@@ -1,7 +1,7 @@
 # thinksns-plus
 ThinkSNS+
 
-# 服务器response外出结构体
+# 服务器response外层结构体
 ```json
 {
     "status": (bool) true, // 标示请求处理的处理类型，true: 成功处理，false: 错误处理
