@@ -11,8 +11,8 @@
     "data": null
 }
 ```
-|name      |type      |default   |direction |
-|----------|:--------:|:--------:|:--------:|
+|name      |type      |default   |description|
+|----------|:--------:|:--------:|:---------:|
 |status    |bool      |false     |标示请求处理的处理类型，true: 成功处理，false: 错误处理|
 |code      |int       |0         |消息码，可能涉及到友好的用户界面提示消息代码|
 |message   | string   | ""       | 消息，多数用于不协商code消息码场景，后端直接给出消息，前端展示消息等场景 |
