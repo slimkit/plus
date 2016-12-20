@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +12,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', [ 'middleware' => 'auth:api' ], function() {
+Route::get('/', ['middleware' => 'auth:api'], function () {
     dd(123);
 });
