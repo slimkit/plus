@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/{name?}', function(Request $request, $name = null) {
+Route::get('/{name?}', function (Request $request, $name = null) {
     dd($request);
 })
 ->middleware('auth:api');
