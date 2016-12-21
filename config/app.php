@@ -226,7 +226,7 @@ return [
         'Validator'    => Illuminate\Support\Facades\Validator::class,
         'View'         => Illuminate\Support\Facades\View::class,
 
-        'PhpSms' => Toplan\PhpSms\Facades\Sms::class,
+        'PhpSms'     => Toplan\PhpSms\Facades\Sms::class,
         'SmsManager' => Toplan\Sms\Facades\SmsManager::class,
 
     ],
