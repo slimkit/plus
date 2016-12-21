@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Sms;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -11,7 +10,6 @@ class AuthController extends Controller
     public function getPhoneCode(Request $request)
     {
         $phone = $request->input('phone');
-        $data = Sms::byPhone($phone)->byDesc()->first();
     }
 
     /**
