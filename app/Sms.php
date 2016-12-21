@@ -10,11 +10,13 @@ class Sms extends Model
     protected $table = 'sms';
 
     /**
-     * 局部复用手机号码条件方法
+     * 局部复用手机号码条件方法.
      *
      * @param Builder $query 构造器
-     * @param string $phone 手机号码
+     * @param string  $phone 手机号码
+     *
      * @return Builder 构造器
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
