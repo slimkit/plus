@@ -1,5 +1,8 @@
 <?php
 
+/* 开启强类型模式 */
+declare(strict_types=1);
+
 define('LARAVEL_START', microtime(true));
 
 /*

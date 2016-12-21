@@ -13,7 +13,18 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/{name?}', function (Request $request, $name = null) {
-    dd($request);
-})
-->middleware('auth:api');
+// Route::get('/{name?}', function (Request $request, $name = null) {
+//     dd($request);
+// })
+// ->middleware('auth:api');
+
+Route::group([
+    'namespace' => 'Api',
+], function ($routes) {
+
+    // 获取手机验证码
+    Route::post('/auth/get-phone-code', 'AuthController@getPhoneCode');
+
+    Route::post('/auth/register', 'AuthController@register')
+        ->middleware(App\Http\Middleware\VerifyPhoneCode::class);
+});
