@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ed9df8b872992035f068a7fe461a635a",
-    "content-hash": "76036da3b5b55b91dbe1e1affa01bf9e",
+    "hash": "45b1b5422966cf3fe31c66eaed38363e",
+    "content-hash": "dab3a42aca37220566fa94e0c4a30312",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -516,6 +516,107 @@
                 "storage"
             ],
             "time": "2016-10-19 20:38:46"
+        },
+        {
+            "name": "medz/laravel-sms",
+            "version": "v2.5.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/medz/laravel-sms.git",
+                "reference": "804b21fc2a79c4d46b09d8496a27638a3c7bbb19"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/medz/laravel-sms/804b21fc2a79c4d46b09d8496a27638a3c7bbb19.zip",
+                "reference": "804b21fc2a79c4d46b09d8496a27638a3c7bbb19",
+                "shasum": ""
+            },
+            "require": {
+                "medz/phpsms": "^1.6",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ],
+                "psr-0": {
+                    "Toplan\\Sms": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "toplan",
+                    "email": "toplan710@gmail.com"
+                }
+            ],
+            "description": "sms send package for laravel",
+            "keywords": [
+                "laravel sms",
+                "laravel-sms",
+                "sms"
+            ],
+            "time": "2016-12-21 06:48:33"
+        },
+        {
+            "name": "medz/phpsms",
+            "version": "v1.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/medz/phpsms.git",
+                "reference": "3ffe19dcfb549fba161bedbbcc669f9bae9beac4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/medz/phpsms/3ffe19dcfb549fba161bedbbcc669f9bae9beac4.zip",
+                "reference": "3ffe19dcfb549fba161bedbbcc669f9bae9beac4",
+                "shasum": ""
+            },
+            "require": {
+                "jeremeamia/superclosure": "^2.3",
+                "php": ">=5.4.0",
+                "toplan/task-balancer": ">=0.4.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Toplan\\PhpSms\\": [
+                        "src/phpsms/",
+                        "src/phpsms/agents/"
+                    ],
+                    "Toplan\\PhpSms\\Facades\\": [
+                        "src/phpsms/facades/"
+                    ]
+                },
+                "classmap": [
+                    "src/phpsms/lib/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "toplan",
+                    "email": "toplan710@gmail.com"
+                }
+            ],
+            "description": "sms send library for php, support the main SMS service provider.",
+            "keywords": [
+                "php sms",
+                "phpsms",
+                "sms",
+                "sms library for php"
+            ],
+            "time": "2016-12-21 06:43:52"
         },
         {
             "name": "monolog/monolog",
@@ -1819,6 +1920,48 @@
                 "dump"
             ],
             "time": "2016-12-08 14:58:14"
+        },
+        {
+            "name": "toplan/task-balancer",
+            "version": "0.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/toplan/task-balancer.git",
+                "reference": "32914c1162fd566d811315f3e015039870642150"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/toplan/task-balancer/32914c1162fd566d811315f3e015039870642150.zip",
+                "reference": "32914c1162fd566d811315f3e015039870642150",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Toplan\\TaskBalance\\": "src/TaskBalancer/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "toplan",
+                    "email": "toplan710@gmail.com"
+                }
+            ],
+            "description": "lightweight and powerful task load balancing for php (like the nginx load balancing)",
+            "keywords": [
+                "balance",
+                "balancer",
+                "load balancing",
+                "task"
+            ],
+            "time": "2016-04-14 09:24:31"
         },
         {
             "name": "vlucas/phpdotenv",

@@ -12,7 +12,6 @@ class AuthController extends Controller
     {
         $phone = $request->input('phone');
         $data = Sms::byPhone($phone)->byDesc()->first();
-        var_dump($data);
     }
 
     /**

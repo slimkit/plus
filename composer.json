@@ -6,7 +6,8 @@
     "type": "project",
     "require": {
         "php": ">=5.6.4",
-        "laravel/framework": "5.3.*"
+        "laravel/framework": "5.3.*",
+        "medz/laravel-sms": "^2.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

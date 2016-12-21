@@ -29,4 +29,14 @@ class Sms extends Model
     {
         return $query->orderBy('id', 'desc');
     }
+
+    public function setDataAttribute($value)
+    {
+        $this->attributes['data'] = serialize($value);
+    }
+
+    public function getDataAttribute($value)
+    {
+        return unserialize($value);
+    }
 }
