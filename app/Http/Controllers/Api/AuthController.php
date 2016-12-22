@@ -11,10 +11,6 @@ class AuthController extends Controller
     public function getPhoneCode(Request $request)
     {
         $phone = $request->input('phone');
-
-        return app(MessageResponseBody::class)
-            ->setStatus(true)
-            ->setMessage('测试可以');
     }
 
     /**
