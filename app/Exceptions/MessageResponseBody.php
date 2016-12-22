@@ -12,12 +12,13 @@ class MessageResponseBody extends JsonResponse
     protected $anyData = null;
 
     /**
-     * 构造方法
+     * 构造方法.
      *
-     * @param bool|boolean $status 状态
-     * @param int|integer $code 状态码
-     * @param string $message 消息
-     * @param any $data 携带数据
+     * @param bool|bool $status  状态
+     * @param int|int   $code    状态码
+     * @param string    $message 消息
+     * @param any       $data    携带数据
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -33,7 +34,8 @@ class MessageResponseBody extends JsonResponse
     /**
      * 设置状态
      *
-     * @param bool|boolean $status 状态
+     * @param bool|bool $status 状态
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -46,9 +48,10 @@ class MessageResponseBody extends JsonResponse
     }
 
     /**
-     * 设置消息
+     * 设置消息.
      *
      * @param string $message 消息
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -60,13 +63,14 @@ class MessageResponseBody extends JsonResponse
         return $this;
     }
 
-     /**
-      * 设置状态码
-      *
-      * @param int $code 状态码
-      * @author Seven Du <shiweidu@outlook.com>
-      * @homepage http://medz.cn
-      */
+    /**
+     * 设置状态码
+     *
+     * @param int $code 状态码
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
     public function setCode(int $code): self
     {
         $this->code = $code;
@@ -76,9 +80,10 @@ class MessageResponseBody extends JsonResponse
     }
 
     /**
-     * 设置数据
+     * 设置数据.
      *
      * @param any $data 数据
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -91,20 +96,20 @@ class MessageResponseBody extends JsonResponse
     }
 
     /**
-     * 获取设置的数据
+     * 获取设置的数据.
      *
      * @return array 数据结构
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
     public function getBody()
     {
         return [
-            'status' => $this->status,
-            'code' => $this->code,
+            'status'  => $this->status,
+            'code'    => $this->code,
             'message' => $this->message,
-            'data' => $this->anyData,
+            'data'    => $this->anyData,
         ];
     }
-
 }
