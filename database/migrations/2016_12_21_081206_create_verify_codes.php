@@ -14,8 +14,14 @@ class CreateVerifyCodes extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->increments('id')->comment('user id.');
+            $table->increments('id');
+            $table->string('account')->comment('账户');
+            $table->integer('code')->comment('验证码');
+            $table->string('content')->nullable()->default('')->comment('内容');
+            $table->string('data')->nullable()->default('')->comment('数据');
             $table->timestamps();
+
+            $table->index('account');
         });
     }
 
