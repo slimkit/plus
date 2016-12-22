@@ -2,10 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
-use Validator;
 use App\Exceptions\MessageResponseBody;
+use Closure;
 use Illuminate\Http\Request;
+use Validator;
 
 /**
  * 验证手机号码
