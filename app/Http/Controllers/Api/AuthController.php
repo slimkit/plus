@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Exceptions\MessageResponseBody;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -10,6 +11,9 @@ class AuthController extends Controller
     public function getPhoneCode(Request $request)
     {
         $phone = $request->input('phone');
+        return app(MessageResponseBody::class)
+            ->setStatus(true)
+            ->setMessage('测试可以');
     }
 
     /**
