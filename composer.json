@@ -6,6 +6,7 @@
     "type": "project",
     "require": {
         "php": ">=7.0",
+        "flc/alidayu": "^2.0",
         "laravel/framework": "5.3.*"
     },
     "require-dev": {
