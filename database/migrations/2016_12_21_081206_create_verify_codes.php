@@ -13,7 +13,7 @@ class CreateVerifyCodes extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('verify_codes', function (Blueprint $table) {
             $table->increments('id');
             $table->string('account')->comment('账户');
             $table->integer('code')->comment('验证码');
@@ -32,6 +32,6 @@ class CreateVerifyCodes extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('verfiy_codes');
+        Schema::dropIfExists('verify_codes');
     }
 }
