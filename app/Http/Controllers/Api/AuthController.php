@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Exceptions\MessageResponseBody;
+use App\Handler\SendMessage;
 use App\Http\Controllers\Controller;
 use App\Models\VerifyCode;
 use Illuminate\Http\Request;
@@ -11,25 +12,26 @@ class AuthController extends Controller
 {
     public function getPhoneCode(Request $request)
     {
-        $vaildSecond = 60;
+        $vaildSecond = 600;
         $phone = $request->input('phone');
-        $verfiy = VerifyCode::byAccount($phone)->byValid($vaildSecond)->first();
+        $verify = VerifyCode::byAccount($phone)->byValid($vaildSecond)->orderByDesc()->first();
 
-        if ($verfiy) {
+        if ($verify) {
             return app(MessageResponseBody::class, [
                 'code' => 1008,
-                'data' => $verfiy->makeSurplusSecond($vaildSecond),
+                'data' => $verify->makeSurplusSecond($vaildSecond),
             ]);
         }
 
         $verify = new VerifyCode();
-        $verify->accound = $phone;
+        $verify->account = $phone;
         $verify->makeVerifyCode();
         $verify->data = [
             'code' => $verify->code,
         ];
+        $verify->save();
 
-        var_dump($verify);
+        return app(SendMessage::class, [ $verify, 'type' => 'phone' ])->send();
     }
 
     /**
