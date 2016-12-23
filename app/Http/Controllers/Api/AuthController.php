@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\MessageResponseBody;
 use App\Http\Controllers\Controller;
 use App\Models\VerifyCode;
-use App\Exceptions\MessageResponseBody;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -14,7 +14,6 @@ class AuthController extends Controller
         $vaildSecond = 60;
         $phone = $request->input('phone');
         $verfiy = VerifyCode::byAccount($phone)->byValid($vaildSecond)->first();
-
 
         if ($verfiy) {
             return app(MessageResponseBody::class, [
@@ -31,7 +30,6 @@ class AuthController extends Controller
         ];
 
         var_dump($verify);
-
     }
 
     /**
