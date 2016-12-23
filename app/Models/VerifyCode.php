@@ -111,7 +111,9 @@ class VerifyCode extends Model
      *
      * @param int $min 最小数
      * @param int $max 最大数
+     *
      * @return self 自身对象
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
