@@ -11,10 +11,11 @@ class SendMessage
     protected $type;
 
     /**
-     * 构造方法
+     * 构造方法.
      *
      * @param VerifyCode $verify 验证数据对象
-     * @param string $type 发送消息的类型，[phone|email]
+     * @param string     $type   发送消息的类型，[phone|email]
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -25,9 +26,10 @@ class SendMessage
     }
 
     /**
-     * 发送消息
+     * 发送消息.
      *
      * @return Response 消息对象
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -38,11 +40,11 @@ class SendMessage
 
     public function withPhone(): Response
     {
-        return app(SendPhoneMessage::class, [ $this->verify ])->send();
+        return app(SendPhoneMessage::class, [$this->verify])->send();
     }
 
     public function withEmail(): Response
     {
-        return app(SendEmailMessage::class, [ $this->verify ])->send();
+        return app(SendEmailMessage::class, [$this->verify])->send();
     }
 }

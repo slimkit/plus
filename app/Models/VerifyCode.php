@@ -72,10 +72,12 @@ class VerifyCode extends Model
     }
 
     /**
-     * 设置倒叙查询
+     * 设置倒叙查询.
      *
      * @param Builder $query 查询对象
+     *
      * @return Builder 查询对象
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */

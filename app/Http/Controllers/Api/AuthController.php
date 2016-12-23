@@ -31,7 +31,7 @@ class AuthController extends Controller
         ];
         $verify->save();
 
-        return app(SendMessage::class, [ $verify, 'type' => 'phone' ])->send();
+        return app(SendMessage::class, [$verify, 'type' => 'phone'])->send();
     }
 
     /**

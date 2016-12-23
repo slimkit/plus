@@ -2,8 +2,8 @@
 
 namespace App\Handler;
 
-use App\Models\VerifyCode;
 use App\Exceptions\MessageResponseBody;
+use App\Models\VerifyCode;
 use Symfony\Component\HttpFoundation\Response;
 
 class SendPhoneMessage
