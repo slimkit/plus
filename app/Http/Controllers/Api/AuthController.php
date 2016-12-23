@@ -26,6 +26,11 @@ class AuthController extends Controller
         $verify = new VerifyCode();
         $verify->accound = $phone;
         $verify->makeVerifyCode();
+        $verify->data = [
+            'code' => $verify->code,
+        ];
+
+        var_dump($verify);
 
     }
 
