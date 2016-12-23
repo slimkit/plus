@@ -4,10 +4,10 @@ namespace App\Handler;
 
 use App\Exceptions\MessageResponseBody;
 use App\Models\VerifyCode;
-use Symfony\Component\HttpFoundation\Response;
-use Flc\Alidayu\Client;
 use Flc\Alidayu\App;
+use Flc\Alidayu\Client;
 use Flc\Alidayu\Requests\AlibabaAliqinFcSmsNumSend;
+use Symfony\Component\HttpFoundation\Response;
 
 class SendPhoneMessage
 {
@@ -38,7 +38,8 @@ class SendPhoneMessage
 
         $response = $this->alidayu->execute($request);
 
-        var_dump($response);exit;
+        var_dump($response);
+        exit;
 
         return app(MessageResponseBody::class, [
             'status' => true,
