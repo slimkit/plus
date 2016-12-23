@@ -95,8 +95,28 @@ class VerifyCode extends Model
         return $vaildSecond - $differ;
     }
 
-    public function makeVerifyCode(): self
+    /**
+     * 生成验证码
+     *
+     * @param int $min 最小数
+     * @param int $max 最大数
+     * @return self 自身对象
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function makeVerifyCode(int $min = 1000, int $max = 9999): self
     {
-        // 
+        $min = min($min, $max);
+        $max = max($min, $max);
+
+        if (function_exists('mt_rand')) {
+            $this->attributes['code'] = mt_rand($min, $max);
+
+            return $this;
+        }
+
+        $this->attributes['code'] = rand($min, $max);
+
+        return $this;
     }
 }
