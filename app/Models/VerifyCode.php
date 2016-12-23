@@ -5,9 +5,12 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class VerifyCode extends Model
 {
+    use SoftDeletes;
+
     /**
      * 设置data字段，并将其格式化.
      *
@@ -16,7 +19,7 @@ class VerifyCode extends Model
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function setDataAttribule($data)
+    public function setDataAttribute($data)
     {
         $this->attributes['data'] = serialize($data);
     }
@@ -31,7 +34,7 @@ class VerifyCode extends Model
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function getDataAttribule(string $data)
+    public function getDataAttribute(string $data)
     {
         return unserialize($data);
     }
@@ -66,6 +69,19 @@ class VerifyCode extends Model
     public function scopeByCode(Builder $query, int $code): Builder
     {
         return $query->where('code', $code);
+    }
+
+    /**
+     * 设置倒叙查询
+     *
+     * @param Builder $query 查询对象
+     * @return Builder 查询对象
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function scopeOrderByDesc(Builder $query): Builder
+    {
+        return $query->orderBy('created_at', 'desc');
     }
 
     /**
