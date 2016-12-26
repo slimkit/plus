@@ -12,7 +12,7 @@ class AuthController extends Controller
 {
     public function getPhoneCode(Request $request)
     {
-        $vaildSecond = 600;
+        $vaildSecond = 60;
         $phone = $request->input('phone');
         $verify = VerifyCode::byAccount($phone)->byValid($vaildSecond)->orderByDesc()->first();
 
@@ -26,7 +26,7 @@ class AuthController extends Controller
         $verify = new VerifyCode();
         $verify->account = $phone;
         $verify->makeVerifyCode();
-        // $verify->save();
+        $verify->save();
 
         return app(SendMessage::class, [$verify, 'type' => 'phone'])->send();
     }

@@ -43,6 +43,11 @@ class SendPhoneMessage
         $sub_msg = isset($response->sub_msg) ? $response->sub_msg : null;
 
         if ($result && $result->success == true) {
+
+            // 发送成功～更新数据库验证状态
+            $this->verify->state = 1;
+            $this->verify->save();
+
             return app(MessageResponseBody::class, [
                 'status' => true,
             ]);
