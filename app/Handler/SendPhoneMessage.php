@@ -49,10 +49,10 @@ class SendPhoneMessage
         }
 
         return app(MessageResponseBody::class, [
-            'status' => false,
-            'code' => 1009,
+            'status'  => false,
+            'code'    => 1009,
             'message' => $sub_msg ?: '',
-            'data' => [$result, $sub_code, $sub_msg],
+            'data'    => [$result, $sub_code, $sub_msg],
         ]);
     }
 }
