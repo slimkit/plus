@@ -10,6 +10,16 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
+    /**
+     * 发送注册验证码.
+     *
+     * @param Request $request 请求对象
+     * 
+     * @return Response 返回对象
+     * 
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
     public function getPhoneCode(Request $request)
     {
         $vaildSecond = 60;

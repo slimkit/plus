@@ -25,7 +25,8 @@ Route::group([
 
     // 获取手机验证码
     Route::post('/auth/get-phone-code', 'AuthController@getPhoneCode')
-        ->middleware(App\Http\Middleware\VerifyPhoneNumber::class);
+        ->middleware(App\Http\Middleware\VerifyPhoneNumber::class)
+        ->middleware(App\Http\Middleware\CheckUserByPhoneExisted::class);
 
     Route::post('/auth/register', 'AuthController@register')
         ->middleware(App\Http\Middleware\VerifyPhoneCode::class);
