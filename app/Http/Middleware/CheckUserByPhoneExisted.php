@@ -47,8 +47,12 @@ class CheckUserByPhoneExisted
             return app(MessageResponseBody::class, [
                 'code' => 1012,
             ]);
+        } else if (($type == 'register' && !$user) || (in_array($type, ['login', 'change']) && $user)) {
+            return $next($request);
         }
 
-        return $next($request);
+        return app(MessageResponseBody::class, [
+            'code' => $type == 'register' ? 1010 : 1012,
+        ]);
     }
 }
