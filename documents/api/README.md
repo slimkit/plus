@@ -27,4 +27,5 @@
 1. [Overview](overview.md)
 2. [Application theme.](app_theme.md)
 3. [Message codes](message_codes.md)
+4. [Get phone verify code](auth-get-phone-code.md)
 
