@@ -38,11 +38,21 @@ class SendPhoneMessage
 
         $response = $this->alidayu->execute($request);
 
-        var_dump($response);
-        exit;
+        $result = isset($response->result) ? $response->result : null;
+        $sub_code = isset($response->sub_code) ? $response->sub_code : null;
+        $sub_msg = isset($response->sub_msg) ? $response->sub_msg : null;
+
+        if ($result && $result->success == true) {
+            return app(MessageResponseBody::class, [
+                'status' => true,
+            ]);
+        }
 
         return app(MessageResponseBody::class, [
-            'status' => true,
+            'status' => false,
+            'code' => 1009,
+            'message' => $sub_msg ?: '',
+            'data' => [$result, $sub_code, $sub_msg],
         ]);
     }
 }

@@ -25,7 +25,7 @@ class ApiMessageResponse
                 return app(MessageResponseBody::class, [
                     'status'  => false,
                     'message' => $response->exception->getMessage(),
-                    'data'    => config('app.debug') ? $response->exception->getTraceAsString() : '',
+                    'data'    => config('app.debug') ? $response->exception->getTrace() : '',
                 ]);
             }
         }
