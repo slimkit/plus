@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 
 Route::group([
     'namespace' => 'Api',
+    'middleware' => App\Http\Middleware\ApiMessageResponse::class,
 ], function ($routes) {
 
     // 获取手机验证码
