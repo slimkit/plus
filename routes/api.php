@@ -19,7 +19,7 @@ use Illuminate\Http\Request;
 // ->middleware('auth:api');
 
 Route::group([
-    'namespace' => 'Api',
+    'namespace'  => 'Api',
     'middleware' => App\Http\Middleware\ApiMessageResponse::class,
 ], function ($routes) {
 

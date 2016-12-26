@@ -2,17 +2,18 @@
 
 namespace App\Http\Middleware;
 
+use App\Exceptions\MessageResponseBody;
 use Closure;
 use Exception;
-use App\Exceptions\MessageResponseBody;
 
 class ApiMessageResponse
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -20,12 +21,11 @@ class ApiMessageResponse
         try {
             $response = $next($request);
         } finally {
-
             if ($response->exception) {
                 return app(MessageResponseBody::class, [
-                    'status' => false,
+                    'status'  => false,
                     'message' => $response->exception->getMessage(),
-                    'data' => config('app.debug') ? $response->exception->getTraceAsString() : '',
+                    'data'    => config('app.debug') ? $response->exception->getTraceAsString() : '',
                 ]);
             }
         }
