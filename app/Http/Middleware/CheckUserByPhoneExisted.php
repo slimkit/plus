@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\User;
 use App\Exceptions\MessageResponseBody;
+use App\Models\User;
 use Closure;
 
 class CheckUserByPhoneExisted
@@ -17,8 +17,9 @@ class CheckUserByPhoneExisted
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -42,7 +43,7 @@ class CheckUserByPhoneExisted
             ]);
 
         // 如果是登录或者修改用户资料等
-        } else if (in_array($type, ['login', 'change']) && !$user) {
+        } elseif (in_array($type, ['login', 'change']) && !$user) {
             return app(MessageResponseBody::class, [
                 'code' => 1012,
             ]);

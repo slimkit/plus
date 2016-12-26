@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -33,10 +33,10 @@ class User extends Authenticatable
      * 复用设置手机号查询条件方法.
      *
      * @param Builder $query 查询对象
-     * @param string $phone 手机号码
-     * 
+     * @param string  $phone 手机号码
+     *
      * @return Builder 查询对象
-     * 
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
