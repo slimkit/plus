@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
 
         // 添加用户名验证规则
         Validator::extend('username', function ($attribute, $value) {
-            return preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $value);
+            return preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $value);
         });
     }
 
