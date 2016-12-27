@@ -29,5 +29,6 @@ Route::group([
         ->middleware(App\Http\Middleware\CheckUserByPhoneExisted::class);
 
     Route::post('/auth/register', 'AuthController@register')
+        ->middleware(App\Http\Middleware\VerifyPhoneNumber::class)
         ->middleware(App\Http\Middleware\VerifyPhoneCode::class);
 });
