@@ -59,14 +59,14 @@ class AuthController extends Controller
     }
 
     /**
-     * 用户登录
-     * 
+     * 用户登录.
+     *
      * @Author   Wayne[qiaobin@zhiyicx.com]
      * @DateTime 2016-12-27T16:57:18+0800
-     * 
-     * @param    Request $request 请求对象
-     * @return   Response 响应对象
-     * 
+     *
+     * @param Request $request 请求对象
+     *
+     * @return Response 响应对象
      */
     public function login(Request $request)
     {

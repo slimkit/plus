@@ -32,6 +32,5 @@ Route::group([
     Route::post('/auth/login', 'AuthController@login')
         ->middleware(App\Http\Middleware\VerifyPhoneNumber::class) // 验证手机号码是否正确
         ->middleware(App\Http\Middleware\CheckUserByPhoneExisted::class) // 验证手机号码用户是否存在
-        ->middleware(App\Http\Middleware\VerifyPassword::class)
-    ;
+        ->middleware(App\Http\Middleware\VerifyPassword::class);
 });
