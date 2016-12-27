@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\VerifyCode;
 use App\Exceptions\MessageResponseBody;
+use App\Models\VerifyCode;
 use Closure;
 
 class VerifyPhoneCode
@@ -26,7 +26,7 @@ class VerifyPhoneCode
         if (!$verify || $verify->state == 2) {
             return app(MessageResponseBody::class, [
                 'code' => 1001,
-            ]); 
+            ]);
         }
 
         // 验证通过，失效验证码，执行下一步操作.
