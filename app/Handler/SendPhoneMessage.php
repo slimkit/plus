@@ -50,6 +50,7 @@ class SendPhoneMessage
 
             return app(MessageResponseBody::class, [
                 'status' => true,
+                'message' => '发送成功',
             ]);
         }
 
