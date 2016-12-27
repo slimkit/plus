@@ -53,7 +53,7 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        $username = $request->input('username');
+        $username = $request->input('name');
         $phone = $request->input('phone');
         $password = $request->input('password');
     }
