@@ -49,7 +49,7 @@ class SendPhoneMessage
             $this->verify->save();
 
             return app(MessageResponseBody::class, [
-                'status' => true,
+                'status'  => true,
                 'message' => '发送成功',
             ]);
         }

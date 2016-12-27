@@ -12,8 +12,9 @@ class CheckUserByNameNotExisted
     /**
      * 从检查用户是否不存在中间件.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle(Request $request, Closure $next)

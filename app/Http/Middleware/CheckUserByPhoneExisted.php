@@ -24,7 +24,7 @@ class CheckUserByPhoneExisted
         // 用户不存在
         if (!$user) {
             return app(MessageResponseBody::class, [
-                'code' => 1005
+                'code' => 1005,
             ]);
         }
 

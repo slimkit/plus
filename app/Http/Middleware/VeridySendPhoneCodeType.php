@@ -16,8 +16,9 @@ class VeridySendPhoneCodeType
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -31,7 +32,7 @@ class VeridySendPhoneCodeType
             ]);
 
         // 如果是注册获取验证码，如果用户不存在继续执行
-        } else if ($type == 'register') {
+        } elseif ($type == 'register') {
             return app(CheckUserByPhoneNotExisted::class)->handle($request, $next);
         }
 
