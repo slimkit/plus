@@ -44,4 +44,20 @@ class User extends Authenticatable
     {
         return $query->where('phone', $phone);
     }
+
+    /**
+     * 复用设置用户名查询条件方法.
+     *
+     * @param Builder $query 查询对象
+     * @param string $name 用户名
+     * 
+     * @return Builder 查询对象
+     * 
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function scopeByName(Builder $query, string $name): Builder
+    {
+        return $query->where('name', $name);
+    }
 }
