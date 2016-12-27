@@ -60,4 +60,9 @@ class User extends Authenticatable
     {
         return $query->where('name', $name);
     }
+
+    public function verifyPassword(string $password): bool
+    {
+        return app('hash')->check($password, $this->password);
+    }
 }
