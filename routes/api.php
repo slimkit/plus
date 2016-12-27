@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,5 +28,5 @@ Route::group([
         ->middleware(App\Http\Middleware\CheckUserByNameExisted::class) // 验证用户名是否被占用
         ->middleware(App\Http\Middleware\CheckUserByPhoneExisted::class) // 验证手机号码是否被占用
         ->middleware(App\Http\Middleware\VerifyPhoneCode::class) // 验证验证码释放正确
-    ;
+;
 });

@@ -4,20 +4,20 @@ namespace App\Http\Middleware;
 
 use App\Exceptions\MessageResponseBody;
 use Closure;
-use Validator;
 use Illuminate\Http\Request;
+use Validator;
 
 class VerifyUserNameRole
 {
     /**
-     * 最大用户名长度
+     * 最大用户名长度.
      *
      * @var int
      */
     protected $usernameMaxLength = 48; // 4b * 12
 
     /**
-     * 最小用户名长度
+     * 最小用户名长度.
      *
      * @var int
      */
@@ -26,8 +26,9 @@ class VerifyUserNameRole
     /**
      * 验证用户名规则是否合法.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
