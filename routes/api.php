@@ -13,11 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-// Route::get('/{name?}', function (Request $request, $name = null) {
-//     dd($request);
-// })
-// ->middleware('auth:api');
-
 Route::group([
     'namespace'  => 'Api',
     'middleware' => App\Http\Middleware\ApiMessageResponse::class,
@@ -29,6 +24,10 @@ Route::group([
         ->middleware(App\Http\Middleware\CheckUserByPhoneExisted::class);
 
     Route::post('/auth/register', 'AuthController@register')
-        ->middleware(App\Http\Middleware\VerifyPhoneNumber::class)
-        ->middleware(App\Http\Middleware\VerifyPhoneCode::class);
+        ->middleware(App\Http\Middleware\VerifyPhoneNumber::class) // 验证手机号码是否正确
+        ->middleware(App\Http\Middleware\VerifyUserNameRole::class) // 验证用户名规则是否正确
+        ->middleware(App\Http\Middleware\CheckUserByNameExisted::class) // 验证用户名是否被占用
+        ->middleware(App\Http\Middleware\CheckUserByPhoneExisted::class) // 验证手机号码是否被占用
+        ->middleware(App\Http\Middleware\VerifyPhoneCode::class) // 验证验证码释放正确
+    ;
 });
