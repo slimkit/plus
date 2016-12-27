@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class CheckUserByNameExisted
 {
     /**
-     * Handle an incoming request.
+     * 检查用户是否存在中间件.
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure                 $next
@@ -22,14 +22,14 @@ class CheckUserByNameExisted
         $name = $request->input('name');
         $user = User::byName($name)->withTrashed()->first();
 
-        // 用户名已被使用
+        // 用户不存在
         if (!$user) {
             return app(MessageResponseBody::class, [
-                'code' => 1004,
+                'code' => 1005,
             ]);
         }
 
-        app()->user = $user;
+        $request->attributes->set('user', $user);
 
         return $next($request);
     }
