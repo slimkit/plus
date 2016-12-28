@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Exceptions\MessageResponseBody;
 use App\Handler\SendMessage;
 use App\Http\Controllers\Controller;
-use App\Models\VerifyCode;
 use App\Models\User;
+use App\Models\VerifyCode;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -64,7 +64,7 @@ class AuthController extends Controller
         $user->save();
 
         $request->attributes->set('user', $user);
-        
+
         return $this->login($request);
     }
 

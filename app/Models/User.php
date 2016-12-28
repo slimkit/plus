@@ -65,7 +65,9 @@ class User extends Authenticatable
      * Create user ppassword.
      *
      * @param string $password user password
+     *
      * @return self
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
