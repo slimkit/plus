@@ -117,6 +117,7 @@ class MessageResponseBody extends JsonResponse
      * 保证APImessage永远存在信息处理方法.
      *
      * @return string 消息
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
