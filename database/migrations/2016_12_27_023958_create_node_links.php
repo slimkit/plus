@@ -15,8 +15,8 @@ class CreateNodeLinks extends Migration
     {
         Schema::create('node_links', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('node_id')->commit('节点id');
-            $table->integer('user_group_id')->commit('用户组id');
+            $table->integer('node_id')->comment('节点id');
+            $table->integer('user_group_id')->comment('用户组id');
             $table->timestamps();
         });
     }

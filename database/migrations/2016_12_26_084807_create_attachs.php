@@ -15,13 +15,13 @@ class CreateAttachs extends Migration
     {
         Schema::create('attachs', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->commit('原文件名');
-            $table->string('path')->commit('存储路径');
-            $table->string('hash')->uniqid()->commit('文件hash值');
-            $table->string('mime')->commit('mime类型');
-            $table->string('extension')->commit('文件扩展名');
-            $table->integer('width')->nullable()->default(0)->commit('图片宽度');
-            $table->integer('height')->nullable()->default(0)->commit('图片高度');
+            $table->string('name')->comment('原文件名');
+            $table->string('path')->comment('存储路径');
+            $table->string('hash')->uniqid()->comment('文件hash值');
+            $table->string('mime')->comment('mime类型');
+            $table->string('extension')->comment('文件扩展名');
+            $table->integer('width')->nullable()->default(0)->comment('图片宽度');
+            $table->integer('height')->nullable()->default(0)->comment('图片高度');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -15,8 +15,8 @@ class CreateNodes extends Migration
     {
         Schema::create('nodes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->commit('节点名字');
-            $table->string('route_name')->commit('路由别名');
+            $table->string('name')->comment('节点名字');
+            $table->string('route_name')->comment('路由别名');
             $table->timestamps();
         });
     }
