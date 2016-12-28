@@ -3,7 +3,7 @@
 
 ## request
 ```shell
-curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d 'phone=18781993582&name=shiwei&code=2993&password=123456' "http://plus.io/api/auth/register"
+curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d 'phone=18781993582&name=shiwei&code=2993&password=123456' "/api/auth/register"
 ```
 | name     | type     | must     | description |
 |----------|:--------:|:--------:|:--------:|
