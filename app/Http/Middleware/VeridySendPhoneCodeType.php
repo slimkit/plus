@@ -14,7 +14,7 @@ class VeridySendPhoneCodeType
     ];
 
     /**
-     * Handle an incoming request.
+     * 验证获取验证码类型以及是否有权限发送中间件.
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure                 $next

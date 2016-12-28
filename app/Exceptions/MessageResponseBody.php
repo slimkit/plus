@@ -108,8 +108,27 @@ class MessageResponseBody extends JsonResponse
         return [
             'status'  => $this->status,
             'code'    => $this->code,
-            'message' => $this->message,
+            'message' => $this->getDefaultMessage(),
             'data'    => $this->anyData,
         ];
+    }
+
+    /**
+     * 保证APImessage永远存在信息处理方法.
+     *
+     * @return string 消息
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    protected function getDefaultMessage(): string
+    {
+        $message = $this->message;
+        $status = $this->status;
+
+        if ($message) {
+            return $message;
+        }
+
+        return $status ? '操作成功' : '操作失败';
     }
 }
