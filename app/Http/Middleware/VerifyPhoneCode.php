@@ -19,9 +19,14 @@ class VerifyPhoneCode
     public function handle($request, Closure $next)
     {
         $phone = $request->input('phone');
+        $code = (int) $request->input('code');
 
         $vaild = 300;
-        $verify = VerifyCode::byAccount($phone)->byValid($vaild)->orderByDesc()->first();
+        $verify = VerifyCode::byAccount($phone)
+            ->byValid($vaild)
+            ->byCode($code)
+            ->orderByDesc()
+            ->first();
 
         if (!$verify || $verify->state == 2) {
             return app(MessageResponseBody::class, [
