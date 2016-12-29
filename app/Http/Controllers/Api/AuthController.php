@@ -82,6 +82,5 @@ class AuthController extends Controller
     {
         $user = $request->attributes->get('user');
         $deviceCode = $request->input('devicecode', '');
-        
     }
 }
