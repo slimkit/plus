@@ -4,8 +4,8 @@ namespace App\Http\Middleware;
 
 use App\Exceptions\MessageResponseBody;
 use App\Models\AuthToken;
-use Closure;
 use Carbon\Carbon;
+use Closure;
 use Illuminate\Http\Request;
 
 class AuthUserToken
@@ -39,13 +39,13 @@ class AuthUserToken
             ]);
 
         // 判断token状态是否被下线
-        } else if ($authToken->state === 1) {
+        } elseif ($authToken->state === 1) {
             return app(MessageResponseBody::class, [
                 'code' => 1015,
             ]);
 
         // 判断token是否被过期
-        } else if (
+        } elseif (
             $authToken->deleted_at ||
             (
                 $authToken->expires &&
@@ -57,7 +57,7 @@ class AuthUserToken
             ]);
 
         // 如果用户不存在
-        } else if (!$authToken->user) {
+        } elseif (!$authToken->user) {
             return app(MessageResponseBody::class, [
                 'code' => 1005,
             ]);
