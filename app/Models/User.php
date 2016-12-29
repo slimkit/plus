@@ -77,7 +77,7 @@ class User extends Authenticatable
 
         return $this;
     }
-    
+
     public function verifyPassword(string $password): bool
     {
         return app('hash')->check($password, $this->password);
