@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Exceptions\MessageResponseBody;
 use App\Models\AuthToken;
 use Closure;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AuthUserToken
@@ -23,13 +24,44 @@ class AuthUserToken
 
         if (!$accessToken) {
             return app(MessageResponseBody::class, [
-                'code' => 1014,
+                'code' => 1016,
             ]);
         }
 
         $authToken = AuthToken::byToken($accessToken)
+            ->withTrashed()
             ->orderByDesc()
             ->first();
+
+        if (!$authToken) {
+            return app(MessageResponseBody::class, [
+                'code' => 1016,
+            ]);
+
+        // 判断token状态是否被下线
+        } else if ($authToken->state === 1) {
+            return app(MessageResponseBody::class, [
+                'code' => 1015,
+            ]);
+
+        // 判断token是否被过期
+        } else if (
+            $authToken->deleted_at ||
+            (
+                $authToken->expires &&
+                $authToken->created_at->diffInSeconds(Carbon::now()) >= $authToken->expires
+            )
+        ) {
+            return app(MessageResponseBody::class, [
+                'code' => 1012,
+            ]);
+
+        // 如果用户不存在
+        } else if (!$authToken->user) {
+            return app(MessageResponseBody::class, [
+                'code' => 1005,
+            ]);
+        }
 
         return $next($request);
     }
