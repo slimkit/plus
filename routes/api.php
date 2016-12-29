@@ -25,6 +25,7 @@ Route::group([
 
     // 用户注册
     Route::post('/auth/register', 'AuthController@register')
+        ->middleware(App\Http\Middleware\CheckDeviceCodeExisted::class) // 验证设备号是否存在
         ->middleware(App\Http\Middleware\VerifyPhoneNumber::class) // 验证手机号码是否正确
         ->middleware(App\Http\Middleware\VerifyUserNameRole::class) // 验证用户名规则是否正确
         ->middleware(App\Http\Middleware\CheckUserByNameNotExisted::class) // 验证用户名是否被占用
@@ -34,6 +35,7 @@ Route::group([
 
     // 用户登录
     Route::post('/auth/login', 'AuthController@login')
+        ->middleware(App\Http\Middleware\CheckDeviceCodeExisted::class) // 验证设备号是否存在
         ->middleware(App\Http\Middleware\VerifyPhoneNumber::class) // 验证手机号码是否正确
         ->middleware(App\Http\Middleware\CheckUserByPhoneExisted::class) // 验证手机号码用户是否存在
         ->middleware(App\Http\Middleware\VerifyPassword::class) // 验证密码是否正确
