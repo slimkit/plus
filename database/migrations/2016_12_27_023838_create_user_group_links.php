@@ -28,6 +28,6 @@ class CreateUserGroupLinks extends Migration
      */
     public function down()
     {
-        Schema::drop('user_group_links');
+        Schema::dropIfExists('user_group_links');
     }
 }

@@ -28,6 +28,6 @@ class CreateNodeLinks extends Migration
      */
     public function down()
     {
-        Schema::drop('node_links');
+        Schema::dropIfExists('node_links');
     }
 }

@@ -34,6 +34,6 @@ class CreateAttachs extends Migration
      */
     public function down()
     {
-        Schema::drop('attachs');
+        Schema::dropIfExists('attachs');
     }
 }
