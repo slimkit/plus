@@ -34,4 +34,6 @@
 2. [Application theme.](app_theme.md)
 3. [Message codes](message_codes.md)
 4. [Get phone verify code](auth-get-phone-code.md)
+5. User login or register.
+    - [User register](auth-register.md)
 

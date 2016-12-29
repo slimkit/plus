@@ -61,6 +61,23 @@ class User extends Authenticatable
         return $query->where('name', $name);
     }
 
+    /**
+     * Create user ppassword.
+     *
+     * @param string $password user password
+     *
+     * @return self
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function createPassword(string $password): self
+    {
+        $this->password = app('hash')->make($password);
+
+        return $this;
+    }
+
     public function verifyPassword(string $password): bool
     {
         return app('hash')->check($password, $this->password);

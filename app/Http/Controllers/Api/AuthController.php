@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Exceptions\MessageResponseBody;
 use App\Handler\SendMessage;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\VerifyCode;
 use Illuminate\Http\Request;
 
@@ -53,9 +54,18 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        $username = $request->input('name');
+        $name = $request->input('name');
         $phone = $request->input('phone');
-        $password = $request->input('password');
+        $password = $request->input('password', '');
+        $user = new User();
+        $user->name = $name;
+        $user->phone = $phone;
+        $user->createPassword($password);
+        $user->save();
+
+        $request->attributes->set('user', $user);
+
+        return $this->login($request);
     }
 
     /**
