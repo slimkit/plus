@@ -88,7 +88,9 @@ class AuthController extends Controller
      * 找回密码控制器.
      *
      * @param Request $request 请求对象
+     *
      * @return any 返回对象
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -101,7 +103,7 @@ class AuthController extends Controller
         $user->save();
 
         return app(MessageResponseBody::class, [
-            'status' => true,
+            'status'  => true,
             'message' => '重置密码成功',
         ]);
     }
