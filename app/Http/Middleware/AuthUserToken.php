@@ -29,7 +29,10 @@ class AuthUserToken
             ]);
         }
 
-        return $this->checkAccessTokenExistedStep($accessToken, function () use ($next, $request) {
+        return $this->checkAccessTokenExistedStep($accessToken, function (User $user) use ($next, $request) {
+            // 注入用户信息到下一步控制器.
+            $request->attributes->set('user', $user);
+
             return $next($request);
         });
     }
@@ -124,6 +127,6 @@ class AuthUserToken
             ]);
         }
 
-        return $next();
+        return $next($user);
     }
 }
