@@ -4,14 +4,15 @@ namespace App\Http\Middleware;
 
 use App\Exceptions\MessageResponseBody;
 use App\Models\AuthToken;
-use Carbon\Carbon;
+use App\Models\User;
 use Closure;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AuthUserToken
 {
     /**
-     * Handle an incoming request.
+     * 验证用户认证入口.
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure                 $next
@@ -28,6 +29,22 @@ class AuthUserToken
             ]);
         }
 
+        return $this->checkAccessTokenExistedStep($accessToken, function () use ($next, $request) {
+            return $next($request);
+        });
+    }
+
+    /**
+     * 验证AccessToken是否存在.
+     *
+     * @param string $accessToken 请求的token
+     * @param Closure $next 下一步回掉方法
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    protected function checkAccessTokenExistedStep(string $accessToken, Closure $next)
+    {
         $authToken = AuthToken::byToken($accessToken)
             ->withTrashed()
             ->orderByDesc()
@@ -37,32 +54,68 @@ class AuthUserToken
             return app(MessageResponseBody::class, [
                 'code' => 1016,
             ]);
+        }
 
-        // 判断token状态是否被下线
-        } elseif ($authToken->state === 1) {
+        return $this->checkAccessTokenIsShutDownStep($authToken, $next);
+    }
+
+    /**
+     * 验证AccessToken设备是否被下线.
+     *
+     * @param AuthToken $authToken token数据对象
+     * @param Closure $next 下一步回掉方法
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    protected function checkAccessTokenIsShutDownStep(AuthToken $authToken, Closure $next)
+    {
+        if ($authToken->state === 1) {
             return app(MessageResponseBody::class, [
                 'code' => 1015,
             ]);
+        }
 
-        // 判断token是否被过期
-        } elseif (
-            $authToken->deleted_at ||
-            (
-                $authToken->expires &&
-                $authToken->created_at->diffInSeconds(Carbon::now()) >= $authToken->expires
-            )
-        ) {
+        return $this->checkAccessTokenIsInvaildStep($accessToken, $next);
+    }
+
+    /**
+     * 验证AccessToken是否有效.
+     *
+     * @param AuthToken $authToken token数据对象
+     * @param Closure $next 下一步回掉方法
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    protected function checkAccessTokenIsInvaildStep(AuthToken $authToken, Closure $next)
+    {
+        if ($authToken->deleted_at || ($authToken->expires && $authToken->created_at->diffInSeconds(Carbon::now()) >= $authToken->expires)) {
             return app(MessageResponseBody::class, [
                 'code' => 1012,
             ]);
+        }
 
-        // 如果用户不存在
-        } elseif (!$authToken->user) {
+        return $this->checkUserExistedStep($authToken->user, $next);
+    }
+
+    /**
+     * 检查与AccessToken绑定的用户是否存在.
+     *
+     * @param mixed $user 用户对象
+     * @param Closure $next 下一步回掉的
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    protected function checkUserExistedStep($user, Closure $next)
+    {
+        if (!$user || $user instanceof User) {
             return app(MessageResponseBody::class, [
                 'code' => 1005,
             ]);
         }
 
-        return $next($request);
+        return $next();
     }
 }
