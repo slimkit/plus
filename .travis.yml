@@ -4,5 +4,10 @@ php:
     - 7.0
     - 7.1
 
+install:
+    - composer install
+    - php -r "file_exists('.env') || copy('.env.example', '.env');"
+    - php artisan key:generate
+
 script:
     - php vendor/bin/phpunit
