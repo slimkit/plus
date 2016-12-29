@@ -35,5 +35,6 @@
 3. [Message codes](message_codes.md)
 4. [Get phone verify code](auth-get-phone-code.md)
 5. User login or register.
+    - [Overview](auth-overview.md)
     - [User register](auth-register.md)
 
