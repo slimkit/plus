@@ -33,7 +33,9 @@ class AuthToken extends Model
      * 查询排序条件复用倒叙.
      *
      * @param Builder $query 查询对象
+     *
      * @return Builder
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
