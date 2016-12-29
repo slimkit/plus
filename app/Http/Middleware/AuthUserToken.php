@@ -5,8 +5,8 @@ namespace App\Http\Middleware;
 use App\Exceptions\MessageResponseBody;
 use App\Models\AuthToken;
 use App\Models\User;
-use Closure;
 use Carbon\Carbon;
+use Closure;
 use Illuminate\Http\Request;
 
 class AuthUserToken
@@ -37,9 +37,11 @@ class AuthUserToken
     /**
      * 验证AccessToken是否存在.
      *
-     * @param string $accessToken 请求的token
-     * @param Closure $next 下一步回掉方法
+     * @param string  $accessToken 请求的token
+     * @param Closure $next        下一步回掉方法
+     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -63,8 +65,10 @@ class AuthUserToken
      * 验证AccessToken设备是否被下线.
      *
      * @param AuthToken $authToken token数据对象
-     * @param Closure $next 下一步回掉方法
+     * @param Closure   $next      下一步回掉方法
+     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -83,8 +87,10 @@ class AuthUserToken
      * 验证AccessToken是否有效.
      *
      * @param AuthToken $authToken token数据对象
-     * @param Closure $next 下一步回掉方法
+     * @param Closure   $next      下一步回掉方法
+     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -102,9 +108,11 @@ class AuthUserToken
     /**
      * 检查与AccessToken绑定的用户是否存在.
      *
-     * @param mixed $user 用户对象
+     * @param mixed   $user 用户对象
      * @param Closure $next 下一步回掉的
+     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
