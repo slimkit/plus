@@ -70,6 +70,8 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        dump($request->attributes->get('user'));
+        $user = $request->attributes->get('user');
+        $deviceCode = $request->input('devicecode', '');
+        
     }
 }

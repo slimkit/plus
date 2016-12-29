@@ -43,7 +43,7 @@ class User extends Authenticatable
     public function scopeByPhone(Builder $query, string $phone): Builder
     {
         return $query->where('phone', $phone);
-    }
+    }=
 
     /**
      * 复用设置用户名查询条件方法.
