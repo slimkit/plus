@@ -24,8 +24,21 @@ class AuthToken extends Model
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function scopeByToken(Builder $query, $token)
+    public function scopeByToken(Builder $query, $token): Builder
     {
         return $query->where('token', $token);
+    }
+
+    /**
+     * 查询排序条件复用倒叙.
+     *
+     * @param Builder $query 查询对象
+     * @return Builder
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function scopeOrderByDesc(Builder $query): Builder
+    {
+        return $query->orderBy('id', 'desc');
     }
 }
