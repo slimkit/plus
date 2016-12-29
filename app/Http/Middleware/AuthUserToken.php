@@ -2,17 +2,18 @@
 
 namespace App\Http\Middleware;
 
+use App\Exceptions\MessageResponseBody;
 use Closure;
 use Illuminate\Http\Request;
-use App\Exceptions\MessageResponseBody;
 
 class AuthUserToken
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle(Request $request, Closure $next)

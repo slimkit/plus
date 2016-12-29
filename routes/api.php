@@ -53,12 +53,11 @@ Route::group([
         'middleware' => [
             App\Http\Middleware\AuthUserToken::class,
         ],
-        'prefix' => '/user'
+        'prefix' => '/user',
     ], function ($routes) {
 
         // 修改用户密码
         Route::post('/reset-password', 'UserController@resetPassword') // 设置控制器
-        ;
+;
     });
-
 });
