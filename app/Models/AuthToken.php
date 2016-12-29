@@ -17,8 +17,10 @@ class AuthToken extends Model
      * 查找条件依照token的复用方法.
      *
      * @param Builder $query 查询对象
-     * @param string $token Token值
+     * @param string  $token Token值
+     *
      * @return Builder 查询对象
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
