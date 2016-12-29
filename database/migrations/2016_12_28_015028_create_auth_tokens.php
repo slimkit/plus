@@ -32,6 +32,6 @@ class CreateAuthTokens extends Migration
      */
     public function down()
     {
-        Schema::drop('auth_tokens');
+        Schema::dropIfExists('auth_tokens');
     }
 }

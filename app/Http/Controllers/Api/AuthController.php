@@ -83,4 +83,28 @@ class AuthController extends Controller
         $user = $request->attributes->get('user');
         $deviceCode = $request->input('devicecode', '');
     }
+
+    /**
+     * 找回密码控制器.
+     *
+     * @param Request $request 请求对象
+     *
+     * @return any 返回对象
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function forgotPassword(Request $request)
+    {
+        $password = $request->input('password', '');
+
+        $user = $request->attributes->get('user');
+        $user->createPassword($password);
+        $user->save();
+
+        return app(MessageResponseBody::class, [
+            'status'  => true,
+            'message' => '重置密码成功',
+        ]);
+    }
 }

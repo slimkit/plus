@@ -3,10 +3,10 @@
 namespace App\Http\Middleware;
 
 use App\Exceptions\MessageResponseBody;
-use App\Models\User;
 use Closure;
+use Illuminate\Http\Request;
 
-class CheckUserByPhoneExisted
+class AuthUserToken
 {
     /**
      * Handle an incoming request.
@@ -16,19 +16,15 @@ class CheckUserByPhoneExisted
      *
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
-        $phone = $request->input('phone');
-        $user = User::byPhone($phone)->withTrashed()->first();
+        $accessToken = $request->headers->get('ACCESS-TOKEN');
 
-        // 用户不存在 or 软删除用户
-        if (!$user || !$user->deleted_at) {
+        if (!$accessToken) {
             return app(MessageResponseBody::class, [
-                'code' => 1005,
+                'code' => 1014,
             ]);
         }
-
-        $request->attributes->set('user', $user);
 
         return $next($request);
     }

@@ -14,7 +14,9 @@
 
 Route::group([
     'namespace'  => 'Api',
-    'middleware' => App\Http\Middleware\ApiMessageResponse::class,
+    'middleware' => [
+        App\Http\Middleware\ApiMessageResponse::class,
+    ],
 ], function ($routes) {
 
     // 获取手机验证码
@@ -40,4 +42,24 @@ Route::group([
         ->middleware(App\Http\Middleware\CheckUserByPhoneExisted::class) // 验证手机号码用户是否存在
         ->middleware(App\Http\Middleware\VerifyPassword::class) // 验证密码是否正确
 ;
+
+    // 找回密码
+    Route::post('/auth/forgot', 'AuthController@forgotPassword')
+        ->middleware(App\Http\Middleware\VerifyPhoneNumber::class) // 验证手机号格式
+        ->middleware(App\Http\Middleware\CheckUserByPhoneExisted::class) // 验证手机号码用户是否存在
+        ->middleware(App\Http\Middleware\VerifyPhoneCode::class) // 验证手机号码验证码是否正确
+;
+
+    // 用户相关组
+    Route::group([
+        'middleware' => [
+            App\Http\Middleware\AuthUserToken::class,
+        ],
+        'prefix' => '/user',
+    ], function ($routes) {
+
+        // 修改用户密码
+        Route::post('/reset-password', 'UserController@resetPassword') // 设置控制器
+;
+    });
 });

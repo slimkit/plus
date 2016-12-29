@@ -34,6 +34,6 @@ class CreateLoginRecords extends Migration
      */
     public function down()
     {
-        Schema::drop('login_records');
+        Schema::dropIfExists('login_records');
     }
 }

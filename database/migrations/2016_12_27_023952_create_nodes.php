@@ -28,6 +28,6 @@ class CreateNodes extends Migration
      */
     public function down()
     {
-        Schema::drop('nodes');
+        Schema::dropIfExists('nodes');
     }
 }
