@@ -22,8 +22,8 @@ class CheckUserByNameExisted
         $name = $request->input('name');
         $user = User::byName($name)->withTrashed()->first();
 
-        // 用户不存在
-        if (!$user) {
+        // 用户不存在 or 软删除用户
+        if (!$user || !$user->deleted_at) {
             return app(MessageResponseBody::class, [
                 'code' => 1005,
             ]);
