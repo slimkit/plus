@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Exceptions\MessageResponseBody;
+use App\Models\AuthToken;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -25,6 +26,10 @@ class AuthUserToken
                 'code' => 1014,
             ]);
         }
+
+        $authToken = AuthToken::byToken($accessToken)
+            ->orderByDesc()
+            ->first();
 
         return $next($request);
     }
