@@ -26,7 +26,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token'
+        'password', 'remember_token',
     ];
 
     /**
@@ -80,10 +80,13 @@ class User extends Authenticatable
 
     /**
      * 验证用户密码
+     *
      * @Author   Wayne[qiaobin@zhiyicx.com]
      * @DateTime 2016-12-30T18:44:40+0800
-     * @param    string     $password [description]
-     * @return   bool       验证结果true or false
+     *
+     * @param string $password [description]
+     *
+     * @return bool 验证结果true or false
      */
     public function verifyPassword(string $password): bool
     {
@@ -91,10 +94,12 @@ class User extends Authenticatable
     }
 
     /**
-     * 用户登录记录关系
+     * 用户登录记录关系.
+     *
      * @Author   Wayne[qiaobin@zhiyicx.com]
      * @DateTime 2016-12-30T18:47:51+0800
-     * @return   object \Illuminate\Database\Eloquent\Relations\HasMany
+     *
+     * @return object \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function loginRecords()
     {

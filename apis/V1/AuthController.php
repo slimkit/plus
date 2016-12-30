@@ -5,11 +5,11 @@ namespace App\Http\Controllers\APIs\V1;
 use App\Exceptions\MessageResponseBody;
 use App\Handler\SendMessage;
 use App\Http\Controllers\Controller;
+use App\Models\AuthToken;
+use App\Models\LoginRecord;
 use App\Models\User;
 use App\Models\VerifyCode;
 use Illuminate\Http\Request;
-use App\Models\AuthToken;
-use App\Models\LoginRecord;
 use Zhuzhichao\IpLocationZh\Ip;
 
 class AuthController extends Controller
@@ -56,8 +56,7 @@ class AuthController extends Controller
      * @return Response 响应对象
      */
     public function login(Request $request)
-    {   
-    
+    {
         $user = $request->attributes->get('user');
         $deviceCode = $request->input('device_code');
         $token = new AuthToken();
@@ -68,12 +67,12 @@ class AuthController extends Controller
         $token->state = 1;
         $token->save();
 
-        // 
+        //
         $data = [
-            'token' => $token->token,
+            'token'         => $token->token,
             'refresh_token' => $token->refresh_token,
-            'created_at' => $token->created_at->getTimestamp(),
-            'expires' => $token->expires,
+            'created_at'    => $token->created_at->getTimestamp(),
+            'expires'       => $token->expires,
         ];
 
         // 登录记录
@@ -82,7 +81,7 @@ class AuthController extends Controller
         $loginrecord->ip = $ip;
         // 保留测试ip
         // $location = (array)Ip::find($ip);
-        $location = (array)Ip::find('61.139.2.69');
+        $location = (array) Ip::find('61.139.2.69');
         array_filter($location);
         $loginrecord->address = trim(implode(' ', $location));
         $loginrecord->device_system = $request->input('device_system');
@@ -94,7 +93,7 @@ class AuthController extends Controller
         return app(MessageResponseBody::class, [
             'status'  => true,
             'message' => '登录成功',
-            'data' => $data,
+            'data'    => $data,
         ])->setStatusCode(201);
     }
 
