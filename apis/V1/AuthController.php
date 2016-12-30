@@ -31,7 +31,7 @@ class AuthController extends Controller
             return app(MessageResponseBody::class, [
                 'code' => 1008,
                 'data' => $verify->makeSurplusSecond($vaildSecond),
-            ]);
+            ])->setStatusCode(403);
         }
 
         $verify = new VerifyCode();
@@ -105,6 +105,6 @@ class AuthController extends Controller
         return app(MessageResponseBody::class, [
             'status'  => true,
             'message' => '重置密码成功',
-        ]);
+        ])->setStatusCode(201);
     }
 }
