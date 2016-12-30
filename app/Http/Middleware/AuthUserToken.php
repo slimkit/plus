@@ -26,7 +26,7 @@ class AuthUserToken
         if (!$accessToken) {
             return app(MessageResponseBody::class, [
                 'code' => 1016,
-            ]);
+            ])->setStatusCode(401);
         }
 
         return $this->checkAccessTokenExistedStep($accessToken, function (User $user) use ($next, $request) {
@@ -58,7 +58,7 @@ class AuthUserToken
         if (!$authToken) {
             return app(MessageResponseBody::class, [
                 'code' => 1016,
-            ]);
+            ])->setStatusCode(401);
         }
 
         return $this->checkAccessTokenIsShutDownStep($authToken, $next);
@@ -80,7 +80,7 @@ class AuthUserToken
         if ($authToken->state === 1) {
             return app(MessageResponseBody::class, [
                 'code' => 1015,
-            ]);
+            ])->setStatusCode(401);
         }
 
         return $this->checkAccessTokenIsInvaildStep($accessToken, $next);
@@ -102,7 +102,7 @@ class AuthUserToken
         if ($authToken->deleted_at || ($authToken->expires && $authToken->created_at->diffInSeconds(Carbon::now()) >= $authToken->expires)) {
             return app(MessageResponseBody::class, [
                 'code' => 1012,
-            ]);
+            ])->setStatusCode(401);
         }
 
         return $this->checkUserExistedStep($authToken->user, $next);
@@ -124,7 +124,7 @@ class AuthUserToken
         if (!$user || $user instanceof User) {
             return app(MessageResponseBody::class, [
                 'code' => 1005,
-            ]);
+            ])->setStatusCode(404);
         }
 
         return $next($user);

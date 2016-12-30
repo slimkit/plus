@@ -51,7 +51,7 @@ class SendPhoneMessage
             return app(MessageResponseBody::class, [
                 'status'  => true,
                 'message' => '发送成功',
-            ]);
+            ])->setStatusCode(201);
         }
 
         return app(MessageResponseBody::class, [
@@ -59,6 +59,6 @@ class SendPhoneMessage
             'code'    => 1009,
             'message' => $sub_msg ?: '',
             'data'    => [$result, $sub_code, $sub_msg],
-        ]);
+        ])->setStatusCode(503);
     }
 }
