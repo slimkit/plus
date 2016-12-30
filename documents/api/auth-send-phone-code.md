@@ -6,7 +6,7 @@
 curl -X POST -H "Content-Type: application/json" -d '{
     "phone": "187xxxxx582",
     "type": "register"
-}' "/api/auth/get-phone-code"
+}' "/api/v1/auth/phone/send-code"
 ```
 | name     | type     | must     | description |
 |----------|:--------:|:--------:|:--------:|

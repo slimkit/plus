@@ -17,7 +17,7 @@ class ExampleTest extends TestCase
 
     public function testApiAuthGetPhoneCode()
     {
-        $this->postJson('/api/auth/get-phone-code')
+        $this->postJson('/api/v1/auth/phone/send-code')
              ->seeJson(app(MessageResponseBody::class, [
                 'code' => 1000,
             ])->getBody());
