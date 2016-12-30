@@ -1,7 +1,6 @@
-# ThinkSNS plus documents.
+# TS+ 文档
 
-- [APIs request documents.](api)
-- [Server development documents.](https://laravel-china.org/docs/5.3)
-- Android development documents.
-- iOS development documents.
-- ...
+- API 文档
+    - [v1](api/v1)
+
+- [后端程序开发文档](https://laravel-china.org/docs/5.3)
