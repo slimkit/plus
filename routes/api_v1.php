@@ -6,10 +6,14 @@ Route::post('/auth/phone/send-code', 'AuthController@sendPhoneCode')
     ->middleware(App\Http\Middleware\VerifySendPhoneCodeType::class) // 验证发送验证码类型等集合
 ;
 
-// Route::any('/auth/get-phone-code', 'AuthController@getPhoneCode')
-//     ->middleware(App\Http\Middleware\VerifyPhoneNumber::class) // 验证手机号码是否正确
-//     ->middleware(App\Http\Middleware\VeridySendPhoneCodeType::class) // 验证发送验证码类型等集合
-// ;
+// 用户登录
+Route::post('/auth', 'AuthController@login')
+    ->middleware(App\Http\Middleware\CheckDeviceCodeExisted::class) // 验证设备号是否存在
+    ->middleware(App\Http\Middleware\VerifyPhoneNumber::class) // 验证手机号码是否正确
+    ->middleware(App\Http\Middleware\CheckUserByPhoneExisted::class) // 验证手机号码用户是否存在
+    ->middleware(App\Http\Middleware\VerifyPassword::class) // 验证密码是否正确
+;
+
 
 // // 用户注册
 // Route::get('/auth/register', 'AuthController@register')

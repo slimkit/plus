@@ -40,4 +40,20 @@ class AuthController extends Controller
 
         return app(SendMessage::class, [$verify, 'type' => 'phone'])->send();
     }
+
+    /**
+     * 用户登录.
+     *
+     * @Author   Wayne[qiaobin@zhiyicx.com]
+     * @DateTime 2016-12-27T16:57:18+0800
+     *
+     * @param Request $request 请求对象
+     *
+     * @return Response 响应对象
+     */
+    public function login(Request $request)
+    {
+        $user = $request->attributes->get('user');
+        $deviceCode = $request->input('devicecode', '');
+    }
 }
