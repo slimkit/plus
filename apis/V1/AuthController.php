@@ -5,13 +5,14 @@ namespace App\Http\Controllers\APIs\V1;
 use App\Exceptions\MessageResponseBody;
 use App\Handler\SendMessage;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\VerifyCode;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
     /**
-     * 发送注册验证码.
+     * 发送手机验证码.
      *
      * @param Request $request 请求对象
      *
