@@ -9,10 +9,10 @@ services:
 
 before_install:
     - mysql -e 'CREATE DATABASE IF NOT EXISTS thinksns_plus;'
+    - php -r "file_exists('.env') || copy('.env.example', '.env');"
 
 install:
     - composer install
-    - php -r "file_exists('.env') || copy('.env.example', '.env');"
     - php artisan key:generate
 
 script:
