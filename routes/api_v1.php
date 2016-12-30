@@ -36,7 +36,7 @@ Route::group([
     'middleware' => [
         App\Http\Middleware\AuthUserToken::class,
     ],
-    'prefix' => 'user',
+    'prefix' => 'users',
 ], function ($routes) {
 
     // 修改用户密码
