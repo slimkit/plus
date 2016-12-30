@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use App\Exceptions\MessageResponseBody;
 use Closure;
 
-class VeridySendPhoneCodeType
+class VerifySendPhoneCodeType
 {
     protected $types = [
         'register',
