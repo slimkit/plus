@@ -12,7 +12,9 @@ class UserController extends Controller
      * 修改用户密码.
      *
      * @param Request $request 请求对象
+     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
