@@ -28,7 +28,7 @@ class VerifyPassword
             ])->setStatusCode(404);
 
         // 用户密码是否正确
-        } else if (!$user->verifyPassword($password)) {
+        } elseif (!$user->verifyPassword($password)) {
             return app(MessageResponseBody::class, [
                 'code' => 1006,
             ])->setStatusCode(401);
