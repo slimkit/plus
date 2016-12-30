@@ -26,7 +26,7 @@ class ApiMessageResponse
                     'status'  => false,
                     'message' => $response->exception->getMessage(),
                     'data'    => config('app.debug') ? $response->exception->getTrace() : '',
-                ]);
+                ])->setStatusCode(500);
             }
         }
 

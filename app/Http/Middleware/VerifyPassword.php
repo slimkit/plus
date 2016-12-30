@@ -18,18 +18,20 @@ class VerifyPassword
      */
     public function handle($request, Closure $next)
     {
-        $phone = $request->input('phone');
         $password = $request->input('password');
-        if ($request->attributes->has('user')) {
-            $user = $request->attributes->get('user');
-        } else {
-            $user = User::byPhone($phone)->first();
-        }
+        $user = $request->attributes->get('user');
 
-        if (!$user->verifyPassword($password)) {
+        // 验证用户是否存在或者是否是一个user实例
+        if (!$request->attributes->has('user') || !$user instanceof User) {
+            return app(MessageResponseBody::class, [
+                'code' => 1005,
+            ])->setStatusCode(404);
+
+        // 用户密码是否正确
+        } else if (!$user->verifyPassword($password)) {
             return app(MessageResponseBody::class, [
                 'code' => 1006,
-            ]);
+            ])->setStatusCode(401);
         }
 
         $request->attributes->set('user', $user);
