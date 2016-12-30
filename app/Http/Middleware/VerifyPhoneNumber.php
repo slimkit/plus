@@ -29,7 +29,7 @@ class VerifyPhoneNumber
         if ($validator->fails()) {
             return app(MessageResponseBody::class, [
                 'code' => 1000,
-            ]);
+            ])->setStatusCode(403);
         }
 
         return $next($request);

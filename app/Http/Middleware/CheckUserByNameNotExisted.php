@@ -26,7 +26,7 @@ class CheckUserByNameNotExisted
         if ($user) {
             return app(MessageResponseBody::class, [
                 'code' => 1004,
-            ]);
+            ])->setStatusCode(403);
         }
 
         return $next($request);

@@ -25,7 +25,7 @@ class CheckDeviceCodeExisted
             return app(MessageResponseBody::class, [
                 'code'    => 1014,
                 'message' => '设备号不能为空',
-            ]);
+            ])->setStatusCode(422);
         }
 
         return $next($request);

@@ -29,7 +29,7 @@ class VerifySendPhoneCodeType
         if (!in_array($type, $this->types)) {
             return app(MessageResponseBody::class, [
                 'code' => 1011,
-            ]);
+            ])->setStatusCode(403);
 
         // 如果是注册获取验证码，如果用户不存在继续执行
         } elseif ($type == 'register') {

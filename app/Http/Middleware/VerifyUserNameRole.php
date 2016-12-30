@@ -38,7 +38,7 @@ class VerifyUserNameRole
         if ($length > $this->usernameMaxLength || $length < $this->usernameMinLength) {
             return app(MessageResponseBody::class, [
                 'code' => 1002,
-            ]);
+            ])->setStatusCode(403);
         }
 
         $validator = Validator::make($request->all(), [
@@ -48,7 +48,7 @@ class VerifyUserNameRole
         if ($validator->fails()) {
             return app(MessageResponseBody::class, [
                 'code' => 1003,
-            ]);
+            ])->setStatusCode(403);
         }
 
         return $next($request);

@@ -25,7 +25,7 @@ class CheckUserByPhoneExisted
         if (!$user || $user->deleted_at) {
             return app(MessageResponseBody::class, [
                 'code' => 1005,
-            ]);
+            ])->setStatusCode(404);
         }
 
         $request->attributes->set('user', $user);

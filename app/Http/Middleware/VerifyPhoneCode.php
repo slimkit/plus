@@ -31,7 +31,7 @@ class VerifyPhoneCode
         if (!$verify || $verify->state == 2) {
             return app(MessageResponseBody::class, [
                 'code' => 1001,
-            ]);
+            ])->setStatusCode(403);
         }
 
         // 验证通过，失效验证码，执行下一步操作.
