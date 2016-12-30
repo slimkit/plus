@@ -7,7 +7,8 @@
     "require": {
         "php": ">=7.0",
         "flc/alidayu": "^2.0",
-        "laravel/framework": "5.3.*"
+        "laravel/framework": "5.3.*",
+        "zhuzhichao/ip-location-zh": "^2.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

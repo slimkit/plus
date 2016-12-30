@@ -26,7 +26,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token'
     ];
 
     /**
@@ -78,8 +78,26 @@ class User extends Authenticatable
         return $this;
     }
 
+    /**
+     * 验证用户密码
+     * @Author   Wayne[qiaobin@zhiyicx.com]
+     * @DateTime 2016-12-30T18:44:40+0800
+     * @param    string     $password [description]
+     * @return   bool       验证结果true or false
+     */
     public function verifyPassword(string $password): bool
     {
         return app('hash')->check($password, $this->password);
+    }
+
+    /**
+     * 用户登录记录关系
+     * @Author   Wayne[qiaobin@zhiyicx.com]
+     * @DateTime 2016-12-30T18:47:51+0800
+     * @return   object \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function loginRecords()
+    {
+        return $this->hasMany(loginRecord::class, 'user_id');
     }
 }

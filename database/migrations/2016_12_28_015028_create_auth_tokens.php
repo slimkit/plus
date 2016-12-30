@@ -18,7 +18,7 @@ class CreateAuthTokens extends Migration
             $table->string('token', 255)->comment('验证token');
             $table->string('refresh_token', 255)->comment('刷新token');
             $table->integer('user_id')->comment('token所属用户id');
-            $table->integer('expires')->nullable()->default(0)->comment('token生命周期,秒为单位');
+            $table->integer('expires')->nullable()->default(0)->comment('token生命周期,秒为单位, 0为永久不过期');
             $table->tinyInteger('state')->nullalble()->default(1)->comment('token状态1:在线,0:下线');
             $table->timestamps();
             $table->softDeletes();
