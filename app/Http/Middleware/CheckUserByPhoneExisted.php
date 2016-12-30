@@ -22,7 +22,7 @@ class CheckUserByPhoneExisted
         $user = User::byPhone($phone)->withTrashed()->first();
 
         // 用户不存在 or 软删除用户
-        if (!$user || !$user->deleted_at) {
+        if (!$user || $user->deleted_at) {
             return app(MessageResponseBody::class, [
                 'code' => 1005,
             ]);
