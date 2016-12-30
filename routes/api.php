@@ -14,8 +14,8 @@
 
 // RESTful API version 1.
 Route::group([
-    'prefix' => 'v1',
-    'namespace' => 'APIs\\V1',
+    'prefix'     => 'v1',
+    'namespace'  => 'APIs\\V1',
     'middleware' => [
         App\Http\Middleware\ApiMessageResponse::class,
     ],

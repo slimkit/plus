@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\APIs\V1;
 
-use App\Http\Controllers\Controller;
 use App\Exceptions\MessageResponseBody;
 use App\Handler\SendMessage;
+use App\Http\Controllers\Controller;
 use App\Models\VerifyCode;
 use Illuminate\Http\Request;
 
