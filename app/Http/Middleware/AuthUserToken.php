@@ -135,6 +135,7 @@ class AuthUserToken
      * 获取当前的时间对象
      *
      * @return Carbon
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
