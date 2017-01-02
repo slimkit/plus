@@ -11,6 +11,7 @@
         "zhuzhichao/ip-location-zh": "^2.1"
     },
     "require-dev": {
+        "codacy/coverage": "^1.0",
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "~5.0",
