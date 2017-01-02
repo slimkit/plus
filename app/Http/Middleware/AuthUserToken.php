@@ -83,7 +83,7 @@ class AuthUserToken
             ])->setStatusCode(401);
         }
 
-        return $this->checkAccessTokenIsInvaildStep($accessToken, $next);
+        return $this->checkAccessTokenIsInvaildStep($authToken, $next);
     }
 
     /**
