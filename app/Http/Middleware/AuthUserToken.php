@@ -99,7 +99,7 @@ class AuthUserToken
      */
     protected function checkAccessTokenIsInvaildStep(AuthToken $authToken, Closure $next)
     {
-        $now = Carbon::now();
+        $now = $this->getDataTimeNow();
         if ($authToken->deleted_at || ($authToken->expires && $authToken->created_at->diffInSeconds($now) >= $authToken->expires)) {
             return app(MessageResponseBody::class, [
                 'code' => 1012,
@@ -129,5 +129,17 @@ class AuthUserToken
         }
 
         return $next($user);
+    }
+
+    /**
+     * 获取当前的时间对象
+     *
+     * @return Carbon
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    protected function getDataTimeNow()
+    {
+        return Carbon::now();
     }
 }
