@@ -99,7 +99,8 @@ class AuthUserToken
      */
     protected function checkAccessTokenIsInvaildStep(AuthToken $authToken, Closure $next)
     {
-        if ($authToken->deleted_at || ($authToken->expires && $authToken->created_at->diffInSeconds(Carbon::now()) >= $authToken->expires)) {
+        $now = Carbon::now();
+        if ($authToken->deleted_at || ($authToken->expires && $authToken->created_at->diffInSeconds($now) >= $authToken->expires)) {
             return app(MessageResponseBody::class, [
                 'code' => 1012,
             ])->setStatusCode(401);
