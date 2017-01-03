@@ -116,21 +116,22 @@ class AuthController extends Controller
      */
     public function resetToken(Request $request)
     {
-        $useState = 2;
+        $shutDownState = 0;
         $refresh_token = $request->input('refresh_token');
 
         if (!$refresh_token || !($token = AuthToken::withTrashed()->byRefreshToken($refresh_token)->orderByDesc()->first())) {
             return app(MessageResponseBody::class, [
                 'code' => 1016,
             ])->setStatusCode(404);
-        } elseif ($token->state === $useState) {
+        } elseif ($token->state === $shutDownState) {
             return app(MessageResponseBody::class, [
                 'code' => 1013,
-            ])->setStatusCode(422);
+                'message' => '请重新登录',
+            ])->setStatusCode(401);
         }
 
-        $status = DB::transaction(function () use ($token, $useState) {
-            $token->state = $useState;
+        $status = DB::transaction(function () use ($token, $shutDownState) {
+            $token->state = $shutDownState;
             $token->save();
         });
 
