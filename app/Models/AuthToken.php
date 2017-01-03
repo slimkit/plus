@@ -13,7 +13,7 @@ class AuthToken extends Model
     // 关联users表
     public function user()
     {
-        return $this->hasOne(User::class, 'user_id', 'id');
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 
     /**
@@ -30,6 +30,11 @@ class AuthToken extends Model
     public function scopeByToken(Builder $query, $token): Builder
     {
         return $query->where('token', $token);
+    }
+
+    public function scopeByRefreshToken(Builder $query, $refresh_token): Builder
+    {
+        return $query->where('refresh_token', $refresh_token);
     }
 
     /**
