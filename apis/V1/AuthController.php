@@ -125,7 +125,7 @@ class AuthController extends Controller
             ])->setStatusCode(404);
         } elseif ($token->state === $shutDownState) {
             return app(MessageResponseBody::class, [
-                'code' => 1013,
+                'code'    => 1013,
                 'message' => '请重新登录',
             ])->setStatusCode(401);
         }
