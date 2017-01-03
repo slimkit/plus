@@ -82,6 +82,23 @@ class AuthSendPhoneCodeTest extends TestCase
         $this->shouldReturnJson();
     }
 
+    /**
+     * 测试改变类型的发送.
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function testChangeSendType()
+    {
+        $requestBody = [
+            'phone' => '18781993583',
+            'type' => 'change',
+        ];
+
+        $this->postJson($this->uri, $requestBody);
+        $this->shouldReturnJson();
+    }
+
     // more...
     // 目前没有在自动测试中部署测试的短信发送，真实的发送暂时不需要测试.
 }
