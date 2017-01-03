@@ -13,7 +13,7 @@ class AuthSendPhoneCodeTest extends TestCase
 
     /**
      * 测试错误的请求手机号验证.
-     * 
+     *
      * Message code: 1000
      *
      * @author Seven Du <shiweidu@outlook.com>
@@ -41,7 +41,7 @@ class AuthSendPhoneCodeTest extends TestCase
 
     /**
      * 测试错误的发送类型返回数据.
-     * 
+     *
      * Message code: 1011
      *
      * @author Seven Du <shiweidu@outlook.com>
