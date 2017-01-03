@@ -48,8 +48,8 @@ class AuthRegisterTest extends TestCase
 
         $this->user = $user;
         $this->requestBody = [
-            'phone' => $phone,
-            'password' => $this->password,
+            'phone'       => $phone,
+            'password'    => $this->password,
             'device_code' => 'testing',
         ];
     }
@@ -76,6 +76,7 @@ class AuthRegisterTest extends TestCase
      * test middleware \App\Http\Middleware\CheckDeviceCodeExisted
      *
      * @return [type] [description]
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
