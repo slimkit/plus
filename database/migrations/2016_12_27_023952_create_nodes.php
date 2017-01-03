@@ -14,6 +14,7 @@ class CreateNodes extends Migration
     public function up()
     {
         Schema::create('nodes', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name')->comment('节点名字');
             $table->string('route_name')->comment('路由别名');

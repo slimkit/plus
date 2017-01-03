@@ -14,6 +14,7 @@ class CreateUserGroups extends Migration
     public function up()
     {
         Schema::create('user_groups', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name')->comment('用户组名称');
             $table->timestamps();

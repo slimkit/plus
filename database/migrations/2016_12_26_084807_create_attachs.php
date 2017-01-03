@@ -14,6 +14,7 @@ class CreateAttachs extends Migration
     public function up()
     {
         Schema::create('attachs', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name')->comment('原文件名');
             $table->string('path')->comment('存储路径');

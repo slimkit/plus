@@ -14,6 +14,7 @@ class CreateNodeLinks extends Migration
     public function up()
     {
         Schema::create('node_links', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('node_id')->comment('节点id');
             $table->integer('user_group_id')->comment('用户组id');
