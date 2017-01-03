@@ -107,9 +107,11 @@ class User extends Authenticatable
     }
 
     /**
-     * 用户tokens关系
+     * 用户tokens关系.
+     *
      * @Author   Wayne[qiaobin@zhiyicx.com]
      * @DateTime 2017-01-03T10:13:06+0800
+     *
      * @return object \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function tokens()

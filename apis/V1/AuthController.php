@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\APIs\V1;
 
-use Illuminate\Support\Facades\DB;
 use App\Exceptions\MessageResponseBody;
 use App\Handler\SendMessage;
 use App\Http\Controllers\Controller;
@@ -11,6 +10,7 @@ use App\Models\LoginRecord;
 use App\Models\User;
 use App\Models\VerifyCode;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Zhuzhichao\IpLocationZh\Ip;
 
 class AuthController extends Controller
@@ -84,7 +84,7 @@ class AuthController extends Controller
         $loginrecord->device_code = $deviceCode;
         // $user->loginRecords()->save($loginrecord);
 
-        DB::transaction(function () use ($token, $user, $loginrecord){
+        DB::transaction(function () use ($token, $user, $loginrecord) {
             $user->tokens()->update(['state' => 0]);
             $user->tokens()->delete();
             $token->save();
