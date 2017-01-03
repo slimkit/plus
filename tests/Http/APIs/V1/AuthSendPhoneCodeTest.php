@@ -47,7 +47,7 @@ class AuthSendPhoneCodeTest extends TestCase
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function testSendType()
+    public function testErrorSendType()
     {
         $requestBody = [
             'phone' => '18781993583',
@@ -64,4 +64,24 @@ class AuthSendPhoneCodeTest extends TestCase
         ]);
         $this->seeJsonEquals($json);
     }
+
+    /**
+     * 测试注册类型的发送.
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function testRegisterSendType()
+    {
+        $requestBody = [
+            'phone' => '18781993583',
+            'type' => 'register',
+        ];
+
+        $this->postJson($this->uri, $requestBody);
+        $this->shouldReturnJson();
+    }
+
+    // more...
+    // 目前没有在自动测试中部署测试的短信发送，真实的发送暂时不需要测试.
 }
