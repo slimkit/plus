@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -99,7 +98,7 @@ class VerifyCode extends Model
      */
     public function scopeByValid(Builder $query, int $second = 300): Builder
     {
-        $now = Carbon::now();
+        $now = $this->freshTimestamp();
         $sub = clone $now;
         $sub->subSeconds($second);
 
@@ -118,7 +117,7 @@ class VerifyCode extends Model
      */
     public function makeSurplusSecond(int $vaildSecond = 60): int
     {
-        $now = Carbon::now();
+        $now = $this->freshTimestamp();
         $differ = $this->created_at->diffInSeconds($now);
 
         return $vaildSecond - $differ;
