@@ -83,7 +83,7 @@ class VerifyCode extends Model
      */
     public function scopeOrderByDesc(Builder $query): Builder
     {
-        return $query->orderBy('created_at', 'desc');
+        return $query->orderBy('id', 'desc');
     }
 
     /**
