@@ -77,7 +77,7 @@ class AuthUserToken
      */
     protected function checkAccessTokenIsShutDownStep(AuthToken $authToken, Closure $next)
     {
-        if ($authToken->state === 1) {
+        if ($authToken->state === 0) {
             return app(MessageResponseBody::class, [
                 'code' => 1015,
             ])->setStatusCode(401);
