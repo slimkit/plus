@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use App\Exceptions\MessageResponseBody;
 use App\Models\AuthToken;
 use App\Models\User;
-use Carbon\Carbon;
 use Closure;
 use Illuminate\Http\Request;
 
