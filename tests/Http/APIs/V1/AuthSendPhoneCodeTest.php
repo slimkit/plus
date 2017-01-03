@@ -75,7 +75,7 @@ class AuthSendPhoneCodeTest extends TestCase
     {
         $requestBody = [
             'phone' => '18781993583',
-            'type' => 'register',
+            'type'  => 'register',
         ];
 
         $this->postJson($this->uri, $requestBody);
