@@ -66,7 +66,6 @@ class AuthController extends Controller
         $token->user_id = $user->id;
         $token->expires = 0;
         $token->state = 1;
-        // $token->save();
 
         // 登录记录
         $ip = $request->getClientIp();
@@ -82,7 +81,6 @@ class AuthController extends Controller
         $loginrecord->device_name = $request->input('device_name');
         $loginrecord->device_model = $request->input('device_model');
         $loginrecord->device_code = $deviceCode;
-        // $user->loginRecords()->save($loginrecord);
 
         DB::transaction(function () use ($token, $user, $loginrecord) {
             $user->tokens()->update(['state' => 0]);
@@ -90,6 +88,7 @@ class AuthController extends Controller
             $token->save();
             $user->loginRecords()->save($loginrecord);
         });
+
         //返回数据
         $data = [
             'token'         => $token->token,
