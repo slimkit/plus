@@ -1,5 +1,7 @@
 <?php
 
+namespace Ts\Test;
+
 use App\Exceptions\MessageResponseBody;
 
 class ExampleTest extends TestCase
