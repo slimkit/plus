@@ -105,4 +105,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(loginRecord::class, 'user_id');
     }
+
+    /**
+     * 用户tokens关系
+     * @Author   Wayne[qiaobin@zhiyicx.com]
+     * @DateTime 2017-01-03T10:13:06+0800
+     * @return object \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tokens()
+    {
+        return $this->hasMany(AuthToken::class, 'user_id');
+    }
 }

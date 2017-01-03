@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\APIs\V1;
 
+use Illuminate\Support\Facades\DB;
 use App\Exceptions\MessageResponseBody;
 use App\Handler\SendMessage;
 use App\Http\Controllers\Controller;
@@ -65,20 +66,13 @@ class AuthController extends Controller
         $token->user_id = $user->id;
         $token->expires = 0;
         $token->state = 1;
-        $token->save();
-
-        //
-        $data = [
-            'token'         => $token->token,
-            'refresh_token' => $token->refresh_token,
-            'created_at'    => $token->created_at->getTimestamp(),
-            'expires'       => $token->expires,
-        ];
+        // $token->save();
 
         // 登录记录
         $ip = $request->getClientIp();
         $loginrecord = new LoginRecord();
         $loginrecord->ip = $ip;
+
         // 保留测试ip
         // $location = (array)Ip::find($ip);
         $location = (array) Ip::find('61.139.2.69');
@@ -88,7 +82,21 @@ class AuthController extends Controller
         $loginrecord->device_name = $request->input('device_name');
         $loginrecord->device_model = $request->input('device_model');
         $loginrecord->device_code = $deviceCode;
-        $user->loginRecords()->save($loginrecord);
+        // $user->loginRecords()->save($loginrecord);
+
+        DB::transaction(function () use ($token, $user, $loginrecord){
+            $user->tokens()->update(['state' => 0]);
+            $user->tokens()->delete();
+            $token->save();
+            $user->loginRecords()->save($loginrecord);
+        });
+        //返回数据
+        $data = [
+            'token'         => $token->token,
+            'refresh_token' => $token->refresh_token,
+            'created_at'    => $token->created_at->getTimestamp(),
+            'expires'       => $token->expires,
+        ];
 
         return app(MessageResponseBody::class, [
             'status'  => true,
