@@ -108,7 +108,9 @@ class AuthController extends Controller
      * 重置token.
      *
      * @param Request $request 请求对象
+     *
      * @return Response 返回对象
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -121,7 +123,7 @@ class AuthController extends Controller
             return app(MessageResponseBody::class, [
                 'code' => 1016,
             ])->setStatusCode(404);
-        } else if ($token->state === $useState) {
+        } elseif ($token->state === $useState) {
             return app(MessageResponseBody::class, [
                 'code' => 1013,
             ])->setStatusCode(422);
