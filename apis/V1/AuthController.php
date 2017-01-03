@@ -130,7 +130,7 @@ class AuthController extends Controller
             ])->setStatusCode(401);
         }
 
-        $status = DB::transaction(function () use ($token, $shutDownState) {
+        DB::transaction(function () use ($token, $shutDownState) {
             $token->state = $shutDownState;
             $token->save();
         });
