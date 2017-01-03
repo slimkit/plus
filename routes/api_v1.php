@@ -14,6 +14,9 @@ Route::post('/auth', 'AuthController@login')
     ->middleware(App\Http\Middleware\VerifyPassword::class) // 验证密码是否正确
 ;
 
+// 重置token接口
+Route::patch('/auth', 'AuthController@resetToken');
+
 // 用户注册
 Route::post('/auth/register', 'AuthController@register')
     ->middleware(App\Http\Middleware\CheckDeviceCodeExisted::class) // 验证设备号是否存在

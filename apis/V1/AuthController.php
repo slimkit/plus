@@ -105,6 +105,39 @@ class AuthController extends Controller
     }
 
     /**
+     * 重置token.
+     *
+     * @param Request $request 请求对象
+     * @return Response 返回对象
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function resetToken(Request $request)
+    {
+        $useState = 2;
+        $refresh_token = $request->input('refresh_token');
+
+        if (!$refresh_token || !($token = AuthToken::withTrashed()->byRefreshToken($refresh_token)->orderByDesc()->first())) {
+            return app(MessageResponseBody::class, [
+                'code' => 1016,
+            ])->setStatusCode(404);
+        } else if ($token->state === $useState) {
+            return app(MessageResponseBody::class, [
+                'code' => 1013,
+            ])->setStatusCode(422);
+        }
+
+        $status = DB::transaction(function () use ($token, $useState) {
+            $token->state = $useState;
+            $token->save();
+        });
+
+        $request->attributes->set('user', $token->user);
+
+        return $this->login($request);
+    }
+
+    /**
      * 注册用户.
      *
      * @param Request $request 请求对象
