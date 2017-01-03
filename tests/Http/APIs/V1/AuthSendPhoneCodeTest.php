@@ -16,6 +16,7 @@ class AuthSendPhoneCodeTest extends TestCase
      * Message code: 1000.
      *
      * @return [type] [description]
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
