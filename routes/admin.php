@@ -16,5 +16,4 @@ Route::group([
     })
         ->name('admin/login')
     ;
-
 });
