@@ -117,8 +117,31 @@ class AuthRegisterTest extends TestCase
         $this->seeStatusCode(403);
         // Assert that the response contains an exact JSON array.
         $json = $this->createMessageResponseBody([
-            'code'    => 1000,
+    		'code' => 1000,
         ]);
         $this->seeJsonEquals($json);
     }
+	/**
+	 * 测试注册手机号非法
+	 *
+	 * message code:1000
+	 * test middleware \App\Http\Middleware\VerifyPhoneNumber
+	 *
+	 * @author martinsun <syh@sunyonghong.com>
+	 */
+	public function testCheckPhoneError()
+	{
+		$requestBody = $this->requestBody;
+        $requestBody['phone'] = '123456789';
+
+        $this->postJson($this->uri, $requestBody);
+        // Asserts that the status code of the response matches the given code.
+        $this->seeStatusCode(403);
+        // Assert that the response contains an exact JSON array.
+        $json = $this->createMessageResponseBody([
+    		'code' => 1000,
+        ]);
+        $this->seeJsonEquals($json);
+	}
+
 }
