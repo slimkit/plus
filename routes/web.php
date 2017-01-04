@@ -16,10 +16,9 @@ Route::get('/', function () {
 });
 
 Route::group([
-    'prefix' => 'admin',
+    'prefix'    => 'admin',
     'namespace' => 'Admin',
     // 'middleware' => [],
 ], function ($router) {
     require base_path('routes/admin.php');
 });
-
