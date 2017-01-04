@@ -6,6 +6,7 @@
  */
 
 import '../bootstrap';
+import LoginForm from './components/LoginForm.vue';
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -13,6 +14,7 @@ import '../bootstrap';
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.component('login-form', LoginForm);
 // Vue.component('example', require('./components/Example.vue'));
 
 const app = new Vue({

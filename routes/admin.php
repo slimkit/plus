@@ -13,6 +13,8 @@ Route::group([
     // 首页
     Route::get('/', function () {
         return view('admin.login');
-    });
+    })
+        ->name('admin/login')
+    ;
 
 });

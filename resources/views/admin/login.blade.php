@@ -11,12 +11,7 @@
 @section('body')
     
 <div class="container" id="app">
-    <form class="form-signin" role="form">
-        <h2 class="form-signin-heading text-center">登录后台</h2>
-        <input type="email" class="form-control" placeholder="Email address" required autofocus>
-        <input type="password" class="form-control" placeholder="Password" required>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    </form>
+    <login-form action="{{ route('admin/login') }}"></login-form>
 </div>
 <script type="text/javascript" src="{{ elixir('js/admin/login.js') }}"></script>
 @endsection
