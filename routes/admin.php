@@ -14,5 +14,4 @@ Route::group([
     Route::get('/', function () {
         return view('admin.login');
     });
-
 });
