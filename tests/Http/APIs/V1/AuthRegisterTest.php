@@ -144,4 +144,50 @@ class AuthRegisterTest extends TestCase
         ]);
         $this->seeJsonEquals($json);
     }
+
+	/**
+     * 测试注册用户名不存在
+     *
+     * message code:1000
+     * test middleware \App\Http\Middleware\VerifyPhoneNumber
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     */
+    public function testCheckUserNameNotExisted()
+    {
+        $requestBody = $this->requestBody;
+
+        $this->postJson($this->uri, $requestBody);
+        // Asserts that the status code of the response matches the given code.
+        $this->seeStatusCode(403);
+        // Assert that the response contains an exact JSON array.
+        $json = $this->createMessageResponseBody([
+            'code' => 1002,
+        ]);
+        $this->seeJsonEquals($json);
+    }
+
+    /**
+     * 测试注册用户名长度
+     *
+     * message code:
+     * test middleware \App\Http\Middleware\VerifyUserNameRole
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     */
+    public function testCheckUserNameLength()
+    {
+		$requestBody = $this->requestBody;
+		$requestBody['name'] = 'iss';
+
+        $this->postJson($this->uri, $requestBody);
+        // Asserts that the status code of the response matches the given code.
+        $this->seeStatusCode(403);
+        // Assert that the response contains an exact JSON array.
+        $json = $this->createMessageResponseBody([
+            'code' => 1002,
+        ]);
+        $this->seeJsonEquals($json);
+    }
+
 }
