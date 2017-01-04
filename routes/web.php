@@ -14,3 +14,12 @@
 Route::get('/', function () {
     return view('tets');
 });
+
+Route::group([
+    'prefix' => 'admin',
+    'namespace' => 'Admin',
+    // 'middleware' => [],
+], function ($router) {
+    require base_path('routes/admin.php');
+});
+
