@@ -231,7 +231,7 @@ class AuthRegisterTest extends TestCase
         $this->seeStatusCode(403);
         // Assert that the response contains an exact JSON array.
         $json = $this->createMessageResponseBody([
-                        'code' => 1004,
+            'code' => 1004,
         ]);
         $this->seeJsonEquals($json);
     }
