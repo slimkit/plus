@@ -145,8 +145,8 @@ class AuthRegisterTest extends TestCase
         $this->seeJsonEquals($json);
     }
 
-	/**
-     * 测试注册用户名不存在
+    /**
+     * 测试注册用户名不存在.
      *
      * message code:1000
      * test middleware \App\Http\Middleware\VerifyPhoneNumber
@@ -168,7 +168,7 @@ class AuthRegisterTest extends TestCase
     }
 
     /**
-     * 测试注册用户名长度
+     * 测试注册用户名长度.
      *
      * message code:
      * test middleware \App\Http\Middleware\VerifyUserNameRole
@@ -177,8 +177,8 @@ class AuthRegisterTest extends TestCase
      */
     public function testCheckUserNameLength()
     {
-		$requestBody = $this->requestBody;
-		$requestBody['name'] = 'iss';
+        $requestBody = $this->requestBody;
+        $requestBody['name'] = 'iss';
 
         $this->postJson($this->uri, $requestBody);
         // Asserts that the status code of the response matches the given code.
@@ -189,5 +189,4 @@ class AuthRegisterTest extends TestCase
         ]);
         $this->seeJsonEquals($json);
     }
-
 }
