@@ -14,6 +14,5 @@ Route::group([
     Route::get('/', function () {
         return view('admin.login');
     })
-        ->name('admin/login')
-    ;
+        ->name('admin/login');
 });
