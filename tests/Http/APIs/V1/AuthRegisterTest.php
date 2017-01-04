@@ -213,26 +213,26 @@ class AuthRegisterTest extends TestCase
         $this->seeJsonEquals($json);
     }
 
-        /**
-         * 测试注册时用户名是否被占用.
-         *
-         * message code:1004
-         * test middleware \App\Http\Middleware\CheckUserByNameNotExisted
-         *
-         * @author martinsun <syh@sunyonghong.com>
-         */
-        public function testCheckUserNameUsed()
-        {
-            $requestBody = $this->requestBody;
-            $requestBody['name'] = 'Seven_test_user';
+    /**
+     * 测试注册时用户名是否被占用.
+     *
+     * message code:1004
+     * test middleware \App\Http\Middleware\CheckUserByNameNotExisted
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     */
+    public function testCheckUserNameUsed()
+    {
+        $requestBody = $this->requestBody;
+        $requestBody['name'] = 'Seven_test_user';
 
-            $this->postJson($this->uri, $requestBody);
+        $this->postJson($this->uri, $requestBody);
         // Asserts that the status code of the response matches the given code.
         $this->seeStatusCode(403);
         // Assert that the response contains an exact JSON array.
         $json = $this->createMessageResponseBody([
                         'code' => 1004,
         ]);
-            $this->seeJsonEquals($json);
-        }
+        $this->seeJsonEquals($json);
+    }
 }
