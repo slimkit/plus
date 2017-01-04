@@ -98,16 +98,17 @@ class AuthRegisterTest extends TestCase
         $this->seeJsonEquals($json);
     }
 
-	/**
-	 * 测试注册手机号为空
-	 *
-	 * message code:1000
-	 * test middleware \App\Http\Middleware\VerifyPhoneNumber
-	 * @author martinsun <syh@sunyonghong.com>
-	 */
-	public function testCheckPhoneNotExisted()
-	{
-		$requestBody = $this->requestBody;
+    /**
+     * 测试注册手机号为空.
+     *
+     * message code:1000
+     * test middleware \App\Http\Middleware\VerifyPhoneNumber
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     */
+    public function testCheckPhoneNotExisted()
+    {
+        $requestBody = $this->requestBody;
         $requestBody['phone'] = '';
 
         $this->postJson($this->uri, $requestBody);
@@ -119,5 +120,5 @@ class AuthRegisterTest extends TestCase
             'code'    => 1000,
         ]);
         $this->seeJsonEquals($json);
-	}
+    }
 }
