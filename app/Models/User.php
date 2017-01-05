@@ -118,4 +118,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(AuthToken::class, 'user_id');
     }
+
+    public function groups()
+    {
+        return $this->hasMany(UserGroupLink::class, 'user_id');
+    }
 }
