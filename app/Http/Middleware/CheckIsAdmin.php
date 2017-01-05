@@ -17,7 +17,7 @@ class CheckIsAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!$request->session()->has('is_admin') or !$request->session()->has('user_id') {
+        if (!$request->session()->has('is_admin') or !$request->session()->has('user_id')) {
             return app(MessageResponseBody::class, [
                 'code' => 5001,
                 'message' => '你不是管理员',
