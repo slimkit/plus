@@ -49,8 +49,8 @@ class AuthRegisterTest extends TestCase
 
         $this->user = $user;
         $this->requestBody = [
-            'phone'       => $phone,
-            'password'    => $this->password,
+            'phone' => $phone,
+            'password' => $this->password,
             'device_code' => 'testing',
         ];
     }
@@ -65,7 +65,11 @@ class AuthRegisterTest extends TestCase
     {
         // delete user.
         $this->user->forceDelete();
-
+        //删除测试用户
+        User::where('phone', '15266668888')
+            ->orWhere('name', 'test_username')
+            ->withTrashed()
+            ->forceDelete();
         parent::tearDown();
     }
 
@@ -93,7 +97,7 @@ class AuthRegisterTest extends TestCase
 
         // Assert that the response contains an exact JSON array.
         $json = $this->createMessageResponseBody([
-            'code'    => 1014,
+            'code' => 1014,
             'message' => '设备号不能为空',
         ]);
         $this->seeJsonEquals($json);
@@ -103,9 +107,12 @@ class AuthRegisterTest extends TestCase
      * 测试注册手机号为空.
      *
      * message code:1000
-     * test middleware \App\Http\Middleware\VerifyPhoneNumber
+     * test middleware \App\Http\Middleware\VerifyPhoneNumber.
      *
      * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-05T11:31:03+080
+     *
+     * @version  1.0
      */
     public function testCheckPhoneNotExisted()
     {
@@ -127,9 +134,12 @@ class AuthRegisterTest extends TestCase
      * 测试注册手机号非法.
      *
      * message code:1000
-     * test middleware \App\Http\Middleware\VerifyPhoneNumber
+     * test middleware \App\Http\Middleware\VerifyPhoneNumber.
      *
      * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-05T11:32:58+080
+     *
+     * @version  1.0
      */
     public function testCheckPhoneError()
     {
@@ -150,9 +160,12 @@ class AuthRegisterTest extends TestCase
      * 测试注册用户名不存在.
      *
      * message code:1000
-     * test middleware \App\Http\Middleware\VerifyUserNameRole
+     * test middleware \App\Http\Middleware\VerifyUserNameRole.
      *
      * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-05T11:34:03+080
+     *
+     * @version  1.0
      */
     public function testCheckUserNameNotExisted()
     {
@@ -171,10 +184,13 @@ class AuthRegisterTest extends TestCase
     /**
      * 测试注册用户名长度.
      *
-     * message code:
-     * test middleware \App\Http\Middleware\VerifyUserNameRole
+     * message code:403
+     * test middleware \App\Http\Middleware\VerifyUserNameRole.
      *
      * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-05T11:34:43+080
+     *
+     * @version  1.0
      */
     public function testCheckUserNameLength()
     {
@@ -198,6 +214,9 @@ class AuthRegisterTest extends TestCase
      * test middleware \App\Http\Middleware\VerifyUserNameRole
      *
      * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-05T11:34:43+080
+     *
+     * @version  1.0
      */
     public function testCheckUserNameRole()
     {
@@ -221,6 +240,9 @@ class AuthRegisterTest extends TestCase
      * test middleware \App\Http\Middleware\CheckUserByNameNotExisted
      *
      * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-05T11:34:43+080
+     *
+     * @version  1.0
      */
     public function testCheckUserNameUsed()
     {
@@ -244,6 +266,9 @@ class AuthRegisterTest extends TestCase
      * test method: \App\Http\Controllers\APIs\V1\AuthController::register;
      *
      * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-05T11:34:43+080
+     *
+     * @version  1.0
      */
     public function testCheckRegister()
     {
@@ -255,11 +280,11 @@ class AuthRegisterTest extends TestCase
 
         //注册数据
         $requestBody = [
-            'phone'       => '15266668888',
-            'name'        => 'test_username',
-            'password'    => '123456',
+            'phone' => '15266668888',
+            'name' => 'test_username',
+            'password' => '123456',
             'device_code' => 'test2',
-            'code'        => $verify->code,
+            'code' => $verify->code,
         ];
 
         $this->postJson($this->uri, $requestBody);
