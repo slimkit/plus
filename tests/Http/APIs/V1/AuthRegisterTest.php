@@ -3,6 +3,7 @@
 namespace Ts\Test\Http\APIs\V1;
 
 use App\Models\User;
+use App\Models\VerifyCode;
 
 class AuthRegisterTest extends TestCase
 {
@@ -48,8 +49,8 @@ class AuthRegisterTest extends TestCase
 
         $this->user = $user;
         $this->requestBody = [
-            'phone'       => $phone,
-            'password'    => $this->password,
+            'phone' => $phone,
+            'password' => $this->password,
             'device_code' => 'testing',
         ];
     }
@@ -92,7 +93,7 @@ class AuthRegisterTest extends TestCase
 
         // Assert that the response contains an exact JSON array.
         $json = $this->createMessageResponseBody([
-            'code'    => 1014,
+            'code' => 1014,
             'message' => '设备号不能为空',
         ]);
         $this->seeJsonEquals($json);
@@ -232,6 +233,41 @@ class AuthRegisterTest extends TestCase
         // Assert that the response contains an exact JSON array.
         $json = $this->createMessageResponseBody([
             'code' => 1004,
+        ]);
+        $this->seeJsonEquals($json);
+    }
+
+    /**
+     * 测试注册一个合法的用户.
+     *
+     * message code:
+     * test method: \App\Http\Controllers\APIs\V1\AuthController::register;
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     */
+    public function testCheckRegister()
+    {
+        //创建验证码
+        $verify = new VerifyCode();
+        $verify->account = '15266668888';
+        $verify->makeVerifyCode();
+        $verify->save();
+
+        //注册数据
+        $requestBody = [
+            'phone' => '15266668888',
+            'name' => 'test_username',
+            'password' => '123456',
+            'device_code' => 'test2',
+            'code' => $verify->code,
+        ];
+
+        $this->postJson($this->uri, $requestBody);
+        // Asserts that the status code of the response matches the given code.
+        $this->seeStatusCode(201);
+        // Assert that the response contains an exact JSON array.
+        $json = $this->createMessageResponseBody([
+            'code' => 0,
         ]);
         $this->seeJsonEquals($json);
     }
