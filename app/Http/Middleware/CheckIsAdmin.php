@@ -19,7 +19,8 @@ class CheckIsAdmin
     {
         if (!$request->session()->has('is_admin') or !$request->session()->has('user_id') {
             return app(MessageResponseBody::class, [
-                'code' => 1000,
+                'code' => 5001,
+                'message' => '你不是管理员',
             ])->setStatusCode(403);
         }
         die;

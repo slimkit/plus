@@ -28,7 +28,7 @@ class VerifyPermissionNode
         // 非超级管理员则查找用户节点
         if (!$user_groups) {
             return app(MessageResponseBody::class, [
-                'code'    => 1004,
+                'code'    => 5000,
                 'message' => '没有进入后台的权限',
             ])->setStatusCode(403);
         }
