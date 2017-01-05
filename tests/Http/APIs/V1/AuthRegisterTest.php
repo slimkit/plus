@@ -288,12 +288,7 @@ class AuthRegisterTest extends TestCase
         ];
 
         $this->postJson($this->uri, $requestBody);
-        // Asserts that the status code of the response matches the given code.
+        // 返回201表示注册成功
         $this->seeStatusCode(201);
-        // Assert that the response contains an exact JSON array.
-        $json = $this->createMessageResponseBody([
-            'code' => 0,
-        ]);
-        $this->seeJsonEquals($json);
     }
 }
