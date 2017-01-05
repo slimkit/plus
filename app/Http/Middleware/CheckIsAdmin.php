@@ -24,7 +24,7 @@ class CheckIsAdmin
                 'message' => '你不是管理员',
             ])->setStatusCode(403);
         }
-        
+
         return $next($request);
     }
 }
