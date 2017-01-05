@@ -32,7 +32,6 @@ class VerifyPermissionNode
                 'message' => '没有进入后台的权限',
             ])->setStatusCode(403);
         }
-
         return $next($request);
     }
 }
