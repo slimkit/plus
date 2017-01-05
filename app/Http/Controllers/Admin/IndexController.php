@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
@@ -15,18 +15,19 @@ class IndexController extends Controller
     protected $redirectTo = '/login';
 
     /**
-     * 管理后台登录页面
+     * 管理后台登录页面.
+     *
      * @Author   Wayne[qiaobin@zhiyicx.com]
      * @DateTime 2017-01-03T17:16:07+0800
-     * @return   [type]                     [description]
+     *
+     * @return [type] [description]
      */
     public function login()
     {
-    	return view('admin/login');
+        return view('admin/login');
     }
 
-
-    public function  doLogin(Request $request)
+    public function doLogin(Request $request)
     {
         $user = $request->attributes->get('user');
         session(['user_id' => $user->id, 'is_admin' => 1]);

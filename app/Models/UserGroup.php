@@ -8,6 +8,6 @@ class UserGroup extends Model
 {
     public function nodes()
     {
-    	return $this->hasMany(NodeLink::class, 'user_group_id', 'id');
+        return $this->hasMany(NodeLink::class, 'user_group_id', 'id');
     }
 }
