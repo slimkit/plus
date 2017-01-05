@@ -5,7 +5,6 @@
 Route::get('/', function () {
     return view('tets');
 });
-
 Route::get('/login', 'IndexController@login');
 Route::post('/login', 'IndexController@doLogin')
 	->name('admin.login')
@@ -20,4 +19,15 @@ Route::group([
 	]
 ], function() {
 	Route::get('/index', 'IndexController@index')->name('admin.index');
+});
+
+Route::group([
+    'prefix' => 'vue',
+], function ($router) {
+
+    // 首页
+    Route::get('/', function () {
+        return view('admin.login');
+    })
+        ->name('admin/login');
 });

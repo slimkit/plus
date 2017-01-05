@@ -3,6 +3,7 @@
 namespace Ts\Test\Http\APIs\V1;
 
 use App\Models\User;
+use App\Models\VerifyCode;
 
 class AuthRegisterTest extends TestCase
 {
@@ -64,7 +65,11 @@ class AuthRegisterTest extends TestCase
     {
         // delete user.
         $this->user->forceDelete();
-
+        //删除测试用户
+        User::where('phone', '15266668888')
+            ->orWhere('name', 'test_username')
+            ->withTrashed()
+            ->forceDelete();
         parent::tearDown();
     }
 
@@ -102,9 +107,12 @@ class AuthRegisterTest extends TestCase
      * 测试注册手机号为空.
      *
      * message code:1000
-     * test middleware \App\Http\Middleware\VerifyPhoneNumber
+     * test middleware \App\Http\Middleware\VerifyPhoneNumber.
      *
      * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-05T11:31:03+080
+     *
+     * @version  1.0
      */
     public function testCheckPhoneNotExisted()
     {
@@ -126,9 +134,12 @@ class AuthRegisterTest extends TestCase
      * 测试注册手机号非法.
      *
      * message code:1000
-     * test middleware \App\Http\Middleware\VerifyPhoneNumber
+     * test middleware \App\Http\Middleware\VerifyPhoneNumber.
      *
      * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-05T11:32:58+080
+     *
+     * @version  1.0
      */
     public function testCheckPhoneError()
     {
@@ -143,5 +154,141 @@ class AuthRegisterTest extends TestCase
             'code' => 1000,
         ]);
         $this->seeJsonEquals($json);
+    }
+
+    /**
+     * 测试注册用户名不存在.
+     *
+     * message code:1000
+     * test middleware \App\Http\Middleware\VerifyUserNameRole.
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-05T11:34:03+080
+     *
+     * @version  1.0
+     */
+    public function testCheckUserNameNotExisted()
+    {
+        $requestBody = $this->requestBody;
+
+        $this->postJson($this->uri, $requestBody);
+        // Asserts that the status code of the response matches the given code.
+        $this->seeStatusCode(403);
+        // Assert that the response contains an exact JSON array.
+        $json = $this->createMessageResponseBody([
+            'code' => 1002,
+        ]);
+        $this->seeJsonEquals($json);
+    }
+
+    /**
+     * 测试注册用户名长度.
+     *
+     * message code:403
+     * test middleware \App\Http\Middleware\VerifyUserNameRole.
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-05T11:34:43+080
+     *
+     * @version  1.0
+     */
+    public function testCheckUserNameLength()
+    {
+        $requestBody = $this->requestBody;
+        $requestBody['name'] = 'iss';
+
+        $this->postJson($this->uri, $requestBody);
+        // Asserts that the status code of the response matches the given code.
+        $this->seeStatusCode(403);
+        // Assert that the response contains an exact JSON array.
+        $json = $this->createMessageResponseBody([
+            'code' => 1002,
+        ]);
+        $this->seeJsonEquals($json);
+    }
+
+    /**
+     * 测试注册用户名规则.
+     *
+     * message code:1003
+     * test middleware \App\Http\Middleware\VerifyUserNameRole
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-05T11:34:43+080
+     *
+     * @version  1.0
+     */
+    public function testCheckUserNameRole()
+    {
+        $requestBody = $this->requestBody;
+        $requestBody['name'] = '++test';
+
+        $this->postJson($this->uri, $requestBody);
+        // Asserts that the status code of the response matches the given code.
+        $this->seeStatusCode(403);
+        // Assert that the response contains an exact JSON array.
+        $json = $this->createMessageResponseBody([
+                        'code' => 1003,
+        ]);
+        $this->seeJsonEquals($json);
+    }
+
+    /**
+     * 测试注册时用户名是否被占用.
+     *
+     * message code:1004
+     * test middleware \App\Http\Middleware\CheckUserByNameNotExisted
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-05T11:34:43+080
+     *
+     * @version  1.0
+     */
+    public function testCheckUserNameUsed()
+    {
+        $requestBody = $this->requestBody;
+        $requestBody['name'] = 'Seven_test_user';
+
+        $this->postJson($this->uri, $requestBody);
+        // Asserts that the status code of the response matches the given code.
+        $this->seeStatusCode(403);
+        // Assert that the response contains an exact JSON array.
+        $json = $this->createMessageResponseBody([
+            'code' => 1004,
+        ]);
+        $this->seeJsonEquals($json);
+    }
+
+    /**
+     * 测试注册一个合法的用户.
+     *
+     * message code:
+     * test method: \App\Http\Controllers\APIs\V1\AuthController::register;
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-05T11:34:43+080
+     *
+     * @version  1.0
+     */
+    public function testCheckRegister()
+    {
+        //创建验证码
+        $verify = new VerifyCode();
+        $verify->account = '15266668888';
+        $verify->makeVerifyCode();
+        $verify->save();
+
+        //注册数据
+        $requestBody = [
+            'phone'       => '15266668888',
+            'name'        => 'test_username',
+            'password'    => '123456',
+            'device_code' => 'test2',
+            'code'        => $verify->code,
+        ];
+
+        $this->postJson($this->uri, $requestBody);
+        // 返回201表示注册成功
+        $this->seeStatusCode(201);
     }
 }
