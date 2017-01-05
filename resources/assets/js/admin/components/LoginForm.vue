@@ -1,9 +1,9 @@
 <template>
-    <form class="form-signin" role="form" :action="action" @submit.prevent="onSubmit">
+    <form class="form-signin" role="form" :action="url" @submit.prevent="onSubmit">
         <h2 class="form-signin-heading text-center">后台</h2>
 
-        <input type="tel" class="form-control" placeholder="输入手机号码" required autofocus>
-        <input type="password" class="form-control" placeholder="输入密码" required>
+        <input type="tel" class="form-control" placeholder="输入手机号码" required autofocus v-model="phone">
+        <input type="password" class="form-control" placeholder="输入密码" required v-model="password">
 
         <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
     </form>
@@ -11,18 +11,20 @@
 
 <script>
     export default {
-        // mounted() {
-        //     console.log('Component mounted.')
-        // },
         
         props: {
-            action: String,
+            url: String,
         },
+
+        data: () => ({
+            phone: '',
+            password: '',
+        }),
 
         methods: {
             onSubmit() {
                 console.log(this.action);
             }
-        }
+        },
     }
 </script>

@@ -23,3 +23,4 @@ elixir(mix => {
   mix.sass('admin.scss')
      .webpack('admin/login.js', './public/js/admin/');
 });
+
