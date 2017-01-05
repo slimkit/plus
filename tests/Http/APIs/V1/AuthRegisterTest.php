@@ -49,8 +49,8 @@ class AuthRegisterTest extends TestCase
 
         $this->user = $user;
         $this->requestBody = [
-            'phone' => $phone,
-            'password' => $this->password,
+            'phone'       => $phone,
+            'password'    => $this->password,
             'device_code' => 'testing',
         ];
     }
@@ -93,7 +93,7 @@ class AuthRegisterTest extends TestCase
 
         // Assert that the response contains an exact JSON array.
         $json = $this->createMessageResponseBody([
-            'code' => 1014,
+            'code'    => 1014,
             'message' => '设备号不能为空',
         ]);
         $this->seeJsonEquals($json);
@@ -255,11 +255,11 @@ class AuthRegisterTest extends TestCase
 
         //注册数据
         $requestBody = [
-            'phone' => '15266668888',
-            'name' => 'test_username',
-            'password' => '123456',
+            'phone'       => '15266668888',
+            'name'        => 'test_username',
+            'password'    => '123456',
             'device_code' => 'test2',
-            'code' => $verify->code,
+            'code'        => $verify->code,
         ];
 
         $this->postJson($this->uri, $requestBody);
