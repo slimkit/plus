@@ -25,11 +25,18 @@ require('vue-resource');
  * included with Laravel will automatically verify the header's value.
  */
 
+const httpStatusCodes = [400, 401, 403, 404, 405, 408, 500, 502, 503, 504, 505];
+
 Vue.http.interceptors.push((request, next) => {
     request.headers.set('X-CSRF-TOKEN', TS.csrfToken);
 
-    next();
+    next((response) => {
+    	if (httpStatusCodes.indexOf(response.status) > -1) {
+    		console.log('hehe');
+    	};
+    });
 });
+
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
