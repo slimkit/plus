@@ -10,21 +10,28 @@
 </template>
 
 <script>
-    export default {
-        
-        props: {
-            url: String,
-        },
+import { admin_login } from '../../utils/APIs';
 
-        data: () => ({
-            phone: '',
-            password: '',
-        }),
+export default {
+    
+    props: {
+        url: String,
+    },
 
-        methods: {
-            onSubmit() {
-                
-            }
-        },
-    }
+    data: () => ({
+        phone: '',
+        password: '',
+    }),
+
+    methods: {
+        onSubmit() {
+            this.$http.post(admin_login, {
+                phone: this.phone,
+                password: this.password
+            }).then((response) => {
+                console.log(response);
+            });
+        }
+    },
+}
 </script>
