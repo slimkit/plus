@@ -11,7 +11,7 @@
 @section('body')
     
 <div class="container" id="app">
-    <login-form url="{{ route('admin/login') }}"></login-form>
+    <login-form />
 </div>
 <script type="text/javascript" src="{{ elixir('js/admin/login.js') }}"></script>
 @endsection

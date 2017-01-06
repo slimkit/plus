@@ -23,7 +23,7 @@
 
         methods: {
             onSubmit() {
-                console.log(this.action);
+                
             }
         },
     }
