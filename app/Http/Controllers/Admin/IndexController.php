@@ -29,44 +29,51 @@ class IndexController extends Controller
     }
 
     /**
-     * 后台登录方法
+     * 后台登录方法.
+     *
      * @Author   Wayne[qiaobin@zhiyicx.com]
      * @DateTime 2017-01-06T09:45:55+0800
-     * @param    Request                    $request [description]
-     * @return   [type]                              [description]
+     *
+     * @param Request $request [description]
+     *
+     * @return [type] [description]
      */
     public function doLogin(Request $request)
     {
         $user = $request->attributes->get('user');
         session(['user_id' => $user->id, 'is_admin' => 1]);
+
         return app(MessageResponseBody::class, [
-            'status' => true,
+            'status'  => true,
             'message' => '登录成功',
-            'data' => [
+            'data'    => [
                 'jumpUrl' => '/index',
             ],
         ])->setStatusCode(201);
     }
 
-
     /**
-     * 后台登出方法
+     * 后台登出方法.
+     *
      * @Author   Wayne[qiaobin@zhiyicx.com]
      * @DateTime 2017-01-06T09:45:43+0800
-     * @param    Request                    $request [description]
-     * @return   [type]                              [description]
+     *
+     * @param Request $request [description]
+     *
+     * @return [type] [description]
      */
     public function logout(Request $request)
     {
         session(['is_admin' => 0]);
+
         return app(MessageResponseBody::class, [
             'status' => true,
         ])->setStatusCode(201);
 
         return app(MessageResponseBody::class, [
-            'status' => true,
+            'status'  => true,
             'message' => '登出成功',
-            'data' => [
+            'data'    => [
                 'jumpUrl' => '/login',
             ],
         ]);
