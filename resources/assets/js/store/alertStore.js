@@ -37,6 +37,13 @@ import Vuex from 'vuex';
 
 const alertStore = new Vuex.Store({
   state: defaultState,
+
+  getters: {
+    doneTypeName: (state, getters) => {
+
+    },
+  },
+
 });
 
 export default alertStore;
