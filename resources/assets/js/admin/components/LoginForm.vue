@@ -1,5 +1,7 @@
 <template>
-    <form class="form-signin" role="form" :action="url" @submit.prevent="onSubmit">
+
+    <form class="form-signin" role="form" @submit.prevent="onSubmit">
+        <bootstrap-alert></bootstrap-alert>
         <h2 class="form-signin-heading text-center">后台</h2>
 
         <input type="tel" class="form-control" placeholder="输入手机号码" required autofocus v-model="phone">
@@ -11,12 +13,10 @@
 
 <script>
 import { admin_login } from '../../utils/APIs';
+import Alert from '../../components/Alert.vue';
+import { alert, alertClose } from '../../utils/alert';
 
 export default {
-    
-    props: {
-        url: String,
-    },
 
     data: () => ({
         phone: '',
@@ -25,13 +25,15 @@ export default {
 
     methods: {
         onSubmit() {
-            this.$http.post(admin_login, {
-                phone: this.phone,
-                password: this.password
-            }).then((response) => {
-                console.log(response);
+            alert({
+                open: true,
+                node: '124',
             });
         }
     },
+
+    components: {
+        'bootstrap-alert': Alert,
+    }
 }
 </script>

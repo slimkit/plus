@@ -1,4 +1,6 @@
-import { alert, alertClose } from '../store/alertStore';
+import store from '../store/alertStore';
+
+const { alert, alertClose } = store;
 
 export {
   alert, alertClose
