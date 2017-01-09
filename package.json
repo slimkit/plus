@@ -1,21 +1,41 @@
 {
   "private": true,
-  "scripts": {
-    "prod": "gulp --production",
-    "dev": "gulp watch"
-  },
+  "name": "thinksns-plus",
+  "version": "1.0.0",
+  "description": "TS+",
+  "main": "index.js",
+  "repository": "https://github.com/zhiyicx/thinksns-plus.git",
+  "author": "Seven <shiweidu@outlook.com>",
+  "license": "Apache-2.0",
   "devDependencies": {
-    "bootstrap-sass": "^3.3.7",
+    "autoprefixer": "^6.6.1",
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-stage-2": "^6.18.0",
+    "cross-env": "^3.1.4",
+    "css-loader": "^0.26.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.9.0",
     "gulp": "^3.9.1",
-    "jquery": "^3.1.0",
-    "laravel-elixir": "^6.0.0-14",
-    "laravel-elixir-vue-2": "^0.2.0",
-    "laravel-elixir-webpack-official": "^1.0.2",
-    "lodash": "^4.16.2",
-    "vue": "^2.0.1",
-    "vue-resource": "^1.0.3"
+    "laravel-elixir": "^6.0.0-15",
+    "shelljs": "^0.7.6",
+    "url-loader": "^0.5.7",
+    "vue-loader": "^10.0.2",
+    "vue-template-compiler": "^2.1.8",
+    "webpack": "^1.14.0"
   },
   "dependencies": {
-    "vuex": "^2.1.1"
+    "trash-cli": "^1.4.0",
+    "vue": "^2.1.8"
+  },
+  "scripts": {
+    "clean-dist": "trash public/js public/css public/images",
+    "clean-version": "trash public/build",
+    "clean-all": "npm run clean-version && npm run clean-dist",
+    "dist-version": "npm run clean-version && gulp --production",
+    "watch": "npm run clean-all && cross-env NODE_ENV=development webpack --display-error-details --progress --colors --watch",
+    "build": "npm run clean-all && cross-env NODE_ENV=development webpack --display-error-details --progress --colors",
+    "dist": "npm run clean-all && cross-env NODE_ENV=production webpack --display-error-details --progress --colors && npm run dist-version"
   }
 }

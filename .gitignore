@@ -7,3 +7,7 @@ Homestead.json
 Homestead.yaml
 .env
 composer.lock
+
+yarn-error.log
+
+yarn.lock

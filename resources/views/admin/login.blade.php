@@ -9,9 +9,6 @@
 @endsection
 
 @section('body')
-    
-<div class="container" id="app">
-    <login-form />
-</div>
-<script type="text/javascript" src="{{ elixir('js/admin/login.js') }}"></script>
+<div class="container" id="app"></div>
+<script type="text/javascript" src="{{ elixir('js/admin.js') }}"></script>
 @endsection
