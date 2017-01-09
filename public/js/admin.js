@@ -44,38 +44,11 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(2);
+	module.exports = __webpack_require__(1);
 
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	//
-	//
-	//
-	//
-	//
-	//
-	
-	
-	var App = {
-	  data: function data() {
-	    return {
-	      message: 123
-	    };
-	  }
-	};
-	
-	exports.default = App;
-
-/***/ },
-/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -90,6 +63,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	/* eslint-disable no-new */
 	new _vue2.default({
 	  el: '#app',
 	  template: '<App />',
@@ -97,6 +71,32 @@
 	    App: _App2.default
 	  }
 	});
+
+/***/ },
+/* 2 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	//
+	//
+	//
+	//
+	//
+	//
+	
+	var App = {
+	  data: function data() {
+	    return {
+	      message: 123
+	    };
+	  }
+	};
+	
+	exports.default = App;
 
 /***/ },
 /* 3 */
@@ -115,7 +115,7 @@
 	__webpack_require__(3)
 	
 	/* script */
-	__vue_exports__ = __webpack_require__(1)
+	__vue_exports__ = __webpack_require__(2)
 	
 	/* template */
 	var __vue_template__ = __webpack_require__(5)

@@ -5,12 +5,11 @@
 </template>
 
 <script>
-
 const App = {
-  data() {
+  data () {
     return {
-      message: 123,
-    }
+      message: 123
+    };
   }
 };
 
