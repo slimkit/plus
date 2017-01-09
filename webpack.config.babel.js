@@ -6,8 +6,6 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin'
 // 环境变量获取
 const NODE_ENV = process.env.NODE_ENV || 'development'
 
-console.log(NODE_ENV)
-
 // 是否是正式环境编译
 const isProd = NODE_ENV === 'production'
 
@@ -58,6 +56,19 @@ const cssLoaders = (options = {}) => {
     // styl: generateLoaders(['css', 'stylus'])
   }
 }
+
+// 环境插件～不同环境启用的不同插件.
+const plugins = isProd ?
+[
+  new webpack.optimize.UglifyJsPlugin({
+    compress: {
+      warnings: false
+    }
+  })
+] : 
+[
+  new webpack.NoErrorsPlugin()
+]
 
 const webpackConfig = {
   devtool: isProd ? false : 'source-map',
@@ -137,7 +148,10 @@ const webpackConfig = {
         'NODE_ENV': JSON.stringify(NODE_ENV),
       },
     }),
-    new ExtractTextPlugin('css/[name].css')
+    new ExtractTextPlugin('css/[name].css'),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    // 依托关键加载的插件
+    ...plugins,
   ]
 
 }
