@@ -5,10 +5,10 @@
 @endsection
 
 @section('head')
-<link rel="stylesheet" type="text/css" href="{{ elixir('css/admin.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ elixir('css/admin-login.css') }}">
 @endsection
 
 @section('body')
-<div class="container" id="app"></div>
-<script type="text/javascript" src="{{ elixir('js/admin.js') }}"></script>
+<div id="app"></div>
+<script type="text/javascript" src="{{ elixir('js/admin-login.js') }}"></script>
 @endsection

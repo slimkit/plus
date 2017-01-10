@@ -1,7 +1,12 @@
-import webpack from 'webpack'
-import path from 'path'
-import autoprefixer from 'autoprefixer'
-import ExtractTextPlugin from 'extract-text-webpack-plugin'
+import webpack from 'webpack';
+import path from 'path';
+import autoprefixer from 'autoprefixer';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import fs from 'fs';
+import ini from 'ini';
+
+// 获取应用配置
+const env = ini.parse(fs.readFileSync('./.env', 'utf8'));
 
 // 环境变量获取
 const NODE_ENV = process.env.NODE_ENV || 'development'
@@ -19,6 +24,7 @@ const entry = {
   admin: [
     path.join(assetsRoot, 'admin', 'index.js'),
   ],
+  'admin-login': path.join(assetsRoot, 'admin', 'login.js')
 }
 
 const cssLoaders = (options = {}) => {
@@ -50,8 +56,8 @@ const cssLoaders = (options = {}) => {
     css: generateLoaders(['css']),
     // postcss: generateLoaders(['css']),
     // less: generateLoaders(['css', 'less']),
-    // sass: generateLoaders(['css', 'sass?indentedSyntax']),
-    // scss: generateLoaders(['css', 'sass']),
+    sass: generateLoaders(['css', 'sass?indentedSyntax']),
+    scss: generateLoaders(['css', 'sass']),
     // stylus: generateLoaders(['css', 'stylus']),
     // styl: generateLoaders(['css', 'stylus'])
   }
@@ -75,13 +81,14 @@ const webpackConfig = {
   entry: entry,
   output: {
     path: path.join(buildAssetsRoot),
-    publicPath: '/',
+    publicPath: env.APP_URL + '/',
     filename: 'js/[name].js',
   },
   resolve: {
     extensions: ['', '.js', '.vue', '.json'],
     fallback: [path.join(__dirname, 'node_modules')],
     alias: {
+      'jquery': 'jquery/src/jquery',
       'vue$': 'vue/dist/vue.common.js',
       'admin': path.resolve(assetsRoot, 'admin'),
       'assets': assetsRoot
@@ -158,7 +165,17 @@ const webpackConfig = {
     }),
     postcss: [
       autoprefixer({
-        browsers: ['last 2 versions']
+        browsers: [
+          'Android 2.3',
+          'Android >= 4',
+          'Chrome >= 20',
+          'Firefox >= 24',
+          'Explorer >= 8',
+          'iOS >= 6',
+          'Opera >= 12',
+          'Safari >= 6'
+        ]
+        // browsers: ['last 2 versions']
       })
     ],
   },
