@@ -6,6 +6,9 @@ php:
     - 7.0
     - 7.1
 
+node_js:
+    - 6
+
 services:
     - mysql
 
@@ -16,11 +19,15 @@ before_install:
 install:
     - composer install
     - php artisan key:generate
+    - yarn install
 
 script:
     - php artisan migrate
     - php artisan db:seed
     - php vendor/bin/phpunit --coverage-clover=./storage/logs/coverage.xml
+    - yarn lint
+    - yarn build
+    - yarn dist
 
 after_script:
     - php vendor/bin/codacycoverage clover ./storage/logs/coverage.xml
