@@ -1,6 +1,7 @@
 <template>
-  <div id="app">
-    {{ message }}
+  <div class="container" id="app">
+    <h2>{{ message }}</h2>
+    <input type="text" v-model="message">
   </div>
 </template>
 
@@ -8,18 +9,14 @@
 const App = {
   data () {
     return {
-      message: 123
+      message: 'init message.'
     };
   }
 };
 
 export default App;
-
 </script>
 
-<style>
-  #app {
-    width: 100%;
-    text-align: center;
-  }
+<style lang="scss">
+@import "../sass/bootstrap";
 </style>

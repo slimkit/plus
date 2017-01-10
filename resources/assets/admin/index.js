@@ -1,8 +1,6 @@
-// jQuery
-window.$ = window.jQuery = require('jquery');
-
+import 'assets/bootstrap';
 import Vue from 'vue';
-import App from './App';
+import App from 'admin/App';
 
 /* eslint-disable no-new */
 new Vue({
