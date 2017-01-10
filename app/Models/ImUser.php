@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use GuzzleHttp\Client;
 
 class ImUser extends Model
 {
@@ -45,12 +45,12 @@ class ImUser extends Model
      */
     protected $service_urls = [
         'base_url' => 'http://192.168.2.222:9900',
-        'apis' => [
-            'users' => '/users',
+        'apis'     => [
+            'users'        => '/users',
             'conversation' => '/conversations',
-            'member' => '/conversations/member',
-            'limited' => '/conversations/{cid}/limited-members',
-            'message' => '/conversations/{cid}/messages',
+            'member'       => '/conversations/member',
+            'limited'      => '/conversations/{cid}/limited-members',
+            'message'      => '/conversations/{cid}/messages',
         ],
     ];
 
@@ -100,7 +100,7 @@ class ImUser extends Model
             'form_params' => [
                 'type' => 0,
                 'name' => '测试私有的对话',
-                'pwd' => '',
+                'pwd'  => '',
                 'uids' => [1001, 1002],
             ],
             'auth' => [
