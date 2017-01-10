@@ -13,8 +13,7 @@ Route::post('/login', 'IndexController@doLogin')
     ->middleware(App\Http\Middleware\VerifyPhoneNumber::class)
     ->middleware(App\Http\Middleware\CheckUserByPhoneExisted::class)
     ->middleware(App\Http\Middleware\VerifyPassword::class)
-    ->middleware(App\Http\Middleware\VerifyPermissionNode::class)
-;
+    ->middleware(App\Http\Middleware\VerifyPermissionNode::class);
 
 Route::group([
     'middleware' => [
