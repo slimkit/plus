@@ -15,7 +15,6 @@
     <script type="text/javascript">
         window.TS = {!!
             json_encode([
-                'csrfToken' => csrf_token(),
                 'baseRUL' => url('admin'),
             ])
         !!};

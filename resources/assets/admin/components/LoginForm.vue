@@ -12,6 +12,9 @@
 </template>
 
 <script>
+import request from 'assets/utils/request';
+import { ADMIN_LOGIN } from 'assets/utils/APIs';
+
 const LoginForm = {
   data () {
     return {
@@ -24,7 +27,16 @@ const LoginForm = {
     onSubmit () {
       const phone = this.phone;
       const password = this.password;
-      console.log(phone, password);
+      request.post(ADMIN_LOGIN, {
+        phone,
+        password
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     }
   }
 };
