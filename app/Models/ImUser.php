@@ -39,19 +39,43 @@ class ImUser extends Model
     protected $dates = ['deleted_at'];
 
     /**
+     * 是否开启对IM聊天服务器请求的调试功能.
+     *
+     * @var bool
+     */
+    protected $service_debug = false;
+
+    /**
+     * 保存错误信息.
+     *
+     * @var string
+     */
+    protected $error = '';
+
+    /**
      * 定义im服务器的相关请求链接.
      *
      * @var array
      */
     protected $service_urls = [
         'base_url' => 'http://192.168.2.222:9900',
-        'apis'     => [
-            'users'        => '/users',
+        'apis' => [
+            'users' => '/users',
             'conversation' => '/conversations',
-            'member'       => '/conversations/member',
-            'limited'      => '/conversations/{cid}/limited-members',
-            'message'      => '/conversations/{cid}/messages',
+            'member' => '/conversations/member',
+            'limited' => '/conversations/{cid}/limited-members',
+            'message' => '/conversations/{cid}/messages',
         ],
+    ];
+
+    /**
+     * 定义IM服务器的授权用户登陆信息.
+     *
+     * @var array
+     */
+    protected $service_auth = [
+        'user' => 'admin',
+        'password' => '123456',
     ];
 
     /**
@@ -83,49 +107,88 @@ class ImUser extends Model
      */
     public function initImUser(int $user_id)
     {
+        /* 以下为测试数据 **/
+        //创建请求根地址类
         $client = new Client(['base_uri' => $this->service_urls['base_url']]);
-        // $res = $client->request('post', $this->service_urls['apis']['users'], [
-        //     'form_params' => [
-        //         'uid' => 1002,
-        //         'name' => '测试账号1002',
-        //     ],
-        //     'auth' => [
-        //         'admin', '123456',
-        //     ],
-        // ]);
-        // $body = $res->getBody();
-        // $data = $body->getContents();
-
-        $res = $client->request('post', $this->service_urls['apis']['conversation'], [
-            'form_params' => [
-                'type' => 0,
-                'name' => '测试私有的对话',
-                'pwd'  => '',
-                'uids' => [1001, 1002],
+        $res = $client->request('post', $this->service_urls['apis']['users'], [
+             'form_params' => [
+                 'uid' => $user_id,
+                 'name' => '测试账号1002', //需要获取用户昵称
             ],
-            'auth' => [
-                'admin', '123456',
-            ],
+            'auth' => $this->service_auth,
+            'http_errors' => $this->service_debug,
         ]);
         $body = $res->getBody();
         $data = $body->getContents();
         echo $data;
-        //file_put_contents('conversation1.txt', json_encode($data));
-        exit;
-        $res = $client->request('post', $this->service_urls['apis']['conversation'], [
-            'form_params' => [
-
-            ],
-            'auth' => [
-                'admin', '123456',
-            ],
-        ]);
-        echo $res->getStatusCode();
-        $body = $res->getBody();
-        echo $body->getContents();
         exit;
     }
+    /**
+     * 创建会话.
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-11T17:59:37+080
+     *
+     * @version  1.0
+     *
+     * @param int   $type 会话类型 0:私聊 1:群聊 2:聊天室
+     * @param array $uids 默认加入的用户uid数组
+     *
+     * @return array
+     */
+    public function conversation(int $type, array $uids)
+    {
+        if (!$this->checkConversationType()) {
+            $this->error = '会话类型不合法';
 
+            return false;
+        }
+        //创建私聊对话
+        $res = $client->request('post', $this->service_urls['apis']['conversation'], [
+            'form_params' => [
+                'type' => 0,
+                'name' => '测试私有的对话',
+                'pwd' => '',
+                'uids' => [1001, 1002],
+            ],
+            'auth' => $this->service_auth,
+            'http_errors' => false,
+        ]);
+        $body = $res->getBody();
+        $data = $body->getContents();
+        echo $data;
+        exit;
+    }
+    /**
+     * 检测会话类型.
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-11T18:01:26+080
+     *
+     * @version  1.0
+     *
+     * @param int $type 会话类型 0:私聊 1:群聊 2:单聊
+     *
+     * @return bool 是否合法
+     */
+    private function checkConversationType(int $type) : boolean
+    {
+        return in_array($type, [0, 1, 2]) ? true : false;
+    }
+    /**
+     * 处理IM聊天服务器返回的数据.
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-11T17:38:16+080
+     *
+     * @version  1.0
+     *
+     * @return array 返回数据信息
+     */
+    private function haddleImServerResponse($res) : array
+    {
+        return array();
+    }
     /**
      * 根据用户ID获取IM用户信息.
      *
@@ -140,5 +203,19 @@ class ImUser extends Model
      */
     public function getImUserByUserId(int $user_id)
     {
+    }
+    /**
+     * 获取错误信息.
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-11T18:08:14+080
+     *
+     * @version  1.0
+     *
+     * @return string 错误信息描述
+     */
+    public function getError() : string
+    {
+        return $this->error;
     }
 }
