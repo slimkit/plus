@@ -27,10 +27,10 @@ class CheckIsAdmin
             return app(MessageResponseBody::class, [
                 'code'    => 5001,
                 'message' => '你不是管理员',
-                'data' => [
+                'data'    => [
                     // 后台非管理员访问先跳转到管理员登录页
-                    'jumpUrl' => 'login'
-                ]
+                    'jumpUrl' => 'login',
+                ],
             ])->setStatusCode(403);
         }
 

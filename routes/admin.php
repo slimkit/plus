@@ -5,8 +5,7 @@
 // login
 Route::get('/login', 'IndexController@login')
     ->name('admin.login')
-    ->middleware(App\Http\Middleware\CheckAdminLogin::class)
-;
+    ->middleware(App\Http\Middleware\CheckAdminLogin::class);
 
 // 登出方法
 Route::get('/logout', 'IndexController@logout');

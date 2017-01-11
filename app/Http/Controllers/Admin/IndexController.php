@@ -25,7 +25,6 @@ class IndexController extends Controller
      */
     public function login()
     {
-
         return view('admin.login');
     }
 
@@ -66,6 +65,7 @@ class IndexController extends Controller
     public function logout(Request $request)
     {
         session(['is_admin' => 0]);
+
         return redirect(route('admin.login'));
     }
 
