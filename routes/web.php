@@ -16,17 +16,9 @@ Route::get('/', function () {
 });
 
 Route::group([
-    'prefix' => 'admin',
+    'prefix'    => 'admin',
     'namespace' => 'Admin',
     // 'middleware' => [],
 ], function ($router) {
     require base_path('routes/admin.php');
-});
-
-Route::group([
-    'prefix' => 'imuser',
-], function () {
-    Route::post('/create', 'ImUserController@imUsercreate')->name('imuser.create');//注册IM用户
-    Route::delete('/delete', 'ImUserController@imUserDelete')->name('imuser.delete');//删除IM用户
-    Route::get('/testDelete', 'ImUserController@testDelete');//测试删除用户
 });
