@@ -43,7 +43,9 @@ const LoginForm = {
         console.log(error);
       });
     },
-    show,
+    show () {
+      show(this.phone);
+    },
     hidden
   },
 

@@ -5,11 +5,13 @@ Vue.use(Vuex);
 
 const alertStore = new Vuex.Store({
   state: {
-    show: false
+    show: false,
+    message: ''
   },
   mutations: {
-    show (state) {
+    show (state, message) {
       state.show = true;
+      state.message = message;
     },
     hidden (state) {
       state.show = false;
