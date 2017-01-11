@@ -109,9 +109,7 @@ class ImUser extends Model
         ]);
         $body = $res->getBody();
         $data = $body->getContents();
-        echo $data;
-        //file_put_contents('conversation1.txt', json_encode($data));
-        exit;
+        return $data;
         $res = $client->request('post', $this->service_urls['apis']['conversation'], [
             'form_params' => [
 
@@ -120,10 +118,7 @@ class ImUser extends Model
                 'admin', '123456',
             ],
         ]);
-        echo $res->getStatusCode();
-        $body = $res->getBody();
-        echo $body->getContents();
-        exit;
+        return $res;
     }
 
     /**
