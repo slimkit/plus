@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+
 // 获取手机验证码
 Route::post('/auth/phone/send-code', 'AuthController@sendPhoneCode')
     ->middleware(App\Http\Middleware\VerifyPhoneNumber::class) // 验证手机号格式是否正确
@@ -46,4 +48,11 @@ Route::group([
     Route::patch('/password', 'UserController@resetPassword') // 设置控制器
         ->middleware(App\Http\Middleware\VerifyPassword::class) // 验证用户密码是否正确
 ;
+});
+
+Route::any('/storage', function (Request $request) {
+    $hash = $request->input('hash');
+    $storage = new Ts\Storages\Storage();
+    $storage->createStorageTask($hash);
+    var_dump($storage);
 });
