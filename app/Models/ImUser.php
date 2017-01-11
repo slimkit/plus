@@ -59,12 +59,12 @@ class ImUser extends Model
      */
     protected $service_urls = [
         'base_url' => 'http://192.168.2.222:9900',
-        'apis' => [
-            'users' => '/users',
+        'apis'     => [
+            'users'        => '/users',
             'conversation' => '/conversations',
-            'member' => '/conversations/member',
-            'limited' => '/conversations/{cid}/limited-members',
-            'message' => '/conversations/{cid}/messages',
+            'member'       => '/conversations/member',
+            'limited'      => '/conversations/{cid}/limited-members',
+            'message'      => '/conversations/{cid}/messages',
         ],
     ];
 
@@ -74,7 +74,7 @@ class ImUser extends Model
      * @var array
      */
     protected $service_auth = [
-        'user' => 'admin',
+        'user'     => 'admin',
         'password' => '123456',
     ];
 
@@ -112,10 +112,10 @@ class ImUser extends Model
         $client = new Client(['base_uri' => $this->service_urls['base_url']]);
         $res = $client->request('post', $this->service_urls['apis']['users'], [
              'form_params' => [
-                 'uid' => $user_id,
+                 'uid'  => $user_id,
                  'name' => '测试账号1002', //需要获取用户昵称
             ],
-            'auth' => $this->service_auth,
+            'auth'        => $this->service_auth,
             'http_errors' => $this->service_debug,
         ]);
         $body = $res->getBody();
@@ -123,6 +123,7 @@ class ImUser extends Model
         echo $data;
         exit;
     }
+
     /**
      * 创建会话.
      *
@@ -148,10 +149,10 @@ class ImUser extends Model
             'form_params' => [
                 'type' => 0,
                 'name' => '测试私有的对话',
-                'pwd' => '',
+                'pwd'  => '',
                 'uids' => [1001, 1002],
             ],
-            'auth' => $this->service_auth,
+            'auth'        => $this->service_auth,
             'http_errors' => false,
         ]);
         $body = $res->getBody();
@@ -159,6 +160,7 @@ class ImUser extends Model
         echo $data;
         exit;
     }
+
     /**
      * 检测会话类型.
      *
@@ -175,6 +177,7 @@ class ImUser extends Model
     {
         return in_array($type, [0, 1, 2]) ? true : false;
     }
+
     /**
      * 处理IM聊天服务器返回的数据.
      *
@@ -187,8 +190,9 @@ class ImUser extends Model
      */
     private function haddleImServerResponse($res) : array
     {
-        return array();
+        return [];
     }
+
     /**
      * 根据用户ID获取IM用户信息.
      *
@@ -204,6 +208,7 @@ class ImUser extends Model
     public function getImUserByUserId(int $user_id)
     {
     }
+
     /**
      * 获取错误信息.
      *
