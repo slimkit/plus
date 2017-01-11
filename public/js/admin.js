@@ -22595,9 +22595,8 @@
 	/* eslint-disable no-new */
 	new _vue2.default({
 	  el: '#app',
-	  template: '<App />',
-	  components: {
-	    App: _App2.default
+	  render: function render(h) {
+	    return h(_App2.default);
 	  }
 	});
 

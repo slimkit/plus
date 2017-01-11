@@ -5,8 +5,5 @@ import LoginForm from 'admin/components/LoginForm';
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  template: '<LoginForm />',
-  components: {
-    LoginForm
-  }
+  render: h => h(LoginForm)
 });

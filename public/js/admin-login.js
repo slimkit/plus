@@ -61,9 +61,8 @@
 	/* eslint-disable no-new */
 	new _vue2.default({
 	  el: '#app',
-	  template: '<LoginForm />',
-	  components: {
-	    LoginForm: _LoginForm2.default
+	  render: function render(h) {
+	    return h(_LoginForm2.default);
 	  }
 	});
 
