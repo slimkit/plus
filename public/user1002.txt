@@ -1,0 +1,7 @@
+{
+    "code":201,
+    "data":{
+        "uid":1002,
+        "token":"PgbSQKRm3EXEtZFrzjMI_uoDAAA"
+    }
+}
