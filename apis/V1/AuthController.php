@@ -68,12 +68,12 @@ class AuthController extends Controller
         $token->state = 1;
 
         // 登录记录
-        $ip = $request->getClientIp();
+        $clientIp = $request->getClientIp();
         $loginrecord = new LoginRecord();
-        $loginrecord->ip = $ip;
+        $loginrecord->ip = $clientIp;
 
         // 保留测试ip
-        // $location = (array)Ip::find($ip);
+        // $location = (array)Ip::find($clientIp);
         $location = (array) Ip::find('61.139.2.69');
         array_filter($location);
         $loginrecord->address = trim(implode(' ', $location));
