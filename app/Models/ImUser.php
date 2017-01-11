@@ -109,6 +109,7 @@ class ImUser extends Model
         ]);
         $body = $res->getBody();
         $data = $body->getContents();
+
         return $data;
         $res = $client->request('post', $this->service_urls['apis']['conversation'], [
             'form_params' => [
@@ -118,6 +119,7 @@ class ImUser extends Model
                 'admin', '123456',
             ],
         ]);
+
         return $res;
     }
 
