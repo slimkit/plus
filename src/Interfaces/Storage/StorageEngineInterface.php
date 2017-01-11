@@ -4,7 +4,7 @@ namespace Ts\Interfaces\Storage;
 
 interface StorageEngineInterface
 {
-    /**
+    /*
      * 创建一个储存任务.
      *
      * @param string $fileName 文件原始名称
@@ -16,7 +16,7 @@ interface StorageEngineInterface
      */
     // public function createStorageTask($fileName, $fileHash, $options = []);
 
-    /**
+    /*
      * 保存储存.
      *
      * @param array $options 参数信息
@@ -26,7 +26,7 @@ interface StorageEngineInterface
      */
     // public function saveStorage($options = []);
 
-    /**
+    /*
      * 任务回掉.
      *
      * @param array $options 参数信息
