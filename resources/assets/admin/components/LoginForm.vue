@@ -2,18 +2,23 @@
   <div class="container" id="app">
     <form class="form-signin" role="form" @submit.prevent="onSubmit">
       <h2 class="form-signin-heading text-center">后台</h2>
+      <Alert />
 
       <input type="tel" class="form-control" placeholder="输入手机号码" required autofocus v-model="phone">
       <input type="password" class="form-control" placeholder="输入密码" required v-model="password">
 
       <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
     </form>
+    <button class="btn btn-lg btn-primary btn-block" @click="show">show</button>
+    <button class="btn btn-lg btn-primary btn-block" @click="hidden">hidden</button>
   </div>
 </template>
 
 <script>
 import request from 'assets/utils/request';
 import { ADMIN_LOGIN } from 'assets/utils/APIs';
+import Alert from 'assets/components/Alert';
+import { show, hidden } from 'assets/utils/alert';
 
 const LoginForm = {
   data () {
@@ -37,7 +42,13 @@ const LoginForm = {
       .catch((error) => {
         console.log(error);
       });
-    }
+    },
+    show,
+    hidden
+  },
+
+  components: {
+    Alert
   }
 };
 

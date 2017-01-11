@@ -2,14 +2,16 @@
 
 // admin router.
 
-Route::get('/', function () {
-    return view('admin.index');
-});
-
 // login
-Route::get('/login', 'IndexController@login');
-Route::post('/login', 'IndexController@doLogin')
+Route::get('/login', 'IndexController@login')
     ->name('admin.login')
+    ->middleware(App\Http\Middleware\CheckAdminLogin::class);
+
+// 登出方法
+Route::get('/logout', 'IndexController@logout');
+
+Route::post('/login', 'IndexController@doLogin')
+    ->name('admin.doLogin')
     ->middleware(App\Http\Middleware\VerifyPhoneNumber::class)
     ->middleware(App\Http\Middleware\CheckUserByPhoneExisted::class)
     ->middleware(App\Http\Middleware\VerifyPassword::class)
@@ -20,5 +22,5 @@ Route::group([
         App\Http\Middleware\CheckIsAdmin::class,
     ],
 ], function () {
-    Route::get('/index', 'IndexController@index')->name('admin.index');
+    Route::get('/', 'IndexController@index');
 });

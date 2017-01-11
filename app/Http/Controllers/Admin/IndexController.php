@@ -13,7 +13,7 @@ class IndexController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/login';
+    protected $redirectTo = 'login';
 
     /**
      * 管理后台登录页面.
@@ -47,7 +47,7 @@ class IndexController extends Controller
             'status'  => true,
             'message' => '登录成功',
             'data'    => [
-                'jumpUrl' => '/index',
+                'jumpUrl' => '',
             ],
         ])->setStatusCode(201);
     }
@@ -66,21 +66,11 @@ class IndexController extends Controller
     {
         session(['is_admin' => 0]);
 
-        return app(MessageResponseBody::class, [
-            'status' => true,
-        ])->setStatusCode(201);
-
-        return app(MessageResponseBody::class, [
-            'status'  => true,
-            'message' => '登出成功',
-            'data'    => [
-                'jumpUrl' => '/login',
-            ],
-        ]);
+        return redirect(route('admin.login'));
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        echo '';
+        return view('admin.index');
     }
 }

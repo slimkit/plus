@@ -24,7 +24,8 @@
         ],
         "psr-4": {
             "App\\": "app/",
-            "App\\Http\\Controllers\\APIs\\": "apis/"
+            "App\\Http\\Controllers\\APIs\\": "apis/",
+            "Ts\\": "src/"
         }
     },
     "autoload-dev": {

@@ -1,4 +1,4 @@
-const elixir = require('laravel-elixir')
+const elixir = require('laravel-elixir');
 
 /*
  |--------------------------------------------------------------------------
@@ -16,5 +16,4 @@ elixir(function (mix) {
     'js/*.js',
     'css/*.css'
   ]);
-})
-
+});
