@@ -1,5 +1,10 @@
 /node_modules
 /public/storage
+/public/css
+/public/build
+/public/js
+/public/fonts
+/public/images
 /storage/*.key
 /vendor
 /.idea
@@ -7,7 +12,5 @@ Homestead.json
 Homestead.yaml
 .env
 composer.lock
-
 yarn-error.log
-
 yarn.lock
