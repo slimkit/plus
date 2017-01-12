@@ -50,9 +50,31 @@ Route::group([
 ;
 });
 
-Route::any('/storage', function (Request $request) {
+// 获取一个附件资源
+Route::get('/storages/{storage_id}', function ($storage_id) {});
+// 附件储存相关
+Route::group([
+    'middleware' => [
+        App\Http\Middleware\AuthUserToken::class,
+    ],
+    'prefix' => 'storages',
+], function () {
+    // 创建一个储存任务
+    Route::post('/{hash}/{origin_filename}', 'StorageController@createStorageTask');
+    // 完整一个任务上传通知
+    Route::patch('/{storage_task_id}', function () {});
+    // 删除一个上传任务以及相关附件
+    Route::delete('/{storage_task_id}', function () {});
+    // local storage api.
+    Route::post('/', function () {})
+        ->name('storage/upload');
+});
+
+Route::post('/storage', function (Request $request) {
+    // var_dump(app());
     $hash = $request->input('hash');
+    $filename = $request->input('filename');
     $storage = new Ts\Storages\Storage();
-    $storage->createStorageTask($hash);
-    var_dump($storage);
+    $info = $storage->createStorageTask($filename, $hash);
+    var_dump($info);
 });
