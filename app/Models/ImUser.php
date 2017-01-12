@@ -97,7 +97,7 @@ class ImUser extends Model
 			return false;
 		}
         //检测是否已经存在信息
-    	if ($info = $this->->where('user_id',$user_id)->first()) {
+    	if ($info = $this->where('user_id',$user_id)->first()) {
     		return $info;
     	}
         //创建请求根地址类
