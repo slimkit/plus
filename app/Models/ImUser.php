@@ -59,12 +59,12 @@ class ImUser extends Model
      */
     public $service_urls = [
         'base_url' => 'http://192.168.2.222:9900',
-        'apis' => [
-            'users' => '/users',
+        'apis'     => [
+            'users'        => '/users',
             'conversation' => '/conversations',
-            'member' => '/conversations/member',
-            'limited' => '/conversations/{cid}/limited-members',
-            'message' => '/conversations/{cid}/messages',
+            'member'       => '/conversations/member',
+            'limited'      => '/conversations/{cid}/limited-members',
+            'message'      => '/conversations/{cid}/messages',
         ],
     ];
 
@@ -74,7 +74,7 @@ class ImUser extends Model
      * @var array
      */
     public $service_auth = [
-        'user' => 'admin',
+        'user'     => 'admin',
         'password' => '123456',
     ];
 
@@ -104,12 +104,12 @@ class ImUser extends Model
         //创建请求根地址类
         $client = new Client(['base_uri' => $this->service_urls['base_url']]);
         $form_params = [
-            'uid' => $user_id,
+            'uid'  => $user_id,
             'name' => '测试账号'.date('YmdHis', time()), //需要获取用户昵称
         ];
         $res = $client->request('post', $this->service_urls['apis']['users'], [
             'form_params' => $form_params,
-            'auth' => array_values($this->service_auth),
+            'auth'        => array_values($this->service_auth),
             'http_errors' => $this->service_debug,
         ]);
         //判断执行结果
@@ -118,8 +118,8 @@ class ImUser extends Model
         if ($res->getStatusCode() == 201) {
             //添加成功,保存记录
             $imUser = [
-                'user_id' => $user_id,
-                'username' => $form_params['name'],
+                'user_id'     => $user_id,
+                'username'    => $form_params['name'],
                 'im_password' => $res_data['data']['token'],
                 'is_disabled' => 0,
             ];
@@ -160,10 +160,10 @@ class ImUser extends Model
             'form_params' => [
                 'type' => $type,
                 'name' => $ext_data ?? '',
-                'pwd' => '',
+                'pwd'  => '',
                 'uids' => [1001, 1002],
             ],
-            'auth' => array_values($this->service_auth),
+            'auth'        => array_values($this->service_auth),
             'http_errors' => false,
         ]);
         $body = $res->getBody();
