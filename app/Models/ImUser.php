@@ -79,21 +79,6 @@ class ImUser extends Model
     ];
 
     /**
-     * 对密码进行加密.
-     *
-     * @author martinsun <syh@sunyonghong.com>
-     * @datetime 2017-01-09T09:53:25+080
-     *
-     * @version  1.0
-     *
-     * @param string $password 初始密码
-     */
-    public function setImPasswordAttribute($password = '')
-    {
-        $this->attributes['im_password'] = bcrypt($password);
-    }
-
-    /**
      * 初始化IM用户.
      *
      * @author martinsun <syh@sunyonghong.com>
@@ -107,20 +92,33 @@ class ImUser extends Model
      */
     public function initImUser(int $user_id)
     {
-        /* 以下为测试数据 **/
+		if (!$user_id || !is_numeric($user_id)) {
+			$this->error = '参数非法';
+			return false;
+		}
+        //检测是否已经存在信息
+    	if ($info = $this->->where('user_id',$user_id)->first()) {
+    		return $info;
+    	}
         //创建请求根地址类
         $client = new Client(['base_uri' => $this->service_urls['base_url']]);
         $res = $client->request('post', $this->service_urls['apis']['users'], [
              'form_params' => [
                  'uid' => $user_id,
-                 'name' => '测试账号1002', //需要获取用户昵称
+                 'name' => '测试账号'.date('Ymd', time()), //需要获取用户昵称
             ],
             'auth' => $this->service_auth,
             'http_errors' => $this->service_debug,
         ]);
-        $body = $res->getBody();
-        $data = $body->getContents();
-        echo $data;
+        if ($res->getStatusCode() == 201) {
+            $body = $res->getBody();
+            $data = $body->getContents();
+            echo $data;
+        } else {
+            dump($res->getBody());
+            exit;
+        }
+
         exit;
     }
     /**
