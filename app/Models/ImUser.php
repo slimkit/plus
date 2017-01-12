@@ -22,7 +22,7 @@ class ImUser extends Model
      *
      * @var array
      */
-    protected $fillable = ['username', 'im_password', 'is_disabled'];
+    protected $fillable = ['user_id', 'username', 'im_password', 'is_disabled'];
 
     /**
      * 定义隐藏的字段.
@@ -43,7 +43,7 @@ class ImUser extends Model
      *
      * @var bool
      */
-    protected $service_debug = false;
+    public $service_debug = false;
 
     /**
      * 保存错误信息.
@@ -57,14 +57,14 @@ class ImUser extends Model
      *
      * @var array
      */
-    protected $service_urls = [
+    public $service_urls = [
         'base_url' => 'http://192.168.2.222:9900',
-        'apis'     => [
-            'users'        => '/users',
+        'apis' => [
+            'users' => '/users',
             'conversation' => '/conversations',
-            'member'       => '/conversations/member',
-            'limited'      => '/conversations/{cid}/limited-members',
-            'message'      => '/conversations/{cid}/messages',
+            'member' => '/conversations/member',
+            'limited' => '/conversations/{cid}/limited-members',
+            'message' => '/conversations/{cid}/messages',
         ],
     ];
 
@@ -73,8 +73,8 @@ class ImUser extends Model
      *
      * @var array
      */
-    protected $service_auth = [
-        'user'     => 'admin',
+    public $service_auth = [
+        'user' => 'admin',
         'password' => '123456',
     ];
 
@@ -92,34 +92,45 @@ class ImUser extends Model
      */
     public function initImUser(int $user_id)
     {
-		if (!$user_id || !is_numeric($user_id)) {
-			$this->error = '参数非法';
-			return false;
-		}
+        if (!$user_id || !is_numeric($user_id)) {
+            $this->error = '参数非法';
+
+            return false;
+        }
         //检测是否已经存在信息
-    	if ($info = $this->->where('user_id',$user_id)->first()) {
-    		return $info;
-    	}
+        if ($info = $this->where('user_id', $user_id)->first()) {
+            //return $info;
+        }
         //创建请求根地址类
         $client = new Client(['base_uri' => $this->service_urls['base_url']]);
+        $form_params = [
+            'uid' => $user_id,
+            'name' => '测试账号'.date('YmdHis', time()), //需要获取用户昵称
+        ];
         $res = $client->request('post', $this->service_urls['apis']['users'], [
-             'form_params' => [
-                 'uid' => $user_id,
-                 'name' => '测试账号'.date('Ymd', time()), //需要获取用户昵称
-            ],
-            'auth'        => $this->service_auth,
+            'form_params' => $form_params,
+            'auth' => array_values($this->service_auth),
             'http_errors' => $this->service_debug,
         ]);
+        //判断执行结果
+        $body = $res->getBody();
+        $res_data = json_decode($body->getContents(), true);
         if ($res->getStatusCode() == 201) {
-            $body = $res->getBody();
-            $data = $body->getContents();
-            echo $data;
-        } else {
-            dump($res->getBody());
-            exit;
-        }
+            //添加成功,保存记录
+            $imUser = [
+                'user_id' => $user_id,
+                'username' => $form_params['name'],
+                'im_password' => $res_data['data']['token'],
+                'is_disabled' => 0,
+            ];
 
-        exit;
+            return $this->create($imUser);
+        } else {
+            //添加失败,返回服务器错误信息
+            $this->error = $res_data['msg'];
+
+            return false;
+        }
     }
 
     /**
@@ -130,12 +141,14 @@ class ImUser extends Model
      *
      * @version  1.0
      *
-     * @param int   $type 会话类型 0:私聊 1:群聊 2:聊天室
-     * @param array $uids 默认加入的用户uid数组
+     * @param int   $type     会话类型 0:私聊 1:群聊 2:聊天室
+     * @param array $uids     默认加入的用户uid数组
+     * @param array $ext_data 扩展字段 包括以下字段
+     *                        name:会话名称,pwd会话密码
      *
      * @return array
      */
-    public function conversation(int $type, array $uids)
+    public function conversation(int $type, array $uids, array $ext_data)
     {
         if (!$this->checkConversationType()) {
             $this->error = '会话类型不合法';
@@ -145,12 +158,12 @@ class ImUser extends Model
         //创建私聊对话
         $res = $client->request('post', $this->service_urls['apis']['conversation'], [
             'form_params' => [
-                'type' => 0,
-                'name' => '测试私有的对话',
-                'pwd'  => '',
+                'type' => $type,
+                'name' => $ext_data ?? '',
+                'pwd' => '',
                 'uids' => [1001, 1002],
             ],
-            'auth'        => $this->service_auth,
+            'auth' => array_values($this->service_auth),
             'http_errors' => false,
         ]);
         $body = $res->getBody();
