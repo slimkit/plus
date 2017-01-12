@@ -92,19 +92,20 @@ class ImUser extends Model
      */
     public function initImUser(int $user_id)
     {
-		if (!$user_id || !is_numeric($user_id)) {
-			$this->error = '参数非法';
-			return false;
-		}
+        if (!$user_id || !is_numeric($user_id)) {
+            $this->error = '参数非法';
+
+            return false;
+        }
         //检测是否已经存在信息
-    	if ($info = $this->where('user_id',$user_id)->first()) {
-    		return $info;
-    	}
+        if ($info = $this->where('user_id', $user_id)->first()) {
+            return $info;
+        }
         //创建请求根地址类
         $client = new Client(['base_uri' => $this->service_urls['base_url']]);
         $res = $client->request('post', $this->service_urls['apis']['users'], [
              'form_params' => [
-                 'uid' => $user_id,
+                 'uid'  => $user_id,
                  'name' => '测试账号'.date('Ymd', time()), //需要获取用户昵称
             ],
             'auth'        => $this->service_auth,
