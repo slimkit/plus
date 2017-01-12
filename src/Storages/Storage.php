@@ -2,6 +2,10 @@
 
 namespace Ts\Storages;
 
+use App\Models\Storage as StorageModel;
+use App\Models\StorageTask;
+use Carbon\Carbon;
+use Illuminate\Filesystem\Filesystem;
 use Ts\Interfaces\Storage\StorageEngineInterface;
 
 class Storage
@@ -50,17 +54,48 @@ class Storage
     /**
      * 创建储存任务.
      *
-     * @param string $fileHash 文件hash值
-     * @param string $engine   文件储存引擎
+     * @param string $origin_filename 原始文件名
+     * @param string $hash            文件hash
+     * @param string $engine          储存引擎
      *
-     * @return mixed
+     * @return array
      *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function createStorageTask(string $fileHash, string $engine = 'local')
+    public function createStorageTask(string $origin_filename, string $hash, $engine = 'local'): array
     {
-        var_dump($fileHash, $engine);
-        exit;
+        $storageInfo = StorageModel::byHash($hash)->first();
+        if ($storageInfo) {
+            return [
+                'storage_id' => $storageInfo->id,
+            ];
+        }
+
+        $storageTask = new StorageTask();
+        $storageTask->origin_filename = $origin_filename;
+        $storageTask->hash = $hash;
+        $storageTask->filename = static::createStorageFilename($origin_filename, $hash);
+
+        return static::$storages[$engine]->createStorageTask($storageTask);
+    }
+
+    /**
+     * 创建文件储存路径.
+     *
+     * @param string $origin_filename 原始文件名
+     * @param string $hash            文件hash
+     *
+     * @return string
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public static function createStorageFilename(string $origin_filename, string $hash): string
+    {
+        $filename = app(Carbon::class)->format('Y/m/d/Hs/').$hash;
+        $extension = app(Filesystem::class)->extension($origin_filename);
+
+        return $filename.'.'.$extension;
     }
 }

@@ -121,7 +121,7 @@ class AuthUserToken
      */
     protected function checkUserExistedStep($user, Closure $next)
     {
-        if (!$user || $user instanceof User) {
+        if (!$user || !$user instanceof User) {
             return app(MessageResponseBody::class, [
                 'code' => 1005,
             ])->setStatusCode(404);

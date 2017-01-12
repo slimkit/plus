@@ -99,7 +99,7 @@ class ImUser extends Model
         }
         //检测是否已经存在信息
         if ($info = $this->where('user_id', $user_id)->first()) {
-            //return $info;
+            return $info;
         }
         //创建请求根地址类
         $client = new Client(['base_uri' => $this->service_urls['base_url']]);
