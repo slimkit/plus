@@ -8,6 +8,7 @@ class StorageController extends Controller
 {
     public function createStorageTask(string $hash, string $origin_filename)
     {
-        var_dump($hash, $origin_filename);exit;
+        var_dump($hash, $origin_filename);
+        exit;
     }
 }

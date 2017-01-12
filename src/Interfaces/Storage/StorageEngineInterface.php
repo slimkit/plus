@@ -10,7 +10,9 @@ interface StorageEngineInterface
      * 创建一个任务
      *
      * @param StorageTask $storageTask 任务记录保存容器
+     *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */

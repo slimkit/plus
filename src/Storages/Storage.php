@@ -5,8 +5,8 @@ namespace Ts\Storages;
 use App\Models\Storage as StorageModel;
 use App\Models\StorageTask;
 use Carbon\Carbon;
-use Ts\Interfaces\Storage\StorageEngineInterface;
 use Illuminate\Filesystem\Filesystem;
+use Ts\Interfaces\Storage\StorageEngineInterface;
 
 class Storage
 {
@@ -55,9 +55,11 @@ class Storage
      * 创建储存任务.
      *
      * @param string $origin_filename 原始文件名
-     * @param string $hash 文件hash
-     * @param string $engine 储存引擎
+     * @param string $hash            文件hash
+     * @param string $engine          储存引擎
+     *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -82,8 +84,10 @@ class Storage
      * 创建文件储存路径.
      *
      * @param string $origin_filename 原始文件名
-     * @param string $hash 文件hash
+     * @param string $hash            文件hash
+     *
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
