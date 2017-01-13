@@ -18,10 +18,10 @@ class LocalStorage implements StorageEngineInterface
         $storateTask->save();
 
         return [
-            'uri'     => route('storage/upload', [$storateTask->id]),
-            'method'  => 'PUT',
+            'uri'             => route('storage/upload', [$storateTask->id]),
+            'method'          => 'PUT',
             'storage_task_id' => $storateTask->id,
-            'headers' => [
+            'headers'         => [
                 'ACCESS-TOKEN' => $token->token,
             ],
             'options' => [],

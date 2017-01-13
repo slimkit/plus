@@ -55,7 +55,7 @@ class Storage
     /**
      * 创建储存任务.
      *
-     * @param User $user 用户模型
+     * @param User   $user            用户模型
      * @param string $origin_filename 原始文件名
      * @param string $hash            文件hash
      * @param string $engine          储存引擎
