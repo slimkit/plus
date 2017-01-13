@@ -127,6 +127,7 @@ class User extends Authenticatable
     public function storages()
     {
         $table = app(StorageUserLink::class)->getTable();
+
         return $this->belongsToMany(Storage::class, $table, 'user_id', 'storage_id');
     }
 

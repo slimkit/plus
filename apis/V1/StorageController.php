@@ -2,25 +2,27 @@
 
 namespace App\Http\Controllers\APIs\V1;
 
-use App\Http\Controllers\Controller;
-use App\Models\StorageTask;
-use Illuminate\Http\Request;
-use Ts\Storages\Storage;
 use App\Exceptions\MessageResponseBody;
-use Illuminate\Support\Facades\Storage as FilesystemManager;
-use Illuminate\Filesystem\Filesystem;
+use App\Http\Controllers\Controller;
 use App\Models\Storage as StorageModel;
+use App\Models\StorageTask;
 use App\Models\StorageUserLink;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage as FilesystemManager;
+use Ts\Storages\Storage;
 
 class StorageController extends Controller
 {
     /**
      * 创建上传任务
      *
-     * @param Request $request 请求对象
-     * @param string $hash 文件hash
-     * @param string $origin_filename 文件原始名称
+     * @param Request $request         请求对象
+     * @param string  $hash            文件hash
+     * @param string  $origin_filename 文件原始名称
+     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -28,9 +30,10 @@ class StorageController extends Controller
     {
         $user = $request->attributes->get('user');
         $storage = app(Storage::class)->createStorageTask($user, $origin_filename, $hash);
+
         return app(MessageResponseBody::class, [
             'status' => true,
-            'data' => $storage,
+            'data'   => $storage,
         ])->setStatusCode(201);
     }
 
@@ -39,7 +42,7 @@ class StorageController extends Controller
         $storageTask = StorageTask::find($storage_task_id);
         if (!$storageTask) {
             return app(MessageResponseBody::class, [
-                'code' => 2000,
+                'code'    => 2000,
                 'message' => '上传任务不存在',
             ])->setStatusCode(404);
         }
@@ -61,8 +64,7 @@ class StorageController extends Controller
             $storage->extension = app(Filesystem::class)->extension($storageTask->filename);
 
             $storage = $user->storages()->save($storage, ['created_at' => $user->freshTimestamp(), 'updated_at' => $user->freshTimestamp()]);
-
-        } else if (!$user->storagesLinks()->where('storage_id', $storage->id)->first()) {
+        } elseif (!$user->storagesLinks()->where('storage_id', $storage->id)->first()) {
             $link = new StorageUserLink();
             $link->storage_id = $storage->id;
             $link->user_id = $user->id;
@@ -70,18 +72,21 @@ class StorageController extends Controller
         }
 
         $storageTask->delete();
+
         return app(MessageResponseBody::class, [
             'status' => true,
-            'data' => $storage->id,
+            'data'   => $storage->id,
         ]);
     }
 
     /**
-     * 上传文件
+     * 上传文件.
      *
-     * @param Request $request 请求对象
-     * @param int $storage_task_id 任务id
+     * @param Request $request         请求对象
+     * @param int     $storage_task_id 任务id
+     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -90,7 +95,7 @@ class StorageController extends Controller
         $storageTask = StorageTask::find($storage_task_id);
         if (!$storageTask) {
             return app(MessageResponseBody::class, [
-                'code' => 2000,
+                'code'    => 2000,
                 'message' => '上传任务不存在',
             ])->setStatusCode(404);
         }
@@ -105,7 +110,7 @@ class StorageController extends Controller
         $filesystem = app(Filesystem::class);
         $path = 'public/'.$filesystem->dirname($storageTask->filename);
         $name = $filesystem->basename($storageTask->filename);
-        
+
         if (!$file->storePubliclyAs($path, $name)) {
             return app(MessageResponseBody::class, [
                 'code' => 2002,
@@ -115,9 +120,9 @@ class StorageController extends Controller
         $url = FilesystemManager::url($storageTask->filename);
 
         return app(MessageResponseBody::class, [
-            'status' => true,
+            'status'  => true,
             'message' => '上传成功',
-            'data' => url($url),
+            'data'    => url($url),
         ]);
     }
 }
