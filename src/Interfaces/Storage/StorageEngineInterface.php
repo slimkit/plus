@@ -3,6 +3,7 @@
 namespace Ts\Interfaces\Storage;
 
 use App\Models\StorageTask;
+use App\Models\User;
 
 interface StorageEngineInterface
 {
@@ -16,7 +17,7 @@ interface StorageEngineInterface
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function createStorageTask(StorageTask $storageTask);
+    public function createStorageTask(StorageTask $storageTask, User $user);
 
     /*
      * 保存储存.

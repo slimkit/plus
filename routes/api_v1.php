@@ -69,8 +69,7 @@ Route::group([
     Route::delete('/{storage_task_id}', function () {
     });
     // local storage api.
-    Route::post('/', function () {
-    })
+    Route::post('/{storage_task_id}', 'StorageController@upload')
         ->name('storage/upload');
 });
 

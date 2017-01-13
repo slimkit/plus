@@ -4,6 +4,7 @@ namespace Ts\Storages;
 
 use App\Models\Storage as StorageModel;
 use App\Models\StorageTask;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Filesystem\Filesystem;
 use Ts\Interfaces\Storage\StorageEngineInterface;
@@ -54,6 +55,7 @@ class Storage
     /**
      * 创建储存任务.
      *
+     * @param User $user 用户模型
      * @param string $origin_filename 原始文件名
      * @param string $hash            文件hash
      * @param string $engine          储存引擎
@@ -63,7 +65,7 @@ class Storage
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function createStorageTask(string $origin_filename, string $hash, $engine = 'local'): array
+    public function createStorageTask(User $user, string $origin_filename, string $hash, $engine = 'local'): array
     {
         $storageInfo = StorageModel::byHash($hash)->first();
         if ($storageInfo) {
@@ -77,7 +79,7 @@ class Storage
         $storageTask->hash = $hash;
         $storageTask->filename = static::createStorageFilename($origin_filename, $hash);
 
-        return static::$storages[$engine]->createStorageTask($storageTask);
+        return static::$storages[$engine]->createStorageTask($storageTask, $user);
     }
 
     /**
