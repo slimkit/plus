@@ -82,6 +82,16 @@ class Storage
         return static::$storages[$engine]->createStorageTask($storageTask, $user);
     }
 
+    public function exists(string $filename, $engine = 'local')
+    {
+        return static::$storages[$engine]->exists($filename);
+    }
+
+    public function mimeType(string $filename, $engine = 'local')
+    {
+        return static::$storages[$engine]->mimeType($filename);
+    }
+
     /**
      * 创建文件储存路径.
      *
