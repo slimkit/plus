@@ -17,6 +17,7 @@ class StorageController extends Controller
     public function get(StorageModel $storage)
     {
         $url = $this->storage()->url($storage->filename);
+
         return redirect($url, 302);
     }
 

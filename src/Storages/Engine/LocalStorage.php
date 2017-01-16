@@ -38,6 +38,7 @@ class LocalStorage implements StorageEngineInterface
     public function url(string $filename)
     {
         $path = Storage::url($this->getPath($filename));
+
         return url($path);
     }
 
