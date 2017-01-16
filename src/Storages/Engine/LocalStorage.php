@@ -35,6 +35,12 @@ class LocalStorage implements StorageEngineInterface
         $response->setStatus($this->exists($filename));
     }
 
+    public function url(string $filename)
+    {
+        $path = Storage::url($this->getPath($filename));
+        return url($path);
+    }
+
     /**
      * 判断文件是否存在.
      *

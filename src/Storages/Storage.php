@@ -117,6 +117,11 @@ class Storage
         return static::$storages[$engine]->notice($message, $filename, $response);
     }
 
+    public function url(string $filename, string $engine = 'local')
+    {
+        return static::$storages[$engine]->url($filename);
+    }
+
     /**
      * 判断文件是否存在.
      *

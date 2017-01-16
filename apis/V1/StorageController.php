@@ -14,6 +14,12 @@ class StorageController extends Controller
 {
     protected static $storage;
 
+    public function get(StorageModel $storage)
+    {
+        $url = $this->storage()->url($storage->filename);
+        return redirect($url, 302);
+    }
+
     /**
      * 创建上传任务
      *
