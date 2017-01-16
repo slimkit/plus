@@ -2,13 +2,13 @@
 
 namespace Ts\Storages;
 
+use App\Exceptions\MessageResponseBody;
 use App\Models\Storage as StorageModel;
 use App\Models\StorageTask;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Filesystem\Filesystem;
 use Ts\Interfaces\Storage\StorageEngineInterface;
-use App\Exceptions\MessageResponseBody;
 
 class Storage
 {
@@ -84,7 +84,7 @@ class Storage
         $task->save();
 
         return [
-            'storage_id' => $storage->id,
+            'storage_id'      => $storage->id,
             'storage_task_id' => $task->id,
         ];
     }
@@ -92,11 +92,13 @@ class Storage
     /**
      * 新建储存任务
      *
-     * @param User $user 用户信息
+     * @param User   $user            用户信息
      * @param string $origin_filename 原始文件名
-     * @param string $hash 文件hash
-     * @param string $engine 储存引擎
+     * @param string $hash            文件hash
+     * @param string $engine          储存引擎
+     *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
