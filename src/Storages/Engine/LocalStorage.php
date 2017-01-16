@@ -6,6 +6,7 @@ use App\Models\StorageTask;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Ts\Interfaces\Storage\StorageEngineInterface;
+use App\Exceptions\MessageResponseBody;
 
 class LocalStorage implements StorageEngineInterface
 {
@@ -27,6 +28,11 @@ class LocalStorage implements StorageEngineInterface
             ],
             'options' => [],
         ];
+    }
+
+    public function notice(string $message, string $filename, MessageResponseBody $response)
+    {
+        $response->setStatus($this->exists($filename));
     }
 
     /**

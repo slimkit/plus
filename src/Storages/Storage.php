@@ -8,6 +8,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Filesystem\Filesystem;
 use Ts\Interfaces\Storage\StorageEngineInterface;
+use App\Exceptions\MessageResponseBody;
 
 class Storage
 {
@@ -67,19 +68,51 @@ class Storage
      */
     public function createStorageTask(User $user, string $origin_filename, string $hash, $engine = 'local'): array
     {
-        $storageInfo = StorageModel::byHash($hash)->first();
-        if ($storageInfo) {
-            return [
-                'storage_id' => $storageInfo->id,
-            ];
+        // 删除同hash任务
+        StorageTask::where('hash', $hash)->delete();
+
+        // 查询储存
+        $storage = StorageModel::byHash($hash)->first();
+        if (!$storage) { // 储存不存在，新建储存.
+            return $this->newStorageTask($user, $origin_filename, $hash, $engine);
         }
 
-        $storageTask = new StorageTask();
-        $storageTask->origin_filename = $origin_filename;
-        $storageTask->hash = $hash;
-        $storageTask->filename = static::createStorageFilename($origin_filename, $hash);
+        $task = new StorageTask();
+        $task->hash = $storage->hash;
+        $task->filename = $storage->filename;
+        $task->origin_filename = $storage->origin_filename;
+        $task->save();
 
-        return static::$storages[$engine]->createStorageTask($storageTask, $user);
+        return [
+            'storage_id' => $storage->id,
+            'storage_task_id' => $task->id,
+        ];
+    }
+
+    /**
+     * 新建储存任务
+     *
+     * @param User $user 用户信息
+     * @param string $origin_filename 原始文件名
+     * @param string $hash 文件hash
+     * @param string $engine 储存引擎
+     * @return array
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    protected function newStorageTask(User $user, string $origin_filename, string $hash, string $engine): array
+    {
+        $task = new StorageTask();
+        $task->hash = $hash;
+        $task->origin_filename = $origin_filename;
+        $task->filename = static::createStorageFilename($origin_filename, $hash);
+
+        return static::$storages[$engine]->createStorageTask($task, $user);
+    }
+
+    public function notice(string $message, string $filename, MessageResponseBody $response, string $engine = 'local')
+    {
+        return static::$storages[$engine]->notice($message, $filename, $response);
     }
 
     /**

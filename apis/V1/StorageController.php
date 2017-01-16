@@ -14,6 +14,8 @@ use Ts\Storages\Storage;
 
 class StorageController extends Controller
 {
+    protected static $storage;
+
     /**
      * 创建上传任务
      *
@@ -26,10 +28,10 @@ class StorageController extends Controller
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function createStorageTask(Request $request, string $hash, string $origin_filename)
+    public function create(Request $request, string $hash, string $origin_filename)
     {
         $user = $request->attributes->get('user');
-        $storage = app(Storage::class)->createStorageTask($user, $origin_filename, $hash);
+        $storage = $this->storage()->createStorageTask($user, $origin_filename, $hash);
 
         return app(MessageResponseBody::class, [
             'status' => true,
@@ -39,43 +41,34 @@ class StorageController extends Controller
 
     public function notice(Request $request, int $storage_task_id)
     {
-        $storageTask = StorageTask::find($storage_task_id);
-        if (!$storageTask) {
+        $task = StorageTask::find($storage_task_id);
+        if (!$task) {
             return app(MessageResponseBody::class, [
                 'code'    => 2000,
                 'message' => '上传任务不存在',
             ])->setStatusCode(404);
         }
 
-        if (!app(Storage::class)->exists($storageTask->filename)) {
+        $message = $request->input('message');
+        return $this->storage()->notice($message, $task->filename, app(MessageResponseBody::class));
+    }
+
+    public function delete(Request $request, int $storage_task_id)
+    {
+        $task = StorageTask::find($storage_task_id);
+        if (!$task) {
             return app(MessageResponseBody::class, [
-                'code' => 2003,
-            ]);
+                'code'    => 2000,
+                'message' => '上传任务不存在',
+            ])->setStatusCode(404);
         }
 
         $user = $request->attributes->get('user');
-        $storage = StorageModel::byHash($storageTask->hash)->first();
-        if (!$storage) {
-            $storage = new StorageModel();
-            $storage->hash = $storageTask->hash;
-            $storage->origin_filename = $storageTask->origin_filename;
-            $storage->filename = $storageTask->filename;
-            $storage->mime = app(Storage::class)->mimeType($storageTask->filename);
-            $storage->extension = app(Filesystem::class)->extension($storageTask->filename);
-
-            $storage = $user->storages()->save($storage, ['created_at' => $user->freshTimestamp(), 'updated_at' => $user->freshTimestamp()]);
-        } elseif (!$user->storagesLinks()->where('storage_id', $storage->id)->first()) {
-            $link = new StorageUserLink();
-            $link->storage_id = $storage->id;
-            $link->user_id = $user->id;
-            $link->save();
-        }
-
-        $storageTask->delete();
+        $user->storages()->where('hash', $task->hash)->delete();
+        $task->delete();
 
         return app(MessageResponseBody::class, [
             'status' => true,
-            'data'   => $storage->id,
         ]);
     }
 
@@ -92,14 +85,31 @@ class StorageController extends Controller
      */
     public function upload(Request $request, int $storage_task_id)
     {
-        $storageTask = StorageTask::find($storage_task_id);
-        if (!$storageTask) {
+        $task = StorageTask::find($storage_task_id);
+        if (!$task) {
             return app(MessageResponseBody::class, [
                 'code'    => 2000,
                 'message' => '上传任务不存在',
             ])->setStatusCode(404);
         }
 
+        return $this->uploadIsExister($request, $task);
+    }
+
+    protected function uploadIsExister(Request $request, StorageTask $task)
+    {
+        $storage = StorageModel::byHash($task->hahs)->first();
+        if ($storage) {
+            return app(MessageResponseBody::class, [
+                'status' => true,
+            ]);
+        }
+
+        return $this->uploadIsExisteFile($request, $task);
+    }
+
+    protected function uploadIsExisteFile(Request $request, StorageTask $task)
+    {
         $file = current($request->file());
         if ($file === false) {
             return app(MessageResponseBody::class, [
@@ -107,9 +117,14 @@ class StorageController extends Controller
             ])->setStatusCode(404);
         }
 
+        return $this->runUploadAction($task, $file);
+    }
+
+    protected function runUploadAction(StorageTask $task, $file)
+    {
         $filesystem = app(Filesystem::class);
-        $path = 'public/'.$filesystem->dirname($storageTask->filename);
-        $name = $filesystem->basename($storageTask->filename);
+        $path = 'public/'.$filesystem->dirname($task->filename);
+        $name = $filesystem->basename($task->filename);
 
         if (!$file->storePubliclyAs($path, $name)) {
             return app(MessageResponseBody::class, [
@@ -117,12 +132,18 @@ class StorageController extends Controller
             ])->setStatusCode(422);
         }
 
-        $url = FilesystemManager::url($storageTask->filename);
-
         return app(MessageResponseBody::class, [
             'status'  => true,
             'message' => '上传成功',
-            'data'    => url($url),
         ]);
+    }
+
+    protected function storage()
+    {
+        if (!static::$storage instanceof Storage) {
+            static::$storage = new Storage();
+        }
+
+        return static::$storage;
     }
 }

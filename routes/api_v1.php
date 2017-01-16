@@ -61,14 +61,13 @@ Route::group([
     'prefix' => 'storages',
 ], function () {
     // 创建一个储存任务
-    Route::post('/{hash}/{origin_filename}', 'StorageController@createStorageTask');
+    Route::post('/task/{hash}/{origin_filename}', 'StorageController@create');
     // 完成一个任务上传通知
-    Route::patch('/{storage_task_id}', 'StorageController@notice');
-    // 删除一个上传任务以及相关附件
-    Route::delete('/{storage_task_id}', function () {
-    });
+    Route::patch('/task/{storage_task_id}', 'StorageController@notice');
+    // 删除一个上传任务附件
+    Route::delete('/task/{storage_task_id}', 'StorageController@delete');
     // local storage api.
-    Route::post('/{storage_task_id}', 'StorageController@upload')
+    Route::post('/task/{storage_task_id}', 'StorageController@upload')
         ->name('storage/upload');
 });
 
