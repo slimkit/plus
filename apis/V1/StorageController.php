@@ -56,7 +56,7 @@ class StorageController extends Controller
 
         $message = $request->input('message');
 
-        return $this->storage()->notice($message, $task->filename, app(MessageResponseBody::class));
+        return $this->storage()->notice($message, $task, app(MessageResponseBody::class));
     }
 
     public function delete(Request $request, int $storage_task_id)

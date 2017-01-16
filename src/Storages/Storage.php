@@ -112,9 +112,26 @@ class Storage
         return static::$storages[$engine]->createStorageTask($task, $user);
     }
 
-    public function notice(string $message, string $filename, MessageResponseBody $response, string $engine = 'local')
+    public function notice(string $message, StorageTask $task, MessageResponseBody $response, string $engine = 'local')
     {
-        return static::$storages[$engine]->notice($message, $filename, $response);
+        $response = static::$storages[$engine]->notice($message, $filename, $response);
+        if ($response->getBody()['status'] === false) {
+            return $response;
+        }
+
+        // 保存任务.
+        $storage = StorageModel::buHash($task)->first();
+        if (!$storage) {
+            $storage = new StorageModel();
+            $storage->hash = $task->hash;
+            $storage->origin_filename = $task->origin_filename;
+            $storage->filename = $task->filename;
+            $storage->mime = $this->mimeType($task->filename, $engine);
+            $storage->extension = app(Filesystem::class)->extension($task->origin_filename);
+            $storage->save();
+        }
+
+        return $response->setStatus(true);
     }
 
     public function url(string $filename, string $engine = 'local')
