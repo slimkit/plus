@@ -20,20 +20,24 @@ interface StorageEngineInterface
     public function createStorageTask(StorageTask $storageTask, User $user);
 
     /**
-     * 验证文件是否存在
+     * 验证文件是否存在.
      *
      * @param string $filename 文件名
+     *
      * @return bool
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
     public function exists(string $filename): bool;
 
     /**
-     * 获取文件完整的mimeType信息
+     * 获取文件完整的mimeType信息.
      *
      * @param string $filename 文件名
+     *
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
