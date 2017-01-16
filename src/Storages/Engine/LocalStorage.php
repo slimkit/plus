@@ -29,16 +29,40 @@ class LocalStorage implements StorageEngineInterface
         ];
     }
 
-    public function exists(string $filename)
+    /**
+     * 判断文件是否存在
+     *
+     * @param string $filename 文件名
+     * @return bool
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function exists(string $filename): bool
     {
         return Storage::exists($this->getPath($filename));
     }
 
-    public function mimeType(string $filename)
+    /**
+     * 获取文件mimeType信息
+     *
+     * @param string $filename 文件名
+     * @return string
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function mimeType(string $filename): string
     {
         return Storage::mimeType($this->getPath($filename));
     }
 
+    /**
+     * 获取文件完整路径
+     *
+     * @param string $path 文件名
+     * @return string
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
     protected function getPath(string $path): string
     {
         return 'public/'.$path;

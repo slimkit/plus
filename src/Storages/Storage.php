@@ -82,12 +82,30 @@ class Storage
         return static::$storages[$engine]->createStorageTask($storageTask, $user);
     }
 
-    public function exists(string $filename, $engine = 'local')
+    /**
+     * 判断文件是否存在
+     *
+     * @param string $filename 文件名
+     * @param string $engine 储存引擎
+     * @return bool
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function exists(string $filename, $engine = 'local'): bool
     {
         return static::$storages[$engine]->exists($filename);
     }
 
-    public function mimeType(string $filename, $engine = 'local')
+    /**
+     * 获取文件mimeType信息
+     *
+     * @param string $filename 文件名
+     * @param string $engine 储存引擎
+     * @return string
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function mimeType(string $filename, $engine = 'local'): string
     {
         return static::$storages[$engine]->mimeType($filename);
     }
