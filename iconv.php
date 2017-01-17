@@ -1,4 +1,5 @@
 <?php
+
 $str = 'PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHg6TmV0d29ya1JlcXVlc3Qg
 eG1sbnM6eD0iaHR0cDovL3d3dy5wYXllY28uY29tIiB4bWxuczp4c2k9Imh0dHA6Ly93d3cudzMu
 b3JnIj4KCTxWZXJzaW9uPjIuMC4wPC9WZXJzaW9uPgoJPFByb2NDb2RlPjAyMTA8L1Byb2NDb2Rl
@@ -21,14 +22,15 @@ c05vPjE2ODQ3MzwvVHNObz4KCTxTZXR0bGVEYXRlPjAxMTY8L1NldHRsZURhdGU Cgk8VHJhbnNE
 YXRhPjwvVHJhbnNEYXRhPgoJPE1ldGhvZD5QT1NUPC9NZXRob2Q Cgk8VXNlclBheWVkVGltZT4y
 MDE3MDExNjE3NDM1OTwvVXNlclBheWVkVGltZT4KCTxNQUM MTAyQTJDNEYxODJBREJGQ0MzMUU0
 RTJCQTVEQ0VGMEQ8L01BQz4KPC94Ok5ldHdvcmtSZXF1ZXN0Pgo=';
-$encode = mb_detect_encoding($str,array('ASCII','UTF-8','GB2312','GBK','BIG5')); 
-if ($encode != 'UTF-8'){
-	$str = mb_convert_encoding($str,'UTF-8');
-	echo mb_detect_encoding($str,array('ASCII','UTF-8','GB2312','GBK','BIG5')); exit;
+$encode = mb_detect_encoding($str, ['ASCII', 'UTF-8', 'GB2312', 'GBK', 'BIG5']);
+if ($encode != 'UTF-8') {
+    $str = mb_convert_encoding($str, 'UTF-8');
+    echo mb_detect_encoding($str, ['ASCII', 'UTF-8', 'GB2312', 'GBK', 'BIG5']);
+    exit;
 }
 $d = base64_decode($str);
 
 $ret = simplexml_load_string($d);
-var_dump($ret);exit;
-header("content-type:text/xml");
-echo $ret;exit;
+var_dump($ret); exit;
+header('content-type:text/xml');
+echo $ret; exit;
