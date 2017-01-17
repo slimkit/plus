@@ -58,13 +58,13 @@ class ImUser extends Model
      * @var array
      */
     public $service_urls = [
-        'base_url' => 'http://192.168.2.222:9900',
-        'apis'     => [
-            'users'        => '/users',
+        'base_url' => 'http://192.168.10.222:9900',
+        'apis' => [
+            'users' => '/users',
             'conversation' => '/conversations',
-            'member'       => '/conversations/member',
-            'limited'      => '/conversations/{cid}/limited-members',
-            'message'      => '/conversations/{cid}/messages',
+            'member' => '/conversations/member',
+            'limited' => '/conversations/{cid}/limited-members',
+            'message' => '/conversations/{cid}/messages',
         ],
     ];
 
@@ -74,10 +74,10 @@ class ImUser extends Model
      * @var array
      */
     protected $response_type = [
-        'post'   => ['post', 'add', 'init'],
-        'put'    => ['put', 'update', 'save'],
+        'post' => ['post', 'add', 'init'],
+        'put' => ['put', 'update', 'save'],
         'delete' => ['delete', 'del'],
-        'get'    => ['get', 'select'],
+        'get' => ['get', 'select'],
     ];
 
     /**
@@ -86,7 +86,7 @@ class ImUser extends Model
      * @var array
      */
     public $service_auth = [
-        'user'     => 'admin',
+        'user' => 'admin',
         'password' => '123456',
     ];
 
@@ -247,12 +247,14 @@ class ImUser extends Model
         if ($info = $this->where('user_id', $user_id)->first()) {
             return $info;
         }
-        $res_data = $this->request();
+        $res = $this->request();
+        $res_data = $res->getBody();
+        $res_data = json_decode($res_data->getContents(), true);
         if ($res->getStatusCode() == 201 || $res_data['code'] == 201) {
             //添加成功,保存记录
             $imUser = [
-                'user_id'     => $user_id,
-                'username'    => $form_params['name'],
+                'user_id' => $user_id,
+                'username' => $this->params['name'] ?? '',
                 'im_password' => $res_data['data']['token'],
                 'is_disabled' => 0,
             ];
@@ -293,10 +295,10 @@ class ImUser extends Model
             'form_params' => [
                 'type' => $type,
                 'name' => isset($ext_data['name']) ? $ext_data['name'] : '',
-                'pwd'  => isset($ext_data['pwd']) ? $ext_data['pwd'] : '',
+                'pwd' => isset($ext_data['pwd']) ? $ext_data['pwd'] : '',
                 'uids' => [1001, 1002],
             ],
-            'auth'        => array_values($this->service_auth),
+            'auth' => array_values($this->service_auth),
             'http_errors' => false,
         ]);
         $body = $res->getBody();
@@ -321,26 +323,41 @@ class ImUser extends Model
     {
         return in_array($type, [0, 1, 2]) ? true : false;
     }
-
-    public function request()
+    /**
+     * 请求方法.
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-17T14:16:20+080
+     *
+     * @version  1.0
+     *
+     * @param bool $get_body 是否获取数据信息
+     *
+     * @return [type] 如果 $get_body设置为false,返回请求实例对象,否则返回请求结果的body体
+     */
+    public function request($get_body = false)
     {
         // 创建请求根地址类
         $client = new Client(['base_uri' => $this->service_urls['base_url']]);
-        dump($this->requset_method);
-        dump($this->getRequestUrl());
-        dump($this->params);
-        dump(array_values($this->service_auth));
-        dump($this->service_debug);
-        exit;
+        // dump($this->requset_method);
+        // dump($this->getRequestUrl());
+        // dump($this->params);
+        // dump(array_values($this->service_auth));
+        // dump($this->service_debug);
+        // exit;
         $res = $client->request($this->requset_method, $this->getRequestUrl(), [
             'form_params' => $this->params,
-            'auth'        => array_values($this->service_auth),
+            'auth' => array_values($this->service_auth),
             'http_errors' => $this->service_debug,
         ]);
-        // 判断执行结果
-        $body = $res->getBody();
+        // 判断并返回执行结果
+        if ($res === true) {
+            $body = $res->getBody();
 
-        return json_decode($body->getContents(), true);
+            return json_decode($body->getContents(), true);
+        } else {
+            return $res;
+        }
     }
 
     /**
