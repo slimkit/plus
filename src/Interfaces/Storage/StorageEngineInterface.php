@@ -3,6 +3,7 @@
 namespace Ts\Interfaces\Storage;
 
 use App\Models\StorageTask;
+use App\Models\User;
 
 interface StorageEngineInterface
 {
@@ -16,25 +17,29 @@ interface StorageEngineInterface
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function createStorageTask(StorageTask $storageTask);
+    public function createStorageTask(StorageTask $storageTask, User $user);
 
-    /*
-     * 保存储存.
+    /**
+     * 验证文件是否存在.
      *
-     * @param array $options 参数信息
-     * @return mixed
+     * @param string $filename 文件名
+     *
+     * @return bool
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    // public function saveStorage($options = []);
+    public function exists(string $filename): bool;
 
-    /*
-     * 任务回掉.
+    /**
+     * 获取文件完整的mimeType信息.
      *
-     * @param array $options 参数信息
-     * @return mixed
+     * @param string $filename 文件名
+     *
+     * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    // public function taskCallback($options = []);
+    public function mimeType(string $filename): string;
 }

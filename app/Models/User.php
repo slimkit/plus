@@ -123,4 +123,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserGroupLink::class, 'user_id');
     }
+
+    public function storages()
+    {
+        $table = app(StorageUserLink::class)->getTable();
+
+        return $this->belongsToMany(Storage::class, $table, 'user_id', 'storage_id');
+    }
+
+    public function storagesLinks()
+    {
+        return $this->hasMany(StorageUserLink::class, 'user_id');
+    }
 }

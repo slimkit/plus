@@ -51,8 +51,7 @@ Route::group([
 });
 
 // 获取一个附件资源
-Route::get('/storages/{storage_id}', function ($storage_id) {
-});
+Route::get('/storages/{storage}', 'StorageController@get');
 // 附件储存相关
 Route::group([
     'middleware' => [
@@ -61,16 +60,13 @@ Route::group([
     'prefix' => 'storages',
 ], function () {
     // 创建一个储存任务
-    Route::post('/{hash}/{origin_filename}', 'StorageController@createStorageTask');
-    // 完整一个任务上传通知
-    Route::patch('/{storage_task_id}', function () {
-    });
-    // 删除一个上传任务以及相关附件
-    Route::delete('/{storage_task_id}', function () {
-    });
+    Route::post('/task/{hash}/{origin_filename}', 'StorageController@create');
+    // 完成一个任务上传通知
+    Route::patch('/task/{storage_task_id}', 'StorageController@notice');
+    // 删除一个上传任务附件
+    Route::delete('/task/{storage_task_id}', 'StorageController@delete');
     // local storage api.
-    Route::post('/', function () {
-    })
+    Route::post('/task/{storage_task_id}', 'StorageController@upload')
         ->name('storage/upload');
 });
 

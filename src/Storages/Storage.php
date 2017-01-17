@@ -2,8 +2,10 @@
 
 namespace Ts\Storages;
 
+use App\Exceptions\MessageResponseBody;
 use App\Models\Storage as StorageModel;
 use App\Models\StorageTask;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Filesystem\Filesystem;
 use Ts\Interfaces\Storage\StorageEngineInterface;
@@ -54,6 +56,7 @@ class Storage
     /**
      * 创建储存任务.
      *
+     * @param User   $user            用户模型
      * @param string $origin_filename 原始文件名
      * @param string $hash            文件hash
      * @param string $engine          储存引擎
@@ -63,21 +66,109 @@ class Storage
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function createStorageTask(string $origin_filename, string $hash, $engine = 'local'): array
+    public function createStorageTask(User $user, string $origin_filename, string $hash, $engine = 'local'): array
     {
-        $storageInfo = StorageModel::byHash($hash)->first();
-        if ($storageInfo) {
-            return [
-                'storage_id' => $storageInfo->id,
-            ];
+        // 删除同hash任务
+        StorageTask::where('hash', $hash)->delete();
+
+        // 查询储存
+        $storage = StorageModel::byHash($hash)->first();
+        if (!$storage) { // 储存不存在，新建储存.
+            return $this->newStorageTask($user, $origin_filename, $hash, $engine);
         }
 
-        $storageTask = new StorageTask();
-        $storageTask->origin_filename = $origin_filename;
-        $storageTask->hash = $hash;
-        $storageTask->filename = static::createStorageFilename($origin_filename, $hash);
+        $task = new StorageTask();
+        $task->hash = $storage->hash;
+        $task->filename = $storage->filename;
+        $task->origin_filename = $storage->origin_filename;
+        $task->save();
 
-        return static::$storages[$engine]->createStorageTask($storageTask);
+        return [
+            'storage_id'      => $storage->id,
+            'storage_task_id' => $task->id,
+        ];
+    }
+
+    /**
+     * 新建储存任务
+     *
+     * @param User   $user            用户信息
+     * @param string $origin_filename 原始文件名
+     * @param string $hash            文件hash
+     * @param string $engine          储存引擎
+     *
+     * @return array
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    protected function newStorageTask(User $user, string $origin_filename, string $hash, string $engine): array
+    {
+        $task = new StorageTask();
+        $task->hash = $hash;
+        $task->origin_filename = $origin_filename;
+        $task->filename = static::createStorageFilename($origin_filename, $hash);
+
+        return static::$storages[$engine]->createStorageTask($task, $user);
+    }
+
+    public function notice(string $message, StorageTask $task, MessageResponseBody $response, string $engine = 'local')
+    {
+        $response = static::$storages[$engine]->notice($message, $filename, $response);
+        if ($response->getBody()['status'] === false) {
+            return $response;
+        }
+
+        // 保存任务.
+        $storage = StorageModel::buHash($task)->first();
+        if (!$storage) {
+            $storage = new StorageModel();
+            $storage->hash = $task->hash;
+            $storage->origin_filename = $task->origin_filename;
+            $storage->filename = $task->filename;
+            $storage->mime = $this->mimeType($task->filename, $engine);
+            $storage->extension = app(Filesystem::class)->extension($task->origin_filename);
+            $storage->save();
+        }
+
+        return $response->setStatus(true);
+    }
+
+    public function url(string $filename, string $engine = 'local')
+    {
+        return static::$storages[$engine]->url($filename);
+    }
+
+    /**
+     * 判断文件是否存在.
+     *
+     * @param string $filename 文件名
+     * @param string $engine   储存引擎
+     *
+     * @return bool
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function exists(string $filename, $engine = 'local'): bool
+    {
+        return static::$storages[$engine]->exists($filename);
+    }
+
+    /**
+     * 获取文件mimeType信息.
+     *
+     * @param string $filename 文件名
+     * @param string $engine   储存引擎
+     *
+     * @return string
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function mimeType(string $filename, $engine = 'local'): string
+    {
+        return static::$storages[$engine]->mimeType($filename);
     }
 
     /**
