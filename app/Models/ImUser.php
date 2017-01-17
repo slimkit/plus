@@ -152,10 +152,16 @@ class ImUser extends Model
         if (method_exists($this, $after_fun)) {
             return $this->$after_fun($res);
         } else {
-            $body = $res->getBody();
-            $data = $body->getContents();
+            $body = $res->getBody()->getContents();
+            if ($body) {
+                $ret = json_decode($body, true);
+            } else {
+                $ret = [
+                    'code' => $res->getStatusCode(),
+                ];
+            }
 
-            return json_decode($data, true);
+            return $ret;
         }
     }
 
@@ -351,17 +357,12 @@ class ImUser extends Model
      *
      * @param bool $get_body 是否获取数据信息
      *
-     * @return [type] 如果 $get_body设置为false,返回请求实例对象,否则返回请求结果的body体
+     * @return class,array 如果 $get_body设置为false,返回请求实例对象,否则返回请求结果的body体
      */
     public function request($get_body = false)
     {
         // 创建请求根地址类
         $client = new Client(['base_uri' => $this->service_urls['base_url']]);
-        // dump($this->requset_method);
-        // dump($this->getRequestUrl());
-        // dump($this->params);
-        // dump(array_values($this->service_auth));
-        // exit;
 
         // 发送请求内容
         $request_body = [
@@ -379,8 +380,9 @@ class ImUser extends Model
                     $request_url .= '/'.$value;
                 }
             }
+
             // 同时也发送请求的参数信息
-            $request_body['query'] = array_values($this->params);
+            $request_body['query'] = $this->params;
         } else {
             // 采用表单的方式提交数据
             $request_body['form_params'] = $this->params;
@@ -391,9 +393,16 @@ class ImUser extends Model
 
         // 判断并返回期望得到的执行结果类型
         if ($get_body === true) {
-            $body = $res->getBody();
+            $body = $res->getBody()->getContents();
+            if ($body) {
+                $ret = json_decode($body, true);
+            } else {
+                $ret = [
+                    'code' => $res->getStatusCode(),
+                ];
+            }
 
-            return json_decode($body->getContents(), true);
+            return $ret;
         } else {
             return $res;
         }
