@@ -25,6 +25,6 @@ Route::group([
 Route::group([
     'prefix' => 'imuser',
 ], function () {
-    Route::get('/create/{user_id}', 'IMController@create')->name('imuser.create');//注册聊天用户
-    Route::get('/delete/{user_id}', 'IMController@delete')->name('imuser.delete');//删除聊天用户
+    Route::get('/create/{user_id}', 'IMController@create')->name('imuser.create'); //注册聊天用户
+    Route::get('/getImUser', 'IMController@getImUser')->name('imuser.get'); //获取聊天用户
 });
