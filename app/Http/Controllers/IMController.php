@@ -27,6 +27,11 @@ class IMController extends Controller
     public function delete(Request $request, int $user_id)
     {
         $ImUser = new Imuser();
-        $user = $ImUser->deleteUser();
+        $user = $ImUser->usersGet(['uid' => $user_id]);
+        dump($user);
+        if ($user === false) {
+            dump($ImUser->getError());
+        }
+        exit;
     }
 }
