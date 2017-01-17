@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\ImUser;
+use Illuminate\Http\Request;
 
 class IMController extends Controller
 {
     public function create(Request $request, int $user_id)
     {
-		
         $ImUser = new ImUser();
         $user = $ImUser->usersPost(['uid' => $user_id]);
         dump($user);

@@ -59,12 +59,12 @@ class ImUser extends Model
      */
     public $service_urls = [
         'base_url' => 'http://192.168.2.222:9900',
-        'apis' => [
-            'users' => '/users',
+        'apis'     => [
+            'users'        => '/users',
             'conversation' => '/conversations',
-            'member' => '/conversations/member',
-            'limited' => '/conversations/{cid}/limited-members',
-            'message' => '/conversations/{cid}/messages',
+            'member'       => '/conversations/member',
+            'limited'      => '/conversations/{cid}/limited-members',
+            'message'      => '/conversations/{cid}/messages',
         ],
     ];
 
@@ -74,10 +74,10 @@ class ImUser extends Model
      * @var array
      */
     protected $response_type = [
-        'post' => ['post', 'add', 'init'],
-        'put' => ['put', 'update', 'save'],
+        'post'   => ['post', 'add', 'init'],
+        'put'    => ['put', 'update', 'save'],
         'delete' => ['delete', 'del'],
-        'get' => ['get', 'select'],
+        'get'    => ['get', 'select'],
     ];
 
     /**
@@ -86,7 +86,7 @@ class ImUser extends Model
      * @var array
      */
     public $service_auth = [
-        'user' => 'admin',
+        'user'     => 'admin',
         'password' => '123456',
     ];
 
@@ -222,6 +222,7 @@ class ImUser extends Model
     {
         return strpos($name, '/') ? explode('/', $name, 2) : [$name];
     }
+
     /**
      * 初始化IM用户.
      *
@@ -250,8 +251,8 @@ class ImUser extends Model
         if ($res->getStatusCode() == 201 || $res_data['code'] == 201) {
             //添加成功,保存记录
             $imUser = [
-                'user_id' => $user_id,
-                'username' => $form_params['name'],
+                'user_id'     => $user_id,
+                'username'    => $form_params['name'],
                 'im_password' => $res_data['data']['token'],
                 'is_disabled' => 0,
             ];
@@ -292,10 +293,10 @@ class ImUser extends Model
             'form_params' => [
                 'type' => $type,
                 'name' => isset($ext_data['name']) ? $ext_data['name'] : '',
-                'pwd' => isset($ext_data['pwd']) ? $ext_data['pwd'] : '',
+                'pwd'  => isset($ext_data['pwd']) ? $ext_data['pwd'] : '',
                 'uids' => [1001, 1002],
             ],
-            'auth' => array_values($this->service_auth),
+            'auth'        => array_values($this->service_auth),
             'http_errors' => false,
         ]);
         $body = $res->getBody();
@@ -333,7 +334,7 @@ class ImUser extends Model
         exit;
         $res = $client->request($this->requset_method, $this->getRequestUrl(), [
             'form_params' => $this->params,
-            'auth' => array_values($this->service_auth),
+            'auth'        => array_values($this->service_auth),
             'http_errors' => $this->service_debug,
         ]);
         // 判断执行结果
