@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 Route::group([
-    'prefix' => 'admin',
+    'prefix'    => 'admin',
     'namespace' => 'Admin',
     // 'middleware' => [],
 ], function ($router) {
