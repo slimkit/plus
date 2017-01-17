@@ -22,7 +22,6 @@ class AreasTableSeeder extends Seeder
         $chinaAreas = GB2260::getData();
         $pid = 0;
         foreach ($chinaAreas as $key => $value) {
-            echo $value.PHP_EOL;
             $a = GB2260::parse($key);
             $arr_a = explode(' ', $a);
             if ($arr_a[0]) {

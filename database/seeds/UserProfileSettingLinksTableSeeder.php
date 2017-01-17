@@ -1,6 +1,6 @@
 <?php
 
-use App\Model\UserProfileSettingLink;
+use App\Models\UserProfileSettingLink;
 use Illuminate\Database\Seeder;
 
 class UserProfileSettingLinksTableSeeder extends Seeder
