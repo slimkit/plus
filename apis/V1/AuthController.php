@@ -6,10 +6,10 @@ use App\Exceptions\MessageResponseBody;
 use App\Handler\SendMessage;
 use App\Http\Controllers\Controller;
 use App\Models\AuthToken;
+use App\Models\ImUser;
 use App\Models\LoginRecord;
 use App\Models\User;
 use App\Models\VerifyCode;
-use App\Models\ImUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Zhuzhichao\IpLocationZh\Ip;
@@ -92,19 +92,19 @@ class AuthController extends Controller
 
         //返回数据
         $data = [
-            'token' => $token->token,
+            'token'         => $token->token,
             'refresh_token' => $token->refresh_token,
-            'created_at' => $token->created_at->getTimestamp(),
-            'expires' => $token->expires,
+            'created_at'    => $token->created_at->getTimestamp(),
+            'expires'       => $token->expires,
         ];
         //IM账号信息同步
         $ImUser = new ImUser();
         $ImUser->usersPost(['uid' => $user->id, 'name' => $user->name]);
 
         return app(MessageResponseBody::class, [
-            'status' => true,
+            'status'  => true,
             'message' => '登录成功',
-            'data' => $data,
+            'data'    => $data,
         ])->setStatusCode(201);
     }
 
@@ -129,7 +129,7 @@ class AuthController extends Controller
             ])->setStatusCode(404);
         } elseif ($token->state === $shutDownState) {
             return app(MessageResponseBody::class, [
-                'code' => 1013,
+                'code'    => 1013,
                 'message' => '请重新登录',
             ])->setStatusCode(401);
         }
@@ -189,7 +189,7 @@ class AuthController extends Controller
         $user->save();
 
         return app(MessageResponseBody::class, [
-            'status' => true,
+            'status'  => true,
             'message' => '重置密码成功',
         ])->setStatusCode(201);
     }

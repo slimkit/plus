@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\APIs\V1;
 
+use App\Exceptions\MessageResponseBody;
 use App\Http\Controllers\Controller;
 use App\Models\ImUser;
 use App\Models\User;
-use App\Exceptions\MessageResponseBody;
 use Illuminate\Http\Request;
 
 class ImController extends Controller
@@ -17,9 +17,9 @@ class ImController extends Controller
         $data = $ImUser->usersPost(['uid' => $user->id, 'name' => $user->name]);
 
         return app(MessageResponseBody::class, [
-            'code' => 0,
+            'code'   => 0,
             'status' => true,
-            'data' => $data,
+            'data'   => $data,
         ])->setStatusCode(200);
     }
 
@@ -45,7 +45,7 @@ class ImController extends Controller
         $user->syncData($datas);
 
         return app(MessageResponseBody::class, [
-            'code' => 0,
+            'code'   => 0,
             'status' => true,
         ])->setStatusCode(201);
     }

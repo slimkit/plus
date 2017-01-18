@@ -81,7 +81,7 @@ Route::post('/storage', function (Request $request) {
 
 // IM相关接口
 Route::group([
-    'prefix' => 'im',
+    'prefix'     => 'im',
     'middleware' => [
         App\Http\Middleware\AuthUserToken::class,
     ],
