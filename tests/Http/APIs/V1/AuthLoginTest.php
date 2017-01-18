@@ -85,6 +85,7 @@ class AuthLoginTest extends TestCase
      */
     public function testNotExistePhone()
     {
+        // request.
         $this->postJson(static::$uri, [
             'pasword'     => static::$password,
             'device_code' => 'The is device code.',
@@ -96,6 +97,30 @@ class AuthLoginTest extends TestCase
         // Assert that the response contains an exact JSON array.
         $json = $this->createMessageResponseBody([
             'code' => 1000,
+        ]);
+        $this->seeJsonEquals($json);
+    }
+
+    /**
+     * 测试无登录密码情况下的错误情况.
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function testNotExistePassword()
+    {
+        // request.
+        $this->postJson(static::$uri, [
+            'phone' => static::$phone,
+            'device_code' => 'The is device code.',
+        ]);
+
+        // Assert that the status code of the response matches the giben code.
+        $this->seeStatusCode(401);
+
+        // Assert that the response contains an exact JSON array.
+        $json = $this->createMessageResponseBody([
+            'code' => 1006,
         ]);
         $this->seeJsonEquals($json);
     }
