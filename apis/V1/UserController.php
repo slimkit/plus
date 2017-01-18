@@ -52,47 +52,31 @@ class UserController extends Controller
     public function profile(Request $request)
     {
         $user = $request->attributes->get('user');
-        // $userDatas = $user->datas;
-        // foreach ($userDatas as &$value) {
-        //     $value->profile_name = $value->name;
-        // }
-        // dump($userDatas);
-        // die;
         $profileData = $request->all();
-
-        dump(array_filter($profileData));
-        $settingModel = new UserProfileSetting();
-        $settingData = $settingModel
-            ->byRequired(1)
-            ->byState(1)
-            ->get();
-        foreach ($settingData as $key => $value) {
+        $profileSettings = UserProfileSetting::whereIn('profile', array_keys($profileData))->get();
+        $datas = [];
+        foreach ($profileSettings as $profile) {
+            $datas[$profile->id] = ['user_profile_setting_data' => $request->input($profile->profile)];
         }
-        dump($settingData);
-        $profileSettinglinks = UserProfileSettingLink::ByUserId($user->id)
-            ->get();
-        dump($profileSettinglinks);
-        die;
-        // return app(MessageResponseBody::class, [
-        //     'data' => $profileSettings
-        // ])->setStatusCode(201);
+        $user->syncData($datas);
+
+        return app(MessageResponseBody::class, [
+            'code'    => 0,
+            'status'  => true,
+        ])->setStatusCode(201);
     }
 
     public function get(User $user)
     {
         $userDatas = $user->datas;
-        $data = [];
+        $datas = [];
         foreach ($userDatas as $value) {
-            $data['user_id'] = $user->id;
-            $data['avatar'] = '';
-            $data[$value->name->profile] = $value->user_profile_setting_data;
+            $datas[$value->profile] = $value->pivot->user_profile_setting_data;
         }
-
         return app(MessageResponseBody::class, [
-                'code'    => 0,
-                'status'  => true,
-                'data'    => $data,
-            ])->setStatusCode(201);
+            'status'  => true,
+            'data'    => $datas,
+        ])->setStatusCode(201);
     }
 
     public function settings()
