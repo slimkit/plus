@@ -4,11 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\UserProfileSettingLink;
 
 class UserProfileSetting extends Model
-{	
-	/**
+{
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -23,50 +22,58 @@ class UserProfileSetting extends Model
      * @var array
      */
     protected $hidden = [
-    	'required',
-    	'is_delable',
-    	'is_show',
-    	'state'
+        'required',
+        'is_delable',
+        'is_show',
+        'state',
     ];
 
-	/**
-	 * 获取view层展示的字段内容
-	 * @Author   Wayne[qiaobin@zhiyicx.com]
-	 * @DateTime 2017-01-17T18:28:06+0800
-	 * @return   [type]                     [description]
-	 */
-    public function scopeByIsShow (Builder $query, int $is_show): Builder
+    /**
+     * 获取view层展示的字段内容.
+     *
+     * @Author   Wayne[qiaobin@zhiyicx.com]
+     * @DateTime 2017-01-17T18:28:06+0800
+     *
+     * @return [type] [description]
+     */
+    public function scopeByIsShow(Builder $query, int $is_show): Builder
     {
-    	return $query->where('is_show', $is_show);
+        return $query->where('is_show', $is_show);
     }
 
     /**
-     * 获取指定状态的字段内容
+     * 获取指定状态的字段内容.
+     *
      * @Author   Wayne[qiaobin@zhiyicx.com]
      * @DateTime 2017-01-17T18:32:19+0800
-     * @param    Builder                    $query [description]
-     * @return   [type]                            [description]
+     *
+     * @param Builder $query [description]
+     *
+     * @return [type] [description]
      */
-    public function scopeByState (Builder $query, int $state): Builder
+    public function scopeByState(Builder $query, int $state): Builder
     {
-    	return $query->where('state', $state);
+        return $query->where('state', $state);
     }
-
 
     /**
-     * 获取是否必填的内容
+     * 获取是否必填的内容.
+     *
      * @Author   Wayne[qiaobin@zhiyicx.com]
      * @DateTime 2017-01-17T18:37:58+0800
-     * @param    Builder                    $query       [description]
-     * @param    tinyinteger                $is_required [description]
-     * @return   [type]                                  [description]
+     *
+     * @param Builder     $query       [description]
+     * @param tinyinteger $is_required [description]
+     *
+     * @return [type] [description]
      */
-    public function scopeByRequired (Builder $query, int $is_required): Builder 
+    public function scopeByRequired(Builder $query, int $is_required): Builder
     {
-    	return $query->where('required', $is_required);
+        return $query->where('required', $is_required);
     }
 
-    public function datas() {
-    	return $this->hasMany(UserProfileSettingLink::class, 'user_profile_setting_id', 'id');
+    public function datas()
+    {
+        return $this->hasMany(UserProfileSettingLink::class, 'user_profile_setting_id', 'id');
     }
 }
