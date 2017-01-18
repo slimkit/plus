@@ -3,13 +3,11 @@
 namespace App\Models;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Response as ImResponse;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ImUser extends Model
 {
-    use SoftDeletes;
-
     /**
      * 定义表名.
      *
@@ -59,12 +57,12 @@ class ImUser extends Model
      */
     public $service_urls = [
         'base_url' => 'http://192.168.10.222:9900',
-        'apis'     => [
-            'users'        => '/users',
+        'apis' => [
+            'users' => '/users',
             'conversation' => '/conversations',
-            'member'       => '/conversations/member',
-            'limited'      => '/conversations/{cid}/limited-members',
-            'message'      => '/conversations/{cid}/messages',
+            'member' => '/conversations/member',
+            'limited' => '/conversations/{cid}/limited-members',
+            'message' => '/conversations/{cid}/messages',
         ],
     ];
 
@@ -74,10 +72,10 @@ class ImUser extends Model
      * @var array
      */
     protected $response_type = [
-        'post'   => ['post', 'add', 'init'],
-        'put'    => ['put', 'update', 'save'],
+        'post' => ['post', 'add', 'init'],
+        'put' => ['put', 'update', 'save'],
         'delete' => ['delete', 'del'],
-        'get'    => ['get', 'select'],
+        'get' => ['get', 'select'],
     ];
 
     /**
@@ -86,7 +84,7 @@ class ImUser extends Model
      * @var array
      */
     public $service_auth = [
-        'user'     => 'admin',
+        'user' => 'admin',
         'password' => '123456',
     ];
 
@@ -110,6 +108,13 @@ class ImUser extends Model
      * @var string
      */
     protected $requset_method = '';
+
+    /**
+     * 当前操作的用户uid.
+     *
+     * @var int
+     */
+    protected $user_id = 0;
 
     /**
      * 重写__call方法.
@@ -137,16 +142,16 @@ class ImUser extends Model
         // 调用本类中的方法,获取请求方法以及请求地址
         $type_alias = strtolower($type_alias);
         $this->params = $params[0];
+        $this->user_id = $this->params['uid'] ?? 0;
         $this->requset_method = $this->getRequestType($type_alias);
 
-        // 当前方法是否存在
+        // 当前方法是否存在,存在则执行
         $fun = $this->request_mod.'Do'.ucfirst($this->requset_method);
         if (method_exists($this, $fun)) {
             return $this->$fun();
         }
-        // 调用请求IM服务器
+        // 直接调用请求IM服务器
         $res = $this->request();
-
         // 是否存在后置方法
         $after_fun = '_after_'.$fun;
         if (method_exists($this, $after_fun)) {
@@ -154,8 +159,10 @@ class ImUser extends Model
         } else {
             $body = $res->getBody()->getContents();
             if ($body) {
+                // 有返回主体
                 $ret = json_decode($body, true);
             } else {
+                // 没有返回主体,获取状态码
                 $ret = [
                     'code' => $res->getStatusCode(),
                 ];
@@ -276,8 +283,8 @@ class ImUser extends Model
         if ($res->getStatusCode() == 201 || $res_data['code'] == 201) {
             //添加成功,保存记录
             $imUser = [
-                'user_id'     => $user_id,
-                'username'    => $this->params['name'] ?? '',
+                'user_id' => $user_id,
+                'username' => $this->params['name'] ?? '',
                 'im_password' => $res_data['data']['token'],
                 'is_disabled' => 0,
             ];
@@ -291,6 +298,28 @@ class ImUser extends Model
         }
     }
 
+    /**
+     * 删除用户操作后置.
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-18T09:33:55+080
+     *
+     * @version  1.0
+     *
+     * @param ImResponse $res IM聊天服务器返回的信息
+     *
+     * @return array
+     */
+    private function _after_usersDoDelete(ImResponse $res)
+    {
+        // 如果聊天服务器删除成功
+        if ($res->getStatusCode() == 204) {
+            // 删除本地的聊天用户信息
+            $this->where('user_id', $this->user_id)->delete();
+        }
+
+        return $res;
+    }
     /**
      * 创建会话.
      *
@@ -318,10 +347,10 @@ class ImUser extends Model
             'form_params' => [
                 'type' => $type,
                 'name' => isset($ext_data['name']) ? $ext_data['name'] : '',
-                'pwd'  => isset($ext_data['pwd']) ? $ext_data['pwd'] : '',
+                'pwd' => isset($ext_data['pwd']) ? $ext_data['pwd'] : '',
                 'uids' => [1001, 1002],
             ],
-            'auth'        => array_values($this->service_auth),
+            'auth' => array_values($this->service_auth),
             'http_errors' => false,
         ]);
         $body = $res->getBody();
@@ -366,7 +395,7 @@ class ImUser extends Model
 
         // 发送请求内容
         $request_body = [
-            'auth'        => array_values($this->service_auth),
+            'auth' => array_values($this->service_auth),
             'http_errors' => $this->service_debug,
         ];
 
