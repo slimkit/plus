@@ -26,13 +26,13 @@ class UserProfileSettingsTableSeeder extends Seeder
             // 用户头像
             [
                 'create_user_id' => 0,
-                'profile' => 'avatar',
-                'profile_name' => '用户头像',
-                'type' => 'input',
-                'required' => 0,
-                'is_delable' => 0,
-                'state' => 1,
-                'is_show' => 0,
+                'profile'        => 'avatar',
+                'profile_name'   => '用户头像',
+                'type'           => 'input',
+                'required'       => 0,
+                'is_delable'     => 0,
+                'state'          => 1,
+                'is_show'        => 0,
                 // 'default_options' => ''
             ],
         ];
