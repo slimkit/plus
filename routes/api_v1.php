@@ -43,10 +43,11 @@ Route::group([
     ],
     'prefix' => 'users',
 ], function ($routes) {
-
+    Route::patch('/', 'UserController@profile');
     // 修改用户密码
     Route::patch('/password', 'UserController@resetPassword') // 设置控制器
-        ->middleware(App\Http\Middleware\VerifyPassword::class) // 验证用户密码是否正确
+        ->middleware(App\Http\Middleware\VerifyPassword::class); // 验证用户密码是否正确
+    Route::get('/{user}', 'UserController@get')
 ;
 });
 
