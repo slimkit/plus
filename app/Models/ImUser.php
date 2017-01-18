@@ -57,12 +57,12 @@ class ImUser extends Model
      */
     public $service_urls = [
         'base_url' => 'http://192.168.10.222:9900',
-        'apis'     => [
-            'users'        => '/users',
-            'conversation' => '/conversations',
-            'member'       => '/conversations/member',
-            'limited'      => '/conversations/{cid}/limited-members',
-            'message'      => '/conversations/{cid}/messages',
+        'apis' => [
+            'users' => '/users',
+            'conversations' => '/conversations',
+            'member' => '/conversations/member',
+            'limited' => '/conversations/{cid}/limited-members',
+            'message' => '/conversations/{cid}/messages',
         ],
     ];
 
@@ -72,10 +72,10 @@ class ImUser extends Model
      * @var array
      */
     protected $response_type = [
-        'post'   => ['post', 'add', 'init'],
-        'put'    => ['put', 'update', 'save'],
+        'post' => ['post', 'add', 'init'],
+        'put' => ['put', 'update', 'save'],
         'delete' => ['delete', 'del'],
-        'get'    => ['get', 'select'],
+        'get' => ['get', 'select'],
     ];
 
     /**
@@ -84,7 +84,7 @@ class ImUser extends Model
      * @var array
      */
     public $service_auth = [
-        'user'     => 'admin',
+        'user' => 'admin',
         'password' => '123456',
     ];
 
@@ -135,6 +135,9 @@ class ImUser extends Model
         $method = strtolower($method);
         if (($request_mod = substr($method, 0, 5)) == 'users') {
             $type_alias = self::parseName(substr($method, 5))[0];
+            $this->request_mod = $request_mod;
+        } elseif (($request_mod = substr($method, 0, 13)) == 'conversations') {
+            $type_alias = self::parseName(substr($method, 13))[0];
             $this->request_mod = $request_mod;
         } else {
             return parent::__call($method, $params);
@@ -285,8 +288,8 @@ class ImUser extends Model
         if ($res->getStatusCode() == 201 || $res_data['code'] == 201) {
             //添加成功,保存记录
             $imUser = [
-                'user_id'     => $user_id,
-                'username'    => $this->params['name'] ?? '',
+                'user_id' => $user_id,
+                'username' => $this->params['name'] ?? '',
                 'im_password' => $res_data['data']['token'],
                 'is_disabled' => 0,
             ];
@@ -331,35 +334,59 @@ class ImUser extends Model
      *
      * @version  1.0
      *
-     * @param int   $type     会话类型 0:私聊 1:群聊 2:聊天室
-     * @param array $uids     默认加入的用户uid数组
-     * @param array $ext_data 扩展字段 包括以下字段
-     *                        name:会话名称,pwd会话密码
+     * @param ImResponse $res IM聊天服务器返回的信息
      *
      * @return array
      */
-    public function conversation(int $type, array $uids, array $ext_data)
+    public function _after_conversationsDoPost(ImResponse $res)
     {
-        if (!$this->checkConversationType()) {
-            $this->error = '会话类型不合法';
+        // 获取返回数据
+        $res_data = $res->getBody();
+
+        //获取执行结果
+        $res_data = json_decode($res_data->getContents(), true);
+        dump($res_data);
+        exit;
+        if ($res->getStatusCode() == 201 || $res_data['code'] == 201) {
+            //添加成功,保存记录
+            $conversations = [
+                'user_id' => $this->params['uid'] ?? 0,
+                'cid' => $res_data['data']['cid'],
+                'is_disabled' => 0,
+                'name' => $this->params['name'] ?? '',
+                'pwd' => $this->params['pwd'] ?? '',
+                'uids' => $this->params['uids'] ?? [],
+                'type' => $this->params['type'],
+            ];
+
+            return ImConversation::create($conversations);
+        } else {
+            // 添加失败,返回服务器错误信息
+            $this->error = $res_data['msg'];
 
             return false;
         }
-        // 创建私聊对话
-        $res = $client->request('post', $this->service_urls['apis']['conversation'], [
-            'form_params' => [
-                'type' => $type,
-                'name' => isset($ext_data['name']) ? $ext_data['name'] : '',
-                'pwd'  => isset($ext_data['pwd']) ? $ext_data['pwd'] : '',
-                'uids' => [1001, 1002],
-            ],
-            'auth'        => array_values($this->service_auth),
-            'http_errors' => false,
-        ]);
-        $body = $res->getBody();
-        $data = $body->getContents();
-        echo $data;
-        exit;
+    }
+
+    /**
+     * 获取会话.
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-18T18:08:54+080
+     *
+     * @version  1.0
+     *
+     * @return array|bool 如果存在返回会话,不存在返回false
+     */
+    public function conversationsDoGet()
+    {
+        $cid = $this->params['cid'] ?? 0;
+        //获取会话
+        if ($info = ImConversations::where('cid', $cid)->get()) {
+            return $info;
+        }
+
+        return false;
     }
 
     /**
@@ -374,7 +401,7 @@ class ImUser extends Model
      *
      * @return bool 是否合法
      */
-    private function checkConversationType(int $type) : boolean
+    public function checkConversationType(int $type) : bool
     {
         return in_array($type, [0, 1, 2]) ? true : false;
     }
@@ -398,7 +425,7 @@ class ImUser extends Model
 
         // 发送请求内容
         $request_body = [
-            'auth'        => array_values($this->service_auth),
+            'auth' => array_values($this->service_auth),
             'http_errors' => $this->service_debug,
         ];
 
@@ -419,7 +446,6 @@ class ImUser extends Model
             // 采用表单的方式提交数据
             $request_body['form_params'] = $this->params;
         }
-
         // 发送请求
         $res = $client->request($this->requset_method, $request_url, $request_body);
 

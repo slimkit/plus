@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\APIs\V1;
 
-use App\Exceptions\MessageResponseBody;
 use App\Http\Controllers\Controller;
 use App\Models\ImUser;
 use App\Models\User;
+use App\Exceptions\MessageResponseBody;
 use Illuminate\Http\Request;
 
 class ImController extends Controller
@@ -29,36 +29,50 @@ class ImController extends Controller
         $data = $ImUser->usersPost(['uid' => $user->id, 'name' => $user->name]);
 
         return app(MessageResponseBody::class, [
-            'code'   => 0,
+            'code' => 0,
             'status' => true,
-            'data'   => $data,
+            'data' => $data,
         ])->setStatusCode(200);
     }
 
     /**
-     * 修改用户资料.
+     * 创建会话.
      *
-     * @Author   Wayne[qiaobin@zhiyicx.com]
-     * @DateTime 2017-01-17T17:25:45+0800
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-18T16:19:33+080
      *
-     * @param Request $request [description]
+     * @version  1.0
+     *
+     * @param Request $request 请求类
      *
      * @return mixed 返回结果
      */
-    public function profile(Request $request)
+    public function createConversations(Request $request)
     {
-        $user = $request->attributes->get('user');
-        $profileData = $request->all();
-        $profileSettings = UserProfileSetting::whereIn('profile', array_keys($profileData))->get();
-        $datas = [];
-        foreach ($profileSettings as $profile) {
-            $datas[$profile->id] = ['user_profile_setting_data' => $request->input($profile->profile)];
+        //聊天对话类型
+        $type = intval($request->input('type'));
+        $Im = new ImUser();
+        if (!$Im->checkConversationType($type)) {
+            return app(MessageResponseBody::class, [
+                'code' => 3001,
+                'status' => false,
+            ])->setStatusCode(422);
         }
-        $user->syncData($datas);
+        $user = $request->attributes->get('user');
+        $conversations = [
+            'type' => intval($type),
+            'name' => (string) $request->input('name'),
+            'pwd' => (string) $request->input('name'),
+            'uids' => $request->input('uids'),
+            'uid' => $user->id,
+        ];
 
-        return app(MessageResponseBody::class, [
-            'code'   => 0,
-            'status' => true,
-        ])->setStatusCode(201);
+        $res = $Im->conversationsPost($conversations);
+        if (!$res) {
+            return app(MessageResponseBody::class, [
+                'code' => 3002,
+                'status' => false,
+            ])->setStatusCode(422);
+        }
     }
 }
