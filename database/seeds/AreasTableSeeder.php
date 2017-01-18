@@ -19,7 +19,7 @@ class AreasTableSeeder extends Seeder
             // 'id'      => 100000,
             'name'    => '中国',
             'pid'     => 0,
-            'extends' => 3
+            'extends' => 3,
         ]);
 
         $gbs = array_keys($this->data);
@@ -31,7 +31,6 @@ class AreasTableSeeder extends Seeder
             $progressBar->setProgressCharacter('');
             $progressBar->setBarCharacter('▓'); // dark shade character \u2593
         }
-
 
         foreach ($gbs as $gb) {
             $location = $this->get($gb);
@@ -48,7 +47,7 @@ class AreasTableSeeder extends Seeder
                 if (!$province) {
                     $province = Area::create([
                         'name' => $province_name,
-                        'pid' => $cn->id,
+                        'pid'  => $cn->id,
                     ]);
                     $progressBar->advance();
                 }
@@ -62,7 +61,7 @@ class AreasTableSeeder extends Seeder
                 if (!$city) {
                     $city = Area::create([
                         'name' => $city_name,
-                        'pid' => $province->id,
+                        'pid'  => $province->id,
                     ]);
                     $progressBar->advance();
                 }
@@ -75,7 +74,7 @@ class AreasTableSeeder extends Seeder
                 if (!$area) {
                     Area::create([
                         'name' => $area_name,
-                        'pid' => $city->id,
+                        'pid'  => $city->id,
                     ]);
                     $progressBar->advance();
                 }
@@ -93,27 +92,28 @@ class AreasTableSeeder extends Seeder
         if ($codeLength < 2 || $codeLength > 6 || $codeLength % 2 !== 0) {
             throw new \Exception('Invalid code');
         }
-        $provinceCode = substr($code, 0, 2) . '0000';
+        $provinceCode = substr($code, 0, 2).'0000';
         if (!isset($this->data[$provinceCode])) {
-            return null;
+            return;
         }
         $province = $this->data[$provinceCode];
         if ($codeLength === 2) {
             return $province;
         }
-        $prefectureCode = substr($code, 0, 4) . '00';
+        $prefectureCode = substr($code, 0, 4).'00';
         if (!isset($this->data[$prefectureCode])) {
-            return null;
+            return;
         }
         $area = $this->data[$prefectureCode];
         if ($codeLength === 4) {
-            return $province . ' ' . $area;
+            return $province.' '.$area;
         }
         if (!isset($this->data[$code])) {
-            return null;
+            return;
         }
         $name = $this->data[$code];
-        return $province . ' ' . $area . ' ' . $name;
+
+        return $province.' '.$area.' '.$name;
     }
 
     protected $data = [
