@@ -3,7 +3,6 @@
 namespace Ts\Test\Http\APIs\V1;
 
 use App\Models\User;
-use App\Models\VerifyCode;
 
 class AuthRegisterTest extends TestCase
 {
