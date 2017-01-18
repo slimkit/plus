@@ -175,4 +175,23 @@ class AuthLoginTest extends TestCase
         ]);
         $this->seeJsonEquals($json);
     }
+
+    /**
+     * 测试用户登录成功.
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function testLoginSuccess()
+    {
+        $this->postJson(static::$uri, [
+            'phone' => static::$phone,
+            'password' => static::$password,
+            'device_code' => 'The is device code.',
+        ]);
+
+        // Assert that the status code of the response matches the giben code.
+        $this->seeStatusCode(201);
+        // more, 201 status code is successful.
+    }
 }
