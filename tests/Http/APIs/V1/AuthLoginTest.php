@@ -103,6 +103,7 @@ class AuthLoginTest extends TestCase
 
     /**
      * 测试无登录密码情况下的错误情况.
+     * code: 1006
      *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
@@ -121,6 +122,31 @@ class AuthLoginTest extends TestCase
         // Assert that the response contains an exact JSON array.
         $json = $this->createMessageResponseBody([
             'code' => 1006,
+        ]);
+        $this->seeJsonEquals($json);
+    }
+
+    /**
+     * 测试用户不存在.
+     * code: 1005
+     * 
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function testNotFundUser()
+    {
+        $this->postJson(static::$uri, [
+            'phone' => '18781932642',
+            'password' => static::$password,
+            'device_code' => 'The is device code.',
+        ]);
+
+        // Assert that the status code of the response matches the giben code.
+        $this->seeStatusCode(404);
+
+        // Assert that the response contains an exact JSON array.
+        $json = $this->createMessageResponseBody([
+            'code' => 1005,
         ]);
         $this->seeJsonEquals($json);
     }
