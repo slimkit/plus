@@ -56,15 +56,18 @@ class ChangeUserAvatar
 
         // 开启事务.
         DB::beginTransaction();
+
         return $this->userProfileExiste($user, $task, function () use ($request, $next) {
             $response = $next($request);
             if ($response instanceof MessageResponseBody) {
                 if (!$response->getBody()['status']) {
                     DB::rollBack();
+
                     return $response;
                 }
 
                 DB::commit();
+
                 return $response;
             }
         });
