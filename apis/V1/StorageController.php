@@ -104,7 +104,7 @@ class StorageController extends Controller
 
     protected function uploadIsExister(Request $request, StorageTask $task)
     {
-        $storage = StorageModel::byHash($task->hahs)->first();
+        $storage = StorageModel::byHash($task->hash)->first();
         if ($storage) {
             return app(MessageResponseBody::class, [
                 'status' => true,

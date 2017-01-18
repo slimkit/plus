@@ -114,13 +114,13 @@ class Storage
 
     public function notice(string $message, StorageTask $task, MessageResponseBody $response, string $engine = 'local')
     {
-        $response = static::$storages[$engine]->notice($message, $filename, $response);
+        $response = static::$storages[$engine]->notice($message, $task->filename, $response);
         if ($response->getBody()['status'] === false) {
             return $response;
         }
 
         // 保存任务附件.
-        $storage = StorageModel::buHash($task)->first();
+        $storage = StorageModel::byHash($task->hash)->first();
         if (!$storage) {
             $storage = new StorageModel();
             $storage->hash = $task->hash;
