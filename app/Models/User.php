@@ -157,6 +157,7 @@ class User extends Authenticatable
      * 用户资料.
      *
      * @return [type] [description]
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -173,8 +174,10 @@ class User extends Authenticatable
      * 更新用户资料.
      *
      * @param array $attributes 更新关联profile资料数据 【二维数组】
-     * 参考：https://laravel-china.org/docs/5.3/eloquent-relationships#updating-many-to-many-relationships
+     *                          参考：https://laravel-china.org/docs/5.3/eloquent-relationships#updating-many-to-many-relationships
+     *
      * @return [type] [description]
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
