@@ -153,6 +153,13 @@ class User extends Authenticatable
         return $this->hasMany(StorageUserLink::class, 'user_id');
     }
 
+    /**
+     * 用户资料.
+     *
+     * @return [type] [description]
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
     public function datas()
     {
         $table = app(UserProfileSettingLink::class)->getTable();
@@ -160,5 +167,19 @@ class User extends Authenticatable
         return $this->belongsToMany(UserProfileSetting::class, $table, 'user_id', 'user_profile_setting_id')
             ->withPivot('user_profile_setting_data', 'user_id')
             ->withTimestamps();
+    }
+
+    /**
+     * 更新用户资料.
+     *
+     * @param array $attributes 更新关联profile资料数据 【二维数组】
+     * 参考：https://laravel-china.org/docs/5.3/eloquent-relationships#updating-many-to-many-relationships
+     * @return [type] [description]
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function syncData(array $attributes)
+    {
+        return $this->datas()->sync($attributes, false);
     }
 }
