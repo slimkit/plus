@@ -2,21 +2,22 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
-use App\Models\UserProfileSetting;
 use App\Exceptions\MessageResponseBody;
-use Illuminate\Http\Request;
 use App\Models\StorageTask;
 use App\Models\User;
+use App\Models\UserProfileSetting;
+use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ChangeUserAvatar
 {
     /**
-     * 修改用户头像中间件入口
+     * 修改用户头像中间件入口.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
@@ -30,12 +31,14 @@ class ChangeUserAvatar
     }
 
     /**
-     * 先查储存任务是否存在
+     * 先查储存任务是否存在.
      *
      * @param int|string $storage_task_id 任务ID
-     * @param Request $request
-     * @param Closure $next
+     * @param Request    $request
+     * @param Closure    $next
+     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -59,10 +62,12 @@ class ChangeUserAvatar
     /**
      * 检查用户拓展字段是否存在.
      *
-     * @param User $user 用户模型
+     * @param User        $user 用户模型
      * @param StorageTask $task 任务模型
-     * @param Closure $next
+     * @param Closure     $next
+     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -71,7 +76,7 @@ class ChangeUserAvatar
         $profile = UserProfileSetting::where('profile', 'avatar')->first();
         if (!$profile) {
             return app(MessageResponseBody::class, [
-                'code' => 1017,
+                'code'    => 1017,
                 'message' => '系统错误',
             ]);
         }
@@ -80,13 +85,15 @@ class ChangeUserAvatar
     }
 
     /**
-     * 插入储存link
+     * 插入储存link.
      *
-     * @param User $user 用户模型
-     * @param StorageTask $task 储存任务模型
+     * @param User               $user    用户模型
+     * @param StorageTask        $task    储存任务模型
      * @param UserProfileSetting $profile 用户字段模型
-     * @param Closure $next
+     * @param Closure            $next
+     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -108,13 +115,15 @@ class ChangeUserAvatar
     }
 
     /**
-     * 保存用户头像信息
+     * 保存用户头像信息.
      *
-     * @param User $user 用户模型
-     * @param int $profileId 字段id
-     * @param int $storageId 储存ID
+     * @param User    $user      用户模型
+     * @param int     $profileId 字段id
+     * @param int     $storageId 储存ID
      * @param Closure $next
+     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
