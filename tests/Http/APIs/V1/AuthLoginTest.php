@@ -76,6 +76,13 @@ class AuthLoginTest extends TestCase
         $this->seeJsonEquals($json);
     }
 
+    /**
+     * 测试登录无phone字段情况.
+     * code: 1000.
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
     public function testNotExistePhone()
     {
         $this->postJson(static::$uri, [
