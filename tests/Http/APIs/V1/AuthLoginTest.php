@@ -154,15 +154,15 @@ class AuthLoginTest extends TestCase
     /**
      * 测试密码错误情况.
      * code: 1006.
-     * 
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
     public function testErrorPassword()
     {
         $this->postJson(static::$uri, [
-            'phone' => static::$phone,
-            'password' => 'xxx',
+            'phone'       => static::$phone,
+            'password'    => 'xxx',
             'device_code' => 'The is device code.',
         ]);
 
