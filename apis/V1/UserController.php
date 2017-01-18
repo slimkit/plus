@@ -65,8 +65,23 @@ class UserController extends Controller
         ])->setStatusCode(201);
     }
 
-    public function get(User $user)
+    /**
+     * [get description]
+     * @Author   Wayne[qiaobin@zhiyicx.com]
+     * @DateTime 2017-01-18T17:54:59+0800
+     * @param    User                       $user [description]
+     * @return   [type]                           [description]
+     */
+    public function get(int $user)
     {
+        $user = User::find($user);
+        if (!$user or !$user instanceof User) {
+            
+            return app(MessageResponseBody::class, [
+                'status'  => false,
+                'code'    => 1005,
+            ])->setStatusCode(404);
+        }
         $userDatas = $user->datas;
         $datas = [];
         foreach ($userDatas as $value) {
