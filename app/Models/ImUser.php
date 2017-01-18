@@ -3,13 +3,11 @@
 namespace App\Models;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Response as ImResponse;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ImUser extends Model
 {
-    use SoftDeletes;
-
     /**
      * 定义表名.
      *
@@ -112,6 +110,13 @@ class ImUser extends Model
     protected $requset_method = '';
 
     /**
+     * 当前操作的用户uid.
+     *
+     * @var int
+     */
+    protected $user_id = 0;
+
+    /**
      * 重写__call方法.
      *
      * @author martinsun <syh@sunyonghong.com>
@@ -137,15 +142,34 @@ class ImUser extends Model
         // 调用本类中的方法,获取请求方法以及请求地址
         $type_alias = strtolower($type_alias);
         $this->params = $params[0];
+        $this->user_id = $this->params['uid'] ?? 0;
         $this->requset_method = $this->getRequestType($type_alias);
 
-        // 当前方法是否存在
+        // 当前方法是否存在,存在则执行
         $fun = $this->request_mod.'Do'.ucfirst($this->requset_method);
         if (method_exists($this, $fun)) {
             return $this->$fun();
         }
-        // 调用请求IM服务器
-        $this->requset();
+        // 直接调用请求IM服务器
+        $res = $this->request();
+        // 是否存在后置方法
+        $after_fun = '_after_'.$fun;
+        if (method_exists($this, $after_fun)) {
+            return $this->$after_fun($res);
+        } else {
+            $body = $res->getBody()->getContents();
+            if ($body) {
+                // 有返回主体
+                $ret = json_decode($body, true);
+            } else {
+                // 没有返回主体,获取状态码
+                $ret = [
+                    'code' => $res->getStatusCode(),
+                ];
+            }
+
+            return $ret;
+        }
     }
 
     /**
@@ -247,8 +271,14 @@ class ImUser extends Model
         if ($info = $this->where('user_id', $user_id)->first()) {
             return $info;
         }
+
+        // 发送请求
         $res = $this->request();
+
+        // 获取返回数据
         $res_data = $res->getBody();
+
+        //获取执行结果
         $res_data = json_decode($res_data->getContents(), true);
         if ($res->getStatusCode() == 201 || $res_data['code'] == 201) {
             //添加成功,保存记录
@@ -266,6 +296,29 @@ class ImUser extends Model
 
             return false;
         }
+    }
+
+    /**
+     * 删除用户操作后置.
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-18T09:33:55+080
+     *
+     * @version  1.0
+     *
+     * @param ImResponse $res IM聊天服务器返回的信息
+     *
+     * @return array
+     */
+    private function _after_usersDoDelete(ImResponse $res)
+    {
+        // 如果聊天服务器删除成功
+        if ($res->getStatusCode() == 204) {
+            // 删除本地的聊天用户信息
+            $this->where('user_id', $this->user_id)->delete();
+        }
+
+        return $res;
     }
 
     /**
@@ -334,28 +387,52 @@ class ImUser extends Model
      *
      * @param bool $get_body 是否获取数据信息
      *
-     * @return [type] 如果 $get_body设置为false,返回请求实例对象,否则返回请求结果的body体
+     * @return class,array 如果 $get_body设置为false,返回请求实例对象,否则返回请求结果的body体
      */
     public function request($get_body = false)
     {
         // 创建请求根地址类
         $client = new Client(['base_uri' => $this->service_urls['base_url']]);
-        // dump($this->requset_method);
-        // dump($this->getRequestUrl());
-        // dump($this->params);
-        // dump(array_values($this->service_auth));
-        // dump($this->service_debug);
-        // exit;
-        $res = $client->request($this->requset_method, $this->getRequestUrl(), [
-            'form_params' => $this->params,
+
+        // 发送请求内容
+        $request_body = [
             'auth'        => array_values($this->service_auth),
             'http_errors' => $this->service_debug,
-        ]);
-        // 判断并返回执行结果
-        if ($res === true) {
-            $body = $res->getBody();
+        ];
 
-            return json_decode($body->getContents(), true);
+        // 获取请求的地址
+        $request_url = $this->getRequestUrl();
+
+        // 处理请求的参数
+        if (in_array($this->requset_method, ['get', 'delete'])) {
+            if (!empty($this->params)) {
+                foreach ($this->params as $key => $value) {
+                    $request_url .= '/'.$value;
+                }
+            }
+
+            // 同时也发送请求的参数信息
+            $request_body['query'] = $this->params;
+        } else {
+            // 采用表单的方式提交数据
+            $request_body['form_params'] = $this->params;
+        }
+
+        // 发送请求
+        $res = $client->request($this->requset_method, $request_url, $request_body);
+
+        // 判断并返回期望得到的执行结果类型
+        if ($get_body === true) {
+            $body = $res->getBody()->getContents();
+            if ($body) {
+                $ret = json_decode($body, true);
+            } else {
+                $ret = [
+                    'code' => $res->getStatusCode(),
+                ];
+            }
+
+            return $ret;
         } else {
             return $res;
         }
