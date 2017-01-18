@@ -73,5 +73,23 @@ class GetUserTest extends TestCase
         $this->seeJsonEquals($json);
     }
 
-    // public function testUserGet()
+    public function testGetUserData()
+    {
+        $this->get($this->uri, [
+            'ACCESS-TOKEN' => $this->auth->token,
+        ]);
+
+        // Asserts that the status code of the response matches the given code.
+        $this->seeStatusCode(201);
+        
+        $datas = [];
+        foreach ($this->user->datas as $data) {
+            $datas[$data->profile] = $data->pivot->user_profile_setting_data;
+        }
+        $json = $this->createMessageResponseBody([
+            'status' => true,
+            'data' => $datas,
+        ]);
+        $this->seeJsonEquals($json);
+    }
 }
