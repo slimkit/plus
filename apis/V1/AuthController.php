@@ -97,6 +97,9 @@ class AuthController extends Controller
             'created_at' => $token->created_at->getTimestamp(),
             'expires' => $token->expires,
         ];
+        //IM账号信息同步
+        $ImUser = new ImUser();
+        $ImUser->usersPost(['uid' => $user->id, 'name' => $user->name]);
 
         return app(MessageResponseBody::class, [
             'status' => true,
@@ -163,10 +166,6 @@ class AuthController extends Controller
         $user->save();
 
         $request->attributes->set('user', $user);
-
-        //IM账号信息同步
-        $ImUser = new ImUser();
-        $ImUser->usersPost(['uid' => $user->id, 'name' => $user->name]);
 
         return $this->login($request);
     }
