@@ -55,7 +55,7 @@ class UserController extends Controller
         $profileSettings = UserProfileSetting::whereIn('profile', array_keys($profileData))->get();
         $datas = [];
         foreach ($profileSettings as $profile) {
-            $datas[$profile->id] = ['user_profile_setting_data' => $request->input($profile->profile)];
+            $datas[$profile->id] = $request->input($profile->profile);
         }
         $user->syncData($datas);
 
