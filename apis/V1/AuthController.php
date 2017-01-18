@@ -6,6 +6,7 @@ use App\Exceptions\MessageResponseBody;
 use App\Handler\SendMessage;
 use App\Http\Controllers\Controller;
 use App\Models\AuthToken;
+use App\Models\ImUser;
 use App\Models\LoginRecord;
 use App\Models\User;
 use App\Models\VerifyCode;
@@ -96,6 +97,9 @@ class AuthController extends Controller
             'created_at'    => $token->created_at->getTimestamp(),
             'expires'       => $token->expires,
         ];
+        //IM账号信息同步
+        $ImUser = new ImUser();
+        $ImUser->usersPost(['uid' => $user->id, 'name' => $user->name]);
 
         return app(MessageResponseBody::class, [
             'status'  => true,

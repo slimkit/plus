@@ -54,8 +54,22 @@ class ChangeUserAvatar
 
         $user = $request->attributes->get('user');
 
+        // 开启事务.
+        DB::beginTransaction();
+
         return $this->userProfileExiste($user, $task, function () use ($request, $next) {
-            return $next($request);
+            $response = $next($request);
+            if ($response instanceof MessageResponseBody) {
+                if (!$response->getBody()['status']) {
+                    DB::rollBack();
+
+                    return $response;
+                }
+
+                DB::commit();
+
+                return $response;
+            }
         });
     }
 
@@ -106,12 +120,10 @@ class ChangeUserAvatar
             ]);
         }
 
-        return DB::transaction(Closure::bind(function () use ($user, $task) {
-            $user->storages()->sync([$storage->id], false);
-            $task->delete();
+        $user->storages()->sync([$storage->id], false);
+        $task->delete();
 
-            return $this->setUserProfile($user, $profile->id, $storage->id, $next);
-        }, $this));
+        return $this->setUserProfile($user, $profile->id, $storage->id, $next);
     }
 
     /**

@@ -21,7 +21,7 @@ class LocalStorage implements StorageEngineInterface
 
         return [
             'uri'             => route('storage/upload', [$storateTask->id]),
-            'method'          => 'PUT',
+            'method'          => 'POST',
             'storage_task_id' => $storateTask->id,
             'headers'         => [
                 'ACCESS-TOKEN' => $token->token,
@@ -32,7 +32,7 @@ class LocalStorage implements StorageEngineInterface
 
     public function notice(string $message, string $filename, MessageResponseBody $response)
     {
-        $response->setStatus($this->exists($filename));
+        return $response->setStatus($this->exists($filename));
     }
 
     public function url(string $filename)

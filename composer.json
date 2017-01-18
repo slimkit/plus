@@ -6,7 +6,6 @@
     "type": "project",
     "require": {
         "php": ">=7.0",
-        "cn/gb2260": "^0.2.0",
         "flc/alidayu": "^2.0",
         "laravel/framework": "5.3.*",
         "zhuzhichao/ip-location-zh": "^2.1"

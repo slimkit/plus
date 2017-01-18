@@ -44,7 +44,8 @@ Route::group([
     'prefix' => 'users',
 ], function ($routes) {
     // 修改用户资料
-    Route::patch('/', 'UserController@profile');
+    Route::patch('/', 'UserController@profile')
+        ->middleware(App\Http\Middleware\ChangeUserAvatar::class);
     // 修改用户密码
     Route::patch('/password', 'UserController@resetPassword') // 设置控制器
         ->middleware(App\Http\Middleware\VerifyPassword::class); // 验证用户密码是否正确
@@ -79,4 +80,14 @@ Route::post('/storage', function (Request $request) {
     $storage = new Ts\Storages\Storage();
     $info = $storage->createStorageTask($filename, $hash);
     var_dump($info);
+});
+
+// IM相关接口
+Route::group([
+    'prefix'     => 'im',
+    'middleware' => [
+        App\Http\Middleware\AuthUserToken::class,
+    ],
+], function () {
+    Route::get('/users', 'ImController@getImUserInfo');
 });
