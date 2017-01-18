@@ -119,7 +119,7 @@ class Storage
             return $response;
         }
 
-        // 保存任务.
+        // 保存任务附件.
         $storage = StorageModel::buHash($task)->first();
         if (!$storage) {
             $storage = new StorageModel();
