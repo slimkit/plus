@@ -60,17 +60,19 @@ class UserController extends Controller
     }
 
     /**
-     * [get description]
+     * [get description].
+     *
      * @Author   Wayne[qiaobin@zhiyicx.com]
      * @DateTime 2017-01-18T17:54:59+0800
-     * @param    User                       $user [description]
-     * @return   [type]                           [description]
+     *
+     * @param User $user [description]
+     *
+     * @return [type] [description]
      */
     public function get(int $user)
     {
         $user = User::find($user);
         if (!$user or !$user instanceof User) {
-            
             return app(MessageResponseBody::class, [
                 'status'  => false,
                 'code'    => 1005,
