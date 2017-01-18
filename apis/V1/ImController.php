@@ -10,6 +10,18 @@ use Illuminate\Http\Request;
 
 class ImController extends Controller
 {
+    /**
+     * 获取聊天服务器信息.
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-18T16:08:41+080
+     *
+     * @version  1.0
+     *
+     * @param Request $request 请求类
+     *
+     * @return mixed 返回结果
+     */
     public function getImUserInfo(Request $request)
     {
         $user = $request->attributes->get('user');
