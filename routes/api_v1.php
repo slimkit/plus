@@ -78,3 +78,13 @@ Route::post('/storage', function (Request $request) {
     $info = $storage->createStorageTask($filename, $hash);
     var_dump($info);
 });
+
+// IM相关接口
+Route::group([
+    'prefix' => 'im',
+    'middleware' => [
+        App\Http\Middleware\AuthUserToken::class,
+    ],
+], function () {
+    Route::get('/users', 'ImController@getImUserInfo');
+});

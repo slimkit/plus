@@ -27,7 +27,7 @@ class ImUser extends Model
      *
      * @var array
      */
-    protected $hidden = ['is_disabled', 'deleted_at', 'username'];
+    protected $hidden = ['id', 'is_disabled', 'deleted_at', 'username', 'created_at', 'updated_at'];
 
     /**
      * 将字段调整为日期属性.
@@ -57,12 +57,12 @@ class ImUser extends Model
      */
     public $service_urls = [
         'base_url' => 'http://192.168.10.222:9900',
-        'apis'     => [
-            'users'        => '/users',
+        'apis' => [
+            'users' => '/users',
             'conversation' => '/conversations',
-            'member'       => '/conversations/member',
-            'limited'      => '/conversations/{cid}/limited-members',
-            'message'      => '/conversations/{cid}/messages',
+            'member' => '/conversations/member',
+            'limited' => '/conversations/{cid}/limited-members',
+            'message' => '/conversations/{cid}/messages',
         ],
     ];
 
@@ -72,10 +72,10 @@ class ImUser extends Model
      * @var array
      */
     protected $response_type = [
-        'post'   => ['post', 'add', 'init'],
-        'put'    => ['put', 'update', 'save'],
+        'post' => ['post', 'add', 'init'],
+        'put' => ['put', 'update', 'save'],
         'delete' => ['delete', 'del'],
-        'get'    => ['get', 'select'],
+        'get' => ['get', 'select'],
     ];
 
     /**
@@ -84,7 +84,7 @@ class ImUser extends Model
      * @var array
      */
     public $service_auth = [
-        'user'     => 'admin',
+        'user' => 'admin',
         'password' => '123456',
     ];
 
@@ -285,8 +285,8 @@ class ImUser extends Model
         if ($res->getStatusCode() == 201 || $res_data['code'] == 201) {
             //添加成功,保存记录
             $imUser = [
-                'user_id'     => $user_id,
-                'username'    => $this->params['name'] ?? '',
+                'user_id' => $user_id,
+                'username' => $this->params['name'] ?? '',
                 'im_password' => $res_data['data']['token'],
                 'is_disabled' => 0,
             ];
@@ -350,10 +350,10 @@ class ImUser extends Model
             'form_params' => [
                 'type' => $type,
                 'name' => isset($ext_data['name']) ? $ext_data['name'] : '',
-                'pwd'  => isset($ext_data['pwd']) ? $ext_data['pwd'] : '',
+                'pwd' => isset($ext_data['pwd']) ? $ext_data['pwd'] : '',
                 'uids' => [1001, 1002],
             ],
-            'auth'        => array_values($this->service_auth),
+            'auth' => array_values($this->service_auth),
             'http_errors' => false,
         ]);
         $body = $res->getBody();
@@ -398,7 +398,7 @@ class ImUser extends Model
 
         // 发送请求内容
         $request_body = [
-            'auth'        => array_values($this->service_auth),
+            'auth' => array_values($this->service_auth),
             'http_errors' => $this->service_debug,
         ];
 
