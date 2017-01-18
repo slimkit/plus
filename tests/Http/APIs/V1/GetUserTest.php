@@ -15,9 +15,16 @@ class GetUserTest extends TestCase
     // test user data.
     protected $user_id = 1;
 
+    protected $authToken;
+
+    protected setUp()
+    {
+        $this->authToken = AutoToken::where('user_id', $this->user_id)->pluck('token');
+    }
+
     public function testGetUser()
     {
-        $this->getJson($this->uri, ['ACCESS-TOKEN' => 'dc22aae7774d9387ba766a1adce3165b']);
+        $this->getJson($this->uri, ['ACCESS-TOKEN' => $this->authToken]);
         $this->seeStatusCode(201);
         $profiles = User::find($this->user_id)->datas;
         $datas = [];
@@ -35,7 +42,7 @@ class GetUserTest extends TestCase
 
     public function testUserNotExistedStep()
     {	
-    	$this->getJson($this->url_404, ['ACCESS-TOKEN' => 'dc22aae7774d9387ba766a1adce3165b']);
+    	$this->getJson($this->url_404, ['ACCESS-TOKEN' => $this->authToken]);
         $this->seeStatusCode(404);
     	$json = $this->createMessageResponseBody([
     		'code' => 1005,
