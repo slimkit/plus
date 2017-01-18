@@ -185,8 +185,8 @@ class AuthLoginTest extends TestCase
     public function testLoginSuccess()
     {
         $this->postJson(static::$uri, [
-            'phone' => static::$phone,
-            'password' => static::$password,
+            'phone'       => static::$phone,
+            'password'    => static::$password,
             'device_code' => 'The is device code.',
         ]);
 
