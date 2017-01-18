@@ -23,6 +23,7 @@ dependencies:
             fi
     override:
         - yarn install
+        - mv .env.example .env
     cache_directories:
         - ~/.yarn
         - ~/.yarn-cache
