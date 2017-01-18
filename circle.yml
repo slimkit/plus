@@ -23,6 +23,8 @@ dependencies:
             fi
     override:
         - yarn install
+        - yarn remove node-sass
+        - yarn add node-sass
         - mv .env.example .env
     cache_directories:
         - ~/.yarn
