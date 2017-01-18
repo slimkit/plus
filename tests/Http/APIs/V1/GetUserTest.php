@@ -4,22 +4,25 @@ namespace Ts\Test\Http\APIs\V1;
 use App\Models\User;
 use App\Models\UserProfileSetting;
 use App\Models\UserProfileSettingLink;
+use App\Models\AuthToken;
 
 class GetUserTest extends TestCase
 {
 	// test API.
-    protected $uri = '/api/v1/users/1';
+    protected $uri = '/api/v1/users/11';
 
     protected $url_404 = '/api/v1/users/5';
 
     // test user data.
-    protected $user_id = 1;
+    protected $user_id = 11;
 
     protected $authToken;
 
-    protected setUp()
+    protected function setUp()
     {
-        $this->authToken = AutoToken::where('user_id', $this->user_id)->pluck('token');
+        parent::setUp();
+        $token = AuthToken::where('user_id', $this->user_id)->pluck('token');
+        $this->authToken = $token[0];
     }
 
     public function testGetUser()
