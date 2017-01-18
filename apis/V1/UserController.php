@@ -9,7 +9,6 @@ use App\Models\StoragesTask;
 use App\Models\StorageUserLink;
 use App\Models\User;
 use App\Models\UserProfileSetting;
-use App\Models\UserProfileSettingLink;
 use Illuminate\Http\Request;
 use Ts\Storages\Storage;
 
@@ -73,6 +72,7 @@ class UserController extends Controller
         foreach ($userDatas as $value) {
             $datas[$value->profile] = $value->pivot->user_profile_setting_data;
         }
+
         return app(MessageResponseBody::class, [
             'status'  => true,
             'data'    => $datas,
