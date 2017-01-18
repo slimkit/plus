@@ -139,20 +139,22 @@ class ImUser extends Model
         } else {
             return parent::__call($method, $params);
         }
-        // 调用本类中的方法,获取请求方法以及请求地址
+        // 调用本类中的方法,获取请求方法
         $type_alias = strtolower($type_alias);
-        $this->params = $params[0];
-        $this->user_id = $this->params['uid'] ?? 0;
         $this->requset_method = $this->getRequestType($type_alias);
 
-        // 当前方法是否存在,存在则执行
+        // 定义类参数
+        $this->params = $params[0];
+        $this->user_id = $this->params['uid'] ?? 0;
+
+        // 自定义方法是否存在,存在则执行并返回
         $fun = $this->request_mod.'Do'.ucfirst($this->requset_method);
         if (method_exists($this, $fun)) {
             return $this->$fun();
         }
         // 直接调用请求IM服务器
         $res = $this->request();
-        // 是否存在后置方法
+        // 是否定义后置方法,已定义则执行并返回
         $after_fun = '_after_'.$fun;
         if (method_exists($this, $after_fun)) {
             return $this->$after_fun($res);
