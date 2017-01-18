@@ -98,8 +98,9 @@ class AuthController extends Controller
             'expires'       => $token->expires,
         ];
         //IM账号信息同步
-        $ImUser = new ImUser();
-        $ImUser->usersPost(['uid' => $user->id, 'name' => $user->name]);
+        // 先注销，开发人先自己思考下～这是作产品，不是完成某个项目，不是说交了就完事了～
+        // $ImUser = new ImUser();
+        // $ImUser->usersPost(['uid' => $user->id, 'name' => $user->name]);
 
         return app(MessageResponseBody::class, [
             'status'  => true,
