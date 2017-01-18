@@ -49,16 +49,17 @@ class AuthLoginTest extends TestCase
 
     /**
      * 测试无设备号的登录情况.
-     * code: 1014
+     * code: 1014.
      *
      * @return [type] [description]
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
     public function testNotExisteDeviceCode()
     {
         $requestBody = [
-            'phone' => static::$phone,
+            'phone'    => static::$phone,
             'password' => static::$password,
         ];
 
@@ -69,7 +70,7 @@ class AuthLoginTest extends TestCase
 
         // Assert that the response contains an exact JSON array.
         $json = $this->createMessageResponseBody([
-            'code' => 1014,
+            'code'    => 1014,
             'message' => '设备号不能为空',
         ]);
         $this->seeJsonEquals($json);
@@ -78,7 +79,7 @@ class AuthLoginTest extends TestCase
     public function testNotExistePhone()
     {
         $this->postJson(static::$uri, [
-            'pasword' => static::$password,
+            'pasword'     => static::$password,
             'device_code' => 'The is device code.',
         ]);
 
