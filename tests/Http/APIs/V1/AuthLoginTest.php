@@ -111,7 +111,7 @@ class AuthLoginTest extends TestCase
     {
         // request.
         $this->postJson(static::$uri, [
-            'phone' => static::$phone,
+            'phone'       => static::$phone,
             'device_code' => 'The is device code.',
         ]);
 
