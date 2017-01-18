@@ -192,6 +192,7 @@ class User extends Authenticatable
                 'user_profile_setting_data' => $value,
             ];
         }
+
         return $this->datas()->sync($attributes, false);
     }
 }
