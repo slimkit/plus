@@ -81,14 +81,14 @@ class GetUserTest extends TestCase
 
         // Asserts that the status code of the response matches the given code.
         $this->seeStatusCode(201);
-        
+
         $datas = [];
         foreach ($this->user->datas as $data) {
             $datas[$data->profile] = $data->pivot->user_profile_setting_data;
         }
         $json = $this->createMessageResponseBody([
             'status' => true,
-            'data' => $datas,
+            'data'   => $datas,
         ]);
         $this->seeJsonEquals($json);
     }
