@@ -166,6 +166,7 @@ class AuthController extends Controller
 
         //IM账号信息同步
         $ImUser = new ImUser();
+        $ImUser->usersPost(['uid' => $user->id, 'name' => $user->name]);
 
         return $this->login($request);
     }
