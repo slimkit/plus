@@ -173,7 +173,7 @@ class User extends Authenticatable
     /**
      * 更新用户资料.
      *
-     * @param array $attributes 更新关联profile资料数据 【二维数组】
+     * @param array $attributes 更新关联profile资料数据
      *                          参考：https://laravel-china.org/docs/5.3/eloquent-relationships#updating-many-to-many-relationships
      *
      * @return [type] [description]
@@ -183,6 +183,15 @@ class User extends Authenticatable
      */
     public function syncData(array $attributes)
     {
+        if (!$attributes) {
+            return false;
+        }
+
+        foreach ($attributes as &$value) {
+            $value = [
+                'user_profile_setting_data' => $value,
+            ];
+        }
         return $this->datas()->sync($attributes, false);
     }
 }
