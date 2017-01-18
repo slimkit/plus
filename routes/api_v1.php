@@ -48,6 +48,8 @@ Route::group([
     Route::patch('/password', 'UserController@resetPassword') // 设置控制器
         ->middleware(App\Http\Middleware\VerifyPassword::class); // 验证用户密码是否正确
     Route::get('/{user}', 'UserController@get');
+        ->middleware(App\Http\Middleware\VerifyPassword::class) // 验证用户密码是否正确
+;
 });
 
 // 获取一个附件资源

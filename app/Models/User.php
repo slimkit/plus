@@ -124,15 +124,38 @@ class User extends Authenticatable
         return $this->hasMany(UserGroupLink::class, 'user_id');
     }
 
+    /**
+     * 用户附件.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
     public function storages()
     {
         $table = app(StorageUserLink::class)->getTable();
 
-        return $this->belongsToMany(Storage::class, $table, 'user_id', 'storage_id');
+        return $this->belongsToMany(Storage::class, $table, 'user_id', 'storage_id')
+            ->withTimestamps();
     }
 
+    /**
+     * 用户附件关系.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
     public function storagesLinks()
     {
         return $this->hasMany(StorageUserLink::class, 'user_id');
+    }
+
+    public function datas()
+    {
+        $table = app(UserProfileSettingLink::class)->getTable();
+        return $this->belongsToMany(UserProfileSetting::class, $table, 'user_id', 'user_profile_setting_id')
+            ->withPivot('user_profile_setting_data', 'user_id')
+            ->withTimestamps();
     }
 }

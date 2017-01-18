@@ -95,6 +95,11 @@ class UserController extends Controller
             ])->setStatusCode(201);
     }
 
+    public function settings()
+    {
+        var_dump(123);
+    }
+
     public function setAvatar(Request $request)
     {
         $task = StoragesTask::find($request->input('storage_task_id'));
