@@ -16,7 +16,7 @@
     <a href="https://www.codacy.com/app/shiweidu/thinksns-plus?utm_source=github.com&utm_medium=referral&utm_content=zhiyicx/thinksns-plus&utm_campaign=badger">
         <img src="https://api.codacy.com/project/badge/Grade/8320deaa80b8489f95fcedaae6df079d" alt="Codacy Badge">
     </a>
-    <a href="https://www.codacy.com/app/shiweidu/thinksns-plus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=zhiyicx/thinksns-plus&amp;utm_campaign=Badge_Coverage">
+    <a href="https://www.codacy.com/app/shiweidu/thinksns-plus?utm_source=github.com&utm_medium=referral&utm_content=zhiyicx/thinksns-plus&utm_campaign=Badge_Coverage">
         <img src="https://api.codacy.com/project/badge/Coverage/8320deaa80b8489f95fcedaae6df079d" alt="Codacy Badge">
     </a>
     <!-- license -->
