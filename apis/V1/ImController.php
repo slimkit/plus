@@ -7,11 +7,12 @@ use App\Models\ImUser;
 use App\Models\User;
 use App\Exceptions\MessageResponseBody;
 use Illuminate\Http\Request;
+use Ts\IM\Service as ImService;
 
 class ImController extends Controller
 {
     /**
-     * 获取聊天服务器信息.
+     * 获取聊天服务账号信息.
      *
      * @author martinsun <syh@sunyonghong.com>
      * @datetime 2017-01-18T16:08:41+080
@@ -22,11 +23,21 @@ class ImController extends Controller
      *
      * @return mixed 返回结果
      */
-    public function getImUserInfo(Request $request)
+    public function getImAccount(Request $request)
     {
+		// 当前登陆的用户
         $user = $request->attributes->get('user');
+
+		// 获取本地的IM用户
         $ImUser = new ImUser();
-        $data = $ImUser->usersPost(['uid' => $user->id, 'name' => $user->name]);
+		$data = $ImUser->where('user_id',$user->id)->first();
+
+		//本地不存在账号信息
+		if(!$data){
+			$ImService = new ImService():
+			$data = $ImService->usersPost(['uid' => $user->id, 'name' => $user->name]);
+		}
+
 
         return app(MessageResponseBody::class, [
             'code' => 0,
