@@ -48,8 +48,8 @@ class AuthRegisterTest extends TestCase
 
         $this->user = $user;
         $this->requestBody = [
-            'phone'       => $phone,
-            'password'    => $this->password,
+            'phone' => $phone,
+            'password' => $this->password,
             'device_code' => 'testing',
         ];
     }
@@ -64,11 +64,6 @@ class AuthRegisterTest extends TestCase
     {
         // delete user.
         $this->user->forceDelete();
-        //删除测试用户
-        User::where('phone', '15266668888')
-            ->orWhere('name', 'test_username')
-            ->withTrashed()
-            ->forceDelete();
         parent::tearDown();
     }
 
@@ -96,7 +91,7 @@ class AuthRegisterTest extends TestCase
 
         // Assert that the response contains an exact JSON array.
         $json = $this->createMessageResponseBody([
-            'code'    => 1014,
+            'code' => 1014,
             'message' => '设备号不能为空',
         ]);
         $this->seeJsonEquals($json);

@@ -1,4 +1,3 @@
-@@ -1,353 +0,0 @@
 <?php
 
 namespace Ts\IM;
@@ -28,12 +27,12 @@ class Service
      */
     public $service_urls = [
         'base_url' => 'http://192.168.10.222:9900',
-        'apis'     => [
-            'users'         => '/users',
+        'apis' => [
+            'users' => '/users',
             'conversations' => '/conversations',
-            'member'        => '/conversations/member',
-            'limited'       => '/conversations/{cid}/limited-members',
-            'message'       => '/conversations/{cid}/messages',
+            'member' => '/conversations/member',
+            'limited' => '/conversations/{cid}/limited-members',
+            'message' => '/conversations/{cid}/messages',
         ],
     ];
 
@@ -43,10 +42,10 @@ class Service
      * @var array
      */
     protected $response_type = [
-        'post'   => ['post', 'add', 'init'],
-        'put'    => ['put', 'update', 'save'],
+        'post' => ['post', 'add', 'init'],
+        'put' => ['put', 'update', 'save'],
         'delete' => ['delete', 'del'],
-        'get'    => ['get', 'select'],
+        'get' => ['get', 'select'],
     ];
 
     /**
@@ -55,7 +54,7 @@ class Service
      * @var array
      */
     public $service_auth = [
-        'user'     => 'admin',
+        'user' => 'admin',
         'password' => '123456',
     ];
 
@@ -294,7 +293,7 @@ class Service
 
         // 发送请求内容
         $request_body = [
-            'auth'        => array_values($this->service_auth),
+            'auth' => array_values($this->service_auth),
             'http_errors' => $this->service_debug,
         ];
 
@@ -315,10 +314,6 @@ class Service
             // 采用表单的方式提交数据
             $request_body['form_params'] = $this->params;
         }
-        dump($request_body);
-        dump($this->requset_method);
-        dump($request_url);
-        exit;
         // 发送请求
         $res = $client->request($this->requset_method, $request_url, $request_body);
 
