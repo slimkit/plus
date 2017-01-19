@@ -50,6 +50,6 @@
     "watch": "npm run clean-all && cross-env NODE_ENV=development webpack --display-error-details --progress --colors --watch",
     "build": "npm run clean-all && cross-env NODE_ENV=development webpack --display-error-details --progress --colors",
     "dist": "npm run clean-all && cross-env NODE_ENV=production webpack --display-error-details --progress --colors && npm run dist-version",
-    "lint": "eslint --ext .js,.vue resources/assets/admin"
+    "lint": "eslint --ext .js,.vue resources/assets"
   }
 }
