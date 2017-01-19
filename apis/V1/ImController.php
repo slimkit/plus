@@ -24,19 +24,19 @@ class ImController extends Controller
      * @return mixed 返回结果
      */
     public function getImAccount(Request $request)
-	{
-		// 当前登陆的用户
+    {
+        // 当前登陆的用户
         $user = $request->attributes->get('user');
 
-		// 获取本地的IM用户
+        // 获取本地的IM用户
         $ImUser = new ImUser();
-		$data = $ImUser->where('user_id',$user->id)->first();
+        $data = $ImUser->where('user_id', $user->id)->first();
 
-		//本地不存在账号信息
-		if(!$data){
-			$ImService = new ImService();
-			$data = $ImService->usersPost(['uid' => $user->id, 'name' => $user->name]);
-		}
+        //本地不存在账号信息
+        if (!$data) {
+            $ImService = new ImService();
+            $data = $ImService->usersPost(['uid' => $user->id, 'name' => $user->name]);
+        }
 
         $data = $ImUser->usersPost(['uid' => $user->id, 'name' => $user->name]);
 
