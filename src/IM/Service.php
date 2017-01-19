@@ -315,9 +315,10 @@ class Service
             // 采用表单的方式提交数据
             $request_body['form_params'] = $this->params;
         }
-		dump($request_body);
-		dump($this->requset_method);
-		dump($request_url);exit;
+        dump($request_body);
+        dump($this->requset_method);
+        dump($request_url);
+        exit;
         // 发送请求
         $res = $client->request($this->requset_method, $request_url, $request_body);
 
