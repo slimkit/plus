@@ -1,7 +1,7 @@
 general:
-  branches:
-    ignore:
-      - gh-pages
+    branches:
+        ignore:
+            - gh-pages
 
 machine:
     node:
