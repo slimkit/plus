@@ -24,26 +24,38 @@ class ImController extends Controller
      * @return mixed 返回结果
      */
     public function getImAccount(Request $request)
-	{
-		// 当前登陆的用户
+    {
+        // 当前登陆的用户
         $user = $request->attributes->get('user');
 
-		// 获取本地的IM用户
+        // 获取本地的IM用户
         $ImUser = new ImUser();
-		$data = $ImUser->where('user_id',$user->id)->first();
+        $data = $ImUser->where('user_id', $user->id)->first();
 
-		//本地不存在账号信息
-		if(!$data){
-			$ImService = new ImService():
-			$data = $ImService->usersPost(['uid' => $user->id, 'name' => $user->name]);
-		}
+        // 本地不存在账号信息
+        if (!$data) {
+            $ImService = new ImService();
+            $res = $ImService->usersPost(['uid' => $user->id, 'name' => $user->name]);
 
-        $data = $ImUser->usersPost(['uid' => $user->id, 'name' => $user->name]);
+            // 处理返回
+            if ($res['code'] == 201) {
+                $data = [
+                    'user_id' => $user->id,
+                    'im_password' => $res_data['token'],
+                ];
+            }
+
+            return app(MessageResponseBody::class, [
+                'code' => 0,
+                'status' => true,
+                'data' => $data,
+            ])->setStatusCode(200);
+        }
 
         return app(MessageResponseBody::class, [
-            'code'   => 0,
+            'code' => 0,
             'status' => true,
-            'data'   => $data,
+            'data' => $data,
         ])->setStatusCode(200);
     }
 
@@ -66,7 +78,7 @@ class ImController extends Controller
         $Im = new ImUser();
         if (!$Im->checkConversationType($type)) {
             return app(MessageResponseBody::class, [
-                'code'   => 3001,
+                'code' => 3001,
                 'status' => false,
             ])->setStatusCode(422);
         }
@@ -74,15 +86,15 @@ class ImController extends Controller
         $conversations = [
             'type' => intval($type),
             'name' => (string) $request->input('name'),
-            'pwd'  => (string) $request->input('name'),
+            'pwd' => (string) $request->input('name'),
             'uids' => $request->input('uids'),
-            'uid'  => $user->id,
+            'uid' => $user->id,
         ];
 
         $res = $Im->conversationsPost($conversations);
         if (!$res) {
             return app(MessageResponseBody::class, [
-                'code'   => 3002,
+                'code' => 3002,
                 'status' => false,
             ])->setStatusCode(422);
         }

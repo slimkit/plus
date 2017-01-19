@@ -75,12 +75,12 @@ Route::group([
 
 // IM相关接口
 Route::group([
-    'prefix'     => 'im',
+    'prefix' => 'im',
     'middleware' => [
         App\Http\Middleware\AuthUserToken::class,
     ],
 ], function () {
-    Route::get('/users', 'ImController@getImUserInfo');
+    Route::get('/users', 'ImController@getImAccount');
     Route::get('/conversations', 'ImController@conversationsList'); //获取聊天列表
     Route::post('/conversations', 'ImController@createConversations'); //创建聊天
     Route::get('/conversations/{cid}', 'ImController@conversationsOne'); //获取单个聊天信息
