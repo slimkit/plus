@@ -34,7 +34,7 @@ class ImController extends Controller
 
 		//本地不存在账号信息
 		if(!$data){
-			$ImService = new ImService():
+			$ImService = new ImService();
 			$data = $ImService->usersPost(['uid' => $user->id, 'name' => $user->name]);
 		}
 
