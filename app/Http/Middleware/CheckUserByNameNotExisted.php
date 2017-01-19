@@ -21,7 +21,7 @@ class CheckUserByNameNotExisted
     {
         $name = $request->input('name');
         $user = User::byName($name)->withTrashed()->first();
-        $theUser = $this->attributes->get('user');
+        $theUser = $request->attributes->get('user');
 
         // 用户名已被使用
         if (($user && (!$theUser)) || ($user && $theUser && $user->id != $theUser->id)) {
