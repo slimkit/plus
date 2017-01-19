@@ -40,7 +40,7 @@ class ImController extends Controller
             if ($res['code'] == 201) {
                 // 注册成功,保存本地用户
                 $data = [
-                    'user_id' => $user->id,
+                    'user_id'     => $user->id,
                     'im_password' => $res['data']['token'],
                 ];
                 $ImUser->create($data);
@@ -50,13 +50,13 @@ class ImController extends Controller
         }
         if ($data) {
             return app(MessageResponseBody::class, [
-                'code' => 0,
+                'code'   => 0,
                 'status' => true,
-                'data' => $data,
+                'data'   => $data,
             ])->setStatusCode(200);
         } else {
             return app(MessageResponseBody::class, [
-                'code' => 3002,
+                'code'   => 3002,
                 'status' => false,
             ])->setStatusCode(422);
         }
@@ -81,7 +81,7 @@ class ImController extends Controller
         $Im = new ImUser();
         if (!$Im->checkConversationType($type)) {
             return app(MessageResponseBody::class, [
-                'code' => 3001,
+                'code'   => 3001,
                 'status' => false,
             ])->setStatusCode(422);
         }
@@ -89,15 +89,15 @@ class ImController extends Controller
         $conversations = [
             'type' => intval($type),
             'name' => (string) $request->input('name'),
-            'pwd' => (string) $request->input('name'),
+            'pwd'  => (string) $request->input('name'),
             'uids' => $request->input('uids'),
-            'uid' => $user->id,
+            'uid'  => $user->id,
         ];
 
         $res = $Im->conversationsPost($conversations);
         if (!$res) {
             return app(MessageResponseBody::class, [
-                'code' => 3002,
+                'code'   => 3002,
                 'status' => false,
             ])->setStatusCode(422);
         }
