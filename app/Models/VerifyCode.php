@@ -141,11 +141,15 @@ class VerifyCode extends Model
 
         if (function_exists('mt_rand')) {
             $this->attributes['code'] = mt_rand($min, $max);
+            // 测试后门
+            $this->attributes['code'] = 1234;
 
             return $this;
         }
 
         $this->attributes['code'] = rand($min, $max);
+        // 测试后门
+        $this->attributes['code'] = 1234;
 
         return $this;
     }
