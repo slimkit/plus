@@ -18,7 +18,7 @@ class VerifyPassword
      */
     public function handle($request, Closure $next)
     {
-        $password = $request->input('password');
+        $password = $request->input('password', '');
         $user = $request->attributes->get('user');
 
         // 验证用户是否存在或者是否是一个user实例

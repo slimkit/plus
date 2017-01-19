@@ -3,7 +3,6 @@
 namespace Ts\Test\Http\APIs\V1;
 
 use App\Models\User;
-use App\Models\VerifyCode;
 
 class AuthRegisterTest extends TestCase
 {
@@ -257,38 +256,5 @@ class AuthRegisterTest extends TestCase
             'code' => 1004,
         ]);
         $this->seeJsonEquals($json);
-    }
-
-    /**
-     * 测试注册一个合法的用户.
-     *
-     * message code:
-     * test method: \App\Http\Controllers\APIs\V1\AuthController::register;
-     *
-     * @author martinsun <syh@sunyonghong.com>
-     * @datetime 2017-01-05T11:34:43+080
-     *
-     * @version  1.0
-     */
-    public function testCheckRegister()
-    {
-        //创建验证码
-        $verify = new VerifyCode();
-        $verify->account = '15266668888';
-        $verify->makeVerifyCode();
-        $verify->save();
-
-        //注册数据
-        $requestBody = [
-            'phone'       => '15266668888',
-            'name'        => 'test_username',
-            'password'    => '123456',
-            'device_code' => 'test2',
-            'code'        => $verify->code,
-        ];
-
-        $this->postJson($this->uri, $requestBody);
-        // 返回201表示注册成功
-        $this->seeStatusCode(201);
     }
 }

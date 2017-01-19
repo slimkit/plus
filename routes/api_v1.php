@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 
 // 获取手机验证码
 Route::post('/auth/phone/send-code', 'AuthController@sendPhoneCode')
@@ -45,7 +44,8 @@ Route::group([
 ], function ($routes) {
     // 修改用户资料
     Route::patch('/', 'UserController@profile')
-        ->middleware(App\Http\Middleware\ChangeUserAvatar::class);
+        ->middleware(App\Http\Middleware\ChangeUserAvatar::class)
+        ->middleware(App\Http\Middleware\ChangeUsername::class);
     // 修改用户密码
     Route::patch('/password', 'UserController@resetPassword') // 设置控制器
         ->middleware(App\Http\Middleware\VerifyPassword::class); // 验证用户密码是否正确
@@ -73,24 +73,15 @@ Route::group([
         ->name('storage/upload');
 });
 
-Route::post('/storage', function (Request $request) {
-    // var_dump(app());
-    $hash = $request->input('hash');
-    $filename = $request->input('filename');
-    $storage = new Ts\Storages\Storage();
-    $info = $storage->createStorageTask($filename, $hash);
-    var_dump($info);
-});
-
 // IM相关接口
 Route::group([
-    'prefix' => 'im',
+    'prefix'     => 'im',
     'middleware' => [
         App\Http\Middleware\AuthUserToken::class,
     ],
 ], function () {
-    Route::get('/users', 'ImController@getImAccount');
-    Route::get('/conversations', 'ImController@conversationsList');//获取聊天列表
-    Route::post('/conversations', 'ImController@createConversations');//创建聊天
-    Route::get('/conversations/{cid}', 'ImController@conversationsOne');//获取单个聊天信息
+    Route::get('/users', 'ImController@getImUserInfo');
+    Route::get('/conversations', 'ImController@conversationsList'); //获取聊天列表
+    Route::post('/conversations', 'ImController@createConversations'); //创建聊天
+    Route::get('/conversations/{cid}', 'ImController@conversationsOne'); //获取单个聊天信息
 });

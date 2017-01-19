@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\APIs\V1;
 
+use App\Exceptions\MessageResponseBody;
 use App\Http\Controllers\Controller;
 use App\Models\ImUser;
 use App\Models\User;
@@ -24,7 +25,7 @@ class ImController extends Controller
      * @return mixed 返回结果
      */
     public function getImAccount(Request $request)
-    {
+	{
 		// 当前登陆的用户
         $user = $request->attributes->get('user');
 
@@ -38,11 +39,14 @@ class ImController extends Controller
 			$data = $ImService->usersPost(['uid' => $user->id, 'name' => $user->name]);
 		}
 
+        $data = $ImUser->usersPost(['uid' => $user->id, 'name' => $user->name]);
 
         return app(MessageResponseBody::class, [
             'code' => 0,
+            'code'   => 0,
             'status' => true,
             'data' => $data,
+            'data'   => $data,
         ])->setStatusCode(200);
     }
 
@@ -66,6 +70,7 @@ class ImController extends Controller
         if (!$Im->checkConversationType($type)) {
             return app(MessageResponseBody::class, [
                 'code' => 3001,
+                'code'   => 3001,
                 'status' => false,
             ])->setStatusCode(422);
         }
@@ -74,14 +79,17 @@ class ImController extends Controller
             'type' => intval($type),
             'name' => (string) $request->input('name'),
             'pwd' => (string) $request->input('name'),
+            'pwd'  => (string) $request->input('name'),
             'uids' => $request->input('uids'),
             'uid' => $user->id,
+            'uid'  => $user->id,
         ];
 
         $res = $Im->conversationsPost($conversations);
         if (!$res) {
             return app(MessageResponseBody::class, [
                 'code' => 3002,
+                'code'   => 3002,
                 'status' => false,
             ])->setStatusCode(422);
         }
