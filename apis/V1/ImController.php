@@ -44,12 +44,6 @@ class ImController extends Controller
                     'im_password' => $res_data['token'],
                 ];
             }
-
-            return app(MessageResponseBody::class, [
-                'code' => 0,
-                'status' => true,
-                'data' => $data,
-            ])->setStatusCode(200);
         }
 
         return app(MessageResponseBody::class, [

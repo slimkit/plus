@@ -1,5 +1,5 @@
 {
-    "name": "laravel/laravel",
+    "name": "zhiyicx/thinksns-plus",
     "description": "The Laravel Framework.",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
@@ -52,5 +52,10 @@
     "config": {
         "preferred-install": "dist",
         "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
     }
 }

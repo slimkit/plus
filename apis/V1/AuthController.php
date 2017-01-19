@@ -96,6 +96,7 @@ class AuthController extends Controller
             'refresh_token' => $token->refresh_token,
             'created_at'    => $token->created_at->getTimestamp(),
             'expires'       => $token->expires,
+            'user_id'       => $user->id,
         ];
         //IM账号信息同步
         // 先注销，开发人先自己思考下～这是作产品，不是完成某个项目，不是说交了就完事了～
