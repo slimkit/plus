@@ -19,11 +19,12 @@ class ChangeUsename
     {
         $username = $request->input('name');
         if ($username) {
-            return app(VerifyUserNameRole::class)->handle($request, function (Request $request) use($next, $username) {
+            return app(VerifyUserNameRole::class)->handle($request, function (Request $request) use ($next, $username) {
                 return app(CheckUserByNameNotExisted::class)->handle($request, function (Request $request) use ($next, $username) {
                     $user = $request->attributes->get('user');
                     $user->name = $username;
                     $user->save();
+
                     return $next($request);
                 });
             });
