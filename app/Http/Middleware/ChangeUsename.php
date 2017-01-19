@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 
 class ChangeUsename
 {
@@ -14,8 +15,20 @@ class ChangeUsename
      *
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
+        $username = $request->input('name');
+        if ($username) {
+            return app(VerifyUserNameRole::class)->handle($request, function (Request $request) use($next, $username) {
+                return app(CheckUserByNameNotExisted::class)->handle($request, function (Request $request) use ($next, $username) {
+                    $user = $request->attributes->get('user');
+                    $user->name = $username;
+                    $user->save();
+                    return $next($request);
+                });
+            });
+        }
+
         return $next($request);
     }
 }
