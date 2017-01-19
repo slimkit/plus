@@ -73,15 +73,6 @@ Route::group([
         ->name('storage/upload');
 });
 
-Route::post('/storage', function (Request $request) {
-    // var_dump(app());
-    $hash = $request->input('hash');
-    $filename = $request->input('filename');
-    $storage = new Ts\Storages\Storage();
-    $info = $storage->createStorageTask($filename, $hash);
-    var_dump($info);
-});
-
 // IM相关接口
 Route::group([
     'prefix'     => 'im',
