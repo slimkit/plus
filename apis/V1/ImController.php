@@ -142,7 +142,7 @@ class ImController extends Controller
      *
      * @param int $cid 会话ID
      *
-     * @return 
+     * @return
      */
     public function getConversation(int $cid)
     {
