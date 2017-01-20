@@ -27,12 +27,12 @@ class Service
      */
     public $service_urls = [
         'base_url' => 'http://192.168.10.222:9900',
-        'apis'     => [
-            'users'         => '/users',
+        'apis' => [
+            'users' => '/users',
             'conversations' => '/conversations',
-            'member'        => '/conversations/member',
-            'limited'       => '/conversations/{cid}/limited-members',
-            'message'       => '/conversations/{cid}/messages',
+            'member' => '/conversations/member',
+            'limited' => '/conversations/{cid}/limited-members',
+            'message' => '/conversations/{cid}/messages',
         ],
     ];
 
@@ -42,10 +42,10 @@ class Service
      * @var array
      */
     protected $response_type = [
-        'post'   => ['post', 'add', 'init'],
-        'put'    => ['put', 'update', 'save'],
+        'post' => ['post', 'add', 'init'],
+        'put' => ['put', 'update', 'save'],
         'delete' => ['delete', 'del'],
-        'get'    => ['get', 'select'],
+        'get' => ['get', 'select'],
     ];
 
     /**
@@ -54,7 +54,7 @@ class Service
      * @var array
      */
     public $service_auth = [
-        'user'     => 'admin',
+        'user' => 'admin',
         'password' => '123456',
     ];
 
@@ -220,44 +220,6 @@ class Service
     }
 
     /**
-     * 初始化IM用户.
-     *
-     * @author martinsun <syh@sunyonghong.com>
-     * @datetime 2017-01-09T09:52:07+080
-     *
-     * @version  1.0
-     *
-     * @param int $user_id 本地用户id
-     *
-     * @return array IM用户信息
-     */
-    public function usersDoPost()
-    {
-        $user_id = $this->params['uid'] ?? 0;
-        if (!$user_id || !is_numeric($user_id)) {
-            $this->error = '参数非法';
-
-            return false;
-        }
-
-        // 发送请求
-        $res = $this->request();
-
-        // 获取返回数据
-        $res_data = $res->getBody();
-        //获取执行结果
-        $res_data = json_decode($res_data->getContents(), true);
-        if ($res->getStatusCode() == 201 || $res_data['code'] == 201) {
-            return $res_data;
-        } else {
-            // 添加失败,返回服务器错误信息
-            $this->error = $res_data['msg'];
-
-            return false;
-        }
-    }
-
-    /**
      * 检测会话类型.
      *
      * @author martinsun <syh@sunyonghong.com>
@@ -282,18 +244,16 @@ class Service
      *
      * @version  1.0
      *
-     * @param bool $get_body 是否获取数据信息
-     *
-     * @return class,array 如果 $get_body设置为false,返回请求实例对象,否则返回请求结果的body体
+     * @return ClientClass
      */
-    public function request($get_body = false)
+    public function request()
     {
         // 创建请求根地址类
         $client = new Client(['base_uri' => $this->service_urls['base_url']]);
 
         // 发送请求内容
         $request_body = [
-            'auth'        => array_values($this->service_auth),
+            'auth' => array_values($this->service_auth),
             'http_errors' => $this->service_debug,
         ];
 
@@ -315,23 +275,7 @@ class Service
             $request_body['form_params'] = $this->params;
         }
         // 发送请求
-        $res = $client->request($this->requset_method, $request_url, $request_body);
-
-        // 判断并返回期望得到的执行结果类型
-        if ($get_body === true) {
-            $body = $res->getBody()->getContents();
-            if ($body) {
-                $ret = json_decode($body, true);
-            } else {
-                $ret = [
-                    'code' => $res->getStatusCode(),
-                ];
-            }
-
-            return $ret;
-        } else {
-            return $res;
-        }
+        return $client->request($this->requset_method, $request_url, $request_body);
     }
 
     /**
