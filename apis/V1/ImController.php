@@ -138,11 +138,11 @@ class ImController extends Controller
      * @author martinsun <syh@sunyonghong.com>
      * @datetime 2017-01-20T16:22:58+080
      *
-     * @version  [version]
+     * @version  1.0
      *
-     * @param int $cid [description]
+     * @param int $cid 会话ID
      *
-     * @return [type] [description]
+     * @return 
      */
     public function getConversation(int $cid)
     {
