@@ -7,6 +7,7 @@
     "require": {
         "php": ">=7.0",
         "flc/alidayu": "^2.0",
+        "intervention/image": "^2.3",
         "laravel/framework": "5.3.*",
         "zhuzhichao/ip-location-zh": "^2.1"
     },

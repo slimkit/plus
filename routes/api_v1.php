@@ -54,7 +54,7 @@ Route::group([
 });
 
 // 获取一个附件资源
-Route::get('/storages/{storage}', 'StorageController@get');
+Route::get('/storages/{storage}/{process?}', 'StorageController@get');
 // 附件储存相关
 Route::group([
     'middleware' => [

@@ -134,9 +134,9 @@ class Storage
         return $response->setStatus(true);
     }
 
-    public function url(string $filename, string $engine = 'local')
+    public function url(string $filename, array $process = [], string $engine = 'local')
     {
-        return static::$storages[$engine]->url($filename);
+        return static::$storages[$engine]->url($filename, $process);
     }
 
     /**

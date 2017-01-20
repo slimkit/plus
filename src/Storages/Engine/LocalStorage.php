@@ -7,6 +7,8 @@ use App\Models\StorageTask;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Ts\Interfaces\Storage\StorageEngineInterface;
+use Illuminate\Filesystem\Filesystem;
+use Image;
 
 class LocalStorage implements StorageEngineInterface
 {
@@ -35,11 +37,72 @@ class LocalStorage implements StorageEngineInterface
         return $response->setStatus($this->exists($filename));
     }
 
-    public function url(string $filename)
+    public function url(string $filename, array $process = [])
     {
-        $path = Storage::url($this->getPath($filename));
+        $path = $this->markProcessFilename($filename, $process);
 
         return url($path);
+    }
+
+    protected function markProcessFilename(string $filename, array $process = [])
+    {
+        $filesystem = app(Filesystem::class);
+        $name = $filesystem->name($filename);
+        $dir = 'process/'.$filesystem->dirname($filename);
+        $ext = $filesystem->extension($filename);
+
+        if (!in_array(strtolower($ext), ['png', 'jpg', 'jpge', 'webp'])) {
+            return Storage::url($filename);
+        }
+
+        $crop = array_get($process, 'crop');
+        $crop_w = array_get($crop, 'w');
+        $crop_h = array_get($crop, 'h');
+        $crop_x = array_get($crop, 'x', null);
+        $crop_y = array_get($crop, 'y', null);
+
+        $quality = array_get($process, 'quality', 100);
+
+        $resize = array_get($process, 'resize');
+        $resize_w = array_get($resize, 'w');
+        $resize_h = array_get($resize, 'h');
+
+        $e = implode('-', [
+            'c_w'.$crop_w,
+            'c_h'.$crop_h,
+            'c_x'.$crop_x,
+            'c_y'.$crop_y,
+            'q'.$quality,
+            'r_w'.$resize_w,
+            'r_h'.$resize_h,
+        ]);
+
+        $newfilename = $dir.'/'.$name.'/'.$e.'.'.$ext;
+        $newpath = Storage::url($newfilename);
+        if ($this->exists($newfilename)) {
+            return $newpath;
+        }
+
+        $fullpath = storage_path('app/public/'.$filename);
+        $image = Image::make($fullpath);
+
+        // if ($quality) {
+        //     $image->encode($ext, $quality);
+        // }
+
+        if ($crop_w && $crop_h) {
+            $image->crop($crop_w, $crop_h, $crop_x, $crop_y);
+        }
+
+        if ($resize_w || $resize_h) {
+            $image->resize($resize_w, $resize_h);
+        }
+
+        $savepath = storage_path('app/public/'.$newfilename);
+        Storage::makeDirectory(dirname($this->getPath($newfilename)));
+        $image->save($savepath, $quality);
+
+        return $newpath;
     }
 
     /**

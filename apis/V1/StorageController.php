@@ -9,14 +9,17 @@ use App\Models\StorageTask;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Ts\Storages\Storage;
+use json_decode;
 
 class StorageController extends Controller
 {
     protected static $storage;
 
-    public function get(StorageModel $storage)
+    public function get(Request $request, StorageModel $storage, string $process = '{}')
     {
-        $url = $this->storage()->url($storage->filename);
+        // {"crop":{"w":100,"h":100},"quality":80,"resize":{"w":100,"h":100}}
+        $process = json_decode($process, true);
+        $url = $this->storage()->url($storage->filename, $process);
 
         return redirect($url, 302);
     }
