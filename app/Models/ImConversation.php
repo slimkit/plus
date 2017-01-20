@@ -25,7 +25,7 @@ class ImConversation extends Model
      *
      * @var array
      */
-    protected $hidden = ['id', 'is_disabled', 'updated_at'];
+    protected $hidden = ['id', 'is_disabled', 'created_at', 'updated_at'];
 
     public function setUidsAttribute($uids)
     {

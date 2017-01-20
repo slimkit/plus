@@ -27,12 +27,12 @@ class Service
      */
     public $service_urls = [
         'base_url' => 'http://192.168.10.222:9900',
-        'apis'     => [
-            'users'         => '/users',
+        'apis' => [
+            'users' => '/users',
             'conversations' => '/conversations',
-            'member'        => '/conversations/member',
-            'limited'       => '/conversations/{cid}/limited-members',
-            'message'       => '/conversations/{cid}/messages',
+            'member' => '/conversations/member',
+            'limited' => '/conversations/{cid}/limited-members',
+            'message' => '/conversations/{cid}/messages',
         ],
     ];
 
@@ -42,10 +42,10 @@ class Service
      * @var array
      */
     protected $response_type = [
-        'post'   => ['post', 'add', 'init'],
-        'put'    => ['put', 'update', 'save'],
+        'post' => ['post', 'add', 'init'],
+        'put' => ['put', 'update', 'save'],
         'delete' => ['delete', 'del'],
-        'get'    => ['get', 'select'],
+        'get' => ['get', 'select'],
     ];
 
     /**
@@ -54,7 +54,7 @@ class Service
      * @var array
      */
     public $service_auth = [
-        'user'     => 'admin',
+        'user' => 'admin',
         'password' => '123456',
     ];
 
@@ -253,7 +253,7 @@ class Service
 
         // 发送请求内容
         $request_body = [
-            'auth'        => array_values($this->service_auth),
+            'auth' => array_values($this->service_auth),
             'http_errors' => $this->service_debug,
         ];
 
@@ -276,6 +276,45 @@ class Service
         }
         // 发送请求
         return $client->request($this->requset_method, $request_url, $request_body);
+    }
+
+    /**
+     * 检测聊天的uids参数是否合法.
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-20T14:19:39+080
+     *
+     * @version  1.0
+     *
+     * @param int          $type 聊天会话类型
+     * @param string|array $uids 默认加入聊天的用户uid组
+     *
+     * @return booelan 是否合法
+     */
+    public function checkUids(int $type, $uids)
+    {
+        $uids = is_array($uids) ? $uids : array_filter(explode(',', $uids));
+        switch ($type) {
+            case 0:
+                // 私聊 必须包含2个uid
+                if (count($uids) < 2) {
+                    return false;
+                }
+                break;
+            case 1:
+                // 群聊 至少需要一个uid
+                if (count($uids) < 1) {
+                    return false;
+                }
+                break;
+            case 2:
+                // 聊天室 不限制
+                break;
+            default:
+                return false;
+        }
+
+        return true;
     }
 
     /**

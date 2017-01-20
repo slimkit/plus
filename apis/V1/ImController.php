@@ -6,6 +6,7 @@ use App\Exceptions\MessageResponseBody;
 use App\Http\Controllers\Controller;
 use App\Models\ImUser;
 use App\Models\User;
+use App\Models\ImConversation;
 use Illuminate\Http\Request;
 use Ts\IM\Service as ImService;
 
@@ -40,7 +41,7 @@ class ImController extends Controller
             if ($res['code'] == 201) {
                 // 注册成功,保存本地用户
                 $data = [
-                    'user_id'     => $user->id,
+                    'user_id' => $user->id,
                     'im_password' => $res['data']['token'],
                 ];
                 $ImUser->create($data);
@@ -50,13 +51,13 @@ class ImController extends Controller
         }
         if ($data) {
             return app(MessageResponseBody::class, [
-                'code'   => 0,
+                'code' => 0,
                 'status' => true,
-                'data'   => $data,
+                'data' => $data,
             ])->setStatusCode(200);
         } else {
             return app(MessageResponseBody::class, [
-                'code'   => 3002,
+                'code' => 3002,
                 'status' => false,
             ])->setStatusCode(422);
         }
@@ -76,30 +77,112 @@ class ImController extends Controller
      */
     public function createConversations(Request $request)
     {
-        //聊天对话类型
         $type = intval($request->input('type'));
-        $Im = new ImService();
-        if (!$Im->checkConversationType($type)) {
-            return app(MessageResponseBody::class, [
-                'code'   => 3001,
-                'status' => false,
-            ])->setStatusCode(422);
+        $ImService = new ImService();
+        // 聊天对话类型
+        if (!$request->exists('type') || !$ImService->checkConversationType($type)) {
+            // 会话类型不支持
+            return $this->returnMessage(3003, $info, 400);
         }
         $user = $request->attributes->get('user');
+        // 如果是单聊 检测是否已经存在
+        $uids = is_array($request->input('uids')) ? $request->input('uids') : array_filter(explode(',', $request->input('uids')));
+        $uids[] = $user->id;
+        sort($uids);
+        $info = ImConversation::where(['user_id' => $user->id, 'uids' => implode(',', $uids)])->first();
+        if ($info) {
+            $info = $info->toArray();
+            $info['uids'] = explode(',', $info['uids']);
+
+            return $this->returnMessage(0, $info, 200);
+        }
+        // 组装数据
         $conversations = [
             'type' => intval($type),
             'name' => (string) $request->input('name'),
-            'pwd'  => (string) $request->input('pwd'),
-            'uids' => $request->input('uids'),
-            'uid'  => $user->id,
+            'pwd' => (string) $request->input('pwd'),
+            'uids' => $uids,
+            'uid' => $user->id,
         ];
 
-        $res = $Im->conversationsPost($conversations);
-        if (!$res) {
+        // 检测uids参数是否合法
+        $is_void = $ImService->checkUids($conversations['type'], $conversations['uids']);
+        if (!$is_void) {
+            // 返回会话参数错误
+            return $this->returnMessage(3004, [], 422);
+        }
+        $res = $ImService->conversationsPost($conversations);
+        if ($res['code'] != '201') {
+            return $this->returnMessage(3005, [], 422);
+        } else {
+            // 保存会话
+            $addConversation = [
+                'user_id' => $user->id,
+                'cid' => $res['data']['cid'],
+                'name' => $res['data']['name'],
+                'pwd' => $res['data']['pwd'],
+                'is_disabled' => 0,
+                'type' => $res['data']['type'],
+                'uids' => $uids,
+            ];
+            $info = ImConversation::create($addConversation);
+            $info = $info->toArray();
+
+            return $this->returnMessage(0, $info, 200);
+        }
+    }
+
+    /**
+     * 获取会话信息.
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-20T16:22:58+080
+     *
+     * @version  [version]
+     *
+     * @param int $cid [description]
+     *
+     * @return [type] [description]
+     */
+    public function getConversation(int $cid)
+    {
+        $info = ImConversation::where('cid', $cid)->first();
+        if ($info) {
+            $info = $info->toArray();
+            $info['uids'] = explode(',', $info['uids']);
+
+            return $this->returnMessage(0, $info, 200);
+        }
+
+        return $this->returnMessage(3006, [], 404);
+    }
+    /**
+     * 返回信息.
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-20T15:49:10+080
+     *
+     * @version  1.0
+     *
+     * @param int   $code      code状态码 0表示成功
+     * @param int   $http_code http状态码
+     * @param array $data      返回数据
+     *
+     * @return
+     */
+    private function returnMessage(int $code, array $data, $http_code = 200)
+    {
+        if ($code !== 0) {
             return app(MessageResponseBody::class, [
-                'code'   => 3002,
+                'code' => $code,
                 'status' => false,
-            ])->setStatusCode(422);
+            ])->setStatusCode($http_code);
+        } else {
+            return app(MessageResponseBody::class, [
+                'code' => 0,
+                'status' => true,
+                'data' => $data,
+            ])->setStatusCode($http_code);
         }
     }
 }
