@@ -19,10 +19,6 @@
     <a href="https://www.codacy.com/app/shiweidu/thinksns-plus?utm_source=github.com&utm_medium=referral&utm_content=zhiyicx/thinksns-plus&utm_campaign=Badge_Coverage">
         <img src="https://api.codacy.com/project/badge/Coverage/8320deaa80b8489f95fcedaae6df079d" alt="Codacy Badge">
     </a>
-    <!-- license -->
-    <a href="LICENSE">
-        <img src="https://img.shields.io/badge/license-Apache%202-blue.svg" alt="license">
-    </a>
 </p>
 
 # [documents](documents)
