@@ -25,7 +25,7 @@ class CheckUserByPhoneNotExisted
         if ($user) {
             return app(MessageResponseBody::class, [
                 'code' => 1010,
-            ])->setStatusCode(403);
+            ])->setStatusCode(200);
         }
 
         return $next($request);
