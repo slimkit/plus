@@ -86,6 +86,7 @@ class GetUserTest extends TestCase
         foreach ($this->user->datas as $data) {
             $datas[$data->profile] = $data->pivot->user_profile_setting_data;
         }
+        $datas['user_id'] = $this->user->id;
         $json = $this->createMessageResponseBody([
             'status' => true,
             'data'   => $datas,
