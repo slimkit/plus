@@ -78,11 +78,12 @@ class UserController extends Controller
                 'code'    => 1005,
             ])->setStatusCode(404);
         }
-        $userDatas = $user->datas;
+        
         $datas = [];
-        foreach ($userDatas as $value) {
+        foreach ($user->datas as $value) {
             $datas[$value->profile] = $value->pivot->user_profile_setting_data;
         }
+        $datas['user_id'] = $user->id;
 
         return app(MessageResponseBody::class, [
             'status'  => true,
