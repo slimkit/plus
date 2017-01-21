@@ -37,72 +37,57 @@ class LocalStorage implements StorageEngineInterface
         return $response->setStatus($this->exists($filename));
     }
 
-    public function url(string $filename, array $process = [])
+    public function url(string $filename, int $process = 100)
     {
         $path = $this->markProcessFilename($filename, $process);
 
         return url($path);
     }
 
-    protected function markProcessFilename(string $filename, array $process = [])
+    protected function markProcessFilename(string $filename, int $process)
     {
+        // base info.
         $filesystem = app(Filesystem::class);
         $name = $filesystem->name($filename);
         $dir = 'process/'.$filesystem->dirname($filename);
         $ext = $filesystem->extension($filename);
 
-        if (!in_array(strtolower($ext), ['png', 'jpg', 'jpge', 'webp'])) {
+        // create new image filename.
+        $processFilename = sprintf('%s/%s/%s.%s', $dir, $name, $process, $ext);
+
+        //  return origin.
+        if (
+            !in_array(strtolower($ext), ['png', 'jpg', 'jpeg', 'webp'])
+            || $process === 100
+        ) {
             return Storage::url($filename);
+        } else if ($this->exists($processFilename)) {
+            return Storage::url($processFilename);
         }
 
-        $crop = array_get($process, 'crop');
-        $crop_w = array_get($crop, 'w');
-        $crop_h = array_get($crop, 'h');
-        $crop_x = array_get($crop, 'x', null);
-        $crop_y = array_get($crop, 'y', null);
-
-        $quality = array_get($process, 'quality', 100);
-
-        $resize = array_get($process, 'resize');
-        $resize_w = array_get($resize, 'w');
-        $resize_h = array_get($resize, 'h');
-
-        $e = implode('-', [
-            'c_w'.$crop_w,
-            'c_h'.$crop_h,
-            'c_x'.$crop_x,
-            'c_y'.$crop_y,
-            'q'.$quality,
-            'r_w'.$resize_w,
-            'r_h'.$resize_h,
-        ]);
-
-        $newfilename = $dir.'/'.$name.'/'.$e.'.'.$ext;
-        $newpath = Storage::url($newfilename);
-        if ($this->exists($newfilename)) {
-            return $newpath;
-        }
-
+        // create image resource.
         $fullpath = storage_path('app/public/'.$filename);
         $image = Image::make($fullpath);
 
-        // if ($quality) {
-        //     $image->encode($ext, $quality);
-        // }
+        // get origin image size.
+        $width = $image->width();
+        $height = $image->height();
 
-        if ($crop_w && $crop_h) {
-            $image->crop($crop_w, $crop_h, $crop_x, $crop_y);
-        }
+        // Calculate new size.
+        $processWidth = intval($width / 100 * $process);
+        $processHeight = intval($height / 100 * $process);
 
-        if ($resize_w || $resize_h) {
-            $image->resize($resize_w, $resize_h);
-        }
+        // Setting new image size.
+        $image->resize($processWidth, $processHeight);
 
-        $savepath = storage_path('app/public/'.$newfilename);
-        Storage::makeDirectory(dirname($this->getPath($newfilename)));
-        $image->save($savepath, $quality);
+        // 打包新文件.
+        $image->encode();
+        
+        // 保存转换文件
+        Storage::disk('public')
+            ->put($processFilename, $image, 'public');
 
-        return $newpath;
+        return Storage::url($processFilename);
     }
 
     /**

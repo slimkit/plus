@@ -15,10 +15,8 @@ class StorageController extends Controller
 {
     protected static $storage;
 
-    public function get(Request $request, StorageModel $storage, string $process = '{}')
+    public function get(Request $request, StorageModel $storage, int $process = 100)
     {
-        // {"crop":{"w":100,"h":100},"quality":80,"resize":{"w":100,"h":100}}
-        $process = json_decode($process, true);
         $url = $this->storage()->url($storage->filename, $process);
 
         return redirect($url, 302);
