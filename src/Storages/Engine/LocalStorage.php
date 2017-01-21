@@ -61,7 +61,7 @@ class LocalStorage implements StorageEngineInterface
             || $process === 100
         ) {
             return Storage::url($filename);
-        } else if ($this->exists($processFilename)) {
+        } elseif ($this->exists($processFilename)) {
             return Storage::url($processFilename);
         }
 
@@ -82,7 +82,7 @@ class LocalStorage implements StorageEngineInterface
 
         // 打包新文件.
         $image->encode();
-        
+
         // 保存转换文件
         Storage::disk('public')
             ->put($processFilename, $image, 'public');
