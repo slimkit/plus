@@ -78,7 +78,7 @@ class UserController extends Controller
                 'code'    => 1005,
             ])->setStatusCode(404);
         }
-        
+
         $datas = [];
         foreach ($user->datas as $value) {
             $datas[$value->profile] = $value->pivot->user_profile_setting_data;
