@@ -1,5 +1,3 @@
-import Vue from 'vue';
-
 // jQuery and Bootstrap-SASS
 // -------------------------
 // Questions: Why use CommonJS require?
@@ -8,6 +6,8 @@ import Vue from 'vue';
 window.$ = window.jQuery = require('jquery');
 require('bootstrap-sass');
 
+// The TS+ app.
+import Vue from 'vue';
 import App from './component/App';
 
 /* eslint-disable no-new */
