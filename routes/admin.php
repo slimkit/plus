@@ -17,10 +17,14 @@ Route::post('/login', 'IndexController@doLogin')
     ->middleware(App\Http\Middleware\VerifyPassword::class)
     ->middleware(App\Http\Middleware\VerifyPermissionNode::class);
 
-Route::group([
-    'middleware' => [
-        App\Http\Middleware\CheckIsAdmin::class,
-    ],
-], function () {
-    Route::get('/', 'IndexController@index');
+Route::get('/', function () {
+    return view('admin.index');
 });
+
+// Route::group([
+//     'middleware' => [
+//         App\Http\Middleware\CheckIsAdmin::class,
+//     ],
+// ], function () {
+//     Route::get('/', 'IndexController@index');
+// });

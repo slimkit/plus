@@ -14,4 +14,4 @@ Homestead.yaml
 composer.lock
 yarn-error.log
 yarn.lock
-database/migrations/2017_01_12_074017_create_jobs_table.php
+.DS_Store

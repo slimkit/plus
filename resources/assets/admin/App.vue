@@ -1,22 +1,9 @@
 <template>
-  <div class="container" id="app">
-    <h2>{{ message }}</h2>
-    <input type="text" v-model="message">
+  <div id="app">
+    <router-view></router-view>
   </div>
 </template>
 
-<script>
-const App = {
-  data () {
-    return {
-      message: 'init message.'
-    };
-  }
-};
-
-export default App;
-</script>
-
 <style lang="scss">
-@import "../sass/bootstrap";
+@import "./style/app";
 </style>
