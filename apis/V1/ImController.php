@@ -41,7 +41,7 @@ class ImController extends Controller
             if ($res['code'] == 201) {
                 // 注册成功,保存本地用户
                 $data = [
-                    'user_id'     => $user->id,
+                    'user_id' => $user->id,
                     'im_password' => $res['data']['token'],
                 ];
                 $ImUser->create($data);
@@ -51,13 +51,13 @@ class ImController extends Controller
         }
         if ($data) {
             return app(MessageResponseBody::class, [
-                'code'   => 0,
+                'code' => 0,
                 'status' => true,
-                'data'   => $data,
+                'data' => $data,
             ])->setStatusCode(200);
         } else {
             return app(MessageResponseBody::class, [
-                'code'   => 3002,
+                'code' => 3002,
                 'status' => false,
             ])->setStatusCode(422);
         }
@@ -100,9 +100,9 @@ class ImController extends Controller
         $conversations = [
             'type' => intval($type),
             'name' => (string) $request->input('name'),
-            'pwd'  => (string) $request->input('pwd'),
+            'pwd' => (string) $request->input('pwd'),
             'uids' => $uids,
-            'uid'  => $user->id,
+            'uid' => $user->id,
         ];
 
         // 检测uids参数是否合法
@@ -117,13 +117,13 @@ class ImController extends Controller
         } else {
             // 保存会话
             $addConversation = [
-                'user_id'     => $user->id,
-                'cid'         => $res['data']['cid'],
-                'name'        => $res['data']['name'],
-                'pwd'         => $res['data']['pwd'],
+                'user_id' => $user->id,
+                'cid' => $res['data']['cid'],
+                'name' => $res['data']['name'],
+                'pwd' => $res['data']['pwd'],
                 'is_disabled' => 0,
-                'type'        => $res['data']['type'],
-                'uids'        => $uids,
+                'type' => $res['data']['type'],
+                'uids' => $uids,
             ];
             $info = ImConversation::create($addConversation);
             $info = $info->toArray();
@@ -156,6 +156,26 @@ class ImController extends Controller
 
         return $this->returnMessage(3006, [], 404);
     }
+    /**
+     * 获取会话列表.
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-22T09:23:42+080
+     *
+     * @version  1.0
+     *
+     * @return
+     */
+    public function getConversationList(Request $request)
+    {
+        $user = $request->attributes->get('user');
+        $list = ImConversation::where('user_id', $user->id)->orderBy('updated_at', 'desc')->get();
+        if ($list) {
+            return $this->returnMessage(0, $list->toArray(), 200);
+        }
+
+        return $this->returnMessage(0, [], 200);
+    }
 
     /**
      * 返回信息.
@@ -175,14 +195,14 @@ class ImController extends Controller
     {
         if ($code !== 0) {
             return app(MessageResponseBody::class, [
-                'code'   => $code,
+                'code' => $code,
                 'status' => false,
             ])->setStatusCode($http_code);
         } else {
             return app(MessageResponseBody::class, [
-                'code'   => 0,
+                'code' => 0,
                 'status' => true,
-                'data'   => $data,
+                'data' => $data,
             ])->setStatusCode($http_code);
         }
     }
