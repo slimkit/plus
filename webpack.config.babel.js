@@ -17,14 +17,10 @@ const isProd = NODE_ENV === 'production'
 // 各项资源地址定义
 const assetsRoot = path.join(__dirname, 'resources', 'assets')
 const buildAssetsRoot = path.join(__dirname, 'public')
-// const viewAssetsRoot = path.join(__dirname, 'resources', 'views')
 
 // 入口配置
 const entry = {
-  admin: [
-    path.join(assetsRoot, 'admin', 'index.js'),
-  ],
-  'admin-login': path.join(assetsRoot, 'admin', 'login.js')
+  admin: path.join(assetsRoot, 'admin', 'index.js'),
 }
 
 const cssLoaders = (options = {}) => {
