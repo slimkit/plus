@@ -170,10 +170,12 @@ class ImController extends Controller
 
         return $this->returnMessage(0, [], 200);
     }
+
     public function refresh($value = '')
     {
-        # code...
+        // code...
     }
+
     /**
      * 返回信息.
      *

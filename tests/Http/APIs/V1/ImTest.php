@@ -55,8 +55,8 @@ class ImTest extends TestCase
     protected function createTempData()
     {
         $user = User::create([
-            'phone' => '1520'.rand(1111111, 9999999),
-            'name' => 'ts_用户'.date('YmdHis'),
+            'phone'    => '1520'.rand(1111111, 9999999),
+            'name'     => 'ts_用户'.date('YmdHis'),
             'password' => bcrypt(123456),
         ]);
 
@@ -69,6 +69,7 @@ class ImTest extends TestCase
         $user->tokens()->save($auth);
         $this->user[] = $user;
     }
+
     /**
      * 测试获取用户授权.
      *
