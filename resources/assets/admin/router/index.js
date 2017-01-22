@@ -1,17 +1,25 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import auth, { requireAuth } from '../util/auth';
+import Login from '../component/Login';
 
 Vue.use(VueRouter);
 
-const Foo = { template: '<div>foo <router-link to="/demo">bar</router-link> </div>' };
-const Bar = { template: '<div>bar <router-link to="/">foo</router-link> </div>' };
+const Foo = { template: '<div>foo <router-link to="/login">bar</router-link> </div>' };
 
 const router = new VueRouter({
   mode: 'hash',
   base: '/admin/',
   routes: [
-    { path: '/', component: Foo },
-    { path: '/demo', component: Bar }
+    { path: '/', component: Foo, beforeEnter: requireAuth },
+    { path: '/login', component: Login },
+    {
+      path: '/logout',
+      beforeEnter (to, form, next) {
+        auth.logout();
+        next('/login');
+      }
+    }
   ]
 });
 

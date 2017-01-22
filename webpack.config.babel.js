@@ -20,7 +20,7 @@ const buildAssetsRoot = path.join(__dirname, 'public')
 
 // 入口配置
 const entry = {
-  admin: path.join(assetsRoot, 'admin', 'app.js'),
+  admin: path.join(assetsRoot, 'admin', 'index.js'),
 }
 
 const cssLoaders = (options = {}) => {

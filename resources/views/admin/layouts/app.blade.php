@@ -16,6 +16,7 @@
         window.TS = {!!
             json_encode([
                 'baseRUL' => url('admin'),
+                'auth' => false,
             ])
         !!};
     </script>
