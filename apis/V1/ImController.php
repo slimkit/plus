@@ -50,16 +50,9 @@ class ImController extends Controller
             }
         }
         if ($data) {
-            return app(MessageResponseBody::class, [
-                'code' => 0,
-                'status' => true,
-                'data' => $data,
-            ])->setStatusCode(200);
+            return $this->returnMessage(0, $data, 200);
         } else {
-            return app(MessageResponseBody::class, [
-                'code' => 3002,
-                'status' => false,
-            ])->setStatusCode(422);
+            return $this->returnMessage(3002, [], 422);
         }
     }
 
@@ -176,7 +169,10 @@ class ImController extends Controller
 
         return $this->returnMessage(0, [], 200);
     }
-
+    public function refresh($value = '')
+    {
+        # code...
+    }
     /**
      * 返回信息.
      *
