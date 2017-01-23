@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('tets');
+    return 'ThinkSNS+';
 });
 
 Route::group([
