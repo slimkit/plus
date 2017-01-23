@@ -27,12 +27,12 @@ class Service
      */
     public $service_urls = [
         'base_url' => 'http://192.168.10.222:9900',
-        'apis'     => [
-            'users'         => '/users',
+        'apis' => [
+            'users' => '/users',
             'conversations' => '/conversations',
-            'member'        => '/conversations/member',
-            'limited'       => '/conversations/{cid}/limited-members',
-            'message'       => '/conversations/{cid}/messages',
+            'member' => '/conversations/member',
+            'limited' => '/conversations/{cid}/limited-members',
+            'message' => '/conversations/{cid}/messages',
         ],
     ];
 
@@ -42,10 +42,11 @@ class Service
      * @var array
      */
     protected $response_type = [
-        'post'   => ['post', 'add', 'init'],
-        'put'    => ['put', 'update', 'save'],
+        'post' => ['post', 'add', 'init'],
+        'put' => ['put', 'update', 'save'],
         'delete' => ['delete', 'del'],
-        'get'    => ['get', 'select'],
+        'get' => ['get', 'select'],
+        'patch' =>,
     ];
 
     /**
@@ -54,7 +55,7 @@ class Service
      * @var array
      */
     public $service_auth = [
-        'user'     => 'admin',
+        'user' => 'admin',
         'password' => '123456',
     ];
 
@@ -253,7 +254,7 @@ class Service
 
         // 发送请求内容
         $request_body = [
-            'auth'        => array_values($this->service_auth),
+            'auth' => array_values($this->service_auth),
             'http_errors' => $this->service_debug,
         ];
 
