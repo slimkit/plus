@@ -184,6 +184,6 @@ const webpackConfig = {
     ...plugins,
   ]
 
-}
+};
 
-export default webpackConfig
+export default webpackConfig;
