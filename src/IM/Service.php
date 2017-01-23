@@ -46,7 +46,7 @@ class Service
         'put' => ['put', 'update', 'save'],
         'delete' => ['delete', 'del'],
         'get' => ['get', 'select'],
-        'patch' =>,
+        'patch' => ['patch'],
     ];
 
     /**
