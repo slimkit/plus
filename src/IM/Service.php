@@ -27,26 +27,32 @@ class Service
      */
     public $service_urls = [
         'base_url' => 'http://192.168.10.222:9900',
-        'apis'     => [
-            'users'         => '/users',
+        'apis' => [
+            'users' => '/users',
             'conversations' => '/conversations',
-            'member'        => '/conversations/member',
-            'limited'       => '/conversations/{cid}/limited-members',
-            'message'       => '/conversations/{cid}/messages',
+            'member' => '/conversations/member',
+            'limited' => '/conversations/{cid}/limited-members',
+            'message' => '/conversations/{cid}/messages',
         ],
     ];
 
+    /**
+     * 定义请求链接中拼接的参数.
+     *
+     * @var string
+     */
+    protected $sub_request_url = '';
     /**
      * 请求的类型别名定义.
      *
      * @var array
      */
     protected $response_type = [
-        'post'   => ['post', 'add', 'init'],
-        'put'    => ['put', 'update', 'save'],
+        'post' => ['post', 'add', 'init'],
+        'put' => ['put', 'update', 'save'],
         'delete' => ['delete', 'del'],
-        'get'    => ['get', 'select'],
-        'patch'  => ['patch'],
+        'get' => ['get', 'select'],
+        'patch' => ['patch'],
     ];
 
     /**
@@ -55,7 +61,7 @@ class Service
      * @var array
      */
     public $service_auth = [
-        'user'     => 'admin',
+        'user' => 'admin',
         'password' => '123456',
     ];
 
@@ -104,16 +110,20 @@ class Service
             $type_alias = self::parseName(substr($method, 13))[0];
             $this->request_mod = $request_mod;
         } else {
-            $this->error = '服务不可用';
+            $this->error = '聊天服务不可用';
 
             return false;
         }
 
+        //请求子参数
+        if (isset($params[1])) {
+            $this->sub_request_url = $params[1];
+        }
         // 调用本类中的方法,获取请求方法
         $type_alias = strtolower($type_alias);
         $this->requset_method = $this->getRequestType($type_alias);
 
-        // 定义类参数
+        // 请求参数赋值
         $this->params = $params[0];
 
         // 自定义方法是否存在,存在则执行并返回
@@ -189,6 +199,7 @@ class Service
         if (!$url) {
             return '';
         } else {
+            $url .= $this->sub_request_url;
             // 待替换字符串匹配
             preg_match_all('/\{(\w+)\}/', $url, $matches);
             $replace = $matches[1];
@@ -254,7 +265,7 @@ class Service
 
         // 发送请求内容
         $request_body = [
-            'auth'        => array_values($this->service_auth),
+            'auth' => array_values($this->service_auth),
             'http_errors' => $this->service_debug,
         ];
 
@@ -275,6 +286,7 @@ class Service
             // 采用表单的方式提交数据
             $request_body['form_params'] = $this->params;
         }
+
         // 发送请求
         return $client->request($this->requset_method, $request_url, $request_body);
     }

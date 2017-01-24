@@ -172,6 +172,44 @@ class ImController extends Controller
     }
 
     /**
+     * 刷新聊天授权.
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-01-22T17:35:47+080
+     *
+     * @version  1.0
+     *
+     * @return
+     */
+    public function refresh(Request $request)
+    {
+        $user = $request->attributes->get('user');
+        // 获取旧的password
+        $old_im_password = $request->input('password');
+
+        // 验证是否存在
+        $data = ImUser::where('im_password', $old_im_password)->first();
+        if ($data) {
+            // 刷新授权
+            $ImService = new ImService();
+            $res = $ImService->usersPatch(['token' => true, 'uid' => $user->id], '/{uid}');
+            // 处理返回数据
+            if ($res['code'] == 200) {
+                $data->im_password = $res['data']['token'];
+                $data->save();
+
+                return $this->returnMessage(0, $data->toArray(), 200);
+            } else {
+                // 返回错误
+                return $this->returnMessage(3008, [], 422);
+            }
+        } else {
+            // 返回错误
+            return $this->returnMessage(3007, [], 404);
+        }
+    }
+
+    /**
      * 返回信息.
      *
      * @author martinsun <syh@sunyonghong.com>

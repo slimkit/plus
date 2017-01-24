@@ -75,7 +75,7 @@ Route::group([
 
 // IM相关接口
 Route::group([
-    'prefix'     => 'im',
+    'prefix' => 'im',
     'middleware' => [
         App\Http\Middleware\AuthUserToken::class,
     ],
@@ -84,4 +84,5 @@ Route::group([
     Route::post('/conversations', 'ImController@createConversations'); //创建聊天
     Route::get('/conversations/{cid}', 'ImController@getConversation'); //获取单个聊天信息
     Route::get('/conversations/list/all', 'ImController@getConversationList'); //获取某个用户聊天列表
+    Route::patch('/users', 'ImController@refresh');//刷新授权
 });
