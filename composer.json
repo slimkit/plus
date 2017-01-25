@@ -9,7 +9,7 @@
         "flc/alidayu": "^2.0",
         "guzzlehttp/guzzle": "^6.2",
         "intervention/image": "^2.3",
-        "zhuzhichao/ip-location-zh": "^2.1"
+        "zhuzhichao/ip-location-zh": "^2.1",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0"
     },
