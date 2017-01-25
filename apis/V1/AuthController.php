@@ -148,7 +148,7 @@ class AuthController extends Controller
                 'code' => 1013,
                 'message' => '请重新登录',
                 'data' => null,
-            ])
+            ]);
         }
 
         DB::transaction(function () use ($token, $shutDownState) {
@@ -205,11 +205,11 @@ class AuthController extends Controller
         $user->createPassword($password);
         $user->save();
 
-        return response()->json(
+        return response()->json([
             'status' => true,
             'code' => 0,
             'message' => '重置密码成功',
             'data' => null,
-        );
+        ]);
     }
 }
