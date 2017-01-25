@@ -43,8 +43,9 @@ class IndexController extends Controller
         $user = $request->attributes->get('user');
         session(['user_id' => $user->id, 'is_admin' => 1]);
 
-        return app(MessageResponseBody::class, [
+        return response()->json([
             'status'  => true,
+            'code' => 0,
             'message' => '登录成功',
             'data'    => [
                 'jumpUrl' => '',
