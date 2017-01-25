@@ -27,8 +27,11 @@ class VerifyPhoneNumber
         ]);
 
         if ($validator->fails()) {
-            return app(MessageResponseBody::class, [
+            return response()->json([
+                'status' => false,
                 'code' => 1000,
+                'message' => '操作失败',
+                'data' => null,
             ])->setStatusCode(403);
         }
 

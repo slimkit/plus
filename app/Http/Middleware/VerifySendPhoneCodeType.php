@@ -27,8 +27,11 @@ class VerifySendPhoneCodeType
 
         // 传递获取类型不正确
         if (!in_array($type, $this->types)) {
-            return app(MessageResponseBody::class, [
+            return response()->json([
+                'status' => false,
                 'code' => 1011,
+                'message' => '类型错误',
+                'data' => null,
             ])->setStatusCode(403);
 
         // 如果是注册获取验证码，如果用户不存在继续执行
