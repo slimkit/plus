@@ -40,11 +40,13 @@ class SendMessage
 
     public function withPhone(): Response
     {
-        return app(SendPhoneMessage::class, [$this->verify])->send();
+        $message = new SendPhoneMessage($this->verify);
+        return $message->send();
     }
 
     public function withEmail(): Response
     {
-        return app(SendEmailMessage::class, [$this->verify])->send();
+        $message = new SendEmailMessage($this->verify);
+        return $message->send();
     }
 }

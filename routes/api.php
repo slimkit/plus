@@ -13,15 +13,9 @@
 */
 
 // RESTful API version 1.
-Route::group([
-    'prefix'     => 'v1',
-    'namespace'  => 'APIs\\V1',
-    'middleware' => [
-        App\Http\Middleware\ApiMessageResponse::class,
-    ],
-], function ($router) {
-    require base_path('routes/api_v1.php');
-});
+Route::prefix('v1')
+    ->namespace('APIs\\V1')
+    ->group(base_path('routes/api_v1.php'));
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();

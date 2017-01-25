@@ -28,13 +28,15 @@ class AuthController extends Controller
      */
     public function sendPhoneCode(Request $request)
     {
-        $vaildSecond = 60;
+        $vaildSecond = 1;
         $phone = $request->input('phone');
         $verify = VerifyCode::byAccount($phone)->byValid($vaildSecond)->orderByDesc()->first();
 
         if ($verify) {
-            return app(MessageResponseBody::class, [
+            return response()->json([
+                'status' => false,
                 'code' => 1008,
+                'message' => null,
                 'data' => $verify->makeSurplusSecond($vaildSecond),
             ])->setStatusCode(403);
         }
@@ -44,7 +46,9 @@ class AuthController extends Controller
         $verify->makeVerifyCode();
         $verify->save();
 
-        return app(SendMessage::class, [$verify, 'type' => 'phone'])->send();
+        $type = 'phone';
+        $message = new SendMessage($verify, $type);
+        return $message->send();
     }
 
     /**

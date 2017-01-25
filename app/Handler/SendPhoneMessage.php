@@ -17,21 +17,20 @@ class SendPhoneMessage
     public function __construct(VerifyCode $verify)
     {
         $this->verify = $verify;
-        $this->alidayu = app(Client::class, [
-            app(App::class, [
-                config('alidayu'),
-            ]),
-        ]);
+
+        $app = new App(config('alidayu'));
+        $this->alidayu = new Client($app);
     }
 
     public function send(): Response
     {
         $freeSignName = config('alidayu.sign_name');
         $verifyTemplateId = config('alidayu.verify_template_id');
-        $request = with(new AlibabaAliqinFcSmsNumSend())
-            ->setSmsParam([
-                'code' => $this->verify->code,
-            ])
+
+        $request = new AlibabaAliqinFcSmsNumSend();
+        $request->setSmsParam([
+            'code' => $this->verify->code,
+        ])
             ->setSmsFreeSignName($freeSignName)
             ->setSmsTemplateCode($verifyTemplateId)
             ->setRecNum($this->verify->account);
@@ -48,17 +47,19 @@ class SendPhoneMessage
             $this->verify->state = 1;
             $this->verify->save();
 
-            return app(MessageResponseBody::class, [
-                'status'  => true,
+            return response()->json([
+                'status' => true,
+                'code' => 0,
                 'message' => '发送成功',
+                'data' => null,
             ])->setStatusCode(201);
         }
 
-        return app(MessageResponseBody::class, [
-            'status'  => false,
-            'code'    => 1009,
-            'message' => $sub_msg ?: '',
-            'data'    => [$result, $sub_code, $sub_msg],
+        return response()->json([
+            'status' => false,
+            'code' => 1009,
+            'message' => $sub_msg ?: null,
+            'data' => [$result, $sub_code, $sub_msg],
         ])->setStatusCode(503);
     }
 }
