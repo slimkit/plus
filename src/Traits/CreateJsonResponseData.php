@@ -7,10 +7,10 @@ trait CreateJsonResponseData
     protected static function createJsonData(array $data = [])
     {
         $data = array_merge([
-            'status' => false,
-            'code' => 0,
+            'status'  => false,
+            'code'    => 0,
             'message' => null,
-            'data' => null,
+            'data'    => null,
         ], $data);
 
         if (!$data['message']) {

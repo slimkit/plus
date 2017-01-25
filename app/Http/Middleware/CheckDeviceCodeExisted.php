@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Exceptions\MessageResponseBody;
 use Closure;
 use Validator;
 
@@ -22,12 +21,11 @@ class CheckDeviceCodeExisted
             'device_code' => 'required',
         ]);
         if ($validator->fails()) {
-
             return response()->json([
-                'status' => false,
-                'code' => 1014,
+                'status'  => false,
+                'code'    => 1014,
                 'message' => '设备号不能为空',
-                'data' => null,
+                'data'    => null,
             ])->setStatusCode(422);
         }
 

@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Exceptions\MessageResponseBody;
 use App\Models\User;
 use Closure;
 use Ts\Traits\CreateJsonResponseData;
@@ -26,7 +25,6 @@ class VerifyPassword
 
         // 验证用户是否存在或者是否是一个user实例
         if (!$request->attributes->has('user') || !$user instanceof User) {
-
             return response()->json(static::createJsonData([
                 'code' => 1005,
             ]))->setStatusCode(404);

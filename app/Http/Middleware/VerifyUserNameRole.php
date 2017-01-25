@@ -2,11 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use App\Exceptions\MessageResponseBody;
 use Closure;
 use Illuminate\Http\Request;
-use Validator;
 use Ts\Traits\CreateJsonResponseData;
+use Validator;
 
 class VerifyUserNameRole
 {

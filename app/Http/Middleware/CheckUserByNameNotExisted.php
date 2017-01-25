@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Exceptions\MessageResponseBody;
 use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
@@ -11,6 +10,7 @@ use Ts\Traits\CreateJsonResponseData;
 class CheckUserByNameNotExisted
 {
     use CreateJsonResponseData;
+
     /**
      * 从检查用户是否不存在中间件.
      *

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\APIs\V1;
 
-use App\Exceptions\MessageResponseBody;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UserProfileSetting;

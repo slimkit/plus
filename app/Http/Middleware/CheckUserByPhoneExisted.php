@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Exceptions\MessageResponseBody;
 use App\Models\User;
 use Closure;
 use Ts\Traits\CreateJsonResponseData;
@@ -26,7 +25,6 @@ class CheckUserByPhoneExisted
 
         // 用户不存在 or 软删除用户
         if (!$user || $user->deleted_at) {
-
             return resopnse()->json(static::createJsonData([
                 'code' => 1005,
             ]))->setStatusCode(404);

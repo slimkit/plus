@@ -14,6 +14,7 @@ use Ts\Traits\CreateJsonResponseData;
 class ChangeUserAvatar
 {
     use CreateJsonResponseData;
+
     /**
      * 修改用户头像中间件入口.
      *
@@ -49,7 +50,6 @@ class ChangeUserAvatar
         $task = StorageTask::find($storage_task_id);
         $task->load('storage');
         if (!$task) {
-
             return response()->json(static::createJsonData([
                 'code' => 2000,
             ]))->setStatusCode(403);
@@ -92,7 +92,6 @@ class ChangeUserAvatar
     {
         $profile = UserProfileSetting::where('profile', 'avatar')->first();
         if (!$profile) {
-
             return response()->json(static::createJsonData([
                 'code' => 1017,
             ]))->setStatusCode(500);
@@ -118,7 +117,6 @@ class ChangeUserAvatar
     {
         $storage = $task->storage;
         if (!$storage) {
-
             return response()->json(static::createJsonData([
                 'code' => 2004,
             ]))->setStatusCode(404);

@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Exceptions\MessageResponseBody;
 use App\Models\VerifyCode;
 use Closure;
 use Ts\Traits\CreateJsonResponseData;
@@ -10,6 +9,7 @@ use Ts\Traits\CreateJsonResponseData;
 class VerifyPhoneCode
 {
     use CreateJsonResponseData;
+
     /**
      * 验证验证码中间件.
      *
@@ -31,7 +31,6 @@ class VerifyPhoneCode
             ->first();
 
         if (!$verify || $verify->state == 2) {
-
             return response()->json(static::createJsonData([
                 'code' => 1001,
             ]))->setStatusCode(403);

@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Exceptions\MessageResponseBody;
 use App\Models\User;
 use Closure;
 use Ts\Traits\CreateJsonResponseData;
@@ -10,6 +9,7 @@ use Ts\Traits\CreateJsonResponseData;
 class CheckUserByPhoneNotExisted
 {
     use CreateJsonResponseData;
+
     /**
      * Handle an incoming request.
      *
@@ -25,7 +25,6 @@ class CheckUserByPhoneNotExisted
 
         // 手机号已被使用
         if ($user) {
-
             return response()->json(static::createJsonData([
                 'code' => 1010,
             ]))->setStatusCode(403);

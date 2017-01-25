@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Exceptions\MessageResponseBody;
 use App\Models\AuthToken;
 use App\Models\User;
 use Closure;
@@ -55,7 +54,6 @@ class AuthUserToken
             ->first();
 
         if (!$authToken) {
-
             return response()->json(static::createJsonData([
                 'code' => 1016,
             ]))->setStatusCode(401);
@@ -78,7 +76,6 @@ class AuthUserToken
     protected function checkAccessTokenIsShutDownStep(AuthToken $authToken, Closure $next)
     {
         if ($authToken->state === 0) {
-
             return response()->json(static::createJsonData([
                 'code' => 1015,
             ]))->setStatusCode(401);
@@ -102,7 +99,6 @@ class AuthUserToken
     {
         $now = $authToken->freshTimestamp();
         if ($authToken->deleted_at || ($authToken->expires && $authToken->created_at->diffInSeconds($now) >= $authToken->expires)) {
-
             return response()->json(static::createJsonData([
                 'code' => 1012,
             ]))->setStatusCode(401);
@@ -125,7 +121,6 @@ class AuthUserToken
     protected function checkUserExistedStep($user, Closure $next)
     {
         if (!$user || !$user instanceof User) {
-
             return response()->json(static::createJsonData([
                 'code' => 1005,
             ]))->setStatusCode(401);
