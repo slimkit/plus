@@ -34,10 +34,10 @@ class AuthController extends Controller
 
         if ($verify) {
             return response()->json([
-                'status' => false,
-                'code' => 1008,
+                'status'  => false,
+                'code'    => 1008,
                 'message' => null,
-                'data' => $verify->makeSurplusSecond($vaildSecond),
+                'data'    => $verify->makeSurplusSecond($vaildSecond),
             ])->setStatusCode(403);
         }
 
@@ -48,6 +48,7 @@ class AuthController extends Controller
 
         $type = 'phone';
         $message = new SendMessage($verify, $type);
+
         return $message->send();
     }
 

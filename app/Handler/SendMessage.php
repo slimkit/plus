@@ -41,12 +41,14 @@ class SendMessage
     public function withPhone(): Response
     {
         $message = new SendPhoneMessage($this->verify);
+
         return $message->send();
     }
 
     public function withEmail(): Response
     {
         $message = new SendEmailMessage($this->verify);
+
         return $message->send();
     }
 }

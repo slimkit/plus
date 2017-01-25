@@ -2,7 +2,6 @@
 
 namespace App\Handler;
 
-use App\Exceptions\MessageResponseBody;
 use App\Models\VerifyCode;
 use Flc\Alidayu\App;
 use Flc\Alidayu\Client;
@@ -48,18 +47,18 @@ class SendPhoneMessage
             $this->verify->save();
 
             return response()->json([
-                'status' => true,
-                'code' => 0,
+                'status'  => true,
+                'code'    => 0,
                 'message' => '发送成功',
-                'data' => null,
+                'data'    => null,
             ])->setStatusCode(201);
         }
 
         return response()->json([
-            'status' => false,
-            'code' => 1009,
+            'status'  => false,
+            'code'    => 1009,
             'message' => $sub_msg ?: null,
-            'data' => [$result, $sub_code, $sub_msg],
+            'data'    => [$result, $sub_code, $sub_msg],
         ])->setStatusCode(503);
     }
 }
