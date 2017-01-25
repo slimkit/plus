@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exceptions\MessageResponseBody;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -45,7 +44,7 @@ class IndexController extends Controller
 
         return response()->json([
             'status'  => true,
-            'code' => 0,
+            'code'    => 0,
             'message' => '登录成功',
             'data'    => [
                 'jumpUrl' => '',
