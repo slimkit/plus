@@ -5,9 +5,11 @@ namespace App\Http\Middleware;
 use App\Exceptions\MessageResponseBody;
 use Closure;
 use Illuminate\Http\Request;
+use Ts\Traits\CreateJsonResponseData;
 
 class CheckIsAdmin
 {
+    use CreateJsonResponseData;
     /**
      * Handle an incoming request.
      *
@@ -24,14 +26,14 @@ class CheckIsAdmin
                 return redirect(route('admin.login'));
             }
 
-            return app(MessageResponseBody::class, [
-                'code'    => 5001,
+            return response()->json(static::createJsonData([
+                'code' => 5001,
                 'message' => '你不是管理员',
-                'data'    => [
-                    // 后台非管理员访问先跳转到管理员登录页
+                'data' => [
                     'jumpUrl' => 'login',
-                ],
-            ])->setStatusCode(403);
+                ]
+            ]))->setStatusCode(403);
+
         }
 
         return $next($request);

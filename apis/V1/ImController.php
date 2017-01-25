@@ -226,16 +226,16 @@ class ImController extends Controller
     private function returnMessage(int $code, array $data, $http_code = 200)
     {
         if ($code !== 0) {
-            return app(MessageResponseBody::class, [
+            return response()->json(static::createJsonData([
                 'code'   => $code,
                 'status' => false,
-            ])->setStatusCode($http_code);
+            ]))->setStatusCode($http_code);
         } else {
-            return app(MessageResponseBody::class, [
+            return response()->json(static::createJsonData([
                 'code'   => 0,
                 'status' => true,
                 'data'   => $data,
-            ])->setStatusCode($http_code);
+            ]))->setStatusCode($http_code);
         }
     }
 }

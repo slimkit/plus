@@ -6,9 +6,11 @@ use App\Exceptions\MessageResponseBody;
 use Closure;
 use Illuminate\Http\Request;
 use Validator;
+use Ts\Traits\CreateJsonResponseData;
 
 class VerifyUserNameRole
 {
+    use CreateJsonResponseData;
     /**
      * 最大用户名长度.
      *
@@ -36,9 +38,9 @@ class VerifyUserNameRole
         $length = strlen($request->input('name'));
 
         if ($length > $this->usernameMaxLength || $length < $this->usernameMinLength) {
-            return app(MessageResponseBody::class, [
+            return response()->json(static::createJsonData([
                 'code' => 1002,
-            ])->setStatusCode(403);
+            ]))->setStatusCode(403);
         }
 
         $validator = Validator::make($request->all(), [
@@ -46,9 +48,9 @@ class VerifyUserNameRole
         ]);
 
         if ($validator->fails()) {
-            return app(MessageResponseBody::class, [
+            return response()->json(static::createJsonData([
                 'code' => 1003,
-            ])->setStatusCode(403);
+            ]))->setStatusCode(403);
         }
 
         return $next($request);

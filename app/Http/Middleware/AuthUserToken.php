@@ -23,9 +23,9 @@ class AuthUserToken
         $accessToken = $request->headers->get('ACCESS-TOKEN');
 
         if (!$accessToken) {
-            return app(MessageResponseBody::class, [
+            return response()->json(static::createJsonData([
                 'code' => 1016,
-            ])->setStatusCode(401);
+            ]))->setStatusCode(401);
         }
 
         return $this->checkAccessTokenExistedStep($accessToken, function (User $user) use ($next, $request) {
@@ -55,9 +55,10 @@ class AuthUserToken
             ->first();
 
         if (!$authToken) {
-            return app(MessageResponseBody::class, [
+
+            return response()->json(static::createJsonData([
                 'code' => 1016,
-            ])->setStatusCode(401);
+            ]))->setStatusCode(401);
         }
 
         return $this->checkAccessTokenIsShutDownStep($authToken, $next);
@@ -77,9 +78,10 @@ class AuthUserToken
     protected function checkAccessTokenIsShutDownStep(AuthToken $authToken, Closure $next)
     {
         if ($authToken->state === 0) {
-            return app(MessageResponseBody::class, [
+
+            return response()->json(static::createJsonData([
                 'code' => 1015,
-            ])->setStatusCode(401);
+            ]))->setStatusCode(401);
         }
 
         return $this->checkAccessTokenIsInvaildStep($authToken, $next);
@@ -100,9 +102,10 @@ class AuthUserToken
     {
         $now = $authToken->freshTimestamp();
         if ($authToken->deleted_at || ($authToken->expires && $authToken->created_at->diffInSeconds($now) >= $authToken->expires)) {
-            return app(MessageResponseBody::class, [
+
+            return response()->json(static::createJsonData([
                 'code' => 1012,
-            ])->setStatusCode(401);
+            ]))->setStatusCode(401);
         }
 
         return $this->checkUserExistedStep($authToken->user, $next);
@@ -122,9 +125,10 @@ class AuthUserToken
     protected function checkUserExistedStep($user, Closure $next)
     {
         if (!$user || !$user instanceof User) {
-            return app(MessageResponseBody::class, [
+
+            return response()->json(static::createJsonData([
                 'code' => 1005,
-            ])->setStatusCode(404);
+            ]))->setStatusCode(401);
         }
 
         return $next($user);

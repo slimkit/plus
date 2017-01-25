@@ -9,9 +9,12 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Image;
 use Ts\Interfaces\Storage\StorageEngineInterface;
+use Ts\Traits\CreateJsonResponseData;
 
 class LocalStorage implements StorageEngineInterface
 {
+    use CreateJsonResponseData;
+
     public function createStorageTask(StorageTask $storateTask, User $user)
     {
         $token = $user->tokens()->orderByDesc()->first();
@@ -32,9 +35,15 @@ class LocalStorage implements StorageEngineInterface
         ];
     }
 
-    public function notice(string $message, string $filename, MessageResponseBody $response)
+    public function notice(string $message, string $filename)
     {
-        return $response->setStatus($this->exists($filename));
+        if (!$this->exists($filename)) {
+            return response()->json(static::createJsonData([
+                'status' => false,
+            ]));
+        }
+
+        return true;
     }
 
     public function url(string $filename, int $process = 100)

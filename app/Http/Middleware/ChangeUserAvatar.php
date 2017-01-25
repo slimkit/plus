@@ -9,9 +9,11 @@ use App\Models\UserProfileSetting;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Ts\Traits\CreateJsonResponseData;
 
 class ChangeUserAvatar
 {
+    use CreateJsonResponseData;
     /**
      * 修改用户头像中间件入口.
      *
@@ -47,9 +49,10 @@ class ChangeUserAvatar
         $task = StorageTask::find($storage_task_id);
         $task->load('storage');
         if (!$task) {
-            return app(MessageResponseBody::class, [
+
+            return response()->json(static::createJsonData([
                 'code' => 2000,
-            ]);
+            ]))->setStatusCode(403);
         }
 
         $user = $request->attributes->get('user');
@@ -89,10 +92,10 @@ class ChangeUserAvatar
     {
         $profile = UserProfileSetting::where('profile', 'avatar')->first();
         if (!$profile) {
-            return app(MessageResponseBody::class, [
-                'code'    => 1017,
-                'message' => '系统错误',
-            ]);
+
+            return response()->json(static::createJsonData([
+                'code' => 1017,
+            ]))->setStatusCode(500);
         }
 
         return $this->linkStorage($user, $task, $profile, $next);
@@ -115,9 +118,10 @@ class ChangeUserAvatar
     {
         $storage = $task->storage;
         if (!$storage) {
-            return app(MessageResponseBody::class, [
+
+            return response()->json(static::createJsonData([
                 'code' => 2004,
-            ]);
+            ]))->setStatusCode(404);
         }
 
         $user->storages()->sync([$storage->id], false);

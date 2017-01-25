@@ -6,9 +6,11 @@ use App\Exceptions\MessageResponseBody;
 use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
+use Ts\Traits\CreateJsonResponseData;
 
 class CheckUserByNameNotExisted
 {
+    use CreateJsonResponseData;
     /**
      * 从检查用户是否不存在中间件.
      *
@@ -25,9 +27,9 @@ class CheckUserByNameNotExisted
 
         // 用户名已被使用
         if (($user && (!$theUser)) || ($user && $theUser && $user->id != $theUser->id)) {
-            return app(MessageResponseBody::class, [
+            return response()->json(static::createJsonData([
                 'code' => 1004,
-            ])->setStatusCode(403);
+            ]))->setStatusCode(403);
         }
 
         return $next($request);

@@ -9,6 +9,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Filesystem\Filesystem;
 use Ts\Interfaces\Storage\StorageEngineInterface;
+use Illuminate\Http\Response;
 
 class Storage
 {
@@ -112,10 +113,11 @@ class Storage
         return static::$storages[$engine]->createStorageTask($task, $user);
     }
 
-    public function notice(string $message, StorageTask $task, MessageResponseBody $response, string $engine = 'local')
+    public function notice(string $message, StorageTask $task, string $engine = 'local')
     {
-        $response = static::$storages[$engine]->notice($message, $task->filename, $response);
-        if ($response->getBody()['status'] === false) {
+        $response = static::$storages[$engine]->notice($message, $task->filename);
+
+        if ($response instanceof Response) {
             return $response;
         }
 
@@ -131,7 +133,9 @@ class Storage
             $storage->save();
         }
 
-        return $response->setStatus(true);
+        return response()->json(static::createJsonData([
+            'status' => true,
+        ]));
     }
 
     public function url(string $filename, int $process = 100, string $engine = 'local')

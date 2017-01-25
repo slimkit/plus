@@ -27,9 +27,9 @@ class UserController extends Controller
         $user->createPassword($password);
         $user->save();
 
-        return app(MessageResponseBody::class, [
+        return response()->json(static::createJsonData([
             'status' => true,
-        ])->setStatusCode(201);
+        ]))->setStatusCode(201);
     }
 
     /**
@@ -53,10 +53,10 @@ class UserController extends Controller
         }
         $user->syncData($datas);
 
-        return app(MessageResponseBody::class, [
+        return response()->json(static::createJsonData([
             'code'    => 0,
             'status'  => true,
-        ])->setStatusCode(201);
+        ]))->setStatusCode(201);
     }
 
     /**
@@ -73,10 +73,10 @@ class UserController extends Controller
     {
         $user = User::find($user);
         if (!$user or !$user instanceof User) {
-            return app(MessageResponseBody::class, [
+            return response()->json(static::createJsonData([
                 'status'  => false,
                 'code'    => 1005,
-            ])->setStatusCode(404);
+            ]))->setStatusCode(404);
         }
 
         $datas = [];
@@ -85,9 +85,9 @@ class UserController extends Controller
         }
         $datas['user_id'] = $user->id;
 
-        return app(MessageResponseBody::class, [
+        return response()->json(static::createJsonData([
             'status'  => true,
             'data'    => $datas,
-        ])->setStatusCode(201);
+        ]))->setStatusCode(201);
     }
 }

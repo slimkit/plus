@@ -108,10 +108,11 @@ class AuthController extends Controller
         // $ImUser = new ImUser();
         // $ImUser->usersPost(['uid' => $user->id, 'name' => $user->name]);
 
-        return app(MessageResponseBody::class, [
-            'status'  => true,
+        return response()->json([
+            'status' => true,
+            'code' => 0,
             'message' => '登录成功',
-            'data'    => $data,
+            'data' => $data,
         ])->setStatusCode(201);
     }
 
@@ -131,14 +132,23 @@ class AuthController extends Controller
         $refresh_token = $request->input('refresh_token');
 
         if (!$refresh_token || !($token = AuthToken::withTrashed()->byRefreshToken($refresh_token)->orderByDesc()->first())) {
-            return app(MessageResponseBody::class, [
-                'code' => 1016,
-            ])->setStatusCode(404);
+
+            return response()
+                ->json([
+                    'status' => false,
+                    'code' => 1016,
+                    'message' => '操作失败',
+                    'data' => null,
+                ])->setStatusCode(404);
+
         } elseif ($token->state === $shutDownState) {
-            return app(MessageResponseBody::class, [
-                'code'    => 1013,
+
+            return response()->json([
+                'status' => false,
+                'code' => 1013,
                 'message' => '请重新登录',
-            ])->setStatusCode(401);
+                'data' => null,
+            ])
         }
 
         DB::transaction(function () use ($token, $shutDownState) {
@@ -195,9 +205,11 @@ class AuthController extends Controller
         $user->createPassword($password);
         $user->save();
 
-        return app(MessageResponseBody::class, [
-            'status'  => true,
+        return response()->json(
+            'status' => true,
+            'code' => 0,
             'message' => '重置密码成功',
-        ])->setStatusCode(201);
+            'data' => null,
+        );
     }
 }

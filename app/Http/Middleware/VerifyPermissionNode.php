@@ -7,9 +7,11 @@ use App\Models\AdminUser;
 use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
+use Ts\Traits\CreateJsonResponseData;
 
 class VerifyPermissionNode
 {
+    use CreateJsonResponseData;
     /**
      * Handle an incoming request.
      *
@@ -27,10 +29,12 @@ class VerifyPermissionNode
 
         // 非超级管理员则查找用户节点
         if (!$user_groups) {
-            return app(MessageResponseBody::class, [
-                'code'    => 5000,
+
+            return response()->json(static::createJsonData([
+                'code' => 5000,
                 'message' => '没有进入后台的权限',
-            ])->setStatusCode(403);
+            ]))->setStatusCode(403);
+
         }
 
         return $next($request);

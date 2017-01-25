@@ -38,44 +38,44 @@ class StorageController extends Controller
         $user = $request->attributes->get('user');
         $storage = $this->storage()->createStorageTask($user, $origin_filename, $hash);
 
-        return app(MessageResponseBody::class, [
+        return response()->json(static::createJsonData([
             'status' => true,
             'data'   => $storage,
-        ])->setStatusCode(201);
+        ]))->setStatusCode(201);
     }
 
     public function notice(Request $request, int $storage_task_id)
     {
         $task = StorageTask::find($storage_task_id);
         if (!$task) {
-            return app(MessageResponseBody::class, [
+            return response()->json(static::createJsonData([
                 'code'    => 2000,
                 'message' => '上传任务不存在',
-            ])->setStatusCode(404);
+            ]))->setStatusCode(404);
         }
 
         $message = $request->input('message');
 
-        return $this->storage()->notice($message, $task, app(MessageResponseBody::class));
+        return $this->storage()->notice($message, $task);
     }
 
     public function delete(Request $request, int $storage_task_id)
     {
         $task = StorageTask::find($storage_task_id);
         if (!$task) {
-            return app(MessageResponseBody::class, [
+            return response()->json(static::createJsonData([
                 'code'    => 2000,
                 'message' => '上传任务不存在',
-            ])->setStatusCode(404);
+            ]))->setStatusCode(404);
         }
 
         $user = $request->attributes->get('user');
         $user->storages()->where('hash', $task->hash)->delete();
         $task->delete();
 
-        return app(MessageResponseBody::class, [
+        return response()->json(static::createJsonData([
             'status' => true,
-        ]);
+        ]));
     }
 
     /**
@@ -93,10 +93,10 @@ class StorageController extends Controller
     {
         $task = StorageTask::find($storage_task_id);
         if (!$task) {
-            return app(MessageResponseBody::class, [
+            return response()->json(static::createJsonData([
                 'code'    => 2000,
                 'message' => '上传任务不存在',
-            ])->setStatusCode(404);
+            ]))->setStatusCode(404);
         }
 
         return $this->uploadIsExister($request, $task);
@@ -106,9 +106,9 @@ class StorageController extends Controller
     {
         $storage = StorageModel::byHash($task->hash)->first();
         if ($storage) {
-            return app(MessageResponseBody::class, [
+            return response()->json(static::createJsonData([
                 'status' => true,
-            ]);
+            ]));
         }
 
         return $this->uploadIsExisteFile($request, $task);
@@ -118,9 +118,9 @@ class StorageController extends Controller
     {
         $file = current($request->file());
         if ($file === false) {
-            return app(MessageResponseBody::class, [
+            return response()->json(static::createJsonData([
                 'code' => 2001,
-            ])->setStatusCode(404);
+            ]))->setStatusCode(404);
         }
 
         return $this->runUploadAction($task, $file);
@@ -133,15 +133,15 @@ class StorageController extends Controller
         $name = $filesystem->basename($task->filename);
 
         if (!$file->storePubliclyAs($path, $name)) {
-            return app(MessageResponseBody::class, [
+            return response()->json(static::createJsonData([
                 'code' => 2002,
-            ])->setStatusCode(422);
+            ]))->setStatusCode(422);
         }
 
-        return app(MessageResponseBody::class, [
+        return response()->json(static::createJsonData([
             'status'  => true,
             'message' => '上传成功',
-        ]);
+        ]));
     }
 
     protected function storage()

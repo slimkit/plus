@@ -22,9 +22,12 @@ class CheckDeviceCodeExisted
             'device_code' => 'required',
         ]);
         if ($validator->fails()) {
-            return app(MessageResponseBody::class, [
-                'code'    => 1014,
+
+            return response()->json([
+                'status' => false,
+                'code' => 1014,
                 'message' => '设备号不能为空',
+                'data' => null,
             ])->setStatusCode(422);
         }
 
