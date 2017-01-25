@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Exceptions\MessageResponseBody;
 use Closure;
 use Illuminate\Http\Request;
 use Validator;
@@ -28,10 +27,10 @@ class VerifyPhoneNumber
 
         if ($validator->fails()) {
             return response()->json([
-                'status' => false,
-                'code' => 1000,
+                'status'  => false,
+                'code'    => 1000,
                 'message' => '操作失败',
-                'data' => null,
+                'data'    => null,
             ])->setStatusCode(403);
         }
 

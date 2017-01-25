@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Exceptions\MessageResponseBody;
 use Closure;
 
 class VerifySendPhoneCodeType
@@ -28,10 +27,10 @@ class VerifySendPhoneCodeType
         // 传递获取类型不正确
         if (!in_array($type, $this->types)) {
             return response()->json([
-                'status' => false,
-                'code' => 1011,
+                'status'  => false,
+                'code'    => 1011,
                 'message' => '类型错误',
-                'data' => null,
+                'data'    => null,
             ])->setStatusCode(403);
 
         // 如果是注册获取验证码，如果用户不存在继续执行
