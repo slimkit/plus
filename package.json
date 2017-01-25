@@ -52,6 +52,6 @@
     "build": "npm run clean-all && cross-env NODE_ENV=development webpack --display-error-details --progress --colors",
     "dist": "npm run clean-all && cross-env NODE_ENV=production webpack --display-error-details --progress --colors && npm run dist-version",
     "lint": "eslint --ext .js,.vue resources/assets",
-    "hot": "node_modules/cross-env/bin/cross-env.js NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "hot": "node_modules/cross-env/bin/cross-env.js NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js"
   }
 }
