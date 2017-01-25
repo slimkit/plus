@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\APIs\V1;
 
-use App\Exceptions\MessageResponseBody;
 use App\Handler\SendMessage;
 use App\Http\Controllers\Controller;
 use App\Models\AuthToken;
@@ -109,10 +108,10 @@ class AuthController extends Controller
         // $ImUser->usersPost(['uid' => $user->id, 'name' => $user->name]);
 
         return response()->json([
-            'status' => true,
-            'code' => 0,
+            'status'  => true,
+            'code'    => 0,
             'message' => '登录成功',
-            'data' => $data,
+            'data'    => $data,
         ])->setStatusCode(201);
     }
 
@@ -132,22 +131,19 @@ class AuthController extends Controller
         $refresh_token = $request->input('refresh_token');
 
         if (!$refresh_token || !($token = AuthToken::withTrashed()->byRefreshToken($refresh_token)->orderByDesc()->first())) {
-
             return response()
                 ->json([
-                    'status' => false,
-                    'code' => 1016,
+                    'status'  => false,
+                    'code'    => 1016,
                     'message' => '操作失败',
-                    'data' => null,
+                    'data'    => null,
                 ])->setStatusCode(404);
-
         } elseif ($token->state === $shutDownState) {
-
             return response()->json([
-                'status' => false,
-                'code' => 1013,
+                'status'  => false,
+                'code'    => 1013,
                 'message' => '请重新登录',
-                'data' => null,
+                'data'    => null,
             ]);
         }
 
@@ -206,10 +202,10 @@ class AuthController extends Controller
         $user->save();
 
         return response()->json([
-            'status' => true,
-            'code' => 0,
+            'status'  => true,
+            'code'    => 0,
             'message' => '重置密码成功',
-            'data' => null,
+            'data'    => null,
         ]);
     }
 }
