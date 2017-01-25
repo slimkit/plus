@@ -44,12 +44,9 @@
   },
   "scripts": {
     "clean-dist": "trash public/js public/css public/images public/fonts",
-    "clean-version": "trash public/build",
-    "clean-all": "npm run clean-version && npm run clean-dist",
-    "dist-version": "npm run clean-version && gulp --production",
-    "watch": "npm run clean-all && cross-env NODE_ENV=development webpack --display-error-details --progress --colors --watch",
-    "build": "npm run clean-all && cross-env NODE_ENV=development webpack --display-error-details --progress --colors",
-    "dist": "npm run clean-all && cross-env NODE_ENV=production webpack --display-error-details --progress --colors && npm run dist-version",
+    "watch": "npm run clean-dist && cross-env NODE_ENV=development webpack --display-error-details --progress --colors --watch",
+    "build": "npm run clean-dist && cross-env NODE_ENV=development webpack --display-error-details --progress --colors",
+    "dist": "npm run clean-dist && cross-env NODE_ENV=production webpack --display-error-details --progress --colors",
     "lint": "eslint --ext .js,.vue resources/assets"
   }
 }
