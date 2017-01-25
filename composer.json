@@ -9,16 +9,15 @@
         "flc/alidayu": "^2.0",
         "guzzlehttp/guzzle": "^6.2",
         "intervention/image": "^2.3",
-        "laravel/framework": "5.3.*",
         "zhuzhichao/ip-location-zh": "^2.1"
+        "laravel/framework": "5.4.*",
+        "laravel/tinker": "~1.0"
     },
     "require-dev": {
         "codacy/coverage": "^1.0",
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~5.0",
-        "symfony/css-selector": "3.1.*",
-        "symfony/dom-crawler": "3.1.*"
+        "phpunit/phpunit": "~5.0"
     },
     "autoload": {
         "classmap": [
@@ -32,7 +31,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Ts\\Test\\": "tests/"
+            "Ts\\Test\\": "tests/",
+            "Tests\\": "tests/"
         }
     },
     "scripts": {

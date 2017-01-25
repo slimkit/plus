@@ -22,3 +22,7 @@ Route::group([
 ], function ($router) {
     require base_path('routes/api_v1.php');
 });
+
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
