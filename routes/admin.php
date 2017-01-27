@@ -18,7 +18,7 @@ Route::post('/login', 'IndexController@doLogin')
     ->middleware(App\Http\Middleware\VerifyPermissionNode::class);
 
 Route::get('/', function () {
-    return view('admin.index');
+    return view('admin');
 });
 
 // Route::group([
