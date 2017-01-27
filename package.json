@@ -50,6 +50,6 @@
     "dev": "npm run clean-dist && cross-env NODE_ENV=development webpack --display-error-details --progress --colors",
     "build": "npm run clean-dist && cross-env NODE_ENV=production webpack --display-error-details --progress --colors",
     "lint": "eslint --ext .js,.vue resources/assets",
-    "hot": "npm run build && cross-env NODE_ENV=development webpack-dev-server --inline --hot"
+    "hot": "npm run dev && cross-env NODE_ENV=development webpack-dev-server --inline --hot"
   }
 }
