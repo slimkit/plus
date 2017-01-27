@@ -2,21 +2,22 @@ import webpack from 'webpack';
 import path from 'path';
 import autoprefixer from 'autoprefixer';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import { StatsWriterPlugin } from 'webpack-stats-plugin';
+import lodash from 'lodash';
 import fs from 'fs';
-import ini from 'ini';
-
-// 获取应用配置
-const env = ini.parse(fs.readFileSync('./.env', 'utf8'));
 
 // 环境变量获取
-const NODE_ENV = process.env.NODE_ENV || 'development'
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const isHot = process.argv.includes('--hot');
 
 // 是否是正式环境编译
 const isProd = NODE_ENV === 'production'
 
 // 各项资源地址定义
-const assetsRoot = path.join(__dirname, 'resources', 'assets')
-const buildAssetsRoot = path.join(__dirname, 'public')
+const assetsRoot = path.join(__dirname, 'resources', 'assets');
+const buildAssetsRoot = path.resolve(__dirname, 'public/');
+
+console.log(buildAssetsRoot);
 
 // 入口配置
 const entry = {
@@ -53,6 +54,21 @@ const cssLoaders = (options = {}) => {
     sass: generateLoaders(['css', 'sass?indentedSyntax']),
     scss: generateLoaders(['css', 'sass'])
   }
+};
+
+function MixManifest(stats) {
+  let flattenedPaths = [].concat.apply([], lodash.values(stats.assetsByChunkName));
+
+  let manifest = flattenedPaths.reduce((manifest, filename) => {
+    let original = filename.replace(/\.(\w{20})(\..+)/, '$2');
+    manifest['/'+original] = '/'+filename;
+    // manifest[original] = filename;
+
+    return manifest;
+  }, {});
+
+  // return stats;
+  return JSON.stringify(manifest, null, 2);
 }
 
 // 环境插件～不同环境启用的不同插件.
@@ -72,9 +88,9 @@ const webpackConfig = {
   devtool: isProd ? false : 'source-map',
   entry: entry,
   output: {
-    path: path.join(buildAssetsRoot),
-    publicPath: env.APP_URL + '/',
-    filename: 'js/[name].js',
+    path: isHot ? '/' : path.join(buildAssetsRoot),
+    publicPath: isHot ? 'http://localhost:8080/' : '../',
+    filename: isProd ? 'js/[name].[chunkhash].js' : 'js/[name].js',
   },
   resolve: {
     extensions: ['', '.js', '.vue', '.json'],
@@ -178,12 +194,35 @@ const webpackConfig = {
         'NODE_ENV': JSON.stringify(NODE_ENV),
       },
     }),
-    new ExtractTextPlugin('css/[name].css'),
+    new ExtractTextPlugin(isProd ? 'css/[name].[chunkhash].css' : 'css/[name].css'),
     new webpack.optimize.OccurrenceOrderPlugin(),
+    new StatsWriterPlugin({
+      filename: 'mix-manifest.json',
+      transform: MixManifest
+    }),
     // 依托关键加载的插件
     ...plugins,
-  ]
+  ],
+
+  // Webpack Dev Server Configuration.
+  devServer: {
+    historyApiFallback: true,
+    noInfo: true,
+    compress: true
+  }
 
 };
+
+// mix.
+if (isHot) {
+
+  // hot file.
+  let hotFile = buildAssetsRoot+'/hot';
+  if (fs.existsSync(hotFile)) {
+    fs.unlinkSync(hotFile);
+  }
+  // hot reloading enabled
+  fs.writeFileSync(hotFile, 'hot reloading enabled');
+}
 
 export default webpackConfig;
