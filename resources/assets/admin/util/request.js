@@ -6,6 +6,7 @@ const { baseRUL } = window.TS; // This "TS" variable is set from the global vari
 export const createRequestURI = PATH => `${baseRUL}/${PATH}`;
 
 axios.defaults.headers.common = {
+  'X-CSRF-TOKEN': window.TS.csrfToken,
   'X-Requested-With': 'XMLHttpRequest'
 };
 
