@@ -1,6 +1,7 @@
 <?php
 
 use Zhiyi\Plus\Http\Middleware;
+
 // admin router.
 
 // login
@@ -21,4 +22,3 @@ Route::post('/login', 'IndexController@doLogin')
 Route::get('/', function () {
     return view('admin');
 });
-

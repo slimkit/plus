@@ -62,7 +62,7 @@ class AuthSendPhoneCodeTest extends TestCase
 
         // Assert that the response contains an exact JSON array.
         $json = static::createJsonData([
-            'code' => 1011,
+            'code'    => 1011,
             'message' => '类型错误',
         ]);
         $response->assertJson($json);
