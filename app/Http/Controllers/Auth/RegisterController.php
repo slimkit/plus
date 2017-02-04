@@ -2,10 +2,10 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Auth;
 
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Validator;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\User;
 
 class RegisterController extends Controller
 {

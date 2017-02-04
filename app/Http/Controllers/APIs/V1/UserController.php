@@ -2,10 +2,10 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
+use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\UserProfileSetting;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {

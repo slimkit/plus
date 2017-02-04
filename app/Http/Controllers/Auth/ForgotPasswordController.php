@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Auth;
 
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 class ForgotPasswordController extends Controller
 {

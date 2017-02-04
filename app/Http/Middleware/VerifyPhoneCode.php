@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Plus\Http\Middleware;
 
-use Zhiyi\Plus\Models\VerifyCode;
 use Closure;
+use Zhiyi\Plus\Models\VerifyCode;
 use Zhiyi\Plus\Plus\Traits\CreateJsonResponseData;
 
 class VerifyPhoneCode

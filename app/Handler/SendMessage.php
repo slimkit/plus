@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Plus\Handler;
 
-use Zhiyi\Plus\Models\VerifyCode;
 use Symfony\Component\HttpFoundation\Response;
+use Zhiyi\Plus\Models\VerifyCode;
 
 class SendMessage
 {

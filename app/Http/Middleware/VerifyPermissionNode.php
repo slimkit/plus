@@ -2,10 +2,10 @@
 
 namespace Zhiyi\Plus\Http\Middleware;
 
-use Zhiyi\Plus\Models\AdminUser;
-use Zhiyi\Plus\Models\User;
 use Closure;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\AdminUser;
+use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Plus\Traits\CreateJsonResponseData;
 
 class VerifyPermissionNode

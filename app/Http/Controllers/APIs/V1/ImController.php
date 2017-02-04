@@ -2,12 +2,12 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
+use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\IM\Service as ImService;
 use Zhiyi\Plus\Models\ImConversation;
 use Zhiyi\Plus\Models\ImUser;
 use Zhiyi\Plus\Models\User;
-use Illuminate\Http\Request;
-use Zhiyi\Plus\IM\Service as ImService;
 
 class ImController extends Controller
 {

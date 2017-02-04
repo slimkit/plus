@@ -2,11 +2,11 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Storage as StorageModel;
 use Zhiyi\Plus\Models\StorageTask;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Http\Request;
 use Zhiyi\Plus\Storages\Storage;
 
 class StorageController extends Controller

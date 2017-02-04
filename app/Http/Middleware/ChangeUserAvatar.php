@@ -2,13 +2,13 @@
 
 namespace Zhiyi\Plus\Http\Middleware;
 
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Exceptions\MessageResponseBody;
 use Zhiyi\Plus\Models\StorageTask;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\UserProfileSetting;
-use Closure;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Plus\Traits\CreateJsonResponseData;
 
 class ChangeUserAvatar

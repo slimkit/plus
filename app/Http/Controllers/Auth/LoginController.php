@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Auth;
 
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 class LoginController extends Controller
 {

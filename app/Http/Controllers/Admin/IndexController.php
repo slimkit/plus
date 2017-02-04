@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 class IndexController extends Controller
 {
