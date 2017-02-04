@@ -44,7 +44,7 @@ if (!function_exists('push_router')) {
         $storage_key = 'http_routers';
         $options['namespace'] = $namespace;
 
-        $routers = memory_storage($storage_key) ?: [];
+        $routes = memory_storage($storage_key) ?: [];
         $routes[$routerFile] = $options;
 
         memory_storage($storage_key, $routers);
