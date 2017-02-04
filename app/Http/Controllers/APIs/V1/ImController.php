@@ -238,6 +238,7 @@ class ImController extends Controller
 
         return $this->returnMessage(3006, [], 404);
     }
+
     /**
      * 刷新聊天授权.
      *
