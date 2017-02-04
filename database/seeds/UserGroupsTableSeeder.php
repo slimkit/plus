@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\UserGroup;
+use Zhiyi\Plus\Models\UserGroup;
 use Illuminate\Database\Seeder;
 
 class UserGroupsTableSeeder extends Seeder

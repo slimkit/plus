@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Node;
+use Zhiyi\Plus\Models\Node;
 use Illuminate\Database\Seeder;
 
 class NodesTableSeeder extends Seeder

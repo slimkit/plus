@@ -1,7 +1,6 @@
 <?php
 
-use App\Models\Area;
-// use cn\GB2260;
+use Zhiyi\Plus\Models\Area;
 use Illuminate\Database\Seeder;
 use Symfony\Component\Console\Helper\ProgressBar;
 
