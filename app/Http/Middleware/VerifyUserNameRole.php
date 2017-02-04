@@ -4,8 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Traits\CreateJsonResponseData;
 use Validator;
+use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
 class VerifyUserNameRole
 {
