@@ -4,6 +4,7 @@ namespace Zhiyi\Plus\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use function Zhiyi\Plus\routes_all;
 
 class RouteServiceProvider extends ServiceProvider
 {
