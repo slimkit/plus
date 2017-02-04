@@ -4,7 +4,7 @@ namespace Zhiyi\Plus\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Plus\Traits\CreateJsonResponseData;
+use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
 class CheckIsAdmin
 {

@@ -6,9 +6,11 @@ use Closure;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\AuthToken;
 use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
 class AuthUserToken
 {
+    use CreateJsonResponseData;
     /**
      * 验证用户认证入口.
      *

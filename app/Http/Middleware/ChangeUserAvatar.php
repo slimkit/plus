@@ -9,7 +9,7 @@ use Zhiyi\Plus\Exceptions\MessageResponseBody;
 use Zhiyi\Plus\Models\StorageTask;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\UserProfileSetting;
-use Zhiyi\Plus\Plus\Traits\CreateJsonResponseData;
+use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
 class ChangeUserAvatar
 {

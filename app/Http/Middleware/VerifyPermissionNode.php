@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\AdminUser;
 use Zhiyi\Plus\Models\User;
-use Zhiyi\Plus\Plus\Traits\CreateJsonResponseData;
+use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
 class VerifyPermissionNode
 {
