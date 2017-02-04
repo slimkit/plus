@@ -5,17 +5,17 @@
 // login
 Route::get('/login', 'IndexController@login')
     ->name('admin.login')
-    ->middleware(App\Http\Middleware\CheckAdminLogin::class);
+    ->middleware(Zhiyi\Plus\Http\Middleware\CheckAdminLogin::class);
 
 // 登出方法
 Route::get('/logout', 'IndexController@logout');
 
 Route::post('/login', 'IndexController@doLogin')
     ->name('admin.doLogin')
-    ->middleware(App\Http\Middleware\VerifyPhoneNumber::class)
-    ->middleware(App\Http\Middleware\CheckUserByPhoneExisted::class)
-    ->middleware(App\Http\Middleware\VerifyPassword::class)
-    ->middleware(App\Http\Middleware\VerifyPermissionNode::class);
+    ->middleware(Zhiyi\Plus\Http\Middleware\VerifyPhoneNumber::class)
+    ->middleware(Zhiyi\Plus\Http\Middleware\CheckUserByPhoneExisted::class)
+    ->middleware(Zhiyi\Plus\Http\Middleware\VerifyPassword::class)
+    ->middleware(Zhiyi\Plus\Http\Middleware\VerifyPermissionNode::class);
 
 Route::get('/', function () {
     return view('admin');
@@ -23,7 +23,7 @@ Route::get('/', function () {
 
 // Route::group([
 //     'middleware' => [
-//         App\Http\Middleware\CheckIsAdmin::class,
+//         Zhiyi\Plus\Http\Middleware\CheckIsAdmin::class,
 //     ],
 // ], function () {
 //     Route::get('/', 'IndexController@index');
