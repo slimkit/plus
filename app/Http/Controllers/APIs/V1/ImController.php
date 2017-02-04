@@ -40,12 +40,10 @@ class ImController extends Controller
             if ($res['code'] == 201) {
                 // 注册成功,保存本地用户
                 $data = [
-                    'user_id'     => $user->id,
+                    'user_id' => $user->id,
                     'im_password' => $res['data']['token'],
                 ];
-                $ImUser->create($data);
-            } else {
-                $data = [];
+                $data = $ImUser->create($data);
             }
         }
         if ($data) {
@@ -92,9 +90,9 @@ class ImController extends Controller
         $conversations = [
             'type' => intval($type),
             'name' => (string) $request->input('name'),
-            'pwd'  => (string) $request->input('pwd'),
+            'pwd' => (string) $request->input('pwd'),
             'uids' => $uids,
-            'uid'  => $user->id,
+            'uid' => $user->id,
         ];
 
         // 检测uids参数是否合法
@@ -109,13 +107,13 @@ class ImController extends Controller
         } else {
             // 保存会话
             $addConversation = [
-                'user_id'     => $user->id,
-                'cid'         => $res['data']['cid'],
-                'name'        => $res['data']['name'],
-                'pwd'         => $res['data']['pwd'],
+                'user_id' => $user->id,
+                'cid' => $res['data']['cid'],
+                'name' => $res['data']['name'],
+                'pwd' => $res['data']['pwd'],
                 'is_disabled' => 0,
-                'type'        => $res['data']['type'],
-                'uids'        => $uids,
+                'type' => $res['data']['type'],
+                'uids' => $uids,
             ];
             $info = ImConversation::create($addConversation);
             $info = $info->toArray();
@@ -226,14 +224,14 @@ class ImController extends Controller
     {
         if ($code !== 0) {
             return response()->json(static::createJsonData([
-                'code'   => $code,
+                'code' => $code,
                 'status' => false,
             ]))->setStatusCode($http_code);
         } else {
             return response()->json(static::createJsonData([
-                'code'   => 0,
+                'code' => 0,
                 'status' => true,
-                'data'   => $data,
+                'data' => $data,
             ]))->setStatusCode($http_code);
         }
     }
