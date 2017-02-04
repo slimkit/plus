@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\APIs\V1;
+namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
-use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Models\UserProfileSetting;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Models\UserProfileSetting;
 use Illuminate\Http\Request;
 
 class UserController extends Controller

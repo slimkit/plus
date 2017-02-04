@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace Zhiyi\Plus\Http\Middleware;
 
 use Closure;
 

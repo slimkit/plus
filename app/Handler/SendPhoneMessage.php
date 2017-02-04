@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Handler;
+namespace Zhiyi\Plus\Handler;
 
-use App\Models\VerifyCode;
+use Zhiyi\Plus\Models\VerifyCode;
 use Flc\Alidayu\App;
 use Flc\Alidayu\Client;
 use Flc\Alidayu\Requests\AlibabaAliqinFcSmsNumSend;

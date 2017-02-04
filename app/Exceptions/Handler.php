@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exceptions;
+namespace Zhiyi\Plus\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\APIs\V1;
+namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
-use App\Http\Controllers\Controller;
-use App\Models\ImConversation;
-use App\Models\ImUser;
-use App\Models\User;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\ImConversation;
+use Zhiyi\Plus\Models\ImUser;
+use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\IM\Service as ImService;
 

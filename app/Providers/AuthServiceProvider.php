@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace Zhiyi\Plus\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -12,7 +12,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
+        'Zhiyi\Plus\Model' => 'Zhiyi\Plus\Policies\ModelPolicy',
     ];
 
     /**

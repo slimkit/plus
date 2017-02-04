@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\APIs\V1;
+namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
-use App\Handler\SendMessage;
-use App\Http\Controllers\Controller;
-use App\Models\AuthToken;
-use App\Models\ImUser;
-use App\Models\LoginRecord;
-use App\Models\User;
-use App\Models\VerifyCode;
+use Zhiyi\Plus\Handler\SendMessage;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\AuthToken;
+use Zhiyi\Plus\Models\ImUser;
+use Zhiyi\Plus\Models\LoginRecord;
+use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Models\VerifyCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Zhuzhichao\IpLocationZh\Ip;

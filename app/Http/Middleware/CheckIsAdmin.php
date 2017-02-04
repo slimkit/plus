@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace Zhiyi\Plus\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Traits\CreateJsonResponseData;
+use Zhiyi\Plus\Plus\Traits\CreateJsonResponseData;
 
 class CheckIsAdmin
 {

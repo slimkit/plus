@@ -2,13 +2,13 @@
 
 namespace Zhiyi\Plus\Storages;
 
-use App\Models\Storage as StorageModel;
-use App\Models\StorageTask;
-use App\Models\User;
+use Zhiyi\Plus\Models\Storage as StorageModel;
+use Zhiyi\Plus\Models\StorageTask;
+use Zhiyi\Plus\Models\User;
 use Carbon\Carbon;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Response;
-use Zhiyi\Plus\Interfaces\Storage\StorageEngineInterface;
+use Zhiyi\Plus\Plus\Interfaces\Storage\StorageEngineInterface;
 
 class Storage
 {

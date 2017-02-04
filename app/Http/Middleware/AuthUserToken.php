@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace Zhiyi\Plus\Http\Middleware;
 
-use App\Models\AuthToken;
-use App\Models\User;
+use Zhiyi\Plus\Models\AuthToken;
+use Zhiyi\Plus\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 

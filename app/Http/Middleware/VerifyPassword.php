@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace Zhiyi\Plus\Http\Middleware;
 
-use App\Models\User;
+use Zhiyi\Plus\Models\User;
 use Closure;
-use Zhiyi\Plus\Traits\CreateJsonResponseData;
+use Zhiyi\Plus\Plus\Traits\CreateJsonResponseData;
 
 class VerifyPassword
 {

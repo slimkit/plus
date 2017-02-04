@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Zhiyi\Plus\Models;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response as ImResponse;

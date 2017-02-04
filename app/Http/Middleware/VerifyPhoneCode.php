@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace Zhiyi\Plus\Http\Middleware;
 
-use App\Models\VerifyCode;
+use Zhiyi\Plus\Models\VerifyCode;
 use Closure;
-use Zhiyi\Plus\Traits\CreateJsonResponseData;
+use Zhiyi\Plus\Plus\Traits\CreateJsonResponseData;
 
 class VerifyPhoneCode
 {

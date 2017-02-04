@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace Zhiyi\Plus\Http\Middleware;
 
-use App\Exceptions\MessageResponseBody;
-use App\Models\StorageTask;
-use App\Models\User;
-use App\Models\UserProfileSetting;
+use Zhiyi\Plus\Exceptions\MessageResponseBody;
+use Zhiyi\Plus\Models\StorageTask;
+use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Models\UserProfileSetting;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Zhiyi\Plus\Traits\CreateJsonResponseData;
+use Zhiyi\Plus\Plus\Traits\CreateJsonResponseData;
 
 class ChangeUserAvatar
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Zhiyi\Plus\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
