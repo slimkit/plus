@@ -74,7 +74,7 @@ Route::group([
 
 // IM相关接口
 Route::group([
-    'prefix'     => 'im',
+    'prefix' => 'im',
     'middleware' => [
         Zhiyi\Plus\Http\Middleware\AuthUserToken::class,
     ],
@@ -84,4 +84,6 @@ Route::group([
     Route::get('/conversations/{cid}', 'ImController@getConversation'); //获取单个聊天信息
     Route::get('/conversations/list/all', 'ImController@getConversationList'); //获取某个用户聊天列表
     Route::patch('/users', 'ImController@refresh'); //刷新授权
+    Route::delete('/conversations/{cid}', 'ImController@deleteConversation');//删除对话
+    Route::delete('/conversations/members/{cid}', 'ImController@deleteMembers');//退出对话
 });

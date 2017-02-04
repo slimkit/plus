@@ -82,7 +82,6 @@ class ImController extends Controller
         $info = ImConversation::where(['user_id' => $user->id, 'uids' => implode(',', $uids)])->first();
         if ($info) {
             $info = $info->toArray();
-            $info['uids'] = explode(',', $info['uids']);
 
             return $this->returnMessage(0, $info, 200);
         }
@@ -130,7 +129,7 @@ class ImController extends Controller
      *
      * @version  1.0
      *
-     * @param int $cid 会话ID
+     * @param int $cid 对话ID
      *
      * @return
      */
@@ -139,7 +138,6 @@ class ImController extends Controller
         $info = ImConversation::where('cid', $cid)->first();
         if ($info) {
             $info = $info->toArray();
-            $info['uids'] = explode(',', $info['uids']);
 
             return $this->returnMessage(0, $info, 200);
         }
@@ -160,7 +158,7 @@ class ImController extends Controller
     public function getConversationList(Request $request)
     {
         $user = $request->attributes->get('user');
-        $list = ImConversation::where('user_id', $user->id)->orderBy('updated_at', 'desc')->get();
+        $list = ImConversation::where('user_id', $user->id)->orWhereRaw('find_in_set('.$user->id.',uids)')->orderBy('updated_at', 'desc')->get();
         if ($list) {
             return $this->returnMessage(0, $list->toArray(), 200);
         }
@@ -168,6 +166,78 @@ class ImController extends Controller
         return $this->returnMessage(0, [], 200);
     }
 
+    /**
+     * 删除对话.
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-02-04T14:13:28+080
+     *
+     * @version  1.0
+     *
+     * @param int $cid 对话ID
+     *
+     * @return
+     */
+    public function deleteConversation(int $cid, Request $request)
+    {
+        $info = ImConversation::where('cid', $cid)->first();
+        if ($info) {
+            $ImService = new ImService();
+            // 如果是创建者,直接删除对话
+            $user = $request->attributes->get('user');
+            if ($user->id == $info->user_id) {
+                $res = $ImService->conversationsDelete(['cids' => $cid]);
+                if ($res['code'] == 204) {
+                    return $this->returnMessage(0, ['cid' => $cid], 200);
+                }
+
+                return $this->returnMessage(3009, [], 422);
+            } else {
+                return $this->returnMessage(3010, [], 401);
+            }
+        }
+
+        return $this->returnMessage(3006, [], 404);
+    }
+
+    /**
+     * 退出对话.
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-02-04T14:13:28+080
+     *
+     * @version  1.0
+     *
+     * @param int $cid 对话ID
+     *
+     * @return
+     */
+    public function deleteMembers(int $cid, Request $request)
+    {
+        $info = ImConversation::where('cid', $cid)->first();
+        if ($info) {
+            $user = $request->attributes->get('user');
+            $ImService = new ImService();
+            // 退出指定对话
+            $res = $ImService->memberDelete(['cid' => $cid, 'uids' => $user->id]);
+            if ($res['code'] == 204) {
+                $uids = $info->uids;
+                // 更新本地保存的状态
+                $removeUid = array_search($user->id, $uids);
+                if ($removeUid !== false) {
+                    array_splice($uids, $removeUid, 1);
+                    $info->uids = $uids;
+                    $info->save();
+                }
+
+                return $this->returnMessage(0, ['cid' => $cid], 200);
+            } else {
+                return $this->returnMessage(3009, [], 422);
+            }
+        }
+
+        return $this->returnMessage(3006, [], 404);
+    }
     /**
      * 刷新聊天授权.
      *

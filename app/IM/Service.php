@@ -27,12 +27,12 @@ class Service
      */
     public $service_urls = [
         'base_url' => 'http://192.168.10.222:9900',
-        'apis'     => [
-            'users'         => '/users',
+        'apis' => [
+            'users' => '/users',
             'conversations' => '/conversations',
-            'member'        => '/conversations/member',
-            'limited'       => '/conversations/{cid}/limited-members',
-            'message'       => '/conversations/{cid}/messages',
+            'member' => '/conversations/{cid}/member',
+            'limited' => '/conversations/{cid}/limited-members',
+            'message' => '/conversations/{cid}/messages',
         ],
     ];
 
@@ -48,11 +48,11 @@ class Service
      * @var array
      */
     protected $response_type = [
-        'post'   => ['post', 'add', 'init'],
-        'put'    => ['put', 'update', 'save'],
-        'delete' => ['delete', 'del'],
-        'get'    => ['get', 'select'],
-        'patch'  => ['patch'],
+        'post' => ['post', 'add', 'init'],
+        'put' => ['put', 'update', 'save'],
+        'delete' => ['delete', 'del', 'remove'],
+        'get' => ['get', 'select'],
+        'patch' => ['patch'],
     ];
 
     /**
@@ -61,7 +61,7 @@ class Service
      * @var array
      */
     public $service_auth = [
-        'user'     => 'admin',
+        'user' => 'admin',
         'password' => '123456',
     ];
 
@@ -103,18 +103,19 @@ class Service
     {
         $type_alias = '';
         $method = strtolower($method);
-        if (($request_mod = substr($method, 0, 5)) == 'users') {
-            $type_alias = self::parseName(substr($method, 5))[0];
-            $this->request_mod = $request_mod;
-        } elseif (($request_mod = substr($method, 0, 13)) == 'conversations') {
-            $type_alias = self::parseName(substr($method, 13))[0];
-            $this->request_mod = $request_mod;
-        } else {
-            $this->error = '聊天服务不可用';
+        $apiList = array_keys($this->service_urls['apis']);
+        foreach ($apiList as $api) {
+            if (preg_match('/^'.$api.'\w+/', $method)) {
+                $this->request_mod = $api;
+                $type_alias = self::parseName(substr($method, strlen($api)))[0];
+                break;
+            }
+        }
+        if (!$this->request_mod) {
+            $this->error = '该聊天服务不可用';
 
             return false;
         }
-
         //请求子参数
         if (isset($params[1])) {
             $this->sub_request_url = $params[1];
@@ -265,7 +266,7 @@ class Service
 
         // 发送请求内容
         $request_body = [
-            'auth'        => array_values($this->service_auth),
+            'auth' => array_values($this->service_auth),
             'http_errors' => $this->service_debug,
         ];
 
@@ -321,7 +322,7 @@ class Service
                 }
                 break;
             case 2:
-                // 聊天室 不限制
+                // 聊天室 暂时不限制
                 break;
             default:
                 return false;
