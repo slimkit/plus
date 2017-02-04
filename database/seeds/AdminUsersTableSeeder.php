@@ -1,7 +1,7 @@
 <?php
 
-use Zhiyi\Plus\Models\AdminUser;
 use Illuminate\Database\Seeder;
+use Zhiyi\Plus\Models\AdminUser;
 
 class AdminUsersTableSeeder extends Seeder
 {
