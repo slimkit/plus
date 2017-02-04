@@ -1,6 +1,6 @@
 <?php
 
-namespace Ts\Storages;
+namespace Zhiyi\Plus\Storages;
 
 use App\Models\Storage as StorageModel;
 use App\Models\StorageTask;
@@ -8,7 +8,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Response;
-use Ts\Interfaces\Storage\StorageEngineInterface;
+use Zhiyi\Plus\Interfaces\Storage\StorageEngineInterface;
 
 class Storage
 {

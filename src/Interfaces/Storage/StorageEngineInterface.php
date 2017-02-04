@@ -1,6 +1,6 @@
 <?php
 
-namespace Ts\Interfaces\Storage;
+namespace Zhiyi\Plus\Interfaces\Storage;
 
 use App\Models\StorageTask;
 use App\Models\User;

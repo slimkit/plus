@@ -7,7 +7,7 @@ use App\Models\ImConversation;
 use App\Models\ImUser;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Ts\IM\Service as ImService;
+use Zhiyi\Plus\IM\Service as ImService;
 
 class ImController extends Controller
 {

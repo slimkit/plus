@@ -1,14 +1,14 @@
 <?php
 
-namespace Ts\Storages\Engine;
+namespace Zhiyi\Plus\Storages\Engine;
 
 use App\Models\StorageTask;
 use App\Models\User;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Image;
-use Ts\Interfaces\Storage\StorageEngineInterface;
-use Ts\Traits\CreateJsonResponseData;
+use Zhiyi\Plus\Interfaces\Storage\StorageEngineInterface;
+use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
 class LocalStorage implements StorageEngineInterface
 {
