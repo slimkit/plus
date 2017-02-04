@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\User;
 use Closure;
-use Ts\Traits\CreateJsonResponseData;
+use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
 class CheckUserByPhoneExisted
 {

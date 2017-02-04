@@ -9,7 +9,7 @@ use App\Models\UserProfileSetting;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Ts\Traits\CreateJsonResponseData;
+use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
 class ChangeUserAvatar
 {

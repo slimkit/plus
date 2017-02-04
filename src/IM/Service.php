@@ -1,6 +1,6 @@
 <?php
 
-namespace Ts\IM;
+namespace Zhiyi\Plus\IM;
 
 use GuzzleHttp\Client;
 

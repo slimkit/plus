@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Ts\Traits\CreateJsonResponseData;
+use Zhiyi\Plus\Traits\CreateJsonResponseData;
 use Validator;
 
 class VerifyUserNameRole

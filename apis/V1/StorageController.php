@@ -7,7 +7,7 @@ use App\Models\Storage as StorageModel;
 use App\Models\StorageTask;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
-use Ts\Storages\Storage;
+use Zhiyi\Plus\Storages\Storage;
 
 class StorageController extends Controller
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ts\Traits;
+namespace Zhiyi\Plus\Traits;
 
 trait CreateJsonResponseData
 {
