@@ -4,6 +4,7 @@ namespace Zhiyi\Plus\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use function Zhiyi\Plus\routes_all;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -39,7 +40,8 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
-        //
+        // vendor
+        $this->mapVendorRoutes();
     }
 
     /**
@@ -69,5 +71,19 @@ class RouteServiceProvider extends ServiceProvider
              ->middleware('api')
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
+    }
+
+    /**
+     * load all vendor push router.
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    protected function mapVendorRoutes()
+    {
+        $all = routes_all();
+        foreach ($all as $filename => $options) {
+            Route::group($options, $filename);
+        }
     }
 }

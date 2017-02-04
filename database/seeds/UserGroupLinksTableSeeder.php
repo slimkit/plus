@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\UserGroupLink;
 use Illuminate\Database\Seeder;
+use Zhiyi\Plus\Models\UserGroupLink;
 
 class UserGroupLinksTableSeeder extends Seeder
 {

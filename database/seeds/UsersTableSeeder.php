@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\User;
 use Illuminate\Database\Seeder;
+use Zhiyi\Plus\Models\User;
 
 class UsersTableSeeder extends Seeder
 {

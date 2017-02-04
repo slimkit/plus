@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\NodeLink;
 use Illuminate\Database\Seeder;
+use Zhiyi\Plus\Models\NodeLink;
 
 class NodeLinksTableSeeder extends Seeder
 {

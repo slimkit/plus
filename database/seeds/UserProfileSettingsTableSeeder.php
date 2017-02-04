@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\UserProfileSetting;
 use Illuminate\Database\Seeder;
+use Zhiyi\Plus\Models\UserProfileSetting;
 
 class UserProfileSettingsTableSeeder extends Seeder
 {

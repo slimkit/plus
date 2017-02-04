@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\UserProfileSettingLink;
 use Illuminate\Database\Seeder;
+use Zhiyi\Plus\Models\UserProfileSettingLink;
 
 class UserProfileSettingLinksTableSeeder extends Seeder
 {
