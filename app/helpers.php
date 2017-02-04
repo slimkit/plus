@@ -7,8 +7,10 @@ if (!function_exists('memory_storage')) {
      * 内存储存.
      *
      * @param string|int $key
-     * @param mixed $value
+     * @param mixed      $value
+     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -30,9 +32,9 @@ if (!function_exists('push_router')) {
     /**
      * 添加路由注入.
      *
-     * @param string $namespace Controller所在命名空间
+     * @param string $namespace  Controller所在命名空间
      * @param string $routerFile 路由配置文件地址
-     * @param array $options 更多设置，参考Route::group
+     * @param array  $options    更多设置，参考Route::group
      *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
@@ -54,6 +56,7 @@ if (!function_exists('routes_all')) {
      * 获取全部push的路由.
      *
      * @return array 路由数组
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
