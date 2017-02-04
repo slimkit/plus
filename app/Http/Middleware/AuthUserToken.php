@@ -11,6 +11,7 @@ use Zhiyi\Plus\Traits\CreateJsonResponseData;
 class AuthUserToken
 {
     use CreateJsonResponseData;
+
     /**
      * 验证用户认证入口.
      *
