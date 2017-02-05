@@ -49,7 +49,7 @@ class ImController extends Controller
             if ($res['code'] == 201) {
                 // 注册成功,保存本地用户
                 $data = [
-                    'user_id'     => $user->id,
+                    'user_id' => $user->id,
                     'im_password' => $res['data']['token'],
                 ];
                 $data = $ImUser->create($data);
@@ -84,23 +84,27 @@ class ImController extends Controller
             return $this->returnMessage(3003, $info, 400);
         }
         $user = $request->attributes->get('user');
-        // 如果是单聊 检测是否已经存在
+        // 对话成员处理
         $uids = is_array($request->input('uids')) ? $request->input('uids') : array_filter(explode(',', $request->input('uids')));
         $uids[] = $user->id;
         sort($uids);
-        $info = ImConversation::where(['user_id' => $user->id, 'uids' => implode(',', $uids)])->first();
-        if ($info) {
-            $info = $info->toArray();
+        // 私聊时检测对话是否已经存在
+        if (intval($type) === 0) {
+            $info = ImConversation::where(['user_id' => $user->id, 'uids' => implode(',', $uids)])->first();
+            if ($info) {
+                $info = $info->toArray();
 
-            return $this->returnMessage(0, $info, 200);
+                return $this->returnMessage(0, $info, 200);
+            }
         }
+
         // 组装数据
         $conversations = [
             'type' => intval($type),
             'name' => (string) $request->input('name'),
-            'pwd'  => (string) $request->input('pwd'),
+            'pwd' => (string) $request->input('pwd'),
             'uids' => $uids,
-            'uid'  => $user->id,
+            'uid' => $user->id,
         ];
 
         // 检测uids参数是否合法
@@ -115,13 +119,13 @@ class ImController extends Controller
         } else {
             // 保存会话
             $addConversation = [
-                'user_id'     => $user->id,
-                'cid'         => $res['data']['cid'],
-                'name'        => $res['data']['name'],
-                'pwd'         => $res['data']['pwd'],
+                'user_id' => $user->id,
+                'cid' => $res['data']['cid'],
+                'name' => $res['data']['name'],
+                'pwd' => $res['data']['pwd'],
                 'is_disabled' => 0,
-                'type'        => $res['data']['type'],
-                'uids'        => $uids,
+                'type' => $res['data']['type'],
+                'uids' => $uids,
             ];
             $info = ImConversation::create($addConversation);
             $info = $info->toArray();
@@ -167,7 +171,8 @@ class ImController extends Controller
     public function getConversationList(Request $request)
     {
         $user = $request->attributes->get('user');
-        $list = ImConversation::where('user_id', $user->id)->orWhereRaw('find_in_set('.$user->id.',uids)')->orderBy('updated_at', 'desc')->get();
+        //$list = ImConversation::where('user_id', $user->id)->orWhereRaw('find_in_set('.$user->id.',uids)')->orderBy('updated_at', 'desc')->get();
+        $list = ImConversation::whereRaw('find_in_set('.$user->id.',uids)')->orderBy('updated_at', 'desc')->get();
         if ($list) {
             return $this->returnMessage(0, $list->toArray(), 200);
         }
@@ -197,6 +202,8 @@ class ImController extends Controller
             if ($user->id == $info->user_id) {
                 $res = $ImService->conversationsDelete(['cids' => $cid]);
                 if ($res['code'] == 204) {
+                    $info->delete();
+
                     return $this->returnMessage(0, ['cid' => $cid], 200);
                 }
 
@@ -228,7 +235,7 @@ class ImController extends Controller
             $user = $request->attributes->get('user');
             $ImService = new ImService($this->config);
             // 退出指定对话
-            $res = $ImService->memberDelete(['cid' => $cid, 'uids' => $user->id]);
+            $res = $ImService->memberDelete(['cid' => $cid, 'uids' => $user->id], '/{uids}');
             if ($res['code'] == 204) {
                 $uids = $info->uids;
                 // 更新本地保存的状态
@@ -304,14 +311,14 @@ class ImController extends Controller
     {
         if ($code !== 0) {
             return response()->json(static::createJsonData([
-                'code'   => $code,
+                'code' => $code,
                 'status' => false,
             ]))->setStatusCode($http_code);
         } else {
             return response()->json(static::createJsonData([
-                'code'   => 0,
+                'code' => 0,
                 'status' => true,
-                'data'   => $data,
+                'data' => $data,
             ]))->setStatusCode($http_code);
         }
     }
