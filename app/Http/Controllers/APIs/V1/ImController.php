@@ -271,6 +271,7 @@ class ImController extends Controller
     public function removeMembers(int $cid, int $uid, Request $request)
     {
     }
+
     /**
      * 对话成员限制.
      *
@@ -304,9 +305,9 @@ class ImController extends Controller
             }
             $expire = $request->exists('expire') ? intval($request->input('expire')) : 0;
             $postData = [
-                'uids' => $uids,
+                'uids'   => $uids,
                 'expire' => $expire,
-                'cid' => $cid,
+                'cid'    => $cid,
             ];
 
             $ImService = new ImService($this->config);
@@ -321,6 +322,7 @@ class ImController extends Controller
 
         return $this->returnMessage(3006, [], 404);
     }
+
     /**
      * 移除对话成员限制.
      *
@@ -368,6 +370,7 @@ class ImController extends Controller
 
         return $this->returnMessage(3006, [], 404);
     }
+
     /**
      * 刷新聊天授权.
      *
