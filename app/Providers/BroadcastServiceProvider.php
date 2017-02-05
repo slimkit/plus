@@ -23,6 +23,7 @@ class BroadcastServiceProvider extends ServiceProvider
      * Broadcast routes.
      *
      * @return void
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
