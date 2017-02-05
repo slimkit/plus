@@ -15,6 +15,11 @@ use Zhuzhichao\IpLocationZh\Ip;
 
 class AuthController extends Controller
 {
+    protected function findIp($ip): array
+    {
+        return (array) Ip::find($ip);
+    }
+
     /**
      * 发送手机验证码.
      *
@@ -79,7 +84,7 @@ class AuthController extends Controller
 
         // 保留测试ip
         // $location = (array)Ip::find($clientIp);
-        $location = (array) Ip::find('61.139.2.69');
+        $location = $this->findIp('61.139.2.69');
         array_filter($location);
         $loginrecord->address = trim(implode(' ', $location));
         $loginrecord->device_system = $request->input('device_system');

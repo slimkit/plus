@@ -1,8 +1,8 @@
 <?php
 
-namespace Ts\Test\Http\APIs\V1;
+namespace Tests\Feature\APIs\V1;
 
-use App\Models\User;
+use Zhiyi\Plus\Models\User;
 
 class AuthLoginTest extends TestCase
 {
@@ -63,17 +63,18 @@ class AuthLoginTest extends TestCase
             'password' => static::$password,
         ];
 
-        $this->postJson(static::$uri, $requestBody);
+        $response = $this->postJson(static::$uri, $requestBody);
 
         // Asserts that the status code of the response matches the given code.
-        $this->seeStatusCode(422);
+        $response->assertStatus(422);
 
         // Assert that the response contains an exact JSON array.
-        $json = $this->createMessageResponseBody([
+        $json = static::createJsonData([
             'code'    => 1014,
             'message' => '设备号不能为空',
         ]);
-        $this->seeJsonEquals($json);
+
+        $response->assertJson($json);
     }
 
     /**
@@ -86,19 +87,19 @@ class AuthLoginTest extends TestCase
     public function testNotExistePhone()
     {
         // request.
-        $this->postJson(static::$uri, [
+        $response = $this->postJson(static::$uri, [
             'pasword'     => static::$password,
             'device_code' => 'The is device code.',
         ]);
 
         // Asserts that the status code of the response matches the given code.
-        $this->seeStatusCode(403);
+        $response->assertStatus(403);
 
         // Assert that the response contains an exact JSON array.
-        $json = $this->createMessageResponseBody([
+        $json = static::createJsonData([
             'code' => 1000,
         ]);
-        $this->seeJsonEquals($json);
+        $response->assertJson($json);
     }
 
     /**
@@ -111,19 +112,19 @@ class AuthLoginTest extends TestCase
     public function testNotExistePassword()
     {
         // request.
-        $this->postJson(static::$uri, [
+        $response = $this->postJson(static::$uri, [
             'phone'       => static::$phone,
             'device_code' => 'The is device code.',
         ]);
 
         // Assert that the status code of the response matches the giben code.
-        $this->seeStatusCode(401);
+        $response->assertStatus(401);
 
         // Assert that the response contains an exact JSON array.
-        $json = $this->createMessageResponseBody([
+        $json = static::createJsonData([
             'code' => 1006,
         ]);
-        $this->seeJsonEquals($json);
+        $response->assertJson($json);
     }
 
     /**
@@ -135,20 +136,20 @@ class AuthLoginTest extends TestCase
      */
     public function testNotFundUser()
     {
-        $this->postJson(static::$uri, [
+        $response = $this->postJson(static::$uri, [
             'phone'       => '18781932642',
             'password'    => static::$password,
             'device_code' => 'The is device code.',
         ]);
 
         // Assert that the status code of the response matches the giben code.
-        $this->seeStatusCode(404);
+        $response->assertStatus(404);
 
         // Assert that the response contains an exact JSON array.
-        $json = $this->createMessageResponseBody([
+        $json = static::createJsonData([
             'code' => 1005,
         ]);
-        $this->seeJsonEquals($json);
+        $response->assertJson($json);
     }
 
     /**
@@ -160,20 +161,20 @@ class AuthLoginTest extends TestCase
      */
     public function testErrorPassword()
     {
-        $this->postJson(static::$uri, [
+        $response = $this->postJson(static::$uri, [
             'phone'       => static::$phone,
             'password'    => 'xxx',
             'device_code' => 'The is device code.',
         ]);
 
         // Assert that the status code of the response matches the giben code.
-        $this->seeStatusCode(401);
+        $response->assertStatus(401);
 
         // Assert that the response contains an exact JSON array.
-        $json = $this->createMessageResponseBody([
+        $json = static::createJsonData([
             'code' => 1006,
         ]);
-        $this->seeJsonEquals($json);
+        $response->assertJson($json);
     }
 
     /**
@@ -184,14 +185,14 @@ class AuthLoginTest extends TestCase
      */
     public function testLoginSuccess()
     {
-        $this->postJson(static::$uri, [
+        $response = $this->postJson(static::$uri, [
             'phone'       => static::$phone,
             'password'    => static::$password,
             'device_code' => 'The is device code.',
         ]);
 
         // Assert that the status code of the response matches the giben code.
-        $this->seeStatusCode(201);
+        $response->assertStatus(201);
         // more, 201 status code is successful.
     }
 }
