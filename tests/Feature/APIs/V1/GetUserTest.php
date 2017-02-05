@@ -1,9 +1,9 @@
 <?php
 
-namespace Ts\Test\Http\APIs\V1;
+namespace Tests\Feature\APIs\V1;
 
-use App\Models\AuthToken;
-use App\Models\User;
+use Zhiyi\Plus\Models\AuthToken;
+use Zhiyi\Plus\Models\User;
 
 class GetUserTest extends TestCase
 {
@@ -60,37 +60,37 @@ class GetUserTest extends TestCase
     public function testNotFoundUser()
     {
         $uri = str_replace('{user}', '9999999', $this->uri_template);
-        $this->get($uri, [
+        $response = $this->get($uri, [
             'ACCESS-TOKEN' => $this->auth->token,
         ]);
 
         // Asserts that the status code of the response matches the given code.
-        $this->seeStatusCode(404);
+        $response->assertStatus(404);
 
-        $json = $this->createMessageResponseBody([
+        $json = static::createJsonData([
             'code' => 1005,
         ]);
-        $this->seeJsonEquals($json);
+        $response->assertJson($json);
     }
 
     public function testGetUserData()
     {
-        $this->get($this->uri, [
+        $response = $this->get($this->uri, [
             'ACCESS-TOKEN' => $this->auth->token,
         ]);
 
         // Asserts that the status code of the response matches the given code.
-        $this->seeStatusCode(201);
+        $response->assertStatus(201);
 
         $datas = [];
         foreach ($this->user->datas as $data) {
             $datas[$data->profile] = $data->pivot->user_profile_setting_data;
         }
         $datas['user_id'] = $this->user->id;
-        $json = $this->createMessageResponseBody([
+        $json = static::createJsonData([
             'status' => true,
             'data'   => $datas,
         ]);
-        $this->seeJsonEquals($json);
+        $response->assertJson($json);
     }
 }
