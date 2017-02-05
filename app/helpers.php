@@ -47,7 +47,7 @@ if (!function_exists('push_router')) {
         $routes = memory_storage($storage_key) ?: [];
         $routes[$routerFile] = $options;
 
-        memory_storage($storage_key, $routers);
+        memory_storage($storage_key, $routes);
     }
 }
 
