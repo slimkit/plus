@@ -76,7 +76,7 @@ Route::group([
 
 // IM相关接口
 Route::group([
-    'prefix'     => 'im',
+    'prefix' => 'im',
     'middleware' => [
         Middleware\AuthUserToken::class,
     ],
@@ -88,4 +88,5 @@ Route::group([
     Route::patch('/users', 'ImController@refresh'); //刷新授权
     Route::delete('/conversations/{cid}', 'ImController@deleteConversation'); //删除对话
     Route::delete('/conversations/members/{cid}', 'ImController@deleteMembers'); //退出对话
+    Route::delete('/conversations/members/{cid}/{uid}', 'ImController@removeMembers');//剔除指定成员
 });

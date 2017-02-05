@@ -12,6 +12,14 @@ use Zhiyi\Plus\Models\User;
 class ImController extends Controller
 {
     /**
+     * 聊天服务器地址
+     *
+     * @var string
+     */
+    protected $config = [
+        'base_url' => 'http://192.168.10.222:9900',
+    ];
+    /**
      * 获取聊天服务账号信息.
      *
      * @author martinsun <syh@sunyonghong.com>
@@ -34,13 +42,13 @@ class ImController extends Controller
 
         // 本地不存在账号信息
         if (!$data) {
-            $ImService = new ImService();
+            $ImService = new ImService($this->config);
             $res = $ImService->usersPost(['uid' => $user->id, 'name' => $user->name]);
             // 处理返回
             if ($res['code'] == 201) {
                 // 注册成功,保存本地用户
                 $data = [
-                    'user_id'     => $user->id,
+                    'user_id' => $user->id,
                     'im_password' => $res['data']['token'],
                 ];
                 $data = $ImUser->create($data);
@@ -68,7 +76,7 @@ class ImController extends Controller
     public function createConversations(Request $request)
     {
         $type = intval($request->input('type'));
-        $ImService = new ImService();
+        $ImService = new ImService($this->config);
         // 聊天对话类型
         if (!$request->exists('type') || !$ImService->checkConversationType($type)) {
             // 会话类型不支持
@@ -89,9 +97,9 @@ class ImController extends Controller
         $conversations = [
             'type' => intval($type),
             'name' => (string) $request->input('name'),
-            'pwd'  => (string) $request->input('pwd'),
+            'pwd' => (string) $request->input('pwd'),
             'uids' => $uids,
-            'uid'  => $user->id,
+            'uid' => $user->id,
         ];
 
         // 检测uids参数是否合法
@@ -106,13 +114,13 @@ class ImController extends Controller
         } else {
             // 保存会话
             $addConversation = [
-                'user_id'     => $user->id,
-                'cid'         => $res['data']['cid'],
-                'name'        => $res['data']['name'],
-                'pwd'         => $res['data']['pwd'],
+                'user_id' => $user->id,
+                'cid' => $res['data']['cid'],
+                'name' => $res['data']['name'],
+                'pwd' => $res['data']['pwd'],
                 'is_disabled' => 0,
-                'type'        => $res['data']['type'],
-                'uids'        => $uids,
+                'type' => $res['data']['type'],
+                'uids' => $uids,
             ];
             $info = ImConversation::create($addConversation);
             $info = $info->toArray();
@@ -182,7 +190,7 @@ class ImController extends Controller
     {
         $info = ImConversation::where('cid', $cid)->first();
         if ($info) {
-            $ImService = new ImService();
+            $ImService = new ImService($this->config);
             // 如果是创建者,直接删除对话
             $user = $request->attributes->get('user');
             if ($user->id == $info->user_id) {
@@ -217,7 +225,7 @@ class ImController extends Controller
         $info = ImConversation::where('cid', $cid)->first();
         if ($info) {
             $user = $request->attributes->get('user');
-            $ImService = new ImService();
+            $ImService = new ImService($this->config);
             // 退出指定对话
             $res = $ImService->memberDelete(['cid' => $cid, 'uids' => $user->id]);
             if ($res['code'] == 204) {
@@ -259,7 +267,7 @@ class ImController extends Controller
         $data = ImUser::where('im_password', $old_im_password)->first();
         if ($data) {
             // 刷新授权
-            $ImService = new ImService();
+            $ImService = new ImService($this->config);
             $res = $ImService->usersPatch(['token' => true, 'uid' => $user->id], '/{uid}');
             // 处理返回数据
             if ($res['code'] == 200) {
@@ -295,14 +303,14 @@ class ImController extends Controller
     {
         if ($code !== 0) {
             return response()->json(static::createJsonData([
-                'code'   => $code,
+                'code' => $code,
                 'status' => false,
             ]))->setStatusCode($http_code);
         } else {
             return response()->json(static::createJsonData([
-                'code'   => 0,
+                'code' => 0,
                 'status' => true,
-                'data'   => $data,
+                'data' => $data,
             ]))->setStatusCode($http_code);
         }
     }
