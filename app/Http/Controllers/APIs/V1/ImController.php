@@ -49,7 +49,7 @@ class ImController extends Controller
             if ($res['code'] == 201) {
                 // 注册成功,保存本地用户
                 $data = [
-                    'user_id'     => $user->id,
+                    'user_id' => $user->id,
                     'im_password' => $res['data']['token'],
                 ];
                 $data = $ImUser->create($data);
@@ -102,9 +102,9 @@ class ImController extends Controller
         $conversations = [
             'type' => intval($type),
             'name' => (string) $request->input('name'),
-            'pwd'  => (string) $request->input('pwd'),
+            'pwd' => (string) $request->input('pwd'),
             'uids' => $uids,
-            'uid'  => $user->id,
+            'uid' => $user->id,
         ];
 
         // 检测uids参数是否合法
@@ -119,13 +119,13 @@ class ImController extends Controller
         } else {
             // 保存会话
             $addConversation = [
-                'user_id'     => $user->id,
-                'cid'         => $res['data']['cid'],
-                'name'        => $res['data']['name'],
-                'pwd'         => $res['data']['pwd'],
+                'user_id' => $user->id,
+                'cid' => $res['data']['cid'],
+                'name' => $res['data']['name'],
+                'pwd' => $res['data']['pwd'],
                 'is_disabled' => 0,
-                'type'        => $res['data']['type'],
-                'uids'        => $uids,
+                'type' => $res['data']['type'],
+                'uids' => $uids,
             ];
             $info = ImConversation::create($addConversation);
             $info = $info->toArray();
@@ -228,7 +228,7 @@ class ImController extends Controller
      *
      * @return
      */
-    public function deleteMembers(int $cid, Request $request)
+    public function exitConversations(int $cid, Request $request)
     {
         $info = ImConversation::where('cid', $cid)->first();
         if ($info) {
@@ -248,7 +248,7 @@ class ImController extends Controller
 
                 return $this->returnMessage(0, ['cid' => $cid], 200);
             } else {
-                return $this->returnMessage(3009, [], 422);
+                return $this->returnMessage(3013, [], 422);
             }
         }
 
@@ -268,8 +268,35 @@ class ImController extends Controller
      *
      * @return
      */
-    public function removeMembers(int $cid, int $uid, Request $request)
+    public function deleteMembers(int $cid, int $uid, Request $request)
     {
+        $info = ImConversation::where('cid', $cid)->first();
+        if ($info) {
+            $user = $request->attributes->get('user');
+            if ($user->id != $info->user_id) {
+                // 没有权限操作
+                return $this->returnMessage(3010, [], 401);
+            }
+            $ImService = new ImService($this->config);
+            // 退出指定对话
+            $res = $ImService->memberDelete(['cid' => $cid, 'uids' => $uid], '/{uids}');
+            if ($res['code'] == 204) {
+                $uids = $info->uids;
+                // 更新本地保存的状态
+                $removeUid = array_search($uid, $uids);
+                if ($removeUid !== false) {
+                    array_splice($uids, $removeUid, 1);
+                    $info->uids = $uids;
+                    $info->save();
+                }
+
+                return $this->returnMessage(0, ['cid' => $cid, 'uid' => $uid], 200);
+            } else {
+                return $this->returnMessage(3014, [], 422);
+            }
+        }
+
+        return $this->returnMessage(3006, [], 404);
     }
 
     /**
@@ -294,7 +321,7 @@ class ImController extends Controller
             $user = $request->attributes->get('user');
             if ($user->id != $conversations->user_id) {
                 // 没有权限操作
-                return $this->returnMessage(3010, $conversations, 401);
+                return $this->returnMessage(3010, [], 401);
             }
 
             // 获取指定的限制的成员
@@ -305,9 +332,9 @@ class ImController extends Controller
             }
             $expire = $request->exists('expire') ? intval($request->input('expire')) : 0;
             $postData = [
-                'uids'   => $uids,
+                'uids' => $uids,
                 'expire' => $expire,
-                'cid'    => $cid,
+                'cid' => $cid,
             ];
 
             $ImService = new ImService($this->config);
@@ -427,14 +454,14 @@ class ImController extends Controller
     {
         if ($code !== 0) {
             return response()->json(static::createJsonData([
-                'code'   => $code,
+                'code' => $code,
                 'status' => false,
             ]))->setStatusCode($http_code);
         } else {
             return response()->json(static::createJsonData([
-                'code'   => 0,
+                'code' => 0,
                 'status' => true,
-                'data'   => $data,
+                'data' => $data,
             ]))->setStatusCode($http_code);
         }
     }
