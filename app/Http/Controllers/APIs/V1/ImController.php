@@ -256,6 +256,119 @@ class ImController extends Controller
     }
 
     /**
+     * 移除指定对话中的指定成员.
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-02-05T14:05:25+080
+     *
+     * @version  1.0
+     *
+     * @param int $cid 对话ID
+     * @param int $uid 需要移除的用户uid
+     *
+     * @return
+     */
+    public function removeMembers(int $cid, int $uid, Request $request)
+    {
+    }
+    /**
+     * 对话成员限制.
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-02-05T14:39:12+080
+     *
+     * @version  1.0
+     *
+     * @param int     $cid     对话ID
+     * @param Request $request
+     *
+     * @return
+     */
+    public function disableLimited(int $cid, Request $request)
+    {
+        // 检测对话是存在
+        $conversations = ImConversation::where('cid', $cid)->first();
+        if ($conversations) {
+            // 检测是不是管理员
+            $user = $request->attributes->get('user');
+            if ($user->id != $conversations->user_id) {
+                // 没有权限操作
+                return $this->returnMessage(3010, $conversations, 401);
+            }
+
+            // 获取指定的限制的成员
+            $uids = is_array($request->input('uids')) ? $request->input('uids') : array_filter(explode(',', $request->input('uids')));
+            if (!$uids) {
+                // 为空
+                return $this->returnMessage(3011, [], 422);
+            }
+            $expire = $request->exists('expire') ? intval($request->input('expire')) : 0;
+            $postData = [
+                'uids' => $uids,
+                'expire' => $expire,
+                'cid' => $cid,
+            ];
+
+            $ImService = new ImService($this->config);
+            // 退出指定对话
+            $res = $ImService->limitedPost($postData);
+            if ($res['code'] == 201) {
+                return $this->returnMessage(0, $postData, 200);
+            }
+
+            return $this->returnMessage(3012, [], 422);
+        }
+
+        return $this->returnMessage(3006, [], 404);
+    }
+    /**
+     * 移除对话成员限制.
+     *
+     * @author martinsun <syh@sunyonghong.com>
+     * @datetime 2017-02-05T14:39:12+080
+     *
+     * @version  1.0
+     *
+     * @param int     $cid     对话ID
+     * @param Request $request
+     *
+     * @return
+     */
+    public function enabledLimited(int $cid, int $uid, Request $request)
+    {
+        // 检测对话是存在
+        $conversations = ImConversation::where('cid', $cid)->first();
+        if ($conversations) {
+            // 检测是不是管理员
+            $user = $request->attributes->get('user');
+            if ($user->id != $conversations->user_id) {
+                // 没有权限操作
+                return $this->returnMessage(3010, $conversations, 401);
+            }
+
+            // 获取指定的限制的成员
+            if (!$uid) {
+                // 为空
+                return $this->returnMessage(3011, [], 422);
+            }
+            $postData = [
+                'uid' => $uid,
+                'cid' => $cid,
+            ];
+
+            $ImService = new ImService($this->config);
+            // 退出指定对话
+            $res = $ImService->limitedDelete($postData, '/{uid}');
+            if ($res['code'] == 204) {
+                return $this->returnMessage(0, $postData, 200);
+            }
+
+            return $this->returnMessage(3012, [], 422);
+        }
+
+        return $this->returnMessage(3006, [], 404);
+    }
+    /**
      * 刷新聊天授权.
      *
      * @author martinsun <syh@sunyonghong.com>

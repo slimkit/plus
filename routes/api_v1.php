@@ -76,7 +76,7 @@ Route::group([
 
 // IM相关接口
 Route::group([
-    'prefix'     => 'im',
+    'prefix' => 'im',
     'middleware' => [
         Middleware\AuthUserToken::class,
     ],
@@ -87,6 +87,9 @@ Route::group([
     Route::get('/conversations/list/all', 'ImController@getConversationList'); //获取某个用户聊天列表
     Route::patch('/users', 'ImController@refresh'); //刷新授权
     Route::delete('/conversations/{cid}', 'ImController@deleteConversation'); //删除对话
+    Route::post('/conversations/members/limited/{cid}', 'ImController@disableLimited');//对话成员限制
+    Route::delete('/conversations/members/limited/{cid}/{uid}', 'ImController@enabledLimited');//移除对话中限制的成员
     Route::delete('/conversations/members/{cid}', 'ImController@deleteMembers'); //退出对话
-    Route::delete('/conversations/members/{cid}/{uid}', 'ImController@removeMembers'); //剔除指定成员
+    Route::delete('/conversations/members/{cid}/{uid}', 'ImController@removeMembers');//剔除指定成员
+
 });
