@@ -5,12 +5,12 @@ namespace Tests\Feature\APIs\V1;
 use Illuminate\Filesystem\Filesystem;
 use PHPUnit\Framework\Assert as PHPUnit;
 use Zhiyi\Plus\Models\AuthToken;
-use Zhiyi\Plus\Models\User;
 use Zhiyi\plus\Models\StorageTask;
+use Zhiyi\Plus\Models\User;
 
 class StorageCreateTaskTest extends TestCase
 {
-	protected $uri = '/api/v1/storages/task/{hash}/{origin_filename}';
+    protected $uri = '/api/v1/storages/task/{hash}/{origin_filename}';
     protected $filename = __DIR__.'/res/teststorage.jpg';
 
     protected $phone = '18781993582';
@@ -52,23 +52,25 @@ class StorageCreateTaskTest extends TestCase
         $this->auth->forceDelete();
         parent::tearDown();
     }
-	/**
-	 * 测试认证不通过的返回情况
-	 *
-	 * test middleware \App\Http\Middleware\AuthUserToken
-	 * 
-	 * @author bs<414606094@qq.com>
-	 * @return void
-	 */
-	public function testAuthTokenError()
-	{
-		$requestHeaders = ['ACCESS-TOKEN' => ''];
-		$requestBody = [];
 
-		$filename = $this->filename;
-		$uri = $this->replaceUri()['uri'];
+    /**
+     * 测试认证不通过的返回情况.
+     *
+     * test middleware \App\Http\Middleware\AuthUserToken
+     *
+     * @author bs<414606094@qq.com>
+     *
+     * @return void
+     */
+    public function testAuthTokenError()
+    {
+        $requestHeaders = ['ACCESS-TOKEN' => ''];
+        $requestBody = [];
 
-		$response = $this->postJson($uri, $requestBody, $requestHeaders);
+        $filename = $this->filename;
+        $uri = $this->replaceUri()['uri'];
+
+        $response = $this->postJson($uri, $requestBody, $requestHeaders);
 
         // Asserts that the status code of the response matches the given code.
         $response->assertStatus(401);
@@ -78,63 +80,66 @@ class StorageCreateTaskTest extends TestCase
             'code'    => 1016,
         ]);
         $response->assertJson($json);
-	}
+    }
 
-	/**
-	 * 测试秒传情况
-	 * 
-	 * @author bs<414606094@qq.com>
-	 * @return void
-	 */
-	public function testFlashUpload()
-	{	
-		$requestHeaders = ['ACCESS-TOKEN' => $this->auth->token];
-		$requestBody = [];
-		$uri = $this->replaceUri()['uri'];
+    /**
+     * 测试秒传情况.
+     *
+     * @author bs<414606094@qq.com>
+     *
+     * @return void
+     */
+    public function testFlashUpload()
+    {
+        $requestHeaders = ['ACCESS-TOKEN' => $this->auth->token];
+        $requestBody = [];
+        $uri = $this->replaceUri()['uri'];
 
-		$response = $this->postJson($uri, $requestBody, $requestHeaders);
-		$response->assertStatus(201);
+        $response = $this->postJson($uri, $requestBody, $requestHeaders);
+        $response->assertStatus(201);
 
-		$taskId = $response->original['data']['storage_task_id'];
-		$responseHash = StorageTask::find($taskId)->hash;
+        $taskId = $response->original['data']['storage_task_id'];
+        $responseHash = StorageTask::find($taskId)->hash;
 
-		$bool = $this->replaceUri()['hash'] === $responseHash; 
+        $bool = $this->replaceUri()['hash'] === $responseHash;
 
-		PHPUnit::assertTrue($bool);
-	}
+        PHPUnit::assertTrue($bool);
+    }
 
-	/**
-	 * 测试正常创建上传队列情况
-	 * 
-	 * @author bs<414606094@qq.com>
-	 * @return void
-	 */
-	public function testCreateTask()
-	{
-		$requestBody = [];
-		$requestHeaders = ['ACCESS-TOKEN' => $this->auth->token];
-		$uri = $this->replaceUri()['uri'];
+    /**
+     * 测试正常创建上传队列情况.
+     *
+     * @author bs<414606094@qq.com>
+     *
+     * @return void
+     */
+    public function testCreateTask()
+    {
+        $requestBody = [];
+        $requestHeaders = ['ACCESS-TOKEN' => $this->auth->token];
+        $uri = $this->replaceUri()['uri'];
 
-		$response = $this->postJson($uri, $requestBody, $requestHeaders);
+        $response = $this->postJson($uri, $requestBody, $requestHeaders);
 
-		$response->assertStatus(201);
-	}
+        $response->assertStatus(201);
+    }
 
-	/**
-	 * 根据默认测试文件生成测试链接
-	 * 
-	 * @author bs<414606094@qq.com>
-	 * @return array
-	 */
-	protected function replaceUri()
-	{
-		$filename = $this->filename;
-		$fileHash = md5_file($filename);
-		$basename = with(new Filesystem())->basename($filename);
+    /**
+     * 根据默认测试文件生成测试链接.
+     *
+     * @author bs<414606094@qq.com>
+     *
+     * @return array
+     */
+    protected function replaceUri()
+    {
+        $filename = $this->filename;
+        $fileHash = md5_file($filename);
+        $basename = with(new Filesystem())->basename($filename);
 
-		$uri = str_replace('{hash}', urlencode($fileHash), $this->uri);
-		$uri = str_replace('{origin_filename}', urlencode($basename), $uri);
+        $uri = str_replace('{hash}', urlencode($fileHash), $this->uri);
+        $uri = str_replace('{origin_filename}', urlencode($basename), $uri);
 
-		return ['uri' => $uri, 'hash' => $fileHash, 'name' => $filename];
-	}	
+        return ['uri' => $uri, 'hash' => $fileHash, 'name' => $filename];
+    }
 }
