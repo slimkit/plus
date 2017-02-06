@@ -8,9 +8,9 @@ use Zhiyi\Plus\Models\AuthToken;
 use Zhiyi\plus\Models\StorageTask;
 use Zhiyi\Plus\Models\User;
 
-class StorageCreateTaskTest extends TestCase
+class StorageUploadTest extends TestCase
 {
-    protected $uri = '/api/v1/storages/task/{hash}/{origin_filename}';
+    protected $uri = '/api/v1/storages/task/{storage_task_id}';
     protected $filename = __DIR__.'/res/teststorage.jpg';
 
     protected function setUp()
@@ -34,7 +34,6 @@ class StorageCreateTaskTest extends TestCase
         // save token.
         $this->user->tokens()->save($this->auth);
 
-        $this->uri = $this->replaceUri()['uri'];
     }
 
     /**
@@ -79,64 +78,4 @@ class StorageCreateTaskTest extends TestCase
         $response->assertJson($json);
     }
 
-    /**
-     * 测试秒传情况.
-     *
-     * @author bs<414606094@qq.com>
-     *
-     * @return void
-     */
-    public function testFlashUpload()
-    {
-        $requestHeaders = ['ACCESS-TOKEN' => $this->auth->token];
-        $requestBody = [];
-        $uri = $this->uri;
-
-        $response = $this->postJson($uri, $requestBody, $requestHeaders);
-        $response->assertStatus(201);
-
-        $taskId = $response->original['data']['storage_task_id'];
-        $responseHash = StorageTask::find($taskId)->hash;
-
-        $bool = $this->replaceUri()['hash'] === $responseHash;
-
-        PHPUnit::assertTrue($bool);
-    }
-
-    /**
-     * 测试正常创建上传队列情况.
-     *
-     * @author bs<414606094@qq.com>
-     *
-     * @return void
-     */
-    public function testCreateTask()
-    {
-        $requestBody = [];
-        $requestHeaders = ['ACCESS-TOKEN' => $this->auth->token];
-        $uri = $this->uri;
-
-        $response = $this->postJson($uri, $requestBody, $requestHeaders);
-
-        $response->assertStatus(201);
-    }
-
-    /**
-     * 根据默认测试文件生成测试链接.
-     *
-     * @author bs<414606094@qq.com>
-     *
-     * @return array
-     */
-    protected function replaceUri()
-    {
-        $filename = $this->filename;
-        $fileHash = md5_file($filename);
-        $basename = with(new Filesystem())->basename($filename);
-
-        $uri = str_replace('{hash}', urlencode($fileHash), $this->uri);
-        $uri = str_replace('{origin_filename}', urlencode($basename), $uri);
-
-        return ['uri' => $uri, 'hash' => $fileHash, 'name' => $filename];
-    }
 }
