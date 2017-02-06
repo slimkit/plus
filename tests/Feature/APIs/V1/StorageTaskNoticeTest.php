@@ -102,7 +102,7 @@ class StorageTaskNoticeTest extends TestCase
         $requestHeaders = ['ACCESS-TOKEN' => $this->auth->token];
         $requestBody = [];
 
-        $uri = str_replace('{storage_task_id}', 1, $this->uri);
+        $uri = str_replace('{storage_task_id}', 99999999999, $this->uri);
 
         $response = $this->patchJson($uri, $requestBody, $requestHeaders);
         // Asserts that the status code of the response matches the given code.
