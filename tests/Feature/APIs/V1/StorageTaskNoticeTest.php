@@ -2,16 +2,13 @@
 
 namespace Tests\Feature\APIs\V1;
 
-use Illuminate\Filesystem\Filesystem;
-use PHPUnit\Framework\Assert as PHPUnit;
 use Zhiyi\Plus\Models\AuthToken;
-use Zhiyi\Plus\Models\User;
 use Zhiyi\plus\Models\StorageTask;
-use Zhiyi\Plus\Storages\Storage;
+use Zhiyi\Plus\Models\User;
 
 class StorageTaskNoticeTest extends TestCase
 {
-	protected $uri = '/api/v1/storages/task/{storage_task_id}';
+    protected $uri = '/api/v1/storages/task/{storage_task_id}';
 
     protected function setUp()
     {
@@ -35,14 +32,14 @@ class StorageTaskNoticeTest extends TestCase
         $this->user->tokens()->save($this->auth);
 
         // set error Task
-        $this->errortask = new StorageTask;
+        $this->errortask = new StorageTask();
         $this->errortask->hash = 'a9e056d78546f7db451231239161fbf0879';
         $this->errortask->origin_filename = 'teststorage2.jpg';
         $this->errortask->filename = '2017/02/06/0612/a9e056d78546f7db4576112312f0879.jpg';
         $this->errortask->save();
 
         // set Task
-        $this->task = new StorageTask;
+        $this->task = new StorageTask();
         $this->task->hash = 'a9e056d78546f7db457619161fbf0878';
         $this->task->origin_filename = 'teststorage.jpg';
         $this->task->filename = '2017/02/06/0612/a9e056d78546f7db457619161fbf0878.jpg';
@@ -50,9 +47,10 @@ class StorageTaskNoticeTest extends TestCase
     }
 
     /**
-     * 清除测试数据
-     * 
+     * 清除测试数据.
+     *
      * @author bs<414606094@qq.com>
+     *
      * @return void
      */
     protected function tearDown()
@@ -64,7 +62,7 @@ class StorageTaskNoticeTest extends TestCase
         parent::tearDown();
     }
 
-     /**
+    /**
      * 测试认证不通过的返回情况.
      *
      * test middleware \App\Http\Middleware\AuthUserToken
@@ -93,9 +91,10 @@ class StorageTaskNoticeTest extends TestCase
     }
 
     /**
-     * 测试资源不存在的情况
-     *  
+     * 测试资源不存在的情况.
+     *
      * @author bs<414606094@qq.com>
+     *
      * @return void
      */
     public function testGetEmptyStorages()
@@ -111,16 +110,17 @@ class StorageTaskNoticeTest extends TestCase
 
         // Assert that the response contains an exact JSON array.
         $json = static::createJsonData([
-            'code' => 2000,
+            'code'    => 2000,
             'message' => '上传任务不存在',
         ]);
         $response->assertJson($json);
     }
 
     /**
-     * 测试资源参数传入错误的情况
-     *  
+     * 测试资源参数传入错误的情况.
+     *
      * @author bs<414606094@qq.com>
+     *
      * @return void
      */
     public function testGetErrorStorages()
@@ -135,15 +135,15 @@ class StorageTaskNoticeTest extends TestCase
         $response->assertStatus(500);
     }
 
-
     /**
-     * 测试任务存在文件不存在情况
-     *  
+     * 测试任务存在文件不存在情况.
+     *
      * @author bs<414606094@qq.com>
+     *
      * @return void
      */
     public function testGetEmptyFile()
-    {   
+    {
         $requestHeaders = ['ACCESS-TOKEN' => $this->auth->token];
         $requestBody = ['message' => '123'];
 
@@ -155,9 +155,10 @@ class StorageTaskNoticeTest extends TestCase
     }
 
     /**
-     * 测试正常获取通知情况
-     *  
+     * 测试正常获取通知情况.
+     *
      * @author bs<414606094@qq.com>
+     *
      * @return void
      */
     public function testGetNotice()
@@ -175,5 +176,4 @@ class StorageTaskNoticeTest extends TestCase
         ]);
         $response->assertJson($json);
     }
-
 }

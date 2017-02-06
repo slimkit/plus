@@ -133,6 +133,7 @@ class Storage
             $storage->extension = app(Filesystem::class)->extension($task->origin_filename);
             $storage->save();
         }
+
         return response()->json(static::createJsonData([
             'status' => true,
         ]));
