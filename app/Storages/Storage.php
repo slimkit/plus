@@ -46,7 +46,7 @@ class Storage
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function setStorageEngine(string $engine, StorageEngineInterface $storage)
+    public function setStorageEngine(string $engine, $storage)
     {
         static::$storages[$engine] = $storage;
 
