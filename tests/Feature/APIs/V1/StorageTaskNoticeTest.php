@@ -168,6 +168,7 @@ class StorageTaskNoticeTest extends TestCase
         $uri = str_replace('{storage_task_id}', $this->task->id, $this->uri);
 
         $response = $this->patchJson($uri, $requestBody, $requestHeaders);
+
         // Asserts that the status code of the response matches the given code.
         $response->assertStatus(200);
         // Assert that the response contains an exact JSON array.

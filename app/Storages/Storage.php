@@ -8,12 +8,10 @@ use Illuminate\Http\Response;
 use Zhiyi\Plus\Models\Storage as StorageModel;
 use Zhiyi\Plus\Models\StorageTask;
 use Zhiyi\Plus\Models\User;
-use Zhiyi\Plus\Plus\Interfaces\Storage\StorageEngineInterface;
-use Zhiyi\Plus\Traits\CreateJsonResponseData;
+use Zhiyi\Plus\Interfaces\Storage\StorageEngineInterface;
 
 class Storage
 {
-    use CreateJsonResponseData;
     /**
      * 储存器列表.
      *
@@ -48,7 +46,7 @@ class Storage
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function setStorageEngine(string $engine, $storage)
+    public function setStorageEngine(string $engine, StorageEngineInterface $storage)
     {
         static::$storages[$engine] = $storage;
 
