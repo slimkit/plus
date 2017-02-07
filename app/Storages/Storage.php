@@ -9,9 +9,11 @@ use Zhiyi\Plus\Interfaces\Storage\StorageEngineInterface;
 use Zhiyi\Plus\Models\Storage as StorageModel;
 use Zhiyi\Plus\Models\StorageTask;
 use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
 class Storage
 {
+    use CreateJsonResponseData;
     /**
      * 储存器列表.
      *
