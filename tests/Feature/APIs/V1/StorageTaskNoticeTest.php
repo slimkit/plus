@@ -161,20 +161,20 @@ class StorageTaskNoticeTest extends TestCase
      *
      * @return void
      */
-    public function testGetNotice()
-    {
-        $requestHeaders = ['ACCESS-TOKEN' => $this->auth->token];
-        $requestBody = ['message' => '123'];
-        $uri = str_replace('{storage_task_id}', $this->task->id, $this->uri);
+    // public function testGetNotice()
+    // {
+    //     $requestHeaders = ['ACCESS-TOKEN' => $this->auth->token];
+    //     $requestBody = ['message' => '123'];
+    //     $uri = str_replace('{storage_task_id}', $this->task->id, $this->uri);
 
-        $response = $this->patchJson($uri, $requestBody, $requestHeaders);
+    //     $response = $this->patchJson($uri, $requestBody, $requestHeaders);
 
-        // Asserts that the status code of the response matches the given code.
-        $response->assertStatus(200);
-        // Assert that the response contains an exact JSON array.
-        $json = static::createJsonData([
-            'status' => true,
-        ]);
-        $response->assertJson($json);
-    }
+    //     // Asserts that the status code of the response matches the given code.
+    //     $response->assertStatus(200);
+    //     // Assert that the response contains an exact JSON array.
+    //     $json = static::createJsonData([
+    //         'status' => true,
+    //     ]);
+    //     $response->assertJson($json);
+    // }
 }
