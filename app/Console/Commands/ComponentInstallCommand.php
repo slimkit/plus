@@ -3,9 +3,8 @@
 namespace Zhiyi\Plus\Console\Commands;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use stdClass;
 use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Console\Input\InputArgument;
 
 class ComponentInstallCommand extends Command
 {
@@ -52,7 +51,7 @@ class ComponentInstallCommand extends Command
         if (!$installer) {
             throw new \Exception("The {$component} not require.");
         }
-        
+
         if (is_string($installer)) {
             $installer = new $installer($this);
         }
@@ -104,7 +103,7 @@ class ComponentInstallCommand extends Command
         $data = '<?php '.PHP_EOL;
         $data .= 'return ';
         $data .= var_export($routes, true);
-        $data .=';'.PHP_EOL;
+        $data .= ';'.PHP_EOL;
 
         $this->filesystem->put(config_path('component_routes.php'), $data);
         $this->info("The {$componentName} created router successfully.");
