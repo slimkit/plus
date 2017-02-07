@@ -2,8 +2,6 @@
 
 namespace Tests\Feature\APIs\V1;
 
-use Illuminate\Filesystem\Filesystem;
-use PHPUnit\Framework\Assert as PHPUnit;
 use Zhiyi\Plus\Models\AuthToken;
 use Zhiyi\plus\Models\StorageTask;
 use Zhiyi\Plus\Models\User;
@@ -33,7 +31,6 @@ class StorageTaskDeleteTest extends TestCase
 
         // save token.
         $this->user->tokens()->save($this->auth);
-
     }
 
     /**
@@ -79,9 +76,10 @@ class StorageTaskDeleteTest extends TestCase
     }
 
     /**
-     * 测试删除不存在的任务的情况
-     * 
+     * 测试删除不存在的任务的情况.
+     *
      * @author bs<414606094@qq.com>
+     *
      * @return void
      */
     public function testDeleteEmptyTask()
@@ -97,7 +95,7 @@ class StorageTaskDeleteTest extends TestCase
 
         // Assert that the response contains an exact JSON array.
         $json = static::createJsonData([
-            'code' => 2000,
+            'code'    => 2000,
             'message' => '上传任务不存在',
         ]);
         $response->assertJson($json);
@@ -105,13 +103,14 @@ class StorageTaskDeleteTest extends TestCase
 
     /**
      * 测试删除任务
-     * 
+     *
      * @author bs<414606094@qq.com>
+     *
      * @return void
      */
     public function testDeleteTask()
     {
-        $task = new StorageTask;
+        $task = new StorageTask();
         $task->hash = 'a9e056d78546f7db457619161fbf0878';
         $task->origin_filename = 'teststorage.jpg';
         $task->filename = '2017/02/06/0612/a9e056d78546f7db457619161fbf0878.jpg';
@@ -128,7 +127,7 @@ class StorageTaskDeleteTest extends TestCase
 
         // Assert that the response contains an exact JSON array.
         $json = static::createJsonData([
-            'code' => 2000,
+            'code'    => 2000,
             'message' => '上传任务不存在',
         ]);
         $response->assertJson($json);
