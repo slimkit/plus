@@ -4,7 +4,6 @@ namespace Zhiyi\Plus\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
-use function Zhiyi\Plus\routes_all;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -81,9 +80,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapVendorRoutes()
     {
-        $all = routes_all();
-        foreach ($all as $filename => $options) {
-            Route::group($options, $filename);
+        $files = config('component_routes', []);
+        foreach ($files as $file) {
+            include_once $file;
         }
     }
 }

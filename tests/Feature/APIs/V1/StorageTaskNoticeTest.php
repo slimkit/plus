@@ -158,7 +158,7 @@ class StorageTaskNoticeTest extends TestCase
         $response->assertStatus(500);
     }
 
-    /**
+    /*
      * 测试正常获取通知情况.
      *
      * @author bs<414606094@qq.com>
@@ -192,6 +192,5 @@ class StorageTaskNoticeTest extends TestCase
         $fs = new Filesystem();
         $fs->copy($this->filename, storage_path('app/public/'.$this->task->filename));
     }
-
 
 }
