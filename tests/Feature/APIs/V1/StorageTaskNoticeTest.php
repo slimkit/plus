@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\APIs\V1;
 
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Storage;
 use Zhiyi\Plus\Models\AuthToken;
 use Zhiyi\plus\Models\StorageTask;
 use Zhiyi\Plus\Models\User;
@@ -9,6 +11,8 @@ use Zhiyi\Plus\Models\User;
 class StorageTaskNoticeTest extends TestCase
 {
     protected $uri = '/api/v1/storages/task/{storage_task_id}';
+
+    protected $filename = __DIR__.'/res/teststorage.jpg';
 
     protected function setUp()
     {
@@ -163,6 +167,10 @@ class StorageTaskNoticeTest extends TestCase
      */
     public function testGetNotice()
     {
+        // move test file
+        if (!file_exists(storage_path('app/public/'.$this->task->filename))) {
+            $this->moveTestFile();
+        }
         $requestHeaders = ['ACCESS-TOKEN' => $this->auth->token];
         $requestBody = ['message' => '123'];
         $uri = str_replace('{storage_task_id}', $this->task->id, $this->uri);
@@ -177,4 +185,13 @@ class StorageTaskNoticeTest extends TestCase
         ]);
         $response->assertJson($json);
     }
+
+    protected function moveTestFile()
+    {
+        Storage::makeDirectory('public/'.dirname($this->task->filename));
+        $fs = new Filesystem();
+        $fs->copy($this->filename, storage_path('app/public/'.$this->task->filename));
+    }
+
+
 }
