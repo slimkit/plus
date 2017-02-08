@@ -192,5 +192,4 @@ class StorageTaskNoticeTest extends TestCase
         $fs = new Filesystem();
         $fs->copy($this->filename, storage_path('app/public/'.$this->task->filename));
     }
-
 }
