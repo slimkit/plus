@@ -74,9 +74,11 @@ class ComponentCommand extends Command
     /**
      * Bind The Closure.
      *
-     * @param mixed $bind
+     * @param mixed   $bind
      * @param Closure $call
+     *
      * @return Closure
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -91,7 +93,9 @@ class ComponentCommand extends Command
      * Get the component installer instance.
      *
      * @param string $componentName
+     *
      * @return InstallerInterface
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -144,7 +148,7 @@ class ComponentCommand extends Command
      * Installed resource entry.
      *
      * @param InstallerInterface $installer
-     * @param string $componentName
+     * @param string             $componentName
      *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
@@ -184,7 +188,7 @@ class ComponentCommand extends Command
      * install router entry.
      *
      * @param InstallerInterface $installer
-     * @param string $componentName
+     * @param string             $componentName
      *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
@@ -223,7 +227,7 @@ class ComponentCommand extends Command
      * Save php file by interator.
      *
      * @param string $filename
-     * @param array $datas
+     * @param array  $datas
      *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
@@ -242,6 +246,7 @@ class ComponentCommand extends Command
      * get "component" argument.
      *
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -258,6 +263,7 @@ class ComponentCommand extends Command
      * get "name" argument.
      *
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -275,6 +281,7 @@ class ComponentCommand extends Command
      * get command arguments.
      *
      * @return array
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
