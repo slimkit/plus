@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\Console\Commands;
 
+use Closure;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputArgument;
@@ -84,7 +85,7 @@ class ComponentCommand extends Command
      */
     protected function getClosureBind($bind, Closure $call): Closure
     {
-        $call->call($bind);
+        $call->bindTo($bind);
 
         return $call;
     }
@@ -101,14 +102,14 @@ class ComponentCommand extends Command
      */
     protected function getInstallerInstance(string $componentName): InstallerInterface
     {
-        $installer = array_get(config('component'), $component);
+        $installer = array_get(config('component'), $componentName);
         if (!$installer) {
-            throw new \Exception("The {$component} not require.");
+            throw new \Exception("The {$componentName} not require.");
         }
 
         $installer = new $installer($this, $this->output);
-        if ($installer instanceof InstallerInterface) {
-            throw new \Exception(sprintf('The %s not implement %s', $component, InstallerInterface::class));
+        if (!$installer instanceof InstallerInterface) {
+            throw new \Exception(sprintf('The %s not implement %s', $componentName, InstallerInterface::class));
         }
 
         return $installer;
