@@ -1,1 +1,0 @@
-alert('This is TS+ component example.');
