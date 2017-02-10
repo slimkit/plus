@@ -5,7 +5,7 @@ namespace Zhiyi\Plus\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class ChangeUsename
+class ChangeUsername
 {
     /**
      * Handle an incoming request.
