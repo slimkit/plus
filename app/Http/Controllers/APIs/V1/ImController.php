@@ -17,7 +17,7 @@ class ImController extends Controller
      * @var string
      */
     protected $config = [
-        'base_url' => 'http://192.168.10.222:9900',
+        'base_url' => 'http://192.168.2.222:9900',
     ];
 
     /**
