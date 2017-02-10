@@ -20,9 +20,9 @@ TS+ 在 PHP 版本上选择 **>=7.0** 版本开发，并使用了强类型语言
 ### Pre
 
 - PHP >= 7.0
-- Composer
     * ext-mbstring
     * ext-openssl
+- Composer
 - MySQL
 - Nginx | Apache | IIS
 - Git
