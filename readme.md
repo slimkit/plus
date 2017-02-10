@@ -30,11 +30,11 @@ TS+ 在 PHP 版本上选择 **>=7.0** 版本开发，并使用了强类型语言
 ### Installed
 
 1. 进入你的 `www` 目录，先克隆仓库。
-```shell
-git clone https://github.com/zhiyicx/thinksns-plus
-cd thinksns-plus
-```
+    ```shell
+    git clone https://github.com/zhiyicx/thinksns-plus
+    cd thinksns-plus
+    ```
 2. 使用 Composer 进行依赖处理。
-```shell
-composer install
-```
+    ```shell
+    composer install
+    ```
