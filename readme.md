@@ -63,6 +63,6 @@ php aerisan component install medz/plus-component-example
 
 ## 开发文档
 
-- [RESTful API](documents/api/v1)
+- [RESTful API version 1](documents/api/v1)
 - [Laravel Docs](https://laravel-china.org/docs/5.3)
 - [More...](documents/) 
