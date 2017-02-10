@@ -60,3 +60,9 @@ composer require medz/plus-component-example
 php aerisan component install medz/plus-component-example
 ```
 [拓展应用开发文档](documents/component/)
+
+## 开发文档
+
+- [RESTful API](documents/api/v1)
+- [Laravel Docs](https://laravel-china.org/docs/5.3)
+- [More...](documents/) 
