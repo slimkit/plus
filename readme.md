@@ -29,12 +29,34 @@ TS+ 在 PHP 版本上选择 **>=7.0** 版本开发，并使用了强类型语言
 
 ### Installed
 
-1. 进入你的 `www` 目录，先克隆仓库。
-    ```shell
-    git clone https://github.com/zhiyicx/thinksns-plus
-    cd thinksns-plus
-    ```
-2. 使用 Composer 进行依赖处理。
-    ```shell
-    composer install
-    ```
+进入你的 `www` 目录，先克隆仓库：
+```shell
+git clone https://github.com/zhiyicx/thinksns-plus
+cd thinksns-plus
+```
+复制 **.env.example** 文件为 **.env** ，然后打开 **.env** 文件，对你的站点，数据库等信息进行配置
+
+使用 Composer 进行依赖处理：
+```shell
+composer install
+```
+
+生成加密的key：
+```shell
+php artisan key:generate
+```
+
+数据信息迁移和填充：
+```shell
+php artisan migrate --seed
+```
+
+到此，TS+ 已经安装完成
+
+## TS+ 拓展应用开发(component)
+TS+ 应用包开发，安装都非常简单，安装包如下：
+```shell
+composer require medz/plus-component-example
+php aerisan component install medz/plus-component-example
+```
+[拓展应用开发文档](documents/component/)
