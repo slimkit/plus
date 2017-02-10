@@ -1,4 +1,10 @@
 <p align="center"><img src=".github/plus.png"></p>
+
+<p align="center">
+<a href="https://styleci.io/repos/76627423"><img src="https://styleci.io/repos/76627423/shield?branch=master" alt="StyleCI"></a>
+<a href="https://travis-ci.org/zhiyicx/thinksns-plus"><img src="https://travis-ci.org/zhiyicx/thinksns-plus.svg?branch=master" alt="Build Status"></a>
+</p>
+
 <p align="center">
     <!-- StyleCI -->
     <a href="https://styleci.io/repos/76627423">
