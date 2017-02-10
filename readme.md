@@ -57,7 +57,7 @@ php artisan migrate --seed
 TS+ 应用包开发，安装都非常简单，安装包如下：
 ```shell
 composer require medz/plus-component-example
-php aerisan component install medz/plus-component-example
+php artisan component install medz/plus-component-example
 ```
 [拓展应用开发文档](documents/component/)
 
