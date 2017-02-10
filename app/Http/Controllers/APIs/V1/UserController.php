@@ -83,7 +83,7 @@ class UserController extends Controller
             $datas[$value->profile] = $value->pivot->user_profile_setting_data;
         }
         $datas['user_id'] = $user->id;
-        $data['name'] = $user->name;
+        $datas['name'] = $user->name;
 
         return response()->json(static::createJsonData([
             'status'  => true,
