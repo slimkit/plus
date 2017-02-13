@@ -1,5 +1,6 @@
-<?php 
-return 
-array (
+<?php
+
+return
+ [
   'zhiyicx/plus-component-im' => 'D:\\wamp_new\\www\\thinksns-plus\\vendor\\zhiyicx\\plus-component-im/routes/api.php',
-);
+];
