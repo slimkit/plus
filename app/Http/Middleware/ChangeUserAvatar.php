@@ -55,7 +55,7 @@ class ChangeUserAvatar
             ]))->setStatusCode(403);
         }
 
-        $user = $request->attributes->get('user');
+        $user = $request->user();
 
         // 开启事务.
         DB::beginTransaction();

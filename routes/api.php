@@ -12,6 +12,13 @@
 |
 */
 
+use Illuminate\Http\Request;
+
+Route::any('/example', function (Request $request) {
+    var_dump($request->user());
+})
+->middleware('auth:api');
+
 // RESTful API version 1.
 Route::prefix('v1')
     ->namespace('APIs\\V1')

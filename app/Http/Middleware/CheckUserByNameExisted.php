@@ -31,8 +31,6 @@ class CheckUserByNameExisted
             ]))->setStatusCode(404);
         }
 
-        $request->attributes->set('user', $user);
-
         return $next($request);
     }
 }

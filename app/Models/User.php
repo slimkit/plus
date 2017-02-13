@@ -6,17 +6,15 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Zhiyi\Plus\Traits\UserRolePerms;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class User extends Model
+class User extends Authenticatable
 {
     use SoftDeletes, UserRolePerms {
         SoftDeletes::restore insteadof UserRolePerms;
         UserRolePerms::restore insteadof SoftDeletes;
     }
-
-    // use SoftDeletes::restore insteadof EntrustUserTrait;
-    // use EntrustUserTrait::restore insteadof SoftDeletes;
-    // use SoftDeletes, UserRolePerms;
 
     /**
      * The attributes that are mass assignable.

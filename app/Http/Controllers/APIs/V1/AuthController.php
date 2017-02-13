@@ -68,7 +68,16 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        $user = $request->attributes->get('user');
+        $phone = $request->input('phone');
+        $password = $request->input('password', '');
+
+        $user = User::byPhone($phone)->first();
+        if (!$user->verifyPassword($password)) {
+            return response()->json(static::createJsonData([
+                'code' => 1006,
+            ]))->setStatusCode(401);
+        }
+
         $deviceCode = $request->input('device_code');
         $token = new AuthToken();
         $token->token = md5($deviceCode.str_random(32));
@@ -107,10 +116,6 @@ class AuthController extends Controller
             'expires'       => $token->expires,
             'user_id'       => $user->id,
         ];
-        //IM账号信息同步
-        // 先注销，开发人先自己思考下～这是作产品，不是完成某个项目，不是说交了就完事了～
-        // $ImUser = new ImUser();
-        // $ImUser->usersPost(['uid' => $user->id, 'name' => $user->name]);
 
         return response()->json([
             'status'  => true,
@@ -157,8 +162,6 @@ class AuthController extends Controller
             $token->save();
         });
 
-        $request->attributes->set('user', $token->user);
-
         return $this->login($request);
     }
 
@@ -183,8 +186,6 @@ class AuthController extends Controller
         $user->createPassword($password);
         $user->save();
 
-        $request->attributes->set('user', $user);
-
         return $this->login($request);
     }
 
@@ -202,7 +203,7 @@ class AuthController extends Controller
     {
         $password = $request->input('password', '');
 
-        $user = $request->attributes->get('user');
+        $user = $request->user();
         $user->createPassword($password);
         $user->save();
 

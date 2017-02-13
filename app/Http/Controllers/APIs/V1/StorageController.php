@@ -34,7 +34,7 @@ class StorageController extends Controller
      */
     public function create(Request $request, string $hash, string $origin_filename)
     {
-        $user = $request->attributes->get('user');
+        $user = $request->user();
         $storage = $this->storage()->createStorageTask($user, $origin_filename, $hash);
 
         return response()->json(static::createJsonData([
@@ -68,7 +68,7 @@ class StorageController extends Controller
             ]))->setStatusCode(404);
         }
 
-        $user = $request->attributes->get('user');
+        $user = $request->user();
         $user->storages()->where('hash', $task->hash)->delete();
         $task->delete();
 

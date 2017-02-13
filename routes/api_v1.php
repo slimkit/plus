@@ -13,7 +13,6 @@ Route::post('/auth', 'AuthController@login')
     ->middleware(Middleware\CheckDeviceCodeExisted::class) // 验证设备号是否存在
     ->middleware(Middleware\VerifyPhoneNumber::class) // 验证手机号码是否正确
     ->middleware(Middleware\CheckUserByPhoneExisted::class) // 验证手机号码用户是否存在
-    ->middleware(Middleware\VerifyPassword::class) // 验证密码是否正确
 ;
 
 // 重置token接口
@@ -37,12 +36,9 @@ Route::patch('/auth/forgot', 'AuthController@forgotPassword')
 ;
 
 // 用户相关组
-Route::group([
-    'middleware' => [
-        Middleware\AuthUserToken::class,
-    ],
-    'prefix' => 'users',
-], function ($routes) {
+Route::prefix('users')
+->middleware('auth:api')
+->group(function () {
     // 修改用户资料
     Route::patch('/', 'UserController@profile')
         ->middleware(Middleware\ChangeUserAvatar::class)
@@ -58,9 +54,7 @@ Route::group([
 Route::get('/storages/{storage}/{process?}', 'StorageController@get');
 // 附件储存相关
 Route::group([
-    'middleware' => [
-        Middleware\AuthUserToken::class,
-    ],
+    'middleware' => 'auth:api',
     'prefix' => 'storages',
 ], function () {
     // 创建一个储存任务

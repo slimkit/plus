@@ -22,7 +22,7 @@ class UserController extends Controller
     public function resetPassword(Request $request)
     {
         $password = $request->input('new_password', '');
-        $user = $request->attributes->get('user');
+        $user = $request->user();
         $user->createPassword($password);
         $user->save();
 
@@ -43,7 +43,7 @@ class UserController extends Controller
      */
     public function profile(Request $request)
     {
-        $user = $request->attributes->get('user');
+        $user = $request->user();
         $profileData = $request->all();
         $profileSettings = UserProfileSetting::whereIn('profile', array_keys($profileData))->get();
         $datas = [];
