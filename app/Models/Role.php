@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\Models;
 
+use Illuminate\Cache\TaggableStore;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 
