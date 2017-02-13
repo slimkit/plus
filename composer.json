@@ -12,6 +12,7 @@
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "medz/plus-component-example": "^1.0",
+        "zhiyicx/plus-component-im": "^1.0",
         "zhiyicx/plus-install-plugin": "^1.0",
         "zhuzhichao/ip-location-zh": "^2.2"
     },
