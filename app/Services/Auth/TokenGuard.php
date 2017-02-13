@@ -2,9 +2,9 @@
 
 namespace Zhiyi\Plus\Services\Auth;
 
+use Illuminate\Auth\GuardHelpers;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
-use Illuminate\Auth\GuardHelpers;
 
 class TokenGuard implements Guard
 {
@@ -20,8 +20,9 @@ class TokenGuard implements Guard
     /**
      * Create a new authentication guard.
      *
-     * @param  \Zhiyi\Plus\Services\Auth\TokenUserProvider  $provider
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Zhiyi\Plus\Services\Auth\TokenUserProvider $provider
+     * @param \Illuminate\Http\Request                    $request
+     *
      * @return void
      */
     public function __construct(TokenUserProvider $provider, Request $request)
@@ -40,7 +41,7 @@ class TokenGuard implements Guard
         // If we've already retrieved the user for the current request we can just
         // return it back immediately. We do not want to fetch the user data on
         // every call to this method because that would be tremendously slow.
-        if (! is_null($this->user)) {
+        if (!is_null($this->user)) {
             return $this->user;
         }
 
@@ -48,7 +49,7 @@ class TokenGuard implements Guard
 
         $token = $this->getTokenForRequest();
 
-        if (! empty($token)) {
+        if (!empty($token)) {
             $user = $this->provider->retrieveByCredentials(
                 ['token' => $token]
             );
@@ -60,12 +61,14 @@ class TokenGuard implements Guard
     /**
      * Validate a user's credentials.
      *
-     * @param  array  $credentials
+     * @param array $credentials
+     *
      * @return bool
      */
     public function validate(array $credentials = [])
     {
-        var_dump($credentials);exit;
+        var_dump($credentials);
+        exit;
         if (empty($credentials[$this->inputKey])) {
             return false;
         }
@@ -92,7 +95,8 @@ class TokenGuard implements Guard
     /**
      * Set the current request instance.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return $this
      */
     public function setRequest(Request $request)

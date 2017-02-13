@@ -3,11 +3,9 @@
 namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Zhiyi\Plus\Traits\UserRolePerms;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Zhiyi\Plus\Traits\UserRolePerms;
 
 class User extends Authenticatable
 {

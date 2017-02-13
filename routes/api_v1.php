@@ -55,7 +55,7 @@ Route::get('/storages/{storage}/{process?}', 'StorageController@get');
 // 附件储存相关
 Route::group([
     'middleware' => 'auth:api',
-    'prefix' => 'storages',
+    'prefix'     => 'storages',
 ], function () {
     // 创建一个储存任务
     Route::post('/task/{hash}/{origin_filename}', 'StorageController@create');

@@ -10,6 +10,7 @@ class Role
     const DELIMITER = '|';
 
     protected $auth;
+
     /**
      * Creates a new instance of the middleware.
      *
@@ -23,8 +24,9 @@ class Role
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next, $roles)
@@ -34,7 +36,8 @@ class Role
         }
 
         var_dump($request->user());
-        var_dump($roles);exit;
+        var_dump($roles);
+        exit;
 
         // ...
 

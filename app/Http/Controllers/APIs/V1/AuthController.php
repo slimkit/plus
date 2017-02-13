@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Handler\SendMessage;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\AuthToken;
-use Zhiyi\Plus\Models\ImUser;
 use Zhiyi\Plus\Models\LoginRecord;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\VerifyCode;

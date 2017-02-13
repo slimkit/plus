@@ -72,7 +72,7 @@ return [
 
         'tokens' => [
             'driver' => 'token',
-        ]
+        ],
 
         // 'users' => [
         //     'driver' => 'database',

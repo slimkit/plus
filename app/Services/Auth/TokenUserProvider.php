@@ -2,17 +2,18 @@
 
 namespace Zhiyi\Plus\Services\Auth;
 
-use Illuminate\Contracts\Auth\UserProvider;
-use Zhiyi\Plus\Models\User;
-use Zhiyi\Plus\Models\AuthToken;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\UserProvider;
+use Zhiyi\Plus\Models\AuthToken;
+use Zhiyi\Plus\Models\User;
 
 class TokenUserProvider implements UserProvider
 {
     /**
      * Retrieve a user by their unique identifier.
      *
-     * @param  mixed  $identifier
+     * @param mixed $identifier
+     *
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
     public function retrieveById($identifier)
@@ -23,8 +24,9 @@ class TokenUserProvider implements UserProvider
     /**
      * Retrieve a user by their unique identifier and "remember me" token.
      *
-     * @param  mixed   $identifier
-     * @param  string  $token
+     * @param mixed  $identifier
+     * @param string $token
+     *
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
     public function retrieveByToken($identifier, $token)
@@ -40,8 +42,9 @@ class TokenUserProvider implements UserProvider
     /**
      * Update the "remember me" token for the given user in storage.
      *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
-     * @param  string  $token
+     * @param \Illuminate\Contracts\Auth\Authenticatable $user
+     * @param string                                     $token
+     *
      * @return void
      */
     public function updateRememberToken(Authenticatable $user, $token)
@@ -57,7 +60,8 @@ class TokenUserProvider implements UserProvider
     /**
      * Retrieve a user by the given credentials.
      *
-     * @param  array  $credentials
+     * @param array $credentials
+     *
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
     public function retrieveByCredentials(array $credentials)
@@ -78,8 +82,9 @@ class TokenUserProvider implements UserProvider
     /**
      * Validate a user against the given credentials.
      *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
-     * @param  array  $credentials
+     * @param \Illuminate\Contracts\Auth\Authenticatable $user
+     * @param array                                      $credentials
+     *
      * @return bool
      */
     public function validateCredentials(Authenticatable $user, array $credentials)

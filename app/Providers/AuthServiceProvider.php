@@ -28,12 +28,10 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Auth::extend('token', function ($app, $name, array $config) {
-
             return new TokenGuard(Auth::createUserProvider($config['provider']), $app->request);
         });
         Auth::provider('token', function ($app, array $config) {
-
             return new TokenUserProvider();
-        });      
+        });
     }
 }
