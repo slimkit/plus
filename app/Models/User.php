@@ -10,6 +10,7 @@ use Zhiyi\Plus\Traits\UserRolePerms;
 class User extends Model
 {
     use SoftDeletes, UserRolePerms {
+        SoftDeletes::restore insteadof UserRolePerms;
         UserRolePerms::restore insteadof SoftDeletes;
     }
 
