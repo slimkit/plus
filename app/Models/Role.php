@@ -94,7 +94,7 @@ class Role extends Model
             return false;
         }
 
-        $this->flushPermissionRoleTableCeche()''
+        $this->flushPermissionRoleTableCeche();
 
         return true;
     }
