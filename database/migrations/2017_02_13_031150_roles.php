@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateNodeLinks extends Migration
+class Roles extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateNodeLinks extends Migration
      */
     public function up()
     {
-        Schema::create('node_links', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
+        Schema::create('roles', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('node_id')->comment('节点id');
-            $table->integer('user_group_id')->comment('用户组id');
+            $table->string('name')->unique();
+            $table->string('display_name')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateNodeLinks extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('node_links');
+        Schema::dropIfExists('roles');
     }
 }
