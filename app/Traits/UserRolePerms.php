@@ -4,7 +4,7 @@ namespace Zhiyi\Plus\Traits;
 
 use InvalidArgumentException;
 
-trait UserRolePerm
+trait UserRolePerms
 {
     /**
      * Boot the user model
@@ -16,7 +16,7 @@ trait UserRolePerm
     public static function boot()
     {
         parent::boot();
-        static::deleting(function($user) {
+        static::deleting(function ($user) {
             if (!method_exists($this, 'bootSoftDeletes')) {
                 $user->roles()->sync([]);
             }
@@ -29,17 +29,19 @@ trait UserRolePerm
     {
         $userPrimaryKey = $this->primaryKey;
         $cacheKey = 'roles_for_user_'.$this->$userPrimaryKey;
-        if(Cache::getStore() instanceof TaggableStore) {
+        if (Cache::getStore() instanceof TaggableStore) {
             return Cache::tags(Config::get('role_user_table'))->remember($cacheKey, Config::get('cache.ttl'), function () {
                 return $this->roles()->get();
             });
+        } else {
+            return $this->roles()->get();
         }
-        else return $this->roles()->get();
     }
 
     public function save(array $options = [])
     {
         $this->flushRoleUserCache();
+
         return parent::save($options);
     }
 
@@ -95,6 +97,7 @@ trait UserRolePerm
                 }
             }
         }
+
         return false;
     }
 
@@ -125,12 +128,13 @@ trait UserRolePerm
             foreach ($this->cachedRoles() as $role) {
                 // Validate against the Permission table
                 foreach ($role->cachedPermissions() as $perm) {
-                    if (str_is( $permission, $perm->name) ) {
+                    if (str_is($permission, $perm->name)) {
                         return true;
                     }
                 }
             }
         }
+
         return false;
     }
 
@@ -183,8 +187,8 @@ trait UserRolePerm
         // If validate all and there is a false in either
         // Check that if validate all, then there should not be any false.
         // Check that if not validate all, there must be at least one true.
-        if(($options['validate_all'] && !(in_array(false,$checkedRoles) || in_array(false,$checkedPermissions))) ||
-            (!$options['validate_all'] && (in_array(true,$checkedRoles) || in_array(true,$checkedPermissions)))) {
+        if (($options['validate_all'] && !(in_array(false, $checkedRoles) || in_array(false, $checkedPermissions))) ||
+            (!$options['validate_all'] && (in_array(true, $checkedRoles) || in_array(true, $checkedPermissions)))) {
             $validateAll = true;
         } else {
             $validateAll = false;
@@ -206,10 +210,10 @@ trait UserRolePerm
      */
     public function attachRole($role)
     {
-        if(is_object($role)) {
+        if (is_object($role)) {
             $role = $role->getKey();
         }
-        if(is_array($role)) {
+        if (is_array($role)) {
             $role = $role['id'];
         }
         $this->roles()->attach($role);
@@ -232,7 +236,7 @@ trait UserRolePerm
     }
 
     /**
-     * Attach multiple roles to a user
+     * Attach multiple roles to a user.
      *
      * @param mixed $roles
      */
@@ -244,13 +248,15 @@ trait UserRolePerm
     }
 
     /**
-     * Detach multiple roles from a user
+     * Detach multiple roles from a user.
      *
      * @param mixed $roles
      */
-    public function detachRoles($roles=null)
+    public function detachRoles($roles = null)
     {
-        if (!$roles) $roles = $this->roles()->get();
+        if (!$roles) {
+            $roles = $this->roles()->get();
+        }
         foreach ($roles as $role) {
             $this->detachRole($role);
         }
@@ -259,7 +265,7 @@ trait UserRolePerm
     protected function flushRoleUserCache()
     {
         //both inserts and updates
-        if(Cache::getStore() instanceof TaggableStore) {
+        if (Cache::getStore() instanceof TaggableStore) {
             Cache::tags(Config::get('role_user_table'))->flush();
         }
     }
