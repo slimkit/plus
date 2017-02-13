@@ -3,6 +3,7 @@
 namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
 
 class Role extends Model
 {
@@ -56,7 +57,7 @@ class Role extends Model
         $rolePrimaryKey = $this->primaryKey;
         $cacheKey = 'permissions_for_role_'.$this->$rolePrimaryKey;
         if(Cache::getStore() instanceof TaggableStore) {
-            return Cache::tags(Config::get('permission_role_table'))->remember($cacheKey, Config::get('cache.ttl', 60), function () {
+            return Cache::tags('permission_role_table')->remember($cacheKey, Config::get('cache.ttl', 60), function () {
                 return $this->perms()->get();
             });
         }
@@ -100,7 +101,7 @@ class Role extends Model
     protected function flushPermissionRoleTableCeche()
     {
         if(Cache::getStore() instanceof TaggableStore) {
-            Cache::tags(Config::get('permission_role_table'))->flush();
+            Cache::tags('permission_role_table')->flush();
         }
     }
 }
