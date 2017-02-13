@@ -12,6 +12,7 @@ class Role extends Model
      * The role bind users.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -20,11 +21,11 @@ class Role extends Model
         return $this->belongsToMany(User::class, 'role_user', 'role_id', 'user_id');
     }
 
-
     /**
      * The role bind permissions.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -43,7 +44,7 @@ class Role extends Model
     public static function boot()
     {
         parent::boot();
-        static::deleting(function($role) {
+        static::deleting(function ($role) {
             if (!method_exists($this, 'bootSoftDeletes')) {
                 $role->users()->sync([]);
                 $role->perms()->sync([]);
@@ -57,18 +58,18 @@ class Role extends Model
     {
         $rolePrimaryKey = $this->primaryKey;
         $cacheKey = 'permissions_for_role_'.$this->$rolePrimaryKey;
-        if(Cache::getStore() instanceof TaggableStore) {
+        if (Cache::getStore() instanceof TaggableStore) {
             return Cache::tags('permission_role_table')->remember($cacheKey, Config::get('cache.ttl', 60), function () {
                 return $this->perms()->get();
             });
         }
-        
+
         return $this->perms()->get();
     }
 
     public function save(array $options = [])
     {   //both inserts and updates
-        if(!parent::save($options)){
+        if (!parent::save($options)) {
             return false;
         }
 
@@ -79,7 +80,7 @@ class Role extends Model
 
     public function delete(array $options = [])
     {   //soft or hard
-        if(!parent::delete($options)){
+        if (!parent::delete($options)) {
             return false;
         }
 
@@ -90,7 +91,7 @@ class Role extends Model
 
     public function restore()
     {   //soft delete undo's
-        if(!parent::restore()){
+        if (!parent::restore()) {
             return false;
         }
 
@@ -101,7 +102,7 @@ class Role extends Model
 
     protected function flushPermissionRoleTableCeche()
     {
-        if(Cache::getStore() instanceof TaggableStore) {
+        if (Cache::getStore() instanceof TaggableStore) {
             Cache::tags('permission_role_table')->flush();
         }
     }
