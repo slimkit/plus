@@ -2,10 +2,10 @@
 
 namespace Zhiyi\Plus\Traits;
 
-use InvalidArgumentException;
 use Illuminate\Cache\TaggableStore;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
+use InvalidArgumentException;
 
 trait UserRolePerms
 {
@@ -19,7 +19,7 @@ trait UserRolePerms
     public static function boot()
     {
         parent::boot();
-        static::deleting(function($user) {
+        static::deleting(function ($user) {
             if (!method_exists($user, 'bootSoftDeletes')) {
                 $user->roles()->sync([]);
             }
@@ -32,7 +32,7 @@ trait UserRolePerms
     {
         $userPrimaryKey = $this->primaryKey;
         $cacheKey = 'roles_for_user_'.$this->$userPrimaryKey;
-        if(Cache::getStore() instanceof TaggableStore) {
+        if (Cache::getStore() instanceof TaggableStore) {
             return Cache::tags('role_user')->remember($cacheKey, Config::get('cache.ttl'), function () {
                 return $this->roles()->get();
             });
@@ -268,7 +268,7 @@ trait UserRolePerms
     protected function flushRoleUserCache()
     {
         //both inserts and updates
-        if(Cache::getStore() instanceof TaggableStore) {
+        if (Cache::getStore() instanceof TaggableStore) {
             Cache::tags('role_user')->flush();
         }
     }
