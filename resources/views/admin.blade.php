@@ -18,8 +18,8 @@
     <script type="text/javascript">
         window.TS = {!!
             json_encode([
-                'csrf_token' => $csrf_token,
-                'base_url' => $base_url,
+                'csrfToken' => $csrf_token,
+                'baseURL' => $base_url,
                 'logged' => $logged,
                 'user' => $user,
             ])

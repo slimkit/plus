@@ -7,7 +7,7 @@ const login = (access, password, cb) => {};
  * @author Seven Du <shiweidu@outlook.com>
  * @homepage http://medz.cn
  */
-const logged = () => TS.logged;
+const logged = () => window.TS.logged;
 
 /**
  * 退出登录方法
@@ -18,8 +18,8 @@ const logged = () => TS.logged;
  * @homepage http://medz.cn
  */
 const logout = (cb = () => {}) => {
-  TS.logged = false;
-  TS.user = null;
+  window.TS.logged = false;
+  window.TS.user = null;
   cb();
 };
 

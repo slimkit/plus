@@ -17,8 +17,6 @@ const isProd = NODE_ENV === 'production'
 const assetsRoot = path.join(__dirname, 'resources', 'assets');
 const buildAssetsRoot = path.resolve(__dirname, 'public/');
 
-console.log(buildAssetsRoot);
-
 // 入口配置
 const entry = {
   admin: path.join(assetsRoot, 'admin', 'index.js'),
@@ -28,7 +26,7 @@ const cssLoaders = (options = {}) => {
   // generate loader string to be used with extract text plugin
   function generateLoaders (loaders) {
     var sourceLoader = loaders.map(function (loader) {
-      var extraParamChar
+      var extraParamChar;
       if (/\?/.test(loader)) {
         loader = loader.replace(/\?/, '-loader?')
         extraParamChar = '&'
@@ -37,12 +35,15 @@ const cssLoaders = (options = {}) => {
         extraParamChar = '?'
       }
       return loader + (options.sourceMap ? extraParamChar + 'sourceMap' : '')
-    }).join('!')
+    }).join('!');
 
     // Extract CSS when that option is specified
     // (which is the case during production build)
     if (options.extract) {
-      return ExtractTextPlugin.extract('vue-style-loader', sourceLoader)
+      return ExtractTextPlugin.extract({
+        use: sourceLoader,
+        fallback: 'vue-style-loader'
+      });
     } else {
       return ['vue-style-loader', sourceLoader].join('!')
     }
@@ -51,10 +52,28 @@ const cssLoaders = (options = {}) => {
   // http://vuejs.github.io/vue-loader/en/configurations/extract-css.html
   return {
     css: generateLoaders(['css']),
+    postcss: generateLoaders(['css']),
+    // less: generateLoaders(['css', 'less']),
     sass: generateLoaders(['css', 'sass?indentedSyntax']),
-    scss: generateLoaders(['css', 'sass'])
+    scss: generateLoaders(['css', 'sass']),
+    // stylus: generateLoaders(['css', 'stylus']),
+    // styl: generateLoaders(['css', 'stylus'])
   }
 };
+
+// Generate loaders for standalone style files (outside of .vue)
+// const styleLoaders = (options) => {
+//   let output = []
+//   let loaders = cssLoaders(options)
+//   for (let extension in loaders) {
+//     let loader = loaders[extension]
+//     output.push({
+//       test: new RegExp('\\.' + extension + '$'),
+//       loader: loader
+//     })
+//   };
+//   return output
+// };
 
 function MixManifest(stats) {
   let flattenedPaths = [].concat.apply([], lodash.values(stats.assetsByChunkName));
@@ -81,8 +100,9 @@ const plugins = isProd ?
   })
 ] : 
 [
-  new webpack.NoErrorsPlugin()
-]
+  // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
+  new webpack.NoEmitOnErrorsPlugin(),
+];
 
 const webpackConfig = {
   devtool: isProd ? false : 'source-map',
@@ -93,58 +113,59 @@ const webpackConfig = {
     filename: isProd ? 'js/[name].[chunkhash].js' : 'js/[name].js',
   },
   resolve: {
-    extensions: ['', '.js', '.vue', '.json'],
-    fallback: [path.join(__dirname, 'node_modules')],
+    extensions: ['.js', '.vue', '.json'],
+    modules: [
+      assetsRoot,
+      path.join(__dirname, 'node_modules'),
+    ],
     alias: {
-      'jquery': 'jquery/src/jquery',
-      'vue$': 'vue/dist/vue.common.js',
-      'admin': path.resolve(assetsRoot, 'admin'),
-      'assets': assetsRoot
+      'jquery': 'jquery/dist/jquery.js',
+      'vue$': 'vue/dist/vue.common.js'
     }
   },
-  resolveLoader: {
-    fallback: [path.join(__dirname, 'node_modules')]
-  },
   module: {
-    preLoaders: [
-      // vue
+    rules: [
+      // ...styleLoaders({
+      //   sourceMap: !isProd,
+      //   extract: true,
+      // }),
       {
-        test: /\.vue$/,
+        test: /\.(js|vue)$/,
         loader: 'eslint-loader',
+        enforce: "pre",
         include: [
-          assetsRoot
-        ],
-        exclude: /node_modules/
+          assetsRoot,
+        ]
       },
-
-      // js
-      {
-        test: /\.js$/,
-        loader: 'eslint-loader',
-        include: [
-          assetsRoot
-        ],
-        exclude: /node_modules/
-      }
-    ],
-    loaders: [
-      // vue
       {
         test: /\.vue$/,
         loader: 'vue-loader',
+        options: {
+          loaders: cssLoaders({
+            sourceMap: !isProd,
+            extract: true,
+          }),
+          postcss: [
+            autoprefixer({
+              browsers: [
+                'Android 2.3',
+                'Android >= 4',
+                'Chrome >= 20',
+                'Firefox >= 24',
+                'Explorer >= 8',
+                'iOS >= 6',
+                'Opera >= 12',
+                'Safari >= 6'
+              ]
+            })
+          ]
+        }
       },
-
-      // js
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [
-          assetsRoot
-        ],
-        exclude: /node_modules/
+        include: [assetsRoot]
       },
-
-      // image
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
@@ -153,8 +174,6 @@ const webpackConfig = {
           name: isProd ? 'images/[hash].[ext]' : `images/[name].[ext]`
         }
       },
-
-      // fonts
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
         loader: 'url-loader',
@@ -162,38 +181,16 @@ const webpackConfig = {
           limit: 10000,
           name: isProd ? 'fonts/[hash].[ext]' : `fonts/[name].[ext]`
         }
-      },
-    ],
+      }
+    ]
   },
-
-  vue: {
-    loaders: cssLoaders({
-      sourceMap: !isProd,
-      extract: true,
-    }),
-    postcss: [
-      autoprefixer({
-        browsers: [
-          'Android 2.3',
-          'Android >= 4',
-          'Chrome >= 20',
-          'Firefox >= 24',
-          'Explorer >= 8',
-          'iOS >= 6',
-          'Opera >= 12',
-          'Safari >= 6'
-        ]
-        // browsers: ['last 2 versions']
-      })
-    ],
-  },
-
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify(NODE_ENV),
       },
     }),
+    // extract css into its own file
     new ExtractTextPlugin(isProd ? 'css/[name].[chunkhash].css' : 'css/[name].css'),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new StatsWriterPlugin({
