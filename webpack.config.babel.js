@@ -109,16 +109,12 @@ const webpackConfig = {
       path.join(__dirname, 'node_modules'),
     ],
     alias: {
-      'jquery': 'jquery/dist/jquery.js',
+      'jquery': `jquery/dist/jquery.${isProd ? 'min.js' : 'js'}`,
       'vue$': 'vue/dist/vue.common.js'
     }
   },
   module: {
     rules: [
-      // ...styleLoaders({
-      //   sourceMap: !isProd,
-      //   extract: true,
-      // }),
       {
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',
