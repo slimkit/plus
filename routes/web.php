@@ -18,3 +18,5 @@ Route::get('/', function () {
 Route::prefix('admin')
     ->namespace('Admin')
     ->group(base_path('routes/admin.php'));
+
+Auth::routes();

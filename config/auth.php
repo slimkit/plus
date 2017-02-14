@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model'  => App\Models\User::class,
+            'model'  => Zhiyi\Plus\Models\User::class,
         ],
 
         'tokens' => [

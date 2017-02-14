@@ -9,7 +9,7 @@
     <title>后台管理</title>
 
     <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="{{ $csrf_token }}">
 
     <!-- style -->
     <link rel="stylesheet" type="text/css" href="{{ mix('css/admin.css') }}">
@@ -18,9 +18,10 @@
     <script type="text/javascript">
         window.TS = {!!
             json_encode([
-                'csrfToken' => csrf_token(),
-                'baseRUL' => url('admin'),
-                'auth' => false,
+                'csrf_token' => $csrf_token,
+                'base_url' => $base_url,
+                'logged' => $logged,
+                'user' => $user,
             ])
         !!};
     </script>

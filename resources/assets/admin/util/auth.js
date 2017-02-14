@@ -1,6 +1,13 @@
 const login = (access, password, cb) => {};
-const getToken = () => localStorage.access_token;
-const loggedIn = () => !!getToken();
+
+/**
+ * 返回用户是否已经登陆
+ *
+ * @return {[type]} [description]
+ * @author Seven Du <shiweidu@outlook.com>
+ * @homepage http://medz.cn
+ */
+const logged = () => TS.logged;
 
 /**
  * 退出登录方法
@@ -11,11 +18,8 @@ const loggedIn = () => !!getToken();
  * @homepage http://medz.cn
  */
 const logout = (cb = () => {}) => {
-  delete localStorage.access_token;
-  delete localStorage.refresh_token;
-  delete localStorage.expires;
-  delete localStorage.created_at;
-  delete localStorage.user_id;
+  TS.logged = false;
+  TS.user = null;
   cb();
 };
 
@@ -30,7 +34,7 @@ const logout = (cb = () => {}) => {
  * @homepage http://medz.cn
  */
 export function requireAuth (to, from, next) {
-  if (!loggedIn()) {
+  if (!logged()) {
     next({
       path: '/login',
       query: {
@@ -43,5 +47,5 @@ export function requireAuth (to, from, next) {
 };
 
 export default {
-  login, getToken, loggedIn, logout
+  login, logged, logout
 };

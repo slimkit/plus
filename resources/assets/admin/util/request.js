@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-const { baseRUL, csrfToken } = window.TS; // This "TS" variable is set from the global variables in the template.
+const { base_url, csrf_token } = window.TS; // This "TS" variable is set from the global variables in the template.
 
 // Export a method to create the requested address.
-export const createRequestURI = PATH => `${baseRUL}/${PATH}`;
+export const createRequestURI = PATH => `${base_url}/${PATH}`;
 
 axios.defaults.headers.common = {
-  'X-CSRF-TOKEN': csrfToken,
+  'X-CSRF-TOKEN': base_url,
   'X-Requested-With': 'XMLHttpRequest'
 };
 

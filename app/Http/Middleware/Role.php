@@ -35,11 +35,9 @@ class Role
             $roles = explode(static::DELIMITER, $roles);
         }
 
-        var_dump($request->user());
-        var_dump($roles);
-        exit;
-
-        // ...
+        if ($this->auth->guest() || !$request->user()->hasRole($roles)) {
+            abort(403);
+        }
 
         return $next($request);
     }

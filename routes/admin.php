@@ -4,7 +4,5 @@
 
 // admin router.
 
-Route::get('/', function () {
-    return view('admin');
-})
-->middleware('role:admin|root');
+Route::get('/', 'HomeController@index');
+Route::post('/login', 'HomeController@login');

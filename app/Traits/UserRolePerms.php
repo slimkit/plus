@@ -6,6 +6,7 @@ use Illuminate\Cache\TaggableStore;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use InvalidArgumentException;
+use Zhiyi\Plus\Models\Role;
 
 trait UserRolePerms
 {
@@ -67,7 +68,7 @@ trait UserRolePerms
      */
     public function roles()
     {
-        return $this->belongsToMany(Rols::class, 'role_user', 'user_id', 'role_id');
+        return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
     }
 
     /**
