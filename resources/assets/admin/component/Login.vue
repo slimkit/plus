@@ -3,7 +3,7 @@
     <div class="center-block login">
       <form role="form">
         <div class="form-group">
-          <label for="access">账号</label>
+          <label for="access">账户</label>
           <input type="tel" class="form-control" id="access" placeholder="输入账号">
         </div>
         <div class="form-group">

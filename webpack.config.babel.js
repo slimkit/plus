@@ -11,7 +11,7 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 const isHot = process.argv.includes('--hot');
 
 // 是否是正式环境编译
-const isProd = NODE_ENV === 'production'
+const isProd = NODE_ENV === 'production';
 
 // 各项资源地址定义
 const assetsRoot = path.join(__dirname, 'resources', 'assets');
@@ -19,22 +19,22 @@ const buildAssetsRoot = path.resolve(__dirname, 'public/');
 
 // 入口配置
 const entry = {
-  admin: path.join(assetsRoot, 'admin', 'index.js'),
-}
+  admin: path.join(assetsRoot, 'admin', 'index.js')
+};
 
 const cssLoaders = (options = {}) => {
   // generate loader string to be used with extract text plugin
   function generateLoaders (loaders) {
-    var sourceLoader = loaders.map(function (loader) {
-      var extraParamChar;
+    let sourceLoader = loaders.map(function (loader) {
+      let extraParamChar;
       if (/\?/.test(loader)) {
-        loader = loader.replace(/\?/, '-loader?')
-        extraParamChar = '&'
+        loader = loader.replace(/\?/, '-loader?');
+        extraParamChar = '&';
       } else {
-        loader = loader + '-loader'
-        extraParamChar = '?'
+        loader = loader + '-loader';
+        extraParamChar = '?';
       }
-      return loader + (options.sourceMap ? extraParamChar + 'sourceMap' : '')
+      return loader + (options.sourceMap ? extraParamChar + 'sourceMap' : '');
     }).join('!');
 
     // Extract CSS when that option is specified
@@ -45,7 +45,7 @@ const cssLoaders = (options = {}) => {
         fallback: 'vue-style-loader'
       });
     } else {
-      return ['vue-style-loader', sourceLoader].join('!')
+      return ['vue-style-loader', sourceLoader].join('!');
     }
   }
 
@@ -58,22 +58,8 @@ const cssLoaders = (options = {}) => {
     scss: generateLoaders(['css', 'sass']),
     // stylus: generateLoaders(['css', 'stylus']),
     // styl: generateLoaders(['css', 'stylus'])
-  }
+  };
 };
-
-// Generate loaders for standalone style files (outside of .vue)
-// const styleLoaders = (options) => {
-//   let output = []
-//   let loaders = cssLoaders(options)
-//   for (let extension in loaders) {
-//     let loader = loaders[extension]
-//     output.push({
-//       test: new RegExp('\\.' + extension + '$'),
-//       loader: loader
-//     })
-//   };
-//   return output
-// };
 
 function MixManifest(stats) {
   let flattenedPaths = [].concat.apply([], lodash.values(stats.assetsByChunkName));
@@ -96,12 +82,16 @@ const plugins = isProd ?
   new webpack.optimize.UglifyJsPlugin({
     compress: {
       warnings: false
-    }
+    },
+    sourceMap: !isProd
   })
 ] : 
 [
   // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
   new webpack.NoEmitOnErrorsPlugin(),
+  ...(isHot ? [
+    new webpack.HotModuleReplacementPlugin(),
+  ] : [])
 ];
 
 const webpackConfig = {
@@ -191,14 +181,34 @@ const webpackConfig = {
       },
     }),
     // extract css into its own file
-    new ExtractTextPlugin(isProd ? 'css/[name].[chunkhash].css' : 'css/[name].css'),
-    new webpack.optimize.OccurrenceOrderPlugin(),
+    new ExtractTextPlugin({
+      filename: isProd ? 'css/[name].[chunkhash].css' : 'css/[name].css'
+    }),
+    // split vendor js into its own file
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'vendor',
+    //   minChunks: function (module, count) {
+    //     // any required modules inside node_modules are extracted to vendor
+    //     return (
+    //       module.resource &&
+    //       /\.js$/.test(module.resource) &&
+    //       module.resource.indexOf(
+    //         path.join(__dirname, 'node_modules')
+    //       ) === 0
+    //     )
+    //   }
+    // }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'manifest',
+    //   chunks: ['vendor']
+    // }),
+    // new webpack.optimize.OccurrenceOrderPlugin(),
     new StatsWriterPlugin({
       filename: 'mix-manifest.json',
       transform: MixManifest
     }),
     // 依托关键加载的插件
-    ...plugins,
+    ...plugins
   ],
 
   // Webpack Dev Server Configuration.
