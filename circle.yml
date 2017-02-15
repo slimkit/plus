@@ -28,10 +28,8 @@ dependencies:
         - mv .env.example .env
     cache_directories:
         - ~/.yarn
-        - ~/.yarn-cache
 
 test:
     override:
         - yarn lint
         - yarn build
-        - ./node_modules/.bin/eslint --ext .js,.vue --format junit --output-file $CIRCLE_TEST_REPORTS/eslint/junit.xml resources/assets/
