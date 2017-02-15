@@ -34,3 +34,4 @@ test:
     override:
         - yarn lint
         - yarn build
+        - bundle exec ./node_modules/.bin/eslint --ext .js,.vue --format junit --output-file $CIRCLE_TEST_REPORTS/junit/eslint.xml resources/assets/
