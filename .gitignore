@@ -16,3 +16,4 @@ composer.lock
 yarn-error.log
 yarn.lock
 .DS_Store
+/public/zhiyicx
