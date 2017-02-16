@@ -16,5 +16,5 @@ class Following extends Model
     public function scopeByUserId(Builder $query, int $user_id): Builder
     {
     	return $query->where('user_id', $user_id);
-    }
+	}
 }
