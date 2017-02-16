@@ -48,7 +48,19 @@ Route::prefix('users')
         ->middleware(Middleware\VerifyPassword::class); // 验证用户密码是否正确
     // 获取用户信息
     Route::get('/{user}', 'UserController@get');
+
+    // 关注操作相关
+    Route::post('/follow', 'FollowController@doFollow')
+        ->middleware(Middleware\CheckUserExsistedByUserId::class)
+        ->middleware(Middleware\CheckIsFollow::class);
+    Route::delete('/unFollow', 'FollowController@doUnFollow')
+        ->middleware(Middleware\CheckUserExsistedByUserId::class)
+        ->middleware(Middleware\CheckIsFollowing::class);
 });
+
+// 用户关注相关
+Route::get('/follows/follows/{user_id}', 'FollowController@follows');
+Route::get('/follows/followed/{user_id}', 'FollowController@followeds');
 
 // 获取一个附件资源
 Route::get('/storages/{storage}/{process?}', 'StorageController@get');
