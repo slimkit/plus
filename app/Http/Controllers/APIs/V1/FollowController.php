@@ -55,11 +55,15 @@ class FollowController extends Controller
     {
     	$user_id = $request->user()->id;
     	$follow_user_id = $request->user_id;
+
+    	// 我关注的
     	Following::where([
     			['user_id', $user_id],
     			['following_user_id', $follow_user_id]
     		])
     		->delete();
+
+    	// 目标用户我的粉丝
     	Followed::where([
     		['user_id', $follow_user_id],
     		['followed_user_id', $user_id]
@@ -70,25 +74,71 @@ class FollowController extends Controller
             'status'  => true,
             'code'    => 0,
             'message' => '成功取关'
-        ]))->setStatusCode(201);
+        ]))->setStatusCode(200);
     }
 
     /**
-     * 查询关注我的用户
+     * 关注的用户
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function follows(Request $request)
+    public function follows(int $user_id, int $max_id = 0)
     {
+    	if(!User::find($user_id)) {
+    		return response()->json(static::createJsonData([
+	            'status'  => false,
+	            'code'    => 1023,
+	            'message' => '用户未找到'
+	        ]))->setStatusCode(404);
+    	}
 
+    	$data['follows'] = Following::where('user_id', $user_id)
+    		->where(function ($query) use ($max_id) {
+    			if($max_id > 0) {
+    				$query->where('id', '<', $max_id);
+    			}
+    		})
+    		->select('id', 'following_user_id as user_id')
+    		->orderBy('id', 'DESC')
+    		->take(15)
+    		->get();
+    	return response()->json(static::createJsonData([
+            'status'  => true,
+            'code'    => 0,
+            'message' => '获取成功',
+            'data' => $data
+        ]))->setStatusCode(200);
     }
     /**
-     * [followeds description]
+     * 查询粉丝
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function followeds(Request $request)
+    public function followeds(int $user_id, int $max_id = 0)
     {
+    	if(!User::find($user_id)) {
+    		return response()->json(static::createJsonData([
+	            'status'  => false,
+	            'code'    => 1023,
+	            'message' => '用户未找到'
+	        ]))->setStatusCode(404);
+    	}
+    	$data['followeds'] = Followed::where('user_id', $user_id)
+    		->where(function ($query) use ($max_id) {
+    			if($max_id > 0) {
+    				$query->where('id', '<', $max_id);
+    			}
+    		})
+    		->select('id', 'followed_user_id as user_id')
+    		->orderBy('id', 'DESC')
+    		->take(15)
+    		->get();
 
+    	return response()->json(static::createJsonData([
+            'status'  => true,
+            'code'    => 0,
+            'message' => '获取成功',
+            'data' => $data
+        ]))->setStatusCode(200);	
     }
 }
