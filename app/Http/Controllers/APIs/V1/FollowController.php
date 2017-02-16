@@ -1,5 +1,4 @@
 <?php
-
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
 use Illuminate\Http\Request;
@@ -68,7 +67,7 @@ class FollowController extends Controller
     		['user_id', $follow_user_id],
     		['followed_user_id', $user_id]
     	])
-    	->delete();
+    	->delete(); 
 
     	return response()->json(static::createJsonData([
             'status'  => true,
