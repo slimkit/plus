@@ -201,7 +201,8 @@ class User extends Authenticatable
     }
 
     /**
-     * 我关注的用户
+     * 我关注的用户.
+     *
      * @return [type] [description]
      */
     public function follows()
@@ -210,7 +211,8 @@ class User extends Authenticatable
     }
 
     /**
-     * 关注我的用户
+     * 关注我的用户.
+     *
      * @return [type] [description]
      */
     public function followeds()
