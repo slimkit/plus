@@ -28,7 +28,6 @@
 </style>
 
 <script>
-// import { mapGetters } from 'vuex';
 import { USER_UPDATE } from '../store/types';
 import auth from '../util/auth';
 
@@ -38,11 +37,6 @@ const login = {
     password: '',
     error: null
   }),
-  // computed: {
-  //   ...mapGetters({
-  //     user: 'user'
-  //   })
-  // },
   methods: {
     submit () {
       let { access, password } = this;
