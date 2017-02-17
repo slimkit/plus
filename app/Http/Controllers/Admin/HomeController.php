@@ -41,9 +41,7 @@ class HomeController extends Controller
         $request->session()->flush();
         $request->session()->regenerate();
 
-        return response()->json([
-            'message' => '退出成功！',
-        ]);
+        return redirect(route('admin'));
     }
 
     public function index()
