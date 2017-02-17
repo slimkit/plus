@@ -6,3 +6,4 @@
 
 Route::get('/', 'HomeController@index');
 Route::post('/login', 'HomeController@login');
+Route::any('/logout', 'HomeController@logout');

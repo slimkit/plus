@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import auth, { requireAuth } from '../util/auth';
+import auth, { requireAuth, loggedAuth } from '../util/auth';
 import Login from '../component/Login';
 
 Vue.use(VueRouter);
@@ -12,7 +12,7 @@ const router = new VueRouter({
   base: '/admin/',
   routes: [
     { path: '/', component: Foo, beforeEnter: requireAuth },
-    { path: '/login', component: Login },
+    { path: '/login', component: Login, beforeEnter: loggedAuth },
     {
       path: '/logout',
       beforeEnter (to, form, next) {

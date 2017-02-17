@@ -1,4 +1,11 @@
-const login = (access, password, cb) => {};
+import store from '../store';
+import { USER_DELETE } from '../store/types';
+import request, { createRequestURI } from '../util/request';
+
+const login = (access, password) => request.post(createRequestURI('login'), {
+  phone: access,
+  password
+});
 
 /**
  * 返回用户是否已经登陆
@@ -7,7 +14,7 @@ const login = (access, password, cb) => {};
  * @author Seven Du <shiweidu@outlook.com>
  * @homepage http://medz.cn
  */
-const logged = () => window.TS.logged;
+const logged = () => store.getters.logged;
 
 /**
  * 退出登录方法
@@ -17,17 +24,15 @@ const logged = () => window.TS.logged;
  * @author Seven Du <shiweidu@outlook.com>
  * @homepage http://medz.cn
  */
-const logout = (cb = () => {}) => {
-  window.TS.logged = false;
-  window.TS.user = null;
-  cb();
+const logout = (cb) => {
+  store.dispatch(USER_DELETE, cb);
 };
 
 /**
  * auth验证器.
  *
- * @param {string} to 跳转地址
- * @param {object} from 提交数据
+ * @param {object} to 要跳转的对象地址
+ * @param {object} from 上一层的对象地址
  * @param {Function} next 下一步执行回掉
  *
  * @author Seven Du <shiweidu@outlook.com>
@@ -40,6 +45,26 @@ export function requireAuth (to, from, next) {
       query: {
         redirect: to.fullPath
       }
+    });
+  } else {
+    next();
+  }
+};
+
+/**
+ * 登录情况下不允许访问的路由前置验证
+ *
+ * @param {object} to 要跳转的对象地址
+ * @param {object} from 上一层的对象地址
+ * @param {Function} next 继续执行的异步回调
+ *
+ * @author Seven Du <shiweidu@outlook.com>
+ * @homepage http://medz.cn
+ */
+export function loggedAuth (to, from, next) {
+  if (logged()) {
+    next({
+      path: from.fullPath
     });
   } else {
     next();

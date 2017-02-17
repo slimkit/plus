@@ -5,10 +5,13 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\User;
 
 class HomeController extends Controller
 {
-    use AuthenticatesUsers;
+    use AuthenticatesUsers {
+        login as traitLogin;
+    }
 
     /**
      * Create a new controller instance.
@@ -17,7 +20,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => 'logout']);
+        $this->middleware('guest', ['except' => ['logout', 'index']]);
     }
 
     public function username()
@@ -25,25 +28,32 @@ class HomeController extends Controller
         return 'phone';
     }
 
-    /**
-     * Handle a login request to the application.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
-     */
     public function login(Request $request)
     {
-        return parent::login();
+        $this->guard()->logout();
+
+        return $this->traitLogin($request);
+    }
+
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+        $request->session()->flush();
+        $request->session()->regenerate();
+
+        return response()->json([
+            'message' => '退出成功！',
+        ]);
     }
 
     public function index()
     {
+        $user = $this->guard()->user();
         $data = [
             'csrf_token' => csrf_token(),
             'base_url'   => url('admin'),
             'logged'     => $this->guard()->check(),
-            'user'       => $this->guard()->user(),
+            'user'       => $user ? $this->user($user) : null,
         ];
 
         return view('admin', $data);
@@ -59,6 +69,13 @@ class HomeController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        return response()->json($user);
+        return response()->json($this->user($user));
+    }
+
+    protected function user(User $user)
+    {
+        $user->load('datas');
+
+        return $user;
     }
 }
