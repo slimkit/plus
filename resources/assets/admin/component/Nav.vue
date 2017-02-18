@@ -30,6 +30,12 @@
       margin-right: 32px;
       color: #78909c;
     }
+    .__icon-img {
+      width: 14px;
+      height: 14px;
+      border: none;
+      margin-right: 32px;
+    }
   }
 }
 </style>
@@ -44,5 +50,20 @@
       <span class="glyphicon glyphicon-user __icon"></span>
       用户
     </router-link>
+    <router-link v-for="({ name, icon }, component) in menu" :to="`/component/${component}`" class="list-group-item __button">
+      <img class="__icon-img" :src="icon">
+      {{ name }}
+    </router-link>
   </div>
 </template>
+
+<script>
+const menu = window.TS.menu || [];
+const nav = {
+  data: () => ({
+    menu
+  })
+};
+
+export default nav;
+</script>

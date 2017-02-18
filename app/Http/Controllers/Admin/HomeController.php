@@ -53,9 +53,28 @@ class HomeController extends Controller
             'api'        => url('api/v1'),
             'logged'     => $this->guard()->check(),
             'user'       => $user ? $this->user($user) : null,
+            'menu'       => $this->menu(),
         ];
 
         return view('admin', $data);
+    }
+
+    protected function menu()
+    {
+        return [
+            // 'medz/plus-component-medz' => [
+            //     'name'  => 'MEDZ',
+            //     'admin' => 'http://medz.cn',
+            //     'icon'  => 'http://medz.cn/windid/attachment/avatar/000/00/03/387_small.jpg',
+            //     'logo'  => '',
+            // ],
+            // 'medz/plus-component-baidu' => [
+            //     'name'  => '百度',
+            //     'admin' => 'https://www.baidu.com',
+            //     'icon'  => 'hhttps://www.baidu.com/favicon.ico',
+            //     'logo'  => '',
+            // ],
+        ];
     }
 
     /**

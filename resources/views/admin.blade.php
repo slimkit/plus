@@ -23,6 +23,7 @@
                 'api' => $api,
                 'logged' => $logged,
                 'user' => $user,
+                'menu' => $menu,
             ])
         !!};
     </script>
