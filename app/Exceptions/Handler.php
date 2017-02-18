@@ -68,6 +68,6 @@ class Handler extends ExceptionHandler
             ], 401);
         }
 
-        return redirect()->guest('login');
+        return redirect()->guest(route('login'));
     }
 }
