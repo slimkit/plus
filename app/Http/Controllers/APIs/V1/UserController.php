@@ -74,18 +74,18 @@ class UserController extends Controller
             ->with('datas')
             ->get()
             ->toArray();
-        if(!$datas) {
+        if (!$datas) {
             return response()->json([
                 'status'  => false,
                 'message' => '没有相关用户',
-                'code' => '1019',
-                'data' => null
+                'code'    => '1019',
+                'data'    => null,
             ])->setStatusCode(404);
         }
 
         return response()->json([
             'status'  => true,
-            'code' => 0,
+            'code'    => 0,
             'message' => '获取成功',
             'data'    => $datas,
         ])->setStatusCode(201);

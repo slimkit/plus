@@ -4,7 +4,6 @@ namespace Tests\Feature\APIs\V1;
 
 use Zhiyi\Plus\Models\AuthToken;
 use Zhiyi\Plus\Models\User;
-use PHPUnit\Framework\Assert as PHPUnit;
 
 class GetUserTest extends TestCase
 {
@@ -62,19 +61,19 @@ class GetUserTest extends TestCase
     {
         $uri = $this->uri;
         $response = $this->post($uri, [
-            'user_ids' => [9999999]
+            'user_ids' => [9999999],
         ],
         [
-            'ACCESS-TOKEN' => $this->auth->token
+            'ACCESS-TOKEN' => $this->auth->token,
         ]);
         // Asserts that the status code of the response matches the given code.
         $response->assertStatus(404);
 
         $json = static::createJsonData([
-            'status' => false,
-            'code' => 1019,
+            'status'  => false,
+            'code'    => 1019,
             'message' => '没有相关用户',
-            'data' => null
+            'data'    => null,
 
         ]);
         $response->assertJson($json);
@@ -83,10 +82,10 @@ class GetUserTest extends TestCase
     public function testGetUserData()
     {
         $response = $this->post($this->uri, [
-            'user_ids' => [$this->user->id]
+            'user_ids' => [$this->user->id],
         ],
         [
-            'ACCESS-TOKEN' => $this->auth->token
+            'ACCESS-TOKEN' => $this->auth->token,
         ]
         );
 
@@ -97,7 +96,7 @@ class GetUserTest extends TestCase
         // $content = $response->getContent();
         $json = static::createJsonData([
             'status'  => true,
-            'code' => 0,
+            'code'    => 0,
             'message' => '获取成功',
             'data'    => [$this->user->toArray()],
         ]);
