@@ -50,6 +50,7 @@ class HomeController extends Controller
         $data = [
             'csrf_token' => csrf_token(),
             'base_url'   => url('admin'),
+            'api'        => url('api/v1'),
             'logged'     => $this->guard()->check(),
             'user'       => $user ? $this->user($user) : null,
         ];

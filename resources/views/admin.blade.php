@@ -20,6 +20,7 @@
             json_encode([
                 'csrfToken' => $csrf_token,
                 'baseURL' => $base_url,
+                'api' => $api,
                 'logged' => $logged,
                 'user' => $user,
             ])

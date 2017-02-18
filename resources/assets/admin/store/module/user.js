@@ -58,7 +58,22 @@ const actions = {
 // Created getters.
 const getters = {
   logged: ({ logged }) => logged,
-  user: ({ user }) => user
+  user: ({ user }) => user,
+  userDatas: ({ user = {} }) => {
+    let { datas = [] } = user;
+    let newData = {};
+    datas.forEach(data => {
+      newData[data.profile] = {
+        display: data.profile_name,
+        value: data.pivot.user_profile_setting_data,
+        type: data.type,
+        options: data.default_options,
+        updated_at: data.updated_at
+      };
+    });
+
+    return newData;
+  }
 };
 
 // create store.
