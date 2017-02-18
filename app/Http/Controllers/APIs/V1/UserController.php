@@ -70,17 +70,9 @@ class UserController extends Controller
      */
     public function get(Request $request)
     {
-        $users = User::whereIn('id', $request->user_ids)
+        $datas = $users = User::whereIn('id', $request->user_ids)
             ->with('datas')
             ->get();
-        $datas = [];
-        foreach ($users as $user) {
-            $datas[$user->id] = [];
-            foreach($user->datas as $data) {
-                $datas[$user->id][$data['profile']] = $data->pivot->user_profile_setting_data;
-            }
-            
-        }
 
         return response()->json(static::createJsonData([
             'status'  => true,
