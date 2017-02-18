@@ -5,6 +5,8 @@ import auth, { requireAuth, loggedAuth } from '../util/auth';
 // components.
 import Login from '../component/Login';
 import Home from '../component/Home';
+import Component from '../component/Component';
+import User from '../component/User';
 
 Vue.use(VueRouter);
 
@@ -12,7 +14,15 @@ const router = new VueRouter({
   mode: 'hash',
   base: '/admin/',
   routes: [
-    { path: '/', component: Home, beforeEnter: requireAuth },
+    {
+      path: '/',
+      component: Home,
+      beforeEnter: requireAuth,
+      children: [
+        { path: 'components', component: Component },
+        { path: 'users', component: User }
+      ]
+    },
     { path: '/login', component: Login, beforeEnter: loggedAuth },
     {
       path: '/logout',

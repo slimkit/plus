@@ -10,6 +10,9 @@ $lefyNavWidth: 240px;
     padding-top: 12px;
     background: #263238;
     z-index: 1;
+    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     .user-avatar {
       width: 64px;
       height: 64px;
@@ -66,10 +69,12 @@ $lefyNavWidth: 240px;
       </div>
       <!-- End username and dropdown menu. -->
 
+      <system-nav />
+
     </div>
-    <div class="pull-right context-container">
-      233333
-    </div>
+    <!-- The content container. -->
+    <router-view class="pull-right context-container"></router-view>
+    <!-- End content container. -->
   </div>
 </template>
 
@@ -77,6 +82,9 @@ $lefyNavWidth: 240px;
 import { mapGetters } from 'vuex';
 import { createRequestURI, createAPI } from '../util/request';
 import { USER, USER_DATA } from '../store/getter-types';
+
+// components.
+import Nav from './Nav';
 
 const home = {
   data: () => ({
@@ -107,6 +115,9 @@ const home = {
 
       return false;
     }
+  },
+  components: {
+    'system-nav': Nav
   }
 };
 
