@@ -72,11 +72,22 @@ class UserController extends Controller
     {
         $datas = $users = User::whereIn('id', $request->user_ids)
             ->with('datas')
-            ->get();
+            ->get()
+            ->toArray();
+        if(!$datas) {
+            return response()->json([
+                'status'  => false,
+                'message' => '没有相关用户',
+                'code' => '1019',
+                'data' => null
+            ])->setStatusCode(404);
+        }
 
-        return response()->json(static::createJsonData([
+        return response()->json([
             'status'  => true,
+            'code' => 0,
+            'message' => '获取成功',
             'data'    => $datas,
-        ]))->setStatusCode(201);
+        ])->setStatusCode(201);
     }
 }

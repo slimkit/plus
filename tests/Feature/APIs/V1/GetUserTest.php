@@ -4,10 +4,11 @@ namespace Tests\Feature\APIs\V1;
 
 use Zhiyi\Plus\Models\AuthToken;
 use Zhiyi\Plus\Models\User;
+use PHPUnit\Framework\Assert as PHPUnit;
 
 class GetUserTest extends TestCase
 {
-    protected $uri_template = '/api/v1/users/{user}';
+    protected $uri_template = '/api/v1/users';
 
     protected $uri;
     protected $user;
@@ -35,7 +36,7 @@ class GetUserTest extends TestCase
         $this->user->tokens()->save($this->auth);
 
         // set uri.
-        $this->uri = str_replace('{user}', $this->user->id, $this->uri_template);
+        $this->uri = $this->uri_template;
     }
 
     /**
@@ -59,37 +60,46 @@ class GetUserTest extends TestCase
      */
     public function testNotFoundUser()
     {
-        $uri = str_replace('{user}', '9999999', $this->uri_template);
-        $response = $this->get($uri, [
-            'ACCESS-TOKEN' => $this->auth->token,
+        $uri = $this->uri;
+        $response = $this->post($uri, [
+            'user_ids' => [9999999]
+        ],
+        [
+            'ACCESS-TOKEN' => $this->auth->token
         ]);
-
         // Asserts that the status code of the response matches the given code.
         $response->assertStatus(404);
 
         $json = static::createJsonData([
-            'code' => 1005,
+            'status' => false,
+            'code' => 1019,
+            'message' => '没有相关用户',
+            'data' => null
+
         ]);
         $response->assertJson($json);
     }
 
     public function testGetUserData()
     {
-        $response = $this->get($this->uri, [
-            'ACCESS-TOKEN' => $this->auth->token,
-        ]);
+        $response = $this->post($this->uri, [
+            'user_ids' => [$this->user->id]
+        ],
+        [
+            'ACCESS-TOKEN' => $this->auth->token
+        ]
+        );
 
         // Asserts that the status code of the response matches the given code.
         $response->assertStatus(201);
 
-        $datas = [];
-        foreach ($this->user->datas as $data) {
-            $datas[$data->profile] = $data->pivot->user_profile_setting_data;
-        }
-        $datas['user_id'] = $this->user->id;
+        // $datas = $this->user->toArray();
+        // $content = $response->getContent();
         $json = static::createJsonData([
-            'status' => true,
-            'data'   => $datas,
+            'status'  => true,
+            'code' => 0,
+            'message' => '获取成功',
+            'data'    => [$this->user->toArray()],
         ]);
         $response->assertJson($json);
     }
