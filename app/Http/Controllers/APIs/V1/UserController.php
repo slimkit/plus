@@ -76,10 +76,9 @@ class UserController extends Controller
         $datas = [];
         foreach ($users as $user) {
             $datas[$user->id] = [];
-            foreach($user->datas as $data) {
+            foreach ($user->datas as $data) {
                 $datas[$user->id][$data['profile']] = $data->pivot->user_profile_setting_data;
             }
-            
         }
 
         return response()->json(static::createJsonData([
