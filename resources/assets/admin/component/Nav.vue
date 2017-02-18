@@ -36,9 +36,9 @@
 
 <template>
   <div class="list-group app-nav">
-    <router-link class="list-group-item __button" to="/components">
-      <span class="glyphicon glyphicon-th-large __icon"></span>
-      应用
+    <router-link class="list-group-item __button" to="/">
+      <span class="glyphicon glyphicon-cog __icon"></span>
+      系统
     </router-link>
     <router-link class="list-group-item __button" to="/users">
       <span class="glyphicon glyphicon-user __icon"></span>

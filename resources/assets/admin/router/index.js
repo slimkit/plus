@@ -5,7 +5,7 @@ import auth, { requireAuth, loggedAuth } from '../util/auth';
 // components.
 import Login from '../component/Login';
 import Home from '../component/Home';
-import Component from '../component/Component';
+import Settings from '../component/Settings';
 import User from '../component/User';
 
 Vue.use(VueRouter);
@@ -19,7 +19,7 @@ const router = new VueRouter({
       component: Home,
       beforeEnter: requireAuth,
       children: [
-        { path: 'components', component: Component },
+        { path: '', component: Settings },
         { path: 'users', component: User }
       ]
     },

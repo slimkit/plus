@@ -1,3 +1,3 @@
 <template>
-  <div>component</div>
+  <div>Settings.</div>
 </template>

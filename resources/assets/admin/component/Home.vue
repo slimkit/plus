@@ -73,7 +73,9 @@ $lefyNavWidth: 240px;
 
     </div>
     <!-- The content container. -->
-    <router-view class="pull-right context-container"></router-view>
+    <transition>
+      <router-view class="pull-right context-container"></router-view>
+    </transition>
     <!-- End content container. -->
   </div>
 </template>
