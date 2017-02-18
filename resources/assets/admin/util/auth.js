@@ -1,5 +1,6 @@
 import store from '../store';
 import { USER_DELETE } from '../store/types';
+import { USER_LOGGED } from '../store/getter-types';
 import request, { createRequestURI } from '../util/request';
 
 const login = (access, password) => request.post(createRequestURI('login'), {
@@ -14,7 +15,7 @@ const login = (access, password) => request.post(createRequestURI('login'), {
  * @author Seven Du <shiweidu@outlook.com>
  * @homepage http://medz.cn
  */
-const logged = () => store.getters.logged;
+const logged = () => store.getters[USER_LOGGED];
 
 /**
  * 退出登录方法

@@ -5,6 +5,7 @@
 // --------------------------
 
 import { USER_UPDATE, USER_DELETE } from '../types';
+import { USER_LOGGED, USER, USER_DATA } from '../getter-types';
 
 // Use the server in data.
 const logged = window.TS.logged;
@@ -57,9 +58,14 @@ const actions = {
 
 // Created getters.
 const getters = {
-  logged: ({ logged }) => logged,
-  user: ({ user }) => user,
-  userDatas: ({ user = {} }) => {
+  // Created auth logged func.
+  [USER_LOGGED]: ({ logged }) => logged,
+
+  // get auth user data.
+  [USER]: ({ user }) => user,
+
+  // get auth user ext datas.
+  [USER_DATA]: ({ user = {} }) => {
     let { datas = [] } = user;
     let newData = {};
     datas.forEach(data => {

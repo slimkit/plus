@@ -36,25 +36,23 @@ $lefyNavWidth: 240px;
 <template>
   <div class="app-container clearfix">
     <div class="left-nav pull-left">
+
+      <!-- User avatar. -->
       <img v-if="avatar" class="img-responsive img-circle center-block user-avatar" :src="avatar">
       <div v-else class="img-responsive img-circle center-block user-avatar"></div>
+      <!-- End user avatar. -->
 
+      <!-- Username and dropdown menu. -->
       <div class="dropdown">
         <button class="btn dropdown-toggle username-btn" type="button" id="userDropdownMune" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           {{ user.name }}
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdownMune">
-          <li>
-            <a href="#">
+          <li class="disabled">
+            <a href="#" @click="openWebsite">
               <span class="glyphicon glyphicon-new-window"></span>
               打开前台
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <span class="glyphicon glyphicon-off"></span>
-              关闭后台
             </a>
           </li>
           <li role="separator" class="divider"></li>
@@ -66,6 +64,8 @@ $lefyNavWidth: 240px;
           </li>
         </ul>
       </div>
+      <!-- End username and dropdown menu. -->
+
     </div>
     <div class="pull-right context-container">
       233333
@@ -74,8 +74,9 @@ $lefyNavWidth: 240px;
 </template>
 
 <script>
-import { createRequestURI, createAPI } from '../util/request';
 import { mapGetters } from 'vuex';
+import { createRequestURI, createAPI } from '../util/request';
+import { USER, USER_DATA } from '../store/getter-types';
 
 const home = {
   data: () => ({
@@ -83,17 +84,28 @@ const home = {
   }),
   computed: {
     ...mapGetters([
-      'user',
-      'userDatas'
+      USER,
+      USER_DATA
     ]),
     avatar () {
-      let { avatar } = this.userDatas || {};
+      let { avatar } = this[USER_DATA] || {};
 
       if (typeof avatar === 'object') {
         return createAPI(`storages/${avatar.value}`);
       }
 
       return '';
+    },
+    user () {
+      return this[USER];
+    }
+  },
+  methods: {
+    openWebsite (e) {
+      e.stopPropagation();
+      e.preventDefault();
+
+      return false;
     }
   }
 };
