@@ -22,10 +22,13 @@ class UserProfileSetting extends Model
      * @var array
      */
     protected $hidden = [
+        'create_user_id',
         'required',
         'is_delable',
         'is_show',
         'state',
+        'created_at',
+        'updated_at'
     ];
 
     /**
