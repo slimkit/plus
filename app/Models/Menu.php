@@ -20,6 +20,6 @@ class Menu extends Model
      */
     public function scopeByType(Builder $query, string $type): Builder
     {
-        return $query->where('type', 'link', $type);
+        return $query->where('type', 'like', $type);
     }
 }
