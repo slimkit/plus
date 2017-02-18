@@ -68,22 +68,19 @@ class UserController extends Controller
      *
      * @return [type] [description]
      */
-    public function get(int $user)
+    public function get(Request $request)
     {
-        $user = User::find($user);
-        if (!$user or !$user instanceof User) {
-            return response()->json(static::createJsonData([
-                'status'  => false,
-                'code'    => 1005,
-            ]))->setStatusCode(404);
-        }
-
+        $users = User::whereIn('id', $request->user_ids)
+            ->with('datas')
+            ->get();
         $datas = [];
-        foreach ($user->datas as $value) {
-            $datas[$value->profile] = $value->pivot->user_profile_setting_data;
+        foreach ($users as $user) {
+            $datas[$user->id] = [];
+            foreach($user->datas as $data) {
+                $datas[$user->id][$data['profile']] = $data->pivot->user_profile_setting_data;
+            }
+            
         }
-        $datas['user_id'] = $user->id;
-        $datas['name'] = $user->name;
 
         return response()->json(static::createJsonData([
             'status'  => true,

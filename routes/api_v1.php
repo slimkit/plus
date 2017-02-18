@@ -47,7 +47,7 @@ Route::prefix('users')
     Route::patch('/password', 'UserController@resetPassword') // 设置控制器
         ->middleware(Middleware\VerifyPassword::class); // 验证用户密码是否正确
     // 获取用户信息
-    Route::get('/{user}', 'UserController@get');
+    Route::post('/', 'UserController@get');
 
     // 关注操作相关
     Route::post('/follow', 'FollowController@doFollow')
