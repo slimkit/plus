@@ -28,7 +28,7 @@ class UserProfileSetting extends Model
         'is_show',
         'state',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     /**
