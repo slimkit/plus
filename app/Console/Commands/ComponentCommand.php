@@ -78,7 +78,7 @@ class ComponentCommand extends Command
      * Change component installed status.
      *
      * @param string $componentName component name
-     * @param bool $status status
+     * @param bool   $status        status
      *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn

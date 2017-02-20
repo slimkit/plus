@@ -8,7 +8,7 @@ use Zhiyi\Plus\Models\Following;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
-class CheckISFollowing
+class CheckIsFollowing
 {
     use CreateJsonResponseData;
 
