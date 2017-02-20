@@ -126,12 +126,13 @@ class ComponentCommand extends Command
             throw new \Exception("The {$componentName} not require.");
         }
 
-        $installer = new $installConfig['installer'];
+        $installer = new $installConfig['installer']();
         if (!$installer instanceof InstallerInterface) {
             throw new \Exception(sprintf('The %s not implement %s', $componentName, InstallerInterface::class));
         }
 
         $installer->setCommand($this, $this->output);
+
         return $installer;
     }
 
