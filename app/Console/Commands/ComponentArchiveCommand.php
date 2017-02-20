@@ -3,12 +3,11 @@
 namespace Zhiyi\Plus\Console\Commands;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Illuminate\Filesystem\Filesystem;
-
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessUtils;
-use Symfony\Component\Process\PhpExecutableFinder;
 
 class ComponentArchiveCommand extends Command
 {
@@ -69,11 +68,11 @@ class ComponentArchiveCommand extends Command
     protected function findComposer($workingPath)
     {
         if ($this->filesystem->exists($workingPath.'/composer.phar')) {
-            return ProcessUtils::escapeArgument((new PhpExecutableFinder)->find(false)).' composer.phar';
+            return ProcessUtils::escapeArgument((new PhpExecutableFinder())->find(false)).' composer.phar';
         }
 
         if ($this->filesystem->exists(getcwd().'/composer.phar')) {
-            return ProcessUtils::escapeArgument((new PhpExecutableFinder)->find(false).' '.getcwd().'/composer.phar');
+            return ProcessUtils::escapeArgument((new PhpExecutableFinder())->find(false).' '.getcwd().'/composer.phar');
         }
 
         return 'composer';
@@ -109,6 +108,7 @@ class ComponentArchiveCommand extends Command
      * Get the command [package].
      *
      * @return string
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
