@@ -16,8 +16,8 @@ class StoragesTable extends Migration
         Schema::create('storages', function (Blueprint $table) {
             // 创建表结构
             $table->increments('id');
-            $table->string('origin_filename', 255)->comment('原始文件名');
-            $table->string('filename', 255)->comment('文件名称（完整路径）');
+            $table->string('origin_filename')->comment('原始文件名');
+            $table->string('filename')->comment('文件名称（完整路径）');
             $table->string('hash', 100)->comment('文件hash值');
             $table->string('mime', 100)->comment('文件mime');
             $table->string('extension', 10)->comment('文件拓展名称');
