@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputArgument;
 use Zhiyi\Component\Installer\PlusInstallPlugin\InstallerInterface;
+use Zhiyi\Component\Installer\PlusInstallPlugin\ComponentInfoInterface;
 
 class ComponentCommand extends Command
 {
@@ -129,6 +130,11 @@ class ComponentCommand extends Command
         $installer = new $installConfig['installer']();
         if (!$installer instanceof InstallerInterface) {
             throw new \Exception(sprintf('The %s not implement %s', $componentName, InstallerInterface::class));
+        }
+
+        $componentInfo = $installer->getComponentInfo();
+        if ($componentInfo && !($componentInfo instanceof ComponentInfoInterface)) {
+            throw new \Exception(printf('The getComponentInfo() return object not implement %s', ComponentInfoInterface::class));
         }
 
         $installer->setCommand($this, $this->output);
