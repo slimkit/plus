@@ -4,6 +4,12 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",
+    "repositories": [
+        {
+            "type": "artifact",
+            "url": "resources/repositorie/zips/"
+        }
+    ],
     "require": {
         "php": ">=7.0",
         "flc/alidayu": "^2.0",
