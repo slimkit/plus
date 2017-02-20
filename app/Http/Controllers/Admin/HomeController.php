@@ -53,28 +53,42 @@ class HomeController extends Controller
             'api'        => url('api/v1'),
             'logged'     => $this->guard()->check(),
             'user'       => $user ? $this->user($user) : null,
-            'menu'       => $this->menu(),
+            'menus'      => $this->menus(),
         ];
 
         return view('admin', $data);
     }
 
-    protected function menu()
+    protected function menus()
     {
-        return [
-            // 'medz/plus-component-medz' => [
-            //     'name'  => 'MEDZ',
-            //     'admin' => 'http://medz.cn',
-            //     'icon'  => 'http://medz.cn/windid/attachment/avatar/000/00/03/387_small.jpg',
-            //     'logo'  => '',
-            // ],
-            // 'medz/plus-component-baidu' => [
-            //     'name'  => '百度',
-            //     'admin' => 'https://www.baidu.com',
-            //     'icon'  => 'hhttps://www.baidu.com/favicon.ico',
-            //     'logo'  => '',
-            // ],
-        ];
+        $components = config('component');
+        $menus = [];
+
+        foreach ($components as $component => $info) {
+            $info = (array) $info;
+            $installer = array_get($info, 'installer');
+            $installed = array_get($info, 'installed', false);
+            
+            if (!$installed || !$installer) {
+                continue;
+            }
+
+            $componentInfo = (new $installer)->getComponentInfo();
+
+            if (!$componentInfo) {
+                continue;
+            }
+
+            $menus[$component] = [
+                'name' => $componentInfo->getName(),
+                'icon' => $componentInfo->getIcon(),
+                'logo' => $componentInfo->getLogo(),
+                'admin' => $componentInfo->getAdminEntry(),
+            ];
+
+        }
+
+        return $menus;
     }
 
     /**
@@ -95,5 +109,10 @@ class HomeController extends Controller
         $user->load('datas');
 
         return $user;
+    }
+
+    protected function menuModel()
+    {
+        return (new Menu())->newQuery();
     }
 }

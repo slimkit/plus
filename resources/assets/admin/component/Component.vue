@@ -14,10 +14,10 @@
 </template>
 
 <script>
-const menu = window.TS.menu;
+const menus = window.TS.menus || {};
 
 const component = {
-  data: () => ({...menu}),
+  data: () => ({...menus}),
   computed: {
     uri () {
       const { component } = this.$route.params;

@@ -50,7 +50,7 @@
       <span class="glyphicon glyphicon-user __icon"></span>
       用户
     </router-link>
-    <router-link v-for="({ name, icon }, component) in menu" :to="`/component/${component}`" class="list-group-item __button">
+    <router-link v-for="({ name, icon }, component) in menus" :to="`/component/${component}`" class="list-group-item __button">
       <img class="__icon-img" :src="icon">
       {{ name }}
     </router-link>
@@ -58,10 +58,10 @@
 </template>
 
 <script>
-const menu = window.TS.menu || [];
+const menus = window.TS.menus || {};
 const nav = {
   data: () => ({
-    menu
+    menus
   })
 };
 
