@@ -6,8 +6,8 @@ use Closure;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputArgument;
-use Zhiyi\Component\Installer\PlusInstallPlugin\InstallerInterface;
 use Zhiyi\Component\Installer\PlusInstallPlugin\ComponentInfoInterface;
+use Zhiyi\Component\Installer\PlusInstallPlugin\InstallerInterface;
 
 class ComponentCommand extends Command
 {

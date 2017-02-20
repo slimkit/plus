@@ -68,24 +68,23 @@ class HomeController extends Controller
             $info = (array) $info;
             $installer = array_get($info, 'installer');
             $installed = array_get($info, 'installed', false);
-            
+
             if (!$installed || !$installer) {
                 continue;
             }
 
-            $componentInfo = (new $installer)->getComponentInfo();
+            $componentInfo = (new $installer())->getComponentInfo();
 
             if (!$componentInfo) {
                 continue;
             }
 
             $menus[$component] = [
-                'name' => $componentInfo->getName(),
-                'icon' => $componentInfo->getIcon(),
-                'logo' => $componentInfo->getLogo(),
+                'name'  => $componentInfo->getName(),
+                'icon'  => $componentInfo->getIcon(),
+                'logo'  => $componentInfo->getLogo(),
                 'admin' => $componentInfo->getAdminEntry(),
             ];
-
         }
 
         return $menus;
