@@ -88,7 +88,7 @@ class ComponentCommand extends Command
         $settings = config('component');
         $settings[$componentName]['installed'] = $status;
 
-        $this->filePutIterator(config_path('component'), $settings);
+        $this->filePutIterator(config_path('component.php'), $settings);
     }
 
     /**
@@ -122,7 +122,7 @@ class ComponentCommand extends Command
     protected function getInstallerInstance(string $componentName): InstallerInterface
     {
         $installConfig = array_get(config('component'), $componentName);
-        if (!$installer) {
+        if (!$installConfig) {
             throw new \Exception("The {$componentName} not require.");
         }
 

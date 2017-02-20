@@ -1,4 +1,4 @@
 *
 !.gitignore
 !sources/
-!zips/
+!zips/.gitignore
