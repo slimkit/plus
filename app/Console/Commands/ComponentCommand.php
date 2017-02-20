@@ -58,6 +58,7 @@ class ComponentCommand extends Command
         $install = $this->getClosureBind($this, function () use ($installer, $component) {
             $this->installVendorComponentRouter($installer, $component);
             $this->installVendorComponentResource($installer, $component);
+            $this->changeInstalledStatus($component, true);
         });
 
         // update call.
@@ -67,9 +68,27 @@ class ComponentCommand extends Command
         $uninstall = $this->getClosureBind($this, function () use ($component) {
             $this->removeVendorComponentRouter($component);
             $this->removeVendorComponentResource($component);
+            $this->changeInstalledStatus($component, false);
         });
 
         $installer->$name($$name);
+    }
+
+    /**
+     * Change component installed status.
+     *
+     * @param string $componentName component name
+     * @param bool $status status
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    protected function changeInstalledStatus(string $componentName, bool $status)
+    {
+        $settings = config('component');
+        $settings[$componentName]['installed'] = $status;
+
+        $this->filePutIterator(config_path('component'), $settings);
     }
 
     /**
@@ -102,12 +121,12 @@ class ComponentCommand extends Command
      */
     protected function getInstallerInstance(string $componentName): InstallerInterface
     {
-        $installer = array_get(config('component'), $componentName);
+        $installConfig = array_get(config('component'), $componentName);
         if (!$installer) {
             throw new \Exception("The {$componentName} not require.");
         }
 
-        $installer = new $installer($this, $this->output);
+        $installer = new $installConfig['installer']($this, $this->output);
         if (!$installer instanceof InstallerInterface) {
             throw new \Exception(sprintf('The %s not implement %s', $componentName, InstallerInterface::class));
         }
