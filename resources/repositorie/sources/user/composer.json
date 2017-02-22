@@ -1,0 +1,27 @@
+{
+    "name": "zhiyicx/plus-component-web",
+    "description": "web fo ts+\u001b[D\u001b[D",
+    "license": "MIT",
+    "type": "plus-component",
+    "version": "1.0.6",
+    "authors": [
+        {
+            "name": "Wayne John",
+            "email": "qiaobinloverabbi@gmail.com"
+        }
+    ],
+    "require": {
+        "zhiyicx/plus-install-plugin": "^1.0"
+    },
+    "extra": {
+        "installer-class": "Zhiyi\\PlusComponentWeb\\Installer"
+    },
+    "autoload" : {
+        "files" : [
+            "helper.php"
+        ],
+        "classmap": [
+            "Installer.php"
+        ]
+    }
+}

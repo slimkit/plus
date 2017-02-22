@@ -1,0 +1,72 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "ed9bef1cfc532d90c9703931434893a1",
+    "packages": [
+        {
+            "name": "zhiyicx/plus-install-plugin",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zhiyicx/plus-install-plugin.git",
+                "reference": "c7ad096e584934bcde7bf273619a0edf4d94361c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/zhiyicx/plus-install-plugin/c7ad096e584934bcde7bf273619a0edf4d94361c.zip",
+                "reference": "c7ad096e584934bcde7bf273619a0edf4d94361c",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0",
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "composer/composer": "^1.3",
+                "phpunit/phpunit": "^6.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                },
+                "class": "Zhiyi\\Component\\Installer\\PlusInstallPlugin\\InstallerPlugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zhiyi\\Component\\Installer\\PlusInstallPlugin\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Seven Du",
+                    "email": "shiweidu@outlook.com",
+                    "homepage": "http://medz.cn",
+                    "role": "Developer"
+                }
+            ],
+            "description": "ThinkSNS Plus component require plugin.",
+            "keywords": [
+                "plus",
+                "thinksns",
+                "ts"
+            ],
+            "time": "2017-02-09T02:43:00+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
