@@ -11,7 +11,7 @@
   <div class="setting-container">
     <!-- The settings nav. -->
     <ul class="nav nav-tabs setting-nav">
-      <router-link to="/setting" tag="li" active-class="active">
+      <router-link to="/setting/base" tag="li" active-class="active">
         <a href="#">基本信息</a>
       </router-link>
       <router-link to="/setting/area" tag="li" active-class="active">

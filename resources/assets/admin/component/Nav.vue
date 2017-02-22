@@ -42,7 +42,7 @@
 
 <template>
   <div class="list-group app-nav">
-    <router-link class="list-group-item __button" to="/setting">
+    <router-link class="list-group-item __button" to="/setting/base">
       <span class="glyphicon glyphicon-cog __icon"></span>
       系统
     </router-link>
