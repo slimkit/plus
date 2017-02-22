@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import auth, { requireAuth, loggedAuth } from '../util/auth';
+import { requireAuth, loggedAuth } from '../util/auth';
 
 // components.
 import Login from '../component/Login';
@@ -25,14 +25,7 @@ const router = new VueRouter({
         { path: 'component/:component(.*)', component: Component }
       ]
     },
-    { path: '/login', component: Login, beforeEnter: loggedAuth },
-    {
-      path: '/logout',
-      beforeEnter (to, form, next) {
-        auth.logout();
-        next('/login');
-      }
-    }
+    { path: '/login', component: Login, beforeEnter: loggedAuth }
   ]
 });
 
