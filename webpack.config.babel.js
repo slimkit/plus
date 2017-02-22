@@ -98,7 +98,7 @@ const webpackConfig = {
   devtool: isProd ? false : 'source-map',
   entry: entry,
   output: {
-    path: isHot ? '/' : path.join(buildAssetsRoot),
+    path: isHot ? '/' : buildAssetsRoot,
     publicPath: isHot ? 'http://localhost:8080/' : '../',
     filename: isProd ? 'js/[name].[chunkhash].js' : 'js/[name].js',
   },
