@@ -1,3 +1,3 @@
 <template>
-  <div>Settings.</div>
+  <div>hahaTest.</div>
 </template>
