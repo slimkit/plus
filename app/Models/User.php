@@ -207,7 +207,7 @@ class User extends Authenticatable
      */
     public function follows()
     {
-        return $this->hasMany(Follow::class, 'user_id');
+        return $this->hasMany(Following::class, 'user_id');
     }
 
     /**
