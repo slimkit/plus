@@ -50,7 +50,7 @@ const login = {
         })
         .catch(({ response: { data = {} } }) => {
           const { phone, password } = data;
-          this.error = phone || password || '账户密码错误';
+          this.error = phone || password || '登录失败！';
         });
     }
   }
