@@ -32,4 +32,4 @@ dependencies:
 test:
     override:
         - yarn lint
-        - yarn build
+        - yarn dist
