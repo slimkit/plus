@@ -15,12 +15,13 @@ class Followed extends Model
 
     /**
      *  粉丝的关注列表  用于预加载判断对方关注状态
-     * 
+     *
      * @author bs<414606094@qq.com>
+     *
      * @return [type] [description]
      */
     public function following()
     {
-    	return $this->hasMany(Following::class, 'user_id', 'user_id');
+        return $this->hasMany(Following::class, 'user_id', 'user_id');
     }
 }
