@@ -98,22 +98,30 @@ class FollowController extends Controller
             ]))->setStatusCode(404);
         }
 
-        $data['follows'] = Following::where('user_id', $user_id)
+        $follows = Following::where('user_id', $user_id)
             ->where(function ($query) use ($max_id) {
                 if ($max_id > 0) {
                     $query->where('id', '<', $max_id);
                 }
             })
-            ->select('id', 'following_user_id as user_id')
             ->orderBy('id', 'DESC')
             ->take(15)
+            ->with('followed')
             ->get();
+        foreach ($follows as $follow) {
+            $data = [];
+            $data['id'] = $follow->id;
+            $data['user_id'] = $follow->following_user_id;
+            $data['my_follow_status'] = 1;//我关注的列表  关注状态始终为1
+            $data['follow_status'] = $follow->followed->where('followed_user_id', $follow->following_user_id)->isEmpty() ? 0 : 1;
+            $datas[] = $data;
+        }
 
         return response()->json(static::createJsonData([
             'status'  => true,
             'code'    => 0,
             'message' => '获取成功',
-            'data'    => $data,
+            'data'    => $datas,
         ]))->setStatusCode(200);
     }
 
@@ -133,22 +141,30 @@ class FollowController extends Controller
                 'message' => '用户未找到',
             ]))->setStatusCode(404);
         }
-        $data['followeds'] = Followed::where('user_id', $user_id)
+        $followeds = Followed::where('user_id', $user_id)
             ->where(function ($query) use ($max_id) {
                 if ($max_id > 0) {
                     $query->where('id', '<', $max_id);
                 }
             })
-            ->select('id', 'followed_user_id as user_id')
             ->orderBy('id', 'DESC')
             ->take(15)
+            ->with('following')
             ->get();
+        foreach ($followeds as $followed) {
+            $data = [];
+            $data['id'] = $followed->id;
+            $data['user_id'] = $followed->followed_user_id;
+            $data['my_follow_status'] = $followed->following->where('following_user_id', $followed->followed_user_id)->isEmpty() ? 0 : 1;
+            $data['follow_status'] = 1;//关注我的的列表  对方关注状态始终为1
+            $datas[] = $data;
+        }
 
         return response()->json(static::createJsonData([
             'status'  => true,
             'code'    => 0,
             'message' => '获取成功',
-            'data'    => $data,
+            'data'    => $datas,
         ]))->setStatusCode(200);
     }
 }
