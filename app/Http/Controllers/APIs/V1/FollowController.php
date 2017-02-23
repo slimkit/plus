@@ -112,7 +112,7 @@ class FollowController extends Controller
             $data = [];
             $data['id'] = $follow->id;
             $data['user_id'] = $follow->following_user_id;
-            $data['my_follow_status'] = 1;//我关注的列表  关注状态始终为1
+            $data['my_follow_status'] = 1; //我关注的列表  关注状态始终为1
             $data['follow_status'] = $follow->followed->where('followed_user_id', $follow->following_user_id)->isEmpty() ? 0 : 1;
             $datas[] = $data;
         }
@@ -156,7 +156,7 @@ class FollowController extends Controller
             $data['id'] = $followed->id;
             $data['user_id'] = $followed->followed_user_id;
             $data['my_follow_status'] = $followed->following->where('following_user_id', $followed->followed_user_id)->isEmpty() ? 0 : 1;
-            $data['follow_status'] = 1;//关注我的的列表  对方关注状态始终为1
+            $data['follow_status'] = 1; //关注我的的列表  对方关注状态始终为1
             $datas[] = $data;
         }
 
