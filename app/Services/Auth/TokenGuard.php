@@ -4,10 +4,9 @@ namespace Zhiyi\Plus\Services\Auth;
 
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Contracts\Auth\SupportsBasicAuth;
 use Illuminate\Http\Request;
 
-class TokenGuard implements Guard, SupportsBasicAuth
+class TokenGuard implements Guard
 {
     use GuardHelpers;
 
@@ -60,36 +59,6 @@ class TokenGuard implements Guard, SupportsBasicAuth
     }
 
     /**
-     * Attempt to authenticate using HTTP Basic Auth.
-     *
-     * @param string $field
-     * @param array  $extraConditions
-     *
-     * @return \Symfony\Component\HttpFoundation\Response|null
-     */
-    public function basic($field = 'token', $extraConditions = [])
-    {
-        $this->user = $this->provider->retrieveByCredentials([
-            'token' => $this->getTokenForRequest(),
-        ]);
-
-        return $this->user;
-    }
-
-    /**
-     * Perform a stateless HTTP Basic login attempt.
-     *
-     * @param string $field
-     * @param array  $extraConditions
-     *
-     * @return \Symfony\Component\HttpFoundation\Response|null
-     */
-    public function onceBasic($field = 'token', $extraConditions = [])
-    {
-        return $this->basic();
-    }
-
-    /**
      * Validate a user's credentials.
      *
      * @param array $credentials
@@ -100,17 +69,6 @@ class TokenGuard implements Guard, SupportsBasicAuth
     {
         var_dump($credentials);
         exit;
-        if (empty($credentials[$this->inputKey])) {
-            return false;
-        }
-
-        $credentials = [$this->storageKey => $credentials[$this->inputKey]];
-
-        if ($this->provider->retrieveByCredentials($credentials)) {
-            return true;
-        }
-
-        return false;
     }
 
     /**

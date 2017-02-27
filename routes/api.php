@@ -13,11 +13,14 @@
 */
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 Route::any('/example', function (Request $request) {
-    var_dump($request->user());
+    var_dump(Auth::guard('api')->user());
+    // var_dump($request->user());
 })
-->middleware('auth:api');
+// ->middleware('auth:api')
+;
 
 // RESTful API version 1.
 Route::prefix('v1')
