@@ -44,7 +44,7 @@ class StorageController extends Controller
 
         if (!$originFilename || !$hash || !$mimeType) {
             return response()->json(static::createJsonData([
-                'status' => false,
+                'status'  => false,
                 'message' => '发送参数错误',
             ]));
         }
