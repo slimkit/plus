@@ -88,4 +88,6 @@ Route::group([
     //意见反馈
     Route::post('/feedback', 'FeedbackController@createFeedback')
     ->middleware(Middleware\CheckFeedbackContentExisted::class);
+    //获取聊天服务器地址  TODO 之后根据后台配置更改
+    Route::get('/imserverconfig', 'SystemController@getImServerConfig');
 });
