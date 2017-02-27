@@ -8,7 +8,8 @@ class SystemController extends Controller
 {
     public function getImServerConfig()
     {
-        $data['url'] = 'ws://192.168.2.222:9900';
+        $data['url'] = '192.168.2.222';
+        $data['port'] = '9900';
 
         return response()->json([
             'status'  => true,
