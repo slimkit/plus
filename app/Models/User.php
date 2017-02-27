@@ -175,14 +175,15 @@ class User extends Authenticatable
     }
 
     /**
-     * 用户拥有多条统计数据
-     * 
+     * 用户拥有多条统计数据.
+     *
      * @author bs<414606094@qq.com>
+     *
      * @return [type] [description]
      */
     public function counts()
     {
-         return $this->hasMany(UserDatas::class, 'user_id');
+        return $this->hasMany(UserDatas::class, 'user_id');
     }
 
     /**
