@@ -27,6 +27,7 @@ class CheckFeedbackContentExisted
                 'status'  => false,
             ]))->setStatusCode(400);
         }
+
         return $next($request);
     }
 }
