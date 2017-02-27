@@ -14,6 +14,8 @@ export const USER = 'user/user';
 export const USER_DATA = 'user/datas';
 
 // The const is defined [settings/site]
-export const SITE_TITLE = 'settings/site/title';
-export const SITE_KEYWORDS = 'settings/site/keywords';
-export const SITE_DESCRIPTION = 'settings/site/description';
+export const SETTINGS_SITE = 'settings/site';
+// export const SITE_TITLE = 'settings/site/title';
+// export const SITE_KEYWORDS = 'settings/site/keywords';
+// export const SITE_DESCRIPTION = 'settings/site/description';
+// export const SITE_ICP = 'settings/site/icp';
