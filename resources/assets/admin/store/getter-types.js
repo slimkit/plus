@@ -12,3 +12,8 @@ export const USER = 'user/user';
 
 // the const is defined [user/datas] type.
 export const USER_DATA = 'user/datas';
+
+// The const is defined [settings/site]
+export const SITE_TITLE = 'settings/site/title';
+export const SITE_KEYWORDS = 'settings/site/keywords';
+export const SITE_DESCRIPTION = 'settings/site/description';
