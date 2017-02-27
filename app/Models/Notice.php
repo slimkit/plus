@@ -1,6 +1,6 @@
 <?php
 
-namespace Zhiyi\Plus;
+namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

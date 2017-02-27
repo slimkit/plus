@@ -70,7 +70,7 @@ Route::group([
     'prefix'     => 'storages',
 ], function () {
     // 创建一个储存任务
-    Route::post('/task', 'StorageController@create');
+    Route::post('/task/{hash}/{origin_filename}', 'StorageController@create');
     // 完成一个任务上传通知
     Route::patch('/task/{storage_task_id}', 'StorageController@notice');
     // 删除一个上传任务附件
@@ -78,4 +78,14 @@ Route::group([
     // local storage api.
     Route::post('/task/{storage_task_id}', 'StorageController@upload')
         ->name('storage/upload');
+});
+
+//系统及配置相关
+Route::group([
+    'middleware' => 'auth:api',
+    'prefix'     => 'system',
+], function () {
+    //意见反馈
+    Route::post('/feedback', 'FeedbackController@createFeedback')
+    ->middleware(Middleware\CheckFeedbackContentExisted::class);
 });
