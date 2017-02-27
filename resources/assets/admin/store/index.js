@@ -9,11 +9,13 @@ import Vuex from 'vuex';
 
 // modules.
 import user from './module/user';
+import site from './module/site';
 
 Vue.use(Vuex);
 
 const modules = {
-  user
+  user,
+  site
 };
 
 const store = new Vuex.Store({
