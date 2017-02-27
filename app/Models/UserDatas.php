@@ -29,4 +29,19 @@ class UserDatas extends Model
     {
         return $query->where('user_id', $user_id);
     }
+
+    /**
+     * 通过key查看统计数据.
+     *
+     * @author bs<414606094@qq.com>
+     *
+     * @param Builder $query   [description]
+     * @param int     $user_id [description]
+     *
+     * @return [type] [description]
+     */
+    public function scopeByKey(Builder $query, $key): Builder
+    {
+        return $query->where('key', $key);
+    }
 }
