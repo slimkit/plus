@@ -68,7 +68,7 @@ class Storage
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function createStorageTask(User $user, string $origin_filename, string $hash, $engine = 'local'): array
+    public function createStorageTask(User $user, string $origin_filename, string $hash, string $mimeType, float $width, float $height, $engine = 'local'): array
     {
         // 删除同hash任务
         StorageTask::where('hash', $hash)->delete();
@@ -76,7 +76,7 @@ class Storage
         // 查询储存
         $storage = StorageModel::byHash($hash)->first();
         if (!$storage) { // 储存不存在，新建储存.
-            return $this->newStorageTask($user, $origin_filename, $hash, $engine);
+            return $this->newStorageTask($user, $origin_filename, $hash, $mimeType, $width, $height, $engine);
         }
 
         $task = new StorageTask();
@@ -104,12 +104,15 @@ class Storage
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    protected function newStorageTask(User $user, string $origin_filename, string $hash, string $engine): array
+    protected function newStorageTask(User $user, string $origin_filename, string $hash, string $mimeType, float $width, float $height, string $engine): array
     {
         $task = new StorageTask();
         $task->hash = $hash;
         $task->origin_filename = $origin_filename;
         $task->filename = static::createStorageFilename($origin_filename, $hash);
+        $task->mime_type = $mimeType;
+        $task->width = $width;
+        $task->height = $height;
 
         return static::$storages[$engine]->createStorageTask($task, $user);
     }
@@ -129,8 +132,10 @@ class Storage
             $storage->hash = $task->hash;
             $storage->origin_filename = $task->origin_filename;
             $storage->filename = $task->filename;
-            $storage->mime = $this->mimeType($task->filename, $engine);
+            $storage->mime = $task->mime_type ?? $this->mimeType($task->filename, $engine);
             $storage->extension = app(Filesystem::class)->extension($task->origin_filename);
+            $storage->image_width = $task->width;
+            $storage->image_height = $task->height;
             $storage->save();
         }
 

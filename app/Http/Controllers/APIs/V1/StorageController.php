@@ -32,10 +32,24 @@ class StorageController extends Controller
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function create(Request $request, string $hash, string $origin_filename)
+    public function create(Request $request)
     {
         $user = $request->user();
-        $storage = $this->storage()->createStorageTask($user, $origin_filename, $hash);
+
+        $originFilename = $request->input('origin_filename');
+        $hash = $request->input('hash');
+        $mimeType = $request->input('mime_type');
+        $width = (float) $request->input('width', 0);
+        $height = (float) $request->input('height', 0);
+
+        if (!$originFilename || !$hash || !$mimeType) {
+            return response()->json(static::createJsonData([
+                'status' => false,
+                'message' => '发送参数错误',
+            ]));
+        }
+
+        $storage = $this->storage()->createStorageTask($user, $originFilename, $hash, $mimeType, $width, $height);
 
         return response()->json(static::createJsonData([
             'status' => true,
