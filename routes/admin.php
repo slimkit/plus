@@ -10,6 +10,9 @@ Route::get('/', 'HomeController@index')
 Route::post('/login', 'HomeController@login');
 Route::any('/logout', 'HomeController@logout');
 
+Route::get('/site/baseinfo', 'SiteController@get')
+->middleware('auth:web');
+
 // Add the route, SPA used mode "history"
 // But, RESTful the route?
 // Route::get('/{route?}', 'HomeController@index')
