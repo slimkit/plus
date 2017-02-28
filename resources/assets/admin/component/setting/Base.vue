@@ -67,6 +67,7 @@
 
 <script>
 import { SETTINGS_SITE_UPDATE } from '../../store/types';
+import request, { createRequestURI } from '../../util/request';
 
 const settingBase = {
   computed: {
@@ -106,6 +107,9 @@ const settingBase = {
   methods: {
   },
   created () {
+    request.get(createRequestURI('site/baseinfo'))
+      .then(response => console.log(response))
+      .catch(error => console.log(...error));
     // console.log(this);
   }
 };
