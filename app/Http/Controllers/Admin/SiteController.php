@@ -2,7 +2,6 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\CommonConfig;
 
@@ -19,6 +18,7 @@ class SiteController extends Controller
      * Get the website info.
      *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -36,6 +36,7 @@ class SiteController extends Controller
      * instance a new model.
      *
      * @return Zhiyi\Plus\Models\CommonConfig::newQuery
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
