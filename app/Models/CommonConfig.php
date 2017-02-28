@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Plus\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class CommonConfig extends Model
 {
@@ -11,8 +11,10 @@ class CommonConfig extends Model
      * Scope func to namespace.
      *
      * @param Illuminate\Database\Eloquent\Builder $query
-     * @param string $namespace
+     * @param string                               $namespace
+     *
      * @return Illuminate\Database\Eloquent\Builder
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -25,8 +27,10 @@ class CommonConfig extends Model
      * Scope func to name.
      *
      * @param Illuminate\Database\Eloquent\Builder $query
-     * @param string $name
+     * @param string                               $name
+     *
      * @return Illuminate\Database\Eloquent\Builder
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
