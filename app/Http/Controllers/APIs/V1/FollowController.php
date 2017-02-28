@@ -108,7 +108,7 @@ class FollowController extends Controller
             ->take(15)
             ->with('followed')
             ->get();
-        $datas = ['follows'][];
+        $datas['follows'] = [];
         foreach ($follows as $follow) {
             $data = [];
             $data['id'] = $follow->id;
@@ -152,7 +152,7 @@ class FollowController extends Controller
             ->take(15)
             ->with('following')
             ->get();
-        $datas = ['followeds'][];
+        $datas['followeds'] = [];
         foreach ($followeds as $followed) {
             $data = [];
             $data['id'] = $followed->id;
