@@ -83,7 +83,7 @@ class Storage
         $task->hash = $storage->hash;
         $task->filename = $storage->filename;
         $task->origin_filename = $storage->origin_filename;
-        $task->mime_type = $storage->mimeType;
+        $task->mime_type = $storage->mime;
         $task->width = $storage->width;
         $task->height = $storage->height;
         $task->save();
