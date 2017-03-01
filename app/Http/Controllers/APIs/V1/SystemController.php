@@ -3,8 +3,8 @@
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\Conversation;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\Conversation;
 
 class SystemController extends Controller
 {
@@ -24,7 +24,7 @@ class SystemController extends Controller
     public function createFeedback(Request $request)
     {
         $feedback = new Conversation();
-        $feedback->type    = 'feedback';
+        $feedback->type = 'feedback';
         $feedback->content = $request->input('content');
         $feedback->user_id = $request->user()->id;
         $feedback->save();
