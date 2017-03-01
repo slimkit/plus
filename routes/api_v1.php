@@ -56,6 +56,9 @@ Route::prefix('users')
     Route::delete('/unFollow', 'FollowController@doUnFollow')
         ->middleware(Middleware\CheckUserExsistedByUserId::class)
         ->middleware(Middleware\CheckIsFollowing::class);
+
+    //查看指定用户关注状态
+    Route::get('/followstatus', 'FollowController@getFollowStatus');
 });
 
 // 用户关注相关
