@@ -1,13 +1,4 @@
 <style lang="scss">
-@keyframes TurnAround {
-  from {
-    transform: rotate(1deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .app-setting-base-container {
   padding: 15px;
   .app-setting-base-demo {
