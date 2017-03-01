@@ -3,8 +3,8 @@
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Closure;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\CommonConfig;
 
@@ -40,10 +40,12 @@ class SiteController extends Controller
     }
 
     /**
-     * 更新网站基本信息
+     * 更新网站基本信息.
      *
      * @param Request $request
+     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -79,7 +81,7 @@ class SiteController extends Controller
             }
 
             return response()->json([
-                'message' => '更新成功'
+                'message' => '更新成功',
             ])->setStatusCode(201);
         };
         $callback->bindTo($this);
@@ -108,8 +110,10 @@ class SiteController extends Controller
      * Static bind DB::transaction .
      *
      * @param Closure $callback
-     * @param integer $attempts
+     * @param int     $attempts
+     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
