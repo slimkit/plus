@@ -173,10 +173,12 @@ class FollowController extends Controller
 
     /**
      * 获取用户的关注状态
-     * 
+     *
      * @author bs<414606094@qq.com>
-     * @param  Request $request [description]
-     * @return [type]           [description]
+     *
+     * @param Request $request [description]
+     *
+     * @return [type] [description]
      */
     public function getFollowStatus(Request $request)
     {
@@ -191,19 +193,19 @@ class FollowController extends Controller
 
                 $return['user_id'] = $value;
                 if ($following && $followed) {
-                    $return['followstatus'] = 0;// 双方未关注
+                    $return['followstatus'] = 0; // 双方未关注
                 } elseif (!$following && $followed) {
-                    $return['followstatus'] = 1;// 该用户关注当前用户  当前用户未关注该用户
+                    $return['followstatus'] = 1; // 该用户关注当前用户  当前用户未关注该用户
                 } elseif ($following && !$followed) {
-                    $return['followstatus'] = 2;// 该用户未关注当前用户  当前用户关注该用户
+                    $return['followstatus'] = 2; // 该用户未关注当前用户  当前用户关注该用户
                 } elseif (!$following && !$followed) {
-                    $return['followstatus'] = 3;// 双方互相关注
+                    $return['followstatus'] = 3; // 双方互相关注
                 }
 
                 $data[] = $return;
             }
         }
-        
+
         return response()->json(static::createJsonData([
             'status'  => true,
             'code'    => 0,
