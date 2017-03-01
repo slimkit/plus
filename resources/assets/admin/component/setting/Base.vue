@@ -76,8 +76,8 @@
         <button v-if="loadding" class="btn btn-primary" disabled="disabled">
           <span class="glyphicon glyphicon-refresh app-setting-base-demo"></span>
         </button>
-        <button v-else-if="error" @click.prevent="requestSiteInfo" class="btn btn-primary" disabled="disabled">{{ error_message }}</button>
-        <button v-else type="submit" class="btn btn-primary">提交</button>
+        <button v-else-if="error" @click.prevent="requestSiteInfo" class="btn btn-danger">{{ error_message }}</button>
+        <button v-else type="submit" class="btn btn-primary">{{ message }}</button>
       </div>
     </div>
     <!-- End button -->
@@ -92,7 +92,8 @@ const settingBase = {
   data: () => ({
     loadding: true,
     error: false,
-    error_message: '重新加载'
+    error_message: '重新加载',
+    message: '提交'
   }),
   computed: {
     title: {
@@ -143,8 +144,24 @@ const settingBase = {
     },
     submit () {
       const { title, keywords, description, icp } = this;
-      request.patch(createRequestURI('site/baseinfo'), { title, keywords, description, icp })
-        .then(response => console.log(response));
+      this.loadding = true;
+      request.patch(createRequestURI('site/baseinfo'), { title, keywords, description, icp }, {
+        validateStatus: status => status === 201
+      }).then(() => {
+        this.message = '执行成功';
+        this.loadding = false;
+        setTimeout(() => {
+          this.message = '提交';
+        }, 1000);
+      }).catch(() => {
+        this.loadding = false;
+        this.error = true;
+        this.error_message = '操作失败';
+        setTimeout(() => {
+          this.error = false;
+          this.error_message = '重新加载';
+        }, 1000);
+      });
     }
   },
   created () {
