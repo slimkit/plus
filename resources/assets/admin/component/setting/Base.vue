@@ -1,12 +1,27 @@
 <style lang="scss">
-.app-setting-base-container
-{
+@keyframes TurnAround {
+  from {
+    transform: rotate(1deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.app-setting-base-container {
   padding: 15px;
+  .app-setting-base-demo {
+    animation-name: TurnAround;
+    animation-duration: 1.6s;
+    animation-timing-function: linear;
+    // animation-direction: alternate;
+    animation-iteration-count: infinite;
+  }
 }
 </style>
 
 <template>
-  <form class="form-horizontal app-setting-base-container">
+  <form class="form-horizontal app-setting-base-container" @submit.prevent="submit">
     <!-- Site title. -->
     <div class="form-group">
       <label for="site-title" class="col-sm-2 control-label">标题</label>
@@ -58,7 +73,11 @@
     <!-- Button -->
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-primary">提交</button>
+        <button v-if="loadding" class="btn btn-primary" disabled="disabled">
+          <span class="glyphicon glyphicon-refresh app-setting-base-demo"></span>
+        </button>
+        <button v-else-if="error" @click.prevent="requestSiteInfo" class="btn btn-primary" disabled="disabled">{{ error_message }}</button>
+        <button v-else type="submit" class="btn btn-primary">提交</button>
       </div>
     </div>
     <!-- End button -->
@@ -70,6 +89,11 @@ import { SETTINGS_SITE_UPDATE } from '../../store/types';
 import request, { createRequestURI } from '../../util/request';
 
 const settingBase = {
+  data: () => ({
+    loadding: true,
+    error: false,
+    error_message: '重新加载'
+  }),
   computed: {
     title: {
       get () {
@@ -105,12 +129,26 @@ const settingBase = {
     }
   },
   methods: {
+    requestSiteInfo () {
+      request.get(createRequestURI('site/baseinfo'), {
+        validateStatus: status => status === 200
+      }).then(({ data = {} }) => {
+        this.$store.commit(SETTINGS_SITE_UPDATE, { ...data });
+        this.loadding = false;
+      }).catch(() => {
+        this.loadding = false;
+        this.error = true;
+        // this.error_message
+      });
+    },
+    submit () {
+      const { title, keywords, description, icp } = this;
+      request.patch(createRequestURI('site/baseinfo'), { title, keywords, description, icp })
+        .then(response => console.log(response));
+    }
   },
   created () {
-    request.get(createRequestURI('site/baseinfo'))
-      .then(response => console.log(response))
-      .catch(error => console.log(...error));
-    // console.log(this);
+    this.requestSiteInfo();
   }
 };
 
