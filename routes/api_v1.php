@@ -91,6 +91,8 @@ Route::group([
     //意见反馈
     Route::post('/feedback', 'SystemController@createFeedback')
     ->middleware(Middleware\CheckFeedbackContentExisted::class);
+    //获取系统会话列表
+    Route::get('/conversations', 'SystemController@getConversations');
     //获取聊天服务器地址  TODO 之后根据后台配置更改
     Route::get('/imserverconfig', 'SystemController@getImServerConfig');
 });
