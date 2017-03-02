@@ -1,8 +1,8 @@
-<style lang="scss">
-.app-setting-base-container {
+<style lang="scss" module>
+.container {
   padding: 15px;
-  .app-setting-base-demo {
-    animation-name: TurnAround;
+  .containerAround {
+    animation-name: "TurnAround";
     animation-duration: 1.6s;
     animation-timing-function: linear;
     // animation-direction: alternate;
@@ -12,7 +12,7 @@
 </style>
 
 <template>
-  <form class="form-horizontal app-setting-base-container" @submit.prevent="submit">
+  <form class="form-horizontal" :class="$style.container" @submit.prevent="submit">
     <!-- Site title. -->
     <div class="form-group">
       <label for="site-title" class="col-sm-2 control-label">标题</label>
@@ -65,7 +65,7 @@
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <button v-if="loadding" class="btn btn-primary" disabled="disabled">
-          <span class="glyphicon glyphicon-refresh app-setting-base-demo"></span>
+          <span class="glyphicon glyphicon-refresh" :class="$style.containerAround"></span>
         </button>
         <button v-else-if="error" @click.prevent="requestSiteInfo" class="btn btn-danger">{{ error_message }}</button>
         <button v-else type="submit" class="btn btn-primary">{{ message }}</button>
