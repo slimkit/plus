@@ -20,7 +20,7 @@ const settingRouter = {
       alias: ''
     },
     {
-      path: 'area',
+      path: 'area/:id?',
       component: Area
     },
     {
