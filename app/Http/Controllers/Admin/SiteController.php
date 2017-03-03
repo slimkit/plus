@@ -89,6 +89,11 @@ class SiteController extends Controller
         return $this->dbTransaction($callback);
     }
 
+    public function areaGet(int $id = 0)
+    {
+        var_dump($id);
+    }
+
     /**
      * instance a new model.
      *
