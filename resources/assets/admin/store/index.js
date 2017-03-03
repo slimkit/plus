@@ -10,12 +10,14 @@ import Vuex from 'vuex';
 // modules.
 import user from './module/user';
 import site from './module/site';
+import area from './module/area';
 
 Vue.use(Vuex);
 
 const modules = {
   user,
-  site
+  site,
+  area
 };
 
 const store = new Vuex.Store({

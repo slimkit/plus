@@ -19,3 +19,6 @@ export const SETTINGS_SITE = 'settings/site';
 // export const SITE_KEYWORDS = 'settings/site/keywords';
 // export const SITE_DESCRIPTION = 'settings/site/description';
 // export const SITE_ICP = 'settings/site/icp';
+
+// The conts is defined [setting/area]
+export const SETTINGS_AREA = 'settings/area';

@@ -16,3 +16,7 @@ export const SETTINGS_SITE_UPDATE = 'settings/site/UPDATE';
 // export const SETTINGS_SITE_KEYWORDS = 'settings/site/keywords';
 // export const SETTINGS_SITE_DESCRIPTION = 'settings/site/description';
 // export const SETTINGS_SITE_ICP = 'settings/site/icp';
+
+// Defined [settings/area]
+export const SETTINGS_AREA_APPEND = 'settings/area/APPEND';
+export const SETTINGS_AREA_CHANGEITEM = 'settings/area/CHANGE-ITEM';
