@@ -13,7 +13,7 @@ class StorageController extends Controller
 {
     protected static $storage;
 
-    public function get(Request $request, StorageTask $storage, int $process = 100)
+    public function get(Request $request, StorageModel $storage, int $process = 100)
     {
         $url = $this->storage()->url($storage->filename, $process);
 
