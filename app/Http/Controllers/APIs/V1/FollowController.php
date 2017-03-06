@@ -188,19 +188,9 @@ class FollowController extends Controller
         if (is_array($ids) && $request->user_ids) {
             foreach ($ids as $key => $value) {
                 $return = [];
-                $following = Following::where('user_id', $value)->where('following_user_id', $user_id)->get()->isEmpty();
-                $followed = Followed::where('user_id', $value)->where('followed_user_id', $user_id)->get()->isEmpty();
-
+                $return['follow_status'] = Following::where('user_id', $value)->where('following_user_id', $user_id)->get()->isEmpty() ? 0 : 1;
+                $return['my_follow_status'] = Followed::where('user_id', $value)->where('followed_user_id', $user_id)->get()->isEmpty() ? 0 : 1;
                 $return['user_id'] = $value;
-                if ($following && $followed) {
-                    $return['followstatus'] = 0; // 双方未关注
-                } elseif (!$following && $followed) {
-                    $return['followstatus'] = 1; // 该用户关注当前用户  当前用户未关注该用户
-                } elseif ($following && !$followed) {
-                    $return['followstatus'] = 2; // 该用户未关注当前用户  当前用户关注该用户
-                } elseif (!$following && !$followed) {
-                    $return['followstatus'] = 3; // 双方互相关注
-                }
 
                 $data[] = $return;
             }

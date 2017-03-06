@@ -78,7 +78,7 @@ class UserController extends Controller
             return response()->json([
                 'status'  => false,
                 'message' => '没有相关用户',
-                'code'    => '1019',
+                'code'    => 1019,
                 'data'    => null,
             ])->setStatusCode(404);
         }
