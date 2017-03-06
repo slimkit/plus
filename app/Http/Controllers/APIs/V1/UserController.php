@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\UserProfileSetting;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -81,6 +82,15 @@ class UserController extends Controller
                 'code'    => 1019,
                 'data'    => null,
             ])->setStatusCode(404);
+        }
+
+        foreach ($datas as &$user) {
+            foreach ($user['datas'] as &$profile) {
+                $create_time = new Carbon($profile['pivot']['created_at']);
+                $profile['pivot']['created_at'] = $create_time->timestamp;
+                $update_time = new Carbon($profile['pivot']['updated_at']);
+                $profile['pivot']['updated_at'] = $update_time->timestamp;
+            }
         }
 
         return response()->json([
