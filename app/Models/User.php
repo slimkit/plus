@@ -2,12 +2,12 @@
 
 namespace Zhiyi\Plus\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Zhiyi\Plus\Traits\UserRolePerms;
-use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -236,12 +236,14 @@ class User extends Authenticatable
     public function getCreatedAtAttribute($value)
     {
         $time = new Carbon($value);
-      return $this->attributes['created_at'] = $time->timestamp;
+
+        return $this->attributes['created_at'] = $time->timestamp;
     }
 
     public function getUpdatedAtAttribute($value)
     {
         $time = new Carbon($value);
+
         return $this->attributes['updated_at'] = $time->timestamp;
     }
 }
