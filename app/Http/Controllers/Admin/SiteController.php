@@ -155,7 +155,9 @@ class SiteController extends Controller
      * 删除地区.
      *
      * @param int $id
+     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -164,7 +166,7 @@ class SiteController extends Controller
         $notEmpty = Area::byPid($id)->first();
         if ($notEmpty) {
             return response()->json([
-                'error' => '请先删除该地区下级地区'
+                'error' => '请先删除该地区下级地区',
             ])->setStatusCode(400);
         }
 
