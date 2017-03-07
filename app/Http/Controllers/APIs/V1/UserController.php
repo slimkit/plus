@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\User;
@@ -72,8 +73,9 @@ class UserController extends Controller
     {
         $datas = $users = User::whereIn('id', $request->user_ids)
             ->with('datas', 'counts')
-            ->get();
-        if ($datas->isEmpty()) {
+            ->get()
+            ->toArray();
+        if (!$datas) {
             return response()->json([
                 'status'  => false,
                 'message' => '没有相关用户',
@@ -82,24 +84,11 @@ class UserController extends Controller
             ])->setStatusCode(404);
         }
 
-        $userdatas = $datas->map(function ($userdata) {
-            $userprofile['datas'] = $userdata->datas->map(function ($profile) {
-                $pivot['pivot'] = array_merge($profile->pivot->toArray(), [
-                        'created_at' => $profile->pivot->created_at->timestamp,
-                        'updated_at' => $profile->pivot->updated_at->timestamp,
-                ]);
-
-                return array_merge($profile->toArray(), $pivot);
-            });
-
-            return array_merge($userdata->toArray(), $userprofile);
-        });
-
         return response()->json([
             'status'  => true,
             'code'    => 0,
             'message' => '获取成功',
-            'data'    => $userdatas,
+            'data'    => $datas,
         ])->setStatusCode(201);
     }
 }
