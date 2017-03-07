@@ -18,7 +18,7 @@ class CreateAreas extends Migration
             $table->increments('id');
             $table->string('name')->comment('名字');
             $table->integer('pid')->comment('父级ID');
-            $table->string('extends')->nuable()->default('')->comment('扩展内容');
+            $table->string('extends')->nullable()->default('')->comment('扩展内容');
             $table->timestamps();
 
             $table->index('name');
