@@ -27,6 +27,7 @@ class Area extends Model
      * 父地区.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -36,9 +37,10 @@ class Area extends Model
     }
 
     /**
-     * 子地区
+     * 子地区.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */

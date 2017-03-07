@@ -111,10 +111,12 @@ class SiteController extends Controller
     }
 
     /**
-     * 添加地区
+     * 添加地区.
      *
      * @param Request $request
+     *
      * @return mixed [description]
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -140,7 +142,7 @@ class SiteController extends Controller
         $area->pid = $pid;
         if (!$area->save()) {
             return response()->json([
-                'error' => ['数据库保存失败']
+                'error' => ['数据库保存失败'],
             ])->setStatusCode(500);
         }
 
