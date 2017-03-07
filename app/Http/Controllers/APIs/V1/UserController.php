@@ -73,9 +73,8 @@ class UserController extends Controller
     {
         $datas = $users = User::whereIn('id', $request->user_ids)
             ->with('datas', 'counts')
-            ->get()
-            ->toArray();
-        if (!$datas) {
+            ->get();
+        if ($datas->isEmpty()) {
             return response()->json([
                 'status'  => false,
                 'message' => '没有相关用户',
@@ -84,20 +83,22 @@ class UserController extends Controller
             ])->setStatusCode(404);
         }
 
-        foreach ($datas as &$user) {
-            foreach ($user['datas'] as &$profile) {
-                $create_time = new Carbon($profile['pivot']['created_at']);
-                $profile['pivot']['created_at'] = $create_time->timestamp;
-                $update_time = new Carbon($profile['pivot']['updated_at']);
-                $profile['pivot']['updated_at'] = $update_time->timestamp;
-            }
-        }
+        $userdatas = $datas->map(function ($userdata) {
+            $userprofile['datas'] = $userdata->datas->map(function ($profile) {
+                $pivot['pivot'] = array_merge($profile->pivot->toArray(), [
+                        'created_at' => $profile->pivot->created_at->timestamp,
+                        'updated_at' => $profile->pivot->updated_at->timestamp
+                ]);
+                return array_merge($profile->toArray(), $pivot);
+            });    
+            return array_merge($userdata->toArray(), $userprofile);
+        });
 
         return response()->json([
             'status'  => true,
             'code'    => 0,
             'message' => '获取成功',
-            'data'    => $datas,
+            'data'    => $userdatas,
         ])->setStatusCode(201);
     }
 }
