@@ -4,8 +4,8 @@ namespace Zhiyi\Plus\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use Zhiyi\Plus\Exceptions\MessageResponseBody;
 use Zhiyi\Plus\Models\StorageTask;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\UserProfileSetting;
@@ -62,17 +62,16 @@ class ChangeUserAvatar
 
         return $this->userProfileExiste($user, $task, function () use ($request, $next) {
             $response = $next($request);
-            if ($response instanceof MessageResponseBody) {
-                if (!$response->getBody()['status']) {
-                    DB::rollBack();
 
-                    return $response;
-                }
-
-                DB::commit();
+            if ($response instanceof JsonResponse && $response->getStatusCode() !== 201) {
+                DB::rollBack();
 
                 return $response;
             }
+
+            DB::commit();
+
+            return $response;
         });
     }
 
