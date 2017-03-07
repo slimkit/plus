@@ -3,10 +3,13 @@
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Closure;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\CommonConfig;
+use Zhiyi\Plus\Models\Area;
 
 class SiteController extends Controller
 {
@@ -89,9 +92,21 @@ class SiteController extends Controller
         return $this->dbTransaction($callback);
     }
 
-    public function areaGet(int $id = 0)
+    /**
+     * 获取全部地区.
+     *
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function areas()
     {
-        var_dump($id);
+        $expiresAt = Carbon::now()->addMonth(12);
+        $areas = Cache::remember('areas', $expiresAt, function () {
+            return Area::all();
+        });
+
+        return response()->json($areas ?: [])->setStatusCode(200);
     }
 
     /**

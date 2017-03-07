@@ -4,7 +4,7 @@ $lefyNavWidth: 240px;
 
 .app-container {
   .left-nav {
-    position: absolute;
+    position: fixed;
     width: $lefyNavWidth;
     height: 100%;
     padding-top: 12px;

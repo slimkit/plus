@@ -4,7 +4,7 @@
  * @author Seven Du <shiweidu@outlook.com>
  */
 
-import { SETTINGS_AREA_APPEND, SETTINGS_AREA_CHANGEITEM } from '../types';
+import { SETTINGS_AREA_APPEND, SETTINGS_AREA_CHANGEITEM, SETTINGS_AREA_CHANGE } from '../types';
 import { SETTINGS_AREA } from '../getter-types';
 
 const state = {
@@ -30,6 +30,9 @@ const mutations = {
 
       return _item;
     });
+  },
+  [SETTINGS_AREA_CHANGE] (state, list) {
+    state.list = [...list];
   }
 };
 
@@ -44,6 +47,10 @@ const actions = {
   ),
   [SETTINGS_AREA_CHANGEITEM]: (context, cb) => cb(
     item => context.commit(SETTINGS_AREA_CHANGEITEM, item),
+    context
+  ),
+  [SETTINGS_AREA_CHANGE]: (context, cb) => cb(
+    list => context.commit(SETTINGS_AREA_CHANGE, list),
     context
   )
 };
