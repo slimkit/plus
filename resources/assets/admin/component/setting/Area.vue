@@ -5,13 +5,13 @@
 .loadding {
   text-align: center;
   padding-top: 100px;
+  font-size: 42px;
 }
 .loaddingIcon {
   animation-name: "TurnAround";
   animation-duration: 1.4s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
-  font-size: 42px;
 }
 .breadcrumbNotActvie {
   color: #3097D1;
@@ -30,19 +30,21 @@
     <div v-show="!loadding">
 
       <!-- 路径导航 -->
-      <ol v-if="!tree" class="breadcrumb">
-        <li class="active">全部</li>
-      </ol>
-      <ol v-else class="breadcrumb">
-        <li :class="$style.breadcrumbNotActvie">全部</li>
-        <li v-for="area in tree" :class="area.id === current ? 'active' : $style.breadcrumbNotActvie" >
+      <ol v-if="tree" class="breadcrumb">
+        <li :class="$style.breadcrumbNotActvie" @click.prevent="selectCurrent(0)">全部</li>
+        <li
+          v-for="area in tree"
+          :class="area.id === current ? 'active' : $style.breadcrumbNotActvie"
+          @click.prevent="selectCurrent(area.id)"
+        >
           {{ area.name }}
         </li>
       </ol>
 
       <!-- 位于全部提示 -->
       <div v-show="!current" class="alert alert-success" role="alert">
-        拓展信息赋予单条信息而外的数据，例如国家设置，<strong>中国</strong>的拓展信息设置的<strong>3</strong>,用于在app开发中UI层展示几级选择菜单，所以，只有在业务需求下，设置拓展信息才是有用的。其他情况下留空即可。
+        <p>1. 提交：编辑地区信息的时候，直接修改输入框内容，失去焦点后程序会自动提交</p>
+        <p>2. 拓展信息：拓展信息赋予单条信息而外的数据，例如国家设置，<strong>中国</strong>的拓展信息设置的<strong>3</strong>,用于在app开发中UI层展示几级选择菜单，所以，只有在业务需求下，设置拓展信息才是有用的。其他情况下留空即可。</p>
       </div>
 
       <!-- 列表表格 -->
@@ -66,25 +68,39 @@
                   <input type="text" class="form-control" placeholder="输入拓展信息" :value="area.extends">
                 </div>
               </td>
-              <td></td>
+              <td>
+                <button type="button" class="btn btn-primary btn-sm" @click.prevent="selectCurrent(area.id)">下级管理</button>
+                <button type="button" class="btn btn-danger btn-sm" @click.prevent="alert(1)">删除</button>
+              </td>
             </tr>
             <tr>
               <td>
                 <div class="input-group">
-                  <input type="text" class="form-control" placeholder="输入名称">
+                  <input v-model="add.name" type="text" class="form-control" placeholder="输入名称">
                 </div>
               </td>
               <td>
                 <div class="input-group">
-                  <input type="text" class="form-control" placeholder="输入拓展信息">
+                  <input v-model="add.extends" type="text" class="form-control" placeholder="输入拓展信息">
                 </div>
               </td>
               <td>
-                <button type="button" class="btn btn-primary btn-sm">添加</button>
+                <button v-if="!add.loadding" @click.prevent="addArea" type="button" class="btn btn-primary btn-sm">添加</button>
+                <button v-else class="btn btn-primary btn-sm" disabled="disabled">
+                  <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
+                </button>
               </td>
             </tr>
         </tbody>
       </table>
+
+      <div v-show="add.error" class="alert alert-danger alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>Error:</strong>
+        <p v-for="error in add.error_message">{{ error }}</p>
+      </div>
 
     </div>
   </div>
@@ -93,7 +109,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { SETTINGS_AREA } from '../../store/getter-types';
-import { SETTINGS_AREA_CHANGE } from '../../store/types';
+import { SETTINGS_AREA_CHANGE, SETTINGS_AREA_APPEND } from '../../store/types';
 import request, { createRequestURI } from '../../util/request';
 
 const AreaComponent = {
@@ -106,7 +122,14 @@ const AreaComponent = {
    */
   data: () => ({
     current: 0,
-    loadding: true
+    loadding: true,
+    add: {
+      name: '',
+      extends: '',
+      loadding: false,
+      error: false,
+      error_message: {}
+    }
   }),
   /**
    * 定义需要初始化时候计算的数据对象.
@@ -162,6 +185,14 @@ const AreaComponent = {
    * @type {Object}
    */
   methods: {
+    /**
+     * 获取路径导航树.
+     *
+     * @param {Number} pid
+     * @return {Array}
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
     getTrees (pid) {
       let trees = [];
       this.areas.forEach(area => {
@@ -174,6 +205,62 @@ const AreaComponent = {
       });
 
       return trees;
+    },
+    /**
+     * 设置选中id.
+     *
+     * @param {Number} id
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    selectCurrent (id) {
+      if (this.add.loadding) {
+        alert('正在添加新地区，请等待！！！');
+        return;
+      }
+
+      this.current = id;
+      this.add = {
+        name: '',
+        extends: '',
+        loadding: false
+      };
+      // 用于回到顶部
+      document.documentElement.scrollTop = document.body.scrollTop = 0;
+    },
+    /**
+     * 添加新地区.
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    addArea () {
+      this.add.loadding = true;
+      this.add.error = false;
+
+      const data = {
+        name: this.add.name,
+        extends: this.add.extends,
+        pid: this.current
+      };
+
+      this.$store.dispatch(SETTINGS_AREA_APPEND, cb => request.post(
+        createRequestURI('site/areas'),
+        data,
+        { validateStatus: status => status === 201 }
+      ).then(({ data }) => {
+        this.add = {
+          name: '',
+          extends: '',
+          loadding: false
+        };
+        cb(data);
+      }).catch(({ response: { data = {} } = {} }) => {
+        const { error = ['添加失败!!!'] } = data;
+        this.add.loadding = false;
+        this.add.error = true;
+        this.add.error_message = error;
+      }));
     }
   },
   /**
