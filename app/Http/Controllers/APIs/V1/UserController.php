@@ -2,7 +2,6 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\User;
@@ -87,10 +86,12 @@ class UserController extends Controller
             $userprofile['datas'] = $userdata->datas->map(function ($profile) {
                 $pivot['pivot'] = array_merge($profile->pivot->toArray(), [
                         'created_at' => $profile->pivot->created_at->timestamp,
-                        'updated_at' => $profile->pivot->updated_at->timestamp
+                        'updated_at' => $profile->pivot->updated_at->timestamp,
                 ]);
+
                 return array_merge($profile->toArray(), $pivot);
-            });    
+            });
+
             return array_merge($userdata->toArray(), $userprofile);
         });
 
