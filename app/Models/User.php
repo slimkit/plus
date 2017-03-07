@@ -2,7 +2,6 @@
 
 namespace Zhiyi\Plus\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -231,19 +230,5 @@ class User extends Authenticatable
     public function followeds()
     {
         return $this->hasMany(Followed::class, 'user_id');
-    }
-
-    public function getCreatedAtAttribute($value)
-    {
-        $time = new Carbon($value);
-
-        return $this->attributes['created_at'] = $time->timestamp;
-    }
-
-    public function getUpdatedAtAttribute($value)
-    {
-        $time = new Carbon($value);
-
-        return $this->attributes['updated_at'] = $time->timestamp;
     }
 }

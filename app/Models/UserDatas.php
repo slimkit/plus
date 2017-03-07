@@ -2,7 +2,6 @@
 
 namespace Zhiyi\Plus\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -44,19 +43,5 @@ class UserDatas extends Model
     public function scopeByKey(Builder $query, $key): Builder
     {
         return $query->where('key', $key);
-    }
-
-    public function getCreatedAtAttribute($value)
-    {
-        $time = new Carbon($value);
-
-        return $this->attributes['created_at'] = $time->timestamp;
-    }
-
-    public function getUpdatedAtAttribute($value)
-    {
-        $time = new Carbon($value);
-
-        return $this->attributes['updated_at'] = $time->timestamp;
     }
 }
