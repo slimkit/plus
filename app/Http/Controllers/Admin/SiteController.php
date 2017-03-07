@@ -111,6 +111,45 @@ class SiteController extends Controller
     }
 
     /**
+     * 添加地区
+     *
+     * @param Request $request
+     * @return mixed [description]
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function doAddArea(Request $request)
+    {
+        $name = $request->input('name');
+        $extends = $request->input('extends', '');
+        $pid = $request->input('pid', 0);
+
+        if (!$name) {
+            return response()->json([
+                'error' => ['name' => '名称不能为空'],
+            ])->setStatusCode(400);
+        } elseif ($pid && !Area::find($pid)) {
+            return response()->json([
+                'error' => ['pid' => '父地区不存在'],
+            ])->setStatusCode(404);
+        }
+
+        $area = new Area();
+        $area->name = $name;
+        $area->extends = $extends;
+        $area->pid = $pid;
+        if (!$area->save()) {
+            return response()->json([
+                'error' => ['数据库保存失败']
+            ])->setStatusCode(500);
+        }
+
+        Cache::forget('areas');
+
+        return response()->json($area)->setStatusCode(201);
+    }
+
+    /**
      * instance a new model.
      *
      * @return Zhiyi\Plus\Models\CommonConfig::newQuery

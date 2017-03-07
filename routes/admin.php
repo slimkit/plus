@@ -17,6 +17,8 @@ Route::patch('/site/baseinfo', 'SiteController@updateSiteInfo')
 
 // area
 Route::get('/site/areas', 'SiteController@areas');
+Route::post('/site/areas', 'SiteController@doAddArea')
+->middleware('auth:web');
 
 // Add the route, SPA used mode "history"
 // But, RESTful the route?
