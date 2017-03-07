@@ -152,6 +152,29 @@ class SiteController extends Controller
     }
 
     /**
+     * 删除地区.
+     *
+     * @param int $id
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function deleteArea(int $id)
+    {
+        $notEmpty = Area::byPid($id)->first();
+        if ($notEmpty) {
+            return response()->json([
+                'error' => '请先删除该地区下级地区'
+            ])->setStatusCode(400);
+        }
+
+        Area::where('id', $id)->delete();
+        Cache::forget('areas');
+
+        return response('', 204);
+    }
+
+    /**
      * instance a new model.
      *
      * @return Zhiyi\Plus\Models\CommonConfig::newQuery

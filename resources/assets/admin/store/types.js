@@ -21,3 +21,4 @@ export const SETTINGS_SITE_UPDATE = 'settings/site/UPDATE';
 export const SETTINGS_AREA_APPEND = 'settings/area/APPEND';
 export const SETTINGS_AREA_CHANGEITEM = 'settings/area/CHANGE-ITEM';
 export const SETTINGS_AREA_CHANGE = 'settings/area/CHANGE';
+export const SETTINGS_AREA_DELETE = 'settings/area/DELETE';

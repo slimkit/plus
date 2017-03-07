@@ -5,20 +5,22 @@
 // admin router.
 
 Route::get('/', 'HomeController@index')
-->name('admin');
+    ->name('admin');
 
 Route::post('/login', 'HomeController@login');
 Route::any('/logout', 'HomeController@logout');
 
 Route::get('/site/baseinfo', 'SiteController@get')
-->middleware('auth:web');
+    ->middleware('auth:web');
 Route::patch('/site/baseinfo', 'SiteController@updateSiteInfo')
-->middleware('auth:web');
+    ->middleware('auth:web');
 
 // area
 Route::get('/site/areas', 'SiteController@areas');
 Route::post('/site/areas', 'SiteController@doAddArea')
-->middleware('auth:web');
+    ->middleware('auth:web');
+Route::delete('/site/areas/{id}', 'SiteController@deleteArea')
+    ->middleware('auth:web');
 
 // Add the route, SPA used mode "history"
 // But, RESTful the route?

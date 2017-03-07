@@ -70,7 +70,7 @@
               </td>
               <td>
                 <button type="button" class="btn btn-primary btn-sm" @click.prevent="selectCurrent(area.id)">下级管理</button>
-                <button type="button" class="btn btn-danger btn-sm" @click.prevent="alert(1)">删除</button>
+                <button type="button" class="btn btn-danger btn-sm" @click.prevent="deleteArea(area.id)">删除</button>
               </td>
             </tr>
             <tr>
@@ -95,7 +95,7 @@
       </table>
 
       <div v-show="add.error" class="alert alert-danger alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <button type="button" class="close" @click.prevent="dismisAddAreaError">
           <span aria-hidden="true">&times;</span>
         </button>
         <strong>Error:</strong>
@@ -109,7 +109,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { SETTINGS_AREA } from '../../store/getter-types';
-import { SETTINGS_AREA_CHANGE, SETTINGS_AREA_APPEND } from '../../store/types';
+import { SETTINGS_AREA_CHANGE, SETTINGS_AREA_APPEND, SETTINGS_AREA_DELETE } from '../../store/types';
 import request, { createRequestURI } from '../../util/request';
 
 const AreaComponent = {
@@ -261,6 +261,33 @@ const AreaComponent = {
         this.add.error = true;
         this.add.error_message = error;
       }));
+    },
+    /**
+     * 关闭添加错误消息.
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    dismisAddAreaError () {
+      this.add.error = false;
+    },
+    /**
+     * 删除地区.
+     *
+     * @param {Number} id
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    deleteArea (id) {
+      if (window.confirm('确认删除?')) {
+        this.$store.dispatch(SETTINGS_AREA_DELETE, cb => request.delete(
+          createRequestURI(`site/areas/${id}`),
+          { validateStatus: status => status === 204 }
+        ).then(() => cb(id)).catch(({ response: { data = {} } = {} }) => {
+          const { error = '删除失败' } = data;
+          window.alert(error);
+        }));
+      }
     }
   },
   /**
