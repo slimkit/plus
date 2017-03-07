@@ -2,14 +2,14 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
-use Closure;
 use Carbon\Carbon;
+use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\Area;
+use Zhiyi\Plus\Models\CommonConfig;
 
 class SiteController extends Controller
 {
@@ -96,6 +96,7 @@ class SiteController extends Controller
      * 获取全部地区.
      *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */

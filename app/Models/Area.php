@@ -11,8 +11,10 @@ class Area extends Model
      * Scope func by pid.
      *
      * @param Builder $query
-     * @param int $pid
+     * @param int     $pid
+     *
      * @return Illuminate\Database\Eloquent\Builder
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
