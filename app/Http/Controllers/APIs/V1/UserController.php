@@ -2,7 +2,6 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\User;
