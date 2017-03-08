@@ -50,7 +50,7 @@
       <span class="glyphicon glyphicon-user __icon"></span>
       用户
     </router-link>
-    <router-link v-for="({ name, icon }, component) in menus" :to="`/component/${component}`" class="list-group-item __button">
+    <router-link class="list-group-item __button" v-for="({ name, icon }, component) in menus" :key="component" :to="`/component/${component}`">
       <img class="__icon-img" :src="icon">
       {{ name }}
     </router-link>

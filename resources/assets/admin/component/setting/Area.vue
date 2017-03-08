@@ -111,6 +111,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import lodash from 'lodash';
 import { SETTINGS_AREA } from '../../store/getter-types';
 import { SETTINGS_AREA_CHANGE, SETTINGS_AREA_APPEND, SETTINGS_AREA_DELETE, SETTINGS_AREA_CHANGEITEM } from '../../store/types';
 import request, { createRequestURI } from '../../util/request';
@@ -333,7 +334,7 @@ const AreaComponent = {
         });
       }).catch(({ response: { data = {} } = {} }) => {
         const { error = ['更新失败'] } = data;
-        const errorMessage = Object.values(error).pop();
+        const errorMessage = lodash.values(error).pop();
         window.alert(errorMessage);
       }));
     }
