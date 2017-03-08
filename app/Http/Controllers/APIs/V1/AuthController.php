@@ -201,8 +201,7 @@ class AuthController extends Controller
     public function forgotPassword(Request $request)
     {
         $password = $request->input('password', '');
-
-        $user = $request->user();
+        $user = $request->attributes->get('user');
         $user->createPassword($password);
         $user->save();
 

@@ -29,6 +29,7 @@ class CheckUserByPhoneExisted
                 'code' => 1005,
             ]))->setStatusCode(404);
         }
+        $request->attributes->set('user', $user);
 
         return $next($request);
     }
