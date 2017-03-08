@@ -70,10 +70,10 @@
               </td>
               <td>
                 <button type="button" class="btn btn-primary btn-sm" @click.prevent="selectCurrent(area.id)">下级管理</button>
-                <button v-if="deleteId === area.id" type="button" class="btn btn-danger btn-sm" disabled="disabled">
+                <button v-if="deleteIds.hasOwnProperty(area.id)" type="button" class="btn btn-danger btn-sm" disabled="disabled">
                   <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
                 </button>
-                <button v-if-else type="button" class="btn btn-danger btn-sm" @click.prevent="deleteArea(area.id)">删除</button>
+                <button v-else type="button" class="btn btn-danger btn-sm" @click.prevent="deleteArea(area.id)">删除</button>
               </td>
             </tr>
             <tr>
@@ -133,7 +133,7 @@ const AreaComponent = {
       error: false,
       error_message: {}
     },
-    deleteId: 0
+    deleteIds: {}
   }),
   /**
    * 定义需要初始化时候计算的数据对象.
@@ -284,15 +284,32 @@ const AreaComponent = {
      */
     deleteArea (id) {
       if (window.confirm('确认删除?')) {
-        this.deleteId = id;
+        this.deleteIds = {
+          ...this.deleteIds,
+          [id]: id
+        };
+
+        const deleteId = (id) => {
+          let ids = {};
+          for (let _id in this.deleteIds) {
+            if (_id !== id) {
+              ids = {
+                ...ids,
+                [_id]: _id
+              };
+            }
+          }
+          this.deleteIds = ids;
+        };
+
         this.$store.dispatch(SETTINGS_AREA_DELETE, cb => request.delete(
           createRequestURI(`site/areas/${id}`),
           { validateStatus: status => status === 204 }
         ).then(() => {
           cb(id);
-          this.deleteId = 0;
+          deleteId(id);
         }).catch(({ response: { data = {} } = {} }) => {
-          this.deleteId = 0;
+          deleteId(id);
           const { error = '删除失败' } = data;
           window.alert(error);
         }));
