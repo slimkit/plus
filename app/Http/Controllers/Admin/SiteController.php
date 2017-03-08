@@ -180,8 +180,10 @@ class SiteController extends Controller
      * 更新地区数据.
      *
      * @param Request $request
-     * @param Area $area
+     * @param Area    $area
+     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
@@ -189,28 +191,28 @@ class SiteController extends Controller
     {
         $key = $request->input('key');
         $value = $request->input('value', '');
-        
+
         if (!in_array($key, ['name', 'extends'])) {
             return response()->json([
                 'error' => ['请求不合法'],
             ])->setStatusCode(422);
         } elseif ($key == 'name' && !$value) {
             return response()->json([
-                'error' => ['name' => '地区名称不能为空']
+                'error' => ['name' => '地区名称不能为空'],
             ])->setStatusCode(422);
         }
 
         $area->$key = $value;
         if (!$area->save()) {
             return response()->json([
-                'error' => ['数据更新失败']
+                'error' => ['数据更新失败'],
             ])->setStatusCode(500);
         }
 
         Cache::forget('areas');
 
         return response()->json([
-            'message' => [$key => '更新成功']
+            'message' => [$key => '更新成功'],
         ])->setStatusCode(201);
     }
 
