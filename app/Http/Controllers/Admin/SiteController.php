@@ -129,11 +129,11 @@ class SiteController extends Controller
         if (!$name) {
             return response()->json([
                 'error' => ['name' => '名称不能为空'],
-            ])->setStatusCode(400);
+            ])->setStatusCode(422);
         } elseif ($pid && !Area::find($pid)) {
             return response()->json([
                 'error' => ['pid' => '父地区不存在'],
-            ])->setStatusCode(404);
+            ])->setStatusCode(422);
         }
 
         $area = new Area();
@@ -167,13 +167,51 @@ class SiteController extends Controller
         if ($notEmpty) {
             return response()->json([
                 'error' => '请先删除该地区下级地区',
-            ])->setStatusCode(400);
+            ])->setStatusCode(422);
         }
 
         Area::where('id', $id)->delete();
         Cache::forget('areas');
 
         return response('', 204);
+    }
+
+    /**
+     * 更新地区数据.
+     *
+     * @param Request $request
+     * @param Area $area
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function patchArea(Request $request, Area $area)
+    {
+        $key = $request->input('key');
+        $value = $request->input('value', '');
+        
+        if (!in_array($key, ['name', 'extends'])) {
+            return response()->json([
+                'error' => ['请求不合法'],
+            ])->setStatusCode(422);
+        } elseif ($key == 'name' && !$value) {
+            return response()->json([
+                'error' => ['name' => '地区名称不能为空']
+            ])->setStatusCode(422);
+        }
+
+        $area->$key = $value;
+        if (!$area->save()) {
+            return response()->json([
+                'error' => ['数据更新失败']
+            ])->setStatusCode(500);
+        }
+
+        Cache::forget('areas');
+
+        return response()->json([
+            'message' => [$key => '更新成功']
+        ])->setStatusCode(201);
     }
 
     /**

@@ -60,12 +60,12 @@
             <tr v-for="area in list">
               <td>
                 <div class="input-group">
-                  <input type="text" class="form-control" placeholder="输入名称" :value="area.name">
+                  <input @change.lazy="patchArea(area.id, 'name', $event.target.value)" type="text" class="form-control" placeholder="输入名称" :value="area.name">
                 </div>
               </td>
               <td>
                 <div class="input-group">
-                  <input type="text" class="form-control" placeholder="输入拓展信息" :value="area.extends">
+                  <input @change.lazy="patchArea(area.id, 'extends', $event.target.value)" type="text" class="form-control" placeholder="输入拓展信息" :value="area.extends">
                 </div>
               </td>
               <td>
@@ -112,7 +112,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { SETTINGS_AREA } from '../../store/getter-types';
-import { SETTINGS_AREA_CHANGE, SETTINGS_AREA_APPEND, SETTINGS_AREA_DELETE } from '../../store/types';
+import { SETTINGS_AREA_CHANGE, SETTINGS_AREA_APPEND, SETTINGS_AREA_DELETE, SETTINGS_AREA_CHANGEITEM } from '../../store/types';
 import request, { createRequestURI } from '../../util/request';
 
 const AreaComponent = {
@@ -314,6 +314,28 @@ const AreaComponent = {
           window.alert(error);
         }));
       }
+    },
+    /**
+     * 更新地区数据
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    patchArea (id, key, value) {
+      this.$store.dispatch(SETTINGS_AREA_CHANGEITEM, cb => request.patch(
+        createRequestURI(`site/areas/${id}`),
+        { key, value },
+        { validateStatus: status => status === 201 }
+      ).then(() => {
+        cb({
+          id,
+          [key]: value
+        });
+      }).catch(({ response: { data = {} } = {} }) => {
+        const { error = ['更新失败'] } = data;
+        const errorMessage = Object.values(error).pop();
+        window.alert(errorMessage);
+      }));
     }
   },
   /**

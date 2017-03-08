@@ -19,7 +19,7 @@ const mutations = {
     ];
   },
   [SETTINGS_AREA_CHANGEITEM] (state, item) {
-    const list = state;
+    const list = state.list;
     state.list = list.map((_item) => {
       if (_item.id === item.id) {
         return {

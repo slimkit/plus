@@ -21,6 +21,8 @@ Route::post('/site/areas', 'SiteController@doAddArea')
     ->middleware('auth:web');
 Route::delete('/site/areas/{id}', 'SiteController@deleteArea')
     ->middleware('auth:web');
+Route::patch('/site/areas/{area}', 'SiteController@patchArea')
+    ->middleware('auth:web');
 
 // Add the route, SPA used mode "history"
 // But, RESTful the route?
