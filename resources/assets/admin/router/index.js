@@ -4,11 +4,11 @@ import { requireAuth, loggedAuth } from '../util/auth';
 
 // routes.
 import settingRouter from './setting';
+import userRouter from './user';
 
 // components.
 import Login from '../component/Login';
 import Home from '../component/Home';
-import User from '../component/User';
 import Component from '../component/Component';
 
 Vue.use(VueRouter);
@@ -26,7 +26,7 @@ const router = new VueRouter({
         { path: '', redirect: '/setting/base' },
         // Setting router.
         settingRouter,
-        { path: 'users', component: User },
+        userRouter,
         { path: 'component/:component(.*)', component: Component }
       ]
     },

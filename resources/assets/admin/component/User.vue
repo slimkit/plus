@@ -1,3 +1,22 @@
+<style lang="css" module>
+.nav {
+  padding: 12px 12px 0;
+}
+</style>
+
 <template>
-  <div>User</div>
+  <div>
+    <ul class="nav nav-tabs" :class="$style.nav">
+      <router-link to="/users/manage" tag="li" active-class="active">
+        <a href="#">用户管理</a>
+      </router-link>
+      <router-link to="/users/role" tag="li" active-class="active">
+        <a href="#">角色管理</a>
+      </router-link>
+      <router-link to="/users/permission" tag="li" active-class="active">
+        <a href="#">权限管理</a>
+      </router-link>
+    </ul>
+    <router-view />
+  </div>
 </template>
