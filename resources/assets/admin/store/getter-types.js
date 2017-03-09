@@ -22,3 +22,6 @@ export const SETTINGS_SITE = 'settings/site';
 
 // The conts is defined [setting/area]
 export const SETTINGS_AREA = 'settings/area';
+
+// Users.
+export const USERS = 'user/GET-LIST';
