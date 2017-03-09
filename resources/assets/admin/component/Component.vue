@@ -1,5 +1,5 @@
-<style>
-.app-iframe {
+<style lang="css" module>
+.appIframe {
   position: absolute;
   top: 0;
   height: 100%;
@@ -10,7 +10,7 @@
 </style>
 
 <template>
-  <iframe class="app-iframe" :src="uri"></iframe>
+  <iframe :class="$style.appIframe" :src="uri"></iframe>
 </template>
 
 <script>
