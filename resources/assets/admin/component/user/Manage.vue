@@ -61,13 +61,13 @@
         <label for="search-input-name" class="col-sm-2 control-label">角色</label>
         <div class="col-sm-10">
           <select v-model="role" class="form-control" id="search-input-name">
-            <option value="">全部</option>
+            <option value="0">全部</option>
           </select>
         </div>
       </div>
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-          <router-link class="btn btn-default" tag="button" :to="{ path: '/users/manage', query: queryParams }">
+          <router-link class="btn btn-default" tag="button" :to="{ path: '/users/manage', query: searchQuery }">
             搜索
           </router-link>
         </div>
@@ -86,8 +86,18 @@
           <th>操作</th>
         </tr>
       </thead>
+      <tbody>
+        <tr v-for="user in users" :key="user.id">
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.phone }}</td>
+          <td>{{ user.created_at }}</td>
+          <td></td>
+        </tr>
+      </tbody>
     </table>
-    <ul class="pager" v-show="page < lastPage || true">
+    <ul class="pager" v-show="page < lastPage">
       <li class="previous" :class="page <= 1 ? 'disabled' : ''">
         <router-link :to="{ path: '/users/manage', query: prevQuery }">
           <span aria-hidden="true">&larr;</span>
@@ -120,11 +130,11 @@ const ManageComponent = {
     sort: 'up',
     email: '',
     name: '',
-    role: '',
+    role: 0,
     phone: '',
     lastPage: 1,
     page: 1,
-    perPage: 2,
+    perPage: 20,
     total: 0,
     users: []
   }),
@@ -149,6 +159,12 @@ const ManageComponent = {
         lastPage: lastPage,
         page: page < lastPage ? page + 1 : lastPage
       };
+    },
+    searchQuery () {
+      return {
+        ...this.queryParams,
+        page: 1
+      };
     }
   },
   watch: {
@@ -161,7 +177,7 @@ const ManageComponent = {
         sort = 'up',
         userId = '',
         lastPage = 1,
-        perPage = 2,
+        perPage = 20,
         page = 1
       } = to.query;
 
@@ -229,7 +245,7 @@ const ManageComponent = {
       sort = 'up',
       userId = '',
       lastPage = 1,
-      perPage = 2,
+      perPage = 20,
       page = 1
     } = this.$route.query;
     // set state.
