@@ -24,13 +24,13 @@ class UserProfileSettingsTableSeeder extends Seeder
             ['create_user_id' => '1', 'profile' => 'name', 'profile_name' => '昵称', 'type' => 'input', 'required' => '1', 'is_delable' => '0', 'state' => '1', 'is_show' => '1'],
             [
                 'create_user_id' => '1',
-                'profile' => 'cover',
-                'profile_name' => '个人主页背景图',
-                'type' => 'input',
-                'required' => '1',
-                'is_delable' => '0',
-                'state' => '1',
-                'is_show' => '1'
+                'profile'        => 'cover',
+                'profile_name'   => '个人主页背景图',
+                'type'           => 'input',
+                'required'       => '1',
+                'is_delable'     => '0',
+                'state'          => '1',
+                'is_show'        => '1',
             ],
             // 用户头像
             [
