@@ -18,7 +18,7 @@
     <div class="form-horizontal">
       <div class="form-group">
         <label for="search-input-id" class="col-sm-2 control-label">用户ID</label>
-        <div class="col-sm-10">
+        <div class="col-sm-8">
           <div class="input-group">
             <div class="input-group-btn">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -41,25 +41,25 @@
       </div>
       <div class="form-group">
         <label for="search-input-email" class="col-sm-2 control-label">邮箱</label>
-        <div class="col-sm-10">
+        <div class="col-sm-8">
           <input v-model="email" type="text" class="form-control" id="search-input-email" placeholder="请输入搜索邮箱地址，支持模糊搜索">
         </div>
       </div>
       <div class="form-group">
         <label for="search-input-phone" class="col-sm-2 control-label">手机号码</label>
-        <div class="col-sm-10">
+        <div class="col-sm-8">
           <input v-model="phone" type="tel" class="form-control" id="search-input-phone" placeholder="请输入搜索手机号码，支持模糊搜索">
         </div>
       </div>
       <div class="form-group">
         <label for="search-input-name" class="col-sm-2 control-label">用户名</label>
-        <div class="col-sm-10">
+        <div class="col-sm-8">
           <input v-model="name" type="text" class="form-control" id="search-input-name" placeholder="请输入搜索用户名，支持模糊搜索">
         </div>
       </div>
       <div class="form-group">
         <label for="search-input-name" class="col-sm-2 control-label">角色</label>
-        <div class="col-sm-10">
+        <div class="col-sm-8">
           <select v-model="role" class="form-control" id="search-input-name">
             <option value="0">全部</option>
           </select>
