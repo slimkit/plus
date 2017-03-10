@@ -11,18 +11,18 @@ class UserController extends Controller
     public function users(Request $request)
     {
         $sort = $request->query('sort');
-        $userId = $request->query('user_id');
+        $userId = $request->query('userId');
         $email = $request->query('email');
         $name = $request->query('name');
         $phone = $request->query('phone');
         $role = $request->query('role');
-        $per_page = $request->query('per_page', 10);
+        $perPage = $request->query('perPage', 10);
 
         $builder = with(new User())->newQuery();
 
         // user id
-        if ($userId && $user = $builder->where('id', $userId)->paginate($per_page)) {
-            return response()->json($user);
+        if ($userId && $users = $builder->where('id', $userId)->paginate($perPage)) {
+            return response()->json($users);
         }
 
         foreach ([
@@ -43,17 +43,17 @@ class UserController extends Controller
             ],
         ] as $key => $data) {
             if ($data['condition']) {
-                $builder = $builder->where($key, $data['operator'], $data['value']);
+                $builder->where($key, $data['operator'], $data['value']);
             }
         }
 
         // build sort.
-        $builder = $builder->orderBy('id', ($sort === 'down' ? 'desc' : 'asc'));
+        $builder->orderBy('id', ($sort === 'down' ? 'desc' : 'asc'));
 
-        $role && $builder = $builder->whereHas('roles', function ($query) use ($role) {
+        $role && $builder->whereHas('roles', function ($query) use ($role) {
             $query->where('id', $role);
         });
 
-        return response()->json($builder->paginate($per_page));
+        return response()->json($builder->paginate($perPage));
     }
 }

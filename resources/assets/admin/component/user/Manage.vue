@@ -15,14 +15,14 @@
     </div>
 
     <!-- 搜索用户 -->
-    <form class="form-horizontal" @submit.prevent="getUsers">
+    <div class="form-horizontal">
       <div class="form-group">
         <label for="search-input-id" class="col-sm-2 control-label">用户ID</label>
         <div class="col-sm-10">
           <div class="input-group">
             <div class="input-group-btn">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                排序 <span class="glyphicon" :class="(search.sort === 'up' ? 'glyphicon-triangle-top' : 'glyphicon-triangle-bottom')"></span>
+                排序 <span class="glyphicon" :class="(sort === 'up' ? 'glyphicon-triangle-top' : 'glyphicon-triangle-bottom')"></span>
               </button>
               <ul class="dropdown-menu">
                 <li><a href="#" @click.prevent="changeUserIdSort('up')">
@@ -35,42 +35,44 @@
                 </a></li>
               </ul>
             </div>
-            <input v-model="search.user_id" type="number" class="form-control" id="search-input-id" placeholder="按照用户ID搜索">
+            <input v-model="userId" type="number" class="form-control" id="search-input-id" placeholder="按照用户ID搜索">
           </div>
         </div>
       </div>
       <div class="form-group">
         <label for="search-input-email" class="col-sm-2 control-label">邮箱</label>
         <div class="col-sm-10">
-          <input v-model="search.email" type="text" class="form-control" id="search-input-email" placeholder="请输入搜索邮箱地址，支持模糊搜索">
+          <input v-model="email" type="text" class="form-control" id="search-input-email" placeholder="请输入搜索邮箱地址，支持模糊搜索">
         </div>
       </div>
       <div class="form-group">
         <label for="search-input-phone" class="col-sm-2 control-label">手机号码</label>
         <div class="col-sm-10">
-          <input v-model="search.phone" type="tel" class="form-control" id="search-input-phone" placeholder="请输入搜索手机号码，支持模糊搜索">
+          <input v-model="phone" type="tel" class="form-control" id="search-input-phone" placeholder="请输入搜索手机号码，支持模糊搜索">
         </div>
       </div>
       <div class="form-group">
         <label for="search-input-name" class="col-sm-2 control-label">用户名</label>
         <div class="col-sm-10">
-          <input v-model="search.name" type="text" class="form-control" id="search-input-name" placeholder="请输入搜索用户名，支持模糊搜索">
+          <input v-model="name" type="text" class="form-control" id="search-input-name" placeholder="请输入搜索用户名，支持模糊搜索">
         </div>
       </div>
       <div class="form-group">
         <label for="search-input-name" class="col-sm-2 control-label">角色</label>
         <div class="col-sm-10">
-          <select v-model="search.role" class="form-control" id="search-input-name">
+          <select v-model="role" class="form-control" id="search-input-name">
             <option value="">全部</option>
           </select>
         </div>
       </div>
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-          <button type="submit" class="btn btn-default">搜索</button>
+          <router-link class="btn btn-default" tag="button" :to="{ path: '/users/manage', query: queryParams }">
+            搜索
+          </router-link>
         </div>
       </div>
-    </form>
+    </div>
 
     <!-- 用户列表 -->
     <table class="table table-striped">
@@ -85,6 +87,20 @@
         </tr>
       </thead>
     </table>
+    <ul class="pager" v-show="page < lastPage || true">
+      <li class="previous" :class="page <= 1 ? 'disabled' : ''">
+        <router-link :to="{ path: '/users/manage', query: prevQuery }">
+          <span aria-hidden="true">&larr;</span>
+          上一页
+        </router-link>
+      </li>
+      <li class="next" :class="page >= lastPage ? 'disabled': ''">
+        <router-link :to="{ path: '/users/manage', query: nextQuery }">
+          下一页
+          <span aria-hidden="true">&rarr;</span>
+        </router-link>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -100,19 +116,68 @@ const ManageComponent = {
    * @homepage http://medz.cn
    */
   data: () => ({
-    search: {
-      user_id: '',
-      sort: 'up',
-      email: '',
-      name: '',
-      role: '',
-      phone: '',
-      total: 0,
-      current_page: 1,
-      per_page: 20
-      users: []
-    }
+    userId: '',
+    sort: 'up',
+    email: '',
+    name: '',
+    role: '',
+    phone: '',
+    lastPage: 1,
+    page: 1,
+    perPage: 2,
+    total: 0,
+    users: []
   }),
+  computed: {
+    queryParams () {
+      const { userId, sort, email, name, phone, role, perPage, page } = this;
+      return { userId, sort, email, name, phone, role, perPage, page };
+    },
+    prevQuery () {
+      const page = parseInt(this.page);
+      return {
+        ...this.queryParams,
+        lastPage: this.lastPage,
+        page: page > 1 ? page - 1 : page
+      };
+    },
+    nextQuery () {
+      const page = parseInt(this.page);
+      const lastPage = parseInt(this.lastPage);
+      return {
+        ...this.queryParams,
+        lastPage: lastPage,
+        page: page < lastPage ? page + 1 : lastPage
+      };
+    }
+  },
+  watch: {
+    '$route' (to) {
+      const {
+        email = '',
+        name = '',
+        phone = '',
+        role = 0,
+        sort = 'up',
+        userId = '',
+        lastPage = 1,
+        perPage = 2,
+        page = 1
+      } = to.query;
+
+      this.email = email;
+      this.name = name;
+      this.phone = phone;
+      this.role = role;
+      this.sort = sort;
+      this.userId = userId;
+      this.lastPage = parseInt(lastPage);
+      this.perPage = parseInt(perPage);
+      this.page = parseInt(page);
+
+      this.getUsers();
+    }
+  },
   /**
    * 定义方法组.
    *
@@ -127,7 +192,7 @@ const ManageComponent = {
      * @homepage http://medz.cn
      */
     changeUserIdSort (sort) {
-      this.search.sort = sort;
+      this.sort = sort;
     },
     /**
      * 获取列表用户.
@@ -136,14 +201,17 @@ const ManageComponent = {
      * @homepage http://medz.cn
      */
     getUsers () {
-      const { user_id, sort, email, name, phone, role } = this.search;
       request.get(
         createRequestURI('users'),
         {
-          params: { user_id, sort, email, name, phone, role },
-          validateStatus: status => status === 201
+          params: this.queryParams,
+          validateStatus: status => status === 200
         }
-      ).then(({ data }) => console.log(data)).catch(({ response }) => console.log(response));
+      ).then(({ data }) => {
+        this.users = data.data || [];
+        this.lastPage = parseInt(data.last_page);
+        this.total = parseInt(data.total);
+      }).catch(({ response }) => console.log(response));
     }
   },
   /**
@@ -153,6 +221,28 @@ const ManageComponent = {
    * @homepage http://medz.cn
    */
   created () {
+    const {
+      email = '',
+      name = '',
+      phone = '',
+      role = 0,
+      sort = 'up',
+      userId = '',
+      lastPage = 1,
+      perPage = 2,
+      page = 1
+    } = this.$route.query;
+    // set state.
+    this.email = email;
+    this.name = name;
+    this.phone = phone;
+    this.role = role;
+    this.sort = sort;
+    this.userId = userId;
+    this.lastPage = parseInt(lastPage);
+    this.perPage = parseInt(perPage);
+    this.page = parseInt(page);
+
     this.getUsers();
   }
 };
