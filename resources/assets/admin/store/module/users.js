@@ -4,11 +4,16 @@
  * @author Seven Du <shiweidu@outlook.com>
  */
 
-import { USER_UPDATE, USER_DELETE } from '../types';
+import { USER_UPDATE, USER_DELETE, USERS_CHANGE } from '../types';
 import { USERS } from '../getter-types';
 
 const state = {
-  users: []
+  users: [],
+  userId: '',
+  sort: 'up',
+  email: '',
+  name: '',
+  role: ''
 };
 
 const mutations = {
@@ -45,14 +50,25 @@ const mutations = {
    *
    * @author Seven Du <shiweidu@outlook.com>
    */
-  [USER_DELETE] (state, user_id) {
+  [USER_DELETE] (state, userId) {
     let users = [];
     state.users.forEach(user => {
-      if (user.id !== user_id) {
+      if (user.id !== userId) {
         users.push(user);
       }
     });
 
+    state.users = users;
+  },
+  /**
+   * 改变用户列表
+   *
+   * @param {Object} state
+   * @param {Array} users
+   *
+   * @author Seven Du <shiweidu@outlook.com>
+   */
+  [USERS_CHANGE] (state, users) {
     state.users = users;
   }
 };
@@ -79,7 +95,7 @@ const actions = {
    * @homepage http://medz.cn
    */
   [USER_DELETE]: (context, cb) => cb(
-    user_id => context.commit(USER_DELETE, user_id),
+    userId => context.commit(USER_DELETE, userId),
     context
   )
 };
