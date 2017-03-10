@@ -2,6 +2,16 @@
 .container {
   padding-top: 15px;
 }
+.loadding {
+  text-align: center;
+  font-size: 42px;
+}
+.loaddingIcon {
+  animation-name: "TurnAround";
+  animation-duration: 1.4s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
 </style>
 
 <template>
@@ -87,6 +97,12 @@
         </tr>
       </thead>
       <tbody>
+        <tr v-show="loadding">
+          <!-- 加载动画 -->
+          <td :class="$style.loadding" colspan="6">
+            <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
+          </td>
+        </tr>
         <tr v-for="user in users" :key="user.id">
           <td>{{ user.id }}</td>
           <td>{{ user.name }}</td>
@@ -97,7 +113,7 @@
         </tr>
       </tbody>
     </table>
-    <ul class="pager" v-show="page < lastPage">
+    <ul class="pager" v-show="page >= 1 && lastPage > 1">
       <li class="previous" :class="page <= 1 ? 'disabled' : ''">
         <router-link :to="{ path: '/users/manage', query: prevQuery }">
           <span aria-hidden="true">&larr;</span>
@@ -136,7 +152,8 @@ const ManageComponent = {
     page: 1,
     perPage: 20,
     total: 0,
-    users: []
+    users: [],
+    loadding: false
   }),
   computed: {
     queryParams () {
@@ -217,6 +234,7 @@ const ManageComponent = {
      * @homepage http://medz.cn
      */
     getUsers () {
+      this.loadding = true;
       request.get(
         createRequestURI('users'),
         {
@@ -227,6 +245,7 @@ const ManageComponent = {
         this.users = data.data || [];
         this.lastPage = parseInt(data.last_page);
         this.total = parseInt(data.total);
+        this.loadding = false;
       }).catch(({ response }) => console.log(response));
     }
   },
