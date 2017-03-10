@@ -22,7 +22,16 @@ class UserProfileSettingsTableSeeder extends Seeder
             ['create_user_id' => '1', 'profile' => 'area', 'profile_name' => '区', 'type' => 'input', 'required' => '1', 'is_delable' => '0', 'state' => '1', 'is_show' => '0'],
             ['create_user_id' => '1', 'profile' => 'education', 'profile_name' => '学历', 'type' => 'checkbox', 'required' => 1, 'is_delable' => '0', 'state' => '1', 'default_options' => '1:高中|2:大专|3:本科', 'is_show' => '1'],
             ['create_user_id' => '1', 'profile' => 'name', 'profile_name' => '昵称', 'type' => 'input', 'required' => '1', 'is_delable' => '0', 'state' => '1', 'is_show' => '1'],
-
+            [
+                'create_user_id' => '1',
+                'profile' => 'banner',
+                'profile_name' => '个人主页背景图',
+                'type' => 'input',
+                'required' => '1',
+                'is_delable' => '0',
+                'state' => '1',
+                'is_show' => '1'
+            ],
             // 用户头像
             [
                 'create_user_id' => 0,
