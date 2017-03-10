@@ -17,7 +17,7 @@ class UserController extends Controller
         $phone = $request->query('phone');
         $role = $request->query('role');
 
-        $builder = with(new User)->newQuery();
+        $builder = with(new User())->newQuery();
 
         // user id
         if ($userId && $user = $builder->where('id', $userId)->get()) {
@@ -28,18 +28,18 @@ class UserController extends Controller
             'email' => [
                 'operator' => 'like',
                 'value' => sprintf('%%%s%%', $email),
-                'condition' => boolval($email)
+                'condition' => boolval($email),
             ],
             'name' => [
                 'operator' => 'like',
                 'value' => sprintf('%%%s%%', $name),
-                'condition' => boolval($name)
+                'condition' => boolval($name),
             ],
             'phone' => [
                 'operator' => 'like',
                 'value' => sprintf('%%%s%%', $phone),
-                'condition' => boolval($phone)
-            ]
+                'condition' => boolval($phone),
+            ],
         ] as $key => $data) {
             if ($data['condition']) {
                 $builder = $builder->where($key, $data['operator'], $data['value']);
