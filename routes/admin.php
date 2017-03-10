@@ -24,6 +24,10 @@ Route::delete('/site/areas/{id}', 'SiteController@deleteArea')
 Route::patch('/site/areas/{area}', 'SiteController@patchArea')
     ->middleware('auth:web');
 
+// users
+Route::get('/users', 'UserController@users')
+    ->middleware('auth:web');
+
 // Add the route, SPA used mode "history"
 // But, RESTful the route?
 // Route::get('/{route?}', 'HomeController@index')

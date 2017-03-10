@@ -15,14 +15,14 @@
     </div>
 
     <!-- 搜索用户 -->
-    <form class="form-horizontal">
+    <form class="form-horizontal" @submit.prevent="getUsers">
       <div class="form-group">
         <label for="search-input-id" class="col-sm-2 control-label">用户ID</label>
         <div class="col-sm-10">
           <div class="input-group">
             <div class="input-group-btn">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                排序 <span class="glyphicon" :class="(search.id_sort === 'up' ? 'glyphicon-triangle-top' : 'glyphicon-triangle-bottom')"></span>
+                排序 <span class="glyphicon" :class="(search.sort === 'up' ? 'glyphicon-triangle-top' : 'glyphicon-triangle-bottom')"></span>
               </button>
               <ul class="dropdown-menu">
                 <li><a href="#" @click.prevent="changeUserIdSort('up')">
@@ -42,7 +42,13 @@
       <div class="form-group">
         <label for="search-input-email" class="col-sm-2 control-label">邮箱</label>
         <div class="col-sm-10">
-          <input v-model="search.email" type="email" class="form-control" id="search-input-email" placeholder="请输入搜索邮箱地址，支持模糊搜索">
+          <input v-model="search.email" type="text" class="form-control" id="search-input-email" placeholder="请输入搜索邮箱地址，支持模糊搜索">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="search-input-phone" class="col-sm-2 control-label">手机号码</label>
+        <div class="col-sm-10">
+          <input v-model="search.phone" type="tel" class="form-control" id="search-input-phone" placeholder="请输入搜索手机号码，支持模糊搜索">
         </div>
       </div>
       <div class="form-group">
@@ -83,6 +89,8 @@
 </template>
 
 <script>
+import request, { createRequestURI } from '../../util/request';
+
 const ManageComponent = {
   /**
    * 定义当前组件状态数据
@@ -94,10 +102,12 @@ const ManageComponent = {
   data: () => ({
     search: {
       user_id: '',
-      id_sort: 'up',
+      sort: 'up',
       email: '',
       name: '',
-      role: ''
+      role: '',
+      phone: '',
+      users: []
     }
   }),
   /**
@@ -114,8 +124,33 @@ const ManageComponent = {
      * @homepage http://medz.cn
      */
     changeUserIdSort (sort) {
-      this.search.id_sort = sort;
+      this.search.sort = sort;
+    },
+    /**
+     * 获取列表用户.
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    getUsers () {
+      const { user_id, sort, email, name, phone, role } = this.search;
+      request.get(
+        createRequestURI('users'),
+        {
+          params: { user_id, sort, email, name, phone, role },
+          validateStatus: status => status === 201
+        }
+      ).then(({ data }) => console.log(data)).catch(({ response }) => console.log(response));
     }
+  },
+  /**
+   * 组件创建完成后.
+   *
+   * @author Seven Du <shiweidu@outlook.com>
+   * @homepage http://medz.cn
+   */
+  created () {
+    this.getUsers();
   }
 };
 
