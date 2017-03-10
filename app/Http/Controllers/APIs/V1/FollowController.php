@@ -43,7 +43,7 @@ class FollowController extends Controller
         ]);
 
         $this->countUserFollow($user_id, 'increment', 'following_count');
-        $this->countUserFollow($follow_user_id, 'increment', 'followed_count');  
+        $this->countUserFollow($follow_user_id, 'increment', 'followed_count');
 
         return response()->json(static::createJsonData([
             'status'  => true,
@@ -79,7 +79,7 @@ class FollowController extends Controller
         ->delete();
 
         $this->countUserFollow($user_id, 'decrement', 'following_count');
-        $this->countUserFollow($follow_user_id, 'decrement', 'followed_count');  
+        $this->countUserFollow($follow_user_id, 'decrement', 'followed_count');
 
         return response()->json(static::createJsonData([
             'status'  => true,
@@ -210,7 +210,6 @@ class FollowController extends Controller
             'data'    => $data,
         ]))->setStatusCode(200);
     }
-
 
     protected function countUserFollow($user_id, $method, $countKey)
     {
