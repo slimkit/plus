@@ -7,6 +7,7 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Followed;
 use Zhiyi\Plus\Models\Following;
 use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Models\UserDatas;
 
 class FollowController extends Controller
 {
@@ -41,6 +42,9 @@ class FollowController extends Controller
             'followed_user_id' => $user_id,
         ]);
 
+        $this->countUserFollow($user_id, 'increment', 'following_count');
+        $this->countUserFollow($follow_user_id, 'increment', 'followed_count');  
+
         return response()->json(static::createJsonData([
             'status'  => true,
             'code'    => 0,
@@ -73,6 +77,9 @@ class FollowController extends Controller
             ['followed_user_id', $user_id],
         ])
         ->delete();
+
+        $this->countUserFollow($user_id, 'decrement', 'following_count');
+        $this->countUserFollow($follow_user_id, 'decrement', 'followed_count');  
 
         return response()->json(static::createJsonData([
             'status'  => true,
@@ -202,5 +209,29 @@ class FollowController extends Controller
             'message' => '获取成功',
             'data'    => $data,
         ]))->setStatusCode(200);
+    }
+
+
+    protected function countUserFollow($user_id, $method, $countKey)
+    {
+        $allowedMethod = ['increment', 'decrement'];
+
+        $allowedKey = ['following_count', 'followed_count'];
+
+        if (in_array($method, $allowedMethod) && in_array($countKey, $allowedKey)) {
+            if (!(UserDatas::byKey($countKey)->byUserId($user_id)->first())) {
+                $countModel = new UserDatas();
+                $countModel->key = $countKey;
+                $countModel->user_id = $user_id;
+                $countModel->value = 0;
+                $countModel->save();
+            }
+
+            return tap(UserDatas::where('key', $countKey)->byUserId($user_id), function ($query) use ($method) {
+                $query->$method('value');
+            });
+        }
+
+        return false;
     }
 }
