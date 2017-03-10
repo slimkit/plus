@@ -16,11 +16,12 @@ class UserController extends Controller
         $name = $request->query('name');
         $phone = $request->query('phone');
         $role = $request->query('role');
+        $per_page = $request->query('per_page', 10);
 
         $builder = with(new User())->newQuery();
 
         // user id
-        if ($userId && $user = $builder->where('id', $userId)->get()) {
+        if ($userId && $user = $builder->where('id', $userId)->paginate($per_page)) {
             return response()->json($user);
         }
 
@@ -53,6 +54,6 @@ class UserController extends Controller
             $query->where('id', $role);
         });
 
-        return response()->json($builder->get());
+        return response()->json($builder->paginate($per_page));
     }
 }

@@ -61,7 +61,7 @@
         <label for="search-input-name" class="col-sm-2 control-label">角色</label>
         <div class="col-sm-10">
           <select v-model="search.role" class="form-control" id="search-input-name">
-            <option value="">无</option>
+            <option value="">全部</option>
           </select>
         </div>
       </div>
@@ -107,6 +107,9 @@ const ManageComponent = {
       name: '',
       role: '',
       phone: '',
+      total: 0,
+      current_page: 1,
+      per_page: 20
       users: []
     }
   }),
