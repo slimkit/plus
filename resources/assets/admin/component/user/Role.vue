@@ -32,7 +32,16 @@
           <td>{{ role.display_name }}</td>
           <td>{{ role.description }}</td>
           <td>{{ role.updated_at }}</td>
-          <td></td>
+          <td>
+            <!-- 管理分类 -->
+            <button type="button" class="btn btn-primary btn-sm">管理</button>
+
+            <!-- delete role. -->
+            <button v-if="deleteIds.hasOwnProperty(role.id)" type="button" class="btn btn-danger btn-sm" disabled="disabled">
+              <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
+            </button>
+            <button v-else type="button" class="btn btn-danger btn-sm" @click.prevent="deleteRole(role.id)">删除</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -66,8 +75,52 @@ const RoleComponent = {
      *
      * @type {Boolean}
      */
-    loadding: true
+    loadding: true,
+    /**
+     * delete role ids.
+     *
+     * @type {Array}
+     */
+    deleteIds: {}
   }),
+  /**
+   * methods.
+   *
+   * @type {Object}
+   */
+  methods: {
+    /**
+     * delete this.deleteIds item.
+     *
+     * @param {Number} id
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    deleteIdsItem (id) {
+      let ids = {};
+      for (let _id in this.deleteIds) {
+        if (_id !== id) {
+          ids[_id] = id;
+        }
+      }
+
+      this.deleteIds = ids;
+    },
+    /**
+     * delete role.
+     *
+     * @param {Number} id
+     * @return {void}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    deleteRole (id) {
+      if (window.confirm('是否确认删除？删除后，该角色下用户将被移动到注册默认角色下！')) {
+        this.deleteIds = {
+          ...this.deleteIds,
+          [id]: id
+        };
+      }
+    }
+  },
   /**
    * The component created run.
    *
