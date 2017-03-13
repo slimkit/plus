@@ -4,6 +4,7 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Role;
+use Zhiyi\Plus\Models\Permission;
 
 class RoleController extends Controller
 {
@@ -39,5 +40,18 @@ class RoleController extends Controller
         return response()->json([
             'errors' => ['删除失败'],
         ])->setStatusCode(500);
+    }
+
+    /**
+     * 获取全部权限节点.
+     *
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function perms()
+    {
+        $perms = Permission::all();
+
+        return response()->json($perms)->setStatusCode(200);
     }
 }
