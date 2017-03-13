@@ -27,12 +27,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1</td>
-          <td>2</td>
-          <td>3</td>
-          <td>4</td>
-          <td>5</td>
+        <tr v-for="role in roles">
+          <td>{{ role.name }}</td>
+          <td>{{ role.display_name }}</td>
+          <td>{{ role.description }}</td>
+          <td>{{ role.updated_at }}</td>
+          <td></td>
         </tr>
       </tbody>
     </table>
