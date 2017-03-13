@@ -95,21 +95,6 @@ const RoleComponent = {
    * @type {Object}
    */
   methods: {
-    // updateRole (role) {
-    //   let roles = [];
-    //   this.roles.forEach(_role => {
-    //     if (_role.id === role.id) {
-    //       return {
-    //         ..._role,
-    //         ...role
-    //       };
-    //     }
-
-    //     return _role;
-    //   });
-
-    //   this.roles = roles;
-    // }
     /**
      * delete this.deleteIds item.
      *
