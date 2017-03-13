@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import request, { createRequestURI } from '../../util/request';
+
 const RoleComponent = {
   /**
    * The component state tree.
@@ -43,7 +45,13 @@ const RoleComponent = {
      *
      * @type {Array}
      */
-    roles: []
+    roles: [],
+    /**
+     * is loadding.
+     *
+     * @type {Boolean}
+     */
+    loadding: true
   }),
   /**
    * The component created run.
@@ -51,7 +59,16 @@ const RoleComponent = {
    * @author Seven Du <shiweidu@outlook.com>
    */
   created () {
-    console.log(this);
+    this.loadding = true;
+    request.get(
+      createRequestURI('roles'),
+      { validateStatus: status => status === 200 }
+    ).then(({ data }) => {
+      this.loadding = false;
+      this.roles = data;
+    }).catch(() => {
+      this.loadding = false;
+    });
   }
 };
 
