@@ -25,7 +25,9 @@ class RoleController extends Controller
      * 删除用户组.
      *
      * @param Role $role
+     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function delete(Role $role)
