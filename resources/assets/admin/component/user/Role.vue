@@ -2,6 +2,16 @@
 .container {
   padding-top: 15px;
 }
+.loadding {
+  text-align: center;
+  font-size: 42px;
+}
+.loaddingIcon {
+  animation-name: "TurnAround";
+  animation-duration: 1.4s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
 </style>
 
 <template>
@@ -26,6 +36,11 @@
         </tr>
       </tbody>
     </table>
+
+    <!-- 加载动画 -->
+    <div v-show="loadding" :class="$style.loadding">
+      <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
+    </div>
   </div>
 </template>
 
