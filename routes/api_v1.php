@@ -42,6 +42,7 @@ Route::prefix('users')
     // 修改用户资料
     Route::patch('/', 'UserController@profile')
         ->middleware(Middleware\ChangeUserAvatar::class)
+        ->middleware(Middleware\ChangeUserCover::class)
         ->middleware(Middleware\ChangeUsername::class);
     // 修改用户密码
     Route::patch('/password', 'UserController@resetPassword') // 设置控制器
