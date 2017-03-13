@@ -1,3 +1,59 @@
+<style lang="css" module>
+.container {
+  padding-top: 15px;
+}
+</style>
+
 <template>
-  <div>role.</div>
+  <div class="container-fluid" :class="$style.container">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>节点名称</th>
+          <th>显示名称</th>
+          <th>描述</th>
+          <th>更新时间</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
+
+<script>
+const RoleComponent = {
+  /**
+   * The component state tree.
+   *
+   * @return {Object} state tree
+   * @author Seven Du <shiweidu@outlook.com>
+   */
+  data: () => ({
+    /**
+     * roles
+     *
+     * @type {Array}
+     */
+    roles: []
+  }),
+  /**
+   * The component created run.
+   *
+   * @author Seven Du <shiweidu@outlook.com>
+   */
+  created () {
+    console.log(this);
+  }
+};
+
+export default RoleComponent;
+</script>
