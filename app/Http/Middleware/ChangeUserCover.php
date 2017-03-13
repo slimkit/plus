@@ -3,13 +3,13 @@
 namespace Zhiyi\Plus\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\StorageTask;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\UserProfileSetting;
 use Zhiyi\Plus\Traits\CreateJsonResponseData;
-use Illuminate\Http\JsonResponse;
 
 class ChangeUserCover
 {
