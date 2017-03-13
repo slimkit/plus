@@ -3,8 +3,8 @@
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Models\Role;
 use Zhiyi\Plus\Models\Permission;
+use Zhiyi\Plus\Models\Role;
 
 class RoleController extends Controller
 {
@@ -46,6 +46,7 @@ class RoleController extends Controller
      * 获取全部权限节点.
      *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function perms()
