@@ -27,7 +27,7 @@ class FollowTest extends TestCase
         // register user.
         $this->user = User::create([
             'phone'    => '1878'.rand(1111111, 9999999),
-            'name'     => 'ts'.rand(1000, 9999),
+            'name'     => 'ts'.time(),
             'password' => bcrypt(123456),
         ]);
 
