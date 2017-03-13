@@ -16,6 +16,12 @@
 
 <template>
   <div class="container-fluid" :class="$style.container">
+
+    <!-- 提示 -->
+    <div class="alert alert-success" role="alert">
+      尽量不要删除用户组～删除用户组会造成用户组混乱！请谨慎编辑。
+    </div>
+
     <table class="table table-striped">
       <thead>
         <tr>
@@ -89,6 +95,21 @@ const RoleComponent = {
    * @type {Object}
    */
   methods: {
+    // updateRole (role) {
+    //   let roles = [];
+    //   this.roles.forEach(_role => {
+    //     if (_role.id === role.id) {
+    //       return {
+    //         ..._role,
+    //         ...role
+    //       };
+    //     }
+
+    //     return _role;
+    //   });
+
+    //   this.roles = roles;
+    // }
     /**
      * delete this.deleteIds item.
      *
@@ -113,12 +134,29 @@ const RoleComponent = {
      * @author Seven Du <shiweidu@outlook.com>
      */
     deleteRole (id) {
-      if (window.confirm('是否确认删除？删除后，该角色下用户将被移动到注册默认角色下！')) {
+      if (window.confirm('是否确认删除？')) {
         this.deleteIds = {
           ...this.deleteIds,
           [id]: id
         };
       }
+
+      request.delete(
+        createRequestURI(`roles/${id}`),
+        { validateStatus: status => status === 204 }
+      ).then(() => {
+        this.deleteIdsItem(id);
+        let roles = [];
+        this.roles.forEach(role => {
+          if (role.id !== id) {
+            roles.push(role);
+          }
+        });
+        this.roles = roles;
+      }).catch(() => {
+        this.deleteIdsItem(id);
+        window.alert('删除失败');
+      });
     }
   },
   /**

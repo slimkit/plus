@@ -20,4 +20,22 @@ class RoleController extends Controller
 
         return response()->json($roles)->setStatusCode(200);
     }
+
+    /**
+     * 删除用户组.
+     *
+     * @param Role $role
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function delete(Role $role)
+    {
+        if ($role->delete()) {
+            return response('', 204);
+        }
+
+        return response()->json([
+            'errors' => ['删除失败'],
+        ])->setStatusCode(500);
+    }
 }
