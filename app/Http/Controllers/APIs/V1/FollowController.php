@@ -197,7 +197,7 @@ class FollowController extends Controller
                 $return = [];
                 $return['follow_status'] = Following::where('user_id', $value)->where('following_user_id', $user_id)->get()->isEmpty() ? 0 : 1;
                 $return['my_follow_status'] = Followed::where('user_id', $value)->where('followed_user_id', $user_id)->get()->isEmpty() ? 0 : 1;
-                $return['user_id'] = $value;
+                $return['user_id'] = (int) $value;
 
                 $data[] = $return;
             }
