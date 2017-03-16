@@ -36,10 +36,20 @@
       <tbody>
         <tr v-for="perm in perms" :key="perm.id">
           <td>{{ perm.name }}</td>
-          <td>{{ perm.display_name }}</td>
-          <td>{{ perm.description }}</td>
+          <td>
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="输入名称" :value="perm.display_name">
+            </div>
+          </td>
+          <td>
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="输入名称" :value="perm.description">
+            </div>
+          </td>
           <td>{{ perm.updated_at }}</td>
-          <td></td>
+          <td>
+            <button type="button" class="btn btn-danger btn-sm">删除</button>
+          </td>
         </tr>
       </tbody>
     </table>
