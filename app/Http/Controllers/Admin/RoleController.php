@@ -60,9 +60,11 @@ class RoleController extends Controller
     /**
      * 更新权限节点.
      *
-     * @param Request $request
+     * @param Request    $request
      * @param Permission $perm
+     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function updatePerm(Request $request, Permission $perm)
