@@ -30,8 +30,18 @@
           <th>显示名称</th>
           <th>描述</th>
           <th>更新时间</th>
+          <th>操作</th>
         </tr>
       </thead>
+      <tbody>
+        <tr v-for="perm in perms" :key="perm.id">
+          <td>{{ perm.name }}</td>
+          <td>{{ perm.display_name }}</td>
+          <td>{{ perm.description }}</td>
+          <td>{{ perm.updated_at }}</td>
+          <td></td>
+        </tr>
+      </tbody>
     </table>
 
   </div>
