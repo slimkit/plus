@@ -49,7 +49,10 @@
           </td>
           <td>{{ perm.updated_at }}</td>
           <td>
-            <button type="button" class="btn btn-danger btn-sm">删除</button>
+            <button v-if="deleteIds.hasOwnProperty(perm.id)" type="button" class="btn btn-danger btn-sm" disabled="disabled">
+              <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
+            </button>
+            <button v-else type="button" class="btn btn-danger btn-sm" @click.prevent="deletePerm(perm.id)">删除</button>
           </td>
         </tr>
       </tbody>
@@ -64,7 +67,8 @@ import lodash from 'lodash';
 
 const PermissionComponent = {
   data: () => ({
-    perms: []
+    perms: [],
+    deleteIds: {}
   }),
   methods: {
     updatePerm (id, key, value) {
@@ -80,6 +84,40 @@ const PermissionComponent = {
         const errorMessage = lodash.values(errors).pop();
         window.alert(errorMessage);
       });
+    },
+    deletePerm (id) {
+      if (window.confirm('确认删除节点？')) {
+        this.deleteIds = {
+          ...this.deleteIds,
+          [id]: id
+        };
+
+        const deleteId = (id) => {
+          let ids = {};
+          for (let _id in this.deleteIds) {
+            if (_id !== id) {
+              console.log(_id !== id);
+              ids = {
+                ...ids,
+                [_id]: _id
+              };
+            }
+          }
+          this.deleteIds = ids;
+          console.log(ids);
+        };
+
+        request.delete(
+          createRequestURI(`perms/${id}`),
+          { validateStatus: status => status === 204 }
+        ).then(() => deleteId(id)).catch(({ response: { data = {} } = {} }) => {
+          const { errors = ['删除失败'] } = data;
+          const errorMessage = lodash.values(errors).pop();
+          deleteId(id);
+          console.log(id);
+          window.alert(errorMessage);
+        });
+      }
     }
   },
   created () {
