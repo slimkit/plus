@@ -35,6 +35,8 @@ Route::delete('/roles/{role}', 'RoleController@delete')
     ->middleware('auth:web');
 Route::get('/perms', 'RoleController@perms')
     ->middleware('auth:web');
+Route::patch('/perms/{perm}', 'RoleController@updatePerm')
+    ->middleware('auth:web');
 
 // Add the route, SPA used mode "history"
 // But, RESTful the route?
