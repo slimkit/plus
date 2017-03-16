@@ -61,6 +61,13 @@ php artisan component install medz/plus-component-example
 ```
 [拓展应用开发文档](documents/component/)
 
+## 扩展包
+
+- [聊天模块](https://github.com/zhiyicx/plus-component-im)
+- [动态模块](https://github.com/zhiyicx/plus-component-feed)
+- [资讯模块](https://github.com/zhiyicx/plus-component-news)
+- [音乐模块](https://github.com/zhiyicx/plus-component-music)
+
 ## 开发文档
 
 - [RESTful API version 1](documents/api/v1)
