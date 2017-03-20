@@ -10,6 +10,10 @@
 PATCH
 ```
 
+### HTTP Status Code
+
+201
+
 ## 请求体
 | name     | type     | must     | description |
 |----------|:--------:|:--------:|:--------:|
