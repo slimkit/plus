@@ -2,11 +2,11 @@
 
 namespace Zhiyi\Plus\Traits;
 
+use Zhiyi\Plus\Models\Role;
+use InvalidArgumentException;
 use Illuminate\Cache\TaggableStore;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
-use InvalidArgumentException;
-use Zhiyi\Plus\Models\Role;
 
 trait UserRolePerms
 {
@@ -21,7 +21,7 @@ trait UserRolePerms
     {
         parent::boot();
         static::deleting(function ($user) {
-            if (!method_exists($user, 'bootSoftDeletes')) {
+            if (! method_exists($user, 'bootSoftDeletes')) {
                 $user->roles()->sync([]);
             }
 
@@ -84,9 +84,9 @@ trait UserRolePerms
         if (is_array($name)) {
             foreach ($name as $roleName) {
                 $hasRole = $this->hasRole($roleName);
-                if ($hasRole && !$requireAll) {
+                if ($hasRole && ! $requireAll) {
                     return true;
-                } elseif (!$hasRole && $requireAll) {
+                } elseif (! $hasRole && $requireAll) {
                     return false;
                 }
             }
@@ -118,9 +118,9 @@ trait UserRolePerms
         if (is_array($permission)) {
             foreach ($permission as $permName) {
                 $hasPerm = $this->can($permName);
-                if ($hasPerm && !$requireAll) {
+                if ($hasPerm && ! $requireAll) {
                     return true;
-                } elseif (!$hasPerm && $requireAll) {
+                } elseif (! $hasPerm && $requireAll) {
                     return false;
                 }
             }
@@ -156,21 +156,21 @@ trait UserRolePerms
     public function ability($roles, $permissions, $options = [])
     {
         // Convert string to array if that's what is passed in.
-        if (!is_array($roles)) {
+        if (! is_array($roles)) {
             $roles = explode(',', $roles);
         }
-        if (!is_array($permissions)) {
+        if (! is_array($permissions)) {
             $permissions = explode(',', $permissions);
         }
         // Set up default values and validate options.
-        if (!isset($options['validate_all'])) {
+        if (! isset($options['validate_all'])) {
             $options['validate_all'] = false;
         } else {
             if ($options['validate_all'] !== true && $options['validate_all'] !== false) {
                 throw new InvalidArgumentException();
             }
         }
-        if (!isset($options['return_type'])) {
+        if (! isset($options['return_type'])) {
             $options['return_type'] = 'boolean';
         } else {
             if ($options['return_type'] != 'boolean' &&
@@ -191,8 +191,8 @@ trait UserRolePerms
         // If validate all and there is a false in either
         // Check that if validate all, then there should not be any false.
         // Check that if not validate all, there must be at least one true.
-        if (($options['validate_all'] && !(in_array(false, $checkedRoles) || in_array(false, $checkedPermissions))) ||
-            (!$options['validate_all'] && (in_array(true, $checkedRoles) || in_array(true, $checkedPermissions)))) {
+        if (($options['validate_all'] && ! (in_array(false, $checkedRoles) || in_array(false, $checkedPermissions))) ||
+            (! $options['validate_all'] && (in_array(true, $checkedRoles) || in_array(true, $checkedPermissions)))) {
             $validateAll = true;
         } else {
             $validateAll = false;
@@ -258,7 +258,7 @@ trait UserRolePerms
      */
     public function detachRoles($roles = null)
     {
-        if (!$roles) {
+        if (! $roles) {
             $roles = $this->roles()->get();
         }
         foreach ($roles as $role) {

@@ -2,10 +2,10 @@
 
 namespace Zhiyi\Plus\Services\Auth;
 
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Contracts\Auth\UserProvider;
-use Zhiyi\Plus\Models\AuthToken;
 use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Models\AuthToken;
+use Illuminate\Contracts\Auth\UserProvider;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 class TokenUserProvider implements UserProvider
 {
@@ -91,7 +91,7 @@ class TokenUserProvider implements UserProvider
     {
         $token = array_get($credentials, 'token');
 
-        if (!$token) {
+        if (! $token) {
             return false;
         }
 

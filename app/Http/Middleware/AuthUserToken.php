@@ -3,9 +3,9 @@
 namespace Zhiyi\Plus\Http\Middleware;
 
 use Closure;
+use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\AuthToken;
-use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
 class AuthUserToken
@@ -24,7 +24,7 @@ class AuthUserToken
     {
         $accessToken = $request->headers->get('ACCESS-TOKEN');
 
-        if (!$accessToken) {
+        if (! $accessToken) {
             return response()->json(static::createJsonData([
                 'code' => 1016,
             ]))->setStatusCode(401);
@@ -56,7 +56,7 @@ class AuthUserToken
             ->orderByDesc()
             ->first();
 
-        if (!$authToken) {
+        if (! $authToken) {
             return response()->json(static::createJsonData([
                 'code' => 1016,
             ]))->setStatusCode(401);
@@ -123,7 +123,7 @@ class AuthUserToken
      */
     protected function checkUserExistedStep($user, Closure $next)
     {
-        if (!$user || !$user instanceof User) {
+        if (! $user || ! $user instanceof User) {
             return response()->json(static::createJsonData([
                 'code' => 1005,
             ]))->setStatusCode(401);

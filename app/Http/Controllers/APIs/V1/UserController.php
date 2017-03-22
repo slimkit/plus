@@ -2,10 +2,10 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\User;
+use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\UserProfileSetting;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
@@ -74,7 +74,7 @@ class UserController extends Controller
             ->with('datas', 'counts')
             ->get()
             ->toArray();
-        if (!$datas) {
+        if (! $datas) {
             return response()->json([
                 'status'  => false,
                 'message' => '没有相关用户',

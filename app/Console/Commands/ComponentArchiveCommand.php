@@ -4,10 +4,10 @@ namespace Zhiyi\Plus\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessUtils;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Process\PhpExecutableFinder;
 
 class ComponentArchiveCommand extends Command
 {
@@ -97,7 +97,7 @@ class ComponentArchiveCommand extends Command
     {
         $sourceDir = resource_path('repositorie/sources/'.$package);
 
-        if (!$this->filesystem->exists($sourceDir.'/composer.json')) {
+        if (! $this->filesystem->exists($sourceDir.'/composer.json')) {
             throw new \Exception('The package is not "composer.json" exist!');
         }
 
@@ -114,7 +114,7 @@ class ComponentArchiveCommand extends Command
      */
     protected function getPackageInput()
     {
-        if (!$this->hasArgument('package')) {
+        if (! $this->hasArgument('package')) {
             throw new \Exception('"package" already exists!');
         }
 

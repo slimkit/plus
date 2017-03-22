@@ -83,7 +83,7 @@ class AuthSendPhoneCodeTest extends TestCase
 
         $response = $this->postJson($this->uri, $requestBody);
 
-        $bool = !empty($response->getContent());
+        $bool = ! empty($response->getContent());
         PHPUnit::assertTrue($bool);
     }
 
@@ -102,7 +102,7 @@ class AuthSendPhoneCodeTest extends TestCase
 
         $response = $this->postJson($this->uri, $requestBody);
 
-        $bool = !empty($response->getContent());
+        $bool = ! empty($response->getContent());
         PHPUnit::assertTrue($bool);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
+use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Models\User;
 
 class UserController extends Controller
 {

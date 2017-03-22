@@ -1,8 +1,8 @@
 <?php
 
+use Zhiyi\Plus\Models\Area;
 use Illuminate\Database\Seeder;
 use Symfony\Component\Console\Helper\ProgressBar;
-use Zhiyi\Plus\Models\Area;
 
 class AreasTableSeeder extends Seeder
 {
@@ -43,7 +43,7 @@ class AreasTableSeeder extends Seeder
                 $province = Area::where('name', $province_name)
                 ->where('pid', $cn->id)
                 ->first();
-                if (!$province) {
+                if (! $province) {
                     $province = Area::create([
                         'name' => $province_name,
                         'pid'  => $cn->id,
@@ -57,7 +57,7 @@ class AreasTableSeeder extends Seeder
                 $city = Area::where('name', $city_name)
                     ->where('pid', $province->id)
                     ->first();
-                if (!$city) {
+                if (! $city) {
                     $city = Area::create([
                         'name' => $city_name,
                         'pid'  => $province->id,
@@ -70,7 +70,7 @@ class AreasTableSeeder extends Seeder
                 $area = Area::where('name', $area_name)
                     ->where('pid', $city->id)
                     ->first();
-                if (!$area) {
+                if (! $area) {
                     Area::create([
                         'name' => $area_name,
                         'pid'  => $city->id,
@@ -92,7 +92,7 @@ class AreasTableSeeder extends Seeder
             throw new \Exception('Invalid code');
         }
         $provinceCode = substr($code, 0, 2).'0000';
-        if (!isset($this->data[$provinceCode])) {
+        if (! isset($this->data[$provinceCode])) {
             return;
         }
         $province = $this->data[$provinceCode];
@@ -100,14 +100,14 @@ class AreasTableSeeder extends Seeder
             return $province;
         }
         $prefectureCode = substr($code, 0, 4).'00';
-        if (!isset($this->data[$prefectureCode])) {
+        if (! isset($this->data[$prefectureCode])) {
             return;
         }
         $area = $this->data[$prefectureCode];
         if ($codeLength === 4) {
             return $province.' '.$area;
         }
-        if (!isset($this->data[$code])) {
+        if (! isset($this->data[$code])) {
             return;
         }
         $name = $this->data[$code];

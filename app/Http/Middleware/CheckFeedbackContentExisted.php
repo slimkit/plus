@@ -20,7 +20,7 @@ class CheckFeedbackContentExisted
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!$request->input('content')) {
+        if (! $request->input('content')) {
             return response()->json(static::createJsonData([
                 'code'    => 7001,
                 'message' => '反馈内容不能为空',

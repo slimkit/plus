@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Plus\Interfaces\Storage;
 
-use Zhiyi\Plus\Models\StorageTask;
 use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Models\StorageTask;
 
 interface StorageEngineInterface
 {

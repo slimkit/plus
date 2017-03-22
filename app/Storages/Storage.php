@@ -3,13 +3,13 @@
 namespace Zhiyi\Plus\Storages;
 
 use Carbon\Carbon;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Http\Response;
-use Zhiyi\Plus\Interfaces\Storage\StorageEngineInterface;
-use Zhiyi\Plus\Models\Storage as StorageModel;
-use Zhiyi\Plus\Models\StorageTask;
 use Zhiyi\Plus\Models\User;
+use Illuminate\Http\Response;
+use Zhiyi\Plus\Models\StorageTask;
+use Illuminate\Filesystem\Filesystem;
 use Zhiyi\Plus\Traits\CreateJsonResponseData;
+use Zhiyi\Plus\Models\Storage as StorageModel;
+use Zhiyi\Plus\Interfaces\Storage\StorageEngineInterface;
 
 class Storage
 {
@@ -33,7 +33,7 @@ class Storage
             $this->setStorageEngine($engine, $storage);
         }
 
-        if (!isset(static::$storages['local'])) {
+        if (! isset(static::$storages['local'])) {
             $storage = new Engine\LocalStorage();
             $this->setStorageEngine('local', $storage);
         }
@@ -75,7 +75,7 @@ class Storage
 
         // 查询储存
         $storage = StorageModel::byHash($hash)->first();
-        if (!$storage) { // 储存不存在，新建储存.
+        if (! $storage) { // 储存不存在，新建储存.
             return $this->newStorageTask($user, $origin_filename, $hash, $mimeType, $width, $height, $engine);
         }
 
@@ -130,7 +130,7 @@ class Storage
 
         // 保存任务附件.
         $storage = StorageModel::byHash($task->hash)->first();
-        if (!$storage) {
+        if (! $storage) {
             $storage = new StorageModel();
             $storage->hash = $task->hash;
             $storage->origin_filename = $task->origin_filename;

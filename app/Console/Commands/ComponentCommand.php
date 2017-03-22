@@ -6,8 +6,8 @@ use Closure;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputArgument;
-use Zhiyi\Component\Installer\PlusInstallPlugin\ComponentInfoInterface;
 use Zhiyi\Component\Installer\PlusInstallPlugin\InstallerInterface;
+use Zhiyi\Component\Installer\PlusInstallPlugin\ComponentInfoInterface;
 
 class ComponentCommand extends Command
 {
@@ -123,17 +123,17 @@ class ComponentCommand extends Command
     protected function getInstallerInstance(string $componentName): InstallerInterface
     {
         $installConfig = array_get(config('component'), $componentName);
-        if (!$installConfig) {
+        if (! $installConfig) {
             throw new \Exception("The {$componentName} not require.");
         }
 
         $installer = new $installConfig['installer']();
-        if (!$installer instanceof InstallerInterface) {
+        if (! $installer instanceof InstallerInterface) {
             throw new \Exception(sprintf('The %s not implement %s', $componentName, InstallerInterface::class));
         }
 
         $componentInfo = $installer->getComponentInfo();
-        if ($componentInfo && !($componentInfo instanceof ComponentInfoInterface)) {
+        if ($componentInfo && ! ($componentInfo instanceof ComponentInfoInterface)) {
             throw new \Exception(printf('The getComponentInfo() return object not implement %s', ComponentInfoInterface::class));
         }
 
@@ -200,7 +200,7 @@ class ComponentCommand extends Command
      */
     protected function doInstallVendorComponentResource(string $componentName, string $resource)
     {
-        if (!$this->filesystem->isDirectory($resource)) {
+        if (! $this->filesystem->isDirectory($resource)) {
             throw new \Exception("Directory desc not exist as path {$resource}");
         }
 
@@ -240,7 +240,7 @@ class ComponentCommand extends Command
      */
     protected function doInstallVendorComponentRouter(string $componentName, string $filename)
     {
-        if (!$this->filesystem->exists($filename)) {
+        if (! $this->filesystem->exists($filename)) {
             throw new \Exception("File does not exist at path {$filename}");
         }
 
@@ -280,7 +280,7 @@ class ComponentCommand extends Command
      */
     protected function getComponentInput()
     {
-        if (!$this->hasArgument('component')) {
+        if (! $this->hasArgument('component')) {
             throw new \Exception('"component" already exists!');
         }
 
@@ -298,7 +298,7 @@ class ComponentCommand extends Command
     protected function getNameInput()
     {
         $name = strtolower($this->argument('name'));
-        if (!in_array($name, ['install', 'update', 'uninstall'])) {
+        if (! in_array($name, ['install', 'update', 'uninstall'])) {
             throw new \Exception('The name of [install, update, uninstall].');
         }
 

@@ -25,7 +25,7 @@ class VerifySendPhoneCodeType
         $type = $request->input('type');
 
         // 传递获取类型不正确
-        if (!in_array($type, $this->types)) {
+        if (! in_array($type, $this->types)) {
             return response()->json([
                 'status'  => false,
                 'code'    => 1011,

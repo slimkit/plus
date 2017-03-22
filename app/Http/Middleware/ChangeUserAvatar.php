@@ -3,11 +3,11 @@
 namespace Zhiyi\Plus\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\JsonResponse;
+use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\StorageTask;
-use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\UserProfileSetting;
 use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
@@ -26,7 +26,7 @@ class ChangeUserAvatar
     public function handle(Request $request, Closure $next)
     {
         $storage_task_id = $request->input('storage_task_id');
-        if (!$storage_task_id) {
+        if (! $storage_task_id) {
             return $next($request);
         }
 
@@ -49,7 +49,7 @@ class ChangeUserAvatar
     {
         $task = StorageTask::find($storage_task_id);
         $task->load('storage');
-        if (!$task) {
+        if (! $task) {
             return response()->json(static::createJsonData([
                 'code' => 2000,
             ]))->setStatusCode(403);
@@ -90,7 +90,7 @@ class ChangeUserAvatar
     protected function userProfileExiste(User $user, StorageTask $task, Closure $next)
     {
         $profile = UserProfileSetting::where('profile', 'avatar')->first();
-        if (!$profile) {
+        if (! $profile) {
             return response()->json(static::createJsonData([
                 'code' => 1017,
             ]))->setStatusCode(500);
@@ -115,7 +115,7 @@ class ChangeUserAvatar
     protected function linkStorage(User $user, StorageTask $task, UserProfileSetting $profile, Closure $next)
     {
         $storage = $task->storage;
-        if (!$storage) {
+        if (! $storage) {
             return response()->json(static::createJsonData([
                 'code' => 2004,
             ]))->setStatusCode(404);

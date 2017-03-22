@@ -2,10 +2,10 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Models\Permission;
 use Zhiyi\Plus\Models\Role;
+use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\Permission;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 class RoleController extends Controller
 {
@@ -72,7 +72,7 @@ class RoleController extends Controller
         $key = $request->input('key');
         $value = $request->input('value');
 
-        if (!in_array($key, ['display_name', 'description'])) {
+        if (! in_array($key, ['display_name', 'description'])) {
             return response()->json([
                 'errors' => ['请求不合法'],
             ])->setStatusCode(422);
@@ -80,7 +80,7 @@ class RoleController extends Controller
 
         $perm->$key = $value;
 
-        if (!$perm->save()) {
+        if (! $perm->save()) {
             return response()->json([
                 'errors' => ['数据更新失败'],
             ])->setStatusCode(500);

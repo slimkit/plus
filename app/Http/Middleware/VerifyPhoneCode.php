@@ -30,7 +30,7 @@ class VerifyPhoneCode
             ->orderByDesc()
             ->first();
 
-        if (!$verify || $verify->state == 2) {
+        if (! $verify || $verify->state == 2) {
             return response()->json(static::createJsonData([
                 'code' => 1001,
             ]))->setStatusCode(403);

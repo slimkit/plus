@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\APIs\V1;
 
-use Zhiyi\Plus\Models\AuthToken;
 use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Models\AuthToken;
 
 class GetUserTest extends TestCase
 {

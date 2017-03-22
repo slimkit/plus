@@ -23,7 +23,7 @@ class VerifyPassword
         $password = $request->input('password', '');
         $user = $request->user();
 
-        if (!$user->verifyPassword($password)) {
+        if (! $user->verifyPassword($password)) {
             return response()->json(static::createJsonData([
                 'code' => 1006,
             ]))->setStatusCode(401);

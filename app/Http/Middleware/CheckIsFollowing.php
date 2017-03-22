@@ -3,9 +3,9 @@
 namespace Zhiyi\Plus\Http\Middleware;
 
 use Closure;
+use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Following;
-use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
 class CheckIsFollowing
@@ -24,7 +24,7 @@ class CheckIsFollowing
     {
         $user_id = $request->user()->id;
         $following_user_id = $request->user_id;
-        if (!Following::where([
+        if (! Following::where([
                 ['user_id', $user_id],
                 ['following_user_id', $following_user_id],
             ])

@@ -13,7 +13,7 @@ trait CreateJsonResponseData
             'data'    => null,
         ], $data);
 
-        if (!$data['message']) {
+        if (! $data['message']) {
             $data['message'] = $data['status'] === true ? '操作成功' : '操作失败';
         }
 

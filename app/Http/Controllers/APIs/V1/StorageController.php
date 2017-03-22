@@ -2,12 +2,12 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Storages\Storage;
+use Zhiyi\Plus\Models\StorageTask;
+use Illuminate\Filesystem\Filesystem;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Storage as StorageModel;
-use Zhiyi\Plus\Models\StorageTask;
-use Zhiyi\Plus\Storages\Storage;
 
 class StorageController extends Controller
 {
@@ -42,7 +42,7 @@ class StorageController extends Controller
         $width = (float) $request->input('width', 0);
         $height = (float) $request->input('height', 0);
 
-        if (!$originFilename || !$hash || !$mimeType) {
+        if (! $originFilename || ! $hash || ! $mimeType) {
             return response()->json(static::createJsonData([
                 'status'  => false,
                 'message' => '发送参数错误',
@@ -60,7 +60,7 @@ class StorageController extends Controller
     public function notice(Request $request, int $storage_task_id)
     {
         $task = StorageTask::find($storage_task_id);
-        if (!$task) {
+        if (! $task) {
             return response()->json(static::createJsonData([
                 'code'    => 2000,
                 'message' => '上传任务不存在',
@@ -75,7 +75,7 @@ class StorageController extends Controller
     public function delete(Request $request, int $storage_task_id)
     {
         $task = StorageTask::find($storage_task_id);
-        if (!$task) {
+        if (! $task) {
             return response()->json(static::createJsonData([
                 'code'    => 2000,
                 'message' => '上传任务不存在',
@@ -105,7 +105,7 @@ class StorageController extends Controller
     public function upload(Request $request, int $storage_task_id)
     {
         $task = StorageTask::find($storage_task_id);
-        if (!$task) {
+        if (! $task) {
             return response()->json(static::createJsonData([
                 'code'    => 2000,
                 'message' => '上传任务不存在',
@@ -145,7 +145,7 @@ class StorageController extends Controller
         $path = 'public/'.$filesystem->dirname($task->filename);
         $name = $filesystem->basename($task->filename);
 
-        if (!$file->storePubliclyAs($path, $name)) {
+        if (! $file->storePubliclyAs($path, $name)) {
             return response()->json(static::createJsonData([
                 'code' => 2002,
             ]))->setStatusCode(422);
@@ -159,7 +159,7 @@ class StorageController extends Controller
 
     protected function storage()
     {
-        if (!static::$storage instanceof Storage) {
+        if (! static::$storage instanceof Storage) {
             static::$storage = new Storage();
         }
 

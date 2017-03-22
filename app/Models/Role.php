@@ -3,8 +3,8 @@
 namespace Zhiyi\Plus\Models;
 
 use Illuminate\Cache\TaggableStore;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
@@ -45,7 +45,7 @@ class Role extends Model
     {
         parent::boot();
         static::deleting(function ($role) {
-            if (!method_exists($role, 'bootSoftDeletes')) {
+            if (! method_exists($role, 'bootSoftDeletes')) {
                 $role->users()->sync([]);
                 $role->perms()->sync([]);
             }
@@ -69,7 +69,7 @@ class Role extends Model
 
     public function save(array $options = [])
     {   //both inserts and updates
-        if (!parent::save($options)) {
+        if (! parent::save($options)) {
             return false;
         }
 
@@ -80,7 +80,7 @@ class Role extends Model
 
     public function delete(array $options = [])
     {   //soft or hard
-        if (!parent::delete($options)) {
+        if (! parent::delete($options)) {
             return false;
         }
 
@@ -91,7 +91,7 @@ class Role extends Model
 
     public function restore()
     {   //soft delete undo's
-        if (!parent::restore()) {
+        if (! parent::restore()) {
             return false;
         }
 

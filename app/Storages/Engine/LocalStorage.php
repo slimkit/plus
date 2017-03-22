@@ -2,13 +2,13 @@
 
 namespace Zhiyi\Plus\Storages\Engine;
 
+use Image;
+use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Models\StorageTask;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
-use Image;
-use Zhiyi\Plus\Interfaces\Storage\StorageEngineInterface;
-use Zhiyi\Plus\Models\StorageTask;
-use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Traits\CreateJsonResponseData;
+use Zhiyi\Plus\Interfaces\Storage\StorageEngineInterface;
 
 class LocalStorage implements StorageEngineInterface
 {
@@ -17,7 +17,7 @@ class LocalStorage implements StorageEngineInterface
     public function createStorageTask(StorageTask $storateTask, User $user)
     {
         $token = $user->tokens()->orderByDesc()->first();
-        if (!$token) {
+        if (! $token) {
             throw new \Exception('No authentication information associated with the user was found.');
         }
 
@@ -36,7 +36,7 @@ class LocalStorage implements StorageEngineInterface
 
     public function notice(string $message, string $filename)
     {
-        if (!$this->exists($filename)) {
+        if (! $this->exists($filename)) {
             return response()->json(static::createJsonData([
                 'status' => false,
             ]));
@@ -65,7 +65,7 @@ class LocalStorage implements StorageEngineInterface
 
         //  return origin.
         if (
-            !in_array(strtolower($ext), ['png', 'jpg', 'jpeg', 'webp'])
+            ! in_array(strtolower($ext), ['png', 'jpg', 'jpeg', 'webp'])
             || $process === 100
         ) {
             return Storage::url($filename);

@@ -3,9 +3,9 @@
 namespace Zhiyi\Plus\Http\Middleware;
 
 use Closure;
+use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Following;
-use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
 class CheckIsFollow

@@ -3,8 +3,8 @@
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Conversation;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 class SystemController extends Controller
 {
@@ -61,7 +61,7 @@ class SystemController extends Controller
         ->take($limit)
         ->get();
         $datas = [];
-        if (!$list->isEmpty()) {
+        if (! $list->isEmpty()) {
             $datas = $list->toArray();
         }
 

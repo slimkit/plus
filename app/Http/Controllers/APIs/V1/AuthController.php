@@ -2,15 +2,15 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
+use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use Zhuzhichao\IpLocationZh\Ip;
+use Zhiyi\Plus\Models\AuthToken;
+use Zhiyi\Plus\Models\VerifyCode;
 use Illuminate\Support\Facades\DB;
+use Zhiyi\Plus\Models\LoginRecord;
 use Zhiyi\Plus\Handler\SendMessage;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Models\AuthToken;
-use Zhiyi\Plus\Models\LoginRecord;
-use Zhiyi\Plus\Models\User;
-use Zhiyi\Plus\Models\VerifyCode;
-use Zhuzhichao\IpLocationZh\Ip;
 
 class AuthController extends Controller
 {
@@ -71,7 +71,7 @@ class AuthController extends Controller
         $password = $request->input('password', '');
 
         $user = User::byPhone($phone)->first();
-        if (!$user->verifyPassword($password)) {
+        if (! $user->verifyPassword($password)) {
             return response()->json(static::createJsonData([
                 'code' => 1006,
             ]))->setStatusCode(401);
@@ -139,7 +139,7 @@ class AuthController extends Controller
         $shutDownState = 0;
         $refresh_token = $request->input('refresh_token');
 
-        if (!$refresh_token || !($token = AuthToken::withTrashed()->byRefreshToken($refresh_token)->orderByDesc()->first())) {
+        if (! $refresh_token || ! ($token = AuthToken::withTrashed()->byRefreshToken($refresh_token)->orderByDesc()->first())) {
             return response()
                 ->json([
                     'status'  => false,

@@ -2,19 +2,19 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
+use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Followed;
 use Zhiyi\Plus\Models\Following;
-use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\UserDatas;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 class FollowController extends Controller
 {
     public function __construct(Request $request)
     {
         $user = User::find($request->user_id);
-        if (!$user or !$user instanceof User) {
+        if (! $user or ! $user instanceof User) {
             return response()->json(static::createJsonData([
                 'status'  => false,
                 'code'    => 1005,
@@ -97,7 +97,7 @@ class FollowController extends Controller
      */
     public function follows(int $user_id, int $max_id = 0)
     {
-        if (!User::find($user_id)) {
+        if (! User::find($user_id)) {
             return response()->json(static::createJsonData([
                 'status'  => false,
                 'code'    => 1023,
@@ -142,7 +142,7 @@ class FollowController extends Controller
      */
     public function followeds(int $user_id, int $max_id = 0)
     {
-        if (!User::find($user_id)) {
+        if (! User::find($user_id)) {
             return response()->json(static::createJsonData([
                 'status'  => false,
                 'code'    => 1023,
@@ -218,7 +218,7 @@ class FollowController extends Controller
         $allowedKey = ['following_count', 'followed_count'];
 
         if (in_array($method, $allowedMethod) && in_array($countKey, $allowedKey)) {
-            if (!(UserDatas::byKey($countKey)->byUserId($user_id)->first())) {
+            if (! (UserDatas::byKey($countKey)->byUserId($user_id)->first())) {
                 $countModel = new UserDatas();
                 $countModel->key = $countKey;
                 $countModel->user_id = $user_id;

@@ -3,8 +3,8 @@
 namespace Zhiyi\Plus\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User;
+use Illuminate\Http\Request;
 use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
 class CheckUserExsistedByUserId
@@ -21,7 +21,7 @@ class CheckUserExsistedByUserId
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!$request->user_id) {
+        if (! $request->user_id) {
             return response()->json(static::createJsonData([
                 'code'    => 1018,
                 'message' => '目标用户user_id不能为空',
@@ -29,7 +29,7 @@ class CheckUserExsistedByUserId
             ]))->setStatusCode(400);
         }
         $user = User::find($request->user_id);
-        if (!$user) {
+        if (! $user) {
             return response()->json(static::createJsonData([
                 'code'    => 1019,
                 'message' => '目标用户不存在',

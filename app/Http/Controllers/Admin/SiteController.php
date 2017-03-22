@@ -2,14 +2,14 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
-use Carbon\Carbon;
 use Closure;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
-use Zhiyi\Plus\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Zhiyi\Plus\Models\Area;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\CommonConfig;
+use Illuminate\Support\Facades\Cache;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 class SiteController extends Controller
 {
@@ -66,7 +66,7 @@ class SiteController extends Controller
         $callback = function () use ($sites, $requestSites) {
             foreach ($requestSites as $name => $value) {
                 $model = $sites[$name] ?? false;
-                if (!$model) {
+                if (! $model) {
                     $model = new CommonConfig();
                     $model->namespace = 'site';
                     $model->name = $name;
@@ -126,11 +126,11 @@ class SiteController extends Controller
         $extends = $request->input('extends', '');
         $pid = $request->input('pid', 0);
 
-        if (!$name) {
+        if (! $name) {
             return response()->json([
                 'error' => ['name' => '名称不能为空'],
             ])->setStatusCode(422);
-        } elseif ($pid && !Area::find($pid)) {
+        } elseif ($pid && ! Area::find($pid)) {
             return response()->json([
                 'error' => ['pid' => '父地区不存在'],
             ])->setStatusCode(422);
@@ -140,7 +140,7 @@ class SiteController extends Controller
         $area->name = $name;
         $area->extends = $extends;
         $area->pid = $pid;
-        if (!$area->save()) {
+        if (! $area->save()) {
             return response()->json([
                 'error' => ['数据库保存失败'],
             ])->setStatusCode(500);
@@ -192,18 +192,18 @@ class SiteController extends Controller
         $key = $request->input('key');
         $value = $request->input('value', '');
 
-        if (!in_array($key, ['name', 'extends'])) {
+        if (! in_array($key, ['name', 'extends'])) {
             return response()->json([
                 'error' => ['请求不合法'],
             ])->setStatusCode(422);
-        } elseif ($key == 'name' && !$value) {
+        } elseif ($key == 'name' && ! $value) {
             return response()->json([
                 'error' => ['name' => '地区名称不能为空'],
             ])->setStatusCode(422);
         }
 
         $area->$key = $value;
-        if (!$area->save()) {
+        if (! $area->save()) {
             return response()->json([
                 'error' => ['数据更新失败'],
             ])->setStatusCode(500);
@@ -226,7 +226,7 @@ class SiteController extends Controller
      */
     protected function newCommonConfigModel()
     {
-        if (!$this->commonCinfigModel instanceof CommonConfig) {
+        if (! $this->commonCinfigModel instanceof CommonConfig) {
             $this->commonCinfigModel = new CommonConfig();
         }
 

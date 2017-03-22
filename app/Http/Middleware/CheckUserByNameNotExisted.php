@@ -3,8 +3,8 @@
 namespace Zhiyi\Plus\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User;
+use Illuminate\Http\Request;
 use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
 class CheckUserByNameNotExisted
@@ -26,7 +26,7 @@ class CheckUserByNameNotExisted
         $theUser = $request->attributes->get('user');
 
         // 用户名已被使用
-        if (($user && (!$theUser)) || ($user && $theUser && $user->id != $theUser->id)) {
+        if (($user && (! $theUser)) || ($user && $theUser && $user->id != $theUser->id)) {
             return response()->json(static::createJsonData([
                 'code' => 1004,
             ]))->setStatusCode(403);
