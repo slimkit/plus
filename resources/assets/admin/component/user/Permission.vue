@@ -74,7 +74,10 @@
           </td>
           <td></td>
           <td>
-            <button type="button" class="btn btn-primary btn-sm">添加</button>
+            <button v-if="add.adding" class="btn btn-primary btn-sm" disabled="disabled">
+              <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
+            </button>
+            <button v-else type="button" class="btn btn-primary btn-sm">添加</button>
           </td>
         </tr>
 
