@@ -25,7 +25,7 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>节点名称</th>
+          <th>角色名称</th>
           <th>显示名称</th>
           <th>描述</th>
           <th>更新时间</th>
@@ -49,6 +49,32 @@
             <button v-else type="button" class="btn btn-danger btn-sm" @click.prevent="deleteRole(role.id)">删除</button>
           </td>
         </tr>
+
+        <tr>
+          <td>
+            <div class="input-group">
+              <input v-model="add.name" type="text" class="form-control" placeholder="输入角色名称">
+            </div>
+          </td>
+          <td>
+            <div class="input-group">
+              <input v-model="add.display_name" type="text" class="form-control" placeholder="输入显示名称">
+            </div>
+          </td>
+          <td>
+            <div class="input-group">
+              <input v-model="add.description" type="text" class="form-control" placeholder="输入节点描述">
+            </div>
+          </td>
+          <td></td>
+          <td>
+            <button v-if="add.adding" class="btn btn-primary btn-sm" disabled="disabled">
+              <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
+            </button>
+            <button v-else type="button" class="btn btn-primary btn-sm" @click.pervent="postPerm">添加</button>
+          </td>
+        </tr>
+
       </tbody>
     </table>
 
@@ -87,7 +113,13 @@ const RoleComponent = {
      *
      * @type {Array}
      */
-    deleteIds: {}
+    deleteIds: {},
+    add: {
+      name: '',
+      display_name: '',
+      description: '',
+      adding: false
+    }
   }),
   /**
    * methods.
