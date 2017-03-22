@@ -57,6 +57,13 @@ class RoleController extends Controller
         return response()->json($perms)->setStatusCode(200);
     }
 
+    /**
+     * 创建权限节点.
+     *
+     * @param Request $request
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function createPerm(Request $request)
     {
         $name = $request->input('name');
@@ -121,6 +128,13 @@ class RoleController extends Controller
         ])->setStatusCode(201);
     }
 
+    /**
+     * 删除权限节点.
+     *
+     * @param Permission $perm
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function deletePerm(Permission $perm)
     {
         if ($perm->delete()) {
