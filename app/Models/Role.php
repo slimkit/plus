@@ -45,7 +45,7 @@ class Role extends Model
     {
         parent::boot();
         static::deleting(function ($role) {
-            if (!method_exists($this, 'bootSoftDeletes')) {
+            if (!method_exists($role, 'bootSoftDeletes')) {
                 $role->users()->sync([]);
                 $role->perms()->sync([]);
             }
