@@ -14,7 +14,7 @@ Route::middleware('auth:web')->group(function () {
     Route::patch('/site/baseinfo', 'SiteController@updateSiteInfo');
 
     // area
-    Route::get('/site/areas', 'SiteController@areas');;
+    Route::get('/site/areas', 'SiteController@areas');
     Route::post('/site/areas', 'SiteController@doAddArea');
     Route::delete('/site/areas/{id}', 'SiteController@deleteArea');
     Route::patch('/site/areas/{area}', 'SiteController@patchArea');
