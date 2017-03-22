@@ -6,45 +6,34 @@
 
 Route::get('/', 'HomeController@index')
     ->name('admin');
-
 Route::post('/login', 'HomeController@login');
 Route::any('/logout', 'HomeController@logout');
 
-Route::get('/site/baseinfo', 'SiteController@get')
-    ->middleware('auth:web');
-Route::patch('/site/baseinfo', 'SiteController@updateSiteInfo')
-    ->middleware('auth:web');
+Route::middleware('auth:web')->group(function () {
+    Route::get('/site/baseinfo', 'SiteController@get');
+    Route::patch('/site/baseinfo', 'SiteController@updateSiteInfo');
 
-// area
-Route::get('/site/areas', 'SiteController@areas');
-Route::post('/site/areas', 'SiteController@doAddArea')
-    ->middleware('auth:web');
-Route::delete('/site/areas/{id}', 'SiteController@deleteArea')
-    ->middleware('auth:web');
-Route::patch('/site/areas/{area}', 'SiteController@patchArea')
-    ->middleware('auth:web');
+    // area
+    Route::get('/site/areas', 'SiteController@areas');;
+    Route::post('/site/areas', 'SiteController@doAddArea');
+    Route::delete('/site/areas/{id}', 'SiteController@deleteArea');
+    Route::patch('/site/areas/{area}', 'SiteController@patchArea');
 
-// users
-Route::get('/users', 'UserController@users')
-    ->middleware('auth:web');
+    // users
+    Route::get('/users', 'UserController@users');
 
-// roles
-Route::get('/roles', 'RoleController@roles')
-    ->middleware('auth:web');
-Route::post('/roles', 'RoleController@createRole')
-    ->middleware('auth:web');
-Route::delete('/roles/{role}', 'RoleController@delete')
-    ->middleware('auth:web');
+    // roles
+    Route::get('/roles', 'RoleController@roles');
+    Route::post('/roles', 'RoleController@createRole');
+    Route::delete('/roles/{role}', 'RoleController@delete');
+    Route::get('/roles/{role}', 'RoleController@showRole');
 
-// 权限节点
-Route::get('/perms', 'RoleController@perms')
-    ->middleware('auth:web');
-Route::post('/perms', 'RoleController@createPerm')
-    ->middleware('auth:web');
-Route::patch('/perms/{perm}', 'RoleController@updatePerm')
-    ->middleware('auth:web');
-Route::delete('/perms/{perm}', 'RoleController@deletePerm')
-    ->middleware('auth:web');
+    // 权限节点
+    Route::get('/perms', 'RoleController@perms');
+    Route::post('/perms', 'RoleController@createPerm');
+    Route::patch('/perms/{perm}', 'RoleController@updatePerm');
+    Route::delete('/perms/{perm}', 'RoleController@deletePerm');
+});
 
 // Add the route, SPA used mode "history"
 // But, RESTful the route?
