@@ -17,7 +17,7 @@ class Permission extends Model
     {
         parent::boot();
         static::deleting(function ($permission) {
-            if (!method_exists($this, 'bootSoftDeletes')) {
+            if (!method_exists($permission, 'bootSoftDeletes')) {
                 $permission->roles()->sync([]);
             }
 
