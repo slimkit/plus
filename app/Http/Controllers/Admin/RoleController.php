@@ -90,4 +90,15 @@ class RoleController extends Controller
             'messages' => ['更新成功'],
         ])->setStatusCode(201);
     }
+
+    public function deletePerm(Permission $perm)
+    {
+        if ($perm->delete()) {
+            return response('', 204);
+        }
+
+        return response()->json([
+            'errors' => ['删除失败'],
+        ])->setStatusCode(500);
+    }
 }
