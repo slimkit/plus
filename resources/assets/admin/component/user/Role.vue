@@ -71,7 +71,7 @@
             <button v-if="add.adding" class="btn btn-primary btn-sm" disabled="disabled">
               <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
             </button>
-            <button v-else type="button" class="btn btn-primary btn-sm" @click.pervent="postPerm">添加</button>
+            <button v-else type="button" class="btn btn-primary btn-sm" @click.pervent="postRole">添加</button>
           </td>
         </tr>
 
@@ -87,6 +87,7 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
+import lodash from 'lodash';
 
 const RoleComponent = {
   /**
@@ -128,6 +129,36 @@ const RoleComponent = {
    */
   methods: {
     /**
+     * 创建角色
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    postRole () {
+      this.add.adding = true;
+      const { name, display_name, description } = this.add;
+      request.post(
+        createRequestURI('roles'),
+        { name, display_name, description },
+        { validateStatus: status => status === 201 }
+      ).then(({ data }) => {
+        this.roles = [
+          ...this.roles,
+          data
+        ];
+        this.add = {
+          name: '',
+          display_name: '',
+          description: '',
+          adding: false
+        };
+      }).catch(({ response: { data = {} } = {} }) => {
+        const { errors = ['添加失败'] } = data;
+        const errorMessage = lodash.values(errors).pop();
+        this.add.adding = false;
+        window.alert(errorMessage);
+      });
+    },
+    /**
      * delete this.deleteIds item.
      *
      * @param {Number} id
@@ -136,7 +167,7 @@ const RoleComponent = {
     deleteIdsItem (id) {
       let ids = {};
       for (let _id in this.deleteIds) {
-        if (_id !== id) {
+        if (parseInt(_id) !== parseInt(id)) {
           ids[_id] = id;
         }
       }
