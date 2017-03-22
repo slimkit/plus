@@ -31,8 +31,12 @@ Route::get('/users', 'UserController@users')
 // roles
 Route::get('/roles', 'RoleController@roles')
     ->middleware('auth:web');
+Route::post('/roles', 'RoleController@createRole')
+    ->middleware('auth:web');
 Route::delete('/roles/{role}', 'RoleController@delete')
     ->middleware('auth:web');
+
+// 权限节点
 Route::get('/perms', 'RoleController@perms')
     ->middleware('auth:web');
 Route::post('/perms', 'RoleController@createPerm')

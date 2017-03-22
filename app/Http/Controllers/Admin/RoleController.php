@@ -44,6 +44,43 @@ class RoleController extends Controller
     }
 
     /**
+     * 创建角色接口.
+     *
+     * @param Request $request
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function createRole(Request $request)
+    {
+        $name = $request->input('name');
+        $display_name = $request->input('display_name');
+        $description => $request->input('description');
+
+        if (! $name) {
+            return response()->json([
+                'errors' => ['name' => '名称不能为空'],
+            ])->setStatusCode(422);
+        } elseif (Role::where('name', 'LIKE', $name)->first()) {
+            return response()->json([
+                'errors' => ['name' => '名称已经存在'],
+            ])->setStatusCode(422);
+        }
+
+        $role = new Role();
+        $role->name = $name;
+        $role->display_name = $display_name;
+        $role->description = $description;
+
+        if (! $role->save()) {
+            return response()->json([
+                'errors' => ['保存失败'],
+            ])->setStatusCode(400);
+        }
+
+        return response()->json($role)->setStatusCode(201);
+    }
+
+    /**
      * 获取全部权限节点.
      *
      * @return mixed
