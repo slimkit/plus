@@ -95,8 +95,7 @@ const PermissionComponent = {
         const deleteId = (id) => {
           let ids = {};
           for (let _id in this.deleteIds) {
-            if (_id !== id) {
-              console.log(_id !== id);
+            if (parseInt(_id) !== parseInt(id)) {
               ids = {
                 ...ids,
                 [_id]: _id
@@ -104,20 +103,30 @@ const PermissionComponent = {
             }
           }
           this.deleteIds = ids;
-          console.log(ids);
         };
 
         request.delete(
           createRequestURI(`perms/${id}`),
           { validateStatus: status => status === 204 }
-        ).then(() => deleteId(id)).catch(({ response: { data = {} } = {} }) => {
+        ).then(() => {
+          deleteId(id);
+          this.deletePermToState(id);
+        }).catch(({ response: { data = {} } = {} }) => {
           const { errors = ['删除失败'] } = data;
           const errorMessage = lodash.values(errors).pop();
           deleteId(id);
-          console.log(id);
           window.alert(errorMessage);
         });
       }
+    },
+    deletePermToState (id) {
+      let perms = [];
+      this.perms.forEach(perm => {
+        if (parseInt(perm.id) !== parseInt(id)) {
+          perms.push(perm);
+        }
+      });
+      this.perms = perms;
     }
   },
   created () {
