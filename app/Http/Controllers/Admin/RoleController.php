@@ -54,7 +54,7 @@ class RoleController extends Controller
     {
         $name = $request->input('name');
         $display_name = $request->input('display_name');
-        $description => $request->input('description');
+        $description = $request->input('description');
 
         if (! $name) {
             return response()->json([
