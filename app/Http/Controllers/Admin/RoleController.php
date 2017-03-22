@@ -81,7 +81,7 @@ class RoleController extends Controller
     }
 
     /**
-     * 完成获取角色接口
+     * 完成获取角色接口.
      *
      * @param Request $request
      * @param Role $role
@@ -106,7 +106,7 @@ class RoleController extends Controller
 
         return response()->json([
             'perms' => $perms,
-            'role' => $role
+            'role' => $role,
         ])->setStatusCode(200);
     }
 
