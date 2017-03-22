@@ -55,6 +55,29 @@
             <button v-else type="button" class="btn btn-danger btn-sm" @click.prevent="deletePerm(perm.id)">删除</button>
           </td>
         </tr>
+
+        <tr>
+          <td>
+            <div class="input-group">
+              <input v-model="add.name" type="text" class="form-control" placeholder="输入节点名称">
+            </div>
+          </td>
+          <td>
+            <div class="input-group">
+              <input v-model="add.display_name" type="text" class="form-control" placeholder="输入显示名称">
+            </div>
+          </td>
+          <td>
+            <div class="input-group">
+              <input v-model="add.description" type="text" class="form-control" placeholder="输入节点描述">
+            </div>
+          </td>
+          <td></td>
+          <td>
+            <button type="button" class="btn btn-primary btn-sm">添加</button>
+          </td>
+        </tr>
+
       </tbody>
     </table>
 
@@ -68,7 +91,13 @@ import lodash from 'lodash';
 const PermissionComponent = {
   data: () => ({
     perms: [],
-    deleteIds: {}
+    deleteIds: {},
+    add: {
+      name: '',
+      display_name: '',
+      description: '',
+      adding: false
+    }
   }),
   methods: {
     updatePerm (id, key, value) {
