@@ -63,7 +63,7 @@ class RoleController extends Controller
         $display_name = $request->input('display_name');
         $description = $request->input('description');
 
-        if (!$name) {
+        if (! $name) {
             return response()->json([
                 'errors' => ['name' => '名称不能为空'],
             ])->setStatusCode(422);
@@ -80,7 +80,7 @@ class RoleController extends Controller
 
         if (! $perm->save()) {
             return response()->json([
-                'errors' => ['保存失败']
+                'errors' => ['保存失败'],
             ])->setStatusCode(400);
         }
 
