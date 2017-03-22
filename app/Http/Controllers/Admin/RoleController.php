@@ -57,6 +57,36 @@ class RoleController extends Controller
         return response()->json($perms)->setStatusCode(200);
     }
 
+    public function createPerm(Request $request)
+    {
+        $name = $request->input('name');
+        $display_name = $request->input('display_name');
+        $description = $request->input('description');
+
+        if (!$name) {
+            return response()->json([
+                'errors' => ['name' => '名称不能为空'],
+            ])->setStatusCode(422);
+        } elseif (Permission::where('name', 'LIKE', $name)->first()) {
+            return response()->json([
+                'errors' => ['name' => '名称已经存在'],
+            ])->setStatusCode(422);
+        }
+
+        $perm = new Permission();
+        $perm->name = $name;
+        $perm->display_name = $display_name;
+        $perm->description = $description;
+
+        if (! $perm->save()) {
+            return response()->json([
+                'errors' => ['保存失败']
+            ])->setStatusCode(400);
+        }
+
+        return response()->json($perm)->setStatusCode(201);
+    }
+
     /**
      * 更新权限节点.
      *

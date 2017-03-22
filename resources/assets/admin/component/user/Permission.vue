@@ -77,7 +77,7 @@
             <button v-if="add.adding" class="btn btn-primary btn-sm" disabled="disabled">
               <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
             </button>
-            <button v-else type="button" class="btn btn-primary btn-sm">添加</button>
+            <button v-else type="button" class="btn btn-primary btn-sm" @click.pervent="postPerm">添加</button>
           </td>
         </tr>
 
@@ -103,6 +103,32 @@ const PermissionComponent = {
     }
   }),
   methods: {
+    postPerm () {
+      console.log(2);
+      const { name, display_name, description } = this.add;
+      this.add.adding = true;
+      request.post(
+        createRequestURI('perms'),
+        { name, display_name, description },
+        { validateStatus: status => status === 201 }
+      ).then(({ data }) => {
+        this.perms = [
+          ...this.perms,
+          data
+        ];
+        this.add = {
+          name: '',
+          display_name: '',
+          description: '',
+          adding: false
+        };
+      }).catch(({ response: { data = {} } = {} }) => {
+        const { errors = ['更新失败'] } = data;
+        const errorMessage = lodash.values(errors).pop();
+        window.alert(errorMessage);
+        this.add.adding = false;
+      });
+    },
     updatePerm (id, key, value) {
       request.patch(
         createRequestURI(`perms/${id}`),
