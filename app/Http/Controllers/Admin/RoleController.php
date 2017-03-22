@@ -81,6 +81,36 @@ class RoleController extends Controller
     }
 
     /**
+     * 完成获取角色接口
+     *
+     * @param Request $request
+     * @param Role $role
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function showRole(Request $request, Role $role)
+    {
+        $allPerms = $request->has('all_perms');
+        $hasPerms = $request->has('perms');
+
+        // var_dump($perms === true);exit;
+
+        $perms = [];
+        if ($allPerms === true) {
+            $perms = Permission::all();
+        }
+
+        if ($hasPerms === true) {
+            $role->load(['perms']);
+        }
+
+        return response()->json([
+            'perms' => $perms,
+            'role' => $role
+        ])->setStatusCode(200);
+    }
+
+    /**
      * 获取全部权限节点.
      *
      * @return mixed
