@@ -1,6 +1,6 @@
 <template>
   <div class="component-container container-fluid">
-    <button type="button" class="btn btn-default">返回</button>
+    <button type="button" class="btn btn-default" @click="goBack">返回</button>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -50,6 +50,11 @@ const RoleManageComponent = {
         this.perms.forEach(perm => seleced.push(perm.id));
         this.seleced = seleced;
       }
+    }
+  },
+  methods: {
+    goBack () {
+      this.$router.back();
     }
   },
   created () {
