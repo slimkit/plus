@@ -40,7 +40,7 @@
           <td>{{ role.updated_at }}</td>
           <td>
             <!-- 管理分类 -->
-            <button type="button" class="btn btn-primary btn-sm">管理</button>
+            <router-link :to="`${role.id}`" tag="button" append exact type="button" class="btn btn-primary btn-sm">管理</router-link>
 
             <!-- delete role. -->
             <button v-if="deleteIds.hasOwnProperty(role.id)" type="button" class="btn btn-danger btn-sm" disabled="disabled">
@@ -89,7 +89,7 @@
 import request, { createRequestURI } from '../../util/request';
 import lodash from 'lodash';
 
-const RoleComponent = {
+const RolesComponent = {
   /**
    * The component state tree.
    *
@@ -226,5 +226,5 @@ const RoleComponent = {
   }
 };
 
-export default RoleComponent;
+export default RolesComponent;
 </script>

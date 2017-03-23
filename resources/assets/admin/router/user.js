@@ -6,17 +6,18 @@
 
 import User from '../component/User';
 import Manage from '../component/user/Manage';
-import Role from '../component/user/Role';
-import Permission from '../component/user/Permission';
+import Roles from '../component/user/Roles';
+import RoleManage from '../component/user/RoleManage';
+import Permissions from '../component/user/Permissions';
 
 const routers = {
   path: 'users',
   component: User,
   children: [
-    { path: '', redirect: '/users/manage' },
-    { path: 'manage', component: Manage },
-    { path: 'role', component: Role },
-    { path: 'permission', component: Permission }
+    { path: '', component: Manage },
+    { path: 'roles', component: Roles },
+    { path: 'roles/:role', component: RoleManage },
+    { path: 'permissions', component: Permissions }
   ]
 };
 

@@ -91,7 +91,7 @@
 import request, { createRequestURI } from '../../util/request';
 import lodash from 'lodash';
 
-const PermissionComponent = {
+const PermissionsComponent = {
   data: () => ({
     perms: [],
     deleteIds: {},
@@ -197,5 +197,5 @@ const PermissionComponent = {
   }
 };
 
-export default PermissionComponent;
+export default PermissionsComponent;
 </script>
