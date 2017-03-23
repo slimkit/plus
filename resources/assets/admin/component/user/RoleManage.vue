@@ -23,6 +23,11 @@
         </tr>
       </tbody>
     </table>
+
+    <div v-show="loadding" class="component-loadding">
+      <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
+    </div>
+
   </div>
 </template>
 
@@ -33,7 +38,8 @@ const RoleManageComponent = {
   data: () => ({
     perms: [],
     seleced: [],
-    role: {}
+    role: {},
+    loadding: false
   }),
   computed: {
     checkBoxSelectAll: {
@@ -59,6 +65,7 @@ const RoleManageComponent = {
   },
   created () {
     const { params: { role: id } } = this.$route;
+    this.loadding = true;
     request.get(
       createRequestURI(`roles/${id}`),
       {
@@ -76,6 +83,7 @@ const RoleManageComponent = {
       let seleced = [];
       role.perms.forEach(perm => seleced.push(perm.id));
       this.seleced = seleced;
+      this.loadding = false;
     }).catch(() => {
       window.alert('加载失败，请刷新重试！');
     });
