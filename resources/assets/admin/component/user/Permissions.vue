@@ -84,6 +84,10 @@
       </tbody>
     </table>
 
+    <div v-show="loadding" :class="$style.loadding">
+      <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
+    </div>
+
   </div>
 </template>
 
@@ -100,7 +104,8 @@ const PermissionsComponent = {
       display_name: '',
       description: '',
       adding: false
-    }
+    },
+    loadding: true
   }),
   methods: {
     postPerm () {
@@ -193,6 +198,7 @@ const PermissionsComponent = {
       { validateStatus: status => status === 200 }
     ).then(({ data }) => {
       this.perms = data;
+      this.loadding = false;
     }).catch();
   }
 };
