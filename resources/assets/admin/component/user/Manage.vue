@@ -77,7 +77,7 @@
       </div>
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-          <router-link class="btn btn-default" tag="button" :to="{ path: '/users/manage', query: searchQuery }">
+          <router-link class="btn btn-default" tag="button" :to="{ path: '/users', query: searchQuery }">
             搜索
           </router-link>
         </div>
