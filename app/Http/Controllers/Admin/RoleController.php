@@ -114,7 +114,9 @@ class RoleController extends Controller
         $perms = $request->input('perms', []);
         $role->perms()->sync($perms);
 
-        return response()->json($role->perms)->setStatusCode(201);
+        return response()->json([
+            'message' => '更新成功',
+        ])->setStatusCode(201);
     }
 
     /**

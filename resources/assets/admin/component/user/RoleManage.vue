@@ -31,7 +31,7 @@
     <button v-if="submit" type="button" class="btn btn-primary" disabled="disabled">
       <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
     </button>
-    <button v-else type="button" class="btn btn-primary">提交</button>
+    <button v-else type="button" class="btn btn-primary" @click="postPerms">提交</button>
 
   </div>
 </template>
@@ -45,7 +45,7 @@ const RoleManageComponent = {
     seleced: [],
     role: {},
     loadding: false,
-    submit: true
+    submit: false
   }),
   computed: {
     checkBoxSelectAll: {
@@ -65,6 +65,21 @@ const RoleManageComponent = {
     }
   },
   methods: {
+    postPerms () {
+      const seleced = this.seleced;
+      const { id } = this.role;
+      this.submit = true;
+      request.patch(
+        createRequestURI(`roles/${id}`),
+        { perms: seleced },
+        { validateStatus: status => status === 201 }
+      ).then(() => {
+        this.submit = false;
+      }).catch(() => {
+        this.submit = false;
+        window.alert('更新失败');
+      });
+    },
     goBack () {
       this.$router.back();
     }
