@@ -25,6 +25,7 @@ Route::middleware('auth:web')->group(function () {
     // roles
     Route::get('/roles', 'RoleController@roles');
     Route::post('/roles', 'RoleController@createRole');
+    Route::patch('/roles/{role}', 'RoleController@updateRole');
     Route::delete('/roles/{role}', 'RoleController@delete');
     Route::get('/roles/{role}', 'RoleController@showRole');
 

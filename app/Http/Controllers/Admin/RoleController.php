@@ -110,6 +110,13 @@ class RoleController extends Controller
         ])->setStatusCode(200);
     }
 
+    public function updateRole(Request $request, Role $role) {
+        $perms = $request->input('perms', []);
+        $role->perms()->sync($perms);
+
+        return response()->json($role->perms)->setStatusCode(201);
+    }
+
     /**
      * 获取全部权限节点.
      *
