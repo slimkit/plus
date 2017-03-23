@@ -110,7 +110,8 @@ class RoleController extends Controller
         ])->setStatusCode(200);
     }
 
-    public function updateRole(Request $request, Role $role) {
+    public function updateRole(Request $request, Role $role)
+    {
         $perms = $request->input('perms', []);
         $role->perms()->sync($perms);
 
