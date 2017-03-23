@@ -2,24 +2,24 @@
 
 namespace Zhiyi\Plus\Traits;
 
-use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\Comment;
+use Illuminate\Support\Facades\DB;
 
 trait CommentStatistics
 {
-
     public static function boot()
     {
         parent::boot();
     }
+
     /**
-     * 同步创建
+     * 同步创建.
      * @author bs<414606094@qq.com>
      * @param  array  $options [description]
      * @return [type]          [description]
      */
     public function save(array $options = [])
-    {   
+    {
         $component = $this->component;
         unset($this->component);
 
@@ -37,9 +37,8 @@ trait CommentStatistics
             $datas->save();
         });
 
-
         return $this;
-    }     
+    }
 
     // 同步删除
     public function delete()
