@@ -28,6 +28,11 @@
       <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
     </div>
 
+    <button v-if="submit" type="button" class="btn btn-primary" disabled="disabled">
+      <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
+    </button>
+    <button v-else type="button" class="btn btn-primary">提交</button>
+
   </div>
 </template>
 
@@ -39,7 +44,8 @@ const RoleManageComponent = {
     perms: [],
     seleced: [],
     role: {},
-    loadding: false
+    loadding: false,
+    submit: true
   }),
   computed: {
     checkBoxSelectAll: {
