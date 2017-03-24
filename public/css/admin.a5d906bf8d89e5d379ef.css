@@ -264,8 +264,8 @@ h2,
 }
 @font-face {
   font-family: 'Glyphicons Halflings';
-  src: url(../fonts/glyphicons-halflings-regular.eot);
-  src: url(../fonts/glyphicons-halflings-regular.eot?#iefix) format("embedded-opentype"), url(../fonts/glyphicons-halflings-regular.woff2) format("woff2"), url(../fonts/glyphicons-halflings-regular.woff) format("woff"), url(../fonts/glyphicons-halflings-regular.ttf) format("truetype"), url(../images/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format("svg");
+  src: url(../fonts/f4769f9bdb7466be65088239c12046d1.eot);
+  src: url(../fonts/f4769f9bdb7466be65088239c12046d1.eot?#iefix) format("embedded-opentype"), url(../fonts/448c34a56d699c29117adc64c43affeb.woff2) format("woff2"), url(../fonts/fa2772327f55d8198301fdb8bcfc8158.woff) format("woff"), url(../fonts/e18bbf611f2a2e43afc071aa2f4e1512.ttf) format("truetype"), url(../images/89889688147bd7575d6327160d64e760.svg#glyphicons_halflingsregular) format("svg");
 }
 .glyphicon {
   position: relative;
@@ -6841,5 +6841,3 @@ to {
   overflow: auto;
   border: none;
 }
-
-/*# sourceMappingURL=admin.css.map*/

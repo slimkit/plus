@@ -83,7 +83,7 @@ const plugins = isProd ?
     compress: {
       warnings: false
     },
-    sourceMap: !isProd
+    sourceMap: false
   })
 ] : 
 [
