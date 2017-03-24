@@ -110,7 +110,12 @@
           <td>{{ user.email }}</td>
           <td>{{ user.phone }}</td>
           <td>{{ user.created_at }}</td>
-          <td></td>
+          <td>
+            <!-- 编辑 -->
+            <button type="button" class="btn btn-primary btn-sm">编辑</button>
+            <!-- 删除 -->
+            <button type="button" class="btn btn-danger btn-sm">删除</button>
+          </td>
         </tr>
       </tbody>
     </table>
