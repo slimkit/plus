@@ -9,6 +9,13 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
+    /**
+     * 获取用户列表数据
+     *
+     * @param Request $request
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function users(Request $request)
     {
         $sort = $request->query('sort');
@@ -66,5 +73,28 @@ class UserController extends Controller
         $datas['page'] = $builder->paginate($perPage);
 
         return response()->json($datas)->setStatusCode(200);
+    }
+
+    public function createUser(Request $request)
+    {
+        $name = $request->input('name');
+        $phone = $request->input('phone');
+        $password = $request->input('password');
+
+        $user = new User();
+        $user->name = $name;
+        $user->phone = $phone;
+        $user->createPassword($password);
+
+        if (! $user->save()) {
+            return response()->json([
+                'errors' => ['添加失败'],
+            ])->setStatusCode(400);
+        }
+
+        return response()->json([
+            'message' => '成功',
+            'user_id' => $user->id,
+        ])->setStatusCode(201);
     }
 }

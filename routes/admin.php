@@ -1,6 +1,6 @@
 <?php
 
-// use Zhiyi\Plus\Http\Middleware;
+use Zhiyi\Plus\Http\Middleware;
 
 // admin router.
 
@@ -21,6 +21,9 @@ Route::middleware('auth:web')->group(function () {
 
     // users
     Route::get('/users', 'UserController@users');
+    Route::post('/users', 'UserController@createUser')
+        ->middleware(Middleware\CheckUserByNameNotExisted::class)
+        ->middleware(Middleware\CheckUserByPhoneNotExisted::class);
 
     // roles
     Route::get('/roles', 'RoleController@roles');
