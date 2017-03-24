@@ -72,6 +72,7 @@
         <div class="col-sm-8">
           <select v-model="role" class="form-control" id="search-input-name">
             <option value="0">全部</option>
+            <option v-for="({ id, display_name }) in roles" :key="id" :value="id">{{ display_name }}</option>
           </select>
         </div>
       </div>
@@ -153,7 +154,9 @@ const ManageComponent = {
     perPage: 20,
     total: 0,
     users: [],
-    loadding: false
+    loadding: false,
+    showRole: true,
+    roles: []
   }),
   computed: {
     queryParams () {
@@ -238,14 +241,19 @@ const ManageComponent = {
       request.get(
         createRequestURI('users'),
         {
-          params: this.queryParams,
+          params: { ...this.queryParams, show_role: this.showRole },
           validateStatus: status => status === 200
         }
-      ).then(({ data }) => {
+      ).then(response => {
+        const { page: data, roles } = response.data;
+
         this.users = data.data || [];
         this.lastPage = parseInt(data.last_page);
         this.total = parseInt(data.total);
         this.loadding = false;
+        this.showRole = false;
+
+        this.roles = roles;
       }).catch(({ response }) => console.log(response));
     }
   },
@@ -277,6 +285,7 @@ const ManageComponent = {
     this.lastPage = parseInt(lastPage);
     this.perPage = parseInt(perPage);
     this.page = parseInt(page);
+    this.showRole = true;
 
     this.getUsers();
   }

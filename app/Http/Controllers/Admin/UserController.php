@@ -5,6 +5,7 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\Role;
 
 class UserController extends Controller
 {
@@ -17,6 +18,7 @@ class UserController extends Controller
         $phone = $request->query('phone');
         $role = $request->query('role');
         $perPage = $request->query('perPage', 10);
+        $showRole = $request->has('show_role');
 
         $builder = with(new User())->newQuery();
 
@@ -54,6 +56,13 @@ class UserController extends Controller
             $query->where('id', $role);
         });
 
-        return response()->json($builder->paginate($perPage));
+        $data = [];
+        $data['page'] = $builder->paginate($perPage);
+
+        if ($showRole) {
+            $data['roles'] = Role::all();
+        }
+
+        return response()->json($data)->setStatusCode(200);
     }
 }
