@@ -30,6 +30,7 @@ class UserController extends Controller
         // user id
         if ($userId && $users = $builder->where('id', $userId)->paginate($perPage)) {
             $datas['page'] = $users;
+
             return response()->json($datas)->setStatusCode(200);
         }
 
