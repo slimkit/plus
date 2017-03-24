@@ -106,7 +106,7 @@ class UserController extends Controller
     }
 
     /**
-     * 删除用户
+     * 删除用户.
      *
      * @param User $user
      * @return mixed
