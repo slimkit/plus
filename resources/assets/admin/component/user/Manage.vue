@@ -117,7 +117,7 @@
             <button v-if="deleteIds.indexOf(user.id) !== -1" type="button" class="btn btn-danger btn-sm" disabled="disabled">
               <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
             </button>
-            <button v-else type="button" class="btn btn-danger btn-sm">删除</button>
+            <button v-else type="button" class="btn btn-danger btn-sm" @click="deleteUser(user.id)">删除</button>
           </td>
         </tr>
       </tbody>
@@ -229,6 +229,29 @@ const ManageComponent = {
    * @type {Object}
    */
   methods: {
+    deleteIdsUnTo (userId) {
+      let deleteIds = [];
+      this.deleteIds.forEach(id => {
+        if (id !== userId) {
+          deleteIds.push(id);
+        }
+      });
+      this.deleteIds = deleteIds;
+    },
+    deleteUser (userId) {
+      if (window.confirm('确定要删除用户吗？')) {
+        this.deleteIds = [ ...this.deleteIds, userId ];
+        request.delete(
+          createRequestURI(`users/${userId}`),
+          { validateStatus: status => status === 204 }
+        ).then(() => {
+          this.deleteIdsUnTo(userId);
+        }).catch(() => {
+          this.deleteIdsUnTo(userId);
+          window.alert('删除失败');
+        });
+      }
+    },
     /**
      * 改变用户排序状态方法.
      *
