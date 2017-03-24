@@ -75,6 +75,13 @@ class UserController extends Controller
         return response()->json($datas)->setStatusCode(200);
     }
 
+    /**
+     * 创建用户.
+     *
+     * @param Request $request
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function createUser(Request $request)
     {
         $name = $request->input('name');
@@ -96,5 +103,19 @@ class UserController extends Controller
             'message' => '成功',
             'user_id' => $user->id,
         ])->setStatusCode(201);
+    }
+
+    /**
+     * 删除用户
+     *
+     * @param User $user
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function deleteUser(User $user)
+    {
+        $user->delete();
+
+        return response('', 204);
     }
 }

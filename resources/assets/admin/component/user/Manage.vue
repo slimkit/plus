@@ -246,6 +246,13 @@ const ManageComponent = {
           { validateStatus: status => status === 204 }
         ).then(() => {
           this.deleteIdsUnTo(userId);
+          let users = [];
+          this.users.forEach(user => {
+            if (user.id !== userId) {
+              users.push(user);
+            }
+          });
+          this.users = users;
         }).catch(() => {
           this.deleteIdsUnTo(userId);
           window.alert('删除失败');

@@ -26,6 +26,7 @@ Route::middleware('auth:web')->group(function () {
         ->middleware(Middleware\VerifyPhoneNumber::class)
         ->middleware(Middleware\CheckUserByNameNotExisted::class)
         ->middleware(Middleware\CheckUserByPhoneNotExisted::class);
+    Route::delete('/users/{user}', 'UserController@deleteUser');
 
     // roles
     Route::get('/roles', 'RoleController@roles');
