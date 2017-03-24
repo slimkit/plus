@@ -27,7 +27,7 @@
       <div class="form-group">
         <label for="password" class="col-sm-2 control-label">密码</label>
         <div class="col-sm-6">
-          <input type="password" class="form-control" id="password" aria-describedby="password-help-block" placeholder="请输入手机号码" v-model="password">
+          <input type="password" class="form-control" id="password" aria-describedby="password-help-block" placeholder="请输入用户密码" v-model="password">
         </div>
         <span class="col-sm-4 help-block" id="password-help-block">
           用户密码
