@@ -40,7 +40,7 @@
         <button v-if="adding" type="button" class="btn btn-primary" disabled="disabled">
           <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
         </button>
-        <button v-else type="button" class="btn btn-primary">添加用户</button>
+        <button v-else type="button" class="btn btn-primary" @click="createUser">添加用户</button>
       </div>
     </div>
 
@@ -55,7 +55,13 @@ const UserAddComponent = {
     phone: '',
     password: '',
     adding: false
-  })
+  }),
+  methods: {
+    createUser () {
+      this.adding = true;
+      // todo
+    }
+  }
 };
 
 export default UserAddComponent;
