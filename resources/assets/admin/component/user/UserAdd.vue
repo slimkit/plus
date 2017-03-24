@@ -35,31 +35,59 @@
       </div>
 
       <!-- Button -->
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <button v-if="adding" type="button" class="btn btn-primary" disabled="disabled">
-          <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
-        </button>
-        <button v-else type="button" class="btn btn-primary" @click="createUser">添加用户</button>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button v-if="adding" type="button" class="btn btn-primary" disabled="disabled">
+            <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
+          </button>
+          <button v-else type="button" class="btn btn-primary" @click="createUser">添加用户</button>
+        </div>
       </div>
-    </div>
+
+      <div v-show="errorMessage" class="alert alert-danger alert-dismissible" role="alert">
+        <button type="button" class="close" @click.prevent="dismisError">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {{ errorMessage }}
+      </div>
 
     </div>
   </div>
 </template>
 
 <script>
+import request, { createRequestURI } from '../../util/request';
+import lodash from 'lodash';
+
 const UserAddComponent = {
   data: () => ({
     name: '',
     phone: '',
     password: '',
-    adding: false
+    adding: false,
+    errorMessage: ''
   }),
   methods: {
     createUser () {
       this.adding = true;
-      // todo
+      request.post(
+        createRequestURI('users'),
+        { name: this.name, phone: this.phone, password: this.password },
+        { validateStatus: status => status === 201 }
+      ).then(({ data: { user_id: userId } }) => {
+        this.$router.replace({ path: '/users', query: { userId } });
+      }).catch(({ response: { data = {} } = {} }) => {
+        const { errors = ['添加失败'], code } = data;
+        const { [code]: errorMessage = lodash.values(errors).pop() } = {
+          '1004': '用户名已经被使用',
+          '1010': '手机号码已经被使用'
+        };
+        this.errorMessage = errorMessage;
+        this.adding = false;
+      });
+    },
+    dismisError () {
+      this.errorMessage = '';
     }
   }
 };
