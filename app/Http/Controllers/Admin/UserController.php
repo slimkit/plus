@@ -10,7 +10,7 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 class UserController extends Controller
 {
     /**
-     * 获取用户列表数据
+     * 获取用户列表数据.
      *
      * @param Request $request
      * @return mixed
