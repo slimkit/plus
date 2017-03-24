@@ -114,7 +114,10 @@
             <!-- 编辑 -->
             <button type="button" class="btn btn-primary btn-sm">编辑</button>
             <!-- 删除 -->
-            <button type="button" class="btn btn-danger btn-sm">删除</button>
+            <button v-if="deleteIds.indexOf(user.id) !== -1" type="button" class="btn btn-danger btn-sm" disabled="disabled">
+              <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
+            </button>
+            <button v-else type="button" class="btn btn-danger btn-sm">删除</button>
           </td>
         </tr>
       </tbody>
@@ -161,7 +164,8 @@ const ManageComponent = {
     users: [],
     loadding: false,
     showRole: true,
-    roles: []
+    roles: [],
+    deleteIds: []
   }),
   computed: {
     queryParams () {
