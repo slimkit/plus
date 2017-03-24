@@ -18,10 +18,10 @@
   <div class="container-fluid" :class="$style.container">
     <div class="well well-sm">
       检索用户
-      <a class="btn btn-link pull-right btn-xs" href="#" role="button">
+      <router-link tag="a" class="btn btn-link pull-right btn-xs" to="/users/add" role="button">
         <span class="glyphicon glyphicon-plus"></span>
         添加用户
-      </a>
+      </router-link>
     </div>
 
     <!-- 搜索用户 -->

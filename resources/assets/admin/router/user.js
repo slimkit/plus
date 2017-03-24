@@ -5,6 +5,7 @@
  */
 
 import User from '../component/User';
+import UserAdd from '../component/user/UserAdd';
 import Manage from '../component/user/Manage';
 import Roles from '../component/user/Roles';
 import RoleManage from '../component/user/RoleManage';
@@ -15,6 +16,7 @@ const routers = {
   component: User,
   children: [
     { path: '', component: Manage },
+    { path: 'add', component: UserAdd },
     { path: 'roles', component: Roles },
     { path: 'roles/:role', component: RoleManage },
     { path: 'permissions', component: Permissions }
