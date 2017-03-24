@@ -37,7 +37,10 @@
       <!-- Button -->
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-primary">添加</button>
+        <button v-if="adding" type="button" class="btn btn-primary" disabled="disabled">
+          <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
+        </button>
+        <button v-else type="button" class="btn btn-primary">添加用户</button>
       </div>
     </div>
 
@@ -50,7 +53,8 @@ const UserAddComponent = {
   data: () => ({
     name: '',
     phone: '',
-    password: ''
+    password: '',
+    adding: false
   })
 };
 
