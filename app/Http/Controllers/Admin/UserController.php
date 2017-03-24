@@ -22,9 +22,15 @@ class UserController extends Controller
 
         $builder = with(new User())->newQuery();
 
+        $datas = [];
+        if ($showRole) {
+            $datas['roles'] = Role::all();
+        }
+
         // user id
         if ($userId && $users = $builder->where('id', $userId)->paginate($perPage)) {
-            return response()->json($users);
+            $datas['page'] = $users;
+            return response()->json($datas)->setStatusCode(200);
         }
 
         foreach ([
@@ -56,13 +62,8 @@ class UserController extends Controller
             $query->where('id', $role);
         });
 
-        $data = [];
-        $data['page'] = $builder->paginate($perPage);
+        $datas['page'] = $builder->paginate($perPage);
 
-        if ($showRole) {
-            $data['roles'] = Role::all();
-        }
-
-        return response()->json($data)->setStatusCode(200);
+        return response()->json($datas)->setStatusCode(200);
     }
 }
