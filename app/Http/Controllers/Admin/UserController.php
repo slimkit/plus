@@ -6,10 +6,10 @@ use Exception;
 use Zhiyi\Plus\Models\Role;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Http\Middleware\VerifyUserNameRole;
-use Zhiyi\Plus\Http\Middleware\VerifyPhoneNumber;
 use Illuminate\Http\JsonResponse;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Http\Middleware\VerifyPhoneNumber;
+use Zhiyi\Plus\Http\Middleware\VerifyUserNameRole;
 
 class UserController extends Controller
 {
@@ -124,11 +124,11 @@ class UserController extends Controller
     }
 
     public function showUser(User $user)
-    {   
+    {
         $data = [
-            'user' => $user
+            'user' => $user,
         ];
-        
+
         return response()->json($data)->setStatusCode(200);
     }
 
@@ -139,7 +139,7 @@ class UserController extends Controller
             $this->throwResponseError($user = $this->updateUserPhone($request, $user));
         } catch (Exception $e) {
             return response()->json([
-                'errors' => [$e->getMessage()]
+                'errors' => [$e->getMessage()],
             ])->setStatusCode($e->getCode());
         }
     }
@@ -151,12 +151,12 @@ class UserController extends Controller
      * @return [type] [description]
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function throwResponseError ($mixed)
+    protected function throwResponseError($mixed)
     {
         if ($mixed instanceof JsonResponse) {
             $data = $mixed->getData();
             throw new Exception($data['message'], $mixed->getStatusCode());
-        } elseif (!$mixed instanceof User) {
+        } elseif (! $mixed instanceof User) {
             throw new Exception('更新失败', 422);
         }
     }
@@ -178,13 +178,11 @@ class UserController extends Controller
         }
 
         return app(VerifyPhoneNumber::class)->handle($request, function () use ($user, $phone) {
-
-
         });
     }
 
     /**
-     * 修改用户名称
+     * 修改用户名称.
      *
      * @param Request $request
      * @param User $user
