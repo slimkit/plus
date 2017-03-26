@@ -112,7 +112,7 @@
           <td>{{ user.created_at }}</td>
           <td>
             <!-- 编辑 -->
-            <button type="button" class="btn btn-primary btn-sm">编辑</button>
+            <router-link type="button" class="btn btn-primary btn-sm" :to="`/users/manage/${user.id}`" >编辑</router-link>
             <!-- 删除 -->
             <button v-if="deleteIds.indexOf(user.id) !== -1" type="button" class="btn btn-danger btn-sm" disabled="disabled">
               <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>

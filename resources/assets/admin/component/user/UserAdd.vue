@@ -23,7 +23,7 @@
         </span>
       </div>
 
-       <!-- password -->
+      <!-- password -->
       <div class="form-group">
         <label for="password" class="col-sm-2 control-label">密码</label>
         <div class="col-sm-6">

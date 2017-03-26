@@ -2,10 +2,14 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
+use Exception;
 use Zhiyi\Plus\Models\Role;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Http\Middleware\VerifyUserNameRole;
+use Zhiyi\Plus\Http\Middleware\VerifyPhoneNumber;
+use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
@@ -117,5 +121,93 @@ class UserController extends Controller
         $user->delete();
 
         return response('', 204);
+    }
+
+    public function showUser(User $user)
+    {   
+        $data = [
+            'user' => $user
+        ];
+        
+        return response()->json($data)->setStatusCode(200);
+    }
+
+    public function updateUser(Request $request, User $user)
+    {
+        try {
+            $this->throwResponseError($user = $this->updateUsername($request, $user));
+            $this->throwResponseError($user = $this->updateUserPhone($request, $user));
+        } catch (Exception $e) {
+            return response()->json([
+                'errors' => [$e->getMessage()]
+            ])->setStatusCode($e->getCode());
+        }
+    }
+
+    /**
+     * 用于执行部分更新验证，非按照要求抛出异常.
+     *
+     * @param [type] $mixed [description]
+     * @return [type] [description]
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function throwResponseError ($mixed)
+    {
+        if ($mixed instanceof JsonResponse) {
+            $data = $mixed->getData();
+            throw new Exception($data['message'], $mixed->getStatusCode());
+        } elseif (!$mixed instanceof User) {
+            throw new Exception('更新失败', 422);
+        }
+    }
+
+    /**
+     * 更新用户手机号码.
+     *
+     * @param Request $request
+     * @param User $user
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function updateUserPhone(Request $request, User $user)
+    {
+        $phone = $request->input('phone');
+
+        if (! $phone) {
+            return $user;
+        }
+
+        return app(VerifyPhoneNumber::class)->handle($request, function () use ($user, $phone) {
+
+
+        });
+    }
+
+    /**
+     * 修改用户名称
+     *
+     * @param Request $request
+     * @param User $user
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function updateUsername(Request $request, User $user)
+    {
+        $name = $request->input('name');
+        if (! $name) {
+            return $user;
+        }
+
+        return app(VerifyUserNameRole::class)->handle($request, function () use ($user, $name) {
+            $theUser = User::byName($name)->withTrashed()->first();
+
+            if (($user && ! $theUser) || ($user && $theUser && $user->id != $theUser->id)) {
+                throw new Exception('用户名已经被其他用户所使用', 422);
+            }
+
+            $user->name = $name;
+
+            return $user;
+        });
     }
 }
