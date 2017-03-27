@@ -113,7 +113,7 @@ class Storage
     public function getEngineOption(string $engins, array $defaultOption = []): array
     {
         $option = json_decode($this->getEngineOptionModel($engine)->value, true);
-        if (! $option || empty($option) || !is_array($option)) {
+        if (! $option || empty($option) || ! is_array($option)) {
             return $defaultOption;
         }
 
@@ -121,7 +121,7 @@ class Storage
     }
 
     /**
-     * 设置储存引擎配置
+     * 设置储存引擎配置.
      *
      * @param string $engins
      * @param array $option
