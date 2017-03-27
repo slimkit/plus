@@ -3,15 +3,14 @@
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Exception;
-use Validator;
 use Zhiyi\Plus\Models\Role;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Illuminate\Validation\ValidationException;
 use Zhiyi\Plus\Http\Middleware\VerifyPhoneNumber;
 use Zhiyi\Plus\Http\Middleware\VerifyUserNameRole;
-use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -161,9 +160,8 @@ class UserController extends Controller
             }
 
             return response()->json([
-                'message' => '更新成功！'
+                'message' => '更新成功！',
             ])->setStatusCode(201);
-
         } catch (Exception $e) {
             return response()->json([
                 'errors' => [$e->getMessage()],
