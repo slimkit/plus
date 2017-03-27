@@ -159,10 +159,13 @@ class UserController extends Controller
             $this->throwResponseError($user = $this->updateUsername($request, $user));
             $this->throwResponseError($user = $this->updateUserPhone($request, $user));
             $this->throwResponseError($user = $this->updateUserEmail($request, $user));
+            $this->throwResponseError($user = $this->updateUserPassword($request, $user));
 
             if (! $user->save()) {
                 throw new Exception('更新失败', 400);
             }
+
+            $this->throwResponseError($user = $this->syncUserRoles($request, $user));
 
             return response()->json([
                 'message' => '更新成功！',
@@ -192,6 +195,48 @@ class UserController extends Controller
     }
 
     /**
+     * 同步用户角色.
+     *
+     * @param Request $request
+     * @param User $user
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function syncUserRoles(Request $request, User $user)
+    {
+        $roles = $request->input('roles', []);
+
+        if (! is_array($roles)) {
+            throw new Exception('上传角色数据错误', 422);
+        } elseif (count($roles) < 1) {
+            throw new Exception('请选择用户角色', 422);
+        }
+
+        $user->roles()->sync($roles);
+
+        return $user;
+    }
+
+    /**
+     * 更新用户密码
+     *
+     * @param Request $request
+     * @param User $user
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function updateUserPassword(Request $request, User $user)
+    {
+        $password = $request->input('password');
+
+        if ($password) {
+            $user->createPassword($password);
+        }
+
+        return $user;
+    }
+
+    /**
      * 更新用户邮箱.
      *
      * @param Request $request
@@ -199,7 +244,7 @@ class UserController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function updateUserEmail(Request $request, User $user)
+    protected function updateUserEmail(Request $request, User $user)
     {
         $email = $request->input('email');
 
