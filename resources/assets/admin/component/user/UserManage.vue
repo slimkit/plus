@@ -1,3 +1,9 @@
+<style lang="css" module>
+.roleItem {
+  margin-right: 10px;
+}
+</style>
+
 <template>
   <div class="component-container container-fluid form-horizontal">
      <!-- user name -->
@@ -44,6 +50,18 @@
         </span>
       </div>
 
+      <div class="form-group">
+        <label class="col-sm-2 control-label">角色</label>
+        <div class="col-sm-6">
+          <label v-for="role in roles" :key="role.id" :class="$style.roleItem">
+            <input type="checkbox" :value="role.id" v-model="selecedRoles" /> {{ role.display_name }}
+          </label>
+        </div>
+        <span class="col-sm-4 help-block" id="role-help-block">
+          选择用户拥有的角色
+        </span>
+      </div>
+
       <!-- Button -->
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
@@ -72,15 +90,19 @@ const UserManageComponent = {
     changeIn: false,
     password: '',
     error: null,
-    user: {}
+    user: {},
+    roles: [],
+    selecedRoles: []
   }),
   methods: {
     updateUser () {
       this.changeIn = true;
       const { id, name, phone, email } = this.user;
+      const roles = this.selecedRoles;
+      const password = this.password;
       request.patch(
         createRequestURI(`users/${id}`),
-        { name, phone, email },
+        { name, phone, email, password, roles },
         { validateStatus: status => status === 201 }
       ).then(() => {
         this.changeIn = false;
@@ -98,9 +120,17 @@ const UserManageComponent = {
     const { params: { userId } } = this.$route;
     request.get(
       createRequestURI(`users/${userId}`),
-      { validateStatus: status => status === 200 }
-    ).then(({ data: { user } }) => {
+      {
+        params: { show_role: 1 },
+        validateStatus: status => status === 200
+      }
+    ).then(({ data: { user, roles } }) => {
       this.user = user;
+      this.roles = roles;
+
+      let selecedRoles = [];
+      user.roles.forEach(role => selecedRoles.push(role.id));
+      this.selecedRoles = selecedRoles;
     }).catch(() => {
       window.alert('加载失败');
     });
