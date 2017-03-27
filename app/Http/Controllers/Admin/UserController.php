@@ -131,10 +131,15 @@ class UserController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function showUser(User $user)
+    public function showUser(Request $request, User $user)
     {
+        $showRole = $request->query('show_role');
+
+        $user->load(['roles']);
+
         $data = [
             'user' => $user,
+            'roles' => $showRole ? Role::all() : [],
         ];
 
         return response()->json($data)->setStatusCode(200);
