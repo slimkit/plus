@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Services\Storage;
+use Zhiyi\Plus\Models\CommonConfig;
 
 class CommonConfigSeeder extends Seeder
 {
@@ -18,7 +18,7 @@ class CommonConfigSeeder extends Seeder
     }
 
     /**
-     * 网站基础信息
+     * 网站基础信息.
      *
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -29,25 +29,25 @@ class CommonConfigSeeder extends Seeder
             [
                 'name' => 'title',
                 'namespace' => 'site',
-                'value' => 'ThinkSNS +'
+                'value' => 'ThinkSNS +',
             ],
             // 网站关键词
             [
                 'name' => 'keywords',
                 'namespace' => 'site',
-                'value' => 'ts,ts+,thinksns,plus,laravel'
+                'value' => 'ts,ts+,thinksns,plus,laravel',
             ],
             // 网站描述
             [
                 'name' => 'description',
                 'namespace' => 'site',
-                'value' => '基于 Laravel 而生的未来中心用户核心系统'
+                'value' => '基于 Laravel 而生的未来中心用户核心系统',
             ],
             // 备案信息
             [
                 'name' => 'icp',
                 'namespace' => 'site',
-                'value' => '蜀ICP备xxxxxxxx号-1'
+                'value' => '蜀ICP备xxxxxxxx号-1',
             ],
         ];
         foreach ($sites as $config) {
@@ -62,7 +62,7 @@ class CommonConfigSeeder extends Seeder
      */
     protected function seedStorage()
     {
-        /**
+        /*
          * 插入默认储存引擎配置
          */
         app(Storage::class)->setEngines([]);
@@ -71,7 +71,7 @@ class CommonConfigSeeder extends Seeder
         CommonConfig::create([
             'name' => 'select',
             'namespace' => 'storage',
-            'value' => 'local'
+            'value' => 'local',
         ]);
     }
 }
