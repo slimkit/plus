@@ -9,6 +9,7 @@ import Base from '../component/setting/Base';
 import Area from '../component/setting/Area';
 import Filter from '../component/setting/Filter';
 import AppTheme from '../component/setting/AppTheme';
+import StoreageManage from '../component/setting/StoreageManage';
 
 const settingRouter = {
   path: 'setting',
@@ -30,6 +31,10 @@ const settingRouter = {
     {
       path: 'app/theme',
       component: AppTheme
+    },
+    {
+      path: 'storeages',
+      component: StoreageManage
     }
   ]
 };

@@ -23,6 +23,9 @@
       <router-link to="/setting/filter" tag="li" active-class="active">
         <a href="#">过滤词库</a>
       </router-link>
+      <router-link to="/setting/storeages" tag="li" active-class="active">
+        <a href="#">储存管理</a>
+      </router-link>
     </ul>
     <!-- End settings nav. -->
 
