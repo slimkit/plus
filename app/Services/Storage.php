@@ -81,6 +81,64 @@ class Storage
     }
 
     /**
+     * 获取储存引擎配置模型.
+     *
+     * @param string $engine
+     * @return \Zhiyi\Plus\Models\CommonConfig
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function getEngineOptionModel(string $engine): CommonConfig
+    {
+        $engine = CommonConfig::byNamespace('storage')->byName($engine)->first();
+
+        if (! $engine) {
+            $engine = new CommonConfig();
+            $engine->namespace = 'storage';
+            $engine->name = $engine;
+            $engine->value = json_encode([]);
+            $engine->save();
+        }
+
+        return $engine;
+    }
+
+    /**
+     * 获取储存引擎配置.
+     *
+     * @param string $engins
+     * @param array $defaultOption
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function getEngineOption(string $engins, array $defaultOption = []): array
+    {
+        $option = json_decode($this->getEngineOptionModel($engine)->value, true);
+        if (! $option || empty($option) || !is_array($option)) {
+            return $defaultOption;
+        }
+
+        return $option;
+    }
+
+    /**
+     * 设置储存引擎配置
+     *
+     * @param string $engins
+     * @param array $option
+     * @param array $baseOption
+     * @return bool
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function setEngineOption(string $engins, array $option, array $baseOption = []): bool
+    {
+        $option = array_merge($baseOption, $option);
+        $engineOption = $this->getEngineOptionModel();
+        $engineOption->value = json_encode($option);
+
+        return $engineOption->save();
+    }
+
+    /**
      * 设置所有的储存引擎.
      *
      * @param array $engines
