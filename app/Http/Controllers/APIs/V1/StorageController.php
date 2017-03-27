@@ -11,8 +11,15 @@ use Zhiyi\Plus\Models\Storage as StorageModel;
 
 class StorageController extends Controller
 {
-    protected static $storage;
-
+    /**
+     * 获取储存资源
+     *
+     * @param Request $request
+     * @param StorageModel $storage
+     * @param int|integer $process
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function get(Request $request, StorageModel $storage, int $process = 100)
     {
         $url = $this->storage()->url($storage->filename, $process);
@@ -159,10 +166,6 @@ class StorageController extends Controller
 
     protected function storage()
     {
-        if (! static::$storage instanceof Storage) {
-            static::$storage = new Storage();
-        }
-
-        return static::$storage;
+        return app(\Zhiyi\Plus\Services\Storage::class)->getStorage();
     }
 }
