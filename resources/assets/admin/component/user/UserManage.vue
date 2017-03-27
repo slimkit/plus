@@ -76,7 +76,19 @@ const UserManageComponent = {
   }),
   methods: {
     updateUser () {
-      console.log(this);
+      this.changeIn = true;
+      const { id, name, phone, email } = this.user;
+      request.patch(
+        createRequestURI(`users/${id}`),
+        { name, phone, email },
+        { validateStatus: status => status === 201 }
+      ).then(() => {
+        this.changeIn = false;
+      }).catch(({ response: { data: { errors = [] } = {} } = {} }) => {
+        const [ errorMessage = '更新失败' ] = errors;
+        this.error = errorMessage;
+        this.changeIn = false;
+      });
     },
     dismisError () {
       this.error = null;
