@@ -24,7 +24,7 @@ class CommonConfigSeeder extends Seeder
      */
     protected function seedSite()
     {
-        CommonConfig::create([
+        $sites = [
             // 网站标题
             [
                 'name' => 'title',
@@ -45,11 +45,14 @@ class CommonConfigSeeder extends Seeder
             ],
             // 备案信息
             [
-                'name' = 'icp',
+                'name' => 'icp',
                 'namespace' => 'site',
                 'value' => '蜀ICP备xxxxxxxx号-1'
-            ]
-        ]);
+            ],
+        ];
+        foreach ($sites as $config) {
+            CommonConfig::create($config);
+        }
     }
 
     /**
