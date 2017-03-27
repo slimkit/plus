@@ -181,7 +181,7 @@ class Storage
             $engineModel = new CommonConfig();
             $engineModel->namespace = 'storage';
             $engineModel->name = 'engines';
-            $engineModel->value = $this->defaultEngines();
+            $engineModel->value = json_encode($this->defaultEngines());
             $engineModel->save();
         }
 
