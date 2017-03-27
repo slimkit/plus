@@ -3,6 +3,7 @@
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Exception;
+use Validator;
 use Zhiyi\Plus\Models\Role;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
@@ -10,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Http\Middleware\VerifyPhoneNumber;
 use Zhiyi\Plus\Http\Middleware\VerifyUserNameRole;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -123,6 +125,13 @@ class UserController extends Controller
         return response('', 204);
     }
 
+    /**
+     * 获取用户资料.
+     *
+     * @param User $user
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function showUser(User $user)
     {
         $data = [
@@ -132,11 +141,29 @@ class UserController extends Controller
         return response()->json($data)->setStatusCode(200);
     }
 
+    /**
+     * 更新用户资料.
+     *
+     * @param Request $request
+     * @param User $user
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function updateUser(Request $request, User $user)
     {
         try {
             $this->throwResponseError($user = $this->updateUsername($request, $user));
             $this->throwResponseError($user = $this->updateUserPhone($request, $user));
+            $this->throwResponseError($user = $this->updateUserEmail($request, $user));
+
+            if (! $user->save()) {
+                throw new Exception('更新失败', 400);
+            }
+
+            return response()->json([
+                'message' => '更新成功！'
+            ])->setStatusCode(201);
+
         } catch (Exception $e) {
             return response()->json([
                 'errors' => [$e->getMessage()],
@@ -162,6 +189,41 @@ class UserController extends Controller
     }
 
     /**
+     * 更新用户邮箱.
+     *
+     * @param Request $request
+     * @param User $user
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function updateUserEmail(Request $request, User $user)
+    {
+        $email = $request->input('email');
+
+        if (! $email || $email === $user->email) {
+            return $user;
+        }
+
+        try {
+            $this->validate($request, [
+                'email' => 'email',
+            ]);
+        } catch (ValidationException $e) {
+            throw new Exception('E-Mail 格式不正确', 422);
+        }
+
+        $theUser = User::byEmail($email)->withTrashed()->first();
+
+        if ($theUser && $user->id !== $theUser->id) {
+            throw new Exception('Email 已经被其他用户所使用', 422);
+        }
+
+        $user->email = $email;
+
+        return $user;
+    }
+
+    /**
      * 更新用户手机号码.
      *
      * @param Request $request
@@ -173,11 +235,20 @@ class UserController extends Controller
     {
         $phone = $request->input('phone');
 
-        if (! $phone) {
+        if (! $phone || $phone === $user->phone) {
             return $user;
         }
 
         return app(VerifyPhoneNumber::class)->handle($request, function () use ($user, $phone) {
+            $theUser = User::byPhone($phone)->withTrashed()->first();
+
+            if ($theUser && $user->id !== $theUser->id) {
+                throw new Exception('手机号已经被其他用户所使用', 422);
+            }
+
+            $user->phone = $phone;
+
+            return $user;
         });
     }
 
@@ -192,14 +263,14 @@ class UserController extends Controller
     protected function updateUsername(Request $request, User $user)
     {
         $name = $request->input('name');
-        if (! $name) {
+        if (! $name || $name === $user->name) {
             return $user;
         }
 
         return app(VerifyUserNameRole::class)->handle($request, function () use ($user, $name) {
             $theUser = User::byName($name)->withTrashed()->first();
 
-            if (($user && ! $theUser) || ($user && $theUser && $user->id != $theUser->id)) {
+            if ($theUser && $user->id !== $theUser->id) {
                 throw new Exception('用户名已经被其他用户所使用', 422);
             }
 
