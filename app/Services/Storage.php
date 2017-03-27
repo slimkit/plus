@@ -17,7 +17,7 @@ class Storage
     }
 
     /**
-     * 获取默认配置
+     * 获取默认配置.
      *
      * @return array
      * @author Seven Du <shiweidu@outlook.com>
@@ -45,7 +45,7 @@ class Storage
     }
 
     /**
-     * 初始化储存，设置所有的储存引擎
+     * 初始化储存，设置所有的储存引擎.
      *
      * @return [type] [description]
      * @author Seven Du <shiweidu@outlook.com>
@@ -110,7 +110,7 @@ class Storage
     }
 
     /**
-     * 获取储存引擎数据模型
+     * 获取储存引擎数据模型.
      *
      * @return \Zhiyi\Plus\Models\CommonConfig
      * @author Seven Du <shiweidu@outlook.com>

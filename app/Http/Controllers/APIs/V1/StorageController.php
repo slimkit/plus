@@ -12,11 +12,11 @@ use Zhiyi\Plus\Models\Storage as StorageModel;
 class StorageController extends Controller
 {
     /**
-     * 获取储存资源
+     * 获取储存资源.
      *
      * @param Request $request
      * @param StorageModel $storage
-     * @param int|integer $process
+     * @param int|int $process
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
