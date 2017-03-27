@@ -36,33 +36,46 @@ class User extends Authenticatable
     /**
      * 复用设置手机号查询条件方法.
      *
-     * @param Builder $query 查询对象
+     * @param Illuminate\Database\Eloquent\Builder $query 查询对象
      * @param string  $phone 手机号码
      *
-     * @return Builder 查询对象
+     * @return Illuminate\Database\Eloquent\Builder 查询对象
      *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
     public function scopeByPhone(Builder $query, string $phone): Builder
     {
-        return $query->where('phone', $phone);
+        return $query->where('phone', 'LIKE', $phone);
     }
 
     /**
      * 复用设置用户名查询条件方法.
      *
-     * @param Builder $query 查询对象
+     * @param Illuminate\Database\Eloquent\Builder $query 查询对象
      * @param string  $name  用户名
      *
-     * @return Builder 查询对象
+     * @return Illuminate\Database\Eloquent\Builder 查询对象
      *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
     public function scopeByName(Builder $query, string $name): Builder
     {
-        return $query->where('name', $name);
+        return $query->where('name', 'LIKE', $name);
+    }
+
+    /**
+     * 复用 E-Mail 查询条件方法.
+     *
+     * @param Illuminate\Database\Eloquent\Builder $query
+     * @param string $email [description]
+     * @return Illuminate\Database\Eloquent\Builder
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function scopeByEmail(Builder $query, string $email): Builder
+    {
+        return $query->where('email', 'LIKE', $email);
     }
 
     /**
