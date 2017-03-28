@@ -8,9 +8,19 @@ use Zhiyi\Plus\Models\StorageTask;
 use Illuminate\Filesystem\Filesystem;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Storage as StorageModel;
+use Zhiyi\Plus\Services\Storage as ServiceStorage;
 
 class StorageController extends Controller
 {
+    protected static $engine;
+    protected static $service;
+
+    public function __construct(ServiceStorage $service)
+    {
+        static::$service = $service;
+        static::$engine = $service->getEngineSelect();
+    }
+
     /**
      * 获取储存资源.
      *
@@ -22,7 +32,7 @@ class StorageController extends Controller
      */
     public function get(Request $request, StorageModel $storage, int $process = 100)
     {
-        $url = $this->storage()->url($storage->filename, $process);
+        $url = $this->storage()->url($storage->filename, $process, static::$engine);
 
         return redirect($url, 302);
     }
@@ -56,7 +66,7 @@ class StorageController extends Controller
             ]));
         }
 
-        $storage = $this->storage()->createStorageTask($user, $originFilename, $hash, $mimeType, $width, $height);
+        $storage = $this->storage()->createStorageTask($user, $originFilename, $hash, $mimeType, $width, $height, static::$engine);
 
         return response()->json(static::createJsonData([
             'status' => true,
@@ -76,7 +86,7 @@ class StorageController extends Controller
 
         $message = $request->input('message');
 
-        return $this->storage()->notice($message, $task);
+        return $this->storage()->notice($message, $task, static::$engine);
     }
 
     public function delete(Request $request, int $storage_task_id)
@@ -166,6 +176,6 @@ class StorageController extends Controller
 
     protected function storage()
     {
-        return app(\Zhiyi\Plus\Services\Storage::class)->getStorage();
+        return static::$service->getStorage();
     }
 }
