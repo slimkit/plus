@@ -42,6 +42,9 @@ Route::middleware('auth:web')->group(function () {
     Route::post('/perms', 'RoleController@createPerm');
     Route::patch('/perms/{perm}', 'RoleController@updatePerm');
     Route::delete('/perms/{perm}', 'RoleController@deletePerm');
+
+    // 储存设置
+    Route::get('/storages/engines', 'StorageController@showEngines');
 });
 
 // Add the route, SPA used mode "history"
