@@ -68,7 +68,7 @@ class Storage
      * @return bool 是否添加成功
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function appendEngine(string $engine, string $name, string $engineClassName, array $option = [])
+    public function appendEngine(string $engine, string $name, string $engineClassName, array $option = []): bool
     {
         $engines = $this->getEngines();
         $engines[$engine] = [
@@ -76,6 +76,24 @@ class Storage
             'engine' => $engineClassName,
             'option' => $option,
         ];
+
+        return $this->setEngines($engines);
+    }
+
+    /**
+     * 删除一个储存引擎.
+     *
+     * @param string $engine
+     * @return bool
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function deleteEngine(string $engine): bool
+    {
+        $engines = $this->getEngines();
+
+        if (isset($engines[$engine])) {
+            unset($engines[$engine]);
+        }
 
         return $this->setEngines($engines);
     }
