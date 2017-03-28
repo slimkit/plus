@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Services\Storage;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 class StorageController extends Controller
 {
