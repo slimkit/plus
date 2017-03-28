@@ -150,10 +150,11 @@ class Storage
     public function setEngineOption(string $engins, array $option, array $baseOption = []): bool
     {
         $option = array_merge($baseOption, $option);
-        $engineOption = $this->getEngineOptionModel();
-        $engineOption->value = json_encode($option);
+        $value = json_encode($option);
 
-        return $engineOption->save();
+        return (bool) CommonConfig::byNamespace('storage')->byName($engine)->update([
+            'value' => $value,
+        ]);
     }
 
     /**
@@ -166,10 +167,11 @@ class Storage
     public function setEngines(array $engines): bool
     {
         $engines = array_merge($engines, $this->defaultEngines());
-        $engine = $this->getEnginesModel();
-        $engine->value = json_encode($engines);
+        $value = json_encode($engines);
 
-        return $engine->save();
+        return (bool) CommonConfig::byNamespace('storage')->byName('engines')->update([
+            'value' => $value,
+        ]);
     }
 
     /**
