@@ -34,6 +34,23 @@ class Storage
     }
 
     /**
+     * 获取储存引擎选择.
+     *
+     * @return string
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function getEngineSelect(): string
+    {
+        static $select;
+
+        if (! $select) {
+            $select = CommonConfig::byNamespace('storage')->byName('select')->value('value') ?: 'local';
+        }
+
+        return $select;
+    }
+
+    /**
      * 获取储存过程.
      *
      * @return \Zhiyi\Plus\Storages\Storage
