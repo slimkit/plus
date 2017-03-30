@@ -17,10 +17,11 @@ class SystemController extends Controller
     public function getComponentStatus()
     {
         $config = CommonConfig::select('namespace')->groupBy('namespace')->pluck('namespace')->toArray();
-        
+
         $status = [
             'im' => in_array('im', $config),
         ];
+
         return response()->json(static::createJsonData([
             'status' => true,
             'data' => $status,
