@@ -124,28 +124,28 @@ class Storage
      */
     public function getEngineOptionModel(string $engine): CommonConfig
     {
-        $engine = CommonConfig::byNamespace('storage')->byName($engine)->first();
+        $engineOptiomModel = CommonConfig::byNamespace('storage')->byName($engine)->first();
 
-        if (! $engine) {
-            $engine = new CommonConfig();
-            $engine->namespace = 'storage';
-            $engine->name = $engine;
-            $engine->value = json_encode([]);
-            $engine->save();
+        if (! $engineOptiomModel) {
+            $engineOptiomModel = new CommonConfig();
+            $engineOptiomModel->namespace = 'storage';
+            $engineOptiomModel->name = $engine;
+            $engineOptiomModel->value = json_encode([]);
+            $engineOptiomModel->save();
         }
 
-        return $engine;
+        return $engineOptiomModel;
     }
 
     /**
      * 获取储存引擎配置.
      *
-     * @param string $engins
+     * @param string $engine
      * @param array $defaultOption
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function getEngineOption(string $engins, array $defaultOption = []): array
+    public function getEngineOption(string $engine, array $defaultOption = []): array
     {
         $option = json_decode($this->getEngineOptionModel($engine)->value, true);
         if (! $option || empty($option) || ! is_array($option)) {
