@@ -3,8 +3,8 @@
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\Conversation;
 use Zhiyi\Plus\Models\CommonConfig;
+use Zhiyi\Plus\Models\Conversation;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class SystemController extends Controller
