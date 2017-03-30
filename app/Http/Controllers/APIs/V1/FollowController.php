@@ -97,7 +97,7 @@ class FollowController extends Controller
      */
     public function follows(int $user_id, int $max_id = 0)
     {
-        $limit = $request->limit ?? 15;
+        $limit = $request->input('limit', 15);
         if (! User::find($user_id)) {
             return response()->json(static::createJsonData([
                 'status'  => false,
@@ -143,7 +143,7 @@ class FollowController extends Controller
      */
     public function followeds(int $user_id, int $max_id = 0)
     {
-        $limit = $request->limit ?? 15;
+        $limit = $request->input('limit', 15);
         if (! User::find($user_id)) {
             return response()->json(static::createJsonData([
                 'status'  => false,
