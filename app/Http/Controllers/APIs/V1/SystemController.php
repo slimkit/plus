@@ -8,17 +8,17 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 
 class SystemController extends Controller
 {
-    public function getImServerConfig()
+    public function getComponentStatus()
     {
-        $data['url'] = '192.168.2.222';
-        $data['port'] = '9900';
-
-        return response()->json([
-            'status'  => true,
-            'code'    => 0,
-            'message' => '获取成功',
-            'data'    => $data,
-        ])->setStatusCode(200);
+        $config = CommonConfig::select('namespace')->groupBy('namespace')->pluck('namespace')->toArray();
+        
+        $status = [
+            'im' => in_array('im', $config),
+        ];
+        return response()->json(static::createJsonData([
+            'status' => true,
+            'data' => $status,
+        ]))->setStatusCode(200);
     }
 
     public function createFeedback(Request $request)
