@@ -2,7 +2,7 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
-use Zhiyi\Plus\Services\Storage;
+use Zhiyi\Plus\Services\Storage as StorageService;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class StorageController extends Controller
@@ -13,8 +13,16 @@ class StorageController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function showEngines()
+    public function showEngines(StorageService $storageService)
     {
-        return response()->json(app(Storage::class)->getEngines())->setStatusCode(200);
+        $engines = $storageService->getEngines();
+        $selected = $storageService->getEngineSelect();
+        $optionsValues = $storageService->getEngineOption($selected);
+
+        return response()->json([
+            'engines' => $engines,
+            'selected' => $selected,
+            'optionsValues' => $optionsValues,
+        ])->setStatusCode(200);
     }
 }
