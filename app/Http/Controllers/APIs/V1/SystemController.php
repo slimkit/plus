@@ -8,6 +8,12 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 
 class SystemController extends Controller
 {
+    /**
+     * 获取扩展包安装状态
+     * 
+     * @author bs<414606094@qq.com>
+     * @return [type] [description]
+     */
     public function getComponentStatus()
     {
         $config = CommonConfig::select('namespace')->groupBy('namespace')->pluck('namespace')->toArray();
@@ -21,6 +27,29 @@ class SystemController extends Controller
         ]))->setStatusCode(200);
     }
 
+    /**
+     * 获取扩展包配置信息
+     * 
+     * @author bs<414606094@qq.com>
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function getComponentConfig(Request $request)
+    {
+        $configData = CommonConfig::where('namespace' , $request->component)->select(['name', 'value'])->get();
+        return response()->json(static::createJsonData([
+            'status' => true,
+            'data' => $configData,
+        ]))->setStatusCode(200);
+    }
+
+    /**
+     * 用户反馈
+     * 
+     * @author bs<414606094@qq.com>
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
     public function createFeedback(Request $request)
     {
         $feedback = new Conversation();
