@@ -98,4 +98,4 @@ Route::group([
 //获取扩展包安装状态
 Route::get('/system/component/status', 'SystemController@getComponentStatus');
 //获取扩展包配置信息
-Route::get('/system/component/configs', 'SystemController@getComponentConfig'); 
+Route::get('/system/component/configs', 'SystemController@getComponentConfig');
