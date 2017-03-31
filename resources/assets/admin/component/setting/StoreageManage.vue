@@ -143,8 +143,8 @@ const StorageManageComponent = {
         this.allOptionsValues = {
           ...this.allOptionsValues,
           [engine]: {
-            ...data,
-            ...this.optionsValues
+            ...this.optionsValues,
+            ...data
           }
         };
       }).catch();
