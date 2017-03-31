@@ -204,7 +204,7 @@ class Storage
 
             // 文本输入框
             if ($type === 'text') {
-               $newOption[$key] = $optionValue ?: array_get($role, 'value');
+                $newOption[$key] = $optionValue ?: array_get($role, 'value');
 
             // 多选
             } elseif (
