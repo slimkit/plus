@@ -55,4 +55,19 @@ class StorageController extends Controller
             'message' => '更新成功',
         ])->setStatusCode(201);
     }
+
+    /**
+     * 获取引擎配置
+     *
+     * @param StorageService $service
+     * @param string $engine
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function showEngineOption(StorageService $service, string $engine)
+    {
+        return response()->json(
+            $service->getEngineOption($engine)
+        )->setStatusCode(200);
+    }
 }
