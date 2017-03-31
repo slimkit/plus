@@ -64,13 +64,15 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
+import lodash from 'lodash';
 
 const StorageManageComponent = {
   data: () => ({
     engines: {},
     selected: 'local',
     allOptionsValues: {},
-    changeIn: false
+    changeIn: false,
+    error: ''
   }),
   computed: {
     showOption () {
@@ -100,6 +102,14 @@ const StorageManageComponent = {
       return optionsValues;
     }
   },
+  watch: {
+    selected (engine) {
+      const { [engine]: optionsValues } = this.allOptionsValues;
+      if (optionsValues === undefined && this.showOption) {
+        this.requestEngineOption(engine);
+      }
+    }
+  },
   methods: {
     eventOptions (options) {
       return options.map(({ name, type, tip, value = '', items = {}, ...option }) => {
@@ -113,11 +123,31 @@ const StorageManageComponent = {
     updateEngineOption () {
       const engine = this.selected;
       const options = this.optionsValues;
+      this.changeIn = true;
       request.patch(
         createRequestURI(`storages/engines/${engine}`),
         { options },
         { validateStatus: status => status === 201 }
-      ).then().catch();
+      ).then(() => {
+        this.changeIn = false;
+      }).catch(({ response: { data = ['更新失败'] } = {} }) => {
+        this.error = lodash.values(data).pop();
+        this.changeIn = false;
+      });
+    },
+    requestEngineOption (engine) {
+      request.get(
+        createRequestURI(`storages/engines/${engine}`),
+        { validateStatus: status => status === 200 }
+      ).then(({ data }) => {
+        this.allOptionsValues = {
+          ...this.allOptionsValues,
+          [engine]: {
+            ...data,
+            ...this.optionsValues
+          }
+        };
+      }).catch();
     }
   },
   created () {
@@ -126,9 +156,11 @@ const StorageManageComponent = {
       { validateStatus: status => status === 200 }
     ).then(({ data }) => {
       this.engines = data.engines;
-      this.selected = data.selected;
       this.allOptionsValues = { [this.selected]: data.validateStatus };
-    }).catch();
+      this.selected = data.selected;
+    }).catch(() => {
+      this.error = '加载失败，请刷新重试';
+    });
   }
 };
 
