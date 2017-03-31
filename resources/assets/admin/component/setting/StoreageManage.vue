@@ -20,7 +20,7 @@
     </div>
 
     <!-- for - option -->
-    <div class="form-group" v-if="showOption" :key="`engine-option-${selected}`" v-for="{name, type, tip, items, value, option} in options" >
+    <div class="form-group" v-if="showOption" v-show="!loadingOption" :key="`engine-option-${selected}`" v-for="{name, type, tip, items, value, option} in options" >
       <label :for="`engine-option-${selected}-${name}`" class="col-sm-2 control-label">{{ name }}</label>
       <div class="col-sm-6" :class="type">
         <!-- text -->
@@ -49,6 +49,11 @@
       <span class="col-sm-4 help-block" :id="`storages-option-${selected}-${name}-help-block`">{{ tip }}</span>
     </div>
 
+    <!-- engine option loadding -->
+    <div v-show="loadingOption" class="component-loadding">
+      <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
+    </div>
+
     <!-- Button -->
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
@@ -57,6 +62,11 @@
         </button>
         <button v-else type="button" class="btn btn-primary" @click="updateEngineOption">提交</button>
       </div>
+    </div>
+
+    <!-- error -->
+    <div v-show="error" class="alert alert-danger alert-dismissible" role="alert">
+      {{ error }}
     </div>
 
   </div>
@@ -72,7 +82,8 @@ const StorageManageComponent = {
     selected: 'local',
     allOptionsValues: {},
     changeIn: false,
-    error: ''
+    error: null,
+    loadingOption: false
   }),
   computed: {
     showOption () {
@@ -136,6 +147,7 @@ const StorageManageComponent = {
       });
     },
     requestEngineOption (engine) {
+      this.loadingOption = true;
       request.get(
         createRequestURI(`storages/engines/${engine}`),
         { validateStatus: status => status === 200 }
@@ -147,7 +159,11 @@ const StorageManageComponent = {
             ...data
           }
         };
-      }).catch();
+        this.loadingOption = false;
+      }).catch(() => {
+        this.loadingOption = true;
+        this.error = '加载储存引擎配置失败，请刷新网页重现尝试。如果此时忽略本条警告强行提交，可能会造成数据错误。';
+      });
     }
   },
   created () {
