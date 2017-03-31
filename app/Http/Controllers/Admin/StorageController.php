@@ -57,7 +57,7 @@ class StorageController extends Controller
     }
 
     /**
-     * 获取引擎配置
+     * 获取引擎配置.
      *
      * @param StorageService $service
      * @param string $engine
