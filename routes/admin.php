@@ -45,6 +45,7 @@ Route::middleware('auth:web')->group(function () {
 
     // 储存设置
     Route::get('/storages/engines', 'StorageController@showEngines');
+    Route::get('/storages/engines/{engine}', 'StorageController@showEngineOption');
     Route::patch('/storages/engines/{engine}', 'StorageController@updateEngineOption');
 });
 
