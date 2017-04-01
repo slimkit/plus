@@ -31,6 +31,7 @@ class HomeController extends Controller
     public function login(Request $request)
     {
         $this->guard()->logout();
+        $request->session()->regenerate();
 
         return $this->traitLogin($request);
     }
@@ -100,7 +101,18 @@ class HomeController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        return response()->json($this->user($user));
+        if (! $user->can('admin:login')) {
+
+            $this->guard()->logout();
+            $request->session()->regenerate();
+
+            return response()->json([
+                'phone' => '该账户没有权限进入后台',
+                'flush' => true,
+            ])->setStatusCode(403);
+        }
+
+        return response()->json($this->user($user))->setStatusCode(201);
     }
 
     protected function user(User $user)
