@@ -104,7 +104,7 @@ class PermissionSeeder extends Seeder
         Permission::create([
             'name' => 'admin:perm:delete',
             'display_name' => '权限管理-删除',
-            'description' => '权限管理删除权限节点权限'
+            'description' => '权限管理删除权限节点权限',
         ]);
     }
 
