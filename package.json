@@ -13,7 +13,7 @@
     "dev": "npm run clean-dist && cross-env NODE_ENV=development webpack --progress --hide-modules --colors",
     "watch": "npm run dev -- -w",
     "watch-poll": "npm run dev -- -w --watch-poll",
-    "hot": "npm run dev && cross-env NODE_ENV=development webpack-dev-server --inline --hot",
+    "hot": "npm run clean-dist && cross-env NODE_ENV=development webpack-dev-server --inline --hot",
     "dist": "npm run clean-dist && cross-env NODE_ENV=production webpack --display-error-details --progress --colors"
   },
   "devDependencies": {
