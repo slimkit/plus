@@ -3,7 +3,6 @@
 namespace Zhiyi\Plus\Http\Middleware;
 
 use Closure;
-use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
 class VerifyPassword
