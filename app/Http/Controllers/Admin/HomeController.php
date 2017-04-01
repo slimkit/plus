@@ -102,7 +102,6 @@ class HomeController extends Controller
     protected function authenticated(Request $request, $user)
     {
         if (! $user->can('admin:login')) {
-
             $this->guard()->logout();
             $request->session()->regenerate();
 
