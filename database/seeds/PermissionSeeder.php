@@ -30,7 +30,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'admin:site:base', 'display_name' => '系统-基本信息', 'description' => '编辑系统配置基本信息权限']);
 
         // 地区管理
-        Permission::create(['name' => 'admin:area:show'] 'display_name' => '系统-地区管理', 'description' => '编辑系统地区管理权限');
+        Permission::create(['name' => 'admin:area:show', 'display_name' => '系统-地区管理', 'description' => '编辑系统地区管理权限']);
         Permission::create(['name' => 'admin:area:add', 'display_name' => '地区管理-添加', 'description' => '地区管理添加地区权限']);
         Permission::create([
             'name' => 'admin:area:update',
@@ -44,7 +44,7 @@ class PermissionSeeder extends Seeder
         ]);
 
         // 储存引擎
-        Permission::create(['name' => 'admin:storages'], 'display_name' => '储存管理', 'description' => '编辑系统储存管理权限');
+        Permission::create(['name' => 'admin:storages', 'display_name' => '储存管理', 'description' => '编辑系统储存管理权限']);
 
         // 用户管理
         Permission::create([
