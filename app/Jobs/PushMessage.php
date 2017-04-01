@@ -3,18 +3,18 @@
 namespace Zhiyi\Plus\Jobs;
 
 use Illuminate\Bus\Queueable;
+use Zhiyi\Plus\Services\Push;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Zhiyi\Plus\Services\Push;
 
 class PushMessage implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     // 提示信息
-    protected $alert; 
+    protected $alert;
 
     // 别名
     protected $audience;
@@ -27,7 +27,7 @@ class PushMessage implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($alert, $audience, $extras = array())
+    public function __construct($alert, $audience, $extras = [])
     {
         $this->alert = $alert;
         $this->audience = $audience;
