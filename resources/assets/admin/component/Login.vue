@@ -42,16 +42,16 @@ const login = {
       let { access, password } = this;
       this.error = null;
       auth.login(access, password)
-        .then(response => {
-          this.$store.dispatch(USER_UPDATE, cb => {
-            cb(response.data);
-            this.$router.replace(this.$route.query.redirect || '/');
-          });
-        })
-        .catch(({ response: { data = {} } }) => {
-          const { phone, password } = data;
-          this.error = phone || password || '登录失败！';
+      .then(response => {
+        this.$store.dispatch(USER_UPDATE, cb => {
+          cb(response.data);
+          this.$router.replace(this.$route.query.redirect || '/');
         });
+      })
+      .catch(({ response: { data = {} } }) => {
+        const { phone, password } = data;
+        this.error = phone || password || '登录失败！';
+      });
     }
   }
 };

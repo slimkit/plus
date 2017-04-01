@@ -3,10 +3,11 @@ import { USER_DELETE } from '../store/types';
 import { USER_LOGGED } from '../store/getter-types';
 import request, { createRequestURI } from '../util/request';
 
-const login = (access, password) => request.post(createRequestURI('login'), {
-  phone: access,
-  password
-});
+const login = (access, password) => request.post(
+  createRequestURI('login'),
+  { phone: access, password },
+  { validateStatus: status => status === 201 }
+);
 
 /**
  * 返回用户是否已经登陆
