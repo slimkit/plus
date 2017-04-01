@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use Zhiyi\Plus\Models\Role;
+use Illuminate\Database\Seeder;
 use Zhiyi\Plus\Models\Permission;
 
 class RoleSeeder extends Seeder
@@ -33,7 +33,7 @@ class RoleSeeder extends Seeder
         $role = Role::create([
             'name' => 'founder',
             'display_name' => '创始人',
-            'description' => '站点创始人'
+            'description' => '站点创始人',
         ]);
 
         $perms = Permission::all();
