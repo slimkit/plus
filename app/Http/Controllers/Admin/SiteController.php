@@ -28,8 +28,14 @@ class SiteController extends Controller
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function get()
+    public function get(Request $request)
     {
+        if (! $request->user()->can('admin:site:base')) {
+            return response()->json([
+                'message' => '没有权限查看该项信息',
+            ])->setStatusCode(403);
+        }
+
         $sites = $this->newCommonConfigModel()
             ->byNamespace('site')
             ->whereIn('name', ['title', 'keywords', 'description', 'icp'])

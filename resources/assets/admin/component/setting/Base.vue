@@ -127,9 +127,10 @@ const settingBase = {
       }).then(({ data = {} }) => {
         this.$store.commit(SETTINGS_SITE_UPDATE, { ...data });
         this.loadding = false;
-      }).catch(() => {
+      }).catch(({ response: { data: { message = '加载失败' } = {} } = {} }) => {
         this.loadding = false;
         this.error = true;
+        window.alert(message);
         // this.error_message
       });
     },
