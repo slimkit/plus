@@ -73,7 +73,7 @@ class HomeController extends Controller
                 continue;
             }
 
-            $componentInfo = (new $installer())->getComponentInfo();
+            $componentInfo = app($installer)->getComponentInfo();
 
             if (! $componentInfo) {
                 continue;
@@ -108,10 +108,5 @@ class HomeController extends Controller
         $user->load('datas');
 
         return $user;
-    }
-
-    protected function menuModel()
-    {
-        return (new Menu())->newQuery();
     }
 }
