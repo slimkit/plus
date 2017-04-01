@@ -145,10 +145,10 @@ const settingBase = {
         setTimeout(() => {
           this.message = '提交';
         }, 1000);
-      }).catch(() => {
+      }).catch(({ response: { data: { message = '加载失败' } = {} } = {} }) => {
         this.loadding = false;
         this.error = true;
-        this.error_message = '操作失败';
+        this.error_message = message;
         setTimeout(() => {
           this.error = false;
           this.error_message = '重新加载';

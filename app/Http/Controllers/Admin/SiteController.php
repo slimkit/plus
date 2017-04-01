@@ -60,6 +60,12 @@ class SiteController extends Controller
      */
     public function updateSiteInfo(Request $request)
     {
+        if (! $request->user()->can('admin:site:base')) {
+            return response()->json([
+                'message' => '没有权限更新该信息',
+            ])->setStatusCode(403);
+        }
+
         $keys = ['title', 'keywords', 'description', 'icp'];
         $requestSites = array_filter($request->only($keys));
 
