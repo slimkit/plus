@@ -188,7 +188,7 @@ class UserController extends Controller
     {
         if ($mixed instanceof JsonResponse) {
             $data = $mixed->getData();
-            throw new Exception($data['message'], $mixed->getStatusCode());
+            throw new Exception($data->message ?? '更新失败', $mixed->getStatusCode());
         } elseif (! $mixed instanceof User) {
             throw new Exception('更新失败', 422);
         }
