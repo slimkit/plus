@@ -33,7 +33,7 @@
     "eslint-plugin-standard": "^2.1.1",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.11.0",
-    "node-sass": "^4.5.0",
+    "node-sass": "^4.5.2",
     "sass-loader": "^6.0.3",
     "trash-cli": "^1.4.0",
     "url-loader": "^0.5.8",
