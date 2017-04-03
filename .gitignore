@@ -1,6 +1,7 @@
 .idea
 .DS_Store
 .env
+.vagrant
 
 composer.lock
 yarn.lock
