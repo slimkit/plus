@@ -140,6 +140,12 @@ class SiteController extends Controller
      */
     public function doAddArea(Request $request)
     {
+        if (! $request->user()->can('admin:area:add')) {
+            return response()->json([
+                'error' => ['你没有添加地区权限'],
+            ])->setStatusCode(403);
+        }
+
         $name = $request->input('name');
         $extends = $request->input('extends', '');
         $pid = $request->input('pid', 0);
