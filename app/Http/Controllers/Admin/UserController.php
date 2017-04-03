@@ -123,8 +123,14 @@ class UserController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function deleteUser(User $user)
+    public function deleteUser(Request $request, User $user)
     {
+        if ($request->user()->can('admin:user:delete')) {
+            return response()->json([
+                'errors' => ['你没有删除用户的权限'],
+            ])->setStatusCode(403);
+        }
+
         $user->delete();
 
         return response('', 204);

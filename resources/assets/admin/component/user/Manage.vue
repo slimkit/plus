@@ -263,9 +263,9 @@ const ManageComponent = {
             }
           });
           this.users = users;
-        }).catch(() => {
+        }).catch(({ response: { data: { errors = ['删除失败'] } = {} } = {} }) => {
           this.deleteIdsUnTo(userId);
-          window.alert('删除失败');
+          this.error = lodash.values(errors).pop();
         });
       }
     },
