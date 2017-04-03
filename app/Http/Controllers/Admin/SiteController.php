@@ -187,7 +187,7 @@ class SiteController extends Controller
      */
     public function deleteArea(Request $request, int $id)
     {
-        if (! $request->user()->can('admin:area:add')) {
+        if (! $request->user()->can('admin:area:delete')) {
             return response()->json([
                 'error' => ['你没有权限删除地区'],
             ])->setStatusCode(403);
@@ -219,6 +219,12 @@ class SiteController extends Controller
      */
     public function patchArea(Request $request, Area $area)
     {
+        if (! $request->user()->can('admin:area:update')) {
+            return response()->json([
+                'error' => ['你没有更新地区权限'],
+            ])->setStatusCode(403);
+        }
+
         $key = $request->input('key');
         $value = $request->input('value', '');
 
