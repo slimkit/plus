@@ -155,8 +155,14 @@ class RoleController extends Controller
      *
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function perms()
+    public function perms(Request $request)
     {
+        if ($request->user()->can('admin:perm:show')) {
+            return response()->json([
+                'errors' => ['你没有管理权限节点的权限'],
+            ])->setStatusCode(403);
+        }
+
         $perms = Permission::all();
 
         return response()->json($perms)->setStatusCode(200);

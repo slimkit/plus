@@ -88,6 +88,13 @@
       <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
     </div>
 
+    <div v-show="error" class="alert alert-danger alert-dismissible" role="alert">
+      <button type="button" class="close" @click.prevent="dismisError">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ error }}
+    </div>
+
   </div>
 </template>
 
@@ -105,7 +112,8 @@ const PermissionsComponent = {
       description: '',
       adding: false
     },
-    loadding: true
+    loadding: true,
+    error: null
   }),
   methods: {
     postPerm () {
@@ -190,6 +198,9 @@ const PermissionsComponent = {
         }
       });
       this.perms = perms;
+    },
+    dismisError () {
+      this.error = null;
     }
   },
   created () {
@@ -199,7 +210,10 @@ const PermissionsComponent = {
     ).then(({ data }) => {
       this.perms = data;
       this.loadding = false;
-    }).catch();
+    }).catch(({ response: { data: { errors = ['获取失败，请刷新重试！'] } = {} } = {} }) => {
+      this.error = lodash.values(errors).pop();
+      this.loadding = false;
+    });
   }
 };
 
