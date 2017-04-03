@@ -95,6 +95,12 @@ class UserController extends Controller
      */
     public function createUser(Request $request)
     {
+        if (! $request->user()->can('admin:user:add')) {
+            return response()->json([
+                'errors' => ['你没有添加用户权限'],
+            ])->setStatusCode(403);
+        }
+
         $name = $request->input('name');
         $phone = $request->input('phone');
         $password = $request->input('password');
@@ -125,7 +131,7 @@ class UserController extends Controller
      */
     public function deleteUser(Request $request, User $user)
     {
-        if ($request->user()->can('admin:user:delete')) {
+        if (! $request->user()->can('admin:user:delete')) {
             return response()->json([
                 'errors' => ['你没有删除用户的权限'],
             ])->setStatusCode(403);

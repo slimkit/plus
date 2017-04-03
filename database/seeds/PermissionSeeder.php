@@ -62,6 +62,11 @@ class PermissionSeeder extends Seeder
             'display_name' => '用户管理-删除',
             'description' => '删除用户权限',
         ]);
+        Permission::create([
+            'name' => 'admin:user:add',
+            'display_name' => '用户管理-添加',
+            'description' => '添加用户权限',
+        ]);
 
         // 角色管理
         Permission::create([
