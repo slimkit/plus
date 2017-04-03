@@ -353,8 +353,9 @@ const AreaComponent = {
     ).then(({ data = [] }) => {
       cb(data);
       this.loadding = false;
-    }).catch(() => {
-      // todo
+    }).catch(({ response: { data: { message = '获取地区失败' } = {} } = {} }) => {
+      this.loadding = false;
+      window.alert(message);
     }));
   }
 };

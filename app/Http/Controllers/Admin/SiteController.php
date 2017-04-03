@@ -112,8 +112,14 @@ class SiteController extends Controller
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function areas()
+    public function areas(Request $request)
     {
+        if (! $request->user()->can('admin:area:show')) {
+            return response()->json([
+                'message' => '你没有权限查看地区数据',
+            ])->setStatusCode(403);
+        }
+
         $expiresAt = Carbon::now()->addMonth(12);
         $areas = Cache::remember('areas', $expiresAt, function () {
             return Area::all();
