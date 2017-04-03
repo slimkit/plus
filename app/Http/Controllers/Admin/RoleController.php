@@ -16,8 +16,14 @@ class RoleController extends Controller
      *
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function roles()
+    public function roles(Request $request)
     {
+        if ($request->user()->can('admin:role:show')) {
+            return response()->json([
+                'errors' => ['你没有管理角色的权限'],
+            ])->setStatusCode(403);
+        }
+
         $roles = Role::all();
 
         return response()->json($roles)->setStatusCode(200);

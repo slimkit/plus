@@ -78,6 +78,13 @@
       </tbody>
     </table>
 
+    <div v-show="error" class="alert alert-danger alert-dismissible" role="alert">
+      <button type="button" class="close" @click.prevent="dismisError">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ error }}
+    </div>
+
     <!-- 加载动画 -->
     <div v-show="loadding" :class="$style.loadding">
       <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
@@ -120,7 +127,8 @@ const RolesComponent = {
       display_name: '',
       description: '',
       adding: false
-    }
+    },
+    error: null
   }),
   /**
    * methods.
@@ -205,6 +213,9 @@ const RolesComponent = {
         this.deleteIdsItem(id);
         window.alert('删除失败');
       });
+    },
+    dismisError () {
+      this.error = null;
     }
   },
   /**
@@ -220,8 +231,9 @@ const RolesComponent = {
     ).then(({ data }) => {
       this.loadding = false;
       this.roles = data;
-    }).catch(() => {
+    }).catch(({ response: { data: { errors = ['加载失败,请刷新重试！'] } = {} } = {} }) => {
       this.loadding = false;
+      this.error = lodash.values(errors).pop();
     });
   }
 };
