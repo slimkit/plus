@@ -133,7 +133,7 @@ class RoleController extends Controller
     }
 
     /**
-     * 更新角色信息
+     * 更新角色信息.
      *
      * @param Request $request
      * @param Role $role
