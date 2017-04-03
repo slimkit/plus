@@ -108,7 +108,7 @@ class RoleController extends Controller
      */
     public function showRole(Request $request, Role $role)
     {
-        if ($request->user()->can('admin:role:show')) {
+        if (! $request->user()->can('admin:role:show')) {
             return response()->json([
                 'errors' => ['你没有权限查看角色信息'],
             ])->setStatusCode(403);
@@ -134,6 +134,12 @@ class RoleController extends Controller
 
     public function updateRole(Request $request, Role $role)
     {
+        if (! $request->user()->can('admin:role:update')) {
+            return response()->json([
+                'errors' => ['你没有权限编辑角色权限'],
+            ])->setStatusCode(403);
+        }
+
         $perms = $request->input('perms', []);
         $role->perms()->sync($perms);
 

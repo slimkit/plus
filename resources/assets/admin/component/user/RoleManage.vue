@@ -84,9 +84,9 @@ const RoleManageComponent = {
         { validateStatus: status => status === 201 }
       ).then(() => {
         this.submit = false;
-      }).catch(() => {
+      }).catch(({ response: { data: { errors = ['更新失败'] } = {} } = {} }) => {
         this.submit = false;
-        window.alert('更新失败');
+        this.error = lodash.values(errors).pop();
       });
     },
     goBack () {
