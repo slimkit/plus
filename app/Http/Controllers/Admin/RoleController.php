@@ -18,7 +18,7 @@ class RoleController extends Controller
      */
     public function roles(Request $request)
     {
-        if ($request->user()->can('admin:role:show')) {
+        if (! $request->user()->can('admin:role:show')) {
             return response()->json([
                 'errors' => ['你没有管理角色的权限'],
             ])->setStatusCode(403);
@@ -58,6 +58,12 @@ class RoleController extends Controller
      */
     public function createRole(Request $request)
     {
+        if (! $request->user()->can('admin:role:add')) {
+            return response()->json([
+                'errors' => ['你没有添加角色的权限'],
+            ])->setStatusCode(403);
+        }
+
         $name = $request->input('name');
         $display_name = $request->input('display_name');
         $description = $request->input('description');

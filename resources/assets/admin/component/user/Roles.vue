@@ -163,7 +163,7 @@ const RolesComponent = {
         const { errors = ['添加失败'] } = data;
         const errorMessage = lodash.values(errors).pop();
         this.add.adding = false;
-        window.alert(errorMessage);
+        this.error = errorMessage;
       });
     },
     /**
