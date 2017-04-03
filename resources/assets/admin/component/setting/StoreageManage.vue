@@ -174,8 +174,8 @@ const StorageManageComponent = {
       this.engines = data.engines;
       this.allOptionsValues = { [this.selected]: data.validateStatus };
       this.selected = data.selected;
-    }).catch(() => {
-      this.error = '加载失败，请刷新重试';
+    }).catch(({ response: { data: { message = '加载失败，请刷新重试' } = {} } = {} }) => {
+      this.error = message;
     });
   }
 };

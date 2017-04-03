@@ -15,8 +15,14 @@ class StorageController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function showEngines(StorageService $storageService)
+    public function showEngines(Request $request, StorageService $storageService)
     {
+        if (! $request->user()->can('admin:storages')) {
+            return response()->json([
+                'message' => '你没有权限查看该项',
+            ])->setStatusCode(403);
+        }
+
         $engines = $storageService->getEngines();
         $selected = $storageService->getEngineSelect();
         $optionsValues = $storageService->getEngineOption($selected);
