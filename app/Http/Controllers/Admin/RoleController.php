@@ -132,6 +132,14 @@ class RoleController extends Controller
         ])->setStatusCode(200);
     }
 
+    /**
+     * 更新角色信息
+     *
+     * @param Request $request
+     * @param Role $role
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function updateRole(Request $request, Role $role)
     {
         if (! $request->user()->can('admin:role:update')) {
