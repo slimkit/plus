@@ -108,10 +108,14 @@ class RoleController extends Controller
      */
     public function showRole(Request $request, Role $role)
     {
+        if ($request->user()->can('admin:role:show')) {
+            return response()->json([
+                'errors' => ['你没有权限查看角色信息'],
+            ])->setStatusCode(403);
+        }
+
         $allPerms = $request->has('all_perms');
         $hasPerms = $request->has('perms');
-
-        // var_dump($perms === true);exit;
 
         $perms = [];
         if ($allPerms === true) {

@@ -28,6 +28,13 @@
       <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
     </div>
 
+    <div v-show="error" class="alert alert-danger alert-dismissible" role="alert">
+      <button type="button" class="close" @click.prevent="dismisError">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ error }}
+    </div>
+
     <button v-if="submit" type="button" class="btn btn-primary" disabled="disabled">
       <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
     </button>
@@ -38,6 +45,7 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
+import lodash from 'lodash';
 
 const RoleManageComponent = {
   data: () => ({
@@ -45,7 +53,8 @@ const RoleManageComponent = {
     seleced: [],
     role: {},
     loadding: false,
-    submit: false
+    submit: false,
+    error: null
   }),
   computed: {
     checkBoxSelectAll: {
@@ -82,6 +91,9 @@ const RoleManageComponent = {
     },
     goBack () {
       this.$router.back();
+    },
+    dismisError () {
+      this.error = null;
     }
   },
   created () {
@@ -105,8 +117,9 @@ const RoleManageComponent = {
       role.perms.forEach(perm => seleced.push(perm.id));
       this.seleced = seleced;
       this.loadding = false;
-    }).catch(() => {
-      window.alert('加载失败，请刷新重试！');
+    }).catch(({ response: { data: { errors = ['加载失败，请刷新重试！'] } = {} } = {} }) => {
+      this.loadding = false;
+      this.error = lodash.values(errors).pop();
     });
   }
 };
