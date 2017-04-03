@@ -186,7 +186,7 @@ const PermissionsComponent = {
           const { errors = ['删除失败'] } = data;
           const errorMessage = lodash.values(errors).pop();
           deleteId(id);
-          window.alert(errorMessage);
+          this.error = errorMessage;
         });
       }
     },

@@ -258,8 +258,14 @@ class RoleController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function deletePerm(Permission $perm)
+    public function deletePerm(Request $request, Permission $perm)
     {
+        if (! $request->user()->can('admin:perm:delete')) {
+            return response()->json([
+                'errors' => ['你没有权限删除该节点'],
+            ])->setStatusCode(403);
+        }
+
         if ($perm->delete()) {
             return response('', 204);
         }
