@@ -223,6 +223,12 @@ class RoleController extends Controller
      */
     public function updatePerm(Request $request, Permission $perm)
     {
+        if (! $request->user()->can('admin:perm:update')) {
+            return response()->json([
+                'errors' => ['你没有修改权限节点的权限'],
+            ])->setStatusCode(403);
+        }
+
         $key = $request->input('key');
         $value = $request->input('value');
 
