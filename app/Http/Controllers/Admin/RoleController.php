@@ -157,7 +157,7 @@ class RoleController extends Controller
      */
     public function perms(Request $request)
     {
-        if ($request->user()->can('admin:perm:show')) {
+        if (! $request->user()->can('admin:perm:show')) {
             return response()->json([
                 'errors' => ['你没有管理权限节点的权限'],
             ])->setStatusCode(403);
@@ -177,6 +177,12 @@ class RoleController extends Controller
      */
     public function createPerm(Request $request)
     {
+        if (! $request->user()->can('admin:perm:add')) {
+            return response()->json([
+                'errors' => ['你没有权限增加权限节点'],
+            ])->setStatusCode(403);
+        }
+
         $name = $request->input('name');
         $display_name = $request->input('display_name');
         $description = $request->input('description');

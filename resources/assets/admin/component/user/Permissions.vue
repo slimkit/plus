@@ -138,7 +138,7 @@ const PermissionsComponent = {
       }).catch(({ response: { data = {} } = {} }) => {
         const { errors = ['更新失败'] } = data;
         const errorMessage = lodash.values(errors).pop();
-        window.alert(errorMessage);
+        this.error = errorMessage;
         this.add.adding = false;
       });
     },
