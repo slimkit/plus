@@ -185,8 +185,14 @@ class SiteController extends Controller
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function deleteArea(int $id)
+    public function deleteArea(Request $request, int $id)
     {
+        if (! $request->user()->can('admin:area:add')) {
+            return response()->json([
+                'error' => ['你没有权限删除地区'],
+            ])->setStatusCode(403);
+        }
+
         $notEmpty = Area::byPid($id)->first();
         if ($notEmpty) {
             return response()->json([

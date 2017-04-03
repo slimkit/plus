@@ -293,7 +293,7 @@ const AreaComponent = {
         const deleteId = (id) => {
           let ids = {};
           for (let _id in this.deleteIds) {
-            if (_id !== id) {
+            if (parseInt(_id) !== parseInt(id)) {
               ids = {
                 ...ids,
                 [_id]: _id
