@@ -44,6 +44,12 @@ class StorageController extends Controller
      */
     public function updateEngineOption(Request $request, StorageService $storageService, string $engine)
     {
+        if (! $request->user()->can('admin:storages')) {
+            return response()->json([
+                'message' => '你没有权限更新储存设置',
+            ])->setStatusCode(403);
+        }
+
         $engines = $storageService->getEngines();
         if (! in_array($engine, array_keys($engines))) {
             return response()->json([
