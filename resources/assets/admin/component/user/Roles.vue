@@ -209,9 +209,9 @@ const RolesComponent = {
           }
         });
         this.roles = roles;
-      }).catch(() => {
+      }).catch(({ response: { data: { errors = ['删除失败'] } = {} } = {} }) => {
         this.deleteIdsItem(id);
-        window.alert('删除失败');
+        this.error = lodash.values(errors).pop();
       });
     },
     dismisError () {

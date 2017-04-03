@@ -38,8 +38,14 @@ class RoleController extends Controller
      *
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function delete(Role $role)
+    public function delete(Request $request, Role $role)
     {
+        if (! $request->user()->can('admin:role:delete')) {
+            return response()->json([
+                'errors' => ['你没有删除角色权限'],
+            ])->setStatusCode(403);
+        }
+
         if ($role->delete()) {
             return response('', 204);
         }
