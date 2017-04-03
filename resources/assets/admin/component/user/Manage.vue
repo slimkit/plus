@@ -85,6 +85,14 @@
       </div>
     </div>
 
+    <!-- error -->
+    <div v-show="error" class="alert alert-danger alert-dismissible" role="alert">
+      <button type="button" class="close" @click.prevent="dismisError">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ error }}
+    </div>
+
     <!-- 用户列表 -->
     <table class="table table-striped">
       <thead>
@@ -141,6 +149,7 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
+import lodash from 'lodash';
 
 const ManageComponent = {
   /**
@@ -165,7 +174,8 @@ const ManageComponent = {
     loadding: false,
     showRole: true,
     roles: [],
-    deleteIds: []
+    deleteIds: [],
+    error: null
   }),
   computed: {
     queryParams () {
@@ -232,7 +242,7 @@ const ManageComponent = {
     deleteIdsUnTo (userId) {
       let deleteIds = [];
       this.deleteIds.forEach(id => {
-        if (id !== userId) {
+        if (parseInt(id) !== parseInt(userId)) {
           deleteIds.push(id);
         }
       });
@@ -293,7 +303,13 @@ const ManageComponent = {
         this.showRole = false;
 
         this.roles = roles;
-      }).catch(({ response }) => console.log(response));
+      }).catch(({ response: { data: { errors = ['加载用户失败'] } = {} } = {} }) => {
+        this.error = lodash.values(errors).pop();
+        this.loadding = false;
+      });
+    },
+    dismisError () {
+      this.error = null;
     }
   },
   /**

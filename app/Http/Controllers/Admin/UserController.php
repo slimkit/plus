@@ -23,6 +23,12 @@ class UserController extends Controller
      */
     public function users(Request $request)
     {
+        if (! $request->user()->can('admin:user:show')) {
+            return response()->json([
+                'errors' => ['你没有权限查管理用户'],
+            ])->setStatusCode(403);
+        }
+
         $sort = $request->query('sort');
         $userId = $request->query('userId');
         $email = $request->query('email');
