@@ -131,8 +131,9 @@ const UserManageComponent = {
       let selecedRoles = [];
       user.roles.forEach(role => selecedRoles.push(role.id));
       this.selecedRoles = selecedRoles;
-    }).catch(() => {
-      window.alert('加载失败');
+    }).catch(({ response: { data: { errors = [] } = {} } = {} }) => {
+      const [ errorMessage = '获取失败，请刷新重试！' ] = errors;
+      this.error = errorMessage;
     });
   }
 };

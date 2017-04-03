@@ -151,6 +151,12 @@ class UserController extends Controller
      */
     public function showUser(Request $request, User $user)
     {
+        if (! $request->user()->can('admin:user:show')) {
+            return response()->json([
+                'errors' => ['你没有权限执行该操作'],
+            ])->setStatusCode(403);
+        }
+
         $showRole = $request->query('show_role');
 
         $user->load(['roles']);
@@ -173,6 +179,12 @@ class UserController extends Controller
      */
     public function updateUser(Request $request, User $user)
     {
+        if (! $request->user()->can('admin:user:update')) {
+            return response()->json([
+                'errors' => ['你没有修改用户信息的权限'],
+            ])->setStatusCode(403);
+        }
+
         try {
             $this->throwResponseError($user = $this->updateUsername($request, $user));
             $this->throwResponseError($user = $this->updateUserPhone($request, $user));
