@@ -2,7 +2,6 @@
 
 namespace Zhiyi\Plus\Console\Commands;
 
-use stdClass;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputArgument;
@@ -105,7 +104,7 @@ class ComponentLinkCommand extends Command
     }
 
     /**
-     * 获取包 composer 信息
+     * 获取包 composer 信息.
      *
      * @param string $package
      * @return array
