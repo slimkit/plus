@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\ComponentCommand::class,
         Commands\ComponentArchiveCommand::class,
+        Commands\ComponentLinkCommand::class
     ];
 
     /**
