@@ -60,7 +60,7 @@ class ComponentLinkCommand extends Command
 
         // delete vendor dir.
         if (! $this->filesystem->delete($link)) {
-            $this->filesystem->deleteDirectory($link, true);
+            $this->filesystem->deleteDirectory($link, false);
         }
 
         // create link.
