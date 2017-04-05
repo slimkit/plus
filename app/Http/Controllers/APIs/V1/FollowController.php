@@ -95,7 +95,7 @@ class FollowController extends Controller
      *
      * @return [type] [description]
      */
-    public function follows(int $user_id, int $max_id = 0)
+    public function follows(Request $request, int $user_id, int $max_id = 0)
     {
         $limit = $request->input('limit', 15);
         if (! User::find($user_id)) {
@@ -141,7 +141,7 @@ class FollowController extends Controller
      *
      * @return [type] [description]
      */
-    public function followeds(int $user_id, int $max_id = 0)
+    public function followeds(Request $request, int $user_id, int $max_id = 0)
     {
         $limit = $request->input('limit', 15);
         if (! User::find($user_id)) {
