@@ -221,7 +221,7 @@ class Storage
                 });
                 $newOption[$key] = $optionValue;
 
-                return ;
+                return;
 
             // 单选
             } elseif (
