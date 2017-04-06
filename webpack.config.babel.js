@@ -5,6 +5,7 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import { StatsWriterPlugin } from 'webpack-stats-plugin';
 import lodash from 'lodash';
 import fs from 'fs';
+import formatter from 'eslint-friendly-formatter';
 
 // 环境变量获取
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -119,9 +120,8 @@ const webpackConfig = {
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',
         enforce: "pre",
-        include: [
-          assetsRoot,
-        ]
+        include: [ assetsRoot ],
+        options: { formatter },
       },
       {
         test: /\.vue$/,
