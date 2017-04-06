@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
         $this->call(CommonConfigSeeder::class);
 
         // 把地区放在最后，因为耗时较长.
-        $this->call(AreasTableSeeder::class);
+        if (getenv('PLUS_TESTER') !== false) {
+            $this->call(AreasTableSeeder::class);
+        }
     }
 }
