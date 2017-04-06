@@ -54,5 +54,14 @@
     "vue-router": "^2.3.1",
     "vuex": "^2.2.1",
     "vuex-router-sync": "^4.1.2"
-  }
+  },
+  "engines": {
+    "node": ">= 4.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
 }
