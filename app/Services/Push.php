@@ -24,7 +24,7 @@ class Push
         ];
 
         try {
-            $result = $this->client->push()
+            $this->client->push()
                 ->setOptions(1, null, null, false, null)
                 ->setPlatform('all') //全部平台
                 ->addAlias($audience) // 指定用户
