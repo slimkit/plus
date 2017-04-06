@@ -255,7 +255,7 @@ class ComponentCommand extends Command
         }
 
         if (! $this->filesystem->exists($router)) {
-            throw new \Exception("File does not exist at path {$filename}");
+            throw new \Exception("File does not exist at path {$router}");
         }
 
         $routes = config('component_routes');
