@@ -141,7 +141,7 @@ class ComponentCommand extends Command
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    protected function getClosureBind($bind, Closure $call): Closure
+    public function getClosureBind($bind, Closure $call): Closure
     {
         $call->bindTo($bind);
 
@@ -222,22 +222,10 @@ class ComponentCommand extends Command
     protected function installVendorComponentResource(InstallerInterface $installer, string $componentName)
     {
         $resource = $installer->resource();
-        if ($resource) {
-            $this->doInstallVendorComponentResource($componentName, $resource);
+        if (! $resource) {
+            return ;
         }
-    }
 
-    /**
-     * Do run install resource.
-     *
-     * @param string $componentName
-     * @param string $resource
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     * @homepage http://medz.cn
-     */
-    protected function doInstallVendorComponentResource(string $componentName, string $resource)
-    {
         if (! $this->filesystem->isDirectory($resource)) {
             throw new \Exception("Directory desc not exist as path {$resource}");
         }
@@ -262,28 +250,16 @@ class ComponentCommand extends Command
     protected function installVendorComponentRouter(InstallerInterface $installer, string $componentName)
     {
         $router = $installer->router();
-        if ($router) {
-            $this->doInstallVendorComponentRouter($componentName, $router);
+        if (! $router) {
+            return ;
         }
-    }
 
-    /**
-     * Do run install router.
-     *
-     * @param string $componentName
-     * @param string $filename
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     * @homepage http://medz.cn
-     */
-    protected function doInstallVendorComponentRouter(string $componentName, string $filename)
-    {
-        if (! $this->filesystem->exists($filename)) {
+        if (! $this->filesystem->exists($router)) {
             throw new \Exception("File does not exist at path {$filename}");
         }
 
         $routes = config('component_routes');
-        $routes[$componentName] = $filename;
+        $routes[$componentName] = $router;
 
         $this->filePutIterator(config_path('component_routes.php'), $routes);
         $this->info("The {$componentName} created router successfully.");
@@ -298,7 +274,7 @@ class ComponentCommand extends Command
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    protected function filePutIterator(string $filename, array $datas)
+    public function filePutIterator(string $filename, array $datas)
     {
         $data = '<?php '.PHP_EOL;
         $data .= 'return '.PHP_EOL;
