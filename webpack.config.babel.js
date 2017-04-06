@@ -25,7 +25,7 @@ const entry = {
 };
 
 function cssLoaders (options = {}) {
-  let cssLoader = {
+  const cssLoader = {
     loader: 'css-loader',
     options: {
       minimize: isProd,
@@ -134,7 +134,7 @@ const webpackConfig = {
     ],
     alias: {
       'jquery': `jquery/dist/jquery.${isProd ? 'min.js' : 'js'}`,
-      'vue$': `vue/dist/vue.common.${isProd ? 'min.js' : 'js'}`,
+      'vue$': `vue/dist/vue.common.js`,
       'bootstrap-sass$': `bootstrap-sass/assets/javascripts/bootstrap.${isProd ? 'min.js' : 'js'}`
     }
   },
