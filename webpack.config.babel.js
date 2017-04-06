@@ -78,18 +78,22 @@ function styleLoaders(options = {}) {
   return output;
 };
 
-function MixManifest(stats) {
-  let flattenedPaths = [].concat.apply([], lodash.values(stats.assetsByChunkName));
+function MixManifest({ assetsByChunkName = {} }) {
+  const manifest = lodash.reduce(assetsByChunkName, (manifest, values, name) => {
+    let files = lodash.values(values);
+    if (typeof values === 'string') {
+      files = [values];
+    }
 
-  let manifest = flattenedPaths.reduce((manifest, filename) => {
-    let original = filename.replace(/\.(\w{20})(\..+)/, '$2');
-    manifest['/'+original] = '/'+filename;
-    // manifest[original] = filename;
+    return lodash.reduce(files, (manifest, filename) => {
+      const dirname = path.dirname(filename);
+      const extname = path.extname(filename);
+      manifest[`/${dirname}/${name}${extname}`] = `/${filename}`;
 
-    return manifest;
+      return manifest;
+    }, manifest);
   }, {});
 
-  // return stats;
   return JSON.stringify(manifest, null, 2);
 };
 
@@ -124,7 +128,7 @@ const webpackConfig = {
   output: {
     path: isHot ? '/' : buildAssetsRoot,
     publicPath: isHot ? 'http://localhost:8080/' : '/',
-    filename: isProd ? 'js/[name].[chunkhash].js' : 'js/[name].js',
+    filename: isProd ? 'js/[chunkhash].js' : 'js/[name].js',
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -188,7 +192,7 @@ const webpackConfig = {
     }),
     // extract css into its own file
     new ExtractTextPlugin({
-      filename: isProd ? 'css/[name].[chunkhash].css' : 'css/[name].css'
+      filename: isProd ? 'css/[chunkhash].css' : 'css/[name].css'
     }),
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
