@@ -67,12 +67,16 @@ class ComponentArchiveCommand extends Command
      */
     protected function findComposer($workingPath)
     {
+        $phpScript = ProcessUtils::escapeArgument(
+            app(PhpExecutableFinder::class)->find(false)
+        );
+
         if ($this->filesystem->exists($workingPath.'/composer.phar')) {
-            return ProcessUtils::escapeArgument((new PhpExecutableFinder())->find(false)).' composer.phar';
+            return sprintf('%s composer.phar', $phpScript);
         }
 
         if ($this->filesystem->exists(getcwd().'/composer.phar')) {
-            return ProcessUtils::escapeArgument((new PhpExecutableFinder())->find(false).' '.getcwd().'/composer.phar');
+            return sprintf('%s %s/composer.phar', $phpScript, getcwd());
         }
 
         return 'composer';
