@@ -60,11 +60,11 @@ class ComponentCommand extends Command
      * 卸载步骤.
      *
      * @param InstallerInterface $installer
-     * @param string $coponent
+     * @param string $component
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function uninstall(InstallerInterface $installer, string $coponent)
+    protected function uninstall(InstallerInterface $installer, string $component)
     {
         $installer->uninstall(
             $this->getClosureBind($this, function () use ($component) {
