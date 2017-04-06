@@ -206,6 +206,8 @@ class Storage
             if ($type === 'text') {
                 $newOption[$key] = $optionValue ?: array_get($role, 'value');
 
+                return;
+
             // 多选
             } elseif (
                 ($type === 'checkbox' && is_array($optionValue)) ||
@@ -219,6 +221,8 @@ class Storage
                 });
                 $newOption[$key] = $optionValue;
 
+                return ;
+
             // 单选
             } elseif (
                 $type === 'radio' ||
@@ -229,9 +233,11 @@ class Storage
                     throw new \Exception(sprintf('验证的储存引擎表单%s储存的值不存在于规定表单中', $key), 422);
                 }
                 $newOption[$key] = $optionValue ?: array_get($role, 'value');
-            } else {
-                throw new \Exception(sprintf('表单%s不允许不传递'), 422);
+
+                return;
             }
+
+            throw new \Exception(sprintf('表单%s不允许不传递'), 422);
         });
 
         return $newOption;
