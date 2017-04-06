@@ -123,7 +123,7 @@ const webpackConfig = {
   entry: entry,
   output: {
     path: isHot ? '/' : buildAssetsRoot,
-    publicPath: isHot ? 'http://localhost:8080/' : '../',
+    publicPath: isHot ? 'http://localhost:8080/' : '/',
     filename: isProd ? 'js/[name].[chunkhash].js' : 'js/[name].js',
   },
   resolve: {

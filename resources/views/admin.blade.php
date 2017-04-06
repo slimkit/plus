@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <base id="headbase" href="{{ url('/') }}" />
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -32,6 +33,8 @@
 <body>
 <div id="app"></div>
 <!-- script -->
+<script type="text/javascript" src="{{ mix('js/manifest.js') }}"></script>
+<script type="text/javascript" src="{{ mix('js/vendor.js') }}"></script>
 <script type="text/javascript" src="{{ mix('js/admin.js') }}"></script>
 </body>
 </html>
