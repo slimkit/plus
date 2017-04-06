@@ -134,7 +134,8 @@ const webpackConfig = {
     ],
     alias: {
       'jquery': `jquery/dist/jquery.${isProd ? 'min.js' : 'js'}`,
-      'vue$': 'vue/dist/vue.common.js'
+      'vue$': `vue/dist/vue.common.${isProd ? 'min.js' : 'js'}`,
+      'bootstrap-sass$': `bootstrap-sass/assets/javascripts/bootstrap.${isProd ? 'min.js' : 'js'}`
     }
   },
   module: {
@@ -190,24 +191,24 @@ const webpackConfig = {
       filename: isProd ? 'css/[name].[chunkhash].css' : 'css/[name].css'
     }),
     // split vendor js into its own file
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: 'vendor',
-    //   minChunks: function (module, count) {
-    //     // any required modules inside node_modules are extracted to vendor
-    //     return (
-    //       module.resource &&
-    //       /\.js$/.test(module.resource) &&
-    //       module.resource.indexOf(
-    //         path.join(__dirname, 'node_modules')
-    //       ) === 0
-    //     )
-    //   }
-    // }),
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: 'manifest',
-    //   chunks: ['vendor']
-    // }),
-    // new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: function (module, count) {
+        // any required modules inside node_modules are extracted to vendor
+        return (
+          module.resource &&
+          /\.js$/.test(module.resource) &&
+          module.resource.indexOf(
+            path.join(__dirname, 'node_modules')
+          ) === 0
+        );
+      }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest',
+      chunks: ['vendor']
+    }),
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new StatsWriterPlugin({
       filename: 'mix-manifest.json',
       transform: MixManifest
