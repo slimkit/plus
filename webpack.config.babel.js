@@ -6,6 +6,7 @@ import { StatsWriterPlugin } from 'webpack-stats-plugin';
 import lodash from 'lodash';
 import fs from 'fs';
 import formatter from 'eslint-friendly-formatter';
+import OptimizeCSSPlugin from 'optimize-css-assets-webpack-plugin';
 
 // 环境变量获取
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -62,6 +63,21 @@ function cssLoaders (options = {}) {
   };
 };
 
+function styleLoaders(options = {}) {
+  let output = [];
+  const loaders = cssLoaders(options);
+
+  for (let extension in loaders) {
+    let loader = loaders[extension]
+    output.push({
+      test: new RegExp('\\.' + extension + '$'),
+      use: loader
+    });
+  }
+
+  return output;
+};
+
 function MixManifest(stats) {
   let flattenedPaths = [].concat.apply([], lodash.values(stats.assetsByChunkName));
 
@@ -85,6 +101,13 @@ const plugins = isProd ?
       warnings: false
     },
     sourceMap: false
+  }),
+  // Compress extracted CSS. We are using this plugin so that possible
+  // duplicated CSS from different components can be deduped.
+  new OptimizeCSSPlugin({
+    cssProcessorOptions: {
+      safe: true
+    }
   })
 ] : 
 [
@@ -116,6 +139,7 @@ const webpackConfig = {
   },
   module: {
     rules: [
+      ...styleLoaders({ sourceMap: !isProd }),
       {
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',
