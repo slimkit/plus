@@ -52,27 +52,65 @@ class ComponentCommand extends Command
     {
         $name = $this->getNameInput();
         $component = $this->getComponentInput();
-
         $installer = $this->getInstallerInstance($component);
+        $this->$name($installer, $component);
+    }
 
-        // install call.
-        $install = $this->getClosureBind($this, function () use ($installer, $component) {
-            $this->installVendorComponentRouter($installer, $component);
-            $this->installVendorComponentResource($installer, $component);
-            $this->changeInstalledStatus($component, true);
-        });
+    /**
+     * 卸载步骤.
+     *
+     * @param InstallerInterface $installer
+     * @param string $coponent
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function uninstall(InstallerInterface $installer, string $coponent)
+    {
+        $installer->uninstall(
+            $this->getClosureBind($this, function () use ($component) {
+                $this->removeVendorComponentResource($component);
+                $this->removeVendorComponentResource($component);
+                $this->changeInstalledStatus($component, false);
+            })
+        );
+    }
 
-        // update call.
-        $update = clone $install;
+    /**
+     * 升级步骤.
+     *
+     * @param InstallerInterface $installer
+     * @param string $component component name.
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function update(InstallerInterface $installer, string $component)
+    {
+        $installer->update(
+            $this->getClosureBind($this, function () use ($installer, $component) {
+                $this->installVendorComponentRouter($installer, $component);
+                $this->installVendorComponentResource($installer, $component);
+                $this->changeInstalledStatus($component, true);
+            })
+        );
+    }
 
-        // uninstall call.
-        $uninstall = $this->getClosureBind($this, function () use ($component) {
-            $this->removeVendorComponentRouter($component);
-            $this->removeVendorComponentResource($component);
-            $this->changeInstalledStatus($component, false);
-        });
-
-        $installer->$name($$name, $this, $this->output);
+    /**
+     * 安装步骤.
+     *
+     * @param InstallerInterface $installer
+     * @param string $component component name.
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function install(InstallerInterface $installer, string $component)
+    {
+        $installer->install(
+            $this->getClosureBind($this, function () use ($installer, $component) {
+                $this->installVendorComponentRouter($installer, $component);
+                $this->installVendorComponentResource($installer, $component);
+                $this->changeInstalledStatus($component, true);
+            })
+        );
     }
 
     /**
