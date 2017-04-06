@@ -70,7 +70,7 @@ class UserController extends Controller
      */
     public function get(Request $request)
     {
-        $datas = $users = User::whereIn('id', $request->user_ids)
+        $datas = User::whereIn('id', $request->user_ids)
             ->with('datas', 'counts')
             ->get()
             ->toArray();
