@@ -44,16 +44,10 @@ function cssLoaders (options = {}) {
       });
     }
 
-    // Extract CSS when that option is specified
-    // (which is the case during production build)
-    if (options.extract) {
-      return ExtractTextPlugin.extract({
-        use: loaders,
-        fallback: 'vue-style-loader'
-      });
-    }
-
-    return ['vue-style-loader'].concat(loaders);
+    return ExtractTextPlugin.extract({
+      use: loaders,
+      fallback: 'vue-style-loader'
+    });
   }
 
   // https://vue-loader.vuejs.org/en/configurations/extract-css.html
@@ -134,8 +128,7 @@ const webpackConfig = {
         loader: 'vue-loader',
         options: {
           loaders: cssLoaders({
-            sourceMap: !isProd,
-            extract: true,
+            sourceMap: !isProd
           }),
           postcss: [
             autoprefixer({
