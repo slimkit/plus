@@ -223,7 +223,7 @@ class ComponentCommand extends Command
     {
         $resource = $installer->resource();
         if (! $resource) {
-            return ;
+            return;
         }
 
         if (! $this->filesystem->isDirectory($resource)) {
@@ -251,7 +251,7 @@ class ComponentCommand extends Command
     {
         $router = $installer->router();
         if (! $router) {
-            return ;
+            return;
         }
 
         if (! $this->filesystem->exists($router)) {
