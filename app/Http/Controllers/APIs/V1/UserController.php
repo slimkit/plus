@@ -2,11 +2,10 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
-
 use Zhiyi\Plus\Models\User;
+use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Followed;
 use Zhiyi\Plus\Models\Following;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Zhiyi\Plus\Models\UserProfileSetting;
 use Zhiyi\Plus\Http\Controllers\Controller;
@@ -90,7 +89,7 @@ class UserController extends Controller
 
         foreach ($datas as $key => &$value) {
             $value['is_following'] = Following::where('user_id', $uid)->where('following_user_id', $value['id'])->get()->isEmpty() ? 0 : 1;
-            $value['is_followed'] =  Followed::where('user_id', $uid)->where('followed_user_id', $value['id'])->get()->isEmpty() ? 0 : 1;
+            $value['is_followed'] = Followed::where('user_id', $uid)->where('followed_user_id', $value['id'])->get()->isEmpty() ? 0 : 1;
         }
 
         return response()->json([
