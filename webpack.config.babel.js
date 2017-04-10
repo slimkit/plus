@@ -2,11 +2,11 @@ import webpack from 'webpack';
 import path from 'path';
 import autoprefixer from 'autoprefixer';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
-import { StatsWriterPlugin } from 'webpack-stats-plugin';
 import lodash from 'lodash';
 import fs from 'fs';
 import formatter from 'eslint-friendly-formatter';
 import OptimizeCSSPlugin from 'optimize-css-assets-webpack-plugin';
+import WebpackLaravelMixManifest from 'webpack-laravel-mix-manifest';
 
 // 环境变量获取
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -76,25 +76,6 @@ function styleLoaders(options = {}) {
   }
 
   return output;
-};
-
-function MixManifest({ assetsByChunkName = {} }) {
-  const manifest = lodash.reduce(assetsByChunkName, (manifest, values, name) => {
-    let files = lodash.values(values);
-    if (typeof values === 'string') {
-      files = [values];
-    }
-
-    return lodash.reduce(files, (manifest, filename) => {
-      const dirname = path.dirname(filename);
-      const extname = path.extname(filename);
-      manifest[`/${dirname}/${name}${extname}`] = `/${filename}`;
-
-      return manifest;
-    }, manifest);
-  }, {});
-
-  return JSON.stringify(manifest, null, 2);
 };
 
 // 环境插件～不同环境启用的不同插件.
@@ -213,10 +194,7 @@ const webpackConfig = {
       chunks: ['vendor']
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new StatsWriterPlugin({
-      filename: 'mix-manifest.json',
-      transform: MixManifest
-    }),
+    new WebpackLaravelMixManifest(),
     // 依托关键加载的插件
     ...plugins
   ],

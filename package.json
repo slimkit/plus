@@ -43,7 +43,7 @@
     "vue-template-compiler": "^2.2.6",
     "webpack": "^2.3.2",
     "webpack-dev-server": "^2.4.2",
-    "webpack-stats-plugin": "^0.1.5"
+    "webpack-laravel-mix-manifest": "^1.0.3"
   },
   "dependencies": {
     "axios": "^0.16.0",
