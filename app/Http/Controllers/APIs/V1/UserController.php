@@ -3,6 +3,7 @@
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
 use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Models\UserDatas;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Followed;
 use Zhiyi\Plus\Models\Following;
@@ -98,5 +99,34 @@ class UserController extends Controller
             'message' => '获取成功',
             'data'    => $datas,
         ])->setStatusCode(201);
+    }
+
+    /**
+     * 点赞排行
+     * 
+     * @author bs<414606094@qq.com>
+     * 
+     * @return [type] [description]
+     */
+    public function diggsRank(Request $request)
+    {
+        $limit = $request->input('limit', 15);
+        $max_id = $request->input('max_id', 0);
+        $rank = UserDatas::where('key', 'diggs_count')->where(function ($query) use ($max_id) {
+            if ($max_id > 0) {
+                $query->where('id', '<', $max_id);
+            }
+        })
+        ->select('id', 'user_id', 'value')
+        ->orderBy('value', 'desc')
+        ->take($limit)
+        ->get();
+
+        return response()->json([
+            'status'  => true,
+            'code'    => 0,
+            'message' => '获取成功',
+            'data'    => $rank,
+        ])->setStatusCode(200);
     }
 }

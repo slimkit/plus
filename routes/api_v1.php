@@ -62,6 +62,9 @@ Route::prefix('users')
     Route::get('/followstatus', 'FollowController@getFollowStatus');
 });
 
+// 点赞排行
+Route::get('/diggsrank', 'UserController@diggsRank');
+
 // 用户关注相关
 Route::get('/follows/follows/{user_id}/{max_id?}', 'FollowController@follows');
 Route::get('/follows/followeds/{user_id}/{max_id?}', 'FollowController@followeds');
