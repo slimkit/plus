@@ -1,10 +1,23 @@
-import webpack from 'webpack';
-import path from 'path';
+/*
+|--------------------------------------------------------
+| ThinkSNS+ webpack 配置文件
+|--------------------------------------------------------
+|
+| 配置文件使用 ES6 语法配置，这样能保证整个文档项目的语法统一性
+| 修改配置文件请使用 ES6 语法对 webpack 进行配置。
+|
+| @author Seven Du <shiweidu@outlook.com>
+|
+*/
+
 import autoprefixer from 'autoprefixer';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import lodash from 'lodash';
-import fs from 'fs';
+import path from 'path';
 import formatter from 'eslint-friendly-formatter';
+import fs from 'fs';
+import webpack from 'webpack';
+
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import OptimizeCSSPlugin from 'optimize-css-assets-webpack-plugin';
 import WebpackLaravelMixManifest from 'webpack-laravel-mix-manifest';
 
