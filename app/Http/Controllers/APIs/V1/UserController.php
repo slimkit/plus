@@ -2,8 +2,12 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
+
 use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Models\Followed;
+use Zhiyi\Plus\Models\Following;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Zhiyi\Plus\Models\UserProfileSetting;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
@@ -70,6 +74,7 @@ class UserController extends Controller
      */
     public function get(Request $request)
     {
+        $uid = Auth::guard('api')->user()->id ?? 0;
         $datas = User::whereIn('id', $request->user_ids)
             ->with('datas', 'counts')
             ->get()
@@ -81,6 +86,11 @@ class UserController extends Controller
                 'code'    => 1019,
                 'data'    => null,
             ])->setStatusCode(404);
+        }
+
+        foreach ($datas as $key => &$value) {
+            $value['is_following'] = Following::where('user_id', $uid)->where('following_user_id', $value['id'])->get()->isEmpty() ? 0 : 1;
+            $value['is_followed'] =  Followed::where('user_id', $uid)->where('followed_user_id', $value['id'])->get()->isEmpty() ? 0 : 1;
         }
 
         return response()->json([
