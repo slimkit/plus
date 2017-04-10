@@ -3,10 +3,10 @@
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
 use Zhiyi\Plus\Models\User;
-use Zhiyi\Plus\Models\UserDatas;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Followed;
 use Zhiyi\Plus\Models\Following;
+use Zhiyi\Plus\Models\UserDatas;
 use Illuminate\Support\Facades\Auth;
 use Zhiyi\Plus\Models\UserProfileSetting;
 use Zhiyi\Plus\Http\Controllers\Controller;
@@ -102,10 +102,10 @@ class UserController extends Controller
     }
 
     /**
-     * 点赞排行
-     * 
+     * 点赞排行.
+     *
      * @author bs<414606094@qq.com>
-     * 
+     *
      * @return [type] [description]
      */
     public function diggsRank(Request $request)
