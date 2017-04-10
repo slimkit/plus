@@ -8,10 +8,8 @@ export const createRequestURI = PATH => `${baseURL}/${PATH}`;
 // Created the request address of API.
 export const createAPI = PATH => `${api}/${PATH}`;
 
-axios.defaults.headers.common = {
-  'X-CSRF-TOKEN': csrfToken,
-  'X-Requested-With': 'XMLHttpRequest'
-};
+axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 export default axios;
 
