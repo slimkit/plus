@@ -111,14 +111,12 @@ class UserController extends Controller
     public function diggsRank(Request $request)
     {
         $limit = $request->input('limit', 15);
-        $max_id = $request->input('max_id', 0);
-        $rank = UserDatas::where('key', 'diggs_count')->where(function ($query) use ($max_id) {
-            if ($max_id > 0) {
-                $query->where('id', '<', $max_id);
-            }
-        })
+        $page = $request->input('page', 1);
+        $skip = ($page - 1) * $limit;
+        $rank = UserDatas::where('key', 'diggs_count')
         ->select('id', 'user_id', 'value')
         ->orderBy('value', 'desc')
+        ->skip($skip)
         ->take($limit)
         ->get();
 
