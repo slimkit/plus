@@ -3,11 +3,11 @@
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
 use DB;
+use Zhiyi\Plus\Models\Digg;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\Conversation;
-use Zhiyi\Plus\Models\Comment;
-use Zhiyi\Plus\Models\Digg;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class SystemController extends Controller
@@ -108,12 +108,12 @@ class SystemController extends Controller
     }
 
     /**
-     * 获取我收到的所有评论
-     * 
+     * 获取我收到的所有评论.
+     *
      * @author bs<414606094@qq.com>
-     * 
+     *
      * @param  Request $request [description]
-     * 
+     *
      * @return [type]           [description]
      */
     public function getMyComments(Request $request)
@@ -130,12 +130,13 @@ class SystemController extends Controller
             }
         })
         ->take($limit)
-        ->orderBy('id','desc')
+        ->orderBy('id', 'desc')
         ->get()->toArray();
         foreach ($comment as $key => &$value) {
             $value['sourceInfo'] = DB::table($value['source_table'])->where('id', $value['source_id'])->first();
             $value['commentInfo'] = DB::table($value['comment_table'])->where('id', $value['comment_id'])->first();
         }
+
         return response()->json(static::createJsonData([
             'status'  => true,
             'message' => '获取成功',
@@ -144,12 +145,12 @@ class SystemController extends Controller
     }
 
     /**
-     * 获取我收到的所有点赞
-     * 
+     * 获取我收到的所有点赞.
+     *
      * @author bs<414606094@qq.com>
-     * 
+     *
      * @param  Request $request [description]
-     * 
+     *
      * @return [type]           [description]
      */
     public function getMyDiggs(Request $request)
@@ -170,6 +171,7 @@ class SystemController extends Controller
             $value['sourceInfo'] = DB::table($value['source_table'])->where('id', $value['source_id'])->first();
             $value['diggInfo'] = DB::table($value['digg_table'])->where('id', $value['digg_id'])->first();
         }
+
         return response()->json(static::createJsonData([
             'status'  => true,
             'message' => '获取成功',
