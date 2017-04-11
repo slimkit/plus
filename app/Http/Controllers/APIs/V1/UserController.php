@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
+use DB;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Followed;
@@ -115,8 +116,7 @@ class UserController extends Controller
         $skip = ($page - 1) * $limit;
         $rank = UserDatas::where('key', 'diggs_count')
         ->select('id', 'user_id', 'value')
-        ->orderBy('value', 'desc')
-        ->skip($skip)
+        ->orderBy(DB::raw('-value', 'desc'))
         ->take($limit)
         ->get();
 
