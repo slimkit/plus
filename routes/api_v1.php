@@ -60,6 +60,12 @@ Route::prefix('users')
 
     //查看指定用户关注状态
     Route::get('/followstatus', 'FollowController@getFollowStatus');
+
+    // 获取我收到的评论
+    Route::get('/mycomments', 'SystemController@getMyComments');
+
+    // 获取我收到的点赞
+    Route::get('/mydiggs', 'SystemController@getMyDiggs');
 });
 
 // 点赞排行
