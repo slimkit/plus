@@ -67,8 +67,9 @@ class TokenGuard implements Guard
      */
     public function validate(array $credentials = [])
     {
-        var_dump($credentials);
-        exit;
+        // The test useing code.
+        // Do not know the use.
+        dd($credentials);
     }
 
     /**
