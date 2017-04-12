@@ -10,7 +10,7 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 class AreaController extends Controller
 {
     /**
-     * 获取全部地区数据
+     * 获取全部地区数据.
      *
      * @param Request $request
      * @return mixed
@@ -54,7 +54,7 @@ class AreaController extends Controller
     private function str2array($source, $delimiter = ','): array
     {
         $array = $source;
-        if (!is_array($source)) {
+        if (! is_array($source)) {
             $array = explode($delimiter, $source);
         }
 
