@@ -131,12 +131,7 @@ class SystemController extends Controller
         })
         ->take($limit)
         ->orderBy('id', 'desc')
-        ->get()->toArray();
-        foreach ($comment as $key => &$value) {
-            $value['sourceInfo'] = DB::table($value['source_table'])->where('id', $value['source_id'])->first();
-            $value['commentInfo'] = DB::table($value['comment_table'])->where('id', $value['comment_id'])->first();
-        }
-
+        ->get();
         return response()->json(static::createJsonData([
             'status'  => true,
             'message' => '获取成功',
@@ -166,11 +161,7 @@ class SystemController extends Controller
         })
         ->take($limit)
         ->orderBy('id', 'desc')
-        ->get()->toArray();
-        foreach ($digg as $key => &$value) {
-            $value['sourceInfo'] = DB::table($value['source_table'])->where('id', $value['source_id'])->first();
-            $value['diggInfo'] = DB::table($value['digg_table'])->where('id', $value['digg_id'])->first();
-        }
+        ->get();
 
         return response()->json(static::createJsonData([
             'status'  => true,
