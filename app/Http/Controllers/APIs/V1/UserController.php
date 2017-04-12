@@ -89,9 +89,9 @@ class UserController extends Controller
             ])->setStatusCode(404);
         }
 
-        foreach ($datas as $key => &$value) {
-            $value['is_following'] = Following::where('user_id', $uid)->where('following_user_id', $value['id'])->get()->isEmpty() ? 0 : 1;
-            $value['is_followed'] = Followed::where('user_id', $uid)->where('followed_user_id', $value['id'])->get()->isEmpty() ? 0 : 1;
+        foreach ($datas as &$data) {
+            $data['is_following'] = Following::where('user_id', $uid)->where('following_user_id', $data['id'])->get()->isEmpty() ? 0 : 1;
+            $data['is_followed'] = Followed::where('user_id', $uid)->where('followed_user_id', $data['id'])->get()->isEmpty() ? 0 : 1;
         }
 
         return response()->json([
