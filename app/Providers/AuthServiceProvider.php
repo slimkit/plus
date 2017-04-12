@@ -2,7 +2,6 @@
 
 namespace Zhiyi\Plus\Providers;
 
-use Illuminate\Support\Facades\Auth;
 use Zhiyi\Plus\Services\Auth\TokenGuard;
 use Zhiyi\Plus\Services\Auth\TokenUserProvider;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -28,16 +27,16 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         // auth:api -> token provider.
-        Auth::provider('token', function ($app) {
+        $this->app->auth->provider('token', function ($app) {
             return $app->make(TokenUserProvider::class);
         });
 
         // auth:api -> token guard.
         // @throw \Exception
-        Auth::extend('token', function ($app, $name, array $config) {
+        $this->app->auth->extend('token', function ($app, $name, array $config) {
             if ($name === 'api') {
                 return $app->make(TokenGuard::class, [
-                    'provider' => Auth::createUserProvider($config['provider']),
+                    'provider' => $app->auth->createUserProvider($config['provider']),
                     'request' => $app->request,
                 ]);
             }
