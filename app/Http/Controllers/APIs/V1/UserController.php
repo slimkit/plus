@@ -117,6 +117,7 @@ class UserController extends Controller
         $rank = UserDatas::where('key', 'diggs_count')
         ->select('id', 'user_id', 'value')
         ->orderBy(DB::raw('-value', 'desc'))
+        ->skip($skip)
         ->take($limit)
         ->get();
 
