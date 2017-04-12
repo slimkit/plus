@@ -195,11 +195,11 @@ class FollowController extends Controller
         $ids = explode(',', $request->user_ids);
         $data = [];
         if (is_array($ids) && $request->user_ids) {
-            foreach ($ids as $key => $value) {
+            foreach ($ids as $key) {
                 $return = [];
-                $return['follow_status'] = Following::where('user_id', $value)->where('following_user_id', $user_id)->get()->isEmpty() ? 0 : 1;
-                $return['my_follow_status'] = Followed::where('user_id', $value)->where('followed_user_id', $user_id)->get()->isEmpty() ? 0 : 1;
-                $return['user_id'] = (int) $value;
+                $return['follow_status'] = Following::where('user_id', $key)->where('following_user_id', $user_id)->get()->isEmpty() ? 0 : 1;
+                $return['my_follow_status'] = Followed::where('user_id', $key)->where('followed_user_id', $user_id)->get()->isEmpty() ? 0 : 1;
+                $return['user_id'] = (int) $key;
 
                 $data[] = $return;
             }
