@@ -2,7 +2,6 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
-use DB;
 use Zhiyi\Plus\Models\Digg;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Comment;
@@ -132,6 +131,7 @@ class SystemController extends Controller
         ->take($limit)
         ->orderBy('id', 'desc')
         ->get();
+
         return response()->json(static::createJsonData([
             'status'  => true,
             'message' => '获取成功',
