@@ -21,6 +21,8 @@ class CreateDiggs extends Migration
             $table->integer('digg_id')->comment('关联点赞记录id');
             $table->string('source_table')->comment('资源表名');
             $table->integer('source_id')->comment('关联资源id');
+            $table->integer('source_cover')->default(0)->comment('资源封面');
+            $table->longtext('source_content')->comment('资源内容');
             $table->integer('user_id')->default(0)->comment('点赞者id');
             $table->integer('to_user_id')->default(0)->comment('资源作者id');
             $table->timestamps();
