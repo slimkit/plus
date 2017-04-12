@@ -36,6 +36,7 @@ class LocalStorage implements StorageEngineInterface
 
     public function notice(string $message, string $filename)
     {
+        unset($message);
         if (! $this->exists($filename)) {
             return response()->json(static::createJsonData([
                 'status' => false,
