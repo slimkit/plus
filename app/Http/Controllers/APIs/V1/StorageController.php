@@ -24,13 +24,12 @@ class StorageController extends Controller
     /**
      * 获取储存资源.
      *
-     * @param Request $request
      * @param StorageModel $storage
      * @param int|int $process
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function get(Request $request, StorageModel $storage, int $process = 100)
+    public function get(StorageModel $storage, int $process = 100)
     {
         $url = $this->storage()->url($storage->filename, $process, static::$engine);
 
