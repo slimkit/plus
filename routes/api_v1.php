@@ -35,6 +35,9 @@ Route::patch('/auth/forgot', 'AuthController@forgotPassword')
     ->middleware(Middleware\VerifyPhoneCode::class) // 验证手机号码验证码是否正确
 ;
 
+// 地区接口
+Route::get('/areas', 'AreaController@showAreas');
+
 // 用户相关组
 Route::prefix('users')
 ->middleware('auth:api')
