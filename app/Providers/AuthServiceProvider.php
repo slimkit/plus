@@ -33,6 +33,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         // auth:api -> token guard.
+        // @throw \Exception
         Auth::extend('token', function ($app, $name, array $config) {
             if ($name === 'api') {
                 return $app->make(TokenGuard::class, [
@@ -40,6 +41,8 @@ class AuthServiceProvider extends ServiceProvider
                     'request' => $app->request,
                 ]);
             }
+
+            throw new \Exception('This guard only serves "auth:api".');
         });
     }
 }
