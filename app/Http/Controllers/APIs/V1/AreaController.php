@@ -39,6 +39,7 @@ class AreaController extends Controller
         });
 
         return response()->json(static::createJsonData([
+            'status' => true,
             'data' => $areas,
         ]))->setStatusCode(200);
     }
