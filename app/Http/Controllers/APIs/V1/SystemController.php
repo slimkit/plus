@@ -190,28 +190,24 @@ class SystemController extends Controller
         $time = Carbon::createFromTimestamp($time)->toDateTimeString();
         $return = [];
         if (in_array('diggs', $key)) {
-            $diggs = Digg::where('to_user_id', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->pluck('user_id');
+            $diggs = Digg::where('to_user_id', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->get();
 
             $digg_return['key'] = 'diggs';
-            $digg_return['uids'] = implode(',', $diggs->toArray());
+            $digg_return['uids'] = implode(',', $diggs->pluck('user_id')->toArray());
             $digg_return['count'] = $diggs->count();
-            $digg_return['time'] = $diggs->count() > 0 ? Digg::where('to_user_id', $uid)
-                                                            ->where('created_at', '>', $time)
-                                                            ->orderBy('id', 'desc')
-                                                            ->first()->created_at->toDateTimeString() : Carbon::now()->toDateTimeString();
+            $digg_return['time'] = $diggs->count() > 0 ? $diggs->toArray()[0]['created_at'] : Carbon::now()->toDateTimeString();
+            $digg_return['max_id'] = $diggs->count() > 0 ? $diggs->toArray()[0]['id'] : 0;
 
             $return[] = $digg_return;
         }
         if (in_array('follows', $key)) {
-            $follows = Following::where('following_user_id', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->pluck('user_id');
+            $follows = Following::where('following_user_id', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->get();
 
             $follow_return['key'] = 'follows';
-            $follow_return['uids'] = implode(',', $follows->toArray());
+            $follow_return['uids'] = implode(',', $follows->pluck('user_id')->toArray());
             $follow_return['count'] = $follows->count();
-            $follow_return['time'] = $follows->count() > 0 ? Following::where('following_user_id', $uid)
-                                                            ->where('created_at', '>', $time)
-                                                            ->orderBy('id', 'desc')
-                                                            ->first()->created_at->toDateTimeString() : Carbon::now()->toDateTimeString();
+            $follow_return['time'] = $follows->count() > 0 ? $follows->toArray()[0]['created_at'] : Carbon::now()->toDateTimeString();
+            $follow_return['max_id'] = $follows->count() > 0 ? $follows->toArray()[0]['id'] : 0;
 
             $return[] = $follow_return;
         }
@@ -222,18 +218,13 @@ class SystemController extends Controller
             ->where('user_id', '!=', $uid)
             ->where('created_at', '>', $time)
             ->orderBy('id', 'desc')
-            ->pluck('user_id');
+            ->get();
 
             $comment_return['key'] = 'comments';
-            $comment_return['uids'] = implode(',', $comments->toArray());
+            $comment_return['uids'] = implode(',', $comments->pluck('user_id')->toArray());
             $comment_return['count'] = $comments->count();
-            $comment_return['time'] = $comments->count() > 0 ? Comment::where(function ($query) use ($uid) {
-                $query->where('to_user_id', $uid)->orWhere('reply_to_user_id', $uid);
-            })
-                                                            ->where('user_id', '!=', $uid)
-                                                            ->where('created_at', '>', $time)
-                                                            ->orderBy('id', 'desc')
-                                                            ->first()->created_at->toDateTimeString() : Carbon::now()->toDateTimeString();
+            $comment_return['time'] = $comments->count() > 0 ? $comments->toArray()[0]['created_at'] : Carbon::now()->toDateTimeString();
+            $comment_return['max_id'] = $comments->count() > 0 ? $comments->toArray()[0]['id'] : 0;
 
             $return[] = $comment_return;
         }
