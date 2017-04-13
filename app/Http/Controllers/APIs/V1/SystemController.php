@@ -96,15 +96,11 @@ class SystemController extends Controller
         ->orderBy('created_at', 'desc')
         ->take($limit)
         ->get();
-        $datas = [];
-        if (! $list->isEmpty()) {
-            $datas = $list->toArray();
-        }
 
         return response()->json(static::createJsonData([
             'status'  => true,
             'message' => '获取成功',
-            'data'    => $datas,
+            'data'    => $list,
         ]))->setStatusCode(200);
     }
 
