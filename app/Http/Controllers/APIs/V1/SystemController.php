@@ -228,8 +228,8 @@ class SystemController extends Controller
             $comment_return['uids'] = implode(',', $comments->toArray());
             $comment_return['count'] = $comments->count();
             $comment_return['time'] = $comments->count() > 0 ? Comment::where(function ($query) use ($uid) {
-                                                                $query->where('to_user_id', $uid)->orWhere('reply_to_user_id', $uid);
-                                                            })
+                $query->where('to_user_id', $uid)->orWhere('reply_to_user_id', $uid);
+            })
                                                             ->where('user_id', '!=', $uid)
                                                             ->where('created_at', '>', $time)
                                                             ->orderBy('id', 'desc')
