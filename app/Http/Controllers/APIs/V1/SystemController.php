@@ -190,13 +190,13 @@ class SystemController extends Controller
         $time = Carbon::createFromTimestamp($time)->toDateTimeString();
         $return = [];
         if (in_array('diggs', $key)) {
-            $diggs = Digg::where('to_user_id', $uid)->where('created_at', '>', $time)->get();
+            $diggs = Digg::where('to_user_id', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->get();
 
             $return['diggs']['data'] = $diggs->toArray();
             $return['diggs']['count'] = $diggs->count();
         }
         if (in_array('follows', $key)) {
-            $follows = Following::where('following_user_id', $uid)->where('created_at', '>', $time)->get();
+            $follows = Following::where('following_user_id', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->get();
 
             $return['follows']['data'] = $follows->toArray();
             $return['follows']['count'] = $follows->count();
@@ -206,7 +206,9 @@ class SystemController extends Controller
                 $query->where('to_user_id', $uid)->orWhere('reply_to_user_id', $uid);
             })
             ->where('user_id', '!=', $uid)
-            ->where('created_at', '>', $time)->get();
+            ->where('created_at', '>', $time)
+            ->orderBy('id', 'desc')
+            ->get();
 
             $return['comments']['data'] = $comments->toArray();
             $return['comments']['count'] = $comments->count();
