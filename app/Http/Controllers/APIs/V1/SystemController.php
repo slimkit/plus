@@ -190,16 +190,30 @@ class SystemController extends Controller
         $time = Carbon::createFromTimestamp($time)->toDateTimeString();
         $return = [];
         if (in_array('diggs', $key)) {
-            $diggs = Digg::where('to_user_id', $uid)->where('created_at', '>', $time)->pluck('user_id');
+            $diggs = Digg::where('to_user_id', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->pluck('user_id');
 
-            $return['diggs']['uids'] = implode(',', $diggs->toArray());
-            $return['diggs']['count'] = $diggs->count();
+            $digg_return['key'] = 'diggs';
+            $digg_return['uids'] = implode(',', $diggs->toArray());
+            $digg_return['count'] = $diggs->count();
+            $digg_return['time'] = $diggs->count() > 0 ? Digg::where('to_user_id', $uid)
+                                                            ->where('created_at', '>', $time)
+                                                            ->orderBy('id', 'desc')
+                                                            ->first()->created_at->toDateTimeString() : Carbon::now()->toDateTimeString();
+
+            $return[] = $digg_return;
         }
         if (in_array('follows', $key)) {
-            $follows = Following::where('following_user_id', $uid)->where('created_at', '>', $time)->pluck('user_id');
+            $follows = Following::where('following_user_id', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->pluck('user_id');
 
-            $return['follows']['uids'] = implode(',', $follows->toArray());
-            $return['follows']['count'] = $follows->count();
+            $follow_return['key'] = 'follows';
+            $follow_return['uids'] = implode(',', $follows->toArray());
+            $follow_return['count'] = $follows->count();
+            $follow_return['time'] = $follows->count() > 0 ? Following::where('following_user_id', $uid)
+                                                            ->where('created_at', '>', $time)
+                                                            ->orderBy('id', 'desc')
+                                                            ->first()->created_at->toDateTimeString() : Carbon::now()->toDateTimeString();
+
+            $return[] = $follow_return;
         }
         if (in_array('follows', $key)) {
             $comments = Comment::where(function ($query) use ($uid) {
@@ -207,10 +221,21 @@ class SystemController extends Controller
             })
             ->where('user_id', '!=', $uid)
             ->where('created_at', '>', $time)
+            ->orderBy('id', 'desc')
             ->pluck('user_id');
 
-            $return['comments']['uids'] = implode(',', $comments->toArray());
-            $return['comments']['count'] = $comments->count();
+            $comment_return['key'] = 'comments';
+            $comment_return['uids'] = implode(',', $comments->toArray());
+            $comment_return['count'] = $comments->count();
+            $comment_return['time'] = $comments->count() > 0 ? Comment::where(function ($query) use ($uid) {
+                                                                $query->where('to_user_id', $uid)->orWhere('reply_to_user_id', $uid);
+                                                            })
+                                                            ->where('user_id', '!=', $uid)
+                                                            ->where('created_at', '>', $time)
+                                                            ->orderBy('id', 'desc')
+                                                            ->first()->created_at->toDateTimeString() : Carbon::now()->toDateTimeString();
+
+            $return[] = $comment_return;
         }
 
         return response()->json(static::createJsonData([
