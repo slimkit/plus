@@ -2,9 +2,11 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
+use Carbon\Carbon;
 use Zhiyi\Plus\Models\Digg;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Comment;
+use Zhiyi\Plus\Models\Following;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\Conversation;
 use Zhiyi\Plus\Http\Controllers\Controller;
@@ -167,6 +169,53 @@ class SystemController extends Controller
             'status'  => true,
             'message' => '获取成功',
             'data'    => $digg,
+        ]))->setStatusCode(200);
+    }
+
+    /**
+     * 获取最新消息
+     * 
+     * @author bs<414606094@qq.com>
+     * 
+     * @param  Request $request [description]
+     * 
+     * @return [type]           [description]
+     */
+    public function flushMessages(Request $request)
+    {
+        $uid = $request->user()->id;
+        $key = $request->input('key', ['diggs', 'follows', 'comments']);
+        is_string($key) && $key = explode(',', $key);
+        $time = $request->input('time');
+        $time = Carbon::createFromTimestamp($time)->toDateTimeString();
+        $return = [];
+        if (in_array('diggs', $key)) {
+            $diggs = Digg::where('to_user_id', $uid)->where('created_at', '>', $time)->get();
+            
+            $return['diggs']['data'] = $diggs->toArray();
+            $return['diggs']['count'] = $diggs->count();
+        }
+        if (in_array('follows', $key)) {
+            $follows = Following::where('following_user_id', $uid)->where('created_at', '>', $time)->get();
+
+            $return['follows']['data'] = $follows->toArray();
+            $return['follows']['count'] = $follows->count();
+        }
+        if (in_array('follows', $key)) {
+            $comments = Comment::where(function ($query) use ($uid) {
+                $query->where('to_user_id', $uid)->orWhere('reply_to_user_id', $uid);
+            })
+            ->where('user_id', '!=', $uid)
+            ->where('created_at', '>', $time)->get();
+
+            $return['comments']['data'] = $comments->toArray();
+            $return['comments']['count'] = $comments->count();
+        }
+
+        return response()->json(static::createJsonData([
+            'status'  => true,
+            'message' => '获取成功',
+            'data'    => $return,
         ]))->setStatusCode(200);
     }
 }
