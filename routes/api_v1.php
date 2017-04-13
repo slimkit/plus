@@ -69,6 +69,9 @@ Route::prefix('users')
 
     // 获取我收到的点赞
     Route::get('/mydiggs', 'SystemController@getMyDiggs');
+
+    // 刷新我收到的消息
+    Route::get('/flushmessages', 'SystemController@flushMessages');
 });
 
 // 点赞排行

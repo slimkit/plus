@@ -184,7 +184,7 @@ class SystemController extends Controller
     public function flushMessages(Request $request)
     {
         $uid = $request->user()->id;
-        $key = $request->input('key', ['diggs', 'follows', 'comments']);
+        $key = $request->input('key') ?? 'diggs,follows,comments';
         is_string($key) && $key = explode(',', $key);
         $time = $request->input('time');
         $time = Carbon::createFromTimestamp($time)->toDateTimeString();
@@ -211,7 +211,7 @@ class SystemController extends Controller
 
             $return[] = $follow_return;
         }
-        if (in_array('follows', $key)) {
+        if (in_array('comments', $key)) {
             $comments = Comment::where(function ($query) use ($uid) {
                 $query->where('to_user_id', $uid)->orWhere('reply_to_user_id', $uid);
             })
