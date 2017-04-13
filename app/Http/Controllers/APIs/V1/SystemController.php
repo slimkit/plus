@@ -173,12 +173,12 @@ class SystemController extends Controller
     }
 
     /**
-     * 获取最新消息
-     * 
+     * 获取最新消息.
+     *
      * @author bs<414606094@qq.com>
-     * 
+     *
      * @param  Request $request [description]
-     * 
+     *
      * @return [type]           [description]
      */
     public function flushMessages(Request $request)
@@ -191,7 +191,7 @@ class SystemController extends Controller
         $return = [];
         if (in_array('diggs', $key)) {
             $diggs = Digg::where('to_user_id', $uid)->where('created_at', '>', $time)->get();
-            
+
             $return['diggs']['data'] = $diggs->toArray();
             $return['diggs']['count'] = $diggs->count();
         }
