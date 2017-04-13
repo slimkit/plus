@@ -191,7 +191,7 @@ class SystemController extends Controller
         $return = [];
         if (in_array('diggs', $key)) {
             $diggs = Digg::where('to_user_id', $uid)->where('created_at', '>', $time)->pluck('user_id');
-            
+
             $return['diggs']['uids'] = implode(',', $diggs->toArray());
             $return['diggs']['count'] = $diggs->count();
         }
