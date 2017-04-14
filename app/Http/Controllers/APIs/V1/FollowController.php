@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Followed;
 use Zhiyi\Plus\Models\Following;
 use Zhiyi\Plus\Models\UserDatas;
+use Zhiyi\Plus\Jobs\PushMessage;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class FollowController extends Controller
@@ -34,6 +35,12 @@ class FollowController extends Controller
             $this->countUserFollow($user_id, 'increment', 'following_count');
             $this->countUserFollow($follow_user_id, 'increment', 'followed_count');
         });
+
+        $extras = ['action' => 'follow', 'type' => 'user', 'uid' => $user_id];
+        $alert = '有人关注了你，去看看吧';
+        $alias = $follow_user_id;
+
+        dispatch(new PushMessage($alert, (string) $alias, $extras));
 
         return response()->json(static::createJsonData([
             'status'  => true,
