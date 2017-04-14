@@ -126,7 +126,7 @@ class Storage
 
         return response()->json(static::createJsonData([
             'status' => true,
-        ]));
+        ]))->setStatusCode(201);
     }
 
     public function url(string $filename, int $process = 100, string $engine = 'local')
