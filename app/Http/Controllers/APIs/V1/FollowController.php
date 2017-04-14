@@ -11,17 +11,6 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 
 class FollowController extends Controller
 {
-    public function __construct(Request $request)
-    {
-        $user = User::find($request->user_id);
-        if (! $user or ! $user instanceof User) {
-            return response()->json(static::createJsonData([
-                'status'  => false,
-                'code'    => 1005,
-            ]))->setStatusCode(404);
-        }
-    }
-
     /**
      * 关注用户.
      *
