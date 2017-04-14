@@ -13,6 +13,8 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 
 class SystemController extends Controller
 {
+    // 允许查询的扩展配置
+    protected $allowedNamespace = ['im'];
     /**
      * 获取扩展包安装状态
      *
@@ -21,7 +23,7 @@ class SystemController extends Controller
      */
     public function getComponentStatus()
     {
-        $config = CommonConfig::select('namespace')->groupBy('namespace')->pluck('namespace')->toArray();
+        $config = CommonConfig::select('namespace')->whereIn('namespace', $this->allowedNamespace)->groupBy('namespace')->pluck('namespace')->toArray();
 
         $status = [
             'im' => in_array('im', $config),
@@ -42,7 +44,7 @@ class SystemController extends Controller
      */
     public function getComponentConfig(Request $request)
     {
-        $configData = CommonConfig::where('namespace', $request->component)->select(['name', 'value'])->get();
+        $configData = CommonConfig::where('namespace', $request->component)->whereIn('namespace', $this->allowedNamespace)->select(['name', 'value'])->get();
 
         return response()->json(static::createJsonData([
             'status' => true,
