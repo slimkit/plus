@@ -54,7 +54,7 @@ class FollowController extends Controller
         $user_id = $request->user()->id;
         $follow_user_id = $request->user_id;
 
-        DB::transaction(function() use ($user_id, $follow_user_id) {
+        DB::transaction(function () use ($user_id, $follow_user_id) {
             $follow = Following::where(['user_id' => $user_id, 'following_user_id' => $follow_user_id])->first();
             $follow->followed()->delete();
             $follow->delete();
