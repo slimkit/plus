@@ -65,13 +65,13 @@ Route::prefix('users')
     Route::get('/followstatus', 'FollowController@getFollowStatus');
 
     // 获取我收到的评论
-    Route::get('/mycomments', 'SystemController@getMyComments');
+    Route::get('/mycomments', 'UserController@getMyComments');
 
     // 获取我收到的点赞
-    Route::get('/mydiggs', 'SystemController@getMyDiggs');
+    Route::get('/mydiggs', 'UserController@getMyDiggs');
 
     // 刷新我收到的消息
-    Route::get('/flushmessages', 'SystemController@flushMessages');
+    Route::get('/flushmessages', 'UserController@flushMessages');
 });
 
 // 点赞排行
