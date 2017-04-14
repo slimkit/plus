@@ -149,6 +149,7 @@ class UserController extends Controller
         $comment = Comment::where(function ($query) use ($uid) {
             $query->where('to_user_id', $uid)->orWhere('reply_to_user_id', $uid);
         })
+        ->where('user_id', '!=', $uid)
         ->where(function ($query) use ($max_id) {
             if ($max_id > 0) {
                 $query->where('id', '<', $max_id);
