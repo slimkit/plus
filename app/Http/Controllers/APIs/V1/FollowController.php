@@ -6,9 +6,9 @@ use DB;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Followed;
+use Zhiyi\Plus\Jobs\PushMessage;
 use Zhiyi\Plus\Models\Following;
 use Zhiyi\Plus\Models\UserDatas;
-use Zhiyi\Plus\Jobs\PushMessage;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class FollowController extends Controller
