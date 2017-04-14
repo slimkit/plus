@@ -15,6 +15,7 @@ class SystemController extends Controller
 {
     // 允许查询的扩展配置
     protected $allowedNamespace = ['im'];
+
     /**
      * 获取扩展包安装状态
      *
