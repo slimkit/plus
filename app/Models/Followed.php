@@ -27,7 +27,7 @@ class Followed extends Model
 
     public function following()
     {
-        return $this->hasOne(Following::class, 'user_id', 'following_user_id');
+        return $this->hasOne(Following::class, 'following_user_id', 'user_id');
     }
 
     public function syncFollowing()

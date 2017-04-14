@@ -54,22 +54,14 @@ class FollowController extends Controller
         $user_id = $request->user()->id;
         $follow_user_id = $request->user_id;
 
-        // 我关注的
-        Following::where([
-                ['user_id', $user_id],
-                ['following_user_id', $follow_user_id],
-            ])
-            ->delete();
+        DB::transaction(function() use ($user_id, $follow_user_id) {
+            $follow = Following::where(['user_id' => $user_id, 'following_user_id' => $follow_user_id])->first();
+            $follow->followed()->delete();
+            $follow->delete();
 
-        // 目标用户我的粉丝
-        Followed::where([
-            ['user_id', $follow_user_id],
-            ['followed_user_id', $user_id],
-        ])
-        ->delete();
-
-        $this->countUserFollow($user_id, 'decrement', 'following_count');
-        $this->countUserFollow($follow_user_id, 'decrement', 'followed_count');
+            $this->countUserFollow($user_id, 'decrement', 'following_count');
+            $this->countUserFollow($follow_user_id, 'decrement', 'followed_count');
+        });
 
         return response()->json(static::createJsonData([
             'status'  => true,

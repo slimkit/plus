@@ -32,7 +32,7 @@ class Following extends Model
 
     public function followed()
     {
-        return $this->hasOne(Followed::class, 'user_id', 'followed_user_id');
+        return $this->hasOne(Followed::class, 'followed_user_id', 'user_id');
     }
 
     public function syncFollowed()
