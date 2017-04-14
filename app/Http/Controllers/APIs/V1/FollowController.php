@@ -24,7 +24,7 @@ class FollowController extends Controller
         $user_id = $request->user()->id;
         $follow_user_id = $request->user_id;
 
-        DB::transaction(function() use ($user_id, $follow_user_id) {
+        DB::transaction(function () use ($user_id, $follow_user_id) {
             $follow = new Following();
             $follow->user_id = $user_id;
             $follow->following_user_id = $follow_user_id;
