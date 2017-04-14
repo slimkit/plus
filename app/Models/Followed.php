@@ -20,8 +20,20 @@ class Followed extends Model
      *
      * @return [type] [description]
      */
-    public function following()
+    public function userFollowing()
     {
         return $this->hasMany(Following::class, 'user_id', 'user_id');
+    }
+
+    public function following()
+    {
+        return $this->hasOne(Following::class, 'user_id', 'following_user_id');
+    }
+
+    public function syncFollowing()
+    {
+        $followed = new Following(['user_id' => $this->followed_user_id, 'following_user_id' => $this->user_id]);
+
+        return $followed->save();
     }
 }

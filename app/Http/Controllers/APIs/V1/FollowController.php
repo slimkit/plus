@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
+use DB;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Followed;
@@ -22,17 +23,17 @@ class FollowController extends Controller
     {
         $user_id = $request->user()->id;
         $follow_user_id = $request->user_id;
-        Following::create([
-            'user_id'           => $user_id,
-            'following_user_id' => $follow_user_id,
-        ]);
-        Followed::create([
-            'user_id'          => $follow_user_id,
-            'followed_user_id' => $user_id,
-        ]);
 
-        $this->countUserFollow($user_id, 'increment', 'following_count');
-        $this->countUserFollow($follow_user_id, 'increment', 'followed_count');
+        DB::transaction(function() use ($user_id, $follow_user_id) {
+            $follow = new Following();
+            $follow->user_id = $user_id;
+            $follow->following_user_id = $follow_user_id;
+            $follow->save();
+            $follow->syncFollowed();
+
+            $this->countUserFollow($user_id, 'increment', 'following_count');
+            $this->countUserFollow($follow_user_id, 'increment', 'followed_count');
+        });
 
         return response()->json(static::createJsonData([
             'status'  => true,
@@ -103,7 +104,7 @@ class FollowController extends Controller
             })
             ->orderBy('id', 'DESC')
             ->take($limit)
-            ->with('followed')
+            ->with('userFollowed')
             ->get();
         $datas['follows'] = [];
         foreach ($follows as $follow) {
@@ -111,7 +112,7 @@ class FollowController extends Controller
             $data['id'] = $follow->id;
             $data['user_id'] = $follow->following_user_id;
             $data['my_follow_status'] = 1; //我关注的列表  关注状态始终为1
-            $data['follow_status'] = $follow->followed->where('followed_user_id', $follow->following_user_id)->isEmpty() ? 0 : 1;
+            $data['follow_status'] = $follow->userFollowed->where('followed_user_id', $follow->following_user_id)->isEmpty() ? 0 : 1;
             $datas['follows'][] = $data;
         }
 
@@ -148,14 +149,14 @@ class FollowController extends Controller
             })
             ->orderBy('id', 'DESC')
             ->take($limit)
-            ->with('following')
+            ->with('userFollowing')
             ->get();
         $datas['followeds'] = [];
         foreach ($followeds as $followed) {
             $data = [];
             $data['id'] = $followed->id;
             $data['user_id'] = $followed->followed_user_id;
-            $data['my_follow_status'] = $followed->following->where('following_user_id', $followed->followed_user_id)->isEmpty() ? 0 : 1;
+            $data['my_follow_status'] = $followed->userFollowing->where('following_user_id', $followed->followed_user_id)->isEmpty() ? 0 : 1;
 
             $data['follow_status'] = 1; //关注我的的列表  对方关注状态始终为1
             $datas['followeds'][] = $data;
