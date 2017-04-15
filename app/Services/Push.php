@@ -26,6 +26,7 @@ class Push
             ->setPlatform('all') //全部平台
             ->addAlias($audience) // 指定用户
             ->message($alert, $notification)
+            ->iosNotification($alert, $notification)
             ->send();
 
             return [
