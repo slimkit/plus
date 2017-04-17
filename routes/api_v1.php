@@ -82,7 +82,12 @@ Route::get('/follows/follows/{user_id}/{max_id?}', 'FollowController@follows');
 Route::get('/follows/followeds/{user_id}/{max_id?}', 'FollowController@followeds');
 
 // 获取一个附件资源
-Route::get('/storages/{storage}/{process?}', 'StorageController@get');
+tap(Route::get('/storages/{storage}/{process?}', 'StorageController@get'), function (\Illuminate\Routing\Route $route) {
+    $route->setAction(array_merge($route->getAction(), [
+        'middleware' => 'bindings',
+    ]));
+});
+
 // 附件储存相关
 Route::group([
     'middleware' => 'auth:api',
