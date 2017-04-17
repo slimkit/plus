@@ -18,7 +18,7 @@ class CreateCommentsTable extends Migration
             $table->string('component')->comment('扩展包名');
             $table->string('comment_table')->comment('评论表名');
             $table->integer('comment_id')->comment('关联评论id');
-            $table->string('comment_content')->comment('关联评论内容');
+            $table->text('comment_content')->comment('关联评论内容');
             $table->string('source_table')->comment('资源表名');
             $table->integer('source_id')->comment('关联资源id');
             $table->integer('source_cover')->default(0)->comment('资源封面');
