@@ -4,6 +4,7 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Storages\Storage;
+use Illuminate\Http\UploadedFile;
 use Zhiyi\Plus\Models\StorageTask;
 use Illuminate\Filesystem\Filesystem;
 use Zhiyi\Plus\Http\Controllers\Controller;
@@ -155,13 +156,13 @@ class StorageController extends Controller
         return $this->runUploadAction($task, $file);
     }
 
-    protected function runUploadAction(StorageTask $task, $file)
+    protected function runUploadAction(StorageTask $task, UploadedFile $file)
     {
         $filesystem = app(Filesystem::class);
-        $path = 'public/'.$filesystem->dirname($task->filename);
+        $path = $filesystem->dirname($task->filename);
         $name = $filesystem->basename($task->filename);
 
-        if (! $file->storePubliclyAs($path, $name)) {
+        if (! $file->storePubliclyAs($path, $name, 'public')) {
             return response()->json(static::createJsonData([
                 'code' => 2002,
             ]))->setStatusCode(422);
