@@ -119,3 +119,5 @@ Route::group([
 Route::get('/system/component/status', 'SystemController@getComponentStatus');
 //获取扩展包配置信息
 Route::get('/system/component/configs', 'SystemController@getComponentConfig');
+//关于我们
+Route::get('/system/about', 'SystemController@about');

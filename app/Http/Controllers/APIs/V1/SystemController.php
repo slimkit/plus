@@ -102,4 +102,15 @@ class SystemController extends Controller
             'data'    => $list,
         ]))->setStatusCode(200);
     }
+
+    /**
+     * 关于我们
+     * 
+     * @author bs<414606094@qq.com>
+     * @return [type] [description]
+     */
+    public function about()
+    {
+        return '关于我们';
+    }
 }
