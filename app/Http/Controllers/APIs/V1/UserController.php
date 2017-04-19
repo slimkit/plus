@@ -215,7 +215,7 @@ class UserController extends Controller
         $time = Carbon::createFromTimestamp($time)->toDateTimeString();
         $return = [];
         if (in_array('diggs', $key)) {
-            $diggs = Digg::where('to_user_id', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->get();
+            $diggs = Digg::where('to_user_id', $uid)->where('user_id', '!=', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->get();
 
             $digg_return['key'] = 'diggs';
             $digg_return['uids'] = implode(',', $diggs->pluck('user_id')->toArray());
