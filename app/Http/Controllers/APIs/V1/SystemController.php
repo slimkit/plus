@@ -104,8 +104,8 @@ class SystemController extends Controller
     }
 
     /**
-     * 关于我们
-     * 
+     * 关于我们.
+     *
      * @author bs<414606094@qq.com>
      * @return [type] [description]
      */
