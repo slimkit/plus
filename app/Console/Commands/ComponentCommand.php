@@ -190,7 +190,11 @@ class ComponentCommand extends Command
      */
     protected function removeVendorComponentResource(string $componentName)
     {
-        $this->filesystem->deleteDirectory(public_path($componentName));
+        $dir = public_path($componentName);
+        if (! $this->filesystem->delete($dir)) {
+            $this->filesystem->deleteDirectory($dir);
+        }
+
         $this->info("Deleted the {$componentName} resource successfully.");
     }
 
