@@ -68,7 +68,7 @@ class ComponentCommand extends Command
     {
         $installer->uninstall(
             $this->getClosureBind($this, function () use ($component) {
-                $this->removeVendorComponentResource($component);
+                $this->removeVendorComponentRouter($component);
                 $this->removeVendorComponentResource($component);
                 $this->changeInstalledStatus($component, false);
             })
