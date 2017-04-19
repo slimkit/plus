@@ -234,7 +234,9 @@ class ComponentCommand extends Command
             throw new \Exception("Directory desc not exist as path {$resource}");
         }
 
-        $this->filesystem->deleteDirectory(public_path($componentName));
+        // Deleted old directory.
+        $this->removeVendorComponentResource($componentName);
+
         $status = $this->filesystem->copyDirectory($resource, public_path($componentName));
         if ($status === false) {
             throw new \Exception("Copy the {$componentName} resource failed.");
