@@ -5,6 +5,7 @@ namespace Zhiyi\Plus\Console\Commands;
 use Closure;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Zhiyi\Component\Installer\PlusInstallPlugin\InstallerInterface;
 use Zhiyi\Component\Installer\PlusInstallPlugin\ComponentInfoInterface;
@@ -234,14 +235,61 @@ class ComponentCommand extends Command
             throw new \Exception("Directory desc not exist as path {$resource}");
         }
 
-        // Deleted old directory.
-        $this->removeVendorComponentResource($componentName);
-
-        $status = $this->filesystem->copyDirectory($resource, public_path($componentName));
-        if ($status === false) {
+        if ($this->copyVendorComponentResource($componentName, $resource) === false) {
             throw new \Exception("Copy the {$componentName} resource failed.");
         }
+
         $this->info("Copy the {$componentName} resource successfully.");
+    }
+
+    /**
+     * Copy the component resource.
+     *
+     * @param string $componentName
+     * @param string $resource
+     * @return bool
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function copyVendorComponentResource(string $componentName, string $resource): bool
+    {
+        $link = public_path($componentName);
+
+        // Deleted old directory.
+        $this->removeVendorComponentResource($componentName, $resource);
+
+        if ($this->isLink()) {
+            return $this->createResourceLink($resource, $link);
+        }
+
+        return $this->filesystem->copyDirectory($resource, $link);
+    }
+
+    /**
+     * Create component resource link.
+     *
+     * @param string $target
+     * @param string $link
+     * @return true
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function createResourceLink(string $target, string $link): bool
+    {
+        $parentDir = dirname($link);
+
+        // Parent dir is existe.
+        if (! $this->filesystem->isDirectory($parentDir)) {
+            $this->filesystem->makeDirectory($parentDir);
+        }
+
+        // delete link dir.
+        if (! $this->filesystem->delete($link)) {
+            $this->filesystem->deleteDirectory($link, false);
+        }
+
+        // create link.
+        $this->filesystem->link($target, $link);
+
+        return true;
     }
 
     /**
@@ -326,6 +374,17 @@ class ComponentCommand extends Command
     }
 
     /**
+     * Is link resource.
+     *
+     * @return boolean
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function isLink(): bool
+    {
+        return (bool) $this->option('link');
+    }
+
+    /**
      * get command arguments.
      *
      * @return array
@@ -338,6 +397,19 @@ class ComponentCommand extends Command
         return [
             ['name', InputArgument::REQUIRED, 'The command of [install, update, uninstall]'],
             ['component', InputArgument::REQUIRED, 'The name of the component.'],
+        ];
+    }
+
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function getOptions()
+    {
+        return [
+            ['link', null, InputOption::VALUE_NONE, 'Use a soft link to point to the component\'s resource, only install and update are valid.'],
         ];
     }
 }
