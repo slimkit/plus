@@ -376,7 +376,7 @@ class ComponentCommand extends Command
     /**
      * Is link resource.
      *
-     * @return boolean
+     * @return bool
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function isLink(): bool
