@@ -111,6 +111,6 @@ class SystemController extends Controller
      */
     public function about()
     {
-        return '关于我们';
+        return view('about');
     }
 }
