@@ -15,6 +15,7 @@ class Conversations extends Migration
     {
         Schema::create('conversations', function (Blueprint $table) {
             // 创建表结构
+            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('type')->default('system')->comment('会话类型 system 系统通知 feedback 用户反馈');
             $table->integer('user_id')->default(0)->comment('用户ID');
