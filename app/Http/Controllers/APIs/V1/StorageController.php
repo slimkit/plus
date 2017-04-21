@@ -156,7 +156,7 @@ class StorageController extends Controller
         return $this->uploadIsLimitedSize($task, $file);
     }
 
-    protected function uploadIsLimitedSize(Request $request, UploadedFile $file)
+    protected function uploadIsLimitedSize(StorageTask $task, UploadedFile $file)
     {   
         $size = $file->getClientSize();
         if ($size >= 1024*1024*9) {
