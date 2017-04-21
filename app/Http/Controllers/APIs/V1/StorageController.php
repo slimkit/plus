@@ -157,13 +157,14 @@ class StorageController extends Controller
     }
 
     protected function uploadIsLimitedSize(Request $request, UploadedFile $file)
-    {   
+    {
         $size = $file->getClientSize();
-        if ($size >= 1024*1024*9) {
+        if ($size >= 1024 * 1024 * 9) {
             return response()->json(static::createJsonData([
                 'message' => '上传文件大小超过服务器限制',
             ]))->setStatusCode(502);
         }
+
         return $this->runUploadAction($task, $file);
     }
 
