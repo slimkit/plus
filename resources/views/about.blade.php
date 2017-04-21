@@ -2,7 +2,7 @@
 <html>
     <head>
       <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
-        <title>ThinkSNS+</title>
+        <title>关于我们</title>
         <style>
             html, body {
                 height: 100%;
@@ -20,7 +20,7 @@
 
             .container {
                 text-align: center;
-                display: table-cell;
+                margin-top: 20px;
                 vertical-align: middle;
             }
 
