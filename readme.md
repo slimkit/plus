@@ -1,4 +1,4 @@
-<p align="center"><img src=".github/plus.png"></p>
+<p align="center"><img src="public/plus.png"></p>
 
 <p align="center">
 <a href="https://styleci.io/repos/76627423"><img src="https://styleci.io/repos/76627423/shield?branch=master" alt="StyleCI"></a>
