@@ -2,8 +2,6 @@
 
 namespace Zhiyi\Plus\Storages;
 
-use Zhiyi\Plus\Models\StorageTask;
-
 class StorageTaskResponse
 {
     protected $url;
@@ -15,7 +13,7 @@ class StorageTaskResponse
     /**
      * Create the response.
      *
-     * @var $this
+     * @var
      */
     public static function create(string $url, string $method = 'POST', array $headers = [], array $options = []): self
     {
@@ -109,5 +107,4 @@ class StorageTaskResponse
             'input' => $this->inputName,
         ];
     }
-
 }
