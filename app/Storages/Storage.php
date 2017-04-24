@@ -30,7 +30,6 @@ class Storage
      */
     public function __construct(StorageService $service)
     {
-
         foreach ($service->getEngines() as $engine => $value) {
             $this->setStorageEngine($engine, app($value['engine']));
         }
