@@ -99,7 +99,7 @@ class StorageTaskResponse
      * @return array
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function getArray(): array
+    public function toArray(): array
     {
         return [
             'url' => $this->url,

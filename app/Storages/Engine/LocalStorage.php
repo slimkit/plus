@@ -7,6 +7,7 @@ use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\StorageTask;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
+use Zhiyi\Plus\Storages\StorageTaskResponse;
 use Zhiyi\Plus\Traits\CreateJsonResponseData;
 use Zhiyi\Plus\Interfaces\Storage\StorageEngineInterface;
 
@@ -14,14 +15,12 @@ class LocalStorage implements StorageEngineInterface
 {
     use CreateJsonResponseData;
 
-    public function createStorageTask(StorageTask $storateTask, User $user)
+    public function createStorageTask(StorageTask $storateTask, User $user): StorageTaskResponse
     {
         $token = $user->tokens()->orderByDesc()->first();
         if (! $token) {
             throw new \Exception('No authentication information associated with the user was found.');
         }
-
-        $storateTask->save();
 
         return [
             'uri'             => route('storage/upload', [$storateTask->id]),
