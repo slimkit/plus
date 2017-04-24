@@ -103,7 +103,9 @@ class Storage
         $response = static::$storages[$engine]->createStorageTask($task, $user);
         $task->save();
 
-        return $response->toArray();
+        return array_merge($response->toArray(), [
+            'storage_task_id' => $task->id,
+        ]);
     }
 
     public function notice(string $message, StorageTask $task, string $engine = 'local')
