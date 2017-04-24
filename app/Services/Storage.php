@@ -75,20 +75,6 @@ class Storage
     }
 
     /**
-     * 初始化储存，设置所有的储存引擎.
-     *
-     * @return [type] [description]
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    // protected function initStorage()
-    // {
-    //     $engines = $this->getEngines();
-    //     foreach ($engines as $engine => $value) {
-    //         $this->getStorage()->setStorageEngine($engine, app($value['engine']));
-    //     }
-    // }
-
-    /**
      * 添加一个储存引擎到数据库.
      *
      * @param string $engine 引擎名称
