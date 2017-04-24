@@ -20,6 +20,26 @@ interface StorageEngineInterface
     public function createStorageTask(StorageTask $storageTask, User $user);
 
     /**
+     * Notice upload message.
+     *
+     * @param string $message
+     * @param string $filename
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function notice(string $message, string $filename);
+
+    /**
+     * Get resource url.
+     *
+     * @param string $filename
+     * @param int $process
+     * @return string
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function url(string $filename, int $process = 100): string;
+
+    /**
      * 验证文件是否存在.
      *
      * @param string $filename 文件名

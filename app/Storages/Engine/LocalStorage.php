@@ -46,7 +46,7 @@ class LocalStorage implements StorageEngineInterface
         return true;
     }
 
-    public function url(string $filename, int $process = 100)
+    public function url(string $filename, int $process = 100): string
     {
         $path = $this->markProcessFilename($filename, $process);
 
