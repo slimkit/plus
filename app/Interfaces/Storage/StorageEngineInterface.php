@@ -4,6 +4,7 @@ namespace Zhiyi\Plus\Interfaces\Storage;
 
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\StorageTask;
+use Zhiyi\Plus\Storages\StorageTaskResponse;
 
 interface StorageEngineInterface
 {
@@ -17,7 +18,7 @@ interface StorageEngineInterface
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function createStorageTask(StorageTask $storageTask, User $user);
+    public function createStorageTask(StorageTask $storageTask, User $user): StorageTaskResponse;
 
     /**
      * Notice upload message.
