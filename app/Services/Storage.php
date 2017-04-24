@@ -7,16 +7,6 @@ use Zhiyi\Plus\Models\CommonConfig;
 class Storage
 {
     /**
-     * 初始化储存引擎.
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    // public function __construct()
-    // {
-    //     $this->initStorage();
-    // }
-
-    /**
      * 获取默认配置.
      *
      * @return array
