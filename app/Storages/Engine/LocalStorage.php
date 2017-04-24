@@ -119,21 +119,6 @@ class LocalStorage implements StorageEngineInterface
     }
 
     /**
-     * 获取文件mimeType信息.
-     *
-     * @param string $filename 文件名
-     *
-     * @return string
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     * @homepage http://medz.cn
-     */
-    public function mimeType(string $filename): string
-    {
-        return Storage::mimeType($this->getPath($filename));
-    }
-
-    /**
      * 获取文件完整路径.
      *
      * @param string $path 文件名
