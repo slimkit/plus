@@ -88,6 +88,9 @@ tap(Route::get('/storages/{storage}/{process?}', 'StorageController@get'), funct
     ]));
 });
 
+// 批量储存资源地址获取.
+Route::get('/storages', 'StorageController@getStorageLinks');
+
 // 附件储存相关
 Route::group([
     'middleware' => 'auth:api',

@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
+use Closure;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Storages\Storage;
 use Illuminate\Http\UploadedFile;
@@ -23,10 +24,68 @@ class StorageController extends Controller
     }
 
     /**
+     * 从URL请求中获取指定key变为数组.
+     *
+     * @param Request $request
+     * @param string $key
+     * @param string $delimiter
+     * @return array
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function getQueryItemToArray(Request $request, string $key, string $delimiter = ','): array
+    {
+        $value = $request->query($key, []);
+
+        if (! is_array($value)) {
+            $value = explode($delimiter, $value);
+        }
+
+        return $value;
+    }
+
+    /**
+     * 获取资源真实地址.
+     *
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function getStorageLinks(Request $request)
+    {
+        $ids = $this->getQueryItemToArray($request, 'id', ',');
+        $process = $this->getQueryItemToArray($request, 'process', ',');
+        $source = array_reduce($ids, function (array $carry, $item) use (&$process) {
+            if (intval($item)) {
+                $carry[$item] = intval(current($process) ?: 0);
+            }
+            next($process);
+
+            return $carry;
+        }, []);
+
+        $storages = StorageModel::whereIn('id', array_keys($source))->get();
+        $links = $storages->reduce(Closure::bind(
+            function (array $carry, StorageModel $storage) use ($source) {
+                $id = $storage->id;
+                $filename = $storage->filename;
+                $process = $source[$id];
+                $carry[$id] = $this->storage()->url($filename, $process, static::$engine);
+
+                return $carry;
+            },
+            $this
+        ), []);
+
+        return response()->json(static::createJsonData([
+            'status' => true,
+            'data' => $links,
+        ]))->setStatusCode(200);
+    }
+
+    /**
      * 获取储存资源.
      *
      * @param StorageModel $storage
-     * @param int|int $process
+     * @param int $process
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
