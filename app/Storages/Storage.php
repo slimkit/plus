@@ -135,22 +135,6 @@ class Storage
     }
 
     /**
-     * 判断文件是否存在.
-     *
-     * @param string $filename 文件名
-     * @param string $engine   储存引擎
-     *
-     * @return bool
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     * @homepage http://medz.cn
-     */
-    public function exists(string $filename, $engine = 'local'): bool
-    {
-        return static::$storages[$engine]->exists($filename);
-    }
-
-    /**
      * 创建文件储存路径.
      *
      * @param string $origin_filename 原始文件名

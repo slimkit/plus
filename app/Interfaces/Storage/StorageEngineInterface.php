@@ -38,16 +38,4 @@ interface StorageEngineInterface
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function url(string $filename, int $process = 100): string;
-
-    /**
-     * 验证文件是否存在.
-     *
-     * @param string $filename 文件名
-     *
-     * @return bool
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     * @homepage http://medz.cn
-     */
-    public function exists(string $filename): bool;
 }
