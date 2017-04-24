@@ -106,6 +106,7 @@ class StorageTaskResponse
             'method' => $this->method,
             'headers' => $this->headers,
             'options' => $this->options,
+            'input' => $this->inputName,
         ];
     }
 
