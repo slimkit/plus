@@ -29,6 +29,7 @@
     - [储存任务通知](storage-task-notice.md)
     - [储存任务删除](storage-task-delete.md)
     - [储存资源获取](storage-task-get.md)
+    - [储存资源批量地址获取](storage/batch-show-storage.md)
 8. IM聊天
     - [获取聊天服务器配置信息](get-im-server-info.md)
 	- [聊天授权说明](im-token-description.md)
