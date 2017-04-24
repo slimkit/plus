@@ -18,8 +18,8 @@ GET
 
 | name     | type     | must     | description |
 |----------|:--------:|:--------:|:--------:|
-| id       | int|string|array | yes | 需要被获取的 id ,可以是单个值，也可以是一个数组，如果是一个字符串形态且是多个，也可以用 **,** 符号对附件 id 进行分割。 |
-| process  | int|string|array | no  | 该参数只对 image 类型有资源生效，其他资源则自动跳过，用法和上述 “id” 描述一致 |
+| id       | int,string,array | yes | 需要被获取的 id ,可以是单个值，也可以是一个数组，如果是一个字符串形态且是多个，也可以用 **,** 符号对附件 id 进行分割。 |
+| process  | int,string,array | no  | 该参数只对 image 类型有资源生效，其他资源则自动跳过，用法和上述 “id” 描述一致 |
 
 > process 的使用，如果传递多个资源 id 获取需要用到转换参数，转换参数的值对应和 “id” 的下标一致。
 
