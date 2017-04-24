@@ -17,7 +17,7 @@ class StorageTaskResponse
      *
      * @var $this
      */
-    public static create(string $url, string $method = 'POST', array $headers = [], array $options = []): self
+    public static function create(string $url, string $method = 'POST', array $headers = [], array $options = []): self
     {
         $response = new self();
         $response->setURL($url)
@@ -47,7 +47,7 @@ class StorageTaskResponse
      * @param string $method
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function setMethod(string $method): slef
+    public function setMethod(string $method): self
     {
         $this->method = $method;
 

@@ -22,15 +22,7 @@ class LocalStorage implements StorageEngineInterface
             throw new \Exception('No authentication information associated with the user was found.');
         }
 
-        return [
-            'uri'             => route('storage/upload', [$storateTask->id]),
-            'method'          => 'POST',
-            'storage_task_id' => $storateTask->id,
-            'headers'         => [
-                'ACCESS-TOKEN' => $token->token,
-            ],
-            'options' => [],
-        ];
+        return StorageTaskResponse::create(route('storage/upload', [$storateTask->id]), 'POST', ['ACCESS-TOKEN' => $token->token]);
     }
 
     public function notice(string $message, string $filename)
