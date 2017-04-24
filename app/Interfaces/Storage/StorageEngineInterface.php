@@ -50,16 +50,4 @@ interface StorageEngineInterface
      * @homepage http://medz.cn
      */
     public function exists(string $filename): bool;
-
-    /**
-     * 获取文件完整的mimeType信息.
-     *
-     * @param string $filename 文件名
-     *
-     * @return string
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     * @homepage http://medz.cn
-     */
-    public function mimeType(string $filename): string;
 }

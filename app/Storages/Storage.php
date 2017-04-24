@@ -117,7 +117,7 @@ class Storage
             $storage->hash = $task->hash;
             $storage->origin_filename = $task->origin_filename;
             $storage->filename = $task->filename;
-            $storage->mime = $task->mime_type ?? $this->mimeType($task->filename, $engine);
+            $storage->mime = $task->mime_type;
             $storage->extension = app(Filesystem::class)->extension($task->origin_filename);
             $storage->image_width = $task->width;
             $storage->image_height = $task->height;
@@ -148,22 +148,6 @@ class Storage
     public function exists(string $filename, $engine = 'local'): bool
     {
         return static::$storages[$engine]->exists($filename);
-    }
-
-    /**
-     * 获取文件mimeType信息.
-     *
-     * @param string $filename 文件名
-     * @param string $engine   储存引擎
-     *
-     * @return string
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     * @homepage http://medz.cn
-     */
-    public function mimeType(string $filename, $engine = 'local'): string
-    {
-        return static::$storages[$engine]->mimeType($filename);
     }
 
     /**
