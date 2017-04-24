@@ -9,6 +9,7 @@ use Zhiyi\Plus\Models\StorageTask;
 use Illuminate\Filesystem\Filesystem;
 use Zhiyi\Plus\Traits\CreateJsonResponseData;
 use Zhiyi\Plus\Models\Storage as StorageModel;
+use Zhiyi\Plus\Services\Storage as StorageService;
 use Zhiyi\Plus\Interfaces\Storage\StorageEngineInterface;
 
 class Storage
@@ -20,6 +21,20 @@ class Storage
      * @var array
      */
     protected static $storages = [];
+
+    /**
+     * 设置所有存储引擎.
+     *
+     * @param StorageService $service
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function __construct(StorageService $service)
+    {
+
+        foreach ($service->getEngines() as $engine => $value) {
+            $this->setStorageEngine($engine, app($value['engine']));
+        }
+    }
 
     /**
      * 设置储存引擎.

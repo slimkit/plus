@@ -11,10 +11,10 @@ class Storage
      *
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function __construct()
-    {
-        $this->initStorage();
-    }
+    // public function __construct()
+    // {
+    //     $this->initStorage();
+    // }
 
     /**
      * 获取默认配置.
@@ -80,13 +80,13 @@ class Storage
      * @return [type] [description]
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function initStorage()
-    {
-        $engines = $this->getEngines();
-        foreach ($engines as $engine => $value) {
-            $this->getStorage()->setStorageEngine($engine, app($value['engine']));
-        }
-    }
+    // protected function initStorage()
+    // {
+    //     $engines = $this->getEngines();
+    //     foreach ($engines as $engine => $value) {
+    //         $this->getStorage()->setStorageEngine($engine, app($value['engine']));
+    //     }
+    // }
 
     /**
      * 添加一个储存引擎到数据库.
