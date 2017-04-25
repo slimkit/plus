@@ -37,11 +37,13 @@ POST
 data字段直接返回`storage_id`储存唯一标识字段，表示跳过上传步骤和通知步骤，直接上传成功。
 
 情况2:
+
 ```json5
 {
     "uri": "http://plus.io/api/v1/storages/1",
     "method": "PUT",
     "storage_task_id": 1,
+    "input": "file",
     "headers": {
       "ACCESS-TOKEN": "fb0581e7a50d8a6fd19bed5b7f299b32"
     },
@@ -56,5 +58,6 @@ data字段直接返回`storage_id`储存唯一标识字段，表示跳过上传�
 | uri      | string   | yes      | 上传附件的地址 |
 | method   | string   | yes      | 请求附件上传的方式 |
 | storage_task_id | int | yes    | 任务ID |
+| input    | string   | yes      | 上传资源的表单名称 |
 | headers  | object   | yes      | 请求头 |
 | options  | object   | yes      | 请求体 |
