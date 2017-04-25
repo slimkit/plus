@@ -180,7 +180,7 @@ class Storage
 
             // 文本输入框
             if ($type === 'text') {
-                $newOption[$key] = $optionValue ?: array_get($role, 'value');
+                $newOption[$key] = is_string($optionValue) ? $optionValue : array_get($role, 'value');
 
                 return;
 
@@ -208,7 +208,8 @@ class Storage
                 if (! in_array($optionValue, $values) && $optionValue) {
                     throw new \Exception(sprintf('验证的储存引擎表单%s储存的值不存在于规定表单中', $key), 422);
                 }
-                $newOption[$key] = $optionValue ?: array_get($role, 'value');
+
+                $newOption[$key] = is_string($optionValue) ? $optionValue : array_get($role, 'value');
 
                 return;
             }
