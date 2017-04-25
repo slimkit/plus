@@ -47,8 +47,8 @@ class LocalStorage implements StorageEngineInterface
     protected function markProcessFilename(string $filename, int $process)
     {
         // make process.
+        $process = max($process, 1);
         $process = min($process, 100);
-        $process || $process = 100;
 
         // base info.
         $filesystem = app(Filesystem::class);
