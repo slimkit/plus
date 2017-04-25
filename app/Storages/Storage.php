@@ -161,6 +161,11 @@ class Storage
 
     public function url(string $filename, int $process = 100, string $engine = 'local')
     {
+        // 处理转换值，保证范围是1-100
+        $process === 0 && $process = 100;
+        $process = min($process, 100);
+        $process = max($process, 1);
+
         return $this->engine($engine)->url($filename, $process);
     }
 
