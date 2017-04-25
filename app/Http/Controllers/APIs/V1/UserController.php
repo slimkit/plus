@@ -11,6 +11,7 @@ use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Models\Followed;
 use Zhiyi\Plus\Models\Following;
 use Zhiyi\Plus\Models\UserDatas;
+use Zhiyi\Plus\Models\Conversation;
 use Illuminate\Support\Facades\Auth;
 use Zhiyi\Plus\Models\UserProfileSetting;
 use Zhiyi\Plus\Http\Controllers\Controller;
@@ -252,6 +253,23 @@ class UserController extends Controller
             $comment_return['max_id'] = $comments->count() > 0 ? $comments->toArray()[0]['id'] : 0;
 
             $return[] = $comment_return;
+        }
+
+        if (in_array('notices', $key)) {
+            $notices = Conversation::where(function ($query) use ($uid) {
+                $query->where('type', 'system')->whereIn('to_user_id', [0, $uid]);
+            })
+            ->where('created_at', '>', $time)
+            ->orderBy('id', 'desc')
+            ->get();
+
+            $notice_return['key'] = 'notices';
+            $notice_return['uids'] = '';
+            $notice_return['count'] = $notices->count();
+            $notice_return['time'] = $notices->count() > 0 ? $notices->toArray()[0]['created_at'] : Carbon::now()->toDateTimeString();
+            $notice_return['max_id'] = $notices->count() > 0 ? $notices->toArray()[0]['id'] : 0;
+
+            $return[] = $notice_return;
         }
 
         return response()->json(static::createJsonData([
