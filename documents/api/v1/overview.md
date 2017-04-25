@@ -64,6 +64,7 @@
 | music | 音乐模块    |
 | news | 资讯模块     |
 | user | 用户模块     |
+| system | 系统通知模块 |
 
 `action` 推送操作类型
 
@@ -72,3 +73,4 @@
 | comment | 评论操作  |
 | digg | 点赞操作     |
 | follow | 关注操作   |
+| notice | 系统通知   |
