@@ -112,9 +112,9 @@ class Storage
         $task->mime_type = $mimeType;
         $task->width = $width;
         $task->height = $height;
+        $task->save();
 
         $response = static::$storages[$engine]->createStorageTask($task, $user);
-        $task->save();
 
         return array_merge($response->toArray(), [
             'storage_task_id' => $task->id,
