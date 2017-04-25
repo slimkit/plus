@@ -4,7 +4,7 @@ namespace Zhiyi\Plus\Storages;
 
 class StorageTaskResponse
 {
-    protected $url;
+    protected $uri;
     protected $method;
     protected $headers = [];
     protected $options = [];
@@ -15,10 +15,10 @@ class StorageTaskResponse
      *
      * @var
      */
-    public static function create(string $url, string $method = 'POST', array $headers = [], array $options = []): self
+    public static function create(string $uri, string $method = 'POST', array $headers = [], array $options = []): self
     {
         $response = new self();
-        $response->setURL($url)
+        $response->setURI($uri)
             ->setMethod($method)
             ->setHeaders($headers)
             ->setOptions($options);
@@ -27,14 +27,14 @@ class StorageTaskResponse
     }
 
     /**
-     * Set url.
+     * Set uri.
      *
-     * @param string $url
+     * @param string $uri
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function setURL(string $url): self
+    public function setURI(string $uri): self
     {
-        $this->url = $url;
+        $this->uri = $uri;
 
         return $this;
     }
@@ -100,7 +100,7 @@ class StorageTaskResponse
     public function toArray(): array
     {
         return [
-            'url' => $this->url,
+            'uri' => $this->url,
             'method' => $this->method,
             'headers' => $this->headers,
             'options' => $this->options,
