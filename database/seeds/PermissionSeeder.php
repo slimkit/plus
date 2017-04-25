@@ -111,6 +111,13 @@ class PermissionSeeder extends Seeder
             'display_name' => '权限管理-删除',
             'description' => '权限管理删除权限节点权限',
         ]);
+
+        // 系统通知
+        Permission::create([
+            'name' => 'admin:notice:send',
+            'display_name' => '系统通知-发送',
+            'description' => '系统通知发送系统通知权限',
+        ]);
     }
 
     /**

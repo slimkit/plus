@@ -47,6 +47,9 @@ Route::middleware('auth:web')->group(function () {
     Route::get('/storages/engines', 'StorageController@showEngines');
     Route::get('/storages/engines/{engine}', 'StorageController@showEngineOption');
     Route::patch('/storages/engines/{engine}', 'StorageController@updateEngineOption');
+
+    // 系统通知
+    Route::any('/system/notice', 'SystemController@pushSystemNotice');
 });
 
 // Add the route, SPA used mode "history"
