@@ -55,7 +55,7 @@ class StorageController extends Controller
         $process = $this->getQueryItemToArray($request, 'process', ',');
         $source = array_reduce($ids, function (array $carry, $item) use (&$process) {
             if (intval($item)) {
-                $carry[$item] = intval(current($process) ?: 0);
+                $carry[$item] = intval(current($process) ?: 100);
             }
             next($process);
 
