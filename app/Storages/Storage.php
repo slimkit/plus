@@ -15,12 +15,8 @@ use Zhiyi\Plus\Interfaces\Storage\StorageEngineInterface;
 class Storage
 {
     use CreateJsonResponseData;
-    /**
-     * 储存器列表.
-     *
-     * @var array
-     */
-    protected static $storages = [];
+
+    protected $aliases = [];
 
     /**
      * 设置所有存储引擎.
@@ -31,24 +27,39 @@ class Storage
     public function __construct(StorageService $service)
     {
         foreach ($service->getEngines() as $engine => $value) {
-            $this->setStorageEngine($engine, app($value['engine']));
+            // Set engine alias.
+            $this->aliases[$engine] = $value['engine'];
         }
     }
 
     /**
-     * 设置储存引擎.
+     * Get engine.
      *
-     * @param string                 $engine  储存引擎名称
-     * @param StorageEngineInterface $storage 储存引擎
-     *
+     * @param string $engine
+     * @return [type] [description]
      * @author Seven Du <shiweidu@outlook.com>
-     * @homepage http://medz.cn
      */
-    public function setStorageEngine(string $engine, StorageEngineInterface $storage)
+    public function engine(string $engine): StorageEngineInterface
     {
-        static::$storages[$engine] = $storage;
+        return app(
+            $this->getAlise($engine)
+        );
+    }
 
-        return $this;
+    /**
+     * Get storage engine alise.
+     *
+     * @param string $abstrace
+     * @return string
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function getAlise(string $abstrace): string
+    {
+        if (! isset($this->aliases[$abstrace])) {
+            throw new \InvalidArgumentException(sprintf('The "%s" storage engine does not exist.', $abstrace));
+        }
+
+        return $this->aliases[$abstrace];
     }
 
     /**
@@ -114,7 +125,7 @@ class Storage
         $task->height = $height;
         $task->save();
 
-        $response = static::$storages[$engine]->createStorageTask($task, $user);
+        $response = $this->engine($engine)->createStorageTask($task, $user);
 
         return array_merge($response->toArray(), [
             'storage_task_id' => $task->id,
@@ -123,7 +134,7 @@ class Storage
 
     public function notice(string $message, StorageTask $task, string $engine = 'local')
     {
-        $response = static::$storages[$engine]->notice($message, $task->filename);
+        $response = $this->engine($engine)->notice($message, $task->filename);
 
         if ($response instanceof Response) {
             return $response;
@@ -150,7 +161,7 @@ class Storage
 
     public function url(string $filename, int $process = 100, string $engine = 'local')
     {
-        return static::$storages[$engine]->url($filename, $process);
+        return $this->engine($engine)->url($filename, $process);
     }
 
     /**
