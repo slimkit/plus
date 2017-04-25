@@ -5,7 +5,7 @@ namespace Zhiyi\Plus\Services;
 use JPush\Client;
 
 class Push
-{   
+{
     protected $environment = false; // true为生产环境
 
     public function push($alert, $audience, $extras = [])
@@ -30,8 +30,8 @@ class Push
     }
 
     /**
-     * 推送别名
-     * 
+     * 推送别名.
+     *
      * @author bs<414606094@qq.com>
      * @param  Client $client       [description]
      * @param  [type] $alert        [description]
@@ -64,8 +64,8 @@ class Push
     }
 
     /**
-     * 推送全部
-     * 
+     * 推送全部.
+     *
      * @author bs<414606094@qq.com>
      * @param  Client $client       [description]
      * @param  [type] $alert        [description]
