@@ -100,7 +100,7 @@ class StorageTaskResponse
     public function toArray(): array
     {
         return [
-            'uri' => $this->url,
+            'uri' => $this->uri,
             'method' => $this->method,
             'headers' => $this->headers,
             'options' => $this->options,
