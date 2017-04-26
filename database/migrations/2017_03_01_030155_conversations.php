@@ -22,6 +22,7 @@ class Conversations extends Migration
             $table->integer('to_user_id')->default(0)->comment('被发送用户ID');
             $table->text('content')->comment('会话内容');
             $table->text('options')->nullable()->comment('给推送平台的额外参数');
+            $table->bigInteger('system_mark')->default(null)->comment('移动端存储标记');
             $table->timestamps();
         });
     }

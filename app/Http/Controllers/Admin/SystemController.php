@@ -53,6 +53,7 @@ class SystemController extends Controller
         $notice->user_id = 0;
         $notice->to_user_id = 0;
         $notice->content = $message;
+        $notice->system_mark = Carbon::now()->timestamp * 1000;
 
         $notice->save();
         if ($notice->id) {
@@ -73,10 +74,10 @@ class SystemController extends Controller
         if (is_string($uids)) {
             $uids = explode(',', $uids);
         }
-        $now = Carbon::now()->toDateTimeString();
+        $now = Carbon::now();
 
         $datas = array_map(function ($uid) use ($message, $now) {
-            return ['user_id' => 0, 'type' => 'system', 'to_user_id' => $uid, 'content' => $message, 'created_at' => $now, 'updated_at' => $now];
+            return ['user_id' => 0, 'type' => 'system', 'to_user_id' => $uid, 'content' => $message, 'created_at' => $now->toDateTimeString(), 'updated_at' => $now->toDateTimeString(), 'system_mark' => ($now->timestamp) * 1000];
         }, $uids);
 
         Conversation::insert($datas);

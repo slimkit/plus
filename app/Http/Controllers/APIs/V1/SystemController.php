@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\Conversation;
@@ -62,11 +63,13 @@ class SystemController extends Controller
         $feedback->type = 'feedback';
         $feedback->content = $request->input('content');
         $feedback->user_id = $request->user()->id;
+        $feedback->system_mark = $request->input('system_mark', (Carbon::now()->timestamp) * 1000);
         $feedback->save();
 
         return response()->json(static::createJsonData([
             'status'  => true,
             'message' => '反馈成功',
+            'data' => $feedback->id,
         ]))->setStatusCode(201);
     }
 
