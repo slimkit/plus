@@ -13,6 +13,7 @@
 | name     | type     | must     | description |
 |----------|:--------:|:--------:|:--------:|
 | content  | string   | yes      | 反馈内容    |
+| system_mark | int   | yes      | 移动端存储标记 |
 
 ### HTTP Status Code
 
