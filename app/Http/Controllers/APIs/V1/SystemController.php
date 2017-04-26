@@ -88,7 +88,7 @@ class SystemController extends Controller
         $list = Conversation::where(function ($query) use ($uid) {
             $query->where(function ($query) use ($uid) {
                 $query->where('type', 'system')->whereIn('to_user_id', [0, $uid]);
-            })->orWhere(['type' => 'feedback', 'user_id' => 1]);
+            })->orWhere(['type' => 'feedback', 'user_id' => $uid]);
         })
         ->where(function ($query) use ($max_id) {
             if ($max_id > 0) {
