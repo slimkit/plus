@@ -11,7 +11,7 @@
 |
 */
 
-$app = new Illuminate\Foundation\Application(
+$app = new Zhiyi\Plus\Application(
     realpath(__DIR__.'/../')
 );
 
