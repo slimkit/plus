@@ -25,27 +25,42 @@ class FollowController extends Controller
         $user_id = $request->user()->id;
         $follow_user_id = $request->user_id;
 
-        DB::transaction(function () use ($user_id, $follow_user_id) {
-            $follow = new Following();
-            $follow->user_id = $user_id;
-            $follow->following_user_id = $follow_user_id;
-            $follow->save();
-            $follow->syncFollowed();
+        $this->checkUserFollowData($follow_user_id, 'followed_count');
+        $this->checkUserFollowData($user_id, 'following_count');
 
-            $this->countUserFollow($user_id, 'increment', 'following_count');
-            $this->countUserFollow($follow_user_id, 'increment', 'followed_count');
-        });
+        $follow = new Following();
+        $follow->user_id = $user_id;
+        $follow->following_user_id = $follow_user_id;
 
-        $extras = ['action' => 'follow', 'type' => 'user', 'uid' => $user_id];
-        $alert = '有人关注了你，去看看吧';
-        $alias = $follow_user_id;
+        DB::beginTransaction();
 
-        dispatch(new PushMessage($alert, (string) $alias, $extras));
+        $add_following = $follow->save();
+        $add_followed = $follow->syncFollowed();
+        $following_count = UserDatas::byKey('following_count')->byUserId($user_id)->increment('value');
+        $followed_count = UserDatas::byKey('followed_count')->byUserId($follow_user_id)->increment('value');
+
+        if ($add_following && $add_followed && $following_count && $followed_count) {
+            DB::commit();
+
+            $extras = ['action' => 'follow', 'type' => 'user', 'uid' => $user_id];
+            $alert = '有人关注了你，去看看吧';
+            $alias = $follow_user_id;
+
+            dispatch(new PushMessage($alert, (string) $alias, $extras));
+
+            return response()->json(static::createJsonData([
+                'status'  => true,
+                'code'    => 0,
+                'message' => '成功关注',
+            ]))->setStatusCode(201);
+        }
+
+        DB::rollBack();
 
         return response()->json(static::createJsonData([
             'status'  => true,
-            'code'    => 0,
-            'message' => '关注成功',
+            'code'    => 1024,
+            'message' => '操作失败，请稍后重试',
         ]))->setStatusCode(201);
     }
 
@@ -60,14 +75,13 @@ class FollowController extends Controller
     {
         $user_id = $request->user()->id;
         $follow_user_id = $request->user_id;
-        $follow = Following::where(['user_id' => $user_id, 'following_user_id' => $follow_user_id])->first();
 
         DB::beginTransaction();
 
-        $delete_followed = $follow->followed()->delete();
-        $delete_following = $follow->delete();
-        $followed_count = $this->countUserFollow($follow_user_id, 'decrement', 'followed_count');
-        $following_count = $this->countUserFollow($user_id, 'decrement', 'following_count');
+        $delete_followed = Followed::where(['user_id' => $followed_user_id, 'followed_user_id' => $user_id])->delete();
+        $delete_following = Following::where(['user_id' => $user_id, 'following_user_id' => $follow_user_id])->delete();
+        $following_count = UserDatas::byKey('following_count')->byUserId($user_id)->decrement('value');
+        $followed_count = UserDatas::byKey('followed_count')->byUserId($follow_user_id)->decrement('value');
 
         if ($delete_following && $delete_followed && $following_count && $followed_count) {
             DB::commit();
@@ -83,7 +97,7 @@ class FollowController extends Controller
 
         return response()->json(static::createJsonData([
             'status'  => false,
-            'code'    => 0,
+            'code'    => 1024,
             'message' => '操作失败，请稍后重试',
         ]))->setStatusCode(400);
     }
@@ -213,24 +227,17 @@ class FollowController extends Controller
         ]))->setStatusCode(200);
     }
 
-    protected function countUserFollow($user_id, $method, $countKey)
+    protected function checkUserFollowData($user_id, $countKey)
     {
-        $allowedMethod = ['increment', 'decrement'];
-
         $allowedKey = ['following_count', 'followed_count'];
 
-        if (in_array($method, $allowedMethod) && in_array($countKey, $allowedKey)) {
-            if (! (UserDatas::byKey($countKey)->byUserId($user_id)->first())) {
-                $countModel = new UserDatas();
-                $countModel->key = $countKey;
-                $countModel->user_id = $user_id;
-                $countModel->value = 0;
-                $countModel->save();
-            }
+        if (in_array($countKey, $allowedKey)) {
+            $map = ['key' => $countKey, 'user_id' => $user_id];
+            $data = ['key' => $countKey, 'user_id' => $user_id, 'value' => 0];
 
-            return UserDatas::where('key', $countKey)->byUserId($user_id)->$method('value');
+            UserDatas::updateOrCreate($map, $data);
         }
 
-        return false;
+        return true;
     }
 }
