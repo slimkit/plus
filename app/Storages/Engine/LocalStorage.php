@@ -17,12 +17,20 @@ class LocalStorage implements StorageEngineInterface
 
     public function createStorageTask(StorageTask $storateTask, User $user): StorageTaskResponse
     {
-        $token = $user->tokens()->orderByDesc()->first();
+        $tokenRow = $user->tokens()->orderByDesc()->first();
         if (! $token) {
             throw new \Exception('No authentication information associated with the user was found.');
         }
 
-        return StorageTaskResponse::create(route('storage/upload', [$storateTask->id]), 'POST', ['ACCESS-TOKEN' => $token->token]);
+        // save task.
+        $storateTask->save();
+
+        $response = new StorageTaskResponse();
+        $response->setURI(route('storage/upload', [$storateTask->id]))
+            ->setMethod('POST')
+            ->setHeaders(['Authorization' => $tokenRow->token]);
+
+        return $response;
     }
 
     public function notice(string $message, string $filename)

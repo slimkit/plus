@@ -123,9 +123,11 @@ class Storage
         $task->mime_type = $mimeType;
         $task->width = $width;
         $task->height = $height;
-        $task->save();
 
         $response = $this->engine($engine)->createStorageTask($task, $user);
+
+        // 依旧切换为后置保存，本地存储可以自行先保存后再做处理。
+        $task->save();
 
         return array_merge($response->toArray(), [
             'storage_task_id' => $task->id,
