@@ -45,7 +45,7 @@ data字段直接返回`storage_id`储存唯一标识字段，表示跳过上传�
     "storage_task_id": 1,
     "input": "file",
     "headers": {
-      "ACCESS-TOKEN": "fb0581e7a50d8a6fd19bed5b7f299b32"
+      "Authorization": "fb0581e7a50d8a6fd19bed5b7f299b32"
     },
     "options": []
 }
