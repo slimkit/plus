@@ -210,7 +210,7 @@ class UserController extends Controller
     public function flushMessages(Request $request)
     {
         $uid = $request->user()->id;
-        $key = $request->input('key') ?? 'diggs,follows,comments';
+        $key = $request->input('key') ?? 'diggs,follows,comments,notices';
         is_string($key) && $key = explode(',', $key);
         $time = $request->input('time');
         $time = Carbon::createFromTimestamp($time)->toDateTimeString();
