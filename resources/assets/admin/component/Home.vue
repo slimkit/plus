@@ -42,7 +42,7 @@ $lefyNavWidth: 240px;
 
       <!-- User avatar. -->
       <img v-if="avatar" class="img-responsive img-circle center-block user-avatar" :src="avatar">
-      <div v-else class="img-responsive img-circle center-block user-avatar"></div>
+      <default-avatar v-else class="img-responsive img-circle center-block user-avatar" />
       <!-- End user avatar. -->
 
       <!-- Username and dropdown menu. -->
@@ -83,6 +83,8 @@ import { mapGetters } from 'vuex';
 import { createRequestURI, createAPI } from '../util/request';
 import { USER, USER_DATA } from '../store/getter-types';
 
+import DefaultAvatar from '../icons/default-avatar';
+
 // components.
 import Nav from './Nav';
 
@@ -117,7 +119,8 @@ const home = {
     }
   },
   components: {
-    'system-nav': Nav
+    'system-nav': Nav,
+    'default-avatar': DefaultAvatar
   }
 };
 
