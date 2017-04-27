@@ -18,7 +18,7 @@ class LocalStorage implements StorageEngineInterface
     public function createStorageTask(StorageTask $storateTask, User $user): StorageTaskResponse
     {
         $tokenRow = $user->tokens()->orderByDesc()->first();
-        if (! $token) {
+        if (! $tokenRow) {
             throw new \Exception('No authentication information associated with the user was found.');
         }
 
