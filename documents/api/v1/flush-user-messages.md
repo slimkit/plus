@@ -16,7 +16,7 @@ GET
 | name     | type     | must     | description |
 |----------|:--------:|:--------:|:-----------:|
 | time     | int      | yes      | 零时区的秒级时间戳 |
-| key      | string   | no       | 查询关键字 默认查询全部  多个以逗号隔开  可选参数有 diggs comments follows|
+| key      | string   | no       | 查询关键字 默认查询全部  多个以逗号隔开  可选参数有 diggs comments follows notices|
 
 ### HTTP Status Code
 
@@ -66,11 +66,11 @@ GET
 
 | name              | must     | description |
 |-------------------|:--------:|:-----------:|
-| key               | no       | 消息关键字  |
-| uids              | no       | 操作者id 多个以逗号隔开 第一条为最新消息的操作者  |
-| count             | no       | 新消息数量  |
-| time              | no       | 最后一条数据的时间 无数据时为当前时间 |
-| max_id            | no       | 最后一条数据的id |
+| key               | yes      | 消息关键字  |
+| uids              | yes      | 操作者id 多个以逗号隔开 第一条为最新消息的操作者  |
+| count             | yes      | 新消息数量  |
+| time              | yes      | 最后一条数据的时间 无数据时为当前时间 |
+| max_id            | yes      | 最后一条数据的id |
 
 ## 由于请求接口数据时间是以秒级时间戳  建议调用传入时间间隔1秒以上 以防止数据重复
 
