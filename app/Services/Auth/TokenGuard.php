@@ -79,7 +79,10 @@ class TokenGuard implements Guard
      */
     public function getTokenForRequest()
     {
-        return $this->request->header('ACCESS-TOKEN', '');
+        return $this->request->header(
+            'Authorization',
+            $this->request->header('ACCESS-TOKEN', '')
+        );
     }
 
     /**
