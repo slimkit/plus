@@ -60,21 +60,32 @@ class FollowController extends Controller
     {
         $user_id = $request->user()->id;
         $follow_user_id = $request->user_id;
+        $follow = Following::where(['user_id' => $user_id, 'following_user_id' => $follow_user_id])->first();
 
-        DB::transaction(function () use ($user_id, $follow_user_id) {
-            $follow = Following::where(['user_id' => $user_id, 'following_user_id' => $follow_user_id])->first();
-            $follow->followed()->delete();
-            $follow->delete();
+        DB::beginTransaction();
 
-            $this->countUserFollow($user_id, 'decrement', 'following_count');
-            $this->countUserFollow($follow_user_id, 'decrement', 'followed_count');
-        });
+        $delete_followed = $follow->followed()->delete();
+        $delete_following = $follow->delete();
+        $followed_count = $this->countUserFollow($follow_user_id, 'decrement', 'followed_count');
+        $following_count = $this->countUserFollow($user_id, 'decrement', 'following_count');
+
+        if ($delete_following && $delete_followed && $following_count && $followed_count) {
+            DB::commit();
+
+            return response()->json(static::createJsonData([
+                'status'  => true,
+                'code'    => 0,
+                'message' => '成功取关',
+            ]))->setStatusCode(200);  
+        }
+
+        DB::rollBack();
 
         return response()->json(static::createJsonData([
-            'status'  => true,
+            'status'  => false,
             'code'    => 0,
-            'message' => '成功取关',
-        ]))->setStatusCode(200);
+            'message' => '操作失败，请稍后重试',
+        ]))->setStatusCode(400);  
     }
 
     /**
@@ -217,9 +228,7 @@ class FollowController extends Controller
                 $countModel->save();
             }
 
-            return tap(UserDatas::where('key', $countKey)->byUserId($user_id), function ($query) use ($method) {
-                $query->$method('value');
-            });
+            return UserDatas::where('key', $countKey)->byUserId($user_id)->$method('value');
         }
 
         return false;
