@@ -76,7 +76,7 @@ class FollowController extends Controller
                 'status'  => true,
                 'code'    => 0,
                 'message' => '成功取关',
-            ]))->setStatusCode(200);  
+            ]))->setStatusCode(200);
         }
 
         DB::rollBack();
@@ -85,7 +85,7 @@ class FollowController extends Controller
             'status'  => false,
             'code'    => 0,
             'message' => '操作失败，请稍后重试',
-        ]))->setStatusCode(400);  
+        ]))->setStatusCode(400);
     }
 
     /**
