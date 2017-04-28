@@ -59,5 +59,5 @@ data字段直接返回`storage_id`储存唯一标识字段，表示跳过上传�
 | method   | string   | yes      | 请求附件上传的方式 |
 | storage_task_id | int | yes    | 任务ID |
 | input    | string   | yes      | 上传资源的表单名称 |
-| headers  | object   | yes      | 请求头 |
-| options  | object   | yes      | 请求体 |
+| headers  | object   | yes      | 请求头 为空时为空数组|
+| options  | object   | yes      | 请求体 为空时为空数组|
