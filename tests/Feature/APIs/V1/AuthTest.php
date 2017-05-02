@@ -5,11 +5,12 @@ namespace Zhiyi\Plus\Tests\Feature\APIs\V1;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Zhiyi\Plus\Http\Controllers\APIs\V1\AuthController;
 
 class AuthTest extends TestCase
 {
-    use WithoutMiddleware;
+    use WithoutMiddleware, DatabaseTransactions;
 
     /**
      * 前置操作.
@@ -57,5 +58,22 @@ class AuthTest extends TestCase
         // Assert
         $response->assertStatus(201)
             ->assertExactJson($data);
+    }
+
+    /**
+     * Test register.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function testRegister()
+    {
+        // created register method.
+        $this->app->make(AuthController::class)->method('register')
+            ->will($this->returnValue(['status' => true]));
+
+        $response = $this->json('POST', '/api/v1/auth/register');
+
+        $response->assertExactJson(['status' => true]);
     }
 }
