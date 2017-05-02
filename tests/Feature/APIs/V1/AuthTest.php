@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Plus\Tests\Feature\APIs\V1;
 
-use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Zhiyi\Plus\Http\Controllers\APIs\V1\AuthController;
 
@@ -16,7 +16,7 @@ class AuthTest extends TestCase
     // protected $json = ['status' => true];
 
     /**
-     * 前置操作
+     * 前置操作.
      *
      * @author Seven Du <shiweidu@outlook.com>
      */
