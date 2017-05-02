@@ -76,4 +76,21 @@ class AuthTest extends TestCase
 
         $response->assertExactJson(['status' => true]);
     }
+
+    /**
+     * Test reset token.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function testResetToken()
+    {
+        // create reset token method.
+        $this->app->make(AuthController::class)->method('resetToken')
+            ->will($this->returnValue(['status' => true]));
+
+        $response = $this->json('PATCH', '/api/v1/auth');
+
+        $response->assertExactJson(['status' => true]);
+    }
 }
