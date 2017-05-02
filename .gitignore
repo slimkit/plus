@@ -12,6 +12,7 @@ Homestead.yaml
 
 /config/component.php
 /config/component_routes.php
+/config/providers.php
 /node_modules
 /public/hot
 /public/storage
