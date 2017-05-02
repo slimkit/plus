@@ -136,7 +136,7 @@ class FollowTest extends TestCase
         $json = static::createJsonData([
             'status'  => true,
             'code'    => 0,
-            'message' => '关注成功',
+            'message' => '成功关注',
             'data'    => null,
 
         ]);
