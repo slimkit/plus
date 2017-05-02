@@ -11,10 +11,6 @@ class AuthTest extends TestCase
 {
     use WithoutMiddleware;
 
-    // protected $controller;
-
-    // protected $json = ['status' => true];
-
     /**
      * 前置操作.
      *
