@@ -1,7 +1,8 @@
 <?php
 
-namespace Tests\Feature\APIs\V1;
+namespace Zhiyi\Plus\Tests\Feature\APIs\V1;
 
+use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Zhiyi\Plus\Http\Controllers\APIs\V1\AuthController;
 
