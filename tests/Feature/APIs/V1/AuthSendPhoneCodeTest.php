@@ -2,107 +2,39 @@
 
 namespace Tests\Feature\APIs\V1;
 
-use PHPUnit\Framework\Assert as PHPUnit;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Zhiyi\Plus\Http\Controllers\APIs\V1\AuthController;
 
 class AuthSendPhoneCodeTest extends TestCase
 {
-    /**
-     * API uri.
-     *
-     * @var string
-     */
-    protected $uri = '/api/v1/auth/phone/send-code';
+    use WithoutMiddleware;
 
     /**
-     * 测试错误的请求手机号验证.
+     * Test send phone code.
      *
-     * Message code: 1000
-     *
+     * @return void
      * @author Seven Du <shiweidu@outlook.com>
-     * @homepage http://medz.cn
      */
-    public function testPostErrorPhoneNumber()
+    public function testSendPhoneCode()
     {
-        // create request data.
-        $requestBody = [
-            'phone' => '*****',
-        ];
+        // json
+        $json = ['status' => true];
 
-        // request api, send data.
-        $response = $this->postJson($this->uri, $requestBody);
+        // mock controller.
+        $controller = $this->getMockBuilder(AuthController::class)
+            ->setMethods(['sendPhoneCode'])
+            ->getMock();
 
-        // Asserts that the status code of the response matches the given code.
-        $response->assertStatus(403);
+        $controller->method('sendPhoneCode')
+            ->will($this->returnValue($json));
 
-        // Assert that the response contains an exact JSON array.
-        $json = static::createJsonData([
-            'code' => 1000,
-        ]);
-        $response->assertJson($json);
-    }
+        $this->instance(AuthController::class, $controller);
 
-    /**
-     * 测试错误的发送类型返回数据.
-     *
-     * Message code: 1011
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     * @homepage http://medz.cn
-     */
-    public function testErrorSendType()
-    {
-        $requestBody = [
-            'phone' => '18781993583',
-        ];
+        // request.
+        $response = $this->json('POST', 'api/v1/auth/phone/send-code');
 
-        $response = $this->postJson($this->uri, $requestBody);
-
-        // Asserts that the status code of the response matches the given code.
-        $response->assertStatus(403);
-
-        // Assert that the response contains an exact JSON array.
-        $json = static::createJsonData([
-            'code'    => 1011,
-            'message' => '类型错误',
-        ]);
-        $response->assertJson($json);
-    }
-
-    /**
-     * 测试注册类型的发送.
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     * @homepage http://medz.cn
-     */
-    public function testRegisterSendType()
-    {
-        $requestBody = [
-            'phone' => '18781993583',
-            'type'  => 'register',
-        ];
-
-        $response = $this->postJson($this->uri, $requestBody);
-
-        $bool = ! empty($response->getContent());
-        PHPUnit::assertTrue($bool);
-    }
-
-    /**
-     * 测试改变类型的发送.
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     * @homepage http://medz.cn
-     */
-    public function testChangeSendType()
-    {
-        $requestBody = [
-            'phone' => '18781993583',
-            'type'  => 'change',
-        ];
-
-        $response = $this->postJson($this->uri, $requestBody);
-
-        $bool = ! empty($response->getContent());
-        PHPUnit::assertTrue($bool);
+        // assert.
+        $response->assertStatus(200)
+            ->assertExactJson($json);
     }
 }
