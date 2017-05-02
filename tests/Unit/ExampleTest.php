@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit;
+namespace Zhiyi\Plus\Tests\Unit;
 
-use Tests\TestCase;
+use Zhiyi\Plus\Tests\TestCase;
 
 class ExampleTest extends TestCase
 {

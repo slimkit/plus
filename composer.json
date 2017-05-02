@@ -41,7 +41,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Zhiyi\\Plus\\Tests\\": "tests/"
         }
     },
     "scripts": {

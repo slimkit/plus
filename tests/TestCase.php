@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests;
+namespace Zhiyi\Plus\Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
