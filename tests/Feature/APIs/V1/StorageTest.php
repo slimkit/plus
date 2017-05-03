@@ -64,6 +64,7 @@ class StorageTest extends TestCase
     public function testStorageTaskNotice()
     {
         $task = factory(StorageTask::class)->create();
+        $user = factory(User::class)->create();
 
         Storage::fake('public');
 
@@ -75,10 +76,28 @@ class StorageTest extends TestCase
             ->image($task->filename, $task->width, $task->height)
             ->storePubliclyAs($path, $name, 'public');
 
-        $response = $this->json('PATCH', '/api/v1/storages/task/'.$task->id, [
-            'message' => 'xxx',
-        ]);
+        $response = $this->actingAs($user, 'api')
+            ->json('PATCH', '/api/v1/storages/task/'.$task->id, [
+                'message' => 'xxx',
+            ]);
 
         $response->assertStatus(201);
+    }
+
+    /**
+     * Test delete storage task.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function testStorageTaskDelete()
+    {
+        $task = factory(StorageTask::class)->create();
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user, 'api')
+            ->json('DELETE', '/api/v1/storages/task/'.$task->id);
+
+        $response->assertStatus(200);
     }
 }
