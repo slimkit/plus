@@ -32,8 +32,8 @@ class StorageTest extends TestCase
 
         // $response->assertStatus(201);
         // $this->assertEquals($user->id, $json['data'][0]['id']);
-        // 
-        
+        //
+
         $user = factory(User::class)->create();
         $user->tokens()->save(
             factory(AuthToken::class)->make()
