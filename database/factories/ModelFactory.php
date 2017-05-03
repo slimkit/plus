@@ -33,3 +33,14 @@ $factory->define(Zhiyi\Plus\Models\AuthToken::class, function (Faker\Generator $
         'state' => 1,
     ];
 });
+
+$factory->define(Zhiyi\Plus\Models\StorageTask::class, function (Faker\Generator $faker) {
+    return [
+        'hash' => $faker->md5,
+        'origin_filename' => 'origin.png',
+        'filename' => 'origin.png',
+        'width' => 120,
+        'height' => 120,
+        'mime_type' => 'image/png',
+    ];
+});
