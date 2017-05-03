@@ -25,19 +25,6 @@ class StorageTest extends TestCase
      */
     public function testCreateStorageTask()
     {
-        // $user = factory(User::class)->create();
-
-        // $response = $this->actingAs($user, 'api')
-        //     ->json('POST', '/api/v1/users', [
-        //         'user_ids' => [$user->id]
-        //     ]);
-
-        // $json = $response->json();
-
-        // $response->assertStatus(201);
-        // $this->assertEquals($user->id, $json['data'][0]['id']);
-        //
-
         $user = factory(User::class)->create();
         $user->tokens()->save(
             factory(AuthToken::class)->make()
