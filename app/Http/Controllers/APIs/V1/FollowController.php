@@ -78,7 +78,7 @@ class FollowController extends Controller
 
         DB::beginTransaction();
 
-        $delete_followed = Followed::where(['user_id' => $followed_user_id, 'followed_user_id' => $user_id])->delete();
+        $delete_followed = Followed::where(['user_id' => $follow_user_id, 'followed_user_id' => $user_id])->delete();
         $delete_following = Following::where(['user_id' => $user_id, 'following_user_id' => $follow_user_id])->delete();
         $following_count = UserDatas::byKey('following_count')->byUserId($user_id)->decrement('value');
         $followed_count = UserDatas::byKey('followed_count')->byUserId($follow_user_id)->decrement('value');
