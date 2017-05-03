@@ -90,7 +90,7 @@ class FollowController extends Controller
                 'status'  => true,
                 'code'    => 0,
                 'message' => '成功取关',
-            ]))->setStatusCode(200);
+            ]))->setStatusCode(204);
         }
 
         DB::rollBack();
