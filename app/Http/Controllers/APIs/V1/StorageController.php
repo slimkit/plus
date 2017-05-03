@@ -159,7 +159,9 @@ class StorageController extends Controller
         }
 
         $user = $request->user();
-        $user->storages()->where('hash', $task->hash)->delete();
+        $user->storages()->detach(
+            $user->storages()->where('hash', $task->hash)->get()
+        );
         $task->delete();
 
         return response()->json(static::createJsonData([
