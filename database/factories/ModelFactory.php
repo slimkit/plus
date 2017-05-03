@@ -21,8 +21,15 @@ $factory->define(Zhiyi\Plus\Models\User::class, function (Faker\Generator $faker
         'phone' => $faker->unique()->phoneNumber,
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
-        'created_at' => $faker->dateTime,
-        'updated_at' => $faker->dateTime,
-        'deleted_at' => null,
+    ];
+});
+
+$factory->define(Zhiyi\Plus\Models\AuthToken::class, function (Faker\Generator $faker) {
+    return [
+        'token' => str_random(10),
+        'refresh_token' => str_random(10),
+        'user_id' => null,
+        'expires' => 0,
+        'state' => 1,
     ];
 });
