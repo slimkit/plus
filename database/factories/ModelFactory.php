@@ -39,8 +39,20 @@ $factory->define(Zhiyi\Plus\Models\StorageTask::class, function (Faker\Generator
         'hash' => $faker->md5,
         'origin_filename' => 'origin.png',
         'filename' => 'origin.png',
-        'width' => 120,
-        'height' => 120,
+        'width' => null,
+        'height' => null,
         'mime_type' => 'image/png',
+    ];
+});
+
+$factory->define(Zhiyi\Plus\Models\Storage::class, function (Faker\Generator $faker) {
+    return [
+        'origin_filename' => 'origin.png',
+        'filename' => 'origin.png',
+        'hash' => $faker->md5,
+        'mime' => 'image/png',
+        'extension' => 'png',
+        'image_width' => null,
+        'image_height' => null,
     ];
 });
