@@ -144,7 +144,7 @@ class StorageTest extends TestCase
 
         $response = $this->actingAs($user, 'api')
             ->post('/api/v1/storages/task/'.$task->id, [
-                'file' => UploadedFile::fake()->image($task->origin_filename)
+                'file' => UploadedFile::fake()->image($task->origin_filename),
             ]);
 
         $response->assertStatus(200);
