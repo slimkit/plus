@@ -143,7 +143,7 @@ class StorageController extends Controller
             ]))->setStatusCode(404);
         }
 
-        $message = $request->input('message', '');
+        $message = strval($request->input('message', ''));
 
         return $this->storage()->notice($message, $task, static::$engine);
     }
