@@ -3,13 +3,13 @@
 namespace Zhiyi\Plus\Unit\Storages;
 
 use Zhiyi\Plus\Models\User;
-use Zhiyi\Plus\Models\StorageTask;
 use Zhiyi\Plus\Tests\TestCase;
 use Zhiyi\Plus\Storages\Storage;
+use Zhiyi\Plus\Models\StorageTask;
+use Zhiyi\Plus\Storages\StorageTaskResponse;
 use Zhiyi\Plus\Services\Storage as StorageService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Zhiyi\Plus\Interfaces\Storage\StorageEngineInterface;
-use Zhiyi\Plus\Storages\StorageTaskResponse;
 
 class StorageTest extends TestCase
 {
@@ -37,7 +37,7 @@ class StorageTest extends TestCase
                     'name' => 'Testing',
                     'engine' => 'TestEngine',
                     'option' => [],
-                ]
+                ],
             ]));
 
         $this->instance('TestEngine', $testEngine);
@@ -87,7 +87,6 @@ class StorageTest extends TestCase
         $response = $this->createMock(StorageTaskResponse::class);
         $response->method('toArray')
             ->will($this->returnValue(['test' => true]));
-
 
         $this->app->make('TestEngine')->method('createStorageTask')
             ->will($this->returnValue($response));
