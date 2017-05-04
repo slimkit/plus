@@ -6,6 +6,7 @@ use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Tests\TestCase;
 use Zhiyi\Plus\Storages\Storage;
 use Zhiyi\Plus\Models\StorageTask;
+use Zhiyi\Plus\Models\Storage as StorageModel;
 use Zhiyi\Plus\Storages\StorageTaskResponse;
 use Zhiyi\Plus\Services\Storage as StorageService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -76,7 +77,7 @@ class StorageTest extends TestCase
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function testCeateStorageTaskByNoHash()
+    public function testCreateStorageTaskByNoHash()
     {
         $storage = new Storage($this->app->make(StorageService::class));
 
@@ -94,5 +95,27 @@ class StorageTest extends TestCase
         $data = $storage->createStorageTask($user, $task->origin_filename, $task->hash, $task->mime_type, 120.00, 120.00, 'test');
 
         $this->assertTrue($data['test']);
+    }
+
+    /**
+     * Test createStorageTask method.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function testCreateStorageTask()
+    {
+        $storage = new Storage($this->app->make(StorageService::class));
+
+        $user = factory(User::class)->create();
+        // $task = factory(StorageTask::class)->make();
+        $storageData = factory(StorageModel::class)->create([
+            'image_width' => 120.00,
+            'image_height' => 120.00,
+        ]);
+
+        $data = $storage->createStorageTask($user, $storageData->origin_filename, $storageData->hash, $storageData->mime, $storageData->image_width, $storageData->image_height, 'test');
+
+        $this->assertEquals($storageData->id, $data['storage_id']);
     }
 }
