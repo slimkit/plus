@@ -7,6 +7,7 @@ use Zhiyi\Plus\Tests\TestCase;
 use Zhiyi\Plus\Storages\Storage;
 use Zhiyi\Plus\Models\StorageTask;
 use Zhiyi\Plus\Storages\StorageTaskResponse;
+use Illuminate\Foundation\Testing\TestResponse;
 use Zhiyi\Plus\Models\Storage as StorageModel;
 use Zhiyi\Plus\Services\Storage as StorageService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -117,5 +118,27 @@ class StorageTest extends TestCase
         $data = $storage->createStorageTask($user, $storageData->origin_filename, $storageData->hash, $storageData->mime, $storageData->image_width, $storageData->image_height, 'test');
 
         $this->assertEquals($storageData->id, $data['storage_id']);
+    }
+
+    /**
+     * Test notice method.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function testNotice()
+    {
+        $storage = new Storage($this->app->make(StorageService::class));
+
+        $task = factory(StorageTask::class)->make([
+            'width' => 120.00,
+            'height' => 120.00,
+        ]);
+
+        $response = TestResponse::fromBaseResponse(
+            $storage->notice('', $task, 'test')
+        );
+
+        $response->assertStatus(201);
     }
 }
