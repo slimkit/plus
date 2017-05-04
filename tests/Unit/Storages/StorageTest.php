@@ -44,6 +44,9 @@ class StorageTest extends TestCase
 
         $this->instance('TestEngine', $testEngine);
         $this->instance(StorageService::class, $storageService);
+        $this->instance(Storage::class, new Storage(
+            $this->app->make(StorageService::class)
+        ));
     }
 
     /**
@@ -54,9 +57,10 @@ class StorageTest extends TestCase
      */
     public function testEngine()
     {
-        $storage = new Storage($this->app->make(StorageService::class));
-
-        $this->assertInstanceOf(StorageEngineInterface::class, $storage->engine('test'));
+        $this->assertInstanceOf(
+            StorageEngineInterface::class,
+            $this->app->make(Storage::class)->engine('test')
+        );
     }
 
     /**
@@ -67,9 +71,10 @@ class StorageTest extends TestCase
      */
     public function testGetAlise()
     {
-        $storage = new Storage($this->app->make(StorageService::class));
-
-        $this->assertEquals('TestEngine', $storage->getAlise('test'));
+        $this->assertEquals(
+            'TestEngine',
+            $this->app->make(Storage::class)->getAlise('test')
+        );
     }
 
     /**
@@ -80,8 +85,6 @@ class StorageTest extends TestCase
      */
     public function testCreateStorageTaskByNoHash()
     {
-        $storage = new Storage($this->app->make(StorageService::class));
-
         $user = factory(User::class)->create();
         $task = factory(StorageTask::class)->make();
 
@@ -93,7 +96,9 @@ class StorageTest extends TestCase
         $this->app->make('TestEngine')->method('createStorageTask')
             ->will($this->returnValue($response));
 
-        $data = $storage->createStorageTask($user, $task->origin_filename, $task->hash, $task->mime_type, 120.00, 120.00, 'test');
+        $data = $this->app
+            ->make(Storage::class)
+            ->createStorageTask($user, $task->origin_filename, $task->hash, $task->mime_type, 120.00, 120.00, 'test');
 
         $this->assertTrue($data['test']);
     }
@@ -106,8 +111,6 @@ class StorageTest extends TestCase
      */
     public function testCreateStorageTask()
     {
-        $storage = new Storage($this->app->make(StorageService::class));
-
         $user = factory(User::class)->create();
         // $task = factory(StorageTask::class)->make();
         $storageData = factory(StorageModel::class)->create([
@@ -115,7 +118,9 @@ class StorageTest extends TestCase
             'image_height' => 120.00,
         ]);
 
-        $data = $storage->createStorageTask($user, $storageData->origin_filename, $storageData->hash, $storageData->mime, $storageData->image_width, $storageData->image_height, 'test');
+        $data = $this->app
+            ->make(Storage::class)
+            ->createStorageTask($user, $storageData->origin_filename, $storageData->hash, $storageData->mime, $storageData->image_width, $storageData->image_height, 'test');
 
         $this->assertEquals($storageData->id, $data['storage_id']);
     }
@@ -128,17 +133,33 @@ class StorageTest extends TestCase
      */
     public function testNotice()
     {
-        $storage = new Storage($this->app->make(StorageService::class));
-
         $task = factory(StorageTask::class)->make([
             'width' => 120.00,
             'height' => 120.00,
         ]);
 
         $response = TestResponse::fromBaseResponse(
-            $storage->notice('', $task, 'test')
+            $this->app->make(Storage::class)->notice('', $task, 'test')
         );
 
         $response->assertStatus(201);
+    }
+
+    /**
+     * Test url method.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function testUrl()
+    {
+        $task = factory(StorageTask::class)->make();
+
+        $this->app->make('TestEngine')->method('url')
+            ->will($this->returnArgument(0));
+
+        $filename = $this->app->make(Storage::class)->url($task->filename, 100, 'test');
+
+        $this->assertEquals($task->filename, $filename);
     }
 }
