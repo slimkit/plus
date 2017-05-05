@@ -235,7 +235,7 @@ class FollowController extends Controller
             $map = ['key' => $countKey, 'user_id' => $user_id];
             $data = ['key' => $countKey, 'user_id' => $user_id, 'value' => 0];
 
-            UserDatas::updateOrCreate($map, $data);
+            UserDatas::firstOrCreate($map, $data);
         }
 
         return true;
