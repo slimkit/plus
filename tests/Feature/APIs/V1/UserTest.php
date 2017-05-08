@@ -5,7 +5,6 @@ namespace Zhiyi\Plus\Tests\Feature\APIs\V1;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Zhiyi\Plus\Http\Controllers\APIs\V1\UserController;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UserTest extends TestCase
@@ -13,8 +12,8 @@ class UserTest extends TestCase
     use WithoutMiddleware,DatabaseTransactions;
 
     /**
-     * Test get user`s info
-     * 
+     * Test get user`s info.
+     *
      * @author bs<414606094@qq.com>
      */
     public function testGetUserInfo()
@@ -29,8 +28,8 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test reset user`s password
-     * 
+     * Test reset user`s password.
+     *
      * @author bs<414606094@qq.com>
      */
     public function testResetPassword()
@@ -48,8 +47,8 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test edit user`s profile
-     * 
+     * Test edit user`s profile.
+     *
      * @author bs<414606094@qq.com>
      */
     public function testEditProfile()
@@ -69,8 +68,8 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test get diggsrank
-     * 
+     * Test get diggsrank.
+     *
      * @author bs<414606094@qq.com>
      */
     public function testGetDiggRank()
@@ -84,8 +83,8 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test get user`s comments
-     * 
+     * Test get user`s comments.
+     *
      * @author bs<414606094@qq.com>
      */
     public function testGetMyComments()
@@ -102,8 +101,8 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test get user`s diggs
-     * 
+     * Test get user`s diggs.
+     *
      * @author bs<414606094@qq.com>
      */
     public function testGetMyDiggs()
@@ -120,8 +119,8 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test get user`s new messages
-     * 
+     * Test get user`s new messages.
+     *
      * @author bs<414606094@qq.com>
      */
     public function testGetMyNewsMessages()
@@ -134,5 +133,5 @@ class UserTest extends TestCase
             ]);
 
         $response->assertStatus(200);
-    } 
+    }
 }
