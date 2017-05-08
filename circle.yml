@@ -31,5 +31,4 @@ dependencies:
 
 test:
     override:
-        - yarn lint
         - yarn dist
