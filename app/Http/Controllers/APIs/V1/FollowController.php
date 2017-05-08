@@ -58,10 +58,10 @@ class FollowController extends Controller
         DB::rollBack();
 
         return response()->json(static::createJsonData([
-            'status'  => true,
+            'status'  => false,
             'code'    => 1024,
             'message' => '操作失败，请稍后重试',
-        ]))->setStatusCode(201);
+        ]))->setStatusCode(400);
     }
 
     /**
