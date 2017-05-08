@@ -3,8 +3,8 @@
 namespace Zhiyi\Plus\Services\Admin;
 
 use Closure;
-use Zhiyi\Plus\Models\CommonConfig;
 use Illuminate\Support\Collection;
+use Zhiyi\Plus\Models\CommonConfig;
 
 class Forms
 {
@@ -55,7 +55,7 @@ class Forms
     protected function formatForm(CommonConfig $form): array
     {
         $value = json_decode($form->value, true);
-        
+
         return [
             'name' => $form->name,
             'type' => array_get($value, 'type'),

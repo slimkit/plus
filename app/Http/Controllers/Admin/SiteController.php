@@ -8,9 +8,9 @@ use Zhiyi\Plus\Models\Area;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\CommonConfig;
-use Zhiyi\Plus\Services\Admin\FormCreate;
 use Zhiyi\Plus\Services\Admin\Forms;
 use Illuminate\Support\Facades\Cache;
+use Zhiyi\Plus\Services\Admin\FormCreate;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class SiteController extends Controller
@@ -30,7 +30,6 @@ class SiteController extends Controller
      */
     public function showForms(Forms $formService)
     {
-
         dump($formService->all());
 
         // $form = new FormCreate('短信设置', '阿里大于');
@@ -59,7 +58,6 @@ class SiteController extends Controller
         // ]);
         // $form->saveToDatabase();
 
-        
         exit;
 
         return response()->json([
