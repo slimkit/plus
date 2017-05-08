@@ -13,7 +13,6 @@
 import autoprefixer from 'autoprefixer';
 import lodash from 'lodash';
 import path from 'path';
-import formatter from 'eslint-friendly-formatter';
 import fs from 'fs';
 import webpack from 'webpack';
 
