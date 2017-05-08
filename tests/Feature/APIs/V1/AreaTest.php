@@ -11,7 +11,7 @@ class AreaTest extends TestCase
 
     /**
      * test get area list.
-     * 
+     *
      * @author bs<414606094@qq.com>
      */
     public function testGetAreaList()
