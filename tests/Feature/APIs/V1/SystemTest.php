@@ -55,7 +55,7 @@ class SystemTest extends TestCase
     }
 
     /**
-     * test get user`s conversations
+     * test get user`s conversations.
      *
      * @author bs<414606094@qq.com>
      */
@@ -66,7 +66,7 @@ class SystemTest extends TestCase
         $response = $this->actingAs($user, 'api')
             ->json('GET', '/api/v1/system/conversations', [
                 'max_id' => 0,
-                'limit' => 15
+                'limit' => 15,
             ]);
 
         $response->assertStatus(200);
