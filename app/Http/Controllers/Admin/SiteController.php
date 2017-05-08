@@ -8,9 +8,9 @@ use Zhiyi\Plus\Models\Area;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\CommonConfig;
+use Zhiyi\Plus\Services\Admin\Form;
 use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Services\Admin\Form;
 
 class SiteController extends Controller
 {
@@ -41,17 +41,17 @@ class SiteController extends Controller
         $form->addChildren([
             'name' => 'as',
             'type' => 'text',
-            'display' => 'APP SECRET'
+            'display' => 'APP SECRET',
         ]);
         $form->addChildren([
             'name' => 'sign_name',
             'type' => 'text',
-            'display' => '签名名称'
+            'display' => '签名名称',
         ]);
         $form->addChildren([
             'name' => 'template',
             'type' => 'text',
-            'display' => '模板ID'
+            'display' => '模板ID',
         ]);
         $form->saveToDatabase();
 
@@ -60,6 +60,7 @@ class SiteController extends Controller
                 ->toArray()
         );
         exit;
+
         return response()->json([
             '短信中心' => [
                 '阿里大于' => [
@@ -71,10 +72,10 @@ class SiteController extends Controller
                             'type' => 'text',
                             'name' => 'ak',
                             'display' => 'AK',
-                        ]
-                    ]
-                ]
-            ]
+                        ],
+                    ],
+                ],
+            ],
         ]);
     }
 

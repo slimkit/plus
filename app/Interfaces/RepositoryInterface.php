@@ -2,10 +2,10 @@
 
 namespace Zhiyi\Plus\Interfaces;
 
-use \Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
-interface RepositoryInterface {
-
+interface RepositoryInterface
+{
     /**
      * Get all.
      *

@@ -20,7 +20,7 @@ class Form
     protected $inputTypes = ['checkbox', 'hidden', 'password', 'radio', 'text'];
 
     /**
-     * 构造方法，设置最基础的信息
+     * 构造方法，设置最基础的信息.
      *
      * @param string $root
      * @param string $childrenName
@@ -140,7 +140,7 @@ class Form
      */
     protected function checkNameEmpty(string $name)
     {
-        if (!$name) {
+        if (! $name) {
             throw new InvalidArgumentException('The input name can not be empty.');
         }
     }
