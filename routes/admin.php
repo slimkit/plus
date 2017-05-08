@@ -13,6 +13,9 @@ Route::middleware('auth:web')->group(function () {
     Route::get('/site/baseinfo', 'SiteController@get');
     Route::patch('/site/baseinfo', 'SiteController@updateSiteInfo');
 
+    // 后台表单
+    Route::get('/forms', 'SiteController@showForms');
+
     // area
     Route::get('/site/areas', 'SiteController@areas');
     Route::post('/site/areas', 'SiteController@doAddArea');

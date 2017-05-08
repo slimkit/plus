@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\CommonConfig;
 use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Services\Admin\Form;
 
 class SiteController extends Controller
 {
@@ -19,6 +20,63 @@ class SiteController extends Controller
      * @var Zhiyi\Plus\Models\CommonConfig
      */
     protected $commonCinfigModel;
+
+    /**
+     * Show form's.
+     *
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function showForms()
+    {
+        $form = new Form('短信设置', '阿里大于');
+        $form->type(Form::TYPE_FORM);
+        $form->save('https://github.com');
+        $form->data('https://baidu.com');
+        $form->addChildren([
+            'name' => 'ak',
+            'type' => 'text',
+            'display' => 'APP KEY',
+        ]);
+        $form->addChildren([
+            'name' => 'as',
+            'type' => 'text',
+            'display' => 'APP SECRET'
+        ]);
+        $form->addChildren([
+            'name' => 'sign_name',
+            'type' => 'text',
+            'display' => '签名名称'
+        ]);
+        $form->addChildren([
+            'name' => 'template',
+            'type' => 'text',
+            'display' => '模板ID'
+        ]);
+        $form->saveToDatabase();
+
+        dump(
+            CommonConfig::byNamespace('admin-forms')->get()
+                ->toArray()
+        );
+        exit;
+        return response()->json([
+            '短信中心' => [
+                '阿里大于' => [
+                    'type' => 'form', // form | url
+                    'data' => 'https://www.baidu.com',
+                    'save' => 'https://github.com',
+                    'form' => [
+                        [
+                            'type' => 'text',
+                            'name' => 'ak',
+                            'display' => 'AK',
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+    }
 
     /**
      * Get the website info.
