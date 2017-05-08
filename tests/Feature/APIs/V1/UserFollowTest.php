@@ -5,7 +5,6 @@ namespace Zhiyi\Plus\Tests\Feature\APIs\V1;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Zhiyi\Plus\Http\Controllers\APIs\V1\UserController;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UserFollowTest extends TestCase
@@ -36,7 +35,7 @@ class UserFollowTest extends TestCase
      * @author bs<414606094@qq.com>
      */
     public function testCancelFollow()
-    {        
+    {
         $user = factory(User::class)->create();
         $followed_user = factory(User::class)->create();
 
@@ -88,7 +87,7 @@ class UserFollowTest extends TestCase
     }
 
     /**
-     * test get user follow status
+     * test get user follow status.
      *
      * @author bs<414606094@qq.com>
      */
