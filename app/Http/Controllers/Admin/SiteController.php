@@ -8,7 +8,7 @@ use Zhiyi\Plus\Models\Area;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\CommonConfig;
-use Zhiyi\Plus\Services\Admin\Form;
+use Zhiyi\Plus\Services\Admin\FormCreate;
 use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
@@ -29,8 +29,8 @@ class SiteController extends Controller
      */
     public function showForms()
     {
-        $form = new Form('短信设置', '阿里大于');
-        $form->type(Form::TYPE_FORM);
+        $form = new FormCreate('短信设置', '阿里大于');
+        $form->type(FormCreate::TYPE_FORM);
         $form->save('https://github.com');
         $form->data('https://baidu.com');
         $form->addChildren([

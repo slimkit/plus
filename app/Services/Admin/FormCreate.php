@@ -5,7 +5,7 @@ namespace Zhiyi\Plus\Services\Admin;
 use InvalidArgumentException;
 use Zhiyi\Plus\Models\CommonConfig;
 
-class Form
+class FormCreate
 {
     const TYPE_FORM = 'form';
     const TYPE_URL = 'url';
