@@ -84,18 +84,19 @@ class SystemController extends Controller
     {
         $uid = $request->user()->id;
         $limit = $request->input('limit', 15);
-        $max_id = $request->input('max_id', 0);
+        $max_id = $request->input('max_id', 0); 
+        $order = $request->input('order', 0);
         $list = Conversation::where(function ($query) use ($uid) {
             $query->where(function ($query) use ($uid) {
                 $query->where('type', 'system')->whereIn('to_user_id', [0, $uid]);
             })->orWhere(['type' => 'feedback', 'user_id' => $uid]);
         })
-        ->where(function ($query) use ($max_id) {
+        ->where(function ($query) use ($max_id, $order) {
             if ($max_id > 0) {
-                $query->where('id', '<', $max_id);
+                $query->where('id', $order ? '>' : '<', $max_id);
             }
         })
-        ->orderBy('id', 'desc')
+        ->orderBy('id', 'asc')
         ->take($limit)
         ->get();
 
