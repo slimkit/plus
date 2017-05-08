@@ -8,8 +8,8 @@ use Zhiyi\Plus\Models\Area;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\CommonConfig;
-use Zhiyi\Plus\Services\Admin\FormCreate;
 use Illuminate\Support\Facades\Cache;
+use Zhiyi\Plus\Services\Admin\FormCreate;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class SiteController extends Controller
