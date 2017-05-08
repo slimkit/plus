@@ -140,13 +140,6 @@ const webpackConfig = {
     rules: [
       ...styleLoaders({ sourceMap: !isProd }),
       {
-        test: /\.(js|vue)$/,
-        loader: 'eslint-loader',
-        enforce: "pre",
-        include: [ assetsRoot ],
-        options: { formatter },
-      },
-      {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
