@@ -76,7 +76,7 @@ const UserAddComponent = {
         { name: this.name, phone: this.phone, password: this.password },
         { validateStatus: status => status === 201 }
       ).then(({ data: { user_id: userId } }) => {
-        this.$router.replace({ path: '/users', query: { userId } });
+        this.$router.replace({ path: '/users/manage/'+userId });
       }).catch(({ response: { data = {} } = {} }) => {
         const { errors = ['添加失败'], code } = data;
         this.errorMessage = code2message(code, lodash.values(errors).pop());

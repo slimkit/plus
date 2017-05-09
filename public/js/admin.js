@@ -2976,7 +2976,7 @@ var UserAddComponent = {
         } }).then(function (_ref) {
         var userId = _ref.data.user_id;
 
-        _this.$router.replace({ path: '/users', query: { userId: userId } });
+        _this.$router.replace({ path: '/users/manage/' + userId });
       }).catch(function (_ref2) {
         var _ref2$response = _ref2.response;
         _ref2$response = _ref2$response === undefined ? {} : _ref2$response;
