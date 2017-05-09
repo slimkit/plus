@@ -17,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // 添加验证手机号码规则
         Validator::extend('cn_phone', function ($attribute, $value) {
-            return preg_match('/^(\+?0?86\-?)?((13\d|14[57]|15[^4,\D]|17[678]|18\d)\d{8}|170[059]\d{7})$/', $value);
+            return preg_match('/^(\+?0?86\-?)?((13\d|14[57]|15[^4,\D]|17[3678]|18\d)\d{8}|170[059]\d{7})$/', $value);
         });
 
         // 添加用户名验证规则
