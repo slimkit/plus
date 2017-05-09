@@ -61,6 +61,14 @@
         </div>
         <span class="col-sm-4 help-block" :id="`${root}-${children}-${name}-help-block`">{{ tip }}</span>
       </div>
+
+      <!-- Button -->
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="button" class="btn btn-primary">提交</button>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
