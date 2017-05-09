@@ -17,7 +17,7 @@ class FormCreate
     protected $type = 'form';
     protected $childrens = [];
 
-    protected $inputTypes = ['checkbox', 'hidden', 'password', 'radio', 'text'];
+    protected $inputTypes = ['checkbox', 'password', 'radio', 'text'];
 
     /**
      * 构造方法，设置最基础的信息.

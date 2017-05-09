@@ -20,6 +20,13 @@ class Forms
         return $form->saveToDatabase();
     }
 
+    /**
+     * Find forms.
+     *
+     * @param callable $query
+     * @return \Illuminate\Support\Collection
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function find(callable $query): Collection
     {
         $forms = CommonConfig::byNamespace('admin-forms')->where($query)

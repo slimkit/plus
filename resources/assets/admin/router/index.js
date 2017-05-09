@@ -10,6 +10,7 @@ import userRouter from './user';
 import Login from '../component/Login';
 import Home from '../component/Home';
 import Component from '../component/Component';
+import VendorComponent from '../component/VendorComponent';
 
 Vue.use(VueRouter);
 
@@ -27,7 +28,8 @@ const router = new VueRouter({
         // Setting router.
         settingRouter,
         userRouter,
-        { path: 'component/:component(.*)', component: Component }
+        { path: 'component/:component(.*)', component: Component },
+        { path: ':root/:children?', component: VendorComponent }
       ]
     },
     { path: '/login', component: Login, beforeEnter: loggedAuth }

@@ -25,3 +25,6 @@ export const SETTINGS_AREA_DELETE = 'settings/area/DELETE';
 
 // Defined [users/]
 export const USERS_CHANGE = 'users/CHANGE';
+
+// forms
+export const FORM_SET = 'forms/SET';

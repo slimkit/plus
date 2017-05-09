@@ -1,6 +1,10 @@
 {
-  "/js/admin.js": "/js/fafe757c42b77297730a.js",
-  "/css/admin.css": "/css/fafe757c42b77297730a.css",
-  "/js/vendor.js": "/js/d7505bb36306d21097d9.js",
-  "/js/manifest.js": "/js/291e2378932f9b50ef78.js"
+  "/js/admin.js": "/js/admin.js",
+  "/css/admin.css": "/css/admin.css",
+  "/js/admin.map": "/js/admin.js.map",
+  "/css/admin.map": "/css/admin.css.map",
+  "/js/vendor.js": "/js/vendor.js",
+  "/js/vendor.map": "/js/vendor.js.map",
+  "/js/manifest.js": "/js/manifest.js",
+  "/js/manifest.map": "/js/manifest.js.map"
 }

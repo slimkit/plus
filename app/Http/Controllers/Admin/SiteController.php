@@ -12,6 +12,7 @@ use Zhiyi\Plus\Services\Admin\Forms;
 use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\Services\Admin\FormCreate;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Illuminate\Contracts\Routing\ResponseFactory;
 
 class SiteController extends Controller
 {
@@ -28,9 +29,15 @@ class SiteController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function showForms(Forms $formService)
+    public function showForms(Forms $formService, ResponseFactory $response)
     {
-        dump($formService->all());
+        return $response->json(
+            $formService->all()
+        )->setStatusCode(200);
+        // dump($response->json());
+        // dump($formService->find(function ($query) {
+        //     $query->where('name', 'LIKE', '短信设置/%');
+        // }));
 
         // $form = new FormCreate('短信设置', '阿里大于');
         // $form->type(FormCreate::TYPE_FORM);
@@ -57,25 +64,6 @@ class SiteController extends Controller
         //     'display' => '模板ID',
         // ]);
         // $form->saveToDatabase();
-
-        exit;
-
-        return response()->json([
-            '短信中心' => [
-                '阿里大于' => [
-                    'type' => 'form', // form | url
-                    'data' => 'https://www.baidu.com',
-                    'save' => 'https://github.com',
-                    'form' => [
-                        [
-                            'type' => 'text',
-                            'name' => 'ak',
-                            'display' => 'AK',
-                        ],
-                    ],
-                ],
-            ],
-        ]);
     }
 
     /**

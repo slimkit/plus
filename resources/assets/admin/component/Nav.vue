@@ -54,15 +54,44 @@
       <img class="__icon-img" :src="icon">
       {{ name }}
     </router-link>
+    <router-link
+      class="list-group-item __button"
+      v-for="rootName in vendorMenus"
+      :key="rootName"
+      :to="'/'+rootName"
+    >
+      {{ rootName }}
+    </router-link>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import lodash from 'lodash';
+import { FORM_ALL } from '../store/getter-types';
+
 const menus = window.TS.menus || {};
 const nav = {
   data: () => ({
     menus
-  })
+  }),
+  computed: {
+    ...mapGetters({
+      forms: FORM_ALL,
+    }),
+    vendorMenus() {
+      return lodash.reduce(lodash.keys(this.forms), function (forms, name) {
+        if (name != '系统' || name != '用户') {
+          forms.push(name);
+        }
+        
+        return forms;
+      }, []);
+    }
+  },
+  created() {
+    console.log(this);
+  }
 };
 
 export default nav;
