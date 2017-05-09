@@ -132,13 +132,13 @@
     </table>
     <ul class="pager" v-show="page >= 1 && lastPage > 1">
       <li class="previous" :class="page <= 1 ? 'disabled' : ''">
-        <router-link :to="{ path: '/users/manage', query: prevQuery }">
+        <router-link :to="{ path: '/users', query: prevQuery }">
           <span aria-hidden="true">&larr;</span>
           上一页
         </router-link>
       </li>
       <li class="next" :class="page >= lastPage ? 'disabled': ''">
-        <router-link :to="{ path: '/users/manage', query: nextQuery }">
+        <router-link :to="{ path: '/users', query: nextQuery }">
           下一页
           <span aria-hidden="true">&rarr;</span>
         </router-link>

@@ -5886,7 +5886,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('router-link', {
     attrs: {
       "to": {
-        path: '/users/manage',
+        path: '/users',
         query: _vm.prevQuery
       }
     }
@@ -5900,7 +5900,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('router-link', {
     attrs: {
       "to": {
-        path: '/users/manage',
+        path: '/users',
         query: _vm.nextQuery
       }
     }
