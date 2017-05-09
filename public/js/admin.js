@@ -1966,7 +1966,7 @@ var ManageComponent = {
   data: function data() {
     return {
       userId: '',
-      sort: 'up',
+      sort: 'down',
       email: '',
       name: '',
       role: 0,
