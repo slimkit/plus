@@ -58,7 +58,7 @@
       class="list-group-item __button"
       v-for="rootName in vendorMenus"
       :key="rootName"
-      :to="'/'+rootName"
+      :to="'/vendor/'+rootName"
     >
       {{ rootName }}
     </router-link>

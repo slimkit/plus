@@ -16,7 +16,7 @@
         tag="li"
         v-for="name in munes"
         :key="name"
-        :to="`/${root}/${name}`"
+        :to="`/vendor/${root}/${name}`"
         :class="name === children ? 'active' : null"
       >
         <a href="#">{{ name }}</a>

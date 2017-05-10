@@ -432,7 +432,7 @@ var router = new _vueRouter2.default({
     // root.
     { path: '', redirect: '/setting/base' },
     // Setting router.
-    _setting2.default, _user2.default, { path: 'component/:component(.*)', component: _Component2.default }, { path: ':root/:children?', component: _VendorComponent2.default }]
+    _setting2.default, _user2.default, { path: 'component/:component(.*)', component: _Component2.default }, { path: 'vendor/:root/:children?', component: _VendorComponent2.default }]
   }, { path: '/login', component: _Login2.default, beforeEnter: _auth.loggedAuth }]
 });
 
@@ -5690,7 +5690,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       key: rootName,
       staticClass: "list-group-item __button",
       attrs: {
-        "to": '/' + rootName
+        "to": '/vendor/' + rootName
       }
     }, [_vm._v("\n    " + _vm._s(rootName) + "\n  ")])
   })], 2)
@@ -5717,7 +5717,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       class: name === _vm.children ? 'active' : null,
       attrs: {
         "tag": "li",
-        "to": ("/" + _vm.root + "/" + name)
+        "to": ("/vendor/" + _vm.root + "/" + name)
       }
     }, [_c('a', {
       attrs: {
