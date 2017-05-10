@@ -5,31 +5,31 @@ namespace Zhiyi\Plus\Unit\Middleware\Auth;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Foundation\Testing\TestResponse;
-use Zhiyi\Plus\Http\Middleware\VerifySendPhoneCodeType;
+use Zhiyi\Plus\Http\Middleware\CheckDeviceCodeExisted;
 
-class VerifySendPhoneCodeTypeTest extends TestCase
+class CheckDeviceCodeExistedTest extends TestCase
 {
     /**
-     * test verify send phone number type.
+     * test check device code whit empty.
      *
      * @author bs<414606094@qq.com>
      */
     public function testHandle()
     {
         $request = $this->getMockBuilder(Request::class)
-            ->setMethods(['post'])
+            ->setMethods(['all'])
             ->getMock();
 
         $request->expects($this->any())
-            ->method('post')
+            ->method('all')
             ->willReturn([
-                'type' => 'test',
+                'device_code' => '',
             ]);
 
         $response = TestResponse::fromBaseResponse(
-            with(new VerifySendPhoneCodeType())->handle($request, function () {
+            with(new CheckDeviceCodeExisted())->handle($request, function () {
             })
         );
-        $response->assertStatus(403);
+        $response->assertStatus(422);
     }
 }
