@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\CommonConfig;
 use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Illuminate\Contracts\Routing\ResponseFactory;
 
 class SiteController extends Controller
 {

@@ -2,9 +2,9 @@
 
 namespace Zhiyi\Plus\Unit\Middleware\Auth;
 
+use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\User;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Zhiyi\Plus\Http\Middleware\CheckUserByNameNotExisted;
@@ -12,6 +12,7 @@ use Zhiyi\Plus\Http\Middleware\CheckUserByNameNotExisted;
 class CheckUserByNameNotExistedTest extends TestCase
 {
     use DatabaseTransactions;
+
     /**
      * test check user with phone exited.
      *
