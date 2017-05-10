@@ -35,7 +35,6 @@ class VerifyPhoneNumberTest extends TestCase
     }
 
     /**
-     *
      * @author bs<414606094@qq.com>
      */
     public function testWrongNumber()
@@ -56,5 +55,5 @@ class VerifyPhoneNumberTest extends TestCase
         );
 
         $response->assertStatus(403);
-    }    
+    }
 }
