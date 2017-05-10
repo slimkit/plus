@@ -2,10 +2,10 @@
 
 namespace Zhiyi\Plus\Support;
 
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Yaml\Parser;
 use Illuminate\Config\Repository;
+use Symfony\Component\Yaml\Parser;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Config\Repository as RepositoryContract;
 
 class Configuration

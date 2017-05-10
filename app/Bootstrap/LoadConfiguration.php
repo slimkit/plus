@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Plus\Bootstrap;
 
-use Illuminate\Contracts\Foundation\Application;
 use Zhiyi\Plus\Support\Configuration;
+use Illuminate\Contracts\Foundation\Application;
 
 class LoadConfiguration
 {
@@ -20,7 +20,7 @@ class LoadConfiguration
     {
         static $loaded = false;
         if ($loaded) {
-            return ;
+            return;
         }
 
         $this->app->config->set(
