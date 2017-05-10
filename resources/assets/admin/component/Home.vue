@@ -80,9 +80,8 @@ $lefyNavWidth: 240px;
 
 <script>
 import { mapGetters } from 'vuex';
-import request, { createRequestURI, createAPI } from '../util/request';
+import { createRequestURI, createAPI } from '../util/request';
 import { USER, USER_DATA } from '../store/getter-types';
-import { FORM_SET } from '../store/types';
 
 import DefaultAvatar from '../icons/default-avatar';
 
@@ -122,12 +121,6 @@ const home = {
   components: {
     'system-nav': Nav,
     'default-avatar': DefaultAvatar
-  },
-  created() {
-    this.$store.dispatch(FORM_SET, cb => request.get(
-      createRequestURI('forms'),
-      { validateStatus: status => status === 200 }
-    ).then(({ data }) => cb(data)).catch());
   }
 };
 

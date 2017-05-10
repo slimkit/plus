@@ -8,9 +8,7 @@ use Zhiyi\Plus\Models\Area;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\CommonConfig;
-use Zhiyi\Plus\Services\Admin\Forms;
 use Illuminate\Support\Facades\Cache;
-use Zhiyi\Plus\Services\Admin\FormCreate;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
 
@@ -22,49 +20,6 @@ class SiteController extends Controller
      * @var Zhiyi\Plus\Models\CommonConfig
      */
     protected $commonCinfigModel;
-
-    /**
-     * Show form's.
-     *
-     * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function showForms(Forms $formService, ResponseFactory $response)
-    {
-        return $response->json(
-            $formService->all()
-        )->setStatusCode(200);
-        // dump($response->json());
-        // dump($formService->find(function ($query) {
-        //     $query->where('name', 'LIKE', '短信设置/%');
-        // }));
-
-        // $form = new FormCreate('短信设置', '阿里大于');
-        // $form->type(FormCreate::TYPE_FORM);
-        // $form->save('https://github.com');
-        // $form->data('https://baidu.com');
-        // $form->addChildren([
-        //     'name' => 'ak',
-        //     'type' => 'text',
-        //     'display' => 'APP KEY',
-        // ]);
-        // $form->addChildren([
-        //     'name' => 'as',
-        //     'type' => 'text',
-        //     'display' => 'APP SECRET',
-        // ]);
-        // $form->addChildren([
-        //     'name' => 'sign_name',
-        //     'type' => 'text',
-        //     'display' => '签名名称',
-        // ]);
-        // $form->addChildren([
-        //     'name' => 'template',
-        //     'type' => 'text',
-        //     'display' => '模板ID',
-        // ]);
-        // $form->saveToDatabase();
-    }
 
     /**
      * Get the website info.

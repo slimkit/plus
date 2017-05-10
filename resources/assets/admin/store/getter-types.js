@@ -25,6 +25,3 @@ export const SETTINGS_AREA = 'settings/area';
 
 // Users.
 export const USERS = 'user/GET-LIST';
-
-// forms
-export const FORM_ALL = 'forms/ALL';

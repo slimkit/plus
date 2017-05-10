@@ -83,9 +83,6 @@ var SETTINGS_AREA_DELETE = exports.SETTINGS_AREA_DELETE = 'settings/area/DELETE'
 // Defined [users/]
 var USERS_CHANGE = exports.USERS_CHANGE = 'users/CHANGE';
 
-// forms
-var FORM_SET = exports.FORM_SET = 'forms/SET';
-
 /***/ }),
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -124,9 +121,6 @@ var SETTINGS_AREA = exports.SETTINGS_AREA = 'settings/area';
 // Users.
 var USERS = exports.USERS = 'user/GET-LIST';
 
-// forms
-var FORM_ALL = exports.FORM_ALL = 'forms/ALL';
-
 /***/ }),
 /* 8 */,
 /* 9 */,
@@ -162,11 +156,9 @@ var _area = __webpack_require__(69);
 
 var _area2 = _interopRequireDefault(_area);
 
-var _forms = __webpack_require__(70);
-
-var _forms2 = _interopRequireDefault(_forms);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_vue2.default.use(_vuex2.default);
 
 // modules.
 // The file is store.
@@ -175,13 +167,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // @homepage http://medz.cn
 // ---------------------------------------
 
-_vue2.default.use(_vuex2.default);
-
 var modules = {
   user: _user2.default,
   site: _site2.default,
-  area: _area2.default,
-  forms: _forms2.default
+  area: _area2.default
 };
 
 var store = new _vuex2.default.Store({
@@ -313,13 +302,7 @@ module.exports = {"checkboxAndRadioInput":"_3_PJzR8yknYsK4O4paifqR_0"};
 module.exports = {"container":"lWxMHASIe22tHRzHw5Jrt_0","loadding":"_24gnTDmaU_22fnRx6b_rdh_0","loaddingIcon":"_1XxUsqzTSJmFcRgogAR05X_0"};
 
 /***/ }),
-/* 21 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"nav":"_3Y31S1z3C63LCCts4A4cjC_0","checkboxAndRadioInput":"_2Iu8ZBde__z6b0WJ-dcuBo_0"};
-
-/***/ }),
+/* 21 */,
 /* 22 */
 /***/ (function(module, exports) {
 
@@ -409,17 +392,15 @@ var _Component = __webpack_require__(84);
 
 var _Component2 = _interopRequireDefault(_Component);
 
-var _VendorComponent = __webpack_require__(90);
-
-var _VendorComponent2 = _interopRequireDefault(_VendorComponent);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_vue2.default.use(_vueRouter2.default);
 
 // components.
 
 
 // routes.
-_vue2.default.use(_vueRouter2.default);
+
 
 var router = new _vueRouter2.default({
   mode: 'hash',
@@ -432,7 +413,7 @@ var router = new _vueRouter2.default({
     // root.
     { path: '', redirect: '/setting/base' },
     // Setting router.
-    _setting2.default, _user2.default, { path: 'component/:component(.*)', component: _Component2.default }, { path: 'vendor/:root/:children?', component: _VendorComponent2.default }]
+    _setting2.default, _user2.default, { path: 'component/:component(.*)', component: _Component2.default }]
   }, { path: '/login', component: _Login2.default, beforeEnter: _auth.loggedAuth }]
 });
 
@@ -656,11 +637,7 @@ var _vuex = __webpack_require__(8);
 
 var _request = __webpack_require__(2);
 
-var _request2 = _interopRequireDefault(_request);
-
 var _getterTypes = __webpack_require__(7);
-
-var _types = __webpack_require__(6);
 
 var _defaultAvatar = __webpack_require__(100);
 
@@ -704,16 +681,6 @@ var home = {
   components: {
     'system-nav': _Nav2.default,
     'default-avatar': _defaultAvatar2.default
-  },
-  created: function created() {
-    this.$store.dispatch(_types.FORM_SET, function (cb) {
-      return _request2.default.get((0, _request.createRequestURI)('forms'), { validateStatus: function validateStatus(status) {
-          return status === 200;
-        } }).then(function (_ref2) {
-        var data = _ref2.data;
-        return cb(data);
-      }).catch();
-    });
   }
 };
 
@@ -813,8 +780,6 @@ exports.default = login;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //
 //
 //
 //
@@ -874,23 +839,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-
-var _vuex = __webpack_require__(8);
-
-var _lodash = __webpack_require__(4);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-var _getterTypes = __webpack_require__(7);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var menus = window.TS.menus || {};
 var nav = {
@@ -898,219 +846,13 @@ var nav = {
     return {
       menus: menus
     };
-  },
-  computed: _extends({}, (0, _vuex.mapGetters)({
-    forms: _getterTypes.FORM_ALL
-  }), {
-    vendorMenus: function vendorMenus() {
-      return _lodash2.default.reduce(_lodash2.default.keys(this.forms), function (forms, name) {
-        if (name != '系统' || name != '用户') {
-          forms.push(name);
-        }
-
-        return forms;
-      }, []);
-    }
-  }),
-  created: function created() {
-    console.log(this);
   }
 };
 
 exports.default = nav;
 
 /***/ }),
-/* 56 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-var _lodash = __webpack_require__(4);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-var _vuex = __webpack_require__(8);
-
-var _getterTypes = __webpack_require__(7);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var VendorComponent = {
-  data: function data() {
-    return {
-      loadding: false,
-      error: null,
-      message: null
-    };
-  },
-  computed: _extends({}, (0, _vuex.mapGetters)({
-    forms: _getterTypes.FORM_ALL
-  }), {
-    root: function root() {
-      return this.$route.params.root;
-    },
-    children: function children() {
-      var children = this.$route.params.children;
-
-
-      if (!children) {
-        var _munes = _slicedToArray(this.munes, 1),
-            last = _munes[0];
-
-        return last;
-      }
-
-      return children;
-    },
-    munes: function munes() {
-      var _forms$root = this.forms[this.root],
-          items = _forms$root === undefined ? {} : _forms$root;
-
-      return _lodash2.default.keys(items);
-    },
-    currentData: function currentData() {
-      var _forms$root2 = this.forms[this.root];
-      _forms$root2 = _forms$root2 === undefined ? {} : _forms$root2;
-      var _forms$root2$children = _forms$root2[this.children],
-          form = _forms$root2$children === undefined ? {} : _forms$root2$children;
-
-
-      return form;
-    },
-    type: function type() {
-      var type = this.currentData.type;
-
-
-      return type;
-    },
-    data: function data() {
-      var data = this.currentData.data;
-
-
-      return data;
-    },
-    save: function save() {
-      var save = this.currentData.save;
-
-
-      return save;
-    },
-    inputs: function inputs() {
-      var _currentData$form = this.currentData.form,
-          form = _currentData$form === undefined ? [] : _currentData$form;
-
-
-      var inputs = [];
-
-      _lodash2.default.forEach(form, function (input) {
-        var display = input.display,
-            name = input.name,
-            type = input.type,
-            tip = input.tip,
-            items = input.items,
-            options = _objectWithoutProperties(input, ['display', 'name', 'type', 'tip', 'items']);
-
-        inputs.push({
-          display: display, name: name, type: type, tip: tip, items: items, options: options
-        });
-      });
-
-      return inputs;
-    }
-  }),
-  created: function created() {
-    // console.log(this.$store);
-  }
-};
-
-exports.default = VendorComponent;
-
-/***/ }),
+/* 56 */,
 /* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3697,82 +3439,7 @@ var areaStore = {
 exports.default = areaStore;
 
 /***/ }),
-/* 70 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var _getterTypes = __webpack_require__(7);
-
-var _types = __webpack_require__(6);
-
-var _lodash = __webpack_require__(4);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; } /**
-                                                                                                                                                                                                                   * Admin form's store.
-                                                                                                                                                                                                                   */
-
-
-var state = {
-  forms: {}
-};
-
-var mutations = _defineProperty({}, _types.FORM_SET, function (state, forms) {
-  state.forms = forms;
-});
-
-var getters = _defineProperty({}, _getterTypes.FORM_ALL, function (state) {
-  return state.forms;
-});
-
-var actions = _defineProperty({}, _types.FORM_SET, function (context, cb) {
-  return cb(function (forms) {
-    // context.commit(SETTINGS_AREA_APPEND, item)
-    var newForms = {};
-    _lodash2.default.forEach(forms, function (item) {
-      var data = item.data,
-          form = item.form,
-          name = item.name,
-          save = item.save,
-          type = item.type;
-
-      var _name$split = name.split('/'),
-          _name$split2 = _slicedToArray(_name$split, 2),
-          rootName = _name$split2[0],
-          childrenName = _name$split2[1];
-
-      if (!newForms[rootName]) {
-        newForms[rootName] = {};
-      }
-
-      newForms[rootName][childrenName] = {
-        data: data, form: form, save: save, type: type
-      };
-
-      context.commit(_types.FORM_SET, newForms);
-    });
-  }, context);
-});
-
-exports.default = {
-  actions: actions,
-  state: state,
-  getters: getters,
-  mutations: mutations
-};
-
-/***/ }),
+/* 70 */,
 /* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4272,65 +3939,7 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)(module)))
 
 /***/ }),
-/* 90 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(module) {var disposed = false
-var cssModules = {}
-module.hot && module.hot.accept(["!!../../../../node_modules/extract-text-webpack-plugin/loader.js?{\"omit\":1,\"remove\":true}!vue-style-loader!css-loader?{\"minimize\":false,\"sourceMap\":true,\"localIdentName\":\"[hash:base64]_0\",\"modules\":true,\"importLoaders\":true}!../../../../node_modules/vue-loader/lib/style-compiler/index?{\"vue\":true,\"id\":\"data-v-6497075d\",\"scoped\":false,\"hasInlineConfig\":false}!../../../../node_modules/vue-loader/lib/selector?type=styles&index=0!./VendorComponent.vue"], function () {
-  var oldLocals = cssModules["$style"]
-  if (!oldLocals) return
-  var newLocals = __webpack_require__(21)
-  if (JSON.stringify(newLocals) === JSON.stringify(oldLocals)) return
-  cssModules["$style"] = newLocals
-  __webpack_require__(5).rerender("data-v-6497075d")
-})
-function injectStyle (ssrContext) {
-  if (disposed) return
-  cssModules["$style"] = __webpack_require__(21)
-Object.defineProperty(this, "$style", { get: function () { return cssModules["$style"] }})
-}
-var Component = __webpack_require__(0)(
-  /* script */
-  __webpack_require__(56),
-  /* template */
-  __webpack_require__(107),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/usr/local/var/www/thinksns-plus/resources/assets/admin/component/VendorComponent.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] VendorComponent.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6497075d", Component.options)
-  } else {
-    if (module.hot.data.cssModules && Object.keys(module.hot.data.cssModules) !== Object.keys(cssModules)) {
-      delete Component.options._Ctor
-    }
-    hotAPI.reload("data-v-6497075d", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    data.cssModules = cssModules
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)(module)))
-
-/***/ }),
+/* 90 */,
 /* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5685,14 +5294,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "src": icon
       }
     }), _vm._v("\n    " + _vm._s(name) + "\n  ")])
-  }), _vm._v(" "), _vm._l((_vm.vendorMenus), function(rootName) {
-    return _c('router-link', {
-      key: rootName,
-      staticClass: "list-group-item __button",
-      attrs: {
-        "to": '/vendor/' + rootName
-      }
-    }, [_vm._v("\n    " + _vm._s(rootName) + "\n  ")])
   })], 2)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
@@ -5704,115 +5305,7 @@ if (false) {
 }
 
 /***/ }),
-/* 107 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('ul', {
-    staticClass: "nav nav-tabs",
-    class: _vm.$style.nav
-  }, _vm._l((_vm.munes), function(name) {
-    return _c('router-link', {
-      key: name,
-      class: name === _vm.children ? 'active' : null,
-      attrs: {
-        "tag": "li",
-        "to": ("/vendor/" + _vm.root + "/" + name)
-      }
-    }, [_c('a', {
-      attrs: {
-        "href": "#"
-      }
-    }, [_vm._v(_vm._s(name))])])
-  })), _vm._v(" "), _c('div', {
-    staticClass: "component-container container-fluid form-horizontal"
-  }, [_vm._l((_vm.inputs), function(ref) {
-    var type = ref.type;
-    var display = ref.display;
-    var name = ref.name;
-    var tip = ref.tip;
-    var items = ref.items;
-    var options = ref.options;
-
-    return _c('div', {
-      key: ("/" + _vm.root + "/" + _vm.children + "/" + name),
-      staticClass: "form-group"
-    }, [_c('label', {
-      staticClass: "col-sm-2 control-label",
-      attrs: {
-        "for": (_vm.root + "-" + _vm.children + "-" + name)
-      }
-    }, [_vm._v(_vm._s(display))]), _vm._v(" "), _c('div', {
-      staticClass: "col-sm-6",
-      class: type
-    }, [(type === 'text') ? _c('input', _vm._b({
-      staticClass: "form-control",
-      attrs: {
-        "type": "text",
-        "name": name,
-        "id": (_vm.root + "-" + _vm.children + "-" + name),
-        "ariaDescribedby": (_vm.root + "-" + _vm.children + "-" + name + "-help-block")
-      }
-    }, 'input', options)) : _vm._e(), _vm._v(" "), (type === 'password') ? _c('input', _vm._b({
-      staticClass: "form-control",
-      attrs: {
-        "type": "password",
-        "name": name,
-        "id": (_vm.root + "-" + _vm.children + "-" + name),
-        "ariaDescribedby": (_vm.root + "-" + _vm.children + "-" + name + "-help-block")
-      }
-    }, 'input', options)) : (type === 'checkbox') ? _vm._l((items), function(display_name, value) {
-      return _c('label', {
-        key: ("/" + _vm.root + "/" + _vm.children + "/" + name),
-        class: _vm.$style.checkboxAndRadioInput
-      }, [_c('input', _vm._b({
-        attrs: {
-          "type": "checkbox",
-          "name": name,
-          "id": ("engine-option-" + _vm.selected + "-" + name),
-          ":ariaDescribedby": (_vm.root + "-" + _vm.children + "-" + name + "-help-block")
-        }
-      }, 'input', options)), _vm._v(" " + _vm._s(display_name) + "\n          ")])
-    }) : (type === 'radio') ? _vm._l((items), function(display_name, value) {
-      return _c('label', {
-        key: ("/" + _vm.root + "/" + _vm.children + "/" + name),
-        class: _vm.$style.checkboxAndRadioInput
-      }, [_c('input', _vm._b({
-        attrs: {
-          "type": "radio",
-          "name": name,
-          "id": (_vm.root + "-" + _vm.children + "-" + name),
-          "ariaDescribedby": "`${root}-${children}-${name}-help-block`"
-        }
-      }, 'input', options)), _vm._v(" " + _vm._s(display_name) + "\n          ")])
-    }) : _vm._e()], 2), _vm._v(" "), _c('span', {
-      staticClass: "col-sm-4 help-block",
-      attrs: {
-        "id": (_vm.root + "-" + _vm.children + "-" + name + "-help-block")
-      }
-    }, [_vm._v(_vm._s(tip))])])
-  }), _vm._v(" "), _vm._m(0)], 2)])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "form-group"
-  }, [_c('div', {
-    staticClass: "col-sm-offset-2 col-sm-10"
-  }, [_c('button', {
-    staticClass: "btn btn-primary",
-    attrs: {
-      "type": "button"
-    }
-  }, [_vm._v("提交")])])])
-}]}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-6497075d", module.exports)
-  }
-}
-
-/***/ }),
+/* 107 */,
 /* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
