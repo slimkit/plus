@@ -10,7 +10,7 @@ use Zhiyi\Plus\Http\Middleware\VerifyPhoneNumber;
 class VerifyPhoneNumberTest extends TestCase
 {
     /**
-     * test verify phone number.
+     * test verify phone number with empty.
      *
      * @author bs<414606094@qq.com>
      */
@@ -33,4 +33,28 @@ class VerifyPhoneNumberTest extends TestCase
 
         $response->assertStatus(403);
     }
+
+    /**
+     *
+     * @author bs<414606094@qq.com>
+     */
+    public function testWrongNumber()
+    {
+        $request = $this->getMockBuilder(Request::class)
+            ->setMethods(['all'])
+            ->getMock();
+
+        $request->expects($this->any())
+            ->method('all')
+            ->willReturn([
+                'phone' => '11111111111',
+            ]);
+
+        $response = TestResponse::fromBaseResponse(
+            with(new VerifyPhoneNumber())->handle($request, function () {
+            })
+        );
+
+        $response->assertStatus(403);
+    }    
 }
