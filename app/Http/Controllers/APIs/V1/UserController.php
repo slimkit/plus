@@ -219,7 +219,7 @@ class UserController extends Controller
             $diggs = Digg::where('to_user_id', $uid)->where('user_id', '!=', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->get();
 
             $digg_return['key'] = 'diggs';
-            $digg_return['uids'] = implode(',', $diggs->pluck('user_id')->toArray());
+            $digg_return['uids'] = $diggs->pluck('user_id')->toArray();
             $digg_return['count'] = $diggs->count();
             $digg_return['time'] = $diggs->count() > 0 ? $diggs->toArray()[0]['created_at'] : Carbon::now()->toDateTimeString();
             $digg_return['max_id'] = $diggs->count() > 0 ? $diggs->toArray()[0]['id'] : 0;
@@ -230,7 +230,7 @@ class UserController extends Controller
             $follows = Following::where('following_user_id', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->get();
 
             $follow_return['key'] = 'follows';
-            $follow_return['uids'] = implode(',', $follows->pluck('user_id')->toArray());
+            $follow_return['uids'] = $follows->pluck('user_id')->toArray();
             $follow_return['count'] = $follows->count();
             $follow_return['time'] = $follows->count() > 0 ? $follows->toArray()[0]['created_at'] : Carbon::now()->toDateTimeString();
             $follow_return['max_id'] = $follows->count() > 0 ? $follows->toArray()[0]['id'] : 0;
@@ -247,7 +247,7 @@ class UserController extends Controller
             ->get();
 
             $comment_return['key'] = 'comments';
-            $comment_return['uids'] = implode(',', $comments->pluck('user_id')->toArray());
+            $comment_return['uids'] = $comments->pluck('user_id')->toArray();
             $comment_return['count'] = $comments->count();
             $comment_return['time'] = $comments->count() > 0 ? $comments->toArray()[0]['created_at'] : Carbon::now()->toDateTimeString();
             $comment_return['max_id'] = $comments->count() > 0 ? $comments->toArray()[0]['id'] : 0;
