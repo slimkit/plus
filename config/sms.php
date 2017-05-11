@@ -7,7 +7,7 @@ return [
     | SMS Driver
     |--------------------------------------------------------------------------
     |
-    | ThinkSNS + through the PHP design SMS send function as a driver to send 
+    | ThinkSNS + through the PHP design SMS send function as a driver to send
     | text messages. Your program uses "testing" to send text messages by default.
     |
     | Supported: "testing",
@@ -39,5 +39,5 @@ return [
             'sign_name' => null,
             'verify_template_id' => null,
         ],
-    ]
+    ],
 ];
