@@ -23,21 +23,45 @@ class Message
             ->setData($data);
     }
 
+    /**
+     * Get phone.
+     *
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function getPhone()
     {
         return $phone;
     }
 
+    /**
+     * Get message.
+     *
+     * @return string
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function getMessage(): string
     {
         return $this->message;
     }
 
+    /**
+     * Get data.
+     *
+     * @return array
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function getData(): array
     {
         return $this->data;
     }
 
+    /**
+     * Set phone
+     *
+     * @param mixed $phone
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function setPhone($phone): self
     {
         $this->phone = $phone;
@@ -45,6 +69,12 @@ class Message
         return $this;
     }
 
+    /**
+     * Set message.
+     *
+     * @param string $message
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function setMessage(string $message): self
     {
         $this->message = $message;
@@ -52,6 +82,12 @@ class Message
         return $this;
     }
 
+    /**
+     * Set data.
+     *
+     * @param array $data
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function setData(array $data): self
     {
         $this->data = $data;
