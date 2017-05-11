@@ -4,6 +4,7 @@ namespace Zhiyi\Plus\Support;
 
 use Illuminate\Config\Repository;
 use Symfony\Component\Yaml\Parser;
+use Symfony\Component\Yaml\Dumper;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Config\Repository as RepositoryContract;
@@ -13,6 +14,12 @@ class Configuration
     protected $app;
     protected $files;
 
+    /**
+     * Create basic information.
+     *
+     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function __construct(Application $app)
     {
         $this->app = $app;
@@ -28,7 +35,7 @@ class Configuration
     public function getConfiguration(): RepositoryContract
     {
         $items = [];
-        if ($this->files->exists($file = $this->app->vendorEnvironmentYamlFilePath())) {
+        if ($this->files->exists($file = $this->app->vendorYamlFilePath())) {
             $items = $this->app->make(Parser::class)->parse(
                 $this->files->get($file)
             ) ?: $items;
@@ -50,6 +57,61 @@ class Configuration
         );
     }
 
+    /**
+     * Set configuration save to file.
+     *
+     * @param array|string $key
+     * @param mixed $value
+     * @return \Illuminate\Contracts\Config\Repository
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function set($key, $value = null): RepositoryContract
+    {
+        $config = $this->getConfiguration()
+            ->set($key, $value);
+
+        // Perform the configuration save operation.
+        $this->save($config);
+
+        return $config;
+    }
+
+    /**
+     * Save the custom configuration into the YAML file.
+     *
+     * @param RepositoryContract $config
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function save(RepositoryContract $config): bool
+    {
+        // Created if the target directory does not exist.
+        // 
+        // This is useful in custom configuration file storage,
+        // and you can avoid the direct save of the error.
+        $target = dirname($this->app->vendorYamlFilePath());
+        if (! $this->files->isDirectory($target)) {
+            $this->files->makeDirectory($target, 0755, true);
+        }
+
+        // Save the configuration into the YAML file.
+        $this->files->put(
+            $this->app->vendorYamlFilePath(),
+            $this->app->make(Dumper::class)->dump(
+                $config->all()
+            )
+        );
+    }
+
+    /**
+     * Converts a multidimensional array to a basic array of point divisions.
+     *
+     * @param array $target 目标数组
+     * @param string $pre 数组前缀
+     * @param array $org 原始数组
+     * @return array
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     protected function parse(array $target, string $pre = '', array $org = []): array
     {
         if (! is_array($target)) {
