@@ -8,7 +8,15 @@ class Message
     protected $message;
     protected $data = [];
 
-    public function __construct($phone = null, string $message = '', arrat $data = [])
+    /**
+     * 构造创建消息.
+     *
+     * @param mixed $phone
+     * @param string $message
+     * @param array $data
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function __construct($phone = null, string $message = '', array $data = [])
     {
         $this->setPhone($phone)
             ->setMessage($message)
