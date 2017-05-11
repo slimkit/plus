@@ -57,7 +57,7 @@ class Message
     }
 
     /**
-     * Set phone
+     * Set phone.
      *
      * @param mixed $phone
      * @author Seven Du <shiweidu@outlook.com>
