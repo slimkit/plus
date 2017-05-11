@@ -32,28 +32,28 @@ GET
   "data": [
     {
       "key": "diggs",
-      "uids": "1",
+      "uids": [1],
       "count": 1,
       "time": "2017-04-13 01:45:37",
       "max_id": 1
     },
     {
       "key": "follows",
-      "uids": "21,19",
+      "uids": [21,19],
       "count": 2,
       "time": "2017-04-12 07:09:33",
       "max_id": 2
     },
     {
       "key": "comments",
-      "uids": "",
+      "uids": [],
       "count": 0,
       "time": "2017-04-13 08:06:48",
       "max_id": 0
     },
     {
       "key": "notices",
-      "uids": "",
+      "uids": [],
       "count": 0,
       "time": "2017-04-13 08:06:48",
       "max_id": 0
