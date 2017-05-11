@@ -30,7 +30,7 @@ class Configuration
         $items = [];
         if ($this->files->exists($file = $this->app->vendorEnvironmentYamlFilePath())) {
             $items = $this->app->make(Parser::class)->parse(
-                $this->files->get($file);
+                $this->files->get($file)
             ) ?: $items;
         }
 
