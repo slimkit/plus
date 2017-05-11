@@ -12,5 +12,13 @@ interface DirverInterface
      */
     public function setConfig(array $config);
 
-    public function send($phone, array $data = [])
+    /**
+     * Send handle.
+     *
+     * @param mixed $phone
+     * @param \Zhiyi\Plus\Services\SMS\Message $message
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function send($phone, Message $message);
 }
