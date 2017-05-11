@@ -8,7 +8,7 @@ use Illuminate\Foundation\Application as LaravelApplication;
 
 class Application extends LaravelApplication
 {
-    protected $vendorEnvironmentYamlFile;
+    protected $vendorYamlFile;
 
     /**
      * Create a new Illuminate application instance.
@@ -34,9 +34,9 @@ class Application extends LaravelApplication
      * @return $this
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function loadVendorEnvironmentYamlFrom(string $file): self
+    public function loadVendorYamlFrom(string $file): self
     {
-        $this->vendorEnvironmentYamlFile = $file;
+        $this->vendorYamlFile = $file;
     }
 
     /**
@@ -45,9 +45,9 @@ class Application extends LaravelApplication
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function vendorEnvironmentYamlFile(): string
+    public function vendorYamlFile(): string
     {
-        return $this->vendorEnvironmentYamlFile ?: '.plus.yml';
+        return $this->vendorYamlFile ?: '.plus.yml';
     }
 
     /**
@@ -56,9 +56,9 @@ class Application extends LaravelApplication
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function vendorEnvironmentYamlFilePath(): string
+    public function vendorYamlFilePath(): string
     {
-        return $this->environmentPath().DIRECTORY_SEPARATOR.$this->vendorEnvironmentYamlFile();
+        return $this->environmentPath().DIRECTORY_SEPARATOR.$this->vendorYamlFile();
     }
 
     /**
