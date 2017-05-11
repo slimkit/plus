@@ -3,8 +3,8 @@
 namespace Zhiyi\Plus\Support;
 
 use Illuminate\Config\Repository;
-use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Dumper;
+use Symfony\Component\Yaml\Parser;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Config\Repository as RepositoryContract;
@@ -86,7 +86,7 @@ class Configuration
     public function save(RepositoryContract $config): bool
     {
         // Created if the target directory does not exist.
-        // 
+        //
         // This is useful in custom configuration file storage,
         // and you can avoid the direct save of the error.
         $target = dirname($this->app->vendorYamlFilePath());
