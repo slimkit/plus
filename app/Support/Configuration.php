@@ -19,15 +19,22 @@ class Configuration
         $this->files = new Filesystem();
     }
 
+    /**
+     * Get vendor configuration.
+     *
+     * @return \Illuminate\Contracts\Config\Repository
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function getConfiguration(): RepositoryContract
     {
-        if (! $this->files->exists($file = $this->app->vendorEnvironmentYamlFilePath())) {
-            return [];
+        $items = [];
+        if ($this->files->exists($file = $this->app->vendorEnvironmentYamlFilePath())) {
+            $items = $this->app->make(Parser::class)->parse(
+                $this->files->get($file);
+            ) ?: $items;
         }
 
-        return new Repository($this->app->make(Parser::class)->parse(
-            $this->files->get($file)
-        ));
+        return new Repository($items);
     }
 
     public function getConfigurationBase(): array
