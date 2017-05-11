@@ -4,14 +4,14 @@ namespace Zhiyi\Plus\Unit\Middleware\Auth;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\User;
 use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Zhiyi\Plus\Http\Middleware\VerifyPhoneCode;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class VerifyPhoneCodeTest extends TestCase
 {
     use DatabaseTransactions;
+
     /**
      * test verify phone without code exited.
      *
