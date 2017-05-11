@@ -48,13 +48,12 @@ class ChangeUserCover
     protected function storageTaskExiste($storage_task_id, Request $request, Closure $next)
     {
         $task = StorageTask::find($storage_task_id);
-        $task->load('storage');
         if (! $task) {
             return response()->json(static::createJsonData([
                 'code' => 2000,
             ]))->setStatusCode(403);
         }
-
+        $task->load('storage');
         $user = $request->user();
 
         // 开启事务.
