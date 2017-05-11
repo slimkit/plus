@@ -264,7 +264,7 @@ class UserController extends Controller
             ->get();
 
             $notice_return['key'] = 'notices';
-            $notice_return['uids'] = '';
+            $notice_return['uids'] = [];
             $notice_return['count'] = $notices->count();
             $notice_return['time'] = $notices->count() > 0 ? $notices->toArray()[0]['created_at'] : Carbon::now()->toDateTimeString();
             $notice_return['max_id'] = $notices->count() > 0 ? $notices->toArray()[0]['id'] : 0;
