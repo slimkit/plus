@@ -2,9 +2,9 @@
 
 namespace Zhiyi\Plus\Unit\Middleware\User;
 
+use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\StorageTask;
 use Zhiyi\Plus\Models\UserProfileSetting;
 use Illuminate\Foundation\Testing\TestResponse;
@@ -83,7 +83,7 @@ class ChangeUserCoverTest extends TestCase
      */
     public function testEmptyStorage()
     {
-       $storageTask = factory(StorageTask::class)->create();
+        $storageTask = factory(StorageTask::class)->create();
         $user = factory(User::class)->create();
         $request = $this->getMockBuilder(Request::class)
             ->setMethods(['input', 'user'])
@@ -104,6 +104,6 @@ class ChangeUserCoverTest extends TestCase
             })
         );
 
-        $response->assertStatus(404); 
+        $response->assertStatus(404);
     }
 }
