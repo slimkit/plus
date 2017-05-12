@@ -16,7 +16,7 @@
               <li><a href="#">发送失败</a></li>
             </ul>
           </div>
-          <input type="text" class="form-control" aria-label="input-group-btn" placeholder="输入要搜索的手机号码">
+          <input type="text" class="form-control" aria-label="input-group-btn" placeholder="输入要搜索的手机号码" v-model="search.keyword">
           <div class="input-group-btn">
             <button class="btn btn-primary" type="submit">搜索</button>
           </div>
@@ -44,3 +44,16 @@
     </div>
   </div>
 </template>
+
+<script>
+const SmsMainComponent = {
+  data: () => ({
+    search: {
+      state: -1,
+      keyword: '',
+    }
+  })
+};
+
+export default SmsMainComponent;
+</script>
