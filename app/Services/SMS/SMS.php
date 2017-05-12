@@ -3,10 +3,10 @@
 namespace Zhiyi\Plus\Services\SMS;
 
 use RuntimeException;
-use Zhiyi\Plus\Jobs\SendSmsMessage;
 use Zhiyi\Plus\Models\VerifyCode;
-use Illuminate\Contracts\Foundation\Application;
+use Zhiyi\Plus\Jobs\SendSmsMessage;
 use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Contracts\Foundation\Application;
 
 class SMS
 {
@@ -29,7 +29,7 @@ class SMS
     }
 
     /**
-     * Dispatch a job to its appropriate handler. 
+     * Dispatch a job to its appropriate handler.
      *
      * @param \Zhiyi\Plus\Models\VerifyCode $verify
      * @return void

@@ -4,13 +4,13 @@ namespace Zhiyi\Plus\Jobs;
 
 use Exception;
 use Illuminate\Bus\Queueable;
+use Zhiyi\Plus\Models\VerifyCode;
+use Zhiyi\Plus\Services\SMS\Message;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Zhiyi\Plus\Services\SMS\DirverInterface;
-use Zhiyi\Plus\Services\SMS\Message;
-use Zhiyi\Plus\Models\VerifyCode;
 
 class SendSmsMessage implements ShouldQueue
 {
@@ -27,7 +27,7 @@ class SendSmsMessage implements ShouldQueue
     public $timeout = 30;
 
     /**
-     * 任务最大尝试次数
+     * 任务最大尝试次数.
      *
      * @var int
      */
