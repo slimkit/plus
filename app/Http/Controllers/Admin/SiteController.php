@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\CommonConfig;
 use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Config\Repository;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Zhiyi\Plus\Support\Configuration;
 
 class SiteController extends Controller
 {
@@ -20,6 +24,19 @@ class SiteController extends Controller
      */
     protected $commonCinfigModel;
 
+    protected $app;
+
+    /**
+     * Construct handle.
+     *
+     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
+    }
+
     /**
      * Get the website info.
      *
@@ -28,7 +45,7 @@ class SiteController extends Controller
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function get(Request $request)
+    public function get(Request $request, Repository $config, ResponseFactory $response)
     {
         if (! $request->user()->can('admin:site:base')) {
             return response()->json([
@@ -36,16 +53,28 @@ class SiteController extends Controller
             ])->setStatusCode(403);
         }
 
-        $sites = $this->newCommonConfigModel()
-            ->byNamespace('site')
-            ->whereIn('name', ['title', 'keywords', 'description', 'icp'])
-            ->get();
+        $name = $config->get('app.name', 'ThinkSNS+');
+        $keywords = $config->get('app.keywords');
+        $description = $config->get('app.description');
+        $icp = $config->get('app.description');
 
-        $sites = $sites->mapWithKeys(function ($item) {
-            return [$item['name'] => $item['value']];
-        });
+        return $response->json([
+            'name' => $name,
+            'keywords' => $keywords,
+            'description' => $description,
+            'icp' => $icp,
+        ])->setStatusCode(200);
 
-        return response()->json($sites)->setStatusCode(200);
+        // $sites = $this->newCommonConfigModel()
+        //     ->byNamespace('site')
+        //     ->whereIn('name', ['title', 'keywords', 'description', 'icp'])
+        //     ->get();
+
+        // $sites = $sites->mapWithKeys(function ($item) {
+        //     return [$item['name'] => $item['value']];
+        // });
+
+        // return response()->json($sites)->setStatusCode(200);
     }
 
     /**
@@ -58,7 +87,7 @@ class SiteController extends Controller
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function updateSiteInfo(Request $request)
+    public function updateSiteInfo(Request $request, Configuration $config, ResponseFactory $response)
     {
         if (! $request->user()->can('admin:site:base')) {
             return response()->json([
@@ -66,42 +95,52 @@ class SiteController extends Controller
             ])->setStatusCode(403);
         }
 
-        $keys = ['title', 'keywords', 'description', 'icp'];
-        $requestSites = array_filter($request->only($keys));
+        $keys = ['name', 'keywords', 'description', 'icp'];
+        // $requestSites = array_filter($request->only($keys));
 
-        $sites = $this->newCommonConfigModel()
-            ->byNamespace('site')
-            ->whereIn('name', $keys)
-            ->get()
-            ->keyBy('name');
+        $site = [];
+        foreach (array_filter($request->only($keys)) as $key => $value) {
+            $site['app.'.$key] = $value;
+        }
+        $config->set($site);
 
-        $callback = function () use ($sites, $requestSites) {
-            foreach ($requestSites as $name => $value) {
-                $model = $sites[$name] ?? false;
-                if (! $model) {
-                    $model = new CommonConfig();
-                    $model->namespace = 'site';
-                    $model->name = $name;
-                    $model->value = $value;
-                    $model->save();
-                    continue;
-                }
+        return $response->json([
+            'message' => '更新成功',
+        ])->setStatusCode(201);
 
-                $this->newCommonConfigModel()
-                    ->byNamespace('site')
-                    ->byName($name)
-                    ->update([
-                        'value' => $value,
-                    ]);
-            }
+        // $sites = $this->newCommonConfigModel()
+        //     ->byNamespace('site')
+        //     ->whereIn('name', $keys)
+        //     ->get()
+        //     ->keyBy('name');
 
-            return response()->json([
-                'message' => '更新成功',
-            ])->setStatusCode(201);
-        };
-        $callback->bindTo($this);
+        // $callback = function () use ($sites, $requestSites) {
+        //     foreach ($requestSites as $name => $value) {
+        //         $model = $sites[$name] ?? false;
+        //         if (! $model) {
+        //             $model = new CommonConfig();
+        //             $model->namespace = 'site';
+        //             $model->name = $name;
+        //             $model->value = $value;
+        //             $model->save();
+        //             continue;
+        //         }
 
-        return $this->dbTransaction($callback);
+        //         $this->newCommonConfigModel()
+        //             ->byNamespace('site')
+        //             ->byName($name)
+        //             ->update([
+        //                 'value' => $value,
+        //             ]);
+        //     }
+
+        //     return response()->json([
+        //         'message' => '更新成功',
+        //     ])->setStatusCode(201);
+        // };
+        // $callback->bindTo($this);
+
+        // return $this->dbTransaction($callback);
     }
 
     /**

@@ -24,7 +24,7 @@ const router = new VueRouter({
       beforeEnter: requireAuth,
       children: [
         // root.
-        { path: '', redirect: '/setting/base' },
+        { path: '', redirect: '/setting' },
         // Setting router.
         settingRouter,
         userRouter,

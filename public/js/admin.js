@@ -412,7 +412,7 @@ var router = new _vueRouter2.default({
     beforeEnter: _auth.requireAuth,
     children: [
     // root.
-    { path: '', redirect: '/setting/base' },
+    { path: '', redirect: '/setting' },
     // Setting router.
     _setting2.default, _user2.default, _sms2.default, { path: 'component/:component(.*)', component: _Component2.default }]
   }, { path: '/login', component: _Login2.default, beforeEnter: _auth.loggedAuth }]
@@ -1395,12 +1395,12 @@ var settingBase = {
     };
   },
   computed: {
-    title: {
+    name: {
       get: function get() {
-        return this.$store.state.site.title;
+        return this.$store.state.site.name;
       },
-      set: function set(title) {
-        this.$store.commit(_types.SETTINGS_SITE_UPDATE, { title: title });
+      set: function set(name) {
+        this.$store.commit(_types.SETTINGS_SITE_UPDATE, { name: name });
       }
     },
     keywords: {
@@ -1459,13 +1459,13 @@ var settingBase = {
     submit: function submit() {
       var _this2 = this;
 
-      var title = this.title,
+      var name = this.name,
           keywords = this.keywords,
           description = this.description,
           icp = this.icp;
 
       this.loadding = true;
-      _request2.default.patch((0, _request.createRequestURI)('site/baseinfo'), { title: title, keywords: keywords, description: description, icp: icp }, {
+      _request2.default.patch((0, _request.createRequestURI)('site/baseinfo'), { name: name, keywords: keywords, description: description, icp: icp }, {
         validateStatus: function validateStatus(status) {
           return status === 201;
         }
@@ -3472,7 +3472,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 // import { SETTINGS_SITE } from '../getter-types';
 
 var state = {
-  title: '',
+  name: '',
   keywords: '',
   description: '',
   icp: ''
@@ -6153,39 +6153,39 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('label', {
     staticClass: "col-sm-2 control-label",
     attrs: {
-      "for": "site-title"
+      "for": "site-name"
     }
-  }, [_vm._v("标题")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("应用名称")]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.title),
-      expression: "title"
+      value: (_vm.name),
+      expression: "name"
     }],
     staticClass: "form-control",
     attrs: {
       "type": "text",
-      "id": "site-title",
-      "aria-describedby": "site-title-help-block",
+      "id": "site-name",
+      "aria-describedby": "site-name-help-block",
       "placeholder": "输入网站标题"
     },
     domProps: {
-      "value": (_vm.title)
+      "value": (_vm.name)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.title = $event.target.value
+        _vm.name = $event.target.value
       }
     }
   })]), _vm._v(" "), _c('span', {
     staticClass: "col-sm-4 help-block",
     attrs: {
-      "id": "site-title-help-block"
+      "id": "site-name-help-block"
     }
-  }, [_vm._v("\n      网站标题，将在网页中显示在title的基本信息。也是搜索引擎为搜录做筛选标题的重要信息。\n    ")])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n      应用名称，将在网页中显示在title的基本信息。也是搜索引擎为搜录做筛选标题的重要信息。\n    ")])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     staticClass: "col-sm-2 control-label",

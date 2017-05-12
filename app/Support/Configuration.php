@@ -67,8 +67,8 @@ class Configuration
      */
     public function set($key, $value = null): RepositoryContract
     {
-        $config = $this->getConfiguration()
-            ->set($key, $value);
+        $config = $this->getConfiguration();
+        $config->set($key, $value);
 
         // Perform the configuration save operation.
         $this->save($config);
@@ -83,7 +83,7 @@ class Configuration
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function save(RepositoryContract $config): bool
+    public function save(RepositoryContract $config)
     {
         // Created if the target directory does not exist.
         //
@@ -97,9 +97,7 @@ class Configuration
         // Save the configuration into the YAML file.
         $this->files->put(
             $this->app->vendorYamlFilePath(),
-            $this->app->make(Dumper::class)->dump(
-                $config->all()
-            )
+            $this->app->make(Dumper::class)->dump($config->all(), 2)
         );
     }
 

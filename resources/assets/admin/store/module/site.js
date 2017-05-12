@@ -10,7 +10,7 @@ import {
 // import { SETTINGS_SITE } from '../getter-types';
 
 const state = {
-  title: '',
+  name: '',
   keywords: '',
   description: '',
   icp: ''

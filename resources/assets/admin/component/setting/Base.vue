@@ -13,17 +13,17 @@
 
 <template>
   <form class="form-horizontal" :class="$style.container" @submit.prevent="submit">
-    <!-- Site title. -->
+    <!-- Site name. -->
     <div class="form-group">
-      <label for="site-title" class="col-sm-2 control-label">标题</label>
+      <label for="site-name" class="col-sm-2 control-label">应用名称</label>
       <div class="col-sm-6">
-        <input type="text" class="form-control" id="site-title" aria-describedby="site-title-help-block" placeholder="输入网站标题" v-model="title">
+        <input type="text" class="form-control" id="site-name" aria-describedby="site-name-help-block" placeholder="输入网站标题" v-model="name">
       </div>
-      <span class="col-sm-4 help-block" id="site-title-help-block">
-        网站标题，将在网页中显示在title的基本信息。也是搜索引擎为搜录做筛选标题的重要信息。
+      <span class="col-sm-4 help-block" id="site-name-help-block">
+        应用名称，将在网页中显示在title的基本信息。也是搜索引擎为搜录做筛选标题的重要信息。
       </span>
     </div>
-    <!-- End site title. -->
+    <!-- End site name. -->
 
     <!-- Site keywords -->
     <div class="form-group">
@@ -87,12 +87,12 @@ const settingBase = {
     message: '提交'
   }),
   computed: {
-    title: {
+    name: {
       get () {
-        return this.$store.state.site.title;
+        return this.$store.state.site.name;
       },
-      set (title) {
-        this.$store.commit(SETTINGS_SITE_UPDATE, { title });
+      set (name) {
+        this.$store.commit(SETTINGS_SITE_UPDATE, { name });
       }
     },
     keywords: {
@@ -135,9 +135,9 @@ const settingBase = {
       });
     },
     submit () {
-      const { title, keywords, description, icp } = this;
+      const { name, keywords, description, icp } = this;
       this.loadding = true;
-      request.patch(createRequestURI('site/baseinfo'), { title, keywords, description, icp }, {
+      request.patch(createRequestURI('site/baseinfo'), { name, keywords, description, icp }, {
         validateStatus: status => status === 201
       }).then(() => {
         this.message = '执行成功';
