@@ -14,7 +14,7 @@ class SMS
      */
     protected static $aliases = [
         'testing' => \Zhiyi\Plus\Services\SMS\Driver\Testing::class,
-    ]
+    ];
 
     protected $app;
     protected $dirver;
