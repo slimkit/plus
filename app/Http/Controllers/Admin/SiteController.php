@@ -54,7 +54,7 @@ class SiteController extends Controller
         $name = $config->get('app.name', 'ThinkSNS+');
         $keywords = $config->get('app.keywords');
         $description = $config->get('app.description');
-        $icp = $config->get('app.description');
+        $icp = $config->get('app.icp');
 
         return $response->json([
             'name' => $name,
@@ -86,7 +86,7 @@ class SiteController extends Controller
         // $requestSites = array_filter($request->only($keys));
 
         $site = [];
-        foreach (array_filter($request->only($keys)) as $key => $value) {
+        foreach ($request->only($keys) as $key => $value) {
             $site['app.'.$key] = $value;
         }
         $config->set($site);
