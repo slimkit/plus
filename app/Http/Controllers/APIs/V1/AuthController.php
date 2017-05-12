@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\LoginRecord;
 use Zhiyi\Plus\Handler\SendMessage;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Services\SMS\SMS;
 
 class AuthController extends Controller
 {
@@ -29,9 +30,9 @@ class AuthController extends Controller
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function sendPhoneCode(Request $request)
+    public function sendPhoneCode(Request $request, SMS $sms)
     {
-        $vaildSecond = 1;
+        $vaildSecond = config('app.env') == 'production' ? 300 : 6;
         $phone = $request->input('phone');
         $verify = VerifyCode::byAccount($phone)->byValid($vaildSecond)->orderByDesc()->first();
 
@@ -49,10 +50,12 @@ class AuthController extends Controller
         $verify->makeVerifyCode();
         $verify->save();
 
-        $type = 'phone';
-        $message = new SendMessage($verify, $type);
+        $sms->send($verify);
 
-        return $message->send();
+        return response()->json(static::createJsonData([
+            'status' => true,
+            'message' => '获取成功',
+        ]))->setStatusCode(201);
     }
 
     /**
