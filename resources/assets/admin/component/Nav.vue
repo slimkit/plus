@@ -44,15 +44,15 @@
   <div class="list-group app-nav">
     <router-link class="list-group-item __button" to="/setting/base">
       <span class="glyphicon glyphicon-cog __icon"></span>
-      系统
+      系统设置
     </router-link>
     <router-link class="list-group-item __button" to="/users">
       <span class="glyphicon glyphicon-user __icon"></span>
-      用户
+      用户中心
     </router-link>
     <router-link class="list-group-item __button" to="/sms">
       <span class="glyphicon glyphicon-phone __icon"></span>
-      短信
+      短信设置
     </router-link>
     <router-link class="list-group-item __button" v-for="({ name, icon }, component) in menus" :key="component" :to="`/component/${component}`">
       <img class="__icon-img" :src="icon">

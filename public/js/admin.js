@@ -5273,21 +5273,21 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('span', {
     staticClass: "glyphicon glyphicon-cog __icon"
-  }), _vm._v("\n    系统\n  ")]), _vm._v(" "), _c('router-link', {
+  }), _vm._v("\n    系统设置\n  ")]), _vm._v(" "), _c('router-link', {
     staticClass: "list-group-item __button",
     attrs: {
       "to": "/users"
     }
   }, [_c('span', {
     staticClass: "glyphicon glyphicon-user __icon"
-  }), _vm._v("\n    用户\n  ")]), _vm._v(" "), _c('router-link', {
+  }), _vm._v("\n    用户中心\n  ")]), _vm._v(" "), _c('router-link', {
     staticClass: "list-group-item __button",
     attrs: {
       "to": "/sms"
     }
   }, [_c('span', {
     staticClass: "glyphicon glyphicon-phone __icon"
-  }), _vm._v("\n    短信\n  ")]), _vm._v(" "), _vm._l((_vm.menus), function(ref, component) {
+  }), _vm._v("\n    短信设置\n  ")]), _vm._v(" "), _vm._l((_vm.menus), function(ref, component) {
     var name = ref.name;
     var icon = ref.icon;
 
