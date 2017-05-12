@@ -14,5 +14,5 @@ class Testing implements DirverInterface
         $this->config = $config;
     }
 
-    public function send($phone, Message $message)
+    public function send($phone, Message $message);
 }
