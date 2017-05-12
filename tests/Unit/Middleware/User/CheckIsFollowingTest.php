@@ -2,11 +2,11 @@
 
 namespace Zhiyi\Plus\Unit\Middleware\Auth;
 
+use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\User;
-use Zhiyi\Plus\Http\Middleware\CheckIsFollowing;
 use Illuminate\Foundation\Testing\TestResponse;
+use Zhiyi\Plus\Http\Middleware\CheckIsFollowing;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CheckIsFollowingTest extends TestCase
