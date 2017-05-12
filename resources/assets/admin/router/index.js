@@ -5,6 +5,7 @@ import { requireAuth, loggedAuth } from '../util/auth';
 // routes.
 import settingRouter from './setting';
 import userRouter from './user';
+import smsRouter from './sms';
 
 // components.
 import Login from '../component/Login';
@@ -27,6 +28,7 @@ const router = new VueRouter({
         // Setting router.
         settingRouter,
         userRouter,
+        smsRouter,
         { path: 'component/:component(.*)', component: Component }
       ]
     },

@@ -6580,6 +6580,9 @@ th.visible-print,
        -o-animation-iteration-count: infinite;
           animation-iteration-count: infinite;
 }
+.component-controller-nav {
+  padding: 12px 12px 0;
+}
 @-webkit-keyframes TurnAround {
 from {
     -webkit-transform: rotate(1deg);

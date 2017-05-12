@@ -50,7 +50,7 @@
       <span class="glyphicon glyphicon-user __icon"></span>
       用户
     </router-link>
-    <router-link class="list-group-item __button" to="/">
+    <router-link class="list-group-item __button" to="/sms">
       <span class="glyphicon glyphicon-phone __icon"></span>
       短信
     </router-link>
