@@ -7102,8 +7102,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "to": "/sms/driver",
       "tag": "li",
-      "active-class": "active",
-      "exact": ""
+      "active-class": "active"
     }
   }, [_c('a', {
     attrs: {
@@ -7113,8 +7112,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "to": "/sms/alidayu",
       "tag": "li",
-      "active-class": "active",
-      "exact": ""
+      "active-class": "active"
     }
   }, [_c('a', {
     attrs: {
