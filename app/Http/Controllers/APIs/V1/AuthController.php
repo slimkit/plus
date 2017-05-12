@@ -6,12 +6,11 @@ use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhuzhichao\IpLocationZh\Ip;
 use Zhiyi\Plus\Models\AuthToken;
+use Zhiyi\Plus\Services\SMS\SMS;
 use Zhiyi\Plus\Models\VerifyCode;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\LoginRecord;
-use Zhiyi\Plus\Handler\SendMessage;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Services\SMS\SMS;
 
 class AuthController extends Controller
 {
