@@ -15,10 +15,9 @@ interface DirverInterface
     /**
      * Send handle.
      *
-     * @param mixed $phone
      * @param \Zhiyi\Plus\Services\SMS\Message $message
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function send($phone, Message $message);
+    public function send(Message $message);
 }

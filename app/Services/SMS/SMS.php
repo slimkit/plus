@@ -3,7 +3,10 @@
 namespace Zhiyi\Plus\Services\SMS;
 
 use RuntimeException;
+use Zhiyi\Plus\Jobs\SendSmsMessage;
+use Zhiyi\Plus\Models\VerifyCode;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Bus\Dispatcher;
 
 class SMS
 {
@@ -19,9 +22,23 @@ class SMS
     protected $app;
     protected $dirver;
 
-    protected function __construct(Application $app)
+    public function __construct(Application $app)
     {
         $this->app = $app;
+        $this->createDirver();
+    }
+
+    /**
+     * Dispatch a job to its appropriate handler. 
+     *
+     * @param \Zhiyi\Plus\Models\VerifyCode $verify
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function send(VerifyCode $verify)
+    {
+        $this->app->make(Dispatcher::class)
+            ->dispatch(new SendSmsMessage($this->dirver, $verify));
     }
 
     /**
