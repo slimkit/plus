@@ -6821,8 +6821,15 @@ to {
       color: #a6aeb2;
       color: rgba(255, 255, 255, 0.56);
 }
-.app-nav .__button:hover {
+.app-nav .__button.active {
+      border-right-width: 4px;
+      border-right-style: solid;
+      border-right-color: #3097D1;
+      color: #fff;
       background: #000;
+}
+.app-nav .__button:hover {
+      background: #263238;
       color: #fff;
 }
 .app-nav .__button .__icon {

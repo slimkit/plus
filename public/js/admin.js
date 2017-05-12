@@ -844,6 +844,15 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var menus = window.TS.menus || {};
 var nav = {
@@ -5268,21 +5277,24 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('router-link', {
     staticClass: "list-group-item __button",
     attrs: {
-      "to": "/setting"
+      "to": "/setting",
+      "active-class": "active"
     }
   }, [_c('span', {
     staticClass: "glyphicon glyphicon-cog __icon"
   }), _vm._v("\n    系统设置\n  ")]), _vm._v(" "), _c('router-link', {
     staticClass: "list-group-item __button",
     attrs: {
-      "to": "/users"
+      "to": "/users",
+      "active-class": "active"
     }
   }, [_c('span', {
     staticClass: "glyphicon glyphicon-user __icon"
   }), _vm._v("\n    用户中心\n  ")]), _vm._v(" "), _c('router-link', {
     staticClass: "list-group-item __button",
     attrs: {
-      "to": "/sms"
+      "to": "/sms",
+      "active-class": "active"
     }
   }, [_c('span', {
     staticClass: "glyphicon glyphicon-phone __icon"
@@ -5294,7 +5306,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       key: component,
       staticClass: "list-group-item __button",
       attrs: {
-        "to": ("/component/" + component)
+        "to": ("/component/" + component),
+        "active-class": "active",
+        "exact": ""
       }
     }, [_c('img', {
       staticClass: "__icon-img",

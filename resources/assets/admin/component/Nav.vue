@@ -22,8 +22,17 @@
       color: #a6aeb2;
       color: rgba(255, 255, 255, 0.56);
     }
-    &:hover {
+
+    &.active {
+      border-right-width: 4px;
+      border-right-style: solid;
+      border-right-color: #3097D1;
+      color: #fff;
       background: #000;
+    }
+
+    &:hover {
+      background: #263238;
       color: #fff;
     }
     .__icon {
@@ -42,19 +51,19 @@
 
 <template>
   <div class="list-group app-nav">
-    <router-link class="list-group-item __button" to="/setting">
+    <router-link class="list-group-item __button" to="/setting" active-class="active" >
       <span class="glyphicon glyphicon-cog __icon"></span>
       系统设置
     </router-link>
-    <router-link class="list-group-item __button" to="/users">
+    <router-link class="list-group-item __button" to="/users" active-class="active" >
       <span class="glyphicon glyphicon-user __icon"></span>
       用户中心
     </router-link>
-    <router-link class="list-group-item __button" to="/sms">
+    <router-link class="list-group-item __button" to="/sms" active-class="active" >
       <span class="glyphicon glyphicon-phone __icon"></span>
       短信设置
     </router-link>
-    <router-link class="list-group-item __button" v-for="({ name, icon }, component) in menus" :key="component" :to="`/component/${component}`">
+    <router-link class="list-group-item __button" v-for="({ name, icon }, component) in menus" :key="component" :to="`/component/${component}`" active-class="active" exact>
       <img class="__icon-img" :src="icon">
       {{ name }}
     </router-link>
