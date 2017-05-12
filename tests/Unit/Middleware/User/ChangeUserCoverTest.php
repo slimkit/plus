@@ -3,12 +3,8 @@
 namespace Zhiyi\Plus\Unit\Middleware\User;
 
 use Closure;
-use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\StorageTask;
-use Zhiyi\Plus\Models\UserProfileSetting;
-use Illuminate\Foundation\Testing\TestResponse;
 use Zhiyi\Plus\Http\Middleware\ChangeUserCover;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -45,7 +41,8 @@ class ChangeUserCoverTest extends TestCase
             ->will($this->returnValue(true));
 
         $this->assertTrue(
-            $changeUserCover->handle($request, function () {})
+            $changeUserCover->handle($request, function () {
+            })
         );
     }
 }
