@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Plus\Services\SMS\Dirver;
 
-use Zhiyi\Plus\Services\SMS\DirverInterface;
 use Zhiyi\Plus\Services\SMS\Message;
+use Zhiyi\Plus\Services\SMS\DirverInterface;
 
 class Testing implements DirverInterface
 {
@@ -15,5 +15,6 @@ class Testing implements DirverInterface
     }
 
     public function send($phone, Message $message)
-    {}
+    {
+    }
 }
