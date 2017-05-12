@@ -11,34 +11,6 @@ class VerifyCode extends Model
     use SoftDeletes;
 
     /**
-     * 设置data字段，并将其格式化.
-     *
-     * @param any $data 数据
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     * @homepage http://medz.cn
-     */
-    public function setDataAttribute($data)
-    {
-        $this->attributes['data'] = serialize($data);
-    }
-
-    /**
-     * 获取data字段，将其反序列化.
-     *
-     * @param string $data 需要被反序列化的数据
-     *
-     * @return any 任意格式
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     * @homepage http://medz.cn
-     */
-    public function getDataAttribute(string $data)
-    {
-        return unserialize($data);
-    }
-
-    /**
      * 复用的设置查询账户方法.
      *
      * @param Builder $query   查询对象
