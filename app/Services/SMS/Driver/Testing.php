@@ -15,4 +15,5 @@ class Testing implements DirverInterface
     }
 
     public function send($phone, Message $message)
+    {}
 }
