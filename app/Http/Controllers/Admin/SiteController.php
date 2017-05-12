@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\CommonConfig;
 use Illuminate\Support\Facades\Cache;
+use Zhiyi\Plus\Support\Configuration;
+use Illuminate\Contracts\Config\Repository;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Zhiyi\Plus\Support\Configuration;
 
 class SiteController extends Controller
 {
