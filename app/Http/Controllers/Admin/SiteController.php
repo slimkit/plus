@@ -2,11 +2,9 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
-use Closure;
 use Carbon\Carbon;
 use Zhiyi\Plus\Models\Area;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\CommonConfig;
 use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\Support\Configuration;
