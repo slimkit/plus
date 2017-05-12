@@ -1,6 +1,6 @@
 <?php
 
-namespace Zhiyi\Plus\Services\SMS\Dirver;
+namespace Zhiyi\Plus\Services\SMS\Driver;
 
 use Zhiyi\Plus\Services\SMS\Message;
 use Zhiyi\Plus\Services\SMS\DirverInterface;
@@ -16,5 +16,6 @@ class Testing implements DirverInterface
 
     public function send(Message $message)
     {
+        info($message->getMessage());
     }
 }

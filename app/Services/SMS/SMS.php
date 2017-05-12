@@ -20,7 +20,7 @@ class SMS
     ];
 
     protected $app;
-    protected $dirver;
+    protected $driver;
 
     public function __construct(Application $app)
     {
@@ -38,11 +38,11 @@ class SMS
     public function send(VerifyCode $verify)
     {
         $this->app->make(Dispatcher::class)
-            ->dispatch(new SendSmsMessage($this->dirver, $verify));
+            ->dispatch(new SendSmsMessage($this->driver, $verify));
     }
 
     /**
-     * Create SMS send dirver.
+     * Create SMS send driver.
      *
      * @throws \RuntimeException
      * @return vodi
@@ -50,15 +50,15 @@ class SMS
      */
     protected function createDirver()
     {
-        $dirverName = $this->app->make('config')->get('sms.default');
+        $driverName = $this->app->make('config')->get('sms.default');
 
-        if (! isset(static::$aliases[$dirverName])) {
-            throw new RuntimeException(sprintf('This "%s" is not supported by the driver.', $dirverName));
+        if (! isset(static::$aliases[$driverName])) {
+            throw new RuntimeException(sprintf('This "%s" is not supported by the driver.', $driverName));
         }
 
-        $config = $this->app->make('config')->get('sms.connections.'.$dirverName, []);
+        $config = $this->app->make('config')->get('sms.connections.'.$driverName, []);
 
-        $this->dirver = $this->app->make(static::$aliases[$dirverName])
-            ->setConfig($config);
+        $this->driver = $this->app->make(static::$aliases[$driverName]);
+        $this->driver->setConfig($config);
     }
 }

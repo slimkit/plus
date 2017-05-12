@@ -52,7 +52,7 @@ class SendSmsMessage implements ShouldQueue
     public function handle()
     {
         $this->dirver->send(new Message(
-            $this->verify->code,
+            $this->verify->account,
             sprintf('验证码%s，如非本人操作，请忽略这条短信。', $this->verify->code),
             [
                 'code' => $this->verify->code,
