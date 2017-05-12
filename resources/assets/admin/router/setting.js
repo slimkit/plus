@@ -14,9 +14,8 @@ const settingRouter = {
   component: Setting,
   children: [
     {
-      path: 'base',
+      path: '',
       component: Base,
-      alias: ''
     },
     {
       path: 'area',

@@ -52,7 +52,7 @@ const SmsMainComponent = {
       state: -1,
       keyword: '',
     }
-  })
+  }),
 };
 
 export default SmsMainComponent;

@@ -3289,9 +3289,8 @@ var settingRouter = {
   path: 'setting',
   component: _Setting2.default,
   children: [{
-    path: 'base',
-    component: _Base2.default,
-    alias: ''
+    path: '',
+    component: _Base2.default
   }, {
     path: 'area',
     component: _Area2.default
@@ -5269,7 +5268,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('router-link', {
     staticClass: "list-group-item __button",
     attrs: {
-      "to": "/setting/base"
+      "to": "/setting"
     }
   }, [_c('span', {
     staticClass: "glyphicon glyphicon-cog __icon"
@@ -6771,9 +6770,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "nav nav-tabs setting-nav"
   }, [_c('router-link', {
     attrs: {
-      "to": "/setting/base",
+      "to": "/setting",
       "tag": "li",
-      "active-class": "active"
+      "active-class": "active",
+      "exact": ""
     }
   }, [_c('a', {
     attrs: {
