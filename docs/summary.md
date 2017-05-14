@@ -1,0 +1,2 @@
+- [开始](get-started)
+    - [关于ThinkSNS+](get-started/about.md)
