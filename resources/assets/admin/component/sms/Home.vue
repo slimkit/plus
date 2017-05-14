@@ -51,7 +51,8 @@ const SmsMainComponent = {
     search: {
       state: -1,
       keyword: '',
-    }
+    },
+    loading: false,
   }),
 };
 
