@@ -32,10 +32,10 @@ class VerifySendPhoneCodeType
 
         // 如果是注册获取验证码，如果用户不存在继续执行
         } elseif ($type == 'register') {
-            return app(CheckUserByPhoneNotExisted::class)->handle($request, $next);
+            return app(CheckUserByPhoneNotExistedByRouteParameter::class)->handle($request, $next);
         }
 
         // 如果不是注册，用户存在则继续执行
-        return app(CheckUserByPhoneExisted::class)->handle($request, $next);
+        return app(CheckUserByPhoneExistedByRouteParameter::class)->handle($request, $next);
     }
 }
