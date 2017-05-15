@@ -6,8 +6,8 @@ use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Tests\TestCase;
 use Zhiyi\Plus\Models\Following;
-use Zhiyi\Plus\Http\Middleware\V1\CheckIsFollow;
 use Illuminate\Foundation\Testing\TestResponse;
+use Zhiyi\Plus\Http\Middleware\V1\CheckIsFollow;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CheckIsFollowTest extends TestCase
