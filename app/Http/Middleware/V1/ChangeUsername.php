@@ -1,6 +1,6 @@
 <?php
 
-namespace Zhiyi\Plus\Http\Middleware;
+namespace Zhiyi\Plus\Http\Middleware\V1;
 
 use Closure;
 use Illuminate\Http\Request;

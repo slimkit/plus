@@ -1,16 +1,17 @@
 <?php
 
-namespace Zhiyi\Plus\Http\Middleware;
+namespace Zhiyi\Plus\Http\Middleware\V1;
 
 use Closure;
+use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
-class VerifyPassword
+class CheckUserByPhoneNotExisted
 {
     use CreateJsonResponseData;
 
     /**
-     * 验证用户密码正确性中间件.
+     * Handle an incoming request.
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure                 $next
@@ -19,13 +20,14 @@ class VerifyPassword
      */
     public function handle($request, Closure $next)
     {
-        $password = $request->input('password', '');
-        $user = $request->user();
+        $phone = $request->input('phone');
+        $user = User::byPhone($phone)->withTrashed()->first();
 
-        if (! $user->verifyPassword($password)) {
+        // 手机号已被使用
+        if ($user) {
             return response()->json(static::createJsonData([
-                'code' => 1006,
-            ]))->setStatusCode(401);
+                'code' => 1010,
+            ]))->setStatusCode(403);
         }
 
         return $next($request);

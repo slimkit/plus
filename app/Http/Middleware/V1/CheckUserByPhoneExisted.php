@@ -1,28 +1,27 @@
 <?php
 
-namespace Zhiyi\Plus\Http\Middleware;
+namespace Zhiyi\Plus\Http\Middleware\V1;
 
 use Closure;
 use Zhiyi\Plus\Models\User;
-use Illuminate\Http\Request;
 use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
-class CheckUserByNameExisted
+class CheckUserByPhoneExisted
 {
     use CreateJsonResponseData;
 
     /**
-     * 检查用户是否存在中间件.
+     * Handle an incoming request.
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure                 $next
      *
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle($request, Closure $next)
     {
-        $name = $request->input('name');
-        $user = User::byName($name)->withTrashed()->first();
+        $phone = $request->input('phone');
+        $user = User::byPhone($phone)->withTrashed()->first();
 
         // 用户不存在 or 软删除用户
         if (! $user || $user->deleted_at) {
@@ -30,6 +29,7 @@ class CheckUserByNameExisted
                 'code' => 1005,
             ]))->setStatusCode(404);
         }
+        $request->attributes->set('user', $user);
 
         return $next($request);
     }

@@ -1,12 +1,13 @@
 <?php
 
-namespace Zhiyi\Plus\Http\Middleware;
+namespace Zhiyi\Plus\Http\Middleware\V1;
 
 use Closure;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\Following;
 use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
-class CheckFeedbackContentExisted
+class CheckIsFollowing
 {
     use CreateJsonResponseData;
 
@@ -20,10 +21,17 @@ class CheckFeedbackContentExisted
      */
     public function handle(Request $request, Closure $next)
     {
-        if (! $request->input('content')) {
+        $user_id = $request->user()->id;
+        $following_user_id = $request->user_id;
+        if (! Following::where([
+                ['user_id', $user_id],
+                ['following_user_id', $following_user_id],
+            ])
+            ->count()
+        ) {
             return response()->json(static::createJsonData([
-                'code'    => 7001,
-                'message' => '反馈内容不能为空',
+                'code'    => 1021,
+                'message' => '您并没有关注此用户',
                 'status'  => false,
             ]))->setStatusCode(400);
         }
