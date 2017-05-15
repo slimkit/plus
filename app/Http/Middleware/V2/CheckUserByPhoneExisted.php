@@ -23,7 +23,7 @@ class CheckUserByPhoneExisted
         // 用户不存在 or 软删除用户
         if (! $user || $user->deleted_at) {
             return response()->json([
-                'message' => '用户不存在或已删除'
+                'message' => '用户不存在或已删除',
             ])->setStatusCode(404);
         }
         $request->attributes->set('user', $user);

@@ -36,7 +36,7 @@ class VerifyUserNameRole
 
         if ($length > $this->usernameMaxLength || $length < $this->usernameMinLength) {
             return response()->json([
-                "message" => '用户名长度不符合规范',
+                'message' => '用户名长度不符合规范',
             ])->setStatusCode(400);
         }
 
@@ -46,7 +46,7 @@ class VerifyUserNameRole
 
         if ($validator->fails()) {
             return response()->json([
-                "message" => '用户名格式不正确',
+                'message' => '用户名格式不正确',
             ])->setStatusCode(400);
         }
 
