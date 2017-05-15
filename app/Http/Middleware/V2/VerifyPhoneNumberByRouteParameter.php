@@ -27,8 +27,8 @@ class VerifyPhoneNumberByRouteParameter
 
         if ($validator->fails()) {
             return response()->json([
-                'message' => '操作失败',
-            ])->setStatusCode(403);
+                'message' => '手机号格式不正确',
+            ])->setStatusCode(400);
         }
 
         return $next($request);
