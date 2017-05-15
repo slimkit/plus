@@ -3,7 +3,6 @@
 namespace Zhiyi\Plus\Http\Middleware\V2;
 
 use Closure;
-use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 
 class CheckUserExsistedByUserId
