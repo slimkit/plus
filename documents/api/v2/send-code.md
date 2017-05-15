@@ -2,7 +2,7 @@
 
 ## 接口地址
 
-`api/v1/auth/phone/code`
+`api/v2/auth/phone/code`
 
 ## 请求方式
 
