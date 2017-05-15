@@ -2,5 +2,5 @@
     - [关于ThinkSNS+](get-started/about.md)
 
 - [APIs](api)
-    [V1](../documents/api/v1)
-    [V2(REST ful)](api/v2)
+    - [V1](../documents/api/v1)
+    - [V2(REST ful)](api/v2)
