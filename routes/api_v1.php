@@ -1,5 +1,5 @@
 <?php
-
+use Zhiyi\Plus\Http\Middleware\V1 as Middleware;
 
 // 获取手机验证码
 Route::post('/auth/phone/send-code', 'AuthController@sendPhoneCode')
