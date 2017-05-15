@@ -25,7 +25,7 @@ class CheckUserByNameNotExisted
         // 用户名已被使用
         if (($user && (! $theUser)) || ($user && $theUser && $user->id != $theUser->id)) {
             return response()->json([
-                'code' => 1004,
+                'message' => '用户名已被使用',
             ])->setStatusCode(403);
         }
 
