@@ -2,7 +2,7 @@
 
 ## 接口地址
 
-`api/v2/auth/phone/code`
+`api/v2/auth/phone/{phone}/code`
 
 ## 请求方式
 
@@ -16,7 +16,6 @@
 
 | name     | type     | must     | description |
 |----------|:--------:|:--------:|:--------:|
-| phone    | string   | yes      | 需要被发送验证码的手机号 |
 | type     | string   | yes      | 发送验证码的类型，固定三个值(register、login、change) <br /> register: 注册 <br /> login: 登录 <br /> change: 修改 |
 
 ## 返回体
