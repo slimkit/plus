@@ -10,8 +10,14 @@ GET /bootstrappers
 
 ### Response
 
+Headers
+
 ```
 Status: 200 OK
+```
+
+Bdoy
+
 ```json5
 {
     "im:serve": "127.0.0.1:9900"
