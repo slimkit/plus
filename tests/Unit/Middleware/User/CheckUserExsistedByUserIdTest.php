@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Zhiyi\Plus\Http\Middleware\CheckUserExsistedByUserId;
+use Zhiyi\Plus\Http\Middleware\V1\CheckUserExsistedByUserId;
 
 class CheckUserExsistedByUserIdTest extends TestCase
 {

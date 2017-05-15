@@ -8,7 +8,7 @@ use Zhiyi\Plus\Tests\TestCase;
 use Zhiyi\Plus\Models\StorageTask;
 use Zhiyi\Plus\Models\UserProfileSetting;
 use Illuminate\Foundation\Testing\TestResponse;
-use Zhiyi\Plus\Http\Middleware\ChangeUserAvatar;
+use Zhiyi\Plus\Http\Middleware\V1\ChangeUserAvatar;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ChangeUserAvatarTest extends TestCase

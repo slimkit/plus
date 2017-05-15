@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Zhiyi\Plus\Http\Middleware\CheckFeedbackContentExisted;
+use Zhiyi\Plus\Http\Middleware\V1\CheckFeedbackContentExisted;
 
 class CheckFeedbackContentExistedTest extends TestCase
 {

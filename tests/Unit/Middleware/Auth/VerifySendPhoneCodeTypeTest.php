@@ -5,7 +5,7 @@ namespace Zhiyi\Plus\Unit\Middleware\Auth;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Foundation\Testing\TestResponse;
-use Zhiyi\Plus\Http\Middleware\VerifySendPhoneCodeType;
+use Zhiyi\Plus\Http\Middleware\V1\VerifySendPhoneCodeType;
 
 class VerifySendPhoneCodeTypeTest extends TestCase
 {

@@ -7,7 +7,7 @@ use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Tests\TestCase;
 use Zhiyi\Plus\Models\StorageTask;
-use Zhiyi\Plus\Http\Middleware\ChangeUserCover;
+use Zhiyi\Plus\Http\Middleware\V1\ChangeUserCover;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ChangeUserCoverTest extends TestCase

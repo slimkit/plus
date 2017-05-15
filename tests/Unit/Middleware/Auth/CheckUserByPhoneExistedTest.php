@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Zhiyi\Plus\Http\Middleware\CheckUserByPhoneExisted;
+use Zhiyi\Plus\Http\Middleware\V1\CheckUserByPhoneExisted;
 
 class CheckUserByPhoneExistedTest extends TestCase
 {
