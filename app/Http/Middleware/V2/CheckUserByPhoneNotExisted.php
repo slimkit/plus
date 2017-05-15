@@ -4,12 +4,9 @@ namespace Zhiyi\Plus\Http\Middleware\V2;
 
 use Closure;
 use Zhiyi\Plus\Models\User;
-use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
 class CheckUserByPhoneNotExisted
 {
-    use CreateJsonResponseData;
-
     /**
      * Handle an incoming request.
      *
@@ -25,9 +22,9 @@ class CheckUserByPhoneNotExisted
 
         // 手机号已被使用
         if ($user) {
-            return response()->json(static::createJsonData([
+            return response()->json([
                 'message' => '手机号已被使用',
-            ]))->setStatusCode(400);
+            ])->setStatusCode(400);
         }
 
         return $next($request);
