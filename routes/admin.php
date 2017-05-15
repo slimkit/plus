@@ -1,6 +1,6 @@
 <?php
 
-use Zhiyi\Plus\Http\Middleware;
+use Zhiyi\Plus\Http\Middleware\V1 as Middleware;
 
 // admin router.
 
