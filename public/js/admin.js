@@ -8,7 +8,7 @@ webpackJsonp([0],[
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 exports.createAPI = exports.createRequestURI = undefined;
 
@@ -20,22 +20,34 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var _window$TS = window.TS,
     baseURL = _window$TS.baseURL,
-    csrfToken = _window$TS.csrfToken,
     api = _window$TS.api; // This "TS" variable is set from the global variables in the template.
 
 // Export a method to create the requested address.
 
 var createRequestURI = exports.createRequestURI = function createRequestURI(PATH) {
-  return baseURL + '/' + PATH;
+    return baseURL + '/' + PATH;
 };
 
 // Created the request address of API.
 var createAPI = exports.createAPI = function createAPI(PATH) {
-  return api + '/' + PATH;
+    return api + '/' + PATH;
 };
 
-_axios2.default.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
 _axios2.default.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+/**
+ * Next we will register the CSRF Token as a common header with Axios so that
+ * all outgoing HTTP requests automatically have it attached. This is just
+ * a simple convenience so we don't have to attach every token manually.
+ */
+
+var token = document.head.querySelector('meta[name="csrf-token"]');
+
+if (token) {
+    _axios2.default.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+} else {
+    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+}
 
 exports.default = _axios2.default;
 
