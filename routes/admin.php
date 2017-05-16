@@ -10,6 +10,13 @@ Route::post('/login', 'HomeController@login');
 Route::any('/logout', 'HomeController@logout');
 
 Route::middleware('auth:web')->group(function () {
+
+    // SMS 相关
+    Route::prefix('sms')->group(function () {
+        Route::get('/', 'SmsController@show');
+    });
+
+    /* ------------------------------ */
     Route::get('/site/baseinfo', 'SiteController@get');
     Route::patch('/site/baseinfo', 'SiteController@updateSiteInfo');
 
