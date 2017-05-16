@@ -84,7 +84,7 @@ class UserController extends Controller
                 'message' => '没有相关用户',
             ])->setStatusCode(404);
         }
-        
+
         return $this->formatUserInfo($datas);
     }
 
@@ -92,10 +92,10 @@ class UserController extends Controller
      * get single user info.
      *
      * @author bs<414606094@qq.com>
-     * 
+     *
      * @param  User    $user    [description]
      */
-    public function getSingleInfo(Request $request, User $user)
+    public function getSingleInfo(User $user)
     {
         $datas = [$user->load('datas', 'counts')->toArray()];
 
