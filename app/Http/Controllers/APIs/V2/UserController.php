@@ -74,7 +74,7 @@ class UserController extends Controller
      */
     public function get(Request $request)
     {
-        $uids = explode(',', $request->query('user_ids'));
+        $uids = explode(',', $request->query('user'));
         $datas = User::whereIn('id', $uids)
             ->with('datas', 'counts')
             ->get()
