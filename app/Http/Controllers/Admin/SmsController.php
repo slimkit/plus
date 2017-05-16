@@ -21,11 +21,11 @@ class SmsController extends Controller
             $query->where('state', $state);
         }
 
-        if ($phone !== null) {
+        if ($phone) {
             $query->where('account', 'like', sprintf('%%%s%%', $phone));
         }
 
-        if ($after !== null) {
+        if ($after) {
             $query->where('id', '<', $after);
         }
 
