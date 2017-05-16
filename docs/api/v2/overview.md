@@ -19,7 +19,7 @@
 用户认证需要在 headers 中加入 Access token，示例：
 
 ```shell
-curl -v -H "Authorization: Bearer TOKEN" https://plus.io/v2/bootstrappers
+curl -v -H "Authorization: Bearer TOKEN" https://plus.io/api/v2/bootstrappers
 ```
 
 > 格式为 `Authorization: Bearer TOKEN` 其中 **TOKEN** 是获取授权得到的。
