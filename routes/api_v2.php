@@ -5,6 +5,9 @@ use Zhiyi\Plus\Http\Middleware\V2 as Middleware;
 // 应用启动配置
 Route::get('/bootstrappers', 'BootstrappersController@show');
 
+// 用户登录
+Route::any('/login', 'LoginController@store');
+
 // 获取手机验证码
 Route::post('/auth/phone/code', 'AuthController@sendPhoneCode')
     ->middleware(Middleware\VerifyPhoneNumber::class) // 验证手机号格式是否正确
