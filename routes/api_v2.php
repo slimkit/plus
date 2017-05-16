@@ -43,7 +43,6 @@ Route::get('/areas', 'AreaController@showAreas');
 // 获取用户资料
 Route::get('/users/{user?}', 'UserController@get');
 
-
 // 用户相关组
 Route::prefix('users')
 ->middleware('auth:api')
