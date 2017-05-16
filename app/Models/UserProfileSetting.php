@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace Zhiyi\Plus\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class UserProfileSetting extends Model
 {
@@ -22,10 +22,13 @@ class UserProfileSetting extends Model
      * @var array
      */
     protected $hidden = [
+        'create_user_id',
         'required',
         'is_delable',
         'is_show',
         'state',
+        'created_at',
+        'updated_at',
     ];
 
     /**

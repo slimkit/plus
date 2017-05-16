@@ -12,13 +12,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(UsersTableSeeder::class);
-        $this->call(UserGroupsTableSeeder::class);
-        $this->call(UserGroupLinksTableSeeder::class);
-        $this->call(NodesTableSeeder::class);
-        $this->call(NodeLinksTableSeeder::class);
-        $this->call(AdminUsersTableSeeder::class);
-        $this->call(AreasTableSeeder::class);
         $this->call(UserProfileSettingsTableSeeder::class);
         $this->call(UserProfileSettingLinksTableSeeder::class);
+        $this->call(CommonConfigSeeder::class);
+
+        // 把地区放在最后，因为耗时较长.
+        $this->call(AreasTableSeeder::class);
     }
 }

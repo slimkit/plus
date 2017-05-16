@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Feature;
+namespace Zhiyi\Plus\Tests\Feature;
 
-use Tests\TestCase;
+use Zhiyi\Plus\Tests\TestCase;
 
 class ExampleTest extends TestCase
 {

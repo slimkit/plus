@@ -12,13 +12,47 @@
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\Models\User::class, function (Faker\Generator $faker) {
+$factory->define(Zhiyi\Plus\Models\User::class, function (Faker\Generator $faker) {
     static $password;
 
     return [
-        'name'           => $faker->name,
-        'email'          => $faker->unique()->safeEmail,
-        'password'       => $password ?: $password = bcrypt('secret'),
+        'name' => $faker->name,
+        'email' => $faker->unique()->safeEmail,
+        'phone' => $faker->unique()->phoneNumber,
+        'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
+    ];
+});
+
+$factory->define(Zhiyi\Plus\Models\AuthToken::class, function (Faker\Generator $faker) {
+    return [
+        'token' => str_random(10),
+        'refresh_token' => str_random(10),
+        'user_id' => null,
+        'expires' => 0,
+        'state' => 1,
+    ];
+});
+
+$factory->define(Zhiyi\Plus\Models\StorageTask::class, function (Faker\Generator $faker) {
+    return [
+        'hash' => $faker->md5,
+        'origin_filename' => 'origin.png',
+        'filename' => 'origin.png',
+        'width' => null,
+        'height' => null,
+        'mime_type' => 'image/png',
+    ];
+});
+
+$factory->define(Zhiyi\Plus\Models\Storage::class, function (Faker\Generator $faker) {
+    return [
+        'origin_filename' => 'origin.png',
+        'filename' => 'origin.png',
+        'hash' => $faker->md5,
+        'mime' => 'image/png',
+        'extension' => 'png',
+        'image_width' => null,
+        'image_height' => null,
     ];
 });

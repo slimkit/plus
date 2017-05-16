@@ -1,42 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace Zhiyi\Plus\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class VerifyCode extends Model
 {
     use SoftDeletes;
-
-    /**
-     * 设置data字段，并将其格式化.
-     *
-     * @param any $data 数据
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     * @homepage http://medz.cn
-     */
-    public function setDataAttribute($data)
-    {
-        $this->attributes['data'] = serialize($data);
-    }
-
-    /**
-     * 获取data字段，将其反序列化.
-     *
-     * @param string $data 需要被反序列化的数据
-     *
-     * @return any 任意格式
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     * @homepage http://medz.cn
-     */
-    public function getDataAttribute(string $data)
-    {
-        return unserialize($data);
-    }
 
     /**
      * 复用的设置查询账户方法.
@@ -141,15 +113,11 @@ class VerifyCode extends Model
 
         if (function_exists('mt_rand')) {
             $this->attributes['code'] = mt_rand($min, $max);
-            // 测试后门
-            $this->attributes['code'] = 1234;
 
             return $this;
         }
 
         $this->attributes['code'] = rand($min, $max);
-        // 测试后门
-        $this->attributes['code'] = 1234;
 
         return $this;
     }

@@ -1,15 +1,19 @@
 <?php
 
-namespace App\Models;
+namespace Zhiyi\Plus\Models;
 
+use Zhiyi\Plus\Traits\UserRolePerms;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes;
+    use Notifiable, SoftDeletes, UserRolePerms {
+        SoftDeletes::restore insteadof UserRolePerms;
+        UserRolePerms::restore insteadof SoftDeletes;
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -32,33 +36,46 @@ class User extends Authenticatable
     /**
      * 复用设置手机号查询条件方法.
      *
-     * @param Builder $query 查询对象
+     * @param Illuminate\Database\Eloquent\Builder $query 查询对象
      * @param string  $phone 手机号码
      *
-     * @return Builder 查询对象
+     * @return Illuminate\Database\Eloquent\Builder 查询对象
      *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
     public function scopeByPhone(Builder $query, string $phone): Builder
     {
-        return $query->where('phone', $phone);
+        return $query->where('phone', 'LIKE', $phone);
     }
 
     /**
      * 复用设置用户名查询条件方法.
      *
-     * @param Builder $query 查询对象
+     * @param Illuminate\Database\Eloquent\Builder $query 查询对象
      * @param string  $name  用户名
      *
-     * @return Builder 查询对象
+     * @return Illuminate\Database\Eloquent\Builder 查询对象
      *
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
     public function scopeByName(Builder $query, string $name): Builder
     {
-        return $query->where('name', $name);
+        return $query->where('name', 'LIKE', $name);
+    }
+
+    /**
+     * 复用 E-Mail 查询条件方法.
+     *
+     * @param Illuminate\Database\Eloquent\Builder $query
+     * @param string $email [description]
+     * @return Illuminate\Database\Eloquent\Builder
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function scopeByEmail(Builder $query, string $email): Builder
+    {
+        return $query->where('email', 'LIKE', $email);
     }
 
     /**
@@ -171,6 +188,18 @@ class User extends Authenticatable
     }
 
     /**
+     * 用户拥有多条统计数据.
+     *
+     * @author bs<414606094@qq.com>
+     *
+     * @return [type] [description]
+     */
+    public function counts()
+    {
+        return $this->hasMany(UserDatas::class, 'user_id');
+    }
+
+    /**
      * 更新用户资料.
      *
      * @param array $attributes 更新关联profile资料数据
@@ -183,7 +212,7 @@ class User extends Authenticatable
      */
     public function syncData(array $attributes)
     {
-        if (!$attributes) {
+        if (! $attributes) {
             return false;
         }
 
@@ -194,5 +223,25 @@ class User extends Authenticatable
         }
 
         return $this->datas()->sync($attributes, false);
+    }
+
+    /**
+     * 我关注的用户.
+     *
+     * @return [type] [description]
+     */
+    public function follows()
+    {
+        return $this->hasMany(Following::class, 'user_id');
+    }
+
+    /**
+     * 关注我的用户.
+     *
+     * @return [type] [description]
+     */
+    public function followeds()
+    {
+        return $this->hasMany(Followed::class, 'user_id');
     }
 }

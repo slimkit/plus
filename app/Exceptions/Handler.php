@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exceptions;
+namespace Zhiyi\Plus\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;
@@ -62,12 +62,12 @@ class Handler extends ExceptionHandler
         if ($request->expectsJson() || in_array('api', $exception->guards())) {
             return response()->json([
                 'status'  => false,
-                'code'    => 0,
+                'code'    => 1099,
                 'message' => '用户认证失败',
                 'data'    => null,
             ], 401);
         }
 
-        return redirect()->guest('login');
+        return redirect()->guest(route('login'));
     }
 }

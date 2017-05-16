@@ -1,16 +1,25 @@
 {
     "name": "zhiyicx/thinksns-plus",
-    "description": "The Laravel Framework.",
+    "description": "The TS+ is a social project.",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",
+    "repositories": [
+        {
+            "type": "artifact",
+            "url": "resources/repositorie/zips/"
+        }
+    ],
     "require": {
         "php": ">=7.0",
         "flc/alidayu": "^2.0",
-        "guzzlehttp/guzzle": "^6.2",
         "intervention/image": "^2.3",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
+        "medz/plus-component-example": "^1.0",
+        "predis/predis": "^1.1",
+        "zhiyicx/plus-component-feed": "^1.0",
+        "zhiyicx/plus-install-plugin": ">=1.0",
         "zhuzhichao/ip-location-zh": "^2.2"
     },
     "require-dev": {
@@ -20,18 +29,19 @@
         "phpunit/phpunit": "~5.7"
     },
     "autoload": {
+        "files": [
+            "app/helpers.php"
+        ],
         "classmap": [
             "database"
         ],
         "psr-4": {
-            "App\\": "app/",
-            "App\\Http\\Controllers\\APIs\\": "apis/",
-            "Zhiyi\\Plus\\": "src/"
+            "Zhiyi\\Plus\\": "app/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Zhiyi\\Plus\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -52,7 +62,8 @@
     },
     "config": {
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "optimize-autoloader": true
     },
     "extra": {
         "branch-alias": {

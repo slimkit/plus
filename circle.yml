@@ -8,7 +8,7 @@ machine:
         version: 6
     environment:
         TRAVIS_REPO_SLUG: zhiyicx/thinksns-plus
-        YARN_VERSION: 0.19.1
+        YARN_VERSION: 0.21.3
         PATH: "${PATH}:${HOME}/.yarn/bin"
 
 dependencies:
@@ -28,9 +28,7 @@ dependencies:
         - mv .env.example .env
     cache_directories:
         - ~/.yarn
-        - ~/.yarn-cache
 
 test:
     override:
-        - yarn lint
-        - yarn build
+        - yarn dist

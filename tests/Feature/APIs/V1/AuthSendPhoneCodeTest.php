@@ -1,43 +1,41 @@
 <?php
 
-namespace Tests\Feature\APIs\V1;
+namespace Zhiyi\Plus\Tests\Feature\APIs\V1;
+
+use Zhiyi\Plus\Tests\TestCase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Zhiyi\Plus\Http\Controllers\APIs\V1\AuthController;
 
 class AuthSendPhoneCodeTest extends TestCase
 {
-    /**
-     * API uri.
-     *
-     * @var string
-     */
-    protected $uri = '/api/v1/auth/phone/send-code';
+    use WithoutMiddleware;
 
     /**
-     * 测试错误的请求手机号验证.
+     * Test send phone code.
      *
-     * Message code: 1000
-     *
+     * @return void
      * @author Seven Du <shiweidu@outlook.com>
-     * @homepage http://medz.cn
      */
-    public function testPostErrorPhoneNumber()
+    public function testSendPhoneCode()
     {
-        // create request data.
-        $requestBody = [
-            'phone' => '*****',
-        ];
+        // json
+        $json = ['status' => true];
 
-        // request api, send data.
-        $response = $this->postJson($this->uri, $requestBody);
+        // mock controller.
+        $controller = $this->getMockBuilder(AuthController::class)
+            ->setMethods(['sendPhoneCode'])
+            ->getMock();
 
-        // var_dump($response);
+        $controller->method('sendPhoneCode')
+            ->will($this->returnValue($json));
 
-        // Asserts that the status code of the response matches the given code.
-        $response->assertStatus(403);
+        $this->instance(AuthController::class, $controller);
 
-        // // Assert that the response contains an exact JSON array.
-        // $json = $this->createMessageResponseBody([
-        //     'code' => 1000,
-        // ]);
-        // $response->seeJsonEquals($json);
+        // request.
+        $response = $this->json('POST', 'api/v1/auth/phone/send-code');
+
+        // assert.
+        $response->assertStatus(200)
+            ->assertExactJson($json);
     }
 }

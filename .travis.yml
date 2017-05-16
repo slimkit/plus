@@ -18,6 +18,7 @@ install:
 script:
     - php artisan migrate
     - php artisan db:seed
+    - php artisan component install medz/plus-component-example
     - php vendor/bin/phpunit --coverage-clover=./storage/logs/coverage.xml
 
 after_script:

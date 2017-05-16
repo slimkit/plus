@@ -1,0 +1,13 @@
+*
+!.gitignore
+!/.htaccess
+!/index.php
+!/favicon.icn
+!/robots.txt
+!/web.config
+!/css
+!/fonts
+!/images
+!/js
+!/mix-manifest.json
+!/plus.png

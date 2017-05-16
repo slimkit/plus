@@ -1,6 +1,7 @@
 <?php
 
-use App\Models\User;
+use Zhiyi\Plus\Models\Role;
+use Zhiyi\Plus\Models\User;
 use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
@@ -12,7 +13,20 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        User::create(['name' => '管理员', 'phone' => '18781993582', 'password' => bcrypt('123456')]);
-        User::create(['name' => 'Wayne', 'phone' => '18908019700', 'password' => bcrypt('123456')]);
+        $this->call(RoleSeeder::class);
+        $this->createFounderUser();
+    }
+
+    /**
+     * 插入创始人信息.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function createFounderUser()
+    {
+        $user = User::create(['name' => '创始人', 'phone' => 'admin', 'password' => bcrypt('admin')]);
+        $roles = Role::all();
+        $user->attachRoles($roles);
     }
 }
