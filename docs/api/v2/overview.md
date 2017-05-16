@@ -33,3 +33,31 @@ curl -v -H "Authorization: Bearer TOKEN" https://plus.io/api/v2/bootstrappers
 ```shell
 curl -v -H "Accept: application/json" https://plus.io/api/v2/bootstrappers
 ```
+
+## 错误响应
+
+在请求错误的大多数情况下，返回的错误都是 `"inputName": ["message"]` 的格式，如下：
+
+```json5
+{
+    "phone": [
+        "手机号码错误"
+    ],
+    "password": [
+        "用户密码错误"
+    ]
+}
+```
+
+这是可预知的错误情况，在不知道具体错误的情况：
+
+```json5
+{
+    "message": [
+        "错误消息1"
+        // ...
+    ]
+}
+```
+
+> 在非程序主动通知错误外，返回体不会有上述结构。
