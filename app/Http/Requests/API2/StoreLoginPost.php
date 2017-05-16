@@ -25,7 +25,7 @@ class StoreLoginPost extends FormRequest
     {
         return [
             'phone' => 'required|cn_phone|exists:users,phone',
-            'password' => 'required'
+            'password' => 'required',
         ];
     }
 

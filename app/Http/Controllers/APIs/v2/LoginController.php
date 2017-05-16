@@ -4,11 +4,10 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\AuthToken;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Http\Requests\API2\StoreLoginPost;
-use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Factory;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Zhiyi\Plus\Http\Requests\API2\StoreLoginPost;
 
 class LoginController extends Controller
 {
@@ -42,4 +41,3 @@ class LoginController extends Controller
             ->setStatusCode(201);
     }
 }
-
