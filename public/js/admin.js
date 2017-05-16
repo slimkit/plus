@@ -1746,122 +1746,35 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 var _request = __webpack_require__(2);
 
 var _request2 = _interopRequireDefault(_request);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 var SmsMainComponent = {
   data: function data() {
     return {
       search: {
         state: -1,
-        keyword: '',
-        after: []
+        keyword: ''
       },
       loading: false,
       logs: [],
-      error: null
+      error: null,
+      currentPage: 1
     };
   },
   methods: {
+    nextPage: function nextPage() {
+      this.requestLogs(parseInt(this.currentPage) + 1);
+    },
+    prevPage: function prevPage() {
+      this.requestLogs(parseInt(this.currentPage) - 1);
+    },
+    searchHandle: function searchHandle() {
+      this.requestLogs(1);
+    },
     dismisError: function dismisError() {
       this.error = null;
     },
@@ -1869,16 +1782,10 @@ var SmsMainComponent = {
       this.search.after = [];
       this.search.state = state;
     },
-    requestLogs: function requestLogs() {
+    requestLogs: function requestLogs(page) {
       var _this = this;
 
-      var _search$after = _slicedToArray(this.search.after, 1),
-          _search$after$ = _search$after[0],
-          last = _search$after$ === undefined ? null : _search$after$;
-
-      var params = {
-        after: last
-      };
+      var params = { page: page };
 
       if (this.search.state >= 0) {
         params['state'] = this.search.state;
@@ -1894,24 +1801,136 @@ var SmsMainComponent = {
           return status === 200;
         } }).then(function (_ref) {
         var _ref$data = _ref.data,
-            data = _ref$data === undefined ? [] : _ref$data;
+            data = _ref$data === undefined ? {} : _ref$data;
 
         _this.loading = false;
-        if (!data.length) {
-          _this.error = '没有更多消息了';
+
+        var _data$current_page = data.current_page,
+            currentPage = _data$current_page === undefined ? 1 : _data$current_page,
+            _data$data = data.data,
+            logs = _data$data === undefined ? [] : _data$data;
+
+
+        if (!logs.length) {
+          _this.error = '没有数据可加载';
           return;
         }
 
-        var last = data.pop();
-        _this.logs = [].concat(_toConsumableArray(data), [last]);
-        _this.search.after = [last.id, _this.search.after];
+        _this.currentPage = currentPage;
+        _this.logs = logs;
       }).catch();
     }
   },
   created: function created() {
-    this.requestLogs();
+    this.searchHandle();
   }
-};
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = SmsMainComponent;
 
@@ -4911,6 +4930,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "panel-heading"
   }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-6"
+  }, [_c('div', {
     staticClass: "input-group",
     staticStyle: {
       "max-width": "356px"
@@ -4936,7 +4959,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "glyphicon glyphicon-ok-circle"
   }) : _c('span', {
     staticClass: "glyphicon glyphicon-record"
-  }), _vm._v("\n                全部状态\n              ")])]), _vm._v(" "), _c('li', [_c('a', {
+  }), _vm._v("\n                    全部状态\n                  ")])]), _vm._v(" "), _c('li', [_c('a', {
     attrs: {
       "href": "#"
     },
@@ -4950,7 +4973,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "glyphicon glyphicon-ok-circle"
   }) : _c('span', {
     staticClass: "glyphicon glyphicon-record"
-  }), _vm._v("\n                未发送\n              ")])]), _vm._v(" "), _c('li', [_c('a', {
+  }), _vm._v("\n                    未发送\n                  ")])]), _vm._v(" "), _c('li', [_c('a', {
     attrs: {
       "href": "#"
     },
@@ -4964,7 +4987,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "glyphicon glyphicon-ok-circle"
   }) : _c('span', {
     staticClass: "glyphicon glyphicon-record"
-  }), _vm._v("\n                发送成功\n              ")])]), _vm._v(" "), _c('li', [_c('a', {
+  }), _vm._v("\n                    发送成功\n                  ")])]), _vm._v(" "), _c('li', [_c('a', {
     attrs: {
       "href": "#"
     },
@@ -4978,7 +5001,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "glyphicon glyphicon-ok-circle"
   }) : _c('span', {
     staticClass: "glyphicon glyphicon-record"
-  }), _vm._v("\n                发送失败\n              ")])])])]), _vm._v(" "), _c('input', {
+  }), _vm._v("\n                    发送失败\n                  ")])])])]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -5010,7 +5033,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('span', {
     staticClass: "glyphicon glyphicon-refresh component-loadding-icon"
-  }), _vm._v("\n            搜索...\n          ")]) : _c('button', {
+  }), _vm._v("\n                搜索...\n              ")]) : _c('button', {
     staticClass: "btn btn-primary",
     attrs: {
       "type": "submit"
@@ -5019,10 +5042,51 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "click": function($event) {
         $event.stopPropagation();
         $event.preventDefault();
-        _vm.requestLogs($event)
+        _vm.searchHandle($event)
       }
     }
-  }, [_vm._v("搜索")])])])]), _vm._v(" "), _c('table', {
+  }, [_vm._v("搜索")])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-6 text-right"
+  }, [_c('ul', {
+    staticClass: "pagination",
+    staticStyle: {
+      "margin": "0"
+    }
+  }, [_c('li', {
+    class: parseInt(this.currentPage) <= 1 ? 'disabled' : null
+  }, [_c('a', {
+    attrs: {
+      "href": "#",
+      "aria-label": "Previous"
+    },
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+        $event.preventDefault();
+        _vm.prevPage($event)
+      }
+    }
+  }, [_c('span', {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("«")])])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#",
+      "aria-label": "Next"
+    },
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+        $event.preventDefault();
+        _vm.nextPage($event)
+      }
+    }
+  }, [_c('span', {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("»")])])])])])])]), _vm._v(" "), _c('table', {
     staticClass: "table table-hove"
   }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.logs), function(log) {
     return _c('tr', {
@@ -5040,7 +5104,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "color": "#d9534f"
       }
     }, [_vm._v("发送失败")]) : _c('td', [_vm._v("未知状态")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(log.created_at))])])
-  }))]), _vm._v(" "), _vm._m(2)])])
+  }))])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('button', {
     staticClass: "btn btn-default dropdown-toggle",
@@ -5056,36 +5120,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', [_vm._v("手机号码")]), _vm._v(" "), _c('th', [_vm._v("验证码")]), _vm._v(" "), _c('th', [_vm._v("状态")]), _vm._v(" "), _c('th', [_vm._v("时间")])])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "panel-footer"
-  }, [_c('nav', {
-    attrs: {
-      "aria-label": "..."
-    }
-  }, [_c('ul', {
-    staticClass: "pager"
-  }, [_c('li', {
-    staticClass: "previous"
-  }, [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_c('span', {
-    attrs: {
-      "aria-hidden": "true"
-    }
-  }, [_vm._v("←")]), _vm._v(" Older")])]), _vm._v(" "), _c('li', {
-    staticClass: "next"
-  }, [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Newer "), _c('span', {
-    attrs: {
-      "aria-hidden": "true"
-    }
-  }, [_vm._v("→")])])])])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {

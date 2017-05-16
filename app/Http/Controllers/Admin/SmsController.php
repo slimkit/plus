@@ -14,7 +14,7 @@ class SmsController extends Controller
         $state = $request->query('state');
         $phone = $request->query('phone');
         $limit = $request->query('limit', 20);
-        $after = $request->query('after');
+        $page = $request->query('page');
         $query = app(VerifyCode::class)->newQuery();
 
         if ($state !== null) {
@@ -25,13 +25,10 @@ class SmsController extends Controller
             $query->where('account', 'like', sprintf('%%%s%%', $phone));
         }
 
-        if ($after) {
-            $query->where('id', '<', $after);
-        }
-
-        $query->limit($limit);
         $query->latest();
 
-        return $response->json($query->get(), 200);
+        $data = $query->simplePaginate($limit);
+
+        return $response->json($data, 200);
     }
 }

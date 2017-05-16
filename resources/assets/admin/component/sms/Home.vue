@@ -10,51 +10,73 @@
     <div class="panel panel-default">
       <!-- 短信记录面板 -->
       <div class="panel-heading">
-        <div class="input-group" style="
-          max-width: 356px;
-        ">
-          <div class="input-group-btn">
-            <!-- 状态 -->
-            <button type="button" class="btn btn-default dropdown-toggle" id="state" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">状态 <span class="caret"></span></button>
-            <ul class="dropdown-menu" aria-labelledby="state">
-              <li>
-                <a href="#" @click.prevent="changeState(-1)">
-                  <span v-if="search.state === -1" class="glyphicon glyphicon-ok-circle"></span>
-                  <span v-else class="glyphicon glyphicon-record"></span>
-                  全部状态
+
+        <div class="row">
+
+          <div class="col-xs-6">
+              
+            <div class="input-group" style="max-width: 356px;">
+              <div class="input-group-btn">
+                <!-- 状态 -->
+                <button type="button" class="btn btn-default dropdown-toggle" id="state" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">状态 <span class="caret"></span></button>
+                <ul class="dropdown-menu" aria-labelledby="state">
+                  <li>
+                    <a href="#" @click.prevent="changeState(-1)">
+                      <span v-if="search.state === -1" class="glyphicon glyphicon-ok-circle"></span>
+                      <span v-else class="glyphicon glyphicon-record"></span>
+                      全部状态
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" @click.prevent="changeState(0)">
+                      <span v-if="search.state === 0" class="glyphicon glyphicon-ok-circle"></span>
+                      <span v-else class="glyphicon glyphicon-record"></span>
+                      未发送
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" @click.prevent="changeState(1)">
+                      <span v-if="search.state === 1" class="glyphicon glyphicon-ok-circle"></span>
+                      <span v-else class="glyphicon glyphicon-record"></span>
+                      发送成功
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" @click.prevent="changeState(2)">
+                      <span v-if="search.state === 2" class="glyphicon glyphicon-ok-circle"></span>
+                      <span v-else class="glyphicon glyphicon-record"></span>
+                      发送失败
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <input type="text" class="form-control" aria-label="input-group-btn" placeholder="输入要搜索的手机号码" v-model="search.keyword">
+              <div class="input-group-btn">
+                <button v-if="loading === true" class="btn btn-primary" type="submit" disabled="disabled">
+                  <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
+                  搜索...
+                </button>
+                <button v-else class="btn btn-primary" type="submit" @click.stop.prevent="searchHandle">搜索</button>
+              </div>
+            </div>
+
+          </div>
+          <!-- pager -->
+          <div class="col-xs-6 text-right">
+            <ul class="pagination" style="margin: 0;">
+              <li :class="parseInt(this.currentPage) <= 1 ? 'disabled' : null">
+                <a href="#" aria-label="Previous" @click.stop.prevent="prevPage">
+                  <span aria-hidden="true">&laquo;</span>
                 </a>
               </li>
               <li>
-                <a href="#" @click.prevent="changeState(0)">
-                  <span v-if="search.state === 0" class="glyphicon glyphicon-ok-circle"></span>
-                  <span v-else class="glyphicon glyphicon-record"></span>
-                  未发送
-                </a>
-              </li>
-              <li>
-                <a href="#" @click.prevent="changeState(1)">
-                  <span v-if="search.state === 1" class="glyphicon glyphicon-ok-circle"></span>
-                  <span v-else class="glyphicon glyphicon-record"></span>
-                  发送成功
-                </a>
-              </li>
-              <li>
-                <a href="#" @click.prevent="changeState(2)">
-                  <span v-if="search.state === 2" class="glyphicon glyphicon-ok-circle"></span>
-                  <span v-else class="glyphicon glyphicon-record"></span>
-                  发送失败
+                <a href="#" aria-label="Next" @click.stop.prevent="nextPage">
+                  <span aria-hidden="true">&raquo;</span>
                 </a>
               </li>
             </ul>
           </div>
-          <input type="text" class="form-control" aria-label="input-group-btn" placeholder="输入要搜索的手机号码" v-model="search.keyword">
-          <div class="input-group-btn">
-            <button v-if="loading === true" class="btn btn-primary" type="submit" disabled="disabled">
-              <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
-              搜索...
-            </button>
-            <button v-else class="btn btn-primary" type="submit" @click.stop.prevent="requestLogs">搜索</button>
-          </div>
+
         </div>
       </div>
       <!-- Table -->
@@ -79,14 +101,6 @@
           </tr>
         </tbody>
       </table>
-      <div class="panel-footer">
-        <nav aria-label="...">
-          <ul class="pager">
-            <li class="previous"><a href="#"><span aria-hidden="true">&larr;</span> Older</a></li>
-            <li class="next"><a href="#">Newer <span aria-hidden="true">&rarr;</span></a></li>
-          </ul>
-        </nav>
-      </div>
     </div>
   </div>
 </template>
@@ -99,13 +113,22 @@ const SmsMainComponent = {
     search: {
       state: -1,
       keyword: '',
-      after: [],
     },
     loading: false,
     logs: [],
     error: null,
+    currentPage: 1,
   }),
   methods: {
+    nextPage() {
+      this.requestLogs(parseInt(this.currentPage) + 1);
+    },
+    prevPage() {
+      this.requestLogs(parseInt(this.currentPage) - 1);
+    },
+    searchHandle() {
+      this.requestLogs(1);
+    },
     dismisError() {
       this.error = null;
     },
@@ -113,11 +136,8 @@ const SmsMainComponent = {
       this.search.after = [];
       this.search.state = state;
     },
-    requestLogs() {
-      const [last = null] = this.search.after;
-      let params = {
-        after: last,
-      };
+    requestLogs(page) {
+      let params = { page };
 
       if (this.search.state >= 0) {
         params['state'] = this.search.state;
@@ -132,21 +152,24 @@ const SmsMainComponent = {
       request.get(
         createRequestURI('sms'),
         { params, validateStatus: status => status === 200 }
-      ).then(({ data = [] }) => {
+      ).then(({ data = {} }) => {
         this.loading = false;
-        if (!data.length) {
-          this.error = '没有更多消息了';
+
+        const { current_page: currentPage = 1, data: logs = [] } = data;
+
+        if (!logs.length) {
+          this.error = '没有数据可加载';
           return;
         }
+          
+        this.currentPage = currentPage;
+        this.logs = logs;
 
-        const last = data.pop();
-        this.logs = [...data, last];
-        this.search.after = [last.id, this.search.after];
       }).catch();
     }
   },
   created() {
-    this.requestLogs();
+    this.searchHandle();
   }
 };
 
