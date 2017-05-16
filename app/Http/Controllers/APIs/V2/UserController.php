@@ -72,13 +72,9 @@ class UserController extends Controller
      *
      * @return [type] [description]
      */
-    public function get(Request $request, User $user)
+    public function get(Request $request)
     {
-        $uid = Auth::guard('api')->user()->id ?? 0;
-        $uids = $request->input('user_ids') ? explode(',', $request->input('user_ids')) : [];
-        if ($request->user) {
-            array_push($uids, $request->user->id);
-        }
+        $uids = explode(',', $request->query('user_ids'));
         $datas = User::whereIn('id', $uids)
             ->with('datas', 'counts')
             ->get()
@@ -88,6 +84,27 @@ class UserController extends Controller
                 'message' => '没有相关用户',
             ])->setStatusCode(404);
         }
+        
+        return $this->formatUserInfo($datas);
+    }
+
+    /**
+     * get single user info.
+     *
+     * @author bs<414606094@qq.com>
+     * 
+     * @param  User    $user    [description]
+     */
+    public function getSingleInfo(Request $request, User $user)
+    {
+        $datas = [$user->load('datas', 'counts')->toArray()];
+
+        return $this->formatUserInfo($datas);
+    }
+
+    protected function formatUserInfo(array $datas)
+    {
+        $uid = Auth::guard('api')->user()->id ?? 0;
 
         foreach ($datas as &$data) {
             $data['is_following'] = Following::where('user_id', $uid)->where('following_user_id', $data['id'])->get()->isEmpty() ? 0 : 1;

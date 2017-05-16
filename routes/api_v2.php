@@ -40,8 +40,11 @@ Route::patch('/auth/password', 'AuthController@forgotPassword')
 // 地区接口
 Route::get('/areas', 'AreaController@showAreas');
 
-// 获取用户资料
-Route::get('/users/{user?}', 'UserController@get');
+// 获取单个用户资料
+Route::get('/users/{user}', 'UserController@getSingleInfo');
+
+// 批量获取用户资料
+Route::get('/users', 'UserController@get');
 
 // 用户相关组
 Route::prefix('users')
