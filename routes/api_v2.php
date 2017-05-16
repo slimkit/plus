@@ -43,6 +43,12 @@ Route::patch('/auth/password', 'AuthController@forgotPassword')
 // 地区接口
 Route::get('/areas', 'AreaController@showAreas');
 
+// 获取单个用户资料
+Route::get('/users/{user}', 'UserController@getSingleUserInfo');
+
+// 批量获取用户资料
+Route::get('/users', 'UserController@getMultiUserInfo');
+
 // 用户相关组
 Route::prefix('users')
 ->middleware('auth:api')
@@ -55,14 +61,25 @@ Route::prefix('users')
     // 修改用户密码
     Route::patch('/password', 'UserController@resetPassword') // 设置控制器
         ->middleware(Middleware\VerifyPassword::class); // 验证用户密码是否正确
-    // 获取用户资料
-    Route::get('/', 'UserController@get');
-
     // 关注操作相关
-    Route::post('{user}/follow', 'FollowController@doFollow')
+    Route::post('/{user}/follow', 'FollowController@doFollow')
         ->middleware(Middleware\CheckUserExsistedByUserId::class)
         ->middleware(Middleware\CheckIsFollow::class);
-    Route::delete('{user}/follow', 'FollowController@doUnFollow')
+    Route::delete('/{user}/follow', 'FollowController@doUnFollow')
         ->middleware(Middleware\CheckUserExsistedByUserId::class)
         ->middleware(Middleware\CheckIsFollowing::class);
+
+    // 查看指定用户关注状态
+    // Route::get('/{user}/followstatus', 'FollowController@getFollowStatus')
+    //     ->where(['user' => '[0-9]+']);;
+
+    // 批量查看用户关注状态
+    // Route::get('/followstatus', function () {
+    //     return 1;
+    // });
 });
+
+// 用户关注相关
+// Route::get('/follows/{user}/follows/{max_id?}', 'FollowController@follows');
+
+// Route::get('/follows/{user}/followeds/{max_id?}', 'FollowController@followeds');
