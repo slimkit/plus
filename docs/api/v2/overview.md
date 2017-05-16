@@ -60,4 +60,4 @@ curl -v -H "Accept: application/json" https://plus.io/api/v2/bootstrappers
 }
 ```
 
-> 在非程序主动通知错误外，返回体不会有上述结构。
+> 在非程序主动抛出错误外，返回体不会有上述结构。
