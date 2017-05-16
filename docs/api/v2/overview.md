@@ -13,3 +13,13 @@
 所以接口尽量靠近 REST ful 规范进行开发，以请求方式标示「动作」，地址标示「资源」，HTTP 状态码标示是否是正确的。
 
 > 不清楚 REST ful 请参考：《[阮一峰：RESTful API 设计指南](http://www.ruanyifeng.com/blog/2014/05/restful_api.html)》、《[RESTful - Wikipedia](https://en.wikipedia.org/wiki/Representational_state_transfer)》进行了解。
+
+## Authorization
+
+用户认证需要在 headers 中加入 Access token，示例：
+
+```shell
+curl -v -H "Authorization: Bearer TOKEN" https://plus.io/v2/bootstrappers
+```
+
+> 格式为 `Authorization: Bearer TOKEN` 其中 **TOKEN** 是获取授权得到的。
