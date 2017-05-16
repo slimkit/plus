@@ -23,6 +23,8 @@ curl -v -H "Authorization: Bearer TOKEN" https://plus.io/api/v2/bootstrappers
 ```
 
 > 格式为 `Authorization: Bearer TOKEN` 其中 **TOKEN** 是获取授权得到的。
+> 针对 GET 请求在无法传递 Authorization 的情况下，增加了 URL 参数来进行认证。格式：
+> `access_token=TOKEN` ， 如：`https://plus.io/api/v2/bootstrappers?access_token=TOKEN`
 
 ## 媒体类型
 
