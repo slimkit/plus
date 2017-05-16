@@ -72,26 +72,41 @@ class UserController extends Controller
      *
      * @return [type] [description]
      */
-    public function get(Request $request)
+    public function getMultiUserInfo(Request $request)
     {
         $uid = Auth::guard('api')->user()->id ?? 0;
-        $uids = explode(',', $request->input('user_ids'));
+        $uids = explode(',', $request->query('user'));
         $datas = User::whereIn('id', $uids)
             ->with('datas', 'counts')
-            ->get()
-            ->toArray();
-        if (! $datas) {
+            ->get();
+        if ($datas->isEmpty()) {
             return response()->json([
-                'message' => '没有相关用户',
+                'user' => '没有相关用户',
             ])->setStatusCode(404);
         }
-
-        foreach ($datas as &$data) {
-            $data['is_following'] = Following::where('user_id', $uid)->where('following_user_id', $data['id'])->get()->isEmpty() ? 0 : 1;
-            $data['is_followed'] = Followed::where('user_id', $uid)->where('followed_user_id', $data['id'])->get()->isEmpty() ? 0 : 1;
-        }
+        $datas->each(function ($data) use ($uid) {
+            $data->is_followed = $data->follows()->where('following_user_id', $uid)->count() > 0 ? 1 : 0;
+            $data->is_following = $data->followeds()->where('followed_user_id', $uid)->count() > 0 ? 1 : 0;
+        });
 
         return response()->json($datas)->setStatusCode(200);
+    }
+
+    /**
+     * get single user info.
+     *
+     * @author bs<414606094@qq.com>
+     *
+     * @param  User    $user    [description]
+     */
+    public function getSingleUserInfo(User $user)
+    {
+        $uid = Auth::guard('api')->user()->id ?? 0;
+        $data = $user->load('datas', 'counts');
+        $data->is_followed = $data->follows()->where('following_user_id', $uid)->count() > 0 ? 1 : 0;
+        $data->is_following = $data->followeds()->where('followed_user_id', $uid)->count() > 0 ? 1 : 0;
+
+        return response()->json($data)->setStatusCode(200);
     }
 
     /**
