@@ -79,7 +79,8 @@ Route::prefix('users')
     // });
 });
 
-// 用户关注相关
+// 获取用户关注
 // Route::get('/follows/{user}/follows/{max_id?}', 'FollowController@follows');
 
+// 获取用户粉丝
 // Route::get('/follows/{user}/followeds/{max_id?}', 'FollowController@followeds');

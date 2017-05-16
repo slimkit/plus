@@ -8,7 +8,6 @@ use Zhiyi\Plus\Models\Digg;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Comment;
-use Zhiyi\Plus\Models\Followed;
 use Zhiyi\Plus\Models\Following;
 use Zhiyi\Plus\Models\UserDatas;
 use Zhiyi\Plus\Models\Conversation;
@@ -77,16 +76,22 @@ class UserController extends Controller
         $uid = Auth::guard('api')->user()->id ?? 0;
         $uids = explode(',', $request->query('user'));
         $datas = User::whereIn('id', $uids)
-            ->with('datas', 'counts')
+            ->with(['datas', 'counts', 'follows' => function ($query) use ($uid){
+                $query->where('following_user_id', $uid);
+            },
+            'followeds' => function ($query) use ($uid) {
+                $query->where('followed_user_id', $uid);
+            }])
             ->get();
         if ($datas->isEmpty()) {
             return response()->json([
                 'user' => '没有相关用户',
             ])->setStatusCode(404);
         }
+
         $datas->each(function ($data) use ($uid) {
-            $data->is_followed = $data->follows()->where('following_user_id', $uid)->count() > 0 ? 1 : 0;
-            $data->is_following = $data->followeds()->where('followed_user_id', $uid)->count() > 0 ? 1 : 0;
+            $data->is_followed = $data->follows->count() > 0 ? 1 : 0;
+            $data->is_following = $data->followeds->count() > 0 ? 1 : 0;
         });
 
         return response()->json($datas)->setStatusCode(200);
