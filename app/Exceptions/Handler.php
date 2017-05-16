@@ -59,12 +59,18 @@ class Handler extends ExceptionHandler
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        if ($request->expectsJson() || in_array('api', $exception->guards())) {
+        if ($request->is('*/v1/*') && ($request->expectsJson() || in_array('api', $exception->guards()))) {
             return response()->json([
                 'status'  => false,
                 'code'    => 1099,
                 'message' => '用户认证失败',
                 'data'    => null,
+            ], 401);
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => ['Unauthenticated.'],
             ], 401);
         }
 
