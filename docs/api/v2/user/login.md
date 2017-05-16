@@ -17,6 +17,8 @@ POST /login
 
 ### 响应
 
+> Status: 201 Created
+
 ```json
 {
   "token": "51WAM1rIOtJYMDIIeyGf2TUE7HCrjc7gFvP4dWWnEmnkWpjEtG42JaudABNyNjMM",
