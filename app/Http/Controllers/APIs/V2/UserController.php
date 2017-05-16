@@ -72,10 +72,13 @@ class UserController extends Controller
      *
      * @return [type] [description]
      */
-    public function get(Request $request)
+    public function get(Request $request, User $user)
     {
         $uid = Auth::guard('api')->user()->id ?? 0;
-        $uids = explode(',', $request->input('user_ids'));
+        $uids = $request->input('user_ids') ? explode(',', $request->input('user_ids')) : [];
+        if ($request->user) {
+            array_push($uids, $request->user->id);
+        }
         $datas = User::whereIn('id', $uids)
             ->with('datas', 'counts')
             ->get()

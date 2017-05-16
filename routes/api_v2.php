@@ -40,6 +40,10 @@ Route::patch('/auth/password', 'AuthController@forgotPassword')
 // 地区接口
 Route::get('/areas', 'AreaController@showAreas');
 
+// 获取用户资料
+Route::get('/users/{user?}', 'UserController@get');
+
+
 // 用户相关组
 Route::prefix('users')
 ->middleware('auth:api')
@@ -52,9 +56,6 @@ Route::prefix('users')
     // 修改用户密码
     Route::patch('/password', 'UserController@resetPassword') // 设置控制器
         ->middleware(Middleware\VerifyPassword::class); // 验证用户密码是否正确
-    // 获取用户资料
-    Route::get('/', 'UserController@get');
-
     // 关注操作相关
     Route::post('{user}/follow', 'FollowController@doFollow')
         ->middleware(Middleware\CheckUserExsistedByUserId::class)
