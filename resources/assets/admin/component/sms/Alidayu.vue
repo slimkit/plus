@@ -60,7 +60,7 @@
             <button v-else type="button" class="btn btn-primary" @click.stop.prevent="submitHandle">提交</button>
           </div>
           <div class="col-sm-6 help-block">
-            <span class="text-">{{ submit.message }}</span>
+            <span :class="`text-${submit.type}`">{{ submit.message }}</span>
           </div>
         </div>
       </div>
@@ -106,6 +106,19 @@ const AlidayuComponent = {
     submitHandle() {
       const { app_key = null, app_secret = null, sign_name = null, verify_template_id = null } = this.options;
       this.submit.state = true;
+      request.patch(
+        createRequestURI('sms/driver/alidayu'),
+        { app_key, app_secret, sign_name, verify_template_id },
+        { validateStatus: status => status === 201 }
+      ).then(({ data: { message: [ message = '提交成功' ] = [] } }) => {
+        this.submit.state = false;
+        this.submit.type = 'success';
+        this.submit.message = message;
+      }).catch(({ response: { data: { message: [ message = '提交失败' ] = [] } = {} } = {} }) => {
+        this.submit.state = false;
+        this.submit.type = 'danger';
+        this.submit.message = message;
+      });
     }
   },
   created() {
