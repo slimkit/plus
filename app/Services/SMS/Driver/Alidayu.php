@@ -4,8 +4,8 @@ namespace Zhiyi\Plus\Services\SMS\Driver;
 
 use Exception;
 use Flc\Alidayu\App as AlidayuApp;
-use Flc\Alidayu\Client as AlidayuClient;
 use Zhiyi\Plus\Services\SMS\Message;
+use Flc\Alidayu\Client as AlidayuClient;
 use Zhiyi\Plus\Services\SMS\DirverInterface;
 use Illuminate\Contracts\Foundation\Application;
 use Flc\Alidayu\Requests\AlibabaAliqinFcSmsNumSend;
@@ -90,7 +90,7 @@ class Alidayu implements DirverInterface
     {
         if (! $this->client instanceof AlidayuClient) {
             $this->client = $this->app->makeWith(AlidayuClient::class, [
-                $this->app->makeWith(AlidayuApp::class, [$this->config])
+                $this->app->makeWith(AlidayuApp::class, [$this->config]),
             ]);
         }
 
