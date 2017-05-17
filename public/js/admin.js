@@ -7955,11 +7955,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
-  }, [_vm._v("阿里大于 - 驱动配置")]), _vm._v(" "), (_vm.loadding) ? _c('div', {
+  }, [_vm._v("阿里大于 - 驱动配置")]), _vm._v(" "), (_vm.loadding.state === 0) ? _c('div', {
     staticClass: "panel-body text-center"
   }, [_c('span', {
     staticClass: "glyphicon glyphicon-refresh component-loadding-icon"
-  }), _vm._v("\n      加载中...\n    ")]) : _c('div', {
+  }), _vm._v("\n      加载中...\n    ")]) : (_vm.loadding.state === 1) ? _c('div', {
     staticClass: "panel-body form-horizontal"
   }, [_c('div', {
     staticClass: "form-group"
@@ -7971,6 +7971,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("App Key")]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-4"
   }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.options.app_key),
+      expression: "options.app_key"
+    }],
     staticClass: "form-control",
     attrs: {
       "type": "text",
@@ -7978,6 +7984,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "id": "app-key",
       "placeholder": "请输入应用 AppKey",
       "aria-describedby": "app-key-help"
+    },
+    domProps: {
+      "value": (_vm.options.app_key)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.options.app_key = $event.target.value
+      }
     }
   })]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
@@ -7996,6 +8011,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("App Secret")]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-4"
   }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.options.app_secret),
+      expression: "options.app_secret"
+    }],
     staticClass: "form-control",
     attrs: {
       "type": "text",
@@ -8003,6 +8024,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "id": "app-secret",
       "placeholder": "请输入应用 App Secret",
       "aria-describedby": "app-secret-help"
+    },
+    domProps: {
+      "value": (_vm.options.app_secret)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.options.app_secret = $event.target.value
+      }
     }
   })]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
@@ -8021,6 +8051,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("短信签名")]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-4"
   }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.options.sign_name),
+      expression: "options.sign_name"
+    }],
     staticClass: "form-control",
     attrs: {
       "type": "text",
@@ -8028,6 +8064,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "id": "sign-name",
       "placeholder": "请输入短信签名名称",
       "aria-describedby": "sign-name-help"
+    },
+    domProps: {
+      "value": (_vm.options.sign_name)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.options.sign_name = $event.target.value
+      }
     }
   })]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
@@ -8046,6 +8091,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("模板ID")]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-4"
   }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.options.verify_template_id),
+      expression: "options.verify_template_id"
+    }],
     staticClass: "form-control",
     attrs: {
       "type": "text",
@@ -8053,6 +8104,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "id": "template-id",
       "placeholder": "请输入短信模板id",
       "aria-describedby": "template-id-help"
+    },
+    domProps: {
+      "value": (_vm.options.verify_template_id)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.options.verify_template_id = $event.target.value
+      }
     }
   })]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
@@ -8065,16 +8125,50 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-group"
   }, [_c('div', {
     staticClass: "col-sm-offset-2 col-sm-4"
-  }, [_c('button', {
+  }, [(_vm.submit.state === true) ? _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "submit",
+      "disabled": "disabled"
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-refresh component-loadding-icon"
+  }), _vm._v("\n            提交...\n          ")]) : _c('button', {
     staticClass: "btn btn-primary",
     attrs: {
       "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+        $event.preventDefault();
+        _vm.submitHandle($event)
+      }
     }
   }, [_vm._v("提交")])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6 help-block"
   }, [_c('span', {
-    staticClass: "text-"
-  }, [_vm._v("哈哈")])])])])])])
+    class: ("text-" + (_vm.submit.type))
+  }, [_vm._v(_vm._s(_vm.submit.message))])])])]) : _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "alert alert-danger",
+    attrs: {
+      "role": "alert"
+    }
+  }, [_vm._v(_vm._s(_vm.loadding.message))]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+        $event.preventDefault();
+        _vm.request($event)
+      }
+    }
+  }, [_vm._v("刷新")])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -8094,6 +8188,16 @@ if (false) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); //
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -8161,11 +8265,107 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 
+var _request2 = __webpack_require__(2);
+
+var _request3 = _interopRequireDefault(_request2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var AlidayuComponent = {
   data: function data() {
     return {
-      loadding: false
+      loadding: {
+        state: 0,
+        message: ''
+      },
+      submit: {
+        state: false,
+        type: 'muted',
+        message: ''
+      },
+      options: {}
     };
+  },
+  methods: {
+    request: function request() {
+      var _this = this;
+
+      this.loadding.state = 0;
+      _request3.default.get((0, _request2.createRequestURI)('sms/driver/alidayu'), { validateStatus: function validateStatus(status) {
+          return status === 200;
+        } }).then(function (_ref) {
+        var _ref$data = _ref.data,
+            data = _ref$data === undefined ? {} : _ref$data;
+
+        _this.loadding.state = 1;
+        _this.options = data;
+      }).catch(function (_ref2) {
+        var _ref2$response = _ref2.response;
+        _ref2$response = _ref2$response === undefined ? {} : _ref2$response;
+        var _ref2$response$data = _ref2$response.data;
+        _ref2$response$data = _ref2$response$data === undefined ? {} : _ref2$response$data;
+        var _ref2$response$data$m = _ref2$response$data.message;
+        _ref2$response$data$m = _ref2$response$data$m === undefined ? [] : _ref2$response$data$m;
+
+        var _ref2$response$data$m2 = _slicedToArray(_ref2$response$data$m, 1),
+            _ref2$response$data$m3 = _ref2$response$data$m2[0],
+            message = _ref2$response$data$m3 === undefined ? '加载失败' : _ref2$response$data$m3;
+
+        _this.loadding.state = 2;
+        _this.loadding.message = message;
+      });
+    },
+    submitHandle: function submitHandle() {
+      var _this2 = this;
+
+      var _options = this.options,
+          _options$app_key = _options.app_key,
+          app_key = _options$app_key === undefined ? null : _options$app_key,
+          _options$app_secret = _options.app_secret,
+          app_secret = _options$app_secret === undefined ? null : _options$app_secret,
+          _options$sign_name = _options.sign_name,
+          sign_name = _options$sign_name === undefined ? null : _options$sign_name,
+          _options$verify_templ = _options.verify_template_id,
+          verify_template_id = _options$verify_templ === undefined ? null : _options$verify_templ;
+
+      this.submit.state = true;
+      _request3.default.patch((0, _request2.createRequestURI)('sms/driver/alidayu'), { app_key: app_key, app_secret: app_secret, sign_name: sign_name, verify_template_id: verify_template_id }, { validateStatus: function validateStatus(status) {
+          return status === 201;
+        } }).then(function (_ref3) {
+        var _ref3$data$message = _ref3.data.message;
+        _ref3$data$message = _ref3$data$message === undefined ? [] : _ref3$data$message;
+
+        var _ref3$data$message2 = _slicedToArray(_ref3$data$message, 1),
+            _ref3$data$message2$ = _ref3$data$message2[0],
+            message = _ref3$data$message2$ === undefined ? '提交成功' : _ref3$data$message2$;
+
+        _this2.submit.state = false;
+        _this2.submit.type = 'success';
+        _this2.submit.message = message;
+      }).catch(function (_ref4) {
+        var _ref4$response = _ref4.response;
+        _ref4$response = _ref4$response === undefined ? {} : _ref4$response;
+        var _ref4$response$data = _ref4$response.data;
+        _ref4$response$data = _ref4$response$data === undefined ? {} : _ref4$response$data;
+        var _ref4$response$data$m = _ref4$response$data.message;
+        _ref4$response$data$m = _ref4$response$data$m === undefined ? [] : _ref4$response$data$m;
+
+        var _ref4$response$data$m2 = _slicedToArray(_ref4$response$data$m, 1),
+            _ref4$response$data$m3 = _ref4$response$data$m2[0],
+            message = _ref4$response$data$m3 === undefined ? '提交失败' : _ref4$response$data$m3;
+
+        _this2.submit.state = false;
+        _this2.submit.type = 'danger';
+        _this2.submit.message = message;
+      });
+    }
+  },
+  created: function created() {
+    var _this3 = this;
+
+    window.setTimeout(function () {
+      return _this3.request();
+    }, 500);
   }
 };
 
