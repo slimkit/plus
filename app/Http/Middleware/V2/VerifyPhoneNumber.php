@@ -27,7 +27,7 @@ class VerifyPhoneNumber
 
         if ($validator->fails()) {
             return response()->json([
-                'message' => '操作失败',
+                'phone' => '请输入中国大陆合法手机号码',
             ])->setStatusCode(403);
         }
 

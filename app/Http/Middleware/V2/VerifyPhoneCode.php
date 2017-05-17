@@ -29,7 +29,7 @@ class VerifyPhoneCode
 
         if (! $verify || $verify->state == 2) {
             return response()->json([
-                '验证码错误或失效',
+                'code' => '验证码错误或失效',
             ])->setStatusCode(403);
         }
 

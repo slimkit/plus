@@ -8,6 +8,16 @@ Route::get('/bootstrappers', 'BootstrappersController@show');
 // 用户登录
 Route::any('/login', 'LoginController@store');
 
+// 用户注册
+Route::post('/register', 'AuthController@register')
+    ->middleware(Middleware\CheckDeviceCodeExisted::class) // 验证设备号是否存在
+    ->middleware(Middleware\VerifyPhoneNumber::class) // 验证手机号码是否正确
+    ->middleware(Middleware\VerifyUserNameRole::class) // 验证用户名规则是否正确
+    ->middleware(Middleware\CheckUserByNameNotExisted::class) // 验证用户名是否被占用
+    ->middleware(Middleware\CheckUserByPhoneNotExisted::class) // 验证手机号码是否被占用
+    ->middleware(Middleware\VerifyPhoneCode::class) // 验证验证码释放正确
+;
+
 // 获取手机验证码
 Route::post('/auth/phone/code', 'AuthController@sendPhoneCode')
     ->middleware(Middleware\VerifyPhoneNumber::class) // 验证手机号格式是否正确
@@ -22,16 +32,6 @@ Route::post('/auth', 'AuthController@login')
 
 // 重置token接口
 Route::patch('/auth', 'AuthController@resetToken');
-
-// 用户注册
-Route::post('/auth/register', 'AuthController@register')
-    ->middleware(Middleware\CheckDeviceCodeExisted::class) // 验证设备号是否存在
-    ->middleware(Middleware\VerifyPhoneNumber::class) // 验证手机号码是否正确
-    ->middleware(Middleware\VerifyUserNameRole::class) // 验证用户名规则是否正确
-    ->middleware(Middleware\CheckUserByNameNotExisted::class) // 验证用户名是否被占用
-    ->middleware(Middleware\CheckUserByPhoneNotExisted::class) // 验证手机号码是否被占用
-    ->middleware(Middleware\VerifyPhoneCode::class) // 验证验证码释放正确
-;
 
 // 找回密码
 Route::patch('/auth/password', 'AuthController@forgotPassword')

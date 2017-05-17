@@ -10,6 +10,7 @@ use Zhiyi\Plus\Services\SMS\SMS;
 use Zhiyi\Plus\Models\VerifyCode;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\LoginRecord;
+use Illuminate\Database\Eloquent\Factory;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class AuthController extends Controller
@@ -160,14 +161,19 @@ class AuthController extends Controller
     {
         $name = $request->input('name');
         $phone = $request->input('phone');
-        $password = $request->input('password', '');
+        $password = $request->input('password');
         $user = new User();
         $user->name = $name;
         $user->phone = $phone;
         $user->createPassword($password);
         $user->save();
 
-        return $this->login($request);
+        return $response->json($factory->create(AuthToken::class, [
+                'token' => str_random(64),
+                'refresh_token' => str_random(64),
+                'user_id' => $user->id,
+            ]))
+            ->setStatusCode(201);
     }
 
     /**
