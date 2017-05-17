@@ -7584,7 +7584,7 @@ if (false) {
 var disposed = false
 var Component = __webpack_require__(0)(
   /* script */
-  null,
+  __webpack_require__(145),
   /* template */
   __webpack_require__(144),
   /* styles */
@@ -7622,40 +7622,72 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _vm._m(0)
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "component-container container-fluid"
   }, [_c('div', {
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
-  }, [_vm._v("短信发送驱动设置")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("短信发送驱动设置")]), _vm._v(" "), (_vm.loadding) ? _c('div', {
+    staticClass: "panel-body text-center"
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-refresh component-loadding-icon"
+  }), _vm._v("\n      加载中...\n    ")]) : (_vm.loaddingError) ? _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "alert alert-danger",
+    attrs: {
+      "role": "alert"
+    }
+  }, [_vm._v(_vm._s(_vm.loaddingErrorMessage))]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+        $event.preventDefault();
+        _vm.request($event)
+      }
+    }
+  }, [_vm._v("刷新")])]) : _c('div', {
     staticClass: "form-horizontal panel-body"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
-    staticClass: "col-sm-2 control-label",
-    attrs: {
-      "for": "dirver"
-    }
+    staticClass: "col-sm-2 control-label"
   }, [_vm._v("驱动")]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-4"
-  }, [_c('input', {
-    staticClass: "form-control",
-    attrs: {
-      "type": "text",
-      "id": "dirver",
-      "placeholder": "选择驱动",
-      "aria-describedby": "dirver-help-block"
-    }
-  })]), _vm._v(" "), _c('div', {
+  }, _vm._l((_vm.driver), function(name, value) {
+    return _c('div', {
+      key: value,
+      staticClass: "radio"
+    }, [_c('label', [_c('input', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (_vm.selected),
+        expression: "selected"
+      }],
+      attrs: {
+        "type": "radio",
+        "name": "default"
+      },
+      domProps: {
+        "value": value,
+        "checked": _vm._q(_vm.selected, value)
+      },
+      on: {
+        "__c": function($event) {
+          _vm.selected = value
+        }
+      }
+    }), _vm._v("\n              " + _vm._s(name) + "\n            ")])])
+  })), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
   }, [_c('span', {
-    staticClass: "help-block",
-    attrs: {
-      "id": "dirver-help-block"
-    }
+    staticClass: "help-block"
   }, [_vm._v("请选择用于发送短信的驱动程序。")])])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('div', {
@@ -7670,7 +7702,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('span', {
     staticClass: "text-success"
   }, [_vm._v("Test tip")])])])])])])
-}]}
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -7678,6 +7710,131 @@ if (false) {
      require("vue-hot-reload-api").rerender("data-v-92bb26f4", module.exports)
   }
 }
+
+/***/ }),
+/* 145 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var _request2 = __webpack_require__(2);
+
+var _request3 = _interopRequireDefault(_request2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var DriverComponent = {
+  data: function data() {
+    return {
+      selected: null,
+      driver: [],
+      loadding: true,
+      loaddingError: false,
+      loaddingErrorMessage: ''
+    };
+  },
+  methods: {
+    request: function request() {
+      var _this = this;
+
+      this.loadding = true;
+      _request3.default.get((0, _request2.createRequestURI)('sms/driver'), { validateStatus: function validateStatus(status) {
+          return status === 200;
+        } }).then(function (_ref) {
+        var _ref$data = _ref.data,
+            data = _ref$data === undefined ? {} : _ref$data;
+        var _data$default = data.default,
+            selected = _data$default === undefined ? null : _data$default,
+            _data$driver = data.driver,
+            driver = _data$driver === undefined ? [] : _data$driver;
+
+        _this.loadding = false;
+        _this.loaddingError = false;
+        _this.selected = selected;
+        _this.driver = driver;
+      }).catch(function (_ref2) {
+        var _ref2$response = _ref2.response;
+        _ref2$response = _ref2$response === undefined ? {} : _ref2$response;
+        var _ref2$response$data = _ref2$response.data;
+        _ref2$response$data = _ref2$response$data === undefined ? {} : _ref2$response$data;
+        var _ref2$response$data$m = _ref2$response$data.message;
+        _ref2$response$data$m = _ref2$response$data$m === undefined ? [] : _ref2$response$data$m;
+
+        var _ref2$response$data$m2 = _slicedToArray(_ref2$response$data$m, 1),
+            _ref2$response$data$m3 = _ref2$response$data$m2[0],
+            message = _ref2$response$data$m3 === undefined ? '加载驱动设置失败，请刷新重新尝试！' : _ref2$response$data$m3;
+
+        _this.loadding = false;
+        _this.loaddingError = true;
+        _this.loaddingErrorMessage = message;
+      });
+    },
+    submit: function submit() {
+      var selected = this.selected;
+    }
+  },
+  created: function created() {
+    var _this2 = this;
+
+    window.setTimeout(function () {
+      return _this2.request();
+    }, 500);
+  }
+};
+
+exports.default = DriverComponent;
 
 /***/ })
 ],[65]);

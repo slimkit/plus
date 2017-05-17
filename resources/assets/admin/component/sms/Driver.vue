@@ -3,16 +3,31 @@
     <div class="panel panel-default">
       <!-- Title -->
       <div class="panel-heading">短信发送驱动设置</div>
+      <!-- Loading -->
+      <div v-if="loadding" class="panel-body text-center">
+        <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
+        加载中...
+      </div>
+      <!-- Loading Error. -->
+      <div v-else-if="loaddingError" class="panel-body">
+        <div class="alert alert-danger" role="alert">{{ loaddingErrorMessage }}</div>
+        <button type="button" class="btn btn-primary" @click.stop.prevent="request">刷新</button>
+      </div>
       <!-- Body -->
-      <div class="form-horizontal panel-body">
+      <div v-else class="form-horizontal panel-body">
         <!-- 驱动设置表单 -->
         <div class="form-group">
-          <label for="dirver" class="col-sm-2 control-label">驱动</label>
+          <label class="col-sm-2 control-label">驱动</label>
           <div class="col-sm-4">
-            <input type="text" class="form-control" id="dirver" placeholder="选择驱动" aria-describedby="dirver-help-block">
+            <div class="radio" v-for="name, value in driver" :key="value">
+              <label>
+                <input type="radio" name="default" :value="value" v-model="selected">
+                {{ name }}
+              </label>
+            </div>
           </div>
           <div class="col-sm-6">
-            <span id="dirver-help-block" class="help-block">请选择用于发送短信的驱动程序。</span>
+            <span class="help-block">请选择用于发送短信的驱动程序。</span>
           </div>
         </div>
         <!-- 提交表单按钮 -->
@@ -28,3 +43,43 @@
     </div>
   </div>
 </template>
+
+<script>
+import request, { createRequestURI } from '../../util/request';
+
+const DriverComponent = {
+  data: () => ({
+    selected: null,
+    driver: [],
+    loadding: true,
+    loaddingError: false,
+    loaddingErrorMessage: '',
+  }),
+  methods: {
+    request() {
+      this.loadding = true;
+      request.get(createRequestURI('sms/driver'), { validateStatus: status => status === 200 })
+        .then(({ data = {} }) => {
+          const { default: selected = null, driver = [] } = data;
+          this.loadding = false;
+          this.loaddingError = false;
+          this.selected = selected;
+          this.driver = driver;
+        })
+        .catch(({ response: { data: { message: [message = '加载驱动设置失败，请刷新重新尝试！'] = [] } = {} } = {} }) => {
+          this.loadding = false;
+          this.loaddingError = true;
+          this.loaddingErrorMessage = message;
+        });
+    },
+    submit() {
+      const selected = this.selected;
+    }
+  },
+  created() {
+    window.setTimeout(() => this.request(), 500);
+  }
+};
+
+export default DriverComponent;
+</script>
