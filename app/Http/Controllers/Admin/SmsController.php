@@ -102,7 +102,7 @@ class SmsController extends Controller
     }
 
     /**
-     * 更新阿里短信配置信息
+     * 更新阿里短信配置信息.
      *
      * @param Repository $config
      * @param Configuration $store
