@@ -11,6 +11,15 @@ use Zhiyi\Plus\Http\Requests\API2\CreateRegisterVerifyCodeRequest;
 
 class VerifyCodeController extends Controller
 {
+    /**
+     * 创建注册验证码.
+     *
+     * @param \Zhiyi\Plus\Http\Requests\API2\CreateRegisterVerifyCodeRequest $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param \Zhiyi\Plus\Services\SMS\SMS $sms
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function createRegister(CreateRegisterVerifyCodeRequest $request, ResponseFactory $response, SMS $sms)
     {
         $vaildSecond = config('app.env') == 'production' ? 300 : 6;
@@ -27,6 +36,15 @@ class VerifyCodeController extends Controller
         return $this->createVerifyCode($phone, $sms, $response);
     }
 
+    /**
+     * 创建验证码并派发事件.
+     *
+     * @param string $phone
+     * @param \Zhiyi\Plus\Services\SMS\SMS $sms
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     protected function createVerifyCode($phone, SMS $sms, ResponseFactory $response)
     {
         $sms->dispatch(factory(VerifyCode::class)->create([
