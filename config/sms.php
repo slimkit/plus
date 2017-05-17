@@ -26,7 +26,7 @@ return [
     */
 
     'driver' => [
-        'testing' => '开发测试（不发送）',
+        'testing' => '只记录（不通过任何驱动发送）',
         'alidayu' => '阿里大于',
     ],
 
