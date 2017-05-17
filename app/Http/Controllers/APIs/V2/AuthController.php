@@ -149,62 +149,6 @@ class AuthController extends Controller
     }
 
     /**
-     * 注册用户.
-     *
-     * @param Request $request 请求对象
-     *
-     * @return Response 返回对象
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     * @homepage http://medz.cn
-     */
-    public function register(VerifyRegisterPost $request, Factory $factory)
-    {
-        $name = $request->input('name');
-        $phone = $request->input('phone');
-        $password = $request->input('password');
-        $code = $request->input('code');
-
-        $vaild = 300;
-        $verify = VerifyCode::byAccount($phone)
-            ->byValid($vaild)
-            ->byCode($code)
-            ->orderByDesc()
-            ->first();
-
-        if (! $verify || $verify->state == 2) {
-            return response()->json([
-                'code' => ['验证码错误或失效'],
-            ])->setStatusCode(403);
-        }
-
-        if (User::byPhone($phone)->withTrashed()->first()) {
-            return response()->json([
-                'phone' => ['手机号已被使用'],
-            ])->setStatusCode(403);
-        }
-
-        if (User::byName($name)->withTrashed()->first()) {
-            return response()->json([
-                'name' => ['用户名已被使用'],
-            ])->setStatusCode(403);
-        }
-
-        $user = new User();
-        $user->name = $name;
-        $user->phone = $phone;
-        $user->createPassword($password);
-        $user->save();
-
-        return response()->json($factory->create(AuthToken::class, [
-                'token' => str_random(64),
-                'refresh_token' => str_random(64),
-                'user_id' => $user->id,
-            ]))
-            ->setStatusCode(201);
-    }
-
-    /**
      * 找回密码控制器.
      *
      * @param Request $request 请求对象

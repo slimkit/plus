@@ -34,7 +34,7 @@ Route::get('/users/{user}', 'UserController@getSingleUserInfo');
 Route::get('/users', 'UserController@getMultiUserInfo');
 
 // 用户注册
-Route::post('/users', 'AuthController@register')
+Route::post('/users', 'UserController@registerUser')
     ->middleware(Middleware\VerifyPhoneCodeAfterAction::class) // 后置操作设置验证码过期
 ;
 

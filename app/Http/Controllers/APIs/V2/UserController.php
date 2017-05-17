@@ -8,15 +8,76 @@ use Zhiyi\Plus\Models\Digg;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Comment;
+use Zhiyi\Plus\Models\AuthToken;
 use Zhiyi\Plus\Models\Following;
 use Zhiyi\Plus\Models\UserDatas;
+use Zhiyi\Plus\Models\VerifyCode;
 use Zhiyi\Plus\Models\Conversation;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Factory;
 use Zhiyi\Plus\Models\UserProfileSetting;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Http\Requests\API2\VerifyRegisterPost;
 
 class UserController extends Controller
 {
+    /**
+     * 注册用户.
+     *
+     * @author bs<414606094@qq.com>
+     *
+     * @param  VerifyRegisterPost $request
+     *
+     * @param  Factory            $factory
+     *
+     * @return Response
+     */
+    public function registerUser(VerifyRegisterPost $request, Factory $factory)
+    {
+        $name = $request->input('name');
+        $phone = $request->input('phone');
+        $password = $request->input('password');
+        $code = $request->input('code');
+
+        $vaild = 300;
+        $verify = VerifyCode::byAccount($phone)
+            ->byValid($vaild)
+            ->byCode($code)
+            ->orderByDesc()
+            ->first();
+
+        if (! $verify || $verify->state == 2) {
+            return response()->json([
+                'code' => ['验证码错误或失效'],
+            ])->setStatusCode(403);
+        }
+
+        if (User::byPhone($phone)->withTrashed()->first()) {
+            return response()->json([
+                'phone' => ['手机号已被使用'],
+            ])->setStatusCode(403);
+        }
+
+        if (User::byName($name)->withTrashed()->first()) {
+            return response()->json([
+                'name' => ['用户名已被使用'],
+            ])->setStatusCode(403);
+        }
+
+        $user = new User();
+        $user->name = $name;
+        $user->phone = $phone;
+        $user->createPassword($password);
+        $user->save();
+
+        return response()->json($factory->create(AuthToken::class, [
+                'token' => str_random(64),
+                'refresh_token' => str_random(64),
+                'user_id' => $user->id,
+            ]))
+            ->setStatusCode(201);
+    }
+
     /**
      * 修改用户密码.
      *

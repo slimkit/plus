@@ -47,6 +47,4 @@ class VerifyRegisterPost extends FormRequest
             'name.max' => '用户名最大长度不超过48位',
         ];
     }
-
-
 }
