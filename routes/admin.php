@@ -17,6 +17,7 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/driver', 'SmsController@showDriver');
         Route::patch('/driver', 'SmsController@updateDriver');
         Route::get('/driver/{dirver}', 'SmsController@showOption');
+        Route::patch('/driver/alidayu', 'SmsController@updateAlidayuOption');
     });
 
     /* ------------------------------ */

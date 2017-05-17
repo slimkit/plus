@@ -100,4 +100,25 @@ class SmsController extends Controller
 
         return $response->json($data, 200);
     }
+
+    /**
+     * 更新阿里短信配置信息
+     *
+     * @param Repository $config
+     * @param Configuration $store
+     * @param Request $request
+     * @param ResponseFactory $response
+     * @param string $driver
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function updateAlidayuOption(Repository $config, Configuration $store, Request $request, ResponseFactory $response)
+    {
+        $store->set(
+            'sms.connections.alidayu',
+            $request->only(['app_key', 'app_secret', 'sign_name', 'verify_template_id'])
+        );
+
+        return $response->json(['message' => ['更新成功']], 201);
+    }
 }
