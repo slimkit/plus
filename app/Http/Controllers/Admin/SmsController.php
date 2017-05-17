@@ -7,6 +7,7 @@ use Zhiyi\Plus\Models\VerifyCode;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Config\Repository;
+use Zhiyi\Plus\Support\Configuration;
 
 class SmsController extends Controller
 {
@@ -55,5 +56,28 @@ class SmsController extends Controller
         $driver = $config->get('sms.driver');
 
         return $response->json(['default' => $default, 'driver' => $driver], 200);
+    }
+
+    /**
+     * 更新驱动程序选择.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param \Illuminate\Contracts\Config\Repository $config
+     * @param \Zhiyi\Plus\Support\Configuration $store
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function updateDriver(Request $request, ResponseFactory $response, Repository $config, Configuration $store)
+    {
+        $default = $request->input('default');
+
+        if (! in_array($default, $config->get('sms.driver'))) {
+            return $response->json(['message' => ['选择的驱动类型不在系统当中']], 422);
+        }
+
+        $store->set('sms.default', $default);
+
+        return $response->json(['message' => ['设置成功']], 201);
     }
 }
