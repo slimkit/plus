@@ -44,12 +44,11 @@ class AuthController extends Controller
             ])->setStatusCode(403);
         }
 
-        $verify = new VerifyCode();
-        $verify->account = $phone;
-        $verify->makeVerifyCode();
-        $verify->save();
+        $sms->dispatch(factory(VerifyCode::class)->create([
+            'account' => $phone,
+        ]));
 
-        $sms->send($verify);
+        // $sms->send($verify);
 
         return response()->json(static::createJsonData([
             'status' => true,
