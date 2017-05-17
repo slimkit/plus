@@ -85,7 +85,7 @@ class UserController extends Controller
             ->get();
         if ($datas->isEmpty()) {
             return response()->json([
-                'user' => '没有相关用户',
+                'message' => '没有相关用户',
             ])->setStatusCode(404);
         }
 
