@@ -10,7 +10,9 @@ use Zhiyi\Plus\Services\SMS\SMS;
 use Zhiyi\Plus\Models\VerifyCode;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\LoginRecord;
+use Illuminate\Database\Eloquent\Factory;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Http\Requests\API2\VerifyRegisterPost;
 
 class AuthController extends Controller
 {
@@ -142,30 +144,6 @@ class AuthController extends Controller
             $token->state = $shutDownState;
             $token->save();
         });
-
-        return $this->login($request);
-    }
-
-    /**
-     * 注册用户.
-     *
-     * @param Request $request 请求对象
-     *
-     * @return Response 返回对象
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     * @homepage http://medz.cn
-     */
-    public function register(Request $request)
-    {
-        $name = $request->input('name');
-        $phone = $request->input('phone');
-        $password = $request->input('password', '');
-        $user = new User();
-        $user->name = $name;
-        $user->phone = $phone;
-        $user->createPassword($password);
-        $user->save();
 
         return $this->login($request);
     }

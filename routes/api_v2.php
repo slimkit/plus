@@ -18,25 +18,9 @@ Route::post('/auth/phone/code', 'AuthController@sendPhoneCode')
     ->middleware(Middleware\VerifyPhoneNumber::class) // 验证手机号格式是否正确
     ->middleware(Middleware\VerifySendPhoneCodeType::class) // 验证发送验证码类型等集合
 ;
-// 用户登录
-Route::post('/auth', 'AuthController@login')
-    ->middleware(Middleware\CheckDeviceCodeExisted::class) // 验证设备号是否存在
-    ->middleware(Middleware\VerifyPhoneNumber::class) // 验证手机号码是否正确
-    ->middleware(Middleware\CheckUserByPhoneExisted::class) // 验证手机号码用户是否存在
-;
 
 // 重置token接口
 Route::patch('/auth', 'AuthController@resetToken');
-
-// 用户注册
-Route::post('/auth/register', 'AuthController@register')
-    ->middleware(Middleware\CheckDeviceCodeExisted::class) // 验证设备号是否存在
-    ->middleware(Middleware\VerifyPhoneNumber::class) // 验证手机号码是否正确
-    ->middleware(Middleware\VerifyUserNameRole::class) // 验证用户名规则是否正确
-    ->middleware(Middleware\CheckUserByNameNotExisted::class) // 验证用户名是否被占用
-    ->middleware(Middleware\CheckUserByPhoneNotExisted::class) // 验证手机号码是否被占用
-    ->middleware(Middleware\VerifyPhoneCode::class) // 验证验证码释放正确
-;
 
 // 找回密码
 Route::patch('/auth/password', 'AuthController@forgotPassword')
@@ -53,6 +37,11 @@ Route::get('/users/{user}', 'UserController@getSingleUserInfo');
 
 // 批量获取用户资料
 Route::get('/users', 'UserController@getMultiUserInfo');
+
+// 用户注册
+Route::post('/users', 'UserController@registerUser')
+    ->middleware(Middleware\VerifyPhoneCodeAfterAction::class) // 后置操作设置验证码过期
+;
 
 // 用户相关组
 Route::prefix('users')
