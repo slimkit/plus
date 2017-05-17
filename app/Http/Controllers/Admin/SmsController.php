@@ -4,10 +4,10 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\VerifyCode;
+use Zhiyi\Plus\Support\Configuration;
+use Illuminate\Contracts\Config\Repository;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Contracts\Config\Repository;
-use Zhiyi\Plus\Support\Configuration;
 
 class SmsController extends Controller
 {
