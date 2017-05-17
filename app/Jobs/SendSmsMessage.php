@@ -4,8 +4,8 @@ namespace Zhiyi\Plus\Jobs;
 
 use Exception;
 use Illuminate\Bus\Queueable;
-use Zhiyi\Plus\Models\VerifyCode;
 use Zhiyi\Plus\Services\SMS\SMS;
+use Zhiyi\Plus\Models\VerifyCode;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;

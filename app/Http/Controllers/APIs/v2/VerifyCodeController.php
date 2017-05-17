@@ -20,7 +20,7 @@ class VerifyCodeController extends Controller
 
         if ($verify) {
             return $response->json([
-                'message' => [sprintf('还需要%d后才能获取', $verify->makeSurplusSecond($vaildSecond))]
+                'message' => [sprintf('还需要%d后才能获取', $verify->makeSurplusSecond($vaildSecond))],
             ], 403);
         }
 

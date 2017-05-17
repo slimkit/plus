@@ -48,7 +48,7 @@ class SMS
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function send(VerifyCode $verify)
-    {       
+    {
         $message = clone $this->app->make(Message::class);
         $message->setPhone($verify->account)
             ->setMessage(sprintf('验证码%s，如非本人操作，请忽略这条短信。', $verify->code))

@@ -28,11 +28,11 @@ class CreateRegisterVerifyCodeRequest extends FormRequest
             'phone' => [
                 'required',
                 'cn_phone',
-                'unique:users,phone'
+                'unique:users,phone',
                 // Rule::unique('users')->where(function ($query) {
                 //     $query->where('')
                 // }),
-            ]
+            ],
         ];
     }
 
