@@ -50,6 +50,22 @@ class Handler extends ExceptionHandler
     }
 
     /**
+     * Prepare response containing exception render.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Exception $e
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function prepareResponse($request, Exception $e)
+    {
+        if ($request->expectsJson() && app('config')->get('app.env') == 'production') {
+            return response()->json(['message' => [$e->getMessage()]], 500);
+        }
+
+        return parent::prepareResponse($request, $e);
+    }
+
+    /**
      * Convert an authentication exception into an unauthenticated response.
      *
      * @param \Illuminate\Http\Request                 $request
