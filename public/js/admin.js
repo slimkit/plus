@@ -7692,16 +7692,31 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-group"
   }, [_c('div', {
     staticClass: "col-sm-offset-2 col-sm-4"
-  }, [_c('button', {
+  }, [(_vm.submit.loadding === true) ? _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "submit",
+      "disabled": "disabled"
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-refresh component-loadding-icon"
+  }), _vm._v("\n            提交...\n          ")]) : _c('button', {
     staticClass: "btn btn-primary",
     attrs: {
       "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+        $event.preventDefault();
+        _vm.submitHandle($event)
+      }
     }
   }, [_vm._v("提交")])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6 help-block"
   }, [_c('span', {
-    staticClass: "text-success"
-  }, [_vm._v("Test tip")])])])])])])
+    class: ("text-" + (_vm.submit.messageType))
+  }, [_vm._v(_vm._s(_vm.submit.message))])])])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -7768,6 +7783,10 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 //
 //
 //
+//
+//
+//
+//
 
 var _request2 = __webpack_require__(2);
 
@@ -7782,7 +7801,12 @@ var DriverComponent = {
       driver: [],
       loadding: true,
       loaddingError: false,
-      loaddingErrorMessage: ''
+      loaddingErrorMessage: '',
+      submit: {
+        loadding: false,
+        message: '',
+        messageType: 'muted'
+      }
     };
   },
   methods: {
@@ -7821,15 +7845,53 @@ var DriverComponent = {
         _this.loaddingErrorMessage = message;
       });
     },
-    submit: function submit() {
+    submitHandle: function submitHandle() {
+      var _this2 = this;
+
       var selected = this.selected;
+      this.submit.loadding = true;
+      this.submit.message = '';
+      _request3.default.patch((0, _request2.createRequestURI)('sms/driver'), { default: selected }, { validateStatus: function validateStatus(status) {
+          return status === 201;
+        } }).then(function (_ref3) {
+        var _ref3$data = _ref3.data;
+        _ref3$data = _ref3$data === undefined ? {} : _ref3$data;
+        var _ref3$data$message = _ref3$data.message;
+        _ref3$data$message = _ref3$data$message === undefined ? [] : _ref3$data$message;
+
+        var _ref3$data$message2 = _slicedToArray(_ref3$data$message, 1),
+            _ref3$data$message2$ = _ref3$data$message2[0],
+            message = _ref3$data$message2$ === undefined ? '更新成功' : _ref3$data$message2$;
+
+        _this2.submit.loadding = false;
+        _this2.submit.message = message;
+        _this2.submit.messageType = 'success';
+        window.setTimeout(function () {
+          _this2.submit.message = '';
+        }, 3000);
+      }).catch(function (_ref4) {
+        var _ref4$response = _ref4.response;
+        _ref4$response = _ref4$response === undefined ? {} : _ref4$response;
+        var _ref4$response$data = _ref4$response.data;
+        _ref4$response$data = _ref4$response$data === undefined ? {} : _ref4$response$data;
+        var _ref4$response$data$m = _ref4$response$data.message;
+        _ref4$response$data$m = _ref4$response$data$m === undefined ? [] : _ref4$response$data$m;
+
+        var _ref4$response$data$m2 = _slicedToArray(_ref4$response$data$m, 1),
+            _ref4$response$data$m3 = _ref4$response$data$m2[0],
+            message = _ref4$response$data$m3 === undefined ? '更新失败' : _ref4$response$data$m3;
+
+        _this2.submit.loadding = false;
+        _this2.submit.message = message;
+        _this2.submit.messageType = 'danger';
+      });
     }
   },
   created: function created() {
-    var _this2 = this;
+    var _this3 = this;
 
     window.setTimeout(function () {
-      return _this2.request();
+      return _this3.request();
     }, 500);
   }
 };
