@@ -80,4 +80,24 @@ class SmsController extends Controller
 
         return $response->json(['message' => ['设置成功']], 201);
     }
+
+    /**
+     * 获取短信驱动配置信息.
+     *
+     * @param \Illuminate\Contracts\Config\Repository $config
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param string $driver
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function showOption(Repository $config, ResponseFactory $response, string $driver)
+    {
+        if (! in_array($driver, array_keys($config->get('sms.driver')))) {
+            return $response->json(['message' => ['当前驱动不存在于系统中']], 422);
+        }
+
+        $data = $config->get(sprintf('sms.connections.%s', $driver), []);
+
+        return $response->json($data, 200);
+    }
 }
