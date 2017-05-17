@@ -72,7 +72,7 @@ class SmsController extends Controller
     {
         $default = $request->input('default');
 
-        if (! in_array($default, $config->get('sms.driver'))) {
+        if (! in_array($default, array_keys($config->get('sms.driver')))) {
             return $response->json(['message' => ['选择的驱动类型不在系统当中']], 422);
         }
 
