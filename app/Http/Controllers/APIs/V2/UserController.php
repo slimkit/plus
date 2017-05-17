@@ -76,12 +76,12 @@ class UserController extends Controller
         $uid = Auth::guard('api')->user()->id ?? 0;
         $uids = explode(',', $request->query('user'));
         $datas = User::whereIn('id', $uids)
-            ->with(['datas', 'counts', 'follows' => function ($query) use ($uid){
+            ->with(['datas', 'counts', 'follows' => function ($query) use ($uid) {
                 $query->where('following_user_id', $uid);
             },
             'followeds' => function ($query) use ($uid) {
                 $query->where('followed_user_id', $uid);
-            }])
+            }, ])
             ->get();
         if ($datas->isEmpty()) {
             return response()->json([
