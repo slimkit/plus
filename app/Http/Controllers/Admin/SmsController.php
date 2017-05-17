@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\VerifyCode;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Contracts\Config\Repository;
 
 class SmsController extends Controller
 {
@@ -40,7 +41,19 @@ class SmsController extends Controller
         return $response->json($data, 200);
     }
 
-    public function showDriver()
+    /**
+     * Show driver.
+     *
+     * @param \Illuminate\Contracts\Config\Repository $config
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function showDriver(Repository $config, ResponseFactory $response)
     {
+        $default = $config->get('sms.default');
+        $driver = $config->get('sms.driver');
+
+        return $response->json(['default' => $default, 'driver' => $driver], 200);
     }
 }
