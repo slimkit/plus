@@ -31,7 +31,7 @@ class Message
      */
     public function getPhone()
     {
-        return $phone;
+        return $this->phone;
     }
 
     /**

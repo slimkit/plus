@@ -13,7 +13,6 @@ use Flc\Alidayu\Requests\AlibabaAliqinFcSmsNumSend;
 class Alidayu implements DirverInterface
 {
     protected $config;
-    protected $client;
     protected $app;
 
     /**
@@ -54,8 +53,11 @@ class Alidayu implements DirverInterface
      */
     public function send(Message $message)
     {
-        $result = $this->client()
+        $this->registerInstances();
+        $response = $this->client()
             ->execute($this->createSendRequest($message));
+
+        $result = isset($response->result) ? $response->result : null;
 
         if (! is_object($result) || $result->success !== true) {
             throw new Exception('发送阿里大于短信验证码失败');
@@ -88,12 +90,25 @@ class Alidayu implements DirverInterface
      */
     protected function client(): AlidayuClient
     {
-        if (! $this->client instanceof AlidayuClient) {
-            $this->client = $this->app->makeWith(AlidayuClient::class, [
-                $this->app->makeWith(AlidayuApp::class, [$this->config]),
-            ]);
-        }
+        return $this->app->make(AlidayuClient::class);
+    }
 
-        return $this->client;
+    /**
+     * 注册共享单例.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function registerInstances()
+    {
+        $config = $this->config;
+        $this->app->singleton(AlidayuApp::class, function () use ($config) {
+            return new AlidayuApp($config);
+        });
+
+        $app = $this->app->make(AlidayuApp::class);
+        $this->app->singleton(AlidayuClient::class, function () use ($app) {
+            return new AlidayuClient($app);
+        });
     }
 }

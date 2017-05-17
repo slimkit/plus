@@ -5,18 +5,16 @@ namespace Zhiyi\Plus\Jobs;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Zhiyi\Plus\Models\VerifyCode;
-use Zhiyi\Plus\Services\SMS\Message;
+use Zhiyi\Plus\Services\SMS\SMS;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Zhiyi\Plus\Services\SMS\DirverInterface;
 
 class SendSmsMessage implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $dirver;
     protected $verify;
 
     /**
@@ -38,9 +36,8 @@ class SendSmsMessage implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(DirverInterface $dirver, VerifyCode $verify)
+    public function __construct(VerifyCode $verify)
     {
-        $this->dirver = $dirver;
         $this->verify = $verify;
     }
 
@@ -49,15 +46,9 @@ class SendSmsMessage implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(SMS $sms)
     {
-        $this->dirver->send(new Message(
-            $this->verify->account,
-            sprintf('验证码%s，如非本人操作，请忽略这条短信。', $this->verify->code),
-            [
-                'code' => $this->verify->code,
-            ]
-        ));
+        $sms->send($this->verify);
 
         $this->verify->state = 1;
         $this->verify->save();

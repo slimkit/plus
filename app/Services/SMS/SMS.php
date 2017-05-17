@@ -21,25 +21,43 @@ class SMS
     ];
 
     protected $app;
-    protected $driver;
 
     public function __construct(Application $app)
     {
         $this->app = $app;
-        $this->createDirver();
     }
 
     /**
-     * Dispatch a job to its appropriate handler.
+     * 派发发送任务.
+     *
+     * @param \Zhiyi\Plus\Models\VerifyCode $verify
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function dispatch(VerifyCode $verify)
+    {
+        $this->app->make(Dispatcher::class)
+            ->dispatch(new SendSmsMessage($verify));
+    }
+
+    /**
+     * 发送验证码.
      *
      * @param \Zhiyi\Plus\Models\VerifyCode $verify
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function send(VerifyCode $verify)
-    {
-        $this->app->make(Dispatcher::class)
-            ->dispatch(new SendSmsMessage($this->driver, $verify));
+    {       
+        $message = clone $this->app->make(Message::class);
+        $message->setPhone($verify->account)
+            ->setMessage(sprintf('验证码%s，如非本人操作，请忽略这条短信。', $verify->code))
+            ->setData([
+                'code' => $verify->code,
+            ]);
+
+        $this->createDirver()
+            ->send($message);
     }
 
     /**
@@ -57,9 +75,11 @@ class SMS
             throw new RuntimeException(sprintf('This "%s" is not supported by the driver.', $driverName));
         }
 
-        $config = $this->app->make('config')->get('sms.connections.'.$driverName, []);
+        $config = (array) $this->app->make('config')->get('sms.connections.'.$driverName, []);
 
-        $this->driver = $this->app->make(static::$aliases[$driverName]);
-        $this->driver->setConfig($config);
+        $driver = $this->app->make(static::$aliases[$driverName]);
+        $driver->setConfig($config);
+
+        return $driver;
     }
 }

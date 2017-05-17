@@ -56,3 +56,11 @@ $factory->define(Zhiyi\Plus\Models\Storage::class, function (Faker\Generator $fa
         'image_height' => null,
     ];
 });
+
+$factory->define(Zhiyi\Plus\Models\VerifyCode::class, function (Faker\Generator $faker) {
+    return [
+        'account' => $faker->unique()->phoneNumber,
+        'code' => $faker->numberBetween(1000, 999999),
+        'state' => 0,
+    ];
+});

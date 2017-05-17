@@ -6,7 +6,12 @@ use Zhiyi\Plus\Http\Middleware\V2 as Middleware;
 Route::get('/bootstrappers', 'BootstrappersController@show');
 
 // 用户登录
-Route::any('/login', 'LoginController@store');
+Route::post('/login', 'LoginController@store');
+
+// 创建注册验证码
+Route::post('/verifycodes/register', 'VerifyCodeController@createRegister');
+
+/* ----------------------- 以下接口非 Seven Du 维护 --------------------------- */
 
 // 获取手机验证码
 Route::post('/auth/phone/code', 'AuthController@sendPhoneCode')
