@@ -9,6 +9,14 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 
 class SmsController extends Controller
 {
+    /**
+     * Show SMS logs.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function show(Request $request, ResponseFactory $response)
     {
         $state = $request->query('state');
