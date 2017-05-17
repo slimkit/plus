@@ -36,7 +36,7 @@
             <button type="button" class="btn btn-primary">提交</button>
           </div>
           <div class="col-sm-6 help-block">
-            <span class="text-success">Test tip</span>
+            <span :class="`text-${submit.messageType}`">{{ submit.message }}</span>
           </div>
         </div>
       </div>
@@ -54,6 +54,11 @@ const DriverComponent = {
     loadding: true,
     loaddingError: false,
     loaddingErrorMessage: '',
+    submit: {
+      loadding: false,
+      message: '',
+      messageType: 'muted'
+    }
   }),
   methods: {
     request() {
