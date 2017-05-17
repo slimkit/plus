@@ -8,7 +8,7 @@ webpackJsonp([0],[
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 exports.createAPI = exports.createRequestURI = undefined;
 
@@ -20,22 +20,34 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var _window$TS = window.TS,
     baseURL = _window$TS.baseURL,
-    csrfToken = _window$TS.csrfToken,
     api = _window$TS.api; // This "TS" variable is set from the global variables in the template.
 
 // Export a method to create the requested address.
 
 var createRequestURI = exports.createRequestURI = function createRequestURI(PATH) {
-  return baseURL + '/' + PATH;
+    return baseURL + '/' + PATH;
 };
 
 // Created the request address of API.
 var createAPI = exports.createAPI = function createAPI(PATH) {
-  return api + '/' + PATH;
+    return api + '/' + PATH;
 };
 
-_axios2.default.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
 _axios2.default.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+/**
+ * Next we will register the CSRF Token as a common header with Axios so that
+ * all outgoing HTTP requests automatically have it attached. This is just
+ * a simple convenience so we don't have to attach every token manually.
+ */
+
+var token = document.head.querySelector('meta[name="csrf-token"]');
+
+if (token) {
+    _axios2.default.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+} else {
+    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+}
 
 exports.default = _axios2.default;
 
@@ -1745,53 +1757,12 @@ exports.default = StorageManageComponent;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
+var _request = __webpack_require__(2);
+
+var _request2 = _interopRequireDefault(_request);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var SmsMainComponent = {
   data: function data() {
@@ -1800,10 +1771,178 @@ var SmsMainComponent = {
         state: -1,
         keyword: ''
       },
-      loading: false
+      loading: false,
+      logs: [],
+      error: null,
+      currentPage: 1
     };
+  },
+  methods: {
+    nextPage: function nextPage() {
+      this.requestLogs(parseInt(this.currentPage) + 1);
+    },
+    prevPage: function prevPage() {
+      this.requestLogs(parseInt(this.currentPage) - 1);
+    },
+    searchHandle: function searchHandle() {
+      this.requestLogs(1);
+    },
+    dismisError: function dismisError() {
+      this.error = null;
+    },
+    changeState: function changeState(state) {
+      this.search.after = [];
+      this.search.state = state;
+    },
+    requestLogs: function requestLogs(page) {
+      var _this = this;
+
+      var params = { page: page };
+
+      if (this.search.state >= 0) {
+        params['state'] = this.search.state;
+      }
+
+      if (this.search.keyword.length) {
+        params['phone'] = this.search.keyword;
+      }
+
+      this.loading = true;
+
+      _request2.default.get((0, _request.createRequestURI)('sms'), { params: params, validateStatus: function validateStatus(status) {
+          return status === 200;
+        } }).then(function (_ref) {
+        var _ref$data = _ref.data,
+            data = _ref$data === undefined ? {} : _ref$data;
+
+        _this.loading = false;
+
+        var _data$current_page = data.current_page,
+            currentPage = _data$current_page === undefined ? 1 : _data$current_page,
+            _data$data = data.data,
+            logs = _data$data === undefined ? [] : _data$data;
+
+
+        if (!logs.length) {
+          _this.error = '没有数据可加载';
+          return;
+        }
+
+        _this.currentPage = currentPage;
+        _this.logs = logs;
+      }).catch();
+    }
+  },
+  created: function created() {
+    this.searchHandle();
   }
-};
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = SmsMainComponent;
 
@@ -3402,20 +3541,22 @@ var _Home = __webpack_require__(92);
 
 var _Home2 = _interopRequireDefault(_Home);
 
+var _Driver = __webpack_require__(143);
+
+var _Driver2 = _interopRequireDefault(_Driver);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//
+var smsRouter = {
+  path: 'sms',
+  component: _Main2.default,
+  children: [{ path: '', component: _Home2.default }, { path: 'driver', component: _Driver2.default }]
+}; //
 // The file is defined "/sms" route.
 //
 // @author Seven Du <shiweidu@outlook.com>
 // @homepage http://medz.cn
 //
-
-var smsRouter = {
-  path: 'sms',
-  component: _Main2.default,
-  children: [{ path: '', component: _Home2.default }]
-};
 
 exports.default = smsRouter;
 
@@ -4773,15 +4914,108 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "component-container container-fluid"
   }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.error),
+      expression: "error"
+    }],
+    staticClass: "alert alert-danger alert-dismissible",
+    attrs: {
+      "role": "alert"
+    }
+  }, [_c('button', {
+    staticClass: "close",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.dismisError($event)
+      }
+    }
+  }, [_c('span', {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("×")])]), _vm._v("\n    " + _vm._s(_vm.error) + "\n  ")]), _vm._v(" "), _c('div', {
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-6"
   }, [_c('div', {
     staticClass: "input-group",
     staticStyle: {
       "max-width": "356px"
     }
-  }, [_vm._m(0), _vm._v(" "), _c('input', {
+  }, [_c('div', {
+    staticClass: "input-group-btn"
+  }, [_vm._m(0), _vm._v(" "), _c('ul', {
+    staticClass: "dropdown-menu",
+    attrs: {
+      "aria-labelledby": "state"
+    }
+  }, [_c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.changeState(-1)
+      }
+    }
+  }, [(_vm.search.state === -1) ? _c('span', {
+    staticClass: "glyphicon glyphicon-ok-circle"
+  }) : _c('span', {
+    staticClass: "glyphicon glyphicon-record"
+  }), _vm._v("\n                    全部状态\n                  ")])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.changeState(0)
+      }
+    }
+  }, [(_vm.search.state === 0) ? _c('span', {
+    staticClass: "glyphicon glyphicon-ok-circle"
+  }) : _c('span', {
+    staticClass: "glyphicon glyphicon-record"
+  }), _vm._v("\n                    未发送\n                  ")])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.changeState(1)
+      }
+    }
+  }, [(_vm.search.state === 1) ? _c('span', {
+    staticClass: "glyphicon glyphicon-ok-circle"
+  }) : _c('span', {
+    staticClass: "glyphicon glyphicon-record"
+  }), _vm._v("\n                    发送成功\n                  ")])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.changeState(2)
+      }
+    }
+  }, [(_vm.search.state === 2) ? _c('span', {
+    staticClass: "glyphicon glyphicon-ok-circle"
+  }) : _c('span', {
+    staticClass: "glyphicon glyphicon-record"
+  }), _vm._v("\n                    发送失败\n                  ")])])])]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -4803,11 +5037,90 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.search.keyword = $event.target.value
       }
     }
-  }), _vm._v(" "), _vm._m(1)])]), _vm._v(" "), _vm._m(2)])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
+  }), _vm._v(" "), _c('div', {
     staticClass: "input-group-btn"
-  }, [_c('button', {
+  }, [(_vm.loading === true) ? _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "submit",
+      "disabled": "disabled"
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-refresh component-loadding-icon"
+  }), _vm._v("\n                搜索...\n              ")]) : _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "submit"
+    },
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+        $event.preventDefault();
+        _vm.searchHandle($event)
+      }
+    }
+  }, [_vm._v("搜索")])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-6 text-right"
+  }, [_c('ul', {
+    staticClass: "pagination",
+    staticStyle: {
+      "margin": "0"
+    }
+  }, [_c('li', {
+    class: parseInt(this.currentPage) <= 1 ? 'disabled' : null
+  }, [_c('a', {
+    attrs: {
+      "href": "#",
+      "aria-label": "Previous"
+    },
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+        $event.preventDefault();
+        _vm.prevPage($event)
+      }
+    }
+  }, [_c('span', {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("«")])])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#",
+      "aria-label": "Next"
+    },
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+        $event.preventDefault();
+        _vm.nextPage($event)
+      }
+    }
+  }, [_c('span', {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("»")])])])])])])]), _vm._v(" "), _c('table', {
+    staticClass: "table table-hove"
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.logs), function(log) {
+    return _c('tr', {
+      key: log.id
+    }, [_c('td', [_vm._v(_vm._s(log.account))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(log.code))]), _vm._v(" "), (log.state === 0) ? _c('td', {
+      staticStyle: {
+        "color": "#5bc0de"
+      }
+    }, [_vm._v("未发送")]) : (log.state === 1) ? _c('td', {
+      staticStyle: {
+        "color": "#449d44"
+      }
+    }, [_vm._v("发送成功")]) : (log.state === 2) ? _c('td', {
+      staticStyle: {
+        "color": "#d9534f"
+      }
+    }, [_vm._v("发送失败")]) : _c('td', [_vm._v("未知状态")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(log.created_at))])])
+  }))])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('button', {
     staticClass: "btn btn-default dropdown-toggle",
     attrs: {
       "type": "button",
@@ -4818,41 +5131,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("状态 "), _c('span', {
     staticClass: "caret"
-  })]), _vm._v(" "), _c('ul', {
-    staticClass: "dropdown-menu",
-    attrs: {
-      "aria-labelledby": "state"
-    }
-  }, [_c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("全部状态")])]), _vm._v(" "), _c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("未发送")])]), _vm._v(" "), _c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("发送成功")])]), _vm._v(" "), _c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("发送失败")])])])])
+  })])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "input-group-btn"
-  }, [_c('button', {
-    staticClass: "btn btn-primary",
-    attrs: {
-      "type": "submit"
-    }
-  }, [_vm._v("搜索")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('table', {
-    staticClass: "table table-hove"
-  }, [_c('thead', [_c('tr', [_c('th', [_vm._v("手机号码")]), _vm._v(" "), _c('th', [_vm._v("验证码")]), _vm._v(" "), _c('th', [_vm._v("状态")]), _vm._v(" "), _c('th', [_vm._v("时间")])])]), _vm._v(" "), _c('tbody', [_c('tr', [_c('td', [_vm._v("18781993582")]), _vm._v(" "), _c('td', [_vm._v("1234")]), _vm._v(" "), _c('td', [_vm._v("未发送")]), _vm._v(" "), _c('td', [_vm._v("2017-12.1.d")])])])])
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("手机号码")]), _vm._v(" "), _c('th', [_vm._v("验证码")]), _vm._v(" "), _c('th', [_vm._v("状态")]), _vm._v(" "), _c('th', [_vm._v("时间")])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -7272,6 +7553,350 @@ if (false) {
      require("vue-hot-reload-api").rerender("data-v-d7706172", module.exports)
   }
 }
+
+/***/ }),
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */,
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */,
+/* 132 */,
+/* 133 */,
+/* 134 */,
+/* 135 */,
+/* 136 */,
+/* 137 */,
+/* 138 */,
+/* 139 */,
+/* 140 */,
+/* 141 */,
+/* 142 */,
+/* 143 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(145),
+  /* template */
+  __webpack_require__(144),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/usr/local/var/www/thinksns-plus/resources/assets/admin/component/sms/Driver.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Driver.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-92bb26f4", Component.options)
+  } else {
+    hotAPI.reload("data-v-92bb26f4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 144 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "component-container container-fluid"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("短信发送驱动设置")]), _vm._v(" "), (_vm.loadding) ? _c('div', {
+    staticClass: "panel-body text-center"
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-refresh component-loadding-icon"
+  }), _vm._v("\n      加载中...\n    ")]) : (_vm.loaddingError) ? _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "alert alert-danger",
+    attrs: {
+      "role": "alert"
+    }
+  }, [_vm._v(_vm._s(_vm.loaddingErrorMessage))]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+        $event.preventDefault();
+        _vm.request($event)
+      }
+    }
+  }, [_vm._v("刷新")])]) : _c('div', {
+    staticClass: "form-horizontal panel-body"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-2 control-label"
+  }, [_vm._v("驱动")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-4"
+  }, _vm._l((_vm.driver), function(name, value) {
+    return _c('div', {
+      key: value,
+      staticClass: "radio"
+    }, [_c('label', [_c('input', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (_vm.selected),
+        expression: "selected"
+      }],
+      attrs: {
+        "type": "radio",
+        "name": "default"
+      },
+      domProps: {
+        "value": value,
+        "checked": _vm._q(_vm.selected, value)
+      },
+      on: {
+        "__c": function($event) {
+          _vm.selected = value
+        }
+      }
+    }), _vm._v("\n              " + _vm._s(name) + "\n            ")])])
+  })), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('span', {
+    staticClass: "help-block"
+  }, [_vm._v("请选择用于发送短信的驱动程序。")])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('div', {
+    staticClass: "col-sm-offset-2 col-sm-4"
+  }, [(_vm.submit.loadding === true) ? _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "submit",
+      "disabled": "disabled"
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-refresh component-loadding-icon"
+  }), _vm._v("\n            提交...\n          ")]) : _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+        $event.preventDefault();
+        _vm.submitHandle($event)
+      }
+    }
+  }, [_vm._v("提交")])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6 help-block"
+  }, [_c('span', {
+    class: ("text-" + (_vm.submit.messageType))
+  }, [_vm._v(_vm._s(_vm.submit.message))])])])])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-92bb26f4", module.exports)
+  }
+}
+
+/***/ }),
+/* 145 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var _request2 = __webpack_require__(2);
+
+var _request3 = _interopRequireDefault(_request2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var DriverComponent = {
+  data: function data() {
+    return {
+      selected: null,
+      driver: [],
+      loadding: true,
+      loaddingError: false,
+      loaddingErrorMessage: '',
+      submit: {
+        loadding: false,
+        message: '',
+        messageType: 'muted'
+      }
+    };
+  },
+  methods: {
+    request: function request() {
+      var _this = this;
+
+      this.loadding = true;
+      _request3.default.get((0, _request2.createRequestURI)('sms/driver'), { validateStatus: function validateStatus(status) {
+          return status === 200;
+        } }).then(function (_ref) {
+        var _ref$data = _ref.data,
+            data = _ref$data === undefined ? {} : _ref$data;
+        var _data$default = data.default,
+            selected = _data$default === undefined ? null : _data$default,
+            _data$driver = data.driver,
+            driver = _data$driver === undefined ? [] : _data$driver;
+
+        _this.loadding = false;
+        _this.loaddingError = false;
+        _this.selected = selected;
+        _this.driver = driver;
+      }).catch(function (_ref2) {
+        var _ref2$response = _ref2.response;
+        _ref2$response = _ref2$response === undefined ? {} : _ref2$response;
+        var _ref2$response$data = _ref2$response.data;
+        _ref2$response$data = _ref2$response$data === undefined ? {} : _ref2$response$data;
+        var _ref2$response$data$m = _ref2$response$data.message;
+        _ref2$response$data$m = _ref2$response$data$m === undefined ? [] : _ref2$response$data$m;
+
+        var _ref2$response$data$m2 = _slicedToArray(_ref2$response$data$m, 1),
+            _ref2$response$data$m3 = _ref2$response$data$m2[0],
+            message = _ref2$response$data$m3 === undefined ? '加载驱动设置失败，请刷新重新尝试！' : _ref2$response$data$m3;
+
+        _this.loadding = false;
+        _this.loaddingError = true;
+        _this.loaddingErrorMessage = message;
+      });
+    },
+    submitHandle: function submitHandle() {
+      var _this2 = this;
+
+      var selected = this.selected;
+      this.submit.loadding = true;
+      this.submit.message = '';
+      _request3.default.patch((0, _request2.createRequestURI)('sms/driver'), { default: selected }, { validateStatus: function validateStatus(status) {
+          return status === 201;
+        } }).then(function (_ref3) {
+        var _ref3$data = _ref3.data;
+        _ref3$data = _ref3$data === undefined ? {} : _ref3$data;
+        var _ref3$data$message = _ref3$data.message;
+        _ref3$data$message = _ref3$data$message === undefined ? [] : _ref3$data$message;
+
+        var _ref3$data$message2 = _slicedToArray(_ref3$data$message, 1),
+            _ref3$data$message2$ = _ref3$data$message2[0],
+            message = _ref3$data$message2$ === undefined ? '更新成功' : _ref3$data$message2$;
+
+        _this2.submit.loadding = false;
+        _this2.submit.message = message;
+        _this2.submit.messageType = 'success';
+        window.setTimeout(function () {
+          _this2.submit.message = '';
+        }, 3000);
+      }).catch(function (_ref4) {
+        var _ref4$response = _ref4.response;
+        _ref4$response = _ref4$response === undefined ? {} : _ref4$response;
+        var _ref4$response$data = _ref4$response.data;
+        _ref4$response$data = _ref4$response$data === undefined ? {} : _ref4$response$data;
+        var _ref4$response$data$m = _ref4$response$data.message;
+        _ref4$response$data$m = _ref4$response$data$m === undefined ? [] : _ref4$response$data$m;
+
+        var _ref4$response$data$m2 = _slicedToArray(_ref4$response$data$m, 1),
+            _ref4$response$data$m3 = _ref4$response$data$m2[0],
+            message = _ref4$response$data$m3 === undefined ? '更新失败' : _ref4$response$data$m3;
+
+        _this2.submit.loadding = false;
+        _this2.submit.message = message;
+        _this2.submit.messageType = 'danger';
+      });
+    }
+  },
+  created: function created() {
+    var _this3 = this;
+
+    window.setTimeout(function () {
+      return _this3.request();
+    }, 500);
+  }
+};
+
+exports.default = DriverComponent;
 
 /***/ })
 ],[65]);

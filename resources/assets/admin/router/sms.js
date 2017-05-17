@@ -7,12 +7,14 @@
 
 import Main from '../component/sms/Main';
 import Home from '../component/sms/Home';
+import Driver from '../component/sms/Driver';
 
 const smsRouter = {
   path: 'sms',
   component: Main,
   children: [
     { path: '', component: Home },
+    { path: 'driver', component: Driver },
   ],
 };
 
