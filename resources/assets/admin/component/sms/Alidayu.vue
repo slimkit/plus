@@ -4,12 +4,12 @@
       <!-- Title -->
       <div class="panel-heading">阿里大于 - 驱动配置</div>
       <!-- Loading -->
-      <div v-if="loadding" class="panel-body text-center">
+      <div v-if="loadding.state === 0" class="panel-body text-center">
         <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
         加载中...
       </div>
       <!-- Body -->
-      <div v-else class="panel-body form-horizontal">
+      <div v-else-if="loadding.state === 1" class="panel-body form-horizontal">
         <!-- App key -->
         <div class="form-group">
           <label for="app-key" class="col-sm-2 control-label">App Key</label>
@@ -60,6 +60,11 @@
           </div>
         </div>
       </div>
+      <!-- Loading Error -->
+      <div v-else class="panel-body">
+        <div class="alert alert-danger" role="alert">{{ loadding.message }}</div>
+        <button type="button" class="btn btn-primary">刷新</button>
+      </div>
     </div>
   </div>
 </template>
@@ -67,7 +72,10 @@
 <script>
 const AlidayuComponent = {
   data: () => ({
-    loadding: false,
+    loadding: {
+      state: 2,
+      message: '',
+    },
   })
 };
 
