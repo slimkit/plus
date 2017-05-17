@@ -3545,18 +3545,24 @@ var _Driver = __webpack_require__(143);
 
 var _Driver2 = _interopRequireDefault(_Driver);
 
+var _Alidayu = __webpack_require__(146);
+
+var _Alidayu2 = _interopRequireDefault(_Alidayu);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var smsRouter = {
-  path: 'sms',
-  component: _Main2.default,
-  children: [{ path: '', component: _Home2.default }, { path: 'driver', component: _Driver2.default }]
-}; //
+//
 // The file is defined "/sms" route.
 //
 // @author Seven Du <shiweidu@outlook.com>
 // @homepage http://medz.cn
 //
+
+var smsRouter = {
+  path: 'sms',
+  component: _Main2.default,
+  children: [{ path: '', component: _Home2.default }, { path: 'driver', component: _Driver2.default }, { path: 'alidayu', component: _Alidayu2.default }]
+};
 
 exports.default = smsRouter;
 
@@ -7897,6 +7903,273 @@ var DriverComponent = {
 };
 
 exports.default = DriverComponent;
+
+/***/ }),
+/* 146 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(148),
+  /* template */
+  __webpack_require__(147),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/usr/local/var/www/thinksns-plus/resources/assets/admin/component/sms/Alidayu.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Alidayu.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-d8dfe5ee", Component.options)
+  } else {
+    hotAPI.reload("data-v-d8dfe5ee", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 147 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "component-container container-fluid"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("阿里大于 - 驱动配置")]), _vm._v(" "), (_vm.loadding) ? _c('div', {
+    staticClass: "panel-body text-center"
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-refresh component-loadding-icon"
+  }), _vm._v("\n      加载中...\n    ")]) : _c('div', {
+    staticClass: "panel-body form-horizontal"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-2 control-label",
+    attrs: {
+      "for": "app-key"
+    }
+  }, [_vm._v("App Key")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-4"
+  }, [_c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "app_key",
+      "id": "app-key",
+      "placeholder": "请输入应用 AppKey",
+      "aria-describedby": "app-key-help"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('span', {
+    staticClass: "help-block",
+    attrs: {
+      "id": "app-key-help"
+    }
+  }, [_vm._v("输入应用 App Key 信息")])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-2 control-label",
+    attrs: {
+      "for": "app-secret"
+    }
+  }, [_vm._v("App Secret")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-4"
+  }, [_c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "app_secret",
+      "id": "app-secret",
+      "placeholder": "请输入应用 App Secret",
+      "aria-describedby": "app-secret-help"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('span', {
+    staticClass: "help-block",
+    attrs: {
+      "id": "app-secret-help"
+    }
+  }, [_vm._v("输入应用 App Secret 信息")])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-2 control-label",
+    attrs: {
+      "for": "sign-name"
+    }
+  }, [_vm._v("短信签名")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-4"
+  }, [_c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "sign_name",
+      "id": "sign-name",
+      "placeholder": "请输入短信签名名称",
+      "aria-describedby": "sign-name-help"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('span', {
+    staticClass: "help-block",
+    attrs: {
+      "id": "sign-name-help"
+    }
+  }, [_vm._v("请输入短信签名的名称")])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-2 control-label",
+    attrs: {
+      "for": "template-id"
+    }
+  }, [_vm._v("模板ID")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-4"
+  }, [_c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "name": "template_id",
+      "id": "template-id",
+      "placeholder": "请输入短信模板id",
+      "aria-describedby": "template-id-help"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('span', {
+    staticClass: "help-block",
+    attrs: {
+      "id": "template-id-help"
+    }
+  }, [_vm._v("请输入短信模板id")])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('div', {
+    staticClass: "col-sm-offset-2 col-sm-4"
+  }, [_c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    }
+  }, [_vm._v("提交")])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6 help-block"
+  }, [_c('span', {
+    staticClass: "text-"
+  }, [_vm._v("哈哈")])])])])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-d8dfe5ee", module.exports)
+  }
+}
+
+/***/ }),
+/* 148 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var AlidayuComponent = {
+  data: function data() {
+    return {
+      loadding: false
+    };
+  }
+};
+
+exports.default = AlidayuComponent;
 
 /***/ })
 ],[65]);
