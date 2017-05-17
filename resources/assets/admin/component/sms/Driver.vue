@@ -85,6 +85,22 @@ const DriverComponent = {
       const selected = this.selected;
       this.submit.loadding = true;
       this.submit.message = '';
+      request.patch(
+        createRequestURI('sms/driver'),
+        { default: selected },
+        { validateStatus: status => status === 201 }
+      ).then(({ data: { message: [message = '更新成功'] = [] } = {} }) => {
+        this.submit.loadding = false;
+        this.submit.message = message;
+        this.submit.messageType = 'success';
+        window.setTimeout(() => {
+          this.submit.message = '';
+        }, 3000);
+      }).catch(({ response: { data: { message: [message = '更新失败'] = [] } = {} } = {} }) => {
+        this.submit.loadding = false;
+        this.submit.message = message;
+        this.submit.messageType = 'danger';
+      });
     }
   },
   created() {
