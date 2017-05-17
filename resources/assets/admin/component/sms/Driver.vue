@@ -33,7 +33,11 @@
         <!-- 提交表单按钮 -->
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-4">
-            <button type="button" class="btn btn-primary">提交</button>
+            <button v-if="submit.loadding === true" class="btn btn-primary" type="submit" disabled="disabled">
+              <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
+              提交...
+            </button>
+            <button v-else type="button" class="btn btn-primary" @click.stop.prevent="submitHandle">提交</button>
           </div>
           <div class="col-sm-6 help-block">
             <span :class="`text-${submit.messageType}`">{{ submit.message }}</span>
@@ -77,8 +81,10 @@ const DriverComponent = {
           this.loaddingErrorMessage = message;
         });
     },
-    submit() {
+    submitHandle() {
       const selected = this.selected;
+      this.submit.loadding = true;
+      this.submit.message = '';
     }
   },
   created() {
