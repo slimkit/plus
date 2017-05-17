@@ -43,8 +43,10 @@ class VerifyRegisterPost extends FormRequest
             'phone.cn_phone' => '请输入中国大陆合法手机号码',
             'password.required' => '密码不能为空',
             'name.username' => '请输入格式正确的用户名',
-            'name:min:4' => '用户名最小长度不小于4位',
-            'name:max:48' => '用户名最大长度不超过48位',
+            'name.min' => '用户名最小长度不小于4位',
+            'name.max' => '用户名最大长度不超过48位',
         ];
     }
+
+
 }

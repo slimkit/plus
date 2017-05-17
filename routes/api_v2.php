@@ -8,11 +8,6 @@ Route::get('/bootstrappers', 'BootstrappersController@show');
 // 用户登录
 Route::any('/login', 'LoginController@store');
 
-// 用户注册
-Route::post('/register', 'AuthController@register')
-    ->middleware(Middleware\VerifyPhoneCodeAfterAction::class) // 后置操作设置验证码过期
-;
-
 // 获取手机验证码
 Route::post('/auth/phone/code', 'AuthController@sendPhoneCode')
     ->middleware(Middleware\VerifyPhoneNumber::class) // 验证手机号格式是否正确
@@ -37,6 +32,11 @@ Route::get('/users/{user}', 'UserController@getSingleUserInfo');
 
 // 批量获取用户资料
 Route::get('/users', 'UserController@getMultiUserInfo');
+
+// 用户注册
+Route::post('/users', 'AuthController@register')
+    ->middleware(Middleware\VerifyPhoneCodeAfterAction::class) // 后置操作设置验证码过期
+;
 
 // 用户相关组
 Route::prefix('users')
