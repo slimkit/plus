@@ -17,6 +17,7 @@ class SMS
      */
     protected static $aliases = [
         'testing' => \Zhiyi\Plus\Services\SMS\Driver\Testing::class,
+        'alidayu' => \Zhiyi\Plus\Services\SMS\Driver\Alidayu::class,
     ];
 
     protected $app;
