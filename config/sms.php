@@ -27,7 +27,7 @@ return [
 
     'driver' => [
         'testing' => '开发测试（不发送）',
-        'alidayu' => '阿里大鱼',
+        'alidayu' => '阿里大于',
     ],
 
     /*
