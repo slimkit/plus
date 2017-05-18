@@ -6,12 +6,12 @@ use Exception;
 use Zhiyi\Plus\Models\Role;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
 use Zhiyi\Plus\Http\Middleware\V1\VerifyPhoneNumber;
 use Zhiyi\Plus\Http\Middleware\V1\VerifyUserNameRole;
-use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -111,7 +111,7 @@ class UserController extends Controller
             'roles' => [
                 'required',
                 'array',
-                Rule::in(Role::all()->keyBy('id')->keys()->toArray())
+                Rule::in(Role::all()->keyBy('id')->keys()->toArray()),
             ],
         ];
 
@@ -242,7 +242,6 @@ class UserController extends Controller
 
         return response()->json($data)->setStatusCode(200);
     }
-
 
     /**
      * 用于执行部分更新验证，非按照要求抛出异常.
