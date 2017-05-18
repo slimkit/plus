@@ -106,8 +106,10 @@ const UserManageComponent = {
         { validateStatus: status => status === 201 }
       ).then(() => {
         this.changeIn = false;
-      }).catch(({ response: { data: { errors = [] } = {} } = {} }) => {
-        const [ errorMessage = '更新失败' ] = errors;
+      }).catch(({ response: { data = {} } = {} }) => {
+        const { phone = [], name = [], email = [], roles = [], message = [] } = data;
+        const [ errorMessage ] = [ ...phone, ...name, ...email, ...roles, ...message ];
+
         this.error = errorMessage;
         this.changeIn = false;
       });

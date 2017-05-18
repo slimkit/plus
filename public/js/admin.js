@@ -1,7 +1,6 @@
 webpackJsonp([0],[
 /* 0 */,
-/* 1 */,
-/* 2 */
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55,6 +54,7 @@ exports.default = _axios2.default;
 // Read the https://github.com/mzabriskie/axios
 
 /***/ }),
+/* 2 */,
 /* 3 */,
 /* 4 */,
 /* 5 */
@@ -156,15 +156,15 @@ var _vuex = __webpack_require__(10);
 
 var _vuex2 = _interopRequireDefault(_vuex);
 
-var _user = __webpack_require__(71);
+var _user = __webpack_require__(73);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _site = __webpack_require__(70);
+var _site = __webpack_require__(72);
 
 var _site2 = _interopRequireDefault(_site);
 
-var _area = __webpack_require__(69);
+var _area = __webpack_require__(71);
 
 var _area2 = _interopRequireDefault(_area);
 
@@ -217,7 +217,7 @@ var _types = __webpack_require__(5);
 
 var _getterTypes = __webpack_require__(7);
 
-var _request = __webpack_require__(2);
+var _request = __webpack_require__(1);
 
 var _request2 = _interopRequireDefault(_request);
 
@@ -377,33 +377,33 @@ var _vue = __webpack_require__(8);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _vueRouter = __webpack_require__(120);
+var _vueRouter = __webpack_require__(126);
 
 var _vueRouter2 = _interopRequireDefault(_vueRouter);
 
 var _auth = __webpack_require__(18);
 
-var _setting = __webpack_require__(66);
+var _setting = __webpack_require__(68);
 
 var _setting2 = _interopRequireDefault(_setting);
 
-var _user = __webpack_require__(68);
+var _user = __webpack_require__(70);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _sms = __webpack_require__(67);
+var _sms = __webpack_require__(69);
 
 var _sms2 = _interopRequireDefault(_sms);
 
-var _Login = __webpack_require__(85);
+var _Login = __webpack_require__(87);
 
 var _Login2 = _interopRequireDefault(_Login);
 
-var _Home = __webpack_require__(84);
+var _Home = __webpack_require__(86);
 
 var _Home2 = _interopRequireDefault(_Home);
 
-var _Component = __webpack_require__(83);
+var _Component = __webpack_require__(85);
 
 var _Component2 = _interopRequireDefault(_Component);
 
@@ -441,13 +441,13 @@ exports.default = router;
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(76)
+  __webpack_require__(78)
 }
 var Component = __webpack_require__(0)(
   /* script */
   null,
   /* template */
-  __webpack_require__(107),
+  __webpack_require__(111),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -648,15 +648,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _vuex = __webpack_require__(10);
 
-var _request = __webpack_require__(2);
+var _request = __webpack_require__(1);
 
 var _getterTypes = __webpack_require__(7);
 
-var _defaultAvatar = __webpack_require__(100);
+var _defaultAvatar = __webpack_require__(104);
 
 var _defaultAvatar2 = _interopRequireDefault(_defaultAvatar);
 
-var _Nav = __webpack_require__(86);
+var _Nav = __webpack_require__(88);
 
 var _Nav2 = _interopRequireDefault(_Nav);
 
@@ -1010,7 +1010,7 @@ var _getterTypes = __webpack_require__(7);
 
 var _types = __webpack_require__(5);
 
-var _request = __webpack_require__(2);
+var _request = __webpack_require__(1);
 
 var _request2 = _interopRequireDefault(_request);
 
@@ -1391,7 +1391,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _types = __webpack_require__(5);
 
-var _request = __webpack_require__(2);
+var _request = __webpack_require__(1);
 
 var _request2 = _interopRequireDefault(_request);
 
@@ -1598,7 +1598,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 
-var _request = __webpack_require__(2);
+var _request = __webpack_require__(1);
 
 var _request2 = _interopRequireDefault(_request);
 
@@ -1758,7 +1758,372 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _request = __webpack_require__(2);
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var _request2 = __webpack_require__(1);
+
+var _request3 = _interopRequireDefault(_request2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var AlidayuComponent = {
+  data: function data() {
+    return {
+      loadding: {
+        state: 0,
+        message: ''
+      },
+      submit: {
+        state: false,
+        type: 'muted',
+        message: ''
+      },
+      options: {}
+    };
+  },
+  methods: {
+    request: function request() {
+      var _this = this;
+
+      this.loadding.state = 0;
+      _request3.default.get((0, _request2.createRequestURI)('sms/driver/alidayu'), { validateStatus: function validateStatus(status) {
+          return status === 200;
+        } }).then(function (_ref) {
+        var _ref$data = _ref.data,
+            data = _ref$data === undefined ? {} : _ref$data;
+
+        _this.loadding.state = 1;
+        _this.options = data;
+      }).catch(function (_ref2) {
+        var _ref2$response = _ref2.response;
+        _ref2$response = _ref2$response === undefined ? {} : _ref2$response;
+        var _ref2$response$data = _ref2$response.data;
+        _ref2$response$data = _ref2$response$data === undefined ? {} : _ref2$response$data;
+        var _ref2$response$data$m = _ref2$response$data.message;
+        _ref2$response$data$m = _ref2$response$data$m === undefined ? [] : _ref2$response$data$m;
+
+        var _ref2$response$data$m2 = _slicedToArray(_ref2$response$data$m, 1),
+            _ref2$response$data$m3 = _ref2$response$data$m2[0],
+            message = _ref2$response$data$m3 === undefined ? '加载失败' : _ref2$response$data$m3;
+
+        _this.loadding.state = 2;
+        _this.loadding.message = message;
+      });
+    },
+    submitHandle: function submitHandle() {
+      var _this2 = this;
+
+      var _options = this.options,
+          _options$app_key = _options.app_key,
+          app_key = _options$app_key === undefined ? null : _options$app_key,
+          _options$app_secret = _options.app_secret,
+          app_secret = _options$app_secret === undefined ? null : _options$app_secret,
+          _options$sign_name = _options.sign_name,
+          sign_name = _options$sign_name === undefined ? null : _options$sign_name,
+          _options$verify_templ = _options.verify_template_id,
+          verify_template_id = _options$verify_templ === undefined ? null : _options$verify_templ;
+
+      this.submit.state = true;
+      _request3.default.patch((0, _request2.createRequestURI)('sms/driver/alidayu'), { app_key: app_key, app_secret: app_secret, sign_name: sign_name, verify_template_id: verify_template_id }, { validateStatus: function validateStatus(status) {
+          return status === 201;
+        } }).then(function (_ref3) {
+        var _ref3$data$message = _ref3.data.message;
+        _ref3$data$message = _ref3$data$message === undefined ? [] : _ref3$data$message;
+
+        var _ref3$data$message2 = _slicedToArray(_ref3$data$message, 1),
+            _ref3$data$message2$ = _ref3$data$message2[0],
+            message = _ref3$data$message2$ === undefined ? '提交成功' : _ref3$data$message2$;
+
+        _this2.submit.state = false;
+        _this2.submit.type = 'success';
+        _this2.submit.message = message;
+      }).catch(function (_ref4) {
+        var _ref4$response = _ref4.response;
+        _ref4$response = _ref4$response === undefined ? {} : _ref4$response;
+        var _ref4$response$data = _ref4$response.data;
+        _ref4$response$data = _ref4$response$data === undefined ? {} : _ref4$response$data;
+        var _ref4$response$data$m = _ref4$response$data.message;
+        _ref4$response$data$m = _ref4$response$data$m === undefined ? [] : _ref4$response$data$m;
+
+        var _ref4$response$data$m2 = _slicedToArray(_ref4$response$data$m, 1),
+            _ref4$response$data$m3 = _ref4$response$data$m2[0],
+            message = _ref4$response$data$m3 === undefined ? '提交失败' : _ref4$response$data$m3;
+
+        _this2.submit.state = false;
+        _this2.submit.type = 'danger';
+        _this2.submit.message = message;
+      });
+    }
+  },
+  created: function created() {
+    var _this3 = this;
+
+    window.setTimeout(function () {
+      return _this3.request();
+    }, 500);
+  }
+};
+
+exports.default = AlidayuComponent;
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var _request2 = __webpack_require__(1);
+
+var _request3 = _interopRequireDefault(_request2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var DriverComponent = {
+  data: function data() {
+    return {
+      selected: null,
+      driver: [],
+      loadding: true,
+      loaddingError: false,
+      loaddingErrorMessage: '',
+      submit: {
+        loadding: false,
+        message: '',
+        messageType: 'muted'
+      }
+    };
+  },
+  methods: {
+    request: function request() {
+      var _this = this;
+
+      this.loadding = true;
+      _request3.default.get((0, _request2.createRequestURI)('sms/driver'), { validateStatus: function validateStatus(status) {
+          return status === 200;
+        } }).then(function (_ref) {
+        var _ref$data = _ref.data,
+            data = _ref$data === undefined ? {} : _ref$data;
+        var _data$default = data.default,
+            selected = _data$default === undefined ? null : _data$default,
+            _data$driver = data.driver,
+            driver = _data$driver === undefined ? [] : _data$driver;
+
+        _this.loadding = false;
+        _this.loaddingError = false;
+        _this.selected = selected;
+        _this.driver = driver;
+      }).catch(function (_ref2) {
+        var _ref2$response = _ref2.response;
+        _ref2$response = _ref2$response === undefined ? {} : _ref2$response;
+        var _ref2$response$data = _ref2$response.data;
+        _ref2$response$data = _ref2$response$data === undefined ? {} : _ref2$response$data;
+        var _ref2$response$data$m = _ref2$response$data.message;
+        _ref2$response$data$m = _ref2$response$data$m === undefined ? [] : _ref2$response$data$m;
+
+        var _ref2$response$data$m2 = _slicedToArray(_ref2$response$data$m, 1),
+            _ref2$response$data$m3 = _ref2$response$data$m2[0],
+            message = _ref2$response$data$m3 === undefined ? '加载驱动设置失败，请刷新重新尝试！' : _ref2$response$data$m3;
+
+        _this.loadding = false;
+        _this.loaddingError = true;
+        _this.loaddingErrorMessage = message;
+      });
+    },
+    submitHandle: function submitHandle() {
+      var _this2 = this;
+
+      var selected = this.selected;
+      this.submit.loadding = true;
+      this.submit.message = '';
+      _request3.default.patch((0, _request2.createRequestURI)('sms/driver'), { default: selected }, { validateStatus: function validateStatus(status) {
+          return status === 201;
+        } }).then(function (_ref3) {
+        var _ref3$data = _ref3.data;
+        _ref3$data = _ref3$data === undefined ? {} : _ref3$data;
+        var _ref3$data$message = _ref3$data.message;
+        _ref3$data$message = _ref3$data$message === undefined ? [] : _ref3$data$message;
+
+        var _ref3$data$message2 = _slicedToArray(_ref3$data$message, 1),
+            _ref3$data$message2$ = _ref3$data$message2[0],
+            message = _ref3$data$message2$ === undefined ? '更新成功' : _ref3$data$message2$;
+
+        _this2.submit.loadding = false;
+        _this2.submit.message = message;
+        _this2.submit.messageType = 'success';
+        window.setTimeout(function () {
+          _this2.submit.message = '';
+        }, 3000);
+      }).catch(function (_ref4) {
+        var _ref4$response = _ref4.response;
+        _ref4$response = _ref4$response === undefined ? {} : _ref4$response;
+        var _ref4$response$data = _ref4$response.data;
+        _ref4$response$data = _ref4$response$data === undefined ? {} : _ref4$response$data;
+        var _ref4$response$data$m = _ref4$response$data.message;
+        _ref4$response$data$m = _ref4$response$data$m === undefined ? [] : _ref4$response$data$m;
+
+        var _ref4$response$data$m2 = _slicedToArray(_ref4$response$data$m, 1),
+            _ref4$response$data$m3 = _ref4$response$data$m2[0],
+            message = _ref4$response$data$m3 === undefined ? '更新失败' : _ref4$response$data$m3;
+
+        _this2.submit.loadding = false;
+        _this2.submit.message = message;
+        _this2.submit.messageType = 'danger';
+      });
+    }
+  },
+  created: function created() {
+    var _this3 = this;
+
+    window.setTimeout(function () {
+      return _this3.request();
+    }, 500);
+  }
+};
+
+exports.default = DriverComponent;
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _request = __webpack_require__(1);
 
 var _request2 = _interopRequireDefault(_request);
 
@@ -1947,7 +2312,7 @@ var SmsMainComponent = {
 exports.default = SmsMainComponent;
 
 /***/ }),
-/* 59 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2107,7 +2472,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 
-var _request = __webpack_require__(2);
+var _request = __webpack_require__(1);
 
 var _request2 = _interopRequireDefault(_request);
 
@@ -2363,7 +2728,7 @@ var ManageComponent = {
 exports.default = ManageComponent;
 
 /***/ }),
-/* 60 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2375,7 +2740,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _request = __webpack_require__(2);
+var _request = __webpack_require__(1);
 
 var _request2 = _interopRequireDefault(_request);
 
@@ -2634,7 +2999,7 @@ var PermissionsComponent = {
 exports.default = PermissionsComponent;
 
 /***/ }),
-/* 61 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2644,7 +3009,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _request = __webpack_require__(2);
+var _request = __webpack_require__(1);
 
 var _request2 = _interopRequireDefault(_request);
 
@@ -2806,7 +3171,7 @@ var RoleManageComponent = {
 exports.default = RoleManageComponent;
 
 /***/ }),
-/* 62 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2818,7 +3183,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _request = __webpack_require__(2);
+var _request = __webpack_require__(1);
 
 var _request2 = _interopRequireDefault(_request);
 
@@ -3098,7 +3463,7 @@ var RolesComponent = {
 exports.default = RolesComponent;
 
 /***/ }),
-/* 63 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3108,11 +3473,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _request = __webpack_require__(2);
+var _request = __webpack_require__(1);
 
 var _request2 = _interopRequireDefault(_request);
 
-var _codes = __webpack_require__(72);
+var _codes = __webpack_require__(74);
 
 var _lodash = __webpack_require__(6);
 
@@ -3219,7 +3584,7 @@ var UserAddComponent = {
 exports.default = UserAddComponent;
 
 /***/ }),
-/* 64 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3229,96 +3594,98 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var _request = __webpack_require__(2);
+var _request = __webpack_require__(1);
 
 var _request2 = _interopRequireDefault(_request);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var UserManageComponent = {
   data: function data() {
@@ -3351,14 +3718,21 @@ var UserManageComponent = {
       }).catch(function (_ref) {
         var _ref$response = _ref.response;
         _ref$response = _ref$response === undefined ? {} : _ref$response;
-        var _ref$response$data = _ref$response.data;
-        _ref$response$data = _ref$response$data === undefined ? {} : _ref$response$data;
-        var _ref$response$data$er = _ref$response$data.errors,
-            errors = _ref$response$data$er === undefined ? [] : _ref$response$data$er;
+        var _ref$response$data = _ref$response.data,
+            data = _ref$response$data === undefined ? {} : _ref$response$data;
+        var _data$phone = data.phone,
+            phone = _data$phone === undefined ? [] : _data$phone,
+            _data$name = data.name,
+            name = _data$name === undefined ? [] : _data$name,
+            _data$email = data.email,
+            email = _data$email === undefined ? [] : _data$email,
+            _data$roles = data.roles,
+            roles = _data$roles === undefined ? [] : _data$roles,
+            _data$message = data.message,
+            message = _data$message === undefined ? [] : _data$message;
 
-        var _errors = _slicedToArray(errors, 1),
-            _errors$ = _errors[0],
-            errorMessage = _errors$ === undefined ? '更新失败' : _errors$;
+        var _ref2 = [].concat(_toConsumableArray(phone), _toConsumableArray(name), _toConsumableArray(email), _toConsumableArray(roles), _toConsumableArray(message)),
+            errorMessage = _ref2[0];
 
         _this.error = errorMessage;
         _this.changeIn = false;
@@ -3378,10 +3752,10 @@ var UserManageComponent = {
       validateStatus: function validateStatus(status) {
         return status === 200;
       }
-    }).then(function (_ref2) {
-      var _ref2$data = _ref2.data,
-          user = _ref2$data.user,
-          roles = _ref2$data.roles;
+    }).then(function (_ref3) {
+      var _ref3$data = _ref3.data,
+          user = _ref3$data.user,
+          roles = _ref3$data.roles;
 
       _this2.user = user;
       _this2.roles = roles;
@@ -3391,17 +3765,17 @@ var UserManageComponent = {
         return selecedRoles.push(role.id);
       });
       _this2.selecedRoles = selecedRoles;
-    }).catch(function (_ref3) {
-      var _ref3$response = _ref3.response;
-      _ref3$response = _ref3$response === undefined ? {} : _ref3$response;
-      var _ref3$response$data = _ref3$response.data;
-      _ref3$response$data = _ref3$response$data === undefined ? {} : _ref3$response$data;
-      var _ref3$response$data$e = _ref3$response$data.errors,
-          errors = _ref3$response$data$e === undefined ? [] : _ref3$response$data$e;
+    }).catch(function (_ref4) {
+      var _ref4$response = _ref4.response;
+      _ref4$response = _ref4$response === undefined ? {} : _ref4$response;
+      var _ref4$response$data = _ref4$response.data;
+      _ref4$response$data = _ref4$response$data === undefined ? {} : _ref4$response$data;
+      var _ref4$response$data$e = _ref4$response$data.errors,
+          errors = _ref4$response$data$e === undefined ? [] : _ref4$response$data$e;
 
-      var _errors2 = _slicedToArray(errors, 1),
-          _errors2$ = _errors2[0],
-          errorMessage = _errors2$ === undefined ? '获取失败，请刷新重试！' : _errors2$;
+      var _errors = _slicedToArray(errors, 1),
+          _errors$ = _errors[0],
+          errorMessage = _errors$ === undefined ? '获取失败，请刷新重试！' : _errors$;
 
       _this2.error = errorMessage;
     });
@@ -3411,7 +3785,7 @@ var UserManageComponent = {
 exports.default = UserManageComponent;
 
 /***/ }),
-/* 65 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3471,7 +3845,7 @@ exports.router = _router2.default;
 exports.store = _store2.default;
 
 /***/ }),
-/* 66 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3481,19 +3855,19 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Setting = __webpack_require__(87);
+var _Setting = __webpack_require__(89);
 
 var _Setting2 = _interopRequireDefault(_Setting);
 
-var _Base = __webpack_require__(90);
+var _Base = __webpack_require__(92);
 
 var _Base2 = _interopRequireDefault(_Base);
 
-var _Area = __webpack_require__(89);
+var _Area = __webpack_require__(91);
 
 var _Area2 = _interopRequireDefault(_Area);
 
-var _StoreageManage = __webpack_require__(91);
+var _StoreageManage = __webpack_require__(93);
 
 var _StoreageManage2 = _interopRequireDefault(_StoreageManage);
 
@@ -3523,7 +3897,7 @@ var settingRouter = {
 exports.default = settingRouter;
 
 /***/ }),
-/* 67 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3533,19 +3907,19 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Main = __webpack_require__(93);
+var _Main = __webpack_require__(97);
 
 var _Main2 = _interopRequireDefault(_Main);
 
-var _Home = __webpack_require__(92);
+var _Home = __webpack_require__(96);
 
 var _Home2 = _interopRequireDefault(_Home);
 
-var _Driver = __webpack_require__(143);
+var _Driver = __webpack_require__(95);
 
 var _Driver2 = _interopRequireDefault(_Driver);
 
-var _Alidayu = __webpack_require__(146);
+var _Alidayu = __webpack_require__(94);
 
 var _Alidayu2 = _interopRequireDefault(_Alidayu);
 
@@ -3567,7 +3941,7 @@ var smsRouter = {
 exports.default = smsRouter;
 
 /***/ }),
-/* 68 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3577,31 +3951,31 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _User = __webpack_require__(88);
+var _User = __webpack_require__(90);
 
 var _User2 = _interopRequireDefault(_User);
 
-var _UserAdd = __webpack_require__(98);
+var _UserAdd = __webpack_require__(102);
 
 var _UserAdd2 = _interopRequireDefault(_UserAdd);
 
-var _UserManage = __webpack_require__(99);
+var _UserManage = __webpack_require__(103);
 
 var _UserManage2 = _interopRequireDefault(_UserManage);
 
-var _Manage = __webpack_require__(94);
+var _Manage = __webpack_require__(98);
 
 var _Manage2 = _interopRequireDefault(_Manage);
 
-var _Roles = __webpack_require__(97);
+var _Roles = __webpack_require__(101);
 
 var _Roles2 = _interopRequireDefault(_Roles);
 
-var _RoleManage = __webpack_require__(96);
+var _RoleManage = __webpack_require__(100);
 
 var _RoleManage2 = _interopRequireDefault(_RoleManage);
 
-var _Permissions = __webpack_require__(95);
+var _Permissions = __webpack_require__(99);
 
 var _Permissions2 = _interopRequireDefault(_Permissions);
 
@@ -3620,7 +3994,7 @@ var routers = {
 exports.default = routers;
 
 /***/ }),
-/* 69 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3706,7 +4080,7 @@ var areaStore = {
 exports.default = areaStore;
 
 /***/ }),
-/* 70 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3747,7 +4121,7 @@ var siteStore = {
 exports.default = siteStore;
 
 /***/ }),
-/* 71 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3847,7 +4221,7 @@ var userStore = {
 exports.default = userStore;
 
 /***/ }),
-/* 72 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3876,20 +4250,8 @@ function code2message(code, defaultMessage) {
 exports.default = codes;
 
 /***/ }),
-/* 73 */,
-/* 74 */,
-/* 75 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 76 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
+/* 75 */,
+/* 76 */,
 /* 77 */
 /***/ (function(module, exports) {
 
@@ -3908,10 +4270,22 @@ exports.default = codes;
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 80 */,
-/* 81 */,
+/* 80 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 81 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
 /* 82 */,
-/* 83 */
+/* 83 */,
+/* 84 */,
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -3933,7 +4307,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(51),
   /* template */
-  __webpack_require__(114),
+  __webpack_require__(118),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -3970,19 +4344,19 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)(module)))
 
 /***/ }),
-/* 84 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(79)
+  __webpack_require__(81)
 }
 var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(52),
   /* template */
-  __webpack_require__(119),
+  __webpack_require__(124),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -4014,19 +4388,19 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 85 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(75)
+  __webpack_require__(77)
 }
 var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(53),
   /* template */
-  __webpack_require__(101),
+  __webpack_require__(105),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -4058,19 +4432,19 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 86 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(77)
+  __webpack_require__(79)
 }
 var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(54),
   /* template */
-  __webpack_require__(108),
+  __webpack_require__(112),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -4102,19 +4476,19 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 87 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(78)
+  __webpack_require__(80)
 }
 var Component = __webpack_require__(0)(
   /* script */
   null,
   /* template */
-  __webpack_require__(117),
+  __webpack_require__(122),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -4146,7 +4520,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 88 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -4168,7 +4542,7 @@ var Component = __webpack_require__(0)(
   /* script */
   null,
   /* template */
-  __webpack_require__(118),
+  __webpack_require__(123),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -4205,7 +4579,7 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)(module)))
 
 /***/ }),
-/* 89 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -4227,7 +4601,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(55),
   /* template */
-  __webpack_require__(113),
+  __webpack_require__(117),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -4264,7 +4638,7 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)(module)))
 
 /***/ }),
-/* 90 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -4286,7 +4660,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(56),
   /* template */
-  __webpack_require__(112),
+  __webpack_require__(116),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -4323,7 +4697,7 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)(module)))
 
 /***/ }),
-/* 91 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -4345,7 +4719,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(57),
   /* template */
-  __webpack_require__(103),
+  __webpack_require__(107),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -4382,7 +4756,7 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)(module)))
 
 /***/ }),
-/* 92 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -4390,7 +4764,87 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(58),
   /* template */
-  __webpack_require__(102),
+  __webpack_require__(125),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/usr/local/var/www/thinksns-plus/resources/assets/admin/component/sms/Alidayu.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Alidayu.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-d8dfe5ee", Component.options)
+  } else {
+    hotAPI.reload("data-v-d8dfe5ee", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 95 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(59),
+  /* template */
+  __webpack_require__(121),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/usr/local/var/www/thinksns-plus/resources/assets/admin/component/sms/Driver.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Driver.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-92bb26f4", Component.options)
+  } else {
+    hotAPI.reload("data-v-92bb26f4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 96 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(60),
+  /* template */
+  __webpack_require__(106),
   /* styles */
   null,
   /* scopeId */
@@ -4422,7 +4876,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 93 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -4430,7 +4884,7 @@ var Component = __webpack_require__(0)(
   /* script */
   null,
   /* template */
-  __webpack_require__(106),
+  __webpack_require__(110),
   /* styles */
   null,
   /* scopeId */
@@ -4462,7 +4916,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 94 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -4482,9 +4936,9 @@ Object.defineProperty(this, "$style", { get: function () { return cssModules["$s
 }
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(59),
+  __webpack_require__(61),
   /* template */
-  __webpack_require__(110),
+  __webpack_require__(114),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -4521,7 +4975,7 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)(module)))
 
 /***/ }),
-/* 95 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -4541,9 +4995,9 @@ Object.defineProperty(this, "$style", { get: function () { return cssModules["$s
 }
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(60),
+  __webpack_require__(62),
   /* template */
-  __webpack_require__(104),
+  __webpack_require__(108),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -4580,15 +5034,15 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)(module)))
 
 /***/ }),
-/* 96 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(61),
+  __webpack_require__(63),
   /* template */
-  __webpack_require__(115),
+  __webpack_require__(119),
   /* styles */
   null,
   /* scopeId */
@@ -4620,7 +5074,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 97 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -4640,9 +5094,9 @@ Object.defineProperty(this, "$style", { get: function () { return cssModules["$s
 }
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(62),
+  __webpack_require__(64),
   /* template */
-  __webpack_require__(109),
+  __webpack_require__(113),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -4679,15 +5133,15 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)(module)))
 
 /***/ }),
-/* 98 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(63),
+  __webpack_require__(65),
   /* template */
-  __webpack_require__(105),
+  __webpack_require__(109),
   /* styles */
   null,
   /* scopeId */
@@ -4719,7 +5173,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 99 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -4739,9 +5193,9 @@ Object.defineProperty(this, "$style", { get: function () { return cssModules["$s
 }
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(64),
+  __webpack_require__(66),
   /* template */
-  __webpack_require__(111),
+  __webpack_require__(115),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -4778,7 +5232,7 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)(module)))
 
 /***/ }),
-/* 100 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -4786,7 +5240,7 @@ var Component = __webpack_require__(0)(
   /* script */
   null,
   /* template */
-  __webpack_require__(116),
+  __webpack_require__(120),
   /* styles */
   null,
   /* scopeId */
@@ -4818,7 +5272,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 101 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -4913,7 +5367,7 @@ if (false) {
 }
 
 /***/ }),
-/* 102 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -5150,7 +5604,7 @@ if (false) {
 }
 
 /***/ }),
-/* 103 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -5432,7 +5886,7 @@ if (false) {
 }
 
 /***/ }),
-/* 104 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -5644,7 +6098,7 @@ if (false) {
 }
 
 /***/ }),
-/* 105 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -5820,7 +6274,7 @@ if (false) {
 }
 
 /***/ }),
-/* 106 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -5868,7 +6322,7 @@ if (false) {
 }
 
 /***/ }),
-/* 107 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -5888,7 +6342,7 @@ if (false) {
 }
 
 /***/ }),
-/* 108 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -5947,7 +6401,7 @@ if (false) {
 }
 
 /***/ }),
-/* 109 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -6130,7 +6584,7 @@ if (false) {
 }
 
 /***/ }),
-/* 110 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -6496,7 +6950,7 @@ if (false) {
 }
 
 /***/ }),
-/* 111 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -6755,7 +7209,7 @@ if (false) {
 }
 
 /***/ }),
-/* 112 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -6954,7 +7408,7 @@ if (false) {
 }
 
 /***/ }),
-/* 113 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -7187,7 +7641,7 @@ if (false) {
 }
 
 /***/ }),
-/* 114 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -7207,7 +7661,7 @@ if (false) {
 }
 
 /***/ }),
-/* 115 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -7355,7 +7809,7 @@ if (false) {
 }
 
 /***/ }),
-/* 116 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -7394,237 +7848,7 @@ if (false) {
 }
 
 /***/ }),
-/* 117 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "setting-container"
-  }, [_c('ul', {
-    staticClass: "nav nav-tabs setting-nav"
-  }, [_c('router-link', {
-    attrs: {
-      "to": "/setting",
-      "tag": "li",
-      "active-class": "active",
-      "exact": ""
-    }
-  }, [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("基本信息")])]), _vm._v(" "), _c('router-link', {
-    attrs: {
-      "to": "/setting/area",
-      "tag": "li",
-      "active-class": "active"
-    }
-  }, [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("地区库")])]), _vm._v(" "), _c('router-link', {
-    attrs: {
-      "to": "/setting/storeages",
-      "tag": "li",
-      "active-class": "active"
-    }
-  }, [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("储存管理")])])], 1), _vm._v(" "), _c('router-view')], 1)
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-9bb730d0", module.exports)
-  }
-}
-
-/***/ }),
-/* 118 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('ul', {
-    staticClass: "nav nav-tabs",
-    class: _vm.$style.nav
-  }, [_c('router-link', {
-    attrs: {
-      "to": "/users",
-      "tag": "li",
-      "active-class": "active",
-      "exact": ""
-    }
-  }, [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("用户管理")])]), _vm._v(" "), _c('router-link', {
-    attrs: {
-      "to": "/users/roles",
-      "tag": "li",
-      "active-class": "active"
-    }
-  }, [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("角色管理")])]), _vm._v(" "), _c('router-link', {
-    attrs: {
-      "to": "/users/permissions",
-      "tag": "li",
-      "active-class": "active"
-    }
-  }, [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("权限管理")])])], 1), _vm._v(" "), _c('router-view')], 1)
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-bd3f1f9a", module.exports)
-  }
-}
-
-/***/ }),
-/* 119 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "app-container clearfix"
-  }, [_c('div', {
-    staticClass: "left-nav pull-left"
-  }, [(_vm.avatar) ? _c('img', {
-    staticClass: "img-responsive img-circle center-block user-avatar",
-    attrs: {
-      "src": _vm.avatar
-    }
-  }) : _c('default-avatar', {
-    staticClass: "img-responsive img-circle center-block user-avatar"
-  }), _vm._v(" "), _c('div', {
-    staticClass: "dropdown"
-  }, [_c('button', {
-    staticClass: "btn dropdown-toggle username-btn",
-    attrs: {
-      "type": "button",
-      "id": "userDropdownMune",
-      "data-toggle": "dropdown",
-      "aria-haspopup": "true",
-      "aria-expanded": "false"
-    }
-  }, [_vm._v("\n        " + _vm._s(_vm.user.name) + "\n        "), _c('span', {
-    staticClass: "caret"
-  })]), _vm._v(" "), _c('ul', {
-    staticClass: "dropdown-menu dropdown-menu-right",
-    attrs: {
-      "aria-labelledby": "userDropdownMune"
-    }
-  }, [_c('li', {
-    staticClass: "disabled"
-  }, [_c('a', {
-    attrs: {
-      "href": "#"
-    },
-    on: {
-      "click": _vm.openWebsite
-    }
-  }, [_c('span', {
-    staticClass: "glyphicon glyphicon-new-window"
-  }), _vm._v("\n            打开前台\n          ")])]), _vm._v(" "), _c('li', {
-    staticClass: "divider",
-    attrs: {
-      "role": "separator"
-    }
-  }), _vm._v(" "), _c('li', [_c('a', {
-    attrs: {
-      "href": _vm.logout
-    }
-  }, [_c('span', {
-    staticClass: "glyphicon glyphicon-log-in"
-  }), _vm._v("\n            退出登录\n          ")])])])]), _vm._v(" "), _c('system-nav')], 1), _vm._v(" "), _c('router-view', {
-    staticClass: "pull-right context-container"
-  })], 1)
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-d7706172", module.exports)
-  }
-}
-
-/***/ }),
-/* 120 */,
-/* 121 */,
-/* 122 */,
-/* 123 */,
-/* 124 */,
-/* 125 */,
-/* 126 */,
-/* 127 */,
-/* 128 */,
-/* 129 */,
-/* 130 */,
-/* 131 */,
-/* 132 */,
-/* 133 */,
-/* 134 */,
-/* 135 */,
-/* 136 */,
-/* 137 */,
-/* 138 */,
-/* 139 */,
-/* 140 */,
-/* 141 */,
-/* 142 */,
-/* 143 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var Component = __webpack_require__(0)(
-  /* script */
-  __webpack_require__(145),
-  /* template */
-  __webpack_require__(144),
-  /* styles */
-  null,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/usr/local/var/www/thinksns-plus/resources/assets/admin/component/sms/Driver.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] Driver.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-92bb26f4", Component.options)
-  } else {
-    hotAPI.reload("data-v-92bb26f4", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 144 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -7733,219 +7957,174 @@ if (false) {
 }
 
 /***/ }),
-/* 145 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-var _request2 = __webpack_require__(2);
-
-var _request3 = _interopRequireDefault(_request2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var DriverComponent = {
-  data: function data() {
-    return {
-      selected: null,
-      driver: [],
-      loadding: true,
-      loaddingError: false,
-      loaddingErrorMessage: '',
-      submit: {
-        loadding: false,
-        message: '',
-        messageType: 'muted'
-      }
-    };
-  },
-  methods: {
-    request: function request() {
-      var _this = this;
-
-      this.loadding = true;
-      _request3.default.get((0, _request2.createRequestURI)('sms/driver'), { validateStatus: function validateStatus(status) {
-          return status === 200;
-        } }).then(function (_ref) {
-        var _ref$data = _ref.data,
-            data = _ref$data === undefined ? {} : _ref$data;
-        var _data$default = data.default,
-            selected = _data$default === undefined ? null : _data$default,
-            _data$driver = data.driver,
-            driver = _data$driver === undefined ? [] : _data$driver;
-
-        _this.loadding = false;
-        _this.loaddingError = false;
-        _this.selected = selected;
-        _this.driver = driver;
-      }).catch(function (_ref2) {
-        var _ref2$response = _ref2.response;
-        _ref2$response = _ref2$response === undefined ? {} : _ref2$response;
-        var _ref2$response$data = _ref2$response.data;
-        _ref2$response$data = _ref2$response$data === undefined ? {} : _ref2$response$data;
-        var _ref2$response$data$m = _ref2$response$data.message;
-        _ref2$response$data$m = _ref2$response$data$m === undefined ? [] : _ref2$response$data$m;
-
-        var _ref2$response$data$m2 = _slicedToArray(_ref2$response$data$m, 1),
-            _ref2$response$data$m3 = _ref2$response$data$m2[0],
-            message = _ref2$response$data$m3 === undefined ? '加载驱动设置失败，请刷新重新尝试！' : _ref2$response$data$m3;
-
-        _this.loadding = false;
-        _this.loaddingError = true;
-        _this.loaddingErrorMessage = message;
-      });
-    },
-    submitHandle: function submitHandle() {
-      var _this2 = this;
-
-      var selected = this.selected;
-      this.submit.loadding = true;
-      this.submit.message = '';
-      _request3.default.patch((0, _request2.createRequestURI)('sms/driver'), { default: selected }, { validateStatus: function validateStatus(status) {
-          return status === 201;
-        } }).then(function (_ref3) {
-        var _ref3$data = _ref3.data;
-        _ref3$data = _ref3$data === undefined ? {} : _ref3$data;
-        var _ref3$data$message = _ref3$data.message;
-        _ref3$data$message = _ref3$data$message === undefined ? [] : _ref3$data$message;
-
-        var _ref3$data$message2 = _slicedToArray(_ref3$data$message, 1),
-            _ref3$data$message2$ = _ref3$data$message2[0],
-            message = _ref3$data$message2$ === undefined ? '更新成功' : _ref3$data$message2$;
-
-        _this2.submit.loadding = false;
-        _this2.submit.message = message;
-        _this2.submit.messageType = 'success';
-        window.setTimeout(function () {
-          _this2.submit.message = '';
-        }, 3000);
-      }).catch(function (_ref4) {
-        var _ref4$response = _ref4.response;
-        _ref4$response = _ref4$response === undefined ? {} : _ref4$response;
-        var _ref4$response$data = _ref4$response.data;
-        _ref4$response$data = _ref4$response$data === undefined ? {} : _ref4$response$data;
-        var _ref4$response$data$m = _ref4$response$data.message;
-        _ref4$response$data$m = _ref4$response$data$m === undefined ? [] : _ref4$response$data$m;
-
-        var _ref4$response$data$m2 = _slicedToArray(_ref4$response$data$m, 1),
-            _ref4$response$data$m3 = _ref4$response$data$m2[0],
-            message = _ref4$response$data$m3 === undefined ? '更新失败' : _ref4$response$data$m3;
-
-        _this2.submit.loadding = false;
-        _this2.submit.message = message;
-        _this2.submit.messageType = 'danger';
-      });
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "setting-container"
+  }, [_c('ul', {
+    staticClass: "nav nav-tabs setting-nav"
+  }, [_c('router-link', {
+    attrs: {
+      "to": "/setting",
+      "tag": "li",
+      "active-class": "active",
+      "exact": ""
     }
-  },
-  created: function created() {
-    var _this3 = this;
-
-    window.setTimeout(function () {
-      return _this3.request();
-    }, 500);
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("基本信息")])]), _vm._v(" "), _c('router-link', {
+    attrs: {
+      "to": "/setting/area",
+      "tag": "li",
+      "active-class": "active"
+    }
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("地区库")])]), _vm._v(" "), _c('router-link', {
+    attrs: {
+      "to": "/setting/storeages",
+      "tag": "li",
+      "active-class": "active"
+    }
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("储存管理")])])], 1), _vm._v(" "), _c('router-view')], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-9bb730d0", module.exports)
   }
-};
-
-exports.default = DriverComponent;
+}
 
 /***/ }),
-/* 146 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var disposed = false
-var Component = __webpack_require__(0)(
-  /* script */
-  __webpack_require__(148),
-  /* template */
-  __webpack_require__(147),
-  /* styles */
-  null,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/usr/local/var/www/thinksns-plus/resources/assets/admin/component/sms/Alidayu.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] Alidayu.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('ul', {
+    staticClass: "nav nav-tabs",
+    class: _vm.$style.nav
+  }, [_c('router-link', {
+    attrs: {
+      "to": "/users",
+      "tag": "li",
+      "active-class": "active",
+      "exact": ""
+    }
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("用户管理")])]), _vm._v(" "), _c('router-link', {
+    attrs: {
+      "to": "/users/roles",
+      "tag": "li",
+      "active-class": "active"
+    }
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("角色管理")])]), _vm._v(" "), _c('router-link', {
+    attrs: {
+      "to": "/users/permissions",
+      "tag": "li",
+      "active-class": "active"
+    }
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("权限管理")])])], 1), _vm._v(" "), _c('router-view')], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
   module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-d8dfe5ee", Component.options)
-  } else {
-    hotAPI.reload("data-v-d8dfe5ee", Component.options)
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-bd3f1f9a", module.exports)
   }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
+}
 
 /***/ }),
-/* 147 */
+/* 124 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "app-container clearfix"
+  }, [_c('div', {
+    staticClass: "left-nav pull-left"
+  }, [(_vm.avatar) ? _c('img', {
+    staticClass: "img-responsive img-circle center-block user-avatar",
+    attrs: {
+      "src": _vm.avatar
+    }
+  }) : _c('default-avatar', {
+    staticClass: "img-responsive img-circle center-block user-avatar"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "dropdown"
+  }, [_c('button', {
+    staticClass: "btn dropdown-toggle username-btn",
+    attrs: {
+      "type": "button",
+      "id": "userDropdownMune",
+      "data-toggle": "dropdown",
+      "aria-haspopup": "true",
+      "aria-expanded": "false"
+    }
+  }, [_vm._v("\n        " + _vm._s(_vm.user.name) + "\n        "), _c('span', {
+    staticClass: "caret"
+  })]), _vm._v(" "), _c('ul', {
+    staticClass: "dropdown-menu dropdown-menu-right",
+    attrs: {
+      "aria-labelledby": "userDropdownMune"
+    }
+  }, [_c('li', {
+    staticClass: "disabled"
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": _vm.openWebsite
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-new-window"
+  }), _vm._v("\n            打开前台\n          ")])]), _vm._v(" "), _c('li', {
+    staticClass: "divider",
+    attrs: {
+      "role": "separator"
+    }
+  }), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": _vm.logout
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-log-in"
+  }), _vm._v("\n            退出登录\n          ")])])])]), _vm._v(" "), _c('system-nav')], 1), _vm._v(" "), _c('router-view', {
+    staticClass: "pull-right context-container"
+  })], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-d7706172", module.exports)
+  }
+}
+
+/***/ }),
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -8178,199 +8357,6 @@ if (false) {
   }
 }
 
-/***/ }),
-/* 148 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-var _request2 = __webpack_require__(2);
-
-var _request3 = _interopRequireDefault(_request2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var AlidayuComponent = {
-  data: function data() {
-    return {
-      loadding: {
-        state: 0,
-        message: ''
-      },
-      submit: {
-        state: false,
-        type: 'muted',
-        message: ''
-      },
-      options: {}
-    };
-  },
-  methods: {
-    request: function request() {
-      var _this = this;
-
-      this.loadding.state = 0;
-      _request3.default.get((0, _request2.createRequestURI)('sms/driver/alidayu'), { validateStatus: function validateStatus(status) {
-          return status === 200;
-        } }).then(function (_ref) {
-        var _ref$data = _ref.data,
-            data = _ref$data === undefined ? {} : _ref$data;
-
-        _this.loadding.state = 1;
-        _this.options = data;
-      }).catch(function (_ref2) {
-        var _ref2$response = _ref2.response;
-        _ref2$response = _ref2$response === undefined ? {} : _ref2$response;
-        var _ref2$response$data = _ref2$response.data;
-        _ref2$response$data = _ref2$response$data === undefined ? {} : _ref2$response$data;
-        var _ref2$response$data$m = _ref2$response$data.message;
-        _ref2$response$data$m = _ref2$response$data$m === undefined ? [] : _ref2$response$data$m;
-
-        var _ref2$response$data$m2 = _slicedToArray(_ref2$response$data$m, 1),
-            _ref2$response$data$m3 = _ref2$response$data$m2[0],
-            message = _ref2$response$data$m3 === undefined ? '加载失败' : _ref2$response$data$m3;
-
-        _this.loadding.state = 2;
-        _this.loadding.message = message;
-      });
-    },
-    submitHandle: function submitHandle() {
-      var _this2 = this;
-
-      var _options = this.options,
-          _options$app_key = _options.app_key,
-          app_key = _options$app_key === undefined ? null : _options$app_key,
-          _options$app_secret = _options.app_secret,
-          app_secret = _options$app_secret === undefined ? null : _options$app_secret,
-          _options$sign_name = _options.sign_name,
-          sign_name = _options$sign_name === undefined ? null : _options$sign_name,
-          _options$verify_templ = _options.verify_template_id,
-          verify_template_id = _options$verify_templ === undefined ? null : _options$verify_templ;
-
-      this.submit.state = true;
-      _request3.default.patch((0, _request2.createRequestURI)('sms/driver/alidayu'), { app_key: app_key, app_secret: app_secret, sign_name: sign_name, verify_template_id: verify_template_id }, { validateStatus: function validateStatus(status) {
-          return status === 201;
-        } }).then(function (_ref3) {
-        var _ref3$data$message = _ref3.data.message;
-        _ref3$data$message = _ref3$data$message === undefined ? [] : _ref3$data$message;
-
-        var _ref3$data$message2 = _slicedToArray(_ref3$data$message, 1),
-            _ref3$data$message2$ = _ref3$data$message2[0],
-            message = _ref3$data$message2$ === undefined ? '提交成功' : _ref3$data$message2$;
-
-        _this2.submit.state = false;
-        _this2.submit.type = 'success';
-        _this2.submit.message = message;
-      }).catch(function (_ref4) {
-        var _ref4$response = _ref4.response;
-        _ref4$response = _ref4$response === undefined ? {} : _ref4$response;
-        var _ref4$response$data = _ref4$response.data;
-        _ref4$response$data = _ref4$response$data === undefined ? {} : _ref4$response$data;
-        var _ref4$response$data$m = _ref4$response$data.message;
-        _ref4$response$data$m = _ref4$response$data$m === undefined ? [] : _ref4$response$data$m;
-
-        var _ref4$response$data$m2 = _slicedToArray(_ref4$response$data$m, 1),
-            _ref4$response$data$m3 = _ref4$response$data$m2[0],
-            message = _ref4$response$data$m3 === undefined ? '提交失败' : _ref4$response$data$m3;
-
-        _this2.submit.state = false;
-        _this2.submit.type = 'danger';
-        _this2.submit.message = message;
-      });
-    }
-  },
-  created: function created() {
-    var _this3 = this;
-
-    window.setTimeout(function () {
-      return _this3.request();
-    }, 500);
-  }
-};
-
-exports.default = AlidayuComponent;
-
 /***/ })
-],[65]);
+],[67]);
 //# sourceMappingURL=admin.js.map
