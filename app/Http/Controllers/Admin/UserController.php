@@ -193,42 +193,6 @@ class UserController extends Controller
     }
 
     /**
-     * 创建用户.
-     *
-     * @param Request $request
-     * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function createUser(Request $request)
-    {
-        if (! $request->user()->can('admin:user:add')) {
-            return response()->json([
-                'errors' => ['你没有添加用户权限'],
-            ])->setStatusCode(403);
-        }
-
-        $name = $request->input('name');
-        $phone = $request->input('phone');
-        $password = $request->input('password');
-
-        $user = new User();
-        $user->name = $name;
-        $user->phone = $phone;
-        $user->createPassword($password);
-
-        if (! $user->save()) {
-            return response()->json([
-                'errors' => ['添加失败'],
-            ])->setStatusCode(400);
-        }
-
-        return response()->json([
-            'message' => '成功',
-            'user_id' => $user->id,
-        ])->setStatusCode(201);
-    }
-
-    /**
      * 删除用户.
      *
      * @param User $user
