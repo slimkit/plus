@@ -31,10 +31,9 @@ class CheckRegisterParameter extends FormRequest
     }
 
     /**
-     * Get rule messages.
+     * return validation messages.
      *
-     * @return array
-     * @author Seven Du <shiweidu@outlook.com>
+     * @author bs<414606094@qq.com>
      */
     public function messages()
     {
