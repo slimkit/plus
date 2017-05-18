@@ -39,7 +39,7 @@ class RolePermissions
      */
     public function handle(Request $request, Closure $next, string $permissions, string $message = '')
     {
-        if ($this->auth->guest() || $request->user()->can($permissions)) {
+        if ($this->auth->guest() || ! $request->user()->can($permissions)) {
             abort(403, $message ?: '你没有权限执行该操作');
         }
 
