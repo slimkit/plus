@@ -22,7 +22,7 @@ class CheckDeviceCodeExisted
         ]);
         if ($validator->fails()) {
             return response()->json([
-                'message' => '设备号不能为空',
+                'device_code' => ['设备号不能为空'],
             ])->setStatusCode(422);
         }
 
