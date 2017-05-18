@@ -1,9 +1,5 @@
 <?php
 
-use Zhiyi\Plus\Http\Middleware\V1 as Middleware;
-
-// admin router.
-
 Route::get('/', 'HomeController@index')
     ->name('admin');
 Route::post('/login', 'HomeController@login');
@@ -35,11 +31,7 @@ Route::middleware('auth:web')->group(function () {
 
     // users
     Route::get('/users', 'UserController@users');
-    Route::post('/users', 'UserController@createUser')
-        ->middleware(Middleware\VerifyUserNameRole::class)
-        ->middleware(Middleware\VerifyPhoneNumber::class)
-        ->middleware(Middleware\CheckUserByNameNotExisted::class)
-        ->middleware(Middleware\CheckUserByPhoneNotExisted::class);
+    Route::post('/users', 'UserController@store');
     Route::delete('/users/{user}', 'UserController@deleteUser');
     Route::get('/users/{user}', 'UserController@showUser');
     Route::patch('/users/{user}', 'UserController@update');

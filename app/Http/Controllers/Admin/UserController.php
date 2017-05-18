@@ -6,12 +6,12 @@ use Exception;
 use Zhiyi\Plus\Models\Role;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
 use Zhiyi\Plus\Http\Middleware\V1\VerifyPhoneNumber;
 use Zhiyi\Plus\Http\Middleware\V1\VerifyUserNameRole;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -111,7 +111,7 @@ class UserController extends Controller
             'roles' => [
                 'required',
                 'array',
-                Rule::in(Role::all()->keyBy('id')->keys()->toArray()),
+                Rule::in(Role::all()->keyBy('id')->keys()->toArray())
             ],
         ];
 
@@ -123,7 +123,7 @@ class UserController extends Controller
             'name.username' => '用户名只能以非特殊字符和数字开头，不能包含特殊字符',
             'name.min' => '用户名最少输入两个字',
             'name.max' => '用户名最多输入十二个字',
-            'name.unique' => '用户名以存在',
+            'name.unique' => '用户名已经被其他用户所使用',
             'phone.required' => '请输入用户手机号码',
             'phone.cn_phone' => '请输入大陆地区合法手机号码',
             'phone.unique' => '手机号码已经存在',
@@ -158,6 +158,43 @@ class UserController extends Controller
                 $response === true ? '更新成功' : '更新失败',
             ],
         ])->setStatusCode($response === true ? 201 : 422);
+    }
+
+    public function store(Request $request)
+    {
+        $rules = [
+            'phone' => 'required|cn_phone|unique:users,phone',
+            'name' => 'required|username|min:2|max:12|unique:users,name',
+            'password' => 'required',
+        ];
+        $messages = [
+            'phone.required' => '请输入用户手机号码',
+            'phone.cn_phone' => '请输入大陆地区合法手机号码',
+            'phone.unique' => '手机号码已经存在',
+            'name.required' => '请输入用户名',
+            'name.username' => '用户名只能以非特殊字符和数字开头，不能包含特殊字符',
+            'name.min' => '用户名最少输入两个字',
+            'name.max' => '用户名最多输入十二个字',
+            'name.unique' => '用户名已经被其他用户所使用',
+            'password.required' => '请输入密码',
+        ];
+        $this->validate($request, $rules, $messages);
+
+        $user = new User();
+        $user->name = $request->input('name');
+        $user->phone = $request->input('phone');
+        $user->createPassword($request->input('password'));
+
+        if ($user->save()) {
+            return response()->json([
+                'message' => ['成功'],
+                'user_id' => $user->id,
+            ])->setStatusCode(201);
+        }
+
+        return response()->json([
+            'message' => ['添加失败'],
+        ])->setStatusCode(400);
     }
 
     /**
@@ -242,6 +279,7 @@ class UserController extends Controller
 
         return response()->json($data)->setStatusCode(200);
     }
+
 
     /**
      * 用于执行部分更新验证，非按照要求抛出异常.
