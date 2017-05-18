@@ -6,9 +6,8 @@ use Zhiyi\Plus\Services\SMS\SMS;
 use Zhiyi\Plus\Models\VerifyCode;
 use Illuminate\Database\Eloquent\Factory;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Illuminate\Contracts\Routing\ResponseFactory;
-use Zhiyi\Plus\Http\Requests\API2\CreateRegisterVerifyCodeRequest;
 use Zhiyi\Plus\Http\Requests\API2\StoreVerifyCode;
+use Zhiyi\Plus\Http\Requests\API2\CreateRegisterVerifyCodeRequest;
 
 class VerifyCodeController extends Controller
 {
