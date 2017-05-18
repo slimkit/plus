@@ -27,7 +27,7 @@ class RolePermissions
      * @param  \Closure  $next
      * @return mixed
      */
-    
+
     /**
      * Handle an incoming request.
      *
