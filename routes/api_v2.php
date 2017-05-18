@@ -9,7 +9,9 @@ Route::get('/bootstrappers', 'BootstrappersController@show');
 Route::post('/login', 'LoginController@store');
 
 // 创建注册验证码
-Route::post('/verifycodes/register', 'VerifyCodeController@createRegister');
+Route::post('/verifycodes/register', 'VerifyCodeController@storeByRegister');
+// 已存在用户发送验证码
+Route::any('/verifycodes', 'VerifyCodeController@store');
 
 /* ----------------------- 以下接口非 Seven Du 维护 --------------------------- */
 

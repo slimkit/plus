@@ -8,49 +8,72 @@ use Illuminate\Database\Eloquent\Factory;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Zhiyi\Plus\Http\Requests\API2\CreateRegisterVerifyCodeRequest;
+use Zhiyi\Plus\Http\Requests\API2\StoreVerifyCode;
 
 class VerifyCodeController extends Controller
 {
+    protected $sms;
+
+    /**
+     * 设置启动需要依赖.
+     *
+     * @param \Zhiyi\Plus\Services\SMS\SMS $sms
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function __construct(SMS $sms)
+    {
+        $this->sms = $sms;
+    }
+
     /**
      * 创建注册验证码.
      *
      * @param \Zhiyi\Plus\Http\Requests\API2\CreateRegisterVerifyCodeRequest $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Services\SMS\SMS $sms
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function createRegister(CreateRegisterVerifyCodeRequest $request, ResponseFactory $response, SMS $sms)
+    public function storeByRegister(CreateRegisterVerifyCodeRequest $request)
     {
-        $vaildSecond = config('app.env') == 'production' ? 300 : 6;
-        $phone = $request->input('phone');
-
-        $verify = VerifyCode::byAccount($phone)->byValid($vaildSecond)->orderByDesc()->first();
-
-        if ($verify) {
-            return $response->json([
-                'message' => [sprintf('还需要%d后才能获取', $verify->makeSurplusSecond($vaildSecond))],
-            ], 403);
-        }
-
-        return $this->createVerifyCode($phone, $sms, $response);
+        return $this->send(
+            $request->input('phone')
+        );
     }
 
     /**
-     * 创建验证码并派发事件.
+     * 创建用户短信.
      *
-     * @param string $phone
-     * @param \Zhiyi\Plus\Services\SMS\SMS $sms
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param \Zhiyi\Plus\Http\Requests\API2\StoreVerifyCode $request [description]
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function createVerifyCode($phone, SMS $sms, ResponseFactory $response)
+    public function store(StoreVerifyCode $request)
     {
-        $sms->dispatch(factory(VerifyCode::class)->create([
-            'account' => $phone,
-        ]));
+        return $this->send(
+            $request->input('phone')
+        );
+    }
 
-        return $response->json(['message' => ['获取成功']])->setStatusCode(201);
+    /**
+     * Send phone message.
+     *
+     * @param string $phone
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function send($phone)
+    {
+        $vaildSecond = config('app.env') == 'production' ? 300 : 6;
+        $verify = VerifyCode::byAccount($phone)->byValid($vaildSecond)
+            ->orderByDesc()
+            ->first();
+
+        if ($verify) {
+            return response()->json(['message' => [sprintf('还需要%d后才能获取', $verify->makeSurplusSecond($vaildSecond))]])
+                ->setStatusCode(403);
+        }
+
+        $this->sms->dispatch(factory(VerifyCode::class)->create(['account' => $phone]));
+
+        return response()->json(['message' => ['获取成功']])->setStatusCode(201);
     }
 }
