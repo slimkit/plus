@@ -3477,13 +3477,65 @@ var _request = __webpack_require__(1);
 
 var _request2 = _interopRequireDefault(_request);
 
-var _codes = __webpack_require__(74);
-
-var _lodash = __webpack_require__(6);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var UserAddComponent = {
   data: function data() {
@@ -3511,11 +3563,19 @@ var UserAddComponent = {
         _ref2$response = _ref2$response === undefined ? {} : _ref2$response;
         var _ref2$response$data = _ref2$response.data,
             data = _ref2$response$data === undefined ? {} : _ref2$response$data;
-        var _data$errors = data.errors,
-            errors = _data$errors === undefined ? ['添加失败'] : _data$errors,
-            code = data.code;
+        var _data$name = data.name,
+            name = _data$name === undefined ? [] : _data$name,
+            _data$phone = data.phone,
+            phone = _data$phone === undefined ? [] : _data$phone,
+            _data$password = data.password,
+            password = _data$password === undefined ? [] : _data$password,
+            _data$message = data.message,
+            message = _data$message === undefined ? [] : _data$message;
 
-        _this.errorMessage = (0, _codes.code2message)(code, _lodash2.default.values(errors).pop());
+        var _ref3 = [].concat(_toConsumableArray(name), _toConsumableArray(phone), _toConsumableArray(password), _toConsumableArray(message)),
+            errorMessage = _ref3[0];
+
+        _this.errorMessage = errorMessage;
         _this.adding = false;
       });
     },
@@ -3523,63 +3583,7 @@ var UserAddComponent = {
       this.errorMessage = '';
     }
   }
-}; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+};
 
 exports.default = UserAddComponent;
 
@@ -4221,35 +4225,7 @@ var userStore = {
 exports.default = userStore;
 
 /***/ }),
-/* 74 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.code2message = code2message;
-var codes = {
-  1000: '手机号码格式不正确',
-  1002: '用户名长度不正确，长度必须大于1个长度且小于12个长度',
-  1003: '用户名格式不正确，不能特殊字符或者数字开头',
-  1004: '用户名已经被使用',
-  1010: '手机号码已经被使用'
-};
-
-function code2message(code, defaultMessage) {
-  var _codes$parseInt = codes[parseInt(code)],
-      message = _codes$parseInt === undefined ? defaultMessage : _codes$parseInt;
-
-
-  return message;
-};
-
-exports.default = codes;
-
-/***/ }),
+/* 74 */,
 /* 75 */,
 /* 76 */,
 /* 77 */

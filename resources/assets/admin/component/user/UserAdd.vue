@@ -57,8 +57,6 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
-import { code2message } from '../../util/codes';
-import lodash from 'lodash';
 
 const UserAddComponent = {
   data: () => ({
@@ -78,8 +76,10 @@ const UserAddComponent = {
       ).then(({ data: { user_id: userId } }) => {
         this.$router.replace({ path: '/users/manage/'+userId });
       }).catch(({ response: { data = {} } = {} }) => {
-        const { errors = ['添加失败'], code } = data;
-        this.errorMessage = code2message(code, lodash.values(errors).pop());
+        const { name = [], phone = [], password = [], message = [] } = data;
+        const [ errorMessage ] = [ ...name, ...phone, ...password, ...message ];
+
+        this.errorMessage = errorMessage;
         this.adding = false;
       });
     },
