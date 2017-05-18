@@ -27,8 +27,8 @@ Bdoy
     "im:serve": "127.0.0.1:9900" // IM 服务器地址
     "im:helper": [ // IM 聊天助手用户信息
         {
-            "uid": "1",
-            "url": "https://plus.io/users/1"
+            "uid": "1", // 用户ID
+            "url": "https://plus.io/users/1" // 主页地址 URL
         }
         // ...
     ]
