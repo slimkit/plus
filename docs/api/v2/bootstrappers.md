@@ -24,7 +24,13 @@ Bdoy
 
 ```json5
 {
-    "im:serve": "127.0.0.1:9900"
-    // ...
+    "im:serve": "127.0.0.1:9900" // IM 服务器地址
+    "im:helper": [ // IM 聊天助手用户信息
+        {
+            "uid": "1",
+            "url": "https://plus.io/users/1"
+        }
+        // ...
+    ]
 }
 ```
