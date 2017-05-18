@@ -57,5 +57,6 @@ class Kernel extends HttpKernel
         'guest'      => \Zhiyi\Plus\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle'   => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'role'       => \Zhiyi\Plus\Http\Middleware\Role::class,
+        'role-permissions' => \Zhiyi\Plus\Http\Middleware\RolePermissions::class,
     ];
 }
