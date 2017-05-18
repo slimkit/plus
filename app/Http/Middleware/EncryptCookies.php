@@ -1,6 +1,6 @@
 <?php
 
-namespace Zhiyi\Plus\Http\Middleware\V1;
+namespace Zhiyi\Plus\Http\Middleware;
 
 use Illuminate\Cookie\Middleware\EncryptCookies as BaseEncrypter;
 

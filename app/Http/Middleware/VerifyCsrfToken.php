@@ -1,6 +1,6 @@
 <?php
 
-namespace Zhiyi\Plus\Http\Middleware\V1;
+namespace Zhiyi\Plus\Http\Middleware;
 
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
 
