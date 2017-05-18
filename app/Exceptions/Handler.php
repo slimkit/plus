@@ -58,7 +58,7 @@ class Handler extends ExceptionHandler
      */
     protected function prepareResponse($request, Exception $e)
     {
-        if ($request->expectsJson() && app('config')->get('app.env') == 'production') {
+        if ($request->expectsJson()) {
             return response()->json(['message' => [$e->getMessage()]], 500);
         }
 
