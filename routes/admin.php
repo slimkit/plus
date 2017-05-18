@@ -42,7 +42,7 @@ Route::middleware('auth:web')->group(function () {
         ->middleware(Middleware\CheckUserByPhoneNotExisted::class);
     Route::delete('/users/{user}', 'UserController@deleteUser');
     Route::get('/users/{user}', 'UserController@showUser');
-    Route::patch('/users/{user}', 'UserController@updateUser');
+    Route::patch('/users/{user}', 'UserController@update');
 
     // roles
     Route::get('/roles', 'RoleController@roles');

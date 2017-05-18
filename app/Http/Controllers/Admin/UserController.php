@@ -9,8 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
-use Zhiyi\Plus\Http\Middleware\VerifyPhoneNumber;
-use Zhiyi\Plus\Http\Middleware\VerifyUserNameRole;
+use Zhiyi\Plus\Http\Middleware\V1\VerifyPhoneNumber;
+use Zhiyi\Plus\Http\Middleware\V1\VerifyUserNameRole;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -84,6 +85,79 @@ class UserController extends Controller
         $datas['page'] = $builder->paginate($perPage);
 
         return response()->json($datas)->setStatusCode(200);
+    }
+
+    public function update(Request $request, User $user)
+    {
+        // 验证规则.
+        $rules = [
+            'email' => [
+                'nullable',
+                'email',
+                Rule::unique('users', 'email')->ignore($user->id),
+            ],
+            'name' => [
+                'required',
+                'username',
+                'min:2',
+                'max:12',
+                Rule::unique('users', 'name')->ignore($user->id),
+            ],
+            'phone' => [
+                'required',
+                'cn_phone',
+                Rule::unique('users', 'phone')->ignore($user->id),
+            ],
+            'roles' => [
+                'required',
+                'array',
+                Rule::in(Role::all()->keyBy('id')->keys()->toArray())
+            ],
+        ];
+
+        // 消息
+        $messages = [
+            'email.email' => '请输入正确的 E-Mail 格式',
+            'email.unique' => '邮箱已经存在',
+            'name.required' => '请输入用户名',
+            'name.username' => '用户名只能以非特殊字符和数字开头，不能包含特殊字符',
+            'name.min' => '用户名最少输入两个字',
+            'name.max' => '用户名最多输入十二个字',
+            'name.unique' => '用户名以存在',
+            'phone.required' => '请输入用户手机号码',
+            'phone.cn_phone' => '请输入大陆地区合法手机号码',
+            'phone.unique' => '手机号码已经存在',
+            'roles.required' => '必须选择用户组',
+            'roles.array' => '发送数据格式错误',
+            'roles.in' => '选择的用户组中存在不合法信息',
+        ];
+
+        $this->validate($request, $rules, $messages);
+
+        foreach ($request->only(['email', 'name', 'phone']) as $key => $value) {
+            if ($value) {
+                $user->$key = $value;
+            }
+        }
+
+        if ($password = $request->input('password')) {
+            $user->createPassword($password);
+        }
+
+        $response = app('db.connection')->transaction(function () use ($user, $request) {
+            $user->save();
+            $user->roles()->sync(
+                $request->input('roles')
+            );
+
+            return true;
+        });
+
+        return response()->json([
+            'messages' => [
+                $response === true ? '更新成功' : '更新失败',
+            ],
+        ])->setStatusCode($response === true ? 201 : 422);
     }
 
     /**
@@ -169,43 +243,6 @@ class UserController extends Controller
         return response()->json($data)->setStatusCode(200);
     }
 
-    /**
-     * 更新用户资料.
-     *
-     * @param Request $request
-     * @param User $user
-     * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function updateUser(Request $request, User $user)
-    {
-        if (! $request->user()->can('admin:user:update')) {
-            return response()->json([
-                'errors' => ['你没有修改用户信息的权限'],
-            ])->setStatusCode(403);
-        }
-
-        try {
-            $this->throwResponseError($user = $this->updateUsername($request, $user));
-            $this->throwResponseError($user = $this->updateUserPhone($request, $user));
-            $this->throwResponseError($user = $this->updateUserEmail($request, $user));
-            $this->throwResponseError($user = $this->updateUserPassword($request, $user));
-
-            if (! $user->save()) {
-                throw new Exception('更新失败', 400);
-            }
-
-            $this->throwResponseError($user = $this->syncUserRoles($request, $user));
-
-            return response()->json([
-                'message' => '更新成功！',
-            ])->setStatusCode(201);
-        } catch (Exception $e) {
-            return response()->json([
-                'errors' => [$e->getMessage()],
-            ])->setStatusCode($e->getCode());
-        }
-    }
 
     /**
      * 用于执行部分更新验证，非按照要求抛出异常.
@@ -218,7 +255,7 @@ class UserController extends Controller
     {
         if ($mixed instanceof JsonResponse) {
             $data = $mixed->getData();
-            throw new Exception($data->message ?? '更新失败', $mixed->getStatusCode());
+            throw new Exception($data->message ?? '更新失败', 422);
         } elseif (! $mixed instanceof User) {
             throw new Exception('更新失败', 422);
         }
