@@ -31,10 +31,12 @@ Route::middleware('auth:web')->group(function () {
 
     // users
     Route::get('/users', 'UserController@users');
-    Route::post('/users', 'UserController@store');
+    Route::post('/users', 'UserController@store')
+        ->middleware('role-permissions:admin:user:add,你没有创建用户权限');
     Route::delete('/users/{user}', 'UserController@deleteUser');
     Route::get('/users/{user}', 'UserController@showUser');
-    Route::patch('/users/{user}', 'UserController@update');
+    Route::patch('/users/{user}', 'UserController@update')
+        ->middleware('role-permissions:admin:user:update,你没有修改用户信息的权限');
 
     // roles
     Route::get('/roles', 'RoleController@roles');
