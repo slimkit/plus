@@ -183,12 +183,28 @@ class AuthController extends Controller
     public function forgotPassword(Request $request)
     {
         $password = $request->input('password', '');
-        $user = $request->attributes->get('user');
+        $phone = $request->input('phone');
+        $code = $request->input('code');
+
+        $user = User::byPhone($phone)->first();
+        if (!$user) {
+            return response()->json([
+                'message' => ['用户不存在或已删除'],
+            ])->setStatusCode(404);
+        }
+
+        $verify = VerifyCode::byAccount($phone)->byValid(300)->byCode($code)->first();
+        if (!$verify || $verify->state == 2) {
+            return response()->json([
+                'code' => ['验证码错误或失效'],
+            ])->setStatusCode(403);
+        }
+
         $user->createPassword($password);
         $user->save();
 
         return response()->json([
-            'message' => '重置密码成功',
+            'message' => ['重置密码成功'],
         ])->setStatusCode(201);
     }
 }
