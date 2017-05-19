@@ -97,7 +97,7 @@ class Configuration
         // Save the configuration into the YAML file.
         $this->files->put(
             $this->app->vendorYamlFilePath(),
-            $this->app->make(Dumper::class)->dump($config->all(), 2)
+            $this->app->make(Dumper::class)->dump($config->all(), 10)
         );
     }
 
