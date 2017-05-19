@@ -187,14 +187,14 @@ class AuthController extends Controller
         $code = $request->input('code');
 
         $user = User::byPhone($phone)->first();
-        if (!$user) {
+        if (! $user) {
             return response()->json([
                 'message' => ['用户不存在或已删除'],
             ])->setStatusCode(404);
         }
 
         $verify = VerifyCode::byAccount($phone)->byValid(300)->byCode($code)->first();
-        if (!$verify || $verify->state == 2) {
+        if (! $verify || $verify->state == 2) {
             return response()->json([
                 'code' => ['验证码错误或失效'],
             ])->setStatusCode(403);
