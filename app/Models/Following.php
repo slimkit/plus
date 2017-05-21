@@ -10,7 +10,7 @@ class Following extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'following_user_id', 'id');
     }
 
     public function scopeByUserId(Builder $query, int $user_id): Builder

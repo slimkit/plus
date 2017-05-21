@@ -44,4 +44,9 @@ class UserDatas extends Model
     {
         return $query->where('key', $key);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }
