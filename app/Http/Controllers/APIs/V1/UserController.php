@@ -216,9 +216,8 @@ class UserController extends Controller
         $time = $time ? Carbon::createFromTimestamp($time)->toDateTimeString() : 0;
         $return = [];
         if (in_array('diggs', $key)) {
-            $diggs = $time ? Digg::where('to_user_id', $uid)->where('user_id', '!=', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->get() : 
-                Digg::where('to_user_id', $uid)->where('user_id', '!=', $uid)->orderBy('id', 'desc')->take(5)->get()
-            ;
+            $diggs = $time ? Digg::where('to_user_id', $uid)->where('user_id', '!=', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->get() :
+                Digg::where('to_user_id', $uid)->where('user_id', '!=', $uid)->orderBy('id', 'desc')->take(5)->get();
 
             $digg_return['key'] = 'diggs';
             $digg_return['uids'] = $diggs->pluck('user_id')->toArray();
@@ -229,9 +228,8 @@ class UserController extends Controller
             $return[] = $digg_return;
         }
         if (in_array('follows', $key)) {
-            $follows = $time ? Following::where('following_user_id', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->get() : 
-                Following::where('following_user_id', $uid)->orderBy('id', 'desc')->take(5)->get()
-            ;
+            $follows = $time ? Following::where('following_user_id', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->get() :
+                Following::where('following_user_id', $uid)->orderBy('id', 'desc')->take(5)->get();
 
             $follow_return['key'] = 'follows';
             $follow_return['uids'] = $follows->pluck('user_id')->toArray();
@@ -255,8 +253,7 @@ class UserController extends Controller
             ->where('user_id', '!=', $uid)
             ->take(5)
             ->orderBy('id', 'desc')
-            ->get()
-            ;
+            ->get();
 
             $comment_return['key'] = 'comments';
             $comment_return['uids'] = $comments->pluck('user_id')->toArray();
@@ -279,8 +276,7 @@ class UserController extends Controller
             })
             ->take(5)
             ->orderBy('id', 'desc')
-            ->get()
-            ;
+            ->get();
 
             $notice_return['key'] = 'notices';
             $notice_return['uids'] = [];
