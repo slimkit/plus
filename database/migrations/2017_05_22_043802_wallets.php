@@ -27,8 +27,8 @@ class Wallets extends Migration
 
             // 余额，单位 分 (避免小数计算偏移)
             $table
-                ->integer('balance', 9)
-                ->default(0)
+                ->integer('balance')
+                ->unsigned()
                 ->comment('钱包余额');
             $table->timestamps(); // 自动维护时间
             $table->softDeletes(); // 软删除
@@ -40,7 +40,7 @@ class Wallets extends Migration
                 ->on('users');
 
             // 唯一健设置
-            $table->primary('user_id');
+            $table->unique('user_id');
 
             // 加入余额到普通索引，加速查找和sql命中.
             $table->index('balance');
