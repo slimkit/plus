@@ -152,6 +152,11 @@ class UserController extends Controller
             $cover = $profileData['cover'];
             unset($profileData['cover']);
             $coverProfile = UserProfileSetting::where('profile', 'cover')->first();
+            if (! $coverProfile) {
+                return response()->json([
+                    'cover' => ['用户资料字段不存在'],
+                ])->setStatusCode(404);
+            }
             $coverTask = $this->checkStorageProfile($cover, 'cover');
             if (! $coverTask instanceof StorageTask) {
                 return response()->json($coverTask['message'])->setStatusCode($coverTask['code']);
@@ -168,6 +173,11 @@ class UserController extends Controller
             $avatar = $profileData['avatar'];
             unset($profileData['avatar']);
             $avatarProfile = UserProfileSetting::where('profile', 'avatar')->first();
+            if (! $avatarProfile) {
+                return response()->json([
+                    'avatar' => ['用户资料字段不存在'],
+                ])->setStatusCode(404);
+            }
             $avatarTask = $this->checkStorageProfile($avatar, 'avatar');
             if (! $avatarTask instanceof StorageTask) {
                 return response()->json($avatarTask['message'])->setStatusCode($avatarTask['code']);
