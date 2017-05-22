@@ -16,9 +16,9 @@ Route::post('/verifycodes', 'VerifyCodeController@store');
 // 当前用户资料接口
 Route::prefix('/user')
     ->group(function () {
-    // 当前用户资料
+        // 当前用户资料
     Route::get('/', 'CurrentUserController@show');
-});
+    });
 
 /* ----------------------- 以下接口非 Seven Du 维护 --------------------------- */
 
