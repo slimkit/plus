@@ -12,6 +12,7 @@ use Zhiyi\Plus\Models\AuthToken;
 use Zhiyi\Plus\Models\Following;
 use Zhiyi\Plus\Models\UserDatas;
 use Zhiyi\Plus\Models\VerifyCode;
+use Zhiyi\Plus\Models\StorageTask;
 use Zhiyi\Plus\Models\Conversation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Factory;
@@ -113,6 +114,72 @@ class UserController extends Controller
     {
         $user = $request->user();
         $profileData = $request->all();
+        $profileSettings = UserProfileSetting::whereIn('profile', array_keys($profileData))->get();
+        $datas = [];
+        foreach ($profileSettings as $profile) {
+            $datas[$profile->id] = $request->input($profile->profile) ?? '';
+        }
+        $user->syncData($datas);
+
+        return response()->json()->setStatusCode(201);
+    }
+
+    /**
+     * edit user info.
+     * 
+     * @author bs<414606094@qq.com>
+     *
+     * @param  Request $request
+     */
+    public function editUserInfo(Request $request)
+    {
+        $user = $request->user();
+        $profileData = $request->all();
+
+        if ($request->has('name')) {
+            $rules = [
+                'name' => 'username|unique:users,name',
+            ];
+            $messages = [
+                'name.username' => '用户名只能以非特殊字符和数字开头，不能包含特殊字符',
+                'name.unique' => '用户名已经被其他用户所使用',
+            ];
+
+            $this->validate($request, $rules, $messages);
+        } // 验证用户名字段
+
+        if ($request->has('cover')) {
+            $cover = $profileData['cover'];
+            unset($profileData['cover']);
+            $coverProfile = UserProfileSetting::where('profile', 'cover')->first();
+            $coverTask = $this->checkStorageProfile($cover, 'cover');
+            if (! $coverTask instanceof StorageTask) {
+                return response()->json($coverTask['message'])->setStatusCode($coverTask['code']);
+            }
+
+            DB::transaction(function () use ($user, $coverTask, $coverProfile) {
+                $user->storages()->sync([$coverTask->storage->id], false);
+                $user->syncData([$coverProfile->id => $coverTask->storage->id]);
+                $coverTask->delete();
+            });
+        } // 个人主页背景图字段相应处理
+
+        if ($request->has('avatar')) {
+            $avatar = $profileData['avatar'];
+            unset($profileData['avatar']);
+            $avatarProfile = UserProfileSetting::where('profile', 'avatar')->first();
+            $avatarTask = $this->checkStorageProfile($avatar, 'avatar');
+            if (! $avatarTask instanceof StorageTask) {
+                return response()->json($avatarTask['message'])->setStatusCode($avatarTask['code']);
+            }
+
+            DB::transaction(function () use ($user, $avatarTask, $avatarProfile) {
+                $user->storages()->sync([$avatarTask->storage->id], false);
+                $user->syncData([$avatarProfile->id => $avatarTask->storage->id]);
+                $avatarTask->delete();
+            });
+        } // 头像字段相应处理
+
         $profileSettings = UserProfileSetting::whereIn('profile', array_keys($profileData))->get();
         $datas = [];
         foreach ($profileSettings as $profile) {
@@ -330,5 +397,30 @@ class UserController extends Controller
         }
 
         return response()->json($return)->setStatusCode(200);
+    }
+
+    protected function checkStorageProfile($task_id, $profile)
+    {
+        $task = StorageTask::find($task_id);
+        if (!$task) {
+            return [
+                'code' => 404,
+                'message' => [
+                    $profile => ['上传任务不存在'],
+                ]
+            ];
+        }
+        $task->load('storage');
+        $storage = $task->storage;
+        if (!$storage) {
+            return [
+                'code' => 404,
+                'message' => [
+                    $profile => ['上传附件不存在'],
+                ]
+            ];
+        }
+
+        return $task;
     }
 }

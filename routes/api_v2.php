@@ -44,10 +44,7 @@ Route::prefix('users')
 ->middleware('auth:api')
 ->group(function () {
     // 修改用户资料
-    Route::patch('/', 'UserController@profile')
-        ->middleware(Middleware\ChangeUserAvatar::class)
-        ->middleware(Middleware\ChangeUserCover::class)
-        ->middleware(Middleware\ChangeUsername::class);
+    Route::patch('/', 'UserController@editUserInfo');
     // 修改用户密码
     Route::patch('/password', 'UserController@resetPassword') // 设置控制器
         ->middleware(Middleware\VerifyPassword::class); // 验证用户密码是否正确
