@@ -15,6 +15,6 @@ trait UserWallet
      */
     public function wallet(): HasOne
     {
-        $this->hasOne(Wallet::class, 'user_id', 'id');
+        return $this->hasOne(Wallet::class, 'user_id', 'id');
     }
 }
