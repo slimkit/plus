@@ -46,6 +46,10 @@ trait UserFollw
             $user = $user->id;
         }
 
+        if (! $user) {
+            return false;
+        }
+
         return $this
             ->followings()
             ->where($this->getKeyName(), $user)
@@ -63,6 +67,10 @@ trait UserFollw
     {
         if ($user instanceof User) {
             $user = $user->id;
+        }
+
+        if (! $user) {
+            return false;
         }
 
         return $this
