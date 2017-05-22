@@ -15,7 +15,7 @@ GET
 
 | name     | type     | must     | description |
 |----------|:--------:|:--------:|:-----------:|
-| time     | int      | yes      | 零时区的秒级时间戳 |
+| time     | int      | no      | 零时区的秒级时间戳 不传为获取5条历史记录|
 | key      | string   | no       | 查询关键字 默认查询全部  多个以逗号隔开  可选参数有 diggs comments follows notices|
 
 ### HTTP Status Code

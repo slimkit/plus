@@ -213,42 +213,54 @@ class UserController extends Controller
         $key = $request->input('key') ?? 'diggs,follows,comments,notices';
         is_string($key) && $key = explode(',', $key);
         $time = $request->input('time');
-        $time = Carbon::createFromTimestamp($time)->toDateTimeString();
+        $time = $time ? Carbon::createFromTimestamp($time)->toDateTimeString() : 0;
         $return = [];
         if (in_array('diggs', $key)) {
-            $diggs = Digg::where('to_user_id', $uid)->where('user_id', '!=', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->get();
+            $diggs = $time ? Digg::where('to_user_id', $uid)->where('user_id', '!=', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->get() : 
+                Digg::where('to_user_id', $uid)->where('user_id', '!=', $uid)->orderBy('id', 'desc')->take(5)->get()
+            ;
 
             $digg_return['key'] = 'diggs';
             $digg_return['uids'] = $diggs->pluck('user_id')->toArray();
-            $digg_return['count'] = $diggs->count();
+            $digg_return['count'] = $time ? $diggs->count() : 0;
             $digg_return['time'] = $diggs->count() > 0 ? $diggs->toArray()[0]['created_at'] : Carbon::now()->toDateTimeString();
             $digg_return['max_id'] = $diggs->count() > 0 ? $diggs->toArray()[0]['id'] : 0;
 
             $return[] = $digg_return;
         }
         if (in_array('follows', $key)) {
-            $follows = Following::where('following_user_id', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->get();
+            $follows = $time ? Following::where('following_user_id', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->get() : 
+                Following::where('following_user_id', $uid)->orderBy('id', 'desc')->take(5)->get()
+            ;
 
             $follow_return['key'] = 'follows';
             $follow_return['uids'] = $follows->pluck('user_id')->toArray();
-            $follow_return['count'] = $follows->count();
+            $follow_return['count'] = $time ? $follows->count() : 0;
             $follow_return['time'] = $follows->count() > 0 ? $follows->toArray()[0]['created_at'] : Carbon::now()->toDateTimeString();
             $follow_return['max_id'] = $follows->count() > 0 ? $follows->toArray()[0]['id'] : 0;
 
             $return[] = $follow_return;
         }
         if (in_array('comments', $key)) {
-            $comments = Comment::where(function ($query) use ($uid) {
+            $comments = $time ? Comment::where(function ($query) use ($uid) {
                 $query->where('to_user_id', $uid)->orWhere('reply_to_user_id', $uid);
             })
             ->where('user_id', '!=', $uid)
             ->where('created_at', '>', $time)
             ->orderBy('id', 'desc')
-            ->get();
+            ->get() :
+            Comment::where(function ($query) use ($uid) {
+                $query->where('to_user_id', $uid)->orWhere('reply_to_user_id', $uid);
+            })
+            ->where('user_id', '!=', $uid)
+            ->take(5)
+            ->orderBy('id', 'desc')
+            ->get()
+            ;
 
             $comment_return['key'] = 'comments';
             $comment_return['uids'] = $comments->pluck('user_id')->toArray();
-            $comment_return['count'] = $comments->count();
+            $comment_return['count'] = $time ? $comments->count() : 0;
             $comment_return['time'] = $comments->count() > 0 ? $comments->toArray()[0]['created_at'] : Carbon::now()->toDateTimeString();
             $comment_return['max_id'] = $comments->count() > 0 ? $comments->toArray()[0]['id'] : 0;
 
@@ -256,16 +268,23 @@ class UserController extends Controller
         }
 
         if (in_array('notices', $key)) {
-            $notices = Conversation::where(function ($query) use ($uid) {
+            $notices = $time ? Conversation::where(function ($query) use ($uid) {
                 $query->where('type', 'system')->whereIn('to_user_id', [0, $uid]);
             })
             ->where('created_at', '>', $time)
             ->orderBy('id', 'desc')
-            ->get();
+            ->get() :
+            Conversation::where(function ($query) use ($uid) {
+                $query->where('type', 'system')->whereIn('to_user_id', [0, $uid]);
+            })
+            ->take(5)
+            ->orderBy('id', 'desc')
+            ->get()
+            ;
 
             $notice_return['key'] = 'notices';
             $notice_return['uids'] = [];
-            $notice_return['count'] = $notices->count();
+            $notice_return['count'] = $time ? $notices->count() : 0;
             $notice_return['time'] = $notices->count() > 0 ? $notices->toArray()[0]['created_at'] : Carbon::now()->toDateTimeString();
             $notice_return['max_id'] = $notices->count() > 0 ? $notices->toArray()[0]['id'] : 0;
 
