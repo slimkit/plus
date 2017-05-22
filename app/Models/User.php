@@ -3,11 +3,11 @@
 namespace Zhiyi\Plus\Models;
 
 use Zhiyi\Plus\Traits\UserRolePerms;
+use Zhiyi\Plus\Traits\Model\UserWallet;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Zhiyi\Plus\Traits\Model\UserWallet;
 
 class User extends Authenticatable
 {
