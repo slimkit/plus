@@ -24,9 +24,9 @@ class CheckRegisterParameter extends FormRequest
     public function rules()
     {
         return [
-            'phone' => 'required|cn_phone',
+            'phone' => 'required|cn_phone|unique:users,phone',
             'password' => 'required',
-            'name' => 'username|min:4|max:48',
+            'name' => 'username|min:4|max:48|unique:users,name',
         ];
     }
 
@@ -39,8 +39,10 @@ class CheckRegisterParameter extends FormRequest
     {
         return [
             'phone.required' => '手机号不能为空',
+            'phone.unique' => '手机号已被使用',
             'phone.cn_phone' => '请输入中国大陆合法手机号码',
             'password.required' => '密码不能为空',
+            'name.unique' => '用户名已被使用',
             'name.username' => '请输入格式正确的用户名',
             'name.min' => '用户名最小长度不小于4位',
             'name.max' => '用户名最大长度不超过48位',

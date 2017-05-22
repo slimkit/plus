@@ -51,18 +51,6 @@ class UserController extends Controller
             ])->setStatusCode(403);
         }
 
-        if (User::byPhone($phone)->withTrashed()->first()) {
-            return response()->json([
-                'phone' => ['手机号已被使用'],
-            ])->setStatusCode(403);
-        }
-
-        if (User::byName($name)->withTrashed()->first()) {
-            return response()->json([
-                'name' => ['用户名已被使用'],
-            ])->setStatusCode(403);
-        }
-
         $user = new User();
         $user->name = $name;
         $user->phone = $phone;
