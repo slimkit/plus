@@ -3,12 +3,12 @@
 namespace Zhiyi\Plus\Traits\Model;
 
 use Zhiyi\Plus\Models\User;
-use \Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 trait UserFollw
 {
     /**
-     * 正在关注 - 我关注的
+     * 正在关注 - 我关注的.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      * @author Seven Du <shiweidu@outlook.com>
