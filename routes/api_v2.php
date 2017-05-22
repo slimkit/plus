@@ -1,6 +1,5 @@
 <?php
 
-use Zhiyi\Plus\Http\Middleware\V2 as Middleware;
 
 // 应用启动配置
 Route::get('/bootstrappers', 'BootstrappersController@show');
@@ -23,7 +22,6 @@ Route::prefix('/user')
 // 用户相关
 Route::prefix('/users')
     ->group(function () {
-    // 获取单用户
+        // 获取单用户
     Route::get('/{user}', 'UserController@show');
-});
-
+    });
