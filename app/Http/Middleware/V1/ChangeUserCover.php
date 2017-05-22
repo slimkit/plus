@@ -1,6 +1,6 @@
 <?php
 
-namespace Zhiyi\Plus\Http\Middleware\V2;
+namespace Zhiyi\Plus\Http\Middleware\V1;
 
 use Closure;
 use Zhiyi\Plus\Models\User;
@@ -9,9 +9,12 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\StorageTask;
 use Zhiyi\Plus\Models\UserProfileSetting;
+use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
 class ChangeUserCover
 {
+    use CreateJsonResponseData;
+
     /**
      * 修改用户个人主页背景图中间件入口.
      *
@@ -46,9 +49,9 @@ class ChangeUserCover
     {
         $task = StorageTask::find($storage_task_id);
         if (! $task) {
-            return response()->json([
-                'message' => '上传任务不存在',
-            ])->setStatusCode(404);
+            return response()->json(static::createJsonData([
+                'code' => 2000,
+            ]))->setStatusCode(403);
         }
         $task->load('storage');
         $user = $request->user();
@@ -87,9 +90,9 @@ class ChangeUserCover
     {
         $profile = UserProfileSetting::where('profile', 'cover')->first();
         if (! $profile) {
-            return response()->json([
-                'message' => '用户主页背景字段不存在',
-            ])->setStatusCode(404);
+            return response()->json(static::createJsonData([
+                'code' => 1017,
+            ]))->setStatusCode(500);
         }
 
         return $this->linkStorage($user, $task, $profile, $next);
@@ -112,9 +115,9 @@ class ChangeUserCover
     {
         $storage = $task->storage;
         if (! $storage) {
-            return response()->json([
-                'message' => '已上传的文件不存在',
-            ])->setStatusCode(404);
+            return response()->json(static::createJsonData([
+                'code' => 2004,
+            ]))->setStatusCode(404);
         }
 
         $user->storages()->sync([$storage->id], false);
