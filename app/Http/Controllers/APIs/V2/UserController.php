@@ -30,7 +30,7 @@ class UserController extends Controller
 
     public function show(Request $request)
     {
-        // 
+        //
     }
 
     /**
