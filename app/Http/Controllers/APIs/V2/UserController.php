@@ -66,6 +66,7 @@ class UserController extends Controller
             $temp->offsetSet('follower', $user->followers->isNotEmpty());
 
             $users->push($temp);
+
             return $users;
         }, new Collection());
 
