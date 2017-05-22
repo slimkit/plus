@@ -54,6 +54,9 @@ class Wallets extends Migration
      */
     public function down()
     {
+        Schema::table('wallets', function (Blueprint $table) {
+            $table->dropForeign();
+        });
         Schema::dropIfExists('wallets');
     }
 }
