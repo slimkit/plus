@@ -51,4 +51,23 @@ trait UserFollw
             ->where($this->getKeyName(), $user)
             ->value('target') === $user;
     }
+
+    /**
+     * 验证是否关注了我.
+     *
+     * @param  int|\Zhiyi\Plus\Models\User $user
+     * @return bool
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function hasFollower($user): bool
+    {
+        if ($user instanceof User) {
+            $user = $user->id;
+        }
+
+        return $this
+            ->followers()
+            ->where($this->getKeyName(), $user)
+            ->value('user_id') === $user;
+    }
 }
