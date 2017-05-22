@@ -126,7 +126,7 @@ class UserController extends Controller
 
     /**
      * edit user info.
-     * 
+     *
      * @author bs<414606094@qq.com>
      *
      * @param  Request $request
@@ -409,25 +409,30 @@ class UserController extends Controller
         return response()->json($return)->setStatusCode(200);
     }
 
+    /**
+     * check the profile with storage task.
+     *
+     * @author bs<414606094@qq.com>
+     */
     protected function checkStorageProfile($task_id, $profile)
     {
         $task = StorageTask::find($task_id);
-        if (!$task) {
+        if (! $task) {
             return [
                 'code' => 404,
                 'message' => [
                     $profile => ['上传任务不存在'],
-                ]
+                ],
             ];
         }
         $task->load('storage');
         $storage = $task->storage;
-        if (!$storage) {
+        if (! $storage) {
             return [
                 'code' => 404,
                 'message' => [
                     $profile => ['上传附件不存在'],
-                ]
+                ],
             ];
         }
 
