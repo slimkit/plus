@@ -25,7 +25,7 @@ class Wallets extends Migration
                 ->unsigned()
                 ->comment('钱包所属用户');
 
-            // 余额，单位 分 (避免小数计算float偏移)
+            // 余额，单位 分 (避免小数计算偏移)
             $table
                 ->integer('balance', 9)
                 ->default(0)
