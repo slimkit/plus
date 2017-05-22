@@ -16,7 +16,7 @@ class UserController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function show(Request $request, User $user)
+    public function user(Request $request, User $user)
     {
         $user->load('datas');
 
@@ -26,6 +26,11 @@ class UserController extends Controller
         $this->hasFollower($request, $user);
 
         return response()->json($user, 200);
+    }
+
+    public function show(Request $request)
+    {
+        // 
     }
 
     /**

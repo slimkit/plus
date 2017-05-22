@@ -8,17 +8,6 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 class CurrentUserController extends Controller
 {
     /**
-     * Created the controller.
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function __construct(Request $request)
-    {
-        // 用户认证.
-        $this->middleware('auth:api')->except('logout');
-    }
-
-    /**
      * Get the user.
      *
      * @return mixed
