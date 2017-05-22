@@ -32,4 +32,23 @@ trait UserFollw
             ->belongsToMany(User::class, 'user_follow', 'target', 'user_id')
             ->withTimestamps();
     }
+
+    /**
+     * 验证是否关注.
+     *
+     * @param int|\Zhiyi\Plus\Models\User $user
+     * @return bool
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function hasFollwing($user): bool
+    {
+        if ($user instanceof User) {
+            $user = $user->id;
+        }
+
+        return $this
+            ->followings()
+            ->where($this->getKeyName(), $user)
+            ->value('target') === $user;
+    }
 }
