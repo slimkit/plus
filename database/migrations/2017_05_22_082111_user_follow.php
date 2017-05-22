@@ -13,7 +13,7 @@ class UserFollow extends Migration
      */
     public function up()
     {
-        Schema::table('user_follow', function (Blueprint $table) {
+        Schema::create('user_follow', function (Blueprint $table) {
             // 操作对象用户
             $table
                 ->integer('user_id')
@@ -26,7 +26,24 @@ class UserFollow extends Migration
                 ->unsigned()
                 ->comment('目标用户');
 
-            $table->timestamps() // 对象时间维护
+            $table->timestamps(); // 对象时间维护
+
+            // 外健约束
+            $table
+                ->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table
+                ->foreign('target')
+                ->references('id')
+                ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            // 复合唯一健
+            $table->unique(['user_id', 'target']);
         });
     }
 
@@ -37,8 +54,6 @@ class UserFollow extends Migration
      */
     public function down()
     {
-        Schema::table('follow_user', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('user_follow');
     }
 }

@@ -37,7 +37,9 @@ class Wallets extends Migration
             $table
                 ->foreign('user_id')
                 ->references('id')
-                ->on('users');
+                ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');;
 
             // 唯一健设置
             $table->unique('user_id');
@@ -54,9 +56,6 @@ class Wallets extends Migration
      */
     public function down()
     {
-        Schema::table('wallets', function (Blueprint $table) {
-            $table->dropForeign();
-        });
         Schema::dropIfExists('wallets');
     }
 }
