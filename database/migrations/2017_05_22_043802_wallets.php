@@ -39,7 +39,7 @@ class Wallets extends Migration
                 ->references('id')
                 ->on('users')
                 ->onUpdate('cascade')
-                ->onDelete('cascade');;
+                ->onDelete('cascade');
 
             // 唯一健设置
             $table->unique('user_id');
