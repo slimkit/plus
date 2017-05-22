@@ -11,7 +11,14 @@ Route::post('/login', 'LoginController@store');
 // 创建注册验证码
 Route::post('/verifycodes/register', 'VerifyCodeController@storeByRegister');
 // 已存在用户发送验证码
-Route::any('/verifycodes', 'VerifyCodeController@store');
+Route::post('/verifycodes', 'VerifyCodeController@store');
+
+// 当前用户资料接口
+Route::prefix('/user')
+    ->group(function () {
+    // 当前用户资料
+    Route::get('/', 'CurrentUserController@show');
+});
 
 /* ----------------------- 以下接口非 Seven Du 维护 --------------------------- */
 
