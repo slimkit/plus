@@ -7,10 +7,12 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Zhiyi\Plus\Traits\Model\UserWallet;
 
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes, UserRolePerms {
+    use Notifiable, SoftDeletes, UserWallet;
+    use UserRolePerms {
         SoftDeletes::restore insteadof UserRolePerms;
         UserRolePerms::restore insteadof SoftDeletes;
     }
