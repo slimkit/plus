@@ -20,7 +20,10 @@ trait UserWallet
             ['user_id' => $user->id],
             ['balance' => 0]
         );
-        $user->wallet()->save($wallet);
+
+        if ($wallet === false) {
+            return false;
+        }
     }
 
     /**

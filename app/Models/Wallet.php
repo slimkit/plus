@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Wallet extends Model
 {
+    protected $fillable = ['user_id', 'balance'];
     /**
      * 获取钱包所属用户.
      *

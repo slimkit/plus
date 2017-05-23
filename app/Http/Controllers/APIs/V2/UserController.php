@@ -2,9 +2,12 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use RuntimeException;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\VerifyCode;
 use Illuminate\Support\Collection;
+use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Http\Requests\API2\StoreUserPost;
 
@@ -86,6 +89,39 @@ class UserController extends Controller
         $name = $request->input('name');
         $password = $request->input('password');
         $verifyCode = $request->input('verify_code');
+
+        $role = CommonConfig::byNamespace('user')
+            ->byName('default_role')
+            ->firstOr(function () {
+                throw new RuntimeException('Failed to get the defined user group.');
+            });
+
+        $verify = VerifyCode::byAccount($phone)->byCode($verifyCode)
+            ->orderByDesc()
+            ->first();
+
+        if (! $verify) {
+            return response()
+                ->json(['verify_code' => ['验证码错误!']])
+                ->setStatusCode(422);
+        }
+
+        $user = new User();
+        $user->phone = $phone;
+        $user->name = $name;
+        $user->createPassword($password);
+        
+        if ($user->save()) {
+            // 添加默认用户组.
+            $user->attachRole($role->value);
+            return response()
+                ->json(['message' => ['用户注册成功']])
+                ->setStatusCode(201);
+        }
+
+        return response()
+            ->json(['message' => ['用户注册失败']])
+            ->setStatusCode(500);
     }
 
     /**
