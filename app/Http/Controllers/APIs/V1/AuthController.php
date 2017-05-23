@@ -211,6 +211,6 @@ class AuthController extends Controller
             'code'    => 0,
             'message' => '重置密码成功',
             'data'    => null,
-        ]);
+        ])->setStatusCode(201);
     }
 }
