@@ -3,8 +3,8 @@
 namespace Zhiyi\Plus\Models;
 
 use Zhiyi\Plus\Traits\UserRolePerms;
-use Zhiyi\Plus\Traits\ModelTraitEvent;
 use Zhiyi\Plus\Traits\Model\UserFollw;
+use Zhiyi\Plus\Traits\ModelTraitEvent;
 use Zhiyi\Plus\Traits\Model\UserWallet;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;

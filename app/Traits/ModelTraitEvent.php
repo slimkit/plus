@@ -37,7 +37,7 @@ trait ModelTraitEvent
             if (method_exists($class, $method = $event.class_basename($trait))) {
                 if (forward_static_call_array([$class, $method], [$model]) === false) {
                     return false;
-                };
+                }
             }
         }
     }
