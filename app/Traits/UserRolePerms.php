@@ -10,23 +10,11 @@ use Illuminate\Support\Facades\Config;
 
 trait UserRolePerms
 {
-    /**
-     * Boot the user model
-     * Attach event listener to remove the many-to-many records when trying to delete
-     * Will NOT delete any records if the user model uses soft deletes.
-     *
-     * @return void|bool
-     */
-    public static function boot()
+    public static function deletingUserRolePerms($user)
     {
-        parent::boot();
-        static::deleting(function ($user) {
-            if (! method_exists($user, 'bootSoftDeletes')) {
-                $user->roles()->sync([]);
-            }
-
-            return true;
-        });
+        if (! method_exists($user, 'bootSoftDeletes')) {
+            $user->roles()->sync([]);
+        }
     }
 
     public function cachedRoles()
