@@ -25,7 +25,9 @@ class SmsController extends Controller
         $phone = $request->query('phone');
         $limit = $request->query('limit', 20);
         $page = $request->query('page');
-        $query = app(VerifyCode::class)->newQuery();
+        $query = app(VerifyCode::class)
+            ->newQuery()
+            ->withTrashed();
 
         if ($state !== null) {
             $query->where('state', $state);
