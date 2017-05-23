@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Builder;
 
 class CommonConfig extends Model
 {
+    protected $primaryKey = ['name', 'namespace'];
+    public $incrementing = false;
+    protected $fillable = ['name', 'namespace', 'value'];
     /**
      * Scope func to namespace.
      *
@@ -37,5 +40,20 @@ class CommonConfig extends Model
     public function scopeByName(Builder $query, string $name): Builder
     {
         return $query->where('name', $name);
+    }
+
+    /**
+     * Set the keys for a save update query.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSaveQuery(Builder $query)
+    {
+        foreach ($this->getKeyName() as $key) {
+            $query->where($key, '=', $this->original[$key] ?? $this->getAttribute($key));
+        }
+
+        return $query;
     }
 }
