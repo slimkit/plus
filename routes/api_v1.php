@@ -46,20 +46,25 @@ Route::prefix('users')
     Route::patch('/', 'UserController@profile')
         ->middleware(Middleware\ChangeUserAvatar::class)
         ->middleware(Middleware\ChangeUserCover::class)
-        ->middleware(Middleware\ChangeUsername::class);
+        ->middleware(Middleware\ChangeUsername::class)
+        ->middleware('role-permissions:user-update,你没有修改资料的权限');
     // 修改用户密码
     Route::patch('/password', 'UserController@resetPassword') // 设置控制器
-        ->middleware(Middleware\VerifyPassword::class); // 验证用户密码是否正确
+        ->middleware(Middleware\VerifyPassword::class) // 验证用户密码是否正确
+        ->middleware('role-permissions:password-update,你没有修改用户密码的权限');
     // 获取用户信息
-    Route::post('/', 'UserController@get');
+    Route::post('/', 'UserController@get')
+        ->middleware('role-permissions:user-view,你没有查看用户信息的权限');
 
     // 关注操作相关
     Route::post('/follow', 'FollowController@doFollow')
         ->middleware(Middleware\CheckUserExsistedByUserId::class)
-        ->middleware(Middleware\CheckIsFollow::class);
+        ->middleware(Middleware\CheckIsFollow::class)
+        ->middleware('role-permissions:user-follow,你没有关注用户的权限');
     Route::delete('/unFollow', 'FollowController@doUnFollow')
         ->middleware(Middleware\CheckUserExsistedByUserId::class)
-        ->middleware(Middleware\CheckIsFollowing::class);
+        ->middleware(Middleware\CheckIsFollowing::class)
+        ->middleware('role-permissions:user-follow,你没有关注用户的权限');
 
     //查看指定用户关注状态
     Route::get('/followstatus', 'FollowController@getFollowStatus');
@@ -105,7 +110,7 @@ Route::group([
     // local storage api.
     Route::post('/task/{storage_task_id}', 'StorageController@upload')
         ->name('storage/upload');
-});
+})->middleware('role-permissions:storage-create,你没有上传附件的权限');
 
 //系统及配置相关
 Route::group([
@@ -114,9 +119,11 @@ Route::group([
 ], function () {
     //意见反馈
     Route::post('/feedback', 'SystemController@createFeedback')
-    ->middleware(Middleware\CheckFeedbackContentExisted::class);
+    ->middleware(Middleware\CheckFeedbackContentExisted::class)
+    ->middleware('role-permissions:feedback,你没有意见反馈的权限');
     //获取系统会话列表
-    Route::get('/conversations', 'SystemController@getConversations');
+    Route::get('/conversations', 'SystemController@getConversations')
+    ->middleware('role-permissions:conversations,你没有获取系统会话的权限');
 });
 //获取扩展包安装状态
 Route::get('/system/component/status', 'SystemController@getComponentStatus');

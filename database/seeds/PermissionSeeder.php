@@ -133,5 +133,47 @@ class PermissionSeeder extends Seeder
             'display_name' => '登录',
             'description' => '用户登录权限',
         ]);
+
+        Permission::create([
+            'name' => 'password-update',
+            'display_name' => '修改用户密码',
+            'description' => '用户修改密码权限',
+        ]);
+
+        Permission::create([
+            'name' => 'user-update',
+            'display_name' => '修改用户资料',
+            'description' => '用户修改资料权限',
+        ]);
+
+        Permission::create([
+            'name' => 'user-view',
+            'display_name' => '查看用户资料',
+            'description' => '用户查看资料权限',
+        ]);
+
+        Permission::create([
+            'name' => 'user-follow',
+            'display_name' => '关注用户',
+            'description' => '用户关注权限',
+        ]);
+
+        Permission::create([
+            'name' => 'storage-create',
+            'display_name' => '上传附件',
+            'description' => '用户上传附件权限',
+        ]);
+
+        Permission::create([
+            'name' => 'feedback',
+            'display_name' => '意见反馈',
+            'description' => '用户意见反馈权限',
+        ]);
+
+        Permission::create([
+            'name' => 'conversations',
+            'display_name' => '系统会话',
+            'description' => '用户获取系统会话权限',
+        ]);
     }
 }
