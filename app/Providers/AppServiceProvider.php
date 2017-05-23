@@ -27,7 +27,6 @@ class AppServiceProvider extends ServiceProvider
 
         // 添加长度规则
         Validator::extend('display_length', function ($attribute, $value, array $parameters) {
-
             if (empty($parameters)) {
                 throw new \InvalidArgumentException('Parameters must be passed');
             }

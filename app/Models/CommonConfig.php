@@ -10,6 +10,7 @@ class CommonConfig extends Model
     protected $primaryKey = ['name', 'namespace'];
     public $incrementing = false;
     protected $fillable = ['name', 'namespace', 'value'];
+
     /**
      * Scope func to namespace.
      *
