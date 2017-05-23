@@ -116,6 +116,8 @@ class UserController extends Controller
         if ($user->save()) {
             // 添加默认用户组.
             $user->attachRole($role->value);
+            // 失效验证码
+            $verify->delete();
 
             return response()->json($factory->create(AuthToken::class, [
                 'token' => str_random(64),
