@@ -7,6 +7,7 @@ use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\CommonConfig;
 
 class UserController extends Controller
 {
@@ -237,5 +238,58 @@ class UserController extends Controller
         ];
 
         return response()->json($data)->setStatusCode(200);
+    }
+
+    /**
+     * 获取用户信息设置.
+     *
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function showSetting()
+    {
+        $roles = Role::all();
+        $currentRole = CommonConfig::byNamespace('user')
+            ->byName('default_role')
+            ->value('value');
+
+        return response()
+            ->json([
+                'roles' => $roles,
+                'current_role' => $currentRole,
+            ])
+            ->setStatusCode(200);
+    }
+
+    /**
+     * 储存用户基本设置.
+     *
+     * @param Request $request
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function storeSetting(Request $request)
+    {
+        $rules = [
+            'role' => 'required|exists:roles,id',
+        ];
+        $messages = [
+            'role.required' => '必须选择用户组',
+            'role.exists' => '选择的用户组中存在不合法信息',
+        ];
+        $this->validate($request, $rules, $messages);
+
+        $role = $request->input('role');
+
+        CommonConfig::updateOrCreate(
+            ['namespace' => 'user', 'name' => 'default_role'],
+            ['value' => $role]
+        );
+
+        return response()
+            ->json([
+                'message' => ['更新成功!'],
+            ])
+            ->setStatusCode(201);
     }
 }

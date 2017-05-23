@@ -37,6 +37,8 @@ Route::middleware('auth:web')->group(function () {
     Route::get('/users/{user}', 'UserController@showUser');
     Route::patch('/users/{user}', 'UserController@update')
         ->middleware('role-permissions:admin:user:update,你没有修改用户信息的权限');
+    Route::get('/user/setting', 'UserController@showSetting');
+    Route::patch('/user/setting', 'UserController@storeSetting');
 
     // roles
     Route::get('/roles', 'RoleController@roles');
