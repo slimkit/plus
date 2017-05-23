@@ -75,7 +75,7 @@ class UserController extends Controller
     }
 
     /**
-     * 创建用户
+     * 创建用户.
      *
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
