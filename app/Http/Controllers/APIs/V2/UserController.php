@@ -110,10 +110,11 @@ class UserController extends Controller
         $user->phone = $phone;
         $user->name = $name;
         $user->createPassword($password);
-        
+
         if ($user->save()) {
             // 添加默认用户组.
             $user->attachRole($role->value);
+
             return response()
                 ->json(['message' => ['用户注册成功']])
                 ->setStatusCode(201);
