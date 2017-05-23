@@ -5,11 +5,13 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 use RuntimeException;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\AuthToken;
 use Zhiyi\Plus\Models\VerifyCode;
 use Illuminate\Support\Collection;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Http\Requests\API2\StoreUserPost;
+use Illuminate\Database\Eloquent\Factory;
 
 class UserController extends Controller
 {
@@ -83,7 +85,7 @@ class UserController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function store(StoreUserPost $request)
+    public function store(StoreUserPost $request, Factory $factory)
     {
         $phone = $request->input('phone');
         $name = $request->input('name');
@@ -115,9 +117,16 @@ class UserController extends Controller
             // 添加默认用户组.
             $user->attachRole($role->value);
 
-            return response()
-                ->json(['message' => ['用户注册成功']])
-                ->setStatusCode(201);
+            return response()->json($factory->create(AuthToken::class, [
+                'token' => str_random(64),
+                'refresh_token' => str_random(64),
+                'user_id' => $user->id,
+            ]))
+            ->setStatusCode(201);
+
+            // return response()
+            //     ->json(['message' => ['用户注册成功']])
+            //     ->setStatusCode(201);
         }
 
         return response()
