@@ -8,6 +8,34 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 trait UserWallet
 {
     /**
+     * 监听用户创建完成事件.
+     *
+     * @param self $user
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public static function createdUserWallet($user)
+    {
+        $wallet = Wallet::firstOrCreate(
+            ['user_id' => $user->id],
+            ['balance' => 0]
+        );
+        $user->wallet()->save($wallet);
+    }
+
+    /**
+     * 监听用户删除事件.
+     *
+     * @param self $user
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public static function deletedUserWallet($user)
+    {
+        $user->wallet()->delete();
+    }
+
+    /**
      * 用户钱包.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
