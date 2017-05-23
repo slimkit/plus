@@ -6,6 +6,7 @@ use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Http\Requests\API2\StoreUserPost;
 
 class UserController extends Controller
 {
@@ -71,6 +72,20 @@ class UserController extends Controller
         }, new Collection());
 
         return response()->json($users, 200);
+    }
+
+    /**
+     * 创建用户
+     *
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function store(StoreUserPost $request)
+    {
+        $phone = $request->input('phone');
+        $name = $request->input('name');
+        $password = $request->input('password');
+        $verifyCode = $request->input('verify_code');
     }
 
     /**

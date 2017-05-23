@@ -27,4 +27,6 @@ Route::prefix('/users')
     Route::get('/', 'UserController@show');
     // 获取单用户
     Route::get('/{user}', 'UserController@user');
+
+    Route::post('/', 'UserController@store');
 });
