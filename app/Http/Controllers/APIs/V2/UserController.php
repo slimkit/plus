@@ -9,9 +9,9 @@ use Zhiyi\Plus\Models\AuthToken;
 use Zhiyi\Plus\Models\VerifyCode;
 use Illuminate\Support\Collection;
 use Zhiyi\Plus\Models\CommonConfig;
+use Illuminate\Database\Eloquent\Factory;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Http\Requests\API2\StoreUserPost;
-use Illuminate\Database\Eloquent\Factory;
 
 class UserController extends Controller
 {
