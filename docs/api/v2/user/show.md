@@ -56,15 +56,18 @@ Status: 200 OK
 ### 获取指定用户
 
 ```
-GET /users/1
+GET /users/1?following={user}&follower={user}
 ```
 
+其中 `following`、`follower` 是可选参数，验证用户我是否关注以及是否关注我的用户 id ，默认为当前登陆用户。
 
 ### 批量获取指定用户
 
 ```
 GET /users?user=1,2
 ```
+
+> user 可以是一个值，或者多个值，多个值的时候用英文半角 `,` 分割。
 
 ----------
 
