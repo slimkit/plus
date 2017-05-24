@@ -42,6 +42,7 @@
     "jquery": "^3.2.1",
     "lodash": "^4.17.4",
     "vue": "^2.3.2",
+    "vue-js-modal": "^1.1.2",
     "vue-router": "^2.5.3",
     "vuex": "^2.3.1",
     "vuex-router-sync": "^4.1.2"
