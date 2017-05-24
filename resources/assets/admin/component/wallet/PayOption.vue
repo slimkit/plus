@@ -36,8 +36,15 @@
     <div class="panel panel-default">
       <!-- title -->
       <div class="panel-heading">基础设置 - 充值选项</div>
+
+      <!-- Loading -->
+      <div v-if="loadding.status === 0" class="panel-body text-center">
+        <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
+        加载中...
+      </div>
+
       <!-- Body -->
-      <div class="panel-body">
+      <div v-else-if="loadding.status === 1" class="panel-body">
         <blockquote>
           <p>设置充值选项可以让用户在充值页面快速选择充值金额(只能输入整数)，用户也可以选择输入自定义金额进行充值。</p>
           <footer>在使用 Apple Pay 充值是非常好的选择，因为苹果支付有这样要的要求。</footer>
@@ -46,7 +53,7 @@
         <!-- 选项组 -->
         <div :class="$style.labelBox">
           <span class="label label-info" :class="$style.label" v-for="label in labels">
-            {{ label }}元
+            {{ label / 100 }}
             <span :class="$style.labelDelete" title="删除" aria-hidden="true">&times;</span>
           </span>
           <span class="label label-danger" :class="$style.add" v-show="add.inputStatus === false" @click="openAddInput">
@@ -73,6 +80,13 @@
         </div>
 
       </div>
+
+      <!-- Loading Error -->
+      <div v-else class="panel-body">
+        <div class="alert alert-danger" role="alert">{{ loadding.message }}</div>
+        <button type="button" class="btn btn-primary" @click="requestLabel">刷新</button>
+      </div>
+
     </div>
 
   </div>
@@ -80,9 +94,14 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
+import lodash from 'lodash';
 export default {
   data: () => ({
-    labels: [10, 20, 30],
+    loadding: {
+      status: 0,
+      message: '',
+    },
+    labels: [],
     add: {
       inputStatus: false,
       adding: false,
@@ -100,18 +119,21 @@ export default {
       this.add.inputStatus = true;
     },
     addLabel() {
-      let { value } = this.add;
-      value = parseInt(value);
+      let { value: label } = this.add;
+      label = parseInt(label);
 
-      if (! value) {
+      if (! label) {
         this.sendAlert('danger', '输入选项不能为空！');
-
         return;
-      } else if (this.labels.indexOf(value) !== -1) {
+      } else if (isNaN($label)) {
+        this.sendAlert('danger', '输入的选项存在错误字符');
+        return;
+      } else if (this.labels.indexOf(label) !== -1) {
         this.sendAlert('danger', '输入的选项已经存在');
+        return ;
       }
 
-      this.add.adding = true;
+      // this.add.adding = true;
 
       // console.log(this.labels.indexOf(value) !== -1);
       // return;
@@ -138,7 +160,27 @@ export default {
           this.alert.open = false;
         }, 2000)
       };
+    },
+    requestLabel() {
+      this.loadding.status = 0;
+      request.get(
+        createRequestURI('wallet/labels'),
+        { validateStatus: status => status === 200 }
+      ).then(({ data = [] }) => {
+        this.labels = lodash.reduce(data, function (labels, label) {
+          labels.push(parseInt(label));
+        }, []);
+        this.loadding.status = 1;
+      }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {
+        this.loadding = {
+          status: 2,
+          message: message || '加载失败!'
+        };
+      });
     }
+  },
+  created() {
+    this.requestLabel();
   }
 };
 </script>
