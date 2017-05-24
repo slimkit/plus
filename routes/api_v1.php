@@ -98,7 +98,7 @@ Route::get('/storages', 'StorageController@getStorageLinks');
 
 // 附件储存相关
 Route::group([
-    'middleware' => ['auth:api', 'role-permissions:storage-create,你没有上传附件的权限'],
+    'middleware' => 'auth:api',
     'prefix'     => 'storages',
 ], function () {
     // 创建一个储存任务
@@ -110,7 +110,7 @@ Route::group([
     // local storage api.
     Route::post('/task/{storage_task_id}', 'StorageController@upload')
         ->name('storage/upload');
-});
+})->middleware('role-permissions:storage-create,你没有上传附件的权限');
 
 //系统及配置相关
 Route::group([
