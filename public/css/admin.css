@@ -6764,8 +6764,10 @@ to {
   display: block;
 }
 ._2xxNAnwVXAMC2m7Y3v7VB3_0 ._3sxbqz7ysithx58bvO8I0f_0, ._2xxNAnwVXAMC2m7Y3v7VB3_0 ._2-_SJqKm_4d5oVmwj3r0oY_0 {
+    display: inline-block;
     font-size: 14px;
-    margin: auto 5px;
+    margin: 5px;
+    padding: .4em .8em .5em;
 }
 ._2xxNAnwVXAMC2m7Y3v7VB3_0 ._3sxbqz7ysithx58bvO8I0f_0:first-child, ._2xxNAnwVXAMC2m7Y3v7VB3_0 ._2-_SJqKm_4d5oVmwj3r0oY_0:first-child {
       margin-left: 0;

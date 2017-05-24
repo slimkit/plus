@@ -4106,6 +4106,8 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
+//
 
 exports.default = {
   data: function data() {
@@ -4157,7 +4159,7 @@ exports.default = {
         } }).then(function () {
         _this.add = {
           adding: false,
-          inputStatus: true,
+          inputStatus: false,
           value: ''
         };
         _this.labels = [].concat(_toConsumableArray(_this.labels), [label]);
