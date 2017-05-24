@@ -4,9 +4,9 @@ namespace Zhiyi\Plus\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 class Handler extends ExceptionHandler
 {
@@ -67,6 +67,14 @@ class Handler extends ExceptionHandler
         return parent::prepareResponse($request, $e);
     }
 
+    /**
+     * Render an exception into an HTTP response to json.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception $e
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     protected function renderAPIsException($request, Exception $e)
     {
         $hasAPIsV1 = $request->is('*/v1/*');
@@ -94,7 +102,7 @@ class Handler extends ExceptionHandler
                 ]
                 : ['message' => [$e->getMessage() ?: 'Unknown error.']],
             $e->getStatusCode()
-        );
+        ); 
     }
 
     /**
