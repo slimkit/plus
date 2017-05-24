@@ -82,11 +82,10 @@ class TokenGuard implements Guard
         // APIs v1.
         if ($this->request->is('*/v1/*')) {
             return $this->request->header(
-                'Authorization',
-                $this->request->header('ACCESS-TOKEN', '')
+                'ACCESS-TOKEN',
+                $this->request->header('Authorization', '')
             );
         }
-
         if ($token = $this->request->bearerToken()) {
             return $token;
         }
