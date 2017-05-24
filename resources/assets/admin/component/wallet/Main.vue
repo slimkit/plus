@@ -4,10 +4,10 @@
       <router-link to="/wallet" tag="li" active-class="active" exact>
         <a href="#">统计</a>
       </router-link>
-      <router-link to="/wallet/accounts" tag="li" active-class="active" exact>
+      <router-link to="/wallet/accounts" tag="li" active-class="active">
         <a href="#">流水</a>
       </router-link>
-      <router-link to="/wallet/cash" tag="li" active-class="active" exact>
+      <router-link to="/wallet/cash" tag="li" active-class="active">
         <a href="#">提现审批</a>
       </router-link>
       <li role="presentation" class="dropdown">
