@@ -5,8 +5,10 @@
   .labelBox {
     display: block;
     .label {
+      display: inline-block;
       font-size: 14px;
-      margin: auto 5px;
+      margin: 5px;
+      padding: .4em .8em .5em;
       &:first-child {
         margin-left: 0;
       }
@@ -142,7 +144,7 @@ export default {
       ).then(() => {
         this.add = {
           adding: false,
-          inputStatus: true,
+          inputStatus: false,
           value: ''
         };
         this.labels = [
