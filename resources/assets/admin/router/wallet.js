@@ -10,6 +10,11 @@ import Report from '../component/wallet/Report'
 import Accounts from '../component/wallet/Accounts';
 import Cash from '../component/wallet/Cash';
 import CashSetting from '../component/wallet/CashSetting';
+import PayOption from '../component/wallet/PayOption';
+import PayRule from '../component/wallet/PayRule';
+import Alipay from '../component/wallet/Alipay';
+import ApplePay from '../component/wallet/ApplePay';
+import WeChatPay from '../component/wallet/WeChatPay';
 
 const walletRouter = {
   path: 'wallet',
@@ -18,7 +23,12 @@ const walletRouter = {
     { path: '', component: Report },
     { path: 'accounts', component: Accounts },
     { path: 'cash', component: Cash },
-    { path: 'cash/setting', component: CashSetting }
+    { path: 'cash/setting', component: CashSetting },
+    { path: 'pay/option', component: PayOption },
+    { path: 'pay/rule', component: PayRule },
+    { path: 'pay/alipay', component: Alipay },
+    { path: 'pay/apple', component: ApplePay },
+    { path: 'pay/wechat', component: WeChatPay }
   ]
 };
 
