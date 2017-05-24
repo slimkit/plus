@@ -12,7 +12,7 @@ before_install:
     - php -r "file_exists('.env') || copy('.env.example', '.env');"
 
 install:
-    - composer install
+    - composer install -vvv
     - php artisan key:generate
 
 script:
