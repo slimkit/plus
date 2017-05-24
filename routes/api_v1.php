@@ -97,10 +97,10 @@ tap(Route::get('/storages/{storage}/{process?}', 'StorageController@get'), funct
 Route::get('/storages', 'StorageController@getStorageLinks');
 
 // 附件储存相关
-Route::group([
-    'middleware' => 'auth:api',
-    'prefix'     => 'storages',
-], function () {
+Route::prefix('storages')
+->middleware('auth:api')
+->middleware('role-permissions:storage-create,你没有上传附件的权限')
+->group(function () {
     // 创建一个储存任务
     Route::post('/task', 'StorageController@create');
     // 完成一个任务上传通知
@@ -110,21 +110,21 @@ Route::group([
     // local storage api.
     Route::post('/task/{storage_task_id}', 'StorageController@upload')
         ->name('storage/upload');
-})->middleware('role-permissions:storage-create,你没有上传附件的权限');
+});
 
 //系统及配置相关
-Route::group([
-    'middleware' => 'auth:api',
-    'prefix'     => 'system',
-], function () {
+Route::prefix('/system')
+->middleware('auth:api')
+->group(function () {
     //意见反馈
     Route::post('/feedback', 'SystemController@createFeedback')
-    ->middleware(Middleware\CheckFeedbackContentExisted::class)
-    ->middleware('role-permissions:feedback,你没有意见反馈的权限');
+        ->middleware(Middleware\CheckFeedbackContentExisted::class)
+        ->middleware('role-permissions:feedback,你没有意见反馈的权限');
     //获取系统会话列表
     Route::get('/conversations', 'SystemController@getConversations')
-    ->middleware('role-permissions:conversations,你没有获取系统会话的权限');
+        ->middleware('role-permissions:conversations,你没有获取系统会话的权限');
 });
+
 //获取扩展包安装状态
 Route::get('/system/component/status', 'SystemController@getComponentStatus');
 //获取扩展包配置信息
