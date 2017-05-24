@@ -7,6 +7,7 @@ window.$ = window.jQuery = require('jquery');
 require('bootstrap-sass');
 
 import Vue from 'vue';
+import modal from 'vue-js-modal/src'; // Do not use dist code.
 import { sync } from 'vuex-router-sync';
 import App from './App.vue';
 import store from './store';
@@ -15,6 +16,9 @@ import router from './router';
 // sync the router with the vuex store.
 // this registers `store.state.route`
 sync(store, router);
+
+// Add modal component.
+Vue.use(modal);
 
 // create the app instance.
 // here we inject the router and store to all child components,
