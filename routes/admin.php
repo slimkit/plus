@@ -7,6 +7,11 @@ Route::any('/logout', 'HomeController@logout');
 
 Route::middleware('auth:web')->group(function () {
 
+    // 钱包
+    Route::prefix('wallet')->group(function () {
+        Route::get('/labels', 'WalletSettingController@labels');
+    });
+
     // SMS 相关
     Route::prefix('sms')->group(function () {
         Route::get('/', 'SmsController@show');
