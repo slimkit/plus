@@ -1,26 +1,33 @@
 <template>
   <div>
     <ul class="nav nav-tabs component-controller-nav">
+      <!-- 账目报表统计 -->
       <router-link to="/wallet" tag="li" active-class="active" exact>
         <a href="#">统计</a>
       </router-link>
+
+      <!-- 流水 -->
       <router-link to="/wallet/accounts" tag="li" active-class="active">
         <a href="#">流水</a>
       </router-link>
+
+      <!-- 提现 -->
       <router-link to="/wallet/cash" tag="li" active-class="active">
         <a href="#">提现审批</a>
       </router-link>
+
+      <!-- 基础设置相关 -->
       <li role="presentation" class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
           基础设置 <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
-          <li>
+          <router-link to="/wallet/pay/option" tag="li" active-class="active">
             <a href="#">充值选项</a>
-          </li>
-          <li>
+          </router-link>
+          <router-link to="/wallet/pay/rule" tag="li" active-class="active">
             <a href="#">规则设置</a>
-          </li>
+          </router-link>
         </ul>
       </li>
       <li role="presentation" class="dropdown">
@@ -28,15 +35,15 @@
           支付设置 <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
-          <li>
+          <router-link to="/wallet/pay/apple" tag="li" active-class="active">
             <a href="#">Apple Pay</a>
-          </li>
-          <li>
+          </router-link>
+          <router-link to="/wallet/pay/alipay" tag="li" active-class="active">
             <a href="#">支付宝</a>
-          </li>
-          <li>
+          </router-link>
+          <router-link to="/wallet/pay/wechat" tag="li" active-class="active">
             <a href="#">微信支付</a>
-          </li>
+          </router-link>
         </ul>
       </li>
     </ul>
