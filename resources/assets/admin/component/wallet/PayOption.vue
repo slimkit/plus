@@ -120,12 +120,12 @@ export default {
     },
     addLabel() {
       let { value: label } = this.add;
-      label = parseInt(label);
+      label = parseInt(label * 100);
 
       if (! label) {
         this.sendAlert('danger', '输入选项不能为空！');
         return;
-      } else if (isNaN($label)) {
+      } else if (isNaN(label)) {
         this.sendAlert('danger', '输入的选项存在错误字符');
         return;
       } else if (this.labels.indexOf(label) !== -1) {
@@ -133,20 +133,28 @@ export default {
         return ;
       }
 
-      // this.add.adding = true;
+      this.add.adding = true;
 
-      // console.log(this.labels.indexOf(value) !== -1);
-      // return;
-
-      // this.add.adding = true;
-      // window.setTimeout(() => {
-      //   this.add.adding = false;
-      //   this.labels = [
-      //     ...this.labels,
-      //     this.add.value,
-      //   ];
-      //   this.sendAlert('success', '添加成功！');
-      // }, 1500);
+      request.post(
+        createRequestURI('wallet/labels'),
+        { label },
+        { validateStatus: status => status === 201 }
+      ).then(() => {
+        this.add = {
+          adding: false,
+          inputStatus: true,
+          value: ''
+        };
+        this.labels = [
+          ...this.labels,
+          label
+        ];
+        this.sendAlert('success', '创建选项成功!');
+      }).catch(({ response: { data: { message = [], label = [] } = {} } = {} }) => {
+        const [ currentMessage = '创建失败，请检查网络！' ] = [ ...message, ...label ];
+        this.add.adding = false;
+        this.sendAlert('danger', currentMessage);
+      });
     },
     sendAlert(type, message) {
       window.clearInterval(this.alert.interval);
@@ -169,6 +177,8 @@ export default {
       ).then(({ data = [] }) => {
         this.labels = lodash.reduce(data, function (labels, label) {
           labels.push(parseInt(label));
+
+          return labels;
         }, []);
         this.loadding.status = 1;
       }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {

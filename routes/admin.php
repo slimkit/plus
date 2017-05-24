@@ -10,6 +10,7 @@ Route::middleware('auth:web')->group(function () {
     // 钱包
     Route::prefix('wallet')->group(function () {
         Route::get('/labels', 'WalletSettingController@labels');
+        Route::post('/labels', 'WalletSettingController@storeLabel');
     });
 
     // SMS 相关
