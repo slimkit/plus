@@ -5,6 +5,8 @@ namespace Zhiyi\Plus\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 class Handler extends ExceptionHandler
 {
@@ -59,10 +61,40 @@ class Handler extends ExceptionHandler
     protected function prepareResponse($request, Exception $e)
     {
         if ($request->expectsJson()) {
-            return response()->json(['message' => [$e->getMessage()]], 500);
+            return $this->renderAPIsException($request, $e);
         }
 
         return parent::prepareResponse($request, $e);
+    }
+
+    protected function renderAPIsException($request, Exception $e)
+    {
+        $hasAPIsV1 = $request->is('*/v1/*');
+        if ($e instanceof HttpException) {
+            return response()->json(
+                $hasAPIsV1
+                    ? [
+                        'status'  => false,
+                        'code'    => 0,
+                        'message' => $e->getMessage() ?: Response::$statusTexts[$e->getStatusCode()],
+                        'data'    => null,
+                    ]
+                    : ['message' => $e->getMessage() ?: Response::$statusTexts[$e->getStatusCode()]],
+                $e->getStatusCode()
+            );
+        }
+
+        return response()->json(
+            $hasAPIsV1
+                ? [
+                    'status'  => false,
+                    'code'    => 0,
+                    'message' => $e->getMessage() ?: 'Unknown error.',
+                    'data'    => null,
+                ]
+                : ['message' => [$e->getMessage() ?: 'Unknown error.']],
+            $e->getStatusCode()
+        ); 
     }
 
     /**
@@ -75,7 +107,7 @@ class Handler extends ExceptionHandler
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        if ($request->is('*/v1/*') && ($request->expectsJson() || in_array('api', $exception->guards()))) {
+        if ($request->is('*/v1/*')) {
             return response()->json([
                 'status'  => false,
                 'code'    => 1099,
