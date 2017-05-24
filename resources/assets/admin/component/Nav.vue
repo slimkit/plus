@@ -63,6 +63,10 @@
       <span class="glyphicon glyphicon-phone __icon"></span>
       短信设置
     </router-link>
+    <router-link class="list-group-item __button" to="/wallet" active-class="active" >
+      <span class="glyphicon glyphicon-credit-card __icon"></span>
+      钱包
+    </router-link>
     <router-link class="list-group-item __button" v-for="({ name, icon }, component) in menus" :key="component" :to="`/component/${component}`" active-class="active" exact>
       <img class="__icon-img" :src="icon">
       {{ name }}
