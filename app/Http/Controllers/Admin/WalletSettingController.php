@@ -30,4 +30,3 @@ class WalletSettingController extends Controller
             ->setJson($labels->value);
     }
 }
-
