@@ -4,9 +4,9 @@ namespace Zhiyi\Plus\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
@@ -94,7 +94,7 @@ class Handler extends ExceptionHandler
                 ]
                 : ['message' => [$e->getMessage() ?: 'Unknown error.']],
             $e->getStatusCode()
-        ); 
+        );
     }
 
     /**
