@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
-class WalletSettingController extends Controller
+class WalletLabelController extends Controller
 {
     /**
      * Get wallet labels.
@@ -72,6 +72,39 @@ class WalletSettingController extends Controller
 
         return response()
             ->json(['messages' => ['创建失败']])
+            ->setStatusCode(500);
+    }
+
+    /**
+     * 删除充值选项.
+     *
+     * @param int $label
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function deleteLabel(int $label)
+    {
+        $labels = CommonConfig::firstOrNew(
+            ['name' => 'labels', 'namespace' => 'wallet'],
+            ['value' => '[]']
+        );
+
+        $items = array_reduce(json_decode($labels->value, true), function (array $labels, $item) use ($label) {
+            if (intval($item) !== $label) {
+                array_push($labels, $item);
+            }
+
+            return $labels;
+        }, []);
+
+        $labels->value = json_encode($items);
+
+        if ($labels->save()) {
+            return response('', 204);
+        }
+
+        return response()
+            ->json(['message' => ['删除失败']])
             ->setStatusCode(500);
     }
 }

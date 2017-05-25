@@ -9,8 +9,9 @@ Route::middleware('auth:web')->group(function () {
 
     // 钱包
     Route::prefix('wallet')->group(function () {
-        Route::get('/labels', 'WalletSettingController@labels');
-        Route::post('/labels', 'WalletSettingController@storeLabel');
+        Route::get('/labels', 'WalletLabelController@labels');
+        Route::post('/labels', 'WalletLabelController@storeLabel');
+        Route::delete('/labels/{label}', 'WalletLabelController@deleteLabel');
     });
 
     // SMS 相关
