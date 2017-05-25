@@ -9,9 +9,13 @@ Route::middleware('auth:web')->group(function () {
 
     // 钱包
     Route::prefix('wallet')->group(function () {
+        // 充值选项
         Route::get('/labels', 'WalletLabelController@labels');
         Route::post('/labels', 'WalletLabelController@storeLabel');
         Route::delete('/labels/{label}', 'WalletLabelController@deleteLabel');
+
+        // 转换比例
+        Route::get('/ratio', 'WalletRatioController@show');
     });
 
     // SMS 相关
