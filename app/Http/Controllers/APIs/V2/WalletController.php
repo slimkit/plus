@@ -22,20 +22,54 @@ class WalletController extends Controller
         $walletOptions = CommonConfig::where(function ($query) {
             $query->where('namespace', 'wallet')
                 ->whereIn('name', ['labels']);
+        })->orWhere(function ($query) {
+            $query->where('namespace', 'common')
+                ->whereIn('name', ['wallet:ratio']);
         })->get();
 
         $options = $walletOptions->reduce(
             Closure::bind(function (Collection $options, CommonConfig $item) {
                 $this->resolveLabel($options, $item);
+                $this->resolveRatio($options, $item);
 
                 return $options;
             }, $this),
             new Collection()
         );
 
+        // 预设结构.
+        $options->offsetSet('rule', '我是积分规则纯文本.');
+        $options->offsetSet('alipay', [
+            'open' => false,
+        ]);
+        $options->offsetSet('apple', [
+            'open' => false,
+        ]);
+        $options->offsetSet('wechat', [
+            'open' => false,
+        ]);
+        $options->offsetSet('cash', [
+            'types' => ['alipay']
+        ]);
+
         return $response
             ->json($options)
             ->setStatusCode(200);
+    }
+
+    /**
+     * Resolve ratio.
+     *
+     * @param Collection &$options
+     * @param CommonConfig $item
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function resolveRatio(Collection &$options, CommonConfig $item)
+    {
+        if ($item->name === 'wallet:ratio') {
+            $options->offsetSet('ratio', intval($item->value));
+        }
     }
 
     /**
