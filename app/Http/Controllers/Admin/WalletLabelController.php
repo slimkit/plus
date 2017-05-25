@@ -27,7 +27,8 @@ class WalletLabelController extends Controller
 
         return response()
             ->json()
-            ->setJson($labels);
+            ->setJson($labels)
+            ->setStatusCode(200);
     }
 
     /**
