@@ -56,7 +56,7 @@
         <div :class="$style.labelBox">
           <span class="label label-info" :class="$style.label" v-for="label in labels">
             {{ label / 100 }}
-            <span :class="$style.labelDelete" title="删除" aria-hidden="true">&times;</span>
+            <span :class="$style.labelDelete" title="删除" aria-hidden="true" @click="deleteLabel(label)">&times;</span>
           </span>
           <span class="label label-danger" :class="$style.add" v-show="add.inputStatus === false" @click="openAddInput">
             <span class="glyphicon glyphicon-plus"></span> 添加
@@ -79,6 +79,16 @@
         <!-- 警告框 -->
         <div v-show="alert.open" :class="['alert', `alert-${alert.type}`, $style.alert]" role="alert">
           {{ alert.message }}
+        </div>
+
+        <!-- 删除 充值选项 -->
+        <div v-show="del.open" class="alert alert-danger" :class="$style.alert" role="alert">
+          <p>是否删除 「<strong>{{ del.label / 100 }}</strong>」 选项？</p>
+          <button type="button" class="btn btn-default" :disabled="del.ing" @click="unDeleteLabel">取消</button>
+          <button v-if="del.ing === false" type="button" class="btn btn-primary" @click="sendDeleteLabel">删除</button>
+          <button v-else type="button" class="btn btn-primary" disabled="disabled">
+            <span class="glyphicon glyphicon-refresh component-loadding-icon"></span> 删除...
+          </button>
         </div>
 
       </div>
@@ -115,6 +125,11 @@ export default {
       type: 'info',
       message: null,
     },
+    del: {
+      label: null,
+      open: false,
+      ing: false,
+    }
   }),
   methods: {
     openAddInput() {
@@ -189,6 +204,50 @@ export default {
           message: message || '加载失败!'
         };
       });
+    },
+    sendDeleteLabel() {
+      this.del.ing = true;
+      const { label } = this.del;
+      request.delete(
+        createRequestURI(`wallet/labels/${label}`),
+        { validateStatus: status => status === 204 }
+      ).then(() => {
+        this.del = {
+          open: false,
+          ing: false,
+          label: null,
+        };
+        this.labels = lodash.reduce(this.labels, function (labels, item) {
+          if (item !== label) {
+            labels.push(item);
+          }
+
+          return labels;
+        }, []);
+        this.sendAlert('success', '删除成功!');
+      }).catch(({ response: { data: { message = [] } = {} } = {} }) => {
+        const [ currentMessage = '删除失败！' ] = message;
+        this.del.ing = false;
+        this.sendAlert('danger', currentMessage);
+      });
+    },
+    unDeleteLabel() {
+      if (this.del.ing) {
+        return false;
+      }
+
+      this.del = {
+        ing: false,
+        open: false,
+        label: null
+      };
+    },
+    deleteLabel(label) {
+      this.del = {
+        open: true,
+        ing: false,
+        label
+      };
     }
   },
   created() {

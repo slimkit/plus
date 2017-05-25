@@ -28,6 +28,9 @@
           <router-link to="/wallet/pay/rule" tag="li" active-class="active">
             <a href="#">规则设置</a>
           </router-link>
+          <router-link to="/wallet/pay/ratio" tag="li" active-class="active">
+            <a href="#">充值比例</a>
+          </router-link>
         </ul>
       </li>
       <li role="presentation" class="dropdown">
