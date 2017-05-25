@@ -4108,6 +4108,16 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 exports.default = {
   data: function data() {
@@ -4127,6 +4137,11 @@ exports.default = {
         interval: null,
         type: 'info',
         message: null
+      },
+      del: {
+        label: null,
+        open: false,
+        ing: false
       }
     };
   },
@@ -4228,6 +4243,62 @@ exports.default = {
           message: message || '加载失败!'
         };
       });
+    },
+    sendDeleteLabel: function sendDeleteLabel() {
+      var _this4 = this;
+
+      this.del.ing = true;
+      var label = this.del.label;
+
+      _request2.default.delete((0, _request.createRequestURI)('wallet/labels/' + label), { validateStatus: function validateStatus(status) {
+          return status === 204;
+        } }).then(function () {
+        _this4.del = {
+          open: false,
+          ing: false,
+          label: null
+        };
+        _this4.labels = _lodash2.default.reduce(_this4.labels, function (labels, item) {
+          if (item !== label) {
+            labels.push(item);
+          }
+
+          return labels;
+        }, []);
+        _this4.sendAlert('success', '删除成功!');
+      }).catch(function (_ref5) {
+        var _ref5$response = _ref5.response;
+        _ref5$response = _ref5$response === undefined ? {} : _ref5$response;
+        var _ref5$response$data = _ref5$response.data;
+        _ref5$response$data = _ref5$response$data === undefined ? {} : _ref5$response$data;
+        var _ref5$response$data$m = _ref5$response$data.message,
+            message = _ref5$response$data$m === undefined ? [] : _ref5$response$data$m;
+
+        var _message = _slicedToArray(message, 1),
+            _message$ = _message[0],
+            currentMessage = _message$ === undefined ? '删除失败！' : _message$;
+
+        _this4.del.ing = false;
+        _this4.sendAlert('danger', currentMessage);
+      });
+    },
+    unDeleteLabel: function unDeleteLabel() {
+      if (this.del.ing) {
+        return false;
+      }
+
+      this.del = {
+        ing: false,
+        open: false,
+        label: null
+      };
+    },
+    deleteLabel: function deleteLabel(label) {
+      this.del = {
+        open: true,
+        ing: false,
+        label: label
+      };
     }
   },
   created: function created() {
@@ -4501,20 +4572,22 @@ var _WeChatPay = __webpack_require__(117);
 
 var _WeChatPay2 = _interopRequireDefault(_WeChatPay);
 
+var _PayRatio = __webpack_require__(175);
+
+var _PayRatio2 = _interopRequireDefault(_PayRatio);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//
+var walletRouter = {
+  path: 'wallet',
+  component: _Main2.default,
+  children: [{ path: '', component: _Report2.default }, { path: 'accounts', component: _Accounts2.default }, { path: 'cash', component: _Cash2.default }, { path: 'cash/setting', component: _CashSetting2.default }, { path: 'pay/option', component: _PayOption2.default }, { path: 'pay/rule', component: _PayRule2.default }, { path: 'pay/ratio', component: _PayRatio2.default }, { path: 'pay/alipay', component: _Alipay2.default }, { path: 'pay/apple', component: _ApplePay2.default }, { path: 'pay/wechat', component: _WeChatPay2.default }]
+}; //
 // The file is defined "/wallet" route.
 //
 // @author Seven Du <shiweidu@outlook.com>
 // @homepage http://medz.cn
 //
-
-var walletRouter = {
-  path: 'wallet',
-  component: _Main2.default,
-  children: [{ path: '', component: _Report2.default }, { path: 'accounts', component: _Accounts2.default }, { path: 'cash', component: _Cash2.default }, { path: 'cash/setting', component: _CashSetting2.default }, { path: 'pay/option', component: _PayOption2.default }, { path: 'pay/rule', component: _PayRule2.default }, { path: 'pay/alipay', component: _Alipay2.default }, { path: 'pay/apple', component: _ApplePay2.default }, { path: 'pay/wechat', component: _WeChatPay2.default }]
-};
 
 exports.default = walletRouter;
 
@@ -7308,7 +7381,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "href": "#"
     }
-  }, [_vm._v("规则设置")])])], 1)]), _vm._v(" "), _c('li', {
+  }, [_vm._v("规则设置")])]), _vm._v(" "), _c('router-link', {
+    attrs: {
+      "to": "/wallet/pay/ratio",
+      "tag": "li",
+      "active-class": "active"
+    }
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("充值比例")])])], 1)]), _vm._v(" "), _c('li', {
     staticClass: "dropdown",
     attrs: {
       "role": "presentation"
@@ -9205,6 +9288,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "title": "删除",
         "aria-hidden": "true"
+      },
+      on: {
+        "click": function($event) {
+          _vm.deleteLabel(label)
+        }
       }
     }, [_vm._v("×")])])
   }), _vm._v(" "), _c('span', {
@@ -9287,7 +9375,44 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "role": "alert"
     }
-  }, [_vm._v("\n        " + _vm._s(_vm.alert.message) + "\n      ")])], 1) : _c('div', {
+  }, [_vm._v("\n        " + _vm._s(_vm.alert.message) + "\n      ")]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.del.open),
+      expression: "del.open"
+    }],
+    staticClass: "alert alert-danger",
+    class: _vm.$style.alert,
+    attrs: {
+      "role": "alert"
+    }
+  }, [_c('p', [_vm._v("是否删除 「"), _c('strong', [_vm._v(_vm._s(_vm.del.label / 100))]), _vm._v("」 选项？")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button",
+      "disabled": _vm.del.ing
+    },
+    on: {
+      "click": _vm.unDeleteLabel
+    }
+  }, [_vm._v("取消")]), _vm._v(" "), (_vm.del.ing === false) ? _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.sendDeleteLabel
+    }
+  }, [_vm._v("删除")]) : _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button",
+      "disabled": "disabled"
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-refresh component-loadding-icon"
+  }), _vm._v(" 删除...\n        ")])])], 1) : _c('div', {
     staticClass: "panel-body"
   }, [_c('div', {
     staticClass: "alert alert-danger",
@@ -9836,6 +9961,85 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-e8d66898", module.exports)
+  }
+}
+
+/***/ }),
+/* 151 */,
+/* 152 */,
+/* 153 */,
+/* 154 */,
+/* 155 */,
+/* 156 */,
+/* 157 */,
+/* 158 */,
+/* 159 */,
+/* 160 */,
+/* 161 */,
+/* 162 */,
+/* 163 */,
+/* 164 */,
+/* 165 */,
+/* 166 */,
+/* 167 */,
+/* 168 */,
+/* 169 */,
+/* 170 */,
+/* 171 */,
+/* 172 */,
+/* 173 */,
+/* 174 */,
+/* 175 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(0)(
+  /* script */
+  null,
+  /* template */
+  __webpack_require__(176),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/usr/local/var/www/thinksns-plus/resources/assets/admin/component/wallet/PayRatio.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] PayRatio.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-e97292be", Component.options)
+  } else {
+    hotAPI.reload("data-v-e97292be", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 176 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_vm._v("充值比例")])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-e97292be", module.exports)
   }
 }
 
