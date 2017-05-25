@@ -29,7 +29,7 @@
             <a href="#">规则设置</a>
           </router-link>
           <router-link to="/wallet/pay/ratio" tag="li" active-class="active">
-            <a href="#">充值比例</a>
+            <a href="#">转换比例</a>
           </router-link>
         </ul>
       </li>
