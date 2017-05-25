@@ -18,7 +18,7 @@ class WalletConfigController extends Controller
     protected $aliases = [
         'rule',
         'labels' => ['type' => 'json'],
-        'wallet:ratio' => ['type' => 'int', 'alias' => 'ratio']
+        'wallet:ratio' => ['type' => 'int', 'alias' => 'ratio'],
     ];
 
     /**
