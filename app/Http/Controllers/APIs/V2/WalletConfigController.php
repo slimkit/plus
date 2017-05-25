@@ -67,7 +67,7 @@ class WalletConfigController extends Controller
      */
     protected function resolveText(Collection &$options, CommonConfig $item)
     {
-        if (in_array($item->name , ['rule'])) {
+        if (in_array($item->name, ['rule'])) {
             $options->offsetSet($item->name, $item->value);
         }
     }
