@@ -36,5 +36,5 @@ Route::prefix('wallet')
 ->middleware('auth:api')
 ->group(function () {
     // 获取钱包配置信息
-    Route::get('/', 'WalletController@show');
+    Route::get('/', 'WalletConfigController@show');
 });

@@ -8,7 +8,7 @@ use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
 
-class WalletController extends Controller
+class WalletConfigController extends Controller
 {
     /**
      * Get wallet info.
@@ -21,7 +21,7 @@ class WalletController extends Controller
     {
         $walletOptions = CommonConfig::where(function ($query) {
             $query->where('namespace', 'wallet')
-                ->whereIn('name', ['labels']);
+                ->whereIn('name', ['labels', 'rule']);
         })->orWhere(function ($query) {
             $query->where('namespace', 'common')
                 ->whereIn('name', ['wallet:ratio']);
@@ -31,6 +31,7 @@ class WalletController extends Controller
             Closure::bind(function (Collection $options, CommonConfig $item) {
                 $this->resolveLabel($options, $item);
                 $this->resolveRatio($options, $item);
+                $this->resolveText($options, $item);
 
                 return $options;
             }, $this),
@@ -38,7 +39,6 @@ class WalletController extends Controller
         );
 
         // 预设结构.
-        $options->offsetSet('rule', '我是积分规则纯文本.');
         $options->offsetSet('alipay', [
             'open' => false,
         ]);
@@ -55,6 +55,21 @@ class WalletController extends Controller
         return $response
             ->json($options)
             ->setStatusCode(200);
+    }
+
+    /**
+     * Resolve test.
+     *
+     * @param Collection &$options
+     * @param CommonConfig $item
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function resolveText(Collection &$options, CommonConfig $item)
+    {
+        if (in_array($item->name , ['rule'])) {
+            $options->offsetSet($item->name, $item->value);
+        }
     }
 
     /**
