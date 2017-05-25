@@ -17,6 +17,10 @@ Route::middleware('auth:web')->group(function () {
         // 转换比例
         Route::get('/ratio', 'WalletRatioController@show');
         Route::patch('/ratio', 'WalletRatioController@update');
+
+        // 规则描述
+        Route::get('/rule', 'WalletRuleController@show');
+        Route::patch('/rule', 'WalletRuleController@update');
     });
 
     // SMS 相关

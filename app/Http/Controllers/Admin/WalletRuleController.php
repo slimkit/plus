@@ -26,4 +26,26 @@ class WalletRuleController extends Controller
             ->json(['rule' => $rule])
             ->setStatusCode(200);
     }
+
+    /**
+     * 更新规则.
+     *
+     * @param Request $request
+     * @param ResponseFactory $response
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function update(Request $request, ResponseFactory $response)
+    {
+        $rule = $request->input('rule', '');
+
+        CommonConfig::updateOrCreate(
+            ['name' => 'rule', 'namespace' => 'wallet'],
+            ['value' => $rule]
+        );
+
+        return $response
+            ->json(['message' => ['更新成功']])
+            ->setStatusCode(201);
+    }
 }
