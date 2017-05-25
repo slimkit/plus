@@ -61,7 +61,7 @@ class VerifyCodeController extends Controller
      */
     protected function send($phone)
     {
-        $vaildSecond = config('app.env') == 'production' ? 300 : 6;
+        $vaildSecond = config('app.env') == 'production' ? 60 : 6;
         $verify = VerifyCode::byAccount($phone)->byValid($vaildSecond)
             ->orderByDesc()
             ->first();
