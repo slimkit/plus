@@ -163,7 +163,7 @@ Status: 200 OK
 
 | 名称 | 类型 | 描述 |
 |----|:----:|:----:|
-| balance | int | 钱包余额 |
+| balance | int | 钱包余额，余额单位为「分」 |
 | updated_at | string | 最后交易时间 |
 
 ### 用户拓展信息

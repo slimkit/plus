@@ -31,6 +31,7 @@ Bdoy
             "url": "https://plus.io/users/1" // 主页地址 URL
         }
         // ...
-    ]
+    ],
+    "wallet:ratio": 200 // 转换显示余额的比例，百分比。（200 就表示 200%）
 }
 ```
