@@ -49,7 +49,7 @@ class WalletController extends Controller
             'open' => false,
         ]);
         $options->offsetSet('cash', [
-            'types' => ['alipay']
+            'types' => ['alipay'],
         ]);
 
         return $response
