@@ -11,6 +11,31 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 class WalletConfigController extends Controller
 {
     /**
+     * 格式化数据别名设置.
+     *
+     * @var array
+     */
+    protected $aliases = [
+        'rule',
+        'labels' => ['type' => 'json'],
+        'wallet:ratio' => ['type' => 'int', 'alias' => 'ratio']
+    ];
+
+    /**
+     * 钱包私有配置名称列表.
+     *
+     * @var array
+     */
+    protected $walletNames = ['labels', 'rule'];
+
+    /**
+     * 钱包共有配置名称列表.
+     *
+     * @var array
+     */
+    protected $commonNames = ['wallet:ratio'];
+
+    /**
      * Get wallet info.
      *
      * @param ResponseFactory $response
@@ -19,19 +44,19 @@ class WalletConfigController extends Controller
      */
     public function show(ResponseFactory $response)
     {
-        $walletOptions = CommonConfig::where(function ($query) {
+        $walletNames = $this->walletNames;
+        $commonNames = $this->commonNames;
+        $walletOptions = CommonConfig::where(function ($query) use ($walletNames) {
             $query->where('namespace', 'wallet')
-                ->whereIn('name', ['labels', 'rule']);
-        })->orWhere(function ($query) {
+                ->whereIn('name', $walletNames);
+        })->orWhere(function ($query) use ($commonNames) {
             $query->where('namespace', 'common')
-                ->whereIn('name', ['wallet:ratio']);
+                ->whereIn('name', $commonNames);
         })->get();
 
         $options = $walletOptions->reduce(
             Closure::bind(function (Collection $options, CommonConfig $item) {
-                $this->resolveLabel($options, $item);
-                $this->resolveRatio($options, $item);
-                $this->resolveText($options, $item);
+                $this->resolve($options, $item);
 
                 return $options;
             }, $this),
@@ -58,47 +83,42 @@ class WalletConfigController extends Controller
     }
 
     /**
-     * Resolve test.
+     * 解决数据结构和别名.
      *
      * @param Collection &$options
      * @param CommonConfig $item
-     * @return void
+     * @return vodi
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function resolveText(Collection &$options, CommonConfig $item)
+    protected function resolve(Collection &$options, CommonConfig $item)
     {
-        if (in_array($item->name, ['rule'])) {
-            $options->offsetSet($item->name, $item->value);
-        }
+        $name = $item->name;
+        $value = $item->value;
+        $with = $this->aliases[$name] ?? [];
+        $alias = $with['alias'] ?? $name;
+        $type = $with['type'] ?? false;
+        $options->offsetSet($alias, $this->formatData($type, $value));
     }
 
     /**
-     * Resolve ratio.
+     * 格式化数据.
      *
-     * @param Collection &$options
-     * @param CommonConfig $item
-     * @return void
+     * @param string $type
+     * @param mixed $value
+     * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function resolveRatio(Collection &$options, CommonConfig $item)
+    protected function formatData(string $type, $value)
     {
-        if ($item->name === 'wallet:ratio') {
-            $options->offsetSet('ratio', intval($item->value));
-        }
-    }
+        switch ($type) {
+            case 'json':
+                return json_decode($value);
 
-    /**
-     * Resolve label.
-     *
-     * @param Collection &$options
-     * @param CommonConfig $item
-     * @return void
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    protected function resolveLabel(Collection &$options, CommonConfig $item)
-    {
-        if ($item->name === 'labels') {
-            $options->offsetSet('labels', json_decode($item->value));
+            case 'int':
+                return intval($value);
+
+            default:
+                return $value;
         }
     }
 }
