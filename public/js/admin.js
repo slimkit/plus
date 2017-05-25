@@ -7391,7 +7391,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "href": "#"
     }
-  }, [_vm._v("充值比例")])])], 1)]), _vm._v(" "), _c('li', {
+  }, [_vm._v("转换比例")])])], 1)]), _vm._v(" "), _c('li', {
     staticClass: "dropdown",
     attrs: {
       "role": "presentation"
@@ -9992,14 +9992,28 @@ if (false) {
 /* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var disposed = false
+/* WEBPACK VAR INJECTION */(function(module) {var disposed = false
+var cssModules = {}
+module.hot && module.hot.accept(["!!../../../../../node_modules/extract-text-webpack-plugin/loader.js?{\"omit\":1,\"remove\":true}!vue-style-loader!css-loader?{\"minimize\":false,\"sourceMap\":true,\"localIdentName\":\"[hash:base64]_0\",\"modules\":true,\"importLoaders\":true}!../../../../../node_modules/vue-loader/lib/style-compiler/index?{\"vue\":true,\"id\":\"data-v-e97292be\",\"scoped\":false,\"hasInlineConfig\":false}!sass-loader?{\"sourceMap\":true}!../../../../../node_modules/vue-loader/lib/selector?type=styles&index=0!./PayRatio.vue"], function () {
+  var oldLocals = cssModules["$style"]
+  if (!oldLocals) return
+  var newLocals = __webpack_require__(178)
+  if (JSON.stringify(newLocals) === JSON.stringify(oldLocals)) return
+  cssModules["$style"] = newLocals
+  __webpack_require__(4).rerender("data-v-e97292be")
+})
+function injectStyle (ssrContext) {
+  if (disposed) return
+  cssModules["$style"] = __webpack_require__(178)
+Object.defineProperty(this, "$style", { get: function () { return cssModules["$style"] }})
+}
 var Component = __webpack_require__(0)(
   /* script */
-  null,
+  __webpack_require__(177),
   /* template */
   __webpack_require__(176),
   /* styles */
-  null,
+  injectStyle,
   /* scopeId */
   null,
   /* moduleIdentifier (server only) */
@@ -10018,22 +10032,142 @@ if (false) {(function () {
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-e97292be", Component.options)
   } else {
+    if (module.hot.data.cssModules && Object.keys(module.hot.data.cssModules) !== Object.keys(cssModules)) {
+      delete Component.options._Ctor
+    }
     hotAPI.reload("data-v-e97292be", Component.options)
   }
   module.hot.dispose(function (data) {
+    data.cssModules = cssModules
     disposed = true
   })
 })()}
 
 module.exports = Component.exports
 
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)(module)))
 
 /***/ }),
 /* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_vm._v("充值比例")])
+  return _c('div', {
+    staticClass: "component-container container-fluid"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("基础设置 - 转换比例")]), _vm._v(" "), (_vm.load.status === 0) ? _c('div', {
+    staticClass: "panel-body text-center"
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-refresh component-loadding-icon"
+  }), _vm._v("\n      加载中...\n    ")]) : (_vm.load.status === 1) ? _c('div', {
+    staticClass: "panel-body form-horizontal"
+  }, [_c('blockquote', [_c('p', [_vm._v("转换比例为「真实货币」如人民币，美元等与钱包系统「用户余额」比例的设置。")]), _vm._v(" "), _c('footer', [_vm._v("以「CNY」为例，比例设置为 200% 则充值 1CNY 则得到 2 余额。")])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-2 control-label",
+    attrs: {
+      "for": "wallet-ratio"
+    }
+  }, [_vm._v("转换比例")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-4"
+  }, [_c('div', {
+    staticClass: "input-group"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.ratio),
+      expression: "ratio"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "number",
+      "name": "ratio",
+      "id": "wallet-ratio",
+      "placeholder": "输入转换比例",
+      "aria-describedby": "wallet-ratio-help",
+      "min": "1",
+      "max": "1000",
+      "step": "1"
+    },
+    domProps: {
+      "value": (_vm.ratio)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.ratio = $event.target.value
+      },
+      "blur": function($event) {
+        _vm.$forceUpdate()
+      }
+    }
+  }), _vm._v(" "), _c('span', {
+    staticClass: "input-group-addon",
+    attrs: {
+      "id": "basic-addon2"
+    }
+  }, [_vm._v("%")])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('span', {
+    staticClass: "help-block",
+    attrs: {
+      "id": "wallet-ratio-help"
+    }
+  }, [_vm._v("输入转换比例，不理只能是正整数，范围在 1 - 1000 之间。")])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('div', {
+    staticClass: "col-sm-offset-2 col-sm-4"
+  }, [(_vm.update === true) ? _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "submit",
+      "disabled": "disabled"
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-refresh component-loadding-icon"
+  }), _vm._v("\n            提交...\n          ")]) : _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+        $event.preventDefault();
+        _vm.updateRatio($event)
+      }
+    }
+  }, [_vm._v("提交")])])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.alert.open),
+      expression: "alert.open"
+    }],
+    class: ['alert', ("alert-" + (_vm.alert.type)), _vm.$style.alert],
+    attrs: {
+      "role": "alert"
+    }
+  }, [_vm._v("\n        " + _vm._s(_vm.alert.message) + "\n      ")])], 1) : _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "alert alert-danger",
+    attrs: {
+      "role": "alert"
+    }
+  }, [_vm._v(_vm._s(_vm.load.message))]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.requestRatio
+    }
+  }, [_vm._v("刷新")])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -10042,6 +10176,211 @@ if (false) {
      require("vue-hot-reload-api").rerender("data-v-e97292be", module.exports)
   }
 }
+
+/***/ }),
+/* 177 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var _request = __webpack_require__(1);
+
+var _request2 = _interopRequireDefault(_request);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+  data: function data() {
+    return {
+      ratio: 100,
+      load: {
+        status: 0,
+        message: null
+      },
+      update: false,
+      alert: {
+        open: false,
+        interval: null,
+        type: 'info',
+        message: null
+      }
+    };
+  },
+  methods: {
+    /**
+     * 请求转换值.
+     *
+     * @return {void}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    requestRatio: function requestRatio() {
+      var _this = this;
+
+      this.load.status = 0;
+      _request2.default.get((0, _request.createRequestURI)('wallet/ratio'), { validateStatus: function validateStatus(status) {
+          return status === 200;
+        } }).then(function (_ref) {
+        var ratio = _ref.data.ratio;
+
+        _this.load.status = 1;
+        _this.ratio = ratio;
+      }).catch(function (_ref2) {
+        var _ref2$response = _ref2.response;
+        _ref2$response = _ref2$response === undefined ? {} : _ref2$response;
+        var _ref2$response$data = _ref2$response.data;
+        _ref2$response$data = _ref2$response$data === undefined ? {} : _ref2$response$data;
+        var _ref2$response$data$m = _ref2$response$data.message;
+        _ref2$response$data$m = _ref2$response$data$m === undefined ? [] : _ref2$response$data$m;
+
+        var _ref2$response$data$m2 = _slicedToArray(_ref2$response$data$m, 1),
+            message = _ref2$response$data$m2[0];
+
+        _this.load = {
+          status: 2,
+          message: message
+        };
+      });
+    },
+
+
+    /**
+     * 发送转换值到服务端.
+     *
+     * @return {void}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    updateRatio: function updateRatio() {
+      var _this2 = this;
+
+      var ratio = this.ratio;
+      this.update = true;
+      _request2.default.patch((0, _request.createRequestURI)('wallet/ratio'), { ratio: ratio }, { validateStatus: function validateStatus(status) {
+          return status === 201;
+        } }).then(function () {
+        _this2.update = false;
+        _this2.sendAlert('success', '更新成功');
+      }).catch(function (_ref3) {
+        var _ref3$response = _ref3.response;
+        _ref3$response = _ref3$response === undefined ? {} : _ref3$response;
+        var _ref3$response$data = _ref3$response.data;
+        _ref3$response$data = _ref3$response$data === undefined ? {} : _ref3$response$data;
+        var _ref3$response$data$m = _ref3$response$data.message;
+        _ref3$response$data$m = _ref3$response$data$m === undefined ? [] : _ref3$response$data$m;
+
+        var _ref3$response$data$m2 = _slicedToArray(_ref3$response$data$m, 1),
+            message = _ref3$response$data$m2[0];
+
+        _this2.update = false;
+        _this2.sendAlert('danger', message);
+      });
+    },
+    sendAlert: function sendAlert(type, message) {
+      var _this3 = this;
+
+      window.clearInterval(this.alert.interval);
+      this.alert = _extends({}, this.alert, {
+        type: type,
+        message: message,
+        open: true,
+        interval: window.setInterval(function () {
+          window.clearInterval(_this3.alert.interval);
+          _this3.alert.open = false;
+        }, 2000)
+      });
+    }
+  },
+  /**
+   * 组件创建成功事件.
+   *
+   * @return {void}
+   * @author Seven Du <shiweidu@outlook.com>
+   */
+  created: function created() {
+    this.requestRatio();
+  }
+};
+
+/***/ }),
+/* 178 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"alert":"_2GDhN1P5bM-BD821OsSYyg_0"};
 
 /***/ })
 ],[70]);
