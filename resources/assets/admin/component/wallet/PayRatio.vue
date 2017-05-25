@@ -1,3 +1,9 @@
+<style lang="scss" module>
+  .alert {
+    margin: 22px 0 0;
+  }
+</style>
+
 <template>
   <div class="component-container container-fluid">
     <div class="panel panel-default">
@@ -31,6 +37,22 @@
           </div>
         </div>
 
+        <!-- 提交按钮 -->
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-4">
+            <button v-if="update === true" class="btn btn-primary" type="submit" disabled="disabled">
+              <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
+              提交...
+            </button>
+            <button v-else type="button" class="btn btn-primary" @click.stop.prevent="updateRatio">提交</button>
+          </div>
+        </div>
+
+        <!-- 警告框 -->
+        <div v-show="alert.open" :class="['alert', `alert-${alert.type}`, $style.alert]" role="alert">
+          {{ alert.message }}
+        </div>
+
       </div>
 
       <!-- Loading Error -->
@@ -51,7 +73,14 @@ export default {
     load: {
       status: 0,
       message: null,
-    }
+    },
+    update: false,
+    alert: {
+      open: false,
+      interval: null,
+      type: 'info',
+      message: null,
+    },
   }),
   methods: {
     /**
@@ -82,7 +111,34 @@ export default {
      * @return {void}
      * @author Seven Du <shiweidu@outlook.com>
      */
-    updateRatio() {}
+    updateRatio() {
+      const ratio = this.ratio;
+      this.update = true;
+      request.patch(
+        createRequestURI('wallet/ratio'),
+        { ratio },
+        { validateStatus: status => status === 201 }
+      ).then(() => {
+        this.update = false;
+        this.sendAlert('success', '更新成功');
+      }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {
+        this.update = false;
+        this.sendAlert('danger', message);
+      });
+    },
+    sendAlert(type, message) {
+      window.clearInterval(this.alert.interval);
+      this.alert = {
+        ...this.alert,
+        type,
+        message,
+        open: true,
+        interval: window.setInterval(() => {
+          window.clearInterval(this.alert.interval);
+          this.alert.open = false;
+        }, 2000)
+      };
+    },
   },
   /**
    * 组件创建成功事件.
