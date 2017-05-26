@@ -99,10 +99,10 @@ Route::get('/storages', 'StorageController@getStorageLinks');
 // 附件储存相关
 Route::prefix('storages')
 ->middleware('auth:api')
-->middleware('role-permissions:storage-create,你没有上传附件的权限')
 ->group(function () {
     // 创建一个储存任务
-    Route::post('/task', 'StorageController@create');
+    Route::post('/task', 'StorageController@create')
+    ->middleware('role-permissions:storage-create,你没有上传附件的权限');
     // 完成一个任务上传通知
     Route::patch('/task/{storage_task_id}', 'StorageController@notice');
     // 删除一个上传任务附件
