@@ -106,7 +106,7 @@ class ExampleServiceProvider extends ServiceProvider
         }
     },
     "extra": {
-        "class": "ExampleServiceProvider"
+        "class": "Zhiyi\\PackageExample\\ExampleServiceProvider"
     }
 }
 ```
@@ -223,7 +223,7 @@ public function boot()
 
 ### 视图
 
-如果你想在拓展包中注册视图，就不需要告诉 ThinkSNS+ 视图位置。你可以使用服务提供者的 `loadViewsFrom` 方法来达到这一目的，`loadViewsFrom` 方法有两个参数：视图路径和拓展包名称。例如你的拓展包名称为 `example`，你可以按照下面的方法增加到服务提供者的 `boot` 方法内：
+如果你想在拓展包中注册视图，就需要告诉 ThinkSNS+ 视图位置。你可以使用服务提供者的 `loadViewsFrom` 方法来达到这一目的，`loadViewsFrom` 方法有两个参数：视图路径和拓展包名称。例如你的拓展包名称为 `example`，你可以按照下面的方法增加到服务提供者的 `boot` 方法内：
 
 ```php
 public function boot()
