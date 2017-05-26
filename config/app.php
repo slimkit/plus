@@ -168,6 +168,7 @@ return [
          */
         Intervention\Image\ImageServiceProvider::class,
         Laravel\Tinker\TinkerServiceProvider::class,
+        Zhiyi\Plus\Installer\InstallerServiceProvider::class,
 
         /*
          * Application Service Providers...
