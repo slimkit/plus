@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Plus\Support;
 
-use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 class ProviderRepository
 {
