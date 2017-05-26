@@ -1,6 +1,7 @@
 - [开始](get-started)
     - [关于ThinkSNS+](get-started/about.md)
-
+- [拓展包](package)
+    - [拓展包开发指南](package)
 - [APIs](api)
     - [V1](../documents/api/v1)
     - [V2(REST ful)](api/v2)
