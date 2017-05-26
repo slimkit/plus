@@ -12,7 +12,7 @@
 
 ## 简介
 
-拓展包时添加功能到 ThinkSNS+ 的主要方式。拓展包几乎可以达到任何自定义 ThinkSNS+ 的目的，也可以包含许多好用的功能，例如 [medz/plus-component-qiniu](https://github.com/medz/plus-component-qiniu) 可以增加云储存引擎，或像 [zhiyicx/plus-component-web](https://packagist.org/packages/zhiyicx/plus-component-web) 一样包含一整套前端视图程序。
+拓展包是添加功能到 ThinkSNS+ 的主要方式。拓展包几乎可以达到任何自定义 ThinkSNS+ 的目的，也可以包含许多好用的功能，例如 [medz/plus-component-qiniu](https://github.com/medz/plus-component-qiniu) 可以增加云储存引擎，或像 [zhiyicx/plus-component-web](https://packagist.org/packages/zhiyicx/plus-component-web) 一样包含一整套前端视图程序。
 
 当然，这并不是拓展包的全部，也有很多不需要依赖 ThinkSNS+ 的拓展包，这些都是通过 Composer 组织起来的，这也是 ThinkSNS+ 开发的主要方式。
 
