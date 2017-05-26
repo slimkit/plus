@@ -290,6 +290,27 @@ php artisan package:publish vendor/package
 
 同时还有两个可选参数，`--tag[=TAG]`、`--force`，参数是可选的。加入 `--force` 参数可以强制覆盖之前已完成的发布，加入 `--tag` 参数可以指定在服务提供者种设置的群组。
 
+### 发布群组资源
+
+有时候需要将发布的资源进行分组，在发布的时候可以选择性的发布特定资源，这对公用 Asstes 非常有用，因为公用 Asstes （如javascriot、css、image等）在拓展包有的情况下基本是每个版本都会出现更改，而其他资源则不一定，由此可以直接发布特定资源来达到最小化操作。
+
+我们在调用 `publishes` 方法的时候可以使用「标签」来对资源进行分组，例如我们现在把发布的数据库迁移和公用 Assets 进行发布两个群组：
+
+```php
+public function boot()
+{
+    $this->publish([
+        __DIR__.'/path/to/assets' => $this->app->publicPath().'/vendor/example'
+    ], 'public');
+
+    $this->publish([
+        __DIR__.'/path/to/migrations/' => $this->app->databasePath('migrations')
+    ], 'migrations');
+}
+```
+
+这样发布到群组后我们可以 `php artisan package:publish vendor/package --tag=public` 来单独发布公用 Assets 但是如果已经发布过，可以调用 `php artisan package:publish vendor/package --tag=public --force` 来强制覆盖已经发布的文件。
+
 ## 其他服务提供者
 
 这不是一个常用的需求，但是其他服务提供者选项可以让你轻松整合「Laravel 拓展包」，在你的包开发需求中，你其实就是基于 Laravel 的另一种形态进行开发，在特殊需求场景下，你希望你的拓展包能依赖其他的服务提供者或者 Laravel 的服务提供者，你只需要在 `register` 方法中使用 `loadProvider` 方法即可。`loadProvider` 方法接受单个服务提供者类，也可以是用数组包含起来的多个服务提供者类：
