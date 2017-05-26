@@ -95,11 +95,11 @@ class ExampleServiceProvider extends ServiceProvider
 
 ```json
 {
-    "name": "zhiyicx\plus-example-package",
+    "name": "zhiyicx/plus-example-package",
     "type": "plus-library",
     "require": {
         "zhiyicx/plus-installer": "^1.0"
-    }
+    },
     "authload": {
         "psr-4": {
             "Zhiyi\\PackageExample\\": "src/"
