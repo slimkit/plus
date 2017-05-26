@@ -39,7 +39,7 @@ class PackagePublishCommand extends Command
         if (! $provider = $providers[$package = $this->getPackageInput()] ?? false) {
             throw new RuntimeException(sprintf('This "%s" package is not installed', $package));
         }
-        
+
         $this->call(
             'vendor:publish',
             [
