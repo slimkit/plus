@@ -299,11 +299,11 @@ php artisan package:publish vendor/package
 ```php
 public function boot()
 {
-    $this->publish([
+    $this->publishes([
         __DIR__.'/path/to/assets' => $this->app->publicPath().'/vendor/example'
     ], 'public');
 
-    $this->publish([
+    $this->publishes([
         __DIR__.'/path/to/migrations/' => $this->app->databasePath('migrations')
     ], 'migrations');
 }
