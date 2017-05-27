@@ -3,7 +3,6 @@
 namespace Zhiyi\Plus\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputArgument;
 
 class ComponentLinkCommand extends Command
@@ -21,7 +20,6 @@ class ComponentLinkCommand extends Command
      * @var string
      */
     protected $description = 'Create a symbolic link from "repositorie" to "vendor" (Composer component.)';
-
 
     /**
      * 执行操作.
