@@ -6,6 +6,7 @@ use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Zhiyi\Plus\Support\ServiceProvider;
 
 class HomeController extends Controller
 {
@@ -20,7 +21,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => ['logout', 'index']]);
+        $this->middleware('guest', ['except' => ['logout', 'index', 'showManages']]);
     }
 
     public function username()
@@ -58,6 +59,19 @@ class HomeController extends Controller
         ];
 
         return view('admin', $data);
+    }
+
+    /**
+     * 后台导航菜单.
+     *
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function showManages()
+    {
+        return response()
+            ->json(ServiceProvider::getManages())
+            ->setStatusCode(200);
     }
 
     protected function menus()

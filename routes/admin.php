@@ -7,6 +7,9 @@ Route::any('/logout', 'HomeController@logout');
 
 Route::middleware('auth:web')->group(function () {
 
+    // 后台导航
+    Route::get('/manages', 'HomeController@showManages');
+
     // 钱包
     Route::prefix('wallet')->group(function () {
         // 充值选项
