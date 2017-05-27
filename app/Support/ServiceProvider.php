@@ -55,7 +55,7 @@ abstract class ServiceProvider extends BaseServiceProvider
             'package:run',
             [
                 'package' => $command->argument('package'),
-                'handle' => 'list'
+                'handle' => 'list',
             ]
         );
     }
