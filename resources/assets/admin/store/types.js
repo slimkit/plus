@@ -25,3 +25,6 @@ export const SETTINGS_AREA_DELETE = 'settings/area/DELETE';
 
 // Defined [users/]
 export const USERS_CHANGE = 'users/CHANGE';
+
+// Defined [manages/SET]
+export const MANAGES_SET = 'manages/SET';

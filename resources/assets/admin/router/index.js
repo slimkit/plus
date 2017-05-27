@@ -11,12 +11,14 @@ import walletRouter from './wallet';
 // components.
 import Login from '../component/Login';
 import Home from '../component/Home';
+import Package from '../component/Package';
 import Component from '../component/Component';
 
 Vue.use(VueRouter);
 
 const baseRoutes = [
   { path: '', redirect: '/setting' },
+  { path: 'package/:key', component: Package },
   { path: 'component/:component(.*)', component: Component }
 ];
 

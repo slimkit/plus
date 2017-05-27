@@ -67,6 +67,14 @@
       <span class="glyphicon glyphicon-credit-card __icon"></span>
       钱包
     </router-link>
+
+    <!-- 拓展包导航加载 -->
+    <router-link class="list-group-item __button" v-for="item, index in manages" :key="index" :to="`/package/${index}`" active-class="active" exact>
+      <img class="__icon-img" :src="item['icon']">
+      {{ item['name'] }}
+    </router-link>
+
+    <!-- 旧的拓展包导航加载 -->
     <router-link class="list-group-item __button" v-for="({ name, icon }, component) in menus" :key="component" :to="`/component/${component}`" active-class="active" exact>
       <img class="__icon-img" :src="icon">
       {{ name }}
@@ -75,11 +83,31 @@
 </template>
 
 <script>
+import request, { createRequestURI } from '../util/request';
+import { MANAGES_SET } from '../store/types';
+import { MANAGES_GET } from '../store/getter-types';
+import { mapGetters } from 'vuex';
+
 const menus = window.TS.menus || {};
 const nav = {
   data: () => ({
     menus
-  })
+  }),
+  computed: {
+    ...mapGetters({
+      manages: MANAGES_GET
+    })
+  },
+  created() {
+    this.$store.dispatch(MANAGES_SET, cb => request.get(
+      createRequestURI('manages'),
+      { validateStatus: status => status === 200 }
+    ).then(({ data = [] }) => {
+      cb(data);
+    }).catch(() => {
+      window.alert('加载导航失败，请刷新页面！');
+    }));
+  }
 };
 
 export default nav;

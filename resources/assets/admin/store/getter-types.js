@@ -25,3 +25,6 @@ export const SETTINGS_AREA = 'settings/area';
 
 // Users.
 export const USERS = 'user/GET-LIST';
+
+// Defined [manages/GET]
+export const MANAGES_GET = 'manages/GET';
