@@ -51,7 +51,7 @@ abstract class ServiceProvider extends BaseServiceProvider
         static::$manages[] = [
             'name' => $name,
             'uri' => $uri,
-            'option' => $option
+            'option' => $option,
         ];
     }
 
