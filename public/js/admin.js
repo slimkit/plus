@@ -94,6 +94,9 @@ var SETTINGS_AREA_DELETE = exports.SETTINGS_AREA_DELETE = 'settings/area/DELETE'
 // Defined [users/]
 var USERS_CHANGE = exports.USERS_CHANGE = 'users/CHANGE';
 
+// Defined [manages/SET]
+var MANAGES_SET = exports.MANAGES_SET = 'manages/SET';
+
 /***/ }),
 /* 6 */,
 /* 7 */
@@ -133,6 +136,9 @@ var SETTINGS_AREA = exports.SETTINGS_AREA = 'settings/area';
 // Users.
 var USERS = exports.USERS = 'user/GET-LIST';
 
+// Defined [manages/GET]
+var MANAGES_GET = exports.MANAGES_GET = 'manages/GET';
+
 /***/ }),
 /* 8 */,
 /* 9 */,
@@ -168,9 +174,11 @@ var _area = __webpack_require__(75);
 
 var _area2 = _interopRequireDefault(_area);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _manages = __webpack_require__(183);
 
-_vue2.default.use(_vuex2.default);
+var _manages2 = _interopRequireDefault(_manages);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // modules.
 // The file is store.
@@ -179,10 +187,13 @@ _vue2.default.use(_vuex2.default);
 // @homepage http://medz.cn
 // ---------------------------------------
 
+_vue2.default.use(_vuex2.default);
+
 var modules = {
   user: _user2.default,
   site: _site2.default,
-  area: _area2.default
+  area: _area2.default,
+  manages: _manages2.default
 };
 
 var store = new _vuex2.default.Store({
@@ -414,21 +425,23 @@ var _Home = __webpack_require__(89);
 
 var _Home2 = _interopRequireDefault(_Home);
 
+var _Package = __webpack_require__(184);
+
+var _Package2 = _interopRequireDefault(_Package);
+
 var _Component = __webpack_require__(88);
 
 var _Component2 = _interopRequireDefault(_Component);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_vue2.default.use(_vueRouter2.default);
-
 // components.
 
 
 // routes.
+_vue2.default.use(_vueRouter2.default);
 
-
-var baseRoutes = [{ path: '', redirect: '/setting' }, { path: 'component/:component(.*)', component: _Component2.default }];
+var baseRoutes = [{ path: '', redirect: '/setting' }, { path: 'package/:key', component: _Package2.default }, { path: 'component/:component(.*)', component: _Component2.default }];
 
 var childrenRoutes = [_setting2.default, _user2.default, _sms2.default, _wallet2.default];
 
@@ -806,6 +819,15 @@ exports.default = login;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -883,12 +905,41 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 
+var _request = __webpack_require__(1);
+
+var _request2 = _interopRequireDefault(_request);
+
+var _types = __webpack_require__(5);
+
+var _getterTypes = __webpack_require__(7);
+
+var _vuex = __webpack_require__(10);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var menus = window.TS.menus || {};
 var nav = {
   data: function data() {
     return {
       menus: menus
     };
+  },
+  computed: _extends({}, (0, _vuex.mapGetters)({
+    manages: _getterTypes.MANAGES_GET
+  })),
+  created: function created() {
+    this.$store.dispatch(_types.MANAGES_SET, function (cb) {
+      return _request2.default.get((0, _request.createRequestURI)('manages'), { validateStatus: function validateStatus(status) {
+          return status === 200;
+        } }).then(function (_ref) {
+        var _ref$data = _ref.data,
+            data = _ref$data === undefined ? [] : _ref$data;
+
+        cb(data);
+      }).catch(function () {
+        window.alert('加载导航失败，请刷新页面！');
+      });
+    });
   }
 };
 
@@ -7650,7 +7701,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('span', {
     staticClass: "glyphicon glyphicon-credit-card __icon"
-  }), _vm._v("\n    钱包\n  ")]), _vm._v(" "), _vm._l((_vm.menus), function(ref, component) {
+  }), _vm._v("\n    钱包\n  ")]), _vm._v(" "), _vm._l((_vm.manages), function(item, index) {
+    return _c('router-link', {
+      key: index,
+      staticClass: "list-group-item __button",
+      attrs: {
+        "to": ("/package/" + index),
+        "active-class": "active",
+        "exact": ""
+      }
+    }, [_c('img', {
+      staticClass: "__icon-img",
+      attrs: {
+        "src": item['icon']
+      }
+    }), _vm._v("\n    " + _vm._s(item['name']) + "\n  ")])
+  }), _vm._v(" "), _vm._l((_vm.menus), function(ref, component) {
     var name = ref.name;
     var icon = ref.icon;
 
@@ -10701,6 +10767,183 @@ exports.default = {
 
 // removed by extract-text-webpack-plugin
 module.exports = {"alert":"_1-jHVXNOObbINCoPz14_FI_0"};
+
+/***/ }),
+/* 182 */,
+/* 183 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _types = __webpack_require__(5);
+
+var _getterTypes = __webpack_require__(7);
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var state = {
+  manages: []
+};
+
+var mutations = _defineProperty({}, _types.MANAGES_SET, function (state, manages) {
+  state.manages = manages;
+});
+
+var getters = _defineProperty({}, _getterTypes.MANAGES_GET, function (state) {
+  return state.manages;
+});
+
+var actions = _defineProperty({}, _types.MANAGES_SET, function (context, cb) {
+  return cb(function (manages) {
+    return context.commit(_types.MANAGES_SET, manages);
+  }, context);
+});
+
+exports.default = {
+  state: state,
+  mutations: mutations,
+  getters: getters,
+  actions: actions
+};
+
+/***/ }),
+/* 184 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(module) {var disposed = false
+var cssModules = {}
+module.hot && module.hot.accept(["!!../../../../node_modules/extract-text-webpack-plugin/loader.js?{\"omit\":1,\"remove\":true}!vue-style-loader!css-loader?{\"minimize\":false,\"sourceMap\":true,\"localIdentName\":\"[hash:base64]_0\",\"modules\":true,\"importLoaders\":true}!../../../../node_modules/vue-loader/lib/style-compiler/index?{\"vue\":true,\"id\":\"data-v-20cabae4\",\"scoped\":false,\"hasInlineConfig\":false}!../../../../node_modules/vue-loader/lib/selector?type=styles&index=0!./Package.vue"], function () {
+  var oldLocals = cssModules["$style"]
+  if (!oldLocals) return
+  var newLocals = __webpack_require__(186)
+  if (JSON.stringify(newLocals) === JSON.stringify(oldLocals)) return
+  cssModules["$style"] = newLocals
+  __webpack_require__(4).rerender("data-v-20cabae4")
+})
+function injectStyle (ssrContext) {
+  if (disposed) return
+  cssModules["$style"] = __webpack_require__(186)
+Object.defineProperty(this, "$style", { get: function () { return cssModules["$style"] }})
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(188),
+  /* template */
+  __webpack_require__(185),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/usr/local/var/www/thinksns-plus/resources/assets/admin/component/Package.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Package.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-20cabae4", Component.options)
+  } else {
+    if (module.hot.data.cssModules && Object.keys(module.hot.data.cssModules) !== Object.keys(cssModules)) {
+      delete Component.options._Ctor
+    }
+    hotAPI.reload("data-v-20cabae4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    data.cssModules = cssModules
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)(module)))
+
+/***/ }),
+/* 185 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('iframe', {
+    class: _vm.$style.appIframe,
+    attrs: {
+      "src": _vm.uri
+    }
+  })
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-20cabae4", module.exports)
+  }
+}
+
+/***/ }),
+/* 186 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"appIframe":"_35pOO3wniuJQ-kNkV4ib0k_0"};
+
+/***/ }),
+/* 187 */,
+/* 188 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var _getterTypes = __webpack_require__(7);
+
+var _vuex = __webpack_require__(10);
+
+exports.default = {
+  computed: _extends({}, (0, _vuex.mapGetters)({
+    manages: _getterTypes.MANAGES_GET
+  }), {
+    uri: function uri() {
+      var key = this.$route.params.key;
+      var _manages$key = this.manages[key];
+      _manages$key = _manages$key === undefined ? {} : _manages$key;
+      var uri = _manages$key.uri;
+
+
+      return uri;
+    }
+  })
+};
 
 /***/ })
 ],[70]);
