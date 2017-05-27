@@ -75,7 +75,6 @@ class ComponentCommand extends Command
     private function openBrowser($url)
     {
         $url = ProcessUtils::escapeArgument($url);
-        $process = (new Process(''))->setTimeout(null);
 
         if (windows_os()) {
             $process = new Process('start "web" explorer "'.$url.'"');
