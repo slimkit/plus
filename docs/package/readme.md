@@ -262,7 +262,7 @@ public function boot()
 
 ## 命令
 
-有时候，你可能希望为 ThinkSNS+ 增加一些命令行指令，你可以使用 `commands` 来实现，方法接受一个数组，数组中你需要列出你你需要注册的命令：
+有时候，你可能希望为 ThinkSNS+ 增加一些命令，你可以使用 `commands` 来实现，方法接受一个数组，数组中你需要列出你你需要注册的命令：
 
 ```php
 public function boot()
@@ -279,6 +279,8 @@ public function boot()
 ```
 
 注册完命令后，你可以使用 `php artisan commandName` 来调用它。
+
+> 命令详细开发指南请参考 [拓展包命令行开发指南](console.md)
 
 ## 发布资源
 

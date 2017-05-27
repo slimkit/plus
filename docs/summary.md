@@ -2,6 +2,7 @@
     - [关于ThinkSNS+](get-started/about.md)
 - [拓展包](package)
     - [拓展包开发指南](package)
+    - [处理器 & 命令](package/console.md)
 - [APIs](api)
     - [V1](../documents/api/v1)
     - [V2(REST ful)](api/v2)
