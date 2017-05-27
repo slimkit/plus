@@ -9,6 +9,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Zhiyi\Component\Installer\PlusInstallPlugin\InstallerInterface;
 use Zhiyi\Component\Installer\PlusInstallPlugin\ComponentInfoInterface;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\ProcessUtils;
 
 class ComponentCommand extends Command
 {
@@ -55,6 +57,47 @@ class ComponentCommand extends Command
         $component = $this->getComponentInput();
         $installer = $this->getInstallerInstance($component);
         $this->$name($installer, $component);
+
+        $this->error(
+            'This command is about to be removed, and this development will not be supported.'.PHP_EOL.
+            'We designed a better way to develop please refer to:'.PHP_EOL.
+            '    https://github.com/zhiyicx/plus-installer'
+        );
+
+        $this->openBrowser('https://github.com/zhiyicx/plus-installer');
+    }
+
+    /**
+     * opens a url in your system default browser
+     *
+     * @param string $url
+     */
+    private function openBrowser($url)
+    {
+        $url = ProcessUtils::escapeArgument($url);
+        $process = (new Process(''))->setTimeout(null);
+
+        if (windows_os()) {
+            $process = new Process('start "web" explorer "'.$url.'"');
+            
+            return $process->run();
+        }
+
+        $process = new Process('which xdg-open');
+        $linux = $process->run();
+
+        $process = new Process('which open');
+        $osx = $process->run();
+
+        if ($linux === 0) {
+            $process = new Process('xdg-open '.$url);
+
+            return $process->run();
+        } elseif ($osx === 0) {
+            $process = new Process('open '.$url);
+
+            return $process->run();
+        }
     }
 
     /**
