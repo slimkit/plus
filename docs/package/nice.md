@@ -103,14 +103,14 @@ public function store(\Zhiyi\Plus\Support\Configuration $config)
 
 > 注意，数组的维度级别使用半角 `.` 点进行分割，例如：
 > ```php
-$a = [
-    'key' => [
-        'k' => [
-            'k2' => 1,
-        ]
-    ]
-];
-```
+> $a = [
+>     'key' => [
+>         'k' => [
+>             'k2' => 1,
+>         ]
+>     ]
+> ];
+> ```
 > 想更新 `k2` 的值，只需要 `key.k.k2` 座位 `set` 方法的健即可。
 
 通过诸如的 `Configuration` 实例，你可以让用户在后台通过表单提交配置，ThinkSNS+ 会根据你在执行用户提交保存的 `set` 函数配置深度合并你发布的配置的信息。
