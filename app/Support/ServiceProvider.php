@@ -23,6 +23,38 @@ abstract class ServiceProvider extends BaseServiceProvider
     }
 
     /**
+     * 转换处理方法名称为显示名称.
+     *
+     * @param string $handle
+     * @return string
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function formatHandleToDisplay(string $handle): string
+    {
+        if (strtolower(substr($handle, -6)) === 'handle') {
+            $handle = substr($handle, 0, -6);
+        }
+
+        return str_replace('_', '-', snake_case($handle));
+    }
+
+    /**
+     * 转换处理方法为类方法名称.
+     *
+     * @param string $handle
+     * @return string
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function formatHandleToMethod(string $handle): string
+    {
+        if (strtolower(substr($handle, -6)) === 'handle') {
+            $handle = substr($handle, 0, -6);
+        }
+
+        return camel_case(str_replace('-', '_', $handle.'_handle'));
+    }
+
+    /**
      * Service provider list handle.
      *
      * @param \Illuminate\Console\Command $command
@@ -39,7 +71,7 @@ abstract class ServiceProvider extends BaseServiceProvider
         $command->comment('Available Handles:');
         foreach (get_class_methods($this) as $method) {
             if (strtolower(substr($method, -6)) === 'handle') {
-                $command->info(sprintf('  - %s', substr($method, 0, -6)));
+                $command->info(sprintf('  - %s', $this->formatHandleToDisplay($method)));
             }
         }
     }
