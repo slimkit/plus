@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
         Commands\ComponentLinkCommand::class,
         Commands\PackagePublishCommand::class,
         Commands\PackageArchiveCommand::class,
+        Commands\ComponentLinkCommand::class,
     ];
 
     /**
