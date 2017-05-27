@@ -31,6 +31,8 @@ abstract class ServiceProvider extends BaseServiceProvider
      */
     public function listHandle($command)
     {
+        $command->line('ThinkSNS+ <info>1.0.0-alpha.1<info>');
+        $command->line('');
         $command->comment('Usage:');
         $command->line(sprintf('  package:run %s [<handle>]', $command->argument('package')));
         $command->line('');
