@@ -38,3 +38,5 @@ php artisan package:link vendor/name
 
 > 开发 ThinkSNS+ 拓展包，配合内酯开发模式，会非常方便，只要熟了的运用这几个命令即可。
 > 你不再需要正式打包，就可以进行打包发布，这样在你开发完成后就可以正式打包了，而不是开发过程中就打包。
+>
+> `vendor/name` 可以是标准的包名称， `php artisan package:create` 生成的就是标准包名称目录，也可以是你在 `resource/repsitorie/source` 目录下的目录名称，例如你的包在 `resource/repsitorie/source/example` 你可以 `php artisan package:link example` 而不用输入完整的包名称。
