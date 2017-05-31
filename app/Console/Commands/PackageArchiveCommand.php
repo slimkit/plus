@@ -128,7 +128,7 @@ class PackageArchiveCommand extends Command
             throw new \Exception('"package" already exists!');
         }
 
-        return $this->argument('package');
+        return str_replace('/', '-', $this->argument('package'));
     }
 
     /**
