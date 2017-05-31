@@ -54,6 +54,12 @@ Bdoy
             "title":"广告3",
             "type":"html",
             "data":"<h1>广告3</h1><p>我不管我不管</p><script>alert('我是广告3')</script>"
+        },
+        {
+            "id":4,
+            "title":"广告4",
+            "type":"user:id",
+            "data":"1"
         }
     ]
 }
