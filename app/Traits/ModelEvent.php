@@ -14,7 +14,7 @@ trait ModelEvent
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public static function registerEvent(string $event,  callable $callback)
+    public static function registerEvent(string $event, callable $callback)
     {
         $class = static::class;
         if (! array_has(static::$modelEvents, $key = $class.'.'.$event)) {
