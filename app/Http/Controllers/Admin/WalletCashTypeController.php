@@ -41,7 +41,7 @@ class WalletCashTypeController extends Controller
         );
 
         $rules = [
-            'types' => 'array|in_array:alipay,wechat'
+            'types' => 'array|in_array:alipay,wechat',
         ];
         $messages = [
             'types.array' => '提交的数据有误，请刷新重试',
