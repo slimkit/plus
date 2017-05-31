@@ -29,8 +29,8 @@ class BootstrappersController extends Controller
                 'type' => 'image', // image, markdown, html, feed:id, user:id,
                 'data' => [
                     'image' => 'https://avatars0.githubusercontent.com/u/5564821?v=3&s=460',
-                    'link' => 'https://github.com/zhiyicx/thinksns-plus'
-                ]
+                    'link' => 'https://github.com/zhiyicx/thinksns-plus',
+                ],
             ],
             [
                 'id' => 2,
