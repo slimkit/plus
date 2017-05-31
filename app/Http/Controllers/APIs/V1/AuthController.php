@@ -46,9 +46,8 @@ class AuthController extends Controller
 
         $sms->dispatch(factory(VerifyCode::class)->create([
             'account' => $phone,
+            'code' => rand(1000, 9999),
         ]));
-
-        // $sms->send($verify);
 
         return response()->json(static::createJsonData([
             'status' => true,
