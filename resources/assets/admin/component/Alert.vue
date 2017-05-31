@@ -30,8 +30,8 @@ export default {
   }),
   watch: {
     open: function (open) {
+      window.clearInterval(this.interval);
       if (open === true) {
-        window.clearInterval(this.interval);
         this.interval = window.setInterval(() => {
           this.open = false;
           window.clearInterval(this.interval);
