@@ -19,7 +19,7 @@ export default {
     },
     type: {
       type: String,
-      validator: value => ['success', 'info', 'warning', 'danger'].indexOf(value),
+      validator: value => ['success', 'info', 'warning', 'danger'].indexOf(value) !== -1,
       default: 'info',
     },
     class: [String, Array]
