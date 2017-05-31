@@ -34,11 +34,9 @@ Status: 200 OK
     "wechat":{ // 微信支付信息
         "open":false // 是否开启微信支付选项
     },
-    "cash":{ // 提现相关
-        "types":[ // 可选提现的「提现方式」，按照现在系统预设，只有 alipay 和 wechat
-            "alipay"
-        ]
-    }
+    "cash": [ // 可选提现的「提现方式」，按照现在系统预设，只有 alipay 和 wechat
+        "alipay"
+    ]
 }
 ```
 

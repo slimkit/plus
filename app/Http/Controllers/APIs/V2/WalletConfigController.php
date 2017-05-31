@@ -18,6 +18,7 @@ class WalletConfigController extends Controller
     protected $aliases = [
         'rule',
         'labels' => ['type' => 'json'],
+        'cash' => ['type' => 'json'],
         'wallet:ratio' => ['type' => 'int', 'alias' => 'ratio'],
     ];
 
@@ -26,7 +27,7 @@ class WalletConfigController extends Controller
      *
      * @var array
      */
-    protected $walletNames = ['labels', 'rule'];
+    protected $walletNames = ['labels', 'rule', 'cash'];
 
     /**
      * 钱包共有配置名称列表.
@@ -72,9 +73,6 @@ class WalletConfigController extends Controller
         ]);
         $options->offsetSet('wechat', [
             'open' => false,
-        ]);
-        $options->offsetSet('cash', [
-            'types' => ['alipay'],
         ]);
 
         return $response
