@@ -8,22 +8,23 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 trait UserWallet
 {
     /**
-     * 监听用户创建完成事件.
+     * Bootstrap the trait.
      *
-     * @param self $user
-     * @return mixed
+     * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public static function createdUserWallet($user)
+    public static function bootUserWallet()
     {
-        $wallet = Wallet::firstOrCreate(
-            ['user_id' => $user->id],
-            ['balance' => 0]
-        );
+        static::created(function ($user) {
+            $wallet = Wallet::firstOrCreate(
+                ['user_id' => $user->id],
+                ['balance' => 0]
+            );
 
-        if ($wallet === false) {
-            return false;
-        }
+            if ($wallet === false) {
+                return false;
+            }
+        });
     }
 
     /**

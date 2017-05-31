@@ -2,7 +2,6 @@
 
 namespace Zhiyi\Plus\Models;
 
-use Zhiyi\Plus\Traits\ModelEvent;
 use Zhiyi\Plus\Traits\UserRolePerms;
 use Zhiyi\Plus\Traits\Model\UserFollw;
 use Zhiyi\Plus\Traits\Model\UserWallet;
@@ -13,8 +12,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes, ModelEvent;
-    use UserWallet, UserFollw;
+    use Notifiable,
+        SoftDeletes,
+        UserWallet,
+        UserFollw;
     use UserRolePerms {
         SoftDeletes::restore insteadof UserRolePerms;
         UserRolePerms::restore insteadof SoftDeletes;

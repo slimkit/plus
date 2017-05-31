@@ -10,11 +10,19 @@ use Illuminate\Support\Facades\Config;
 
 trait UserRolePerms
 {
-    public static function deletingUserRolePerms($user)
+    /**
+     * 添加事件监听.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public static function bootUserRolePerms()
     {
-        if (! method_exists($user, 'bootSoftDeletes')) {
-            $user->roles()->sync([]);
-        }
+        static::deleting(function ($user) {
+            if (! method_exists($user, 'bootSoftDeletes')) {
+                $user->roles()->sync([]);
+            }
+        });
     }
 
     public function cachedRoles()
