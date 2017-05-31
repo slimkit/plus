@@ -24,6 +24,10 @@ Route::middleware('auth:web')->group(function () {
         // 规则描述
         Route::get('/rule', 'WalletRuleController@show');
         Route::patch('/rule', 'WalletRuleController@update');
+
+        // 提现规则
+        Route::get('cash/type', 'WalletCashTypeController@show');
+        Route::patch('cash/type', 'WalletCashTypeController@update');
     });
 
     // SMS 相关
