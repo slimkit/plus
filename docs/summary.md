@@ -4,7 +4,7 @@
     - [拓展包开发指南](package)
     - [处理器 & 命令](package/console.md)
     - [如果更好的开发一个拓展包](package/nice.md)
-    - [内置开发支持（模拟完整的线上打包，发布流程）](dev.md)
+    - [内置开发支持（模拟完整的线上打包，发布流程）](package/dev.md)
 - [APIs](api)
     - [V1](../documents/api/v1)
     - [V2(REST ful)](api/v2)
