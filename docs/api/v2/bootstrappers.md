@@ -33,5 +33,28 @@ Bdoy
         // ...
     ],
     "wallet:ratio": 200 // 转换显示余额的比例，百分比。（200 就表示 200%）
+    "ad":[
+        {
+            "id":1,
+            "title":"广告1",
+            "type":"image",
+            "data":{
+                "image":"https://avatars0.githubusercontent.com/u/5564821?v=3&s=460",
+                "link":"https://github.com/zhiyicx/thinksns-plus"
+            }
+        },
+            {
+            "id":2,
+            "title":"广告2",
+            "type":"markdown",
+            "data":"# 广告2\n我是广告2"
+        },
+        {
+            "id":3,
+            "title":"广告3",
+            "type":"html",
+            "data":"<h1>广告3</h1><p>我不管我不管</p><script>alert('我是广告3')</script>"
+        }
+    ]
 }
 ```
