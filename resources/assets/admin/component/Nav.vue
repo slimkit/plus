@@ -67,10 +67,15 @@
       <span class="glyphicon glyphicon-credit-card __icon"></span>
       钱包
     </router-link>
+    <router-link class="list-group-item __button" to="/ad" active-class="active" >
+      <span class="__icon">AD</span>
+      广告管理
+    </router-link>
 
     <!-- 拓展包导航加载 -->
     <router-link class="list-group-item __button" v-for="item, index in manages" :key="index" :to="`/package/${index}`" active-class="active" exact>
-      <img class="__icon-img" :src="item['icon']">
+      <img class="__icon-img" :src="item['icon']" v-if="item['icon'].substr(4, 3) === '://' || item['icon'].substr(5, 3) === '://'">
+      <span v-else class="__icon">{{ item['icon'] }}</span>
       {{ item['name'] }}
     </router-link>
 
