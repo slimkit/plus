@@ -2,7 +2,6 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Throwable;
 use Zhiyi\Plus\Models\WalletCash;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Http\Controllers\Controller;

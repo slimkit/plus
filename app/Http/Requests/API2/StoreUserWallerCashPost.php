@@ -36,7 +36,7 @@ class StoreUserWallerCashPost extends FormRequest
                 'required',
                 Rule::in($repository->get()),
             ],
-            'account' => ['required']
+            'account' => ['required'],
         ];
     }
 

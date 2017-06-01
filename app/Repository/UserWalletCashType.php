@@ -38,7 +38,7 @@ class UserWalletCashType
         if ($this->cache->has($this->cacheKey())) {
             return $this->cache->get($this->cacheKey());
         }
-        
+
         $model = CommonConfig::firstOrCreate(
             ['name' => 'cash', 'namespace' => 'wallet'],
             ['value' => '[]']
@@ -88,7 +88,7 @@ class UserWalletCashType
     {
         $keys = [
             $this->cacheKey(),
-            'bootstrappers'
+            'bootstrappers',
         ];
 
         foreach ($keys as $key) {
