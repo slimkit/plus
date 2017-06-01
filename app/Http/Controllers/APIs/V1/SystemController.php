@@ -96,7 +96,7 @@ class SystemController extends Controller
                 $query->where('id', $order ? '>' : '<', $max_id);
             }
         })
-        ->orderBy('id', 'asc')
+        ->orderBy('id', 'desc')
         ->take($limit)
         ->get();
 
