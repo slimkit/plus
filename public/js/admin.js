@@ -4216,6 +4216,10 @@ var _request2 = _interopRequireDefault(_request);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _toArray(arr) { return Array.isArray(arr) ? arr : Array.from(arr); }
+
 exports.default = {
   data: function data() {
     return {
@@ -4327,11 +4331,16 @@ exports.default = {
         var _ref4$response$data$m = _ref4$response$data.message;
         _ref4$response$data$m = _ref4$response$data$m === undefined ? [] : _ref4$response$data$m;
 
-        var _ref4$response$data$m2 = _slicedToArray(_ref4$response$data$m, 1),
-            _ref4$response$data$m3 = _ref4$response$data$m2[0],
-            message = _ref4$response$data$m3 === undefined ? '更新失败，请刷新重试' : _ref4$response$data$m3;
+        var _ref4$response$data$m2 = _toArray(_ref4$response$data$m),
+            _ref4$response$data$t = _ref4$response$data.types,
+            types = _ref4$response$data$t === undefined ? [] : _ref4$response$data$t;
 
         _this3.update = false;
+
+        var _ref5 = [].concat(_toConsumableArray(types), _toConsumableArray(message)),
+            _ref5$ = _ref5[0],
+            message = _ref5$ === undefined ? '更新失败，请刷新重试' : _ref5$;
+
         _this3.sendAlert('danger', message);
       });
     }
