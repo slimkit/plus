@@ -2,7 +2,7 @@
 
 namespace Zhiyi\Plus\Support;
 
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider as SupportServiceProvider;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 class ProviderRepository
@@ -116,9 +116,9 @@ class ProviderRepository
      * @return \Illuminate\Support\ServiceProvider
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function resolveProvider($provider): ServiceProvider
+    protected function resolveProvider($provider): SupportServiceProvider
     {
-        if ($provider instanceof ServiceProvider) {
+        if ($provider instanceof SupportServiceProvider) {
             return $provider;
         }
 
