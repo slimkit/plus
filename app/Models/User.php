@@ -15,6 +15,7 @@ class User extends Authenticatable
     use Notifiable,
         SoftDeletes,
         UserWallet,
+        Concerns\UserWalletCash,
         UserFollw;
     use UserRolePerms {
         SoftDeletes::restore insteadof UserRolePerms;
