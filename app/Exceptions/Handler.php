@@ -101,7 +101,7 @@ class Handler extends ExceptionHandler
                     'data'    => null,
                 ]
                 : ['message' => [$e->getMessage() ?: 'Unknown error.']],
-            $e->getStatusCode()
+            500
         );
     }
 
