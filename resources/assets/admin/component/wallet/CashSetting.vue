@@ -148,8 +148,9 @@ export default {
       ).then(({ data: { message: [ message = '更新成功' ] = [] } = {} }) => {
         this.update = false;
         this.sendAlert('success', message);
-      }).catch(({ response: { data: { message: [ message = '更新失败，请刷新重试' ] = [] } = {} } = {} }) => {
+      }).catch(({ response: { data: { message: [] = [], types = [] } = {} } = {} }) => {
         this.update = false;
+        const [ message = '更新失败，请刷新重试' ] = [ ...types, ...message ];
         this.sendAlert('danger', message);
       });
     },
