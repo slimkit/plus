@@ -37,4 +37,7 @@ Route::prefix('wallet')
 ->group(function () {
     // 获取钱包配置信息
     Route::get('/', 'WalletConfigController@show');
+
+    // 提现
+    Route::post('/cashes', 'WalletCashController@store');
 });
