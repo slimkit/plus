@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class WalletCashs extends Migration
+class WalletCashes extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class WalletCashs extends Migration
      */
     public function up()
     {
-        Schema::create('wallet_cashs', function (Blueprint $table) {
+        Schema::create('wallet_cashes', function (Blueprint $table) {
             $table
                 ->bigIncrements('id')
                 ->comment('提现记录ID');
@@ -71,6 +71,6 @@ class WalletCashs extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('wallet_cashs');
+        Schema::dropIfExists('wallet_cashes');
     }
 }
