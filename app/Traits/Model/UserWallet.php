@@ -15,6 +15,7 @@ trait UserWallet
      */
     public static function bootUserWallet()
     {
+        // 用户创建后事件
         static::created(function ($user) {
             $wallet = Wallet::firstOrCreate(
                 ['user_id' => $user->id],
@@ -25,18 +26,11 @@ trait UserWallet
                 return false;
             }
         });
-    }
 
-    /**
-     * 监听用户删除事件.
-     *
-     * @param self $user
-     * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public static function deletedUserWallet($user)
-    {
-        $user->wallet()->delete();
+        // 用户删除后事件
+        static::deleted(function ($user) {
+            $user->wallet()->delete();
+        });
     }
 
     /**
