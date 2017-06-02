@@ -98,7 +98,7 @@
             <td>{{ cash.user.name }} ({{ cash.user.id }})</td>
 
             <!-- 金额 -->
-            <td>{{ cash.value }} ({{ cash.value / 100 * ratio / 100 }})</td>
+            <td>{{ cash.value / 100 * ratio / 100 }} ({{ cash.value / 100 }})</td>
 
             <!-- 账户 -->
             <td v-if="cash.type === 'alipay'">支付宝：{{ cash.account }}</td>
