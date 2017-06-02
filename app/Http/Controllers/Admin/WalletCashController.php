@@ -97,4 +97,47 @@ class WalletCashController extends Controller
             ->json(['message' => ['操作成功']])
             ->setStatusCode(201);
     }
+
+    /**
+     * 提现驳回
+     *
+     * @param Request $request
+     * @param WalletCash $cash
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function refuse(Request $request, WalletCash $cash)
+    {
+        $remark = $request->input('remark');
+
+        if (! $remark) {
+            return response()
+                ->json(['remark' => ['请输入备注信息']])
+                ->setStatusCode(422);
+        }
+
+        $user = $request->user();
+        $cash->status = 2;
+        $cash->remark = $remark;
+
+        // Record
+        $record = new WalletRecord();
+        $record->value = $cash->value;
+        $record->type = $cash->type;
+        $record->action = 1; // 提现拒绝只有增项。
+        $record->title = '账户提现 - 驳回';
+        $record->content = $remark;
+        $record->status = 1;
+        $record->account = $cash->account;
+
+        DB::transaction(function () use ($user, $cash, $record) {
+            $user->wallet()->increment('balance', $cash->value);
+            $user->walletRecords()->save($record);
+            $cash->save();
+        });
+
+        return response()
+            ->json(['message' => ['操作成功']])
+            ->setStatusCode(201);
+    }
 }
