@@ -3,11 +3,14 @@
 namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 // use Illuminate\Database\Eloquent\Builder;
 
 class WalletCash extends Model
 {
+    use SoftDeletes;
+    
     /**
      * User.
      *
