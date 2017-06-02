@@ -155,23 +155,57 @@
     </div>
 
     <!-- 分页 -->
-    <div class="text-center">
+    <div class="text-center" v-show="pagination.show">
       <ul class="pagination">
-        <li>
-          <a href="#" aria-label="Previous">
+        <!-- 上一页按钮 -->
+        <router-link
+          v-show="!!pagination.isPrevPage"
+          tag="li"
+          :to="{ path: '/wallet/cash', query: resolveStatus2Query({ page: pagination.isPrevPage }) }"
+        >
+          <a aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </a>
-        </li>
-        <li><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li>
-          <a href="#" aria-label="Next">
+        </router-link>
+
+        <!-- 前页码 -->
+        <router-link
+          v-for="item in pagination.prevPages"
+          tag="li"
+          :key="item.page"
+          :to="{ path: '/wallet/cash', query: resolveStatus2Query({ page: item.page }) }"
+        >
+          <a>{{ item.name }}</a>
+        </router-link>
+
+        <!-- 当前页码 -->
+        <router-link class="active" tag="li" :to="{ path: '/wallet/cash', query: resolveStatus2Query({ page: pagination.current }) }">
+          <a>
+            {{ pagination.current }}
+          </a>
+        </router-link>
+
+        <!-- 后页码 -->
+        <router-link
+          v-for="item in pagination.nextPages"
+          tag="li"
+          :key="item.page"
+          :to="{ path: '/wallet/cash', query: resolveStatus2Query({ page: item.page }) }"
+        >
+          <a>{{ item.name }}</a>
+        </router-link>
+
+        <!-- 下一页按钮 -->
+        <router-link
+          v-show="!!pagination.isNextPage"
+          tag="li"
+          :to="{ path: '/wallet/cash', query: resolveStatus2Query({ page: pagination.isNextPage }) }"
+        >
+          <a aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
           </a>
-        </li>
+        </router-link>
+        
       </ul>
     </div>
 
@@ -218,6 +252,102 @@ export default {
       message: '',
     }
   }),
+  computed: {
+    pagination() {
+      // 当前页
+      let current = 1;
+      current = isNaN(current = parseInt(this.page.current)) ? 1 : current;
+
+      // 最后页码
+      let last = 1;
+      last = isNaN(last = parseInt(this.page.last)) ? 1 : last;
+
+      // 是否显示
+      const show = last > 1;
+
+      // 前三页
+      let minPage = current - 3;
+      minPage = minPage <= 1 ? 1 : minPage;
+
+      // 后三页
+      let maxPage = current + 3;
+      maxPage = maxPage >= last ? last : maxPage;
+
+      // 是否有上一页
+      let isPrevPage = false;
+      // 前页页码
+      let prevPages = [];
+
+      // 前页计算
+      if (current > minPage) {
+        // 有上一页按钮
+        isPrevPage = current - 1; // 如果有，传入上一页页码.
+
+        // 回归第一页
+        if (minPage > 1) {
+          prevPages.push({
+            name: current < 6 ? 1 : '1...',
+            page: 1,
+          });
+        }
+
+        // 前页码
+        for (let i = minPage; i < current; i++) {
+          prevPages.push({
+            name: i,
+            page: i
+          });
+        }
+      }
+
+      // 是否有下一页
+      let isNextPage = false;
+      // 后页页码
+      let nextPages = [];
+
+      // 后页计算
+      if (current < maxPage) {
+        // 后页码
+        for (let i = current + 1; i <= maxPage; i++) {
+          nextPages.push({
+            name: i,
+            page: i,
+          });
+        }
+
+        // 进入最后页
+        if (maxPage < last) {
+          nextPages.push({
+            name: current + 4 === last ? last : '...'+last,
+            page: last,
+          })
+        }
+
+        // 是否有下一页按钮
+        isNextPage = current + 1;
+      }
+
+      return {
+        isPrevPage,
+        isNextPage,
+        current,
+        show,
+        prevPages,
+        nextPages,
+      }
+    }
+  },
+  watch: {
+    '$route' (to) {
+      const { page = this.page.current, ...query = this.query } = this.resolveQueryString(to);
+      this.query = query;
+      this.page.current = page;
+      this.requestCashes({
+        ...query,
+        page
+      });
+    },
+  },
   methods: {
     /**
      * 驳回提现申请
@@ -336,18 +466,18 @@ export default {
     },
 
     /**
-     * 请求数据.
+     * 请求列表数据.
      *
+     * @param {Object} query
      * @return {void}
      * @author Seven Du <shiweidu@outlook.com>
      */
-    requestCashes() {
+    requestCashes(query = {}) {
       this.loading = true
-      const query = { ...this.query, page: this.page.current };
       request.get(
         createRequestURI('wallet/cashes'),
         {
-          query,
+          params: this.resolveStatus2Query(query),
           validateStatus: status => status === 200
         }
       ).then(({ data = {} }) => {
@@ -410,10 +540,59 @@ export default {
           this.alert.status = false;
         }, 2000)
       };
-    }
+    },
+
+    /**
+     * 将状态转换为可供查询的查询对象.
+     *
+     * @param {Object} query
+     * @return {Object}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    resolveStatus2Query(query = {}) {
+      return { ...this.query, page: this.page.current, ...query };
+    },
+
+    /**
+     * 解决网页请求参数.
+     *
+     * @return {Object}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    resolveQueryString(route = false) {
+      const {
+        page = this.page.current,
+        user,
+        status,
+        order,
+      } = route !== false ? route.query : this.$route.query;
+
+      let query = {};
+
+      // 用户
+      if (!! user) {
+        query['user'] = user;
+      }
+
+      // 状态
+      if (!! status) {
+        query['status'] = status;
+      }
+
+      // 排序
+      if (!! order) {
+        query['order'] = order;
+      }
+
+      query['page'] = parseInt(page);
+
+      return query;
+    },
   },
   created() {
-    this.requestCashes();
+    this.requestCashes(
+      this.resolveQueryString()
+    );
   },
 };
 </script>
