@@ -48,10 +48,9 @@ class WalletRecords extends Migration
                 ->comment('交易详情');
 
             $table
-                ->integer('account')
-                ->unsigned()
+                ->string('account')
                 ->nullable()
-                ->default(0)
+                ->default(null)
                 ->comment('交易账户，减项为目标账户，增项为来源账户，当 type 为 user 时，此处是用户ID');
 
             $table
