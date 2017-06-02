@@ -48,31 +48,33 @@
           <!-- 提现用户 -->
           <div class="form-group">
             <label>用户：</label>
-            <input type="number" class="form-control" placeholder="User ID" min="1">
+            <input type="number" class="form-control" placeholder="User ID" min="1" v-model.lazy="queryTemp.user">
           </div>
 
           <!-- 状态 -->
           <div class="form-group">
             <label>状态</label>
-            <select class="form-control">
-              <option>全部</option>
-              <option>待审批</option>
-              <option>已审批</option>
-              <option>被拒绝</option>
+            <select class="form-control" v-model="queryTemp.status">
+              <option value="all">全部</option>
+              <option value="0">待审批</option>
+              <option value="1">已审批</option>
+              <option value="2">被拒绝</option>
             </select>
           </div>
 
           <!-- 排序 -->
           <div class="form-group">
             <label>排序</label>
-            <select class="form-control">
-              <option>最新申请</option>
-              <option>时间排序</option>
+            <select class="form-control" v-model="queryTemp.order">
+              <option value="desc">最新申请</option>
+              <option value="asc">时间排序</option>
             </select>
           </div>
 
-          <!-- 搜索按钮 -->
-          <button type="submit" class="btn btn-default">搜索</button>
+          <!-- 搜索 -->
+          <router-link class="btn btn-default" tag="button" :to="{ path: '/wallet/cash', query: searchQuery }">
+            搜索
+          </router-link>
 
         </div>
       </div>
@@ -230,6 +232,11 @@ export default {
   data: () => ({
     cashes: [],
     query: {},
+    queryTemp: {
+      user: null,
+      status: 'all',
+      order: 'desc',
+    },
     page: {
       last: 0,
       current: 1,
@@ -335,6 +342,13 @@ export default {
         prevPages,
         nextPages,
       }
+    },
+    searchQuery () {
+      return {
+        ...this.query,
+        ...this.queryTemp,
+        page: 1,
+      };
     }
   },
   watch: {
@@ -346,7 +360,7 @@ export default {
         ...query,
         page
       });
-    },
+    }
   },
   methods: {
     /**
@@ -473,7 +487,9 @@ export default {
      * @author Seven Du <shiweidu@outlook.com>
      */
     requestCashes(query = {}) {
-      this.loading = true
+      this.loading = true;
+      this.cashes = [];
+      this.alert.status = false;
       request.get(
         createRequestURI('wallet/cashes'),
         {
@@ -494,6 +510,7 @@ export default {
         this.ratio = ratio;
       }).catch(({ response: { data: { message: [ message = '加载失败' ] = [] } = {} } = {} } = {}) => {
         this.loading = false;
+        this.page = { last: 0, current: 1, first: 1 };
         this.sendAlert('danger', message, false);
       });
     },
@@ -593,6 +610,8 @@ export default {
     this.requestCashes(
       this.resolveQueryString()
     );
+    const { user, status, order } = this.$route.query;
+    this.queryTemp = { user, status, order };
   },
 };
 </script>
