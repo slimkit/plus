@@ -1,4 +1,11 @@
-# 提现申请
+# 提现相关
+
+用户账户提现相关接口
+
+- [提现申请](#提现申请)
+- [提现申请列表](#提现申请列表)
+
+## 提现申请
 
 ```
 POST /wallet/cashes
@@ -50,4 +57,45 @@ Status: 201 Created
     "申请失败" // 失败
   ]
 }
+```
+
+## 提现申请列表
+
+```
+GET /wallet/cashes
+```
+
+> limit=20&after=3
+> limit 可以设置获取数量
+> after 获取更多数据，上一次获取列表的最后一条 ID
+
+#### Headers
+
+```
+Status: 201 OK
+```
+
+#### Body
+
+```json5
+[
+  {
+    "id": 4, // 提现记录ID
+    "value": 10, // 提现金额
+    "type": "alipay", // 提现方式
+    "account": "xxx@alipay.com", // 提现账户
+    "status": 0, // 提现状态， 0 - 待审批，1 - 已审批，2 - 被拒绝
+    "remark": null, // 备注，审批或者拒绝的时候由管理填写
+    "created_at": "2017-06-01 09:30:22" // 申请时间
+  },
+  {
+    "id": 3,
+    "value": 10,
+    "type": "wechat",
+    "account": "xxxx",
+    "status": 0,
+    "remark": null,
+    "created_at": "2017-06-01 09:29:09"
+  }
+]
 ```
