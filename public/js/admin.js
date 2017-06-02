@@ -8605,7 +8605,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     return _c('tr', {
       key: cash.id,
       class: cash.status === 2 ? 'danger' : cash.status === 1 ? 'success' : ''
-    }, [_c('td', [_vm._v(_vm._s(cash.user.name) + " (" + _vm._s(cash.user.id) + ")")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(cash.value) + " (" + _vm._s(cash.value / 100 * _vm.ratio / 100) + ")")]), _vm._v(" "), (cash.type === 'alipay') ? _c('td', [_vm._v("支付宝：" + _vm._s(cash.account))]) : (cash.type === 'wechat') ? _c('td', [_vm._v("微信：" + _vm._s(cash.account))]) : _c('td', [_vm._v("未知：" + _vm._s(cash.account))]), _vm._v(" "), (cash.status === 1) ? _c('td', [_vm._v("已审批")]) : (cash.status === 2) ? _c('td', [_vm._v("被拒绝")]) : _c('td', [_vm._v("待审批")]), _vm._v(" "), (_vm.actions[cash.id]) ? _c('td', [_vm._v(_vm._s(_vm.remarks[cash.id]))]) : (cash.status === 0) ? _c('td', [_c('div', {
+    }, [_c('td', [_vm._v(_vm._s(cash.user.name) + " (" + _vm._s(cash.user.id) + ")")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(cash.value / 100 * _vm.ratio / 100) + " (" + _vm._s(cash.value / 100) + ")")]), _vm._v(" "), (cash.type === 'alipay') ? _c('td', [_vm._v("支付宝：" + _vm._s(cash.account))]) : (cash.type === 'wechat') ? _c('td', [_vm._v("微信：" + _vm._s(cash.account))]) : _c('td', [_vm._v("未知：" + _vm._s(cash.account))]), _vm._v(" "), (cash.status === 1) ? _c('td', [_vm._v("已审批")]) : (cash.status === 2) ? _c('td', [_vm._v("被拒绝")]) : _c('td', [_vm._v("待审批")]), _vm._v(" "), (_vm.actions[cash.id]) ? _c('td', [_vm._v(_vm._s(_vm.remarks[cash.id]))]) : (cash.status === 0) ? _c('td', [_c('div', {
       staticClass: "input-group"
     }, [_c('input', {
       directives: [{
