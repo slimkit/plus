@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class WalletCash extends Model
 {
     use SoftDeletes;
-    
+
     /**
      * User.
      *
