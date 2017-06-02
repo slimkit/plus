@@ -4,6 +4,8 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\WalletCash;
+use Illuminate\Support\Facades\DB;
+use Zhiyi\Plus\Models\WalletRecord;
 use Zhiyi\Plus\Repository\WalletRatio;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
@@ -52,5 +54,47 @@ class WalletCashController extends Controller
                 'ratio' => $repository->get(),
             ])
             ->setStatusCode(200);
+    }
+
+    /**
+     * 通过审批.
+     *
+     * @param Request $request
+     * @param WalletCash $cash
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function passed(Request $request, WalletCash $cash)
+    {
+        $remark = $request->input('remark');
+
+        if (! $remark) {
+            return response()
+                ->json(['remark' => ['请输入备注信息']])
+                ->setStatusCode(422);
+        }
+
+        $user = $request->user();
+        $cash->status = 1;
+        $cash->remark = $remark;
+
+        // Record
+        $record = new WalletRecord();
+        $record->value = $cash->value;
+        $record->type = $cash->type;
+        $record->action = 0; // 提现只有减项。
+        $record->title = '账户提现';
+        $record->content = $remark;
+        $record->status = 1;
+        $record->account = $cash->account;
+
+        DB::transaction(function () use ($user, $cash, $record) {
+            $user->walletRecords()->save($record);
+            $cash->save();
+        });
+
+        return response()
+            ->json(['message' => ['操作成功']])
+            ->setStatusCode(201);
     }
 }

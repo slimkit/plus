@@ -31,6 +31,7 @@ Route::middleware('auth:web')->group(function () {
 
         // 提现记录
         Route::get('/cashes', 'WalletCashController@show');
+        Route::patch('/cashes/{cash}', 'WalletCashController@passed');
     });
 
     // SMS 相关
