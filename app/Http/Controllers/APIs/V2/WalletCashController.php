@@ -2,7 +2,6 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Throwable;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\WalletCash;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +12,7 @@ use Zhiyi\Plus\Http\Requests\API2\StoreUserWallerCashPost;
 class WalletCashController extends Controller
 {
     /**
-     * 获取提现列表
+     * 获取提现列表.
      *
      * @param \Illuminate\Http\Request $request
      * @return mixed
