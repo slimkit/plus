@@ -26,8 +26,11 @@ Route::middleware('auth:web')->group(function () {
         Route::patch('/rule', 'WalletRuleController@update');
 
         // 提现规则
-        Route::get('cash/type', 'WalletCashTypeController@show');
-        Route::patch('cash/type', 'WalletCashTypeController@update');
+        Route::get('/cash/type', 'WalletCashTypeController@show');
+        Route::patch('/cash/type', 'WalletCashTypeController@update');
+
+        // 提现记录
+        Route::get('/cashes', 'WalletCashController@show');
     });
 
     // SMS 相关
