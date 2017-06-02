@@ -72,7 +72,7 @@ GET /wallet/cashes
 #### Headers
 
 ```
-Status: 201 OK
+Status: 200 OK
 ```
 
 #### Body
