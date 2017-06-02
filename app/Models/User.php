@@ -13,10 +13,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable,
-        SoftDeletes,
-        UserWallet,
-        Concerns\UserWalletCash,
-        UserFollw;
+        SoftDeletes, // 软删除
+        UserWallet, // 用户钱包
+        Concerns\UserWalletCash, // 钱包提现
+        Concerns\UserWalletRecord, // 钱包明细
+        UserFollw; // 用户关注
     use UserRolePerms {
         SoftDeletes::restore insteadof UserRolePerms;
         UserRolePerms::restore insteadof SoftDeletes;
