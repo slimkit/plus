@@ -38,6 +38,8 @@ Route::prefix('wallet')
     // 获取钱包配置信息
     Route::get('/', 'WalletConfigController@show');
 
-    // 提现
+    // 提现申请
     Route::post('/cashes', 'WalletCashController@store');
+    // 获取提现记录
+    Route::get('/cashes', 'WalletCashController@show');
 });

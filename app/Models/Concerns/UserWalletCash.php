@@ -12,7 +12,7 @@ trait UserWalletCash
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function walletCashs()
+    public function walletCashes()
     {
         return $this->hasMany(WalletCash::class, 'user_id', 'id');
     }
