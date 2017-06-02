@@ -293,7 +293,7 @@ export default {
         }
       ).then(({ data = {} }) => {
         const {
-          ratio: 100,
+          ratio = 100,
           cashes = [],
           current_page: current = this.page.current,
           first_page: first = this.page.first,
