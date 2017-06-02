@@ -73,10 +73,6 @@ GET /wallet/cashes
 
 ```
 Status: 200 OK
-```
-
-#### Body
-
 ```json5
 [
   {
