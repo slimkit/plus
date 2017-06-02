@@ -3,10 +3,9 @@
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\CommonConfig;
+use Zhiyi\Plus\Repository\WalletRatio;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Zhiyi\Plus\Repository\WalletRatio;
 
 class WalletRatioController extends Controller
 {
