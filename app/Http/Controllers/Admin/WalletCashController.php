@@ -31,7 +31,7 @@ class WalletCashController extends Controller
             $query->where('user_id', $user);
         }
 
-        if ($status) {
+        if ($status !== null && $status !== 'all') {
             $query->where('status', $status);
         }
 
