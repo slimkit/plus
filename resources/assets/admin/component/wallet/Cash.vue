@@ -255,9 +255,11 @@ export default {
           return actions;
         }, {});
         this.cashes = lodash.reduce(this.cashes, function (cashes, cash) {
-          if (id !== cash.id) {
-            cashes.push(cash);
+          if (id === cash.id) {
+            cash.remark = remark;
+            cash.status = 1;
           }
+          cashes.push(cash);
 
           return cashes;
         }, []);
