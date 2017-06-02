@@ -6757,6 +6757,35 @@ to {
           animation-iteration-count: infinite;
 }
 
+._18zkCHcsD6BvYfk_RfuVLu_0 {
+  margin: 22px 0 0;
+}
+.gHPYWsfLJKHf2gOJRSGds_0 {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 9999;
+}
+.gHPYWsfLJKHf2gOJRSGds_0 ._1O4OTL2FvYuh6CpTMSyGwW_0 {
+    min-width: 260px;
+    max-width: 400px;
+    height: auto;
+    margin: 10% auto;
+    background: #fff;
+    border-radius: 6px;
+    padding: 12px;
+    text-align: center;
+}
+.gHPYWsfLJKHf2gOJRSGds_0 ._1O4OTL2FvYuh6CpTMSyGwW_0 ._2mwThkOL24of1sO1PKbvpu_0 {
+      font-size: 4em;
+      color: #c9302c;
+}
+
 .kU2xO7mSoPYQiLDZxw6mY_0 {
   margin: 22px 0 0;
 }

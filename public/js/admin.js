@@ -6889,14 +6889,28 @@ module.exports = Component.exports
 /* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var disposed = false
+/* WEBPACK VAR INJECTION */(function(module) {var disposed = false
+var cssModules = {}
+module.hot && module.hot.accept(["!!../../../../../node_modules/extract-text-webpack-plugin/loader.js?{\"omit\":1,\"remove\":true}!vue-style-loader!css-loader?{\"minimize\":false,\"sourceMap\":true,\"localIdentName\":\"[hash:base64]_0\",\"modules\":true,\"importLoaders\":true}!../../../../../node_modules/vue-loader/lib/style-compiler/index?{\"vue\":true,\"id\":\"data-v-404ff491\",\"scoped\":false,\"hasInlineConfig\":false}!sass-loader?{\"sourceMap\":true}!../../../../../node_modules/vue-loader/lib/selector?type=styles&index=0!./Cash.vue"], function () {
+  var oldLocals = cssModules["$style"]
+  if (!oldLocals) return
+  var newLocals = __webpack_require__(201)
+  if (JSON.stringify(newLocals) === JSON.stringify(oldLocals)) return
+  cssModules["$style"] = newLocals
+  __webpack_require__(3).rerender("data-v-404ff491")
+})
+function injectStyle (ssrContext) {
+  if (disposed) return
+  cssModules["$style"] = __webpack_require__(201)
+Object.defineProperty(this, "$style", { get: function () { return cssModules["$style"] }})
+}
 var Component = __webpack_require__(0)(
   /* script */
-  null,
+  __webpack_require__(195),
   /* template */
   __webpack_require__(141),
   /* styles */
-  null,
+  injectStyle,
   /* scopeId */
   null,
   /* moduleIdentifier (server only) */
@@ -6915,15 +6929,20 @@ if (false) {(function () {
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-404ff491", Component.options)
   } else {
+    if (module.hot.data.cssModules && Object.keys(module.hot.data.cssModules) !== Object.keys(cssModules)) {
+      delete Component.options._Ctor
+    }
     hotAPI.reload("data-v-404ff491", Component.options)
   }
   module.hot.dispose(function (data) {
+    data.cssModules = cssModules
     disposed = true
   })
 })()}
 
 module.exports = Component.exports
 
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module)))
 
 /***/ }),
 /* 124 */
@@ -8574,7 +8593,128 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('span', {
     staticClass: "glyphicon glyphicon-cog"
-  }), _vm._v("\n        提现设置\n      ")])], 1), _vm._v(" "), _vm._m(0), _vm._v(" "), _vm._m(1)]), _vm._v(" "), _vm._m(2)])
+  }), _vm._v("\n        提现设置\n      ")])], 1), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('table', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.cashes.length),
+      expression: "cashes.length"
+    }],
+    staticClass: "table table-striped table-hover"
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.cashes), function(cash) {
+    return _c('tr', {
+      key: cash.id,
+      class: cash.status === 2 ? 'danger' : cash.status === 1 ? 'success' : ''
+    }, [_c('td', [_vm._v(_vm._s(cash.user.name) + " (" + _vm._s(cash.user.id) + ")")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(cash.value) + " (" + _vm._s(cash.value / 100 * _vm.ratio / 100) + ")")]), _vm._v(" "), (cash.type === 'alipay') ? _c('td', [_vm._v("支付宝：" + _vm._s(cash.account))]) : (cash.type === 'wechat') ? _c('td', [_vm._v("微信：" + _vm._s(cash.account))]) : _c('td', [_vm._v("未知：" + _vm._s(cash.account))]), _vm._v(" "), (cash.status === 1) ? _c('td', [_vm._v("已审批")]) : (cash.status === 2) ? _c('td', [_vm._v("被拒绝")]) : _c('td', [_vm._v("待审批")]), _vm._v(" "), (_vm.actions[cash.id]) ? _c('td', [_vm._v(_vm._s(_vm.remarks[cash.id]))]) : (cash.status === 0) ? _c('td', [_c('div', {
+      staticClass: "input-group"
+    }, [_c('input', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (_vm.remarks[cash.id]),
+        expression: "remarks[cash.id]"
+      }],
+      staticClass: "form-control",
+      attrs: {
+        "type": "text",
+        "placeholder": "备注"
+      },
+      domProps: {
+        "value": (_vm.remarks[cash.id])
+      },
+      on: {
+        "input": function($event) {
+          if ($event.target.composing) { return; }
+          var $$exp = _vm.remarks,
+            $$idx = cash.id;
+          if (!Array.isArray($$exp)) {
+            _vm.remarks[cash.id] = $event.target.value
+          } else {
+            $$exp.splice($$idx, 1, $event.target.value)
+          }
+        }
+      }
+    })])]) : _c('td', [_vm._v(_vm._s(cash.remark))]), _vm._v(" "), (cash.status === 0) ? _c('td', [(_vm.actions[cash.id] === 1) ? _c('button', {
+      staticClass: "btn btn-primary btn-sm",
+      attrs: {
+        "type": "button",
+        "disabled": "disabled"
+      }
+    }, [_c('span', {
+      staticClass: "glyphicon glyphicon-refresh component-loadding-icon"
+    })]) : (_vm.actions[cash.id] === 2) ? _c('button', {
+      staticClass: "btn btn-primary btn-sm",
+      attrs: {
+        "type": "button",
+        "disabled": "disabled"
+      }
+    }, [_vm._v("通过")]) : _c('button', {
+      staticClass: "btn btn-primary btn-sm",
+      attrs: {
+        "type": "button"
+      },
+      on: {
+        "click": function($event) {
+          _vm.requestCashPassed(cash.id)
+        }
+      }
+    }, [_vm._v("通过")]), _vm._v(" "), (_vm.actions[cash.id] === 2) ? _c('button', {
+      staticClass: "btn btn-danger btn-sm",
+      attrs: {
+        "type": "button",
+        "disabled": "disabled"
+      }
+    }, [_vm._v("拒绝")]) : (_vm.actions[cash.id] === 1) ? _c('button', {
+      staticClass: "btn btn-danger btn-sm",
+      attrs: {
+        "type": "button",
+        "disabled": "disabled"
+      }
+    }, [_vm._v("拒绝")]) : _c('button', {
+      staticClass: "btn btn-danger btn-sm",
+      attrs: {
+        "type": "button"
+      }
+    }, [_vm._v("拒绝")])]) : _c('td')])
+  }))]), _vm._v(" "), (_vm.loading) ? _c('div', {
+    staticClass: "panel-body text-center"
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-refresh component-loadding-icon"
+  }), _vm._v("\n      加载中...\n    ")]) : (_vm.alert.status) ? _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    class: ['alert', ("alert-" + (_vm.alert.type)), _vm.$style.alert],
+    attrs: {
+      "role": "alert"
+    }
+  }, [_vm._v("\n        " + _vm._s(_vm.alert.message) + "\n      ")]), _vm._v(" "), _c('br'), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.requestCashes
+    }
+  }, [_vm._v("重试")])]) : _vm._e()]), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.modal.status),
+      expression: "modal.status"
+    }],
+    class: _vm.$style.modal
+  }, [_c('div', {
+    class: _vm.$style.modalContent
+  }, [_c('div', {
+    class: _vm.$style.modalIcon
+  }, [(_vm.modal.type) ? _c('span', {
+    staticClass: "glyphicon glyphicon-ok-sign",
+    staticStyle: {
+      "color": "#449d44"
+    }
+  }) : _c('span', {
+    staticClass: "glyphicon glyphicon-warning-sign"
+  })]), _vm._v("\n      " + _vm._s(_vm.modal.message) + "\n    ")])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel-body"
@@ -8604,9 +8744,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("搜索")])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('table', {
-    staticClass: "table table-striped table-hover"
-  }, [_c('thead', [_c('tr', [_c('th', [_vm._v("用户")]), _vm._v(" "), _c('th', [_vm._v("金额")]), _vm._v(" "), _c('th', [_vm._v("提现账户")]), _vm._v(" "), _c('th', [_vm._v("操作")])])]), _vm._v(" "), _c('tbody', [_c('tr', [_c('td', [_vm._v("Seven(id:1)")]), _vm._v(" "), _c('td', [_vm._v("1500")]), _vm._v(" "), _c('td', [_vm._v("支付宝：lovevipdsw@outlook.com")]), _vm._v(" "), _c('td')])])])
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("用户(用户ID)")]), _vm._v(" "), _c('th', [_vm._v("金额(真实金额)")]), _vm._v(" "), _c('th', [_vm._v("提现账户")]), _vm._v(" "), _c('th', [_vm._v("状态")]), _vm._v(" "), _c('th', [_vm._v("备注")]), _vm._v(" "), _c('th', [_vm._v("操作")])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "text-center"
@@ -11531,6 +11669,473 @@ if (false) {
      require("vue-hot-reload-api").rerender("data-v-e97292be", module.exports)
   }
 }
+
+/***/ }),
+/* 167 */,
+/* 168 */,
+/* 169 */,
+/* 170 */,
+/* 171 */,
+/* 172 */,
+/* 173 */,
+/* 174 */,
+/* 175 */,
+/* 176 */,
+/* 177 */,
+/* 178 */,
+/* 179 */,
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */,
+/* 184 */,
+/* 185 */,
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var _request = __webpack_require__(1);
+
+var _request2 = _interopRequireDefault(_request);
+
+var _lodash = __webpack_require__(7);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+exports.default = {
+  data: function data() {
+    return {
+      cashes: [],
+      query: {},
+      page: {
+        last: 0,
+        current: 1,
+        first: 1
+      },
+      alert: {
+        status: false,
+        message: '',
+        type: 'info',
+        interval: null
+      },
+      loading: true,
+      ratio: 100,
+      actions: {},
+      remarks: {},
+      modal: {
+        status: false,
+        interval: null,
+        type: false,
+        message: ''
+      }
+    };
+  },
+  methods: {
+    /**
+     * 请求审批通过
+     *
+     * @param {Number} id
+     * @return {void}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    requestCashPassed: function requestCashPassed(id) {
+      var _this = this;
+
+      // 备注
+      var remark = this.remarks[id];
+
+      if (!remark) {
+        this.sendModal('请输入备注内容', false);
+
+        return;
+      }
+
+      // 添加到正在被执行当中
+      this.actions = _extends({}, this.actions, _defineProperty({}, id, 1));
+
+      // 请求通过
+      _request2.default.patch((0, _request.createRequestURI)('wallet/cashes/' + id), { remark: remark }, { validateStatus: function validateStatus(status) {
+          return status === 201;
+        } }).then(function () {
+        _this.actions = _lodash2.default.reduce(_this.actions, function (actions, item, key) {
+          if (parseInt(id) !== parseInt(key)) {
+            actions[key] = item;
+          }
+
+          return actions;
+        }, {});
+        _this.cashes = _lodash2.default.reduce(_this.cashes, function (cashes, cash) {
+          if (id !== cash.id) {
+            cashes.push(cash);
+          }
+
+          return cashes;
+        }, []);
+        _this.sendModal('审核成功！');
+      }).catch(function () {
+        var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+            _ref$response = _ref.response;
+
+        _ref$response = _ref$response === undefined ? {} : _ref$response;
+        var _ref$response$data = _ref$response.data;
+        _ref$response$data = _ref$response$data === undefined ? {} : _ref$response$data;
+        var _ref$response$data$re = _ref$response$data.remark,
+            remark = _ref$response$data$re === undefined ? [] : _ref$response$data$re,
+            _ref$response$data$me = _ref$response$data.message,
+            message = _ref$response$data$me === undefined ? [] : _ref$response$data$me;
+
+        var _ref2 = [].concat(_toConsumableArray(remark), _toConsumableArray(message)),
+            _ref2$ = _ref2[0],
+            currentMessage = _ref2$ === undefined ? '提交失败，请刷新网页重试！' : _ref2$;
+
+        _this.actions = _lodash2.default.reduce(_this.actions, function (actions, item, key) {
+          if (parseInt(id) !== parseInt(key)) {
+            console.log(id, key);
+            actions[key] = item;
+          }
+
+          return actions;
+        }, {});
+        _this.sendModal(currentMessage, false);
+      });
+    },
+
+
+    /**
+     * 请求数据.
+     *
+     * @return {void}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    requestCashes: function requestCashes() {
+      var _this2 = this;
+
+      this.loading = true;
+      var query = _extends({}, this.query, { page: this.page.current });
+      _request2.default.get((0, _request.createRequestURI)('wallet/cashes'), {
+        query: query,
+        validateStatus: function validateStatus(status) {
+          return status === 200;
+        }
+      }).then(function (_ref3) {
+        var _ref3$data = _ref3.data,
+            data = _ref3$data === undefined ? {} : _ref3$data;
+        var _data$cashes = data.cashes,
+            cashes = _data$cashes === undefined ? [] : _data$cashes,
+            _data$current_page = data.current_page,
+            current = _data$current_page === undefined ? _this2.page.current : _data$current_page,
+            _data$first_page = data.first_page,
+            first = _data$first_page === undefined ? _this2.page.first : _data$first_page,
+            _data$last_page = data.last_page,
+            last = _data$last_page === undefined ? thus.page.last : _data$last_page;
+
+        _this2.loading = false;
+        _this2.cashes = cashes;
+        _this2.page = { last: last, current: current, first: first };
+      }).catch(function () {
+        var _ref4 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+            _ref4$response = _ref4.response;
+
+        _ref4$response = _ref4$response === undefined ? {} : _ref4$response;
+        var _ref4$response$data = _ref4$response.data;
+        _ref4$response$data = _ref4$response$data === undefined ? {} : _ref4$response$data;
+        var _ref4$response$data$m = _ref4$response$data.message;
+        _ref4$response$data$m = _ref4$response$data$m === undefined ? [] : _ref4$response$data$m;
+
+        var _ref4$response$data$m2 = _slicedToArray(_ref4$response$data$m, 1),
+            _ref4$response$data$m3 = _ref4$response$data$m2[0],
+            message = _ref4$response$data$m3 === undefined ? '加载失败' : _ref4$response$data$m3;
+
+        _this2.loading = false;
+        _this2.sendAlert('danger', message, false);
+      });
+    },
+
+
+    /**
+     * 发送模糊框提示
+     *
+     * @param {[type]} message [description]
+     * @param {Boolean} success [description]
+     * @return {[type]} [description]
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    sendModal: function sendModal(message) {
+      var _this3 = this;
+
+      var success = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+      var time = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1500;
+
+      window.clearInterval(this.modal.interval);
+      this.modal = {
+        type: !!success,
+        message: message,
+        status: true,
+        interval: window.setInterval(function () {
+          _this3.modal.status = false;
+          window.clearInterval(_this3.modal.interval);
+        }, time)
+      };
+    },
+
+
+    /**
+     * 发送 alert 提示.
+     *
+     * @param {string} type
+     * @param {string} message
+     * @return {void}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    sendAlert: function sendAlert(type, message) {
+      var _this4 = this;
+
+      var hide = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+
+      window.clearInterval(this.alert.interval);
+      this.loading = false;
+      this.alert = _extends({}, this.alert, {
+        type: type,
+        message: message,
+        status: true,
+        interval: !hide ? null : window.setInterval(function () {
+          window.clearInterval(_this4.alert.interval);
+          _this4.alert.status = false;
+        }, 2000)
+      });
+    }
+  },
+  created: function created() {
+    this.requestCashes();
+  }
+};
+
+/***/ }),
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"alert":"_18zkCHcsD6BvYfk_RfuVLu_0","modal":"gHPYWsfLJKHf2gOJRSGds_0","modalContent":"_1O4OTL2FvYuh6CpTMSyGwW_0","modalIcon":"_2mwThkOL24of1sO1PKbvpu_0"};
 
 /***/ })
 ],[78]);
