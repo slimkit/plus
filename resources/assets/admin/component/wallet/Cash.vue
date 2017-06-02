@@ -293,6 +293,7 @@ export default {
         }
       ).then(({ data = {} }) => {
         const {
+          ratio: 100,
           cashes = [],
           current_page: current = this.page.current,
           first_page: first = this.page.first,
@@ -301,6 +302,7 @@ export default {
         this.loading = false;
         this.cashes = cashes;
         this.page = { last, current, first };
+        this.ratio = ratio;
       }).catch(({ response: { data: { message: [ message = '加载失败' ] = [] } = {} } = {} } = {}) => {
         this.loading = false;
         this.sendAlert('danger', message, false);
