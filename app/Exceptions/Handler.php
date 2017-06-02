@@ -87,7 +87,7 @@ class Handler extends ExceptionHandler
                         'message' => $e->getMessage() ?: Response::$statusTexts[$e->getStatusCode()],
                         'data'    => null,
                     ]
-                    : ['message' => $e->getMessage() ?: Response::$statusTexts[$e->getStatusCode()]],
+                    : ['message' => [$e->getMessage() ?: Response::$statusTexts[$e->getStatusCode()]]],
                 $e->getStatusCode()
             );
         }
