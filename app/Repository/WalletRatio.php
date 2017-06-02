@@ -64,7 +64,7 @@ class WalletRatio
         );
 
         $this->flush();
-        $this->cache->forever($this->cacheKey(), $types);
+        $this->cache->forever($this->cacheKey(), $ratio);
     }
 
     /**
