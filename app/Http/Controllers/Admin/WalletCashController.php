@@ -99,7 +99,7 @@ class WalletCashController extends Controller
     }
 
     /**
-     * 提现驳回
+     * 提现驳回.
      *
      * @param Request $request
      * @param WalletCash $cash
