@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Zhiyi\Plus\Repository\WalletRatio;
 
 class WalletRatioController extends Controller
 {
@@ -16,14 +17,10 @@ class WalletRatioController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function show(ResponseFactory $response)
+    public function show(ResponseFactory $response, WalletRatio $repository)
     {
-        $ratio = CommonConfig::byNamespace('common')
-            ->byName('wallet:ratio')
-            ->value('value') ?: 100;
-
         return $response
-            ->json(['ratio' => $ratio])
+            ->json(['ratio' => $repository->get()])
             ->setStatusCode(200);
     }
 
@@ -35,7 +32,7 @@ class WalletRatioController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function update(Request $request, ResponseFactory $response)
+    public function update(Request $request, ResponseFactory $response, WalletRatio $repository)
     {
         $ratio = intval($request->input('ratio'));
 
@@ -45,10 +42,7 @@ class WalletRatioController extends Controller
                 ->setStatusCode(422);
         }
 
-        CommonConfig::updateOrCreate(
-            ['namespace' => 'common', 'name' => 'wallet:ratio'],
-            ['value' => $ratio]
-        );
+        $repository->store($ratio);
 
         return $response
             ->json(['message' => ['更新成功']])
