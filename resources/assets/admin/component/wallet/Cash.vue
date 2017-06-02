@@ -131,7 +131,7 @@
               <!-- 拒绝 -->
               <button v-if="actions[cash.id] === 2" type="button" class="btn btn-danger btn-sm" disabled="disabled">拒绝</button>
               <button v-else-if="actions[cash.id] === 1" type="button" class="btn btn-danger btn-sm" disabled="disabled">拒绝</button>
-              <button v-else type="button" class="btn btn-danger btn-sm">拒绝</button>
+              <button v-else type="button" class="btn btn-danger btn-sm" @click="requestCashRefuse(cash.id)">拒绝</button>
             </td>
             <td v-else></td>
           </tr>
@@ -220,6 +220,64 @@ export default {
   }),
   methods: {
     /**
+     * 驳回提现申请
+     *
+     * @param {Number} id
+     * @return {void}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    requestCashRefuse(id) {
+      // 备注
+      const { [id]: remark } = this.remarks;
+      if (! remark) {
+        this.sendModal('请输入备注内容', false);
+
+        return;
+      }
+
+      // 添加到正在被执行当中
+      this.actions = {
+        ...this.actions,
+        [id]: 2
+      }
+
+      // 请求通过
+      request.patch(
+        createRequestURI(`wallet/cashes/${id}/refuse`),
+        { remark },
+        { validateStatus: status => status === 201 }
+      ).then(() => {
+        this.actions = lodash.reduce(this.actions, function (actions, item, key) {
+          if (parseInt(id) !== parseInt(key)) {
+            actions[key] = item;
+          }
+
+          return actions;
+        }, {});
+        this.cashes = lodash.reduce(this.cashes, function (cashes, cash) {
+          if (id === cash.id) {
+            cash.remark = remark;
+            cash.status = 2;
+          }
+          cashes.push(cash);
+
+          return cashes;
+        }, []);
+        this.sendModal('操作成功！');
+      }).catch(({ response: { data: { remark = [], message = [] } = {} } = {} } = {}) => {
+        const [ currentMessage = '提交失败，请刷新网页重试！' ] = [ ...remark, ...message ];
+        this.actions = lodash.reduce(this.actions, function (actions, item, key) {
+          if (parseInt(id) !== parseInt(key)) {
+            actions[key] = item;
+          }
+
+          return actions;
+        }, {});
+        this.sendModal(currentMessage, false);
+      });
+    },
+
+    /**
      * 请求审批通过
      *
      * @param {Number} id
@@ -243,7 +301,7 @@ export default {
 
       // 请求通过
       request.patch(
-        createRequestURI(`wallet/cashes/${id}`),
+        createRequestURI(`wallet/cashes/${id}/passed`),
         { remark },
         { validateStatus: status => status === 201 }
       ).then(() => {
@@ -268,7 +326,6 @@ export default {
         const [ currentMessage = '提交失败，请刷新网页重试！' ] = [ ...remark, ...message ];
         this.actions = lodash.reduce(this.actions, function (actions, item, key) {
           if (parseInt(id) !== parseInt(key)) {
-            console.log(id, key);
             actions[key] = item;
           }
 
