@@ -76,7 +76,7 @@ class HomeController extends Controller
 
     protected function menus()
     {
-        $components = config('component');
+        $components = (array) config('component');
         $menus = [];
 
         foreach ($components as $component => $info) {
