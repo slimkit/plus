@@ -88,6 +88,16 @@ class Application extends LaravelApplication
     }
 
     /**
+     * Get the path to the cached packages.php file.
+     *
+     * @return string
+     */
+    public function getCachedPackagesPath()
+    {
+        return $this->bootstrapPath('cache/packages.php');
+    }
+
+    /**
      * Get all of the configured providers.
      *
      * @return array
@@ -96,8 +106,23 @@ class Application extends LaravelApplication
     protected function getConfiguredProviders(): array
     {
         return array_merge(
-            $this->config['app.providers'],
-            $this->config['providers'] ?? []
+            $this->config['providers'] ?? [], // 内部转换完成后废弃。
+            $this->make(PackageManifest::class)->providers(),
+            $this->config['app.providers']
         );
+    }
+
+    /**
+     * Register the basic bindings into the container.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function registerBaseBindings()
+    {
+        parent::registerBaseBindings();
+        $this->instance(PackageManifest::class, new PackageManifest(
+            new Filesystem, $this->basePath(), $this->getCachedPackagesPath()
+        ));
     }
 }
