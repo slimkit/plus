@@ -8,7 +8,7 @@
         <a href="#">短信驱动</a>
       </router-link>
       <router-link to="/sms/alidayu" tag="li" active-class="active">
-        <a href="#">阿里大鱼</a>
+        <a href="#">阿里大于</a>
       </router-link>
     </ul>
     <router-view />
