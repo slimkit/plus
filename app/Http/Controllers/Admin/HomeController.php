@@ -4,7 +4,7 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Support\ServiceProvider;
+use Zhiyi\Plus\Support\ManageRepository;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -67,10 +67,10 @@ class HomeController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function showManages()
+    public function showManages(ManageRepository $repository)
     {
         return response()
-            ->json(ServiceProvider::getManages())
+            ->json($repository->getManages())
             ->setStatusCode(200);
     }
 

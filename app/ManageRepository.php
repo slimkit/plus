@@ -15,7 +15,7 @@ class ManageRepository
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public static function loadManageFrom(string $name, string $uri, array $option = [])
+    public function loadManageFrom(string $name, string $uri, array $option = [])
     {
         static::$manages[] = [
             'name' => $name,
@@ -30,7 +30,7 @@ class ManageRepository
      * @return array
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public static function getManages(): array
+    public function getManages(): array
     {
         $manages = [];
         foreach (static::$manages as $item) {
