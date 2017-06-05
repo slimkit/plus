@@ -16,7 +16,6 @@
         "intervention/image": "^2.3",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
-        "medz/plus-storage-qiniu": "^2.0",
         "predis/predis": "^1.1",
         "zhiyicx/plus-install-plugin": ">=1.0",
         "zhiyicx/plus-installer": "^1.0",
@@ -53,10 +52,12 @@
         ],
         "post-install-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postInstall",
+            "Zhiyi\\Plus\\ComposerScript::postInstall",
             "php artisan optimize"
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "Zhiyi\\Plus\\ComposerScript::postUpdate",
             "php artisan optimize"
         ]
     },
