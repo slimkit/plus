@@ -33,11 +33,11 @@ abstract class PackageHandler
      * Register handler.
      *
      * @param string $name
-     * @param PackageHandler $handler
+     * @param PackageHandler|string $handler
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public static function loadHandleFrom(string $name, PackageHandler $handler)
+    public static function loadHandleFrom(string $name, $handler)
     {
         static::$handles[$name] = $handler;
     }
