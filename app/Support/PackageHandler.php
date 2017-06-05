@@ -5,7 +5,7 @@ namespace Zhiyi\Plus\Support;
 abstract class PackageHandler
 {
     /**
-     * The handles/
+     * The handles/.
      *
      * @var array
      */
