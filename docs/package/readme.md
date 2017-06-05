@@ -1,5 +1,7 @@
 # ThinkSNS+ 拓展包开发指南
 
+在开发 ThinkSNS+ 拓展之前，你应该先看《[Laravel 拓展包开发](http://d.laravel-china.org/docs/5.4/packages)》，熟悉 Laravel 拓展包开发后才能开发 ThinkSNS+ 拓展包。
+
 > 也有可能是指北、指东、指西。
 
 - [简介](#简介)
