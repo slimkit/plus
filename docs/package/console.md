@@ -9,48 +9,60 @@
 
 可以把处理理解成一个事件，通过特定指令触发这个处理，可以处理很多微笑需求，通过简单的开发就可以完成一个指令动作的开发。
 
-#### 创建处理
+#### 创建处理器
 
-创建处理很简单，只需要在你的服务提供者中以 `<name>Handle` 的命名创建方法即可，默认回向改方法的注入 `$command` 以方便调用其他指令或者处理以及输出:
+你只需要创建一个类，这个类继承 `Zhiyi\Plus\Support\PackageHandler`:
 
 ```php
-public function helloHandle($command)
+
+use Zhiyi\Plus\Support\PakcageHandler;
+
+class ExamplePackageHandler extends PakcageHandler
 {
-    $command->info('Hello ThinkSNS+');
+    // todo.
 }
 ```
 
-就开发出了一个可以输出 `Hello ThinkSNS+` 的处理。
+然后在你的服务提供者的 `boot` 方法中:
 
-> 处理名称必须按照 **驼峰式** 命名并以 `Handle` 结尾，例如 `php artisan package:run vendor/package hello-test` 则创建处理的名称应该是 `helloTestHandle`。
+```php
+use Zhiyi\Plus\Support\PakcageHandler;
 
-#### 默认处理
+...
+public function boot()
+{
+    PackageHandler::loadHandleFrom('example', ExamolePackageHandler::class);
+}
+...
 
-ThinkSNS+ 已经为你默认创建了默认处理，默认处理可以让你在执行包的处理的时候不需要发送处理的名称。默认处理的方法为 `defaultHandle`，默认创建的默认处理是指向 `list` 的别名。你可以创建该方法来完成你的默认处理。
-
-##### 处理列表
-
-处理默认处理外，还为你创建好了 `list` 处理，该处理会列出你所创建的所有处理器列表。
-
-```shell
-php artisan package:run vendor/package list
 ```
 
-#### 运行处理
+即可发布
 
-创建了处理，我们需要来调用处理器执行处理过程：
+#### 实现处理器
 
-```shell
-php artisan package:run vendor/package hello
+在你创建的「处理器」中只要方法按照 `<name>Handle` 的格式进行写即可：
+```php
+use Zhiyi\Plus\Support\PakcageHandler;
+
+class ExamplePackageHandler extends PakcageHandler
+{
+    public function aHandler($command) {
+        // TODO
+    }    
+}
 ```
 
-你也可以不指定处理器名称来调用默认处理器：
+> 一个处理器中可以实现多个处理方法
+
+#### 调用处理器方法
 
 ```shell
-php artisan package:run vendor/package
+php artisan package:handle <name> [<handler>]
 ```
 
-> 省略处理器执行上述命令，会触发  `defaultHandle` 所定义的处理。
+> name, handler 都是可选参数，两个都确实，则会打印出全部命令
+> 如果只缺失  handler 则打印出该处理器下所有的处理方法。
 
 ## 命令
 

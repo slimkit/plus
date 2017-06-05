@@ -13,7 +13,7 @@
 
 ## 简介
 
-拓展包是添加功能到 ThinkSNS+ 的主要方式。拓展包几乎可以达到任何自定义 ThinkSNS+ 的目的，也可以包含许多好用的功能，例如 [medz/plus-component-qiniu](https://github.com/medz/plus-component-qiniu) 可以增加云储存引擎，或像 [zhiyicx/plus-component-web](https://packagist.org/packages/zhiyicx/plus-component-web) 一样包含一整套前端视图程序。
+拓展包是添加功能到 ThinkSNS+ 的主要方式。拓展包几乎可以达到任何自定义 ThinkSNS+ 的目的，也可以包含许多好用的功能，例如 [medz/plus-component-qiniu](https://github.com/medz/plus-storage-qiniu) 可以增加云储存引擎，或像 [zhiyicx/plus-component-web](https://packagist.org/packages/zhiyicx/plus-component-web) 一样包含一整套前端视图程序。
 
 当然，这并不是拓展包的全部，也有很多不需要依赖 ThinkSNS+ 的拓展包，这些都是通过 Composer 组织起来的，这也是 ThinkSNS+ 开发的主要方式。
 
@@ -32,101 +32,6 @@ php artisan package:create
 ```
 
 > 创建命令是询问交互的方式，你只需要一步一步的按照要求简单的输入信息即可完成。
-
-## 服务提供者
-
-服务提供者是每一个拓展包的入口，这是一个非常重要的类，也是所有功能定制入口。
-
-服务提供者负责绑定或注册一些东西到 ThinkSNS+ 的服务容器中并告知 ThinkSNS+ 要从哪里加载拓展包的资源，例如：视图、路由、配置文件、语言包甚至是其他的服务提供者。
-
-### 创建一个服务提供者
-
-所有拓展包的服务提供者都应该继承自 `Zhiyi\Plus\Support\ServiceProvider` 并包含以下两个方法：`boot` 和 `register`。基类 `ServiceProvider` 被放置在 ThinkSNS+ 程序中，正常情况下你无需依赖，但是我们建议你在 Composer 的 "require-dev" 中依赖 `zhiyicx\thinksns-plus` 依赖它，当时它并不会成为一个网站，而是成为你做单元测试服务的环境提供者。
-
-```php
-<?php
-
-use Zhiyi\Plus\Support\ServiceProvider;
-
-class ExampleServiceProvider extends ServiceProvider
-{
-    public function boot()
-    {
-        // TODO.
-    }
-
-    public fucntion register()
-    {
-        // TODO.
-    }
-}
-
-```
-
-> `register` 和 `boot` 都不是必须的，但是就算是空方法，没有实体我们也建议包含其中，如果你的服务提供者两个方法都是空的，你就应该考虑，你的拓展包是否还需要按照本文档开发。两个方法都是空的情况下，你的拓展包应该是一个标准的 Composer 包，而不是 ThinkSNS+ 拓展包。
-
-### 发布服务提供者
-
-发布服务提供者很重要，没有发布配置，你的拓展包只会被 Composer 当初普通的包进行依赖，这样 ThinkSNS+ 就无法得知你包的存在也不会加载你的包。
-
-发布服务提供者的方法是在 `composer.json` 中增加配置，由 Composer 来告诉 ThinkSNS+。首先你的包中应当依赖 `zhiyicx\plus-installer` 你可以执行命令 `composer require zhiyicx\plus-installer` 来进行依赖也可以手动修改 `composer.json`。
-
-```json
-{
-    ...
-    "require": {
-        ...
-        "zhiyicx/plus-installer": "^1.0"
-    }
-    ...
-}
-```
-
-依赖 `zhiyicx\plus-installer` 后，只是为 Composer 添加了类型安装器，所以，你需要用 `type` 字段来告诉 Composer 应该用我们选择的安装器，将 `type` 字段设置为 `plus-library` 就可以了。
-
-```json
-{
-    ...
-    "type": "plus-library"
-    ...
-}
-```
-
-好了，我们已经为 Composer 增加了类型安装器，也告诉 Composer 安装你的包改用哪个安装器了，那么我们来发布我们的服务提供者吧。我们在 `composer.json` 中增加 `extra.class` 来告诉安装器我们的服务提供者的位置。
-
-```json
-{
-    ...
-    "extra": {
-        "class": "ExampleServiceProvider"
-    }
-    ...
-}
-```
-
-> `extra.class` 应当是相当于你包定义的命名空间的完整类名称。
-
-这样发布服务提供者就完成了，当你在 ThinkSNS+ 中依赖你这个包的时候，ThinkSNS+ 就会自动加载你的服务。完整的 `composer.json` 示例如下：
-
-```json
-{
-    "name": "zhiyicx/plus-example-package",
-    "type": "plus-library",
-    "require": {
-        "zhiyicx/plus-installer": "^1.0"
-    },
-    "authload": {
-        "psr-4": {
-            "Zhiyi\\PackageExample\\": "src/"
-        }
-    },
-    "extra": {
-        "class": "Zhiyi\\PackageExample\\ExampleServiceProvider"
-    }
-}
-```
-
-> 上面的配置只是一个完整的示例，你需要配置成你包的信息。
 
 ## 路由
 
@@ -300,7 +205,7 @@ public function boot()
 在上面定义了很多资源发布，但是定义了并不是真的发布，还需要使用复制命令来进行资源的发布，命令：
 
 ```shell
-php artisan package:publish vendor/package
+php artisan vendor:publish --provider=ExampleServiceProvider
 ```
 
 同时还有两个可选参数，`--tag[=TAG]`、`--force`，参数是可选的。加入 `--force` 参数可以强制覆盖之前已完成的发布，加入 `--tag` 参数可以指定在服务提供者种设置的群组。
@@ -324,17 +229,8 @@ public function boot()
 }
 ```
 
-这样发布到群组后我们可以 `php artisan package:publish vendor/package --tag=public` 来单独发布公用 Assets 但是如果已经发布过，可以调用 `php artisan package:publish vendor/package --tag=public --force` 来强制覆盖已经发布的文件。
+这样发布到群组后我们可以 `php artisan vendor:publish --provider=ExampleServiceProvider --tag=public` 来单独发布公用 Assets 但是如果已经发布过，可以调用 `php artisan vendor:publish --provider=ExampleServiceProvider --tag=public --force` 来强制覆盖已经发布的文件。
 
 ## 其他服务提供者
 
-这不是一个常用的需求，但是其他服务提供者选项可以让你轻松整合「Laravel 拓展包」，在你的包开发需求中，你其实就是基于 Laravel 的另一种形态进行开发，在特殊需求场景下，你希望你的拓展包能依赖其他的服务提供者或者 Laravel 的服务提供者，你只需要在 `register` 方法中使用 `loadProvider` 方法即可。`loadProvider` 方法接受单个服务提供者类，也可以是用数组包含起来的多个服务提供者类：
-
-```php
-public function register()
-{
-    $this->loadProvider([
-        Example2ServiceProvider::class,
-    ]);
-}
-```
+打开 `composer.json` 找到 `extra.laravel.providers` 只需要在里面增加服务提供者即可，如果你有多个服务提供者类，也是以此方式增加。
