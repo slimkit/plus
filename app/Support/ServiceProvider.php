@@ -2,7 +2,6 @@
 
 namespace Zhiyi\Plus\Support;
 
-use Zhiyi\Plus\Support\ManageRepository;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 abstract class ServiceProvider extends BaseServiceProvider
