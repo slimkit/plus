@@ -52,4 +52,8 @@ class ManageRepository
 
         return $manages;
     }
+
+    public function __callStatic(string $method, array $parameters)
+    {
+    }
 }
