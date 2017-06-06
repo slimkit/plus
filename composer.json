@@ -16,6 +16,7 @@
         "intervention/image": "^2.3",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
+        "pingplusplus/pingpp-php": "^2.2",
         "predis/predis": "^1.1",
         "zhiyicx/plus-install-plugin": ">=1.0",
         "zhiyicx/plus-installer": "^1.0",
