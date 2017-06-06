@@ -33,6 +33,10 @@ Route::middleware('auth:web')->group(function () {
         Route::get('/cashes', 'WalletCashController@show');
         Route::patch('/cashes/{cash}/passed', 'WalletCashController@passed');
         Route::patch('/cashes/{cash}/refuse', 'WalletCashController@refuse');
+
+        //  Ping++
+        Route::get('/pingpp', 'WalletPingPlusPlusController@show');
+        Route::patch('/pingpp', 'WalletPingPlusPlusController@update');
     });
 
     // SMS 相关
