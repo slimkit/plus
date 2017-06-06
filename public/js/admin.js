@@ -6066,17 +6066,13 @@ var _PayRule = __webpack_require__(130);
 
 var _PayRule2 = _interopRequireDefault(_PayRule);
 
-var _Alipay = __webpack_require__(123);
-
-var _Alipay2 = _interopRequireDefault(_Alipay);
-
 var _ApplePay = __webpack_require__(124);
 
 var _ApplePay2 = _interopRequireDefault(_ApplePay);
 
-var _WeChatPay = __webpack_require__(132);
+var _PingPlusPlus = __webpack_require__(198);
 
-var _WeChatPay2 = _interopRequireDefault(_WeChatPay);
+var _PingPlusPlus2 = _interopRequireDefault(_PingPlusPlus);
 
 var _PayRatio = __webpack_require__(129);
 
@@ -6084,16 +6080,18 @@ var _PayRatio2 = _interopRequireDefault(_PayRatio);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var walletRouter = {
-  path: 'wallet',
-  component: _Main2.default,
-  children: [{ path: '', component: _Report2.default }, { path: 'accounts', component: _Accounts2.default }, { path: 'cash', component: _Cash2.default }, { path: 'cash/setting', component: _CashSetting2.default }, { path: 'pay/option', component: _PayOption2.default }, { path: 'pay/rule', component: _PayRule2.default }, { path: 'pay/ratio', component: _PayRatio2.default }, { path: 'pay/alipay', component: _Alipay2.default }, { path: 'pay/apple', component: _ApplePay2.default }, { path: 'pay/wechat', component: _WeChatPay2.default }]
-}; //
+//
 // The file is defined "/wallet" route.
 //
 // @author Seven Du <shiweidu@outlook.com>
 // @homepage http://medz.cn
 //
+
+var walletRouter = {
+  path: 'wallet',
+  component: _Main2.default,
+  children: [{ path: '', component: _Report2.default }, { path: 'accounts', component: _Accounts2.default }, { path: 'cash', component: _Cash2.default }, { path: 'cash/setting', component: _CashSetting2.default }, { path: 'pay/option', component: _PayOption2.default }, { path: 'pay/rule', component: _PayRule2.default }, { path: 'pay/ratio', component: _PayRatio2.default }, { path: 'pay/apple', component: _ApplePay2.default }, { path: 'pay/pingpp', component: _PingPlusPlus2.default }]
+};
 
 exports.default = walletRouter;
 
@@ -7528,46 +7526,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 123 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var Component = __webpack_require__(0)(
-  /* script */
-  null,
-  /* template */
-  __webpack_require__(147),
-  /* styles */
-  null,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/usr/local/var/www/thinksns-plus/resources/assets/admin/component/wallet/Alipay.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] Alipay.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-5c0af2b0", Component.options)
-  } else {
-    hotAPI.reload("data-v-5c0af2b0", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
+/* 123 */,
 /* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7983,46 +7942,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 132 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var Component = __webpack_require__(0)(
-  /* script */
-  null,
-  /* template */
-  __webpack_require__(144),
-  /* styles */
-  null,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/usr/local/var/www/thinksns-plus/resources/assets/admin/component/wallet/WeChatPay.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] WeChatPay.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4cc31ed8", Component.options)
-  } else {
-    hotAPI.reload("data-v-4cc31ed8", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
+/* 132 */,
 /* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9193,7 +9113,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("Apple Pay")])]), _vm._v(" "), _c('router-link', {
     attrs: {
-      "to": "/wallet/pay/alipay",
+      "to": "/wallet/pay/pingpp",
       "tag": "li",
       "active-class": "active"
     }
@@ -9201,17 +9121,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "href": "#"
     }
-  }, [_vm._v("支付宝")])]), _vm._v(" "), _c('router-link', {
-    attrs: {
-      "to": "/wallet/pay/wechat",
-      "tag": "li",
-      "active-class": "active"
-    }
-  }, [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("微信支付")])])], 1)])], 1), _vm._v(" "), _c('router-view')], 1)
+  }, [_vm._v("Ping++")])])], 1)])], 1), _vm._v(" "), _c('router-view')], 1)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('a', {
     staticClass: "dropdown-toggle",
@@ -9657,21 +9567,7 @@ if (false) {
 }
 
 /***/ }),
-/* 144 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_vm._v("微信支付设置")])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-4cc31ed8", module.exports)
-  }
-}
-
-/***/ }),
+/* 144 */,
 /* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9852,21 +9748,7 @@ if (false) {
 }
 
 /***/ }),
-/* 147 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_vm._v("Alipay 设置")])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-5c0af2b0", module.exports)
-  }
-}
-
-/***/ }),
+/* 147 */,
 /* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12527,6 +12409,531 @@ if (false) {
      require("vue-hot-reload-api").rerender("data-v-e97292be", module.exports)
   }
 }
+
+/***/ }),
+/* 169 */,
+/* 170 */,
+/* 171 */,
+/* 172 */,
+/* 173 */,
+/* 174 */,
+/* 175 */,
+/* 176 */,
+/* 177 */,
+/* 178 */,
+/* 179 */,
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */,
+/* 184 */,
+/* 185 */,
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(200),
+  /* template */
+  __webpack_require__(199),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/usr/local/var/www/thinksns-plus/resources/assets/admin/component/wallet/PingPlusPlus.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] PingPlusPlus.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-f17a7078", Component.options)
+  } else {
+    hotAPI.reload("data-v-f17a7078", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 199 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "component-container container-fluid"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("支付设置 -  Ping++")]), _vm._v(" "), (_vm.load.status === 0) ? _c('div', {
+    staticClass: "panel-body text-center"
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-refresh component-loadding-icon"
+  }), _vm._v("\n      加载中...\n    ")]) : (_vm.load.status === 1) ? _c('div', {
+    staticClass: "panel-body form-horizontal"
+  }, [_c('blockquote', [_c('p', [_vm._v("ThinkSNS+ 使用 "), _c('a', {
+    attrs: {
+      "href": "https://www.pingxx.com/",
+      "target": "block"
+    }
+  }, [_vm._v("Ping++")]), _vm._v(" 进行支付集成，以提供统一的支付接口使其方便拓展。")]), _vm._v(" "), _c('footer', [_vm._v("因为使用 RSA 进行认证，所以请服务器安装 OpenSSL 的 PHP 拓展。")])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-2 control-label"
+  }, [_vm._v("应用 ID")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-4"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.appId),
+      expression: "appId"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "placeholder": "输入应用 ID"
+    },
+    domProps: {
+      "value": (_vm.appId)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.appId = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('span', {
+    staticClass: "col-sm-6 help-block"
+  }, [_vm._v("\n          请输入应用ID。\n        ")])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-2 control-label"
+  }, [_vm._v("Secret Key")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-4"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.secretKey),
+      expression: "secretKey"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "placeholder": "请输入 Secret Key"
+    },
+    domProps: {
+      "value": (_vm.secretKey)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.secretKey = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('span', {
+    staticClass: "col-sm-6 help-block"
+  }, [_vm._v("\n          输入 Secret Key，非上线环境请输入 Test Secret Key，正式环境请输入 Live Secret Key。\n        ")])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-2 control-label"
+  }, [_vm._v("Ping++ 公钥")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-4"
+  }, [_c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.publicKey),
+      expression: "publicKey"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "rows": "3"
+    },
+    domProps: {
+      "value": (_vm.publicKey)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.publicKey = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('span', {
+    staticClass: "col-sm-6 help-block"
+  }, [_vm._v("\n          用于 Webhooks 回调时验证其正确性，不设置或者错误设置会造成所有异步通知的订单用户支付成功，但是不会到账。\n        ")])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-2 control-label"
+  }, [_vm._v("商户私钥")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-4"
+  }, [_c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.privateKey),
+      expression: "privateKey"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "rows": "3"
+    },
+    domProps: {
+      "value": (_vm.privateKey)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.privateKey = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('span', {
+    staticClass: "col-sm-6 help-block"
+  }, [_vm._v("\n          商户私钥是与 Ping++ 服务器交互的认证凭据，可以「"), _c('a', {
+    attrs: {
+      "href": ""
+    }
+  }, [_vm._v("点击这里")]), _vm._v("」获取一对 公／私钥，获取后倾妥善保管，公钥设置到 Ping++ 中，私钥设置在这里。\n        ")])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('div', {
+    staticClass: "col-sm-offset-2 col-sm-10"
+  }, [(_vm.updating) ? _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button",
+      "disabled": "disabled"
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-refresh component-loadding-icon"
+  })]) : _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.updateConfig
+    }
+  }, [_vm._v("添加用户")])])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.alert.status),
+      expression: "alert.status"
+    }],
+    class: ['alert', ("alert-" + (_vm.alert.type))],
+    staticStyle: {
+      "margin-top": "16px"
+    },
+    attrs: {
+      "role": "alert"
+    }
+  }, [_vm._v("\n        " + _vm._s(_vm.alert.message) + "\n      ")])], 1) : _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "alert alert-danger",
+    attrs: {
+      "role": "alert"
+    }
+  }, [_vm._v(_vm._s(_vm.load.message))]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.requestConfig
+    }
+  }, [_vm._v("重试")])])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-f17a7078", module.exports)
+  }
+}
+
+/***/ }),
+/* 200 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var _request = __webpack_require__(1);
+
+var _request2 = _interopRequireDefault(_request);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+exports.default = {
+  data: function data() {
+    return {
+      appId: null,
+      secretKey: null,
+      publicKey: null,
+      privateKey: null,
+      load: {
+        status: 0,
+        message: ''
+      },
+      alert: {
+        status: false,
+        type: 'info',
+        message: '',
+        interval: null
+      },
+      updating: false
+    };
+  },
+  methods: {
+    /**
+     * Request Ping++ config.
+     *
+     * @return {void}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    requestConfig: function requestConfig() {
+      var _this = this;
+
+      this.load.status = 0;
+      _request2.default.get((0, _request.createRequestURI)('wallet/pingpp'), { validateStatus: function validateStatus(status) {
+          return status === 200;
+        } }).then(function (_ref) {
+        var _ref$data = _ref.data;
+        _ref$data = _ref$data === undefined ? {} : _ref$data;
+        var appId = _ref$data.app_id,
+            secretKey = _ref$data.secret_key,
+            publicKey = _ref$data.public_key,
+            privateKey = _ref$data.private_key;
+
+        _this.load.status = 1;
+        _this.appId = appId;
+        _this.secretKey = secretKey;
+        _this.publicKey = publicKey;
+        _this.privateKey = privateKey;
+      }).catch(function () {
+        var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+            _ref2$response = _ref2.response;
+
+        _ref2$response = _ref2$response === undefined ? {} : _ref2$response;
+        var _ref2$response$data = _ref2$response.data;
+        _ref2$response$data = _ref2$response$data === undefined ? {} : _ref2$response$data;
+        var _ref2$response$data$m = _ref2$response$data.message;
+        _ref2$response$data$m = _ref2$response$data$m === undefined ? [] : _ref2$response$data$m;
+
+        var _ref2$response$data$m2 = _slicedToArray(_ref2$response$data$m, 1),
+            message = _ref2$response$data$m2[0];
+
+        _this.load = {
+          status: 2,
+          message: message
+        };
+      });
+    },
+
+
+    /**
+     * Update Ping++ config.
+     *
+     * @return {void}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    updateConfig: function updateConfig() {
+      var _this2 = this;
+
+      this.updating = true;
+      _request2.default.patch((0, _request.createRequestURI)('wallet/pingpp'), { app_id: this.appId, secret_key: this.secretKey, public_key: this.publicKey, private_key: this.privateKey }, { validateStatus: function validateStatus(status) {
+          return status === 201;
+        } }).then(function (_ref3) {
+        var _ref3$data$message = _ref3.data.message;
+        _ref3$data$message = _ref3$data$message === undefined ? [] : _ref3$data$message;
+
+        var _ref3$data$message2 = _slicedToArray(_ref3$data$message, 1),
+            _ref3$data$message2$ = _ref3$data$message2[0],
+            message = _ref3$data$message2$ === undefined ? '更新成功' : _ref3$data$message2$;
+
+        _this2.updating = false;
+        _this2.sendAlert('success', message);
+      }).catch(function () {
+        var _ref4 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+            _ref4$response = _ref4.response;
+
+        _ref4$response = _ref4$response === undefined ? {} : _ref4$response;
+        var _ref4$response$data = _ref4$response.data;
+        _ref4$response$data = _ref4$response$data === undefined ? {} : _ref4$response$data;
+        var _ref4$response$data$a = _ref4$response$data.app_id,
+            appIdMessage = _ref4$response$data$a === undefined ? [] : _ref4$response$data$a,
+            _ref4$response$data$s = _ref4$response$data.secret_key,
+            secretKeyMessage = _ref4$response$data$s === undefined ? [] : _ref4$response$data$s,
+            _ref4$response$data$p = _ref4$response$data.public_key,
+            publicKeyMessage = _ref4$response$data$p === undefined ? [] : _ref4$response$data$p,
+            _ref4$response$data$p2 = _ref4$response$data.private_key,
+            privateKeyMessage = _ref4$response$data$p2 === undefined ? [] : _ref4$response$data$p2,
+            _ref4$response$data$m = _ref4$response$data.message,
+            anyMessage = _ref4$response$data$m === undefined ? [] : _ref4$response$data$m;
+
+        var _ref5 = [].concat(_toConsumableArray(appIdMessage), _toConsumableArray(secretKeyMessage), _toConsumableArray(publicKeyMessage), _toConsumableArray(privateKeyMessage), _toConsumableArray(anyMessage)),
+            _ref5$ = _ref5[0],
+            message = _ref5$ === undefined ? '提交失败，请刷新重试！' : _ref5$;
+
+        _this2.updating = false;
+        _this2.sendAlert('danger', message);
+      });
+    },
+
+
+    /**
+     * Send alert message tip.
+     *
+     * @param {String} type
+     * @param {String} message
+     * @return {void}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    sendAlert: function sendAlert(type, message) {
+      var _this3 = this;
+
+      window.clearInterval(this.alert.interval);
+      this.alert = { type: type, message: message, status: true, interval: window.setInterval(function () {
+          window.clearInterval(_this3.alert.interval);
+          _this3.alert.status = false;
+        }, 1500) };
+    }
+  },
+  /**
+   * The page created.
+   *
+   * @return {void}
+   * @author Seven Du <shiweidu@outlook.com>
+   */
+  created: function created() {
+    this.requestConfig();
+  }
+};
 
 /***/ })
 ],[80]);
