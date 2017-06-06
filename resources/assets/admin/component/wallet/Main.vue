@@ -41,11 +41,8 @@
           <router-link to="/wallet/pay/apple" tag="li" active-class="active">
             <a href="#">Apple Pay</a>
           </router-link>
-          <router-link to="/wallet/pay/alipay" tag="li" active-class="active">
-            <a href="#">支付宝</a>
-          </router-link>
-          <router-link to="/wallet/pay/wechat" tag="li" active-class="active">
-            <a href="#">微信支付</a>
+          <router-link to="/wallet/pay/pingpp" tag="li" active-class="active">
+            <a href="#">Ping++</a>
           </router-link>
         </ul>
       </li>
