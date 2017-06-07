@@ -30,6 +30,11 @@ class Charge
      */
     protected $privateKey;
 
+    /**
+     * The charge prefix.
+     *
+     * @var string
+     */
     private $prefix = 'a';
 
     /**
