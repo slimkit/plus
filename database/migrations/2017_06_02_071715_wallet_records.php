@@ -24,6 +24,12 @@ class WalletRecords extends Migration
                 ->comment('记录关联用户');
 
             $table
+                ->integer('charge_id')
+                ->nullable()
+                ->default(null)
+                ->comment('凭据ID');
+
+            $table
                 ->integer('value')
                 ->unsigned()
                 ->comment('操作金额'); // 真实货币乘 100 的整数单位
@@ -72,6 +78,7 @@ class WalletRecords extends Migration
                 ->onDelete('cascade');
 
             $table->index('user_id');
+            $table->index('charge_id');
             $table->index('account');
             $table->index('status');
             $table->index('type');
