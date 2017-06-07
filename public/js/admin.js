@@ -162,19 +162,19 @@ var _vuex = __webpack_require__(8);
 
 var _vuex2 = _interopRequireDefault(_vuex);
 
-var _user = __webpack_require__(89);
+var _user = __webpack_require__(90);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _site = __webpack_require__(88);
+var _site = __webpack_require__(89);
 
 var _site2 = _interopRequireDefault(_site);
 
-var _area = __webpack_require__(86);
+var _area = __webpack_require__(87);
 
 var _area2 = _interopRequireDefault(_area);
 
-var _manages = __webpack_require__(87);
+var _manages = __webpack_require__(88);
 
 var _manages2 = _interopRequireDefault(_manages);
 
@@ -430,45 +430,45 @@ var _vue = __webpack_require__(9);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _vueRouter = __webpack_require__(169);
+var _vueRouter = __webpack_require__(168);
 
 var _vueRouter2 = _interopRequireDefault(_vueRouter);
 
 var _auth = __webpack_require__(18);
 
-var _setting = __webpack_require__(82);
+var _setting = __webpack_require__(83);
 
 var _setting2 = _interopRequireDefault(_setting);
 
-var _user = __webpack_require__(84);
+var _user = __webpack_require__(85);
 
 var _user2 = _interopRequireDefault(_user);
 
-var _sms = __webpack_require__(83);
+var _sms = __webpack_require__(84);
 
 var _sms2 = _interopRequireDefault(_sms);
 
-var _wallet = __webpack_require__(85);
+var _wallet = __webpack_require__(86);
 
 var _wallet2 = _interopRequireDefault(_wallet);
 
-var _ad = __webpack_require__(81);
+var _ad = __webpack_require__(82);
 
 var _ad2 = _interopRequireDefault(_ad);
 
-var _Login = __webpack_require__(102);
+var _Login = __webpack_require__(103);
 
 var _Login2 = _interopRequireDefault(_Login);
 
-var _Home = __webpack_require__(101);
+var _Home = __webpack_require__(102);
 
 var _Home2 = _interopRequireDefault(_Home);
 
-var _Package = __webpack_require__(104);
+var _Package = __webpack_require__(105);
 
 var _Package2 = _interopRequireDefault(_Package);
 
-var _Component = __webpack_require__(100);
+var _Component = __webpack_require__(101);
 
 var _Component2 = _interopRequireDefault(_Component);
 
@@ -506,7 +506,7 @@ exports.default = router;
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(93)
+  __webpack_require__(94)
 }
 var Component = __webpack_require__(0)(
   /* script */
@@ -721,7 +721,7 @@ var _defaultAvatar = __webpack_require__(133);
 
 var _defaultAvatar2 = _interopRequireDefault(_defaultAvatar);
 
-var _Nav = __webpack_require__(103);
+var _Nav = __webpack_require__(104);
 
 var _Nav2 = _interopRequireDefault(_Nav);
 
@@ -5795,6 +5795,263 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var _request = __webpack_require__(1);
+
+var _request2 = _interopRequireDefault(_request);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+exports.default = {
+  data: function data() {
+    return {
+      appId: null,
+      secretKey: null,
+      publicKey: null,
+      privateKey: null,
+      load: {
+        status: 0,
+        message: ''
+      },
+      alert: {
+        status: false,
+        type: 'info',
+        message: '',
+        interval: null
+      },
+      updating: false
+    };
+  },
+  methods: {
+    /**
+     * Request Ping++ config.
+     *
+     * @return {void}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    requestConfig: function requestConfig() {
+      var _this = this;
+
+      this.load.status = 0;
+      _request2.default.get((0, _request.createRequestURI)('wallet/pingpp'), { validateStatus: function validateStatus(status) {
+          return status === 200;
+        } }).then(function (_ref) {
+        var _ref$data = _ref.data;
+        _ref$data = _ref$data === undefined ? {} : _ref$data;
+        var appId = _ref$data.app_id,
+            secretKey = _ref$data.secret_key,
+            publicKey = _ref$data.public_key,
+            privateKey = _ref$data.private_key;
+
+        _this.load.status = 1;
+        _this.appId = appId;
+        _this.secretKey = secretKey;
+        _this.publicKey = publicKey;
+        _this.privateKey = privateKey;
+      }).catch(function () {
+        var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+            _ref2$response = _ref2.response;
+
+        _ref2$response = _ref2$response === undefined ? {} : _ref2$response;
+        var _ref2$response$data = _ref2$response.data;
+        _ref2$response$data = _ref2$response$data === undefined ? {} : _ref2$response$data;
+        var _ref2$response$data$m = _ref2$response$data.message;
+        _ref2$response$data$m = _ref2$response$data$m === undefined ? [] : _ref2$response$data$m;
+
+        var _ref2$response$data$m2 = _slicedToArray(_ref2$response$data$m, 1),
+            message = _ref2$response$data$m2[0];
+
+        _this.load = {
+          status: 2,
+          message: message
+        };
+      });
+    },
+
+
+    /**
+     * Update Ping++ config.
+     *
+     * @return {void}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    updateConfig: function updateConfig() {
+      var _this2 = this;
+
+      this.updating = true;
+      _request2.default.patch((0, _request.createRequestURI)('wallet/pingpp'), { app_id: this.appId, secret_key: this.secretKey, public_key: this.publicKey, private_key: this.privateKey }, { validateStatus: function validateStatus(status) {
+          return status === 201;
+        } }).then(function (_ref3) {
+        var _ref3$data$message = _ref3.data.message;
+        _ref3$data$message = _ref3$data$message === undefined ? [] : _ref3$data$message;
+
+        var _ref3$data$message2 = _slicedToArray(_ref3$data$message, 1),
+            _ref3$data$message2$ = _ref3$data$message2[0],
+            message = _ref3$data$message2$ === undefined ? '更新成功' : _ref3$data$message2$;
+
+        _this2.updating = false;
+        _this2.sendAlert('success', message);
+      }).catch(function () {
+        var _ref4 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+            _ref4$response = _ref4.response;
+
+        _ref4$response = _ref4$response === undefined ? {} : _ref4$response;
+        var _ref4$response$data = _ref4$response.data;
+        _ref4$response$data = _ref4$response$data === undefined ? {} : _ref4$response$data;
+        var _ref4$response$data$a = _ref4$response$data.app_id,
+            appIdMessage = _ref4$response$data$a === undefined ? [] : _ref4$response$data$a,
+            _ref4$response$data$s = _ref4$response$data.secret_key,
+            secretKeyMessage = _ref4$response$data$s === undefined ? [] : _ref4$response$data$s,
+            _ref4$response$data$p = _ref4$response$data.public_key,
+            publicKeyMessage = _ref4$response$data$p === undefined ? [] : _ref4$response$data$p,
+            _ref4$response$data$p2 = _ref4$response$data.private_key,
+            privateKeyMessage = _ref4$response$data$p2 === undefined ? [] : _ref4$response$data$p2,
+            _ref4$response$data$m = _ref4$response$data.message,
+            anyMessage = _ref4$response$data$m === undefined ? [] : _ref4$response$data$m;
+
+        var _ref5 = [].concat(_toConsumableArray(appIdMessage), _toConsumableArray(secretKeyMessage), _toConsumableArray(publicKeyMessage), _toConsumableArray(privateKeyMessage), _toConsumableArray(anyMessage)),
+            _ref5$ = _ref5[0],
+            message = _ref5$ === undefined ? '提交失败，请刷新重试！' : _ref5$;
+
+        _this2.updating = false;
+        _this2.sendAlert('danger', message);
+      });
+    },
+
+
+    /**
+     * Send alert message tip.
+     *
+     * @param {String} type
+     * @param {String} message
+     * @return {void}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    sendAlert: function sendAlert(type, message) {
+      var _this3 = this;
+
+      window.clearInterval(this.alert.interval);
+      this.alert = { type: type, message: message, status: true, interval: window.setInterval(function () {
+          window.clearInterval(_this3.alert.interval);
+          _this3.alert.status = false;
+        }, 1500) };
+    }
+  },
+  /**
+   * The page created.
+   *
+   * @return {void}
+   * @author Seven Du <shiweidu@outlook.com>
+   */
+  created: function created() {
+    this.requestConfig();
+  }
+};
+
+/***/ }),
+/* 81 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.store = exports.router = exports.app = undefined;
 
 var _vue = __webpack_require__(9);
@@ -5846,7 +6103,7 @@ exports.router = _router2.default;
 exports.store = _store2.default;
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5856,7 +6113,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Main = __webpack_require__(107);
+var _Main = __webpack_require__(108);
 
 var _Main2 = _interopRequireDefault(_Main);
 
@@ -5873,7 +6130,7 @@ exports.default = {
 //
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5883,19 +6140,19 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Setting = __webpack_require__(105);
+var _Setting = __webpack_require__(106);
 
 var _Setting2 = _interopRequireDefault(_Setting);
 
-var _Base = __webpack_require__(109);
+var _Base = __webpack_require__(110);
 
 var _Base2 = _interopRequireDefault(_Base);
 
-var _Area = __webpack_require__(108);
+var _Area = __webpack_require__(109);
 
 var _Area2 = _interopRequireDefault(_Area);
 
-var _StoreageManage = __webpack_require__(110);
+var _StoreageManage = __webpack_require__(111);
 
 var _StoreageManage2 = _interopRequireDefault(_StoreageManage);
 
@@ -5925,7 +6182,7 @@ var settingRouter = {
 exports.default = settingRouter;
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5935,19 +6192,19 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Main = __webpack_require__(114);
+var _Main = __webpack_require__(115);
 
 var _Main2 = _interopRequireDefault(_Main);
 
-var _Home = __webpack_require__(113);
+var _Home = __webpack_require__(114);
 
 var _Home2 = _interopRequireDefault(_Home);
 
-var _Driver = __webpack_require__(112);
+var _Driver = __webpack_require__(113);
 
 var _Driver2 = _interopRequireDefault(_Driver);
 
-var _Alidayu = __webpack_require__(111);
+var _Alidayu = __webpack_require__(112);
 
 var _Alidayu2 = _interopRequireDefault(_Alidayu);
 
@@ -5969,7 +6226,7 @@ var smsRouter = {
 exports.default = smsRouter;
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5979,35 +6236,35 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _User = __webpack_require__(106);
+var _User = __webpack_require__(107);
 
 var _User2 = _interopRequireDefault(_User);
 
-var _UserAdd = __webpack_require__(120);
+var _UserAdd = __webpack_require__(121);
 
 var _UserAdd2 = _interopRequireDefault(_UserAdd);
 
-var _UserManage = __webpack_require__(121);
+var _UserManage = __webpack_require__(122);
 
 var _UserManage2 = _interopRequireDefault(_UserManage);
 
-var _Manage = __webpack_require__(115);
+var _Manage = __webpack_require__(116);
 
 var _Manage2 = _interopRequireDefault(_Manage);
 
-var _Roles = __webpack_require__(118);
+var _Roles = __webpack_require__(119);
 
 var _Roles2 = _interopRequireDefault(_Roles);
 
-var _RoleManage = __webpack_require__(117);
+var _RoleManage = __webpack_require__(118);
 
 var _RoleManage2 = _interopRequireDefault(_RoleManage);
 
-var _Permissions = __webpack_require__(116);
+var _Permissions = __webpack_require__(117);
 
 var _Permissions2 = _interopRequireDefault(_Permissions);
 
-var _Setting = __webpack_require__(119);
+var _Setting = __webpack_require__(120);
 
 var _Setting2 = _interopRequireDefault(_Setting);
 
@@ -6028,7 +6285,7 @@ var routers = {
 exports.default = routers;
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6038,43 +6295,43 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Main = __webpack_require__(127);
+var _Main = __webpack_require__(126);
 
 var _Main2 = _interopRequireDefault(_Main);
 
-var _Report = __webpack_require__(131);
+var _Report = __webpack_require__(132);
 
 var _Report2 = _interopRequireDefault(_Report);
 
-var _Accounts = __webpack_require__(122);
+var _Accounts = __webpack_require__(123);
 
 var _Accounts2 = _interopRequireDefault(_Accounts);
 
-var _Cash = __webpack_require__(125);
+var _Cash = __webpack_require__(124);
 
 var _Cash2 = _interopRequireDefault(_Cash);
 
-var _CashSetting = __webpack_require__(126);
+var _CashSetting = __webpack_require__(125);
 
 var _CashSetting2 = _interopRequireDefault(_CashSetting);
 
-var _PayOption = __webpack_require__(128);
+var _PayOption = __webpack_require__(127);
 
 var _PayOption2 = _interopRequireDefault(_PayOption);
 
-var _PayRule = __webpack_require__(130);
+var _PayRule = __webpack_require__(129);
 
 var _PayRule2 = _interopRequireDefault(_PayRule);
 
-var _ApplePay = __webpack_require__(124);
+var _RechargeType = __webpack_require__(131);
 
-var _ApplePay2 = _interopRequireDefault(_ApplePay);
+var _RechargeType2 = _interopRequireDefault(_RechargeType);
 
-var _PingPlusPlus = __webpack_require__(198);
+var _PingPlusPlus = __webpack_require__(130);
 
 var _PingPlusPlus2 = _interopRequireDefault(_PingPlusPlus);
 
-var _PayRatio = __webpack_require__(129);
+var _PayRatio = __webpack_require__(128);
 
 var _PayRatio2 = _interopRequireDefault(_PayRatio);
 
@@ -6090,13 +6347,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var walletRouter = {
   path: 'wallet',
   component: _Main2.default,
-  children: [{ path: '', component: _Report2.default }, { path: 'accounts', component: _Accounts2.default }, { path: 'cash', component: _Cash2.default }, { path: 'cash/setting', component: _CashSetting2.default }, { path: 'pay/option', component: _PayOption2.default }, { path: 'pay/rule', component: _PayRule2.default }, { path: 'pay/ratio', component: _PayRatio2.default }, { path: 'pay/apple', component: _ApplePay2.default }, { path: 'pay/pingpp', component: _PingPlusPlus2.default }]
+  children: [{ path: '', component: _Report2.default }, { path: 'accounts', component: _Accounts2.default }, { path: 'cash', component: _Cash2.default }, { path: 'cash/setting', component: _CashSetting2.default }, { path: 'pay/option', component: _PayOption2.default }, { path: 'pay/rule', component: _PayRule2.default }, { path: 'pay/ratio', component: _PayRatio2.default }, { path: 'pay/type', component: _RechargeType2.default }, { path: 'pay/pingpp', component: _PingPlusPlus2.default }]
 };
 
 exports.default = walletRouter;
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6182,7 +6439,7 @@ var areaStore = {
 exports.default = areaStore;
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6224,7 +6481,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6265,7 +6522,7 @@ var siteStore = {
 exports.default = siteStore;
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6365,14 +6622,8 @@ var userStore = {
 exports.default = userStore;
 
 /***/ }),
-/* 90 */,
 /* 91 */,
-/* 92 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
+/* 92 */,
 /* 93 */
 /***/ (function(module, exports) {
 
@@ -6397,10 +6648,16 @@ exports.default = userStore;
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 97 */,
+/* 97 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
 /* 98 */,
 /* 99 */,
-/* 100 */
+/* 100 */,
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -6422,7 +6679,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(57),
   /* template */
-  __webpack_require__(158),
+  __webpack_require__(156),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -6459,19 +6716,19 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module)))
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(96)
+  __webpack_require__(97)
 }
 var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(58),
   /* template */
-  __webpack_require__(165),
+  __webpack_require__(163),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -6503,13 +6760,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(92)
+  __webpack_require__(93)
 }
 var Component = __webpack_require__(0)(
   /* script */
@@ -6547,19 +6804,19 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(94)
+  __webpack_require__(95)
 }
 var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(60),
   /* template */
-  __webpack_require__(148),
+  __webpack_require__(147),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -6591,7 +6848,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -6650,19 +6907,19 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module)))
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(95)
+  __webpack_require__(96)
 }
 var Component = __webpack_require__(0)(
   /* script */
   null,
   /* template */
-  __webpack_require__(163),
+  __webpack_require__(161),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -6694,7 +6951,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -6716,7 +6973,7 @@ var Component = __webpack_require__(0)(
   /* script */
   null,
   /* template */
-  __webpack_require__(164),
+  __webpack_require__(162),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -6753,7 +7010,7 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module)))
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -6761,7 +7018,7 @@ var Component = __webpack_require__(0)(
   /* script */
   null,
   /* template */
-  __webpack_require__(150),
+  __webpack_require__(149),
   /* styles */
   null,
   /* scopeId */
@@ -6793,7 +7050,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -6815,7 +7072,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(62),
   /* template */
-  __webpack_require__(156),
+  __webpack_require__(154),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -6852,7 +7109,7 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module)))
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -6874,7 +7131,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(63),
   /* template */
-  __webpack_require__(155),
+  __webpack_require__(153),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -6911,7 +7168,7 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module)))
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -6933,7 +7190,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(64),
   /* template */
-  __webpack_require__(138),
+  __webpack_require__(139),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -6970,7 +7227,7 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module)))
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -6978,7 +7235,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(65),
   /* template */
-  __webpack_require__(166),
+  __webpack_require__(164),
   /* styles */
   null,
   /* scopeId */
@@ -7010,7 +7267,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -7018,7 +7275,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(66),
   /* template */
-  __webpack_require__(161),
+  __webpack_require__(159),
   /* styles */
   null,
   /* scopeId */
@@ -7050,7 +7307,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -7090,7 +7347,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -7098,7 +7355,7 @@ var Component = __webpack_require__(0)(
   /* script */
   null,
   /* template */
-  __webpack_require__(142),
+  __webpack_require__(143),
   /* styles */
   null,
   /* scopeId */
@@ -7130,7 +7387,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -7152,7 +7409,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(68),
   /* template */
-  __webpack_require__(152),
+  __webpack_require__(151),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -7189,7 +7446,7 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module)))
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -7211,7 +7468,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(69),
   /* template */
-  __webpack_require__(139),
+  __webpack_require__(140),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -7248,7 +7505,7 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module)))
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -7256,7 +7513,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(70),
   /* template */
-  __webpack_require__(159),
+  __webpack_require__(157),
   /* styles */
   null,
   /* scopeId */
@@ -7288,7 +7545,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -7310,7 +7567,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(71),
   /* template */
-  __webpack_require__(151),
+  __webpack_require__(150),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -7347,7 +7604,7 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module)))
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -7355,7 +7612,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(72),
   /* template */
-  __webpack_require__(167),
+  __webpack_require__(165),
   /* styles */
   null,
   /* scopeId */
@@ -7387,7 +7644,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -7395,7 +7652,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(73),
   /* template */
-  __webpack_require__(140),
+  __webpack_require__(141),
   /* styles */
   null,
   /* scopeId */
@@ -7427,7 +7684,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -7449,7 +7706,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(74),
   /* template */
-  __webpack_require__(154),
+  __webpack_require__(152),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -7486,7 +7743,7 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module)))
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -7526,48 +7783,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 123 */,
 /* 124 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var Component = __webpack_require__(0)(
-  /* script */
-  null,
-  /* template */
-  __webpack_require__(153),
-  /* styles */
-  null,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/usr/local/var/www/thinksns-plus/resources/assets/admin/component/wallet/ApplePay.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] ApplePay.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6bad4fcc", Component.options)
-  } else {
-    hotAPI.reload("data-v-6bad4fcc", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -7589,7 +7805,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(75),
   /* template */
-  __webpack_require__(143),
+  __webpack_require__(144),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -7626,7 +7842,7 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module)))
 
 /***/ }),
-/* 126 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -7685,7 +7901,7 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module)))
 
 /***/ }),
-/* 127 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -7693,7 +7909,7 @@ var Component = __webpack_require__(0)(
   /* script */
   null,
   /* template */
-  __webpack_require__(141),
+  __webpack_require__(142),
   /* styles */
   null,
   /* scopeId */
@@ -7725,7 +7941,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 128 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -7747,7 +7963,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(77),
   /* template */
-  __webpack_require__(162),
+  __webpack_require__(160),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -7784,7 +8000,7 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module)))
 
 /***/ }),
-/* 129 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -7806,7 +8022,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(78),
   /* template */
-  __webpack_require__(168),
+  __webpack_require__(166),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -7843,7 +8059,7 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module)))
 
 /***/ }),
-/* 130 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var disposed = false
@@ -7865,7 +8081,7 @@ var Component = __webpack_require__(0)(
   /* script */
   __webpack_require__(79),
   /* template */
-  __webpack_require__(149),
+  __webpack_require__(148),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -7902,7 +8118,87 @@ module.exports = Component.exports
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module)))
 
 /***/ }),
+/* 130 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(80),
+  /* template */
+  __webpack_require__(167),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/usr/local/var/www/thinksns-plus/resources/assets/admin/component/wallet/PingPlusPlus.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] PingPlusPlus.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-f17a7078", Component.options)
+  } else {
+    hotAPI.reload("data-v-f17a7078", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
 /* 131 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(197),
+  /* template */
+  __webpack_require__(138),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/usr/local/var/www/thinksns-plus/resources/assets/admin/component/wallet/RechargeType.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] RechargeType.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-297b5a42", Component.options)
+  } else {
+    hotAPI.reload("data-v-297b5a42", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -7910,7 +8206,7 @@ var Component = __webpack_require__(0)(
   /* script */
   null,
   /* template */
-  __webpack_require__(157),
+  __webpack_require__(155),
   /* styles */
   null,
   /* scopeId */
@@ -7942,7 +8238,6 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 132 */,
 /* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7951,7 +8246,7 @@ var Component = __webpack_require__(0)(
   /* script */
   null,
   /* template */
-  __webpack_require__(160),
+  __webpack_require__(158),
   /* styles */
   null,
   /* scopeId */
@@ -8355,6 +8650,130 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
+    staticClass: "component-container container-fluid"
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("支付设置 - 支付选项")]), _vm._v(" "), (_vm.load.status === 0) ? _c('div', {
+    staticClass: "panel-body text-center"
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-refresh component-loadding-icon"
+  }), _vm._v("\n      加载中...\n    ")]) : (_vm.load.status === 1) ? _c('div', {
+    staticClass: "panel-body form-horizontal"
+  }, [_c('blockquote', [_c('p', [_vm._v("如果将充值选项全部取消，则表示关闭充值功能")]), _vm._v(" "), _c('footer', [_vm._v("单个平台多个选择时针对不同场景的分类，关闭某个场景，某个场景则无支付。")])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-2 control-label"
+  }, [_vm._v("充值选项")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, _vm._l((_vm.support), function(name, type) {
+    return _c('div', {
+      key: type,
+      staticClass: "checkbox"
+    }, [_c('label', [_c('input', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (_vm.types),
+        expression: "types"
+      }],
+      attrs: {
+        "type": "checkbox",
+        "disabled": _vm.updating
+      },
+      domProps: {
+        "value": type,
+        "checked": Array.isArray(_vm.types) ? _vm._i(_vm.types, type) > -1 : (_vm.types)
+      },
+      on: {
+        "__c": function($event) {
+          var $$a = _vm.types,
+            $$el = $event.target,
+            $$c = $$el.checked ? (true) : (false);
+          if (Array.isArray($$a)) {
+            var $$v = type,
+              $$i = _vm._i($$a, $$v);
+            if ($$c) {
+              $$i < 0 && (_vm.types = $$a.concat($$v))
+            } else {
+              $$i > -1 && (_vm.types = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+            }
+          } else {
+            _vm.types = $$c
+          }
+        }
+      }
+    }), _vm._v(" " + _vm._s(name) + "\n            ")])])
+  })), _vm._v(" "), _c('span', {
+    staticClass: "col-sm-4 help-block"
+  }, [_vm._v("选择不同场景下开启的支付方式，选择后对应场景则无此支付功能。")])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('div', {
+    staticClass: "col-sm-offset-2 col-sm-4"
+  }, [_c('div', {
+    staticClass: "col-sm-offset-2 col-sm-10"
+  }, [(_vm.updating) ? _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button",
+      "disabled": "disabled"
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-refresh component-loadding-icon"
+  })]) : _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.updateType
+    }
+  }, [_vm._v("提交")])])])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.alert.status),
+      expression: "alert.status"
+    }],
+    class: ['alert', ("alert-" + (_vm.alert.type))],
+    staticStyle: {
+      "margin-top": "16px"
+    },
+    attrs: {
+      "role": "alert"
+    }
+  }, [_vm._v("\n        " + _vm._s(_vm.alert.message) + "\n      ")])], 1) : _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "alert alert-danger",
+    attrs: {
+      "role": "alert"
+    }
+  }, [_vm._v(_vm._s(_vm.load.message))]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.requestTypes
+    }
+  }, [_vm._v("重试")])])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-297b5a42", module.exports)
+  }
+}
+
+/***/ }),
+/* 139 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
     staticClass: "component-container container-fluid form-horizontal"
   }, [_c('div', {
     staticClass: "form-group"
@@ -8632,7 +9051,7 @@ if (false) {
 }
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -8844,7 +9263,7 @@ if (false) {
 }
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -9020,7 +9439,7 @@ if (false) {
 }
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -9103,7 +9522,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "dropdown-menu"
   }, [_c('router-link', {
     attrs: {
-      "to": "/wallet/pay/apple",
+      "to": "/wallet/pay/type",
       "tag": "li",
       "active-class": "active"
     }
@@ -9111,7 +9530,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "href": "#"
     }
-  }, [_vm._v("Apple Pay")])]), _vm._v(" "), _c('router-link', {
+  }, [_vm._v("支付选项")])]), _vm._v(" "), _c('router-link', {
     attrs: {
       "to": "/wallet/pay/pingpp",
       "tag": "li",
@@ -9158,7 +9577,7 @@ if (false) {
 }
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -9206,7 +9625,7 @@ if (false) {
 }
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -9567,7 +9986,6 @@ if (false) {
 }
 
 /***/ }),
-/* 144 */,
 /* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9748,8 +10166,7 @@ if (false) {
 }
 
 /***/ }),
-/* 147 */,
-/* 148 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -9841,7 +10258,7 @@ if (false) {
 }
 
 /***/ }),
-/* 149 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -9953,7 +10370,7 @@ if (false) {
 }
 
 /***/ }),
-/* 150 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -9991,7 +10408,7 @@ if (false) {
 }
 
 /***/ }),
-/* 151 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -10174,7 +10591,7 @@ if (false) {
 }
 
 /***/ }),
-/* 152 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -10540,22 +10957,7 @@ if (false) {
 }
 
 /***/ }),
-/* 153 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_vm._v("Apple Pay 设置")])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-6bad4fcc", module.exports)
-  }
-}
-
-/***/ }),
-/* 154 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -10814,7 +11216,7 @@ if (false) {
 }
 
 /***/ }),
-/* 155 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -11013,7 +11415,7 @@ if (false) {
 }
 
 /***/ }),
-/* 156 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -11246,7 +11648,7 @@ if (false) {
 }
 
 /***/ }),
-/* 157 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -11261,7 +11663,7 @@ if (false) {
 }
 
 /***/ }),
-/* 158 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -11281,7 +11683,7 @@ if (false) {
 }
 
 /***/ }),
-/* 159 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -11429,7 +11831,7 @@ if (false) {
 }
 
 /***/ }),
-/* 160 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -11468,7 +11870,7 @@ if (false) {
 }
 
 /***/ }),
-/* 161 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -11577,7 +11979,7 @@ if (false) {
 }
 
 /***/ }),
-/* 162 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -11754,7 +12156,7 @@ if (false) {
 }
 
 /***/ }),
-/* 163 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -11804,7 +12206,7 @@ if (false) {
 }
 
 /***/ }),
-/* 164 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -11863,7 +12265,7 @@ if (false) {
 }
 
 /***/ }),
-/* 165 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -11931,7 +12333,7 @@ if (false) {
 }
 
 /***/ }),
-/* 166 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -12165,7 +12567,7 @@ if (false) {
 }
 
 /***/ }),
-/* 167 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -12281,7 +12683,7 @@ if (false) {
 }
 
 /***/ }),
-/* 168 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -12411,76 +12813,7 @@ if (false) {
 }
 
 /***/ }),
-/* 169 */,
-/* 170 */,
-/* 171 */,
-/* 172 */,
-/* 173 */,
-/* 174 */,
-/* 175 */,
-/* 176 */,
-/* 177 */,
-/* 178 */,
-/* 179 */,
-/* 180 */,
-/* 181 */,
-/* 182 */,
-/* 183 */,
-/* 184 */,
-/* 185 */,
-/* 186 */,
-/* 187 */,
-/* 188 */,
-/* 189 */,
-/* 190 */,
-/* 191 */,
-/* 192 */,
-/* 193 */,
-/* 194 */,
-/* 195 */,
-/* 196 */,
-/* 197 */,
-/* 198 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var Component = __webpack_require__(0)(
-  /* script */
-  __webpack_require__(200),
-  /* template */
-  __webpack_require__(199),
-  /* styles */
-  null,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/usr/local/var/www/thinksns-plus/resources/assets/admin/component/wallet/PingPlusPlus.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] PingPlusPlus.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-f17a7078", Component.options)
-  } else {
-    hotAPI.reload("data-v-f17a7078", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 199 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -12639,7 +12972,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.updateConfig
     }
-  }, [_vm._v("添加用户")])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("提交")])])]), _vm._v(" "), _c('div', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -12679,7 +13012,36 @@ if (false) {
 }
 
 /***/ }),
-/* 200 */
+/* 168 */,
+/* 169 */,
+/* 170 */,
+/* 171 */,
+/* 172 */,
+/* 173 */,
+/* 174 */,
+/* 175 */,
+/* 176 */,
+/* 177 */,
+/* 178 */,
+/* 179 */,
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */,
+/* 184 */,
+/* 185 */,
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12690,33 +13052,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }(); //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -12792,49 +13127,63 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 exports.default = {
   data: function data() {
     return {
-      appId: null,
-      secretKey: null,
-      publicKey: null,
-      privateKey: null,
       load: {
         status: 0,
         message: ''
       },
+      support: {},
+      types: [],
+      updating: false,
       alert: {
         status: false,
         type: 'info',
         message: '',
         interval: null
-      },
-      updating: false
+      }
     };
   },
   methods: {
     /**
-     * Request Ping++ config.
+     * Send alert message tip.
+     *
+     * @param {String} type
+     * @param {String} message
+     * @return {void}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    sendAlert: function sendAlert(type, message) {
+      var _this = this;
+
+      window.clearInterval(this.alert.interval);
+      this.alert = { type: type, message: message, status: true, interval: window.setInterval(function () {
+          window.clearInterval(_this.alert.interval);
+          _this.alert.status = false;
+        }, 2000) };
+    },
+
+
+    /**
+     * Request support types.
      *
      * @return {void}
      * @author Seven Du <shiweidu@outlook.com>
      */
-    requestConfig: function requestConfig() {
-      var _this = this;
+    requestTypes: function requestTypes() {
+      var _this2 = this;
 
       this.load.status = 0;
-      _request2.default.get((0, _request.createRequestURI)('wallet/pingpp'), { validateStatus: function validateStatus(status) {
+      _request2.default.get((0, _request.createRequestURI)('wallet/recharge/types'), { validateStatus: function validateStatus(status) {
           return status === 200;
         } }).then(function (_ref) {
-        var _ref$data = _ref.data;
-        _ref$data = _ref$data === undefined ? {} : _ref$data;
-        var appId = _ref$data.app_id,
-            secretKey = _ref$data.secret_key,
-            publicKey = _ref$data.public_key,
-            privateKey = _ref$data.private_key;
+        var _ref$data = _ref.data,
+            _ref$data$support = _ref$data.support,
+            support = _ref$data$support === undefined ? {} : _ref$data$support,
+            _ref$data$types = _ref$data.types,
+            types = _ref$data$types === undefined ? [] : _ref$data$types;
 
-        _this.load.status = 1;
-        _this.appId = appId;
-        _this.secretKey = secretKey;
-        _this.publicKey = publicKey;
-        _this.privateKey = privateKey;
+        _this2.load.status = 1;
+        _this2.support = support;
+        _this2.types = types;
       }).catch(function () {
         var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
             _ref2$response = _ref2.response;
@@ -12846,9 +13195,10 @@ exports.default = {
         _ref2$response$data$m = _ref2$response$data$m === undefined ? [] : _ref2$response$data$m;
 
         var _ref2$response$data$m2 = _slicedToArray(_ref2$response$data$m, 1),
-            message = _ref2$response$data$m2[0];
+            _ref2$response$data$m3 = _ref2$response$data$m2[0],
+            message = _ref2$response$data$m3 === undefined ? '加载失败，请刷新页面重试' : _ref2$response$data$m3;
 
-        _this.load = {
+        _this2.load = {
           status: 2,
           message: message
         };
@@ -12857,16 +13207,16 @@ exports.default = {
 
 
     /**
-     * Update Ping++ config.
+     * Update support types.
      *
      * @return {void}
      * @author Seven Du <shiweidu@outlook.com>
      */
-    updateConfig: function updateConfig() {
-      var _this2 = this;
+    updateType: function updateType() {
+      var _this3 = this;
 
       this.updating = true;
-      _request2.default.patch((0, _request.createRequestURI)('wallet/pingpp'), { app_id: this.appId, secret_key: this.secretKey, public_key: this.publicKey, private_key: this.privateKey }, { validateStatus: function validateStatus(status) {
+      _request2.default.patch((0, _request.createRequestURI)('wallet/recharge/types'), { types: this.types }, { validateStatus: function validateStatus(status) {
           return status === 201;
         } }).then(function (_ref3) {
         var _ref3$data$message = _ref3.data.message;
@@ -12876,8 +13226,8 @@ exports.default = {
             _ref3$data$message2$ = _ref3$data$message2[0],
             message = _ref3$data$message2$ === undefined ? '更新成功' : _ref3$data$message2$;
 
-        _this2.updating = false;
-        _this2.sendAlert('success', message);
+        _this3.updating = false;
+        _this3.sendAlert('success', message);
       }).catch(function () {
         var _ref4 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
             _ref4$response = _ref4.response;
@@ -12885,45 +13235,21 @@ exports.default = {
         _ref4$response = _ref4$response === undefined ? {} : _ref4$response;
         var _ref4$response$data = _ref4$response.data;
         _ref4$response$data = _ref4$response$data === undefined ? {} : _ref4$response$data;
-        var _ref4$response$data$a = _ref4$response$data.app_id,
-            appIdMessage = _ref4$response$data$a === undefined ? [] : _ref4$response$data$a,
-            _ref4$response$data$s = _ref4$response$data.secret_key,
-            secretKeyMessage = _ref4$response$data$s === undefined ? [] : _ref4$response$data$s,
-            _ref4$response$data$p = _ref4$response$data.public_key,
-            publicKeyMessage = _ref4$response$data$p === undefined ? [] : _ref4$response$data$p,
-            _ref4$response$data$p2 = _ref4$response$data.private_key,
-            privateKeyMessage = _ref4$response$data$p2 === undefined ? [] : _ref4$response$data$p2,
+        var _ref4$response$data$t = _ref4$response$data.types,
+            typeMessage = _ref4$response$data$t === undefined ? [] : _ref4$response$data$t,
             _ref4$response$data$m = _ref4$response$data.message,
             anyMessage = _ref4$response$data$m === undefined ? [] : _ref4$response$data$m;
 
-        var _ref5 = [].concat(_toConsumableArray(appIdMessage), _toConsumableArray(secretKeyMessage), _toConsumableArray(publicKeyMessage), _toConsumableArray(privateKeyMessage), _toConsumableArray(anyMessage)),
+        var _ref5 = [].concat(_toConsumableArray(typeMessage), [anyMessage]),
             _ref5$ = _ref5[0],
-            message = _ref5$ === undefined ? '提交失败，请刷新重试！' : _ref5$;
+            message = _ref5$ === undefined ? '提交失败，请刷新网页重试' : _ref5$;
 
-        _this2.updating = false;
-        _this2.sendAlert('danger', message);
+        _this3.updating = false;
+        _this3.sendAlert('danger', message);
       });
-    },
-
-
-    /**
-     * Send alert message tip.
-     *
-     * @param {String} type
-     * @param {String} message
-     * @return {void}
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    sendAlert: function sendAlert(type, message) {
-      var _this3 = this;
-
-      window.clearInterval(this.alert.interval);
-      this.alert = { type: type, message: message, status: true, interval: window.setInterval(function () {
-          window.clearInterval(_this3.alert.interval);
-          _this3.alert.status = false;
-        }, 1500) };
     }
   },
+
   /**
    * The page created.
    *
@@ -12931,10 +13257,10 @@ exports.default = {
    * @author Seven Du <shiweidu@outlook.com>
    */
   created: function created() {
-    this.requestConfig();
+    this.requestTypes();
   }
 };
 
 /***/ })
-],[80]);
+],[81]);
 //# sourceMappingURL=admin.js.map
