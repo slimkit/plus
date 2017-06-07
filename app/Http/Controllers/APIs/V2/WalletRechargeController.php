@@ -63,7 +63,7 @@ class WalletRechargeController extends Controller
     {
         $model = $this->createChargeModel($request, 'applepay_upacp');
         $charge = $this->createCharge($model);
-        
+
         $model->charge_id = $charge['id'];
         $model->transaction_no = array_get($charge, 'credential.applepay_upacp.tn');
         $model->saveOrFail();
@@ -72,7 +72,7 @@ class WalletRechargeController extends Controller
             ->json(['id' => $model->id, 'charge' => $charge])
             ->setStatusCode(201);
     }
-    
+
     /**
      * Create a APP rechrage by Alipay.
      *
@@ -93,7 +93,7 @@ class WalletRechargeController extends Controller
             ->json(['id' => $model->id, 'charge' => $charge])
             ->setStatusCode(201);
     }
-    
+
     /**
      * Create a recharge charge.
      *
