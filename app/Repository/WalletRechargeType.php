@@ -38,7 +38,7 @@ class WalletRechargeType
         }
 
         $model = CommonConfig::firstOrCreate(
-            ['name' => 'recharge-type', 'namespace' => 'wallet'],
+            ['name' => 'wallet:recharge-type', 'namespace' => 'common'],
             ['value' => '[]']
         );
 
@@ -57,7 +57,7 @@ class WalletRechargeType
     public function store(array $types)
     {
         CommonConfig::updateOrCreate(
-            ['name' => 'recharge-type', 'namespace' => 'wallet'],
+            ['name' => 'wallet:recharge-type', 'namespace' => 'common'],
             ['value' => json_encode($types)]
         );
 
