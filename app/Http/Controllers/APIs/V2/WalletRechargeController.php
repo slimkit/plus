@@ -7,6 +7,7 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Http\Requests\API2\StoreWalletRecharge;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\Plus\Services\Wallet\Charge as WalletChargeService;
+use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 class WalletRechargeController extends Controller
@@ -52,25 +53,69 @@ class WalletRechargeController extends Controller
     }
 
     /**
-     * Create a APP recharge by alipay.
+     *  Create Apple Pay recharge charge.
      *
      * @param \Illuminate\Http\Request $request
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function alipayStore(Request $request)
+    public function applepayUpacpStore(Request $request, ContractResponse $response)
     {
-        return $this->createCharge($request, 'alipay');
-    }
+        $model = $this->createChargeModel($request, 'applepay_upacp');
+        $charge = $this->createCharge($model);
+        
+        $model->charge_id = $charge['id'];
+        $model->transaction_no = array_get($charge, 'credential.applepay_upacp.tn');
+        $model->saveOrFail();
 
+        return $response
+            ->json(['id' => $model->id, 'charge' => $charge])
+            ->setStatusCode(201);
+    }
+    
     /**
-     * Create a recharge charge.
+     * Create a APP rechrage by Alipay.
      *
-     * @param Request $request
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function createCharge(Request $request, string $channel, array $extra = [])
+    public function alipayStore(Request $request, ContractResponse $response)
+    {
+        $model = $this->createChargeModel($request, 'alipay');
+        $charge = $this->createCharge($model);
+
+        $model->charge_id = $charge['id'];
+        $model->saveOrFail();
+
+        return $response
+            ->json(['id' => $model->id, 'charge' => $charge])
+            ->setStatusCode(201);
+    }
+    
+    /**
+     * Create a recharge charge.
+     *
+     * @param \Zhiyi\Plus\Models\WalletCharge $charge
+     * @param array $extra
+     * @return array
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function createCharge(WalletChargeModel $charge, array $extra = [])
+    {
+        return $this->chargeService->create($charge, $extra);
+    }
+
+    /**
+     * Create a charge model.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string $channel
+     * @return \Zhiyi\Plus\Models\WalletCharge
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function createChargeModel(Request $request, string $channel): WalletChargeModel
     {
         $charge = new WalletChargeModel();
         $charge->user_id = $request->user()->id;
@@ -81,13 +126,6 @@ class WalletRechargeController extends Controller
         $charge->body = '账户余额充值';
         $charge->status = 0; // 待操作状态
 
-        $pingppCharge = $this->chargeService->create($charge, $extra);
-
-        $charge->charge_id = $pingppCharge['id'];
-        $charge->saveOrFail();
-
-        return response()
-            ->json(['id' => $charge->id, 'charge' => $pingppCharge])
-            ->setStatusCode(201);
+        return $charge;
     }
 }
