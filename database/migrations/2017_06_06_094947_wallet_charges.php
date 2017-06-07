@@ -15,8 +15,7 @@ class WalletCharges extends Migration
     {
         Schema::create('wallet_charges', function (Blueprint $table) {
             $table
-                ->increments('id')
-                ->comment('记录ID');
+                ->increments('id');
 
             $table
                 ->integer('user_id')
@@ -26,8 +25,20 @@ class WalletCharges extends Migration
                 ->comment('关联用户，可不存在，例如直接支付方式等。存在便于按照用户检索。');
 
             $table
-                ->string('type', 50)
-                ->comment('支付平台');
+                ->string('type', 100)
+                ->comment('记录类型，user - 表示用户，alipay - 表示支付宝, wechat - 表示微信, apple - 表示苹果支付');
+
+            $table
+                ->string('channel')
+                ->nullable()
+                ->default(null)
+                ->comment('支付频道，参考 Ping++');
+
+            $table
+                ->string('account')
+                ->nullable()
+                ->default(null)
+                ->comment('交易账户，减项为目标账户，增项为来源账户，当 type 为 user 时，此处是用户ID');
 
             $table
                 ->string('charge_id', 255)
@@ -36,8 +47,9 @@ class WalletCharges extends Migration
                 ->comment('凭据id, 来自 Ping ++ ');
 
             $table
-                ->string('channel')
-                ->comment('支付频道，参考 Ping++');
+                ->tinyInteger('action')
+                ->unsigned()
+                ->comment('类型：1 - 增加，0 - 减少');
 
             $table
                 ->integer('amount')
@@ -67,6 +79,13 @@ class WalletCharges extends Migration
                 ->comment('平台记录ID');
 
             $table
+                ->tinyInteger('status')
+                ->unsigned()
+                ->nullable()
+                ->default(0)
+                ->comment('状态：0 - 等待, 1 - 成功, 2 - 失败');
+
+            $table
                 ->json('extra')
                 ->nullable()
                 ->default(null)
@@ -75,8 +94,20 @@ class WalletCharges extends Migration
             $table->timestamps();
             $table->softDeletes(); // 软删除
 
+            // 外健约束
+            $table
+                ->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
             $table->index('user_id');
             $table->index('charge_id');
+            $table->index('account');
+            $table->index('status');
+            $table->index('type');
+            $table->index('action');
             $table->index('transaction_no');
         });
     }
