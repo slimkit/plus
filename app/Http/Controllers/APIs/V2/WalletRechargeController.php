@@ -53,27 +53,6 @@ class WalletRechargeController extends Controller
     }
 
     /**
-     *  Create Apple Pay recharge charge.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function applepayUpacpStore(Request $request, ContractResponse $response)
-    {
-        $model = $this->createChargeModel($request, 'applepay_upacp');
-        $charge = $this->createCharge($model);
-
-        $model->charge_id = $charge['id'];
-        $model->transaction_no = array_get($charge, 'credential.applepay_upacp.tn');
-        $model->saveOrFail();
-
-        return $response
-            ->json(['id' => $model->id, 'charge' => $charge])
-            ->setStatusCode(201);
-    }
-
-    /**
      * Create a APP rechrage by Alipay.
      *
      * @param \Illuminate\Http\Request $request
@@ -87,6 +66,27 @@ class WalletRechargeController extends Controller
         $charge = $this->createCharge($model);
 
         $model->charge_id = $charge['id'];
+        $model->saveOrFail();
+
+        return $response
+            ->json(['id' => $model->id, 'charge' => $charge])
+            ->setStatusCode(201);
+    }
+
+    /**
+     *  Create Apple Pay recharge charge.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function applepayUpacpStore(Request $request, ContractResponse $response)
+    {
+        $model = $this->createChargeModel($request, 'applepay_upacp');
+        $charge = $this->createCharge($model);
+
+        $model->charge_id = $charge['id'];
+        $model->transaction_no = array_get($charge, 'credential.applepay_upacp.tn');
         $model->saveOrFail();
 
         return $response
