@@ -60,7 +60,7 @@ class WalletPingPlusPlus
     public function store(array $config)
     {
         CommonConfig::updateOrCreate(
-            ['name' => 'cash', 'namespace' => 'wallet'],
+            ['name' => 'ping++', 'namespace' => 'wallet'],
             ['value' => json_encode($config = $this->resolveConfig($config))]
         );
 
