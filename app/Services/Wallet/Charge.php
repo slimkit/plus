@@ -1,6 +1,6 @@
 <?php
 
-namespace Zhiyi\Plus\Service\Wallet;
+namespace Zhiyi\Plus\Services\Wallet;
 
 use Pingpp\Pingpp as PingppInit;
 use Pingpp\Charge as PingppCharge;
@@ -59,14 +59,14 @@ class Charge
      * @return array
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function create(WalletChargeModel $charge, array $extra = []): array
+    public function create(WalletChargeModel $charge, array $extra = [])
     {
         if (! $charge->id) {
             $charge->save();
         }
 
         // Request Ping++
-        $pingppCharge = PingppCharge::create([
+        return PingppCharge::create([
             'order_no' => $this->formatChargeId($charge->id),
             'amount' => $charge->amount,
             'app' => ['id' => $this->appId],
@@ -77,11 +77,6 @@ class Charge
             'body' => $charge->body,
             'extra' => $extra,
         ]);
-
-        $charge->charge_id = $pingppCharge['id'];
-        $charge->transaction_no = $pingppCharge['transaction_no'];
-
-        return $pingppCharge->__toArray();
     }
 
     /**
