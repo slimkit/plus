@@ -16,6 +16,7 @@ class User extends Authenticatable
         SoftDeletes, // 软删除
         UserWallet, // 用户钱包
         Concerns\UserWalletCash, // 钱包提现
+        Concerns\UserWalletCharge, // 钱包凭据
         UserFollw; // 用户关注
     use UserRolePerms {
         SoftDeletes::restore insteadof UserRolePerms;
