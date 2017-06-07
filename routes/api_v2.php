@@ -42,4 +42,7 @@ Route::prefix('wallet')
     Route::post('/cashes', 'WalletCashController@store');
     // 获取提现记录
     Route::get('/cashes', 'WalletCashController@show');
+
+    // 充值
+    Route::post('/recharge', 'WalletRechargeController@store');
 });
