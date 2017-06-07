@@ -32,7 +32,16 @@ Bdoy
         }
         // ...
     ],
-    "wallet:ratio": 200 // 转换显示余额的比例，百分比。（200 就表示 200%）
+    "wallet:ratio": 200, // 转换显示余额的比例，百分比。（200 就表示 200%）
+    "wallet:recharge-type": [ // 此配置支持全平台的支付方式，不同平台更具自身平台对应值判断是非支持该支付方式。
+        "alipay", // "支付宝 APP 支付",
+        "alipay_wap", // "支付宝手机网页支付",
+        "alipay_pc_direct", // "支付宝电脑网站支付",
+        "alipay_qr", // "支付宝扫码支付",
+        "wx", // "微信 APP 支付",
+        "wx_wap", // "微信 WAP 支付",
+        "applepay_upacp" // "Apple Pay"
+    ],
     "ad":[
         {
             "id":1,
