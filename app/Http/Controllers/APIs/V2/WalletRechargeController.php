@@ -7,7 +7,6 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Http\Requests\API2\StoreWalletRecharge;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\Plus\Services\Wallet\Charge as WalletChargeService;
-use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 class WalletRechargeController extends Controller
