@@ -47,51 +47,39 @@ class WalletRechargeController extends Controller
      */
     public function store(StoreWalletRecharge $request)
     {
-        $method = camel_case($request->input('type').'_store');
+        // 设置共享实例，一面多个地方重复调用验证
+        $this->app->singleton(StoreWalletRecharge::class, function () use ($request) {
+            return $request;
+        });
 
-        return $this->app->call([$this, $method]);
+        $type = $request->input('type');
+        $controllers = [
+            WalletRechargeApplePayController::class => ['applepay_upacp'],
+            WalletRechargeAlipayController::class => ['alipay', 'alipay_wap', 'alipay_pc_direct', 'alipay_qr'],
+            WalletRechargeWeChatController::class => ['wx', 'wx_wap'],
+        ];
+
+        foreach ($controllers as $controller => $keys) {
+            if (! in_array($type, $keys)) {
+                continue;
+            }
+
+            return $this->app->call([$this->app->make($controller), 'create']);
+        }
+
+        $this->app->abort(406, '请求动作不存在或者非法');
     }
 
     /**
-     * Create a APP rechrage by Alipay.
+     * Resolve store method.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param string $type
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function alipayStore(Request $request, ContractResponse $response)
+    protected function resolveStore(string $type)
     {
-        $model = $this->createChargeModel($request, 'alipay');
-        $charge = $this->createCharge($model);
-
-        $model->charge_id = $charge['id'];
-        $model->saveOrFail();
-
-        return $response
-            ->json(['id' => $model->id, 'charge' => $charge])
-            ->setStatusCode(201);
-    }
-
-    /**
-     *  Create Apple Pay recharge charge.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function applepayUpacpStore(Request $request, ContractResponse $response)
-    {
-        $model = $this->createChargeModel($request, 'applepay_upacp');
-        $charge = $this->createCharge($model);
-
-        $model->charge_id = $charge['id'];
-        $model->transaction_no = array_get($charge, 'credential.applepay_upacp.tn');
-        $model->saveOrFail();
-
-        return $response
-            ->json(['id' => $model->id, 'charge' => $charge])
-            ->setStatusCode(201);
+        return $this->app->call([$this, camel_case($type.'_store')]);
     }
 
     /**
