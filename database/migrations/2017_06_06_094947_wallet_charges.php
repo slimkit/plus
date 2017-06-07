@@ -25,14 +25,8 @@ class WalletCharges extends Migration
                 ->comment('关联用户，可不存在，例如直接支付方式等。存在便于按照用户检索。');
 
             $table
-                ->string('type', 100)
-                ->comment('记录类型，user - 表示用户，alipay - 表示支付宝, wechat - 表示微信, apple - 表示苹果支付');
-
-            $table
                 ->string('channel')
-                ->nullable()
-                ->default(null)
-                ->comment('支付频道，参考 Ping++');
+                ->comment('支付频道，参考 Ping++，增加 user 选项，表示站内用户凭据');
 
             $table
                 ->string('account')
@@ -96,9 +90,9 @@ class WalletCharges extends Migration
 
             $table->index('user_id');
             $table->index('charge_id');
+            $table->index('channel');
             $table->index('account');
             $table->index('status');
-            $table->index('type');
             $table->index('action');
             $table->index('transaction_no');
         });
