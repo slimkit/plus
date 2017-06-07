@@ -12,7 +12,7 @@ import Cash from '../component/wallet/Cash';
 import CashSetting from '../component/wallet/CashSetting';
 import PayOption from '../component/wallet/PayOption';
 import PayRule from '../component/wallet/PayRule';
-import ApplePay from '../component/wallet/ApplePay';
+import RechargeType from '../component/wallet/RechargeType';
 import PingPlusPlus from '../component/wallet/PingPlusPlus';
 import PayRatio from '../component/wallet/PayRatio';
 
@@ -27,7 +27,7 @@ const walletRouter = {
     { path: 'pay/option', component: PayOption },
     { path: 'pay/rule', component: PayRule },
     { path: 'pay/ratio', component: PayRatio },
-    { path: 'pay/apple', component: ApplePay },
+    { path: 'pay/type', component: RechargeType },
     { path: 'pay/pingpp', component: PingPlusPlus }
   ]
 };

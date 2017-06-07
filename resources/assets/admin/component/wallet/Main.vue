@@ -38,8 +38,8 @@
           支付设置 <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
-          <router-link to="/wallet/pay/apple" tag="li" active-class="active">
-            <a href="#">Apple Pay</a>
+          <router-link to="/wallet/pay/type" tag="li" active-class="active">
+            <a href="#">支付选项</a>
           </router-link>
           <router-link to="/wallet/pay/pingpp" tag="li" active-class="active">
             <a href="#">Ping++</a>
