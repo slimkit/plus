@@ -5,7 +5,7 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\WalletCash;
 use Illuminate\Support\Facades\DB;
-use Zhiyi\Plus\Models\WalletRecord;
+use Zhiyi\Plus\Models\WalletCharge;
 use Zhiyi\Plus\Repository\WalletRatio;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
@@ -78,18 +78,19 @@ class WalletCashController extends Controller
         $cash->status = 1;
         $cash->remark = $remark;
 
-        // Record
-        $record = new WalletRecord();
-        $record->value = $cash->value;
-        $record->type = $cash->type;
-        $record->action = 0; // 提现只有减项。
-        $record->title = '账户提现';
-        $record->content = $remark;
-        $record->status = 1;
-        $record->account = $cash->account;
+        // Charge
+        $charge = new WalletCharge();
+        $charge->amount = $cash->value;
+        $charge->channel = $cash->type;
+        $charge->action = 0;
+        $charge->subject = '账户提现';
+        $charge->body = $remark;
+        $charge->account = $cash->account;
+        $charge->status = 1;
+        $charge->user_id = $user->id;
 
-        DB::transaction(function () use ($user, $cash, $record) {
-            $user->walletRecords()->save($record);
+        DB::transaction(function () use ($cash, $charge) {
+            $charge->save();
             $cash->save();
         });
 
@@ -120,19 +121,20 @@ class WalletCashController extends Controller
         $cash->status = 2;
         $cash->remark = $remark;
 
-        // Record
-        $record = new WalletRecord();
-        $record->value = $cash->value;
-        $record->type = $cash->type;
-        $record->action = 1; // 提现拒绝只有增项。
-        $record->title = '账户提现 - 驳回';
-        $record->content = $remark;
-        $record->status = 1;
-        $record->account = $cash->account;
+        // Charge
+        $charge = new WalletCharge();
+        $charge->amount = $cash->value;
+        $charge->channel = $cash->type;
+        $charge->action = 1;
+        $charge->subject = '账户提现';
+        $charge->body = $remark;
+        $charge->account = $cash->account;
+        $charge->status = 1;
+        $charge->user_id = $user->id;
 
-        DB::transaction(function () use ($user, $cash, $record) {
+        DB::transaction(function () use ($user, $cash, $charge) {
             $user->wallet()->increment('balance', $cash->value);
-            $user->walletRecords()->save($record);
+            $charge->save();
             $cash->save();
         });
 
