@@ -79,7 +79,7 @@ class WalletRechargeTypeController extends Controller
     protected function rules(): array
     {
         return [
-            'types' => 'in:'.implode(',', array_keys($this->getSupportTypes())),
+            'types' => 'array|in:'.implode(',', array_keys($this->getSupportTypes())),
         ];
     }
 
@@ -92,6 +92,7 @@ class WalletRechargeTypeController extends Controller
     protected function validateErrorMessages(): array
     {
         return [
+            'types.array' => '发送类型错误',
             'types.in' => '选择类型存在非法选择，目前仅支持：'.implode('、', array_values($this->getSupportTypes())),
         ];
     }
