@@ -12,7 +12,7 @@ POST /wallet/recharge
 |----|:----:|:----:|:----:|
 | type | 是 | string | 充值方式 （见「启动信息接口」或者「钱包信息」） |
 | amount | 是 | int | 用户充值金额，单位为真实货币「分」单位 |
-| extra | 否 | object|array | 拓展信息字段，见 [支付渠道-extra-参数说明](https://www.pingxx.com/api?language=PHP#支付渠道-extra-参数说明) |
+| extra | 否 | object,array | 拓展信息字段，见 [支付渠道-extra-参数说明](https://www.pingxx.com/api?language=PHP#支付渠道-extra-参数说明) |
 
 ```json5
 {
