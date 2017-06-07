@@ -37,6 +37,10 @@ Route::middleware('auth:web')->group(function () {
         //  Ping++
         Route::get('/pingpp', 'WalletPingPlusPlusController@show');
         Route::patch('/pingpp', 'WalletPingPlusPlusController@update');
+
+        // 支付选项
+        Route::get('/recharge/types', 'WalletRechargeTypeController@show');
+        Route::patch('/recharge/types', 'WalletRechargeTypeController@update');
     });
 
     // SMS 相关
