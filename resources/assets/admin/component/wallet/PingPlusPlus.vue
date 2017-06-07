@@ -68,7 +68,7 @@
             <button v-if="updating" type="button" class="btn btn-primary" disabled="disabled">
               <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
             </button>
-            <button v-else type="button" class="btn btn-primary" @click="updateConfig">添加用户</button>
+            <button v-else type="button" class="btn btn-primary" @click="updateConfig">提交</button>
           </div>
         </div>
 
