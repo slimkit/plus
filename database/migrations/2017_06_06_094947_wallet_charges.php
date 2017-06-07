@@ -68,8 +68,6 @@ class WalletCharges extends Migration
 
             $table
                 ->text('body')
-                ->nullable()
-                ->default(null)
                 ->comment('订单详情');
 
             $table
@@ -84,12 +82,6 @@ class WalletCharges extends Migration
                 ->nullable()
                 ->default(0)
                 ->comment('状态：0 - 等待, 1 - 成功, 2 - 失败');
-
-            $table
-                ->json('extra')
-                ->nullable()
-                ->default(null)
-                ->comment('拓展字段');
 
             $table->timestamps();
             $table->softDeletes(); // 软删除
