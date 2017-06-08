@@ -27,16 +27,16 @@ Status: 200 OK
   "user_id": 1, // 凭据对应用户（不一定有，该凭据对应的用户，客户端几乎用不到的。）
   "channel": "alipay", // 支付频道
   "account": "alipay_account", // 账户，如果是系统内购买，例如购买一张图片，会和频道对应，然后给出不同的值，例如支付宝给出的是支付宝账号。微信给出的是 open_id、银联给出的是银行卡号。channel 还有我们系统内置类型，例如 user 可能对应的就是用户ID（例如转账）
-  "charge_id": "ch_vvP4u1H0evPGqn9qn5mPCGS4",
-  "action": 1,
-  "amount": 100,
-  "currency": "cny",
-  "subject": "余额充值",
-  "body": "账户余额充值",
-  "transaction_no": "2017060879918233",
-  "status": 1,
-  "created_at": "2017-06-07 06:32:28",
-  "updated_at": "2017-06-08 06:46:23",
+  "charge_id": "ch_vvP4u1H0evPGqn9qn5mPCGS4", // Ping++ 凭据ID
+  "action": 1, // 动作， 1 增加、2 减少
+  "amount": 100, //  操作金额（真实货币分单位）
+  "currency": "cny", // 操作货币单位,目前只有 cny 
+  "subject": "余额充值", // 订单标题
+  "body": "账户余额充值", // 订单描述
+  "transaction_no": "2017060879918233", // 第三发平台凭据ID 例如支付宝订单号
+  "status": 1, // 状态，0 - 未支付（等待）、1 - 成功、2 - 失败
+  "created_at": "2017-06-07 06:32:28", // 订餐创建时间
+  "updated_at": "2017-06-08 06:46:23", // 订单更新时间
   "deleted_at": null
 }
 ```
