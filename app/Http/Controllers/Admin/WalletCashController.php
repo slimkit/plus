@@ -125,11 +125,11 @@ class WalletCashController extends Controller
         $charge = new WalletCharge();
         $charge->amount = $cash->value;
         $charge->channel = $cash->type;
-        $charge->action = 1;
+        $charge->action = 0;
         $charge->subject = '账户提现';
         $charge->body = $remark;
         $charge->account = $cash->account;
-        $charge->status = 1;
+        $charge->status = 2;
         $charge->user_id = $user->id;
 
         DB::transaction(function () use ($user, $cash, $charge) {
