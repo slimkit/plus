@@ -20,6 +20,7 @@ class WalletConfigController extends Controller
         'labels' => ['type' => 'json'],
         'cash' => ['type' => 'json'],
         'wallet:ratio' => ['type' => 'int', 'alias' => 'ratio'],
+        'wallet:recharge-type' => ['type' => 'json', 'alias' => 'recharge_type'],
     ];
 
     /**
@@ -34,7 +35,7 @@ class WalletConfigController extends Controller
      *
      * @var array
      */
-    protected $commonNames = ['wallet:ratio'];
+    protected $commonNames = ['wallet:ratio', 'wallet:recharge-type'];
 
     /**
      * Get wallet info.
@@ -63,17 +64,6 @@ class WalletConfigController extends Controller
             }, $this),
             new Collection()
         );
-
-        // 预设结构.
-        $options->offsetSet('alipay', [
-            'open' => false,
-        ]);
-        $options->offsetSet('apple', [
-            'open' => false,
-        ]);
-        $options->offsetSet('wechat', [
-            'open' => false,
-        ]);
 
         return $response
             ->json($options)
