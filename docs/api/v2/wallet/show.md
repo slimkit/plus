@@ -25,21 +25,17 @@ Status: 200 OK
     ],
     "ratio":200, // 转换比例（在启动者中也有提供哟）
     "rule":"我是积分规则纯文本.", // 充值提现规则。（以后需求中，可能是 markdown 目前是多行文本）
-    "alipay":{ // 支付宝信息
-        "open":false // 是否开启支付宝支付选项
-    },
-    "apple":{ // Apple Pay 信息 （iOS独享）
-        "open":false // 是否开启 Apple Pay 支付选项
-    },
-    "wechat":{ // 微信支付信息
-        "open":false // 是否开启微信支付选项
-    },
     // 可选提现的「提现方式」，按照现在系统预设，只有 alipay 和 wechat
     // type: array|null 如果 alipay 和 wechat 都不存在，则代表关闭提现功能
     "cash": [
         "alipay"
+    ],
+    "recharge_type": [ // 对于移动端而言，alipay wx 不存在则表示关闭了充值功能，单个不存在则表示关闭单个充值选项，iOS多一个 apple pay 选项，其他端，例如 h5 或者 pc 参考平台后缀。例如没有 alipay_wap 表示关闭 h5 的支付宝。
+        "alipay",
+        "alipay_wap",
+        "wx",
+        "wx_wap",
+        "applepay_upacp"
     ]
 }
 ```
-
-> 目前部分是预设数据，例如 alipay 后续会增加，但是结构不会改。
