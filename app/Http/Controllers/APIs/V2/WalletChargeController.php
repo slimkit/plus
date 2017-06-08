@@ -12,6 +12,35 @@ use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
 class WalletChargeController extends Controller
 {
     /**
+     *  Get charges.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function list(Request $request, ContractResponse $response)
+    {
+        $limit = intval($request->query('limit', 20));
+        $after = $request->query('after');
+        $charges = $request
+            ->user()
+            ->walletCharges()
+            ->where(function ($query) use ($after) {
+                if ($after) {
+                    $query->where('id', '<', $after);
+                }
+            })
+            ->limit($limit)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return $response
+            ->json($charges)
+            ->setStatusCode(200);
+    }
+
+    /**
      * Get a charge.
      *
      * @param \Illuminate\Http\Request $request
