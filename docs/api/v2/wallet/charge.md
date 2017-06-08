@@ -71,7 +71,7 @@ GET /wallet/charges
 ##### Header
 
 ```
-GET /wallet/charges/{charge}
+Status: 200 OK
 ```
 
 ##### Body
