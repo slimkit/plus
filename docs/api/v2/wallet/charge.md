@@ -2,7 +2,7 @@
 
 - [凭据获取](#凭据获取)
     - [凭据取回](#凭据取回)
-- 凭据列表
+- [凭据列表](#凭据列表)
 
 ## 凭据获取
 
@@ -11,6 +11,7 @@
 ```
 GET /wallet/charges/{charge}
 ```
+
 `{charge}` 为创建订单或者列表给出的凭据 ID
 
 ##### Header
@@ -55,3 +56,28 @@ GET /wallet/charges/{charge}?mode=retrieve
 
 
 ## 凭据列表
+
+```
+GET /wallet/charges
+```
+
+###### Query
+
+- limit - 获取条数
+- after - 上一次获取最后一条的id，获取该id之后的数据
+
+> 参数均为可选，更具情况选择性传递。
+
+##### Header
+
+```
+GET /wallet/charges/{charge}
+```
+
+##### Body
+
+```json5
+[
+  {...} // 单条内容参考 「凭据获取」数据
+]
+```
