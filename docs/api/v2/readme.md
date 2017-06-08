@@ -15,3 +15,4 @@ V2 版本的 APIs 是符合 REST full 的借口实现，所以在使用前请自
     - [获取钱包信息](wallet/show.md)
     - [提现申请](wallet/cashes.md)
     - [余额充值](wallet/recharge.md)
+    - [凭据](wallet/charge.md)

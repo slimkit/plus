@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\WalletCharge;
 use Zhiyi\Plus\Http\Controllers\Controller;
@@ -30,7 +31,7 @@ class WalletChargeController extends Controller
 
         // retrueve.
         } elseif ($mode === true && $charge->status === 0) {
-            $this->retrieveCharge($charge);
+            $this->retrieveCharge($charge, $request->user());
         }
 
         return $response
@@ -45,7 +46,7 @@ class WalletChargeController extends Controller
      * @return \Zhiyi\Plus\Models\WalletCharge
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function retrieveCharge(WalletCharge &$charge): WalletCharge
+    protected function retrieveCharge(WalletCharge &$charge, User $user): WalletCharge
     {
         if (! $charge->charge_id) {
             abort(422, '取回订单非支付类型凭据');
@@ -59,7 +60,15 @@ class WalletChargeController extends Controller
         $charge->transaction_no = $pingppCharge['transaction_no'];
         $charge->status = $pingppCharge['paid'] === true ? 1 : $charge->status;
         $charge->account = $this->resolveChargeAccount($pingppCharge, $charge->account);
-        $charge->saveOrFail();
+
+        $user->getConnection()->transaction(function () use ($charge, $user) {
+            if ($charge->action !== 1) {
+                return;
+            }
+
+            $user->wallet()->increment('balance', $charge->amount);
+            $charge->save();
+        });
 
         return $charge;
     }
