@@ -45,4 +45,7 @@ Route::prefix('wallet')
 
     // 充值
     Route::post('/recharge', 'WalletRechargeController@store');
+
+    //  凭据
+    Route::get('/charges/{charge}', 'WalletChargeController@show');
 });

@@ -57,6 +57,18 @@ class Charge
     }
 
     /**
+     * query a charge.
+     *
+     * @param string $charge
+     * @return array
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function query(string $charge)
+    {
+        return PingppCharge::retrieve($charge);
+    }
+
+    /**
      * Create charge.
      *
      * @param \Zhiyi\Plus\Models\WalletCharge $charge
