@@ -47,7 +47,7 @@ class AppServiceProvider extends ServiceProvider
             $single = count($single[0]) / 2;
 
             // 多子节长度.
-            $double = str_word_count(preg_replace('([a-zA-Z0-9_])', '', $value));
+            $double = mb_strlen(preg_replace('([a-zA-Z0-9_])', '', $value));
 
             $length = $single + $double;
 
