@@ -119,15 +119,30 @@ export default {
       }, {});
     }
   },
+  watch: {
+    /**
+     * The this.$route watcher.
+     *
+     * @param {Object} options.query
+     * @return {void}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    '$route': function ({ query = {} } = {}) {
+      this.requestCharge(
+        this.resolveQuery(query)
+      );
+    }, 
+  },
   methods: {
     /**
      * Resolve route query.
      *
+     * @param {Object} query
      * @return {Object}
      * @author Seven Du <shiweidu@outlook.com>
      */
-    resolveQuery() {
-      return lodash.reduce(this.$route.query, function (query, value, key) {
+    resolveQuery(query = this.$route.query) {
+      return lodash.reduce(query, function (query, value, key) {
         switch (key) {
           case 'user':
           case 'action':
@@ -149,6 +164,17 @@ export default {
 
         return query;
       }, {});
+    },
+
+    /**
+     * Request the charges.
+     *
+     * @param {Object} params
+     * @return {void}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    requestCharge(params = {}) {
+      console.log(params);
     }
   },
   /**
@@ -159,12 +185,15 @@ export default {
    * @author Seven Du <shiweidu@outlook.com>
    */
   created() {
-    const { page, ...query } = this.resolveQuery();
+    const { page = 1, ...query } = this.resolveQuery();
     this.search = {
       ...this.search,
       ...query
     };
     this.page.current = page;
+
+    // Request Charges.
+    this.requestCharge({ ...query, page });
   }
 };
 </script>
