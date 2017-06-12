@@ -47,7 +47,7 @@ class HomeController extends Controller
     }
 
     /**
-     * Admin home
+     * Admin home.
      *
      * @param \Illuminate\Http\Request $request
      * @return mixed

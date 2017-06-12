@@ -42,8 +42,8 @@ class Kernel extends HttpKernel
         ],
 
         'admin' => [
-            'role-permissions:admin:login,你没有权限访问该页面'
-        ]
+            'role-permissions:admin:login,你没有权限访问该页面',
+        ],
     ];
 
     /**
