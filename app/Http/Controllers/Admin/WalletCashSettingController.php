@@ -5,20 +5,22 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Repository\UserWalletCashType;
+use Zhiyi\Plus\Repository\WalletCashMinAmount;
 
-class WalletCashTypeController extends Controller
+class WalletCashSettingController extends Controller
 {
     /**
-     * 获取提现类型.
+     * 获取提现设置.
      *
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function show(UserWalletCashType $repository)
+    public function show(UserWalletCashType $typeRepository, WalletCashMinAmount $minAmountRepository)
     {
-        return response()
-            ->json($repository->get())
-            ->setStatusCode(200);
+        return response()->json([
+            'types' => $typeRepository->get(),
+            'min_amount' => $minAmountRepository->get(),
+        ])->setStatusCode(200);
     }
 
     /**
@@ -28,19 +30,26 @@ class WalletCashTypeController extends Controller
      * @return mexed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function update(Request $request, UserWalletCashType $repository)
+    public function update(Request $request, UserWalletCashType $typeRepository, WalletCashMinAmount $minAmountRepository)
     {
         $rules = [
             'types' => 'array|in:alipay,wechat',
+            'min_amount' => 'required|numeric|min:1',
         ];
         $messages = [
             'types.array' => '提交的数据有误，请刷新重试',
             'types.in_array' => '提交的数据不合法，请刷新重试',
+            'min_amount.required' => '请输入最低提现金额',
+            'min_amount.numeric' => '最低金额必须为数字',
+            'min_amount.min' => '最低提现金额出错',
         ];
 
         $this->validate($request, $rules, $messages);
-        $repository->store(
+        $typeRepository->store(
             $request->input('types', [])
+        );
+        $minAmountRepository->store(
+            intval($request->input('min_amount', 1))
         );
 
         return response()

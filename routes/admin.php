@@ -26,8 +26,8 @@ Route::middleware('auth:web')->group(function () {
         Route::patch('/rule', 'WalletRuleController@update');
 
         // 提现规则
-        Route::get('/cash/type', 'WalletCashTypeController@show');
-        Route::patch('/cash/type', 'WalletCashTypeController@update');
+        Route::get('/cash', 'WalletCashSettingController@show');
+        Route::patch('/cash', 'WalletCashSettingController@update');
 
         // 提现记录
         Route::get('/cashes', 'WalletCashController@show');

@@ -26,7 +26,7 @@ class WalletChargeController extends Controller
         $this->setWhere($query, $request);
 
         $query->orderBy('id', 'desc');
-        $paginate = $query->paginate(3);
+        $paginate = $query->paginate(10);
         $paginate->load('user');
         $items = $paginate->items();
 

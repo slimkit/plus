@@ -44,6 +44,15 @@
           </div>
         </div>
 
+        <!-- 最低提现金额 -->
+        <div class="form-group">
+          <label class="col-sm-2 control-label">最低提现</label>
+          <div class="col-sm-4">
+            <input type="number" class="form-control" v-model="minAmountCompute">
+          </div>
+          <span class="col-sm-6 help-block">设置最低用户提现金额，这里设置真实金额，验证的时候会自动验证转换后金额。</span>
+        </div>
+
         <!-- 提交按钮 -->
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-4">
@@ -65,7 +74,7 @@
       <!-- Loading Error. -->
       <div v-else class="panel-body">
         <div class="alert alert-danger" role="alert">{{ load.message }}</div>
-        <button type="button" class="btn btn-primary" @click="requestCashType">刷新</button>
+        <button type="button" class="btn btn-primary" @click="requestCashSetting">刷新</button>
       </div>
 
     </div>
@@ -83,12 +92,23 @@ export default {
       message: null,
     },
     cashType: [],
+    minAmount: 1,
     load: {
       status: 0,
       message: '',
     },
     update: false,
   }),
+  computed: {
+    minAmountCompute: {
+      set(minAmount) {
+        this.minAmount = minAmount * 100;
+      },
+      get() {
+        return this.minAmount / 100;
+      }
+    }
+  },
   methods: {
     /**
      * 发送提示.
@@ -118,14 +138,15 @@ export default {
      * @return {void}
      * @author Seven Du <shiweidu@outlook.com>
      */
-    requestCashType() {
+    requestCashSetting() {
       request.get(
-        createRequestURI('wallet/cash/type'),
+        createRequestURI('wallet/cash'),
         { validateStatus: status => status === 200 }
-      ).then(({ data = [] }) => {
-        this.cashType = data;
+      ).then(({ data: { types = [], min_amount: minAmount = 1 } = {} }) => {
+        this.cashType = types;
+        this.minAmount = minAmount;
         this.load.status = 1;
-      }).catch(({ response: { data: { message: [ message = '加载失败' ] = [] } = {} } = {} }) => {
+      }).catch(({ response: { data: { message: [ message = '加载失败' ] = [] } = {} } = {} } = {}) => {
         this.load = {
           message,
           status: 2
@@ -142,21 +163,21 @@ export default {
     updateHandle() {
       this.update = true;
       request.patch(
-        createRequestURI('wallet/cash/type'),
-        { types: this.cashType },
+        createRequestURI('wallet/cash'),
+        { types: this.cashType, min_amount: this.minAmount },
         { validateStatus: status => status === 201 }
       ).then(({ data: { message: [ message = '更新成功' ] = [] } = {} }) => {
         this.update = false;
         this.sendAlert('success', message);
-      }).catch(({ response: { data: { message: [] = [], types = [] } = {} } = {} }) => {
+      }).catch(({ response: { data: { message: anyMessage = [], types: typeMessage = [], min_amount: amountMessage = [] } = {} } = {} }) => {
         this.update = false;
-        const [ message = '更新失败，请刷新重试' ] = [ ...types, ...message ];
+        const [ message = '更新失败，请刷新重试' ] = [ ...anyMessage, ...typeMessage, ...amountMessage ];
         this.sendAlert('danger', message);
       });
     },
   },
   created() {
-    this.requestCashType();
+    this.requestCashSetting();
   }
 }
 </script>
