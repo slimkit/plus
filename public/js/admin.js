@@ -456,6 +456,10 @@ var _ad = __webpack_require__(83);
 
 var _ad2 = _interopRequireDefault(_ad);
 
+var _paid = __webpack_require__(199);
+
+var _paid2 = _interopRequireDefault(_paid);
+
 var _Login = __webpack_require__(104);
 
 var _Login2 = _interopRequireDefault(_Login);
@@ -475,14 +479,14 @@ var _Component2 = _interopRequireDefault(_Component);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // components.
-_vue2.default.use(_vueRouter2.default);
+
 
 // routes.
-
+_vue2.default.use(_vueRouter2.default);
 
 var baseRoutes = [{ path: '', redirect: '/setting' }, { path: 'package/:key', component: _Package2.default }, { path: 'component/:component(.*)', component: _Component2.default }];
 
-var childrenRoutes = [_setting2.default, _user2.default, _sms2.default, _wallet2.default, _ad2.default];
+var childrenRoutes = [_setting2.default, _user2.default, _sms2.default, _wallet2.default, _ad2.default, _paid2.default];
 
 var router = new _vueRouter2.default({
   mode: 'hash',
@@ -860,6 +864,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //
+//
+//
+//
+//
 //
 //
 //
@@ -10798,6 +10806,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v("\n    钱包\n  ")]), _vm._v(" "), _c('router-link', {
     staticClass: "list-group-item __button",
     attrs: {
+      "to": "/paid",
+      "active-class": "active"
+    }
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-yen __icon"
+  }), _vm._v("\n    内容付费\n  ")]), _vm._v(" "), _c('router-link', {
+    staticClass: "list-group-item __button",
+    attrs: {
       "to": "/ad",
       "active-class": "active"
     }
@@ -14172,6 +14188,279 @@ exports.default = {
 
     // Request Charges.
     this.requestCharge(_extends({}, query, { page: page }));
+  }
+};
+
+/***/ }),
+/* 199 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Main = __webpack_require__(200);
+
+var _Main2 = _interopRequireDefault(_Main);
+
+var _Home = __webpack_require__(202);
+
+var _Home2 = _interopRequireDefault(_Home);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * The file defuned /paid route.
+ *
+ * @author Seven Du <shiweidu@outlook.com>
+ */
+
+exports.default = {
+  path: 'paid',
+  component: _Main2.default,
+  children: [{ path: '', component: _Home2.default }]
+};
+
+/***/ }),
+/* 200 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(0)(
+  /* script */
+  null,
+  /* template */
+  __webpack_require__(201),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/usr/local/var/www/thinksns-plus/resources/assets/admin/component/paid/Main.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Main.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-217f2ea4", Component.options)
+  } else {
+    hotAPI.reload("data-v-217f2ea4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 201 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('ul', {
+    staticClass: "nav nav-tabs component-controller-nav"
+  }, [_c('router-link', {
+    attrs: {
+      "to": "/paid",
+      "tag": "li",
+      "active-class": "active",
+      "exact": ""
+    }
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("基础设置")])]), _vm._v(" "), _c('router-link', {
+    attrs: {
+      "to": "/paid/manage",
+      "tag": "li",
+      "active-class": "active"
+    }
+  }, [_c('a', [_vm._v("付费管理")])])], 1), _vm._v(" "), _c('div', {
+    staticClass: "component-container container-fluid"
+  }, [_c('router-view')], 1)])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-217f2ea4", module.exports)
+  }
+}
+
+/***/ }),
+/* 202 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(204),
+  /* template */
+  __webpack_require__(203),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/usr/local/var/www/thinksns-plus/resources/assets/admin/component/paid/Home.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Home.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-05051aca", Component.options)
+  } else {
+    hotAPI.reload("data-v-05051aca", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 203 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("基础设置")]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body form-horizontal"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-2 control-label"
+  }, [_vm._v("开启付费")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-4"
+  }, [_c('div', {
+    staticClass: "radio"
+  }, [_c('label', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.paidOpen),
+      expression: "paidOpen"
+    }],
+    attrs: {
+      "type": "radio",
+      "name": "open",
+      "value": "0"
+    },
+    domProps: {
+      "checked": _vm._q(_vm.paidOpen, "0")
+    },
+    on: {
+      "__c": function($event) {
+        _vm.paidOpen = "0"
+      }
+    }
+  }), _vm._v(" 关闭\n          ")])]), _vm._v(" "), _c('div', {
+    staticClass: "radio"
+  }, [_c('label', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.paidOpen),
+      expression: "paidOpen"
+    }],
+    attrs: {
+      "type": "radio",
+      "name": "open",
+      "value": "1"
+    },
+    domProps: {
+      "checked": _vm._q(_vm.paidOpen, "1")
+    },
+    on: {
+      "__c": function($event) {
+        _vm.paidOpen = "1"
+      }
+    }
+  }), _vm._v(" 开启\n          ")])])]), _vm._v(" "), _c('span', {
+    staticClass: "col-sm-6 help-block"
+  }, [_vm._v("如果需要启动内容付费，则开启，设置关闭则关闭全部付费")])])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-05051aca", module.exports)
+  }
+}
+
+/***/ }),
+/* 204 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+  data: function data() {
+    return {
+      paidOpen: 0
+    };
   }
 };
 
