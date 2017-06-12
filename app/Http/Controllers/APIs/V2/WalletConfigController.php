@@ -21,7 +21,7 @@ class WalletConfigController extends Controller
         'cash' => ['type' => 'json'],
         'wallet:ratio' => ['type' => 'int', 'alias' => 'ratio'],
         'wallet:recharge-type' => ['type' => 'json', 'alias' => 'recharge_type'],
-        'wallet:min-amount' => ['type' => 'int', 'alias' => 'min_amount'],
+        'cash:min-amount' => ['type' => 'int', 'alias' => 'case_min_amount'],
     ];
 
     /**
@@ -29,14 +29,14 @@ class WalletConfigController extends Controller
      *
      * @var array
      */
-    protected $walletNames = ['labels', 'rule', 'cash'];
+    protected $walletNames = ['labels', 'rule', 'cash', 'cash:min-amount'];
 
     /**
      * 钱包共有配置名称列表.
      *
      * @var array
      */
-    protected $commonNames = ['wallet:ratio', 'wallet:recharge-type', 'wallet:min-amount'];
+    protected $commonNames = ['wallet:ratio', 'wallet:recharge-type'];
 
     /**
      * Get wallet info.
