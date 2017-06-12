@@ -37,7 +37,7 @@ class WalletCashMinAmount
         }
 
         $model = CommonConfig::firstOrCreate(
-            ['name' => 'wallet:min-amount', 'namespace' => 'common'],
+            ['name' => 'cash:min-amount', 'namespace' => 'wallet'],
             ['value' => 0]
         );
 
@@ -56,7 +56,7 @@ class WalletCashMinAmount
     public function store(int $amount)
     {
         CommonConfig::updateOrCreate(
-            ['name' => 'wallet:min-amount', 'namespace' => 'common'],
+            ['name' => 'cash:min-amount', 'namespace' => 'wallet'],
             ['value' => $amount]
         );
 

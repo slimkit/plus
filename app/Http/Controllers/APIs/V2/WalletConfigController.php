@@ -21,6 +21,7 @@ class WalletConfigController extends Controller
         'cash' => ['type' => 'json'],
         'wallet:ratio' => ['type' => 'int', 'alias' => 'ratio'],
         'wallet:recharge-type' => ['type' => 'json', 'alias' => 'recharge_type'],
+        'wallet:min-amount' => ['type' => 'int', 'alias' => 'min_amount'],
     ];
 
     /**
@@ -35,7 +36,7 @@ class WalletConfigController extends Controller
      *
      * @var array
      */
-    protected $commonNames = ['wallet:ratio', 'wallet:recharge-type'];
+    protected $commonNames = ['wallet:ratio', 'wallet:recharge-type', 'wallet:min-amount'];
 
     /**
      * Get wallet info.
