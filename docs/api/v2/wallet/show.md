@@ -30,6 +30,7 @@ Status: 200 OK
     "cash": [
         "alipay"
     ],
+    "case_min_amount": 1, // 真实金额分单位，用户最低提现金额。
     "recharge_type": [ // 对于移动端而言，alipay wx 不存在则表示关闭了充值功能，单个不存在则表示关闭单个充值选项，iOS多一个 apple pay 选项，其他端，例如 h5 或者 pc 参考平台后缀。例如没有 alipay_wap 表示关闭 h5 的支付宝。
         "alipay",
         "alipay_wap",
