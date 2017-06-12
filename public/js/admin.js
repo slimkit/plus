@@ -4931,6 +4931,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var _request = __webpack_require__(1);
 
@@ -4939,8 +4948,6 @@ var _request2 = _interopRequireDefault(_request);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function _toArray(arr) { return Array.isArray(arr) ? arr : Array.from(arr); }
 
 exports.default = {
   data: function data() {
@@ -4952,12 +4959,23 @@ exports.default = {
         message: null
       },
       cashType: [],
+      minAmount: 1,
       load: {
         status: 0,
         message: ''
       },
       update: false
     };
+  },
+  computed: {
+    minAmountCompute: {
+      set: function set(minAmount) {
+        this.minAmount = minAmount * 100;
+      },
+      get: function get() {
+        return this.minAmount / 100;
+      }
+    }
   },
   methods: {
     /**
@@ -4990,19 +5008,26 @@ exports.default = {
      * @return {void}
      * @author Seven Du <shiweidu@outlook.com>
      */
-    requestCashType: function requestCashType() {
+    requestCashSetting: function requestCashSetting() {
       var _this2 = this;
 
-      _request2.default.get((0, _request.createRequestURI)('wallet/cash/type'), { validateStatus: function validateStatus(status) {
+      _request2.default.get((0, _request.createRequestURI)('wallet/cash'), { validateStatus: function validateStatus(status) {
           return status === 200;
         } }).then(function (_ref) {
-        var _ref$data = _ref.data,
-            data = _ref$data === undefined ? [] : _ref$data;
+        var _ref$data = _ref.data;
+        _ref$data = _ref$data === undefined ? {} : _ref$data;
+        var _ref$data$types = _ref$data.types,
+            types = _ref$data$types === undefined ? [] : _ref$data$types,
+            _ref$data$min_amount = _ref$data.min_amount,
+            minAmount = _ref$data$min_amount === undefined ? 1 : _ref$data$min_amount;
 
-        _this2.cashType = data;
+        _this2.cashType = types;
+        _this2.minAmount = minAmount;
         _this2.load.status = 1;
-      }).catch(function (_ref2) {
-        var _ref2$response = _ref2.response;
+      }).catch(function () {
+        var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+            _ref2$response = _ref2.response;
+
         _ref2$response = _ref2$response === undefined ? {} : _ref2$response;
         var _ref2$response$data = _ref2$response.data;
         _ref2$response$data = _ref2$response$data === undefined ? {} : _ref2$response$data;
@@ -5031,7 +5056,7 @@ exports.default = {
       var _this3 = this;
 
       this.update = true;
-      _request2.default.patch((0, _request.createRequestURI)('wallet/cash/type'), { types: this.cashType }, { validateStatus: function validateStatus(status) {
+      _request2.default.patch((0, _request.createRequestURI)('wallet/cash'), { types: this.cashType, min_amount: this.minAmount }, { validateStatus: function validateStatus(status) {
           return status === 201;
         } }).then(function (_ref3) {
         var _ref3$data = _ref3.data;
@@ -5050,16 +5075,16 @@ exports.default = {
         _ref4$response = _ref4$response === undefined ? {} : _ref4$response;
         var _ref4$response$data = _ref4$response.data;
         _ref4$response$data = _ref4$response$data === undefined ? {} : _ref4$response$data;
-        var _ref4$response$data$m = _ref4$response$data.message;
-        _ref4$response$data$m = _ref4$response$data$m === undefined ? [] : _ref4$response$data$m;
-
-        var _ref4$response$data$m2 = _toArray(_ref4$response$data$m),
+        var _ref4$response$data$m = _ref4$response$data.message,
+            anyMessage = _ref4$response$data$m === undefined ? [] : _ref4$response$data$m,
             _ref4$response$data$t = _ref4$response$data.types,
-            types = _ref4$response$data$t === undefined ? [] : _ref4$response$data$t;
+            typeMessage = _ref4$response$data$t === undefined ? [] : _ref4$response$data$t,
+            _ref4$response$data$m2 = _ref4$response$data.min_amount,
+            amountMessage = _ref4$response$data$m2 === undefined ? [] : _ref4$response$data$m2;
 
         _this3.update = false;
 
-        var _ref5 = [].concat(_toConsumableArray(types), _toConsumableArray(message)),
+        var _ref5 = [].concat(_toConsumableArray(anyMessage), _toConsumableArray(typeMessage), _toConsumableArray(amountMessage)),
             _ref5$ = _ref5[0],
             message = _ref5$ === undefined ? '更新失败，请刷新重试' : _ref5$;
 
@@ -5068,7 +5093,7 @@ exports.default = {
     }
   },
   created: function created() {
-    this.requestCashType();
+    this.requestCashSetting();
   }
 };
 
@@ -10626,6 +10651,37 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "help-block"
   }, [_vm._v("选择用户提现支持的提现方式，如果都不勾选，则表示关闭提现功能。")])])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-2 control-label"
+  }, [_vm._v("最低提现")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-4"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.minAmountCompute),
+      expression: "minAmountCompute"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "number"
+    },
+    domProps: {
+      "value": (_vm.minAmountCompute)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.minAmountCompute = $event.target.value
+      },
+      "blur": function($event) {
+        _vm.$forceUpdate()
+      }
+    }
+  })]), _vm._v(" "), _c('span', {
+    staticClass: "col-sm-6 help-block"
+  }, [_vm._v("设置最低用户提现金额，这里设置真实金额，验证的时候会自动验证转换后金额。")])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
   }, [_c('div', {
     staticClass: "col-sm-offset-2 col-sm-4"
   }, [(_vm.update === true) ? _c('button', {
@@ -10668,7 +10724,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "type": "button"
     },
     on: {
-      "click": _vm.requestCashType
+      "click": _vm.requestCashSetting
     }
   }, [_vm._v("刷新")])])])])
 },staticRenderFns: []}
