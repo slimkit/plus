@@ -5,6 +5,7 @@ namespace Zhiyi\Plus\Http\Requests\API2;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Zhiyi\Plus\Repository\UserWalletCashType;
+use Zhiyi\Plus\Repository\WalletCashMinAmount as CashMinAmountRepository;
 
 class StoreUserWallerCashPost extends FormRequest
 {
@@ -23,18 +24,18 @@ class StoreUserWallerCashPost extends FormRequest
      *
      * @return array
      */
-    public function rules(UserWalletCashType $repository)
+    public function rules(UserWalletCashType $typeRepository, CashMinAmountRepository $minAmountRepository)
     {
         return [
             'value' => [
                 'required',
                 'numeric',
-                'min:1',
+                'min:'.$minAmountRepository->get(),
                 'max:'.$this->user()->wallet->balance,
             ],
             'type' => [
                 'required',
-                Rule::in($repository->get()),
+                Rule::in($typeRepository->get()),
             ],
             'account' => ['required'],
         ];
@@ -51,7 +52,7 @@ class StoreUserWallerCashPost extends FormRequest
         return [
             'value.required' => '请输入提现金额',
             'value.numeric' => '发送的数据错误',
-            'value.min' => '输入的提现金额不合法',
+            'value.min' => '输入的提现金额不足最低提现金额要求',
             'value.max' => '提现金额超出账户余额',
             'type.required' => '请选择提现方式',
             'type.in' => '你选择的提现方式不支持',
