@@ -67,6 +67,10 @@
       <span class="glyphicon glyphicon-credit-card __icon"></span>
       钱包
     </router-link>
+    <router-link class="list-group-item __button" to="/paid" active-class="active" >
+      <span class="glyphicon glyphicon-yen __icon"></span>
+      内容付费
+    </router-link>
     <router-link class="list-group-item __button" to="/ad" active-class="active" >
       <span class="__icon">AD</span>
       广告管理

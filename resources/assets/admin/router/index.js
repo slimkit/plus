@@ -8,6 +8,7 @@ import userRouter from './user';
 import smsRouter from './sms';
 import walletRouter from './wallet';
 import adRouter from './ad';
+import paidRouter from './paid';
 
 // components.
 import Login from '../component/Login';
@@ -29,6 +30,7 @@ const childrenRoutes = [
   smsRouter,
   walletRouter,
   adRouter,
+  paidRouter
 ];
 
 const router = new VueRouter({
