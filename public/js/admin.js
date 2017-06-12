@@ -8542,7 +8542,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })]), _vm._v(" "), _c('span', {
     staticClass: "help-block col-sm-6"
-  }, [_vm._v("输入交易账户的用户 ID,如果要检索不属于用户的订单，请输入 null")])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("输入交易账户的用户 ID")])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     staticClass: "col-sm-2 control-label"
@@ -8570,7 +8570,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })]), _vm._v(" "), _c('span', {
     staticClass: "col-sm-6 help-block"
-  }, [_vm._v("输入交易账户，应用内交易则为用户ID，例如支付宝则输入支付宝，无法获取的交易账户输入 null 查询")])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("输入交易账户，应用内交易则为用户ID")])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     staticClass: "col-sm-2 control-label"
@@ -8721,7 +8721,103 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         query: _vm.searchQuery
       }
     }
-  }, [_vm._v("搜索")])], 1)])])])])
+  }, [_vm._v("搜索")])], 1)])]), _vm._v(" "), (_vm.load.status === 0) ? _c('div', {
+    staticClass: "panel-body text-center"
+  }, [_c('span', {
+    staticClass: "glyphicon glyphicon-refresh component-loadding-icon"
+  }), _vm._v("\n      加载中...\n    ")]) : (_vm.load.status === 1) ? _c('table', {
+    staticClass: "table table-striped table-hover"
+  }, [_c('thead', [_c('tr', [_c('th', [_vm._v("ID")]), _vm._v(" "), _c('th', [_vm._v("用户（ID）")]), _vm._v(" "), _c('th', [_vm._v("支付频道")]), _vm._v(" "), _c('th', [_vm._v("交易账户")]), _vm._v(" "), _c('th', [_vm._v("Ping++")]), _vm._v(" "), _c('th', [_vm._v("订单ID")]), _vm._v(" "), _c('th', [_vm._v("金额")]), _vm._v(" "), _c('th', [_vm._v("交易信息")]), _vm._v(" "), _c('th', [_vm._v("状态")]), _vm._v(" "), _c('th', [_vm._v("时间")])])]), _vm._v(" "), _c('tbody', _vm._l((_vm.charges), function(charge) {
+    return _c('tr', {
+      key: charge.id,
+      class: charge.status === 2 ? 'danger' : charge.status === 1 ? 'success' : ''
+    }, [_c('td', [_vm._v(_vm._s(charge.id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.resolveChargeUserDisplay(charge.user)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.resolvePayChannel(charge.channel)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(charge.account))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(charge.charge_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(charge.transaction_no))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(charge.action == 1 ? '+' : '-') + _vm._s(charge.amount / 100))]), _vm._v(" "), _c('td', [_vm._v("\n            " + _vm._s(charge.subject)), _c('br'), _vm._v(" "), _c('small', [_vm._v(_vm._s(charge.body))])]), _vm._v(" "), (charge.status === 0) ? _c('td', [_vm._v("等待")]) : (charge.status === 1) ? _c('td', [_vm._v("成功")]) : (charge.status === 2) ? _c('td', [_vm._v("失败")]) : _c('td', [_vm._v("未知")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(charge.created_at))])])
+  }))]) : _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "alert alert-danger",
+    attrs: {
+      "role": "alert"
+    }
+  }, [_vm._v(_vm._s(_vm.load.message))]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.requestRefresh
+    }
+  }, [_vm._v("重试")])])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.pagination.show),
+      expression: "pagination.show"
+    }],
+    staticClass: "text-center"
+  }, [_c('ul', {
+    staticClass: "pagination"
+  }, [_c('router-link', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!!_vm.pagination.isPrevPage),
+      expression: "!!pagination.isPrevPage"
+    }],
+    attrs: {
+      "tag": "li",
+      "to": _vm.resolvePaginationRoute(_vm.pagination.isPrevPage)
+    }
+  }, [_c('a', {
+    attrs: {
+      "aria-label": "Previous"
+    }
+  }, [_c('span', {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("«")])])]), _vm._v(" "), _vm._l((_vm.pagination.prevPages), function(item) {
+    return _c('router-link', {
+      key: item.page,
+      attrs: {
+        "tag": "li",
+        "to": _vm.resolvePaginationRoute(item.page)
+      }
+    }, [_c('a', [_vm._v(_vm._s(item.name))])])
+  }), _vm._v(" "), _c('router-link', {
+    staticClass: "active",
+    attrs: {
+      "tag": "li",
+      "to": _vm.resolvePaginationRoute(_vm.pagination.current)
+    }
+  }, [_c('a', [_vm._v("\n          " + _vm._s(_vm.pagination.current) + "\n        ")])]), _vm._v(" "), _vm._l((_vm.pagination.nextPages), function(item) {
+    return _c('router-link', {
+      key: item.page,
+      attrs: {
+        "tag": "li",
+        "to": _vm.resolvePaginationRoute(item.page)
+      }
+    }, [_c('a', [_vm._v(_vm._s(item.name))])])
+  }), _vm._v(" "), _c('router-link', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!!_vm.pagination.isNextPage),
+      expression: "!!pagination.isNextPage"
+    }],
+    attrs: {
+      "tag": "li",
+      "to": _vm.resolvePaginationRoute(_vm.pagination.isNextPage)
+    }
+  }, [_c('a', {
+    attrs: {
+      "aria-label": "Next"
+    }
+  }, [_c('span', {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("»")])])])], 2)])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -13490,99 +13586,224 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
+var _request = __webpack_require__(1);
+
+var _request2 = _interopRequireDefault(_request);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; } //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+var channelTypes = {
+  applepay_upacp: 'Apple Pay',
+  alipay: '支付宝 APP',
+  alipay_pc_direct: '支付宝电脑网站',
+  alipay_qr: '支付宝扫码',
+  alipay_wap: '支付宝手机网页',
+  wx: '微信 APP',
+  wx_wap: '微信 WAP'
+};
 
 exports.default = {
   data: function data() {
@@ -13601,6 +13822,15 @@ exports.default = {
       page: {
         current: 1,
         total: 1
+      },
+
+      // 凭据
+      charges: [],
+
+      // Load
+      load: {
+        status: 0,
+        message: ''
       }
     };
   },
@@ -13618,6 +13848,96 @@ exports.default = {
         }
         return search;
       }, {});
+    },
+
+    /**
+     * Pagination.
+     *
+     * @return {Object}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    pagination: function pagination() {
+      // 当前页
+      var current = 1;
+      current = isNaN(current = parseInt(this.page.current)) ? 1 : current;
+
+      // 最后页码
+      var last = 1;
+      last = isNaN(last = parseInt(this.page.total)) ? 1 : last;
+
+      // 是否显示
+      var show = last > 1;
+
+      // 前三页
+      var minPage = current - 3;
+      minPage = minPage <= 1 ? 1 : minPage;
+
+      // 后三页
+      var maxPage = current + 3;
+      maxPage = maxPage >= last ? last : maxPage;
+
+      // 是否有上一页
+      var isPrevPage = false;
+      // 前页页码
+      var prevPages = [];
+
+      // 前页计算
+      if (current > minPage) {
+        // 有上一页按钮
+        isPrevPage = current - 1; // 如果有，传入上一页页码.
+
+        // 回归第一页
+        if (minPage > 1) {
+          prevPages.push({
+            name: current < 6 ? 1 : '1...',
+            page: 1
+          });
+        }
+
+        // 前页码
+        for (var i = minPage; i < current; i++) {
+          prevPages.push({
+            name: i,
+            page: i
+          });
+        }
+      }
+
+      // 是否有下一页
+      var isNextPage = false;
+      // 后页页码
+      var nextPages = [];
+
+      // 后页计算
+      if (current < maxPage) {
+        // 后页码
+        for (var _i = current + 1; _i <= maxPage; _i++) {
+          nextPages.push({
+            name: _i,
+            page: _i
+          });
+        }
+
+        // 进入最后页
+        if (maxPage < last) {
+          nextPages.push({
+            name: current + 4 === last ? last : '...' + last,
+            page: last
+          });
+        }
+
+        // 是否有下一页按钮
+        isNextPage = current + 1;
+      }
+
+      return {
+        isPrevPage: isPrevPage,
+        isNextPage: isNextPage,
+        current: current,
+        show: show,
+        prevPages: prevPages,
+        nextPages: nextPages
+      };
     }
   },
   watch: {
@@ -13637,6 +13957,67 @@ exports.default = {
     }
   },
   methods: {
+    /**
+     * Builder page route object.
+     *
+     * @param {Number} page
+     * @return {Object}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    resolvePaginationRoute: function resolvePaginationRoute(page) {
+      return {
+        path: '/wallet/accounts',
+        query: _extends({}, this.resolveQuery(), { page: page })
+      };
+    },
+
+
+    /**
+     * 返回显示的频道类型.
+     *
+     * @param {String} channel
+     * @return {String}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    resolvePayChannel: function resolvePayChannel(channel) {
+      var _channelTypes$channel = channelTypes[channel],
+          displayChannel = _channelTypes$channel === undefined ? '余额' : _channelTypes$channel;
+
+
+      return displayChannel;
+    },
+
+    /**
+     * 解决用户信息显示.
+     *
+     * @param {Object} user
+     * @return {String|null}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    resolveChargeUserDisplay: function resolveChargeUserDisplay() {
+      var user = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var id = user.id,
+          name = user.name;
+
+      if (!!id) {
+        return name + ' (' + id + ')';
+      }
+
+      return null;
+    },
+
+    /**
+     * Request refresh.
+     *
+     * @return {void}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    requestRefresh: function requestRefresh() {
+      this.requestCharge(_extends({
+        page: this.page.current
+      }, this.resolveQuery()));
+    },
+
     /**
      * Resolve route query.
      *
@@ -13680,9 +14061,41 @@ exports.default = {
      * @author Seven Du <shiweidu@outlook.com>
      */
     requestCharge: function requestCharge() {
+      var _this = this;
+
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-      console.log(params);
+      this.load.status = 0;
+      _request2.default.get((0, _request.createRequestURI)('wallet/charges'), { params: params, validateStatus: function validateStatus(status) {
+          return status === 200;
+        } }).then(function (_ref2) {
+        var _ref2$data = _ref2.data,
+            _ref2$data$total = _ref2$data.total,
+            total = _ref2$data$total === undefined ? 1 : _ref2$data$total,
+            _ref2$data$current = _ref2$data.current,
+            current = _ref2$data$current === undefined ? 1 : _ref2$data$current,
+            _ref2$data$items = _ref2$data.items,
+            items = _ref2$data$items === undefined ? [] : _ref2$data$items;
+
+        _this.load.status = 1;
+        _this.page = { total: total, current: current };
+        _this.charges = items;
+      }).catch(function () {
+        var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+            _ref3$response = _ref3.response;
+
+        _ref3$response = _ref3$response === undefined ? {} : _ref3$response;
+        var _ref3$response$data = _ref3$response.data;
+        _ref3$response$data = _ref3$response$data === undefined ? {} : _ref3$response$data;
+        var _ref3$response$data$m = _ref3$response$data.message;
+        _ref3$response$data$m = _ref3$response$data$m === undefined ? [] : _ref3$response$data$m;
+
+        var _ref3$response$data$m2 = _slicedToArray(_ref3$response$data$m, 1),
+            _ref3$response$data$m3 = _ref3$response$data$m2[0],
+            anyMessage = _ref3$response$data$m3 === undefined ? '加载失败，请刷新重试' : _ref3$response$data$m3;
+
+        _this.load = { message: anyMessage, status: 2 };
+      });
     }
   },
   /**
