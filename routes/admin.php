@@ -41,6 +41,9 @@ Route::middleware('auth:web')->group(function () {
         // 支付选项
         Route::get('/recharge/types', 'WalletRechargeTypeController@show');
         Route::patch('/recharge/types', 'WalletRechargeTypeController@update');
+
+        // 凭据列表
+        Route::get('/charges', 'WalletChargeController@show');
     });
 
     // SMS 相关
