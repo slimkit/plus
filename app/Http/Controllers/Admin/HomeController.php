@@ -46,9 +46,17 @@ class HomeController extends Controller
         return redirect(route('admin'));
     }
 
-    public function index()
+    /**
+     * Admin home
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function index(Request $request)
     {
-        $user = $this->guard()->user();
+        $this->abortIfAuthenticated($user = $this->guard()->user(), $request);
+
         $data = [
             'csrf_token' => csrf_token(),
             'base_url'   => url('admin'),
@@ -106,6 +114,21 @@ class HomeController extends Controller
     }
 
     /**
+     *  如果用户存在，判断权限.
+     *
+     * @param null|\Zhiyi\Plus\Models\User $user
+     * @param \Illuminate\Http\Request $request
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function abortIfAuthenticated($user, Request $request)
+    {
+        if ($user && ! $user->can('admin:login')) {
+            abort(401, '你没有权限访问该页面');
+        }
+    }
+
+    /**
      * The user has been authenticated.
      *
      * @param \Illuminate\Http\Request $request
@@ -122,7 +145,7 @@ class HomeController extends Controller
             return response()->json([
                 'phone' => '该账户没有权限进入后台',
                 'flush' => true,
-            ])->setStatusCode(403);
+            ])->setStatusCode(401);
         }
 
         return response()->json($this->user($user))->setStatusCode(201);

@@ -5,7 +5,9 @@ Route::get('/', 'HomeController@index')
 Route::post('/login', 'HomeController@login');
 Route::any('/logout', 'HomeController@logout');
 
-Route::middleware('auth:web')->group(function () {
+Route::middleware('auth:web')
+->middleware('admin')
+->group(function () {
 
     // 后台导航
     Route::get('/manages', 'HomeController@showManages');

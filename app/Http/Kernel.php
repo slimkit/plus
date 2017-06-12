@@ -40,6 +40,10 @@ class Kernel extends HttpKernel
             'throttle:60,1',
             'bindings',
         ],
+
+        'admin' => [
+            'role-permissions:admin:login,你没有权限访问该页面'
+        ]
     ];
 
     /**
