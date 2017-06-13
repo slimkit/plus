@@ -54,7 +54,7 @@ class User extends Authenticatable
      */
     public function scopeByPhone(Builder $query, string $phone): Builder
     {
-        return $query->where('phone', 'LIKE', $phone);
+        return $query->where('phone', $phone);
     }
 
     /**
@@ -70,7 +70,7 @@ class User extends Authenticatable
      */
     public function scopeByName(Builder $query, string $name): Builder
     {
-        return $query->where('name', 'LIKE', $name);
+        return $query->where('name', $name);
     }
 
     /**
@@ -83,7 +83,7 @@ class User extends Authenticatable
      */
     public function scopeByEmail(Builder $query, string $email): Builder
     {
-        return $query->where('email', 'LIKE', $email);
+        return $query->where('email', $email);
     }
 
     /**
@@ -105,7 +105,7 @@ class User extends Authenticatable
             $field = 'name';
         }
 
-        return $query->where($field, 'LIKE', $account);
+        return $query->where($field, $account);
     }
 
     /**
