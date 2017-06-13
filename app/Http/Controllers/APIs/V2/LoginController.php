@@ -32,7 +32,7 @@ class LoginController extends Controller
             $builder = User::byAccount($account);
         }
 
-        if( ! $user = $builder->first() ) {
+        if (! $user = $builder->first()) {
             return $response->json([
                 'message' => ['登录的用户不存在'],
             ])->setStatusCode(422);
