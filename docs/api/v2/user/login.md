@@ -12,7 +12,8 @@ POST /login
 
 | 名称 | 类型 | 描述 |
 |----|:----:|----|
-| phone | string | 用户用于登陆的中国大陆合法手机号码 |
+| phone | string | 用户用于登陆的中国大陆合法手机号码，和account二选一 |
+| account | string | 用户账号，可以是手机号、邮箱、用户名、用户ID，和phone二选一 |
 | password | string | 用户登陆密码 |
 
 ### 响应

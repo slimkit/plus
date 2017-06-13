@@ -88,6 +88,7 @@ class UserController extends Controller
     public function store(StoreUserPost $request, Factory $factory)
     {
         $phone = $request->input('phone');
+        $email = $request->input('email');
         $name = $request->input('name');
         $password = $request->input('password');
         $verifyCode = $request->input('verify_code');
@@ -98,7 +99,15 @@ class UserController extends Controller
                 throw new RuntimeException('Failed to get the defined user group.');
             });
 
-        $verify = VerifyCode::byAccount($phone)->byCode($verifyCode)
+        if ($phone) {
+            $field = 'phone';
+            $account = $phone;
+        } else {
+            $field = 'email';
+            $account = $email;
+        }
+
+        $verify = VerifyCode::byAccount($account)->byCode($verifyCode)
             ->orderByDesc()
             ->first();
 
@@ -109,7 +118,7 @@ class UserController extends Controller
         }
 
         $user = new User();
-        $user->phone = $phone;
+        $user->$field = $account;
         $user->name = $name;
         $user->createPassword($password);
 

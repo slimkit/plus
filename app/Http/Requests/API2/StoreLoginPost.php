@@ -24,7 +24,8 @@ class StoreLoginPost extends FormRequest
     public function rules()
     {
         return [
-            'phone' => 'required|cn_phone|exists:users,phone',
+            'phone' => 'required_without:account|cn_phone|exists:users,phone',
+            'account' => 'required_without:phone|string',
             'password' => 'required',
         ];
     }
@@ -38,9 +39,13 @@ class StoreLoginPost extends FormRequest
     public function messages()
     {
         return [
-            'phone.required' => '手机号不能为空',
+            'phone.required_without' => '手机号不能为空',
             'phone.cn_phone' => '请输入中国大陆合法手机号码',
             'phone.exists' => '登录的用户不存在',
+
+            'account.required_without' => '登录账号不能为空',
+            'account.string' => '登录账号需要一个字符串',
+
             'password.required' => '密码不能为空',
         ];
     }

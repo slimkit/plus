@@ -23,9 +23,20 @@ class LoginController extends Controller
     public function store(Factory $factory, StoreLoginPost $request, ResponseFactory $response)
     {
         $phone = $request->input('phone');
+        $account = $request->input('account');
         $password = $request->input('password');
 
-        $user = User::byPhone($phone)->first();
+        if ($phone) {
+            $builder = User::byPhone($phone);
+        } else {
+            $builder = User::byAccount($account);
+        }
+
+        if( ! $user = $builder->first() ) {
+            return $response->json([
+                'message' => ['登录的用户不存在'],
+            ])->setStatusCode(422);
+        }
 
         if (! $user->verifyPassword($password)) {
             return $response->json([
