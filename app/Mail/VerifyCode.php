@@ -3,11 +3,10 @@
 namespace Zhiyi\Plus\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Mail\Mailer as MailerContract;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Zhiyi\Plus\Models\VerifyCode as VerifyCodeModel;
+use Illuminate\Contracts\Mail\Mailer as MailerContract;
 
 class VerifyCode extends Mailable
 {
@@ -29,14 +28,15 @@ class VerifyCode extends Mailable
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function send(MailerContract $mailer)
     {
         try {
             parent::send($mailer);
         } catch (\Exception $e) {
-        } catch (\Throwable $e) {}
+        } catch (\Throwable $e) {
+        }
 
         $this->verifyCode->state = isset($e) ? 2 : 1;
         $this->verifyCode->save();
@@ -55,7 +55,7 @@ class VerifyCode extends Mailable
     {
         return $this
             ->view('emails.verify_code')
-            ->subject(config('app.name') . '验证码')
+            ->subject(config('app.name').'验证码')
             ->with($this->verifyCode->toArray());
     }
 }

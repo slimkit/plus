@@ -6,8 +6,8 @@ use Mail;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Services\SMS\SMS;
 use Zhiyi\Plus\Models\VerifyCode;
-use Zhiyi\Plus\Mail\VerifyCode as MailVerifyCode;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Mail\VerifyCode as MailVerifyCode;
 use Zhiyi\Plus\Http\Requests\API2\StoreVerifyCode;
 use Zhiyi\Plus\Http\Requests\API2\CreateRegisterVerifyCodeRequest;
 
@@ -98,6 +98,5 @@ class VerifyCodeController extends Controller
         } elseif ($type == 'email') {
             Mail::to($account)->queue(new MailVerifyCode($verifyCode));
         }
-
     }
 }
