@@ -2,10 +2,10 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Mail;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Services\SMS\SMS;
 use Zhiyi\Plus\Models\VerifyCode;
+use Illuminate\Support\Facades\Mail;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Mail\VerifyCode as MailVerifyCode;
 use Zhiyi\Plus\Http\Requests\API2\StoreVerifyCode;
@@ -59,12 +59,15 @@ class VerifyCodeController extends Controller
     protected function sendFromRequest(Request $request)
     {
         foreach (['phone', 'email'] as $type) {
-            if ($account = $request->input($type)) {
-                $this->send($account, $type);
+            if (! ($account = $request->input($type))) {
+                continue;
             }
+
+            $this->send($account, $type);
+            break;
         }
 
-        return response()->json(['message' => ['获取成功']], 201);
+        return response()->json(['message' => ['获取成功']], 202);
     }
 
     /**
@@ -75,28 +78,35 @@ class VerifyCodeController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function send($account, $type = null)
+    protected function send(string $account, string $type = '')
+    {
+        $this->validateSent($account);
+
+        $verify = factory(VerifyCode::class)->create(['account' => $account]);
+        if ($type === 'email' || strpos($account, '@') !== false) {
+            Mail::to($account)->queue(new MailVerifyCode($verify));
+        }
+
+        $this->sms->dispatch($verify);
+    }
+
+    /**
+     * Validate sent.
+     *
+     * @param string $account
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function validateSent(string $account)
     {
         $vaildSecond = config('app.env') == 'production' ? 60 : 6;
-        $verify = VerifyCode::byAccount($account)->byValid($vaildSecond)
-            ->orderByDesc()
+        $verify = VerifyCode::byAccount($account)
+            ->byValid($vaildSecond)
+            ->orderBy('id', 'desc')
             ->first();
 
         if ($verify) {
-            return response()->json(['message' => [sprintf('还需要%d后才能获取', $verify->makeSurplusSecond($vaildSecond))]])
-                ->setStatusCode(403);
-        }
-
-        if (null === $type) {
-            $type = false === strpos($account, '@') ? 'phone' : 'email';
-        }
-
-        $verifyCode = factory(VerifyCode::class)->create(['account' => $account]);
-
-        if ($type == 'phone') {
-            $this->sms->dispatch($verifyCode);
-        } elseif ($type == 'email') {
-            Mail::to($account)->queue(new MailVerifyCode($verifyCode));
+            abort(403, sprintf('还需要%d后才能获取', $verify->makeSurplusSecond($vaildSecond)));
         }
     }
 }
