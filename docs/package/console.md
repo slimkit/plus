@@ -15,9 +15,9 @@
 
 ```php
 
-use Zhiyi\Plus\Support\PakcageHandler;
+use Zhiyi\Plus\Support\PackageHandler;
 
-class ExamplePackageHandler extends PakcageHandler
+class ExamplePackageHandler extends PackageHandler
 {
     // todo.
 }
@@ -26,7 +26,7 @@ class ExamplePackageHandler extends PakcageHandler
 然后在你的服务提供者的 `boot` 方法中:
 
 ```php
-use Zhiyi\Plus\Support\PakcageHandler;
+use Zhiyi\Plus\Support\PackageHandler;
 
 ...
 public function boot()
@@ -43,9 +43,9 @@ public function boot()
 
 在你创建的「处理器」中只要方法按照 `<name>Handle` 的格式进行写即可：
 ```php
-use Zhiyi\Plus\Support\PakcageHandler;
+use Zhiyi\Plus\Support\PackageHandler;
 
-class ExamplePackageHandler extends PakcageHandler
+class ExamplePackageHandler extends PackageHandler
 {
     public function aHandler($command) {
         // TODO
