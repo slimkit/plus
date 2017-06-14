@@ -4,7 +4,8 @@ namespace Zhiyi\Plus\Providers;
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Validator;
+use function Zhiyi\Plus\validateUsername;
+use function Zhiyi\Plus\validateChinaPhoneNumber;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,55 +16,60 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // 添加验证手机号码规则
-        Validator::extend('cn_phone', function ($attribute, $value) {
-            return is_string($value) && \Zhiyi\Plus\is_cn_phone($value);
-        });
-
-        // 添加用户名验证规则
-        Validator::extend('username', function ($attribute, $value) {
-            return is_string($value) && \Zhiyi\Plus\is_username($value);
-        });
-
-        // 添加长度规则
-        Validator::extend('display_length', function ($attribute, $value, array $parameters) {
-            if (empty($parameters)) {
-                throw new \InvalidArgumentException('Parameters must be passed');
-            }
-
-            $min = 0;
-            if (count($parameters) === 1) {
-                list($max) = $parameters;
-            } elseif (count($parameters) >= 2) {
-                list($min, $max) = $parameters;
-            }
-
-            if (! isset($max) || $max < $min) {
-                throw new \InvalidArgumentException('The parameters passed are incorrect');
-            }
-
-            // 计算单字节.
-            preg_match_all('/[a-zA-Z0-9_]/', $value, $single);
-            $single = count($single[0]) / 2;
-
-            // 多子节长度.
-            $double = mb_strlen(preg_replace('([a-zA-Z0-9_])', '', $value));
-
-            $length = $single + $double;
-
-            return $length >= $min && $length <= $max;
-        });
+        // 注册验证规则.
+        $this->registerValidator();
 
         Schema::defaultStringLength(191);
     }
 
     /**
-     * Register any application services.
+     * 注册验证规则.
      *
      * @return void
+     * @author Seven Du <shiweidu@outlook.com>
      */
-    public function register()
+    protected function registerValidator()
     {
-        //
+        // 注册中国大陆手机号码验证规则
+        $this->app->validator->extend('cn_phone', function (...$parameters) {
+            return validateChinaPhoneNumber($parameters[1]);
+        });
+
+        // 注册用户名验证规则
+        $this->app->validator->extend('username', function (...$parameters) {
+            return validateUsername($parameters[1]);
+        });
+
+        // 注册显示长度验证规则
+        $this->app->validator->extend('display_length', function ($attribute, string $value, array $parameters) {
+            unset($attribute);
+            return $this->validateDisplayLength($value, $parameters);
+        });
+    }
+
+    /**
+     * 验证显示长度计算.
+     *
+     * @param strint|int $value
+     * @param array $parameters
+     * @return bool
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function validateDisplayLength(string $value, array $parameters): bool
+    {
+        if (empty($parameters)) {
+            throw new \InvalidArgumentException('Parameters must be passed');
+
+        // 补充 min 位.
+        } elseif (count($parameters) === 1) {
+            $parameters = [0, array_first($parameters)];
+        }
+
+        [$min, $max] = $parameters;
+
+        preg_match_all('/[a-zA-Z0-9_]/', $value, $single);
+        $length = count($single[0]) / 2 + mb_strlen(preg_replace('([a-zA-Z0-9_])', '', $value));
+
+        return $length >= $min && $length <= $max;
     }
 }
