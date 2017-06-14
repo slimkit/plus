@@ -43,6 +43,7 @@ class AppServiceProvider extends ServiceProvider
         // 注册显示长度验证规则
         $this->app->validator->extend('display_length', function ($attribute, string $value, array $parameters) {
             unset($attribute);
+
             return $this->validateDisplayLength($value, $parameters);
         });
     }
@@ -59,7 +60,6 @@ class AppServiceProvider extends ServiceProvider
     {
         if (empty($parameters)) {
             throw new \InvalidArgumentException('Parameters must be passed');
-
         // 补充 min 位.
         } elseif (count($parameters) === 1) {
             $parameters = [0, array_first($parameters)];
