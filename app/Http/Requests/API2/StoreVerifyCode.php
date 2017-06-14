@@ -26,7 +26,6 @@ class StoreVerifyCode extends FormRequest
         return [
             'phone' => 'required_without:email|cn_phone|exists:users,phone',
             'email' => 'required_without:phone|email|max:128|exists:users,email',
-            'type' => 'nullable|in:phone,email',
         ];
     }
 
@@ -46,7 +45,6 @@ class StoreVerifyCode extends FormRequest
             'email.email'  => '请求的邮箱地址格式无效',
             'email.max'    => '请求的邮箱地址太长，应小于128字节',
             'email.exists' => '请求的用户不存在',
-            'type.in' => '请求类型非法',
         ];
     }
 }
