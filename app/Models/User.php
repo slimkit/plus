@@ -87,28 +87,6 @@ class User extends Authenticatable
     }
 
     /**
-     * 复用 账号 查询条件方法.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $account 可以是手机号、邮箱、用户名、用户ID
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeByAccount(Builder $query, string $account): Builder
-    {
-        if (\Zhiyi\Plus\is_cn_phone($account)) {
-            $field = 'phone';
-        } elseif (false !== filter_var($account, FILTER_VALIDATE_EMAIL)) {
-            $field = 'email';
-        } elseif (ctype_digit($account)) {
-            $field = 'id';
-        } else {
-            $field = 'name';
-        }
-
-        return $query->where($field, $account);
-    }
-
-    /**
      * Create user ppassword.
      *
      * @param string $password user password
