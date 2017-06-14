@@ -65,7 +65,7 @@ class AppServiceProvider extends ServiceProvider
             $parameters = [0, array_first($parameters)];
         }
 
-        [$min, $max] = $parameters;
+        list($min, $max) = $parameters;
 
         preg_match_all('/[a-zA-Z0-9_]/', $value, $single);
         $length = count($single[0]) / 2 + mb_strlen(preg_replace('([a-zA-Z0-9_])', '', $value));
