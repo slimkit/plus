@@ -17,6 +17,7 @@ class CreatePayPublishesTable extends Migration
             $table->increments('id')->comment('付费记录ID');
             $table->string('index')->comment('付费索引');
             $table->string('subject')->comment('付费主题');
+            $table->string('body')->comment('付费内容详情');
             $table->integer('amount')->unsigned()->comment('付费金额');
             $table->timestamps();
 
