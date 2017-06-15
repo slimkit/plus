@@ -25,7 +25,7 @@ class UsersTableSeeder extends Seeder
      */
     protected function createFounderUser()
     {
-        $user = User::create(['name' => '创始人', 'phone' => 'admin', 'password' => bcrypt('admin')]);
+        $user = User::create(['name' => 'root', 'password' => bcrypt('root')]);
         $roles = Role::all();
         $user->attachRoles($roles);
     }
