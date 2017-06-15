@@ -23,3 +23,25 @@ function validateUsername(string $username): bool
 {
     return preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $username);
 }
+
+/**
+ * 获取用户账号所属的字段
+ *
+ * @param string $account
+ * @param string $default
+ * @return string 如果成功返回字段名，失败返回$default
+ */
+function getUserAccountField(string $account, string $default = ''): string
+{
+    if (false !== filter_var($account, FILTER_VALIDATE_EMAIL)) {
+        return 'email';
+    } elseif (validateChinaPhoneNumber($account)) {
+        return 'phone';
+    } elseif (validateUsername($account)) {
+        return 'name';
+    } elseif (preg_match('/^[1-9]\d{0,9}$/', $account)) {
+        return 'id';
+    }
+
+    return $default;
+}
