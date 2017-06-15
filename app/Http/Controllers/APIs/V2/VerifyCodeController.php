@@ -74,7 +74,7 @@ class VerifyCodeController extends Controller
      * Send phone or email verification code.
      *
      * @param string $account
-     * @param string|null $type
+     * @param string $type
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -85,9 +85,9 @@ class VerifyCodeController extends Controller
         $verify = factory(VerifyCode::class)->create(['account' => $account]);
         if ($type === 'email' || strpos($account, '@') !== false) {
             Mail::to($account)->queue(new MailVerifyCode($verify));
+        } else {
+            $this->sms->dispatch($verify);
         }
-
-        $this->sms->dispatch($verify);
     }
 
     /**
