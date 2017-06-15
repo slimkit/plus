@@ -8,7 +8,7 @@
           <input type="text" class="form-control" id="name" aria-describedby="name-help-block" placeholder="请输入用户名" v-model="name">
         </div>
         <span class="col-sm-4 help-block" id="name-help-block">
-          请输入用户名，只能以非特殊字符和数字抬头！
+          请输入用户名，只能以非特殊字符和数字开头！
         </span>
       </div>
 
@@ -16,10 +16,21 @@
       <div class="form-group">
         <label for="phone" class="col-sm-2 control-label">手机号码</label>
         <div class="col-sm-6">
-          <input type="text" class="form-control" id="phonepassword" aria-describedby="phone-help-block" placeholder="请输入手机号码" v-model="phone">
+          <input type="text" class="form-control" id="phone" aria-describedby="phone-help-block" placeholder="请输入手机号码" v-model="phone">
         </div>
         <span class="col-sm-4 help-block" id="phone-help-block">
-          手机号码
+          可选，手机号码
+        </span>
+      </div>
+
+      <!-- email -->
+      <div class="form-group">
+        <label for="email" class="col-sm-2 control-label">邮箱</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="email" aria-describedby="phone-help-block" placeholder="请输入邮箱地址" v-model="email">
+        </div>
+        <span class="col-sm-4 help-block" id="email-help-block">
+          可选，电子邮箱
         </span>
       </div>
 
@@ -27,7 +38,7 @@
       <div class="form-group">
         <label for="password" class="col-sm-2 control-label">密码</label>
         <div class="col-sm-6">
-          <input type="password" class="form-control" id="password" aria-describedby="password-help-block" placeholder="请输入用户密码" v-model="password">
+          <input type="password" autocomplete="new-password" class="form-control" id="password" aria-describedby="password-help-block" placeholder="请输入用户密码" v-model="password">
         </div>
         <span class="col-sm-4 help-block" id="password-help-block">
           用户密码
@@ -62,6 +73,7 @@ const UserAddComponent = {
   data: () => ({
     name: '',
     phone: '',
+    email: '',
     password: '',
     adding: false,
     errorMessage: ''
@@ -76,7 +88,7 @@ const UserAddComponent = {
       ).then(({ data: { user_id: userId } }) => {
         this.$router.replace({ path: '/users/manage/'+userId });
       }).catch(({ response: { data = {} } = {} }) => {
-        const { name = [], phone = [], password = [], message = [] } = data;
+        const { name = [], phone = [], email = [], password = [], message = [] } = data;
         const [ errorMessage ] = [ ...name, ...phone, ...password, ...message ];
 
         this.errorMessage = errorMessage;
