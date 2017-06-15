@@ -51,3 +51,10 @@ Route::prefix('wallet')
     // 用户凭据列表
     Route::get('/charges', 'WalletChargeController@list');
 });
+
+// 文件相关接口
+Route::get('/files/{fileWith}', 'FilesController@show');
+Route::prefix('files')->middleware('auth:api')->group(function () {
+    Route::post('/', 'FilesController@store');
+    Route::get('/uploaded/{hash}', 'FilesController@uploaded');
+});
