@@ -4,12 +4,12 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\AuthToken;
+use function Zhiyi\Plus\validateUsername;
 use Illuminate\Database\Eloquent\Factory;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use function Zhiyi\Plus\validateChinaPhoneNumber;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Zhiyi\Plus\Http\Requests\API2\StoreLoginPost;
-use function Zhiyi\Plus\validateUsername;
-use function Zhiyi\Plus\validateChinaPhoneNumber;
 
 class LoginController extends Controller
 {
@@ -40,8 +40,9 @@ class LoginController extends Controller
             $builder = User::where('id', $account);
         }
 
-        if (empty($builder) || !$user = $builder->first()) {
+        if (empty($builder) || ! $user = $builder->first()) {
             $key = $phone ? 'phone' : 'account';
+
             return $response->json([
                 $key => ['登录的用户不存在'],
             ])->setStatusCode(422);
