@@ -4,10 +4,9 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\AuthToken;
-use function Zhiyi\Plus\validateUsername;
 use Illuminate\Database\Eloquent\Factory;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use function Zhiyi\Plus\validateChinaPhoneNumber;
+use function Zhiyi\Plus\getUserAccountField;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Zhiyi\Plus\Http\Requests\API2\StoreLoginPost;
 
@@ -30,14 +29,8 @@ class LoginController extends Controller
 
         if ($phone) {
             $builder = User::byPhone($phone);
-        } elseif (validateChinaPhoneNumber($account)) {
-            $builder = User::byPhone($account);
-        } elseif (false !== filter_var($account, FILTER_VALIDATE_EMAIL)) {
-            $builder = User::byEmail($account);
-        } elseif (validateUsername($account)) {
-            $builder = User::byName($account);
-        } elseif (preg_match('/^[1-9]\d{0,9}$/', $account)) {
-            $builder = User::where('id', $account);
+        } elseif ($field = getUserAccountField($account)) {
+            $builder = User::where($field, $account);
         }
 
         if (empty($builder) || ! $user = $builder->first()) {
