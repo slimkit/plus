@@ -6,7 +6,7 @@ V2 版本的 APIs 是符合 REST full 的借口实现，所以在使用前请自
 
 - [概述](overview.md)
 - [启动信息](bootstrappers.md)
-- [手机短信验证码](verify-code.md)
+- [获取验证码](verify-code.md)
 - 用户
     - [获取用户信息](user/show.md)
     - [登录（获取Token）](user/login.md)
