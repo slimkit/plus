@@ -85,9 +85,10 @@ class VerifyCodeController extends Controller
         $verify = factory(VerifyCode::class)->create(['account' => $account]);
         if ($type === 'email' || strpos($account, '@') !== false) {
             Mail::to($account)->queue(new MailVerifyCode($verify));
-        } else {
-            $this->sms->dispatch($verify);
+            return;
         }
+
+        $this->sms->dispatch($verify);
     }
 
     /**
