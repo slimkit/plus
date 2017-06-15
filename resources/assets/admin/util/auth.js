@@ -5,7 +5,7 @@ import request, { createRequestURI } from '../util/request';
 
 const login = (access, password) => request.post(
   createRequestURI('login'),
-  { phone: access, password },
+  { account: access, password },
   { validateStatus: status => status === 201 }
 );
 

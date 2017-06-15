@@ -6,6 +6,7 @@ use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Support\ManageRepository;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use function Zhiyi\Plus\getUserAccountField;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class HomeController extends Controller
@@ -13,6 +14,11 @@ class HomeController extends Controller
     use AuthenticatesUsers {
         login as traitLogin;
     }
+
+    /**
+     * @var string
+     */
+    protected $loginField;
 
     /**
      * Create a new controller instance.
@@ -24,9 +30,19 @@ class HomeController extends Controller
         $this->middleware('guest', ['except' => ['logout', 'index', 'showManages']]);
     }
 
+    /**
+     * @return string
+     */
     public function username()
     {
-        return 'phone';
+        if (null === $this->loginField) {
+            $request = app(Request::class);
+            $account = $request->input('account');
+            $this->loginField = getUserAccountField($account, 'name');
+            $request->merge([$this->loginField => $account]);
+        }
+
+        return $this->loginField;
     }
 
     public function login(Request $request)

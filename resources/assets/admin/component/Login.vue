@@ -4,7 +4,7 @@
       <form role="form" @submit.prevent="submit">
         <div class="form-group">
           <label for="access">账户</label>
-          <input type="tel" class="form-control" id="access" placeholder="输入账号" v-model="access">
+          <input type="text" class="form-control" id="access" placeholder="输入账号" v-model="access">
         </div>
         <div class="form-group">
           <label for="password">密码</label>
@@ -49,8 +49,8 @@ const login = {
         });
       })
       .catch(({ response: { data = {} } }) => {
-        const { phone, password } = data;
-        this.error = phone || password || '登录失败！';
+        const { id, name, phone, email, password } = data;
+        this.error = id || name || phone || email || password || '登录失败！';
       });
     }
   }
