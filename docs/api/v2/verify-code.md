@@ -49,7 +49,7 @@ POST /verifycodes
 ##### Headers
 
 ```
-Status: 201 Created
+Status: 202 Accepted
 ```
 
 ##### Body
