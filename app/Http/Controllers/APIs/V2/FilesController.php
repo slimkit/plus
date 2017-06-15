@@ -16,7 +16,8 @@ class FilesController extends Controller
     }
 
     public function store()
-    {}
+    {
+    }
 
     public function uploaded(Request $request, ResponseContract $response, FileModel $file, string $hash)
     {
