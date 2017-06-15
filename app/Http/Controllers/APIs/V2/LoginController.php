@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factory;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Zhiyi\Plus\Http\Requests\API2\StoreLoginPost;
+use function Zhiyi\Plus\validateUsername;
+use function Zhiyi\Plus\validateChinaPhoneNumber;
 
 class LoginController extends Controller
 {
@@ -28,13 +30,20 @@ class LoginController extends Controller
 
         if ($phone) {
             $builder = User::byPhone($phone);
-        } else {
-            $builder = User::byAccount($account);
+        } elseif (validateChinaPhoneNumber($account)) {
+            $builder = User::byPhone($account);
+        } elseif (false !== filter_var($account, FILTER_VALIDATE_EMAIL)) {
+            $builder = User::byEmail($account);
+        } elseif (validateUsername($account)) {
+            $builder = User::byName($account);
+        } elseif (preg_match('/^[1-9]\d{0,9}$/', $account)) {
+            $builder = User::where('id', $account);
         }
 
-        if (! $user = $builder->first()) {
+        if (empty($builder) || !$user = $builder->first()) {
+            $key = $phone ? 'phone' : 'account';
             return $response->json([
-                'message' => ['登录的用户不存在'],
+                $key => ['登录的用户不存在'],
             ])->setStatusCode(422);
         }
 
