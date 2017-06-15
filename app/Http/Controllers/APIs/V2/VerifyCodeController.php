@@ -3,29 +3,16 @@
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Services\SMS\SMS;
 use Zhiyi\Plus\Models\VerifyCode;
 use Illuminate\Support\Facades\Mail;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Services\SMS\SMS as SMSService;
 use Zhiyi\Plus\Mail\VerifyCode as MailVerifyCode;
 use Zhiyi\Plus\Http\Requests\API2\StoreVerifyCode;
 use Zhiyi\Plus\Http\Requests\API2\CreateRegisterVerifyCodeRequest;
 
 class VerifyCodeController extends Controller
 {
-    protected $sms;
-
-    /**
-     * 设置启动需要依赖.
-     *
-     * @param \Zhiyi\Plus\Services\SMS\SMS $sms
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function __construct(SMS $sms)
-    {
-        $this->sms = $sms;
-    }
-
     /**
      * 创建注册验证码.
      *
@@ -89,7 +76,7 @@ class VerifyCodeController extends Controller
             return;
         }
 
-        $this->sms->dispatch($verify);
+        app(SMSService::class)->dispatch($verify);
     }
 
     /**
