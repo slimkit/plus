@@ -25,7 +25,7 @@ function validateUsername(string $username): bool
 }
 
 /**
- * 获取用户账号所属的字段
+ * 获取用户账号所属的字段.
  *
  * @param string $account
  * @param string $default
