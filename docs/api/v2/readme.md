@@ -17,3 +17,6 @@ V2 版本的 APIs 是符合 REST full 的借口实现，所以在使用前请自
     - [提现申请](wallet/cashes.md)
     - [余额充值](wallet/recharge.md)
     - [凭据](wallet/charge.md)
+
+- 文件
+    - [上传检查](file/uploaded.md)
