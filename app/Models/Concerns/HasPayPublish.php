@@ -3,7 +3,6 @@
 namespace Zhiyi\Plus\Models\Concerns;
 
 use Zhiyi\Plus\Models\PayPublish;
-use Zhiyi\Plus\Models\PayPublishUser;
 
 trait HasPayPublish
 {

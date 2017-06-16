@@ -24,7 +24,7 @@ class FilesController extends Controller
         $fileWith->load(['file', 'pay']);
 
         if ($fileWith->pay instanceof PayPublishModel) {
-            $this->resolveUserPaid($request->user('api'), $fileWith->pay);   
+            $this->resolveUserPaid($request->user('api'), $fileWith->pay);
         }
 
         dd($fileWith->pay);
@@ -43,10 +43,8 @@ class FilesController extends Controller
         // 如果用户位空，则抛出认证错误.
         if ($user === null) {
             abort(401);
-        } else
-
-        // 检查用户是否购买过，购买过则跳过.
-        if ($user->payPublishes()->newPivotStatementForId($pay->id)->exists() === true) {
+        } elseif // 检查用户是否购买过，购买过则跳过.
+        ($user->payPublishes()->newPivotStatementForId($pay->id)->exists() === true) {
             return;
         }
 

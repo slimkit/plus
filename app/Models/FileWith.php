@@ -2,8 +2,6 @@
 
 namespace Zhiyi\Plus\Models;
 
-use Zhiyi\Plus\Models\File;
-use Zhiyi\Plus\Models\PayPublish;
 use Illuminate\Database\Eloquent\Model;
 
 class FileWith extends Model
