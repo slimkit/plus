@@ -2,7 +2,6 @@
 
 namespace Zhiyi\Plus\Models;
 
-use Zhiyi\Plus\Models\File;
 use Illuminate\Database\Eloquent\Model;
 
 class FileWith extends Model
