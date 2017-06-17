@@ -1,6 +1,6 @@
 # ThinkSNS+ 安装部署
 
-- [祖传安装](#祖传安装)
+- [祖传部署](#祖传部署)
 - [Laradock](#Laradock)
 
 > 首先，我们推荐使用 [Laradock](#Laradock) 进行部署程序，将持续运行在 Docker 容器之中。
