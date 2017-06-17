@@ -212,3 +212,66 @@ git clone https://github.com/zhiyicx/thinksns-plus
 至此您已久安装完成了，现在输入 `{APP_UEL}/admin` 进入后台看看吧
 
 > 进入后台的账号密码都是 `root`
+
+## Laradock
+
+Laradock 是一套完整的在 Docker 下的 PHP 环境，支持繁多的数据库引擎和 http 软件以及多版本的 PHP 支持。
+
+### 安装 Docker
+
+Docker 是你在你的电脑或者服务器上唯一需要安装的软件，如何安装情阅读 [Docker 安装官方文档](https://docs.docker.com/engine/installation/) 中找到您电脑或者服务器的安装方式进行安装。
+
+> 我们推荐安装的版本是 `Docker CE` 版本，该版本在服务器上支持性更好。
+
+### 安装 Laradock
+
+首先我们看推荐阅读 [Laradock 官方安装文档](http://laradock.io/getting-started/) 来了解您需要何种安装，而本文只会讲解以 git submodule 的方式对 ThinkSNS+ 的环境部署。
+
+### 下载 ThinkSNS+
+
+```shell
+git clone https://github.com/zhiyicx/thinksns-plus
+```
+
+```shell
+cd thinksns-plus
+```
+
+### 添加 Laradock
+
+```shell
+git submodule add https://github.com/Laradock/laradock && cd laradock
+```
+
+### 配置 Laradock
+
+```
+cp env.example .env && vi .env
+```
+
+然后根据你的实际环境修改变量
+
+### 运行
+
+到这一步，您基本已经部署完成了。
+
+```shell
+docker-compose up -d nginx mysql
+```
+
+进入工作区：
+```shell
+docker0compose exec workspace bash
+```
+
+初始化 ThinkSNS+
+
+```shell
+composer install
+php artisan key:generate
+php artisan vendor:publish --force
+php artisan migrate
+php artisan db:send
+```
+
+好了，现在已经利用 Laradock 部署完成，但是这是最简单的部署，已久推荐去看 Laradock 官方文档，你可以最大化的友好部署。
