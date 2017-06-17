@@ -5,6 +5,7 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 use DB;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\Follow;
 use Zhiyi\Plus\Models\Followed;
 use Zhiyi\Plus\Jobs\PushMessage;
 use Zhiyi\Plus\Models\Following;
@@ -32,8 +33,13 @@ class FollowController extends Controller
         $follow->user_id = $user_id;
         $follow->following_user_id = $follow_user_id;
 
+        $newfollow = new follow();
+        $newfollow->user_id = $user_id;
+        $newfollow->target = $follow_user_id;  // TODO 暂定兼容方案 之后删除旧版关注数据操作
+
         DB::beginTransaction();
 
+        $newfollow->save();
         $add_following = $follow->save();
         $add_followed = $follow->syncFollowed();
         $following_count = UserDatas::byKey('following_count')->byUserId($user_id)->increment('value');
@@ -80,6 +86,7 @@ class FollowController extends Controller
 
         $delete_followed = Followed::where(['user_id' => $follow_user_id, 'followed_user_id' => $user_id])->delete();
         $delete_following = Following::where(['user_id' => $user_id, 'following_user_id' => $follow_user_id])->delete();
+        $delete_follow = Follow::where(['user_id' => $user_id, 'target' => $follow_user_id])->delete();
         $following_count = UserDatas::byKey('following_count')->byUserId($user_id)->decrement('value');
         $followed_count = UserDatas::byKey('followed_count')->byUserId($follow_user_id)->decrement('value');
 
