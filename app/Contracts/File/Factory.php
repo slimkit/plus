@@ -20,8 +20,9 @@ interface Factory
      *
      * @param \Zhiyi\Plus\Models\File $file
      * @param array $extra
+     * @param string $name
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function make(File $file, array $extra = []): string;
+    public function make(File $file, array $extra = [], string $name = ''): string;
 }
