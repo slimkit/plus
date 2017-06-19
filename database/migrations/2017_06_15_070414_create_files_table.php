@@ -19,9 +19,9 @@ class CreateFilesTable extends Migration
             $table->string('origin_filename')->nullbale()->default(null)->comment('原始文件名');
             $table->string('filename')->comment('文件名');
             $table->string('mime', 100)->comment('mime type');
-            $table->integer('size')->comment('file size');
             $table->float('width')->nullbale()->default(null)->comment('图片宽度');
             $table->float('height')->nullbale()->default(null)->comment('图片高度');
+            $table->timestamps();
 
             $table->unique('hash');
             $table->index('mime');
