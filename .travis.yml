@@ -1,25 +1,22 @@
+sudo: required
+dist: trusty
+group: edge
 language: php
-
 php:
     - 7.0
     - 7.1
-
 services:
     - mysql
-
 before_install:
     - mysql -e 'CREATE DATABASE IF NOT EXISTS thinksns_plus;'
     - php -r "file_exists('.env') || copy('.env.example', '.env');"
-
 install:
     - composer install -vvv
     - php artisan key:generate
-
 script:
     - php artisan migrate
     - php artisan db:seed
     - php artisan vendor:publish --force
     - php vendor/bin/phpunit --coverage-clover=./storage/logs/coverage.xml
-
 after_script:
     - php vendor/bin/codacycoverage clover ./storage/logs/coverage.xml
