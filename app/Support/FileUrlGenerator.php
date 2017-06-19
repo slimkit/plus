@@ -48,7 +48,7 @@ abstract class FileUrlGenerator implements FileUrlGeneratorContract
             return static::$generator;
         }
 
-        if (isset($abstract = static::$generators[$name])) {
+        if (($abstract = static::$generators[$name] ?? false) !== false) {
             return $abstract;
         }
 
