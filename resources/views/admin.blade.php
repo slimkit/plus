@@ -24,7 +24,6 @@
                 'api' => $api,
                 'logged' => $logged,
                 'user' => $user,
-                'menus' => $menus,
             ])
         !!};
     </script>

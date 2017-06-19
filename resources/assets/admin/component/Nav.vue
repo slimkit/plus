@@ -82,12 +82,6 @@
       <span v-else class="__icon">{{ item['icon'] }}</span>
       {{ item['name'] }}
     </router-link>
-
-    <!-- 旧的拓展包导航加载 -->
-    <router-link class="list-group-item __button" v-for="({ name, icon }, component) in menus" :key="component" :to="`/component/${component}`" active-class="active" exact>
-      <img class="__icon-img" :src="icon">
-      {{ name }}
-    </router-link>
   </div>
 </template>
 
@@ -97,11 +91,7 @@ import { MANAGES_SET } from '../store/types';
 import { MANAGES_GET } from '../store/getter-types';
 import { mapGetters } from 'vuex';
 
-const menus = window.TS.menus || {};
 const nav = {
-  data: () => ({
-    menus
-  }),
   computed: {
     ...mapGetters({
       manages: MANAGES_GET

@@ -79,7 +79,6 @@ class HomeController extends Controller
             'api'        => url('api/v1'),
             'logged'     => $this->guard()->check(),
             'user'       => $user ? $this->user($user) : null,
-            'menus'      => $this->menus(),
         ];
 
         return view('admin', $data);
@@ -96,37 +95,6 @@ class HomeController extends Controller
         return response()
             ->json($repository->getManages())
             ->setStatusCode(200);
-    }
-
-    protected function menus()
-    {
-        $components = (array) config('component');
-        $menus = [];
-
-        foreach ($components as $component => $info) {
-            $info = (array) $info;
-            $installer = array_get($info, 'installer');
-            $installed = array_get($info, 'installed', false);
-
-            if (! $installed || ! $installer) {
-                continue;
-            }
-
-            $componentInfo = app($installer)->getComponentInfo();
-
-            if (! $componentInfo) {
-                continue;
-            }
-
-            $menus[$component] = [
-                'name'  => $componentInfo->getName(),
-                'icon'  => $componentInfo->getIcon(),
-                'logo'  => $componentInfo->getLogo(),
-                'admin' => $componentInfo->getAdminEntry(),
-            ];
-        }
-
-        return $menus;
     }
 
     /**
