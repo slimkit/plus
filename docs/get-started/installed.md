@@ -206,7 +206,7 @@ git clone https://github.com/zhiyicx/thinksns-plus
     ```
 5. 填充数据
     ```shell
-    php artisan db:send
+    php artisan db:seed
     ```
 
 至此您已久安装完成了，现在输入 `{APP_UEL}/admin` 进入后台看看吧
@@ -271,7 +271,7 @@ composer install
 php artisan key:generate
 php artisan vendor:publish --force
 php artisan migrate
-php artisan db:send
+php artisan db:seed
 ```
 
 好了，现在已经利用 Laradock 部署完成，但是这是最简单的部署，已久推荐去看 Laradock 官方文档，你可以最大化的友好部署。
