@@ -24,7 +24,7 @@ class StoreUploadFile extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'required|max:2048|file|mimes:jpeg,bmp,png,gif,txt'
+            'file' => 'required|max:2048|file|mimes:jpeg,bmp,png,gif,txt',
         ];
     }
 }

@@ -10,7 +10,6 @@ use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\PayPublish as PayPublishModel;
-use Illuminate\Contracts\Filesystem\Factory as FilesystemContract;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Zhiyi\Plus\Http\Requests\API2\StoreUploadFile as StoreUploadFileRequest;
 
@@ -135,6 +134,7 @@ class FilesController extends Controller
     protected function validateFileInDatabase(FileModel $fileModel, UploadedFile $file, callable $call): FileModel
     {
         $hash = md5_file($file);
+
         return $fileModel->where('hash', $hash)->firstOr(['id'], function () use ($file, $call, $hash): FileModel {
             return call_user_func_array($call, [$file, $hash]);
         });
