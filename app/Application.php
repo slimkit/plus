@@ -106,7 +106,6 @@ class Application extends LaravelApplication
     protected function getConfiguredProviders(): array
     {
         return array_merge(
-            $this->config['providers'] ?? [], // 内部转换完成后废弃。
             $this->make(PackageManifest::class)->providers(),
             $this->config['app.providers']
         );
