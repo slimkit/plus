@@ -42,7 +42,7 @@ abstract class FileUrlGenerator implements FileUrlGeneratorContract
      * @return array|string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public static function getGeneratorAbstract(string $name = null)
+    public static function getGeneratorAbstract(string $name = '')
     {
         if (! $name) {
             return static::$generator;

@@ -36,11 +36,11 @@ class UrlManager implements FactoryContract
     /**
      * Get URL generator.
      *
-     * @param string|null $name
+     * @param string $name
      * @return \Zhiyi\Plus\Contracts\UrlGenerator
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function generator(string $name = null): UrlGenerator
+    public function generator(string $name = ''): UrlGenerator
     {
         $name = $name ?: $this->getDefaulrGennerator();
 
@@ -55,7 +55,7 @@ class UrlManager implements FactoryContract
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function make(File $file, array $extra = [], string $name = null): string
+    public function make(File $file, array $extra = [], string $name = ''): string
     {
         $generator = $this->generator($name);
 
@@ -87,7 +87,7 @@ class UrlManager implements FactoryContract
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function getGeneratorAbstract(string $name = null): string
+    protected function getGeneratorAbstract(string $name = ''): string
     {
         return FileUrlGenerator::getGeneratorAbstract($name);
     }

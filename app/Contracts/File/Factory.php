@@ -9,11 +9,11 @@ interface Factory
     /**
      * Get URL generator.
      *
-     * @param string|null $name
+     * @param string $name
      * @return \Zhiyi\Plus\Contracts\UrlGenerator
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function generator(string $name = null): UrlGenerator;
+    public function generator(string $name = ''): UrlGenerator;
 
     /**
      * Make a file url.
