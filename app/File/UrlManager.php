@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\File;
 
+use Zhiyi\Plus\Models\File;
 use Zhiyi\Plus\Support\FileUrlGenerator;
 use Zhiyi\Plus\Contracts\File\Factory as FactoryContract;
 use Zhiyi\Plus\Contracts\File\UrlGenerator as UrlGeneratorContract;
