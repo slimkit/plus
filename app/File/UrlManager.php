@@ -4,6 +4,7 @@ namespace Zhiyi\Plus\File;
 
 use Zhiyi\Plus\Support\FileUrlGenerator;
 use Zhiyi\Plus\Contracts\File\Factory as FactoryContract;
+use Zhiyi\Plus\Contracts\UrlGenerator as UrlGeneratorContract;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 class UrlManager implements FactoryContract
@@ -40,7 +41,7 @@ class UrlManager implements FactoryContract
      * @return \Zhiyi\Plus\Contracts\UrlGenerator
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function generator(string $name = ''): UrlGenerator
+    public function generator(string $name = ''): UrlGeneratorContract
     {
         $name = $name ?: $this->getDefaulrGennerator();
 
@@ -73,7 +74,7 @@ class UrlManager implements FactoryContract
      * @return \Zhiyi\Plus\Contracts\UrlGenerator
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function resolve(string $name): UrlGenerator
+    protected function resolve(string $name): UrlGeneratorContract
     {
         return $this->generators[$name] = $this->app->make(
             $this->getGeneratorAbstract($name)
