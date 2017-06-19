@@ -1,6 +1,4 @@
-sudo: required
-dist: trusty
-group: edge
+sudo: false
 language: php
 php:
     - 7.0
