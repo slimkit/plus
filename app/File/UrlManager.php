@@ -65,7 +65,7 @@ class UrlManager implements FactoryContract
             $generator->setFile($file);
         }
 
-        return $generator->to($file->filename, $extra);
+        return $generator->url($file->filename, $extra);
     }
 
     /**

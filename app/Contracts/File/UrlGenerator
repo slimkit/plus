@@ -12,5 +12,5 @@ interface UrlGenerator
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function to(string $filename, array $extra = []): string;
+    public function url(string $filename, array $extra = []): string;
 }
