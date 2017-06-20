@@ -92,7 +92,7 @@ class UrlManager implements UrlFactoryContract
     protected function getGeneratorAbstract(string $driver): string
     {
         return $this->app->config->get(
-            sprintf('file.generators.%s', $driver)
+            sprintf('cdn.generators.%s', $driver)
         ) ?: $driver;
     }
 
@@ -104,6 +104,6 @@ class UrlManager implements UrlFactoryContract
      */
     protected function getDefaulrGennerator(): string
     {
-        return $this->app->config['file.default_generator'] ?: 'local';
+        return $this->app->config['cdn.default'] ?: 'local';
     }
 }
