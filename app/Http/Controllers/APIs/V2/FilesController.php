@@ -103,7 +103,7 @@ class FilesController extends Controller
         $fileWith = $this->resolveFileWith($fileWith, $request->user(), $fileModel->id);
 
         return $response->json([
-            'message' => '上传成功',
+            'message' => ['上传成功'],
             'id' => $fileWith->id,
         ])->setStatusCode(201);
     }
