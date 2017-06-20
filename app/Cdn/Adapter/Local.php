@@ -57,7 +57,7 @@ class Local implements FileUrlGeneratorContract
                 return $this->putProcessFile(
                     $image,
                     $this->makeProcessFilename($filename, $this->makeProcessFingerprint($extra))
-                ); 
+                );
             });
         });
     }
@@ -141,7 +141,7 @@ class Local implements FileUrlGeneratorContract
         $height = floatval($extra['height'] ?? 0.0);
         $quality = intval($extra['quality'] ?? 0);
 
-        if ((!$width || !$height) && !$quality) {
+        if ((! $width || ! $height) && ! $quality) {
             return $this->makeUrl($filename);
         }
 
@@ -163,13 +163,13 @@ class Local implements FileUrlGeneratorContract
      */
     protected function validateFingerprint(string $filename, callable $call, array $extra): string
     {
-       $processFilename = $this->makeProcessFilename($filename, $fingerprint = $this->makeProcessFingerprint($extra));
+        $processFilename = $this->makeProcessFilename($filename, $fingerprint = $this->makeProcessFingerprint($extra));
 
-       if ($this->files->exists($processFilename)) {
-           return $this->makeUrl($processFilename);
-       }
+        if ($this->files->exists($processFilename)) {
+            return $this->makeUrl($processFilename);
+        }
 
-       return $call(
+        return $call(
             ImageFacade::make($this->app['config']['filesystems.disks.public.root'].'/'.$filename),
             $extra
         );
@@ -213,7 +213,7 @@ class Local implements FileUrlGeneratorContract
         $mimes = [
             'image/jpeg',
             'image/png',
-            'image/gif'
+            'image/gif',
         ];
 
         if ($this->app['config']['image.driver'] === 'imagick') {
@@ -221,7 +221,7 @@ class Local implements FileUrlGeneratorContract
                 'image/tiff',
                 'image/bmp',
                 'image/x-icon',
-                'image/vnd.adobe.photoshop'
+                'image/vnd.adobe.photoshop',
             ]);
         }
 
