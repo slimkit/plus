@@ -102,6 +102,6 @@ class UrlManager implements FactoryContract
      */
     protected function getDefaulrGennerator(): string
     {
-        // 
+        //
     }
 }
