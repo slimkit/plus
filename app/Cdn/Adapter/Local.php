@@ -55,7 +55,7 @@ class Local implements FileUrlGeneratorContract
         return $this->validateImageAnd($filename, function (string $filename) use ($extra) {
             return $this->validateProcessAnd($filename, $extra, function (Image $image, array $extra = []) use ($filename) {
                 $this->processSize($image, $extra);
-                
+
                 $quality = intval($extra['quality'] ?? 90) ?: 90;
                 $quality = min($quality, 90);
 
