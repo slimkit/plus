@@ -4,7 +4,7 @@ return [
     'default' => 'local',
     'generators' => [
         'local' => [
-            'driver' => \Zhiyi\Plus\Cdn\Adapter\Local::class
-        ]
+            'driver' => \Zhiyi\Plus\Cdn\Adapter\Local::class,
+        ],
     ],
 ];
