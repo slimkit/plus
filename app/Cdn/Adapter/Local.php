@@ -42,17 +42,24 @@ class Local implements FileUrlGeneratorContract
      *
      * @param string $filename
      * @param array $extra
+     * @throws \Exception
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function url(string $filename, array $extra = []): string
     {
-        $this->validateFileOrFail($filename);
+        if ($this->files->exists($filename) === false) {
+            throw new \Exception("Unable to find a file at path [{$filename}].");
+        }
 
         return $this->validateImageAnd($filename, function (string $filename) use ($extra) {
             return $this->validateProcessAnd($filename, $extra, function (Image $image, array $extra = []) use ($filename) {
                 $this->processSize($image, $extra);
-                $this->processQuality($image, $extra['quality'] ?? 0);
+                
+                $quality = intval($extra['quality'] ?? 90) ?: 90;
+                $quality = min($quality, 90);
+
+                $image->encode($image->extension, $quality);
 
                 return $this->putProcessFile(
                     $image,
@@ -70,27 +77,13 @@ class Local implements FileUrlGeneratorContract
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function putProcessFile(Image $image, string $filename): string
+    private function putProcessFile(Image $image, string $filename): string
     {
         if (! $image->isEncoded() || ! $this->files->put($filename, $image)) {
             throw new \Exception('The file encode error.');
         }
 
         return $this->makeUrl($filename);
-    }
-
-    /**
-     * 处理文件转换并加载转换后的对象.
-     *
-     * @param \Intervention\Image\Image $image
-     * @param int $quality
-     * @return void
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    protected function processQuality(Image $image, int $quality = 90)
-    {
-        $quality = min($quality ?: 90, 90);
-        $image->encode($image->extension, $quality);
     }
 
     /**
@@ -135,7 +128,7 @@ class Local implements FileUrlGeneratorContract
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function validateProcessAnd(string $filename, array $extra, callable $call): string
+    private function validateProcessAnd(string $filename, array $extra, callable $call): string
     {
         $width = floatval($extra['width'] ?? 0.0);
         $height = floatval($extra['height'] ?? 0.0);
@@ -161,7 +154,7 @@ class Local implements FileUrlGeneratorContract
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function validateFingerprint(string $filename, callable $call, array $extra): string
+    private function validateFingerprint(string $filename, callable $call, array $extra): string
     {
         $processFilename = $this->makeProcessFilename($filename, $this->makeProcessFingerprint($extra));
 
@@ -220,7 +213,7 @@ class Local implements FileUrlGeneratorContract
      * @return array
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function getSupportMimeTypes(): array
+    public function getSupportMimeTypes(): array
     {
         $mimes = [
             'image/jpeg',
@@ -248,7 +241,7 @@ class Local implements FileUrlGeneratorContract
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function validateImageAnd(string $filename, callable $call): string
+    private function validateImageAnd(string $filename, callable $call): string
     {
         if (in_array($this->files->mimeType($filename), $this->getSupportMimeTypes())) {
             return $call($filename);
@@ -267,20 +260,5 @@ class Local implements FileUrlGeneratorContract
     protected function makeUrl(string $filename): string
     {
         return $this->files->url($filename);
-    }
-
-    /**
-     * 验证并返回文件证实路径，如果没找到抛出一场.
-     *
-     * @param string $filename
-     * @throws \Exception
-     * @return string
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    protected function validateFileOrFail(string $filename)
-    {
-        if ($this->files->exists($filename) === false) {
-            throw new \Exception("Unable to find a file at path [{$filename}].");
-        }
     }
 }
