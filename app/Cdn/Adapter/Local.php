@@ -163,16 +163,28 @@ class Local implements FileUrlGeneratorContract
      */
     protected function validateFingerprint(string $filename, callable $call, array $extra): string
     {
-        $processFilename = $this->makeProcessFilename($filename, $fingerprint = $this->makeProcessFingerprint($extra));
+        $processFilename = $this->makeProcessFilename($filename, $this->makeProcessFingerprint($extra));
 
         if ($this->files->exists($processFilename)) {
             return $this->makeUrl($processFilename);
         }
 
         return $call(
-            ImageFacade::make($this->app['config']['filesystems.disks.public.root'].'/'.$filename),
+            $this->makeImage($this->app['config']['filesystems.disks.public.root'].'/'.$filename),
             $extra
         );
+    }
+
+    /**
+     * Make Image.
+     *
+     * @param string $filename
+     * @return \Intervention\Image\Image
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function makeImage(string $filename): Image
+    {
+        return ImageFacade::make($filename);
     }
 
     /**
