@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePayPublishUsersTable extends Migration
+class CreatePaidNodeUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,16 @@ class CreatePayPublishUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('pay_publish_users', function (Blueprint $table) {
-            $table->integer('publish_id')->unsigned()->comment('付费发布ID');
+        Schema::create('paid_node_users', function (Blueprint $table) {
+            $table->integer('node_id')->unsigned()->comment('付费发布ID');
             $table->integer('user_id')->unsigned()->comment('用户ID');
 
-            $table->foreign('publish_id')->references('id')->on('pay_publishes')
+            $table->foreign('node_id')->references('id')->on('paid_nodes')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('cascade');
 
-            $table->primary(['publish_id', 'user_id']);
+            $table->primary(['node_id', 'user_id']);
         });
     }
 
@@ -33,6 +33,6 @@ class CreatePayPublishUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pay_publish_users');
+        Schema::dropIfExists('paid_node_users');
     }
 }

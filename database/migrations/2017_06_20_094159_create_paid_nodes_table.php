@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePayPublishesTable extends Migration
+class CreatePaidNodesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,14 @@ class CreatePayPublishesTable extends Migration
      */
     public function up()
     {
-        Schema::create('pay_publishes', function (Blueprint $table) {
+        Schema::create('paid_nodes', function (Blueprint $table) {
             $table->increments('id')->comment('付费记录ID');
             $table->string('index')->comment('付费索引');
             $table->string('subject')->comment('付费主题');
             $table->string('body')->comment('付费内容详情');
             $table->integer('amount')->unsigned()->comment('付费金额');
+            $table->text('extra')->nullable()->default(null)->comment('拓展信息');
             $table->timestamps();
-
-            $table->unique('index');
         });
     }
 
@@ -32,6 +31,6 @@ class CreatePayPublishesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pay_publishes');
+        Schema::dropIfExists('paid_nodes');
     }
 }
