@@ -9,6 +9,7 @@ use Zhiyi\Plus\Models\File as FileModel;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
+use Zhiyi\Plus\File\UrlManager as FileUrlManager;
 use Zhiyi\Plus\Models\PayPublish as PayPublishModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Zhiyi\Plus\Http\Requests\API2\StoreUploadFile as StoreUploadFileRequest;
@@ -19,11 +20,13 @@ class FilesController extends Controller
      * Get file.
      *
      * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param \Zhiyi\Plus\File\UrlManager $manager
      * @param \Zhiyi\Plus\Models\FileWith $fileWith
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function show(Request $request, FileWithModel $fileWith)
+    public function show(Request $request, ResponseContract $response, FileUrlManager $manager, FileWithModel $fileWith)
     {
         $fileWith->load(['file', 'pay']);
 
@@ -31,7 +34,17 @@ class FilesController extends Controller
             $this->resolveUserPaid($request->user('api'), $fileWith->pay);
         }
 
-        dd($fileWith->pay);
+        $extra = array_filter([
+            'width' => $request->query('w'),
+            'height' => $request->query('h'),
+            'quality' => $request->query('q'),
+        ]);
+
+        $url = $manager->make($fileWith->file, $extra);
+
+        return $request->query('json') !== null
+            ? $response->json(['url' => $url])->setStatusCode(200)
+            : $response->redirectTo($url, 302);
     }
 
     /**

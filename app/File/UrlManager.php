@@ -93,4 +93,15 @@ class UrlManager implements FactoryContract
     {
         return FileUrlGenerator::getGeneratorAbstract($name);
     }
+
+    /**
+     * Get default file URL generator.
+     *
+     * @return string
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function getDefaulrGennerator(): string
+    {
+        // 
+    }
 }
