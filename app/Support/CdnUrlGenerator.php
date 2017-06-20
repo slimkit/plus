@@ -22,7 +22,7 @@ abstract class CdnUrlGenerator implements FileUrlGeneratorContract
      */
     protected function getFile(): File
     {
-        return $file;
+        return $this->file;
     }
 
     /**
