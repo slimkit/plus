@@ -1,10 +1,10 @@
 <?php
 
-namespace Zhiyi\Plus\Contracts\File;
+namespace Zhiyi\Plus\Contracts\Cdn;
 
 use Zhiyi\Plus\Models\File;
 
-interface Factory
+interface UrlFactory
 {
     /**
      * Get URL generator.

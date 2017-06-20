@@ -1,6 +1,6 @@
 <?php
 
-namespace Zhiyi\Plus\Contracts\File;
+namespace Zhiyi\Plus\Contracts\Cdn;
 
 interface UrlGenerator
 {

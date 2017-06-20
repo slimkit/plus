@@ -1,14 +1,14 @@
 <?php
 
-namespace Zhiyi\Plus\File;
+namespace Zhiyi\Plus\Cdn;
 
 use Zhiyi\Plus\Models\File;
 use Zhiyi\Plus\Support\FileUrlGenerator;
-use Zhiyi\Plus\Contracts\File\Factory as FactoryContract;
-use Zhiyi\Plus\Contracts\File\UrlGenerator as UrlGeneratorContract;
+use Zhiyi\Plus\Contracts\Cdn\UrlFactory as UrlFactoryContract;
+use Zhiyi\Plus\Contracts\Cdn\UrlGenerator as UrlGeneratorContract;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
-class UrlManager implements FactoryContract
+class UrlManager implements UrlFactoryContract
 {
     /**
      * The application instance.
@@ -38,15 +38,15 @@ class UrlManager implements FactoryContract
     /**
      * Get URL generator.
      *
-     * @param string $name
-     * @return \Zhiyi\Plus\Contracts\File\UrlGenerator
+     * @param string $driver
+     * @return \Zhiyi\Plus\Contracts\Cdn\UrlGenerator
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function generator(string $name = ''): UrlGeneratorContract
+    public function generator(string $driver = ''): UrlGeneratorContract
     {
-        $name = $name ?: $this->getDefaulrGennerator();
+        $driver = $driver ?: $this->getDefaulrGennerator();
 
-        return $this->generators[$name] ?? $this->resolve($name);
+        return $this->generators[$driver] ?? $this->resolve($driver);
     }
 
     /**
@@ -57,9 +57,9 @@ class UrlManager implements FactoryContract
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function make(File $file, array $extra = [], string $name = ''): string
+    public function make(File $file, array $extra = [], string $driver = ''): string
     {
-        $generator = $this->generator($name);
+        $generator = $this->generator($driver);
 
         if ($generator instanceof FileUrlGenerator) {
             $generator->setFile($file);
@@ -71,27 +71,29 @@ class UrlManager implements FactoryContract
     /**
      * Resolve the given generator.
      *
-     * @param string $name
-     * @return \Zhiyi\Plus\Contracts\File\UrlGenerator
+     * @param string $driver
+     * @return \Zhiyi\Plus\Contracts\Cdn\UrlGenerator
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function resolve(string $name): UrlGeneratorContract
+    protected function resolve(string $driver): UrlGeneratorContract
     {
-        return $this->generators[$name] = $this->app->make(
-            $this->getGeneratorAbstract($name)
+        return $this->generators[$driver] = $this->app->make(
+            $this->getGeneratorAbstract($driver)
         );
     }
 
     /**
      * Get a generator abstract.
      *
-     * @param string|null $name
+     * @param string $driver
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function getGeneratorAbstract(string $name = ''): string
+    protected function getGeneratorAbstract(string $driver): string
     {
-        return FileUrlGenerator::getGeneratorAbstract($name);
+        return $this->app->config->get(
+            sprintf('file.generators.%s', $driver)
+        ) ?: $driver;
     }
 
     /**
@@ -102,6 +104,6 @@ class UrlManager implements FactoryContract
      */
     protected function getDefaulrGennerator(): string
     {
-        //
+        return $this->app->config['file.default_generator'] ?: 'local';
     }
 }

@@ -5,7 +5,7 @@ namespace Zhiyi\Plus\Support;
 use Zhiyi\Plus\Models\File;
 use Zhiyi\Plus\Contracts\File\UrlGenerator as FileUrlGeneratorContract;
 
-abstract class FileUrlGenerator implements FileUrlGeneratorContract
+abstract class CdnUrlGenerator implements FileUrlGeneratorContract
 {
     /**
      * File data model.
