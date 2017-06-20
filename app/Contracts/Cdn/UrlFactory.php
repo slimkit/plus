@@ -10,7 +10,7 @@ interface UrlFactory
      * Get URL generator.
      *
      * @param string $name
-     * @return \Zhiyi\Plus\Contracts\File\UrlGenerator
+     * @return \Zhiyi\Plus\Contracts\Cdn\UrlGenerator
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function generator(string $name = ''): UrlGenerator;

@@ -3,7 +3,7 @@
 namespace Zhiyi\Plus\Support;
 
 use Zhiyi\Plus\Models\File;
-use Zhiyi\Plus\Contracts\File\UrlGenerator as FileUrlGeneratorContract;
+use Zhiyi\Plus\Contracts\Cdn\UrlGenerator as FileUrlGeneratorContract;
 
 abstract class CdnUrlGenerator implements FileUrlGeneratorContract
 {
