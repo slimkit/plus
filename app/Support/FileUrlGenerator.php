@@ -25,7 +25,7 @@ abstract class FileUrlGenerator implements FileUrlGeneratorContract
      * Register a file URL generator abstract.
      *
      * @param string $name
-     * @param string $generator
+     * @param string $abstract
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -38,7 +38,6 @@ abstract class FileUrlGenerator implements FileUrlGeneratorContract
      * Get a generator abstract.
      *
      * @param string|null $name
-     * @throws \RuntimeException
      * @return array|string
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -52,7 +51,7 @@ abstract class FileUrlGenerator implements FileUrlGeneratorContract
             return $abstract;
         }
 
-        throw new \RuntimeException(sprintf('The "%s" is undefined.', $name));
+        return $name;
     }
 
     /**
