@@ -8,6 +8,8 @@ class Local implements FileUrlGeneratorContract
 {
     public function url(string $filename, array $extra = []): string
     {
-        //
+        dd(
+            $filename, $extra
+        );
     }
 }
