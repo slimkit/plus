@@ -2,7 +2,6 @@
 
 namespace Zhiyi\Plus\Providers;
 
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use function Zhiyi\Plus\validateUsername;
 use function Zhiyi\Plus\validateChinaPhoneNumber;
