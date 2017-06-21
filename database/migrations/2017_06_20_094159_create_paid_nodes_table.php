@@ -21,6 +21,8 @@ class CreatePaidNodesTable extends Migration
             $table->integer('amount')->unsigned()->comment('付费金额');
             $table->text('extra')->nullable()->default(null)->comment('拓展信息');
             $table->timestamps();
+
+            $table->unique('index');
         });
     }
 
