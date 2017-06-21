@@ -23,13 +23,14 @@ class FileWith extends Model
     }
 
     /**
-     * has pay publish.
+     * 获取付费节点.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function pay()
+    public function paidNode()
     {
-        return $this->hasOne(PayPublish::class, 'index', 'pay_index');
+        return $this->hasOne(PaidNode::class, 'raw', 'id')
+            ->where('channel', 'file');
     }
 }
