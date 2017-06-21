@@ -18,8 +18,6 @@ class AppServiceProvider extends ServiceProvider
     {
         // 注册验证规则.
         $this->registerValidator();
-
-        Schema::defaultStringLength(191);
     }
 
     /**
