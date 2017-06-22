@@ -18,9 +18,8 @@ trait HasUserPaid
         return $this->belongsToMany(User::class, 'paid_node_users', 'node_id', 'user_id');
     }
 
-
     /**
-     * 判断是非对节点进行付费，支持过滤发布者
+     * 判断是非对节点进行付费，支持过滤发布者.
      *
      * @param int $user User ID
      * @return bool
