@@ -9,9 +9,8 @@ use Zhiyi\Plus\Models\File as FileModel;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Cdn\UrlManager as CdnUrlManager;
-use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
-use Zhiyi\Plus\Models\PayPublish as PayPublishModel;
+use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Zhiyi\Plus\Http\Requests\API2\StoreUploadFile as StoreUploadFileRequest;
 
