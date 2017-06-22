@@ -102,17 +102,17 @@ class Local implements FileUrlGeneratorContract
         $processWidth = floatval($extra['width']);
         $processHeight = floatval($extra['height']);
 
-        if ($width <= $processWidth || $height <= $processHeight) {
+        if (($width <= $processWidth || $height <= $processHeight) || (! $processWidth && ! $processHeight)) {
             return;
         }
 
         $minSide = min($processWidth, $processHeight);
 
-        if ($minSide === $processWidth) {
+        if (($minSide === $processWidth && $processWidth) || (!! $processWidth && ! $processHeight)) {
             $image->resize($processWidth, null, function (Constraint $constraint) {
                 $constraint->aspectRatio();
             });
-        } elseif ($minSide === $processHeight) {
+        } elseif (($minSide === $processHeight && $processWidth) || (!! $processHeight && ! $processWidth)) {
             $image->resize(null, $processHeight, function (Constraint $constraint) {
                 $constraint->aspectRatio();
             });
