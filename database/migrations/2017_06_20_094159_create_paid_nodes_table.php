@@ -20,6 +20,7 @@ class CreatePaidNodesTable extends Migration
             $table->string('subject')->comment('付费主题');
             $table->string('body')->comment('付费内容详情');
             $table->integer('amount')->unsigned()->comment('付费金额');
+            $table->integer('user_id')->unsigned()->nullable()->defaul(null)->comment('用户ID，主要用于排除付费用户。');
             $table->text('extra')->nullable()->default(null)->comment('拓展信息');
             $table->timestamps();
 
