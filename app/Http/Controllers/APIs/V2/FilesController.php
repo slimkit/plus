@@ -9,6 +9,7 @@ use Zhiyi\Plus\Models\File as FileModel;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Cdn\UrlManager as CdnUrlManager;
+use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\PayPublish as PayPublishModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
@@ -28,17 +29,23 @@ class FilesController extends Controller
      */
     public function show(Request $request, ResponseContract $response, CdnUrlManager $cdn, FileWithModel $fileWith)
     {
-        $fileWith->load(['file', 'pay']);
-
-        if ($fileWith->pay instanceof PayPublishModel) {
-            $this->resolveUserPaid($request->user('api'), $fileWith->pay);
-        }
-
+        $fileWith->load(['file', 'paidNode']);
         $extra = array_filter([
             'width' => $request->query('w'),
             'height' => $request->query('h'),
-            'quality' => $request->query('q'),
         ]);
+
+        if ($fileWith->paidNode instanceof PaidNodeModel && $this->resolveUserPaid($request->user('api'), $fileWith->paidNode) === false) {
+            if ($fileWith->paidNode->extra === 'read' || empty($extra)) {
+                return $response->json([
+                    'message' => ['请购买文件'],
+                    'paid_node' => $fileWith->paidNode->id,
+                    'amount' => $fileWith->paidNode->amount,
+                ]);
+            }
+        }
+
+        $extra['quality'] = $request->query('q');
         $url = $cdn->make($fileWith->file, $extra);
 
         return $request->query('json') !== null
@@ -50,22 +57,18 @@ class FilesController extends Controller
      * 解决用户是否购买过处理.
      *
      * @param \Zhiyi\Plus\Models\User|null $user
-     * @param \Zhiyi\Plus\Models\PayPublish $pay
+     * @param \Zhiyi\Plus\Models\PaidNode  $pay
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function resolveUserPaid($user, PayPublishModel $pay)
+    protected function resolveUserPaid($user, PaidNodeModel $node): bool
     {
         // 如果用户位空，则抛出认证错误.
-        if ($user === null) {
+        if ($user === null or ! $user instanceof UserModel) {
             abort(401);
-        } elseif // 检查用户是否购买过，购买过则跳过.
-        ($user->payPublishes()->newPivotStatementForId($pay->id)->exists() === true) {
-            return;
         }
 
-        // 检查失败后抛出禁止访问异常.
-        abort(403, '没有购买当前文件');
+        return $node->paid($user->id);
     }
 
     /**
