@@ -9,8 +9,9 @@ use Zhiyi\Plus\Models\File as FileModel;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Cdn\UrlManager as CdnUrlManager;
-use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
+use Zhiyi\Plus\Models\FileWith as FileWithModel;
+use Zhiyi\Plus\Models\PayPublish as PayPublishModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Zhiyi\Plus\Http\Requests\API2\StoreUploadFile as StoreUploadFileRequest;
 
@@ -102,7 +103,7 @@ class FilesController extends Controller
             return $fileModel;
         });
 
-        $fileWith = $this->resolveFileWith($fileWith, $request->user(), $fileModel->id);
+        $fileWith = $this->resolveFileWith($fileWith, $request->user(), $fileModel);
 
         return $response->json([
             'message' => ['上传成功'],
@@ -123,12 +124,12 @@ class FilesController extends Controller
      */
     public function uploaded(Request $request, ResponseContract $response, FileModel $file, FileWithModel $fileWith, string $hash)
     {
-        $file = $file->where('hash', strtolower($hash))->firstOr(['id'], function () {
+        $file = $file->where('hash', strtolower($hash))->firstOr(function () {
             abort(404);
         });
 
         // 复用空类型数据～减少资源浪费.
-        $fileWith = $this->resolveFileWith($fileWith, $request->user(), $file->id);
+        $fileWith = $this->resolveFileWith($fileWith, $request->user(), $file);
 
         return $response->json([
             'message' => ['success'],
@@ -149,7 +150,7 @@ class FilesController extends Controller
     {
         $hash = md5_file($file);
 
-        return $fileModel->where('hash', $hash)->firstOr(['id'], function () use ($file, $call, $hash): FileModel {
+        return $fileModel->where('hash', $hash)->firstOr(function () use ($file, $call, $hash): FileModel {
             return call_user_func_array($call, [$file, $hash]);
         });
     }
@@ -159,20 +160,21 @@ class FilesController extends Controller
      *
      * @param \Zhiyi\Plus\Models\FileWith $fileWith
      * @param \Zhiyi\Plus\Models\User $user
-     * @param int $fileId
+     * @param \Zhiyi\Plus\Models\File $file
      * @return \Zhiyi\Plus\Models\FileWith
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function resolveFileWith(FileWithModel $fileWith, UserModel $user, int $fileId): FileWithModel
+    protected function resolveFileWith(FileWithModel $fileWith, UserModel $user, FileModel $file): FileWithModel
     {
-        return $fileWith->where('file_id', $fileId)
+        return $fileWith->where('file_id', $file->id)
             ->where('user_id', $user->id)
             ->where('channel', null)
             ->where('raw', null)
-            ->firstOr(function () use ($user, $fileWith, $fileId) {
-                $fileWith->file_id = $fileId;
+            ->firstOr(function () use ($user, $fileWith, $file) {
+                $fileWith->file_id = $file->id;
                 $fileWith->channel = null;
                 $fileWith->raw = null;
+                $fileWith->size = ($size = sprintf('%sx%s', $file->width, $file->height)) === 'x' ? null : $size;
                 $user->files()->save($fileWith);
 
                 return $fileWith;

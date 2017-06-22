@@ -19,6 +19,7 @@ class CreateFileWithsTable extends Migration
             $table->integer('user_id')->unsigned()->comment('用户ID');
             $table->string('channel', 100)->nullable()->default(null)->comment('记录频道');
             $table->string('raw', 100)->nullable()->default(null)->comment('原始频道关联信息');
+            $table->string('size', 50)->nullable()->default(null)->comment('图片尺寸，目标文件如果是图片的话则存在。便于客户端提前预设盒子');
             $table->timestamps();
             $table->softDeletes();
 
