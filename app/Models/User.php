@@ -3,7 +3,7 @@
 namespace Zhiyi\Plus\Models;
 
 use Zhiyi\Plus\Traits\UserRolePerms;
-use Zhiyi\Plus\Traits\Model\UserFollw;
+use Zhiyi\Plus\Traits\Model\UserFollow;
 use Zhiyi\Plus\Traits\Model\UserWallet;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,7 +18,7 @@ class User extends Authenticatable
         Concerns\UserWalletCash, // 钱包提现
         Concerns\UserWalletCharge, // 钱包凭据
         Concerns\HasFilesWith, // 用户文件
-        UserFollw; // 用户关注
+        UserFollow; // 用户关注
     use UserRolePerms {
         SoftDeletes::restore insteadof UserRolePerms;
         UserRolePerms::restore insteadof SoftDeletes;

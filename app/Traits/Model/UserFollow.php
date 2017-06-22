@@ -5,7 +5,7 @@ namespace Zhiyi\Plus\Traits\Model;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-trait UserFollw
+trait UserFollow
 {
     /**
      * 正在关注 - 我关注的.
