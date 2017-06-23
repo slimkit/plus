@@ -21,7 +21,7 @@ class StorageUserLinks extends Migration
             $table->timestamps();
             $table->softDeletes();
             // 设置表引擎
-            
+
             // 建立索引
             $table->index('user_id');
             $table->index('storage_id');

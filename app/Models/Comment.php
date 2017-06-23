@@ -24,7 +24,7 @@ class Comment extends Model implements FetchComment
     protected $appends = ['comment_content', 'target_image', 'target_title', 'target_id'];
 
     /**
-     * Fetch
+     * Fetch.
      *
      * @var [type]
      */

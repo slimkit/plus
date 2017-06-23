@@ -22,7 +22,7 @@ class StorageTasksTable extends Migration
             $table->float('height')->nullable()->comment('高度');
             $table->string('mime_type')->comment('文件类型');
             $table->timestamps();
-            
+
             $table->index(['hash']);
         });
     }

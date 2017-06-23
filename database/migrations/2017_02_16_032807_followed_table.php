@@ -14,7 +14,6 @@ class FollowedTable extends Migration
     public function up()
     {
         Schema::create('followeds', function (Blueprint $table) {
-            
             $table->increments('id');
             $table->integer('user_id')->index()->unsigned();
             $table->integer('followed_user_id')->unsigned();

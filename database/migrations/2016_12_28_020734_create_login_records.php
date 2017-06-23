@@ -14,7 +14,6 @@ class CreateLoginRecords extends Migration
     public function up()
     {
         Schema::create('login_records', function (Blueprint $table) {
-            
             $table->increments('id');
             $table->integer('user_id')->comment('用户id');
             $table->string('ip', 100)->nullable()->default('')->comment('ip地址，可为空');

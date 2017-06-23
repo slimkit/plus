@@ -14,7 +14,6 @@ class UserDatasTable extends Migration
     public function up()
     {
         Schema::create('user_datas', function (Blueprint $table) {
-            
             $table->increments('id');
             $table->integer('user_id')->comment('用户id');
             $table->string('key')->comment('键名');
