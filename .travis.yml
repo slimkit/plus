@@ -4,12 +4,12 @@ php:
     - 7.0
     - 7.1
 services:
-    - mysql
+    - postgresql
 before_install:
-    - mysql -e 'CREATE DATABASE IF NOT EXISTS thinksns_plus;'
-    - php -r "file_exists('.env') || copy('.env.example', '.env');"
+    - psql -c 'create database travis_ci_test;' -U postgres
+    - php -r "file_exists('.env') || copy('.env.travis', '.env');"
 install:
-    - composer install -vvv
+    - composer install
     - php artisan key:generate
 script:
     - php artisan migrate
