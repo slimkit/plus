@@ -32,7 +32,7 @@ Route::prefix('/users')
 });
 
 // 钱包相关接口
-Route::prefix('wallet')
+Route::prefix('/wallet')
 ->middleware('auth:api')
 ->group(function () {
     // 获取钱包配置信息
@@ -54,7 +54,14 @@ Route::prefix('wallet')
 
 // 文件相关接口
 Route::get('/files/{fileWith}', 'FilesController@show');
-Route::prefix('files')->middleware('auth:api')->group(function () {
+Route::prefix('/files')->middleware('auth:api')->group(function () {
     Route::post('/', 'FilesController@store');
     Route::get('/uploaded/{hash}', 'FilesController@uploaded');
+});
+
+// 付费购买
+Route::prefix('/purchases')
+->middleware('auth:api')
+->group(function () {
+    Route::get('/{node}', 'PurchaseController@show');
 });
