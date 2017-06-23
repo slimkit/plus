@@ -14,7 +14,7 @@ class CreateUserProfileSettings extends Migration
     public function up()
     {
         Schema::create('user_profile_settings', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
+            
             $table->increments('id');
             $table->integer('create_user_id')->comment('创建者uid');
             $table->string('profile', 10)->comment('资料标识');

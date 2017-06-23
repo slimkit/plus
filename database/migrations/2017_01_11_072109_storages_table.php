@@ -26,7 +26,7 @@ class StoragesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
             // 设置表引擎
-            $table->engine = 'InnoDB';
+            
             // 建立索引
             $table->unique('hash');
             $table->index('mime', 'extension');

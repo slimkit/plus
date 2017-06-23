@@ -15,7 +15,7 @@ class CreateDiggs extends Migration
     {
         Schema::create('diggs', function (Blueprint $table) {
             $table->increments('id');
-            $table->engine = 'InnoDB';
+            
             $table->string('component')->comment('扩展包名');
             $table->string('digg_table')->comment('点赞表名');
             $table->integer('digg_id')->comment('关联点赞记录id');

@@ -14,7 +14,7 @@ class CreateAreas extends Migration
     public function up()
     {
         Schema::create('areas', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
+            
             $table->increments('id');
             $table->string('name')->comment('名字');
             $table->integer('pid')->comment('父级ID');

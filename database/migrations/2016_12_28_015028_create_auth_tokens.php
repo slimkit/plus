@@ -14,7 +14,7 @@ class CreateAuthTokens extends Migration
     public function up()
     {
         Schema::create('auth_tokens', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
+            
             $table->increments('id');
             $table->string('token')->comment('验证token');
             $table->string('refresh_token')->comment('刷新token');
