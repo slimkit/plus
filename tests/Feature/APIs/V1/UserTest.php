@@ -68,21 +68,6 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test get diggsrank.
-     *
-     * @author bs<414606094@qq.com>
-     */
-    public function testGetDiggRank()
-    {
-        $response = $this->json('GET', '/api/v1/diggsrank', [
-            'limit' => 15,
-            'page' => 1,
-        ]);
-
-        $response->assertStatus(200);
-    }
-
-    /**
      * Test get user`s comments.
      *
      * @author bs<414606094@qq.com>
