@@ -22,3 +22,6 @@ V2 版本的 APIs 是符合 REST full 的借口实现，所以在使用前请自
     - [上传检查](file/uploaded.md)
     - [上传文件](file/upload.md)
     - [文件获取](file/show.md)
+
+- 付费
+    - [查询节点 & 付费状态](purchase/show.md)
