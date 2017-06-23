@@ -17,7 +17,7 @@ class CreateCommentsTable extends Migration
             $table->increments('id')->comment('评论ID');
             $table->integer('user_id')->unsigned()->comment('评论用户');
             $table->integer('target_user')->unsigned()->comment('目标用户');
-            $table->integer('parent_id')->unsigned()->nullable()->default(0)->comment('父评论ID');
+            $table->integer('reply_user')->unsigned()->nullable()->default(0)->comment('回复用户');
             $table->string('channel', 100)->comment('来源频道');
             $table->string('target', 100)->comment('来源目标');
             $table->timestamps();
