@@ -23,6 +23,7 @@ class PurchaseController extends Controller
         $node->paid = $node->paid(
             $request->user()->id
         );
+
         return $response->json($node)->setStatusCode(200);
     }
 }
