@@ -38,7 +38,7 @@ class PurchaseController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    
+
     /**
      * 支付节点费用.
      *
