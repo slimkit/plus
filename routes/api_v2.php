@@ -64,4 +64,5 @@ Route::prefix('/purchases')
 ->middleware('auth:api')
 ->group(function () {
     Route::get('/{node}', 'PurchaseController@show');
+    Route::post('/{node}', 'PurchaseController@pay');
 });
