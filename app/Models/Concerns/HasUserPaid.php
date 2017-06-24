@@ -3,10 +3,17 @@
 namespace Zhiyi\Plus\Models\Concerns;
 
 use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Models\Wallet;
 use Illuminate\Support\Facades\Cache;
 
 trait HasUserPaid
 {
+    // 发起支付节点人钱包.
+    public function wallet()
+    {
+        return $this->hasManyThrough(Wallet::class, User::class, 'id', 'user_id', 'user_id');
+    }
+
     /**
      * Paid node users.
      *
