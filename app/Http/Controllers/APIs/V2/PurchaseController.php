@@ -106,7 +106,7 @@ class PurchaseController extends Controller
         $cache->forget($cacheKey);
 
         return $response->json([
-            'message' => '付费成功',
+            'message' => ['付费成功'],
         ])->setStatusCode(201);
     }
 }
