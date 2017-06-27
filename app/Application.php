@@ -106,8 +106,8 @@ class Application extends LaravelApplication
     protected function getConfiguredProviders(): array
     {
         return array_merge(
-            $this->make(PackageManifest::class)->providers(),
-            $this->config['app.providers']
+            $this->config['app.providers'],
+            $this->make(PackageManifest::class)->providers()
         );
     }
 
