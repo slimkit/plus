@@ -171,7 +171,7 @@ class UserController extends Controller
         ]))->setStatusCode(200);
     }
 
-    // 解析组装数据以兼容v1接口字段返回    
+    // 解析组装数据以兼容v1接口字段返回
     protected function formmatOldDate(Comment $data)
     {
         $arr = [
@@ -213,6 +213,7 @@ class UserController extends Controller
 
         return $arr;
     }
+
     /**
      * 获取我收到的所有点赞.
      *
