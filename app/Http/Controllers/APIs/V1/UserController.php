@@ -148,7 +148,7 @@ class UserController extends Controller
         $limit = $request->input('limit', 15);
         $max_id = $request->input('max_id', 0);
         $comment = Comment::where(function ($query) use ($uid) {
-            $query->where('to_user_id', $uid)->orWhere('reply_to_user_id', $uid);
+            $query->where('target_user', $uid)->orWhere('reply_user', $uid);
         })
         ->where('user_id', '!=', $uid)
         ->where(function ($query) use ($max_id) {
@@ -160,13 +160,59 @@ class UserController extends Controller
         ->orderBy('id', 'desc')
         ->get();
 
+        $return = $comment->map(function ($data) {
+            return $this->formmatOldDate($data);
+        });
+
         return response()->json(static::createJsonData([
             'status'  => true,
             'message' => '获取成功',
-            'data'    => $comment,
+            'data'    => $return,
         ]))->setStatusCode(200);
     }
 
+    // 解析组装数据以兼容v1接口字段返回    
+    protected function formmatOldDate(Comment $data)
+    {
+        $arr = [
+            'id' => $data->id,
+            'user_id' => $data->user_id,
+            'to_user_id' => $data->target_user,
+            'reply_to_user_id' => $data->reply_user,
+            'comment_id' => $data->target,
+            'comment_content' => $data->comment_content,
+            'source_cover' => $data->target_image,
+            'source_content' => $data->target_title,
+            'source_id' => $data->target_id,
+            'created_at' => $data->created_at->toDateTimeString(),
+            'updated_at' => $data->updated_at->toDateTimeString(),
+        ];
+
+        switch ($data->channel) {
+            case 'feed':
+                $arr['component'] = 'feed';
+                $arr['comment_table'] = 'feed_comments';
+                $arr['source_table'] = 'feeds';
+                break;
+            case 'music':
+                $arr['component'] = 'music';
+                $arr['comment_table'] = 'music_comments';
+                $arr['source_table'] = 'musics';
+                break;
+            case 'music_special':
+                $arr['component'] = 'music';
+                $arr['comment_table'] = 'music_comments';
+                $arr['source_table'] = 'music_specials';
+                break;
+            case 'news':
+                $arr['component'] = 'news';
+                $arr['comment_table'] = 'news_comments';
+                $arr['source_table'] = 'news';
+                break;
+        }
+
+        return $arr;
+    }
     /**
      * 获取我收到的所有点赞.
      *
