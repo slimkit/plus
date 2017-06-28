@@ -209,7 +209,7 @@ git clone https://github.com/zhiyicx/thinksns-plus
     php artisan db:seed
     ```
 
-至此您已久安装完成了，现在输入 `{APP_UEL}/admin` 进入后台看看吧
+至此您已久安装完成了，现在输入 `{APP_URL}/admin` 进入后台看看吧
 
 > 进入后台的账号密码都是 `root`
 
