@@ -19,21 +19,21 @@
     &:focus {
       outline: none;
       background: none;
-      color: #a6aeb2;
-      color: rgba(255, 255, 255, 0.56);
+      color: #a6aeb2 !important;
+      color: rgba(255, 255, 255, 0.56) !important;
     }
 
     &.active {
       border-right-width: 4px;
       border-right-style: solid;
       border-right-color: #3097D1;
-      color: #fff;
-      background: #000;
+      color: #fff !important;
+      background-color: #000 !important;
     }
 
     &:hover {
-      background: #263238;
-      color: #fff;
+      background-color: #263238 !important;
+      color: #fff !important;
     }
     .__icon {
       margin-right: 32px;

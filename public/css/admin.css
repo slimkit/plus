@@ -17,111 +17,6 @@
   border: none;
 }
 
-._3aSlbEE3z6zx2l_uo3HI0c_0 {
-  padding: 12px 12px 0;
-}
-
-.lWxMHASIe22tHRzHw5Jrt_0 {
-  padding-top: 15px;
-}
-._24gnTDmaU_22fnRx6b_rdh_0 {
-  text-align: center;
-  font-size: 42px;
-}
-._1XxUsqzTSJmFcRgogAR05X_0 {
-  -webkit-animation-name: "TurnAround";
-       -o-animation-name: "TurnAround";
-          animation-name: "TurnAround";
-  -webkit-animation-duration: 1.4s;
-       -o-animation-duration: 1.4s;
-          animation-duration: 1.4s;
-  -webkit-animation-timing-function: linear;
-       -o-animation-timing-function: linear;
-          animation-timing-function: linear;
-  -webkit-animation-iteration-count: infinite;
-       -o-animation-iteration-count: infinite;
-          animation-iteration-count: infinite;
-}
-
-._1rfKjF_Jbsrt-NPuVUF68J_0 {
-  padding-top: 15px;
-}
-._12izD6_COs4Sv6Mf_3NeY4_0 {
-  text-align: center;
-  font-size: 42px;
-}
-._2QJw2UnKca7-Q7P6_KVdU0_0 {
-  -webkit-animation-name: "TurnAround";
-       -o-animation-name: "TurnAround";
-          animation-name: "TurnAround";
-  -webkit-animation-duration: 1.4s;
-       -o-animation-duration: 1.4s;
-          animation-duration: 1.4s;
-  -webkit-animation-timing-function: linear;
-       -o-animation-timing-function: linear;
-          animation-timing-function: linear;
-  -webkit-animation-iteration-count: infinite;
-       -o-animation-iteration-count: infinite;
-          animation-iteration-count: infinite;
-}
-
-._3dmnCvozpw3m8fFish2esW_0 {
-  padding-top: 15px;
-}
-._2r5QYXEH13EfeIfzZcabFJ_0 {
-  text-align: center;
-  font-size: 42px;
-}
-._1z3mStIIgVBALloTE-yh_I_0 {
-  -webkit-animation-name: "TurnAround";
-       -o-animation-name: "TurnAround";
-          animation-name: "TurnAround";
-  -webkit-animation-duration: 1.4s;
-       -o-animation-duration: 1.4s;
-          animation-duration: 1.4s;
-  -webkit-animation-timing-function: linear;
-       -o-animation-timing-function: linear;
-          animation-timing-function: linear;
-  -webkit-animation-iteration-count: infinite;
-       -o-animation-iteration-count: infinite;
-          animation-iteration-count: infinite;
-}
-
-._31HzegN0N_MKNx8ek-ewdS_0 {
-  margin-right: 10px;
-}
-
-._3_PJzR8yknYsK4O4paifqR_0 {
-  margin-right: 10px;
-}
-
-._1z4RhTrWlanBvCuyqi6fBV_0 {
-  padding-top: 15px;
-}
-._1mZzobTI0IkBqSC5lgNrlj_0 {
-  text-align: center;
-  padding-top: 100px;
-  font-size: 42px;
-}
-._4_lrzbUDzh31qV7YzKgKI_0 {
-  -webkit-animation-name: "TurnAround";
-       -o-animation-name: "TurnAround";
-          animation-name: "TurnAround";
-  -webkit-animation-duration: 1.4s;
-       -o-animation-duration: 1.4s;
-          animation-duration: 1.4s;
-  -webkit-animation-timing-function: linear;
-       -o-animation-timing-function: linear;
-          animation-timing-function: linear;
-  -webkit-animation-iteration-count: infinite;
-       -o-animation-iteration-count: infinite;
-          animation-iteration-count: infinite;
-}
-._179TtcPFaYQhDG3qbBUqaq_0 {
-  color: #3097D1;
-  cursor: pointer;
-}
-
 .app-container .left-nav {
   position: fixed;
   width: 240px;
@@ -154,62 +49,12 @@
   padding-left: 240px;
 }
 
-.app-nav {
-  background-color: #37474f;
-  width: 100%;
-  min-height: 100%;
-  padding-top: 16px;
-  margin: 0;
-}
-.app-nav .__button {
-    background: none;
-    border: none;
-    color: #a6aeb2;
-    color: rgba(255, 255, 255, 0.56);
-    padding: 16px 40px;
-    font-weight: 500;
-}
-.app-nav .__button:last-child, .app-nav .__button:first-child {
-      border-radius: 0;
-}
-.app-nav .__button:focus {
-      outline: none;
-      background: none;
-      color: #a6aeb2;
-      color: rgba(255, 255, 255, 0.56);
-}
-.app-nav .__button.active {
-      border-right-width: 4px;
-      border-right-style: solid;
-      border-right-color: #3097D1;
-      color: #fff;
-      background: #000;
-}
-.app-nav .__button:hover {
-      background: #263238;
-      color: #fff;
-}
-.app-nav .__button .__icon {
-      margin-right: 32px;
-      color: #78909c;
-}
-.app-nav .__button .__icon-img {
-      width: 14px;
-      height: 14px;
-      border: none;
-      margin-right: 32px;
-}
-
 .login {
   width: 100%;
   min-width: 290px;
   max-width: 320px;
   margin-top: 40px;
   padding: 15px;
-}
-
-.setting-container .setting-nav {
-  padding: 12px 12px 0;
 }
 
 ._2GDhN1P5bM-BD821OsSYyg_0 {
@@ -285,6 +130,111 @@
       color: #c9302c;
 }
 
+.lWxMHASIe22tHRzHw5Jrt_0 {
+  padding-top: 15px;
+}
+._24gnTDmaU_22fnRx6b_rdh_0 {
+  text-align: center;
+  font-size: 42px;
+}
+._1XxUsqzTSJmFcRgogAR05X_0 {
+  -webkit-animation-name: "TurnAround";
+       -o-animation-name: "TurnAround";
+          animation-name: "TurnAround";
+  -webkit-animation-duration: 1.4s;
+       -o-animation-duration: 1.4s;
+          animation-duration: 1.4s;
+  -webkit-animation-timing-function: linear;
+       -o-animation-timing-function: linear;
+          animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+       -o-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+}
+
+._1rfKjF_Jbsrt-NPuVUF68J_0 {
+  padding-top: 15px;
+}
+._12izD6_COs4Sv6Mf_3NeY4_0 {
+  text-align: center;
+  font-size: 42px;
+}
+._2QJw2UnKca7-Q7P6_KVdU0_0 {
+  -webkit-animation-name: "TurnAround";
+       -o-animation-name: "TurnAround";
+          animation-name: "TurnAround";
+  -webkit-animation-duration: 1.4s;
+       -o-animation-duration: 1.4s;
+          animation-duration: 1.4s;
+  -webkit-animation-timing-function: linear;
+       -o-animation-timing-function: linear;
+          animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+       -o-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+}
+
+._3dmnCvozpw3m8fFish2esW_0 {
+  padding-top: 15px;
+}
+._2r5QYXEH13EfeIfzZcabFJ_0 {
+  text-align: center;
+  font-size: 42px;
+}
+._1z3mStIIgVBALloTE-yh_I_0 {
+  -webkit-animation-name: "TurnAround";
+       -o-animation-name: "TurnAround";
+          animation-name: "TurnAround";
+  -webkit-animation-duration: 1.4s;
+       -o-animation-duration: 1.4s;
+          animation-duration: 1.4s;
+  -webkit-animation-timing-function: linear;
+       -o-animation-timing-function: linear;
+          animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+       -o-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+}
+
+._31HzegN0N_MKNx8ek-ewdS_0 {
+  margin-right: 10px;
+}
+
+._3aSlbEE3z6zx2l_uo3HI0c_0 {
+  padding: 12px 12px 0;
+}
+
+._3_PJzR8yknYsK4O4paifqR_0 {
+  margin-right: 10px;
+}
+
+._1z4RhTrWlanBvCuyqi6fBV_0 {
+  padding-top: 15px;
+}
+._1mZzobTI0IkBqSC5lgNrlj_0 {
+  text-align: center;
+  padding-top: 100px;
+  font-size: 42px;
+}
+._4_lrzbUDzh31qV7YzKgKI_0 {
+  -webkit-animation-name: "TurnAround";
+       -o-animation-name: "TurnAround";
+          animation-name: "TurnAround";
+  -webkit-animation-duration: 1.4s;
+       -o-animation-duration: 1.4s;
+          animation-duration: 1.4s;
+  -webkit-animation-timing-function: linear;
+       -o-animation-timing-function: linear;
+          animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+       -o-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+}
+._179TtcPFaYQhDG3qbBUqaq_0 {
+  color: #3097D1;
+  cursor: pointer;
+}
+
 ._1KZThGFAzqMZHWZXSnyyqW_0 {
   padding: 15px;
 }
@@ -301,6 +251,10 @@
     -webkit-animation-iteration-count: infinite;
          -o-animation-iteration-count: infinite;
             animation-iteration-count: infinite;
+}
+
+.setting-container .setting-nav {
+  padding: 12px 12px 0;
 }
 
 @charset "UTF-8";
@@ -6932,6 +6886,52 @@ to {
 #app {
   padding: 0;
   margin: 0;
+}
+
+.app-nav {
+  background-color: #37474f;
+  width: 100%;
+  min-height: 100%;
+  padding-top: 16px;
+  margin: 0;
+}
+.app-nav .__button {
+    background: none;
+    border: none;
+    color: #a6aeb2;
+    color: rgba(255, 255, 255, 0.56);
+    padding: 16px 40px;
+    font-weight: 500;
+}
+.app-nav .__button:last-child, .app-nav .__button:first-child {
+      border-radius: 0;
+}
+.app-nav .__button:focus {
+      outline: none;
+      background: none;
+      color: #a6aeb2 !important;
+      color: rgba(255, 255, 255, 0.56) !important;
+}
+.app-nav .__button.active {
+      border-right-width: 4px;
+      border-right-style: solid;
+      border-right-color: #3097D1;
+      color: #fff !important;
+      background-color: #000 !important;
+}
+.app-nav .__button:hover {
+      background-color: #263238 !important;
+      color: #fff !important;
+}
+.app-nav .__button .__icon {
+      margin-right: 32px;
+      color: #78909c;
+}
+.app-nav .__button .__icon-img {
+      width: 14px;
+      height: 14px;
+      border: none;
+      margin-right: 32px;
 }
 
 /*# sourceMappingURL=admin.css.map*/
