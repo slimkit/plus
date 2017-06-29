@@ -120,19 +120,6 @@ class User extends Authenticatable
     }
 
     /**
-     * 用户登录记录关系.
-     *
-     * @Author   Wayne[qiaobin@zhiyicx.com]
-     * @DateTime 2016-12-30T18:47:51+0800
-     *
-     * @return object \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function loginRecords()
-    {
-        return $this->hasMany(loginRecord::class, 'user_id');
-    }
-
-    /**
      * 用户tokens关系.
      *
      * @Author   Wayne[qiaobin@zhiyicx.com]
