@@ -116,6 +116,6 @@ return [
     'api-client' => [
         'id' => null,
         'secret' => null,
-    ]
+    ],
 
 ];
