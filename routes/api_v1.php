@@ -53,8 +53,7 @@ Route::prefix('users')
         ->middleware(Middleware\VerifyPassword::class) // 验证用户密码是否正确
         ->middleware('role-permissions:password-update,你没有修改用户密码的权限');
     // 获取用户信息
-    Route::post('/', 'UserController@get')
-        ->middleware('role-permissions:user-view,你没有查看用户信息的权限');
+    Route::post('/', 'UserController@get');
 
     // 关注操作相关
     Route::post('/follow', 'FollowController@doFollow')

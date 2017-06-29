@@ -147,12 +147,6 @@ class PermissionSeeder extends Seeder
         ]);
 
         Permission::create([
-            'name' => 'user-view',
-            'display_name' => '查看用户资料',
-            'description' => '用户查看资料权限',
-        ]);
-
-        Permission::create([
             'name' => 'user-follow',
             'display_name' => '关注用户',
             'description' => '用户关注权限',
