@@ -103,4 +103,19 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | API Client
+    |--------------------------------------------------------------------------
+    |
+    | Set the client information needed for user authentication
+    | for ThinkSNS+ applications.
+    |
+    */
+
+    'api-client' => [
+        'id' => null,
+        'secret' => null,
+    ]
+
 ];
