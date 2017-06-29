@@ -2,7 +2,6 @@
 
 namespace Zhiyi\Plus\Providers;
 
-use Laravel\Passport\Passport;
 use Zhiyi\Plus\Services\Auth\TokenGuard;
 use Zhiyi\Plus\Services\Auth\TokenUserProvider;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -26,10 +25,6 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        Passport::routes(function ($router) {
-            $router->forAccessTokens();
-        });
 
         // auth:api -> token provider.
         $this->app->auth->provider('token', function ($app) {

@@ -15,12 +15,10 @@
         "flc/alidayu": "^2.0",
         "intervention/image": "^2.3",
         "laravel/framework": "5.4.*",
-        "laravel/passport": "^2.0",
         "laravel/tinker": "~1.0",
         "pingplusplus/pingpp-php": "^2.2",
         "predis/predis": "^1.1",
-        "zhiyicx/plus-installer": "^1.0",
-        "zhuzhichao/ip-location-zh": "^2.2"
+        "zhiyicx/plus-installer": "^1.0"
     },
     "require-dev": {
         "codacy/coverage": "^1.0",

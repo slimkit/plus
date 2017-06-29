@@ -4,7 +4,6 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use Zhuzhichao\IpLocationZh\Ip;
 use Zhiyi\Plus\Models\AuthToken;
 use Zhiyi\Plus\Services\SMS\SMS;
 use Zhiyi\Plus\Models\VerifyCode;
@@ -14,11 +13,6 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
-    protected function findIp($ip): array
-    {
-        return (array) Ip::find($ip);
-    }
-
     /**
      * 发送手机验证码.
      *
@@ -85,26 +79,10 @@ class AuthController extends Controller
         $token->expires = 0;
         $token->state = 1;
 
-        // 登录记录
-        $clientIp = $request->getClientIp();
-        $loginrecord = new LoginRecord();
-        $loginrecord->ip = $clientIp;
-
-        // 保留测试ip
-        // $location = (array)Ip::find($clientIp);
-        $location = $this->findIp('61.139.2.69');
-        array_filter($location);
-        $loginrecord->address = trim(implode(' ', $location));
-        $loginrecord->device_system = $request->input('device_system');
-        $loginrecord->device_name = $request->input('device_name');
-        $loginrecord->device_model = $request->input('device_model');
-        $loginrecord->device_code = $deviceCode;
-
         DB::transaction(function () use ($token, $user, $loginrecord) {
             $user->tokens()->update(['state' => 0]);
             $user->tokens()->delete();
             $token->save();
-            $user->loginRecords()->save($loginrecord);
         });
 
         //返回数据
