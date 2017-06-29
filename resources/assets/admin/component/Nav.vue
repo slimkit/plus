@@ -59,6 +59,10 @@
       <span class="glyphicon glyphicon-user __icon"></span>
       用户中心
     </router-link>
+    <router-link class="list-group-item __button" to="/oauth" active-class="active" >
+      <span class="glyphicon glyphicon-font __icon"></span>
+      oAuth Server
+    </router-link>
     <router-link class="list-group-item __button" to="/sms" active-class="active" >
       <span class="glyphicon glyphicon-phone __icon"></span>
       短信设置

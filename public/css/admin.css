@@ -49,6 +49,52 @@
   padding-left: 240px;
 }
 
+.app-nav {
+  background-color: #37474f;
+  width: 100%;
+  min-height: 100%;
+  padding-top: 16px;
+  margin: 0;
+}
+.app-nav .__button {
+    background: none;
+    border: none;
+    color: #a6aeb2;
+    color: rgba(255, 255, 255, 0.56);
+    padding: 16px 40px;
+    font-weight: 500;
+}
+.app-nav .__button:last-child, .app-nav .__button:first-child {
+      border-radius: 0;
+}
+.app-nav .__button:focus {
+      outline: none;
+      background: none;
+      color: #a6aeb2 !important;
+      color: rgba(255, 255, 255, 0.56) !important;
+}
+.app-nav .__button.active {
+      border-right-width: 4px;
+      border-right-style: solid;
+      border-right-color: #3097D1;
+      color: #fff !important;
+      background-color: #000 !important;
+}
+.app-nav .__button:hover {
+      background-color: #263238 !important;
+      color: #fff !important;
+}
+.app-nav .__button .__icon {
+      margin-right: 32px;
+      color: #78909c;
+}
+.app-nav .__button .__icon-img {
+      width: 14px;
+      height: 14px;
+      border: none;
+      margin-right: 32px;
+}
+
 .login {
   width: 100%;
   min-width: 290px;
@@ -6886,52 +6932,6 @@ to {
 #app {
   padding: 0;
   margin: 0;
-}
-
-.app-nav {
-  background-color: #37474f;
-  width: 100%;
-  min-height: 100%;
-  padding-top: 16px;
-  margin: 0;
-}
-.app-nav .__button {
-    background: none;
-    border: none;
-    color: #a6aeb2;
-    color: rgba(255, 255, 255, 0.56);
-    padding: 16px 40px;
-    font-weight: 500;
-}
-.app-nav .__button:last-child, .app-nav .__button:first-child {
-      border-radius: 0;
-}
-.app-nav .__button:focus {
-      outline: none;
-      background: none;
-      color: #a6aeb2 !important;
-      color: rgba(255, 255, 255, 0.56) !important;
-}
-.app-nav .__button.active {
-      border-right-width: 4px;
-      border-right-style: solid;
-      border-right-color: #3097D1;
-      color: #fff !important;
-      background-color: #000 !important;
-}
-.app-nav .__button:hover {
-      background-color: #263238 !important;
-      color: #fff !important;
-}
-.app-nav .__button .__icon {
-      margin-right: 32px;
-      color: #78909c;
-}
-.app-nav .__button .__icon-img {
-      width: 14px;
-      height: 14px;
-      border: none;
-      margin-right: 32px;
 }
 
 /*# sourceMappingURL=admin.css.map*/
