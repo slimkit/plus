@@ -2,7 +2,6 @@
 
 namespace Zhiyi\Plus\Models;
 
-use Laravel\Passport\HasApiTokens;
 use Zhiyi\Plus\Traits\UserRolePerms;
 use Zhiyi\Plus\Traits\Model\UserFollow;
 use Zhiyi\Plus\Traits\Model\UserWallet;
@@ -13,8 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens,
-        Notifiable,
+    use Notifiable,
         SoftDeletes, // 软删除
         UserWallet, // 用户钱包
         Concerns\UserWalletCash, // 钱包提现
