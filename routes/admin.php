@@ -101,10 +101,6 @@ Route::middleware('auth:web')
 
     // 系统通知
     Route::any('/system/notice', 'SystemController@pushSystemNotice');
-
-    // oAuth Server
-    Route::get('/oauth/clients/api', 'OAuthApiClientController@show');
-    Route::patch('/oauth/clients/api', 'OAuthApiClientController@update');
 });
 
 // Add the route, SPA used mode "history"
