@@ -27,7 +27,7 @@ class OAuthApiClientController extends Controller
     }
 
     /**
-     * Update API client
+     * Update API client.
      *
      * @param \Illuminate\Http\Request $request
      * @param \Illuminate\Contracts\Routing\ResponseFactory $response
