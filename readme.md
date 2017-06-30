@@ -1,11 +1,8 @@
 <p align="center"><img src="public/plus.png"></p>
-
 <p align="center">
 <a href="https://styleci.io/repos/76627423"><img src="https://styleci.io/repos/76627423/shield?branch=master" alt="StyleCI"></a>
-<a href="https://travis-ci.org/zhiyicx/thinksns-plus"><img src="https://travis-ci.org/zhiyicx/thinksns-plus.svg?branch=master" alt="Build Status"></a>
-<a href="https://circleci.com/gh/zhiyicx/thinksns-plus/tree/master"><img src="https://circleci.com/gh/zhiyicx/thinksns-plus/tree/master.svg?style=svg" alt="CircleCI"></a>
-<a href="https://www.codacy.com/app/zhiyi/thinksns-plus?utm_source=github.com&utm_medium=referral&utm_content=zhiyicx/thinksns-plus&utm_campaign=badger"><img src="https://api.codacy.com/project/badge/Grade/8320deaa80b8489f95fcedaae6df079d" alt="Codacy Badge"></a>
-<a href="https://www.codacy.com/app/zhiyi/thinksns-plus?utm_source=github.com&utm_medium=referral&utm_content=zhiyicx/thinksns-plus&utm_campaign=Badge_Coverage"><img src="https://api.codacy.com/project/badge/Coverage/8320deaa80b8489f95fcedaae6df079d" alt="Codacy Badge"></a>
+<a href="https://travis-ci.org/slimkit/thinksns-plus"><img src="https://travis-ci.org/slimkit/thinksns-plus.svg?branch=master" alt="Build Status"></a>
+<a href="https://circleci.com/gh/slimkit/thinksns-plus"><img src="https://circleci.com/gh/slimkit/thinksns-plus.svg?style=svg" alt="CircleCI"></a>
 </p>
 
 ## 关于 ThinkSNS+
@@ -18,7 +15,7 @@ ThinkSNS+ 是基于 Laravel 开发的一个用户生态基础框架系统，支�
 
 ## ThinkSNS+ 文档
 
-[https://github.com/zhiyicx/thinksns-plus/tree/master/docs](https://github.com/zhiyicx/thinksns-plus/tree/master/docs)
+[docs](docs)
 
 > 文档中详细的讲述了关于 ThinkSNS+ 的大部分内容，你可以随时查看。
 > 其中包含了「APIs」、「后台」、「应用开发」等。
