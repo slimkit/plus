@@ -25,11 +25,11 @@ class WalletCharges extends Migration
                 ->comment('关联用户，可不存在，例如直接支付方式等。存在便于按照用户检索。');
 
             $table
-                ->string('channel')
+                ->string('channel', 100)
                 ->comment('支付频道，参考 Ping++，增加 user 选项，表示站内用户凭据');
 
             $table
-                ->string('account')
+                ->string('account', 100)
                 ->nullable()
                 ->default(null)
                 ->comment('交易账户，减项为目标账户，增项为来源账户，当 type 为 user 时，此处是用户ID');
@@ -51,7 +51,7 @@ class WalletCharges extends Migration
                 ->comment('总额');
 
             $table
-                ->string('currency')
+                ->string('currency', 30)
                 ->nullable()
                 ->default('cny')
                 ->comment('货币类型');

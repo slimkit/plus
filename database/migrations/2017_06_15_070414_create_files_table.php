@@ -15,7 +15,7 @@ class CreateFilesTable extends Migration
     {
         Schema::create('files', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('hash')->comment('文件 hash');
+            $table->string('hash', 150)->comment('文件 hash');
             $table->string('origin_filename')->nullbale()->default(null)->comment('原始文件名');
             $table->string('filename')->comment('文件名');
             $table->string('mime', 100)->comment('mime type');
