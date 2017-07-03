@@ -3,6 +3,7 @@
 $db = $argv[1] ?? 'mysql';
 $connection = [];
 switch ($db) {
+    case 'postgres':
     case 'pgsql':
         $connection = [
             'DB_CONNECTION' => 'pgsql',
