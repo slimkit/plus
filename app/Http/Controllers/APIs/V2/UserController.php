@@ -25,7 +25,7 @@ class UserController extends Controller
      */
     public function user(Request $request, User $user)
     {
-        $user->load('datas');
+        $user->load('datas', 'counts');
 
         // 我关注的处理
         $this->hasFollowing($request, $user);
@@ -54,6 +54,7 @@ class UserController extends Controller
         $users = User::whereIn('id', $ids)
             ->with([
                 'datas',
+                'counts',
                 'followings' => function ($query) use ($currentUser) {
                     $query->where('id', $currentUser);
                 },
