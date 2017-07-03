@@ -3,6 +3,8 @@
 <a href="https://styleci.io/repos/76627423"><img src="https://styleci.io/repos/76627423/shield?branch=master" alt="StyleCI"></a>
 <a href="https://travis-ci.org/slimkit/thinksns-plus"><img src="https://travis-ci.org/slimkit/thinksns-plus.svg?branch=master" alt="Build Status"></a>
 <a href="https://circleci.com/gh/slimkit/thinksns-plus"><img src="https://circleci.com/gh/slimkit/thinksns-plus.svg?style=svg" alt="CircleCI"></a>
+<a href="https://packagist.org/packages/zhiyicx/thinksns-plus"><img src="https://img.shields.io/packagist/dt/zhiyicx/thinksns-plus.svg"></a>
+<a href="https://packagist.org/packages/zhiyicx/thinksns-plus"><img src="https://img.shields.io/packagist/v/zhiyicx/thinksns-plus.svg"></a>
 </p>
 
 ## 关于 ThinkSNS+
