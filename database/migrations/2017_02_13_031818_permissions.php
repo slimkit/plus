@@ -20,7 +20,7 @@ class Permissions extends Migration
             $table->string('description')->nullable();
             $table->timestamps();
 
-            $table->uniqid('name');
+            $table->unique('name');
         });
     }
 
