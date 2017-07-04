@@ -78,7 +78,7 @@ class AuthController extends Controller
         $token->expires = 0;
         $token->state = 1;
 
-        DB::transaction(function () use ($token, $user, $loginrecord) {
+        DB::transaction(function () use ($token, $user) {
             $user->tokens()->update(['state' => 0]);
             $user->tokens()->delete();
             $token->save();
