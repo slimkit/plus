@@ -2,6 +2,8 @@
 
 在上传一个文件前对文件进行检查，并创建一个 File with,如果文件存在，当文件存在，则创建一个 with id，不存在抛出 `404`。
 
+iOS端和Android端均使用SHA256算法对文件进行hash。
+
 ```
 GET /files/uploaded/:hash
 ```
