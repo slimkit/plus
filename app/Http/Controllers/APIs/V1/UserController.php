@@ -288,14 +288,14 @@ class UserController extends Controller
         }
         if (in_array('comments', $key)) {
             $comments = $time ? Comment::where(function ($query) use ($uid) {
-                $query->where('to_user_id', $uid)->orWhere('reply_to_user_id', $uid);
+                $query->where('target_user', $uid)->orWhere('reply_user', $uid);
             })
             ->where('user_id', '!=', $uid)
             ->where('created_at', '>', $time)
             ->orderBy('id', 'desc')
             ->get() :
             Comment::where(function ($query) use ($uid) {
-                $query->where('to_user_id', $uid)->orWhere('reply_to_user_id', $uid);
+                $query->where('target_user', $uid)->orWhere('reply_user', $uid);
             })
             ->where('user_id', '!=', $uid)
             ->take(5)
