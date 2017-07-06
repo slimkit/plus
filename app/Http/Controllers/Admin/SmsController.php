@@ -3,7 +3,6 @@
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\VerifyCode;
 use Zhiyi\Plus\Support\Configuration;
 use Zhiyi\Plus\Models\VerificationCode;
 use Illuminate\Contracts\Config\Repository;
