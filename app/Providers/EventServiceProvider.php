@@ -13,8 +13,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'Zhiyi\Plus\Events\Event' => [
-            'Zhiyi\Plus\Listeners\EventListener',
+        \Illuminate\Notifications\Events\NotificationSent::class => [
+            \Zhiyi\Plus\Listeners\VerificationCode::class,
         ],
     ];
 
