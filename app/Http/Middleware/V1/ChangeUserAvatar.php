@@ -5,9 +5,8 @@ namespace Zhiyi\Plus\Http\Middleware\V1;
 use Closure;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\FileWith;
+use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\UserProfileSetting;
 use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
@@ -75,7 +74,7 @@ class ChangeUserAvatar
     protected function setUserProfile(User $user, int $profileId, int $file_with_id, Closure $next, Request $request)
     {
         $file_with = FileWith::find($file_with_id);
-        if (!$file_with) {
+        if (! $file_with) {
             return response()->json(static::createJsonData([
                 'code' => 1017,
             ]))->setStatusCode(500);
