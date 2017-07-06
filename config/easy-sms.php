@@ -73,7 +73,7 @@ return [
         'code' => [
             'alidayu' => [
                 'template' => null,
-            ]
-        ]
-    ]
+            ],
+        ],
+    ],
 ];

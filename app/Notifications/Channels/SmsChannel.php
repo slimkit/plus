@@ -51,6 +51,7 @@ class SmsChannel
         $message = $notification->toSms($notifiable, $this->sms->getConfig());
 
         dd($this->sms->send($to, $message));
+
         return $this->sms->send($to, $message);
     }
 }

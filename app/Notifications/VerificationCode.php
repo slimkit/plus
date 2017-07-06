@@ -66,10 +66,10 @@ class VerificationCode extends Notification implements ShouldQueue
      */
     public function toSms(VerificationCodeModel $notifiable, Config $config)
     {
-        return (new Messages\VerificationCodeMessage(
+        return new Messages\VerificationCodeMessage(
             new ConfigRepository($config->get('channels.code')),
             $notifiable->code
-        ));
+        );
     }
 
     /**
