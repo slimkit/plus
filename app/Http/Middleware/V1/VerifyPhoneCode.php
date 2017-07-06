@@ -3,7 +3,7 @@
 namespace Zhiyi\Plus\Http\Middleware\V1;
 
 use Closure;
-use Zhiyi\Plus\Models\VerifyCode;
+use Zhiyi\Plus\Models\VerificationCode;
 use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
 class VerifyPhoneCode
@@ -23,11 +23,9 @@ class VerifyPhoneCode
         $phone = $request->input('phone');
         $code = (int) $request->input('code');
 
-        $vaild = 300;
-        $verify = VerifyCode::byAccount($phone)
-            ->byValid($vaild)
-            ->byCode($code)
-            ->orderByDesc()
+        $verify = VerificationCode::where('account', $phone)
+            ->where('code', $code)
+            ->orderby('id', 'desc');
             ->first();
 
         if (! $verify || $verify->state == 2) {
