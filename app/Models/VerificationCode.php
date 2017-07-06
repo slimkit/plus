@@ -4,10 +4,11 @@ namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class VerificationCode extends Model
 {
-    use Notifiable;
+    use Notifiable, SoftDeletes;
 
     /**
      * Get the notification routing information for the given driver.
