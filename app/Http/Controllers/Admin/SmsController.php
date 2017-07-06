@@ -5,6 +5,7 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\VerifyCode;
 use Zhiyi\Plus\Support\Configuration;
+use Zhiyi\Plus\Models\VerificationCode;
 use Illuminate\Contracts\Config\Repository;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -19,68 +20,23 @@ class SmsController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function show(Request $request, ResponseFactory $response)
+    public function show(Request $request, ResponseFactory $response, VerificationCode $model)
     {
         $state = $request->query('state');
         $phone = $request->query('phone');
         $limit = $request->query('limit', 20);
-        $page = $request->query('page');
-        $query = app(VerifyCode::class)
-            ->newQuery()
-            ->withTrashed();
 
-        if ($state !== null) {
-            $query->where('state', $state);
-        }
-
-        if ($phone) {
-            $query->where('account', 'like', sprintf('%%%s%%', $phone));
-        }
-
-        $query->latest();
-
-        $data = $query->simplePaginate($limit);
+        $data = $model->withTrashed()
+            ->when(boolval($state), function ($query) use ($state) {
+                return $query->where('state', $state);
+            })
+            ->when(boolval($phone), function ($query) use ($phone) {
+                return $query->where('account', 'like', sprintf('%%%s%%', $phone));
+            })
+            ->orderBy('id', 'desc')
+            ->simplePaginate($limit);
 
         return $response->json($data, 200);
-    }
-
-    /**
-     * Show driver.
-     *
-     * @param \Illuminate\Contracts\Config\Repository $config
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function showDriver(Repository $config, ResponseFactory $response)
-    {
-        $default = $config->get('sms.default');
-        $driver = $config->get('sms.driver');
-
-        return $response->json(['default' => $default, 'driver' => $driver], 200);
-    }
-
-    /**
-     * 更新驱动程序选择.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Illuminate\Contracts\Config\Repository $config
-     * @param \Zhiyi\Plus\Support\Configuration $store
-     * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function updateDriver(Request $request, ResponseFactory $response, Repository $config, Configuration $store)
-    {
-        $default = $request->input('default');
-
-        if (! in_array($default, array_keys($config->get('sms.driver')))) {
-            return $response->json(['message' => ['选择的驱动类型不在系统当中']], 422);
-        }
-
-        $store->set('sms.default', $default);
-
-        return $response->json(['message' => ['设置成功']], 201);
     }
 
     /**
@@ -94,11 +50,12 @@ class SmsController extends Controller
      */
     public function showOption(Repository $config, ResponseFactory $response, string $driver)
     {
-        if (! in_array($driver, array_keys($config->get('sms.driver')))) {
+        if (! in_array($driver, array_keys($config->get('sms.gateways')))) {
             return $response->json(['message' => ['当前驱动不存在于系统中']], 422);
         }
 
-        $data = $config->get(sprintf('sms.connections.%s', $driver), []);
+        $data = $config->get(sprintf('sms.gateways.%s', $driver), []);
+        $data['verify_template_id'] = $config->get(sprintf('sms.channels.code.alidayu.template'));
 
         return $response->json($data, 200);
     }
@@ -116,10 +73,16 @@ class SmsController extends Controller
      */
     public function updateAlidayuOption(Repository $config, Configuration $store, Request $request, ResponseFactory $response)
     {
-        $store->set(
-            'sms.connections.alidayu',
-            $request->only(['app_key', 'app_secret', 'sign_name', 'verify_template_id'])
+        $config = $store->getConfiguration();
+        $config->set(
+            'sms.gateways.alidayu',
+            $request->only(['app_key', 'app_secret', 'sign_name'])
         );
+        $config->set(
+            'sms.channels.code.alidayu.template',
+            $request->input('verify_template_id')
+        );
+        $store->save($config);
 
         return $response->json(['message' => ['更新成功']], 201);
     }
