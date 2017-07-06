@@ -15,7 +15,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-Route::any('/example', function (Request $request) {    
+Route::any('/example', function (Request $request) {
     $model = factory(\Zhiyi\Plus\Models\VerificationCode::class)->create([
         'account' => '18781993582',
         'channel' => 'sms',
@@ -24,10 +24,8 @@ Route::any('/example', function (Request $request) {
         new \Zhiyi\Plus\Notifications\VerificationCode($model)
     );
     dd($model);
-
 })
-->middleware('auth:api')
-;
+->middleware('auth:api');
 
 // API version 1.
 Route::prefix('v1')
