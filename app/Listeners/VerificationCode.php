@@ -2,10 +2,9 @@
 
 namespace Zhiyi\Plus\Listeners;
 
-use Illuminate\Notifications\Events\NotificationSent;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-USE Zhiyi\Plus\Models\VerificationCode as VerificationCodeModel;
+use Illuminate\Notifications\Events\NotificationSent;
+use Zhiyi\Plus\Models\VerificationCode as VerificationCodeModel;
 
 class VerificationCode implements ShouldQueue
 {
@@ -37,7 +36,7 @@ class VerificationCode implements ShouldQueue
             $notifiable->state = 2;
             $notifiable->save();
         }
-        
+
         throw $exception;
     }
 
