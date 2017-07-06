@@ -51,8 +51,6 @@ Route::middleware('auth:web')
     // SMS 相关
     Route::prefix('sms')->group(function () {
         Route::get('/', 'SmsController@show');
-        Route::get('/driver', 'SmsController@showDriver');
-        Route::patch('/driver', 'SmsController@updateDriver');
         Route::get('/driver/{dirver}', 'SmsController@showOption');
         Route::patch('/driver/alidayu', 'SmsController@updateAlidayuOption');
     });
