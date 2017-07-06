@@ -52,7 +52,7 @@ class VerificationCode extends Notification implements ShouldQueue
         return (new MailMessage)->markdown('mail.varification_code', [
             'model' => $notifiable,
             'user' => $notifiable->user,
-        ])->from('service@mail.medz.cn', 'ThinkSNS+');
+        ]);
     }
 
     /**
