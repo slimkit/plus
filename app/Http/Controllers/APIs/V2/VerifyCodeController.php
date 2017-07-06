@@ -3,11 +3,9 @@
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\VerifyCode;
 use Illuminate\Support\Facades\Mail;
+use Zhiyi\Plus\Models\VerificationCode;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Services\SMS\SMS as SMSService;
-use Zhiyi\Plus\Mail\VerifyCode as MailVerifyCode;
 use Zhiyi\Plus\Http\Requests\API2\StoreVerifyCode;
 use Zhiyi\Plus\Http\Requests\API2\CreateRegisterVerifyCodeRequest;
 
@@ -45,12 +43,20 @@ class VerifyCodeController extends Controller
      */
     protected function sendFromRequest(Request $request)
     {
-        foreach (['phone', 'email'] as $type) {
-            if (! ($account = $request->input($type))) {
+        $map = [
+            'mail' => 'email',
+            'sms' => 'phone',
+        ];
+        $user = $request->user()->id ?? null;
+
+        foreach ($map as $channel => $input) {
+            if (! ($account = $request->input($input))) {
                 continue;
             }
 
-            $this->send($account, $type);
+            $this->send($account, $channel, [
+                'user_id' => $user,
+            ]);
             break;
         }
 
@@ -65,18 +71,16 @@ class VerifyCodeController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function send(string $account, string $type = '')
+    protected function send(string $account, string $channel = '', array $data = [])
     {
         $this->validateSent($account);
 
-        $verify = factory(VerifyCode::class)->create(['account' => $account]);
-        if ($type === 'email' || strpos($account, '@') !== false) {
-            Mail::to($account)->queue(new MailVerifyCode($verify));
-
-            return;
-        }
-
-        app(SMSService::class)->dispatch($verify);
+        $data['account'] = $account;
+        $data['channel'] = $channel;
+        $model = factory(VerificationCode::class)->create($data);
+        $model->notify(
+             new \Zhiyi\Plus\Notifications\VerificationCode($model)
+        );
     }
 
     /**
@@ -89,7 +93,7 @@ class VerifyCodeController extends Controller
     protected function validateSent(string $account)
     {
         $vaildSecond = config('app.env') == 'production' ? 60 : 6;
-        $verify = VerifyCode::byAccount($account)
+        $verify = VerificationCode::byAccount($account)
             ->byValid($vaildSecond)
             ->orderBy('id', 'desc')
             ->first();
