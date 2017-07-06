@@ -64,3 +64,13 @@ $factory->define(Zhiyi\Plus\Models\VerifyCode::class, function (Faker\Generator 
         'state' => 0,
     ];
 });
+
+$factory->define(Zhiyi\Plus\Models\VerificationCode::class, function (Faker\Generator $faker) {
+    return [
+        'user_id' => null,
+        'channel' => 'mail',
+        'account' => $faker->safeEmail,
+        'code' => $faker->numberBetween(1000, 999999),
+        'state' => 0,
+    ];
+});
