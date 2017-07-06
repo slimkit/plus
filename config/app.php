@@ -176,6 +176,7 @@ return [
         // Zhiyi\Plus\Providers\BroadcastServiceProvider::class,
         Zhiyi\Plus\Providers\EventServiceProvider::class,
         Zhiyi\Plus\Providers\RouteServiceProvider::class,
+        Zhiyi\Plus\Providers\NotificationServiceProvider::class,
 
     ],
 
