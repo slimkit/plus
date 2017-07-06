@@ -25,7 +25,7 @@ class NotificationServiceProvider extends ServiceProvider
     {
         $this->app->singleton(\Overtrue\EasySms\EasySms::class, function ($app) {
             return new \Overtrue\EasySms\EasySms(
-                $app->config['easy-sms']
+                $app->config['sms']
             );
         });
         $this->app->extend(\Illuminate\Notifications\ChannelManager::class, function ($channel) {
