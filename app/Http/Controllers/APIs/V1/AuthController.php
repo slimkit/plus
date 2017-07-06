@@ -6,7 +6,7 @@ use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\AuthToken;
 use Zhiyi\Plus\Services\SMS\SMS;
-use Zhiyi\Plus\Models\VerifyCode;
+use Zhiyi\Plus\Models\VerificationCode;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
@@ -26,21 +26,27 @@ class AuthController extends Controller
     {
         $vaildSecond = config('app.env') == 'production' ? 300 : 6;
         $phone = $request->input('phone');
-        $verify = VerifyCode::byAccount($phone)->byValid($vaildSecond)->orderByDesc()->first();
+        $verify = VerificationCode::where('account', $account)
+            ->byValid($vaildSecond)
+            ->orderBy('id', 'desc')
+            ->first();
 
         if ($verify) {
             return response()->json([
                 'status'  => false,
                 'code'    => 1008,
                 'message' => null,
-                'data'    => $verify->makeSurplusSecond($vaildSecond),
+                'data'    => '请稍后再获取验证码',
             ])->setStatusCode(403);
         }
 
-        $sms->dispatch(factory(VerifyCode::class)->create([
+        $model = factory(VerificationCode::class)->create([
+            'channel' => 'sms',
             'account' => $phone,
-            'code' => rand(1000, 9999),
-        ]));
+        ]);
+        $model->notify(
+             new \Zhiyi\Plus\Notifications\VerificationCode($model)
+        );
 
         return response()->json(static::createJsonData([
             'status' => true,

@@ -93,7 +93,7 @@ class VerifyCodeController extends Controller
     protected function validateSent(string $account)
     {
         $vaildSecond = config('app.env') == 'production' ? 60 : 6;
-        $verify = VerificationCode::byAccount($account)
+        $verify = VerificationCode::where('account', $account)
             ->byValid($vaildSecond)
             ->orderBy('id', 'desc')
             ->first();
