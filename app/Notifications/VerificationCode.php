@@ -3,9 +3,11 @@
 namespace Zhiyi\Plus\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Overtrue\EasySms\Support\Config;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Config\Repository as ConfigRepository;
 use Zhiyi\Plus\Models\VerificationCode as VerificationCodeModel;
 
 class VerificationCode extends Notification implements ShouldQueue
@@ -62,10 +64,12 @@ class VerificationCode extends Notification implements ShouldQueue
      * @return [type]
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function toSms(VerificationCodeModel $notifiable)
+    public function toSms(VerificationCodeModel $notifiable, Config $config)
     {
-        unset($notifiable);
-        // todo.
+        return (new Messages\VerificationCodeMessage(
+            new ConfigRepository($config->get('channels.code')),
+            $notifiable->code
+        ));
     }
 
     /**
