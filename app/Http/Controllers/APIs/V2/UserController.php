@@ -110,7 +110,7 @@ class UserController extends Controller
 
         $verify = VerificationCode::where('account', $account)
             ->where('code', $verifyCode)
-            ->orderby('id', 'desc');
+            ->orderby('id', 'desc')
             ->first();
 
         if (! $verify) {

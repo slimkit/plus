@@ -25,7 +25,7 @@ class VerifyPhoneCode
 
         $verify = VerificationCode::where('account', $phone)
             ->where('code', $code)
-            ->orderby('id', 'desc');
+            ->orderby('id', 'desc')
             ->first();
 
         if (! $verify || $verify->state == 2) {
