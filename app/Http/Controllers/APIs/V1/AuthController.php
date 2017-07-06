@@ -6,8 +6,8 @@ use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\AuthToken;
 use Zhiyi\Plus\Services\SMS\SMS;
-use Zhiyi\Plus\Models\VerificationCode;
 use Illuminate\Support\Facades\DB;
+use Zhiyi\Plus\Models\VerificationCode;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class AuthController extends Controller
