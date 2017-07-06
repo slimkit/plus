@@ -17,25 +17,6 @@ class AppServiceProvider extends ServiceProvider
     {
         // 注册验证规则.
         $this->registerValidator();
-
-        // 启动 easy-sms
-        $this->bootstrapEasySms();
-    }
-
-    /**
-     * Bootstrap Easy SMS.
-     *
-     * @return void
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    protected function bootstrapEasySms()
-    {
-        $this->app->alias('easy-sms', \Overtrue\EasySms\EasySms::class);
-        $this->app->singleton('easy-sms', function ($app) {
-            return new \Overtrue\EasySms\EasySms(
-                $app->config['easy-sms']
-            );
-        });
     }
 
     /**
