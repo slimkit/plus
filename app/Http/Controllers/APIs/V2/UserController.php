@@ -6,7 +6,7 @@ use RuntimeException;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\AuthToken;
-use Zhiyi\Plus\Models\VerifyCode;
+use Zhiyi\Plus\Models\VerificationCode;
 use Illuminate\Support\Collection;
 use Zhiyi\Plus\Models\CommonConfig;
 use Illuminate\Database\Eloquent\Factory;
@@ -108,8 +108,9 @@ class UserController extends Controller
             $account = $email;
         }
 
-        $verify = VerifyCode::byAccount($account)->byCode($verifyCode)
-            ->orderByDesc()
+        $verify = VerificationCode::where('account', $account)
+            ->where('code', $verifyCode)
+            ->orderby('id', 'desc');
             ->first();
 
         if (! $verify) {
