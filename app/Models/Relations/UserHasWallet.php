@@ -1,6 +1,6 @@
 <?php
 
-namespace Zhiyi\Plus\Traits\Relations;
+namespace Zhiyi\Plus\Models\Relations;
 
 use Zhiyi\Plus\Models\Wallet;
 use Illuminate\Database\Eloquent\Relations\HasOne;
