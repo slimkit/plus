@@ -12,7 +12,7 @@ class User extends Authenticatable
     use Notifiable,
         SoftDeletes,
         Relations\UserHasWalletCash,
-        Concerns\UserWalletCharge,
+        Relations\UserHasWalletCharge,
         Concerns\HasFilesWith,
         Concerns\UserHasNotifiable,
         Relations\UserHasWallet,
