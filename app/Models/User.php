@@ -12,10 +12,10 @@ class User extends Authenticatable
     use Notifiable,
         SoftDeletes,
         Concerns\UserHasNotifiable,
+        Relations\UserHasWallet,
         Relations\UserHasWalletCash,
         Relations\UserHasWalletCharge,
         Relations\UserHasFilesWith,
-        Relations\UserHasWallet,
         Relations\UserHasFollow;
     use Relations\UserHasRolePerms {
         SoftDeletes::restore insteadof Relations\UserHasRolePerms;
