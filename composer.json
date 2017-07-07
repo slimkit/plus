@@ -12,7 +12,6 @@
     ],
     "require": {
         "php": ">=7.0",
-        "flc/alidayu": "^2.0",
         "intervention/image": "^2.3",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
