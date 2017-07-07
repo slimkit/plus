@@ -2,7 +2,6 @@
 
 namespace Zhiyi\Plus\Models;
 
-use Zhiyi\Plus\Traits\Model\UserWallet;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,13 +10,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable,
-        SoftDeletes, // 软删除
-        UserWallet, // 用户钱包
-        Concerns\UserWalletCash, // 钱包提现
-        Concerns\UserWalletCharge, // 钱包凭据
-        Concerns\HasFilesWith, // 用户文件
-        Concerns\UserHasNotifiable, // 用户通知相关
-        Relations\UserHasFollow; // 用户关注
+        SoftDeletes,
+        Concerns\UserWalletCash,
+        Concerns\UserWalletCharge,
+        Concerns\HasFilesWith,
+        Concerns\UserHasNotifiable,
+        Relations\UserHasWallet,
+        Relations\UserHasFollow;
     use Relations\UserHasRolePerms {
         SoftDeletes::restore insteadof Relations\UserHasRolePerms;
         Relations\UserHasRolePerms::restore insteadof SoftDeletes;
