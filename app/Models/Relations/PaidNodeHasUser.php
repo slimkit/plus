@@ -1,6 +1,6 @@
 <?php
 
-namespace Zhiyi\Plus\Models\Concerns;
+namespace Zhiyi\Plus\Models\Relations;
 
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\Wallet;
