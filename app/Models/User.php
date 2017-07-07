@@ -218,24 +218,4 @@ class User extends Authenticatable
 
         return $this->datas()->sync($attributes, false);
     }
-
-    /**
-     * 我关注的用户.
-     *
-     * @return [type] [description]
-     */
-    public function follows()
-    {
-        return $this->hasMany(Following::class, 'user_id');
-    }
-
-    /**
-     * 关注我的用户.
-     *
-     * @return [type] [description]
-     */
-    public function followeds()
-    {
-        return $this->hasMany(Followed::class, 'user_id');
-    }
 }
