@@ -2,7 +2,7 @@
 
 namespace Zhiyi\Plus\Models\Concerns;
 
-trait HasNotifiable
+trait UserHasNotifiable
 {
     public function routeNotificationForNexmo()
     {

@@ -16,7 +16,7 @@ class User extends Authenticatable
         Concerns\UserWalletCash, // 钱包提现
         Concerns\UserWalletCharge, // 钱包凭据
         Concerns\HasFilesWith, // 用户文件
-        Concerns\HasNotifiable, // 用户通知相关
+        Concerns\UserHasNotifiable, // 用户通知相关
         Relations\UserHasFollow; // 用户关注
     use Relations\UserHasRolePerms {
         SoftDeletes::restore insteadof Relations\UserHasRolePerms;
