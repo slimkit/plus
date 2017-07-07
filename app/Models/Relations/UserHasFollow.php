@@ -1,11 +1,11 @@
 <?php
 
-namespace Zhiyi\Plus\Traits\Model;
+namespace Zhiyi\Plus\Models\Relations;
 
 use Zhiyi\Plus\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-trait UserFollow
+trait UserHasFollow
 {
     /**
      * 正在关注 - 我关注的.
