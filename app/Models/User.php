@@ -11,10 +11,10 @@ class User extends Authenticatable
 {
     use Notifiable,
         SoftDeletes,
+        Concerns\UserHasNotifiable,
         Relations\UserHasWalletCash,
         Relations\UserHasWalletCharge,
-        Concerns\HasFilesWith,
-        Concerns\UserHasNotifiable,
+        Relations\UserHasFilesWith,
         Relations\UserHasWallet,
         Relations\UserHasFollow;
     use Relations\UserHasRolePerms {

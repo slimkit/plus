@@ -1,10 +1,10 @@
 <?php
 
-namespace Zhiyi\Plus\Models\Concerns;
+namespace Zhiyi\Plus\Models\Relations;
 
 use Zhiyi\Plus\Models\FileWith;
 
-trait HasFilesWith
+trait UserHasFilesWith
 {
     /**
      * user files.
