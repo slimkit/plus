@@ -11,7 +11,7 @@ class User extends Authenticatable
 {
     use Notifiable,
         SoftDeletes,
-        Concerns\UserWalletCash,
+        Relations\UserHasWalletCash,
         Concerns\UserWalletCharge,
         Concerns\HasFilesWith,
         Concerns\UserHasNotifiable,

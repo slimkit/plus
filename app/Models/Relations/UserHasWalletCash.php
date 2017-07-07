@@ -1,10 +1,10 @@
 <?php
 
-namespace Zhiyi\Plus\Models\Concerns;
+namespace Zhiyi\Plus\Models\Relations;
 
 use Zhiyi\Plus\Models\WalletCash;
 
-trait UserWalletCash
+trait UserHasWalletCash
 {
     /**
      * Wallet cshs.
