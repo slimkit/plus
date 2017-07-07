@@ -1,14 +1,8 @@
 <?php
 
-namespace Zhiyi\Plus\Traits;
+namespace Zhiyi\Plus\Models\Relations;
 
-use Zhiyi\Plus\Models\Role;
-use InvalidArgumentException;
-use Illuminate\Cache\TaggableStore;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
-
-trait UserRolePerms
+trait UserHasRolePerms
 {
     /**
      * 添加事件监听.
