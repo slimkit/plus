@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class PaidNode extends Model
 {
-    use Concerns\HasUserPaid;
+    use Relations\PaidNodeHasUser;
 }

@@ -6,7 +6,7 @@ use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\Wallet;
 use Illuminate\Support\Facades\Cache;
 
-trait HasUserPaid
+trait PaidNodeHasUser
 {
     // 发起支付节点人钱包.
     public function wallet()
