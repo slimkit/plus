@@ -1,11 +1,11 @@
 <?php
 
-namespace Zhiyi\Plus\Traits\Model;
+namespace Zhiyi\Plus\Traits\Relations;
 
 use Zhiyi\Plus\Models\Wallet;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-trait UserWallet
+trait UserHasWallet
 {
     /**
      * Bootstrap the trait.
