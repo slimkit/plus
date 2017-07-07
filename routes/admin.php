@@ -92,11 +92,6 @@ Route::middleware('auth:web')
     Route::patch('/perms/{perm}', 'RoleController@updatePerm');
     Route::delete('/perms/{perm}', 'RoleController@deletePerm');
 
-    // 储存设置
-    Route::get('/storages/engines', 'StorageController@showEngines');
-    Route::get('/storages/engines/{engine}', 'StorageController@showEngineOption');
-    Route::patch('/storages/engines/{engine}', 'StorageController@updateEngineOption');
-
     // 系统通知
     Route::any('/system/notice', 'SystemController@pushSystemNotice');
 });
