@@ -51,4 +51,22 @@ class VerificationCode extends Model
 
         return $query->whereBetween('created_at', [$sub, $now]);
     }
+
+    /**
+     * 计算距离验证码过期时间.
+     *
+     * @param int $vaildSecond 验证的总时间
+     *
+     * @return int 剩余时间
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     * @homepage http://medz.cn
+     */
+    public function makeSurplusSecond(int $vaildSecond = 60): int
+    {
+        $now = $this->freshTimestamp();
+        $differ = $this->created_at->diffInSeconds($now);
+
+        return $vaildSecond - $differ;
+    }
 }
