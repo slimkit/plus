@@ -7,7 +7,6 @@
 import Setting from '../component/Setting';
 import Base from '../component/setting/Base';
 import Area from '../component/setting/Area';
-import StoreageManage from '../component/setting/StoreageManage';
 
 const settingRouter = {
   path: 'setting',
@@ -20,10 +19,6 @@ const settingRouter = {
     {
       path: 'area',
       component: Area
-    },
-    {
-      path: 'storeages',
-      component: StoreageManage
     }
   ]
 };

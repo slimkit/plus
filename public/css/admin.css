@@ -250,10 +250,6 @@
   padding: 12px 12px 0;
 }
 
-._3_PJzR8yknYsK4O4paifqR_0 {
-  margin-right: 10px;
-}
-
 ._1z4RhTrWlanBvCuyqi6fBV_0 {
   padding-top: 15px;
 }
@@ -297,10 +293,6 @@
     -webkit-animation-iteration-count: infinite;
          -o-animation-iteration-count: infinite;
             animation-iteration-count: infinite;
-}
-
-.setting-container .setting-nav {
-  padding: 12px 12px 0;
 }
 
 @charset "UTF-8";
@@ -6932,6 +6924,10 @@ to {
 #app {
   padding: 0;
   margin: 0;
+}
+
+.setting-container .setting-nav {
+  padding: 12px 12px 0;
 }
 
 /*# sourceMappingURL=admin.css.map*/
