@@ -86,32 +86,6 @@ Route::get('/diggsrank', 'UserController@diggsRank');
 Route::get('/follows/follows/{user_id}/{max_id?}', 'FollowController@follows');
 Route::get('/follows/followeds/{user_id}/{max_id?}', 'FollowController@followeds');
 
-// 获取一个附件资源
-tap(Route::get('/storages/{storage}/{process?}', 'StorageController@get'), function (\Illuminate\Routing\Route &$route) {
-    $route->setAction(array_merge($route->getAction(), [
-        'middleware' => 'bindings',
-    ]));
-});
-
-// 批量储存资源地址获取.
-Route::get('/storages', 'StorageController@getStorageLinks');
-
-// 附件储存相关
-Route::prefix('storages')
-->middleware('auth:api')
-->group(function () {
-    // 创建一个储存任务
-    Route::post('/task', 'StorageController@create')
-    ->middleware('role-permissions:storage-create,你没有上传附件的权限');
-    // 完成一个任务上传通知
-    Route::patch('/task/{storage_task_id}', 'StorageController@notice');
-    // 删除一个上传任务附件
-    Route::delete('/task/{storage_task_id}', 'StorageController@delete');
-    // local storage api.
-    Route::post('/task/{storage_task_id}', 'StorageController@upload')
-        ->name('storage/upload');
-});
-
 //系统及配置相关
 Route::prefix('/system')
 ->middleware('auth:api')
