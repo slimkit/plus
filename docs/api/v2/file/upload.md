@@ -18,7 +18,7 @@ Status: 201 Created
 
 ```json
 {
-    "messate": [
+    "message": [
         "上传成功"
     ],
     "id": 1
