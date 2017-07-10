@@ -1,7 +1,17 @@
 # 消息通知
 
+- [未读通知数量检查](#未读通知数据检查)
 - [通知列表](#通知列表)
 - [数据解析](#数据解析)
+
+## 通知数据检查
+
+```
+HEAD /user/notifications
+```
+
+> 查看 [通知列表](#通知列表) 请求头
+
 
 ## 通知列表
 
@@ -22,6 +32,7 @@ GET /user/notifications
 
 ```
 Status: 200 OK
+Unread-Notification-Limit: 10
 ```
 ```json5
 [
@@ -39,6 +50,8 @@ Status: 200 OK
     }
 ]
 ```
+
+> `Unread-Notification-Limit` 为当前用户未读消息数量。
 > 详情数据结构参考[数据解析](#数据解析)
 
 ---------------
