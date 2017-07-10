@@ -6,5 +6,5 @@
 
 ------
 
-邮件由 [{{ config('app.name') }}]({{ config('app.url') }}) 自动发出，请勿回复。
+<small>邮件由 [{{ config('app.name') }}]({{ config('app.url') }}) 自动发出，请勿回复。</small>
 @endcomponent
