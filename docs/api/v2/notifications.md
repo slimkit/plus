@@ -10,6 +10,8 @@
 HEAD /user/notifications
 ```
 
+本接口可用于消息分组显示的客户端，可以提前得到未读消息数量，然后将 `Unread-Notification-Limit` 拼接为 `limit` 参数，type 设置为 `unread` 得到全部未读消息。
+
 > 查看 [通知列表](#通知列表) 请求头
 
 
