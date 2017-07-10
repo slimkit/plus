@@ -1,0 +1,67 @@
+<?php
+
+namespace Zhiyi\Plus\Notifications\Messages;
+
+class UserNotificationMessage
+{
+    /**
+     * The message channel.
+     *
+     * @var strng
+     */
+    protected $channel;
+
+    /**
+     * The message channel target.
+     *
+     * @var mixed
+     */
+    protected $target;
+
+    /**
+     * The message content.
+     *
+     * @var string
+     */
+    protected $content;
+
+    /**
+     * The message extra data.
+     *
+     * @var array
+     */
+    protected $extra = [];
+
+    /**
+     * Create the message instance.
+     *
+     * @param string $channel
+     * @param mixed $target
+     * @param string $content
+     * @param array $extra
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function __construct(string $channel, $target, string $content, array $extra = [])
+    {
+        $this->channel = $channel;
+        $this->target = $target;
+        $this->content = $content;
+        $this->extra = $extra;
+    }
+
+    /**
+     * The message to array.
+     *
+     * @return array
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function toArray(): array
+    {
+        return [
+            'channel' => $this->channel,
+            'target' => $this->target,
+            'content' => $this->content,
+            'extra' => $this->extra,
+        ];
+    }
+}
