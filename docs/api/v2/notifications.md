@@ -96,7 +96,6 @@ Example:
 
 通知来源频道，客户端需要根据 `data.channel` 值进行独立解析。已知频道:
 
-- system 系统消息
 - feed:comment 动态被评论
 - feed:reply-comment 动态评论被回复
 - feed:pinned-comment 动态评论申请置顶
