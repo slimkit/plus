@@ -20,6 +20,11 @@ class UserNotificationController extends Controller
         $offset = intval($request->query('offset', 0));
         $method = in_array($type = $request->query('type'), array_keys($typeMap)) ? $typeMap[$type] : $typeMap['all'];
         $notification = array_filter(is_string($notification = $request->query('notification')) ? explode(',', $notification) : [$notification]);
+        $unreadNotificationLimit = $user->unreadNotifications()->count();
+
+        if (strtolower($request->method()) === 'head') {
+            return $response->make(null, 200, ['unread-notification-limit' => $unreadNotificationLimit]);
+        }
 
         $notifications = $user->$method()
             ->when(! empty($notification), function ($query) use ($notification) {
@@ -29,6 +34,8 @@ class UserNotificationController extends Controller
             ->offset($offset)
             ->get(['id', 'read_at', 'data', 'created_at']);
 
-        return $response->json($notifications)->setStatusCode(200);
+        return $response->json($notifications)
+            ->header('unread-notification-limit', $unreadNotificationLimit)
+            ->setStatusCode(200);
     }
 }
