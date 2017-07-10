@@ -123,11 +123,11 @@ class AreasTableSeeder extends Seeder
      */
     protected function datas(): array
     {
-      if (env('APP_ENV') === 'testing') {
-        return [];
-      }
+        if (env('APP_ENV') === 'testing') {
+            return [];
+        }
 
-      return $this->data;
+        return $this->data;
     }
 
     protected $data = [
