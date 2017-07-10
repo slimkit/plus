@@ -18,12 +18,12 @@ return [
     | 默认发送配置
     |--------------------------------------------------------------------------
     |
-    | strategy 为调度器，默认使用「顺序调度器」，可选值有：
-    |       - \Overtrue\EasySms\Strategies\OrderStrategy::class  顺序调度器
-    |       - \Overtrue\EasySms\Strategies\RandomStrategy::class 随机调度器
+    | strategy 为策略器，默认使用「顺序策略器」，可选值有：
+    |       - \Overtrue\EasySms\Strategies\OrderStrategy::class  顺序策略器
+    |       - \Overtrue\EasySms\Strategies\RandomStrategy::class 随机策略器
     |
     | gateways 设置可用的发送网关，可用网关：
-    |       - alidayu 阿里云信
+    |       - aliyun 阿里云信
     |       - alidayu 阿里大于
     |       - yunpian 云片
     |       - submail Submail
