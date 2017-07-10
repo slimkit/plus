@@ -21,7 +21,7 @@ class AreasTableSeeder extends Seeder
             'extends' => 3,
         ]);
 
-        $gbs = array_keys($this->data);
+        $gbs = array_keys($this->datas());
 
         $progressBar = new ProgressBar($output, count($gbs));
 
@@ -113,6 +113,21 @@ class AreasTableSeeder extends Seeder
         $name = $this->data[$code];
 
         return $province.' '.$area.' '.$name;
+    }
+
+    /**
+     * Get areas data.
+     *
+     * @return array
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function datas(): array
+    {
+      if (env('APP_ENV') === 'testing') {
+        return [];
+      }
+
+      return $this->data;
     }
 
     protected $data = [
