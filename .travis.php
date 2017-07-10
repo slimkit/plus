@@ -1,7 +1,9 @@
 <?php
 
 $db = $argv[1] ?? 'mysql';
-$connection = [];
+$connection = [
+    'APP_ENV' => 'testing',
+];
 switch ($db) {
     case 'postgres':
     case 'pgsql':
