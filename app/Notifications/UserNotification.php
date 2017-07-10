@@ -2,33 +2,47 @@
 
 namespace Zhiyi\Plus\Notifications;
 
+use Zhiyi\Plus\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class UserNotification extends Notification
+class UserNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+
+    /**
+     * The notification message.
+     *
+     * @var \Zhiyi\Plus\Notifications\Messages\UserNotificationMessage
+     */
+    protected $message;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Messages\UserNotificationMessage $message)
     {
-        //
+        $this->message = $message;
     }
 
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
+     * @param \Zhiyi\Plus\Models\User $user
      * @return array
      */
-    public function via($notifiable)
+    public function via(User $user): array
     {
-        return ['mail'];
+        $vias = ['database'];
+
+        if ($user->email) {
+            $vias[] = 'mail';
+        }
+
+        return $vias;
     }
 
     /**
