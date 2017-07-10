@@ -1,9 +1,7 @@
 <?php
 
 $db = $argv[1] ?? 'mysql';
-$connection = [
-    'APP_ENV' => 'testing',
-];
+$connection = [];
 switch ($db) {
     case 'postgres':
     case 'pgsql':
@@ -30,6 +28,9 @@ switch ($db) {
         break;
 }
 
+$connection = array_merge($connection, [
+    'APP_ENV' => 'testing',
+]);
 $env = file_get_contents(__DIR__.'/.env.example');
 foreach ($connection as $key => $value) {
     $env = preg_replace("/{$key}=(.*)?/i", "{$key}={$value}", $env);
