@@ -14,6 +14,8 @@ class UserFollow extends Migration
     public function up()
     {
         Schema::create('user_follow', function (Blueprint $table) {
+            $table->bigIncrements('id')->comment('关注ID');
+
             // 操作对象用户
             $table
                 ->integer('user_id')
