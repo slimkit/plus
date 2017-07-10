@@ -2,6 +2,7 @@
 
 - [未读通知数量检查](#未读通知数据检查)
 - [通知列表](#通知列表)
+- [读取通知](#读取通知)
 - [数据解析](#数据解析)
 
 ## 未读通知数量检查
@@ -55,6 +56,33 @@ Unread-Notification-Limit: 10
 
 > `Unread-Notification-Limit` 为当前用户未读消息数量。
 > 详情数据结构参考[数据解析](#数据解析)
+
+## 读取通知
+
+```
+GET /user/notifications/:notification
+```
+
+#### Response
+
+```
+Status: 200 OK
+```
+```json
+{
+    "id": "98aaae93-9d9e-446e-b894-691569b686b5",
+    "read_at": "2017-07-10 09:31:04",
+    "data": {
+        "channel": "feed:pinned",
+        "target": 1,
+        "content": "我是测试消息",
+        "extra": []
+    },
+    "created_at": "2017-07-10 04:23:08"
+}
+```
+
+> 读取通知详情，会使这条通知状态变为已读状态。
 
 ---------------
 

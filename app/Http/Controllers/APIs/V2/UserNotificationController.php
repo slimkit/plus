@@ -5,9 +5,18 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
+// use Illuminate\Notifications\DatabaseNotification as NotificationModel;
 
 class UserNotificationController extends Controller
 {
+    /**
+     * Get user notifications.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function index(Request $request, ContractResponse $response)
     {
         $user = $request->user();
@@ -37,5 +46,30 @@ class UserNotificationController extends Controller
         return $response->json($notifications)
             ->header('unread-notification-limit', $unreadNotificationLimit)
             ->setStatusCode(200);
+    }
+
+    /**
+     * Get notification message.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param string $notification
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function show(Request $request, ContractResponse $response, string $notification)
+    {
+        $notification = $request->user()
+            ->notifications()
+            ->where('id', $notification)
+            ->first(['id', 'read_at', 'data', 'created_at']);
+
+        if (! $notification) {
+            return $response->json(['message' => ['通知不存在或者已被删除']])->setStatusCode(404);
+        }
+
+        $notification->markAsRead();
+
+        return $response->json($notification)->setStatusCode(200);
     }
 }
