@@ -51,7 +51,7 @@ class VerificationCode extends Notification implements ShouldQueue
      */
     public function toMail(VerificationCodeModel $notifiable)
     {
-        return (new MailMessage)->markdown('mail.varification_code', [
+        return (new MailMessage)->markdown('mails.varification_code', [
             'model' => $notifiable,
             'user' => $notifiable->user,
         ]);
