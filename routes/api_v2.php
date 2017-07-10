@@ -18,6 +18,9 @@ Route::prefix('/user')
 ->group(function () {
     // 当前用户资料
     Route::get('/', 'CurrentUserController@show');
+
+    // 用户通知
+    Route::get('/notifications', 'UserNotificationController@index');
 });
 
 // 用户相关
