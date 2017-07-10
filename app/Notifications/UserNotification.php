@@ -57,7 +57,7 @@ class UserNotification extends Notification implements ShouldQueue
         return (new MailMessage)->markdown('mails.user_notification', [
             'message' => $this->message,
             'user' => $user,
-        ]);
+        ])->subject($this->message->getSubject() ?: '新消息提醒');
     }
 
     /**

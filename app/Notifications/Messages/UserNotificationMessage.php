@@ -33,6 +33,13 @@ class UserNotificationMessage
     protected $extra = [];
 
     /**
+     * The notification subject.
+     *
+     * @var string
+     */
+    protected $subject = '';
+
+    /**
      * Create the message instance.
      *
      * @param string $channel
@@ -47,6 +54,23 @@ class UserNotificationMessage
         $this->target = $target;
         $this->content = $content;
         $this->extra = $extra;
+    }
+
+    public function setSubject(string $subject)
+    {
+        $this->subject = $subject;
+
+        return $this;
+    }
+
+    public function getSubject(): string
+    {
+        return $this->subject;
+    }
+
+    public function getContent(): string
+    {
+        return $this->content;
     }
 
     /**

@@ -1,12 +1,10 @@
 @component('mail::message')
-# Introduction
 
-The body of your message.
+**{{ $user->name }}，你好，你有一条新消息。**
 
-@component('mail::button', ['url' => ''])
-Button Text
-@endcomponent
+> {{ $message->getContent() }}
 
-Thanks,<br>
-{{ config('app.name') }}
+------
+
+邮件由 [{{ config('app.name') }}]({{ config('app.url') }}) 自动发出，请勿回复。
 @endcomponent
