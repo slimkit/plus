@@ -48,12 +48,15 @@ class UserNotification extends Notification implements ShouldQueue
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param \Zhiyi\Plus\Models\User $user
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail(User $user)
     {
-        return (new MailMessage)->markdown('mails.user_notification');
+        return (new MailMessage)->markdown('mails.user_notification', [
+            'message' => $this->message,
+            'user' => $user,
+        ]);
     }
 
     /**
