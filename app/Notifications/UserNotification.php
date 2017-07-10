@@ -5,6 +5,7 @@ namespace Zhiyi\Plus\Notifications;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
 class UserNotification extends Notification implements ShouldQueue
