@@ -73,4 +73,25 @@ class UserNotificationController extends Controller
 
         return $response->json($notification)->setStatusCode(200);
     }
+
+    /**
+     * Mark notification status to read.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param string $notification
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function markAsRead(Request $request, ContractResponse $response, string $notification = '')
+    {
+        $notifications = array_filter(array_merge(
+            is_string($notifications = $request->query('notification')) ? explode(',', $notifications) : [$notifications],
+            [$notification]
+        ));
+
+        $request->user()->unreadNotifications()->whereIn('id', $notifications)->get()->markAsRead();
+
+        return $response->json(['message' => ['操作成功']])->setStatusCode(201);
+    }
 }

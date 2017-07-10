@@ -22,6 +22,7 @@ Route::prefix('/user')
     // 用户通知
     Route::get('/notifications', 'UserNotificationController@index');
     Route::get('/notifications/{notification}', 'UserNotificationController@show');
+    Route::patch('/notifications/{notification?}', 'UserNotificationController@markAsRead');
 });
 
 // 用户相关
