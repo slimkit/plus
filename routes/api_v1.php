@@ -83,8 +83,8 @@ Route::prefix('users')
 Route::get('/diggsrank', 'UserController@diggsRank');
 
 // 用户关注相关
-Route::get('/follows/follows/{user_id}/{max_id?}', 'FollowController@follows');
-Route::get('/follows/followeds/{user_id}/{max_id?}', 'FollowController@followeds');
+Route::get('/follows/follows/{user}/{max_id?}', 'FollowController@follows');
+Route::get('/follows/followeds/{user}/{max_id?}', 'FollowController@followeds');
 
 //系统及配置相关
 Route::prefix('/system')
