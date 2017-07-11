@@ -49,10 +49,9 @@ trait UserHasFollow
         if (! $user) {
             return false;
         }
-
         return $this
             ->followings()
-            ->where($this->getKeyName(), $user)
+            ->where($this->getTable().'.'.$this->getKeyName(), $user)
             ->value('target') === $user;
     }
 
@@ -75,7 +74,7 @@ trait UserHasFollow
 
         return $this
             ->followers()
-            ->where($this->getKeyName(), $user)
+            ->where($this->getTable().'.'$this->getKeyName(), $user)
             ->value('user_id') === $user;
     }
 }
