@@ -7,7 +7,6 @@ use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Jobs\PushMessage;
 use Zhiyi\Plus\Models\UserDatas;
-use Illuminate\Database\QueryException;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class FollowController extends Controller
