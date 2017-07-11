@@ -52,7 +52,7 @@ trait UserHasFollow
 
         return $this
             ->followings()
-            ->where($this->getTable().'.'.$this->getKeyName(), $user)
+            ->newPivotStatementForId($user)
             ->value('target') === $user;
     }
 
@@ -75,7 +75,7 @@ trait UserHasFollow
 
         return $this
             ->followers()
-            ->where($this->getTable().'.'.$this->getKeyName(), $user)
-            ->value('user_id') === $user;
+            ->newPivotStatementForId($user)
+            ->value('target') === $user;
     }
 }
