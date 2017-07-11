@@ -49,6 +49,7 @@ trait UserHasFollow
         if (! $user) {
             return false;
         }
+
         return $this
             ->followings()
             ->where($this->getTable().'.'.$this->getKeyName(), $user)
