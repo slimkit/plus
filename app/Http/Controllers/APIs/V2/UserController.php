@@ -56,10 +56,10 @@ class UserController extends Controller
                 'datas',
                 'counts',
                 'followings' => function ($query) use ($currentUser) {
-                    $query->where('id', $currentUser);
+                    $query->where('users.id', $currentUser);
                 },
                 'followers' => function ($query) use ($currentUser) {
-                    $query->where('id', $currentUser);
+                    $query->where('users.id', $currentUser);
                 },
             ])
             ->get();
