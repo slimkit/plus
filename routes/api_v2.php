@@ -23,6 +23,9 @@ Route::prefix('/user')
     Route::get('/notifications', 'UserNotificationController@index');
     Route::get('/notifications/{notification}', 'UserNotificationController@show');
     Route::patch('/notifications/{notification?}', 'UserNotificationController@markAsRead');
+
+    // 用户收到的评论
+    Route::get('/comments', 'UserCommentController@index');
 });
 
 // 用户相关
