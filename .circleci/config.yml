@@ -1,6 +1,6 @@
 version: 2
 jobs:
-    build:
+    front-end:
         working_directory: ~/plus
         docker:
             - image: circleci/node:6
@@ -12,23 +12,11 @@ jobs:
             - run:
                 name: Run yarn install
                 command: yarn install
-
-    test:
-        working_directory: ~/plus
-        docker:
-            - image: circleci/node:6
-        steps:
             - run:
-                name: test
-                command: ls -al && pwd
+                name: Build dist
+                command: yarn dist
 workflows:
     version: 2
-    build_and_test:
+    run_all:
         jobs:
-            - build
-            - test:
-                requires:
-                    - build
-                filters:
-                    branches:
-                        only: master
+            - front-end
