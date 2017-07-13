@@ -2,6 +2,8 @@ version: 2
 jobs:
     build:
         working_directory: ~/plus
+        docker:
+            - image: circleci/node:6
         steps:
             - checkout
     front-end:
