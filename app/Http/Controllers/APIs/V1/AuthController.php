@@ -5,7 +5,6 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\AuthToken;
-use Zhiyi\Plus\Services\SMS\SMS;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\VerificationCode;
@@ -23,7 +22,7 @@ class AuthController extends Controller
      * @author Seven Du <shiweidu@outlook.com>
      * @homepage http://medz.cn
      */
-    public function sendPhoneCode(Request $request, SMS $sms)
+    public function sendPhoneCode(Request $request)
     {
         $vaildSecond = config('app.env') == 'production' ? 300 : 6;
         $phone = $request->input('phone');
