@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
+use RuntimeException;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\AuthToken;
@@ -166,15 +167,19 @@ class AuthController extends Controller
         $user->name = $name;
         $user->phone = $phone;
         $user->createPassword($password);
-        $user->save();
 
         $role = CommonConfig::byNamespace('user')
         ->byName('default_role')
         ->firstOr(function () {
             throw new RuntimeException('Failed to get the defined user group.');
         });
-        // 添加默认用户组.
-        $user->attachRole($role->value);
+
+        DB::transaction(function () use ($user, $role) {
+            $user->save();
+
+            // 添加默认用户组.
+            $user->attachRole($role->value);
+        });
 
         return $this->login($request);
     }
