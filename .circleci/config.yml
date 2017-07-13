@@ -1,22 +1,22 @@
 version: 2
 jobs:
-  build:
-    working_directory: ~/thinksns-plus
-    docker:
-      - image: circleci/node:6
-    steps:
-      - checkout
-  test1:
-    working_directory: ~/thinksns-plus
-    docker:
-      - image: circleci/node:6
-    steps:
-      - run: ls -al
+    build:
+        working_directory: ~/thinksns-plus
+        docker:
+            - image: circleci/node:6
+        steps:
+            - checkout
+    test1:
+        working_directory: ~/thinksns-plus
+        docker:
+            - image: circleci/node:6
+        steps:
+            - run: ls -al
 workflows:
-  version: 2
-  build_and_test:
-    jobs:
-      - build
-      - test1:
-        requires:
-          - build
+    version: 2
+    build_and_test:
+        jobs:
+            - test1:
+                requires:
+                    - build
+            - build
