@@ -26,6 +26,9 @@ Route::prefix('/user')
 
     // 用户收到的评论
     Route::get('/comments', 'UserCommentController@index');
+
+    // 用户收到赞
+    Route::get('/likes', 'UserLikeController@index');
 });
 
 // 用户相关
