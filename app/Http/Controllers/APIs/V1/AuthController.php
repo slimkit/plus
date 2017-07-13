@@ -176,7 +176,7 @@ class AuthController extends Controller
         });
         // 添加默认用户组.
         $user->attachRole($role->value);
-        
+
         return $this->login($request);
     }
 
