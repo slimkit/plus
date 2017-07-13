@@ -171,7 +171,7 @@ class AuthController extends Controller
         $role = CommonConfig::byNamespace('user')
         ->byName('default_role')
         ->firstOr(function () {
-            throw new RuntimeException('Failed to get the defined user group.');
+            throw new \RuntimeException('Failed to get the defined user group.');
         });
 
         DB::transaction(function () use ($user, $role) {
