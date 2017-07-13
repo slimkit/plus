@@ -68,42 +68,34 @@ class UserController extends Controller
     }
 
     /**
-     * [get description].
+     * Show users.
      *
-     * @Author   Wayne[qiaobin@zhiyicx.com]
-     * @DateTime 2017-01-18T17:54:59+0800
-     *
-     * @param User $user [description]
-     *
-     * @return [type] [description]
+     * @param \Illuminate\Http\Request $request
+     * @param \Zhiyi\Plus\Models\User $model
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
      */
-    public function get(Request $request)
+    public function get(Request $request, User $model)
     {
-        $uid = Auth::guard('api')->user()->id ?? 0;
-        $datas = User::whereIn('id', $request->user_ids)
-            ->with('datas', 'counts')
-            ->get()
-            ->toArray();
-        if (! $datas) {
-            return response()->json([
-                'status'  => false,
-                'message' => '没有相关用户',
-                'code'    => 1019,
-                'data'    => null,
-            ])->setStatusCode(404);
-        }
+        $user = $request->user('api')->id ?? 0;
+        $ids = is_string($ids = $request->user_ids) ? explode(',', $ids) : $ids;
 
-        foreach ($datas as &$data) {
-            $data['is_following'] = Following::where('user_id', $uid)->where('following_user_id', $data['id'])->get()->isEmpty() ? 0 : 1;
-            $data['is_followed'] = Followed::where('user_id', $uid)->where('followed_user_id', $data['id'])->get()->isEmpty() ? 0 : 1;
-        }
+        $users = $model->with('datas', 'counts')
+            ->whereIn('id', (array) $ids)
+            ->get();
+        $users = $model->getConnection()->transaction(function () use ($user, $users) {
+            return $users->map(function (User $item) use ($user) {
+                $item->is_following = $item->hasFollwing($user);
+                $item->is_followed = $item->hasFollower($user);
 
-        return response()->json([
-            'status'  => true,
-            'code'    => 0,
-            'message' => '获取成功',
-            'data'    => $datas,
-        ])->setStatusCode(201);
+                return $item;
+            });
+        });
+
+        return response()->json(static::createJsonData([
+            'status' => true,
+            'data' => $users,
+        ]), 201);
     }
 
     /**
