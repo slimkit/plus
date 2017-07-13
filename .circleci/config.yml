@@ -9,15 +9,15 @@ jobs:
             - run:
                 name: Install Yarn
                 command: curl -o- -L https://yarnpkg.com/install.sh | bash
+            - run:
+                name: Run yarn install
+                command: yarn install
 
     test:
         working_directory: ~/plus
         docker:
             - image: circleci/node:6
         steps:
-            - run:
-                name: run yarn install
-                command: yarn install
             - run:
                 name: dist
                 command: yarn dist
