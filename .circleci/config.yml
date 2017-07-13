@@ -1,0 +1,34 @@
+version: 2
+jobs:
+    build:
+        working_directory: ~/plus
+        docker:
+            - image: circleci/node:6
+        steps:
+            - checkout
+            - install_yarm:
+                name: Install Yarn
+                command: curl -o- -L https://yarnpkg.com/install.sh | bash
+
+    test:
+        working_directory: ~/plus
+        docker:
+            - image: circleci/node:6
+        steps:
+            - pre:
+                name: run yarn install
+                command: yarn install
+            - run:
+                name: dist
+                command: yarn dist
+workflows:
+    version: 2
+    build_and_test:
+        jobs:
+            - build
+            - test:
+                requires:
+                    - build
+                filters:
+                    branches:
+                        only: master
