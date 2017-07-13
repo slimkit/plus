@@ -17,7 +17,8 @@ class User extends Authenticatable
         Relations\UserHasWalletCharge,
         Relations\UserHasFilesWith,
         Relations\UserHasFollow,
-        Relations\UserHasComment;
+        Relations\UserHasComment,
+        Relations\UserHasLike;
     use Relations\UserHasRolePerms {
         SoftDeletes::restore insteadof Relations\UserHasRolePerms;
         Relations\UserHasRolePerms::restore insteadof SoftDeletes;
