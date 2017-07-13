@@ -19,8 +19,8 @@ jobs:
             - image: circleci/node:6
         steps:
             - run:
-                name: dist
-                command: yarn dist
+                name: test
+                command: ls -al
 workflows:
     version: 2
     build_and_test:
