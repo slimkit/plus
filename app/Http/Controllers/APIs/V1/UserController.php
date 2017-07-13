@@ -8,11 +8,9 @@ use Zhiyi\Plus\Models\Digg;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Comment;
-use Zhiyi\Plus\Models\Followed;
 use Zhiyi\Plus\Models\Following;
 use Zhiyi\Plus\Models\UserDatas;
 use Zhiyi\Plus\Models\Conversation;
-use Illuminate\Support\Facades\Auth;
 use Zhiyi\Plus\Models\UserProfileSetting;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
