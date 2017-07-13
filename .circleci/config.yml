@@ -6,7 +6,7 @@ jobs:
             - image: circleci/node:6
         steps:
             - checkout
-            - install_yarm:
+            - run:
                 name: Install Yarn
                 command: curl -o- -L https://yarnpkg.com/install.sh | bash
 
@@ -15,7 +15,7 @@ jobs:
         docker:
             - image: circleci/node:6
         steps:
-            - pre:
+            - run:
                 name: run yarn install
                 command: yarn install
             - run:
