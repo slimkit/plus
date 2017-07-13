@@ -8,7 +8,6 @@ use Zhiyi\Plus\Models\Digg;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Comment;
-use Zhiyi\Plus\Models\Following;
 use Zhiyi\Plus\Models\UserDatas;
 use Zhiyi\Plus\Models\Conversation;
 use Zhiyi\Plus\Models\UserProfileSetting;
@@ -265,14 +264,13 @@ class UserController extends Controller
             $return[] = $digg_return;
         }
         if (in_array('follows', $key)) {
-            $follows = $time ? Following::where('following_user_id', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->get() :
-                Following::where('following_user_id', $uid)->orderBy('id', 'desc')->take(5)->get();
-
+            $follows = $time ? DB::table('user_follow')->where('target', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->get() :
+                DB::table('user_follow')->where('target', $uid)->orderBy('id', 'desc')->take(5)->get();
             $follow_return['key'] = 'follows';
             $follow_return['uids'] = $follows->pluck('user_id')->toArray();
             $follow_return['count'] = $time ? $follows->count() : 0;
-            $follow_return['time'] = $follows->count() > 0 ? $follows->toArray()[0]['created_at'] : Carbon::now()->toDateTimeString();
-            $follow_return['max_id'] = $follows->count() > 0 ? $follows->toArray()[0]['id'] : 0;
+            $follow_return['time'] = $follows->count() > 0 ? $follows->toArray()[0]->created_at : Carbon::now()->toDateTimeString();
+            $follow_return['max_id'] = $follows->count() > 0 ? $follows->toArray()[0]->id : 0;
 
             $return[] = $follow_return;
         }
