@@ -1,32 +1,20 @@
 version: 2
 jobs:
-    build:
-        working_directory: ~/plus
-        docker:
-            - image: circleci/node:6
-        steps:
-            - checkout
-    front-end:
-        working_directory: ~/plus
-        docker:
-            - image: circleci/node:6
-        steps:
-            - run:
-                command: ls -al & pwd
-            - run:
-                name: Install Yarn
-                command: curl -o- -L https://yarnpkg.com/install.sh | bash
-            - run:
-                name: Run yarn install
-                command: yarn install
-            - run:
-                name: Build dist
-                command: yarn dist
+  build:
+    working_directory: ~/thinksns-plus
+    docker:
+      - image: circleci/node:6
+    steps:
+      - checkout
+  test1:
+    working_directory: ~/thinksns-plus
+    docker:
+      - image: circleci/node:6
+    steps:
+      - run: ls -al
 workflows:
-    version: 2
-    run_all:
-        jobs:
-            - build
-            - front-end:
-                requires:
-                    - build
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test1
