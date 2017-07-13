@@ -20,7 +20,7 @@ jobs:
         steps:
             - run:
                 name: test
-                command: ls -al
+                command: ls -al && pwd
 workflows:
     version: 2
     build_and_test:
