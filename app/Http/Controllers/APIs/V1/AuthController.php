@@ -2,7 +2,6 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
-use RuntimeException;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\AuthToken;
