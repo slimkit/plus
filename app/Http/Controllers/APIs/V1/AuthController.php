@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\AuthToken;
 use Zhiyi\Plus\Services\SMS\SMS;
 use Illuminate\Support\Facades\DB;
+use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\VerificationCode;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
@@ -168,6 +169,14 @@ class AuthController extends Controller
         $user->createPassword($password);
         $user->save();
 
+        $role = CommonConfig::byNamespace('user')
+        ->byName('default_role')
+        ->firstOr(function () {
+            throw new RuntimeException('Failed to get the defined user group.');
+        });
+        // 添加默认用户组.
+        $user->attachRole($role->value);
+        
         return $this->login($request);
     }
 
