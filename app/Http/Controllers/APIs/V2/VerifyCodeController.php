@@ -99,7 +99,7 @@ class VerifyCodeController extends Controller
             ->first();
 
         if ($verify) {
-            abort(403, sprintf('还需要%d后才能获取', $verify->makeSurplusSecond($vaildSecond)));
+            abort(403, sprintf('还需要%d秒后才能获取', $verify->makeSurplusSecond($vaildSecond)));
         }
     }
 }
