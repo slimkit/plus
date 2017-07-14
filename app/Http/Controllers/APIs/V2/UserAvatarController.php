@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User as UserModel;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
+
 // use Illuminate\Contracts\Routing\UrlGenerator as UrlGeneratorContract;
 
 class UserAvatarController extends Controller
@@ -49,7 +50,7 @@ class UserAvatarController extends Controller
                 'image',
                 'max:'.$this->getMaxFilesize() / 1024,
                 'dimensions:min_width=100,min_height=100,max_width=500,max_height=500,ratio=1/1',
-            ]
+            ],
         ];
     }
 
@@ -65,7 +66,7 @@ class UserAvatarController extends Controller
             'avatar.required' => '请上传头像.',
             'avatar.image' => '头像必须是 png/jpeg/bmp/gif/svg 图片',
             'avatar.max' => sprintf('头像尺寸必须小于%sMB', $this->getMaxFilesize() / 1024 / 1024),
-            'avatar.dimensions' => '头像必须是正方形，宽高必须在 100px - 500px 之间'
+            'avatar.dimensions' => '头像必须是正方形，宽高必须在 100px - 500px 之间',
         ];
     }
 

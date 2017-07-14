@@ -15,7 +15,6 @@ class User extends Authenticatable implements ShouldAvatarContract
         SoftDeletes,
         Concerns\HasAvatar,
         Concerns\UserHasNotifiable;
-
     // 关系数据相关
     use Relations\UserHasWallet,
         Relations\UserHasWalletCash,
@@ -24,7 +23,6 @@ class User extends Authenticatable implements ShouldAvatarContract
         Relations\UserHasFollow,
         Relations\UserHasComment,
         Relations\UserHasLike;
-
     // 解决冲突
     use Relations\UserHasRolePerms {
         SoftDeletes::restore insteadof Relations\UserHasRolePerms;

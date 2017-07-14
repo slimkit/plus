@@ -35,7 +35,6 @@ trait HasAvatar
 
         dd($files);
 
-        
         return false;
     }
 

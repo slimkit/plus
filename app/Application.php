@@ -88,7 +88,7 @@ class Application extends LaravelApplication
             'cdn' => [
                 \Zhiyi\Plus\Contracts\Cdn\UrlFactory::class,
                 \Zhiyi\Plus\Cdn\UrlManager::class,
-            ]
+            ],
         ];
 
         foreach ($aliases as $key => $aliases) {
