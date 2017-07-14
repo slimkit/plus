@@ -38,9 +38,6 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapApiRoutes();
 
         $this->mapWebRoutes();
-
-        // vendor
-        $this->mapVendorRoutes();
     }
 
     /**
@@ -69,19 +66,5 @@ class RouteServiceProvider extends ServiceProvider
         Route::prefix('api')
              ->middleware('api')
              ->group(base_path('routes/api.php'));
-    }
-
-    /**
-     * load all vendor push router.
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     * @homepage http://medz.cn
-     */
-    protected function mapVendorRoutes()
-    {
-        $files = config('component_routes', []);
-        foreach ($files as $file) {
-            include_once $file;
-        }
     }
 }
