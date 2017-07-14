@@ -11,8 +11,8 @@ V2 版本的 APIs 是符合 REST full 的借口实现，所以在使用前请自
     - [获取用户信息](user/show.md)
     - [登录（获取Token）](user/login.md)
     - [创建用户（注册）](user/create.md)
-    - [收到的评论](#user/comments.md)
-    - [收到的赞](#user/likes.md)
+    - [收到的评论](user/comments.md)
+    - [收到的赞](user/likes.md)
 - 钱包
     - [概述](wallet/readme.md)
     - [获取钱包信息](wallet/show.md)
