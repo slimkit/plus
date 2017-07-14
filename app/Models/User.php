@@ -6,19 +6,26 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Zhiyi\Plus\Contracts\Model\ShouldAvatar as ShouldAvatarContract;
 
-class User extends Authenticatable
+class User extends Authenticatable implements ShouldAvatarContract
 {
+    // 功能性辅助相关。
     use Notifiable,
         SoftDeletes,
-        Concerns\UserHasNotifiable,
-        Relations\UserHasWallet,
+        Concerns\HasAvatar,
+        Concerns\UserHasNotifiable;
+
+    // 关系数据相关
+    use Relations\UserHasWallet,
         Relations\UserHasWalletCash,
         Relations\UserHasWalletCharge,
         Relations\UserHasFilesWith,
         Relations\UserHasFollow,
         Relations\UserHasComment,
         Relations\UserHasLike;
+
+    // 解决冲突
     use Relations\UserHasRolePerms {
         SoftDeletes::restore insteadof Relations\UserHasRolePerms;
         Relations\UserHasRolePerms::restore insteadof SoftDeletes;
@@ -41,6 +48,17 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Get avatar key.
+     *
+     * @return int
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function getAvatarKey()
+    {
+        return $this->getKey();
+    }
 
     /**
      * 复用设置手机号查询条件方法.
