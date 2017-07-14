@@ -20,6 +20,19 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
+     * Resgister the application service.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function register()
+    {
+        $this->app->singleton('cdn', function ($app) {
+            return new \Zhiyi\Plus\Cdn\UrlManager($app);
+        });
+    }
+
+    /**
      * 注册验证规则.
      *
      * @return void
