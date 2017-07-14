@@ -3,7 +3,7 @@
 namespace Zhiyi\Plus\Cdn;
 
 use Zhiyi\Plus\Models\File;
-use Zhiyi\Plus\Support\FileUrlGenerator;
+use Zhiyi\Plus\Support\CdnUrlGenerator;
 use Zhiyi\Plus\Contracts\Cdn\UrlFactory as UrlFactoryContract;
 use Zhiyi\Plus\Contracts\Cdn\UrlGenerator as UrlGeneratorContract;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
@@ -61,7 +61,7 @@ class UrlManager implements UrlFactoryContract
     {
         $generator = $this->generator($driver);
 
-        if ($generator instanceof FileUrlGenerator) {
+        if ($generator instanceof CdnUrlGenerator) {
             $generator->setFile($file);
         }
 
