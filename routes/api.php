@@ -32,7 +32,7 @@ Route::prefix('v1')
 | RESTful API version 2.
 |--------------------------------------------------------------------------
 |
-| Define the version of the interface that conforms to most of the 
+| Define the version of the interface that conforms to most of the
 | REST ful specification.
 |
 */
@@ -44,8 +44,8 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     | No user authentication required.
     |-----------------------------------------------------------------------
     |
-    | Here are some public routes, public routes do not require user 
-    | authentication, and if it is an optional authentication route to 
+    | Here are some public routes, public routes do not require user
+    | authentication, and if it is an optional authentication route to
     | obtain the current authentication user, use `$request-> user ('api')`.
     |
     */
@@ -76,13 +76,13 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
         /*
         | 注册验证码
         */
-        
+
         $api->post('/register', API2\VerifyCodeController::class.'@storeByRegister');
 
         /*
         | 已存在用户验证码
         */
-        
+
         $api->post('/', API2\VerifyCodeController::class.'@store');
     });
 
@@ -106,19 +106,19 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
         /*
         | 创建用户
         */
-        
+
         $api->post('/', API2\UserController::class.'@store');
 
         /*
         | 批量获取用户
         */
-    
+
         $api->get('/', API2\UserController::class.'@show');
 
         /*
         | 获取单个用户资源
          */
-        
+
         $api->get('/{user}', API2\UserController::class.'@user');
     });
 
@@ -127,65 +127,65 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     | Define a route that requires user authentication.
     |-----------------------------------------------------------------------
     |
-    | The routes defined here are routes that require the user to 
+    | The routes defined here are routes that require the user to
     | authenticate to access.
     |
     */
 
     $api->group(['middleware' => 'auth:api'], function (RouteContract $api) {
-        
+
         /*
         |--------------------------------------------------------------------
         | Define the current authentication user to operate the route.
         |--------------------------------------------------------------------
         |
-        | Define the routes associated with the current authenticated user, 
+        | Define the routes associated with the current authenticated user,
         | such as getting your current user, updating user data, and so on.
         |
         */
-        
+
         $api->group(['prefix' => 'user'], function (RouteContract $api) {
 
             /*
             | 获取当前用户
             */
-            
+
             $api->get('/', API2\CurrentUserController::class.'@show');
 
             /*
             | 用户收到的评论
             */
-            
+
             $api->get('/comments', API2\UserCommentController::class.'@index');
 
             /*
             | 用户收到的赞
              */
-            
+
             $api->get('/likes', API2\UserLikeController::class.'@index');
 
             /*
             | 用户通知相关
              */
-            
+
             $api->group(['prefix' => 'notifications'], function (RouteContract $api) {
 
                 /*
                 | 用户通知列表
                  */
-                
+
                 $api->get('/', API2\UserNotificationController::class.'@index');
 
                 /*
                 | 通知详情
                  */
-                
+
                 $api->get('/{notification}', API2\UserNotificationController::class.'@show');
 
                 /*
                 | 阅读通知，可以使用资源模型阅读单条，也可以使用资源组形式，阅读标注多条.
                  */
-                
+
                 $api->patch('/{notification?}', API2\UserNotificationController::class.'@markAsRead');
             });
         });
@@ -204,7 +204,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             /*
             | 获取钱包配置信息
              */
-            
+
             $api->get('/', API2\WalletConfigController::class.'@show');
 
             /*
@@ -215,50 +215,50 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             /*
             | 发起提现申请
              */
-            
+
             $api->post('/cashes', API2\WalletCashController::class.'@store');
 
             /*
             | 充值钱包余额
              */
-            
+
             $api->post('/recharge', API2\WalletRechargeController::class.'@store');
 
             /*
             | 获取凭据列表
              */
-            
+
             $api->get('/charges', API2\WalletChargeController::class.'@list');
 
             /*
             | 获取单条凭据
              */
-            
+
             $api->get('/charges/{charge}', API2\WalletChargeController::class.'@show');
         });
 
         /*
         | 检查一个文件的 md5, 如果存在着创建一个 file with id.
          */
-        
+
         $api->get('/files/uploaded/{hash}', API2\FilesController::class.'@uploaded');
 
         /*
         | 上传一个文件
          */
-        
+
         $api->post('/files', API2\FilesController::class.'@store');
 
         /*
         | 显示一个付费节点
          */
-        
+
         $api->get('/purchases/{node}', API2\PurchaseController::class.'@show');
 
         /*
         | 为一个付费节点支付
          */
-        
+
         $api->post('/purchases/{node}', API2\PurchaseController::class.'@pay');
     });
 });
