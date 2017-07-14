@@ -83,8 +83,19 @@ class Application extends LaravelApplication
     {
         parent::registerCoreContainerAliases();
 
-        // Register class aliases.
-        $this->alias('app', \Zhiyi\Plus\Application::class);
+        $aliases = [
+            'app' => [static::class],
+            'cdn' => [
+                \Zhiyi\Plus\Contracts\Cdn\UrlFactory::class,
+                \Zhiyi\Plus\Cdn\UrlManager::class,
+            ]
+        ];
+
+        foreach ($aliases as $key => $aliases) {
+            foreach ($aliases as $alias) {
+                $this->alias($key, $alias);
+            }
+        }
     }
 
     /**
