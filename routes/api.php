@@ -188,6 +188,12 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
                 $api->patch('/{notification?}', API2\UserNotificationController::class.'@markAsRead');
             });
+
+            /*
+            | 更新当前用户头像
+             */
+
+            $api->post('/avatar', API2\UserAvatarController::class.'@update');
         });
 
         /*
