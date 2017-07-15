@@ -3,14 +3,33 @@
 namespace Zhiyi\Plus\Models\Concerns;
 
 use Illuminate\Http\UploadedFile;
+use Zhiyi\Plus\Models\File as FileModel;
 use Illuminate\Filesystem\FilesystemManager;
+use Zhiyi\Plus\Contracts\Cdn\UrlFactory as CdnUrlFactoryContract;
 use Zhiyi\Plus\Contracts\Model\ShouldAvatar as ShouldAvatarContract;
 
 trait HasAvatar
 {
+    /**
+     * avatar extensions.
+     *
+     * @var array
+     */
     protected $avatar_extensions = ['svg', 'png', 'jpeg', 'gif', 'bmp'];
+
+    /**
+     * Avatar prefix.
+     *
+     * @var string
+     */
     protected $avatar_prefix = 'avatars';
 
+    /**
+     * Bootstrap the trait.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public static function bootHasAvatar()
     {
         if (! (new static) instanceof ShouldAvatarContract) {
@@ -18,36 +37,63 @@ trait HasAvatar
         }
     }
 
+    /**
+     * Get avatar,
+     *
+     * @param int $size 
+     * @param string $prefix
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function avatar(int $size = 0, string $prefix = 'avatars')
     {
-        $path = $this->avatarFilename($prefix);
+        $path = $this->avatarPath($prefix);
+
+        if (! $path) {
+            return null;
+        }
+
+        return app(CdnUrlFactoryContract::class)->generator()->url($path, $size ? [
+            'width' => $size,
+            'height' => $size,
+        ] : []);
     }
 
-    public function avatarFilename(string $prefix = 'avatars')
+    /**
+     * Get avatar file path.
+     *
+     * @param string $prefix
+     * @return string|null
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function avatarPath(string $prefix = 'avatars')
     {
         if ($prefix && $this->avatar_prefix !== $prefix) {
             $this->avatar_prefix = $prefix;
         }
 
         $path = $this->makeAvatarPath();
+        $disk = $this->filesystem()->disk('public');
 
-        $files = $this->filesystem()->files($path);
+        foreach ($this->avatar_extensions as $extension) {
+            if ($disk->exists($filename = $path.'.'.$extension)) {
+                return $filename;
+            }
+        }
 
-        dd($files);
-
-        return false;
+        return null;
     }
 
     /**
      * Store avatar.
      *
-     * @param UploadedFile $file
+     * @param UploadedFile $avatar
      * @return string|false
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function storeAvatar(UploadedFile $file)
+    public function storeAvatar(UploadedFile $avatar)
     {
-        $extension = strtolower($file->extension());
+        $extension = strtolower($avatar->extension());
         if (! in_array($extension, $this->avatar_extensions)) {
             throw new \Exception('保存的头像格式不符合要求');
         }
@@ -56,7 +102,13 @@ trait HasAvatar
         $path = pathinfo($filename, PATHINFO_DIRNAME);
         $name = pathinfo($filename, PATHINFO_BASENAME).'.'.$extension;
 
-        return $file->storeAs($path, $name, 'public');
+        $disk = $this->filesystem()->disk('public');
+        if ($disk->exists($filename)) {
+            $disk->deleteDirectory($filename);
+            $disk->delete($filename);
+        }
+
+        return $avatar->storeAs($path, $name, 'public');
     }
 
     /**
