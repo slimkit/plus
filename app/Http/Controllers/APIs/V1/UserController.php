@@ -5,6 +5,7 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 use DB;
 use Carbon\Carbon;
 use Zhiyi\Plus\Models\Digg;
+use Zhiyi\Plus\Models\Like;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Comment;
@@ -217,21 +218,52 @@ class UserController extends Controller
         $uid = $request->user()->id;
         $limit = $request->input('limit', 15);
         $max_id = $request->input('max_id', 0);
-        $digg = Digg::where('to_user_id', $uid)
+
+        $likes = Like::where('target_user', $uid)
         ->where(function ($query) use ($max_id) {
             if ($max_id > 0) {
                 $query->where('id', '<', $max_id);
             }
         })
         ->take($limit)
+        ->with('likeable')
         ->orderBy('id', 'desc')
         ->get();
+
+        $digg = $likes->map(function ($like) {
+            return $this->checkOldDigg($like);
+        });
 
         return response()->json(static::createJsonData([
             'status'  => true,
             'message' => '获取成功',
             'data'    => $digg,
         ]))->setStatusCode(200);
+    }
+
+    protected function checkOldDigg(Like $data)
+    {
+        $arr = [
+            'id' => $data->id,
+            'source_id' => $data->likeable->id,
+            'source_cover' => $data->likeable->image[0] ? $data->likeable->image[0] : 0,
+            'source_content' => $data->likeable->feed_content,
+            'user_id' => $data->user_id,
+            'to_user_id' => $data->target_user,
+            'created_at' => $data->created_at->toDateTimeString(),
+            'updated_at' => $data->updated_at->toDateTimeString(),
+        ];
+
+        switch ($data->likeable_type) {
+            case 'feeds':
+                $arr['component'] = 'feed';
+                $arr['digg_table'] = 'feed_diggs';
+                $arr['source_table'] = 'feeds';
+                $arr['digg_id'] = $data->id;
+                break;
+        }
+
+        return $arr; 
     }
 
     /**
@@ -252,8 +284,8 @@ class UserController extends Controller
         $time = $time ? Carbon::createFromTimestamp($time)->toDateTimeString() : 0;
         $return = [];
         if (in_array('diggs', $key)) {
-            $diggs = $time ? Digg::where('to_user_id', $uid)->where('user_id', '!=', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->get() :
-                Digg::where('to_user_id', $uid)->where('user_id', '!=', $uid)->orderBy('id', 'desc')->take(5)->get();
+            $diggs = $time ? Like::where('target_user', $uid)->where('user_id', '!=', $uid)->where('created_at', '>', $time)->orderBy('id', 'desc')->get() :
+                Like::where('target_user', $uid)->where('user_id', '!=', $uid)->orderBy('id', 'desc')->take(5)->get();
 
             $digg_return['key'] = 'diggs';
             $digg_return['uids'] = $diggs->pluck('user_id')->toArray();
