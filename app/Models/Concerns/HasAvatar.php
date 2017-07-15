@@ -3,7 +3,6 @@
 namespace Zhiyi\Plus\Models\Concerns;
 
 use Illuminate\Http\UploadedFile;
-use Zhiyi\Plus\Models\File as FileModel;
 use Illuminate\Filesystem\FilesystemManager;
 use Zhiyi\Plus\Contracts\Cdn\UrlFactory as CdnUrlFactoryContract;
 use Zhiyi\Plus\Contracts\Model\ShouldAvatar as ShouldAvatarContract;
@@ -38,9 +37,9 @@ trait HasAvatar
     }
 
     /**
-     * Get avatar,
+     * Get avatar,.
      *
-     * @param int $size 
+     * @param int $size
      * @param string $prefix
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>

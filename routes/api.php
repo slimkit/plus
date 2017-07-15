@@ -124,7 +124,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
         /*
         | 用户头像
          */
-        
+
         $api->get('/{user}/avatar', API2\UserAvatarController::class.'@show');
     });
 
