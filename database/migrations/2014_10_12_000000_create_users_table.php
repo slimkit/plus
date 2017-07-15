@@ -19,6 +19,9 @@ class CreateUsersTable extends Migration
             $table->string('email', 150)->nullable()->default(null)->comment('user email.');
             $table->string('phone', 50)->nullable()->default(null)->comment('user phone member.');
             $table->string('password')->nullable()->default(null)->comment('password.');
+            $table->string('bio')->nullable()->default(null)->comment('用户简介');
+            $table->tinyInteger('sex')->nullable()->default(0)->comment('用户性别');
+            $table->string('location')->nullable()->default(null)->comment('用户位置');
             $table->rememberToken()->comment('user auth token.');
             $table->timestamps();
             $table->softDeletes();
