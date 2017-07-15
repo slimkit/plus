@@ -15,10 +15,10 @@ class CreateUserExtrasTable extends Migration
     {
         Schema::create('user_extras', function (Blueprint $table) {
             $table->integer('user_id')->unsigned()->comment('用户标识');
-            $table->integer('like_count')->unsigned()->nullable()->default(0)->comment('点赞统计');
-            $table->integer('comment_count')->unsigned()->nullable()->default(0)->comment('评论统计');
-            $table->integer('follower_count')->unsigned()->nullable()->default(0)->comment('粉丝统计');
-            $table->integer('following_count')->unsigned()->nullable()->default(0)->comment('关注数统计');
+            $table->integer('likes_count')->unsigned()->nullable()->default(0)->comment('点赞统计');
+            $table->integer('comments_count')->unsigned()->nullable()->default(0)->comment('评论统计');
+            $table->integer('followers_count')->unsigned()->nullable()->default(0)->comment('粉丝统计');
+            $table->integer('followings_count')->unsigned()->nullable()->default(0)->comment('关注数统计');
             $table->timestamps();
             $table->softDeletes();
         });
