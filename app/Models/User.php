@@ -77,7 +77,7 @@ class User extends Authenticatable implements ShouldAvatarContract
         if (! $this->avatarPath()) {
             return null;
         }
-        
+
         return action('\\'.UserAvatarController::class.'@show', ['user' => $this]);
     }
 
