@@ -104,8 +104,13 @@ trait HasAvatar
         $disk = $this->filesystem()->disk('public');
         if ($disk->exists($filename)) {
             $disk->deleteDirectory($filename);
-            $disk->delete($filename);
         }
+
+        $disk->delete(array_reduce($this->avatar_extensions, function (array $collect, $extension) use ($filename) {
+            $collect[] = $filename.'.'.$extension;
+
+            return $collect;
+        }, [$filename]));
 
         return $avatar->storeAs($path, $name, 'public');
     }
