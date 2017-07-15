@@ -38,7 +38,7 @@ class WalletCashMinAmount
 
         $model = CommonConfig::firstOrCreate(
             ['name' => 'cash:min-amount', 'namespace' => 'wallet'],
-            ['value' => 0]
+            ['value' => 1]
         );
 
         $this->cache->forever($this->cacheKey(), $amount = intval($model->value));
