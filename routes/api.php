@@ -90,7 +90,11 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     | 获取文件.
     */
 
-    $api->get('/files/{fileWith}', API2\FilesController::class.'@show');
+    tap($api->get('/files/{fileWith}', API2\FilesController::class.'@show'), function ($api) {
+        $route->setAction(array_merge($route->getAction(), [
+            'middleware' => 'bindings',
+        ]));
+    });
 
     /*
     |-----------------------------------------------------------------------
