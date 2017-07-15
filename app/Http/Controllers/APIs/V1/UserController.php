@@ -4,7 +4,6 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
 use DB;
 use Carbon\Carbon;
-use Zhiyi\Plus\Models\Digg;
 use Zhiyi\Plus\Models\Like;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
@@ -263,7 +262,7 @@ class UserController extends Controller
                 break;
         }
 
-        return $arr; 
+        return $arr;
     }
 
     /**
