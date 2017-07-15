@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Zhiyi\Plus\Http\Controllers\APIs\V2\UserAvatarController;
 use Zhiyi\Plus\Contracts\Model\ShouldAvatar as ShouldAvatarContract;
 
 class User extends Authenticatable implements ShouldAvatarContract
@@ -48,6 +49,13 @@ class User extends Authenticatable implements ShouldAvatarContract
     ];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['avatar'];
+
+    /**
      * Get avatar key.
      *
      * @return int
@@ -56,6 +64,21 @@ class User extends Authenticatable implements ShouldAvatarContract
     public function getAvatarKey()
     {
         return $this->getKey();
+    }
+
+    /**
+     * Get abatar attribute.
+     *
+     * @return string|null
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function getAvatarAttribute()
+    {
+        if (! $this->avatarPath()) {
+            return null;
+        }
+        
+        return action('\\'.UserAvatarController::class.'@show', ['user' => $this]);
     }
 
     /**
