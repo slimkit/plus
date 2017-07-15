@@ -120,6 +120,12 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
          */
 
         $api->get('/{user}', API2\UserController::class.'@user');
+
+        /*
+        | 用户头像
+         */
+        
+        $api->get('/{user}/avatar', API2\UserAvatarController::class.'@show');
     });
 
     /*

@@ -7,19 +7,15 @@ use Zhiyi\Plus\Models\User as UserModel;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 
-// use Illuminate\Contracts\Routing\UrlGenerator as UrlGeneratorContract;
-
 class UserAvatarController extends Controller
 {
-    public function show(Request $request, UserModel $user)
+    public function show(Request $request, ResponseContract $response, UserModel $user)
     {
         $size = intval($request->query('s', 0));
         $size = max($size, 0);
-        $size = min($size, 500);
+        $size = min($size, 500) === 500 ? 0 : $size;
 
-        dd(
-            $user->avatar($size)
-        );
+        return $response->redirectTo($user->avatar($size));
     }
 
     public function update(Request $request, ResponseContract $response)
@@ -31,9 +27,9 @@ class UserAvatarController extends Controller
             return $response->json(['messages' => [$avatar->getErrorMessage()]], 400);
         }
 
-        dd(
-            $request->user()->storeAvatar($avatar)
-        );
+        return $request->user()->storeAvatar($avatar)
+            ? $response->json(['message' => ['上传成功']], 201)
+            : $response->json(['message' => ['上传失败']], 500);
     }
 
     /**
