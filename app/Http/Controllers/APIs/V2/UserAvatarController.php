@@ -9,6 +9,15 @@ use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 
 class UserAvatarController extends Controller
 {
+    /**
+     * Show user avatar.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param \Zhiyi\Plus\Models\User $user
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function show(Request $request, ResponseContract $response, UserModel $user)
     {
         $size = intval($request->query('s', 0));
@@ -18,6 +27,14 @@ class UserAvatarController extends Controller
         return $response->redirectTo($user->avatar($size));
     }
 
+    /**
+     * Upload user avatar.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function update(Request $request, ResponseContract $response)
     {
         $this->validate($request, $this->uploadAvatarRules(), $this->uploadAvatarMessages());
