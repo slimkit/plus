@@ -45,7 +45,7 @@ class User extends Authenticatable implements ShouldAvatarContract
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'phone', 'email', 'pivot',
+        'password', 'remember_token', 'phone', 'email', 'deleted_at', 'pivot',
     ];
 
     /**

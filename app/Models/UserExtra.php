@@ -19,4 +19,13 @@ class UserExtra extends Model
      * @var bool
      */
     public $incrementing = false;
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'created_at', 'deleted_at',
+    ];
 }
