@@ -22,7 +22,7 @@ trait UserHasFollow
     }
 
     /**
-     * 关注着 - 关注我的.
+     * 关注者 - 关注我的.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      * @author Seven Du <shiweidu@outlook.com>
