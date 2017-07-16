@@ -52,9 +52,21 @@ class CurrentUserController extends Controller
         return $response->json($followers)->setStatusCode(200);
     }
 
-    public function followings()
+    public function followings(Request $request, ResponseFactoryContract $response)
     {
-        // todo.
+        $user = $request->user();
+        $limit = $request->query('limit', 20);
+        $after = $request->query('after', false);
+
+        $followings = $user->followings()
+            ->when($after, function ($query) use ($after, $user) {
+                return $query->where($user->getQualifiedKeyName(), '<', $after);
+            })
+            ->limit($limit)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return $response->json($followings)->setStatusCode(200);
     }
 
     public function attachFollowingUser()
