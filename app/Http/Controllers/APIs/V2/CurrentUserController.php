@@ -47,7 +47,14 @@ class CurrentUserController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
-        return $response->json($followers)->setStatusCode(200);
+        return $user->getConnection()->transaction(function () use ($followers, $user, $response) {
+            return $response->json($followers->map(function (UserModel $item) use ($user) {
+                $item->following = true;
+                $item->follower = $item->hasFollower($user);
+
+                return $item;
+            }))->setStatusCode(200);
+        });
     }
 
     /**
@@ -72,7 +79,14 @@ class CurrentUserController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
-        return $response->json($followings)->setStatusCode(200);
+        return $user->getConnection()->transaction(function () use ($followings, $user, $response) {
+            return $response->json($followings->map(function (UserModel $item) use ($user) {
+                $item->following = $item->hasFollwing($user);
+                $item->follower = true;
+
+                return $item;
+            }))->setStatusCode(200);
+        });
     }
 
     /**
