@@ -87,6 +87,12 @@ class CurrentUserController extends Controller
     {
         $user = $request->user();
 
+        if ($user->id === $target->id) {
+            return $response->json(['message' => ['不可对自己进行操作']], 422);
+        } elseif ($user->hasFollwing($target)) {
+            return $response->json(['message' => ['非法的操作']], 422);
+        }
+
         return $user->getConnection()->transaction(function () use ($user, $target, $response) {
             $user->followings()->attach($target);
 
