@@ -208,7 +208,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             /*
             | 用户关注
              */
-            
+
             $api->group(['prefix' => 'followings'], function (RouteContract $api) {
 
                 // 我关注的人列表
