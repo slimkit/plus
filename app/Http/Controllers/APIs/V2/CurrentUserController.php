@@ -14,13 +14,18 @@ class CurrentUserController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function show(Request $request)
+    public function show(Request $request, ResponseFactoryContract $response)
     {
         $user = $request->user();
         $user->load([
             'wallet',
             'datas',
         ]);
+
+        return $response->json(array_merge($user->toArray(), [
+            'phone' => $user->phone,
+            'email' => $user->email,
+        ]))->setStatusCode(200);
 
         return response()->json($user, 200);
     }
