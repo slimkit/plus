@@ -25,8 +25,6 @@ class UserController extends Controller
      */
     public function user(Request $request, User $user)
     {
-        $user->load('datas', 'counts');
-
         // 我关注的处理
         $this->hasFollowing($request, $user);
         // 处理关注我的

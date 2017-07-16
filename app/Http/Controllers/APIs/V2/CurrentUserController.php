@@ -17,10 +17,7 @@ class CurrentUserController extends Controller
     public function show(Request $request, ResponseFactoryContract $response)
     {
         $user = $request->user();
-        $user->load([
-            'wallet',
-            'datas',
-        ]);
+        $user->load('wallet');
 
         return $response->json(array_merge($user->toArray(), [
             'phone' => $user->phone,
