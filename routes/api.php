@@ -215,10 +215,10 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                 $api->get('/', API2\CurrentUserController::class.'@followings');
 
                 // 关注一个用户
-                $api->put('/{user}', API2\CurrentUserController::class.'@attachFollowingUser');
+                $api->put('/{target}', API2\CurrentUserController::class.'@attachFollowingUser');
 
                 // 取消关注一个用户
-                $api->delete('/{user}', API2\CurrentUserController::class.'@detachFollowingUser');
+                $api->delete('/{target}', API2\CurrentUserController::class.'@detachFollowingUser');
             });
 
             $api->group(['prefix' => 'followers'], function (RouteContract $api) {
