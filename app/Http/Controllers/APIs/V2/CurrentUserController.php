@@ -80,6 +80,9 @@ class CurrentUserController extends Controller
     /**
      * Attach a following user.
      *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param \Zhiyi\Plus\Models\User $target
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -95,13 +98,30 @@ class CurrentUserController extends Controller
 
         return $user->getConnection()->transaction(function () use ($user, $target, $response) {
             $user->followings()->attach($target);
+            $user->extra()->firstOrCreate([])->increment('followings_count', 1);
 
             return $response->make(null, 204);
         });
     }
 
-    public function detachFollowingUser()
+    /**
+     * detach a following user.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param \Zhiyi\Plus\Models\User $target
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function detachFollowingUser(Request $request, ResponseFactoryContract $response, UserModel $target)
     {
-        // todo.
+        $user = $request->user();
+
+        return $user->getConnection()->transaction(function () use ($user, $target, $response) {
+            $user->followings()->detach($target);
+            $user->extra()->firstOrCreate([])->decrement('followings_count', 1);
+
+            return $response->make('', 204);
+        });
     }
 }
