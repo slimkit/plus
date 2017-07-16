@@ -56,6 +56,13 @@ class User extends Authenticatable implements ShouldAvatarContract
     protected $appends = ['avatar'];
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['extra'];
+
+    /**
      * Get avatar key.
      *
      * @return int
@@ -79,6 +86,17 @@ class User extends Authenticatable implements ShouldAvatarContract
         }
 
         return action('\\'.UserAvatarController::class.'@show', ['user' => $this]);
+    }
+
+    /**
+     * Has user extra.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function extra()
+    {
+        return $this->hasOne(UserExtra::class, 'user_id', 'id');
     }
 
     /**
