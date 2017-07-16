@@ -16,7 +16,7 @@ trait UserHasFollow
     public function followings(): BelongsToMany
     {
         return $this
-            ->belongsToMany(User::class, 'user_follow', 'user_id', 'target')
+            ->belongsToMany(User::class, 'user_follow', 'target', 'user_id')
             ->withPivot('id')
             ->withTimestamps();
     }
@@ -30,7 +30,7 @@ trait UserHasFollow
     public function followers(): BelongsToMany
     {
         return $this
-            ->belongsToMany(User::class, 'user_follow', 'target', 'user_id')
+            ->belongsToMany(User::class, 'user_follow', 'user_id', 'target')
             ->withPivot('id')
             ->withTimestamps();
     }
