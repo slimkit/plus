@@ -130,6 +130,12 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
          */
 
         $api->get('/{user}/avatar', API2\UserAvatarController::class.'@show');
+
+        // 获取用户关注者
+        $api->get('/{user}/followers', API2\UserFollowController::class.'@followers');
+
+        // 获取用户关注的用户
+        $api->get('/{user}/followings', API2\UserFollowController::class.'@followings');
     });
 
     /*
@@ -227,14 +233,6 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                 $api->get('/', API2\CurrentUserController::class.'@followers');
             });
         });
-
-        // /*
-        // | 用户关注
-        //  */
-        // $api->group(['prefix' => 'users'], function (RouteContract $api) {
-        //     $api->post('/{user}/followings', API2\UserFollowController::class.'@store');
-        //     $api->delete('/{user}/followings/{user_id}', API2\UserFollowController::class.'@destroy');
-        // });
 
         /*
         |--------------------------------------------------------------------
