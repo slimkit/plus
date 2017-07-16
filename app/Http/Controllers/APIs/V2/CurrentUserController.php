@@ -25,4 +25,24 @@ class CurrentUserController extends Controller
 
         return response()->json($user, 200);
     }
+
+    public function followers()
+    {
+        // todo.
+    }
+
+    public function followings()
+    {
+        // todo.
+    }
+
+    public function attachFollowingUser()
+    {
+        // todo.
+    }
+
+    public function detachFollowingUser()
+    {
+        // todo.
+    }
 }

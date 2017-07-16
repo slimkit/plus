@@ -204,7 +204,37 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
              */
 
             $api->post('/avatar', API2\UserAvatarController::class.'@update');
+
+            /*
+            | 用户关注
+             */
+            
+            $api->group(['prefix' => 'followings'], function (RouteContract $api) {
+
+                // 我关注的人列表
+                $api->get('/', API2\CurrentUserController::class.'@followings');
+
+                // 关注一个用户
+                $api->put('/{user}', API2\CurrentUserController::class.'@attachFollowingUser');
+
+                // 取消关注一个用户
+                $api->delete('/{user}', API2\CurrentUserController::class.'@detachFollowingUser');
+            });
+
+            $api->group(['prefix' => 'followers'], function (RouteContract $api) {
+
+                // 获取关注我的用户
+                $api->get('/', API2\CurrentUserController::class.'@followers');
+            });
         });
+
+        // /*
+        // | 用户关注
+        //  */
+        // $api->group(['prefix' => 'users'], function (RouteContract $api) {
+        //     $api->post('/{user}/followings', API2\UserFollowController::class.'@store');
+        //     $api->delete('/{user}/followings/{user_id}', API2\UserFollowController::class.'@destroy');
+        // });
 
         /*
         |--------------------------------------------------------------------
