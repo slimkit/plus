@@ -21,7 +21,6 @@ class CurrentUserController extends Controller
         $user->load([
             'wallet',
             'datas',
-            'counts',
         ]);
 
         return response()->json($user, 200);
