@@ -2,7 +2,6 @@
 
 namespace Zhiyi\Plus\Models;
 
-use Zhiyi\Plus\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Zhiyi\Plus\Contracts\Model\FetchComment;
 
