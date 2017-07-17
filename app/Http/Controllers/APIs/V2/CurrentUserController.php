@@ -133,7 +133,7 @@ class CurrentUserController extends Controller
 
         return $user->getConnection()->transaction(function () use ($user, $target, $response) {
             $user->followings()->detach($target);
-            $user->extra()->firstOrCreate([])->decrement('followings_count', 1);
+            $user->extra()->decrement('followings_count', 1);
 
             return $response->make('', 204);
         });
