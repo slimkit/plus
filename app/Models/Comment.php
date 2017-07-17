@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\Models;
 
+use Zhiyi\Plus\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Zhiyi\Plus\Contracts\Model\FetchComment;
 
@@ -29,6 +30,31 @@ class Comment extends Model implements FetchComment
      * @var [type]
      */
     protected $fetch;
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Register the comment observer.
+        static::observe(\Zhiyi\Plus\Observers\CommentObserver::class);
+    }
+
+    /**
+     * Has a user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 
     /**
      * Get comment centent.
