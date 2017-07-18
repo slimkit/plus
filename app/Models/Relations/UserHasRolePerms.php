@@ -16,7 +16,7 @@ trait UserHasRolePerms
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public static function bootUserRolePerms()
+    public static function bootUserHasRolePerms()
     {
         static::deleting(function ($user) {
             if (! method_exists($user, 'bootSoftDeletes')) {

@@ -13,7 +13,7 @@ trait UserHasWallet
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public static function bootUserWallet()
+    public static function bootUserHasWallet()
     {
         // 用户创建后事件
         static::created(function ($user) {
