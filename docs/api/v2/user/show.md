@@ -183,35 +183,3 @@ Status: 201 Created
     ]
 }
 ```
-
-----------
-
-## 数据根信息
-
-| 名称 | 类型 | 描述 |
-|----|:----:|:----:|
-| id | int | 用户ID |
-| phone | string,null | 用户手机号码 |
-| email | string,null | 用户电子邮箱 |
-| created_at | string | 用户注册时间 |
-| updated_at | string | 用户最后更新时间 |
-| wallet | object,null | 用户钱包信息 |
-| datas | array | 用户拓展信息 |
-
-### 用户钱包信息
-
-| 名称 | 类型 | 描述 |
-|----|:----:|:----:|
-| balance | int | 钱包余额，余额单位为「分」 |
-| updated_at | string | 最后交易时间 |
-
-### 用户拓展信息
-
-| 名称 | 类型 | 描述 |
-|----|:----:|:----:|
-| profile | steing | 字段名称 |
-| profile_name| string | 显示名称 |
-| type | string | 字段类型 |
-| default_options | string | 选项 |
-| pivot.user_profile_setting_data | any | 表单值 |
-
