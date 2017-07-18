@@ -33,8 +33,6 @@ class LoginController extends Controller
             return $response->json([$username => ['账户密码错误']], 422);
         }
 
-        $user->tokens()->delete();
-
         return $response->json($factory->create(AuthToken::class, [
             'token' => str_random(64),
             'refresh_token' => str_random(64),
