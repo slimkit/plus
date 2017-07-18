@@ -44,6 +44,9 @@ class HomeController extends Controller
     {
         $this->guard()->logout();
         $request->session()->regenerate();
+        $request->merge([
+            $this->username() => $request->input('account'),
+        ]);
 
         return $this->traitLogin($request);
     }
