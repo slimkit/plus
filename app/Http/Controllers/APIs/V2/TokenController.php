@@ -3,40 +3,42 @@
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Zhiyi\Plus\Models\User;
+use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\AuthToken;
 use function Zhiyi\Plus\username;
 use Illuminate\Database\Eloquent\Factory;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 use Zhiyi\Plus\Http\Requests\API2\StoreLoginPost;
+use Tymon\JWTAuth\JWTAuth;
 
 class TokenController extends Controller
 {
     /**
-     * 用户登录接口.
+     * Create a user token
      *
-     * @param \Illuminate\Database\Eloquent\Factory $factory
-     * @param \Zhiyi\Plus\Http\Requests\API2\StoreLoginPost $request
+     * @param \Illuminate\Http\Request $request
      * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param \Tymon\JWTAuth\JWTAuth $auth
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function store(Factory $factory, StoreLoginPost $request, ResponseFactory $response, User $model)
+    public function store(Request $request, ResponseFactoryContract $response, JWTAuth $auth)
     {
         $login = $request->input('login');
         $password = $request->input('password');
-        $username = username($login);
-        $user = $model->where($username, $login)
-            ->firstOrFail();
+        $credentials = [
+            username($login) => $login,
+            'password' => $password,
+        ];
 
-        if (! $user->verifyPassword($password)) {
-            return $response->json([$username => ['账户密码错误']], 422);
-        }
-
-        return $response->json($factory->create(AuthToken::class, [
-            'token' => str_random(64),
-            'refresh_token' => str_random(64),
-            'user_id' => $user->id,
-        ]))->setStatusCode(201);
+        return ($token = $auth->attempt($credentials)) !== false
+            ? $response->json([
+                'token' => $token,
+                'user' => $request->user(),
+                'ttl' => config('jwt.ttl'),
+                'refresh_ttl' => config('jwt.refresh_ttl')
+            ])->setStatusCode(201)
+            : $response->json(['message' => 'Failed to create token.'])->setStatusCode(500);
     }
 }

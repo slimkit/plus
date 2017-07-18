@@ -5,30 +5,28 @@ namespace Zhiyi\Plus\Services\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Contracts\Auth\Guard;
+use Tymon\JWTAuth\JWTAuth;
 
 class TokenGuard implements Guard
 {
     use GuardHelpers;
 
     /**
-     * The request instance.
+     * The JWT auth.
      *
-     * @var \Illuminate\Http\Request
+     * @var \Tymon\JWTAuth\JWTAuth
      */
-    protected $request;
+    protected $auth;
 
     /**
      * Create a new authentication guard.
      *
-     * @param \Zhiyi\Plus\Services\Auth\TokenUserProvider $provider
-     * @param \Illuminate\Http\Request                    $request
-     *
-     * @return void
+     * @param \Tymon\JWTAuth\JWTAuth $auth
+     * @author Seven Du <shiweidu@outlook.com>
      */
-    public function __construct(TokenUserProvider $provider, Request $request)
+    public function __construct(JWTAuth $auth)
     {
-        $this->provider = $provider;
-        $this->request = $request;
+        $this->auth = $auth;
     }
 
     /**
@@ -45,17 +43,9 @@ class TokenGuard implements Guard
             return $this->user;
         }
 
-        $user = null;
-
-        $token = $this->getTokenForRequest();
-
-        if (! empty($token)) {
-            $user = $this->provider->retrieveByCredentials(
-                ['token' => $token]
-            );
-        }
-
-        return $this->user = $user;
+        return $this->user = $this->auth->authenticate(
+            $this->auth->getToken()
+        );
     }
 
     /**
@@ -67,30 +57,13 @@ class TokenGuard implements Guard
      */
     public function validate(array $credentials = [])
     {
-        // The test useing code.
-        // Do not know the use.
-        dd($credentials);
-    }
-
-    /**
-     * Get the token for the current request.
-     *
-     * @return string
-     */
-    public function getTokenForRequest()
-    {
-        // APIs v1.
-        if ($this->request->is('*/v1/*')) {
-            return $this->request->header(
-                'ACCESS-TOKEN',
-                $this->request->header('Authorization', '')
-            );
-        }
-        if ($token = $this->request->bearerToken()) {
-            return $token;
+        if (($token = $this->auth->attempt($credentials)) === false) {
+            return false;
         }
 
-        return $this->request->query('access_token', '');
+        $this->user = $this->auth->toUser($token);
+
+        return true;
     }
 
     /**
@@ -102,7 +75,7 @@ class TokenGuard implements Guard
      */
     public function setRequest(Request $request)
     {
-        $this->request = $request;
+        $this->auth->setRequest($request);
 
         return $this;
     }

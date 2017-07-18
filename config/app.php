@@ -168,6 +168,8 @@ return [
          */
         Intervention\Image\ImageServiceProvider::class,
         Laravel\Tinker\TinkerServiceProvider::class,
+        Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+
         /*
          * Application Service Providers...
          */

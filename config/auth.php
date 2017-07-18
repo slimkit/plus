@@ -43,7 +43,6 @@ return [
 
         'api' => [
             'driver'   => 'token',
-            'provider' => 'tokens',
         ],
     ],
 
@@ -68,10 +67,6 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model'  => Zhiyi\Plus\Models\User::class,
-        ],
-
-        'tokens' => [
-            'driver' => 'token',
         ],
 
         // 'users' => [
@@ -101,21 +96,6 @@ return [
             'table'    => 'password_resets',
             'expire'   => 60,
         ],
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | API Client
-    |--------------------------------------------------------------------------
-    |
-    | Set the client information needed for user authentication
-    | for ThinkSNS+ applications.
-    |
-    */
-
-    'api-client' => [
-        'id' => null,
-        'secret' => null,
     ],
 
 ];
