@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\Http\Requests\API2;
 
+use function Zhiyi\Plus\username;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreLoginPost extends FormRequest
@@ -21,12 +22,19 @@ class StoreLoginPost extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
+        $username = username($this->input('login', ''));
+        $loginValidateRuleMap = ['required', 'string'];
+
+        if ($username === 'phone') {
+            $loginValidateRuleMap[] = 'cn_phone';
+        }
+        $loginValidateRuleMap[] = 'exists:users,'.$username;
+
         return [
-            'phone' => 'required_without:account|cn_phone|exists:users,phone',
-            'account' => 'required_without:phone|string',
-            'password' => 'required',
+            'login' => $loginValidateRuleMap,
+            'password' => ['required'],
         ];
     }
 
@@ -39,13 +47,10 @@ class StoreLoginPost extends FormRequest
     public function messages()
     {
         return [
-            'phone.required_without' => '手机号不能为空',
-            'phone.cn_phone' => '请输入中国大陆合法手机号码',
-            'phone.exists' => '登录的用户不存在',
-
-            'account.required_without' => '登录账号不能为空',
-            'account.string' => '登录账号需要一个字符串',
-
+            'login.required' => '账户不能为空',
+            'login.string' => '输入的账户非法',
+            'login.cn_phone' => '请输入符合大陆地区合法手机号码',
+            'login.exists' => '登录的账户不存在',
             'password.required' => '密码不能为空',
         ];
     }

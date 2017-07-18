@@ -6,9 +6,10 @@ use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\AuthToken;
 use Illuminate\Database\Eloquent\Factory;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use function Zhiyi\Plus\getUserAccountField;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Zhiyi\Plus\Http\Requests\API2\StoreLoginPost;
+
+use function Zhiyi\Plus\username;
 
 class LoginController extends Controller
 {
@@ -21,37 +22,24 @@ class LoginController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function store(Factory $factory, StoreLoginPost $request, ResponseFactory $response)
+    public function store(Factory $factory, StoreLoginPost $request, ResponseFactory $response, User $model)
     {
-        $phone = $request->input('phone');
-        $account = $request->input('account');
+        $login = $request->input('login');
         $password = $request->input('password');
-
-        if ($phone) {
-            $builder = User::byPhone($phone);
-        } elseif ($field = getUserAccountField($account)) {
-            $builder = User::where($field, $account);
-        }
-
-        if (empty($builder) || ! $user = $builder->first()) {
-            $key = $phone ? 'phone' : 'account';
-
-            return $response->json([
-                $key => ['登录的用户不存在'],
-            ])->setStatusCode(422);
-        }
+        $username = username($login);
+        $user = $model->where($username, $login)
+            ->firstOrFail();
 
         if (! $user->verifyPassword($password)) {
-            return $response->json([
-                'password' => ['用户密码错误'],
-            ])->setStatusCode(422);
+            return $response->json([$username => ['账户密码错误']], 422);
         }
 
+        $user->tokens()->delete();
+
         return $response->json($factory->create(AuthToken::class, [
-                'token' => str_random(64),
-                'refresh_token' => str_random(64),
-                'user_id' => $user->id,
-            ]))
-            ->setStatusCode(201);
+            'token' => str_random(64),
+            'refresh_token' => str_random(64),
+            'user_id' => $user->id,
+        ]))->setStatusCode(201);
     }
 }

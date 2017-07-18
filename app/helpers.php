@@ -25,22 +25,25 @@ function validateUsername(string $username): bool
 }
 
 /**
- * 获取用户账号所属的字段.
+ * Get user login field.
  *
- * @param string $account
+ * @param string $login
  * @param string $default
- * @return string 如果成功返回字段名，失败返回$default
+ * @return string
+ * @author Seven Du <shiweidu@outlook.com>
  */
-function getUserAccountField(string $account, string $default = ''): string
+function username(string $login, string $default = 'id'): string
 {
-    if (false !== filter_var($account, FILTER_VALIDATE_EMAIL)) {
-        return 'email';
-    } elseif (validateChinaPhoneNumber($account)) {
-        return 'phone';
-    } elseif (validateUsername($account)) {
-        return 'name';
-    } elseif (preg_match('/^[1-9]\d{0,9}$/', $account)) {
-        return 'id';
+    $map = [
+        'email' => filter_var($login, FILTER_VALIDATE_EMAIL),
+        'phone' => validateChinaPhoneNumber($login),
+        'name' => validateUsername($login)
+    ];
+
+    foreach ($map as $field => $value) {
+        if ($value) {
+            return $field;
+        }
     }
 
     return $default;
