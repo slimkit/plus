@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Like extends Model
 {
     /**
-     * 可以被批量赋值的属性。
+     * The guarded attributes on the model.
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'target_user'];
+    protected $guarded = ['created_at', 'updated_at'];
 
     /**
      * Has likeable.
