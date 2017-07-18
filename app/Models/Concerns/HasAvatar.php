@@ -44,7 +44,7 @@ trait HasAvatar
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function avatar(int $size = 0, string $prefix = 'avatars')
+    public function avatar(int $size = 0, string $prefix = '')
     {
         $path = $this->avatarPath($prefix);
 
@@ -65,13 +65,9 @@ trait HasAvatar
      * @return string|null
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function avatarPath(string $prefix = 'avatars')
+    public function avatarPath(string $prefix = '')
     {
-        if ($prefix && $this->avatar_prefix !== $prefix) {
-            $this->avatar_prefix = $prefix;
-        }
-
-        $path = $this->makeAvatarPath();
+        $path = $this->makeAvatarPath($prefix);
         $disk = $this->filesystem()->disk('public');
 
         foreach ($this->avatar_extensions as $extension) {
@@ -90,14 +86,14 @@ trait HasAvatar
      * @return string|false
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function storeAvatar(UploadedFile $avatar)
+    public function storeAvatar(UploadedFile $avatar, string $prefix = '')
     {
         $extension = strtolower($avatar->extension());
         if (! in_array($extension, $this->avatar_extensions)) {
             throw new \Exception('保存的头像格式不符合要求');
         }
 
-        $filename = $this->makeAvatarPath();
+        $filename = $this->makeAvatarPath($prefix);
         $path = pathinfo($filename, PATHINFO_DIRNAME);
         $name = pathinfo($filename, PATHINFO_BASENAME).'.'.$extension;
 
@@ -121,7 +117,7 @@ trait HasAvatar
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function makeAvatarPath(): string
+    protected function makeAvatarPath(string $prefix = ''): string
     {
         $filename = strval($this->getAvatarKey());
         if (strlen($filename) < 11) {
@@ -130,7 +126,7 @@ trait HasAvatar
 
         return sprintf(
             '%s/%s/%s/%s/%s',
-            $this->avatar_prefix,
+            $prefix ?: $this->avatar_prefix,
             substr($filename, 0, 3),
             substr($filename, 3, 3),
             substr($filename, 6, 3),
