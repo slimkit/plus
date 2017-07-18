@@ -38,4 +38,24 @@ class TokenController extends Controller
             ])->setStatusCode(201)
             : $response->json(['message' => 'Failed to create token.'])->setStatusCode(500);
     }
+
+    /**
+     * Refresh a user token.
+     *
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param \Tymon\JWTAuth\JWTAuth $auth
+     * @param string $token
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function refresh(ResponseFactoryContract $response, JWTAuth $auth, string $token)
+    {
+        return ($token = $auth->refresh($token)) !== false
+            ? $response->json([
+                'token' => $token,
+                'ttl' => config('jwt.ttl'),
+                'refresh_ttl' => config('jwt.refresh_ttl'),
+            ])->setStatusCode(201)
+            : $response->json(['message' => ['Failed to refresh token.']], 500);
+    }
 }
