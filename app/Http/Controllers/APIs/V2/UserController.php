@@ -51,8 +51,6 @@ class UserController extends Controller
 
         $users = User::whereIn('id', $ids)
             ->with([
-                'datas',
-                'counts',
                 'followings' => function ($query) use ($currentUser) {
                     $query->where('users.id', $currentUser);
                 },
