@@ -4,11 +4,10 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\username;
 use Zhiyi\Plus\Support\ManageRepository;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-
-use function Zhiyi\Plus\username;
 
 class HomeController extends Controller
 {

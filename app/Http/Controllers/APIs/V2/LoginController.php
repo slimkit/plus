@@ -4,12 +4,11 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\AuthToken;
+use function Zhiyi\Plus\username;
 use Illuminate\Database\Eloquent\Factory;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Zhiyi\Plus\Http\Requests\API2\StoreLoginPost;
-
-use function Zhiyi\Plus\username;
 
 class LoginController extends Controller
 {
