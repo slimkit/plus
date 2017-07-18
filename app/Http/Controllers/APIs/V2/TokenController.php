@@ -36,7 +36,7 @@ class TokenController extends Controller
                 'ttl' => config('jwt.ttl'),
                 'refresh_ttl' => config('jwt.refresh_ttl'),
             ])->setStatusCode(201)
-            : $response->json(['message' => 'Failed to create token.'])->setStatusCode(500);
+            : $response->json(['message' => ['Failed to create token.']])->setStatusCode(500);
     }
 
     /**
