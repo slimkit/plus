@@ -6,7 +6,7 @@
 ## Create user authentication token
 
 ```
-POST /login
+POST /tokens
 ```
 
 ### Input
@@ -23,15 +23,46 @@ Status: 201 Created
 ```
 ```json
 {
-    "token": "Kyle5NWouF3cbDUsAeC1zdzQ1xTvBi62UZtmFG2d16M86dyztNyRTPjx1ZydD0rH",
-    "refresh_token": "8JucelIqUHcfQfRpujXhrg8rzG7zOOWREPALh2kh5EClpxhyfzFFXdnHwfgtJlqr",
-    "user_id": 1,
-    "expires": 0,
-    "state": 1,
-    "updated_at": "2017-07-18 04:51:25",
-    "created_at": "2017-07-18 04:51:25",
-    "id": 11
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6Ly9wbHVzLmlvL2FwaS92Mi90b2tlbnMiLCJpYXQiOjE1MDAzNjU5MzQsImV4cCI6MTUwMTU3NTUzNCwibmJmIjoxNTAwMzY1OTM0LCJqdGkiOiJ1aXlvdTQwNnJsdU9pa3l3In0.OTM4mbH3QW7busunRsFUsheE5vysuIfrBrwjWnd0J6k",
+    "user": {
+        "id": 1,
+        "name": "创始人",
+        "bio": "我是大管理员",
+        "sex": 0,
+        "location": "成都市 四川省 中国",
+        "created_at": "2017-06-02 08:43:54",
+        "updated_at": "2017-07-06 07:04:06",
+        "avatar": "http://plus.io/api/v2/users/1/avatar",
+        "extra": {
+            "user_id": 1,
+            "likes_count": 0,
+            "comments_count": 0,
+            "followers_count": 0,
+            "followings_count": 1,
+            "updated_at": "2017-07-16 09:44:25",
+            "feeds_count": 0
+        }
+    },
+    "ttl": 20160,
+    "refresh_ttl": 40320
 }
 ```
 
 ## Refresh token
+
+```
+PATCH /tokens/:token
+```
+
+#### Response
+
+```
+Status: 201 Created
+```
+```json
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6Ly9wbHVzLmlvL2FwaS92Mi90b2tlbnMvZXlKMGVYQWlPaUpLVjFRaUxDSmhiR2NpT2lKSVV6STFOaUo5LmV5SnpkV0lpT2pFc0ltbHpjeUk2SW1oMGRIQTZMeTl3YkhWekxtbHZMMkZ3YVM5Mk1pOTBiMnRsYm5NaUxDSnBZWFFpT2pFMU1EQXpOalUxTVRjc0ltVjRjQ0k2TVRVd01UVTNOVEV4Tnl3aWJtSm1Jam94TlRBd016WTFOVEUzTENKcWRHa2lPaUpLT1RKVlJsRlRaVm96UkRGUFVsaFRJbjAuejNkNTBXZm5lSUIyTk45N2FSWW9lSFAwUjhyN1l0STJSVmxRUEVFWElaSSIsImlhdCI6MTUwMDM2NTUxNywiZXhwIjoxNTAxNTc1MTI4LCJuYmYiOjE1MDAzNjU1MjgsImp0aSI6IkV0S3VXUWd2VHlkMnpQSXcifQ.MJt3fz0hgH7BJNa1oC-9H3BZa3vIxS2oHu5OG9g39O8",
+    "ttl": 20160,
+    "refresh_ttl": 40320
+}
+```
