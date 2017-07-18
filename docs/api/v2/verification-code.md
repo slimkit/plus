@@ -19,7 +19,7 @@ POST /verifycodes
 | Name | Type | Description |
 |:----:|:----:|----|
 | phone | String | **Required without `email`**, Send the verification code in `sms` mode. |
-| email | String | **Required without `phone`**, Send the verification code in `sms` mode. |
+| email | String | **Required without `phone`**, Send the verification code in `mail` mode. |
 
 #### Response
 
