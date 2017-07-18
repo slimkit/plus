@@ -2,10 +2,10 @@
 
 namespace Zhiyi\Plus\Services\Auth;
 
+use Tymon\JWTAuth\JWTAuth;
 use Illuminate\Http\Request;
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Contracts\Auth\Guard;
-use Tymon\JWTAuth\JWTAuth;
 
 class TokenGuard implements Guard
 {
