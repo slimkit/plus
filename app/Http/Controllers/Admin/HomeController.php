@@ -6,8 +6,9 @@ use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Support\ManageRepository;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use function Zhiyi\Plus\getUserAccountField;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+
+use function Zhiyi\Plus\username;
 
 class HomeController extends Controller
 {
@@ -35,14 +36,9 @@ class HomeController extends Controller
      */
     public function username()
     {
-        if (null === $this->loginField) {
-            $request = app(Request::class);
-            $account = $request->input('account');
-            $this->loginField = getUserAccountField($account, 'name');
-            $request->merge([$this->loginField => $account]);
-        }
-
-        return $this->loginField;
+        return username(
+            request()->input('account')
+        );
     }
 
     public function login(Request $request)
