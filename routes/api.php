@@ -56,11 +56,11 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
     $api->get('/bootstrappers', API2\BootstrappersController::class.'@show');
 
-    /*
-    | 用户登录,获取认证口令.
-    */
+    // Create user authentication token
+    $api->post('/tokens', API2\TokenController::class.'@store');
 
-    $api->post('/login', API2\LoginController::class.'@store');
+    // Refresh token
+    $api->patch('/tokens/{token}', API2\TokenController::class.'@refresh');
 
     /*
     |-----------------------------------------------------------------------

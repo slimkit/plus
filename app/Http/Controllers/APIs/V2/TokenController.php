@@ -10,7 +10,7 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Zhiyi\Plus\Http\Requests\API2\StoreLoginPost;
 
-class LoginController extends Controller
+class TokenController extends Controller
 {
     /**
      * 用户登录接口.
