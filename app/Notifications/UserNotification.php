@@ -39,7 +39,7 @@ class UserNotification extends Notification implements ShouldQueue
     {
         $vias = ['database'];
 
-        if ($user->email) {
+        if ($user->email && false) {
             $vias[] = 'mail';
         }
 
