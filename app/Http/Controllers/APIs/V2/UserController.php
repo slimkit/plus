@@ -3,6 +3,7 @@
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use RuntimeException;
+use Tymon\JWTAuth\JWTAuth;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\AuthToken;
@@ -12,6 +13,7 @@ use Zhiyi\Plus\Models\VerificationCode;
 use Illuminate\Database\Eloquent\Factory;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Http\Requests\API2\StoreUserPost;
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class UserController extends Controller
 {
@@ -82,13 +84,14 @@ class UserController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function store(StoreUserPost $request, Factory $factory)
+    public function store(StoreUserPost $request, ResponseFactoryContract $response, JWTAuth $auth)
     {
         $phone = $request->input('phone');
         $email = $request->input('email');
         $name = $request->input('name');
         $password = $request->input('password');
-        $verifyCode = $request->input('verify_code');
+        $channel = $request->input('verifiable_type');
+        $code = $request->input('verifiable_code');
 
         $role = CommonConfig::byNamespace('user')
             ->byName('default_role')
@@ -96,51 +99,34 @@ class UserController extends Controller
                 throw new RuntimeException('Failed to get the defined user group.');
             });
 
-        if ($phone) {
-            $field = 'phone';
-            $account = $phone;
-        } else {
-            $field = 'email';
-            $account = $email;
-        }
-
-        $verify = VerificationCode::where('account', $account)
-            ->where('code', $verifyCode)
+        $verify = VerificationCode::where('account', $channel == 'mail' ? $email : $phone)
+            ->where('channel', $channel)
+            ->where('code', $code)
             ->orderby('id', 'desc')
             ->first();
 
         if (! $verify) {
-            return response()
-                ->json(['verify_code' => ['验证码错误!']])
-                ->setStatusCode(422);
+            return $response->json(['message' => ['验证码错误或者已实效']], 422);
         }
 
         $user = new User();
-        $user->$field = $account;
+        $user->phone = $phone;
+        $user->email = $email;
         $user->name = $name;
         $user->createPassword($password);
 
-        if ($user->save()) {
-            // 添加默认用户组.
-            $user->attachRole($role->value);
-            // 失效验证码
-            $verify->delete();
-
-            return response()->json($factory->create(AuthToken::class, [
-                'token' => str_random(64),
-                'refresh_token' => str_random(64),
-                'user_id' => $user->id,
-            ]))
-            ->setStatusCode(201);
-
-            // return response()
-            //     ->json(['message' => ['用户注册成功']])
-            //     ->setStatusCode(201);
+        $verify->delete();
+        if (! $user->save()) {
+            return $response->json(['message' => ['注册失败']], 500);
         }
 
-        return response()
-            ->json(['message' => ['用户注册失败']])
-            ->setStatusCode(500);
+        $user->attachRole($role->value);
+
+        return $response->json([
+            'token' => $auth->fromUser($user),
+            'ttl' => config('jwt.ttl'),
+            'refresh_ttl' => config('jwt.refresh_ttl'),
+        ])->setStatusCode(201);
     }
 
     /**
