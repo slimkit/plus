@@ -53,7 +53,7 @@ class User extends Authenticatable implements ShouldAvatarContract
      *
      * @var array
      */
-    protected $appends = ['avatar'];
+    protected $appends = ['avatar', 'bg'];
 
     /**
      * The relations to eager load on every query.
@@ -74,7 +74,7 @@ class User extends Authenticatable implements ShouldAvatarContract
     }
 
     /**
-     * Get abatar attribute.
+     * Get avatar attribute.
      *
      * @return string|null
      * @author Seven Du <shiweidu@outlook.com>
@@ -86,6 +86,17 @@ class User extends Authenticatable implements ShouldAvatarContract
         }
 
         return action('\\'.UserAvatarController::class.'@show', ['user' => $this]);
+    }
+
+    /**
+     * Get user background image.
+     *
+     * @return string|null
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function getBgAttribute()
+    {
+        return $this->avatar(0, 'user-bg');
     }
 
     /**
