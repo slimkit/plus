@@ -48,6 +48,15 @@ Status: 201 Created
 }
 ```
 
+| Field name | Description |
+|:----:|----|
+| token | Authorization code of JSON web Token. |
+| user | User data. |
+| ttl | Authorization code expiration interval |
+| refresh_ttl | Use the authorization code to refresh the interval of the authorization code. |
+
+> `TTL` time in **minutes**
+
 ## Refresh token
 
 ```
