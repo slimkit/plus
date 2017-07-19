@@ -1,155 +1,60 @@
-# 获取用户信息
-    
-- [获取当前用户](#获取当前用户)
-- [获取指定用户](#获取指定用户)
-- [批量获取指定用户](#批量获取指定用户)
-- [用户头像](#用户头像)
+# Users
 
-### 获取当前用户
+- [Get a single user](#get-a-single-user)
+- [Get the authenticated user](#get-the-authenticated-user)
+- [Update the authenticated user](#update-the-authenticated-user)
+- [Get all users](#get-all-users)
 
-```
-GET /user
-```
+## Get a single user
 
-##### Headers
+- [Get a user avatar](#get-a-user-avatar)
 
 ```
-Status: 200 OK
-```
-
-##### Body
-
-```json5
-{
-    "id": 1, // 用户id
-    "name": "创始人", // 用户名
-    "phone": "187xxxxxxxx", // 用户手机号码
-    "email": "shiweidu@outlook.com" // 用户邮箱
-    "bio": "我是大管理员", // 用户简介
-    "sex": 0, // 用户性别，0 - 未知，1 - 男，2 - 女
-    "location": "成都市 四川省 中国", // 用户位置
-    "created_at": "2017-06-02 08:43:54",
-    "updated_at": "2017-07-06 07:04:06",
-    "avatar": "http://plus.io/api/v2/users/1/avatar", // 头像
-    "bg": "https://plus.io/storage/user-bg/1.jpg" // 用户封面 | 背景图片
-    "extra": {
-        "user_id": 1,
-        "likes_count": 0, // 被喜欢统计数
-        "comments_count": 0, // 用户发出的评论统计
-        "followers_count": 0, // 用户粉丝数
-        "followings_count": 1, // 用户关注数
-        "updated_at": "2017-07-16 09:44:25", // 更新时间
-        "feeds_count": 0 // 发布的动态统计，没有安装 动态应用则不存在
-    },
-    "wallet": {
-        "id": 1,
-        "user_id": 1,
-        "balance": 90, // 用户余额
-        "created_at": "2017-06-02 08:43:54",
-        "updated_at": "2017-07-05 08:29:49",
-        "deleted_at": null
-    }
-}
-```
-
-### 获取指定用户
-
-```
-GET /users/1?following={user}&follower={user}
-```
-
-其中 `following`、`follower` 是可选参数，验证用户我是否关注以及是否关注我的用户 id ，默认为当前登陆用户。
-
-##### Headers
-
-```
-Status: 200 OK
-```
-
-##### Body
-
-```json5
-{
-    "id": 1, // 用户id
-    "name": "创始人", // 用户名
-    "bio": "我是大管理员", // 用户简介
-    "sex": 0, // 用户性别，0 - 未知，1 - 男，2 - 女
-    "location": "成都市 四川省 中国", // 用户位置
-    "created_at": "2017-06-02 08:43:54",
-    "updated_at": "2017-07-06 07:04:06",
-    "avatar": "http://plus.io/api/v2/users/1/avatar", // 头像
-    "following": false, // 获取用户是否关注了指定用户
-    "follower": false, // 指定用户是否关注获取用户
-    "extra": {
-        "user_id": 1,
-        "likes_count": 0, // 被喜欢统计数
-        "comments_count": 0, // 用户发出的评论统计
-        "followers_count": 0, // 用户粉丝数
-        "followings_count": 1, // 用户关注数
-        "updated_at": "2017-07-16 09:44:25", // 更新时间
-        "feeds_count": 0 // 发布的动态统计，没有安装 动态应用则不存在
-    }
-}
-```
-
-### 批量获取指定用户
-
-```
-GET /users?user=1,2
-```
-
-> user 可以是一个值，或者多个值，多个值的时候用英文半角 `,` 分割。
-
-##### Headers
-
-```
-Status: 200 OK
-```
-
-##### Body
-
-```json5
-[
-    {
-        "id": 1, // 用户id
-        "name": "创始人", // 用户名
-        "bio": "我是大管理员", // 用户简介
-        "sex": 0, // 用户性别，0 - 未知，1 - 男，2 - 女
-        "location": "成都市 四川省 中国", // 用户位置
-        "created_at": "2017-06-02 08:43:54",
-        "updated_at": "2017-07-06 07:04:06",
-        "avatar": "http://plus.io/api/v2/users/1/avatar", // 头像
-        "following": false, // 获取用户是否关注了指定用户
-        "follower": false, // 指定用户是否关注获取用户
-        "extra": {
-            "user_id": 1,
-            "likes_count": 0, // 被喜欢统计数
-            "comments_count": 0, // 用户发出的评论统计
-            "followers_count": 0, // 用户粉丝数
-            "followings_count": 1, // 用户关注数
-            "updated_at": "2017-07-16 09:44:25", // 更新时间
-            "feeds_count": 0 // 发布的动态统计，没有安装 动态应用则不存在
-        }
-    }
-]
-```
-
-## 用户头像
-
-- [获取头像](#获取头像)
-- [上传头像](#上传头像)
-
-### 获取头像
-
-```
-GET /users/:user/avatar
+GET /users/:user
 ```
 
 #### Parameters
 
-| 名称 | 类型 | 描述 |
+| Name | Type | Description |
 |:----:|:----:|----|
-| s | Integer | 获取头像尺寸，范围是 0 - 500，其中 0 和 500 都是表示获取原始尺寸，默认值 0 |
+| following | Integer | Check whether the specified user is paying attention to the current user, the default is the current authentication user. |
+| follower | Integer | Check whether the specified user is concerned about the acquisition of the user, the default is the current authentication user. |
+
+##### Response
+
+```
+Status: 200 OK
+```
+```json
+{
+    "id": 1,
+    "name": "创始人",
+    "bio": "我是大管理员",
+    "sex": 0,
+    "location": "成都市 四川省 中国",
+    "created_at": "2017-06-02 08:43:54",
+    "updated_at": "2017-07-06 07:04:06",
+    "following": false,
+    "follower": false,
+    "avatar": "http://plus.io/api/v2/users/1/avatar",
+    "bg": null,
+    "extra": {
+        "user_id": 1,
+        "likes_count": 0,
+        "comments_count": 0,
+        "followers_count": 0,
+        "followings_count": 1,
+        "updated_at": "2017-07-16 09:44:25",
+        "feeds_count": 0
+    }
+}
+```
+
+### Get a user avatar
+
+```
+GET /users/:user/avatar
+```
 
 ##### Response
 
@@ -157,9 +62,57 @@ GET /users/:user/avatar
 Status: 302 > 200 | 304
 Etag: "59698999-592a"
 ```
-> Etag 为 200 后缓存值。在用户资料中已经返回了 `avatar` 字段，为头像地址，也可使用接口拼接。
 
-### 上传头像
+## Get the authenticated user
+
+```
+GET /user
+```
+
+##### Response
+
+```
+Status: 200 OK
+```
+```json
+{
+    "id": 1,
+    "name": "创始人",
+    "phone": "18781993582",
+    "email": "shiweidu@outlook.com",
+    "bio": "我是大管理员",
+    "sex": 0,
+    "location": "成都市 四川省 中国",
+    "created_at": "2017-06-02 08:43:54",
+    "updated_at": "2017-07-06 07:04:06",
+    "avatar": "http://plus.io/api/v2/users/1/avatar",
+    "bg": null,
+    "extra": {
+        "user_id": 1,
+        "likes_count": 0,
+        "comments_count": 0,
+        "followers_count": 0,
+        "followings_count": 1,
+        "updated_at": "2017-07-16 09:44:25",
+        "feeds_count": 0
+    },
+    "wallet": {
+        "id": 1,
+        "user_id": 1,
+        "balance": 90,
+        "created_at": "2017-06-02 08:43:54",
+        "updated_at": "2017-07-05 08:29:49",
+        "deleted_at": null
+    }
+}
+```
+
+## Update the authenticated user
+
+- [Update avatar of the authenticated user](#update-avatar-of-the-authenticated-user)
+- [Update user background image of the authenticated user](#update-user-background-image-of-the-authenticated-user)
+
+### Update avatar of the authenticated user
 
 ```
 POST /user/avatar
@@ -167,20 +120,61 @@ POST /user/avatar
 
 #### Input
 
-| 名称 | 类型 | 描述 |
+| Name | Type | Description |
 |:----:|:----:|----|
-| avatar | File | 用户头像，文件限制，必须是正方形，切头像尺寸必须在 100px - 500px 之间。
+| avatar | File | The user new avatar, *scale*: `1:1`, *size*: `100px` - `500px`. |
 
 ##### Response
 
 ```
-Status: 201 Created
+Status: 204 No Content
 ```
 
+### Update user background image of the authenticated user
+
+## Get all users
+
+```
+GET /users
+```
+
+#### Parameters
+
+| Name | Type | Description |
+|:----:|:----:|----|
+| limit | Integer | List user limit, minimum `1` max `50`. |
+| order | Enum: `asc`, `desc` | Sorting. |
+| since | Integer | The integer ID of the last User that you've seen. |
+| name | String | Used to retrieve users whose username contains `name`. |
+
+##### Response
+
+```
+Status: 200 OK
+```
 ```json
-{
-    "message": [
-        "上传成功"
-    ]
-}
+[
+    {
+        "id": 1,
+        "name": "创始人",
+        "bio": "我是大管理员",
+        "sex": 0,
+        "location": "成都市 四川省 中国",
+        "created_at": "2017-06-02 08:43:54",
+        "updated_at": "2017-07-06 07:04:06",
+        "following": false,
+        "follower": false,
+        "avatar": "http://plus.io/api/v2/users/1/avatar",
+        "bg": null,
+        "extra": {
+            "user_id": 1,
+            "likes_count": 0,
+            "comments_count": 0,
+            "followers_count": 0,
+            "followings_count": 1,
+            "updated_at": "2017-07-16 09:44:25",
+            "feeds_count": 0
+        }
+    }
+]
 ```
