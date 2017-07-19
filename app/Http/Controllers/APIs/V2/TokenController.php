@@ -20,19 +20,25 @@ class TokenController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function store(Request $request, ResponseFactoryContract $response, JWTAuth $auth)
+    public function store(Request $request, ResponseFactoryContract $response, JWTAuth $auth, User $model)
     {
         $login = $request->input('login');
         $password = $request->input('password');
-        $credentials = [
-            username($login) => $login,
-            'password' => $password,
-        ];
+        $user = $model->where(username($login), $login)->first();
 
-        return ($token = $auth->attempt($credentials)) !== false
+        if (! $user) {
+            return $response->json(['login' => ['用户不存在']], 404);
+        } elseif (! $user->verifyPassword($password)) {
+            return $response->json(['password' => ['密码错误']], 422);
+        }
+
+        return ($token = $auth->fromUser($user)) !== false
             ? $response->json([
                 'token' => $token,
-                'user' => $request->user(),
+                'user' => array_merge($user->toArray(), [
+                    'phone' => $user->phone,
+                    'email' => $user->email,
+                ]),
                 'ttl' => config('jwt.ttl'),
                 'refresh_ttl' => config('jwt.refresh_ttl'),
             ])->setStatusCode(201)
