@@ -110,7 +110,7 @@ Status: 200 OK
 ## Update the authenticated user
 
 - [Update avatar of the authenticated user](#update-avatar-of-the-authenticated-user)
-- [Update user background image of the authenticated user](#update-user-background-image-of-the-authenticated-user)
+- [Update background image of the authenticated user](#update-background-image-of-the-authenticated-user)
 
 ### Update avatar of the authenticated user
 
@@ -122,7 +122,7 @@ POST /user/avatar
 
 | Name | Type | Description |
 |:----:|:----:|----|
-| avatar | File | The user new avatar, *scale*: `1:1`, *size*: `100px` - `500px`. |
+| avatar | File | The users new avatar, *scale*: `1:1`, *size*: `100px` - `500px`. |
 
 ##### Response
 
@@ -130,7 +130,7 @@ POST /user/avatar
 Status: 204 No Content
 ```
 
-### Update user background image of the authenticated user
+### Update background image of the authenticated user
 
 ## Get all users
 
