@@ -16,6 +16,41 @@ use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 class UserController extends Controller
 {
     /**
+     * Get all users.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param \Zhiyi\Plus\Models\User $model
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function index(Request $request, ResponseFactoryContract $response, User $model)
+    {
+        $user = $request->user('api') ?: 0;
+        $limit = max(min($request->query('limit', 20), 50), 1);
+        $order = in_array($order = $request->query('order', 'desc'), ['asc', 'desc']) ? $order : 'desc';
+        $since = $request->query('since', false);
+        $name = $request->query('name', false);
+
+        $users = $model->when($since, function ($query) use ($since, $order) {
+            return $query->where('id', $order === 'asc' ? '>' : '<', $since);
+        })->when($name, function ($query) use ($name) {
+            return $query->where('name', 'like', sprintf('%%%s%%', $name));
+        })->limit($limit)
+          ->orderby('id', $order)
+          ->get();
+
+        return $response->json($model->getConnection()->transaction(function () use ($users, $user) {
+            return $users->map(function (User $item) use ($user) {
+                $item->following = $item->hasFollwing($user);
+                $item->follower = $item->hasFollower($user);
+
+                return $item;
+            });
+        }))->setStatusCode(200);
+    }
+
+    /**
      *  Get user.
      *
      * @param \Illuminate\Http\Request $request
@@ -23,7 +58,7 @@ class UserController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function user(Request $request, User $user)
+    public function show(Request $request, User $user)
     {
         // 我关注的处理
         $this->hasFollowing($request, $user);
@@ -31,49 +66,6 @@ class UserController extends Controller
         $this->hasFollower($request, $user);
 
         return response()->json($user, 200);
-    }
-
-    /**
-     * 获取用户列表.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function show(Request $request)
-    {
-        $ids = array_filter(explode(',', $request->query('user')));
-        $currentUser = $request->user('api') ? $request->user('api')->id : 0;
-
-        if (empty($ids)) {
-            return response()->json([], 200);
-        }
-
-        $users = User::whereIn('id', $ids)
-            ->with([
-                'followings' => function ($query) use ($currentUser) {
-                    $query->where('users.id', $currentUser);
-                },
-                'followers' => function ($query) use ($currentUser) {
-                    $query->where('users.id', $currentUser);
-                },
-            ])
-            ->get();
-
-        $users = $users->reduce(function (Collection $users, $user) {
-            $temp = new Collection($user);
-
-            $temp->pull('followings');
-            $temp->pull('followers');
-            $temp->offsetSet('following', $user->followings->isNotEmpty());
-            $temp->offsetSet('follower', $user->followers->isNotEmpty());
-
-            $users->push($temp);
-
-            return $users;
-        }, new Collection());
-
-        return response()->json($users, 200);
     }
 
     /**

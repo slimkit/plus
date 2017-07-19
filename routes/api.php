@@ -117,13 +117,13 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
         | 批量获取用户
         */
 
-        $api->get('/', API2\UserController::class.'@show');
+        $api->get('/', API2\UserController::class.'@index');
 
         /*
         | 获取单个用户资源
          */
 
-        $api->get('/{user}', API2\UserController::class.'@user');
+        $api->get('/{user}', API2\UserController::class.'@show');
 
         /*
         | 用户头像
