@@ -13,7 +13,7 @@ POST /users
 | email | String | **Required withput `phone`**, User E-Mail. |
 | password | String | **Required**, User password. |
 | verifiable_type | Enum: mail, sms | **Required**, Notification serve verification type. |
-| verifiable_type | Strint\|Number | **Required**, Verification code. |
+| verifiable_code | Strint\|Number | **Required**, Verification code. |
 
 #### Response
 

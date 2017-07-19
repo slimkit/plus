@@ -135,6 +135,7 @@ Status: 200 OK
 
 - [Update avatar of the authenticated user](#update-avatar-of-the-authenticated-user)
 - [Update background image of the authenticated user](#update-background-image-of-the-authenticated-user)
+- [Update phone or email of the authenticated user](#update-phone-or-email-of-the-authenticated-user)
 
 ```
 PATCH /user
@@ -183,6 +184,26 @@ POST /user/bg
 | Name | Type | Description |
 |:----:|:----:|----|
 | image | File | The user's new background image. |
+
+##### Response
+
+```
+Status: 204 No Content
+```
+
+### Update phone or email of the authenticated user
+
+```
+PUT /user
+```
+
+#### Input
+
+| Name | Type | Description |
+|:----:|:----:|----|
+| phone | String | **Required without `email`**, The new phone of the user. |
+| email | String | **Required without `phone`**, The new email of the user. |
+| verifiable_code | Strint\|Number | **Required**, Verification code. |
 
 ##### Response
 
