@@ -43,7 +43,7 @@ class TokenGuard implements Guard
             return $this->user;
         }
 
-        return $token = $this->auth->getToken()
+        return ($token = $this->auth->getToken()) !== false
             ? $this->user = $this->auth->authenticate($token)
             : null;
     }
