@@ -6,7 +6,6 @@ use RuntimeException;
 use Tymon\JWTAuth\JWTAuth;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\VerificationCode;
 use Zhiyi\Plus\Http\Controllers\Controller;
