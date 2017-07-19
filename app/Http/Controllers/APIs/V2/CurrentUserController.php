@@ -9,7 +9,7 @@ use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 class CurrentUserController extends Controller
 {
     /**
-     * Get a single user
+     * Get a single user.
      *
      * @param \Illuminate\Http\Request $request
      * @param \Illuminate\Contracts\Routing\ResponseFactory $response
@@ -30,7 +30,7 @@ class CurrentUserController extends Controller
     }
 
     /**
-     * Update the authenticated user
+     * Update the authenticated user.
      *
      * @param \Illuminate\Http\Request $request
      * @param \Illuminate\Contracts\Routing\ResponseFactory $response
@@ -65,7 +65,7 @@ class CurrentUserController extends Controller
     }
 
     /**
-     * Update background image of the authenticated user
+     * Update background image of the authenticated user.
      *
      * @param \Illuminate\Http\Request $request
      * @param \Illuminate\Contracts\Routing\ResponseFactory $response
