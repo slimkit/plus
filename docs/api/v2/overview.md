@@ -86,6 +86,7 @@ X-RateLimit-Remaining: 56
 ```
 
 | Header Name | Description |
+|:----:|----|
 | X-RateLimit-Limit | The maximum number of requests you're permitted to make per hour. |
 | X-RateLimit-Remaining | The number of requests remaining in the current rate limit window. |
 
