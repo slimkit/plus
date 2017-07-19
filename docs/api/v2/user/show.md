@@ -156,6 +156,22 @@ Status: 204 No Content
 
 ### Update background image of the authenticated user
 
+```
+POST /user/bg
+```
+
+#### Input
+
+| Name | Type | Description |
+|:----:|:----:|----|
+| image | File | The user's new background image. |
+
+##### Response
+
+```
+Status: 204 No Content
+```
+
 ## Get all users
 
 ```

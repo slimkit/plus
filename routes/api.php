@@ -211,6 +211,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             $api->post('/avatar', API2\UserAvatarController::class.'@update');
 
+            // Update background image of the authenticated user.
+            $api->post('/bg', API2\CurrentUserController::class.'@uploadBgImage');
+
             /*
             | 用户关注
              */

@@ -27,6 +27,20 @@ class CurrentUserController extends Controller
         return response()->json($user, 200);
     }
 
+    public function uploadBgImage(Request $request, ResponseFactoryContract $response)
+    {
+        $this->validate($request, ['image' => ['required', 'image']], [
+            'image.required' => '请上传图片',
+            'image.image' => '上传的文件必须是图像',
+        ]);
+
+        $image = $request->file('image');
+
+        return $request->user()->storeAvatar($image, 'user-bg')
+            ? $response->make('', 204)
+            : $response->json(['message' => ['上传失败']], 500);
+    }
+
     /**
      * Show user followers.
      *
