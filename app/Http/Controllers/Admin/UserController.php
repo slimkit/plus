@@ -35,7 +35,7 @@ class UserController extends Controller
         $perPage = $request->query('perPage', 10);
         $showRole = $request->has('show_role');
 
-        $builder = with(new User())->newQuery();
+        $builder = with(new User())->setHidden([])->newQuery();
 
         $datas = [];
         if ($showRole) {
@@ -44,7 +44,11 @@ class UserController extends Controller
 
         // user id
         if ($userId && $users = $builder->where('id', $userId)->paginate($perPage)) {
-            $datas['page'] = $users;
+            $datas['page'] = $users->map(function ($user) {
+                $user->setHidden([]);
+
+                return $user;
+            });
 
             return response()->json($datas)->setStatusCode(200);
         }
@@ -78,7 +82,11 @@ class UserController extends Controller
             $query->where('id', $role);
         });
 
-        $datas['page'] = $builder->paginate($perPage);
+        $datas['page'] = $builder->paginate($perPage)->map(function ($user) {
+            $user->setHidden([]);
+
+            return $user;
+        });
 
         return response()->json($datas)->setStatusCode(200);
     }
@@ -240,6 +248,7 @@ class UserController extends Controller
         $showRole = $request->query('show_role');
 
         $user->load(['roles']);
+        $user->setHidden([]);
 
         $data = [
             'user' => $user,
