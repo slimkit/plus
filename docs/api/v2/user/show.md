@@ -136,6 +136,24 @@ Status: 200 OK
 - [Update avatar of the authenticated user](#update-avatar-of-the-authenticated-user)
 - [Update background image of the authenticated user](#update-background-image-of-the-authenticated-user)
 
+```
+PATCH /user
+```
+
+#### Input
+
+| Name | Type | Description |
+|:----:|:----:|----|
+| bio | String | The new short biography of the user. |
+| sex | Integer | The new sex of the user. |
+| location | String | The new location of the user. |
+
+##### Response
+
+```
+Status: 204 No Content
+```
+
 ### Update avatar of the authenticated user
 
 ```

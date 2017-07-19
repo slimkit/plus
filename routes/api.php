@@ -168,6 +168,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             $api->get('/', API2\CurrentUserController::class.'@show');
 
+            // Update the authenticated user
+            $api->patch('/', API2\CurrentUserController::class.'@update');
+
             /*
             | 用户收到的评论
             */

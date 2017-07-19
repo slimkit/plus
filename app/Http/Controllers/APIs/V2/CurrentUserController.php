@@ -9,8 +9,10 @@ use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 class CurrentUserController extends Controller
 {
     /**
-     * Get the user.
+     * Get a single user
      *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -27,6 +29,49 @@ class CurrentUserController extends Controller
         return response()->json($user, 200);
     }
 
+    /**
+     * Update the authenticated user
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function update(Request $request, ResponseFactoryContract $response)
+    {
+        $user = $request->user();
+        $rules = [
+            'bio' => ['nullable', 'string'],
+            'sex' => ['nullable', 'numeric', 'in:0,1,2'],
+            'location' => ['nullable', 'string'],
+        ];
+        $messages = [
+            'bio.string' => '用户简介必须是字符串',
+            'sex.numeric' => '发送的性别数据异常',
+            'sex.in' => '发送的性别数据非法',
+            'location.string' => '地区数据异常',
+        ];
+        $this->validate($request, $rules, $messages);
+
+        foreach ($request->only(['bio', 'sex', 'location']) as $key => $value) {
+            if ($value) {
+                $user->$key = $value;
+            }
+        }
+
+        return $user->save()
+            ? $response->make('', 204)
+            : $response->json(['message' => ['更新失败']], 500);
+    }
+
+    /**
+     * Update background image of the authenticated user
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function uploadBgImage(Request $request, ResponseFactoryContract $response)
     {
         $this->validate($request, ['image' => ['required', 'image']], [
