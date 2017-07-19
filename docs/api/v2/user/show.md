@@ -31,6 +31,7 @@ Status: 200 OK
     "created_at": "2017-06-02 08:43:54",
     "updated_at": "2017-07-06 07:04:06",
     "avatar": "http://plus.io/api/v2/users/1/avatar", // 头像
+    "bg": "https://plus.io/storage/user-bg/1.jpg" // 用户封面 | 背景图片
     "extra": {
         "user_id": 1,
         "likes_count": 0, // 被喜欢统计数
