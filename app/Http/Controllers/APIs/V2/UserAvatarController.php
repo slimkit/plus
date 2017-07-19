@@ -45,7 +45,7 @@ class UserAvatarController extends Controller
         }
 
         return $request->user()->storeAvatar($avatar)
-            ? $response->json(['message' => ['上传成功']], 201)
+            ? $response->make('', 204)
             : $response->json(['message' => ['上传失败']], 500);
     }
 
