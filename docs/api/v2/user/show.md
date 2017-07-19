@@ -50,6 +50,25 @@ Status: 200 OK
 }
 ```
 
+| Name | Description |
+|:----:|----|
+| id | User ID. |
+| name | Username. |
+| bio | A little bit about user. |
+| sex | The user's gender, `0` - Unknown, `1` - Man, `2` - Woman. |
+| location | The user's location. |
+| created_at | User registration time. |
+| updated_at | The update time of the user's main data. |
+| following | Whether the user is following you. |
+| follower | Whether you are following this user. |
+| avatar | The user's avatar. |
+| bg | The background image of this user. |
+| extra.likes_count | The number of users who received the number of statistics. |
+| extra.comments_count | The comments made by this user. |
+| extra.followers_count | Follow this user's statistics. |
+| extra.followings_count | This user follows the statistics. |
+| extra.updated_at | Secondary data update time. |
+
 ### Get a user avatar
 
 ```
@@ -107,6 +126,11 @@ Status: 200 OK
 }
 ```
 
+| Name | Description |
+|:----:|----|
+| wallet.balance | The user's wallet balance. |
+| wallet.updated_at | User last wallet trading time. |
+
 ## Update the authenticated user
 
 - [Update avatar of the authenticated user](#update-avatar-of-the-authenticated-user)
@@ -122,7 +146,7 @@ POST /user/avatar
 
 | Name | Type | Description |
 |:----:|:----:|----|
-| avatar | File | The users new avatar, *scale*: `1:1`, *size*: `100px` - `500px`. |
+| avatar | File | The user's new avatar, *scale*: `1:1`, *size*: `100px` - `500px`. |
 
 ##### Response
 
