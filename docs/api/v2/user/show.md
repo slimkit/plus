@@ -146,6 +146,7 @@ GET /users
 | order | Enum: `asc`, `desc` | Sorting. |
 | since | Integer | The integer ID of the last User that you've seen. |
 | name | String | Used to retrieve users whose username contains `name`. |
+| id | Integer | Get multiple designated users, multiple `ID`s using `,` split. |
 
 ##### Response
 

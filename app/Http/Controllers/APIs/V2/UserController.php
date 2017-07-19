@@ -26,6 +26,7 @@ class UserController extends Controller
     public function index(Request $request, ResponseFactoryContract $response, User $model)
     {
         $user = $request->user('api') ?: 0;
+        $ids = array_filter(explode(',', $request->query('id')));
         $limit = max(min($request->query('limit', 20), 50), 1);
         $order = in_array($order = $request->query('order', 'desc'), ['asc', 'desc']) ? $order : 'desc';
         $since = $request->query('since', false);
@@ -35,6 +36,8 @@ class UserController extends Controller
             return $query->where('id', $order === 'asc' ? '>' : '<', $since);
         })->when($name, function ($query) use ($name) {
             return $query->where('name', 'like', sprintf('%%%s%%', $name));
+        })->when(! empty($ids), function ($query) use ($ids) {
+            return $query->whereIn('id', $ids);
         })->limit($limit)
           ->orderby('id', $order)
           ->get();
