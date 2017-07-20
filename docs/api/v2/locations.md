@@ -1,6 +1,6 @@
 # Locations
 
-- [Search Locations](search-locations)
+- [Search Locations](#search-locations)
 
 ## Search Locations
 
