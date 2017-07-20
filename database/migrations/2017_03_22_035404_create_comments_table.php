@@ -14,16 +14,16 @@ class CreateCommentsTable extends Migration
     public function up()
     {
         Schema::create('comments', function (Blueprint $table) {
-            $table->increments('id')->comment('评论ID');
-            $table->integer('user_id')->unsigned()->comment('评论用户');
-            $table->integer('target_user')->unsigned()->comment('目标用户');
-            $table->integer('reply_user')->unsigned()->nullable()->default(0)->comment('回复用户');
-            $table->string('channel', 100)->comment('来源频道');
-            $table->string('target', 100)->comment('来源目标');
+            $table->increments('id')->comment('Comment ID.');
+            $table->integer('user_id')->unsigned()->comment('Send comment user.');
+            $table->integer('target_user')->unsigned()->comment('Target user.');
+            $table->integer('reply_user')->unsigned()->comment('Comments were answered.');
+            $table->morphs('commentable');
             $table->timestamps();
 
             $table->index('user_id');
             $table->index('target_user');
+            $table->index('reply_user');
         });
     }
 
