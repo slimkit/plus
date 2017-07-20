@@ -65,6 +65,15 @@ class CurrentUserController extends Controller
             : $response->json(['message' => ['更新失败']], 500);
     }
 
+    /**
+     * Update phone or email of the authenticated user.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param \Zhiyi\Plus\Models\VerificationCode $model
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function updatePhoneOrMail(Request $request, ResponseFactoryContract $response, VerificationCodeModel $model)
     {
         $user = $request->user();
