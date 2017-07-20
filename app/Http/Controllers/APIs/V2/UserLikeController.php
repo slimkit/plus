@@ -21,6 +21,7 @@ class UserLikeController extends Controller
                 return $query->where('id', '<', $after);
             })
             ->limit($limit)
+            ->orderBy('id', 'desc')
             ->get();
 
         return $response->json($likes)->setStatusCode(200);
