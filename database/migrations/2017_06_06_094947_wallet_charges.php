@@ -65,7 +65,7 @@ class WalletCharges extends Migration
                 ->comment('订单详情');
 
             $table
-                ->string('transaction_no', 255)
+                ->string('transaction_no', 150)
                 ->nullable()
                 ->default(null)
                 ->comment('平台记录ID');
