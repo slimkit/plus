@@ -62,6 +62,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     // Refresh token
     $api->patch('/tokens/{token}', API2\TokenController::class.'@refresh');
 
+    // Search location.
+    $api->get('/locations/search', API2\LocationController::class.'@search');
+
     /*
     |-----------------------------------------------------------------------
     | 用户验证验证码
