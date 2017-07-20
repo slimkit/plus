@@ -48,10 +48,9 @@ class UserNotificationMessage
      * @param array $extra
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function __construct(string $channel, $target, string $content, array $extra = [])
+    public function __construct(string $channel, string $content, array $extra = [])
     {
         $this->channel = $channel;
-        $this->target = $target;
         $this->content = $content;
         $this->extra = $extra;
     }
@@ -83,7 +82,6 @@ class UserNotificationMessage
     {
         return [
             'channel' => $this->channel,
-            'target' => $this->target,
             'content' => $this->content,
             'extra' => $this->extra,
         ];
