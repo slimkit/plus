@@ -23,7 +23,7 @@ class CreateSensitivesTables extends Migration
     }
 
     /**
-     * delete table
+     * delete table.
      *
      * @return void
      */

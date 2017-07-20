@@ -1,7 +1,7 @@
 <?php
 
-use Zhiyi\Plus\Models\Sensitive;
 use Illuminate\Database\Seeder;
+use Zhiyi\Plus\Models\Sensitive;
 
 class SensitivesTableSeeder extends Seeder
 {
