@@ -35,7 +35,7 @@ class WalletCharges extends Migration
                 ->comment('交易账户，减项为目标账户，增项为来源账户，当 type 为 user 时，此处是用户ID');
 
             $table
-                ->string('charge_id', 255)
+                ->string('charge_id', 150)
                 ->nullable()
                 ->default(null)
                 ->comment('凭据id, 来自 Ping ++ ');
