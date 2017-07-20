@@ -62,7 +62,7 @@ class RoleSeeder extends Seeder
     }
 
     /**
-     * 被禁用的用户
+     * 被禁用的用户.
      * @return [type] [description]
      */
     protected function createDisabledRole()
@@ -70,7 +70,7 @@ class RoleSeeder extends Seeder
         $role = Role::create([
             'name' => 'disabler',
             'display_name' => '禁用用户',
-            'description' => '被禁止登录用户， 需要手动设置'
+            'description' => '被禁止登录用户， 需要手动设置',
         ]);
     }
 }
