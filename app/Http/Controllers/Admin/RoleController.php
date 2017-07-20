@@ -40,7 +40,7 @@ class RoleController extends Controller
      */
     public function delete(Request $request, Role $role)
     {
-        if(in_array($role->id, [1, 2, 3])) {
+        if (in_array($role->id, [1, 2, 3])) {
             return response()->json([
                 'errors' => ['不可删除的用户组'],
             ])->setStatusCode(500);
