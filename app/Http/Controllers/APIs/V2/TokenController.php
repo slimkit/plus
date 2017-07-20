@@ -6,7 +6,6 @@ use Tymon\JWTAuth\JWTAuth;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use function Zhiyi\Plus\username;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class TokenController extends Controller

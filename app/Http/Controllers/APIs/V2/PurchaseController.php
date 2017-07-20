@@ -3,7 +3,6 @@
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Illuminate\Contracts\Cache\Repository as CacheContract;

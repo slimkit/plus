@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Zhiyi\Plus\Models\File as FileModel;
 use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Cdn\UrlManager as CdnUrlManager;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;

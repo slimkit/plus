@@ -8,7 +8,6 @@ use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\VerificationCode;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Http\Requests\API2\StoreUserPost;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 

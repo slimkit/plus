@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\WalletCash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Http\Requests\API2\StoreUserWallerCashPost;
 
 class WalletCashController extends Controller

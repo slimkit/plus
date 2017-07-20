@@ -5,7 +5,6 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 use Closure;
 use Illuminate\Support\Collection;
 use Zhiyi\Plus\Models\CommonConfig;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
 
 class WalletConfigController extends Controller

@@ -3,7 +3,6 @@
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 

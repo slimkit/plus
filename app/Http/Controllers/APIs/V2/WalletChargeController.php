@@ -5,7 +5,6 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\WalletCharge;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Services\Wallet\Charge as WalletChargeService;
 use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
 
