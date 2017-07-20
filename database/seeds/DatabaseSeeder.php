@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UsersTableSeeder::class);
         $this->call(UserProfileSettingsTableSeeder::class);
         $this->call(UserProfileSettingLinksTableSeeder::class);
+        $this->call(SensitivesTableSeeder::class);
 
         // 把地区放在最后，因为耗时较长.
         $this->call(AreasTableSeeder::class);
