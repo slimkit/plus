@@ -18,6 +18,7 @@ class CreateCommentsTable extends Migration
             $table->integer('user_id')->unsigned()->comment('Send comment user.');
             $table->integer('target_user')->unsigned()->comment('Target user.');
             $table->integer('reply_user')->unsigned()->comment('Comments were answered.');
+            $table->text('body')->comment('Comment body.');
             $table->morphs('commentable');
             $table->timestamps();
 
