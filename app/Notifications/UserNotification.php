@@ -32,32 +32,11 @@ class UserNotification extends Notification implements ShouldQueue
     /**
      * Get the notification's delivery channels.
      *
-     * @param \Zhiyi\Plus\Models\User $user
      * @return array
      */
-    public function via(User $user): array
+    public function via(): array
     {
-        $vias = ['database'];
-
-        if ($user->email && false) {
-            $vias[] = 'mail';
-        }
-
-        return $vias;
-    }
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param \Zhiyi\Plus\Models\User $user
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail(User $user)
-    {
-        return (new MailMessage)->markdown('mails.user_notification', [
-            'message' => $this->message,
-            'user' => $user,
-        ])->subject($this->message->getSubject() ?: '新消息提醒');
+        return ['database'];
     }
 
     /**
