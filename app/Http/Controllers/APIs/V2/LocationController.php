@@ -44,7 +44,7 @@ class LocationController extends Controller
                 $item->setHidden(array_merge($item->getHidden(), ['items']));
 
                 return [
-                    'items' => count($parentTreeCall($parentTreeCall, $item, [$item])) < 3 ? $item->items : [],
+                    'items' => count($parentTreeCall($parentTreeCall, $item, [$item])) < 3 ? $item->items : null,
                     'tree' => $item,
                 ];
             }))->setStatusCode(200);
