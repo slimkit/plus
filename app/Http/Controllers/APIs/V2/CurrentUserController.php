@@ -4,6 +4,7 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Models\VerificationCode as VerificationCodeModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class CurrentUserController extends Controller
@@ -62,6 +63,51 @@ class CurrentUserController extends Controller
         return $user->save()
             ? $response->make('', 204)
             : $response->json(['message' => ['更新失败']], 500);
+    }
+
+    public function updatePhoneOrMail(Request $request, ResponseFactoryContract $response, VerificationCodeModel $model)
+    {
+        $user = $request->user();
+        $email = $request->input('email');
+        $phone = $request->input('phone');
+        $code = $request->input('verifiable_code');
+
+        if (($email && $phone) || (! $email && ! $phone)) {
+            return $response->json(['message' => ['非法操作']], 422);
+        }
+
+        $this->validate($request, [
+            'email' => ['nullable', 'email'],
+            'phone' => ['nullable', 'cn_phone'],
+        ], [
+            'email.email' => '请输入正确的 E-Mail',
+            'phone.cn_phone' => '请输入符合大陆地区的手机号码',
+        ]);
+
+        $field = $email ? 'email' : 'phone';
+        $target = $user->newQuery()
+            ->where($field, $$field)
+            ->where('id', '!=', $user->id)
+            ->first();
+
+        if ($target) {
+            return $response->json([$field => ['已经被使用']], 422);
+        }
+
+        $code = $model->where('account', $field)
+            ->where('code', $code)
+            ->first();
+
+        if (! $code) {
+            return $response->json(['message' => ['验证码错误或者已实效']], 422);
+        }
+
+        $user->$field = $$field;
+        $code->delete();
+
+        return $user->save()
+            ? $response->make('', 204)
+            : $response->json(['message' => ['操作失败']], 500);
     }
 
     /**

@@ -171,6 +171,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             // Update the authenticated user
             $api->patch('/', API2\CurrentUserController::class.'@update');
 
+            // Update phone or email of the authenticated user.
+            $api->put('/', API2\CurrentUserController::class.'@updatePhoneOrMail');
+
             /*
             | 用户收到的评论
             */
