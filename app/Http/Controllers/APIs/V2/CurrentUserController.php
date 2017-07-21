@@ -42,11 +42,15 @@ class CurrentUserController extends Controller
     {
         $user = $request->user();
         $rules = [
+            'name' => ['nullable', 'string', 'username', 'display_length:2,12'],
             'bio' => ['nullable', 'string'],
             'sex' => ['nullable', 'numeric', 'in:0,1,2'],
             'location' => ['nullable', 'string'],
         ];
         $messages = [
+            'name.string' => '用户名只能是字符串',
+            'name.username' => '用户名只能以非特殊字符和数字开头，不能包含特殊字符',
+            'name.display_length' => '用户名长度不合法',
             'bio.string' => '用户简介必须是字符串',
             'sex.numeric' => '发送的性别数据异常',
             'sex.in' => '发送的性别数据非法',
@@ -54,7 +58,14 @@ class CurrentUserController extends Controller
         ];
         $this->validate($request, $rules, $messages);
 
-        foreach ($request->only(['bio', 'sex', 'location']) as $key => $value) {
+        $target = ($name = $request->input('name'))
+            ? $user->newQuery()->where('name', $name)->where('id', '!=', $user->id)->first()
+            : null;
+        if ($target) {
+            return $response->json(['name' => ['用户名已被使用']], 422);
+        }
+
+        foreach ($request->only(['name', 'bio', 'sex', 'location']) as $key => $value) {
             if ($value) {
                 $user->$key = $value;
             }
