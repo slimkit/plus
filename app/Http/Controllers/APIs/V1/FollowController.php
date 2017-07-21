@@ -110,10 +110,10 @@ class FollowController extends Controller
         $followings = $user->followings()
             ->where(function ($query) use ($max_id) {
                 if ($max_id > 0) {
-                    $query->where('id', '<', $max_id);
+                    $query->where('user_follow.id', '<', $max_id);
                 }
             })
-            ->orderBy('id', 'DESC')
+            ->orderBy('user_follow.id', 'DESC')
             ->take($limit)
             ->get();
         $datas['follows'] = [];
@@ -152,10 +152,10 @@ class FollowController extends Controller
         $followers = $user->followers()
             ->where(function ($query) use ($max_id) {
                 if ($max_id > 0) {
-                    $query->where('id', '<', $max_id);
+                    $query->where('user_follow.id', '<', $max_id);
                 }
             })
-            ->orderBy('id', 'DESC')
+            ->orderBy('user_follow.id', 'DESC')
             ->take($limit)
             ->get();
 
