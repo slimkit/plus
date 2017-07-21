@@ -14,11 +14,11 @@ class CreateCertification extends Migration
     public function up()
     {
         Schema::create('certifications', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name')->unique()->comment('certification name');
-            $table->unsignedInteger('icon')->comment('certification\' icon');
-            $table->unsignedInteger('user_id')->comment('create user');
+            $table->string('name', 100);
+            $table->string('display_name')->comment('certification name');
+            $table->string('desc')->comment('description of certification');
             $table->timestamps();
+            $table->primary('name');
         });
     }
 

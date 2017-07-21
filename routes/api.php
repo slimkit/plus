@@ -199,7 +199,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             $api->group(['prefix' => 'certification'], function (RouteContract $api) {
                 $api->get('/', API2\UserCertificationController::class.'@show');
                 $api->post('/', API2\UserCertificationController::class.'@store');
-                $api->patch('/', API2\UserCertificationController::class.'@update');
+                $api->patch('/{certification}', API2\UserCertificationController::class.'@update');
             });
 
             /*

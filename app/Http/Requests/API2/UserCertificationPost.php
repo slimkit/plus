@@ -12,7 +12,6 @@ class UserCertificationPost extends FormRequest
      * authorization check.
      *
      * @return bool
-     * @author Seven Du <shiweidu@outlook.com>
      */
     public function authorize(): bool
     {
@@ -22,10 +21,10 @@ class UserCertificationPost extends FormRequest
 
     public function rules()
     {
-        $rules = [
+        $base = [
             'certification' => [
                 'required',
-                'exists:certifications,id',
+                'exists:certifications,name',
             ],
             'id' => 'bail|required|max:50', // 验证证件ID
             'contact' => 'bail|required', // 验证联系方式
@@ -42,14 +41,34 @@ class UserCertificationPost extends FormRequest
             'tips' => 'max:100', // 验证备注
         ];
 
-        return $this->input('certification') == 2 // 企业认证
-            ? array_merge($rules, [
+        $rules =  $this->input('certification') === 'enterprise_certification' // 企业认证
+            ? array_merge($base, [
                 'company_name' => 'bail|required|string|min:2|max:50',
                 'contact_name' => 'bail|required|string|max:20',
             ])
-            : array_merge($rules, [
+            : array_merge($base, [
                 'name' => 'bail|required|string|min:2|max:50', // 验证名称
             ]);
+        if(strtolower($this->getMethod()) === 'post') {
+            return $rules;
+        }
+
+        $rules['name'] = 'nullable';
+        $rules['id'] = 'nullable';
+        $rules['certification'] = 'nullable';
+        $rules['contact'] = 'nullable';
+        $rules['desc'] = 'nullable';
+        $rules['file'] = [
+            'nullable',
+            'integer',
+                Rule::exists('file_withs', 'id')->where(function ($query) {
+                    $query->where('channel', null);
+                    $query->where('raw', null);
+                }),
+        ];
+
+        return $rules;
+
     }
 
     public function messages()
@@ -66,7 +85,7 @@ class UserCertificationPost extends FormRequest
             'tips' => '备注最长100',
         ];
 
-        return $this->input('certification') == 2
+        return $this->input('certification') === 'enterprise_certification'
             ? array_merge($messages, [
                 'company_name.required' => '企业名称未提供',
                 'company_name.min' => '企业名称太短',

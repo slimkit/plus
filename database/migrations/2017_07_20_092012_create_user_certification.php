@@ -15,7 +15,7 @@ class CreateUserCertification extends Migration
     {
         Schema::create('user_certifications', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedTinyInteger('certification')->comment('type of certification');
+            $table->string('certification')->comment('type of certification');
             $table->text('data')->comment('certification data');
             $table->unsignedTinyInteger('status')->default(0)->comment('status of certification');
             $table->unsignedInteger('user_id')->unique()->comment('who post certification');
