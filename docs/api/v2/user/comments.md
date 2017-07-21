@@ -1,38 +1,67 @@
-# 收到的评论
+# List all comments of the authenticated user
 
 ```
 GET /user/comments
 ```
 
-### Parameters
+#### Parameters
 
-| 名称 | 类型 | 描述 |
+| Name | Type | Description |
 |:----:|:----:|----|
-| limit | Integer | 获取条数，默认值 20 |
-| after | Integer | 获取之后数据，默认 0 |
+| limit | Integer | List comments limit. By default `20` |
+| after | Integer | The integer ID of the last Comment that you've seen. |
 
-#### Response
+##### Response
 
 ```
 Status: 200 OK
 ```
-
-```json5
+```json
 [
-    // ...
     {
-        "id": 5, // 评论 ID
-        "user_id": 1, // 评论发送用户
-        "target_user": 1, // 目标用户
-        "reply_user": 0, // 被回复用户
-        "channel": "feed", // 评论来自频道，目前预留参数 feed-动态 music-音乐 music_special-音乐专辑 news-资讯
-        "target": "8", // 来自频道目标id 例如 channel = feed 则 target 就是 feed 频道评论 ID,
-        "created_at": "2017-07-11 09:53:21", // 评论时间
-        "updated_at": "2017-07-11 09:53:21", // 更新时间
-        "comment_content": "测试一些评论发送", // 评论内容
-        "target_image": 0, // 目标频道图片 ID
-        "target_title": "动态内容", // 目标频道标题
-        "target_id": 1 // 目标频道ID，例如 channel = feed 则 target_id 就是 feed_id
+        "id": 3,
+        "user_id": 1,
+        "target_user": 1,
+        "reply_user": 0,
+        "body": "我是第三条评论",
+        "commentable_id": 1,
+        "commentable_type": "feeds",
+        "created_at": "2017-07-20 08:53:24",
+        "updated_at": "2017-07-20 08:53:24",
+        "commentable": {
+            "id": 1,
+            "user_id": 1,
+            "feed_content": "动态内容",
+            "feed_from": 1,
+            "like_count": 1,
+            "feed_view_count": 0,
+            "feed_comment_count": 6,
+            "feed_latitude": null,
+            "feed_longtitude": null,
+            "feed_geohash": null,
+            "audit_status": 1,
+            "feed_mark": 1,
+            "pinned": 0,
+            "created_at": "2017-06-27 07:04:32",
+            "updated_at": "2017-07-20 08:53:24",
+            "deleted_at": null,
+            "pinned_amount": 0,
+            "images": [],
+            "paid_node": null
+        }
     }
 ]
 ```
+
+| Name | Description |
+|:----:|-----|
+| id | The ID of the comment. |
+| user_id | Commentator. |
+| target_user | Own dynamic publisher. |
+| reply_user | Reverted to the user.|
+| body | The `body` of the comment. |
+| commentable_id | The `commentable_id` of the commentable type. |
+| commentable_type | The commentable type. |
+| created_at | Comment release time. |
+| updated_at | Comment update time. |
+| commentable | the `commentable` of the commentable type source. |

@@ -24,17 +24,18 @@ class UserCommentController extends Controller
         $after = (int) $request->query('after', 0);
 
         $comments = $model->getConnection()->transaction(function () use ($user, $limit, $after, $model) {
-            return $model->where(function ($query) use ($user) {
-                return $query->where('target_user', $user->id)
-                    ->orWhere('reply_user', $user->id);
-            })
-            ->where('user_id', '!=', $user->id)
-            ->when($after, function ($query) use ($after) {
-                return $query->where('id', '<', $after);
-            })
-            ->orderBy('id', 'desc')
-            ->limit($limit)
-            ->get();
+            return $model->with('commentable')
+                ->where(function ($query) use ($user) {
+                    return $query->where('target_user', $user->id)
+                        ->orWhere('reply_user', $user->id);
+                })
+                // ->where('user_id', '!=', $user->id)
+                ->when($after, function ($query) use ($after) {
+                    return $query->where('id', '<', $after);
+                })
+                ->orderBy('id', 'desc')
+                ->limit($limit)
+                ->get();
         });
 
         return $model->getConnection()->transaction(function () use ($comments, $response) {

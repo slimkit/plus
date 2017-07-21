@@ -12,7 +12,7 @@ V2 版本的 APIs 是符合 REST full 的接口实现，所以在使用前请自
     - [获取用户信息](user/show.md)
     - [Authorization](user/authorization.md)
     - [Register](user/register.md)
-    - [收到的评论](user/comments.md)
+    - [List all comments of the authenticated user](user/comments.md)
     - [收到的赞](user/likes.md)
     - [Followers](user/followers.md)
 - 钱包
