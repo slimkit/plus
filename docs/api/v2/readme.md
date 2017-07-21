@@ -32,3 +32,4 @@ V2 版本的 APIs 是符合 REST full 的接口实现，所以在使用前请自
     - [节点支付](purchase/pay.md)
 
 - [消息通知（系统消息）](notifications.md)
+- [用户认证](certification.md)
