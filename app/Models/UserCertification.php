@@ -12,12 +12,12 @@ class UserCertification extends Model
     // ];
 
     protected $hidden = [
-    	'uid',
+        'uid',
         'updated_at',
-        'created_at'
+        'created_at',
     ];
 
     protected $casts = [
-        'data' => 'json'
+        'data' => 'json',
     ];
 }
