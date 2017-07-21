@@ -22,6 +22,10 @@ Route::any('/example', function (Request $request) {
 })
 ->middleware('auth:api');
 
+Route::any('/develop', function () {
+    return view('developing');
+});
+
 // API version 1.
 Route::prefix('v1')
     ->namespace('Zhiyi\\Plus\\Http\\Controllers\\APIs\\V1')
