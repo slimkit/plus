@@ -31,8 +31,8 @@ class UserCertificationController extends Controller
 
         unset($certification['data']);
         $certification = array_merge($certification, $data);
-        
-    	return response()->json($certification)->setStatusCode(200);
+
+        return response()->json($certification)->setStatusCode(200);
     }
 
     /**
@@ -69,18 +69,18 @@ class UserCertificationController extends Controller
     }
 
     /**
-     * 修改认证资料
+     * 修改认证资料.
      * @param  UserCertificationPost $request [description]
      * @return [type]                         [description]
      */
     public function update(UserCertificationPost $request)
     {
         $user = $request->user('api')->id ?? 0;
-        !$user && abort(401, '请先登录');
+        ! $user && abort(401, '请先登录');
 
         $certification = $request->input('certification');
 
-        if(!$certification) {
+        if (! $certification) {
             abort(400, '无效的认证类型');
         }
 

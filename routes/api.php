@@ -325,7 +325,5 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
          */
 
         $api->post('/purchases/{node}', API2\PurchaseController::class.'@pay');
-
-        
     });
 });
