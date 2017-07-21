@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Certification extends Model
 {
     protected $hidden = [
-    	'created_at',
-    	'updated_at',
-    	'user_id'
+        'created_at',
+        'updated_at',
+        'user_id',
     ];
+
     //
     public function userCertifications()
     {
-    	return $this->hasMany(UserCertification::class, 'Certification');
+        return $this->hasMany(UserCertification::class, 'Certification');
     }
 }
