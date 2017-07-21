@@ -145,6 +145,7 @@ PATCH /user
 
 | Name | Type | Description |
 |:----:|:----:|----|
+| name | String | The new name of the user. |
 | bio | String | The new short biography of the user. |
 | sex | Integer | The new sex of the user. |
 | location | String | The new location of the user. |
