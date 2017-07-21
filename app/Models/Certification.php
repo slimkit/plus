@@ -33,7 +33,6 @@ class Certification extends Model implements ShouldAvatarContract
      */
     protected $avatar_prefix = 'certification_icons';
 
-
     protected $appends = ['icon'];
 
     public function getAvatarKey()

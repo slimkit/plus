@@ -41,7 +41,7 @@ class UserCertificationPost extends FormRequest
             'tips' => 'max:100', // 验证备注
         ];
 
-        $rules =  $this->input('certification') === 'enterprise_certification' // 企业认证
+        $rules = $this->input('certification') === 'enterprise_certification' // 企业认证
             ? array_merge($base, [
                 'company_name' => 'bail|required|string|min:2|max:50',
                 'contact_name' => 'bail|required|string|max:20',
@@ -49,7 +49,7 @@ class UserCertificationPost extends FormRequest
             : array_merge($base, [
                 'name' => 'bail|required|string|min:2|max:50', // 验证名称
             ]);
-        if(strtolower($this->getMethod()) === 'post') {
+        if (strtolower($this->getMethod()) === 'post') {
             return $rules;
         }
 
@@ -68,7 +68,6 @@ class UserCertificationPost extends FormRequest
         ];
 
         return $rules;
-
     }
 
     public function messages()
