@@ -33,7 +33,7 @@ class UserCertificationController extends Controller
 
         unset($certification['data']);
         $certification = array_merge($certification, $data);
-        	
+
     	return response()->json($certification)->setStatusCode(200);
     }
 
@@ -68,5 +68,38 @@ class UserCertificationController extends Controller
         }
 
         return response()->json(['message'=>'提交成功,请等待审核'])->setStatusCode(201);
+    }
+
+    /**
+     * 修改认证资料
+     * @param  UserCertificationPost $request [description]
+     * @return [type]                         [description]
+     */
+    public function update(UserCertificationPost $request)
+    {
+        $user = $request->user('api')->id ?? 0;
+        !$user && abort(401, '请先登录');
+
+        $certification = $request->input('certification');
+
+        if(!$certification) {
+            abort(400, '无效的认证类型');
+        }
+
+        $data = $request->only(['name', 'id', 'contact_name', 'desc', 'tips', 'company_name', 'contact', 'file']);
+
+        $userCertification = UserCertificationModel::where('user_id', $user)->first();
+
+        $userCertification->status = 0;
+        $userCertification->data = $data;
+        $userCertification->certification = $certification;
+        try {
+            $userCertification->save();
+        } catch (\Exception $e) {
+            throw $e;
+            // abort(500, '系统错误');
+        }
+
+        return response()->json(['message'=>'修改成功,请等待审核'])->setStatusCode(201);
     }
 }

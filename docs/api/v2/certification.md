@@ -6,7 +6,7 @@
 
 ## 创建认证
 ```
-POST /certification
+POST /user/certification
 ```
 
 ### 参数说明
@@ -43,7 +43,7 @@ Status 201
 
 ## 查询认证
 ```
-GET /certification
+GET /user/certification
 ```
 
 ### 返回参数说
@@ -71,7 +71,7 @@ Status 200
 
 ## 修改认证
 ```
-PATCH /certification
+PATCH /user/certification
 ```
 
 ### 参数说明

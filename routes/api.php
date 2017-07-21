@@ -190,6 +190,15 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             $api->get('/likes', API2\UserLikeController::class.'@index');
 
             /*
+            | 用户认证相关
+             */
+            $api->group(['prefix' => 'certification'], function (RouteContract $api) {
+                $api->get('/', API2\UserCertificationController::class.'@show');
+                $api->post('/', API2\UserCertificationController::class.'@store');
+                $api->patch('/', API2\UserCertificationController::class.'@update');
+            });
+
+            /*
             | 用户通知相关
              */
 
@@ -317,12 +326,6 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
         $api->post('/purchases/{node}', API2\PurchaseController::class.'@pay');
 
-        /*
-        | 用户认证相关
-         */
-        $api->group(['prefix' => 'certification'], function (RouteContract $api) {
-            $api->get('/', API2\UserCertificationController::class.'@show');
-            $api->post('/', API2\UserCertificationController::class.'@store');
-        });
+        
     });
 });
