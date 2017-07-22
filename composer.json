@@ -20,7 +20,6 @@
         "pingplusplus/pingpp-php": "^2.2",
         "predis/predis": "^1.1",
         "tymon/jwt-auth": "^0.5.12",
-        "zhiyicx/plus-component-group": "^0.0.1",
         "zhiyicx/plus-installer": "^1.0"
     },
     "require-dev": {
