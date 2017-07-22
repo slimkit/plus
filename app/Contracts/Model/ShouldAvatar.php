@@ -11,4 +11,20 @@ interface ShouldAvatar
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function getAvatarKey();
+
+    /**
+     * avatar extensions.
+     *
+     * @return array
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function getAvatarExtensions(): array;
+
+    /**
+     * Avatar prefix.
+     *
+     * @return string
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function getAvatarPrefix(): string;
 }

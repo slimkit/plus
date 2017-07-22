@@ -10,20 +10,6 @@ use Zhiyi\Plus\Contracts\Model\ShouldAvatar as ShouldAvatarContract;
 trait HasAvatar
 {
     /**
-     * avatar extensions.
-     *
-     * @var array
-     */
-    protected $avatar_extensions = ['svg', 'png', 'jpeg', 'gif', 'bmp'];
-
-    /**
-     * Avatar prefix.
-     *
-     * @var string
-     */
-    protected $avatar_prefix = 'avatars';
-
-    /**
      * Bootstrap the trait.
      *
      * @return void
@@ -34,6 +20,28 @@ trait HasAvatar
         if (! (new static) instanceof ShouldAvatarContract) {
             throw new \Exception(sprintf('使用"HasAvatar"性状必须实现"%s"契约', ShouldAvatarContract::class));
         }
+    }
+
+    /**
+     * avatar extensions.
+     *
+     * @return array
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function getAvatarExtensions(): array
+    {
+        return ['svg', 'png', 'jpg', 'jpeg', 'gif', 'bmp'];
+    }
+
+    /**
+     * Avatar prefix.
+     *
+     * @return string
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function getAvatarPrefix(): string
+    {
+        return 'avatars';
     }
 
     /**
@@ -70,7 +78,7 @@ trait HasAvatar
         $path = $this->makeAvatarPath($prefix);
         $disk = $this->filesystem()->disk('public');
 
-        foreach ($this->avatar_extensions as $extension) {
+        foreach ($this->getAvatarExtensions() as $extension) {
             if ($disk->exists($filename = $path.'.'.$extension)) {
                 return $filename;
             }
@@ -89,7 +97,7 @@ trait HasAvatar
     public function storeAvatar(UploadedFile $avatar, string $prefix = '')
     {
         $extension = strtolower($avatar->extension());
-        if (! in_array($extension, $this->avatar_extensions)) {
+        if (! in_array($extension, $this->getAvatarExtensions())) {
             throw new \Exception('保存的头像格式不符合要求');
         }
 
@@ -102,7 +110,7 @@ trait HasAvatar
             $disk->deleteDirectory($filename);
         }
 
-        $disk->delete(array_reduce($this->avatar_extensions, function (array $collect, $extension) use ($filename) {
+        $disk->delete(array_reduce($this->getAvatarExtensions(), function (array $collect, $extension) use ($filename) {
             $collect[] = $filename.'.'.$extension;
 
             return $collect;
@@ -126,7 +134,7 @@ trait HasAvatar
 
         return sprintf(
             '%s/%s/%s/%s/%s',
-            $prefix ?: $this->avatar_prefix,
+            $prefix ?: $this->getAvatarPrefix(),
             substr($filename, 0, 3),
             substr($filename, 3, 3),
             substr($filename, 6, 3),
