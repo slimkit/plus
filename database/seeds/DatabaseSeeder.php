@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UserProfileSettingsTableSeeder::class);
         $this->call(UserProfileSettingLinksTableSeeder::class);
         $this->call(SensitivesTableSeeder::class); //敏感词
-        $this->call(CertificationsTableSeeder::class); // 用户认证类型
+        $this->call(CertificationCategoryTableSeeder::class); // 用户认证类型
 
         // 把地区放在最后，因为耗时较长.
         $this->call(AreasTableSeeder::class);
