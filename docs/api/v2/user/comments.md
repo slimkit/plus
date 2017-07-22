@@ -64,4 +64,4 @@ Status: 200 OK
 | commentable_type | The commentable type. |
 | created_at | Comment release time. |
 | updated_at | Comment update time. |
-| commentable | the `commentable` of the commentable type source. |
+| commentable | the `commentable` of the commentable type source. Source delete the `commentable` is `null`. |
