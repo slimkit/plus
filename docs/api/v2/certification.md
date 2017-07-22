@@ -2,7 +2,7 @@
 
 - [Apply for certification](#apply-for-certification)
 - [Update certification](#update-certification)
-- [Get certification of the authenticated user](#get-certification-of-the-authenticated user)
+- [Get certification of the authenticated user](#get-certification-of-the-authenticated-user)
 
 ## Apply for certification
 
