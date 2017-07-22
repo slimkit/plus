@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCertification extends Migration
+class CreateCertificationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,11 +14,17 @@ class CreateCertification extends Migration
     public function up()
     {
         Schema::create('certifications', function (Blueprint $table) {
-            $table->string('name', 100);
-            $table->string('display_name')->comment('certification name');
-            $table->string('desc')->comment('description of certification');
+            $table->increments('id');
+            $table->string('certification_name', 100);
+            $table->integer('user_id')->unsigned();
+            $table->text('data');
+            $table->integer('examiner')->nullable()->default(0);
+            $table->tinyInteger('status')->nullable()->default(0);
             $table->timestamps();
-            $table->primary('name');
+
+            $table->index('user_id');
+            $table->index('certification_name');
+            $table->unique(['user_id', 'certification_name']);
         });
     }
 

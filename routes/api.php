@@ -193,13 +193,17 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             $api->get('/likes', API2\UserLikeController::class.'@index');
 
-            /*
-            | 用户认证相关
-             */
+            // User certification.
             $api->group(['prefix' => 'certification'], function (RouteContract $api) {
-                $api->get('/', API2\UserCertificationController::class.'@show');
+
+                // Send certification.
                 $api->post('/', API2\UserCertificationController::class.'@store');
-                $api->patch('/{certification}', API2\UserCertificationController::class.'@update');
+
+                // Update certification.
+                $api->patch('/', API2\UserCertificationController::class.'@update');
+
+                // Get user certification.
+                $api->get('/', API2\UserCertificationController::class.'@show');
             });
 
             /*

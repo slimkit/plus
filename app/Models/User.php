@@ -111,6 +111,17 @@ class User extends Authenticatable implements ShouldAvatarContract
     }
 
     /**
+     * Has user certification.
+     *
+     * @return Illuminate\Database\Eloquent\Relations\HasOne
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function certification()
+    {
+        return $this->hasOne(Certification::class, 'user_id', 'id');
+    }
+
+    /**
      * 复用设置手机号查询条件方法.
      *
      * @param Illuminate\Database\Eloquent\Builder $query 查询对象
