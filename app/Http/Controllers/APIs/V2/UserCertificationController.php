@@ -5,8 +5,8 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\Certification as CertificationModel;
-use Zhiyi\Plus\Http\Requests\API2\UserCertification as UserCertificationRequest;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
+use Zhiyi\Plus\Http\Requests\API2\UserCertification as UserCertificationRequest;
 
 class UserCertificationController extends Controller
 {
