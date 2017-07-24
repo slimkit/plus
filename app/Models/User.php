@@ -53,7 +53,7 @@ class User extends Authenticatable implements ShouldAvatarContract
      *
      * @var array
      */
-    protected $appends = ['avatar', 'bg'];
+    protected $appends = ['avatar', 'bg', 'verified'];
 
     /**
      * The relations to eager load on every query.
@@ -97,6 +97,28 @@ class User extends Authenticatable implements ShouldAvatarContract
     public function getBgAttribute()
     {
         return $this->avatar(0, 'user-bg');
+    }
+
+    /**
+     * Get verifed.
+     *
+     * @return array|null
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function getVerifiedAttribute()
+    {
+        $certification = $this->certification()
+            ->where('status', 1)
+            ->first();
+
+        if (! $certification) {
+            return null;
+        }
+
+        return [
+            'type' => $certification->certification_name,
+            'icon' => $certification->icon,
+        ];
     }
 
     /**

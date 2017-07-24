@@ -38,6 +38,10 @@ Status: 200 OK
     "follower": false,
     "avatar": "http://plus.io/api/v2/users/1/avatar",
     "bg": null,
+    "verified": {
+        "type": "user",
+        "icon": null
+    },
     "extra": {
         "user_id": 1,
         "likes_count": 0,
@@ -68,6 +72,9 @@ Status: 200 OK
 | extra.followers_count | Follow this user's statistics. |
 | extra.followings_count | This user follows the statistics. |
 | extra.updated_at | Secondary data update time. |
+| verified | This user does not have information, the default is `null`. |
+| verified.type | Verified type. |
+| verified.icon | Verified icon. |
 
 ### Get a user avatar
 
