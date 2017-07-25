@@ -143,6 +143,7 @@ Status: 200 OK
 - [Update avatar of the authenticated user](#update-avatar-of-the-authenticated-user)
 - [Update background image of the authenticated user](#update-background-image-of-the-authenticated-user)
 - [Update phone or email of the authenticated user](#update-phone-or-email-of-the-authenticated-user)
+- [Update password or the authenticated user](#update-password-or-the-authenticated-user)
 
 ```
 PATCH /user
@@ -212,6 +213,26 @@ PUT /user
 | phone | String | **Required without `email`**, The new phone of the user. |
 | email | String | **Required without `phone`**, The new email of the user. |
 | verifiable_code | Strint\|Number | **Required**, Verification code. |
+
+##### Response
+
+```
+Status: 204 No Content
+```
+
+### Update password or the authenticated user
+
+```
+PUT /user/password
+```
+
+#### Input
+
+| Name | Type | Description |
+|:----:|:----:|----|
+| old_password | String | **Required**, User password. |
+| password | String | **required**, The new password of the user. |
+| password_confirmation | String | **Required**, Consistent with the user's new password. |
 
 ##### Response
 

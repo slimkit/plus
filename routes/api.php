@@ -261,6 +261,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                 // 获取关注我的用户
                 $api->get('/', API2\CurrentUserController::class.'@followers');
             });
+
+            // Reset password.
+            $api->put('/password', API2\ResetPasswordController::class.'@reset');
         });
 
         /*
