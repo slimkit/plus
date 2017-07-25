@@ -113,4 +113,4 @@ https://plus.io/api/v2/user?token={TOKEN}
 
 | Tag name | Description |
 |:----:|----|
-| `@![title](file id)` | 改造自 `![title](url)`, 增加 `@` 前缀来表示为系统图片附件。|
+| `@![title](file id)` | 改造自 `![title](url)`, 增加 `@` 前缀来表示为系统图片附件，而 `url` 更改为文件 ID。 |
