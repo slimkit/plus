@@ -127,8 +127,8 @@ return [
         'verifiable_type' => '验证码类型',
         'verifiable_code' => '验证码',
         'password' => '密码',
-        'old_password' => "旧密码",
-        ''
+        'old_password' => '旧密码',
+        '',
     ],
 
 ];
