@@ -82,6 +82,12 @@ Status: 200 OK
 GET /users/:user/avatar
 ```
 
+#### Parameters
+
+| Name | Type | Description |
+|:----:|:----:|----|
+| s | Integer | Avatar size, Min: 0, Max : 500. |
+
 ##### Response
 
 ```
