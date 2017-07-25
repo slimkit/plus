@@ -97,7 +97,7 @@ class UserController extends Controller
             ->first();
 
         if (! $verify) {
-            return $response->json(['message' => ['验证码错误或者已实效']], 422);
+            return $response->json(['message' => ['验证码错误或者已失效']], 422);
         }
 
         $user = new User();
