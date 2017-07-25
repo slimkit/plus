@@ -3,6 +3,8 @@
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Models\VerificationCode as VerificationCodeModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class ResetPasswordController extends Controller
@@ -60,5 +62,50 @@ class ResetPasswordController extends Controller
             'password.different' => '新密码和旧密码相同',
             'password.confirmed' => '确认输入的新密码不一致',
         ];
+    }
+
+    /**
+     * Retrueve user password.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param \Zhiyi\Plus\Models\VerificationCode $verificationCodeModel
+     * @param \Zhiyi\Plus\Models\User $userModel
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function retrieve(Request $request,
+                             ResponseFactoryContract $response,
+                             VerificationCodeModel $verificationCodeModel,
+                             UserModel $userModel)
+    {
+        if ($request->input('phone') && $request->input('email')) {
+            return $response->json(['message' => ['非法请求']], 400);
+        }
+
+        $this->validate($request, [
+            'verifiable_type' => 'required|in:mail,sms',
+            'verifiable_code' => 'required',
+            'phone' => 'required_unless:verifiable_type,mail|cn_phone|exists:users,phone',
+            'email' => 'required_unless:verifiable_type,sms|email|exists:users,email',
+            'password' => 'required|string',
+        ]);
+
+        $field = $request->input('phone') ? 'phone' : 'email';
+        $user = $userModel->where($field, $account = $request->input($field))->first();
+        $verificationCode = $verificationCodeModel->where('channel', $request->input('verifiable_type'))
+            ->where('code', $request->input('verifiable_code'))
+            ->where('account', $account)
+            ->first();
+
+        if (! $verificationCode) {
+            return $response->json(['message' => ['验证码错误或者已失效']], 422);
+        }
+
+        $user->createPassword($request->input('password'));
+        $user->save();
+        $verificationCode->delete();
+
+        return $response->make('', 204);
     }
 }

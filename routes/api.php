@@ -145,6 +145,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
         $api->get('/{user}/followings', API2\UserFollowController::class.'@followings');
     });
 
+    // Retrieve user password.
+    $api->put('/user/retrieve-password', API2\ResetPasswordController::class.'@retrieve');
+
     /*
     |-----------------------------------------------------------------------
     | Define a route that requires user authentication.

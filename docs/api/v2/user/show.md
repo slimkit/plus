@@ -4,6 +4,7 @@
 - [Get the authenticated user](#get-the-authenticated-user)
 - [Update the authenticated user](#update-the-authenticated-user)
 - [Get all users](#get-all-users)
+- [Retrueve user password](#retrueve-user-password)
 
 ## Get a single user
 
@@ -292,4 +293,26 @@ Status: 200 OK
         }
     }
 ]
+```
+
+## Retrueve user password
+
+```
+PUT /user/retrieve-password
+```
+
+#### Input
+
+| Name | Type | Description |
+|:----:|:----:|----|
+| verifiable_type | Enum: mail, sms | **Required**, Notification serve verification type. |
+| verifiable_code | Strint\|Number | **Required**, Verification code. |
+| email | String | If the `verifiable_type` field is `mail`, then this field is required. |
+| phone | String | If the `verifiable_type` field is `sms`, then this field is required. |
+| password | String | The new passworf of the user. |
+
+##### Response
+
+```
+Status: 204 No Content
 ```
