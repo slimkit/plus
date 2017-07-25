@@ -9,6 +9,7 @@
 - [HTTP Verbs](#http-verbs)
 - [Rate Limiting](#rate-limiting)
 - [Authorization](#authorization)
+- [Customize the markdown tag](#customize-the-markdown-tag);
 
 ## Current Version
 
@@ -107,3 +108,9 @@ Alternatively you can include the token via a query string
 ```
 https://plus.io/api/v2/user?token={TOKEN}
 ```
+
+## Customize the markdown tag
+
+| Tag name | Description |
+|:----:|----|
+| `@![title](file id)` | 改造自 `![title](url)`, 增加 `@` 前缀来表示为系统图片附件。|
