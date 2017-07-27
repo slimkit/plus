@@ -18,7 +18,12 @@ class AdvertisingController extends Controller
     public function advertising(Request $request, AdvertisingSpace $space)
     {
         $space->load('advertising');
+        $datas = $space->advertising->map(function ($ad) {
+			$ad->data = json_decode($ad->data);
 
-        return response()->json($space->advertising, 200);
+			return $ad;
+        });
+
+        return response()->json($datas, 200);
     }
 }
