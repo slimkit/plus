@@ -19,9 +19,9 @@ class AdvertisingController extends Controller
     {
         $space->load('advertising');
         $datas = $space->advertising->map(function ($ad) {
-			$ad->data = json_decode($ad->data);
+            $ad->data = json_decode($ad->data);
 
-			return $ad;
+            return $ad;
         });
 
         return response()->json($datas, 200);
