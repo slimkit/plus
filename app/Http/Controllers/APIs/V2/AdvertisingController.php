@@ -10,13 +10,15 @@ class AdvertisingController extends Controller
 {
     public function index(Request $request, AdvertisingSpace $space)
     {
-		$space = $space->get();
-		return response()->json($space, 200);
+        $space = $space->get();
+
+        return response()->json($space, 200);
     }
 
     public function advertising(Request $request, AdvertisingSpace $space)
     {
-		$space->load('advertising');
-		return response()->json($space->advertising, 200);
+        $space->load('advertising');
+
+        return response()->json($space->advertising, 200);
     }
 }
