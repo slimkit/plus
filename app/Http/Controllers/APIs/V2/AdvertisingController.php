@@ -28,7 +28,7 @@ class AdvertisingController extends Controller
      *
      * @author bs<414606094@qq.com>
      * @param  Request          $request
-     * @param  AdvertisingSpace $space  
+     * @param  AdvertisingSpace $space
      * @return mix
      */
     public function advertising(Request $request, AdvertisingSpace $space)
