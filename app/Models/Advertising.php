@@ -6,5 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Advertising extends Model
 {
-    protected $fillable = ['space_id', 'type', 'image', 'data'];
+	protected $table = 'advertising';
+
+    protected $fillable = ['space_id', 'type', 'title', 'data'];
 }
