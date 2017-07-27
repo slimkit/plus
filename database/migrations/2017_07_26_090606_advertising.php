@@ -16,9 +16,9 @@ class Advertising extends Migration
         Schema::create('advertising', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('space_id')->unsigned()->comment('广告位id');
+            $table->string('title')->comment('广告标题');
             $table->string('type')->comment('类型');
-            $table->integer('image')->unsigned()->comment('广告图片');
-            $table->text('data')->comment('相关参数');
+            $table->text('data')->nullable()->comment('相关参数');
             $table->timestamps();
 
             $table->index('space_id');
