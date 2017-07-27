@@ -17,6 +17,7 @@ class Advertising extends Migration
             $table->increments('id');
             $table->integer('space_id')->unsigned()->comment('广告位id');
             $table->string('type')->comment('类型');
+            $table->integer('image')->unsigned()->comment('广告图片');
             $table->text('data')->comment('相关参数');
             $table->timestamps();
 
