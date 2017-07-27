@@ -69,6 +69,11 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     // Search location.
     $api->get('/locations/search', API2\LocationController::class.'@search');
 
+    // Get Advertising space
+    $api->get('/advertisingspace', API2\AdvertisingController::class.'@index');
+
+    // Get Advertising.
+    $api->get('/advertisingspace/{space}/advertising', API2\AdvertisingController::class.'@advertising');
     /*
     |-----------------------------------------------------------------------
     | 用户验证验证码
