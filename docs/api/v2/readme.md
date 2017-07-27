@@ -30,5 +30,9 @@ V2 版本的 APIs 是符合 REST full 的接口实现，所以在使用前请自
     - [查询节点 & 付费状态](purchase/show.md)
     - [节点支付](purchase/pay.md)
 
+- 广告位
+    - [查询广告位](advertising/space.md)
+    - [查询广告列表](advertising/advertising.md)
+
 - [消息通知（系统消息）](notifications.md)
 - [User certification](certification.md)
