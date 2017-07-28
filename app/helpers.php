@@ -48,3 +48,20 @@ function username(string $login, string $default = 'id'): string
 
     return $default;
 }
+
+/**
+ * Find markdown image IDs.
+ *
+ * @param string $markdown
+ * @return array
+ * @author Seven Du <shiweidu@outlook.com>
+ */
+function findMarkdownImageIDs(string $markdown): array
+{
+    $pattern = '/\@\!\[.*\]\((\d+)\)/is';
+    if (preg_match_all($pattern, $markdown, $matches) < 1) {
+        return [];
+    }
+
+    return $matches[1];
+}
