@@ -135,12 +135,23 @@ class User extends Authenticatable implements ShouldAvatarContract
     /**
      * Has user certification.
      *
-     * @return Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function certification()
     {
         return $this->hasOne(Certification::class, 'user_id', 'id');
+    }
+
+    /**
+     * Has tags of the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable', 'taggables');
     }
 
     /**
