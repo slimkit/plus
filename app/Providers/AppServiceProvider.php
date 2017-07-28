@@ -32,6 +32,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('cdn', function ($app) {
             return new \Zhiyi\Plus\Cdn\UrlManager($app);
         });
+
+        $this->registerMorpMap();
     }
 
     /**
@@ -83,5 +85,30 @@ class AppServiceProvider extends ServiceProvider
         $length = count($single[0]) / 2 + mb_strlen(preg_replace('([a-zA-Z0-9_])', '', $value));
 
         return $length >= $min && $length <= $max;
+    }
+
+    /**
+     * Register model morp map.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function registerMorpMap()
+    {
+        $this->morphMap([
+            'users' => \Zhiyi\Plus\Models\User::class,
+        ]);
+    }
+
+    /**
+     * Set or get the morph map for polymorphic relations.
+     *
+     * @param array $map
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function morphMap(array $map)
+    {
+        \Illuminate\Database\Eloquent\Relations\Relation::morphMap($map);
     }
 }
