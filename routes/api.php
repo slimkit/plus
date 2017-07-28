@@ -277,6 +277,15 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // Reset password.
             $api->put('/password', API2\ResetPasswordController::class.'@reset');
+
+            // The tags route of the authenticated user.
+            // @Route /api/v2/user/tags
+            $api->group(['prefix' => 'tags'], function (RouteContract $api) {
+
+                // Get all tags of the authenticated user.
+                // @GET /api/v2/user/tags
+                $api->get('/', API2\TagUserController::class.'@index');
+            });
         });
 
         /*
