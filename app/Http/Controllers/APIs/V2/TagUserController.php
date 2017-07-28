@@ -41,7 +41,7 @@ class TagUserController extends Controller
                     trans('tag.user.attached', [
                         'tag' => $tag->name,
                     ]),
-                ]
+                ],
             ], 422);
         }
 
