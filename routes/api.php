@@ -285,6 +285,10 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                 // Get all tags of the authenticated user.
                 // @GET /api/v2/user/tags
                 $api->get('/', API2\TagUserController::class.'@index');
+
+                // Attach a tag for the authenticated user.
+                // @PUT /api/v2/user/tags/:tag
+                $api->put('/{tag}', API2\TagUserController::class.'@store');
             });
         });
 

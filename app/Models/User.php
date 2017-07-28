@@ -151,7 +151,8 @@ class User extends Authenticatable implements ShouldAvatarContract
      */
     public function tags()
     {
-        return $this->morphToMany(Tag::class, 'taggable', 'taggables');
+        return $this->morphToMany(Tag::class, 'taggable', 'taggables')
+            ->withTimestamps();
     }
 
     /**
