@@ -74,6 +74,11 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
     // Get Advertising.
     $api->get('/advertisingspace/{space}/advertising', API2\AdvertisingController::class.'@advertising');
+
+    // Get all tags.
+    // @Get /api/v2/tags
+    $api->get('/tags', API2\TagController::class.'@index');
+
     /*
     |-----------------------------------------------------------------------
     | 用户验证验证码
