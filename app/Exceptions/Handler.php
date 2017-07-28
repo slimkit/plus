@@ -77,32 +77,17 @@ class Handler extends ExceptionHandler
      */
     protected function renderAPIsException($request, Exception $e)
     {
-        $hasAPIsV1 = $request->is('*/v1/*');
-        if ($e instanceof HttpException) {
-            return response()->json(
-                $hasAPIsV1
-                    ? [
-                        'status'  => false,
-                        'code'    => 0,
-                        'message' => $e->getMessage() ?: Response::$statusTexts[$e->getStatusCode()],
-                        'data'    => null,
-                    ]
-                    : ['message' => [$e->getMessage() ?: Response::$statusTexts[$e->getStatusCode()]]],
-                $e->getStatusCode()
-            );
+        $statusCode = 500;
+        if (method_exists($e, 'getStatusCode')) {
+            $statusCode = $e->getStatusCode();
         }
 
-        return response()->json(
-            $hasAPIsV1
-                ? [
-                    'status'  => false,
-                    'code'    => 0,
-                    'message' => $e->getMessage() ?: 'Unknown error.',
-                    'data'    => null,
-                ]
-                : ['message' => [$e->getMessage() ?: 'Unknown error.']],
-            500
-        );
+        $message = $e->getMessage() ?: 'Unknown failure.';
+        if (! $e->getMessage() && $e instanceof HttpException) {
+            $message = Response::$statusTexts[$statusCode];
+        }
+
+        return response()->json(['message' => [$message]], $statusCode);
     }
 
     /**
@@ -115,15 +100,6 @@ class Handler extends ExceptionHandler
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        if ($request->is('*/v1/*')) {
-            return response()->json([
-                'status'  => false,
-                'code'    => 1099,
-                'message' => '用户认证失败',
-                'data'    => null,
-            ], 401);
-        }
-
         if ($request->expectsJson()) {
             return response()->json([
                 'message' => ['Unauthenticated.'],
