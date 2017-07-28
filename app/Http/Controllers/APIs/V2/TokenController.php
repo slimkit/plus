@@ -37,7 +37,7 @@ class TokenController extends Controller
                 'user' => array_merge($user->toArray(), [
                     'phone'  => $user->phone,
                     'email'  => $user->email,
-                    'wallet' => $user->wallet ? $user->wallet->balance : null,
+                    'wallet' => $user->wallet,
                 ]),
                 'ttl' => config('jwt.ttl'),
                 'refresh_ttl' => config('jwt.refresh_ttl'),
