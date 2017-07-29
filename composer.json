@@ -33,7 +33,8 @@
             "app/helpers.php"
         ],
         "classmap": [
-            "database"
+            "database/seeds",
+            "database/factories"
         ],
         "psr-4": {
             "Zhiyi\\Plus\\": "app/"
