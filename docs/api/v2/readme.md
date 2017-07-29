@@ -8,6 +8,7 @@ V2 版本的 APIs 是符合 REST full 的接口实现，所以在使用前请自
 - [启动信息](bootstrappers.md)
 - [Send verification code](verification-code.md)
 - [Locations](locations.md)
+- [标签](tags.md)
 - [User](user/show.md)
     - [Authorization](user/authorization.md)
     - [Register](user/register.md)
