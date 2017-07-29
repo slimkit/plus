@@ -22,3 +22,4 @@
             - [关注](api2/users/followers.md)
             - [标签](api2/users/tags.md)
             - [身份认证](api2/users/certification.md)
+        - [消息通知（系统消息）](notifications.md)
