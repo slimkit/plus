@@ -10,3 +10,8 @@
 - [APIs]
     - [概述](api-overview.md)
     - [Version 2 (REST ful)](api2)
+        - [启动信息](api2/bootstrappers.md)
+        - [验证码](verification-code.md)
+        - [位置](locations.md)
+        - [标签](tags.md)
+        - [用户](users)
