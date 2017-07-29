@@ -4,6 +4,7 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Tag as TagModel;
+use Zhiyi\Plus\Models\User as UserModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class TagUserController extends Controller
@@ -18,9 +19,7 @@ class TagUserController extends Controller
      */
     public function index(Request $request, ResponseFactoryContract $response)
     {
-        return $response->json(
-            $request->user()->tags
-        )->setStatusCode(200);
+        return $this->userTgas($response, $request->user());
     }
 
     /**
@@ -76,5 +75,18 @@ class TagUserController extends Controller
         $user->tags()->detach($tag);
 
         return $response->make('', 204);
+    }
+
+    /**
+     * Get the user's tags.
+     *
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response [description]
+     * @param \Zhiyi\Plus\Models\User $user [description]
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function userTgas(ResponseFactoryContract $response, UserModel $user)
+    {
+        return $response->json($user->tags, 200);
     }
 }

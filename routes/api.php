@@ -153,6 +153,10 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
         // 获取用户关注的用户
         $api->get('/{user}/followings', API2\UserFollowController::class.'@followings');
+
+        // Get the user's tags.
+        // @GET /api/v2/users/:user/tags
+        $api->get('/{user}/tags', API2\TagUserController::class.'@userTgas');
     });
 
     // Retrieve user password.
