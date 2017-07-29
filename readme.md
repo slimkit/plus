@@ -19,10 +19,6 @@
 
 [Full Documentation Here](docs)
 
-## 安装 ThinkSNS+
-
-所有安装说明均在 ThinkSNS+ 文档，[安装](docs/zh-CN/get-started/installed.md) 中进行了详细说明。
-
 ## Contributing
 
 Thank you for considering contributing to the ThinkSNS+!
