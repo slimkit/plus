@@ -2,6 +2,7 @@
 
 - [开始](get-started)
     - [关于 ThinkSNS+](get-started)
+    - [安装](get-started/installed.md)
 - [拓展包](package)
     - [开发指南](package)
     - [处理器 & 命令](package/console.md)
