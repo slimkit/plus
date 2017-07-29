@@ -9,7 +9,7 @@
 - [HTTP 动词](#HTTP-动词)
 - [速率限制](#速率限制)
 - [授权](#授权)
-- [Customize the markdown tag](#customize-the-markdown-tag);
+- [自定义的 Markdown 标签](#自定义的-markdown-标签);
 
 ## 选择版本
 
