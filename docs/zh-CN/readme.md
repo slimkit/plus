@@ -15,3 +15,4 @@
         - [位置](api2/locations.md)
         - [标签](api2/tags.md)
         - [用户](api2/users)
+            - [授权](api2/user/authorization.md)
