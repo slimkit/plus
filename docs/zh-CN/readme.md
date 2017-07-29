@@ -20,3 +20,4 @@
             - [用户收到的评论](api2/users/comments.md)‘
             - [用户收到的喜欢](api2/users/likes.md)
             - [关注](api2/users/followers.md)
+            - [标签](api2/users/tags.md)
