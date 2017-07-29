@@ -289,6 +289,10 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                 // Attach a tag for the authenticated user.
                 // @PUT /api/v2/user/tags/:tag
                 $api->put('/{tag}', API2\TagUserController::class.'@store');
+
+                // Detach a tag for the authenticated user.
+                // @DELETE /api/v2/user/tags/:tag
+                $api->delete('/{tag}', API2\TagUserController::class.'@destroy');
             });
         });
 

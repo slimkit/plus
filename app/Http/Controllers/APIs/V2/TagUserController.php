@@ -49,4 +49,32 @@ class TagUserController extends Controller
 
         return $response->make('', 204);
     }
+
+    /**
+     * Detach a tag for the authenticated user.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param \Zhiyi\Plus\Models\Tag $tag
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function destroy(Request $request, ResponseFactoryContract $response, TagModel $tag)
+    {
+        $user = $request->user();
+
+        if ($user->tags()->newPivotStatementForId($tag->id)->first()) {
+            return $response->json([
+                'message' => [
+                    trans('tag.user.destroyed', [
+                        'tag' => $tag->name,
+                    ]),
+                ],
+            ], 422);
+        }
+
+        $user->tags()->detach($tag);
+
+        return $response->make('', 204);
+    }
 }
