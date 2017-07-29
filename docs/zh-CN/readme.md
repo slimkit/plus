@@ -9,7 +9,7 @@
     - [内置开发支持（模拟完整的线上打包，发布流程）](package/dev.md)
 - [APIs]
     - [概述](api-overview.md)
-    - [Version 2 (REST ful)](api2)
+    - Version 2 (REST ful)
         - [启动信息](api2/bootstrappers.md)
         - [验证码](api2/verification-code.md)
         - [位置](api2/locations.md)
