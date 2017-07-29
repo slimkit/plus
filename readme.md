@@ -23,6 +23,6 @@
 
 Thank you for considering contributing to the ThinkSNS+!
 
-## 授权协议
+## License
 
 The ThinkSNS+ is open-sourced software licensed under the [Apache 2.0 license](LICENSE).
