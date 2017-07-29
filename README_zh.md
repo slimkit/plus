@@ -13,7 +13,7 @@
 
 ThinkSNS+ 是基于 Laravel 开发的一个用户生态基础框架系统，支持动态拓展应用的接入和UI规范设计。
 
-更多关于 ThinkSNS+ 请访问 [关于 ThinkSNS+](docs/get-started/about.md) 了解产品。
+更多关于 ThinkSNS+ 请访问 [关于 ThinkSNS+](docs/zh-CN/get-started/about.md) 了解产品。
 
 > 欢迎访问官网：[http://www.thinksns.com](http://www.thinksns.com) 了解我们产品和团队。
 
