@@ -10,6 +10,9 @@ GET /tags
 
 #### 响应
 
+```
+Status: 200 OK
+```
 ```json
 [
     {

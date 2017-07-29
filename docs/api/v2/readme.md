@@ -15,6 +15,7 @@ V2 版本的 APIs 是符合 REST full 的接口实现，所以在使用前请自
     - [List all comments of the authenticated user](user/comments.md)
     - [收到的赞](user/likes.md)
     - [Followers](user/followers.md)
+    - [用户标签](user/tags.md)
 - 钱包
     - [概述](wallet/readme.md)
     - [获取钱包信息](wallet/show.md)
