@@ -12,16 +12,11 @@
 GET /bootstrappers
 ```
 
-### Response
-
-Headers
+#### 响应
 
 ```
 Status: 200 OK
 ```
-
-Bdoy
-
 ```json5
 {
     "im:serve": "127.0.0.1:9900" // IM 服务器地址
