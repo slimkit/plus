@@ -23,4 +23,15 @@ class Like extends Model
     {
         return $this->morphTo();
     }
+
+    /**
+     * Has user of the likeable.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }
