@@ -33,6 +33,7 @@ Status: 200 OK
 ```
 
 | 字段 | 描述 |
+|:----:|----|
 | id | 标签 ID。 |
 | name | 标签名称 |
 | tag_category_id | 标签分类 ID |
