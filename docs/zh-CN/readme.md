@@ -17,4 +17,5 @@
         - [用户](api2/users)
             - [授权](api2/users/authorization.md)
             - [注册](api2/users/register.md)
-            - [用户收到的评论](api2/users/comments.md)
+            - [用户收到的评论](api2/users/comments.md)‘
+            - [用户收到的喜欢](api2/users/likes.md)
