@@ -62,7 +62,7 @@ class TagUserController extends Controller
     {
         $user = $request->user();
 
-        if ($user->tags()->newPivotStatementForId($tag->id)->first()) {
+        if (! $user->tags()->newPivotStatementForId($tag->id)->first()) {
             return $response->json([
                 'message' => [
                     trans('tag.user.destroyed', [
