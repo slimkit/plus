@@ -13,16 +13,16 @@ class AdvertisingSpaceTableSeeder extends Seeder
     public function run()
     {
         AdvertisingSpace::create([
-        	'channel' => 'boot',
-        	'space' => 'boot',
-        	'alias' => '启动图广告',
-        	'allow_type' => 'image',
-        	'format' => json_encode([
-				'image' => [
-					'image' => '图片|string',
-					'link' => '链接|string',
-				]
-			])
+            'channel' => 'boot',
+            'space' => 'boot',
+            'alias' => '启动图广告',
+            'allow_type' => 'image',
+            'format' => json_encode([
+                'image' => [
+                    'image' => '图片|string',
+                    'link' => '链接|string',
+                ],
+            ]),
         ]);
     }
 }
