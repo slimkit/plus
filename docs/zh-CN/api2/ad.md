@@ -21,7 +21,13 @@ Status: 200 OK
         "channel": "boot", // 广告位所属模块
         "space": "boot", // 广告位标识
         "alias": "启动图广告", // 广告位别名
-        "allow_type": "image", // 广告位允许的广告类型 (当前app中只有图片类型)
+        "allow_type": "image", // 广告位允许的广告类型 (当前app中只有图片类型) 多个类型将以逗号隔开
+        "format": { // 广告数据格式
+            "image": {
+                "image": "图片|string",
+                "link": "链接|string"
+            }
+        },
         "created_at": "2017-07-27 06:56:36",
         "updated_at": "2017-07-27 06:56:36"
     },
@@ -31,6 +37,12 @@ Status: 200 OK
         "space": "feed:list:top",
         "alias": "动态列表顶部广告",
         "allow_type": "image",
+        "format": {
+            "image": {
+                "image": "图片|string",
+                "link": "链接|string"
+            }
+        },
         "created_at": "2017-07-27 07:04:50",
         "updated_at": "2017-07-27 07:04:50"
     },
@@ -40,8 +52,32 @@ Status: 200 OK
         "space": "feed:single",
         "alias": "动态详情广告",
         "allow_type": "image",
+        "format": {
+            "image": {
+                "image": "图片|string",
+                "link": "链接|string"
+            }
+        },
         "created_at": "2017-07-27 07:04:50",
         "updated_at": "2017-07-27 07:04:50"
+    },
+    {
+        "id": 4,
+        "channel": "feed",
+        "space": "feed:list:analog",
+        "alias": "动态列表模拟数据广告",
+        "allow_type": "analog",
+        "format": {
+            "analog": {
+                "avatar": "头像图|string",
+                "name": "用户名|string",
+                "content": "内容|string",
+                "image": "图片|string",
+                "time": "时间|date"
+            }
+        },
+        "created_at": "2017-07-31 03:18:02",
+        "updated_at": "2017-07-31 03:18:02"
     }
 ]
 ```

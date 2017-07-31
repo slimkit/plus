@@ -8,7 +8,12 @@ class AdvertisingSpace extends Model
 {
     protected $table = 'advertising_space';
 
-    protected $fillable = ['channel', 'space', 'alias', 'allow_type'];
+    protected $fillable = ['channel', 'space', 'alias', 'allow_type', 'format'];
+
+    public function getFormatAttribute($format)
+    {
+        return json_decode($format);
+    }
 
     public function advertising()
     {
