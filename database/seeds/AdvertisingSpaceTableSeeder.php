@@ -17,12 +17,12 @@ class AdvertisingSpaceTableSeeder extends Seeder
             'space' => 'boot',
             'alias' => '启动图广告',
             'allow_type' => 'image',
-            'format' => json_encode([
+            'format' => [
                 'image' => [
                     'image' => '图片|string',
                     'link' => '链接|string',
                 ],
-            ]),
+            ],
         ]);
     }
 }

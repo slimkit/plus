@@ -10,10 +10,9 @@ class AdvertisingSpace extends Model
 
     protected $fillable = ['channel', 'space', 'alias', 'allow_type', 'format'];
 
-    public function getFormatAttribute($format)
-    {
-        return json_decode($format);
-    }
+    protected $casts = [
+        'format' => 'array',
+    ];
 
     public function advertising()
     {
