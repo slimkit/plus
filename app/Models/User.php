@@ -295,6 +295,23 @@ class User extends Authenticatable implements ShouldAvatarContract
     }
 
     /**
+     * Get a relationship value from a method.
+     *
+     * @param string $key
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function getRelationValue($key)
+    {
+        $relation = parent::getRelationValue($key);
+        if (! $relation && static::hasMacro($key)) {
+            return $this->getRelationshipFromMethod($key);
+        }
+
+        return $relation;
+    }
+
+    /**
      * Handle dynamic method calls into the model.
      *
      * @param string $method
