@@ -26,8 +26,8 @@ install:
 
 script:
     - php artisan migrate -vvv
-    - php artisan db:seed
-    - php artisan vendor:publish
+    - php artisan db:seed -vvv
+    - php artisan vendor:publish -vvv
     - php vendor/bin/phpunit --coverage-clover=./storage/logs/coverage.xml
 
 after_script:
