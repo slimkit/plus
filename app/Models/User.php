@@ -33,7 +33,6 @@ class User extends Authenticatable implements ShouldAvatarContract
 
     use Macroable {
         __call as macroCall;
-        __callStatic as MacroCallStatis;
     }
 
     /**
@@ -326,5 +325,17 @@ class User extends Authenticatable implements ShouldAvatarContract
         }
 
         return parent::__call($method, $parameters);
+    }
+
+    /**
+     * Handle dynamic static method calls into the method.
+     *
+     * @param  string  $method
+     * @param  array  $parameters
+     * @return mixed
+     */
+    public static function __callStatic($method, $parameters)
+    {
+        return parent::__callStatic($method, $parameters);
     }
 }
