@@ -34,7 +34,6 @@ class AdvertisingController extends Controller
     public function advertising(Request $request, AdvertisingSpace $space)
     {
         $space->load(['advertising' => function ($query) {
-
             return $query->orderBy('sort', 'asc');
         }]);
 

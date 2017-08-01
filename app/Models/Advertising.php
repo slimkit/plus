@@ -10,8 +10,7 @@ class Advertising extends Model
 
     protected $fillable = ['space_id', 'type', 'title', 'data', 'sort'];
 
-	protected $casts = [
+    protected $casts = [
         'data' => 'array',
     ];
-
 }
