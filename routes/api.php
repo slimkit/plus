@@ -74,6 +74,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
     // Get Advertising.
     $api->get('/advertisingspace/{space}/advertising', API2\AdvertisingController::class.'@advertising');
+    $api->get('/advertisingspace/advertising', API2\AdvertisingController::class.'@batch');
 
     // Get all tags.
     // @Get /api/v2/tags

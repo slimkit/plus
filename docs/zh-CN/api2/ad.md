@@ -2,6 +2,7 @@
 
 - [获取所有广告位](#查询所有广告位)
 - [获取一个广告位的广告列表](#获取一个广告位的广告列表)
+- [批量获取广告列表](#批量获取广告列表)
 
 ## 查询所有广告位
 
@@ -131,3 +132,53 @@ Status: 200 OK
 | title | string | 广告位标题 |
 | data | array | 广告数据 参见对应广告位数据格式 |
 | sort | int   | 广告顺序 |
+
+
+## 批量获取广告列表
+
+```
+GET /advertisingspace/advertising
+```
+
+
+#### 参数
+
+| 名称 | 类型 | 描述 |
+|:----:|:----:|----|
+| space | 字符串 | 广告位id，多个以逗号隔开 |
+
+#### 响应
+
+```
+Status: 200 OK
+```
+```json
+[
+    {
+        "id": 1,
+        "space_id": 1, // 广告位id
+        "title": "广告1", // 广告标题
+        "type": "image", // 广告类型
+        "data": { // 广告数据
+            "image": "http://plus.bai/api/v2/files/1", // 广告图片地址
+            "link": "http://www.baidu.com" // 广告链接
+        },
+        "sort": 2,
+        "created_at": "2017-07-27 15:09:15",
+        "updated_at": "2017-07-27 15:09:16"
+    },
+    {
+        "id": 2,
+        "space_id": 2,
+        "title": "广告2",
+        "type": "image",
+        "data": {
+            "image": "http://plus.bai/api/v2/files/1",
+            "link": "http://www.baidu.com"
+        },
+        "sort": 3,
+        "created_at": "2017-07-27 15:09:15",
+        "updated_at": "2017-07-27 15:09:16"
+    }
+]
+```
