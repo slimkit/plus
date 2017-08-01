@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\Models;
 
+use Illuminate\Support\Traits\Macroable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -28,6 +29,11 @@ class User extends Authenticatable implements ShouldAvatarContract
     use Relations\UserHasRolePerms {
         SoftDeletes::restore insteadof Relations\UserHasRolePerms;
         Relations\UserHasRolePerms::restore insteadof SoftDeletes;
+    }
+
+    use Macroable {
+        __call as macroCall;
+        __callStatic as MacroCallStatis;
     }
 
     /**
@@ -286,5 +292,22 @@ class User extends Authenticatable implements ShouldAvatarContract
         }
 
         return $this->datas()->sync($attributes, false);
+    }
+
+    /**
+     * Handle dynamic method calls into the model.
+     *
+     * @param string $method
+     * @param array $parameters
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function __call($method, $parameters)
+    {
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
+
+        return parent::__call($method, $parameters);
     }
 }
