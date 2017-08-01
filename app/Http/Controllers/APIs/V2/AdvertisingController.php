@@ -33,13 +33,11 @@ class AdvertisingController extends Controller
      */
     public function advertising(Request $request, AdvertisingSpace $space)
     {
-        $space->load('advertising');
-        $datas = $space->advertising->map(function ($ad) {
-            $ad->data = json_decode($ad->data);
+        $space->load(['advertising' => function ($query) {
 
-            return $ad;
-        });
+            return $query->orderBy('sort', 'asc');
+        }]);
 
-        return response()->json($datas, 200);
+        return response()->json($space->advertising, 200);
     }
 }

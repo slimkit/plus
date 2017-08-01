@@ -19,6 +19,7 @@ class Advertising extends Migration
             $table->string('title')->comment('广告标题');
             $table->string('type')->comment('类型');
             $table->text('data')->nullable()->comment('相关参数');
+            $table->integer('sort')->default(0)->comment('广告位排序');
             $table->timestamps();
 
             $table->index('space_id');

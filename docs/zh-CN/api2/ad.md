@@ -104,6 +104,7 @@ Status: 200 OK
             "image": "http://plus.bai/api/v2/files/1", // 广告图片地址
             "link": "http://www.baidu.com" // 广告链接
         },
+        "sort": 2,
         "created_at": "2017-07-27 15:09:15",
         "updated_at": "2017-07-27 15:09:16"
     },
@@ -116,8 +117,17 @@ Status: 200 OK
             "image": "http://plus.bai/api/v2/files/1",
             "link": "http://www.baidu.com"
         },
+        "sort": 3,
         "created_at": "2017-07-27 15:09:15",
         "updated_at": "2017-07-27 15:09:16"
     }
 ]
 ```
+
+| 名称 | 类型 | 描述 |
+|:----:|:----:|------|
+| id   | int  | 数据id |
+| space_id | int | 所属广告位id |
+| title | string | 广告位标题 |
+| data | array | 广告数据 参见对应广告位数据格式 |
+| sort | int   | 广告顺序 |
