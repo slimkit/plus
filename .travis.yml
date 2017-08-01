@@ -14,6 +14,10 @@ services:
     - postgresql
     - mysql
 
+cache:
+    directories:
+        - $HOME/.composer/cache
+
 before_install:
     - sh -c "if [ '$DB' = 'postgres' ]; then psql -c 'create database plus;' -U postgres; echo "$DB"; fi"
     - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'CREATE DATABASE IF NOT EXISTS plus;'; echo "$DB"; fi"
