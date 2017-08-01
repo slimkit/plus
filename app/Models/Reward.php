@@ -26,7 +26,7 @@ class Reward extends Model
 
     /**
      * Has user for the rewardable.
-     * 
+     *
      * @author bs<414606094@qq.com>
      * @return \Illuminate\Database\Eloquent\Relations\HasOne|null
      */
