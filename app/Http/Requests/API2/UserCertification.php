@@ -30,7 +30,7 @@ class UserCertification extends FormRequest
             'name' => ['bail', 'required', 'string'],
             'phone' => ['bail', 'required', 'string', 'cn_phone'],
             'number' =>['bail', 'required', 'string'],
-            'desc' => ['bail', 'nullable', 'string'],
+            'desc' => ['bail', 'required', 'string'],
             'file' => ['bail', 'required', 'integer', Rule::exists('file_withs', 'id')->where(function ($query) {
                 $query->where('channel', null)
                     ->where('raw', null);
