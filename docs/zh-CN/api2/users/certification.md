@@ -15,13 +15,25 @@ POST /user/certification
 | 名称 | 类型 | 描述 |
 |:----:|:----:|----|
 | type | String | **必须**, 认证类型，必须是 `user` 或者 `org`。 |
-| file | Integer | **必须**, 认证材料文件。 |
+| files | Array|Object | **必须**, 认证材料文件。必须是数组或者对象，value 为 文件ID。 |
 | name | String | **必须**, 如果 `type` 是 `org` 那么就是负责人名字，如果 `type` 是 `user` 则为用户真实姓名。 |
 | phone | String | **必须**, 如果 `type` 是 `org` 则为负责人联系方式，如果 `type` 是 `user` 则为用户联系方式。 |
 | number | String | **必须要**, 如果 `type` 是 `org` 则为营业执照注册号，如果 `type` 是 `user` 则为用户身份证号码。 |
 | desc | String | **必须**，认证描述。 |
 | org_name | String | 如果 `type` 为 `org` 则必须，企业或机构名称。 |
 | org_address | String | 如果 `type` 为 `org` 则必须，企业或机构地址。 |
+
+example:
+```json
+{
+    "type": "user",
+    "name": "Seven",
+    "phone": "xxxxxxxx",
+    "number": "aaaaaa",
+    "desc": "hahahah",
+    "files": [ 14, 15 ]
+}
+```
 
 ##### 响应
 
