@@ -2,7 +2,6 @@
 
 namespace Zhiyi\Plus\Http\Requests\API2;
 
-use Illuminate\Validation\Rule;
 use Zhiyi\Plus\Models\Certification;
 use Illuminate\Foundation\Http\FormRequest;
 

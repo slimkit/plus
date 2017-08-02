@@ -107,7 +107,6 @@ class UserCertificationController extends Controller
         $certification->status = 0;
 
         return $user->getConnection()->transaction(function () use ($user, $files, $certification, $response) {
-
             $files->each(function ($file) use ($user) {
                 $file->channel = 'certification:file';
                 $file->raw = $user->id;
@@ -136,7 +135,7 @@ class UserCertificationController extends Controller
         if ($files->isEmpty()) {
             return $files;
         }
-        
+
         return $fileWithModel->where('channel', null)
             ->where('raw', null)
             ->whereIn('id', $files)
