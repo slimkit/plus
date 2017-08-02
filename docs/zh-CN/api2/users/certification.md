@@ -101,7 +101,7 @@ Status: 200 OK
         "phone": "18781993582",
         "number": "xxxxxxxxxx",
         "desc": "hahaha",
-        "file": 12,
+        "files": [ 12 ],
         "org_name": "之一程序",
         "org_address": null
     },
