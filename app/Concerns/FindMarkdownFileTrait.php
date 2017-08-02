@@ -1,6 +1,6 @@
 <?php
 
-namespace Zhiyi\Plus\Contracts;
+namespace Zhiyi\Plus\Concerns;
 
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Builder;
