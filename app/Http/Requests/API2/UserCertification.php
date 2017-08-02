@@ -31,10 +31,8 @@ class UserCertification extends FormRequest
             'phone' => ['bail', 'required', 'string', 'cn_phone'],
             'number' =>['bail', 'required', 'string'],
             'desc' => ['bail', 'required', 'string'],
-            'file' => ['bail', 'required', 'integer', Rule::exists('file_withs', 'id')->where(function ($query) {
-                $query->where('channel', null)
-                    ->where('raw', null);
-            })],
+            'files' => 'bail|required|array',
+            'files.*' => 'bail|required_with:files|integer|exists:file_withs,id,channel,NULL,raw,NULL',
         ];
 
         if ($this->input('type') === 'org') {
@@ -55,10 +53,8 @@ class UserCertification extends FormRequest
             'phone' => ['bail', 'nullable', 'string', 'cn_phone'],
             'number' =>['bail', 'nullable', 'string'],
             'desc' => ['bail', 'nullable', 'string'],
-            'file' => ['bail', 'nullable', 'integer', Rule::exists('file_withs', 'id')->where(function ($query) {
-                $query->where('channel', null)
-                    ->where('raw', null);
-            })],
+            'files' => 'bail|nullable|array',
+            'files.*' => 'bail|required_with:files|integer|exists:file_withs,id',
         ];
 
         if ($this->input('type') === 'org') {
@@ -80,9 +76,8 @@ class UserCertification extends FormRequest
             'contact.required' => '联系方式未提供',
             'desc.required' => '认证描述未提供',
             'desc.max' => '认证描述长度最大250',
-            'file.required' => '证件照片未提供',
-            'file.exists' => '文件不存在或已被使用',
-            'tips' => '备注最长100',
+            'files.required' => '证件照片未提供',
+            'files.exists' => '文件不存在或已被使用',
         ];
 
         return $this->input('certification') === 'enterprise_certification'

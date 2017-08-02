@@ -3,6 +3,7 @@
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\Certification as CertificationModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
@@ -42,13 +43,10 @@ class UserCertificationController extends Controller
     {
         $user = $request->user();
         $type = $request->input('type');
-        $file = $fileWithModel->find($request->input('file'));
         $data = $request->only(['name', 'phone', 'number', 'desc']);
+        $files = $this->findNotWithFileModels($request, $fileWithModel);
 
-        $data['file'] = $file->id;
-        $file->channel = 'certification:file';
-        $file->raw = $user->id;
-
+        $data['files'] = $files->pluck('id');
         if ($type === 'org') {
             $data = array_merge($data, $request->only(['org_name', 'org_address']));
         }
@@ -57,8 +55,12 @@ class UserCertificationController extends Controller
         $certification->data = $data;
         $certification->status = 0;
 
-        return $certification->getConnection()->transaction(function () use ($user, $file, $certification, $response) {
-            $file->save();
+        return $certification->getConnection()->transaction(function () use ($user, $files, $certification, $response) {
+            $files->each(function ($file) use ($user) {
+                $file->channel = 'certification:file';
+                $file->raw = $user->id;
+                $file->save();
+            });
             $user->certification()->save($certification);
 
             return $response->json(['message' => ['申请成功，等待审核']])->setStatusCode(201);
@@ -80,7 +82,6 @@ class UserCertificationController extends Controller
     {
         $user = $request->user();
         $type = $request->input('type');
-        $file = $request->input('file');
         $certification = $user->certification;
 
         if ($certification->status === 1) {
@@ -92,25 +93,53 @@ class UserCertificationController extends Controller
             $updateData = array_merge($updateData, $request->only(['org_name', 'org_address']));
         }
 
-        if ($file) {
-            $updateData['file'] = $file;
+        $files = $this->findNotWithFileModels($request, $fileWithModel);
+        $fileIds = array_values(
+            array_filter((array) $request->input('files', []))
+        );
+
+        if (! empty($fileIds)) {
+            $updateData['files'] = $fileIds;
         }
 
         $certification->certification_name = $type ?: $certification->certification_name;
         $certification->data = array_merge($certification->data, array_filter($updateData));
         $certification->status = 0;
 
-        return $user->getConnection()->transaction(function () use ($user, $file, $certification, $fileWithModel, $response) {
-            if ($file) {
-                $fileWithModel->where('id', $file)->update([
-                    'channel' => 'certification:file',
-                    'raw' => $user->id,
-                ]);
-            }
+        return $user->getConnection()->transaction(function () use ($user, $files, $certification, $response) {
 
+            $files->each(function ($file) use ($user) {
+                $file->channel = 'certification:file';
+                $file->raw = $user->id;
+                $file->save();
+            });
             $certification->save();
 
             return $response->json(['message' => ['修改成功，等待审核']], 201);
         });
+    }
+
+    /**
+     * File not with file models.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Zhiyi\Plus\Models\FileWith $fileWithModel
+     * @return \Illuminate\Support\Collection
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function findNotWithFileModels(Request $request, FileWithModel $fileWithModel): Collection
+    {
+        $files = new Collection(
+            array_filter((array) $request->input('files', []))
+        );
+
+        if ($files->isEmpty()) {
+            return $files;
+        }
+        
+        return $fileWithModel->where('channel', null)
+            ->where('raw', null)
+            ->whereIn('id', $files)
+            ->get();
     }
 }
