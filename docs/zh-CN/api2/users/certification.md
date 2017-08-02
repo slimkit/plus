@@ -15,7 +15,7 @@ POST /user/certification
 | 名称 | 类型 | 描述 |
 |:----:|:----:|----|
 | type | String | **必须**, 认证类型，必须是 `user` 或者 `org`。 |
-| files | Array|Object | **必须**, 认证材料文件。必须是数组或者对象，value 为 文件ID。 |
+| files | Array\|Object | **必须**, 认证材料文件。必须是数组或者对象，value 为 文件ID。 |
 | name | String | **必须**, 如果 `type` 是 `org` 那么就是负责人名字，如果 `type` 是 `user` 则为用户真实姓名。 |
 | phone | String | **必须**, 如果 `type` 是 `org` 则为负责人联系方式，如果 `type` 是 `user` 则为用户联系方式。 |
 | number | String | **必须**, 如果 `type` 是 `org` 则为营业执照注册号，如果 `type` 是 `user` 则为用户身份证号码。 |
@@ -59,7 +59,7 @@ PATCH /user/certification
 | Name | Type | Description |
 |:----:|:----:|----|
 | type | String | 认证类型，必须是 `user` 或者 `org`。 |
-| files | Array|Object | 认证材料文件。必须是数组或者对象，value 为 文件ID。 |
+| files | Array\|Object | 认证材料文件。必须是数组或者对象，value 为 文件ID。 |
 | name | String | 如果 `type` 是 `org` 那么就是负责人名字，如果 `type` 是 `user` 则为用户真实姓名。 |
 | phone | String | 如果 `type` 是 `org` 则为负责人联系方式，如果 `type` 是 `user` 则为用户联系方式。 |
 | number | String | 如果 `type` 是 `org` 则为营业执照注册号，如果 `type` 是 `user` 则为用户身份证号码。 |
