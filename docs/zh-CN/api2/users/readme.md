@@ -74,8 +74,8 @@ Status: 200 OK
 | extra.followings_count | 这个用户关注了多少人总数统计。 |
 | extra.updated_at | 用户次要资料更新时间。 |
 | verified | 用户的认证信息，未认证用户该值为 `null`。 |
-| verified.type | 用户认证类型。 |
-| verified.icon | 用户认证类型的 Icon。 |
+| verified.type | 用户认证类型。字符串，`user`、`org` |
+| verified.icon | 用户认证类型的 Icon。图片地址。 |
 
 ### 获取一个用户头像
 
