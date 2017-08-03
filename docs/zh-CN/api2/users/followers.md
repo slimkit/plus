@@ -35,22 +35,27 @@ Status: 200 OK
 [
     {
         "id": 1,
-        "name": "创始人",
+        "name": "Seven",
+        "bio": "Seven 的个人传记",
+        "sex": 2,
+        "location": "成都 中国",
         "created_at": "2017-06-02 08:43:54",
-        "updated_at": "2017-07-06 07:04:06",
-        "deleted_at": null,
+        "updated_at": "2017-07-25 03:59:39",
         "following": false,
         "follower": false,
         "avatar": "http://plus.io/api/v2/users/1/avatar",
+        "bg": "http://plus.io/storage/user-bg/000/000/000/01.png",
+        "verified": null,
         "extra": {
             "user_id": 1,
             "likes_count": 0,
-            "comments_count": 0,
+            "comments_count": 8,
             "followers_count": 0,
-            "followings_count": 0,
-            "created_at": "2017-07-16 08:45:51",
-            "updated_at": "2017-07-16 08:46:54",
-            "deleted_at": null
+            "followings_count": 1,
+            "updated_at": "2017-08-01 06:06:37",
+            "feeds_count": 0,
+            "questions_count": 5,
+            "answers_count": 3
         }
     }
 ]
@@ -86,22 +91,27 @@ Status: 200 OK
 [
     {
         "id": 1,
-        "name": "创始人",
+        "name": "Seven",
+        "bio": "Seven 的个人传记",
+        "sex": 2,
+        "location": "成都 中国",
         "created_at": "2017-06-02 08:43:54",
-        "updated_at": "2017-07-06 07:04:06",
-        "deleted_at": null,
+        "updated_at": "2017-07-25 03:59:39",
         "following": false,
         "follower": false,
         "avatar": "http://plus.io/api/v2/users/1/avatar",
+        "bg": "http://plus.io/storage/user-bg/000/000/000/01.png",
+        "verified": null,
         "extra": {
             "user_id": 1,
             "likes_count": 0,
-            "comments_count": 0,
+            "comments_count": 8,
             "followers_count": 0,
-            "followings_count": 0,
-            "created_at": "2017-07-16 08:45:51",
-            "updated_at": "2017-07-16 08:46:54",
-            "deleted_at": null
+            "followings_count": 1,
+            "updated_at": "2017-08-01 06:06:37",
+            "feeds_count": 0,
+            "questions_count": 5,
+            "answers_count": 3
         }
     }
 ]
