@@ -299,6 +299,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                 // @DELETE /api/v2/user/tags/:tag
                 $api->delete('/{tag}', API2\TagUserController::class.'@destroy');
             });
+
+            // 打赏用户
+            $api->post('/{target}/rewards', API2\UserRewardController::class.'@store');
         });
 
         /*

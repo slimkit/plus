@@ -33,3 +33,4 @@
         - [文件](api2/files.md)
         - [付费](api2/purchase.md)
         - [广告位](api2/ad.md)
+        - [打赏](api2/reward.md)
