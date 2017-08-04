@@ -2,10 +2,8 @@
 
 namespace Zhiyi\Plus\Models\Relations;
 
-use DB;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\Reward;
-use Illuminate\Support\Facades\Cache;
 
 trait UserHasReward
 {
