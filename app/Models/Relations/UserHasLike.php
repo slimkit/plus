@@ -25,6 +25,6 @@ trait UserHasLike
      */
     public function belikeds()
     {
-        return $this->hasMany(Like::class. 'target_user', 'id');
+        return $this->hasMany(Like::class.'target_user', 'id');
     }
 }
