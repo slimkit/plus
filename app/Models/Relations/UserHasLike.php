@@ -9,11 +9,11 @@ trait UserHasLike
     /**
      * Has likes for user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function likes()
     {
-        return $this->morphMany(Like::class, 'likeable');
+        return $this->hasMany(Like::class, 'user_id', 'id');
     }
 }
