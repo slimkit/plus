@@ -13,7 +13,7 @@ trait UserHasReward
      * @author bs<414606094@qq.com>
      * @return \Illuminate\Database\Eloquent\Relations\morphMany
      */
-    public function rewards()
+    public function beRewardeds()
     {
         return $this->morphMany(Reward::class, 'rewardable');
     }
@@ -33,7 +33,7 @@ trait UserHasReward
         }
 
         return $this->getConnection()->transaction(function () use ($user, $amount) {
-            return $this->rewards()->create([
+            return $this->beRewardeds()->create([
                 'user_id' => $user,
                 'target_user' => $this->id,
                 'amount' => $amount,
