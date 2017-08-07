@@ -19,8 +19,8 @@
         "overtrue/easy-sms": "^0.0.9",
         "pingplusplus/pingpp-php": "^2.2",
         "predis/predis": "^1.1",
-        "tymon/jwt-auth": "^0.5.12",
-        "zhiyicx/plus-installer": "^1.0"
+        "slimkit/plus-installer": "^1.0",
+        "tymon/jwt-auth": "^0.5.12"
     },
     "require-dev": {
         "codacy/coverage": "^1.0",
