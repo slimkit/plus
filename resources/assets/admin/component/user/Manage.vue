@@ -296,7 +296,7 @@ const ManageComponent = {
       ).then(response => {
         const { page: data, roles } = response.data;
 
-        this.users = data.data || [];
+        this.users = data || [];
         this.lastPage = parseInt(data.last_page);
         this.total = parseInt(data.total);
         this.loadding = false;
