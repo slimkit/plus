@@ -54,6 +54,11 @@ Route::middleware('auth:web')
         Route::get('/driver/{dirver}', 'SmsController@showOption');
         Route::patch('/driver/alidayu', 'SmsController@updateAlidayuOption');
     });
+    
+    /* -----------  Mail  ------------ */
+    Route::get('/site/mail', 'SiteController@mail');
+    Route::post('/site/sendmail', 'SiteController@sendMail');
+    Route::patch('/site/mail', 'SiteController@updateMailInfo');    
 
     /* ------------------------------ */
     Route::get('/site/baseinfo', 'SiteController@get');
@@ -64,7 +69,9 @@ Route::middleware('auth:web')
 
     // area
     Route::get('/site/areas', 'SiteController@areas');
+    Route::get('/site/areas/hots', 'SiteController@hots');
     Route::post('/site/areas', 'SiteController@doAddArea');
+    Route::post('/site/areas/hots', 'SiteController@doHots');
     Route::delete('/site/areas/{id}', 'SiteController@deleteArea');
     Route::patch('/site/areas/{area}', 'SiteController@patchArea');
 
