@@ -7,6 +7,9 @@
 import Setting from '../component/Setting';
 import Base from '../component/setting/Base';
 import Area from '../component/setting/Area';
+import Hots from '../component/setting/Hots';
+import Mail from '../component/setting/Mail';
+import SendMail from '../component/setting/SendMail';
 
 const settingRouter = {
   path: 'setting',
@@ -19,7 +22,19 @@ const settingRouter = {
     {
       path: 'area',
       component: Area
-    }
+    },
+    {
+      path: 'hots',
+      component: Hots
+    },
+    {
+      path: 'mail',
+      component: Mail
+    },
+    {
+      path: 'sendmail',
+      component: SendMail
+    }        
   ]
 };
 

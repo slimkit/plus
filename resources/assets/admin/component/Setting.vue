@@ -17,6 +17,9 @@
       <router-link to="/setting/area" tag="li" active-class="active">
         <a href="#">地区库</a>
       </router-link>
+      <router-link to="/setting/mail" tag="li" active-class="active">
+        <a href="#">邮件</a>
+      </router-link>      
       </router-link>
     </ul>
     <!-- End settings nav. -->
