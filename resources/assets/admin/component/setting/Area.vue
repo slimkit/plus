@@ -17,17 +17,29 @@
   color: #3097D1;
   cursor: pointer;
 }
+.areaTab{
+  margin-bottom: 10px;
+}
 </style>
 
 <template>
+
   <div class="container-fluid" :class="$style.container">
+  <ul class="nav nav-tabs" :class="$style.areaTab">
+    <router-link to="/setting/area" tag="li" active-class="active" exact>
+      <a href="#">地区管理</a>
+    </router-link> 
+    <router-link to="/setting/hots" tag="li" active-class="active">
+      <a href="#">热门城市</a>
+    </router-link> 
+  </ul>
+
     <!-- 加载动画 -->
     <div v-show="loadding" :class="$style.loadding">
       <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-    </div>
-
+    </div>    
     <!-- 整体盒子 -->
-    <div v-show="!loadding">
+    <div v-show="!loadding" class="">
 
       <!-- 路径导航 -->
       <ol v-if="tree" class="breadcrumb">
