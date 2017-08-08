@@ -16,15 +16,7 @@ use Illuminate\Support\Facades\Route;
 use Zhiyi\Plus\Http\Controllers\APIs\V2 as API2;
 use Illuminate\Contracts\Routing\Registrar as RouteContract;
 
-Route::any('/example', function (Request $request) {
-    $user = $request->user();
-    dd($user->hasFollwing(3));
-})
-->middleware('auth:api');
-
-Route::any('/develop', function () {
-    return view('developing');
-});
+Route::any('/develop', \Zhiyi\Plus\Http\Controllers\DevelopController::class.'@index');
 
 // API version 1.
 Route::prefix('v1')
