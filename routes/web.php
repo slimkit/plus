@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return 'ThinkSNS+';
-});
+Route::get('/', 'HomeController@welcome');
 
 Route::prefix('admin')
     ->namespace('Admin')
