@@ -54,11 +54,11 @@ Route::middleware('auth:web')
         Route::get('/driver/{dirver}', 'SmsController@showOption');
         Route::patch('/driver/alidayu', 'SmsController@updateAlidayuOption');
     });
-    
+
     /* -----------  Mail  ------------ */
     Route::get('/site/mail', 'SiteController@mail');
     Route::post('/site/sendmail', 'SiteController@sendMail');
-    Route::patch('/site/mail', 'SiteController@updateMailInfo');    
+    Route::patch('/site/mail', 'SiteController@updateMailInfo');
 
     /* ------------------------------ */
     Route::get('/site/baseinfo', 'SiteController@get');
