@@ -96,21 +96,21 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function registerMorpMap()
     {
-        $this->morphMap([
+        $this->setMorphMap([
             'users' => \Zhiyi\Plus\Models\User::class,
         ]);
     }
 
     /**
-     * Set or get the morph map for polymorphic relations.
+     * Set the morph map for polymorphic relations.
      *
      * @param array|null $map
      * @param bool|bool $merge
      * @return array
      * @author Seven Du <shiweidu@outlook.com>
      */
-    private function morphMap(array $map = null, bool $merge = true)
+    private function setMorphMap(array $map = null, bool $merge = true)
     {
-        return Relation::morphMap($map, $merge);
+        Relation::morphMap($map, $merge);
     }
 }
