@@ -6,13 +6,13 @@ use Carbon\Carbon;
 use Zhiyi\Plus\Models\Area;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\CommonConfig;
+use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\Support\Configuration;
 use Illuminate\Contracts\Config\Repository;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Contracts\Mail\Mailer;
 
 class SiteController extends Controller
 {
@@ -247,7 +247,7 @@ class SiteController extends Controller
 
     /**
      * 获取热门地区数据.
-     * 
+     *
      * @return mixed
      */
     public function hots(ResponseFactory $response)
@@ -256,7 +256,7 @@ class SiteController extends Controller
             ->byName('hots_area')
             ->value('value');
 
-        $toHot = $hots ? json_decode($hots): [];
+        $toHot = $hots ? json_decode($hots) : [];
 
         return $response->json([
             'data' => $toHot,
@@ -265,37 +265,37 @@ class SiteController extends Controller
 
     /**
      * 添加、更新 热门地区.
-     * 
+     *
      * @return mixed
      */
     public function doHots(Request $request, ResponseFactory $response)
     {
         $update = $request->input('update');
         $areaStr = $request->input('content');
-        $areaArr = explode(' ', $areaStr);
         $hots = CommonConfig::byNamespace('common')
             ->byName('hots_area')
             ->value('value');
-        $toHot = $hots ? json_decode($hots): [];
-        $toArr = (array) $areaStr;
+        $toHot = $hots ? json_decode($hots) : [];
         if ($update) {
             $index = array_search($areaStr, $toHot);
             unset($toHot[$index]);
             $data = json_encode($toHot);
             $status = 2;
         } else {
+            $areaArr = explode(' ', $areaStr);
             if (count($areaArr) < 2) {
                 return $response->json(['message' => ['地区不能小于两级']], 422);
             }
-            if (!in_array($areaStr, $toHot)) {
+            if (! in_array($areaStr, $toHot)) {
+                $toArr = (array) $areaStr;
                 $data = json_encode(array_merge($toHot, $toArr));
                 $status = 1;
             } else {
                 $data = json_encode($toHot);
                 $status = 0;
-            }           
+            }
         }
-        
+
         CommonConfig::updateOrCreate(
             ['namespace' => 'common', 'name' => 'hots_area'],
             ['value' => $data]
@@ -303,13 +303,13 @@ class SiteController extends Controller
 
         return $response->json([
             'message' => '添加成功',
-            'status' => $status
-        ])->setStatusCode(201);        
+            'status' => $status,
+        ])->setStatusCode(201);
     }
 
     /**
      * 获取邮件配置信息.
-     * 
+     *
      * @return mixed
      */
     public function mail(Request $request, Repository $config, ResponseFactory $response)
@@ -335,13 +335,13 @@ class SiteController extends Controller
             'from' => $from,
             'encryption' => $encryption,
             'username' => $username,
-            'password' => $password
+            'password' => $password,
         ])->setStatusCode(200);
     }
 
     /**
      * 更新邮件配置信息.
-     * 
+     *
      * @return mixed
      */
     public function updateMailInfo(Request $request, Configuration $config, ResponseFactory $response)
@@ -365,7 +365,7 @@ class SiteController extends Controller
 
     /**
      * 测试发送邮件.
-     * 
+     *
      * @return mixed
      */
     public function sendMail(Request $request, Mailer $mailer, ResponseFactory $response)
@@ -373,13 +373,13 @@ class SiteController extends Controller
         $title = '测试邮件';
         $email = $request->input('email');
         $content = $request->input('content');
-        $mailer->raw($title, function($message) use ($email, $content) {
+        $mailer->raw($title, function ($message) use ($email, $content) {
             $message->subject($content);
             $message->to($email);
         });
 
         return $response->json([
-            'message' => '发送成功'
-        ])->setStatusCode(201);        
+            'message' => '发送成功',
+        ])->setStatusCode(201);
     }
 }
