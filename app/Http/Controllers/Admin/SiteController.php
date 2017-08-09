@@ -277,34 +277,29 @@ class SiteController extends Controller
         $hots = CommonConfig::byNamespace('common')
             ->byName('hots_area')
             ->value('value');
-        $toHot = $hots ? json_decode($hots) : [];
+        $data = $hots ? json_decode($hots) : [];
         if (count($areaArr) < 2) {
             return $response->json(['message' => ['地区不能小于两级']], 422);
         }
         if ($update) {
-            $index = array_search($areaStr, $toHot);
-            unset($toHot[$index]);
-            $data = json_encode($toHot);
-            $status = 2;
+            $index = array_search($areaStr, $data);
+            unset($data[$index]);
         }
-        if (! in_array($areaStr, $toHot)) {
+        if (! in_array($areaStr, $data)) {
             $toArr = (array) $areaStr;
-            $data = json_encode(array_merge($toHot, $toArr));
-            $status = 1;
-        }
-        if (in_array($areaStr, $toHot)) {
-            $data = json_encode($toHot);
-            $status = 0;
+            $data = array_merge($data, $toArr);
+        } else {
+            return $response->json(['message' => ['地区已存在']], 422);
         }
 
         $this->commonCinfigModel->updateOrCreate(
             ['namespace' => 'common', 'name' => 'hots_area'],
-            ['value' => $data]
+            ['value' => json_decode($data)]
         );
 
         return $response->json([
             'message' => '操作成功',
-            'status' => $status,
+            'status' => $update ? 2 : 1,
         ])->setStatusCode(201);
     }
 

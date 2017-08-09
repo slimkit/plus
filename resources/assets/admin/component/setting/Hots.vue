@@ -115,14 +115,10 @@ const HotsComponent = {
 	      ).then(({ data: { message = '提交成功', status = '' } }) => {
 	        this.add.loadding = false;
 	        this.add.type = 'success';
-	        if (status == 0) {
-	        		this.list.push(this.add.content);
-	        		this.add.message = '已存在';
-	        }
 					if (status == 1) {
 	        		this.list.push(this.add.content);
 	        		this.add.message = message;
-	        }	        
+	        }
 	        if (status == 2) {
 	        		const index = this.list.indexOf(this.add.content);
 							if (index > -1) {
