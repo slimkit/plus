@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use function Zhiyi\Plus\validateUsername;
 use function Zhiyi\Plus\validateChinaPhoneNumber;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -95,20 +96,21 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function registerMorpMap()
     {
-        $this->morphMap([
+        $this->setMorphMap([
             'users' => \Zhiyi\Plus\Models\User::class,
         ]);
     }
 
     /**
-     * Set or get the morph map for polymorphic relations.
+     * Set the morph map for polymorphic relations.
      *
-     * @param array $map
-     * @return void
+     * @param array|null $map
+     * @param bool|bool $merge
+     * @return array
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function morphMap(array $map)
+    private function setMorphMap(array $map = null, bool $merge = true)
     {
-        \Illuminate\Database\Eloquent\Relations\Relation::morphMap($map);
+        Relation::morphMap($map, $merge);
     }
 }

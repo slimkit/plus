@@ -69,7 +69,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $this->abortIfAuthenticated($user = $this->guard()->user(), $request);
+        $this->abortIfAuthenticated($user = $this->guard()->user());
 
         $data = [
             'csrf_token' => csrf_token(),
@@ -99,11 +99,10 @@ class HomeController extends Controller
      *  如果用户存在，判断权限.
      *
      * @param null|\Zhiyi\Plus\Models\User $user
-     * @param \Illuminate\Http\Request $request
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function abortIfAuthenticated($user, Request $request)
+    protected function abortIfAuthenticated($user)
     {
         if ($user && ! $user->can('admin:login')) {
             abort(401, '你没有权限访问该页面');
