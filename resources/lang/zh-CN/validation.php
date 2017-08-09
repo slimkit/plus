@@ -72,10 +72,10 @@ return [
     'required_if'          => 'The :attribute field is required when :other is :value.',
     'required_unless'      => 'The :attribute field is required unless :other is in :values.',
     'required_unless'      => ':attribute必须存在，除非:other值是:values',
-    'required_with'        => 'The :attribute field is required when :values is present.',
-    'required_with_all'    => 'The :attribute field is required when :values is present.',
+    'required_with'        => '当:values存在的时候:attribute必须存在',
+    'required_with_all'    => '当:values存在的时候:attribute必须存在',
     'required_without'     => '当:values不存在的时候:attribute必须存在',
-    'required_without_all' => 'The :attribute field is required when none of :values are present.',
+    'required_without_all' => '当:values不存在的时候:attribute必须存在',
     'same'                 => 'The :attribute and :other must match.',
     'size'                 => [
         'numeric' => 'The :attribute must be :size.',
