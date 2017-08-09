@@ -14,7 +14,7 @@
   animation-iteration-count: infinite;
 }
 .areaTab{
-	margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 </style>
 
@@ -24,16 +24,16 @@
   <ul class="nav nav-tabs" :class="$style.areaTab">
     <router-link to="/setting/area" tag="li" active-class="active">
       <a href="#">地区管理</a>
-    </router-link> 
+    </router-link>
     <router-link to="/setting/hots" tag="li" active-class="active" exact>
       <a href="#">热门城市</a>
-    </router-link> 
+    </router-link>
   </ul>
 
     <!-- 加载动画 -->
     <div v-show="loadding" :class="$style.loadding">
       <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-    </div>    
+    </div>
     <!-- 整体盒子 -->
     <div v-if="!message" v-show="!loadding">
 
@@ -76,11 +76,11 @@
         </tbody>
       </table>
     </div>
-	  <!-- Loading Error -->
+    <!-- Loading Error -->
       <div v-else class="panel-body">
         <div class="alert alert-danger" role="alert">{{ message }}</div>
         <button type="button" class="btn btn-primary" @click.stop.prevent="request">刷新</button>
-      </div>    
+      </div>
   </div>
 </template>
 
@@ -105,61 +105,59 @@ const HotsComponent = {
     doHotsArea () {
       this.add.loadding = true;
       const data = {
-  			content: this.add.content,
-  			update: this.add.update
+        content: this.add.content,
+        update: this.add.update
       };
-	    request.post(
-	        createRequestURI('site/areas/hots'),
-	        data,
-	        { validateStatus: status => status === 201 }
-	      ).then(({ data: { message = '提交成功', status = '' } }) => {
-	        this.add.loadding = false;
-	        this.add.type = 'success';
-	        if (status == 0) {
-	        		this.list.push(this.add.content);
-	        		this.add.message = '已存在';
-	        }
-					if (status == 1) {
-	        		this.list.push(this.add.content);
-	        		this.add.message = message;
-	        }	        
-	        if (status == 2) {
-	        		const index = this.list.indexOf(this.add.content);
-							if (index > -1) {
-								this.list.splice(index, 1);
-							}
-							this.add.message = '删除成功';
-	        }
-	      }).catch(({ response: { data: { message: [ message = '提交失败' ] = [] } = {} } = {} }) => {
-	      	this.add.loadding = false;
-	      	this.add.type = 'danger';
-	        this.add.message = message;
+      request.post(
+          createRequestURI('site/areas/hots'),
+          data,
+          { validateStatus: status => status === 201 }
+        ).then(({ data: { message = '提交成功', status = '' } }) => {
+          const index = this.list.indexOf(this.add.content);
+          this.add.loadding = false;
+          this.add.type = 'success';
+          if (status == 1 && (index < 0)) {
+            this.list.push(this.add.content);
+            this.add.message = message;
+          } else {
+            this.add.message = '已存在此地区';
+          }
+          if (status == 2) {
+            if (index > -1) {
+              this.list.splice(index, 1);
+            }
+            this.add.message = '删除成功';
+          }
+        }).catch(({ response: { data: { error: [ error = '提交失败' ] = [] } = {} } = {} }) => {
+          this.add.loadding = false;
+          this.add.type = 'danger';
+          this.add.message = error;
       });
     },
     deleteArea (area) {
       if (window.confirm('确认删除?')) {
-      	this.add.content = area;
-      	this.add.update = 1;
-      	this.doHotsArea();
+        this.add.content = area;
+        this.add.update = 1;
+        this.doHotsArea();
       }
     },
-		request() {
-		  this.loadding = true;
-		  request.get(
-		    createRequestURI('site/areas/hots'),
-		    { validateStatus: status => status === 200 }
-		  ).then(({ data: { data = {} } }) => {
-		    this.loadding = false;
-		    this.list = data;
-		  }).catch(({ response: { data: { message: [ message = '加载失败' ] = [] } = {} } = {} }) => {
-		  	this.loadding = false;
-		    this.message = message;
-		  });
-		}
+    request() {
+      this.loadding = true;
+      request.get(
+        createRequestURI('site/areas/hots'),
+        { validateStatus: status => status === 200 }
+      ).then(({ data: { data = {} } }) => {
+        this.loadding = false;
+        this.list = data;
+      }).catch(({ response: { data: { message: [ message = '加载失败' ] = [] } = {} } = {} }) => {
+        this.loadding = false;
+        this.message = message;
+      });
+    }
   },
-	created() {
+  created() {
     window.setTimeout(() => this.request(), 500);
-  }  
+  }
 };
 
 export default HotsComponent;

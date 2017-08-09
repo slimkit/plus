@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Zhiyi\Plus\Models\Area;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\CommonConfig;
+use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\Support\Configuration;
 use Illuminate\Contracts\Config\Repository;
@@ -30,9 +31,10 @@ class SiteController extends Controller
      * @param \Illuminate\Contracts\Foundation\Application $app
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function __construct(Application $app)
+    public function __construct(Application $app, CommonConfig $config)
     {
         $this->app = $app;
+        $this->commonCinfigModel = $config;
     }
 
     /**
@@ -241,6 +243,143 @@ class SiteController extends Controller
 
         return response()->json([
             'message' => [$key => '更新成功'],
+        ])->setStatusCode(201);
+    }
+
+    /**
+     * 获取热门地区数据.
+     *
+     * @return mixed
+     */
+    public function hots(ResponseFactory $response)
+    {
+        $hots = CommonConfig::byNamespace('common')
+            ->byName('hots_area')
+            ->value('value');
+
+        $toHot = $hots ? json_decode($hots) : [];
+
+        return $response->json([
+            'data' => $toHot,
+        ])->setStatusCode(200);
+    }
+
+    /**
+     * 添加、更新 热门地区.
+     *
+     * @return mixed
+     */
+    public function doHots(Request $request, ResponseFactory $response)
+    {
+        $update = $request->input('update');
+        $areaStr = $request->input('content');
+
+        if (count(explode(' ', $areaStr)) < 2) {
+            return $response->json(['error' => ['地区不能小于两级']], 422);
+        }
+
+        $hots = collect(
+            json_decode($this->commonCinfigModel->byNamespace('common')
+                ->byName('hots_area')
+                ->value('value'), true) ?: []
+        );
+
+        $map = $hots->when(! in_array($areaStr, $hots->all()) && ! $update, function ($map) use ($areaStr) {
+            $map->push($areaStr);
+
+            return $map;
+        })->map(function (string $str) use ($areaStr, $update) {
+            if ($update && $str === $areaStr) {
+                return null;
+            }
+
+            return $str;
+        })->all();
+
+        $this->commonCinfigModel->updateOrCreate(
+            ['namespace' => 'common', 'name' => 'hots_area'],
+            ['value' => json_encode(array_filter($map))]
+        );
+
+        return $response->json([
+            'message' => '操作成功',
+            'status' => $update ? 2 : 1,
+        ])->setStatusCode(201);
+    }
+
+    /**
+     * 获取邮件配置信息.
+     *
+     * @return mixed
+     */
+    public function mail(Request $request, Repository $config, ResponseFactory $response)
+    {
+        if (! $request->user()->can('admin:mail:show')) {
+            return response()->json([
+                'message' => '没有权限查看该项信息',
+            ])->setStatusCode(403);
+        }
+
+        $driver = $config->get('mail.driver', 'smtp');
+        $host = $config->get('mail.host');
+        $port = $config->get('mail.port');
+        $from = $config->get('mail.from');
+        $encryption = $config->get('mail.encryption');
+        $username = $config->get('mail.username');
+        $password = $config->get('mail.password');
+
+        return $response->json([
+            'driver' => $driver,
+            'host' => $host,
+            'port' => $port,
+            'from' => $from,
+            'encryption' => $encryption,
+            'username' => $username,
+            'password' => $password,
+        ])->setStatusCode(200);
+    }
+
+    /**
+     * 更新邮件配置信息.
+     *
+     * @return mixed
+     */
+    public function updateMailInfo(Request $request, Configuration $config, ResponseFactory $response)
+    {
+        if (! $request->user()->can('admin:mail:show')) {
+            return response()->json([
+                'message' => '没有权限更新该信息',
+            ])->setStatusCode(403);
+        }
+
+        $site = [];
+        foreach ($request->all() as $key => $value) {
+            $site['mail.'.$key] = $value;
+        }
+        $config->set($site);
+
+        return $response->json([
+            'message' => '更新成功',
+        ])->setStatusCode(201);
+    }
+
+    /**
+     * 测试发送邮件.
+     *
+     * @return mixed
+     */
+    public function sendMail(Request $request, Mailer $mailer, ResponseFactory $response)
+    {
+        $title = '测试邮件';
+        $email = $request->input('email');
+        $content = $request->input('content');
+        $mailer->raw($title, function ($message) use ($email, $content) {
+            $message->subject($content);
+            $message->to($email);
+        });
+
+        return $response->json([
+            'message' => '发送成功',
         ])->setStatusCode(201);
     }
 }
