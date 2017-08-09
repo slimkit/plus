@@ -203,6 +203,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             // @get recommended users
             $api->get('/recommends', API2\FindUserController::class.'@recommends');
 
+            // @get search name
+            $api->get('/search', API2\FindUserController::class.'@search');
+
             /*
             | 用户收到的评论
             */

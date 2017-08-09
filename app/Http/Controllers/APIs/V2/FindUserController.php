@@ -99,4 +99,36 @@ class FindUserController extends Controller
 		)
 		->setStatusCode(200);
 	}
+
+	/**
+	 * search users by name
+	 */
+	public function search(Request $request, UserModel $user, ResponseContract $response)
+	{
+		$u = $request->user();
+		$limit = $request->input('limit', 20);
+		$offset = $request->input('offset', 0);
+		$keyword = $request->input('keyword', null);
+
+		if(!$keyword) {
+			abort(422, '请输入关键字');
+		}
+
+		$users = $user->where('name', 'like', "%{$keyword}%")
+			->when($offset, function ($query) use ($offset) {
+				return $query->offset($offset);
+			})
+			->limit($limit)
+			->orderBy('id', 'desc')
+			->get();
+		return $response->json(
+			$users->map(function($user) use ($u) {
+				$user->following = $u->hasFollwing($user->id);
+				$user->follower = $u->hasFollower($user->id);
+
+				return $user;
+			})
+		)
+		->setStatusCode(200);
+	}
 }
