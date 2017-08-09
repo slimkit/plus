@@ -66,7 +66,7 @@ class CurrentUserController extends Controller
         }
 
         foreach ($request->only(['name', 'bio', 'sex', 'location']) as $key => $value) {
-            if ($value) {
+            if (isset($value)) {
                 $user->$key = $value;
             }
         }
