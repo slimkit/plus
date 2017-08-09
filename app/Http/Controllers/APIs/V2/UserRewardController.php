@@ -47,7 +47,7 @@ class UserRewardController extends Controller
             // 扣费记录
             $userCharge = clone $chargeModel;
             $userCharge->channel = 'user';
-            $userCharge->account = $user->id;
+            $userCharge->account = $target->id;
             $userCharge->subject = '用户打赏';
             $userCharge->action = 0;
             $userCharge->amount = $amount;
@@ -66,7 +66,7 @@ class UserRewardController extends Controller
             // 增加金额记录
             $chargeModel->user_id = $target->id;
             $chargeModel->channel = 'user';
-            $chargeModel->account = $target->id;
+            $chargeModel->account = $user->id;
             $chargeModel->subject = sprintf('被%s打赏', $user->name);
             $chargeModel->action = 1;
             $chargeModel->amount = $amount;
