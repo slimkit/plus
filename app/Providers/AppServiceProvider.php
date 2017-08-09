@@ -105,7 +105,7 @@ class AppServiceProvider extends ServiceProvider
      * Set or get the morph map for polymorphic relations.
      *
      * @param array|null $map
-     * @param bool|boolean $merge
+     * @param bool|bool $merge
      * @return array
      * @author Seven Du <shiweidu@outlook.com>
      */
