@@ -101,7 +101,7 @@ class FindUserController extends Controller
     }
 
     /**
-     * search users by name
+     * search users by name.
      */
     public function search(Request $request, UserModel $user, ResponseContract $response)
     {
@@ -110,7 +110,7 @@ class FindUserController extends Controller
         $offset = $request->input('offset', 0);
         $keyword = $request->input('keyword', null);
 
-        if(!$keyword) {
+        if (! $keyword) {
             abort(422, '请输入关键字');
         }
 
@@ -123,7 +123,7 @@ class FindUserController extends Controller
             ->get();
 
         return $response->json(
-            $users->map(function($user) use ($u) {
+            $users->map(function ($user) use ($u) {
                 $user->following = $u->hasFollwing($user->id);
                 $user->follower = $u->hasFollower($user->id);
 
