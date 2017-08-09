@@ -3,6 +3,8 @@
 namespace Zhiyi\Plus\Providers;
 
 use Illuminate\Support\Facades\Event;
+use Zhiyi\Plus\Support\BootstrapAPIsEventer;
+use Illuminate\Contracts\Events\Dispatcher as EventsDispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -19,12 +21,21 @@ class EventServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Register any events for your application.
+     * Register the provider service.
      *
      * @return void
+     * @author Seven Du <shiweidu@outlook.com>
      */
-    public function boot()
+    public function register()
     {
-        parent::boot();
+        // Run parent register method.
+        parent::register();
+
+        // Register BootstrapAPIsEventer event singleton.
+        $this->app->singleton(BootstrapAPIsEventer::class, function ($app) {
+            return new BootstrapAPIsEventer(
+                $app->make(EventsDispatcherContract::class)
+            );
+        });
     }
 }
