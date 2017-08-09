@@ -191,6 +191,19 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             $api->put('/', API2\CurrentUserController::class.'@updatePhoneOrMail');
 
             /*
+            | 找人
+            */
+
+            // @get popular users
+            $api->get('/populars', API2\FindUserController::class.'@populars');
+
+            // @get latest users
+            $api->get('/latests', API2\FindUserController::class.'@latests');
+
+            // @get recommended users
+            $api->get('/recommends', API2\FindUserController::class.'@recommends');
+
+            /*
             | 用户收到的评论
             */
 

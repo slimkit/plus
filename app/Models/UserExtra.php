@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\Models;
 
+use Zhiyi\Plus\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class UserExtra extends Model
@@ -28,4 +29,8 @@ class UserExtra extends Model
     protected $hidden = [
         'created_at', 'deleted_at',
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }
