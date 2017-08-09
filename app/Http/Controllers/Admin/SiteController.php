@@ -31,9 +31,10 @@ class SiteController extends Controller
      * @param \Illuminate\Contracts\Foundation\Application $app
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function __construct(Application $app)
+    public function __construct(Application $app, CommonConfig $config)
     {
         $this->app = $app;
+        $this->commonCinfigModel = $config;
     }
 
     /**
@@ -272,37 +273,37 @@ class SiteController extends Controller
     {
         $update = $request->input('update');
         $areaStr = $request->input('content');
+        $areaArr = explode(' ', $areaStr);
         $hots = CommonConfig::byNamespace('common')
             ->byName('hots_area')
             ->value('value');
         $toHot = $hots ? json_decode($hots) : [];
+        if (count($areaArr) < 2) {
+            return $response->json(['message' => ['地区不能小于两级']], 422);
+        }
         if ($update) {
             $index = array_search($areaStr, $toHot);
             unset($toHot[$index]);
             $data = json_encode($toHot);
             $status = 2;
-        } else {
-            $areaArr = explode(' ', $areaStr);
-            if (count($areaArr) < 2) {
-                return $response->json(['message' => ['地区不能小于两级']], 422);
-            }
-            if (! in_array($areaStr, $toHot)) {
-                $toArr = (array) $areaStr;
-                $data = json_encode(array_merge($toHot, $toArr));
-                $status = 1;
-            } else {
-                $data = json_encode($toHot);
-                $status = 0;
-            }
+        }
+        if (! in_array($areaStr, $toHot)) {
+            $toArr = (array) $areaStr;
+            $data = json_encode(array_merge($toHot, $toArr));
+            $status = 1;
+        }
+        if (in_array($areaStr, $toHot)) {
+            $data = json_encode($toHot);
+            $status = 0;
         }
 
-        CommonConfig::updateOrCreate(
+        $this->commonCinfigModel->updateOrCreate(
             ['namespace' => 'common', 'name' => 'hots_area'],
             ['value' => $data]
         );
 
         return $response->json([
-            'message' => '添加成功',
+            'message' => '操作成功',
             'status' => $status,
         ])->setStatusCode(201);
     }
