@@ -135,7 +135,7 @@ class FindUserController extends Controller
     }
 
     /**
-     * 通过标签推荐用户
+     * 通过标签推荐用户.
      */
     public function findByTags(Request $request, TaggableModel $taggable, ResponseContract $response)
     {
@@ -144,7 +144,7 @@ class FindUserController extends Controller
         $offset = $request->input('offset', 0);
 
         $tags = $u->tags()->select('tag_id')->get();
-        
+
         $tags = array_pluck($tags, 'tag_id');
 
         $users = $taggable->whereIn('tag_id', $tags)
@@ -160,7 +160,7 @@ class FindUserController extends Controller
             ->get();
 
         return $response->json(
-            $users->map( function ($user) use ($u) {
+            $users->map(function ($user) use ($u) {
                 $user->user->following = $u->hasFollwing($user->user->id);
                 $user->user->follower = $u->hasFollower($user->user->id);
 
@@ -175,7 +175,7 @@ class FindUserController extends Controller
         $u = $request->user();
         $phones = $request->input('phones', '');
 
-        if(!$phones) {
+        if (! $phones) {
             abort(422, '请传递手机号码');
         }
 
@@ -184,9 +184,9 @@ class FindUserController extends Controller
             ->whereIn('phone', $phones)
             ->limit(100)
             ->get();
-        
+
         return $response->json(
-            $users->map( function($user) use ($u) {
+            $users->map(function ($user) use ($u) {
                 $user->following = $u->hasFollwing($user->id);
                 $user->follower = $u->hasFollower($user->id);
                 $user->mibi = $user->phone;
