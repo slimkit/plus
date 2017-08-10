@@ -1,8 +1,8 @@
 {
     "name": "zhiyicx/thinksns-plus",
-    "description": "The TS+ is a social project.",
-    "keywords": ["framework", "laravel"],
-    "license": "MIT",
+    "description": "Use of Laravel framework to achieve the user ecosystem. （基于 Laravel 开发的用户生态系统。）",
+    "keywords": ["thinksns", "web", "php", "laravel", "sns", "user", "think", "app"],
+    "license": "Apache-2.0",
     "type": "project",
     "repositories": [
         {
@@ -20,6 +20,7 @@
         "pingplusplus/pingpp-php": "^2.2",
         "predis/predis": "^1.1",
         "slimkit/plus-installer": "^1.0",
+        "symfony/polyfill-mbstring": "^1.4",
         "tymon/jwt-auth": "^0.5.12"
     },
     "require-dev": {
