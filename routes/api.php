@@ -206,6 +206,12 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             // @get search name
             $api->get('/search', API2\FindUserController::class.'@search');
 
+            // @get find users by tags
+            $api->get('/find-by-tags', API2\FindUserController::class.'@findByTags');
+
+            // @get find users by phone
+            $api->post('/find-by-phone', API2\FindUserController::class.'@findByPhone');
+
             /*
             | 用户收到的评论
             */

@@ -4,6 +4,7 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Models\Taggable as TaggableModel;
 use Zhiyi\Plus\Models\UserExtra as UserExtraModel;
 use Zhiyi\Plus\Models\UserRecommended as UserRecommendedModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
@@ -51,11 +52,11 @@ class FindUserController extends Controller
     public function latests(Request $request, UserModel $user, ResponseContract $response)
     {
         $limit = $request->input('limit', 20);
-        $after = $request->input('after', null);
+        $offset = $request->input('offset', null);
         $u = $request->user();
 
-        $users = $user->when($after, function ($query) use ($after) {
-            return $query->where('id', '>', $after);
+        $users = $user->when($offset, function ($query) use ($offset) {
+            return $query->offset($offset);
         })
             ->latest()
             ->limit($limit)
@@ -126,6 +127,69 @@ class FindUserController extends Controller
             $users->map(function($user) use ($u) {
                 $user->following = $u->hasFollwing($user->id);
                 $user->follower = $u->hasFollower($user->id);
+
+                return $user;
+            })
+        )
+        ->setStatusCode(200);
+    }
+
+    /**
+     * 通过标签推荐用户
+     */
+    public function findByTags(Request $request, TaggableModel $taggable, ResponseContract $response)
+    {
+        $u = $request->user();
+        $limit = $request->input('limit', 20);
+        $offset = $request->input('offset', 0);
+
+        $tags = $u->tags()->select('tag_id')->get();
+        
+        $tags = array_pluck($tags, 'tag_id');
+
+        $users = $taggable->whereIn('tag_id', $tags)
+            ->where('taggable_type', 'users')
+            ->where('taggable_id', '<>', $u->id)
+            ->when($offset, function ($query) use ($offset) {
+                return $query->offset($offset);
+            })
+            ->limit($limit)
+            ->with(['user'])
+            ->select('taggable_id')
+            ->groupBy('taggable_id')
+            ->get();
+
+        return $response->json(
+            $users->map( function ($user) use ($u) {
+                $user->user->following = $u->hasFollwing($user->user->id);
+                $user->user->follower = $u->hasFollower($user->user->id);
+
+                return $user->user;
+            })
+        )
+        ->setStatusCode(200);
+    }
+
+    public function findByPhone(Request $request, UserModel $user, ResponseContract $response)
+    {
+        $u = $request->user();
+        $phones = $request->input('phones', '');
+
+        if(!$phones) {
+            abort(422, '请传递手机号码');
+        }
+
+        $users = $user
+            ->select('*')
+            ->whereIn('phone', $phones)
+            ->limit(100)
+            ->get();
+        
+        return $response->json(
+            $users->map( function($user) use ($u) {
+                $user->following = $u->hasFollwing($user->id);
+                $user->follower = $u->hasFollower($user->id);
+                $user->mibi = $user->phone;
 
                 return $user;
             })
