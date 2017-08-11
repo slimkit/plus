@@ -315,6 +315,14 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // 打赏用户
             $api->post('/{target}/rewards', API2\UserRewardController::class.'@store');
+
+            /*
+             * 解除手机号码绑定
+             *
+             * @DELETE /api/v2/user/phone
+             * @author Seven Du <shiweidu@outlook.com>
+             */
+            $api->delete('/phone', API2\UserPhoneController::class.'@delete');
         });
 
         /*
