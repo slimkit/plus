@@ -80,6 +80,11 @@ class PurchaseController extends Controller
             $userCharge->status = 1;
             $user->walletCharges()->save($userCharge);
 
+            // 发送购买通知
+            $user->sendNotifyMessage('paid:'.$node->channel, $node->body, [
+                'charge' => $userCharge,
+            ]);
+
             // 插入购买用户
             $node->users()->sync($user->id, false);
 
@@ -98,6 +103,11 @@ class PurchaseController extends Controller
                 $charge->status = 1;
                 $charge->user_id = $wallet->user_id;
                 $charge->save();
+
+                // 被购买通知
+                $wallet->user->sendNotifyMessage('paid:'.$node->channel, '被'.$user->name.$node->body, [
+                    'charge' => $charge,
+                ]);
             }
         });
 
