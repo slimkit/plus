@@ -37,8 +37,8 @@ class FindUserController extends Controller
 
         return $response->json(
             $users->map(function ($user) use ($u) {
-                $user->user->following = $u->hasFollwing($user->user->id);
-                $user->user->follower = $u->hasFollower($user->user->id);
+                $user->user->following = $user->user->hasFollwing($u->id);
+                $user->user->follower = $user->user->hasFollower($u->id);
 
                 return $user->user;
             })
@@ -64,8 +64,8 @@ class FindUserController extends Controller
 
         return $response->json(
             $users->map(function ($user) use ($u) {
-                $user->following = $u->hasFollwing($user->id);
-                $user->follower = $u->hasFollower($user->id);
+                $user->following = $user->hasFollwing($u->id);
+                $user->follower = $user->hasFollower($u->id);
 
                 return $user;
             })
@@ -92,8 +92,8 @@ class FindUserController extends Controller
 
         return $response->json(
             $users->map(function ($user) use ($u) {
-                $user->user->following = $u->hasFollwing($user->user->id);
-                $user->user->follower = $u->hasFollower($user->user->id);
+                $user->user->following = $user->user->hasFollwing($u->id);
+                $user->user->follower = $user->user->hasFollower($u->id);
 
                 return $user->user;
             })
@@ -125,8 +125,8 @@ class FindUserController extends Controller
 
         return $response->json(
             $users->map(function ($user) use ($u) {
-                $user->following = $u->hasFollwing($user->id);
-                $user->follower = $u->hasFollower($user->id);
+                $user->following = $user->hasFollwing($u->id);
+                $user->follower = $user->hasFollower($u->id);
 
                 return $user;
             })
@@ -161,8 +161,8 @@ class FindUserController extends Controller
 
         return $response->json(
             $users->map(function ($user) use ($u) {
-                $user->user->following = $u->hasFollwing($user->user->id);
-                $user->user->follower = $u->hasFollower($user->user->id);
+                $user->user->following = $user->user->hasFollwing($u->id);
+                $user->user->follower = $user->user->hasFollower($u->id);
 
                 return $user->user;
             })
@@ -187,8 +187,8 @@ class FindUserController extends Controller
 
         return $response->json(
             $users->map(function ($user) use ($u) {
-                $user->following = $u->hasFollwing($user->id);
-                $user->follower = $u->hasFollower($user->id);
+                $user->following = $user->hasFollwing($u->id);
+                $user->follower = $user->hasFollower($u->id);
                 $user->mibi = $user->phone;
 
                 return $user;
