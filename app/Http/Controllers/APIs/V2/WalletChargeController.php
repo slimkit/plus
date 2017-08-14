@@ -53,10 +53,7 @@ class WalletChargeController extends Controller
         $mode = $request->query('mode') === 'retrieve';
         // prem.
         if ($request->user()->id !== $charge->user_id) {
-            return $response
-                ->json(['message' => ['当前用户无权限查询该订单']])
-                ->setStatusCode(403);
-
+            return $response->json(['message' => ['当前用户无权限查询该订单']])->setStatusCode(403);
         // retrueve.
         } elseif ($mode === true && $charge->status === 0) {
             $this->retrieveCharge($charge, $request->user());
