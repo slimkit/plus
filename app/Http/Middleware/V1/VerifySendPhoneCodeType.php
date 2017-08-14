@@ -33,7 +33,7 @@ class VerifySendPhoneCodeType
                 'data'    => null,
             ])->setStatusCode(403);
 
-        // 如果是注册获取验证码，如果用户不存在继续执行
+            // 如果是注册获取验证码，如果用户不存在继续执行
         } elseif ($type == 'register') {
             return app(CheckUserByPhoneNotExisted::class)->handle($request, $next);
         }

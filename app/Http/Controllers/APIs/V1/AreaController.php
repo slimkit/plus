@@ -10,7 +10,8 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 class AreaController extends Controller
 {
     /**
-     * 获取全部地区数据.
+     * 获取�
+     * �部地区数据.
      *
      * @param Request $request
      * @return mixed
