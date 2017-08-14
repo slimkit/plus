@@ -39,8 +39,7 @@ class SmsController extends Controller
     }
 
     /**
-     * 获取短信驱动�
-     * �置信息.
+     * 获取短信驱动配置信息.
      *
      * @param \Illuminate\Contracts\Config\Repository $config
      * @param \Illuminate\Contracts\Routing\ResponseFactory $response
@@ -61,8 +60,7 @@ class SmsController extends Controller
     }
 
     /**
-     * 更新阿里短信�
-     * �置信息.
+     * 更新阿里短信配置信息.
      *
      * @param Repository $config
      * @param Configuration $store

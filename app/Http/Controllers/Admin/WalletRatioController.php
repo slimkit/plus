@@ -10,9 +10,7 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 class WalletRatioController extends Controller
 {
     /**
-     * 获取�.
-     *
-     * 值转换值.
+     * 获取充值转换值.
      *
      * @param ResponseFactory $response
      * @return mixed

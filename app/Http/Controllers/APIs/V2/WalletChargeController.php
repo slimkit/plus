@@ -57,7 +57,7 @@ class WalletChargeController extends Controller
                 ->json(['message' => ['当前用户无权限查询该订单']])
                 ->setStatusCode(403);
 
-            // retrueve.
+        // retrueve.
         } elseif ($mode === true && $charge->status === 0) {
             $this->retrieveCharge($charge, $request->user());
         }

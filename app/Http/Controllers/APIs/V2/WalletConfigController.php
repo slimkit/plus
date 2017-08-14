@@ -24,19 +24,14 @@ class WalletConfigController extends Controller
     ];
 
     /**
-     * 钱�
-     * 私有�
-     * �置名称列表.
+     * 钱包私有配置名称列表.
      *
      * @var array
      */
     protected $walletNames = ['labels', 'rule', 'cash', 'cash:min-amount'];
 
     /**
-     * 钱�
-     * �
-     * �有�
-     * �置名称列表.
+     * 钱包共有配置名称列表.
      *
      * @var array
      */
