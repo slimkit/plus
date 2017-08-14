@@ -58,7 +58,7 @@ class LocationController extends Controller
      * @param  \Illuminate\Contracts\Routing\ResponseFactory $response
      * @return mixed
      */
-    public function hots(ResponseFactory $response)
+    public function hots(ResponseFactoryContract $response)
     {
         $hots = CommonConfig::byNamespace('common')
             ->byName('hots_area')
