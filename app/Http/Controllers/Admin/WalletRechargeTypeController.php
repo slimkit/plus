@@ -2,9 +2,9 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
+use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
 use Zhiyi\Plus\Repository\WalletRechargeType as RechargeTypeRepository;
 
 class WalletRechargeTypeController extends Controller

@@ -2,10 +2,10 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\User as UserModel;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Zhiyi\Plus\Models\User as UserModel;
 
 class UserAvatarController extends Controller
 {

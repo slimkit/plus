@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Zhiyi\Plus\Http\Requests\API2\StoreWalletRecharge;
 use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
+use Zhiyi\Plus\Http\Requests\API2\StoreWalletRecharge;
 
 class WalletRechargeApplePayController extends WalletRechargeController
 {

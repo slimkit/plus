@@ -3,9 +3,9 @@
 namespace Zhiyi\Plus\Models;
 
 use Illuminate\Cache\TaggableStore;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {

@@ -2,12 +2,12 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Support\Configuration;
-use Zhiyi\Plus\Models\VerificationCode;
 use Illuminate\Contracts\Config\Repository;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\Request;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\VerificationCode;
+use Zhiyi\Plus\Support\Configuration;
 
 class SmsController extends Controller
 {
@@ -39,7 +39,8 @@ class SmsController extends Controller
     }
 
     /**
-     * 获取短信驱动配置信息.
+     * 获取短信驱动�
+     * �置信息.
      *
      * @param \Illuminate\Contracts\Config\Repository $config
      * @param \Illuminate\Contracts\Routing\ResponseFactory $response
@@ -60,7 +61,8 @@ class SmsController extends Controller
     }
 
     /**
-     * 更新阿里短信配置信息.
+     * 更新阿里短信�
+     * �置信息.
      *
      * @param Repository $config
      * @param Configuration $store

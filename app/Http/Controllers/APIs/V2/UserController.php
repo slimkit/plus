@@ -2,14 +2,14 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
+use Illuminate\Http\Request;
 use RuntimeException;
 use Tymon\JWTAuth\JWTAuth;
-use Zhiyi\Plus\Models\User;
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\CommonConfig;
-use Zhiyi\Plus\Models\VerificationCode;
 use Zhiyi\Plus\Http\Requests\API2\StoreUserPost;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
+use Zhiyi\Plus\Models\CommonConfig;
+use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Models\VerificationCode;
 
 class UserController extends Controller
 {
@@ -121,7 +121,8 @@ class UserController extends Controller
     }
 
     /**
-     * 处理我关注的状态.
+     * 处理我�
+     * �注的状态.
      *
      * @param \Illuminate\Http\Request $request
      * @param \Zhiyi\Plus\Models\User &$user
@@ -136,7 +137,8 @@ class UserController extends Controller
     }
 
     /**
-     * 验证是否关注了我.
+     * 验证是否�
+     * �注了我.
      *
      * @param \Illuminate\Http\Request $request
      * @param \Zhiyi\Plus\Models\User &$user

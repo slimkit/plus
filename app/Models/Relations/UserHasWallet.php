@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Plus\Models\Relations;
 
-use Zhiyi\Plus\Models\Wallet;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Zhiyi\Plus\Models\Wallet;
 
 trait UserHasWallet
 {
@@ -34,7 +34,8 @@ trait UserHasWallet
     }
 
     /**
-     * 用户钱包.
+     * 用户钱�
+     * .
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      * @author Seven Du <shiweidu@outlook.com>

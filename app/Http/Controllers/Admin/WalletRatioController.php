@@ -2,15 +2,17 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Repository\WalletRatio;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\Request;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Repository\WalletRatio;
 
 class WalletRatioController extends Controller
 {
     /**
-     * 获取充值转换值.
+     * 获取�.
+     *
+     * 值转换值.
      *
      * @param ResponseFactory $response
      * @return mixed

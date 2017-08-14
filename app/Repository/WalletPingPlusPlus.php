@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Plus\Repository;
 
-use Zhiyi\Plus\Models\CommonConfig;
 use Illuminate\Contracts\Cache\Repository as ContractsCacheRepository;
+use Zhiyi\Plus\Models\CommonConfig;
 
 class WalletPingPlusPlus
 {

@@ -3,11 +3,11 @@
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\WalletCash;
 use Illuminate\Support\Facades\DB;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\WalletCash;
 use Zhiyi\Plus\Models\WalletCharge;
 use Zhiyi\Plus\Repository\WalletRatio;
-use Zhiyi\Plus\Http\Controllers\Controller;
 
 class WalletCashController extends Controller
 {

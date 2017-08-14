@@ -2,11 +2,11 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Zhiyi\Plus\Models\User;
+use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\WalletCharge;
 use Zhiyi\Plus\Services\Wallet\Charge as WalletChargeService;
-use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
 
 class WalletChargeController extends Controller
 {
@@ -57,7 +57,7 @@ class WalletChargeController extends Controller
                 ->json(['message' => ['当前用户无权限查询该订单']])
                 ->setStatusCode(403);
 
-        // retrueve.
+            // retrueve.
         } elseif ($mode === true && $charge->status === 0) {
             $this->retrieveCharge($charge, $request->user());
         }

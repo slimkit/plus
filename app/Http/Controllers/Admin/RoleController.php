@@ -2,10 +2,10 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
-use Zhiyi\Plus\Models\Role;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\Permission;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\Permission;
+use Zhiyi\Plus\Models\Role;
 
 class RoleController extends Controller
 {
@@ -162,7 +162,8 @@ class RoleController extends Controller
     }
 
     /**
-     * 获取全部权限节点.
+     * 获取�
+     * �部权限节点.
      *
      * @return mixed
      *

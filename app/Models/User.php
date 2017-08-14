@@ -2,12 +2,12 @@
 
 namespace Zhiyi\Plus\Models;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Zhiyi\Plus\Http\Controllers\APIs\V2\UserAvatarController;
+use Illuminate\Notifications\Notifiable;
 use Zhiyi\Plus\Contracts\Model\ShouldAvatar as ShouldAvatarContract;
+use Zhiyi\Plus\Http\Controllers\APIs\V2\UserAvatarController;
 
 class User extends Authenticatable implements ShouldAvatarContract
 {
@@ -235,7 +235,8 @@ class User extends Authenticatable implements ShouldAvatarContract
     }
 
     /**
-     * 用户tokens关系.
+     * 用户tokens�
+     * �系.
      *
      * @Author   Wayne[qiaobin@zhiyicx.com]
      * @DateTime 2017-01-03T10:13:06+0800
@@ -267,7 +268,8 @@ class User extends Authenticatable implements ShouldAvatarContract
     /**
      * 更新用户资料.
      *
-     * @param array $attributes 更新关联profile资料数据
+     * @param array $attributes 更新�
+     * �联profile资料数据
      *                          参考：https://laravel-china.org/docs/5.3/eloquent-relationships#updating-many-to-many-relationships
      *
      * @return [type] [description]

@@ -2,12 +2,12 @@
 
 namespace Zhiyi\Plus\Cdn\Adapter;
 
-use Intervention\Image\Image;
+use Illuminate\Contracts\Filesystem\Factory as FilesystemFactoryContract;
+use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Intervention\Image\Constraint;
+use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
 use Zhiyi\Plus\Contracts\Cdn\UrlGenerator as FileUrlGeneratorContract;
-use Illuminate\Contracts\Foundation\Application as ApplicationContract;
-use Illuminate\Contracts\Filesystem\Factory as FilesystemFactoryContract;
 
 class Local implements FileUrlGeneratorContract
 {

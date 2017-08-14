@@ -2,9 +2,9 @@
 
 namespace Zhiyi\Plus\Models\Relations;
 
+use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\Wallet;
-use Illuminate\Support\Facades\Cache;
 
 trait PaidNodeHasUser
 {
@@ -26,7 +26,8 @@ trait PaidNodeHasUser
     }
 
     /**
-     * 判断是非对节点进行付费，支持过滤发布者.
+     * 判断是非对节点进行付费，支持过滤发布�
+     * .
      *
      * @param int $user User ID
      * @return bool

@@ -2,15 +2,17 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Zhiyi\Plus\Models\CommonConfig;
-use Zhiyi\Plus\Models\AdvertisingSpace;
-use Zhiyi\Plus\Support\BootstrapAPIsEventer;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Zhiyi\Plus\Models\AdvertisingSpace;
+use Zhiyi\Plus\Models\CommonConfig;
+use Zhiyi\Plus\Support\BootstrapAPIsEventer;
 
 class BootstrappersController extends Controller
 {
     /**
-     * 获取启动者配置列表.
+     * 获取启动�
+     * �
+     * �置列表.
      *
      * @param ResponseFactory $response
      * @return mixed

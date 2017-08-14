@@ -2,16 +2,16 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
-use DB;
 use Carbon\Carbon;
+use DB;
+use Illuminate\Http\Request;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\Comment;
+use Zhiyi\Plus\Models\Conversation;
 use Zhiyi\Plus\Models\Like;
 use Zhiyi\Plus\Models\User;
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Models\UserDatas;
-use Zhiyi\Plus\Models\Conversation;
 use Zhiyi\Plus\Models\UserProfileSetting;
-use Zhiyi\Plus\Http\Controllers\Controller;
 
 class UserController extends Controller
 {

@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Plus\Bootstrap;
 
-use Zhiyi\Plus\Support\Configuration;
 use Illuminate\Contracts\Foundation\Application;
+use Zhiyi\Plus\Support\Configuration;
 
 class LoadConfiguration
 {
@@ -11,7 +11,8 @@ class LoadConfiguration
     protected $configuration;
 
     /**
-     * 加载配置构造方法.
+     * 加载�
+     * �置构造方法.
      *
      * @author Seven Du <shiweidu@outlook.com>
      */

@@ -2,10 +2,10 @@
 
 namespace Zhiyi\Plus\Concerns;
 
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Builder;
-use function Zhiyi\Plus\findMarkdownImageIDs;
+use Illuminate\Support\Collection;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
+use function Zhiyi\Plus\findMarkdownImageIDs;
 
 trait FindMarkdownFileTrait
 {
