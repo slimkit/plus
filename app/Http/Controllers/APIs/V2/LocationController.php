@@ -4,6 +4,7 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Area as AreaModel;
+use Zhiyi\Plus\Models\CommonConfig as ConfigModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class LocationController extends Controller
@@ -58,9 +59,9 @@ class LocationController extends Controller
      * @param  \Illuminate\Contracts\Routing\ResponseFactory $response
      * @return mixed
      */
-    public function hots(ResponseFactoryContract $response)
+    public function hots(ResponseFactoryContract $response, ConfigModel $configMModel)
     {
-        $hots = CommonConfig::byNamespace('common')
+        $hots = $configMModel->byNamespace('common')
             ->byName('hots_area')
             ->value('value');
 
