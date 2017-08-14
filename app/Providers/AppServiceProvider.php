@@ -75,7 +75,7 @@ class AppServiceProvider extends ServiceProvider
     {
         if (empty($parameters)) {
             throw new \InvalidArgumentException('Parameters must be passed');
-        // 补充 min 位.
+            // 补充 min 位.
         } elseif (count($parameters) === 1) {
             $parameters = [0, array_first($parameters)];
         }

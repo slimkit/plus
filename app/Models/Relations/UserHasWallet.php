@@ -34,7 +34,8 @@ trait UserHasWallet
     }
 
     /**
-     * 用户钱包.
+     * 用户钱�
+     * .
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      * @author Seven Du <shiweidu@outlook.com>
