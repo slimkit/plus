@@ -50,4 +50,22 @@ class LocationController extends Controller
             }))->setStatusCode(200);
         });
     }
+
+    /**
+     * 获取热门城市列表.
+     *
+     * @author bs<414606094@qq.com>
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @return mixed
+     */
+    public function hots(ResponseFactory $response)
+    {
+        $hots = CommonConfig::byNamespace('common')
+            ->byName('hots_area')
+            ->value('value');
+
+        $hots = $hots ? json_decode($hots) : [];
+
+        return $response->json($hots, 200);
+    }
 }
