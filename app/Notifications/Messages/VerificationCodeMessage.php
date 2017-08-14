@@ -10,7 +10,6 @@ class VerificationCodeMessage extends Message
 {
     protected $config;
     protected $code;
-    protected $gateways = ['alidayu'];
 
     /**
      * Create the message instance.
@@ -34,7 +33,9 @@ class VerificationCodeMessage extends Message
      */
     public function getContent(GatewayInterface $gateway = null)
     {
-        return sprintf('验证码%s，如非本人操作，请忽略本条信息。', $this->code);
+        $alias = $this->gatewayAliasName($gateway);
+
+        return str_replace(':code', $this->code, $this->config($alias.'.content'));
     }
 
     /**
@@ -46,7 +47,9 @@ class VerificationCodeMessage extends Message
      */
     public function getTemplate(GatewayInterface $gateway = null)
     {
-        return $this->config->get('alidayu.template');
+        $alias = $this->gatewayAliasName($gateway);
+
+        return $this->config->get($alias.'.template');
     }
 
     /**
@@ -58,8 +61,28 @@ class VerificationCodeMessage extends Message
      */
     public function getData(GatewayInterface $gateway = null)
     {
+        $alias = $this->gatewayAliasName($gateway);
+
         return [
-            'code' => strval($this->code),
+            $this->config->get($alias.'.:code') => (string) $this->code,
         ];
+    }
+
+    /**
+     * Get Gateway Alias name.
+     *
+     * @param \Overtrue\EasySms\Contracts\GatewayInterface $gateway
+     * @return string
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function gatewayAliasName(GatewayInterface $gateway): string
+    {
+        foreach (config('sms.gateway_aliases') as $alias => $class) {
+            if ($gateway instanceof $class) {
+                return $alias;
+            }
+        }
+
+        throw new \Exception('不支持的网关');
     }
 }

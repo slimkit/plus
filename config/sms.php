@@ -38,7 +38,7 @@ return [
 
     'default' => [
         'strategy' => \Overtrue\EasySms\Strategies\OrderStrategy::class,
-        'gateways' => ['alidayu'],
+        'gateways' => [],
     ],
 
     /*
@@ -51,11 +51,30 @@ return [
     */
 
     'gateways' => [
+
+        // 阿里大于
         'alidayu' => [
             'app_key' => null,
             'app_secret' => null,
             'sign_name' => null,
         ],
+
+        // 阿里云
+        'aliyun' => [
+            'access_key_id' => null,
+            'access_key_secret' => null,
+            'sign_name' => null,
+        ],
+
+        // 云片
+        'yunpian' => [
+            'api_key' => null,
+        ],
+    ],
+
+    'gateway_aliases' => [
+        'aliyun' => \Overtrue\EasySms\Gateways\AliyunGateway::class,
+        'alidayu' => \Overtrue\EasySms\Gateways\AlidayuGateway::class,
     ],
 
     /*
@@ -73,6 +92,14 @@ return [
         'code' => [
             'alidayu' => [
                 'template' => null,
+                ':code' => 'code',
+            ],
+            'aliyun' => [
+                'template' => null,
+                ':code' => 'code',
+            ],
+            'yunpian' => [
+                'content' => null,
             ],
         ],
     ],
