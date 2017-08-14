@@ -15,10 +15,11 @@ preset: laravel
 risky: false
 
 # 在开启修复等级的基础上额外开启的修复项目, 下面先注销，可以逐步开启修复要求，达到风格严谨的目的。
-# enabled:
-#     - long_array_syntax
-#     - strict
+enabled:
+    - encoding
+    - is_null
+    - alpha_ordered_imports
 
 # 禁用的修复项目，在修复等级中，期望不被修改的风格.
-# disabled:
-#     [... -]
+disabled:
+    - length_ordered_imports
