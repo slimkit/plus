@@ -50,8 +50,7 @@ class UserWalletCashType
     }
 
     /**
-     * 储存或�
-     * 更新设置.
+     * 储存或者更新设置.
      *
      * @param array $types
      * @return void

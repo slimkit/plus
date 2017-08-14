@@ -45,8 +45,7 @@ class Configuration
     }
 
     /**
-     * 获取转化为一级数组的�
-     * �置，应用场景可能在 Repository 中的覆盖.
+     * 获取转化为一级数组的配置，应用场景可能在 Repository 中的覆盖.
      *
      * @return array
      * @author Seven Du <shiweidu@outlook.com>

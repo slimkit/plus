@@ -32,9 +32,7 @@ class WalletLabelController extends Controller
     }
 
     /**
-     * 创建�.
-     *
-     * 值选项标签.
+     * 创建充值选项标签.
      *
      * @param Request $request
      * @return mixed
@@ -79,9 +77,7 @@ class WalletLabelController extends Controller
     }
 
     /**
-     * 删除�.
-     *
-     * 值选项.
+     * 删除充值选项.
      *
      * @param int $label
      * @return mixed

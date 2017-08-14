@@ -64,8 +64,7 @@ class Push
     }
 
     /**
-     * 推送�
-     * �部.
+     * 推送全部.
      *
      * @author bs<414606094@qq.com>
      * @param  Client $client       [description]

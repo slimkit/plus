@@ -10,9 +10,7 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 class BootstrappersController extends Controller
 {
     /**
-     * 获取启动�
-     * �
-     * �置列表.
+     * 获取启动者配置列表.
      *
      * @param ResponseFactory $response
      * @return mixed
