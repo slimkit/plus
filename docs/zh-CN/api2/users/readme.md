@@ -5,6 +5,7 @@
 - [更新认证用户资料](#更新认证用户资料)
 - [获取所有用户](#获取所有用户)
 - [用户找回密码](#用户找回密码)
+- [解除用户 Phone 或者 E-Mail 绑定](#解除用户-phone-或者-e-mail-绑定);
 
 ## 获取一个用户
 
@@ -316,6 +317,32 @@ PUT /user/retrieve-password
 | password | 字符串 | 用户新密码。 |
 
 ##### 响应
+
+```
+Status: 204 No Content
+```
+
+## 解除用户 Phone 或者 E-Mail 绑定
+
+解除用户 Phone 绑定:
+
+```
+DELETE /api/v2/user/phone
+```
+
+解除用户 E-Mail 绑定:
+
+```
+DELETE /api/v2/user/email
+```
+
+#### 输入
+
+| 名称 | 类型 | 描述 |
+| password | String | 用户密码。 |
+| verifiable_code | Int 或者 String | 手机号码或者邮箱验证码。 |
+
+#### 响应
 
 ```
 Status: 204 No Content
