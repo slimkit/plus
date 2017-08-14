@@ -1,8 +1,8 @@
 <?php
 
+use Illuminate\Database\Seeder;
 use Zhiyi\Plus\Models\Role;
 use Zhiyi\Plus\Models\User;
-use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
 {
@@ -18,7 +18,8 @@ class UsersTableSeeder extends Seeder
     }
 
     /**
-     * 插入创始人信息.
+     * 插�
+     * �创始人信息.
      *
      * @return void
      * @author Seven Du <shiweidu@outlook.com>

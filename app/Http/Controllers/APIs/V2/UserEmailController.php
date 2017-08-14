@@ -2,9 +2,9 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\VerificationCode as VerificationCodeModel;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class UserEmailController extends Controller
 {

@@ -2,9 +2,9 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Comment as CommentModel;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 
 class UserCommentController extends Controller
 {

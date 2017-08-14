@@ -4,9 +4,9 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\Conversation;
-use Zhiyi\Plus\Http\Controllers\Controller;
 
 class SystemController extends Controller
 {
@@ -14,7 +14,9 @@ class SystemController extends Controller
     protected $allowedNamespace = ['im'];
 
     /**
-     * 获取扩展包安装状态
+     * 获取扩展�
+     * 安�
+     * 状态
      *
      * @author bs<414606094@qq.com>
      * @return [type] [description]
@@ -34,7 +36,9 @@ class SystemController extends Controller
     }
 
     /**
-     * 获取扩展包配置信息.
+     * 获取扩展�
+     * �
+     * �置信息.
      *
      * @author bs<414606094@qq.com>
      * @param  Request $request [description]
@@ -108,7 +112,8 @@ class SystemController extends Controller
     }
 
     /**
-     * 关于我们.
+     * �
+     * �于我们.
      *
      * @author bs<414606094@qq.com>
      * @return [type] [description]

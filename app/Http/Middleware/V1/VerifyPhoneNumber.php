@@ -3,8 +3,8 @@
 namespace Zhiyi\Plus\Http\Middleware\V1;
 
 use Closure;
-use Validator;
 use Illuminate\Http\Request;
+use Validator;
 
 /**
  * 验证手机号码

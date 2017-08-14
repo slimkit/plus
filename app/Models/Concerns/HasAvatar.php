@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Plus\Models\Concerns;
 
-use Illuminate\Http\UploadedFile;
 use Illuminate\Filesystem\FilesystemManager;
+use Illuminate\Http\UploadedFile;
 use Zhiyi\Plus\Contracts\Cdn\UrlFactory as CdnUrlFactoryContract;
 use Zhiyi\Plus\Contracts\Model\ShouldAvatar as ShouldAvatarContract;
 

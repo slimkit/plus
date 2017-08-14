@@ -2,9 +2,9 @@
 
 namespace Zhiyi\Plus\Notifications\Channels;
 
-use Overtrue\EasySms\EasySms;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
+use Illuminate\Notifications\Notification;
+use Overtrue\EasySms\EasySms;
 
 class SmsChannel
 {

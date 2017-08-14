@@ -2,10 +2,10 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Tag as TagModel;
 use Zhiyi\Plus\Models\User as UserModel;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class TagUserController extends Controller
 {

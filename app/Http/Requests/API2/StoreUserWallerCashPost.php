@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Plus\Http\Requests\API2;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Zhiyi\Plus\Repository\UserWalletCashType;
 use Zhiyi\Plus\Repository\WalletCashMinAmount as CashMinAmountRepository;
 

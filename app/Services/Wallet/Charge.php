@@ -2,10 +2,10 @@
 
 namespace Zhiyi\Plus\Services\Wallet;
 
-use Pingpp\Pingpp as PingppInit;
 use Pingpp\Charge as PingppCharge;
-use Zhiyi\Plus\Repository\WalletPingPlusPlus;
+use Pingpp\Pingpp as PingppInit;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
+use Zhiyi\Plus\Repository\WalletPingPlusPlus;
 
 class Charge
 {

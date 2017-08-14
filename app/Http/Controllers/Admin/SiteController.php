@@ -3,16 +3,16 @@
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Carbon\Carbon;
-use Zhiyi\Plus\Models\Area;
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\CommonConfig;
-use Illuminate\Contracts\Mail\Mailer;
-use Illuminate\Support\Facades\Cache;
-use Zhiyi\Plus\Support\Configuration;
 use Illuminate\Contracts\Config\Repository;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\Area;
+use Zhiyi\Plus\Models\CommonConfig;
+use Zhiyi\Plus\Support\Configuration;
 
 class SiteController extends Controller
 {
@@ -99,7 +99,8 @@ class SiteController extends Controller
     }
 
     /**
-     * 获取全部地区.
+     * 获取�
+     * �部地区.
      *
      * @return mixed
      *
@@ -308,7 +309,8 @@ class SiteController extends Controller
     }
 
     /**
-     * 获取邮件配置信息.
+     * 获取邮件�
+     * �置信息.
      *
      * @return mixed
      */
@@ -340,7 +342,8 @@ class SiteController extends Controller
     }
 
     /**
-     * 更新邮件配置信息.
+     * 更新邮件�
+     * �置信息.
      *
      * @return mixed
      */

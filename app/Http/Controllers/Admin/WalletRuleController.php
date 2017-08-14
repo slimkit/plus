@@ -2,15 +2,17 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\CommonConfig;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\Request;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\CommonConfig;
 
 class WalletRuleController extends Controller
 {
     /**
-     * 获取充值、提现规则.
+     * 获取�.
+     *
+     * 值、提现规则.
      *
      * @param ResponseFactory $response
      * @return mixed

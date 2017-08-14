@@ -3,11 +3,11 @@
 namespace Zhiyi\Plus\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Overtrue\EasySms\Support\Config;
-use Illuminate\Notifications\Notification;
+use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Config\Repository as ConfigRepository;
+use Illuminate\Notifications\Notification;
+use Overtrue\EasySms\Support\Config;
 use Zhiyi\Plus\Models\VerificationCode as VerificationCodeModel;
 
 class VerificationCode extends Notification implements ShouldQueue

@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Plus\Models\Concerns;
 
-use Zhiyi\Plus\Notifications\UserNotification;
 use Zhiyi\Plus\Notifications\Messages\UserNotificationMessage;
+use Zhiyi\Plus\Notifications\UserNotification;
 
 trait UserHasNotifiable
 {

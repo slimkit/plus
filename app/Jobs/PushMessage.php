@@ -3,11 +3,11 @@
 namespace Zhiyi\Plus\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Zhiyi\Plus\Services\Push;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Zhiyi\Plus\Services\Push;
 
 class PushMessage implements ShouldQueue
 {

@@ -3,10 +3,10 @@
 namespace Zhiyi\Plus\Http\Middleware\V1;
 
 use Closure;
-use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\FileWith;
 use Illuminate\Support\Facades\DB;
+use Zhiyi\Plus\Models\FileWith;
+use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\UserProfileSetting;
 use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
@@ -15,7 +15,8 @@ class ChangeUserAvatar
     use CreateJsonResponseData;
 
     /**
-     * 修改用户头像中间件入口.
+     * 修改用户头像中间件�
+     * �口.
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure                 $next

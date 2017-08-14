@@ -2,13 +2,13 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
-use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\AuthToken;
 use Illuminate\Support\Facades\DB;
-use Zhiyi\Plus\Models\CommonConfig;
-use Zhiyi\Plus\Models\VerificationCode;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\AuthToken;
+use Zhiyi\Plus\Models\CommonConfig;
+use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Models\VerificationCode;
 
 class AuthController extends Controller
 {

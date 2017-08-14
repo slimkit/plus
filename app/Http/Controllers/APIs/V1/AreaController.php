@@ -3,14 +3,15 @@
 namespace Zhiyi\Plus\Http\Controllers\APIs\V1;
 
 use Carbon\Carbon;
-use Zhiyi\Plus\Models\Area;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\Area;
 
 class AreaController extends Controller
 {
     /**
-     * 获取全部地区数据.
+     * 获取�
+     * �部地区数据.
      *
      * @param Request $request
      * @return mixed

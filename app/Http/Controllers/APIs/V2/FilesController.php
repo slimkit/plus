@@ -3,15 +3,15 @@
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Carbon\Carbon;
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
-use Zhiyi\Plus\Models\File as FileModel;
-use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Cdn\UrlManager as CdnUrlManager;
+use Zhiyi\Plus\Http\Requests\API2\StoreUploadFile as StoreUploadFileRequest;
+use Zhiyi\Plus\Models\File as FileModel;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
-use Zhiyi\Plus\Http\Requests\API2\StoreUploadFile as StoreUploadFileRequest;
+use Zhiyi\Plus\Models\User as UserModel;
 
 class FilesController extends Controller
 {
@@ -136,7 +136,8 @@ class FilesController extends Controller
     }
 
     /**
-     * 验证病返回文件数据库模型实例.
+     * 验证�
+     * 返回文件数据库模型实例.
      *
      * @param \Zhiyi\Plus\Models\File $fileModel
      * @param \Illuminate\Http\UploadedFile $file

@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
+use Illuminate\Http\Request;
 
 // use Illuminate\Notifications\DatabaseNotification as NotificationModel;
 

@@ -2,11 +2,11 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
+use Illuminate\Http\Request;
 use Tymon\JWTAuth\JWTAuth;
 use Zhiyi\Plus\Models\User;
-use Illuminate\Http\Request;
 use function Zhiyi\Plus\username;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class TokenController extends Controller
 {

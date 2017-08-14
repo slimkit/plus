@@ -2,9 +2,9 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Like as LikeModel;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 
 class UserLikeController extends Controller
 {

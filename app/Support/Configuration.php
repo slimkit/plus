@@ -3,11 +3,11 @@
 namespace Zhiyi\Plus\Support;
 
 use Illuminate\Config\Repository;
+use Illuminate\Contracts\Config\Repository as RepositoryContract;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Dumper;
 use Symfony\Component\Yaml\Parser;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Config\Repository as RepositoryContract;
 
 class Configuration
 {
@@ -45,7 +45,8 @@ class Configuration
     }
 
     /**
-     * 获取转化为一级数组的配置，应用场景可能在 Repository 中的覆盖.
+     * 获取转化为一级数组的�
+     * �置，应用场景可能在 Repository 中的覆盖.
      *
      * @return array
      * @author Seven Du <shiweidu@outlook.com>

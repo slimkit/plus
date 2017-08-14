@@ -2,11 +2,11 @@
 
 namespace Zhiyi\Plus\Providers;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
-use function Zhiyi\Plus\validateUsername;
 use function Zhiyi\Plus\validateChinaPhoneNumber;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use function Zhiyi\Plus\validateUsername;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -75,7 +75,7 @@ class AppServiceProvider extends ServiceProvider
     {
         if (empty($parameters)) {
             throw new \InvalidArgumentException('Parameters must be passed');
-        // 补充 min 位.
+            // 补充 min 位.
         } elseif (count($parameters) === 1) {
             $parameters = [0, array_first($parameters)];
         }
