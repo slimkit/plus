@@ -317,12 +317,20 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             $api->post('/{target}/rewards', API2\UserRewardController::class.'@store');
 
             /*
-             * 解除手机号码绑定
+             * 解除手机号码绑定.
              *
              * @DELETE /api/v2/user/phone
              * @author Seven Du <shiweidu@outlook.com>
              */
             $api->delete('/phone', API2\UserPhoneController::class.'@delete');
+
+            /*
+             * 解除用户邮箱绑定.
+             *
+             * @DELETE /api/v2/user/email
+             * @author Seven Du <shiweidu@outlook.com>
+             */
+            $api->delete('/email', API2\UserEmailController::class.'@delete');
         });
 
         /*
