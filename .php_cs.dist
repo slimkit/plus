@@ -1,0 +1,25 @@
+<?php
+
+$header = <<<'EOF'
+This file is part of ThinkSNS+.
+
+This source file is subject to the Apache-2.0 license that is bundled
+with this source code in the file LICENSE.
+EOF;
+
+$finder = PhpCsFixer\Finder::create()
+    ->exclude('vendor')
+    ->exclude('resources')
+    ->exclude('storage')
+    ->in(__DIR__)
+;
+
+
+$config = PhpCsFixer\Config::create()
+    ->setRules([
+        'encoding' => true,
+    ])
+    ->setFinder($finder)
+;
+
+return $config;
