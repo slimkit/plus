@@ -11,3 +11,6 @@ preset: laravel
 # 是否启用危险的修复
 # true | false
 risky: false
+
+disabled:
+    - encoding
