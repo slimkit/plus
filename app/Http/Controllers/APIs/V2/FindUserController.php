@@ -189,7 +189,7 @@ class FindUserController extends Controller
             $users->map(function ($user) use ($u) {
                 $user->following = $user->hasFollwing($u->id);
                 $user->follower = $user->hasFollower($u->id);
-                $user->mibi = $user->phone;
+                $user->mobi = $user->phone;
 
                 return $user;
             })

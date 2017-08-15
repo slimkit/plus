@@ -4,6 +4,7 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Area as AreaModel;
+use Zhiyi\Plus\Models\CommonConfig as ConfigModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class LocationController extends Controller
@@ -49,5 +50,23 @@ class LocationController extends Controller
                 ];
             }))->setStatusCode(200);
         });
+    }
+
+    /**
+     * 获取热门城市列表.
+     *
+     * @author bs<414606094@qq.com>
+     * @param  \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @return mixed
+     */
+    public function hots(ResponseFactoryContract $response, ConfigModel $configMModel)
+    {
+        $hots = $configMModel->byNamespace('common')
+            ->byName('hots_area')
+            ->value('value');
+
+        $hots = $hots ? json_decode($hots) : [];
+
+        return $response->json($hots, 200);
     }
 }

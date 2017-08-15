@@ -60,6 +60,10 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     // Search location.
     $api->get('/locations/search', API2\LocationController::class.'@search');
 
+    // Get hot locations.
+    // @GET /api/v2/locations/hots
+    $api->get('/locations/hots', API2\LocationController::class.'@hots');
+
     // Get Advertising space
     $api->get('/advertisingspace', API2\AdvertisingController::class.'@index');
 
