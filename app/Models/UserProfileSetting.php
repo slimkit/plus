@@ -32,8 +32,7 @@ class UserProfileSetting extends Model
     ];
 
     /**
-     * 获取view层展示的字段�
-     * 容.
+     * Gets the field content of the view layer.
      *
      * @Author   Wayne[qiaobin@zhiyicx.com]
      * @DateTime 2017-01-17T18:28:06+0800
@@ -46,8 +45,7 @@ class UserProfileSetting extends Model
     }
 
     /**
-     * 获取指定状态的字段�
-     * 容.
+     * Gets the field contents of the specified status.
      *
      * @Author   Wayne[qiaobin@zhiyicx.com]
      * @DateTime 2017-01-17T18:32:19+0800
@@ -62,9 +60,7 @@ class UserProfileSetting extends Model
     }
 
     /**
-     * 获取是否�
-     * 填的�
-     * 容.
+     * Get the required content.
      *
      * @Author   Wayne[qiaobin@zhiyicx.com]
      * @DateTime 2017-01-17T18:37:58+0800
