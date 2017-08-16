@@ -8,8 +8,7 @@ use Illuminate\Http\Request;
 class RankController extends Controller
 {
     /**
-     * 获取�
-     * �站粉丝排行.
+     * Get the full rank of user who has more followers.
      *
      * @author bs<414606094@qq.com>
      * @param  Illuminate\Http\Request $request
@@ -57,8 +56,7 @@ class RankController extends Controller
     }
 
     /**
-     * 获取�
-     * �站财富排行.
+     * Get the total fortune ranking.
      *
      * @author bs<414606094@qq.com>
      * @param  Illuminate\Http\Request $request
