@@ -8,9 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 trait UserHasFollow
 {
     /**
-     * æ­£åœ¨å
-     * ³æ³¨ - æˆ‘å
-     * ³æ³¨çš„.
+     * follows - my following
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      * @author Seven Du <shiweidu@outlook.com>
@@ -24,10 +22,7 @@ trait UserHasFollow
     }
 
     /**
-     * å
-     * ³æ³¨è€
-     * - å
-     * ³æ³¨æˆ‘çš„.
+     * followers - my followers.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      * @author Seven Du <shiweidu@outlook.com>
@@ -41,8 +36,7 @@ trait UserHasFollow
     }
 
     /**
-     * éªŒè¯æ˜¯å¦å
-     * ³æ³¨.
+     * Verification is concerned followed.
      *
      * @param int|\Zhiyi\Plus\Models\User $user
      * @return bool
@@ -65,8 +59,7 @@ trait UserHasFollow
     }
 
     /**
-     * éªŒè¯æ˜¯å¦å
-     * ³æ³¨äº†æˆ‘.
+     * Verify that I am followed.
      *
      * @param  int|\Zhiyi\Plus\Models\User $user
      * @return bool
