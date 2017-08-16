@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use DB;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 
@@ -89,5 +90,26 @@ class RankController extends Controller
                 return $user;
             });
         }), 200);
+    }
+
+    public function income(Request $request, User $userModel)
+    {
+        $auth = $request->user();
+        $limit = $request->query('limit', 10);
+        $offset = $request->query('offset', 0);
+
+        $users = $userModel->select('users.id', 'users.name')
+            ->join(DB::raw(''), function ($join) {
+                return $join->on('users.id', '=', 'wallet_charges.user_id')
+                    ->select('user_id', DB::raw('SUM(amount) as count'))
+                    ->where('wallet_charges.action', 1)
+                    ->groupBy('user_id');
+            })
+            ->orderBy('wallet_charges.count', 'desc')
+            ->offset($offset)
+            ->take($limit)
+            ->get();
+
+        dd($users);
     }
 }
