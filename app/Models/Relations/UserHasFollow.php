@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 trait UserHasFollow
 {
     /**
-     * follows - my following
+     * follows - my following.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      * @author Seven Du <shiweidu@outlook.com>
