@@ -26,8 +26,7 @@ trait PaidNodeHasUser
     }
 
     /**
-     * 判断是非对节点进行付费，支持过滤发布�
-     * .
+     * To determine whether to pay for the node, to support the filter publisher.
      *
      * @param int $user User ID
      * @return bool
