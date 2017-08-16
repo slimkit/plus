@@ -24,6 +24,7 @@
             - [标签](api2/users/tags.md)
             - [身份认证](api2/users/certification.md)
             - [找人](api2/find-users.md)
+            - [排行](api2/users/rank.md)
         - [消息通知（系统消息）](api2/notifications.md)
         - [钱包](api2/wallet)
             - [概述](api2/wallet)
