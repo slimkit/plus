@@ -15,8 +15,7 @@ class ChangeUserCover
     use CreateJsonResponseData;
 
     /**
-     * 修改用户头像中间件�
-     * �口.
+     * Modify the user background image middleware entry.
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure                 $next
