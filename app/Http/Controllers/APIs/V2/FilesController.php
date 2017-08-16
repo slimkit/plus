@@ -136,7 +136,8 @@ class FilesController extends Controller
     }
 
     /**
-     * 验证病返回文件数据库模型实例.
+     * 验证�
+     * 返回文件数据库模型实例.
      *
      * @param \Zhiyi\Plus\Models\File $fileModel
      * @param \Illuminate\Http\UploadedFile $file

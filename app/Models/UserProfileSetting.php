@@ -32,7 +32,8 @@ class UserProfileSetting extends Model
     ];
 
     /**
-     * 获取view层展示的字段内容.
+     * 获取view层展示的字段�
+     * 容.
      *
      * @Author   Wayne[qiaobin@zhiyicx.com]
      * @DateTime 2017-01-17T18:28:06+0800
@@ -45,7 +46,8 @@ class UserProfileSetting extends Model
     }
 
     /**
-     * 获取指定状态的字段内容.
+     * 获取指定状态的字段�
+     * 容.
      *
      * @Author   Wayne[qiaobin@zhiyicx.com]
      * @DateTime 2017-01-17T18:32:19+0800
@@ -60,7 +62,9 @@ class UserProfileSetting extends Model
     }
 
     /**
-     * 获取是否必填的内容.
+     * 获取是否�
+     * 填的�
+     * 容.
      *
      * @Author   Wayne[qiaobin@zhiyicx.com]
      * @DateTime 2017-01-17T18:37:58+0800

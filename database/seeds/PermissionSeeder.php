@@ -6,7 +6,8 @@ use Zhiyi\Plus\Models\Permission;
 class PermissionSeeder extends Seeder
 {
     /**
-     * 运行权限节点插入数据方法.
+     * 运行权限节点插�
+     * �数据方法.
      *
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
