@@ -24,19 +24,14 @@ class WalletConfigController extends Controller
     ];
 
     /**
-     * é’±åŒ
-     * ç§æœ‰é
-     * ç½®åç§°åˆ—è¡¨.
+     * Purse private configuration name list.
      *
      * @var array
      */
     protected $walletNames = ['labels', 'rule', 'cash', 'cash:min-amount'];
 
     /**
-     * é’±åŒ
-     * å
-     * ±æœ‰é
-     * ç½®åç§°åˆ—è¡¨.
+     * Wallet public configuration list.
      *
      * @var array
      */
