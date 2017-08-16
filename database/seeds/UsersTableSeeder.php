@@ -18,7 +18,7 @@ class UsersTableSeeder extends Seeder
     }
 
     /**
-     * Insert the founder information
+     * Insert the founder information.
      *
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
