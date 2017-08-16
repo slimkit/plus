@@ -162,7 +162,8 @@ class RoleController extends Controller
     }
 
     /**
-     * 获取全部权限节点.
+     * 获取�
+     * �部权限节点.
      *
      * @return mixed
      *

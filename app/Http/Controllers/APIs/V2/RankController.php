@@ -2,16 +2,14 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use DB;
-use Carbon\Carbon;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 
 class RankController extends Controller
 {
-
     /**
-     * 获取全站粉丝排行.
+     * 获取�
+     * �站粉丝排行.
      *
      * @author bs<414606094@qq.com>
      * @param  Illuminate\Http\Request $request
@@ -36,7 +34,7 @@ class RankController extends Controller
         return response()->json($userModel->getConnection()->transaction(function () use ($users, $userModel, $auth, $offset) {
             $data = [
                 'user_count' => 0,
-                'ranks' => []
+                'ranks' => [],
             ];
 
             $data['ranks'] = $users->map(function ($user, $key) use ($auth, $offset) {
@@ -59,7 +57,8 @@ class RankController extends Controller
     }
 
     /**
-     * 获取全站财富排行.
+     * 获取�
+     * �站财富排行.
      *
      * @author bs<414606094@qq.com>
      * @param  Illuminate\Http\Request $request
