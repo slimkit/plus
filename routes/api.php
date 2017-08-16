@@ -347,6 +347,10 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                 // 获取财富排行
                 // @GET /api/v2/user/ranks/balance
                 $api->get('/balance', API2\RankController::class.'@balance');
+
+                // 获取收入排行
+                // @GET /api/v2/user/ranks/income
+                $api->get('/income', API2\RankController::class.'@income');
             });
         });
 

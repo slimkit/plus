@@ -79,7 +79,7 @@ class RankController extends Controller
             ->take($limit)
             ->get();
 
-        return response()->json($userModel->getConnection()->transaction(function () use ($users, $userModel, $auth, $offset) {
+        return response()->json($userModel->getConnection()->transaction(function () use ($users, $auth, $offset) {
             return $users->map(function ($user, $key) use ($auth, $offset) {
                 $user->addHidden('extra');
                 $user->rank = $key + $offset + 1;
@@ -92,6 +92,14 @@ class RankController extends Controller
         }), 200);
     }
 
+    /**
+     * Get the rank of user`s income.
+     *
+     * @author bs<414606094@qq.com>
+     * @param  Illuminate\Http\Request $request
+     * @param  Zhiyi\Plus\Models\User $userModel
+     * @return mixed
+     */
     public function income(Request $request, User $userModel)
     {
         $auth = $request->user();
@@ -99,17 +107,24 @@ class RankController extends Controller
         $offset = $request->query('offset', 0);
 
         $users = $userModel->select('users.id', 'users.name')
-            ->join(DB::raw(''), function ($join) {
-                return $join->on('users.id', '=', 'wallet_charges.user_id')
-                    ->select('user_id', DB::raw('SUM(amount) as count'))
-                    ->where('wallet_charges.action', 1)
-                    ->groupBy('user_id');
+            ->join(DB::raw("(select `user_id`, SUM(`amount`) as `count` from `wallet_charges` where `action` = '1' and `channel` = 'user' group by `user_id`) as count"), function ($join) {
+                return $join->on('users.id', '=', 'count.user_id');
             })
-            ->orderBy('wallet_charges.count', 'desc')
+            ->orderBy('count.count', 'desc')
             ->offset($offset)
             ->take($limit)
             ->get();
 
-        dd($users);
+        return response()->json($userModel->getConnection()->transaction(function () use ($users, $auth, $offset) {
+            return $users->map(function ($user, $key) use ($auth, $offset) {
+                $user->addHidden('extra');
+                $user->rank = $key + $offset + 1;
+
+                $user->following = $user->hasFollwing($auth);
+                $user->follower = $user->hasFollower($auth);
+
+                return $user;
+            });
+        }), 200);
     }
 }
