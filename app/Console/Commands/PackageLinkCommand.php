@@ -41,7 +41,7 @@ class PackageLinkCommand extends Command
     }
 
     /**
-     * 执行操作.
+     * Perform the operation.
      *
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
@@ -70,7 +70,7 @@ class PackageLinkCommand extends Command
     }
 
     /**
-     * 获取安装包后储存在的vendor所在目录.
+     * Get the installation directory and store the directory where the vendor is located.
      *
      * @param string $package
      * @return string
@@ -85,7 +85,7 @@ class PackageLinkCommand extends Command
     }
 
     /**
-     * 获取根包信息.
+     * Get root package information.
      *
      * @return array
      * @author Seven Du <shiweidu@outlook.com>
@@ -104,7 +104,7 @@ class PackageLinkCommand extends Command
     }
 
     /**
-     * 获取包 composer 信息.
+     * Get package composer information.
      *
      * @param string $package
      * @return array

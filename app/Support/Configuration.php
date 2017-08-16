@@ -45,7 +45,7 @@ class Configuration
     }
 
     /**
-     * 获取转化为一级数组的配置，应用场景可能在 Repository 中的覆盖.
+     * Get the configuration into a primary array, and the application scenario may be overridden in the Repository.
      *
      * @return array
      * @author Seven Du <shiweidu@outlook.com>

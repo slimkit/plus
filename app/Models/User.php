@@ -235,7 +235,7 @@ class User extends Authenticatable implements ShouldAvatarContract
     }
 
     /**
-     * 用户tokens关系.
+     * User tokens relationship.
      *
      * @Author   Wayne[qiaobin@zhiyicx.com]
      * @DateTime 2017-01-03T10:13:06+0800
@@ -267,7 +267,7 @@ class User extends Authenticatable implements ShouldAvatarContract
     /**
      * 更新用户资料.
      *
-     * @param array $attributes 更新关联profile资料数据
+     * @param array $attributes Update the profile data
      *                          参考：https://laravel-china.org/docs/5.3/eloquent-relationships#updating-many-to-many-relationships
      *
      * @return [type] [description]

@@ -9,7 +9,7 @@ use Zhiyi\Plus\Models\AdvertisingSpace;
 class AdvertisingController extends Controller
 {
     /**
-     * 获取已安装的广告位信息.
+     * Get installed ad slot information.
      *
      * @author bs<414606094@qq.com>
      * @param  Request          $request

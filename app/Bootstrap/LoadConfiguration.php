@@ -11,7 +11,7 @@ class LoadConfiguration
     protected $configuration;
 
     /**
-     * 加载配置构造方法.
+     * Create the bootstrap instance.
      *
      * @author Seven Du <shiweidu@outlook.com>
      */

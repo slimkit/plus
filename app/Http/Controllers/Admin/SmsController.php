@@ -39,7 +39,7 @@ class SmsController extends Controller
     }
 
     /**
-     * 获取短信驱动配置信息.
+     * Get SMS driver configuration information.
      *
      * @param \Illuminate\Contracts\Config\Repository $config
      * @param \Illuminate\Contracts\Routing\ResponseFactory $response
@@ -60,7 +60,7 @@ class SmsController extends Controller
     }
 
     /**
-     * 更新阿里短信配置信息.
+     * Update Ali SMS configuration information.
      *
      * @param Repository $config
      * @param Configuration $store

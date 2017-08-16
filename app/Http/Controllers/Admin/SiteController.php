@@ -99,7 +99,7 @@ class SiteController extends Controller
     }
 
     /**
-     * 获取全部地区.
+     * Get all areas.
      *
      * @return mixed
      *
@@ -308,7 +308,7 @@ class SiteController extends Controller
     }
 
     /**
-     * 获取邮件配置信息.
+     * Get mail configuration information.
      *
      * @return mixed
      */
@@ -340,7 +340,7 @@ class SiteController extends Controller
     }
 
     /**
-     * 更新邮件配置信息.
+     * Update the mail configuration information.
      *
      * @return mixed
      */

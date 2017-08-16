@@ -10,7 +10,7 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 class AreaController extends Controller
 {
     /**
-     * 获取全部地区数据.
+     * Get all region data.
      *
      * @param Request $request
      * @return mixed
@@ -45,7 +45,7 @@ class AreaController extends Controller
     }
 
     /**
-     * 字符串转换为数组.
+     * Convert strings to an array.
      *
      * @param array|string $source
      * @param string $delimiter

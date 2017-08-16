@@ -15,7 +15,7 @@ class ChangeUserAvatar
     use CreateJsonResponseData;
 
     /**
-     * 修改用户头像中间件入口.
+     * Modify User Avatar Middleware Entrance.
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure                 $next

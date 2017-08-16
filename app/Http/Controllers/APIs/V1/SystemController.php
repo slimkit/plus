@@ -14,7 +14,7 @@ class SystemController extends Controller
     protected $allowedNamespace = ['im'];
 
     /**
-     * 获取扩展包安装状态
+     * Get the extended package installation status.
      *
      * @author bs<414606094@qq.com>
      * @return [type] [description]
@@ -34,7 +34,7 @@ class SystemController extends Controller
     }
 
     /**
-     * 获取扩展包配置信息.
+     * Get the extension package configuration information.
      *
      * @author bs<414606094@qq.com>
      * @param  Request $request [description]
@@ -108,7 +108,7 @@ class SystemController extends Controller
     }
 
     /**
-     * 关于我们.
+     * about us.
      *
      * @author bs<414606094@qq.com>
      * @return [type] [description]

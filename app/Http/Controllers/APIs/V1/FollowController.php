@@ -12,9 +12,9 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 class FollowController extends Controller
 {
     /**
-     * 关注用户.
+     * Follow an user.
      *
-     * @param  $user_id [被关注者ID]
+     * @param  $user_id
      *
      * @return [type] [description]
      */
@@ -58,9 +58,9 @@ class FollowController extends Controller
     }
 
     /**
-     * 取消关注.
+     * Cancel follow an user.
      *
-     * @param [integer] $user_id [被取消关注的用户ID]
+     * @param [integer] $user_id
      *
      * @return [type] [description]
      */
@@ -95,7 +95,7 @@ class FollowController extends Controller
     }
 
     /**
-     * 关注的用户.
+     * Concerned users.
      *
      * @param Request $request [description]
      *
@@ -137,7 +137,7 @@ class FollowController extends Controller
     }
 
     /**
-     * 查询粉丝.
+     * List of the followers.
      *
      * @param Request $request [description]
      *
@@ -180,7 +180,7 @@ class FollowController extends Controller
     }
 
     /**
-     * 获取用户的关注状态
+     * Get the user's follow status.
      *
      * @author bs<414606094@qq.com>
      *

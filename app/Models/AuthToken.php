@@ -14,7 +14,7 @@ class AuthToken extends Model
     }
 
     /**
-     * 查找条件依照token的复用方法.
+     * Find the condition according to the token reuse method.
      *
      * @param Builder $query 查询对象
      * @param string  $token Token值

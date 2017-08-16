@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 trait UserHasFollow
 {
     /**
-     * 正在关注 - 我关注的.
+     * follows - my following.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      * @author Seven Du <shiweidu@outlook.com>
@@ -22,7 +22,7 @@ trait UserHasFollow
     }
 
     /**
-     * 关注者 - 关注我的.
+     * followers - my followers.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      * @author Seven Du <shiweidu@outlook.com>
@@ -36,7 +36,7 @@ trait UserHasFollow
     }
 
     /**
-     * 验证是否关注.
+     * Verification is concerned followed.
      *
      * @param int|\Zhiyi\Plus\Models\User $user
      * @return bool
@@ -59,7 +59,7 @@ trait UserHasFollow
     }
 
     /**
-     * 验证是否关注了我.
+     * Verify that I am followed.
      *
      * @param  int|\Zhiyi\Plus\Models\User $user
      * @return bool

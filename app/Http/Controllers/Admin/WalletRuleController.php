@@ -10,7 +10,7 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 class WalletRuleController extends Controller
 {
     /**
-     * 获取充值、提现规则.
+     * Get the recharge and withdraw the rules.
      *
      * @param ResponseFactory $response
      * @return mixed

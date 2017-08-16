@@ -10,7 +10,7 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 class BootstrappersController extends Controller
 {
     /**
-     * 获取启动者配置列表.
+     * Gets the list of initiator configurations.
      *
      * @param ResponseFactory $response
      * @return mixed

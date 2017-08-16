@@ -10,7 +10,7 @@ class Wallet extends Model
     protected $fillable = ['user_id', 'balance'];
 
     /**
-     * 获取钱包所属用户.
+     * Get the user of the wallet.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      * @author Seven Du <shiweidu@outlook.com>

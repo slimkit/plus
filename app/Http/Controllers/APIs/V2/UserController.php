@@ -121,7 +121,7 @@ class UserController extends Controller
     }
 
     /**
-     * 处理我关注的状态.
+     * Handle the state of my follow status.
      *
      * @param \Illuminate\Http\Request $request
      * @param \Zhiyi\Plus\Models\User &$user
@@ -136,7 +136,7 @@ class UserController extends Controller
     }
 
     /**
-     * 验证是否关注了我.
+     * Verify that I am followed.
      *
      * @param \Illuminate\Http\Request $request
      * @param \Zhiyi\Plus\Models\User &$user
