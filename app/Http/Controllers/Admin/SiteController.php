@@ -99,8 +99,7 @@ class SiteController extends Controller
     }
 
     /**
-     * 获取�
-     * �部地区.
+     * Get all areas.
      *
      * @return mixed
      *
@@ -309,8 +308,8 @@ class SiteController extends Controller
     }
 
     /**
-     * 获取邮件�
-     * �置信息.
+     * 获取邮件?
+     * ?置信息.
      *
      * @return mixed
      */
@@ -342,8 +341,8 @@ class SiteController extends Controller
     }
 
     /**
-     * 更新邮件�
-     * �置信息.
+     * 更新邮件?
+     * ?置信息.
      *
      * @return mixed
      */
