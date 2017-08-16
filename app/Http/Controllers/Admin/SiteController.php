@@ -308,8 +308,7 @@ class SiteController extends Controller
     }
 
     /**
-     * 获取邮件?
-     * ?置信息.
+     * Get mail configuration information.
      *
      * @return mixed
      */
@@ -341,8 +340,7 @@ class SiteController extends Controller
     }
 
     /**
-     * 更新邮件?
-     * ?置信息.
+     * Update the mail configuration information.
      *
      * @return mixed
      */
