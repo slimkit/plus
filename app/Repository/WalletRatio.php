@@ -50,8 +50,7 @@ class WalletRatio
     }
 
     /**
-     * 储存或�
-     * 更新设置.
+     * Save or update settings.
      *
      * @param int $ratio
      * @return void
