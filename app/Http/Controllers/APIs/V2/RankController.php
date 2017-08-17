@@ -18,7 +18,7 @@ class RankController extends Controller
      */
     public function followers(Request $request, User $userModel)
     {
-        $auth = $request->user('api')->id ?? 0;;
+        $auth = $request->user('api')->id ?? 0;
         $limit = $request->query('limit', 10);
         $offset = $request->query('offset', 0);
 
@@ -32,7 +32,6 @@ class RankController extends Controller
             ->get();
 
         return response()->json($userModel->getConnection()->transaction(function () use ($users, $userModel, $auth, $offset) {
-
             return $users->map(function ($user, $key) use ($auth, $offset) {
                 $user->extra->count = $user->followers_count;
                 $user->extra->rank = $key + $offset + 1;

@@ -99,7 +99,6 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
         $api->post('/', API2\VerifyCodeController::class.'@store');
     });
 
-
     // 排行榜相关
     // @Route /api/v2/user/ranks
     $api->group(['prefix' => 'ranks'], function (RouteContract $api) {
