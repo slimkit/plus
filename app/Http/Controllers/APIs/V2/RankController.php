@@ -18,11 +18,11 @@ class RankController extends Controller
      */
     public function followers(Request $request, User $userModel)
     {
-        $auth = $request->user();
+        $auth = $request->user('api')->id ?? 0;;
         $limit = $request->query('limit', 10);
         $offset = $request->query('offset', 0);
 
-        $users = $userModel->select('users.id', 'users.name', 'user_extras.followers_count')
+        $users = $userModel->select('users.*', 'user_extras.followers_count')
             ->join('user_extras', function ($join) {
                 return $join->on('users.id', '=', 'user_extras.user_id');
             })
@@ -32,15 +32,10 @@ class RankController extends Controller
             ->get();
 
         return response()->json($userModel->getConnection()->transaction(function () use ($users, $userModel, $auth, $offset) {
-            $data = [
-                'user_count' => 0,
-                'ranks' => [],
-            ];
 
-            $data['ranks'] = $users->map(function ($user, $key) use ($auth, $offset) {
-                $user->addHidden('extra');
-                $user->count = $user->followers_count;
-                $user->rank = $key + $offset + 1;
+            return $users->map(function ($user, $key) use ($auth, $offset) {
+                $user->extra->count = $user->followers_count;
+                $user->extra->rank = $key + $offset + 1;
 
                 $user->following = $user->hasFollwing($auth);
                 $user->follower = $user->hasFollower($auth);
@@ -49,10 +44,6 @@ class RankController extends Controller
 
                 return $user;
             });
-
-            $data['user_count'] = $userModel->extra()->where('user_id', $auth->id)->value('followers_count') ?? 0;
-
-            return $data;
         }), 200);
     }
 
@@ -66,11 +57,11 @@ class RankController extends Controller
      */
     public function balance(Request $request, User $userModel)
     {
-        $auth = $request->user();
+        $auth = $request->user('api')->id ?? 0;
         $limit = $request->query('limit', 10);
         $offset = $request->query('offset', 0);
 
-        $users = $userModel->select('users.id', 'users.name')
+        $users = $userModel->select('users.*', 'users.name')
             ->join('wallets', function ($join) {
                 return $join->on('users.id', '=', 'wallets.user_id');
             })
@@ -81,8 +72,7 @@ class RankController extends Controller
 
         return response()->json($userModel->getConnection()->transaction(function () use ($users, $auth, $offset) {
             return $users->map(function ($user, $key) use ($auth, $offset) {
-                $user->addHidden('extra');
-                $user->rank = $key + $offset + 1;
+                $user->extra->rank = $key + $offset + 1;
 
                 $user->following = $user->hasFollwing($auth);
                 $user->follower = $user->hasFollower($auth);
@@ -102,7 +92,7 @@ class RankController extends Controller
      */
     public function income(Request $request, User $userModel)
     {
-        $auth = $request->user();
+        $auth = $request->user('api')->id ?? 0;
         $limit = $request->query('limit', 10);
         $offset = $request->query('offset', 0);
 
@@ -117,8 +107,7 @@ class RankController extends Controller
 
         return response()->json($userModel->getConnection()->transaction(function () use ($users, $auth, $offset) {
             return $users->map(function ($user, $key) use ($auth, $offset) {
-                $user->addHidden('extra');
-                $user->rank = $key + $offset + 1;
+                $user->extra->rank = $key + $offset + 1;
 
                 $user->following = $user->hasFollwing($auth);
                 $user->follower = $user->hasFollower($auth);

@@ -99,6 +99,23 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
         $api->post('/', API2\VerifyCodeController::class.'@store');
     });
 
+
+    // 排行榜相关
+    // @Route /api/v2/user/ranks
+    $api->group(['prefix' => 'ranks'], function (RouteContract $api) {
+
+        // 获取粉丝排行
+        // @GET /api/v2/user/ranks/followers
+        $api->get('/followers', API2\RankController::class.'@followers');
+
+        // 获取财富排行
+        // @GET /api/v2/user/ranks/balance
+        $api->get('/balance', API2\RankController::class.'@balance');
+
+        // 获取收入排行
+        // @GET /api/v2/user/ranks/income
+        $api->get('/income', API2\RankController::class.'@income');
+    });
     /*
     | 获取文件.
     */
@@ -335,23 +352,6 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
              * @author Seven Du <shiweidu@outlook.com>
              */
             $api->delete('/email', API2\UserEmailController::class.'@delete');
-
-            // 排行榜相关
-            // @Route /api/v2/user/ranks
-            $api->group(['prefix' => 'ranks'], function (RouteContract $api) {
-
-                // 获取粉丝排行
-                // @GET /api/v2/user/ranks/followers
-                $api->get('/followers', API2\RankController::class.'@followers');
-
-                // 获取财富排行
-                // @GET /api/v2/user/ranks/balance
-                $api->get('/balance', API2\RankController::class.'@balance');
-
-                // 获取收入排行
-                // @GET /api/v2/user/ranks/income
-                $api->get('/income', API2\RankController::class.'@income');
-            });
         });
 
         /*

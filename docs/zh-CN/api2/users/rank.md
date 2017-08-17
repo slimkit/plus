@@ -9,7 +9,7 @@
 根据全站的用户粉丝数进行的排序
 
 ```
-GET /user/ranks/followers
+GET /ranks/followers
 ```
 
 ## 传入参数
@@ -26,56 +26,51 @@ Http Status 200 Ok
 ```
 
 ```json5
-{
-    "user_count": 0,
-    "ranks": [
-        {
-            "id": 3,
-            "name": "root2",
-            "count": 7,
-            "rank": 1,
-            "following": false,
-            "follower": false,
-            "avatar": null,
-            "bg": null,
-            "verified": null
-        },
-        {
-            "id": 2,
-            "name": "root1",
-            "count": 1,
-            "rank": 2,
-            "following": false,
-            "follower": false,
-            "avatar": null,
-            "bg": null,
-            "verified": null
+[
+    {
+        "id": 1,
+        "name": "baishi",
+        "bio": null,
+        "sex": 1,
+        "location": null,
+        "created_at": "2017-07-31 03:16:19",
+        "updated_at": "2017-08-09 10:09:28",
+        "following": false,
+        "follower": false,
+        "avatar": null,
+        "bg": null,
+        "verified": null,
+        "extra": {
+            "user_id": 1,
+            "likes_count": 2,
+            "comments_count": 9,
+            "followers_count": 0,
+            "followings_count": 0,
+            "updated_at": "2017-08-17 07:05:06",
+            "feeds_count": 0,
+            "questions_count": 0,
+            "answers_count": 19,
+            "count": 0,
+            "rank": 1
         }
-    ]
-}
+    }
+]
 ```
 
 ### 返回参数
 | 名称 | 类型 | 说明 |
 |:----:|:-----|------|
-| user_count | int | 当前用户收到的点赞数 |
-| ranks | array | 排行信息 |
-| ranks.id | int | 用户id |
-| ranks.name | string | 用户名称 |
-| ranks.count | int | 用户粉丝数 |
-| ranks.rank | int | 用户排名 |
-| ranks.following | bool | 对方用户是否关注了当前用户 |
-| ranks.follower | bool | 对方用户是否被当前用户关注 |
-| ranks.avatar | string/null | 用户头像 |
-| ranks.bg | string/null | 用户背景图片 |
-| ranks.verified | array/null | 用户认证资料 |
+| extra.count | int | 粉丝数 |
+| extra.rank | int | 排行 |
+
+> 其他数据结构参考「用户」接口用户资料
 
 ## 获取财富达人排行
 
 根据全站的钱包余额进行的排序
 
 ```
-GET /user/ranks/balance
+GET /ranks/balance
 ```
 
 ## 传入参数
@@ -96,54 +91,45 @@ Http Status 200 Ok
     {
         "id": 1,
         "name": "baishi",
-        "rank": 1,
+        "bio": null,
+        "sex": 1,
+        "location": null,
+        "created_at": "2017-07-31 03:16:19",
+        "updated_at": "2017-08-09 10:09:28",
         "following": false,
         "follower": false,
         "avatar": null,
         "bg": null,
-        "verified": null
-    },
-    {
-        "id": 3,
-        "name": "root2",
-        "rank": 2,
-        "following": false,
-        "follower": false,
-        "avatar": null,
-        "bg": null,
-        "verified": null
-    },
-    {
-        "id": 2,
-        "name": "root1",
-        "rank": 3,
-        "following": false,
-        "follower": false,
-        "avatar": null,
-        "bg": null,
-        "verified": null
+        "verified": null,
+        "extra": {
+            "user_id": 1,
+            "likes_count": 2,
+            "comments_count": 9,
+            "followers_count": 0,
+            "followings_count": 0,
+            "updated_at": "2017-08-17 07:05:06",
+            "feeds_count": 0,
+            "questions_count": 0,
+            "answers_count": 19,
+            "rank": 1
+        }
     }
 ]
 ```
 
 ### 返回参数
+
 | 名称 | 类型 | 说明 |
 |:----:|:-----|------|
-| id | int | 用户id |
-| name | string | 用户名称 ||
-| rank | int | 用户排名 |
-| following | bool | 对方用户是否关注了当前用户 |
-| follower | bool | 对方用户是否被当前用户关注 |
-| avatar | string/null | 用户头像 |
-| bg | string/null | 用户背景图片 |
-| verified | array/null | 用户认证资料 |
+| extra.rank | int | 排行 |
 
+> 其他数据结构参考「用户」接口用户资料
 ## 获取全站收入排行
 
 根据全站的收入记录总额进行的排序
 
 ```
-GET /user/ranks/income
+GET /ranks/income
 ```
 
 ## 传入参数
@@ -164,44 +150,36 @@ Http Status 200 Ok
     {
         "id": 1,
         "name": "baishi",
-        "rank": 1,
+        "bio": null,
+        "sex": 1,
+        "location": null,
+        "created_at": "2017-07-31 03:16:19",
+        "updated_at": "2017-08-09 10:09:28",
         "following": false,
         "follower": false,
         "avatar": null,
         "bg": null,
-        "verified": null
-    },
-    {
-        "id": 3,
-        "name": "root2",
-        "rank": 2,
-        "following": false,
-        "follower": false,
-        "avatar": null,
-        "bg": null,
-        "verified": null
-    },
-    {
-        "id": 2,
-        "name": "root1",
-        "rank": 3,
-        "following": false,
-        "follower": false,
-        "avatar": null,
-        "bg": null,
-        "verified": null
+        "verified": null,
+        "extra": {
+            "user_id": 1,
+            "likes_count": 2,
+            "comments_count": 9,
+            "followers_count": 0,
+            "followings_count": 0,
+            "updated_at": "2017-08-17 07:05:06",
+            "feeds_count": 0,
+            "questions_count": 0,
+            "answers_count": 19,
+            "rank": 1
+        }
     }
 ]
 ```
 
 ### 返回参数
+
 | 名称 | 类型 | 说明 |
 |:----:|:-----|------|
-| id | int | 用户id |
-| name | string | 用户名称 ||
-| rank | int | 用户排名 |
-| following | bool | 对方用户是否关注了当前用户 |
-| follower | bool | 对方用户是否被当前用户关注 |
-| avatar | string/null | 用户头像 |
-| bg | string/null | 用户背景图片 |
-| verified | array/null | 用户认证资料 |
+| extra.rank | int | 排行 |
+
+> 其他数据结构参考「用户」接口用户资料
