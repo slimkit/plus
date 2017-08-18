@@ -235,19 +235,6 @@ class User extends Authenticatable implements ShouldAvatarContract
     }
 
     /**
-     * User tokens relationship.
-     *
-     * @Author   Wayne[qiaobin@zhiyicx.com]
-     * @DateTime 2017-01-03T10:13:06+0800
-     *
-     * @return object \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function tokens()
-    {
-        return $this->hasMany(AuthToken::class, 'user_id');
-    }
-
-    /**
      * 用户资料.
      *
      * @return [type] [description]
