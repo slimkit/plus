@@ -64,6 +64,9 @@ Route::middleware('auth:web')
     Route::get('/site/baseinfo', 'SiteController@get');
     Route::patch('/site/baseinfo', 'SiteController@updateSiteInfo');
 
+    /* ------------- system info ------------*/
+    Route::get('/site/systeminfo', 'SiteController@server');
+
     // 后台表单
     Route::get('/forms', 'SiteController@showForms');
 

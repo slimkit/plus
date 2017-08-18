@@ -19,7 +19,9 @@
       </router-link>
       <router-link to="/setting/mail" tag="li" active-class="active">
         <a href="#">邮件</a>
-      </router-link>      
+      </router-link>
+      <router-link to="/setting/server" tag="li" active-class="active">
+        <a href="#">服务器信息</a> 
       </router-link>
     </ul>
     <!-- End settings nav. -->

@@ -12,6 +12,8 @@ export const USER_DELETE = 'user/delete';
 
 // Defined [settings/site].
 export const SETTINGS_SITE_UPDATE = 'settings/site/UPDATE';
+
+export const SETTINGS_SYSTEM_UPDATE = 'settings/system/UPDATE';
 // export const SETTINGS_SITE_TITLE = 'settings/site/title';
 // export const SETTINGS_SITE_KEYWORDS = 'settings/site/keywords';
 // export const SETTINGS_SITE_DESCRIPTION = 'settings/site/description';
