@@ -2,7 +2,7 @@
 
 namespace Zhiyi\Plus\Providers;
 
-use Zhiyi\Plus\Services\Auth\TokenGuard;
+use Zhiyi\Plus\Auth\TokenGuard;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zhiyi\Plus\Services\Auth;
+namespace Zhiyi\Plus\Auth;
 
 use Tymon\JWTAuth\JWTAuth;
 use Illuminate\Http\Request;
