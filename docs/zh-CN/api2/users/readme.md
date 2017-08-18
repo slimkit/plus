@@ -339,6 +339,7 @@ DELETE /api/v2/user/email
 #### 输入
 
 | 名称 | 类型 | 描述 |
+|:-----:|:----:|----|
 | password | String | 用户密码。 |
 | verifiable_code | Int 或者 String | 手机号码或者邮箱验证码。 |
 
