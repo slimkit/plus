@@ -3,9 +3,9 @@
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\Area;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\CommonConfig;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Support\Facades\Cache;
@@ -385,28 +385,28 @@ class SiteController extends Controller
     }
 
     /**
-     * 服务器信息
+     * 服务器信息.
      */
     public function server(ResponseFactory $response)
     {
-        $mysql = DB::select( DB::raw("select version()") )[0];
+        $mysql = DB::select(DB::raw('select version()'))[0];
         $system = [
             'os' => PHP_OS,
-            'server' => $_SERVER["SERVER_SOFTWARE"],
+            'server' => $_SERVER['SERVER_SOFTWARE'],
             'mysql' => $mysql->{'version()'},
             'port' => $_SERVER['SERVER_PORT'],
-            'root' => $_SERVER["DOCUMENT_ROOT"],
+            'root' => $_SERVER['DOCUMENT_ROOT'],
             'agent' => $_SERVER['HTTP_USER_AGENT'],
             'protocol' => $_SERVER['SERVER_PROTOCOL'],
             'method' => $_SERVER['REQUEST_METHOD'],
             'laravel_version' => app()::VERSION,
             'max_upload_size' => ini_get('upload_max_filesize'),
             'execute_time' => ini_get('max_execution_time').'秒',
-            'server_date' => date("Y年n月j日 H:i:s"),
-            'local_date' => gmdate("Y年n月j日 H:i:s",time()+8*3600),
-            'domain_ip' => $_SERVER['SERVER_NAME'].' [ '. $_SERVER['SERVER_ADDR'].' ]',
+            'server_date' => date('Y年n月j日 H:i:s'),
+            'local_date' => gmdate('Y年n月j日 H:i:s', time() + 8 * 3600),
+            'domain_ip' => $_SERVER['SERVER_NAME'].' [ '.$_SERVER['SERVER_ADDR'].' ]',
             'user_ip' => $_SERVER['REMOTE_ADDR'],
-            'disk' => round((disk_free_space(".")/(1024*1024)),2).'M',
+            'disk' => round((disk_free_space('.') / (1024 * 1024)), 2).'M',
         ];
 
         return $response->json($system)->setStatusCode(200);
