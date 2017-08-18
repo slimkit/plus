@@ -391,6 +391,7 @@ class SiteController extends Controller
     {
         $mysql = DB::select(DB::raw('select version()'))[0];
         $system = [
+            'php_version' => PHP_VERSION,
             'os' => PHP_OS,
             'server' => $_SERVER['SERVER_SOFTWARE'],
             'mysql' => $mysql->{'version()'},

@@ -28,6 +28,7 @@
   const System = {
     data: () => ({
       translates: {
+        php_version: 'PHP版本',
         os: '操作系统',
         server: '运行环境',
         domain_ip: '域名/IP',

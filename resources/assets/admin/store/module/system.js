@@ -1,6 +1,7 @@
 import { SETTINGS_SYSTEM_UPDATE } from '../types';
 
 const state = {
+  php_version: '',
  	os: '',
 	server: '',
   mysql: '',
