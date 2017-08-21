@@ -81,7 +81,7 @@ $lefyNavWidth: 240px;
 <script>
 import { mapGetters } from 'vuex';
 import { createRequestURI, createAPI } from '../util/request';
-import { USER, USER_DATA } from '../store/getter-types';
+import { USER } from '../store/getter-types';
 
 import DefaultAvatar from '../icons/default-avatar';
 
