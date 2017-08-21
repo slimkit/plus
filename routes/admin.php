@@ -67,6 +67,14 @@ Route::middleware('auth:web')
     /* ------------- system info ------------*/
     Route::get('/site/systeminfo', 'SiteController@server');
 
+    /* ------------- tags -----------------*/
+    
+    // 标签列表
+    Route::get('/site/tags', 'TagController@lists');
+
+    // 分类列表
+    Route::get('/site/tag_categories', 'TagController@categories');
+
     // 后台表单
     Route::get('/forms', 'SiteController@showForms');
 

@@ -23,4 +23,13 @@ class Tag extends Model
     {
         return $this->hasOne(TagCategory::class, 'id', 'tag_category_id');
     }
+
+    /**
+     * 统计使用了多少次
+     */
+    public function taggable()
+    {
+        return $this->hasMany(Taggable::class, 'tag_id', 'id');
+    }
+
 }
