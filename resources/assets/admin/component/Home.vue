@@ -52,8 +52,8 @@ $lefyNavWidth: 240px;
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdownMune">
-          <li class="disabled">
-            <a href="#" @click="openWebsite">
+          <li>
+            <a href="/" target="_blank">
               <span class="glyphicon glyphicon-new-window"></span>
               打开前台
             </a>
@@ -98,14 +98,6 @@ const home = {
     ]),
     user () {
       return this[USER];
-    }
-  },
-  methods: {
-    openWebsite (e) {
-      e.stopPropagation();
-      e.preventDefault();
-
-      return false;
     }
   },
   components: {
