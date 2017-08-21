@@ -315,11 +315,11 @@ class SiteController extends Controller
      */
     public function mail(Request $request, Repository $config, ResponseFactory $response)
     {
-        if (! $request->user()->can('admin:mail:show')) {
-            return response()->json([
-                'message' => '没有权限查看该项信息',
-            ])->setStatusCode(403);
-        }
+        // if (! $request->user()->can('admin:mail:show')) {
+        //     return response()->json([
+        //         'message' => '没有权限查看该项信息',
+        //     ])->setStatusCode(403);
+        // }
 
         $driver = $config->get('mail.driver', 'smtp');
         $host = $config->get('mail.host');
@@ -347,11 +347,11 @@ class SiteController extends Controller
      */
     public function updateMailInfo(Request $request, Configuration $config, ResponseFactory $response)
     {
-        if (! $request->user()->can('admin:mail:show')) {
-            return response()->json([
-                'message' => '没有权限更新该信息',
-            ])->setStatusCode(403);
-        }
+        // if (! $request->user()->can('admin:mail:show')) {
+        //     return response()->json([
+        //         'message' => '没有权限更新该信息',
+        //     ])->setStatusCode(403);
+        // }
 
         $site = [];
         foreach ($request->all() as $key => $value) {
@@ -389,12 +389,11 @@ class SiteController extends Controller
      */
     public function server(ResponseFactory $response)
     {
-        $mysql = DB::select(DB::raw('select version()'))[0];
         $system = [
             'php_version' => PHP_VERSION,
             'os' => PHP_OS,
             'server' => $_SERVER['SERVER_SOFTWARE'],
-            'mysql' => $mysql->{'version()'},
+            'db' => env('DB_CONNECTION'),
             'port' => $_SERVER['SERVER_PORT'],
             'root' => $_SERVER['DOCUMENT_ROOT'],
             'agent' => $_SERVER['HTTP_USER_AGENT'],

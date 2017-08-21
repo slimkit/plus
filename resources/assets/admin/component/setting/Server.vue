@@ -32,7 +32,7 @@
         os: '操作系统',
         server: '运行环境',
         domain_ip: '域名/IP',
-        mysql: 'MySQL版本',
+        db: '数据库',
         root: '根目录',
         laravel_version: 'Laravel版本',
         max_upload_size: '最大上传限制',

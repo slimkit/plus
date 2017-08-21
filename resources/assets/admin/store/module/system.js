@@ -4,7 +4,7 @@ const state = {
   php_version: '',
  	os: '',
 	server: '',
-  mysql: '',
+  db: '',
   port: '',
   root: '',
   agent: '',
