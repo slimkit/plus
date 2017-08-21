@@ -68,7 +68,7 @@ Route::middleware('auth:web')
     Route::get('/site/systeminfo', 'SiteController@server');
 
     /* ------------- tags -----------------*/
-    
+
     // 标签列表
     Route::get('/site/tags', 'TagController@lists');
 
