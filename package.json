@@ -47,8 +47,8 @@
     "vuex-router-sync": "^4.2.0"
   },
   "engines": {
-    "node": ">= 4.0.0",
-    "npm": ">= 3.0.0"
+    "node": ">= 6.0.0",
+    "npm": ">= 5.0.0"
   },
   "browserslist": [
     "Android 2.3",
