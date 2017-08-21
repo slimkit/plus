@@ -20,7 +20,6 @@ class JWTAuthStorageAdapter implements StorageInterface
     public function add($key, $value, $minutes)
     {
         $this->payloadSingle('add', function ($key, $value, $minutes) {
-
             $token = JWTCache::find($key);
             if (! $token) {
                 $token = new JWTCache();
