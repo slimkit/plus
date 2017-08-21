@@ -2,10 +2,10 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Tymon\JWTAuth\JWTAuth;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use function Zhiyi\Plus\username;
+use Zhiyi\Plus\Auth\JWTAuthToken;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class TokenController extends Controller
@@ -15,11 +15,11 @@ class TokenController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Tymon\JWTAuth\JWTAuth $auth
+     * @param \Zhiyi\Plus\Auth\JWTAuthToken $jwtAuthToken
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function store(Request $request, ResponseFactoryContract $response, JWTAuth $auth, User $model)
+    public function store(Request $request, ResponseFactoryContract $response, JWTAuthToken $jwtAuthToken, User $model)
     {
         $login = $request->input('login');
         $password = $request->input('password');
@@ -29,10 +29,8 @@ class TokenController extends Controller
             return $response->json(['login' => ['用户不存在']], 404);
         } elseif (! $user->verifyPassword($password)) {
             return $response->json(['password' => ['密码错误']], 422);
-        }
-
-        return ($token = $auth->fromUser($user)) !== false
-            ? $response->json([
+        } elseif (($token = $jwtAuthToken->create($user))) {
+            return $response->json([
                 'token' => $token,
                 'user' => array_merge($user->toArray(), [
                     'phone'  => $user->phone,
@@ -41,8 +39,10 @@ class TokenController extends Controller
                 ]),
                 'ttl' => config('jwt.ttl'),
                 'refresh_ttl' => config('jwt.refresh_ttl'),
-            ])->setStatusCode(201)
-            : $response->json(['message' => ['Failed to create token.']])->setStatusCode(500);
+            ])->setStatusCode(201);
+        }
+
+        return $response->json(['message' => ['Failed to create token.']])->setStatusCode(500);
     }
 
     /**
@@ -54,14 +54,16 @@ class TokenController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function refresh(ResponseFactoryContract $response, JWTAuth $auth, string $token)
+    public function refresh(ResponseFactoryContract $response, JWTAuthToken $jwtAuthToken, string $token)
     {
-        return ($token = $auth->refresh($token)) !== false
-            ? $response->json([
-                'token' => $token,
-                'ttl' => config('jwt.ttl'),
-                'refresh_ttl' => config('jwt.refresh_ttl'),
-            ])->setStatusCode(201)
-            : $response->json(['message' => ['Failed to refresh token.']], 500);
+        if (! $jwtAuthToken->refresh($token)) {
+            return $response->json(['message' => ['Failed to refresh token.']], 500);
+        }
+
+        return $response->json([
+            'token' => $token,
+            'ttl' => config('jwt.ttl'),
+            'refresh_ttl' => config('jwt.refresh_ttl'),
+        ])->setStatusCode(201);
     }
 }
