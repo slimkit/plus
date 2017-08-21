@@ -75,7 +75,7 @@ class JWTAuthToken
             return $token;
         }
 
-        JWTCacheModel::where('user_id', $user->id)->update([
+        JWTCacheModel::where('user_id', $user->id)->where('status', 0)->update([
             'status' => 1,
         ]);
 
