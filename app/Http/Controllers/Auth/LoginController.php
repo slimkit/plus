@@ -74,6 +74,6 @@ class LoginController extends Controller
      */
     protected function redirectTo(): string
     {
-        return request()->input('redirect', '/');
+        return request()->input('redirect') ?: '/';
     }
 }

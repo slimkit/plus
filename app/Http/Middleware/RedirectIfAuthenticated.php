@@ -35,6 +35,6 @@ class RedirectIfAuthenticated
      */
     protected function redirectTo(): string
     {
-        return request()->input('redirect', '/');
+        return request()->input('redirect') ?: '/';
     }
 }
