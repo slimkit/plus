@@ -41,7 +41,7 @@ $lefyNavWidth: 240px;
     <div class="left-nav pull-left">
 
       <!-- User avatar. -->
-      <img v-if="avatar" class="img-responsive img-circle center-block user-avatar" :src="avatar">
+      <img v-if="user.avatar" class="img-responsive img-circle center-block user-avatar" :src="user.avatar">
       <default-avatar v-else class="img-responsive img-circle center-block user-avatar" />
       <!-- End user avatar. -->
 
@@ -94,18 +94,8 @@ const home = {
   }),
   computed: {
     ...mapGetters([
-      USER,
-      USER_DATA
+      USER
     ]),
-    avatar () {
-      let { avatar } = this[USER_DATA] || {};
-
-      if (typeof avatar === 'object') {
-        return createAPI(`storages/${avatar.value}`);
-      }
-
-      return '';
-    },
     user () {
       return this[USER];
     }
