@@ -114,6 +114,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Single auth token.
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    'single_auth' => true,
+
+    /*
+    |--------------------------------------------------------------------------
     | Providers
     |--------------------------------------------------------------------------
     |
@@ -166,7 +175,8 @@ return [
         |
         */
 
-        'storage' => 'Tymon\JWTAuth\Providers\Storage\IlluminateCacheAdapter',
+        'cache_storage' => 'Tymon\JWTAuth\Providers\Storage\IlluminateCacheAdapter',
+        'storage' => Zhiyi\Plus\Auth\JWTAuthStorageAdapter::class,
 
     ],
 
