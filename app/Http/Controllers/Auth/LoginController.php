@@ -24,6 +24,20 @@ class LoginController extends Controller
     }
 
     /**
+     * Show the application's login form.
+     *
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function showLoginForm()
+    {
+        return view('auth.login', [
+            'login' => $login = old('email', old('phone', old('name', old('id', '')))),
+            'errorUsername' => username($login),
+        ]);
+    }
+
+    /**
      * Handle a login request to the application.
      *
      * @param \Illuminate\Http\Request $request

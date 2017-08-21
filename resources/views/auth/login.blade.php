@@ -64,6 +64,17 @@
             outline: none;
             box-sizing: border-box;
         }
+        .has-error .form-control {
+            border-color: #a94442;
+        }
+        .has-error .help-block {
+            display: block;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            color: #a94442;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
         .form-submit {
             border: 1px solid rgba(255, 255, 255, 0.25);
             border-radius: 4px;
@@ -82,17 +93,34 @@
     <form role="form" method="POST" action="{{ route('login') }}">
         {{ csrf_field() }}
 
-        <div class="form-group">
-            <input class="form-control" type="text" name="login" placeholder="登录名 / 邮箱 / 手机号码" />
+        <input type="hidden" name="redirect" value="{{ request()->input('redirect') }}">
+
+        <div class="form-group {{ $errors->has($errorUsername) ? 'has-error' : '' }} ">
+
+            <input class="form-control" type="text" name="login" placeholder="登录名 / 邮箱 / 手机号码" value="{{ $login }}" required autofocus />
+
+            @if ($errors->has($errorUsername))
+                <span class="help-block">
+                    {{ $errors->first($errorUsername) }}
+                </span>
+            @endif
+
         </div>
 
-        <div class="form-group">
-            <input class="form-control" type="password" name="password" placeholder="请输入密码" />
+        <div class="form-group {{ $errors->has('password') ? 'has-error' : '' }} ">
+            <input class="form-control" type="password" name="password" placeholder="请输入密码" required />
+
+            @if ($errors->has('password'))
+                <span class="help-block">
+                    {{ $errors->first('password') }}
+                </span>
+            @endif
+
         </div>
 
         <div class="form-group form-buttom-group">
             <label>
-                <input type="checkbox" name="remember" /> 记住我
+                <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }} /> 记住我
             </label>
             <button class="form-submit" type="submit">登陆</button>
         </div>
