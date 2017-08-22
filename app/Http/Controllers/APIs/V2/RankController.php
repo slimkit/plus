@@ -76,6 +76,7 @@ class RankController extends Controller
 
                 $user = $user->toArray();
                 $user['extra']['rank'] = $key + $offset + 1;
+
                 return $user;
             });
         }), 200);
