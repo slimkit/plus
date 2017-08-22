@@ -71,6 +71,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     $api->get('/advertisingspace/{space}/advertising', API2\AdvertisingController::class.'@advertising');
     $api->get('/advertisingspace/advertising', API2\AdvertisingController::class.'@batch');
 
+    // Get a html for about us.
+    $api->get('/aboutus', API2\SystemController::class.'@about');
+
     // Get all tags.
     // @Get /api/v2/tags
     $api->get('/tags', API2\TagController::class.'@index');
@@ -281,6 +284,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
                 $api->patch('/{notification?}', API2\UserNotificationController::class.'@markAsRead');
             });
+
+            // send a feedback.
+            $api->post('/feedback', API2\SystemController::class.'@createFeedback');
 
             /*
             | 更新当前用户头像
