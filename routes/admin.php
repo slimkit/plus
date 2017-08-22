@@ -1,16 +1,38 @@
 <?php
 
-Route::get('/', 'HomeController@index')
-    ->name('admin');
-Route::post('/login', 'HomeController@login');
-Route::any('/logout', 'HomeController@logout');
+use Illuminate\Support\Facades\Route;
+use Illuminate\Contracts\Routing\Registrar as RouteRegisterContract;
+
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::group(['middleware' => 'auth:web'], function (RouteRegisterContract $route) {
+
+    // Admin Index.
+    // @GET /admin
+    $route->get('/', 'HomeController@index');
+
+    // Admin Routes.
+    // @Route /admin
+    $route->group(['middleware' => 'admin'], function (RouteRegisterContract $route) {
+
+        // 后台导航
+        // @GET /admin/manages
+        $route->get('/manages', 'HomeController@showManages');
+    });
+});
 
 Route::middleware('auth:web')
 ->middleware('admin')
 ->group(function () {
-
-    // 后台导航
-    Route::get('/manages', 'HomeController@showManages');
 
     // 钱包
     Route::prefix('wallet')->group(function () {
@@ -134,8 +156,3 @@ Route::middleware('auth:web')
     // 系统通知
     Route::any('/system/notice', 'SystemController@pushSystemNotice');
 });
-
-// Add the route, SPA used mode "history"
-// But, RESTful the route?
-// Route::get('/{route?}', 'HomeController@index')
-// ->where('route', '.*');

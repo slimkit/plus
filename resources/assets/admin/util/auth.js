@@ -42,12 +42,7 @@ const logout = (cb) => {
  */
 export function requireAuth (to, from, next) {
   if (!logged()) {
-    next({
-      path: '/login',
-      query: {
-        redirect: to.fullPath
-      }
-    });
+    window.location.replace('/auth/login');
   } else {
     next();
   }

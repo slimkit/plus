@@ -60,7 +60,7 @@ $lefyNavWidth: 240px;
           </li>
           <li role="separator" class="divider"></li>
           <li>
-            <a :href="logout">
+            <a href="/auth/logout" >
               <span class="glyphicon glyphicon-log-in"></span>
               退出登录
             </a>
@@ -80,7 +80,6 @@ $lefyNavWidth: 240px;
 
 <script>
 import { mapGetters } from 'vuex';
-import { createRequestURI, createAPI } from '../util/request';
 import { USER } from '../store/getter-types';
 
 import DefaultAvatar from '../icons/default-avatar';
@@ -89,9 +88,6 @@ import DefaultAvatar from '../icons/default-avatar';
 import Nav from './Nav';
 
 const home = {
-  data: () => ({
-    logout: createRequestURI('logout')
-  }),
   computed: {
     ...mapGetters([
       USER
