@@ -31,5 +31,4 @@ class Tag extends Model
     {
         return $this->hasMany(Taggable::class, 'tag_id', 'id');
     }
-
 }

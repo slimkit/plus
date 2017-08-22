@@ -5,11 +5,11 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Requests\API2\StoreTag;
 use Zhiyi\Plus\Models\Tag as TagModel;
-use Zhiyi\Plus\Models\TagCategory as TagCategoryModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\TagCategory as TagCategoryModel;
 
 /**
- * 标签管理控制器
+ * 标签管理控制器.
  */
 class TagController extends Controller
 {
