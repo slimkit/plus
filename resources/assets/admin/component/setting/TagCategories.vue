@@ -201,8 +201,11 @@
         }
 
         request.patch(createRequestURI(`site/tags/tag_categories/${edit}`), {
-          
+          name: edit_name
         }, {
+          validateStatus: status => status === 201
+        })
+        .then(({ data = {} }) => {
           
         })
       },
