@@ -71,11 +71,11 @@ class RankController extends Controller
 
         return response()->json($userModel->getConnection()->transaction(function () use ($users, $auth, $offset) {
             return $users->map(function ($user, $key) use ($auth, $offset) {
-                $user->extra->rank = $key + $offset + 1;
-
                 $user->following = $user->hasFollwing($auth);
                 $user->follower = $user->hasFollower($auth);
 
+                $user = $user->toArray();
+                $user['extra']['rank'] = $key + $offset + 1;
                 return $user;
             });
         }), 200);
@@ -106,10 +106,11 @@ class RankController extends Controller
 
         return response()->json($userModel->getConnection()->transaction(function () use ($users, $auth, $offset) {
             return $users->map(function ($user, $key) use ($auth, $offset) {
-                $user->extra->rank = $key + $offset + 1;
-
                 $user->following = $user->hasFollwing($auth);
                 $user->follower = $user->hasFollower($auth);
+
+                $user = $user->toArray();
+                $user['extra']['rank'] = $key + $offset + 1;
 
                 return $user;
             });
