@@ -69,11 +69,23 @@ Route::middleware('auth:web')
 
     /* ------------- tags -----------------*/
     
-    // 标签列表
-    Route::get('/site/tags', 'TagController@lists');
+    Route::prefix('site/tags')->group( function () {
+        // 标签列表(带分页)
+        Route::get('/', 'TagController@lists');
+        Route::get('/{tag}', 'TagController@tag')
+            ->where('tag', '[0-9]+');
 
-    // 分类列表
-    Route::get('/site/tag_categories', 'TagController@categories');
+        // 分类列表(带分页)
+        Route::get('/tag_categories', 'TagController@categories');
+
+        // 标签分类(不带分页)
+        Route::get('/categories', 'TagController@cateForTag');
+
+        // 添加标签
+        Route::post('/', 'TagController@store');
+        Route::patch('/{tag}', 'TagController@update')
+            ->where('tag', '[0-9]+');
+    });
 
     // 后台表单
     Route::get('/forms', 'SiteController@showForms');

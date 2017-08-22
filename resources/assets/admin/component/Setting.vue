@@ -31,6 +31,9 @@
           <router-link tag="li" active-class="active" to="/setting/tag-categories">
             <a href="#">标签分类</a>
           </router-link>
+          <router-link tag="li" active-class="active" to="/setting/addtag">
+            <a href="#">添加标签</a>
+          </router-link>
         </ul>
       </li>
       </router-link>

@@ -1,5 +1,8 @@
 <template>
   <div class="container-fluid">
+    <div class="page-header">
+      <h4>标签列表<small :class="$style.link"><router-link to="/setting/addtag">添加标签</router-link></small></h4>
+    </div>
     <!-- 标签列表 -->
       <table class="table table-striped" v-if="!empty">
         <thead>
@@ -21,13 +24,17 @@
           <tr v-for="tag in tags" :key="tag.id">
             <td>{{ tag.id }}</td>
             <td>{{ tag.name }}</td>
-            <td>{{ tag.category.name }}</td>
+            <td>
+              <router-link :to="`/setting/tags?cate=${ tag.category.id }`">
+                {{ tag.category.name }}
+              </router-link>
+            </td>
             <td>{{ tag.taggable_count }}</td>
             <td>
               <!-- 编辑 -->
-              <router-link type="button" class="btn btn-primary btn-sm" :to="`/users/manage/${tag.id}`" >编辑</router-link>
+              <router-link type="button" class="btn btn-primary btn-sm" :to="`/setting/updatetag/${tag.id}`" >编辑</router-link>
               <!-- 删除 -->
-              <button type="button" class="btn btn-danger btn-sm" @click="deleteUser(tag.id)">删除</button>
+              <button type="button" class="btn btn-danger btn-sm" @click="deleteTag(tag.id)">删除</button>
             </td>
           </tr>
         </tbody>
@@ -63,7 +70,8 @@
     animation-duration: 1.4s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
-  }  
+  }
+  .link { margin-left: 16px; }
 </style>
 
 <script>
@@ -79,7 +87,8 @@
       prev_page_url: null,
       total: 0,
       per_page: 20,
-      loadding: true
+      loadding: true,
+      cate: 0
     }),
     methods: {
       getTags () {
@@ -96,8 +105,8 @@
           this.loadding = false;
         }).catch(({ response: { data: { message = '加载失败' } = {} } = {} }) => {
           this.loadding = false;
-          // this.error = true;
-          // window.alert(message);
+          this.error = true;
+          window.alert(message);
         });
       }
       
@@ -108,12 +117,14 @@
         const {
           last_page = 1,
           per_page = 20,
-          page = 1
+          page = 1,
+          cate = 0
         } = to.query;
 
         this.last_page = parseInt(last_page);
         this.per_page = parseInt(per_page);
         this.page = parseInt(page);
+        this.cate = parseInt(cate);
 
         this.getTags();
       }
@@ -124,8 +135,8 @@
         return !(this.tags.length > 0);
       },
       queryParams () {
-        const { per_page, page } = this;
-        return { per_page, page };
+        const { per_page, page, cate } = this;
+        return { per_page, page, cate };
       },
       prevQuery () {
         const page = parseInt(this.page);
@@ -150,12 +161,14 @@
       const {
         last_page = 1,
         page = 1,
-        per_page = 20
+        per_page = 20,
+        cate = 0
       } = this.$route.query;
       // set state.
       this.last_page = last_page;
       this.current_page = page;
-      this.per_page = per_page
+      this.per_page = per_page;
+      this.cate = cate
       this.getTags();
     }
   }

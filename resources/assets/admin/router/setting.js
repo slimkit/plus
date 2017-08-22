@@ -13,6 +13,8 @@ import SendMail from '../component/setting/SendMail';
 import Server from '../component/setting/Server';
 import Tags from '../component/setting/Tags';
 import TagCategories from '../component/setting/TagCategories';
+import AddTag from '../component/setting/AddTag';
+import UpdateTag from '../component/setting/UpdateTag';
 
 const settingRouter = {
   path: 'setting',
@@ -45,6 +47,14 @@ const settingRouter = {
     {
       path: 'tag-categories',
       component: TagCategories
+    },
+    {
+      path: 'addtag',
+      component: AddTag
+    },
+    {
+      path: 'updatetag/:tag_id',
+      component: UpdateTag
     },
     {
       path: 'server',

@@ -19,9 +19,14 @@
         "overtrue/easy-sms": "^0.0.9",
         "pingplusplus/pingpp-php": "^2.2",
         "predis/predis": "^1.1",
+        "slimkit/around-amap": "^0.0.1",
         "slimkit/plus-installer": "^1.0",
         "symfony/polyfill-mbstring": "^1.4",
-        "tymon/jwt-auth": "^0.5.12"
+        "tymon/jwt-auth": "^0.5.12",
+        "zhiyicx/plus-component-feed": "^2.0",
+        "zhiyicx/plus-component-group": "^0.0.3",
+        "zhiyicx/plus-component-im": "^2.0",
+        "zhiyicx/plus-component-web": "^3.0"
     },
     "require-dev": {
         "codacy/coverage": "^1.0",

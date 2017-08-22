@@ -1,5 +1,8 @@
 <template>
   <div class="container-fluid">
+    <div class="page-header">
+      <h4>标签分类<small :class="$style.link"><router-link to="/setting/addTagCate">添加分类</router-link></small></h4>
+    </div>
     <!-- 标签列表 -->
       <table class="table table-striped" v-if="!empty">
         <thead>
@@ -20,10 +23,14 @@
           <tr v-for="category in tag_categories" :key="category.id">
             <td>{{ category.id }}</td>
             <td>{{ category.name }}</td>
-            <td>{{ category.tags_count }}</td>
+            <td>
+              <router-link :to="`/setting/tags?cate=${category.id}`">
+                {{ category.tags_count }}
+              </router-link>
+            </td>
             <td>
               <!-- 编辑 -->
-              <router-link type="button" class="btn btn-primary btn-sm" :to="`/users/manage/${category.id}`" >编辑</router-link>
+              <router-link type="button" class="btn btn-primary btn-sm" :to="`/setting/updatetag/${category.id}`" >编辑</router-link>
               <!-- 删除 -->
               <button type="button" class="btn btn-danger btn-sm" @click="deleteUser(category.id)">删除</button>
             </td>
@@ -62,6 +69,9 @@
     animation-timing-function: linear;
     animation-iteration-count: infinite;
   }
+  .link {
+    margin-left: 16px;
+  }
 </style>
 
 <script>
@@ -79,7 +89,7 @@
 
     methods: {
       getTagCategories () {
-        request.get(createRequestURI(`site/tag_categories`) , {
+        request.get(createRequestURI(`site/tags/tag_categories`) , {
           params: { ...this.queryParams }
         }, {
           validateStatus: status => status === 200
