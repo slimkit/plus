@@ -5,7 +5,7 @@ namespace Zhiyi\Plus\Http\Requests\API2;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTag extends FormRequest
+class UpdateTag extends FormRequest
 {
 	 /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +25,9 @@ class StoreTag extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:10|unique:tags',
+            'name' => 'required_without:category|required|max:10|unique:tags',
             'category' => [
-            	'required',
+            	'required_without:name',
             	Rule::exists('tag_categories', 'id')
             ]
         ];
@@ -42,10 +42,10 @@ class StoreTag extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => '标签名称必填',
+            'name.required_without' => '标签名称和分类至少提交一个',
             'name.max' => '标签名称过长',
             'name.unique' => '标签已经存在',
-            'category.required' => '标签分类必填',
+            'category.required_without' => '标签名称和分类至少提交一个',
             'category.exists' => '标签分类不存在'
         ];
     }

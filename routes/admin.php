@@ -83,8 +83,17 @@ Route::middleware('auth:web')
 
         // 添加标签
         Route::post('/', 'TagController@store');
+
+        Route::post('/tag_categories', 'TagController@storeCate');
+
+        Route::patch('/tag_categories/{cate}', 'TagController@updateCate');
+
         Route::patch('/{tag}', 'TagController@update')
             ->where('tag', '[0-9]+');
+
+        Route::delete('/{tag}', 'TagController@delete');
+        
+        Route::delete('/tag_categories/{cate}', 'TagController@deleteCategory');
     });
 
     // 后台表单

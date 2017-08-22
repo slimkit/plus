@@ -3,8 +3,16 @@
     <div class="page-header">
       <h4>标签列表<small :class="$style.link"><router-link to="/setting/addtag">添加标签</router-link></small></h4>
     </div>
+    <div v-show="error" class="alert alert-danger alert-dismissible" role="alert">
+      <button type="button" class="close" @click.prevent="dismisAddAreaError">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <strong>Error:</strong>
+      <p>{{ message }}</p>
+    </div>
     <!-- 标签列表 -->
       <table class="table table-striped" v-if="!empty">
+        
         <thead>
           <tr>
             <th>标签ID</th>
@@ -75,6 +83,7 @@
 </style>
 
 <script>
+  import _ from 'lodash';
   import { mapGetters } from 'vuex';
   import request, { createRequestURI } from '../../util/request';
   
@@ -88,7 +97,9 @@
       total: 0,
       per_page: 20,
       loadding: true,
-      cate: 0
+      cate: 0,
+      error: false,
+      message: ''
     }),
     methods: {
       getTags () {
@@ -108,6 +119,31 @@
           this.error = true;
           window.alert(message);
         });
+      },
+
+      dismisAddAreaError () {
+        this.error = false;
+      },
+
+      deleteTag(id) {
+        if(!id) {
+          return false;
+        }
+        request.delete(createRequestURI(`site/tags/${id}`), {
+          validateStatus: status => status === 204
+        })
+        .then( () => {
+          // 删除数据
+          let index = _.findIndex(this.tags, (tag) => {
+            return tag.id === id;
+          });
+
+          this.tags.splice(index, 1);
+        })
+        .catch(({ response: { data: { message  = '加载失败' } = {} } = {} }) => {
+          this.error = true;
+          this.message = message;
+        })
       }
       
     },

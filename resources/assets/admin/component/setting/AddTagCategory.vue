@@ -25,17 +25,17 @@
           </button>
         </div>
       </div>
-      <button type="button" @click="send()" id="myButton" data-complete-text="修改成功" data-loading-text="提交中..." class="btn btn-default" autocomplete="off" :disabled="!canSend">
-        修改
+      <button type="submit" @click="send()" id="myButton" data-complete-text="添加成功" data-loading-text="提交中..." class="btn btn-default" autocomplete="off" :disabled="!canSend">
+        添加
       </button>
     </form>
     <div v-show="add.error" class="alert alert-danger alert-dismissible" role="alert">
-        <button type="button" class="close" @click.prevent="dismisAddAreaError">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <strong>Error:</strong>
-        <p>{{ add.error_message }}</p>
-      </div>
+      <button type="button" class="close" @click.prevent="dismisAddAreaError">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <strong>Error:</strong>
+      <p>{{ add.error_message }}</p>
+    </div>
   </div>
 </template>
 <style module lang="scss">
@@ -44,10 +44,8 @@
 <script>
   import request, { createRequestURI } from '../../util/request';
 
-  const UpdateTag = {
+  const AddTag = {
     data: () => ({
-      tag: {},
-      tag_id: 0,
       name: '',
       category: 0,
       categories: [],
@@ -62,17 +60,16 @@
       send () {
         const {
           name = '',
-          category = 0,
-          tag_id = 0
+          category = 0
         } = this;
-        if(!name || !category || !tag_id) {
+        if(!name || !category) {
           this.add.error = true;
           this.add.error_message = '参数不完整';
           return false;
         }
         let btn = $("#myButton").button('loading');
 
-        request.patch(createRequestURI(`site/tags/${tag_id}`), {
+        request.post(createRequestURI('site/tags'), {
           name,category
         }, {
           validateStatus: status => status === 201
@@ -83,7 +80,7 @@
         .catch(({ response: { data = {} } = {} }) => {
           btn.button('reset');
 
-          let error = '修改标签失败';
+          let error = '添加标签失败';
           if(data.name) {
             error = data.name[0];
           }
@@ -100,9 +97,9 @@
         btn.button('complete');
           setTimeout(() => {
             btn.button('reset');
-            this.tag.name = this.name;
-            this.tag.tag_category_id = this.category;
-          }, 1500);
+            this.name = '',
+            this.category = 0;
+          }, 2000);
       },
 
       dismisAddAreaError () {
@@ -124,48 +121,19 @@
         .catch( () => {
 
         });
-      },
-
-      // 获取标签详情
-      getTag () {
-        request.get(createRequestURI(`site/tags/${this.tag_id}`), {
-          validateStatus: status => status === 200
-        })
-        .then(({ data = {} }) => {
-          this.tag = { ...data };
-          this.name = data.name;
-          this.category = data.tag_category_id;
-        })
-        .catch( () => {
-
-        })
       }
     },
 
     computed: {
       // 按钮是否处于激活状态
       canSend() {
-        let nameChanged = (this.name != '' && (this.name != this.tag.name));
-        let cateChanged = (this.category !== 0 && (this.tag.tag_category_id !== this.category));
-        return (nameChanged || cateChanged);
+        return (this.name != '') && (this.category != 0);
       }
     },
     created () {
-      const {
-        tag_id = 0
-      } = this.$route.params;
-
-      if(!tag_id) {
-        window.alert('参数错误');
-        setTimeout( () => {
-          this.$router.go(-1);
-        }, 2000); 
-      }
-      this.tag_id = tag_id;
-      this.getTag();
       this.getCategories();
     }
   };
 
-  export default UpdateTag;
+  export default AddTag;
 </script>

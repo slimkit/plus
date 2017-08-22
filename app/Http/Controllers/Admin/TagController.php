@@ -4,6 +4,7 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Requests\API2\StoreTag;
+use Zhiyi\Plus\Http\Requests\API2\UpdateTag;
 use Zhiyi\Plus\Models\Tag as TagModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\TagCategory as TagCategoryModel;
@@ -55,6 +56,20 @@ class TagController extends Controller
 		return response()->json($tag)->setStatusCode(200);
 	}
 
+	/**
+	 * 删除tag
+	 */
+	public function delete(TagModel $tag)
+	{
+		if( !$tag->taggable()->count() ) {
+			$tag->delete();
+
+			return response()->json()->setStatusCode(204);
+		}
+
+		return response()->json(['message' => '有资源使用该标签，不能删除，请先清理使用该标签的资源'])->setStatusCode(422);
+	}
+
 	// 获取无分页tag分类
 	public function cateForTag() {
 		$categories = TagCategoryModel::orderBy('id', 'asc')
@@ -80,7 +95,7 @@ class TagController extends Controller
 	/**
 	 * 更新tag
 	 */
-	public function update (Request $request, TagModel $tag)
+	public function update (UpdateTag $request, TagModel $tag)
 	{
 		$name = $request->input('name', '');
 		$tag_category_id = $request->input('category', 0);
@@ -90,6 +105,52 @@ class TagController extends Controller
 		if($name) $tag->name = $name;
 		if($tag_category_id) $tag->tag_category_id = $tag_category_id;
 
-		dd($tag->save());
+		if ($tag->save()) {
+			return response()->json(['message' => '修改成功'])->setStatusCode(201);
+		}
+
+		return response()->json(['message' => '未知错误'])->setStatusCode(500);
+	}
+
+	/**
+	 * 删除标签分类
+	 */
+	public function deleteCategory(TagCategoryModel $cate)
+	{
+		if(!$cate->tags()->count()) {
+			$cate->delete();
+
+			return response()->json()->setStatusCode(204);
+		}
+
+		return response()->json(['message' => '该分类下还有标签存在，请先删除标签再删除分类'])->setStatusCode(422);
+	}
+
+	/**
+	 * 存储标签分类
+	 */
+	public function storeCate(Request $request, TagCategoryModel $tagcate)
+	{
+		$name = $request->input('name', '');
+		if(!$name) {
+			return response()->json(['message' => '请输入分类名称'])->setStatusCode(400);
+		}
+
+		if($tagcate->where('name', $name)->count()) {
+			return response()->json(['message' => '分类已经存在'])->setStatusCode(422);
+		}
+
+		$tagcate->name = $name;
+		$tagcate->save();
+
+		return response()->json(['message' => '创建分类成功', 'id' => $tagcate->id])->setStatusCode(201);
+	}
+
+	/**
+	 * 更新标签分类
+	 */
+	public function updateCate(Request $request, TagCategoryModel $cate)
+	{
+
 	}
 }

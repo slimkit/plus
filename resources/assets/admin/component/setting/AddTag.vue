@@ -25,17 +25,17 @@
           </button>
         </div>
       </div>
-      <button type="submit" @click="send()" id="myButton" data-complete-text="添加成功" data-loading-text="提交中..." class="btn btn-default" autocomplete="off">
+      <button type="submit" @click="send()" id="myButton" data-complete-text="添加成功" data-loading-text="提交中..." class="btn btn-default" autocomplete="off" :disabled="!canSend">
         添加
       </button>
     </form>
     <div v-show="add.error" class="alert alert-danger alert-dismissible" role="alert">
-        <button type="button" class="close" @click.prevent="dismisAddAreaError">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <strong>Error:</strong>
-        <p>{{ add.error_message }}</p>
-      </div>
+      <button type="button" class="close" @click.prevent="dismisAddAreaError">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <strong>Error:</strong>
+      <p>{{ add.error_message }}</p>
+    </div>
   </div>
 </template>
 <style module lang="scss">
@@ -95,11 +95,11 @@
 
       sendComplate(btn) {
         btn.button('complete');
-          setTimeout(() => {
-            btn.button('reset');
-            this.name = '',
-            this.category = 0;
-          }, 2000);
+        setTimeout(() => {
+          btn.button('reset');
+          this.name = '',
+          this.category = 0;
+        }, 1500);
       },
 
       dismisAddAreaError () {
