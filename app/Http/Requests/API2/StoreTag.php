@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTag extends FormRequest
 {
-	 /**
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
@@ -27,9 +27,9 @@ class StoreTag extends FormRequest
         return [
             'name' => 'required|max:10|unique:tags',
             'category' => [
-            	'required',
-            	Rule::exists('tag_categories', 'id')
-            ]
+                'required',
+                Rule::exists('tag_categories', 'id'),
+            ],
         ];
     }
 
@@ -46,7 +46,7 @@ class StoreTag extends FormRequest
             'name.max' => '标签名称过长',
             'name.unique' => '标签已经存在',
             'category.required' => '标签分类必填',
-            'category.exists' => '标签分类不存在'
+            'category.exists' => '标签分类不存在',
         ];
     }
 }

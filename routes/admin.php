@@ -90,8 +90,8 @@ Route::middleware('auth:web')
     Route::get('/site/systeminfo', 'SiteController@server');
 
     /* ------------- tags -----------------*/
-    
-    Route::prefix('site/tags')->group( function () {
+
+    Route::prefix('site/tags')->group(function () {
         // 标签列表(带分页)
         Route::get('/', 'TagController@lists');
         Route::get('/{tag}', 'TagController@tag')
@@ -114,7 +114,7 @@ Route::middleware('auth:web')
             ->where('tag', '[0-9]+');
 
         Route::delete('/{tag}', 'TagController@delete');
-        
+
         Route::delete('/tag_categories/{cate}', 'TagController@deleteCategory');
     });
 

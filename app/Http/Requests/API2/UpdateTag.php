@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateTag extends FormRequest
 {
-	 /**
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
@@ -27,9 +27,9 @@ class UpdateTag extends FormRequest
         return [
             'name' => 'required_without:category|required|max:10|unique:tags',
             'category' => [
-            	'required_without:name',
-            	Rule::exists('tag_categories', 'id')
-            ]
+                'required_without:name',
+                Rule::exists('tag_categories', 'id'),
+            ],
         ];
     }
 
@@ -46,7 +46,7 @@ class UpdateTag extends FormRequest
             'name.max' => '标签名称过长',
             'name.unique' => '标签已经存在',
             'category.required_without' => '标签名称和分类至少提交一个',
-            'category.exists' => '标签分类不存在'
+            'category.exists' => '标签分类不存在',
         ];
     }
 }
