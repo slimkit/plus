@@ -19,7 +19,7 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            return ($redirectTo = $this->$this->redirectTo())
+            return ($redirectTo = $this->redirectTo())
                 ? redirect($redirectTo)
                 : back();
         }
