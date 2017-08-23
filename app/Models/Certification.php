@@ -37,7 +37,7 @@ class Certification extends Model implements ShouldAvatarContract
      *
      * @var array
      */
-    protected $with = ['category'];
+    protected $with = ['category', 'user'];
 
     /**
      * Get icon url.
@@ -92,5 +92,10 @@ class Certification extends Model implements ShouldAvatarContract
     public function category()
     {
         return $this->hasOne(CertificationCategory::class, 'name', 'certification_name');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

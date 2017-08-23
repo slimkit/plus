@@ -104,6 +104,19 @@ Route::middleware('auth:web')
 
     // 系统通知
     Route::any('/system/notice', 'SystemController@pushSystemNotice');
+
+    // 认证类型管理
+    Route::get('certification/categories', 'CertificationCategoryController@certifications');
+    Route::get('certification/categories/{name}', 'CertificationCategoryController@show');
+    Route::put('certification/categories/{name}', 'CertificationCategoryController@update');
+    // 认证管理
+    Route::get('certifications', 'CertificationController@index');
+    Route::get('certifications/{certification}', 'CertificationController@show');
+    Route::patch('certifications/{certification}', 'CertificationController@update');
+    Route::post('certifications', 'CertificationController@store');
+    Route::patch('certifications/{certification}/pass', 'CertificationController@passCertification');
+    Route::patch('certifications/{certification}/reject', 'CertificationController@rejectCertification');
+    Route::get('find/nocertification/users', 'CertificationController@findNoCertificationUsers');
 });
 
 // Add the route, SPA used mode "history"

@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use function Zhiyi\Plus\username;
@@ -77,6 +78,7 @@ class HomeController extends Controller
             'api'        => url('api/v1'),
             'logged'     => $this->guard()->check(),
             'user'       => $user ? $this->user($user) : null,
+            'token'      => JWTAuth::fromUser($user),
         ];
 
         return view('admin', $data);

@@ -24,6 +24,7 @@
                 'api' => $api,
                 'logged' => $logged,
                 'user' => $user,
+                'token' => $token,
             ])
         !!};
     </script>
