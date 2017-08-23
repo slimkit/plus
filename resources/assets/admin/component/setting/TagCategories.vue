@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <div class="page-header">
-      <h4>标签分类<small :class="$style.link"><router-link to="/setting/addTagCate">添加分类</router-link></small></h4>
+      <h4>标签分类<small :class="$style.link" @click="addFocus()"><a href="javascript:void(0)">添加分类</a></small></h4>
     </div>
     <div v-show="error" class="alert alert-danger alert-dismissible" role="alert">
       <button type="button" class="close" @click.prevent="dismisAddAreaError">
@@ -27,6 +27,21 @@
             <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
           </td>
         </tr>
+        <tr v-for="category in tag_categories" :key="category.id" v-if="edit === category.id">
+          <td>
+            <input type="text" v-model="edit_name" v-focus placeholder="标签分类名字" />
+          </td>
+          <td></td>
+          <td></td>
+          <td>
+            <button type="button" @click="hideEdit()" class="btn btn-danger btn-sm" autocomplete="off">
+              取消
+            </button>
+            <button type="button" @click="update()" class="btn btn-default" autocomplete="off" :disabled="!canEditSend">
+              修改分类
+            </button>
+          </td>
+        </tr>
         <tr v-for="category in tag_categories" :key="category.id" v-if="edit !== category.id">
           <td>{{ category.id }}</td>
           <td>{{ category.name }}</td>
@@ -42,29 +57,23 @@
             <button type="button" class="btn btn-danger btn-sm" @click="deleteCate(category.id)">删除</button>
           </td>
         </tr>
-        <tr v-for="category in tag_categories" :key="category.id" v-if="edit === category.id">
-          <td>
-            <input type="text" v-model="edit_name" placeholder="标签分类名字" />
-          </td>
-          <td></td>
-          <td></td>
-          <td>
-            <button type="button" @click="hideEdit()" class="btn btn-danger btn-sm" autocomplete="off">
-              取消
-            </button>
-            <button type="button" @click="update()" id="myEditButton" data-complete-text="修改成功" data-loading-text="提交中..." class="btn btn-default" autocomplete="off" :disabled="!canEditSend">
-              修改分类
-            </button>
-          </td>
-        </tr>
         <tr>
           <td>
-            <input type="text" v-model="name" placeholder="标签分类名字" />
+            <input type="text" ref="focusinput" v-model="name" placeholder="标签分类名字" />
           </td>
           <td></td>
           <td></td>
           <td>
-            <button type="submit" @click="send()" id="myButton" data-complete-text="添加成功" data-loading-text="提交中..." class="btn btn-default" autocomplete="off" :disabled="!canSend">
+            <button 
+              type="submit" 
+              @click="send()" 
+              id="myButton" 
+              data-complete-text="添加成功" 
+              data-loading-text="提交中..." 
+              class="btn btn-default" 
+              autocomplete="off" 
+              :disabled="!canSend"
+            >
               添加分类
             </button>
           </td>
@@ -165,6 +174,7 @@
         this.edit_cate = {};
       },
 
+      // add tag cate
       send () {
         const { name } = this;
         let btn = $("#myButton").button('loading');
@@ -206,12 +216,27 @@
           validateStatus: status => status === 201
         })
         .then(({ data = {} }) => {
-          
+          let index = _.findIndex(this.tag_categories, (cate) => {
+            return cate.id === edit;
+          });
+
+          this.tag_categories[index].name = edit_name;
+          this.edit = 0;
+          this.edit_name = '';
+          this.edit_cate = {};
+        })
+        .catch(({ response: { data: { message = '修改失败' } = {} } = {} }) => {
+          this.error = true;
+          this.message = message;
         })
       },
 
       dismisAddAreaError () {
         this.error = false;
+      },
+
+      addFocus() {
+        this.$refs.focusinput.focus();
       },
 
       // 删除分类

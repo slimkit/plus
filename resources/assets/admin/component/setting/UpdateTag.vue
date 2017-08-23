@@ -38,8 +38,10 @@
       </div>
   </div>
 </template>
-<style module lang="scss">
-  
+<style scoped lang="scss">
+  .btn-group {
+    margin-bottom: 8px;
+  }
 </style>
 <script>
   import request, { createRequestURI } from '../../util/request';

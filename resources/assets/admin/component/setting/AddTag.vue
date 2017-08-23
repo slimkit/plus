@@ -11,7 +11,7 @@
       <div class="form-group">
         <label for="exampleInputPassword1">标签分类</label>
         <div  class="btn-toolbar" role="group" aria-label="cate">
-          <button 
+          <button
             type="button" 
             @click="setCategory(cate.id)" 
             :class="{ 'btn-info': category === cate.id}"
@@ -38,8 +38,10 @@
     </div>
   </div>
 </template>
-<style module lang="scss">
-  
+<style scoped lang="scss">
+  .btn-group {
+    margin-bottom: 8px;
+  }
 </style>
 <script>
   import request, { createRequestURI } from '../../util/request';

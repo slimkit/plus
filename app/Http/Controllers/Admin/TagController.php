@@ -44,8 +44,8 @@ class TagController extends Controller
         $page = $request->input('page', 1);
 
         $categories = TagCategoryModel::withCount('tags')
-        ->orderBy('id', 'desc')
-        ->paginate($limit);
+            ->orderBy('id', 'desc')
+            ->paginate($limit);
 
         return response()->json($categories)->setStatusCode(200);
     }
@@ -158,5 +158,15 @@ class TagController extends Controller
      */
     public function updateCate(Request $request, TagCategoryModel $cate)
     {
+        $name = $request->input('name', '');
+        if(TagCategoryModel::where('name', $name)->count()) {
+            return response()->json(['message' => '分类已经存在'])->setStatusCode(422);
+        }
+
+        $cate->name = $name;
+        $cate->save();
+
+        return response()->json(['message' => '修改成功'])->setStatusCode(201);
+
     }
 }
