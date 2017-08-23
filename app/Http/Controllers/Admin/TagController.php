@@ -159,7 +159,7 @@ class TagController extends Controller
     public function updateCate(Request $request, TagCategoryModel $cate)
     {
         $name = $request->input('name', '');
-        if(TagCategoryModel::where('name', $name)->count()) {
+        if (TagCategoryModel::where('name', $name)->count()) {
             return response()->json(['message' => '分类已经存在'])->setStatusCode(422);
         }
 
@@ -167,6 +167,5 @@ class TagController extends Controller
         $cate->save();
 
         return response()->json(['message' => '修改成功'])->setStatusCode(201);
-
     }
 }
