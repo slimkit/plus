@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <div class="page-header">
-      <h4>添加标签</h4>
+      <h4>编辑标签</h4>
     </div>
     <form style="margin-bottom: 16px;">
       <div class="form-group">
