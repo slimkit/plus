@@ -53,7 +53,7 @@ class JWTAuthStorageAdapter implements StorageInterface
             $now = Carbon::now();
             if ($token->status && $now->diffInMinutes($token->created_at) < $token->minutes) {
                 return true;
-            } elseif (! $token->status && $now->diffInMinutes($token->created_at) > $token->minutes) {
+            } elseif ($now->diffInMinutes($token->created_at) > $token->minutes) {
                 $token->delete();
             }
 

@@ -18,7 +18,7 @@ class TagController extends Controller
     public function index(ResponseFactoryContract $response, TagCategoryModel $categoryModel)
     {
         return $response->json(
-            $categoryModel->with('tags')->get()
+            $categoryModel->with('tags')->orderBy('weight', 'desc')->get()
         )->setStatusCode(200);
     }
 }

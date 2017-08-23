@@ -17,6 +17,7 @@ class CreateTagsTable extends Migration
             $table->increments('id');
             $table->string('name', 150)->comment('标签名称');
             $table->integer('tag_category_id')->comment('标签类别');
+            $table->integer('weight')->default(0)->comment('权重,排序用');
             $table->timestamps();
         });
     }

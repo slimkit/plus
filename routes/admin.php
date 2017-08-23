@@ -1,16 +1,38 @@
 <?php
 
-Route::get('/', 'HomeController@index')
-    ->name('admin');
-Route::post('/login', 'HomeController@login');
-Route::any('/logout', 'HomeController@logout');
+use Illuminate\Support\Facades\Route;
+use Illuminate\Contracts\Routing\Registrar as RouteRegisterContract;
+
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::group(['middleware' => 'auth:web'], function (RouteRegisterContract $route) {
+
+    // Admin Index.
+    // @GET /admin
+    $route->get('/', 'HomeController@index');
+
+    // Admin Routes.
+    // @Route /admin
+    $route->group(['middleware' => 'admin'], function (RouteRegisterContract $route) {
+
+        // 后台导航
+        // @GET /admin/manages
+        $route->get('/manages', 'HomeController@showManages');
+    });
+});
 
 Route::middleware('auth:web')
 ->middleware('admin')
 ->group(function () {
-
-    // 后台导航
-    Route::get('/manages', 'HomeController@showManages');
 
     // 钱包
     Route::prefix('wallet')->group(function () {
@@ -67,6 +89,35 @@ Route::middleware('auth:web')
     /* ------------- system info ------------*/
     Route::get('/site/systeminfo', 'SiteController@server');
 
+    /* ------------- tags -----------------*/
+
+    Route::prefix('site/tags')->group(function () {
+        // 标签列表(带分页)
+        Route::get('/', 'TagController@lists');
+        Route::get('/{tag}', 'TagController@tag')
+            ->where('tag', '[0-9]+');
+
+        // 分类列表(带分页)
+        Route::get('/tag_categories', 'TagController@categories');
+
+        // 标签分类(不带分页)
+        Route::get('/categories', 'TagController@cateForTag');
+
+        // 添加标签
+        Route::post('/', 'TagController@store');
+
+        Route::post('/tag_categories', 'TagController@storeCate');
+
+        Route::patch('/tag_categories/{cate}', 'TagController@updateCate');
+
+        Route::patch('/{tag}', 'TagController@update')
+            ->where('tag', '[0-9]+');
+
+        Route::delete('/{tag}', 'TagController@delete');
+
+        Route::delete('/tag_categories/{cate}', 'TagController@deleteCategory');
+    });
+
     // 后台表单
     Route::get('/forms', 'SiteController@showForms');
 
@@ -118,8 +169,3 @@ Route::middleware('auth:web')
     Route::patch('certifications/{certification}/reject', 'CertificationController@rejectCertification');
     Route::get('find/nocertification/users', 'CertificationController@findNoCertificationUsers');
 });
-
-// Add the route, SPA used mode "history"
-// But, RESTful the route?
-// Route::get('/{route?}', 'HomeController@index')
-// ->where('route', '.*');

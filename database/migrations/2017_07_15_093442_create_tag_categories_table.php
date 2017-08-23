@@ -16,6 +16,7 @@ class CreateTagCategoriesTable extends Migration
         Schema::create('tag_categories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 150)->comment('标签类别');
+            $table->integer('weight')->default(0)->comment('权重,排序用');
             $table->timestamps();
         });
     }

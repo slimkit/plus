@@ -32,6 +32,7 @@
             align-items: center;
             display: flex;
             justify-content: center;
+            width: 100%;
         }
 
         .position-ref {
@@ -66,10 +67,63 @@
         .m-b-md {
             margin-bottom: 30px;
         }
+
+        .navbar {
+            position: absolute;
+            right: 36px;
+            top: 20px;
+        }
+        .navbar .button {
+            display: flex;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0);
+            width: 100px;
+            height: 36px;
+            color: #fff;
+            outline: none;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+        .navbar .user {
+            display: flex;
+            align-items: center;
+        }
+        .navbar .user .avatar {
+            width: 36px;
+            height: 36px;
+            border: 1px solid #fff;
+            border-radius: 50%;
+        }
+        .navbar .user .logout {
+            width: auto;
+            margin-left: 12px;
+            border: none;
+        }
     </style>
 </head>
-<body class="g-bg-color">
+<body>
 <div class="flex-center position-ref full-height g-bg-color">
+    <div class="navbar">
+
+        @if (Auth::guest())
+            <a class="button" href="{{ route('login') }}">登陆</a>
+        @else
+            <div class="user">
+                @if (Auth::user()->avatar)
+                    <img class="avatar" src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}" />
+                @else
+                    <span class="name">Hi, {{ Auth::user()->name }}</span>
+                @endif
+
+                <a class="button logout" href="{{ route('logout') }}">登出</a>
+            </div>
+        @endif
+
+    </div>
+
     <div class="content">
         <img src="{{ asset('/plus.png') }}" align="{{ config('app.name') }}">
 

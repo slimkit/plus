@@ -19,9 +19,22 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            return redirect('/home');
+            return ($redirectTo = $this->redirectTo())
+                ? redirect($redirectTo)
+                : back();
         }
 
         return $next($request);
+    }
+
+    /**
+     * logged in redirect path.
+     *
+     * @return string
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function redirectTo(): string
+    {
+        return request()->input('redirect') ?: '';
     }
 }
