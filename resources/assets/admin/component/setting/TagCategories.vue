@@ -17,6 +17,7 @@
           <th>分类ID</th>
           <th>分类</th>
           <th>拥有标签数量</th>
+          <th>权重(越大越靠前)</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -28,11 +29,16 @@
           </td>
         </tr>
         <tr v-for="category in tag_categories" :key="category.id" v-if="edit === category.id">
+          <td> {{ category.id }}</td>
           <td>
             <input type="text" v-model="edit_name" v-focus placeholder="标签分类名字" />
           </td>
-          <td></td>
-          <td></td>
+          <td>
+            {{ category.tags_count }}
+          </td>
+          <td>
+            <input type="number" v-model="edit_weight" placeholder="分类权重,数字,越大排序越靠前" />
+          </td>
           <td>
             <button type="button" @click="hideEdit()" class="btn btn-danger btn-sm" autocomplete="off">
               取消
@@ -51,6 +57,9 @@
             </router-link>
           </td>
           <td>
+            {{ category.weight }}
+          </td>
+          <td>
             <!-- 编辑 -->
             <button type="button" class="btn btn-primary btn-sm" @click="showEdit(category.id)">编辑</button>
             <!-- 删除 -->
@@ -58,11 +67,14 @@
           </td>
         </tr>
         <tr>
+          <td></td>
           <td>
             <input type="text" ref="focusinput" v-model="name" placeholder="标签分类名字" />
           </td>
           <td></td>
-          <td></td>
+          <td>
+            <input type="number" v-model="weight" placeholder="分类权重,数字,越大排序越靠前" />
+          </td>
           <td>
             <button 
               type="submit" 
@@ -131,9 +143,11 @@
       error: false,
       message: '',
       name: '',
+      weight: 0,
       edit: 0,
       edit_name: '',
-      edit_cate: {}
+      edit_cate: {},
+      edit_weight: null
     }),
 
     methods: {
@@ -165,6 +179,7 @@
           return cate.id === id;
         });
         this.edit_cate = { ...this.tag_categories[index] };
+        this.edit_weight = this.edit_cate.weight;
         this.edit_name = this.edit_cate.name;
       },
 
@@ -172,14 +187,16 @@
         this.edit = 0;
         this.edit_name = '';
         this.edit_cate = {};
+        this.edit_weight = null;
       },
 
       // add tag cate
       send () {
-        const { name } = this;
+        const { name, weight } = this;
         let btn = $("#myButton").button('loading');
         request.post(createRequestURI('site/tags/tag_categories'), {
-          name
+          name,
+          weight
         }, {
           validateStatus: status => status === 201
         })
@@ -187,15 +204,16 @@
           const newCate = {
             id: data.id,
             tags_count: 0,
-            name: name 
+            name: name,
+            weight: weight
           };
           btn.button('complete');
           setTimeout(() => {
             btn.button('reset');
             this.name = '',
             this.category = 0;
+            this.weight = 0;
             this.tag_categories.unshift(newCate);
-            location.href = location.href;
           }, 1500);
         })
         .catch(({ response: { data: { message = '添加分类失败' } = {} } = {} }) => {
@@ -205,13 +223,21 @@
       },
 
       update() {
-        const { edit_name, edit } = this;
-        if(!edit_name || !edit) {
+        const { edit_name, edit, edit_weight } = this;
+        if(!edit_name || !edit ) {
           return false;
         }
 
+        let data = {};
+        if (edit_name != this.edit_cate.name) {
+          data.name = edit_name;
+        }
+        if (edit_weight != this.edit_cate.weight) {
+          data.weight = edit_weight;
+        }
+
         request.patch(createRequestURI(`site/tags/tag_categories/${edit}`), {
-          name: edit_name
+          ...data
         }, {
           validateStatus: status => status === 201
         })
@@ -221,6 +247,7 @@
           });
 
           this.tag_categories[index].name = edit_name;
+          this.tag_categories[index].weight = edit_weight;
           this.edit = 0;
           this.edit_name = '';
           this.edit_cate = {};
@@ -282,7 +309,7 @@
         return !(this.tag_categories.length > 0);
       },
       canEditSend () {
-        return ((this.edit_name != this.edit_cate.name) && this.edit_name != '');
+        return ((this.edit_name != this.edit_cate.name) && this.edit_name != '') || (this.edit_weight !== null && (this.edit_weight != this.edit_cate.weight));
       },
       canSend() {
         return this.name.length > 0;

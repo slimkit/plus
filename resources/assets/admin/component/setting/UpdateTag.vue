@@ -9,6 +9,10 @@
         <input v-model="name" type="text" class="form-control" id="exampleInputEmail1" placeholder="标签名称">
       </div>
       <div class="form-group">
+        <label for="exampleInputEmail1">标签权重<small>(越大越靠前)</small></label>
+        <input v-model="weight" type="text" class="form-control" id="exampleInputEmail1" placeholder="标签权重">
+      </div>
+      <div class="form-group">
         <label for="exampleInputPassword1">标签分类</label>
         <div  class="btn-toolbar" role="group" aria-label="cate">
           <button 
@@ -52,6 +56,7 @@
       tag_id: 0,
       name: '',
       category: 0,
+      weight: null,
       categories: [],
       add: {
         loadding: false,
@@ -65,17 +70,32 @@
         const {
           name = '',
           category = 0,
-          tag_id = 0
+          tag_id = 0,
+          weight = null
         } = this;
         if(!name || !category || !tag_id) {
           this.add.error = true;
           this.add.error_message = '参数不完整';
           return false;
         }
+
+        let data = {};
+        if (name != this.tag.name) {
+          data.name = name;
+        }
+
+        if (category != this.tag.tag_category_id) {
+          data.category = category;
+        }
+
+        if (weight != this.tag.weight) {
+          data.weight = parseInt(weight);
+        }
+
         let btn = $("#myButton").button('loading');
 
         request.patch(createRequestURI(`site/tags/${tag_id}`), {
-          name,category
+          ...data
         }, {
           validateStatus: status => status === 201
         })
@@ -104,6 +124,7 @@
             btn.button('reset');
             this.tag.name = this.name;
             this.tag.tag_category_id = this.category;
+            this.tag.weight = this.weight;
           }, 1500);
       },
 
@@ -137,6 +158,7 @@
           this.tag = { ...data };
           this.name = data.name;
           this.category = data.tag_category_id;
+          this.weight = data.weight;
         })
         .catch( () => {
 
@@ -149,7 +171,8 @@
       canSend() {
         let nameChanged = (this.name != '' && (this.name != this.tag.name));
         let cateChanged = (this.category !== 0 && (this.tag.tag_category_id !== this.category));
-        return (nameChanged || cateChanged);
+        let weightChanged = (this.weight !== null && (this.tag.weight !== this.weight));
+        return (nameChanged || cateChanged || weightChanged);
       }
     },
     created () {

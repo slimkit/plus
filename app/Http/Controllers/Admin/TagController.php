@@ -27,6 +27,7 @@ class TagController extends Controller
             ->when($cate, function ($query) use ($cate) {
                 return $query->where('tag_category_id', '=', $cate);
             })
+            ->orderBy('weight', 'desc')
             ->with('category')
             ->withCount(['taggable'])
             ->orderBy('id', 'asc')
@@ -44,6 +45,7 @@ class TagController extends Controller
         $page = $request->input('page', 1);
 
         $categories = TagCategoryModel::withCount('tags')
+            ->orderBy('weight', 'desc')
             ->orderBy('id', 'desc')
             ->paginate($limit);
 
@@ -74,6 +76,7 @@ class TagController extends Controller
     public function cateForTag()
     {
         $categories = TagCategoryModel::orderBy('id', 'asc')
+            ->orderBy('weight', 'desc')
             ->get();
 
         return response()->json($categories)->setStatusCode(200);
@@ -84,9 +87,11 @@ class TagController extends Controller
     {
         $name = $request->input('name');
         $tag_category_id = $request->input('category');
+        $weight = $request->input('weight', 0);
 
         $tag->name = $name;
         $tag->tag_category_id = $tag_category_id;
+        $tag->weight = $weight;
 
         $tag->save();
 
@@ -99,18 +104,16 @@ class TagController extends Controller
     public function update(UpdateTag $request, TagModel $tag)
     {
         $name = $request->input('name', '');
-        $tag_category_id = $request->input('category', 0);
+        $tag_category_id = $request->input('category');
+        $weight = $request->input('weight');
 
-        if (! $name && ! $tag_category_id) {
-            abort(400, '参数传递错误');
-        }
+        $name && $tag->name = $name;
 
-        if ($name) {
-            $tag->name = $name;
-        }
         if ($tag_category_id) {
             $tag->tag_category_id = $tag_category_id;
         }
+
+        $weight !== null && $tag->weight = $weight;
 
         if ($tag->save()) {
             return response()->json(['message' => '修改成功'])->setStatusCode(201);
@@ -139,6 +142,8 @@ class TagController extends Controller
     public function storeCate(Request $request, TagCategoryModel $tagcate)
     {
         $name = $request->input('name', '');
+        $weight = $request->input('weight', 0);
+
         if (! $name) {
             return response()->json(['message' => '请输入分类名称'])->setStatusCode(400);
         }
@@ -147,6 +152,7 @@ class TagController extends Controller
             return response()->json(['message' => '分类已经存在'])->setStatusCode(422);
         }
 
+        $tagcate->weight = $weight;
         $tagcate->name = $name;
         $tagcate->save();
 
@@ -159,11 +165,13 @@ class TagController extends Controller
     public function updateCate(Request $request, TagCategoryModel $cate)
     {
         $name = $request->input('name', '');
-        if (TagCategoryModel::where('name', $name)->count()) {
+        $weight = $request->input('weight');
+        if ($name && TagCategoryModel::where('name', $name)->count()) {
             return response()->json(['message' => '分类已经存在'])->setStatusCode(422);
         }
 
-        $cate->name = $name;
+        $weight !== null && $cate->weight = $weight;
+        $name && $cate->name = $name;
         $cate->save();
 
         return response()->json(['message' => '修改成功'])->setStatusCode(201);

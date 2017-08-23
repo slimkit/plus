@@ -25,11 +25,12 @@ class UpdateTag extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required_without:category|required|max:10|unique:tags',
+            'name' => 'required_without_all:category,weight|max:10|unique:tags',
             'category' => [
-                'required_without:name',
+                'required_without_all:name,weight',
                 Rule::exists('tag_categories', 'id'),
             ],
+            'weight' => 'required_without_all:name,category|numeric|min:0'
         ];
     }
 
@@ -42,11 +43,14 @@ class UpdateTag extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required_without' => '标签名称和分类至少提交一个',
+            'name.required_without_all' => '没有进行任何修改1',
             'name.max' => '标签名称过长',
             'name.unique' => '标签已经存在',
-            'category.required_without' => '标签名称和分类至少提交一个',
+            'category.required_without_all' => '没有进行任何修改2',
             'category.exists' => '标签分类不存在',
+            'weight.required_without_all' => '没有进行任何修改3',
+            'weight.numeric' => '权重值必须为数字',
+            'weight.min' => '权重值不能小于0'
         ];
     }
 }

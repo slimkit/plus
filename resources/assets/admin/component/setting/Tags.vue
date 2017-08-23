@@ -18,7 +18,8 @@
             <th>标签ID</th>
             <th>标签</th>
             <th>所属分类</th>
-            <th>使用量</th>
+            <th>热度</th>
+            <th>权重(越大越靠前)</th>
             <th>操作</th>
           </tr>
         </thead>
@@ -38,6 +39,7 @@
               </router-link>
             </td>
             <td>{{ tag.taggable_count }}</td>
+            <td>{{ tag.weight }}</td>
             <td>
               <!-- 编辑 -->
               <router-link type="button" class="btn btn-primary btn-sm" :to="`/setting/updatetag/${tag.id}`" >编辑</router-link>

@@ -9,6 +9,10 @@
         <input v-model="name" type="text" class="form-control" id="exampleInputEmail1" placeholder="标签名称">
       </div>
       <div class="form-group">
+        <label for="exampleInputEmail1">权重<small>(越大越靠前)</small></label>
+        <input v-model="weight" type="text" class="form-control" id="exampleInputEmail1" placeholder="标签权重">
+      </div>
+      <div class="form-group">
         <label for="exampleInputPassword1">标签分类</label>
         <div  class="btn-toolbar" role="group" aria-label="cate">
           <button
@@ -50,6 +54,7 @@
     data: () => ({
       name: '',
       category: 0,
+      weight: 0,
       categories: [],
       add: {
         loadding: false,
@@ -62,7 +67,8 @@
       send () {
         const {
           name = '',
-          category = 0
+          category = 0,
+          weight = 0
         } = this;
         if(!name || !category) {
           this.add.error = true;
@@ -72,7 +78,7 @@
         let btn = $("#myButton").button('loading');
 
         request.post(createRequestURI('site/tags'), {
-          name,category
+          name,category,weight
         }, {
           validateStatus: status => status === 201
         })
@@ -101,6 +107,7 @@
           btn.button('reset');
           this.name = '',
           this.category = 0;
+          this.weight = 0;
         }, 1500);
       },
 
