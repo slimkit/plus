@@ -1,6 +1,6 @@
 <style lang="css" module>
     .container {
-        padding-top: 15px;
+        padding: 15px;
     }
     .loadding {
         text-align: center;
@@ -15,7 +15,7 @@
 </style>
 
 <template>
-    <div class="container" :class="$style.container">
+    <div :class="$style.container">
         <div class="panel panel-default">
           <div class="panel-body">
             <table class="table table-striped">
