@@ -15,6 +15,7 @@ class User extends Authenticatable implements ShouldAvatarContract
     use Notifiable,
         SoftDeletes,
         Concerns\HasAvatar,
+        Concerns\UserHasAbility,
         Concerns\UserHasNotifiable,
         Concerns\Macroable;
     // 关系数据相关
@@ -26,11 +27,6 @@ class User extends Authenticatable implements ShouldAvatarContract
         Relations\UserHasComment,
         Relations\UserHasReward,
         Relations\UserHasLike;
-    // 解决冲突
-    use Relations\UserHasRolePerms {
-        SoftDeletes::restore insteadof Relations\UserHasRolePerms;
-        Relations\UserHasRolePerms::restore insteadof SoftDeletes;
-    }
 
     /**
      * The attributes that are mass assignable.

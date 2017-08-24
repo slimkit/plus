@@ -20,7 +20,7 @@ class UserController extends Controller
      */
     public function users(Request $request)
     {
-        if (! $request->user()->can('admin:user:show')) {
+        if (! $request->user()->ability('admin:user:show')) {
             return response()->json([
                 'errors' => ['你没有权限查管理用户'],
             ])->setStatusCode(403);
@@ -219,7 +219,7 @@ class UserController extends Controller
      */
     public function deleteUser(Request $request, User $user)
     {
-        if (! $request->user()->can('admin:user:delete')) {
+        if (! $request->user()->ability('admin:user:delete')) {
             return response()->json([
                 'errors' => ['你没有删除用户的权限'],
             ])->setStatusCode(403);
@@ -239,7 +239,7 @@ class UserController extends Controller
      */
     public function showUser(Request $request, User $user)
     {
-        if (! $request->user()->can('admin:user:show')) {
+        if (! $request->user()->ability('admin:user:show')) {
             return response()->json([
                 'errors' => ['你没有权限执行该操作'],
             ])->setStatusCode(403);

@@ -2,7 +2,7 @@
 
 use Zhiyi\Plus\Models\Role;
 use Illuminate\Database\Seeder;
-use Zhiyi\Plus\Models\Permission;
+use Zhiyi\Plus\Models\Ability;
 
 class RoleSeeder extends Seeder
 {
@@ -15,7 +15,7 @@ class RoleSeeder extends Seeder
     public function run()
     {
         // 权限节点.
-        $this->call(PermissionSeeder::class);
+        $this->call(AbilitySeeder::class);
 
         // roles
         $this->createFounderRole();
@@ -37,9 +37,9 @@ class RoleSeeder extends Seeder
             'description' => '站点创始人',
         ]);
 
-        $perms = Permission::all();
+        $abilities = Ability::all();
 
-        $role->perms()->sync($perms);
+        $role->abilities()->sync($abilities);
     }
 
     /**
@@ -56,9 +56,9 @@ class RoleSeeder extends Seeder
             'description' => '普通用户',
         ]);
 
-        $perms = Permission::where('name', 'not like', 'admin:%')->get();
+        $abilities = Ability::where('name', 'not like', 'admin:%')->get();
 
-        $role->perms()->sync($perms);
+        $role->abilities()->sync($abilities);
     }
 
     /**

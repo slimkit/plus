@@ -54,8 +54,8 @@ class HomeController extends Controller
      */
     protected function abortIfAuthenticated($user)
     {
-        if ($user && ! $user->can('admin:login')) {
-            abort(401, '你没有权限访问该页面');
+        if ($user && ! $user->ability('admin: login')) {
+            abort(403, '你没有权限访问后台');
         }
     }
 }

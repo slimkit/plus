@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
 
-class RolePermissions
+class UserAbility
 {
     protected $auth;
 
@@ -25,13 +25,13 @@ class RolePermissions
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure $next
-     * @param string $permissions
+     * @param string $ability
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function handle(Request $request, Closure $next, string $permissions, string $message = '')
+    public function handle(Request $request, Closure $next, string $ability, string $message = '')
     {
-        if ($this->auth->guest() || ! $request->user()->can($permissions)) {
+        if ($this->auth->guest() || ! $this->auth->user()->ability($ability)) {
             abort(403, $message ?: '你没有权限执行该操作');
         }
 

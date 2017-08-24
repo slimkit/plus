@@ -48,7 +48,7 @@ class SiteController extends Controller
      */
     public function get(Request $request, Repository $config, ResponseFactory $response)
     {
-        if (! $request->user()->can('admin:site:base')) {
+        if (! $request->user()->ability('admin:site:base')) {
             return response()->json([
                 'message' => '没有权限查看该项信息',
             ])->setStatusCode(403);
@@ -79,7 +79,7 @@ class SiteController extends Controller
      */
     public function updateSiteInfo(Request $request, Configuration $config, ResponseFactory $response)
     {
-        if (! $request->user()->can('admin:site:base')) {
+        if (! $request->user()->ability('admin:site:base')) {
             return response()->json([
                 'message' => '没有权限更新该信息',
             ])->setStatusCode(403);
@@ -109,7 +109,7 @@ class SiteController extends Controller
      */
     public function areas(Request $request)
     {
-        if (! $request->user()->can('admin:area:show')) {
+        if (! $request->user()->ability('admin:area:show')) {
             return response()->json([
                 'message' => '你没有权限查看地区数据',
             ])->setStatusCode(403);
@@ -135,7 +135,7 @@ class SiteController extends Controller
      */
     public function doAddArea(Request $request)
     {
-        if (! $request->user()->can('admin:area:add')) {
+        if (! $request->user()->ability('admin:area:add')) {
             return response()->json([
                 'error' => ['你没有添加地区权限'],
             ])->setStatusCode(403);
@@ -182,7 +182,7 @@ class SiteController extends Controller
      */
     public function deleteArea(Request $request, int $id)
     {
-        if (! $request->user()->can('admin:area:delete')) {
+        if (! $request->user()->ability('admin:area:delete')) {
             return response()->json([
                 'error' => ['你没有权限删除地区'],
             ])->setStatusCode(403);
@@ -214,7 +214,7 @@ class SiteController extends Controller
      */
     public function patchArea(Request $request, Area $area)
     {
-        if (! $request->user()->can('admin:area:update')) {
+        if (! $request->user()->ability('admin:area:update')) {
             return response()->json([
                 'error' => ['你没有更新地区权限'],
             ])->setStatusCode(403);
@@ -315,7 +315,7 @@ class SiteController extends Controller
      */
     public function mail(Request $request, Repository $config, ResponseFactory $response)
     {
-        // if (! $request->user()->can('admin:mail:show')) {
+        // if (! $request->user()->ability('admin:mail:show')) {
         //     return response()->json([
         //         'message' => '没有权限查看该项信息',
         //     ])->setStatusCode(403);
@@ -347,7 +347,7 @@ class SiteController extends Controller
      */
     public function updateMailInfo(Request $request, Configuration $config, ResponseFactory $response)
     {
-        // if (! $request->user()->can('admin:mail:show')) {
+        // if (! $request->user()->ability('admin:mail:show')) {
         //     return response()->json([
         //         'message' => '没有权限更新该信息',
         //     ])->setStatusCode(403);

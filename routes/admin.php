@@ -14,20 +14,19 @@ use Illuminate\Contracts\Routing\Registrar as RouteRegisterContract;
 |
 */
 
-Route::group(['middleware' => 'auth:web'], function (RouteRegisterContract $route) {
+Route::group([
+    'middleware' => [
+        'auth:web', 'admin',
+    ]
+], function (RouteRegisterContract $route) {
 
     // Admin Index.
     // @GET /admin
     $route->get('/', 'HomeController@index');
 
-    // Admin Routes.
-    // @Route /admin
-    $route->group(['middleware' => 'admin'], function (RouteRegisterContract $route) {
-
-        // 后台导航
-        // @GET /admin/manages
-        $route->get('/manages', 'HomeController@showManages');
-    });
+    // 后台导航
+    // @GET /admin/manages
+    $route->get('/manages', 'HomeController@showManages');
 });
 
 Route::middleware('auth:web')
@@ -131,12 +130,10 @@ Route::middleware('auth:web')
 
     // users
     Route::get('/users', 'UserController@users');
-    Route::post('/users', 'UserController@store')
-        ->middleware('role-permissions:admin:user:add,你没有创建用户权限');
+    Route::post('/users', 'UserController@store');
     Route::delete('/users/{user}', 'UserController@deleteUser');
     Route::get('/users/{user}', 'UserController@showUser');
-    Route::patch('/users/{user}', 'UserController@update')
-        ->middleware('role-permissions:admin:user:update,你没有修改用户信息的权限');
+    Route::patch('/users/{user}', 'UserController@update');
     Route::get('/user/setting', 'UserController@showSetting');
     Route::patch('/user/setting', 'UserController@storeSetting');
 

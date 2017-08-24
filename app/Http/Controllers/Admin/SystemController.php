@@ -19,7 +19,7 @@ class SystemController extends Controller
      */
     public function pushSystemNotice(Request $request)
     {
-        if (! $request->user()->can('admin:notice:send')) {
+        if (! $request->user()->ability('admin:notice:send')) {
             return response()->json([
                 'errors' => ['你没有发送系统通知的权限'],
             ])->setStatusCode(403);

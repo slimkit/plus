@@ -18,7 +18,7 @@ class RoleController extends Controller
      */
     public function roles(Request $request)
     {
-        if (! $request->user()->can('admin:role:show')) {
+        if (! $request->user()->ability('admin:role:show')) {
             return response()->json([
                 'errors' => ['你没有管理角色的权限'],
             ])->setStatusCode(403);
@@ -45,7 +45,7 @@ class RoleController extends Controller
                 'errors' => ['不可删除的用户组'],
             ])->setStatusCode(500);
         }
-        if (! $request->user()->can('admin:role:delete')) {
+        if (! $request->user()->ability('admin:role:delete')) {
             return response()->json([
                 'errors' => ['你没有删除角色权限'],
             ])->setStatusCode(403);
@@ -69,7 +69,7 @@ class RoleController extends Controller
      */
     public function createRole(Request $request)
     {
-        if (! $request->user()->can('admin:role:add')) {
+        if (! $request->user()->ability('admin:role:add')) {
             return response()->json([
                 'errors' => ['你没有添加角色的权限'],
             ])->setStatusCode(403);
@@ -113,7 +113,7 @@ class RoleController extends Controller
      */
     public function showRole(Request $request, Role $role)
     {
-        if (! $request->user()->can('admin:role:show')) {
+        if (! $request->user()->ability('admin:role:show')) {
             return response()->json([
                 'errors' => ['你没有权限查看角色信息'],
             ])->setStatusCode(403);
@@ -147,7 +147,7 @@ class RoleController extends Controller
      */
     public function updateRole(Request $request, Role $role)
     {
-        if (! $request->user()->can('admin:role:update')) {
+        if (! $request->user()->ability('admin:role:update')) {
             return response()->json([
                 'errors' => ['你没有权限编辑角色权限'],
             ])->setStatusCode(403);
@@ -170,7 +170,7 @@ class RoleController extends Controller
      */
     public function perms(Request $request)
     {
-        if (! $request->user()->can('admin:perm:show')) {
+        if (! $request->user()->ability('admin:perm:show')) {
             return response()->json([
                 'errors' => ['你没有管理权限节点的权限'],
             ])->setStatusCode(403);
@@ -190,7 +190,7 @@ class RoleController extends Controller
      */
     public function createPerm(Request $request)
     {
-        if (! $request->user()->can('admin:perm:add')) {
+        if (! $request->user()->ability('admin:perm:add')) {
             return response()->json([
                 'errors' => ['你没有权限增加权限节点'],
             ])->setStatusCode(403);
@@ -236,7 +236,7 @@ class RoleController extends Controller
      */
     public function updatePerm(Request $request, Permission $perm)
     {
-        if (! $request->user()->can('admin:perm:update')) {
+        if (! $request->user()->ability('admin:perm:update')) {
             return response()->json([
                 'errors' => ['你没有修改权限节点的权限'],
             ])->setStatusCode(403);
@@ -273,7 +273,7 @@ class RoleController extends Controller
      */
     public function deletePerm(Request $request, Permission $perm)
     {
-        if (! $request->user()->can('admin:perm:delete')) {
+        if (! $request->user()->ability('admin:perm:delete')) {
             return response()->json([
                 'errors' => ['你没有权限删除该节点'],
             ])->setStatusCode(403);

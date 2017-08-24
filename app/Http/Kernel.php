@@ -42,7 +42,7 @@ class Kernel extends HttpKernel
         ],
 
         'admin' => [
-            'role-permissions:admin:login,你没有权限访问该页面',
+            'ability:admin: login,你没有权限访问后台。',
         ],
     ];
 
@@ -60,7 +60,6 @@ class Kernel extends HttpKernel
         'can'        => \Illuminate\Auth\Middleware\Authorize::class,
         'guest'      => \Zhiyi\Plus\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle'   => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'role'       => \Zhiyi\Plus\Http\Middleware\Role::class,
-        'role-permissions' => \Zhiyi\Plus\Http\Middleware\RolePermissions::class,
+        'ability'    => \Zhiyi\Plus\Http\Middleware\UserAbility::class,
     ];
 }
