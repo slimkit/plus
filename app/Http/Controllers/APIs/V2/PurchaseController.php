@@ -53,7 +53,7 @@ class PurchaseController extends Controller
     {
         $user = $request->user();
         $user->load('wallet');
-        $wallet = $node->wallet()->first();
+        $wallet = $node->user->wallet;
 
         if ($node->paid($user->id)) {
             return $response->json([

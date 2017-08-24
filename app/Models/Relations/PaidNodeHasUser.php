@@ -25,6 +25,18 @@ trait PaidNodeHasUser
         return $this->belongsToMany(User::class, 'paid_node_users', 'node_id', 'user_id');
     }
 
+
+    /**
+     * the author of paid.
+     *
+     * @author bs<414606094@qq.com>
+     * @return hasOne
+     */
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
     /**
      * To determine whether to pay for the node, to support the filter publisher.
      *
