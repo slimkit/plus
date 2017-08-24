@@ -2,21 +2,20 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
+use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Http\Requests\API2\UserCertification;
 use Zhiyi\Plus\Models\Certification;
-use Zhiyi\Plus\Models\CertificationCategory;
+use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
-use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Http\Requests\API2\UserCertification;
 
 class CertificationController extends Controller
 {
     /**
-     * 认证详情
+     * 认证详�.
+     *
      * @param Request $request
      * @return $this
      * @author: huhao <915664508@qq.com>
@@ -27,8 +26,8 @@ class CertificationController extends Controller
         $certificationName = $request->get('certification_name');
         $certificationStatus = $request->get('status');
         $keyword = $request->get('keyword');
-        $items   = Certification::orderBy('id', 'desc')
-        ->when(! is_null($keyword) , function ($query) use ($keyword) {
+        $items = Certification::orderBy('id', 'desc')
+        ->when(! is_null($keyword), function ($query) use ($keyword) {
             $where = sprintf('%%%s%%', $keyword);
             $query->whereHas('user', function ($query) use ($keyword, $where) {
                 $query->where('name', 'like', $where);
@@ -46,11 +45,12 @@ class CertificationController extends Controller
             $query->where('status', $certificationStatus);
         })
        ->paginate($perPage);
+
         return response()->json($items)->setStatusCode(200);
     }
 
     /**
-     * 认证通过处理
+     * 认证通过处理.
      * @param Certification $certification
      * @return \Illuminate\Http\JsonResponse
      * @author: huhao <915664508@qq.com>
@@ -65,7 +65,7 @@ class CertificationController extends Controller
     }
 
     /**
-     * 认证驳回处理
+     * 认证驳回处理.
      * @param Request $request
      * @param Certification $certification
      * @return \Illuminate\Http\JsonResponse
@@ -75,7 +75,7 @@ class CertificationController extends Controller
     {
         $content = $request->input('reject_content');
 
-        if ($content === null || !$content) {
+        if ($content === null || ! $content) {
             return response()->json(['message' => ['请填写驳回理由']], 422);
         }
 
@@ -85,7 +85,7 @@ class CertificationController extends Controller
         $certification->status = 2;
         $certification->examiner = Auth::user()->id;
 
-        if ( $certification->save() ) {
+        if ($certification->save()) {
             return response()->json(['message' => ['驳回成功']], 201);
         } else {
             return response()->json(['message' => ['驳回失败，请稍后再试']], 500);
@@ -93,7 +93,8 @@ class CertificationController extends Controller
     }
 
     /**
-     * 获取认证详情
+     * 获取认证详�.
+     *
      * @param Certification $certification
      * @return $this
      * @author: huhao <915664508@qq.com>
@@ -115,8 +116,7 @@ class CertificationController extends Controller
         UserCertification $request,
         Certification $certification,
         FileWithModel $fileWithModel
-    )
-    {
+    ) {
         $request->all();
         $type = $request->input('type');
         $certification = $certification;
@@ -164,7 +164,7 @@ class CertificationController extends Controller
                           FileWithModel $fileWithModel)
     {
         $userId = (int) $request->input('user_id');
-        if ( !$userId ) {
+        if (! $userId) {
             return response()->json(['message' => ['用户ID不存在']], 422);
         }
         $type = $request->input('type');
@@ -195,7 +195,7 @@ class CertificationController extends Controller
     }
 
     /**
-     * 搜索未进行认证的用户
+     * 搜索未进行认证的用户.
      * @param Request $request
      * @return $this|\Illuminate\Http\JsonResponse
      * @author: huhao <915664508@qq.com>
@@ -204,12 +204,12 @@ class CertificationController extends Controller
     {
         $keyword = $request->get('keyword');
 
-        if ( !$keyword ) {
+        if (! $keyword) {
             return response()->json(['message' => ['请输入搜索关键字']], 422);
         }
 
         $condition = sprintf('%%%s%%', $keyword);
-        $users   = User::where('name', 'like', $condition)
+        $users = User::where('name', 'like', $condition)
         ->whereDoesntHave('certification')
         ->get();
 
@@ -240,4 +240,3 @@ class CertificationController extends Controller
             ->get();
     }
 }
-

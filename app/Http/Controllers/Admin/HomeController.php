@@ -26,7 +26,7 @@ class HomeController extends Controller
             'api'        => url('api/v1'),
             'logged'     => (bool) $user,
             'user'       => $user,
-            'token' => JWTAuth::fromUser($user)
+            'token' => JWTAuth::fromUser($user),
         ];
 
         return view('admin', $data);
