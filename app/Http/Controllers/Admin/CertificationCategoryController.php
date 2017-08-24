@@ -9,6 +9,7 @@ use Zhiyi\Plus\Models\CertificationCategory;
 class CertificationCategoryController extends Controller
 {
     /**
+     * certification categories list
      * @param Request $request
      * @author: huhao <915664508@qq.com>
      */
@@ -20,7 +21,7 @@ class CertificationCategoryController extends Controller
     }
 
     /**
-     * 获取认证类型详�.
+     * certification category detail
      *
      * @param $name
      * @return $this
@@ -34,7 +35,7 @@ class CertificationCategoryController extends Controller
     }
 
     /**
-     * 更新认证栏目.
+     * update certification category
      * @param Request $request
      * @param $name
      * @return $this
