@@ -163,8 +163,7 @@ const PersonalCertificationEdit = {
             createRequestURI('certification/categories'),
             {validateStatus: status => status === 200}
           ).then(response => {
-            const {data: data} = response.data;
-            this.categories = data;
+            this.categories = response.data;
             this.loadding = false;
           }).catch(({ response: { data: { errors = ['加载认证详情失败'] } = {} } = {} }) => {
 

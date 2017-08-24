@@ -111,54 +111,53 @@ const PersonalCertificationEdit = {
     }),
     methods: {
         getCertificationCategories () {
-            request.get(
-                createRequestURI('certification/categories'),
-                {validateStatus: status => status === 200}
-            ).then(response => {
-                const {data: data} = response.data;
-                this.categories = data;
-            }).catch(({ response: { data: { errors = ['加载认证详情失败'] } = {} } = {} }) => {
-            }); 
+          request.get(
+            createRequestURI('certification/categories'),
+            {validateStatus: status => status === 200}
+          ).then(response => {
+            this.categories = response.data;
+          }).catch(({ response: { data: { errors = ['加载认证详情失败'] } = {} } = {} }) => {
+          }); 
         },
         getCertification (id) {
-            this.loadding = true;
-            request.get(
-                createRequestURI('certifications/' + id),
-                { validateStatus: status => status === 200 }
-            ).then(response => {
+          this.loadding = true;
+          request.get(
+            createRequestURI('certifications/' + id),
+            { validateStatus: status => status === 200 }
+          ).then(response => {
 
-                this.loadding = false;
-                var data = response.data;
-                
-                this.certification.username = data.user.name;
-                this.certification.name = data.data.name;
-                this.certification.phone = data.data.phone;
-                this.certification.number = data.data.number;
-                this.certification.type = data.certification_name;
-                this.certification.desc = data.data.desc;
-                this.certification.files = data.data.files;
-                this.fileBase64 = '/api/v2/files/' + this.certification.files[0]
+            this.loadding = false;
+            var data = response.data;
+            
+            this.certification.username = data.user.name;
+            this.certification.name = data.data.name;
+            this.certification.phone = data.data.phone;
+            this.certification.number = data.data.number;
+            this.certification.type = data.certification_name;
+            this.certification.desc = data.data.desc;
+            this.certification.files = data.data.files;
+            this.fileBase64 = '/api/v2/files/' + this.certification.files[0]
 
 
-                if ( data.certification_name === 'org' ) {
-                    this.certification.org_name = data.data.org_name;
-                    this.certification.org_address = data.data.org_address;
-                }
+            if ( data.certification_name === 'org' ) {
+                this.certification.org_name = data.data.org_name;
+                this.certification.org_address = data.data.org_address;
+            }
 
-            }).catch(response => {
-                console.log(response);
-            });
+          }).catch(response => {
+            console.log(response);
+          });
         },
         updateCertification (e) {
-            request.patch(
-                createRequestURI('certifications/' + this.id),
-                { ...this.certification },
-                {validateStatus: status => status === 201}
-            ).then(({ data: { message: [ message ] = [] } }) => {
-                this.successMessage = message;
-            }).catch(({ response: { data: { errors = ['加载认证详情失败'] } = {} } = {} }) => {
-                this.loadding = false;
-            });
+          request.patch(
+            createRequestURI('certifications/' + this.id),
+            { ...this.certification },
+            {validateStatus: status => status === 201}
+          ).then(({ data: { message: [ message ] = [] } }) => {
+            this.successMessage = message;
+          }).catch(({ response: { data: { errors = ['加载认证详情失败'] } = {} } = {} }) => {
+            this.loadding = false;
+          });
         },
         offAlert () {
             this.errorMessage = this.successMessage = '';
@@ -190,11 +189,11 @@ const PersonalCertificationEdit = {
         }
     },
     created () {
-        this.id = this.$route.params.certification;
-        //获取认证栏目
-        this.getCertificationCategories();
-        //获取认证详情
-        this.getCertification(this.id);
+      this.id = this.$route.params.certification;
+      //获取认证栏目
+      this.getCertificationCategories();
+      //获取认证详情
+      this.getCertification(this.id);
     },
 };
 export default PersonalCertificationEdit;
