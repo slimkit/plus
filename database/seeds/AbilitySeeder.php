@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use Zhiyi\Plus\Models\Ability;
+use Illuminate\Database\Seeder;
 
 class AbilitySeeder extends Seeder
 {

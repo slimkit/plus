@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Plus\Contracts\Model;
 
-interface UserAbility {
-    
+interface UserAbility
+{
     /**
      * get users all roles.
      *
@@ -22,4 +22,3 @@ interface UserAbility {
      */
     public function all(string $ability = '');
 }
-

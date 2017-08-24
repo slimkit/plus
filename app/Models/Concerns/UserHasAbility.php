@@ -30,7 +30,6 @@ trait UserHasAbility
             return $this->resolveAbility()
                 ->roles($parameters[0])
                 ->ability($parameters[1]);
-
         } elseif (isset($parameters[0])) {
             return $this->resolveAbility()
                 ->all($parameters[0]);

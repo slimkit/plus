@@ -4,7 +4,6 @@ namespace Zhiyi\Plus\Services;
 
 use Illuminate\Support\Collection;
 use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\Models\Permission as PermissionModel;
 use Zhiyi\Plus\Contracts\Model\UserAbility as UserAbilityContract;
 
 class UserAbility implements UserAbilityContract

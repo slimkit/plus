@@ -17,7 +17,7 @@ use Illuminate\Contracts\Routing\Registrar as RouteRegisterContract;
 Route::group([
     'middleware' => [
         'auth:web', 'admin',
-    ]
+    ],
 ], function (RouteRegisterContract $route) {
 
     // Admin Index.

@@ -1,8 +1,8 @@
 <?php
 
 use Zhiyi\Plus\Models\Role;
-use Illuminate\Database\Seeder;
 use Zhiyi\Plus\Models\Ability;
+use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder
 {
