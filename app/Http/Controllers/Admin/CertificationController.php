@@ -5,6 +5,7 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Http\Requests\API2\UserCertification;
 use Zhiyi\Plus\Models\Certification;
@@ -26,7 +27,6 @@ class CertificationController extends Controller
         $certificationName = $request->get('certification_name');
         $certificationStatus = $request->get('status');
         $keyword = $request->get('keyword');
-
         $items   = Certification::orderBy('id', 'desc')
         ->when(! is_null($keyword) , function ($query) use ($keyword) {
             $where = sprintf('%%%s%%', $keyword);
@@ -45,9 +45,7 @@ class CertificationController extends Controller
         ->when(! is_null($certificationStatus), function ($query) use ($certificationStatus) {
             $query->where('status', $certificationStatus);
         })
-        ->paginate($perPage)
-        ->appends($request->all());
-
+       ->paginate($perPage);
         return response()->json($items)->setStatusCode(200);
     }
 
@@ -196,6 +194,12 @@ class CertificationController extends Controller
         });
     }
 
+    /**
+     * 搜索未进行认证的用户
+     * @param Request $request
+     * @return $this|\Illuminate\Http\JsonResponse
+     * @author: huhao <915664508@qq.com>
+     */
     public function findNoCertificationUsers(Request $request)
     {
         $keyword = $request->get('keyword');
