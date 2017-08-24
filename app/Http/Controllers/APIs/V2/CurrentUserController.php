@@ -114,12 +114,12 @@ class CurrentUserController extends Controller
             return $response->json([$field => ['已经被使用']], 422);
         }
 
-        $code = $model->where('account', $field)
+        $code = $model->where('account', $$field)
             ->where('code', $code)
             ->first();
 
         if (! $code) {
-            return $response->json(['message' => ['验证码错误或者已实效']], 422);
+            return $response->json(['message' => ['验证码错误或者已失效']], 422);
         }
 
         $user->$field = $$field;
