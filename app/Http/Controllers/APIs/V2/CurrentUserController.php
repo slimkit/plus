@@ -107,7 +107,7 @@ class CurrentUserController extends Controller
         $field = $email ? 'email' : 'phone';
         $verifiable_field = $email ? 'mail' : 'sms';
         $target = $user->newQuery()
-            ->where($verifiable_field, $$field)
+            ->where($field, $$field)
             ->where('id', '!=', $user->id)
             ->first();
 
@@ -115,7 +115,7 @@ class CurrentUserController extends Controller
             return $response->json([$field => ['已经被使用']], 422);
         }
 
-        $code = $model->where('account', $field)
+        $code = $model->where('account', $verifiable_field)
             ->where('code', $code)
             ->first();
 
