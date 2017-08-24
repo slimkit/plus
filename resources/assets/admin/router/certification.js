@@ -24,15 +24,15 @@ const routers = {
             component: CategoryEdit
         },
         {
+            path: 'add',
+            name: 'certification:add',
+            component: CertificationAdd,
+        },
+        {
             path: ':certification',
             name:'certification:edit',
             component: CertificationEdit,
         },
-        {
-            path: 'add',
-            name: 'certification:add',
-            component: CertificationAdd,
-        }
     ]
 };
 
