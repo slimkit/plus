@@ -15,19 +15,31 @@ class CertificationCategoryController extends Controller
      */
     public function certifications(Request $request)
     {
-    	$perPage = $request->get('perPage', 20);
 
-        $items = CertificationCategory::paginate($perPage);
+        $items = CertificationCategory::get();
 
         return response()->json($items)->setStatusCode(200);
     }
 
+    /**
+     * 获取认证类型详情
+     * @param $name
+     * @return $this
+     * @author: huhao <915664508@qq.com>
+     */
     public function show($name)
     {
         $item = CertificationCategory::where('name',$name)->first();
         return response()->json($item)->setStatusCode(200);
     }
 
+    /**
+     * 更新认证栏目
+     * @param Request $request
+     * @param $name
+     * @return $this
+     * @author: huhao <915664508@qq.com>
+     */
     public function update(Request $request, $name)
     {
        $rule = ['display_name' => 'required'];
@@ -48,16 +60,5 @@ class CertificationCategoryController extends Controller
         ])->setStatusCode($response === true ? 201 : 422);
 
     }
-
-    private function rule()
-    {
-        return [
-            'display_name' => 'required'
-        ];
-    }
-
-    private function msg()
-    {
-
-    }
 }
+

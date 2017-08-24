@@ -36,8 +36,8 @@ class CertificationController extends Controller
             ->orWhere('data->number', 'like', $where)
             ->orWhere('data->phone', 'like', $where)
             ->orWhere('data->name', 'like', $where)
-            ->orWhere('data->org_adress', $where)
-            ->orWhere('data->org_name',  $where);
+            ->orWhere('data->org_address', 'like', $where)
+            ->orWhere('data->org_name', 'like', $where);
         })
         ->when($certificationName, function ($query) use ($certificationName) {
             $query->where('certification_name', $certificationName);
@@ -105,6 +105,14 @@ class CertificationController extends Controller
         return response()->json($certification)->setStatusCode(200);
     }
 
+    /**
+     * 更新认证
+     * @param UserCertification $request
+     * @param Certification $certification
+     * @param FileWithModel $fileWithModel
+     * @return mixed
+     * @author: huhao <915664508@qq.com>
+     */
     public function update(
         UserCertification $request,
         Certification $certification,
@@ -191,13 +199,16 @@ class CertificationController extends Controller
     public function findNoCertificationUsers(Request $request)
     {
         $keyword = $request->get('keyword');
+
         if ( !$keyword ) {
             return response()->json(['message' => ['请输入搜索关键字']], 422);
         }
+
         $condition = sprintf('%%%s%%', $keyword);
         $users   = User::where('name', 'like', $condition)
         ->whereDoesntHave('certification')
         ->get();
+
         return response()->json($users)->setStatusCode(200);
     }
 
@@ -225,3 +236,4 @@ class CertificationController extends Controller
             ->get();
     }
 }
+

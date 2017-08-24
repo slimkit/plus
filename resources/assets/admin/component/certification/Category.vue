@@ -15,8 +15,9 @@
 </style>
 
 <template>
-    <div class="container">
-        <div>
+    <div class="container" :class="$style.container">
+        <div class="panel panel-default">
+          <div class="panel-body">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -44,6 +45,7 @@
                     </tr>
                 </tbody>
             </table>
+          </div>
         </div>
     </div>
 </template>
@@ -52,29 +54,25 @@
 import request, { createRequestURI } from '../../util/request';
 const ManageComponent = {
     data: () => ({
-        loadding: true,
-        categories:{}
+      loadding: true,
+      categories:{}
     }),
-    computed: {
-
-    },
     methods: {
-        getCertificationCategories () {
-            this.loadding = true;
-            request.get(
-                createRequestURI('certification/categories'),
-                {validateStatus: status => status === 200}
-            ).then(response => {
-                this.loadding = false;
-                const { data:data } = response.data;
-                this.categories = data || [];
-            }).catch(({ response: { data: { errors = ['加载认证类型失败'] } = {} } = {} }) => {
-                this.loadding = false;
-            });
-        }
+      getCertificationCategories () {
+        this.loadding = true;
+        request.get(
+          createRequestURI('certification/categories'),
+          { validateStatus: status => status === 200 }
+        ).then(response => {
+          this.loadding = false;
+          this.categories = response.data || [];
+        }).catch(({ response: { data: { errors = ['加载认证类型失败'] } = {} } = {} }) => {
+          this.loadding = false;
+        });
+      }
     },
     created () {
-        this.getCertificationCategories();
+      this.getCertificationCategories();
     },
 
 };

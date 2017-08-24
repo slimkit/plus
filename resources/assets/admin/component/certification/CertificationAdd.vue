@@ -139,13 +139,13 @@ const PersonalCertificationEdit = {
         users: [],
         certification: {
             user_id: '',
-            name: '',
-            phone: '',
-            number: '',
+            name: '章三',
+            phone: '15520759726',
+            number: '513722199302168066',
             files: [],
-            org_name: '',
-            org_address: '',
-            desc: '',
+            org_name: '测试',
+            org_address: '测试',
+            desc: '测试',
             type:'user',
         },
         search:{
@@ -191,78 +191,78 @@ const PersonalCertificationEdit = {
          * 搜索用户
          * @return {[type]} [description]
          */
-        searchUser () {
+          searchUser () {
             if ( !this.search.keyword ) {
-                this.search.message = '请输入搜索关键字';
-                return;
+              this.search.message = '请输入搜索关键字';
+              return;
             }
             $('#serach-user-btn').button('loading');
             request.get(
-                createRequestURI('find/nocertification/users?keyword=' + this.search.keyword),
-                {validateStatus: status => status === 200}
+              createRequestURI('find/nocertification/users?keyword=' + this.search.keyword),
+              { validateStatus: status => status === 200 }
             ).then(response => {
-                $('#serach-user-btn').button('reset');
-                this.users = response.data;
+              $('#serach-user-btn').button('reset');
+              this.users = response.data;
             }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {
-                $('#serach-user-btn').button('reset');
-                this.search.message = message;
+              $('#serach-user-btn').button('reset');
+              this.search.message = message;
             });
-        },
+          },
         /**
          * 上传附件
          * @param  {[type]} e [description]
          * @return {[type]}   [description]
          */
         uploadAttachment (e) {
-            var that = this;
-            let file = e.target.files[0]; 
-            let param = new FormData();
-            param.append('file', file);
-            //  设置请求头
-            let config = {
-                headers: { 
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': 'Bearer ' + window.TS.token 
-                }
-            };
-            let reader = new FileReader(); 
-            reader.readAsDataURL(file); 
-            reader.onload = function(e) {
-               that.fileBase64 = e.target.result;
-               request.post('/api/v2/files', param, config)
-               .then((response) => {
-                    const { id: id, message: [message] = [] } = response.data;
-                    that.certification.files = [id];
-                }).catch((error) => {
-                    console.log(error);
-                });
+          var that = this;
+          let file = e.target.files[0]; 
+          let param = new FormData();
+          param.append('file', file);
+        //  设置请求头
+          let config = {
+            headers: { 
+              'Content-Type': 'multipart/form-data',
+              'Authorization': 'Bearer ' + window.TS.token 
             }
+          };
+          let reader = new FileReader(); 
+          reader.readAsDataURL(file); 
+          reader.onload = function(e) {
+           that.fileBase64 = e.target.result;
+           request.post('/api/v2/files', param, config)
+            .then((response) => {
+                const { id: id, message: [message] = [] } = response.data;
+                that.certification.files = [id];
+            }).catch((error) => {
+                console.log(error);
+            });
+          }
         },
         /**
          * 打开搜索用户modal
          * @return {[type]} [description]
          */
         openfindUserModal () {
-            $('#findUserModal').modal('show');
+          $('#findUserModal').modal('show');
         },
         /**
          * 选择用户
          * @return {[type]} [description]
          */
         selectUser () {
-            if ( !this.users.length ) {
-                this.search.message = '请输入搜索关键字';
-                return;  
-            }
-            if ( !this.certification.user_id ) {
-                this.search.message = '请选择用户';
-                return;
-            }
-            $('#findUserModal').modal('hide');
+          if ( !this.users.length ) {
+            this.search.message = '请输入搜索关键字';
+            return;  
+          }
+          if ( !this.certification.user_id ) {
+            this.search.message = '请选择用户';
+            return;
+          }
+          $('#findUserModal').modal('hide');
         }
     },
     created () {
-        this.getCertificationCategories();
+      this.getCertificationCategories();
     },
 
 };

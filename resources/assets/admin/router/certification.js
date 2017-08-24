@@ -1,5 +1,5 @@
 import CertificationBase from '../component/Certification';
-import Manager from '../component/certification/Manage';
+import Category from '../component/certification/Category';
 import CategoryEdit from '../component/certification/CategoryEdit';
 import Certification from  '../component/certification/Certification';
 import CertificationEdit from '../component/certification/CertificationEdit';
@@ -16,7 +16,7 @@ const routers = {
         {
             path: 'categoies',
             name: 'certification:categoies',
-            component: Manager
+            component: Category
         },
         {
             path: 'category/:name/edit',

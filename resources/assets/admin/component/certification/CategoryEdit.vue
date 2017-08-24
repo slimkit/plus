@@ -59,45 +59,46 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
-
 const CategoryEditComponent = {
     data: () => ({
-        loadding: true,
-        errorMessage: '',
-        successMessage:'',
-        category:{},
+      loadding: true,
+      errorMessage: '',
+      successMessage:'',
+      category:{},
     }),
     methods: {
         getCertificationCategory (name) {
-            this.loadding = true;
-            request.get(
-                createRequestURI('certification/categories/'+name),
-                {validateStatus: status => status === 200}
-            ).then(response => {
-                this.loadding = false;
-                this.category = response.data;
-            }).catch(({ response: { data: { errors = ['加载认证详情失败'] } = {} } = {} }) => {
-                this.loadding = false;
-            });
+          this.loadding = true;
+          request.get(
+            createRequestURI('certification/categories/'+name),
+            {validateStatus: status => status === 200}
+          ).then(response => {
+            this.loadding = false;
+            this.category = response.data;
+          }).catch(({ response: { data: { errors = ['加载认证详情失败'] } = {} } = {} }) => {
+            this.loadding = false;
+          });
         },
         updateCertificationCategory (name) {
-            request.put(
-                createRequestURI('certification/categories/' + name),
-                { ...this.category },
-                { validateStatus: status => status === 201 }
-            ).then(({ data: { message: [ message ] = [] } }) => {
-                this.successMessage = message;
-            }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {
-
-                this.errorMessage = message;
-            });
+          request.put(
+            createRequestURI('certification/categories/' + name),
+            { ...this.category },
+            { validateStatus: status => status === 201 }
+          ).then(({ data: { message: [ message ] = [] } }) => {
+            this.successMessage = message;
+          }).catch(({ response: { data = {} } = {} }) => {
+            const { display_name = [] } = data;
+            const [ errorMessage ] = [...display_name];
+            this.errorMessage = errorMessage;
+            this.adding = false;
+          });
         },
         offAlert() {
-            this.errorMessage = this.successMessage = '';
+          this.errorMessage = this.successMessage = '';
         }
     },
     created () {
-       this.getCertificationCategory(this.$route.params.name);
+      this.getCertificationCategory(this.$route.params.name);
     },
 
 };

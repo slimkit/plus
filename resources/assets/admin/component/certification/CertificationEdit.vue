@@ -196,7 +196,6 @@ const PersonalCertificationEdit = {
         //获取认证详情
         this.getCertification(this.id);
     },
-
 };
 export default PersonalCertificationEdit;
 </script>

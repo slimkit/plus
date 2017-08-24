@@ -22,63 +22,83 @@
     <div :class="$style.container">
         <div class="panel panel-default">
             <div class="panel-heading">
-            <div v-show="successMessage" class="alert alert-success alert-dismissible" role="alert">
-                <button type="button" class="close" @click.prevent="offAlert">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                {{ successMessage }}
-            </div>
-            <div v-show="errorMessage" class="alert alert-danger alert-dismissible" role="alert">
-                <button type="button" class="close" @click.prevent="offAlert">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                {{ errorMessage }}
-            </div>
-            <div class="form-inline">
-                <div class="form-group">
-                    <label>状态：</label>
-                    <select class="form-control" v-model="statuss.selected">
-                        <option :value="item.value" v-for="item in statuss.data">{{ item.status }}</option>
-                    </select>
+                <div v-show="successMessage" class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" @click.prevent="offAlert">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{ successMessage }}
                 </div>
-                <div class="form-group">
-                    <span><label>类型：</label></span>
-                    <select class="form-control" v-model="categories.selected">
-                       <option value="">全部</option>
-                       <option :value="item.name" v-for="item in categories.data">{{ item.display_name }}</option>
-                    </select>
+                <div v-show="errorMessage" class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" @click.prevent="offAlert">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{ errorMessage }}
                 </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" v-model="keyword">
-                  <button class="btn btn-default" type="button" @click="handleSearch">搜索</button>
-                </div>
-                <div class="form-group pull-right">
-                    <router-link type="button" class="btn btn-success btn-sm" :to="{ name: 'certification:add' }">添加认证用户</router-link>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <router-link type="button" class="btn btn-success" :to="{ name: 'certification:add' }">添加认证用户</router-link>
+                    </div>
                 </div>
             </div>
+            <div class="panel-heading">
+                <!-- 数据过滤 -->
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label>状态：</label>
+                        <select class="form-control" v-model="statuss.selected" @change="watchChange">
+                            <option :value="item.value" v-for="item in statuss.data">{{ item.status }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>类型：</label>
+                        <select class="form-control" v-model="categories.selected" @change="watchChange">
+                           <option value="">全部</option>
+                           <option :value="item.name" v-for="item in categories.data">{{ item.display_name }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                      <input type="text" class="form-control" v-model="keyword">
+                      <button class="btn btn-default" type="button" @click="handleSearch">搜索</button>
+                    </div>
+                    <div class="form-group pull-right">
+                        <ul class="pagination" style="margin: 0;">
+                          <li :class="paginate.currentPage <= 1 ? 'disabled' : null">
+                            <a href="javascript:;" aria-label="Previous" @click.stop.prevent="prevPage">
+                              <span aria-hidden="true">&laquo;</span>
+                            </a>
+                          </li>
+                          <li :class="paginate.currentPage >= paginate.lastPage ? 'disabled' : null">
+                            <a href="javascript:;" aria-label="Next" @click.stop.prevent="nextPage">
+                              <span aria-hidden="true">&raquo;</span>
+                            </a>
+                          </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             <div class="panel-body">
+                <!-- 认证列表 -->
                 <table class="table table-striped">
                     <thead>
-                    <tr>
-                        <th></th>
-                        <th>用户名</th>
-                        <th>真实姓名</th>
-                        <th>机构名称</th>
-                        <th>手机号码</th>
-                        <th>身份证号码</th>
-                        <th>认证类型</th>
-                        <th>认证描述</th>
-                        <th>认证资料</th>
-                        <th>认证状态</th>
-                        <th>认证时间</th>
-                        <th>操作</th>
-                    </tr>
+                        <tr>
+                            <th><input type="checkbox"></th>
+                            <th>用户名</th>
+                            <th>真实姓名</th>
+                            <th>机构名称</th>
+                            <th>手机号码</th>
+                            <th>身份证号码</th>
+                            <th>认证类型</th>
+                            <th>认证描述</th>
+                            <th>认证资料</th>
+                            <th>认证状态</th>
+                            <th>认证时间</th>
+                            <th>操作</th>
+                        </tr>
                     </thead>
                     <tbody>
                         <!-- 加载动画 -->
                         <tr v-show="loadding">
-                            <td :class="$style.loadding" colspan="11">
+                            <td :class="$style.loadding" colspan="12">
                                 <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
                             </td>
                         </tr>
@@ -120,7 +140,7 @@
               <div class="modal-body">
                 <div class="form-group">
                     <label>驳回理由</label>
-                    <textarea class="form-control" v-model="reject.reject_content" @input="watchInput"></textarea>
+                    <textarea class="form-control" v-model="reject.reject_content" @input="reject.reject_message = ''"></textarea>
                     <span class="text-danger" v-show="reject.reject_message">{{ reject.reject_message }}</span>
                 </div>
               </div>
@@ -137,7 +157,7 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
-const UserComponent = {
+const certificationComponent = {
     data: () => ({
         loadding: true,
         certifications: {},
@@ -158,8 +178,8 @@ const UserComponent = {
         },
         paginate: {
             perPage: 20,
-            page: 1,
             lastPage: 10,
+            currentPage:1,
         },
         reject: {
             certification_id: '',
@@ -175,128 +195,139 @@ const UserComponent = {
          * 获取认证类型
          */
         getCertificationCategories () {
-            request.get(
-                createRequestURI('certification/categories'),
-                {validateStatus: status => status === 200}
-            ).then(response => {
-                const {data: data} = response.data;
-                this.categories.data = data;
-            }).catch(({ response: { data: { errors = ['加载认证详情失败'] } = {} } = {} }) => {
-            }); 
+          request.get(
+            createRequestURI('certification/categories'),
+            {validateStatus: status => status === 200}
+          ).then(response => {
+            const {data: data} = response.data;
+            this.categories.data = data;
+          }).catch(({ response: { data: { errors = ['加载认证详情失败'] } = {} } = {} }) => {
+        }); 
         },
         /**
          * 获取认证列表
          */
         getCertifications () {
-            this.loadding = true;
-            request.get(
-                createRequestURI('certifications' + this.getQueryParams() ),
-                { validateStatus: status => status === 200 }
-            ).then(response => {
-                this.loadding = false;
-                const {data: data} = response.data;
-                this.certifications = data;
-            }).catch(({ response: { data: { errors = ['加载认证类型失败'] } = {} } = {} }) => {
-                this.loadding = false;
-            });
+          this.loadding = true;
+          request.get(
+            createRequestURI('certifications' + this.getQueryParams() ),
+            { validateStatus: status => status === 200 }
+          ).then(response => {
+            this.loadding = false;
+
+            const { data: data, current_page: currentPage, last_page: lastPage, total: total } = response.data;
+            this.paginate.currentPage = currentPage;
+            this.paginate.lastPage = lastPage;
+            this.paginate.total = total;
+            this.certifications = data;
+
+          }).catch(({ response: { data: { errors = ['加载认证类型失败'] } = {} } = {} }) => {
+            this.loadding = false;
+          });
         },
         /**
          * 通过认证
          */
         passCertification (id) {
-            request.patch(
-                createRequestURI('certifications/' + id + '/pass'),
-                {validateStatus: status => status === 201}
-            ).then(({ data: { message: [ message ] = [] } }) => {
-                this.successMessage = message;
-                this.updateCertificationStatus(id, 1);
-            }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {
-                this.errorMessage = message;
-            });
+          request.patch(
+            createRequestURI('certifications/' + id + '/pass'),
+            {validateStatus: status => status === 201}
+          ).then(({ data: { message: [ message ] = [] } }) => {
+            this.successMessage = message;
+            this.updateCertificationStatus(id, 1);
+          }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {
+            this.errorMessage = message;
+          });
         },
         /**
          * 驳回认证
          */
         rejectCertification () {
-            if ( !this.reject.reject_content ) {
-                this.reject.reject_message = '请填写驳回原因';
-                return;
-            }
-            let id = this.reject.certification_id;
-            request.patch(
-                createRequestURI('certifications/' + id + '/reject'),
-                {reject_content: this.reject.reject_content},
-                {validateStatus: status => status === 201}
-            ).then(({ data: { message: [ message ] = [] } }) => {
-                this.successMessage = message;
-                this.updateCertificationStatus(id, 2);
-                $('#rejectModal').modal('hide')
-            }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {
-                this.errorMessage = message;
-                $('#rejectModal').modal('hide')
-            });
-        },
-        /**
-         * 监听输入
-         */
-        watchInput(e) {
-            if ( e.data ) {
-                this.reject.reject_message = '';
-            }
+          if ( !this.reject.reject_content ) {
+            this.reject.reject_message = '请填写驳回原因';
+            return;
+          }
+          let id = this.reject.certification_id;
+          request.patch(
+            createRequestURI('certifications/' + id + '/reject'),
+            {reject_content: this.reject.reject_content},
+            {validateStatus: status => status === 201}
+          ).then(({ data: { message: [ message ] = [] } }) => {
+            this.successMessage = message;
+            this.updateCertificationStatus(id, 2);
+            $('#rejectModal').modal('hide')
+          }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {
+            this.errorMessage = message;
+            $('#rejectModal').modal('hide')
+          });
         },
         /**
          * 打开驳回弹层
          */
         openRejectModal (id) {
-            this.reject.certification_id = id;
-            this.reject.reject_content = '';
-            this.reject.reject_message = ''
-            $('#rejectModal').modal('show');
+          this.reject.certification_id = id;
+          this.reject.reject_content = '';
+          this.reject.reject_message = ''
+          $('#rejectModal').modal('show');
         },
         /**
          * 更新认证状态
          */
         updateCertificationStatus (id, status) {
-            for (let i=0; i < this.certifications.length; i++) {
-                if ( this.certifications[i].id == id ) {
-                     this.certifications[i].status = status;
-                }
+          for (let i=0; i < this.certifications.length; i++) {
+            if ( this.certifications[i].id == id ) {
+               this.certifications[i].status = status;
             }
+          }
         },
         /**
          * 获取参数
          */
         getQueryParams () {
-            let query = '?';
+          let query = '?';
 
-            query += 'certification_name=' + this.categories.selected;
-            query += '&status=' + this.statuss.selected;
-            query += '&keyword=' + this.keyword;
-            query += '&perPage=' + this.paginate.perPage;
-            query += '&page=' + this.paginate.page;
+          query += 'certification_name=' + this.categories.selected;
+          query += '&status=' + this.statuss.selected;
+          query += '&keyword=' + this.keyword;
+          query += '&perPage=' + this.paginate.perPage;
+          query += '&page=' + this.paginate.currentPage;
 
-            return query;
+          return query;
         },
         /**
          * 处理过滤
          */
         handleSearch () {
-            this.initializationData();
-            this.getCertifications();
+          this.initializationData();
+          this.getCertifications();
         },
         /**
          * 初始化数据
          */
         initializationData () {
-            this.paginate.page = 1;
-            this.certifications = {}; 
+          this.paginate.page = 1;
+          this.certifications = {}; 
         },
         /**
          * 关闭提示
          */
         offAlert() {
-            this.errorMessage = this.successMessage = '';
-        }
+          this.errorMessage = this.successMessage = '';
+        },
+        watchChange () {
+          this.initializationData();
+          this.getCertifications();    
+        },
+        nextPage() {
+          this.paginate.currentPage += 1;
+          this.certifications = {}; 
+          this.getCertifications(); 
+        },
+        prevPage() {
+          this.paginate.currentPage -= 1;
+          this.certifications = {}; 
+          this.getCertifications(); 
+        },
     },
     created () {
         this.getCertificationCategories();
@@ -304,5 +335,5 @@ const UserComponent = {
     },
 
 };
-export default UserComponent;
+export default certificationComponent;
 </script>
