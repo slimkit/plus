@@ -146,7 +146,7 @@ const PersonalCertificationEdit = {
           org_name: '',
           org_address: '',
           desc: '',
-          type:'',
+          type:'user',
         },
         search:{
           keyword: '',

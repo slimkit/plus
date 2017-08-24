@@ -57,7 +57,7 @@
                 </div>
                 <div class="form-group">
                     <label><span class="text-danger">*</span>认证类型：</label>
-                    <select class="form-control" v-model="certification.type">
+                    <select class="form-control" v-model="certification.type" disabled>
                         <option :value="categroy.name" v-for="categroy in categories">{{ categroy.display_name }}</option>
                     </select>
                 </div>
