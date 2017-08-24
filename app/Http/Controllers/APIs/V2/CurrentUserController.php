@@ -105,8 +105,9 @@ class CurrentUserController extends Controller
         ]);
 
         $field = $email ? 'email' : 'phone';
+        $verifiable_field = $email ? 'mail' : 'sms';
         $target = $user->newQuery()
-            ->where($field, $$field)
+            ->where($verifiable_field, $$field)
             ->where('id', '!=', $user->id)
             ->first();
 
@@ -119,7 +120,7 @@ class CurrentUserController extends Controller
             ->first();
 
         if (! $code) {
-            return $response->json(['message' => ['验证码错误或者已实效']], 422);
+            return $response->json(['message' => ['验证码错误或者已失效']], 422);
         }
 
         $user->$field = $$field;
