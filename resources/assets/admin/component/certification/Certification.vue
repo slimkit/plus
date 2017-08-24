@@ -163,28 +163,28 @@ const certificationComponent = {
         certifications: {},
         attachmentPath: '/api/v2/files/',
         categories: {
-            selected: '',
-            data: {}
+          selected: '',
+          data: {}
         },
         statuss: {
-            selected: '',
-            display: ['待审核', '通过' , '拒绝'],
-            data:[
-                {status: '全部', value: ''},
-                {status: '待审核', value: 0},
-                {status: '通过', value: 1},
-                {status: '拒绝', value: 2},
-            ]
+          selected: '',
+          display: ['待审核', '通过' , '拒绝'],
+          data:[
+            {status: '全部', value: ''},
+            {status: '待审核', value: 0},
+            {status: '通过', value: 1},
+            {status: '拒绝', value: 2},
+          ]
         },
         paginate: {
-            perPage: 20,
-            lastPage: 10,
-            currentPage:1,
+          perPage: 20,
+          lastPage: 10,
+          currentPage:1,
         },
         reject: {
-            certification_id: '',
-            reject_content:'',
-            reject_message: '',
+          certification_id: '',
+          reject_content:'',
+          reject_message: '',
         },
         keyword: '',
         successMessage:'',
@@ -202,7 +202,7 @@ const certificationComponent = {
             const {data: data} = response.data;
             this.categories.data = data;
           }).catch(({ response: { data: { errors = ['加载认证详情失败'] } = {} } = {} }) => {
-        }); 
+          }); 
         },
         /**
          * 获取认证列表
@@ -305,7 +305,7 @@ const certificationComponent = {
          * 初始化数据
          */
         initializationData () {
-          this.paginate.page = 1;
+          this.paginate.currentPage = 1;
           this.certifications = {}; 
         },
         /**

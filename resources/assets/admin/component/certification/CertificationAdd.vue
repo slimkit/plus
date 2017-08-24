@@ -138,19 +138,19 @@ const PersonalCertificationEdit = {
         fileBase64: '',
         users: [],
         certification: {
-            user_id: '',
-            name: '章三',
-            phone: '15520759726',
-            number: '513722199302168066',
-            files: [],
-            org_name: '测试',
-            org_address: '测试',
-            desc: '测试',
-            type:'user',
+          user_id: '',
+          name: '',
+          phone: '',
+          number: '',
+          files: [],
+          org_name: '',
+          org_address: '',
+          desc: '',
+          type:'',
         },
         search:{
-            keyword: '',
-            message: '',
+          keyword: '',
+          message: '',
         }
     }),
     methods: {
@@ -159,59 +159,57 @@ const PersonalCertificationEdit = {
          * @return {[type]} [description]
          */
         getCertificationCategories () {
-            request.get(
-                createRequestURI('certification/categories'),
-                {validateStatus: status => status === 200}
-            ).then(response => {
-                const {data: data} = response.data;
-                this.categories = data;
-                this.loadding = false;
-            }).catch(({ response: { data: { errors = ['加载认证详情失败'] } = {} } = {} }) => {
-            }); 
+          request.get(
+            createRequestURI('certification/categories'),
+            {validateStatus: status => status === 200}
+          ).then(response => {
+            const {data: data} = response.data;
+            this.categories = data;
+            this.loadding = false;
+          }).catch(({ response: { data: { errors = ['加载认证详情失败'] } = {} } = {} }) => {
+
+          }); 
         },
         /**
          * 创建用户认证
          * @return {[type]} [description]
          */
         createCertification () {
-            request.post(
-                createRequestURI('certifications'),
-                { ...this.certification },
-                { validateStatus: status => status === 201 }
-            ).then(({ data: { message: [ message ] = [] } }) => {
-                this.successMessage = message;
-            }).catch(({ response: { data = {} } = {} }) => {
-                const { desc = [], files = [], phone = [], number = [], org_address = [], org_name = [], message = [] } = data;
-                const [ errorMessage ] = [...desc, ...files, ...phone, ...number, ...org_address, ...org_name, ...message];
-                this.errorMessage = errorMessage;
-                this.adding = false;
-            });
+          request.post(
+            createRequestURI('certifications'),
+            { ...this.certification },
+            { validateStatus: status => status === 201 }
+          ).then(({ data: { message: [ message ] = [] } }) => {
+            this.successMessage = message;
+          }).catch(({ response: { data = {} } = {} }) => {
+            const { desc = [], files = [], phone = [], number = [], org_address = [], org_name = [], message = [] } = data;
+            const [ errorMessage ] = [...desc, ...files, ...phone, ...number, ...org_address, ...org_name, ...message];
+            this.errorMessage = errorMessage;
+            this.adding = false;
+          });
         },
         /**
          * 搜索用户
-         * @return {[type]} [description]
          */
-          searchUser () {
-            if ( !this.search.keyword ) {
-              this.search.message = '请输入搜索关键字';
-              return;
-            }
-            $('#serach-user-btn').button('loading');
-            request.get(
-              createRequestURI('find/nocertification/users?keyword=' + this.search.keyword),
-              { validateStatus: status => status === 200 }
-            ).then(response => {
-              $('#serach-user-btn').button('reset');
-              this.users = response.data;
-            }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {
-              $('#serach-user-btn').button('reset');
-              this.search.message = message;
-            });
-          },
+        searchUser () {
+        if ( !this.search.keyword ) {
+          this.search.message = '请输入搜索关键字';
+          return;
+        }
+        $('#serach-user-btn').button('loading');
+          request.get(
+            createRequestURI('find/nocertification/users?keyword=' + this.search.keyword),
+            { validateStatus: status => status === 200 }
+          ).then(response => {
+            $('#serach-user-btn').button('reset');
+            this.users = response.data;
+          }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {
+            $('#serach-user-btn').button('reset');
+            this.search.message = message;
+          });
+        },
         /**
          * 上传附件
-         * @param  {[type]} e [description]
-         * @return {[type]}   [description]
          */
         uploadAttachment (e) {
           var that = this;
@@ -240,14 +238,12 @@ const PersonalCertificationEdit = {
         },
         /**
          * 打开搜索用户modal
-         * @return {[type]} [description]
          */
         openfindUserModal () {
           $('#findUserModal').modal('show');
         },
         /**
          * 选择用户
-         * @return {[type]} [description]
          */
         selectUser () {
           if ( !this.users.length ) {
