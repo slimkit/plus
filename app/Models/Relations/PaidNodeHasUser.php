@@ -25,7 +25,6 @@ trait PaidNodeHasUser
         return $this->belongsToMany(User::class, 'paid_node_users', 'node_id', 'user_id');
     }
 
-
     /**
      * the author of paid.
      *
