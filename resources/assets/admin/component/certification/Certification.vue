@@ -199,8 +199,7 @@ const certificationComponent = {
             createRequestURI('certification/categories'),
             {validateStatus: status => status === 200}
           ).then(response => {
-            const {data: data} = response.data;
-            this.categories.data = data;
+            this.categories.data = response.data;
           }).catch(({ response: { data: { errors = ['加载认证详情失败'] } = {} } = {} }) => {
           }); 
         },
@@ -330,8 +329,8 @@ const certificationComponent = {
         },
     },
     created () {
-        this.getCertificationCategories();
-        this.getCertifications();
+      this.getCertificationCategories();
+      this.getCertifications();
     },
 
 };
