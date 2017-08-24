@@ -14,7 +14,7 @@ use Zhiyi\Plus\Http\Requests\API2\UserCertification;
 class CertificationController extends Controller
 {
     /**
-     * certification list
+     * certification list.
      *
      * @param Request $request
      * @return $this
@@ -50,7 +50,7 @@ class CertificationController extends Controller
     }
 
     /**
-     * certifiction pass
+     * certifiction pass.
      * @param certification $certification
      * @return \Illuminate\Http\JsonResponse
      * @author: huhao <915664508@qq.com>
@@ -65,7 +65,7 @@ class CertificationController extends Controller
     }
 
     /**
-     * certifiction reject
+     * certifiction reject.
      * @param Request $request
      * @param Certification $certification
      * @return \Illuminate\Http\JsonResponse
@@ -93,7 +93,7 @@ class CertificationController extends Controller
     }
 
     /**
-     * get certification detail
+     * get certification detail.
      *
      * @param Certification $certification
      * @return $this
@@ -105,7 +105,7 @@ class CertificationController extends Controller
     }
 
     /**
-     * update user certification
+     * update user certification.
      * @param UserCertification $request
      * @param Certification $certification
      * @param FileWithModel $fileWithModel
@@ -152,7 +152,7 @@ class CertificationController extends Controller
     }
 
     /**
-     * add user certification
+     * add user certification.
      * @param UserCertification $request
      * @param Certification $certification
      * @param FileWithModel $fileWithModel
@@ -195,7 +195,7 @@ class CertificationController extends Controller
     }
 
     /**
-     * Search for non certification users
+     * Search for non certification users.
      * @param Request $request
      * @return $this|\Illuminate\Http\JsonResponse
      * @author: huhao <915664508@qq.com>
