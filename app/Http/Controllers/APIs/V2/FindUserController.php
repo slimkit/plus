@@ -149,7 +149,7 @@ class FindUserController extends Controller
 
         $users = $taggable->whereIn('tag_id', $tags)
             ->where('taggable_type', 'users')
-            ->where('taggable_id', '<>', $user_id)
+            ->where('taggable_id', '<>', $u->id)
             ->when($offset, function ($query) use ($offset) {
                 return $query->offset($offset);
             })
