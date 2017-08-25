@@ -15,7 +15,7 @@ use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 class FindUserController extends Controller
 {
     /**
-     * 热门用户, 根据粉丝数量倒序排列. 无需登录
+     * 热门用户, 根据粉丝数量倒序排列. 无需登录.
      */
     public function populars(Request $request, UserExtraModel $userExtra, ResponseContract $response)
     {
@@ -47,7 +47,7 @@ class FindUserController extends Controller
     }
 
     /**
-     * 最新用户,按注册时间倒序. 无需登录
+     * 最新用户,按注册时间倒序. 无需登录.
      */
     public function latests(Request $request, UserModel $user, ResponseContract $response)
     {
@@ -74,7 +74,7 @@ class FindUserController extends Controller
     }
 
     /**
-     * 推荐用户. 无需登录
+     * 推荐用户. 无需登录.
      */
     public function recommends(Request $request, UserRecommendedModel $userRecommended, ResponseContract $response)
     {
@@ -102,7 +102,7 @@ class FindUserController extends Controller
     }
 
     /**
-     * search users by name. 无需登录
+     * search users by name. 无需登录.
      */
     public function search(Request $request, UserModel $user, ResponseContract $response)
     {
@@ -135,7 +135,7 @@ class FindUserController extends Controller
     }
 
     /**
-     * 通过标签推荐用户. 需要登录
+     * 通过标签推荐用户. 需要登录.
      */
     public function findByTags(Request $request, TaggableModel $taggable, ResponseContract $response)
     {
@@ -171,7 +171,7 @@ class FindUserController extends Controller
     }
 
     /**
-     * 通过手机号查找,无需登录
+     * 通过手机号查找,无需登录.
      */
     public function findByPhone(Request $request, UserModel $user, ResponseContract $response)
     {

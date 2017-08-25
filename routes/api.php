@@ -157,7 +157,6 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
         $api->get('/search', API2\FindUserController::class.'@search');
     });
 
-
     $api->group(['prefix' => 'users'], function (RouteContract $api) {
 
         /*
