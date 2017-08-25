@@ -26,7 +26,7 @@ class AbilitySeeder extends Seeder
     protected function createManagerPerm()
     {
         // 基础
-        Ability::create(['name' => 'admin:login', 'display_name' => '后台登录权限', 'description' => '用户是否有权限登录后台']);
+        Ability::create(['name' => 'admin: login', 'display_name' => '后台登录权限', 'description' => '用户是否有权限登录后台']);
         Ability::create(['name' => 'admin:site:base', 'display_name' => '系统-基本信息', 'description' => '编辑系统配置基本信息权限']);
 
         // 地区管理

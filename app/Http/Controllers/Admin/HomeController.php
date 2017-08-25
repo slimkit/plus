@@ -18,8 +18,6 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $this->abortIfAuthenticated($user = $request->user());
-
         $data = [
             'csrf_token' => csrf_token(),
             'base_url'   => url('admin'),
@@ -43,19 +41,5 @@ class HomeController extends Controller
         return response()
             ->json($repository->getManages())
             ->setStatusCode(200);
-    }
-
-    /**
-     *  如果用户存在，判断权限.
-     *
-     * @param null|\Zhiyi\Plus\Models\User $user
-     * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    protected function abortIfAuthenticated($user)
-    {
-        if ($user && ! $user->ability('admin:login')) {
-            abort(403, '你没有权限访问后台');
-        }
     }
 }
