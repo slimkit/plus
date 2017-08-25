@@ -10,7 +10,7 @@ import UserManage from '../component/user/UserManage';
 import Manage from '../component/user/Manage';
 import Roles from '../component/user/Roles';
 import RoleManage from '../component/user/RoleManage';
-import Permissions from '../component/user/Permissions';
+import Abilities from '../component/user/Abilities';
 import Setting from '../component/user/Setting';
 
 const routers = {
@@ -22,7 +22,7 @@ const routers = {
     { path: 'add', component: UserAdd },
     { path: 'roles', component: Roles },
     { path: 'roles/:role', component: RoleManage },
-    { path: 'permissions', component: Permissions },
+    { path: 'abilities', component: Abilities },
     { path: 'setting', component: Setting }
   ]
 };

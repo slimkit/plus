@@ -16,7 +16,7 @@
       <router-link to="/users/roles" tag="li" active-class="active">
         <a href="#">角色管理</a>
       </router-link>
-      <router-link to="/users/permissions" tag="li" active-class="active">
+      <router-link to="/users/abilities" tag="li" active-class="active">
         <a href="#">权限管理</a>
       </router-link>
     </ul>
