@@ -18,6 +18,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+        $user = $request->user();
         $data = [
             'csrf_token' => csrf_token(),
             'base_url'   => url('admin'),
