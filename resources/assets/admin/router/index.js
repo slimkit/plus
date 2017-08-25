@@ -10,6 +10,7 @@ import walletRouter from './wallet';
 import adRouter from './ad';
 import paidRouter from './paid';
 import certificationRouter from './certification';
+import coversationRouter from './conversation';
 
 // components.
 import Login from '../component/Login';
@@ -32,7 +33,8 @@ const childrenRoutes = [
   walletRouter,
   adRouter,
   paidRouter,
-  certificationRouter
+  certificationRouter,
+  coversationRouter,
 ];
 
 const router = new VueRouter({

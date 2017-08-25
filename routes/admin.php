@@ -165,4 +165,7 @@ Route::middleware('auth:web')
     Route::patch('certifications/{certification}/pass', 'CertificationController@passCertification');
     Route::patch('certifications/{certification}/reject', 'CertificationController@rejectCertification');
     Route::get('find/nocertification/users', 'CertificationController@findNoCertificationUsers');
+
+    //会话管理
+    Route::get('conversations', 'ConversationController@index');
 });

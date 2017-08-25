@@ -102,29 +102,34 @@
                                 <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
                             </td>
                         </tr>
-                        <tr v-for="certification in certifications">
-                            <td><input type="checkbox" :value="certification.id"></td>
-                            <td>{{ certification.user.name }}</td>
-                            <td>{{ certification.data.name }}</td>
-                            <td>{{ certification.data.hasOwnProperty('org_name') ? certification.data.org_name : '' }}</td>
-                            <td>{{ certification.data.phone }}</td>
-                            <td>{{ certification.data.number }}</td>
-                            <td>{{ certification.category.display_name }}</td>
-                            <td>{{ certification.data.desc }}</td>
-                            <td><a :href="attachmentPath+certification.data.files[0]" target="__blank">下载</a></td>
-                            <td>{{ statuss.display[certification.status] }}</td>
-                            <td>{{ certification.updated_at }}</td>
-                            <td>
-                                <router-link type="button"
-                                class="btn btn-primary btn-sm"
-                                v-show="certification.status === 1"
-                                :to="{ name: 'certification:edit', params:{certification:certification.id}}">编辑</router-link>
-                                <button class="btn btn-primary btn-sm" v-show="certification.status === 0" @click.prevent="passCertification(certification.id)">通过</button>
-                                <button class="btn btn-primary btn-sm" 
-                                    v-show="certification.status !== 2" 
-                                    data-toggle="modal" @click="openRejectModal(certification.id)">驳回</button>
-                            </td>
-                        </tr>
+                        <template v-if="certifications.length">
+                          <tr v-for="certification in certifications">
+                              <td><input type="checkbox" :value="certification.id"></td>
+                              <td>{{ certification.user.name }}</td>
+                              <td>{{ certification.data.name }}</td>
+                              <td>{{ certification.data.hasOwnProperty('org_name') ? certification.data.org_name : '' }}</td>
+                              <td>{{ certification.data.phone }}</td>
+                              <td>{{ certification.data.number }}</td>
+                              <td>{{ certification.category.display_name }}</td>
+                              <td>{{ certification.data.desc }}</td>
+                              <td><a :href="attachmentPath+certification.data.files[0]" target="__blank">下载</a></td>
+                              <td>{{ statuss.display[certification.status] }}</td>
+                              <td>{{ certification.updated_at }}</td>
+                              <td>
+                                  <router-link type="button"
+                                  class="btn btn-primary btn-sm"
+                                  v-show="certification.status === 1"
+                                  :to="{ name: 'certification:edit', params:{certification:certification.id}}">编辑</router-link>
+                                  <button class="btn btn-primary btn-sm" v-show="certification.status === 0" @click.prevent="passCertification(certification.id)">通过</button>
+                                  <button class="btn btn-primary btn-sm" 
+                                      v-show="certification.status !== 2" 
+                                      data-toggle="modal" @click="openRejectModal(certification.id)">驳回</button>
+                              </td>
+                          </tr> 
+                        </template>
+                        <template v-else>
+                            <tr class="text-center" v-show="!loadding"><td colspan="12">无数据</td></tr>
+                        </template>
                     </tbody>
                 </table>
             </div>
@@ -219,10 +224,6 @@ const certificationComponent = {
             this.paginate.lastPage = lastPage;
             this.paginate.total = total;
             this.certifications = data;
-
-            if (!data.length) {
-              this.errorMessage = '无数据可加载';
-            }
 
           }).catch(({ response: { data: { errors = ['加载认证类型失败'] } = {} } = {} }) => {
             this.loadding = false;

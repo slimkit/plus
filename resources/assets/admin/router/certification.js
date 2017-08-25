@@ -14,8 +14,8 @@ const routers = {
             component: Certification,
         },
         {
-            path: 'categoies',
-            name: 'certification:categoies',
+            path: 'categories',
+            name: 'certification:categories',
             component: Category
         },
         {
