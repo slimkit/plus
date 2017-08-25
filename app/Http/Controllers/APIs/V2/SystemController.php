@@ -39,4 +39,35 @@ class SystemController extends Controller
     {
         return view('about');
     }
+
+    /**
+     * 获取系统会话列表.
+     *
+     * @author bs<414606094@qq.com>
+     * @param  Request $request
+     * @param  Conversation $conversationModel
+     * @return mixed
+     */
+    public function getConversations(Request $request, Conversation $conversationModel)
+    {
+        $uid = $request->user()->id;
+        $limit = $request->input('limit', 15);
+        $max_id = $request->input('max_id', 0);
+        $order = $request->input('order', 0);
+        $list = $conversationModel->where(function ($query) use ($uid) {
+            $query->where(function ($query) use ($uid) {
+                $query->where('type', 'system')->whereIn('to_user_id', [0, $uid]);
+            })->orWhere(['type' => 'feedback', 'user_id' => $uid]);
+        })
+        ->where(function ($query) use ($max_id, $order) {
+            if ($max_id > 0) {
+                $query->where('id', $order ? '>' : '<', $max_id);
+            }
+        })
+        ->orderBy('id', 'desc')
+        ->take($limit)
+        ->get();
+
+        return response()->json($list)->setStatusCode(200);
+    }
 }

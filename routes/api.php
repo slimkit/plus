@@ -293,6 +293,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             // send a feedback.
             $api->post('/feedback', API2\SystemController::class.'@createFeedback');
 
+            // get a list of system conversation.
+            $api->get('/conversations', API2\SystemController::class.'@getConversations');
+
             /*
             | 更新当前用户头像
              */
