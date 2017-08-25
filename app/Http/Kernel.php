@@ -42,7 +42,7 @@ class Kernel extends HttpKernel
         ],
 
         'admin' => [
-            'ability:admin: login,你没有权限访问后台。',
+            'ability:admin:login,你没有权限访问后台。',
         ],
     ];
 
