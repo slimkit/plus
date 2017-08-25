@@ -35,7 +35,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="perm in perms" :key="perm.id">
+        <tr v-for="perm in abilities" :key="perm.id">
           <td>{{ perm.name }}</td>
           <td>
             <div class="input-group">
@@ -104,7 +104,7 @@ import lodash from 'lodash';
 
 const PermissionsComponent = {
   data: () => ({
-    perms: [],
+    abilities: [],
     deleteIds: {},
     add: {
       name: '',
@@ -121,12 +121,12 @@ const PermissionsComponent = {
       const { name, display_name, description } = this.add;
       this.add.adding = true;
       request.post(
-        createRequestURI('perms'),
+        createRequestURI('abilities'),
         { name, display_name, description },
         { validateStatus: status => status === 201 }
       ).then(({ data }) => {
-        this.perms = [
-          ...this.perms,
+        this.abilities = [
+          ...this.abilities,
           data
         ];
         this.add = {
@@ -144,7 +144,7 @@ const PermissionsComponent = {
     },
     updatePerm (id, key, value) {
       request.patch(
-        createRequestURI(`perms/${id}`),
+        createRequestURI(`abilities/${id}`),
         { key, value },
         { validateStatus: status => status === 201 }
       ).then(() => {
@@ -177,7 +177,7 @@ const PermissionsComponent = {
         };
 
         request.delete(
-          createRequestURI(`perms/${id}`),
+          createRequestURI(`abilities/${id}`),
           { validateStatus: status => status === 204 }
         ).then(() => {
           deleteId(id);
@@ -191,13 +191,13 @@ const PermissionsComponent = {
       }
     },
     deletePermToState (id) {
-      let perms = [];
-      this.perms.forEach(perm => {
+      let abilities = [];
+      this.abilities.forEach(perm => {
         if (parseInt(perm.id) !== parseInt(id)) {
-          perms.push(perm);
+          abilities.push(perm);
         }
       });
-      this.perms = perms;
+      this.abilities = abilities;
     },
     dismisError () {
       this.error = null;
@@ -205,10 +205,10 @@ const PermissionsComponent = {
   },
   created () {
     request.get(
-      createRequestURI('perms'),
+      createRequestURI('abilities'),
       { validateStatus: status => status === 200 }
     ).then(({ data }) => {
-      this.perms = data;
+      this.abilities = data;
       this.loadding = false;
     }).catch(({ response: { data: { errors = ['获取失败，请刷新重试！'] } = {} } = {} }) => {
       this.error = lodash.values(errors).pop();

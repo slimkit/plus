@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="perm in perms" @key="perm.id">
+        <tr v-for="perm in abilities" @key="perm.id">
           <th>
             <input type="checkbox" :value="perm.id" v-model="seleced" />
           </th>
@@ -38,7 +38,7 @@
     <button v-if="submit" type="button" class="btn btn-primary" disabled="disabled">
       <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
     </button>
-    <button v-else type="button" class="btn btn-primary" @click="postPerms">提交</button>
+    <button v-else type="button" class="btn btn-primary" @click="postabilities">提交</button>
 
   </div>
 </template>
@@ -49,7 +49,7 @@ import lodash from 'lodash';
 
 const RoleManageComponent = {
   data: () => ({
-    perms: [],
+    abilities: [],
     seleced: [],
     role: {},
     loadding: false,
@@ -59,7 +59,7 @@ const RoleManageComponent = {
   computed: {
     checkBoxSelectAll: {
       get () {
-        return this.perms.length === this.seleced.length;
+        return this.abilities.length === this.seleced.length;
       },
       set (value) {
         if (value === false) {
@@ -68,19 +68,19 @@ const RoleManageComponent = {
         }
 
         let seleced = [];
-        this.perms.forEach(perm => seleced.push(perm.id));
+        this.abilities.forEach(perm => seleced.push(perm.id));
         this.seleced = seleced;
       }
     }
   },
   methods: {
-    postPerms () {
+    postabilities () {
       const seleced = this.seleced;
       const { id } = this.role;
       this.submit = true;
       request.patch(
         createRequestURI(`roles/${id}`),
-        { perms: seleced },
+        { abilities: seleced },
         { validateStatus: status => status === 201 }
       ).then(() => {
         this.submit = false;
@@ -103,18 +103,18 @@ const RoleManageComponent = {
       createRequestURI(`roles/${id}`),
       {
         params: {
-          all_perms: true,
-          perms: true
+          all_abilities: true,
+          abilities: true
         },
         validateStatus: status => status === 200
       }
     ).then(({ data }) => {
-      const { perms, role } = data;
-      this.perms = perms;
+      const { abilities, role } = data;
+      this.abilities = abilities;
       this.role = role;
 
       let seleced = [];
-      role.perms.forEach(perm => seleced.push(perm.id));
+      role.abilities.forEach(perm => seleced.push(perm.id));
       this.seleced = seleced;
       this.loadding = false;
     }).catch(({ response: { data: { errors = ['加载失败，请刷新重试！'] } = {} } = {} }) => {
