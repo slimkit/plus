@@ -137,6 +137,27 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     |
     */
 
+    /*
+    | 找人
+    */
+    $api->group(['prefix' => 'user'], function (RouteContract $api) {
+        // @get find users by phone
+        $api->post('/find-by-phone', API2\FindUserController::class.'@findByPhone');
+
+        // @get popular users
+        $api->get('/populars', API2\FindUserController::class.'@populars');
+
+        // @get latest users
+        $api->get('/latests', API2\FindUserController::class.'@latests');
+
+        // @get recommended users
+        $api->get('/recommends', API2\FindUserController::class.'@recommends');
+
+        // @get search name
+        $api->get('/search', API2\FindUserController::class.'@search');
+    });
+
+
     $api->group(['prefix' => 'users'], function (RouteContract $api) {
 
         /*
@@ -217,23 +238,8 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             | 找人
             */
 
-            // @get popular users
-            $api->get('/populars', API2\FindUserController::class.'@populars');
-
-            // @get latest users
-            $api->get('/latests', API2\FindUserController::class.'@latests');
-
-            // @get recommended users
-            $api->get('/recommends', API2\FindUserController::class.'@recommends');
-
-            // @get search name
-            $api->get('/search', API2\FindUserController::class.'@search');
-
-            // @get find users by tags
+            // @get find users by user tags
             $api->get('/find-by-tags', API2\FindUserController::class.'@findByTags');
-
-            // @get find users by phone
-            $api->post('/find-by-phone', API2\FindUserController::class.'@findByPhone');
 
             /*
             | 用户收到的评论
