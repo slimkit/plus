@@ -27,9 +27,9 @@ trait UserHasAbility
     public function ability(...$parameters)
     {
         if (isset($parameters[1])) {
-            return $this->resolveAbility()
-                ->roles($parameters[0])
-                ->ability($parameters[1]);
+            return ($role = $this->resolveAbility()->roels($parameters[0]))
+                ? $role->ability($parameters[1])
+                : false;
         } elseif (isset($parameters[0])) {
             return $this->resolveAbility()
                 ->all($parameters[0]);

@@ -111,7 +111,7 @@ class UserController extends Controller
             return $response->json(['message' => ['注册失败']], 500);
         }
 
-        $user->attachRole($role->value);
+        $user->roles()->sync($role->value);
 
         return $response->json([
             'token' => $auth->fromUser($user),

@@ -27,6 +27,52 @@ Route::group([
     // 后台导航
     // @GET /admin/manages
     $route->get('/manages', 'HomeController@showManages');
+
+    // Role
+    // @Route /roles
+    $route->group(['prefix' => 'roles'], function (RouteRegisterContract $route) {
+
+        // Get all role.
+        // @GET /roles
+        $route->get('/', 'RoleController@roles');
+
+        // Create role.
+        // @POST /roles
+        $route->post('/', 'RoleController@createRole');
+
+        // Update a role.
+        // @PATCH /roles/:role
+        $route->patch('/{role}', 'RoleController@updateRole');
+
+        // Delete a role.
+        // @DELETE /roles/:role
+        $route->delete('/{role}', 'RoleController@delete');
+
+        // Get a role info.
+        // @get /roles/:role
+        $route->get('/{role}', 'RoleController@showRole');
+    });
+
+    // Abilities.
+    // @Route /abilities
+    $route->group(['prefix' => 'abilities'], function (RouteRegisterContract $route) {
+
+        // Get all abilities.
+        // @get /abilities
+        $route->get('/', 'RoleController@abilities');
+
+        // Create a ability.
+        // @post /abilities
+        $route->post('/', 'RoleController@createAbility');
+
+        // Update a ability.
+        // @patch /abilities/:ability
+        $route->patch('/{ability}', 'RoleController@updateAbility');
+
+        // Delete a ability.
+        // @delete /abilities/:ability
+        $route->delete('/{ability}', 'RoleController@deleteAbility');
+    });
 });
 
 Route::middleware('auth:web')
@@ -136,19 +182,6 @@ Route::middleware('auth:web')
     Route::patch('/users/{user}', 'UserController@update');
     Route::get('/user/setting', 'UserController@showSetting');
     Route::patch('/user/setting', 'UserController@storeSetting');
-
-    // roles
-    Route::get('/roles', 'RoleController@roles');
-    Route::post('/roles', 'RoleController@createRole');
-    Route::patch('/roles/{role}', 'RoleController@updateRole');
-    Route::delete('/roles/{role}', 'RoleController@delete');
-    Route::get('/roles/{role}', 'RoleController@showRole');
-
-    // 权限节点
-    Route::get('/perms', 'RoleController@perms');
-    Route::post('/perms', 'RoleController@createPerm');
-    Route::patch('/perms/{perm}', 'RoleController@updatePerm');
-    Route::delete('/perms/{perm}', 'RoleController@deletePerm');
 
     // 系统通知
     Route::any('/system/notice', 'SystemController@pushSystemNotice');

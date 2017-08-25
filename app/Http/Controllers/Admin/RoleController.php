@@ -4,7 +4,7 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Zhiyi\Plus\Models\Role;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\Permission;
+use Zhiyi\Plus\Models\Ability;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class RoleController extends Controller
@@ -119,20 +119,20 @@ class RoleController extends Controller
             ])->setStatusCode(403);
         }
 
-        $allPerms = $request->has('all_perms');
-        $hasPerms = $request->has('perms');
+        $allabilities = $request->has('all_abilities');
+        $hasabilities = $request->has('abilities');
 
-        $perms = [];
-        if ($allPerms === true) {
-            $perms = Permission::all();
+        $abilities = [];
+        if ($allabilities === true) {
+            $abilities = Ability::all();
         }
 
-        if ($hasPerms === true) {
-            $role->load(['perms']);
+        if ($hasabilities === true) {
+            $role->load(['abilities']);
         }
 
         return response()->json([
-            'perms' => $perms,
+            'abilities' => $abilities,
             'role' => $role,
         ])->setStatusCode(200);
     }
@@ -153,8 +153,8 @@ class RoleController extends Controller
             ])->setStatusCode(403);
         }
 
-        $perms = $request->input('perms', []);
-        $role->perms()->sync($perms);
+        $abilities = $request->input('abilities', []);
+        $role->abilities()->sync($abilities);
 
         return response()->json([
             'message' => '更新成功',
@@ -162,13 +162,13 @@ class RoleController extends Controller
     }
 
     /**
-     * Gets all permission nodes.
+     * Gets all Ability nodes.
      *
      * @return mixed
      *
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function perms(Request $request)
+    public function abilities(Request $request)
     {
         if (! $request->user()->ability('admin:perm:show')) {
             return response()->json([
@@ -176,9 +176,9 @@ class RoleController extends Controller
             ])->setStatusCode(403);
         }
 
-        $perms = Permission::all();
+        $abilities = Ability::all();
 
-        return response()->json($perms)->setStatusCode(200);
+        return response()->json($abilities)->setStatusCode(200);
     }
 
     /**
@@ -188,7 +188,7 @@ class RoleController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function createPerm(Request $request)
+    public function createAbility(Request $request)
     {
         if (! $request->user()->ability('admin:perm:add')) {
             return response()->json([
@@ -204,37 +204,37 @@ class RoleController extends Controller
             return response()->json([
                 'errors' => ['name' => '名称不能为空'],
             ])->setStatusCode(422);
-        } elseif (Permission::where('name', 'LIKE', $name)->first()) {
+        } elseif (Ability::where('name', 'LIKE', $name)->first()) {
             return response()->json([
                 'errors' => ['name' => '名称已经存在'],
             ])->setStatusCode(422);
         }
 
-        $perm = new Permission();
-        $perm->name = $name;
-        $perm->display_name = $display_name;
-        $perm->description = $description;
+        $ability = new Ability();
+        $ability->name = $name;
+        $ability->display_name = $display_name;
+        $ability->description = $description;
 
-        if (! $perm->save()) {
+        if (! $ability->save()) {
             return response()->json([
                 'errors' => ['保存失败'],
             ])->setStatusCode(400);
         }
 
-        return response()->json($perm)->setStatusCode(201);
+        return response()->json($ability)->setStatusCode(201);
     }
 
     /**
      * 更新权限节点.
      *
      * @param Request    $request
-     * @param Permission $perm
+     * @param Ability $ability
      *
      * @return mixed
      *
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function updatePerm(Request $request, Permission $perm)
+    public function updateAbility(Request $request, Ability $ability)
     {
         if (! $request->user()->ability('admin:perm:update')) {
             return response()->json([
@@ -251,9 +251,9 @@ class RoleController extends Controller
             ])->setStatusCode(422);
         }
 
-        $perm->$key = $value;
+        $ability->$key = $value;
 
-        if (! $perm->save()) {
+        if (! $ability->save()) {
             return response()->json([
                 'errors' => ['数据更新失败'],
             ])->setStatusCode(500);
@@ -267,11 +267,11 @@ class RoleController extends Controller
     /**
      * 删除权限节点.
      *
-     * @param Permission $perm
+     * @param Ability $ability
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function deletePerm(Request $request, Permission $perm)
+    public function deleteAbility(Request $request, Ability $ability)
     {
         if (! $request->user()->ability('admin:perm:delete')) {
             return response()->json([
@@ -279,7 +279,7 @@ class RoleController extends Controller
             ])->setStatusCode(403);
         }
 
-        if ($perm->delete()) {
+        if ($ability->delete()) {
             return response('', 204);
         }
 

@@ -15,13 +15,13 @@ use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 class FindUserController extends Controller
 {
     /**
-     * 热门用户, 根据粉丝数量倒序排列.
+     * 热门用户, 根据粉丝数量倒序排列. 无需登录.
      */
     public function populars(Request $request, UserExtraModel $userExtra, ResponseContract $response)
     {
         $limit = $request->input('limit', 20);
         $offset = $request->input('offset', 0);
-        $u = $request->user();
+        $user_id = $request->user('api')->id ?? 0;
 
         $users = $userExtra
             ->when($offset, function ($query) use ($offset) {
@@ -36,9 +36,9 @@ class FindUserController extends Controller
             ->get();
 
         return $response->json(
-            $users->map(function ($user) use ($u) {
-                $user->user->following = $user->user->hasFollwing($u->id);
-                $user->user->follower = $user->user->hasFollower($u->id);
+            $users->map(function ($user) use ($user_id) {
+                $user->user->following = $user->user->hasFollwing($user_id);
+                $user->user->follower = $user->user->hasFollower($user_id);
 
                 return $user->user;
             })
@@ -47,13 +47,13 @@ class FindUserController extends Controller
     }
 
     /**
-     * 最新用户,按注册时间倒序.
+     * 最新用户,按注册时间倒序. 无需登录.
      */
     public function latests(Request $request, UserModel $user, ResponseContract $response)
     {
         $limit = $request->input('limit', 20);
         $offset = $request->input('offset', null);
-        $u = $request->user();
+        $user_id = $request->user('api')->id ?? 0;
 
         $users = $user->when($offset, function ($query) use ($offset) {
             return $query->offset($offset);
@@ -63,9 +63,9 @@ class FindUserController extends Controller
             ->get();
 
         return $response->json(
-            $users->map(function ($user) use ($u) {
-                $user->following = $user->hasFollwing($u->id);
-                $user->follower = $user->hasFollower($u->id);
+            $users->map(function ($user) use ($user_id) {
+                $user->following = $user->hasFollwing($user_id);
+                $user->follower = $user->hasFollower($user_id);
 
                 return $user;
             })
@@ -74,11 +74,11 @@ class FindUserController extends Controller
     }
 
     /**
-     * 推荐用户.
+     * 推荐用户. 无需登录.
      */
     public function recommends(Request $request, UserRecommendedModel $userRecommended, ResponseContract $response)
     {
-        $u = $request->user();
+        $user_id = $request->user('api')->id ?? 0;
         $limit = $request->input('limit', 20);
         $offset = $request->input('offset', 0);
 
@@ -91,9 +91,9 @@ class FindUserController extends Controller
             ->get();
 
         return $response->json(
-            $users->map(function ($user) use ($u) {
-                $user->user->following = $user->user->hasFollwing($u->id);
-                $user->user->follower = $user->user->hasFollower($u->id);
+            $users->map(function ($user) use ($user_id) {
+                $user->user->following = $user->user->hasFollwing($user_id);
+                $user->user->follower = $user->user->hasFollower($user_id);
 
                 return $user->user;
             })
@@ -102,11 +102,11 @@ class FindUserController extends Controller
     }
 
     /**
-     * search users by name.
+     * search users by name. 无需登录.
      */
     public function search(Request $request, UserModel $user, ResponseContract $response)
     {
-        $u = $request->user();
+        $user_id = $request->user('api')->id ?? 0;
         $limit = $request->input('limit', 20);
         $offset = $request->input('offset', 0);
         $keyword = $request->input('keyword', null);
@@ -124,9 +124,9 @@ class FindUserController extends Controller
             ->get();
 
         return $response->json(
-            $users->map(function ($user) use ($u) {
-                $user->following = $user->hasFollwing($u->id);
-                $user->follower = $user->hasFollower($u->id);
+            $users->map(function ($user) use ($user_id) {
+                $user->following = $user->hasFollwing($user_id);
+                $user->follower = $user->hasFollower($user_id);
 
                 return $user;
             })
@@ -135,7 +135,7 @@ class FindUserController extends Controller
     }
 
     /**
-     * 通过标签推荐用户.
+     * 通过标签推荐用户. 需要登录.
      */
     public function findByTags(Request $request, TaggableModel $taggable, ResponseContract $response)
     {
@@ -149,7 +149,7 @@ class FindUserController extends Controller
 
         $users = $taggable->whereIn('tag_id', $tags)
             ->where('taggable_type', 'users')
-            ->where('taggable_id', '<>', $u->id)
+            ->where('taggable_id', '<>', $user_id)
             ->when($offset, function ($query) use ($offset) {
                 return $query->offset($offset);
             })
@@ -170,9 +170,12 @@ class FindUserController extends Controller
         ->setStatusCode(200);
     }
 
+    /**
+     * 通过手机号查找,无需登录.
+     */
     public function findByPhone(Request $request, UserModel $user, ResponseContract $response)
     {
-        $u = $request->user();
+        $user_id = $request->user('api')->id ?? 0;
         $phones = $request->input('phones', '');
 
         if (! $phones) {
@@ -186,9 +189,9 @@ class FindUserController extends Controller
             ->get();
 
         return $response->json(
-            $users->map(function ($user) use ($u) {
-                $user->following = $user->hasFollwing($u->id);
-                $user->follower = $user->hasFollower($u->id);
+            $users->map(function ($user) use ($user_id) {
+                $user->following = $user->hasFollwing($user_id);
+                $user->follower = $user->hasFollower($user_id);
                 $user->mobi = $user->phone;
 
                 return $user;
