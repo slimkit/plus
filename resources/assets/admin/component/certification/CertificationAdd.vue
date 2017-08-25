@@ -254,7 +254,13 @@ const PersonalCertificationEdit = {
             return;
           }
           $('#findUserModal').modal('hide');
-        }
+        },
+        /**
+         * 关闭提示弹层
+         */
+        offAlert () {
+          this.errorMessage = this.successMessage = '';
+        },
     },
     created () {
       this.getCertificationCategories();

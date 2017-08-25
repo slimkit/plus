@@ -220,6 +220,10 @@ const certificationComponent = {
             this.paginate.total = total;
             this.certifications = data;
 
+            if (!data.length) {
+              this.errorMessage = '无数据可加载';
+            }
+
           }).catch(({ response: { data: { errors = ['加载认证类型失败'] } = {} } = {} }) => {
             this.loadding = false;
           });

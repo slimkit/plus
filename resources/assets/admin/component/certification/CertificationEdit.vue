@@ -159,6 +159,9 @@ const PersonalCertificationEdit = {
             this.loadding = false;
           });
         },
+        /**
+         * 关闭提示弹层
+         */
         offAlert () {
             this.errorMessage = this.successMessage = '';
         },
