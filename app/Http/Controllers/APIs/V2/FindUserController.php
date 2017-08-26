@@ -104,7 +104,7 @@ class FindUserController extends Controller
     /**
      * search users by name. 无需登录.
      */
-    public function search(Request $request, UserModel $user, ResponseContract $response)
+    public function search(Request $request, UserModel $user, ResponseContract $response, UserRecommendedModel $userRecommended)
     {
         $user_id = $request->user('api')->id ?? 0;
         $limit = $request->input('limit', 20);
