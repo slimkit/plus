@@ -2,9 +2,54 @@
 
 - [热门用户](#热门用户)
 - [最新用户](#最新用户)
-- [推荐用户(后台推荐,备用)](#后台推荐用户)
+- [推荐用户(后台推荐)](#后台推荐用户)
 - [推荐用户(按标签)](#推荐用户)
 - [搜索用户](#搜索用户)
+
+## 后台推荐用户
+
+```
+get /user/recommends
+```
+#### Response
+```
+Status: 200 OK
+```
+```json5
+[
+    {
+        "id": 29,
+        "name": "袖子",
+        "location": "四川省 成都市 武侯区",
+        "sex": 2,
+        "bio": "咨询QQ 3298713109 电话：18108035545。购买授权、产品咨询、定制开发、TS二次开发",
+        "created_at": "2017-04-17 08:47:49",
+        "updated_at": "2017-08-01 08:20:26",
+        "following": false,
+        "follower": false,
+        "avatar": "http://tsplus.zhibocloud.cn/api/v2/users/29/avatar",
+        "bg": null,
+        "verified": {
+            "type": "user",
+            "icon": null
+        },
+        "extra": {
+            "user_id": 29,
+            "likes_count": 65,
+            "comments_count": 77,
+            "followers_count": 43,
+            "followings_count": 129,
+            "updated_at": "2017-08-26 08:17:40",
+            "feeds_count": 56,
+            "questions_count": 0,
+            "answers_count": 0,
+            "checkin_count": 0,
+            "last_checkin_count": 0
+        }
+    }
+]
+```
+
 
 ## 热门用户
 

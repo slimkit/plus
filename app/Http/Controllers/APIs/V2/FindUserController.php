@@ -79,7 +79,7 @@ class FindUserController extends Controller
     public function recommends(Request $request, UserRecommendedModel $userRecommended, ResponseContract $response)
     {
         $user_id = $request->user('api')->id ?? 0;
-        $limit = $request->input('limit', 20);
+        $limit = $request->input('limit', 200);
         $offset = $request->input('offset', 0);
 
         $users = $userRecommended->when($offset, function ($query) use ($offset) {
