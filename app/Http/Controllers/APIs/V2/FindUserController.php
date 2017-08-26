@@ -113,7 +113,6 @@ class FindUserController extends Controller
 
         // 没有输入关键字，返回后台推荐用户
         if (! $keyword) {
-
             $users = $userRecommended->when($offset, function ($query) use ($offset) {
                 return $query->offset($offset);
             })
