@@ -111,8 +111,26 @@ class FindUserController extends Controller
         $offset = $request->input('offset', 0);
         $keyword = $request->input('keyword', null);
 
+        // 没有输入关键字，返回后台推荐用户
         if (! $keyword) {
-            abort(422, '请输入关键字');
+
+            $users = $userRecommended->when($offset, function ($query) use ($offset) {
+                return $query->offset($offset);
+            })
+                ->with(['user'])
+                ->limit($limit)
+                ->orderBy('id', 'desc')
+                ->get();
+
+            return $response->json(
+                $users->map(function ($user) use ($user_id) {
+                    $user->user->following = $user->user->hasFollwing($user_id);
+                    $user->user->follower = $user->user->hasFollower($user_id);
+
+                    return $user->user;
+                })
+            )
+            ->setStatusCode(200);
         }
 
         $users = $user->where('name', 'like', "%{$keyword}%")
