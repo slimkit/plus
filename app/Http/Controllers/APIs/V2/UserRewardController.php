@@ -56,7 +56,7 @@ class UserRewardController extends Controller
             $user->walletCharges()->save($userCharge);
 
             // 添加打赏通知
-            $user->sendNotifyMessage('user:reward', sprintf('你对用户%s进行%s元打赏', $target->name, $amount), [
+            $user->sendNotifyMessage('user:reward', sprintf('你对用户%s进行%s元打赏', $target->name, $amount / 100), [
                     'user' => $target,
                 ]);
 
@@ -75,7 +75,7 @@ class UserRewardController extends Controller
             $chargeModel->save();
 
             // 添加被打赏通知
-            $target->sendNotifyMessage('user:reward', sprintf('你被%s打赏%s元', $user->name, $amount), [
+            $target->sendNotifyMessage('user:reward', sprintf('你被%s打赏%s元', $user->name, $amount / 100), [
                 'user' => $user,
             ]);
 
