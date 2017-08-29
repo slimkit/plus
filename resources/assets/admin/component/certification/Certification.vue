@@ -229,13 +229,16 @@ const certificationComponent = {
          * 获取认证类型
          */
         getCertificationCategories () {
-          request.get(
-            createRequestURI('certification/categories'),
-            {validateStatus: status => status === 200}
-          ).then(response => {
-            this.categories.data = response.data;
-          }).catch(({ response: { data: { errors = ['加载认证详情失败'] } = {} } = {} }) => {
-          }); 
+          return new Promise((resolve, reject) => {
+            request.get(
+              createRequestURI('certification/categories'),
+              {validateStatus: status => status === 200}
+            ).then(response => {
+              resolve(response.data);
+            }).catch(({ response: { data: { errors = ['加载认证栏目失败详情失败'] } = {} } = {} }) => {
+              reject(errors); 
+            }); 
+          });
         },
         /**
          * 获取认证列表
@@ -378,8 +381,19 @@ const certificationComponent = {
         },
     },
     created () {
-      this.getCertificationCategories();
-      this.getCertifications();
+      let promise = this.getCertificationCategories();
+
+      promise.then(data => {
+        this.loadding = false;
+        if (data.length) {
+          this.getCertifications();
+        } else {
+          this.errorMessage = '认证类型加载失败';
+        }
+      }, error => {
+        this.errorMessage = error;
+      });
+
     },
 };
 export default certificationComponent;
