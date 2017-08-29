@@ -116,7 +116,7 @@ class User extends Authenticatable implements ShouldAvatarContract
         return [
             'type' => $certification->certification_name,
             'icon' => $certification->icon,
-            'description' => $certification->category->description,
+            'description' => $certification->data['desc'],
         ];
     }
 
