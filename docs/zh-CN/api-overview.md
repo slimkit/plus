@@ -109,6 +109,8 @@ Authorization: Bearer {TOKEN}
 https://plus.io/api/v2/user?token={TOKEN}
 ```
 
+在请求需要授权的接口时，若返回`Http Status`为`401`即为授权失效，此时需要刷新授权，若刷新授权失败，则说明该授权失效，需要重新获取授权。
+
 ## 自定义的 Markdown 标签
 
 | 标签 | 描述 |
