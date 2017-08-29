@@ -60,7 +60,7 @@ class CertificationController extends Controller
     {
         $desc = $request->input('desc');
 
-        if ( !$desc ) {
+        if (! $desc) {
             return response()->json(['message' => ['请填写通过描述']], 422);
         }
 
@@ -164,7 +164,6 @@ class CertificationController extends Controller
         });
     }
 
-
     public function rules(Request $request): array
     {
         if (strtolower($request->getMethod()) === 'patch') {
@@ -195,19 +194,19 @@ class CertificationController extends Controller
     public function updateRules(Request $request): array
     {
         $baseRules = [
-            'type' => ['bail', 'required','nullable', 'string', 'in:user,org'],
-            'name' => ['bail', 'required','nullable', 'string'],
-            'phone' => ['bail', 'required','nullable', 'string', 'cn_phone'],
-            'number' =>['bail', 'required','nullable', 'string'],
-            'desc' => ['bail', 'required','nullable', 'string'],
+            'type' => ['bail', 'required', 'nullable', 'string', 'in:user,org'],
+            'name' => ['bail', 'required', 'nullable', 'string'],
+            'phone' => ['bail', 'required', 'nullable', 'string', 'cn_phone'],
+            'number' =>['bail', 'required', 'nullable', 'string'],
+            'desc' => ['bail', 'required', 'nullable', 'string'],
             'files' => 'bail|required|nullable|array',
             'files.*' => 'bail|required_with:files|integer|exists:file_withs,id',
         ];
 
         if ($request->input('type') === 'org') {
             return array_merge($baseRules, [
-                'org_name' => ['bail', 'required','nullable', 'string'],
-                'org_address' => ['bail', 'required','nullable', 'string'],
+                'org_name' => ['bail', 'required', 'nullable', 'string'],
+                'org_address' => ['bail', 'required', 'nullable', 'string'],
             ]);
         }
 
