@@ -103,7 +103,7 @@
                             </td>
                         </tr>
                         <template v-if="certifications.length">
-                          <tr v-for="certification in certifications">
+                          <tr v-for="(certification, index) in certifications">
                               <td><input type="checkbox" :value="certification.id"></td>
                               <td>{{ certification.user.name }}</td>
                               <td>{{ certification.data.name }}</td>
@@ -120,10 +120,12 @@
                                   class="btn btn-primary btn-sm"
                                   v-show="certification.status === 1"
                                   :to="{ name: 'certification:edit', params:{certification:certification.id}}">编辑</router-link>
-                                  <button class="btn btn-primary btn-sm" v-show="certification.status === 0" @click.prevent="passCertification(certification.id)">通过</button>
+                                  <button class="btn btn-primary btn-sm" 
+                                  v-show="certification.status === 0" 
+                                  @click.prevent="openPassModal(index)">通过</button>
                                   <button class="btn btn-primary btn-sm" 
                                       v-show="certification.status !== 2" 
-                                      data-toggle="modal" @click="openRejectModal(certification.id)">驳回</button>
+                                      @click="openRejectModal(certification.id)">驳回</button>  
                               </td>
                           </tr> 
                         </template>
@@ -134,7 +136,7 @@
                 </table>
             </div>
         </div>
-        <!-- 驳回modal start -->
+        <!-- 驳回认证modal start -->
         <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -145,8 +147,8 @@
               <div class="modal-body">
                 <div class="form-group">
                     <label>驳回理由</label>
-                    <textarea class="form-control" v-model="reject.reject_content" @input="reject.reject_message = ''"></textarea>
-                    <span class="text-danger" v-show="reject.reject_message">{{ reject.reject_message }}</span>
+                    <textarea class="form-control" v-model="reject.content" @input="reject.message = ''"></textarea>
+                    <span class="text-danger" v-show="reject.message">{{ reject.message }}</span>
                 </div>
               </div>
               <div class="modal-footer">
@@ -156,7 +158,29 @@
             </div>
           </div>
         </div>
-        <!-- 驳回modal end-->
+        <!-- 驳回认证modal end-->
+        <!-- 通过认证modal start -->
+        <div class="modal fade" id="passModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">认证通过</h4>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                    <label>通过描述</label>
+                    <textarea class="form-control" v-model="pass.desc" @input="pass.message = ''"></textarea>
+                    <span class="text-danger" v-show="pass.message ">{{ pass.message }}</span>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" @click="passCertification">确认</button>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
 </template>
 
@@ -187,12 +211,17 @@ const certificationComponent = {
           currentPage:1,
         },
         reject: {
-          certification_id: '',
-          reject_content:'',
-          reject_message: '',
+          id: '',
+          content:'',
+          message: '',
+        },
+        pass: {
+          id: '',
+          desc: '',
+          message: '',
         },
         keyword: '',
-        successMessage:'',
+        successMessage: '',
         errorMessage: '',
     }),
     methods: {
@@ -219,7 +248,14 @@ const certificationComponent = {
           ).then(response => {
             this.loadding = false;
 
-            const { data: data, current_page: currentPage, last_page: lastPage, total: total } = response.data;
+            let { 
+              data: data, 
+              current_page: 
+              currentPage, 
+              last_page: lastPage, 
+              total: total 
+            } = response.data;
+
             this.paginate.currentPage = currentPage;
             this.paginate.lastPage = lastPage;
             this.paginate.total = total;
@@ -230,35 +266,49 @@ const certificationComponent = {
           });
         },
         /**
-         * 通过认证
+         * 打开通过认证模态框
          */
-        passCertification (id) {
+        openPassModal (index) {
+          let certification = this.certifications[index];
+
+          this.pass.id = certification.id;
+          this.pass.desc = certification.data.desc;
+
+          $('#passModal').modal('show');
+        },
+        /**
+         * 处理通过认证
+         */
+        passCertification () {
+          let {desc: desc, id: id} = this.pass;
           request.patch(
             createRequestURI('certifications/' + id + '/pass'),
+            {desc: desc},
             {validateStatus: status => status === 201}
           ).then(({ data: { message: [ message ] = [] } }) => {
+            $('#passModal').modal('hide');
             this.successMessage = message;
-            this.updateCertificationStatus(id, 1);
+            this.getCertifications();
           }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {
-            this.errorMessage = message;
+            this.pass.message = message;
           });
         },
         /**
          * 驳回认证
          */
         rejectCertification () {
-          if ( !this.reject.reject_content ) {
-            this.reject.reject_message = '请填写驳回原因';
+          if ( !this.reject.content ) {
+            this.reject.message = '请填写驳回原因';
             return;
           }
-          let id = this.reject.certification_id;
+          let {id: id, content: content} = this.reject;
           request.patch(
             createRequestURI('certifications/' + id + '/reject'),
-            {reject_content: this.reject.reject_content},
+            {reject_content: content},
             {validateStatus: status => status === 201}
           ).then(({ data: { message: [ message ] = [] } }) => {
             this.successMessage = message;
-            this.updateCertificationStatus(id, 2);
+            this.getCertifications();
             $('#rejectModal').modal('hide')
           }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {
             this.errorMessage = message;
@@ -269,20 +319,10 @@ const certificationComponent = {
          * 打开驳回弹层
          */
         openRejectModal (id) {
-          this.reject.certification_id = id;
-          this.reject.reject_content = '';
-          this.reject.reject_message = ''
+          this.reject.id = id;
+          this.reject.content = '';
+          this.reject.message = '';
           $('#rejectModal').modal('show');
-        },
-        /**
-         * 更新认证状态
-         */
-        updateCertificationStatus (id, status) {
-          for (let i=0; i < this.certifications.length; i++) {
-            if ( this.certifications[i].id == id ) {
-               this.certifications[i].status = status;
-            }
-          }
         },
         /**
          * 获取参数
@@ -315,21 +355,21 @@ const certificationComponent = {
         /**
          * 关闭提示
          */
-        offAlert() {
+        offAlert () {
           this.errorMessage = this.successMessage = '';
         },
         watchChange () {
           this.initializationData();
           this.getCertifications();    
         },
-        nextPage() {
+        nextPage () {
           if (this.paginate.lastPage > 1) {
             this.paginate.currentPage += 1;
             this.certifications = {}; 
             this.getCertifications();
           } 
         },
-        prevPage() {
+        prevPage () {
           if (this.paginate.currentPage > 1) {
             this.paginate.currentPage -= 1;
             this.certifications = {}; 
@@ -340,17 +380,7 @@ const certificationComponent = {
     created () {
       this.getCertificationCategories();
       this.getCertifications();
-      function timeout(ms) {
-        return new Promise((resolve, reject) => {
-          setTimeout(resolve, ms, 'done');
-        });
-      }
-
-      timeout(100).then((value) => {
-        console.log(value);
-      });
     },
-
 };
 export default certificationComponent;
 </script>

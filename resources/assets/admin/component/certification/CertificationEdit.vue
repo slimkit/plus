@@ -155,8 +155,11 @@ const PersonalCertificationEdit = {
             {validateStatus: status => status === 201}
           ).then(({ data: { message: [ message ] = [] } }) => {
             this.successMessage = message;
-          }).catch(({ response: { data: { errors = ['加载认证详情失败'] } = {} } = {} }) => {
-            this.loadding = false;
+          }).catch(({ response: { data = {} } = {} }) => {
+            this.adding = false;
+            const { name = [], desc = [], files = [], phone = [], number = [], org_address = [], org_name = [], message = [] } = data;
+            const [ errorMessage ] = [...name, ...desc, ...files, ...phone, ...number, ...org_address, ...org_name, ...message];
+            this.errorMessage = errorMessage;
           });
         },
         /**

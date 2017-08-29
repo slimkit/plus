@@ -26,6 +26,7 @@ class CertificationController extends Controller
         $certificationName = $request->get('certification_name');
         $certificationStatus = $request->get('status');
         $keyword = $request->get('keyword');
+
         $items = Certification::orderBy('id', 'desc')
         ->when(! is_null($keyword), function ($query) use ($keyword) {
             $where = sprintf('%%%s%%', $keyword);
@@ -55,13 +56,23 @@ class CertificationController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @author: huhao <915664508@qq.com>
      */
-    public function passCertification(Certification $certification)
+    public function passCertification(Request $request, Certification $certification)
     {
+        $desc = $request->input('desc');
+
+        if ( !$desc ) {
+            return response()->json(['message' => ['请填写通过描述']], 422);
+        }
+
+        $data = $certification->data;
+        $data['desc'] = $desc;
+
+        $certification->data = $data;
         $certification->status = 1;
         $certification->examiner = Auth::user()->id;
         $certification->save();
 
-        return response()->json(['message' => ['修改成功']], 201);
+        return response()->json(['message' => ['通过认证成功']], 201);
     }
 
     /**
@@ -113,10 +124,12 @@ class CertificationController extends Controller
      * @author: huhao <915664508@qq.com>
      */
     public function update(
-        UserCertification $request,
+        Request $request,
         Certification $certification,
         FileWithModel $fileWithModel
     ) {
+        $this->validate($request, $this->rules($request), $this->messages($request));
+
         $request->all();
         $type = $request->input('type');
         $certification = $certification;
@@ -151,6 +164,77 @@ class CertificationController extends Controller
         });
     }
 
+
+    public function rules(Request $request): array
+    {
+        if (strtolower($request->getMethod()) === 'patch') {
+            return $this->updateRules($request);
+        }
+
+        $baseRules = [
+            'user_id' => ['bail', 'required', 'numeric'],
+            'type' => ['bail', 'required', 'string', 'in:user,org'],
+            'name' => ['bail', 'required', 'string'],
+            'phone' => ['bail', 'required', 'string', 'cn_phone'],
+            'number' =>['bail', 'required', 'string'],
+            'desc' => ['bail', 'required', 'string'],
+            'files' => 'bail|required|array',
+            'files.*' => 'bail|required_with:files|integer|exists:file_withs,id,channel,NULL,raw,NULL',
+        ];
+
+        if ($request->input('type') === 'org') {
+            return array_merge($baseRules, [
+                'org_name' => ['bail', 'required', 'string'],
+                'org_address' => ['bail', 'required', 'string'],
+            ]);
+        }
+
+        return $baseRules;
+    }
+
+    public function updateRules(Request $request): array
+    {
+        $baseRules = [
+            'type' => ['bail', 'required','nullable', 'string', 'in:user,org'],
+            'name' => ['bail', 'required','nullable', 'string'],
+            'phone' => ['bail', 'required','nullable', 'string', 'cn_phone'],
+            'number' =>['bail', 'required','nullable', 'string'],
+            'desc' => ['bail', 'required','nullable', 'string'],
+            'files' => 'bail|required|nullable|array',
+            'files.*' => 'bail|required_with:files|integer|exists:file_withs,id',
+        ];
+
+        if ($request->input('type') === 'org') {
+            return array_merge($baseRules, [
+                'org_name' => ['bail', 'required','nullable', 'string'],
+                'org_address' => ['bail', 'required','nullable', 'string'],
+            ]);
+        }
+
+        return $baseRules;
+    }
+
+    public function messages(Request $request)
+    {
+        $messages = [
+            'name.required' => '姓名未提供',
+            'name.min' => '姓名太短',
+            'name.max' => '姓名太长',
+            'user_id.required' => '用户ID未提供',
+            'user_id.numeric' => '用户ID类型错误',
+            'certification.required' => '认证类型未提供',
+            'certification.exists' => '认证类型不存在',
+            'id.required' => '证件号未提供',
+            'contact.required' => '联系方式未提供',
+            'desc.required' => '认证描述未提供',
+            'desc.max' => '认证描述长度最大250',
+            'files.required' => '证件照片未提供',
+            'files.exists' => '文件不存在或已被使用',
+        ];
+
+        return $messages;
+    }
+
     /**
      * add user certification.
      * @param UserCertification $request
@@ -159,14 +243,17 @@ class CertificationController extends Controller
      * @return \Illuminate\Http\JsonResponse|mixed
      * @author: huhao <915664508@qq.com>
      */
-    public function store(UserCertification $request,
+    public function store(Request $request,
                           Certification $certification,
                           FileWithModel $fileWithModel)
     {
+        $this->validate($request, $this->rules($request), $this->messages($request));
+
         $userId = (int) $request->input('user_id');
         if (! $userId) {
             return response()->json(['message' => ['用户ID不存在']], 422);
         }
+
         $type = $request->input('type');
         $data = $request->only(['name', 'phone', 'number', 'desc']);
         $files = $this->findNotWithFileModels($request, $fileWithModel);
