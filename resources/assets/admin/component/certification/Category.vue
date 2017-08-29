@@ -74,7 +74,6 @@ const ManageComponent = {
     created () {
       this.getCertificationCategories();
     },
-
 };
 
 export default ManageComponent;

@@ -323,19 +323,32 @@ const certificationComponent = {
           this.getCertifications();    
         },
         nextPage() {
-          this.paginate.currentPage += 1;
-          this.certifications = {}; 
-          this.getCertifications(); 
+          if (this.paginate.lastPage > 1) {
+            this.paginate.currentPage += 1;
+            this.certifications = {}; 
+            this.getCertifications();
+          } 
         },
         prevPage() {
-          this.paginate.currentPage -= 1;
-          this.certifications = {}; 
-          this.getCertifications(); 
+          if (this.paginate.currentPage > 1) {
+            this.paginate.currentPage -= 1;
+            this.certifications = {}; 
+            this.getCertifications(); 
+          } 
         },
     },
     created () {
       this.getCertificationCategories();
       this.getCertifications();
+      function timeout(ms) {
+        return new Promise((resolve, reject) => {
+          setTimeout(resolve, ms, 'done');
+        });
+      }
+
+      timeout(100).then((value) => {
+        console.log(value);
+      });
     },
 
 };
