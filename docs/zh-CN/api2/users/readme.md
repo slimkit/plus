@@ -42,7 +42,8 @@ Status: 200 OK
     "bg": null,
     "verified": {
         "type": "user",
-        "icon": null
+        "icon": null,
+        "description": "xxxxx"
     },
     "extra": {
         "user_id": 1,
@@ -77,6 +78,7 @@ Status: 200 OK
 | verified | 用户的认证信息，未认证用户该值为 `null`。 |
 | verified.type | 用户认证类型。字符串，`user`、`org` |
 | verified.icon | 用户认证类型的 Icon。图片地址。 |
+| verified.description | 用户认证描述 |
 
 ### 获取一个用户头像
 
