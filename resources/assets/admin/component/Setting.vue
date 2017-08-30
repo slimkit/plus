@@ -36,6 +36,22 @@
           </router-link>
         </ul>
       </li>
+      <li role="presentation" class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+          过滤配置 <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <router-link tag="li" active-class="active" to="/setting/filter-word-categories">
+            <a href="#">过滤词语分类</a>
+          </router-link>
+          <router-link tag="li" active-class="active" to="/setting/tag-categories">
+            <a href="#">过滤词语类型</a>
+          </router-link>
+          <router-link tag="li" active-class="active" to="/setting/addtag">
+            <a href="#">敏感词管理</a>
+          </router-link>
+        </ul>
+      </li>
       </router-link>
       <router-link to="/setting/server" tag="li" active-class="active">
         <a href="#">服务器信息</a> 

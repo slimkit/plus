@@ -15,6 +15,9 @@ import Tags from '../component/setting/Tags';
 import TagCategories from '../component/setting/TagCategories';
 import AddTag from '../component/setting/AddTag';
 import UpdateTag from '../component/setting/UpdateTag';
+import FilterWordCategories from '../component/setting/FilterWordCategories';
+import AddFilterWordCategory from '../component/setting/AddFilterWordCategory';
+import UpdateFilterWordCategory from '../component/setting/UpdateFilterWordCategory';
 
 const settingRouter = {
   path: 'setting',
@@ -59,7 +62,19 @@ const settingRouter = {
     {
       path: 'server',
       component: Server
-    }  
+    },
+    {
+      path: 'filter-word-categories',
+      component: FilterWordCategories,
+    },
+    {
+      path: 'filter-word-categories/add',
+      component: AddFilterWordCategory,
+    },
+    {
+      path: 'filter-word-categories/:id',
+      component: UpdateFilterWordCategory,
+    },
   ]
 };
 

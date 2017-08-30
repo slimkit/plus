@@ -201,4 +201,13 @@ Route::middleware('auth:web')
 
     //会话管理
     Route::get('conversations', 'ConversationController@index');
+
+    //过滤配置
+    Route::prefix('filter-word-categories')->group(function () {
+        Route::get('', 'FilterWordCategoryController@index');
+        Route::get('/{category}', 'FilterWordCategoryController@show');
+        Route::post('', 'FilterWordCategoryController@store');
+        Route::patch('/{category}', 'FilterWordCategoryController@update');
+        Route::delete('/{category}', 'FilterWordCategoryController@delete');
+    });
 });
