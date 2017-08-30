@@ -181,7 +181,11 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
         | 用户头像
          */
 
-        $api->get('/{user}/avatar', API2\UserAvatarController::class.'@show');
+        tap($api->get('/{user}/avatar', API2\UserAvatarController::class.'@show'), function ($route) {
+            $route->setAction(array_merge($route->getAction(), [
+                'middleware' => 'bindings',
+            ]));
+        });
 
         // 获取用户关注者
         $api->get('/{user}/followers', API2\UserFollowController::class.'@followers');
