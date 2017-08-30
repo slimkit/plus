@@ -386,6 +386,7 @@ const certificationComponent = {
       promise.then(data => {
         this.loadding = false;
         if (data.length) {
+          
           this.categories.data = data;
           this.getCertifications();
         } else {
