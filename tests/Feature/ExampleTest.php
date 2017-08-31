@@ -3,7 +3,6 @@
 namespace Zhiyi\Plus\Tests\Feature;
 
 use Zhiyi\Plus\Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ExampleTest extends TestCase
 {
