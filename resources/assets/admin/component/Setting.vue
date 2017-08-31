@@ -44,7 +44,7 @@
           <router-link tag="li" active-class="active" to="/setting/filter-word-categories">
             <a href="#">过滤词语分类</a>
           </router-link>
-          <router-link tag="li" active-class="active" to="/setting/tag-categories">
+          <router-link tag="li" active-class="active" to="/setting/filter-word-types">
             <a href="#">过滤词语类型</a>
           </router-link>
           <router-link tag="li" active-class="active" to="/setting/addtag">

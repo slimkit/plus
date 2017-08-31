@@ -18,6 +18,7 @@ import UpdateTag from '../component/setting/UpdateTag';
 import FilterWordCategories from '../component/setting/FilterWordCategories';
 import AddFilterWordCategory from '../component/setting/AddFilterWordCategory';
 import UpdateFilterWordCategory from '../component/setting/UpdateFilterWordCategory';
+import FilterWordTypes from '../component/setting/FilterWordTypes';
 
 const settingRouter = {
   path: 'setting',
@@ -75,6 +76,10 @@ const settingRouter = {
       path: 'filter-word-categories/:id',
       component: UpdateFilterWordCategory,
     },
+    {
+      path: 'filter-word-types',
+      component: FilterWordTypes,
+    }
   ]
 };
 
