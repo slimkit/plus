@@ -13,14 +13,15 @@
     "require": {
         "php": ">=7.0.0",
         "doctrine/dbal": "^2.5",
-        "intervention/image": "^2.3",
         "fideloper/proxy": "~3.3",
+        "intervention/image": "^2.3",
         "laravel/framework": "5.5.*",
         "overtrue/easy-sms": "^0.0.9",
         "pingplusplus/pingpp-php": "^2.2",
         "predis/predis": "^1.1",
         "slimkit/plus-installer": "^1.0",
         "symfony/polyfill-mbstring": "^1.4",
+        "symfony/yaml": "^3.3",
         "tymon/jwt-auth": "^0.5.12"
     },
     "require-dev": {
