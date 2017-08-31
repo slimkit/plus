@@ -1,11 +1,5 @@
 {
     "private": true,
-    "name": "thinksns-plus",
-    "version": "1.0.0",
-    "description": "TS+",
-    "main": "index.js",
-    "repository": "https://github.com/zhiyicx/thinksns-plus.git",
-    "author": "Seven <shiweidu@outlook.com>",
     "license": "Apache-2.0",
     "scripts": {
         "clean-dist": "trash public/js public/css public/images public/fonts public/hot public/mix-manifest.json",

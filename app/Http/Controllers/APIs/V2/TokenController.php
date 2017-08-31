@@ -21,8 +21,8 @@ class TokenController extends Controller
      */
     public function store(Request $request, ResponseFactoryContract $response, JWTAuthToken $jwtAuthToken, User $model)
     {
-        $login = $request->input('login');
-        $password = $request->input('password');
+        $login = $request->input('login', '');
+        $password = $request->input('password', '');
         $user = $model->where(username($login), $login)->with('wallet')->first();
 
         if (! $user) {

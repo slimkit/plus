@@ -2,8 +2,6 @@
 
 namespace Zhiyi\Plus;
 
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Foundation\ProviderRepository;
 use Illuminate\Foundation\Application as LaravelApplication;
 
 class Application extends LaravelApplication
@@ -62,18 +60,6 @@ class Application extends LaravelApplication
     }
 
     /**
-     * Register all of the configured providers.
-     *
-     * @return void
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function registerConfiguredProviders()
-    {
-        (new ProviderRepository($this, new Filesystem, $this->getCachedServicesPath()))
-                    ->load($this->getConfiguredProviders());
-    }
-
-    /**
      * Register the core class aliases in the container.
      *
      * @return void
@@ -96,43 +82,5 @@ class Application extends LaravelApplication
                 $this->alias($key, $alias);
             }
         }
-    }
-
-    /**
-     * Get the path to the cached packages.php file.
-     *
-     * @return string
-     */
-    public function getCachedPackagesPath()
-    {
-        return $this->bootstrapPath('cache/packages.php');
-    }
-
-    /**
-     * Get all of the configured providers.
-     *
-     * @return array
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    protected function getConfiguredProviders(): array
-    {
-        return array_merge(
-            $this->config['app.providers'],
-            $this->make(PackageManifest::class)->providers()
-        );
-    }
-
-    /**
-     * Register the basic bindings into the container.
-     *
-     * @return void
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    protected function registerBaseBindings()
-    {
-        parent::registerBaseBindings();
-        $this->instance(PackageManifest::class, new PackageManifest(
-            new Filesystem, $this->basePath(), $this->getCachedPackagesPath()
-        ));
     }
 }
