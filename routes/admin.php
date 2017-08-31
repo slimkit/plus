@@ -219,6 +219,6 @@ Route::middleware('auth:web')
 
     // 敏感词
     Route::resource('sensitive-words', 'SensitiveWordController', ['only' => [
-        'index', 'store', 'destroy', 'update'
+        'index', 'store', 'destroy', 'update',
     ]]);
 });

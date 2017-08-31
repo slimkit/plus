@@ -4,14 +4,13 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\SensitiveWord;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 class SensitiveWordController extends Controller
 {
-
     /**
-     * 敏感词列表
+     * 敏感词列表.
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -27,7 +26,7 @@ class SensitiveWordController extends Controller
     }
 
     /**
-     * 创建敏感词
+     * 创建敏感词.
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -37,7 +36,7 @@ class SensitiveWordController extends Controller
         $this->validate($request, $this->rule(), $this->msg());
 
         $data = $request->all();
-        $data = array_merge($data,['user_id' => Auth::user()->id]);
+        $data = array_merge($data, ['user_id' => Auth::user()->id]);
 
         SensitiveWord::create($data);
 
@@ -78,4 +77,3 @@ class SensitiveWordController extends Controller
         return $msg;
     }
 }
-

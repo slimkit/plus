@@ -13,7 +13,7 @@ class SensitiveWord extends Model
         'replace_name',
         'filter_word_category_id',
         'filter_word_type_id',
-        'user_id'
+        'user_id',
     ];
 
     public function user()
