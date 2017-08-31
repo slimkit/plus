@@ -20,6 +20,12 @@ class ResetPasswordController extends Controller
     public function reset(Request $request, ResponseFactoryContract $response)
     {
         $user = $request->user();
+
+        // 用户未设置密码时，只需设置新密码
+        if ($user->password === NULL) {
+            return $this->setPassword($request, $user);
+        }
+
         $this->validate($request, $this->resetRules(), $this->resetValidationErrorMessages());
 
         if (! $user->verifyPassword($request->input('old_password'))) {
@@ -62,6 +68,25 @@ class ResetPasswordController extends Controller
             'password.different' => '新密码和旧密码相同',
             'password.confirmed' => '确认输入的新密码不一致',
         ];
+    }
+
+    /**
+     * Set new password.
+     *
+     * @author bs<414606094@qq.com>
+     * @param  Request $request
+     * @param  User  $user
+     */
+    public function setPassword(Request $request, UserModel $user)
+    {
+        $this->validate($request, [
+            'password' => 'required|string|confirmed'
+        ], $this->resetValidationErrorMessages());
+
+        $user->createPassword($request->input('password'));
+        $user->save();
+
+        return response()->make('', 204);
     }
 
     /**

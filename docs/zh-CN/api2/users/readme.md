@@ -244,7 +244,7 @@ PUT /user/password
 
 | 名称 | 类型 | 描述 |
 |:----:|:----:|----|
-| old_password | 字符串 | **必须**，用户密码。 |
+| old_password | 字符串 | **用户已设置密码时必须**，用户密码。 |
 | password | 字符串 | **必须**，用户的新密码 |
 | password_confirmation | 字符串 | **必须**，用户的新密码，必须和 `password` 一致。 |
 
