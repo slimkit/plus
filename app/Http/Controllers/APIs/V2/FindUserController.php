@@ -154,34 +154,55 @@ class FindUserController extends Controller
     /**
      * 通过标签推荐用户. 需要登录.
      */
-    public function findByTags(Request $request, TaggableModel $taggable, ResponseContract $response)
+    public function findByTags(Request $request, TaggableModel $taggable, ResponseContract $response, UserRecommendedModel $userRecommended, UserModel $userModel)
     {
-        $u = $request->user();
+        $u = $request->user('api');
+        $user_id = $u ? $u->id : 0;
+
         $limit = $request->input('limit', 20);
         $offset = $request->input('offset', 0);
+        $recommends = $users = [];
+        // 后台推荐用户
+        if (!$offset) {
+            $recommends = $userRecommended->when($offset, 
+                function ($query) use ($offset) {
+                    return $query->offset($offset);
+                })
+                ->limit(200)
+                ->orderBy('id', 'desc')
+                ->get()
+                ->pluck('user_id')
+                ->toArray();
+        }
+        
+        // 用户登录的情况
+        if ($u) {
+            $tags = $u->tags()->select('tag_id')->get();
+            $tags = array_pluck($tags, 'tag_id');
+            // 根据用户标签获取用户
+            $users = $taggable->whereIn('tag_id', $tags)
+                ->where('taggable_id', '<>', $u->id)
+                ->where('taggable_type', 'users')
+                ->when($offset, function ($query) use ($offset) {
+                    return $query->offset($offset);
+                })
+                ->limit($limit)
+                ->select('taggable_id')
+                ->groupBy('taggable_id')
+                ->get()
+                ->toArray();
+        }
 
-        $tags = $u->tags()->select('tag_id')->get();
+        $users = array_unique(array_merge($recommends, $users));
 
-        $tags = array_pluck($tags, 'tag_id');
-
-        $users = $taggable->whereIn('tag_id', $tags)
-            ->where('taggable_type', 'users')
-            ->where('taggable_id', '<>', $u->id)
-            ->when($offset, function ($query) use ($offset) {
-                return $query->offset($offset);
-            })
-            ->limit($limit)
-            ->with(['user'])
-            ->select('taggable_id')
-            ->groupBy('taggable_id')
-            ->get();
+        $users = $userModel->whereIn('id', $users)->get();
 
         return $response->json(
-            $users->map(function ($user) use ($u) {
-                $user->user->following = $user->user->hasFollwing($u->id);
-                $user->user->follower = $user->user->hasFollower($u->id);
+            $users->map(function ($user) use ($user_id) {
+                $user->following = $user->hasFollwing($user_id);
+                $user->follower = $user->hasFollower($user_id);
 
-                return $user->user;
+                return $user;
             })
         )
         ->setStatusCode(200);
