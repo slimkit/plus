@@ -1,10 +1,5 @@
 <?php
 
-/**
- * Laravel - A PHP Framework For Web Artisans.
- *
- * @author   Taylor Otwell <taylor@laravel.com>
- */
 define('LARAVEL_START', microtime(true));
 
 /*
