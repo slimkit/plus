@@ -10,6 +10,7 @@
 - [速率限制](#速率限制)
 - [授权](#授权)
 - [自定义的 Markdown 标签](#自定义的-markdown-标签);
+- [消息列举](#messages)
 
 ## 选择版本
 
@@ -116,3 +117,66 @@ https://plus.io/api/v2/user?token={TOKEN}
 | 标签 | 描述 |
 |:----:|----|
 | `@![title](file id)` | 改造自 `![title](url)`, 增加 `@` 前缀来表示为系统图片附件，而 `url` 更改为文件 ID。 |
+
+<a name="messages"></a>
+## 消息列举 {#messages}
+
+正确情况有以下三种情况：
+
+第一种：
+```json
+{ "message": "This is a message." }
+```
+
+第二种：
+```json
+{ "message": [ "This is a message array item." ] }
+```
+
+第三种：
+```json
+{ ... }
+```
+
+> 第三种是获取数据常用情况，`...` 代表的就是实际数据。
+
+错误消息响应体：
+
+第一种：
+```json
+{ "message": "this is a message." }
+```
+
+第二种：
+```json
+{ "message": [ "This is amessage array item." ] }
+```
+
+第三种：
+```json
+{
+    "key": [ "value" ],
+    "key2": [ "value", "value2" ]
+}
+```
+
+第四种：
+```json
+{
+    "message": "This is a message",
+    "errors": {
+        "key1": [ "value1" ],
+        "key2": [ "value1", "value2" ]
+    }
+}
+```
+
+第五种（这种情况，移动端可以当「第一种」处理，并抛弃掉其他字段，这种情况的出现是由于服务器需要 debug）：
+```json
+{
+    "message": "xxx",
+    "file": "xxx",
+    "line": 100,
+    "trace": []
+}
+```
