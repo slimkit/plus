@@ -155,6 +155,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
         // @get search name
         $api->get('/search', API2\FindUserController::class.'@search');
+
+        // @get find users by user tags
+        $api->get('/find-by-tags', API2\FindUserController::class.'@findByTags');
     });
 
     $api->group(['prefix' => 'users'], function (RouteContract $api) {
@@ -236,13 +239,6 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // Update phone or email of the authenticated user.
             $api->put('/', API2\CurrentUserController::class.'@updatePhoneOrMail');
-
-            /*
-            | 找人
-            */
-
-            // @get find users by user tags
-            $api->get('/find-by-tags', API2\FindUserController::class.'@findByTags');
 
             /*
             | 用户收到的评论
