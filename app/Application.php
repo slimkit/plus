@@ -2,8 +2,6 @@
 
 namespace Zhiyi\Plus;
 
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Foundation\ProviderRepository;
 use Illuminate\Foundation\Application as LaravelApplication;
 
 class Application extends LaravelApplication
