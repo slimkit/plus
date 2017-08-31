@@ -22,7 +22,7 @@ class ResetPasswordController extends Controller
         $user = $request->user();
 
         // 用户未设置密码时，只需设置新密码
-        if ($user->password === NULL) {
+        if ($user->password === null) {
             return $this->setPassword($request, $user);
         }
 
@@ -80,7 +80,7 @@ class ResetPasswordController extends Controller
     public function setPassword(Request $request, UserModel $user)
     {
         $this->validate($request, [
-            'password' => 'required|string|confirmed'
+            'password' => 'required|string|confirmed',
         ], $this->resetValidationErrorMessages());
 
         $user->createPassword($request->input('password'));
