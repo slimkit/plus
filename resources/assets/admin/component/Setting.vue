@@ -47,7 +47,7 @@
           <router-link tag="li" active-class="active" to="/setting/filter-word-types">
             <a href="#">过滤词语类型</a>
           </router-link>
-          <router-link tag="li" active-class="active" to="/setting/addtag">
+          <router-link tag="li" active-class="active" to="/setting/sensitive-words">
             <a href="#">敏感词管理</a>
           </router-link>
         </ul>

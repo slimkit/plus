@@ -80,7 +80,7 @@ const FilterWordCategory = {
           { validateStatus: status => status === 200 }
         ).then(response => {
           this.loadding = false;
-          this.categories = response.data.data;
+          this.categories = response.data;
         }).catch(({ response: { data = {} } = {} }) => {
           let {name = []} = data;
           let [ errorMessage ] = [...name];

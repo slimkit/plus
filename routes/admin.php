@@ -211,8 +211,14 @@ Route::middleware('auth:web')
         Route::delete('/{category}', 'FilterWordCategoryController@delete');
     });
 
+    // 过滤类型
     Route::prefix('filter-word-types')->group(function () {
         Route::get('', 'FilterWordTypeController@index');
         Route::patch('/{id}/status', 'FilterWordTypeController@status');
     });
+
+    // 敏感词
+    Route::resource('sensitive-words', 'SensitiveWordController', ['only' => [
+        'index', 'store', 'destroy', 'update'
+    ]]);
 });

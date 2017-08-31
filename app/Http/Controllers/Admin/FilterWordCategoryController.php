@@ -16,9 +16,7 @@ class FilterWordCategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = $request->get('perPage', 20);
-
-        $items = FilterWordCategory::paginate($perPage);
+        $items = FilterWordCategory::get();
 
         return response()->json($items, 200);
     }
