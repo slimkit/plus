@@ -163,8 +163,8 @@ class FindUserController extends Controller
         $offset = $request->input('offset', 0);
         $recommends = $users = [];
         // 后台推荐用户
-        if (!$offset) {
-            $recommends = $userRecommended->when($offset, 
+        if (! $offset) {
+            $recommends = $userRecommended->when($offset,
                 function ($query) use ($offset) {
                     return $query->offset($offset);
                 })
@@ -174,7 +174,7 @@ class FindUserController extends Controller
                 ->pluck('user_id')
                 ->toArray();
         }
-        
+
         // 用户登录的情况
         if ($u) {
             $tags = $u->tags()->select('tag_id')->get();
