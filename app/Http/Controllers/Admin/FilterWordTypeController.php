@@ -2,9 +2,8 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\FilterWordType;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 class FilterWordTypeController extends Controller
 {
@@ -34,5 +33,4 @@ class FilterWordTypeController extends Controller
 
         return response()->json(['message' => ['更新状态成功']], 200);
     }
-
 }

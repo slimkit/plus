@@ -212,7 +212,7 @@ Route::middleware('auth:web')
     });
 
     Route::prefix('filter-word-types')->group(function () {
-       Route::get('', 'FilterWordTypeController@index');
-       Route::patch('/{id}/status', 'FilterWordTypeController@status');
+        Route::get('', 'FilterWordTypeController@index');
+        Route::patch('/{id}/status', 'FilterWordTypeController@status');
     });
 });
