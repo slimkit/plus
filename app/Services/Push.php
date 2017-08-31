@@ -35,10 +35,10 @@ class Push
         ];
 
         if ($audience == 'all') {
-            return $this->pushAll($this->client, $alert, $notification);
+            return $this->pushAll($client, $alert, $notification);
         }
 
-        return $this->pushAlias($this->client, $alert, $audience, $notification);
+        return $this->pushAlias($client, $alert, $audience, $notification);
     }
 
     /**
