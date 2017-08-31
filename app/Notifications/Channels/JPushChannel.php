@@ -15,7 +15,7 @@ class JPushChannel
     }
 
     /**
-     * 发送给定通知
+     * 发送给定通知.
      *
      * @param  mixed  $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
