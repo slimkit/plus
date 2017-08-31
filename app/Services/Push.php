@@ -3,41 +3,52 @@
 namespace Zhiyi\Plus\Services;
 
 use JPush\Client;
+use Illuminate\Contracts\Config\Repository;
 
 class Push
 {
-    protected $environment = false; // true为生产环境
+    // 推送环境
+    protected $environment;
 
-    public function push($alert, $audience, $extras = [])
+    // 推送实例
+    protected $client;
+
+    public function __construct(Repository $config)
     {
-        $appkey = env('JPUSH_APP_KEY');
-        $secret = env('JPUSH_MASTER_SECRET');
+        $appkey = $config->get('jpush.app_key');
+        $secret = $config->get('jpush.master_secret');
+
+        $this->environment = $config->get('jpush.environment', false);
+
         if (! $appkey || ! $secret) {
             return false;
         }
 
-        $client = new Client($appkey, $secret);
+        $this->client = new Client($appkey, $secret);
+    }
 
+    public function push($alert, $audience, $extras = [])
+    {
         $notification = [
             'extras' => $extras,
         ];
 
         if ($audience == 'all') {
-            return $this->pushAll($client, $alert, $notification);
+            return $this->pushAll($this->client, $alert, $notification);
         }
 
-        return $this->pushAlias($client, $alert, $audience, $notification);
+        return $this->pushAlias($this->client, $alert, $audience, $notification);
     }
 
     /**
      * 推送别名.
      *
      * @author bs<414606094@qq.com>
-     * @param  Client $client       [description]
-     * @param  [type] $alert        [description]
-     * @param  [type] $audience     [description]
-     * @param  [type] $notification [description]
-     * @return [type]               [description]
+     * @param  Client $client
+     * @param  $alert
+     * @param  $audience
+     * @param  $notification
+     * @return array
      */
     protected function pushAlias(Client $client, $alert, $audience, $notification)
     {
@@ -67,10 +78,10 @@ class Push
      * Push all.
      *
      * @author bs<414606094@qq.com>
-     * @param  Client $client       [description]
-     * @param  [type] $alert        [description]
-     * @param  [type] $notification [description]
-     * @return [type]               [description]
+     * @param  Client $client
+     * @param  $alert
+     * @param  $notification
+     * @return array
      */
     protected function pushAll(Client $client, $alert, $notification)
     {

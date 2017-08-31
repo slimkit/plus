@@ -5,6 +5,7 @@ namespace Zhiyi\Plus\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Zhiyi\Plus\Notifications\Channels\JPushChannel;
 
 class UserNotification extends Notification implements ShouldQueue
 {
@@ -34,7 +35,7 @@ class UserNotification extends Notification implements ShouldQueue
      */
     public function via(): array
     {
-        return ['database'];
+        return ['database', JPushChannel::class];
     }
 
     /**
