@@ -10,25 +10,26 @@ class Push
     // 推送环境
     protected $environment;
 
-    // 推送实例
-    protected $client;
+    protected $appkey;
+
+    protected $secret;
 
     public function __construct(Repository $config)
     {
-        $appkey = $config->get('jpush.app_key');
-        $secret = $config->get('jpush.master_secret');
+        $this->appkey = $config->get('jpush.app_key');
+        $this->secret = $config->get('jpush.master_secret');
 
         $this->environment = $config->get('jpush.environment', false);
-
-        if (! $appkey || ! $secret) {
-            return false;
-        }
-
-        $this->client = new Client($appkey, $secret);
     }
 
     public function push($alert, $audience, $extras = [])
     {
+        if (! $this->appkey || ! $this->secret) {
+            return false;
+        }
+
+        $client = new Client($this->appkey, $this->secret);
+
         $notification = [
             'extras' => $extras,
         ];
