@@ -23,8 +23,8 @@
           <div class="panel-heading">
             <div class="form-inline">
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search for...">
-                  <button class="btn btn-default" type="button" @click.prevent="search">搜索</button>
+                <input type="text" class="form-control" placeholder="Search for..." v-model="search.keyword">
+                  <button class="btn btn-default" type="button" @click.prevent="getSensitives">搜索</button>
               </div>
               <div class="form-group pull-right">
                   <ul class="pagination" style="margin: 0;">
@@ -87,7 +87,7 @@
                         <td>{{ sensitive.created_at }}</td>
                         <td>
                           <button class="btn btn-primary btn-sm">编辑</button>
-                          <button class="btn btn-danger btn-sm">删除</button>
+                          <button class="btn btn-danger btn-sm" @click.prevent="deleteSensitive(sensitive.id)">删除</button>
                         </td>
                     </tr>
                 </tbody>
@@ -99,20 +99,23 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
-const FilterWordCategory = {
+const SensitiveWord = {
     data: () => ({
       loadding: true,
       sensitives: {},
       types: {},
       categories: {},
-      checked: false,
       paginate: {
         perPage: 20,
         lastPage: 1,
         currentPage: 1,
       },
-      errorMessage: '',
-      successMessage: '',
+      search: {
+        keyword: '',
+      },
+      checked: false,
+      errorMessage: null,
+      successMessage: null,
     }),
     methods: {
       getSensitives () {
@@ -142,6 +145,20 @@ const FilterWordCategory = {
           this.errorMessage = errorMessage;
         });
       },
+      deleteSensitive (id) {
+        let comfirm = confirm('确认要删除？');
+        if (comfirm) {
+          request.delete(
+            createRequestURI('sensitive-words/' + id),
+            { validateStatus: status => status === 204 }
+          ).then(response => {
+            this.successMessage = '删除成功';
+            this.getSensitives();
+          }).catch(({ response: { data : { message } } = {} }) => {
+            this.errorMessage = message;
+          });
+        }
+      },
       getTypes () {
         request.get(
           createRequestURI('filter-word-types'),
@@ -167,15 +184,11 @@ const FilterWordCategory = {
             this.errorMessage = message;
         });
       },
-      search () {
-        //todo
-      },
       getQueryParams () {
-        let query = '?';
-
+        let query = '';
+        query += '?keyword=' + this.search.keyword;
         query += '&perPage=' + this.paginate.perPage;
         query += '&page=' + this.paginate.currentPage;
-
         return query;
       },
       nextPage () {
@@ -200,9 +213,8 @@ const FilterWordCategory = {
       },
     },
     created () {
-      this.getTypes();
       this.getSensitives();
     },
 };
-export default FilterWordCategory;
+export default SensitiveWord;
 </script>

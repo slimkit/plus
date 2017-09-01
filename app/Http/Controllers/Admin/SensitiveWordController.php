@@ -13,23 +13,27 @@ class SensitiveWordController extends Controller
      * 敏感词列表.
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return array json
      */
     public function index(Request $request)
     {
         $perPage = $request->get('perPage');
+        $keyword = $request->get('keyword');
 
         $items = SensitiveWord::with(['user', 'filterWordCategory', 'filterWordType'])
+                 ->when($keyword, function ($query) use ($keyword) {
+                    $query->where('name', 'like', sprintf('%%%s%%', $keyword));
+                 })
                  ->paginate($perPage);
 
-        return response()->json($items, 200);
+        return response($items);
     }
 
     /**
      * 创建敏感词.
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return array json
      */
     public function store(Request $request)
     {
@@ -40,7 +44,7 @@ class SensitiveWordController extends Controller
 
         SensitiveWord::create($data);
 
-        return response()->json(['message' => ['添加敏感词成功']], 201);
+        return response(['message' => ['添加敏感词成功']], 201);
     }
 
     /**
@@ -75,5 +79,18 @@ class SensitiveWordController extends Controller
         ];
 
         return $msg;
+    }
+
+    /**
+     * 删除敏感词.
+     *
+     * @param SensitiveWord $sensitiveWord
+     * @return array json
+     */
+    public function destroy(SensitiveWord $sensitiveWord)
+    {
+        $sensitiveWord->delete();
+        
+        return response('', 204);
     }
 }
