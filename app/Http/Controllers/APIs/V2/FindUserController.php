@@ -158,8 +158,7 @@ class FindUserController extends Controller
     {
         $u = $request->user('api');
 
-        if(!$u)
-        {
+        if (! $u) {
             return response()->json([])->setStatusCode(200);
         }
 
