@@ -186,7 +186,7 @@ class FindUserController extends Controller
                 $user->user->following = $user->user->hasFollwing($u);
                 $user->user->follower = $user->user->hasFollower($u);
 
-                return $user;
+                return $user->user;
             })
         )
         ->setStatusCode(200);
