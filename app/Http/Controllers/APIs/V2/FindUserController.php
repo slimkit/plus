@@ -179,8 +179,7 @@ class FindUserController extends Controller
             ->limit($limit)
             ->select('taggable_id')
             ->groupBy('taggable_id')
-            ->get()
-            ->toArray();
+            ->get();
 
         return $response->json(
             $users->map(function ($user) use ($u) {
