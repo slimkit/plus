@@ -240,6 +240,11 @@ class CurrentUserController extends Controller
             $user->extra()->firstOrCreate([])->increment('followings_count', 1);
             $target->extra()->firstOrCreate([])->increment('followers_count', 1);
 
+            $message = sprintf('%s关注了你，去看看吧', $user->name);
+            $target->sendNotifyMessage('user:follow', $message, [
+                'user' => $user,
+            ]);
+
             return $response->make(null, 204);
         });
     }
