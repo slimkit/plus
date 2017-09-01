@@ -22,7 +22,7 @@ class SensitiveWordController extends Controller
 
         $items = SensitiveWord::with(['user', 'filterWordCategory', 'filterWordType'])
                  ->when($keyword, function ($query) use ($keyword) {
-                    $query->where('name', 'like', sprintf('%%%s%%', $keyword));
+                     $query->where('name', 'like', sprintf('%%%s%%', $keyword));
                  })
                  ->paginate($perPage);
 
@@ -90,7 +90,7 @@ class SensitiveWordController extends Controller
     public function destroy(SensitiveWord $sensitiveWord)
     {
         $sensitiveWord->delete();
-        
+
         return response('', 204);
     }
 }
