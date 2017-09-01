@@ -16,9 +16,21 @@
 
 <template>
     <div :class="$style.container">
+        <div v-show="errorMessage" class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" @click.prevent="offAlert">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ errorMessage }}
+        </div>
+        <div v-show="successMessage" class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" @click.prevent="offAlert">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ successMessage }}
+        </div>
         <div class="panel panel-default">
           <div class="panel-heading">
-            <router-link to="/setting/sensitive-words/add" class="btn btn-success">添加敏感词</router-link>
+            <router-link to="/setting/sensitive-words/add" class="btn btn-success btn-sm">添加敏感词</router-link>
           </div>
           <div class="panel-heading">
             <div class="form-inline">
@@ -34,7 +46,8 @@
                       </a>
                     </li>
                     <li :class="paginate.currentPage >= paginate.lastPage ? 'disabled' : null">
-                      <a href="javascript:;" aria-label="Next" @click.stop.prevent="nextPage">
+                      <a href="javascript:;" aria-label="N,
+                      ext" @click.stop.prevent="nextPage">
                         <span aria-hidden="true">&raquo;</span>
                       </a>
                     </li>
@@ -42,25 +55,13 @@
               </div>
             </div>
           </div>
-          <div class="panel-heading">
-            <div v-show="errorMessage" class="alert alert-danger alert-dismissible" role="alert">
-                <button type="button" class="close" @click.prevent="offAlert">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                {{ errorMessage }}
-            </div>
-            <div v-show="successMessage" class="alert alert-success alert-dismissible" role="alert">
-                <button type="button" class="close" @click.prevent="offAlert">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                {{ successMessage }}
-            </div>
-          </div>
           <div class="panel-body">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th><input type="checkbox" @click="selectAll"></th>
+                        <th>
+                          <input type="checkbox" @click="selectAll">
+                        </th>
                         <th>敏感词</th>
                         <th>替换词</th>
                         <th>类型</th>
@@ -119,30 +120,24 @@ const SensitiveWord = {
     }),
     methods: {
       getSensitives () {
+        this.sensitives = {};
         this.loadding = true;
         request.get(
           createRequestURI('sensitive-words' + this.getQueryParams()),
           { validateStatus: status => status === 200 }
-        ).then(response => {
+        ).then(({ data = {} })=> {
+
           this.loadding = false;
-
-          let { 
-            data: data, 
-            current_page: 
-            currentPage, 
-            last_page: lastPage, 
-            total: total 
-          } = response.data;
-
-          this.paginate.currentPage = currentPage;
-          this.paginate.lastPage = lastPage;
-          this.paginate.total = total;
-          this.sensitives = data;
+          this.paginate.currentPage = data.current_page;
+          this.paginate.lastPage = data.last_page;
+          this.paginate.total = data.total;
+          this.sensitives = data.data;
 
         }).catch(({ response: { data = {} } = {} }) => {
-          let {name = []} = data;
-          let [ errorMessage ] = [...name];
-          this.errorMessage = errorMessage;
+
+          this.loadding = false;
+          this.errorMessage = data.message;
+          
         });
       },
       deleteSensitive (id) {
@@ -194,14 +189,12 @@ const SensitiveWord = {
       nextPage () {
         if (this.paginate.lastPage > this.paginate.currentPage) {
           this.paginate.currentPage += 1;
-          this.sensitives = {}; 
           this.getSensitives();
         } 
       },
       prevPage () {
         if (this.paginate.currentPage > 1) {
           this.paginate.currentPage -= 1;
-          this.sensitives = {}; 
           this.getSensitives(); 
         } 
       },

@@ -84,11 +84,11 @@ const FilterWordCategoryAdd = {
     }),
     methods: {
       add () {
-        // let error = this.validateForm();
-        // if ( error ) {
-        //     this.errorMessage = error;
-        //     return;
-        // }
+        let error = this.validateForm();
+        if ( error ) {
+            this.errorMessage = error;
+            return;
+        }
         let btn = $("#ok-btn").button('loading')
         request.post(
           createRequestURI('sensitive-words'),
