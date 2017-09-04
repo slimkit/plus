@@ -120,6 +120,9 @@ Route::middleware('auth:web')
         Route::get('/', 'SmsController@show');
         Route::get('/driver/{dirver}', 'SmsController@showOption');
         Route::patch('/driver/alidayu', 'SmsController@updateAlidayuOption');
+        Route::get('/gateways', 'SmsController@showGateway');
+        Route::patch('update/gateways', 'SmsController@updateGateway');
+
     });
 
     /* -----------  Mail  ------------ */

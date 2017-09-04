@@ -39,6 +39,50 @@ class SmsController extends Controller
     }
 
     /**
+     * 获取短信所有配置网关.
+     *
+     * @param Repository $config
+     * @return ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function showGateway(Repository $config)
+    {
+        $data = [];
+        $data['gateways'] = array_keys($config->get('sms.gateways'));
+        $data['allowed_gateways'] = $config->get('sms.default.allowed_gateways');
+
+        return response( $data, 200);
+    }
+
+    public function allowedGateways(Repository $config)
+    {
+        dd($config->get('sms.default.allowed_gateways'));
+    }
+
+    /**
+     * 更新允许的网关.
+     *
+     * @param Request $request
+     * @param Repository $config
+     * @param Configuration $store
+     * @return ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function updateGateway(Request $request, Repository $config, Configuration $store)
+    {
+        $gateways = $request->input('gateways');
+
+        if (! is_array($gateways)) {
+            return response(['message' => ['数据格式错误']], 422);
+        }
+
+        $config = $store->getConfiguration();
+        $config->set('sms.default.allowed_gateways', $gateways);
+
+        $store->save($config);
+
+        return response(['message' => ['更新成功']], 201);
+    }
+
+    /**
      * Get SMS driver configuration information.
      *
      * @param \Illuminate\Contracts\Config\Repository $config

@@ -59,6 +59,10 @@
       <span class="glyphicon glyphicon-user __icon"></span>
       用户中心
     </router-link>
+    <router-link class="list-group-item __button" to="/captcha" active-class="active" >
+      <span class="glyphicon glyphicon-phone __icon"></span>
+      验证设置
+    </router-link>
     <router-link class="list-group-item __button" to="/sms" active-class="active" >
       <span class="glyphicon glyphicon-phone __icon"></span>
       短信设置
