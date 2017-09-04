@@ -83,6 +83,7 @@ class PurchaseController extends Controller
             // 发送购买通知
             $user->sendNotifyMessage('paid:'.$node->channel, $node->body, [
                 'charge' => $userCharge,
+                'user' => $node->user,
             ]);
 
             // 插入购买用户
@@ -107,6 +108,7 @@ class PurchaseController extends Controller
                 // 被购买通知
                 $wallet->user->sendNotifyMessage('paid:'.$node->channel, '被'.$user->name.$node->body, [
                     'charge' => $charge,
+                    'user' => $user,
                 ]);
             }
         });
