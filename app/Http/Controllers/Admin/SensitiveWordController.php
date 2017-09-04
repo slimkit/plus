@@ -25,8 +25,19 @@ class SensitiveWordController extends Controller
                      $query->where('name', 'like', sprintf('%%%s%%', $keyword));
                  })
                  ->paginate($perPage);
-
+                     
         return response($items);
+    }
+
+    /**
+     * 获取敏感词.
+     * 
+     * @param  SensitiveWord $sensitiveWord
+     * @return array json
+     */
+    public function show(SensitiveWord $word)
+    { 
+        return response($word, 200);
     }
 
     /**
@@ -45,6 +56,24 @@ class SensitiveWordController extends Controller
         SensitiveWord::create($data);
 
         return response(['message' => ['添加敏感词成功']], 201);
+    }
+
+    /**
+     * 更新敏感词.
+     * 
+     * @param  Request $request
+     * @param  SensitiveWord $word
+     * @return array json
+     */
+    public function update(Request $request, SensitiveWord $word)
+    {
+        $this->validate($request, $this->rule(), $this->msg());
+
+        $data = $request->only('name', 'filter_word_category_id', 'filter_word_type_id');
+
+        $word->update($data);
+
+        return response(['message' => ['更新成功']], 201);
     }
 
     /**
@@ -87,7 +116,7 @@ class SensitiveWordController extends Controller
      * @param SensitiveWord $sensitiveWord
      * @return array json
      */
-    public function destroy(SensitiveWord $sensitiveWord)
+    public function delete(SensitiveWord $word)
     {
         $sensitiveWord->delete();
 

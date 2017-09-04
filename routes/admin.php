@@ -199,10 +199,10 @@ Route::middleware('auth:web')
     Route::patch('certifications/{certification}/reject', 'CertificationController@rejectCertification');
     Route::get('find/nocertification/users', 'CertificationController@findNoCertificationUsers');
 
-    //会话管理
+    // 会话管理
     Route::get('conversations', 'ConversationController@index');
 
-    //过滤配置
+    // 过滤配置
     Route::prefix('filter-word-categories')->group(function () {
         Route::get('', 'FilterWordCategoryController@index');
         Route::get('/{category}', 'FilterWordCategoryController@show');
@@ -218,7 +218,11 @@ Route::middleware('auth:web')
     });
 
     // 敏感词
-    Route::resource('sensitive-words', 'SensitiveWordController', ['only' => [
-        'index', 'store', 'destroy', 'update',
-    ]]);
+    Route::prefix('sensitive-words')->group(function () {
+        Route::get('', 'SensitiveWordController@index');
+        Route::post('', 'SensitiveWordController@store');
+        Route::get('/{word}', 'SensitiveWordController@show');
+        Route::patch('/{word}', 'SensitiveWordController@update');
+        Route::delete('/{word}', 'SensitiveWordController@delete');
+    });
 });
