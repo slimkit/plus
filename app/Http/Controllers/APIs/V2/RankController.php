@@ -27,6 +27,7 @@ class RankController extends Controller
                 return $join->on('users.id', '=', 'user_extras.user_id');
             })
             ->orderBy('user_extras.followers_count', 'desc')
+            ->orderBy('users.id', 'asc')
             ->offset($offset)
             ->take($limit)
             ->get();
@@ -65,6 +66,7 @@ class RankController extends Controller
                 return $join->on('users.id', '=', 'wallets.user_id');
             })
             ->orderBy('wallets.balance', 'desc')
+            ->orderBy('users.id', 'asc')
             ->offset($offset)
             ->take($limit)
             ->get();
@@ -101,6 +103,7 @@ class RankController extends Controller
                 return $join->on('users.id', '=', 'count.user_id');
             })
             ->orderBy('count.count', 'desc')
+            ->orderBy('users.id', 'asc')
             ->offset($offset)
             ->take($limit)
             ->get();
