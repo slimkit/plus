@@ -25,18 +25,18 @@ class SensitiveWordController extends Controller
                      $query->where('name', 'like', sprintf('%%%s%%', $keyword));
                  })
                  ->paginate($perPage);
-                     
+
         return response($items);
     }
 
     /**
      * 获取敏感词.
-     * 
+     *
      * @param  SensitiveWord $sensitiveWord
      * @return array json
      */
     public function show(SensitiveWord $word)
-    { 
+    {
         return response($word, 200);
     }
 
@@ -60,7 +60,7 @@ class SensitiveWordController extends Controller
 
     /**
      * 更新敏感词.
-     * 
+     *
      * @param  Request $request
      * @param  SensitiveWord $word
      * @return array json
