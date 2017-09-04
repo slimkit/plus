@@ -245,8 +245,11 @@ const certificationComponent = {
          */
         getCertifications () {
           this.loadding = true;
+
+          let params = this.getQueryParams();
+
           request.get(
-            createRequestURI('certifications' + this.getQueryParams() ),
+            createRequestURI(`certifications${params}`),
             { validateStatus: status => status === 200 }
           ).then(response => {
             this.loadding = false;
@@ -366,7 +369,7 @@ const certificationComponent = {
           this.getCertifications();    
         },
         nextPage () {
-          if (this.paginate.lastPage > 1) {
+          if (this.paginate.lastPage > this.paginate.currentPage) {
             this.paginate.currentPage += 1;
             this.certifications = {}; 
             this.getCertifications();
