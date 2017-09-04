@@ -16,20 +16,20 @@
 
 <template>
     <div :class="$style.container">
+        <div v-show="errorMessage" class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" @click.prevent="offAlert">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ errorMessage }}
+        </div>
+        <div v-show="successMessage" class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" @click.prevent="offAlert">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ successMessage }}
+        </div> 
         <div class="panel panel-default">
           <div class="panel-heading">
-            <div v-show="errorMessage" class="alert alert-danger alert-dismissible" role="alert">
-                <button type="button" class="close" @click.prevent="offAlert">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                {{ errorMessage }}
-            </div>
-            <div v-show="successMessage" class="alert alert-success alert-dismissible" role="alert">
-                <button type="button" class="close" @click.prevent="offAlert">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                {{ successMessage }}
-            </div>
             <router-link to="/setting/filter-word-categories/add" class="btn btn-success">添加分类</router-link>
           </div>
           <div class="panel-body">
@@ -74,6 +74,7 @@ const FilterWordCategory = {
     }),
     
     methods: {
+
       getCategories () {
         request.get(
           createRequestURI('filter-word-categories'),
@@ -87,6 +88,7 @@ const FilterWordCategory = {
           this.errorMessage = errorMessage;
         });
       },
+      
       deleteCategory (id) {
         let  bool = confirm('是否确认删除？');
         if (bool) {
@@ -95,13 +97,17 @@ const FilterWordCategory = {
             { validateStatus: status => status === 204 }
           ).then(({ data: { message: [ message ] = [] } }) => {
             this.successMessage = '删除成功';
-          }).catch(({ response: { data = {} } = {} }) => {
-            let {name = []} = data;
-            let [ errorMessage ] = [...name];
+          }).catch(({ response: { data: {message = []} } = {} }) => {
+            let [ errorMessage ] = [ ...message ];
             this.errorMessage = errorMessage;
           });
         }
       },
+
+      offAlert () {
+        this.errorMessage = this.successMessage = '';
+      },
+
     },
 
     created () {

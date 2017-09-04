@@ -12,4 +12,9 @@ class FilterWordCategory extends Model
     public $table = 'filter_word_categories';
 
     public $fillable = ['name'];
+
+    public function sensitives()
+    {
+        return $this->hasMany(SensitiveWord::class);
+    }
 }
