@@ -198,7 +198,7 @@ git clone https://github.com/zhiyicx/thinksns-plus
     ```
 3. 发布资源
     ```shell
-    php artisan vendor:publish --force
+    php artisan vendor:publish
     ```
 4. 迁移数据表
     ```shell
@@ -269,7 +269,7 @@ docker0compose exec workspace bash
 ```shell
 composer install
 php artisan key:generate
-php artisan vendor:publish --force
+php artisan vendor:publish
 php artisan migrate
 php artisan db:seed
 ```
