@@ -80,7 +80,7 @@ class FilterWordCategoryController extends Controller
         if ($category->sensitives()->count()) {
             return response(['message' => ['该分类下还有敏感词存在，请先删除敏感词再删除分类']], 422);
         }
-        
+
         $category->delete();
 
         return response()->json('', 204);
