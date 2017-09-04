@@ -50,7 +50,7 @@ class SmsController extends Controller
         $data['gateways'] = array_keys($config->get('sms.gateways'));
         $data['allowed_gateways'] = $config->get('sms.default.allowed_gateways');
 
-        return response( $data, 200);
+        return response($data, 200);
     }
 
     public function allowedGateways(Repository $config)

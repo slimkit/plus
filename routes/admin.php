@@ -122,7 +122,6 @@ Route::middleware('auth:web')
         Route::patch('/driver/alidayu', 'SmsController@updateAlidayuOption');
         Route::get('/gateways', 'SmsController@showGateway');
         Route::patch('update/gateways', 'SmsController@updateGateway');
-
     });
 
     /* -----------  Mail  ------------ */
