@@ -3,6 +3,7 @@
 namespace Zhiyi\Plus\Exceptions;
 
 use Exception;
+use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -50,6 +51,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof TokenBlacklistedException) {
+            abort($exception->getStatusCode(), $exception->getMessage());
+        }
+
         return parent::render($request, $exception);
     }
 }
