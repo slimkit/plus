@@ -24,7 +24,7 @@ class BootstrappersController extends Controller
         }
 
         $bootstrappers['ad'] = $space->where('space', 'boot')->with(['advertising' => function ($query) {
-            $query->select('id', 'title', 'type', 'data');
+            $query->orderBy('sort', 'asc');
         }])->first()->advertising ?? [];
 
         return $response->json($events->dispatch('v2', [$bootstrappers]), 200);
