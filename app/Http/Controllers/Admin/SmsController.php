@@ -48,8 +48,8 @@ class SmsController extends Controller
     {
         $data = [];
         $data['gateways'] = array_keys($config->get('sms.gateways'));
-        $data['allowed_gateways'] = $config->get('sms.default.allowed_gateways') ?:[];
-        $data['default_gateways'] = $config->get('sms.default.gateways') ?:[];
+        $data['allowed_gateways'] = $config->get('sms.default.allowed_gateways') ?: [];
+        $data['default_gateways'] = $config->get('sms.default.gateways') ?: [];
 
         return response($data, 200);
     }
@@ -141,7 +141,7 @@ class SmsController extends Controller
     public function updateAliyunOption(Repository $config, Configuration $store, Request $request)
     {
         $config = $store->getConfiguration();
-        
+
         $config->set(
             'sms.gateways.aliyun',
             $request->only(['access_key_id', 'access_key_secret', 'sign_name'])
@@ -179,7 +179,7 @@ class SmsController extends Controller
 
     /**
      * Get SMS driver Template configuration information.
-     * 
+     *
      * @param  Repository $config [description]
      * @return [type]             [description]
      */
@@ -188,7 +188,7 @@ class SmsController extends Controller
         $data = [];
 
         $data['alidayu_template_id'] = $config->get('sms.channels.code.alidayu.template');
-        $data['aliyun_template_id']  = $config->get('sms.channels.code.aliyun.template');
+        $data['aliyun_template_id'] = $config->get('sms.channels.code.aliyun.template');
         $data['yunpian_template_content'] = $config->get('sms.channels.code.yunpian.content');
 
         return response()->json($data, 200);
@@ -196,7 +196,7 @@ class SmsController extends Controller
 
     /**
      * Update SMS driver Template configuration information.
-     * 
+     *
      * @param  Repository    $config
      * @param  Configuration $store
      * @param  Request       $request
@@ -205,12 +205,12 @@ class SmsController extends Controller
     public function updateTemplate(Repository $config, Configuration $store, Request $request)
     {
         $config = $store->getConfiguration();
-        
+
         $config->set(
             'sms.channels.code.alidayu.template',
             $request->input('alidayu_template_id')
         );
-        
+
         $config->set(
             'sms.channels.code.aliyun.template',
             $request->input('aliyun_template_id')
@@ -226,4 +226,3 @@ class SmsController extends Controller
         return response()->json(['message' => ['更新成功']], 201);
     }
 }
-
