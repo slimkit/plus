@@ -40,16 +40,6 @@
             <span class="help-block" id="sign-name-help">请输入短信签名的名称</span>
           </div>
         </div>
-        <!-- 短信模板 -->
-        <div class="form-group">
-          <label class="col-sm-2 control-label" for="template-id">模板ID</label>
-          <div class="col-sm-4">
-            <input type="text" name="template_id" class="form-control" id="template-id" placeholder="请输入短信模板id" aria-describedby="template-id-help" v-model="options.verify_template_id">
-          </div>
-          <div class="col-sm-6">
-            <span class="help-block" id="template-id-help">请输入短信模板id</span>
-          </div>
-        </div>
         <!-- button -->
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-4">
@@ -104,11 +94,11 @@ const AliyunComponent = {
       });
     },
     submitHandle() {
-      const { access_key_id = null, access_key_secret = null, sign_name = null, verify_template_id = null } = this.options;
+      const { access_key_id = null, access_key_secret = null, sign_name = null } = this.options;
       this.submit.state = true;
       request.patch(
         createRequestURI('sms/driver/aliyun'),
-        { access_key_id, access_key_secret, sign_name, verify_template_id },
+        { access_key_id, access_key_secret, sign_name },
         { validateStatus: status => status === 201 }
       ).then(({ data: { message: [ message = '提交成功' ] = [] } }) => {
         this.submit.state = false;

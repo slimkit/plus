@@ -83,7 +83,7 @@
       <table class="table table-hove">
         <thead>
           <tr>
-            <th>手机号码</th>
+            <th>账号</th>
             <th>验证码</th>
             <th>状态</th>
             <th>时间</th>

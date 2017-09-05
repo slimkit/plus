@@ -1,24 +1,35 @@
 <template>
   <div class="component-container container-fluid">
       <div class="panel panel-default">
-        <div class="panel-heading">网关开启</div>
-        <div class="panel-body">
-            <div class="checkbox-inline" v-for="gateway in gateways">
-              <label>
-               <input type="checkbox" id="blankCheckbox" aria-label="..." @change="watchCheck(gateway)" :checked="checked(gateway)"> {{ gateway }}
-              </label>
-            </div>
-            <div class="checkbox-inline">
-              <button class="btn btn-primary btn-sm" @click.prevent="updateGateway">更新</button>
-            </div>
-            <div class="checkbox-inline">
-              <span :class="`text-${submit.type}`">{{ submit.message }}</span>
-            </div>
+        <div class="panel-heading">网关配置</div>
+        <div class="panel-body form-horizontal">
+              <!-- checkbox -->
+              <div class="form-group">
+                  <label class="col-sm-2 control-label">开启网关</label>
+                  <div class="col-sm-3">
+                    <div class="checkbox-inline"   v-for="gateway in gateways">
+                      <label>
+                       <input type="checkbox" id="blankCheckbox" @change="watchCheck(gateway)" :checked="checked(gateway)"> {{ gateway }}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <span class="help-block" id="password-help">关闭开启网关</span>
+                  </div>
+              </div>
+              <!-- button -->
+              <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-1">
+                      <button class="btn btn-primary btn-sm" @click.prevent="updateGateway">确定</button>
+                  </div>
+                  <div class="col-sm-2">
+                      <span :class="`text-${submit.type}`">{{ submit.message }}</span>
+                  </div>
+              </div>
         </div>  
       </div>
   </div>
 </template>
-
 <script>
 import request, { createRequestURI } from '../../util/request';
 import lodash from 'lodash';
@@ -71,13 +82,6 @@ const SmsGatwayComponent = {
         this.submit.message = message;
         this.submit.type = 'danger';
       });
-    },
-
-    disabled(gateway) {
-      let gateways = this.allowedGateways;
-      let index = lodash.indexOf(gateways, gateway);
-
-      return (parseInt(index) !== -1) ? false : true;
     },
 
     checked(gateway) {

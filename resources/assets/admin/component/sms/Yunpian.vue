@@ -2,7 +2,7 @@
   <div class="component-container container-fluid">
     <div class="panel panel-default">
       <!-- Title -->
-      <div class="panel-heading">阿里云 - 驱动配置</div>
+      <div class="panel-heading">云片 - 驱动配置</div>
       <!-- Loading -->
       <div v-if="loadding.state === 0" class="panel-body text-center">
         <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
@@ -18,16 +18,6 @@
           </div>
           <div class="col-sm-6">
             <span id="app-key-help" class="help-block">输入应用 Api Key 信息</span>
-          </div>
-        </div>
-        <!-- content -->
-        <div class="form-group">
-          <label for="app-secret" class="col-sm-2 control-label">Content </label>
-          <div class="col-sm-4">
-            <input type="text" name="content" class="form-control" id="app-secret" placeholder="请输入应用 Content" aria-describedby="app-secret-help" v-model="options.content">
-          </div>
-          <div class="col-sm-6">
-            <span id="app-secret-help" class="help-block">输入应用 Content 信息，例：你的短信验证是：:code，:code为变量</span>
           </div>
         </div>
         <!-- button -->
@@ -84,11 +74,11 @@ const YunpianComponent = {
       });
     },
     submitHandle() {
-      const { api_key = null, content = null } = this.options;
+      const { api_key = null } = this.options;
       this.submit.state = true;
       request.patch(
         createRequestURI('sms/driver/yunpian'),
-        { api_key, content },
+        { api_key },
         { validateStatus: status => status === 201 }
       ).then(({ data: { message: [ message = '提交成功' ] = [] } }) => {
         this.submit.state = false;

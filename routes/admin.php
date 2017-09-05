@@ -119,11 +119,14 @@ Route::middleware('auth:web')
     Route::prefix('sms')->group(function () {
         Route::get('/', 'SmsController@show');
         Route::get('/driver/{dirver}', 'SmsController@showOption');
+        Route::get('/templates', 'SmsController@smsTemplate');
+        Route::get('/gateways', 'SmsController@showGateway');
+
         Route::patch('/driver/alidayu', 'SmsController@updateAlidayuOption');
         Route::patch('/driver/aliyun', 'SmsController@updateAliyunOption');
         Route::patch('/driver/yunpian', 'SmsController@updateYunpianOption');
-        Route::get('/gateways', 'SmsController@showGateway');
         Route::patch('update/gateways', 'SmsController@updateGateway');
+        Route::patch('update/templates', 'SmsController@updateTemplate');
     });
 
     /* -----------  Mail  ------------ */

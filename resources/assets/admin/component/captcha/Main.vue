@@ -5,7 +5,10 @@
         <a href="#">验证码记录</a>
       </router-link>
       <router-link to="/captcha/gateway" tag="li" active-class="active">
-        <a href="#">网关设置</a>
+        <a href="#">网关配置</a>
+      </router-link>
+      <router-link to="/captcha/template" tag="li" active-class="active">
+        <a href="#">模版配置</a>
       </router-link>
     </ul>
     <router-view />
