@@ -58,7 +58,7 @@ const GatwayComponent = {
     updateGateway () {
       request.patch(
         createRequestURI('sms/update/gateways'),
-        { gateways: this.checkedGateways },
+        { gateways: this.checkedGateways, type: 'captcha' },
         { validateStatus: status => status === 201 }
       ).then(({ data: { message: [ message ] = [] } }) => {
         this.submit.message = message;

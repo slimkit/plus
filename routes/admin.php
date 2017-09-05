@@ -120,6 +120,8 @@ Route::middleware('auth:web')
         Route::get('/', 'SmsController@show');
         Route::get('/driver/{dirver}', 'SmsController@showOption');
         Route::patch('/driver/alidayu', 'SmsController@updateAlidayuOption');
+        Route::patch('/driver/aliyun', 'SmsController@updateAliyunOption');
+        Route::patch('/driver/yunpian', 'SmsController@updateYunpianOption');
         Route::get('/gateways', 'SmsController@showGateway');
         Route::patch('update/gateways', 'SmsController@updateGateway');
     });

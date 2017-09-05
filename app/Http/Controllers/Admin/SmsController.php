@@ -49,13 +49,9 @@ class SmsController extends Controller
         $data = [];
         $data['gateways'] = array_keys($config->get('sms.gateways'));
         $data['allowed_gateways'] = $config->get('sms.default.allowed_gateways');
+        $data['default_gateways'] = $config->get('sms.default.gateways');
 
         return response($data, 200);
-    }
-
-    public function allowedGateways(Repository $config)
-    {
-        dd($config->get('sms.default.allowed_gateways'));
     }
 
     /**
@@ -69,18 +65,23 @@ class SmsController extends Controller
     public function updateGateway(Request $request, Repository $config, Configuration $store)
     {
         $gateways = $request->input('gateways');
+        $type = $request->input('type');
 
-        if (! is_array($gateways)) {
-            return response(['message' => ['数据格式错误']], 422);
+        if (! is_array($gateways) || ! $type) {
+            return response(['message' => ['数据格式错误或类型参数错误']], 422);
         }
 
         $config = $store->getConfiguration();
-        $config->set('sms.default.allowed_gateways', $gateways);
 
+        $key = ($type === 'sms') ? 'gateways' : 'allowed_gateways';
+
+        $config->set(sprintf('sms.default.%s', $key), $gateways);
+        
         $store->save($config);
 
         return response(['message' => ['更新成功']], 201);
     }
+
 
     /**
      * Get SMS driver configuration information.
@@ -96,9 +97,14 @@ class SmsController extends Controller
         if (! in_array($driver, array_keys($config->get('sms.gateways')))) {
             return $response->json(['message' => ['当前驱动不存在于系统中']], 422);
         }
-
+            
         $data = $config->get(sprintf('sms.gateways.%s', $driver), []);
-        $data['verify_template_id'] = $config->get(sprintf('sms.channels.code.alidayu.template'));
+        
+        if ($driver === 'yunpian') {
+            $data['content'] = $config->get(sprintf('sms.channels.code.%s.content', $driver));
+        } else {
+            $data['verify_template_id'] = $config->get(sprintf('sms.channels.code.%s.template', $driver));
+        }
 
         return $response->json($data, 200);
     }
@@ -128,5 +134,66 @@ class SmsController extends Controller
         $store->save($config);
 
         return $response->json(['message' => ['更新成功']], 201);
+    }
+
+    /**
+     * Update Aliyun SMS configuration information.
+     *
+     * @param Repository $config
+     * @param Configuration $store
+     * @param Request $request
+     * @param ResponseFactory $response
+     * @param string $driver
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function updateAliyunOption(Repository $config, Configuration $store, Request $request)
+    {
+        $config = $store->getConfiguration();
+        $config->set(
+            'sms.gateways.aliyun',
+            $request->only(['access_key_id', 'access_key_secret', 'sign_name'])
+        );
+        $config->set(
+            'sms.channels.code.aliyun.template',
+            $request->input('verify_template_id')
+        );
+        $store->save($config);
+
+        return response()->json(['message' => ['更新成功']], 201);
+    }
+
+    /**
+     * Update Yunpian SMS configuration information.
+     *
+     * @param Repository $config
+     * @param Configuration $store
+     * @param Request $request
+     * @param ResponseFactory $response
+     * @param string $driver
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function updateYunpianOption(Repository $config, Configuration $store, Request $request)
+    {
+        $config = $store->getConfiguration();
+
+        $config->set(
+            'sms.gateways.yunpian',
+            $request->only(['api_key'])
+        );
+
+        if (strpos($request->input('content'), ':code') === false) {
+            return response()->json(['message' => [':code变量不存在']], 422);
+        }
+
+        $config->set(
+            'sms.channels.code.yunpian.content',
+            $request->input('content')
+        );
+        
+        $store->save($config);
+
+        return response()->json(['message' => ['更新成功']], 201);
     }
 }
