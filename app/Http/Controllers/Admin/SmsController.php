@@ -76,12 +76,11 @@ class SmsController extends Controller
         $key = ($type === 'sms') ? 'gateways' : 'allowed_gateways';
 
         $config->set(sprintf('sms.default.%s', $key), $gateways);
-        
+
         $store->save($config);
 
         return response(['message' => ['更新成功']], 201);
     }
-
 
     /**
      * Get SMS driver configuration information.
@@ -97,9 +96,9 @@ class SmsController extends Controller
         if (! in_array($driver, array_keys($config->get('sms.gateways')))) {
             return $response->json(['message' => ['当前驱动不存在于系统中']], 422);
         }
-            
+
         $data = $config->get(sprintf('sms.gateways.%s', $driver), []);
-        
+
         if ($driver === 'yunpian') {
             $data['content'] = $config->get(sprintf('sms.channels.code.%s.content', $driver));
         } else {
@@ -191,7 +190,7 @@ class SmsController extends Controller
             'sms.channels.code.yunpian.content',
             $request->input('content')
         );
-        
+
         $store->save($config);
 
         return response()->json(['message' => ['更新成功']], 201);
