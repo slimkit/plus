@@ -22,12 +22,9 @@ class CurrentUserController extends Controller
         $user = $request->user();
         $user->load('wallet');
 
-        return $response->json(array_merge($user->toArray(), [
-            'phone' => $user->phone,
-            'email' => $user->email,
-        ]))->setStatusCode(200);
+        $user->makeVisible(['phone', 'email']);
 
-        return response()->json($user, 200);
+        return $response->json($user, 200);
     }
 
     /**
