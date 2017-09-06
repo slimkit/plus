@@ -77,7 +77,7 @@ class AdvertisingController extends Controller
         if ($model->save()) {
             return response()->json(['message' => ['添加广告成功']], 201);
         } else {
-            return response()->json(['message' => ['添加广告失败']], 422);
+            return response()->json(['message' => ['添加广告失败']], 500);
         }
     }
 
