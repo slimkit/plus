@@ -87,7 +87,7 @@ const CategoryEditComponent = {
           ).then(({ data: { message: [ message ] = [] } }) => {
             this.successMessage = message;
           }).catch(({ response: { data = {} } = {} }) => {
-            const { display_name = [] } = data;
+            const { display_name = [] } = data.errors;
             const [ errorMessage ] = [...display_name];
             this.errorMessage = errorMessage;
             this.adding = false;

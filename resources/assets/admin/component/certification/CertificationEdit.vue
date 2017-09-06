@@ -157,7 +157,7 @@ const PersonalCertificationEdit = {
             this.successMessage = message;
           }).catch(({ response: { data = {} } = {} }) => {
             this.adding = false;
-            const { name = [], desc = [], files = [], phone = [], number = [], org_address = [], org_name = [], message = [] } = data;
+            const { name = [], desc = [], files = [], phone = [], number = [], org_address = [], org_name = [], message = [] } = data.errors;
             const [ errorMessage ] = [...name, ...desc, ...files, ...phone, ...number, ...org_address, ...org_name, ...message];
             this.errorMessage = errorMessage;
           });

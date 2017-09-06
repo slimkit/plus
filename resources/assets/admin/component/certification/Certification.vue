@@ -20,25 +20,25 @@
 
 <template>
     <div :class="$style.container">
+        <div v-show="successMessage" class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" @click.prevent="offAlert">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ successMessage }}
+        </div>
+        <div v-show="errorMessage" class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" @click.prevent="offAlert">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ errorMessage }}
+        </div>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <div v-show="successMessage" class="alert alert-success alert-dismissible" role="alert">
-                    <button type="button" class="close" @click.prevent="offAlert">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    {{ successMessage }}
-                </div>
-                <div v-show="errorMessage" class="alert alert-danger alert-dismissible" role="alert">
-                    <button type="button" class="close" @click.prevent="offAlert">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    {{ errorMessage }}
-                </div>
-                <div class="form-inline">
-                    <div class="form-group">
-                        <router-link type="button" class="btn btn-success" :to="{ name: 'certification:add' }">添加认证用户</router-link>
-                    </div>
-                </div>
+              <div class="form-inline">
+                  <div class="form-group">
+                      <router-link type="button" class="btn btn-success btn-sm" :to="{ name: 'certification:add' }">添加认证用户</router-link>
+                  </div>
+              </div>
             </div>
             <div class="panel-heading">
                 <!-- 数据过滤 -->

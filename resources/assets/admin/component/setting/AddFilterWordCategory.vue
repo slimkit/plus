@@ -74,7 +74,7 @@ const FilterWordCategoryAdd = {
         ).then(({ data: { message: [ message ] = [] } }) => {
           this.successMessage = message;
         }).catch(({ response: { data = {} } = {} }) => {
-          let {name = []} = data;
+          let {name = []} = data.errors;
           let [ errorMessage ] = [...name];
           this.errorMessage = errorMessage;
         });
