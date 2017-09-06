@@ -113,7 +113,7 @@ class SmsController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function updateAlidayuOption(Repository $config, Configuration $store, Request $request, ResponseFactory $response)
+    public function updateAlidayuOption(Configuration $store, Request $request, ResponseFactory $response)
     {
         $config = $store->getConfiguration();
 
@@ -138,7 +138,7 @@ class SmsController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function updateAliyunOption(Repository $config, Configuration $store, Request $request)
+    public function updateAliyunOption(Configuration $store, Request $request)
     {
         $config = $store->getConfiguration();
 
@@ -163,7 +163,7 @@ class SmsController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function updateYunpianOption(Repository $config, Configuration $store, Request $request)
+    public function updateYunpianOption(Configuration $store, Request $request)
     {
         $config = $store->getConfiguration();
 
@@ -183,7 +183,7 @@ class SmsController extends Controller
      * @param  Repository $config [description]
      * @return [type]             [description]
      */
-    public function smsTemplate(Request $request, Repository $config)
+    public function smsTemplate(Repository $config)
     {
         $data = [];
 
@@ -202,7 +202,7 @@ class SmsController extends Controller
      * @param  Request       $request
      * @return [type]
      */
-    public function updateTemplate(Repository $config, Configuration $store, Request $request)
+    public function updateTemplate(Configuration $store, Request $request)
     {
         $config = $store->getConfiguration();
 
