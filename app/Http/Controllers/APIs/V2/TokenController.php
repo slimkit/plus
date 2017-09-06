@@ -30,7 +30,7 @@ class TokenController extends Controller
         } elseif (! $user->verifyPassword($password)) {
             return $response->json(['password' => ['密码错误']], 422);
         } elseif ($user->roles->whereStrict('id', 3)->isNotEmpty()) { // 禁止登录用户
-            return $response->json(['message' => '你已被禁止登陆'], 401);
+            return $response->json(['message' => ['你已被禁止登陆']], 422);
         } elseif (($token = $jwtAuthToken->create($user))) {
             return $response->json([
                 'token' => $token,
