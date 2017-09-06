@@ -234,7 +234,7 @@ Route::middleware('auth:web')
     });
 
     /* ------------- 广告管理 -----------------*/
-    Route::get('ads','AdvertisingController@ads');
+    Route::get('ads', 'AdvertisingController@ads');
     Route::post('ads', 'AdvertisingController@storeAds');
     Route::get('ads/spaces', 'AdvertisingController@spaces');
 });

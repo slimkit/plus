@@ -3,13 +3,12 @@
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Advertising;
 use Zhiyi\Plus\Models\AdvertisingSpace;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 class AdvertisingController extends Controller
 {
-
     /**
      * 获取广告.
      *
@@ -43,32 +42,32 @@ class AdvertisingController extends Controller
         $model = new Advertising();
 
         $model->title = $formData['title'];
-        $model->type  = $formData['type'];
-        $model->sort  = $formData['sort'];
+        $model->type = $formData['type'];
+        $model->sort = $formData['sort'];
         $model->space_id = $formData['space_id'];
 
         $data = $formData['data'];
-        
+
         $items = [];
 
         switch ($formData['type']) {
             case 'image':
                 $items['image'] = $data['image'];
-                $items['link']  = $data['link'];
+                $items['link'] = $data['link'];
                 break;
             case 'feed:analog':
                 $items['avatar'] = $data['avatar'];
-                $items['name']  = $data['name'];
+                $items['name'] = $data['name'];
                 $items['content'] = $data['content'];
-                $items['image']  = $data['image'];
+                $items['image'] = $data['image'];
                 $items['time'] = $data['time'];
-                $items['link']  = $data['link'];
+                $items['link'] = $data['link'];
                 break;
             case 'news:analog':
                 $items['title'] = $data['title'];
-                $items['image']  = $data['image'];
+                $items['image'] = $data['image'];
                 $items['from'] = $data['from'];
-                $items['time']  = $data['time'];
+                $items['time'] = $data['time'];
                 $items['link'] = $data['link'];
                 break;
         }
@@ -123,7 +122,7 @@ class AdvertisingController extends Controller
                     'data.time' => 'required|date',
                     'data.avatar' => 'required|url',
                     'data.title' => 'required',
-                    'data.name' => 'required'
+                    'data.name' => 'required',
                 ];
                 break;
             case 'news:analog':
@@ -164,7 +163,7 @@ class AdvertisingController extends Controller
      */
     public function spaces()
     {
-        $items = AdvertisingSpace::select(['id', 'space','alias', 'format', 'allow_type'])->get();
+        $items = AdvertisingSpace::select(['id', 'space', 'alias', 'format', 'allow_type'])->get();
 
         return response()->json($items, 200);
     }
