@@ -13,4 +13,9 @@ class Advertising extends Model
     protected $casts = [
         'data' => 'array',
     ];
+
+    public function space()
+    {
+        return $this->belongsTo(AdvertisingSpace::class);
+    }
 }

@@ -232,4 +232,9 @@ Route::middleware('auth:web')
         Route::patch('/{word}', 'SensitiveWordController@update');
         Route::delete('/{word}', 'SensitiveWordController@delete');
     });
+
+    /* ------------- 广告管理 -----------------*/
+    Route::get('ads','AdvertisingController@ads');
+    Route::post('ads', 'AdvertisingController@storeAds');
+    Route::get('ads/spaces', 'AdvertisingController@spaces');
 });
