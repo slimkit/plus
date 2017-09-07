@@ -45,13 +45,13 @@
                 <div class="form-inline">
                     <div class="form-group">
                         <label>状态：</label>
-                        <select class="form-control" v-model="statuss.selected" @change="watchChange">
+                        <select class="form-control" v-model="statuss.selected">
                             <option :value="item.value" v-for="item in statuss.data">{{ item.status }}</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>类型：</label>
-                        <select class="form-control" v-model="categories.selected" @change="watchChange">
+                        <select class="form-control" v-model="categories.selected">
                            <option value="">全部</option>
                            <option :value="item.name" v-for="item in categories.data">{{ item.display_name }}</option>
                         </select>
@@ -224,6 +224,21 @@ const certificationComponent = {
         successMessage: '',
         errorMessage: '',
     }),
+    
+    watch: {
+      deep: true,
+      'statuss.selected': {
+        handler () {
+          this.selectChange();
+        },
+      },
+      'categories.selected': {
+        handler () {
+          this.selectChange();
+        },
+      }
+    },
+
     methods: {
         /**
          * 获取认证类型
@@ -245,6 +260,7 @@ const certificationComponent = {
          */
         getCertifications () {
           this.loadding = true;
+          this.certifications = {}; 
 
           let params = this.getQueryParams();
 
@@ -348,15 +364,8 @@ const certificationComponent = {
          * 处理过滤
          */
         handleSearch () {
-          this.initializationData();
-          this.getCertifications();
-        },
-        /**
-         * 初始化数据
-         */
-        initializationData () {
           this.paginate.currentPage = 1;
-          this.certifications = {}; 
+          this.getCertifications();
         },
         /**
          * 关闭提示
@@ -364,21 +373,19 @@ const certificationComponent = {
         offAlert () {
           this.errorMessage = this.successMessage = '';
         },
-        watchChange () {
-          this.initializationData();
+        selectChange () {
+          this.paginate.currentPage = 1;
           this.getCertifications();    
         },
         nextPage () {
           if (this.paginate.lastPage > this.paginate.currentPage) {
             this.paginate.currentPage += 1;
-            this.certifications = {}; 
             this.getCertifications();
           } 
         },
         prevPage () {
           if (this.paginate.currentPage > 1) {
             this.paginate.currentPage -= 1;
-            this.certifications = {}; 
             this.getCertifications(); 
           } 
         },
