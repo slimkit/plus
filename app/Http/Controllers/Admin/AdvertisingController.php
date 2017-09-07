@@ -28,9 +28,21 @@ class AdvertisingController extends Controller
             ->when($keyword, function ($query) use ($keyword) {
                 $query->where('title', 'like', sprintf('%%%s%%', $keyword));
             })
+            ->orderBy('id', 'desc')
             ->paginate($perPage);
 
         return response()->json($items, 200);
+    }
+
+    /**
+     * 根据ID获取广告.
+     * 
+     * @param  Advertising $ad
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function showAd(Advertising $ad)
+    {
+        return response()->json($ad, 200);
     }
 
     /**
@@ -39,7 +51,7 @@ class AdvertisingController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function storeAds(Request $request)
+    public function storeAd(Request $request)
     {
         $this->validate($request, $this->basisRule(), $this->basisMsg());
 
@@ -54,11 +66,49 @@ class AdvertisingController extends Controller
         $model->sort = $formData['sort'];
         $model->space_id = $formData['space_id'];
 
-        $data = $formData['data'];
+        $model->data = $this->byAdTypeGetData($formData['type'], $formData['data']);
 
+        if ($model->save()) {
+            return response()->json(['message' => ['添加广告成功']], 201);
+        } else {
+            return response()->json(['message' => ['添加广告失败']], 500);
+        }
+    }
+
+    /**
+     * 更新广告.
+     * 
+     * @param  Request $request
+     * @param  Advertising $ad
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateAd(Request $request, Advertising $ad)
+    {
+        $this->validate($request, $this->basisRule(), $this->basisMsg());
+
+        $this->validate($request, $this->dataRule(), $this->dataMsg());
+
+        $formData = $request->all();
+
+        $ad->title = $formData['title'];
+        $ad->type = $formData['type'];
+        $ad->sort = $formData['sort'];
+        $ad->space_id = $formData['space_id'];
+
+        $ad->data = $this->byAdTypeGetData($formData['type'], $formData['data']);
+
+        if ($ad->save()) {
+            return response()->json(['message' => ['更新广告成功']], 201);
+        } else {
+            return response()->json(['message' => ['更新广告失败']], 500);
+        }
+    }
+
+    private function byAdTypeGetData($type, array $data)
+    {
         $items = [];
 
-        switch ($formData['type']) {
+        switch ($type) {
             case 'image':
                 $items['image'] = $data['image'];
                 $items['link'] = $data['link'];
@@ -80,13 +130,7 @@ class AdvertisingController extends Controller
                 break;
         }
 
-        $model->data = $items;
-
-        if ($model->save()) {
-            return response()->json(['message' => ['添加广告成功']], 201);
-        } else {
-            return response()->json(['message' => ['添加广告失败']], 500);
-        }
+        return $items;
     }
 
     private function basisRule()

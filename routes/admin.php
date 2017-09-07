@@ -235,7 +235,10 @@ Route::middleware('auth:web')
 
     /* ------------- 广告管理 -----------------*/
     Route::get('ads', 'AdvertisingController@ads');
-    Route::post('ads', 'AdvertisingController@storeAds');
     Route::get('ads/spaces', 'AdvertisingController@spaces');
+    Route::get('ads/{ad}', 'AdvertisingController@showAd');
+    Route::post('ads', 'AdvertisingController@storeAd');
     Route::delete('ads/{ad}', 'AdvertisingController@deleteAd');
+    Route::put('ads/{ad}', 'AdvertisingController@updateAd');
+    
 });

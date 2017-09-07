@@ -59,6 +59,7 @@
                         <th>广告位</th>
                         <th>广告图</th>
                         <th>广告链接</th>
+                        <th>广告排序</th>
                         <th>创建时间</th>
                         <th>操作</th>
                     </tr>
@@ -81,9 +82,10 @@
                           </a>
                         </td>
                         <td>{{ ad.data.link }}</td>
+                        <td>{{ ad.sort }}</td>
                         <td>{{ ad.created_at }}</td>
                         <td>
-                          <router-link type="button" class="btn btn-primary btn-sm" to="ad/add">编辑</router-link>
+                          <router-link type="button" class="btn btn-primary btn-sm" :to="`ad/${ad.id}/update`">编辑</router-link>
                           <button type="button" class="btn btn-danger btn-sm" @click="delAd(ad.id)">删除</button>
                         </td>
                       </tr>
@@ -127,6 +129,12 @@ const ManageComponent = {
     
     }),
     
+    computed: {
+      name () {
+        return 1;
+      }
+    },
+
     methods: {  
 
       getAds () {
