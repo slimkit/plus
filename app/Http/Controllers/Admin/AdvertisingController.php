@@ -36,7 +36,7 @@ class AdvertisingController extends Controller
 
     /**
      * 根据ID获取广告.
-     * 
+     *
      * @param  Advertising $ad
      * @return \Illuminate\Http\JsonResponse
      */
@@ -77,7 +77,7 @@ class AdvertisingController extends Controller
 
     /**
      * 更新广告.
-     * 
+     *
      * @param  Request $request
      * @param  Advertising $ad
      * @return \Illuminate\Http\JsonResponse

@@ -240,5 +240,4 @@ Route::middleware('auth:web')
     Route::post('ads', 'AdvertisingController@storeAd');
     Route::delete('ads/{ad}', 'AdvertisingController@deleteAd');
     Route::put('ads/{ad}', 'AdvertisingController@updateAd');
-    
 });
