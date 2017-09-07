@@ -57,7 +57,7 @@ class Handler extends ExceptionHandler
 
         return parent::render($request, $exception);
     }
-    
+
     /**
      * Convert a validation exception into a JSON response.
      *
