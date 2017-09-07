@@ -177,8 +177,8 @@ class AdvertisingController extends Controller
     }
 
     /**
-     * 删除广告
-     * 
+     * 删除广告.
+     *
      * @param  Advertising $ad
      * @return \Illuminate\Http\JsonResponse
      */
