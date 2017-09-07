@@ -132,8 +132,8 @@ class WalletCashController extends Controller
         $charge->status = 2;
         $charge->user_id = $user->id;
 
-        DB::transaction(function () use ($user, $cash, $charge) {
-            $user->wallet()->increment('balance', $cash->value);
+        DB::transaction(function () use ($cash, $charge) {
+            $cash->user->wallet()->increment('balance', $cash->value);
             $charge->save();
             $cash->save();
         });
