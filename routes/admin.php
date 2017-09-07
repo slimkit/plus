@@ -237,4 +237,5 @@ Route::middleware('auth:web')
     Route::get('ads', 'AdvertisingController@ads');
     Route::post('ads', 'AdvertisingController@storeAds');
     Route::get('ads/spaces', 'AdvertisingController@spaces');
+    Route::delete('ads/{ad}', 'AdvertisingController@deleteAd');
 });

@@ -17,9 +17,17 @@ class AdvertisingController extends Controller
      */
     public function ads(Request $request)
     {
-        $perPage = $request->get('perPage');
+        $perPage = (int) $request->get('perPage', 20);
+        $spaceId = (int) $request->get('space_id');
+        $keyword = $request->get('keyword');
 
         $items = Advertising::with('space')
+            ->when($spaceId, function ($query) use ($spaceId) {
+                $query->where('space_id', $spaceId);
+            })
+            ->when($keyword, function ($query) use ($keyword) {
+                $query->where('title', 'like', sprintf('%%%s%%', $keyword));
+            })
             ->paginate($perPage);
 
         return response()->json($items, 200);
@@ -166,5 +174,20 @@ class AdvertisingController extends Controller
         $items = AdvertisingSpace::select(['id', 'space', 'alias', 'format', 'allow_type'])->get();
 
         return response()->json($items, 200);
+    }
+
+    /**
+     * 删除广告
+     * 
+     * @param  Advertising $ad
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteAd(Advertising $ad)
+    {
+        if ($ad->delete()) {
+            return response('', 204);
+        } else {
+            return response()->json(['message' => ['删除广告失败']], 500);
+        }
     }
 }

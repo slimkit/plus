@@ -17,8 +17,9 @@
 <template>
     <div :class="$style.container">
         <div class="panel panel-default">
-          <!-- 添加广告 -->
-          <div class="panel-heading">广告-添加</div>
+          <div class="panel-heading">
+            <router-link type="button" class="btn btn-primary btn-sm" to="/ad">返回</router-link>
+          </div>
           <!-- 广告列表 -->
           <div class="panel-body form-horizontal">
               <div class="col-md-8 col-md-offset-2">
@@ -75,7 +76,7 @@
                           <div class="input-group">
                             <input type="text" class="form-control" placeholder="头像链接" v-model="ad.data.avatar">
                             <span class="input-group-btn">
-                              <button class="btn btn-default" type="button" @click="upload">上传</button>
+                              <button class="btn btn-default" type="button" @click="triggerUpload">上传</button>
                               <input type="file" class="hide file-upload-input" @change="uploadAttachment">
                             </span>
                           </div>
@@ -116,7 +117,7 @@
                           <div class="input-group">
                             <input type="text" class="form-control" placeholder="图片链接" v-model="ad.data.image">
                             <span class="input-group-btn">
-                              <button class="btn btn-default" type="button" @click="upload">上传</button>
+                              <button class="btn btn-default" type="button" @click="triggerUpload">上传</button>
                               <input type="file" class="hide file-upload-input" @change="uploadAttachment">
                             </span>
                           </div>
@@ -214,13 +215,13 @@ const AddAdComponent = {
             this.successMessage = message;
           }).catch(({ response: { data = {} } = {} }) => {
             let errors = data.errors;
-            const { title = [], space_id = [], type = []  } = data.errors;
-            const [ errorMessage ] = [...title, ...space_id, ...type];
+            const { title = [], space_id = [], type = [], sort = [] } = errors;
+            const [ errorMessage ] = [...title, ...space_id, ...type, ...sort];
             this.errorMessage = errorMessage;
           });
       },
 
-      upload () {
+      triggerUpload () {
         $('.file-upload-input').click();
       },
 
@@ -276,6 +277,10 @@ const AddAdComponent = {
             this.format = spaces[i].format[this.ad.type];
           }
         }
+      },
+
+      offAlert () {
+        this.errorMessage = this.successMessage = '';
       }
 
     },
