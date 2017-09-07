@@ -126,4 +126,6 @@ return [
         'old_password' => '旧密码',
     ],
 
+    'message' => '提交的信息验证错误',
+
 ];

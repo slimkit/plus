@@ -118,4 +118,6 @@ return [
 
     'attributes' => [],
 
+    'message' => 'The given data was invalid.',
+
 ];
