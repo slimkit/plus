@@ -313,7 +313,7 @@ class UserController extends Controller
     }
 
     /**
-     * 后台推荐用户
+     * 后台推荐用户.
      */
     public function recommends(Request $request)
     {
@@ -330,7 +330,7 @@ class UserController extends Controller
             'roles' => '',
             'lastPage' => 0,
             'perPage' => $perPage,
-            'total' => 0
+            'total' => 0,
         ];
 
         // // user id
@@ -346,16 +346,21 @@ class UserController extends Controller
 
         $users = UserRecommended::with([
                 'user' => function ($query) use ($name, $userId, $email, $phone, $role) {
-                    if ($userId)
+                    if ($userId) {
                         $query->where('id', '=', $userId);
-                    if ($name) 
+                    }
+                    if ($name) {
                         $query->where('name', '=', $name);
-                    if ($email)
+                    }
+                    if ($email) {
                         $query->where('email', '=', $email);
-                    if ($phone) 
+                    }
+                    if ($phone) {
                         $query->where('phone', '=', $phone);
+                    }
+
                     return $query;
-                }
+                },
             ])
             ->paginate($perPage);
 
@@ -364,8 +369,9 @@ class UserController extends Controller
         }
 
         $users = $users->items();
-        $datas['page']['data'] = $users->map( function ($user) {
+        $datas['page']['data'] = $users->map(function ($user) {
             $user->setHidden([]);
+
             return $user;
         });
         $datas['lastPage'] = $users->lastPage;
@@ -373,6 +379,5 @@ class UserController extends Controller
         $datas['total'] = $users->total;
 
         return response()->json($datas)->setStatusCode(200);
-
     }
 }
