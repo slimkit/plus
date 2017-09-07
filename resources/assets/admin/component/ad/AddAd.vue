@@ -76,7 +76,7 @@
                           <div class="input-group">
                             <input type="text" class="form-control" placeholder="头像链接" v-model="ad.data.avatar">
                             <span class="input-group-btn">
-                              <button class="btn btn-default" type="button" @click="triggerUpload">上传</button>
+                              <button class="btn btn-default" @click="triggerUpload">上传</button>
                               <input type="file" class="hide file-upload-input" @change="uploadAttachment">
                             </span>
                           </div>
@@ -117,7 +117,7 @@
                           <div class="input-group">
                             <input type="text" class="form-control" placeholder="图片链接" v-model="ad.data.image">
                             <span class="input-group-btn">
-                              <button class="btn btn-default" type="button" @click="triggerUpload">上传</button>
+                              <button class="btn btn-default" @click="triggerUpload">上传</button>
                               <input type="file" class="hide file-upload-input" @change="uploadAttachment">
                             </span>
                           </div>

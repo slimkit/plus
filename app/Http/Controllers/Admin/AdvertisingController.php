@@ -30,7 +30,7 @@ class AdvertisingController extends Controller
             })
             ->orderBy('id', 'desc')
             ->paginate($perPage);
-
+        
         return response()->json($items, 200);
     }
 

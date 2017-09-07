@@ -37,7 +37,7 @@
           <div class="panel-heading">
             <div  class="form-inline">
               <div class="input-group">
-                <select class="form-control" v-model="filter.space_id" @change="getAds">
+                <select class="form-control" v-model="filter.space_id">
                   <option value="">全部</option>
                   <option v-for="space in spaces" :value="space.id">{{ space.alias }}</option>
                 </select>
@@ -45,8 +45,22 @@
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="广告搜索" v-model="filter.keyword">
                 <span class="input-group-btn">
-                  <button class="btn btn-default" @click="getAds">搜索</button>
+                  <button class="btn btn-default" @click="search">搜索</button>
                 </span>
+              </div>
+              <div class="input-group pull-right">
+                  <ul class="pagination" style="margin: 0;">
+                    <li :class="paginate.current_page <= 1 ? 'disabled' : null">
+                      <a href="javascript:;" aria-label="Previous" @click.stop.prevent="prevPage">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                    <li :class="paginate.current_page >= paginate.last_page ? 'disabled' : null">
+                      <a href="javascript:;" aria-label="Next" @click.stop.prevent="nextPage">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                  </ul>
               </div>
             </div>
           </div>
@@ -67,33 +81,33 @@
                 <tbody>
                     <tr v-show="loadding">
                         <!-- 加载动画 -->
-                        <td :class="$style.loadding" colspan="6">
+                        <td :class="$style.loadding" colspan="7">
                             <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
                         </td>
                     </tr>
-                    <!-- 数据存在 -->
-                    <template  v-if="ads.length">
-                      <tr v-for="ad in ads">
-                        <td>{{ ad.title }}</td>
-                        <td>{{ ad.space.alias }}</td>
-                        <td>
-                          <a :href="ad.data.image" class="thumbnail" target="_blank">
-                            <img :src="ad.data.image" style="max-width:40px;max-height:40px;">
-                          </a>
-                        </td>
-                        <td>{{ ad.data.link }}</td>
-                        <td>{{ ad.sort }}</td>
-                        <td>{{ ad.created_at }}</td>
-                        <td>
-                          <router-link type="button" class="btn btn-primary btn-sm" :to="`ad/${ad.id}/update`">编辑</router-link>
-                          <button type="button" class="btn btn-danger btn-sm" @click="delAd(ad.id)">删除</button>
-                        </td>
-                      </tr>
-                    </template>
-                    <!-- 数据为空 -->
-                    <template v-else>
-                      <tr> <td colspan="6" style="text-align:center;">暂无数据</td> </tr>
-                    </template>
+                      <!-- 数据存在 -->
+                      <template v-if="ads.length">
+                        <tr v-for="ad in ads">
+                          <td>{{ ad.title }}</td>
+                          <td>{{ ad.space.alias }}</td>
+                          <td>
+                            <a :href="ad.data.image" class="thumbnail" target="_blank">
+                              <img :src="ad.data.image" style="max-width:40px;max-height:40px;">
+                            </a>
+                          </td>
+                          <td>{{ ad.data.link }}</td>
+                          <td>{{ ad.sort }}</td>
+                          <td>{{ ad.created_at }}</td>
+                          <td>
+                            <router-link type="button" class="btn btn-primary btn-sm" :to="`ad/${ad.id}/update`">编辑</router-link>
+                            <button type="button" class="btn btn-danger btn-sm" @click="delAd(ad.id)">删除</button>
+                          </td>
+                        </tr>
+                      </template>
+                      <template v-else-if="!loadding">
+                        <!-- 数据为空 -->
+                        <tr> <td colspan="7" style="text-align:center;">暂无数据</td> </tr>
+                      </template>
                 </tbody>
             </table>
           </div>
@@ -129,9 +143,13 @@ const ManageComponent = {
     
     }),
     
-    computed: {
-      name () {
-        return 1;
+    watch: {
+      deep: true,
+      'filter.space_id': {
+        handler: function (val, oldVal) {
+          this.paginate.current_page = 1;
+          this.getAds();
+        },
       }
     },
 
@@ -198,6 +216,25 @@ const ManageComponent = {
         params += '&page=' + paginate.current_page;
 
         return params; 
+      },
+
+      search () {
+          this.paginate.current_page = 1;
+          this.getAds();
+      },
+
+      nextPage () {
+        if (this.paginate.last_page > this.paginate.current_page) {
+          this.paginate.current_page += 1;
+          this.getAds();
+        } 
+      },
+
+      prevPage () {
+        if (this.paginate.current_page > 1) {
+          this.paginate.current_page -= 1;
+          this.getAds(); 
+        } 
       },
  
     },
