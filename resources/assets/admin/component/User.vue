@@ -19,6 +19,9 @@
       <router-link to="/users/abilities" tag="li" active-class="active">
         <a href="#">权限管理</a>
       </router-link>
+      <router-link to="/users/recommends" tag="li" active-class="active">
+        <a href="#">推荐用户</a>
+      </router-link>
     </ul>
     <router-view />
   </div>

@@ -7,6 +7,7 @@ use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Zhiyi\Plus\Models\CommonConfig;
+use Zhiyi\Plus\Models\UserRecommended;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class UserController extends Controller
@@ -32,7 +33,8 @@ class UserController extends Controller
         $name = $request->query('name');
         $phone = $request->query('phone');
         $role = $request->query('role');
-        $perPage = $request->query('perPage', 10);
+        $perPage = $request->query('perPage', 1);
+        $perPage = 1;
         $showRole = $request->has('show_role');
 
         $builder = with(new User())->setHidden([])->newQuery();
@@ -81,7 +83,6 @@ class UserController extends Controller
         $role && $builder->whereHas('roles', function ($query) use ($role) {
             $query->where('id', $role);
         });
-
         $datas['page'] = $builder->paginate($perPage)->map(function ($user) {
             $user->setHidden([]);
 
@@ -309,5 +310,69 @@ class UserController extends Controller
                 'message' => ['更新成功!'],
             ])
             ->setStatusCode(201);
+    }
+
+    /**
+     * 后台推荐用户
+     */
+    public function recommends(Request $request)
+    {
+        $sort = $request->query('sort');
+        $userId = $request->query('userId');
+        $email = $request->query('email');
+        $name = $request->query('name');
+        $phone = $request->query('phone');
+        $role = $request->query('role');
+        $perPage = $request->query('perPage', 10);
+        $showRole = $request->has('show_role');
+        $datas = [
+            'page' => '',
+            'roles' => '',
+            'lastPage' => 0,
+            'perPage' => $perPage,
+            'total' => 0
+        ];
+
+        // // user id
+        // if ($userId && $users = $builder->where('id', $userId)->paginate($perPage)) {
+        //     $datas['page'] = $users->map(function ($user) {
+        //         $user->setHidden([]);
+
+        //         return $user;
+        //     });
+
+        //     return response()->json($datas)->setStatusCode(200);
+        // }
+
+        $users = UserRecommended::with([
+                'user' => function ($query) use ($name, $userId, $email, $phone, $role) {
+                    if ($userId)
+                        $query->where('id', '=', $userId);
+                    if ($name) 
+                        $query->where('name', '=', $name);
+                    if ($email)
+                        $query->where('email', '=', $email);
+                    if ($phone) 
+                        $query->where('phone', '=', $phone);
+                    return $query;
+                }
+            ])
+            ->paginate($perPage);
+
+        if ($showRole) {
+            $datas['roles'] = Role::all();
+        }
+
+        $users = $users->items();
+        $datas['page']['data'] = $users->map( function ($user) {
+            $user->setHidden([]);
+            return $user;
+        });
+        $datas['lastPage'] = $users->lastPage;
+        $datas['perPage'] = $perPage;
+        $datas['total'] = $users->total;
+
+        return response()->json($datas)->setStatusCode(200);
+
     }
 }
