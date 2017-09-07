@@ -172,8 +172,8 @@ class AdvertisingController extends Controller
                     'data.image' => 'required|url',
                     'data.link'  => 'required|url',
                     'data.time' => 'required|date',
+                    'data.content' => 'required',
                     'data.avatar' => 'required|url',
-                    'data.title' => 'required',
                     'data.name' => 'required',
                 ];
                 break;
@@ -201,6 +201,7 @@ class AdvertisingController extends Controller
            'data.avatar.required' => '头像图链接必填',
            'data.avatar.url' => '头像图链接无效',
            'data.time.required' => '时间必填',
+           'data.content.required' => '内容必填',
            'data.time.date' => '时间格式错误',
            'data.from.required' => '来源必填',
            'data.title.required' => '标题必填',

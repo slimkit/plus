@@ -73,13 +73,7 @@
                       <div class="form-group" v-if="key=='avatar'">
                         <label class="col-md-2 control-label">{{ (item.split('|'))[0] }}</label>
                         <div class="col-md-8">
-                          <div class="input-group">
-                            <input type="text" class="form-control" placeholder="头像链接" v-model="ad.data.avatar">
-                            <span class="input-group-btn">
-                              <button class="btn btn-default" @click="triggerUpload">上传</button>
-                              <input type="file" class="hide file-upload-input" @change="uploadAttachment">
-                            </span>
-                          </div>
+                          <input type="text" class="form-control" placeholder="头像链接" v-model="ad.data.avatar">
                         </div>
                       </div>
                       <!-- 广告名称 -->
