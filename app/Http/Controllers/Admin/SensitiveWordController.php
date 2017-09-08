@@ -118,7 +118,7 @@ class SensitiveWordController extends Controller
      */
     public function delete(SensitiveWord $word)
     {
-        $sensitiveWord->delete();
+        $word->delete();
 
         return response('', 204);
     }
