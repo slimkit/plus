@@ -9,8 +9,8 @@ class UserRecommended extends Model
     protected $table = 'users_recommended';
 
     protected $hidden = [
-    	'created_at',
-    	'updated_at'
+        'created_at',
+        'updated_at',
     ];
 
     public function user()

@@ -155,7 +155,7 @@ class User extends Authenticatable implements ShouldAvatarContract
     }
 
     /**
-     * 是否被后台推荐
+     * 是否被后台推荐.
      * @return [type] [description]
      */
     public function recommended()
@@ -164,10 +164,10 @@ class User extends Authenticatable implements ShouldAvatarContract
     }
 
     /**
-     * 后台设置被注册者关注，或者是双向关注
+     * 后台设置被注册者关注，或者是双向关注.
      * @return [type] [description]
      */
-    public function famous() 
+    public function famous()
     {
         return $this->hasOne(Famous::class, 'user_id');
     }

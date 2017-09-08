@@ -5,10 +5,10 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 use Zhiyi\Plus\Models\Role;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\Famous;
 use Illuminate\Validation\Rule;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\UserRecommended;
-use Zhiyi\Plus\Models\Famous;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class UserController extends Controller
@@ -93,6 +93,7 @@ class UserController extends Controller
             $user->setHidden([]);
             $user->load('recommended');
             $user->load('famous');
+
             return $user;
         });
 
@@ -100,20 +101,20 @@ class UserController extends Controller
     }
 
     /**
-     * 设置注册时关注
+     * 设置注册时关注.
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function handleFamous (Request $request, Famous $famous)
+    public function handleFamous(Request $request, Famous $famous)
     {
         $user = $request->input('user', 0);
         $type = $request->input('type', 0);
 
-        if (!$user) {
+        if (! $user) {
             return response()->json(['message' => '请传递被设置用户'])->setStatusCode(422);
         }
 
-        if (!$type) {
+        if (! $type) {
             return response()->json(['message' => '请传递要设置的类型'])->setStatusCode(422);
         }
 
@@ -126,15 +127,15 @@ class UserController extends Controller
     }
 
     /**
-     * 取消注册时关注
+     * 取消注册时关注.
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function handleUnFamous (Request $request, User $user, Famous $famous)
+    public function handleUnFamous(Request $request, User $user, Famous $famous)
     {
         $f = $famous->where('user_id', '=', $user->id)->first();
 
-        if (!$f) {
+        if (! $f) {
             return response()->json(['message' => '当前用户未被设置'])->setStatusCode(404);
         }
 
@@ -173,6 +174,7 @@ class UserController extends Controller
             $datas['page'] = $users->map(function ($user) {
                 $user->setHidden([]);
                 $user->load('user');
+
                 return $user->user;
             });
 
@@ -438,7 +440,7 @@ class UserController extends Controller
     }
 
     /**
-     * 增加推荐用户
+     * 增加推荐用户.
      * @param  Request $request [description]
      * @return [type]           [description]
      */
@@ -446,7 +448,7 @@ class UserController extends Controller
     {
         $user = $request->input('user', 0);
 
-        if (!$user) {
+        if (! $user) {
             return response()->json(['message' => '未指定要被推荐的用户'])->setStatusCode(422);
         }
 
@@ -457,7 +459,7 @@ class UserController extends Controller
     }
 
     /**
-     * 取消用户推荐
+     * 取消用户推荐.
      * @param  Request $request [description]
      * @param  User    $user    [description]
      * @return [type]           [description]
@@ -465,13 +467,12 @@ class UserController extends Controller
     public function handleUnRecommend(Request $request, User $user, UserRecommended $recommend)
     {
         $user = $recommend->where('user_id', '=', $user->id)->first();
-        if (!$user) {
+        if (! $user) {
             return response()->json(['message' => '该用户未被推荐'])->setStatusCode(404);
         }
 
         $user->delete();
 
         return response()->json()->setStatusCode(204);
-
     }
 }
