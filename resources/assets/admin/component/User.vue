@@ -10,6 +10,9 @@
       <router-link to="/users" tag="li" active-class="active" exact>
         <a href="#">用户管理</a>
       </router-link>
+      <router-link to="/users/register" tag="li" active-class="active" exact>
+        <a href="#">注册设置</a>
+      </router-link>
       <router-link to="/users/setting" tag="li" active-class="active">
         <a href="#">基础设置</a>
       </router-link>
