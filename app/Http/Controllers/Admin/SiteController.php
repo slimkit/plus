@@ -437,7 +437,7 @@ class SiteController extends Controller
      * @param Configuration $configuration
      * @return mixed
      */
-    private function initSiteConfiguration(Repository $config, Configuration $configuration)
+    private function initSiteConfiguration(Configuration $configuration)
     {
         $config = $configuration->getConfiguration();
 

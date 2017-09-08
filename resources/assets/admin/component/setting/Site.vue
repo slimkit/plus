@@ -36,10 +36,10 @@
               <label class="control-label col-md-2">站点状态</label>
               <div class="col-md-6">
                 <label class="radio-inline">
-                  <input type="radio" value="1" id="site-on" v-model="site.status"> 开启
+                  <input type="radio" value="1" v-model="site.status"> 开启
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" value="0" id="site-off" v-model="site.status"> 关闭
+                  <input type="radio" value="0" v-model="site.status"> 关闭
                 </label>
               </div>
               <div class="col-md-4">
@@ -59,10 +59,10 @@
               <label class="control-label col-md-2">APP端</label>
               <div class="col-md-6">
                 <label class="radio-inline">
-                  <input type="radio" value="1" id="site-on" v-model="site.app.status"> 开启
+                  <input type="radio" value="1" v-model="site.app.status"> 开启
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" value="0" id="site-off" v-model="site.app.status"> 关闭
+                  <input type="radio" value="0" v-model="site.app.status"> 关闭
                 </label>
               </div>
               <div class="col-md-4">
@@ -73,10 +73,10 @@
               <label class="control-label col-md-2">H5端</label>
               <div class="col-md-6">
                 <label class="radio-inline">
-                  <input type="radio" value="1" id="site-on" v-model="site.h5.status"> 开启
+                  <input type="radio" value="1" v-model="site.h5.status"> 开启
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" value="0" id="site-off" v-model="site.h5.status"> 关闭
+                  <input type="radio" value="0" v-model="site.h5.status"> 关闭
                 </label>
               </div>
               <div class="col-md-4">
@@ -120,8 +120,7 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
-
-const FilterWordCategoryAdd = {
+const Site = {
     
     data: () => ({
 
@@ -202,5 +201,5 @@ const FilterWordCategoryAdd = {
     },
 
 };
-export default FilterWordCategoryAdd;
+export default Site;
 </script>
