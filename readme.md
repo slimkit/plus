@@ -17,7 +17,7 @@
 
 ## Documentation
 
-[Full Documentation Here](docs)
+[Full Documentation Here](https://slimkit.github.io/plus-docs/)
 
 ## Contributing
 

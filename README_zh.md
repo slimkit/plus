@@ -13,20 +13,20 @@
 
 ThinkSNS+ 是基于 Laravel 开发的一个用户生态基础框架系统，支持动态拓展应用的接入和UI规范设计。
 
-更多关于 ThinkSNS+ 请访问 [关于 ThinkSNS+](docs/zh-CN/get-started/about.md) 了解产品。
+更多关于 ThinkSNS+ 请访问 [关于 ThinkSNS+](https://slimkit.github.io/plus-docs/core) 了解产品。
 
 > 欢迎访问官网：[http://www.thinksns.com](http://www.thinksns.com) 了解我们产品和团队。
 
 ## ThinkSNS+ 文档
 
-[docs](docs)
+[查看全部文档](https://slimkit.github.io/plus-docs/)
 
 > 文档中详细的讲述了关于 ThinkSNS+ 的大部分内容，你可以随时查看。
 > 其中包含了「APIs」、「后台」、「应用开发」等。
 
 ## 安装 ThinkSNS+
 
-所有安装说明均在 ThinkSNS+ 文档，[安装](docs/zh-CN/get-started/installed.md) 中进行了详细说明。
+所有安装说明均在 ThinkSNS+ 文档，[安装](https://slimkit.github.io/plus-docs/core/latest/getting-started/installed) 中进行了详细说明。
 
 ## 参与其中
 
