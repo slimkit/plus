@@ -81,4 +81,33 @@ class WalletRechargeAlipayController extends WalletRechargeController
             ->json(['id' => $model->id, 'charge' => $charge])
             ->setStatusCode(201);
     }
+
+    /**
+     * Create a PC recharge by Alipay.
+     *
+     * @param \Zhiyi\Plus\Http\Requests\API2\StoreWalletRecharge $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @return mixed
+     * @author bs <414606094@qq.com>
+     */
+    public function alipayPcDirect(StoreWalletRecharge $request, ContractResponse $response)
+    {
+        $extra = $request->input('extra');
+
+        if (! is_array($extra)) {
+            $this->app->abort(422, '请求参数不合法');
+        } elseif (! array_get($extra, 'success_url')) {
+            $this->app->abort(422, 'extra.success_url 必须存在');
+        }
+
+        $model = $this->app->make($this->modelSingletonKey);
+        $charge = $this->createCharge($model, $extra);
+
+        $model->charge_id = $charge['id'];
+        $model->saveOrFail();
+
+        return $response
+            ->json(['id' => $model->id, 'charge' => $charge])
+            ->setStatusCode(201);
+    }
 }
