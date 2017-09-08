@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\UserRecommended;
+use Zhiyi\Plus\Models\Famous;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class UserController extends Controller
@@ -33,9 +34,9 @@ class UserController extends Controller
         $name = $request->query('name');
         $phone = $request->query('phone');
         $role = $request->query('role');
-        $perPage = $request->query('perPage', 1);
-        $perPage = 1;
+        $perPage = $request->query('perPage', 20);
         $showRole = $request->has('show_role');
+        $follow = $request->query('follow', 0);
 
         $builder = with(new User())->setHidden([])->newQuery();
 
@@ -83,11 +84,135 @@ class UserController extends Controller
         $role && $builder->whereHas('roles', function ($query) use ($role) {
             $query->where('id', $role);
         });
+
+        $follow && $builder->whereHas('famous', function ($query) use ($follow) {
+            $query->where('type', 'like', ($follow == 2 ? 'each' : 'followed'));
+        });
+
         $datas['page'] = $builder->paginate($perPage)->map(function ($user) {
             $user->setHidden([]);
-
+            $user->load('recommended');
+            $user->load('famous');
             return $user;
         });
+
+        return response()->json($datas)->setStatusCode(200);
+    }
+
+    /**
+     * 设置注册时关注
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function handleFamous (Request $request, Famous $famous)
+    {
+        $user = $request->input('user', 0);
+        $type = $request->input('type', 0);
+
+        if (!$user) {
+            return response()->json(['message' => '请传递被设置用户'])->setStatusCode(422);
+        }
+
+        if (!$type) {
+            return response()->json(['message' => '请传递要设置的类型'])->setStatusCode(422);
+        }
+
+        $famous->user_id = $user;
+        $famous->type = ($type == 1 ? 'followed' : 'each');
+
+        $famous->save();
+
+        return response()->json(['message' => '设置成功'])->setStatusCode(201);
+    }
+
+    /**
+     * 取消注册时关注
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function handleUnFamous (Request $request, User $user, Famous $famous)
+    {
+        $f = $famous->where('user_id', '=', $user->id)->first();
+
+        if (!$f) {
+            return response()->json(['message' => '当前用户未被设置'])->setStatusCode(404);
+        }
+
+        $f->delete();
+
+        return response()->json()->setStatusCode(204);
+    }
+
+    /**
+     * 后台推荐用户.
+     */
+    public function recommends(Request $request)
+    {
+        $sort = $request->query('sort');
+        $userId = $request->query('userId');
+        $email = $request->query('email');
+        $name = $request->query('name');
+        $phone = $request->query('phone');
+        $role = $request->query('role');
+        $perPage = $request->query('perPage', 1);
+        $showRole = $request->has('show_role');
+        $datas = [
+            'page' => [],
+            'roles' => '',
+            'lastPage' => 0,
+            'perPage' => $perPage,
+            'total' => 0,
+        ];
+
+        if ($showRole) {
+            $datas['roles'] = Role::all();
+        }
+
+        // user id
+        if ($userId && $users = UserRecommended::where('user_id', $userId)->paginate($perPage)) {
+            $datas['page'] = $users->map(function ($user) {
+                $user->setHidden([]);
+                $user->load('user');
+                return $user->user;
+            });
+
+            return response()->json($datas)->setStatusCode(200);
+        }
+
+        $sourceUsers = [];
+        if ($name || $email || $phone) {
+            $sourceUsers = User::when($name, function ($query) use ($name) {
+                return $query->where('name', 'like', "%{$name}%");
+            })
+            ->when($email, function ($query) use ($email) {
+                return $query->where('email', '=', $email);
+            })
+            ->when($phone, function ($query) use ($phone) {
+                return $query->where('phone', 'like', "%{$phone}%");
+            })
+            ->select('id')
+            ->get()
+            ->pluck('id');
+        }
+
+        $users = UserRecommended::with('user')
+            ->when($sourceUsers, function ($query) use ($sourceUsers) {
+                return $query->whereIn('user_id', $sourceUsers);
+            })
+            ->paginate($perPage);
+
+        $list = $users->getCollection();
+
+        $datas['page'] = $list->map(function ($user) {
+            $user->user->setHidden([]);
+
+            return $user->user;
+        });
+
+        $datas['lastPage'] = $users->lastPage();
+        $datas['perPage'] = $perPage;
+        $datas['total'] = $users->total();
+        $datas['currentPage'] = $users->currentPage();
 
         return response()->json($datas)->setStatusCode(200);
     }
@@ -313,71 +438,40 @@ class UserController extends Controller
     }
 
     /**
-     * 后台推荐用户.
+     * 增加推荐用户
+     * @param  Request $request [description]
+     * @return [type]           [description]
      */
-    public function recommends(Request $request)
+    public function handleRecommend(Request $request, UserRecommended $recommend)
     {
-        $sort = $request->query('sort');
-        $userId = $request->query('userId');
-        $email = $request->query('email');
-        $name = $request->query('name');
-        $phone = $request->query('phone');
-        $role = $request->query('role');
-        $perPage = $request->query('perPage', 10);
-        $showRole = $request->has('show_role');
-        $datas = [
-            'page' => '',
-            'roles' => '',
-            'lastPage' => 0,
-            'perPage' => $perPage,
-            'total' => 0,
-        ];
+        $user = $request->input('user', 0);
 
-        // // user id
-        // if ($userId && $users = $builder->where('id', $userId)->paginate($perPage)) {
-        //     $datas['page'] = $users->map(function ($user) {
-        //         $user->setHidden([]);
-
-        //         return $user;
-        //     });
-
-        //     return response()->json($datas)->setStatusCode(200);
-        // }
-
-        $users = UserRecommended::with([
-                'user' => function ($query) use ($name, $userId, $email, $phone, $role) {
-                    if ($userId) {
-                        $query->where('id', '=', $userId);
-                    }
-                    if ($name) {
-                        $query->where('name', '=', $name);
-                    }
-                    if ($email) {
-                        $query->where('email', '=', $email);
-                    }
-                    if ($phone) {
-                        $query->where('phone', '=', $phone);
-                    }
-
-                    return $query;
-                },
-            ])
-            ->paginate($perPage);
-
-        if ($showRole) {
-            $datas['roles'] = Role::all();
+        if (!$user) {
+            return response()->json(['message' => '未指定要被推荐的用户'])->setStatusCode(422);
         }
 
-        $users = $users->items();
-        $datas['page']['data'] = $users->map(function ($user) {
-            $user->setHidden([]);
+        $recommend->user_id = $user;
+        $recommend->save();
 
-            return $user;
-        });
-        $datas['lastPage'] = $users->lastPage;
-        $datas['perPage'] = $perPage;
-        $datas['total'] = $users->total;
+        return response()->json(['message' => '推荐成功'])->setStatusCode(201);
+    }
 
-        return response()->json($datas)->setStatusCode(200);
+    /**
+     * 取消用户推荐
+     * @param  Request $request [description]
+     * @param  User    $user    [description]
+     * @return [type]           [description]
+     */
+    public function handleUnRecommend(Request $request, User $user, UserRecommended $recommend)
+    {
+        $user = $recommend->where('user_id', '=', $user->id)->first();
+        if (!$user) {
+            return response()->json(['message' => '该用户未被推荐'])->setStatusCode(404);
+        }
+
+        $user->delete();
+
+        return response()->json()->setStatusCode(204);
+
     }
 }

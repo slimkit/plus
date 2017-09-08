@@ -12,6 +12,8 @@ import Roles from '../component/user/Roles';
 import RoleManage from '../component/user/RoleManage';
 import Abilities from '../component/user/Abilities';
 import Setting from '../component/user/Setting';
+import Recommends from '../component/user/Recommend';
+import Register from '../component/user/Register';
 
 const routers = {
   path: 'users',
@@ -23,7 +25,9 @@ const routers = {
     { path: 'roles', component: Roles },
     { path: 'roles/:role', component: RoleManage },
     { path: 'abilities', component: Abilities },
-    { path: 'setting', component: Setting }
+    { path: 'setting', component: Setting },
+    { path: 'recommends', component: Recommends },
+    { path: 'register', component: Register }
   ]
 };
 

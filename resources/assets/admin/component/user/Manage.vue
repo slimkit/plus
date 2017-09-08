@@ -77,6 +77,16 @@
         </div>
       </div>
       <div class="form-group">
+        <label for="search-input-name" class="col-sm-2 control-label">关注设置</label>
+        <div class="col-sm-8">
+          <select v-model="follow" class="form-control" id="search-input-name">
+            <option value="0">全部</option>
+            <option value="1">注册时被关注</option>
+            <option value="2">注册时相互关注</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <router-link class="btn btn-default" tag="button" :to="{ path: '/users', query: searchQuery }">
             搜索
@@ -121,6 +131,13 @@
           <td>
             <!-- 编辑 -->
             <router-link type="button" class="btn btn-primary btn-sm" :to="`/users/manage/${user.id}`" >编辑</router-link>
+
+            <button type="button" class="btn btn-primary btn-sm" v-if="user.recommended === null" @click="handleRecommend(user.id)">推荐Ta</button>
+            <button v-else type="button" class="btn btn-danger btn-sm" @click="handleUnRecommend(user.id)">不推荐了</button>
+
+            <button type="button" class="btn btn-primary btn-sm" v-if="user.famous === null" @click="handleFollowedFamous(user.id)">设置被关注</button>
+            <button type="button" class="btn btn-primary btn-sm" v-if="user.famous === null" @click="handleEachFamous(user.id)">设置相互关注</button>
+            <button v-else type="button" class="btn btn-danger btn-sm" @click="handleUnFamous(user.id)">取消关注设置</button>
             <!-- 删除 -->
             <button v-if="deleteIds.indexOf(user.id) !== -1" type="button" class="btn btn-danger btn-sm" disabled="disabled">
               <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
@@ -175,12 +192,13 @@ const ManageComponent = {
     showRole: true,
     roles: [],
     deleteIds: [],
-    error: null
+    error: null,
+    follow: 0
   }),
   computed: {
     queryParams () {
-      const { userId, sort, email, name, phone, role, perPage, page } = this;
-      return { userId, sort, email, name, phone, role, perPage, page };
+      const { userId, sort, email, name, phone, role, perPage, page, follow } = this;
+      return { userId, sort, email, name, phone, role, perPage, page, follow };
     },
     prevQuery () {
       const page = parseInt(this.page);
@@ -217,7 +235,8 @@ const ManageComponent = {
         userId = '',
         lastPage = 1,
         perPage = 20,
-        page = 1
+        page = 1,
+        follow = 0,
       } = to.query;
 
       this.email = email;
@@ -247,6 +266,85 @@ const ManageComponent = {
         }
       });
       this.deleteIds = deleteIds;
+    },
+
+    handleUnFamous (user) {
+      request.delete(createRequestURI(`users/famous/${user}`), {
+        validateStatus: status => status === 204
+      })
+      .then ( () => {
+        let index = lodash.findIndex(this.users, (u) => {
+          return u.id == user;
+        });
+
+        this.users[index].famous = null;
+      })
+      .catch( error => {
+
+      });
+    },
+
+    handleEachFamous (user) {
+      request.post(createRequestURI('users/famous'), {
+        user,
+        type: 2
+      }, {
+        validateStatus: status => status === 201
+      })
+      .then ( () => {
+        let index = lodash.findIndex(this.users, (u) => {
+          return u.id == user;
+        });
+
+        this.users[index].famous = true;
+      })
+      .catch( error => {
+
+      });
+    },
+
+    handleFollowedFamous (user) {
+      request.post(createRequestURI('users/famous'), {
+        user,
+        type: 1
+      }, {
+        validateStatus: status => status === 201
+      })
+      .then ( () => {
+        let index = lodash.findIndex(this.users, (u) => {
+          return u.id == user;
+        });
+
+        this.users[index].famous = true;
+      })
+      .catch( error => {
+
+      });
+    },
+
+    handleRecommend (user) {
+      request.post(createRequestURI('users/recommends'), {
+        user
+      }, {
+        validateStatus: status => status === 201
+      })
+      .then( () => {
+        let index = lodash.findIndex(this.users, (u) => {
+          return u.id === user;
+        });
+        this.users[index].recommended = true;
+      })
+    },
+    handleUnRecommend (user) {
+      request.delete(createRequestURI(`users/recommends/${user}`), {
+        validateStatus: status => status === 204
+      })
+      .then( () => {
+        let index = lodash.findIndex(this.users, (u) => {
+          return u.id === user;
+        });
+        this.users[index].recommended = null;
+      });
     },
     deleteUser (userId) {
       if (window.confirm('确定要删除用户吗？')) {
@@ -328,7 +426,8 @@ const ManageComponent = {
       userId = '',
       lastPage = 1,
       perPage = 20,
-      page = 1
+      page = 1,
+      follow = 0,
     } = this.$route.query;
     // set state.
     this.email = email;

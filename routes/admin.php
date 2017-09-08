@@ -184,6 +184,14 @@ Route::middleware('auth:web')
     // users
     Route::get('/users', 'UserController@users');
     Route::post('/users', 'UserController@store');
+
+    // 推荐用户相关
+    Route::post('/users/recommends', 'UserController@handleRecommend');
+    Route::delete('/users/recommends/{user}', 'UserController@handleUnRecommend');
+    Route::get('/users/recommends', 'UserController@recommends');
+    Route::post('/users/famous', 'UserController@handleFamous');
+    Route::delete('/users/famous/{user}', 'UserController@handleUnFamous');
+
     Route::delete('/users/{user}', 'UserController@deleteUser');
     Route::get('/users/{user}', 'UserController@showUser');
     Route::patch('/users/{user}', 'UserController@update');

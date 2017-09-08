@@ -17,11 +17,11 @@
 <template>
   <div class="container-fluid" :class="$style.container">
     <div class="well well-sm">
-      检索用户
-      <router-link tag="a" class="btn btn-link pull-right btn-xs" to="/users/add" role="button">
+      检索推荐用户
+      <!-- <router-link tag="a" class="btn btn-link pull-right btn-xs" to="/users/add" role="button">
         <span class="glyphicon glyphicon-plus"></span>
         添加用户
-      </router-link>
+      </router-link> -->
     </div>
 
     <!-- 搜索用户 -->
@@ -67,7 +67,7 @@
           <input v-model="name" type="text" class="form-control" id="search-input-name" placeholder="请输入搜索用户名，支持模糊搜索">
         </div>
       </div>
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label for="search-input-name" class="col-sm-2 control-label">角色</label>
         <div class="col-sm-8">
           <select v-model="role" class="form-control" id="search-input-name">
@@ -75,7 +75,7 @@
             <option v-for="({ id, display_name }) in roles" :key="id" :value="id">{{ display_name }}</option>
           </select>
         </div>
-      </div>
+      </div> -->
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <router-link class="btn btn-default" tag="button" :to="{ path: '/users/recommends', query: searchQuery }">
@@ -91,6 +91,11 @@
         <span aria-hidden="true">&times;</span>
       </button>
       {{ error }}
+    </div>
+
+    <div v-show="!users.length" class="alert alert-danger alert-dismissible" role="alert">
+      
+      没有被推荐的用户了
     </div>
 
     <!-- 用户列表 -->
@@ -113,32 +118,26 @@
           </td>
         </tr>
         <tr v-for="user in users" :key="user.id">
-          <td>{{ user.user.id }}</td>
-          <td>{{ user.user.name }}</td>
-          <td>{{ user.user.email }}</td>
-          <td>{{ user.user.phone }}</td>
-          <td>{{ user.user.created_at }}</td>
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.phone }}</td>
+          <td>{{ user.created_at }}</td>
           <td>
-            <!-- 编辑 -->
-            <router-link type="button" class="btn btn-primary btn-sm" :to="`/users/manage/${user.id}`" >编辑</router-link>
-            <!-- 删除 -->
-            <button v-if="deleteIds.indexOf(user.id) !== -1" type="button" class="btn btn-danger btn-sm" disabled="disabled">
-              <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
-            </button>
-            <button v-else type="button" class="btn btn-danger btn-sm" @click="deleteUser(user.id)">删除</button>
+            <button type="button" class="btn btn-danger btn-sm" @click="handleUnRecommend(user.id)">不推荐了</button>
           </td>
         </tr>
       </tbody>
     </table>
     <ul class="pager" v-show="page >= 1 && lastPage > 1">
       <li class="previous" :class="page <= 1 ? 'disabled' : ''">
-        <router-link :to="{ path: '/users', query: prevQuery }">
+        <router-link :to="{ path: '/users/recommends', query: prevQuery }">
           <span aria-hidden="true">&larr;</span>
           上一页
         </router-link>
       </li>
       <li class="next" :class="page >= lastPage ? 'disabled': ''">
-        <router-link :to="{ path: '/users', query: nextQuery }">
+        <router-link :to="{ path: '/users/recommends', query: nextQuery }">
           下一页
           <span aria-hidden="true">&rarr;</span>
         </router-link>
@@ -172,10 +171,12 @@ const RecommendComponent = {
     total: 0,
     users: [],
     loadding: false,
-    showRole: true,
+    showRole: false,
     roles: [],
     deleteIds: [],
-    error: null
+    error: null,
+    currentPage: 0,
+    hasPages: false
   }),
   computed: {
     queryParams () {
@@ -248,26 +249,19 @@ const RecommendComponent = {
       });
       this.deleteIds = deleteIds;
     },
-    deleteUser (userId) {
-      if (window.confirm('确定要删除用户吗？')) {
-        this.deleteIds = [ ...this.deleteIds, userId ];
-        request.delete(
-          createRequestURI(`users/${userId}`),
-          { validateStatus: status => status === 204 }
-        ).then(() => {
-          this.deleteIdsUnTo(userId);
-          let users = [];
-          this.users.forEach(user => {
-            if (user.id !== userId) {
-              users.push(user);
-            }
-          });
-          this.users = users;
-        }).catch(({ response: { data: { errors = ['删除失败'] } = {} } = {} }) => {
-          this.deleteIdsUnTo(userId);
-          this.error = lodash.values(errors).pop();
+    handleUnRecommend (user) {
+      request.delete(createRequestURI(`users/recommends/${user}`), {
+        validateStatus: status => status === 204
+      })
+      .then( () => {
+        let index = lodash.findIndex(this.users, (u) => {
+          return u.id === user;
         });
-      }
+        this.users.splice(index, 1);
+      })
+      .catch( error => {
+        console.log(error);
+      })
     },
     /**
      * 改变用户排序状态方法.
@@ -294,18 +288,17 @@ const RecommendComponent = {
           validateStatus: status => status === 200
         }
       ).then(response => {
-        const { page: data, roles } = response.data;
-        this.users = data.data || [];
-        this.lastPage = parseInt(data.last_page);
-        this.total = parseInt(data.total);
+        const { page, roles, lastPage, total, currentPage, hasPages } = response.data;
+        this.users = page || [];
+        this.lastPage = parseInt(lastPage);
+        this.total = parseInt(total);
+        this.currentPage = parseInt(currentPage);
+        this.hasPages = hasPages;
         this.loadding = false;
         this.showRole = false;
 
         this.roles = roles;
-      }).catch(({ response: { data: { errors = ['加载用户失败'] } = {} } = {} }) => {
-        this.error = lodash.values(errors).pop();
-        this.loadding = false;
-      });
+      })
     },
     dismisError () {
       this.error = null;

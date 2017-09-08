@@ -155,6 +155,24 @@ class User extends Authenticatable implements ShouldAvatarContract
     }
 
     /**
+     * 是否被后台推荐
+     * @return [type] [description]
+     */
+    public function recommended()
+    {
+        return $this->hasOne(UserRecommended::class, 'user_id');
+    }
+
+    /**
+     * 后台设置被注册者关注，或者是双向关注
+     * @return [type] [description]
+     */
+    public function famous() 
+    {
+        return $this->hasOne(Famous::class, 'user_id');
+    }
+
+    /**
      * 复用设置手机号查询条件方法.
      *
      * @param Illuminate\Database\Eloquent\Builder $query 查询对象
