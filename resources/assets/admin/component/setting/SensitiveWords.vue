@@ -64,8 +64,8 @@
                         </th>
                         <th>敏感词</th>
                         <th>替换词</th>
-                        <th>类型</th>
                         <th>分类</th>
+                        <th>类型</th>
                         <th>提交人</th>
                         <th>时间</th>
                         <th>操作</th>

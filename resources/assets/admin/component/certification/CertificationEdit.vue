@@ -27,18 +27,6 @@
             </div>
 
             <div class="col-md-6 col-md-offset-3" v-show="!loadding">
-                <div v-show="errorMessage" class="alert alert-danger alert-dismissible affix-top" role="alert">
-                    <button type="button" class="close" @click.prevent="offAlert">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    {{ errorMessage }}
-                </div>
-                <div v-show="successMessage" class="alert alert-success alert-dismissible affix-top" role="alert">
-                    <button type="button" class="close" @click.prevent="offAlert">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    {{ successMessage }}
-                </div>
                 <div class="form-group">
                     <label>用户名：</label>
                     <input type="text" class="form-control" v-model="certification.username" disabled>
@@ -80,7 +68,19 @@
                     <span class="help-block" style="font-size:12px;">附件格式：gif, jpg, jpeg, png； 附件大小：不超过10M</span>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-success btn-sm btn-block" 
+                    <div v-show="errorMessage" class="alert alert-danger alert-dismissible affix-top" role="alert">
+                        <button type="button" class="close" @click.prevent="offAlert">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ errorMessage }}
+                    </div>
+                    <div v-show="successMessage" class="alert alert-success alert-dismissible affix-top" role="alert">
+                        <button type="button" class="close" @click.prevent="offAlert">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ successMessage }}
+                    </div>
+                    <button class="btn btn-primary btn-sm" 
                     @click.prevent="updateCertification">确认</button>
                 </div>
             </div>
