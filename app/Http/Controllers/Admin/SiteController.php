@@ -411,4 +411,66 @@ class SiteController extends Controller
 
         return $response->json($system)->setStatusCode(200);
     }
+
+    /**
+     * 获取站点配置.
+     *
+     * @param Repository $config
+     * @param Configuration $configuration
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function siteConfigurations(Repository $config, Configuration $configuration)
+    {
+        $configs = $config->get('site');
+
+        if (is_null($configs)) {
+            $configs = $this->initSiteConfiguration($config, $configuration);
+        }
+
+        return response()->json($configs, 200);
+    }
+
+    /**
+     * 初始化站点设置.
+     *
+     * @param Repository $config
+     * @param Configuration $configuration
+     * @return mixed
+     */
+    private function initSiteConfiguration(Repository $config, Configuration $configuration)
+    {
+        $config = $configuration->getConfiguration();
+
+        $config->set('site.status', 1);
+        $config->set('site.off_reason', '站点维护中请稍后再访问');
+
+        $config->set('site.app.status', 1);
+        $config->set('site.h5.status', 1);
+
+        $config->set('site.reserved_nickname', 'root,admin');
+
+        $config->set('site.client_email', 'admin@123.com');
+
+        $configuration->save($config);
+
+        return $config['site'];
+    }
+
+    /**
+     * 更新站点设置.
+     *
+     * @param Request $request
+     * @param Configuration $configuration
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateSiteConfigure(Request $request, Configuration $configuration)
+    {
+        $config = $configuration->getConfiguration();
+
+        $config->set('site', $request->input('site'));
+
+        $configuration->save($config);
+
+        return response()->json(['message' => ['更新站点配置成功']], 201);
+    }
 }
