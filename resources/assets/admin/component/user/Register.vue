@@ -89,15 +89,7 @@
 					</div>
 	      </div>
      	</div>
-     	<div class="form-group">
-     		<label  class="col-sm-3 control-label"  for="rule-title">条款标题</label>
-     		<div class="col-sm-7">
-     			<div class="input-group">
-     				<input v-model="title" type="text" class="form-control" placeholder="条款标题" />
-     			</div>
-     		</div>
-     	</div>
-     	<div class="form-group">
+     	<div class="form-group" v-if="rules === 'open'">
      		<label  class="col-sm-3 control-label" for="rule-content">条款内容</label>
      		<div class="col-sm-9">
      			<div class="input-group" style="height: 400px;">
@@ -123,8 +115,7 @@
 			fixed: 'need',
 			method: 'all',
 			type: 'all',
-			title: '',
-			content: '# 条款内容'
+			content: '# 服务条款及隐私政策'
 		}),
 		methods: {
 			input(val) {
