@@ -479,18 +479,18 @@ class UserController extends Controller
     }
 
     /**
-     * 注册配置，暂时存放于配置文件
+     * 注册配置，暂时存放于配置文件.
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function updateRegisterSetting (Request $request, Configuration $config)
+    public function updateRegisterSetting(Request $request, Configuration $config)
     {
         $conf = $request->only(['rules', 'method', 'content', 'fixed', 'type']);
 
         $settings = [];
         foreach ($conf as $key => $value) {
             $settings['registerSettings.'.$key] = $value;
-        };
+        }
 
         $config->set($settings);
 
@@ -498,11 +498,11 @@ class UserController extends Controller
     }
 
     /**
-     * 获取注册配置
+     * 获取注册配置.
      * @return [type] [description]
      */
-    public function getRegisterSetting (Repository $con, Configuration $config)
-    {   
+    public function getRegisterSetting(Repository $con, Configuration $config)
+    {
         $conf = $con->get('registerSettings');
 
         if (is_null($conf)) {
