@@ -424,7 +424,7 @@ class SiteController extends Controller
         $configs = $config->get('site');
 
         if (is_null($configs)) {
-            $configs = $this->initSiteConfiguration($config, $configuration);
+            $configs = $this->initSiteConfiguration($configuration);
         }
 
         return response()->json($configs, 200);
