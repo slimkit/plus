@@ -8,7 +8,9 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Famous;
 use Illuminate\Validation\Rule;
 use Zhiyi\Plus\Models\CommonConfig;
+use Zhiyi\Plus\Support\Configuration;
 use Zhiyi\Plus\Models\UserRecommended;
+use Illuminate\Contracts\Config\Repository;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class UserController extends Controller
@@ -474,5 +476,54 @@ class UserController extends Controller
         $user->delete();
 
         return response()->json()->setStatusCode(204);
+    }
+
+    /**
+     * 注册配置，暂时存放于配置文件
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function updateRegisterSetting (Request $request, Configuration $config)
+    {
+        $conf = $request->only(['rules', 'method', 'content', 'fixed', 'type']);
+
+        $settings = [];
+        foreach ($conf as $key => $value) {
+            $settings['registerSettings.'.$key] = $value;
+        };
+
+        $config->set($settings);
+
+        return response()->json(['message' => '设置成功'])->setStatusCode(201);
+    }
+
+    /**
+     * 获取注册配置
+     * @return [type] [description]
+     */
+    public function getRegisterSetting (Repository $con, Configuration $config)
+    {   
+        $conf = $con->get('registerSettings');
+
+        if (is_null($conf)) {
+            $conf = $this->initRegisterConfiguration($config);
+        }
+
+        return response()->json($conf)->setStatusCode(200);
+    }
+
+    public function initRegisterConfiguration(Configuration $config_model)
+    {
+        $config = $config_model->getConfiguration();
+
+        $config->set('registerSettings.rules', 'open');
+        $config->set('registerSettings.method', 'all');
+        $config->set('registerSettings.fixed', 'need');
+        $config->set('registerSettings.type', 'all');
+        $config->set('registerSettings.content', '# 服务条款及隐私政策');
+
+        $configuration->save($config);
+
+        return $config['registerSettings'];
     }
 }

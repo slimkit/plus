@@ -97,12 +97,25 @@
      			</div>
      		</div>
      	</div>
+     	<!-- Button -->
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-4">
+          <button v-if="loading" type="button" class="btn btn-primary" disabled="disabled">
+            <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
+          </button>
+          <button v-else type="button" class="btn btn-primary" @click="saveConfig">保存设置</button>
+        </div>
+        <div class="col-sm-4">
+        	<p class="text-success">{{ message }}</p>
+        </div>
+      </div>
     </div>
 	</div>
 </template>
 
 <script>
-
+	import request, { createRequestURI } from '../../util/request';
+	import lodash from 'lodash';
 	import VueEditor from '../edit.md/components/index';
 	
 	const RegisterSetting = {
@@ -115,12 +128,56 @@
 			fixed: 'need',
 			method: 'all',
 			type: 'all',
-			content: '# 服务条款及隐私政策'
+			content: '# 服务条款及隐私政策',
+			loading: false,
+			message: ''
 		}),
 		methods: {
 			input(val) {
 				this.content = val;
+			},
+
+			saveConfig() {
+				this.loading = true;
+				const { rules, fixed, method, type, content } = this;
+				let data = {};
+				if (rules !== 'close') {
+					data.content = content
+				}
+				data.fixed = fixed;
+				data.rules = rules;
+				data.method = method;
+				data.type = type;
+				request.post(createRequestURI('users/register-setting'), {
+					...data
+				}, {
+					validateStatus: status => status === 201
+				})
+				.then(({ data = {}}) => {
+					this.loading = false;
+					this.message = data.message;
+					setTimeout( () => {
+						this.message = ''
+					}, 2000);
+				})
+				.catch( error => {
+					this.loading = false;
+					console.log(error);
+				});
 			}
+		},
+
+		created () {
+			request.get(createRequestURI('users/register-setting'), {
+				validateStatus: status => status === 200
+			})
+			.then(({ data = {}}) => {
+				this.rules = data.rules;
+				this.method = data.method;
+				this.fixed = data.fixed;
+				this.type = data.type;
+				this.content = data.content;
+			})
 		}
 	};
 
