@@ -196,7 +196,6 @@ Route::middleware('auth:web')
     Route::get('/users/register-setting', 'UserController@getRegisterSetting');
     Route::post('/users/register-setting', 'UserController@updateRegisterSetting');
 
-
     Route::delete('/users/{user}', 'UserController@deleteUser');
     Route::get('/users/{user}', 'UserController@showUser');
     Route::patch('/users/{user}', 'UserController@update');
