@@ -160,7 +160,21 @@ const AddAdComponent = {
 
       loadding: true,
       
-      ad: {},
+      ad: {
+        title: null,
+        space_id: null,
+        type: null,
+        sort: 0,
+        data: {
+          image: null,
+          title: null,
+          link: null,
+          from: null,
+          time: null,
+          avatar: null,
+          name: null,
+        }
+      },
 
       spaces: {},
 
@@ -240,6 +254,7 @@ const AddAdComponent = {
               let origin = window.location.origin;
               that.ad.data.image = origin + '/api/v2/files/' + id;
           }).catch((error) => {
+             console.log(this.ad);
               console.log(error);
           });
         }
