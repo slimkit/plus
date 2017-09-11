@@ -451,6 +451,8 @@ class SiteController extends Controller
 
         $config->set('site.client_email', 'admin@123.com');
 
+        $config->set('site.gold.status', 1);
+
         $configuration->save($config);
 
         return $config['site'];

@@ -84,6 +84,21 @@
               </div>
             </div>
             <div class="form-group">
+              <label class="control-label col-md-2">金币规则</label>
+              <div class="col-md-6">
+                <label class="radio-inline">
+                  <input type="radio" value="1"  v-model="site.gold.status"> 开启
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" value="0"  v-model="site.gold.status"> 关闭
+                </label>
+              </div>
+              <div class="col-md-4">
+                <span class="help-block">启动规则，用户完成相应的节点操作可以获取对应的奖励<br/>关闭规则，用户完成相应的节点操作不能获取对应的奖励</span>
+                <!-- <span class="help-block">关闭规则，用户完成相应的节点操作不能获取对应的奖励</span> -->
+              </div>
+            </div>
+            <div class="form-group">
               <label class="control-label col-md-2">预留呢称</label>
               <div class="col-md-6">
                 <input type="text" class="form-control" v-model="site.reserved_nickname">
@@ -133,6 +148,9 @@ const Site = {
             status: 1,
           },
           h5: {
+            status: 1,
+          },
+          gold: {
             status: 1,
           },
           reserved_nickname: '',
