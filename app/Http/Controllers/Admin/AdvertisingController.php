@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Advertising;
 use Zhiyi\Plus\Models\AdvertisingSpace;
@@ -118,14 +119,14 @@ class AdvertisingController extends Controller
                 $items['name'] = $data['name'];
                 $items['content'] = $data['content'];
                 $items['image'] = $data['image'];
-                $items['time'] = $data['time'];
+                $items['time'] = Carbon::parse($data['time'])->toDateTimeString();
                 $items['link'] = $data['link'];
                 break;
             case 'news:analog':
                 $items['title'] = $data['title'];
                 $items['image'] = $data['image'];
                 $items['from'] = $data['from'];
-                $items['time'] = $data['time'];
+                $items['time'] = Carbon::parse($data['time'])->toDateTimeString();
                 $items['link'] = $data['link'];
                 break;
         }
@@ -137,8 +138,8 @@ class AdvertisingController extends Controller
     {
         return [
             'title' => 'required',
-            'type' => 'required|string',
             'space_id' => 'required|numeric',
+            'type' => 'required|string',
             'sort' => 'required|numeric',
         ];
     }
@@ -149,7 +150,7 @@ class AdvertisingController extends Controller
             'title.required' => '广告标题必填',
             'type.required' => '广告类型必填',
             'type.string' => '广告类型格式错误',
-            'space_id.required' => '广告位必选',
+            'space_id.required' => '广告位置必选',
             'space_id.numeric' => '广告位格式错误',
             'sort.required' => '广告排序必填',
             'sort.numeric' => '广告排序类型格式错误',
@@ -216,6 +217,7 @@ class AdvertisingController extends Controller
      */
     public function spaces()
     {
+
         $items = AdvertisingSpace::select(['id', 'space', 'alias', 'format', 'allow_type'])->get();
 
         return response()->json($items, 200);

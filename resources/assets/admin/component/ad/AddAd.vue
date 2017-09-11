@@ -22,36 +22,18 @@
           </div>
           <!-- 广告列表 -->
           <div class="panel-body form-horizontal">
-              <div class="col-md-8 col-md-offset-2">
-                <div class="form-group">
-                  <label class="col-md-2 control-label"></label>
-                  <div class="col-md-8">
-                    <!-- 报错显示 -->
-                    <div v-show="successMessage" class="alert alert-success alert-dismissible" role="alert">
-                        <button type="button" class="close" @click.prevent="offAlert">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        {{ successMessage }}
-                    </div>
-                    <div v-show="errorMessage" class="alert alert-danger alert-dismissible" role="alert">
-                        <button type="button" class="close" @click.prevent="offAlert">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        {{ errorMessage }}
-                    </div>
-                  </div>
-                </div>
+              <div class="col-md-7 col-md-offset-2">
                 <!-- 标题 -->
                 <div class="form-group">
                   <label class="col-md-2 control-label">标题</label>
-                  <div class="col-md-8">
-                    <input type="text" class="form-control" v-model="ad.title">
+                  <div class="col-md-7">
+                    <input type="text" class="form-control" v-model="ad.title" placeholder="标题">
                   </div>
                 </div>
                 <!-- 广告位置 -->
                 <div class="form-group">
                   <label class="col-md-2 control-label">位置</label>
-                  <div class="col-md-8">
+                  <div class="col-md-7">
                     <select class="form-control" v-model="ad.space_id" @change="spaceChang">
                       <option v-for="space in spaces" :value="space.id">{{ space.alias }}</option>
                     </select>
@@ -60,7 +42,7 @@
                 <!-- 类型 -->
                 <div class="form-group" v-show="ad.space_id">
                   <label class="col-md-2 control-label">类型</label>
-                  <div class="col-md-8">
+                  <div class="col-md-7">
                     <select class="form-control" v-model="ad.type" @change="typeChang">
                       <option v-for="type in types" :value="type">{{ type }}</option>
                     </select>
@@ -72,47 +54,53 @@
                       <!-- 头像 -->
                       <div class="form-group" v-if="key=='avatar'">
                         <label class="col-md-2 control-label">{{ (item.split('|'))[0] }}</label>
-                        <div class="col-md-8">
-                          <input type="text" class="form-control" placeholder="头像链接" v-model="ad.data.avatar">
+                        <div class="col-md-7">
+                          <div class="input-group">
+                            <input type="url" class="form-control" placeholder="头像链接" v-model="ad.data.avatar">
+                            <span class="input-group-btn">
+                              <button class="btn btn-default" @click="triggerUpload(key)" id="">上传</button>
+                              <input type="file" class="hide" :class="key+'-input'" @change="uploadAttachment(key)">
+                            </span>
+                          </div>
                         </div>
                       </div>
                       <!-- 广告名称 -->
                       <div class="form-group" v-else-if="key=='name'">
                         <label class="col-md-2 control-label">{{ (item.split('|'))[0] }}</label>
-                        <div class="col-md-8">
+                        <div class="col-md-7">
                           <input type="text" class="form-control" v-model="ad.data.name" placeholder="用户名">
                         </div>
                       </div>
                       <!-- 广告内容 -->
                       <div class="form-group" v-else-if="key=='content'">
                         <label class="col-md-2 control-label">{{ (item.split('|'))[0] }}</label>
-                        <div class="col-md-8">
+                        <div class="col-md-7">
                           <textarea class="form-control" v-model="ad.data.content" placeholder="内容"></textarea>
                         </div>
                       </div>
                       <!-- 投放时间 -->
                       <div class="form-group" v-else-if="key=='time'">
                         <label class="col-md-2 control-label">{{ (item.split('|'))[0] }}</label>
-                        <div class="col-md-8">
-                           <input type="text" class="form-control" v-model="ad.data.time" placeholder="1990-12-12 12:00:00">
+                        <div class="col-md-7">
+                           <input type="datetime-local" class="form-control" value="1993-02-15" v-model="ad.data.time" placeholder="1990-12-12 12:00:00">
                         </div>
                       </div>
                       <!-- 广告来源 -->
                       <div class="form-group" v-else-if="key=='from'">
                         <label class="col-md-2 control-label">{{ (item.split('|'))[0] }}</label>
-                        <div class="col-md-8">
+                        <div class="col-md-7">
                            <input type="text" class="form-control" v-model="ad.data.from" placeholder="广告来源">
                         </div>
                       </div>
                       <!-- 广告图片 -->
                       <div class="form-group" v-if="key=='image'">
                         <label class="col-md-2 control-label">{{ (item.split('|'))[0] }}</label>
-                        <div class="col-md-8">
+                        <div class="col-md-7">
                           <div class="input-group">
-                            <input type="text" class="form-control" placeholder="图片链接" v-model="ad.data.image">
+                            <input type="url" class="form-control" placeholder="图片链接" v-model="ad.data.image">
                             <span class="input-group-btn">
-                              <button class="btn btn-default" @click="triggerUpload">上传</button>
-                              <input type="file" class="hide file-upload-input" @change="uploadAttachment">
+                              <button class="btn btn-default" @click="triggerUpload(key)">上传</button>
+                              <input type="file" class="hide" :class="key+'-input'" @change="uploadAttachment(key)">
                             </span>
                           </div>
                         </div>
@@ -120,14 +108,14 @@
                       <!-- 广告链接 -->
                       <div class="form-group" v-else-if="key=='link'">
                         <label class="col-md-2 control-label">{{ (item.split('|'))[0] }}</label>
-                        <div class="col-md-8">
+                        <div class="col-md-7">
                           <input type="text" class="form-control" v-model="ad.data.link" placeholder="广告链接">
                         </div>
                       </div>
                       <!-- 广告标题 -->
                       <div class="form-group" v-else-if="key=='title'">
                         <label class="col-md-2 control-label">{{ (item.split('|'))[0] }}</label>
-                        <div class="col-md-8">
+                        <div class="col-md-7">
                           <input type="text" class="form-control" v-model="ad.data.title" placeholder="标题">
                         </div>
                       </div>
@@ -137,15 +125,19 @@
                 <!-- 广告排序 -->
                 <div class="form-group">
                   <label class="col-md-2 control-label">排序</label>
-                  <div class="col-md-8">
+                  <div class="col-md-7">
                     <input type="number" value="0" class="form-control" v-model="ad.sort">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-md-2 control-label"></label>
-                  <div class="col-md-8">
+                  <div class="col-md-7">
                     <button class="btn btn-primary btn-sm" @click="storeAds">确定</button>
                   </div>
+                    <div class="col-md-3">
+                       <span class="text-success"  v-show="message.success">{{ message.success }}</span>
+                       <span class="text-danger" v-show="message.error">{{ message.error }}</span>
+                    </div>
                 </div>
               </div>
           </div>
@@ -154,6 +146,7 @@
 </template>
 <script>
 import request, { createRequestURI } from '../../util/request';
+import plusMessageBundle from 'plus-message-bundle';
 const AddAdComponent = {
 
     data: () => ({
@@ -181,11 +174,11 @@ const AddAdComponent = {
       types: [],
 
       format: {},
-
-      successMessage: null,
-
-      errorMessage: null,
-    
+      
+      message: {
+        success: null,
+        error: null,
+      }    
     }),
     
     methods: {
@@ -201,26 +194,28 @@ const AddAdComponent = {
       },
 
       storeAds () {
+          
+          this.hiddenMessage();
+
           request.post(
             createRequestURI('ads'),
             { ...this.ad },
             { validateStatus: status => status === 201 }
           ).then(({ data: { message: [ message ] = [] } }) => {
-            this.successMessage = message;
+            this.message.success = message;
           }).catch(({ response: { data = {} } = {} }) => {
-            let errors = data.errors;
-            const { title = [], space_id = [], type = [], sort = [] } = errors;
-            const [ errorMessage ] = [...title, ...space_id, ...type, ...sort];
-            this.errorMessage = errorMessage;
+            const Message = plusMessageBundle(data);
+            this.message.error = Message.getMessage();
           });
       },
 
-      triggerUpload () {
-        $('.file-upload-input').click();
+      triggerUpload (key) {
+        $('.' + key + '-input').click();
       },
 
-      uploadAttachment (e) {
-        var that = this;
+      uploadAttachment (type) {
+        let e = window.event || arguments[0];
+        let that = this;
         let file = e.target.files[0]; 
         let param = new FormData();
         param.append('file', file);
@@ -237,8 +232,15 @@ const AddAdComponent = {
          request.post('/api/v2/files', param, config)
           .then((response) => {
               const { id: id, message: [message] = [] } = response.data;
+
               let origin = window.location.origin;
-              that.ad.data.image = origin + '/api/v2/files/' + id;
+              let fileUrl = origin + '/api/v2/files/' + id;
+
+              if (type == 'image') {
+                that.ad.data.image = fileUrl;
+              } else if(type == 'avatar') {
+                that.ad.data.avatar = fileUrl;
+              }
           }).catch((error) => {
               console.log(error);
           });
@@ -271,13 +273,15 @@ const AddAdComponent = {
         }
       },
 
-      offAlert () {
-        this.errorMessage = this.successMessage = '';
+      hiddenMessage () {
+        this.message.success = this.message.error = null;
       }
 
     },
 
     created () {
+      let dateObject = new Date('2017-09-14 23:02');
+      console.log(dateObject.toISOString());
       this.getAdSpaces();
     },
 };
