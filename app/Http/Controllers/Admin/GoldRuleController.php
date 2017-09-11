@@ -3,16 +3,15 @@
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Ability;
 use Zhiyi\Plus\Models\GoldRule;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 class GoldRuleController extends Controller
 {
-
     /**
      * get all rules.
-     * 
+     *
      * @return [type] [description]
      */
     public function rules(Request $request)
@@ -30,7 +29,7 @@ class GoldRuleController extends Controller
 
     /**
      * show rule.
-     * 
+     *
      * @param  GoldRule $rule
      * @return \Illuminate\Http\JsonResponse
      */
@@ -49,6 +48,7 @@ class GoldRuleController extends Controller
         $items = Ability::where('name', 'NOT LIKE', sprintf('%%%s%%', 'admin'))
             ->select('name', 'display_name')
             ->get();
+
         return response()->json($items, 200);
     }
 
@@ -96,8 +96,8 @@ class GoldRuleController extends Controller
     }
 
     /**
-     * delete rule
-     * @param  GoldRule $rule 
+     * delete rule.
+     * @param  GoldRule $rule
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteRule(GoldRule $rule)
@@ -116,9 +116,9 @@ class GoldRuleController extends Controller
     {
         $rules = [
             'name' => 'required',
-            'alias' => 'required|unique:gold_rules,alias,' . $ruleId,
+            'alias' => 'required|unique:gold_rules,alias,'.$ruleId,
             'incremental' => 'required',
-            'desc' => 'required'
+            'desc' => 'required',
         ];
 
         return $rules;
