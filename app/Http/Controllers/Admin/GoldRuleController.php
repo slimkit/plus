@@ -16,7 +16,6 @@ class GoldRuleController extends Controller
      */
     public function rules(Request $request)
     {
-
         $keyword = $request->get('keyword');
 
         $items = GoldRule::when($keyword, function ($query) use ($keyword) {
