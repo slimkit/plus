@@ -55,6 +55,10 @@
       <span class="glyphicon glyphicon-cog __icon"></span>
       系统设置
     </router-link>
+    <router-link class="list-group-item __button" to="/gold" active-class="active" >
+      <span class="glyphicon glyphicon-usd __icon"></span>
+      金币设置
+    </router-link>
     <router-link class="list-group-item __button" to="/users" active-class="active" >
       <span class="glyphicon glyphicon-user __icon"></span>
       用户中心

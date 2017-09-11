@@ -234,7 +234,6 @@ const AddAdComponent = {
         let reader = new FileReader(); 
         reader.readAsDataURL(file); 
         reader.onload = function(e) {
-         that.fileBase64 = e.target.result;
          request.post('/api/v2/files', param, config)
           .then((response) => {
               const { id: id, message: [message] = [] } = response.data;
@@ -251,7 +250,6 @@ const AddAdComponent = {
       },
 
       typeChang () {
-        console.log('format');
         this.setFormat();
       },
 

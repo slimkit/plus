@@ -252,4 +252,20 @@ Route::middleware('auth:web')
     /* ------------- 站点管理 -----------------*/
     Route::get('site/configures', 'SiteController@siteConfigurations');
     Route::put('update/site/configure', 'SiteController@updateSiteConfigure');
+
+    /* ------------- 金币管理 -----------------*/
+
+    // 金币类型管理
+    Route::get('gold/types', 'GoldTypeController@types');
+    Route::post('gold/types', 'GoldTypeController@storeType');
+    Route::patch('gold/types/{type}/open', 'GoldTypeController@openType');
+    Route::delete('gold/types/{type}', 'GoldTypeController@deleteType');
+
+    // 金币规则管理
+    Route::get('gold/rules', 'GoldRuleController@rules');
+    Route::get('gold/rules/abilities', 'GoldRuleController@abilities');
+    Route::post('gold/rules', 'GoldRuleController@storeRule');
+    Route::put('gold/rules/{rule}', 'GoldRuleController@updateRule');
+    Route::get('gold/rules/{rule}', 'GoldRuleController@showRule');
+    Route::delete('gold/rules/{rule}', 'GoldRuleController@deleteRule');
 });

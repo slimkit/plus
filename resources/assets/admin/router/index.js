@@ -12,6 +12,7 @@ import paidRouter from './paid';
 import certificationRouter from './certification';
 import coversationRouter from './conversation';
 import captchaRouter from './captcha';
+import goldRouter from './gold';
 
 // components.
 import Login from '../component/Login';
@@ -36,7 +37,8 @@ const childrenRoutes = [
   paidRouter,
   certificationRouter,
   coversationRouter,
-  captchaRouter
+  captchaRouter,
+  goldRouter
 ];
 
 const router = new VueRouter({
