@@ -33,6 +33,16 @@
           <div class="panel-heading">
             <router-link class="btn btn-primary btn-sm" to="rules/add">添加</router-link>
           </div>
+          <div class="panel-heading">
+            <div class="form-inline">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="规则搜索" v-model="filter.keyword">
+                <span class="input-group-btn">
+                  <button class="btn btn-default" @click="getRules">搜索</button>
+                </span>
+              </div>
+            </div>
+          </div>
           <!-- 广告列表 -->
           <div class="panel-body">
             <table class="table table-striped">
@@ -87,18 +97,24 @@ const GoldRuleComponent = {
       message: {
         error: null,
         success: null,
+      },
+
+      filter: {
+        keyword: '',
       }
     
     }),
 
     methods: {
-      // 获取权限节点
+
       getRules () {
 
         this.loadding = true;
+
+        let keyword = this.filter.keyword;
         
         request.get(
-          createRequestURI('gold/rules'),
+          createRequestURI('gold/rules?keyword=' + keyword),
           { validateStatus: status => status === 200 }
         ).then(response => {
 

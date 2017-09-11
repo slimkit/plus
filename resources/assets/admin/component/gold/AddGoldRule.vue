@@ -89,6 +89,7 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
+import plusMessageBundle from 'plus-message-bundle';
 const AddGoldTypeCompnent = {
     
     data: () => ({
@@ -115,6 +116,8 @@ const AddGoldTypeCompnent = {
 
       storeGoldRule () {
 
+        this.hiddenMessage();
+        
         request.post(
           createRequestURI('gold/rules'),
           { ...this.rule },
@@ -125,11 +128,9 @@ const AddGoldTypeCompnent = {
 
         }).catch(({ response: { data = {} } = {} }) => {
 
-          let errors = data.errors;
-          const { name = [], alias = [], incremental = [], desc = [], message = [] } = errors;
-          const [ error ] = [...name, ...alias, ...incremental, ...desc, ...message ];
+          let Message = plusMessageBundle(data)
+          this.message.error = Message.getMessage();
 
-          this.message.error = error;
         });
       },
       // 获取权限节点
@@ -152,6 +153,10 @@ const AddGoldTypeCompnent = {
         });
 
       },
+
+      hiddenMessage () {
+        this.message.error = this.message.success = null;
+      }
     },
 
     created () {
