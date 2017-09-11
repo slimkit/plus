@@ -44,7 +44,7 @@ class SmsChannel
      */
     public function send($notifiable, Notification $notification)
     {
-        if (! $to = $notifiable->routeNotificationFor('sms')) {
+        if (! $to = $notifiable->routeNotificationFor('sms') || empty($this->sms->getDefaultGateway()['gateways'])) {
             return;
         }
 
