@@ -280,8 +280,6 @@ const AddAdComponent = {
     },
 
     created () {
-      let dateObject = new Date('2017-09-14 23:02');
-      console.log(dateObject.toISOString());
       this.getAdSpaces();
     },
 };
