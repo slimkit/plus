@@ -217,7 +217,6 @@ class AdvertisingController extends Controller
      */
     public function spaces()
     {
-
         $items = AdvertisingSpace::select(['id', 'space', 'alias', 'format', 'allow_type'])->get();
 
         return response()->json($items, 200);
