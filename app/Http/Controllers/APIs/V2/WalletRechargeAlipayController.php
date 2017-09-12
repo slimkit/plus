@@ -90,7 +90,7 @@ class WalletRechargeAlipayController extends WalletRechargeController
      * @return mixed
      * @author bs <414606094@qq.com>
      */
-    public function alipayPcDirect(StoreWalletRecharge $request, ContractResponse $response)
+    public function alipayPcDirectStore(StoreWalletRecharge $request, ContractResponse $response)
     {
         $extra = $request->input('extra');
 
