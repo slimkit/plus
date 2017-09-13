@@ -42,7 +42,7 @@
 <script>
 import request, { createRequestURI } from '../../util/request';
 import _ from 'lodash';
-import LineChart from './XineChart';
+import LineChart from './LineChart';
 const HomeComponent = {
 
     components: {
@@ -144,7 +144,7 @@ const HomeComponent = {
                 borderColor: '#3097D1'
             }
           ]
-        }
+        },
         // options
         this.chartOptions = {
 
@@ -176,7 +176,7 @@ const HomeComponent = {
 
       test () {
         this.chartDatas.labels.push('11111111');
-      }
+      },
     },
 
     created () {
@@ -187,3 +187,4 @@ const HomeComponent = {
 
 export default HomeComponent;
 </script>
+
