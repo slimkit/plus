@@ -46,8 +46,6 @@ Installation ThinkSNS+ is very simple, but we have a better document available t
 
 ## Support
 
-[![ThinkSNS Plus 技术交流群](https://pub.idqqimg.com/wpa/images/group.png)](https//shang.qq.com/wpa/qunwpa?idkey=7a85a1f73b3da2b1106e10817bd3fb6414766ca7dfe102977ad698011fb01ea5)
-
 You can click through [![ThinkSNS Plus 技术交流群](https://pub.idqqimg.com/wpa/images/group.png)](https//shang.qq.com/wpa/qunwpa?idkey=7a85a1f73b3da2b1106e10817bd3fb6414766ca7dfe102977ad698011fb01ea5) to join our Tencent QQ Group, if the link is invalid, please manually enter: `651240785` to join.
 
 Our core developers and many excellent developers and customers are here.
