@@ -8,8 +8,8 @@ machine:
         version: 6
     environment:
         TRAVIS_REPO_SLUG: zhiyicx/thinksns-plus
-        YARN_VERSION: 0.21.3
-        PATH: "${PATH}:${HOME}/.yarn/bin"
+        # YARN_VERSION: 0.21.3
+        # PATH: "${PATH}:${HOME}/.yarn/bin"
 
 dependencies:
     pre:
@@ -17,18 +17,16 @@ dependencies:
         # Need to figure out how to bail early if this is a "docs only" build
         - echo $CIRCLE_COMPARE_URL | cut -d/ -f7
         # install yarn if it's not already installed
-        - |
-            if [[ ! -e ~/.yarn/bin/yarn || $(yarn --version) != "${YARN_VERSION}" ]]; then
-                curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $YARN_VERSION
-            fi
+        # - |
+        #     if [[ ! -e ~/.yarn/bin/yarn || $(yarn --version) != "${YARN_VERSION}" ]]; then
+        #         curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $YARN_VERSION
+        #     fi
     override:
-        - yarn install
-        - yarn remove node-sass
-        - yarn add node-sass
+        - npm install
         - mv .env.example .env
-    cache_directories:
-        - ~/.yarn
+    # cache_directories:
+    #     - ~/.yarn
 
 test:
     override:
-        - yarn dist
+        - npm run production
