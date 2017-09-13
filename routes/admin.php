@@ -273,6 +273,9 @@ Route::middleware('auth:web')
     Route::get('gold/rules/{rule}', 'GoldRuleController@showRule');
     Route::delete('gold/rules/{rule}', 'GoldRuleController@deleteRule');
 
-    // 打赏管理
+    /* ------------- 打赏管理 -----------------*/
+    // 清单
+    Route::get('rewards', 'RewardController@rewards');
+    // 统计
     Route::get('rewards/statistics', 'RewardController@statistics');
 });

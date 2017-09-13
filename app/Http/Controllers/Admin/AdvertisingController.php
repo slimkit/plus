@@ -113,6 +113,7 @@ class AdvertisingController extends Controller
             case 'image':
                 $items['image'] = $data['image'];
                 $items['link'] = $data['link'];
+                $items['title'] = $data['title'];
                 break;
             case 'feed:analog':
                 $items['avatar'] = $data['avatar'];

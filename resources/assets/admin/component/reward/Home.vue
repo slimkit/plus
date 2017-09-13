@@ -34,20 +34,20 @@
           </div>
           <!-- IEcharts -->
           <div class="panel-body">
-             <chart :option="option" :loading="loading" style="height:400px;"></chart>
+             <!-- <chart :option="option" :loading="loading" style="height:400px;"></chart> -->
           </div>
         </div>
     </div>
 </template>
 <script>
 import request, { createRequestURI } from '../../util/request';
-import IEcharts from 'vue-echarts-v3/src/full.vue';
+// import IEcharts from 'vue-echarts-v3/src/full.vue';
 import _ from 'lodash';
 const HomeComponent = {
 
-    components: {
-      chart: IEcharts
-    },
+    // components: {
+    //   chart: IEcharts
+    // },
 
     data: () => ({     
 

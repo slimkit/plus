@@ -4,6 +4,7 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use DB;
 use Carbon\Carbon;
+use function foo\func;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Reward;
 use Zhiyi\Plus\Http\Controllers\Controller;
@@ -13,15 +14,12 @@ class RewardController extends Controller
     public function statistics(Request $request)
     {
         $type = $request->get('type');
-        $startDate = $request->get('start');
-        $endDate = $request->get('end');
+        $start = $request->get('start');
+        $end = $request->get('end');
 
-        if ($startDate && $endDate) {
-            $start = Carbon::parse($startDate)->startOfDay()->toDateTimeString();
-            $end = Carbon::parse($endDate)->endOfDay()->toDateTimeString();
-        } else {
-            $start = Carbon::now()->startOfDay()->toDateTimeString();
-            $end = Carbon::now()->endOfDay()->toDateTimeString();
+        if ($start && $end) {
+            $start = Carbon::parse($start)->startOfDay()->toDateTimeString();
+            $end   = Carbon::parse($end)->endOfDay()->toDateTimeString();
         }
 
         $items = Reward::select(DB::raw(
@@ -32,9 +30,26 @@ class RewardController extends Controller
         ->when($type, function ($query) use ($type) {
             $query->where('rewardable_type', $type);
         })
-          ->whereBetween('created_at', [$start, $end])
+        ->when($start && $end, function ($qeury) use($start, $end) {
+            $qeury->whereBetween('created_at', [$start, $end]);
+        })
         ->groupBy('reward_date')
         ->get();
+
+        return response()->json($items, 200);
+    }
+
+    /**
+     * 打赏清单.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function rewards(Request $request)
+    {
+        $items = Reward::with(['user', 'target'])
+            ->orderBy('id', 'desc')
+            ->paginate(10);
 
         return response()->json($items, 200);
     }

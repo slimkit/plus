@@ -34,4 +34,14 @@ class Reward extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+
+    /**
+     * Has target for the rewardable.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function target()
+    {
+        return $this->hasOne(User::class, 'id', 'target_user');
+    }
 }
