@@ -38,6 +38,7 @@
     "lodash": "^4.17.4",
     "plus-message-bundle": "0.0.5",
     "vue": "^2.4.2",
+    "vue-echarts-v3": "^1.0.5",
     "vue-router": "^2.7.0",
     "vuex": "^2.3.1",
     "vuex-router-sync": "^4.2.0"
