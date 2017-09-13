@@ -97,7 +97,7 @@
             <td v-else-if="log.state === 1" style="color: #449d44;">发送成功</td>
             <td v-else-if="log.state === 2" style="color: #d9534f;">发送失败</td>
             <td v-else>未知状态</td>
-            <td>{{ log.created_at }}</td>
+            <td> <local-date :utc="log.created_at" /> </td>
           </tr>
         </tbody>
       </table>
