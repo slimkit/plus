@@ -24,7 +24,7 @@
             }
 
             .content {
-		max-width:60%;
+        		max-width:60%;
                 text-align: center;
                 display: inline-block;
             }
