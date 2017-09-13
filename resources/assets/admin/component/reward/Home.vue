@@ -42,7 +42,7 @@
 <script>
 import request, { createRequestURI } from '../../util/request';
 import _ from 'lodash';
-import LineChart from './lineChart';
+import LineChart from './XineChart';
 const HomeComponent = {
 
     components: {
