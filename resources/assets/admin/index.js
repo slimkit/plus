@@ -3,6 +3,7 @@ import { sync } from 'vuex-router-sync';
 import App from './App.vue';
 import store from './store';
 import router from './router';
+import LocalDate from './component/LocalDate';
 
 // sync the router with the vuex store.
 // this registers `store.state.route`
@@ -15,7 +16,10 @@ Vue.directive('focus', {
     // 聚焦元素
     el.focus()
   }
-})
+});
+
+// 注册全局组件。
+Vue.component('local-date', LocalDate);
 
 // create the app instance.
 // here we inject the router and store to all child components,
