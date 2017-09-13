@@ -87,6 +87,10 @@
       <span class="__icon">CO</span>
       会话管理
     </router-link>
+    <router-link class="list-group-item __button" to="/reward" active-class="active" >
+      <span class="__icon">DS</span>
+      打赏管理
+    </router-link>
     <!-- 拓展包导航加载 -->
     <router-link class="list-group-item __button" v-for="item, index in manages" :key="index" :to="`/package/${index}`" active-class="active" exact>
       <img class="__icon-img" :src="item['icon']" v-if="item['icon'].substr(4, 3) === '://' || item['icon'].substr(5, 3) === '://'">
