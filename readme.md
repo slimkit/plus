@@ -60,7 +60,9 @@ Please make sure to update tests as appropriate.
 
 ## Sponsors
 
-We would like to extend our thanks to the following sponsors for helping fund on-going ThinkSNS Plus development. If you are interested in becoming a sponsor, please visit the ThinkSNS+ [Gitee page](https://gitee.com/slimkit/thinksns-plus?donate=true).
+We would like to extend our thanks to the following sponsors for helping fund on-going ThinkSNS Plus development. If you are interested in becoming a sponsor, please visit the ThinkSNS+ [Gitee page](https://gitee.com/slimkit/thinksns-plus?donate=true):
+
+- [China Chengdu · 智艺创想](http://www.zhiyicx.com)
 
 ## License
 
