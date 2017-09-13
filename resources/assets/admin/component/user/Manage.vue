@@ -127,7 +127,7 @@
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.phone }}</td>
-          <td>{{ user.created_at }}</td>
+          <td><local-date :utc="user.created_at" /></td>
           <td>
             <!-- 编辑 -->
             <router-link type="button" class="btn btn-primary btn-sm" :to="`/users/manage/${user.id}`" >编辑</router-link>

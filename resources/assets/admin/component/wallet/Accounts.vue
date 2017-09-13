@@ -121,7 +121,7 @@
             <td v-else-if="charge.status === 2">失败</td>
             <td v-else>未知</td>
 
-            <td>{{ charge.created_at }}</td>
+            <td><local-date :utc="charge.created_at" /></td>
           </tr>
         </tbody>
       </table>

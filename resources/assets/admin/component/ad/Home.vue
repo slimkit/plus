@@ -97,7 +97,7 @@
                           </td>
                           <td>{{ ad.data.link }}</td>
                           <td>{{ ad.sort }}</td>
-                          <td>{{ ad.created_at }}</td>
+                          <td><local-date :utc="ad.created_at" /></td>
                           <td>
                             <router-link type="button" class="btn btn-primary btn-sm" :to="`ad/${ad.id}/update`">编辑</router-link>
                             <button type="button" class="btn btn-danger btn-sm" @click="delAd(ad.id)">删除</button>
