@@ -13,7 +13,7 @@
     <meta name="csrf-token" content="{{ $csrf_token }}">
 
     <!-- style -->
-    <link rel="stylesheet" type="text/css" href="{{ mix('css/admin.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ mix('css/bootstrap.css') }}">
 
     <!-- global config. -->
     <script type="text/javascript">
@@ -32,8 +32,7 @@
 <body>
 <div id="app"></div>
 <!-- script -->
-<script type="text/javascript" src="{{ mix('js/manifest.js') }}"></script>
-<script type="text/javascript" src="{{ mix('js/vendor.js') }}"></script>
+<script type="text/javascript" src="{{ mix('js/bootstrap.js') }}"></script>
 <script type="text/javascript" src="{{ mix('js/admin.js') }}"></script>
 </body>
 </html>
