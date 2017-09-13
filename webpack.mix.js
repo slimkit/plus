@@ -11,6 +11,8 @@ let mix = require('laravel-mix');
  |
  */
 
+mix.sourceMaps(! mix.inProduction());
+
 /*
  |--------------------------------------------------------------------------
  | Bootstrap SASS & jQuery bundle.
