@@ -4,7 +4,6 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use DB;
 use Carbon\Carbon;
-use function foo\func;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Reward;
 use Zhiyi\Plus\Http\Controllers\Controller;
@@ -19,7 +18,7 @@ class RewardController extends Controller
 
         if ($start && $end) {
             $start = Carbon::parse($start)->startOfDay()->toDateTimeString();
-            $end   = Carbon::parse($end)->endOfDay()->toDateTimeString();
+            $end = Carbon::parse($end)->endOfDay()->toDateTimeString();
         }
 
         $items = Reward::select(DB::raw(
@@ -30,7 +29,7 @@ class RewardController extends Controller
         ->when($type, function ($query) use ($type) {
             $query->where('rewardable_type', $type);
         })
-        ->when($start && $end, function ($qeury) use($start, $end) {
+        ->when($start && $end, function ($qeury) use ($start, $end) {
             $qeury->whereBetween('created_at', [$start, $end]);
         })
         ->groupBy('reward_date')
