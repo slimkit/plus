@@ -61,7 +61,7 @@ ThinkSNS+ 很强大，采用前后端分离架构，可以自由的选择需要�
 
 ## 赞助
 
-我们要感谢一下赞助商，资助我们 ThinkSNS+ 的开发。如果你有兴趣成为赞助商，请访问 ThinkSNS+ 的[码云页面](https://gitee.com/slimkit/thinksns-plus?donate=true)：
+我们要感谢以下赞助商，资助我们 ThinkSNS+ 的开发。如果你有兴趣成为赞助商，请访问 ThinkSNS+ 的[码云页面](https://gitee.com/slimkit/thinksns-plus?donate=true)：
 
 - [成都 · 智艺创想](http://www.zhiyicx.com)
 
