@@ -29,9 +29,45 @@
             {{ message.error }}
         </div>
         <div class="panel panel-default">
-            <!-- 添加广告 -->
             <div class="panel-heading">
-              <router-link type="button" class="btn btn-primary btn-sm" to="ad/add">导出</router-link>
+              <div class="form-inline">
+                <!-- 关键词 -->
+                <div class="form-group">
+                  <input type="text" class="form-control" v-model="filter.keyword" placeholder="用户名/ID">
+                </div>
+                <!-- 类型 -->
+                <div class="form-group">
+                  <select class="form-control" v-model="filter.type">
+                    <option v-for="type in reward_types" :value="type.name">{{ type.alias }}</option>
+                  </select>
+                </div>
+                <!-- 时间段 -->
+                <div class="form-group">
+                  <input type="date" class="form-control" v-model="filter.start">
+                  <label>-</label>
+                  <input type="date" class="form-control" v-model="filter.end">
+                </div>
+                <!-- 搜索 -->
+                <div class="form-group">
+                  <button class="btn btn-default" @click.prevent="search">搜索</button>
+                </div>
+                <!-- 导出 -->
+                <router-link class="btn btn-success" to="ad/add">导出</router-link>
+                <div class="input-group pull-right">
+                    <ul class="pagination" style="margin: 0;">
+                      <li :class="paginate.current_page <= 1 ? 'disabled' : null">
+                        <a href="javascript:;" aria-label="Previous" @click.stop.prevent="prevPage">
+                          <span aria-hidden="true">&laquo;</span>
+                        </a>
+                      </li>
+                      <li :class="paginate.current_page >= paginate.last_page ? 'disabled' : null">
+                        <a href="javascript:;" aria-label="Next" @click.stop.prevent="nextPage">
+                          <span aria-hidden="true">&raquo;</span>
+                        </a>
+                      </li>
+                    </ul>
+                </div>
+              </div>
             </div>
             <!-- 添加广告 -->
             <div class="panel-body">
@@ -62,7 +98,7 @@
                           <td v-else-if="reward.rewardable_type=='news'">咨询</td>
                           <td v-else-if="reward.rewardable_type=='users'">用户</td>
                           <td v-else-if="reward.rewardable_type=='question-answers'">问答</td>
-                          <td>{{ reward.created_at }}</td>
+                          <td> <local-date :utc="reward.created_at"/> </td>
                         </tr>
                     </tbody>
                 </table>
@@ -72,6 +108,7 @@
 </template>
 <script>
 import request, { createRequestURI } from '../../util/request';
+import plusMessageBundle from 'plus-message-bundle';
 const ListComponent = {
     data: () => ({
 
@@ -79,14 +116,25 @@ const ListComponent = {
       
       rewards: {},
 
+      reward_types: [
+        { name: '', alias: '全部' },
+        { name: 'feeds', alias: '动态打赏' },
+        { name: 'news', alias: '咨询打赏' },
+        { name: 'users', alias: '用户打赏' },
+        { name: 'question-answers', alias: '问答打赏' },
+      ],
+
       paginate: {
         current_page: 1,
-        last_page: '',
+        last_page: 0,
         per_page: 20,
       },
 
       filter: {
-
+        type: '',
+        start: '',
+        end: '',
+        keyword: '',
       },
 
       message: {
@@ -96,12 +144,13 @@ const ListComponent = {
     
     }),
     
-    methods: {  
+    methods: {
+
       getRewards () {
         this.rewards = {};
         this.loadding = true;
         request.get(
-          createRequestURI('rewards'),
+          createRequestURI('rewards' + this.getQueryParams()),
           { validateStatus: status => status === 200 }
         ).then(response => {
           this.loadding = false;
@@ -115,19 +164,54 @@ const ListComponent = {
           this.paginate.current_page = current_page;
           this.paginate.last_page = last_page;
           this.rewards = data;
-          console.log(this.rewards);
 
-        }).catch(({ response: { data: { errors = ['加载认证类型失败'] } = {} } = {} }) => {
+        }).catch(({ response: { data: { errors = ['加载失败'] } = {} } = {} }) => {
           this.loadding = false;
-          this.message.error = errors;
+          let Message = new plusMessageBundle(errors);
+          this.message.error = Message.getMessage();
         });
-      }
+      },
+
+      search () {
+        this.paginate.current_page = 1;
+        this.getRewards();
+      },
+
+      nextPage () {
+        if (this.paginate.last_page > this.paginate.current_page) {
+          this.paginate.current_page += 1;
+          this.getRewards();
+        } 
+      },
+
+      prevPage () {
+        if (this.paginate.current_page > 1) {
+          this.paginate.current_page -= 1;
+          this.getRewards();
+        } 
+      },
+
+      getQueryParams () {
+        let filter = this.filter;
+        let paginate = this.paginate;
+        let params = '?';
+
+        params += 'keyword=' + filter.keyword;
+        params += '&type=' + filter.type;
+        params += '&end=' + filter.end;
+        params += '&start=' + filter.start;
+        params += '&per_page=' + paginate.per_page;
+        params += '&page=' + paginate.current_page;
+
+        return params; 
+      },
+
     },
 
     created () {
       this.getRewards();
     },
 };
-
 export default ListComponent;
 </script>
+

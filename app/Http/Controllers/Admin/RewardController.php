@@ -4,12 +4,20 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use DB;
 use Carbon\Carbon;
+use function foo\func;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Reward;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class RewardController extends Controller
 {
+
+    /**
+     * 打赏日期分组统计.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function statistics(Request $request)
     {
         $type = $request->get('type');
@@ -46,9 +54,34 @@ class RewardController extends Controller
      */
     public function rewards(Request $request)
     {
+        $type = $request->get('type');
+        $start = $request->get('start');
+        $end   = $request->get('end');
+        $keyword = $request->get('keyword');
+        $perPage = (int) $request->get('perPage', 20);
+
+
         $items = Reward::with(['user', 'target'])
+            ->when($type, function ($query) use ($type) {
+                $query->where('rewardable_type', $type);
+            })
+            ->when($start && $end, function ($query) use ($start, $end) {
+                $query->whereBetween('created_at', [
+                    Carbon::parse($start)->startOfDay()->toDateTimeString(),
+                    Carbon::parse($end)->endOfDay()->toDateTimeString()
+                ]);
+            })
+            ->when($keyword, function ($query) use ($keyword) {
+                if (is_numeric($keyword)) {
+                    $query->where('user_id', $keyword);
+                } else {
+                    $query->whereHas('user', function ($qeruy) use ($keyword) {
+                        $qeruy->where('name', 'like', $keyword);
+                    });
+                }
+            })
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->paginate($perPage);
 
         return response()->json($items, 200);
     }

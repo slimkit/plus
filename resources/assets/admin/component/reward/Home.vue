@@ -108,16 +108,27 @@ const HomeComponent = {
           let labels = [];
           let counts  = [];
           let amounts = [];
-          let totalCount = 0;
-          let totalAmount = 0;
+          let total_count = 0;
+          let total_amount = 0;
 
           _.forEach(data, function(n, key) {
+
+            total_count = total_count + parseInt(data[key].reward_count);
+            total_amount = total_amount + parseInt(data[key].reward_amount);
+            
             labels.push(data[key].reward_date);
             counts.push(data[key].reward_count);
             amounts.push(data[key].reward_amount/100);
+
           });
 
-          let res = { labels: labels, counts: counts, amounts: amounts };
+          let res = { 
+            labels: labels, 
+            counts: counts, 
+            amounts: amounts,
+            total_count: total_count,
+            total_amount: total_amount,
+          };
 
           return res;
 
@@ -125,42 +136,37 @@ const HomeComponent = {
 
       // 初始化 Charts
       initCharts (data) {
+        let text = _.first(data.labels) +'-'+ _.last(data.labels);
+        text    += ' 打赏金额:' + (data.total_amount/100) + '元,打赏次数:' + data.total_count + '次';
+        // options
+        this.chartOptions = {
+          title: {
+            display: true,
+            text: text,
+            position: 'top',
+            fontSize: 14,
+          },
+        };
         // data
         this.chartData = {
           labels: data.labels,
           datasets: [
             {
-                label: '打赏次数',
-                data: data.counts,
-                borderWidth: 2,
-                backgroundColor: '#ff6666',
-                borderColor: '#bf5329',
+              label: '打赏次数',
+              data: data.counts,
+              borderWidth: 2,
+              backgroundColor: '#ff6666',
+              borderColor: '#bf5329',
             },
             {
-                label: '打赏金额',
-                data: data.amounts,
-                borderWidth: 2,
-                backgroundColor: '#33ccff',
-                borderColor: '#3097D1'
-            }
-          ]
-        },
-        // options
-        this.chartOptions = {
-
-          title: {
-            display: true,
-            text: '打赏统计',
-            position: 'top',
-            fontSize: 14,
-          },
-
-          tooltips: {
-            custom: function (tooltipModel) {
-              // return 1111;
-            }
-          }
-        } 
+              label: '打赏金额',
+              data: data.amounts,
+              borderWidth: 2,
+              backgroundColor: '#33ccff',
+              borderColor: '#3097D1'
+            },
+          ],
+        };
       },
 
       getQueryParams () {
