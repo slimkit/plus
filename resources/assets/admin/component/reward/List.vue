@@ -52,7 +52,7 @@
                   <button class="btn btn-default" @click.prevent="search">搜索</button>
                 </div>
                 <!-- 导出 -->
-                <router-link class="btn btn-success" to="ad/add">导出</router-link>
+                <button class="btn btn-success">导出</button>
                 <div class="input-group pull-right">
                     <ul class="pagination" style="margin: 0;">
                       <li :class="paginate.current_page <= 1 ? 'disabled' : null">
@@ -111,11 +111,8 @@ import request, { createRequestURI } from '../../util/request';
 import plusMessageBundle from 'plus-message-bundle';
 const ListComponent = {
     data: () => ({
-
       loadding: false,
-      
       rewards: {},
-
       reward_types: [
         { name: '', alias: '全部' },
         { name: 'feeds', alias: '动态打赏' },
@@ -123,27 +120,36 @@ const ListComponent = {
         { name: 'users', alias: '用户打赏' },
         { name: 'question-answers', alias: '问答打赏' },
       ],
-
       paginate: {
         current_page: 1,
         last_page: 0,
         per_page: 20,
       },
-
       filter: {
         type: '',
         start: '',
         end: '',
         keyword: '',
       },
-
       message: {
         error: null,
         success: null,
+      },
+      searchQuery: {
+        name: 11,
       }
-    
     }),
-    
+
+    watch: {
+      'filter.type'() {
+        this.paginate.current_page = 1;
+        this.getRewards();
+      },
+      'paginate.current_page'() {
+        this.getRewards();
+      }
+    },
+
     methods: {
 
       getRewards () {
@@ -180,14 +186,12 @@ const ListComponent = {
       nextPage () {
         if (this.paginate.last_page > this.paginate.current_page) {
           this.paginate.current_page += 1;
-          this.getRewards();
         } 
       },
 
       prevPage () {
         if (this.paginate.current_page > 1) {
           this.paginate.current_page -= 1;
-          this.getRewards();
         } 
       },
 
@@ -210,6 +214,7 @@ const ListComponent = {
 
     created () {
       this.getRewards();
+      this.$route.query =  {name:1111};
     },
 };
 export default ListComponent;
