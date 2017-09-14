@@ -85,7 +85,7 @@
                         <td>{{ sensitive.filter_word_category.name }}</td>
                         <td>{{ sensitive.filter_word_type.name }}</td>
                         <td>{{ sensitive.user.name }}</td>
-                        <td>{{ sensitive.created_at }}</td>
+                        <td><local-date :utc="sensitive.created_at"/></td>
                         <td>
                         <router-link :to="`/setting/sensitive-words/${sensitive.id}`" class="btn btn-primary btn-sm">编辑</router-link>
                           <button class="btn btn-danger btn-sm" @click.prevent="deleteSensitive(sensitive.id)">删除</button>
@@ -118,6 +118,11 @@ const SensitiveWord = {
       errorMessage: null,
       successMessage: null,
     }),
+    watch: {
+      'paginate.currentPage'() {
+        this.getSensitives();
+      },
+    },
     methods: {
       getSensitives () {
         this.sensitives = {};
@@ -189,13 +194,11 @@ const SensitiveWord = {
       nextPage () {
         if (this.paginate.lastPage > this.paginate.currentPage) {
           this.paginate.currentPage += 1;
-          this.getSensitives();
         } 
       },
       prevPage () {
         if (this.paginate.currentPage > 1) {
           this.paginate.currentPage -= 1;
-          this.getSensitives(); 
         } 
       },
       selectAll () {

@@ -129,6 +129,7 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
+import plusMessageBundle from 'plus-message-bundle';
 const PersonalCertificationEdit = {
     data: () => ({
         loadding: true,
@@ -166,7 +167,8 @@ const PersonalCertificationEdit = {
             this.categories = response.data;
             this.loadding = false;
           }).catch(({ response: { data: { errors = ['加载认证详情失败'] } = {} } = {} }) => {
-
+            let Message = new plusMessageBundle(errors);
+            this.errorMessage = Message.getMessage();
           }); 
         },
         /**
@@ -181,10 +183,8 @@ const PersonalCertificationEdit = {
           ).then(({ data: { message: [ message ] = [] } }) => {
             this.successMessage = message;
           }).catch(({ response: { data = {} } = {} }) => {
-            const { user_id = [], name = [], desc = [], files = [], phone = [], number = [], org_address = [], org_name = [], message = [] } = data.errors;
-            const [ errorMessage ] = [...user_id, ...name, ...desc, ...files, ...phone, ...number, ...org_address, ...org_name, ...message];
-            this.errorMessage = errorMessage;
-            this.adding = false;
+            let Message = new plusMessageBundle(data);
+            this.errorMessage = Message.getMessage();
           });
         },
         /**

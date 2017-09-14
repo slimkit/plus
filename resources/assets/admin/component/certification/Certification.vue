@@ -114,7 +114,7 @@
                               <td>{{ certification.data.desc }}</td>
                               <td><a :href="attachmentPath+certification.data.files[0]" target="__blank">下载</a></td>
                               <td>{{ statuss.display[certification.status] }}</td>
-                              <td>{{ certification.updated_at }}</td>
+                              <td><local-date :utc="certification.updated_at"/></td>
                               <td>
                                   <router-link type="button"
                                   class="btn btn-primary btn-sm"
