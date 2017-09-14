@@ -4,14 +4,12 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use DB;
 use Carbon\Carbon;
-use function foo\func;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Reward;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class RewardController extends Controller
 {
-
     /**
      * 打赏日期分组统计.
      *
@@ -56,10 +54,9 @@ class RewardController extends Controller
     {
         $type = $request->get('type');
         $start = $request->get('start');
-        $end   = $request->get('end');
+        $end = $request->get('end');
         $keyword = $request->get('keyword');
         $perPage = (int) $request->get('perPage', 20);
-
 
         $items = Reward::with(['user', 'target'])
             ->when($type, function ($query) use ($type) {
@@ -68,7 +65,7 @@ class RewardController extends Controller
             ->when($start && $end, function ($query) use ($start, $end) {
                 $query->whereBetween('created_at', [
                     Carbon::parse($start)->startOfDay()->toDateTimeString(),
-                    Carbon::parse($end)->endOfDay()->toDateTimeString()
+                    Carbon::parse($end)->endOfDay()->toDateTimeString(),
                 ]);
             })
             ->when($keyword, function ($query) use ($keyword) {
