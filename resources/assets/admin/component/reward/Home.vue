@@ -37,10 +37,10 @@
                 <label>时间范围：</label>
                 <input type="date" class="form-control" v-model="filter.start" :disabled="disabled">
                 <input type="date" class="form-control" v-model="filter.end" :disabled="disabled">
-                <button class="btn btn-primary btn-sm" @click="getRewardStatistics">确认</button>
+                <button class="btn btn-default" @click="getRewardStatistics">确认</button>
               </div>
               <div class="form-group pull-right">
-                <button class="btn btn-primary btn-success btn-sm">导出</button>
+                <a :href="exportUrl" class="btn btn-success">导出</a>
               </div>
             </div>
           </div>
@@ -149,6 +149,19 @@ const HomeComponent = {
         } else {
           return true;
         }
+      },
+      exportUrl () {
+        let url = '/admin/rewards/export?export_type=statistic';
+        let filter = this.filter;
+  
+        url  += '&type=' + filter.type;
+        if (filter.scope == 'custom') {
+          url += '&start=' + (filter.start ? filter.start : '');
+          url += '&end=' + (filter.end ? filter.end : '');
+        } else {
+          url += '&scope=' + filter.scope;
+        }
+        return url;
       }
     },
     watch: {
@@ -161,6 +174,7 @@ const HomeComponent = {
     },
     methods: {
       getRewardStatistics () {
+        this.loading = true;
         request.get(
           createRequestURI('rewards/statistics' + this.getQueryParams()),
           { validateStatus: status => status === 200 }
@@ -168,7 +182,8 @@ const HomeComponent = {
           this.loading = false;
           this.initEcharts(response.data);
         }).catch(({ response: { data: { errors = ['打赏统计请求错误'] } = {} } = {} }) => {
-
+          let Message = new plusMessageBundle(data);
+          this.message.error = Message.getMessage();
         });
       },
       // 初始化 Echarts

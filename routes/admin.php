@@ -279,5 +279,5 @@ Route::middleware('auth:web')
     // 统计
     Route::get('rewards/statistics', 'RewardController@statistics');
 
-    Route::get('rewards/excel-export', 'RewardController@excelExport');
+    Route::get('rewards/export', 'RewardController@export');
 });

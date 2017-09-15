@@ -52,7 +52,7 @@
                   <button class="btn btn-default" @click.prevent="search">搜索</button>
                 </div>
                 <!-- 导出 -->
-                <a href="/admin/rewards/export" class="btn btn-success">导出</a>
+                <a :href="exportUrl" target="_self" class="btn btn-success">导出</a>
                 <div class="input-group pull-right">
                     <ul class="pagination" style="margin: 0;">
                       <li :class="paginate.current_page <= 1 ? 'disabled' : null">
@@ -136,10 +136,19 @@ const ListComponent = {
         error: null,
         success: null,
       },
-      searchQuery: {
-        name: 11,
-      }
     }),
+
+    computed: {
+      exportUrl () {
+        let url = '/admin/rewards/export?export_type=list';
+        let filter = this.filter;
+        url += '&type=' + filter.type;
+        url += '&start=' + (filter.start ? filter.start : '');
+        url += '&end=' + (filter.end ? filter.end : '');
+        url += '&keyword=' + filter.keyword;
+        return url;
+      }
+    },
 
     watch: {
       'filter.type'() {
