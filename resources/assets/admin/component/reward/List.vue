@@ -33,7 +33,7 @@
               <div class="form-inline">
                 <!-- 关键词 -->
                 <div class="form-group">
-                  <input type="text" class="form-control" v-model="filter.keyword" placeholder="用户名/ID">
+                  <input type="text" class="form-control" v-model="filter.keyword" placeholder="打赏用户名/ID">
                 </div>
                 <!-- 类型 -->
                 <div class="form-group">
@@ -52,7 +52,7 @@
                   <button class="btn btn-default" @click.prevent="search">搜索</button>
                 </div>
                 <!-- 导出 -->
-                <button class="btn btn-success">导出</button>
+                <a href="/admin/rewards/export" class="btn btn-success">导出</a>
                 <div class="input-group pull-right">
                     <ul class="pagination" style="margin: 0;">
                       <li :class="paginate.current_page <= 1 ? 'disabled' : null">
@@ -109,6 +109,7 @@
 <script>
 import request, { createRequestURI } from '../../util/request';
 import plusMessageBundle from 'plus-message-bundle';
+
 const ListComponent = {
     data: () => ({
       loadding: false,

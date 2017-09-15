@@ -1,3 +1,4 @@
+@ -0,0 +1,203 @@
 <template>
     <div style="padding: 15px;">
         <div v-show="message.success" class="alert alert-success alert-dismissible" role="alert">
@@ -15,182 +16,205 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="form-inline">
+              <!-- 打赏类型 -->
               <div class="form-group">
                 <label>打赏类型：</label>
                 <select class="form-control" v-model="filter.type">
                   <option v-for="type in reward_types" :value="type.name">{{ type.alias }}</option>
                 </select>
-                </div>
-                <div class="form-group">
-                  <label>时间范围：</label>
-                  <input type="date" class="form-control" v-model="filter.start">
-                  <input type="date" class="form-control" v-model="filter.end">
-                  <button class="btn btn-primary btn-sm" @click="getRewardStatistics">确认</button>
-                </div>
-                <div class="form-group pull-right">
-                  <button class="btn btn-primary btn-success btn-sm" @click="test">导出</button>
-                </div>
+              </div>
+              <!-- 打赏类型 -->
+              <div class="form-group">
+                <label>日期间隔：</label>
+                <select class="form-control" v-model="filter.scope">
+                  <option value="today">今日</option>
+                  <option value="week">近七天</option>
+                  <option value="custom">自定义时间段</option>
+                </select>
+              </div>
+              <!-- 时间范围 -->
+              <div class="form-group">
+                <label>时间范围：</label>
+                <input type="date" class="form-control" v-model="filter.start" :disabled="disabled">
+                <input type="date" class="form-control" v-model="filter.end" :disabled="disabled">
+                <button class="btn btn-primary btn-sm" @click="getRewardStatistics">确认</button>
+              </div>
+              <div class="form-group pull-right">
+                <button class="btn btn-primary btn-success btn-sm">导出</button>
+              </div>
             </div>
           </div>
-          <!-- IEcharts -->
+          <!-- charts -->
           <div class="panel-body">
-            <chart :chart-data="chartData" :options="chartOptions" :height="200"></chart>
+             <chart :option="option" :loading="loading" style="height:500px;"></chart>
           </div>
         </div>
     </div>
 </template>
 <script>
 import request, { createRequestURI } from '../../util/request';
+import plusMessageBundle from 'plus-message-bundle';
+import IEcharts from 'vue-echarts-v3/src/lite.vue';
+import 'echarts/lib/chart/line';
+import 'echarts/lib/component/grid';
+import 'echarts/lib/component/legend';
+import 'echarts/lib/component/tooltip';
+import 'echarts/lib/component/title';
+import 'echarts/lib/component/toolbox';
 import _ from 'lodash';
-import LineChart from './LineChart';
 const HomeComponent = {
-
+    
     components: {
-      chart: LineChart
+      chart: IEcharts
     },
+    
     data: () => ({     
-
       loading: true,
-
       reward_types: [
         { name: '', alias: '全部' },
         { name: 'feeds', alias: '动态打赏' },
         { name: 'news', alias: '咨询打赏' },
         { name: 'users', alias: '用户打赏' },
         { name: 'question-answers', alias: '问答打赏' }
-      ],  
-
+      ],
       message: {
         error: null,
         success: null,
       },
-
       filter: {
+        scope: 'today',
         type: '',
         date_start: '',
         date_end: '',
       },
-
-      chartData: null,
-
-      chartOptions: null,
-
-    }),
-
-    watch: {
-      deep: true,
-      'filter.type': {
-        handler: function (val, oldVal) {
-          this.getRewardStatistics();
+      // echarts params
+      option: {
+        title: {
+          subtext: '打赏金额：0 打赏次数：0',
+          left: 50,
         },
+        tooltip: {
+          trigger: 'axis', 
+        },
+        legend: {
+          data:['打赏次数', '打赏金额'],
+          orient: 'horizontal',
+          x: 'center',
+          y: 'top',
+          borderWidth: 1,
+          padding: 10,
+          itemGap: 20,
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: [],
+        },
+        yAxis: {
+          type: 'value',
+        },
+        series: [
+          {
+            name: '打赏次数',
+            type: 'line',
+            stack: '总量',
+            borderWidth: 2,
+            data:[]
+          },
+          {
+            name:'打赏金额',
+            type:'line',
+            stack: '总量',
+            borderWidth: 2,
+            data:[]
+          },
+        ]
+      }
+    }),
+    computed: {
+      disabled () {
+        if (this.filter.scope == 'custom') {
+          return false;
+        } else {
+          return true;
+        }
       }
     },
-
-    methods: {  
-      
+    watch: {
+      'filter.type'() {
+        this.getRewardStatistics();
+      },
+      'filter.scope'() {
+        this.getRewardStatistics();
+      }
+    },
+    methods: {
       getRewardStatistics () {
-
         request.get(
           createRequestURI('rewards/statistics' + this.getQueryParams()),
           { validateStatus: status => status === 200 }
         ).then(response => {
-
-          this.initCharts(this.handleData(response.data));
-
+          this.loading = false;
+          this.initEcharts(response.data);
         }).catch(({ response: { data: { errors = ['打赏统计请求错误'] } = {} } = {} }) => {
 
         });
-
       },
+      // 初始化 Echarts
+      initEcharts (data) {
 
-      handleData (data) {
+          let option = this.option;
 
-          let labels = [];
-          let counts  = [];
-          let amounts = [];
+          option.xAxis.data = [];
+          option.series[0].data = [];
+          option.series[1].data = [];
+
           let total_count = 0;
           let total_amount = 0;
 
           _.forEach(data, function(n, key) {
+ 
+            total_count  = total_count + data[key].reward_count;
+            total_amount = parseInt(total_amount) + parseInt(data[key].reward_amount);
 
-            total_count = total_count + parseInt(data[key].reward_count);
-            total_amount = total_amount + parseInt(data[key].reward_amount);
-            
-            labels.push(data[key].reward_date);
-            counts.push(data[key].reward_count);
-            amounts.push(data[key].reward_amount/100);
+            option.xAxis.data.push(data[key].reward_date);
+            option.series[0].data.push(data[key].reward_count);
+            option.series[1].data.push(data[key].reward_amount/100);
 
           });
 
-          let res = { 
-            labels: labels, 
-            counts: counts, 
-            amounts: amounts,
-            total_count: total_count,
-            total_amount: total_amount,
-          };
-
-          return res;
-
+          option.title.subtext  = '打赏金额：'+ (total_amount/100) +'元';
+          option.title.subtext += ' 打赏次数：'+total_count+'次';
       },
-
-      // 初始化 Charts
-      initCharts (data) {
-        let text = _.first(data.labels) +'-'+ _.last(data.labels);
-        text    += ' 打赏金额:' + (data.total_amount/100) + '元,打赏次数:' + data.total_count + '次';
-        // options
-        this.chartOptions = {
-          title: {
-            display: true,
-            text: text,
-            position: 'top',
-            fontSize: 14,
-          },
-        };
-        // data
-        this.chartData = {
-          labels: data.labels,
-          datasets: [
-            {
-              label: '打赏次数',
-              data: data.counts,
-              borderWidth: 2,
-              backgroundColor: '#ff6666',
-              borderColor: '#bf5329',
-            },
-            {
-              label: '打赏金额',
-              data: data.amounts,
-              borderWidth: 2,
-              backgroundColor: '#33ccff',
-              borderColor: '#3097D1'
-            },
-          ],
-        };
-      },
-
       getQueryParams () {
         let query = '?';
         let filter = this.filter;
-
         query += 'type=' + filter.type;
-        query += '&start=' + (filter.start ? filter.start : '');
-        query += '&end=' + (filter.end ? filter.end : '');
-        
+        if (filter.scope == 'custom') {
+          query += '&start=' + (filter.start ? filter.start : '');
+          query += '&end=' + (filter.end ? filter.end : '');
+        } else {
+          query += '&scope=' + filter.scope;
+        }
         return query;
-      },
-
-      test () {
-        this.chartDatas.labels.push('11111111');
       },
     },
 
     created () {
       this.getRewardStatistics();
     },
-
 };
 
 export default HomeComponent;
 </script>
-

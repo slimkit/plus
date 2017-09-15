@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Reward;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\SensitiveWord;
 
 class RewardController extends Controller
 {
@@ -18,14 +19,26 @@ class RewardController extends Controller
      */
     public function statistics(Request $request)
     {
-        $type = $request->get('type');
+        $type  = $request->get('type');
         $start = $request->get('start');
-        $end = $request->get('end');
+        $scope = $request->get('scope');
+        $end   = $request->get('end');
 
-        if ($start && $end) {
-            $start = Carbon::parse($start)->startOfDay()->toDateTimeString();
-            $end = Carbon::parse($end)->endOfDay()->toDateTimeString();
+        if ($scope) {
+            if ($scope == 'today') {
+                $start = Carbon::now()->startOfDay()->toDateTimeString();
+                $end   = Carbon::now()->endOfDay()->toDateTimeString();
+            } elseif ($scope == 'week') {
+                $start = Carbon::now()->addDay(-7)->startOfDay()->toDateTimeString();
+                $end   = Carbon::now()->toDateTimeString();
+            }
+        } else {
+            if ($start && $end) {
+                $start = Carbon::parse($start)->startOfDay()->toDateTimeString();
+                $end   = Carbon::parse($end)->endOfDay()->toDateTimeString();
+            }
         }
+
 
         $items = Reward::select(DB::raw(
             'count(*) AS reward_count, 
@@ -81,5 +94,11 @@ class RewardController extends Controller
             ->paginate($perPage);
 
         return response()->json($items, 200);
+    }
+
+
+    public function excelExport()
+    {
+
     }
 }

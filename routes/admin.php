@@ -278,4 +278,6 @@ Route::middleware('auth:web')
     Route::get('rewards', 'RewardController@rewards');
     // 统计
     Route::get('rewards/statistics', 'RewardController@statistics');
+
+    Route::get('rewards/excel-export', 'RewardController@excelExport');
 });
