@@ -10,7 +10,6 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 
 class RewardController extends Controller
 {
-
     private $rewardableTypes = [
        'feeds' => '动态打赏',
        'news'  => '咨询打赏',
@@ -183,17 +182,17 @@ class RewardController extends Controller
      */
     public function convertRewardData(array $data)
     {
-      $items = [];
-      foreach ($data as $key => $value) {
-          $items[$key][] = $value['user']['name'];
-          $items[$key][] = $value['target']['name'];
-          $items[$key][] = $value['amount']/100;
-          $items[$key][] = $this->rewardableTypes[$value['rewardable_type']];
-          $items[$key][] = $value['created_at'];
-      }
-      return $items;
-    }
+        $items = [];
+        foreach ($data as $key => $value) {
+            $items[$key][] = $value['user']['name'];
+            $items[$key][] = $value['target']['name'];
+            $items[$key][] = $value['amount'] / 100;
+            $items[$key][] = $this->rewardableTypes[$value['rewardable_type']];
+            $items[$key][] = $value['created_at'];
+        }
 
+        return $items;
+    }
 
     /**
      * export excel.
@@ -202,33 +201,32 @@ class RewardController extends Controller
      * @param array $title 列名
      * @param string $filename
      */
-    public function exportExcel(array $data = [], array $title = [], $filename = 'export') {
+    public function exportExcel(array $data = [], array $title = [], $filename = 'export')
+    {
         //set response header
-        header("Content-type:application/octet-stream");
-        header("Accept-Ranges:bytes");
-        header("Content-type:application/vnd.ms-excel");
+        header('Content-type:application/octet-stream');
+        header('Accept-Ranges:bytes');
+        header('Content-type:application/vnd.ms-excel');
         header(sprintf('Content-Disposition:attachment;filename=%s.xls', $filename));
-        header("Pragma: no-cache");
-        header("Expires: 0");
+        header('Pragma: no-cache');
+        header('Expires: 0');
 
         if (count($title)) {
             foreach ($title as $k => $v) {
-                $title[$k]=iconv("UTF-8", "GB2312", $v);
+                $title[$k] = iconv('UTF-8', 'GB2312', $v);
             }
             $title = implode("\t", $title);
             echo "$title\n";
         }
 
         if (count($data)) {
-            foreach ($data as $key => $val){
+            foreach ($data as $key => $val) {
                 foreach ($val as $ck => $cv) {
-                    $data[$key][$ck] = iconv("UTF-8", "GB2312", $cv);
+                    $data[$key][$ck] = iconv('UTF-8', 'GB2312', $cv);
                 }
                 $data[$key] = implode("\t", $data[$key]);
             }
             echo implode("\n", $data);
         }
-
     }
-
 }
