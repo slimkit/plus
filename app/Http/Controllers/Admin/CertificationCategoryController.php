@@ -30,6 +30,7 @@ class CertificationCategoryController extends Controller
     public function show(CertificationCategory $category)
     {
         $category->icon = $category->icon;
+
         return response()->json($category)->setStatusCode(200);
     }
 
@@ -72,6 +73,4 @@ class CertificationCategoryController extends Controller
 
         return response()->json($data, 201);
     }
-
-
 }
