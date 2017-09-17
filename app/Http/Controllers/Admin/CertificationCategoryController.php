@@ -27,11 +27,10 @@ class CertificationCategoryController extends Controller
      * @return $this
      * @author: huhao <915664508@qq.com>
      */
-    public function show($name)
+    public function show(CertificationCategory $category)
     {
-        $item = CertificationCategory::where('name', $name)->first();
-
-        return response()->json($item)->setStatusCode(200);
+        $category->icon = $category->icon;
+        return response()->json($category)->setStatusCode(200);
     }
 
     /**
@@ -41,18 +40,16 @@ class CertificationCategoryController extends Controller
      * @return $this
      * @author: huhao <915664508@qq.com>
      */
-    public function update(Request $request, $name)
+    public function update(Request $request, CertificationCategory $category)
     {
         $rule = ['display_name' => 'required'];
         $msg = ['display_name.required' => '显示名称必须填写'];
 
         $this->validate($request, $rule, $msg);
 
-        $model = CertificationCategory::where('name', $name)->first();
-
-        $model->display_name = $request->get('display_name');
-        $model->description = $request->get('description');
-        $response = $model->save();
+        $category->display_name = $request->get('display_name');
+        $category->description = $request->get('description');
+        $response = $category->save();
 
         return response()->json([
             'message' => [
@@ -60,4 +57,21 @@ class CertificationCategoryController extends Controller
             ],
         ])->setStatusCode($response === true ? 201 : 422);
     }
+
+    public function iconUpload(Request $request, CertificationCategory $category)
+    {
+        $icon = $request->file('icon');
+
+        if (! $icon->isValid()) {
+            return response()->json(['messages' => [$icon->getErrorMessage()]], 400);
+        }
+
+        $category->storeAvatar($icon);
+
+        $data['icon'] = $category->icon;
+
+        return response()->json($data, 201);
+    }
+
+
 }

@@ -207,8 +207,9 @@ Route::middleware('auth:web')
 
     // 认证类型管理
     Route::get('certification/categories', 'CertificationCategoryController@certifications');
-    Route::get('certification/categories/{name}', 'CertificationCategoryController@show');
-    Route::put('certification/categories/{name}', 'CertificationCategoryController@update');
+    Route::get('certification/categories/{category}', 'CertificationCategoryController@show');
+    Route::put('certification/categories/{category}', 'CertificationCategoryController@update');
+    Route::post('certification/categories/{category}/icon/upload', 'CertificationCategoryController@iconUpload');
     // 认证管理
     Route::get('certifications', 'CertificationController@index');
     Route::get('certifications/{certification}', 'CertificationController@show');
