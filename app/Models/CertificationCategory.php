@@ -40,16 +40,24 @@ class CertificationCategory extends Model implements ShouldAvatarContract
     /**
      * avatar extensions.
      *
-     * @var array
+     * @return array
+     * @author Seven Du <shiweidu@outlook.com>
      */
-    protected $avatar_extensions = ['png', 'jpeg', 'bmp'];
+    public function getAvatarExtensions(): array
+    {
+        return ['png', 'jpg', 'jpeg', 'bmp'];
+    }
 
     /**
      * Avatar prefix.
      *
-     * @var string
+     * @return string
+     * @author Seven Du <shiweidu@outlook.com>
      */
-    protected $avatar_prefix = 'certifications';
+    public function getAvatarPrefix(): string
+    {
+        return 'certifications';
+    }
 
     /**
      * Get icon url.
