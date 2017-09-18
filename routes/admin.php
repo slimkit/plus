@@ -113,6 +113,9 @@ Route::middleware('auth:web')
 
         // 凭据列表
         Route::get('/charges', 'WalletChargeController@show');
+
+        // 钱包统计
+        Route::get('/statistics', 'WalletStatisticsController@index');
     });
 
     // SMS 相关
