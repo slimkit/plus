@@ -453,6 +453,8 @@ class SiteController extends Controller
 
         $config->set('site.gold.status', 1);
 
+        $config->set('site.user_invite_template', '你的好友:user邀请你体验thinksns');
+
         $configuration->save($config);
 
         return $config['site'];
