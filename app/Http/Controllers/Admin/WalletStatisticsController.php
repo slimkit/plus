@@ -5,13 +5,12 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 use DB;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\WalletCash;
 use Zhiyi\Plus\Models\WalletCharge;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 class WalletStatisticsController extends Controller
 {
-
     public function index(Request $request)
     {
         $dateScope = [];
@@ -32,7 +31,6 @@ class WalletStatisticsController extends Controller
 
         return response()->json($res, 200);
     }
-
 
     /**
      * 充值统计.
@@ -83,7 +81,7 @@ class WalletStatisticsController extends Controller
     {
         return DB::raw(sprintf('count(*) as num, sum(%s) as total_amount', $field));
     }
-    
+
     /**
      * 默认最近一个月的日期段.
      *
@@ -103,7 +101,7 @@ class WalletStatisticsController extends Controller
     }
 
     /**
-     * 根据日期生成时间范围
+     * 根据日期生成时间范围.
      *
      * @param $startDate
      * @param $endDate
@@ -111,9 +109,9 @@ class WalletStatisticsController extends Controller
      */
     private function generateDateScope($startDate, $endDate): array
     {
-       $start = Carbon::parse($startDate)->startOfDay()->toDateTimeString();
-       $end = Carbon::parse($endDate)->endOfDay()->toDateTimeString();
-       return [$start, $end];
-    }
+        $start = Carbon::parse($startDate)->startOfDay()->toDateTimeString();
+        $end = Carbon::parse($endDate)->endOfDay()->toDateTimeString();
 
+        return [$start, $end];
+    }
 }
