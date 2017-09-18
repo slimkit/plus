@@ -38,7 +38,6 @@ class TokenController extends Controller
                     'phone'  => $user->phone,
                     'email'  => $user->email,
                     'wallet' => $user->wallet,
-                    'initial_password' => $user->password === null ? false : true,
                 ]),
                 'ttl' => config('jwt.ttl'),
                 'refresh_ttl' => config('jwt.refresh_ttl'),
