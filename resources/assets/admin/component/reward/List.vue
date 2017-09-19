@@ -143,8 +143,8 @@ const ListComponent = {
         let url = '/admin/rewards/export?export_type=list';
         let filter = this.filter;
         url += '&type=' + filter.type;
-        url += '&start=' + (filter.start ? filter.start : '');
-        url += '&end=' + (filter.end ? filter.end : '');
+        url += '&start=' + filter.start;
+        url += '&end=' + filter.end;
         url += '&keyword=' + filter.keyword;
         return url;
       }
@@ -224,7 +224,6 @@ const ListComponent = {
 
     created () {
       this.getRewards();
-      this.$route.query =  {name:1111};
     },
 };
 export default ListComponent;

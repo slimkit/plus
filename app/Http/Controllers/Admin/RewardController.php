@@ -128,7 +128,7 @@ class RewardController extends Controller
             $data = $this->byConditionsGetStatisticsData($request);
             $this->exportExcel($data, $title, '打赏统计');
         } else {
-            $title = ['打赏用户', '被打赏用户', '金额元', '打赏应用', '打赏时间'];
+            $title = ['打赏用户', '被打赏用户', '金额（元）', '打赏应用', '打赏时间'];
             $items = $this->byConditionsGetRewardData($request);
             $data = $this->convertRewardData($items);
             $this->exportExcel($data, $title, '打赏详情');
