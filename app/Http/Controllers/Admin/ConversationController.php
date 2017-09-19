@@ -22,4 +22,11 @@ class ConversationController extends Controller
 
         return response()->json($conversations, 200);
     }
+
+    public function delete(Conversation $conversation)
+    {
+        $conversation->delete();
+
+        return response()->json('', 204);
+    }
 }

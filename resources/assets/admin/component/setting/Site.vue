@@ -87,7 +87,7 @@
               </div>
             </div>
             <div class="form-group">
-              <label class="control-label col-md-2">金币规则</label>
+              <label class="control-label col-md-2">金币</label>
               <div class="col-md-7">
                 <label class="radio-inline">
                   <input type="radio" value="1"  v-model="site.gold.status"> 开启
@@ -98,6 +98,20 @@
               </div>
               <div class="col-md-3">
                 <span class="help-block">启动规则，用户完成相应的节点操作可以获取对应的奖励<br/>关闭规则，用户完成相应的节点操作不能获取对应的奖励</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-md-2">打赏</label>
+              <div class="col-md-7">
+                <label class="radio-inline">
+                  <input type="radio" value="1"  v-model="site.reward.status"> 开启
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" value="0"  v-model="site.reward.status"> 关闭
+                </label>
+              </div>
+              <div class="col-md-3">
+                <span class="help-block">用户打赏开启与关闭</span>
               </div>
             </div>
             <div class="form-group">
@@ -121,7 +135,8 @@
             <div class="form-group">
               <label class="control-label col-md-2">用户邀请模版</label>
               <div class="col-md-7">
-                <input type="text" class="form-control" v-model="site.user_invite_template">
+                <textarea class="form-control" v-model="site.user_invite_template">
+                </textarea>
               </div>
               <div class="col-md-3">
                 <span class="help-block">用户邀请模版</span>
@@ -163,6 +178,9 @@ const Site = {
             status: 1,
           },
           gold: {
+            status: 1,
+          },
+          reward: {
             status: 1,
           },
           reserved_nickname: '',

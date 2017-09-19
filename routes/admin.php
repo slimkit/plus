@@ -224,6 +224,7 @@ Route::middleware('auth:web')
 
     // 会话管理
     Route::get('conversations', 'ConversationController@index');
+    Route::delete('conversations/{conversation}', 'ConversationController@delete');
 
     // 过滤配置
     Route::prefix('filter-word-categories')->group(function () {

@@ -16,6 +16,18 @@
 
 <template>
     <div :class="$style.container">
+        <div v-show="message.success" class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" @click.prevent="offAlert">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ message.success }}
+        </div>
+        <div v-show="message.error" class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" @click.prevent="offAlert">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ message.error }}
+        </div>
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="form-inline">
@@ -71,7 +83,8 @@
                             <td>{{ conversation.to_user_id }}</td>
                             <td>{{ conversation.content }}</td>
                             <td>
-                                <button class="btn btn-danger btn-sm">删除</button>
+                                <button class="btn btn-danger btn-sm" 
+                                @click.prevent="delConversation(conversation.id)">删除</button>
                             </td>
                         </tr>
                     </template>
@@ -87,6 +100,7 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
+import plusMessageBundle from 'plus-message-bundle';
 const FeedbackComponent = {
     data: () => ({
       loadding: true,
@@ -103,25 +117,41 @@ const FeedbackComponent = {
       queryParams: {
         type: '',
         keyword: '',
+      },
+      message: {
+        error: null,
+        success: null,
       }
     }),
+    watch: {
+      'queryParams.type' () {
+        this.getConversations();
+      },
+      'paginate.currentPage' () {
+        this.getConversations();
+      }
+    },
     methods: {
       getConversations () {
+        this.loadding = true;
+        this.conversations = [];
         request.get(
           createRequestURI('conversations' + this.getQueryParams()),
           { validateStatus: status => status === 200 }
         ).then(response => {
             this.loadding = false;
             this.conversations = {}; 
-            
+          
             const { data: data, current_page: currentPage, last_page: lastPage, total: total } = response.data;
             this.paginate.currentPage = currentPage;
             this.paginate.lastPage = lastPage;
             this.paginate.total = total;
             this.conversations = data;
 
-        }).catch(({ response: { data: { errors = ['加载认证类型失败'] } = {} } = {} }) => {
+        }).catch(({ response: { data: { errors = ['加载会话列表失败'] } = {} } = {} }) => {
           this.loadding = false;
+          let Message = new plusMessageBundle(errors);
+          this.message.error = Message.getMessage();
         });
       },
       conversionTypeDisplay (type) {
@@ -135,6 +165,21 @@ const FeedbackComponent = {
         this.paginate.currentPage = 1;
         this.getConversations();
       },
+      delConversation (id) {
+        let bool = confirm('是否确认删除？');
+        if (bool) {
+          request.delete(
+            createRequestURI(`conversations/${id}`),
+            { validateStatus: status => status === 204 }
+          ).then(response => {
+            this.message.success = '删除成功';
+            this.byIdDeleteConversation(id);
+          }).catch(({ response: { data: { errors = ['删除失败'] } = {} } = {} }) => {
+            let Message = new plusMessageBundle(errors);
+            this.message.error = Message.getMessage();
+          });
+        }
+      },
       getQueryParams () {
         let query = '?';
         query += 'type=' + this.queryParams.type;
@@ -142,18 +187,27 @@ const FeedbackComponent = {
         query += '&page=' + this.paginate.currentPage;
         return query;
       },
+      byIdDeleteConversation(id) {
+        this.conversations.forEach((item, index) => {
+          if (item.id == id) {
+            this.conversations.splice(index, 1)
+          }
+        });
+      },
       nextPage () {
         if (this.paginate.lastPage > this.paginate.currentPage) {
           this.paginate.currentPage += 1; 
-          this.getConversations();
         }
       },
       prevPage () {
         if (this.paginate.currentPage > 1) {
           this.paginate.currentPage -= 1; 
-          this.getConversations();
         }
       },
+      offAlert () {
+        this.message.error = null;
+        this.message.success = null;
+      }
     },
     created () {
       this.getConversations();
