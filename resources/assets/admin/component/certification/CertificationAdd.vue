@@ -73,20 +73,12 @@
                     <span class="help-block" style="font-size:12px;">附件格式：gif, jpg, jpeg, png； 附件大小：不超过10M</span>
                 </div>
                 <div class="form-group">
-                <div v-show="errorMessage" class="alert alert-danger alert-dismissible affix-top" role="alert">
-                    <button type="button" class="close" @click.prevent="offAlert">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    {{ errorMessage }}
-                </div>
-                <div v-show="successMessage" class="alert alert-success alert-dismissible affix-top" role="alert">
-                    <button type="button" class="close" @click.prevent="offAlert">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    {{ successMessage }}
-                </div>
                     <button class="btn btn-primary btn-sm" 
-                    @click.prevent="createCertification">确认</button>
+                    @click.prevent="createCertification" data-loading-text="提交中" autocomplete="off" id="add-btn">确认</button>
+                    <div class="pull-right">
+                        <span class="text-danger" v-show="message.error">{{ message.error }}</span>
+                        <span class="text-success" v-show="message.success">{{ message.success }}</span>
+                    </div>
                 </div>
             </div>
             <!-- 查找用户 modal start -->
@@ -105,7 +97,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="用户名" v-model="search.keyword" @input="search.message=''">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" @click="searchUser" data-loading-text="搜索中" id="serach-user-btn">搜索</button>
+                                <button class="btn btn-default" @click="searchUser" data-loading-text="提交中" id="serach-user-btn">搜索</button>
                             </span>
                         </div>
                     </div>
@@ -123,7 +115,6 @@
                 </div>
               </div>
             </div>
-            <!-- 查找用户 modal end-->
         </div>
 </template>
 
@@ -133,8 +124,10 @@ import plusMessageBundle from 'plus-message-bundle';
 const PersonalCertificationEdit = {
     data: () => ({
         loadding: true,
-        errorMessage: '',
-        successMessage: '',
+        message: {
+          error: null,
+          success: null,
+        },
         categories: {},
         fileBase64: '',
         users: [],
@@ -167,8 +160,8 @@ const PersonalCertificationEdit = {
             this.categories = response.data;
             this.loadding = false;
           }).catch(({ response: { data: { errors = ['加载认证详情失败'] } = {} } = {} }) => {
-            let Message = new plusMessageBundle(errors);
-            this.errorMessage = Message.getMessage();
+            let Message = new plusMessageBundle(data);
+            this.message.error = Message.getMessage();
           }); 
         },
         /**
@@ -176,15 +169,18 @@ const PersonalCertificationEdit = {
          * @return {[type]} [description]
          */
         createCertification () {
+          $('#add-btn').button('loading');
           request.post(
             createRequestURI('certifications'),
             { ...this.certification },
             { validateStatus: status => status === 201 }
           ).then(({ data: { message: [ message ] = [] } }) => {
-            this.successMessage = message;
+            $('#add-btn').button('reset');
+            this.message.success = message;
           }).catch(({ response: { data = {} } = {} }) => {
+            $('#add-btn').button('reset');
             let Message = new plusMessageBundle(data);
-            this.errorMessage = Message.getMessage();
+            this.message.error = Message.getMessage();
           });
         },
         /**
@@ -231,7 +227,8 @@ const PersonalCertificationEdit = {
                 const { id: id, message: [message] = [] } = response.data;
                 that.certification.files = [id];
             }).catch((error) => {
-                console.log(error);
+              let Message = new plusMessageBundle(data);
+              this.message.error = Message.getMessage();
             });
           }
         },
@@ -254,12 +251,6 @@ const PersonalCertificationEdit = {
             return;
           }
           $('#findUserModal').modal('hide');
-        },
-        /**
-         * 关闭提示弹层
-         */
-        offAlert () {
-          this.errorMessage = this.successMessage = '';
         },
     },
     created () {

@@ -20,23 +20,23 @@
 
 <template>
     <div :class="$style.container">
-        <div v-show="successMessage" class="alert alert-success alert-dismissible" role="alert">
+        <div v-show="message.success" class="alert alert-success alert-dismissible" role="alert">
             <button type="button" class="close" @click.prevent="offAlert">
                 <span aria-hidden="true">&times;</span>
             </button>
-            {{ successMessage }}
+            {{ message.success }}
         </div>
-        <div v-show="errorMessage" class="alert alert-danger alert-dismissible" role="alert">
+        <div v-show="message.error" class="alert alert-danger alert-dismissible" role="alert">
             <button type="button" class="close" @click.prevent="offAlert">
                 <span aria-hidden="true">&times;</span>
             </button>
-            {{ errorMessage }}
+            {{ message.error }}
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">
               <div class="form-inline">
                   <div class="form-group">
-                      <router-link type="button" class="btn btn-success btn-sm" :to="{ name: 'certification:add' }">添加认证用户</router-link>
+                      <router-link type="button" class="btn btn-primary btn-sm" :to="{ name: 'certification:add' }">添加</router-link>
                   </div>
               </div>
             </div>
@@ -81,7 +81,6 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th><input type="checkbox"></th>
                             <th>用户名</th>
                             <th>真实姓名</th>
                             <th>机构名称</th>
@@ -104,7 +103,6 @@
                         </tr>
                         <template v-if="certifications.length">
                           <tr v-for="(certification, index) in certifications">
-                              <td><input type="checkbox" :value="certification.id"></td>
                               <td>{{ certification.user.name }}</td>
                               <td>{{ certification.data.name }}</td>
                               <td>{{ certification.data.hasOwnProperty('org_name') ? certification.data.org_name : '' }}</td>
@@ -221,8 +219,10 @@ const certificationComponent = {
           message: '',
         },
         keyword: '',
-        successMessage: '',
-        errorMessage: '',
+        message: {
+          error: null,
+          success: null,
+        }
     }),
     
     watch: {
@@ -309,7 +309,7 @@ const certificationComponent = {
             {validateStatus: status => status === 201}
           ).then(({ data: { message: [ message ] = [] } }) => {
             $('#passModal').modal('hide');
-            this.successMessage = message;
+            this.message.success = message;
             this.getCertifications();
           }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {
             this.pass.message = message;
@@ -329,11 +329,11 @@ const certificationComponent = {
             {reject_content: content},
             {validateStatus: status => status === 201}
           ).then(({ data: { message: [ message ] = [] } }) => {
-            this.successMessage = message;
+            this.message.success = message;
             this.getCertifications();
             $('#rejectModal').modal('hide')
           }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {
-            this.errorMessage = message;
+            this.message.error = message;
             $('#rejectModal').modal('hide')
           });
         },
@@ -396,14 +396,13 @@ const certificationComponent = {
       promise.then(data => {
         this.loadding = false;
         if (data.length) {
-          
           this.categories.data = data;
           this.getCertifications();
         } else {
-          this.errorMessage = '认证类型加载失败';
+          this.message.error = '认证类型加载失败';
         }
       }, error => {
-        this.errorMessage = error;
+         this.message.error = error;
       });
 
     },

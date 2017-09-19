@@ -21,42 +21,40 @@
 
 <template>
         <div :class="$style.container">
-            <!-- 加载动画 -->
-            <div v-show="loadding" :class="$style.loadding">
-                <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              过滤词分类-修改
             </div>
-            <div class="col-md-6 col-md-offset-3" v-show="!loadding">
-                <div v-show="errorMessage" class="alert alert-danger alert-dismissible affix-top" role="alert">
-                    <button type="button" class="close" @click.prevent="offAlert">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    {{ errorMessage }}
-                </div>
-                <div v-show="successMessage" class="alert alert-success alert-dismissible affix-top" role="alert">
-                    <button type="button" class="close" @click.prevent="offAlert">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    {{ successMessage }}
-                </div>
-                <div class="form-group">
-                    <label><span class="text-danger">*</span>分类名称：</label>
-                    <input type="text" class="form-control" v-model="category.name">
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-primary" 
-                    @click.prevent="update">添加分类</button>
+            <div class="panel-body">
+                <div class="col-md-6 col-md-offset-3" v-show="!loadding">
+                    <div class="form-group">
+                        <label><span class="text-danger">*</span>分类名称：</label>
+                        <input type="text" class="form-control" v-model="category.name">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" 
+                        @click.prevent="update"  data-loading-text="提交" id="edit-btn">确认</button>
+                        <div class="pull-right">
+                            <span class="text-danger" v-show="message.error">{{ message.error }}</span>
+                            <span class="text-success" v-show="message.success">{{ message.success }}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
+          </div>
         </div>
 </template>
 
 <script>
 import request, { createRequestURI } from '../../util/request';
+import plusMessageBundle from 'plus-message-bundle';
 const FilterWordCategoryUpdate = {
     data: () => ({
         loadding: true,
-        errorMessage: '',
-        successMessage: '',
+        message: {
+          error: null,
+          success: null,
+        },
         category: {
           id: '',
           name: '',
@@ -71,29 +69,29 @@ const FilterWordCategoryUpdate = {
             this.loadding = false;
             this.category = response.data;
         }).catch(({ response: { data = {} } = {} }) => {
-            this.loadding = false;
+          let Message = new plusMessageBundle(data);
+          this.message.error = Message.getMessage();
         });
       },
       update () {
         if (!this.category.name) {
-          this.errorMessage = '分类名称不能为空';
+          this.message.error = '分类名称不能为空';
           return;
         }
+        $('#edit-btn').button('loading');
         request.patch(
           createRequestURI('filter-word-categories/' + this.category.id ),
           { ...this.category },
           { validateStatus: status => status === 201 }
         ).then(({ data: { message: [ message ] = [] } }) => {
-          this.successMessage = message;
+          $('#edit-btn').button('reset');
+          this.message.success = message;
         }).catch(({ response: { data = {} } = {} }) => {
-          let {name = []} = data;
-          let [ errorMessage ] = [...name];
-          this.errorMessage = errorMessage;
+          $('#edit-btn').button('reset');
+          let Message = new plusMessageBundle(data);
+          this.message.error = Message.getMessage();
         });
       },
-      offAlert () {
-        this.errorMessage = this.successMessage = '';
-      }
     },
     created () {
       this.category.id = this.$route.params.id;

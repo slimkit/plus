@@ -30,7 +30,7 @@
         </div> 
         <div class="panel panel-default">
           <div class="panel-heading">
-            <router-link to="/setting/filter-word-categories/add" class="btn btn-success">添加分类</router-link>
+            <router-link to="/setting/filter-word-categories/add" class="btn btn-primary btn-sm">添加</router-link>
           </div>
           <div class="panel-body">
             <table class="table table-striped">
@@ -65,6 +65,7 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
+import plusMessageBundle from 'plus-message-bundle';
 const FilterWordCategory = {
     data: () => ({
       loadding: true,
@@ -72,9 +73,7 @@ const FilterWordCategory = {
       errorMessage: '',
       successMessage: '',
     }),
-    
     methods: {
-
       getCategories () {
         request.get(
           createRequestURI('filter-word-categories'),
@@ -83,12 +82,10 @@ const FilterWordCategory = {
           this.loadding = false;
           this.categories = response.data;
         }).catch(({ response: { data = {} } = {} }) => {
-          let {name = []} = data;
-          let [ errorMessage ] = [...name];
-          this.errorMessage = errorMessage;
+          let Message = new plusMessageBundle(data);
+          this.errorMessage = Message.getMessage();
         });
       },
-      
       deleteCategory (id) {
         let  bool = confirm('是否确认删除？');
         if (bool) {
@@ -98,16 +95,14 @@ const FilterWordCategory = {
           ).then(({ data: { message: [ message ] = [] } }) => {
             this.successMessage = '删除成功';
           }).catch(({ response: { data: {message = []} } = {} }) => {
-            let [ errorMessage ] = [ ...message ];
-            this.errorMessage = errorMessage;
+            let Message = new plusMessageBundle(data);
+            this.errorMessage = Message.getMessage();
           });
         }
       },
-
       offAlert () {
         this.errorMessage = this.successMessage = '';
       },
-
     },
 
     created () {
