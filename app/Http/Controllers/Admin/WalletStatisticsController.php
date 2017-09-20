@@ -4,8 +4,8 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use DB;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User;
+use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\WalletCash;
 use Zhiyi\Plus\Models\WalletCharge;
 use Zhiyi\Plus\Http\Controllers\Controller;
@@ -75,7 +75,7 @@ class WalletStatisticsController extends Controller
 
     /**
      * 统计锁定的金额.
-     * 
+     *
      * @param  array  $scopre
      * @return array
      */
