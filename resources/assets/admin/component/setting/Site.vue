@@ -62,10 +62,10 @@
               <label class="control-label col-md-2">APP端</label>
               <div class="col-md-7">
                 <label class="radio-inline">
-                  <input type="radio" value="1" v-model="site.app.status"> 开启
+                  <input type="radio" value="1" v-model="site.app.status" :disabled="site.status == 0"> 开启
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" value="0" v-model="site.app.status"> 关闭
+                  <input type="radio" value="0" v-model="site.app.status" :disabled="site.status == 0"> 关闭
                 </label>
               </div>
               <div class="col-md-3">
@@ -76,10 +76,10 @@
               <label class="control-label col-md-2">H5端</label>
               <div class="col-md-7">
                 <label class="radio-inline">
-                  <input type="radio" value="1" v-model="site.h5.status"> 开启
+                  <input type="radio" value="1" v-model="site.h5.status" :disabled="site.status == 0"> 开启
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" value="0" v-model="site.h5.status"> 关闭
+                  <input type="radio" value="0" v-model="site.h5.status" :disabled="site.status == 0"> 关闭
                 </label>
               </div>
               <div class="col-md-3">
@@ -90,10 +90,10 @@
               <label class="control-label col-md-2">金币</label>
               <div class="col-md-7">
                 <label class="radio-inline">
-                  <input type="radio" value="1"  v-model="site.gold.status"> 开启
+                  <input type="radio" value="1"  v-model="site.gold.status" :disabled="site.status == 0"> 开启
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" value="0"  v-model="site.gold.status"> 关闭
+                  <input type="radio" value="0"  v-model="site.gold.status" :disabled="site.status == 0"> 关闭
                 </label>
               </div>
               <div class="col-md-3">
@@ -104,10 +104,10 @@
               <label class="control-label col-md-2">打赏</label>
               <div class="col-md-7">
                 <label class="radio-inline">
-                  <input type="radio" value="1"  v-model="site.reward.status"> 开启
+                  <input type="radio" value="1"  v-model="site.reward.status" :disabled="site.status == 0"> 开启
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" value="0"  v-model="site.reward.status"> 关闭
+                  <input type="radio" value="0"  v-model="site.reward.status" :disabled="site.status == 0"> 关闭
                 </label>
               </div>
               <div class="col-md-3">

@@ -5,6 +5,7 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 use DB;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\WalletCash;
 use Zhiyi\Plus\Models\WalletCharge;
 use Zhiyi\Plus\Http\Controllers\Controller;
@@ -28,6 +29,7 @@ class WalletStatisticsController extends Controller
 
         $res[] = $this->chargeStatistics($dateScope);
         $res[] = $this->casheStatistics($dateScope);
+        $res[] = $this->lockAmountStatistics($dateScope);
 
         return response()->json($res, 200);
     }
@@ -47,7 +49,7 @@ class WalletStatisticsController extends Controller
             ->first()
             ->toArray();
 
-        $result = array_merge($result, ['type' => '收入']);
+        $result = array_merge($result, ['type' => '收入（充值）']);
 
         return $result;
     }
@@ -66,7 +68,26 @@ class WalletStatisticsController extends Controller
             ->first()
             ->toArray();
 
-        $result = array_merge($result, ['type' => '提现']);
+        $result = array_merge($result, ['type' => '提现（支出）']);
+
+        return $result;
+    }
+
+    /**
+     * 统计锁定的金额.
+     * 
+     * @param  array  $scopre
+     * @return array
+     */
+    public function lockAmountStatistics(array $scope)
+    {
+        $result = WalletCash::select($this->sql('value'))
+            ->where('status', 0)
+            ->whereBetween('created_at', $scope)
+            ->first()
+            ->toArray();
+
+        $result = array_merge($result, ['type' => '锁定金额（提现审核）']);
 
         return $result;
     }
@@ -79,7 +100,7 @@ class WalletStatisticsController extends Controller
      */
     private function sql(string $field)
     {
-        return DB::raw(sprintf('count(*) as num, sum(%s) as total_amount', $field));
+        return DB::raw(sprintf('count(*) as num, sum(%s/100) as total_amount', $field));
     }
 
     /**
@@ -111,6 +132,7 @@ class WalletStatisticsController extends Controller
     {
         $start = Carbon::parse($startDate)->startOfDay()->toDateTimeString();
         $end = Carbon::parse($endDate)->endOfDay()->toDateTimeString();
+        $model = new User();
 
         return [$start, $end];
     }

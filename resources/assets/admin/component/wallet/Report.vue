@@ -31,14 +31,14 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="form-inline">
-	          <div class="form-group">
-	          	<label>时间段：</label>
-	          	<input type="date" class="form-control" v-model="filter.start">
-	          	<label>-</label>
-	          	<input type="date" class="form-control" v-model="filter.end"> 		
-	          </div>
+  	          <div class="form-group">
+  	          	<label>时间段：</label>
+  	          	<input type="date" class="form-control" v-model="filter.start">
+  	          	<label>-</label>
+  	          	<input type="date" class="form-control" v-model="filter.end"> 
+  	          </div>
               <div class="form-group">
-              	<button class="btn btn-primary" @click.prevent="getWalletStatistics">确认</button> 
+                <button class="btn btn-primary" @click.prevent="getWalletStatistics">确认</button>
               </div>
             </div>
           </div>
@@ -48,7 +48,7 @@
           	  	<tr>
           	  	  <th>类型</th>
           	  	  <th>总笔数</th>
-          	  	  <th>总金额</th>
+          	  	  <th>总金额（元）</th>
           	  	</tr>
           	  </thead>
           	  <tbody>
@@ -71,7 +71,6 @@
 </template>
 <script>
 import request, { createRequestURI } from '../../util/request';
-import plusMessageBundle from 'plus-message-bundle';
 const ReportComponent = {
     data: () => ({
       loadding: true,
@@ -96,14 +95,14 @@ const ReportComponent = {
         ).then(response => {
           this.loadding = false;
           this.items = response.data;
-        }).catch(({ response: { data: { message: [ anyMessage = '加载失败，请刷新重试' ] = [] } = {} } = {} } = {}) => {
-          let Message = new plusMessageBundle(data);
-          this.message.error = Message.getMessage();
+        }).catch(({ response: { data: { errors = '加载数据失败，请重试' } = {} } = {} }) => {
+          this.loadding = false;
+          this.message.error = errors;
         });
       },
       getQueryParams() {
         let query = '?';
-        query += 'start=' + this.filter.start;	
+        query += 'start=' + this.filter.start;
         query += '&end=' + this.filter.end;
         return query;
       },
