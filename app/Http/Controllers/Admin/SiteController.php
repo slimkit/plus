@@ -441,19 +441,19 @@ class SiteController extends Controller
     {
         $config = $configuration->getConfiguration();
 
-        $config->set('site.status', 1);
+        $config->set('site.status', true);
         $config->set('site.off_reason', '站点维护中请稍后再访问');
 
-        $config->set('site.app.status', 1);
-        $config->set('site.h5.status', 1);
+        $config->set('site.app.status', true);
+        $config->set('site.h5.status', true);
 
         $config->set('site.reserved_nickname', 'root,admin');
 
         $config->set('site.client_email', 'admin@123.com');
 
-        $config->set('site.gold.status', 1);
+        $config->set('site.gold.status', true);
 
-        $config->set('site.reward.status', 1);
+        $config->set('site.reward.status', true);
 
         $config->set('site.user_invite_template', '我发现了一个全平台社交系统ThinkSNS+，快来加入吧：http://t.cn/RpFfbbi');
 

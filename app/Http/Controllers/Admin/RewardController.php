@@ -60,7 +60,7 @@ class RewardController extends Controller
 
         $items = Reward::select(DB::raw(
             'count(*) AS reward_count, 
-             sum(amount) AS reward_amount, 
+             sum(amount/100) AS reward_amount, 
              LEFT (created_at, 10) AS reward_date'
         ))
         ->when($type, function ($query) use ($type) {

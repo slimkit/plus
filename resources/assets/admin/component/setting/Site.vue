@@ -39,17 +39,17 @@
               <label class="control-label col-md-2">站点状态</label>
               <div class="col-md-7">
                 <label class="radio-inline">
-                  <input type="radio" value="1" v-model="site.status"> 开启
+                  <input type="radio" :value="radio.on" v-model="site.status"> 开启
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" value="0" v-model="site.status"> 关闭
+                  <input type="radio" :value="radio.off" v-model="site.status"> 关闭
                 </label>
               </div>
               <div class="col-md-3">
                 <span class="help-block" >站点开启与关闭，请谨慎操作</span>
               </div>
             </div>
-            <div class="form-group"  v-show="site.status == 0">
+            <div class="form-group"  v-show="!site.status">
               <label class="control-label col-md-2">关闭原因</label>
               <div class="col-md-7">
                 <input type="text" class="form-control" v-model="site.off_reason">
@@ -62,10 +62,10 @@
               <label class="control-label col-md-2">APP端</label>
               <div class="col-md-7">
                 <label class="radio-inline">
-                  <input type="radio" value="1" v-model="site.app.status" :disabled="site.status == 0"> 开启
+                  <input type="radio" :value="radio.on" v-model="site.app.status" :disabled="!site.status"> 开启
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" value="0" v-model="site.app.status" :disabled="site.status == 0"> 关闭
+                  <input type="radio" :value="radio.off" v-model="site.app.status" :disabled="!site.status"> 关闭
                 </label>
               </div>
               <div class="col-md-3">
@@ -76,10 +76,10 @@
               <label class="control-label col-md-2">H5端</label>
               <div class="col-md-7">
                 <label class="radio-inline">
-                  <input type="radio" value="1" v-model="site.h5.status" :disabled="site.status == 0"> 开启
+                  <input type="radio" :value="radio.on" v-model="site.h5.status" :disabled="!site.status"> 开启
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" value="0" v-model="site.h5.status" :disabled="site.status == 0"> 关闭
+                  <input type="radio" :value="radio.off" v-model="site.h5.status" :disabled="!site.status"> 关闭
                 </label>
               </div>
               <div class="col-md-3">
@@ -90,10 +90,10 @@
               <label class="control-label col-md-2">金币</label>
               <div class="col-md-7">
                 <label class="radio-inline">
-                  <input type="radio" value="1"  v-model="site.gold.status" :disabled="site.status == 0"> 开启
+                  <input type="radio" :value="radio.on"  v-model="site.gold.status" :disabled="!site.status"> 开启
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" value="0"  v-model="site.gold.status" :disabled="site.status == 0"> 关闭
+                  <input type="radio" :value="radio.off" v-model="site.gold.status" :disabled="!site.status"> 关闭
                 </label>
               </div>
               <div class="col-md-3">
@@ -104,10 +104,10 @@
               <label class="control-label col-md-2">打赏</label>
               <div class="col-md-7">
                 <label class="radio-inline">
-                  <input type="radio" value="1"  v-model="site.reward.status" :disabled="site.status == 0"> 开启
+                  <input type="radio" :value="radio.on"  v-model="site.reward.status" :disabled="!site.status"> 开启
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" value="0"  v-model="site.reward.status" :disabled="site.status == 0"> 关闭
+                  <input type="radio" :value="radio.off"  v-model="site.reward.status" :disabled="!site.status"> 关闭
                 </label>
               </div>
               <div class="col-md-3">
@@ -168,20 +168,24 @@ const Site = {
     
     data: () => ({
         loadding: true,
+        radio: {
+          on: true,
+          off: false,
+        },
         site: {
-          status: 1,
+          status: true,
           off_reason: '',
           app: {
-            status: 1,
+            status: true,
           },
           h5: {
-            status: 1,
+            status: true,
           },
           gold: {
-            status: 1,
+            status: true,
           },
           reward: {
-            status: 1,
+            status: true,
           },
           reserved_nickname: '',
           client_email: '',
@@ -227,7 +231,7 @@ const Site = {
       },
       validate () {
         let site = this.site;
-        return (site.status == 0 && !site.off_reason) ? false : true;
+        return (site.status && !site.off_reason) ? false : true;
       },
     },
     created () {
