@@ -181,7 +181,6 @@ const HomeComponent = {
         ).then(response => {
           this.loading = false;
           this.initEcharts(response.data);
-          console.log(response.data);
         }).catch(({ response: { data: { errors = ['打赏统计请求错误'] } = {} } = {} }) => {
           let Message = new plusMessageBundle(data);
           this.message.error = Message.getMessage();
@@ -202,7 +201,7 @@ const HomeComponent = {
           _.forEach(data, function(n, key) {
  
             total_count  = total_count + data[key].reward_count;
-            total_amount = parseFloat(data[key].reward_amount) + parseFloat(total_amount);
+            total_amount = parseInt(data[key].reward_amount) + parseInt(total_amount);
 
             option.xAxis.data.push(data[key].reward_date);
             option.series[0].data.push(data[key].reward_count);
@@ -210,8 +209,8 @@ const HomeComponent = {
 
           });
 
-          option.title.subtext  = '打赏金额：'+ (total_amount) +'元';
-          option.title.subtext += ' 打赏次数：'+total_count+'次';
+          option.title.subtext  = '打赏金额：'+ (total_amount/100) +' 元';
+          option.title.subtext += ' 打赏次数：'+total_count+' 次';
       },
       getQueryParams () {
         let query = '?';
