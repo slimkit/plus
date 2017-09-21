@@ -137,7 +137,6 @@ const ListComponent = {
         success: null,
       },
     }),
-
     computed: {
       exportUrl () {
         let url = '/admin/rewards/export?export_type=list';
@@ -149,7 +148,6 @@ const ListComponent = {
         return url;
       }
     },
-
     watch: {
       'filter.type'() {
         this.paginate.current_page = 1;
@@ -159,9 +157,7 @@ const ListComponent = {
         this.getRewards();
       }
     },
-
     methods: {
-
       getRewards () {
         this.rewards = {};
         this.loadding = true;
@@ -176,7 +172,6 @@ const ListComponent = {
             current_page: current_page, 
             last_page: last_page, 
           } = response.data;
-
           this.paginate.current_page = current_page;
           this.paginate.last_page = last_page;
           this.rewards = data;
@@ -187,24 +182,20 @@ const ListComponent = {
           this.message.error = Message.getMessage();
         });
       },
-
       search () {
         this.paginate.current_page = 1;
         this.getRewards();
       },
-
       nextPage () {
         if (this.paginate.last_page > this.paginate.current_page) {
           this.paginate.current_page += 1;
         } 
       },
-
       prevPage () {
         if (this.paginate.current_page > 1) {
           this.paginate.current_page -= 1;
         } 
       },
-
       getQueryParams () {
         let filter = this.filter;
         let paginate = this.paginate;
@@ -219,9 +210,7 @@ const ListComponent = {
 
         return params; 
       },
-
     },
-
     created () {
       this.getRewards();
     },

@@ -51,7 +51,8 @@ class UserController extends Controller
         if ($userId && $users = $builder->where('id', $userId)->paginate($perPage)) {
             $datas['page'] = $users->map(function ($user) {
                 $user->setHidden([]);
-
+                $user->load('recommended');
+                $user->load('famous');
                 return $user;
             });
 
