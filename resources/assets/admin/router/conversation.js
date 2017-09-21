@@ -1,9 +1,9 @@
-import ConversationBase from '../component/Conversation.vue';
+import Main from '../component/conversation/Main.vue';
 import Conversation from '../component/conversation/Conversation';
 
 const routers = {
     path: 'conversations',
-    component: ConversationBase,
+    component: Main,
     children: [
         {
             path: '',

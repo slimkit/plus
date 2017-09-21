@@ -1,6 +1,6 @@
 <style lang="css" module>
     .container {
-        padding-top: 15px;
+        padding: 15px;
     }
     .loadding {
         text-align: center;
@@ -18,64 +18,70 @@
         margin-bottom: 10px;
     }
 </style>
-
 <template>
         <div :class="$style.container">
-            <!-- 加载动画 -->
-            <div v-show="loadding" :class="$style.loadding">
-                <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+                <router-link type="button" class="btn btn-primary btn-sm" :to="{name: 'certification:users'}">返回</router-link>
             </div>
+            <div class="panel-body">
+                <!-- 加载动画 -->
+                <div v-show="loadding" :class="$style.loadding">
+                    <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
+                </div>
 
-            <div class="col-md-6 col-md-offset-3" v-show="!loadding">
-                <div class="form-group">
-                    <label>用户名：</label>
-                    <input type="text" class="form-control" v-model="certification.username" disabled>
-                </div>
-                <div class="form-group">
-                    <label><span class="text-danger">*</span>真实姓名：</label>
-                    <input type="text" class="form-control" v-model="certification.name">
-                </div>
-                <div class="form-group">
-                    <label><span class="text-danger">*</span>手机号：</label>
-                    <input type="text" class="form-control" v-model="certification.phone">
-                </div>
-                <div class="form-group">
-                    <label><span class="text-danger">*</span>身份证号：</label>
-                    <input type="text" class="form-control" v-model="certification.number">
-                </div>
-                <div class="form-group">
-                    <label><span class="text-danger">*</span>认证类型：</label>
-                    <select class="form-control" v-model="certification.type" disabled>
-                        <option :value="categroy.name" v-for="categroy in categories">{{ categroy.display_name }}</option>
-                    </select>
-                </div>
-                <div class="form-group" v-show="certification.type == 'org'">
-                    <label><span class="text-danger">*</span>组织名称：</label>
-                    <input type="text" class="form-control" v-model="certification.org_name">
-                </div>
-                <div class="form-group" v-show="certification.type == 'org'">
-                    <label><span class="text-danger">*</span>组织地址：</label>
-                    <input type="text" class="form-control" v-model="certification.org_address">
-                </div>
-                <div class="form-group">
-                    <label><span class="text-danger">*</span>认证描述：</label>
-                    <textarea class="form-control" v-model="certification.desc"></textarea>
-                </div>
-                <div class="form-group">
-                    <label><span class="text-danger">*</span>认证附件：</label>
-                    <img :src="fileBase64" class="img-responsive" :class="$style.image">
-                    <input type="file" @change="uploadAttachment" accept="image/gif,image/jpeg,image/jpg,image/png">
-                    <span class="help-block" style="font-size:12px;">附件格式：gif, jpg, jpeg, png； 附件大小：不超过10M</span>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-primary btn-sm" 
-                    @click.prevent="updateCertification" data-loading-text="提交中" autocomplete="off" id="edit-btn">确认</button>
-                    <div class="pull-right">
-                        <span class="text-danger" v-show="message.error">{{ message.error }}</span>
-                        <span class="text-success" v-show="message.success">{{ message.success }}</span>
+                <div class="col-md-6 col-md-offset-3" v-show="!loadding">
+                    <div class="form-group">
+                        <label>用户名：</label>
+                        <input type="text" class="form-control" v-model="certification.username" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label><span class="text-danger">*</span>真实姓名：</label>
+                        <input type="text" class="form-control" v-model="certification.name">
+                    </div>
+                    <div class="form-group">
+                        <label><span class="text-danger">*</span>手机号：</label>
+                        <input type="text" class="form-control" v-model="certification.phone">
+                    </div>
+                    <div class="form-group">
+                        <label><span class="text-danger">*</span>身份证号：</label>
+                        <input type="text" class="form-control" v-model="certification.number">
+                    </div>
+                    <div class="form-group">
+                        <label><span class="text-danger">*</span>认证类型：</label>
+                        <select class="form-control" v-model="certification.type" disabled>
+                            <option :value="categroy.name" v-for="categroy in categories">{{ categroy.display_name }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group" v-show="certification.type == 'org'">
+                        <label><span class="text-danger">*</span>组织名称：</label>
+                        <input type="text" class="form-control" v-model="certification.org_name">
+                    </div>
+                    <div class="form-group" v-show="certification.type == 'org'">
+                        <label><span class="text-danger">*</span>组织地址：</label>
+                        <input type="text" class="form-control" v-model="certification.org_address">
+                    </div>
+                    <div class="form-group">
+                        <label><span class="text-danger">*</span>认证描述：</label>
+                        <textarea class="form-control" v-model="certification.desc"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label><span class="text-danger">*</span>认证附件：</label>
+                        <img :src="fileBase64" class="img-responsive" :class="$style.image">
+                        <input type="file" @change="uploadAttachment" accept="image/gif,image/jpeg,image/jpg,image/png">
+                        <span class="help-block" style="font-size:12px;">附件格式：gif, jpg, jpeg, png； 附件大小：不超过10M</span>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-sm" 
+                        @click.prevent="updateCertification" data-loading-text="提交中" autocomplete="off" id="edit-btn">确认</button>
+                        <div class="pull-right">
+                            <span class="text-danger" v-show="message.error">{{ message.error }}</span>
+                            <span class="text-success" v-show="message.success">{{ message.success }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
+          </div>
         </div>
 </template>
 

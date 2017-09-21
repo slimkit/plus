@@ -1,4 +1,4 @@
-import CertificationBase from '../component/Certification';
+import Main from '../component/certification/Main';
 import Category from '../component/certification/Category';
 import CategoryEdit from '../component/certification/CategoryEdit';
 import Certification from  '../component/certification/Certification';
@@ -6,7 +6,7 @@ import CertificationEdit from '../component/certification/CertificationEdit';
 import CertificationAdd from '../component/certification/CertificationAdd';
 const routers = {
     path: 'certifications',
-    component: CertificationBase,
+    component: Main,
     children: [
         {
             path: '',

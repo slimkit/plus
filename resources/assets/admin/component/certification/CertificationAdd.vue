@@ -1,6 +1,6 @@
 <style lang="css" module>
     .container {
-        padding-top: 15px;
+        padding: 15px;
     }
     .loadding {
         text-align: center;
@@ -21,100 +21,106 @@
 
 <template>
         <div :class="$style.container">
-            <!-- 加载动画 -->
-            <div v-show="loadding" :class="$style.loadding">
-                <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-            </div>
-
-            <div class="col-md-6 col-md-offset-3" v-show="!loadding">
-                <div class="form-group">
-                    <label><span class="text-danger">*</span>用户ID：</label>
-                    <div class="input-group">                             
-                        <input type="text" class="form-control" v-model="certification.user_id" disabled>
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button" @click="openfindUserModal">查找用户</button>
-                        </span>
-                    </div>
+          <div class="panel panel-default">
+              <div class="panel-heading">
+                <router-link type="button" class="btn btn-primary btn-sm" :to="{name: 'certification:users'}">返回</router-link>
+              </div>
+              <div class="panel-body">
+                <!-- 加载动画 -->
+                <div v-show="loadding" :class="$style.loadding">
+                    <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
                 </div>
-                <div class="form-group">
-                    <label><span class="text-danger">*</span>真实姓名：</label>
-                    <input type="text" class="form-control" v-model="certification.name">
-                </div>
-                <div class="form-group">
-                    <label><span class="text-danger">*</span>手机号：</label>
-                    <input type="text" class="form-control" v-model="certification.phone">
-                </div>
-                <div class="form-group">
-                    <label><span class="text-danger">*</span>身份证号：</label>
-                    <input type="text" class="form-control" v-model="certification.number">
-                </div>
-                <div class="form-group">
-                    <label><span class="text-danger">*</span>认证类型：</label>
-                    <select class="form-control" v-model="certification.type">
-                        <option :value="categroy.name" v-for="categroy in categories">{{ categroy.display_name }}</option>
-                    </select>
-                </div>
-                <div class="form-group" v-show="certification.type == 'org'">
-                    <label><span class="text-danger">*</span>组织名称：</label>
-                    <input type="text" class="form-control" v-model="certification.org_name">
-                </div>
-                <div class="form-group" v-show="certification.type == 'org'">
-                    <label><span class="text-danger">*</span>组织地址：</label>
-                    <input type="text" class="form-control" v-model="certification.org_address">
-                </div>
-                <div class="form-group">
-                    <label><span class="text-danger">*</span>认证描述：</label>
-                    <textarea class="form-control" v-model="certification.desc"></textarea>
-                </div>
-                <div class="form-group">
-                    <label><span class="text-danger">*</span>认证附件：</label>
-                    <img :src="fileBase64" class="img-responsive" :class="$style.image">
-                    <input type="file" @change="uploadAttachment" accept="image/gif,image/jpeg,image/jpg,image/png">
-                    <span class="help-block" style="font-size:12px;">附件格式：gif, jpg, jpeg, png； 附件大小：不超过10M</span>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-primary btn-sm" 
-                    @click.prevent="createCertification" data-loading-text="提交中" autocomplete="off" id="add-btn">确认</button>
-                    <div class="pull-right">
-                        <span class="text-danger" v-show="message.error">{{ message.error }}</span>
-                        <span class="text-success" v-show="message.success">{{ message.success }}</span>
-                    </div>
-                </div>
-            </div>
-            <!-- 查找用户 modal start -->
-            <div class="modal fade" id="findUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">查找用户</h4>
-                  </div>
-                  <div class="modal-body">
+                <div class="col-md-6 col-md-offset-3" v-show="!loadding">
                     <div class="form-group">
-                        <span class="text-danger" v-show="search.message">{{ search.message }}</span>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="用户名" v-model="search.keyword" @input="search.message=''">
+                        <label><span class="text-danger">*</span>用户ID：</label>
+                        <div class="input-group">                             
+                            <input type="text" class="form-control" v-model="certification.user_id" disabled>
                             <span class="input-group-btn">
-                                <button class="btn btn-default" @click="searchUser" data-loading-text="提交中" id="serach-user-btn">搜索</button>
+                                <button class="btn btn-default" type="button" @click="openfindUserModal">查找用户</button>
                             </span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <select class="form-control" v-show="users.length" v-model="certification.user_id">
-                            <option value="" disabled>请选择用户</option>
-                            <option v-for="user in users" :value="user.id">{{ user.name }}</option>
+                        <label><span class="text-danger">*</span>真实姓名：</label>
+                        <input type="text" class="form-control" v-model="certification.name">
+                    </div>
+                    <div class="form-group">
+                        <label><span class="text-danger">*</span>手机号：</label>
+                        <input type="text" class="form-control" v-model="certification.phone">
+                    </div>
+                    <div class="form-group">
+                        <label><span class="text-danger">*</span>身份证号：</label>
+                        <input type="text" class="form-control" v-model="certification.number">
+                    </div>
+                    <div class="form-group">
+                        <label><span class="text-danger">*</span>认证类型：</label>
+                        <select class="form-control" v-model="certification.type">
+                            <option :value="categroy.name" v-for="categroy in categories">{{ categroy.display_name }}</option>
                         </select>
                     </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" @click="selectUser">确认</button>
+                    <div class="form-group" v-show="certification.type == 'org'">
+                        <label><span class="text-danger">*</span>组织名称：</label>
+                        <input type="text" class="form-control" v-model="certification.org_name">
+                    </div>
+                    <div class="form-group" v-show="certification.type == 'org'">
+                        <label><span class="text-danger">*</span>组织地址：</label>
+                        <input type="text" class="form-control" v-model="certification.org_address">
+                    </div>
+                    <div class="form-group">
+                        <label><span class="text-danger">*</span>认证描述：</label>
+                        <textarea class="form-control" v-model="certification.desc"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label><span class="text-danger">*</span>认证附件：</label>
+                        <img :src="fileBase64" class="img-responsive" :class="$style.image">
+                        <input type="file" @change="uploadAttachment" accept="image/gif,image/jpeg,image/jpg,image/png">
+                        <span class="help-block" style="font-size:12px;">附件格式：gif, jpg, jpeg, png； 附件大小：不超过10M</span>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-sm" 
+                        @click.prevent="createCertification" data-loading-text="提交中" autocomplete="off" id="add-btn">确认</button>
+                        <div class="pull-right">
+                            <span class="text-danger" v-show="message.error">{{ message.error }}</span>
+                            <span class="text-success" v-show="message.success">{{ message.success }}</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 查找用户 modal start -->
+                <div class="modal fade" id="findUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">查找用户</h4>
+                      </div>
+                      <div class="modal-body">
+                        <div class="form-group">
+                            <span class="text-danger" v-show="search.message">{{ search.message }}</span>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="用户名" v-model="search.keyword" @input="search.message=''">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" @click="searchUser" data-loading-text="提交中" id="serach-user-btn">搜索</button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" v-show="users.length" v-model="certification.user_id">
+                                <option value="" disabled>请选择用户</option>
+                                <option v-for="user in users" :value="user.id">{{ user.name }}</option>
+                            </select>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" @click="selectUser">确认</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+          </div>
         </div>
 </template>
 
