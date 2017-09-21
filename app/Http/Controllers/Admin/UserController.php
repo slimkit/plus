@@ -53,6 +53,7 @@ class UserController extends Controller
                 $user->setHidden([]);
                 $user->load('recommended');
                 $user->load('famous');
+
                 return $user;
             });
 
