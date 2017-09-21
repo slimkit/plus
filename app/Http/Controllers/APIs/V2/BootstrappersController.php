@@ -27,8 +27,8 @@ class BootstrappersController extends Controller
             $query->orderBy('sort', 'asc');
         }])->first()->advertising ?? [];
 
-        $bootstrappers['site'] = config('site', []);
-        $bootstrappers['registerSettings'] = config('registerSettings', []);
+        $bootstrappers['site'] = config('site', null);
+        $bootstrappers['registerSettings'] = config('registerSettings', null);
 
         return $response->json($events->dispatch('v2', [$bootstrappers]), 200);
     }
