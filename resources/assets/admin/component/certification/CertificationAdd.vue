@@ -87,7 +87,7 @@
                 </div>
                 <!-- 查找用户 modal start -->
                 <div class="modal fade" id="findUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                  <div class="modal-dialog" role="document">
+                  <div class="modal-dialog modal-sm" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -95,20 +95,15 @@
                       </div>
                       <div class="modal-body">
                         <div class="form-group">
-                            <span class="text-danger" v-show="search.message">{{ search.message }}</span>
+                          <input type="text" class="form-control" placeholder="用户名" v-model="search.keyword" @input="searchUser">
                         </div>
                         <div class="form-group">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="用户名" v-model="search.keyword" @input="search.message=''">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" @click="searchUser" data-loading-text="提交中" id="serach-user-btn">搜索</button>
-                                </span>
-                            </div>
+                            <span class="text-danger" v-show="search.message">{{ search.message }}</span>
                         </div>
                         <div class="form-group">
                             <select class="form-control" v-show="users.length" v-model="certification.user_id">
                                 <option value="" disabled>请选择用户</option>
-                                <option v-for="user in users" :value="user.id">{{ user.name }}</option>
+                                <option v-for="user in users" :value="user.id">{{ user.name+'(id:'+user.id+')' }}</option>
                             </select>
                         </div>
                       </div>
@@ -194,7 +189,6 @@ const PersonalCertificationEdit = {
          */
         searchUser () {
         if ( !this.search.keyword ) {
-          this.search.message = '请输入搜索关键字';
           return;
         }
         $('#serach-user-btn').button('loading');
@@ -202,10 +196,9 @@ const PersonalCertificationEdit = {
             createRequestURI('find/nocertification/users?keyword=' + this.search.keyword),
             { validateStatus: status => status === 200 }
           ).then(response => {
-            $('#serach-user-btn').button('reset');
             this.users = response.data;
+            this.search.message = this.users.length ? '' : '请换个搜索关键字试试';
           }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {
-            $('#serach-user-btn').button('reset');
             this.search.message = message;
           });
         },

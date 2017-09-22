@@ -290,14 +290,11 @@ class CertificationController extends Controller
     {
         $keyword = $request->get('keyword');
 
-        if (! $keyword) {
-            return response()->json(['message' => ['请输入搜索关键字']], 422);
-        }
 
         $condition = sprintf('%%%s%%', $keyword);
-        $users = User::where('name', 'like', $condition)
+        $users = $keyword ? User::where('name', 'like', $condition)
         ->whereDoesntHave('certification')
-        ->get();
+        ->get() : [];
 
         return response()->json($users)->setStatusCode(200);
     }
