@@ -290,7 +290,6 @@ class CertificationController extends Controller
     {
         $keyword = $request->get('keyword');
 
-
         $condition = sprintf('%%%s%%', $keyword);
         $users = $keyword ? User::where('name', 'like', $condition)
         ->whereDoesntHave('certification')
