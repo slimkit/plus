@@ -70,7 +70,7 @@ ThinkSNS+ 很强大，采用前后端分离架构，可以自由的选择需要�
 
 - [成都 · 智艺创想](http://www.zhiyicx.com)
 
-## 优秀 Laravel 仓库
+## 优秀仓库推荐
 
 - [Notadd](https://github.com/notadd/notadd) 基于 Laravel 的下一代开发框架。
 

@@ -70,7 +70,7 @@ We would like to extend our thanks to the following sponsors for helping fund on
 
 - [China Chengdu · 智艺创想](http://www.zhiyicx.com)
 
-## Excellent laravel Repositories
+## Excellent Repositories
 
 - [Notadd](https://github.com/notadd/notadd) Laravel based on the next generation development framework.
 
