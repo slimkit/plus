@@ -72,7 +72,7 @@ class CertificationController extends Controller
         $certification->examiner = Auth::user()->id;
         $certification->save();
 
-        $certification->user->sendNotifyMessage('user-certification:pass', "你申请的身份认证已被通过", [
+        $certification->user->sendNotifyMessage('user-certification:pass', '你申请的身份认证已被通过', [
             'certification' => $certification,
         ]);
 
@@ -101,7 +101,7 @@ class CertificationController extends Controller
         $certification->examiner = Auth::user()->id;
 
         if ($certification->save()) {
-            $certification->user->sendNotifyMessage('user-certification:reject', sprintf("你申请的身份认证已被驳回，驳回理由为%s", $content) , [
+            $certification->user->sendNotifyMessage('user-certification:reject', sprintf('你申请的身份认证已被驳回，驳回理由为%s', $content), [
                 'certification' => $certification,
             ]);
 
