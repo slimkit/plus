@@ -4,7 +4,7 @@
 
 - [English](readme.md)
 
-> [完整的 ThinkSNS+ 文档](https://slimkit.github.io/plus-docs/)
+> [完整的 ThinkSNS Plus 文档](https://slimkit.github.io/plus-docs/)
 
 ## Badges
 
@@ -16,15 +16,15 @@ Travis CI: [![Travis CI Build Status](https://img.shields.io/travis/slimkit/thin
 
 Circle CI: [![https://img.shields.io/circleci/project/github/slimkit/thinksns-plus.svg?style=flat-square](https://img.shields.io/travis/slimkit/thinksns-plus.svg?style=flat-square)](https://circleci.com/gh/slimkit/thinksns-plus)
 
-## 关于 ThinkSNS+
+## 关于 ThinkSNS Plus
 
-ThinkSNS+ 是基于 Laravel 开发的一个用户生态基础框架系统，支持动态拓展应用的接入和UI规范设计。
+ThinkSNS Plus 是基于 Laravel 开发的一个用户生态基础框架系统，支持动态拓展应用的接入和UI规范设计。
 
-更多关于 ThinkSNS+ 请访问 [关于 ThinkSNS+](https://slimkit.github.io/plus-docs/core) 了解产品。
+更多关于 ThinkSNS Plus 请访问 [关于 ThinkSNS Plus](https://slimkit.github.io/plus-docs/core) 了解产品。
 
 > 欢迎访问官网：[http://www.thinksns.com](http://www.thinksns.com) 了解我们产品和团队。
 
-ThinkSNS+ 有很多优秀应用，如：
+ThinkSNS Plus 有很多优秀应用，如：
 
 - [良好支持移动网页的 SPA 应用（h5）](https://github.com/slimkit/plus-component-h5)
 - [类似微博的动态流应用](https://github.com/slimkit/plus-component-h5)
@@ -32,7 +32,7 @@ ThinkSNS+ 有很多优秀应用，如：
 
 ...更多请看 [https://slimkit.github.io/plus-docs/package](https://slimkit.github.io/plus-docs/package)
 
-ThinkSNS+ 很强大，采用前后端分离架构，可以自由的选择需要的功能。同时这些应用支持很完善，安装也非常的简单。
+ThinkSNS Plus 很强大，采用前后端分离架构，可以自由的选择需要的功能。同时这些应用支持很完善，安装也非常的简单。
 
 ## 特点
 
@@ -49,7 +49,7 @@ ThinkSNS+ 很强大，采用前后端分离架构，可以自由的选择需要�
 
 ## 安装
 
-安装 ThinkSNS+ 非常简单，但是我们为你准备了更好的文档来供你阅读，请参阅[安装文档](https://slimkit.github.io/plus-docs/core/latest/getting-started/installed) 。
+安装 ThinkSNS Plus 非常简单，但是我们为你准备了更好的文档来供你阅读，请参阅[安装文档](https://slimkit.github.io/plus-docs/core/latest/getting-started/installed) 。
 
 
 ## 支持
@@ -62,11 +62,11 @@ ThinkSNS+ 很强大，采用前后端分离架构，可以自由的选择需要�
 
 欢迎使用 Pull requests。对于重大变更，请先提出 Issue，和我们一起来讨论你想改变的内容。
 
-> 感谢你考虑为 ThinkSNS+ 作出贡献！具体贡献指南可以在 [ThinkSNS+ 文档](https://slimkit.github.io/plus-docs/core/latest/getting-started/contributions) 中查看。
+> 感谢你考虑为 ThinkSNS Plus 作出贡献！具体贡献指南可以在 [ThinkSNS Plus 文档](https://slimkit.github.io/plus-docs/core/latest/getting-started/contributions) 中查看。
 
 ## 赞助
 
-我们要感谢以下赞助商，资助我们 ThinkSNS+ 的开发。如果你有兴趣成为赞助商，请访问 ThinkSNS+ 的[码云页面](https://gitee.com/slimkit/thinksns-plus?donate=true)：
+我们要感谢以下赞助商，资助我们 ThinkSNS Plus 的开发。如果你有兴趣成为赞助商，请访问 ThinkSNS Plus 的[码云页面](https://gitee.com/slimkit/thinksns-plus?donate=true)：
 
 - [成都 · 智艺创想](http://www.zhiyicx.com)
 
@@ -76,4 +76,4 @@ ThinkSNS+ 很强大，采用前后端分离架构，可以自由的选择需要�
 
 ## 开源协议
 
-ThinkSNS+ 代码遵循 Apache 2.0 许可证发布，请参阅完整的 [许可证文本](LICENSE)
+ThinkSNS Plus 代码遵循 Apache 2.0 许可证发布，请参阅完整的 [许可证文本](LICENSE)

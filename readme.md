@@ -17,13 +17,13 @@ Travis CI: [![Travis CI Build Status](https://img.shields.io/travis/slimkit/thin
 Circle CI: [![https://img.shields.io/circleci/project/github/slimkit/thinksns-plus.svg?style=flat-square](https://img.shields.io/travis/slimkit/thinksns-plus.svg?style=flat-square)](https://circleci.com/gh/slimkit/thinksns-plus)
 
 
-## About ThinkSNS+
+## About ThinkSNS Plus
 
-[ThinkSNS+](https://github.com/slimkit/thinksns-plus) is the use of [Laravel](https://github.com/laravel/laravel) framework to achieve the user ecosystem, Can be friendly and low coupling development development applications.
+[ThinkSNS Plus](https://github.com/slimkit/thinksns-plus) is the use of [Laravel](https://github.com/laravel/laravel) framework to achieve the user ecosystem, Can be friendly and low coupling development development applications.
 
 > You would like to know our team please visit [www.thinksns.com](http://www.thinksns.com)
 
-ThinkSNS+ Also a lot of good applications, such as:
+ThinkSNS Plus Also a lot of good applications, such as:
 
 - [Support for mobile web pages for SPA](https://github.com/slimkit/plus-component-h5)
 - [Social dynamic flow application](https://github.com/slimkit/plus-component-h5)
@@ -31,7 +31,7 @@ ThinkSNS+ Also a lot of good applications, such as:
 
 ...More see [https://slimkit.github.io/plus-docs/package](https://slimkit.github.io/plus-docs/package)
 
-ThinlSNS+ Powerful, the use of front and rear separation architecture, you can freely select the function, ThinkSNS+ can be a very good support and can be a simple installation.
+ThinlSNS+ Powerful, the use of front and rear separation architecture, you can freely select the function, ThinkSNS Plus can be a very good support and can be a simple installation.
 
 ## Features
 
@@ -48,7 +48,7 @@ User ecosystem, We use laravel for development.
 
 ## Installation
 
-Installation ThinkSNS+ is very simple, but we have a better document available to you, please see [Install docs](https://slimkit.github.io/plus-docs/core/latest/getting-started/installed)
+Installation ThinkSNS Plus is very simple, but we have a better document available to you, please see [Install docs](https://slimkit.github.io/plus-docs/core/latest/getting-started/installed)
 
 ## Support
 
@@ -62,11 +62,11 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 Please make sure to update tests as appropriate.
 
-> Thank you for considering contributing to the ThinkSNS+! The contribution guide can be found in the [ThinkSNS+ documentation](https://slimkit.github.io/plus-docs/core/latest/getting-started/contributions).
+> Thank you for considering contributing to the ThinkSNS Plus! The contribution guide can be found in the [ThinkSNS Plus documentation](https://slimkit.github.io/plus-docs/core/latest/getting-started/contributions).
 
 ## Sponsors
 
-We would like to extend our thanks to the following sponsors for helping fund on-going ThinkSNS Plus development. If you are interested in becoming a sponsor, please visit the ThinkSNS+ [Gitee page](https://gitee.com/slimkit/thinksns-plus?donate=true):
+We would like to extend our thanks to the following sponsors for helping fund on-going ThinkSNS Plus development. If you are interested in becoming a sponsor, please visit the ThinkSNS Plus [Gitee page](https://gitee.com/slimkit/thinksns-plus?donate=true):
 
 - [China Chengdu · 智艺创想](http://www.zhiyicx.com)
 
@@ -76,4 +76,4 @@ We would like to extend our thanks to the following sponsors for helping fund on
 
 ## License
 
-The ThinkSNS+ is open-sourced software licensed under the [Apache 2.0 license](LICENSE).
+The ThinkSNS Plus is open-sourced software licensed under the [Apache 2.0 license](LICENSE).
