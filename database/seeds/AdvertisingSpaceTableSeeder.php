@@ -21,7 +21,7 @@ class AdvertisingSpaceTableSeeder extends Seeder
                 'image' => [
                     'image' => '图片|string',
                     'link' => '链接|string',
-                    'duration' => '时长|integer'
+                    'duration' => '时长|integer',
                 ],
             ],
         ]);

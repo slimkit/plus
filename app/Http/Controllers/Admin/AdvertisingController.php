@@ -168,7 +168,7 @@ class AdvertisingController extends Controller
                 $rule = [
                     'data.image' => 'required|url',
                     'data.link'  => 'required|url',
-                    'data.duration' => 'required'
+                    'data.duration' => 'required',
                 ];
                 break;
             case 'feed:analog':
