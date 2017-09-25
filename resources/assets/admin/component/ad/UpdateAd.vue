@@ -39,6 +39,13 @@
                     </select>
                   </div>
                 </div>
+                <!-- 启动广告时长 -->
+                <div class="form-group" v-show="ad.space_id === 1">
+                  <label class="col-md-2 control-label">广告时长</label>
+                  <div class="col-md-7">
+                    <input type="number" value="" class="form-control" placeholder="广告持续时长，不能小于1" v-model="ad.data.duration">
+                  </div>
+                </div>
                 <!-- 类型 -->
                 <div class="form-group" v-show="ad.space_id">
                   <label class="col-md-2 control-label">类型</label>
@@ -166,6 +173,7 @@ const AddAdComponent = {
           time: null,
           avatar: null,
           name: null,
+          duration: 0
         }
       },
 
