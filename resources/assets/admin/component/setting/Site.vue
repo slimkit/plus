@@ -115,12 +115,21 @@
               </div>
             </div>
             <div class="form-group">
+              <label class="control-label col-md-2">打赏金额</label>
+              <div class="col-md-7">
+                <input type="text" class="form-control" v-model="site.reward.amounts">
+              </div>
+              <div class="col-md-3">
+                <span class="help-block">打赏金额配置，多个金额用小写","分割，例如:5,10,15</span>
+              </div>
+            </div>
+            <div class="form-group">
               <label class="control-label col-md-2">预留呢称</label>
               <div class="col-md-7">
                 <input type="text" class="form-control" v-model="site.reserved_nickname">
               </div>
               <div class="col-md-3">
-                <span class="help-block">预留呢称，多个呢称用“,”分割</span>
+                <span class="help-block">预留呢称，多个呢称用小写","分割</span>
               </div>
             </div>
             <div class="form-group">
@@ -186,6 +195,7 @@ const Site = {
           },
           reward: {
             status: true,
+            amounts: '',
           },
           reserved_nickname: '',
           client_email: '',
