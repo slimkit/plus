@@ -11,7 +11,8 @@
       <p>{{ message }}</p>
     </div>
     <!-- 标签列表 -->
-    <table class="table table-striped" v-if="!empty">
+    <p v-if="empty" style="text-align: center; padding: 8px;">还没有添加分类</p>
+    <table class="table table-striped" v-else>
       <thead>
         <tr>
           <th>分类ID</th>
@@ -66,6 +67,34 @@
             <button type="button" class="btn btn-danger btn-sm" @click="deleteCate(category.id)">删除</button>
           </td>
         </tr>
+        <!-- <tr>
+          <td></td>
+          <td>
+            <input type="text" ref="focusinput" v-model="name" placeholder="标签分类名字" />
+          </td>
+          <td></td>
+          <td>
+            <input type="number" v-model="weight" placeholder="分类权重,数字,越大排序越靠前" />
+          </td>
+          <td>
+            <button 
+              type="submit" 
+              @click="send()" 
+              id="myButton" 
+              data-complete-text="添加成功" 
+              data-loading-text="提交中..." 
+              class="btn btn-default" 
+              autocomplete="off" 
+              :disabled="!canSend"
+            >
+              添加分类
+            </button>
+          </td>
+        </tr> -->
+      </tbody>
+    </table>
+    <table class="table table-striped">
+      <tbody>
         <tr>
           <td></td>
           <td>
@@ -92,7 +121,6 @@
         </tr>
       </tbody>
     </table>
-    <p v-else style="text-align: center; padding: 8px;">还没有添加分类</p>
     <ul class="pager" v-show="page >= 1 && last_page > 1">
       <li class="previous" :class="page <= 1 ? 'disabled' : ''">
         <router-link :to="{ path: '/setting/tag-categories', query: prevQuery }">
