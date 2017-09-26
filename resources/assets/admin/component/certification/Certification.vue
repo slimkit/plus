@@ -229,13 +229,18 @@ const certificationComponent = {
       deep: true,
       'statuss.selected': {
         handler () {
-          this.selectChange();
+          this.getCertifications();
         },
       },
       'categories.selected': {
         handler () {
-          this.selectChange();
+          this.getCertifications();
         },
+      },
+      'paginate.currentPage': {
+        handler () {
+          this.getCertifications();
+        }
       }
     },
 
@@ -374,19 +379,16 @@ const certificationComponent = {
           this.errorMessage = this.successMessage = '';
         },
         selectChange () {
-          this.paginate.currentPage = 1;
-          this.getCertifications();    
+          this.paginate.currentPage = 1; 
         },
         nextPage () {
           if (this.paginate.lastPage > this.paginate.currentPage) {
             this.paginate.currentPage += 1;
-            this.getCertifications();
           } 
         },
         prevPage () {
           if (this.paginate.currentPage > 1) {
             this.paginate.currentPage -= 1;
-            this.getCertifications(); 
           } 
         },
     },
