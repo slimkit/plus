@@ -81,6 +81,10 @@ class WalletChargeController extends Controller
             abort(422, '取回订单非支付类型凭据');
         }
 
+        if ($charge->status === 1) {  // 订单已完成状态
+            return $charge;
+        }
+
         //  Ping++ charge.
         $pingppCharge = app(WalletChargeService::class)->query(
             $charge->charge_id
