@@ -95,7 +95,7 @@ class WalletChargeController extends Controller
         $charge->account = $this->resolveChargeAccount($pingppCharge, $charge->account);
 
         $user->getConnection()->transaction(function () use ($charge, $user) {
-            if ($charge->action !== 1 && $charge->status !== 1) {
+            if ($charge->action !== 1 || $charge->status !== 1) {
                 return;
             }
 
