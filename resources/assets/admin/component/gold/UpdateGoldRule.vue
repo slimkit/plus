@@ -73,7 +73,7 @@
             <div class="form-group">
               <label class="control-label col-md-2"></label>
               <div class="col-md-6">
-                <button class="btn btn-primary btn-sm" @click.prevent="updateGoldRule">确认</button>
+                <button class="btn btn-primary btn-sm" data-loading-text="提交中..." id="edit-btn" @click.prevent="updateGoldRule">确认</button>
               </div>
               <div class="col-md-4">
                  <span class="text-success"  v-show="message.success">{{ message.success }}</span>
@@ -89,6 +89,7 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
+import plusMessageBundle from 'plus-message-bundle';
 const UpdateGoldRuleComponent = {
     
     data: () => ({
@@ -142,24 +143,23 @@ const UpdateGoldRuleComponent = {
       updateGoldRule () {
 
         let id = this.$route.params.id
-
+        let btn  = $('#edit-btn');
+        btn.button('loading');
         request.put(
           createRequestURI(`gold/rules/${id}`),
           { ...this.rule },
           { validateStatus: status => status === 201 }
         ).then(({ data: { message: [ message ] = [] } }) => {
-
+          btn.button('reset');
           this.message.success = message;
-
+          let _vue = this;
+          setTimeout(() => {
+            _vue.$router.replace({ path: '/gold/rules' });
+          }, 500);
         }).catch(({ response: { data = {} } = {} }) => {
-
-          let errors = data.errors;
-
-          const { name = [], alias = [], incremental = [], desc = [], message = [] } = errors;
-          const [ error ] = [...name, ...alias, ...incremental, ...desc, ...message ];
-
-          this.message.error = error;
-          
+          btn.button('reset');
+          let Message = new plusMessageBundle(data);
+          this.message.error = Message.getMessage();
         });
       },
 

@@ -67,7 +67,7 @@
             <div class="form-group">
               <label class="control-label col-md-2"></label>
               <div class="col-md-6">
-                <button class="btn btn-primary btn-sm" @click.prevent="storeGoldType">确认</button>
+                <button class="btn btn-primary btn-sm" data-loading-text="提交中..." id="submit-btn" @click.prevent="storeGoldType">确认</button>
               </div>
               <div class="col-md-4">
                  <span class="text-success"  v-show="message.success">{{ message.success }}</span>
@@ -83,6 +83,7 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
+import plusMessageBundle from 'plus-message-bundle';
 const AddGoldType = {
     
     data: () => ({
@@ -106,24 +107,31 @@ const AddGoldType = {
     methods: {
 
       storeGoldType () {
-
+          this.resetMessage();
+          let btn = $('#submit-btn');
+          btn.button('loading');
           request.post(
             createRequestURI('gold/types'),
             { ...this.type },
             { validateStatus: status => status === 201 }
           ).then(({ data: { message: [ message ] = [] } }) => {
-
+            btn.button('reset');
             this.message.success = message;
-
+            let _vue = this;
+            setTimeout(() => {
+              _vue.$router.replace({ path: '/gold' });
+            }, 500);
           }).catch(({ response: { data = {} } = {} }) => {
-
-            let errors = data.errors;
-            const { name = [], unit = [] } = errors;
-            const [ error ] = [...name, ...unit ];
-
-            this.message.error = error;
+            btn.button('reset');
+            let Message = new plusMessageBundle(data);
+            this.message.error = Message.getMessage();
           });
       },
+
+      resetMessage () {
+        let msg = this.message;
+        msg.success = msg.error = null;
+      }
     },
 
     created () {

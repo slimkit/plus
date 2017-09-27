@@ -73,7 +73,7 @@
             <div class="form-group">
               <label class="control-label col-md-2"></label>
               <div class="col-md-6">
-                <button class="btn btn-primary btn-sm" @click.prevent="storeGoldRule">确认</button>
+                <button class="btn btn-primary btn-sm" data-loading-text="提交中..." id="submit-btn" @click.prevent="storeGoldRule">确认</button>
               </div>
               <div class="col-md-4">
                  <span class="text-success"  v-show="message.success">{{ message.success }}</span>
@@ -117,20 +117,23 @@ const AddGoldTypeCompnent = {
       storeGoldRule () {
 
         this.hiddenMessage();
-        
+        let btn = $('#submit-btn');
+        btn.button('loading');
         request.post(
           createRequestURI('gold/rules'),
           { ...this.rule },
           { validateStatus: status => status === 201 }
         ).then(({ data: { message: [ message ] = [] } }) => {
-
+          btn.button('reset');
           this.message.success = message;
-
+          let _vue = this;
+          setTimeout(() => {
+            _vue.$router.replace({ path: '/gold/rules' });
+          }, 500);
         }).catch(({ response: { data = {} } = {} }) => {
-
+          btn.button('reset');
           let Message = plusMessageBundle(data)
           this.message.error = Message.getMessage();
-
         });
       },
       // 获取权限节点
