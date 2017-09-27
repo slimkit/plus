@@ -58,7 +58,7 @@ function username(string $login, string $default = 'id'): string
  */
 function findMarkdownImageIDs(string $markdown): array
 {
-    $pattern = '/\@\!\[.*\]\((\d+)\)/is';
+    $pattern = '/\@\!\[.*?\]\((\d+?)\)/is';
     if (preg_match_all($pattern, $markdown, $matches) < 1) {
         return [];
     }
