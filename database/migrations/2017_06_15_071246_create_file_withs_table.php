@@ -39,7 +39,6 @@ class CreateFileWithsTable extends Migration
 
             $table->index('file_id');
             $table->index('user_id');
-            $table->unique(['channel', 'raw', 'file_id']);
         });
     }
 
