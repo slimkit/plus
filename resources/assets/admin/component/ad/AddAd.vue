@@ -1,21 +1,5 @@
-<style lang="css" module>
-    .container {
-        padding: 15px;
-    }
-    .loadding {
-        text-align: center;
-        font-size: 42px;
-    }
-    .loaddingIcon {
-        animation-name: "TurnAround";
-        animation-duration: 1.4s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-    }
-</style>
-
 <template>
-    <div :class="$style.container">
+    <div style="padding: 15px;">
         <div class="panel panel-default">
           <div class="panel-heading">
             <router-link type="button" class="btn btn-primary btn-sm" to="/ad">返回</router-link>

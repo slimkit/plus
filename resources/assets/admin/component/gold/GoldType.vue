@@ -1,21 +1,5 @@
-<style lang="css" module>
-    .container {
-        padding: 15px;
-    }
-    .loadding {
-        text-align: center;
-        font-size: 42px;
-    }
-    .loaddingIcon {
-        animation-name: "TurnAround";
-        animation-duration: 1.4s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-    }
-</style>
-
 <template>
-    <div :class="$style.container">
+    <div style="padding: 15px;">
         <div v-show="message.success" class="alert alert-success alert-dismissible" role="alert">
             <button type="button" class="close" @click.prevent="offAlert">
                 <span aria-hidden="true">&times;</span>
@@ -46,12 +30,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-show="loadding">
-                        <!-- 加载动画 -->
-                        <td :class="$style.loadding" colspan="5">
-                            <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-                        </td>
-                    </tr>
+                      <table-loading :loadding="loadding" colspanNum="5"></table-loading>
                       <!-- 数据存在 -->
                       <template v-if="types.length">
                         <tr v-for="type in types">
@@ -80,7 +59,11 @@
 </template>
 <script>
 import request, { createRequestURI } from '../../util/request';
+import tableLoading from '../common/TableLoading';
 const HomeComponent = {
+    components: {
+      tableLoading,
+    },
     data: () => ({
 
       loadding: true,
@@ -97,25 +80,18 @@ const HomeComponent = {
     methods: {
 
       getGoldTypes () {
-
         this.types = [];
         this.loadding = true;
-        
         request.get(
           createRequestURI('gold/types'),
           { validateStatus: status => status === 200 }
         ).then(response => {
-          
           this.types = response.data;
           this.loadding = false;
-
         }).catch(({ response: { data: { errors = ['获取金币类型失败'] } = {} } = {} }) => {
-
-          this.loadding = false;
           this.message.error = errors;
-
+          this.loadding = false;
         });
-
       },
 
       changeStatus (id) {

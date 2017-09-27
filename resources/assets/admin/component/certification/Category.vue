@@ -1,21 +1,5 @@
-<style lang="css" module>
-    .container {
-        padding: 15px;
-    }
-    .loadding {
-        text-align: center;
-        font-size: 42px;
-    }
-    .loaddingIcon {
-        animation-name: "TurnAround";
-        animation-duration: 1.4s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-    }
-</style>
-
 <template>
-    <div :class="$style.container">
+    <div style="padding: 15px;">
         <div class="panel panel-default">
           <div class="panel-body">
             <table class="table table-striped">
@@ -27,12 +11,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-show="loadding">
-                        <!-- 加载动画 -->
-                        <td :class="$style.loadding" colspan="2">
-                            <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-                        </td>
-                    </tr>
+                    <!-- 加载 -->
+                    <table-loading :loadding="loadding" colspanNum="2"></table-loading>
                     <tr v-for="category in categories">
                         <td>{{ category.name }}</td>
                         <td>{{ category.display_name }}</td>
@@ -52,7 +32,11 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
+import tableLoading from '../common/TableLoading';
 const ManageComponent = {
+    components: {
+      tableLoading
+    },
     data: () => ({
       loadding: true,
       categories:{}

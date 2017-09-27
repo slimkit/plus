@@ -1,21 +1,5 @@
-<style lang="css" module>
-    .container {
-        padding: 15px;
-    }
-    .loadding {
-        text-align: center;
-        font-size: 42px;
-    }
-    .loaddingIcon {
-        animation-name: "TurnAround";
-        animation-duration: 1.4s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-    }
-</style>
-
 <template>
-    <div :class="$style.container">
+    <div style="padding: 15px;">
         <div v-show="message.success" class="alert alert-success alert-dismissible" role="alert">
             <button type="button" class="close" @click.prevent="offAlert">
                 <span aria-hidden="true">&times;</span>
@@ -69,12 +53,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-show="loadding">
-                        <!-- 加载动画 -->
-                        <td :class="$style.loadding" colspan="6">
-                            <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-                        </td>
-                    </tr>
+                    <!-- 加载 -->
+                    <table-loading :loadding="loadding" colspanNum="6"></table-loading>
                     <template v-if="conversations.length">
                         <tr v-for="conversation in conversations">
                             <td>{{ conversation.id }}</td>
@@ -101,7 +81,11 @@
 <script>
 import request, { createRequestURI } from '../../util/request';
 import plusMessageBundle from 'plus-message-bundle';
+import tableLoading from '../common/TableLoading';
 const FeedbackComponent = {
+    components: {
+      tableLoading
+    },
     data: () => ({
       loadding: true,
       conversations: {},

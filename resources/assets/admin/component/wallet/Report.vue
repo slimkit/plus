@@ -1,21 +1,5 @@
-<style lang="css" module>
-    .container {
-        padding: 15px;
-    }
-    .loadding {
-        text-align: center;
-        font-size: 42px;
-    }
-    .loaddingIcon {
-        animation-name: "TurnAround";
-        animation-duration: 1.4s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-    }
-</style>
-
 <template>
-    <div :class="$style.container">
+    <div style="padding: 15px;">
         <div v-show="message.success" class="alert alert-success alert-dismissible" role="alert">
             <button type="button" class="close" @click.prevent="offAlert">
                 <span aria-hidden="true">&times;</span>
@@ -52,12 +36,8 @@
           	  	</tr>
           	  </thead>
           	  <tbody>
-	            <tr v-show="loadding">
-	                <!-- 加载动画 -->
-	                <td :class="$style.loadding" colspan="7">
-	                    <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-	                </td>
-	            </tr>
+                <!-- 加载 -->
+                <table-loading :loadding="loadding" colspanNum="7"></table-loading>
           	  	<tr  v-for="item in items" v-show="!loadding">
           	  	  <td>{{ item.type }}</td>
           	  	  <td>{{ item.num }}</td>
@@ -71,7 +51,11 @@
 </template>
 <script>
 import request, { createRequestURI } from '../../util/request';
+import tableLoading from '../common/TableLoading';
 const ReportComponent = {
+    components: {
+      tableLoading
+    },
     data: () => ({
       loadding: true,
       items: [],
