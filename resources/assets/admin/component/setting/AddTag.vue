@@ -49,7 +49,7 @@
               <label for="" class="control-label col-md-1"></label>
               <div class="col-md-6">
                 <button type="submit" @click="send()" id="myButton" data-complete-text="添加成功" data-loading-text="提交中..." class="btn btn-primary" autocomplete="off">
-                 添加
+                 确认
                 </button>
               </div>
               <div class="col-md-5">
@@ -124,9 +124,6 @@
           this.category = 0;
           this.weight = 0;
         }, 1500);
-      },
-      dismisAddAreaError () {
-        this.add.error = false;
       },
       setCategory (id) {
         this.category = id;

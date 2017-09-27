@@ -1,55 +1,71 @@
-<template>
+  <template>
   <div class="container-fluid">
-    <div class="page-header">
-      <h4>编辑标签</h4>
-    </div>
-    <form style="margin-bottom: 16px;">
-      <div class="form-group">
-        <label for="exampleInputEmail1">标签名字</label>
-        <input v-model="name" type="text" class="form-control" id="exampleInputEmail1" placeholder="标签名称">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        添加标签
       </div>
-      <div class="form-group">
-        <label for="exampleInputEmail1">标签权重<small>(越大越靠前)</small></label>
-        <input v-model="weight" type="text" class="form-control" id="exampleInputEmail1" placeholder="标签权重">
-      </div>
-      <div class="form-group">
-        <label for="exampleInputPassword1">标签分类</label>
-        <div  class="btn-toolbar" role="group" aria-label="cate">
-          <button 
-            type="button" 
-            @click="setCategory(cate.id)" 
-            :class="{ 'btn-info': category === cate.id}"
-            v-for="cate in categories" 
-            aria-label="cate" 
-            :key="cate.id" 
-            class=" btn btn-group btn-group-sm btn-default" 
-            role="group" 
-          >
-            {{cate.name}}
-          </button>
+      <div class="panel-body form-horizontal">
+        <div class="row">
+          <div class="col-md-11 col-md-offset-1">
+            <div class="form-group">
+              <label for="exampleInputEmail1" class="control-label col-md-1">标签名字</label>
+              <div class="col-md-6">
+                <input v-model="name" type="text" class="form-control" id="exampleInputEmail1" placeholder="标签名称">
+              </div>
+              <div class="col-md-5">
+                <div class="help-block">输入标签名字</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1" class="control-label col-md-1">标签权重</label>
+              <div class="col-md-6">
+                <input v-model="weight" type="text" class="form-control" placeholder="标签权重">
+              </div>
+              <div class="col-md-5">
+                <div class="help-block">输入标签权重<small>（越大越靠前）</small></div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1" class="control-label col-md-1">标签分类</label>
+              <div  class="btn-toolbar col-md-6" role="group" aria-label="cate">
+                <button
+                  type="button" 
+                  @click="setCategory(cate.id)" 
+                  :class="{ 'btn-info': category === cate.id}"
+                  v-for="cate in categories" 
+                  aria-label="cate" 
+                  :key="cate.id" 
+                  class=" btn btn-group btn-group-sm btn-default" 
+                  role="group" 
+                >
+                  {{cate.name}}
+                </button>
+              </div>
+              <div class="col-md-5">
+                <div class="help-block">请选择标签分类</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="" class="control-label col-md-1"></label>
+              <div class="col-md-6">
+                <button type="submit" @click="send()" id="myButton" data-complete-text="添加成功" data-loading-text="提交中..." class="btn btn-primary" autocomplete="off">
+                 确认
+                </button>
+              </div>
+              <div class="col-md-5">
+                 <span class="text-success"  v-show="message.success">{{ message.success }}</span>
+                 <span class="text-danger" v-show="message.error">{{ message.error }}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <button type="button" @click="send()" id="myButton" data-complete-text="修改成功" data-loading-text="提交中..." class="btn btn-default" autocomplete="off" :disabled="!canSend">
-        修改
-      </button>
-    </form>
-    <div v-show="add.error" class="alert alert-danger alert-dismissible" role="alert">
-        <button type="button" class="close" @click.prevent="dismisAddAreaError">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <strong>Error:</strong>
-        <p>{{ add.error_message }}</p>
-      </div>
+    </div>
   </div>
 </template>
-<style scoped lang="scss">
-  .btn-group {
-    margin-bottom: 8px;
-  }
-</style>
 <script>
   import request, { createRequestURI } from '../../util/request';
-
+  import plusMessageBundle from 'plus-message-bundle';
   const UpdateTag = {
     data: () => ({
       tag: {},
@@ -58,15 +74,17 @@
       category: 0,
       weight: null,
       categories: [],
-      add: {
-        loadding: false,
-        error: false,
-        error_message: ''
+      message: {
+        success: null,
+        error: null,
       }
     }),
 
     methods: {
       send () {
+
+        this.resetMessage();
+
         const {
           name = '',
           category = 0,
@@ -101,11 +119,13 @@
         })
         .then ( response => {
           this.sendComplate(btn);
+          this.message.success = '更新成功';
+          this.$router.replace({ path: '/setting/tags' });
         })
         .catch(({ response: { data = {} } = {} }) => {
           btn.button('reset');
-
-          let error = '修改标签失败';
+          let Message = new plusMessageBundle(data);
+          this.message.error = Message.getMessage();
           if(data.name) {
             error = data.name[0];
           }
@@ -113,8 +133,6 @@
             error = data.category[0];
           }
           this.add.loadding = false;
-          this.add.error = true;
-          this.add.error_message = error;
         });
       },
 
@@ -163,6 +181,10 @@
         .catch( () => {
 
         })
+      },
+      resetMessage () {
+        let msg = this.message;
+        msg.error = msg.success = null;
       }
     },
 
