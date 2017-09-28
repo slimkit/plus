@@ -140,7 +140,7 @@ const ListComponent = {
           { validateStatus: status => status === 200,
           params: { ...query, limit: 15 },
           },
-        ).then(({ data = [], headers: { 'x-question-total': total } }) => {
+        ).then(({ data = [], headers: { 'x-reward-total': total } }) => {
           this.loadding = false;
           this.total = parseInt(total);
           this.rewards = data;

@@ -119,7 +119,7 @@ class RewardController extends Controller
             ->offset($offset)
             ->get();
 
-        return response()->json($items, 200, ['x-question-total' => $total]);
+        return response()->json($items, 200, ['x-reward-total' => $total]);
     }
 
     /**
