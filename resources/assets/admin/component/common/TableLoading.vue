@@ -28,6 +28,6 @@ export default {
         colspanNum: {
           type: Number,
         }
-    }
+    },
 };
 </script>

@@ -30,7 +30,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                      <table-loading :loadding="loadding" colspanNum="5"></table-loading>
+                      <table-loading :loadding="loadding" :colspanNum="5"></table-loading>
                       <!-- 数据存在 -->
                       <template v-if="types.length">
                         <tr v-for="type in types">

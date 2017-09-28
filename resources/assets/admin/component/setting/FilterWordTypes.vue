@@ -1,21 +1,5 @@
-<style lang="css" module>
-    .container {
-        padding: 15px;
-    }
-    .loadding {
-        text-align: center;
-        font-size: 42px;
-    }
-    .loaddingIcon {
-        animation-name: "TurnAround";
-        animation-duration: 1.4s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-    }
-</style>
-
 <template>
-    <div :class="$style.container">
+    <div style="padding: 15px;">
         <div class="panel panel-default">
           <div class="panel-heading">
             <div v-show="errorMessage" class="alert alert-danger alert-dismissible" role="alert">
@@ -41,12 +25,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-show="loadding">
-                        <!-- 加载动画 -->
-                        <td :class="$style.loadding" colspan="4">
-                            <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-                        </td>
-                    </tr>
+                    <table-loading :loadding="loadding" :colspanNum="4"></table-loading>
                     <tr v-for="type in types">
                         <td><input type="checkbox" :value="type.id" :checked="checked"></td>
                         <td>{{ type.name }}</td>
@@ -65,7 +44,11 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
+import tableLoading from '../common/TableLoading';
 const FilterWordCategory = {
+    components:{
+      tableLoading,
+    },
     data: () => ({
       loadding: true,
       types: {},

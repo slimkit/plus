@@ -76,7 +76,7 @@
                     </thead>
                     <tbody>
                         <!-- 加载 -->
-                        <table-loading :loadding="loadding" colspanNum="12"></table-loading>
+                        <table-loading :loadding="loadding" :colspanNum="12"></table-loading>
                         <template v-if="certifications.length">
                           <tr v-for="(certification, index) in certifications">
                               <td>{{ certification.user.name }}</td>
