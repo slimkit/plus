@@ -68,7 +68,7 @@
                     </thead>
                     <tbody>
                         <!-- 加载 -->
-                        <table-loading :loadding="loadding" :colspanNum="6"></table-loading>
+                        <table-loading :loadding="loadding" :colspan-num="6"></table-loading>
                         <tr v-for="reward in rewards">
                           <td>{{ reward.id }}</td>
                           <td>{{ reward.user.name }}</td>
@@ -92,7 +92,7 @@ import plusMessageBundle from 'plus-message-bundle';
 import tableLoading from '../common/TableLoading';
 const ListComponent = {
     components: {
-      tableLoading
+      'table-loading': tableLoading,
     },
     data: () => ({
       loadding: false,

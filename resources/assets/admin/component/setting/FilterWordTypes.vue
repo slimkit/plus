@@ -25,7 +25,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <table-loading :loadding="loadding" :colspanNum="4"></table-loading>
+                    <table-loading :loadding="loadding" :colspan-num="4"></table-loading>
                     <tr v-for="type in types">
                         <td><input type="checkbox" :value="type.id" :checked="checked"></td>
                         <td>{{ type.name }}</td>
@@ -47,7 +47,7 @@ import request, { createRequestURI } from '../../util/request';
 import tableLoading from '../common/TableLoading';
 const FilterWordCategory = {
     components:{
-      tableLoading,
+      'table-loading': tableLoading,
     },
     data: () => ({
       loadding: true,

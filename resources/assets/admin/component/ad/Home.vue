@@ -79,12 +79,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-show="loadding">
-                        <!-- 加载动画 -->
-                        <td :class="$style.loadding" colspan="7">
-                            <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-                        </td>
-                    </tr>
+                      <table-loading :loadding="loadding" :colspan-num="7"></table-loading>
                       <!-- 数据存在 -->
                       <template v-if="ads.length">
                         <tr v-for="ad in ads">
@@ -116,7 +111,11 @@
 </template>
 <script>
 import request, { createRequestURI } from '../../util/request';
+import tableLoading from '../common/TableLoading';
 const ManageComponent = {
+    components:{
+      'table-loading': tableLoading,
+    },
     data: () => ({
 
       loadding: true,

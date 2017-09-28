@@ -56,7 +56,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <table-loading :loadding="loadding" :colspanNum="8"></table-loading>
+                    <table-loading :loadding="loadding" :colspan-num="8"></table-loading>
                     <tr v-for="sensitive in sensitives">
                         <td><input type="checkbox" :value="sensitive.id" :checked="checked"></td>
                         <td>{{ sensitive.name }}</td>
@@ -82,7 +82,7 @@ import request, { createRequestURI } from '../../util/request';
 import tableLoading from '../common/TableLoading';
 const SensitiveWord = {
     components: {
-      tableLoading,
+      'table-loading': tableLoading,
     },
     data: () => ({
       loadding: true,

@@ -54,7 +54,7 @@
                 </thead>
                 <tbody>
                     <!-- 加载 -->
-                    <table-loading :loadding="loadding" :colspanNum="6"></table-loading>
+                    <table-loading :loadding="loadding" :colspan-num="6"></table-loading>
                     <template v-if="conversations.length">
                         <tr v-for="conversation in conversations">
                             <td>{{ conversation.id }}</td>
@@ -84,7 +84,7 @@ import plusMessageBundle from 'plus-message-bundle';
 import tableLoading from '../common/TableLoading';
 const FeedbackComponent = {
     components: {
-      tableLoading
+      'table-loading': tableLoading,
     },
     data: () => ({
       loadding: true,

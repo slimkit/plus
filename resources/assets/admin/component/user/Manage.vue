@@ -2,16 +2,6 @@
 .container {
   padding-top: 15px;
 }
-.loadding {
-  text-align: center;
-  font-size: 42px;
-}
-.loaddingIcon {
-  animation-name: "TurnAround";
-  animation-duration: 1.4s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
 </style>
 
 <template>
@@ -116,12 +106,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-show="loadding">
-          <!-- 加载动画 -->
-          <td :class="$style.loadding" colspan="6">
-            <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-          </td>
-        </tr>
+        <table-loading :loadding="loadding" :colspan-num="6"></table-loading>
         <tr v-for="user in users" :key="user.id">
           <td>{{ user.id }}</td>
           <td>{{ user.name }}</td>
@@ -167,8 +152,12 @@
 <script>
 import request, { createRequestURI } from '../../util/request';
 import lodash from 'lodash';
+import tableLoading from '../common/TableLoading';
 
 const ManageComponent = {
+  components: {
+    'table-loading': tableLoading,
+  },
   /**
    * 定义当前组件状态数据
    *

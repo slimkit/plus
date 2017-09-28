@@ -2,18 +2,7 @@
 .container {
   padding-top: 15px;
 }
-.loadding {
-  text-align: center;
-  font-size: 42px;
-}
-.loaddingIcon {
-  animation-name: "TurnAround";
-  animation-duration: 1.4s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
 </style>
-
 <template>
   <div class="container-fluid" :class="$style.container">
     <!-- 提示 -->
@@ -35,6 +24,7 @@
         </tr>
       </thead>
       <tbody>
+        <table-loading :loadding="loadding" :colspan-num="5"></table-loading>
         <tr v-for="perm in abilities" :key="perm.id">
           <td>{{ perm.name }}</td>
           <td>
@@ -80,14 +70,8 @@
             <button v-else type="button" class="btn btn-primary btn-sm" @click.pervent="postPerm">添加</button>
           </td>
         </tr>
-
       </tbody>
     </table>
-
-    <div v-show="loadding" :class="$style.loadding">
-      <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-    </div>
-
     <div v-show="error" class="alert alert-danger alert-dismissible" role="alert">
       <button type="button" class="close" @click.prevent="dismisError">
         <span aria-hidden="true">&times;</span>
@@ -101,8 +85,12 @@
 <script>
 import request, { createRequestURI } from '../../util/request';
 import lodash from 'lodash';
+import tableLoading from '../common/TableLoading';
 
 const PermissionsComponent = {
+  components:{
+    'table-loading': tableLoading
+  },
   data: () => ({
     abilities: [],
     deleteIds: {},
@@ -117,7 +105,6 @@ const PermissionsComponent = {
   }),
   methods: {
     postPerm () {
-      console.log(2);
       const { name, display_name, description } = this.add;
       this.add.adding = true;
       request.post(

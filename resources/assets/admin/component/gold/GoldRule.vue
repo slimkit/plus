@@ -40,7 +40,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                      <table-loading :loadding="loadding" colspanNum="5"></table-loading>
+                      <table-loading :loadding="loadding" :colspan-num="5"></table-loading>
                       <!-- 数据存在 -->
                       <template v-if="rules.length">
                         <tr v-for="rule in rules">
@@ -69,7 +69,7 @@ import request, { createRequestURI } from '../../util/request';
 import tableLoading from '../common/TableLoading';
 const GoldRuleComponent = {
     components: {
-      tableLoading,
+      'table-loading': tableLoading,
     },
     data: () => ({
 

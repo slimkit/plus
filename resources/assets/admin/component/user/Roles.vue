@@ -33,6 +33,8 @@
         </tr>
       </thead>
       <tbody>
+        <!-- 加载动画 -->
+        <table-loading :loadding="loadding" :colspan-num="5"></table-loading>
         <tr v-for="role in roles">
           <td>{{ role.name }}</td>
           <td>{{ role.display_name }}</td>
@@ -84,19 +86,17 @@
       </button>
       {{ error }}
     </div>
-
-    <!-- 加载动画 -->
-    <div v-show="loadding" :class="$style.loadding">
-      <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-    </div>
   </div>
 </template>
 
 <script>
 import request, { createRequestURI } from '../../util/request';
 import lodash from 'lodash';
-
+import tableLoading from '../common/TableLoading';
 const RolesComponent = {
+  components: {
+    'table-loading': tableLoading,
+  },
   /**
    * The component state tree.
    *

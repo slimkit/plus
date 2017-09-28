@@ -37,7 +37,7 @@
           	  </thead>
           	  <tbody>
                 <!-- 加载 -->
-                <table-loading :loadding="loadding" colspanNum="7"></table-loading>
+                <table-loading :loadding="loadding" :colspan-num="7"></table-loading>
           	  	<tr  v-for="item in items" v-show="!loadding">
           	  	  <td>{{ item.type }}</td>
           	  	  <td>{{ item.num }}</td>
@@ -54,7 +54,7 @@ import request, { createRequestURI } from '../../util/request';
 import tableLoading from '../common/TableLoading';
 const ReportComponent = {
     components: {
-      tableLoading
+      'table-loading': tableLoading,
     },
     data: () => ({
       loadding: true,

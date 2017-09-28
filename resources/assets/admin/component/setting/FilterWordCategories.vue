@@ -26,7 +26,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <table-loading :loadding="loadding" :colspanNum="3"></table-loading>
+                    <table-loading :loadding="loadding" :colspan-num="3"></table-loading>
                     <tr v-for="category in categories">
                       <td><input type="checkbox"></td>
                       <td>{{ category.name }}</td>
@@ -48,7 +48,7 @@ import plusMessageBundle from 'plus-message-bundle';
 import tableLoading from '../common/TableLoading';
 const FilterWordCategory = {
     components:{
-      tableLoading,
+      'table-loading': tableLoading,
     },
     data: () => ({
       loadding: true,
