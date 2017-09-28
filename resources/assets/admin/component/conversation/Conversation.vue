@@ -81,11 +81,7 @@
 <script>
 import request, { createRequestURI } from '../../util/request';
 import plusMessageBundle from 'plus-message-bundle';
-import tableLoading from '../commons/TableLoading';
 const FeedbackComponent = {
-    components: {
-      'table-loading': tableLoading,
-    },
     data: () => ({
       loadding: true,
       conversations: {},

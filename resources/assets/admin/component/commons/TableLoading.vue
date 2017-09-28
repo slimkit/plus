@@ -24,9 +24,11 @@ export default {
     props: {
        loadding: {
          type: Boolean,
+         required: true,
        },
         colspanNum: {
           type: Number,
+          required: true,
         }
     },
 };

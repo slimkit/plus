@@ -92,11 +92,8 @@
 <script>
 import request, { createRequestURI } from '../../util/request';
 import lodash from 'lodash';
-import tableLoading from '../commons/TableLoading';
+
 const RolesComponent = {
-  components: {
-    'table-loading': tableLoading,
-  },
   /**
    * The component state tree.
    *

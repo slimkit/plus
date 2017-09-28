@@ -59,11 +59,7 @@
 </template>
 <script>
 import request, { createRequestURI } from '../../util/request';
-import tableLoading from '../commons/TableLoading';
 const HomeComponent = {
-    components: {
-      'table-loading': tableLoading,
-    },
     data: () => ({
 
       loadding: true,

@@ -33,24 +33,12 @@
                 </div>
                 <!-- 搜索 -->
                 <div class="form-group">
-                  <button class="btn btn-default" @click.prevent="search">搜索</button>
+                  <router-link class="btn btn-default" tag="button" :to="{ path: '/reward/list', query: searchQuery }">
+                    搜索
+                  </router-link>
                 </div>
                 <!-- 导出 -->
-                <a :href="exportUrl" target="_self" class="btn btn-success">导出</a>
-                <div class="input-group pull-right">
-                    <ul class="pagination" style="margin: 0;">
-                      <li :class="paginate.current_page <= 1 ? 'disabled' : null">
-                        <a href="javascript:;" aria-label="Previous" @click.stop.prevent="prevPage">
-                          <span aria-hidden="true">&laquo;</span>
-                        </a>
-                      </li>
-                      <li :class="paginate.current_page >= paginate.last_page ? 'disabled' : null">
-                        <a href="javascript:;" aria-label="Next" @click.stop.prevent="nextPage">
-                          <span aria-hidden="true">&raquo;</span>
-                        </a>
-                      </li>
-                    </ul>
-                </div>
+                <a :href="exportUrl" class="btn btn-success">导出</a>
               </div>
             </div>
             <!-- 添加广告 -->
@@ -78,10 +66,22 @@
                           <td v-else-if="reward.rewardable_type=='news'">咨询</td>
                           <td v-else-if="reward.rewardable_type=='users'">用户</td>
                           <td v-else-if="reward.rewardable_type=='question-answers'">问答</td>
-                          <td> <local-date :utc="reward.created_at"/> </td>
+                          <td v-else>未知</td>
+                          <td> <local-date :utc="reward.created_at"/></td>
                         </tr>
                     </tbody>
                 </table>
+                <!-- 分页 -->
+                <div class="text-center">
+                  <offset-paginator class="pagination" :total="total" :offset="offset" :limit="15">
+                    <template scope="pagination">
+                      <li :class="(pagination.disabled ? 'disabled': '') + (pagination.currend ? 'active' : '')">
+                        <span v-if="pagination.disabled || pagination.currend">{{ pagination.page }}</span>
+                        <router-link v-else :to="offsetPage(pagination.offset)">{{ pagination.page }}</router-link>
+                      </li>
+                    </template>
+                  </offset-paginator>
+                </div>
             </div>
         </div>
     </div>
@@ -89,26 +89,12 @@
 <script>
 import request, { createRequestURI } from '../../util/request';
 import plusMessageBundle from 'plus-message-bundle';
-import tableLoading from '../commons/TableLoading';
+
 const ListComponent = {
-    components: {
-      'table-loading': tableLoading,
-    },
     data: () => ({
       loadding: false,
-      rewards: {},
-      reward_types: [
-        { name: '', alias: '全部' },
-        { name: 'feeds', alias: '动态打赏' },
-        { name: 'news', alias: '咨询打赏' },
-        { name: 'users', alias: '用户打赏' },
-        { name: 'question-answers', alias: '问答打赏' },
-      ],
-      paginate: {
-        current_page: 1,
-        last_page: 0,
-        per_page: 20,
-      },
+      rewards: [],
+      total: 0,
       filter: {
         type: '',
         start: '',
@@ -119,83 +105,57 @@ const ListComponent = {
         error: null,
         success: null,
       },
+      reward_types: [
+        { name: '', alias: '全部' },
+        { name: 'feeds', alias: '动态打赏' },
+        { name: 'news', alias: '咨询打赏' },
+        { name: 'users', alias: '用户打赏' },
+        { name: 'question-answers', alias: '问答打赏' },
+      ],
     }),
     computed: {
       exportUrl () {
-        let url = '/admin/rewards/export?export_type=list';
-        let filter = this.filter;
-        url += '&type=' + filter.type;
-        url += '&start=' + filter.start;
-        url += '&end=' + filter.end;
-        url += '&keyword=' + filter.keyword;
-        return url;
-      }
+        return '/admin/rewards/export?export_type=list' + $.param(this.filter);
+      },
+      offset () {
+        const { query: { offset = 0 } } = this.$route;
+        return parseInt(offset);
+      },
+      searchQuery () {
+        return { ...this.filter, offset: 0 };
+      },
     },
     watch: {
-      'filter.type'() {
-        this.paginate.current_page = 1;
-        this.getRewards();
+      '$route': function ($route) {
+        this.total = 0;
+        this.getRewards({ ...$route.query });
       },
-      'paginate.current_page'() {
-        this.getRewards();
-      }
     },
     methods: {
-      getRewards () {
+      getRewards (query = {}) {
         this.rewards = {};
         this.loadding = true;
         request.get(
-          createRequestURI('rewards' + this.getQueryParams()),
-          { validateStatus: status => status === 200 }
-        ).then(response => {
+          createRequestURI('rewards'),
+          { validateStatus: status => status === 200,
+          params: { ...query, limit: 15 },
+          },
+        ).then(({ data = [], headers: { 'x-question-total': total } }) => {
           this.loadding = false;
-
-          let { 
-            data: data, 
-            current_page: current_page, 
-            last_page: last_page, 
-          } = response.data;
-          this.paginate.current_page = current_page;
-          this.paginate.last_page = last_page;
+          this.total = parseInt(total);
           this.rewards = data;
-
         }).catch(({ response: { data: { errors = ['加载失败'] } = {} } = {} }) => {
           this.loadding = false;
           let Message = new plusMessageBundle(errors);
           this.message.error = Message.getMessage();
         });
       },
-      search () {
-        this.paginate.current_page = 1;
-        this.getRewards();
-      },
-      nextPage () {
-        if (this.paginate.last_page > this.paginate.current_page) {
-          this.paginate.current_page += 1;
-        } 
-      },
-      prevPage () {
-        if (this.paginate.current_page > 1) {
-          this.paginate.current_page -= 1;
-        } 
-      },
-      getQueryParams () {
-        let filter = this.filter;
-        let paginate = this.paginate;
-        let params = '?';
-
-        params += 'keyword=' + filter.keyword;
-        params += '&type=' + filter.type;
-        params += '&end=' + filter.end;
-        params += '&start=' + filter.start;
-        params += '&per_page=' + paginate.per_page;
-        params += '&page=' + paginate.current_page;
-
-        return params; 
+      offsetPage(offset) {
+        return { path: '/reward/list', query: { ...this.filter, offset } };
       },
     },
     created () {
-      this.getRewards();
+      this.getRewards(this.$route.query);
     },
 };
 export default ListComponent;

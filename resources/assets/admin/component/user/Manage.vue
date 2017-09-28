@@ -152,12 +152,8 @@
 <script>
 import request, { createRequestURI } from '../../util/request';
 import lodash from 'lodash';
-import tableLoading from '../commons/TableLoading';
 
 const ManageComponent = {
-  components: {
-    'table-loading': tableLoading,
-  },
   /**
    * 定义当前组件状态数据
    *

@@ -69,8 +69,9 @@
                     </tr>
                 </thead>
                 <tbody>
+                      <!-- loading -->
                       <table-loading :loadding="loadding" :colspan-num="7"></table-loading>
-                      <!-- 数据存在 -->
+                      <!--  list -->
                       <template v-if="ads.length">
                         <tr v-for="ad in ads">
                           <td>{{ ad.title }}</td>
@@ -101,11 +102,7 @@
 </template>
 <script>
 import request, { createRequestURI } from '../../util/request';
-import tableLoading from '../commons/TableLoading';
 const ManageComponent = {
-    components:{
-      'table-loading': tableLoading,
-    },
     data: () => ({
 
       loadding: true,

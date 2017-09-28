@@ -85,12 +85,8 @@
 <script>
 import request, { createRequestURI } from '../../util/request';
 import lodash from 'lodash';
-import tableLoading from '../commons/TableLoading';
 
 const PermissionsComponent = {
-  components:{
-    'table-loading': tableLoading
-  },
   data: () => ({
     abilities: [],
     deleteIds: {},

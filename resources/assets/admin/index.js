@@ -4,7 +4,7 @@ import App from './App.vue';
 import store from './store';
 import router from './router';
 import LocalDate from './component/LocalDate';
-
+import './component/commons';
 // sync the router with the vuex store.
 // this registers `store.state.route`
 sync(store, router);

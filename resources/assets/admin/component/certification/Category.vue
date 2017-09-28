@@ -12,7 +12,7 @@
                 </thead>
                 <tbody>
                     <!-- 加载 -->
-                    <table-loading :loadding="loadding" :colspan-num="2"></table-loading>
+                    <table-loading :loadding="loadding" :colspan-num="3"></table-loading>
                     <tr v-for="category in categories">
                         <td>{{ category.name }}</td>
                         <td>{{ category.display_name }}</td>
@@ -32,11 +32,7 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
-import tableLoading from '../commons/TableLoading';
 const ManageComponent = {
-    components: {
-      'table-loading': tableLoading
-    },
     data: () => ({
       loadding: true,
       categories:{}
@@ -59,6 +55,5 @@ const ManageComponent = {
       this.getCertificationCategories();
     },
 };
-
 export default ManageComponent;
 </script>

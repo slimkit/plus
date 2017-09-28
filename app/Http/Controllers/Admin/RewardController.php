@@ -85,13 +85,15 @@ class RewardController extends Controller
      */
     public function rewards(Request $request)
     {
+        $end = $request->get('end');
         $type = $request->get('type');
         $start = $request->get('start');
-        $end = $request->get('end');
         $keyword = $request->get('keyword');
-        $perPage = (int) $request->get('perPage', 20);
 
-        $items = Reward::with(['user', 'target'])
+        $limit = (int) $request->query('limit', 15);
+        $offset = (int) $request->query('offset', 0);
+
+        $query = Reward::with(['user', 'target'])
         ->when($type, function ($query) use ($type) {
             $query->where('rewardable_type', $type);
         })
@@ -106,14 +108,18 @@ class RewardController extends Controller
                 $query->where('user_id', $keyword);
             } else {
                 $query->whereHas('user', function ($qeruy) use ($keyword) {
-                    $qeruy->where('name', 'like', $keyword);
+                    $qeruy->where('name', 'like', sprintf('%%%s%%', $keyword));
                 });
             }
-        })
-        ->orderBy('id', 'desc')
-        ->paginate($perPage);
+        });
 
-        return response()->json($items, 200);
+        $total = $query->count('id');
+        $items = $query->orderBy('id', 'desc')
+            ->limit($limit)
+            ->offset($offset)
+            ->get();
+
+        return response()->json($items, 200, [ 'x-question-total' => $total ]);
     }
 
     /**
