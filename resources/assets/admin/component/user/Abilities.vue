@@ -85,7 +85,7 @@
 <script>
 import request, { createRequestURI } from '../../util/request';
 import lodash from 'lodash';
-import tableLoading from '../common/TableLoading';
+import tableLoading from '../commons/TableLoading';
 
 const PermissionsComponent = {
   components:{

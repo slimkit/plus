@@ -32,7 +32,7 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
-import tableLoading from '../common/TableLoading';
+import tableLoading from '../commons/TableLoading';
 const ManageComponent = {
     components: {
       'table-loading': tableLoading

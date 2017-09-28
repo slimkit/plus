@@ -2,16 +2,6 @@
     .container {
         padding: 15px;
     }
-    .loadding {
-        text-align: center;
-        font-size: 42px;
-    }
-    .loaddingIcon {
-        animation-name: "TurnAround";
-        animation-duration: 1.4s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-    }
 </style>
 
 <template>
@@ -111,7 +101,7 @@
 </template>
 <script>
 import request, { createRequestURI } from '../../util/request';
-import tableLoading from '../common/TableLoading';
+import tableLoading from '../commons/TableLoading';
 const ManageComponent = {
     components:{
       'table-loading': tableLoading,

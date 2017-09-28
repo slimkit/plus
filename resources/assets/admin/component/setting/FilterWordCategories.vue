@@ -45,7 +45,7 @@
 <script>
 import request, { createRequestURI } from '../../util/request';
 import plusMessageBundle from 'plus-message-bundle';
-import tableLoading from '../common/TableLoading';
+import tableLoading from '../commons/TableLoading';
 const FilterWordCategory = {
     components:{
       'table-loading': tableLoading,
