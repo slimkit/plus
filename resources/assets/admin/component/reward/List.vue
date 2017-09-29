@@ -137,8 +137,9 @@ const ListComponent = {
         this.loadding = true;
         request.get(
           createRequestURI('rewards'),
-          { validateStatus: status => status === 200,
-          params: { ...query, limit: 15 },
+          { 
+            validateStatus: status => status === 200,
+            params: { ...query, limit: 15 },
           },
         ).then(({ data = [], headers: { 'x-reward-total': total } }) => {
           this.loadding = false;
@@ -152,6 +153,10 @@ const ListComponent = {
       },
       offsetPage(offset) {
         return { path: '/reward/list', query: { ...this.filter, offset } };
+      },
+      offAlert () {
+        this.message.error = null;
+        this.message.success = null;
       },
     },
     created () {

@@ -10,17 +10,22 @@ class ConversationController extends Controller
 {
     public function index(Request $request)
     {
-        $perPage = (int) $request->get('perPage', 20);
         $type = $request->get('type');
+        $limit = (int) $request->get('limit', 15);
+        $offset = (int) $request->get('offset', 0);
 
-        $conversations = Conversation::with('user')
+        $query = Conversation::with('user')
             ->orderBy('id', 'desc')
             ->when(! is_null($type), function ($query) use ($type) {
                 $query->where('type', $type);
-            })
-            ->paginate($perPage);
+            });
 
-        return response()->json($conversations, 200);
+        $total = $query->count('id');
+        $items = $query->limit($limit)
+            ->offset($offset)
+            ->get();
+
+        return response()->json($items, 200, ['x-conversation-total' => $total]);
     }
 
     public function delete(Conversation $conversation)

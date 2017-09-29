@@ -22,21 +22,9 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-default" @click="handleSearch">搜索</button>
-                </div>
-                <div class="form-group pull-right">
-                    <ul class="pagination" style="margin: 0;">
-                      <li :class="paginate.currentPage <= 1 ? 'disabled' : null">
-                        <a href="javascript:;" aria-label="Previous" @click.stop.prevent="prevPage">
-                          <span aria-hidden="true">&laquo;</span>
-                        </a>
-                      </li>
-                      <li :class="paginate.currentPage >= paginate.lastPage ? 'disabled' : null">
-                        <a href="javascript:;" aria-label="Next" @click.stop.prevent="nextPage">
-                          <span aria-hidden="true">&raquo;</span>
-                        </a>
-                      </li>
-                    </ul>
+                  <router-link class="btn btn-default" tag="button" :to="{ path: '/conversations', query: searchQuery }">
+                    搜索
+                  </router-link>
                 </div>
             </div>
           </div>
@@ -73,26 +61,34 @@
                     </template>
                 </tbody>
             </table>
+            <!-- 分页 -->
+            <div class="text-center">
+              <offset-paginator class="pagination" :total="total" :offset="offset" :limit="15">
+                <template scope="pagination">
+                  <li :class="(pagination.disabled ? 'disabled': '') + (pagination.currend ? 'active' : '')">
+                    <span v-if="pagination.disabled || pagination.currend">{{ pagination.page }}</span>
+                    <router-link v-else :to="offsetPage(pagination.offset)">{{ pagination.page }}</router-link>
+                  </li>
+                </template>
+              </offset-paginator>
+            </div>
           </div>
         </div>
     </div>
 </template>
-
 <script>
 import request, { createRequestURI } from '../../util/request';
 import plusMessageBundle from 'plus-message-bundle';
+
 const FeedbackComponent = {
     data: () => ({
       loadding: true,
-      conversations: {},
-      paginate: {
-        perPage: 20,
-        lastPage: 10,
-        currentPage:1,
-      },
+      conversations: [],
+      total: 0,
       types: [
-         {name: '全部', alias: ''},
-         {name: '意见反馈', alias: 'feedback'},
+        { name: '全部', alias: '' },
+        { name: '意见反馈', alias: 'feedback' },
+        { name: '系统消息', alias: 'system' },
       ],
       queryParams: {
         type: '',
@@ -103,31 +99,35 @@ const FeedbackComponent = {
         success: null,
       }
     }),
-    watch: {
-      'queryParams.type' () {
-        this.getConversations();
+    computed: {
+      offset () {
+        const { query: { offset = 0 } } = this.$route;
+        return parseInt(offset);
       },
-      'paginate.currentPage' () {
-        this.getConversations();
-      }
+      searchQuery () {
+        return { ...this.queryParams, offset: 0 };
+      },
+    },
+    watch: {
+      '$route': function ($route) {
+        this.total = 0;
+        this.getConversations({ ...$route.query });
+      },
     },
     methods: {
-      getConversations () {
+      getConversations (query = {}) {
         this.loadding = true;
         this.conversations = [];
         request.get(
-          createRequestURI('conversations' + this.getQueryParams()),
-          { validateStatus: status => status === 200 }
-        ).then(response => {
-            this.loadding = false;
-            this.conversations = {}; 
-          
-            const { data: data, current_page: currentPage, last_page: lastPage, total: total } = response.data;
-            this.paginate.currentPage = currentPage;
-            this.paginate.lastPage = lastPage;
-            this.paginate.total = total;
-            this.conversations = data;
-
+          createRequestURI('conversations'),
+          { 
+            validateStatus: status => status === 200,
+            params: { ...query, limit: 15 }, 
+          }
+        ).then(({ data = [], headers: { 'x-conversation-total': total } }) => {
+          this.loadding = false;
+          this.conversations = data;
+          this.total = parseInt(total);
         }).catch(({ response: { data: { errors = ['加载会话列表失败'] } = {} } = {} }) => {
           this.loadding = false;
           let Message = new plusMessageBundle(errors);
@@ -140,10 +140,6 @@ const FeedbackComponent = {
              return this.types[i].name;
            }
         }
-      },
-      handleSearch () {
-        this.paginate.currentPage = 1;
-        this.getConversations();
       },
       delConversation (id) {
         let bool = confirm('是否确认删除？');
@@ -160,13 +156,6 @@ const FeedbackComponent = {
           });
         }
       },
-      getQueryParams () {
-        let query = '?';
-        query += 'type=' + this.queryParams.type;
-        query += '&perPage=' + this.paginate.perPage;
-        query += '&page=' + this.paginate.currentPage;
-        return query;
-      },
       byIdDeleteConversation(id) {
         this.conversations.forEach((item, index) => {
           if (item.id == id) {
@@ -174,25 +163,17 @@ const FeedbackComponent = {
           }
         });
       },
-      nextPage () {
-        if (this.paginate.lastPage > this.paginate.currentPage) {
-          this.paginate.currentPage += 1; 
-        }
-      },
-      prevPage () {
-        if (this.paginate.currentPage > 1) {
-          this.paginate.currentPage -= 1; 
-        }
-      },
       offAlert () {
         this.message.error = null;
         this.message.success = null;
-      }
+      },
+      offsetPage(offset) {
+        return { path: '/conversations', query: { ...this.queryParams, offset } };
+      },
     },
     created () {
-      this.getConversations();
+      this.getConversations(this.$route.query);
     },
-
 };
 export default FeedbackComponent;
 </script>
