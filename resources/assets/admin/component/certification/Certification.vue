@@ -74,7 +74,11 @@
                               <td>{{ certification.data.number }}</td>
                               <td>{{ certification.category.display_name }}</td>
                               <td>{{ certification.data.desc }}</td>
-                              <td><a :href="attachmentPath+certification.data.files[0]" target="__blank">下载</a></td>
+                              <td>
+                                <a :href="attachmentPath+file" 
+                                target="__blank" 
+                                v-for="(file,index) in certification.data.files"> 附件[{{ index+1 }}]</a>
+                              </td>
                               <td>{{ statuss.display[certification.status] }}</td>
                               <td><local-date :utc="certification.updated_at"/></td>
                               <td>

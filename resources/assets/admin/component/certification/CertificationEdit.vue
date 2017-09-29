@@ -5,7 +5,7 @@
     .loadding {
         text-align: center;
         font-size: 42px;
-        padding-top: 100px;
+        padding-top: 50px;
     }
     .loaddingIcon {
         animation-name: "TurnAround";

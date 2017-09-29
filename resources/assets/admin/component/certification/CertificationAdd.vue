@@ -2,20 +2,11 @@
     .container {
         padding: 15px;
     }
-    .loadding {
-        text-align: center;
-        font-size: 42px;
-        padding-top: 100px;
-    }
-    .loaddingIcon {
-        animation-name: "TurnAround";
-        animation-duration: 1.4s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-    }
-    .image {
-        max-width:200px;
-        margin-bottom: 10px;
+    .avatar {
+      height:20px;
+      width:20px;
+      display:inline-block;
+      margin-right:20px;
     }
 </style>
 
@@ -26,19 +17,31 @@
                 <router-link type="button" class="btn btn-primary btn-sm" :to="{name: 'certification:users'}">返回</router-link>
               </div>
               <div class="panel-body">
-                <!-- 加载动画 -->
-                <div v-show="loadding" :class="$style.loadding">
-                    <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-                </div>
                 <div class="col-md-6 col-md-offset-3" v-show="!loadding">
                     <div class="form-group">
-                        <label><span class="text-danger">*</span>用户ID：</label>
-                        <div class="input-group">                             
-                            <input type="text" class="form-control" v-model="certification.user_id" disabled>
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" @click="openfindUserModal">查找用户</button>
-                            </span>
+                    <label><span class="text-danger">*</span>用户ID：</label>
+                     <div class="input-group-btn">
+                        <div class="row">
+                            <div class="col-md-6">
+                              <input type="text" class="form-control" placeholder="用户ID" v-model="certification.user_id" disabled="disabled">
+                            </div>
+                            <div class="col-md-6 dropdown" :class="dropdownMenuClass">
+                                <input type="text" class="form-control" placeholder="输入用户名搜索" @input="searchUser" v-model="username">
+                                <ul class="dropdown-menu" style="margin-left:15px;">
+                                  <template v-if="users.length">
+                                    <li  v-for="user in users" @click.prevent="choiceUser(user.id)" >
+                                      <a href="javascript:;"><img :src="user.avatar+'?s=40'" class="img-circle" :class="$style.avatar">
+                                        <span>{{ user.name }}</span>
+                                      </a>
+                                    </li>
+                                  </template>
+                                  <template v-else>
+                                    <li><a href="javascript:;"><span class="help-block">无相关用户，换个用户名在试试</span></a></li>
+                                  </template>
+                                </ul>
+                            </div>
                         </div>
+                      </div>
                     </div>
                     <div class="form-group">
                         <label><span class="text-danger">*</span>真实姓名：</label>
@@ -72,7 +75,7 @@
                     </div>
                     <div class="form-group">
                         <label><span class="text-danger">*</span>认证附件：</label>
-                        <img :src="fileBase64" class="img-responsive" :class="$style.image">
+                        <img :src="fileBase64" class="img-responsive" style="max-width:200px;margin-bottom: 10px;">
                         <input type="file" @change="uploadAttachment" accept="image/gif,image/jpeg,image/jpg,image/png">
                         <span class="help-block" style="font-size:12px;">附件格式：gif, jpg, jpeg, png； 附件大小：不超过10M</span>
                     </div>
@@ -85,35 +88,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- 查找用户 modal start -->
-                <div class="modal fade" id="findUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                  <div class="modal-dialog modal-sm" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">查找用户</h4>
-                      </div>
-                      <div class="modal-body">
-                        <div class="form-group">
-                          <input type="text" class="form-control" placeholder="用户名" v-model="search.keyword" @input="searchUser">
-                        </div>
-                        <div class="form-group">
-                            <span class="text-danger" v-show="search.message">{{ search.message }}</span>
-                        </div>
-                        <div class="form-group">
-                            <select class="form-control" v-show="users.length" v-model="certification.user_id">
-                                <option value="" disabled>请选择用户</option>
-                                <option v-for="user in users" :value="user.id">{{ user.name+'(id:'+user.id+')' }}</option>
-                            </select>
-                        </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" @click="selectUser">确认</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
           </div>
         </div>
@@ -125,13 +99,11 @@ import plusMessageBundle from 'plus-message-bundle';
 const PersonalCertificationEdit = {
     data: () => ({
         loadding: true,
-        message: {
-          error: null,
-          success: null,
-        },
-        categories: {},
-        fileBase64: '',
         users: [],
+        categories: [],
+        fileBase64: '',
+        username: '',
+        dropdownMenuClass: '',
         certification: {
           user_id: '',
           name: '',
@@ -143,10 +115,10 @@ const PersonalCertificationEdit = {
           desc: '',
           type:'user',
         },
-        search:{
-          keyword: '',
-          message: '',
-        }
+        message: {
+          error: null,
+          success: null,
+        },
     }),
     methods: {
         /**
@@ -188,16 +160,12 @@ const PersonalCertificationEdit = {
          * 搜索用户
          */
         searchUser () {
-        if ( !this.search.keyword ) {
-          return;
-        }
-        $('#serach-user-btn').button('loading');
           request.get(
-            createRequestURI('find/nocertification/users?keyword=' + this.search.keyword),
+            createRequestURI('find/nocertification/users?keyword=' + this.username),
             { validateStatus: status => status === 200 }
           ).then(response => {
+            this.dropdownMenuClass = 'open';
             this.users = response.data;
-            this.search.message = this.users.length ? '' : '请换个搜索关键字试试';
           }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {
             this.search.message = message;
           });
@@ -231,25 +199,9 @@ const PersonalCertificationEdit = {
             });
           }
         },
-        /**
-         * 打开搜索用户modal
-         */
-        openfindUserModal () {
-          $('#findUserModal').modal('show');
-        },
-        /**
-         * 选择用户
-         */
-        selectUser () {
-          if ( !this.users.length ) {
-            this.search.message = '请输入搜索关键字';
-            return;  
-          }
-          if ( !this.certification.user_id ) {
-            this.search.message = '请选择用户';
-            return;
-          }
-          $('#findUserModal').modal('hide');
+        choiceUser (userId) {
+          this.dropdownMenuClass = this.username =  '';
+          this.certification.user_id = userId;
         },
     },
     created () {
