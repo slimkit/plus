@@ -28,7 +28,7 @@ class FindUserController extends Controller
                 return $query->offset($offset);
             })
             ->whereExists(function ($query) {
-                return $query->from('users')->whereRaw('users.id = user_extras.user_id');
+                return $query->from('users')->whereRaw('users.id = user_extras.user_id')->where('deleted_at', null);
             })
             ->limit($limit)
             ->select('user_id')
@@ -89,7 +89,7 @@ class FindUserController extends Controller
             return $query->offset($offset);
         })
         ->whereExists(function ($query) {
-            return $query->from('users')->whereRaw('users.id = users_recommended.user_id');
+            return $query->from('users')->whereRaw('users.id = users_recommended.user_id')->where('deleted_at', null);
         })
         ->with(['user'])
         ->limit($limit)
@@ -179,7 +179,7 @@ class FindUserController extends Controller
             ->where('taggable_id', '<>', $u)
             ->where('taggable_type', 'users')
             ->whereExists(function ($query) {
-                return $query->from('users')->whereRaw('users.id = taggables.taggable_id');
+                return $query->from('users')->whereRaw('users.id = taggables.taggable_id')->where('deleted_at', null);
             })
             ->when($offset, function ($query) use ($offset) {
                 return $query->offset($offset);
