@@ -35,22 +35,10 @@
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="广告搜索" v-model="filter.keyword">
                 <span class="input-group-btn">
-                  <button class="btn btn-default" @click="search">搜索</button>
+                  <router-link class="btn btn-default" tag="button" :to="{ path: '/ad', query: searchQuery }">
+                    搜索
+                  </router-link>
                 </span>
-              </div>
-              <div class="input-group pull-right">
-                  <ul class="pagination" style="margin: 0;">
-                    <li :class="paginate.current_page <= 1 ? 'disabled' : null">
-                      <a href="javascript:;" aria-label="Previous" @click.stop.prevent="prevPage">
-                        <span aria-hidden="true">&laquo;</span>
-                      </a>
-                    </li>
-                    <li :class="paginate.current_page >= paginate.last_page ? 'disabled' : null">
-                      <a href="javascript:;" aria-label="Next" @click.stop.prevent="nextPage">
-                        <span aria-hidden="true">&raquo;</span>
-                      </a>
-                    </li>
-                  </ul>
               </div>
             </div>
           </div>
@@ -97,75 +85,74 @@
                 </tbody>
             </table>
           </div>
+          <!-- 分页 -->
+          <div class="text-center">
+            <offset-paginator class="pagination" :total="total" :offset="offset" :limit="15">
+              <template scope="pagination">
+                <li :class="(pagination.disabled ? 'disabled': '') + (pagination.currend ? 'active' : '')">
+                  <span v-if="pagination.disabled || pagination.currend">{{ pagination.page }}</span>
+                  <router-link v-else :to="offsetPage(pagination.offset)">{{ pagination.page }}</router-link>
+                </li>
+              </template>
+            </offset-paginator>
+          </div>
         </div>
     </div>
 </template>
 <script>
 import request, { createRequestURI } from '../../util/request';
+import plusMessageBundle from 'plus-message-bundle';
+
 const ManageComponent = {
     data: () => ({
-
       loadding: true,
-      
-      ads: {},
-
-      spaces: {},
-
-      paginate: {
-        current_page: 1,
-        last_page: '',
-        per_page: 20,
-      },
-
+      ads: [],
+      spaces: [],
+      total: 0,
       filter: {
         keyword: '',
         space_id: '',
       },
-
       message: {
         error: null,
         success: null,
       }
-    
     }),
-    
     watch: {
-      deep: true,
-      'filter.space_id': {
-        handler: function (val, oldVal) {
-          this.paginate.current_page = 1;
-          this.getAds();
-        },
-      }
+      '$route': function ($route) {
+        this.total = 0;
+        this.getAds({ ...$route.query });
+      },
     },
-
+    computed: {
+      offset () {
+        const { query: { offset = 0 } } = this.$route;
+        return parseInt(offset);
+      },
+      searchQuery () {
+        return { ...this.filter, offset: 0 };
+      },
+    },
     methods: {  
-
-      getAds () {
+      getAds (query = {}) {
         this.ads = {};
         this.loadding = true;
         request.get(
-          createRequestURI('ads' + this.getQueryParams()),
-          { validateStatus: status => status === 200 }
-        ).then(response => {
+          createRequestURI('ads'),
+          { 
+            validateStatus: status => status === 200,
+            params: { ...query, limit: 15 },
+          }
+        ).then(({ data = [], headers: { 'x-ad-total': total } }) => {
           this.loadding = false;
-
-          let { 
-            data: data, 
-            current_page: current_page, 
-            last_page: last_page, 
-          } = response.data;
-
-          this.paginate.current_page = current_page;
-          this.paginate.last_page = last_page;
+          this.total = parseInt(total);
           this.ads = data;
-
-        }).catch(({ response: { data: { errors = ['加载认证类型失败'] } = {} } = {} }) => {
+        }).catch(({ response: { data: { errors = ['加载失败'] } = {} } = {} }) => {
           this.loadding = false;
-          this.message.error = errors;
+          let Message = new plusMessageBundle(errors);
+          this.message.error = Message.getMessage();
         });
       },
-
       getAdSpaces () {
         request.get(
           createRequestURI('ads/spaces'),
@@ -173,9 +160,10 @@ const ManageComponent = {
         ).then(response => {
           this.spaces = response.data;
         }).catch(({ response: { data: { errors = ['加载认证类型失败'] } = {} } = {} }) => {
+          let Message = new plusMessageBundle(data);
+          this.message.error = Message.getMessage();
         });
       },
-
       delAd (id) {
         let comfirm = confirm('确认要删除？');
         if (comfirm) {
@@ -186,48 +174,22 @@ const ManageComponent = {
             this.message.success = '删除成功';
             this.getAds();
           }).catch(({ response: { data : { message } } = {} }) => {
-            this.message.error = message;
+            let Message = new plusMessageBundle(data);
+            this.message.error = Message.getMessage();
           });
         }
       },
-
-      getQueryParams () {
-        let filter = this.filter;
-        let paginate = this.paginate;
-        let params = '?';
-
-        params += 'space_id=' + filter.space_id;
-        params += '&keyword=' + filter.keyword;
-        params += '&per_page=' + paginate.per_page;
-        params += '&page=' + paginate.current_page;
-
-        return params; 
+      offsetPage(offset) {
+        return { path: '/ad', query: { ...this.filter, offset } };
       },
-
-      search () {
-          this.paginate.current_page = 1;
-          this.getAds();
+      offAlert () {
+        this.message.error = null;
+        this.message.success = null;
       },
-
-      nextPage () {
-        if (this.paginate.last_page > this.paginate.current_page) {
-          this.paginate.current_page += 1;
-          this.getAds();
-        } 
-      },
-
-      prevPage () {
-        if (this.paginate.current_page > 1) {
-          this.paginate.current_page -= 1;
-          this.getAds(); 
-        } 
-      },
- 
     },
-
     created () {
       this.getAdSpaces();
-      this.getAds();
+      this.getAds(this.$route.query);
     },
 };
 

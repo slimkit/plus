@@ -63,11 +63,9 @@ import 'echarts/lib/component/title';
 import 'echarts/lib/component/toolbox';
 import _ from 'lodash';
 const HomeComponent = {
-    
     components: {
       chart: IEcharts
     },
-    
     data: () => ({     
       loading: true,
       reward_types: [

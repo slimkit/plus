@@ -18,21 +18,28 @@ class AdvertisingController extends Controller
      */
     public function ads(Request $request)
     {
-        $perPage = (int) $request->get('perPage', 20);
-        $spaceId = (int) $request->get('space_id');
         $keyword = $request->get('keyword');
+        $spaceId = (int) $request->get('space_id');
+        $limit = (int) $request->get('limit', 15);
+        $offset = (int) $request->get('offset', 0);
 
-        $items = Advertising::with('space')
-            ->when($spaceId, function ($query) use ($spaceId) {
-                $query->where('space_id', $spaceId);
-            })
-            ->when($keyword, function ($query) use ($keyword) {
-                $query->where('title', 'like', sprintf('%%%s%%', $keyword));
-            })
-            ->orderBy('id', 'desc')
-            ->paginate($perPage);
+        $query = Advertising::with(['space' => function ($query) {
+            $query->select('id', 'alias');
+        }])
+        ->when($spaceId, function ($query) use ($spaceId) {
+            $query->where('space_id', $spaceId);
+        })
+        ->when($keyword, function ($query) use ($keyword) {
+            $query->where('title', 'like', sprintf('%%%s%%', $keyword));
+        });
 
-        return response()->json($items, 200);
+        $total = $query->count('id');
+        $items = $query->limit($limit)
+        ->offset($offset)
+        ->orderBy('id', 'desc')
+        ->get();
+
+        return response()->json($items, 200, ['x-ad-total' => $total]);
     }
 
     /**
