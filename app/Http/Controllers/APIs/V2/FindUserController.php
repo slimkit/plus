@@ -27,6 +27,9 @@ class FindUserController extends Controller
             ->when($offset, function ($query) use ($offset) {
                 return $query->offset($offset);
             })
+            ->whereExists(function ($query) {
+                return $query->from('users')->whereRaw('users.id = user_extras.user_id');
+            })
             ->limit($limit)
             ->select('user_id')
             ->with([
@@ -85,10 +88,13 @@ class FindUserController extends Controller
         $users = $userRecommended->when($offset, function ($query) use ($offset) {
             return $query->offset($offset);
         })
-            ->with(['user'])
-            ->limit($limit)
-            ->orderBy('id', 'desc')
-            ->get();
+        ->whereExists(function ($query) {
+            return $query->from('users')->whereRaw('users.id = users_recommended.user_id');
+        })
+        ->with(['user'])
+        ->limit($limit)
+        ->orderBy('id', 'desc')
+        ->get();
 
         return $response->json(
             $users->map(function ($user) use ($user_id) {
@@ -172,6 +178,9 @@ class FindUserController extends Controller
         $users = $taggable->whereIn('tag_id', $tags)
             ->where('taggable_id', '<>', $u)
             ->where('taggable_type', 'users')
+            ->whereExists(function ($query) {
+                return $query->from('users')->whereRaw('users.id = taggables.taggable_id');
+            })
             ->when($offset, function ($query) use ($offset) {
                 return $query->offset($offset);
             })
