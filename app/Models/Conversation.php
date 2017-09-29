@@ -15,6 +15,6 @@ class Conversation extends Model
 
     public function target()
     {
-    	return $this->hasOne(User::class, 'id', 'to_user_id');
+        return $this->hasOne(User::class, 'id', 'to_user_id');
     }
 }

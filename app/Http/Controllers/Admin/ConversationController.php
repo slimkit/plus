@@ -25,17 +25,17 @@ class ConversationController extends Controller
 
         $total = $query->count('id');
         $items = $query->select([
-                'id', 
-                'user_id', 
-                'to_user_id', 
-                'type', 
-                'content', 
+                'id',
+                'user_id',
+                'to_user_id',
+                'type',
+                'content',
                 'created_at',
-            ]) 
+            ])
             ->with(['user' => function ($query) {
-                $query->select('id','name');
+                $query->select('id', 'name');
             }, 'target' => function ($query) {
-                $query->select('id','name');
+                $query->select('id', 'name');
             }])
             ->limit($limit)
             ->offset($offset)
