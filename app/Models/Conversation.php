@@ -12,4 +12,9 @@ class Conversation extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+
+    public function target()
+    {
+    	return $this->hasOne(User::class, 'id', 'to_user_id');
+    }
 }

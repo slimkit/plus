@@ -17,12 +17,16 @@
             <div class="form-inline">
                 <div class="form-group">
                     <label>类型： </label>
-                    <select class="form-control" v-model="queryParams.type">
+                    <select class="form-control" v-model="filterQueryParams.type">
                         <option v-for="type in types" :value="type.alias">{{ type.name }}</option>
                     </select>
                 </div>
                 <div class="form-group">
-                  <router-link class="btn btn-default" tag="button" :to="{ path: '/conversations', query: searchQuery }">
+                    <label>关键词： </label>
+                    <input type="text" class="form-control" v-model="filterQueryParams.keyword" placeholder="内容">
+                </div>
+                <div class="form-group">
+                  <router-link class="btn btn-default" tag="button" :to="{ path: '/conversations', query: filterQueryParams }">
                     搜索
                   </router-link>
                 </div>
@@ -37,19 +41,21 @@
                         <th>会话用户</th>
                         <th>被会话用户</th>
                         <th>会话内容</th>
+                        <th>会话时间</th>
                         <th>操作</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- 加载 -->
-                    <table-loading :loadding="loadding" :colspan-num="6"></table-loading>
+                    <table-loading :loadding="loadding" :colspan-num="7"></table-loading>
                     <template v-if="conversations.length">
                         <tr v-for="conversation in conversations">
                             <td>{{ conversation.id }}</td>
                             <td>{{ conversionTypeDisplay(conversation.type) }}</td>
                             <td>{{ conversation.user.name }}</td>
-                            <td>{{ conversation.to_user_id }}</td>
+                            <td>{{ conversation.target.name }}</td>
                             <td>{{ conversation.content }}</td>
+                            <td><local-date :utc="conversation.created_at"/></td>
                             <td>
                                 <button class="btn btn-danger btn-sm" 
                                 @click.prevent="delConversation(conversation.id)">删除</button>
@@ -90,7 +96,7 @@ const FeedbackComponent = {
         { name: '意见反馈', alias: 'feedback' },
         { name: '系统消息', alias: 'system' },
       ],
-      queryParams: {
+      filterQueryParams: {
         type: '',
         keyword: '',
       },
@@ -105,11 +111,11 @@ const FeedbackComponent = {
         return parseInt(offset);
       },
       searchQuery () {
-        return { ...this.queryParams, offset: 0 };
+        return { ...this.filterQueryParams, offset: 0 };
       },
     },
     watch: {
-      '$route': function ($route) {
+      '$route' ($route) {
         this.total = 0;
         this.getConversations({ ...$route.query });
       },
@@ -168,7 +174,7 @@ const FeedbackComponent = {
         this.message.success = null;
       },
       offsetPage(offset) {
-        return { path: '/conversations', query: { ...this.queryParams, offset } };
+        return { path: '/conversations', query: { ...this.filterQueryParams, offset } };
       },
     },
     created () {
