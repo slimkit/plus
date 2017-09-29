@@ -10,7 +10,7 @@
             <router-link :to="{name: 'certification:users'}" tag="li" active-class="active" exact>
                 <a href="javascript:;">认证用户</a>
             </router-link>
-            <router-link :to="{name: 'certification:categories'}" tag="li" active-class="active" exact>
+            <router-link :to="{name: 'certification:categories'}" tag="li" active-class="active">
                 <a href="javascript:;">认证类型</a>
             </router-link>
         </ul>

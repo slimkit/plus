@@ -25,34 +25,22 @@
                 <div class="form-inline">
                     <div class="form-group">
                         <label>状态：</label>
-                        <select class="form-control" v-model="statuss.selected">
+                        <select class="form-control" v-model="filter.status">
                             <option :value="item.value" v-for="item in statuss.data">{{ item.status }}</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>类型：</label>
-                        <select class="form-control" v-model="categories.selected">
+                        <select class="form-control" v-model="filter.certification_name">
                            <option value="">全部</option>
                            <option :value="item.name" v-for="item in categories.data">{{ item.display_name }}</option>
                         </select>
                     </div>
                     <div class="form-group">
-                      <input type="text" class="form-control" v-model="keyword">
-                      <button class="btn btn-default" type="button" @click="handleSearch">搜索</button>
-                    </div>
-                    <div class="form-group pull-right">
-                        <ul class="pagination" style="margin: 0;">
-                          <li :class="paginate.currentPage <= 1 ? 'disabled' : null">
-                            <a href="javascript:;" aria-label="Previous" @click.stop.prevent="prevPage">
-                              <span aria-hidden="true">&laquo;</span>
-                            </a>
-                          </li>
-                          <li :class="paginate.currentPage >= paginate.lastPage ? 'disabled' : null">
-                            <a href="javascript:;" aria-label="Next" @click.stop.prevent="nextPage">
-                              <span aria-hidden="true">&raquo;</span>
-                            </a>
-                          </li>
-                        </ul>
+                      <input type="text" class="form-control" v-model="filter.keyword" placeholder="关键词搜索">
+                      <router-link class="btn btn-default" tag="button" :to="{ path: '/certifications/', query: searchQuery }">
+                        搜索
+                      </router-link>
                     </div>
                 </div>
             </div>
@@ -109,6 +97,17 @@
                     </tbody>
                 </table>
             </div>
+            <!-- 分页 -->
+            <div class="text-center">
+              <offset-paginator class="pagination" :total="total" :offset="offset" :limit="1">
+                <template scope="pagination">
+                  <li :class="(pagination.disabled ? 'disabled': '') + (pagination.currend ? 'active' : '')">
+                    <span v-if="pagination.disabled || pagination.currend">{{ pagination.page }}</span>
+                    <router-link v-else :to="offsetPage(pagination.offset)">{{ pagination.page }}</router-link>
+                  </li>
+                </template>
+              </offset-paginator>
+            </div>
         </div>
         <!-- 驳回认证modal start -->
         <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -160,30 +159,14 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
+
 const certificationComponent = {
     data: () => ({
         loadding: true,
-        certifications: {},
+        total: 0,
+        categories: [],
+        certifications: [],
         attachmentPath: '/api/v2/files/',
-        categories: {
-          selected: '',
-          data: {}
-        },
-        statuss: {
-          selected: '',
-          display: ['待审核', '通过' , '拒绝'],
-          data:[
-            {status: '全部', value: ''},
-            {status: '待审核', value: 0},
-            {status: '通过', value: 1},
-            {status: '拒绝', value: 2},
-          ]
-        },
-        paginate: {
-          perPage: 20,
-          lastPage: 10,
-          currentPage:1,
-        },
         reject: {
           id: '',
           content:'',
@@ -194,30 +177,41 @@ const certificationComponent = {
           desc: '',
           message: '',
         },
-        keyword: '',
+        filter: {
+          keyword: '',
+          status: '',
+          certification_name: '',
+        },
         message: {
           error: null,
           success: null,
-        }
+        },
+        statuss: {
+          display: ['待审核', '通过' , '拒绝'],
+          data:[
+            {status: '全部', value: ''},
+            {status: '待审核', value: 0},
+            {status: '通过', value: 1},
+            {status: '拒绝', value: 2},
+          ]
+        },
     }),
     
     watch: {
-      deep: true,
-      'statuss.selected': {
-        handler () {
-          this.getCertifications();
-        },
+      '$route': function ($route) {
+        this.total = 0;
+        this.getCertifications({ ...$route.query });
       },
-      'categories.selected': {
-        handler () {
-          this.getCertifications();
-        },
+    },
+
+    computed: {
+      offset () {
+        const { query: { offset = 0 } } = this.$route;
+        return parseInt(offset);
       },
-      'paginate.currentPage': {
-        handler () {
-          this.getCertifications();
-        }
-      }
+      searchQuery () {
+        return { ...this.filter, offset: 0 };
+      },
     },
 
     methods: {
@@ -239,33 +233,23 @@ const certificationComponent = {
         /**
          * 获取认证列表
          */
-        getCertifications () {
+        getCertifications (query = {}) {
           this.loadding = true;
-          this.certifications = {}; 
-
-          let params = this.getQueryParams();
-
+          this.certifications = []; 
           request.get(
-            createRequestURI(`certifications${params}`),
-            { validateStatus: status => status === 200 }
-          ).then(response => {
+            createRequestURI(`certifications`),
+            { 
+              validateStatus: status => status === 200,
+              params: { ...query, limit: 1 },
+            }
+          ).then(({ data = [], headers: { 'x-certifications-total': total } }) => {
             this.loadding = false;
-
-            let { 
-              data: data, 
-              current_page: 
-              currentPage, 
-              last_page: lastPage, 
-              total: total 
-            } = response.data;
-
-            this.paginate.currentPage = currentPage;
-            this.paginate.lastPage = lastPage;
-            this.paginate.total = total;
+            this.total = parseInt(total);
             this.certifications = data;
-
-          }).catch(({ response: { data: { errors = ['加载认证类型失败'] } = {} } = {} }) => {
+          }).catch(({ response: { data: { errors = ['加载失败'] } = {} } = {} }) => {
             this.loadding = false;
+            let Message = new plusMessageBundle(errors);
+            this.message.error = Message.getMessage();
           });
         },
         /**
@@ -327,62 +311,26 @@ const certificationComponent = {
           this.reject.message = '';
           $('#rejectModal').modal('show');
         },
-        /**
-         * 获取参数
-         */
-        getQueryParams () {
-          let query = '?';
-
-          query += 'certification_name=' + this.categories.selected;
-          query += '&status=' + this.statuss.selected;
-          query += '&keyword=' + this.keyword;
-          query += '&perPage=' + this.paginate.perPage;
-          query += '&page=' + this.paginate.currentPage;
-
-          return query;
-        },
-        /**
-         * 处理过滤
-         */
-        handleSearch () {
-          this.paginate.currentPage = 1;
-          this.getCertifications();
-        },
-        /**
-         * 关闭提示
-         */
         offAlert () {
           this.errorMessage = this.successMessage = '';
         },
-        selectChange () {
-          this.paginate.currentPage = 1; 
-        },
-        nextPage () {
-          if (this.paginate.lastPage > this.paginate.currentPage) {
-            this.paginate.currentPage += 1;
-          } 
-        },
-        prevPage () {
-          if (this.paginate.currentPage > 1) {
-            this.paginate.currentPage -= 1;
-          } 
+        offsetPage(offset) {
+          return { path: '/certifications', query: { ...this.filter, offset } };
         },
     },
     created () {
       let promise = this.getCertificationCategories();
-
       promise.then(data => {
         this.loadding = false;
         if (data.length) {
           this.categories.data = data;
-          this.getCertifications();
+          this.getCertifications(this.$route.query);
         } else {
           this.message.error = '认证类型加载失败';
         }
       }, error => {
          this.message.error = error;
       });
-
     },
 };
 export default certificationComponent;

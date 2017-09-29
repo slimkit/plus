@@ -18,19 +18,18 @@ class CertificationController extends Controller
      *
      * @param Request $request
      * @return $this
-     * @author: huhao <915664508@qq.com>
      */
     public function index(Request $request)
     {
-        $perPage = (int) $request->get('perPage', 20);
-        $certificationName = $request->get('certification_name');
-        $certificationStatus = $request->get('status');
+        $limit = (int) $request->get('limit');
+        $offset = (int) $request->get('offset');
+        $status =  $request->get('status');
         $keyword = $request->get('keyword');
+        $name = $request->get('certification_name');
 
-        $items = Certification::orderBy('id', 'desc')
-        ->when(! is_null($keyword), function ($query) use ($keyword) {
+        $query = Certification::when(! is_null($keyword), function ($query) use ($keyword) {
             $where = sprintf('%%%s%%', $keyword);
-            $query->whereHas('user', function ($query) use ($keyword, $where) {
+            $query->whereHas('user', function ($query) use ($where) {
                 $query->where('name', 'like', $where);
             })
             ->orWhere('data->number', 'like', $where)
@@ -39,22 +38,27 @@ class CertificationController extends Controller
             ->orWhere('data->org_address', 'like', $where)
             ->orWhere('data->org_name', 'like', $where);
         })
-        ->when($certificationName, function ($query) use ($certificationName) {
-            $query->where('certification_name', $certificationName);
+        ->when($name, function ($query) use ($name) {
+            $query->where('certification_name', $name);
         })
-        ->when(! is_null($certificationStatus), function ($query) use ($certificationStatus) {
-            $query->where('status', $certificationStatus);
-        })
-       ->paginate($perPage);
+        ->when(! is_null($status), function ($query) use ($status) {
+            $query->where('status', $status);
+        });
 
-        return response()->json($items)->setStatusCode(200);
+        $total = $query->count('id');
+        $items = $query->orderBy('id', 'desc')
+        ->limit($limit)
+        ->offset($offset)
+        ->get();
+
+        return response()->json($items, 200, ['x-certifications-total' => $total]);
     }
 
     /**
      * certifiction pass.
+     *
      * @param certification $certification
      * @return \Illuminate\Http\JsonResponse
-     * @author: huhao <915664508@qq.com>
      */
     public function passCertification(Request $request, Certification $certification)
     {
@@ -81,10 +85,10 @@ class CertificationController extends Controller
 
     /**
      * certifiction reject.
+     *
      * @param Request $request
      * @param Certification $certification
      * @return \Illuminate\Http\JsonResponse
-     * @author: huhao <915664508@qq.com>
      */
     public function rejectCertification(Request $request, Certification $certification)
     {
@@ -116,7 +120,6 @@ class CertificationController extends Controller
      *
      * @param Certification $certification
      * @return $this
-     * @author: huhao <915664508@qq.com>
      */
     public function show(Certification $certification)
     {
@@ -125,11 +128,11 @@ class CertificationController extends Controller
 
     /**
      * update user certification.
+     *
      * @param UserCertification $request
      * @param Certification $certification
      * @param FileWithModel $fileWithModel
      * @return mixed
-     * @author: huhao <915664508@qq.com>
      */
     public function update(
         Request $request,
@@ -244,11 +247,11 @@ class CertificationController extends Controller
 
     /**
      * add user certification.
+     *
      * @param UserCertification $request
      * @param Certification $certification
      * @param FileWithModel $fileWithModel
      * @return \Illuminate\Http\JsonResponse|mixed
-     * @author: huhao <915664508@qq.com>
      */
     public function store(Request $request,
                           Certification $certification,
@@ -290,9 +293,9 @@ class CertificationController extends Controller
 
     /**
      * Search for non certification users.
+     *
      * @param Request $request
      * @return $this|\Illuminate\Http\JsonResponse
-     * @author: huhao <915664508@qq.com>
      */
     public function findNoCertificationUsers(Request $request)
     {

@@ -26,19 +26,17 @@
           <!-- 添加广告 -->
           <div class="panel-heading">
             <div  class="form-inline">
-              <div class="input-group">
+              <div class="form-group">
                 <select class="form-control" v-model="filter.space_id">
                   <option value="">全部</option>
                   <option v-for="space in spaces" :value="space.id">{{ space.alias }}</option>
                 </select>
               </div>
-              <div class="input-group">
+              <div class="form-group">
                 <input type="text" class="form-control" placeholder="广告搜索" v-model="filter.keyword">
-                <span class="input-group-btn">
                   <router-link class="btn btn-default" tag="button" :to="{ path: '/ad', query: searchQuery }">
                     搜索
                   </router-link>
-                </span>
               </div>
             </div>
           </div>
