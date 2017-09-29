@@ -23,7 +23,7 @@ class CertificationController extends Controller
     {
         $limit = (int) $request->get('limit');
         $offset = (int) $request->get('offset');
-        $status =  $request->get('status');
+        $status = $request->get('status');
         $keyword = $request->get('keyword');
         $name = $request->get('certification_name');
 
