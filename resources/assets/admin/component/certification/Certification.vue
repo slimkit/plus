@@ -99,7 +99,7 @@
             </div>
             <!-- 分页 -->
             <div class="text-center">
-              <offset-paginator class="pagination" :total="total" :offset="offset" :limit="1">
+              <offset-paginator class="pagination" :total="total" :offset="offset" :limit="15">
                 <template scope="pagination">
                   <li :class="(pagination.disabled ? 'disabled': '') + (pagination.currend ? 'active' : '')">
                     <span v-if="pagination.disabled || pagination.currend">{{ pagination.page }}</span>
@@ -240,7 +240,7 @@ const certificationComponent = {
             createRequestURI(`certifications`),
             { 
               validateStatus: status => status === 200,
-              params: { ...query, limit: 1 },
+              params: { ...query, limit: 15 },
             }
           ).then(({ data = [], headers: { 'x-certifications-total': total } }) => {
             this.loadding = false;
