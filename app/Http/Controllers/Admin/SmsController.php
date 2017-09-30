@@ -35,7 +35,7 @@ class SmsController extends Controller
             });
 
         $total = $query->count('id');
-        $items = $query ->orderBy('id', 'desc')
+        $items = $query->orderBy('id', 'desc')
             ->limit($limit)
             ->offset($offset)
             ->get();
