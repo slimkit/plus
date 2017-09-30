@@ -29,14 +29,14 @@
                                 <input type="text" class="form-control" placeholder="输入用户名搜索" @input="searchUser" v-model="username">
                                 <ul class="dropdown-menu" style="margin-left:15px;">
                                   <template v-if="users.length">
-                                    <li  v-for="user in users" @click.prevent="choiceUser(user.id)" >
+                                    <li  v-for="user in users" @click.prevent="choiceUser(user.id)">
                                       <a href="javascript:;"><img :src="user.avatar+'?s=40'" class="img-circle" :class="$style.avatar">
                                         <span>{{ user.name }}</span>
                                       </a>
                                     </li>
                                   </template>
                                   <template v-else>
-                                    <li><a href="javascript:;"><span class="help-block">无相关用户，换个用户名在试试</span></a></li>
+                                    <li @click.prevent="choiceUser(0)"><a href="javascript:;">无相关记录</a></li>
                                   </template>
                                 </ul>
                             </div>
@@ -200,8 +200,9 @@ const PersonalCertificationEdit = {
           }
         },
         choiceUser (userId) {
+          let id = parseInt(userId);
           this.dropdownMenuClass = this.username =  '';
-          this.certification.user_id = userId;
+          this.certification.user_id = id ? id : '';
         },
     },
     created () {

@@ -52,31 +52,13 @@
               </div>
               <input type="text" class="form-control" aria-label="input-group-btn" placeholder="输入要搜索的手机号码" v-model="search.keyword">
               <div class="input-group-btn">
-                <button v-if="loading === true" class="btn btn-primary" type="submit" disabled="disabled">
-                  <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
-                  搜索...
-                </button>
-                <button v-else class="btn btn-primary" type="submit" @click.stop.prevent="searchHandle">搜索</button>
+                <router-link class="btn btn-default" tag="button" :to="{ path: '/captcha', query: search }">
+                  搜索
+                </router-link>
               </div>
             </div>
 
           </div>
-          <!-- pager -->
-          <div class="col-xs-6 text-right">
-            <ul class="pagination" style="margin: 0;">
-              <li :class="parseInt(this.currentPage) <= 1 ? 'disabled' : null">
-                <a href="#" aria-label="Previous" @click.stop.prevent="prevPage">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" aria-label="Next" @click.stop.prevent="nextPage">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-
         </div>
       </div>
       <!-- Table -->
@@ -101,6 +83,17 @@
           </tr>
         </tbody>
       </table>
+      <!-- 分页 -->
+      <div class="text-center">
+        <offset-paginator class="pagination" :total="total" :offset="offset" :limit="15">
+          <template scope="pagination">
+            <li :class="(pagination.disabled ? 'disabled': '') + (pagination.currend ? 'active' : '')">
+              <span v-if="pagination.disabled || pagination.currend">{{ pagination.page }}</span>
+              <router-link v-else :to="offsetPage(pagination.offset)">{{ pagination.page }}</router-link>
+            </li>
+          </template>
+        </offset-paginator>
+      </div>
     </div>
   </div>
 </template>
@@ -110,6 +103,7 @@ import request, { createRequestURI } from '../../util/request';
 
 const SmsMainComponent = {
   data: () => ({
+    total: 0,
     search: {
       state: -1,
       keyword: '',
@@ -119,57 +113,46 @@ const SmsMainComponent = {
     error: null,
     currentPage: 1,
   }),
+  watch: {
+    '$route': function ($route) {
+      this.total = 0;
+      console.log(...$route.query);
+      this.requestLogs({ ...$route.query });
+    },
+  },
+  computed: {
+    offset () {
+      const { query: { offset = 0 } } = this.$route;
+      return parseInt(offset);
+    },
+    searchQuery () {
+      return { ...this.filter, offset: 0 };
+    },
+  },
   methods: {
-    nextPage() {
-      this.requestLogs(parseInt(this.currentPage) + 1);
-    },
-    prevPage() {
-      this.requestLogs(parseInt(this.currentPage) - 1);
-    },
-    searchHandle() {
-      this.requestLogs(1);
-    },
     dismisError() {
       this.error = null;
     },
     changeState(state) {
-      this.search.after = [];
       this.search.state = state;
     },
-    requestLogs(page) {
-      let params = { page };
-
-      if (this.search.state >= 0) {
-        params['state'] = this.search.state;
-      }
-
-      if (this.search.keyword.length) {
-        params['phone'] = this.search.keyword;
-      }
-
+    requestLogs(query = {}) {
       this.loading = true;
-
       request.get(
         createRequestURI('sms'),
-        { params, validateStatus: status => status === 200 }
-      ).then(({ data = {} }) => {
-        this.loading = false;
-
-        const { current_page: currentPage = 1, data: logs = [] } = data;
-
-        if (!logs.length) {
-          this.error = '没有数据可加载';
-          return;
-        }
-          
-        this.currentPage = currentPage;
-        this.logs = logs;
-
-      }).catch();
-    }
+        {  params: { ...query, limit: 15 }, validateStatus: status => status === 200 }
+      ).then(({ data = [], headers: { 'x-sms-total': total } }) => {
+          this.loading = false;
+          this.total = parseInt(total);
+          this.logs = data;
+        }).catch();
+    },
+    offsetPage(offset) {
+      return { path: '/captcha', query: { ...this.search, offset } };
+    },
   },
   created() {
-    this.searchHandle();
+    this.requestLogs(this.$route.query);
   }
 };
 

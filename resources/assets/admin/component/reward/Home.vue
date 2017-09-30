@@ -18,14 +18,12 @@
             <div class="form-inline">
               <!-- 打赏类型 -->
               <div class="form-group">
-                <label>打赏类型：</label>
                 <select class="form-control" v-model="filter.type">
                   <option v-for="type in reward_types" :value="type.name">{{ type.alias }}</option>
                 </select>
               </div>
               <!-- 打赏类型 -->
               <div class="form-group">
-                <label>日期间隔：</label>
                 <select class="form-control" v-model="filter.scope">
                   <option value="today">今日</option>
                   <option value="week">近七天</option>
@@ -34,9 +32,11 @@
               </div>
               <!-- 时间范围 -->
               <div class="form-group">
-                <label>时间范围：</label>
-                <input type="date" class="form-control" v-model="filter.start" :disabled="disabled">
-                <input type="date" class="form-control" v-model="filter.end" :disabled="disabled">
+                <div class="input-group">
+                  <input type="date" class="form-control" v-model="filter.start" :disabled="disabled">
+                  <div class="input-group-addon">-</div>
+                  <input type="date" class="form-control" v-model="filter.end" :disabled="disabled">
+                </div>
                 <button class="btn btn-default" @click="getRewardStatistics">确认</button>
               </div>
               <div class="form-group pull-right">

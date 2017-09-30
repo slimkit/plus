@@ -28,9 +28,6 @@
         {{ message.error }}
     </div>
     <div class="panel panel-default">
-      <div class="panel-heading">
-        <button @click="addFocus()" class="btn btn-primary btn-sm">添加分类</button>
-      </div>
       <div class="panel-body">
       <!-- 标签列表 -->
         <table class="table table-striped">

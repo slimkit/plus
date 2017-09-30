@@ -23,19 +23,24 @@ class SmsController extends Controller
     {
         $state = $request->query('state');
         $phone = $request->query('phone');
-        $limit = $request->query('limit', 20);
+        $limit = (int) $request->query('limit', 15);
+        $offset = (int) $request->query('offset', 0);
 
-        $data = $model->withTrashed()
-            ->when(boolval($state), function ($query) use ($state) {
+        $query = $model->withTrashed()
+            ->when(is_numeric($state) && $state >= 0, function ($query) use ($state) {
                 return $query->where('state', $state);
             })
             ->when(boolval($phone), function ($query) use ($phone) {
                 return $query->where('account', 'like', sprintf('%%%s%%', $phone));
-            })
-            ->orderBy('id', 'desc')
-            ->simplePaginate($limit);
+            });
 
-        return $response->json($data, 200);
+        $total = $query->count('id');
+        $items = $query ->orderBy('id', 'desc')
+            ->limit($limit)
+            ->offset($offset)
+            ->get();
+
+        return $response->json($items, 200, ['x-sms-total' => $total]);
     }
 
     /**

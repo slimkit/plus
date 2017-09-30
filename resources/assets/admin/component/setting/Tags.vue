@@ -29,7 +29,7 @@
     </div>
     <div class="panel panel-default">
       <div class="panel panel-heading">
-        <router-link to="/setting/addtag" class="btn btn-primary btn-sm">添加标签</router-link>
+        <router-link to="/setting/addtag" class="btn btn-primary btn-sm">添加</router-link>
       </div>
       <div class="panel-body">
         <table class="table table-striped">

@@ -27,9 +27,11 @@
                 </div>
                 <!-- 时间段 -->
                 <div class="form-group">
-                  <input type="date" class="form-control" v-model="filter.start">
-                  <label>-</label>
-                  <input type="date" class="form-control" v-model="filter.end">
+                  <div class="input-group">
+                    <input type="date" class="form-control" v-model="filter.start">
+                    <div class="input-group-addon">-</div>
+                    <input type="date" class="form-control" v-model="filter.end">
+                  </div>
                 </div>
                 <!-- 搜索 -->
                 <div class="form-group">

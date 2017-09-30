@@ -7,7 +7,7 @@
 <template>
     <div>
         <ul class="nav nav-tabs" :class="$style.nav">
-            <router-link :to="{ name: 'conversation:list' }" tag="li" active-class="active" exact>
+            <router-link :to="{ name: 'conversation:list' }" tag="li" active-class="active">
                 <a href="javascript:;">会话列表</a>
             </router-link>
         </ul>

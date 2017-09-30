@@ -16,13 +16,14 @@
           <div class="panel-heading">
             <div class="form-inline">
   	          <div class="form-group">
-  	          	<label>时间段：</label>
-  	          	<input type="date" class="form-control" v-model="filter.start">
-  	          	<label>-</label>
-  	          	<input type="date" class="form-control" v-model="filter.end"> 
+                <div class="input-group">
+                  <input type="date" class="form-control" v-model="filter.start">
+                  <div class="input-group-addon">-</div>
+                  <input type="date" class="form-control" v-model="filter.end"> 
+                </div>
   	          </div>
               <div class="form-group">
-                <button class="btn btn-primary" @click.prevent="getWalletStatistics">确认</button>
+                <button class="btn btn-default" @click.prevent="getWalletStatistics">确认</button>
               </div>
             </div>
           </div>
