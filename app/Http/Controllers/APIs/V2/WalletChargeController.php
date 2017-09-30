@@ -23,11 +23,15 @@ class WalletChargeController extends Controller
         $limit = intval($request->query('limit', 20));
         $after = $request->query('after');
         $action = $request->query('action');
+        $filter = $request->query('filter');
         $charges = $request
             ->user()
             ->walletCharges()
             ->when(isset($action), function ($query) use ($action) {
                 $query->where('action', $action);
+            })
+            ->when($filter, function ($query) {
+                $query->where('status', 1);
             })
             ->where(function ($query) use ($after) {
                 if ($after) {
