@@ -29,6 +29,6 @@
 
     @parent
 
-    <script src="{{ mix('js/admin.js') }}"></script>
+    <script src="{{ mix('js/admin.js', 'assets') }}"></script>
 
 @endsection
