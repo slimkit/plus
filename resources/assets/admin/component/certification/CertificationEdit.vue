@@ -13,8 +13,10 @@
         animation-timing-function: linear;
         animation-iteration-count: infinite;
     }
-    .image {
-        max-width:200px;
+    .attachmentBox {
+        display: inline-block;
+        width: 200px;
+        height: 100px;
         margin-bottom: 10px;
     }
 </style>
@@ -67,9 +69,14 @@
                     </div>
                     <div class="form-group">
                         <label><span class="text-danger">*</span>认证附件：</label>
-                        <img :src="fileBase64" class="img-responsive" :class="$style.image">
-                        <input type="file" @change="uploadAttachment" accept="image/gif,image/jpeg,image/jpg,image/png">
-                        <span class="help-block" style="font-size:12px;">附件格式：gif, jpg, jpeg, png； 附件大小：不超过10M</span>
+                        <div>
+                          <a href="javascript:;" class="thumbnail text-center" :class="$style.attachmentBox" @click="triggerUpload">
+                            <img :src="attachmentUrl" v-if="attachmentUrl" style="height:100%;width:100%;">
+                            <i class="glyphicon glyphicon-upload" style="margin-top:42px;font-size:16px;" v-else></i>
+                          </a>
+                        </div>
+                        <input type="file" ref="clickinput" @change="uploadAttachment" accept="image/gif,image/jpeg,image/jpg,image/png" style="display:none;">
+                        <span class="help-block">附件格式：gif, jpg, jpeg, png； 附件大小：不超过10M</span>
                     </div>
                     <div class="form-group">
                         <button class="btn btn-primary btn-sm" 
@@ -97,7 +104,7 @@ const PersonalCertificationEdit = {
         },
         categories: {},
         id: null,
-        fileBase64: '',
+        attachmentUrl: null,
         certification: {
             username: '',
             name: '',
@@ -137,8 +144,7 @@ const PersonalCertificationEdit = {
             this.certification.type = data.certification_name;
             this.certification.desc = data.data.desc;
             this.certification.files = data.data.files;
-            this.fileBase64 = '/api/v2/files/' + this.certification.files[0]
-
+            this.attachmentUrl = '/api/v2/files/' + this.certification.files[0]
 
             if ( data.certification_name === 'org' ) {
                 this.certification.org_name = data.data.org_name;
@@ -185,16 +191,19 @@ const PersonalCertificationEdit = {
             let reader = new FileReader(); 
             reader.readAsDataURL(file); 
             reader.onload = function(e) {
-               that.fileBase64 = e.target.result;
                request.post('/api/v2/files', param, config)
                .then((response) => {
-                    const { id: id, message: [message] = [] } = response.data;
-                    that.certification.files = [id];
-                }).catch((error) => {
-                  let Message = new plusMessageBundle(error);
-                  this.message.error = Message.getMessage();
+                  const { id: id, message: [message] = [] } = response.data;
+                  that.certification.files = [id];
+                  that.attachmentUrl = `/api/v2/files/${id}`;
+                }).catch(({ response: { data = {} } = {} }) => {
+                  let Message = new plusMessageBundle(data);
+                  that.message.error = Message.getMessage();
                 });
             }
+        },
+        triggerUpload () {
+          this.$refs.clickinput.click();
         }
     },
     created () {

@@ -8,6 +8,12 @@
       display:inline-block;
       margin-right:20px;
     }
+    .attachmentBox {
+        display: inline-block;
+        width: 200px;
+        height: 100px;
+        margin-bottom: 10px;
+    }
 </style>
 
 <template>
@@ -75,8 +81,13 @@
                     </div>
                     <div class="form-group">
                         <label><span class="text-danger">*</span>认证附件：</label>
-                        <img :src="fileBase64" class="img-responsive" style="max-width:200px;margin-bottom: 10px;">
-                        <input type="file" @change="uploadAttachment" accept="image/gif,image/jpeg,image/jpg,image/png">
+                        <div>
+                          <a href="javascript:;" class="thumbnail text-center" :class="$style.attachmentBox" @click="triggerUpload">
+                            <img :src="attachmentUrl" v-if="attachmentUrl" style="height:100%;width:100%;">
+                            <i class="glyphicon glyphicon-upload" style="margin-top:42px;font-size:16px;" v-else></i>
+                          </a>
+                        </div>
+                        <input type="file" ref="clickinput" @change="uploadAttachment" accept="image/gif,image/jpeg,image/jpg,image/png" style="display:none;">
                         <span class="help-block" style="font-size:12px;">附件格式：gif, jpg, jpeg, png； 附件大小：不超过10M</span>
                     </div>
                     <div class="form-group">
@@ -101,7 +112,7 @@ const PersonalCertificationEdit = {
         loadding: true,
         users: [],
         categories: [],
-        fileBase64: '',
+        attachmentUrl: '',
         username: '',
         dropdownMenuClass: '',
         certification: {
@@ -188,14 +199,14 @@ const PersonalCertificationEdit = {
           let reader = new FileReader(); 
           reader.readAsDataURL(file); 
           reader.onload = function(e) {
-           that.fileBase64 = e.target.result;
            request.post('/api/v2/files', param, config)
             .then((response) => {
-                const { id: id, message: [message] = [] } = response.data;
-                that.certification.files = [id];
-            }).catch((error) => {
+              const { id: id, message: [message] = [] } = response.data;
+              that.certification.files = [id];
+              that.attachmentUrl = `/api/v2/files/${id}`;
+            }).catch(({ response: { data = {} } = {} }) => {
               let Message = new plusMessageBundle(data);
-              this.message.error = Message.getMessage();
+              that.message.error = Message.getMessage();
             });
           }
         },
@@ -204,6 +215,9 @@ const PersonalCertificationEdit = {
           this.dropdownMenuClass = this.username =  '';
           this.certification.user_id = id ? id : '';
         },
+        triggerUpload () {
+          this.$refs.clickinput.click();
+        }
     },
     created () {
       this.getCertificationCategories();
