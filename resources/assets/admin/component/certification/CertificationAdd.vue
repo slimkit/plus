@@ -158,9 +158,9 @@ const PersonalCertificationEdit = {
             createRequestURI('certifications'),
             { ...this.certification },
             { validateStatus: status => status === 201 }
-          ).then(({ data: { message: [ message ] = [] } }) => {
+          ).then(data => {
             $('#add-btn').button('reset');
-            this.message.success = message;
+            this.$router.replace({ path: `/certifications/${data.data.certification_id}` });
           }).catch(({ response: { data = {} } = {} }) => {
             $('#add-btn').button('reset');
             let Message = new plusMessageBundle(data);

@@ -287,7 +287,10 @@ class CertificationController extends Controller
             $user = User::find($userId);
             $user->certification()->save($certification);
 
-            return response()->json(['message' => ['添加认证成功']])->setStatusCode(201);
+            return response()->json([
+                'message' => ['添加认证成功'],
+                'certification_id' => $user->certification->id,
+            ])->setStatusCode(201);
         });
     }
 

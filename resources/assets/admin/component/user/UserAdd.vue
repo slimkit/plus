@@ -68,6 +68,7 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
+import plusMessageBundle from 'plus-message-bundle';
 
 const UserAddComponent = {
   data: () => ({
@@ -88,11 +89,9 @@ const UserAddComponent = {
       ).then(({ data: { user_id: userId } }) => {
         this.$router.replace({ path: '/users/manage/'+userId });
       }).catch(({ response: { data = {} } = {} }) => {
-        const { name = [], phone = [], email = [], password = [], message = [] } = data;
-        const [ errorMessage ] = [ ...name, ...phone, ...password, ...message ];
-
-        this.errorMessage = errorMessage;
         this.adding = false;
+        let Message = new plusMessageBundle(data);
+        this.errorMessage = Message.getMessage();
       });
     },
     dismisError () {

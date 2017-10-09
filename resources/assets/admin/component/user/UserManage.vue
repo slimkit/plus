@@ -84,6 +84,7 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
+import plusMessageBundle from 'plus-message-bundle';
 
 const UserManageComponent = {
   data: () => ({
@@ -107,11 +108,9 @@ const UserManageComponent = {
       ).then(() => {
         this.changeIn = false;
       }).catch(({ response: { data = {} } = {} }) => {
-        const { phone = [], name = [], email = [], roles = [], message = [] } = data;
-        const [ errorMessage ] = [ ...phone, ...name, ...email, ...roles, ...message ];
-
-        this.error = errorMessage;
         this.changeIn = false;
+        let Message = new plusMessageBundle(data);
+        this.error = Message.getMessage();
       });
     },
     dismisError () {
