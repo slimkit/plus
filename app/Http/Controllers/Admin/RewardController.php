@@ -200,7 +200,7 @@ class RewardController extends Controller
 
     /**
      * 获取打赏类型.
-     * 
+     *
      * @return [type] [description]
      */
     protected function getRewardavelTypes()
