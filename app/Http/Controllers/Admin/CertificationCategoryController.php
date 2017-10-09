@@ -64,7 +64,7 @@ class CertificationCategoryController extends Controller
         $icon = $request->file('icon');
 
         if (! $icon->isValid()) {
-            return response()->json(['messages' => [$icon->getErrorMessage()]], 400);
+            return response()->json(['messages' => [$icon->getErrorMessage()]], 422);
         }
 
         $category->storeAvatar($icon);

@@ -10,12 +10,10 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 
 class RewardController extends Controller
 {
-    private $rewardableTypes = [
-       'feeds' => '动态打赏',
-       'news'  => '咨询打赏',
-       'users' => '用户打赏',
-       'question-answers' => '问答打赏',
-    ];
+    /**
+     *  打赏金额换算元.
+     */
+    const CONVERSION_VALUE = 100;
 
     /**
      * 打赏日期分组统计.
@@ -192,12 +190,27 @@ class RewardController extends Controller
         foreach ($data as $key => $value) {
             $items[$key][] = $value['user']['name'];
             $items[$key][] = $value['target']['name'];
-            $items[$key][] = $value['amount'] / 100;
-            $items[$key][] = $this->rewardableTypes[$value['rewardable_type']];
+            $items[$key][] = $value['amount'] / self::CONVERSION_VALUE;
+            $items[$key][] = $this->getRewardavelTypes()[$value['rewardable_type']];
             $items[$key][] = $value['created_at'];
         }
 
         return $items;
+    }
+
+    /**
+     * 获取打赏类型.
+     * 
+     * @return [type] [description]
+     */
+    protected function getRewardavelTypes()
+    {
+        return [
+           'feeds' => '动态打赏',
+           'news'  => '咨询打赏',
+           'users' => '用户打赏',
+           'question-answers' => '问答打赏',
+        ];
     }
 
     /**
