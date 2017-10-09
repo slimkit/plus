@@ -23,80 +23,123 @@
                 <router-link type="button" class="btn btn-primary btn-sm" :to="{name: 'certification:users'}">返回</router-link>
               </div>
               <div class="panel-body">
-                <div class="col-md-6 col-md-offset-3" v-show="!loadding">
+                <div v-show="!loadding" class="form-horizontal">
                     <div class="form-group">
-                    <label><span class="text-danger">*</span>用户ID：</label>
-                     <div class="input-group-btn">
-                        <div class="row">
-                            <div class="col-md-6">
-                              <input type="text" class="form-control" placeholder="用户ID" v-model="certification.user_id" disabled="disabled">
-                            </div>
-                            <div class="col-md-6 dropdown" :class="dropdownMenuClass">
-                                <input type="text" class="form-control" placeholder="输入用户名搜索" @input="searchUser" v-model="username">
-                                <ul class="dropdown-menu" style="margin-left:15px;">
-                                  <template v-if="users.length">
-                                    <li  v-for="user in users" @click.prevent="choiceUser(user.id)">
-                                      <a href="javascript:;"><img :src="user.avatar+'?s=40'" class="img-circle" :class="$style.avatar">
-                                        <span>{{ user.name }}</span>
-                                      </a>
-                                    </li>
-                                  </template>
-                                  <template v-else>
-                                    <li @click.prevent="choiceUser(0)"><a href="javascript:;">无相关记录</a></li>
-                                  </template>
-                                </ul>
-                            </div>
+                     <label class="col-md-2 control-label"><span class="text-danger">*</span>用户ID：</label>
+                     <div class="col-md-5">
+                       <div class="input-group-btn">
+                          <div class="row">
+                              <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="用户ID" v-model="certification.user_id" disabled="disabled">
+                              </div>
+                              <div class="col-md-6 dropdown" :class="dropdownMenuClass">
+                                  <input type="text" class="form-control" placeholder="输入用户名搜索" @input="searchUser" v-model="username">
+                                  <ul class="dropdown-menu" style="margin-left:15px;">
+                                    <template v-if="users.length">
+                                      <li  v-for="user in users" @click.prevent="choiceUser(user.id)">
+                                        <a href="javascript:;"><img :src="user.avatar+'?s=40'" class="img-circle" :class="$style.avatar">
+                                          <span>{{ user.name }}</span>
+                                        </a>
+                                      </li>
+                                    </template>
+                                    <template v-else>
+                                      <li @click.prevent="choiceUser(0)"><a href="javascript:;">无相关记录</a></li>
+                                    </template>
+                                  </ul>
+                              </div>
+                          </div>
                         </div>
-                      </div>
+                     </div>
+                     <span class="col-md-5 help-block" id="phone-help-block">
+                      必填，用户ID
+                     </span>
                     </div>
                     <div class="form-group">
-                        <label><span class="text-danger">*</span>真实姓名：</label>
-                        <input type="text" class="form-control" v-model="certification.name">
+                        <label class="col-md-2 control-label"><span class="text-danger">*</span>真实姓名</label>
+                        <div class="col-md-5">
+                           <input type="text" class="form-control" v-model="certification.name">
+                        </div>
+                        <span class="col-md-5 help-block" id="phone-help-block">
+                          必填，真实姓名
+                        </span>
                     </div>
                     <div class="form-group">
-                        <label><span class="text-danger">*</span>手机号：</label>
-                        <input type="text" class="form-control" v-model="certification.phone">
+                        <label class="col-md-2 control-label"><span class="text-danger">*</span>手机号码</label>
+                        <div class="col-md-5">
+                          <input type="text" class="form-control" v-model="certification.phone">
+                        </div>
+                        <span class="col-md-5 help-block" id="phone-help-block">
+                          必填，手机号码
+                        </span>
                     </div>
                     <div class="form-group">
-                        <label><span class="text-danger">*</span>身份证号：</label>
-                        <input type="text" class="form-control" v-model="certification.number">
+                        <label class="col-md-2 control-label"><span class="text-danger">*</span>身份证号</label>
+                        <div class="col-md-5">
+                          <input type="text" class="form-control" v-model="certification.number">
+                        </div> 
+                        <span class="col-md-5 help-block" id="phone-help-block">
+                          必填，身份证号
+                        </span>
                     </div>
                     <div class="form-group">
-                        <label><span class="text-danger">*</span>认证类型：</label>
-                        <select class="form-control" v-model="certification.type">
-                            <option :value="categroy.name" v-for="categroy in categories">{{ categroy.display_name }}</option>
-                        </select>
+                        <label class="col-md-2 control-label"><span class="text-danger">*</span>认证类型</label>
+                        <div class="col-md-5">
+                          <select class="form-control" v-model="certification.type">
+                              <option :value="categroy.name" v-for="categroy in categories">{{ categroy.display_name }}</option>
+                          </select>
+                        </div>
+                        <span class="col-md-5 help-block" id="phone-help-block">
+                          必填，认证类型
+                        </span>
                     </div>
                     <div class="form-group" v-show="certification.type == 'org'">
-                        <label><span class="text-danger">*</span>组织名称：</label>
-                        <input type="text" class="form-control" v-model="certification.org_name">
+                        <label class="col-md-2 control-label"><span class="text-danger">*</span>组织名称</label>
+                        <div class="col-md-5">
+                          <input type="text" class="form-control" v-model="certification.org_name">
+                        </div>
+                        <span class="col-md-5 help-block" id="phone-help-block">
+                          必填，组织名称
+                        </span> 
                     </div>
                     <div class="form-group" v-show="certification.type == 'org'">
-                        <label><span class="text-danger">*</span>组织地址：</label>
-                        <input type="text" class="form-control" v-model="certification.org_address">
+                        <label class="col-md-2 control-label"><span class="text-danger">*</span>组织地址</label>
+                        <div class="col-md-5">
+                          <input type="text" class="form-control" v-model="certification.org_address">
+                        </div>
+                        <span class="col-md-5 help-block" id="phone-help-block">
+                          必填，组织地址
+                        </span>
                     </div>
                     <div class="form-group">
-                        <label><span class="text-danger">*</span>认证描述：</label>
-                        <textarea class="form-control" v-model="certification.desc"></textarea>
+                        <label class="col-md-2 control-label"><span class="text-danger">*</span>认证描述</label>
+                        <div class="col-md-5">
+                          <textarea class="form-control" v-model="certification.desc"></textarea>
+                        </div>  
+                        <span class="col-md-5 help-block" id="phone-help-block">
+                          必填，认证描述
+                        </span>
                     </div>
                     <div class="form-group">
-                        <label><span class="text-danger">*</span>认证附件：</label>
-                        <div>
+                        <label class="col-md-2 control-label"><span class="text-danger">*</span>认证附件</label>
+                        <div class="col-md-5">
                           <a href="javascript:;" class="thumbnail text-center" :class="$style.attachmentBox" @click="triggerUpload">
                             <img :src="attachmentUrl" v-if="attachmentUrl" style="height:100%;width:100%;">
                             <i class="glyphicon glyphicon-upload" style="margin-top:42px;font-size:16px;" v-else></i>
                           </a>
                         </div>
                         <input type="file" ref="clickinput" @change="uploadAttachment" accept="image/gif,image/jpeg,image/jpg,image/png" style="display:none;">
-                        <span class="help-block" style="font-size:12px;">附件格式：gif, jpg, jpeg, png； 附件大小：不超过10M</span>
+                        <span class="col-md-5 help-block">必须上传，附件格式：gif, jpg, jpeg, png； <br/> 附件大小：不超过10M</span>
                     </div>
                     <div class="form-group">
+                       <label class="col-md-2 control-label"></label>
+                      <div class="col-md-5">
                         <button class="btn btn-primary btn-sm" 
                         @click.prevent="createCertification" data-loading-text="提交中" autocomplete="off" id="add-btn">确认</button>
-                        <div class="pull-right">
-                            <span class="text-danger" v-show="message.error">{{ message.error }}</span>
-                            <span class="text-success" v-show="message.success">{{ message.success }}</span>
-                        </div>
+                      </div>
+                      <div class="col-md-5">
+                        <span class="text-danger" v-show="message.error">{{ message.error }}</span>
+                        <span class="text-success" v-show="message.success">{{ message.success }}</span>
+                      </div>
                     </div>
                 </div>
               </div>

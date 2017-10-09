@@ -32,58 +32,101 @@
                     <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
                 </div>
 
-                <div class="col-md-6 col-md-offset-3" v-show="!loadding">
+                <div class="form-horizontal" v-show="!loadding">
                     <div class="form-group">
-                        <label>用户名：</label>
-                        <input type="text" class="form-control" v-model="certification.username" disabled>
+                        <label class="control-label col-md-2">用户ID</label>
+                        <div class="col-md-5">
+                          <input type="text" class="form-control" v-model="id" disabled>
+                        </div>
+                        <span class="col-md-5 help-block" id="phone-help-block">
+                          必填，用户ID
+                        </span>
                     </div>
                     <div class="form-group">
-                        <label><span class="text-danger">*</span>真实姓名：</label>
-                        <input type="text" class="form-control" v-model="certification.name">
+                        <label class="control-label col-md-2"><span class="text-danger">*</span>真实姓名</label>
+                        <div class="col-md-5">
+                          <input type="text" class="form-control" v-model="certification.name">
+                        </div>
+                        <span class="col-md-5 help-block" id="phone-help-block">
+                          必填，真实姓名
+                        </span>
                     </div>
                     <div class="form-group">
-                        <label><span class="text-danger">*</span>手机号：</label>
-                        <input type="text" class="form-control" v-model="certification.phone">
+                        <label class="control-label col-md-2"><span class="text-danger">*</span>手机号码</label>
+                        <div class="col-md-5">
+                          <input type="text" class="form-control" v-model="certification.phone">
+                        </div>
+                        <span class="col-md-5 help-block" id="phone-help-block">
+                          必填，真实姓名
+                        </span>
                     </div>
                     <div class="form-group">
-                        <label><span class="text-danger">*</span>身份证号：</label>
-                        <input type="text" class="form-control" v-model="certification.number">
+                        <label class="control-label col-md-2"><span class="text-danger">*</span>身份证号</label>
+                        <div class="col-md-5">
+                          <input type="text" class="form-control" v-model="certification.number">
+                        </div>
+                        <span class="col-md-5 help-block" id="phone-help-block">
+                          必填，身份证号
+                        </span>
                     </div>
                     <div class="form-group">
-                        <label><span class="text-danger">*</span>认证类型：</label>
-                        <select class="form-control" v-model="certification.type" disabled>
+                        <label class="control-label col-md-2"><span class="text-danger">*</span>认证类型</label>
+                        <div class="col-md-5">
+                          <select class="form-control" v-model="certification.type" disabled>
                             <option :value="categroy.name" v-for="categroy in categories">{{ categroy.display_name }}</option>
-                        </select>
+                          </select>
+                        </div>
+                        <span class="col-md-5 help-block" id="phone-help-block">
+                          必填，认证类型
+                        </span>
                     </div>
                     <div class="form-group" v-show="certification.type == 'org'">
-                        <label><span class="text-danger">*</span>组织名称：</label>
-                        <input type="text" class="form-control" v-model="certification.org_name">
+                        <label class="control-label col-md-2"><span class="text-danger">*</span>组织名称</label>
+                        <div class="col-md-5">
+                          <input type="text" class="form-control" v-model="certification.org_name">  
+                        </div>
+                        <span class="col-md-5 help-block" id="phone-help-block">
+                          必填，组织名称
+                        </span>
                     </div>
                     <div class="form-group" v-show="certification.type == 'org'">
-                        <label><span class="text-danger">*</span>组织地址：</label>
-                        <input type="text" class="form-control" v-model="certification.org_address">
+                        <label class="control-label col-md-2"><span class="text-danger">*</span>组织地址</label>
+                        <div class="col-md-5">
+                          <input type="text" class="form-control" v-model="certification.org_address">  
+                        </div>
+                        <span class="col-md-5 help-block" id="phone-help-block">
+                          必填，组织地址
+                        </span>
                     </div>
                     <div class="form-group">
-                        <label><span class="text-danger">*</span>认证描述：</label>
-                        <textarea class="form-control" v-model="certification.desc"></textarea>
+                        <label class="control-label col-md-2"><span class="text-danger">*</span>认证描述</label>
+                        <div class="col-md-5">
+                          <textarea class="form-control" v-model="certification.desc"></textarea>
+                        </div>
+                        <span class="col-md-5 help-block" id="phone-help-block">
+                          必填，认证描述
+                        </span>
                     </div>
                     <div class="form-group">
-                        <label><span class="text-danger">*</span>认证附件：</label>
-                        <div>
+                        <label class="control-label col-md-2"><span class="text-danger">*</span>认证附件：</label>
+                        <div class="col-md-5">
                           <a href="javascript:;" class="thumbnail text-center" :class="$style.attachmentBox" @click="triggerUpload">
                             <img :src="attachmentUrl" v-if="attachmentUrl" style="height:100%;width:100%;">
                             <i class="glyphicon glyphicon-upload" style="margin-top:42px;font-size:16px;" v-else></i>
                           </a>
                         </div>
                         <input type="file" ref="clickinput" @change="uploadAttachment" accept="image/gif,image/jpeg,image/jpg,image/png" style="display:none;">
-                        <span class="help-block">附件格式：gif, jpg, jpeg, png； 附件大小：不超过10M</span>
+                        <span class="col-md-5 help-block">附件格式：gif, jpg, jpeg, png； 附件大小：不超过10M</span>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-primary btn-sm" 
-                        @click.prevent="updateCertification" data-loading-text="提交中" autocomplete="off" id="edit-btn">确认</button>
-                        <div class="pull-right">
-                            <span class="text-danger" v-show="message.error">{{ message.error }}</span>
-                            <span class="text-success" v-show="message.success">{{ message.success }}</span>
+                        <label class="col-md-2 control-label"></label>
+                        <div class="col-md-5">
+                          <button class="btn btn-primary btn-sm" 
+                        @click.prevent="updateCertification" data-loading-text="提交中" autocomplete="off" id="edit-btn">确认</button>   
+                        </div>
+                        <div class="col-md-5">
+                          <span class="text-danger" v-show="message.error">{{ message.error }}</span>
+                          <span class="text-success" v-show="message.success">{{ message.success }}</span>
                         </div>
                     </div>
                 </div>
