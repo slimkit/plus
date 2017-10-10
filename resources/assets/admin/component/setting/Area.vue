@@ -21,103 +21,104 @@
   margin-bottom: 10px;
 }
 </style>
-
 <template>
-
   <div class="container-fluid" :class="$style.container">
-  <ul class="nav nav-tabs" :class="$style.areaTab">
-    <router-link to="/setting/area" tag="li" active-class="active" exact>
-      <a href="#">地区管理</a>
-    </router-link> 
-    <router-link to="/setting/hots" tag="li" active-class="active">
-      <a href="#">热门城市</a>
-    </router-link> 
-  </ul>
+    <ul class="nav nav-tabs" :class="$style.areaTab">
+      <router-link to="/setting/area" tag="li" active-class="active" exact>
+        <a href="#">地区管理</a>
+      </router-link> 
+      <router-link to="/setting/hots" tag="li" active-class="active">
+        <a href="#">热门城市</a>
+      </router-link> 
+    </ul>
+    <div class="panel panel-default">
+      <div class="panel-body">
+     <!-- 加载动画 -->
+        <div v-show="loadding" :class="$style.loadding">
+          <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
+        </div>    
+        <!-- 整体盒子 -->
+        <div v-show="!loadding" class="">
 
-    <!-- 加载动画 -->
-    <div v-show="loadding" :class="$style.loadding">
-      <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-    </div>    
-    <!-- 整体盒子 -->
-    <div v-show="!loadding" class="">
+          <!-- 路径导航 -->
+          <ol v-if="tree" class="breadcrumb">
+            <li :class="$style.breadcrumbNotActvie" @click.prevent="selectCurrent(0)">全部</li>
+            <li
+              v-for="area in tree"
+              :class="area.id === current ? 'active' : $style.breadcrumbNotActvie"
+              @click.prevent="selectCurrent(area.id)"
+            >
+              {{ area.name }}
+            </li>
+          </ol>
 
-      <!-- 路径导航 -->
-      <ol v-if="tree" class="breadcrumb">
-        <li :class="$style.breadcrumbNotActvie" @click.prevent="selectCurrent(0)">全部</li>
-        <li
-          v-for="area in tree"
-          :class="area.id === current ? 'active' : $style.breadcrumbNotActvie"
-          @click.prevent="selectCurrent(area.id)"
-        >
-          {{ area.name }}
-        </li>
-      </ol>
+          <!-- 位于全部提示 -->
+          <div v-show="!current" class="alert alert-success" role="alert">
+            <p>1. 提交：编辑地区信息的时候，直接修改输入框内容，失去焦点后程序会自动提交</p>
+            <p>2. 拓展信息：拓展信息赋予单条信息而外的数据，例如国家设置，<strong>中国</strong>的拓展信息设置的<strong>3</strong>,用于在app开发中UI层展示几级选择菜单，所以，只有在业务需求下，设置拓展信息才是有用的。其他情况下留空即可。</p>
+          </div>
 
-      <!-- 位于全部提示 -->
-      <div v-show="!current" class="alert alert-success" role="alert">
-        <p>1. 提交：编辑地区信息的时候，直接修改输入框内容，失去焦点后程序会自动提交</p>
-        <p>2. 拓展信息：拓展信息赋予单条信息而外的数据，例如国家设置，<strong>中国</strong>的拓展信息设置的<strong>3</strong>,用于在app开发中UI层展示几级选择菜单，所以，只有在业务需求下，设置拓展信息才是有用的。其他情况下留空即可。</p>
+          <!-- 列表表格 -->
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>名称</th>
+                <th>拓展(无需设置)</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr v-for="area in list">
+                  <td>
+                    <div class="input-group">
+                      <input @change.lazy="patchArea(area.id, 'name', $event.target.value)" type="text" class="form-control" placeholder="输入名称" :value="area.name">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="input-group">
+                      <input @change.lazy="patchArea(area.id, 'extends', $event.target.value)" type="text" class="form-control" placeholder="输入拓展信息" :value="area.extends">
+                    </div>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-primary btn-sm" @click.prevent="selectCurrent(area.id)">下级管理</button>
+                    <button v-if="deleteIds.hasOwnProperty(area.id)" type="button" class="btn btn-danger btn-sm" disabled="disabled">
+                      <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
+                    </button>
+                    <button v-else type="button" class="btn btn-danger btn-sm" @click.prevent="deleteArea(area.id)">删除</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="input-group">
+                      <input v-model="add.name" type="text" class="form-control" placeholder="输入名称">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="input-group">
+                      <input v-model="add.extends" type="text" class="form-control" placeholder="输入拓展信息">
+                    </div>
+                  </td>
+                  <td>
+                    <button v-if="!add.loadding" @click.prevent="addArea" type="button" class="btn btn-primary btn-sm">添加</button>
+                    <button v-else class="btn btn-primary btn-sm" disabled="disabled">
+                      <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
+                    </button>
+                  </td>
+                </tr>
+            </tbody>
+          </table>
+
+          <div v-show="add.error" class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" @click.prevent="dismisAddAreaError">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <strong>Error:</strong>
+            <p v-for="error in add.error_message">{{ error }}</p>
+          </div>
+
+        </div>
       </div>
-
-      <!-- 列表表格 -->
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>名称</th>
-            <th>拓展(无需设置)</th>
-            <th>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-            <tr v-for="area in list">
-              <td>
-                <div class="input-group">
-                  <input @change.lazy="patchArea(area.id, 'name', $event.target.value)" type="text" class="form-control" placeholder="输入名称" :value="area.name">
-                </div>
-              </td>
-              <td>
-                <div class="input-group">
-                  <input @change.lazy="patchArea(area.id, 'extends', $event.target.value)" type="text" class="form-control" placeholder="输入拓展信息" :value="area.extends">
-                </div>
-              </td>
-              <td>
-                <button type="button" class="btn btn-primary btn-sm" @click.prevent="selectCurrent(area.id)">下级管理</button>
-                <button v-if="deleteIds.hasOwnProperty(area.id)" type="button" class="btn btn-danger btn-sm" disabled="disabled">
-                  <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-                </button>
-                <button v-else type="button" class="btn btn-danger btn-sm" @click.prevent="deleteArea(area.id)">删除</button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="input-group">
-                  <input v-model="add.name" type="text" class="form-control" placeholder="输入名称">
-                </div>
-              </td>
-              <td>
-                <div class="input-group">
-                  <input v-model="add.extends" type="text" class="form-control" placeholder="输入拓展信息">
-                </div>
-              </td>
-              <td>
-                <button v-if="!add.loadding" @click.prevent="addArea" type="button" class="btn btn-primary btn-sm">添加</button>
-                <button v-else class="btn btn-primary btn-sm" disabled="disabled">
-                  <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-                </button>
-              </td>
-            </tr>
-        </tbody>
-      </table>
-
-      <div v-show="add.error" class="alert alert-danger alert-dismissible" role="alert">
-        <button type="button" class="close" @click.prevent="dismisAddAreaError">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <strong>Error:</strong>
-        <p v-for="error in add.error_message">{{ error }}</p>
-      </div>
-
-    </div>
+    </div>   
   </div>
 </template>
 

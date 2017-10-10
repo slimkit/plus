@@ -12,67 +12,76 @@
 </style>
 
 <template>
-  <form class="form-horizontal" :class="$style.container" @submit.prevent="submit">
-    <!-- Site name. -->
-    <div class="form-group">
-      <label for="site-name" class="col-sm-2 control-label">应用名称</label>
-      <div class="col-sm-6">
-        <input type="text" class="form-control" id="site-name" aria-describedby="site-name-help-block" placeholder="输入网站标题" v-model="name">
+  <div  :class="$style.container">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        基本信息配置
       </div>
-      <span class="col-sm-4 help-block" id="site-name-help-block">
-        应用名称，将在网页中显示在title的基本信息。也是搜索引擎为搜录做筛选标题的重要信息。
-      </span>
-    </div>
-    <!-- End site name. -->
+      <div class="panel-body">
+        <form class="form-horizontal" @submit.prevent="submit">
+          <!-- Site name. -->
+          <div class="form-group">
+            <label for="site-name" class="col-sm-2 control-label">应用名称</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="site-name" aria-describedby="site-name-help-block" placeholder="输入网站标题" v-model="name">
+            </div>
+            <span class="col-sm-4 help-block" id="site-name-help-block">
+              应用名称，将在网页中显示在title的基本信息。也是搜索引擎为搜录做筛选标题的重要信息。
+            </span>
+          </div>
+          <!-- End site name. -->
 
-    <!-- Site keywords -->
-    <div class="form-group">
-      <label for="site-keywords" class="col-sm-2 control-label">关键词</label>
-      <div class="col-sm-6">
-        <input type="text" class="form-control" id="site-keywords" aria-describedby="site-keywords-help-block" placeholder="网站关键词" v-model="keywords">
-      </div>
-      <span class="col-sm-4 help-block" id="site-keywords-help-block">
-        网站关键词，是通过搜索引擎检索网站的重要信息，多个关键词使用英文半角符号“<strong>,</strong>”分割。
-      </span>
-    </div>
-    <!-- End site keywords -->
+          <!-- Site keywords -->
+          <div class="form-group">
+            <label for="site-keywords" class="col-sm-2 control-label">关键词</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="site-keywords" aria-describedby="site-keywords-help-block" placeholder="网站关键词" v-model="keywords">
+            </div>
+            <span class="col-sm-4 help-block" id="site-keywords-help-block">
+              网站关键词，是通过搜索引擎检索网站的重要信息，多个关键词使用英文半角符号“<strong>,</strong>”分割。
+            </span>
+          </div>
+          <!-- End site keywords -->
 
-    <!-- Site description -->
-    <div class="form-group">
-      <label for="site-description" class="col-sm-2 control-label">描述</label>
-      <div class="col-sm-6">
-        <input type="text" class="form-control" id="site-description" aria-describedby="site-description-help-block" placeholder="网站描述" v-model="description">
-      </div>
-      <span class="col-sm-4 help-block" id="site-description-help-block">
-        描述用于简单的介绍站点，在搜索引擎中用于搜索结果的概述。
-      </span>
-    </div>
-    <!-- End site description -->
+          <!-- Site description -->
+          <div class="form-group">
+            <label for="site-description" class="col-sm-2 control-label">描述</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="site-description" aria-describedby="site-description-help-block" placeholder="网站描述" v-model="description">
+            </div>
+            <span class="col-sm-4 help-block" id="site-description-help-block">
+              描述用于简单的介绍站点，在搜索引擎中用于搜索结果的概述。
+            </span>
+          </div>
+          <!-- End site description -->
 
-    <!-- ICP 备案信息 -->
-    <div class="form-group">
-      <label for="site-icp" class="col-sm-2 control-label">ICP 备案信息</label>
-      <div class="col-sm-6">
-        <input type="text" class="form-control" id="site-icp" aria-describedby="site-icp-help-block" placeholder="网站描述" v-model="icp">
-      </div>
-      <span class="col-sm-4 help-block" id="site-icp-help-block">
-        填写 ICP 备案的信息，例如: 浙ICP备xxxxxxxx号
-      </span>
-    </div>
-    <!-- End ICP 备案信息 -->
+          <!-- ICP 备案信息 -->
+          <div class="form-group">
+            <label for="site-icp" class="col-sm-2 control-label">ICP 备案信息</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="site-icp" aria-describedby="site-icp-help-block" placeholder="网站描述" v-model="icp">
+            </div>
+            <span class="col-sm-4 help-block" id="site-icp-help-block">
+              填写 ICP 备案的信息，例如: 浙ICP备xxxxxxxx号
+            </span>
+          </div>
+          <!-- End ICP 备案信息 -->
 
-    <!-- Button -->
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <button v-if="loadding" class="btn btn-primary" disabled="disabled">
-          <span class="glyphicon glyphicon-refresh" :class="$style.containerAround"></span>
-        </button>
-        <button v-else-if="error" @click.prevent="requestSiteInfo" class="btn btn-danger">{{ error_message }}</button>
-        <button v-else type="submit" class="btn btn-primary">{{ message }}</button>
+          <!-- Button -->
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button v-if="loadding" class="btn btn-primary" disabled="disabled">
+                <span class="glyphicon glyphicon-refresh" :class="$style.containerAround"></span>
+              </button>
+              <button v-else-if="error" @click.prevent="requestSiteInfo" class="btn btn-danger">{{ error_message }}</button>
+              <button v-else type="submit" class="btn btn-primary">{{ message }}</button>
+            </div>
+          </div>
+          <!-- End button -->
+        </form>
       </div>
     </div>
-    <!-- End button -->
-  </form>
+  </div>
 </template>
 
 <script>

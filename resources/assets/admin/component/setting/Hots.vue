@@ -21,66 +21,69 @@
 <template>
 
   <div class="container-fluid" :class="$style.container">
-  <ul class="nav nav-tabs" :class="$style.areaTab">
-    <router-link to="/setting/area" tag="li" active-class="active">
-      <a href="#">地区管理</a>
-    </router-link>
-    <router-link to="/setting/hots" tag="li" active-class="active" exact>
-      <a href="#">热门城市</a>
-    </router-link>
-  </ul>
+    <ul class="nav nav-tabs" :class="$style.areaTab">
+      <router-link to="/setting/area" tag="li" active-class="active">
+        <a href="#">地区管理</a>
+      </router-link>
+      <router-link to="/setting/hots" tag="li" active-class="active" exact>
+        <a href="#">热门城市</a>
+      </router-link>
+    </ul>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <!-- 加载动画 -->
+        <div v-show="loadding" :class="$style.loadding">
+          <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
+        </div>
+        <!-- 整体盒子 -->
+        <div v-if="!message" v-show="!loadding">
 
-    <!-- 加载动画 -->
-    <div v-show="loadding" :class="$style.loadding">
-      <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-    </div>
-    <!-- 整体盒子 -->
-    <div v-if="!message" v-show="!loadding">
+          <!-- 提示 -->
+          <div class="alert alert-success" role="alert">
+            <p>添加：直接输入地区名以空格分开， 例如：中国 四川省 成都市</p>
+          </div>
 
-      <!-- 提示 -->
-      <div class="alert alert-success" role="alert">
-        <p>添加：直接输入地区名以空格分开， 例如：中国 四川省 成都市</p>
+          <!-- 列表表格 -->
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>名称</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in list">
+                  <td>
+                    <div class="input-group">{{item}}</div>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-danger btn-sm" @click.prevent="deleteArea(item)">删除</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="input-group">
+                      <input v-model="add.content" type="text" class="form-control" placeholder="输入名称">
+                    </div>
+                  </td>
+                  <td>
+                    <button v-if="!add.loadding" @click.prevent="doHotsArea" type="button" class="btn btn-primary btn-sm">添加</button>
+                    <button v-else class="btn btn-primary btn-sm" disabled="disabled">
+                      <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
+                    </button>
+                    <span :class="`text-${add.type}`">{{ add.message }}</span>
+                  </td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Loading Error -->
+        <div v-else class="panel-body">
+          <div class="alert alert-danger" role="alert">{{ message }}</div>
+          <button type="button" class="btn btn-primary" @click.stop.prevent="request">刷新</button>
+        </div>
       </div>
-
-      <!-- 列表表格 -->
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>名称</th>
-            <th>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-            <tr v-for="item in list">
-              <td>
-                <div class="input-group">{{item}}</div>
-              </td>
-              <td>
-                <button type="button" class="btn btn-danger btn-sm" @click.prevent="deleteArea(item)">删除</button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="input-group">
-                  <input v-model="add.content" type="text" class="form-control" placeholder="输入名称">
-                </div>
-              </td>
-              <td>
-                <button v-if="!add.loadding" @click.prevent="doHotsArea" type="button" class="btn btn-primary btn-sm">添加</button>
-                <button v-else class="btn btn-primary btn-sm" disabled="disabled">
-                  <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-                </button>
-                <span :class="`text-${add.type}`">{{ add.message }}</span>
-              </td>
-            </tr>
-        </tbody>
-      </table>
     </div>
-    <!-- Loading Error -->
-      <div v-else class="panel-body">
-        <div class="alert alert-danger" role="alert">{{ message }}</div>
-        <button type="button" class="btn btn-primary" @click.stop.prevent="request">刷新</button>
-      </div>
   </div>
 </template>
 
