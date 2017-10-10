@@ -5,7 +5,7 @@
 </style>
 
 <template>
-  <div class="component-container container-fluid">
+  <div class="container-fluid" style="margin-top:10px;">
     <div class="panel panel-default">
       <!-- title -->
       <div class="panel-heading">基础设置 - 转换比例</div>

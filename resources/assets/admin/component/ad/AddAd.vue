@@ -1,5 +1,5 @@
 <template>
-    <div style="padding: 15px;" class="form-horizontal">
+    <div class="container-fluid" style="margin-top:10px;">
         <div class="panel panel-default">
           <div class="panel-heading">
             <router-link type="button" class="btn btn-primary btn-sm" to="/ad">返回</router-link>

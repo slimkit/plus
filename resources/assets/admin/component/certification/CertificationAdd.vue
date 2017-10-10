@@ -1,7 +1,4 @@
 <style lang="css" module>
-    .container {
-        padding: 15px;
-    }
     .avatar {
       height:20px;
       width:20px;
@@ -17,7 +14,7 @@
 </style>
 
 <template>
-        <div :class="$style.container">
+        <div class="container-fluid" style="margin-top:10px;">
           <div class="panel panel-default">
               <div class="panel-heading">
                 <router-link type="button" class="btn btn-primary btn-sm" :to="{name: 'certification:users'}">返回</router-link>

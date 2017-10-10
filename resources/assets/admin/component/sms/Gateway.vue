@@ -1,5 +1,5 @@
 <template>
-  <div class="component-container container-fluid">
+  <div class="container-fluid" style="margin-top:10px;">
       <div class="panel panel-default">
         <div class="panel-heading">网关配置</div>
         <div class="panel-body form-horizontal">

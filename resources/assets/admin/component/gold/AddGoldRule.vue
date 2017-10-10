@@ -1,7 +1,4 @@
 <style lang="css" module>
-    .container {
-        padding: 15px;
-    }
     .loadding {
         text-align: center;
         font-size: 42px;
@@ -20,7 +17,7 @@
 </style>
 
 <template>
-<div :class="$style.container">
+<div class="container-fluid" style="margin:15px;">
     <!-- 加载动画 -->
     <div v-show="loadding" :class="$style.loadding">
         <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>

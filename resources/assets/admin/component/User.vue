@@ -1,31 +1,42 @@
-<style lang="css" module>
-.nav {
-  padding: 12px 12px 0;
-}
-</style>
-
 <template>
   <div>
-    <ul class="nav nav-tabs" :class="$style.nav">
-      <router-link to="/users" tag="li" active-class="active" exact>
-        <a href="#">用户管理</a>
-      </router-link>
-      <router-link to="/users/register" tag="li" active-class="active" exact>
-        <a href="#">注册设置</a>
-      </router-link>
-      <router-link to="/users/setting" tag="li" active-class="active">
-        <a href="#">基础设置</a>
-      </router-link>
-      <router-link to="/users/roles" tag="li" active-class="active">
-        <a href="#">角色管理</a>
-      </router-link>
-      <router-link to="/users/abilities" tag="li" active-class="active">
-        <a href="#">权限管理</a>
-      </router-link>
-      <router-link to="/users/recommends" tag="li" active-class="active">
-        <a href="#">推荐用户</a>
-      </router-link>
-    </ul>
-    <router-view />
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">切换导航条</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="navbar-brand">用户</div>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <!-- The settings nav. -->
+          <ul class="nav navbar-nav">
+            <router-link to="/users" tag="li" active-class="active" exact>
+              <a href="#">用户管理</a>
+            </router-link>
+            <router-link to="/users/register" tag="li" active-class="active" exact>
+              <a href="#">注册设置</a>
+            </router-link>
+            <router-link to="/users/setting" tag="li" active-class="active">
+              <a href="#">基础设置</a>
+            </router-link>
+            <router-link to="/users/roles" tag="li" active-class="active">
+              <a href="#">角色管理</a>
+            </router-link>
+            <router-link to="/users/abilities" tag="li" active-class="active">
+              <a href="#">权限管理</a>
+            </router-link>
+            <router-link to="/users/recommends" tag="li" active-class="active">
+              <a href="#">推荐用户</a>
+            </router-link>
+          </ul>
+        </div> 
+      </div>   
+    </nav>
+    <router-view></router-view>
   </div>
 </template>
