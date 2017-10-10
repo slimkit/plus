@@ -1,7 +1,4 @@
 <style lang="css" module>
-.container {
-  padding-top: 15px;
-}
 .loadding {
   text-align: center;
   padding-top: 100px;
@@ -22,15 +19,29 @@
 }
 </style>
 <template>
-  <div class="container-fluid" :class="$style.container">
-    <ul class="nav nav-tabs" :class="$style.areaTab">
-      <router-link to="/setting/area" tag="li" active-class="active" exact>
-        <a href="#">地区管理</a>
-      </router-link> 
-      <router-link to="/setting/hots" tag="li" active-class="active">
-        <a href="#">热门城市</a>
-      </router-link> 
-    </ul>
+  <div class="container-fluid" style="margin-top:10px;">
+    <nav class="nav navbar-default" :class="$style.areaTab">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">切换导航条</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <!-- The settings nav. -->
+          <ul class="nav navbar-nav">
+            <router-link to="/setting/area" tag="li" active-class="active" exact>
+              <a href="#">地区管理</a>
+            </router-link> 
+            <router-link to="/setting/hots" tag="li" active-class="active">
+              <a href="#">热门城市</a>
+            </router-link>
+          </ul>
+        </div>    
+    </nav>
     <div class="panel panel-default">
       <div class="panel-body">
      <!-- 加载动画 -->

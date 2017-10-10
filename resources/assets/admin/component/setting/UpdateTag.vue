@@ -1,5 +1,5 @@
   <template>
-  <div class="container-fluid">
+  <div class="container-fluid" style="margin-top:10px;">
     <div class="panel panel-default">
       <div class="panel-heading">
         添加标签

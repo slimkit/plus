@@ -1,18 +1,14 @@
-<style lang="scss" module>
-.container {
-  padding: 15px;
+<style lang="css" module>
   .containerAround {
     animation-name: "TurnAround";
     animation-duration: 1.6s;
     animation-timing-function: linear;
-    // animation-direction: alternate;
+    animation-direction: alternate;
     animation-iteration-count: infinite;
   }
-}
 </style>
-
 <template>
-  <div  :class="$style.container">
+  <div  class="container-fluid" style="margin-top:10px;">
     <div class="panel panel-default">
       <div class="panel-heading">
         基本信息配置

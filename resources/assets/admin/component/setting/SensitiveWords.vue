@@ -1,5 +1,5 @@
 <template>
-    <div style="padding: 15px;">
+    <div class="container-fluid" style="margin-top:10px;">
         <div v-show="errorMessage" class="alert alert-danger alert-dismissible" role="alert">
             <button type="button" class="close" @click.prevent="offAlert">
                 <span aria-hidden="true">&times;</span>

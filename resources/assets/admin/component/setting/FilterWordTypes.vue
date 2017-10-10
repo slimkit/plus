@@ -1,5 +1,5 @@
 <template>
-    <div style="padding: 15px;">
+    <div class="container-fluid" style="margin-top:10px;">
         <div class="panel panel-default">
           <div class="panel-heading">
             <div v-show="errorMessage" class="alert alert-danger alert-dismissible" role="alert">

@@ -14,7 +14,7 @@
     }
 </style>
 <template>
-  <div class="container-fluid" style="padding:15px;">
+  <div class="container-fluid" style="margin-top:10px;">
     <div v-show="message.success" class="alert alert-success alert-dismissible" role="alert">
         <button type="button" class="close" @click.prevent="offAlert">
             <span aria-hidden="true">&times;</span>

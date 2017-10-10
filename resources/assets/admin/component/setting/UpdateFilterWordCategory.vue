@@ -20,7 +20,7 @@
 </style>
 
 <template>
-        <div :class="$style.container">
+        <div class="container-fluid" style="margin-top:10px;">
           <div class="panel panel-default">
             <div class="panel-heading">
               过滤词分类-修改
