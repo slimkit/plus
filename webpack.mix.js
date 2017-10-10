@@ -12,6 +12,7 @@ let mix = require('laravel-mix');
  */
 
 mix.setPublicPath('public/assets');
+mix.setResourceRoot('../');
 mix.sourceMaps(! mix.inProduction());
 
 /*
@@ -24,7 +25,8 @@ mix.sourceMaps(! mix.inProduction());
  */
 
 mix.sass('resources/assets/sass/bootstrap.scss', 'public/assets/css')
-   .js('resources/assets/js/bootstrap.js', 'public/assets/js');
+   .js('resources/assets/js/bootstrap.js', 'public/assets/js')
+   .setPublicPath('public/assets');
 
 
 /*
