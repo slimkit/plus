@@ -5,80 +5,84 @@
 </style>
 <template>
   <div class="container-fluid" :class="$style.container">
-    <!-- 提示 -->
-    <div class="alert alert-success" role="alert">
-      权限节点，用于各个位置标示用户权限的配置～配置需要配合程序。尽量不要删除权限节点～以为节点name是在程序中赢编码的～
-      这里提供管理，只是方便技术人员对节点进行管理。
-      <p>编辑节点内容，修改完成后可直接回车或者留任不管～失去焦点后会自动保存。</p>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <!-- 提示 -->
+        <div class="alert alert-success" role="alert">
+          权限节点，用于各个位置标示用户权限的配置～配置需要配合程序。尽量不要删除权限节点～以为节点name是在程序中赢编码的～
+          这里提供管理，只是方便技术人员对节点进行管理。
+          <p>编辑节点内容，修改完成后可直接回车或者留任不管～失去焦点后会自动保存。</p>
+        </div>
+      </div>
+      <div class="panel-body">
+        <!-- 表格列表 -->
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>节点名称</th>
+              <th>显示名称</th>
+              <th>描述</th>
+              <th>更新时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <table-loading :loadding="loadding" :colspan-num="5"></table-loading>
+            <tr v-for="perm in abilities" :key="perm.id">
+              <td>{{ perm.name }}</td>
+              <td>
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="输入名称" :value="perm.display_name" @change.lazy="updatePerm(perm.id, 'display_name', $event.target.value)">
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="输入名称" :value="perm.description" @change.lazy="updatePerm(perm.id, 'description', $event.target.value)">
+                </div>
+              </td>
+              <td><local-date :utc="perm.updated_at" /></td>
+              <td>
+                <button v-if="deleteIds.hasOwnProperty(perm.id)" type="button" class="btn btn-danger btn-sm" disabled="disabled">
+                  <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
+                </button>
+                <button v-else type="button" class="btn btn-danger btn-sm" @click.prevent="deletePerm(perm.id)">删除</button>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="input-group">
+                  <input v-model="add.name" type="text" class="form-control" placeholder="输入节点名称">
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input v-model="add.display_name" type="text" class="form-control" placeholder="输入显示名称">
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input v-model="add.description" type="text" class="form-control" placeholder="输入节点描述">
+                </div>
+              </td>
+              <td></td>
+              <td>
+                <button v-if="add.adding" class="btn btn-primary btn-sm" disabled="disabled">
+                  <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
+                </button>
+                <button v-else type="button" class="btn btn-primary btn-sm" @click.pervent="postPerm">添加</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div v-show="error" class="alert alert-danger alert-dismissible" role="alert">
+          <button type="button" class="close" @click.prevent="dismisError">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{ error }}
+        </div>
+      </div>
     </div>
-
-    <!-- 表格列表 -->
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>节点名称</th>
-          <th>显示名称</th>
-          <th>描述</th>
-          <th>更新时间</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <table-loading :loadding="loadding" :colspan-num="5"></table-loading>
-        <tr v-for="perm in abilities" :key="perm.id">
-          <td>{{ perm.name }}</td>
-          <td>
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="输入名称" :value="perm.display_name" @change.lazy="updatePerm(perm.id, 'display_name', $event.target.value)">
-            </div>
-          </td>
-          <td>
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="输入名称" :value="perm.description" @change.lazy="updatePerm(perm.id, 'description', $event.target.value)">
-            </div>
-          </td>
-          <td><local-date :utc="perm.updated_at" /></td>
-          <td>
-            <button v-if="deleteIds.hasOwnProperty(perm.id)" type="button" class="btn btn-danger btn-sm" disabled="disabled">
-              <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-            </button>
-            <button v-else type="button" class="btn btn-danger btn-sm" @click.prevent="deletePerm(perm.id)">删除</button>
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <div class="input-group">
-              <input v-model="add.name" type="text" class="form-control" placeholder="输入节点名称">
-            </div>
-          </td>
-          <td>
-            <div class="input-group">
-              <input v-model="add.display_name" type="text" class="form-control" placeholder="输入显示名称">
-            </div>
-          </td>
-          <td>
-            <div class="input-group">
-              <input v-model="add.description" type="text" class="form-control" placeholder="输入节点描述">
-            </div>
-          </td>
-          <td></td>
-          <td>
-            <button v-if="add.adding" class="btn btn-primary btn-sm" disabled="disabled">
-              <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-            </button>
-            <button v-else type="button" class="btn btn-primary btn-sm" @click.pervent="postPerm">添加</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div v-show="error" class="alert alert-danger alert-dismissible" role="alert">
-      <button type="button" class="close" @click.prevent="dismisError">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      {{ error }}
-    </div>
-
   </div>
 </template>
 

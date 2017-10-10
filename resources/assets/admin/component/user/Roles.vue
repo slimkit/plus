@@ -16,75 +16,79 @@
 
 <template>
   <div class="container-fluid" :class="$style.container">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <!-- 提示 -->
+        <div class="alert alert-success" role="alert">
+          尽量不要删除用户组～删除用户组会造成用户组混乱！请谨慎编辑。
+        </div>
+      </div>
+      <div class="panel-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>角色名称</th>
+              <th>显示名称</th>
+              <th>描述</th>
+              <th>更新时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- 加载动画 -->
+            <table-loading :loadding="loadding" :colspan-num="5"></table-loading>
+            <tr v-for="role in roles">
+              <td>{{ role.name }}</td>
+              <td>{{ role.display_name }}</td>
+              <td>{{ role.description }}</td>
+              <td><local-date :utc="role.updated_at" /></td>
+              <td>
+                <!-- 管理分类 -->
+                <router-link :to="`${role.id}`" tag="button" append exact type="button" class="btn btn-primary btn-sm">管理</router-link>
 
-    <!-- 提示 -->
-    <div class="alert alert-success" role="alert">
-      尽量不要删除用户组～删除用户组会造成用户组混乱！请谨慎编辑。
-    </div>
+                <!-- delete role. -->
+                <button v-if="deleteIds.hasOwnProperty(role.id)" type="button" class="btn btn-danger btn-sm" disabled="disabled">
+                  <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
+                </button>
+                <button v-else type="button" class="btn btn-danger btn-sm" @click.prevent="deleteRole(role.id)">删除</button>
+              </td>
+            </tr>
 
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>角色名称</th>
-          <th>显示名称</th>
-          <th>描述</th>
-          <th>更新时间</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- 加载动画 -->
-        <table-loading :loadding="loadding" :colspan-num="5"></table-loading>
-        <tr v-for="role in roles">
-          <td>{{ role.name }}</td>
-          <td>{{ role.display_name }}</td>
-          <td>{{ role.description }}</td>
-          <td><local-date :utc="role.updated_at" /></td>
-          <td>
-            <!-- 管理分类 -->
-            <router-link :to="`${role.id}`" tag="button" append exact type="button" class="btn btn-primary btn-sm">管理</router-link>
+            <tr>
+              <td>
+                <div class="input-group">
+                  <input v-model="add.name" type="text" class="form-control" placeholder="输入角色名称">
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input v-model="add.display_name" type="text" class="form-control" placeholder="输入显示名称">
+                </div>
+              </td>
+              <td>
+                <div class="input-group">
+                  <input v-model="add.description" type="text" class="form-control" placeholder="输入节点描述">
+                </div>
+              </td>
+              <td></td>
+              <td>
+                <button v-if="add.adding" class="btn btn-primary btn-sm" disabled="disabled">
+                  <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
+                </button>
+                <button v-else type="button" class="btn btn-primary btn-sm" @click.pervent="postRole">添加</button>
+              </td>
+            </tr>
 
-            <!-- delete role. -->
-            <button v-if="deleteIds.hasOwnProperty(role.id)" type="button" class="btn btn-danger btn-sm" disabled="disabled">
-              <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-            </button>
-            <button v-else type="button" class="btn btn-danger btn-sm" @click.prevent="deleteRole(role.id)">删除</button>
-          </td>
-        </tr>
+          </tbody>
+        </table>
 
-        <tr>
-          <td>
-            <div class="input-group">
-              <input v-model="add.name" type="text" class="form-control" placeholder="输入角色名称">
-            </div>
-          </td>
-          <td>
-            <div class="input-group">
-              <input v-model="add.display_name" type="text" class="form-control" placeholder="输入显示名称">
-            </div>
-          </td>
-          <td>
-            <div class="input-group">
-              <input v-model="add.description" type="text" class="form-control" placeholder="输入节点描述">
-            </div>
-          </td>
-          <td></td>
-          <td>
-            <button v-if="add.adding" class="btn btn-primary btn-sm" disabled="disabled">
-              <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-            </button>
-            <button v-else type="button" class="btn btn-primary btn-sm" @click.pervent="postRole">添加</button>
-          </td>
-        </tr>
-
-      </tbody>
-    </table>
-
-    <div v-show="error" class="alert alert-danger alert-dismissible" role="alert">
-      <button type="button" class="close" @click.prevent="dismisError">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      {{ error }}
+        <div v-show="error" class="alert alert-danger alert-dismissible" role="alert">
+          <button type="button" class="close" @click.prevent="dismisError">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{ error }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
