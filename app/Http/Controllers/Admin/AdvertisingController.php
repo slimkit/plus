@@ -77,7 +77,10 @@ class AdvertisingController extends Controller
         $model->data = $this->byAdTypeGetData($formData['type'], $formData['data']);
 
         if ($model->save()) {
-            return response()->json(['message' => ['添加广告成功']], 201);
+            return response()->json([
+                'message' => ['添加广告成功'],
+                'ad_id' => $model->id,
+            ], 201);
         } else {
             return response()->json(['message' => ['添加广告失败']], 500);
         }

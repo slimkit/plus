@@ -1,18 +1,18 @@
 <template>
-    <div style="padding: 15px;">
+    <div style="padding: 15px;" class="form-horizontal">
         <div class="panel panel-default">
           <div class="panel-heading">
             <router-link type="button" class="btn btn-primary btn-sm" to="/ad">返回</router-link>
           </div>
-          <!-- 广告列表 -->
-          <div class="panel-body form-horizontal">
-              <div class="col-md-7 col-md-offset-2">
+          <div class="panel-body">
+              <div class="col-md-8">
                 <!-- 标题 -->
                 <div class="form-group">
                   <label class="col-md-2 control-label">标题</label>
                   <div class="col-md-7">
                     <input type="text" class="form-control" v-model="ad.title" placeholder="标题">
                   </div>
+                  <span class="help-block col-md-3">必填，广告标题</span>
                 </div>
                 <!-- 广告位置 -->
                 <div class="form-group">
@@ -22,6 +22,7 @@
                       <option v-for="space in spaces" :value="space.id">{{ space.alias }}</option>
                     </select>
                   </div>
+                  <span class="help-block col-md-3">必选，广告位置</span>
                 </div>
                 <!-- 启动广告时长 -->
                 <div class="form-group" v-show="ad.space_id === 1">
@@ -29,6 +30,7 @@
                   <div class="col-md-7">
                     <input type="number" value="" class="form-control" placeholder="广告持续时长，不能小于1" v-model="ad.data.duration">
                   </div>
+                  <span class="help-block col-md-3">必填，广告时长</span>
                 </div>
                 <!-- 类型 -->
                 <div class="form-group" v-show="ad.space_id">
@@ -38,6 +40,7 @@
                       <option v-for="type in types" :value="type">{{ type }}</option>
                     </select>
                   </div>
+                  <span class="help-block col-md-3">必填，广告类型</span>
                 </div>
                 <div v-show="ad.type">
                   <template>
@@ -54,6 +57,7 @@
                             </span>
                           </div>
                         </div>
+                        <span class="help-block col-md-3">必填，头像</span>
                       </div>
                       <!-- 广告名称 -->
                       <div class="form-group" v-else-if="key=='name'">
@@ -61,6 +65,7 @@
                         <div class="col-md-7">
                           <input type="text" class="form-control" v-model="ad.data.name" placeholder="用户名">
                         </div>
+                        <span class="help-block col-md-3">必填，用户名</span>
                       </div>
                       <!-- 广告内容 -->
                       <div class="form-group" v-else-if="key=='content'">
@@ -68,6 +73,7 @@
                         <div class="col-md-7">
                           <textarea class="form-control" v-model="ad.data.content" placeholder="内容"></textarea>
                         </div>
+                        <span class="help-block col-md-3">必填，广告内容描述</span>
                       </div>
                       <!-- 投放时间 -->
                       <div class="form-group" v-else-if="key=='time'">
@@ -75,6 +81,7 @@
                         <div class="col-md-7">
                            <input type="datetime-local" class="form-control" value="1993-02-15" v-model="ad.data.time" placeholder="1990-12-12 12:00:00">
                         </div>
+                        <span class="help-block col-md-3">必填，广告投放时间</span>
                       </div>
                       <!-- 广告来源 -->
                       <div class="form-group" v-else-if="key=='from'">
@@ -82,6 +89,7 @@
                         <div class="col-md-7">
                            <input type="text" class="form-control" v-model="ad.data.from" placeholder="广告来源">
                         </div>
+                        <span class="help-block col-md-3">必填，广告来源</span>
                       </div>
                       <!-- 广告图片 -->
                       <div class="form-group" v-if="key=='image'">
@@ -95,6 +103,7 @@
                             </span>
                           </div>
                         </div>
+                        <span class="help-block col-md-3">必填，广告图</span>
                       </div>
                       <!-- 广告链接 -->
                       <div class="form-group" v-else-if="key=='link'">
@@ -102,6 +111,7 @@
                         <div class="col-md-7">
                           <input type="text" class="form-control" v-model="ad.data.link" placeholder="广告链接">
                         </div>
+                        <span class="help-block col-md-3">必填，广告链接</span>
                       </div>
                       <!-- 广告标题 -->
                       <div class="form-group" v-else-if="key=='title'">
@@ -109,6 +119,7 @@
                         <div class="col-md-7">
                           <input type="text" class="form-control" v-model="ad.data.title" placeholder="标题">
                         </div>
+                        <span class="help-block col-md-3">必填，广告标题</span>
                       </div>
                     </div>
                   </template>
@@ -119,6 +130,7 @@
                   <div class="col-md-7">
                     <input type="number" value="0" class="form-control" v-model="ad.sort">
                   </div>
+                  <span class="help-block col-md-3">广告排序，值越大越靠前</span>
                 </div>
                 <div class="form-group">
                   <label class="col-md-2 control-label"></label>
@@ -141,9 +153,7 @@ import plusMessageBundle from 'plus-message-bundle';
 const AddAdComponent = {
 
     data: () => ({
-
       loadding: true,
-      
       ad: {
         title: null,
         space_id: null,
@@ -160,21 +170,15 @@ const AddAdComponent = {
           duration: 0
         }
       },
-
       spaces: {},
-
       types: [],
-
       format: {},
-      
       message: {
         success: null,
         error: null,
       }    
     }),
-    
     methods: {
-
       getAdSpaces () {
         request.get(
           createRequestURI('ads/spaces'),
@@ -184,27 +188,21 @@ const AddAdComponent = {
         }).catch(({ response: { data: { errors = ['加载认证类型失败'] } = {} } = {} }) => {
         });
       },
-
       storeAds () {
-          
-          this.hiddenMessage();
-
           request.post(
             createRequestURI('ads'),
             { ...this.ad },
             { validateStatus: status => status === 201 }
-          ).then(({ data: { message: [ message ] = [] } }) => {
-            this.message.success = message;
+          ).then(data => {
+            this.$router.replace({ path: `/ad/${data.data.ad_id}/update` });
           }).catch(({ response: { data = {} } = {} }) => {
             const Message = plusMessageBundle(data);
             this.message.error = Message.getMessage();
           });
       },
-
       triggerUpload (key) {
         $('.' + key + '-input').click();
       },
-
       uploadAttachment (type) {
         let e = window.event || arguments[0];
         let that = this;
@@ -238,15 +236,12 @@ const AddAdComponent = {
           });
         }
       },
-
       spaceChang () {
         this.setType();
       },
-
       typeChang () {
         this.setFormat();
       },
-
       setType () {
         let spaces = this.spaces;
         for (let i=0; i<spaces.length; i++) {
@@ -255,7 +250,6 @@ const AddAdComponent = {
           }
         }
       },
-
       setFormat () {
         let spaces = this.spaces;
         for (let i=0; i<spaces.length; i++) {
@@ -264,13 +258,10 @@ const AddAdComponent = {
           }
         }
       },
-
       hiddenMessage () {
         this.message.success = this.message.error = null;
       }
-
     },
-
     created () {
       this.getAdSpaces();
     },
