@@ -93,13 +93,19 @@ class UserController extends Controller
             $query->where('type', 'like', ($follow == 2 ? 'each' : 'followed'));
         });
 
-        $datas['page'] = $builder->paginate($perPage)->map(function ($user) {
+        $pages = $builder->paginate($perPage);
+
+        $datas['users'] = $pages->map(function ($user) {
             $user->setHidden([]);
             $user->load('recommended');
             $user->load('famous');
 
             return $user;
         });
+
+        $datas['page']['last_page'] = $pages->lastPage();
+        $datas['page']['current_page'] = $pages->currentPage();
+        $datas['page']['total'] = $pages->total();
 
         return response()->json($datas)->setStatusCode(200);
     }
