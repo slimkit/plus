@@ -351,4 +351,3 @@ class CertificationController extends Controller
             ->get();
     }
 }
-
