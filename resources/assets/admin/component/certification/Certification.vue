@@ -33,7 +33,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                      <input type="text" class="form-control" v-model="filter.keyword" placeholder="关键词搜索">
+                      <input type="text" class="form-control" v-model="filter.keyword" placeholder="用户名/支持模糊匹配">
                       <router-link class="btn btn-default" tag="button" :to="{ path: '/certifications/', query: searchQuery }">
                         搜索
                       </router-link>

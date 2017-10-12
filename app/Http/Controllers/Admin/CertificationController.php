@@ -28,15 +28,9 @@ class CertificationController extends Controller
         $name = $request->get('certification_name');
 
         $query = Certification::when(! is_null($keyword), function ($query) use ($keyword) {
-            $where = sprintf('%%%s%%', $keyword);
-            $query->whereHas('user', function ($query) use ($where) {
-                $query->where('name', 'like', $where);
-            })
-            ->orWhere('data->number', 'like', $where)
-            ->orWhere('data->phone', 'like', $where)
-            ->orWhere('data->name', 'like', $where)
-            ->orWhere('data->org_address', 'like', $where)
-            ->orWhere('data->org_name', 'like', $where);
+            $query->whereHas('user', function ($query) use ($keyword) {
+                $query->where('name', 'like', sprintf('%%%s%%', $keyword));
+            });
         })
         ->when($name, function ($query) use ($name) {
             $query->where('certification_name', $name);
