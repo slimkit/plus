@@ -166,7 +166,6 @@ class CertificationController extends Controller
 
         return $certification->getConnection()->transaction(function () use (
             $files, $type, $data, $certification, $fileWithModel) {
-
             $fileIds = $data['files'];
             $count = $files->count();
 
