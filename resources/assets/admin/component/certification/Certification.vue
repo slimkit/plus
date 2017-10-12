@@ -1,15 +1,11 @@
 <template>
     <div class="container-fluid" style="margin-top:10px;">
         <div v-show="message.success" class="alert alert-success alert-dismissible" role="alert">
-            <button type="button" class="close" @click.prevent="offAlert">
-                <span aria-hidden="true">&times;</span>
-            </button>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             {{ message.success }}
         </div>
         <div v-show="message.error" class="alert alert-danger alert-dismissible" role="alert">
-            <button type="button" class="close" @click.prevent="offAlert">
-                <span aria-hidden="true">&times;</span>
-            </button>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             {{ message.error }}
         </div>
         <div class="panel panel-default">
@@ -314,9 +310,6 @@ const certificationComponent = {
           this.reject.content = '';
           this.reject.message = '';
           $('#rejectModal').modal('show');
-        },
-        offAlert () {
-          this.errorMessage = this.successMessage = '';
         },
         offsetPage(offset) {
           return { path: '/certifications', query: { ...this.filter, offset } };
