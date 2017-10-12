@@ -159,17 +159,33 @@ class CertificationController extends Controller
             $updateData['files'] = $fileIds;
         }
 
-        $certification->certification_name = $type ?: $certification->certification_name;
+        $data = $certification->data;
+
         $certification->data = array_merge($certification->data, array_filter($updateData));
         $certification->status = 1;
 
-        return $certification->getConnection()->transaction(function () use ($files, $certification) {
-            $files->each(function ($file) use ($certification) {
-                $file->channel = 'certification:file';
-                $file->raw = $certification->user_id;
-                $file->save();
-            });
-            $certification->save();
+        return $certification->getConnection()->transaction(function () use (
+            $files, $type, $data, $certification, $fileWithModel) {
+
+            $fileIds = $data['files'];
+            $count = $files->count();
+
+            if ($count) {
+                if ($type === 'org') {
+                    if ($count === 1) {
+                        $value = array_intersect($fileIds, request()->input('files'));
+                        $key = array_search(implode('', $value), $fileIds);
+                        unset($fileIds[$key]);
+                    }
+                }
+                $fileWithModel->destroy($fileIds);
+                $files->each(function ($file) use ($certification) {
+                    $file->channel = 'certification:file';
+                    $file->raw = $certification->user_id;
+                    $file->save();
+                });
+                $certification->save();
+            }
 
             return response()->json(['message' => ['修改成功']], 201);
         });
@@ -334,5 +350,14 @@ class CertificationController extends Controller
             ->where('raw', null)
             ->whereIn('id', $files)
             ->get();
+    }
+
+    protected function findFileWithPrimaryKeyIds(int $userId, FileWithModel $fileWithModel)
+    {
+        return $fileWithModel
+                ->where('user_id', $userId)
+                ->where('channel', 'certification:file')
+                ->select('id')
+                ->get();
     }
 }

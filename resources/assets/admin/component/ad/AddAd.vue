@@ -4,7 +4,7 @@
           <div class="panel-heading">
             <router-link type="button" class="btn btn-primary btn-sm" to="/ad">返回</router-link>
           </div>
-          <div class="panel-body">
+          <div class="panel-body form-horizontal">
               <div class="col-md-8">
                 <!-- 标题 -->
                 <div class="form-group">

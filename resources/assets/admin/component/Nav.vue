@@ -73,7 +73,7 @@
     </router-link>
     <router-link class="list-group-item __button" to="/wallet" active-class="active" >
       <span class="glyphicon glyphicon-credit-card __icon"></span>
-      钱包
+      钱包管理
     </router-link>
     <router-link class="list-group-item __button" to="/ad" active-class="active" >
       <span class="__icon">AD</span>

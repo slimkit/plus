@@ -19,7 +19,11 @@
           </div>
           <!-- 广告列表 -->
           <div class="panel-body form-horizontal">
-              <div class="col-md-8">
+              <!-- 加载动画 -->
+              <div v-show="loadding" :class="$style.loadding">
+                  <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
+              </div>
+              <div class="col-md-8" v-show="!loadding">
                 <!-- 标题 -->
                 <div class="form-group">
                   <label class="col-md-2 control-label">标题</label>
@@ -187,7 +191,7 @@ const AddAdComponent = {
         }
       },
 
-      spaces: {},
+      spaces: [],
 
       types: [],
 
@@ -198,7 +202,15 @@ const AddAdComponent = {
         error: null,
       }    
     }),
-    
+
+    watch: {
+      'spaces'() {
+        if (this.spaces.length) {
+          this.getAd();
+        }
+      }
+    },
+
     methods: {
 
       getAdSpaces () {
@@ -206,8 +218,11 @@ const AddAdComponent = {
           createRequestURI('ads/spaces'),
           { validateStatus: status => status === 200 }
         ).then(response => {
+          this.loadding = false;
           this.spaces = response.data;
         }).catch(({ response: { data: { errors = ['加载认证类型失败'] } = {} } = {} }) => {
+          this.loadding = false;
+          this.message.error = errors;
         });
       },
 
@@ -217,20 +232,15 @@ const AddAdComponent = {
           createRequestURI(`ads/${id}`),
           { validateStatus: status => status === 200 }
         ).then(response => {
-
           let data = response.data;
-
           if (data.data.hasOwnProperty('time')) {
             data.data.time = this.isoTime(data.data.time);
           }
-
           this.ad = data;
-
           this.spaceChang();
-
           this.typeChang();
-
-        }).catch(({ response: { data: { errors = ['加载认证类型失败'] } = {} } = {} }) => {
+        }).catch(({ response: { data: { errors = ['加载广告失败'] } = {} } = {} }) => {
+          this.message.error = errors;
         });
       },
 
@@ -277,9 +287,6 @@ const AddAdComponent = {
               const { id: id, message: [message] = [] } = response.data;
               let origin = window.location.origin;
               let fileUrl = origin + '/api/v2/files/' + id;
-              
-              console.log(that.ad.data);
-
               if (type == 'image') {
                 that.ad.data.image = fileUrl;
               } else if(type == 'avatar') {
@@ -305,6 +312,7 @@ const AddAdComponent = {
         for (let i=0; i<spaces.length; i++) {
           if (spaces[i].id == this.ad.space_id) {
             this.types = spaces[i].allow_type.split(',');
+             break;
           }
         }
       },
@@ -314,6 +322,7 @@ const AddAdComponent = {
         for (let i=0; i<spaces.length; i++) {
           if (spaces[i].id == this.ad.space_id) {
             this.format = spaces[i].format[this.ad.type];
+            break;
           }
         }
       },
@@ -331,7 +340,6 @@ const AddAdComponent = {
 
     created () {
       this.getAdSpaces();
-      this.getAd();
     },
 };
 
