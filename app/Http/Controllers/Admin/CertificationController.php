@@ -350,13 +350,5 @@ class CertificationController extends Controller
             ->whereIn('id', $files)
             ->get();
     }
-
-    protected function findFileWithPrimaryKeyIds(int $userId, FileWithModel $fileWithModel)
-    {
-        return $fileWithModel
-                ->where('user_id', $userId)
-                ->where('channel', 'certification:file')
-                ->select('id')
-                ->get();
-    }
 }
+
