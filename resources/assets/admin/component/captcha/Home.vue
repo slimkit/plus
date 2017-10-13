@@ -10,90 +10,84 @@
     <div class="panel panel-default">
       <!-- 短信记录面板 -->
       <div class="panel-heading">
-
-        <div class="row">
-
-          <div class="col-xs-6">
-              
-            <div class="input-group" style="max-width: 356px;">
-              <div class="input-group-btn">
-                <!-- 状态 -->
-                <button type="button" class="btn btn-default dropdown-toggle" id="state" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">状态 <span class="caret"></span></button>
-                <ul class="dropdown-menu" aria-labelledby="state">
-                  <li>
-                    <a href="#" @click.prevent="changeState(-1)">
-                      <span v-if="search.state === -1" class="glyphicon glyphicon-ok-circle"></span>
-                      <span v-else class="glyphicon glyphicon-record"></span>
-                      全部状态
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" @click.prevent="changeState(0)">
-                      <span v-if="search.state === 0" class="glyphicon glyphicon-ok-circle"></span>
-                      <span v-else class="glyphicon glyphicon-record"></span>
-                      未发送
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" @click.prevent="changeState(1)">
-                      <span v-if="search.state === 1" class="glyphicon glyphicon-ok-circle"></span>
-                      <span v-else class="glyphicon glyphicon-record"></span>
-                      发送成功
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" @click.prevent="changeState(2)">
-                      <span v-if="search.state === 2" class="glyphicon glyphicon-ok-circle"></span>
-                      <span v-else class="glyphicon glyphicon-record"></span>
-                      发送失败
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <input type="text" class="form-control" aria-label="input-group-btn" placeholder="输入要搜索的手机号码" v-model="search.keyword">
-              <div class="input-group-btn">
-                <router-link class="btn btn-default" tag="button" :to="{ path: '/captcha', query: search }">
-                  搜索
-                </router-link>
-              </div>
-            </div>
-
+        <div class="input-group" style="max-width: 356px;">
+          <div class="input-group-btn">
+            <!-- 状态 -->
+            <button type="button" class="btn btn-default dropdown-toggle" id="state" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">状态 <span class="caret"></span></button>
+            <ul class="dropdown-menu" aria-labelledby="state">
+              <li>
+                <a href="#" @click.prevent="changeState(-1)">
+                  <span v-if="search.state === -1" class="glyphicon glyphicon-ok-circle"></span>
+                  <span v-else class="glyphicon glyphicon-record"></span>
+                  全部状态
+                </a>
+              </li>
+              <li>
+                <a href="#" @click.prevent="changeState(0)">
+                  <span v-if="search.state === 0" class="glyphicon glyphicon-ok-circle"></span>
+                  <span v-else class="glyphicon glyphicon-record"></span>
+                  未发送
+                </a>
+              </li>
+              <li>
+                <a href="#" @click.prevent="changeState(1)">
+                  <span v-if="search.state === 1" class="glyphicon glyphicon-ok-circle"></span>
+                  <span v-else class="glyphicon glyphicon-record"></span>
+                  发送成功
+                </a>
+              </li>
+              <li>
+                <a href="#" @click.prevent="changeState(2)">
+                  <span v-if="search.state === 2" class="glyphicon glyphicon-ok-circle"></span>
+                  <span v-else class="glyphicon glyphicon-record"></span>
+                  发送失败
+                </a>
+              </li>
+            </ul>
+          </div>
+          <input type="text" class="form-control" aria-label="input-group-btn" placeholder="输入要搜索的手机号码" v-model="search.keyword">
+          <div class="input-group-btn">
+            <router-link class="btn btn-default" tag="button" :to="{ path: '/captcha', query: search }">
+              搜索
+            </router-link>
           </div>
         </div>
       </div>
-      <!-- Table -->
-      <table class="table table-hove">
-        <thead>
-          <tr>
-            <th>账号</th>
-            <th>验证码</th>
-            <th>状态</th>
-            <th>时间</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="log in logs" :key="log.id">
-            <td>{{ log.account }}</td>
-            <td>{{ log.code }}</td>
-            <td v-if="log.state === 0" style="color: #5bc0de;">未发送</td>
-            <td v-else-if="log.state === 1" style="color: #449d44;">发送成功</td>
-            <td v-else-if="log.state === 2" style="color: #d9534f;">发送失败</td>
-            <td v-else>未知状态</td>
-            <td> <local-date :utc="log.created_at" /> </td>
-          </tr>
-        </tbody>
-      </table>
-      <!-- 分页 -->
-      <div class="text-center">
-        <offset-paginator class="pagination" :total="total" :offset="offset" :limit="15">
-          <template scope="pagination">
-            <li :class="(pagination.disabled ? 'disabled': '') + (pagination.currend ? 'active' : '')">
-              <span v-if="pagination.disabled || pagination.currend">{{ pagination.page }}</span>
-              <router-link v-else :to="offsetPage(pagination.offset)">{{ pagination.page }}</router-link>
-            </li>
-          </template>
-        </offset-paginator>
-      </div>
+      <div class="panel-body">
+        <!-- Table -->
+        <table class="table table-hove">
+          <thead>
+            <tr>
+              <th>账号</th>
+              <th>验证码</th>
+              <th>状态</th>
+              <th>时间</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="log in logs" :key="log.id">
+              <td>{{ log.account }}</td>
+              <td>{{ log.code }}</td>
+              <td v-if="log.state === 0" style="color: #5bc0de;">未发送</td>
+              <td v-else-if="log.state === 1" style="color: #449d44;">发送成功</td>
+              <td v-else-if="log.state === 2" style="color: #d9534f;">发送失败</td>
+              <td v-else>未知状态</td>
+              <td> <local-date :utc="log.created_at" /> </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="text-center">
+          <offset-paginator class="pagination" :total="total" :offset="offset" :limit="15">
+            <template scope="pagination">
+              <li :class="(pagination.disabled ? 'disabled': '') + (pagination.currend ? 'active' : '')">
+                <span v-if="pagination.disabled || pagination.currend">{{ pagination.page }}</span>
+                <router-link v-else :to="offsetPage(pagination.offset)">{{ pagination.page }}</router-link>
+              </li>
+            </template>
+          </offset-paginator>
+        </div>
+      </div>  
     </div>
   </div>
 </template>
