@@ -1,67 +1,74 @@
 <template>
-  <div class="component-container container-fluid">
-    <div class="form-horizontal">
-      <!-- user name -->
-      <div class="form-group">
-        <label for="name" class="col-sm-2 control-label">用户名</label>
-        <div class="col-sm-6">
-          <input type="text" class="form-control" id="name" aria-describedby="name-help-block" placeholder="请输入用户名" v-model="name">
-        </div>
-        <span class="col-sm-4 help-block" id="name-help-block">
-          请输入用户名，只能以非特殊字符和数字开头！
-        </span>
+  <div class="container-fluid" style="margin:15px;">
+    <div class="panel panel-default form-horizontal">
+      <div class="panel panel-heading">
+        用户添加
+        <router-link tag="a" class="btn btn-link pull-right btn-xs" to="/users" role="button">
+          返回
+        </router-link>
       </div>
-
-      <!-- phone -->
-      <div class="form-group">
-        <label for="phone" class="col-sm-2 control-label">手机号码</label>
-        <div class="col-sm-6">
-          <input type="text" class="form-control" id="phone" aria-describedby="phone-help-block" placeholder="请输入手机号码" v-model="phone">
+      <div class="panel panel-body">
+        <!-- user name -->
+        <div class="form-group">
+          <label for="name" class="col-sm-2 control-label">用户名</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" id="name" aria-describedby="name-help-block" placeholder="请输入用户名" v-model="name">
+          </div>
+          <span class="col-sm-4 help-block" id="name-help-block">
+            请输入用户名，只能以非特殊字符和数字开头！
+          </span>
         </div>
-        <span class="col-sm-4 help-block" id="phone-help-block">
-          可选，手机号码
-        </span>
-      </div>
 
-      <!-- email -->
-      <div class="form-group">
-        <label for="email" class="col-sm-2 control-label">邮箱</label>
-        <div class="col-sm-6">
-          <input type="text" class="form-control" id="email" aria-describedby="phone-help-block" placeholder="请输入邮箱地址" v-model="email">
+        <!-- phone -->
+        <div class="form-group">
+          <label for="phone" class="col-sm-2 control-label">手机号码</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" id="phone" aria-describedby="phone-help-block" placeholder="请输入手机号码" v-model="phone">
+          </div>
+          <span class="col-sm-4 help-block" id="phone-help-block">
+            可选，手机号码
+          </span>
         </div>
-        <span class="col-sm-4 help-block" id="email-help-block">
-          可选，电子邮箱
-        </span>
-      </div>
 
-      <!-- password -->
-      <div class="form-group">
-        <label for="password" class="col-sm-2 control-label">密码</label>
-        <div class="col-sm-6">
-          <input type="password" autocomplete="new-password" class="form-control" id="password" aria-describedby="password-help-block" placeholder="请输入用户密码" v-model="password">
+        <!-- email -->
+        <div class="form-group">
+          <label for="email" class="col-sm-2 control-label">邮箱</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" id="email" aria-describedby="phone-help-block" placeholder="请输入邮箱地址" v-model="email">
+          </div>
+          <span class="col-sm-4 help-block" id="email-help-block">
+            可选，电子邮箱
+          </span>
         </div>
-        <span class="col-sm-4 help-block" id="password-help-block">
-          用户密码
-        </span>
-      </div>
 
-      <!-- Button -->
-      <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <button v-if="adding" type="button" class="btn btn-primary" disabled="disabled">
-            <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
+        <!-- password -->
+        <div class="form-group">
+          <label for="password" class="col-sm-2 control-label">密码</label>
+          <div class="col-sm-6">
+            <input type="password" autocomplete="new-password" class="form-control" id="password" aria-describedby="password-help-block" placeholder="请输入用户密码" v-model="password">
+          </div>
+          <span class="col-sm-4 help-block" id="password-help-block">
+            用户密码
+          </span>
+        </div>
+
+        <!-- Button -->
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <button v-if="adding" type="button" class="btn btn-primary" disabled="disabled">
+              <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
+            </button>
+            <button v-else type="button" class="btn btn-primary" @click="createUser">添加用户</button>
+          </div>
+        </div>
+
+        <div v-show="errorMessage" class="alert alert-danger alert-dismissible" role="alert">
+          <button type="button" class="close" @click.prevent="dismisError">
+            <span aria-hidden="true">&times;</span>
           </button>
-          <button v-else type="button" class="btn btn-primary" @click="createUser">添加用户</button>
+          {{ errorMessage }}
         </div>
       </div>
-
-      <div v-show="errorMessage" class="alert alert-danger alert-dismissible" role="alert">
-        <button type="button" class="close" @click.prevent="dismisError">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        {{ errorMessage }}
-      </div>
-
     </div>
   </div>
 </template>

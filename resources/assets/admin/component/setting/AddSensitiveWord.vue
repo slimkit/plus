@@ -20,50 +20,60 @@
 </style>
 
 <template>
-        <div class="container-fluid" style="margin-top:10px;">
-            <!-- 加载动画 -->
-            <div v-show="loadding" :class="$style.loadding">
-                <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-            </div>
-            <div class="col-md-6 col-md-offset-3" v-show="!loadding">
-                <div v-show="errorMessage" class="alert alert-danger alert-dismissible affix-top" role="alert">
-                    <button type="button" class="close" @click.prevent="offAlert">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    {{ errorMessage }}
-                </div>
-                <div v-show="successMessage" class="alert alert-success alert-dismissible affix-top" role="alert">
-                    <button type="button" class="close" @click.prevent="offAlert">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    {{ successMessage }}
-                </div>
-                <div class="form-group">
-                    <label><span class="text-danger">*</span>名称：</label>
-                    <input type="text" class="form-control" v-model="sensitive.name">
-                </div>
-                <div class="form-group">
-                    <label><span class="text-danger">*</span>类型：</label>
-                    <select class="form-control" v-model="sensitive.filter_word_category_id">
-                       <option v-for="category in categories" :value="category.id">{{ category.name }}</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label><span class="text-danger">*</span>分类：</label>
-                   <select class="form-control" v-model="sensitive.filter_word_type_id">
-                       <option v-for="type in types" :value="type.id">{{ type.name }}</option>
-                   </select>
-                </div>
-                <div class="form-group">
-                      <button type="submit" 
-                      @click="add" id="ok-btn" 
-                      data-loading-text="提交中..." 
-                      class="btn btn-primary" 
-                      autocomplete="off" 
-                      :disabled="disabled">确认</button>
-                </div>
-            </div>
-        </div>
+<div class="container-fluid" style="margin-top:10px;">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      敏感词添加
+      <router-link tag="a" class="btn btn-link pull-right btn-xs" to="/setting/sensitive-words" role="button">
+        返回
+      </router-link>
+    </div>
+    <div class="panel-body">
+      <!-- 加载动画 -->
+      <div v-show="loadding" :class="$style.loadding">
+          <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
+      </div>
+      <div class="col-md-6 col-md-offset-3" v-show="!loadding">
+          <div v-show="errorMessage" class="alert alert-danger alert-dismissible affix-top" role="alert">
+              <button type="button" class="close" @click.prevent="offAlert">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+              {{ errorMessage }}
+          </div>
+          <div v-show="successMessage" class="alert alert-success alert-dismissible affix-top" role="alert">
+              <button type="button" class="close" @click.prevent="offAlert">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+              {{ successMessage }}
+          </div>
+          <div class="form-group">
+              <label><span class="text-danger">*</span>名称：</label>
+              <input type="text" class="form-control" v-model="sensitive.name">
+          </div>
+          <div class="form-group">
+              <label><span class="text-danger">*</span>类型：</label>
+              <select class="form-control" v-model="sensitive.filter_word_category_id">
+                 <option v-for="category in categories" :value="category.id">{{ category.name }}</option>
+              </select>
+          </div>
+          <div class="form-group">
+              <label><span class="text-danger">*</span>分类：</label>
+             <select class="form-control" v-model="sensitive.filter_word_type_id">
+                 <option v-for="type in types" :value="type.id">{{ type.name }}</option>
+             </select>
+          </div>
+          <div class="form-group">
+                <button type="submit" 
+                @click="add" id="ok-btn" 
+                data-loading-text="提交中..." 
+                class="btn btn-primary" 
+                autocomplete="off" 
+                :disabled="disabled">确认</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
 </template>
 
 <script>

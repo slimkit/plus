@@ -15,15 +15,14 @@
 </style>
 
 <template>
-  <div class="container-fluid" :class="$style.container">
+  <div class="container-fluid" style="margin:15px;">
     <div class="panel panel-default">
-      <div class="panel-heading">
+      <div class="panel-heading">角色列表</div>
+      <div class="panel-body">
         <!-- 提示 -->
         <div class="alert alert-success" role="alert">
           尽量不要删除用户组～删除用户组会造成用户组混乱！请谨慎编辑。
         </div>
-      </div>
-      <div class="panel-body">
         <table class="table table-striped">
           <thead>
             <tr>

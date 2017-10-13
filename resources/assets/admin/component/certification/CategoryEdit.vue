@@ -20,7 +20,10 @@
             </div>
             <div class="panel panel-default">
               <div class="panel-heading">
-                <router-link type="button" class="btn btn-primary btn-sm" to="/certifications/categories">返回</router-link>
+                认证类型修改
+                <router-link tag="a" class="btn btn-link pull-right btn-xs" to="/certifications/categories" role="button">
+                  返回
+                </router-link>
               </div>
               <div class="panel-body">
                 <div class="col-md-6 col-md-offset-3" v-show="!loadding">

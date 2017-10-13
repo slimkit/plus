@@ -1,19 +1,20 @@
 <template>
     <div class="container-fluid" style="margin-top:10px;">
+        <div v-show="errorMessage" class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" @click.prevent="offAlert">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ errorMessage }}
+        </div>
+        <div v-show="successMessage" class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" @click.prevent="offAlert">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ successMessage }}
+        </div>
         <div class="panel panel-default">
           <div class="panel-heading">
-            <div v-show="errorMessage" class="alert alert-danger alert-dismissible" role="alert">
-                <button type="button" class="close" @click.prevent="offAlert">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                {{ errorMessage }}
-            </div>
-            <div v-show="successMessage" class="alert alert-success alert-dismissible" role="alert">
-                <button type="button" class="close" @click.prevent="offAlert">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                {{ successMessage }}
-            </div>
+            过滤词语类型列表
           </div>
           <div class="panel-body">
             <table class="table table-striped">

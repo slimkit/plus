@@ -1,5 +1,5 @@
 <template>
-  <div class="component-container container-fluid">
+  <div class="container-fluid" style="margin:15px;">
     <div class="panel panel-default">
       <!-- Title -->
       <div class="panel-heading">设置用户相关基础信息</div>

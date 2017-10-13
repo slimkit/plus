@@ -1,11 +1,5 @@
-<style lang="css" module>
-.container {
-  padding-top: 15px;
-}
-</style>
-
 <template>
-  <div class="container-fluid" :class="$style.container">
+  <div class="container-fluid" style="margin:15px;">
     <!-- error -->
     <div v-show="error" class="alert alert-danger alert-dismissible" role="alert">
       <button type="button" class="close" @click.prevent="dismisError">
@@ -14,14 +8,14 @@
       {{ error }}
     </div>
     <div class="panel panel-default">
-      <div class="panel-heading">
-        <div class="well well-sm">
+        <div class="panel-heading">
           检索用户
           <router-link tag="a" class="btn btn-link pull-right btn-xs" to="/users/add" role="button">
             <span class="glyphicon glyphicon-plus"></span>
-            添加用户
+            添加
           </router-link>
         </div>
+      <div class="panel-heading">
         <!-- 搜索用户 -->
         <div class="form-horizontal">
           <div class="form-group">

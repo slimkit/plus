@@ -9,9 +9,12 @@
             {{ message.error }}
         </div>
         <div class="panel panel-default">
-          <!-- 添加广告 -->
           <div class="panel-heading">
-            <router-link class="btn btn-primary btn-sm" to="rules/add">添加</router-link>
+            金币规则列表
+            <router-link tag="a" class="btn btn-link pull-right btn-xs" to="/gold/rules/add" role="button">
+              <span class="glyphicon glyphicon-plus"></span>
+              添加
+            </router-link>
           </div>
           <div class="panel-heading">
             <div class="form-inline">
@@ -23,7 +26,6 @@
               </div>
             </div>
           </div>
-          <!-- 广告列表 -->
           <div class="panel-body">
             <table class="table table-striped">
                 <thead>

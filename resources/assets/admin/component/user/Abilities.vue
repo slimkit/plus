@@ -1,20 +1,16 @@
-<style lang="css" module>
-.container {
-  padding-top: 15px;
-}
-</style>
 <template>
-  <div class="container-fluid" :class="$style.container">
+  <div class="container-fluid" style="margin:15px;">
     <div class="panel panel-default">
       <div class="panel-heading">
+        权限节点
+      </div>
+      <div class="panel-body">
         <!-- 提示 -->
         <div class="alert alert-success" role="alert">
           权限节点，用于各个位置标示用户权限的配置～配置需要配合程序。尽量不要删除权限节点～以为节点name是在程序中赢编码的～
           这里提供管理，只是方便技术人员对节点进行管理。
           <p>编辑节点内容，修改完成后可直接回车或者留任不管～失去焦点后会自动保存。</p>
         </div>
-      </div>
-      <div class="panel-body">
         <!-- 表格列表 -->
         <table class="table table-striped">
           <thead>

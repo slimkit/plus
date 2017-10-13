@@ -2,7 +2,10 @@
     <div class="container-fluid" style="margin-top:10px;">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <router-link type="button" class="btn btn-primary btn-sm" to="/ad">返回</router-link>
+            广告添加
+            <router-link tag="a" class="btn btn-link pull-right btn-xs" to="/ad" role="button">
+              返回
+            </router-link>
           </div>
           <div class="panel-body form-horizontal">
               <div class="col-md-8">

@@ -28,8 +28,12 @@
         {{ message.error }}
     </div>
     <div class="panel panel-default">
-      <div class="panel panel-heading">
-        <router-link to="/setting/addtag" class="btn btn-primary btn-sm">添加</router-link>
+      <div class="panel-heading">
+        标签列表
+        <router-link tag="a" class="btn btn-link pull-right btn-xs" to="/setting/addtag" role="button">
+          <span class="glyphicon glyphicon-plus"></span>
+          添加
+        </router-link>
       </div>
       <div class="panel-body">
         <table class="table table-striped">

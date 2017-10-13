@@ -24,7 +24,10 @@
     </div>
     <div class="panel panel-default" v-show="!loadding">
       <div class="panel-heading">
-        <router-link class="btn btn-primary btn-sm" to="/gold">返回</router-link>
+        金币类型添加
+        <router-link tag="a" class="btn btn-link pull-right btn-xs" to="/gold" role="button">
+          返回
+        </router-link>
       </div>
       <div class="panel-body">
         <div class="form-horizontal">

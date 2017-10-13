@@ -15,7 +15,11 @@
         <div class="panel panel-default">
           <!-- 添加广告 -->
           <div class="panel-heading">
-            <router-link type="button" class="btn btn-primary btn-sm" to="ad/add">添加</router-link>
+            广告列表
+            <router-link tag="a" class="btn btn-link pull-right btn-xs" to="/ad/add" role="button">
+              <span class="glyphicon glyphicon-plus"></span>
+              添加
+            </router-link>
           </div>
           <!-- 添加广告 -->
           <div class="panel-heading">

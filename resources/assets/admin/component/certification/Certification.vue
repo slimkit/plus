@@ -10,11 +10,11 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">
-              <div class="form-inline">
-                  <div class="form-group">
-                      <router-link type="button" class="btn btn-primary btn-sm" :to="{ name: 'certification:add' }">添加</router-link>
-                  </div>
-              </div>
+              认证列表
+              <router-link tag="a" class="btn btn-link pull-right btn-xs" :to="{ name: 'certification:add' }" role="button">
+                <span class="glyphicon glyphicon-plus"></span>
+                添加
+              </router-link>
             </div>
             <div class="panel-heading">
                 <!-- 数据过滤 -->
@@ -48,6 +48,7 @@
                             <th>用户名</th>
                             <th>真实姓名</th>
                             <th>机构名称</th>
+                            <th>机构地址</th>
                             <th>手机号码</th>
                             <th>身份证号码</th>
                             <th>认证类型</th>
@@ -65,7 +66,8 @@
                           <tr v-for="(certification, index) in certifications">
                               <td>{{ certification.user.name }}</td>
                               <td>{{ certification.data.name }}</td>
-                              <td>{{ certification.data.hasOwnProperty('org_name') ? certification.data.org_name : '' }}</td>
+                              <td>{{ certification.data.org_name }}</td>
+                              <td>{{ certification.data.org_address }}</td>
                               <td>{{ certification.data.phone }}</td>
                               <td>{{ certification.data.number }}</td>
                               <td>{{ certification.category.display_name }}</td>

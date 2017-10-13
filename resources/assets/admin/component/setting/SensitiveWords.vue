@@ -14,12 +14,16 @@
         </div>
         <div class="panel panel-default">
           <div class="panel-heading">
-            <router-link to="/setting/sensitive-words/add" class="btn btn-primary btn-sm">添加</router-link>
+            敏感词列表
+            <router-link tag="a" class="btn btn-link pull-right btn-xs" to="/setting/sensitive-words/add" role="button">
+              <span class="glyphicon glyphicon-plus"></span>
+              添加
+            </router-link>
           </div>
           <div class="panel-heading">
             <div class="form-inline">
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search for..." v-model="search.keyword">
+                <input type="text" class="form-control" placeholder="敏感词搜索" v-model="search.keyword">
                   <button class="btn btn-default" type="button" @click.prevent="getSensitives">搜索</button>
               </div>
               <div class="form-group pull-right">

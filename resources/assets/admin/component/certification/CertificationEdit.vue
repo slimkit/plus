@@ -21,7 +21,10 @@
         <div class="container-fluid" style="margin-top:10px;">
           <div class="panel panel-default">
             <div class="panel-heading">
-                <router-link type="button" class="btn btn-primary btn-sm" :to="{name: 'certification:users'}">返回</router-link>
+              认证修改
+              <router-link tag="a" class="btn btn-link pull-right btn-xs" :to="{name: 'certification:users'}" role="button">
+                返回
+              </router-link>
             </div>
             <div class="panel-body">
                 <!-- 加载动画 -->
@@ -78,7 +81,7 @@
                         </span>
                     </div>
                     <div class="form-group" v-show="certification.type == 'org'">
-                        <label class="control-label col-md-2"><span class="text-danger">*</span>组织名称</label>
+                        <label class="control-label col-md-2"><span class="text-danger">*</span>结构名称</label>
                         <div class="col-md-5">
                           <input type="text" class="form-control" v-model="certification.org_name">  
                         </div>
@@ -87,7 +90,7 @@
                         </span>
                     </div>
                     <div class="form-group" v-show="certification.type == 'org'">
-                        <label class="control-label col-md-2"><span class="text-danger">*</span>组织地址</label>
+                        <label class="control-label col-md-2"><span class="text-danger">*</span>结构地址</label>
                         <div class="col-md-5">
                           <input type="text" class="form-control" v-model="certification.org_address">  
                         </div>

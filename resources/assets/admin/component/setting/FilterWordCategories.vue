@@ -14,7 +14,11 @@
         </div> 
         <div class="panel panel-default">
           <div class="panel-heading">
-            <router-link to="/setting/filter-word-categories/add" class="btn btn-primary btn-sm">添加</router-link>
+            过滤词分类列表
+            <router-link tag="a" class="btn btn-link pull-right btn-xs" to="/setting/filter-word-categories/add" role="button">
+              <span class="glyphicon glyphicon-plus"></span>
+              添加
+            </router-link>
           </div>
           <div class="panel-body">
             <table class="table table-striped">

@@ -1,7 +1,4 @@
 <style lang="css" module>
-.container {
-  padding-top: 15px;
-}
 .loadding {
   text-align: center;
   font-size: 42px;
@@ -22,7 +19,7 @@
 </style>
 
 <template>
-  <div class="container-fluid" :class="$style.container">
+    <div class="container-fluid" style="margin:15px;">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				用户注册设置

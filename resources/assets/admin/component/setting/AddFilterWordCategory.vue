@@ -23,7 +23,12 @@
         <div class="container-fluid" style="margin-top:10px;">
           <div class="panel panel-default">
             <div class="panel-heading">
-              过滤词分类-添加
+              <div class="panel-heading">
+                敏感词分类添加
+                <router-link tag="a" class="btn btn-link pull-right btn-xs" to="/setting/filter-word-categories" role="button">
+                  返回
+                </router-link>
+              </div>
             </div>
             <div class="panel-body">
                 <div class="col-md-6 col-md-offset-3" v-show="!loadding">
