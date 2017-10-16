@@ -42,7 +42,7 @@
           	  	<tr  v-for="item in items" v-show="!loadding">
           	  	  <td>{{ item.type }}</td>
           	  	  <td>{{ item.num }}</td>
-          	  	  <td>{{ item.total_amount ? item.total_amount : 0 }}</td>
+          	  	  <td>{{ item.total_amount / 100 ? item.total_amount / 100 : 0 }}</td>
           	  	</tr>
           	  </tbody>
           	</table>

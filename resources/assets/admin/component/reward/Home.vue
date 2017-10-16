@@ -217,12 +217,6 @@ const HomeComponent = {
         }
         return query;
       },
-      publishMessage (data, type, ms = 3000) {
-        this.message = { open: true, data, type };
-        setTimeout(() => {
-          this.message.open = false;
-        }, ms);
-      },
     },
 
     created () {

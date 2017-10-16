@@ -100,7 +100,7 @@ class WalletStatisticsController extends Controller
      */
     private function sql(string $field)
     {
-        return DB::raw(sprintf('count(*) as num, sum(%s/100) as total_amount', $field));
+        return DB::raw(sprintf('count(*) as num, sum(%s) as total_amount', $field));
     }
 
     /**
