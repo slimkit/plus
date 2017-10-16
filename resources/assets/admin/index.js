@@ -4,6 +4,13 @@ import App from './App.vue';
 import store from './store';
 import router from './router';
 import './component/commons';
+
+// Filters
+import * as filters from './filters';
+for (const k in filters) {
+  Vue.filter(k, filters[k]);
+}
+
 // sync the router with the vuex store.
 // this registers `store.state.route`
 sync(store, router);

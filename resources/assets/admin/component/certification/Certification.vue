@@ -78,7 +78,7 @@
                                 v-for="(file,index) in certification.data.files"> 附件[{{ index+1 }}]</a>
                               </td>
                               <td>{{ statuss.display[certification.status] }}</td>
-                              <td><local-date :utc="certification.updated_at"/></td>
+                              <td>{{ certification.updated_at | localDate }}</td>
                               <td>
                                   <router-link type="button"
                                   class="btn btn-primary btn-sm"

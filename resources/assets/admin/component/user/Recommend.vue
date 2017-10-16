@@ -114,7 +114,7 @@
               <td>{{ user.name }}</td>
               <td>{{ user.email }}</td>
               <td>{{ user.phone }}</td>
-              <td>{{ user.created_at }}</td>
+              <td>{{ user.created_at | localDate }}</td>
               <td>
                 <button type="button" class="btn btn-danger btn-sm" @click="handleUnRecommend(user.id)">不推荐了</button>
               </td>

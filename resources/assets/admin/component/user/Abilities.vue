@@ -36,7 +36,7 @@
                   <input type="text" class="form-control" placeholder="输入名称" :value="perm.description" @change.lazy="updatePerm(perm.id, 'description', $event.target.value)">
                 </div>
               </td>
-              <td><local-date :utc="perm.updated_at" /></td>
+              <td>{{ perm.updated_at | localDate }}</td>
               <td>
                 <button v-if="deleteIds.hasOwnProperty(perm.id)" type="button" class="btn btn-danger btn-sm" disabled="disabled">
                   <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>

@@ -59,13 +59,13 @@
                           <td>{{ reward.id }}</td>
                           <td>{{ reward.user.name }}</td>
                           <td>{{ reward.target.name }}</td>
-                          <td>{{ reward.amount/100 }}</td>
+                          <td>{{ reward.amount / 100 }}</td>
                           <td v-if="reward.rewardable_type=='feeds'">动态</td>
                           <td v-else-if="reward.rewardable_type=='news'">咨询</td>
                           <td v-else-if="reward.rewardable_type=='users'">用户</td>
                           <td v-else-if="reward.rewardable_type=='question-answers'">问答</td>
                           <td v-else>未知</td>
-                          <td> <local-date :utc="reward.created_at"/></td>
+                          <td>{{ reward.created_at | localDate }}</td>
                         </tr>
                     </tbody>
                 </table>

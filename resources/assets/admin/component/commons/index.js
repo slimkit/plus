@@ -1,9 +1,5 @@
 import Vue from 'vue';
 /**
- * Local date component.
- */
-import LocalDate from './LocalDate';
-/**
  * table loading component.
  */
 import TableLoading from './TableLoading';
@@ -12,6 +8,5 @@ import TableLoading from './TableLoading';
  */
 import OffsetPaginator from './OffsetPaginator';
 
-Vue.component('local-date', LocalDate);
 Vue.component('table-loading', TableLoading);
 Vue.component('offset-paginator', OffsetPaginator); 

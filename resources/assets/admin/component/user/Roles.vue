@@ -40,7 +40,7 @@
               <td>{{ role.name }}</td>
               <td>{{ role.display_name }}</td>
               <td>{{ role.description }}</td>
-              <td><local-date :utc="role.updated_at" /></td>
+              <td>{{ role.updated_at | localDate }}</td>
               <td>
                 <!-- 管理分类 -->
                 <router-link :to="`${role.id}`" tag="button" append exact type="button" class="btn btn-primary btn-sm">管理</router-link>

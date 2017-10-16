@@ -51,7 +51,7 @@
                             <td>{{ conversation.user.name }}</td>
                             <td>{{ conversation.target.name }}</td>
                             <td>{{ conversation.content }}</td>
-                            <td><local-date :utc="conversation.created_at"/></td>
+                            <td>{{ conversation.created_at | localDate }}</td>
                             <td>
                                 <button class="btn btn-danger btn-sm" 
                                 @click.prevent="delConversation(conversation.id)">删除</button>
