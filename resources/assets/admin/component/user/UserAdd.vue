@@ -1,13 +1,13 @@
 <template>
   <div class="container-fluid" style="margin:15px;">
     <div class="panel panel-default form-horizontal">
-      <div class="panel panel-heading">
+      <div class="panel-heading">
         用户添加
         <router-link tag="a" class="btn btn-link pull-right btn-xs" to="/users" role="button">
           返回
         </router-link>
       </div>
-      <div class="panel panel-body">
+      <div class="panel-body">
         <!-- user name -->
         <div class="form-group">
           <label for="name" class="col-sm-2 control-label">用户名</label>
