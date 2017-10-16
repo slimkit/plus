@@ -27,11 +27,9 @@ class WalletChargeController extends Controller
         $charges = $request
             ->user()
             ->walletCharges()
+            ->where('status', 1)
             ->when(isset($action), function ($query) use ($action) {
                 $query->where('action', $action);
-            })
-            ->when($filter, function ($query) {
-                $query->where('status', 1);
             })
             ->where(function ($query) use ($after) {
                 if ($after) {
