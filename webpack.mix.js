@@ -1,4 +1,5 @@
 let mix = require('laravel-mix');
+let path = require('path');
 
 /*
  |--------------------------------------------------------------------------
@@ -11,7 +12,7 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.setPublicPath('public/assets');
+mix.setPublicPath(path.join('public', 'assets'));
 mix.setResourceRoot('../');
 mix.sourceMaps(! mix.inProduction());
 
@@ -24,8 +25,8 @@ mix.sourceMaps(! mix.inProduction());
  |
  */
 
-mix.sass('resources/assets/sass/bootstrap.scss', 'public/assets/css')
-   .js('resources/assets/js/bootstrap.js', 'public/assets/js')
+mix.sass('resources/assets/sass/bootstrap.scss', path.join('public', 'assets', 'css'))
+   .js('resources/assets/js/bootstrap.js', path.join('public', 'assets', 'js'))
 
 
 /*
@@ -37,4 +38,4 @@ mix.sass('resources/assets/sass/bootstrap.scss', 'public/assets/css')
  |
  */
 
-mix.js('resources/assets/admin', 'public/assets/js');
+mix.js('resources/assets/admin', path.join('public', 'assets', 'js'));
