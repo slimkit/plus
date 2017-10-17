@@ -2,18 +2,27 @@ sudo: false
 
 language: php
 
-php:
-    - 7.0
-    - 7.1
-    - 7.2
-
-env:
-    - DB=mysql
-    - DB=postgres
-
-services:
-    - postgresql
-    - mysql
+matrix:
+  fast_finish: true
+  include:
+    - php: 7.0
+      env: DB=mysql
+      services: mysql
+    - php: 7.0
+      env: DB=postgres
+      services: postgresql
+    - php: 7.1
+      env: DB=mysql
+      services: mysql
+    - php: 7.1
+      env: DB=postgres
+      services: postgresql
+    - php: 7.2
+      env: DB=mysql
+      services: mysql
+    - php: 7.2
+      env: DB=postgres
+      services: postgresql
 
 cache:
     directories:
