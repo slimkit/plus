@@ -26,7 +26,6 @@ mix.sourceMaps(! mix.inProduction());
 
 mix.sass('resources/assets/sass/bootstrap.scss', 'public/assets/css')
    .js('resources/assets/js/bootstrap.js', 'public/assets/js')
-   .setPublicPath('public/assets');
 
 
 /*
