@@ -32,7 +32,7 @@
       <div class="panel-body">
         <div class="form-horizontal">
           <div class="col-md-10">
-            <div class="form-group">
+<!--             <div class="form-group">
               <label class="control-label col-md-2">站点状态</label>
               <div class="col-md-7">
                 <label class="radio-inline">
@@ -82,7 +82,7 @@
               <div class="col-md-3">
                 <span class="help-block">H5端开启与关闭</span>
               </div>
-            </div>
+            </div> -->
             <div class="form-group">
               <label class="control-label col-md-2">金币</label>
               <div class="col-md-7">
