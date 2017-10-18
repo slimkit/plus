@@ -103,7 +103,7 @@
                 <input type="text" class="form-control" v-model="site.reward.amounts">
               </div>
               <div class="col-md-3">
-                <span class="help-block">打赏金额配置，多个金额用小写","分割，例如:5,10,15</span>
+                <span class="help-block">打赏金额配置，单位(元)，多个金额用小写","分割 例如:5,10,15。</span>
               </div>
             </div>
             <div class="form-group">
