@@ -1,18 +1,4 @@
 <style lang="css" module>
-    .container {
-        padding-top: 15px;
-    }
-    .loadding {
-        text-align: center;
-        font-size: 42px;
-        padding-top: 100px;
-    }
-    .loaddingIcon {
-        animation-name: "TurnAround";
-        animation-duration: 1.4s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-    }
     .image {
         max-width:200px;
         margin-bottom: 10px;
@@ -26,6 +12,7 @@
               过滤词分类-修改
             </div>
             <div class="panel-body">
+                <loading :loadding="loadding"></loading>
                 <div class="col-md-6 col-md-offset-3" v-show="!loadding">
                     <div class="form-group">
                         <label><span class="text-danger">*</span>分类名称：</label>

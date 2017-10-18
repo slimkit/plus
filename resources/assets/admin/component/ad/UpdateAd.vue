@@ -1,16 +1,3 @@
-<style lang="css" module>
-    .loadding {
-        text-align: center;
-        font-size: 42px;
-    }
-    .loaddingIcon {
-        animation-name: "TurnAround";
-        animation-duration: 1.4s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-    }
-</style>
-
 <template>
     <div class="container-fluid" style="margin-top:10px;">
         <div class="panel panel-default">
@@ -22,10 +9,8 @@
           </div>
           <!-- 广告列表 -->
           <div class="panel-body form-horizontal">
-              <!-- 加载动画 -->
-              <div v-show="loadding" :class="$style.loadding">
-                  <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-              </div>
+              <!-- 加载 -->
+              <loading :loadding="loadding"></loading>
               <div class="col-md-8" v-show="!loadding">
                 <!-- 标题 -->
                 <div class="form-group">

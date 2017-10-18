@@ -1,14 +1,4 @@
 <style lang="css" module>
-.loadding {
-  text-align: center;
-  font-size: 42px;
-}
-.loaddingIcon {
-  animation-name: "TurnAround";
-  animation-duration: 1.4s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
 .question-editor {
   resize: none;
 }
@@ -25,7 +15,8 @@
 				用户注册设置
 			</div>
 			<div class="panel-body">
-			    <div class="form-horizontal">
+			  <loading :loadding="loadding"></loading>
+			    <div class="form-horizontal" v-show="!loadding">
 			      <div class="form-group">
 					<label class="col-sm-3 control-label">注册方式</label>
 			      	<div class="col-sm-5">
@@ -149,6 +140,7 @@
 	const RegisterSetting = {
     	name: 'question-edit',
 		data: () => ({
+			loadding: true,
 			rules: 'close',
 			fixed: 'need',
 			method: 'all',
@@ -194,10 +186,12 @@
 		},
 
 		created () {
+
 			request.get(createRequestURI('users/register-setting'), {
 				validateStatus: status => status === 200
 			})
 			.then(({ data = {}}) => {
+				this.loadding = false;
 				this.rules = data.rules;
 				this.method = data.method;
 				this.fixed = data.fixed;

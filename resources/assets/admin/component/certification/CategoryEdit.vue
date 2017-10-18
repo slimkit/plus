@@ -1,23 +1,5 @@
-<style lang="css" module>
-    .loadding {
-        text-align: center;
-        font-size: 42px;
-        padding-top: 100px;
-    }
-    .loaddingIcon {
-        animation-name: "TurnAround";
-        animation-duration: 1.4s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-    }
-</style>
-
 <template>
         <div class="container-fluid" style="margin-top:10px;">
-            <!-- 加载动画 -->
-            <div v-show="loadding" :class="$style.loadding">
-                <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-            </div>
             <div class="panel panel-default">
               <div class="panel-heading">
                 认证类型修改
@@ -26,6 +8,8 @@
                 </router-link>
               </div>
               <div class="panel-body">
+                <!-- 加载动画 -->
+                <loading :loadding="loadding"></loading>
                 <div class="col-md-6 col-md-offset-3" v-show="!loadding">
                     <div class="form-horizontal">
                         <div class="form-group">

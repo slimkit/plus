@@ -1,15 +1,4 @@
 <style lang="css" module>
-    .loadding {
-        text-align: center;
-        font-size: 42px;
-        padding-top: 100px;
-    }
-    .loaddingIcon {
-        animation-name: "TurnAround";
-        animation-duration: 1.4s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-    }
     .image {
         max-width:200px;
         margin-bottom: 10px;
@@ -21,17 +10,14 @@
 
 <template>
 <div class="container-fluid" style="margin-top:15px;">
-    <!-- 加载动画 -->
-    <div v-show="loadding" :class="$style.loadding">
-        <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-    </div>
-    <div class="panel panel-default" v-show="!loadding">
+    <div class="panel panel-default">
       <div class="panel-heading">
         站点配置
       </div>
       <div class="panel-body">
         <div class="form-horizontal">
-          <div class="col-md-10">
+          <loading :loadding="loadding"></loading>
+          <div class="col-md-10" v-show="!loadding">
 <!--             <div class="form-group">
               <label class="control-label col-md-2">站点状态</label>
               <div class="col-md-7">

@@ -65,6 +65,7 @@
             </tr>
           </thead>
           <tbody>
+            <table-loading :loadding="loadding" :colspan-num="4"></table-loading>
             <tr v-for="log in logs" :key="log.id">
               <td>{{ log.account }}</td>
               <td>{{ log.code }}</td>
@@ -102,7 +103,7 @@ const SmsMainComponent = {
       state: -1,
       keyword: '',
     },
-    loading: false,
+    loadding: true,
     logs: [],
     error: null,
     currentPage: 1,
@@ -131,12 +132,12 @@ const SmsMainComponent = {
       this.search.state = state;
     },
     requestLogs(query = {}) {
-      this.loading = true;
+      this.loadding = true;
       request.get(
         createRequestURI('sms'),
         {  params: { ...query, limit: 15 }, validateStatus: status => status === 200 }
       ).then(({ data = [], headers: { 'x-sms-total': total } }) => {
-          this.loading = false;
+          this.loadding = false;
           this.total = parseInt(total);
           this.logs = data;
         }).catch();

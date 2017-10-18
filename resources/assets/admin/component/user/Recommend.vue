@@ -1,16 +1,3 @@
-<style lang="css" module>
-.loadding {
-  text-align: center;
-  font-size: 42px;
-}
-.loaddingIcon {
-  animation-name: "TurnAround";
-  animation-duration: 1.4s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-</style>
-
 <template>
     <div class="container-fluid" style="margin-top:10px;">
     <!-- error -->
@@ -19,9 +6,6 @@
         <span aria-hidden="true">&times;</span>
       </button>
       {{ error }}
-    </div>
-    <div v-show="!users.length" class="alert alert-danger alert-dismissible" role="alert">
-          没有被推荐的用户了
     </div>
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -103,13 +87,9 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-show="loadding">
-              <!-- 加载动画 -->
-              <td :class="$style.loadding" colspan="6">
-                <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-              </td>
-            </tr>
-            <tr v-for="user in users" :key="user.id">
+            <!-- 加载动画 -->
+            <table-loading :loadding="loadding" :colspan-num="6"></table-loading>
+            <tr v-if="users.length" v-for="user in users" :key="user.id">
               <td>{{ user.id }}</td>
               <td>{{ user.name }}</td>
               <td>{{ user.email }}</td>

@@ -1,12 +1,3 @@
-<style lang="css" module>
-  .containerAround {
-    animation-name: "TurnAround";
-    animation-duration: 1.6s;
-    animation-timing-function: linear;
-    animation-direction: alternate;
-    animation-iteration-count: infinite;
-  }
-</style>
 <template>
   <div  class="container-fluid" style="margin-top:10px;">
     <div class="panel panel-default">
@@ -14,7 +5,8 @@
         基本信息配置
       </div>
       <div class="panel-body">
-        <form class="form-horizontal" @submit.prevent="submit">
+        <loading :loadding="loadding"></loading>
+        <form class="form-horizontal" @submit.prevent="submit" v-show="!loadding">
           <!-- Site name. -->
           <div class="form-group">
             <label for="site-name" class="col-sm-2 control-label">应用名称</label>

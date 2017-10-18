@@ -12,7 +12,8 @@
           返回
         </router-link>
       </div>
-      <div class="panel-body form-horizontal">
+      <loading :loadding="loadding"></loading>
+      <div class="panel-body form-horizontal" v-show="!loadding">
        <!-- user name -->
         <div class="form-group">
           <label for="name" class="col-sm-2 control-label">用户名</label>
@@ -96,6 +97,7 @@ import plusMessageBundle from 'plus-message-bundle';
 
 const UserManageComponent = {
   data: () => ({
+    loadding: true,
     changeIn: false,
     password: '',
     error: null,
@@ -134,6 +136,7 @@ const UserManageComponent = {
         validateStatus: status => status === 200
       }
     ).then(({ data: { user, roles } }) => {
+      this.loadding = false;
       this.user = user;
       this.roles = roles;
 
@@ -141,6 +144,7 @@ const UserManageComponent = {
       user.roles.forEach(role => selecedRoles.push(role.id));
       this.selecedRoles = selecedRoles;
     }).catch(({ response: { data: { errors = [] } = {} } = {} }) => {
+      this.loadding = false;
       const [ errorMessage = '获取失败，请刷新重试！' ] = errors;
       this.error = errorMessage;
     });

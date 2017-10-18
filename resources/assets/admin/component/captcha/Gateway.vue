@@ -2,7 +2,8 @@
   <div class="container-fluid" style="margin-top:10px;">
       <div class="panel panel-default">
         <div class="panel-heading">网关配置</div>
-        <div class="panel-body form-horizontal">
+        <loading :loadding="loadding"></loading>
+        <div class="panel-body form-horizontal" v-show="!loadding">
               <!-- checkbox -->
               <div class="form-group">
                   <label class="col-sm-2 control-label">开启网关</label>
@@ -37,6 +38,7 @@ import lodash from 'lodash';
 const GatwayComponent = {
   
   data: () => ({
+    loadding: true,
     gateways:[],
     checkedGateways:[],
     submit: {
@@ -53,6 +55,7 @@ const GatwayComponent = {
         { validateStatus: status => status === 200 }
       ).then(response => {
         let data = response.data;
+        this.loadding = false;
         this.gateways = data.gateways;
         this.checkedGateways = data.allowed_gateways;
       }).catch(({ response: { data: { errors = ['加载认证类型失败'] } = {} } = {} }) => {

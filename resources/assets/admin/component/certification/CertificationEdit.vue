@@ -1,15 +1,4 @@
 <style lang="css" module>
-    .loadding {
-        text-align: center;
-        font-size: 42px;
-        padding-top: 50px;
-    }
-    .loaddingIcon {
-        animation-name: "TurnAround";
-        animation-duration: 1.4s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-    }
     .attachmentBox {
         display: inline-block;
         width: 48%;
@@ -28,9 +17,7 @@
             </div>
             <div class="panel-body">
                 <!-- 加载动画 -->
-                <div v-show="loadding" :class="$style.loadding">
-                    <span class="glyphicon glyphicon-refresh" :class="$style.loaddingIcon"></span>
-                </div>
+                <loading :loadding="loadding"></loading>
 
                 <div class="form-horizontal" v-show="!loadding">
                     <div class="form-group">

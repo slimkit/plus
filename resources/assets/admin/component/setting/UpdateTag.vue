@@ -5,7 +5,8 @@
         添加标签
       </div>
       <div class="panel-body form-horizontal">
-        <div class="row">
+        <loading :loadding="loadding"></loading>
+        <div class="row" v-show="!loadding">
           <div class="col-md-11 col-md-offset-1">
             <div class="form-group">
               <label for="exampleInputEmail1" class="control-label col-md-1">标签名字</label>
@@ -68,6 +69,7 @@
   import plusMessageBundle from 'plus-message-bundle';
   const UpdateTag = {
     data: () => ({
+      loadding: true,
       tag: {},
       tag_id: 0,
       name: '',
@@ -156,14 +158,16 @@
 
       // 获取标签分类
       getCategories () {
+        this.loadding = true;
         request.get(createRequestURI('site/tags/categories'),{
           validateStatus: status => status === 200
         })
         .then(({ data = [] }) => {
+          this.loadding = false;
           this.categories = data;
         })
         .catch( () => {
-
+          this.loadding = false;
         });
       },
 
