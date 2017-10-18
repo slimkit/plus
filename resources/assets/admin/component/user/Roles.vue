@@ -15,7 +15,7 @@
 </style>
 
 <template>
-  <div class="container-fluid" style="margin:15px;">
+  <div class="container-fluid" style="margin-top:10px;">
     <div class="panel panel-default">
       <div class="panel-heading">角色列表</div>
       <div class="panel-body">

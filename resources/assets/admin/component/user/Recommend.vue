@@ -12,7 +12,7 @@
 </style>
 
 <template>
-  <div class="container-fluid" style="margin:15px;">
+    <div class="container-fluid" style="margin-top:10px;">
     <!-- error -->
     <div v-show="error" class="alert alert-danger alert-dismissible" role="alert">
       <button type="button" class="close" @click.prevent="dismisError">

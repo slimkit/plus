@@ -19,7 +19,7 @@
 </style>
 
 <template>
-    <div class="container-fluid" style="margin:15px;">
+    <div class="container-fluid" style="margin-top:10px;">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				用户注册设置
