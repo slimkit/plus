@@ -29,7 +29,7 @@ class UserCommentController extends Controller
                     return $query->where('target_user', $user->id)
                         ->orWhere('reply_user', $user->id);
                 })
-                // ->where('user_id', '!=', $user->id)
+                ->where('user_id', '!=', $user->id)
                 ->when($after, function ($query) use ($after) {
                     return $query->where('id', '<', $after);
                 })
