@@ -7,7 +7,7 @@
     }
     .attachmentBox {
         display: inline-block;
-        width: 200px;
+        width: 48%;
         height: 100px;
         margin-bottom: 10px;
     }
