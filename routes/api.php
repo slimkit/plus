@@ -240,6 +240,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             // Update phone or email of the authenticated user.
             $api->put('/', API2\CurrentUserController::class.'@updatePhoneOrMail');
 
+            // 查看用户未读消息统计
+            $api->get('/unread-count', API2\UserUnreadCountController::class.'@index');
+
             /*
             | 用户收到的评论
             */
