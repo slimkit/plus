@@ -17,7 +17,7 @@
       <div class="panel-body">
         <div class="form-horizontal">
           <loading :loadding="loadding"></loading>
-          <div class="col-md-10" v-show="!loadding">
+          <div v-show="!loadding">
 <!--             <div class="form-group">
               <label class="control-label col-md-2">站点状态</label>
               <div class="col-md-7">
@@ -71,7 +71,7 @@
             </div> -->
             <div class="form-group">
               <label class="control-label col-md-2">金币</label>
-              <div class="col-md-7">
+              <div class="col-md-6">
                 <label class="radio-inline">
                   <input type="radio" :value="radio.on"  v-model="site.gold.status" :disabled="!site.status"> 开启
                 </label>
@@ -79,13 +79,13 @@
                   <input type="radio" :value="radio.off" v-model="site.gold.status" :disabled="!site.status"> 关闭
                 </label>
               </div>
-              <div class="col-md-3">
-                <span class="help-block">启动规则，用户完成相应的节点操作可以获取对应的奖励<br/>关闭规则，用户完成相应的节点操作不能获取对应的奖励</span>
+              <div class="col-md-4">
+                <span class="help-block">启动规则，用户完成相应的节点操作可以获取对应的奖励，关闭规则，用户完成相应的节点操作不能获取对应的奖励</span>
               </div>
             </div>
             <div class="form-group">
               <label class="control-label col-md-2">打赏</label>
-              <div class="col-md-7">
+              <div class="col-md-6">
                 <label class="radio-inline">
                   <input type="radio" :value="radio.on"  v-model="site.reward.status" :disabled="!site.status"> 开启
                 </label>
@@ -93,56 +93,56 @@
                   <input type="radio" :value="radio.off"  v-model="site.reward.status" :disabled="!site.status"> 关闭
                 </label>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-4">
                 <span class="help-block">用户打赏开启与关闭</span>
               </div>
             </div>
             <div class="form-group">
               <label class="control-label col-md-2">打赏金额</label>
-              <div class="col-md-7">
+              <div class="col-md-6">
                 <input type="text" class="form-control" v-model="site.reward.amounts">
               </div>
-              <div class="col-md-3">
-                <span class="help-block">打赏金额配置，单位(元)，多个金额用小写","分割 例如:5,10,15。</span>
+              <div class="col-md-4">
+                <span class="help-block">打赏金额配置，单位(元)。多个金额用英文半角符号“,”分割 例如：5,10,15。</span>
               </div>
             </div>
             <div class="form-group">
               <label class="control-label col-md-2">预留呢称</label>
-              <div class="col-md-7">
+              <div class="col-md-6">
                 <input type="text" class="form-control" v-model="site.reserved_nickname">
               </div>
-              <div class="col-md-3">
-                <span class="help-block">预留呢称，多个呢称用小写","分割</span>
+              <div class="col-md-4">
+                <span class="help-block">预留呢称，多个呢称用英文半角符号","分割</span>
               </div>
             </div>
             <div class="form-group">
               <label class="control-label col-md-2">客户邮箱</label>
-              <div class="col-md-7">
+              <div class="col-md-6">
                 <input type="text" class="form-control" v-model="site.client_email">
               </div>
-              <div class="col-md-3">
+              <div class="col-md-4">
                 <span class="help-block">客户邮箱</span>
               </div>
             </div>
             <div class="form-group">
               <label class="control-label col-md-2">用户邀请模版</label>
-              <div class="col-md-7">
+              <div class="col-md-6">
                 <textarea class="form-control" v-model="site.user_invite_template">
                 </textarea>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-4">
                 <span class="help-block">用户邀请模版</span>
               </div>
             </div>
             <div class="form-group">
               <label class="control-label col-md-2"></label>
-              <div class="col-md-7">
+              <div class="col-md-6">
                 <button class="btn btn-primary btn-block" 
                 @click.prevent="updateSiteConfigure" 
                 data-loading-text="提交中" 
                 autocomplete="off" id="submit-btn">确认</button>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-4">
                  <span class="text-success"  v-show="message.success">{{ message.success }}</span>
                  <span class="text-danger" v-show="message.error">{{ message.error }}</span>
               </div>
