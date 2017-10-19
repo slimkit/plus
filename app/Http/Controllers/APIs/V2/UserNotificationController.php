@@ -93,4 +93,18 @@ class UserNotificationController extends Controller
 
         return $response->json(['message' => ['操作成功']])->setStatusCode(201);
     }
+
+    /**
+     * 标记所有未读消息为已读.
+     *
+     * @param Request $request
+     * @return mixed
+     * @author BS <414606094@qq.com>
+     */
+    public function markAllAsRead(Request $request)
+    {
+        $request->user()->unreadNotifications()->where('read_at', null)->get()->markAsRead();
+
+        return response()->json(['message' => ['操作成功']])->setStatusCode(201);
+    }
 }

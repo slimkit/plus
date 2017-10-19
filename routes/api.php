@@ -291,6 +291,11 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                  */
 
                 $api->patch('/{notification?}', API2\UserNotificationController::class.'@markAsRead');
+
+                /*
+                    标记所有未读消息为已读
+                 */
+                $api->patch('/all', API2\UserNotificationController::class.'@markAllAsRead');
             });
 
             // send a feedback.
