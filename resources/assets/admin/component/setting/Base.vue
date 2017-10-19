@@ -1,3 +1,12 @@
+<style lang="css" module>
+  .containerAround {
+    animation-name: "TurnAround";
+    animation-duration: 1.6s;
+    animation-timing-function: linear;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+  }
+</style>
 <template>
   <div  class="container-fluid" style="margin-top:10px;">
     <div class="panel panel-default">
@@ -58,7 +67,7 @@
           <!-- Button -->
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-              <button v-if="loadding" class="btn btn-primary" disabled="disabled">
+              <button v-if="btnLoading" class="btn btn-primary" disabled="disabled">
                 <span class="glyphicon glyphicon-refresh" :class="$style.containerAround"></span>
               </button>
               <button v-else-if="error" @click.prevent="requestSiteInfo" class="btn btn-danger">{{ error_message }}</button>
@@ -78,6 +87,7 @@ import request, { createRequestURI } from '../../util/request';
 
 const settingBase = {
   data: () => ({
+    btnLoading: false,
     loadding: true,
     error: false,
     error_message: '重新加载',
@@ -126,24 +136,23 @@ const settingBase = {
         this.loadding = false;
       }).catch(({ response: { data: { message = '加载失败' } = {} } = {} }) => {
         this.loadding = false;
-        this.error = true;
         window.alert(message);
         // this.error_message
       });
     },
     submit () {
       const { name, keywords, description, icp } = this;
-      this.loadding = true;
+      this.btnLoading = true;
       request.patch(createRequestURI('site/baseinfo'), { name, keywords, description, icp }, {
         validateStatus: status => status === 201
       }).then(() => {
         this.message = '执行成功';
-        this.loadding = false;
+        this.btnLoading = false;
         setTimeout(() => {
           this.message = '提交';
         }, 1000);
       }).catch(({ response: { data: { message = '加载失败' } = {} } = {} }) => {
-        this.loadding = false;
+        this.btnLoading = false;
         this.error = true;
         this.error_message = message;
         setTimeout(() => {
