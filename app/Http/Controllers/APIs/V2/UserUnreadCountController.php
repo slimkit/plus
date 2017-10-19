@@ -49,7 +49,7 @@ class UserUnreadCountController extends Controller
         return response()->json([
             'counts' => $counts,
             'comments' => $comments,
-            'likes' => $likes
+            'likes' => $likes,
         ], 200);
     }
 }
