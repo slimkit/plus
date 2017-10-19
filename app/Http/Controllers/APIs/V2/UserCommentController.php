@@ -38,6 +38,8 @@ class UserCommentController extends Controller
                 ->get();
         });
 
+        $user->unreadCount()->decrement('unread_comments_count', $user->unreadCount->unread_comments_count);
+
         return $model->getConnection()->transaction(function () use ($comments, $response) {
             return $response->json($comments, 200);
         });
