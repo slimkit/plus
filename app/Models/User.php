@@ -291,4 +291,15 @@ class User extends Authenticatable implements ShouldAvatarContract
 
         return $this->datas()->sync($attributes, false);
     }
+
+    /**
+     * 用户未读数统计.
+     *
+     * @return mixed
+     * @author BS <414606094@qq.com>
+     */
+    public function unreadCount()
+    {
+        return $this->hasOne(UserUnreadCount::class, 'user_id', 'id');
+    }
 }
