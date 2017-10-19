@@ -24,7 +24,9 @@ class UserLikeController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
-        $user->unreadCount()->decrement('unread_likes_count', $user->unreadCount->unread_likes_count);
+        if ($user->unreadCount !== null) {
+            $user->unreadCount()->decrement('unread_likes_count', $user->unreadCount->unread_likes_count);
+        }
 
         return $response->json($likes)->setStatusCode(200);
     }
