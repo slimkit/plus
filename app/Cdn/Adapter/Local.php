@@ -54,6 +54,11 @@ class Local implements FileUrlGeneratorContract
 
         return $this->validateImageAnd($filename, function (string $filename) use ($extra) {
             return $this->validateProcessAnd($filename, $extra, function (Image $image, array $extra = []) use ($filename) {
+
+                if ($extra['blur']) {
+                    $image->blur($extra['blur']);
+                }
+
                 $this->processSize($image, $extra);
 
                 $quality = intval($extra['quality'] ?? 90) ?: 90;
@@ -133,8 +138,9 @@ class Local implements FileUrlGeneratorContract
         $width = floatval($extra['width'] ?? 0.0);
         $height = floatval($extra['height'] ?? 0.0);
         $quality = intval($extra['quality'] ?? 0);
+        $blur = intval($extra['blur'] ?? 0);
 
-        if ((! $width || ! $height) && ! $quality) {
+        if ((! $width || ! $height) && ! $quality && ! $blur) {
             return $this->makeUrl($filename);
         }
 
@@ -142,6 +148,7 @@ class Local implements FileUrlGeneratorContract
             'width' => $width,
             'height' => $height,
             'quality' => $quality,
+            'blur' => $blur,
         ]);
     }
 

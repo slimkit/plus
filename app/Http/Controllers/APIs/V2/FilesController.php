@@ -35,15 +35,22 @@ class FilesController extends Controller
 
         if ($fileWith->paidNode instanceof PaidNodeModel && $this->resolveUserPaid($request->user('api'), $fileWith->paidNode) === false) {
             if ($fileWith->paidNode->extra === 'read' || empty($extra)) {
+                
+                $extra['quality'] = $request->query('q');
+                $extra['blur'] = 96;
+                $url = $cdn->make($fileWith->file, $extra);
+
                 return $response->json([
-                    'message' => ['请购买文件'],
+                    'message' => '请购买文件',
                     'paid_node' => $fileWith->paidNode->id,
                     'amount' => $fileWith->paidNode->amount,
-                ]);
+                    'url' => $url,
+                ], 402);
             }
         }
 
         $extra['quality'] = $request->query('q');
+        $extra['blur'] = $request->query('b');
         $url = $cdn->make($fileWith->file, $extra);
 
         return $request->query('json') !== null
@@ -61,12 +68,7 @@ class FilesController extends Controller
      */
     protected function resolveUserPaid($user, PaidNodeModel $node): bool
     {
-        // 如果用户位空，则抛出认证错误.
-        if ($user === null or ! $user instanceof UserModel) {
-            abort(401);
-        }
-
-        return $node->paid($user->id);
+        return $node->paid($user->id ?? 0);
     }
 
     /**
