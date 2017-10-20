@@ -83,10 +83,10 @@
 				      		<div class="input-group">
 				      			<div class="">
 								    <label class="radio-inline">
-								    	<input type="radio" name="rules" value="open" v-model="rules" /> 开启
+								    	<input type="radio" name="showTerms" value="open" v-model="showTerms" /> 开启
 								    </label>
 										<label class="radio-inline">
-								    	<input type="radio" name="rules" checked="checked" value="close" v-model="rules" /> 关闭
+								    	<input type="radio" name="showTerms" checked="checked" value="close" v-model="showTerms" /> 关闭
 								    </label>
 								</div>
 							</div>
@@ -95,7 +95,7 @@
 			     			<span class="help-block">服务条款和隐私政策</span>
 			     		</div>		
 			     	</div>
-			     	<div class="form-group" v-if="rules === 'open'">
+			     	<div class="form-group" v-if="showTerms === 'open'">
 			     		<label  class="col-sm-3 control-label" for="rule-content">条款内容</label>
 			     		<div class="col-sm-5">
 				          <textarea 
@@ -141,7 +141,7 @@
     	name: 'question-edit',
 		data: () => ({
 			loadding: true,
-			rules: 'close',
+			showTerms: 'close',
 			fixed: 'need',
 			method: 'all',
 			type: 'all',
@@ -157,13 +157,13 @@
 		methods: {
 			saveConfig() {
 				this.loading = true;
-				const { rules, fixed, method, type, content } = this;
+				const { showTerms, fixed, method, type, content } = this;
 				let data = {};
-				if (rules !== 'close') {
+				if (showTerms !== 'close') {
 					data.content = content
 				}
 				data.fixed = fixed;
-				data.rules = rules;
+				data.showTerms = showTerms;
 				data.method = method;
 				data.type = type;
 				request.post(createRequestURI('users/register-setting'), {
@@ -192,7 +192,7 @@
 			})
 			.then(({ data = {}}) => {
 				this.loadding = false;
-				this.rules = data.rules;
+				this.showTerms = data.showTerms;
 				this.method = data.method;
 				this.fixed = data.fixed;
 				this.type = data.type;

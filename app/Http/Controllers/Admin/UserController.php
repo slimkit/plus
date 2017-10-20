@@ -493,7 +493,7 @@ class UserController extends Controller
      */
     public function updateRegisterSetting(Request $request, Configuration $config)
     {
-        $conf = $request->only(['rules', 'method', 'content', 'fixed', 'type']);
+        $conf = $request->only(['showTerms', 'method', 'content', 'fixed', 'type']);
 
         $settings = [];
         foreach ($conf as $key => $value) {
@@ -524,7 +524,7 @@ class UserController extends Controller
     {
         $config = $config_model->getConfiguration();
 
-        $config->set('registerSettings.rules', 'open');
+        $config->set('registerSettings.showTerms', 'open');
         $config->set('registerSettings.method', 'all');
         $config->set('registerSettings.fixed', 'need');
         $config->set('registerSettings.type', 'all');
