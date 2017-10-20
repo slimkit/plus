@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserUnreadCount extends Model
 {
-
     /**
      * The primary key for the model.
      *
