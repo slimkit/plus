@@ -139,7 +139,7 @@ class Local implements FileUrlGeneratorContract
         $quality = intval($extra['quality'] ?? 0);
         $blur = intval($extra['blur'] ?? 0);
 
-        if ((! $width || ! $height) && ! $quality && ! $blur) {
+        if (! $width && ! $height && ! $quality && ! $blur) {
             return $this->makeUrl($filename);
         }
 
