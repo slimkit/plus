@@ -3,7 +3,7 @@
       height:20px;
       width:20px;
       display:inline-block;
-      margin-right:20px;
+      /*margin-right:20px;*/
     }
     .attachmentBox {
         display: inline-block;
@@ -37,7 +37,9 @@
                                   <ul class="dropdown-menu" style="margin-left:15px;">
                                     <template v-if="users.length">
                                       <li  v-for="user in users" @click.prevent="choiceUser(user.id)">
-                                        <a href="javascript:;"><img :src="user.avatar+'?s=40'" class="img-circle" :class="$style.avatar">
+                                        <a href="javascript:;">
+                                          <img :src="user.avatar+'?w=40&height=40'" class="img-circle" :class="$style.avatar" v-if="user.avatar">
+                                          <i class="glyphicon glyphicon-user" v-else></i>
                                           <span>{{ user.name }}</span>
                                         </a>
                                       </li>
