@@ -35,7 +35,6 @@ class FilesController extends Controller
 
         if ($fileWith->paidNode instanceof PaidNodeModel && $this->resolveUserPaid($request->user('api'), $fileWith->paidNode) === false) {
             if ($fileWith->paidNode->extra === 'read' || empty($extra)) {
-                
                 $extra['quality'] = $request->query('q');
                 $extra['blur'] = 96;
                 $url = $cdn->make($fileWith->file, $extra);

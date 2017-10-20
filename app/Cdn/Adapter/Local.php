@@ -54,7 +54,6 @@ class Local implements FileUrlGeneratorContract
 
         return $this->validateImageAnd($filename, function (string $filename) use ($extra) {
             return $this->validateProcessAnd($filename, $extra, function (Image $image, array $extra = []) use ($filename) {
-
                 if ($extra['blur']) {
                     $image->blur($extra['blur']);
                 }
