@@ -15,7 +15,7 @@ class PinnedsNotificationEventer
         'namespace' => '',
         'owner_prefix' => '',
         'audit_prefix' => '',
-        'unaudited_value' => ''
+        'unaudited_value' => '',
     ];
 
     protected $prefix = 'pinneds_notifications';
@@ -54,7 +54,7 @@ class PinnedsNotificationEventer
         $notifications = collect($this->events->dispatch($this->prefix));
 
         $notifications = $notifications->reject(function ($notification) {
-            return (! class_exists($notification['namespace']) || array_diff_key($this->fillable, $notification));
+            return ! class_exists($notification['namespace']) || array_diff_key($this->fillable, $notification);
         });
 
         return $notifications;
