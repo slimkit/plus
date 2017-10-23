@@ -130,7 +130,7 @@
                             <i class="glyphicon glyphicon-upload" style="margin-top:42px;font-size:16px;" v-else></i>
                           </a>
                           <!-- 反面 -->
-                          <a href="javascript:;" class="thumbnail text-center pull-right" :class="$style.attachmentBox" @click="triggerUpload(2)"  v-show="certification.type =='org'">
+                          <a href="javascript:;" class="thumbnail text-center pull-right" :class="$style.attachmentBox" @click="triggerUpload(2)"  v-show="certification.type =='user'">
                             <img :src="upload.back" v-if="upload.back" style="height:100%;width:100%;">
                             <i class="glyphicon glyphicon-upload" style="margin-top:42px;font-size:16px;" v-else></i>
                           </a>
@@ -276,7 +276,7 @@ const PersonalCertificationEdit = {
                 upload.back = attachmentUrl;
               }
 
-              if (that.certification.type == 'user') {
+              if (that.certification.type == 'org') {
                 that.certification.files = [id];
               } else {
                 let filesLength = that.certification.files.length;
