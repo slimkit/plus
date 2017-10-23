@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\GoldType;
+use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\AdvertisingSpace;
 use Zhiyi\Plus\Support\BootstrapAPIsEventer;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -33,7 +33,6 @@ class BootstrappersController extends Controller
 
         $goldSetting = $goldType->where('status', 1)->select('name', 'unit')->first() ?? collect(['name' => '金币', 'unit' => '个']);
         $bootstrappers['site']['gold_name'] = $goldSetting;
-
 
         return $response->json($events->dispatch('v2', [$bootstrappers]), 200);
     }
