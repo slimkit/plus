@@ -12,6 +12,7 @@ return [
             'ak' => null,
             'sk' => null,
             'sign' => false,
+            'expires' => 3600,
         ],
     ],
 ];

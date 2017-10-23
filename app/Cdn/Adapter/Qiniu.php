@@ -34,6 +34,8 @@ class Qiniu implements FileUrlGeneratorContract
      */
     private $sk;
 
+    private $expires = 3600;
+
     /**
      * Create the qiniu cdn adapter instance.
      *
@@ -45,6 +47,7 @@ class Qiniu implements FileUrlGeneratorContract
         $this->sign = config('cdn.generators.qiniu.sign', false);
         $this->ak = config('cdn.generators.quniu.ak');
         $this->sk = config('cdn.generators.quniu.sk');
+        $this->expires = config('cdn.generators.qiniu.expires', 3600);
     }
 
     /**
@@ -130,9 +133,7 @@ class Qiniu implements FileUrlGeneratorContract
             return $url;
         }
 
-        $expires = 3600;
-        $deadline = time() + $expires;
-
+        $deadline = time() + $this->expires;
         $url .= (strpos($url, '?') ? '&' : '?').'e='.$deadline;
         $hmac = hash_hmac('sha1', $url, $this->sk, true);
         $token = $this->ak.':'.str_replace(['+', '/'], ['-', '_'], $hmac);
