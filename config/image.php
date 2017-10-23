@@ -16,5 +16,6 @@ return [
     */
 
     'driver' => 'gd',
+    'blur' => 96,
 
 ];
