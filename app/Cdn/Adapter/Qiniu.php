@@ -133,7 +133,7 @@ class Qiniu implements FileUrlGeneratorContract
         $expires = 3600;
         $deadline = time() + $expires;
 
-        $url .= (strpos($url, '?') ? '&' : '?').'e='.$deadline
+        $url .= (strpos($url, '?') ? '&' : '?').'e='.$deadline;
         $hmac = hash_hmac('sha1', $url, $this->sk, true);
         $token = $this->ak.':'.str_replace(['+', '/'], ['-', '_'], $hmac);
 
