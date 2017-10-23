@@ -20,20 +20,10 @@
         "overtrue/easy-sms": "^0.0.9",
         "pingplusplus/pingpp-php": "^2.2",
         "predis/predis": "^1.1",
-        "slimkit/around-amap": "^0.0.2",
-        "slimkit/plus-appversion": "^1.0",
-        "slimkit/plus-checkin": "^3.0",
         "slimkit/plus-installer": "^1.0",
-        "slimkit/plus-question": "^2.0",
         "symfony/polyfill-mbstring": "^1.4",
         "symfony/yaml": "^3.3",
-        "tymon/jwt-auth": "^0.5.12",
-        "zhiyicx/plus-component-feed": "^3.0",
-        "zhiyicx/plus-component-group": "^5.0",
-        "zhiyicx/plus-component-h5": "^5.0",
-        "zhiyicx/plus-component-im": "^2.0",
-        "zhiyicx/plus-component-music": "^3.0",
-        "zhiyicx/plus-component-news": "^5.0"
+        "tymon/jwt-auth": "^0.5.12"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
