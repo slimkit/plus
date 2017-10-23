@@ -9,6 +9,15 @@ class PinnedsNotificationEventer
 {
     protected $events;
 
+    // 默认填充字段格式
+    protected $fillable = [
+        'name' => '',
+        'namespace' => '',
+        'owner_prefix' => '',
+        'audit_prefix' => '',
+        'unaudited_value' => ''
+    ];
+
     protected $prefix = 'pinneds_notifications';
 
     /**
@@ -42,6 +51,12 @@ class PinnedsNotificationEventer
      */
     public function dispatch()
     {
-        return $this->events->dispatch($this->prefix);
+        $notifications = collect($this->events->dispatch($this->prefix));
+
+        $notifications = $notifications->reject(function ($notification) {
+            return (! class_exists($notification['namespace']) || array_diff_key($this->fillable, $notification));
+        });
+
+        return $notifications;
     }
 }
