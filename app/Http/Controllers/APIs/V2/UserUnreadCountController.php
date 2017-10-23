@@ -33,7 +33,7 @@ class UserUnreadCountController extends Controller
             ->limit(5)
             ->with('user')
             ->groupBy('user_id')
-            ->orderBy('id')
+            ->orderBy('id', 'desc')
             ->get();
 
         // 查询最近几条点赞记录
@@ -43,7 +43,7 @@ class UserUnreadCountController extends Controller
             ->limit(5)
             ->with('user')
             ->groupBy('user_id')
-            ->orderBy('id')
+            ->orderBy('id', 'desc')
             ->get();
 
         return response()->json([
