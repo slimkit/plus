@@ -18,57 +18,6 @@
         <div class="form-horizontal">
           <loading :loadding="loadding"></loading>
           <div v-show="!loadding">
-<!--             <div class="form-group">
-              <label class="control-label col-md-2">站点状态</label>
-              <div class="col-md-7">
-                <label class="radio-inline">
-                  <input type="radio" :value="radio.on" v-model="site.status"> 开启
-                </label>
-                <label class="radio-inline">
-                  <input type="radio" :value="radio.off" v-model="site.status"> 关闭
-                </label>
-              </div>
-              <div class="col-md-3">
-                <span class="help-block" >站点开启与关闭，请谨慎操作</span>
-              </div>
-            </div>
-            <div class="form-group"  v-show="!site.status">
-              <label class="control-label col-md-2">关闭原因</label>
-              <div class="col-md-7">
-                <input type="text" class="form-control" v-model="site.off_reason">
-              </div>
-              <div class="col-md-3">
-                <span class="help-block">站点关闭，需要填写关闭原因</span>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label col-md-2">APP端</label>
-              <div class="col-md-7">
-                <label class="radio-inline">
-                  <input type="radio" :value="radio.on" v-model="site.app.status" :disabled="!site.status"> 开启
-                </label>
-                <label class="radio-inline">
-                  <input type="radio" :value="radio.off" v-model="site.app.status" :disabled="!site.status"> 关闭
-                </label>
-              </div>
-              <div class="col-md-3">
-                <span class="help-block" >APP端开启与关闭</span>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label col-md-2">H5端</label>
-              <div class="col-md-7">
-                <label class="radio-inline">
-                  <input type="radio" :value="radio.on" v-model="site.h5.status" :disabled="!site.status"> 开启
-                </label>
-                <label class="radio-inline">
-                  <input type="radio" :value="radio.off" v-model="site.h5.status" :disabled="!site.status"> 关闭
-                </label>
-              </div>
-              <div class="col-md-3">
-                <span class="help-block">H5端开启与关闭</span>
-              </div>
-            </div> -->
             <div class="form-group">
               <label class="control-label col-md-2">金币</label>
               <div class="col-md-6">
@@ -155,7 +104,7 @@
 </template>
 <script>
 import request, { createRequestURI } from '../../util/request';
-import plusMessageBundle from 'plus-message-bundle';
+import PlusMessageBundle from 'plus-message-bundle';
 const Site = {
     
     data: () => ({
@@ -192,16 +141,14 @@ const Site = {
     methods: {
       getSiteConfigures () {
         this.loadding = true;
-        request.get(
-          createRequestURI('site/configures'),
-          { validateStatus: status => status === 200 }
-        ).then(response => {
+        request.get(createRequestURI('site/configures'), {
+          validateStatus: status => status === 200,
+        }).then(( data = {} ) => {
           this.loadding = false;
-          this.site = response.data;
-        }).catch(({ response: { data: { errors = ['加载站点配置失败'] } = {} } = {} }) => {
+          this.site = { ...this.site, ...data };
+        }).catch(({ response: { data = { message: '加载站点配置失败' } } = {} }) => {
           this.loadding = false;
-          let Message = new plusMessageBundle(data);
-          this.message.error = Message.getMessage();
+          this.message.error = (new PlusMessageBundle).getMessage();
         });
       },
       updateSiteConfigure () {
@@ -218,7 +165,7 @@ const Site = {
           $("#submit-btn").button('reset');
           this.message.success = message;
         }).catch(({ response: { data = {} } = {} }) => {
-          let Message = new plusMessageBundle(data);
+          let Message = new PlusMessageBundle(data);
           this.message.error = Message.getMessage();
         });
       },
