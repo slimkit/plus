@@ -184,4 +184,3 @@ class Qiniu implements FileUrlGeneratorContract
         return ['psd', 'png', 'jpg', 'jpeg', 'webp', 'bmp', 'gif', 'tiff'];
     }
 }
-
