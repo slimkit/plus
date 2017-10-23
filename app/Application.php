@@ -3,6 +3,7 @@
 namespace Zhiyi\Plus;
 
 use Illuminate\Foundation\Application as LaravelApplication;
+use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 class Application extends LaravelApplication
 {
@@ -32,9 +33,11 @@ class Application extends LaravelApplication
      * @return $this
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function loadVendorYamlFrom(string $file): self
+    public function loadVendorYamlFrom(string $file): ApplicationContract
     {
         $this->vendorYamlFile = $file;
+
+        return $this;
     }
 
     /**
