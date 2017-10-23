@@ -12,7 +12,7 @@ class PinnedsNotificationEventer
     protected $prefix = 'pinneds_notifications';
 
     /**
-     * create eventer instance
+     * create eventer instance.
      *
      * @param Dispatcher $events
      * @author BS <414606094@qq.com>
@@ -35,7 +35,7 @@ class PinnedsNotificationEventer
     }
 
     /**
-     * call the listeners
+     * call the listeners.
      *
      * @return [type] [description]
      * @author BS <414606094@qq.com>
