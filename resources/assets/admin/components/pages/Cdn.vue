@@ -51,7 +51,7 @@ export default {
     this.loadding = true;
     request.get(createRequestURI('cdn/seleced'), {
       validateStatus: status => status === 200,
-    }).then(({ data: { cdn = 'local' } }) => {
+    }).then(({ data: { seleced: cdn = 'local' } }) => {
       this.selecetd = cdn;
       this.loadding = false;
     }).catch(({ response: { data = { message: '获取失败' } } = {} }) => {
