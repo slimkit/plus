@@ -52,6 +52,7 @@ class UserUnreadCountController extends Controller
             $model = new $pinnedModels['namespace']();
 
             $pinneds[$pinnedModels['name']] = $model->select(DB::raw('max(created_at) as time, count(*) as count'))->where($pinnedModels['owner_prefix'], $user->id)->where($pinnedModels['audit_prefix'], $pinnedModels['unaudited_value'])->first()->toArray();
+
             return $pinneds;
         });
 
