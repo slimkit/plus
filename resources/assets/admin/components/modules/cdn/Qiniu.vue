@@ -12,7 +12,7 @@
         <div class="col-sm-4">
           <input type="text" class="form-control" placeholder="https://..." v-model="domain">
         </div>
-        <span class="col-sm-6 help-block">设置「<a href="://www.qiniu.com" target="_blank">七牛</a>」的 CDN 或者储存空间访问域名，必须携带访问协议。</span>
+        <span class="col-sm-6 help-block">设置「<a href="//www.qiniu.com" target="_blank">七牛</a>」的 CDN 或者储存空间访问域名，必须携带访问协议。</span>
       </div>
 
       <!-- 签名 -->
