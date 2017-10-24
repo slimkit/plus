@@ -12,7 +12,8 @@ class CdnController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function getCdnSelected() {
+    public function getCdnSelected()
+    {
         return response()->json(['seleced' => config('cdn.default')], 200);
     }
 }
