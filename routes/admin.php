@@ -83,6 +83,9 @@ Route::group([
 
         // Setting seleced CDN.
         $route->post('/local', 'CdnController@setCdnSeleced');
+
+        // Get qiniu Config.
+        $route->get('/qiniu', 'CdnController@qiniu');
     });
 });
 

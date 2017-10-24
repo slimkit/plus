@@ -35,6 +35,17 @@ class CdnController extends Controller
         return response()->json(['message' => '修改成功'], 201);
     }
 
+    public function qiniu()
+    {
+        return response()->json([
+            'domain' => config('cdn.generators.qiniu.domain'),
+            'sign' => (bool) config('cdn.generators.qiniu.sign'),
+            'expires' => (int) config('cdn.generators.qiniu.expires'),
+            'ak' => config('cdn.generators.qiniu.ak'),
+            'sk' => config('cdn.generators.qiniu.sk'),
+        ], 200);
+    }
+
     /**
      * Make base settings.
      *
