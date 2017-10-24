@@ -73,6 +73,17 @@ class CdnController extends Controller
     }
 
     /**
+     * Get local disk.
+     *
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function getLocalDisk()
+    {
+        return response()->json(['disk' => config('cdn.generators.local.disk')], 200);
+    }
+
+    /**
      * Make base settings.
      *
      * @param \Illuminate\Http\Request $request
