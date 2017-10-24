@@ -1,21 +1,16 @@
 <template>
   <div class="panel-body">
-    <div class="form-horizontal">
+    <ui-loadding v-if="loadding"></ui-loadding>
+    <div v-else class="form-horizontal">
       
       <!-- 选择驱动 -->
       <module-cdn-select :handle-select="handleSelect" value="local"></module-cdn-select>
 
       <!-- 磁盘选择 -->
-      <module-cdn-filesystem-disk></module-cdn-filesystem-disk>
+      <module-cdn-filesystem-disk :disk="disk" @change="handleSelectDisk"></module-cdn-filesystem-disk>
 
-      <!-- 提交按钮 -->
-      <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-
-          <ui-button type="button" class="btn btn-primary" @click="handleSubmit"></ui-button>
-
-        </div>
-      </div>
+      <!-- 磁盘 -->
+      <module-cdn-filesystem-public v-if="disk === 'public'"></module-cdn-filesystem-public>
 
     </div>
   </div>
@@ -36,19 +31,25 @@ export default {
   },
   data: () => ({
     disk: 'public',
+    loadding: false,
   }),
   methods: {
-    handleSubmit ({ stopProcessing }) {
-      request.post(createRequestURI('cdn/local'), { cdn: 'local' }, {
-        validateStatus: status => status === 201,
-      }).then(({ data }) => {
-        stopProcessing();
-        this.$store.dispatch('alert-open', { type: 'success', message: data });
-      }).catch(({ response: { data = { message: '提交失败' } } }) => {
-        stopProcessing();
-        this.$store.dispatch('alert-open', { type: 'danger', message: data });
-      });
-    }
+    handleSelectDisk (disk) {
+      this.disk = disk;
+      console.log(disk);
+    },
   },
+  created () {
+    this.loadding = true;
+    request.get(createRequestURI('cdn/local/disk'), {
+      validateStatus: status => status === 200,
+    }).then(({ data: { disk = 'public' } }) => {
+      this.disk = disk;
+      this.loadding = false;
+    }).catch(({ response: { data = { message: '加载失败，请刷新重试！' } } = {} }) => {
+      this.loadding = false;
+      this.$store.dispatch('alert-open', { type: 'danger', message: data });
+    });
+  }
 };
 </script>
