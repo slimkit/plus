@@ -19,6 +19,7 @@
 
 <script>
 import Select from './Select';
+import request, { createRequestURI } from '../../../util/request';
 export default {
   name: 'module-cdn-local',
   components: {
@@ -29,7 +30,15 @@ export default {
   },
   methods: {
     handleSubmit ({ stopProcessing }) {
-      console.log(stopProcessing);
+      request.post(createRequestURI('cdn/local'), { cdn: 'local' }, {
+        validateStatus: status => status === 201,
+      }).then(({ data }) => {
+        stopProcessing();
+        this.$store.dispatch('alert-open', { type: 'success', message: data });
+      }).catch(({ response: { data = { message: '提交失败' } } }) => {
+        stopProcessing();
+        this.$store.dispatch('alert-open', { type: 'danger', message: data });
+      });
     }
   },
 };
