@@ -2,13 +2,13 @@
   <div class="form-group">
     
     <label class="col-sm-2 control-label">CDN</label>
-    <div class="col-sm-6">
+    <div class="col-sm-4">
       <select :value="value" class="form-control" @input="handle">
         <option value="local">本地</option>
         <option value="qiniu">七牛</option>
       </select>
     </div>
-    <span class="col-sm-4 help-block">选择你的 CDN 平台</span>
+    <span class="col-sm-6 help-block">选择你的 CDN 平台</span>
 
   </div>
 </template>

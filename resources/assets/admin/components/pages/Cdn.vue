@@ -20,7 +20,8 @@
         <div class="panel-body" v-if="loadding">
           <ui-loadding></ui-loadding>
         </div>
-        <module-cdn-local v-else-if="selecetd === 'local'" :handle-select="handleSelecte"></module-cdn-local>
+        <module-cdn-local v-else-if="selecetd === 'local'" :handle-select="handleSelect"></module-cdn-local>
+        <module-cdn-qiniu v-else-if="selecetd === 'qiniu'" :handle-select="handleSelect"></module-cdn-qiniu>
       </div>
 
     </div>
@@ -42,7 +43,7 @@ export default {
     loadding: false,
   }),
   methods: {
-    handleSelecte (cdn) {
+    handleSelect (cdn) {
       this.selecetd = cdn;
     }
   },
