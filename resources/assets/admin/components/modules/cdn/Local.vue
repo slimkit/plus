@@ -2,7 +2,11 @@
   <div class="panel-body">
     <div class="form-horizontal">
       
+      <!-- 选择驱动 -->
       <module-cdn-select :handle-select="handleSelect" value="local"></module-cdn-select>
+
+      <!-- 磁盘选择 -->
+      <module-cdn-filesystem-disk></module-cdn-filesystem-disk>
 
       <!-- 提交按钮 -->
       <div class="form-group">
@@ -19,15 +23,20 @@
 
 <script>
 import Select from './Select';
+import components from './filesystems';
 import request, { createRequestURI } from '../../../util/request';
 export default {
   name: 'module-cdn-local',
   components: {
+    ...components,
     [Select.name]: Select,
   },
   props: {
     handleSelect: { type: Function, required: true },
   },
+  data: () => ({
+    disk: 'public',
+  }),
   methods: {
     handleSubmit ({ stopProcessing }) {
       request.post(createRequestURI('cdn/local'), { cdn: 'local' }, {
