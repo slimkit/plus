@@ -4,7 +4,7 @@
     <div v-else class="form-horizontal">
       
       <!-- 选择驱动 -->
-      <module-cdn-select :handle-select="handleSelect" value="local"></module-cdn-select>
+      <module-cdn-select :handle-select="handleSelect" value="filesystem"></module-cdn-select>
 
       <!-- 磁盘选择 -->
       <module-cdn-filesystem-disk :disk="disk" @change="handleSelectDisk"></module-cdn-filesystem-disk>
@@ -41,7 +41,7 @@ export default {
   },
   created () {
     this.loadding = true;
-    request.get(createRequestURI('cdn/local/disk'), {
+    request.get(createRequestURI('cdn/filesystem/disk'), {
       validateStatus: status => status === 200,
     }).then(({ data: { disk = 'public' } }) => {
       this.disk = disk;

@@ -82,8 +82,9 @@ Route::group([
         $route->get('/seleced', 'CdnController@getCdnSelected');
 
         // Local.
-        $route->get('/local/disk', 'CdnController@getLocalDisk');
-        $route->post('/local/disk/public', 'CdnController@setPublicDisk');
+        $route->get('/filesystem/disk', 'CdnController@getFilesystemDisk');
+        $route->post('/filesystems/public', 'CdnController@setPublicDisk');
+        $route->get('/filesystems/local', 'CdnController@getLocalDisk');
 
         // qiniu Config.
         $route->get('/qiniu', 'CdnController@qiniu');

@@ -4,7 +4,7 @@
     <label class="col-sm-2 control-label">CDN</label>
     <div class="col-sm-4">
       <select :value="value" class="form-control" @input="handle">
-        <option value="local">文件系统</option>
+        <option value="filesystem">文件系统</option>
         <option value="qiniu">七牛</option>
       </select>
     </div>

@@ -13,7 +13,7 @@ export default {
   name: 'module-cdn-filesystem-public',
   methods: {
     handleSubmit ({ stopProcessing }) {
-      request.post(createRequestURI('cdn/local/disk/public'), {}, {
+      request.post(createRequestURI('cdn/filesystems/public'), {}, {
         validateStatus: status => status === 201,
       }).then(({ data }) => {
         stopProcessing();

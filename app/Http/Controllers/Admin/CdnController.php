@@ -63,7 +63,7 @@ class CdnController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function getLocalDisk()
+    public function getFilesystemDisk()
     {
         return response()->json(['disk' => config('cdn.generators.local.disk')], 200);
     }
@@ -82,5 +82,16 @@ class CdnController extends Controller
         ]);
 
         return response()->json(['message' => '设置成功！'], 201);
+    }
+
+    /**
+     * 获取 local 磁盘公开地址.
+     *
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function getLocalDisk()
+    {
+        return response()->json(['public' => config('cdn.generators.filesystem.public')], 200);
     }
 }
