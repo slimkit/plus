@@ -35,6 +35,12 @@ class CdnController extends Controller
         return response()->json(['message' => '修改成功'], 201);
     }
 
+    /**
+     * Get qiniu setting.
+     *
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function qiniu()
     {
         return response()->json([
@@ -44,6 +50,26 @@ class CdnController extends Controller
             'ak' => config('cdn.generators.qiniu.ak'),
             'sk' => config('cdn.generators.qiniu.sk'),
         ], 200);
+    }
+
+    /**
+     * Qiniu setting.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Zhiyi\Plus\Support\Configuration $repository
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function setQiniu(Request $request, ConfigurationRepository $repository)
+    {
+        $repository->set(array_merge($this->makeBase($request), [
+            'cdn.generators.qiniu.domain' => $request->input('domain'),
+            'cdn.generators.qiniu.sign' => (bool) $request->input('sign'),
+            'cdn.generators.qiniu.expires' => (int) $request->inut('expires'),
+            'cdn.generators.qiniu.ak' => $request->input('ak'),
+            'cdn.generators.qiniu.sk' => $request->input('sk'),
+        ]));
+
+        return response()->json(['message' => '设置成功'], 200);
     }
 
     /**
