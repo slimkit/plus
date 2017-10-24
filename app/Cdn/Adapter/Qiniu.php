@@ -45,8 +45,8 @@ class Qiniu implements FileUrlGeneratorContract
     {
         $this->domain = config('cdn.generators.qiniu.domain');
         $this->sign = config('cdn.generators.qiniu.sign', false);
-        $this->ak = config('cdn.generators.quniu.ak');
-        $this->sk = config('cdn.generators.quniu.sk');
+        $this->ak = config('cdn.generators.qiniu.ak');
+        $this->sk = config('cdn.generators.qiniu.sk');
         $this->expires = config('cdn.generators.qiniu.expires', 3600);
     }
 
@@ -115,8 +115,6 @@ class Qiniu implements FileUrlGeneratorContract
         $blur = min(0, intval($extra['blur'] ?? 0));
         $processor = $this->makeImageProcessor($width, $height, $quality, $blur);
 
-        $url = sprintf('%s/%s?%s', $this->domain, $filename, $processor);
-
         return $this->makeToken($url);
     }
 
@@ -136,7 +134,7 @@ class Qiniu implements FileUrlGeneratorContract
         $deadline = time() + $this->expires;
         $url .= (strpos($url, '?') ? '&' : '?').'e='.$deadline;
         $hmac = hash_hmac('sha1', $url, $this->sk, true);
-        $token = $this->ak.':'.str_replace(['+', '/'], ['-', '_'], $hmac);
+        $token = $this->ak.':'.str_replace(['+', '/'], ['-', '_'], base64_encode($hmac));
 
         return $url .= '&token='.$token;
     }
