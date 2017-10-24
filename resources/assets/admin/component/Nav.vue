@@ -91,6 +91,13 @@
       <span class="__icon">DS</span>
       打赏管理
     </router-link>
+
+    <!-- CDN -->
+    <router-link class="list-group-item __button" to="/cdn" active-class="active">
+        <span class="glyphicon glyphicon-cloud __icon"></span>
+        CDN管理
+    </router-link>
+
     <!-- 拓展包导航加载 -->
     <router-link class="list-group-item __button" v-for="item, index in manages" :key="index" :to="`/package/${index}`" active-class="active" exact>
       <img class="__icon-img" :src="item['icon']" v-if="item['icon'].substr(4, 3) === '://' || item['icon'].substr(5, 3) === '://'">
