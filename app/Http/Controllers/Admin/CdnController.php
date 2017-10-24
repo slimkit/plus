@@ -65,7 +65,7 @@ class CdnController extends Controller
      */
     public function getFilesystemDisk()
     {
-        return response()->json(['disk' => config('cdn.generators.local.disk')], 200);
+        return response()->json(['disk' => config('cdn.generators.filesystem.disk')], 200);
     }
 
     /**
@@ -93,5 +93,23 @@ class CdnController extends Controller
     public function getLocalDisk()
     {
         return response()->json(['public' => config('cdn.generators.filesystem.public')], 200);
+    }
+
+    /**
+     * 设置 local 磁盘配置.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Zhiyi\Plus\Support\Configuration $repository
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function setLocalDisk(Request $request, ConfigurationRepository $repository)
+    {
+        $repository->set([
+            'cdn.default' => 'filesystem',
+            'cdn.generators.filesystem.disk' => 'local',
+            'cdn.generators.filesystem.public' => $request->input('public'),
+        ]);
+
+        return response()->json(['message' => '设置成功！'], 201);
     }
 }

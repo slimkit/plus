@@ -10,7 +10,8 @@
       <module-cdn-filesystem-disk :disk="disk" @change="handleSelectDisk"></module-cdn-filesystem-disk>
 
       <!-- 磁盘 -->
-      <module-cdn-filesystem-public v-if="disk === 'public'"></module-cdn-filesystem-public>
+      <module-cdn-filesystem-local v-if="disk === 'local'"></module-cdn-filesystem-local>
+      <module-cdn-filesystem-public v-else-if="disk === 'public'"></module-cdn-filesystem-public>
 
     </div>
   </div>
@@ -36,7 +37,6 @@ export default {
   methods: {
     handleSelectDisk (disk) {
       this.disk = disk;
-      console.log(disk);
     },
   },
   created () {

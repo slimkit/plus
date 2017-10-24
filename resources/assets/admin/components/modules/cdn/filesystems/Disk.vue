@@ -8,7 +8,7 @@
         <option value="s3">Amazon S3</option>
       </select>
     </div>
-    <span class="col-sm-6">选择你需要的文件系统磁盘。</span>
+    <span class="col-sm-6 help-block">选择你需要的文件系统磁盘。</span>
   </div>
 </template>
 
