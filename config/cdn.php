@@ -5,6 +5,8 @@ return [
     'generators' => [
         'local' => [
             'driver' => \Zhiyi\Plus\Cdn\Adapter\Local::class,
+            'disk' => 'public',
+            'public' => null,
         ],
         'qiniu' => [
             'driver' => \Zhiyi\Plus\Cdn\Adapter\Qiniu::class,
