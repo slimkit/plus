@@ -79,7 +79,10 @@ Route::group([
     $route->group(['prefix' => 'cdn'], function (RouteRegisterContract $route) {
 
         // Get cdn selected
-        $route->get('seleced', 'CdnController@getCdnSelected');
+        $route->get('/seleced', 'CdnController@getCdnSelected');
+
+        // Setting seleced CDN.
+        $route->post('/local', 'CdnController@setCdnSeleced');
     });
 });
 
