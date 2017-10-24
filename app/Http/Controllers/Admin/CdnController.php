@@ -20,22 +20,6 @@ class CdnController extends Controller
     }
 
     /**
-     * Setting local CDN.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Plus\Support\Configuration $repository
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function setCdnSeleced(Request $request, ConfigurationRepository $repository)
-    {
-        $repository->set(
-            $this->makeBase($request)
-        );
-
-        return response()->json(['message' => '修改成功'], 201);
-    }
-
-    /**
      * Get qiniu setting.
      *
      * @return mixed
@@ -61,13 +45,14 @@ class CdnController extends Controller
      */
     public function setQiniu(Request $request, ConfigurationRepository $repository)
     {
-        $repository->set(array_merge($this->makeBase($request), [
+        $repository->set([
+            'cdn.default' => 'qiniu',
             'cdn.generators.qiniu.domain' => $request->input('domain'),
             'cdn.generators.qiniu.sign' => (bool) $request->input('sign'),
             'cdn.generators.qiniu.expires' => (int) $request->input('expires'),
             'cdn.generators.qiniu.ak' => $request->input('ak'),
             'cdn.generators.qiniu.sk' => $request->input('sk'),
-        ]));
+        ]);
 
         return response()->json(['message' => '设置成功'], 201);
     }
@@ -84,26 +69,18 @@ class CdnController extends Controller
     }
 
     /**
-     * Make base settings.
+     * 设置本地文件系统公开磁盘.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return array
+     * @param \Zhiyi\Plus\Support\Configuration $repository
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function makeBase(Request $request): array
+    public function setPublicDisk(ConfigurationRepository $repository)
     {
-        $seleced = $request->input('cdn');
+        $repository->set([
+            'cdn.default' => 'local',
+            'cdn.generators.local.disk' => 'public'
+        ]);
 
-        if (! $seleced) {
-            return [];
-        }
-
-        if (! in_array($seleced, array_keys(config('cdn.generators')))) {
-            return response()->json(['message' => '选择的 CDN 是不被支持的'], 422);
-        }
-
-        return [
-            'cdn.default' => $seleced,
-        ];
+        return response()->json(['message' => '设置成功！'], 201);
     }
 }
