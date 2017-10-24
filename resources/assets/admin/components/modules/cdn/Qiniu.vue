@@ -1,6 +1,7 @@
 <template>
   <div class="panel-body">
-    <div class="form-horizontal">
+    <ui-loadding v-if="loadding"></ui-loadding>
+    <div v-else class="form-horizontal">
 
       <!-- selece cdn -->
       <module-cdn-select :handle-select="handleSelect" value="qiniu"></module-cdn-select>
@@ -76,6 +77,7 @@ export default {
     handleSelect: { type: Function, required: true },
   },
   data: () => ({
+    loadding: false,
     domain: '',
     sign: false,
     ak: '',
