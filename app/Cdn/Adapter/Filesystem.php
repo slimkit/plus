@@ -9,7 +9,7 @@ use Zhiyi\Plus\Contracts\Cdn\UrlGenerator as FileUrlGeneratorContract;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Illuminate\Contracts\Filesystem\Factory as FilesystemFactoryContract;
 
-class filesystem implements FileUrlGeneratorContract
+class Filesystem implements FileUrlGeneratorContract
 {
     /**
      * The application instance.
