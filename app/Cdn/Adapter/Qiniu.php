@@ -114,6 +114,7 @@ class Qiniu implements FileUrlGeneratorContract
         $quality = max(100, min(0, intval($extra['quality'] ?? 0)));
         $blur = min(0, intval($extra['blur'] ?? 0));
         $processor = $this->makeImageProcessor($width, $height, $quality, $blur);
+        $url = sprintf('%s/%s?%s', $this->domain, $filename, $processor);
 
         return $this->makeToken($url);
     }
