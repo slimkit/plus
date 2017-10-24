@@ -91,7 +91,20 @@ export default {
     }
   },
   created () {
-    console.log(1);
+    this.loadding = true;
+    request.get(createRequestURI('cdn/qiniu'), {
+      validateStatus: status => status === 200,
+    }).then(({ data: { domain, sign, ak, sk, expires } }) => {
+      this.loadding = false;
+      this.domain = domain;
+      this.sign = !! sign;
+      this.ak = ak;
+      this.sk = sk;
+      this.expires = expires;
+    }).catch(({ response: { data = { message: '加载失败，请刷新重试！' } } }) => {
+      this.loadding = false;
+      this.$store.dispatch('alert-open', { type: 'danger', message: data });
+    });
   }
 };
 </script>
