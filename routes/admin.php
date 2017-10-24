@@ -73,6 +73,14 @@ Route::group([
         // @delete /abilities/:ability
         $route->delete('/{ability}', 'RoleController@deleteAbility');
     });
+
+    // CDN
+    // @Route /admin/cdn
+    $route->group(['prefix' => 'cdn'], function (RouteRegisterContract $route) {
+
+        // Get cdn selected
+        $route->get('seleced', 'CdnController@getCdnSelected');
+    });
 });
 
 Route::middleware('auth:web')
