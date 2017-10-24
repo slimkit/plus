@@ -104,6 +104,6 @@ class UrlManager implements UrlFactoryContract
      */
     protected function getDefaulrGennerator(): string
     {
-        return $this->app->config['cdn.default'] ?: 'local';
+        return $this->app->config['cdn.default'] ?: 'filesystem';
     }
 }

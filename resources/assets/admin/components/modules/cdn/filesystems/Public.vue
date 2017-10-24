@@ -2,9 +2,7 @@
   <!-- 提交按钮 -->
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-
       <ui-button type="button" class="btn btn-primary" @click="handleSubmit"></ui-button>
-
     </div>
   </div>
 </template>

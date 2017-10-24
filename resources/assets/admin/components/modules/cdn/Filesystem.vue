@@ -21,7 +21,7 @@ import Select from './Select';
 import components from './filesystems';
 import request, { createRequestURI } from '../../../util/request';
 export default {
-  name: 'module-cdn-local',
+  name: 'module-cdn-filesystem',
   components: {
     ...components,
     [Select.name]: Select,

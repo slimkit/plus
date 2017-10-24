@@ -1,7 +1,7 @@
-import Local from './Local';
+import Filesystem from './Filesystem';
 import Qiniu from './Qiniu';
 
 export default {
-  [Local.name]: Local,
+  [Filesystem.name]: Filesystem,
   [Qiniu.name]: Qiniu,
 };

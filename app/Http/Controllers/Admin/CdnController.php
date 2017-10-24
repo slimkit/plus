@@ -77,8 +77,8 @@ class CdnController extends Controller
     public function setPublicDisk(ConfigurationRepository $repository)
     {
         $repository->set([
-            'cdn.default' => 'local',
-            'cdn.generators.local.disk' => 'public',
+            'cdn.default' => 'filesystem',
+            'cdn.generators.filesystem.disk' => 'public',
         ]);
 
         return response()->json(['message' => '设置成功！'], 201);

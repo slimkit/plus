@@ -20,7 +20,7 @@
         <div class="panel-body" v-if="loadding">
           <ui-loadding></ui-loadding>
         </div>
-        <module-cdn-local v-else-if="selecetd === 'local'" :handle-select="handleSelect"></module-cdn-local>
+        <module-cdn-filesystem v-else-if="selecetd === 'filesystem'" :handle-select="handleSelect"></module-cdn-filesystem>
         <module-cdn-qiniu v-else-if="selecetd === 'qiniu'" :handle-select="handleSelect"></module-cdn-qiniu>
       </div>
 
@@ -39,7 +39,7 @@ export default {
     [Alert.name]: Alert,
   },
   data: () => ({
-    selecetd: 'local',
+    selecetd: 'filesystem',
     loadding: false,
   }),
   methods: {
@@ -51,7 +51,7 @@ export default {
     this.loadding = true;
     request.get(createRequestURI('cdn/seleced'), {
       validateStatus: status => status === 200,
-    }).then(({ data: { seleced: cdn = 'local' } }) => {
+    }).then(({ data: { seleced: cdn = 'filesystem' } }) => {
       this.selecetd = cdn;
       this.loadding = false;
     }).catch(({ response: { data = { message: '获取失败' } } = {} }) => {

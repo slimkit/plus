@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'default' => 'local',
+    'default' => 'filesystem',
     'generators' => [
-        'local' => [
-            'driver' => \Zhiyi\Plus\Cdn\Adapter\Local::class,
+        'filesystem' => [
+            'driver' => \Zhiyi\Plus\Cdn\Adapter\Filesystem::class,
             'disk' => 'public',
             'public' => null,
         ],
