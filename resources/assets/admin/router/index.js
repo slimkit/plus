@@ -14,6 +14,7 @@ import coversationRouter from './conversation';
 import captchaRouter from './captcha';
 import goldRouter from './gold';
 import rewardRouter from './reward';
+import cdnRoutes from './cdn';
 
 // components.
 import Login from '../component/Login';
@@ -40,7 +41,8 @@ const childrenRoutes = [
   coversationRouter,
   captchaRouter,
   goldRouter,
-  rewardRouter
+  rewardRouter,
+  cdnRoutes,
 ];
 
 const router = new VueRouter({

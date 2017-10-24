@@ -13,6 +13,7 @@ import site from './module/site';
 import area from './module/area';
 import manages from './module/manages';
 import system from './module/system';
+import alert from './module/alert';
 
 Vue.use(Vuex);
 
@@ -21,7 +22,8 @@ const modules = {
   site,
   area,
   manages,
-  system
+  system,
+  alert,
 };
 
 const store = new Vuex.Store({
