@@ -86,8 +86,23 @@ export default {
   }),
   methods: {
     handleSubmit ({ stopProcessing }) {
-      console.log(stopProcessing);
-      setTimeout(stopProcessing, 2000);
+      const params = {
+        domain: this.domain,
+        sign: this.sign,
+        expires: this.expires,
+        ak: this.ak,
+        sk: this.sk,
+        cdn: 'qiniu',
+      };
+      request.post(createRequestURI('cdn/qiniu'), params, {
+        validateStatus: status => status === 201,
+      }).then(({ data }) => {
+        this.$store.dispatch('alert-open', { type: 'success', message: data });
+        stopProcessing();
+      }).catch(({ response: { data = { message: '设置失败，请重试！' } } }) => {
+        this.$store.dispatch('alert-open', { type: 'danger', message: data });
+        stopProcessing();
+      });
     }
   },
   created () {
