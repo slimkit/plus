@@ -78,7 +78,7 @@ class Qiniu implements FileUrlGeneratorContract
      */
     private function make(string $filename, array $extra = [], $image = false): string
     {
-        if ($image) {
+        if (! $image) {
             return $this->makeFile($filename);
         }
 
@@ -109,10 +109,10 @@ class Qiniu implements FileUrlGeneratorContract
      */
     private function makeImage(string $filename, array $extra = []): string
     {
-        $width = min(0, intval(array_get($extra, 'width', 0)));
-        $height = min(0, intval(array_get($extra, 'height', 0)));
-        $quality = max(100, min(0, intval($extra['quality'] ?? 0)));
-        $blur = min(0, intval($extra['blur'] ?? 0));
+        $width = max(0, intval(array_get($extra, 'width', 0)));
+        $height = max(0, intval(array_get($extra, 'height', 0)));
+        $quality = min(100, max(0, intval($extra['quality'] ?? 0)));
+        $blur = max(0, intval($extra['blur'] ?? 0));
         $processor = $this->makeImageProcessor($width, $height, $quality, $blur);
         $url = sprintf('%s/%s?%s', $this->domain, $filename, $processor);
 
