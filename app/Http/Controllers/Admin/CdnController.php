@@ -78,7 +78,7 @@ class CdnController extends Controller
     {
         $repository->set([
             'cdn.default' => 'local',
-            'cdn.generators.local.disk' => 'public'
+            'cdn.generators.local.disk' => 'public',
         ]);
 
         return response()->json(['message' => '设置成功！'], 201);
