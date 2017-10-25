@@ -74,6 +74,7 @@ class AliOss implements FileUrlGeneratorContract
     protected function makeSignURL(string $filename, array $extra): string
     {
         $publicUrl = $this->makePublicURL($filename, $extra);
+
         return $publicUrl.$this->makeSign(
             $this->bucket,
             $filename,
