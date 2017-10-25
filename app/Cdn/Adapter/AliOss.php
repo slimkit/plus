@@ -281,12 +281,13 @@ class AliOss implements FileUrlGeneratorContract
     protected function makeSign(string $bucket, string $filename, int $timeout = 60, string $method = self::OSS_HTTP_GET, array $process)
     {
         $CanonicalizedResource = $bucket.'/'.$filename.'?'.http_build_query($process);
+        $expireTime = time() + $timeout;
         $filedata = $this->getDataFromFilename($filename);
-        $unsigndata = $method.'\n'.$filedata['hash'].'\n'.$filedata['mime'].'\n'.time() + $timeout.$CanonicalizedResource;
+        $unsigndata = $method.'\n'.$filedata['hash'].'\n'.$filedata['mime'].'\n'.$expireTime.$CanonicalizedResource;
 
         $signature = urlencode(base64(hash_hmac('sha1', $unsigndata, $this->accessKeySecret, true)));
 
-        return sprintf('&OSSAccessKeyId=%s&Expires=%s&Signature=%s', $this->accessKeyId, time() + $timeout, $signature);
+        return sprintf('&OSSAccessKeyId=%s&Expires=%s&Signature=%s', $this->accessKeyId, $expireTime, $signature);
     }
 
     /**
