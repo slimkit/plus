@@ -275,7 +275,7 @@ class Filesystem implements FileUrlGeneratorContract
     protected function makeUrl(string $filename): string
     {
         if ($this->disk === 'local') {
-            return sprintf('%s/%s', config('cdn.generators.filesystem.public'), $filename)
+            return sprintf('%s/%s', config('cdn.generators.filesystem.public'), $filename);
         }
 
         return $this->files->url($filename);
