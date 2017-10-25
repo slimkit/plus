@@ -1,5 +1,5 @@
 <template>
-  <ui-loadding v-if="loadding"></ui-loadding>
+  <ui-loading v-if="loading"></ui-loading>
   <div v-else>
     
     <!-- key -->
@@ -64,7 +64,7 @@ import request, { createRequestURI } from '../../../../util/request';
 export default {
   name: 'module-cdn-filesystem-s3',
   data: () => ({
-    loadding: false,
+    loading: false,
     key: null,
     secret: null,
     region: null,
@@ -90,11 +90,11 @@ export default {
     }
   },
   created () {
-    this.loadding = true;
+    this.loading = true;
     request.get(createRequestURI('cdn/filesystems/s3'), {
       validateStatus: status => status === 200,
     }).then(({ data: { key, secret, region, bucket } }) => {
-      this.loadding = false;
+      this.loading = false;
       this.key = key;
       this.secret = secret;
       this.region = region;

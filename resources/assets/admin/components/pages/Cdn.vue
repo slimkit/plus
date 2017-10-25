@@ -17,8 +17,8 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">CDN 设置</div>
-        <div class="panel-body" v-if="loadding">
-          <ui-loadding></ui-loadding>
+        <div class="panel-body" v-if="loading">
+          <ui-loading></ui-loading>
         </div>
         <module-cdn-filesystem v-else-if="selecetd === 'filesystem'" :handle-select="handleSelect"></module-cdn-filesystem>
         <module-cdn-qiniu v-else-if="selecetd === 'qiniu'" :handle-select="handleSelect"></module-cdn-qiniu>
@@ -40,7 +40,7 @@ export default {
   },
   data: () => ({
     selecetd: 'filesystem',
-    loadding: false,
+    loading: false,
   }),
   methods: {
     handleSelect (cdn) {
@@ -48,14 +48,14 @@ export default {
     }
   },
   created () {
-    this.loadding = true;
+    this.loading = true;
     request.get(createRequestURI('cdn/seleced'), {
       validateStatus: status => status === 200,
     }).then(({ data: { seleced: cdn = 'filesystem' } }) => {
       this.selecetd = cdn;
-      this.loadding = false;
+      this.loading = false;
     }).catch(({ response: { data = { message: '获取失败' } } = {} }) => {
-      this.loadding = false;
+      this.loading = false;
       this.$store.dispatch('alert-open', { type: 'danger', message: data });
     });
   }

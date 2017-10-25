@@ -2,7 +2,7 @@
   <ui-process-button v-bind="$props" @click="handleClick">
     <template slot-scope="{ processing }">
       <template v-if="processing">
-        <ui-loadding></ui-loadding>
+        <ui-loading></ui-loading>
         {{ procesLable }}
       </template>
       <template v-else>

@@ -1,9 +1,9 @@
 <template>
-  <span class="glyphicon glyphicon-refresh loadding-icon" aria-hidden="true" v-bind="$props"></span>
+  <span class="glyphicon glyphicon-refresh loading-icon" aria-hidden="true" v-bind="$props"></span>
 </template>
 
 <script>
-export default { name: 'ui-loadding' };
+export default { name: 'ui-loading' };
 </script>
 
 <style>
@@ -17,7 +17,7 @@ export default { name: 'ui-loadding' };
   }
 }
 
-.loadding-icon {
+.loading-icon {
   animation-name: turn-around;
   animation-duration: 1.4s;
   animation-timing-function: linear;

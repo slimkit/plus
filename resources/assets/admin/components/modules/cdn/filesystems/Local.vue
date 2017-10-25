@@ -1,5 +1,5 @@
 <template>
-  <ui-loadding v-if="loadding"></ui-loadding>
+  <ui-loading v-if="loading"></ui-loading>
   <div v-else>
     
     <!-- 公开地址 -->
@@ -26,7 +26,7 @@ import request, { createRequestURI } from '../../../../util/request';
 export default {
   name: 'module-cdn-filesystem-local',
   data: () => ({
-    loadding: false,
+    loading: false,
     public: null,
   }),
   methods: {
@@ -43,11 +43,11 @@ export default {
     }
   },
   created () {
-    this.loadding = true;
+    this.loading = true;
     request.get(createRequestURI('cdn/filesystems/local'), {
       validateStatus: status => status === 200,
     }).then(({ data }) => {
-      this.loadding = false;
+      this.loading = false;
       this.public = data.public;
     }).catch(({ response: { data = { message: '加载失败，请刷新重试！' } } = {} }) => {
       this.$store.dispatch('alert-open', { type: 'danger', message: data });

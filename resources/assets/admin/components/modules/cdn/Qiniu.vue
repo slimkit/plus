@@ -1,6 +1,6 @@
 <template>
   <div class="panel-body">
-    <ui-loadding v-if="loadding"></ui-loadding>
+    <ui-loading v-if="loading"></ui-loading>
     <div v-else class="form-horizontal">
 
       <!-- selece cdn -->
@@ -77,7 +77,7 @@ export default {
     handleSelect: { type: Function, required: true },
   },
   data: () => ({
-    loadding: false,
+    loading: false,
     domain: '',
     sign: false,
     ak: '',
@@ -106,18 +106,18 @@ export default {
     }
   },
   created () {
-    this.loadding = true;
+    this.loading = true;
     request.get(createRequestURI('cdn/qiniu'), {
       validateStatus: status => status === 200,
     }).then(({ data: { domain, sign, ak, sk, expires } }) => {
-      this.loadding = false;
+      this.loading = false;
       this.domain = domain;
       this.sign = !! sign;
       this.ak = ak;
       this.sk = sk;
       this.expires = expires;
     }).catch(({ response: { data = { message: '加载失败，请刷新重试！' } } }) => {
-      this.loadding = false;
+      this.loading = false;
       this.$store.dispatch('alert-open', { type: 'danger', message: data });
     });
   }

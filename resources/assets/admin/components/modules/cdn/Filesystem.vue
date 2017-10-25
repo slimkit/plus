@@ -1,6 +1,6 @@
 <template>
   <div class="panel-body">
-    <ui-loadding v-if="loadding"></ui-loadding>
+    <ui-loading v-if="loading"></ui-loading>
     <div v-else class="form-horizontal">
       
       <!-- 选择驱动 -->
@@ -33,7 +33,7 @@ export default {
   },
   data: () => ({
     disk: 'public',
-    loadding: false,
+    loading: false,
   }),
   methods: {
     handleSelectDisk (disk) {
@@ -41,14 +41,14 @@ export default {
     },
   },
   created () {
-    this.loadding = true;
+    this.loading = true;
     request.get(createRequestURI('cdn/filesystem/disk'), {
       validateStatus: status => status === 200,
     }).then(({ data: { disk = 'public' } }) => {
       this.disk = disk;
-      this.loadding = false;
+      this.loading = false;
     }).catch(({ response: { data = { message: '加载失败，请刷新重试！' } } = {} }) => {
-      this.loadding = false;
+      this.loading = false;
       this.$store.dispatch('alert-open', { type: 'danger', message: data });
     });
   }
