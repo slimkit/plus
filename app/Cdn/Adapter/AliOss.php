@@ -288,7 +288,7 @@ class AliOss implements FileUrlGeneratorContract
         $filedata = $this->getDataFromFilename($filename);
         $unsigndata = $method.'\n'.$filedata['hash'].'\n'.base64_encode(md5($url)).'\n'.$expireTime.$CanonicalizedResource;
 
-        $signature = urlencode(base64(hash_hmac('sha1', $unsigndata, $this->accessKeySecret, true)));
+        $signature = urlencode(base64_encode(hash_hmac('sha1', $unsigndata, $this->accessKeySecret, true)));
 
         return sprintf('&OSSAccessKeyId=%s&Expires=%s&Signature=%s', $this->accessKeyId, $expireTime, $signature);
     }
