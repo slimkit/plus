@@ -283,7 +283,7 @@ class AliOss implements FileUrlGeneratorContract
      */
     protected function makeSign(string $bucket, string $filename, int $timeout = 60, string $method = self::OSS_HTTP_GET, array $process, string $url)
     {
-        $params = collect($process)->map(function($value, $key) {
+        $params = collect($process)->map(function ($value, $key) {
             return $key.'='.$value;
         })->implode('&');
 
