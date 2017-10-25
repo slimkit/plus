@@ -135,12 +135,12 @@ class AliOss implements FileUrlGeneratorContract
                 return sprintf($key, ...$value['params']);
             })->filter()->implode('/');
 
-            if ((bool) $process) {
-                $process = 'image/'.$process;
+            if (! $process) {
+                return [];
             }
 
             return [
-                self::OSS_PROCESS => $process,
+                self::OSS_PROCESS => 'image/'.$process,
             ];
         }
 
