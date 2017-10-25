@@ -1,11 +1,11 @@
 <?php
 
-namespace Zhiyi\Component\ZhiyiPlus\PlusStorageOSS;
+namespace Zhiyi\Plus\Cdn\Adapter;
 
 use Zhiyi\Plus\Models\File;
 use Zhiyi\Plus\Contracts\Cdn\UrlGenerator as FileUrlGeneratorContract;
 
-class StorageEngine implements FileUrlGeneratorContract
+class AliOss implements FileUrlGeneratorContract
 {
     protected $accessKeyId; // 从OSS获得的AccessKeyId
 
