@@ -40,6 +40,7 @@ class AliOss implements FileUrlGeneratorContract
         $this->endpoint = config('cdn.generators.alioss.endpoint');
         $this->ssl = config('cdn.generators.alioss.ssl', false);
         $this->public = config('cdn.generators.alioss.public', true);
+        $this->expires = config('cdn.generators.alioss.expires', 3600);
     }
 
     /**
@@ -78,7 +79,7 @@ class AliOss implements FileUrlGeneratorContract
         return $publicUrl.$this->makeSign(
             $this->bucket,
             $filename,
-            3600, // 获取签字路径，一小时有效期，一小时之内都可以重复使用。
+            $this->expires, // 授权过期时间。
             self::OSS_HTTP_GET, // 获取资源
             $this->getProcess($filename, $extra),
             $publicUrl

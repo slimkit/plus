@@ -24,6 +24,7 @@ return [
             'endpoint' => null,
             'ssl' => false,
             'public' => true,
+            'expires' => 3600,
         ],
     ],
 ];
