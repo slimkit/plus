@@ -12,6 +12,7 @@
       <!-- 磁盘 -->
       <module-cdn-filesystem-local v-if="disk === 'local'"></module-cdn-filesystem-local>
       <module-cdn-filesystem-public v-else-if="disk === 'public'"></module-cdn-filesystem-public>
+      <module-cdn-filesystem-s3 v-else-if="disk === 's3'"></module-cdn-filesystem-s3>
 
     </div>
   </div>
