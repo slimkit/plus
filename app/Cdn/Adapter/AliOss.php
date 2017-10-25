@@ -116,17 +116,17 @@ class AliOss implements FileUrlGeneratorContract
 
             $process = collect([
                 'quality,q_%d' => [
-                    'confirm' => !! $quality,
+                    'confirm' => (bool) $quality,
                     'params' => [$quality],
                 ],
                 'crop,w_%d,h_%d' => [
-                    'confirm' => !! $width || !! $height,
+                    'confirm' => (bool) $width || (bool) $height,
                     'params' => [$width, $height],
                 ],
                 'blur,r_50,s_%d' => [
-                    'confirm' => !! $blur,
+                    'confirm' => (bool) $blur,
                     'params' => [$blur],
-                ]
+                ],
             ])->map(function ($value, $key) {
                 if (! $value['confirm']) {
                     return null;
@@ -135,7 +135,7 @@ class AliOss implements FileUrlGeneratorContract
                 return sprintf($key, ...$value['params']);
             })->filter()->implode('/');
 
-            if (!! $process) {
+            if ((bool) $process) {
                 $process = 'image/'.$process;
             }
 
