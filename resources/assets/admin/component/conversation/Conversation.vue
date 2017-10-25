@@ -66,7 +66,7 @@
             <!-- 分页 -->
             <div class="text-center">
               <offset-paginator class="pagination" :total="total" :offset="offset" :limit="15">
-                <template scope="pagination">
+                <template slot-scope="pagination">
                   <li :class="(pagination.disabled ? 'disabled': '') + (pagination.currend ? 'active' : '')">
                     <span v-if="pagination.disabled || pagination.currend">{{ pagination.page }}</span>
                     <router-link v-else :to="offsetPage(pagination.offset)">{{ pagination.page }}</router-link>

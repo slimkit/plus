@@ -114,14 +114,6 @@ const Site = {
           off: false,
         },
         site: {
-          status: true,
-          off_reason: '',
-          app: {
-            status: true,
-          },
-          h5: {
-            status: true,
-          },
           gold: {
             status: true,
           },
@@ -143,7 +135,7 @@ const Site = {
         this.loadding = true;
         request.get(createRequestURI('site/configures'), {
           validateStatus: status => status === 200,
-        }).then(( data = {} ) => {
+        }).then(({ data = {} }) => {
           this.loadding = false;
           this.site = { ...this.site, ...data };
         }).catch(({ response: { data = { message: '加载站点配置失败' } } = {} }) => {
@@ -152,10 +144,6 @@ const Site = {
         });
       },
       updateSiteConfigure () {
-        if (!this.validate()) {
-          this.message.error = '请填写关闭站点的原因';
-          return;
-        }
         $("#submit-btn").button('loading');
         request.put(
           createRequestURI('update/site/configure'),
