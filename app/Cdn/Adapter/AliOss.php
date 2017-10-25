@@ -34,12 +34,12 @@ class AliOss implements FileUrlGeneratorContract
      */
     public function __construct()
     {
-        $this->accessKeyId = config('cdn.generators.AliOss.AccessKeyId');
-        $this->accessKeySecret = config('cdn.generators.AliOss.AccessKeySecret');
-        $this->bucket = config('cdn.generators.AliOss.bucket');
-        $this->endpoint = config('cdn.generators.AliOss.endpoint');
-        $this->ssl = config('cdn.generators.AliOss.ssl', false);
-        $this->public = config('cdn.generators.AliOss.public', true);
+        $this->accessKeyId = config('cdn.generators.alioss.AccessKeyId');
+        $this->accessKeySecret = config('cdn.generators.alioss.AccessKeySecret');
+        $this->bucket = config('cdn.generators.alioss.bucket');
+        $this->endpoint = config('cdn.generators.alioss.endpoint');
+        $this->ssl = config('cdn.generators.alioss.ssl', false);
+        $this->public = config('cdn.generators.alioss.public', true);
     }
 
     /**
@@ -115,7 +115,7 @@ class AliOss implements FileUrlGeneratorContract
             $blur = max(0, intval($extra['blur'] ?? 0));
 
             return [
-                self::OSS_PROCESS => sprintf('image/format,jpg/quality,q_%d/crop,w_%d,h_%d/blur,r_%d,s_%d', $quality, $width, $height, $blur, $blur),
+                self::OSS_PROCESS => sprintf('image/format,jpg/quality,q_%d/crop,w_%d,h_%d/blur,r_50,s_%d', $quality, $width, $height, $blur),
             ];
         }
 
