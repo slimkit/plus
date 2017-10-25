@@ -73,12 +73,14 @@ class AliOss implements FileUrlGeneratorContract
      */
     protected function makeSignURL(string $filename, array $extra): string
     {
-        return $this->makePublicURL($filename, $extra).$this->makeSign(
+        $publicUrl = $this->makePublicURL($filename, $extra);
+        return $publicUrl.$this->makeSign(
             $this->bucket,
             $filename,
             3600, // 获取签字路径，一小时有效期，一小时之内都可以重复使用。
             self::OSS_HTTP_GET, // 获取资源
-            $this->getProcess($filename, $extra)
+            $this->getProcess($filename, $extra),
+            $publicUrl
         );
     }
 
@@ -278,12 +280,12 @@ class AliOss implements FileUrlGeneratorContract
      * @return string
      * @author BS <414606094@qq.com>
      */
-    protected function makeSign(string $bucket, string $filename, int $timeout = 60, string $method = self::OSS_HTTP_GET, array $process)
+    protected function makeSign(string $bucket, string $filename, int $timeout = 60, string $method = self::OSS_HTTP_GET, array $process, string $url)
     {
         $CanonicalizedResource = $bucket.'/'.$filename.'?'.http_build_query($process);
         $expireTime = time() + $timeout;
         $filedata = $this->getDataFromFilename($filename);
-        $unsigndata = $method.'\n'.$filedata['hash'].'\n'.$filedata['mime'].'\n'.$expireTime.$CanonicalizedResource;
+        $unsigndata = $method.'\n'.$filedata['hash'].'\n'.base64_encode(md5($url)).'\n'.$expireTime.$CanonicalizedResource;
 
         $signature = urlencode(base64(hash_hmac('sha1', $unsigndata, $this->accessKeySecret, true)));
 
