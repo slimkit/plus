@@ -59,6 +59,7 @@ class StorageEngine implements FileUrlGeneratorContract
             //
             return $this->makeSignURL($filename, $extra);
         }
+
         return $this->makePublicURL($filename, $extra);
     }
 
@@ -244,9 +245,9 @@ class StorageEngine implements FileUrlGeneratorContract
     /**
      * sign url.
      *
-     * @param string $bucket 
-     * @param string $filename 
-     * @param integer $timeout
+     * @param string $bucket
+     * @param string $filename
+     * @param int $timeout
      * @param string $method
      * @param array $process
      * @return string
