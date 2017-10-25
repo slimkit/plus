@@ -51,6 +51,11 @@
       </div>
     </div>
 
+    <div class="help-block">
+      在使用 <a href="https://aws.amazon.com" target="_blank">AWS S3</a> 之前，你需要使用 Composer 安装相应的支持软件包：
+      <code>league/flysystem-aws-s3-v3 ~1.0</code>
+    </div>
+
   </div>
 </template>
 
