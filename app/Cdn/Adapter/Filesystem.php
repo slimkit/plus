@@ -26,6 +26,13 @@ class Filesystem implements FileUrlGeneratorContract
     protected $files;
 
     /**
+     * The filesystem disk.
+     *
+     * @var string
+     */
+    protected $disk = 'public';
+
+    /**
      * Create the CDN generator.
      *
      * @param \Illuminate\Contracts\Foundation\Application $app
@@ -34,7 +41,9 @@ class Filesystem implements FileUrlGeneratorContract
     public function __construct(ApplicationContract $app, FilesystemFactoryContract $files)
     {
         $this->app = $app;
-        $this->files = $files->disk('public');
+        $this->files = $files->disk(
+            $this->disk = config('cdn.generators.filesystem.disk')
+        );
     }
 
     /**
@@ -265,6 +274,10 @@ class Filesystem implements FileUrlGeneratorContract
      */
     protected function makeUrl(string $filename): string
     {
+        if ($this->disk === 'local') {
+            return sprintf('%s/%s', config('cdn.generators.filesystem.public'), $filename)
+        }
+
         return $this->files->url($filename);
     }
 }

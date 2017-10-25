@@ -1,9 +1,12 @@
 <template>
   <!-- 提交按钮 -->
   <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
+    <div class="col-sm-offset-2 col-sm-4">
       <ui-button type="button" class="btn btn-primary" @click="handleSubmit"></ui-button>
     </div>
+    <span class="col-sm-6 help-block">
+      设置公开磁盘，储存目录为 storage/app/public 如果你切换了磁盘，请手动迁移文件。
+    </span>
   </div>
 </template>
 

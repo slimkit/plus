@@ -47,6 +47,7 @@ class CdnController extends Controller
     {
         $repository->set([
             'cdn.default' => 'qiniu',
+            'cdn.generators.filesystem.disk' => 'public',
             'cdn.generators.qiniu.domain' => $request->input('domain'),
             'cdn.generators.qiniu.sign' => (bool) $request->input('sign'),
             'cdn.generators.qiniu.expires' => (int) $request->input('expires'),

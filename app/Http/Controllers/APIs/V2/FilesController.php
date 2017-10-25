@@ -81,7 +81,7 @@ class FilesController extends Controller
             list($width, $height) = ($imageInfo = @getimagesize($file->getRealPath())) === false ? [null, null] : $imageInfo;
             $path = $dateTime->format('Y/m/d/Hi');
 
-            if (($filename = $file->store($path, 'public')) === false) {
+            if (($filename = $file->store($path, config('cdn.generators.filesystem.disk'))) === false) {
                 abort(500, '上传失败');
             }
 

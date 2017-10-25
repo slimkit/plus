@@ -76,7 +76,9 @@ trait HasAvatar
     public function avatarPath(string $prefix = '')
     {
         $path = $this->makeAvatarPath($prefix);
-        $disk = $this->filesystem()->disk('public');
+        $disk = $this->filesystem()->disk(
+            config('cdn.generators.filesystem.disk')
+        );
 
         foreach ($this->getAvatarExtensions() as $extension) {
             if ($disk->exists($filename = $path.'.'.$extension)) {
@@ -105,7 +107,9 @@ trait HasAvatar
         $path = pathinfo($filename, PATHINFO_DIRNAME);
         $name = pathinfo($filename, PATHINFO_BASENAME).'.'.$extension;
 
-        $disk = $this->filesystem()->disk('public');
+        $disk = $this->filesystem()->disk(
+            config('cdn.generators.filesystem.disk')
+        );
         if ($disk->exists($filename)) {
             $disk->deleteDirectory($filename);
         }
@@ -116,7 +120,7 @@ trait HasAvatar
             return $collect;
         }, [$filename]));
 
-        return $avatar->storeAs($path, $name, 'public');
+        return $avatar->storeAs($path, $name, config('cdn.generators.filesystem.disk'));
     }
 
     /**
