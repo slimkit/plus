@@ -71,8 +71,22 @@ export default {
     bucket: null,
   }),
   methods: {
-    handleSubmit () {
-      console.log(1);
+    handleSubmit ({ stopProcessing }) {
+      const params = {
+        key: this.key,
+        secret: this.secret,
+        region: this.region,
+        bucket: this.bucket,
+      };
+      request.post(createRequestURI('cdn/filesystems/s3'), params, {
+        validateStatus: status => status === 201,
+      }).then(({ data }) => {
+        this.$store.dispatch('alert-open', { type: 'success', message: data });
+        stopProcessing();
+      }).catch(({ response: { data = { message: '提交失败！' } } = {} }) => {
+        this.$store.$dispatch('alert-open', { type: 'danger', message: data });
+        stopProcessing();
+      });
     }
   },
   created () {

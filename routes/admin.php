@@ -87,6 +87,7 @@ Route::group([
         $route->get('/filesystems/local', 'CdnController@getLocalDisk');
         $route->post('/filesystems/local', 'CdnController@setLocalDisk');
         $route->get('/filesystems/s3', 'CdnController@getS3Disk');
+        $route->post('/filesystems/s3', 'CdnController@setS3Disk');
 
         // qiniu Config.
         $route->get('/qiniu', 'CdnController@qiniu');

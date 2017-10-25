@@ -124,4 +124,25 @@ class CdnController extends Controller
     {
         return response()->json(config('filesystems.disks.s3'), 200);
     }
+
+    /**
+     * 设置 S3 配置.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Zhiyi\Plus\Support\Configuration $repository
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function setS3Disk(Request $request, ConfigurationRepository $repository)
+    {
+        $repository->set([
+            'cdn.default' => 'filesystem',
+            'cdn.generators.filesystem.disk' => 's3',
+            'filesystems.disks.s3.key' => $request->input('key'),
+            'filesystems.disks.s3.secret' => $request->input('secret'),
+            'filesystems.disks.s3.region' => $request->input('region'),
+            'filesystems.disks.s3.bucket' => $request->input('bucket'),
+        ]);
+
+        return response()->json(['message' => '设置成功！'], 201);
+    }
 }
