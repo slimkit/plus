@@ -16,5 +16,14 @@ return [
             'sign' => false,
             'expires' => 3600,
         ],
+        'AliOss' => [
+            'driver' => \Zhiyi\Plus\Cdn\Adapter\AliOss::class,
+            'AccessKeyId' => null,
+            'AccessKeySecret' => null,
+            'bucket' => null,
+            'endpoint' => null,
+            'ssl' => false,
+            'public' => true,
+        ],
     ],
 ];
