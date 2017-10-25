@@ -93,7 +93,7 @@ class AliOss implements FileUrlGeneratorContract
     protected function makePublicURL(string $filename, array $extra): string
     {
         return $this->resolveQueryString(
-            sprintf('%s/%s', $this->getBaseURI($this->endpoint), $filename),
+            sprintf('%s/%s', $this->getBaseURI(), $filename),
             $this->getProcess($filename, $extra)
         );
     }
@@ -114,8 +114,33 @@ class AliOss implements FileUrlGeneratorContract
             $quality = min(100, max(0, intval($extra['quality'] ?? 0)));
             $blur = max(0, intval($extra['blur'] ?? 0));
 
+            $process = collect([
+                'quality,q_%d' => [
+                    'confirm' => !! $quality,
+                    'params' => [$quality],
+                ],
+                'crop,w_%d,h_%d' => [
+                    'confirm' => !! $width || !! $height,
+                    'params' => [$width, $height],
+                ],
+                'blur,r_50,s_%d' => [
+                    'confirm' => !! $blur,
+                    'params' => [$blur],
+                ]
+            ])->map(function ($value, $key) {
+                if (! $value['confirm']) {
+                    return null;
+                }
+
+                return sprintf($key, ...$value['params']);
+            })->filter()->implode('/');
+
+            if (!! $process) {
+                $process = 'image/'.$process;
+            }
+
             return [
-                self::OSS_PROCESS => sprintf('image/format,jpg/quality,q_%d/crop,w_%d,h_%d/blur,r_50,s_%d', $quality, $width, $height, $blur),
+                self::OSS_PROCESS => $process,
             ];
         }
 
