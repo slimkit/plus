@@ -113,4 +113,15 @@ class CdnController extends Controller
 
         return response()->json(['message' => '设置成功！'], 201);
     }
+
+    /**
+     * 获取 S3 Disk 配置.
+     *
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function getS3Disk()
+    {
+        return response()->json(config('filesystems.disks.s3'), 200);
+    }
 }

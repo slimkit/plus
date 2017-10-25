@@ -60,6 +60,7 @@
 </template>
 
 <script>
+import request, { createRequestURI } from '../../../../util/request';
 export default {
   name: 'module-cdn-filesystem-s3',
   data: () => ({
@@ -73,6 +74,20 @@ export default {
     handleSubmit () {
       console.log(1);
     }
-  }
+  },
+  created () {
+    this.loadding = true;
+    request.get(createRequestURI('cdn/filesystems/s3'), {
+      validateStatus: status => status === 200,
+    }).then(({ data: { key, secret, region, bucket } }) => {
+      this.loadding = false;
+      this.key = key;
+      this.secret = secret;
+      this.region = region;
+      this.bucket = bucket;
+    }).catch(({ response: { data = { message: '加载失败，请刷新重试！' } } = {} }) => {
+      this.$store.dispatch('alert-open', { type: 'danger', message: data });
+    });
+  },
 };
 </script>
