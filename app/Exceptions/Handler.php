@@ -4,7 +4,6 @@ namespace Zhiyi\Plus\Exceptions;
 
 use Exception;
 use Tymon\JWTAuth\Exceptions\JWTException;
-
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
