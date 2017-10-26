@@ -156,11 +156,11 @@ class CdnController extends Controller
     {
         return response()->json([
             'bucket' => config('cdn.generators.alioss.bucket'),
-            'endpoint' => (bool) config('cdn.generators.alioss.endpoint'),
+            'endpoint' => config('cdn.generators.alioss.endpoint'),
             'AccessKeyId' => config('cdn.generators.alioss.AccessKeyId'),
             'AccessKeySecret' => config('cdn.generators.alioss.AccessKeySecret'),
-            'ssl' => config('cdn.generators.alioss.ssl'),
-            'isPublic' => config('cdn.generators.alioss.public'),
+            'ssl' => (bool) config('cdn.generators.alioss.ssl'),
+            'isPublic' => (bool) config('cdn.generators.alioss.public'),
             'expires' => (int) config('cdn.generators.alioss.expires'),
         ], 200);
     }
@@ -178,11 +178,11 @@ class CdnController extends Controller
             'cdn.default' => 'alioss',
             'cdn.generators.filesystem.disk' => 'public',
             'cdn.generators.alioss.bucket' => $request->input('bucket'),
-            'cdn.generators.alioss.endpoint' => (bool) $request->input('endpoint'),
+            'cdn.generators.alioss.endpoint' => $request->input('endpoint'),
             'cdn.generators.alioss.AccessKeyId' => $request->input('AccessKeyId'),
             'cdn.generators.alioss.AccessKeySecret' => $request->input('AccessKeySecret'),
-            'cdn.generators.alioss.ssl' => $request->input('ssl'),
-            'cdn.generators.alioss.public' => $request->input('isPublic'),
+            'cdn.generators.alioss.ssl' => (bool) $request->input('ssl'),
+            'cdn.generators.alioss.public' => (bool) $request->input('isPublic'),
             'cdn.generators.alioss.expires' => (int) $request->input('expires'),
         ]);
 
