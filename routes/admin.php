@@ -92,6 +92,10 @@ Route::group([
         // qiniu Config.
         $route->get('/qiniu', 'CdnController@qiniu');
         $route->post('/qiniu', 'CdnController@setQiniu');
+
+        // alioss Config.
+        $route->get('/alioss', 'CdnController@alioss');
+        $route->post('/alioss', 'CdnController@setAlioss');
     });
 });
 

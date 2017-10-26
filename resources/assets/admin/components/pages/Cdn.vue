@@ -22,6 +22,7 @@
         </div>
         <module-cdn-filesystem v-else-if="selecetd === 'filesystem'" :handle-select="handleSelect"></module-cdn-filesystem>
         <module-cdn-qiniu v-else-if="selecetd === 'qiniu'" :handle-select="handleSelect"></module-cdn-qiniu>
+        <module-cdn-alioss v-else-if="selecetd === 'alioss'" :handle-select="handleSelect"></module-cdn-alioss>
       </div>
 
     </div>

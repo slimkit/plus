@@ -6,6 +6,7 @@
       <select :value="value" class="form-control" @input="handle">
         <option value="filesystem">文件系统</option>
         <option value="qiniu">七牛</option>
+        <option value="alioss">阿里云 OSS</option>
       </select>
     </div>
     <span class="col-sm-6 help-block">选择你的 CDN 平台，如果选择非文件系统，则所有文件都将储存在「本地公开」磁盘上。</span>
