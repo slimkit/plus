@@ -81,8 +81,7 @@ class AliOss implements FileUrlGeneratorContract
             $filename,
             $this->expires, // 授权过期时间。
             self::OSS_HTTP_GET, // 获取资源
-            $this->getProcess($filename, $extra),
-            $publicUrl
+            $this->getProcess($filename, $extra)
         );
     }
 
@@ -282,18 +281,23 @@ class AliOss implements FileUrlGeneratorContract
      * @return string
      * @author BS <414606094@qq.com>
      */
-    protected function makeSign(string $bucket, string $filename, int $timeout = 60, string $method = self::OSS_HTTP_GET, array $process, string $url)
+    protected function makeSign(string $bucket, string $filename, int $timeout = 60, string $method = self::OSS_HTTP_GET, array $process)
     {
         $params = collect($process)->map(function ($value, $key) {
             return $key.'='.$value;
         })->implode('&');
 
-        $CanonicalizedResource = $bucket.'/'.$filename.'?'.$params;
+        $CanonicalizedResource = $bucket.'/'.$filename;
+        if ($params) {
+            $CanonicalizedResource = $CanonicalizedResource.'?'.$params;
+        }
         $expireTime = time() + $timeout;
         $unsigndata = $method."\n\n\n".$expireTime."\n/".$CanonicalizedResource;
 
         $signature = urlencode(base64_encode(hash_hmac('sha1', $unsigndata, $this->accessKeySecret, true)));
 
-        return sprintf('&OSSAccessKeyId=%s&Expires=%s&Signature=%s', $this->accessKeyId, $expireTime, $signature);
+        $stringToSign = $params ? '&OSSAccessKeyId=%s&Expires=%s&Signature=%s' : '?OSSAccessKeyId=%s&Expires=%s&Signature=%s';
+
+        return sprintf($stringToSign, $this->accessKeyId, $expireTime, $signature);
     }
 }
