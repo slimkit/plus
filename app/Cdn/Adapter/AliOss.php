@@ -290,28 +290,10 @@ class AliOss implements FileUrlGeneratorContract
 
         $CanonicalizedResource = $bucket.'/'.$filename.'?'.$params;
         $expireTime = time() + $timeout;
-        $filedata = $this->getDataFromFilename($filename);
         $unsigndata = $method."\n\n\n".$expireTime."\n/".$CanonicalizedResource;
 
         $signature = urlencode(base64_encode(hash_hmac('sha1', $unsigndata, $this->accessKeySecret, true)));
 
         return sprintf('&OSSAccessKeyId=%s&Expires=%s&Signature=%s', $this->accessKeyId, $expireTime, $signature);
-    }
-
-    /**
-     * get data from filename.
-     *
-     * @param $filename
-     * @return array
-     * @author BS <414606094@qq.com>
-     */
-    protected function getDataFromFilename(string $filename)
-    {
-        $fileModel = new File();
-        if ($file = $fileModel->where('filename', $filename)->first()) {
-            return $file;
-        }
-
-        throw new \InvalidArgumentException('The file has no record in database.');
     }
 }
