@@ -86,12 +86,12 @@ class UserController extends Controller
         }
 
         // 注册时间
-        $builder->when(boolval($registStartDate), function ($query) use($registStartDate) {
+        $builder->when(boolval($registStartDate), function ($query) use ($registStartDate) {
             $query->where('created_at', '>=', Carbon::parse($registStartDate)->startOfDay()->toDateTimeString());
         });
 
-        $builder->when(boolval($registEndDate), function ($query) use($registEndDate) {
-             $query->where('created_at', '<=', Carbon::parse($registEndDate)->endOfDay()->toDateTimeString());
+        $builder->when(boolval($registEndDate), function ($query) use ($registEndDate) {
+            $query->where('created_at', '<=', Carbon::parse($registEndDate)->endOfDay()->toDateTimeString());
         });
 
         // build sort.
@@ -103,7 +103,9 @@ class UserController extends Controller
 
         $follow && $builder->whereHas('famous', function ($query) use ($follow) {
             // 检索被关注
-            if ($follow == 1) $query->where('type', 'like', 'followed');
+            if ($follow == 1) {
+                $query->where('type', 'like', 'followed');
+            }
         });
 
         $pages = $builder->paginate($perPage);
