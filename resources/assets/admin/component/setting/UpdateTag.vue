@@ -9,8 +9,8 @@
         <div class="row" v-show="!loadding">
           <div class="col-md-11 col-md-offset-1">
             <div class="form-group">
-              <label for="exampleInputEmail1" class="control-label col-md-1">标签名字</label>
-              <div class="col-md-6">
+              <label for="exampleInputEmail1" class="control-label col-md-2">标签名字</label>
+              <div class="col-md-5">
                 <input v-model="name" type="text" class="form-control" id="exampleInputEmail1" placeholder="标签名称">
               </div>
               <div class="col-md-5">
@@ -18,8 +18,8 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="exampleInputEmail1" class="control-label col-md-1">标签权重</label>
-              <div class="col-md-6">
+              <label for="exampleInputEmail1" class="control-label col-md-2">标签权重</label>
+              <div class="col-md-5">
                 <input v-model="weight" type="text" class="form-control" placeholder="标签权重">
               </div>
               <div class="col-md-5">
@@ -27,8 +27,8 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="exampleInputPassword1" class="control-label col-md-1">标签分类</label>
-              <div  class="btn-toolbar col-md-6" role="group" aria-label="cate">
+              <label for="exampleInputPassword1" class="control-label col-md-2">标签分类</label>
+              <div  class="btn-toolbar col-md-5" role="group" aria-label="cate">
                 <button
                   type="button" 
                   @click="setCategory(cate.id)" 
@@ -47,8 +47,8 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="" class="control-label col-md-1"></label>
-              <div class="col-md-6">
+              <label for="" class="control-label col-md-2"></label>
+              <div class="col-md-5">
                 <button type="submit" @click="send()" id="myButton" data-complete-text="添加成功" data-loading-text="提交中..." class="btn btn-primary" autocomplete="off">
                  确认
                 </button>
@@ -64,6 +64,11 @@
     </div>
   </div>
 </template>
+<style scoped lang="scss">
+  .btn-group {
+    margin-bottom: 8px;
+  }
+</style>
 <script>
   import request, { createRequestURI } from '../../util/request';
   import plusMessageBundle from 'plus-message-bundle';
