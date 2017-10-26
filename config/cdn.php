@@ -1,7 +1,32 @@
 <?php
 
 return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default CDN Generator
+    |--------------------------------------------------------------------------
+    |
+    | This option controls the default CDN driver, and you can select any of 
+    | the supported drivers.
+    |
+    | Supported: "filesystem", "qiniu", "alioss"
+    |
+    */
+
     'default' => 'filesystem',
+
+    /*
+    |--------------------------------------------------------------------------
+    | CDN generators
+    |--------------------------------------------------------------------------
+    |
+    | Here, you can define all supported driver configurations, and all 
+    | configurations can be configured arbitrarily, but the only thing to note 
+    | is that the "driver" entry must exist.
+    |
+    */
+
     'generators' => [
         'filesystem' => [
             'driver' => \Zhiyi\Plus\Cdn\Adapter\Filesystem::class,
