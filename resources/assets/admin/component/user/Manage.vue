@@ -42,6 +42,16 @@
             </div>
           </div>
           <div class="form-group">
+            <label for="search-input-email" class="col-sm-2 control-label">注册时间</label>
+            <div class="col-sm-8">
+              <div class="input-group">
+                  <input type="date" class="form-control" v-model="regist_start_date">
+                  <div class="input-group-addon">-</div>
+                  <input type="date" class="form-control" v-model="regist_end_date">
+              </div>
+            </div>  
+          </div>
+          <div class="form-group">
             <label for="search-input-email" class="col-sm-2 control-label">邮箱</label>
             <div class="col-sm-8">
               <input v-model="email" type="text" class="form-control" id="search-input-email" placeholder="请输入搜索邮箱地址，支持模糊搜索">
@@ -177,12 +187,38 @@ const ManageComponent = {
     roles: [],
     deleteIds: [],
     error: null,
-    follow: 0
+    follow: 0,
+    regist_start_date: '',
+    regist_end_date: '',
   }),
   computed: {
     queryParams () {
-      const { userId, sort, email, name, phone, role, perPage, page, follow } = this;
-      return { userId, sort, email, name, phone, role, perPage, page, follow };
+      const { 
+        userId, 
+        sort, 
+        email, 
+        name, 
+        phone, 
+        role, 
+        perPage, 
+        page, 
+        follow, 
+        regist_start_date, 
+        regist_end_date,
+      } = this;
+      return { 
+        userId, 
+        sort, 
+        email, 
+        name, 
+        phone, 
+        role, 
+        perPage, 
+        page, 
+        follow,
+        regist_start_date,
+        regist_end_date,
+      };
     },
     prevQuery () {
       const page = parseInt(this.page);
@@ -221,6 +257,8 @@ const ManageComponent = {
         perPage = 20,
         page = 1,
         follow = 0,
+        regist_start_date = '',
+        regist_end_date = '',
       } = to.query;
 
       this.email = email;
@@ -232,6 +270,8 @@ const ManageComponent = {
       this.lastPage = parseInt(lastPage);
       this.perPage = parseInt(perPage);
       this.page = parseInt(page);
+      this.regist_start_date = regist_start_date;
+      this.regist_end_date = regist_end_date;
 
       this.getUsers();
     }

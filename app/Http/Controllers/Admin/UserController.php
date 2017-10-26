@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use Zhiyi\Plus\Models\Role;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
@@ -39,6 +40,8 @@ class UserController extends Controller
         $perPage = $request->query('perPage', 20);
         $showRole = $request->has('show_role');
         $follow = $request->query('follow', 0);
+        $registStartDate = $request->query('regist_start_date');
+        $registEndDate = $request->query('regist_end_date');
 
         $builder = with(new User())->setHidden([])->newQuery();
 
@@ -82,6 +85,15 @@ class UserController extends Controller
             }
         }
 
+        // 注册时间
+        $builder->when(boolval($registStartDate), function ($query) use($registStartDate) {
+            $query->where('created_at', '>=', Carbon::parse($registStartDate)->startOfDay()->toDateTimeString());
+        });
+
+        $builder->when(boolval($registEndDate), function ($query) use($registEndDate) {
+             $query->where('created_at', '<=', Carbon::parse($registEndDate)->endOfDay()->toDateTimeString());
+        });
+
         // build sort.
         $builder->orderBy('id', ($sort === 'down' ? 'desc' : 'asc'));
 
@@ -90,7 +102,8 @@ class UserController extends Controller
         });
 
         $follow && $builder->whereHas('famous', function ($query) use ($follow) {
-            $query->where('type', 'like', ($follow == 2 ? 'each' : 'followed'));
+            // 检索被关注
+            if ($follow == 1) $query->where('type', 'like', 'followed');
         });
 
         $pages = $builder->paginate($perPage);
