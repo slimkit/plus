@@ -35,6 +35,19 @@
           添加
         </router-link>
       </div>
+      <div class="panel-heading">
+        <div class="form-inline">
+          <div class="form-group">
+            <label for="">搜索：</label>
+            <input type="text" class="form-control" placeholder="标签名检索" v-model="keyword">
+          </div>
+          <div class="form-group">
+              <router-link class="btn btn-default" tag="button" :to="{ path: '/setting/tags', query: searchQuery }">
+                搜索
+              </router-link>
+          </div>
+        </div>
+      </div>
       <div class="panel-body">
         <table class="table table-striped">
           <thead>
@@ -116,6 +129,7 @@
       per_page: 20,
       loadding: true,
       cate: 0,
+      keyword: '',
       message: {
         error: null,
         success: null,
@@ -190,8 +204,8 @@
         return !(this.tags.length > 0);
       },
       queryParams () {
-        const { per_page, page, cate } = this;
-        return { per_page, page, cate };
+        const { per_page, page, cate, keyword } = this;
+        return { per_page, page, cate, keyword };
       },
       prevQuery () {
         const page = parseInt(this.page);
@@ -209,6 +223,11 @@
           last_page: last_page,
           page: page < last_page ? page + 1 : last_page
         };
+      },
+      searchQuery () {
+        this.page = 1;
+        const { per_page, page, cate, keyword } = this;
+        return { per_page, page, cate, keyword };
       }
     },
 
@@ -217,13 +236,15 @@
         last_page = 1,
         page = 1,
         per_page = 20,
-        cate = 0
+        cate = 0,
+        keyword = '',
       } = this.$route.query;
       // set state.
       this.last_page = last_page;
       this.current_page = page;
       this.per_page = per_page;
-      this.cate = cate
+      this.cate = cate;
+      this.keyword = keyword;
       this.getTags();
     }
   }

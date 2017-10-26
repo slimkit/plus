@@ -66,7 +66,7 @@ const HomeComponent = {
       reward_types: [
         { name: '', alias: '全部' },
         { name: 'feeds', alias: '动态打赏' },
-        { name: 'news', alias: '咨讯打赏' },
+        { name: 'news', alias: '资讯打赏' },
         { name: 'users', alias: '用户打赏' },
         { name: 'question-answers', alias: '问答打赏' }
       ],

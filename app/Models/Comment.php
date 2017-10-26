@@ -27,4 +27,14 @@ class Comment extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function target()
+    {
+        return $this->belongsTo(User::class, 'target_user', 'id');
+    }
+
+    public function reply()
+    {
+        return $this->belongsTo(User::class, 'reply_user', 'id');
+    }
 }

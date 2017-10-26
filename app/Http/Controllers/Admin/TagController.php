@@ -22,10 +22,14 @@ class TagController extends Controller
         $page = $request->input('page', 1);
         $limit = $request->input('per_page', 20);
         $cate = $request->input('cate', 0);
+        $keyword = $request->input('keyword');
 
         $tags = $tag_model
             ->when($cate, function ($query) use ($cate) {
                 return $query->where('tag_category_id', '=', $cate);
+            })
+            ->when($keyword, function ($query) use ($keyword) {
+                return $query->where('name', 'like', sprintf('%%%s%%', $keyword));
             })
             ->orderBy('weight', 'desc')
             ->with('category')
