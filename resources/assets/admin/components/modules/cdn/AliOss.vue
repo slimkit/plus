@@ -134,6 +134,7 @@ export default {
     }).then(({ data: { bucket, endpoint, expires, AccessKeyId, AccessKeySecret, ssl, isPublic } }) => {
       this.loading = false;
       this.bucket = bucket;
+      this.endpoint = endpoint;
       this.ssl = !! ssl;
       this.isPublic = !! isPublic;
       this.AccessKeyId = AccessKeyId;
