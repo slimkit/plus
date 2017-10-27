@@ -22,14 +22,7 @@ class AreasTableSeeder extends Seeder
         ]);
 
         $gbs = array_keys($this->datas());
-
-        $progressBar = new ProgressBar($output, count($gbs));
-
-        if ('\\' !== DIRECTORY_SEPARATOR) {
-            $progressBar->setEmptyBarCharacter('░'); // light shade character \u2591
-            $progressBar->setProgressCharacter('');
-            $progressBar->setBarCharacter('▓'); // dark shade character \u2593
-        }
+        $output->progressStart(count($gbs));
 
         foreach ($gbs as $gb) {
             $location = $this->get($gb);
@@ -48,7 +41,7 @@ class AreasTableSeeder extends Seeder
                         'name' => $province_name,
                         'pid'  => $cn->id,
                     ]);
-                    $progressBar->advance();
+                    $output->progressAdvance(1);
                 }
             }
 
@@ -62,7 +55,7 @@ class AreasTableSeeder extends Seeder
                         'name' => $city_name,
                         'pid'  => $province->id,
                     ]);
-                    $progressBar->advance();
+                    $output->progressAdvance(1);
                 }
             }
 
@@ -75,12 +68,12 @@ class AreasTableSeeder extends Seeder
                         'name' => $area_name,
                         'pid'  => $city->id,
                     ]);
-                    $progressBar->advance();
+                    $output->progressAdvance(1);
                 }
             }
         }
 
-        $progressBar->finish();
+        $output->progressFinish();
         $output->newLine();
     }
 
