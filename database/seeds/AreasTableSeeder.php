@@ -2,7 +2,6 @@
 
 use Zhiyi\Plus\Models\Area;
 use Illuminate\Database\Seeder;
-use Symfony\Component\Console\Helper\ProgressBar;
 
 class AreasTableSeeder extends Seeder
 {
