@@ -53,7 +53,7 @@ class CertificationController extends Controller
 
     /**
      * 认证统计.
-     * 
+     *
      * @return array
      */
     protected function certificationCount()
@@ -65,17 +65,17 @@ class CertificationController extends Controller
                 COUNT(CASE WHEN status=2 THEN 1 ELSE NULL END ) AS `驳回用户：` 
             FROM `certifications`'
         );
+
         return $counts;
     }
 
     protected function transformCertificationCountData($data)
     {
         if ($data) {
-
         } else {
-
         }
     }
+
     /**
      * certifiction pass.
      *
