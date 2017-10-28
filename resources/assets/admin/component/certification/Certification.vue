@@ -42,7 +42,6 @@
             </div>
             <div class="panel-heading">
               <b>统计：</b>
-              <span class="text-primary">全部认证用户：{{ total }}</span>
               <span class="text-primary" v-for="(count, index) in counts">{{ `${index}${count}` }} </span>  
             </div>
             <div class="panel-body">
