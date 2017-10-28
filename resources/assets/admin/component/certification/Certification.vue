@@ -40,6 +40,11 @@
                     </div>
                 </div>
             </div>
+            <div class="panel-heading">
+              <b>统计：</b>
+              <span class="text-primary">全部认证用户：{{ total }}</span>
+              <span class="text-primary" v-for="(count, index) in counts">{{ `${index}${count}` }} </span>  
+            </div>
             <div class="panel-body">
                 <!-- 认证列表 -->
                 <table class="table table-striped">
@@ -166,6 +171,7 @@ const certificationComponent = {
     data: () => ({
         loadding: true,
         total: 0,
+        counts: [],
         categories: [],
         certifications: [],
         attachmentPath: '/api/v2/files/',
@@ -244,10 +250,11 @@ const certificationComponent = {
               validateStatus: status => status === 200,
               params: { ...query, limit: 15 },
             }
-          ).then(({ data = [], headers: { 'x-certifications-total': total } }) => {
+          ).then(({ data, headers: { 'x-certifications-total': total } }) => {
             this.loadding = false;
             this.total = parseInt(total);
-            this.certifications = data;
+            this.certifications = data.items;
+            this.counts = (data.counts)[0];
           }).catch(({ response: { data: { errors = ['加载失败'] } = {} } = {} }) => {
             this.loadding = false;
             let Message = new plusMessageBundle(errors);

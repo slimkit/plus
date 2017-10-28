@@ -45,9 +45,37 @@ class CertificationController extends Controller
         ->offset($offset)
         ->get();
 
-        return response()->json($items, 200, ['x-certifications-total' => $total]);
+        $data['items'] = $items;
+        $data['counts'] = $this->certificationCount();
+
+        return response()->json($data, 200, ['x-certifications-total' => $total]);
     }
 
+    /**
+     * 认证统计.
+     * 
+     * @return array
+     */
+    protected function certificationCount()
+    {
+        $counts = \DB::select('
+            SELECT 
+                COUNT(CASE WHEN status=0 THEN 1 ELSE NULL END ) AS `待审核用户：`,
+                COUNT(CASE WHEN status=1 THEN 1 ELSE NULL END ) AS `已认证用户：`,
+                COUNT(CASE WHEN status=2 THEN 1 ELSE NULL END ) AS `驳回用户：` 
+            FROM `certifications`'
+        );
+        return $counts;
+    }
+
+    protected function transformCertificationCountData($data)
+    {
+        if ($data) {
+
+        } else {
+
+        }
+    }
     /**
      * certifiction pass.
      *
