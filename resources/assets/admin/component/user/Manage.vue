@@ -110,6 +110,7 @@
               <th>用户名</th>
               <th>邮箱</th>
               <th>手机号码</th>
+              <th>地理位置</th>
               <th>注册时间</th>
               <th>操作</th>
             </tr>
@@ -121,6 +122,7 @@
               <td>{{ user.name }}</td>
               <td>{{ user.email }}</td>
               <td>{{ user.phone }}</td>
+              <td>{{ user.location }}</td>
               <td>{{ user.created_at | localDate }}</td>
               <td>
                 <!-- 编辑 -->
