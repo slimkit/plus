@@ -42,6 +42,7 @@ class UserController extends Controller
         $follow = $request->query('follow', 0);
         $registStartDate = $request->query('regist_start_date');
         $registEndDate = $request->query('regist_end_date');
+        $location = $request->query('location');
 
         $builder = with(new User())->setHidden([])->newQuery();
 
@@ -79,6 +80,11 @@ class UserController extends Controller
                 'value' => sprintf('%%%s%%', $phone),
                 'condition' => boolval($phone),
             ],
+            'location' => [
+                'operator' => 'like',
+                'value' => sprintf('%%%s%%', $location),
+                'condition' => boolval($location),
+            ]
         ] as $key => $data) {
             if ($data['condition']) {
                 $builder->where($key, $data['operator'], $data['value']);

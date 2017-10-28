@@ -52,6 +52,10 @@
             </div>  
           </div>
           <div class="form-group">
+            <label for="search-input-email" class="col-sm-2 control-label">区域</label>
+            <area-linkage v-model='location'></area-linkage>
+          </div>
+          <div class="form-group">
             <label for="search-input-email" class="col-sm-2 control-label">邮箱</label>
             <div class="col-sm-8">
               <input v-model="email" type="text" class="form-control" id="search-input-email" placeholder="请输入搜索邮箱地址，支持模糊搜索">
@@ -158,10 +162,15 @@
 </template>
 
 <script>
-import request, { createRequestURI } from '../../util/request';
 import lodash from 'lodash';
+import { mapGetters } from 'vuex';
+import request, { createRequestURI } from '../../util/request';
+import AreaLinkage from './AreaLinkage';
 
 const ManageComponent = {
+  components: {
+    'area-linkage': AreaLinkage
+  },
   /**
    * 定义当前组件状态数据
    *
@@ -190,6 +199,7 @@ const ManageComponent = {
     follow: 0,
     regist_start_date: '',
     regist_end_date: '',
+    location: '',
   }),
   computed: {
     queryParams () {
@@ -205,6 +215,7 @@ const ManageComponent = {
         follow, 
         regist_start_date, 
         regist_end_date,
+        location,
       } = this;
       return { 
         userId, 
@@ -218,6 +229,7 @@ const ManageComponent = {
         follow,
         regist_start_date,
         regist_end_date,
+        location,
       };
     },
     prevQuery () {
@@ -242,7 +254,7 @@ const ManageComponent = {
         ...this.queryParams,
         page: 1
       };
-    }
+    },
   },
   watch: {
     '$route' (to) {
@@ -259,6 +271,7 @@ const ManageComponent = {
         follow = 0,
         regist_start_date = '',
         regist_end_date = '',
+        location = '',
       } = to.query;
 
       this.email = email;
@@ -272,6 +285,7 @@ const ManageComponent = {
       this.page = parseInt(page);
       this.regist_start_date = regist_start_date;
       this.regist_end_date = regist_end_date;
+      this.location = location;
 
       this.getUsers();
     }
