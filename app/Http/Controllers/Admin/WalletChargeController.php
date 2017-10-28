@@ -22,6 +22,7 @@ class WalletChargeController extends Controller
     {
         $query = $this->query();
         $this->setUserToBuilder($query, $request);
+        $this->setUserNameTobuilder($query, $request);
         $this->setAccountToBuilder($query, $request);
         $this->setWhere($query, $request);
 
@@ -97,6 +98,25 @@ class WalletChargeController extends Controller
         $query->where('user_id', $user);
     }
 
+    /**
+     * Setting user name to builder where.
+     * 
+     * @param Builder &$query
+     * @param Request $request
+     */
+    protected function setUserNameTobuilder(Builder &$query, Request $request)
+    {
+        $name = $request->query('user_name', null);
+
+        if ($name === null) {
+            return;
+        }
+
+        $query->whereHas('user', function ($query) use ($name) {
+            $query->where('name', 'like', sprintf('%%%s%%', $name));
+        });
+    }
+    
     /**
      * Get Query.
      *

@@ -15,7 +15,13 @@
           </div>
           <span class="help-block col-sm-6">输入交易账户的用户 ID</span>
         </div>
-
+        <div class="form-group">
+          <label class="col-sm-2 control-label">用户名</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" v-model="search.user_name">
+          </div>
+          <span class="help-block col-sm-6">输入交易账户的用户名，支持模糊匹配</span>
+        </div>
         <!-- 交易账户 -->
         <div class="form-group">
           <label class="col-sm-2 control-label">交易账户</label>
@@ -211,6 +217,7 @@ export default {
     // Search state.
     search: {
       user: null, // 搜索用户
+      user_name: null, // 用户名
       account: null, // 搜索账户
       chargeId: null, // Ping++ 凭据ID
       transactionNo: null, // 第三方平台订单ID
