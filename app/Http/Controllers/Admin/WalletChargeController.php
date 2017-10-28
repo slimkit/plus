@@ -100,7 +100,7 @@ class WalletChargeController extends Controller
 
     /**
      * Setting user name to builder where.
-     * 
+     *
      * @param Builder &$query
      * @param Request $request
      */
@@ -116,7 +116,7 @@ class WalletChargeController extends Controller
             $query->where('name', 'like', sprintf('%%%s%%', $name));
         });
     }
-    
+
     /**
      * Get Query.
      *
