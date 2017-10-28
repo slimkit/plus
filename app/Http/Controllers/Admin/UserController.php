@@ -84,7 +84,7 @@ class UserController extends Controller
                 'operator' => 'like',
                 'value' => sprintf('%%%s%%', $location),
                 'condition' => boolval($location),
-            ]
+            ],
         ] as $key => $data) {
             if ($data['condition']) {
                 $builder->where($key, $data['operator'], $data['value']);
