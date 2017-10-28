@@ -109,7 +109,7 @@
     <div class="navbar">
 
         @if (Auth::guest())
-            <a class="button" href="{{ route('login') }}">登陆</a>
+            <a class="button" href="{{ route('login') }}">登录</a>
         @else
             <div class="user">
                 @if (Auth::user()->avatar)
