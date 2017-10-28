@@ -48,7 +48,7 @@
                         <tr v-for="conversation in conversations">
                             <td>{{ conversation.id }}</td>
                             <td>{{ conversionTypeDisplay(conversation.type) }}</td>
-                            <td>{{ conversation.user ？ conversation.user.name : '' }}</td>
+                            <td>{{ conversation.user ? conversation.user.name : '' }}</td>
                             <td>{{ conversation.target ? conversation.target.name : '' }}</td>
                             <td>{{ conversation.content }}</td>
                             <td>{{ conversation.created_at | localDate }}</td>
