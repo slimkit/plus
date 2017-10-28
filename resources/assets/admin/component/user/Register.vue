@@ -52,6 +52,9 @@
 								    <label class="radio-inline">
 								    	<input type="radio" name="method" checked="checked" value="all" v-model="method" /> 手机或邮箱
 								    </label>
+								    <label class="radio-inline">
+								    	<input type="radio" name="method" disabled="disabled" value="third" v-model="method" /> 第三方
+								    </label>
 								</div>
 							</div>
 					    </div>
