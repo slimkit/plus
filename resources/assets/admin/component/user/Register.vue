@@ -44,13 +44,13 @@
 				      		<div class="input-group">
 				      			<div class="">
 								    <label class="radio-inline">
-								    	<input type="radio" name="method" disabled="disabled" value="mobile-only" v-model="method" /> 仅手机
+								    	<input type="radio" name="method" value="mobile-only" v-model="method" /> 仅手机
 								    </label>
 										<label class="radio-inline">
-								    	<input type="radio" name="method" disabled="disabled" value="mail-only" v-model="method" /> 仅邮箱
+								    	<input type="radio" name="method" value="mail-only" v-model="method" /> 仅邮箱
 								    </label>
 								    <label class="radio-inline">
-								    	<input type="radio" name="method" checked="checked" value="all" v-model="method" /> 手机或邮箱或第三方
+								    	<input type="radio" name="method" value="all" v-model="method" /> 手机或邮箱或第三方
 								    </label>
 								</div>
 							</div>
