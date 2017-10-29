@@ -53,7 +53,7 @@
                         </div>
                      </div>
                      <span class="col-md-5 help-block" id="phone-help-block">
-                      必填，用户ID
+                      必填，用户ID。
                      </span>
                     </div>
                     <div class="form-group">

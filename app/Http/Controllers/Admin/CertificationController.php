@@ -288,6 +288,11 @@ class CertificationController extends Controller
             return response()->json(['message' => ['用户ID不存在']], 422);
         }
 
+        $count = Certification::where('user_id', $userId)->count();
+        if ($count) {
+            return response()->json(['message' => ['该用户已提交过认证']], 422);
+        }
+
         $type = $request->input('type');
         $data = $request->only(['name', 'phone', 'number', 'desc']);
         $files = $this->findNotWithFileModels($request, $fileWithModel);
@@ -330,7 +335,6 @@ class CertificationController extends Controller
 
         $condition = sprintf('%%%s%%', $keyword);
         $users = $keyword ? User::where('name', 'like', $condition)
-        ->whereDoesntHave('certification')
         ->get() : [];
 
         return response()->json($users)->setStatusCode(200);
