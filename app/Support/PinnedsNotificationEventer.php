@@ -14,8 +14,7 @@ class PinnedsNotificationEventer
         'name' => '',
         'namespace' => '',
         'owner_prefix' => '',
-        'audit_prefix' => '',
-        'unaudited_value' => '',
+        'wherecolumn' => '',
     ];
 
     protected $prefix = 'pinneds_notifications';

@@ -51,7 +51,7 @@ class UserUnreadCountController extends Controller
         $pinneds = $eventer->dispatch()->mapWithKeys(function ($pinnedModels) use ($user) {
             $model = new $pinnedModels['namespace']();
 
-            $pinneds[$pinnedModels['name']] = $model->select(DB::raw('max(created_at) as time, count(*) as count'))->where($pinnedModels['owner_prefix'], $user->id)->where($pinnedModels['audit_prefix'], $pinnedModels['unaudited_value'])->first()->toArray();
+            $pinneds[$pinnedModels['name']] = $model->select(DB::raw('max(created_at) as time, count(*) as count'))->where($pinnedModels['owner_prefix'], $user->id)->where($pinnedModels['wherecolumn'])->first()->toArray();
 
             return $pinneds;
         });
