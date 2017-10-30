@@ -27,7 +27,7 @@ class Wallets extends Migration
 
             // 余额，单位 分 (避免小数计算偏移)
             $table
-                ->integer('balance')
+                ->bigInteger('balance')
                 ->unsigned()
                 ->comment('钱包余额');
             $table->timestamps(); // 自动维护时间

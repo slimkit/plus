@@ -46,7 +46,7 @@ class WalletCharges extends Migration
                 ->comment('类型：1 - 增加，0 - 减少');
 
             $table
-                ->integer('amount')
+                ->bigInteger('amount')
                 ->unsigned()
                 ->comment('总额');
 

@@ -24,7 +24,7 @@ class WalletCashes extends Migration
                 ->comment('提现用户');
 
             $table
-                ->integer('value')
+                ->bigInteger('value')
                 ->unsigned()
                 ->comment('需要提现的金额');
 

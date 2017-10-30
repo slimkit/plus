@@ -17,7 +17,7 @@ class CreateRewardsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->comment('操作用户');
             $table->integer('target_user')->unsigned()->comment('目标用户');
-            $table->integer('amount')->unsigned()->comment('打赏金额');
+            $table->bigInteger('amount')->unsigned()->comment('打赏金额');
             $table->morphs('rewardable');
             $table->timestamps();
         });
