@@ -454,7 +454,7 @@ class SiteController extends Controller
         $config->set('site.gold.status', true);
 
         $config->set('site.reward.status', true);
-        $config->set('site.reward.amounts', '5,10,15');
+        $config->set('site.reward.amounts', '100,500,1000');
 
         $config->set('site.user_invite_template', '我发现了一个全平台社交系统ThinkSNS+，快来加入吧：http://t.cn/RpFfbbi');
 

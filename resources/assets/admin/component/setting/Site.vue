@@ -52,7 +52,7 @@
                 <input type="text" class="form-control" v-model="site.reward.amounts">
               </div>
               <div class="col-md-4">
-                <span class="help-block">打赏金额配置，单位(元)。多个金额用英文半角符号“,”分割 例如：5,10,15。</span>
+                <span class="help-block">打赏金额配置，单位(分)。最少为1分，多个金额用英文半角符号“,”分割 例如：5,10,15。</span>
               </div>
             </div>
             <div class="form-group">
