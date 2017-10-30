@@ -71,12 +71,6 @@ class UserRewardController extends Controller
             $userCharge->status = 1;
             $user->walletCharges()->save($userCharge);
 
-            // 添加打赏通知
-            $userNotice = sprintf('你对用户%s进行%s%s打赏', $target->name, $amount * $this->wallet_ratio / 10000, $this->goldName);
-            $user->sendNotifyMessage('user:reward', $userNotice, [
-                    'user' => $target,
-                ]);
-
             // 被打赏用户增加金额
             $target->wallet()->increment('balance', $amount);
 
@@ -91,11 +85,13 @@ class UserRewardController extends Controller
             $chargeModel->status = 1;
             $chargeModel->save();
 
-            // 添加被打赏通知
-            $targetNotice = sprintf('你被%s打赏%s%s', $user->name, $amount * $this->wallet_ratio / 10000, $this->goldName);
-            $target->sendNotifyMessage('user:reward', $targetNotice, [
-                'user' => $user,
-            ]);
+            if ($user->id !== $target->id) {
+                // 添加被打赏通知
+                $targetNotice = sprintf('你被%s打赏%s%s', $user->name, $amount * $this->wallet_ratio / 10000, $this->goldName);
+                $target->sendNotifyMessage('user:reward', $targetNotice, [
+                    'user' => $user,
+                ]);
+            }
 
             // 打赏记录
             $target->reward($user, $amount);
