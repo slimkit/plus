@@ -551,7 +551,7 @@ class UserController extends Controller
         $config->set('registerSettings.type', 'all');
         $config->set('registerSettings.content', '# 服务条款及隐私政策');
 
-        $configuration->save($config);
+        // $configuration->save($config);
 
         return $config['registerSettings'];
     }
