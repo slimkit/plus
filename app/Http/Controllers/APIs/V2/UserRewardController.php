@@ -21,7 +21,7 @@ class UserRewardController extends Controller
         $walletConfig = $configModel->where('name', 'wallet:ratio')->first();
 
         $this->goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '金币';
-        $this->wallet_ratio = $walletConfig->value;
+        $this->wallet_ratio = $walletConfig->value ?? 100;
     }
 
     /**
