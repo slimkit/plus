@@ -3,6 +3,11 @@
 namespace Zhiyi\Plus;
 
 /**
+ * The ThinkSNS Plus version.
+ */
+const VERSION = '1.0.0-alpha.7';
+
+/**
  * 验证是否是中国验证码.
  *
  * @param string $number

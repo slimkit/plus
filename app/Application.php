@@ -7,6 +7,11 @@ use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 class Application extends LaravelApplication
 {
+    /**
+     * The core vendor YAML file.
+     *
+     * @var string.
+     */
     protected $vendorYamlFile;
 
     /**
