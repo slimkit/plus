@@ -8,7 +8,7 @@ class FilterWordType extends Model
 {
     public $table = 'filter_word_types';
 
-    public $fillable = ['name'];
+    public $fillable = ['name', 'status'];
 
     public $timestamps = false;
 }

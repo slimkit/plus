@@ -15,6 +15,9 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             过滤词语类型列表
+              <router-link tag="a" class="btn btn-link pull-right btn-xs" to="/setting/filter-word-types/add" role="button">
+                  添加
+              </router-link>
           </div>
           <div class="panel-body">
             <table class="table table-striped">
@@ -23,6 +26,7 @@
                         <th><input type="checkbox" @click="selectAll"></th>
                         <th>类型</th>
                         <th>状态</th>
+                        <th>操作</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,6 +38,11 @@
                           <a class="label" 
                              :class="type.status ? 'label-success' : 'label-danger'" 
                              href="javascript:;" @click="changeStatus(type.id)">{{ type.status ? '开启' : '关闭' }}</a>
+                        </td>
+                        <td>
+                          <router-link tag="a" class="btn btn-primary btn-sm" :to="`/setting/filter-word-types/${type.id}`" role="button">
+                              编辑
+                          </router-link>
                         </td>
                     </tr>
                 </tbody>

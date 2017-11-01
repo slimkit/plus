@@ -19,6 +19,8 @@ import FilterWordCategories from '../component/setting/FilterWordCategories';
 import AddFilterWordCategory from '../component/setting/AddFilterWordCategory';
 import UpdateFilterWordCategory from '../component/setting/UpdateFilterWordCategory';
 import FilterWordTypes from '../component/setting/FilterWordTypes';
+import AddFilterWordType from '../component/setting/AddFilterWordType';
+import UpdateFilterWordType from '../component/setting/UpdateFilterWordType';
 import SensitiveWords from '../component/setting/SensitiveWords';
 import AddSensitiveWord from '../component/setting/AddSensitiveWord';
 import UpdateSensitiveWord from '../component/setting/UpdateSensitiveWord';
@@ -83,6 +85,14 @@ const settingRouter = {
     {
       path: 'filter-word-types',
       component: FilterWordTypes,
+    },
+    {
+      path: 'filter-word-types/add',
+      component: AddFilterWordType,
+    },
+    {
+      path: 'filter-word-types/:id',
+      component: UpdateFilterWordType,
     },
     {
       path: 'sensitive-words',

@@ -262,6 +262,9 @@ Route::middleware('auth:web')
     // 过滤类型
     Route::prefix('filter-word-types')->group(function () {
         Route::get('', 'FilterWordTypeController@index');
+        Route::post('', 'FilterWordTypeController@store');
+        Route::get('/{type}', 'FilterWordTypeController@show');
+        Route::put('/{type}', 'FilterWordTypeController@update');
         Route::patch('/{id}/status', 'FilterWordTypeController@status');
     });
 
