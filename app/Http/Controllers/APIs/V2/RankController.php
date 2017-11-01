@@ -98,7 +98,7 @@ class RankController extends Controller
         $limit = $request->query('limit', 10);
         $offset = $request->query('offset', 0);
 
-        $users = $userModel->select('users.id', 'users.name')
+        $users = $userModel->select('users.id', 'users.name', 'users.sex')
             ->join(DB::raw("(select `user_id`, SUM(`amount`) as `count` from `wallet_charges` where `action` = '1' and `channel` = 'user' group by `user_id`) as count"), function ($join) {
                 return $join->on('users.id', '=', 'count.user_id');
             })
