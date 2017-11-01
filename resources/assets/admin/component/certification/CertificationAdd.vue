@@ -34,7 +34,7 @@
                               </div>
                               <div class="col-md-6 dropdown" :class="dropdownMenuClass">
                                   <input type="text" class="form-control" placeholder="输入用户名搜索" @input="searchUser" v-model="username">
-                                  <ul class="dropdown-menu" style="margin-left:15px;">
+                                  <ul class="dropdown-menu" style="margin-left:15px;max-height: 200px;overflow: auto;">
                                     <template v-if="users.length">
                                       <li  v-for="user in users" @click.prevent="choiceUser(user.id)">
                                         <a href="javascript:;">
