@@ -71,7 +71,7 @@ class PurchaseController extends Controller
 
             // 插入用户扣除费用订单记录
             $userCharge = clone $charge;
-            $userCharge->channel = $nodeUser->wallet ? 'user' : 'system';
+            $userCharge->channel = $nodeUser ? 'user' : 'system';
             $userCharge->account = $node->user_id;
             $userCharge->action = 0;
             $userCharge->amount = $node->amount;
@@ -103,7 +103,7 @@ class PurchaseController extends Controller
                     $charge->subject = '被'.$node->subject;
                     $charge->body = $charge->subject;
                     $charge->status = 1;
-                    $charge->user_id = $wallet->user_id;
+                    $charge->user_id = $nodeUser->id;
                     $charge->save();
 
                     // 被购买通知
