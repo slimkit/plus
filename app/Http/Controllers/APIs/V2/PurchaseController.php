@@ -53,7 +53,7 @@ class PurchaseController extends Controller
     {
         $user = $request->user();
         $user->load('wallet');
-        $wallet = $node->user->wallet;
+        $nodeUser = $node->user;
 
         if ($node->paid($user->id)) {
             return $response->json([
@@ -65,7 +65,7 @@ class PurchaseController extends Controller
             ])->setStatusCode(403);
         }
 
-        $user->getConnection()->transaction(function () use ($user, $node, $wallet, $charge) {
+        $user->getConnection()->transaction(function () use ($user, $node, $nodeUser, $charge) {
             // 扣除用户余额
             $user->wallet()->decrement('balance', $node->amount);
 
@@ -90,9 +90,9 @@ class PurchaseController extends Controller
             $node->users()->sync($user->id, false);
 
             // 存在发起人钱包，则插入，否则上述余额扣除后不增加到任何账户。
-            if ($wallet) {
+            if ($nodeUser && $nodeUser->wallet) {
                 // 为发起人钱包增加
-                $wallet->increment('balance', $node->amount);
+                $nodeUser->wallet->increment('balance', $node->amount);
 
                 // 添加收款订单
                 $charge->channel = 'user';
@@ -106,7 +106,7 @@ class PurchaseController extends Controller
                 $charge->save();
 
                 // 被购买通知
-                $wallet->user->sendNotifyMessage('paid:'.$node->channel, '被'.$user->name.$node->body, [
+                $nodeUser->sendNotifyMessage('paid:'.$node->channel, '被'.$user->name.$node->body, [
                     'charge' => $charge,
                     'user' => $user,
                 ]);
