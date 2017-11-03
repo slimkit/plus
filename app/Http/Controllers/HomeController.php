@@ -13,9 +13,9 @@ class HomeController
             return redirect()->route($h5Config['routeName']);
         }
 
-        if ($pcConfig['installed'] && ! $this->isMobile()) {
-            return redirect()->route($pcConfig['routeName']);
-        }
+        // if ($pcConfig['installed'] && ! $this->isMobile()) {
+        //     return redirect()->route($pcConfig['routeName']);
+        // }
 
         return view('welcome');
     }
