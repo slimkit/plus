@@ -83,10 +83,10 @@
 				      		<div class="input-group">
 				      			<div class="">
 								    <label class="radio-inline">
-								    	<input type="radio" name="showTerms" value="open" v-model="showTerms" /> 开启
+								    	<input type="radio" name="showTerms" :value="true" v-model="showTerms" /> 开启
 								    </label>
 										<label class="radio-inline">
-								    	<input type="radio" name="showTerms" checked="checked" value="close" v-model="showTerms" /> 关闭
+								    	<input type="radio" name="showTerms" checked="checked" :value="false" v-model="showTerms" /> 关闭
 								    </label>
 								</div>
 							</div>
@@ -95,7 +95,7 @@
 			     			<span class="help-block">服务条款和隐私政策</span>
 			     		</div>		
 			     	</div>
-			     	<div class="form-group" v-if="showTerms === 'open'">
+			     	<div class="form-group" v-if="showTerms">
 			     		<label  class="col-sm-3 control-label" for="rule-content">条款内容</label>
 			     		<div class="col-sm-5">
 				          <textarea 
@@ -141,7 +141,7 @@
     	name: 'question-edit',
 		data: () => ({
 			loadding: true,
-			showTerms: 'close',
+			showTerms: false,
 			fixed: 'need',
 			method: 'all',
 			type: 'all',
@@ -159,7 +159,7 @@
 				this.loading = true;
 				const { showTerms, fixed, method, type, content } = this;
 				let data = {};
-				if (showTerms !== 'close') {
+				if (showTerms) {
 					data.content = content
 				}
 				data.fixed = fixed;
