@@ -80,12 +80,6 @@ class PurchaseController extends Controller
             $userCharge->status = 1;
             $user->walletCharges()->save($userCharge);
 
-            // 发送购买通知
-            $user->sendNotifyMessage('paid:'.$node->channel, $node->body, [
-                'charge' => $userCharge,
-                'user' => $node->user,
-            ]);
-
             // 插入购买用户
             $node->users()->sync($user->id, false);
 
