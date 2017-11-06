@@ -1,6 +1,8 @@
 <template>
   <ul v-show="show" v-bind="props">
-
+    <li class="page-item disabled">
+      <a href="javascript:;"  style="border:none;">共 {{ total }} 条</a>
+    </li>
     <!-- Previous Page Link -->
     <slot :disabled="onFirstPage" :offset="previousPageOffset" page="«">
 
