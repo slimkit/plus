@@ -2,7 +2,7 @@
 
 namespace Zhiyi\Plus\Cdn\Adapter;
 
-use \Zhiyi\Plus\Cdn\Refresh;
+use Zhiyi\Plus\Cdn\Refresh;
 use Intervention\Image\Image;
 use Intervention\Image\Constraint;
 use Intervention\Image\ImageManager;

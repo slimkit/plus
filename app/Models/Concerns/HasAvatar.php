@@ -2,7 +2,7 @@
 
 namespace Zhiyi\Plus\Models\Concerns;
 
-use \Zhiyi\Plus\Cdn\Refresh;
+use Zhiyi\Plus\Cdn\Refresh;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Filesystem\FilesystemManager;
 use Zhiyi\Plus\Contracts\Cdn\UrlFactory as CdnUrlFactoryContract;

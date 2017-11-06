@@ -2,7 +2,7 @@
 
 namespace Zhiyi\Plus\Contracts\Cdn;
 
-use \Zhiyi\Plus\Cdn\Refresh;
+use Zhiyi\Plus\Cdn\Refresh;
 
 interface UrlGenerator
 {
