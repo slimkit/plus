@@ -115,6 +115,9 @@ class AreasTableSeeder extends Seeder
      */
     protected function datas(): array
     {
+        dump(
+            env('APP_ENV')
+        );
         if (env('APP_ENV') === 'testing') {
             return [];
         }
