@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\Cdn\Adapter;
 
+use Zhiyi\Plus\Cdn\Refresh;
 use Zhiyi\Plus\Models\File;
 use Zhiyi\Plus\Contracts\Cdn\UrlGenerator as FileUrlGeneratorContract;
 
@@ -62,6 +63,18 @@ class AliOss implements FileUrlGeneratorContract
         }
 
         return $this->makePublicURL($filename, $extra);
+    }
+
+    /**
+     * Refresh the cdn files and dirs.
+     *
+     * @param \Zhiyi\Plus\Cdn\Refresh $refresh
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function refresh(Refresh $refresh)
+    {
+        // todo.
     }
 
     /**
