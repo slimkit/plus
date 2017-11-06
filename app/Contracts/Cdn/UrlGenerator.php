@@ -2,6 +2,8 @@
 
 namespace Zhiyi\Plus\Contracts\Cdn;
 
+use \Zhiyi\Plus\Cdn\Refresh;
+
 interface UrlGenerator
 {
     /**
@@ -13,4 +15,13 @@ interface UrlGenerator
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function url(string $filename, array $extra = []): string;
+
+    /**
+     * Refresh the cdn files and dirs.
+     *
+     * @param \Zhiyi\Plus\Cdn\Refresh $refresh
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function refresh(Refresh $refresh);
 }
