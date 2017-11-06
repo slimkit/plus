@@ -251,6 +251,7 @@ class Qiniu implements FileUrlGeneratorContract
     {
         $data .= "\n".$body;
         $hmac = hash_hmac('sha1', $data, $this->sk, true);
+
         return $this->ak.':'.$this->safeBase64Encode($hmac);
     }
 

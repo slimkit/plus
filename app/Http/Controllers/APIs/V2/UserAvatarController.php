@@ -3,10 +3,10 @@
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Zhiyi\Plus\Cdn\Refresh;
-use Zhiyi\Plus\Contracts\Cdn\UrlFactory as CdnUrlFactoryContract;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User as UserModel;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Zhiyi\Plus\Contracts\Cdn\UrlFactory as CdnUrlFactoryContract;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 
 class UserAvatarController extends Controller
@@ -22,7 +22,6 @@ class UserAvatarController extends Controller
      */
     public function show(Request $request, ResponseContract $response, UserModel $user)
     {
-
         $demo = app(CdnUrlFactoryContract::class)->generator()->refresh(new Refresh(['demo.png'], ['2017/04/25/0256']));
 
         dd($demo);
