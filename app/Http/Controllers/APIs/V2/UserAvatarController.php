@@ -2,11 +2,9 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Zhiyi\Plus\Cdn\Refresh;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User as UserModel;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Zhiyi\Plus\Contracts\Cdn\UrlFactory as CdnUrlFactoryContract;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 
 class UserAvatarController extends Controller
