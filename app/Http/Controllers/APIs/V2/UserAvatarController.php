@@ -22,10 +22,6 @@ class UserAvatarController extends Controller
      */
     public function show(Request $request, ResponseContract $response, UserModel $user)
     {
-        $demo = app(CdnUrlFactoryContract::class)->generator()->refresh(new Refresh(['demo.png'], ['2017/04/25/0256']));
-
-        dd($demo);
-
         $size = intval($request->query('s', 0));
         $size = max($size, 0);
         $size = min($size, 500) === 500 ? 0 : $size;
