@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\Cdn\Adapter;
 
+use \Zhiyi\Plus\Cdn\Refresh;
 use Intervention\Image\Image;
 use Intervention\Image\Constraint;
 use Intervention\Image\ImageManager;
@@ -80,6 +81,23 @@ class Filesystem implements FileUrlGeneratorContract
                 );
             });
         });
+    }
+
+    /**
+     * Refresh the cdn files and dirs.
+     *
+     * @param \Zhiyi\Plus\Cdn\Refresh $refresh
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function refresh(Refresh $refresh)
+    {
+        $this->files->delete($refresh->getFiles());
+        foreach ($refresh->getDirs() as $dir) {
+            if ($this->files->exists($dir)) {
+                $this->files->deleteDirectory($dir);
+            }
+        }
     }
 
     /**
