@@ -40,7 +40,8 @@ return [
             'sk' => null,
             'sign' => false,
             'expires' => 3600,
-            'type' => 'object', // cdn or object
+            'type' => 'cdn', // cdn or object
+            'bucket' => null,
         ],
         'alioss' => [
             'driver' => \Zhiyi\Plus\Cdn\Adapter\AliOss::class,

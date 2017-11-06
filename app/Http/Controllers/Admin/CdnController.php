@@ -33,6 +33,8 @@ class CdnController extends Controller
             'expires' => (int) config('cdn.generators.qiniu.expires'),
             'ak' => config('cdn.generators.qiniu.ak'),
             'sk' => config('cdn.generators.qiniu.sk'),
+            'type' => config('cdn.generators.qiniu.type'),
+            'bucket' => config('cdn.generators.qiniu.bucket'),
         ], 200);
     }
 
@@ -53,6 +55,8 @@ class CdnController extends Controller
             'cdn.generators.qiniu.expires' => (int) $request->input('expires'),
             'cdn.generators.qiniu.ak' => $request->input('ak'),
             'cdn.generators.qiniu.sk' => $request->input('sk'),
+            'cdn.generators.qiniu.type' => $request->input('type'),
+            'cdn.generators.qiniu.bucket' => $request->input('bucket'),
         ]);
 
         return response()->json(['message' => '设置成功'], 201);

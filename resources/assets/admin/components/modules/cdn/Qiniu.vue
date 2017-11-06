@@ -24,25 +24,46 @@
             <option :value="true">私有</option>
           </select>
         </div>
-        <span class="col-sm-6 help-block">设置是否需要签字，公开云储存或者纯 CDN 则选择「公开」私有云储存必须选择「私有」前台资源才能被访问。</span>
+        <span class="col-sm-6 help-block">设置资源地址是否需要签名。</span>
       </div>
 
       <!-- Acces Key -->
       <div class="form-group">
         <label class="col-sm-2 control-label">Access Key</label>
         <div class="col-sm-4">
-          <input type="text" class="form-control" placeholder="请输入 Access Key." v-model="ak" :disabled="! sign">
+          <input type="text" class="form-control" placeholder="请输入 Access Key." v-model="ak">
         </div>
-        <span class="col-sm-6 help-block">请输入 Access Key, 如果签字为「私有」则必须设置。</span>
+        <span class="col-sm-6 help-block">请输入 Access Key, 公开情况也需要设置，刷新缓存等需要用到。</span>
       </div>
 
       <!-- Secret key -->
       <div class="form-group">
         <label class="col-sm-2 control-label">Secret Key</label>
         <div class="col-sm-4">
-          <input type="text" class="form-control" placeholder="请输入 Secret Key." v-model="sk" :disabled="! sign">
+          <input type="text" class="form-control" placeholder="请输入 Secret Key." v-model="sk">
         </div>
-        <span class="col-sm-6 help-block">请输入 Secret Key，如果签字为「私有」则必须设置。</span>
+        <span class="col-sm-6 help-block">请输入 Secret Key，公开情况也需要设置，刷新缓存等需要用到。</span>
+      </div>
+
+      <!-- Type -->
+      <div class="form-group">
+        <label class="col-sm-2 control-label">类型</label>
+        <div class="col-sm-4">
+          <select class="form-control" v-model="type">
+            <option value="object">对象存储</option>
+            <option value="cdn">融合 CDN</option>
+          </select>
+        </div>
+        <span class="col-sm-6 help-block">选择七牛平台使用类型。</span>
+      </div>
+
+      <!-- bucket -->
+      <div v-show="type === 'object'" class="form-group">
+        <label class="col-sm-2 control-label">Bucket</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" v-model="bucket">
+        </div>
+        <span class="col-sm-6 help-block">输入对象存储空间的 Bucket 。</span>
       </div>
 
       <!-- expires -->
@@ -59,6 +80,10 @@
         <div class="col-sm-offset-2 col-sm-10">
           <ui-button type="button" class="btn btn-primary" @click="handleSubmit"></ui-button>
         </div>
+      </div>
+
+      <div class="col-sm-12 help-block">
+        如果设置「融合 CDN」请联系七牛客服开通刷新目录权限，否则头像类缓存，可能刷新失败。
       </div>
 
     </div>
@@ -83,6 +108,8 @@ export default {
     ak: '',
     sk: '',
     expires: 3600,
+    type: 'object',
+    bucket: null,
   }),
   methods: {
     handleSubmit ({ stopProcessing }) {
@@ -92,7 +119,8 @@ export default {
         expires: this.expires,
         ak: this.ak,
         sk: this.sk,
-        cdn: 'qiniu',
+        type: this.type,
+        bucket: this.bucket,
       };
       request.post(createRequestURI('cdn/qiniu'), params, {
         validateStatus: status => status === 201,
@@ -109,13 +137,15 @@ export default {
     this.loading = true;
     request.get(createRequestURI('cdn/qiniu'), {
       validateStatus: status => status === 200,
-    }).then(({ data: { domain, sign, ak, sk, expires } }) => {
+    }).then(({ data: { domain, sign, ak, sk, expires, type, bucket } }) => {
       this.loading = false;
       this.domain = domain;
       this.sign = !! sign;
       this.ak = ak;
       this.sk = sk;
       this.expires = expires;
+      this.type = type;
+      this.bucket = bucket;
     }).catch(({ response: { data = { message: '加载失败，请刷新重试！' } } }) => {
       this.loading = false;
       this.$store.dispatch('alert-open', { type: 'danger', message: data });

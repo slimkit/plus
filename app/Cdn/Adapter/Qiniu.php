@@ -3,6 +3,7 @@
 namespace Zhiyi\Plus\Cdn\Adapter;
 
 use Zhiyi\Plus\Cdn\Refresh;
+use GuzzleHttp\Client as HttpClient;
 use Zhiyi\Plus\Contracts\Cdn\UrlGenerator as FileUrlGeneratorContract;
 
 class Qiniu implements FileUrlGeneratorContract
@@ -36,6 +37,7 @@ class Qiniu implements FileUrlGeneratorContract
     private $sk;
 
     private $expires = 3600;
+    private $type = 'object';
 
     /**
      * Create the qiniu cdn adapter instance.
@@ -49,6 +51,8 @@ class Qiniu implements FileUrlGeneratorContract
         $this->ak = config('cdn.generators.qiniu.ak');
         $this->sk = config('cdn.generators.qiniu.sk');
         $this->expires = config('cdn.generators.qiniu.expires', 3600);
+        $this->type = config('cdn.generators.qiniu.type', 'object');
+        $this->bucket = config('cdn.generators.qiniu.bucket');
     }
 
     /**
@@ -77,7 +81,97 @@ class Qiniu implements FileUrlGeneratorContract
      */
     public function refresh(Refresh $refresh)
     {
-        // todo.
+        if ($this->type === 'cdn') {
+            return $this->refreshByCdn($refresh);
+        }
+
+        return $this->refreshByObject($refresh);
+    }
+
+    /**
+     * 刷新 融合 CDN.
+     *
+     * @param \Zhiyi\Plus\Cdn\Refresh $refresh
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function refreshByCdn(Refresh $refresh)
+    {
+        $disk = app('filesystem')->disk(
+            config('cdn.generators.filesystem.disk')
+        );
+        $files = array_map(function ($file) use ($disk) {
+            return $disk->url($file);
+        }, $refresh->getFiles());
+        $dirs = array_map(function ($dir) use ($disk) {
+            if (substr($dir, 0, -1) !== '/') {
+                $dir .= '/';
+            }
+
+            return $disk->url($dir);
+        }, $refresh->getDirs());
+
+        $body = json_encode([
+            'urls' => $files,
+            'dirs' => $dirs,
+        ]);
+
+        $client = new HttpClient();
+        $url = '/v2/tune/refresh';
+        $token = $this->generateToken($url);
+
+        $client->request('post', 'http://fusion.qiniuapi.com'.$url, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'QBox '.$token,
+            ],
+            'body' => $body,
+        ]);
+    }
+
+    /**
+     * 删除 Qiniu Object Storage.
+     *
+     * @param \Zhiyi\Plus\Cdn\Refresh $refresh
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function refreshByObject(Refresh $refresh)
+    {
+        $client = new HttpClient();
+        $files = [];
+
+        foreach ($refresh->getDirs() as $dir) {
+            $query = [
+                'bucket' => $this->bucket,
+                'limit' => 20,
+                'prefix' => $dir,
+            ];
+            $url = sprintf('/list?%s', http_build_query($query));
+            $token = $this->generateToken($url);
+
+            $res = $client->request('GET', 'https://rsf.qiniu.com'.$url, [
+                'headers' => [
+                    'Content-Type' => 'application/x-www-form-urlencoded',
+                    'Authorization' => 'QBox '.$token,
+                ],
+            ]);
+
+            foreach (json_decode($res->getBody()->getContents(), false)->items ?? [] as $item) {
+                array_push($files, sprintf('op=/delete/%s', $this->safeBase64Encode($this->bucket.':'.$item->key)));
+            }
+        }
+
+        $url = '/batch';
+        $token = $this->generateToken($url, $body = implode('&', $files));
+
+        $client->request('post', 'https://rs.qiniu.com'.$url, [
+            'headers' => [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+                'Authorization' => 'QBox '.$token,
+            ],
+            'body' => $body,
+        ]);
     }
 
     /**
@@ -148,9 +242,21 @@ class Qiniu implements FileUrlGeneratorContract
         $deadline = time() + $this->expires;
         $url .= (strpos($url, '?') ? '&' : '?').'e='.$deadline;
         $hmac = hash_hmac('sha1', $url, $this->sk, true);
-        $token = $this->ak.':'.str_replace(['+', '/'], ['-', '_'], base64_encode($hmac));
+        $token = $this->ak.':'.$this->safeBase64Encode($hmac);
 
         return $url .= '&token='.$token;
+    }
+
+    protected function generateToken(string $data, string $body = ''): string
+    {
+        $data .= "\n".$body;
+        $hmac = hash_hmac('sha1', $data, $this->sk, true);
+        return $this->ak.':'.$this->safeBase64Encode($hmac);
+    }
+
+    protected function safeBase64Encode(string $data): string
+    {
+        return str_replace(['+', '/'], ['-', '_'], base64_encode($data));
     }
 
     /**
