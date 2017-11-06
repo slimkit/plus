@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\Models\Concerns;
 
+use \Zhiyi\Plus\Cdn\Refresh;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Filesystem\FilesystemManager;
 use Zhiyi\Plus\Contracts\Cdn\UrlFactory as CdnUrlFactoryContract;
@@ -110,15 +111,13 @@ trait HasAvatar
         $disk = $this->filesystem()->disk(
             config('cdn.generators.filesystem.disk')
         );
-        if ($disk->exists($filename)) {
-            $disk->deleteDirectory($filename);
-        }
 
-        $disk->delete(array_reduce($this->getAvatarExtensions(), function (array $collect, $extension) use ($filename) {
+        $files = array_reduce($this->getAvatarExtensions(), function (array $collect, $extension) use ($filename) {
             $collect[] = $filename.'.'.$extension;
 
             return $collect;
-        }, [$filename]));
+        }, []);
+        app(CdnUrlFactoryContract::class)->generator()->refresh(new Refresh($files, [$filename]));
 
         return $avatar->storeAs($path, $name, config('cdn.generators.filesystem.disk'));
     }
