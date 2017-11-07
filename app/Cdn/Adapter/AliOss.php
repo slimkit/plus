@@ -4,6 +4,7 @@ namespace Zhiyi\Plus\Cdn\Adapter;
 
 use Zhiyi\Plus\Cdn\Refresh;
 use Zhiyi\Plus\Models\File;
+use GuzzleHttp\Client as HttpClient;
 use Zhiyi\Plus\Contracts\Cdn\UrlGenerator as FileUrlGeneratorContract;
 
 class AliOss implements FileUrlGeneratorContract
@@ -25,6 +26,10 @@ class AliOss implements FileUrlGeneratorContract
     const OSS_PROCESS = 'x-oss-process';
 
     const OSS_HTTP_GET = 'GET';
+
+    const OSS_HTTP_DELETE = 'DELETE';
+
+    const OSS_HTTP_POST = 'POST';
 
     /**
      * 构造方法，初始化 AliyunOSS 基本信息.
@@ -74,7 +79,33 @@ class AliOss implements FileUrlGeneratorContract
      */
     public function refresh(Refresh $refresh)
     {
-        // todo.
+        $client = new HttpClient();
+        $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><Delete></Delete>'); // xml格式批量删除
+        $xml->addChild('Quiet', false);
+        $date =  gmdate('D, d M Y H:i:s \G\M\T');
+
+        foreach ($refresh->getDirs() as $dir) {
+            $opjectxml = $xml->addChild('Object');
+            $opjectxml->addChild('Key', $dir);
+        }
+
+        $content = $xml->asXML();
+
+        $client->request('POST', $this->getBaseURI(), [
+            'headers' => [
+                'Host' => $this->endpoint,
+                'Date' => $date,
+                'Content-Length' => strlen($content),
+                'Content-MD5' => base64_encode(md5($content, true)),
+                'Authorization' => 'OSS '.$this->getHeaderSign(
+                    $this->endpoint,
+                    null,
+                    $data,
+                    self::OSS_HTTP_POST,
+                    []
+                )
+            ],
+        ]);
     }
 
     /**
@@ -312,5 +343,36 @@ class AliOss implements FileUrlGeneratorContract
         $stringToSign = $params ? '&OSSAccessKeyId=%s&Expires=%s&Signature=%s' : '?OSSAccessKeyId=%s&Expires=%s&Signature=%s';
 
         return sprintf($stringToSign, $this->accessKeyId, $expireTime, $signature);
+    }
+
+    /**
+     * get sign for headers.
+     *
+     * @param string $bucket
+     * @param string $filename
+     * @param string $date
+     * @param string $method
+     * @param array $process
+     * @return string
+     * @author BS <414606094@qq.com>
+     */
+    protected function getHeaderSign(string $bucket, $filename = null, string $date, string $method = self::OSS_HTTP_GET, array $process) {
+
+        $params = collect($process)->map(function ($value, $key) {
+            return $key.'='.$value;
+        })->implode('&');
+
+        $CanonicalizedResource = $bucket;
+        if ($filename) {
+            $CanonicalizedResource = $CanonicalizedResource.'/'.$filename;
+        }
+        if ($params) {
+            $CanonicalizedResource = $CanonicalizedResource.'?'.$params;
+        }
+        $unsigndata = $method."\n\n\n".$date."\n/".$CanonicalizedResource;
+
+        $signature = urlencode(base64_encode(hash_hmac('sha1', $unsigndata, $this->accessKeySecret, true)));
+
+        return $signature;
     }
 }
