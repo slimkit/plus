@@ -358,7 +358,7 @@ class AliOss implements FileUrlGeneratorContract
      * @return string
      * @author BS <414606094@qq.com>
      */
-    protected function getHeaderSign(string $resource, string $md5, string $type = 'application/xml',string $date, string $method = self::OSS_HTTP_GET)
+    protected function getHeaderSign(string $resource, string $md5, string $type = 'application/xml', string $date, string $method = self::OSS_HTTP_GET)
     {
         $unsigndata = $method."\n".$md5."\n".$type."\n".$date."\n/".$resource;
 
