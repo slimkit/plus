@@ -65,7 +65,7 @@ class LocationController extends Controller
             ->byName('hots_area')
             ->value('value');
 
-        $hots = collect(json_decode($hots))
+        $hots = collect(json_decode($hots, true))
             ->sortByDesc('sort')
             ->pluck('name');
 
