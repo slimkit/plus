@@ -82,7 +82,7 @@ class AliOss implements FileUrlGeneratorContract
         $client = new HttpClient();
         $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><Delete></Delete>'); // xml格式批量删除
         $xml->addChild('Quiet', false);
-        $date =  gmdate('D, d M Y H:i:s \G\M\T');
+        $date = gmdate('D, d M Y H:i:s \G\M\T');
 
         foreach ($refresh->getDirs() as $dir) {
             $opjectxml = $xml->addChild('Object');
@@ -103,7 +103,7 @@ class AliOss implements FileUrlGeneratorContract
                     $data,
                     self::OSS_HTTP_POST,
                     []
-                )
+                ),
             ],
         ]);
     }
@@ -356,8 +356,8 @@ class AliOss implements FileUrlGeneratorContract
      * @return string
      * @author BS <414606094@qq.com>
      */
-    protected function getHeaderSign(string $bucket, $filename = null, string $date, string $method = self::OSS_HTTP_GET, array $process) {
-
+    protected function getHeaderSign(string $bucket, $filename = null, string $date, string $method = self::OSS_HTTP_GET, array $process)
+    {
         $params = collect($process)->map(function ($value, $key) {
             return $key.'='.$value;
         })->implode('&');
