@@ -21,7 +21,7 @@
         <div class="col-sm-4">
           <input type="text" class="form-control" placeholder="请输入访问域名" v-model="endpoint">
         </div>
-        <span class="col-sm-6 help-block">设置「阿里云-对象存储」的存储空间对应的访问域名(含bucket)。</span>
+        <span class="col-sm-6 help-block">设置「阿里云-对象存储」的存储空间对应的访问域名(endpoint)。</span>
       </div>
 
       <!-- Acces Key -->
@@ -79,6 +79,11 @@
           <ui-button type="button" class="btn btn-primary" @click="handleSubmit"></ui-button>
         </div>
       </div>
+
+    <div class="help-block">
+      在使用 <a href="https://www.aliyun.com/product/oss" target="_blank">阿里云 OSS</a> 之前，你需要使用 Composer 安装相应的支持软件包：
+      <code>composer require aliyuncs/oss-sdk-php</code>
+    </div>
 
     </div>
   </div>

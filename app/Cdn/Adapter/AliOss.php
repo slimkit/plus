@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\Cdn\Adapter;
 
+use OSS\OssClient;
 use Zhiyi\Plus\Cdn\Refresh;
 use Zhiyi\Plus\Models\File;
 use GuzzleHttp\Client as HttpClient;
@@ -47,6 +48,9 @@ class AliOss implements FileUrlGeneratorContract
         $this->ssl = config('cdn.generators.alioss.ssl', false);
         $this->public = config('cdn.generators.alioss.public', true);
         $this->expires = config('cdn.generators.alioss.expires', 3600);
+
+        $this->client = new OssClient($this->accessKeyId, $this->accessKeySecret, $this->endpoint);
+        $this->client->setUseSSL($this->ssl);
     }
 
     /**
@@ -79,35 +83,23 @@ class AliOss implements FileUrlGeneratorContract
      */
     public function refresh(Refresh $refresh)
     {
-        $client = new HttpClient();
-        $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><Delete></Delete>'); // xml格式批量删除
-        $xml->addChild('Quiet', 'false');
-        $date = gmdate('D, d M Y H:i:s \G\M\T');
+        $files = [];
+        foreach ($refresh->getDirs() as $dir) {
+            $query = [
+                'prefix' => $dir,
+                'max-keys' => 20,
+            ];
 
-        foreach ($refresh->getFiles() as $file) {
-            $opjectxml = $xml->addChild('Object');
-            $opjectxml->addChild('Key', $file);
+            $listObjectInfo = $this->client->listObjects($this->bucket, $query);
+            $objectList = $listObjectInfo->getObjectList();
+
+            $delete = [];
+            foreach ($objectList as $key => $object) {
+                $delete[] = $object->getKey();
+            }
+
+            $this->client->deleteObjects($this->bucket, $delete);
         }
-
-        $content = $xml->asXML();
-        $md5Content = base64_encode(md5($content, true));
-
-        $client->request('POST', $this->getBaseURI().'/?delete', [
-            'headers' => [
-                'Accept-Encoding' => '',
-                'Host' => $this->endpoint,
-                'Date' => $date,
-                'Content-Length' => strlen($content),
-                'Content-MD5' => $md5Content,
-                'Authorization' => 'OSS '.$this->accessKeyId.':'.$this->getHeaderSign(
-                    $this->bucket.'/?delete',
-                    $md5Content,
-                    'application/xml',
-                    $date,
-                    self::OSS_HTTP_POST
-                ),
-            ],
-        ]);
     }
 
     /**
@@ -120,9 +112,7 @@ class AliOss implements FileUrlGeneratorContract
      */
     protected function makeSignURL(string $filename, array $extra): string
     {
-        $publicUrl = $this->makePublicURL($filename, $extra);
-
-        return $publicUrl.$this->makeSign(
+        return $this->client->signUrl(
             $this->bucket,
             $filename,
             $this->expires, // 授权过期时间。
@@ -314,56 +304,5 @@ class AliOss implements FileUrlGeneratorContract
         }
 
         return 'http';
-    }
-
-    /**
-     * sign url.
-     *
-     * @param string $bucket
-     * @param string $filename
-     * @param int $timeout
-     * @param string $method
-     * @param array $process
-     * @return string
-     * @author BS <414606094@qq.com>
-     */
-    protected function makeSign(string $bucket, string $filename, int $timeout = 60, string $method = self::OSS_HTTP_GET, array $process)
-    {
-        $params = collect($process)->map(function ($value, $key) {
-            return $key.'='.$value;
-        })->implode('&');
-
-        $CanonicalizedResource = $bucket.'/'.$filename;
-        if ($params) {
-            $CanonicalizedResource = $CanonicalizedResource.'?'.$params;
-        }
-        $expireTime = time() + $timeout;
-        $unsigndata = $method."\n\n\n".$expireTime."\n/".$CanonicalizedResource;
-
-        $signature = urlencode(base64_encode(hash_hmac('sha1', $unsigndata, $this->accessKeySecret, true)));
-
-        $stringToSign = $params ? '&OSSAccessKeyId=%s&Expires=%s&Signature=%s' : '?OSSAccessKeyId=%s&Expires=%s&Signature=%s';
-
-        return sprintf($stringToSign, $this->accessKeyId, $expireTime, $signature);
-    }
-
-    /**
-     * get sign for headers.
-     *
-     * @param string $bucket
-     * @param string $filename
-     * @param string $date
-     * @param string $method
-     * @param array $process
-     * @return string
-     * @author BS <414606094@qq.com>
-     */
-    protected function getHeaderSign(string $resource, string $md5, string $type = 'application/xml', string $date, string $method = self::OSS_HTTP_GET)
-    {
-        $unsigndata = $method."\n".$md5."\n".$type."\n".$date."\n/".$resource;
-
-        $signature = urlencode(base64_encode(hash_hmac('sha1', $unsigndata, $this->accessKeySecret, true)));
-
-        return $signature;
     }
 }
