@@ -63,13 +63,17 @@
             <thead>
               <tr>
                 <th>名称</th>
+                <th>排序</th>
                 <th>操作</th>
               </tr>
             </thead>
             <tbody>
                 <tr v-for="item in list">
                   <td>
-                    <div class="input-group">{{item}}</div>
+                    <div class="input-group">{{ item.name }}</div>
+                  </td>
+                  <td>
+                    <div class="input-group">{{ item.sort }}</div>
                   </td>
                   <td>
                     <button type="button" class="btn btn-danger btn-sm" @click.prevent="deleteArea(item)">删除</button>
@@ -79,6 +83,11 @@
                   <td>
                     <div class="input-group">
                       <input v-model="add.content" type="text" class="form-control" placeholder="输入名称">
+                    </div>
+                  </td>
+                   <td>
+                    <div class="input-group">
+                      <input v-model="add.sort" type="text" class="form-control" placeholder="权重排序，默认为0">
                     </div>
                   </td>
                   <td>
@@ -111,10 +120,12 @@ const HotsComponent = {
     loadding: false,
     message: '',
     add: {
+      sort: '',
       content: '',
       message: '',
       update: 0,
       loadding: false,
+      area: '',
       type: 'muted'
     },
     list: {}
@@ -123,6 +134,7 @@ const HotsComponent = {
     doHotsArea () {
       this.add.loadding = true;
       const data = {
+        sort: this.add.sort,
         content: this.add.content,
         update: this.add.update
       };
@@ -131,11 +143,11 @@ const HotsComponent = {
           data,
           { validateStatus: status => status === 201 }
         ).then(({ data: { message = '提交成功', status = '' } }) => {
-          const index = this.list.indexOf(this.add.content);
+          const index = this.list.indexOf(this.add.area);
           this.add.loadding = false;
           this.add.type = 'success';
           if (status == 1 && (index < 0)) {
-            this.list.push(this.add.content);
+            this.list.push({ name: this.add.content, sort: this.add.sort });
             this.add.message = message;
           } else {
             this.add.message = '已存在此地区';
@@ -144,6 +156,7 @@ const HotsComponent = {
             if (index > -1) {
               this.list.splice(index, 1);
             }
+            this.add.update = 0;
             this.add.message = '删除成功';
           }
         }).catch(({ response: { data: { error: [ error = '提交失败' ] = [] } = {} } = {} }) => {
@@ -154,7 +167,8 @@ const HotsComponent = {
     },
     deleteArea (area) {
       if (window.confirm('确认删除?')) {
-        this.add.content = area;
+        this.add.content = area.name;
+        this.add.area = area;
         this.add.update = 1;
         this.doHotsArea();
       }

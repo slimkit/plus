@@ -274,38 +274,66 @@ class SiteController extends Controller
     {
         $update = $request->input('update');
         $areaStr = $request->input('content');
+        $sort = (int) $request->input('sort', 0);
 
-        if (count(explode(' ', $areaStr)) < 2) {
+        if (!$update && count(explode(' ', $areaStr)) < 2) {
             return $response->json(['error' => ['地区不能小于两级']], 422);
         }
 
-        $hots = collect(
-            json_decode($this->commonCinfigModel->byNamespace('common')
+        $hots = json_decode($this->commonCinfigModel->byNamespace('common')
                 ->byName('hots_area')
-                ->value('value'), true) ?: []
-        );
+                ->value('value'), true) ?: [];
 
-        $map = $hots->when(! in_array($areaStr, $hots->all()) && ! $update, function ($map) use ($areaStr) {
-            $map->push($areaStr);
-
-            return $map;
-        })->map(function (string $str) use ($areaStr, $update) {
-            if ($update && $str === $areaStr) {
-                return null;
+        if ($update) {
+            $this->unsetHotArea($hots, $areaStr);
+        } else {
+            if ($this->hotAreaExists($hots, $areaStr)) {
+                return $response->json(['error' => ['热门城市已存在']], 422);
             }
+            $hots[] = ['name' => $areaStr, 'sort' => $sort];
+        }
 
-            return $str;
-        })->all();
+        $hots = array_values($hots);
 
         $this->commonCinfigModel->updateOrCreate(
             ['namespace' => 'common', 'name' => 'hots_area'],
-            ['value' => json_encode(array_filter($map))]
+            ['value' => json_encode($hots)]
         );
 
         return $response->json([
             'message' => '操作成功',
             'status' => $update ? 2 : 1,
         ])->setStatusCode(201);
+
+    }
+
+    protected function hotAreaExists(array $hotAreas, $hotAreaName)
+    {
+        $bool = false;
+
+        for ($i = 0; $i < count($hotAreas); $i++) {
+            if ($hotAreas[$i]['name'] == $hotAreaName) {
+                $bool = true;
+            }
+        }
+
+        return $bool;
+    }
+
+    /**
+     * 删除热门城市.
+     * 
+     * @param  array  &$hotAreas   [description]
+     * @param  [type] $hotAreaName [description]
+     * @return [type]              [description]
+     */
+    protected function unsetHotArea(array &$hotAreas, $hotAreaName)
+    {
+        for ($i = 0; $i < count($hotAreas); $i++) {
+            if ($hotAreas[$i]['name'] == $hotAreaName) {
+                unset($hotAreas[$i]);
+            }
+        }
     }
 
     /**
