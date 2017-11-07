@@ -276,7 +276,7 @@ class SiteController extends Controller
         $areaStr = $request->input('content');
         $sort = (int) $request->input('sort', 0);
 
-        if (!$update && count(explode(' ', $areaStr)) < 2) {
+        if (! $update && count(explode(' ', $areaStr)) < 2) {
             return $response->json(['error' => ['地区不能小于两级']], 422);
         }
 
@@ -304,7 +304,6 @@ class SiteController extends Controller
             'message' => '操作成功',
             'status' => $update ? 2 : 1,
         ])->setStatusCode(201);
-
     }
 
     protected function hotAreaExists(array $hotAreas, $hotAreaName)
@@ -322,7 +321,7 @@ class SiteController extends Controller
 
     /**
      * 删除热门城市.
-     * 
+     *
      * @param  array  &$hotAreas   [description]
      * @param  [type] $hotAreaName [description]
      * @return [type]              [description]
