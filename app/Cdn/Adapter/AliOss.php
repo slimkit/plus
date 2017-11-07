@@ -5,7 +5,6 @@ namespace Zhiyi\Plus\Cdn\Adapter;
 use OSS\OssClient;
 use Zhiyi\Plus\Cdn\Refresh;
 use Zhiyi\Plus\Models\File;
-use GuzzleHttp\Client as HttpClient;
 use Zhiyi\Plus\Contracts\Cdn\UrlGenerator as FileUrlGeneratorContract;
 
 class AliOss implements FileUrlGeneratorContract
