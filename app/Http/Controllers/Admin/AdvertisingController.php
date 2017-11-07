@@ -124,7 +124,7 @@ class AdvertisingController extends Controller
                 $items['image'] = $data['image'];
                 $items['link'] = $data['link'];
                 $items['title'] = $data['title'] ?? '';
-                $items['duration'] = $data['duration'] ?? 3;
+                $items['duration'] = (int) $data['duration'] ?? 3;
                 break;
             case 'feed:analog':
                 $items['avatar'] = $data['avatar'];
