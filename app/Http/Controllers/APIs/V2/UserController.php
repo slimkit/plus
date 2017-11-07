@@ -84,6 +84,10 @@ class UserController extends Controller
         $channel = $request->input('verifiable_type');
         $code = $request->input('verifiable_code');
 
+        if (in_array($name, (array) explode(',', config('site.reserved_nickname')))) {
+            return $response->json(['message' => '用户名为系统保留，无法使用！'], 422);
+        }
+
         $role = CommonConfig::byNamespace('user')
             ->byName('default_role')
             ->firstOr(function () {
