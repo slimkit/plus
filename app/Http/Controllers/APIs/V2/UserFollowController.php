@@ -21,14 +21,11 @@ class UserFollowController extends Controller
     {
         $target = $request->user('api')->id ?? 0;
         $limit = $request->query('limit', 20);
-        $after = $request->query('after', false);
+        $offset = $request->query('offset', 0);
 
         $followers = $user->followers()
-            ->when($after, function ($query) use ($after, $user) {
-                return $query->where($user->getQualifiedKeyName(), '<', $after);
-            })
+            ->offset($offset)
             ->limit($limit)
-            ->orderBy('id', 'desc')
             ->get();
 
         return $user->getConnection()->transaction(function () use ($followers, $target, $response) {
@@ -54,14 +51,11 @@ class UserFollowController extends Controller
     {
         $target = $request->user('api')->id ?? 0;
         $limit = $request->query('limit', 20);
-        $after = $request->query('after', false);
+        $offset = $request->query('offset', 0);
 
         $followings = $user->followings()
-            ->when($after, function ($query) use ($after, $user) {
-                return $query->where($user->getQualifiedKeyName(), '<', $after);
-            })
+            ->offset($offset)
             ->limit($limit)
-            ->orderBy('id', 'desc')
             ->get();
 
         return $user->getConnection()->transaction(function () use ($followings, $target, $response) {
