@@ -31,7 +31,5 @@ export default {
     sensitives: { type: Array, default: () => ([]) },
     handleAppend: { type: Function, required: true },
   },
-  methods: {
-  },
 };
 </script>
