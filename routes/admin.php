@@ -250,33 +250,6 @@ Route::middleware('auth:web')
     Route::get('conversations', 'ConversationController@index');
     Route::delete('conversations/{conversation}', 'ConversationController@delete');
 
-    // 过滤配置
-    Route::prefix('filter-word-categories')->group(function () {
-        Route::get('', 'FilterWordCategoryController@index');
-        Route::get('/{category}', 'FilterWordCategoryController@show');
-        Route::post('', 'FilterWordCategoryController@store');
-        Route::patch('/{category}', 'FilterWordCategoryController@update');
-        Route::delete('/{category}', 'FilterWordCategoryController@delete');
-    });
-
-    // 过滤类型
-    Route::prefix('filter-word-types')->group(function () {
-        Route::get('', 'FilterWordTypeController@index');
-        Route::post('', 'FilterWordTypeController@store');
-        Route::get('/{type}', 'FilterWordTypeController@show');
-        Route::put('/{type}', 'FilterWordTypeController@update');
-        Route::patch('/{id}/status', 'FilterWordTypeController@status');
-    });
-
-    // 敏感词
-    Route::prefix('sensitive-words')->group(function () {
-        Route::get('', 'SensitiveWordController@index');
-        Route::post('', 'SensitiveWordController@store');
-        Route::get('/{word}', 'SensitiveWordController@show');
-        Route::patch('/{word}', 'SensitiveWordController@update');
-        Route::delete('/{word}', 'SensitiveWordController@delete');
-    });
-
     /* ------------- 广告管理 -----------------*/
     Route::get('ads', 'AdvertisingController@ads');
     Route::get('ads/spaces', 'AdvertisingController@spaces');
