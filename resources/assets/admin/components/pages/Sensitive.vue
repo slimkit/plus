@@ -9,12 +9,13 @@
       <div class="panel-body">
           
         <!-- Search. -->
-        <module-sensitive-search></module-sensitive-search>
+        <module-sensitive-search :searching="loading"></module-sensitive-search>
 
       </div>
 
       <!-- Table. -->
       <module-sensitive-list
+        v-show="! loading"
         :handle-append="handleAppend"
       ></module-sensitive-list>
 
@@ -24,12 +25,13 @@
 
 <script>
 import lodash from 'lodash';
-import components from '../../modules/sensitive';
+import components from '../modules/sensitive';
 export default {
   name: 'page-sensitive',
   components,
   data: () => ({
     sensitives: [],
+    loading: false,
   }),
   methods: {
     handleChange ({ id, ...sensitive }) {

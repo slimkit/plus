@@ -18,7 +18,11 @@
     </div>
 
     <!-- button. -->
-    <button type="submit" class="btn btn-default">搜索</button>
+    <button v-if="searching" disabled type="button" class="btn btn-default">
+      <ui-loading></ui-loading>
+      搜索中...
+    </button>
+    <button  v-else type="submit" class="btn btn-default">搜索</button>
 
   </div>
 </template>
@@ -26,5 +30,8 @@
 <script>
 export default {
   name: 'module-sensitive-search',
+  props: {
+    searching: { type: Boolean, default: false },
+  },
 };
 </script>

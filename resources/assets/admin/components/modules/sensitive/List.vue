@@ -12,7 +12,7 @@
     <tbody>
 
       <!-- Foreach list. -->
-      <tr v-for="sensitive in sensitives" :key="sensitive.id">1</tr>
+      <module-sensitive-list-item v-for="sensitive in sensitives" :key="sensitive.id" :sensitive="sensitive"></module-sensitive-list-item>
 
       <!-- Store. -->
       <module-sensitive-store :handle-append="handleAppend"></module-sensitive-store>
@@ -22,10 +22,12 @@
 
 <script>
 import Store from './Store';
+import ListItem from './ListItem';
 export default {
   name: 'module-sensitive-list',
   components: {
     [Store.name]: Store,
+    [ListItem.name]: ListItem,
   },
   props: {
     sensitives: { type: Array, default: () => ([]) },
