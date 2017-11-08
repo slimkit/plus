@@ -13,6 +13,19 @@
 
       </div>
 
+      <!-- Table. -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>敏感词</th>
+            <th>类型</th>
+            <th>替换词</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+      </table>
+
     </div>
   </div>
 </template>
