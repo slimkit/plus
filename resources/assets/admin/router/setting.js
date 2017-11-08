@@ -15,101 +15,23 @@ import Tags from '../component/setting/Tags';
 import TagCategories from '../component/setting/TagCategories';
 import AddTag from '../component/setting/AddTag';
 import UpdateTag from '../component/setting/UpdateTag';
-import FilterWordCategories from '../component/setting/FilterWordCategories';
-import AddFilterWordCategory from '../component/setting/AddFilterWordCategory';
-import UpdateFilterWordCategory from '../component/setting/UpdateFilterWordCategory';
-import FilterWordTypes from '../component/setting/FilterWordTypes';
-import AddFilterWordType from '../component/setting/AddFilterWordType';
-import UpdateFilterWordType from '../component/setting/UpdateFilterWordType';
-import SensitiveWords from '../component/setting/SensitiveWords';
-import AddSensitiveWord from '../component/setting/AddSensitiveWord';
-import UpdateSensitiveWord from '../component/setting/UpdateSensitiveWord';
 import Site from '../component/setting/Site';
 
 const settingRouter = {
   path: 'setting',
   component: Setting,
   children: [
-    {
-      path: '',
-      component: Base,
-    },
-    {
-      path: 'area',
-      component: Area
-    },
-    {
-      path: 'hots',
-      component: Hots
-    },
-    {
-      path: 'mail',
-      component: Mail
-    },
-    {
-      path: 'sendmail',
-      component: SendMail
-    },
-    {
-      path: 'tags',
-      component: Tags
-    },
-    {
-      path: 'tag-categories',
-      component: TagCategories
-    },
-    {
-      path: 'addtag',
-      component: AddTag
-    },
-    {
-      path: 'updatetag/:tag_id',
-      component: UpdateTag
-    },
-    {
-      path: 'server',
-      component: Server
-    },
-    {
-      path: 'filter-word-categories',
-      component: FilterWordCategories,
-    },
-    {
-      path: 'filter-word-categories/add',
-      component: AddFilterWordCategory,
-    },
-    {
-      path: 'filter-word-categories/:id',
-      component: UpdateFilterWordCategory,
-    },
-    {
-      path: 'filter-word-types',
-      component: FilterWordTypes,
-    },
-    {
-      path: 'filter-word-types/add',
-      component: AddFilterWordType,
-    },
-    {
-      path: 'filter-word-types/:id',
-      component: UpdateFilterWordType,
-    },
-    {
-      path: 'sensitive-words',
-      component: SensitiveWords
-    },
-    {
-      path: 'sensitive-words/add',
-      component: AddSensitiveWord,
-    },
-    {
-      path: 'sensitive-words/:id',
-      component: UpdateSensitiveWord,
-    },
-    {
-      path: 'site',
-      component: Site,
-    }
+    { path: '', component: Base },
+    { path: 'area', component: Area },
+    { path: 'hots', component: Hots },
+    { path: 'mail', component: Mail },
+    { path: 'sendmail', component: SendMail },
+    { path: 'tags', component: Tags },
+    { path: 'tag-categories', component: TagCategories },
+    { path: 'addtag', component: AddTag },
+    { path: 'updatetag/:tag_id', component: UpdateTag },
+    { path: 'server', component: Server },
+    { path: 'site', component: Site, }
   ]
 };
 
