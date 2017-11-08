@@ -97,6 +97,18 @@ Route::group([
         $route->get('/alioss', 'CdnController@alioss');
         $route->post('/alioss', 'CdnController@setAlioss');
     });
+
+    /* 敏感词路由 */
+    // @Route /admin/sensitives
+    $route->group(['prefix' => 'sensitives'], function (RouteRegisterContract $route) {
+
+        /**
+         * 创建敏感词。
+         *
+         * @post /admin/sensitives
+         */
+        $route->post('/', 'SensitiveController@store');
+    });
 });
 
 Route::middleware('auth:web')
