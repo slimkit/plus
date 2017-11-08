@@ -97,7 +97,9 @@ class AliOss implements FileUrlGeneratorContract
                 $delete[] = $object->getKey();
             }
 
-            $this->client->deleteObjects($this->bucket, $delete);
+            if ($delete) {
+                $this->client->deleteObjects($this->bucket, $delete);
+            }
         }
     }
 
