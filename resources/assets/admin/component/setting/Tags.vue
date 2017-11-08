@@ -42,6 +42,12 @@
             <input type="text" class="form-control" placeholder="标签名检索" v-model="keyword">
           </div>
           <div class="form-group">
+            <select class="form-control" v-model="category" v-show="categories.length">
+              <option value="">全部</option>
+              <option v-for="category in categories" :value="category.id">{{ category.name }}</option>
+            </select>
+          </div>
+          <div class="form-group">
               <router-link class="btn btn-default" tag="button" :to="{ path: '/setting/tags', query: searchQuery }">
                 搜索
               </router-link>
@@ -71,11 +77,7 @@
               <tr v-for="tag in tags" :key="tag.id">
                 <td>{{ tag.id }}</td>
                 <td>{{ tag.name }}</td>
-                <td>
-                  <router-link :to="`/setting/tags?cate=${ tag.category.id }`">
-                    {{ tag.category.name }}
-                  </router-link>
-                </td>
+                <td>{{ tag.category.name }}</td>
                 <td>{{ tag.taggable_count }}</td>
                 <td>{{ tag.weight }}</td>
                 <td>
@@ -133,7 +135,9 @@
       message: {
         error: null,
         success: null,
-      }
+      },
+      categories: [],
+      category: '',
     }),
     methods: {
       getTags () {
@@ -149,6 +153,18 @@
           this.loadding = false;
         }).catch(({ response: { data: { message = '加载失败' } = {} } = {} }) => {
           this.loadding = false;
+          let Message = new plusMessageBundle(data);
+          this.message.error = Message.getMessage();
+        });
+      },
+
+      getTagCategories () {
+        request.get(createRequestURI(`site/tags/categories`) , {
+        }, {
+          validateStatus: status => status === 200
+        }).then(({ data = {} }) => {
+          this.categories = data;
+        }).catch(({ response: { data: { message = '加载失败' } = {} } = {} }) => {
           let Message = new plusMessageBundle(data);
           this.message.error = Message.getMessage();
         });
@@ -204,8 +220,8 @@
         return !(this.tags.length > 0);
       },
       queryParams () {
-        const { per_page, page, cate, keyword } = this;
-        return { per_page, page, cate, keyword };
+        const { per_page, page, keyword, category } = this;
+        return { per_page, page, keyword, category };
       },
       prevQuery () {
         const page = parseInt(this.page);
@@ -226,8 +242,8 @@
       },
       searchQuery () {
         this.page = 1;
-        const { per_page, page, cate, keyword } = this;
-        return { per_page, page, cate, keyword };
+        const { per_page, page, category, keyword } = this;
+        return { per_page, page, category, keyword };
       }
     },
 
@@ -236,16 +252,17 @@
         last_page = 1,
         page = 1,
         per_page = 20,
-        cate = 0,
         keyword = '',
+        category = '',
       } = this.$route.query;
       // set state.
       this.last_page = last_page;
       this.current_page = page;
       this.per_page = per_page;
-      this.cate = cate;
       this.keyword = keyword;
+      this.category = category;
       this.getTags();
+      this.getTagCategories();
     }
   }
 

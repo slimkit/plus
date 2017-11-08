@@ -21,7 +21,7 @@ class TagController extends Controller
     {
         $page = $request->input('page', 1);
         $limit = $request->input('per_page', 20);
-        $cate = $request->input('cate', 0);
+        $cate = $request->input('category', 0);
         $keyword = $request->input('keyword');
 
         $tags = $tag_model
