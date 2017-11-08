@@ -131,6 +131,7 @@ class FindUserController extends Controller
                 $users->map(function ($user) use ($user_id) {
                     $user->user->following = $user->user->hasFollwing($user_id);
                     $user->user->follower = $user->user->hasFollower($user_id);
+                    $user->user->load('tags');
 
                     return $user->user;
                 })
@@ -142,6 +143,7 @@ class FindUserController extends Controller
             ->when($offset, function ($query) use ($offset) {
                 return $query->offset($offset);
             })
+            ->with('tags')
             ->limit($limit)
             ->orderBy('id', 'desc')
             ->get();
