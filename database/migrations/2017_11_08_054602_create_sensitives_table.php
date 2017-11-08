@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSensitivesTables extends Migration
+class CreateSensitivesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,16 +14,16 @@ class CreateSensitivesTables extends Migration
     public function up()
     {
         Schema::create('sensitives', function (Blueprint $table) {
-            $table->increments('id')->comment('primary key');
-            $table->string('sensitive', 20)->comment('sensitive word');
+            $table->increments('id');
+            $table->string('word', 100)->comment('敏感词');
+            $table->enum('type', ['replace', 'warning'])->comment('类型');
+            $table->string('replace', 100)->nullable()->default(null)->comment('替换类型需要替换的文本');
             $table->timestamps();
-            $table->index('sensitive');
-            $table->unique('sensitive');
         });
     }
 
     /**
-     * delete table.
+     * Reverse the migrations.
      *
      * @return void
      */
