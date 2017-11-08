@@ -102,7 +102,7 @@ Route::group([
     // @Route /admin/sensitives
     $route->group(['prefix' => 'sensitives'], function (RouteRegisterContract $route) {
 
-        /**
+        /*
          * 创建敏感词。
          *
          * @post /admin/sensitives
