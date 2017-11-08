@@ -14,7 +14,6 @@ class DatabaseSeeder extends Seeder
         $this->call(UsersTableSeeder::class);
         $this->call(UserProfileSettingsTableSeeder::class);
         $this->call(UserProfileSettingLinksTableSeeder::class);
-        $this->call(SensitivesTableSeeder::class); //敏感词
         $this->call(CertificationCategoryTableSeeder::class); // 用户认证类型
         $this->call(AdvertisingSpaceTableSeeder::class); // 广告位类型
 
