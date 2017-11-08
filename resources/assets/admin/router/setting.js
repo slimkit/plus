@@ -17,6 +17,9 @@ import AddTag from '../component/setting/AddTag';
 import UpdateTag from '../component/setting/UpdateTag';
 import Site from '../component/setting/Site';
 
+// Pages
+import Sensitive from '../components/pages/Sensitive';
+
 const settingRouter = {
   path: 'setting',
   component: Setting,
@@ -31,7 +34,8 @@ const settingRouter = {
     { path: 'addtag', component: AddTag },
     { path: 'updatetag/:tag_id', component: UpdateTag },
     { path: 'server', component: Server },
-    { path: 'site', component: Site, }
+    { path: 'site', component: Site },
+    { path: 'sensitives', component: Sensitive },
   ]
 };
 
