@@ -22,6 +22,9 @@
 <script>
 export default {
   name: 'module-sensitive-store',
+  props: {
+    handleAppend: { type: Function, required: true },
+  },
   data: () => ({
     form: {
       word: null,
