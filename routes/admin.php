@@ -115,6 +115,13 @@ Route::group([
          * @post /admin/sensitives
          */
         $route->post('/', 'SensitiveController@store');
+
+        /*
+         * Update a sensitive.
+         *
+         * @put /admin/sensitives/:sensitive
+         */
+        $route->put('/:sensitive', 'SensitiveController@update');
     });
 });
 

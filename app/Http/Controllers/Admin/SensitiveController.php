@@ -6,9 +6,17 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Sensitive as SensitiveModel;
 use Zhiyi\Plus\Http\Requests\Admin\CreateSensitive as CreateSensitiveRequest;
+use Zhiyi\Plus\Http\Requests\Admin\UpdateSensitive as UpdateSensitiveRequest;
 
 class SensitiveController extends Controller
 {
+    /**
+     * List all sensitives.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function index(Request $request)
     {
         $limit = (int) $request->query('limit', 15);
@@ -49,5 +57,27 @@ class SensitiveController extends Controller
         $sensitive->save();
 
         return response(['message' => '添加成功！', 'sensitive' => $sensitive], 201);
+    }
+
+    /**
+     * Uodate a sensitive.
+     *
+     * @param \Zhiyi\Plus\Http\Requests\Admin\UpdateSensitive $request
+     * @param \Zhiyi\Plus\Models\Sensitive $sensitive
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function update(UpdateSensitiveRequest $request, SensitiveModel $sensitive)
+    {
+        $word = $request->input('word');
+        $type = $request->input('type');
+        $replace = $request->input('replace');
+
+        $sensitive->word = $word;
+        $sensitive->type = $type;
+        $sensitive->replace = $type === 'replace' ? $replace : null;
+        $sensitive->save();
+
+        return response()->json(['message' => '修改成功', 'sensitive' => $sensitive], 201);
     }
 }
