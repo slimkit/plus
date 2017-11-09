@@ -2,12 +2,33 @@
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Sensitive as SensitiveModel;
 use Zhiyi\Plus\Http\Requests\Admin\CreateSensitive as CreateSensitiveRequest;
 
 class SensitiveController extends Controller
 {
+    public function index(Request $request)
+    {
+        $limit = (int) $request->query('limit', 15);
+        $offset = (int) $request->query('offset', 0);
+        $type = $request->query('type');
+        $word = $request->query('word');
+
+        $sensitives = SensitiveModel::when(in_array($type, ['warning', 'replace']), function ($query) use ($type) {
+            return $query->where('type', $type);
+        })
+        ->when((bool) $word, function ($query) use ($word) {
+            return $query->where('word', 'like', sprintf('%%%s%%', $word));
+        })
+        ->limit($limit)
+        ->offset($offset)
+        ->get();
+
+        return response()->json($sensitives, 200);
+    }
+
     /**
      * Create a sensitive.
      *

@@ -103,6 +103,13 @@ Route::group([
     $route->group(['prefix' => 'sensitives'], function (RouteRegisterContract $route) {
 
         /*
+         * 获取敏感词列表
+         * 
+         * @get /admin/sensitves
+         */
+        $route->get('/', 'SensitiveController@index');
+
+        /*
          * 创建敏感词。
          *
          * @post /admin/sensitives

@@ -21,6 +21,7 @@
 
 <script>
 import request, { createRequestURI } from '../../../util/request';
+import { plusMessageFirst } from '../../../filters';
 export default {
   name: 'module-sensitive-store',
   props: {
@@ -52,8 +53,8 @@ export default {
         this.form = { word: null, type: 'warning', replace: null };
         stopProcessing();
         this.submitting = false;
-      }).catch(({ response: { data: { message = '提交失败！' } ={} } = {} }) => {
-        alert(message);
+      }).catch(({ response: { data } = {} }) => {
+        alert(plusMessageFirst(data, '添加失败！'));
         stopProcessing();
         this.submitting = false;
       });

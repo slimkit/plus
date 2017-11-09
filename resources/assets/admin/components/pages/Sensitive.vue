@@ -17,6 +17,7 @@
       <module-sensitive-list
         v-if="! loading"
         :handle-append="handleAppend"
+        :sensitives="sensitives"
       ></module-sensitive-list>
 
     </div>
@@ -26,6 +27,8 @@
 <script>
 import lodash from 'lodash';
 import components from '../modules/sensitive';
+import request, { createRequestURI } from '../../util/request';
+import { plusMessageFirst } from '../../filters';
 export default {
   name: 'page-sensitive',
   components,
@@ -56,7 +59,22 @@ export default {
 
     handleAppend (sensitive) {
       this.sensitives = [ ...this.sensitives, sensitive ];
+    },
+
+    fetchSensitives (query = {}) {
+      this.loading = true;
+      request.get(createRequestURI('sensitives'), {
+        validateStatus: status => status === 200,
+      }).then(({ data }) => {
+        this.sensitives = data;
+        this.loading = false;
+      }).catch(({ response: { data } = {} }) => alert(plusMessageFirst(data, '加载数据失败，请刷新重试！')));
     }
   },
+  created () {
+    this.fetchSensitives(
+      this.$route.query
+    );
+  }
 };
 </script>
