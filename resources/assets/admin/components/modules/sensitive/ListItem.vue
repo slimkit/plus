@@ -28,6 +28,7 @@ export default {
   props: {
     sensitive: { type: Object, required: true },
     handleChange: { type: Function, required: true },
+    handleDelete: { type: Function, required: true },
   },
   data: () => ({
     form: {
@@ -75,6 +76,18 @@ export default {
 
         return ;
       }
+
+      this.submitting = true;
+      request.delete(createRequestURI(`sensitives/${this.sensitive.id}`), {
+        validateStatus: status => status === 204
+      }).then(() => {
+        this.submitting = false;
+        this.handleDelete(this.sensitive.id);
+      }).catch(({ response: { data } = {} }) => {
+        this.submitting = false;
+        stopProcessing();
+        alert(plusMessageFirst(data, '删除失败！'));
+      });
     },
   },
   created () {

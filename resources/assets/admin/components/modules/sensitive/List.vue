@@ -17,6 +17,7 @@
         :key="sensitive.id"
         :sensitive="sensitive"
         :handle-change="handleChange"
+        :handle-delete="handleDelete"
       >
       </module-sensitive-list-item>
 

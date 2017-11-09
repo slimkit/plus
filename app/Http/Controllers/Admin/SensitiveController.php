@@ -84,4 +84,18 @@ class SensitiveController extends Controller
 
         return response()->json(['message' => '修改成功', 'sensitive' => $sensitive], 201);
     }
+
+    /**
+     * Destroy a sensitive.
+     *
+     * @param \Zhiyi\Plus\Models\Sensitive $sensitive
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function destroy(SensitiveModel $sensitive)
+    {
+        $sensitive->delete();
+
+        return response(null, 204);
+    }
 }

@@ -122,6 +122,13 @@ Route::group([
          * @put /admin/sensitives/:sensitive
          */
         $route->patch('/{sensitive}', 'SensitiveController@update');
+
+        /*
+         * destroy a sensitive.
+         *
+         * @delete /admin/sensitives/:sensitive
+         */
+        $route->delete('/{sensitive}', 'SensitiveController@destroy');
     });
 });
 
