@@ -63,7 +63,14 @@ class AdvertisingController extends Controller
     {
         $this->validate($request, $this->basisRule(), $this->basisMsg());
 
-        $this->validate($request, $this->dataRule(), $this->dataMsg());
+        $space = new AdvertisingSpace();
+        $space = $space->find($request->input('space_id'));
+
+        if (! $space) {
+            return response()->json(['message' => ['所属广告位不存在']], 404);
+        }
+
+        $this->checkData($space, $request);
 
         $formData = $request->all();
 
@@ -74,7 +81,7 @@ class AdvertisingController extends Controller
         $model->sort = $formData['sort'];
         $model->space_id = $formData['space_id'];
 
-        $model->data = $this->byAdTypeGetData($formData['type'], $formData['data']);
+        $model->data = $this->formatData($space, $formData['data'], $formData['type']);
 
         if ($model->save()) {
             return response()->json([
@@ -97,7 +104,14 @@ class AdvertisingController extends Controller
     {
         $this->validate($request, $this->basisRule(), $this->basisMsg());
 
-        $this->validate($request, $this->dataRule(), $this->dataMsg());
+        $space = new AdvertisingSpace();
+        $space = $space->find($request->input('space_id'));
+
+        if (! $space) {
+            return response()->json(['message' => ['所属广告位不存在']], 404);
+        }
+
+        $this->checkData($space, $request);
 
         $formData = $request->all();
 
@@ -106,7 +120,7 @@ class AdvertisingController extends Controller
         $ad->sort = $formData['sort'];
         $ad->space_id = $formData['space_id'];
 
-        $ad->data = $this->byAdTypeGetData($formData['type'], $formData['data']);
+        $ad->data = $this->formatData($space, $formData['data'], $formData['type']);
 
         if ($ad->save()) {
             return response()->json(['message' => ['更新广告成功']], 201);
@@ -220,6 +234,64 @@ class AdvertisingController extends Controller
            'data.title.required' => '标题必填',
            'data.name.required' => '用户名必填',
         ];
+    }
+
+    /**
+     * 验证广告详细数据.
+     *
+     * @param AdvertisingSpace $space
+     * @param Request $request
+     * @return mixed
+     * @author BS <414606094@qq.com>
+     */
+    protected function checkData(AdvertisingSpace $space, Request $request)
+    {
+        $rules = collect($space->rule[$request->input('type')])->mapWithKeys(function($rule, $key) {
+            $key = 'data.'.$key;
+
+            return [$key => $rule];
+        })->toArray();
+
+        $messages = collect($space->message[$request->input('type')])->mapWithKeys(function($message, $key) {
+            $key = 'data.'.$key;
+
+            return [$key => $message];
+        })->toArray(); 
+
+        $this->validate($request, $rules, $messages);
+    }
+
+    protected function formatData(AdvertisingSpace $space, array $data = [], string $type)
+    {
+        $format = collect($space->format[$type])->map(function ($value) {
+            return explode('|', $value);
+        });
+
+        // 不传data时，只返回当前广告位格式
+        if (empty($data)) {
+            return $format->toArray();
+        }
+
+        return collect($data)->map(function($value, $key) use ($format) {
+            if ($format->has($key)) {
+                switch ($format->get($key)[1]) {
+                    case 'string':
+                        $value = (string) $value;
+                        break;
+                    case 'integer':
+                        $value = (int) $value;
+                        break;
+                    case 'int':
+                        $value = (int) $value;
+                        break;
+                    case 'date':
+                        $value = Carbon::parse($value)->toDateTimeString();
+                        break;
+                }
+
+                return $value;
+            }
+        })->filter();
     }
 
     /**

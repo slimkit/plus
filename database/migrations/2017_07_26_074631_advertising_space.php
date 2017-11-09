@@ -20,6 +20,8 @@ class AdvertisingSpace extends Migration
             $table->string('alias')->comment('广告位别名');
             $table->string('allow_type')->comment('允许的广告类型');
             $table->text('format')->comment('广告数据格式');
+            $table->text('rule')->comment('广告位表单验证规则');
+            $table->text('message')->comment('广告位表单验证提示');
             $table->timestamps();
 
             $table->index('channel');
