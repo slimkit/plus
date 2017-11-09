@@ -18,7 +18,7 @@ class AdvertisingController extends Controller
      */
     public function index(Request $request, AdvertisingSpace $space)
     {
-        $space = $space->get();
+        $space = $space->select('id', 'channel', 'space', 'alias', 'allow_type', 'format', 'created_at', 'updated_at')->get();
 
         return response()->json($space, 200);
     }
