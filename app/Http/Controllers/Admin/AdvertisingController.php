@@ -246,17 +246,17 @@ class AdvertisingController extends Controller
      */
     protected function checkData(AdvertisingSpace $space, Request $request)
     {
-        $rules = collect($space->rule[$request->input('type')])->mapWithKeys(function($rule, $key) {
+        $rules = collect($space->rule[$request->input('type')])->mapWithKeys(function ($rule, $key) {
             $key = 'data.'.$key;
 
             return [$key => $rule];
         })->toArray();
 
-        $messages = collect($space->message[$request->input('type')])->mapWithKeys(function($message, $key) {
+        $messages = collect($space->message[$request->input('type')])->mapWithKeys(function ($message, $key) {
             $key = 'data.'.$key;
 
             return [$key => $message];
-        })->toArray(); 
+        })->toArray();
 
         $this->validate($request, $rules, $messages);
     }
@@ -272,7 +272,7 @@ class AdvertisingController extends Controller
             return $format->toArray();
         }
 
-        return collect($data)->map(function($value, $key) use ($format) {
+        return collect($data)->map(function ($value, $key) use ($format) {
             if ($format->has($key)) {
                 switch ($format->get($key)[1]) {
                     case 'string':

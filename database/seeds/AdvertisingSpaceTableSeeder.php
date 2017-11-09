@@ -29,7 +29,7 @@ class AdvertisingSpaceTableSeeder extends Seeder
                     'image' => 'required|url',
                     'link' => 'required|url',
                     'duration' => 'required',
-                ]
+                ],
             ],
             'message' => [
                 'image' => [
@@ -38,7 +38,7 @@ class AdvertisingSpaceTableSeeder extends Seeder
                     'link.required' => '广告位链接不能为空',
                     'link.url' => '广告位链接格式错误',
                     'duration' => '启动图广告时长不能为空',
-                ]
+                ],
             ],
         ]);
     }
