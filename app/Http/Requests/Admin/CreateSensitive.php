@@ -23,12 +23,12 @@ class CreateSensitive extends FormRequest
      * @return array
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function roles(): array
+    public function rules(): array
     {
         return [
             'word' => 'required|string|unique:sensitives,word',
-            'type' => 'required|string|in_array:replace,warning',
-            'replace' => 'required_if:type,replace|string',
+            'type' => 'required|string|in:replace,warning',
+            'replace' => 'required_if:type,replace|nullable|string',
         ];
     }
 }

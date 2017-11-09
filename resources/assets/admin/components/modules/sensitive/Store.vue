@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import request, { createRequestURI } from '../../../util/request';
 export default {
   name: 'module-sensitive-store',
   props: {
@@ -42,11 +43,20 @@ export default {
   },
   methods: {
     handleStore ({ stopProcessing }) {
-      this.submitting = true
-      setTimeout(() => {
+      this.submitting = true;
+
+      request.post(createRequestURI('sensitives'), this.form, {
+        validateStatus: status => status === 201,
+      }).then(({ data: { sensitive } }) => {
+        this.handleAppend(sensitive);
+        this.form = { word: null, type: 'warning', replace: null };
         stopProcessing();
         this.submitting = false;
-      }, 3000);
+      }).catch(({ response: { data: { message = '提交失败！' } ={} } = {} }) => {
+        alert(message);
+        stopProcessing();
+        this.submitting = false;
+      });
     }
   },
 };

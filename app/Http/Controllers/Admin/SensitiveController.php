@@ -25,7 +25,8 @@ class SensitiveController extends Controller
         $sensitive->word = $word;
         $sensitive->type = $type;
         $sensitive->replace = $type === 'replace' ? $replace : null;
+        $sensitive->save();
 
-        return response(['message' => '添加成功！', 'sensitive' => $sensitive]);
+        return response(['message' => '添加成功！', 'sensitive' => $sensitive], 201);
     }
 }

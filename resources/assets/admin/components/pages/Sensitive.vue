@@ -15,7 +15,7 @@
 
       <!-- Table. -->
       <module-sensitive-list
-        v-show="! loading"
+        v-if="! loading"
         :handle-append="handleAppend"
       ></module-sensitive-list>
 
