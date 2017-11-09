@@ -24,17 +24,22 @@ class SensitiveController extends Controller
         $type = $request->query('type');
         $word = $request->query('word');
 
-        $sensitives = SensitiveModel::when(in_array($type, ['warning', 'replace']), function ($query) use ($type) {
+        $query = SensitiveModel::when(in_array($type, ['warning', 'replace']), function ($query) use ($type) {
             return $query->where('type', $type);
         })
         ->when((bool) $word, function ($query) use ($word) {
             return $query->where('word', 'like', sprintf('%%%s%%', $word));
-        })
-        ->limit($limit)
-        ->offset($offset)
-        ->get();
+        });
 
-        return response()->json($sensitives, 200);
+        $total = (clone $query)->count();
+        $sensitives = $query->limit($limit)
+            ->offset($offset)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return response()->json($sensitives, 200, [
+            'x-total' => $total,
+        ]);
     }
 
     /**

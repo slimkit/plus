@@ -22,6 +22,17 @@
         :sensitives="sensitives"
       ></module-sensitive-list>
 
+      <div class="panel-body">
+        <ui-offset-paginator class="pagination" :total="total" :offset="offset" :limit="limit">
+          <template slot-scope="pagination">
+            <li :class="(pagination.disabled ? 'disabled': '') + (pagination.currend ? 'active' : '')">
+              <span v-if="pagination.disabled || pagination.currend">{{ pagination.page }}</span>
+              <router-link v-else :to="buildRoute(pagination.offset)">{{ pagination.page }}</router-link>
+            </li>
+          </template>
+        </ui-offset-paginator>
+      </div>
+
     </div>
   </div>
 </template>
@@ -37,7 +48,19 @@ export default {
   data: () => ({
     sensitives: [],
     loading: false,
+    limit: 15,
+    offset: 0,
+    total: 0,
   }),
+  watch: {
+    '$route': function ({ query }) {
+      const { offset } = query;
+      this.offset = parseInt(offset);
+
+      this.total = 0;
+      this.fetchSensitives(query);
+    }
+  },
   methods: {
     handleChange ({ id, ...sensitive }) {
       this.sensitives = lodash.map(this.sensitives, (item) => {
@@ -67,13 +90,33 @@ export default {
       this.loading = true;
       request.get(createRequestURI('sensitives'), {
         validateStatus: status => status === 200,
-      }).then(({ data }) => {
+        params: { ...query, limit: this.limit, offset: this.offset },
+      }).then(({ data, headers: { 'x-total': total = 0 } }) => {
         this.sensitives = data;
         this.loading = false;
+        this.total = parseInt(total);
       }).catch(({ response: { data } = {} }) => alert(plusMessageFirst(data, '加载数据失败，请刷新重试！')));
-    }
+    },
+
+    buildRoute (offset) {
+      let query = { offset };
+      const { word, type } = this.$route;
+
+      if (word) {
+        query.word = word;
+      }
+
+      if (type === 'replace' || type === 'warning') {
+        query.type = type;
+      }
+
+      return { path: '/setting/sensitives', query };
+    },
   },
   created () {
+    const { offset = 0 } = this.$route;
+    this.offset = parseInt(offset);
+
     this.fetchSensitives(
       this.$route.query
     );
