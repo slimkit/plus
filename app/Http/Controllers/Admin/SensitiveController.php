@@ -73,6 +73,10 @@ class SensitiveController extends Controller
         $type = $request->input('type');
         $replace = $request->input('replace');
 
+        if ($word !== $sensitive->word && SensitiveModel::where('word', $word)->first()) {
+            return response()->json(['message' => '敏感词已存在！'], 422);
+        }
+
         $sensitive->word = $word;
         $sensitive->type = $type;
         $sensitive->replace = $type === 'replace' ? $replace : null;

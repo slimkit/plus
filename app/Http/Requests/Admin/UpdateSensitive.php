@@ -26,7 +26,7 @@ class UpdateSensitive extends FormRequest
     public function rules(): array
     {
         return [
-            'word' => 'required|string|unique:sensitives,word',
+            'word' => 'required|string',
             'type' => 'required|string|in:replace,warning',
             'replace' => 'required_if:type,replace|nullable|string',
         ];

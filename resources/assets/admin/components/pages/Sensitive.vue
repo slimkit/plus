@@ -17,6 +17,8 @@
       <module-sensitive-list
         v-if="! loading"
         :handle-append="handleAppend"
+        :handle-change="handleChange"
+        :handle-delete="handleDelete"
         :sensitives="sensitives"
       ></module-sensitive-list>
 

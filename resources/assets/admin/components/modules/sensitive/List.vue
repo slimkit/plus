@@ -12,7 +12,13 @@
     <tbody>
 
       <!-- Foreach list. -->
-      <module-sensitive-list-item v-for="sensitive in sensitives" :key="sensitive.id" :sensitive="sensitive"></module-sensitive-list-item>
+      <module-sensitive-list-item
+        v-for="sensitive in sensitives"
+        :key="sensitive.id"
+        :sensitive="sensitive"
+        :handle-change="handleChange"
+      >
+      </module-sensitive-list-item>
 
       <!-- Store. -->
       <module-sensitive-store :handle-append="handleAppend"></module-sensitive-store>
@@ -32,6 +38,8 @@ export default {
   props: {
     sensitives: { type: Array, default: () => ([]) },
     handleAppend: { type: Function, required: true },
+    handleChange: { type: Function, required: true },
+    handleDelete: { type: Function, required: true },
   },
 };
 </script>

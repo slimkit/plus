@@ -21,10 +21,13 @@
 </template>
 
 <script>
+import request, { createRequestURI } from '../../../util/request';
+import { plusMessageFirst } from '../../../filters';
 export default {
   name: 'module-sensitive-list-item',
   props: {
     sensitive: { type: Object, required: true },
+    handleChange: { type: Function, required: true },
   },
   data: () => ({
     form: {
@@ -42,13 +45,41 @@ export default {
     }
   },
   methods: {
-    submitChange ({ stopProcessing }) {},
-    submitDelete ({ stopProcessing }) {},
+    submitChange ({ stopProcessing }) {
+
+      if (this.submitting === true) {
+        alert('正在等待其他操作完成！');
+        stopProcessing();
+
+        return ;
+      }
+
+      this.submitting = true;
+      request.patch(createRequestURI(`sensitives/${this.sensitive.id}`), this.form, {
+        validateStatus: status => status === 201,
+      }).then(({ data: { sensitive } }) => {
+        this.submitting = false;
+        stopProcessing();
+        this.handleChange(sensitive);
+      }).catch(({ response: { data } = {} }) => {
+        this.submitting = false;
+        stopProcessing();
+        alert(plusMessageFirst(data, '更新失败！'));
+      });
+    },
+    submitDelete ({ stopProcessing }) {
+      
+      if (this.submitting === true) {
+        alert('正在等待其他操作完成！');
+        stopProcessing();
+
+        return ;
+      }
+    },
   },
   created () {
     const { word, type, replace } = this.sensitive;
     this.form = { word, type, replace };
-    console.log(this);
   }
 };
 </script>

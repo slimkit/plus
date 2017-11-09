@@ -121,7 +121,7 @@ Route::group([
          *
          * @put /admin/sensitives/:sensitive
          */
-        $route->put('/:sensitive', 'SensitiveController@update');
+        $route->patch('/{sensitive}', 'SensitiveController@update');
     });
 });
 
