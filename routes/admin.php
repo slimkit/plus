@@ -104,7 +104,7 @@ Route::group([
 
         /*
          * 获取敏感词列表
-         * 
+         *
          * @get /admin/sensitves
          */
         $route->get('/', 'SensitiveController@index');
