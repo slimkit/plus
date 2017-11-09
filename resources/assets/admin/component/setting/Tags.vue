@@ -191,7 +191,7 @@
         })
         .catch(({ response: { data: { message  = '加载失败' } = {} } = {} }) => {
           this.error = true;
-          this.message = message;
+          this.message.error = message;
         })
       }
       

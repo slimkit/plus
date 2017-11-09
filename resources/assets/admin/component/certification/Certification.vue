@@ -86,7 +86,7 @@
                               <td>
                                   <router-link type="button"
                                   class="btn btn-primary btn-sm"
-                                  v-show="certification.status === 1"
+                                  v-show="certification.status === 1 || certification.status == 2"
                                   :to="{ name: 'certification:edit', params:{certification:certification.id}}">编辑</router-link>
                                   <button class="btn btn-primary btn-sm" 
                                   v-show="certification.status === 0" 
@@ -194,12 +194,12 @@ const certificationComponent = {
           success: null,
         },
         statuss: {
-          display: ['待审核', '通过' , '拒绝'],
+          display: ['待审核', '已审核' , '已驳回'],
           data:[
             {status: '全部', value: ''},
             {status: '待审核', value: 0},
-            {status: '通过', value: 1},
-            {status: '拒绝', value: 2},
+            {status: '已审核', value: 1},
+            {status: '已驳回', value: 2},
           ]
         },
     }),

@@ -186,6 +186,7 @@ class CertificationController extends Controller
 
         $certification->data = array_merge($certification->data, array_filter($updateData));
         $certification->status = 1;
+        $certification->certification_name = $type;
 
         return $certification->getConnection()->transaction(function () use ($files, $type, $certification) {
             $files->each(function ($file) use ($certification) {
