@@ -62,5 +62,6 @@ class Kernel extends HttpKernel
         'guest'      => \Zhiyi\Plus\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle'   => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'ability'    => \Zhiyi\Plus\Http\Middleware\UserAbility::class,
+        'sensitive'  => \Zhiyi\Plus\Http\Middleware\DisposeSensitive::class,
     ];
 }
