@@ -24,7 +24,6 @@ class DisposeSensitive
         $warnings = SensitiveModel::where('type', 'warning')->get();
         foreach ($map as $key => $value) {
             foreach ($warnings as $sensitive) {
-
                 if (strpos((string) $value, $sensitive->word) >= 0) {
                     continue;
                 }
