@@ -140,6 +140,7 @@ const MailComponent = {
     },
     submitHandle() {
       this.submit.state = true;
+      this.options.driver = 'smtp';
       request.patch(
         createRequestURI('site/mail'),
         this.options,
