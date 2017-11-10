@@ -35,7 +35,7 @@ class VerificationCodeMessage extends Message
     {
         $alias = $this->gatewayAliasName($gateway);
 
-        return str_replace(':code', $this->code, $this->config($alias.'.content'));
+        return str_replace(':code', $this->code, $this->config->get($alias.'.content'));
     }
 
     /**
