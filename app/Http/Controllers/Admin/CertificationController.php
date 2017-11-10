@@ -40,7 +40,7 @@ class CertificationController extends Controller
         });
 
         $total = $query->count('id');
-        $items = $query->orderBy('id', 'desc')
+        $items = $query->orderBy('updated_at', 'desc')
         ->limit($limit)
         ->offset($offset)
         ->get();
