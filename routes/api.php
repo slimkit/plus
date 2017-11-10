@@ -166,7 +166,8 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
         | 创建用户
         */
 
-        $api->post('/', API2\UserController::class.'@store');
+        $api->post('/', API2\UserController::class.'@store')
+            ->middleware('sensitive:name');
 
         /*
         | 批量获取用户
