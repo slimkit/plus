@@ -70,13 +70,6 @@ class CertificationController extends Controller
         return $counts;
     }
 
-    protected function transformCertificationCountData($data)
-    {
-        if ($data) {
-        } else {
-        }
-    }
-
     /**
      * certifiction pass.
      *
