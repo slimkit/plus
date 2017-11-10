@@ -75,6 +75,7 @@ return [
     'gateway_aliases' => [
         'aliyun' => \Overtrue\EasySms\Gateways\AliyunGateway::class,
         'alidayu' => \Overtrue\EasySms\Gateways\AlidayuGateway::class,
+        'yunpian' => \Overtrue\EasySms\Gateways\YunpianGateway::class,
     ],
 
     /*
