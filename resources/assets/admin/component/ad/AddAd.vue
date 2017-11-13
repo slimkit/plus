@@ -27,14 +27,6 @@
                   </div>
                   <span class="help-block col-md-3">必选，广告位置</span>
                 </div>
-                <!-- 启动广告时长 -->
-                <div class="form-group" v-show="ad.space_id === 1">
-                  <label class="col-md-2 control-label">广告时长</label>
-                  <div class="col-md-7">
-                    <input type="number" value="" class="form-control" placeholder="广告持续时长，不能小于1" v-model="ad.data.duration">
-                  </div>
-                  <span class="help-block col-md-3">必填，广告时长</span>
-                </div>
                 <!-- 类型 -->
                 <div class="form-group" v-show="ad.space_id">
                   <label class="col-md-2 control-label">类型</label>
@@ -44,6 +36,14 @@
                     </select>
                   </div>
                   <span class="help-block col-md-3">必填，广告类型</span>
+                </div>
+                <!-- 启动广告时长 -->
+                <div class="form-group" v-show="ad.space_id === 1">
+                  <label class="col-md-2 control-label">广告时长</label>
+                  <div class="col-md-7">
+                    <input type="number" value="" class="form-control" placeholder="广告持续时长，不能小于1" v-model="ad.data.duration">
+                  </div>
+                  <span class="help-block col-md-3">必填，广告时长</span>
                 </div>
                 <div v-show="ad.type">
                   <template>
@@ -60,7 +60,7 @@
                             </span>
                           </div>
                         </div>
-                        <span class="help-block col-md-3">必填，头像</span>
+                        <span class="help-block col-md-3">{{ (item.split('|'))[2] }}</span>
                       </div>
                       <!-- 广告名称 -->
                       <div class="form-group" v-else-if="key=='name'">
@@ -68,7 +68,7 @@
                         <div class="col-md-7">
                           <input type="text" class="form-control" v-model="ad.data.name" placeholder="用户名">
                         </div>
-                        <span class="help-block col-md-3">必填，用户名</span>
+                        <span class="help-block col-md-3">{{ (item.split('|'))[2] }}</span>
                       </div>
                       <!-- 广告内容 -->
                       <div class="form-group" v-else-if="key=='content'">
@@ -76,7 +76,7 @@
                         <div class="col-md-7">
                           <textarea class="form-control" v-model="ad.data.content" placeholder="内容"></textarea>
                         </div>
-                        <span class="help-block col-md-3">必填，广告内容描述</span>
+                        <span class="help-block col-md-3">{{ (item.split('|'))[2] }}</span>
                       </div>
                       <!-- 投放时间 -->
                       <div class="form-group" v-else-if="key=='time'">
@@ -84,7 +84,7 @@
                         <div class="col-md-7">
                            <input type="datetime-local" class="form-control" value="1993-02-15" v-model="ad.data.time" placeholder="1990-12-12 12:00:00">
                         </div>
-                        <span class="help-block col-md-3">必填，广告投放时间</span>
+                        <span class="help-block col-md-3">{{ (item.split('|'))[2] }}</span>
                       </div>
                       <!-- 广告来源 -->
                       <div class="form-group" v-else-if="key=='from'">
@@ -92,7 +92,7 @@
                         <div class="col-md-7">
                            <input type="text" class="form-control" v-model="ad.data.from" placeholder="广告来源">
                         </div>
-                        <span class="help-block col-md-3">必填，广告来源</span>
+                        <span class="help-block col-md-3">{{ (item.split('|'))[2] }}</span>
                       </div>
                       <!-- 广告图片 -->
                       <div class="form-group" v-if="key=='image'">
@@ -106,7 +106,7 @@
                             </span>
                           </div>
                         </div>
-                        <span class="help-block col-md-3">必填，广告图</span>
+                        <span class="help-block col-md-3">{{ (item.split('|'))[2] }}</span>
                       </div>
                       <!-- 广告链接 -->
                       <div class="form-group" v-else-if="key=='link'">
@@ -114,7 +114,7 @@
                         <div class="col-md-7">
                           <input type="text" class="form-control" v-model="ad.data.link" placeholder="广告链接">
                         </div>
-                        <span class="help-block col-md-3">必填，广告链接</span>
+                        <span class="help-block col-md-3">{{ (item.split('|'))[2] }}</span>
                       </div>
                       <!-- 广告标题 -->
                       <div class="form-group" v-else-if="key=='title'">
@@ -122,7 +122,7 @@
                         <div class="col-md-7">
                           <input type="text" class="form-control" v-model="ad.data.title" placeholder="标题">
                         </div>
-                        <span class="help-block col-md-3">必填，广告标题</span>
+                        <span class="help-block col-md-3">{{ (item.split('|'))[2] }}</span>
                       </div>
                     </div>
                   </template>
