@@ -17,11 +17,6 @@ use Illuminate\Contracts\Routing\Registrar as RouteContract;
 
 Route::any('/develop', \Zhiyi\Plus\Http\Controllers\DevelopController::class.'@index');
 
-// API version 1.
-Route::prefix('v1')
-    ->namespace('Zhiyi\\Plus\\Http\\Controllers\\APIs\\V1')
-    ->group(base_path('routes/api_v1.php'));
-
 /*
 |--------------------------------------------------------------------------
 | RESTful API version 2.
