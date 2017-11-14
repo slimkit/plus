@@ -32,23 +32,33 @@
                               <div class="col-md-6">
                                 <input type="text" class="form-control" placeholder="用户ID" v-model="certification.user_id" disabled="disabled">
                               </div>
-                              <div class="col-md-6 dropdown" :class="dropdownMenuClass">
-                                  <input type="text" class="form-control" placeholder="输入用户名搜索" @input="searchUser" v-model="username">
-                                  <ul class="dropdown-menu" style="margin-left:15px;max-height: 200px;overflow: auto;">
-                                    <template v-if="users.length">
-                                      <li  v-for="user in users" @click.prevent="choiceUser(user.id)">
-                                        <a href="javascript:;">
-                                          <img :src="user.avatar+'?w=40&height=40'" class="img-circle" :class="$style.avatar" v-if="user.avatar">
-                                          <i class="glyphicon glyphicon-user" v-else></i>
-                                          <span>{{ user.name }}</span>
-                                        </a>
-                                      </li>
-                                    </template>
-                                    <template v-else>
-                                      <li @click.prevent="choiceUser(0)"><a href="javascript:;">无相关记录</a></li>
-                                    </template>
-                                  </ul>
+                              <!-- user search satart -->
+                              <div class="col-md-6">
+                                <div style="position: relative;">
+                                  <input type="text" 
+                                    class="form-control dropdown-toggle" 
+                                    data-toggle="dropdown" 
+                                    aria-haspopup="true" 
+                                    aria-expanded="false"
+                                    v-model="username" 
+                                    @input="searchUser">
+                                    <ul class="dropdown-menu" style="max-height: 200px;overflow: auto;">
+                                      <template v-if="users.length">
+                                        <li  v-for="user in users" @click.prevent="choiceUser(user.id)">
+                                          <a href="javascript:;">
+                                            <img :src="`${user.avatar}?w=40&height=40`" class="img-circle" :class="$style.avatar" v-if="user.avatar">
+                                            <i class="glyphicon glyphicon-user" v-else></i>
+                                            <span>{{ user.name }}</span>
+                                          </a>
+                                        </li>
+                                      </template>
+                                      <template v-else>
+                                        <li @click.prevent="choiceUser(0)"><a href="javascript:;">无相关用户</a></li>
+                                      </template>
+                                    </ul>
+                                </div>
                               </div>
+                              <!-- user search end -->
                           </div>
                         </div>
                      </div>
@@ -165,7 +175,6 @@ const PersonalCertificationEdit = {
         categories: [],
         attachmentUrl: '',
         username: '',
-        dropdownMenuClass: '',
         certification: {
           user_id: '',
           name: '',
@@ -239,7 +248,6 @@ const PersonalCertificationEdit = {
             createRequestURI('find/nocertification/users?keyword=' + this.username),
             { validateStatus: status => status === 200 }
           ).then(response => {
-            this.dropdownMenuClass = 'open';
             this.users = response.data;
           }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {
             this.search.message = message;
@@ -309,7 +317,7 @@ const PersonalCertificationEdit = {
         },
         choiceUser (userId) {
           let id = parseInt(userId);
-          this.dropdownMenuClass = this.username =  '';
+          this.username =  '';
           this.certification.user_id = id ? id : '';
         },
         triggerUpload (type) {
