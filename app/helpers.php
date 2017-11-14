@@ -70,3 +70,45 @@ function findMarkdownImageIDs(string $markdown): array
 
     return $matches[1];
 }
+
+/**
+ * Filter URLs Return part of a string.
+ *
+ * @param string $data
+ * @param int $length
+ * @return string
+ * @author Seven Du <shiweidu@outlook.com>
+ */
+function filterUrlStringLength(string $data, int $length = 0): string
+{
+    if (! $length) {
+        return '';
+    }
+
+    // Match all URLs.
+    preg_match_all('/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/', $data, $matches);
+    $urls = $matches[0] ?? [];
+
+    // Explode data.
+    $data = preg_replace('/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/', '<a>', $data);
+    $data = explode('<a>', $data);
+
+    $value = '';
+    $len = 0;
+    foreach ($data as $key => $str) {
+        if (($len + ($itemLength = mb_strlen($str))) <= $length) {
+            $value .= $str;
+            $value .= $urls[$key] ?? '';
+            $len += $itemLength;
+
+            continue;
+        }
+
+        $limit = $length - $len;
+        $value .= mb_substr($str, 0, $limit);
+
+        break;
+    }
+
+    return $value;
+}
