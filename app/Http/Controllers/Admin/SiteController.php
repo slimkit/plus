@@ -483,6 +483,9 @@ class SiteController extends Controller
         $config->set('site.reward.status', true);
         $config->set('site.reward.amounts', '100,500,1000');
 
+        $config->set('site.anonymous.status', false);
+        $config->set('site.anonymous.rule', '');
+
         $config->set('site.user_invite_template', '我发现了一个全平台社交系统ThinkSNS+，快来加入吧：http://t.cn/RpFfbbi');
 
         $configuration->save($config);

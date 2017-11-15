@@ -32,6 +32,7 @@
                 <span class="help-block">启动规则，用户完成相应的节点操作可以获取对应的奖励，关闭规则，用户完成相应的节点操作不能获取对应的奖励</span>
               </div>
             </div>
+            
             <div class="form-group">
               <label class="control-label col-md-2">打赏</label>
               <div class="col-md-6">
@@ -46,13 +47,37 @@
                 <span class="help-block">用户打赏开启与关闭</span>
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" v-if="site.reward.status">
               <label class="control-label col-md-2">打赏金额</label>
               <div class="col-md-6">
                 <input type="text" class="form-control" v-model="site.reward.amounts">
               </div>
               <div class="col-md-4">
                 <span class="help-block">打赏金额配置，单位(分)。最少为1分，多个金额用英文半角符号“,”分割 例如：5,10,15。</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="" class="control-label col-md-2">匿名开关</label>
+              <div class="col-md-6">
+                <label class="radio-inline">
+                  <input type="radio" :value="radio.on"  v-model="site.anonymous.status" :disabled="!site.status"> 开启
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" :value="radio.off"  v-model="site.anonymous.status" :disabled="!site.status"> 关闭
+                </label>
+              </div>
+              <div class="col-md-4">
+                <span class="help-block">站点是否开启匿名，开启后用户可以选择匿名操作部分内容</span>
+              </div>
+            </div>
+            <div class="form-group" v-if="site.anonymous.status">
+              <label class="control-label col-md-2">匿名规则说明</label>
+              <div class="col-md-6">
+                <textarea class="form-control" v-model="site.anonymous.rule">{{ site.anonymous.rule }} </textarea>
+              </div>
+              <div class="col-md-4">
+                <span class="help-block">用于开启匿名时，给用户说明匿名规则</span>
               </div>
             </div>
             <div class="form-group">
@@ -124,6 +149,10 @@ const Site = {
           reserved_nickname: '',
           client_email: '',
           user_invite_template: '',
+          anonymous: {
+            status: false,
+            rule: ''
+          }
         },
         message: {
           error: null,
