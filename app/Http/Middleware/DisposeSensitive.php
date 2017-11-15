@@ -45,7 +45,9 @@ class DisposeSensitive
         $map = array_map(function ($value) use ($replaces) {
             return strtr((string) $value, $replaces);
         }, $map);
+        $souceInput = $request->except($inputs);
         $request->replace($map);
+        $request->merge($souceInput);
 
         return $next($request);
     }
