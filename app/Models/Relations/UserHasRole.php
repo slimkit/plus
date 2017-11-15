@@ -17,6 +17,3 @@ trait UserHasRole
             ->where('role_id', 1);
     }
 }
-
-
-
