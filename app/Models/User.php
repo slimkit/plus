@@ -26,6 +26,7 @@ class User extends Authenticatable implements ShouldAvatarContract
         Relations\UserHasFollow,
         Relations\UserHasComment,
         Relations\UserHasReward,
+        Relations\UserHasRole,
         Relations\UserHasLike;
 
     /**

@@ -21,6 +21,8 @@
         <blockquote>
           <p>转换比例为「真实货币」如人民币，美元等与钱包系统「用户余额」比例的设置。</p>
           <footer>以「CNY」为例，比例设置为 200% 则充值 1CNY 则得到 2 余额。</footer>
+          <footer>比例计算公式，以下方填写数字1000为例： 如果充值1块钱，则得到的积分为 1 * 1000 / 100</footer>
+          <footer class="text-danger">如果您有移动端APP，请不要随意修改此兑换比例</footer>
         </blockquote>
 
         <!-- 比例 -->
