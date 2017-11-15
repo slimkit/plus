@@ -21,7 +21,7 @@ class WalletCashController extends Controller
     {
         $user = $request->user();
         $after = $request->query('after');
-        $limit = $request->query('limit', 20);
+        $limit = $request->query('limit', 15);
 
         $query = $user->walletCashes();
         $query->where(function (Builder $query) use ($after) {

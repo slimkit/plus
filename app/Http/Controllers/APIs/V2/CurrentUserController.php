@@ -160,7 +160,7 @@ class CurrentUserController extends Controller
     public function followers(Request $request, ResponseFactoryContract $response)
     {
         $user = $request->user();
-        $limit = $request->query('limit', 20);
+        $limit = $request->query('limit', 15);
         $after = $request->query('after', false);
 
         $followers = $user->followers()
@@ -192,7 +192,7 @@ class CurrentUserController extends Controller
     public function followings(Request $request, ResponseFactoryContract $response)
     {
         $user = $request->user();
-        $limit = $request->query('limit', 20);
+        $limit = $request->query('limit', 15);
         $after = $request->query('after', false);
 
         $followings = $user->followings()

@@ -25,7 +25,7 @@ class UserNotificationController extends Controller
             'read' => 'readNotifications',
             'unread' => 'unreadNotifications',
         ];
-        $limit = intval($request->query('limit', 20));
+        $limit = intval($request->query('limit', 15));
         $offset = intval($request->query('offset', 0));
         $method = in_array($type = $request->query('type'), array_keys($typeMap)) ? $typeMap[$type] : $typeMap['all'];
         $notification = array_filter(is_string($notification = $request->query('notification')) ? explode(',', $notification) : [$notification]);

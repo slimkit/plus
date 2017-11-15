@@ -20,7 +20,7 @@ class UserFollowController extends Controller
     public function followers(Request $request, ResponseFactoryContract $response, UserModel $user)
     {
         $target = $request->user('api')->id ?? 0;
-        $limit = $request->query('limit', 20);
+        $limit = $request->query('limit', 15);
         $offset = $request->query('offset', 0);
 
         $followers = $user->followers()
@@ -50,7 +50,7 @@ class UserFollowController extends Controller
     public function followings(Request $request, ResponseFactoryContract $response, UserModel $user)
     {
         $target = $request->user('api')->id ?? 0;
-        $limit = $request->query('limit', 20);
+        $limit = $request->query('limit', 15);
         $offset = $request->query('offset', 0);
 
         $followings = $user->followings()

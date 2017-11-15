@@ -26,7 +26,7 @@ class UserController extends Controller
     {
         $user = $request->user('api') ?: 0;
         $ids = array_filter(explode(',', $request->query('id')));
-        $limit = max(min($request->query('limit', 20), 50), 1);
+        $limit = max(min($request->query('limit', 15), 50), 1);
         $order = in_array($order = $request->query('order', 'desc'), ['asc', 'desc']) ? $order : 'desc';
         $since = $request->query('since', false);
         $name = $request->query('name', false);

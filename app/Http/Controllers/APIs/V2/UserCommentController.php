@@ -20,7 +20,7 @@ class UserCommentController extends Controller
     public function index(Request $request, ResponseContract $response, CommentModel $model)
     {
         $user = $request->user();
-        $limit = $request->query('limit', 20);
+        $limit = $request->query('limit', 15);
         $after = (int) $request->query('after', 0);
 
         $comments = $model->getConnection()->transaction(function () use ($user, $limit, $after, $model) {
