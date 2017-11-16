@@ -295,6 +295,11 @@ Route::middleware('auth:web')
     Route::get('site/configures', 'SiteController@siteConfigurations');
     Route::put('update/site/configure', 'SiteController@updateSiteConfigure');
 
+    /*-------------- 后台配置-----------------*/
+
+    Route::get('/site/background', 'SiteController@getBackGroundConfiguration');
+    Route::patch('/site/background', 'SiteController@setBackGroundConfiguration');
+
     /* ------------- 金币管理 -----------------*/
 
     // 金币类型管理

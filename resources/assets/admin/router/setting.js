@@ -20,6 +20,8 @@ import Site from '../component/setting/Site';
 // Pages
 import Sensitive from '../components/pages/Sensitive';
 
+import BackEndSetting from '../component/setting/BackEndSetting';
+
 const settingRouter = {
   path: 'setting',
   component: Setting,
@@ -36,6 +38,7 @@ const settingRouter = {
     { path: 'server', component: Server },
     { path: 'site', component: Site },
     { path: 'sensitives', component: Sensitive },
+    { path: 'back-end-setting', component: BackEndSetting },
   ]
 };
 

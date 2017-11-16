@@ -510,4 +510,25 @@ class SiteController extends Controller
 
         return response()->json(['message' => ['更新站点配置成功']], 201);
     }
+
+    /**
+     * 获取后台页面配置
+     *
+     * @param Configuration $config [description]
+     * @return [type] [description]
+     * @author BS <414606094@qq.com>
+     */
+    public function getBackGroundConfiguration(Repository $config)
+    {
+        $data['logo_src'] = $config->get('site.background.logo', url('/plus.png'));
+
+        return response()->json($data, 200);
+    }
+
+    public function setBackGroundConfiguration(Request $request, Configuration $config)
+    {
+        $config->set('site.background.logo', $request->input('logo_src'));
+
+        return response()->json(['message' => ['保存成功']], 201);
+    }
 }

@@ -89,7 +89,7 @@
 </head>
 <body>
 <div class="g-bg-color root">
-    <img src="{{ asset('/plus.png') }}" width="84px" />
+    <img src="{{ $logo }}" width="84px" />
     <form role="form" method="POST" action="{{ route('login') }}">
         {{ csrf_field() }}
 

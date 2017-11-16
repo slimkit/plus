@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const { baseURL, api } = window.TS; // This "TS" variable is set from the global variables in the template.
+const { baseURL, api, token } = window.TS; // This "TS" variable is set from the global variables in the template.
 
 // Export a method to create the requested address.
 export const createRequestURI = PATH => `${baseURL}/${PATH}`;
@@ -9,6 +9,7 @@ export const createRequestURI = PATH => `${baseURL}/${PATH}`;
 export const createAPI = PATH => `${api}/${PATH}`;
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
@@ -16,10 +17,10 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  * a simple convenience so we don't have to attach every token manually.
  */
 
-const token = document.head.querySelector('meta[name="csrf-token"]');
+const csrf_token = document.head.querySelector('meta[name="csrf-token"]');
 
-if (token) {
-    axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+if (csrf_token) {
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrf_token.content;
 } else {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }

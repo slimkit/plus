@@ -4,6 +4,7 @@ namespace Zhiyi\Plus\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use function Zhiyi\Plus\username;
+use Illuminate\Contracts\Config\Repository;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -29,11 +30,12 @@ class LoginController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function showLoginForm()
+    public function showLoginForm(Repository $config)
     {
         return view('auth.login', [
             'login' => $login = old('email', old('phone', old('name', old('id', '')))),
             'errorUsername' => username($login),
+            'logo' => $config->get('site.background.logo', url('/plus.png')),
         ]);
     }
 
