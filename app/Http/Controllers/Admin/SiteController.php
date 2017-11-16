@@ -512,7 +512,7 @@ class SiteController extends Controller
     }
 
     /**
-     * 获取后台页面配置
+     * 获取后台页面配置.
      *
      * @param Configuration $config [description]
      * @return [type] [description]
