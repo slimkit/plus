@@ -165,13 +165,15 @@ class Qiniu implements FileUrlGeneratorContract
         $url = '/batch';
         $token = $this->generateToken($url, $body = implode('&', $files));
 
-        $client->request('post', 'https://rs.qiniu.com'.$url, [
-            'headers' => [
-                'Content-Type' => 'application/x-www-form-urlencoded',
-                'Authorization' => 'QBox '.$token,
-            ],
-            'body' => $body,
-        ]);
+        if ($files) {
+            $client->request('post', 'https://rs.qiniu.com'.$url, [
+                'headers' => [
+                    'Content-Type' => 'application/x-www-form-urlencoded',
+                    'Authorization' => 'QBox '.$token,
+                ],
+                'body' => $body,
+            ]);
+        }
     }
 
     /**
