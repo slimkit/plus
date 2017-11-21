@@ -10,11 +10,11 @@ class HomeController
         $h5Config = config('h5');
 
         // 临时方案，后续会有骚操作
-        if ($h5Config && $h5Config['installed'] && $this->isMobile()) {
+        if ($h5Config && isset($h5Config['installed']) && $this->isMobile()) {
             return redirect()->route($h5Config['routeName']);
         }
 
-        if ($pcConfig && $pcConfig['installed'] && ! $this->isMobile()) {
+        if ($pcConfig && isset($pcConfig['installed']) && ! $this->isMobile()) {
             return redirect()->route($pcConfig['routeName']);
         }
 
