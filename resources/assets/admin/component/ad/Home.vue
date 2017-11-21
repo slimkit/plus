@@ -97,7 +97,7 @@
 </template>
 <script>
 import request, { createRequestURI } from '../../util/request';
-import plusMessageBundle from 'plus-message-bundle';
+import { plusMessageFirst } from '../../filters';
 
 const ManageComponent = {
     data: () => ({
@@ -145,8 +145,7 @@ const ManageComponent = {
           this.ads = data;
         }).catch(({ response: { data: { errors = ['加载失败'] } = {} } = {} }) => {
           this.loadding = false;
-          let Message = new plusMessageBundle(errors);
-          this.message.error = Message.getMessage();
+          this.message.error = plusMessageFirst(errors);
         });
       },
       getAdSpaces () {
@@ -156,8 +155,7 @@ const ManageComponent = {
         ).then(response => {
           this.spaces = response.data;
         }).catch(({ response: { data: { errors = ['加载认证类型失败'] } = {} } = {} }) => {
-          let Message = new plusMessageBundle(data);
-          this.message.error = Message.getMessage();
+          this.message.error = plusMessageFirst(errors);
         });
       },
       delAd (id) {
@@ -170,8 +168,7 @@ const ManageComponent = {
             this.message.success = '删除成功';
             this.getAds();
           }).catch(({ response: { data : { message } } = {} }) => {
-            let Message = new plusMessageBundle(data);
-            this.message.error = Message.getMessage();
+            this.message.error = plusMessageFirst(message);
           });
         }
       },

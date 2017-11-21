@@ -80,7 +80,7 @@
 </template>
 <script>
 import request, { createRequestURI } from '../../util/request';
-import plusMessageBundle from 'plus-message-bundle';
+import { plusMessageFirst } from '../../filters';
 
 const FeedbackComponent = {
     data: () => ({
@@ -132,8 +132,7 @@ const FeedbackComponent = {
           this.total = parseInt(total);
         }).catch(({ response: { data: { errors = ['加载会话列表失败'] } = {} } = {} }) => {
           this.loadding = false;
-          let Message = new plusMessageBundle(errors);
-          this.message.error = Message.getMessage();
+          this.message.error = plusMessageFirst(errors);
         });
       },
       conversionTypeDisplay (type) {
@@ -153,8 +152,7 @@ const FeedbackComponent = {
             this.message.success = '删除成功';
             this.byIdDeleteConversation(id);
           }).catch(({ response: { data: { errors = ['删除失败'] } = {} } = {} }) => {
-            let Message = new plusMessageBundle(errors);
-            this.message.error = Message.getMessage();
+            this.message.error = plusMessageFirst(errors);
           });
         }
       },

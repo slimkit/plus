@@ -89,7 +89,8 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
-import plusMessageBundle from 'plus-message-bundle';
+import { plusMessageFirst } from '../../filters';
+
 const AddGoldTypeCompnent = {
     
     data: () => ({
@@ -132,8 +133,7 @@ const AddGoldTypeCompnent = {
           }, 500);
         }).catch(({ response: { data = {} } = {} }) => {
           btn.button('reset');
-          let Message = plusMessageBundle(data)
-          this.message.error = Message.getMessage();
+          this.message.error = plusMessageFirst(data);
         });
       },
       // 获取权限节点

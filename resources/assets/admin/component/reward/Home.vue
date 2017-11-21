@@ -48,7 +48,7 @@
 </template>
 <script>
 import request, { createRequestURI } from '../../util/request';
-import plusMessageBundle from 'plus-message-bundle';
+import { plusMessageFirst } from '../../filters';
 import IEcharts from 'vue-echarts-v3/src/lite';
 import 'echarts/lib/chart/line';
 import 'echarts/lib/component/grid';
@@ -175,8 +175,7 @@ const HomeComponent = {
           this.loading = false;
           this.initEcharts(response.data);
         }).catch(({ response: { data: { errors = ['打赏统计请求错误'] } = {} } = {} }) => {
-          let Message = new plusMessageBundle(data);
-          this.message.error = Message.getMessage();
+          this.message.error = plusMessageFirst(errors);
         });
       },
       // 初始化 Echarts

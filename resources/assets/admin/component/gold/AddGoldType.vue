@@ -83,7 +83,7 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
-import plusMessageBundle from 'plus-message-bundle';
+import { plusMessageFirst } from '../../filters';
 const AddGoldType = {
     
     data: () => ({
@@ -123,8 +123,7 @@ const AddGoldType = {
             }, 500);
           }).catch(({ response: { data = {} } = {} }) => {
             btn.button('reset');
-            let Message = new plusMessageBundle(data);
-            this.message.error = Message.getMessage();
+            this.message.error = plusMessageFirst(data);
           });
       },
 

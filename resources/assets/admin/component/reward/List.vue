@@ -86,7 +86,7 @@
 </template>
 <script>
 import request, { createRequestURI } from '../../util/request';
-import plusMessageBundle from 'plus-message-bundle';
+import { plusMessageFirst } from '../../filters';
 
 const ListComponent = {
     data: () => ({
@@ -145,8 +145,7 @@ const ListComponent = {
           this.rewards = data;
         }).catch(({ response: { data: { errors = ['加载失败'] } = {} } = {} }) => {
           this.loadding = false;
-          let Message = new plusMessageBundle(errors);
-          this.message.error = Message.getMessage();
+          this.message.error = plusMessageFirst(errors);
         });
       },
       offsetPage(offset) {

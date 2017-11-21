@@ -86,7 +86,7 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
-import plusMessageBundle from 'plus-message-bundle';
+import { plusMessageFirst } from '../../filters';
 const UpdateGoldRuleComponent = {
     
     data: () => ({
@@ -132,7 +132,7 @@ const UpdateGoldRuleComponent = {
         ).then(response => {
           this.rule = response.data;
         }).catch(({ response: { data: { errors = ['加载认证类型失败'] } = {} } = {} }) => {
-
+          this.message.error = errors;
         });
 
       },
@@ -155,8 +155,7 @@ const UpdateGoldRuleComponent = {
           }, 500);
         }).catch(({ response: { data = {} } = {} }) => {
           btn.button('reset');
-          let Message = new plusMessageBundle(data);
-          this.message.error = Message.getMessage();
+          this.message.error = plusMessageFirst(data);
         });
       },
 
