@@ -34,29 +34,7 @@
                               </div>
                               <!-- user search satart -->
                               <div class="col-md-6">
-                                <div style="position: relative;">
-                                  <input type="text" 
-                                    class="form-control dropdown-toggle" 
-                                    data-toggle="dropdown" 
-                                    aria-haspopup="true" 
-                                    aria-expanded="false"
-                                    v-model="username" 
-                                    @input="searchUser">
-                                    <ul class="dropdown-menu" style="max-height: 200px;overflow: auto;">
-                                      <template v-if="users.length">
-                                        <li  v-for="user in users" @click.prevent="choiceUser(user.id)">
-                                          <a href="javascript:;">
-                                            <img :src="`${user.avatar}?w=40&height=40`" class="img-circle" :class="$style.avatar" v-if="user.avatar">
-                                            <i class="glyphicon glyphicon-user" v-else></i>
-                                            <span>{{ user.name }}</span>
-                                          </a>
-                                        </li>
-                                      </template>
-                                      <template v-else>
-                                        <li @click.prevent="choiceUser(0)"><a href="javascript:;">无相关用户</a></li>
-                                      </template>
-                                    </ul>
-                                </div>
+                                <search-user :get-user-id="getUserId"></search-user>
                               </div>
                               <!-- user search end -->
                           </div>
@@ -174,7 +152,6 @@ const PersonalCertificationEdit = {
         users: [],
         categories: [],
         attachmentUrl: '',
-        username: '',
         certification: {
           user_id: '',
           name: '',
@@ -240,19 +217,6 @@ const PersonalCertificationEdit = {
           });
         },
         /**
-         * 搜索用户
-         */
-        searchUser () {
-          request.get(
-            createRequestURI('find/nocertification/users?keyword=' + this.username),
-            { validateStatus: status => status === 200 }
-          ).then(response => {
-            this.users = response.data;
-          }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {
-            this.search.message = message;
-          });
-        },
-        /**
          * 上传附件
          */
         uploadAttachment (e) {
@@ -313,15 +277,13 @@ const PersonalCertificationEdit = {
             });
           }
         },
-        choiceUser (userId) {
-          let id = parseInt(userId);
-          this.username =  '';
-          this.certification.user_id = id ? id : '';
+        getUserId (userId) {
+          this.certification.user_id = userId ? userId : null;
         },
         triggerUpload (type) {
           this.upload.type = type;
           this.$refs.clickinput.click();
-        }
+        },
     },
     created () {
       this.getCertificationCategories();
