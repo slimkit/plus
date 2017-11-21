@@ -155,7 +155,7 @@
 </template>
 <script>
 import request, { createRequestURI } from '../../util/request';
-import plusMessageBundle from 'plus-message-bundle';
+import { plusMessageFirst } from '../../filters';
 const AddAdComponent = {
 
     data: () => ({
@@ -228,7 +228,7 @@ const AddAdComponent = {
           this.spaceChang();
           this.typeChang();
         }).catch(({ response: { data: { errors = ['加载广告失败'] } = {} } = {} }) => {
-          this.message.error = errors;
+          this.message.error = plusMessageFirst(errors);
         });
       },
 
@@ -245,8 +245,7 @@ const AddAdComponent = {
         ).then(({ data: { message: [ message ] = [] } }) => {
             this.message.success = message;
         }).catch(({ response: { data = {} } = {} }) => {
-            const Message = plusMessageBundle(data);
-            this.message.error = Message.getMessage();
+            this.message.error = plusMessageFirst(data);
         });
       },
 
@@ -281,8 +280,7 @@ const AddAdComponent = {
                 that.ad.data.avatar = fileUrl;
               }
           }).catch((error) => {
-             console.log(this.ad);
-              console.log(error);
+              this.message.error = plusMessageFirst(error);
           });
         }
       },

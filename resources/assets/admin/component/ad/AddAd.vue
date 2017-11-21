@@ -152,7 +152,7 @@
 </template>
 <script>
 import request, { createRequestURI } from '../../util/request';
-import plusMessageBundle from 'plus-message-bundle';
+import { plusMessageFirst } from '../../filters';
 const AddAdComponent = {
 
     data: () => ({
@@ -199,8 +199,7 @@ const AddAdComponent = {
           ).then(data => {
             this.$router.replace({ path: `/ad/${data.data.ad_id}/update` });
           }).catch(({ response: { data = {} } = {} }) => {
-            const Message = plusMessageBundle(data);
-            this.message.error = Message.getMessage();
+            this.message.error = plusMessageFirst(data);
           });
       },
       triggerUpload (key) {
@@ -235,7 +234,7 @@ const AddAdComponent = {
                 that.ad.data.avatar = fileUrl;
               }
           }).catch((error) => {
-              console.log(error);
+              this.message.error = plusMessageFirst(error);
           });
         }
       },

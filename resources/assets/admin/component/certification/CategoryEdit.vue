@@ -54,7 +54,7 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
-import plusMessageBundle from 'plus-message-bundle';
+import { plusMessageFirst } from '../../filters';
 const CategoryEditComponent = {
     data: () => ({
       loadding: true,
@@ -80,8 +80,7 @@ const CategoryEditComponent = {
             this.category = response.data;
           }).catch(({ response: { data: { errors = ['获取认证详情失败'] } = {} } = {} }) => {
             this.loadding = false;
-            let Message = new plusMessageBundle(data);
-            this.message.error = Message.getMessage();
+            this.message.error = plusMessageFirst(errors);
           });
         },
         updateCertificationCategory (name) {
@@ -94,8 +93,7 @@ const CategoryEditComponent = {
             $('#submit-btn').button('reset');
             this.message.success = message;
           }).catch(({ response: { data = {} } = {} }) => {
-            let Message = new plusMessageBundle(data);
-            this.message.error = Message.getMessage();
+            this.message.error = plusMessageFirst(data);
           });
         },
         triggerFileInput () {
@@ -133,8 +131,7 @@ const CategoryEditComponent = {
                 that.category.icon = data.icon;
               }).catch(({ response: { data = { message: message = [] } } = {} }) => {
                 $('#upload-btn').button('reset');
-                let Message = new plusMessageBundle(data);
-                that.message.error = Message.getMessage();
+                this.message.error = plusMessageFirst(message);
               });
             }
         },

@@ -167,7 +167,7 @@
 
 <script>
 import request, { createRequestURI } from '../../util/request';
-import plusMessageBundle from 'plus-message-bundle';
+import { plusMessageFirst } from '../../filters';
 const PersonalCertificationEdit = {
     data: () => ({
         loadding: true,
@@ -217,8 +217,8 @@ const PersonalCertificationEdit = {
             this.categories = response.data;
             this.loadding = false;
           }).catch(({ response: { data: { errors = ['加载认证详情失败'] } = {} } = {} }) => {
-            let Message = new plusMessageBundle(data);
-            this.message.error = Message.getMessage();
+            this.loadding = false;
+            this.message.error = plusMessageFirst(errors);
           }); 
         },
         /**
@@ -236,8 +236,7 @@ const PersonalCertificationEdit = {
             this.$router.replace({ path: `/certifications/${data.data.certification_id}` });
           }).catch(({ response: { data = {} } = {} }) => {
             $('#add-btn').button('reset');
-            let Message = new plusMessageBundle(data);
-            this.message.error = Message.getMessage();
+            this.message.error = plusMessageFirst(data);
           });
         },
         /**
@@ -310,8 +309,7 @@ const PersonalCertificationEdit = {
               }
 
             }).catch(({ response: { data = {} } = {} }) => {
-              let Message = new plusMessageBundle(data);
-              that.message.error = Message.getMessage();
+              this.message.error = plusMessageFirst(data);
             });
           }
         },
