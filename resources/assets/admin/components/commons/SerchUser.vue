@@ -21,7 +21,7 @@
 	          <a href="javascript:;">
 	            <img :src="`${user.avatar}?w=40&height=40`" class="img-circle avatar" v-if="user.avatar">
 	            <i class="glyphicon glyphicon-user" v-else></i>
-	            <span>{{ user.name }} # ID {{ user.id }}</span>
+	            <span>{{ user.name }} #ID {{ user.id }}</span>
 	          </a>
 	        </li>
 	      </template>
