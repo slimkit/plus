@@ -49,7 +49,7 @@
 <script>
 import request, { createRequestURI } from '../../util/request';
 import plusMessageBundle from 'plus-message-bundle';
-import IEcharts from 'vue-echarts-v3/src/lite.vue';
+import IEcharts from 'vue-echarts-v3/src/lite';
 import 'echarts/lib/chart/line';
 import 'echarts/lib/component/grid';
 import 'echarts/lib/component/legend';
