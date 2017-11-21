@@ -78,7 +78,7 @@
             <div class="col-sm-8">
               <select v-model="role" class="form-control" id="search-input-name">
                 <option value="0">全部</option>
-                <option v-for="({ id, display_name }) in roles" :key="id" :value="id">{{ display_name }}</option>
+                <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.display_name }}</option>
               </select>
             </div>
           </div>
