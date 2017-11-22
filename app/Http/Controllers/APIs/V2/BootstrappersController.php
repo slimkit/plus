@@ -31,6 +31,9 @@ class BootstrappersController extends Controller
         $bootstrappers['site'] = config('site', null);
         $bootstrappers['registerSettings'] = config('registerSettings', null);
 
+        $bootstrappers['wallet:cash'] = ['open' => config('wallet.cash.status', true)];
+        $bootstrappers['wallet:recharge'] = ['open' => config('wallet.recharge.status', true)];
+
         $goldSetting = $goldType->where('status', 1)->select('name', 'unit')->first() ?? collect(['name' => '金币', 'unit' => '个']);
         $bootstrappers['site']['gold_name'] = $goldSetting;
 
