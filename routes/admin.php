@@ -173,6 +173,10 @@ Route::middleware('auth:web')
 
         // 钱包统计
         Route::get('/statistics', 'WalletStatisticsController@index');
+
+        // 钱包开关
+        Route::get('/switch', 'WalletSwitchController@show');
+        Route::patch('/switch', 'WalletSwitchController@update');
     });
 
     // SMS 相关

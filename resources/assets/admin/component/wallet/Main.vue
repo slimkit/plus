@@ -36,6 +36,9 @@
                 基础设置 <span class="caret"></span>
               </a>
               <ul class="dropdown-menu">
+                <router-link to="/wallet/pay/switch" tag="li" active-class="active">
+                  <a href="#">开关设置</a>
+                </router-link>
                 <router-link to="/wallet/pay/option" tag="li" active-class="active">
                   <a href="#">充值选项</a>
                 </router-link>
