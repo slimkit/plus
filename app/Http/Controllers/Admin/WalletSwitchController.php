@@ -4,8 +4,8 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Support\Configuration;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Config\Repository;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 class WalletSwitchController extends Controller
 {
