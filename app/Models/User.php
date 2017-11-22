@@ -7,9 +7,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Zhiyi\Plus\Http\Controllers\APIs\V2\UserAvatarController;
-use Zhiyi\Plus\Contracts\Model\ShouldAvatar as ShouldAvatarContract;
 
-class User extends Authenticatable implements ShouldAvatarContract
+class User extends Authenticatable
 {
     // 功能性辅助相关。
     use Notifiable,
