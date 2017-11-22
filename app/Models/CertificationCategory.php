@@ -3,9 +3,8 @@
 namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Zhiyi\Plus\Contracts\Model\ShouldAvatar as ShouldAvatarContract;
 
-class CertificationCategory extends Model implements ShouldAvatarContract
+class CertificationCategory extends Model
 {
     use Concerns\HasAvatar;
 
