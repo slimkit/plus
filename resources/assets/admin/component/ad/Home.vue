@@ -61,7 +61,7 @@
                           <td>{{ ad.title }}</td>
                           <td>{{ ad.space.alias }}</td>
                           <td>
-                            <a :href="ad.data.image" class="thumbnail" target="_blank">
+                            <a :href="ad.data.image" class="img-thumbnail" target="_blank">
                               <img :src="ad.data.image" style="max-width:40px;max-height:40px;">
                             </a>
                           </td>
