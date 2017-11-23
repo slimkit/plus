@@ -130,6 +130,7 @@
 <script>
 import request, { createRequestURI } from '../../util/request';
 import { plusMessageFirst } from '../../filters';
+import { uploadFile } from '../../util/upload';
 const PersonalCertificationEdit = {
     data: () => ({
         loadding: true,
@@ -219,61 +220,38 @@ const PersonalCertificationEdit = {
             this.errorMessage = this.successMessage = '';
         },
         uploadAttachment (e) {
-            var that = this;
-            let file = e.target.files[0]; 
-            let param = new FormData();
-            param.append('file', file);
-            //  设置请求头
-            let config = {
-                headers: { 
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': 'Bearer ' + window.TS.token 
-                }
-            };
-            let reader = new FileReader(); 
-            reader.readAsDataURL(file); 
-            reader.onload = function(e) {
-               request.post('/api/v2/files', param, config)
-               .then((response) => {
-                  const { id: id, message: [message] = [] } = response.data;
+          uploadFile(e.target.files[0], (id) => {
+            
+              let upload = this.upload;
+              upload[upload.type == 1 ? 'front' : 'back'] = `${window.TS.api}/files/${id}`;
 
-                  let upload = that.upload;
-                  let attachmentUrl =  `/api/v2/files/${id}`;
+              let cer = this.certification;
 
-                  if (upload.type == 1) {
-                    upload.front = attachmentUrl;
-                  } else {
-                    upload.back = attachmentUrl;
-                  }
-
-                  if (that.certification.type == 'org') {
-                    that.certification.files = [id];
-                  } else {
-                    let filesLength = that.certification.files.length;
-                    if (filesLength <= 0) {
-                      that.certification.files = [id]
+              if (cer.type == 'org') {
+                cer.files = [id];
+              } else {
+                let length = cer.files.length;
+                if (length <= 0) {
+                  cer.files = [id]
+                } else {
+                  if (length == 1) {
+                    if (upload.type == 2) {
+                      cer.files.push(id);
                     } else {
-                      if (filesLength == 1) {
-                        if (upload.type == 2) {
-                          that.certification.files.push(id);
-                        } else {
-                          that.certification.files.unshift(id);
-                        }
-                      } else {
-                        if (upload.type == 1) {
-                          that.certification.files.splice(0, 1);
-                          that.certification.files.unshift(id);
-                        } else {
-                          that.certification.files.splice(1, 1);
-                          that.certification.files.push(id);
-                        }
-                      }
+                      cer.files.unshift(id);
+                    }
+                  } else {
+                    if (upload.type == 1) {
+                      cer.files.splice(0, 1);
+                      cer.files.unshift(id);
+                    } else {
+                      cer.files.splice(1, 1);
+                      cer.files.push(id);
                     }
                   }
-                }).catch(({ response: { data = {} } = {} }) => {
-                  this.message.error = plusMessageFirst(data);
-                });
-            }
+                }
+              }
+          });
         },
         triggerUpload (type) {
           this.upload.type = type;

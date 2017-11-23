@@ -56,7 +56,7 @@
                             <input type="url" class="form-control" placeholder="头像链接" v-model="ad.data.avatar">
                             <span class="input-group-btn">
                               <button class="btn btn-default" @click="triggerUpload(key)" id="">上传</button>
-                              <input type="file" class="hide" :class="key+'-input'" @change="uploadAttachment(key)">
+                              <input type="file" class="hide" :class="key+'-input'" @change="uploadAttachment(key, $event)">
                             </span>
                           </div>
                         </div>
@@ -102,7 +102,7 @@
                             <input type="url" class="form-control" placeholder="图片链接" v-model="ad.data.image">
                             <span class="input-group-btn">
                               <button class="btn btn-default" @click="triggerUpload(key)">上传</button>
-                              <input type="file" class="hide" :class="key+'-input'" @change="uploadAttachment(key)">
+                              <input type="file" class="hide" :class="key+'-input'" @change="uploadAttachment(key, $event)">
                             </span>
                           </div>
                         </div>
@@ -151,8 +151,10 @@
     </div>
 </template>
 <script>
-import request, { createRequestURI } from '../../util/request';
+import request, { createRequestURI, createAPI } from '../../util/request';
+import { uploadFile } from '../../util/upload';
 import { plusMessageFirst } from '../../filters';
+
 const AddAdComponent = {
 
     data: () => ({
@@ -205,38 +207,10 @@ const AddAdComponent = {
       triggerUpload (key) {
         $('.' + key + '-input').click();
       },
-      uploadAttachment (type) {
-        let e = window.event || arguments[0];
-        let that = this;
-        let file = e.target.files[0]; 
-        let param = new FormData();
-        param.append('file', file);
-        // 设置请求头
-        let config = {
-          headers: { 
-            'Content-Type': 'multipart/form-data',
-            'Authorization': 'Bearer ' + window.TS.token,
-          }
-        };
-        let reader = new FileReader(); 
-        reader.readAsDataURL(file); 
-        reader.onload = function(e) {
-         request.post('/api/v2/files', param, config)
-          .then((response) => {
-              const { id: id, message: [message] = [] } = response.data;
-
-              let origin = window.location.origin;
-              let fileUrl = origin + '/api/v2/files/' + id;
-
-              if (type == 'image') {
-                that.ad.data.image = fileUrl;
-              } else if(type == 'avatar') {
-                that.ad.data.avatar = fileUrl;
-              }
-          }).catch((error) => {
-              this.message.error = plusMessageFirst(error);
-          });
-        }
+      uploadAttachment (type, event) {
+        uploadFile(event.target.files[0], (id) => {
+          this.ad.data[type] = `${window.TS.api}/files/${id}`;
+        });
       },
       spaceChang () {
         this.setType();

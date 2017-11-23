@@ -23,6 +23,7 @@ class TokenController extends Controller
     {
         $login = $request->input('login', '');
         $password = $request->input('password', '');
+
         $user = $model->where(username($login), $login)->with('wallet')->withCount('administrator')->first();
 
         if (! $user) {
