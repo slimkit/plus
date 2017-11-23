@@ -24,7 +24,7 @@ class UserCommentController extends Controller
         $after = (int) $request->query('after', 0);
 
         $comments = $model->getConnection()->transaction(function () use ($user, $limit, $after, $model) {
-            return $model->with('commentable')
+            return $model->with(['commentable', 'user'])
                 ->where(function ($query) use ($user) {
                     return $query->where('target_user', $user->id)
                         ->orWhere('reply_user', $user->id);
