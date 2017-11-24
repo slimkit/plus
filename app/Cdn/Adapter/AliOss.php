@@ -159,7 +159,7 @@ class AliOss implements FileUrlGeneratorContract
                     'confirm' => (bool) $quality,
                     'params' => [$quality],
                 ],
-                'crop,w_%d,h_%d' => [
+                'resize,m_mfit,w_%d,h_%d' => [
                     'confirm' => (bool) $width || (bool) $height,
                     'params' => [$width, $height],
                 ],
