@@ -14,7 +14,7 @@ class UserLikeController extends Controller
         $after = $request->query('after', false);
         $user = $request->user();
 
-        $likes = $model->with('likeable')
+        $likes = $model->with(['likeable', 'user'])
             ->where('target_user', $user->id)
             ->when($after, function ($query) use ($after) {
                 return $query->where('id', '<', $after);
