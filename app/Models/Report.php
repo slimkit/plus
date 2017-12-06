@@ -12,7 +12,7 @@ class Report extends Model
     }
 
     /**
-     * 举报者
+     * 举报者.
      *
      * @return hasOne
      * @author BS <414606094@qq.com>
@@ -23,7 +23,7 @@ class Report extends Model
     }
 
     /**
-     * 被举报者
+     * 被举报者.
      *
      * @return hasOne
      * @author BS <414606094@qq.com>
