@@ -39,7 +39,7 @@ class Comment extends Model
     }
 
     /**
-     * 被举报记录
+     * 被举报记录.
      *
      * @return morphMany
      * @author BS <414606094@qq.com>
