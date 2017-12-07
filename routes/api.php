@@ -450,6 +450,6 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // 举报一条评论
             $api->post('/comments/{comment}', API2\ReportController::class.'@comment');
-        }
+        });
     });
 });
