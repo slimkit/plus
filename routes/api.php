@@ -441,5 +441,15 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
          */
 
         $api->post('/purchases/{node}', API2\PurchaseController::class.'@pay');
+
+
+        $api->group(['prefix' => 'report'], function (RouteContract $api) {
+            
+            // 举报一个用户
+            $api->post('/users/{user}', API2\ReportController::class.'@user');
+
+            // 举报一条评论
+            $api->post('/comments/{comment}', API2\ReportController::class.'@comment');
+        }
     });
 });
