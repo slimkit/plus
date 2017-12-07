@@ -37,4 +37,15 @@ class Comment extends Model
     {
         return $this->belongsTo(User::class, 'reply_user', 'id');
     }
+
+    /**
+     * 被举报记录
+     *
+     * @return morphMany
+     * @author BS <414606094@qq.com>
+     */
+    public function reports()
+    {
+        return $this->morphMany(Report::class, 'reportable');
+    }
 }

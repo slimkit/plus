@@ -98,6 +98,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->setMorphMap([
             'users' => \Zhiyi\Plus\Models\User::class,
+            'comments' => \Zhiyi\Plus\Models\Comment::class,
         ]);
     }
 
