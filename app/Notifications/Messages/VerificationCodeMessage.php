@@ -75,7 +75,7 @@ class VerificationCodeMessage extends Message
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function gatewayAliasName(GatewayInterface $gateway): string
+    protected function gatewayAliasName(GatewayInterface $gateway = null): string
     {
         foreach (config('sms.gateway_aliases') as $alias => $class) {
             if ($gateway instanceof $class) {
