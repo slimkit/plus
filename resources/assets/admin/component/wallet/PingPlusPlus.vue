@@ -16,6 +16,7 @@
         <blockquote>
           <p>ThinkSNS+ 使用 <a href="https://www.pingxx.com/" target="block">Ping++</a> 进行支付集成，以提供统一的支付接口使其方便拓展。</p>
           <footer>因为使用 RSA 进行认证，所以请服务器安装 OpenSSL 的 PHP 拓展。</footer>
+          <footer>在 Ping++ 应用设置 Webhooks 地址为 <code>/api/v2/pingpp/webhooks</code> 以便充值成功用户金额能及时到账。</footer>
         </blockquote>
 
         <!-- APP ID -->
