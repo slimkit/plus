@@ -11,6 +11,12 @@ class PingPlusPlusChargeWebHooks
     {
         $signature = $request->headers->get('x-pingplusplus-signature');
         $pingPlusPlusPublicCertificate = $repository->get()['secret_key'] ?? null;
+
+        return response()->json([
+            'signature' => base64_decode($signature),
+            'pub_key' => $pingPlusPlusPublicCertificate,
+        ]);
+
         $signed = openssl_verify($request->getContent(), base64_decode($signature), $pingPlusPlusPublicCertificate, OPENSSL_ALGO_SHA256);
 
         if (! $signed) {
