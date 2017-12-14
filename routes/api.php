@@ -39,6 +39,8 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     | obtain the current authentication user, use `$request-> user ('api')`.
     |
     */
+   
+    $api->post('/ping++/webhooks', API2\PingPlusPlusChargeWebHooks::class.'@webhook');
 
     /*
     | 应用启动配置.
