@@ -25,24 +25,24 @@ matrix:
       services: postgresql
 
 cache:
-    directories:
-        - $HOME/.composer/cache
+  directories:
+    - $HOME/.composer/cache
 
 before_install:
-    - sh -c "if [ '$DB' = 'postgres' ]; then psql -c 'create database plus;' -U postgres; echo "$DB"; fi"
-    - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'CREATE DATABASE IF NOT EXISTS plus;'; echo "$DB"; fi"
-    - sh -c "php ./.travis.php "$DB""
-    - php -r "file_exists('.env') || copy('.env.travis', '.env');"
+  - sh -c "if [ '$DB' = 'postgres' ]; then psql -c 'create database plus;' -U postgres; echo "$DB"; fi"
+  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'CREATE DATABASE IF NOT EXISTS plus;'; echo "$DB"; fi"
+  - sh -c "php ./.travis.php "$DB""
+  - php -r "file_exists('.env') || copy('.env.travis', '.env');"
 
 install:
-    - composer install
-    - php artisan key:generate
+  - composer install
+  - php artisan key:generate
 
 script:
-    - php artisan migrate -vvv
-    - php artisan db:seed -vvv
-    - php artisan vendor:publish --all -vvv
-    - php vendor/bin/phpunit --coverage-clover=./storage/logs/coverage.xml
+  - php artisan migrate -vvv
+  - php artisan db:seed -vvv
+  - php artisan vendor:publish --all -vvv
+  - php vendor/bin/phpunit --coverage-clover=./storage/logs/coverage.xml
 
 after_script:
-    - php vendor/bin/codacycoverage clover ./storage/logs/coverage.xml
+  - php vendor/bin/codacycoverage clover ./storage/logs/coverage.xml
