@@ -4,18 +4,19 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Repository\WalletPingPlusPlus;
+use Zhiyi\Plus\Services\Wallet\Charge as ChargeService;
+use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 
 class PingPlusPlusChargeWebHooks
 {
-    public function webhook(Request $request, WalletPingPlusPlus $repository)
+    public function webhook(Request $request, WalletPingPlusPlus $repository, ChargeService $chargeService)
     {
-        $signature = $request->headers->get('x-pingplusplus-signature');
-        $pingPlusPlusPublicCertificate = $repository->get()['secret_key'] ?? null;
+        if ($request->json('type') !== 'charge.succeeded') {
+            return response('不是支持的事件', 422);
+        }
 
-        return response()->json([
-            'signature' => base64_decode($signature),
-            'pub_key' => $pingPlusPlusPublicCertificate,
-        ]);
+        $signature = $request->headers->get('x-pingplusplus-signature');
+        $pingPlusPlusPublicCertificate = $repository->get()['public_key'] ?? null;
 
         $signed = openssl_verify($request->getContent(), base64_decode($signature), $pingPlusPlusPublicCertificate, OPENSSL_ALGO_SHA256);
 
@@ -24,7 +25,46 @@ class PingPlusPlusChargeWebHooks
         }
 
         $pingPlusPlusCharge = $request->json('data.object');
+        $charge = WalletChargeModel::find($chargeService->unformatChargeId($pingPlusPlusCharge['order_no']));
 
-        return response()->json($pingPlusPlusCharge);
+        if (! $charge) {
+            return response('凭据不存在', 404);
+        } elseif ($charge->status === 1) {
+            return response('订单已提前完成');
+        }
+
+        $user = $charge->user;
+        $charge->status = 1;
+        $charge->transaction_no = $pingPlusPlusCharge['transaction_no'];
+        $charge->account = $this->resolveChargeAccount($pingPlusPlusCharge, $charge->account);
+
+        $user->getConnection()->transaction(function () use ($user, $charge) {
+            $user->wallet()->increment('balance', $charge->amount);
+            $charge->save();
+        });
+
+        return response('通知成功');
+    }
+
+    /**
+     * 解决付款订单来源.
+     *
+     * @param array $charge
+     * @param string|null $default
+     * @return string|null
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function resolveChargeAccount($charge, $default = null)
+    {
+        $channel = array_get($charge, 'channel');
+        // 支付宝渠道
+        if (in_array($channel, ['alipay', 'alipay_wap', 'alipay_pc_direct', 'alipay_qr'])) {
+            return array_get($charge, 'extra.buyer_account', $default); // 支付宝付款账号
+        // 微信渠道
+        } elseif (in_array($channel, ['wx', 'wx_pub', 'wx_pub_qr', 'wx_wap', 'wx_lite'])) {
+            return array_get($charge, 'extra.open_id', $default); // 用户唯一 open_id
+        }
+
+        return $default;
     }
 }
