@@ -40,7 +40,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     |
     */
 
-    $api->post('/ping++/webhooks', API2\PingPlusPlusChargeWebHooks::class.'@webhook');
+    $api->post('/pingpp/webhooks', API2\PingPlusPlusChargeWebHooks::class.'@webhook');
 
     /*
     | 应用启动配置.
