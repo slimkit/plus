@@ -1,0 +1,33 @@
+{
+    "name": "slimkit/plus-checkin",
+    "description": "✈️The package is a ThinkSNS+ package.",
+    "type": "library",
+    "license": "Apache-2.0",
+    "require": {
+        "php": ">=7.0",
+        "illuminate/console": "^5.5",
+        "illuminate/contracts": "^5.5",
+        "illuminate/database": "^5.5",
+        "illuminate/support": "^5.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "SlimKit\\PlusCheckIn\\": "src/",
+            "SlimKit\\PlusCheckIn\\Seeds\\": "database/seeds/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SlimKit\\PlusCheckIn\\Providers\\AppServiceProvider",
+                "SlimKit\\PlusCheckIn\\Providers\\ModelServiceProvider",
+                "SlimKit\\PlusCheckIn\\Providers\\AuthServiceProvider",
+                "SlimKit\\PlusCheckIn\\Providers\\RouteServiceProvider"
+            ]
+        }
+    },
+    "version": "1.1.0"
+}
