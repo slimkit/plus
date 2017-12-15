@@ -8,6 +8,11 @@
         {
             "type": "artifact",
             "url": "resources/repositorie/zips/"
+        },
+        {
+            "type": "path",
+            "url": "packages/slimkit-plus-id",
+            "options": { "symlink": true }
         }
     ],
     "require": {
@@ -24,6 +29,7 @@
         "symfony/finder": "~3.3",
         "symfony/polyfill-mbstring": "^1.4",
         "symfony/yaml": "^3.3",
+        "slimkit/plus-id": "~1.1",
         "tymon/jwt-auth": "^0.5.12"
     },
     "require-dev": {
