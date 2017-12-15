@@ -13,7 +13,7 @@ class CreateNewsCatesFollowTable extends Migration
      */
     public function up()
     {
-        Schema::table('news_cates_follow', function (Blueprint $table) {
+        Schema::create('news_cates_follow', function (Blueprint $table) {
             $table->increments('id')->comment('主键');
             $table->integer('user_id')->comment('用户id');
             $table->string('follows')->nullable()->comment('关注的分类');

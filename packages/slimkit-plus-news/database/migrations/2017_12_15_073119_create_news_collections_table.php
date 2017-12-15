@@ -13,7 +13,7 @@ class CreateNewsCollectionsTable extends Migration
      */
     public function up()
     {
-        Schema::table('news_collections', function (Blueprint $table) {
+        Schema::create('news_collections', function (Blueprint $table) {
             $table->increments('id')->comment('主键');
             $table->integer('user_id')->comment('用户id');
             $table->integer('news_id')->comment('新闻id');

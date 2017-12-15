@@ -13,7 +13,7 @@ class CreateNewsPinnedsTable extends Migration
      */
     public function up()
     {
-        Schema::table('news_pinneds', function (Blueprint $table) {
+        Schema::create('news_pinneds', function (Blueprint $table) {
             $table->increments('id')->comment('主键');
             $table->string('channel')->comment('频道: 资讯或资讯评论');
             $table->unsignedInteger('raw')->nullable()->default(0)->comment('如果存在则为评论id');

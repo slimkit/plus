@@ -13,7 +13,7 @@ class CreateNewsRecommendTable extends Migration
      */
     public function up()
     {
-        Schema::table('news_recommend', function (Blueprint $table) {
+        Schema::create('news_recommend', function (Blueprint $table) {
             $table->increments('id')->comment('主键');
             $table->string('type')->comment('类型');
             $table->string('title')->nullable()->comment('推荐标题');

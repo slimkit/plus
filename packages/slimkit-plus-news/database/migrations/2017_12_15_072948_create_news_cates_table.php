@@ -13,7 +13,7 @@ class CreateNewsCatesTable extends Migration
      */
     public function up()
     {
-        Schema::table('news_cates', function (Blueprint $table) {
+        Schema::create('news_cates', function (Blueprint $table) {
             $table->increments('id')->comment('主键');
             $table->string('name')->comment('分类名称');
             $table->integer('rank')->default(0)->comment('排序');

@@ -13,7 +13,7 @@ class CreateNewsTable extends Migration
      */
     public function up()
     {
-        Schema::table('news', function (Blueprint $table) {
+        Schema::create('news', function (Blueprint $table) {
             $table->increments('id')->comment('主键');
             $table->string('title')->comment('新闻标题');
             $table->integer('storage')->nullable()->default(0)->comment('缩略图id');
