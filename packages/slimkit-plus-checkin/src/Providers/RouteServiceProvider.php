@@ -42,7 +42,7 @@ class RouteServiceProvider extends ServiceProvider
         // Publish admin menu.
         $this->app->make(ManageRepository::class)->loadManageFrom(trans('plus-checkin::app.name'), 'checkin:admin-home', [
             'route' => true,
-            'icon' => asset('checkin/icon.svg'),
+            'icon' => asset('assets/checkin/icon.svg'),
         ]);
     }
 }

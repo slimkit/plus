@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Publish public resource.
         $this->publishes([
-            $this->app->make('path.checkin.asstes') => $this->app->publicPath().'/checkin',
+            $this->app->make('path.checkin.assets') => $this->app->publicPath().'/assets/checkin',
         ], 'public');
 
         // Publish config.
@@ -47,7 +47,7 @@ class AppServiceProvider extends ServiceProvider
         // Bind all of the package paths in the container.
         $this->app->instance('path.checkin', $path = dirname(dirname(__DIR__)));
         $this->app->instance('path.checkin.migrations', $path.'/database/migrations');
-        $this->app->instance('path.checkin.asstes', $path.'/asstes');
+        $this->app->instance('path.checkin.assets', $path.'/assets');
         $this->app->instance('path.checkin.config', $configFilename = $path.'/config/checkin.php');
         $this->app->instance('path.checkin.lang', $path.'/resource/lang');
         $this->app->instance('path.checkin.view', $path.'/resource/views');
@@ -87,17 +87,15 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function registerContainerAliases()
     {
-        $aliases = [
+        foreach ([
             'plus-checkin:handler' => [
                 \SlimKit\PlusCheckIn\Handlers\PackageHandler::class,
             ],
             'plus-checkin:dev-handler' => [
                 \SlimKit\PlusCheckIn\Handlers\DevPackageHandler::class,
             ],
-        ];
-
-        foreach ($aliases as $key => $aliases) {
-            foreach ($aliases as $key => $alias) {
+        ] as $key => $aliases) {
+            foreach ($aliases as $alias) {
                 $this->app->alias($key, $alias);
             }
         }

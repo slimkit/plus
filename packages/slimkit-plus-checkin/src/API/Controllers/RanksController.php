@@ -26,7 +26,7 @@ class RanksController extends Controller
         $offset = max(0, $request->query('offset', 0));
 
         $users = $model->with('user')
-            ->orderBy('last_checkin_count', 'desc')
+            ->orderBy('checkin_count', 'desc')
             ->offset($offset)
             ->limit($limit)
             ->get()
@@ -40,10 +40,12 @@ class RanksController extends Controller
 
                 return $user;
             })
-            ->when($user_id, function (Collection $users) use ($user_id) {
-                return $users->map(function (UserModel $user) use ($user_id) {
+            ->when($user_id, function (Collection $users) use ($user_id, $offset) {
+                return $users->map(function (UserModel $user, $key) use ($user_id, $offset) {
                     $user->follwing = $user->hasFollwing($user_id);
                     $user->follower = $user->hasFollower($user_id);
+
+                    $user->extra->rank = $offset + $key + 1;
 
                     return $user;
                 });

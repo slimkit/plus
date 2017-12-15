@@ -44,7 +44,7 @@ class PackageHandler extends \Zhiyi\Plus\Support\PackageHandler
     public function dbSeedHandle(Command $command)
     {
         return $command->call('db:seed', [
-            '--calss' => \SlimKit\PlusCheckIn\Seeds\DatabaseSeeder::class,
+            '--class' => \SlimKit\PlusCheckIn\Seeds\DatabaseSeeder::class,
         ]);
     }
 }

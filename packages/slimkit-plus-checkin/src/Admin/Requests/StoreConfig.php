@@ -26,7 +26,7 @@ class StoreConfig extends FormRequest
     public function rules(): array
     {
         return [
-            'switch' => 'required',
+            // 'switch' => 'required',
             'balance' => 'required|integer|min:1',
         ];
     }
