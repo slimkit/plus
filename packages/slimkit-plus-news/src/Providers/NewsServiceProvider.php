@@ -1,6 +1,6 @@
 <?php
 
-namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Installer;
+namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Providers;
 
 use Zhiyi\Plus\Models\User;
 use Illuminate\Support\ServiceProvider;
