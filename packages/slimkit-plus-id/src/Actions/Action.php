@@ -37,9 +37,9 @@ class Action
 
     protected function mode(): string
     {
-        if (!! $this->request->redirect) {
+        if ((bool) $this->request->redirect) {
             return 'redirect';
-        } elseif (!! $this->request->callback) {
+        } elseif ((bool) $this->request->callback) {
             return 'jsonp';
         }
 
