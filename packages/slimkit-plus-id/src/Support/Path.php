@@ -5,7 +5,7 @@ namespace SlimKit\PlusID\Support;
 class Path
 {
     /**
-     * relative PATH
+     * relative PATH.
      *
      * @param string $fromPath
      * @param strong $toPath

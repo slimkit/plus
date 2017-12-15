@@ -5,7 +5,7 @@ namespace SlimKit\PlusID\Support;
 class URL
 {
     /**
-     * The uri scheme
+     * The uri scheme.
      *
      * @var string
      */
