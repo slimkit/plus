@@ -19,4 +19,3 @@ Route::group(['middleware' => ['web'], 'prefix' => 'installer'], __DIR__.'/packa
 
 // Admin routes.
 // Route::group(['middleware' => ['web', 'auth', 'admin']], __DIR__.'/routes/admin.php');
-

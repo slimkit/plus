@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Zhiyi\Plus\Packages\Installer\Controllers;
 use Zhiyi\Plus\Packages\Installer\Middleware;
+use Zhiyi\Plus\Packages\Installer\Controllers;
 use Illuminate\Contracts\Routing\Registrar as RouteRegisterContract;
 
 Route::view('/', 'installer', [
