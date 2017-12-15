@@ -1,0 +1,33 @@
+{
+    "name": "slimkit/plus-news",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Seven Du",
+            "email": "shiweidu@outlook.com",
+            "homepage": "https://medz.cn"
+        }
+    ],
+    "require": {
+        "php": ">=7.0"
+    },
+    "autoload": {
+        "files": [
+            "src/helpers.php"
+        ],
+        "classmap": [
+            "database/seeds/"
+        ],
+        "psr-4": {
+            "Zhiyi\\Component\\ZhiyiPlus\\PlusComponentNews\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Zhiyi\\Component\\ZhiyiPlus\\PlusComponentNews\\Providers\\NewsServiceProvider"
+            ]
+        }
+    },
+    "version": "1.1.0"
+}

@@ -1,0 +1,71 @@
+@font-face {
+  font-family: "vmd-font";
+  src: url('fonts/iconfont.eot?t=1492063411991'); /* IE9*/
+  src: url('fonts/iconfont.eot?t=1492063411991#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('fonts/iconfont.woff?t=1492063411991') format('woff'), /* chrome, firefox */ url('fonts/iconfont.ttf?t=1492063411991') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/ url('fonts/iconfont.svg?t=1492063411991#vmd-font') format('svg'); /* iOS 4.1- */
+}
+
+[class^="vf-"], [class*=" vf-"] {
+  display: inline-block;
+  font: normal normal normal 14px/1 "vmd-font";
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.vf-bold:before {
+  content: "\e62c";
+}
+
+.vf-chain:before {
+  content: "\e644";
+}
+
+.vf-code:before {
+  content: "\e657";
+}
+
+.vf-eye-slash:before {
+  content: "\e680";
+}
+
+.vf-eye:before {
+  content: "\e681";
+}
+
+.vf-header:before {
+  content: "\e6b2";
+}
+
+.vf-image:before {
+  content: "\e6bc";
+}
+
+.vf-italic:before {
+  content: "\e6c3";
+}
+
+.vf-list-ul:before {
+  content: "\e6cf";
+}
+
+.vf-list-ol:before {
+  content: "\e6d0";
+}
+
+.vf-quote-left:before {
+  content: "\e6ff";
+}
+
+.vf-quote-right:before {
+  content: "\e700";
+}
+
+.vf-strikethrough:before {
+  content: "\e728";
+}
+
+.vf-table:before {
+  content: "\e72d";
+}
+
