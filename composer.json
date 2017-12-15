@@ -16,6 +16,11 @@
         },
         {
             "type": "path",
+            "url": "packages/slimkit-plus-feed",
+            "options": { "symlink": true }
+        },
+        {
+            "type": "path",
             "url": "packages/slimkit-plus-id",
             "options": { "symlink": true }
         },
@@ -45,6 +50,7 @@
         "symfony/polyfill-mbstring": "^1.4",
         "symfony/yaml": "^3.3",
         "slimkit/plus-checkin": "~1.1",
+        "slimkit/plus-feed": "~1.1",
         "slimkit/plus-id": "~1.1",
         "slimkit/plus-news": "~1.1",
         "slimkit/plus-socialite": "~1.1",
