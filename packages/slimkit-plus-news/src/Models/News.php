@@ -4,14 +4,17 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models;
 
 use Zhiyi\Plus\Models\Tag;
 use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Models\Report;
 use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Models\FileWith;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class News extends Model
 {
-    use Relations\NewsHasLike,
+    use SoftDeletes,
+        Relations\NewsHasLike,
         Relations\NewsHasReward,
         Relations\NewsHasCollection;
 
@@ -58,18 +61,6 @@ class News extends Model
     {
         // 作者文章数
         return $this->hasMany(self::class, 'user_id', 'user_id');
-    }
-
-    public function link()
-    {
-        // 关联catelink模型
-        return $this->belongsToMany(NewsCate::class, 'news_cates_links', 'news_id', 'cate_id');
-    }
-
-    public function links()
-    {
-        // 关联catelink模型
-        return $this->hasMany(NewsCateLink::class, 'news_id');
     }
 
     public function user()
@@ -126,5 +117,27 @@ class News extends Model
     {
         return $this->morphToMany(Tag::class, 'taggable', 'taggables')
             ->withTimestamps();
+    }
+
+    /**
+     * 资讯关联的删除申请记录.
+     *
+     * @return mixed
+     * @author BS <414606094@qq.com>
+     */
+    public function applylog()
+    {
+        return $this->hasOne(NewsApplyLog::class, 'id', 'news_id');
+    }
+
+    /**
+     * 被举报记录.
+     *
+     * @return morphMany
+     * @author BS <414606094@qq.com>
+     */
+    public function reports()
+    {
+        return $this->morphMany(Report::class, 'reportable');
     }
 }

@@ -2,4 +2,7 @@ vendor
 composer.lock
 node_modules
 resource/assets
+package-lock.json
 *.back/
+*.log
+yarn.lock

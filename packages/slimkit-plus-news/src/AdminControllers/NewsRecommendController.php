@@ -18,21 +18,15 @@ class NewsRecommendController extends Controller
             ->with('cover')
             ->get();
 
-        return response()->json(static::createJsonData([
-            'status'  => true,
-            'code'    => 0,
-            'message' => '获取成功',
-            'data'    => $datas,
-        ]))->setStatusCode(200);
+        return response()->json($datas)->setStatusCode(200);
     }
 
     public function doRecommendInfo(Request $request)
     {
         if (! $request->storage_id) {
             return response()->json([
-                'status' => false,
-                'message' => '没有上传封面图片',
-            ]);
+                'message' => ['没有上传封面图片'],
+            ], 422);
         }
 
         if ($request->rid) {
@@ -61,11 +55,7 @@ class NewsRecommendController extends Controller
             }
         }
 
-        return response()->json(static::createJsonData([
-            'status'  => true,
-            'code'    => 0,
-            'message' => '操作成功',
-        ]))->setStatusCode(200);
+        return response()->json(['message' => ['操作成功']])->setStatusCode(201);
     }
 
     public function delNewsRecommend(int $rid)
@@ -74,10 +64,7 @@ class NewsRecommendController extends Controller
         if ($recommend) {
             NewsRecommend::where('id', $rid)->delete();
 
-            return response()->json(static::createJsonData([
-                'status'  => true,
-                'message' => '删除成功',
-            ]))->setStatusCode(200);
+            return response()->json(['message' => ['删除成功']])->setStatusCode(204);
         }
     }
 
@@ -85,10 +72,6 @@ class NewsRecommendController extends Controller
     {
         $recommend = NewsRecommend::find($rid);
 
-        return response()->json(static::createJsonData([
-            'status'  => true,
-            'message' => '获取成功',
-            'data' => $recommend,
-        ]))->setStatusCode(200);
+        return response()->json($recommend)->setStatusCode(200);
     }
 }

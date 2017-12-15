@@ -33,13 +33,6 @@ class NewsConfigController extends Controller
     public function setContribute(Request $request, Configuration $configuration)
     {
         $contribute = $request->input('contribute');
-        is_array($contribute) ?? $contribute = explode(',', $contribute);
-
-        foreach ($contribute as $value) {
-            if (! in_array($value, ['verified', 'pay'])) {
-                return response()->json(['message' => ['非法的配置项']], 422);
-            }
-        }
 
         $config = $configuration->getConfiguration();
         $config->set('news.contribute', $contribute);

@@ -1,0 +1,10 @@
+{
+  "/js/vendor.js": "/js/vendor.js",
+  "/js/vendor.map": "/js/vendor.js.map",
+  "/js/index.js": "/js/index.js",
+  "/css/index.css": "/css/index.css",
+  "/js/index.map": "/js/index.js.map",
+  "/css/index.map": "/css/index.css.map",
+  "/js/manifest.js": "/js/manifest.js",
+  "/js/manifest.map": "/js/manifest.js.map"
+}

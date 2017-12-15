@@ -31,7 +31,6 @@
     "node-sass": "^4.5.3",
     "optimize-css-assets-webpack-plugin": "^1.3.2",
     "sass-loader": "^6.0.5",
-    "trash-cli": "^1.4.0",
     "url-loader": "^0.5.8",
     "vue-loader": "^11.3.4",
     "vue-template-compiler": "^2.2.6",
@@ -42,16 +41,17 @@
   "dependencies": {
     "axios": "^0.16.1",
     "bootstrap-sass": "^3.3.7",
+    "github-markdown-css": "^2.8.0",
     "highlight.js": "^9.10.0",
     "jquery": "^3.2.1",
     "js-md5": "^0.4.2",
-    "marked": "^0.3.6",
-    "marked-plus-image": "^1.0.0",
-    "mavon-editor": "^2.2.6",
+    "lodash": "^4.17.4",
+    "markdown-it": "^8.4.0",
+    "markdown-it-plus-image": "^1.0.1",
+    "plus-message-bundle": "0.0.5",
     "simplemde": "^1.11.2",
     "vue": "^2.3.3",
-    "vue-router": "^2.5.3",
-    "wangeditor": "^2.1.23"
+    "vue-router": "^2.5.3"
   },
   "engines": {
     "node": ">= 4.0.0",

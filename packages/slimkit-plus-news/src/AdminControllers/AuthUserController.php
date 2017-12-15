@@ -24,12 +24,7 @@ class AuthUserController extends Controller
             ->with('user')
             ->get();
 
-        return response()->json(static::createJsonData([
-            'status'  => true,
-            'code'    => 0,
-            'message' => '获取成功',
-            'data'    => $datas,
-        ]))->setStatusCode(200);
+        return response()->json($datas)->setStatusCode(200);
     }
 
     /**
@@ -46,10 +41,9 @@ class AuthUserController extends Controller
         if ($verified) {
             UserVerified::where('id', $aid)->update(['verified' => $state]);
 
-            return response()->json(static::createJsonData([
-                'status'  => true,
-                'message' => '认证成功',
-            ]))->setStatusCode(200);
+            return response()->json([
+                'message' => ['认证成功'],
+            ])->setStatusCode(200);
         }
     }
 
@@ -65,10 +59,9 @@ class AuthUserController extends Controller
         if ($verified) {
             $verified->delete();
 
-            return response()->json(static::createJsonData([
-                'status'  => true,
-                'message' => '删除成功',
-            ]))->setStatusCode(200);
+            return response()->json([
+                'message' => ['删除成功'],
+            ])->setStatusCode(200);
         }
     }
 }

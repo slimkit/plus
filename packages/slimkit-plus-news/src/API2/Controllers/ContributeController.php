@@ -3,7 +3,6 @@
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Zhiyi\Plus\Models\Tag as TagModel;
 use Zhiyi\Plus\Concerns\FindMarkdownFileTrait;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
@@ -97,19 +96,18 @@ class ContributeController extends Controller
                           TagModel $tagModel)
     {
         $user = $request->user();
-        $pay = in_array('pay', config('news.contribute'));
-        $verified = in_array('verified', config('news.contribute'));
+        $config = config('news.contribute');
         $payAmount = config('news.pay_contribute');
 
-        if ($pay && $user->wallet->balance < $payAmount) {
+        if ($config['pay'] && $user->wallet->balance < $payAmount) {
             return $response->json(['message' => ['账户余额不足']], 422);
         }
 
-        if ($verified && $user->verified === null) {
+        if ($config['verified'] && $user->verified === null) {
             return $response->json(['message' => ['未认证用户不可投稿']], 422);
         }
 
-        $map = $request->only(['title', 'subject', 'content']);
+        $map = $request->only(['title', 'content', 'subject']);
         $map['from'] = $request->input('from') ?: '原创';
         $map['author'] = $request->input('author') ?: $user->name;
         $map['storage'] = $request->input('image');
@@ -153,7 +151,7 @@ class ContributeController extends Controller
         $charge->status = 1;
 
         try {
-            $category->getConnection()->transaction(function () use ($news, $images, $user, $charge, $pay, $tags) {
+            $category->getConnection()->transaction(function () use ($news, $images, $user, $charge, $config, $tags) {
                 $images->each(function (FileWithModel $fileWith) use ($news) {
                     $fileWith->channel = 'news:image';
                     $fileWith->raw = $news->id;
@@ -161,7 +159,7 @@ class ContributeController extends Controller
                     $fileWith->save();
                 });
 
-                if ($pay) {
+                if ($config['pay']) {
                     $user->wallet()->decrement('balance', $charge->amount);
                     $charge->save();
                 }
@@ -216,12 +214,7 @@ class ContributeController extends Controller
             'content' => 'nullable|string',
             'from' => 'nullable|string',
             'author' => 'nullable|string',
-            'image' => [
-                    'nullable',
-                    Rule::exists('file_withs', 'id')->where(function ($query) {
-                        $query->where('channel', null)->where('raw', null);
-                    }),
-            ],
+            'image' => 'nullable|int',
         ]);
 
         $map = $request->only(['title', 'subject', 'content', 'from', 'author']);
@@ -233,6 +226,7 @@ class ContributeController extends Controller
                 ->where('raw', null)
                 ->first();
         });
+
         $images = ! $map['content'] ? collect([]) : $this->findMarkdownImageNotWithModels($map['content']);
 
         if ($image) {
@@ -240,7 +234,7 @@ class ContributeController extends Controller
             $images[] = $image;
         }
 
-        $tags = $tagModel->whereIn('id', is_array($request->input('tags')) ?: explode(',', $request->input('tags')))->get();
+        $tags = $tagModel->whereIn('id', is_array($request->input('tags')) ? $request->input('tags') : explode(',', $request->input('tags')))->get();
         if (! $tags) {
             return $response->json(['message' => ['填写的标签不存在或已删除']], 422);
         }
@@ -285,17 +279,21 @@ class ContributeController extends Controller
 
         if ($news->user_id !== $user->id) {
             return $response->json(['message' => ['你没有权限操作']], 403);
-
             // 审核中
         } elseif ($news->audit_status === 1) {
             return $response->json(['message' => ['审核中禁止删除']], 422);
-
             // 退款中
         } elseif ($news->audit_status === 5) {
             return $response->json(['message' => ['退款中禁止删除']], 422);
         }
 
-        return $category->getConnection()->transaction(function () use ($news, $response) {
+        return $category->getConnection()->transaction(function () use ($news, $response, $user) {
+            if ($news->audit_status == 0) { // 已发布的需提交后台申请删除
+                $news->applylog()->firstOrCreate(['user_id' => $user->id, 'news_id' => $news->id], ['status' => 0]);
+
+                return $response->make(['message' => ['删除申请已提交，请等待审核']], 201);
+            }
+
             $news->delete();
 
             return $response->make('', 204);
@@ -323,8 +321,8 @@ class ContributeController extends Controller
             return $response->json(['message' => ['你没有权限操作']], 403);
         } elseif ($news->audit_status === 5) {
             return $response->json(['message' => ['请勿重复申请']], 422);
-        } elseif ($news->audit_count > 1) {
-            return $response->json(['message' => ['首次驳回可申请，您已超出限制']], 422);
+        } elseif ($news->audit_count > 2) {
+            return $response->json(['message' => ['驳回超过两次，已无法申请退款']], 422);
         }
 
         $news->audit_status = 5;

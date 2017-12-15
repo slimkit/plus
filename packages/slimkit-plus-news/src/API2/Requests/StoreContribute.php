@@ -16,7 +16,7 @@ class StoreContribute extends FormRequest
      */
     public function authorize(): bool
     {
-        if (in_array('verified', config('news.contribute'))) {
+        if (config('news.contribute.verified')) {
             return $this->user()->verified === null ? false : true;
         }
 
@@ -45,7 +45,7 @@ class StoreContribute extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:40'],
-            'subject' => ['required', 'string', 'max:400'],
+            'subject' => ['max:400'],
             'content' => ['required', 'string'],
             'image' => ['nullable', 'integer', Rule::exists('file_withs', 'id')->whereNull('channel')->whereNull('raw')],
             'from' => ['nullable', 'string'],
@@ -66,8 +66,6 @@ class StoreContribute extends FormRequest
             'title.required' => '标题不能为空',
             'title.string' => '标题必须是字符串',
             'title.max' => '标题超出字数限制',
-            'subject.required' => '必须输入概述',
-            'subject.string' => '概述必须是字符串',
             'subject.max' => '概述超出字数限制',
             'content.required' => '内容不能为空',
             'content.string' => '内容必须是字符串',

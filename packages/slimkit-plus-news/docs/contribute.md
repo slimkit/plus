@@ -17,12 +17,18 @@ POST /news/categories/:category/news
 | 字段 | 类型 | 描述 |
 |:----:|:----:|----|
 | title | String | **必须**，标题，最长 20 个字。 |
-| subject | String | **必须**，主题，副标题，概述，最长 200 个字。 |
+| subject | String | 主题，副标题，概述，最长 200 个字。 |
 | content | String | **必须**，内容。 |
 | image | Integer | 缩略图。 |
 | tags | string,array | **必须** 标签id，多个id以逗号隔开或传入数组形式 |
 | from | String | 资讯来源。 |
 | author | String | 作者 |
+
+> 用户投稿时，用户输入`摘要`和`正文`
+
+> 数据提交到服务端时，将用户输入的`摘要`填写到`subject`字段, 将用户输入的`正文`按照**markdown**格式填写到`content`字段
+
+> 前端渲染正文时，使用**markdown**格式渲染`subject`字段和`content`字段
 
 ##### Response
 
@@ -71,6 +77,12 @@ DELETE /news/categories/:category/news/:news
 
 ```
 Status: 204 No Content
+```
+
+已发布时需要提交删除申请
+
+```
+Status: 201 Created
 ```
 
 ## 申请退款

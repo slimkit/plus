@@ -10,7 +10,7 @@ Route::prefix('news')->group(function () {
     Route::get('/info/{news_id}', 'NewsController@getNews')->where(['news_id'=>'[0-9]+']);
     Route::get('/cates', 'NewsCateController@getCateList');
     Route::post('/audit/{news_id}', 'NewsController@auditNews')->where(['news_id'=>'[0-9]+']);
-    Route::get('/recommend/{news_id}', 'NewsController@recommend')->where(['news_id'=>'[0-9]+']);
+    Route::patch('/{news}/recommend', 'NewsController@recommend')->where(['news'=>'[0-9]+']);
     Route::post('/handle_news', 'NewsController@doSaveNews');
     Route::post('/handle_cate', 'NewsCateController@doNewsCate');
     Route::post('/handle_rec', 'NewsRecommendController@doRecommendInfo');
@@ -37,4 +37,12 @@ Route::prefix('news')->group(function () {
 
     // 后台设置置顶
     Route::post('/{news}/pinned', 'NewsPinnedController@set');
+
+    // 后台取消设置置顶
+    Route::delete('/{news}/pinned', 'NewsPinnedController@cancel');
+
+    // 后台删除资讯申请相关
+    Route::get('/applylogs', 'NewsApplyLogController@index');
+    Route::put('/applylogs/{log}/accept', 'NewsApplyLogController@accept');
+    Route::put('/applylogs/{log}/reject', 'NewsApplyLogController@reject');
 });

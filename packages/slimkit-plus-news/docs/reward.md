@@ -45,7 +45,7 @@ GET /news/{news}/rewards
 | name     | type     | must     | description |
 |----------|:--------:|:--------:|:--------:|
 | limit    | int      | no       | 列表返回数据条数 |
-| since    | int      | no       | 翻页标识 时间排序时为数据id 金额排序时为打赏金额amount |
+| offset   | int      | no       | 偏移量，翻页时传入 |
 | order    | string   | no       | 排序 正序-asc 倒序desc |
 | order_type | string | no       | 排序规则 date-按时间 amount-按金额 |
 

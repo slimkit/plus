@@ -1,0 +1,94 @@
+@import './fonts/iconfont.css';
+.body--full {
+    height: 100%;
+    overflow: hidden;
+}
+
+#editor {
+    * {
+        box-sizing: border-box;
+    }
+    *::-webkit-scrollbar {
+        width: 2px;
+        height: 2px;
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background-color: #33BBBA !important;
+    }
+
+    *::-webkit-scrollbar-track {
+        background-color: transparent !important;
+    }
+    *:focus {
+        outline: 0 !important;
+    }
+
+    [class^="vf-"] {
+        font-family: "iconfont" !important;
+        font-size: 16px;
+        font-style: normal;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+#editor {
+    background-color: #ededed;
+    &.full {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1031;
+    }
+    .editor--body {
+        padding: 0;
+        height: 460px;
+        display: flex;
+    }
+    .editor--header {
+        padding: 6px;
+        input[type="file"] {
+            display: none !important;
+        }
+    }
+    .editor--pre,
+    .editor--input {
+        overflow: hidden;
+        width: 50%;
+        height: 100%;
+        box-sizing: border-box;
+    }
+    .editor--pre {
+        background-color: #fcfaf2;
+        .markdown-body {
+            padding: 10px;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            * {
+                max-width: 100%;
+            }
+        }
+    }
+    .editor--input {
+        font-size: 0;
+        border-right: 1px solid #ededed;
+        &.all {
+            width: 100%;
+            border: 0;
+        }
+        textarea {
+            overflow: auto;
+            padding: 10px;
+            width: 100%;
+            height: 100%;
+            font-size: 14px;
+            border: 0;
+            outline: 0;
+            resize: none;
+        }
+    }
+}

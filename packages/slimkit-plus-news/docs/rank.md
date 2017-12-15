@@ -55,7 +55,7 @@ Http Status 200 Ok
 
 | 名称 | 类型 | 说明 |
 |:----:|:-----|------|
-| extra.count | int | 点赞数 |
+| extra.count | int | 点击量 |
 | extra.rank | int | 排行 |
 
 > 其他数据结构参考「用户」接口用户资料

@@ -87,14 +87,7 @@ class PinnedController extends Controller
                 return $this->app->call([$this, 'save'], [
                     'charge' => $charge,
                     'pinned' => $pinned,
-                    'call' => $news->user ? function () use ($user, $news, $pinned) {
-                        $message = sprintf('%s 申请资讯置顶', $user->name);
-                        $news->user->sendNotifyMessage('news:pinned-news', $message, [
-                            'news' => $news,
-                            'user' => $user,
-                            'pinned' => $pinned,
-                        ]);
-                    } : null,
+                    'call' => null,
                 ]);
             },
         ]);

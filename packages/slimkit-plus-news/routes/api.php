@@ -89,10 +89,10 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             $api->patch('/categories/follows', API2\CateController::class.'@follow');
 
             // Send news contributes.
-            $api->post('/categories/{category}/news', API2\ContributeController::class.'@store');
+            $api->post('/categories/{category}/news', API2\ContributeController::class.'@store')->middleware('sensitive:title,content,subject,from,author');
 
             // Update news contributes.
-            $api->patch('/categories/{category}/news/{news}', API2\ContributeController::class.'@update');
+            $api->patch('/categories/{category}/news/{news}', API2\ContributeController::class.'@update')->middleware('sensitive:title,content,subject,from,author');
 
             // Delete new contributes.
             $api->delete('/categories/{category}/news/{news}', API2\ContributeController::class.'@destroy');
@@ -108,6 +108,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // 取消点赞资讯
             $api->delete('/{news}/likes', API2\LikeController::class.'@cancel');
+
+            // 举报一条资讯
+            $api->post('/{news}/reports', API2\ReportController::class.'@news');
 
             // top comments
             // 申请评论置顶
@@ -129,7 +132,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             $api->post('/{news}/pinneds', API2\PinnedController::class.'@newsPinned');
 
             // 评论一条资讯
-            $api->post('/{news}/comments', API2\CommentController::class.'@store');
+            $api->post('/{news}/comments', API2\CommentController::class.'@store')->middleware('sensitive:body');
 
             // 删除一条资讯的指定评论
             $api->delete('/{news}/comments/{comment}', API2\CommentController::class.'@destroy');

@@ -4,16 +4,10 @@
 
 ```json5
 {
-    "news:contribute": [],
-    "news:pay_conyribute": 100,
+    "news:contribute": {
+        "verified": true, // 是否开启只允许认证用户投稿
+        "pay": true // 是否开启付费投稿
+    },
+    "news:pay_conyribute": 100, // 付费投稿金额，开启付费投稿时投稿会自动扣除
 }
 ```
-
-| `news:contribute` 用户投稿限制，数组中可能的组合有：
-
-- `[]`：默认所有人自由投稿
-- `['verified']`：只允许认证用户投稿
-- `['pay']`：所有用户均可付费投稿
-- `['verified', 'pay']`：只允许认证用户付费投稿
-
-| `news:pay_conyribute` 付费投稿金额

@@ -5,15 +5,13 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\AdminControllers;
 use DB;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Zhiyi\Plus\Models\FileWith;
 use Zhiyi\Plus\Models\Tag as TagModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsDigg;
 use function zhiyi\Component\ZhiyiPlus\PlusComponentNews\getShort;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsComment;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCateLink;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCollection;
 
 /**
@@ -26,22 +24,26 @@ class NewsController extends Controller
      * @param  $cate_id [分类ID]
      * @return mixed 返回结果
      */
-    public function getNewsList(Request $request)
+    public function getNewsList(Request $request, Carbon $datetime)
     {
         $cate_id = $request->cate_id ?? '';
         $max_id = $request->max_id;
         $limit = $request->limit ?? 15;
         $key = $request->key;
         $state = $request->state ?? null;
+        $recommend = $request->recommend == 'true' ? 1 : 0;
 
         // if ($cate_id) {
         $datas = News::where(function ($query) use ($key) {
             if ($key) {
-                $query->where('news.title', 'like', '%'.$key.'%');
+                return $query->where('news.title', 'like', '%'.$key.'%');
             }
         })
             ->when($cate_id > 0, function ($query) use ($cate_id) {
-                $query->where('cate_id', $cate_id);
+                return $query->where('cate_id', $cate_id);
+            })
+            ->when($recommend, function ($query) use ($recommend) {
+                return $query->where('is_recommend', $recommend);
             })
             ->where(function ($query) use ($state) {
                 if ($state !== null) {
@@ -50,15 +52,12 @@ class NewsController extends Controller
             })
             ->whereIn('audit_status', [0, 1, 2, 3])
             ->orderBy('id', 'desc')
-            ->with('user', 'tags')
+            ->with(['user', 'tags', 'pinned' => function ($query) use ($datetime) {
+                return $query->whereDate('expires_at', '>=', $datetime);
+            }])
             ->paginate($limit);
 
-        return response()->json(static::createJsonData([
-            'status'  => true,
-            'code'    => 0,
-            'message' => '获取成功',
-            'data'    => $datas,
-        ]))->setStatusCode(200);
+        return response()->json($datas)->setStatusCode(200);
     }
 
     /**
@@ -82,17 +81,13 @@ class NewsController extends Controller
             ->when($cate_id > 0, function ($query) use ($cate_id) {
                 $query->where('cate_id', $cate_id);
             })
+            ->withTrashed()
             ->whereIn('audit_status', [4, 5])
             ->orderBy('id', 'desc')
             ->with('user', 'tags')
             ->paginate($limit);
 
-        return response()->json(static::createJsonData([
-            'status'  => true,
-            'code'    => 0,
-            'message' => '获取成功',
-            'data'    => $datas,
-        ]))->setStatusCode(200);
+        return response()->json($datas)->setStatusCode(200);
     }
 
     public function doSaveNews(Request $request, TagModel $tagModel)
@@ -106,10 +101,7 @@ class NewsController extends Controller
         //     ]));
         // }
         if (mb_strlen($request->content, 'utf8') > 10000) {
-            return response()->json(static::createJsonData([
-                'status' => false,
-                'message' => '内容不能大于10000字',
-            ]));
+            return response()->json(['message' => ['内容不能大于10000字']], 422);
         }
 
         $tags = $tagModel->whereIn('id', is_array($request->input('tags')) ? $request->input('tags') : explode(',', $request->input('tags')))->get();
@@ -124,10 +116,9 @@ class NewsController extends Controller
                 $news->subject = $request->subject ?: getShort($request->content, 60);
                 $news->content = $request->content;
                 $news->storage = $request->storage;
-                $news->from = $request->source ?: '';
+                $news->from = $request->from ?: '原创';
                 $news->cate_id = $request->cate_id;
                 $news->author = $request->author;
-                $news->user_id = $request->user()->id;
                 // $news->audit_status = $type;
                 $news->save();
                 $news->tags()->detach();
@@ -140,7 +131,7 @@ class NewsController extends Controller
             $news->user_id = $request->user()->id;
             $news->content = $request->content;
             $news->storage = $request->storage;
-            $news->from = $request->source ?: '';
+            $news->from = $request->from ?: '原创';
             $news->cate_id = $request->cate_id;
             $news->author = $request->author;
             // $news->audit_status = $type;
@@ -156,26 +147,15 @@ class NewsController extends Controller
             }
         }
 
-        return response()->json(static::createJsonData([
-            'status'  => true,
-            'code'    => 0,
-            'message' => '操作成功',
-            'data'    => $news->id,
-        ]))->setStatusCode(200);
+        return response()->json($news->id)->setStatusCode(201);
     }
 
-    public function recommend(Request $request, int $news_id)
+    public function recommend(Request $request, News $news)
     {
-        $news = News::find($news_id);
-        if ($news) {
-            $news->is_recommend = abs($news->is_recommend - 1);
-            $news->save();
+        $news->is_recommend = abs($news->is_recommend - 1);
+        $news->save();
 
-            return response()->json(static::createJsonData([
-                'status'  => true,
-                'message' => '操作成功',
-            ]))->setStatusCode(200);
-        }
+        return response()->json(['message' => ['操作成功']])->setStatusCode(201);
     }
 
     public function auditNews(Request $request, int $news_id)
@@ -202,7 +182,7 @@ class NewsController extends Controller
                             $charge->body = sprintf('退还资讯《%s》的投稿费用', $news->title);
                             $charge->status = 1;
 
-                            $news->user->increment('balance', $charge->amount);
+                            $news->user->wallet->increment('balance', $charge->amount);
                             $charge->save();
                         }
 
@@ -220,10 +200,7 @@ class NewsController extends Controller
                 'news' => $news,
             ]);
 
-            return response()->json(static::createJsonData([
-                'status'  => true,
-                'message' => '操作成功',
-            ]))->setStatusCode(200);
+            return response()->json(['message' => ['操作成功']])->setStatusCode(204);
         }
     }
 
@@ -232,44 +209,29 @@ class NewsController extends Controller
         $is_del = $request->is_del ?? 0;
         $news = News::find($news_id);
         if (! $news) {
-            return response()->json(static::createJsonData([
-                'status'  => false,
-                'message' => '参数错误',
-            ]));
+            return response()->json(['message' => ['资讯不存在或已删除']]);
         }
 
         if (! $is_del) {
             $news->audit_status = 4;
             $news->save();
+            $news->delete();
 
-            return response()->json(static::createJsonData([
-                'status'  => true,
-                'message' => '已添加到回收站',
-            ]));
+            return response()->json(['message' => ['已添加到回收站']], 204);
         } else {
             DB::transaction(function () use ($news, $news_id) {
                 $news->delete();
-                NewsDigg::where('news_id', $news_id)->delete();
-                NewsCateLink::where('news_id', $news_id)->delete();
                 NewsCollection::where('news_id', $news_id)->delete();
-                NewsComment::where('news_id', $news_id)->delete();
             });
 
-            return response()->json(static::createJsonData([
-                'status'  => true,
-                'message' => '删除成功',
-            ]));
+            return response()->json(['message' => ['删除成功']], 204);
         }
     }
 
     public function getNews(int $news_id)
     {
-        $news = News::with('links', 'tags')->find($news_id);
+        $news = News::with('tags')->withTrashed()->find($news_id);
 
-        return response()->json(static::createJsonData([
-            'status'  => true,
-            'message' => '获取成功',
-            'data' => $news,
-        ]))->setStatusCode(200);
+        return response()->json($news)->setStatusCode(200);
     }
 }

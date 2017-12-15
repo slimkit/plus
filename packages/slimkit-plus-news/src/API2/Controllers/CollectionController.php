@@ -63,7 +63,7 @@ class CollectionController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $limit = $request->query('limit', 20);
+        $limit = $request->query('limit', 15);
         $after = $request->query('after', 0);
         $user->load(['newsCollections' => function ($query) use ($after, $limit) {
             return $query->when($after, function ($query) use ($after) {

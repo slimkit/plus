@@ -4,6 +4,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
@@ -34,20 +35,16 @@ class CommentController extends Controller
             $news->comments()->save($comment);
             $news->increment('comment_count', 1);
             $user->extra()->firstOrCreate([])->increment('comments_count', 1);
+            if ($news->user->id !== $user->id) {
+                $news->user->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
+                app(Push::class)->push(sprintf('%s评论了你的资讯', $user->name), (string) $news->user->id, ['channel' => 'news:comment']);
+            }
         });
 
-        $news->user->sendNotifyMessage('news:comment', sprintf('%s评论了你的资讯', $user->name), [
-                'news' => $news,
-                'user' => $user,
-            ]);
-
-        if ($replyUser) {
+        if ($replyUser && $replyUser !== $user->id && $replyUser !== $news->user_id) {
             $replyUser = $user->newQuery()->where('id', $replyUser)->first();
-            $message = sprintf('%s 回复了您的评论', $user->name);
-            $replyUser->sendNotifyMessage('news:comment-reply', $message, [
-                'news' => $news,
-                'user' => $user,
-            ]);
+            $replyUser->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
+            app(Push::class)->push(sprintf('%s 回复了您的评论', $user->name), (string) $replyUser->id, ['channel' => 'news:comment-reply']);
         }
 
         return response()->json([
@@ -70,7 +67,7 @@ class CommentController extends Controller
         $limit = $request->input('limit', 15);
         $comments = $news->comments()->when($after, function ($query) use ($after) {
             return $query->where('id', '<', $after);
-        })->limit($limit)->orderBy('id', 'desc')->get();
+        })->limit($limit)->with('user')->orderBy('id', 'desc')->get();
 
         return response()->json([
             'pinneds' => ! $after ? app()->call([$this, 'pinneds'], ['news' => $news]) : [],

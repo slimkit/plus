@@ -3,11 +3,27 @@
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\GoldType;
+use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\WalletCharge;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 
 class RewardController extends Controller
 {
+    // 系统货币名称
+    protected $goldName;
+
+    // 系统内货币与真实货币兑换比例
+    protected $wallet_ratio;
+
+    public function __construct(GoldType $goldModel, CommonConfig $configModel)
+    {
+        $walletConfig = $configModel->where('name', 'wallet:ratio')->first();
+
+        $this->goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '金币';
+        $this->wallet_ratio = $walletConfig->value;
+    }
+
     /**
      * 打赏一条资讯.
      *
@@ -51,12 +67,6 @@ class RewardController extends Controller
             $userCharge->status = 1;
             $user->walletCharges()->save($userCharge);
 
-            // 添加打赏通知
-            $user->sendNotifyMessage('news:reward', sprintf('你对资讯《%s》进行%s元打赏', $news->title, $amount / 100), [
-                    'news' => $news,
-                    'user' => $current_user,
-                ]);
-
             if ($current_user->wallet) {
                 // 增加对应用户余额
                 $current_user->wallet()->increment('balance', $amount);
@@ -72,7 +82,8 @@ class RewardController extends Controller
                 $charge->save();
 
                 // 添加被打赏通知
-                $current_user->sendNotifyMessage('news:reward', sprintf('你的资讯《%s》被%s打赏%s元', $news->title, $user->name, $amount / 100), [
+                $currentNotice = sprintf('你的资讯《%s》被%s打赏%s%s', $news->title, $user->name, $amount * $this->wallet_ratio / 10000, $this->goldName);
+                $current_user->sendNotifyMessage('news:reward', $currentNotice, [
                     'news' => $news,
                     'user' => $user,
                 ]);
@@ -97,8 +108,9 @@ class RewardController extends Controller
      */
     public function index(Request $request, News $news)
     {
-        $limit = max(1, min(30, $request->query('limit', 20)));
+        $limit = max(1, min(30, $request->query('limit', 15)));
         $since = $request->query('since', 0);
+        $offset = $request->query('offset', 0);
         $order = in_array($order = $request->query('order', 'desc'), ['asc', 'desc']) ? $order : 'desc';
         $order_type = in_array($order_type = $request->query('order_type'), ['amount', 'date']) ? $order_type : 'date';
         $fieldMap = [
@@ -110,6 +122,7 @@ class RewardController extends Controller
             ->when($since, function ($query) use ($since, $order, $order_type, $fieldMap) {
                 return $query->where($fieldMap[$order_type], $order === 'asc' ? '>' : '<', $since);
             })
+            ->offset($offset)
             ->limit($limit)
             ->orderBy($fieldMap[$order_type], $order)
             ->get();

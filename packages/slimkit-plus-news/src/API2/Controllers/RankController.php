@@ -44,7 +44,7 @@ class RankController extends Controller
         ->where('created_at', '>', $date)
         ->where('audit_status', 0)
         ->with(['user' => function ($query) {
-            return $query->select('id', 'name');
+            return $query->select('id', 'name', 'sex');
         }])
         ->groupBy('user_id')
         ->orderBy('count', 'desc')

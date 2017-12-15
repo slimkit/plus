@@ -3,6 +3,7 @@
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 
@@ -18,7 +19,7 @@ class LikeController extends Controller
      */
     public function like(Request $request, News $news)
     {
-        $user = $request->user()->id;
+        $user = $request->user();
         if ($news->liked($user)) {
             return response()->json([
                 'message' => ['已赞过该资讯'],
@@ -26,6 +27,11 @@ class LikeController extends Controller
         }
 
         $news->like($user);
+        $news->user->extra()->firstOrCreate([])->increment('likes_count', 1);
+        if ($news->user_id !== $user->id) {
+            $news->user->unreadCount()->firstOrCreate([])->increment('unread_likes_count', 1);
+            app(push::class)->push(sprintf('%s点赞了你的资讯', $user->name), (string) $news->user->id, ['channel' => 'news:like']);
+        }
 
         return response()->json()->setStatusCode(201);
     }
@@ -40,7 +46,7 @@ class LikeController extends Controller
      */
     public function cancel(Request $request, News $news)
     {
-        $user = $request->user()->id;
+        $user = $request->user();
         if (! $news->liked($user)) {
             return response()->json([
                 'message' => ['未对该资讯点赞'],
@@ -48,6 +54,7 @@ class LikeController extends Controller
         }
 
         $news->unlike($user);
+        $news->user->extra()->decrement('likes_count', 1);
 
         return response()->json()->setStatusCode(204);
     }
@@ -62,7 +69,7 @@ class LikeController extends Controller
      */
     public function index(Request $request, News $news)
     {
-        $limit = $request->query('limit', 20);
+        $limit = $request->query('limit', 15);
         $after = $request->query('after', false);
         $userID = $request->user('api')->id ?? 0;
         $likes = $news->likes()

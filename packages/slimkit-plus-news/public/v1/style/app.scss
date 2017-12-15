@@ -1,0 +1,23 @@
+// Bootstrap setup.
+@import "variables";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+
+.component-container {
+  padding-top: 15px;
+}
+
+.component-loadding {
+  text-align: center;
+  font-size: 42px;
+}
+
+.component-loadding-icon {
+  animation-name: "TurnAround";
+  animation-duration: 1.4s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.component-controller-nav {
+  padding: 12px 12px 0;
+}

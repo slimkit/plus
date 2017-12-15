@@ -2,8 +2,8 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\AdminControllers;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
@@ -31,18 +31,24 @@ class NewsPinnedController extends Controller
             ->when($max_id, function ($query) use ($max_id) {
                 return $query->where('id', '<', $max_id);
             })
-            ->when($state, function ($query) use ($state) {
+            ->when(isset($state), function ($query) use ($state) {
                 switch ($state) {
+                    case 0:
+                        $query->where('state', 0)->where('expires_at', null);
+                        break;
                     case 1:
-                        $query->where('expires_at', null);
+                        $query->where('state', 1)->where('expires_at', '!=', null);
                         break;
                     case 2:
-                        $query->where('expires_at', null);
+                        $query->where('state', 2)->where('expires_at', '!=', null);
                         break;
                 }
             })
             ->when($user, function ($query) use ($user) {
                 return $query->where('user_id', $user);
+            })
+            ->whereExists(function ($query) {
+                return $query->from('news')->whereRaw('news.id = news_pinneds.target')->where('deleted_at', null);
             })
             ->orderBy('id', 'desc')
             ->limit($limit)
@@ -104,6 +110,7 @@ class NewsPinnedController extends Controller
 
         $pinned->getConnection()->transaction(function () use ($pinned, $charge) {
             $pinned->save();
+            $pinned->user->wallet()->increment('balance', $charge->amount);
             $charge->save();
 
             $pinned->user->sendNotifyMessage('news:pinned:reject', sprintf('资讯《%s》的置顶申请已被驳回', $pinned->news->title), [
@@ -115,27 +122,58 @@ class NewsPinnedController extends Controller
         return response()->json([], 204);
     }
 
+    /**
+     * 后台设置置顶.
+     *
+     * @author bs<414606094@qq.com>
+     * @param  Request $request
+     * @param  News    $news
+     * @param  Carbon  $datetime
+     */
     public function set(Request $request, News $news, Carbon $datetime)
     {
-        $time = $request->query('time');
+        $time = $request->input('time');
         $datetime = $datetime->createFromTimestamp($time);
 
-        $pinned = new NewsPinned();
-        $pinned->user_id = $news->user_id;
-        $pinned->target = $news->id;
-        $pinned->channel = 'news';
-        $pinned->target_user = 0;
-        $pinned->amount = 0;
-        $pinned->day = $datetime->diffInDays(Carbon::now());
+        if (! $pinned = $news->pinned()->whereDate('expires_at', '>=', Carbon::now())->first()) {
+            $pinned = new NewsPinned();
+            $pinned->user_id = $news->user_id;
+            $pinned->target = $news->id;
+            $pinned->channel = 'news';
+            $pinned->target_user = 0;
+            $pinned->amount = 0;
+        }
         $pinned->state = 1;
+        $pinned->day = $datetime->diffInDays(Carbon::now());
         $pinned->expires_at = $datetime;
-
         $pinned->save();
+
         $pinned->user->sendNotifyMessage('news:pinned:accept', sprintf('你的资讯《%s》已被管理员设置为置顶', $news->title), [
             'news' => $news,
             'pinned' => $pinned,
         ]);
 
         return response()->json(['message' => ['操作成功']], 201);
+    }
+
+    /**
+     * 取消后台资讯.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News $news
+     * @param \Illuminate\Support\Carbon $datetime
+     * @return mixed
+     * @author BS <414606094@qq.com>
+     */
+    public function cancel(Request $request, News $news, Carbon $datetime)
+    {
+        if (! $pinned = $news->pinned()->whereDate('expires_at', '>=', $datetime)->first()) {
+            return response()->json(['message' => ['该资讯没有被置顶']], 402);
+        }
+
+        $pinned->expires_at = $datetime;
+        $pinned->save();
+
+        return response()->json(['message' => ['设置成功']], 201);
     }
 }

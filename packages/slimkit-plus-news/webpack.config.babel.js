@@ -1,7 +1,6 @@
-import autoprefixer from 'autoprefixer';
 import path from 'path';
-import fs from 'fs';
 import webpack from 'webpack';
+import autoprefixer from 'autoprefixer';
 
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import OptimizeCSSPlugin from 'optimize-css-assets-webpack-plugin';
@@ -21,7 +20,8 @@ const BuildRoot = path.resolve(__dirname, 'resource/assets/');
 
 // 入口配置
 const entry = {
-    index: path.join(Root, 'index.js')
+    // index: path.join(Root, 'index.js')
+    index: path.join(Root, 'admin/index.js')
 };
 
 // cssLoaders
@@ -156,10 +156,6 @@ const webpackConfig = {
         ]
     },
     plugins: [
-        new webpack.ProvidePlugin({
-            $: "jquery",
-            jQuery: "jquery"
-        }),
         new webpack.DefinePlugin({
             'process.env': {
                 'NODE_ENV': JSON.stringify(NODE_ENV),

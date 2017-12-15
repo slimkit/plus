@@ -20,7 +20,7 @@ class NewsController extends Controller
     public function index(Request $request, News $newsModel)
     {
         $user = $request->user('api')->id ?? 0;
-        $limit = $request->query('limit', 20);
+        $limit = $request->query('limit', 15);
         $after = $request->query('after', 0);
         $key = $request->query('key');
         $is_recommend = $request->query('recommend');
@@ -99,7 +99,7 @@ class NewsController extends Controller
             $news->load('tags');
             $news->has_collect = $news->collected($user);
             $news->has_like = $news->liked($user);
-            $news->is_pinned = $news->pinned ? (! $news->pinned->where('state', 1)->where('expires_at', '>', $datetime)->get()->isEmpty()) : false;
+            $news->is_pinned = ! (bool) $news->pinned()->where('state', 1)->where('expires_at', '>', $datetime)->get()->isEmpty();
             $news->addHidden('pinned');
 
             return $news;
