@@ -1,5 +1,5 @@
 {
-    "name": "zhiyicx/plus-component-feed",
+    "name": "slimkit/plus-feed",
     "description": "feed-component for TS+",
     "license": "Apache-2",
     "authors": [
@@ -26,5 +26,5 @@
             ]
         }
     },
-    "version": "3.0.5"
+    "version": "1.1.0"
 }
