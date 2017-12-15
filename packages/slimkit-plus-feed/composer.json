@@ -1,0 +1,30 @@
+{
+    "name": "zhiyicx/plus-component-feed",
+    "description": "feed-component for TS+",
+    "license": "Apache-2",
+    "authors": [
+        {
+            "name": "boxshadow",
+            "email": "idafoo@sina.com"
+        },
+        {
+            "name": "Seven Du",
+            "email": "shiweidu@outlook.com",
+            "homepage": "http://medz.cn"
+        }
+    ],
+    "autoload": {
+        "classmap": ["database/"],
+        "psr-4": {
+            "Zhiyi\\Component\\ZhiyiPlus\\PlusComponentFeed\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Zhiyi\\Component\\ZhiyiPlus\\PlusComponentFeed\\FeedServiceProvider"
+            ]
+        }
+    },
+    "version": "3.0.5"
+}
