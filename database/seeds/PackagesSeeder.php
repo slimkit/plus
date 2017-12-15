@@ -12,6 +12,7 @@ class PackagesSeeder extends Seeder
      */
     public function run()
     {
-        // todo.
+        // Check in package
+        $this->call(\SlimKit\PlusCheckIn\Seeds\DatabaseSeeder::class);
     }
 }
