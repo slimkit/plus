@@ -1,0 +1,146 @@
+<?php
+
+namespace {namespace}\Providers;
+
+use Zhiyi\Plus\Support\PackageHandler;
+use Illuminate\Support\ServiceProvider;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Boorstrap the service provider.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        // Register a database migration path.
+        $this->loadMigrationsFrom($this->app->make('path.{name}.migrations'));
+
+        // Register translations.
+        $this->loadTranslationsFrom($this->app->make('path.{name}.lang'), '{name}');
+
+        // Register view namespace.
+        $this->loadViewsFrom($this->app->make('path.{name}.views'), '{name}');
+
+        // Publish public resource.
+        $this->publishes([
+            $this->app->make('path.{name}.assets') => $this->app->publicPath().'/assets/{name}',
+        ], '{name}-public');
+
+        // Publish config.
+        $this->publishes([
+            $this->app->make('path.{name}.config').'/{name}.php' => $this->app->configPath('{name}.php'),
+        ], '{name}-config');
+    }
+
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        // Bind all of the package paths in the container.
+        $this->bindPathsInContainer();
+
+        // Merge config.
+        $this->mergeConfigFrom(
+            $this->app->make('path.{name}.config').'/{name}.php',
+            '{name}'
+        );
+
+        // register cntainer aliases
+        $this->registerCoreContainerAliases();
+
+        // Register singletons.
+        $this->registerSingletions();
+
+        // Register Plus package handlers.
+        $this->registerPackageHandlers();
+    }
+
+    /**
+     * Bind paths in container.
+     *
+     * @return void
+     */
+    protected function bindPathsInContainer()
+    {
+        foreach ([
+            'path.{name}' => $root = dirname(dirname(__DIR__)),
+            'path.{name}.assets' => $root.'/assets',
+            'path.{name}.config' => $root.'/config',
+            'path.{name}.database' => $database = $root.'/database',
+            'path.{name}.resources' => $resources = $root.'/resources',
+            'path.{name}.lang' => $resources.'/lang',
+            'path.{name}.views' => $resources.'/views',
+            'path.{name}.migrations' => $database.'/migrations',
+            'path.{name}.seeds' => $database.'/seeds',
+        ] as $abstract => $instance) {
+            $this->app->instance($abstract, $instance);
+        }
+    }
+
+    /**
+     * Register singletons.
+     *
+     * @return void
+     */
+    protected function registerSingletions()
+    {
+        // Owner handler.
+        $this->app->singleton('{name}:handler', function () {
+            return new \{namespace}\Handlers\PackageHandler();
+        });
+
+        // Develop handler.
+        $this->app->singleton('{name}:dev-handler', function ($app) {
+            return new \{namespace}\Handlers\DevPackageHandler($app);
+        });
+    }
+
+    /**
+     * Register the package class aliases in the container.
+     *
+     * @return void
+     */
+    protected function registerCoreContainerAliases()
+    {
+        foreach ([
+            '{name}:handler' => [
+                \{namespace}\Handlers\PackageHandler::class,
+            ],
+            '{name}:dev-handler' => [
+                \{namespace}\Handlers\DevPackageHandler::class,
+            ],
+        ] as $abstract => $aliases) {
+            foreach ($aliases as $alias) {
+                $this->app->alias($abstract, $alias);
+            }
+        }
+    }
+
+    /**
+     * Register Plus package handlers.
+     *
+     * @return void
+     */
+    protected function registerPackageHandlers()
+    {
+        $this->loadHandleFrom('{name}', '{name}:handler');
+        $this->loadHandleFrom('{name}-dev', '{name}:dev-handler');
+    }
+
+    /**
+     * Register handler.
+     *
+     * @param string $name
+     * @param \Zhiyi\Plus\Support\PackageHandler|string $handler
+     * @return void
+     */
+    private function loadHandleFrom(string $name, $handler)
+    {
+        PackageHandler::loadHandleFrom($name, $handler);
+    }
+}

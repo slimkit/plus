@@ -1,0 +1,11 @@
+<?php
+
+namespace {namespace}\API\Controllers;
+
+class HomeController
+{
+    public function index()
+    {
+        return trans('{name}::messages.success');
+    }
+}

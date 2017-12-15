@@ -1,0 +1,11 @@
+<?php
+
+namespace {namespace}\Web\Controllers;
+
+class HomeController
+{
+    public function index()
+    {
+        return view('{name}::welcome');
+    }
+}

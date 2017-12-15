@@ -13,9 +13,11 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        Commands\PackageCreateCommand::class,
         Commands\PackageArchiveCommand::class,
         Commands\PackageLinkCommand::class,
         Commands\PackageHandlerCommand::class,
+        Commands\InstallPasswordCommand::class,
     ];
 
     /**

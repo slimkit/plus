@@ -13,8 +13,9 @@ let path = require('path');
  */
 
 mix.setPublicPath(path.join('public', 'assets'));
-mix.setResourceRoot('../');
+mix.setResourceRoot('/assets/');
 mix.sourceMaps(! mix.inProduction());
+mix.disableNotifications();
 
 /*
  |--------------------------------------------------------------------------
@@ -39,3 +40,15 @@ mix.sass('resources/assets/sass/bootstrap.scss', path.join('public', 'assets', '
  */
 
 mix.js('resources/assets/admin', path.join('public', 'assets', 'js'));
+
+/*
+ |--------------------------------------------------------------------------
+ | Installer 打包
+ |--------------------------------------------------------------------------
+ |
+ | element-ui
+ |
+ */
+
+mix.js('resources/assets/installer/main.js', path.join('public', 'assets', 'js', 'installer.js'));
+mix.copy('resources/assets/installer/logo.png', path.join('public', 'assets', 'installer', 'logo.png'));

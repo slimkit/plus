@@ -10,5 +10,11 @@
             }
         }],
         "stage-2"
+    ],
+    "plugins": [
+        ["component", [{
+            "libraryName": "element-ui",
+            "styleLibraryName": "theme-chalk"
+        }]]
     ]
 }
