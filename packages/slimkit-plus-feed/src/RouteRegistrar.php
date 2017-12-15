@@ -33,7 +33,6 @@ class RouteRegistrar
     public function all()
     {
         $this->forAdmin();
-        $this->forApi1();
         $this->forApi2();
     }
 
@@ -65,20 +64,5 @@ class RouteRegistrar
             'prefix' => '/api/v2',
             'namespace' => 'Zhiyi\\Component\\ZhiyiPlus\\PlusComponentFeed\\API2',
         ], dirname(__DIR__).'/routes/api2.php');
-    }
-
-    /**
-     * Register api 1 routes.
-     *
-     * @return void
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function forApi1()
-    {
-        $this->router->group([
-            'middleware' => ['api'],
-            'prefix' => '/api/v1',
-            'namespace' => 'Zhiyi\\Component\\ZhiyiPlus\\PlusComponentFeed\\Controllers',
-        ], dirname(__DIR__).'/routes/api1.php');
     }
 }

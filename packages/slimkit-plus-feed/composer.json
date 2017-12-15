@@ -14,7 +14,9 @@
         }
     ],
     "autoload": {
-        "classmap": ["database/"],
+        "classmap": [
+            "database/seeds"
+        ],
         "psr-4": {
             "Zhiyi\\Component\\ZhiyiPlus\\PlusComponentFeed\\": "src/"
         }

@@ -2,7 +2,6 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed;
 
-use Zhiyi\Plus\Support\PackageHandler;
 use Illuminate\Support\ServiceProvider;
 use Zhiyi\Plus\Support\ManageRepository;
 use Zhiyi\Plus\Support\BootstrapAPIsEventer;
@@ -22,7 +21,6 @@ class FeedServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->routeMap();
-        $this->publishHandler();
         $this->registerObserves();
 
         // Load views.
@@ -99,17 +97,6 @@ class FeedServiceProvider extends ServiceProvider
     protected function registerObserves()
     {
         Feed::observe(Observers\FeedObserver::class);
-    }
-
-    /**
-     * Publish handler.
-     *
-     * @return void
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    protected function publishHandler()
-    {
-        PackageHandler::loadHandleFrom('feed', FeedPackageHandler::class);
     }
 
     /**
