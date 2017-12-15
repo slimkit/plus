@@ -3,7 +3,7 @@
 namespace Zhiyi\Plus\Utils\Support;
 
 class Path
-{    
+{
     /**
      * relative PATH.
      *
