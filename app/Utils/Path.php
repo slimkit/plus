@@ -1,6 +1,6 @@
 <?php
 
-namespace Zhiyi\Plus\Utils\Support;
+namespace Zhiyi\Plus\Utils;
 
 class Path
 {

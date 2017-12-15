@@ -2,8 +2,8 @@
 
 namespace SlimKit\PlusID\Handlers;
 
+use Zhiyi\Plus\Utils\Path;
 use Illuminate\Console\Command;
-use SlimKit\PlusID\Support\Path;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler

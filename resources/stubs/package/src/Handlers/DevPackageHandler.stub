@@ -2,8 +2,8 @@
 
 namespace {namespace}\Handlers;
 
+use Zhiyi\Plus\Utils\Path;
 use Illuminate\Console\Command;
-use Zhiyi\Plus\Utils\Support\Path;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
