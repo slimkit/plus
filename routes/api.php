@@ -14,6 +14,7 @@
 use Illuminate\Support\Facades\Route;
 use Zhiyi\Plus\Http\Controllers\APIs\V2 as API2;
 use Illuminate\Contracts\Routing\Registrar as RouteContract;
+use Zhiyi\Plus\EaseMobIm;
 
 Route::any('/develop', \Zhiyi\Plus\Http\Controllers\DevelopController::class.'@index');
 
@@ -451,6 +452,22 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // 举报一条评论
             $api->post('/comments/{comment}', API2\ReportController::class.'@comment');
+        });
+
+        /*
+        | 环信
+         */
+        $api->group(['prefix' => 'easemob'], function (RouteContract $api) {
+
+            // 注册环信用户(单个)
+            $api->post('register/{user_id}', EaseMobIm\EaseMobController::class.'@createUser')->where(['user_id' => '[0-9]+']);
+
+             //批量注册环信用户
+            $api->post('/register', EaseMobIm\EaseMobController::class.'@createUsers');
+
+            // 重置用户环信密码
+            $api->put('/password', EaseMobIm\EaseMobController::class.'@resetPassword');
+           
         });
     });
 });

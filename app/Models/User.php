@@ -336,4 +336,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->morphMany(Report::class, 'reportable');
     }
+
+    public function getImPwdHash()
+    {
+        return md5($this->password);
+    }
 }
