@@ -5,10 +5,7 @@ use Zhiyi\Plus\Packages\Installer\Middleware;
 use Zhiyi\Plus\Packages\Installer\Controllers;
 use Illuminate\Contracts\Routing\Registrar as RouteRegisterContract;
 
-Route::view('/', 'installer', [
-    'logo' => asset('/assets/installer/logo.png'),
-    'version' => \Zhiyi\Plus\VERSION,
-]);
+Route::view('/', 'installer');
 
 Route::post('/password', Controllers\InstallController::class.'@verifyPassword');
 Route::get('/license', Controllers\InstallController::class.'@license');
