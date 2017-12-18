@@ -44,4 +44,18 @@ class Kernel extends ConsoleKernel
 
         require base_path('routes/console.php');
     }
+
+    /**
+     * Get the Artisan application instance.
+     *
+     * @return \Illuminate\Console\Application
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function getArtisan()
+    {
+        $artisan = parent::getArtisan();
+        $artisan->setName(sprintf('ThinkSNS Plus ( For Larvel %s )', $this->app->getLaravelVersion()));
+
+        return $artisan;
+    }
 }

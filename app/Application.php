@@ -8,6 +8,13 @@ use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 class Application extends LaravelApplication
 {
     /**
+     * The Laravel framework version.
+     *
+     * @var string
+     */
+    const VERSION = '1.1.0';
+
+    /**
      * The core vendor YAML file.
      *
      * @var string.
@@ -29,6 +36,17 @@ class Application extends LaravelApplication
             $app->make(\Zhiyi\Plus\Bootstrap\LoadConfiguration::class)
                 ->handle();
         });
+    }
+
+    /**
+     * Get the version number of the Laravel framework.
+     *
+     * @return string
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function getLaravelVersion()
+    {
+        return parent::VERSION;
     }
 
     /**
