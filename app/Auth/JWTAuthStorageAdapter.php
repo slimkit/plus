@@ -107,7 +107,7 @@ class JWTAuthStorageAdapter implements Storage
         if (($res = $this->single('flush')) !== false) {
             return $res;
         }
-        
+
         JWTCache::delete();
     }
 
