@@ -8,7 +8,7 @@ use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 class Application extends LaravelApplication
 {
     /**
-     * The Laravel framework version.
+     * The ThinkSNS Plus version.
      *
      * @var string
      */
