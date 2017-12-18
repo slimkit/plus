@@ -2,16 +2,12 @@
 
 namespace Zhiyi\Plus\EaseMobIm;
 
-use function foo\func;
-use function PHPSTORM_META\map;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 
 class EaseMobController
 {
-
     // Client ID
     protected $client_id;
 
@@ -40,22 +36,22 @@ class EaseMobController
         $this->org_name = $app_key[0];
         $this->app_name = $app_key[1];
         $this->register_type = 0;
-        if (!empty($this->org_name) && !empty($this->app_name)) {
+        if (! empty($this->org_name) && ! empty($this->app_name)) {
             $this->url = 'https://a1.easemob.com/'.$this->org_name.'/'.$this->app_name.'/';
         }
     }
 
     public function getToken()
     {
-        $options = array(
+        $options = [
             'grant_type' => 'client_credentials',
             'client_id' => $this->client_id,
             'client_secret' => $this->client_secret,
-        );
+        ];
         $body = json_encode($options);
         $url = $this->url.'token';
 
-        $tokenResult = $this->postCurl($url, $body, $header = array());
+        $tokenResult = $this->postCurl($url, $body, $header = []);
 
         return 'Authorization:Bearer '.$tokenResult['access_token'];
     }
@@ -90,9 +86,7 @@ class EaseMobController
      */
     public function createUser(Request $request, ResponseContract $response)
     {
-
         if ($this->register_type == 0) {
-
             return $this->openRegister($request, $response);
         }
         $user = $request->user();
@@ -122,20 +116,20 @@ class EaseMobController
         $user_ids = is_array($user_ids) ? $user_ids : explode(',', $user_ids);
         $options = [];
         $users = User::when($user_ids, function ($query) use ($user_ids) {
-                return $query->whereIn('id', $user_ids);
-            })
+            return $query->whereIn('id', $user_ids);
+        })
             ->select('id', 'password')
             ->get();
 
         foreach ($users as $user) {
             $options[] = [
                 'username' => $user->id,
-                'password' => $user->getImPwdHash()
+                'password' => $user->getImPwdHash(),
             ];
         }
         $url = $this->url.'users';
         $body = json_encode($options);
-        $header = array($this->getToken());
+        $header = [$this->getToken()];
         $result = $this->postCurl($url, $body, $header);
 
         return $this->getData($result, $response);
@@ -158,7 +152,7 @@ class EaseMobController
             'newpassword' => $user->getImPwdHash(),
         ];
         $body = json_encode($options);
-        $header = array($this->getToken());
+        $header = [$this->getToken()];
         $result = $this->postCurl($url, $body, $header, 'PUT');
 
         return $this->getData($result, $response);
@@ -236,7 +230,6 @@ class EaseMobController
     public function getData($result, ResponseContract $response)
     {
         if ($result['error']) {
-
             return $response->json(['message' => [$result['error_description']]], 500);
         }
 
