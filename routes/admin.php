@@ -98,6 +98,15 @@ Route::group([
         $route->post('/alioss', 'CdnController@setAlioss');
     });
 
+    // 附件部分
+    // @Route /admin/files
+    $route->group(['prefix' => 'files'], function (RouteRegisterContract $route) {
+
+        // 附件配置部分
+        $route->get('/setting', 'FileController@getConfig');
+        $route->patch('/setting', 'FileController@setConfig'); 
+    });
+
     /* 敏感词路由 */
     // @Route /admin/sensitives
     $route->group(['prefix' => 'sensitives'], function (RouteRegisterContract $route) {
