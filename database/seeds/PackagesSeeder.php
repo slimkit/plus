@@ -14,5 +14,7 @@ class PackagesSeeder extends Seeder
     {
         // Check in package
         $this->call(\SlimKit\PlusCheckIn\Seeds\DatabaseSeeder::class);
+        // News in package
+        $this->call(\SlimKit\Plus\Packages\News\Seeds\DatabaseSeeder::class);
     }
 }
