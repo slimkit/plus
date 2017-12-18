@@ -2,6 +2,7 @@
 
 namespace Zhiyi\Plus\Http\Requests\API2;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreUploadFile extends FormRequest
@@ -23,8 +24,10 @@ class StoreUploadFile extends FormRequest
      */
     public function rules()
     {
+        $max = config::get('files.upload_max_size', 10240);
+
         return [
-            'file' => 'required|max:2048|file|mimes:jpeg,bmp,png,gif,txt',
+            'file' => 'required|max:'.$max.'|file|mimes:jpeg,bmp,png,gif,txt',
         ];
     }
 
