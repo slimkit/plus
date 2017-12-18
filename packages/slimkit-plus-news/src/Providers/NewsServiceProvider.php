@@ -28,7 +28,7 @@ class NewsServiceProvider extends ServiceProvider
         );
 
         $this->publishes([
-            dirname(__DIR__).'/../resource' => $this->app->PublicPath().'/zhiyicx/plus-component-news',
+            dirname(__DIR__).'/../resource' => $this->app->PublicPath().'/assets/news',
         ], 'public');
 
         $this->publishes([
