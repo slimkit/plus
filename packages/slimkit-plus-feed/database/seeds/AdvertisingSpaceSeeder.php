@@ -1,9 +1,11 @@
 <?php
 
+namespace SlimKit\Plus\Packages\Feed\Seeds;
+
 use Illuminate\Database\Seeder;
 use Zhiyi\Plus\Models\AdvertisingSpace;
 
-class FeedAdvertisingSpaceSeeder extends Seeder
+class AdvertisingSpaceSeeder extends Seeder
 {
     public function run()
     {

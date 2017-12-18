@@ -1,9 +1,11 @@
 <?php
 
+namespace SlimKit\Plus\Packages\Feed\Seeds;
+
 use Zhiyi\Plus\Models\Ability;
 use Illuminate\Database\Seeder;
 
-class FeedAbilitySeeder extends Seeder
+class AbilityTableSeeder extends Seeder
 {
     /**
      * Run the seeder.
