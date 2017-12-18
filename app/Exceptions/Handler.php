@@ -3,7 +3,6 @@
 namespace Zhiyi\Plus\Exceptions;
 
 use Exception;
-use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -14,7 +13,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        //
+        \Tymon\JWTAuth\Exceptions\JWTException::class,
     ];
 
     /**
@@ -51,10 +50,6 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if ($exception instanceof JWTException) {
-            abort($exception->getStatusCode(), $exception->getMessage());
-        }
-
         return parent::render($request, $exception);
     }
 

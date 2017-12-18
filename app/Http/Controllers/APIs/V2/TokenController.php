@@ -59,7 +59,7 @@ class TokenController extends Controller
      */
     public function refresh(ResponseFactoryContract $response, JWTAuthToken $jwtAuthToken, string $token)
     {
-        if (! $jwtAuthToken->refresh($token)) {
+        if (! ($token = $jwtAuthToken->refresh($token))) {
             return $response->json(['message' => ['Failed to refresh token.']], 500);
         }
 

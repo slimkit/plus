@@ -54,7 +54,7 @@
         "symfony/finder": "~3.3",
         "symfony/polyfill-mbstring": "^1.4",
         "symfony/yaml": "^3.3",
-        "tymon/jwt-auth": "^0.5.12"
+        "tymon/jwt-auth": "1.0.0-rc.1"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

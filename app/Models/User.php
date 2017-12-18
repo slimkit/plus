@@ -2,13 +2,14 @@
 
 namespace Zhiyi\Plus\Models;
 
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Zhiyi\Plus\Http\Controllers\APIs\V2\UserAvatarController;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     // 功能性辅助相关。
     use Notifiable,
@@ -59,6 +60,28 @@ class User extends Authenticatable
      * @var array
      */
     protected $with = ['extra'];
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
     /**
      * Get avatar key.

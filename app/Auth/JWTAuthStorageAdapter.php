@@ -2,12 +2,11 @@
 
 namespace Zhiyi\Plus\Auth;
 
-use Closure;
 use Carbon\Carbon;
 use Zhiyi\Plus\Models\JWTCache;
-use Tymon\JWTAuth\Providers\Storage\StorageInterface;
+use Tymon\JWTAuth\Contracts\Providers\Storage;
 
-class JWTAuthStorageAdapter implements StorageInterface
+class JWTAuthStorageAdapter implements Storage
 {
     /**
      * Add a new item into storage.
@@ -19,46 +18,66 @@ class JWTAuthStorageAdapter implements StorageInterface
      */
     public function add($key, $value, $minutes)
     {
-        $this->payloadSingle('add', function ($key, $value, $minutes) {
-            $token = JWTCache::find($key);
-            if (! $token) {
-                $token = new JWTCache();
-                $token->user_id = 0;
-                $token->key = $key;
-                $token->value = $value;
-            }
+        if (($res = $this->single('add', $key, $value, $minutes)) !== false) {
+            return $res;
+        }
 
-            $token->minutes = $minutes;
-            $token->status = 1;
-            $token->save();
-        }, $key, $value, $minutes);
+        $token = JWTCache::find($key);
+        if (! $token) {
+            $token = new JWTCache();
+            $token->user_id = 0;
+            $token->key = $key;
+            $token->value = $value;
+        }
+
+        $token->minutes = $minutes;
+        $token->status = 1;
+        $token->save();
     }
 
     /**
-     * Check whether a key exists in storage.
+     * Add a new item into storage forever.
      *
      * @param string $key
-     * @return bool
+     * @param string $value
+     * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function has($key)
+    public function forever($key, $value)
     {
-        return $this->payloadSingle('has', function ($key) {
-            $token = JWTCache::find($key);
+        if (($res = $this->single('forever', $key, $value)) !== false) {
+            return $res;
+        }
 
-            if (! $token) {
-                return false;
-            }
+        return $this->add($key, $value, 100000);
+    }
 
-            $now = Carbon::now();
-            if ($token->status && $now->diffInMinutes($token->created_at) < $token->minutes) {
-                return true;
-            } elseif ($now->diffInMinutes($token->created_at) > $token->minutes) {
-                $token->delete();
-            }
+    /**
+     * Get an item from storage.
+     *
+     * @param string $key
+     * @return mixed
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function get($key)
+    {
+        if (($res = $this->single('get', $key)) !== false) {
+            return $res;
+        }
 
-            return false;
-        }, $key);
+        $cache = JWTCache::find($key);
+
+        if (! $cache) {
+            return null;
+        }
+
+        $now = Carbon::now();
+
+        if ($cache->status && $now->diffInMinutes($cache->created_at) < $cache->minutes) {
+            return $cache->value;
+        } elseif ($now->diffInMinutes($cache->created_at) > $cache->minutes) {
+            $cache->delete();
+        }
     }
 
     /**
@@ -70,9 +89,11 @@ class JWTAuthStorageAdapter implements StorageInterface
      */
     public function destroy($key)
     {
-        return $this->payloadSingle('destroy', function ($key) {
-            return JWTCache::destroy($key);
-        }, $key);
+        if (($res = $this->single('destroy', $key)) !== false) {
+            return $res;
+        }
+
+        return JWTCache::destroy($key);
     }
 
     /**
@@ -83,30 +104,24 @@ class JWTAuthStorageAdapter implements StorageInterface
      */
     public function flush()
     {
-        $this->payloadSingle('flush', function () {
-            JWTCache::delete();
-        });
+        if (($res = $this->single('flush')) !== false) {
+            return $res;
+        }
+        
+        JWTCache::delete();
     }
 
-    /**
-     * Pay load single token.
-     *
-     * @param string $method
-     * @param \Closure $call
-     * @param array $args
-     * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    protected function payloadSingle(string $method, Closure $call, ...$args)
+    protected function single(string $method, ...$args)
     {
-        if (! config('jwt.single_auth')) {
-            $storage = app(
-                config('jwt.providers.cache_storage')
-            );
-
-            return $storage->$method(...$args);
+        if (config('jwt.single_auth')) {
+            return false;
         }
 
-        return $call(...$args);
+        return $this->storage()->$method(...$args);
+    }
+
+    protected function storage()
+    {
+        return app(\Tymon\JWTAuth\Providers\Storage\Illuminate::class);
     }
 }

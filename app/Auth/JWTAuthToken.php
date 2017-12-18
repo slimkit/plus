@@ -2,28 +2,28 @@
 
 namespace Zhiyi\Plus\Auth;
 
-use Tymon\JWTAuth\JWTAuth;
+use Tymon\JWTAuth\JWT;
+use Illuminate\Support\Facades\Auth;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\JWTCache as JWTCacheModel;
 
 class JWTAuthToken
 {
-    /**
-     * JWT auth manager.
-     *
-     * @var \Tymon\JWTAuth\JWTAuth
-     */
-    protected $auth;
+    protected $jwt;
+
+    public function __construct(JWT $jwt)
+    {
+        $this->jwt = $jwt;
+    }
 
     /**
-     * Create the auth instance.
+     * Get the guard to be used during authentication.
      *
-     * @param \Tymon\JWTAuth\JWTAuth $auth
-     * @author Seven Du <shiweidu@outlook.com>
+     * @return \Illuminate\Contracts\Auth\Guard
      */
-    public function __construct(JWTAuth $auth)
+    public function guard()
     {
-        $this->auth = $auth;
+        return Auth::guard('api');
     }
 
     /**
@@ -35,13 +35,9 @@ class JWTAuthToken
      */
     public function create(UserModel $user)
     {
-        $token = $this->auth->fromUser($user);
-
-        if (! $token) {
-            return false;
-        }
-
-        return $this->token($token, $user);
+        return $this->token(
+            $this->jwt->fromUser($user), $user
+        );
     }
 
     /**
@@ -53,13 +49,11 @@ class JWTAuthToken
      */
     public function refresh(string $token)
     {
-        $token = $this->auth->refresh($token);
+        $this->jwt->setToken($token);
+        $user = $this->guard()->user();
+        $token = $this->jwt->refresh();
 
-        if (! $token) {
-            return false;
-        }
-
-        return $this->token($token, $this->auth->toUser($token));
+        return $this->token($token, $user);
     }
 
     /**
@@ -75,15 +69,16 @@ class JWTAuthToken
             return $token;
         }
 
+        $this->jwt->setToken($token);
         JWTCacheModel::where('user_id', $user->id)->where('status', 0)->update([
             'status' => 1,
         ]);
 
-        $payload = $this->auth->getPayload($token);
+        $payload = $this->jwt->getPayload();
         $cache = new JWTCacheModel();
         $cache->user_id = $user->id;
         $cache->key = $payload['jti'];
-        $cache->value = $token;
+        $cache->value = ['valid_until' => time()];
         $cache->minutes = max(config('jwt.ttl'), config('jwt.refresh_ttl'));
         $cache->save();
 
