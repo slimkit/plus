@@ -54,6 +54,7 @@ class EaseMobController
         $Client = new Client();
         $tokenResult = $Client->request('post', $url, $data);
         $token = json_decode($tokenResult->getBody()->getContents());
+
         return 'Bearer '.$token->access_token;
     }
 
@@ -66,7 +67,6 @@ class EaseMobController
      */
     public function openRegister(Request $request)
     {
-
         $options['username'] = $request->user_id;
         $options['password'] = $this->getImPwdHash($request->user_id);
         $url = $this->url.'users';
@@ -82,7 +82,7 @@ class EaseMobController
 
             return response()->json([
                 'message' => [
-                    json_decode($error)->error_description
+                    json_decode($error)->error_description,
                 ],
             ])->setStatusCode(500);
         }
@@ -113,9 +113,7 @@ class EaseMobController
      */
     public function createUser(Request $request)
     {
-
         if ($this->register_type == 0) {
-
             return $this->openRegister($request);
         }
 
@@ -135,7 +133,7 @@ class EaseMobController
 
             return response()->json([
                 'message' => [
-                    json_decode($error)->error_description
+                    json_decode($error)->error_description,
                 ],
             ])->setStatusCode(500);
         }
@@ -164,13 +162,13 @@ class EaseMobController
         foreach ($users as $user) {
             $options[] = [
                 'username' => $user->id,
-                'password' => $user->getImPwdHash()
+                'password' => $user->getImPwdHash(),
             ];
         }
         $url = $this->url.'users';
         $data['body'] = json_encode($options);
         $data['headers'] = [
-            'Authorization' => $this->getToken()
+            'Authorization' => $this->getToken(),
         ];
         $data['http_errors'] = false;
 
@@ -182,7 +180,7 @@ class EaseMobController
 
             return response()->json([
                 'message' => [
-                    json_decode($error)->error_description
+                    json_decode($error)->error_description,
                 ],
             ])->setStatusCode(500);
         }
@@ -207,7 +205,7 @@ class EaseMobController
         ];
         $data['body'] = json_encode($options);
         $data['headers'] = [
-            'Authorization' => $this->getToken()
+            'Authorization' => $this->getToken(),
         ];
         $data['http_errors'] = false;
 
@@ -219,7 +217,7 @@ class EaseMobController
 
             return response()->json([
                 'message' => [
-                    json_decode($error)->error_description
+                    json_decode($error)->error_description,
                 ],
             ])->setStatusCode(500);
         }
@@ -228,7 +226,7 @@ class EaseMobController
     }
 
     /**
-     * 获取环信用户信息，无则新注册一个
+     * 获取环信用户信息，无则新注册一个.
      *
      * @param Request $request
      * @return mixed
@@ -238,7 +236,7 @@ class EaseMobController
     {
         $url = $this->url.'users/'.$request->user_id;
         $data['headers'] = [
-            'Authorization' => $this->getToken()
+            'Authorization' => $this->getToken(),
         ];
         $data['http_errors'] = false;
 
@@ -246,7 +244,6 @@ class EaseMobController
         $result = $Client->request('get', $url, $data);
 
         if ($result->getStatusCode() == 404) {
-
             $result = $this->createUser($request);
         }
 
@@ -255,7 +252,7 @@ class EaseMobController
 
             return response()->json([
                 'message' => [
-                    json_decode($error)->error_description
+                    json_decode($error)->error_description,
                 ],
             ])->setStatusCode(500);
         }
