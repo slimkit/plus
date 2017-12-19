@@ -109,6 +109,16 @@
               </div>
             </div>
             <div class="form-group">
+              <label class="control-label col-md-2">关于我们</label>
+              <div class="col-md-6">
+                <input type="text" class="form-control" v-model="site.about_url" placeholder="例如: http://www.about.com">
+                </textarea>
+              </div>
+              <div class="col-md-4">
+                <span class="help-block">关于我们链接地址</span>
+              </div>
+            </div>
+            <div class="form-group">
               <label class="control-label col-md-2"></label>
               <div class="col-md-6">
                 <button class="btn btn-primary btn-block" 
@@ -152,7 +162,8 @@ const Site = {
           anonymous: {
             status: false,
             rule: ''
-          }
+          },
+          about_url:null,
         },
         message: {
           error: null,

@@ -449,7 +449,7 @@ class SiteController extends Controller
     public function siteConfigurations(Repository $config, Configuration $configuration)
     {
         $configs = $config->get('site');
-
+        
         if (is_null($configs)) {
             $configs = $this->initSiteConfiguration($configuration);
         }
