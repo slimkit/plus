@@ -2,11 +2,11 @@
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Zhiyi\Plus\EaseMobIm\EaseMobController;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use function Zhiyi\Plus\username;
 use Zhiyi\Plus\Auth\JWTAuthToken;
+use Zhiyi\Plus\EaseMobIm\EaseMobController;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class TokenController extends Controller
@@ -45,7 +45,7 @@ class TokenController extends Controller
                     'phone'  => $user->phone,
                     'email'  => $user->email,
                     'wallet' => $user->wallet,
-                    'im_pwd_hash' => $user->getImPwdHash()
+                    'im_pwd_hash' => $user->getImPwdHash(),
                 ]),
                 'ttl' => config('jwt.ttl'),
                 'refresh_ttl' => config('jwt.refresh_ttl'),

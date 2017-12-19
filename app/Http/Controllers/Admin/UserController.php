@@ -3,7 +3,6 @@
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Carbon\Carbon;
-use Zhiyi\Plus\EaseMobIm\EaseMobController;
 use Zhiyi\Plus\Models\Role;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
@@ -13,6 +12,7 @@ use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Support\Configuration;
 use Zhiyi\Plus\Models\UserRecommended;
 use Illuminate\Contracts\Config\Repository;
+use Zhiyi\Plus\EaseMobIm\EaseMobController;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class UserController extends Controller
@@ -323,7 +323,6 @@ class UserController extends Controller
             $request->old_pwd_hash = $oldPwdHash;
             $im = $easeMob->resetPassword($request);
             if ($im->getStatusCode() != 201) {
-
                 return false;
             }
 
@@ -376,7 +375,6 @@ class UserController extends Controller
             $request->user_id = $user->id;
             $im = $easeMob->createUser($request);
             if ($im->getStatusCode() != 201) {
-
                 return response()->json([
                     'message' => ['环信用户注册失败'],
                 ])->setStatusCode(400);
