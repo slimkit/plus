@@ -44,36 +44,5 @@ class ReportController extends Controller
         // $reprot->save();
     }
 
-    public function index()
-    {
 
-        $data   = request()->only('idnum', 'bib', 'gender', 'mobile', 'state', 'refundid');
-        $name = request()->qeury('name')
-        $event  = EventModel::all();
-
-        $query  = Registration::latest('id');
-
-        if (isset(request()->query('name')) && request()->query('name')) {
-            $query = $query->where('name', 'like', sprintf('%%%s%%',request()->query('name')));
-        }
-
-        foreach($data as $key => $value) {
-            if (!is_null($value)) {
-                $query = $query->where($key, $value);
-            }
-        }
-
-        $datas = $query->paginate(20);
-
-        $types  = [
-        'normal'=>'正常',
-        'draw'=>'抽签',
-        'audit'=>'等待审核',
-        'auditfail'=>'审核未通过',
-        'drawfail'=>'未中签',
-        'wait'=>'候补中',
-        'waitfail'=>'候补失败'];
-
-        return view("admin.registration.index",compact('datas','types','event'));
-    }
 }
