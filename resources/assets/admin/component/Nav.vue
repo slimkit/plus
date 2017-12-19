@@ -92,12 +92,6 @@
       打赏管理
     </router-link>
 
-    <!-- 附件管理 -->
-    <router-link class="list-group-item __button" to="/file" active-class="active" >
-      <span class="__icon">📄</span>
-      附件管理
-    </router-link>
-
     <!-- CDN -->
     <router-link class="list-group-item __button" to="/cdn" active-class="active">
         <span class="glyphicon glyphicon-cloud __icon"></span>

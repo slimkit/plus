@@ -19,6 +19,7 @@ import Site from '../component/setting/Site';
 
 // Pages
 import Sensitive from '../components/pages/Sensitive';
+import FileSetting from '../components/modules/file/Setting'
 
 import BackEndSetting from '../component/setting/BackEndSetting';
 
@@ -38,6 +39,7 @@ const settingRouter = {
     { path: 'server', component: Server },
     { path: 'site', component: Site },
     { path: 'sensitives', component: Sensitive },
+    { path: 'upload-setting', component: FileSetting },
     { path: 'back-end-setting', component: BackEndSetting },
   ]
 };

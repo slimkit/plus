@@ -53,6 +53,10 @@
                 <a href="#">敏感词</a>
               </router-link>
 
+              <router-link to="/setting/upload-setting" tag="li" active-class="active">
+                <a href="#">上传设置</a>
+              </router-link>
+
               <router-link to="/setting/server" tag="li" active-class="active">
                 <a href="#">服务器信息</a> 
               </router-link>
