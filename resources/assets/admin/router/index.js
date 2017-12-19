@@ -15,12 +15,14 @@ import captchaRouter from './captcha';
 import goldRouter from './gold';
 import rewardRouter from './reward';
 import cdnRoutes from './cdn';
+import reportRoutes from './report';
 
 // components.
 import Login from '../component/Login';
 import Home from '../component/Home';
 import Package from '../component/Package';
 import Component from '../component/Component';
+
 
 Vue.use(VueRouter);
 
@@ -43,6 +45,7 @@ const childrenRoutes = [
   goldRouter,
   rewardRouter,
   cdnRoutes,
+  reportRoutes
 ];
 
 const router = new VueRouter({

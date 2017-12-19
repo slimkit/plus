@@ -336,4 +336,7 @@ Route::middleware('auth:web')
     Route::get('rewards/statistics', 'RewardController@statistics');
 
     Route::get('rewards/export', 'RewardController@export');
+
+    /* ------------- 举报管理 -----------------*/
+    Route::get('reports', 'ReportController@index');
 });
