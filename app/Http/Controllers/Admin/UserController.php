@@ -3,6 +3,7 @@
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Carbon\Carbon;
+use Zhiyi\Plus\EaseMobIm\EaseMobController;
 use Zhiyi\Plus\Models\Role;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
@@ -304,16 +305,27 @@ class UserController extends Controller
         foreach ($request->only(['email', 'name', 'phone']) as $key => $value) {
             $user->$key = $value ?: null;
         }
-
+        $oldPwdHash = $user->getImPwdHash();
         if ($password = $request->input('password')) {
             $user->createPassword($password);
         }
 
-        $response = app('db.connection')->transaction(function () use ($user, $request) {
+        $easeMob = new EaseMobController();
+
+        $response = app('db.connection')->transaction(function () use ($user, $request, $easeMob, $oldPwdHash) {
             $user->save();
             $user->roles()->sync(
                 $request->input('roles')
             );
+
+            // 环信重置密码
+            $request->user_id = $user->id;
+            $request->old_pwd_hash = $oldPwdHash;
+            $im = $easeMob->resetPassword($request);
+            if ($im->getStatusCode() != 201) {
+
+                return false;
+            }
 
             return true;
         });
@@ -358,6 +370,18 @@ class UserController extends Controller
         $user->createPassword($request->input('password'));
 
         if ($user->save()) {
+
+            // 环信用户注册
+            $easeMob = new EaseMobController();
+            $request->user_id = $user->id;
+            $im = $easeMob->createUser($request);
+            if ($im->getStatusCode() != 201) {
+
+                return response()->json([
+                    'message' => ['环信用户注册失败'],
+                ])->setStatusCode(400);
+            }
+
             return response()->json([
                 'message' => ['成功'],
                 'user_id' => $user->id,

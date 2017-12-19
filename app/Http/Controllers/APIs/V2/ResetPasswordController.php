@@ -3,6 +3,7 @@
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
+use Zhiyi\Plus\EaseMobIm\EaseMobController;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\VerificationCode as VerificationCodeModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
@@ -31,9 +32,15 @@ class ResetPasswordController extends Controller
         if (! $user->verifyPassword($request->input('old_password'))) {
             return $response->json(['old_password' => ['账户密码错误']], 422);
         }
-
+        $oldPwdHash = $user->getImPwdHash();
         $user->createPassword($request->input('password'));
         $user->save();
+
+        // 环信重置密码
+        $easeMob = new EaseMobController();
+        $request->user_id = $user->id;
+        $request->old_pwd_hash = $oldPwdHash;
+        $easeMob->resetPassword($request);
 
         return $response->make('', 204);
     }
@@ -117,7 +124,7 @@ class ResetPasswordController extends Controller
         ]);
 
         $field = $request->input('phone') ? 'phone' : 'email';
-        $user = $userModel->where($field, $account = $request->input($field))->first();
+        $user = $userModel->where($field, $account = $request->input($field, 'password'))->first();
         $verificationCode = $verificationCodeModel->where('channel', $request->input('verifiable_type'))
             ->where('code', $request->input('verifiable_code'))
             ->where('account', $account)
@@ -126,9 +133,17 @@ class ResetPasswordController extends Controller
         if (! $verificationCode) {
             return $response->json(['message' => ['验证码错误或者已失效']], 422);
         }
+        $oldPwdHash = $user->getImPwdHash();
 
         $user->createPassword($request->input('password'));
         $user->save();
+
+        // 环信重置密码
+        $easeMob = new EaseMobController();
+        $request->user_id = $user->id;
+        $request->old_pwd_hash = $oldPwdHash;
+        $easeMob->resetPassword($request);
+
         $verificationCode->delete();
 
         return $response->make('', 204);

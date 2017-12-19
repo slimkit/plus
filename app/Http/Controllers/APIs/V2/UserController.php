@@ -4,6 +4,7 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use RuntimeException;
 use Tymon\JWTAuth\JWTAuth;
+use Zhiyi\Plus\EaseMobIm\EaseMobController;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\CommonConfig;
@@ -113,6 +114,17 @@ class UserController extends Controller
         $verify->delete();
         if (! $user->save()) {
             return $response->json(['message' => ['注册失败']], 500);
+        }
+
+        // 环信用户注册
+        $easeMob = new EaseMobController();
+        $request->user_id = $user->id;
+        $im = $easeMob->createUser($request);
+        if ($im->getStatusCode() != 201) {
+
+            return response()->json([
+                'message' => ['环信用户注册失败'],
+            ])->setStatusCode(400);
         }
 
         $user->roles()->sync($role->value);

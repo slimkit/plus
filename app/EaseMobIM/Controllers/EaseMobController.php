@@ -2,9 +2,9 @@
 
 namespace Zhiyi\Plus\EaseMobIm;
 
+use GuzzleHttp\Client;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 
 class EaseMobController
 {
@@ -28,10 +28,10 @@ class EaseMobController
 
     public function __construct()
     {
-        $this->client_id = 'YXA6tCQToBKgEee3Rv3_L_Q4PQ';
-        $this->client_secret = 'YXA6I9abUlXokAjHlKP7fAVK0mKSI_8';
+        $this->client_id = config('easemob.client_id');
+        $this->client_secret = config('easemob.client_secret');
         // 应用标识
-        $app_key = explode('#', '1100170327115877#test');
+        $app_key = explode('#', config('easemob.app_key'));
 
         $this->org_name = $app_key[0];
         $this->app_name = $app_key[1];
@@ -48,69 +48,109 @@ class EaseMobController
             'client_id' => $this->client_id,
             'client_secret' => $this->client_secret,
         ];
-        $body = json_encode($options);
         $url = $this->url.'token';
+        $data['body'] = json_encode($options);
 
-        $tokenResult = $this->postCurl($url, $body, $header = []);
-
-        return 'Authorization:Bearer '.$tokenResult['access_token'];
+        $Client = new Client();
+        $tokenResult = $Client->request('post', $url, $data);
+        $token = json_decode($tokenResult->getBody()->getContents());
+        return 'Bearer '.$token->access_token;
     }
 
     /**
      * 开放注册模式.
      *
      * @param Request $request
-     * @param ResponseContract $response
      * @return string
      * @author ZsyD<1251992018@qq.com>
      */
-    public function openRegister(Request $request, ResponseContract $response)
+    public function openRegister(Request $request)
     {
-        $user = $request->user();
-        $options['username'] = $user->id;
-        $options['password'] = $user->getImPwdHash();
-        $url = $this->url.'users';
-        $body = json_encode($options);
-        $result = $this->postCurl($url, $body, $head = 0);
 
-        return $this->getData($result, $response);
+        $options['username'] = $request->user_id;
+        $options['password'] = $this->getImPwdHash($request->user_id);
+        $url = $this->url.'users';
+
+        $data['headers'] = ['Content-Type' => 'application/json'];
+        $data['body'] = json_encode($options);
+        $data['http_errors'] = false;
+        $Client = new Client();
+        $result = $Client->request('post', $url, $data);
+
+        if ($result->getStatusCode() != 200) {
+            $error = $result->getBody()->getContents();
+
+            return response()->json([
+                'message' => [
+                    json_decode($error)->error_description
+                ],
+            ])->setStatusCode(500);
+        }
+
+        return response()->json([])->setStatusCode(201);
+    }
+
+    /**
+     * 获取用户密码.
+     *
+     * @param $user_id
+     * @return mixed
+     * @author ZsyD<1251992018@qq.com>
+     */
+    public function getImPwdHash($user_id)
+    {
+        $user = User::where('id', $user_id)->select('password')->first();
+
+        return $user->getImPwdHash();
     }
 
     /**
      * 授权注册.
      *
      * @param Request $request
-     * @param ResponseContract $response
      * @return mixed
      * @author ZsyD<1251992018@qq.com>
      */
-    public function createUser(Request $request, ResponseContract $response)
+    public function createUser(Request $request)
     {
+
         if ($this->register_type == 0) {
-            return $this->openRegister($request, $response);
+
+            return $this->openRegister($request);
         }
-        $user = $request->user();
+
         $url = $this->url.'users';
         $options = [
-            'username' => $user->uid,
-            'password' => $user->getImPwdHash(),
+            'username' => $request->user_id,
+            'password' => $this->getImPwdHash($request->user_id),
         ];
-        $body = json_encode($options);
-        $header = [$this->getToken()];
-        $result = $this->postCurl($url, $body, $header);
+        $data['body'] = json_encode($options);
+        $data['headers'] = [$this->getToken()];
+        $data['http_errors'] = false;
+        $Client = new Client();
+        $result = $Client->request('post', $url, $data);
 
-        return $this->getData($result, $response);
+        if ($result->getStatusCode() != 200) {
+            $error = $result->getBody()->getContents();
+
+            return response()->json([
+                'message' => [
+                    json_decode($error)->error_description
+                ],
+            ])->setStatusCode(500);
+        }
+
+        return response()->json([])->setStatusCode(201);
     }
 
     /**
      * 批量注册用户.
      *
      * @param Request $request
-     * @param ResponseContract $response|NULL
      * @return mixed
      * @author ZsyD<1251992018@qq.com>
      */
-    public function createUsers(Request $request, ResponseContract $response)
+    public function createUsers(Request $request)
     {
         $user_ids = $request->input('user_ids');
         $user_ids = is_array($user_ids) ? $user_ids : explode(',', $user_ids);
@@ -124,117 +164,102 @@ class EaseMobController
         foreach ($users as $user) {
             $options[] = [
                 'username' => $user->id,
-                'password' => $user->getImPwdHash(),
+                'password' => $user->getImPwdHash()
             ];
         }
         $url = $this->url.'users';
-        $body = json_encode($options);
-        $header = [$this->getToken()];
-        $result = $this->postCurl($url, $body, $header);
+        $data['body'] = json_encode($options);
+        $data['headers'] = [
+            'Authorization' => $this->getToken()
+        ];
+        $data['http_errors'] = false;
 
-        return $this->getData($result, $response);
+        $Client = new Client();
+        $result = $Client->request('post', $url, $data);
+
+        if ($result->getStatusCode() != 200) {
+            $error = $result->getBody()->getContents();
+
+            return response()->json([
+                'message' => [
+                    json_decode($error)->error_description
+                ],
+            ])->setStatusCode(500);
+        }
+
+        return response()->json([])->setStatusCode(201);
     }
 
     /**
      * 重置环信密码.
      *
      * @param Request $request
-     * @param ResponseContract $response
      * @return mixed
      * @author ZsyD<1251992018@qq.com>
      */
-    public function resetPassword(Request $request, ResponseContract $response)
+    public function resetPassword(Request $request)
     {
-        $user = $request->user();
-        $url = $this->url.'users/'.$user->id.'/password';
+        $url = $this->url.'users/'.$request->user_id.'/password';
 
         $options = [
-            'newpassword' => $user->getImPwdHash(),
+            'oldpassword' => $request->old_pwd_hash,
+            'newpassword' => $this->getImPwdHash($request->user_id),
         ];
-        $body = json_encode($options);
-        $header = [$this->getToken()];
-        $result = $this->postCurl($url, $body, $header, 'PUT');
+        $data['body'] = json_encode($options);
+        $data['headers'] = [
+            'Authorization' => $this->getToken()
+        ];
+        $data['http_errors'] = false;
 
-        return $this->getData($result, $response);
+        $Client = new Client();
+        $result = $Client->request('put', $url, $data);
+
+        if ($result->getStatusCode() != 200) {
+            $error = $result->getBody()->getContents();
+
+            return response()->json([
+                'message' => [
+                    json_decode($error)->error_description
+                ],
+            ])->setStatusCode(500);
+        }
+
+        return response()->json([])->setStatusCode(201);
     }
 
-    public function postCurl($url, $body, $header, $type = 'POST')
+    /**
+     * 获取环信用户信息，无则新注册一个
+     *
+     * @param Request $request
+     * @return mixed
+     * @author ZsyD<1251992018@qq.com>
+     */
+    public function getUser(Request $request)
     {
-        //1.创建一个curl资源
-        $ch = curl_init();
-        //2.设置URL和相应的选项
-        curl_setopt($ch, CURLOPT_URL, $url); //设置url
-        //1)设置请求头
-        //array_push($header, 'Accept:application/json');
-        //array_push($header,'Content-Type:application/json');
-        //array_push($header, 'http:multipart/form-data');
-        //设置为false,只会获得响应的正文(true的话会连响应头一并获取到)
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 5); // 设置超时限制防止死循环
-        //设置发起连接前的等待时间，如果设置为0，则无限等待。
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-        //将curl_exec()获取的信息以文件流的形式返回，而不是直接输出。
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        //2)设备请求体
-        if (count($body) > 0) {
-            //$b=json_encode($body,true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $body); //全部数据使用HTTP协议中的"POST"操作来发送。
-        }
-        //设置请求头
-        if (count($header) > 0) {
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        }
-        //上传文件相关设置
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 对认证证书来源的检查
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0); // 从证书中检查SSL加密算
+        $url = $this->url.'users/'.$request->user_id;
+        $data['headers'] = [
+            'Authorization' => $this->getToken()
+        ];
+        $data['http_errors'] = false;
 
-        //3)设置提交方式
-        switch ($type) {
-            case 'GET':
-                curl_setopt($ch, CURLOPT_HTTPGET, true);
-                break;
-            case 'POST':
-                curl_setopt($ch, CURLOPT_POST, true);
-                break;
-            case 'PUT'://使用一个自定义的请求信息来代替"GET"或"HEAD"作为HTTP请									                     求。这对于执行"DELETE" 或者其他更隐蔽的HTT
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-                break;
-            case 'DELETE':
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
-                break;
+        $Client = new Client();
+        $result = $Client->request('get', $url, $data);
+
+        if ($result->getStatusCode() == 404) {
+
+            $result = $this->createUser($request);
         }
 
-        //4)在HTTP请求中包含一个"User-Agent: "头的字符串。-----必设
+        if ($result->getStatusCode() != 200) {
+            $error = $result->getBody()->getContents();
 
-        curl_setopt($ch, CURLOPT_USERAGENT, 'SSTS Browser/1.0');
-        curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
-
-        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)'); // 模拟用户使用的浏览器
-        //5)
-
-        //3.抓取URL并把它传递给浏览器
-        $res = curl_exec($ch);
-
-        $result = json_decode($res, true);
-        //4.关闭curl资源，并且释放系统资源
-        curl_close($ch);
-        if (empty($result)) {
-            return $res;
-        } else {
-            return $result;
-        }
-    }
-
-    public function getData($result, ResponseContract $response)
-    {
-        if ($result['error']) {
-            return $response->json(['message' => [$result['error_description']]], 500);
+            return response()->json([
+                'message' => [
+                    json_decode($error)->error_description
+                ],
+            ])->setStatusCode(500);
         }
 
-        return $response->json([
-            'data' => $result['data'],
-        ])->setStatusCode(201);
+        return response()->json([])->setStatusCode(201);
     }
 }
