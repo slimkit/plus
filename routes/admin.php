@@ -104,7 +104,7 @@ Route::group([
 
         // 附件配置部分
         $route->get('/setting', 'FileController@getConfig');
-        $route->patch('/setting', 'FileController@setConfig'); 
+        $route->patch('/setting', 'FileController@setConfig');
     });
 
     /* 敏感词路由 */

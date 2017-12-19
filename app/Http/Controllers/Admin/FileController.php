@@ -4,13 +4,13 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Support\Configuration;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Config\Repository;
+use Zhiyi\Plus\Http\Controllers\Controller;
 
 class FileController extends Controller
 {
     /**
-     * 获取附件基本配置
+     * 获取附件基本配置.
      *
      * @param Repository $config
      * @return mixed
@@ -27,7 +27,7 @@ class FileController extends Controller
     }
 
     /**
-     * 保存附件基本配置
+     * 保存附件基本配置.
      *
      * @param Request $request
      * @param Configuration $config
