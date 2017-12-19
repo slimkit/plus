@@ -11,6 +11,7 @@
 [![ThinkSNS Plus 技术交流群](https://img.shields.io/badge/QQ%20Group-651240785-6782d6.svg?style=flat-square)](//shang.qq.com/wpa/qunwpa?idkey=7a85a1f73b3da2b1106e10817bd3fb6414766ca7dfe102977ad698011fb01ea5)
 [![Style CI](https://styleci.io/repos/76627423/shield?branch=master)](https://styleci.io/repos/76627423)
 [![Composer publish version](https://img.shields.io/packagist/v/zhiyicx/thinksns-plus.svg?style=flat-square)](https://packagist.org/packages/zhiyicx/thinksns-plus)
+[![Composer publish preview version](https://img.shields.io/packagist/vpre/zhiyicx/thinksns-plus.svg?style=flat-square)](https://packagist.org/packages/zhiyicx/thinksns-plus)
 
 Travis CI: [![Travis CI Build Status](https://img.shields.io/travis/slimkit/thinksns-plus.svg?style=flat-square)](https://travis-ci.org/slimkit/thinksns-plus)
 
@@ -26,8 +27,8 @@ ThinkSNS Plus 是基于 Laravel 开发的一个用户生态基础框架系统，
 
 ThinkSNS Plus 有很多优秀应用，如：
 
-- [良好支持移动网页的 SPA 应用（h5）](https://github.com/slimkit/plus-component-h5)
-- [类似微博的动态流应用](https://github.com/slimkit/plus-component-h5)
+- [良好支持移动网页的 SPA 应用（h5）](https://github.com/zhiyicx/plus-component-h5)
+- [类似微博的动态流应用](https://github.com/slimkit/plus-component-feed)
 - [圈子](https://github.com/slimkit/plus-component-group)
 
 ...更多请看 [https://slimkit.github.io/plus-docs/package](https://slimkit.github.io/plus-docs/package)
