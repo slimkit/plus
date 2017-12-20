@@ -18,7 +18,6 @@
 
 namespace SlimKit\PlusAroundAmap\Providers;
 
-use Zhiyi\Plus\Support\PackageHandler;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -63,9 +62,6 @@ class AppServiceProvider extends ServiceProvider
 
         // register cntainer aliases
         $this->registerContainerAliases();
-
-        // Register Plus package handlers.
-        $this->registerPackageHandlers();
     }
 
     /**
@@ -75,15 +71,6 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function registerHandlerSingletions()
     {
-        // Owner handler.
-        $this->app->singleton('plus-around-amap:handler', function () {
-            return new \SlimKit\PlusAroundAmap\Handlers\PackageHandler();
-        });
-
-        // Develop handler.
-        $this->app->singleton('plus-around-amap:dev-handler', function ($app) {
-            return new \SlimKit\PlusAroundAmap\Handlers\DevPackageHandler($app);
-        });
     }
 
     /**
@@ -93,42 +80,12 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function registerContainerAliases()
     {
-        $aliases = [
-            'plus-around-amap:handler' => [
-                \SlimKit\PlusAroundAmap\Handlers\PackageHandler::class,
-            ],
-            'plus-around-amap:dev-handler' => [
-                \SlimKit\PlusAroundAmap\Handlers\DevPackageHandler::class,
-            ],
-        ];
+        $aliases = [];
 
         foreach ($aliases as $key => $aliases) {
             foreach ($aliases as $key => $alias) {
                 $this->app->alias($key, $alias);
             }
         }
-    }
-
-    /**
-     * Register Plus package handlers.
-     *
-     * @return void
-     */
-    protected function registerPackageHandlers()
-    {
-        $this->loadHandleFrom('around-amap', 'plus-around-amap:handler');
-        $this->loadHandleFrom('around-amap-dev', 'plus-around-amap:dev-handler');
-    }
-
-    /**
-     * Register handler.
-     *
-     * @param string $name
-     * @param \Zhiyi\Plus\Support\PackageHandler|string $handler
-     * @return void
-     */
-    private function loadHandleFrom(string $name, $handler)
-    {
-        PackageHandler::loadHandleFrom($name, $handler);
     }
 }
