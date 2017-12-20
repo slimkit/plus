@@ -50,7 +50,7 @@
                         <label for="name" class="col-md-4 control-label">高德 Web 服务 Key</label>
 
                         <div class="col-md-6">
-                            <input type="text" class="form-control" name="amap-key" value="{{ old('amap-key', $key) }}"  autofocus>
+                            <input type="text" class="form-control" name="amap-key" value="{{ old('amap-key', $key) }}"  required autofocus>
 
                             @if ($errors->has('amap-key'))
                                 <span class="help-block">
@@ -120,17 +120,6 @@
                         {{ session('status') }}
                     </div>
                 @endif
-
-                @if (count($errors) > 0)
-                @foreach ($errors->all() as $error)
-                    <div class="alert alert-danger alert-dismissible fade in" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                        {{ $error }}
-                    </div>
-                @endforeach
-            @endif
 
             </div>
         </div>
