@@ -1,14 +1,14 @@
 {
-    "name": "slimkit/around-amap",
+    "name": "slimkit/plus-around-amap",
     "description": "✈️The package is a ThinkSNS+ package.",
     "type": "library",
     "license": "MIT",
     "require": {
         "php": ">=7.0",
-        "illuminate/console": "^5.4",
-        "illuminate/contracts": "^5.4",
-        "illuminate/database": "^5.4",
-        "illuminate/support": "^5.4"
+        "illuminate/console": "^5.5",
+        "illuminate/contracts": "^5.5",
+        "illuminate/database": "^5.5",
+        "illuminate/support": "^5.5"
     },
     "autoload": {
         "psr-4": {
@@ -26,5 +26,6 @@
                 "SlimKit\\PlusAroundAmap\\Providers\\RouteServiceProvider"
             ]
         }
-    }
+    },
+    "version": "1.1.0"
 }
