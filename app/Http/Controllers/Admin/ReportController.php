@@ -69,7 +69,7 @@ class ReportController extends Controller
 
         if ($report->user) {
             $report->user->sendNotifyMessage('user-report:notice', '您的举报已被后台处理：'.$mark, [
-                'report' => $report
+                'report' => $report,
             ]);
         }
 
@@ -93,7 +93,7 @@ class ReportController extends Controller
 
         if ($report->user) {
             $report->user->sendNotifyMessage('user-report:notice', '您的举报已被后台驳回，原因是：'.$mark, [
-                'report' => $report
+                'report' => $report,
             ]);
         }
 
@@ -101,7 +101,7 @@ class ReportController extends Controller
     }
 
     /**
-     * 判断是否安装了pc扩展
+     * 判断是否安装了pc扩展.
      *
      * @return bool
      * @author BS <414606094@qq.com>
