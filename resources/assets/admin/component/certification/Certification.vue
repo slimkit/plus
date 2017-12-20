@@ -222,6 +222,24 @@ const certificationComponent = {
     },
 
     methods: {
+      /**
+       * Update certifcation status.
+       *
+       * @param {Integer} id
+       * @param {Integer} status
+       * @return void
+       * @author Seven Du <shiweidu@outlook.com>
+       */
+      updateItemStatus(id, status) {
+        this.certifications = this.certifications.map((certification) => {
+          if (parseInt(id) === parseInt(certification.id)) {
+            return { ...certification, status };
+          }
+
+          return certification;
+        });
+      },
+
         /**
          * 获取认证类型
          */
@@ -283,7 +301,8 @@ const certificationComponent = {
           ).then(({ data: { message: [ message ] = [] } }) => {
             $('#passModal').modal('hide');
             this.message.success = message;
-            this.getCertifications();
+            this.updateItemStatus(id, 1);
+            // this.getCertifications(this.$route.query);
           }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {
             this.pass.message = message;
           });
@@ -303,7 +322,8 @@ const certificationComponent = {
             {validateStatus: status => status === 201}
           ).then(({ data: { message: [ message ] = [] } }) => {
             this.message.success = message;
-            this.getCertifications();
+            this.updateItemStatus(id, 2);
+            // this.getCertifications(this.$route.query);
             $('#rejectModal').modal('hide')
           }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {
             this.message.error = message;
