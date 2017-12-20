@@ -18,7 +18,6 @@
 
 namespace SlimKit\PlusAroundAmap\Admin\Controllers;
 
-use Illuminate\Http\Request;
 use Zhiyi\Plus\Support\Configuration;
 use SlimKit\PlusAroundAmap\Admin\Requests\StoreAmapRequest;
 
