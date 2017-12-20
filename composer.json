@@ -11,6 +11,11 @@
         },
         {
             "type": "path",
+            "url": "packages/slimkit-plus-around-amap",
+            "options": { "symlink": true }
+        },
+        {
+            "type": "path",
             "url": "packages/slimkit-plus-checkin",
             "options": { "symlink": true }
         },
@@ -46,6 +51,7 @@
         "overtrue/easy-sms": "^0.0.10",
         "pingplusplus/pingpp-php": "^2.2",
         "predis/predis": "^1.1",
+        "slimkit/plus-around-amap": "~1.1",
         "slimkit/plus-checkin": "~1.1",
         "slimkit/plus-feed": "~1.1",
         "slimkit/plus-id": "~1.1",
