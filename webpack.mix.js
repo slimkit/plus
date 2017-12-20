@@ -13,9 +13,13 @@ let path = require('path');
  */
 
 mix.setPublicPath(path.join('public', 'assets'));
-mix.setResourceRoot('/assets/');
+mix.setResourceRoot('/assets');
 mix.sourceMaps(! mix.inProduction());
 mix.disableNotifications();
+
+if (mix.config.hmr === true) {
+  mix.setResourceRoot('/');
+}
 
 /*
  |--------------------------------------------------------------------------
