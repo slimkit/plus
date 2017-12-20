@@ -28,11 +28,11 @@ class AdvertisingSpaceSeeder extends Seeder
         AdvertisingSpace::create([
             'channel' => 'feed',
             'space' => 'feed:list:top',
-            'alias' => '移动端动态列表顶部广告',
+            'alias' => 'App 动态列表顶部广告',
             'allow_type' => 'image',
             'format' => [
                 'image' => [
-                    'image' => '图片|string|必填，广告图',
+                    'image' => '图片|string|必填，图片，尺寸：375pt*187.5pt',
                     'link' => '链接|string|必填，广告链接',
                 ],
             ],
@@ -58,7 +58,7 @@ class AdvertisingSpaceSeeder extends Seeder
             'allow_type' => 'image',
             'format' => [
                 'image' => [
-                    'image' => '图片|string|必填，广告图',
+                    'image' => '图片|string|必填，广告图，一张图： 宽353.5pt x 高59pt、两张图：宽174.5pt x 高59pt、三张图： 宽111.5pt x 高59pt;',
                     'link' => '链接|string|必填，广告链接',
                 ],
             ],
@@ -87,7 +87,7 @@ class AdvertisingSpaceSeeder extends Seeder
                     'avatar' => '头像图|image|必填，头像',
                     'name' => '用户名|string|必填，用户名',
                     'content' => '内容|string|必填，广告动态内容',
-                    'image' => '图片|image|广告图',
+                    'image' => '图片|image|广告图，尺寸：262.5pt x 262.5pt',
                     'time' => '时间|date|必填，广告动态时间',
                     'link' => '链接|string|必填，广告链接',
                 ],

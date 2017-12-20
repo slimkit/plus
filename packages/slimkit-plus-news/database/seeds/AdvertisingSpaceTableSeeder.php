@@ -38,7 +38,7 @@ class AdvertisingSpaceTableSeeder extends Seeder
             'allow_type' => 'image',
             'format' => [
                 'image' => [
-                    'image' => '图片|string|必填，广告图',
+                    'image' => '图片|string|必填，广告图，尺寸：375pt*187.5pt',
                     'link' => '链接|string|必填，广告链接',
                 ],
             ],
@@ -64,7 +64,7 @@ class AdvertisingSpaceTableSeeder extends Seeder
             'allow_type' => 'image',
             'format' => [
                 'image' => [
-                    'image' => '图片|string|必填，广告图',
+                    'image' => '图片|string|必填，广告图，一张图： 宽353.5pt x 高59pt、两张图：宽174.5pt x 高59pt、三张图： 宽111.5pt x 高59pt;',
                     'link' => '链接|string|必填，广告链接',
                 ],
             ],
@@ -91,7 +91,7 @@ class AdvertisingSpaceTableSeeder extends Seeder
             'format' => [
                 'news:analog' => [
                     'title' => '标题|string|必填，广告资讯标题',
-                    'image' => '图片|image|必填，广告图片链接',
+                    'image' => '图片|image|必填，广告图片，尺寸：262.5pt x 262.5pt',
                     'from' => '来源|string|必填，广告资讯来源',
                     'time' => '时间|date|必填，广告资讯时间',
                     'link' => '链接|string|必填，广告链接',
