@@ -277,7 +277,7 @@ class EaseMobController
      * @return mixed
      * @author ZsyD<1251992018@qq.com>
      */
-    public function getUser(Request $request)
+    public function getPassword(Request $request)
     {
         $callback = function () use ($request) {
             $url = $this->url.'users/'.$request->user_id;
@@ -292,6 +292,44 @@ class EaseMobController
             if ($result->getStatusCode() == 404) {
                 $result = $this->createUser($request);
             }
+
+            if ($result->getStatusCode() != 200) {
+                $error = $result->getBody()->getContents();
+
+                return response()->json([
+                    'message' => [
+                        json_decode($error)->error_description,
+                    ],
+                ])->setStatusCode(500);
+            }
+
+            return response()->json([
+                'message' => ['成功'],
+                'im_pwd_hash' => $this->getImPwdHash($request->user_id),
+            ])->setStatusCode(201);
+        };
+
+        return $this->getConfig($callback);
+    }
+
+    /**
+     * 删除单个用户.
+     *
+     * @param Request $request
+     * @return mixed
+     * @author ZsyD<1251992018@qq.com>
+     */
+    public function deleteUser(Request $request)
+    {
+        $callback = function () use ($request) {
+            $url = $this->url.'users/'.$request->user_id;
+            $data['headers'] = [
+                'Authorization' => $this->getToken(),
+            ];
+            $data['http_errors'] = false;
+
+            $Client = new Client();
+            $result = $Client->request('get', $url, $data);
 
             if ($result->getStatusCode() != 200) {
                 $error = $result->getBody()->getContents();

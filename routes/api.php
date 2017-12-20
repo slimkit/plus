@@ -471,6 +471,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // 重置用户环信密码
             $api->put('/password', EaseMobIm\EaseMobController::class.'@resetPassword');
+
+            // 获取环信用户密码
+            $api->get('/password', EaseMobIm\EaseMobController::class.'@resetPassword');
         });
     });
 });

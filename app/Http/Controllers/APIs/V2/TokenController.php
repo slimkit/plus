@@ -21,7 +21,6 @@ use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use function Zhiyi\Plus\username;
 use Zhiyi\Plus\Auth\JWTAuthToken;
-use Zhiyi\Plus\EaseMobIm\EaseMobController;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class TokenController extends Controller
@@ -49,18 +48,12 @@ class TokenController extends Controller
         } elseif ($user->roles->whereStrict('id', 3)->isNotEmpty()) { // 禁止登录用户
             return $response->json(['message' => ['你已被禁止登陆']], 422);
         } elseif (($token = $jwtAuthToken->create($user))) {
-            // 查看环信用户
-            $easeMob = new EaseMobController();
-            $request->user_id = $user->id;
-            $easeMob->getUser($request);
-
             return $response->json([
                 'token' => $token,
                 'user' => array_merge($user->toArray(), [
                     'phone'  => $user->phone,
                     'email'  => $user->email,
                     'wallet' => $user->wallet,
-                    'im_pwd_hash' => $user->getImPwdHash(),
                 ]),
                 'ttl' => config('jwt.ttl'),
                 'refresh_ttl' => config('jwt.refresh_ttl'),
