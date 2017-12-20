@@ -31,11 +31,11 @@ class AdvertisingSpaceTableSeeder extends Seeder
         AdvertisingSpace::create([
             'channel' => 'boot',
             'space' => 'boot',
-            'alias' => 'app端启动图广告',
+            'alias' => 'App 启动广告',
             'allow_type' => 'image',
             'format' => [
                 'image' => [
-                    'image' => '图片|string|必填，广告位图片',
+                    'image' => '图片|string|必填，启动图广告尺寸为 375pt*538pt',
                     'link' => '链接|string|必填，广告位链接',
                     'duration' => '时长|integer|必填， 广告显示时间',
                 ],
