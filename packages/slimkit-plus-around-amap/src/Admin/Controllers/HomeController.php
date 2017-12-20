@@ -34,7 +34,7 @@ class HomeController extends BaseController
         $around['tableid'] = array_get($conf, 'around-amap.amap-tableid');
         $around['jssdk'] = array_get($conf, 'around-amap.amap-jssdk');
 
-        return view('around-amap::index', $around);
+        return view('around-amap::admin', $around);
     }
 
     public function save(Request $request, Configuration $config)
