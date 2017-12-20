@@ -1,5 +1,20 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Plus\EaseMobIm;
 
 use GuzzleHttp\Client;
@@ -35,8 +50,7 @@ class EaseMobController
         $this->client_id = config('easemob.client_id');
         $this->client_secret = config('easemob.client_secret');
 
-        if (!$this->open || !$this->client_id || !$this->client_secret) {
-
+        if (! $this->open || ! $this->client_id || ! $this->client_secret) {
             return response()->json([
                 'message' => ['环信未配置'],
             ])->setStatusCode(201);
@@ -134,7 +148,6 @@ class EaseMobController
     {
         $callback = function () use ($request) {
             if ($this->register_type == 0) {
-
                 return $this->openRegister($request);
             }
 
@@ -187,13 +200,13 @@ class EaseMobController
             foreach ($users as $user) {
                 $options[] = [
                     'username' => $user->id,
-                    'password' => $user->getImPwdHash()
+                    'password' => $user->getImPwdHash(),
                 ];
             }
             $url = $this->url.'users';
             $data['body'] = json_encode($options);
             $data['headers'] = [
-                'Authorization' => $this->getToken()
+                'Authorization' => $this->getToken(),
             ];
             $data['http_errors'] = false;
 
@@ -234,7 +247,7 @@ class EaseMobController
             ];
             $data['body'] = json_encode($options);
             $data['headers'] = [
-                'Authorization' => $this->getToken()
+                'Authorization' => $this->getToken(),
             ];
             $data['http_errors'] = false;
 
@@ -269,7 +282,7 @@ class EaseMobController
         $callback = function () use ($request) {
             $url = $this->url.'users/'.$request->user_id;
             $data['headers'] = [
-                'Authorization' => $this->getToken()
+                'Authorization' => $this->getToken(),
             ];
             $data['http_errors'] = false;
 
@@ -277,7 +290,6 @@ class EaseMobController
             $result = $Client->request('get', $url, $data);
 
             if ($result->getStatusCode() == 404) {
-
                 $result = $this->createUser($request);
             }
 
