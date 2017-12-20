@@ -1,57 +1,51 @@
 <template>
 <div class="container-fluid" style="margin-top:10px;">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			检索条件
-		</div>
-		<div class="panel-body">
-			<table class="table table-bordered">
-				<thead>
-					<tr>
-						<th>#ID</th>
-						<th>举报人</th>
-						<th>被举报人</th>
-						<th>举报资源</th>
-						<th>举报资源类型</th>
-						<th>状态</th>
-						<th>举报理由</th>
-						<th>处理备注</th>
-						<th>举报时间</th>
-						<th>操作</th>
-					</tr>
-				</thead>
-				<tbody>
-                  <!-- loading -->
-                  <table-loading :loadding="loading" :colspan-num="10"></table-loading>
-                  <tr v-for="item in items">
-                  	<td>{{ item.id }}</td>
-                  	<td>{{ item.user.name }}</td>
-                  	<td>{{ item.target.name }}</td>
-                  	<td>{{ item | reportable }}</td>
-                  	<td>{{ item.reportable_type | moduleName }}</td>
-                  	<td>{{ item.status | status }}</td>
-                  	<td>{{ item.reason ? item.reason : '无' }}</td>
-                  	<td>
-                  		<input type="text" class="form-control" v-if="!item.status" class="审核需要填写">
-                  		<span v-else>{{ item.status | status }}</span>
-                  	</td>
-                  	<td>{{ item.created_at | localDate }}</td>
-                  	<td>
-                  		<button class="btn btn-primary btn-sm">通过</button>
-                  		<button class="btn btn-primary btn-sm">驳回</button>
-                  	</td>
-                  </tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
+  <div class="panel panel-default">
+    <div class="panel-heading">检索</div>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>#ID</th>
+          <th>举报人</th>
+          <th>被举报人</th>
+          <th>举报资源</th>
+          <th>举报资源类型</th>
+          <th>状态</th>
+          <th>举报理由</th>
+          <th>处理备注</th>
+          <th>举报时间</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <table-loading :loadding="loading" :colspan-num="10"></table-loading>
+        <tr v-for="item in items">
+          <td>{{ item.id }}</td>
+          <td>{{ item.user.name }}</td>
+          <td>{{ item.target.name }}</td>
+          <td>{{ item | reportable }}</td>
+          <td>{{ item.reportable_type | moduleName }}</td>
+          <td>{{ item.status | status }}</td>
+          <td>{{ item.reason ? item.reason : '无' }}</td>
+          <td>
+              <input type="text" class="form-control" v-if="!item.status" placeholder="审核需要填写">
+              <span v-else>{{ item.status | status }}</span>
+          </td>
+          <td>{{ item.created_at | localDate }}</td>
+          <td>
+              <button class="btn btn-primary btn-sm">通过</button>
+              <button class="btn btn-primary btn-sm">驳回</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 </template>
 <script>
 import request, { createRequestURI } from '../../util/request';
 import { plusMessageFirst } from '../../filters';
-
-const reportComponent = {
+export default {
 	data:()=>({
 		items: [],
 		loading: true,
@@ -120,6 +114,4 @@ const reportComponent = {
       this.getReports(this.$route.query);
 	}
 };
-
-export default reportComponent;
 </script>
