@@ -281,7 +281,8 @@ class EaseMobController
     public function getPassword(Request $request)
     {
         $callback = function () use ($request) {
-            $url = $this->url.'users/'.$request->user_id;
+            $user = $request->user();
+            $url = $this->url.'users/'.$user->id;
             $data['headers'] = [
                 'Authorization' => $this->getToken(),
             ];
@@ -306,7 +307,7 @@ class EaseMobController
 
             return response()->json([
                 'message' => ['成功'],
-                'im_pwd_hash' => $this->getImPwdHash($request->user_id),
+                'im_pwd_hash' => $this->getImPwdHash($user->id),
             ])->setStatusCode(201);
         };
 
