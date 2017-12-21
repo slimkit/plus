@@ -42,7 +42,7 @@ class ReportController extends Controller
         $reportModel->target_user = $user->id;
         $reportModel->status = 0;
         $reportModel->reason = $request->input('reason');
-        $reportModel->subject = sprintf("用户：%s", $user->name);
+        $reportModel->subject = sprintf('用户：%s', $user->name);
 
         $user->reports()->save($reportModel);
 
