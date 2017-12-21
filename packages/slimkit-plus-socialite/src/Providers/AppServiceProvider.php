@@ -19,7 +19,6 @@
 namespace SlimKit\PlusSocialite\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use SlimKit\PlusSocialite\SocialiteManager;
 
 class AppServiceProvider extends ServiceProvider
 {
