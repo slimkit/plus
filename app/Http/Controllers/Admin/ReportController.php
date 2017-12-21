@@ -74,7 +74,11 @@ class ReportController extends Controller
         }
 
         if ($report->target) {
-            // todo
+            $report->target->sendNotifyMessage(
+                'user-report:notice', 
+                '你的'.$report->subject.'已被举报',
+                ['report' => $report]
+            );
         }
 
         return response()->json(['message' => ['操作成功']], 201);

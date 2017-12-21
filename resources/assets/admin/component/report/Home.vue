@@ -2,46 +2,59 @@
 <div class="container-fluid" style="margin-top:10px;">
   <div class="panel panel-default">
     <div class="panel-heading">检索</div>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>#ID</th>
-          <th>举报人</th>
-          <th>被举报人</th>
-          <th>举报资源</th>
-          <th>举报资源类型</th>
-          <th>状态</th>
-          <th>举报理由</th>
-          <th>处理备注</th>
-          <th>举报时间</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <table-loading :loadding="loading" :colspan-num="10"></table-loading>
-        <tr v-for="item in items">
-          <td>{{ item.id }}</td>
-          <td>{{ item.user.name }}</td>
-          <td>{{ item.target.name }}</td>
-          <td>{{ item | reportable }}</td>
-          <td>{{ item.reportable_type | moduleName }}</td>
-          <td>{{ item.status | status }}</td>
-          <td>{{ item.reason ? item.reason : '无' }}</td>
-          <td>
-              <input type="text" class="form-control" v-if="!item.status" placeholder="审核需要填写备注" :ref="`mark${item.id}`">
-              <span v-else>{{ item.mark }}</span>
-          </td>
-          <td>{{ item.created_at | localDate }}</td>
-          <td>
-              <a v-if="item.view" class="btn btn-primary btn-sm" :href="item.view">查看</a>
-              <template v-if="item.status == 0">
-                <button class="btn btn-primary btn-sm" @click="handleDeal(item.id)">通过</button>
-                <button class="btn btn-primary btn-sm" @click="handleReject(item.id)">驳回</button>
-              </template>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="panel-body">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>#ID</th>
+            <th>举报人</th>
+            <th>被举报人</th>
+            <th>举报内容</th>
+            <th>举报资源类型</th>
+            <th>状态</th>
+            <th>举报理由</th>
+            <th>处理备注</th>
+            <th>举报时间</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <table-loading :loadding="loading" :colspan-num="10"></table-loading>
+          <tr v-for="item in items">
+            <td>{{ item.id }}</td>
+            <td>{{ item.user.name }}</td>
+            <td>{{ item.target.name }}</td>
+            <td>{{ item.subject }}</td>
+            <td>{{ item.reportable_type | moduleName }}</td>
+            <td>{{ item.status | status }}</td>
+            <td>{{ item.reason ? item.reason : '无' }}</td>
+            <td>
+                <input type="text" class="form-control" v-if="!item.status" placeholder="审核需要填写备注" :ref="`mark${item.id}`">
+                <span v-else>{{ item.mark }}</span>
+            </td>
+            <td>{{ item.created_at | localDate }}</td>
+            <td>
+                <a v-if="item.view" class="btn btn-primary btn-sm" :href="item.view">查看</a>
+                <template v-if="item.status == 0">
+                  <button class="btn btn-primary btn-sm" @click="handleDeal(item.id)">通过</button>
+                  <button class="btn btn-primary btn-sm" @click="handleReject(item.id)">驳回</button>
+                </template>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- 分页 -->
+      <div class="text-center">
+        <offset-paginator class="pagination" :total="total" :offset="offset" :limit="15">
+          <template slot-scope="pagination">
+            <li :class="(pagination.disabled ? 'disabled': '') + (pagination.currend ? 'active' : '')">
+              <span v-if="pagination.disabled || pagination.currend">{{ pagination.page }}</span>
+              <router-link v-else :to="offsetPage(pagination.offset)">{{ pagination.page }}</router-link>
+            </li>
+          </template>
+        </offset-paginator>
+      </div>
+    </div>
   </div>
 </div>
 </template>
@@ -54,7 +67,18 @@ export default {
 		loading: true,
 		total: 0,
 	}),
-
+  watch: {
+    '$route': function ($route) {
+      this.total = 0;
+      this.getReports({ ...$route.query });
+    },
+  },
+  computed: {
+    offset () {
+      const { query: { offset = 0 } } = this.$route;
+      return parseInt(offset);
+    },
+  },
 	filters: {
 		status(val) {
 			let title = '待审核';
@@ -79,33 +103,25 @@ export default {
 					return '未知';
 			}
 		},
-		reportable(val) {
-			switch (val.reportable_type) {
-				case 'users':
-					return val.reportable.name;
-				default:
-					return '未知';
-			}
-		}
 	},
 
 	methods: {
       getReports (query = {}) {
         this.items = [];
-        this.loadding = true;
+        this.loading = true;
         request.get(
           createRequestURI('reports'),
           { 
             validateStatus: status => status === 200,
             params: { ...query, limit: 15 },
           }
-        ).then(({ data = [], headers: { 'x-ad-total': total } }) => {
+        ).then(({ data = [], headers: { 'x-total': total } }) => {
           this.loading = false;
           this.total = parseInt(total);
           this.items = data;
         }).catch(({ response: { data: { errors = ['加载失败'] } = {} } = {} }) => {
           this.loading = false;
-          plusMessageFirst(errors);
+          window.alert(plusMessageFirst(errors));
         });
       },
       handleDeal(id) {
@@ -139,7 +155,10 @@ export default {
         }).catch(({ response: { data: { errors = ['审核失败'] } = {} } = {} }) => {
           window.alert(errors);
         });
-      }
+      },
+      offsetPage(offset) {
+        return { path: '/reports', query: { offset } };
+      },
 	},
 
 	created() {
