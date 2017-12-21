@@ -33,6 +33,7 @@ class CreateReportsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->comment('用户ID');
             $table->integer('target_user')->unsigned()->comment('对方用户ID');
+            $table->string('subject')->comment('被举报资源名');
             $table->morphs('reportable');
             $table->tinyInteger('status')->default(0)->comment('处理状态 0-待处理 1-已处理 2-已驳回');
             $table->string('reason')->nullable()->comment('举报理由');
