@@ -66,7 +66,7 @@ class ReportController extends Controller
         $reportModel->target_user = $comment->user_id;
         $reportModel->status = 0;
         $reportModel->reason = $request->input('reason');
-        $reportModel->subject = mb_substr($comment->body, 0, 50);
+        $reportModel->subject = sprintf('评论：%s', mb_substr($comment->body, 0, 50));
 
         $comment->reports()->save($reportModel);
 

@@ -42,6 +42,7 @@ class ReportController extends Controller
         $reportModel->target_user = $feed->user_id;
         $reportModel->status = 0;
         $reportModel->reason = $request->input('reason');
+        $reportModel->subject = empty($feed->feed_content) ? sprintf('动态：id:%s', $feed->id) : sprintf('动态：%s', mb_substr($feed->feed_content, 0, 50));
 
         $feed->reports()->save($reportModel);
 
