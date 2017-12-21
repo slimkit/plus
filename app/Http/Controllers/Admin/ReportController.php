@@ -75,7 +75,7 @@ class ReportController extends Controller
 
         if ($report->target) {
             $report->target->sendNotifyMessage(
-                'user-report:notice', 
+                'user-report:notice',
                 '你的'.$report->subject.'已被举报',
                 ['report' => $report]
             );
