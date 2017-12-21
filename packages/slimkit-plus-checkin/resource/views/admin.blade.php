@@ -6,7 +6,7 @@
     
     <div class="container">
         <h1>
-            {{ trans('plus-checkin::app.name') }} - {{ config('app.name') }}
+            {{ trans('plus-checkin::app.name') }}
         </h1>
 
         <div class="panel panel-default">
