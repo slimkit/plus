@@ -105,11 +105,6 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function registerSingletions()
     {
-        // Owner handler.
-        $this->app->singleton('plus-id:handler', function () {
-            return new \SlimKit\PlusID\Handlers\PackageHandler();
-        });
-
         // Develop handler.
         $this->app->singleton('plus-id:dev-handler', function ($app) {
             return new \SlimKit\PlusID\Handlers\DevPackageHandler($app);
@@ -124,9 +119,6 @@ class AppServiceProvider extends ServiceProvider
     protected function registerCoreContainerAliases()
     {
         foreach ([
-            'plus-id:handler' => [
-                \SlimKit\PlusID\Handlers\PackageHandler::class,
-            ],
             'plus-id:dev-handler' => [
                 \SlimKit\PlusID\Handlers\DevPackageHandler::class,
             ],
@@ -144,7 +136,6 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function registerPackageHandlers()
     {
-        $this->loadHandleFrom('plus-id', 'plus-id:handler');
         $this->loadHandleFrom('plus-id-dev', 'plus-id:dev-handler');
     }
 
