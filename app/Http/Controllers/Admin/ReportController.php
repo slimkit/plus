@@ -73,6 +73,10 @@ class ReportController extends Controller
             ]);
         }
 
+        if ($report->target) {
+            // todo
+        }
+
         return response()->json(['message' => ['操作成功']], 201);
     }
 

@@ -28,13 +28,16 @@
           <td>{{ item.status | status }}</td>
           <td>{{ item.reason ? item.reason : '无' }}</td>
           <td>
-              <input type="text" class="form-control" v-if="!item.status" placeholder="审核需要填写">
-              <span v-else>{{ item.status | status }}</span>
+              <input type="text" class="form-control" v-if="!item.status" placeholder="审核需要填写备注" :ref="`mark${item.id}`">
+              <span v-else>{{ item.mark }}</span>
           </td>
           <td>{{ item.created_at | localDate }}</td>
           <td>
-              <button class="btn btn-primary btn-sm">通过</button>
-              <button class="btn btn-primary btn-sm">驳回</button>
+              <a v-if="item.view" class="btn btn-primary btn-sm" :href="item.view">查看</a>
+              <template v-if="item.status == 0">
+                <button class="btn btn-primary btn-sm" @click="handleDeal(item.id)">通过</button>
+                <button class="btn btn-primary btn-sm" @click="handleReject(item.id)">驳回</button>
+              </template>
           </td>
         </tr>
       </tbody>
@@ -105,8 +108,37 @@ export default {
           plusMessageFirst(errors);
         });
       },
-      handleAudit(id, mark) {
-
+      handleDeal(id) {
+        let mark = this.$refs[`mark${id}`][0].value;
+        if (!mark) return window.alert('请填写通过备注');
+        request.patch(
+          createRequestURI(`reports/${id}/deal`),
+          { mark: mark},
+          { validateStatus: status => status === 201 }
+        ).then(response => {
+          window.alert('操作成功');
+          this.items.forEach((item) => {
+            if (id == item.id) item.status = 1,item.mark = mark;
+          });
+        }).catch(({ response: { data: { errors = ['审核失败'] } = {} } = {} }) => {
+          window.alert(errors);
+        });
+      },
+      handleReject(id) {
+        let mark = this.$refs[`mark${id}`][0].value;
+        if (!mark) return window.alert('请填写驳回备注');
+        request.patch(
+          createRequestURI(`reports/${id}/reject`),
+          { mark: mark },
+          { validateStatus: status => status === 201 }
+        ).then(response => {
+          window.alert('操作成功');
+          this.items.forEach((item) => {
+            if (id == item.id) item.status = 1,item.mark = mark;
+          });
+        }).catch(({ response: { data: { errors = ['审核失败'] } = {} } = {} }) => {
+          window.alert(errors);
+        });
       }
 	},
 

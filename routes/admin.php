@@ -355,6 +355,6 @@ Route::middleware('auth:web')
 
     /* ------------- 举报管理 -----------------*/
     Route::get('reports', 'ReportController@index');
-    Route::get('reports/{report}/deal', 'ReportController@deal');
-    Route::get('reports/{report}/reject', 'ReportController@reject');
+    Route::patch('reports/{report}/deal', 'ReportController@deal');
+    Route::patch('reports/{report}/reject', 'ReportController@reject');
 });
