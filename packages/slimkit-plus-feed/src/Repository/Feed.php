@@ -186,7 +186,7 @@ class Feed
             $comments = $this->model->comments()
                 ->limit(5 - $pinnedComments->count())
                 ->whereNotIn('id', $pinnedComments->pluck('id'))
-                ->with('user')
+                ->with(['user', 'reply'])
                 ->orderBy('id', 'desc')
                 ->get();
         }

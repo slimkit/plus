@@ -47,7 +47,7 @@ class FeedCommentController extends Controller
             ->when($after, function ($query) use ($after) {
                 return $query->where('id', '<', $after);
             })
-            ->with('user')
+            ->with(['user', 'reply'])
             ->limit($limit)
             ->orderBy('id', 'desc')
             ->get();
@@ -65,7 +65,7 @@ class FeedCommentController extends Controller
         }
 
         return $feed->pinnedComments()
-            ->with('user')
+            ->with(['user', 'reply'])
             ->where('expires_at', '>', $dateTime)
             ->get();
     }

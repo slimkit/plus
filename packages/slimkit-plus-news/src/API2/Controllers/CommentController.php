@@ -83,7 +83,7 @@ class CommentController extends Controller
         $limit = $request->input('limit', 15);
         $comments = $news->comments()->when($after, function ($query) use ($after) {
             return $query->where('id', '<', $after);
-        })->limit($limit)->with('user')->orderBy('id', 'desc')->get();
+        })->limit($limit)->with(['user', 'reply'])->orderBy('id', 'desc')->get();
 
         return response()->json([
             'pinneds' => ! $after ? app()->call([$this, 'pinneds'], ['news' => $news]) : [],
@@ -106,6 +106,7 @@ class CommentController extends Controller
             return [];
         } else {
             return $news->pinnedComments()
+                ->with(['user', 'reply'])
                 ->where('expires_at', '>', $dateTime)
                 ->get();
         }
