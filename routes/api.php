@@ -339,6 +339,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                 $api->get('/', API2\CurrentUserController::class.'@followers');
             });
 
+            // 获取相互关注的用户
+            $api->get('/follow-mutual', API2\CurrentUserController::class.'@followMutual');
+
             // Reset password.
             $api->put('/password', API2\ResetPasswordController::class.'@reset');
 

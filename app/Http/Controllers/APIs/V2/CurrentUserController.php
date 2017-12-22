@@ -283,4 +283,36 @@ class CurrentUserController extends Controller
             return $response->make('', 204);
         });
     }
+
+    /**
+     * 获取授权用户相互关注的用户列表.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @return mixed
+     * @author ZsyD<1251992018@qq.com>
+     */
+    public function followMutual(Request $request, ResponseFactoryContract $response)
+    {
+        $user = $request->user();
+        $limit = $request->query('limit', 15);
+        $after = $request->query('after', false);
+
+        $followings = $user->mutual()
+            ->when($after, function ($query) use ($after, $user) {
+                return $query->where($user->getQualifiedKeyName(), '<', $after);
+            })
+            ->limit($limit)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return $user->getConnection()->transaction(function () use ($followings, $user, $response) {
+            return $response->json($followings->map(function (UserModel $item) use ($user) {
+                $item->following = true;
+                $item->follower = true;
+
+                return $item;
+            }))->setStatusCode(200);
+        });
+    }
 }

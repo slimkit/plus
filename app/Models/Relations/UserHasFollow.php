@@ -98,4 +98,23 @@ trait UserHasFollow
             ->newPivotStatementForId($user)
             ->value('user_id') === $user;
     }
+
+    /**
+     * 相互关注的好友.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @author ZsyD<1251992018@qq.com>
+     */
+    public function mutual(): BelongsToMany
+    {
+        return $this
+            ->belongsToMany(User::class, 'user_follow', 'user_id', 'target')
+            ->join('user_follow as b', function ($join) {
+                $join->on('user_follow.user_id', '=', 'b.target')
+                ->on('user_follow.target', '=', 'b.user_id');
+            })
+            ->withPivot('id')
+            ->orderBy('user_follow.id', 'desc')
+            ->withTimestamps();
+    }
 }
