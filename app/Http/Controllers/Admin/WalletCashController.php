@@ -108,6 +108,11 @@ class WalletCashController extends Controller
         DB::transaction(function () use ($cash, $charge) {
             $charge->save();
             $cash->save();
+
+            $cash->user->sendNotifyMessage('user-cash:passed', '您申请的体现已通过，请注意查收', [
+                'charge' => $charge,
+                'cash' => $cash,
+            ]);
         });
 
         return response()
@@ -148,10 +153,15 @@ class WalletCashController extends Controller
         $charge->status = 2;
         $charge->user_id = $user->id;
 
-        DB::transaction(function () use ($cash, $charge) {
+        DB::transaction(function () use ($cash, $charge, $remark) {
             $cash->user->wallet()->increment('balance', $cash->value);
             $charge->save();
             $cash->save();
+
+            $cash->user->sendNotifyMessage('user-cash:refuse', sprintf('您申请的体现已被拒绝，原因为：%s', $remark), [
+                'charge' => $charge,
+                'cash' => $cash,
+            ]);
         });
 
         return response()
