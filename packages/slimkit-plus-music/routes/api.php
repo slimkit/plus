@@ -16,49 +16,59 @@
  * +----------------------------------------------------------------------+
  */
 
-use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Middleware as MusicMiddleware;
+Route::get('/music/specials', 'MusicSpecialController@list');
 
-//最新分享列表
-// 获取专辑
-Route::get('/music/specials', 'MusicSpecialController@getSpecialList');
 // 专辑详情
-Route::get('/music/specials/{special_id}', 'MusicSpecialController@getSpecialInfo')->where(['special_id' => '[0-9]+']);
-// 歌曲详情
-Route::get('/music/{music_id}', 'MusicController@getMusicInfo')->where(['music_id' => '[0-9]+']);
+Route::get('/music/specials/{special}', 'MusicSpecialController@show');
 
-Route::group([
-    'middleware' => [
-        'auth:api',
-    ],
-], function () {
-    // 添加歌曲评论
-    Route::post('/music/{music_id}/comment', 'MusicCommentController@addComment')
-        ->middleware('role-permissions:music-comment,你没有评论歌曲的权限')
-        ->middleware(MusicMiddleware\VerifyCommentContent::class); // 验证评论内容
-    // 查看歌曲评论列表
-    Route::get('/music/{music_id}/comment', 'MusicCommentController@getMusicCommentList');
+// 音乐详情
+Route::get('/music/{music}', 'MusicController@show')->where(['music' => '[0-9]+']);
+
+// 需认证接口
+Route::middleware('auth:api')->group(function () {
+
+    // 用户收藏列表
+    Route::get('/music/collections', 'MusicCollectionController@list');
+
+    // 添加音乐评论
+    Route::post('/music/{music}/comments', 'MusicCommentController@store')->middleware('sensitive:body');
+
+    // 获取音乐评论
+    Route::get('/music/{music}/comments', 'MusicCommentController@list');
+
+    // 增加音乐分享数
+    Route::patch('/music/{music}/share', 'MusicController@share');
+
     // 添加专辑评论
-    Route::post('/music/special/{special_id}/comment', 'MusicCommentController@addSpecialComment')
-        ->middleware('role-permissions:music-comment,你没有评论歌曲的权限')
-        ->middleware(MusicMiddleware\VerifyCommentContent::class); // 验证评论内容
-    // 分享歌曲统计
-    Route::patch('/music/{music_id}/share', 'MusicController@share');
-    // 分享专辑统计
-    Route::patch('/music/special/{special_id}/share', 'MusicSpecialController@share');
-    // 查看专辑评论列表
-    Route::get('/music/special/{special_id}/comment', 'MusicCommentController@getSpecialCommentList');
-    //删除评论 TODO 根据权限及实际需求增加中间件
-    Route::delete('/music/comment/{comment_id}', 'MusicCommentController@delComment');
-    // 点赞
-    Route::post('/music/{music}/digg', 'MusicDiggController@diggMusic')
-        ->middleware('role-permissions:music-digg,你没有点赞歌曲的权限');
-    // 取消点赞
-    Route::delete('/music/{music}/digg', 'MusicDiggController@cancelDiggMusic');
-    // 我的收藏列表
-    Route::get('/music/special/collections', 'MusicSpecialController@getCollectionSpecialList');
-    // 收藏
-    Route::post('/music/special/{special_id}/collection', 'MusicCollectionController@addMusicCollection')
-        ->middleware('role-permissions:music-collection,你没有收藏歌曲的权限');
+    Route::post('/music/specials/{special}/comments', 'MusicCommentController@specialStore')->middleware('sensitive:body');
+
+    // 获取专辑评论
+    Route::get('/music/specials/{special}/comments', 'MusicCommentController@specialList');
+
+    // 删除音乐评论
+    Route::delete('/music/{music}/comments/{comment}', 'MusicCommentController@delete');
+
+    // 删除专辑评论
+    Route::delete('/music/specials/{special}/comments/{comment}', 'MusicCommentController@specialDelete');
+
+    // 点赞音乐
+    Route::post('/music/{music}/like', 'MusicLikeController@like');
+
+    // 取消点赞音乐
+    Route::delete('/music/{music}/like', 'MusicLikeController@cancel');
+
+    // 收藏专辑
+    Route::post('/music/specials/{special}/collection', 'MusicCollectionController@store');
+
     // 取消收藏
-    Route::delete('/music/special/{special_id}/collection', 'MusicCollectionController@delMusicCollection');
+    Route::delete('/music/specials/{special}/collection', 'MusicCollectionController@delete');
+
+    // 增加专辑分享数
+    Route::patch('/music/specials/{special}/share', 'MusicSpecialController@share');
+
+    // 获取已购买的音乐
+    Route::get('/music/paids', 'MusicPaidController@musics');
+
+    // 获取已购买的专辑
+    Route::get('/music-specials/paids', 'MusicPaidController@specials');
 });
