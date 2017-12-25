@@ -1,19 +1,35 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\AdminControllers;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
-use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Cdn\UrlManager as CdnUrlManager;
+use Zhiyi\Plus\Models\FileWith as FileWithModel;
+use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\Music;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSpecial;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\view;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSinger;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSpecial;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Requests\MusicAdd as MusicAddRequest;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Requests\SpecialAdd as SpecialAddRequest;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Requests\SpecialUpdate as SpecialUpdateRequest;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\view;
 
 class HomeController extends Controller
 {
@@ -30,8 +46,8 @@ class HomeController extends Controller
         $limit = $request->query('limit', 20);
 
         $musicList = $music->when($name, function ($query) use ($name) {
-                return $query->where('title', 'like', "%{$name}%");
-            })
+            return $query->where('title', 'like', "%{$name}%");
+        })
             ->when($album, function ($query) use ($album) {
                 $query->whereHas('musicSpecials', function ($query) use ($album) {
                     return $query->where('title', 'like', "%{$album}%");
@@ -39,8 +55,8 @@ class HomeController extends Controller
             })
             ->with([
                 'musicSpecials',
-                'singer', 
-                'paidNode'
+                'singer',
+                'paidNode',
             ])
             ->orderBy('sort', 'desc')
             ->paginate($limit);
@@ -50,36 +66,35 @@ class HomeController extends Controller
             'name' => $name,
             'album' => $album,
             'music' => $musicList->items(),
-            'page' => $musicList->links()
+            'page' => $musicList->links(),
         ]);
     }
 
     /**
-     * 删除音乐
+     * 删除音乐.
      * @param  Music  $music [description]
      * @return [type]        [description]
      */
-    public function handleDelete(Music $music) 
+    public function handleDelete(Music $music)
     {
         $music->delete();
 
         return back()->with(['success-message' => '删除成功']);
     }
 
-
     /**
-     * 查看专辑
+     * 查看专辑.
      * @param  Request $request [description]
      * @return [type]           [description]
      */
     public function showSpecial(Request $request, MusicSpecial $special, CdnUrlManager $cdn)
-    {   
+    {
         $name = $request->query('name', '');
         $limit = $request->query('limit', 20);
 
         $specials = $special->when($name, function ($query) use ($name) {
-                return $query->where('title', 'like', sprintf("%%%s%%", $name));
-            })
+            return $query->where('title', 'like', sprintf('%%%s%%', $name));
+        })
             ->with('paidNode')
             ->withCount('musics')
             ->orderBy('sort', 'desc')
@@ -89,12 +104,12 @@ class HomeController extends Controller
             'base_url' => route('music:special'),
             'name' => $name,
             'special' => $specials->items(),
-            'page' => $specials->links()
+            'page' => $specials->links(),
         ]);
     }
 
     /**
-     * 显示专辑详情
+     * 显示专辑详情.
      * @param  Request      $request [description]
      * @param  MusicSpecial $special [description]
      * @return [type]                [description]
@@ -108,7 +123,7 @@ class HomeController extends Controller
         $special->file = $storage->file;
 
         return view('specialEdit', [
-            'special' => $special
+            'special' => $special,
         ]);
     }
 
@@ -127,7 +142,7 @@ class HomeController extends Controller
         $fileWith->load('file');
         $extra = array_filter([
             'width' => $width,
-            'height' => $height
+            'height' => $height,
         ]);
 
         $extra['quality'] = $quality;
@@ -137,7 +152,7 @@ class HomeController extends Controller
     }
 
     /**
-     * 禁用专辑
+     * 禁用专辑.
      * @param  MusicSpecial $special [description]
      * @return [type]                [description]
      */
@@ -149,7 +164,7 @@ class HomeController extends Controller
     }
 
     /**
-     * 增加专辑页面
+     * 增加专辑页面.
      * @return [type] [description]
      */
     public function handleAddSpecial()
@@ -158,7 +173,7 @@ class HomeController extends Controller
     }
 
     /**
-     * 保存专辑
+     * 保存专辑.
      * @param  SpecialAddRequest $request [description]
      * @param  MusicSpecial      $special [description]
      * @return [type]                     [description]
@@ -174,7 +189,7 @@ class HomeController extends Controller
         $fileWith = $this->makeSpecialFileWith($request);
         try {
             $special->saveOrFail();
-            $special->getConnection()->transaction( function () use ($special, $request, $fileWith) {
+            $special->getConnection()->transaction(function () use ($special, $request, $fileWith) {
                 $paidNode = $this->makeSpecialNode($request, $special);
                 $this->saveSpecialFileWith($fileWith, $special);
                 $paidNode && $this->saveSpecialPaidNode($paidNode, $special);
@@ -188,7 +203,7 @@ class HomeController extends Controller
     }
 
     /**
-     * 更改专辑
+     * 更改专辑.
      * @param  Request      $request [description]
      * @param  MusicSpecial $special [description]
      * @return [type]                [description]
@@ -199,7 +214,7 @@ class HomeController extends Controller
 
         $paidNode = null;
         $fileWith = null;
-        if($data['storage'] && $data['storage'] !== $special->storage) {
+        if ($data['storage'] && $data['storage'] !== $special->storage) {
             if ($fileWithModel->where('id', $data['storage'])
                 ->where('channel', null)
                 ->where('raw', null)
@@ -214,8 +229,8 @@ class HomeController extends Controller
             }
         }
 
-        if (!$data['paid_node']) {
-            $data['paid_node'] = [ 'free' ];
+        if (! $data['paid_node']) {
+            $data['paid_node'] = ['free'];
         }
 
         $special->paidNode()->delete();
@@ -224,14 +239,13 @@ class HomeController extends Controller
             $paidNode = $this->updateSpecialNode($request, $special);
         }
 
-
         $special->title = $data['title'];
         $special->intro = $data['intro'];
         $special->sort = $data['sort'];
 
         try {
             $special->saveOrFail();
-            $special->getConnection()->transaction( function () use ($special, $request, $paidNode, $fileWith) {
+            $special->getConnection()->transaction(function () use ($special, $request, $paidNode, $fileWith) {
                 $fileWith && $this->saveSpecialFileWith($fileWith, $special);
                 $paidNode && $this->saveSpecialPaidNode($paidNode, $special);
             });
@@ -241,11 +255,10 @@ class HomeController extends Controller
         }
 
         return back()->with(['success-message' => '更新专辑成功']);
-
     }
 
     /**
-     * 歌曲详情
+     * 歌曲详情.
      * @param  Music        $music   [description]
      * @param  MusicSpecial $special [description]
      * @param  MusicSinger  $singer  [description]
@@ -258,7 +271,7 @@ class HomeController extends Controller
 
         return view('musicAdd', [
             'specials' => $specials,
-            'singers' => $singers
+            'singers' => $singers,
         ]);
     }
 
@@ -277,10 +290,10 @@ class HomeController extends Controller
 
         try {
             $music->saveOrFail();
-            if ($request->input('special')){
+            if ($request->input('special')) {
                 $music->musicSpecials()->attach($request->input('special'));
             }
-            $music->getConnection()->transaction( function () use ($request, $music, $paidNodes, $fileWith) {
+            $music->getConnection()->transaction(function () use ($request, $music, $paidNodes, $fileWith) {
                 $this->saveMusicPaidNode($paidNodes, $music);
                 $this->saveMusicFileWith($fileWith, $music);
             });
@@ -303,7 +316,7 @@ class HomeController extends Controller
     {
         $paid_node = (array) $request->input('paid_node');
         if (in_array('download', $paid_node) || in_array('listen', $paid_node)) {
-            return collect($request->input('paid_node'))->map( function ($paid) use ($request) {
+            return collect($request->input('paid_node'))->map(function ($paid) use ($request) {
                 $paidNode = new PaidNodeModel();
                 $paidNode->channel = 'file';
                 $paidNode->raw = $request->input('storage');
@@ -318,7 +331,7 @@ class HomeController extends Controller
     }
 
     /**
-     * 创建专辑付费节点
+     * 创建专辑付费节点.
      * @param  SpecialAddRequest $request [description]
      * @return [type]                     [description]
      */
@@ -339,7 +352,7 @@ class HomeController extends Controller
     }
 
     /**
-     * 创建专辑付费节点
+     * 创建专辑付费节点.
      * @param  SpecialAddRequest $request [description]
      * @return [type]                     [description]
      */
@@ -379,7 +392,7 @@ class HomeController extends Controller
     }
 
     /**
-     * 添加专辑设置封面
+     * 添加专辑设置封面.
      * @param  SpecialAddRequest $request [description]
      * @return [type]                     [description]
      */
@@ -395,7 +408,7 @@ class HomeController extends Controller
     }
 
     /**
-     * 保存需要更新的专辑设置封面
+     * 保存需要更新的专辑设置封面.
      * @param  SpecialAddRequest $request [description]
      * @return [type]                     [description]
      */
@@ -426,7 +439,7 @@ class HomeController extends Controller
     }
 
     /**
-     * 保存专辑封面
+     * 保存专辑封面.
      * @param  [type]       $fileWith [description]
      * @param  MusicSpecial $special  [description]
      * @return [type]                 [description]
@@ -451,7 +464,7 @@ class HomeController extends Controller
         if ($nodes) {
             foreach ($nodes as $node) {
                 $node->subject = ($node->extra === 'download' ? '歌曲下载付费' : '听歌曲收费');
-                $node->body = ($node->extra === 'download' ? '购买歌曲《' . $music->title . '》'  : '下载歌曲《' . $music->title . '》');
+                $node->body = ($node->extra === 'download' ? '购买歌曲《'.$music->title.'》' : '下载歌曲《'.$music->title.'》');
                 $node->user_id = 0;
                 $node->save();
             }
@@ -459,7 +472,7 @@ class HomeController extends Controller
     }
 
     /**
-     * 保存专辑收费节点
+     * 保存专辑收费节点.
      * @param  [type]       $node    [description]
      * @param  MusicSpecial $special [description]
      * @return [type]                [description]
@@ -467,7 +480,7 @@ class HomeController extends Controller
     protected function saveSpecialPaidNode($node, MusicSpecial $special)
     {
         $node->subject = '播放专辑';
-        $node->body = '播放专辑《' . $special->title . '》';
+        $node->body = '播放专辑《'.$special->title.'》';
         $node->user_id = 0;
         $node->save();
     }

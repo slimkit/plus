@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Controllers\V2;
 
 use Illuminate\Http\Request;
@@ -22,10 +38,10 @@ class MusicPaidController extends Controller
         $user = $request->user();
         $limit = $request->query('limit', 15);
         $max_id = $request->query('max_id', 0);
-        $specials = $musicSpecial->with(['storage','paidNode'])->select('music_specials.*')->join('paid_nodes', function ($join) {
+        $specials = $musicSpecial->with(['storage', 'paidNode'])->select('music_specials.*')->join('paid_nodes', function ($join) {
             return $join->on('paid_nodes.raw', '=', 'music_specials.id')->where('channel', 'music');
         })
-        ->join('paid_node_users', function($join) use ($user) {
+        ->join('paid_node_users', function ($join) use ($user) {
             return $join->on('paid_nodes.id', '=', 'paid_node_users.node_id')->where('paid_node_users.user_id', $user->id);
         })
         ->when($max_id, function ($query) use ($max_id) {
@@ -39,6 +55,7 @@ class MusicPaidController extends Controller
             return $specials->map(function ($special) use ($user) {
                 $special->has_collect = $special->hasCollected($user->id);
                 $special = $special->formatPaidNode($user->id);
+
                 return $special;
             });
         });
@@ -66,7 +83,7 @@ class MusicPaidController extends Controller
         ->join('paid_nodes', function ($join) {
             return $join->on('paid_nodes.raw', '=', 'musics.storage')->where('channel', 'file');
         })
-        ->join('paid_node_users', function($join) use ($user) {
+        ->join('paid_node_users', function ($join) use ($user) {
             return $join->on('paid_nodes.id', '=', 'paid_node_users.node_id')->where('paid_node_users.user_id', $user->id);
         })
         ->when($max_id, function ($query) use ($max_id) {

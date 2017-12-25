@@ -1,22 +1,34 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models;
 
 use Zhiyi\Plus\Models\Comment as CommentModel;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\Music;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSpecial;
-
 
 class Comment extends CommentModel
 {
+    public function special()
+    {
+        return $this->belongsTo(MusicSpecial::class, 'commentable_id', 'id');
+    }
 
-	public function special()
-	{
-		return $this->belongsTo(MusicSpecial::class, 'commentable_id', 'id');
-	}
-
-	public function music()
-	{
-		return $this->belongsTo(Music::class, 'commentable_id', 'id');
-	}
+    public function music()
+    {
+        return $this->belongsTo(Music::class, 'commentable_id', 'id');
+    }
 }

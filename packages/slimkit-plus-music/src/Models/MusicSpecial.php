@@ -1,21 +1,36 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models;
 
 use Zhiyi\Plus\Models\Comment;
-use Zhiyi\Plus\Models\PaidNode;
 use Zhiyi\Plus\Models\FileWith;
+use Zhiyi\Plus\Models\PaidNode;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MusicSpecial extends Model
 {
     use SoftDeletes;
-    
+
     protected $hidden = ['pivot'];
-    
+
     protected $table = 'music_specials';
 
     public function musics()
@@ -25,7 +40,7 @@ class MusicSpecial extends Model
 
     public function storage()
     {
-    	return $this->hasOne(FileWith::class, 'id', 'storage')->select('id','size');
+        return $this->hasOne(FileWith::class, 'id', 'storage')->select('id', 'size');
     }
 
     public function comments()
@@ -40,12 +55,12 @@ class MusicSpecial extends Model
      */
     public function collections()
     {
-    	return $this->hasMany(MusicCollection::class, 'special_id', 'id');
+        return $this->hasMany(MusicCollection::class, 'special_id', 'id');
     }
 
     /**
-     * 专辑付费节点
-     * 
+     * 专辑付费节点.
+     *
      * @author bs<414606094@qq.com>
      */
     public function paidNode()
@@ -54,7 +69,7 @@ class MusicSpecial extends Model
     }
 
     /**
-     * 处理付费节点信息
+     * 处理付费节点信息.
      *
      * @author bs<414606094@qq.com>
      * @param  int    $user [description]
@@ -76,11 +91,11 @@ class MusicSpecial extends Model
     }
 
     /**
-     * 验证某个用户是否收藏了某个专辑  
+     * 验证某个用户是否收藏了某个专辑.
      *
      * @author bs<414606094@qq.com>
      * @param  [int]  $user
-     * @return boolean
+     * @return bool
      */
     public function hasCollected(int $user): bool
     {

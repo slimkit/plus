@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Controllers\V2;
 
 use DB;
@@ -56,8 +72,8 @@ class MusicCollectionController extends Controller
                 'message' => ['已收藏该专辑'],
             ])->setStatusCode(400);
         }
-       
-        DB::transaction(function() use ($special, $user) {
+
+        DB::transaction(function () use ($special, $user) {
             $special->collections()->create(['user_id' => $user]);
             $special->increment('collect_count');
         });
@@ -81,20 +97,20 @@ class MusicCollectionController extends Controller
     public function delete(Request $request, MusicSpecial $special)
     {
         $user = $request->user()->id;
-        if (!$special->hasCollected($user)) {
+        if (! $special->hasCollected($user)) {
             return response()->json([
                 'message' => ['未收藏该专辑'],
             ])->setStatusCode(400);
         }
 
-        DB::transaction(function() use ($user, $special) {
+        DB::transaction(function () use ($user, $special) {
             $special->collections()->delete();
             $special->decrement('collect_count');
         });
-        
+
         $cacheKey = sprintf('music-special-collected:%s,%s', $special->id, $user);
         Cache::forget($cacheKey);
-        
+
         return response()->json()->setStatusCode(204);
     }
 }

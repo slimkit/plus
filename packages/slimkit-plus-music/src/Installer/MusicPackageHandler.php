@@ -1,23 +1,37 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Installer;
 
 use Carbon\Carbon;
-use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Models\Ability;
+use Zhiyi\Plus\Models\Comment;
 use Illuminate\Support\Facades\Schema;
 use Zhiyi\Plus\Support\PackageHandler;
 use Illuminate\Database\Schema\Blueprint;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\base_path as component_base_path;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\Music;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSinger;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSpecial;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\base_path as component_base_path;
 
 class MusicPackageHandler extends PackageHandler
 {
     public function defaultHandle($command)
     {
-        $handle = $command->choice('Select handle', ['list','install', 'remove', 'checkstorage', 'quit'], 0);
+        $handle = $command->choice('Select handle', ['list', 'install', 'remove', 'checkstorage', 'quit'], 0);
 
         if ($handle !== 'quit') {
             return $command->call(
@@ -46,7 +60,7 @@ class MusicPackageHandler extends PackageHandler
 
     public function installHandle($command)
     {
-        if (!Schema::hasTable('musics')) {
+        if (! Schema::hasTable('musics')) {
             Schema::create('musics', function (Blueprint $table) {
                 $table->engine = 'InnoDB';
                 $table->increments('id')->comment('主键');
@@ -56,7 +70,7 @@ class MusicPackageHandler extends PackageHandler
             include component_base_path('/databases/table_musics_column.php');
         }
 
-        if (!Schema::hasTable('music_specials')) {
+        if (! Schema::hasTable('music_specials')) {
             Schema::create('music_specials', function (Blueprint $table) {
                 $table->engine = 'InnoDB';
                 $table->increments('id')->comment('主键');
@@ -66,7 +80,7 @@ class MusicPackageHandler extends PackageHandler
             include component_base_path('/databases/table_music_specials_column.php');
         }
 
-        if (!Schema::hasTable('music_special_links')) {
+        if (! Schema::hasTable('music_special_links')) {
             Schema::create('music_special_links', function (Blueprint $table) {
                 $table->engine = 'InnoDB';
                 $table->increments('id')->comment('主键');
@@ -74,7 +88,7 @@ class MusicPackageHandler extends PackageHandler
             include component_base_path('/databases/table_music_special_links_column.php');
         }
 
-        if (!Schema::hasTable('music_comments')) {
+        if (! Schema::hasTable('music_comments')) {
             Schema::create('music_comments', function (Blueprint $table) {
                 $table->engine = 'InnoDB';
                 $table->increments('id')->comment('主键');
@@ -83,7 +97,7 @@ class MusicPackageHandler extends PackageHandler
             include component_base_path('/databases/table_music_comments_column.php');
         }
 
-        if (!Schema::hasTable('music_diggs')) {
+        if (! Schema::hasTable('music_diggs')) {
             Schema::create('music_diggs', function (Blueprint $table) {
                 $table->engine = 'InnoDB';
                 $table->increments('id')->comment('主键');
@@ -92,7 +106,7 @@ class MusicPackageHandler extends PackageHandler
             include component_base_path('/databases/table_music_diggs_column.php');
         }
 
-        if (!Schema::hasTable('music_collections')) {
+        if (! Schema::hasTable('music_collections')) {
             Schema::create('music_collections', function (Blueprint $table) {
                 $table->engine = 'InnoDB';
                 $table->increments('id')->comment('主键');
@@ -101,7 +115,7 @@ class MusicPackageHandler extends PackageHandler
             include component_base_path('/databases/table_music_collections_column.php');
         }
 
-        if (!Schema::hasTable('music_singers')) {
+        if (! Schema::hasTable('music_singers')) {
             Schema::create('music_singers', function (Blueprint $table) {
                 $table->engine = 'InnoDB';
                 $table->increments('id')->comment('主键');

@@ -1,16 +1,31 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Traits\CreateJsonResponseData;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\Feed;
 
 class VerifyCommentContent
 {
     use CreateJsonResponseData;
-    
+
     /**
      * 验证评论内容是否存在.
      *
@@ -20,15 +35,15 @@ class VerifyCommentContent
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
-    {   
-        if (!$request->input('comment_content')) {
+    {
+        if (! $request->input('comment_content')) {
             return response()->json([
                 'status' => false,
                 'code' => 8005,
-                'message' => '评论内容不能为空'
+                'message' => '评论内容不能为空',
             ])->setStatusCode(400);
         }
-        
+
         return $next($request);
     }
 }

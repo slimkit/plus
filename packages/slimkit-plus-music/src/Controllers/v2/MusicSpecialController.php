@@ -1,22 +1,33 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Controllers\V2;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\Music;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicDigg;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSpecial;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicCollection;
-
 
 class MusicSpecialController extends Controller
 {
     /**
-     * 获取专辑列表
-     *  
+     * 获取专辑列表.
+     *
      * @author bs<414606094@qq.com>
      * @return [type] [description]
      */
@@ -26,34 +37,35 @@ class MusicSpecialController extends Controller
         // 设置单页数量
         $limit = $request->limit ?? 15;
         $specials = $specialModel->orderBy('id', 'DESC')
-            ->where(function($query) use ($request) {
-                if($request->max_id > 0){
+            ->where(function ($query) use ($request) {
+                if ($request->max_id > 0) {
                     $query->where('id', '<', $request->max_id);
                 }
             })
-            ->with(['storage','paidNode'])
+            ->with(['storage', 'paidNode'])
             ->take($limit)
             ->get();
 
         $specials = $specialModel->getConnection()->transaction(function () use ($specials, $uid) {
-        	return $specials->map(function ($special) use ($uid) {
-        		$special->has_collect = $special->hasCollected($uid);
+            return $specials->map(function ($special) use ($uid) {
+                $special->has_collect = $special->hasCollected($uid);
                 $special = $special->formatPaidNode($uid);
-        		return $special;
-        	});
+
+                return $special;
+            });
         });
 
         return $response->json($specials)->setStatusCode(200);
     }
 
     /**
-     * 专辑详情
+     * 专辑详情.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request         $request 
-     * @param  MusicSpecial    $special 
-     * @param  ResponseFactory $response 
-     * @return mix                    
+     * @param  Request         $request
+     * @param  MusicSpecial    $special
+     * @param  ResponseFactory $response
+     * @return mix
      */
     public function show(Request $request, MusicSpecial $special, ResponseFactory $response)
     {
@@ -67,17 +79,17 @@ class MusicSpecialController extends Controller
             ])->setStatusCode(403);
         }
 
-        $special->load(['musics' => function($query) {
+        $special->load(['musics' => function ($query) {
             $query->with(['singer' => function ($query) {
-                    $query->with('cover');
+                $query->with('cover');
             }])->orderBy('id', 'desc');
         }, 'storage']);
 
         $special = $special->formatPaidNode($uid);
         $special->has_collect = $special->hasCollected($uid);
         $special->musics->map(function ($music) use ($uid) {
-        	$music->has_like = $music->liked($uid);
-        	$music = $music->formatStorage($uid);
+            $music->has_like = $music->liked($uid);
+            $music = $music->formatStorage($uid);
         });
 
         return $response->json($special)->setStatusCode(200);

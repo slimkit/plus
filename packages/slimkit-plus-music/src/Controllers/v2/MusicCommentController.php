@@ -1,8 +1,23 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Controllers\V2;
 
-use DB;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Models\Comment;
@@ -33,10 +48,10 @@ class MusicCommentController extends Controller
         $comment->body = $body;
 
         $music->getConnection()->transaction(function () use ($music, $comment, $user) {
-        	$music->comments()->save($comment);
-        	$music->increment('comment_count', 1);
-        	$music->musicSpecials()->increment('comment_count', 1);
-        	$user->extra()->firstOrCreate([])->increment('comments_count', 1);
+            $music->comments()->save($comment);
+            $music->increment('comment_count', 1);
+            $music->musicSpecials()->increment('comment_count', 1);
+            $user->extra()->firstOrCreate([])->increment('comments_count', 1);
         });
 
         if ($replyUser && $replyUser !== $user->id) {
@@ -46,9 +61,9 @@ class MusicCommentController extends Controller
         }
 
         return response()->json([
-        	'message' => ['操作成功'],
-        	'comment' => $comment,
-    	])->setStatusCode(201);
+            'message' => ['操作成功'],
+            'comment' => $comment,
+        ])->setStatusCode(201);
     }
 
     /**
@@ -61,13 +76,13 @@ class MusicCommentController extends Controller
      */
     public function list(Request $request, Music $music)
     {
-    	$max_id = $request->input('max_id');
-    	$limit = $request->input('limit', 15);
-    	$comments = $music->comments()->when($max_id, function ($query) use ($max_id) {
-    		return $query->where('id', '<', $max_id);
-    	})->with(['user', 'reply'])->limit($limit)->orderBy('id', 'desc')->get();
+        $max_id = $request->input('max_id');
+        $limit = $request->input('limit', 15);
+        $comments = $music->comments()->when($max_id, function ($query) use ($max_id) {
+            return $query->where('id', '<', $max_id);
+        })->with(['user', 'reply'])->limit($limit)->orderBy('id', 'desc')->get();
 
-    	return response()->json($comments, 200);
+        return response()->json($comments, 200);
     }
 
     /**
@@ -131,15 +146,15 @@ class MusicCommentController extends Controller
      */
     public function specialList(Request $request, MusicSpecial $special)
     {
-    	$max_id = $request->input('max_id');
-    	$limit = $request->input('limit', 15);
-    	$comments = $special->comments()->orWhere(function ($query) use ($special) {
+        $max_id = $request->input('max_id');
+        $limit = $request->input('limit', 15);
+        $comments = $special->comments()->orWhere(function ($query) use ($special) {
             return $query->where('commentable_type', 'musics')->whereIn('commentable_id', $special->musics->pluck('id'));
         })->when($max_id, function ($query) use ($max_id) {
-    		return $query->where('id', '<', $max_id);
-    	})->with(['user', 'reply'])->limit($limit)->orderBy('id', 'desc')->get();
+            return $query->where('id', '<', $max_id);
+        })->with(['user', 'reply'])->limit($limit)->orderBy('id', 'desc')->get();
 
-    	return response()->json($comments, 200);
+        return response()->json($comments, 200);
     }
 
     /**
@@ -163,9 +178,9 @@ class MusicCommentController extends Controller
         $comment->body = $body;
 
         $special->getConnection()->transaction(function () use ($special, $comment, $user) {
-        	$special->comments()->save($comment);
-        	$special->increment('comment_count', 1);
-        	$user->extra()->firstOrCreate([])->increment('comments_count', 1);
+            $special->comments()->save($comment);
+            $special->increment('comment_count', 1);
+            $user->extra()->firstOrCreate([])->increment('comments_count', 1);
         });
 
         if ($replyUser && $replyUser !== $user->id) {
@@ -175,8 +190,8 @@ class MusicCommentController extends Controller
         }
 
         return response()->json([
-        	'message' => ['操作成功'],
-        	'comment' => $comment,
-    	])->setStatusCode(201);
+            'message' => ['操作成功'],
+            'comment' => $comment,
+        ])->setStatusCode(201);
     }
 }

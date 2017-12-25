@@ -1,33 +1,46 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models;
 
 use Zhiyi\Plus\Models\Comment;
-use Zhiyi\Plus\Models\PaidNode;
 use Zhiyi\Plus\Models\FileWith;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Database\Eloquent\Builder;
+use Zhiyi\Plus\Models\PaidNode;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Music extends Model
 {
     use SoftDeletes;
-    
     use Relations\MusicHasLike;
 
-	protected $hidden = ['pivot'];
+    protected $hidden = ['pivot'];
 
     protected $table = 'musics';
 
     public function singer()
     {
-    	return $this->hasOne(MusicSinger::class, 'id', 'singer');
+        return $this->hasOne(MusicSinger::class, 'id', 'singer');
     }
 
     public function speciallinks()
     {
-    	return $this->hasMany(MusicSpecialLink::class, 'music_id', 'id');
+        return $this->hasMany(MusicSpecialLink::class, 'music_id', 'id');
     }
 
     public function musicSpecials()
@@ -40,7 +53,7 @@ class Music extends Model
         return $this->morphMany(Comment::class, 'commentable');
     }
 
-    public function paidNode ()
+    public function paidNode()
     {
         return $this->hasOne(PaidNode::class, 'raw', 'storage')
             ->where('channel', 'file');
@@ -48,22 +61,22 @@ class Music extends Model
 
     public function formatStorage(int $user)
     {
-    	$storage = FileWith::with('paidNode')->find($this->storage);
-    	if (!$storage) {
+        $storage = FileWith::with('paidNode')->find($this->storage);
+        if (! $storage) {
             $this->storage = null;
 
-    		return $this;
-    	}
+            return $this;
+        }
 
-    	$file['id'] = $storage->id;
-    	if ($storage->paidNode !== null) {
+        $file['id'] = $storage->id;
+        if ($storage->paidNode !== null) {
             $file['amount'] = $storage->paidNode->amount;
             $file['type'] = $storage->paidNode->extra;
             $file['paid'] = $storage->paidNode->paid($user);
             $file['paid_node'] = $storage->paidNode->id;
-    	}
-    	$this->storage = $file;
+        }
+        $this->storage = $file;
 
-    	return $this;
+        return $this;
     }
 }

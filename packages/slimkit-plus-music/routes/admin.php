@@ -1,11 +1,25 @@
 <?php
-use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Middleware as MusicMiddleware;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\AdminControllers as Controller;
+
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
 
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
-	// 歌曲相关
+    // 歌曲相关
     Route::get('/', 'HomeController@show')->name('music:list');
     Route::delete('/{music}', 'HomeController@handleDelete')->name('music:delete');
     Route::get('/add', 'HomeController@handleAddMuisc')->name('music:add');
@@ -35,7 +49,6 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('/comments')->group(function () {
-
         Route::get('/musics', 'CommentController@lists')->name('music:all:comments');
 
         Route::get('/musics/{music}', 'CommentController@musicComments')->name('music:comments');
@@ -43,6 +56,6 @@ Route::middleware('auth')->group(function () {
         Route::delete('/musics/{music}/comments/{comment}', 'CommentController@delete')->name('music:comments:delete');
         Route::delete('/specials/{special}/comments/{comment}', 'CommentController@specialDelete')->name('special:comments:delete');
     });
-    
+
     Route::post('/storage', 'MusicStorageController@store')->name('music:storage');
 });

@@ -1,25 +1,38 @@
-<?php 
+<?php
+
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\AdminControllers;
 
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
-use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\File as FileModel;
+use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Requests\MusicUploadFile as MusicUploadFileRequest;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Requests\SpecialUploadFile as SpecialUploadFileRequest;
 
-
 class MusicStorageController extends Controller
 {
-	public function store(MusicUploadFileRequest $request, ResponseContract $response, Carbon $dateTime, FileModel $fileModel, FileWithModel $fileWith)
-	{
-		$fileModel = $this->validateFileInDatabase($fileModel, $file = $request->file('file'), function (UploadedFile $file, string $md5) use ($fileModel, $dateTime): FileModel {
-            
+    public function store(MusicUploadFileRequest $request, ResponseContract $response, Carbon $dateTime, FileModel $fileModel, FileWithModel $fileWith)
+    {
+        $fileModel = $this->validateFileInDatabase($fileModel, $file = $request->file('file'), function (UploadedFile $file, string $md5) use ($fileModel, $dateTime): FileModel {
             $path = $dateTime->format('Y/m/d/Hi');
 
             if (($filename = $file->store($path, 'public')) === false) {
@@ -43,9 +56,9 @@ class MusicStorageController extends Controller
             'message' => ['上传成功'],
             'id' => $fileWith->id,
         ])->setStatusCode(201);
-	}
+    }
 
-	/**
+    /**
      * Validate and return the file database model instance.
      *
      * @param \Zhiyi\Plus\Models\File $fileModel
@@ -90,7 +103,7 @@ class MusicStorageController extends Controller
     }
 
     /**
-     * 专辑/歌手附件上传
+     * 专辑/歌手附件上传.
      * @param  SpecialUploadFileRequest $request   [description]
      * @param  ResponseContract         $response  [description]
      * @param  Carbon                   $dateTime  [description]
@@ -126,5 +139,4 @@ class MusicStorageController extends Controller
             'id' => $fileWith->id,
         ])->setStatusCode(201);
     }
-
 }
