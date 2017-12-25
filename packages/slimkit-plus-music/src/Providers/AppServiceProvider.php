@@ -36,6 +36,10 @@ class AppServiceProvider extends ServiceProvider
         $this->publishes([
             component_base_path('/resource') => $this->app->PublicPath().'/assets/music',
         ]); // 静态资源
+
+        // Register a database migration path.
+        $this->loadMigrationsFrom(dirname(dirname(__DIR__).'/database/migrations');
+
     }
 
     public function register()
