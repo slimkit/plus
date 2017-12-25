@@ -6,4 +6,3 @@ yarn-error.log
 vendor/
 yarn.lock
 composer.lock
-assets/
