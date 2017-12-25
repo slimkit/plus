@@ -30,6 +30,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
+        \Zhiyi\Plus\Http\Middleware\CrossDomain::class,
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \Zhiyi\Plus\Http\Middleware\TrimStrings::class,
