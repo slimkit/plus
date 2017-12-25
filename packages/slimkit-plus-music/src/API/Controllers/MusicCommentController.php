@@ -16,7 +16,7 @@
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Controllers\V2;
+namespace Zhiyi\Plus\Packages\Music\API\Controllers;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Services\Push;
