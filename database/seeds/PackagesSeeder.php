@@ -30,6 +30,7 @@ class PackagesSeeder extends Seeder
     {
         $this->call(\SlimKit\PlusCheckIn\Seeds\DatabaseSeeder::class);
         $this->call(\SlimKit\Plus\Packages\News\Seeds\DatabaseSeeder::class);
-        $this->Call(\SlimKit\Plus\Packages\Feed\Seeds\DatabaseSeeder::class);
+        $this->call(\SlimKit\Plus\Packages\Feed\Seeds\DatabaseSeeder::class);
+        $this->call(\Zhiyi\Plus\Packages\Music\Seeds\DatabaseSeeder::class);
     }
 }
