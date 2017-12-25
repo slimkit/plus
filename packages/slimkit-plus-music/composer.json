@@ -13,6 +13,9 @@
         "files": [
             "src/helpers.php"
         ],
+        "classmap": [
+            "database/seeds"
+        ],
         "psr-4": {
             "Zhiyi\\Component\\ZhiyiPlus\\PlusComponentMusic\\": "src/"
         }

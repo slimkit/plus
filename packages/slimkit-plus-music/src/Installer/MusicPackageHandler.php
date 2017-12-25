@@ -43,14 +43,6 @@ class MusicPackageHandler extends PackageHandler
     {
         if ($command->confirm('This will delete your datas for music')) {
             Comment::whereIn('commentable_type', ['musics', 'music_specials'])->delete();
-            Ability::whereIn('name', ['music-comment', 'music-digg', 'music-collection'])->delete();
-            Schema::dropIfExists('musics');
-            Schema::dropIfExists('music_comments');
-            Schema::dropIfExists('music_specials');
-            Schema::dropIfExists('music_special_links');
-            Schema::dropIfExists('music_diggs');
-            Schema::dropIfExists('music_collections');
-            Schema::dropIfExists('music_singers');
 
             return $command->info('The Music has been removed');
         }
@@ -58,32 +50,6 @@ class MusicPackageHandler extends PackageHandler
 
     public function installHandle($command)
     {
-        $time = Carbon::now();
-
-        Ability::insert([
-            [
-                'name' => 'music-comment',
-                'display_name' => '评论歌曲',
-                'description' => '用户评论歌曲权限',
-                'created_at' => $time,
-                'updated_at' => $time,
-            ],
-            [
-                'name' => 'music-digg',
-                'display_name' => '点赞歌曲',
-                'description' => '用户点赞歌曲权限',
-                'created_at' => $time,
-                'updated_at' => $time,
-            ],
-            [
-                'name' => 'music-collection',
-                'display_name' => '收藏歌曲',
-                'description' => '用户收藏歌曲权限',
-                'created_at' => $time,
-                'updated_at' => $time,
-            ],
-        ]);
-
         return $command->info('Music component install successfully');
     }
 }
