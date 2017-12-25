@@ -1,12 +1,8 @@
 {
-    "name": "slimkit/plus-question",
+    "name": "zhiyicx/plus-question",
     "description": "🤔The Q & A component for ThinkSNS+. （ThinkSNS+ 问答模块）✈️",
     "type": "library",
     "license": "Apache-2.0",
-    "support": {
-        "issues": "https://github.com/slimkit/plus-question/issues",
-        "source": "https://github.com/slimkit/plus-question"
-    },
     "authors": [
         {
             "name": "Seven Du",
@@ -30,9 +26,6 @@
         }
     },
     "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
-        },
         "laravel": {
             "providers": [
                 "SlimKit\\PlusQuestion\\Providers\\AppServiceProvider",
@@ -43,5 +36,6 @@
     },
     "config": {
         "sort-packages": true
-    }
+    },
+    "version": "1.1.0"
 }
