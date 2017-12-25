@@ -18,10 +18,7 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Installer;
 
-use Carbon\Carbon;
-use Zhiyi\Plus\Models\Ability;
 use Zhiyi\Plus\Models\Comment;
-use Illuminate\Support\Facades\Schema;
 use Zhiyi\Plus\Support\PackageHandler;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\Music;
 
