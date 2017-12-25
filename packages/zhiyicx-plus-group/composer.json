@@ -1,0 +1,32 @@
+{
+    "name": "zhiyicx/plus-group",
+    "description": "A \"zhiyicx/plus-group\" package For ThinkSNS+✈️.",
+    "type": "library",
+    "license": "Apache-2.0",
+    "require": {
+        "php": ">=7.0",
+        "geohash/geohash": "^1.0",
+        "illuminate/console": "^5.5",
+        "illuminate/contracts": "^5.5",
+        "illuminate/database": "^5.5",
+        "illuminate/support": "^5.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Zhiyi\\PlusGroup\\": "src/",
+            "Zhiyi\\PlusGroup\\Seeds\\": "database/seeds/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Zhiyi\\PlusGroup\\Providers\\AppServiceProvider",
+                "Zhiyi\\PlusGroup\\Providers\\ModelServiceProvider",
+                "Zhiyi\\PlusGroup\\Providers\\RouteServiceProvider"
+            ]
+        }
+    }
+}
