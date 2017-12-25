@@ -39,7 +39,6 @@ class AppServiceProvider extends ServiceProvider
 
         // Register a database migration path.
         $this->loadMigrationsFrom(dirname(dirname(__DIR__)).'/database/migrations');
-
     }
 
     public function register()
