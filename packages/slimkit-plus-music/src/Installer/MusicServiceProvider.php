@@ -19,7 +19,6 @@
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Installer;
 
 use Zhiyi\Plus\Models\Comment;
-use Zhiyi\Plus\Support\PackageHandler;
 use Illuminate\Support\ServiceProvider;
 use Zhiyi\Plus\Support\ManageRepository;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -41,8 +40,6 @@ class MusicServiceProvider extends ServiceProvider
         $this->publishes([
             component_base_path('/resource') => $this->app->PublicPath().'/assets/music',
         ]); // 静态资源
-
-        PackageHandler::loadHandleFrom('music', MusicPackageHandler::class); // 注入安装处理器
     }
 
     public function register()
