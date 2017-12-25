@@ -1,0 +1,47 @@
+{
+    "name": "slimkit/plus-question",
+    "description": "🤔The Q & A component for ThinkSNS+. （ThinkSNS+ 问答模块）✈️",
+    "type": "library",
+    "license": "Apache-2.0",
+    "support": {
+        "issues": "https://github.com/slimkit/plus-question/issues",
+        "source": "https://github.com/slimkit/plus-question"
+    },
+    "authors": [
+        {
+            "name": "Seven Du",
+            "email": "shiweidu@outlook.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "erusev/parsedown": "^1.6",
+        "ezyang/htmlpurifier": "^4.9",
+        "illuminate/console": "^5.5",
+        "illuminate/contracts": "^5.5",
+        "illuminate/database": "^5.5",
+        "illuminate/http": "^5.5",
+        "illuminate/support": "^5.5",
+        "league/html-to-markdown": "^4.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "SlimKit\\PlusQuestion\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        },
+        "laravel": {
+            "providers": [
+                "SlimKit\\PlusQuestion\\Providers\\AppServiceProvider",
+                "SlimKit\\PlusQuestion\\Providers\\ModelServiceProvider",
+                "SlimKit\\PlusQuestion\\Providers\\RouteServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
