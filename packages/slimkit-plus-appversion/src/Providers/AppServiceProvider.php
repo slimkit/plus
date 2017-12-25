@@ -87,11 +87,6 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function registerSingletions()
     {
-        // Owner handler.
-        $this->app->singleton('plus-appversion:handler', function () {
-            return new \Slimkit\PlusAppversion\Handlers\PackageHandler();
-        });
-
         // Develop handler.
         $this->app->singleton('plus-appversion:dev-handler', function ($app) {
             return new \Slimkit\PlusAppversion\Handlers\DevPackageHandler($app);
@@ -106,9 +101,6 @@ class AppServiceProvider extends ServiceProvider
     protected function registerContainerAliases()
     {
         foreach ([
-            'plus-appversion:handler' => [
-                \Slimkit\PlusAppversion\Handlers\PackageHandler::class,
-            ],
             'plus-appversion:dev-handler' => [
                 \Slimkit\PlusAppversion\Handlers\DevPackageHandler::class,
             ],
@@ -126,7 +118,6 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function registerPackageHandlers()
     {
-        $this->loadHandleFrom('plus-appversion', 'plus-appversion:handler');
         $this->loadHandleFrom('plus-appversion-dev', 'plus-appversion:dev-handler');
     }
 
