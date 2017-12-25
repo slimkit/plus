@@ -18,7 +18,6 @@
 
 namespace Zhiyi\Plus\Packages\Music\Providers;
 
-use Zhiyi\Plus\Models\Comment;
 use Illuminate\Support\ServiceProvider;
 use Zhiyi\Plus\Support\ManageRepository;
 use Illuminate\Database\Eloquent\Relations\Relation;
