@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
         ); // 路由注入
 
         $this->publishes([
-            component_base_path('/resource') => $this->app->PublicPath().'/assets/music',
+            component_base_path('/assets') => $this->app->PublicPath().'/assets/music',
         ]); // 静态资源
 
         // Register a database migration path.
