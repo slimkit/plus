@@ -83,9 +83,27 @@ class GroupsController
         $money = (int) $request->input('money', 0);
 
         $group = new GroupModel();
+
         foreach ($values as $field => $value) {
             $group->$field = $value;
         }
+
+        if ($request->has('permissions')) {
+            $permissions = array_unique($request->input('permissions'));
+            
+            if (! $permissions) {
+                return response()->json(['message' => '无效的发帖权限参数'], 422);
+            }
+
+            foreach($permissions as $permission) {
+                if (! in_array($permission, ['member', 'administrator', 'founder'])) {
+                    return response()->json(['message' => '无效的发帖权限参数'], 422);
+                }
+            }
+
+            $group->permissions = implode(',', $permissions);
+        }
+
         $group->user_id = $user->id;
         $group->allow_feed = $allowFeed;
         $group->mode = $mode;
@@ -133,6 +151,22 @@ class GroupsController
 
         foreach ($values as $field => $value) {
             $group->$field = $value;
+        }
+
+        if ($request->has('permissions')) {
+            $permissions = array_unique($request->input('permissions'));
+            
+            if (! $permissions) {
+                return response()->json(['message' => '无效的发帖权限参数'], 422);
+            }
+
+            foreach($permissions as $permission) {
+                if (! in_array($permission, ['member', 'administrator', 'founder'])) {
+                    return response()->json(['message' => '无效的发帖权限参数'], 422);
+                }
+            }
+
+            $group->permissions = implode(',', $permissions);
         }
 
         $group->user_id = $user->id;
@@ -458,7 +492,7 @@ class GroupsController
 
         return response()->json($groups, 200);
     }
-
+    
     /**
      * 设置圈子权限.
      */
