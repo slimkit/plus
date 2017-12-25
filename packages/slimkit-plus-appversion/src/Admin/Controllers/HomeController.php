@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Slimkit\PlusAppversion\Admin\Controllers;
 
 use Carbon\Carbon;
@@ -8,23 +24,21 @@ use Illuminate\Http\UploadedFile;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Zhiyi\Plus\Support\Configuration;
 use Illuminate\Support\Facades\Storage;
-use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\File as FileModel;
+use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Cdn\UrlManager as CdnUrlManager;
-use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Slimkit\PlusAppversion\Models\ClientVersion;
+use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Slimkit\PlusAppversion\API\Requests\ApkUpload;
 use Slimkit\PlusAppversion\Requests\StoreClientVersion;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 
 class HomeController extends Controller
 {
-
     public function storage(ApkUpload $request, ResponseContract $response, CdnUrlManager $cdn, Carbon $dateTime, FileModel $fileModel, FileWithModel $fileWith)
     {
         $fileModel = $this->validateFileInDatabase($fileModel, $file = $request->file('file'), function (UploadedFile $file, string $md5) use ($fileModel, $dateTime): FileModel {
-            
             $path = $dateTime->format('Y/m/d/Hi');
 
             if (($filename = $file->store($path, 'public')) === false) {
@@ -46,7 +60,7 @@ class HomeController extends Controller
 
         return $response->json([
             'message' => ['上传成功'],
-            'id' => $fileWith->id
+            'id' => $fileWith->id,
         ])->setStatusCode(201);
     }
 
@@ -94,12 +108,13 @@ class HomeController extends Controller
             });
     }
 
-    public function home (Request $request) {
+    public function home(Request $request)
+    {
         $user = $request->user();
         $token = JWTAuth::fromUser($user);
 
         return view('plus-appversion::admin', [
-            'token' => $token
+            'token' => $token,
         ]);
     }
 
@@ -186,8 +201,9 @@ class HomeController extends Controller
     public function status(Request $request)
     {
         $status = config('plus-appversion');
+
         return response()->json($status)->setStatusCode(200);
-    } 
+    }
 
     /**
      * 更新扩展开关状态
