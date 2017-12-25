@@ -1,0 +1,33 @@
+{
+    "name": "slimkit/plus-appversion",
+    "description": "A \"slimkit/plus-appversion\" package For ThinkSNS+✈️.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.0",
+        "alexfloppy/php-apk-parser-php7": "^2.0",
+        "illuminate/console": "^5.5",
+        "illuminate/contracts": "^5.5",
+        "illuminate/database": "^5.5",
+        "illuminate/support": "^5.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Slimkit\\PlusAppversion\\": "src/",
+            "Slimkit\\PlusAppversion\\Seeds\\": "database/seeds/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Slimkit\\PlusAppversion\\Providers\\AppServiceProvider",
+                "Slimkit\\PlusAppversion\\Providers\\ModelServiceProvider",
+                "Slimkit\\PlusAppversion\\Providers\\RouteServiceProvider"
+            ]
+        }
+    },
+    "version": "1.0.0"
+}

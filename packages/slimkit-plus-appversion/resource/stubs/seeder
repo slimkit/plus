@@ -1,0 +1,18 @@
+<?php
+
+namespace Slimkit\PlusAppversion\Seeds;
+
+use Illuminate\Database\Seeder;
+
+class {--name--}Seeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        // TODO.
+    }
+}
