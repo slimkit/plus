@@ -51,12 +51,12 @@
         },
         {
             "type": "path",
-            "url": "packages/zhiyicx-plus-question",
+            "url": "packages/zhiyicx-plus-group",
             "options": { "symlink": true }
         },
         {
             "type": "path",
-            "url": "packages/zhiyicx-plus-group",
+            "url": "packages/zhiyicx-plus-question",
             "options": { "symlink": true }
         }
     ],
