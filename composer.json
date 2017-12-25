@@ -36,6 +36,11 @@
         },
         {
             "type": "path",
+            "url": "packages/slimkit-plus-music",
+            "options": { "symlink": true }
+        },
+        {
+            "type": "path",
             "url": "packages/slimkit-plus-news",
             "options": { "symlink": true }
         },
@@ -61,6 +66,7 @@
         "slimkit/plus-checkin": "~1.1",
         "slimkit/plus-feed": "~1.1",
         "slimkit/plus-id": "~1.1",
+        "slimkit/plus-music": "~1.1",
         "slimkit/plus-news": "~1.1",
         "slimkit/plus-socialite": "~1.1",
         "symfony/finder": "~3.3",
