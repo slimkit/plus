@@ -43,7 +43,7 @@ class CrossDomain
         $response->headers->set('Access-Control-Allow-Methods', '*');
         // $response->headers->set('Access-Control-Allow-Headers', implode(', ', ['Origin', 'Content-Type', 'Accept', 'Cookie']));
         $response->headers->set('Access-Control-Allow-Headers', '*');
-        $response->headers->set('Access-Control-Allow-Origin', $this->getOrigin());
+        $response->headers->set('Access-Control-Allow-Origin', $this->getOrigin($request));
 
         return $response;
     }
@@ -58,13 +58,18 @@ class CrossDomain
         return 'false';
     }
 
-    protected function getOrigin(): string
+    protected function getOrigin($request): string
     {
         $origin = config('http.cros.origin');
-        if (is_array($origin)) {
-            return implode(', ', $origin);
+        if ($origin === '*') {
+            return '*';
         }
 
-        return (string) $origin;
+        $requestOrigin = $request->headers->get('origin');
+        if (in_array($requestOrigin, (array) $origin)) {
+            return $requestOrigin;
+        }
+
+        return (string) '';
     }
 }
