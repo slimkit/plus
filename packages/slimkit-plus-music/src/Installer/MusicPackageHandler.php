@@ -23,9 +23,7 @@ use Zhiyi\Plus\Models\Ability;
 use Zhiyi\Plus\Models\Comment;
 use Illuminate\Support\Facades\Schema;
 use Zhiyi\Plus\Support\PackageHandler;
-use Illuminate\Database\Schema\Blueprint;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\Music;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\base_path as component_base_path;
 
 class MusicPackageHandler extends PackageHandler
 {
@@ -60,7 +58,6 @@ class MusicPackageHandler extends PackageHandler
 
     public function installHandle($command)
     {
-
         $time = Carbon::now();
 
         Ability::insert([
