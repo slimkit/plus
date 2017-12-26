@@ -123,22 +123,3 @@ function filterUrlStringLength(string $data, int $length = 0): string
 
     return $value;
 }
-
-function getSubByKey($pArray, $pKey = '', $pCondition = '')
-{
-    $result = [];
-    if (is_array($pArray)) {
-        foreach ($pArray as $temp_array) {
-            if (is_object($temp_array)) {
-                $temp_array = (array) $temp_array;
-            }
-            if (('' != $pCondition && $temp_array[$pCondition[0]] == $pCondition[1]) || '' == $pCondition) {
-                $result[] = ('' == $pKey) ? $temp_array : isset($temp_array[$pKey]) ? $temp_array[$pKey] : '';
-            }
-        }
-
-        return array_filter($result);
-    } else {
-        return false;
-    }
-}

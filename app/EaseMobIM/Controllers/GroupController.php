@@ -23,7 +23,6 @@ use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\ImGroup;
 use Zhiyi\Plus\Models\FileWith;
-use function Zhiyi\Plus\getSubByKey;
 
 class GroupController extends EaseMobController
 {
@@ -267,8 +266,14 @@ class GroupController extends EaseMobController
             }
 
             foreach ($groupCon->data as $key => &$group) {
-                $members = getSubByKey($group->affiliations, 'member');
-                $owner = getSubByKey($group->affiliations, 'owner');
+                $affiliations = collect($group->affiliations);
+                $owner = $affiliations->pluck('owner')->filter(function ($item) {
+                    return $item;
+                });
+                $members = $affiliations->pluck('member')->filter(function ($item) {
+                    return $item;
+                });
+
                 $group->affiliations = $this->getUser($members, $owner);
             }
 
@@ -302,15 +307,15 @@ class GroupController extends EaseMobController
     /**
      * 获取群组用户信息列表.
      *
-     * @param array $members
-     * @param array $owner
+     * @param $members
+     * @param $owner
      * @return mixed
      * @author ZsyD<1251992018@qq.com>
      */
-    private function getUser(array $members, array $owner)
+    private function getUser($members, $owner)
     {
-        $users = User::whereIn('id', array_merge($members, $owner))->get();
-        $admin = array_values($owner)[0];
+        $users = User::whereIn('id', $owner->merge($members))->get();
+        $admin = $owner->values()[0];
         if ($users) {
             $users->map(function ($user) use ($admin) {
                 $user->is_owner = $user->id == $admin ? 1 : 0;
