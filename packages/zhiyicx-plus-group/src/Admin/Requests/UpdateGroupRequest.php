@@ -63,7 +63,7 @@ class UpdateGroupRequest extends FormRequest
             'summary.required' => '请填写圈子简介',
             'summary.max' => '简介最大长度255字符',
             'notice.required' => '请填写圈子公告',
-            'notice.max' => '公告最大长度2000字符'
+            'notice.max' => '公告最大长度2000字符',
         ];
     }
 }

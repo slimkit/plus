@@ -169,6 +169,22 @@
 	     </div>
 	   </div>
 
+	   <!-- 同步至动态 -->
+	   <div class="form-group">
+	     <label class="control-label col-xs-2">同步</label>
+	     <div class="col-xs-7">
+			<label class="radio-inline">
+			  <input type="radio" name="allow_feed" value="1" v-model="group.allow_feed"> 开启同步动态
+			</label>
+			<label class="radio-inline">
+			  <input type="radio" name="allow_feed" value="0" v-model="group.allow_feed"> 关闭同步动态
+			</label>
+	     </div>
+	     <div class="col-xs-3 help-block">
+	     	同步动态 开启用户发帖可以选择是否同步至动态
+	     </div>
+	   </div>
+
 	   <!-- 简介 -->
 	   <div class="form-group">
 	     <label class="control-label col-xs-2"><span class="text-danger">*</span>简介</label>
@@ -244,6 +260,7 @@ export default({
         permissions: 3,
         pinned: 0,
         audit: 1,
+        allow_feed: 0,
         tags:[],
         money: 0,
         summary: null,

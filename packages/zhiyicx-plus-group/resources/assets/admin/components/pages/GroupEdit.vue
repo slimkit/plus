@@ -97,7 +97,7 @@
 	   </div>
 
 	   <!-- 类型 -->
-	   <div class="form-group" v-if="group.mode !== 'paid'">
+	   <div class="form-group" v-show="mode == 'public' || mode == 'private'">
 	     <label class="control-label col-xs-2">类型</label>
 	     <div class="col-xs-3">
 			<label class="radio-inline">
@@ -169,6 +169,22 @@
 	     </div>
 	   </div>
 
+	   <!-- 同步至动态 -->
+	   <div class="form-group">
+	     <label class="control-label col-xs-2">同步</label>
+	     <div class="col-xs-7">
+			<label class="radio-inline">
+			  <input type="radio" name="allow_feed" value="1" v-model="group.allow_feed"> 开启同步动态
+			</label>
+			<label class="radio-inline">
+			  <input type="radio" name="allow_feed" value="0" v-model="group.allow_feed"> 关闭同步动态
+			</label>
+	     </div>
+	     <div class="col-xs-3 help-block">
+	     	同步动态 开启用户发帖可以选择是否同步至动态
+	     </div>
+	   </div>
+
 	   <!-- 简介 -->
 	   <div class="form-group">
 	     <label class="control-label col-xs-2"><span class="text-danger">*</span>简介</label>
@@ -236,6 +252,7 @@ export default({
 	  mapShow: false,
 	  paid: false,
 	  avatarUrl: null,
+	  mode: null,
       group: {
         name: null,
       	avatar: null,
@@ -245,6 +262,7 @@ export default({
         permissions: 3,
         recommend: 0,
         audit: 1,
+        allow_feed: null,
         tags:[],
         money: 0,
         summary: null,
@@ -262,7 +280,7 @@ export default({
   },
   watch: {
     'group.mode'(val) {
-      this.paid =  (val == 'paid');
+    	this.paid = (val == 'paid' ? this.paid = true : false)
     }
   },
   methods: {
@@ -315,6 +333,7 @@ export default({
         	latitude,
         	longitude,
         	audit,
+        	allow_feed
 	  	} = data;
 	  	let group = this.group;
 
@@ -336,6 +355,8 @@ export default({
 	  	group.latitude = latitude;
 	  	group.longitude = longitude;
 	  	group.audit = audit;
+	  	group.allow_feed = allow_feed;
+	  	this.mode = mode;
 	  });
     },
     setTag(tags) {	

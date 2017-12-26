@@ -64,12 +64,11 @@ class GroupController
         DB::beginTransaction();
 
         try {
-
             $group = new GroupModel;
             foreach($data as $key => $value) {
                 $group->{$key} = $value;
             }
-          
+              
             // 地理位置
             if (isset($data['location'])) {
                 $group->geo_hash = Geohash::encode($data['latitude'], $data['longitude']);
@@ -77,42 +76,43 @@ class GroupController
 
             // 发帖权限
             $permissions = (int) $request->input('permissions');
+
             if (in_array($permissions, [1, 2, 3])) {
                 $default = 'member,administrator,founder';
                 if ($permissions == 2) {
-                  $default = 'administrator,founder';
+                    $default = 'administrator,founder';
                 }
-            if ($permissions == 1) {
-                $default = 'founder';
+                if ($permissions == 1) {
+                    $default = 'founder';
+                }
+                $group->permissions = $default;
             }
-            $group->permissions = $default;
-        }
 
-        $group->save();
+            $group->save();
 
-        $group->tags()->sync(explode(',', $request->input('tags')));
+            $group->tags()->sync(explode(',', $request->input('tags')));
 
-        if ((int) $request->input('recommend')) {
-            RecommendModel::create([
-                'group_id' => $group->id, 
-                'sort_by' => 1000, 
-                'referrer' => $request->user()->id
-            ]);
-        }
+            if ((int) $request->input('recommend')) {
+                RecommendModel::create([
+                    'group_id' => $group->id, 
+                    'sort_by' => 1000, 
+                    'referrer' => $request->user()->id
+                ]);
+            }
 
-        $member = new MemberModel();
-        $member->group_id = $group->id;
-        $member->user_id = $data['user_id'];
-        $member->audit = 1;
-        $member->role = 'founder';
-        $member->save();
+            $member = new MemberModel();
+            $member->group_id = $group->id;
+            $member->user_id = $data['user_id'];
+            $member->audit = 1;
+            $member->role = 'founder';
+            $member->save();
 
-        $group->increment('users_count');
+            $group->increment('users_count');
 
-        $avatar = $request->file('avatar');
-        $group->storeAvatar($avatar);
+            $avatar = $request->file('avatar');
+            $group->storeAvatar($avatar);
 
-        DB::commit();
+            DB::commit();
             return response()->json(['message' => '添加成功'], 201);
         } catch (\Exception $e) {
             DB::rollback();
@@ -133,7 +133,8 @@ class GroupController
             'notice',
             'location',
             'latitude',
-            'longitude'
+            'longitude',
+            'allow_feed'
         );
     }
 

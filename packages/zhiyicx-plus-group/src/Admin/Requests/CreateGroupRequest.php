@@ -36,7 +36,7 @@ class CreateGroupRequest extends FormRequest
             'longitude' => 'required_with:location,latitude|string',
             'latitude' => 'required_with:location,longitude|string',
             'mode' => 'required|in:public,private,paid',
-            'money' => 'required_if:mode,paid|integer',
+            'money' => 'required_if:mode,==,paid|integer',
             'summary' => 'required|max:255',
             'notice' => 'required|max:2000',
         ];
@@ -65,7 +65,7 @@ class CreateGroupRequest extends FormRequest
             'summary.required' => '请填写圈子简介',
             'summary.max' => '简介最大长度255字符',
             'notice.required' => '请填写圈子公告',
-            'notice.max' => '公告最大长度2000字符'
+            'notice.max' => '公告最大长度2000字符',
         ];
     }
 }
