@@ -220,9 +220,6 @@ class PostController
     {
         $data = $request->only('title', 'body', 'summary');
 
-        if (! isset($data['summary']) || ! $data['summary']) {
-            $data['summary'] = $data['summary'] ?? str_repeat('[图片]', count(array_filter($request->input('images' , []))));
-        }
         $data = array_merge($data, ['user_id' => $request->user()->id, 'group_id' => $group->id]);
 
         return $data;
