@@ -22,7 +22,7 @@ class CreateWalletOrdersTable extends Migration
             $table->text('body')->nullable()->default(null)->comment('详情');
             $table->tinyInteger('type', 1)->comment('1：入账、-1：支出');
             $table->integer('amount')->unsigned()->comment('订单金额');
-            $table->tinyInteger('state', 1)->nullable()->default(0)->comment('订单状态，0: 等待，1：成功，-1: 失败')
+            $table->tinyInteger('state', 1)->nullable()->default(0)->comment('订单状态，0: 等待，1：成功，-1: 失败');
             $table->timestamps();
         });
     }
