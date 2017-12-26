@@ -117,7 +117,7 @@ class PostController
      * @param Request $request
      * @param $group
      */
-    public function store(CreateGroupPostRequest $request, Group $group)
+    public function store(CreateGroupPostRequest $request, Group $group, PostRepository $repository)
     {
         $user = $request->user();
 
@@ -158,7 +158,7 @@ class PostController
             $this->syncPostToFeed($request, $group, $fileWiths);
 
             DB::commit();
-            return response()->json(['message' => '操作成功', 'post' => $post], 201);
+            return response()->json(['message' => '操作成功', 'post' => $repository->formatCommonDetail($user, $post)], 201);
         } catch (\Exception $e) {
 
             DB::rollback();
@@ -173,7 +173,7 @@ class PostController
      * @param Group $group
      * @param Post $post
      */
-    public function update(CreateGroupPostRequest $request, Group $group, Post $post)
+    public function update(CreateGroupPostRequest $request, Group $group, Post $post, PostRepository $repository)
     {
         $user = $request->user();
 
@@ -200,7 +200,7 @@ class PostController
             $this->syncPostToFeed($request, $group, $fileWiths);
 
             DB::commit();
-            return response()->json(['message' => '操作成功', 'post' => $post], 201);
+            return response()->json(['message' => '操作成功', 'post' => $repository->formatCommonDetail($user, $post)], 201);
         } catch (\Exception $e) {
 
             DB::rollback();
