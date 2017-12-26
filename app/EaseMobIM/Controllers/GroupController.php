@@ -267,13 +267,8 @@ class GroupController extends EaseMobController
 
             foreach ($groupCon->data as $key => &$group) {
                 $affiliations = collect($group->affiliations);
-                $owner = $affiliations->pluck('owner')->filter(function ($item) {
-                    return $item;
-                });
-                $members = $affiliations->pluck('member')->filter(function ($item) {
-                    return $item;
-                });
-
+                $owner = $affiliations->pluck('owner')->filter();
+                $members = $affiliations->pluck('member')->filter();
                 $group->affiliations = $this->getUser($members, $owner);
             }
 
