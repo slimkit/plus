@@ -126,7 +126,7 @@ function filterUrlStringLength(string $data, int $length = 0): string
 
 function getSubByKey($pArray, $pKey = '', $pCondition = '')
 {
-    $result = array();
+    $result = [];
     if (is_array($pArray)) {
         foreach ($pArray as $temp_array) {
             if (is_object($temp_array)) {

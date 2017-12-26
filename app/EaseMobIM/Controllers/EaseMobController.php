@@ -362,7 +362,7 @@ class EaseMobController
      * @return bool
      * @author ZsyD<1251992018@qq.com>
      */
-    public function sendCmd(string $content = '', Array $target = [], string $from = 'admin', string $target_type = 'chatgroups',  Array $ext = [])
+    public function sendCmd(string $content = '', array $target = [], string $from = 'admin', string $target_type = 'chatgroups', array $ext = [])
     {
         $url = $this->url.'messages';
         $data['headers'] = [
@@ -382,7 +382,6 @@ class EaseMobController
         $result = $Client->request('get', $url, $data);
 
         if ($result->getStatusCode() != 200) {
-
             return false;
         }
 
@@ -392,8 +391,8 @@ class EaseMobController
     public function getMessage()
     {
         $callback = function () {
-            $date = (int)date('YmdH');
-            $time = (string)($date % 100 == 0 ? ($date - 77) : ($date - 1));
+            $date = (int) date('YmdH');
+            $time = (string) ($date % 100 == 0 ? ($date - 77) : ($date - 1));
             $time = '2017122613';
             $url = $this->url.'chatmessages/'.$time;
 

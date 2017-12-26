@@ -1,13 +1,29 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Plus\EaseMobIm;
 
 use GuzzleHttp\Client;
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\FileWith;
-use Zhiyi\Plus\Models\ImGroup;
-use function \Zhiyi\Plus\getSubByKey;
 use Zhiyi\Plus\Models\User;
+use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\ImGroup;
+use Zhiyi\Plus\Models\FileWith;
+use function Zhiyi\Plus\getSubByKey;
 
 class GroupController extends EaseMobController
 {
@@ -24,10 +40,10 @@ class GroupController extends EaseMobController
         $callback = function () use ($request, $imGroup) {
             $options['groupname'] = $request->input('groupname');
             $options['desc'] = $request->input('desc');
-            $options['public'] = (boolean) $request->input('public', 1);
+            $options['public'] = (bool) $request->input('public', 1);
             $options['maxusers'] = $request->input('maxusers', 300);
-            $options['members_only'] = (boolean) $request->input('members_only', 0);
-            $options['allowinvites'] = (boolean) $request->input('allowinvites', 1);
+            $options['members_only'] = (bool) $request->input('members_only', 0);
+            $options['allowinvites'] = (bool) $request->input('allowinvites', 1);
             $options['owner'] = (string) $request->user()->id;
             $request->input('members') && $options['members'] = $request->input('members');
 
@@ -77,7 +93,7 @@ class GroupController extends EaseMobController
             $cmd_content = $request->user()->name.'创建了群聊！';
             $isCmd = $this->sendCmd($cmd_content, [$imGroup->im_group_id]);
 
-            if (!$isCmd) {
+            if (! $isCmd) {
                 return response()->json([
                     'message' => ['消息发送失败'],
                     'im_group_id' => $imGroup->im_group_id,
@@ -106,10 +122,10 @@ class GroupController extends EaseMobController
             $im_group_id = $request->input('im_group_id');
             $options['groupname'] = $request->input('groupname');
             $options['desc'] = $request->input('desc');
-            $options['public'] = (boolean) $request->input('public', 1);
+            $options['public'] = (bool) $request->input('public', 1);
             $options['maxusers'] = $request->input('maxusers', 300);
-            $options['members_only'] = (boolean) $request->input('members_only', 0);
-            $options['allowinvites'] = (boolean) $request->input('allowinvites', 1);
+            $options['members_only'] = (bool) $request->input('members_only', 0);
+            $options['allowinvites'] = (bool) $request->input('allowinvites', 1);
 
             $url = $this->url.'chatgroups/'.$im_group_id;
             $data['headers'] = [
@@ -157,7 +173,7 @@ class GroupController extends EaseMobController
             $cmd_content = $request->user()->name.'修改了群信息！';
             $isCmd = $this->sendCmd($cmd_content, [$im_group_id]);
 
-            if (!$isCmd) {
+            if (! $isCmd) {
                 return response()->json([
                     'message' => ['消息发送失败'],
                     'im_group_id' => $im_group_id,
@@ -188,7 +204,7 @@ class GroupController extends EaseMobController
             $group = $imGroup->where('user_id', $request->user()->id)
                 ->where('im_group_id', $im_group_id);
 
-            if (!$group->first()) {
+            if (! $group->first()) {
                 return response()->json([
                     'message' => ['该群组不存在或已被删除'],
                 ])->setStatusCode(400);
@@ -258,7 +274,7 @@ class GroupController extends EaseMobController
 
             return response()->json([
                 'message' => ['获取成功'],
-                'im_groups' => $groupCon->data
+                'im_groups' => $groupCon->data,
             ])->setStatusCode(200);
         };
 
@@ -275,7 +291,7 @@ class GroupController extends EaseMobController
     public function getGroupFace(GroupId $request)
     {
         $groups = $request->input('im_group_id');
-        $groups = !is_array($groups) ? explode(',', $groups) : $groups;
+        $groups = ! is_array($groups) ? explode(',', $groups) : $groups;
         $datas = ImGroup::whereIn('im_group_id', $groups)
             ->select('im_group_id', 'group_face')
             ->get();
@@ -291,7 +307,7 @@ class GroupController extends EaseMobController
      * @return mixed
      * @author ZsyD<1251992018@qq.com>
      */
-    private function getUser(Array $members, Array $owner)
+    private function getUser(array $members, array $owner)
     {
         $users = User::whereIn('id', array_merge($members, $owner))->get();
         $admin = array_values($owner)[0];
@@ -347,7 +363,7 @@ class GroupController extends EaseMobController
             $cmd_content = $request->user()->name.'邀请了'.$names.'加入了群聊。';
             $isCmd = $this->sendCmd($cmd_content, [$im_group_id]);
 
-            if (!$isCmd) {
+            if (! $isCmd) {
                 return response()->json([
                     'message' => ['消息发送失败'],
                     'im_group_id' => $im_group_id,
@@ -400,7 +416,7 @@ class GroupController extends EaseMobController
             $cmd_content = $request->user()->name.'已将'.$names.'移出群聊。';
             $isCmd = $this->sendCmd($cmd_content, [$im_group_id]);
 
-            if (!$isCmd) {
+            if (! $isCmd) {
                 return response()->json([
                     'message' => ['消息发送失败'],
                     'im_group_id' => $im_group_id,

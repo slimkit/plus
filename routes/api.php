@@ -502,7 +502,6 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // 获取聊天记录Test
             $api->get('/group/message', EaseMobIm\EaseMobController::class.'@getMessage');
-
         });
     });
 });
