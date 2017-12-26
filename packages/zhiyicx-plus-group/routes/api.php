@@ -241,6 +241,14 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
                 // 获取帖子评论申请置顶列表
                 // @get /api/v2/plus-group/pinned/comments/:comment/reject
                 $api->patch('/comments/{comment}/reject', API\PinnedController::class.'@rejectComments');
+
+                // 圈主和管理员置顶帖子
+                // @post /api/v2/plus-group/pinned/posts/:post/create
+                $api->post('/posts/{post}/create', API\PinnedController::class.'@postPinnedCreate');
+
+                // 圈主和管理员取消帖子置顶
+                // @patch /api/v2/plus-group/pinned/posts/:post/create
+                $api->patch('/posts/{post}/cancel', API\PinnedController::class.'@postPinnedCancel');
             });
 
             // report routes.

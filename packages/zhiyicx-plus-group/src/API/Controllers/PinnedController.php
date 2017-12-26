@@ -9,6 +9,7 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\PlusGroup\Models\Post as PostModel;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\PlusGroup\Models\Pinned as PinnedModel;
+use Zhiyi\PlusGroup\Models\GroupMember as MemberModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\PlusGroup\Models\GroupIncome as GroupIncomeModel;
 
@@ -498,5 +499,84 @@ class PinnedController extends Controller
         ];
 
         $this->validate($request, $rules, $messages);
+    }
+
+    public function postPinnedCreate(Request $request, PostModel $post, PinnedModel $pinnedModel, Carbon $datetime)
+    {
+        $user = $request->user();
+        
+        $count = MemberModel::whereIn('role', ['founder', 'administrator'])
+        ->where('user_id', $user->id)
+        ->where('disabled', 0)
+        ->count();
+
+        if (! $count) {
+            return response()->json(['message' => '无权限操作'], 403);
+        }
+
+        $day = (int) $request->input('day');
+
+        if ($day <= 0) {
+            return response()->json(['message' => '置顶天数天数填写错误'], 422);
+        }
+
+        if ($post->pinned()->where('user_id', $user->id)->where(function ($query) use ($datetime) {
+            return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
+        })->first()) {
+            return response()->json(['message' => '已经申请过'])->setStatusCode(422);
+        }
+
+        $target_user = $post->group->user;
+
+        $pinnedModel->channel = 'post';
+        $pinnedModel->target = $post->id;
+        $pinnedModel->user_id = $user->id;
+        $pinnedModel->target_user = $target_user->id;
+        $pinnedModel->amount = 0;
+        $pinnedModel->day = $day;
+        $pinnedModel->status = 1;
+        $pinnedModel->expires_at = $datetime->addDay($day)->toDateTimeString();
+
+        $post->getConnection()->transaction(function () use ($user, $pinnedModel, $post) {
+            // 保存置顶请求
+            $pinnedModel->save();
+
+            // 给用户发消息通知
+            $user->sendNotifyMessage(
+                'group:pinned-post', 
+                sprintf('%s,你的帖子《%s》已被系统管理员置顶', $user->name, $post->title), 
+                ['post' => $post, 'user' => $user, 'pinned' => $pinnedModel]
+            );
+        });
+
+        return response()->json(['message' => '置顶成功', 'pinned' => $pinnedModel], 201);
+    }
+
+    public function postPinnedCancel(Request $request, PostModel $post, PinnedModel $pinnedModel, Carbon $datetime)
+    {
+        $user = $post->user;
+
+        $count = MemberModel::whereIn('role', ['founder', 'administrator'])
+        ->where('user_id', $user->id)
+        ->where('disabled', 0)
+        ->count();
+
+        if (! $count) {
+            return response()->json(['message' => '无权限操作'], 403);
+        }
+
+        $pinned = $pinnedModel->where('channel', 'post')
+            ->where('target', $post->id)
+            ->where('expires_at', '>', $datetime)
+            ->first();
+
+        if (! $pinned) {
+            return response()->json(['message' => '置顶不存在或置顶已过期'], 403);
+        }
+
+        $pinned->expires_at = $datetime->toDateTimeString();
+        $pinned->save();
+        
+        return response()->json(['message' => '取消置顶成功', 'pinned' => $pinned], 201);
     }
 }
