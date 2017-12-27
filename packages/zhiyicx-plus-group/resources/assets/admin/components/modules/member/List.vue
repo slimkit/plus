@@ -25,28 +25,30 @@
         <td>{{ item.disabled ? '是' : '否' }}</td>
         <td>{{ item.user.updated_at | localDate }}</td>
         <td>
-          <button class="btn btn-primary btn-sm" v-if="item.role != 'founder'" 
-          @click="handleRoleSetting(item.id, 'founder')">设置圈主</button>
-          
-          <button class="btn btn-primary btn-sm" 
-          v-if="item.role != 'founder' && item.role != 'administrator'"
-           @click="handleRoleSetting(item.id, 'administrator')">设置为管理员</button>
-          
-          <button class="btn btn-primary btn-sm" 
-          v-if="item.role == 'administrator'"
-          @click="handleRoleSetting(item.id, 'member')">撤销管理员</button>
-          
-          <button class="btn btn-primary btn-sm" 
-          v-if="item.role != 'founder' && item.disabled == 0"
-          @click="handleMemberDisabled(item.id, 1)">加入黑名单</button>
-          
-          <button class="btn btn-primary btn-sm" 
-          v-if="item.disabled == 1"
-          @click="handleMemberDisabled(item.id, 0)">解除黑名单</button>
+            <template v-if="item.audit == 1">
+                <button class="btn btn-primary btn-sm" v-if="item.role != 'founder'"
+                        @click="handleRoleSetting(item.id, 'founder')">设置圈主</button>
 
-          <button class="btn btn-danger btn-sm" 
-          v-if="item.role != 'founder' && item.audit==1"
-          @click="handleMemberRemove(item.id)">踢出成员</button>
+                <button class="btn btn-primary btn-sm"
+                        v-if="item.role != 'founder' && item.role != 'administrator'"
+                        @click="handleRoleSetting(item.id, 'administrator')">设置为管理员</button>
+
+                <button class="btn btn-primary btn-sm"
+                        v-if="item.role == 'administrator'"
+                        @click="handleRoleSetting(item.id, 'member')">撤销管理员</button>
+
+                <button class="btn btn-primary btn-sm"
+                        v-if="item.role != 'founder' && item.disabled == 0"
+                        @click="handleMemberDisabled(item.id, 1)">加入黑名单</button>
+
+                <button class="btn btn-primary btn-sm"
+                        v-if="item.disabled == 1"
+                        @click="handleMemberDisabled(item.id, 0)">解除黑名单</button>
+
+                <button class="btn btn-danger btn-sm"
+                        v-if="item.role != 'founder' && item.audit==1"
+                        @click="handleMemberRemove(item.id)">踢出成员</button>
+            </template>
         </td>
     </tr>
   </ui-table>

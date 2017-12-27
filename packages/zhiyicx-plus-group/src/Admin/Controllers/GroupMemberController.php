@@ -57,8 +57,8 @@ class GroupMemberController
             return response()->json(['mssage' => '错误的参数'], 422);
         }
 
-        if ($member->disabled == 1) {
-            return response()->json(['message' => '成员已被拉黑,不能设置职位'], 422);
+        if ($member->audit != 1 || $member->disabled == 1) {
+            return response()->json(['message' => '申请审核未通过或已被拉黑,不能设置职位'], 422);
         }
 
         if ($role == 'administrator'
