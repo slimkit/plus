@@ -217,13 +217,8 @@ class GroupsController
 
         $member = $group->members()->where('user_id', $user->id)->first();
 
-        if (! is_null($member)) {
-            if ($member->audit === 1) {
-                return response()->json(['message' => '已加入该圈子'], 422);
-            }
-            if ($member->audit === 0) {
-                return response()->json(['message' => '正在审核中，请勿重复提交加圈申请'], 422);
-            }
+        if (! is_null($member) && in_array($member->audit, [0, 1])) {
+            return response()->json(['message' => '已加入该圈子或加圈申请正在审核中'], 422);
         }
 
         if ($group->mode == 'paid' && ($user->wallet->balance < $group->money)) {
@@ -249,7 +244,7 @@ class GroupsController
                 $user->wallet()->decrement('balance', $group->money);
             }
 
-            $member = new GroupMemberModel();
+            $member = $member ?? new GroupMemberModel();
             $member->user_id = $user->id;
             $member->audit = in_array($group->mode, ['paid', 'private'])  ? 0 : 1;
             $member->role = 'member';
