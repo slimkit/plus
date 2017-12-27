@@ -515,12 +515,11 @@ class PinnedController extends Controller
         }
 
         $this->validate($request, [
-            'day' => 'required|integer|min:1|max:30',
+            'day' => 'required|integer|min:1',
         ], [
             'day.required' => '置顶天数不能为空',
             'day.integer' => '置顶天数格式错误',
-            'day.min' => '置顶天数范围1-30天',
-            'day.max' => '置顶天数范围1-30天',
+            'day.min' => '置顶天数错误',
         ]);
 
         if ($post->pinned()->where('user_id', $user->id)->where(function ($query) use ($datetime) {

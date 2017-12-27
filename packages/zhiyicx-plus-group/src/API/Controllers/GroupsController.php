@@ -184,7 +184,9 @@ class GroupsController
         }
 
         $tags = collect($request->input('tags'))->map->id;
-        $group->tags()->sync($tags);
+        if ($tags->count()) {
+            $group->tags()->sync($tags);
+        }
 
         $group->load(['user', 'tags', 'category', 'founder' => function ($query) {
             return $query->with('user');
