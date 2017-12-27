@@ -514,11 +514,14 @@ class PinnedController extends Controller
             return response()->json(['message' => '无权限操作'], 403);
         }
 
-        $day = (int) $request->input('day');
-
-        if ($day <= 0) {
-            return response()->json(['message' => '置顶天数天数填写错误'], 422);
-        }
+        $this->validate($request, [
+            'day' => 'required|integer|min:1|max:30',
+        ], [
+            'day.required' => '置顶天数不能为空',
+            'day.integer' => '置顶天数格式错误',
+            'day.min' => '置顶天数范围1-30天',
+            'day.max' => '置顶天数范围1-30天',
+        ]);
 
         if ($post->pinned()->where('user_id', $user->id)->where(function ($query) use ($datetime) {
             return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
@@ -533,9 +536,9 @@ class PinnedController extends Controller
         $pinnedModel->user_id = $user->id;
         $pinnedModel->target_user = $target_user->id;
         $pinnedModel->amount = 0;
-        $pinnedModel->day = $day;
+        $pinnedModel->day = $request->input('day');
         $pinnedModel->status = 1;
-        $pinnedModel->expires_at = $datetime->addDay($day)->toDateTimeString();
+        $pinnedModel->expires_at = $datetime->addDay($request->input('day'))->toDateTimeString();
 
         $post->getConnection()->transaction(function () use ($user, $pinnedModel, $post) {
             // 保存置顶请求
