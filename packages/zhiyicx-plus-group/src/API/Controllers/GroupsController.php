@@ -273,7 +273,7 @@ class GroupsController
                 ->whereIn('role', ['administrator', 'founder'])
                 ->where('audit', 1)
                 ->get()
-                ->map(function ($member) {
+                ->map(function ($member) use($message) {
                     $member->user->sendNotifyMessage(
                         'group:join',
                         $message,
