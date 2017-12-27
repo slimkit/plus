@@ -102,7 +102,7 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
 
                 // Create a group.
                 // @post /api/plus-group/categories/:category/group
-                $api->post('/{category}/groups', API\GroupsController::class.'@store');
+                $api->post('/{category}/groups', API\GroupsController::class.'@store')->middleware('sensitive:name,summary,notice');
             });
 
             // Group auth routes.
@@ -110,7 +110,7 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
 
                 // Update a group;
                 // @post /api/plus-group/groups/:group
-                $api->post('/{group}', API\GroupsController::class.'@update');
+                $api->post('/{group}', API\GroupsController::class.'@update')->middleware('sensitive:name,summary,notice');
 
                 // Join a group.
                 // @put /api/v2/plus-group/groups/:group
@@ -129,7 +129,7 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
 
                 // Send a group post.
                 // @post /api/v2/plus-group/groups/:group/posts
-                $api->post('/{group}/posts', API\PostController::class.'@store');
+                $api->post('/{group}/posts', API\PostController::class.'@store')->middleware('sensitive:title,summary,body');
 
                 // Update a group post.
                 // @put @get /api/v2/plus-group/groups/:group/posts/:post
@@ -177,7 +177,7 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
 
                 // create a comment for a group post.
                 // @post /api/v2/plus-group/group-posts/:post/comments
-                $api->post('/{post}/comments', API\PostCommentController::class.'@store');
+                $api->post('/{post}/comments', API\PostCommentController::class.'@store')->middleware('sensitive:body');;
 
                 // delete a comment for a group post.
                 // @delete /api/v2/plus-group/group-posts/:post/comments/:comment
