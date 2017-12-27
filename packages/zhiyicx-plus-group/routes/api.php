@@ -230,16 +230,16 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
                 // @get /api/v2/plus-group/pinned/comments
                 $api->get('/comments', API\PinnedController::class.'@comments');
 
-                // 获取帖子评论申请置顶列表
-                // @get /api/v2/plus-group/pinned/comments/:comment
+                // 申请评论帖子置顶
+                // @post /api/v2/plus-group/pinned/comments/:comment
                 $api->post('/comments/{comment}', API\PinnedController::class.'@storeComments');
 
-                // 获取帖子评论申请置顶列表
-                // @get /api/v2/plus-group/pinned/comments/:comment/accept
+                // 接收帖子评论置顶
+                // @patch /api/v2/plus-group/pinned/comments/:comment/accept
                 $api->patch('/comments/{comment}/accept', API\PinnedController::class.'@acceptComments');
 
-                // 获取帖子评论申请置顶列表
-                // @get /api/v2/plus-group/pinned/comments/:comment/reject
+                // 拒绝帖子评论置顶
+                // @patch /api/v2/plus-group/pinned/comments/:comment/reject
                 $api->patch('/comments/{comment}/reject', API\PinnedController::class.'@rejectComments');
 
                 // 圈主和管理员置顶帖子
