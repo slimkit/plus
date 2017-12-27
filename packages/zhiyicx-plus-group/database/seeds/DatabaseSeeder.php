@@ -14,6 +14,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // 广告位数据
-        $this->call(AbilitiesSeeder::class);
+        $this->call(AdvertisingSpaceSeeder::class);
     }
 }
