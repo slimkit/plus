@@ -77,6 +77,11 @@ class GroupMemberController
     {
         $user = $request->user();
         
+        if ($member->audit == 0) {
+            
+            return response()->json(['message' => ['待审核成员不能进行该操作']], 403);
+        }
+
         if (! $member->canBeSet($user)) {
             
             return response()->json(['message' => ['权限不足']], 403);
@@ -98,6 +103,11 @@ class GroupMemberController
     public function setManager(Request $request, GroupModel $group, GroupMemberModel $member)
     {
         $user = $request->user();
+
+        if ($member->audit == 0) {
+            
+            return response()->json(['message' => ['待审核成员不能进行该操作']], 403);
+        }
 
         if (! $member->canBeSetManager($user)) {
             
@@ -128,6 +138,11 @@ class GroupMemberController
     {
         $user = $request->user();
 
+        if ($member->audit == 0) {
+            
+            return response()->json(['message' => ['待审核成员不能进行该操作']], 403);
+        }
+
         if ($member->role !== 'administrator') {
             return response()->json(['message' => ['操作错误']], 403);
         }
@@ -155,6 +170,11 @@ class GroupMemberController
     {
         $user = $request->user();
         
+        if ($member->audit == 0) {
+            
+            return response()->json(['message' => ['待审核成员不能进行该操作']], 403);
+        }
+
         if (! $member->canBeSet($user)) {
             
             return response()->json(['message' => ['权限不足']], 403);
@@ -178,7 +198,12 @@ class GroupMemberController
     public function removeBlacklist(Request $request, GroupModel $group, GroupMemberModel $member)
     {
         $user = $request->user();
-        
+
+        if ($member->audit == 0) {
+            
+            return response()->json(['message' => ['待审核成员不能进行该操作']], 403);
+        }
+
         if (! $member->canBeSet($user)) {
             
             return response()->json(['message' => ['权限不足']], 403);
