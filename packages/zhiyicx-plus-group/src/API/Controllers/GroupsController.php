@@ -233,16 +233,16 @@ class GroupsController
         try {
             if ($group->mode == 'paid') {
                 // 扣费账单
-                $caharge = new WalletChargeModel();
-                $caharge->user_id = $user->id;
-                $caharge->channel = 'user';
-                $caharge->action = 0;
-                $caharge->amount = $group->money;
-                $caharge->subject = '加圈扣费';
-                $caharge->body = sprintf('加入《%s》圈子扣费', $group->name);
-                $caharge->status = 1;
-                $caharge->account = $group->founder->user_id;
-                $caharge->save();
+                $charge = new WalletChargeModel();
+                $charge->user_id = $user->id;
+                $charge->channel = 'user';
+                $charge->action = 0;
+                $charge->amount = $group->money;
+                $charge->subject = '加圈扣费';
+                $charge->body = sprintf('加入《%s》圈子扣费', $group->name);
+                $charge->status = 1;
+                $charge->account = $group->founder->user_id;
+                $charge->save();
                 // 申请扣费
                 $user->wallet()->decrement('balance', $group->money);
             }
