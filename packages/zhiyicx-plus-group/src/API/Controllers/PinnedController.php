@@ -135,7 +135,7 @@ class PinnedController extends Controller
     {
         $user = $request->user();
         $pinned = $pinnedModel->where('channel', 'post')->where('target', $post->id)->whereNull('expires_at')->first();
-        if ($user->id != $post->group->user_id || ! $pinned) {
+        if ($user->id != $post->group->founder->user_id || ! $pinned) {
             return response()->json(['message' => ['没有权限操作']], 403);
         }
 
