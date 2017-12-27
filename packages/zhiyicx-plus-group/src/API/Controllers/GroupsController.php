@@ -254,12 +254,14 @@ class GroupsController
             $member->disabled = 0;
             $group->members()->save($member);
 
-            $log = new GroupMemberLogModel();
-            $log->group_id = $group->id;
-            $log->user_id = $user->id;
-            $log->member_id = $member->id;
-            $log->status = 0;
-            $log->save();
+            if (in_array($group->mode, ['paid', 'private'])) {
+                $log = new GroupMemberLogModel();
+                $log->group_id = $group->id;
+                $log->user_id = $user->id;
+                $log->member_id = $member->id;
+                $log->status = 0;
+                $log->save();
+            }
 
             if ($group->mode == 'public') {
                 $group->increment('users_count');
