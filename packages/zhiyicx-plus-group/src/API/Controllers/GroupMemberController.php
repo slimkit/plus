@@ -314,6 +314,7 @@ class GroupMemberController
         $items = $logModel->whereIn('group_id', $groupIds)
         ->orderBy('id', 'desc')
         ->limit($limit)
+        ->where('user_id', '!=', $user->id)
         ->with(['user', 'audit_user', 'member_info', 'group'])
         ->when($after, function ($query) use ($after) {
             return $query->where('id', '<', $after);
