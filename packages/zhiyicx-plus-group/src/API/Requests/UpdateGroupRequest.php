@@ -25,7 +25,8 @@ class UpdateGroupRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = (int) $this->segment(3);
+        $id = (int) $this->segment(5);
+
         return [
             'name' => 'string|unique:groups,name,'.$id,
             'avatar' => 'image|max:2048',
