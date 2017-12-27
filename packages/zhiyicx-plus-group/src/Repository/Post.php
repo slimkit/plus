@@ -135,7 +135,7 @@ class Post
 
         $rewards = $this->model->rewards;
 
-        $this->model->reward_amount = $rewards->sum('amount');
+        $this->model->reward_amount = (int) $rewards->sum('amount');
         $this->model->reward_number = $rewards->count();
 
         $this->model->addHidden('rewards');
