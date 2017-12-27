@@ -40,6 +40,6 @@ class GroupMember extends Model
      */
     public function logs()
     {
-        return $this->hasMany(GroupMemberLog::class, 'id', 'member_id');
+        return $this->hasMany(GroupMemberLog::class, 'member_id', 'id');
     }
 }
