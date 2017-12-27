@@ -261,11 +261,24 @@ class GroupsController
                 $log->member_id = $member->id;
                 $log->status = 0;
                 $log->save();
+
+                $message = sprintf('%s申请加入圈子%s', $user->name, $group->name);
+            } else {
+                $group->increment('users_count');
+
+                $message = sprintf('%s加入了圈子%s', $user->name, $group->name);
             }
 
-            if ($group->mode == 'public') {
-                $group->increment('users_count');
-            }
+            $group->members()
+                ->whereIn('role', ['administrator', 'founder'])
+                ->where('audit', 1)
+                ->get()
+                ->map(function ($member) use ($post) {
+                    $member->user->sendNotifyMessage(
+                        'group:join',
+                        $message,
+                        ['group' => $group, 'user' => $user]);
+                });
 
             DB::commit();
 
