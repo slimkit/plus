@@ -433,8 +433,8 @@ class GroupsController
 
         if ($group->members()->where('user_id', $user_id)->where('role', 'founder')->where('audit', 1)->first()) {
             
-            $group->join_income_count = $group->incomes()->where('type', 1)->sum('amount');
-            $group->pinned_income_count = $group->incomes()->where('type', 2)->sum('amount');
+            $group->join_income_count = (int) $group->incomes()->where('type', 1)->sum('amount');
+            $group->pinned_income_count = (int) $group->incomes()->where('type', 2)->sum('amount');
         }
         $group->joined = $group->members()->where('user_id', $user_id)->where('audit', 1)->first();
 
