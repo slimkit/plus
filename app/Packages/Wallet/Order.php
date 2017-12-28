@@ -137,7 +137,7 @@ class Order
             return true;
         }
 
-        $manager = app(TargetTypeManager::class)
+        $manager = app(TargetTypeManager::class);
         $manager->setOrder($this);
 
         return $manager->handle();
