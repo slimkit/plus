@@ -100,6 +100,8 @@ class PostCommentController
                 $replyUser->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
                 app(Push::class)->push(sprintf('%s回复了你的评论', $user->name), (string) $replyUser->id, ['channel' => 'group:comment-reply']);
             }
+
+            $commentModel->load(['user', 'reply', 'target']);
         });
 
         return response()->json([
