@@ -88,6 +88,19 @@ class Post
     }
 
     /**
+     * 检测帖子置顶状态.
+     *
+     * @return Zhiyi\PlusGroup\Models\Post
+     * @author BS <414606094@qq.com>
+     */
+    public function formatPinned()
+    {
+        $this->model->pinned = $this->model->pinned()->where('expires_at', '>', $this->datetime)->first() ? true : false;
+
+        return $this->model;
+    }
+
+    /**
      * 帖子列表取五条评论，置顶优先.
      *
      * @return Zhiyi\PlusGroup\Models\Post
@@ -190,6 +203,7 @@ class Post
 
         $this->model->group->joined = isset($this->user) ? $this->model->group->members()->where('user_id', $this->user->id)->where('audit', 1)->first() : null;
 
+        $this->formatPinned();
         $this->previewComments();
         $this->formatRelations();
         $this->formatImages();
