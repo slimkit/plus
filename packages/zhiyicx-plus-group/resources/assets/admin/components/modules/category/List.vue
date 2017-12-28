@@ -99,7 +99,6 @@ export default({
      * @return void
      */
     handleChange(id, val, type) {
-      console.log(id, val, type);
       admin.patch(
         `categories/${id}`, { value: val, type: type },
         { validateStatus: status => status === 204 })
