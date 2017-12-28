@@ -1,11 +1,27 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Plus\Packages\Wallet;
 
 use JsonSerializable;
+use Zhiyi\Plus\Models\User as UserModel;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
-use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\NewWallet as WalletModel;
 
 class Wallet implements Arrayable, Jsonable, JsonSerializable
@@ -26,7 +42,7 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
 
     /**
      * Create wallet.
-     
+     *
      * @param int|\Zhiyi\Plus\Models\User $user
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -46,7 +62,7 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
     public function setUser($user)
     {
         $this->user = $this->resolveUser($user);
-        
+
         return $this;
     }
 
@@ -165,7 +181,7 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
     {
         return $this->getWalletModel()->toArray();
     }
-    
+
     /**
      * Convert the model instance to JSON.
      *
