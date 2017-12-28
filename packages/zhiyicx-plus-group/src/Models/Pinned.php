@@ -44,10 +44,6 @@ class Pinned extends Model
      */
     public function comment()
     {
-        if ($this->channel !== 'comment') {
-            return null;
-        }
-
         return $this->hasOne(CommentModel::class, 'id', 'target');
     }
 }
