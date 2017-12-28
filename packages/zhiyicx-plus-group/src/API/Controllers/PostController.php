@@ -133,12 +133,12 @@ class PostController
             return response()->json(['message' => '未加入该圈子,不能进行发帖'], 403);
         }
 
-        if (! in_array($member->role, explode(',', $group->permissions))) {
-            return response()->json(['message' => '没有发帖权限'], 422);
+        if ($member->audit != 1 || $member->disabled == 1) {
+            return response()->json(['message' => '审核未通过或已被拉黑,不能进行发帖']);
         }
 
-        if ($member->disabled === 1) {
-            return response()->json(['message' => '用户被禁用，不能进行发帖'], 403);
+        if (! in_array($member->role, explode(',', $group->permissions))) {
+            return response()->json(['message' => '没有发帖权限'], 422);
         }
 
         $fileWiths = $this->makeFileWith($request);
