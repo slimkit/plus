@@ -54,7 +54,7 @@ class GroupMemberController
         $role = $request->input('role');
 
         if (! $role || !in_array($role, ['member', 'founder', 'administrator'])) {
-            return response()->json(['mssage' => '错误的参数'], 422);
+            return response()->json(['message' => '错误的参数'], 422);
         }
 
         if ($member->audit != 1 || $member->disabled == 1) {
@@ -137,7 +137,7 @@ class GroupMemberController
         $group = $member->group;
 
         if ($member->role == 'founder') {
-            return response()->json(['mssage' => '圈主不能被踢出'], 403);
+            return response()->json(['message' => '圈主不能被踢出'], 403);
         }
         
         $member->group()->decrement('users_count');
@@ -164,10 +164,10 @@ class GroupMemberController
         $disable = $request->input('disable');
 
         if (! in_array($disable, [0, 1])) {
-            return response()->json(['mssage' => '参数错误'], 422);
+            return response()->json(['message' => '参数错误'], 422);
         }
         if ($member->role == 'founder') {
-            return response()->json(['mssage' => '圈主不能被拉黑'], 403);
+            return response()->json(['message' => '圈主不能被拉黑'], 403);
         }
 
         $member->disabled = $disable;

@@ -116,7 +116,7 @@ export default({
         }
       })
       .catch(({ response: { data } })=> {
-        alert(data.message);
+          this.$store.dispatch('alert-open', { type: 'danger', message: data });
       })
     },
     /**

@@ -28,7 +28,7 @@ class CategoryController
     	if ($category->groups()->count()) {
     		return response()->json(['message' => '该栏目下面存在圈子不能进行删除'], 403);
     	}
-    	
+
     	$category->delete();
 
     	return response()->json(null, 204);
@@ -44,11 +44,14 @@ class CategoryController
         }
 
 		if ($type == 'name') {
-    		$exists = Category::where($type, $value)->first();
-    		if (! is_null($exists) && $exists->id !== $category->name) {
+
+            $exists = Category::where($type, $value)->first();
+
+    		if (! is_null($exists) && $exists->id !== $category->id) {
     			return response()->json(['message' => '分类已存在'], 422);
     		}
 		}
+
     	$category->{$type} = $value;
     	$category->save();
 

@@ -215,6 +215,7 @@ class GroupController
     public function delete(GroupModel $group)
     {
         $group->delete();
+
         return response()->json(null, 204);
     }
 
