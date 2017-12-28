@@ -225,7 +225,7 @@ class GroupsController
             return response()->json(['message' => '账户余额不足不能申请加入'], 422);
         }
 
-        DB::beginTransaction();
+        DB::beginTransaction(); 
 
         try {
             if ($group->mode == 'paid') {

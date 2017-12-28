@@ -39,7 +39,7 @@ class GroupMemberController
         ->offset($offset)
         ->get();
 
-        return response()->json($items, 200, ['x-toal' => $query->count()]);
+        return response()->json($items, 200, ['x-total' => $query->count()]);
     }
 
     /**

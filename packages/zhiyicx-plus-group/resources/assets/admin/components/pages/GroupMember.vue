@@ -64,7 +64,7 @@ export default({
 	    buildLocalhost(offset) {
 	      const { query } = this.$route;
 
-	      return { path: `groups/${this.groupId}/members`, query: { offset } };
+	      return { path: `groups/${this.groupId}/members`, query: { ...query, offset } };
 	    },
 	},
 
