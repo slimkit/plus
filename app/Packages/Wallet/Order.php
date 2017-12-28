@@ -42,7 +42,7 @@ class Order
      * @param array $args see static::createOrder method
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function __construct($order = null,)
+    public function __construct($order = null)
     {
         if ($order instanceof WallerOrderModel) {
             $this->setOrderModel($order);
