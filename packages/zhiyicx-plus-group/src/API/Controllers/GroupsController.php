@@ -271,6 +271,8 @@ class GroupsController
                 ->where('audit', 1)
                 ->get()
                 ->map(function ($member) use($message, $group, $user) {
+                    $member->user->unreadCount()->firstOrCreate([])->increment('unread_group_join_count', 1);
+
                     $member->user->sendNotifyMessage(
                         'group:join',
                         $message,

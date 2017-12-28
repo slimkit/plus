@@ -329,6 +329,10 @@ class GroupMemberController
         $after = $request->query('after', 0);
         $group_ids = $request->query('group_ids');
 
+        if ($user->unreadCount !== null) {
+            $user->unreadCount()->update(['unread_group_join_count' => 0]);
+        }
+
         $groupIds =  GroupModel::select('id')->whereHas('members', function($query) use($user) {
             return $query->where('user_id', $user->id)->whereIn('role', ['founder', 'administrator']);
         })
