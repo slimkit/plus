@@ -140,7 +140,9 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
     protected function resolveUser($user): UserModel
     {
         if (is_numeric($user)) {
-            return $this->resolveWallet(UserModel::findOrFail($user));
+            return $this->resolveWallet(
+                $this->userFindOrFail((int) $user)
+            );
         } elseif ($user instanceof UserModel) {
             return $this->resolveWallet($user);
         }
@@ -157,7 +159,7 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
      */
     protected function resolveWallet(UserModel $user): UserModel
     {
-        $this->wallet = WalletModel::find($user->id);
+        $this->wallet = $this->walletFind($user->id);
 
         if (! $this->wallet) {
             $this->wallet = new WalletModel();
@@ -165,7 +167,6 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
             $this->wallet->balance = 0;
             $this->wallet->total_income = 0;
             $this->wallet->total_expenses = 0;
-            $this->wallet->save();
         }
 
         return $user;
@@ -221,5 +222,29 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
     public function __toString()
     {
         return $this->toJson();
+    }
+
+    /**
+     * Find user or fail.
+     *
+     * @param int $user
+     * @return \Zhiyi\Plus\Models\User
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function userFindOrFail(int $user): UserModel
+    {
+        return UserModel::findOrFail($user);
+    }
+
+    /**
+     * Find wallet.
+     *
+     * @param int $user
+     * @return Zhiyi\Plus\Models\NewWallet
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function walletFind(int $user)
+    {
+        return WalletModel::find($user);
     }
 }
