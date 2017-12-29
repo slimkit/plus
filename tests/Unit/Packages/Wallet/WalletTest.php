@@ -219,6 +219,27 @@ class WalletTest extends TestCase
 
         $this->assertArraySubset($array, $wallet->toArray());
     }
+
+    /**
+     * Test jsonSerialize method.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function testJsonSerialize()
+    {
+        $array = ['test' => true];
+
+        // Create a Wallet::class mock.
+        $wallet = $this->getMockBuilder(Wallet::class)
+                       ->setMethods(['toArray'])
+                       ->getMock();
+        $wallet->expects($this->exactly(1))
+               ->method('toArray')
+               ->willReturn($array);
+
+        $this->assertArraySubset($array, $wallet->jsonSerialize());
+    }
 }
 
 class TestWalletSetUser extends Wallet
