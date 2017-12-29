@@ -301,7 +301,10 @@ class GroupsController
      */
     public function exitGroup(Request $request, GroupModel $group)
     {
-        $member = $group->members()->where('user_id', $request->user()->id)->first();
+
+        $user = $request->user();
+
+        $member = $group->members()->where('user_id',$user->id)->first();
 
         if (is_null($member) || $member->audit !== 1) {
             return response()->json(['message' => '还未加入圈子或审核未通过'], 403);
@@ -313,6 +316,12 @@ class GroupsController
 
         $group->decrement('users_count', 1);
         $member->delete();
+
+        $group->founder->user->sendNotifyMessage(
+            'group:exit',
+            sprintf('成员"%s"，已退出"%s"圈子', $user->name, $group->name),
+            ['group' => $group, 'user' => $user]
+        );
 
         return response()->json(null, 204);
     }
@@ -428,6 +437,25 @@ class GroupsController
     public function show(Request $request, GroupModel $group)
     {
         $user_id = $request->user('api')->id ?? 0;
+
+        $exist = in_array($group->mode, ['paid', 'private']);
+
+        // 圈子被关闭或审核被驳回，无法访问
+        if (in_array($group->audit, [2, 3])) {
+            return response()->json(['message' => '圈子审核被驳回或已关闭无法访问'], 403);
+        }
+
+        // 私密和收费圈子游客，无法访问
+        if ($exist && !$user_id) {
+            return response()->json(['message' => '游客无法访问私密圈和收费圈子'], 403);
+        }
+
+        // 私密和收费圈只有成员才能访问
+        if ($exist && $user_id
+            && !$group->members()->where('user_id', $user_id)->where('audit', 1)->count()) {
+            return response()->json(['message' => '未加入该该圈']);
+        }
+
         $group->load(['user', 'tags', 'category', 'founder' => function ($query) {
             return $query->with('user');
         }]);
@@ -437,6 +465,7 @@ class GroupsController
             $group->join_income_count = (int) $group->incomes()->where('type', 1)->sum('amount');
             $group->pinned_income_count = (int) $group->incomes()->where('type', 2)->sum('amount');
         }
+
         $group->joined = $group->members()->where('user_id', $user_id)->where('audit', 1)->first();
 
         return response()->json($group, 200);
