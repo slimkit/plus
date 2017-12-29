@@ -4,6 +4,7 @@ namespace Zhiyi\PlusGroup\API\Controllers;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Services\Push;
+use Zhiyi\PlusGroup\Models\GroupMember;
 use Zhiyi\PlusGroup\Models\Post as GroupPostModel;
 
 class PostLikeController
@@ -60,9 +61,13 @@ class PostLikeController
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function store(Request $request, GroupPostModel $post)
+    public function store(Request $request, GroupPostModel $post, GroupMember $member)
     {
         $user = $request->user();
+
+        if (! $member->isNormal($post->id, $user->id)) {
+            return response()->json(['message' => '未加入该圈子或已被拉黑'], 403);
+        }
 
         if ($post->liked($user)) {
             return response()->json(['message' => ['已经赞过，请勿重复操作']], 422);

@@ -42,4 +42,20 @@ class GroupMember extends Model
     {
         return $this->hasMany(GroupMemberLog::class, 'member_id', 'id');
     }
+
+    /**
+     * 是否是正常成员.
+     *
+     * @return mixed
+     */
+    public function  isNormal(int $groupId, int $userId)
+    {
+        $count = self::where('audit', 1)
+            ->where('group_id', $groupId)
+            ->where('user_id', $userId)
+            ->where('disabled', 0)
+            ->count();
+
+        return boolval($count);
+    }
 }

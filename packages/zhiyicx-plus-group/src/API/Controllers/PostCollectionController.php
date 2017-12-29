@@ -3,6 +3,7 @@
 namespace Zhiyi\PlusGroup\API\Controllers;
 
 use Illuminate\Http\Request;
+use Zhiyi\PlusGroup\Models\GroupMember;
 use Zhiyi\PlusGroup\Models\Post;
 
 class PostCollectionController
@@ -11,9 +12,13 @@ class PostCollectionController
      * 收藏帖子.
      *  
      */
-    public function store(Request $request, Post $post)
+    public function store(Request $request, Post $post, GroupMember $member)
     {
-        $user = $request->user()->id;
+        $user = $request->user();
+
+        if (! $member->isNormal($post->group_id, $user->id)) {
+           return response()->json(['message' => '未加入该圈子或已被拉黑'], 403);
+        }
 
         if ($post->collected($user)) {
             return response()->json(['message' => '已经收藏过'], 422);
