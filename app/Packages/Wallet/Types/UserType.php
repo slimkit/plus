@@ -68,7 +68,7 @@ class UserType extends Type
      * @return \Zhiyi\Plus\Packages\Wallet\Order
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function createOrder(int $owner, int $target, int $amount): Order
+    public function createOrder(int $owner, int $target, int $amount): Order
     {
         return new Order($this->createOrderModel($owner, $target, $amount));
     }
@@ -82,7 +82,7 @@ class UserType extends Type
      * @return \Ziyi\Plus\Models\WalletOrder
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function createOrderModel(int $owner, int $target, int $amount): WalletOrderModel
+    public function createOrderModel(int $owner, int $target, int $amount): WalletOrderModel
     {
         $order = new WalletOrderModel();
         $order->owner_id = $owner;
