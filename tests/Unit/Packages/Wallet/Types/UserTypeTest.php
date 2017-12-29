@@ -21,6 +21,8 @@ namespace Zhiyi\Plus\Tests\Unit\Packages\Wallet\Types;
 use Zhiyi\Plus\Tests\TestCase;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Packages\Wallet\Types\UserType;
+use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
+use Zhiyi\Plus\Packages\Wallet\TargetTypes\UserTarget;
 
 class UserTypeTest extends TestCase
 {
@@ -58,5 +60,37 @@ class UserTypeTest extends TestCase
                  ->will($this->returnValue($order));
 
         $this->assertTrue($userType->transfer($owner, $target, $amount));
+    }
+
+    /**
+     * Test createOrder method.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function testCreateOrder()
+    {
+        $model = new WalletOrderModel();
+        $model->owner_id = 1;
+        $model->target_type = Order::TARGET_TYPE_USER;
+        $model->target_id = 2;
+        $model->title = UserTarget::ORDER_TITLE;
+        $model->type = Order::TYPE_EXPENSES;
+        $model->amount = 100;
+        $model->state = Order::STATE_WAIT;
+
+        // Create a UserType::class mock.
+        $userType = $this->getMockBuilder(UserType::class)
+                         ->setMethods(['createOrderModel'])
+                         ->getMock();
+
+        // Set UserType::createOrderModel return.
+        $userType->expects($this->once())
+                 ->method('createOrderModel')
+                 ->with($this->equalTo($model->owner_id), $this->equalTo($model->target_id), $this->equalTo($model->amount))
+                 ->willReturn($model);
+
+        $result = $userType->createOrder($model->owner_id, $model->target_id, $model->amount);
+        $this->assertInstanceOf(Order::class, $result);
     }
 }
