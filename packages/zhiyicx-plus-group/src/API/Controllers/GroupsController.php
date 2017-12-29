@@ -325,6 +325,8 @@ class GroupsController
      */
     public function groups(Request $request)
     {
+       $userId = $request->user('api')->id ?? 0;
+
        $keyword = $request->get('keyword');
        $limit = (int) $request->query('limit', 15);
        $offset = (int) $request->get('offset', 0);
@@ -337,6 +339,15 @@ class GroupsController
        })
        ->when($categoryId, function ($query) use ($categoryId) {
            return $query->where('category_id', $categoryId);
+       })
+       ->when($userId, function ($query) use ($userId) {
+           return $query->whereHas('members', function ($query) use ($userId) {
+               return $query->where('audit', 1)->where('user_id', $userId)
+                   ->where('disabled', 0)
+                   ->orWhereIn('mode', ['paid', 'public']);
+           });
+       }, function ($query) {
+           return $query->whereIn('mode', ['paid', 'public']);
        })
        ->offset($offset)
        ->limit($limit)
