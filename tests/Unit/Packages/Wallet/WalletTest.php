@@ -119,6 +119,37 @@ class WalletTest extends TestCase
         $this->assertSame($amount, $wallet->getWalletModel()->balance);
         $this->assertSame($amount, $wallet->getWalletModel()->total_income);
     }
+
+    /**
+     * Test decrement method.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function testDecrement()
+    {
+        // Create a wallet model mock.
+        $model = $this->getMockBuilder(WalletModel::class)
+                      ->setMethods(['save'])
+                      ->getMock();
+        $model->expects($this->once())
+              ->method('save')
+              ->willReturn($model);
+
+        // Create a Wallet mock.
+        $wallet = $this->getMockBuilder(Wallet::class)
+                       ->setMethods(['getWalletModel'])
+                       ->getMock();
+        $wallet->expects($this->exactly(3))
+               ->method('getWalletModel')
+               ->willReturn($model);
+
+        $amount = 100;
+        $wallet->decrement($amount);
+
+        $this->assertSame(-$amount, $wallet->getWalletModel()->balance);
+        $this->assertSame($amount, $wallet->getWalletModel()->total_expenses);
+    }
 }
 
 class TestWalletSetUser extends Wallet
