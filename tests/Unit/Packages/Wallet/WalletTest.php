@@ -167,6 +167,29 @@ class WalletTest extends TestCase
         $this->assertSame(-$amount, $wallet->getWalletModel()->balance);
         $this->assertSame($amount, $wallet->getWalletModel()->total_expenses);
     }
+
+    /**
+     * Test enough method.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function testEnough()
+    {
+        $model = new WalletModel();
+        $model->balance = 100;
+
+        // Create a Wallet::class mock.
+        $wallet = $this->getMockBuilder(Wallet::class)
+                       ->setMethods(['getWalletModel'])
+                       ->getMock();
+        $wallet->expects($this->exactly(2))
+               ->method('getWalletModel')
+               ->willReturn($model);
+
+        $this->assertTrue($wallet->enough(100));
+        $this->assertFalse($wallet->enough(200));
+    }
 }
 
 class TestWalletSetUser extends Wallet
