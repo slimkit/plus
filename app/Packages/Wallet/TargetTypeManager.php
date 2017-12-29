@@ -44,9 +44,15 @@ class TargetTypeManager extends Manager
      */
     public function getDefaultDriver()
     {
-        return $this->order->target_type;
+        return $this->order->getOrderModel()->target_type;
     }
 
+    /**
+     * Create user target type driver.
+     *
+     * @return \Zhiyi\Plus\Packages\TargetTypes\Target
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     protected function createUserDriver(): Target
     {
         $driver = $this->app->make(TargetTypes\UserTarget::class);
