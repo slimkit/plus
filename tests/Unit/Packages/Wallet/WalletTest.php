@@ -190,6 +190,35 @@ class WalletTest extends TestCase
         $this->assertTrue($wallet->enough(100));
         $this->assertFalse($wallet->enough(200));
     }
+
+    /**
+     * Test toArray method.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function testToArray()
+    {
+        $array = ['test' => true];
+
+        // Create a WalletModel::class mock.
+        $model = $this->getMockBuilder(WalletModel::class)
+                      ->setMethods(['toArray'])
+                      ->getMock();
+        $model->expects($this->exactly(1))
+              ->method('toArray')
+              ->willReturn($array);
+
+        // Create a Wallet::class mock.
+        $wallet = $this->getMockBuilder(Wallet::class)
+                       ->setMethods(['getWalletModel'])
+                       ->getMock();
+        $wallet->expects($this->exactly(1))
+               ->method('getWalletModel')
+               ->willReturn($model);
+
+        $this->assertArraySubset($array, $wallet->toArray());
+    }
 }
 
 class TestWalletSetUser extends Wallet
