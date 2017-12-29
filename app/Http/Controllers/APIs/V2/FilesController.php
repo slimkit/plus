@@ -175,18 +175,12 @@ class FilesController extends Controller
      */
     protected function resolveFileWith(FileWithModel $fileWith, UserModel $user, FileModel $file): FileWithModel
     {
-        return $fileWith->where('file_id', $file->id)
-            ->where('user_id', $user->id)
-            ->where('channel', null)
-            ->where('raw', null)
-            ->firstOr(function () use ($user, $fileWith, $file) {
-                $fileWith->file_id = $file->id;
-                $fileWith->channel = null;
-                $fileWith->raw = null;
-                $fileWith->size = ($size = sprintf('%sx%s', $file->width, $file->height)) === 'x' ? null : $size;
-                $user->files()->save($fileWith);
+        $fileWith->file_id = $file->id;
+        $fileWith->channel = null;
+        $fileWith->raw = null;
+        $fileWith->size = ($size = sprintf('%sx%s', $file->width, $file->height)) === 'x' ? null : $size;
+        $user->files()->save($fileWith);
 
-                return $fileWith;
-            });
+        return $fileWith;
     }
 }

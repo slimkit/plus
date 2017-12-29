@@ -45,7 +45,7 @@ class EaseMobController
     // 环信是否开启
     protected $open = false;
 
-    private function getConfig($callback)
+    protected function getConfig($callback)
     {
         $this->open = config('easemob.open');
         $this->client_id = config('easemob.client_id');
@@ -158,7 +158,9 @@ class EaseMobController
                 'password' => $this->getImPwdHash($request->user_id),
             ];
             $data['body'] = json_encode($options);
-            $data['headers'] = [$this->getToken()];
+            $data['headers'] = [
+                'Authorization' => $this->getToken(),
+            ];
             $data['http_errors'] = false;
             $Client = new Client();
             $result = $Client->request('post', $url, $data);
@@ -344,6 +346,79 @@ class EaseMobController
             }
 
             return response()->json([])->setStatusCode(201);
+        };
+
+        return $this->getConfig($callback);
+    }
+
+    /**
+     * 发送透传消息 [群组相关时需要].
+     *
+     * @param string $content       消息内容
+     * @param array  $target        消息发送对象
+     * @param string $from          消息发送者
+     * @param string $target_type   users 给用户发消息。chatgroups: 给群发消息，chatrooms: 给聊天室发消息
+     * @param array  $ext           扩展信息
+     * @return bool
+     * @author ZsyD<1251992018@qq.com>
+     */
+    public function sendCmd(string $content = '', array $target = [], string $from = 'admin', string $target_type = 'chatgroups', array $ext = [])
+    {
+        $url = $this->url.'messages';
+        $data['headers'] = [
+            'Authorization' => $this->getToken(),
+        ];
+        $data['http_errors'] = false;
+        $data['target_type'] = $target_type;
+        $data['target'] = $target;
+        $data['msg'] = [
+            'type' => 'cmd',
+            'msg' => $content,
+        ];
+        $data['from'] = $from;
+        $data['ext'] = $ext;
+
+        $Client = new Client();
+        $result = $Client->request('get', $url, $data);
+
+        if ($result->getStatusCode() != 200) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function getMessage()
+    {
+        $callback = function () {
+            $date = (int) date('YmdH');
+            $time = (string) ($date % 100 == 0 ? ($date - 77) : ($date - 1));
+            $time = '2017122613';
+            $url = $this->url.'chatmessages/'.$time;
+
+            $data['headers'] = [
+                'Authorization' => $this->getToken(),
+            ];
+            $data['http_errors'] = false;
+
+            $Client = new Client();
+            $result = $Client->request('get', $url, $data);
+
+            if ($result->getStatusCode() != 200) {
+                $error = $result->getBody()->getContents();
+
+                return response()->json([
+                    'message' => [
+                        json_decode($error)->error_description,
+                    ],
+                ])->setStatusCode(500);
+            }
+            $url = json_decode($result->getBody()->getContents())->data[0]->url;
+
+            return response()->json([
+                'message' => ['获取成功'],
+                'url' => $url,
+            ])->setStatusCode(500);
         };
 
         return $this->getConfig($callback);

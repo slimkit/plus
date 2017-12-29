@@ -478,6 +478,30 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // 获取环信用户密码
             $api->get('/password', EaseMobIm\EaseMobController::class.'@getPassword');
+
+            // 创建群组
+            $api->post('/group', EaseMobIm\GroupController::class.'@store');
+
+            // 修改群组信息
+            $api->patch('/group', EaseMobIm\GroupController::class.'@update');
+
+            // 删除群组
+            $api->delete('/group', EaseMobIm\GroupController::class.'@delete');
+
+            // 获取指定群组信息
+            $api->get('/group', EaseMobIm\GroupController::class.'@getGroup');
+
+            // 获取群头像
+            $api->get('/group/face', EaseMobIm\GroupController::class.'@getGroupFace');
+
+            // 添加群成员
+            $api->post('/group/member', EaseMobIm\GroupController::class.'@addGroupMembers');
+
+            // 移除群成员
+            $api->delete('/group/member', EaseMobIm\GroupController::class.'@removeGroupMembers');
+
+            // 获取聊天记录Test
+            $api->get('/group/message', EaseMobIm\EaseMobController::class.'@getMessage');
         });
     });
 });

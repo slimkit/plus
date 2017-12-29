@@ -16,33 +16,16 @@
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Observers;
+namespace Zhiyi\Plus\Models;
 
-use Zhiyi\Plus\Models\Comment;
+use Illuminate\Database\Eloquent\Model;
 
-class CommentObserver
+class ImGroup extends Model
 {
-    /**
-     * The Comment created observer.
-     *
-     * @param \Zhiyi\Plus\Models\Comment $comment
-     * @return void
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function created(Comment $comment)
-    {
-        $comment->user->extra()->firstOrCreate([])->increment('comments_count', 1);
-    }
+    public $table = 'im_group';
 
-    /**
-     * The comment deleted observer.
-     *
-     * @param \Zhiyi\Plus\Models\Comment $comment
-     * @return void
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function deleted(Comment $comment)
+    public function owner()
     {
-        $comment->user->extra()->decrement('comments_count', 1);
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 }

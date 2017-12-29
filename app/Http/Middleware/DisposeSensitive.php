@@ -34,7 +34,9 @@ class DisposeSensitive
     {
         $map = [];
         foreach ($inputs as $input) {
-            $map[$input] = $request->$input;
+            if ($request->has($input)) {
+                $map[$input] = $request->$input;
+            }
         }
 
         $warnings = SensitiveModel::where('type', 'warning')->get();
