@@ -152,9 +152,20 @@ class Order
             return true;
         }
 
-        $manager = app(TargetTypeManager::class);
+        $manager = $this->getTargetTypeManager();
         $manager->setOrder($this);
 
         return $manager->handle();
+    }
+
+    /**
+     * Get TargetTypeManager instance.
+     *
+     * @return \Zhiyi\Plus\Packages\Wallet\TargetTypeManager
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function getTargetTypeManager(): TargetTypeManager
+    {
+        return app(TargetTypeManager::class);
     }
 }
