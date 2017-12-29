@@ -21,9 +21,24 @@ namespace Zhiyi\Plus\Tests\Unit\Packages\Wallet;
 use Zhiyi\Plus\Tests\TestCase;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;
+use Zhiyi\Plus\Packages\Wallet\Types\UserType;
 
 class TypeManagerTest extends TestCase
 {
+    protected $typeManager;
+
+    /**
+     * Setup the test environment.
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->typeManager = $this->app->make(TypeManager::class);
+    }
+
     /**
      * Test get default driver return.
      *
@@ -32,8 +47,20 @@ class TypeManagerTest extends TestCase
      */
     public function testGetDefaultDriver()
     {
-        $typeManager = $this->app->make(TypeManager::class);
-        $defaultDriverString = $typeManager->getDefaultDriver();
+        $defaultDriverString = $this->typeManager->getDefaultDriver();
         $this->assertSame(Order::TARGET_TYPE_USER, $defaultDriverString);
+    }
+
+    /**
+     * Test Create user driver.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function testCreateUserDriver()
+    {
+        $userType = $this->typeManager->driver(Order::TARGET_TYPE_USER);
+
+        $this->assertInstanceOf(UserType::class, $userType);
     }
 }
