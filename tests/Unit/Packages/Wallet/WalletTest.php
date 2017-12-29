@@ -18,13 +18,30 @@
 
 namespace Zhiyi\Plus\Tests\Unit\Packages\Wallet;
 
+use JsonSerializable;
 use Zhiyi\Plus\Tests\TestCase;
 use Zhiyi\Plus\Packages\Wallet\Wallet;
 use Zhiyi\Plus\Models\User as UserModel;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\Arrayable;
 use Zhiyi\Plus\Models\NewWallet as WalletModel;
 
 class WalletTest extends TestCase
 {
+    /**
+     * Test Wallet::class implements.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function testClassImplements()
+    {
+        $wallet = new Wallet();
+        $this->assertInstanceOf(Arrayable::class, $wallet);
+        $this->assertInstanceOf(Jsonable::class, $wallet);
+        $this->assertInstanceOf(JsonSerializable::class, $wallet);
+    }
+
     /**
      * Test setUser method.
      *
