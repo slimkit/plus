@@ -74,7 +74,7 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
      */
     public function getWalletModel(): WalletModel
     {
-        if ($this->wallet instanceof WalletModel) {
+        if (! $this->wallet instanceof WalletModel) {
             throw new \Exception('没有设置钱包用户');
         }
 
