@@ -140,12 +140,12 @@ class Wallet implements Arrayable, Jsonable, JsonSerializable
     protected function resolveUser($user): UserModel
     {
         if (is_numeric($user)) {
-            return $this->resolveWallet(UserModel::find($user));
+            return $this->resolveWallet(UserModel::findOrFail($user));
         } elseif ($user instanceof UserModel) {
             return $this->resolveWallet($user);
         }
 
-        throw new \Exception('传递的用户不存在');
+        throw new \Exception('传递的不是一个用户');
     }
 
     /**
