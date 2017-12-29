@@ -56,8 +56,8 @@ class TargetTypeManager extends Manager
     protected function createUserDriver(): Target
     {
         $driver = $this->app->make(TargetTypes\UserTarget::class);
-        $dirver->setOrder($this->order);
+        $driver->setOrder($this->order);
 
-        return $dirver;
+        return $driver;
     }
 }
