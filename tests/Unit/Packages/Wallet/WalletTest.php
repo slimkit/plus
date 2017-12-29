@@ -271,6 +271,26 @@ class WalletTest extends TestCase
         // Test exception
         $wallet->toJson();
     }
+
+    /**
+     * Test __toString method.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function test__toString()
+    {
+        $text = 'ThinkSNS Plus';
+        // Create a Wallet::class mock.
+        $wallet = $this->getMockBuilder(Wallet::class)
+                       ->setMethods(['toJson'])
+                       ->getMock();
+        $wallet->expects($this->exactly(1))
+               ->method('toJson')
+               ->willReturn($text);
+
+        $this->assertSame($text, (string) $wallet);
+    }
 }
 
 class TestWalletSetUser extends Wallet
