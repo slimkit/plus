@@ -21,6 +21,7 @@ namespace Zhiyi\Plus\Providers;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use function Zhiyi\Plus\validateUsername;
+use Zhiyi\Plus\Packages\Wallet\TypeManager;
 use function Zhiyi\Plus\validateChinaPhoneNumber;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
@@ -48,6 +49,10 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton('cdn', function ($app) {
             return new \Zhiyi\Plus\Cdn\UrlManager($app);
+        });
+
+        $this->app->singleton(TypeManager::class, function ($app) {
+            return new TypeManager($app);
         });
 
         $this->registerMorpMap();
