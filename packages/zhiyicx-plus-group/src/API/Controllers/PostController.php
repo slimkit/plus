@@ -398,6 +398,8 @@ class PostController
      */
     public function posts(Request $request, PostRepository $repository)
     {
+        $userId = $request->user('api')->id ?? 0;
+
         $keyword = $request->get('keyword');
         $limit = (int) $request->query('limit', 15);
         $offset = (int) $request->get('offset', 0);
@@ -408,10 +410,24 @@ class PostController
         $posts = $builder->when($keyword, function ($query) use ($keyword) {
             return $query->where('title', 'like', sprintf('%%%s%%', $keyword));
         })
+        ->when($userId, function ($query) use ($userId) {
+            // 登陆状态 可以检索public和已加入圈子的帖子
+           return $query->whereHas('group.members', function ($query) use ($userId) {
+               return $query->where('audit', 1)->where('user_id', $userId)
+                   ->where('disabled', 0)->whereIn('mode', ['public', 'paid', 'private'])->orWhere('mode', 'public');
+           });
+        }, function ($query) {
+            // 未登陆 只能搜索mode为public下面帖子
+           return $query->whereHas('group', function ($query) {
+                return $query->where('mode', 'public');
+           });
+        })
         ->when($groupId, function ($query) use ($groupId) {
             return $query->where('group_id', $groupId);
         })
-        ->select(['id', 'title', 'group_id', 'user_id', 'summary', 'likes_count', 'views_count', 'comments_count', 'created_at'])
+        ->whereHas('group', function ($query) {
+            return $query->where('audit', 1);
+        })
         ->orderBy('id', 'desc')
         ->offset($offset)
         ->limit($limit)
