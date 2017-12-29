@@ -16,7 +16,7 @@
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Packages\Types;
+namespace Zhiyi\Plus\Packages\Wallet\Types;
 
 abstract class Type
 {

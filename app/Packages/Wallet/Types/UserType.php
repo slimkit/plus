@@ -16,7 +16,7 @@
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Packages\Types;
+namespace Zhiyi\Plus\Packages\Wallet\Types;
 
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Models\User as UserModel;
