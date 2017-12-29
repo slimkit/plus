@@ -22,8 +22,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use function Zhiyi\Plus\validateUsername;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;
-use Zhiyi\Plus\Packages\Wallet\TargetTypeManager;
 use function Zhiyi\Plus\validateChinaPhoneNumber;
+use Zhiyi\Plus\Packages\Wallet\TargetTypeManager;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 class AppServiceProvider extends ServiceProvider
