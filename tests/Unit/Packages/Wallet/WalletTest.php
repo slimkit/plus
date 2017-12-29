@@ -89,6 +89,12 @@ class WalletTest extends TestCase
         $wallet->getWalletModel();
     }
 
+    /**
+     * Test increment method.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function testIncrement()
     {
         // Create a wallet model mock.
