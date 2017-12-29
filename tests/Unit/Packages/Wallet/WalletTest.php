@@ -35,7 +35,7 @@ class WalletTest extends TestCase
      */
     public function testSetUser()
     {
-        $user =factory(UserModel::class)->make();
+        $user = factory(UserModel::class)->make();
         $user->id = 1;
 
         // Create a wallet mock.
@@ -70,7 +70,7 @@ class WalletTest extends TestCase
      */
     public function testGetWalletModel()
     {
-        $user =factory(UserModel::class)->make();
+        $user = factory(UserModel::class)->make();
         $user->id = 1;
 
         // Create a wallet mock.
