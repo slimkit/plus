@@ -38,4 +38,20 @@ class CreateGroupRequest extends FormRequest
             'money' => 'required_if:mode,paid|integer|min:1',
         ];
     }
+
+    /**
+     * 错误消息.
+     *
+     * @return array
+     * @author BS <414606094@qq.com>
+     */
+    public function messages(): array
+    {
+        return [
+            'avatar.required' => '必须上传头像',
+            'name.required' => '圈子名称不能为空',
+            'tags.required' => '请选择标签',
+            'mode.string' => '请选择圈子类型',
+        ];
+    }
 }
