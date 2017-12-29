@@ -40,7 +40,7 @@ class TypeManager extends Manager
      * @return \Zhiyi\Plus\Packages\Wallet\Types\Type
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function createUserDriver(): Type
+    protected function createUserDriver(): Type
     {
         return $this->app->make(Types\UserType::class);
     }
