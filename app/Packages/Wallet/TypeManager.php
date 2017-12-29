@@ -42,6 +42,6 @@ class TypeManager extends Manager
      */
     public function createUserDriver(): Type
     {
-        return $this->app->make(Types\TransferType::class);
+        return $this->app->make(Types\UserType::class);
     }
 }
