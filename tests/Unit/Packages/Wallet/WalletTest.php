@@ -240,6 +240,37 @@ class WalletTest extends TestCase
 
         $this->assertArraySubset($array, $wallet->jsonSerialize());
     }
+
+    /**
+     * Test toJson method.
+     *
+     * @expectedException \RuntimeException
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function testToJson()
+    {
+        // 有效的
+        $array = ['test' => true];
+
+        // 无效的
+        $text = "\xB1\x31";
+
+        // Create a Wallet::class mock.
+        $wallet = $this->getMockBuilder(Wallet::class)
+                       ->setMethods(['jsonSerialize'])
+                       ->getMock();
+        $wallet->expects($this->exactly(2))
+               ->method('jsonSerialize')
+               ->will($this->onConsecutiveCalls($array, $text));
+
+        $result = $wallet->toJson(0);
+        // dd($result);
+        $this->assertSame(json_encode($array, 0), $result);
+
+        // Test exception
+        $wallet->toJson();
+    }
 }
 
 class TestWalletSetUser extends Wallet
