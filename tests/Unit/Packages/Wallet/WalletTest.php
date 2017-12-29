@@ -30,6 +30,8 @@ class WalletTest extends TestCase
     /**
      * Test setUser method.
      *
+     * @expectedException \Exception
+     * @expectedExceptionMessage 传递的不是一个用户
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -39,6 +41,13 @@ class WalletTest extends TestCase
         $wallet = new TestWalletSetUser($user);
 
         $this->assertSame($user->id, $wallet->getUser()->id);
+
+        $wallet->setUser($user->id);
+        $this->assertInstanceOf(UserModel::class, $wallet->getUser());
+        $this->assertSame($user->id, $wallet->getUser()->id);
+
+        // @expectedException \Exception
+        $wallet->setUser([]);
     }
 }
 
