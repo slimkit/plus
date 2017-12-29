@@ -93,4 +93,28 @@ class UserTypeTest extends TestCase
         $result = $userType->createOrder($model->owner_id, $model->target_id, $model->amount);
         $this->assertInstanceOf(Order::class, $result);
     }
+
+    /**
+     * Test create order model.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function testCreateOrderModel()
+    {
+        $owner = 1;
+        $target = 2;
+        $amount = 100;
+        $userType = new UserType();
+        $model = $userType->createOrderModel($owner, $target, $amount);
+
+        $this->assertInstanceOf(WalletOrderModel::class, $model);
+        $this->assertSame($owner, $model->owner_id);
+        $this->assertSame($target, $model->target_id);
+        $this->assertSame($amount, $model->amount);
+        $this->assertSame(Order::TARGET_TYPE_USER, $model->target_type);
+        $this->assertSame(Order::TYPE_EXPENSES, $model->type);
+        $this->assertSame(Order::STATE_WAIT, $model->state);
+        $this->assertSame(UserTarget::ORDER_TITLE, $model->title);
+    }
 }
