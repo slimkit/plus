@@ -19,8 +19,6 @@
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\WalletCash;
-use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Illuminate\Database\Eloquent\Builder;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;
