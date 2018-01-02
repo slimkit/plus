@@ -74,7 +74,7 @@ class RewardController extends Controller
         // 记录订单
         $feed_title = str_limit($feed->feed_content, 100, '...');
 
-        $status = $manager->driver(Order::TARGET_TYPE_REWARD)->transfer($user, $target, $amount, [
+        $status = $manager->driver(Order::TARGET_TYPE_REWARD)->reward($user, $target, $amount, [
             'reward_resource' => $feed,
             'target_user' => $target,
             'reward_type' => 'feed:reward',

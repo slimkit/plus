@@ -79,7 +79,7 @@ class TargetTypeManager extends Manager
      * Create Rew target type driver.
      *
      * @return \Zhiyi\Plus\Packages\TargetTypes\Target
-     * @author BS <414606094@qq.com>
+     * @author hh <915664508@qq.com>
      */
     protected function createRewardDriver(): Target
     {

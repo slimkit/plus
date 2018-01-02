@@ -75,7 +75,7 @@ class UserRewardController extends Controller
         }
 
         // 记录订单
-        $status = $manager->driver(Order::TARGET_TYPE_REWARD)->transfer($user, $target, $amount, [
+        $status = $manager->driver(Order::TARGET_TYPE_REWARD)->reward($user, $target, $amount, [
             'reward_resource' => $user,
             'target_user' => $target,
             'reward_type' => 'user:reward',

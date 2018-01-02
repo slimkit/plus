@@ -71,7 +71,7 @@ class RewardController extends Controller
         }
 
         // 记录订单
-        $status = $manager->driver(Order::TARGET_TYPE_REWARD)->transfer($user, $target, $amount, [
+        $status = $manager->driver(Order::TARGET_TYPE_REWARD)->reward($user, $target, $amount, [
             'reward_resource' => $news,
             'target_user' => $target,
             'reward_type' => 'news:reward',

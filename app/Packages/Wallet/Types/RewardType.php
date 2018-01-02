@@ -25,7 +25,14 @@ use Zhiyi\Plus\Packages\Wallet\TargetTypes\RewardTarget;
 
 class RewardType extends Type
 {
-    public function transfer($owner, $target, int $amount, $extra)
+    /**
+     * @param $owner
+     * @param $target
+     * @param int $amount
+     * @param $extra
+     * @return bool
+     */
+    public function reward($owner, $target, int $amount, $extra)
     {
         $owner = $this->resolveGetUserId($owner);
         $target = $this->resolveGetUserId($target);
