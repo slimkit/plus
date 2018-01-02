@@ -21,7 +21,6 @@ namespace Zhiyi\Plus\Packages\Wallet\TargetTypes;
 use DB;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Packages\Wallet\Wallet;
-use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
 
 class WidthdrawTarget extends Target
 {
@@ -34,7 +33,7 @@ class WidthdrawTarget extends Target
     ];
 
     /**
-     * Handle
+     * Handle.
      *
      * @return mixed
      * @author BS <414606094@qq.com>
@@ -42,7 +41,6 @@ class WidthdrawTarget extends Target
     public function handle(): bool
     {
         if (! $this->order->hasWait()) {
-
             return true;
         }
 
@@ -84,5 +82,4 @@ class WidthdrawTarget extends Target
     {
         $this->wallet = new Wallet($this->order->getOrderModel()->owner_id);
     }
-
 }
