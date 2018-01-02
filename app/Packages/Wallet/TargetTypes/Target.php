@@ -31,5 +31,5 @@ abstract class Target
         return $this;
     }
 
-    abstract public function handle(): bool;
+    abstract public function handle(...$arguments): bool;
 }

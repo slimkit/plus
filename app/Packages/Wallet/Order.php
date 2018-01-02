@@ -164,7 +164,7 @@ class Order
      * @return bool
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function autoComplete(): bool
+    public function autoComplete(...$arguments): bool
     {
         if (! $this->hasWait()) {
             return true;
@@ -173,7 +173,7 @@ class Order
         $manager = $this->getTargetTypeManager();
         $manager->setOrder($this);
 
-        return $manager->handle();
+        return $manager->handle(...$arguments);
     }
 
     /**
