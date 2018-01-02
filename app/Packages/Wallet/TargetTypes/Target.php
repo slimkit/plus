@@ -41,15 +41,4 @@ abstract class Target
 
         return $this;
     }
-
-    /**
-     * Handle the target.
-     *
-     * @return bool
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function handle(): bool
-    {
-        return false;
-    }
 }
