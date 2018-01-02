@@ -219,13 +219,14 @@ class OrderTest extends TestCase
                       ->will($this->returnSelf());
         $targetManager->expects($this->exactly(1))
                       ->method('handle')
+                      ->with($this->equalTo(true))
                       ->willReturn(true);
         $order->expects($this->exactly(1))
               ->method('getTargetTypeManager')
               ->willReturn($targetManager);
 
         $model->state = Order::STATE_WAIT;
-        $this->assertTrue($order->autoComplete());
+        $this->assertTrue($order->autoComplete(true));
     }
 
     /**
