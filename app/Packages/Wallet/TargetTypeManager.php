@@ -37,7 +37,7 @@ class TargetTypeManager extends Manager
     }
 
     /**
-     * Get the order target type dirver.
+     * Get the order target type driver.
      *
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
@@ -59,5 +59,19 @@ class TargetTypeManager extends Manager
         $driver->setOrder($this->order);
 
         return $driver;
+    }
+
+    /**
+     * Create widthdraw target type driver.
+     *
+     * @return \Zhiyi\Plus\Packages\TargetTypes\Target
+     * @author BS <414606094@qq.com>
+     */
+    protected function createWidthdrawDriver(): Target
+    {
+        $driver = $this->app->make(TargetTypes\WidthdrawTarget::class);
+        $driver->setOrder($this->order);
+
+        return $driver; 
     }
 }
