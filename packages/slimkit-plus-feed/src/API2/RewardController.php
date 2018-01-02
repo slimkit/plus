@@ -22,10 +22,10 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\GoldType;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\WalletCharge;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 use Zhiyi\Plus\Packages\Wallet\Order;
+use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
 class RewardController extends Controller
 {

@@ -90,6 +90,5 @@ class UserRewardController extends Controller
         } else {
             return response()->json(['message' => ['打赏失败']], 500);
         }
-
     }
 }

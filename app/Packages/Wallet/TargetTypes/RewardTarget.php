@@ -38,7 +38,7 @@ class RewardTarget extends Target
      */
     public function handle($extra): bool
     {
-        if (!$this->order->hasWait()) {
+        if (! $this->order->hasWait()) {
             return true;
         }
 

@@ -35,7 +35,6 @@ class RewardType extends Type
         return $order->autoComplete($extra);
     }
 
-
     /**
      * Get user id.
      *
