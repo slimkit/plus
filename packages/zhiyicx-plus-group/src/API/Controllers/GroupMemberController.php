@@ -276,6 +276,14 @@ class GroupMemberController
 
                     // 用户加钱
                     $group->founder->user->wallet()->increment('balance', $group->money);
+
+                    // 发送通知
+                    $message = sprintf("您申请加入的圈子%s已被审核通过", $group->name);
+                    $member->user->sendNotifyMessage(
+                        'group:join:accept',
+                        $message,
+                        ['group' => $group]
+                    );
                 } else {
                     // 流水
                     $caharge->user_id = $member->user_id;
@@ -289,6 +297,14 @@ class GroupMemberController
                     $caharge->save();
                     // 用户退款
                     $member->user->wallet()->increment('balance', $group->money);
+
+                    // 发送通知s
+                    $message = sprintf("您申请加入的圈子%s已被管理员拒绝", $group->name);
+                    $member->user->sendNotifyMessage(
+                        'group:join:reject',
+                        $message,
+                        ['group' => $group]
+                    );
                 }
             }
             
@@ -299,6 +315,8 @@ class GroupMemberController
 
             $member->audit = $status;
             $member->save();
+
+
 
             if ($log = $member->logs()->where('status', 0)->where('auditer', null)->first()) {
                 $log->status = $status;
