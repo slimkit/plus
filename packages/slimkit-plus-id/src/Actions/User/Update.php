@@ -18,6 +18,7 @@
 
 namespace SlimKit\PlusID\Actions\User;
 
+use Validator;
 use SlimKit\PlusID\Actions\Action;
 use SlimKit\PlusID\Support\Message;
 use Zhiyi\Plus\Models\User as UserModel;
