@@ -40,7 +40,7 @@ class WidthdrawType extends Type
         $owner = $this->checkUserId($owner);
         $order = $this->createOrder($owner, $amount);
 
-        return $order->autoComplete();
+        return $order->autoComplete($type, $account);
     }
 
     /**

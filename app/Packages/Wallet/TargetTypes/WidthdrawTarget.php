@@ -21,6 +21,7 @@ namespace Zhiyi\Plus\Packages\Wallet\TargetTypes;
 use DB;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Packages\Wallet\Wallet;
+use Zhiyi\Plus\Models\WalletCash as WalletCashModel;
 
 class WidthdrawTarget extends Target
 {
@@ -38,7 +39,7 @@ class WidthdrawTarget extends Target
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function handle(): bool
+    public function handle($type, $account): bool
     {
         if (! $this->order->hasWait()) {
             return true;
@@ -46,10 +47,11 @@ class WidthdrawTarget extends Target
 
         $this->initWallet();
 
-        $orderHandle = function () {
+        $orderHandle = function () use ($type, $account) {
             $this->order->saveStateSuccess();
             $this->wallet->{$this->method[$this->order->getOrderModel()->type]}($this->order->getOrderModel()->amount);
 
+            $this->createCash($type, $account);
             return true;
         };
         $orderHandle->bindTo($this);
@@ -81,5 +83,25 @@ class WidthdrawTarget extends Target
     protected function initWallet()
     {
         $this->wallet = new Wallet($this->order->getOrderModel()->owner_id);
+    }
+
+    /**
+     * 创建提现申请.
+     *
+     * @param $type
+     * @param $account
+     * @return void
+     * @author BS <414606094@qq.com>
+     */
+    protected function createCash($type, $account)
+    {
+        $cashModel = new WalletCashModel();
+        $cashModel->user_id = $this->order->getOrderModel()->owner_id;
+        $cashModel->value = $this->order->getOrderModel()->amount;
+        $cashModel->type = $type;
+        $cashModel->account = $account;
+        $cashModel->status = 0;
+
+        $cashModel->save();
     }
 }
