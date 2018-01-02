@@ -141,7 +141,7 @@ class UserTarget extends Target
             Order::TYPE_INCOME => 'increment',
             Order::TYPE_EXPENSES => 'decrement',
         ];
-        $method = $method[$order->getOrderModel()->type];
+        $method = $methods[$order->getOrderModel()->type];
         $wallet->$method($order->getOrderModel()->amount);
     }
 }
