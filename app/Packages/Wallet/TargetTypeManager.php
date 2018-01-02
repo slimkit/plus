@@ -72,6 +72,6 @@ class TargetTypeManager extends Manager
         $driver = $this->app->make(TargetTypes\WidthdrawTarget::class);
         $driver->setOrder($this->order);
 
-        return $driver; 
+        return $driver;
     }
 }
