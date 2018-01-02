@@ -73,11 +73,11 @@ class PostCommentController
         $group = $post->group;
         $member = $group->members()->where('user_id', $user->id)->where('audit', 1)->first();
         if ($member && $member->disabled == 1) {
-            return response()->json(['message' => ['您已被该圈子拉黑，无法发送评论'], 403]);
+            return response()->json(['message' => ['您已被该圈子拉黑，无法发送评论']], 403);
         }
 
         if ($group->model != 'public' && (! $member || $member->disabled == 1)) {
-            return response()->json(['message' => ['您没有评论权限'], 403]);
+            return response()->json(['message' => ['您没有评论权限']], 403);
         }
 
         $commentModel->user_id = $user->id;

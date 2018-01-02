@@ -76,7 +76,7 @@ class PostLikeController
         $group = $post->group;
         $member = $group->members()->where('user_id', $user->id)->where('audit', 1)->first();
         if ($member && $member->disabled == 1) {
-            return response()->json(['message' => ['您已被该圈子拉黑，无法进行该操作'], 403]);
+            return response()->json(['message' => ['您已被该圈子拉黑，无法进行该操作']], 403);
         }
 
         $like = $post->like($user);
