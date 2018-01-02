@@ -52,6 +52,7 @@ class WidthdrawTarget extends Target
             $this->wallet->{$this->method[$this->order->getOrderModel()->type]}($this->order->getOrderModel()->amount);
 
             $this->createCash($type, $account);
+
             return true;
         };
         $orderHandle->bindTo($this);
