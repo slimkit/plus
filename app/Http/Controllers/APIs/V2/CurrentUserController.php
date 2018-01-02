@@ -39,6 +39,8 @@ class CurrentUserController extends Controller
         $user->load('wallet');
 
         $user->makeVisible(['phone', 'email']);
+        $friends_count = $user->mutual()->get()->count();
+        $user->friends_count = $friends_count;
 
         return $response->json($user, 200);
     }
