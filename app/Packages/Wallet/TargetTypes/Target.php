@@ -22,8 +22,19 @@ use Zhiyi\Plus\Packages\Wallet\Order;
 
 abstract class Target
 {
+    /**
+     * The order service.
+     *
+     * @var \Zhiyi\Plus\Packages\Wallet\Order
+     */
     protected $order;
 
+    /**
+     * Set the order service.
+     *
+     * @param \Zhiyi\Plus\Packages\Wallet\Order $order
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function setOrder(Order $order)
     {
         $this->order = $order;
@@ -31,5 +42,14 @@ abstract class Target
         return $this;
     }
 
-    abstract public function handle(): bool;
+    /**
+     * Handle the target.
+     *
+     * @return bool
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function handle(): bool
+    {
+        return false;
+    }
 }
