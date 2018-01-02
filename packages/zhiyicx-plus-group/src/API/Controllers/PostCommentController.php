@@ -72,7 +72,7 @@ class PostCommentController
 
         $group = $post->group;
         $member = $group->members()->where('user_id', $user->id)->where('audit', 1)->first();
-        if ($group->mode == 'public' && $member && $member->disabled == 1) {
+        if ($member && $member->disabled == 1) {
             return response()->json(['message' => ['您已被该圈子拉黑，无法发送评论'], 403]);
         }
 
