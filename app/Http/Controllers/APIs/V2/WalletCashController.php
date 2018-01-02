@@ -21,7 +21,9 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\WalletCash;
 use Illuminate\Support\Facades\DB;
+use Zhiyi\Plus\Packages\Wallet\Order;
 use Illuminate\Database\Eloquent\Builder;
+use Zhiyi\Plus\Packages\Wallet\TypeManager;
 use Zhiyi\Plus\Http\Requests\API2\StoreUserWallerCashPost;
 
 class WalletCashController extends Controller
@@ -60,27 +62,19 @@ class WalletCashController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function store(StoreUserWallerCashPost $request)
+    public function store(StoreUserWallerCashPost $request, TypeManager $manager)
     {
         $value = $request->input('value');
         $type = $request->input('type');
         $account = $request->input('account');
         $user = $request->user();
 
-        // Create Cash.
-        $cash = new WalletCash();
-        $cash->value = $value;
-        $cash->type = $type;
-        $cash->account = $account;
-        $cash->status = 0;
+        if ($manager->driver(Order::TARGET_TYPE_WITHDRAW)->widthdraw($user, $value, $type, $account) === true) {
+            return response()
+                ->json(['message' => ['提交申请成功']])
+                ->setStatusCode(201);
+        }
 
-        DB::transaction(function () use ($user, $value, $cash) {
-            $user->wallet()->decrement('balance', $value);
-            $user->walletCashes()->save($cash);
-        });
-
-        return response()
-            ->json(['message' => ['提交申请成功']])
-            ->setStatusCode(201);
+        return response()->json(['message' => '操作失败'], 500);
     }
 }
