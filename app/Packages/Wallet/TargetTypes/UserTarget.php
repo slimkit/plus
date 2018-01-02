@@ -103,7 +103,7 @@ class UserTarget extends Target
         $order = new WalletOrderModel();
         $order->owner_id = $this->targetWallet->getWalletModel()->owner_id;
         $order->target_type = Order::TARGET_TYPE_USER;
-        $order->target_id = $this->ownerWallet()->getWalletModel()->owner_id;
+        $order->target_id = $this->ownerWallet->getWalletModel()->owner_id;
         $order->title = static::ORDER_TITLE;
         $order->type = $this->getTargetUserOrderType();
         $order->amount = $this->order->getOrderModel()->amount;
