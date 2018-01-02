@@ -74,4 +74,18 @@ class TargetTypeManager extends Manager
 
         return $driver;
     }
+
+    /**
+     * Create Rew target type driver.
+     *
+     * @return \Zhiyi\Plus\Packages\TargetTypes\Target
+     * @author BS <414606094@qq.com>
+     */
+    protected function createRewardDriver(): Target
+    {
+        $driver = $this->app->make(TargetTypes\RewardTarget::class);
+        $driver->setOrder($this->order);
+
+        return $driver;
+    }
 }

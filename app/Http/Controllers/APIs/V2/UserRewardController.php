@@ -23,6 +23,8 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\GoldType;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\WalletCharge;
+use Zhiyi\Plus\Packages\Wallet\Order;
+use Zhiyi\Plus\Packages\Wallet\TypeManager;
 
 class UserRewardController extends Controller
 {
@@ -49,7 +51,7 @@ class UserRewardController extends Controller
      * @param  WalletCharge $chargeModel
      * @return json
      */
-    public function store(Request $request, User $target, WalletCharge $chargeModel)
+    public function store(Request $request, User $target, TypeManager $manager)
     {
         $amount = $request->input('amount');
         if (! $amount || $amount < 0) {
@@ -72,49 +74,22 @@ class UserRewardController extends Controller
             ], 500);
         }
 
-        $user->getConnection()->transaction(function () use ($user, $target, $chargeModel, $amount) {
-            // 扣除操作用户余额
-            $user->wallet()->decrement('balance', $amount);
+        // 记录订单
+        $status = $manager->driver(Order::TARGET_TYPE_REWARD)->transfer($user, $target, $amount, [
+            'reward_resource' => $user,
+            'target_user' => $target,
+            'reward_type' => 'user:reward',
+            'reward_notice' => sprintf('你被%s打赏%s%s', $user->name, $amount / 100, $this->goldName),
+            'reward_detail' => [
+                'user' => $user,
+            ],
+        ]);
 
-            // 扣费记录
-            $userCharge = clone $chargeModel;
-            $userCharge->channel = 'user';
-            $userCharge->account = $target->id;
-            $userCharge->subject = '用户打赏';
-            $userCharge->action = 0;
-            $userCharge->amount = $amount;
-            $userCharge->body = sprintf('打赏用户%s', $target->name);
-            $userCharge->status = 1;
-            $user->walletCharges()->save($userCharge);
+        if ($status === true) {
+            return response()->json(['message' => ['打赏成功']], 201);
+        } else {
+            return response()->json(['message' => ['打赏失败']], 500);
+        }
 
-            // 被打赏用户增加金额
-            $target->wallet()->increment('balance', $amount);
-
-            // 增加金额记录
-            $chargeModel->user_id = $target->id;
-            $chargeModel->channel = 'user';
-            $chargeModel->account = $user->id;
-            $chargeModel->subject = sprintf('被%s打赏', $user->name);
-            $chargeModel->action = 1;
-            $chargeModel->amount = $amount;
-            $chargeModel->body = sprintf('被%s打赏', $user->name);
-            $chargeModel->status = 1;
-            $chargeModel->save();
-
-            if ($user->id !== $target->id) {
-                // 添加被打赏通知
-                $targetNotice = sprintf('你被%s打赏%s%s', $user->name, $amount * $this->wallet_ratio / 10000, $this->goldName);
-                $target->sendNotifyMessage('user:reward', $targetNotice, [
-                    'user' => $user,
-                ]);
-            }
-
-            // 打赏记录
-            $target->reward($user, $amount);
-        });
-
-        return response()->json([
-            'message' => ['打赏成功'],
-        ], 201);
     }
 }

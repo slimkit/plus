@@ -55,4 +55,15 @@ class TypeManager extends Manager
     {
         return $this->app->make(Types\WidthdrawType::class);
     }
+
+    /**
+     * Create reward driver.
+     *
+     * @return \Zhiyi\Plus\Packages\Wallet\Types\Type
+     * @author hh <915664508@qq.com>
+     */
+    protected function createRewardDriver(): Type
+    {
+        return $this->app->make(Types\RewardType::class);
+    }
 }
