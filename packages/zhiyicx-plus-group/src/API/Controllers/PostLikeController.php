@@ -65,7 +65,7 @@ class PostLikeController
     {
         $user = $request->user();
 
-        if (! $member->isNormal($post->id, $user->id)) {
+        if (! $member->isNormal($post->group_id, $user->id)) {
             return response()->json(['message' => '未加入该圈子或已被拉黑'], 403);
         }
 
