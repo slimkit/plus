@@ -166,7 +166,7 @@ class Order
      */
     public function autoComplete(): bool
     {
-        if ($this->getOrderModel()->state !== static::STATE_WAIT) {
+        if (! $this->hasWait()) {
             return true;
         }
 
