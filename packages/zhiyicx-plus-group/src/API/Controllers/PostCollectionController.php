@@ -55,7 +55,7 @@ class PostCollectionController
     {
         $user = $request->user();
 
-        $limit = $request->query('limit', 20);
+        $limit = $request->query('limit', 15);
         $offset = $request->query('offset', 0);
 
         $posts = $post->whereHas('collectors', function($query) use ($user) {
