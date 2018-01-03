@@ -20,35 +20,17 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\GoldType;
-use Zhiyi\Plus\Models\CommonConfig;
-use Zhiyi\Plus\Models\WalletCharge;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;
 
 class UserRewardController extends Controller
 {
-    // 系统货币名称
-    protected $goldName;
-
-    // 系统内货币与真实货币兑换比例
-    protected $wallet_ratio;
-
-    public function __construct(GoldType $goldModel, CommonConfig $configModel)
-    {
-        $walletConfig = $configModel->where('name', 'wallet:ratio')->first();
-
-        $this->goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '金币';
-        $this->wallet_ratio = $walletConfig->value ?? 100;
-    }
-
     /**
      * 打赏用户.
      *
      * @author bs<414606094@qq.com>
      * @param  Request      $request
      * @param  User         $target
-     * @param  WalletCharge $chargeModel
      * @return json
      */
     public function store(Request $request, User $target, TypeManager $manager)
@@ -61,6 +43,10 @@ class UserRewardController extends Controller
         }
         $user = $request->user();
         $user->load('wallet');
+
+        if ($user->id == $target->id) {
+            return response()->json(['message' => ['用户不能打赏自己']], 403);
+        }
 
         if (! $user->wallet || $user->wallet->balance < $amount) {
             return response()->json([
@@ -75,14 +61,22 @@ class UserRewardController extends Controller
         }
 
         // 记录订单
-        $status = $manager->driver(Order::TARGET_TYPE_REWARD)->reward($user, $target, $amount, [
+        $money = ($amount/100);
+
+        $status = $manager->driver(Order::TARGET_TYPE_REWARD)->reward([
             'reward_resource' => $user,
-            'target_user' => $target,
-            'reward_type' => 'user:reward',
-            'reward_notice' => sprintf('你被%s打赏%s%s', $user->name, $amount / 100, $this->goldName),
-            'reward_detail' => [
+            'order' => [
                 'user' => $user,
+                'target' => $target,
+                'amount' => $amount,
+                'user_order_body' => sprintf('打赏用户%s，钱包扣除%s元', $target->name, $money),
+                'target_order_body' => sprintf('被用户%s打赏，钱包增加%s元', $user->name, $money),
             ],
+            'notice' => [
+                'type' => 'user:reward',
+                'detail' => ['user' => $user],
+                'message' => sprintf('你被%s打赏%s', $user->name, $money)
+            ]
         ]);
 
         if ($status === true) {

@@ -32,14 +32,16 @@ class RewardType extends Type
      * @param $extra
      * @return bool
      */
-    public function reward($owner, $target, int $amount, $extra)
+    public function reward($data)
     {
-        $owner = $this->resolveGetUserId($owner);
-        $target = $this->resolveGetUserId($target);
+        $rewardOrder = $data['order'];
 
-        $order = $this->createOrder($owner, $target, $amount);
+        $owner = $this->resolveGetUserId($rewardOrder['user']);
+        $target = $this->resolveGetUserId($rewardOrder['target']);
 
-        return $order->autoComplete($extra);
+        $order = $this->createOrder($owner, $target, $rewardOrder['amount'], $rewardOrder['user_order_body']);
+
+        return $order->autoComplete($data);
     }
 
     /**
@@ -67,9 +69,9 @@ class RewardType extends Type
      * @return \Zhiyi\Plus\Packages\Wallet\Order
      * @author hh <915664508@qq.com>
      */
-    public function createOrder(int $owner, int $target, int $amount): Order
+    public function createOrder(int $owner, int $target, int $amount, string $body): Order
     {
-        return new Order($this->createOrderModel($owner, $target, $amount));
+        return new Order($this->createOrderModel($owner, $target, $amount, $body));
     }
 
     /**
@@ -81,7 +83,7 @@ class RewardType extends Type
      * @return \Ziyi\Plus\Models\WalletOrder
      * @author hh <915664508@qq.com>
      */
-    public function createOrderModel(int $owner, int $target, int $amount): WalletOrderModel
+    public function createOrderModel(int $owner, int $target, int $amount, string $body): WalletOrderModel
     {
         $order = new WalletOrderModel();
         $order->owner_id = $owner;
@@ -90,6 +92,7 @@ class RewardType extends Type
         $order->title = RewardTarget::ORDER_TITLE;
         $order->type = Order::TYPE_EXPENSES;
         $order->amount = $amount;
+        $order->body = $body;
         $order->state = Order::STATE_WAIT;
 
         return $order;

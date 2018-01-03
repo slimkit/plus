@@ -19,9 +19,6 @@
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\GoldType;
-use Zhiyi\Plus\Models\CommonConfig;
-use Zhiyi\Plus\Models\WalletCharge;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;
@@ -29,33 +26,19 @@ use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
 class RewardController extends Controller
 {
-    // 系统货币名称
-    protected $goldName;
-
-    // 系统内货币与真实货币兑换比例
-    protected $wallet_ratio;
-
-    public function __construct(GoldType $goldModel, CommonConfig $configModel)
-    {
-        $walletConfig = $configModel->where('name', 'wallet:ratio')->first();
-
-        $this->goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '金币';
-        $this->wallet_ratio = $walletConfig ? $walletConfig->value : 100;
-    }
-
     /**
      * 打赏一条动态.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request      $request
-     * @param  Feed         $feed
+     * @param  Request $request
+     * @param  Feed $feed
      * @param  WalletCharge $charge
      * @return mix
      */
     public function reward(Request $request, Feed $feed, TypeManager $manager)
     {
         $amount = $request->input('amount');
-        if (! $amount || $amount < 0) {
+        if (!$amount || $amount < 0) {
             return response()->json([
                 'amount' => ['请输入正确的打赏金额'],
             ], 422);
@@ -65,24 +48,34 @@ class RewardController extends Controller
         $feed->load('user');
         $target = $feed->user;
 
-        if (! $user->wallet || $user->wallet->balance < $amount) {
+        if ($user->id == $target->id) {
+            return response()->json(['message' => ['不能打赏自己的发布的动态']], 403);
+        }
+
+        if (!$user->wallet || $user->wallet->balance < $amount) {
             return response()->json([
                 'message' => ['余额不足'],
             ], 403);
         }
 
-        // 记录订单
-        $feed_title = str_limit($feed->feed_content, 100, '...');
+        $feedTitle = str_limit($feed->feed_content, 100, '...');
+        $money = $amount / 100;
 
-        $status = $manager->driver(Order::TARGET_TYPE_REWARD)->reward($user, $target, $amount, [
+        // 记录订单
+        $status = $manager->driver(Order::TARGET_TYPE_REWARD)->reward([
             'reward_resource' => $feed,
-            'target_user' => $target,
-            'reward_type' => 'feed:reward',
-            'reward_notice' => sprintf('你的动态《%s》被%s打赏%s%s', $feed_title, $user->name, $amount / 100, $this->goldName),
-            'reward_detail' => [
-                'feed' => $feed,
+            'order' => [
                 'user' => $user,
+                'target' => $target,
+                'amount' => $amount,
+                'user_order_body' => sprintf('打赏动态《%s》，钱包扣除%s元', $feedTitle, $money),
+                'target_order_body' => sprintf('动态《%s》被打赏，钱包增加%s元', $feedTitle, $money),
             ],
+            'notice' => [
+                'type' => 'feed:reward',
+                'detail' => ['feed' => $feed, 'user' => $user],
+                'message' => sprintf('你的《%s》动态被用户%s打赏%s元', $feedTitle, $user->name, $money)
+            ]
         ]);
 
         if ($status === true) {
@@ -97,7 +90,7 @@ class RewardController extends Controller
      *
      * @author bs<414606094@qq.com>
      * @param  Request $request
-     * @param  Feed    $feed
+     * @param  Feed $feed
      * @return mix
      */
     public function index(Request $request, Feed $feed)

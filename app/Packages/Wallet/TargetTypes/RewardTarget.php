@@ -43,7 +43,8 @@ class RewardTarget extends Target
         }
 
         $this->initWallet();
-        $this->createTargetRewordOrder();
+
+        $this->createTargetRewordOrder($extra['order']['target_order_body']);
 
         $transaction = function () use ($extra) {
             $this->order->saveStateSuccess();
@@ -75,10 +76,13 @@ class RewardTarget extends Target
      */
     protected function sendNotification($extra)
     {
-        $extra['target_user']->sendNotifyMessage(
-            $extra['reward_type'],
-            $extra['reward_notice'],
-            $extra['reward_detail']
+        $target = $extra['order']['target'];
+        $notice = $extra['notice'];
+
+        $target->sendNotifyMessage(
+            $notice['type'],
+            $notice['message'],
+            $notice['detail']
         );
     }
 
@@ -107,7 +111,7 @@ class RewardTarget extends Target
      * @return void
      * @author hh <915664508@qq.com>
      */
-    protected function createTargetRewordOrder()
+    protected function createTargetRewordOrder(string $body)
     {
         $order = new WalletOrderModel();
         $order->owner_id = $this->targetWallet->getWalletModel()->owner_id;
@@ -117,6 +121,7 @@ class RewardTarget extends Target
         $order->type = $this->getTargetRewordOrderType();
         $order->amount = $this->order->getOrderModel()->amount;
         $order->state = Order::STATE_WAIT;
+        $order->body = $body;
 
         $this->targetRewardOrder = new Order($order);
     }
