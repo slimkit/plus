@@ -61,7 +61,7 @@ class UserRewardController extends Controller
         }
 
         // 记录订单
-        $money = ($amount/100);
+        $money = ($amount / 100);
 
         $status = $manager->driver(Order::TARGET_TYPE_REWARD)->reward([
             'reward_resource' => $user,
@@ -75,8 +75,8 @@ class UserRewardController extends Controller
             'notice' => [
                 'type' => 'user:reward',
                 'detail' => ['user' => $user],
-                'message' => sprintf('你被%s打赏%s', $user->name, $money)
-            ]
+                'message' => sprintf('你被%s打赏%s', $user->name, $money),
+            ],
         ]);
 
         if ($status === true) {

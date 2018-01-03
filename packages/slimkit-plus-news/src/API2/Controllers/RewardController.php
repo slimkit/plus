@@ -71,8 +71,8 @@ class RewardController extends Controller
             'notice' => [
                 'type' => 'news:reward',
                 'detail' => ['user' => $user, 'news' => $news],
-                'message' => sprintf('你的资讯《%s》被用户%s打赏%s元', $news->title, $user->name, $money)
-            ]
+                'message' => sprintf('你的资讯《%s》被用户%s打赏%s元', $news->title, $user->name, $money),
+            ],
         ]);
 
         if ($status === true) {

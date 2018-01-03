@@ -38,7 +38,7 @@ class RewardController extends Controller
     public function reward(Request $request, Feed $feed, TypeManager $manager)
     {
         $amount = $request->input('amount');
-        if (!$amount || $amount < 0) {
+        if (! $amount || $amount < 0) {
             return response()->json([
                 'amount' => ['请输入正确的打赏金额'],
             ], 422);
@@ -52,7 +52,7 @@ class RewardController extends Controller
             return response()->json(['message' => ['不能打赏自己的发布的动态']], 403);
         }
 
-        if (!$user->wallet || $user->wallet->balance < $amount) {
+        if (! $user->wallet || $user->wallet->balance < $amount) {
             return response()->json([
                 'message' => ['余额不足'],
             ], 403);
@@ -74,8 +74,8 @@ class RewardController extends Controller
             'notice' => [
                 'type' => 'feed:reward',
                 'detail' => ['feed' => $feed, 'user' => $user],
-                'message' => sprintf('你的《%s》动态被用户%s打赏%s元', $feedTitle, $user->name, $money)
-            ]
+                'message' => sprintf('你的《%s》动态被用户%s打赏%s元', $feedTitle, $user->name, $money),
+            ],
         ]);
 
         if ($status === true) {
