@@ -66,4 +66,15 @@ class TypeManager extends Manager
     {
         return $this->app->make(Types\RewardType::class);
     }
+
+    /**
+     * Create recharge driver.
+     *
+     * @return \Zhiyi\Plus\Packages\Wallet\Types\Type
+     * @author BS <414606094@qq.com>
+     */
+    protected function createRechargeDriver(): Type
+    {
+        return $this->app->make(Types\RechargeType::class);
+    }
 }
