@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;
 use Zhiyi\Plus\Http\Requests\API2\StoreUserWallerCashPost;
 
-class WalletCashController extends Controller
+class NewWalletCashController extends Controller
 {
     /**
      * 获取提现列表.

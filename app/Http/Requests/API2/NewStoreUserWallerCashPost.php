@@ -24,7 +24,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Zhiyi\Plus\Repository\UserWalletCashType;
 use Zhiyi\Plus\Repository\WalletCashMinAmount as CashMinAmountRepository;
 
-class StoreUserWallerCashPost extends FormRequest
+class NewStoreUserWallerCashPost extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
