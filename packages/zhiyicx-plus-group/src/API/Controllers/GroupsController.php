@@ -74,53 +74,60 @@ class GroupsController
     public function store(CreateGroupRequest $request, CategoryModel $category, ConfigRepository $config)
     {
         $user = $request->user();
+
         if ($config->get('plus-group.group_create.need_verified') && ! $user->verified ) {
             return response()->json(['message' => ['创建圈子需要用户认证']], 422);
         }
+
         $values = $request->only(['name', 'location', 'longitude', 'latitude', 'geo_hash', 'summary', 'notice']);
-        $allowFeed = $request->input('allow_feed') ? 1 : 0;
-        $mode = in_array($mode = $request->input('mode'), ['public', 'private', 'paid']) ? $mode : 'public';
-        $money = (int) $request->input('money', 0);
 
-        $group = new GroupModel();
+        DB::beginTransaction();
 
-        foreach ($values as $field => $value) {
-            $group->$field = $value;
-        }
+        try {
 
-        if ($request->has('permissions')) {
-            $permissions = array_unique($request->input('permissions'));
-            
-            if (! $permissions) {
-                return response()->json(['message' => '无效的发帖权限参数'], 422);
+            $group = new GroupModel();
+
+            foreach ($values as $field => $value) {
+                $group->$field = $value;
             }
 
-            foreach($permissions as $permission) {
-                if (! in_array($permission, ['member', 'administrator', 'founder'])) {
+            if ($request->has('permissions')) {
+                $permissions = array_unique($request->input('permissions'));
+                
+                if (! $permissions) {
                     return response()->json(['message' => '无效的发帖权限参数'], 422);
                 }
+
+                foreach($permissions as $permission) {
+                    if (! in_array($permission, ['member', 'administrator', 'founder'])) {
+                        return response()->json(['message' => '无效的发帖权限参数'], 422);
+                    }
+                }
+
+                $group->permissions = implode(',', $permissions);
             }
 
-            $group->permissions = implode(',', $permissions);
+            $group->audit = 0;
+            $group->user_id = $user->id;
+            $group->money =  (int) $request->input('money', 0);
+            $group->allow_feed = $request->input('allow_feed') ? 1 : 0;
+            $group->mode = in_array($mode = $request->input('mode'), ['public', 'private', 'paid']) ? $mode : 'public';;
+
+            $category->groups()->save($group);
+
+            $avatar = $request->file('avatar');
+            $group->storeAvatar($avatar);
+
+            $tags = collect($request->input('tags'))->map->id;
+
+            $group->tags()->sync($tags);
+
+            DB::commit();
+            return response()->json(['message' => '创建成功', 'group' => $group]);  
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => $e->getMessage()], 500);
         }
-
-        $group->user_id = $user->id;
-        $group->allow_feed = $allowFeed;
-        $group->mode = $mode;
-        $group->money = $money;
-        $group->audit = 0;
-
-        if (! $category->groups()->save($group)) {
-            return response()->json(['message' => '创建圈子失败'], 500);
-        }
-
-        $avatar = $request->file('avatar');
-        $group->storeAvatar($avatar);
-
-        $tags = collect($request->input('tags'))->map->id;
-        $group->tags()->sync($tags);
-
-        return response()->json(['message' => '创建成功！', 'group' => $group]);
     }
 
     /**
@@ -132,20 +139,25 @@ class GroupsController
      */
     public function update(UpdateGroupRequest $request, GroupModel $group)
     {
+
+        $user = $request->user();
+
         // 审核未通过或被禁用
         if (in_array($group->audit, [0,2,3])) {
             return response()->json(['message' => '圈子审核未通过或已被禁用,不能进行修改'], 403);
         }
 
+        // 是否圈主
+        if ($group->founder->user_id !== $user->id) {
+            return response()->json(['message' => '无权限操作'], 403);
+        }
+
         $mode = in_array($mode = $request->input('mode'), ['public', 'private', 'paid']) ? $mode : $group->mode;
 
         // 存在未审核成员
-        if ($request->has('mode') && $mode != $group->model 
-            && $group->members()->where('audit', 0)->count()) {
+        if ($mode !== 'paid' && $mode != $group->mode &&  $group->members()->where('audit', 0)->count()) {
             return response()->json(['message' => '当前圈子存在未审核成员,不能修改圈子类型'], 403);
         }
-
-        $user = $request->user();
 
         $values = $request->only(['name', 'location', 'longitude', 'latitude', 'geo_hash', 'notice', 'category_id',  'summary', 'notice']);
 
@@ -169,38 +181,47 @@ class GroupsController
             $group->permissions = implode(',', $permissions);
         }
 
-        $group->user_id = $user->id;
         $group->allow_feed = $request->input('allow_feed') ? 1 : 0;;
 
+        // 收费圈不能修改金额和类型
         if ($group->mode !== 'paid') {
             $group->mode = $mode;
-            $group->money = (int) $request->input('money', 0);
+            $group->money = $mode == 'paid' ? (int) $request->input('money') : 0;
         }
 
-        $group->save();
+        DB::beginTransaction();
 
-        if ($avatar = $request->file('avatar')) {
-            $group->storeAvatar($avatar);
+        try {
+
+            $group->save();
+
+            if ($avatar = $request->file('avatar')) {
+                $group->storeAvatar($avatar);
+            }
+
+            $tags = collect($request->input('tags'))->map->id;
+
+            if ($tags->count()) {
+                $group->tags()->sync($tags);
+            }
+
+            $group->load(['user', 'tags', 'category', 'founder' => function ($query) {
+                return $query->with('user');
+            }]);
+
+            if ($user->id === $group->founder->user_id) {
+                $group->join_income_count = $group->incomes()->where('type', 1)->sum('amount');
+                $group->pinned_income_count = $group->incomes()->where('type', 2)->sum('amount');
+            }
+            
+            $group->joined = $group->members()->where('user_id', $user->id)->where('audit', 1)->first();
+
+            DB::commit();
+            return response()->json(['message' => '修改成功', 'group' => $group], 200);  
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => $e->getMessage()], 500);
         }
-
-        $tags = collect($request->input('tags'))->map->id;
-        if ($tags->count()) {
-            $group->tags()->sync($tags);
-        }
-
-        $group->load(['user', 'tags', 'category', 'founder' => function ($query) {
-            return $query->with('user');
-        }]);
-
-        if ($user->id === $group->founder->user_id) {
-            $group->join_income_count = $group->incomes()->where('type', 1)->sum('amount');
-            $group->pinned_income_count = $group->incomes()->where('type', 2)->sum('amount');
-        }
-        
-        $group->joined = $group->members()->where('user_id', $user->id)->where('audit', 1)->first();
-
-
-        return response()->json(['message' => '修改成功', 'group' => $group]);
     }
 
     /**

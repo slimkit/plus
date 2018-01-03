@@ -35,7 +35,7 @@ class CreateGroupRequest extends FormRequest
             'latitude' => 'required_with:location,longitude,geo_hash|string',
             'geo_hash' => 'required_with:location,longitude,latitude|string',
             'mode' => 'required|in:public,private,paid',
-            'money' => 'required_if:mode,paid|integer|min:1',
+            'money' => 'required_if:mode,paid|integer',
         ];
     }
 
