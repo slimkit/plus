@@ -19,38 +19,23 @@
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\GoldType;
-use Zhiyi\Plus\Models\CommonConfig;
-use Zhiyi\Plus\Models\WalletCharge;
+use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Packages\Wallet\TypeManager;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
-class RewardController extends Controller
+class NewRewardController extends Controller
 {
-    // 系统货币名称
-    protected $goldName;
-
-    // 系统内货币与真实货币兑换比例
-    protected $wallet_ratio;
-
-    public function __construct(GoldType $goldModel, CommonConfig $configModel)
-    {
-        $walletConfig = $configModel->where('name', 'wallet:ratio')->first();
-
-        $this->goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '金币';
-        $this->wallet_ratio = $walletConfig ? $walletConfig->value : 100;
-    }
-
     /**
      * 打赏一条动态.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request      $request
-     * @param  Feed         $feed
+     * @param  Request $request
+     * @param  Feed $feed
      * @param  WalletCharge $charge
      * @return mix
      */
-    public function reward(Request $request, Feed $feed, WalletCharge $charge)
+    public function reward(Request $request, Feed $feed, TypeManager $manager)
     {
         $amount = $request->input('amount');
         if (! $amount || $amount < 0) {
@@ -61,7 +46,11 @@ class RewardController extends Controller
         $user = $request->user();
         $user->load('wallet');
         $feed->load('user');
-        $current_user = $feed->user;
+        $target = $feed->user;
+
+        if ($user->id == $target->id) {
+            return response()->json(['message' => ['不能打赏自己的发布的动态']], 403);
+        }
 
         if (! $user->wallet || $user->wallet->balance < $amount) {
             return response()->json([
@@ -69,52 +58,31 @@ class RewardController extends Controller
             ], 403);
         }
 
-        $user->getConnection()->transaction(function () use ($user, $feed, $charge, $current_user, $amount) {
-            // 扣除操作用户余额
-            $user->wallet()->decrement('balance', $amount);
+        $feedTitle = str_limit($feed->feed_content, 100, '...');
+        $money = $amount / 100;
 
-            $feed_title = str_limit($feed->feed_content, 100, '...');
+        // 记录订单
+        $status = $manager->driver(Order::TARGET_TYPE_REWARD)->reward([
+            'reward_resource' => $feed,
+            'order' => [
+                'user' => $user,
+                'target' => $target,
+                'amount' => $amount,
+                'user_order_body' => sprintf('打赏动态《%s》，钱包扣除%s元', $feedTitle, $money),
+                'target_order_body' => sprintf('动态《%s》被打赏，钱包增加%s元', $feedTitle, $money),
+            ],
+            'notice' => [
+                'type' => 'feed:reward',
+                'detail' => ['feed' => $feed, 'user' => $user],
+                'message' => sprintf('你的《%s》动态被用户%s打赏%s元', $feedTitle, $user->name, $money),
+            ],
+        ]);
 
-            // 扣费记录
-            $userCharge = clone $charge;
-            $userCharge->channel = 'user';
-            $userCharge->account = $current_user->id;
-            $userCharge->subject = '打赏动态';
-            $userCharge->action = 0;
-            $userCharge->amount = $amount;
-            $userCharge->body = sprintf('打赏动态《%s》', $feed_title);
-            $userCharge->status = 1;
-            $user->walletCharges()->save($userCharge);
-
-            if ($current_user->wallet) {
-                // 增加对应用户余额
-                $current_user->wallet()->increment('balance', $amount);
-
-                $charge->user_id = $current_user->id;
-                $charge->channel = 'user';
-                $charge->account = $user->id;
-                $charge->subject = '动态被打赏';
-                $charge->action = 1;
-                $charge->amount = $amount;
-                $charge->body = sprintf('动态《%s》被打赏', $feed_title);
-                $charge->status = 1;
-                $charge->save();
-
-                // 添加被打赏通知
-                $notice = sprintf('你的动态《%s》被%s打赏%s%s', $feed_title, $user->name, $amount * $this->wallet_ratio / 10000, $this->goldName);
-                $current_user->sendNotifyMessage('feed:reward', $notice, [
-                    'feed' => $feed,
-                    'user' => $user,
-                ]);
-            }
-
-            // 打赏记录
-            $feed->reward($user, $amount);
-        });
-
-        return response()->json([
-            'message' => ['打赏成功'],
-        ], 201);
+        if ($status === true) {
+            return response()->json(['message' => ['打赏成功']], 201);
+        } else {
+            return response()->json(['message' => ['打赏失败']], 500);
+        }
     }
 
     /**
@@ -122,7 +90,7 @@ class RewardController extends Controller
      *
      * @author bs<414606094@qq.com>
      * @param  Request $request
-     * @param  Feed    $feed
+     * @param  Feed $feed
      * @return mix
      */
     public function index(Request $request, Feed $feed)
