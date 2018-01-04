@@ -52,7 +52,7 @@ class Resolve extends Action
             'action' => 'auth/resolve',
             'user' => $user = $this->request->user('web')->id,
             'time' => $time = time(),
-            'tc' = floor($time / 300),
+            'tc' => floor($time / 300),
         ];
 
         return $this->response(new Message(200, 'success', [
