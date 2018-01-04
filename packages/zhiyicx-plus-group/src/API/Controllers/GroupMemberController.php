@@ -28,6 +28,7 @@ class GroupMemberController
         $type = in_array($request->query('type'), ['all', 'manager', 'member', 'blacklist', 'audit']) ? $request->query('type') : 'all';
         $limit = $request->query('limit', 15);
         $after = $request->query('after', 0);
+        $name = $request->query('name');
 
         $users = $group->members()->when($type !== 'all', function ($query) use ($type) {
             switch ($type) {
@@ -51,6 +52,11 @@ class GroupMemberController
                     return $query->where('audit', 0);
                     break;
             }
+        })
+        ->when($name, function ($query) use ($name) {
+            return $query->whereHas('user', function ($query) use ($name) {
+                return $query->where('name', 'like', sprintf('%%%s%%', $name));
+            });
         })
         ->when($after, function ($query) use ($after) {
             return $query->where('id', '<', $after);
