@@ -66,6 +66,10 @@ class Action
     {
         $mode = $mode ?: $this->mode();
 
+        $sign = $this->request->sign;
+        $minutes = \Illuminate\Support\Carbon::now()->addSeconds(300);
+        cache([$sign => true], $minutes);
+
         if ($mode === 'json') {
             return response()->json(
                 $message->toArray()
@@ -88,6 +92,7 @@ class Action
             $this->checkTimeOut(),
             $this->checkSign(),
         ];
+        $status[] = (bool) cache($this->request->sign);
 
         foreach ($status as $check) {
             if ($check !== true) {
