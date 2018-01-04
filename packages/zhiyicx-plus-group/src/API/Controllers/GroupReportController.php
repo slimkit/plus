@@ -262,7 +262,7 @@ class GroupReportController extends Controller
             'content' => 'required|max:255',
         ], [
             'content.required' => '请填写举报内容',
-            'content.max' > '举报内容长度不能255',
+            'content.max' => '举报内容长度不能255',
         ]);
     }
 }
