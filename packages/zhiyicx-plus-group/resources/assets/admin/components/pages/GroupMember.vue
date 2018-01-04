@@ -15,7 +15,7 @@
 	<member-list :items="items"></member-list>
 	
 	<!-- 分页 -->
-    <ui-paginator class="pagination" :total="total" :offset="offset" :limit="15">
+    <ui-paginator class="pagination" :total="total" :offset="offset" :limit="4">
       <template slot-scope="pagination">
         <li :class="(pagination.disabled ? 'disabled': '') + (pagination.currend ? 'active' : '')">
           <span v-if="pagination.disabled || pagination.currend">{{ pagination.page }}</span>
@@ -54,7 +54,7 @@ export default({
 	    getMembers(query = {}) {
 	      admin.get(`groups/${this.groupId}/members`,{
 	          validateStatus: status => status === 200,
-	          params: { ...query, limit: 15 }
+	          params: { ...query, limit: 4 }
 	      })
 	      .then(({ data = [], headers: { 'x-total': total } }) => {
 	        this.items = data;
@@ -64,7 +64,7 @@ export default({
 	    buildLocalhost(offset) {
 	      const { query } = this.$route;
 
-	      return { path: `groups/${this.groupId}/members`, query: { ...query, offset } };
+	      return { path: `/groups/${this.groupId}/members`, query: { ...query, offset } };
 	    },
 	},
 

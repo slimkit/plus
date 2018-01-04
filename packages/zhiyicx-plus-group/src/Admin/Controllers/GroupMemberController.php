@@ -34,12 +34,13 @@ class GroupMemberController
             });
         });
 
+        $count = $query->count();
         $items = $query->with(['user', 'group'])
         ->limit($limit)
         ->offset($offset)
         ->get();
 
-        return response()->json($items, 200, ['x-total' => $query->count()]);
+        return response()->json($items, 200, ['x-total' => $count]);
     }
 
     /**
