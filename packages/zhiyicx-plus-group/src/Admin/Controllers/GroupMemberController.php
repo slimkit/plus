@@ -33,7 +33,7 @@ class GroupMemberController
                 return $query->where('name', 'like', sprintf('%%%s%%', $user));
             });
         });
-
+        
         $count = $query->count();
         $items = $query->with(['user', 'group'])
         ->limit($limit)
