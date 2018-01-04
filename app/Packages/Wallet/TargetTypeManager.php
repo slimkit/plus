@@ -88,4 +88,18 @@ class TargetTypeManager extends Manager
 
         return $driver;
     }
+
+    /**
+     * Create Charge target type driver.
+     *
+     * @return \Zhiyi\Plus\Packages\TargetTypes\Target
+     * @author BS <414606094@qq.com>
+     */
+    protected function createRechargePingPPDriver(): Target
+    {
+        $driver = $this->app->make(TargetTypes\ReChargeTarget::class);
+        $driver->setOrder($this->order);
+
+        return $driver;
+    }
 }
