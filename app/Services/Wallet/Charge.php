@@ -21,6 +21,7 @@ namespace Zhiyi\Plus\Services\Wallet;
 use Pingpp\Pingpp as PingppInit;
 use Pingpp\Charge as PingppCharge;
 use Zhiyi\Plus\Repository\WalletPingPlusPlus;
+use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 
 class Charge
@@ -108,6 +109,36 @@ class Charge
             'client_ip' => request()->getClientIp(),
             'subject' => $charge->subject,
             'body' => $charge->body,
+            'extra' => $extra,
+        ]);
+    }
+
+
+    /**
+     * Create charge for new wallet model.
+     *
+     * @param WalletOrderModel $order
+     * @param string $type
+     * @param array $extra
+     * @return array
+     * @author BS <414606094@qq.com>
+     */
+    public function newCreate(WalletOrderModel $order, string $type, array $extra = [])
+    {
+        if (! $order->id) {
+            $order->save();
+        }
+
+        // Request Ping++
+        return PingppCharge::create([
+            'order_no' => $this->formatChargeId($order->id),
+            'amount' => $order->amount,
+            'app' => ['id' => $this->appId],
+            'channel' => $type,
+            'currency' => 'cny', // 目前只支持 cny
+            'client_ip' => request()->getClientIp(),
+            'subject' => $order->title,
+            'body' => $order->body,
             'extra' => $extra,
         ]);
     }
