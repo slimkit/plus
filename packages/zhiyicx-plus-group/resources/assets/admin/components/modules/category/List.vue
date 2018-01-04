@@ -113,6 +113,7 @@ export default({
             return b.sort_by - a.sort_by;
           });
         }
+        this.$store.dispatch('alert-open', { type: 'success', message: { message: '修改成功'} });
       })
       .catch(({ response: { data } })=> {
           this.$store.dispatch('alert-open', { type: 'danger', message: data });

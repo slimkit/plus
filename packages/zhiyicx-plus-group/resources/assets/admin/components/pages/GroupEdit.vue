@@ -258,11 +258,6 @@
                     latitude: null,
                     longitude: null,
                 },
-                message: {
-                    open: false,
-                    type: '',
-                    data: {},
-                },
             }
         },
         watch: {
