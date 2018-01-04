@@ -113,7 +113,6 @@ class Charge
         ]);
     }
 
-
     /**
      * Create charge for new wallet model.
      *
