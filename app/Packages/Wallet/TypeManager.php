@@ -73,7 +73,7 @@ class TypeManager extends Manager
      * @return \Zhiyi\Plus\Packages\Wallet\Types\Type
      * @author BS <414606094@qq.com>
      */
-    protected function createRechargeDriver(): Type
+    protected function createRechargePingPPDriver(): Type
     {
         return $this->app->make(Types\RechargeType::class);
     }
