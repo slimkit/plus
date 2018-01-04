@@ -116,7 +116,8 @@ class Action
     {
         $action = $this->getSignAction();
 
-        // dd($this->server->sign($action), $action);
+        // 增加五分钟有效期的时间验证. 保证不会被伪造请求。
+        $action['tc'] = floor(time() / 300);
 
         if ($this->request->sign === $this->server->sign($action)) {
             return true;
