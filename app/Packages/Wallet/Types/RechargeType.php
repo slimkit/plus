@@ -53,7 +53,6 @@ class RechargeType extends Type
         $order = $this->createOrder($owner, $amount);
 
         if ($this->checkRechargeArgs($type, $extra)) {
-
             $transaction = function () use ($order, $extra, $type) {
                 $order->save();
                 $pingppcharge = app(WalletChargeService::class)->newCreate($order->getOrderModel(), $type, $extra);
@@ -120,7 +119,6 @@ class RechargeType extends Type
     protected function checkRechargeArgs(string $type, array $extra): bool
     {
         if (in_array($type, $this->allowType)) {
-            
             return $this->{camel_case('check_'.$type.'_extra')}($extra);
         }
 
@@ -144,7 +142,7 @@ class RechargeType extends Type
 
     protected function checkAlipayPcDirectExtra(array $extra): bool
     {
-        return in_array('success_url', $extra);   
+        return in_array('success_url', $extra);
     }
 
     protected function checkAlipayQrExtra(array $extra): bool
