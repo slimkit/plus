@@ -40,7 +40,7 @@ class CreateWalletOrdersTable extends Migration
             $table->integer('amount')->unsigned()->comment('订单金额');
             $table->tinyInteger('state')->nullable()->default(0)->comment('订单状态，0: 等待，1：成功，-1: 失败');
             $table->timestamps();
-            $this->index('owner_id');
+            $table->index('owner_id');
         });
     }
 
