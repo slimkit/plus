@@ -92,11 +92,13 @@ class GroupsController
             }
 
             if ($request->has('permissions')) {
-                $permissions = array_unique($request->input('permissions'));
-                
-                if (! $permissions) {
-                    return response()->json(['message' => '无效的发帖权限参数'], 422);
+                $permissions = $request->input('permissions');
+
+                if (! is_array($permissions) || !count($permissions)) {
+                    return response()->json(['message' => '无效的参数'], 422);
                 }
+
+                $permissions = array_unique($permissions);
 
                 foreach($permissions as $permission) {
                     if (! in_array($permission, ['member', 'administrator', 'founder'])) {
@@ -166,11 +168,13 @@ class GroupsController
         }
 
         if ($request->has('permissions')) {
-            $permissions = array_unique($request->input('permissions'));
-            
-            if (! $permissions) {
-                return response()->json(['message' => '无效的发帖权限参数'], 422);
+            $permissions = $request->input('permissions');
+
+            if (! is_array($permissions) || !count($permissions)) {
+                return response()->json(['message' => '无效的参数'], 422);
             }
+
+            $permissions = array_unique($permissions);
 
             foreach($permissions as $permission) {
                 if (! in_array($permission, ['member', 'administrator', 'founder'])) {
@@ -478,6 +482,8 @@ class GroupsController
             $group->join_income_count = (int) $income->where('type', 1)->sum('amount');
             $group->pinned_income_count = (int) $income->where('type', 2)->sum('amount');
         }
+        
+        $group->blacklist_count = $group->members()->where('disabled', 1)->count();
 
         $group->load(['user', 'tags', 'category', 'founder' => function ($query) {
             return $query->with('user');
@@ -562,20 +568,17 @@ class GroupsController
     {
         $user = $request->user();
 
-        $count = GroupMemberModel::where('user_id', $user->id)
-            ->where('group_id', $group->id)
-            ->where('role', 'founder')
-            ->count();
-
-        if (! $count) {
+        if ($group->founder->user_id !== $user->id) {
             return response()->json(['message' => '无权限操作'], 403);
         }
 
-        $permissions = array_unique($request->input('permissions'));
+        $permissions = $request->input('permissions');
 
-        if (! $permissions) {
+        if (! is_array($permissions) || !count($permissions)) {
             return response()->json(['message' => '无效的参数'], 422);
         }
+
+        $permissions = array_unique($permissions);
 
         foreach($permissions as $permission) {
             if (! in_array($permission, ['member', 'administrator', 'founder'])) {
