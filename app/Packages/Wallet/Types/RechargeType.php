@@ -103,6 +103,10 @@ class RechargeType extends Type
             $pingppCharge = $request->json('data.object');
             $walletOrder = WalletChargeModel::find(app(WalletChargeService::class)->unformatChargeId($pingppCharge['order_no']));
 
+            if ($walletOrder || $walletOrder->status === 1) {
+                return false;
+            }
+
             return $this->complete($pingppCharge, $walletOrder);
         }
 

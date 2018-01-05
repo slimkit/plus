@@ -31,7 +31,7 @@ class NewWalletCashController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
+     * @author BS <414606094@qq.com>
      */
     public function show(Request $request)
     {
@@ -58,7 +58,7 @@ class NewWalletCashController extends Controller
      *
      * @param \Zhiyi\Plus\Http\Requests\API2\StoreUserWallerCashPost $request
      * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
+     * @author BS <414606094@qq.com>
      */
     public function store(StoreUserWallerCashPost $request, TypeManager $manager)
     {
