@@ -92,7 +92,7 @@ class Action
             $this->checkTimeOut(),
             $this->checkSign(),
         ];
-        $status[] = (bool) cache($this->request->sign);
+        $status[] = ! cache($this->request->sign);
 
         foreach ($status as $check) {
             if ($check !== true) {
