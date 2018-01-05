@@ -140,12 +140,14 @@ class GroupController
 
     public function show(GroupModel $group)
     {
-        $group->load('tags', 'recommend', 'category', 'user');
-        $group->group_founder = MemberModel::where('group_id', $group->id)
-        ->where('role', 'founder')
-        ->first()
-        ->user;
+        $group->load('tags', 'recommend', 'category');
 
+        if ($group->audit) {
+            $group->group_founder = $group->founder->user;
+        } else {
+            $group->group_founder = $group->user;
+        }
+        
         return response()->json($group, 200);
     }
 
