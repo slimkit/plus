@@ -488,6 +488,7 @@ class GroupsController
         }
 
         $group->joined = $group->members()->where('user_id', $user_id)->where('audit', 1)->first();
+        $group->blacklist_count = $group->members()->where('disabled', 1)->count();
 
         return response()->json($group, 200);
     }
