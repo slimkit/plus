@@ -455,7 +455,7 @@ class GroupsController
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function show(Request $request, GroupModel $group)
+   public function show(Request $request, GroupModel $group)
     {
         $user_id = $request->user('api')->id ?? 0;
 
@@ -466,29 +466,24 @@ class GroupsController
             return response()->json(['message' => '圈子审核被驳回或已关闭无法访问'], 403);
         }
 
-        // 私密和收费圈子游客，无法访问
-        if ($exist && !$user_id) {
-            return response()->json(['message' => '游客无法访问私密圈和收费圈子'], 403);
+        $member = $group->members()->where('user_id', $user_id)->where('audit', 1)->first();
+        
+        // 私密和收费圈只有成员才能访问
+        if ($exist && is_null($member)) {
+            return response()->json(['message' => '未加入该圈子']);
         }
 
-        // 私密和收费圈只有成员才能访问
-        if ($exist && $user_id
-            && !$group->members()->where('user_id', $user_id)->where('audit', 1)->count()) {
-            return response()->json(['message' => '未加入该该圈']);
+        if (! is_null($member) && $member->role === 'founder') {
+            $income = $group->incomes();
+            $group->join_income_count = (int) $income->where('type', 1)->sum('amount');
+            $group->pinned_income_count = (int) $income->where('type', 2)->sum('amount');
         }
 
         $group->load(['user', 'tags', 'category', 'founder' => function ($query) {
             return $query->with('user');
         }]);
 
-        if ($group->members()->where('user_id', $user_id)->where('role', 'founder')->where('audit', 1)->first()) {
-            
-            $group->join_income_count = (int) $group->incomes()->where('type', 1)->sum('amount');
-            $group->pinned_income_count = (int) $group->incomes()->where('type', 2)->sum('amount');
-        }
-
-        $group->joined = $group->members()->where('user_id', $user_id)->where('audit', 1)->first();
-        $group->blacklist_count = $group->members()->where('disabled', 1)->count();
+        $group->joined = $member;
 
         return response()->json($group, 200);
     }
