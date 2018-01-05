@@ -35,7 +35,7 @@ class CreateWalletTable extends Migration
             $table->integer('total_income')->unsigned()->comment('总收入');
             $table->integer('total_expenses')->unsigned()->comment('总支出');
             $table->timestamps();
-            $this->primary('owner_id');
+            $table->primary('owner_id');
         });
     }
 
