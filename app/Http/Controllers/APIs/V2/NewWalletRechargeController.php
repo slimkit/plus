@@ -32,7 +32,7 @@ class NewWalletRechargeController extends Controller
     ];
 
     /**
-     * 钱包流水列表
+     * 钱包流水列表.
      *
      * @param Request $request
      * @param WalletOrderModel $walletOrderModel
