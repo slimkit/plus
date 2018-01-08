@@ -26,6 +26,38 @@ use Zhiyi\Plus\Http\Requests\API2\NewStoreWalletRecharge;
 
 class NewWalletRechargeController extends Controller
 {
+    protected $type = [
+        'income' => Order::TYPE_INCOME,
+        'expenses' => Order::TYPE_EXPENSES,
+    ];
+
+    /**
+     * 钱包流水列表
+     *
+     * @param Request $request
+     * @param WalletOrderModel $walletOrderModel
+     * @return mixed
+     * @author BS <414606094@qq.com>
+     */
+    public function list(Request $request, WalletOrderModel $walletOrderModel)
+    {
+        $limit = $request->query('limit', 15);
+        $after = $request->query('after');
+        $action = $request->query('action');
+        $user = $request->user();
+        $orders = $walletOrderModel->where('owner_id', $user->id)
+            ->when($after, function ($query) use ($after) {
+                return $query->where('id', '<', $after);
+            })
+            ->when(in_array($action, ['income', 'expenses']), function ($query) use ($action) {
+                return $query->where('type', $this->type[$action]);
+            })
+            ->limit($limit)
+            ->get();
+
+        return response()->json($orders, 200);
+    }
+
     /**
      * 创建充值订单.
      *

@@ -441,8 +441,11 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             // 发起充值
             $api->post('/recharge', API2\NewWalletRechargeController::class.'@store');
 
+            // 钱包订单列表
+            $api->get('/orders', API2\NewWalletRechargeController::class.'@list');
+
             // 取回凭据
-            $api->get('/retrieve/{order}', API2\NewWalletRechargeController::class.'@retrieve');
+            $api->get('/orders/{order}', API2\NewWalletRechargeController::class.'@retrieve');
         });
 
         /*
