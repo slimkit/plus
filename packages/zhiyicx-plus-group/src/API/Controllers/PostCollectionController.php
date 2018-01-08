@@ -61,7 +61,7 @@ class PostCollectionController
         $posts = $post->whereHas('collectors', function($query) use ($user) {
             $query->where('user_id', $user->id);
         })
-        ->with(['user', 'images'])
+        ->with(['user', 'images', 'group'])
         ->limit($limit)
         ->offset($offset)
         ->get();
