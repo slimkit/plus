@@ -150,7 +150,7 @@ class MusicCommentController extends Controller
         $limit = $request->query('limit', 15);
         $comments = $special->comments()->where(function ($query) use ($special) {
             return $query->where(function ($query) use ($special) {
-                return $query->where('commentable_type', 'music_specials')->whereIn('commentable_id', $special->id);
+                return $query->where('commentable_type', 'music_specials')->where('commentable_id', $special->id);
             })->orWhere(function ($query) use ($special) {
                 return $query->where('commentable_type', 'musics')->whereIn('commentable_id', $special->musics->pluck('id'));
             });
