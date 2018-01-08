@@ -153,7 +153,7 @@ class MusicCommentController extends Controller
                 return $query->where('commentable_type', 'music_specials')->whereIn('commentable_id', $special->id);
             })->orWhere(function ($query) use ($special) {
                 return $query->where('commentable_type', 'musics')->whereIn('commentable_id', $special->musics->pluck('id'));
-            })
+            });
         })->when($max_id, function ($query) use ($max_id) {
             return $query->where('id', '<', $max_id);
         })->with(['user', 'reply'])->limit($limit)->orderBy('id', 'desc')->get();
