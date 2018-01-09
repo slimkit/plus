@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\PlusGroup\Models\GroupMember;
 use Zhiyi\PlusGroup\Models\Post as PostModel;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\PlusGroup\Models\Pinned as PinnedModel;
@@ -62,9 +63,24 @@ class PinnedController extends Controller
     public function storePost(Request $request, PostModel $post, PinnedModel $pinnedModel, Carbon $datetime, WalletChargeModel $chargeModel)
     {
         $user = $request->user();
-        if ($user->id != $post->user_id) {
-            return response()->json(['message' => ['没有权限申请']], 403);
+
+        $member = GroupMember::where('user_id', $user->id)
+            ->where('group_id', $post->group_id)
+            ->first();
+
+        // 是否有权限进行置顶
+        $bool = ! $member || in_array($member->audit, [0, 2]) || $member->disabled === 1;
+
+        if ($post->user_id !== $user->id) {
+            if ($bool || !in_array($member->role, ['founder', 'administrator'])) {
+                return response()->json(['message' => ['没有权限申请']], 403);
+            }
+        } else {
+            if ($bool) {
+                return response()->json(['message' => ['没有权限申请']], 403);
+            }
         }
+
         if ($post->pinned()->where('user_id', $user->id)->where(function ($query) use ($datetime) {
             return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
         })->first()) {
@@ -285,21 +301,37 @@ class PinnedController extends Controller
     public function storeComments(Request $request, CommentModel $comment, PostModel $postModel, PinnedModel $pinnedModel, Carbon $datetime, WalletChargeModel $chargeModel)
     {
         $user = $request->user();
-        if ($user->id != $comment->user_id) {
-            return response()->json(['message' => ['没有权限申请']], 403);
-        }
-        if ($pinnedModel->where('channel', 'comment')->where('target', $comment->id)->where('user_id', $user->id)->where(function ($query) use ($datetime) {
-            return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
-        })->first()) {
-            return response()->json(['message' => ['已经申请过']])->setStatusCode(422);
-        }
-        if ($comment->commentable_type !== 'group-posts') {
+
+//        if ($pinnedModel->where('channel', 'comment')->where('target', $comment->id)->where('user_id', $user->id)->where(function ($query) use ($datetime) {
+//            return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
+//        })->first()) {
+//            return response()->json(['message' => ['已经申请过']])->setStatusCode(422);
+//        }
+//        if ($comment->commentable_type !== 'group-posts') {
+//            return response()->json(['message' => ['不允许该操作']], 422);
+//        }
+//
+        $post = $postModel->where('id', $comment->commentable_id)->first();
+
+        if (! $post || ! $post->user) {
             return response()->json(['message' => ['不允许该操作']], 422);
         }
 
-        $post = $postModel->where('id', $comment->commentable_id)->first();
-        if (! $post || ! $post->user) {
-            return response()->json(['message' => ['不允许该操作']], 422);
+        $member = GroupMember::where('user_id', $user->id)
+            ->where('group_id', $post->group_id)
+            ->first();
+
+        // 是否有权限进行置顶
+        $bool = ! $member || in_array($member->audit, [0, 2]) || $member->disabled === 1;
+
+        if ($comment->user_id !== $user->id) {
+            if ($bool || !in_array($member->role, ['founder', 'administrator'])) {
+                return response()->json(['message' => ['没有权限申请']], 403);
+            }
+        } else {
+            if ($bool) {
+                return response()->json(['message' => ['没有权限申请']], 403);
+            }
         }
 
         $target_user = $post->user;
