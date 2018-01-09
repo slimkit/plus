@@ -302,15 +302,15 @@ class PinnedController extends Controller
     {
         $user = $request->user();
 
-//        if ($pinnedModel->where('channel', 'comment')->where('target', $comment->id)->where('user_id', $user->id)->where(function ($query) use ($datetime) {
-//            return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
-//        })->first()) {
-//            return response()->json(['message' => ['已经申请过']])->setStatusCode(422);
-//        }
-//        if ($comment->commentable_type !== 'group-posts') {
-//            return response()->json(['message' => ['不允许该操作']], 422);
-//        }
-//
+       if ($pinnedModel->where('channel', 'comment')->where('target', $comment->id)->where('user_id', $user->id)->where(function ($query) use ($datetime) {
+           return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
+       })->first()) {
+           return response()->json(['message' => ['已经申请过']])->setStatusCode(422);
+       }
+       if ($comment->commentable_type !== 'group-posts') {
+           return response()->json(['message' => ['不允许该操作']], 422);
+       }
+
         $post = $postModel->where('id', $comment->commentable_id)->first();
 
         if (! $post || ! $post->user) {
