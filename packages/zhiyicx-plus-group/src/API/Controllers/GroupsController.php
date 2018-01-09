@@ -269,7 +269,7 @@ class GroupsController
                 $user->wallet()->decrement('balance', $group->money);
             }
 
-            $member = $member ?? new GroupMemberModel();
+            $member = new GroupMemberModel();
             $member->user_id = $user->id;
             $member->audit = in_array($group->mode, ['paid', 'private'])  ? 0 : 1;
             $member->role = 'member';

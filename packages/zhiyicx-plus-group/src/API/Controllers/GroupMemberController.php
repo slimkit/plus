@@ -326,13 +326,16 @@ class GroupMemberController
             $member->audit = $status;
             $member->save();
 
-
-
             if ($log = $member->logs()->where('status', 0)->where('auditer', null)->first()) {
                 $log->status = $status;
                 $log->auditer = $user->id;
                 $log->audit_at = $datetime;
                 $log->save();
+            }
+
+            // 拒绝删除该成员数据
+            if ($status == 2) {
+                $member->delete();
             }
 
             DB::commit();
