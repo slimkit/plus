@@ -76,7 +76,7 @@ class PostCommentController
             return response()->json(['message' => ['您已被该圈子拉黑，无法发送评论']], 403);
         }
 
-        if ($group->model != 'public' && (! $member || $member->disabled == 1)) {
+        if ($group->model != 'public' && ! $member ) {
             return response()->json(['message' => ['您没有评论权限']], 403);
         }
 

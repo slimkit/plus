@@ -65,16 +65,16 @@ class PostLikeController
     {
         $user = $request->user();
 
-        if (! $member->isNormal($post->group_id, $user->id)) {
-            return response()->json(['message' => '未加入该圈子或已被拉黑'], 403);
-        }
-
         if ($post->liked($user)) {
             return response()->json(['message' => ['已经赞过，请勿重复操作']], 422);
         }
 
         $group = $post->group;
         $member = $group->members()->where('user_id', $user->id)->where('audit', 1)->first();
+        if ($group->model != 'public' && ! $member) {
+            return response()->json(['message' => ['您没有评论权限']], 403);
+        }
+
         if ($member && $member->disabled == 1) {
             return response()->json(['message' => ['您已被该圈子拉黑，无法进行该操作']], 403);
         }
