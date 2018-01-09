@@ -200,4 +200,26 @@ class Group
 
         return $this->forget($key);
     }
+
+    /**
+     * 获取错误信息.
+     *
+     * @return string
+     * @author BS <414606094@qq.com>
+     */
+    public function getError()
+    {
+        return $this->error;
+    }
+
+    /**
+     * 获取错误码.
+     *
+     * @return int
+     * @author BS <414606094@qq.com>
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
 }
