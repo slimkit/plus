@@ -71,16 +71,10 @@ class PinnedController extends Controller
         // 是否有权限进行置顶
         $bool = ! $member || in_array($member->audit, [0, 2]) || $member->disabled === 1;
 
-        if ($post->user_id !== $user->id) {
-            if ($bool || !in_array($member->role, ['founder', 'administrator'])) {
-                return response()->json(['message' => ['没有权限申请']], 403);
-            }
-        } else {
-            if ($bool) {
-                return response()->json(['message' => ['没有权限申请']], 403);
-            }
+        if (! $member || ($post->user_id !== $user->id && ! in_array($member->role, ['founder', 'administrator']))) {
+            return response()->json(['message' => '无权限操作'], 403);
         }
-
+        
         if ($post->pinned()->where('user_id', $user->id)->where(function ($query) use ($datetime) {
             return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
         })->first()) {
@@ -322,16 +316,8 @@ class PinnedController extends Controller
             ->first();
 
         // 是否有权限进行置顶
-        $bool = ! $member || in_array($member->audit, [0, 2]) || $member->disabled === 1;
-
-        if ($comment->user_id !== $user->id) {
-            if ($bool || !in_array($member->role, ['founder', 'administrator'])) {
-                return response()->json(['message' => ['没有权限申请']], 403);
-            }
-        } else {
-            if ($bool) {
-                return response()->json(['message' => ['没有权限申请']], 403);
-            }
+        if (! $member || ($comment->user_id !== $user->id && ! in_array($member->role, ['founder', 'administrator']))) {
+            return response()->json(['message' => '无权限操作'], 403);
         }
 
         $target_user = $post->user;
