@@ -590,12 +590,12 @@ class PinnedController extends Controller
     {
         $user = $post->user;
 
-        $count = MemberModel::whereIn('role', ['founder', 'administrator'])
-        ->where('user_id', $user->id)
+        $member = MemberModel::where('user_id', $user->id)
+        ->where('group_id', $post->group_id)
         ->where('disabled', 0)
-        ->count();
+        ->first();
 
-        if (! $count) {
+        if (! $member || ($post->user_id !== $user->id && ! in_array($member->role, ['founder', 'administrator']))) {
             return response()->json(['message' => '无权限操作'], 403);
         }
 
