@@ -93,6 +93,10 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
             // get a list of rewards.
             // @get /api/v2/plus-group/group-posts/:post/rewards
             $api->get('/{post}/rewards', API\PostRewardController::class.'@index');
+
+            // get a list of comments.
+            // @get /api/v2/plus-group/group-posts/:post/comments
+            $api->get('/{post}/comments', API\PostCommentController::class.'@get');
         });
 
         // Auth routes.
@@ -182,10 +186,6 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
                 // delete a comment for a group post.
                 // @delete /api/v2/plus-group/group-posts/:post/comments/:comment
                 $api->delete('/{post}/comments/{comment}', API\PostCommentController::class.'@delete');
-
-                // get a list of comments.
-                // @get /api/v2/plus-group/group-posts/:post/comments
-                $api->get('/{post}/comments', API\PostCommentController::class.'@get');
 
                 // like a group post.
                 // @post /api/v2/plus-group/group-posts/:post/likes
