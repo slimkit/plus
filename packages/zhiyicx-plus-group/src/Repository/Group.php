@@ -8,15 +8,19 @@ use Zhiyi\PlusGroup\Models\Group as GroupModel;
 
 class Group
 {
+    // 圈子模型
     protected $model;
 
+    // 用户模型
     protected $user;
 
-    // 成员信息缓存
+    // 成员信息缓存键值
     protected $memberCacheKey = 'group:%s:user:%s';
 
+    // 错误信息
     protected $error;
 
+    // 错误状态码
     protected $status;
 
     /**
