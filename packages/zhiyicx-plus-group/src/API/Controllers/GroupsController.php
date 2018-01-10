@@ -478,9 +478,8 @@ class GroupsController
         }
 
         if (! is_null($member) && $member->role === 'founder') {
-            $income = $group->incomes();
-            $group->join_income_count = (int) $income->where('type', 1)->sum('amount');
-            $group->pinned_income_count = (int) $income->where('type', 2)->sum('amount');
+            $group->join_income_count = (int) $group->incomes()->where('type', 1)->sum('amount');
+            $group->pinned_income_count = (int) $group->incomes()->where('type', 2)->sum('amount');
         }
         
         $group->blacklist_count = $group->members()->where('disabled', 1)->count();
