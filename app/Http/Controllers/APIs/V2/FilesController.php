@@ -159,7 +159,7 @@ class FilesController extends Controller
      */
     protected function validateFileInDatabase(FileModel $fileModel, UploadedFile $file, callable $call): FileModel
     {
-        $hash = md5_file($file);
+        $hash = md5_file($file->getRealPath());
 
         return $fileModel->where('hash', $hash)->firstOr(function () use ($file, $call, $hash): FileModel {
             return call_user_func_array($call, [$file, $hash]);
