@@ -50,6 +50,7 @@ class CreateGroupRequest extends FormRequest
         return [
             'avatar.required' => '必须上传头像',
             'name.required' => '圈子名称不能为空',
+            'name.unique' => '圈子名称已存在',
             'tags.required' => '请选择标签',
             'mode.string' => '请选择圈子类型',
         ];
