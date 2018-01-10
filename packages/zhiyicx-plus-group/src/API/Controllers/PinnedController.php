@@ -574,7 +574,7 @@ class PinnedController extends Controller
 
     public function postPinnedCancel(Request $request, PostModel $post, PinnedModel $pinnedModel, Carbon $datetime)
     {
-        $user = $post->user;
+        $user = $request->user();
 
         $member = MemberModel::where('user_id', $user->id)
         ->where('group_id', $post->group_id)
