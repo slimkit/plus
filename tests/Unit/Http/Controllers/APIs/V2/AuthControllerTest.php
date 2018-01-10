@@ -82,7 +82,7 @@ class AuthControllerTest extends TestCase
         // Mock Request::input method
         $map = [
             ['login', '', '1'],
-            ['password', '', 'password']
+            ['password', '', 'password'],
         ];
         $request->expects($this->exactly(4))
                 ->method('input')

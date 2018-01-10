@@ -23,8 +23,8 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 use Illuminate\Http\Request;
 use function Zhiyi\Plus\username;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
