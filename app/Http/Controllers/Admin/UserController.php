@@ -61,7 +61,7 @@ class UserController extends Controller
         $follow = $request->query('follow', 0);
         $registStartDate = $request->query('regist_start_date');
         $registEndDate = $request->query('regist_end_date');
-        $location = explode(' ', $request->query('location', ''));
+        $location = array_filter(explode(' ', $request->query('location') ?: '')) ?? [];
 
         $builder = with(new User())->setHidden([])->newQuery();
 
