@@ -68,7 +68,7 @@
       <div class="form-group">
         <label class="col-sm-2 control-label">授权期限</label>
         <div class="col-sm-4">
-          <input type="number" class="form-control" placeholder="请输入有效期" min="0" v-model.number="expires" :disabled="! isPublic">
+          <input type="number" class="form-control" placeholder="请输入有效期" min="0" v-model.number="expires" :disabled="isPublic">
         </div>
         <span class="col-sm-6 help-block">设置签字授权有效期，单位是「秒」，默认一般为 3600 秒，时长表示单个资源授权访问授权的有效期。</span>
       </div>
