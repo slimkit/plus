@@ -270,14 +270,14 @@ class GroupMemberController
                     $caharge->action = 1;
                     $caharge->amount = $group->money;
                     $caharge->subject = '用户加圈，审核通过';
-                    $caharge->body = sprintf('用户%s申请加入《%s》圈子审核通过,圈主收益', $user->name, $group->name);
+                    $caharge->body = sprintf('用户%s申请加入《%s》圈子审核通过,圈主收益', $member->user->name, $group->name);
                     $caharge->status = 1;
                     $caharge->account = $member->user_id;
                     $caharge->save();
 
                     /// 保存圈内收入流水
                     $income = new GroupIncomeModel();
-                    $income->subject = sprintf('"%s "加入圈子', $user->name);
+                    $income->subject = sprintf('"%s "加入圈子', $member->user->name);
                     $income->type = 1;
                     $income->amount = $group->money;
                     $income->user_id = $member->user_id;
@@ -301,7 +301,7 @@ class GroupMemberController
                     $caharge->action = 0;
                     $caharge->amount = $group->money;
                     $caharge->subject = '用户加圈，审核拒绝';
-                    $caharge->body = sprintf('用户%s申请加入《%s》圈子审核拒绝,用户退款', $user->name, $group->name);
+                    $caharge->body = sprintf('用户%s申请加入《%s》圈子审核拒绝,用户退款', $member->user->name, $group->name);
                     $caharge->status = 1;
                     $caharge->account = $user->id;
                     $caharge->save();
