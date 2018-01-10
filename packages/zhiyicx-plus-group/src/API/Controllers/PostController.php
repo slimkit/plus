@@ -32,7 +32,8 @@ class PostController
         $posts = $group->posts()->when($type && $type == 'latest_reply', function ($query) use ($type) {
             return $query->leftJoin('comments', function ($join){
                 $join->on('group_posts.id', '=', 'comments.commentable_id')
-                     ->where('commentable_type', '=', 'posts');
+                    ->where('commentable_type', '=', 'group-posts')
+                    ->orderBy('comments.created_at', 'desc');
             })
             ->orderBy('comments.created_at', 'desc');
         }, function ($query) {
