@@ -43,7 +43,7 @@ class UserController extends Controller
     public function index(Request $request, ResponseFactoryContract $response, User $model)
     {
         $user = $request->user('api') ?: 0;
-        $ids = array_filter(explode(',', $request->query('id')));
+        $ids = array_filter(explode(',', $request->query('id', '')));
         $limit = max(min($request->query('limit', 15), 50), 1);
         $order = in_array($order = $request->query('order', 'desc'), ['asc', 'desc']) ? $order : 'desc';
         $since = $request->query('since', false);
