@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Auth;
 
 use Tymon\JWTAuth\JWT;
+use Zhiyi\Plus\Models\User as UserModel;
 
 class JWTAuthToken
 {
