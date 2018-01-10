@@ -546,11 +546,11 @@ class PinnedController extends Controller
             return response()->json(['message' => '已经申请过'])->setStatusCode(422);
         }
 
-        $target_user = $post->group->user;
+        $target_user = $post->group->founder->user;
 
         $pinnedModel->channel = 'post';
         $pinnedModel->target = $post->id;
-        $pinnedModel->user_id = $user->id;
+        $pinnedModel->user_id = $post->user_id;
         $pinnedModel->target_user = $target_user->id;
         $pinnedModel->amount = 0;
         $pinnedModel->day = $request->input('day');
@@ -562,9 +562,9 @@ class PinnedController extends Controller
             $pinnedModel->save();
 
             // 给用户发消息通知
-            $user->sendNotifyMessage(
+            $post->user->sendNotifyMessage(
                 'group:pinned-post', 
-                sprintf('%s,你的帖子《%s》已被系统管理员置顶', $user->name, $post->title), 
+                sprintf('%s,你的帖子《%s》已被系统管理员置顶', $post->user->name, $post->title), 
                 ['post' => $post, 'user' => $user, 'pinned' => $pinnedModel]
             );
         });
