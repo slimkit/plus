@@ -55,6 +55,13 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
     $api->get('/bootstrappers', API2\BootstrappersController::class.'@show');
 
+    // User authentication.
+    $api->group(['prefix' => 'auth'], function (RouteContract $api) {
+        $api->post('login', API2\AuthController::class.'@login');
+        $api->any('logout', API2\AuthController::class.'@logout');
+        $api->any('refresh', API2\AuthController::class.'@refresh');
+    });
+
     // Create user authentication token
     $api->post('/tokens', API2\TokenController::class.'@store');
 
