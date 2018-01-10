@@ -24,6 +24,7 @@ use Illuminate\Http\Request;
 use function Zhiyi\Plus\username;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\Auth\Guard;
 
 class AuthController extends Controller
 {
@@ -42,7 +43,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Contracts\Auth\Guard
      */
-    public function guard()
+    public function guard(): Guard
     {
         return Auth::guard('api');
     }
@@ -56,7 +57,7 @@ class AuthController extends Controller
      */
     public function login(Request $request): JsonResponse
     {
-        $login = $request->input('login', '');
+        $login = (string) $request->input('login', '');
         $credentials = [
             username($login) => $login,
             'password' => $request->input('password', ''),
