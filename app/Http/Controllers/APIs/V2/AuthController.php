@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\username;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use function Zhiyi\Plus\username;
 
 class AuthController extends Controller
 {
@@ -107,7 +107,7 @@ class AuthController extends Controller
         return $this->response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => $this->guard()->factory()->getTTL() * 60
+            'expires_in' => $this->guard()->factory()->getTTL() * 60,
         ]);
     }
 }
