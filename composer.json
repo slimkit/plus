@@ -85,7 +85,8 @@
             "type": "path",
             "url": "packages/zhiyicx-plus-group",
             "options": {
-                "symlink": true
+                "symlink": true,
+                "plus-soft": true
             }
         },
         {
@@ -120,7 +121,7 @@
         "symfony/polyfill-mbstring": "^1.4",
         "symfony/yaml": "^3.3",
         "tymon/jwt-auth": "1.0.0-rc.1",
-        "zhiyicx/plus-group": "~1.1",
+        "zhiyicx/plus-group": "1.1.0",
         "zhiyicx/plus-question": "1.1.0"
     },
     "require-dev": {
