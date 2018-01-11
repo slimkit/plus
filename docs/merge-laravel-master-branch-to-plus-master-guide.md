@@ -3,8 +3,8 @@
 - [场景描述](#overview)
 - [Merging 时机](#merging-time)
 - [添加 Laravel 远端到本地仓库](#add-laravel-repo)
-- [步骤 1（合并 Plus Master 分支）](#merged-plus-master-branch)
-- [步骤 2（合并 Laravel master 分支）](#merged-laravel-master-branch)
+- [步骤 1（合并 Plus `master` 分支）](#merged-plus-master-branch)
+- [步骤 2（合并 Laravel `master` 分支）](#merged-laravel-master-branch)
     - [解决合并冲突](#resolve-conflict)
 - [步骤 3 提交 `merge_laravel`](#push-merge-laravel-branch)
 - [步骤 4 将 `merge_laravel` 合并至 `master`](#merged-merge-laravel-branch-to-master)
@@ -12,8 +12,8 @@
 <a name="overview"></a>
 ## 场景描述
 
-ThinkSNS Plus 是基于 [laravel/laravel](https://github.com/laravel/laravel) 仓库进行开发的一个程序，
-前期是无纪律的直接向 Plus `master` 分支进行 「merge」 操作，造成 ThinkSNS Plus 的 Commits 线并非存粹，
+Plus（ThinkSNS Plus 缩写） 是基于 [laravel/laravel](https://github.com/laravel/laravel) 仓库进行开发的一个程序，
+前期是无纪律的直接向 Plus `master` 分支进行 「merge」 操作，造成 Plus 的 Commits 线并非存粹，
 而是包含了 Laravel 的 Commits。
 
 本指南从而解决这个问题，本指南将指导如何干净的跟随 Laravel 的更新。
@@ -26,10 +26,9 @@ ThinkSNS Plus 是基于 [laravel/laravel](https://github.com/laravel/laravel) �
 其次，更应当至少以 **周** 为节点关注 [laravel/laravel:master](https://github.com/laravel/laravel/tree/master) 的变动情况，
 但是这不是必须的。我们更应关注的是 [Laravel Releases](https://github.com/laravel/laravel/releases) 一旦发现基于 `master` 分支的新「tag」或者 `release` 发布时，我们应当进行 `merge` 操作。
 
----
-上次 Merge 的 Larave 版本: 5.5.28
-上次 Merge 操作执行时间: 2018-01-11
----
+上次 Merge 的 Larave 版本 | 上次 Merge 操作执行时间
+------------------------|----------------------
+5.5.28 | 2018-01-11
 
 <a name="add-laravel-repo"></a>
 ## 添加 Laravel 远端到本地仓库
@@ -41,7 +40,7 @@ ThinkSNS Plus 是基于 [laravel/laravel](https://github.com/laravel/laravel) �
 > 如果上述你本地早已完成，可忽略。
 
 <a name="merged-plus-master-branch"></a>
-## 步骤 1（合并 Plus Master 分支）
+## 步骤 1（合并 Plus `master` 分支）
 
 当我们发现可以 `merge` 操作的版本时，不要着急去进行合并。
 
@@ -52,7 +51,7 @@ ThinkSNS Plus 是基于 [laravel/laravel](https://github.com/laravel/laravel) �
 > 还有可能是另一个问题，团队成员在 `merge_laravel` 分支做出了非 merged 的干扰提交。
 
 <a name="merged-laravel-master-branch"></a>
-## 步骤 2（合并 Laravel master 分支）
+## 步骤 2（合并 Laravel `master` 分支）
 
 首先，我们应该切换到 `merge_laravel` 分支，可以执行 `git checkout merge_laravel` 切换。
 
@@ -75,7 +74,9 @@ git pull laravel master
 <a name="push-merge-laravel-branch"></a>
 ## 步骤 3 提交 `merge_laravel`
 
-上面步骤都完成后，你会在 `merge_laravel` 分支下产生几条 Commit 记录，此时，你应该先将这些没有提交到 ThinkSNS Plus 远端的 Commit 提交上去，并且等待持 **持续集成** 的测试结果，以此类方式与官方保持一致很少会出现持续集成失败的，很多时候失败都是更新了一些配置版本导致，尤其是前端，此时请在 `merge_laravel`
+上面步骤都完成后，你会在 `merge_laravel` 分支下产生几条 Commit 记录，此时，你应该先将这些没有提交到 Plus 远端的 Commit 提交上去，并且等待 **持续集成** 的测试结果，以此类方式与官方保持一致很少会出现持续集成失败的。
+
+很多时候失败都是更新了一些配置版本导致，尤其是前端，此时请在 `merge_laravel`
  下解决合并带来的不兼容问题。然后执行 `git push` 将 Commit 推到远端。
 
 <a name="merged-merge-laravel-branch-to-master"></a>
@@ -83,7 +84,7 @@ git pull laravel master
 
 此时，我们距离合并工作只只剩下最后一步了，就是将 `merge_laravel` 合并完成并解决了冲入的 Laravel 最新代码结构合并到 `master` 分支中。
 
-此时我们的合并必须采用 `squash` 模式进行合并，以免 Laravel 的更新工作给 ThinkSNS Plus 的 Commits 线带来分叉扰乱团队的历史记录。
+此时我们的合并必须采用 `squash` 模式进行合并，以免 Laravel 的更新工作给 Plus 的 Commits 线带来分叉扰乱团队的历史记录。
 
 首要任务是切换回 `master` 分支：`git checkout master`，然后我们执行 `squash` 进行合并：
 
