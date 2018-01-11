@@ -453,6 +453,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // 取回凭据
             $api->get('/orders/{order}', API2\NewWalletRechargeController::class.'@retrieve');
+
+            // 转账
+            $api->post('/transfer', API2\TransferController::class.'@transfer')->middleware('operation');
         });
 
         /*
