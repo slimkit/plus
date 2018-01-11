@@ -78,7 +78,8 @@
             "type": "path",
             "url": "packages/slimkit-plus-socialite",
             "options": {
-                "symlink": true
+                "symlink": true,
+                "plus-soft": true
             }
         },
         {
