@@ -5,6 +5,7 @@ namespace Zhiyi\PlusGroup\API\Controllers;
 use Illuminate\Http\Request;
 use Zhiyi\PlusGroup\Models\Post;
 use Zhiyi\PlusGroup\Models\GroupMember;
+use Zhiyi\PlusGroup\Repository\Post as PostRepository;
 
 class PostCollectionController
 {
@@ -51,7 +52,7 @@ class PostCollectionController
      * @param FeedRepository $repository
      * @return mixed
      */
-    public function collections(Request $request, Post $post)
+    public function collections(Request $request, Post $post, PostRepository $repository)
     {
         $user = $request->user();
 
@@ -66,12 +67,9 @@ class PostCollectionController
         ->offset($offset)
         ->get();
 
-        $items = $posts->map(function ($post) {
-            $images = $post->images;
-            unset($post->images);
-            $post->images = $images->map(function ($image) {
-                return ['id' => $image->id, 'size' => $image->size];
-            });
+        $items = $posts->map(function ($post) use ($user, $repository) {
+            $repository->formatCommonList($user, $post);
+
             return $post;
         });
 
