@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -89,6 +91,7 @@ class LikeController extends Controller
         $after = $request->query('after', false);
         $userID = $request->user('api')->id ?? 0;
         $likes = $news->likes()
+            ->whereHas('user')
             ->with('user')
             ->when($after, function ($query) use ($after) {
                 return $query->where('id', '<', $after);

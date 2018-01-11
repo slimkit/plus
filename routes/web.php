@@ -16,10 +16,19 @@
  * +----------------------------------------------------------------------+
  */
 
-Route::get('/', 'HomeController@welcome');
-Route::get('/auth/login', 'Auth\\LoginController@showLoginForm')->name('login');
+// if (! Route::getRoutes()->hasNamedRoute('home')) {
+    Route::get('/', 'HomeController@welcome')->name('home');
+// }
+
+if (! Route::getRoutes()->hasNamedRoute('login')) {
+    Route::get('/auth/login', 'Auth\\LoginController@showLoginForm')->name('login');
+}
+
+if (! Route::getRoutes()->hasNamedRoute('logout')) {
+    Route::any('auth/logout', 'Auth\\LoginController@logout')->name('logout');
+}
+
 Route::post('/auth/login', 'Auth\\LoginController@login');
-Route::any('auth/logout', 'Auth\\LoginController@logout')->name('logout');
 
 Route::prefix('admin')
     ->namespace('Admin')

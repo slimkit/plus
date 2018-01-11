@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -26,7 +28,7 @@ namespace Zhiyi\Plus;
  */
 function validateChinaPhoneNumber(string $number): bool
 {
-    return preg_match('/^(\+?0?86\-?)?((13\d|14[57]|15[^4,\D]|17[3678]|18\d)\d{8}|170[059]\d{7})$/', $number);
+    return (bool) preg_match('/^(\+?0?86\-?)?((13\d|14[57]|15[^4,\D]|17[3678]|18\d)\d{8}|170[059]\d{7})$/', $number);
 }
 
 /**
@@ -37,7 +39,7 @@ function validateChinaPhoneNumber(string $number): bool
  */
 function validateUsername(string $username): bool
 {
-    return preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $username);
+    return (bool) preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $username);
 }
 
 /**

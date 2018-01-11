@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -211,15 +213,15 @@ class ContributeController extends Controller
         if ($news->user_id !== $user->id) {
             return $response->json(['message' => ['你没有权限操作']], 403);
 
-            // 非驳回状态，不允许编辑
+        // 非驳回状态，不允许编辑
         } elseif ($news->audit_status !== 3) {
             return $response->json(['message' => ['当前状态不可编辑']], 422);
 
-            // 申请退款，无法进行编辑
+        // 申请退款，无法进行编辑
         } elseif ($news->audit_status === 5) {
             return $response->json(['message' => ['退款中，无法修改']], 422);
 
-            // 极端情况，一般审核超过三次，后台会删除，不排除不删除。
+        // 极端情况，一般审核超过三次，后台会删除，不排除不删除。
         } elseif ($news->audit_count >= 3) {
             return $response->json(['message' => ['您没有权限修改']], 403);
         }
@@ -295,10 +297,10 @@ class ContributeController extends Controller
 
         if ($news->user_id !== $user->id) {
             return $response->json(['message' => ['你没有权限操作']], 403);
-            // 审核中
+        // 审核中
         } elseif ($news->audit_status === 1) {
             return $response->json(['message' => ['审核中禁止删除']], 422);
-            // 退款中
+        // 退款中
         } elseif ($news->audit_status === 5) {
             return $response->json(['message' => ['退款中禁止删除']], 422);
         }

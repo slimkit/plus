@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -24,6 +26,7 @@ use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned;
 
 class CommentController extends Controller
 {
@@ -121,14 +124,20 @@ class CommentController extends Controller
      * @param  Comment $comment
      * @return mix
      */
-    public function destroy(Request $request, news $news, Comment $comment)
+    public function destroy(Request $request, news $news, Comment $comment, NewsPinned $pinnedModel)
     {
         $user = $request->user();
         if ($comment->user_id !== $user->id) {
             return $response->json(['message' => ['没有权限']], 403);
         }
 
-        $news->getConnection()->transaction(function () use ($user, $news, $comment) {
+        $pinned = $pinnedModel->where('channel', 'news:comment')->where('raw', $comment->id)->where('state', 0)->first();
+
+        $news->getConnection()->transaction(function () use ($user, $news, $comment, $pinned) {
+            if ($pinneds) {
+                $user->wallet()->increment('balance', $pinned->amount);
+            }
+
             $news->decrement('comment_count', 1);
             $user->extra()->decrement('comments_count', 1);
             $comment->delete();

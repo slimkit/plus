@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -80,5 +82,6 @@ class Kernel extends HttpKernel
         'throttle'   => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'ability'    => \Zhiyi\Plus\Http\Middleware\UserAbility::class,
         'sensitive'  => \Zhiyi\Plus\Http\Middleware\DisposeSensitive::class,
+        'operation'  => \Zhiyi\Plus\Http\Middleware\SensitiveOperation::class,
     ];
 }

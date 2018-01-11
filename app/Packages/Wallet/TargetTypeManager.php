@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -37,7 +39,7 @@ class TargetTypeManager extends Manager
     }
 
     /**
-     * Get the order target type dirver.
+     * Get the order target type driver.
      *
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
@@ -56,8 +58,50 @@ class TargetTypeManager extends Manager
     protected function createUserDriver(): Target
     {
         $driver = $this->app->make(TargetTypes\UserTarget::class);
-        $dirver->setOrder($this->order);
+        $driver->setOrder($this->order);
 
-        return $dirver;
+        return $driver;
+    }
+
+    /**
+     * Create widthdraw target type driver.
+     *
+     * @return \Zhiyi\Plus\Packages\TargetTypes\Target
+     * @author BS <414606094@qq.com>
+     */
+    protected function createWidthdrawDriver(): Target
+    {
+        $driver = $this->app->make(TargetTypes\WidthdrawTarget::class);
+        $driver->setOrder($this->order);
+
+        return $driver;
+    }
+
+    /**
+     * Create Rew target type driver.
+     *
+     * @return \Zhiyi\Plus\Packages\TargetTypes\Target
+     * @author hh <915664508@qq.com>
+     */
+    protected function createRewardDriver(): Target
+    {
+        $driver = $this->app->make(TargetTypes\RewardTarget::class);
+        $driver->setOrder($this->order);
+
+        return $driver;
+    }
+
+    /**
+     * Create Charge target type driver.
+     *
+     * @return \Zhiyi\Plus\Packages\TargetTypes\Target
+     * @author BS <414606094@qq.com>
+     */
+    protected function createRechargePingPPDriver(): Target
+    {
+        $driver = $this->app->make(TargetTypes\ReChargeTarget::class);
+        $driver->setOrder($this->order);
+
+        return $driver;
     }
 }

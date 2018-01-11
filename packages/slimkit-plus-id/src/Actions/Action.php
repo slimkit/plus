@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -66,6 +68,10 @@ class Action
     {
         $mode = $mode ?: $this->mode();
 
+        $sign = $this->request->sign;
+        $minutes = \Illuminate\Support\Carbon::now()->addSeconds(300);
+        cache([$sign => true], $minutes);
+
         if ($mode === 'json') {
             return response()->json(
                 $message->toArray()
@@ -88,6 +94,7 @@ class Action
             $this->checkTimeOut(),
             $this->checkSign(),
         ];
+        $status[] = ! cache($this->request->sign);
 
         foreach ($status as $check) {
             if ($check !== true) {
@@ -116,7 +123,8 @@ class Action
     {
         $action = $this->getSignAction();
 
-        // dd($this->server->sign($action), $action);
+        // 增加五分钟有效期的时间验证. 保证不会被伪造请求。
+        $action['tc'] = floor(time() / 300);
 
         if ($this->request->sign === $this->server->sign($action)) {
             return true;

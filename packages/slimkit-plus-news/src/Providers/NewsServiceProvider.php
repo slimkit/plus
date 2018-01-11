@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -24,7 +26,6 @@ use Zhiyi\Plus\Support\ManageRepository;
 use Zhiyi\Plus\Support\BootstrapAPIsEventer;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentNews\asset;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentNews\base_path as component_base_path;
 
@@ -77,7 +78,7 @@ class NewsServiceProvider extends ServiceProvider
     {
         $this->app->make(ManageRepository::class)->loadManageFrom('资讯', 'news:admin', [
             'route' => true,
-            'icon' => asset('news-icon.png'),
+            'icon' => asset('assets/news/news-icon.png'),
         ]);
 
         $this->mergeConfigFrom(

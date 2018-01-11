@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -19,6 +21,7 @@
 namespace SlimKit\PlusSocialite\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use SlimKit\PlusSocialite\SocialiteManager;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -62,5 +65,9 @@ class AppServiceProvider extends ServiceProvider
 
         // Merge config.
         $this->mergeConfigFrom($configFilename, 'socialite');
+
+        $this->app->singleton(SocialiteManager::class, function ($app) {
+            return new SocialiteManager($app);
+        });
     }
 }

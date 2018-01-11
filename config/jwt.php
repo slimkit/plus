@@ -33,7 +33,6 @@ return [
     */
 
     'secret' => env('JWT_SECRET'),
-    'single_auth' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -108,7 +107,7 @@ return [
     |
     */
 
-    'ttl' => env('JWT_TTL', 20160),
+    'ttl' => env('JWT_TTL', 60),
 
     /*
     |--------------------------------------------------------------------------
@@ -127,7 +126,7 @@ return [
     |
     */
 
-    'refresh_ttl' => env('JWT_REFRESH_TTL', 40320),
+    'refresh_ttl' => env('JWT_REFRESH_TTL', 20160),
 
     /*
     |--------------------------------------------------------------------------
@@ -250,7 +249,7 @@ return [
         |
         */
 
-        'storage' => Zhiyi\Plus\Auth\JWTAuthStorageAdapter::class,
+        'storage' => Tymon\JWTAuth\Providers\Storage\Illuminate::class,
 
     ],
 

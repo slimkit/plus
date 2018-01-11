@@ -48,11 +48,19 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
     $api->post('/pingpp/webhooks', API2\PingPlusPlusChargeWebHooks::class.'@webhook');
 
+    $api->post('/plus-pay/webhooks', API2\NewWalletRechargeController::class.'@webhook');
     /*
     | 应用启动配置.
     */
 
     $api->get('/bootstrappers', API2\BootstrappersController::class.'@show');
+
+    // User authentication.
+    $api->group(['prefix' => 'auth'], function (RouteContract $api) {
+        $api->post('login', API2\AuthController::class.'@login');
+        $api->any('logout', API2\AuthController::class.'@logout');
+        $api->any('refresh', API2\AuthController::class.'@refresh');
+    });
 
     // Create user authentication token
     $api->post('/tokens', API2\TokenController::class.'@store');
@@ -427,6 +435,27 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
              */
 
             $api->get('/charges/{charge}', API2\WalletChargeController::class.'@show');
+        });
+
+        $api->group(['prefix' => 'plus-pay'], function (RouteContract $api) {
+
+            // 获取提现记录
+            $api->get('/cashes', API2\NewWalletCashController::class.'@show');
+
+            // 发起提现申请
+            $api->post('/cashes', API2\NewWalletCashController::class.'@store')->middleware('operation');
+
+            // 发起充值
+            $api->post('/recharge', API2\NewWalletRechargeController::class.'@store');
+
+            // 钱包订单列表
+            $api->get('/orders', API2\NewWalletRechargeController::class.'@list');
+
+            // 取回凭据
+            $api->get('/orders/{order}', API2\NewWalletRechargeController::class.'@retrieve');
+
+            // 转账
+            $api->post('/transfer', API2\TransferController::class.'@transfer')->middleware('operation');
         });
 
         /*

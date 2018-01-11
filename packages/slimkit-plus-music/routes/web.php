@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -16,8 +18,8 @@
  * +----------------------------------------------------------------------+
  */
 
-Route::any('/component-example', 'ExampleWebController@example');
-Route::any('/component-example/admin', 'ExampleWebController@admin')
-    ->middleware('auth:web')
-    ->name('example.admin');
+// Route::any('/component-example', 'ExampleWebController@example');
+// Route::any('/component-example/admin', 'ExampleWebController@admin')
+//     ->middleware('auth:web')
+//     ->name('example.admin');
     // ->middleware('role:admin');

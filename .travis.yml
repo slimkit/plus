@@ -37,10 +37,10 @@ before_install:
 install:
   - composer install
   - php artisan key:generate
+  - php artisan jwt:secret --force
   - php artisan migrate -vvv
   - php artisan db:seed -vvv
   - php artisan vendor:publish --all -vvv
-  - php artisan jwt:secret
 
 script:
   - php vendor/bin/phpunit --coverage-clover=./storage/logs/coverage.xml

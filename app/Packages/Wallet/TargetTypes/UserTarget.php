@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -103,7 +105,7 @@ class UserTarget extends Target
         $order = new WalletOrderModel();
         $order->owner_id = $this->targetWallet->getWalletModel()->owner_id;
         $order->target_type = Order::TARGET_TYPE_USER;
-        $order->target_id = $this->ownerWallet()->getWalletModel()->owner_id;
+        $order->target_id = $this->ownerWallet->getWalletModel()->owner_id;
         $order->title = static::ORDER_TITLE;
         $order->type = $this->getTargetUserOrderType();
         $order->amount = $this->order->getOrderModel()->amount;
@@ -141,7 +143,7 @@ class UserTarget extends Target
             Order::TYPE_INCOME => 'increment',
             Order::TYPE_EXPENSES => 'decrement',
         ];
-        $method = $method[$order->getOrderModel()->type];
+        $method = $methods[$order->getOrderModel()->type];
         $wallet->$method($order->getOrderModel()->amount);
     }
 }

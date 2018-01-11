@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -43,5 +45,38 @@ class TypeManager extends Manager
     protected function createUserDriver(): Type
     {
         return $this->app->make(Types\UserType::class);
+    }
+
+    /**
+     * Create widthdraw driver.
+     *
+     * @return \Zhiyi\Plus\Packages\Wallet\Types\Type
+     * @author BS <414606094@qq.com>
+     */
+    protected function createWidthdrawDriver(): Type
+    {
+        return $this->app->make(Types\WidthdrawType::class);
+    }
+
+    /**
+     * Create reward driver.
+     *
+     * @return \Zhiyi\Plus\Packages\Wallet\Types\Type
+     * @author hh <915664508@qq.com>
+     */
+    protected function createRewardDriver(): Type
+    {
+        return $this->app->make(Types\RewardType::class);
+    }
+
+    /**
+     * Create recharge driver.
+     *
+     * @return \Zhiyi\Plus\Packages\Wallet\Types\Type
+     * @author BS <414606094@qq.com>
+     */
+    protected function createRechargePingPPDriver(): Type
+    {
+        return $this->app->make(Types\RechargeType::class);
     }
 }

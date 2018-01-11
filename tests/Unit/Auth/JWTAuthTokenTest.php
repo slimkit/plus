@@ -27,21 +27,6 @@ class JWTAuthTokenTest extends TestCase
     use DatabaseTransactions;
 
     /**
-     * Test guard.
-     *
-     * @return void
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function testGuard()
-    {
-        $jwtAuthToken = $this->app->make(
-            \Zhiyi\Plus\Auth\JWTAuthToken::class
-        );
-
-        $this->assertInstanceOf(\Illuminate\Contracts\Auth\Guard::class, $jwtAuthToken->guard());
-    }
-
-    /**
      * Test create method.
      *
      * @return void

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -18,7 +20,7 @@
 
 namespace Zhiyi\Plus\Packages\Wallet;
 
-use Zhiyi\Plus\Models\WalletOrder as WallerOrderModel;
+use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
 
 class Order
 {
@@ -59,7 +61,7 @@ class Order
      */
     public function __construct($order = null)
     {
-        if ($order instanceof WallerOrderModel) {
+        if ($order instanceof WalletOrderModel) {
             $this->setOrderModel($order);
         }
     }
@@ -70,7 +72,7 @@ class Order
      * @param \Zhiyi\Plus\Models\WalletOrder $order
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function setOrderModel(WallerOrderModel $order)
+    public function setOrderModel(WalletOrderModel $order)
     {
         $this->order = $order;
 
@@ -83,21 +85,39 @@ class Order
      * @return \Zhiyi\Plus\Models\WalletOrder
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function getOrderModel(): WallerOrderModel
+    public function getOrderModel(): WalletOrderModel
     {
         return $this->order;
     }
 
+    /**
+     * Has order success.
+     *
+     * @return bool
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function hasSuccess(): bool
     {
         return $this->getOrderModel()->state === static::STATE_SUCCESS;
     }
 
+    /**
+     * Has order fail.
+     *
+     * @return bool
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function hasFail(): bool
     {
         return $this->getOrderModel()->state === static::STATE_FAIL;
     }
 
+    /**
+     * Has order wait.
+     *
+     * @return bool
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function hasWait(): bool
     {
         return $this->getOrderModel()->state === static::STATE_WAIT;
@@ -111,7 +131,7 @@ class Order
      */
     public function save()
     {
-        return $this->order->save();
+        return $this->getOrderModel()->save();
     }
 
     /**
@@ -122,7 +142,7 @@ class Order
      */
     public function saveStateSuccess()
     {
-        $this->order->state = static::STATE_SUCCESS;
+        $this->getOrderModel()->state = static::STATE_SUCCESS;
 
         return $this->save();
     }
@@ -135,7 +155,7 @@ class Order
      */
     public function saveStateFial()
     {
-        $this->order->state = static::STATE_FAIL;
+        $this->getOrderModel()->state = static::STATE_FAIL;
 
         return $this->save();
     }
@@ -146,16 +166,16 @@ class Order
      * @return bool
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function autoComplete(): bool
+    public function autoComplete(...$arguments): bool
     {
-        if ($this->order->state !== static::STATE_WAIT) {
+        if (! $this->hasWait()) {
             return true;
         }
 
         $manager = $this->getTargetTypeManager();
         $manager->setOrder($this);
 
-        return $manager->handle();
+        return $manager->handle(...$arguments);
     }
 
     /**

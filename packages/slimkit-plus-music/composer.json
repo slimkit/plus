@@ -9,7 +9,7 @@
             "role": "Developer"
         }
     ],
-  "autoload": {
+    "autoload": {
         "files": [
             "src/helpers.php"
         ],
