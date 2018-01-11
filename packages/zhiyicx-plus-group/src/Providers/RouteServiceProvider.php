@@ -19,18 +19,6 @@ class RouteServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(
             $this->app->make('path.plus-group').'/router.php'
         );
-
-        Route::model('group', Models\Group::class, function () {
-            throw new \Exception("圈子不存在或已删除");
-        });
-
-        Route::model('post', Models\Post::class, function () {
-            throw new \Exception("帖子不存在或已删除");
-        });
-
-        Route::model('member', Models\GroupMember::class, function () {
-            throw new \Exception("成员信息不存在或已删除");
-        });
     }
 
     /**
