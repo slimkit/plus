@@ -175,7 +175,11 @@ class GroupReportController extends Controller
         $cause =  $request->input('cause');
 
         if (in_array($report->status, [1, 2])) {
-            return response()->json(['message' => '举报已处理']);
+            return response()->json(['message' => '举报已处理'], 422);
+        }
+
+        if (! $report->resource) {
+            return response()->json(['message' => '被举报资源不存在或已删除'], 404);
         }
 
         DB::beginTransaction();
@@ -211,7 +215,7 @@ class GroupReportController extends Controller
         } catch (\Exception $exception) {
 
             DB::rollback();
-            return response()->json(['message' => $exception->getMessage()]);
+            return response()->json(['message' => $exception->getMessage()], 500);
         }
     }
 
@@ -227,7 +231,7 @@ class GroupReportController extends Controller
         $cause =  $request->input('cause');
 
         if (in_array($report->status, [1, 2])) {
-            return response()->json(['message' => '举报已处理']);
+            return response()->json(['message' => '举报已处理'], 422);
         }
 
         $request->cause = $cause;
