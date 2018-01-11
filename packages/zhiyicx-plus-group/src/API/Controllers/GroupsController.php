@@ -21,6 +21,13 @@ use Zhiyi\PlusGroup\Models\GroupMemberLog as GroupMemberLogModel;
 
 class GroupsController
 {
+    // 圈子封闭等级
+    protected $mode_level = [
+        'paid' => 3,
+        'private' => 2,
+        'public' => 1,
+    ];
+
     /**
      * List groups of category.
      *
@@ -143,25 +150,36 @@ class GroupsController
     {
 
         $user = $request->user();
+        $member = $group->members()->where('user_id', $user->id)->where('audit', 1)->where('disabled', 0)->first();
 
         // 审核未通过或被禁用
         if (in_array($group->audit, [0,2,3])) {
             return response()->json(['message' => '圈子审核未通过或已被禁用,不能进行修改'], 403);
         }
 
-        // 是否圈主
-        if ($group->founder->user_id !== $user->id) {
+        // 是否为普通成员
+        if ($member->role === 'member') {
             return response()->json(['message' => '无权限操作'], 403);
         }
 
         $mode = in_array($mode = $request->input('mode'), ['public', 'private', 'paid']) ? $mode : $group->mode;
 
+        // 圈子私密程度只能由低到高
+        if ($this->mode_level[$mode] < $this->mode_level[$group->mode]) {
+            return response()->json(['message' => ['不能修改圈子类型']], 422);
+        }
+
         // 存在未审核成员
-        if ($mode !== 'paid' && $mode != $group->mode &&  $group->members()->where('audit', 0)->count()) {
+        if ($mode != $group->mode &&  $group->members()->where('audit', 0)->count()) {
             return response()->json(['message' => '当前圈子存在未审核成员,不能修改圈子类型'], 403);
         }
 
-        $values = $request->only(['name', 'location', 'longitude', 'latitude', 'geo_hash', 'notice', 'category_id',  'summary', 'notice']);
+        $values = $request->only(['name', 'location', 'longitude', 'latitude', 'geo_hash', 'category_id',  'summary', 'notice']);
+
+        // 管理员只能修改简介和公告
+        if ($member->role === 'administrator') {
+            $values = $request->only(['summary', 'notice']);
+        }
 
         foreach ($values as $field => $value) {
             $group->$field = $value;
