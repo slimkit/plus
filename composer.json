@@ -77,12 +77,16 @@
         {
             "type": "path",
             "url": "packages/slimkit-plus-socialite",
-            "options": { "symlink": true }
+            "options": {
+                "symlink": true
+            }
         },
         {
             "type": "path",
             "url": "packages/zhiyicx-plus-group",
-            "options": { "symlink": true }
+            "options": {
+                "symlink": true
+            }
         },
         {
             "type": "path",
@@ -117,7 +121,7 @@
         "symfony/yaml": "^3.3",
         "tymon/jwt-auth": "1.0.0-rc.1",
         "zhiyicx/plus-group": "~1.1",
-        "zhiyicx/plus-question": "~1.1"
+        "zhiyicx/plus-question": "1.1.0"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
