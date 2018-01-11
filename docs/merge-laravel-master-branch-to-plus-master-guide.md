@@ -9,7 +9,7 @@
 - [步骤 3 提交 `merge_laravel`](#push-merge-laravel-branch)
 - [步骤 4 将 `merge_laravel` 合并至 `master`](#merged-merge-laravel-branch-to-master)
 
-<h2 id="overview">场景描述 {#overview}</h2>
+<h2 id="overview">场景描述</h2>
 
 ThinkSNS Plus 是基于 [laravel/laravel](https://github.com/laravel/laravel) 仓库进行开发的一个程序，
 前期是无纪律的直接向 Plus `master` 分支进行 「merge」 操作，造成 ThinkSNS Plus 的 Commits 线并非存粹，
