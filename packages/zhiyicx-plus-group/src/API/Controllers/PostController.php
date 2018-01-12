@@ -64,7 +64,7 @@ class PostController
         });
 
         return response()->json([
-            'pinneds' => $offset > 0 ? collect([]) : app()->call([$this, 'pinneds'], ['group' => $group]),
+            'pinneds' => ($type == 'latest_reply' || $offset > 0) ? collect([]) : app()->call([$this, 'pinneds'], ['group' => $group]),
             'posts' => $items,
         ], 200);
     }
