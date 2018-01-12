@@ -294,6 +294,13 @@ class GroupMemberController
                         $message,
                         ['group' => $group]
                     );
+
+                    // 增加成员数
+                    $group->increment('users_count');
+
+                    // 保存成员状态
+                    $member->audit = $status;
+                    $member->save();
                 } else {
                     // 流水
                     $caharge->user_id = $member->user_id;
@@ -308,34 +315,25 @@ class GroupMemberController
                     // 用户退款
                     $member->user->wallet()->increment('balance', $group->money);
 
-                    // 发送通知s
+                    // 发送通知
                     $message = sprintf("您申请加入的圈子%s已被管理员拒绝", $group->name);
                     $member->user->sendNotifyMessage(
                         'group:join:reject',
                         $message,
                         ['group' => $group]
                     );
+
+                    // 删除待审成员
+                    $member->delete();
                 }
             }
             
-            // 增加成员数
-            if ($status === 1) {
-                $group->increment('users_count');
-            }
-
-            $member->audit = $status;
-            $member->save();
-
+            // 保存成员审核记录
             if ($log = $member->logs()->where('status', 0)->where('auditer', null)->first()) {
                 $log->status = $status;
                 $log->auditer = $user->id;
                 $log->audit_at = $datetime;
                 $log->save();
-            }
-
-            // 拒绝删除该成员数据
-            if ($status == 2) {
-                $member->delete();
             }
 
             DB::commit();
