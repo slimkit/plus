@@ -35,7 +35,8 @@ class CreateCurrencyOrdersTable extends Migration
             $table->string('title')->comment('订单标题');
             $table->text('body')->nullable()->default(null)->comment('详情');
             $table->tinyInteger('type')->comment('1：入账、-1：支出');
-            $table->integer('commodity_id')->unsigned()->default(0)->comment('商品id');
+            $table->string('target_type')->comment('操作类型');
+            $table->integer('target_id')->unsigned()->default(0)->comment('目标id');
             $table->integer('currency')->unsigned()->comment('货币类型ID');
             $table->integer('amount')->unsigned()->comment('订单金额');
             $table->tinyInteger('state')->nullable()->default(0)->comment('订单状态，0: 等待，1：成功，-1: 失败');
