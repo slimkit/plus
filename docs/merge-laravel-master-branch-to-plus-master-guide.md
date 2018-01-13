@@ -45,7 +45,7 @@ Plus（ThinkSNS Plus 缩写） 是基于 [laravel/laravel](https://github.com/la
 当我们发现可以 `merge` 操作的版本时，不要着急去进行合并。
 
 首先我们使用 `git checkout merge_laravel` 进入 **合并操作分支**，进入 `merge_laravel` 分支后我们应该使用常规 `merge` 将 `master` 
-分支代码合并过来，我们现在执行 `git merge --no-ff master`
+分支代码合并过来，我们现在执行 `git merge master`
 
 > 此时，我们已经把 master 代码合并到了 `merge_laravel` 分支了，如果你出现了冲突，那只能说明一个问题，团队成员以前的 `merge` 操作对 `merge_laravel` 产生了干扰。
 > 还有可能是另一个问题，团队成员在 `merge_laravel` 分支做出了非 merged 的干扰提交。
