@@ -52,7 +52,7 @@ class CheckGroup extends FormRequest
                 }),
             ],
             'desc' => 'required|string',
-            'numbers' => 'array',
+            'numbers' => 'string',
             'public' => 'boolean|nullable',
             'members_only' => 'nullable',
             'allowinvites' => 'boolean|nullable',

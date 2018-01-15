@@ -46,7 +46,7 @@ class GroupController extends EaseMobController
             $options['members_only'] = (bool) $request->input('members_only', 0);
             $options['allowinvites'] = (bool) $request->input('allowinvites', 1);
             $options['owner'] = (string) $request->user()->id;
-            $request->input('members') && $options['members'] = $request->input('members');
+            $request->input('members') && $options['members'] = explode(',', $request->input('members'));
 
             $url = $this->url.'chatgroups';
             $data['headers'] = [
