@@ -70,25 +70,7 @@ class GroupController extends EaseMobController
 
             $imGroup->im_group_id = $res->data->groupid;
             $imGroup->user_id = $request->user()->id;
-            $imGroup->group_face = $request->input('group_face', 0);
             $imGroup->type = $request->input('type', 0);
-
-            // 创建头像
-            $fileWith = FileWith::where('id', $imGroup->group_face)
-                ->where('channel', null)
-                ->where('raw', null)
-                ->first();
-
-            if (! $imGroup->save()) {
-                return response()->json([
-                    'message' => ['创建失败'],
-                    'group_id' => $res->error_description,
-                ])->setStatusCode(500);
-            }
-            // 保存群头像
-            $fileWith->channel = 'im:group_face';
-            $fileWith->raw = $imGroup->id;
-            $fileWith->save();
 
             // 发送消息至群组
             $cmd_content = $request->user()->name.'创建了群聊！';
