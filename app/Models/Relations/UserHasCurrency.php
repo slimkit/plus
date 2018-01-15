@@ -20,17 +20,17 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models\Relations;
 
-use Zhiyi\Plus\Models\CurrencyType;
+use Zhiyi\Plus\Models\Currency;
 
-trait UserHasCurrencyType
+trait UserHasCurrency
 {
     /**
      * user has currencies.
      *
      * @author BS <414606094@qq.com>
      */
-    public function CurrencyTypes()
+    public function Currencies()
     {
-        return $this->hasMany(CurrencyType::class, 'owned_id', 'id');
+        return $this->hasMany(Currency::class, 'owner_id', 'id');
     }
 }
