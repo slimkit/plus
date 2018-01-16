@@ -17,6 +17,7 @@ class CreateTestGroupWorkerProjectsTable extends Migration
             $table->increments('id');
             $table->string('name')->comment('Project Name');
             $table->string('github')->comment('Project GitHub Repo URL');
+            $table->string('branch')->comment('Project GitHub Repo Upload File Branch');
             $table->integer('issues_count')->unsgined()->comment('Issues Count');
             $table->integer('task_count')->unsgined()->comment('Test Task Count');
             $table->integer('task_completed_count')->unsgined()->nullable()->default(0)->comment('Test Task Completed Count');
