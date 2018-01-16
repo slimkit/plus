@@ -16,4 +16,10 @@ mix.setResourceRoot('/assets/test-group-worker');
 mix.sourceMaps(! mix.inProduction());
 
 // More documents see: https://laravel.com/docs/master/mix
-mix.js('resources/assets/main.js', 'assets/app.js');
+if (mix.inProduction()) {
+  mix.js('resources/assets/main.js', 'assets/app.js');
+
+// Dev build.
+} else {
+  mix.js('resources/assets/main.js', '../../public/assets/test-group-worker/app.js');
+}
