@@ -17,6 +17,6 @@ use Illuminate\Contracts\Routing\Registrar as RouteRegisterContract;
 
 Route::group(['prefix' => 'test-group-worker'], function (RouteRegisterContract $route) {
 
-    // Home Router.
-    $route->get('/', Web\HomeController::class.'@index');
+    // Fallback route.
+    $route->fallback(Web\HomeController::class.'@index');
 });
