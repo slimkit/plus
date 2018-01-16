@@ -156,8 +156,8 @@ class EaseMobController
 
             $url = $this->url.'users';
             $options = [
-                'username' => $request->user_id,
-                'password' => $this->getImPwdHash($request->user_id),
+                'username' => $request->user()->user_id,
+                'password' => $this->getImPwdHash($request->user()->user_id),
             ];
             $data['body'] = json_encode($options);
             $data['headers'] = [

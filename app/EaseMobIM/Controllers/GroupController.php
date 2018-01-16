@@ -257,7 +257,6 @@ class GroupController extends EaseMobController
             }
 
             return response()->json([
-                'message' => ['获取成功'],
                 'im_groups' => $groupCon->data,
             ])->setStatusCode(200);
         };
