@@ -51,6 +51,7 @@ class RoleSeeder extends Seeder
             'name' => 'founder',
             'display_name' => '创始人',
             'description' => '站点创始人',
+            'non_delete' => 1,
         ]);
 
         $abilities = Ability::all();
@@ -87,6 +88,7 @@ class RoleSeeder extends Seeder
             'name' => 'disabler',
             'display_name' => '禁用用户',
             'description' => '被禁止登录用户， 需要手动设置',
+            'non_delete' => 1,
         ]);
     }
 }
