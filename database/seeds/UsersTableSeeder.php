@@ -43,7 +43,7 @@ class UsersTableSeeder extends Seeder
     {
         $user = User::create(['name' => 'root', 'password' => bcrypt('root')]);
         $user->roles()->sync(
-            Role::all()
+            Role::where('non_delete', '!=', 1)->get()
         );
     }
 }

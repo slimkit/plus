@@ -18,32 +18,35 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Models;
+namespace Zhiyi\Plus\Packages\Currency\Processes;
 
-use Illuminate\Database\Eloquent\Model;
+use Zhiyi\Plus\Packages\Currency\Order;
+use Zhiyi\Plus\Packages\Currency\Process;
+use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 
-class Currency extends Model
+class User extends Process
 {
-    /**
-     * The primary key for the model.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'owner_id';
+    public function createOrder(int $owner_id, string $title, string $body, int $type, int $amount, int $target_id = 0): CurrencyOrderModel
+    {
+        $user = $this->checkUser($owner_id);
+        $target_user = $this->checkUser($target_id);
 
-    /**
-     * The "type" of the auto-incrementing ID.
-     *
-     * @var string
-     */
-    protected $keyType = 'int';
+        $order = new CurrencyOrderModel();
+        $order->owner_id = $user->id;
+        $order->title = $title;
+        $order->body = $body;
+        $order->type = $type;
+        $order->currency = $this->currency_type->id;
+        $order->target_type = Order::TARGET_TYPE_USER;
+        $order->target_id = $target_id;
+        $order->amount = $amount;
 
-    /**
-     * Indicates if the IDs are auto-incrementing.
-     *
-     * @var bool
-     */
-    public $incrementing = false;
+        $order->save();
 
-    public $fillable = ['owner_id', 'type', 'sum'];
+        return $order;
+    }
+
+    public function complete()
+    {
+    }
 }

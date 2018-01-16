@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\EaseMobIm;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CheckGroup extends FormRequest
@@ -44,15 +43,8 @@ class CheckGroup extends FormRequest
     {
         return [
             'groupname' => 'required|string',
-            'group_face' => [
-                'integer',
-                Rule::exists('file_withs', 'id')->where(function ($query) {
-                    $query->where('channel', null);
-                    $query->where('raw', null);
-                }),
-            ],
             'desc' => 'required|string',
-            'numbers' => 'array',
+            'numbers' => 'string',
             'public' => 'boolean|nullable',
             'members_only' => 'nullable',
             'allowinvites' => 'boolean|nullable',
@@ -67,7 +59,6 @@ class CheckGroup extends FormRequest
         return [
             'groupname.required' => '群组名称不能为空',
             'desc.required' => '群组简介不能为空',
-            'group_face.exists' => '文件不存在或已经被使用',
         ];
     }
 }

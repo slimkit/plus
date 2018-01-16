@@ -96,7 +96,7 @@ class AbilitySeeder extends Seeder
             'description' => '角色编辑权限',
         ]);
         Ability::create([
-            'name' => 'admin:role:delete',
+            'name' => 'admin: Deleting role',
             'display_name' => '角色管理-删除',
             'description' => '角色管理删除权限',
         ]);

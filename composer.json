@@ -115,7 +115,7 @@
         "intervention/image": "^2.3",
         "jpush/jpush": "^3.5",
         "laravel/framework": "5.5.*",
-        "overtrue/easy-sms": "^0.0.10",
+        "overtrue/easy-sms": "^1.0",
         "pingplusplus/pingpp-php": "^2.2",
         "predis/predis": "^1.1",
         "slimkit/plus-appversion": "1.1.0",

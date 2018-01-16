@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\EaseMobIm;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateGroup extends FormRequest
@@ -44,7 +45,13 @@ class UpdateGroup extends FormRequest
         return [
             'im_group_id' => 'required|integer',
             'groupname' => 'required|string',
-            'group_face' => 'integer',
+            'group_face' => [
+                'integer',
+                Rule::exists('file_withs', 'id')->where(function ($query) {
+                    $query->where('channel', null);
+                    $query->where('raw', null);
+                }),
+            ],
             'desc' => 'required|string',
             'numbers' => 'array',
             'public' => 'boolean|nullable',

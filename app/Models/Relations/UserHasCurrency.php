@@ -18,32 +18,19 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Models;
+namespace Zhiyi\Plus\Models\Relations;
 
-use Illuminate\Database\Eloquent\Model;
+use Zhiyi\Plus\Models\Currency;
 
-class Currency extends Model
+trait UserHasCurrency
 {
     /**
-     * The primary key for the model.
+     * user has currencies.
      *
-     * @var string
+     * @author BS <414606094@qq.com>
      */
-    protected $primaryKey = 'owner_id';
-
-    /**
-     * The "type" of the auto-incrementing ID.
-     *
-     * @var string
-     */
-    protected $keyType = 'int';
-
-    /**
-     * Indicates if the IDs are auto-incrementing.
-     *
-     * @var bool
-     */
-    public $incrementing = false;
-
-    public $fillable = ['owner_id', 'type', 'sum'];
+    public function Currencies()
+    {
+        return $this->hasMany(Currency::class, 'owner_id', 'id');
+    }
 }
