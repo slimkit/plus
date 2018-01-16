@@ -100,8 +100,8 @@ class EaseMobController
     public function openRegister(Request $request)
     {
         $callback = function () use ($request) {
-            $options['username'] = $request->user_id;
-            $options['password'] = $this->getImPwdHash($request->user_id);
+            $options['username'] = $request->user()->user_id;
+            $options['password'] = $this->getImPwdHash($request->user()->user_id);
             $url = $this->url.'users';
 
             $data['headers'] = ['Content-Type' => 'application/json'];

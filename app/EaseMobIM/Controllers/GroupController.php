@@ -256,9 +256,7 @@ class GroupController extends EaseMobController
                 $group->affiliations = $this->getUser($members, $owner);
             }
 
-            return response()->json([
-                'im_groups' => $groupCon->data,
-            ])->setStatusCode(200);
+            return response()->json($groupCon->data)->setStatusCode(200);
         };
 
         return $this->getConfig($callback);
