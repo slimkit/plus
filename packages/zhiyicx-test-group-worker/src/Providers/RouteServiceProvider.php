@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Packages\TestGroupWorker\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Zhiyi\Plus\Support\ManageRepository;
+// use Zhiyi\Plus\Support\ManageRepository;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -29,9 +29,9 @@ class RouteServiceProvider extends ServiceProvider
     public function register()
     {
         // Publish admin menu.
-        $this->app->make(ManageRepository::class)->loadManageFrom('test-group-worker', 'test-group-worker:admin-home', [
-            'route' => true,
-            'icon' => '📦',
-        ]);
+        // $this->app->make(ManageRepository::class)->loadManageFrom('test-group-worker', 'test-group-worker:admin-home', [
+        //     'route' => true,
+        //     'icon' => '📦',
+        // ]);
     }
 }

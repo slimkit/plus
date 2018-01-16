@@ -20,4 +20,4 @@ Route::group(['middleware' => ['api']], __DIR__.'/routes/api.php');
 Route::group(['middleware' => ['web']], __DIR__.'/routes/web.php');
 
 // Admin routes.
-Route::group(['middleware' => ['web', 'auth', 'admin']], __DIR__.'/routes/admin.php');
+// Route::group(['middleware' => ['web', 'auth', 'admin']], __DIR__.'/routes/admin.php');
