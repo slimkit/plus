@@ -8,7 +8,9 @@
         "illuminate/console": "^5.5",
         "illuminate/contracts": "^5.5",
         "illuminate/database": "^5.5",
-        "illuminate/support": "^5.5"
+        "illuminate/support": "^5.5",
+        "knplabs/github-api": "^2.7",
+        "php-http/guzzle6-adapter": "^1.1"
     },
     "autoload": {
         "psr-4": {
