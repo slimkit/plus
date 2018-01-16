@@ -1,0 +1,32 @@
+{
+    "name": "zhiyicx/test-group-worker",
+    "description": "A \"zhiyicx/test-group-worker\" package For ThinkSNS+✈️.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.0",
+        "illuminate/console": "^5.5",
+        "illuminate/contracts": "^5.5",
+        "illuminate/database": "^5.5",
+        "illuminate/support": "^5.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Zhiyi\\Plus\\Packages\\TestGroupWorker\\": "src/",
+            "Zhiyi\\Plus\\Packages\\TestGroupWorker\\Seeds\\": "database/seeds/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Zhiyi\\Plus\\Packages\\TestGroupWorker\\Providers\\AppServiceProvider",
+                "Zhiyi\\Plus\\Packages\\TestGroupWorker\\Providers\\ModelServiceProvider",
+                "Zhiyi\\Plus\\Packages\\TestGroupWorker\\Providers\\RouteServiceProvider"
+            ]
+        }
+    },
+    "version": "1.1.0"
+}
