@@ -91,11 +91,6 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function registerSingletions()
     {
-        // Owner handler.
-        $this->app->singleton('test-group-worker:handler', function () {
-            return new \Zhiyi\Plus\Packages\TestGroupWorker\Handlers\PackageHandler();
-        });
-
         // Develop handler.
         $this->app->singleton('test-group-worker:dev-handler', function ($app) {
             return new \Zhiyi\Plus\Packages\TestGroupWorker\Handlers\DevPackageHandler($app);
@@ -110,9 +105,6 @@ class AppServiceProvider extends ServiceProvider
     protected function registerCoreContainerAliases()
     {
         foreach ([
-            'test-group-worker:handler' => [
-                \Zhiyi\Plus\Packages\TestGroupWorker\Handlers\PackageHandler::class,
-            ],
             'test-group-worker:dev-handler' => [
                 \Zhiyi\Plus\Packages\TestGroupWorker\Handlers\DevPackageHandler::class,
             ],
@@ -130,7 +122,6 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function registerPackageHandlers()
     {
-        $this->loadHandleFrom('test-group-worker', 'test-group-worker:handler');
         $this->loadHandleFrom('test-group-worker-dev', 'test-group-worker:dev-handler');
     }
 
