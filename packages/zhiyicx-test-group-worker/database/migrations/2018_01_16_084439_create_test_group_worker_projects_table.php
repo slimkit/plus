@@ -20,6 +20,7 @@ class CreateTestGroupWorkerProjectsTable extends Migration
             $table->integer('issues_count')->unsgined()->comment('Issues Count');
             $table->integer('task_count')->unsgined()->comment('Test Task Count');
             $table->integer('task_completed_count')->unsgined()->nullable()->default(0)->comment('Test Task Completed Count');
+            $table->integer('creator')->unsgined()->comment('Project Creator');
             $table->timestamps();
         });
     }
