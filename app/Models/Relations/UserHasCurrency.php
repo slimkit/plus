@@ -29,7 +29,7 @@ trait UserHasCurrency
      *
      * @author BS <414606094@qq.com>
      */
-    public function Currencies()
+    public function Currency()
     {
         return $this->hasOne(Currency::class, 'owner_id', 'id');
     }
