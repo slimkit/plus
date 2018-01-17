@@ -17,10 +17,13 @@ use Illuminate\Contracts\Routing\Registrar as RouteRegisterContract;
 */
 
 Route::group([
+    // 'as' => 'api:test-group-worker',
     'prefix' => 'api/test-group-worker',
-    'as' => 'api:test-group-worker',
     'middleware' => ['auth:api', Middleware\HasRole::class],
 ], function (RouteRegisterContract $api) {
+
+    // Base route
+    $api->any('/', API\AccessesController::class.'@index')->name('api:test-group-worker');
 
     // GitHub Accesses
     $api->apiResource('github/accesses', API\AccessesController::class);

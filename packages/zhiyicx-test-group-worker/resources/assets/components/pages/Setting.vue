@@ -62,16 +62,11 @@
 </template>
 
 <script>
+import * as githubAccesses from '../../api/githubAccesses';
 export default {
   name: 'page-setting',
   data: () => ({
-    accesses: [
-      {
-        username: 'medz',
-        password: 'Zycx2pwd',
-        updated_at: '222'
-      }
-    ],
+    accesses: [],
     editForm: { username: '', password: '' },
     newForm: { username: '', password: '' },
   }),
@@ -129,6 +124,20 @@ export default {
       this.accesses = [ ...this.accesses, { ...this.newForm } ];
       this.newForm = { username: '', password: '' };
     },
+
+    fetchAccesses() {
+      const loading = this.$loading({
+        fullscreen: true,
+        text: '正在加载数据...',
+      });
+      githubAccesses.index().then(({ data }) => {
+        loading.close();
+        this.accesses = data;
+      }).catch(() => {});
+    },
   },
+  created() {
+    this.fetchAccesses();
+  }
 };
 </script>

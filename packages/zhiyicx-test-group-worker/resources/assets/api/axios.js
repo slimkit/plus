@@ -9,7 +9,7 @@ import axios from 'axios';
 axios.defaults.baseURL = window.apiBaseUrl;
 
 export default function() {
-  axios.default.headers.common['Authorization'] = 'Bearer ' + window.accessToken;
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + window.accessToken;
 
   return axios;
 };
