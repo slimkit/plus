@@ -24,7 +24,8 @@
         label="用户名"
       >
         <template slot-scope="scope">
-          <el-input v-model="scope.row.username" v-if="scope.row.isNew || scope.row.isEdit" placeholder="请输入用户名" type="text"></el-input>
+          <el-input v-model="newForm.username" v-if="scope.row.isNew" placeholder="请输入用户名" type="text"></el-input>
+          <el-input v-model="editForm.username" v-else-if="scope.row.isEdit" placeholder="请输入用户名" type="text"></el-input>
           <template v-else>{{ scope.row.username }}</template>
         </template>
       </el-table-column>
@@ -33,8 +34,9 @@
         label="密码"
       >
         <template slot-scope="scope">
-          <el-input v-model="scope.row.password" v-if="scope.row.isNew || scope.row.isEdit" placeholder="请输入密码" type="password"></el-input>
-          <template v-else>{{ scope.row.password }}</template>
+          <el-input v-model="newForm.password" v-if="scope.row.isNew" placeholder="请输入密码" type="password"></el-input>
+          <el-input v-model="editForm.password" v-if="scope.row.isEdit" placeholder="请输入密码" type="password"></el-input>
+          <template v-else>{{ scope.row.password | passwordHidden }}</template>
         </template>
       </el-table-column>
       <el-table-column
@@ -44,13 +46,13 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.isNew" size="mini" type="primary" @click="handleAddAccess(scope.row)">添加</el-button>
+          <el-button v-if="scope.row.isNew" size="mini" type="primary" @click="handleAddAccess">添加</el-button>
           <template v-else-if="scope.row.isEdit">
             <el-button type="primary" size="mini" @click="handleEditSave(scope.$index, scope.row)">保存</el-button>
-            <el-button size="mini" @click="handleEditStatus(scope.$index, false)">取消</el-button>
+            <el-button size="mini" @click="handleEditCancel(scope.$index)">取消</el-button>
           </template>
           <template v-else>
-            <el-button size="mini" @click="handleEditStatus(scope.$index, true)">编辑</el-button>
+            <el-button size="mini" @click="handleEditOpen(scope.$index, scope.row)">编辑</el-button>
             <el-button size="mini" type="danger">删除</el-button>
           </template>
         </template>
@@ -69,7 +71,9 @@ export default {
         password: 'Zycx2pwd',
         updated_at: '222'
       }
-    ]
+    ],
+    editForm: { username: '', password: '' },
+    newForm: { username: '', password: '' },
   }),
   computed: {
     data() {
@@ -79,22 +83,52 @@ export default {
       ];
     }
   },
+  filters: {
+    passwordHidden(password) {
+      if (! password) {
+        return '';
+      }
+      
+      return (new Array(password.length)).join('*');
+    }
+  },
   methods: {
-    handleAddAccess({ username, password }) {
-      console.log(username, password);
-    },
-    handleEditStatus(index, edit = false) {
-      this.accesses = this.accesses.map((access, key) => {
-        if (key === index) {
-          access.isEdit = edit;
+    handleChangeItem($index, data) {
+      this.accesses = this.accesses.map((access, index) => {
+        if (index === $index) {
+          return { ...access, ...data };
         }
 
         return access;
       });
     },
-    handleEditSave(index, { username, password }) {
-      console.log(index, this.accesses);
-    }
+
+    handleEditOpen(index, { username, password }) {
+      this.editForm = { username, password };
+      this.accesses = this.accesses.map((access, $index) => {
+        access.isEdit = false;
+        if (index === $index) {
+          access.isEdit = true;
+        }
+
+        return access;
+      });
+    },
+
+    handleEditSave(index) {
+      const { username, password } = this.editForm;
+      // 请求 API 后执行下面的动作
+      this.handleChangeItem(index, {username, password, isEdit: false});
+    },
+
+    handleEditCancel(index) {
+      this.handleChangeItem(index, { isEdit: false });
+    },
+
+    handleAddAccess() {
+      this.accesses = [ ...this.accesses, { ...this.newForm } ];
+      this.newForm = { username: '', password: '' };
+    },
   },
 };
 </script>
