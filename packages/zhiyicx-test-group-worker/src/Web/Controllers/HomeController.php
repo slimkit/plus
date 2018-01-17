@@ -26,6 +26,6 @@ class HomeController extends BaseController
      */
     public function index()
     {
-        return view('test-group-worker::welcome');
+        return view('test-group-worker::app');
     }
 }

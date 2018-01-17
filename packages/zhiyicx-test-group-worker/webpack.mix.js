@@ -21,5 +21,6 @@ if (mix.inProduction()) {
 
 // Dev build.
 } else {
+  mix.setPublicPath('../../public/assets/test-group-worker');
   mix.js('resources/assets/main.js', '../../public/assets/test-group-worker/app.js');
 }
