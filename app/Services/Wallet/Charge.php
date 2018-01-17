@@ -57,7 +57,7 @@ class Charge
     private $prefix = 'a';
 
     /**
-     * 支持的订单类型
+     * 支持的订单类型.
      *
      * @var array
      */
@@ -160,7 +160,7 @@ class Charge
     }
 
     /**
-     * 不使用任何数据模型创建ping++订单
+     * 不使用任何数据模型创建ping++订单.
      *
      * @param int $id
      * @param string $type
@@ -183,7 +183,7 @@ class Charge
             'subject' => $title,
             'body' => $body,
             'extra' => $extra,
-        ]);  
+        ]);
     }
 
     /**
