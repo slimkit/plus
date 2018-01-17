@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -18,20 +16,21 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Models;
+use Illuminate\Database\Seeder;
+use Zhiyi\Plus\Models\CurrencyType;
 
-use Illuminate\Database\Eloquent\Model;
-
-class CurrencyOrder extends Model
+class CurrencyTypeSeeder extends Seeder
 {
     /**
-     * the owner of order.
+     * Run the database seeds.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     * @author BS <414606094@qq.com>
+     * @return void
      */
-    public function user()
+    public function run()
     {
-        return $this->hasOne(User::class, 'id', 'owner_id');
+        $count = CurrencyType::where('name', '积分')->count();
+        if (! $count) {
+            CurrencyType::create(['name' => '积分', 'unit' => '', 'enable' => 1]);
+        }
     }
 }

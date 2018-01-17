@@ -290,7 +290,8 @@ class GroupController extends EaseMobController
      */
     private function getUser($members, $owner)
     {
-        $users = User::whereIn('id', $owner->merge($members))->get();
+        $user = new User();
+        $users = $user->whereIn('id', $owner->merge($members))->with('certification')->get();
         $admin = $owner->values()[0];
         if ($users) {
             $users->map(function ($user) use ($admin) {

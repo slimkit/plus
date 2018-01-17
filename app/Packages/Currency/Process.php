@@ -33,13 +33,9 @@ abstract class Process
      */
     protected $currency_type;
 
-    public function __construct($currency_type)
+    public function __construct()
     {
-        if (! $currency_type instanceof CurrencyTypeModel) {
-            $currency_type = CurrencyTypeModel::findOrFail($currency_type);
-        }
-
-        $this->currency_type = $currency_type;
+        $this->currency_type = CurrencyTypeModel::findOrFail(1);
     }
 
     /**
@@ -69,10 +65,10 @@ abstract class Process
      */
     protected function checkWallet(UserModel $user): UserModel
     {
-        $currency = $user->Currencies()->where('type', $this->currency_type->id)->first();
+        $currency = $user->Currency;
 
         if (! $currency) {
-            $user->Currencies()->create(['type' => $this->currency_type->id, 'sum' => 0]);
+            $user->Currency()->create(['type' => $this->currency_type->id, 'sum' => 0]);
         }
 
         return $user;

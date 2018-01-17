@@ -100,8 +100,9 @@ class EaseMobController
     public function openRegister(Request $request)
     {
         $callback = function () use ($request) {
-            $options['username'] = $request->user()->user_id;
-            $options['password'] = $this->getImPwdHash($request->user()->user_id);
+            $user = $request->user();
+            $options['username'] = $user->id;
+            $options['password'] = $this->getImPwdHash($user->id);
             $url = $this->url.'users';
 
             $data['headers'] = ['Content-Type' => 'application/json'];
@@ -153,11 +154,11 @@ class EaseMobController
             if ($this->register_type == 0) {
                 return $this->openRegister($request);
             }
-
+            $user = $request->user();
             $url = $this->url.'users';
             $options = [
-                'username' => $request->user()->user_id,
-                'password' => $this->getImPwdHash($request->user()->user_id),
+                'username' => $user->id,
+                'password' => $this->getImPwdHash($user->id),
             ];
             $data['body'] = json_encode($options);
             $data['headers'] = [
