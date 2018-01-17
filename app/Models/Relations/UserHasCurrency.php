@@ -31,6 +31,6 @@ trait UserHasCurrency
      */
     public function Currencies()
     {
-        return $this->hasMany(Currency::class, 'owner_id', 'id');
+        return $this->hasOne(Currency::class, 'owner_id', 'id');
     }
 }
