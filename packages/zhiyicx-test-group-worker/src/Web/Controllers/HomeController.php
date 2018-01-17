@@ -29,6 +29,11 @@ class HomeController extends BaseController
      */
     public function index(Request $request)
     {
+        $user = $request->user();
+        if (! $user->roles('developer') || ! $user->roles('tester')) {
+            abort(403, '您没有权限进入该应用');
+        }
+
         $variables = [
             'accessToken' => $request->session()->get('access_token'),
             'user' => $request->user(),
