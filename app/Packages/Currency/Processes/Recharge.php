@@ -52,7 +52,7 @@ class Recharge extends Process
     }
 
     /**
-     * 创建充值订单
+     * 创建充值订单.
      *
      * @param int $owner_id
      * @param int $amount
@@ -64,7 +64,7 @@ class Recharge extends Process
     public function createPingPPOrder(int $owner_id, int $amount, string $type, array $extra = [])
     {
         $title = '积分充值';
-        $body = sprintf("充值积分：%s%s%s", $amount, $this->currency_type->unit, $this->currency_type->name);
+        $body = sprintf('充值积分：%s%s%s', $amount, $this->currency_type->unit, $this->currency_type->name);
 
         if (app(WalletChargeService::class)->checkRechargeArgs($type, $extra)) {
             $transaction = function () use ($owner_id, $title, $body, $amount, $extra, $type) {
@@ -128,7 +128,7 @@ class Recharge extends Process
     }
 
     /**
-     * 完成充值操作
+     * 完成充值操作.
      *
      * @param PingppCharge $pingppCharge
      * @param CurrencyOrderModel $currencyOrderModel
@@ -143,7 +143,6 @@ class Recharge extends Process
         $user = $this->checkUser($currencyOrderModel->user);
 
         return DB::transaction(function () use ($user, $currencyOrderModel) {
-
             $currencyOrderModel->save();
             $user->Currency->increment('sum', $currencyOrderModel->amount);
         });
