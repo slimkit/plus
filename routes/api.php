@@ -533,5 +533,12 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             // 获取聊天记录Test
             $api->get('/group/message', EaseMobIm\EaseMobController::class.'@getMessage');
         });
+
+        // 积分部分
+        $api->group(['prefix' => 'currency'], function (RouteContract $api) {
+
+            // 发起充值
+            $api->get('/recharge', API2\CurrencyRechargeController::class.'@store');
+        });
     });
 });
