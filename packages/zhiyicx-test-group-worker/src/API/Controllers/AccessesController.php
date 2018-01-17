@@ -26,8 +26,24 @@ class AccessesController
         return response()->json($accesses, 200);
     }
 
-    public function show()
+    /**
+     * Show the user GitHub Access.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Zhiyi\Plus\Packages\TestGroupWorker\Models\Access $model
+     * @param string $access
+     * @return \Illuminate\Http\JsonResponse
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function show(Request $request, AccessModel $model, string $access): JsonResponse
     {
+        $user = $request->user();
+        $access = $model->newQuery()
+                        ->where('owner', $user->id)
+                        ->where('username', $access)
+                        ->firstOrFail();
+
+        return response()->json($access, 200);
     }
 
     public function store()
