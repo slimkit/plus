@@ -1,26 +1,26 @@
 <template>
-  <el-container direction="vertical" id="root" class="app" :style="getAppStyle">
+  <el-container direction="vertical" id="root" class="app" :style="appStyle">
     <el-header class="app-header">
       <span class="app-title">Test Group Worker</span>
       <el-dropdown trigger="click">
         <img class="user-avatar" :src="user.avatar" :alt="user.name" />
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>退出</el-dropdown-item>
+          <el-dropdown-item @click.native="handleUserLogout">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </el-header>
     <el-container direction="horizontal">
       <el-aside width="200px">
-        <el-menu>
-          <el-menu-item index="projects">
+        <el-menu :router="true" :default-active="menuActive">
+          <el-menu-item index="/projects">
             <i class="el-icon-menu"></i>
             <span slot="title">项目</span>
           </el-menu-item>
-          <el-menu-item index="tasks">
+          <el-menu-item index="/tasks">
             <i class="el-icon-tickets"></i>
             <span slot="title">任务</span>
           </el-menu-item>
-          <el-menu-item index="setting">
+          <el-menu-item index="/setting">
             <i class="el-icon-setting"></i>
             <span slot="title">设置</span>
           </el-menu-item>
@@ -46,8 +46,19 @@ export default {
     user: window.user,
   }),
   computed: {
-    getAppStyle() {
+    appStyle() {
       return 'height: ' + this.innerHeight;
+    },
+    menuActive() {
+      return this.$route.path;
+    },
+    logoutUrl() {
+      return window.logoutUrl;
+    }
+  },
+  methods: {
+    handleUserLogout() {
+      window.location.href = window.logoutUrl;
     }
   },
   created() {

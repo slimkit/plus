@@ -8,6 +8,7 @@ export default new VueRouter({
   base: '/test-group-worker/',
   mode: 'history',
   routes: [
-    { path: '/', component: Projects },
+    { path: '/', redirect: '/projects' },
+    { path: '/projects', component: Projects },
   ]
 });
