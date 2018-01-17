@@ -31,7 +31,7 @@ class Order
     const TARGET_TYPE_COMMODITY = 'commodity'; // 商品流程
     const TARGET_TYPE_USER = 'user'; // 用户到用户流程
     const TARGET_TYPE_TASK = 'task'; // 积分任务流程
-    const TARGET_TYPE_CHARGE = 'charge'; // 充值流程
+    const TARGET_TYPE_RECHARGE = 'recharge'; // 充值流程
     const TARGET_TYPE_CASH = 'cash'; // 提现流程
     const TARGET_TYPE_TRANSFORM = 'transform'; // 货币兑换流程
 

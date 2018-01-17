@@ -1,0 +1,151 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
+namespace Zhiyi\Plus\Packages\Currency\Processes;
+
+use DB;
+use Illuminate\Http\Request;
+use Pingpp\Charge as PingppCharge;
+use Zhiyi\Plus\Packages\Currency\Order;
+use Zhiyi\Plus\Packages\Currency\Process;
+use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
+use Zhiyi\Plus\Services\Wallet\Charge as WalletChargeService;
+
+class Recharge extends Process
+{
+    // ping++订单前缀标识
+    protected $PingppPrefix = 'C';
+
+    public function createOrder(int $owner_id, string $title, string $body, int $type, int $amount): CurrencyOrderModel
+    {
+        $user = $this->checkUser($owner_id);
+
+        $order = new CurrencyOrderModel();
+        $order->owner_id = $user->id;
+        $order->title = $title;
+        $order->body = $body;
+        $order->type = $type;
+        $order->currency = $this->currency_type->id;
+        $order->target_type = Order::TARGET_TYPE_RECHARGE;
+        $order->amount = $amount;
+
+        $order->save();
+
+        return $order;
+    }
+
+    /**
+     * 创建充值订单
+     *
+     * @param int $owner_id
+     * @param int $amount
+     * @param string $type
+     * @param array $extra
+     * @return mixed
+     * @author BS <414606094@qq.com>
+     */
+    public function createPingPPOrder(int $owner_id, int $amount, string $type, array $extra = [])
+    {
+        $title = '积分充值';
+        $body = sprintf("充值积分：%s%s%s", $amount, $this->currency_type->unit, $this->currency_type->name);
+
+        if (app(WalletChargeService::class)->checkRechargeArgs($type, $extra)) {
+            $transaction = function () use ($owner_id, $title, $body, $amount, $extra, $type) {
+                $order = $this->createOrder($owner_id, $title, $body, 1, $amount);
+                $service = app(WalletChargeService::class)->setPrefix($this->PingppPrefix);
+                $pingppCharge = $service->createWithoutModel($order->id, $type, $order->amount, $order->title, $order->body, $extra);
+
+                return [
+                    'pingpp_order' => $pingppCharge,
+                    'order' => $order,
+                ];
+            };
+
+            return DB::transaction($transaction);
+        }
+
+        return false;
+    }
+
+    /**
+     * 主动取回凭据.
+     *
+     * @return boolen
+     * @author BS <414606094@qq.com>
+     */
+    public function retrieve(CurrencyOrderModel $currencyOrderModel): bool
+    {
+        $service = app(WalletChargeService::class)->setPrefix($this->PingppPrefix);
+        $charge_id = $service->formatChargeId($currencyOrderModel->id);
+        $pingppCharge = $service->query($charge_id);
+
+        if ($pingppCharge['paid'] === true) {
+            return $this->complete($pingppCharge, $currencyOrderModel);
+        }
+
+        return false;
+    }
+
+    /**
+     * 异步回调通知.
+     *
+     * @param Request $request
+     * @return boolen
+     * @author BS <414606094@qq.com>
+     */
+    public function webhook(Request $request): bool
+    {
+        if ($this->verifyWebHook($request)) {
+            $pingppCharge = $request->json('data.object');
+            $service = app(WalletChargeService::class)->setPrefix($this->PingppPrefix);
+            $currencyOrderModel = CurrencyOrderModel::find($service->unformatChargeId($pingppCharge['order_no']));
+
+            if ($currencyOrderModel || $currencyOrderModel->state === 1) {
+                return true;
+            }
+
+            return $this->complete($pingppCharge, $currencyOrderModel);
+        }
+
+        return false;
+    }
+
+    /**
+     * 完成充值操作
+     *
+     * @param PingppCharge $pingppCharge
+     * @param CurrencyOrderModel $currencyOrderModel
+     * @return boolen
+     * @author BS <414606094@qq.com>
+     */
+    private function complete(PingppCharge $pingppCharge, CurrencyOrderModel $currencyOrderModel): bool
+    {
+        $currencyOrderModel->state = 1;
+        $currencyOrderModel->target_id = $pingppCharge->order_no;
+
+        $user = $this->checkUser($currencyOrderModel->user);
+
+        return DB::transaction(function () use ($user, $currencyOrderModel) {
+
+            $currencyOrderModel->save();
+            $user->Currency->increment('sum', $currencyOrderModel->amount);
+        });
+    }
+}
