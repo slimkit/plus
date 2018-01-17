@@ -15,9 +15,12 @@ use Illuminate\Contracts\Routing\Registrar as RouteRegisterContract;
 |
 */
 
-Route::group(['prefix' => 'api/test-group-worker'], function (RouteRegisterContract $api) {
+Route::group([
+    'prefix' => 'api/test-group-worker',
+    'as' => 'api:test-group-worker'
+], function (RouteRegisterContract $api) {
 
     // Test route.
     // @ANY /api/test-group-worker
-    $api->any('/', API\HomeController::class.'@index');
+    $api->any('', API\HomeController::class.'@index');
 });
