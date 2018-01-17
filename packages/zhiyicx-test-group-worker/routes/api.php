@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Zhiyi\Plus\Packages\TestGroupWorker\API\Middleware;
 use Zhiyi\Plus\Packages\TestGroupWorker\API\Controllers as API;
 use Illuminate\Contracts\Routing\Registrar as RouteRegisterContract;
 
@@ -17,10 +18,10 @@ use Illuminate\Contracts\Routing\Registrar as RouteRegisterContract;
 
 Route::group([
     'prefix' => 'api/test-group-worker',
-    'as' => 'api:test-group-worker'
+    'as' => 'api:test-group-worker',
+    'middleware' => ['auth:api', Middleware\HasRole::class],
 ], function (RouteRegisterContract $api) {
 
-    // Test route.
-    // @ANY /api/test-group-worker
-    $api->any('', API\HomeController::class.'@index');
+    // GitHub Accesses
+    $api->apiResource('github/accesses', API\AccessesController::class);
 });
