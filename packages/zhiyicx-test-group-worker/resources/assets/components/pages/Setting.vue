@@ -119,6 +119,10 @@ export default {
 
     handleEditCancel(index) {
       this.handleChangeItem(index, { isEdit: false });
+      this.$message({
+        type: 'info',
+        message: '已取消编辑'
+      });
     },
 
     handleAddAccess() {
@@ -131,6 +135,10 @@ export default {
         loading.close();
         this.accesses = [ ...this.accesses, data ];
         this.newForm = { username: '', password: '' };
+        this.$notify.success({
+          title: '成功',
+          message: `添加 GitHub 账号「${data.username}」成功`,
+        });
       }).catch(({ response: { data = {} } = {} }) => {
         loading.close();
         const message = new PlusMessageBundle(data, '请求发生错误');
@@ -162,7 +170,7 @@ export default {
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消删除'
+            message: '已取消加载数据'
           });
         });
       });
