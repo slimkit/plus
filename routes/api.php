@@ -437,13 +437,14 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             $api->get('/charges/{charge}', API2\WalletChargeController::class.'@show');
         });
 
+        // 新版钱包
         $api->group(['prefix' => 'plus-pay'], function (RouteContract $api) {
 
             // 获取提现记录
             $api->get('/cashes', API2\NewWalletCashController::class.'@show');
 
             // 发起提现申请
-            $api->post('/cashes', API2\NewWalletCashController::class.'@store')->middleware('operation');
+            $api->post('/cashes', API2\NewWalletCashController::class.'@store');
 
             // 发起充值
             $api->post('/recharge', API2\NewWalletRechargeController::class.'@store');
@@ -455,7 +456,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             $api->get('/orders/{order}', API2\NewWalletRechargeController::class.'@retrieve');
 
             // 转账
-            $api->post('/transfer', API2\TransferController::class.'@transfer')->middleware('operation');
+            $api->post('/transfer', API2\TransferController::class.'@transfer');
         });
 
         /*
