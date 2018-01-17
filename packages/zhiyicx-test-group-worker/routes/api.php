@@ -23,7 +23,7 @@ Route::group([
 ], function (RouteRegisterContract $api) {
 
     // Base route
-    $api->any('/', API\AccessesController::class.'@index')->name('api:test-group-worker');
+    $api->any('/', API\HomeController::class)->name('api:test-group-worker');
 
     // GitHub Accesses
     $api->apiResource('github/accesses', API\AccessesController::class);
