@@ -63,6 +63,7 @@
 
 <script>
 import * as githubAccesses from '../../api/githubAccesses';
+import PlusMessageBundle from 'plus-message-bundle';
 export default {
   name: 'page-setting',
   data: () => ({
@@ -130,7 +131,14 @@ export default {
         loading.close();
         this.accesses = [ ...this.accesses, data ];
         this.newForm = { username: '', password: '' };
-      }).catch(() => {});
+      }).catch(({ response: { data = {} } = {} }) => {
+        loading.close();
+        const message = new PlusMessageBundle(data, '请求发生错误');
+        this.$notify.error({
+          title: '错误',
+          message: message.getMessage(),
+        });
+      });
     },
 
     fetchAccesses() {
@@ -141,7 +149,23 @@ export default {
       githubAccesses.index().then(({ data }) => {
         loading.close();
         this.accesses = data;
-      }).catch(() => {});
+      }).catch(({ response: { data = {} } = {} }) => {
+        loading.close();
+        const message = new PlusMessageBundle(data, '加载数据失败，是否重试？');
+        this.$confirm(message.getMessage(), '错误', {
+          confirmButtonText: '重试',
+          cancelButtonText: '取消',
+          type: 'error',
+          center: true
+        }).then(() => {
+          this.fetchAccesses();
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      });
     },
   },
   created() {
