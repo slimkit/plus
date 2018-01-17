@@ -121,8 +121,16 @@ export default {
     },
 
     handleAddAccess() {
-      this.accesses = [ ...this.accesses, { ...this.newForm } ];
-      this.newForm = { username: '', password: '' };
+      const { username, password } = this.newForm;
+      const loading = this.$loading({
+        fullscreen: true,
+        text: '正在添加 GitHub 账号...',
+      });
+      githubAccesses.store(username, password).then(({ data }) => {
+        loading.close();
+        this.accesses = [ ...this.accesses, data ];
+        this.newForm = { username: '', password: '' };
+      }).catch(() => {});
     },
 
     fetchAccesses() {
