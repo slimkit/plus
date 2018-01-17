@@ -8,7 +8,7 @@ use Github\Client as GitHub;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\Packages\TestGroupWorker\Models\Access as AccessModel;
-use Zhiyi\Plus\Packages\TestGroupWorker\Requests\StoreGitHubAccessRequest;
+use Zhiyi\Plus\Packages\TestGroupWorker\API\Requests\StoreGitHubAccessRequest;
 
 class AccessesController
 {
@@ -51,7 +51,7 @@ class AccessesController
     /**
      * Store a GitHub to auth user.
      *
-     * @param \Zhiyi\Plus\Packages\TestGroupWorker\Requests\StoreGitHubAccessRequest $request
+     * @param \Zhiyi\Plus\Packages\TestGroupWorker\API\Requests\StoreGitHubAccessRequest $request
      * @param \\Zhiyi\Plus\Packages\TestGroupWorker\Models\Access $model
      * @param \GitHub\Client $github
      * @return \Illuminate\Http\JsonResponse

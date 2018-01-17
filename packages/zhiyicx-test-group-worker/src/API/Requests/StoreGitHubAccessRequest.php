@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Zhiyi\Plus\Packages\TestGroupWorker\Requests;
+namespace Zhiyi\Plus\Packages\TestGroupWorker\API\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
