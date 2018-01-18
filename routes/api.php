@@ -49,6 +49,8 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     $api->post('/pingpp/webhooks', API2\PingPlusPlusChargeWebHooks::class.'@webhook');
 
     $api->post('/plus-pay/webhooks', API2\NewWalletRechargeController::class.'@webhook');
+
+    $api->post('/currency/webhooks', API2\CurrencyRechargeController::class.'@webhook');
     /*
     | 应用启动配置.
     */
@@ -537,8 +539,14 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
         // 积分部分
         $api->group(['prefix' => 'currency'], function (RouteContract $api) {
 
+            // 积分流水
+            $api->get('/orders', API2\CurrencyRechargeController::class.'index');
+
             // 发起充值
-            $api->get('/recharge', API2\CurrencyRechargeController::class.'@store');
+            $api->post('/recharge', API2\CurrencyRechargeController::class.'@store');
+
+            // 取回凭据
+            $api->get('/orders/{order}', API2\CurrencyRechargeController::class.'@retrieve');
         });
     });
 });

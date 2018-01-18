@@ -21,10 +21,39 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 use Zhiyi\Plus\Packages\Currency\Processes\Recharge as RechargeProcess;
 
 class CurrencyRechargeController extends controller
 {
+    /**
+     * 钱包流水
+     *
+     * @param Request $request
+     * @param CurrencyOrderModel $currencyOrder
+     * @return mixed
+     * @author BS <414606094@qq.com>
+     */
+    public function index(Request $request, CurrencyOrderModel $currencyOrder)
+    {
+        $user = $request->user();
+
+        $limit = $request->query('limit', 15);
+        $after = $request->query('after');
+        $action = $request->query('action');
+        $orders = $currencyOrder->where('user_id', $user->id)
+            ->when($after, function ($query) use ($after) {
+                return $query->where('id', '<', $after);
+            })
+            ->when(in_array($action, ['recharge', 'cash']), function ($query) use ($action) {
+                return $query->where('target_type', $action);
+            })
+            ->limit($limit)
+            ->get();
+
+        return response()->json($orders, 200);
+    }
+
     /**
      * 发起充值订单.
      *
@@ -43,6 +72,40 @@ class CurrencyRechargeController extends controller
 
         if (($result = $recharge->createPingPPOrder($user->id, $amount, $type, $extra) !== false)) {
             return response()->json($result, 201);
+        }
+
+        return response()->json(['message' => ['操作失败']], 500);
+    }
+
+    /**
+     * 充值回调通知.
+     *
+     * @param Request $request
+     * @return mixed
+     * @author BS <414606094@qq.com>
+     */
+    public function webhook(Request $request)
+    {
+        $webhook = new RechargeProcess();
+        if (($result = $webhook->webhook($request)) === true) {
+            return response('通知成功');
+        }
+
+        return response('操作失败', 500);
+    }
+
+    /**
+     * 主动取回凭据.
+     *
+     * @param CurrencyOrderModel &$currencyOrder
+     * @return mixed
+     * @author BS <414606094@qq.com>
+     */
+    public function retrieve(CurrencyOrderModel &$currencyOrder)
+    {
+        $retrieve = new RechargeProcess();
+        if (($result = $retrieve->retrieve($currencyOrder)) === true) {
+            return response()->json($currencyOrder, 200);
         }
 
         return response()->json(['message' => ['操作失败']], 500);

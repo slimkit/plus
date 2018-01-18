@@ -25,6 +25,7 @@ use Illuminate\Http\Request;
 use Pingpp\Charge as PingppCharge;
 use Zhiyi\Plus\Packages\Currency\Order;
 use Zhiyi\Plus\Packages\Currency\Process;
+use Zhiyi\Plus\Repository\WalletPingPlusPlus;
 use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 use Zhiyi\Plus\Services\Wallet\Charge as WalletChargeService;
 
@@ -146,5 +147,29 @@ class Recharge extends Process
             $currencyOrderModel->save();
             $user->Currency->increment('sum', $currencyOrderModel->amount);
         });
+    }
+
+    /**
+     * 验证回调信息.
+     *
+     * @param Request $request
+     * @return boolen
+     * @author BS <414606094@qq.com>
+     */
+    protected function verifyWebHook(Request $request): bool
+    {
+        if ($request->json('type') !== 'charge.succeeded') {
+            return false;
+        }
+
+        $signature = $request->headers->get('x-pingplusplus-signature');
+        $pingPlusPlusPublicCertificate = app(WalletPingPlusPlus::class)->get()['public_key'] ?? null;
+        $signed = openssl_verify($request->getContent(), base64_decode($signature), $pingPlusPlusPublicCertificate, OPENSSL_ALGO_SHA256);
+
+        if (! $signed) {
+            return false;
+        }
+
+        return true;
     }
 }
