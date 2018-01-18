@@ -22,7 +22,6 @@ namespace Zhiyi\Plus\Packages\Currency;
 
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\CurrencyType as CurrencyTypeModel;
-use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 
 class Process
 {
