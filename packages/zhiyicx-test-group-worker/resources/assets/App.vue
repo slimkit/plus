@@ -29,10 +29,10 @@
       <el-container direction="vertical">
         <el-main>
           <router-view></router-view>
+          <el-footer class="app-footer">
+            © 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd. All rights reserved.
+          </el-footer>
         </el-main>
-        <el-footer class="app-footer">
-          © 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd. All rights reserved.
-        </el-footer>
       </el-container>
     </el-container>
   </el-container>

@@ -3,6 +3,16 @@ html, body {
     margin: 0;
 }
 
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+
+.clearfix:after {
+  clear: both;
+}
+
 .el-menu-item:focus, .el-menu-item:hover {
     color: #409EFF;
     background-color: transparent;
