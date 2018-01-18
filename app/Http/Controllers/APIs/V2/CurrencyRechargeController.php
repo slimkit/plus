@@ -66,7 +66,7 @@ class CurrencyRechargeController extends controller
     {
         $user = $request->user();
         $amount = $request->input('amount');
-        $extra = $request->input('extra');
+        $extra = $request->input('extra', []);
         $type = $request->input('type');
 
         $recharge = new RechargeProcess();

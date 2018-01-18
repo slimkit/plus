@@ -48,7 +48,7 @@ class StoreCurrencyCash extends FormRequest
         $currency = Currency::find($this->user()->id);
 
         return [
-            'amount' => 'required|min:1|max:'.$currency->sum / $config->get()['recharge-ratio'],
+            'amount' => 'required|int|min:1|max:'.$currency->sum / $config->get()['recharge-ratio'],
         ];
     }
 
