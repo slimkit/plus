@@ -30,7 +30,7 @@ class HomeController extends BaseController
     public function index(Request $request)
     {
         $user = $request->user();
-        if (! $user->roles('developer') || ! $user->roles('tester')) {
+        if (! $user->roles('developer') && ! $user->roles('tester')) {
             abort(403, '您没有权限进入该应用');
         }
 

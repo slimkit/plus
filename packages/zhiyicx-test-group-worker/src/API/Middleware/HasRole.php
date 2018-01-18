@@ -37,7 +37,7 @@ class HasRole
         }
 
         $user = $this->auth->user();
-        if (! $user->roles('developer') || ! $user->roles('tester')) {
+        if (! $user->roles('developer') && ! $user->roles('tester')) {
             abort(403, '你没有请求权限');
         }
 
