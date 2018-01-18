@@ -10,7 +10,7 @@
     <h3>GitHub 账号</h3>
     <p class="page-setting-text" v-if="githubUsername">
       您已绑定 GitHub 账号：{{ githubUsername }} &nbsp;
-      <el-button size="mini" type="danger">解绑</el-button>
+      <el-button size="mini" type="danger" :loading="unbindGitHubAccessLoading" @click="handleUnbindGitHubAccess">解绑</el-button>
     </p>
     <el-form size="medium" :inline="true" v-else>
       <el-form-item label="账号">
@@ -39,6 +39,7 @@ import PlusMessageBundle from 'plus-message-bundle';
 export default {
   name: 'page-setting',
   data: () => ({
+    unbindGitHubAccessLoading: false,
     loadingError: false,
     githubUsername: '',
     githubForm: { login: '', password: '', loading: false },
@@ -107,6 +108,27 @@ export default {
         });
       });
     },
+
+    handleUnbindGitHubAccess() {
+      this.unbindGitHubAccessLoading = true;
+      Setting.unbindGitHub().then(() => {
+        this.unbindGitHubAccessLoading = false;
+        this.githubUsername = null;
+        this.$notify({
+          title: '成功',
+          message: '解绑 GitHub 账号成功',
+          type: 'success',
+        });
+      }).catch(({ response: { data = {} } = {} }) => {
+        this.unbindGitHubAccessLoading = false;
+        const Message = new PlusMessageBundle(data, '解绑 GitHub 账号失败');
+        this.$notify({
+          title: '错误',
+          message:  Message.getMessage(),
+          type: 'error',
+        });
+      });
+    }
   },
   created() {
     this.fetchSettings();

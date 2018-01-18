@@ -27,3 +27,15 @@ export function githubBind(login, password) {
     validateStatus: status => status === 201,
   });
 }
+
+/**
+ * Unbing GitHub Access.
+ *
+ * @return {[type]}
+ * @author Seven Du <shiweidu@outlook.com>
+ */
+export function unbindGitHub() {
+  return request.delete('/settings/github', {
+    validateStatus: status => status === 204,
+  });
+}

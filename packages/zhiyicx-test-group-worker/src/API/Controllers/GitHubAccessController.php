@@ -6,6 +6,7 @@ namespace Zhiyi\Plus\Packages\TestGroupWorker\API\Controllers;
 
 use Github\Client as GitHub;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\Builder;
 use Zhiyi\Plus\Packages\TestGroupWorker\Models\Access as AccessModel;
@@ -47,9 +48,12 @@ class GitHubAccessController
         return response()->json(['message' => "绑定 GitHub 账号：{$access->login} 成功", 'username' => $access->login], 201);
     }
 
-    public function unbind()
+    public function unbind(Request $request): Response
     {
-        // todo.
+        $user = $request->user();
+        $this->getAccessQuery()->where('owner', $user->id)->delete();
+
+        return response('', 204);
     }
 
     /**
