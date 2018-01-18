@@ -56,7 +56,7 @@ class CurrencyConfig
 
         $ratio = CommonConfig::firstOrCreate(
             ['name' => 'currency:recharge-ratio', 'namespace' => 'currency'],
-            ['value' => 100]
+            ['value' => 1]
         );
 
         $options = CommonConfig::firstOrCreate(
