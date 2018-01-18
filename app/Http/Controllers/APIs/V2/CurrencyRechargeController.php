@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Http\Requests\API2\StoreCurrencyRecharge;
 use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 use Zhiyi\Plus\Packages\Currency\Processes\Recharge as RechargeProcess;
 
@@ -57,11 +58,11 @@ class CurrencyRechargeController extends controller
     /**
      * 发起充值订单.
      *
-     * @param Request $request
+     * @param StoreCurrencyRecharge $request
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function store(Request $request)
+    public function store(StoreCurrencyRecharge $request)
     {
         $user = $request->user();
         $amount = $request->input('amount');
