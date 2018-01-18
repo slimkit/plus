@@ -23,11 +23,19 @@ class ProjectsController
      */
     public function index(): JsonResponse
     {
-        $projects = $this->getProjectQuery()->all();
+        $projects = $this->getProjectQuery()->get();
 
         return response()->json($projects, 200);
     }
 
+    /**
+     * Create a project.
+     *
+     * @param \Zhiyi\Plus\Packages\TestGroupWorker\API\Requests\CreateProjectRequest $request
+     * @param \Github\Client $github
+     * @return \Illuminate\Http\JsonResponse
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function store(CreateProjectRequest $request, GitHub $github): JsonResponse
     {
         list($owner, $repo) = explode('/', $request->input('owner_repo'));

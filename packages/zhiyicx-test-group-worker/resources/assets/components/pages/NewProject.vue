@@ -76,5 +76,10 @@ export default {
       });
     },
   },
+  created() {
+    const { name = null, desc = null } = this.$route.query;
+    this.createForm.name = name;
+    this.createForm.desc = desc;
+  }
 };
 </script>

@@ -19,22 +19,22 @@
         </el-card>
       </el-col>
 
-      <el-col :span="12">
+      <el-col :span="12" v-for="project in projects" :key="project.id">
         <el-card class="project-card">
-          <div slot="header">ThinkSNS Plus 后端</div>
+          <div slot="header">{{ project.name }}</div>
 
           <el-tooltip content="完成的测试任务" placement="top">
-            <el-button type="text" class="project-button" icon="el-icon-circle-check">100</el-button>
+            <el-button type="text" class="project-button" icon="el-icon-circle-check">{{ project.task_completed_count }}</el-button>
           </el-tooltip>
           <el-tooltip content="总测试任务" placement="top">
-            <el-button type="text" class="project-button" icon="el-icon-tickets">100</el-button>
+            <el-button type="text" class="project-button" icon="el-icon-tickets">{{ project.task_count }}</el-button>
           </el-tooltip>
           <el-tooltip content="Issues 数量" placement="top">
-            <el-button type="text" class="project-button" icon="el-icon-warning">100</el-button>
+            <el-button type="text" class="project-button" icon="el-icon-warning">{{ project.issues_count }}</el-button>
           </el-tooltip>
 
           <div class="project-desc">
-            ThinkSNS Plus is the use of Laravel framework to achieve the user ecosystem, Can be friendly and low coupling development development applications.
+            {{ project.desc }}
             <p>
               <el-button >进入项目</el-button>
             </p>
@@ -47,10 +47,13 @@
 </template>
 
 <script>
+import * as Projects from '../../api/projects';
+import PlusMessageBundle from 'plus-message-bundle';
 export default {
   name: 'page-projects',
   data: () => ({
     createForm: { name: '', desc: '' },
+    projects: [],
   }),
   methods: {
     /**
@@ -73,7 +76,42 @@ export default {
         query,
       });
     },
+
+    /**
+     * Fetch all projects.
+     *
+     * @return {void}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    fetchProjects() {
+      const loading = this.$loading({
+        fullscreen: true,
+        text: '正在获取项目列表...',
+      });
+      Projects.all().then(({ data }) => {
+        this.projects = data;
+        loading.close();
+      }).catch(({ response: { data = {} } = {} }) => {
+        loading.close();
+        const Message = new PlusMessageBundle(data, '获取项目列表失败, 是否重试？');
+        this.$confirm(Message.getMessage(), '错误', {
+          confirmButtonText: '重试',
+          cancelButtonText: '取消',
+          type: 'error',
+          center: true,
+        }).then(this.fetchProjects).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消加载数据',
+          });
+          this.loadingError = true;
+        });
+      });
+    },
   },
+  created() {
+    this.fetchProjects();
+  }
 };
 </script>
 
