@@ -26,7 +26,7 @@ use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 
 class User extends Process
 {
-    public function createOrder(int $owner_id, string $title, string $body, int $type, int $amount, int $target_id = 0): CurrencyOrderModel
+    public function createOrder(int $owner_id, int $type, int $amount, string $title = '', string $body = '', int $target_id = 0): CurrencyOrderModel
     {
         $user = $this->checkUser($owner_id);
         $target_user = $this->checkUser($target_id);

@@ -74,5 +74,5 @@ abstract class Process
         return $user;
     }
 
-    abstract protected function createOrder(int $owner_id, string $title, string $body, int $type, int $amount): CurrencyOrderModel;
+    abstract protected function createOrder(int $owner_id, int $type, int $amount): CurrencyOrderModel;
 }
