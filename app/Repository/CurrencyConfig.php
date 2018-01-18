@@ -75,15 +75,15 @@ class CurrencyConfig
         );
 
         $datas = [
-            'recharge-ratio' => (int) $ratio,
-            'recharge-options' => (string) $options,
-            'recharge-max' => (int) $max,
-            'recharge-min' => (int) $min,
+            'recharge-ratio' => (int) $ratio->value,
+            'recharge-options' => (string) $options->value,
+            'recharge-max' => (int) $max->value,
+            'recharge-min' => (int) $min->value,
         ];
 
         $this->cache->forever($this->cacheKey(), $datas);
 
-        return $ratio;
+        return $datas;
     }
 
     /**

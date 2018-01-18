@@ -41,13 +41,13 @@ class StoreCurrencyRecharge extends FormRequest
      *
      * @param \Zhiyi\Plus\Repository\WalletRechargeType $repository
      * @return array
-     * @author Seven Du <shiweidu@outlook.com>
+     * @author BS <414606094@qq.com>
      */
     public function rules(WalletRechargeType $repository, CurrencyConfig $config)
     {
         return [
             'type' => 'required|in:'.implode(',', $repository->get()),
-            'amount' => 'required|min:'.$config->get()['currency:recharge-min'].'|max:'.$config->get()['currency:recharge-max'],
+            'amount' => 'required|min:'.$config->get()['recharge-min'].'|max:'.$config->get()['recharge-max'],
             'extra' => 'array',
         ];
     }
@@ -56,7 +56,7 @@ class StoreCurrencyRecharge extends FormRequest
      * Get the valodation error message that apply to the request.
      *
      * @return array
-     * @author Seven Du <shiweidu@outlook.com>
+     * @author BS <414606094@qq.com>
      */
     public function messages()
     {
