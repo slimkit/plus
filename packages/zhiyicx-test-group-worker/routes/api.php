@@ -26,5 +26,6 @@ Route::group([
     $api->any('/', API\HomeController::class)->name('api:test-group-worker');
 
     // GitHub Accesses
-    $api->apiResource('github/accesses', API\AccessesController::class);
+    $api->get('/settings', API\SettingsController::class.'@index');
+    // $api->apiResource('github/accesses', API\AccessesController::class);
 });
