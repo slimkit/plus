@@ -22,8 +22,8 @@ namespace Zhiyi\Plus\Packages\Currency\Processes;
 
 use DB;
 use Zhiyi\Plus\Packages\Currency\Order;
-use Zhiyi\Plus\Repository\CurrencyConfig;
 use Zhiyi\Plus\Packages\Currency\Process;
+use Zhiyi\Plus\Repository\CurrencyConfig;
 use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 
 class Cash extends Process

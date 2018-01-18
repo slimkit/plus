@@ -40,7 +40,6 @@ class CurrencyCashController extends controller
         $cash = new CashProcess();
 
         if (($result = $cash->createOrder($user->id, (int) $amount) !== false)) {
-
             return response()->json($result, 201);
         }
 
