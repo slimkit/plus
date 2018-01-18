@@ -61,7 +61,7 @@ class CurrencyConfig
 
         $options = CommonConfig::firstOrCreate(
             ['name' => 'currency:recharge-option', 'namespace' => 'currency'],
-            ['value' => [100, 500, 1000, 2000, 5000, 10000]]
+            ['value' => '100, 500, 1000, 2000, 5000, 10000']
         );
 
         $max = CommonConfig::firstOrCreate(
@@ -76,7 +76,7 @@ class CurrencyConfig
 
         $datas = [
             'recharge-ratio' => (int) $ratio,
-            'recharge-options' => $options,
+            'recharge-options' => (string) $options,
             'recharge-max' => (int) $max,
             'recharge-min' => (int) $min,
         ];
