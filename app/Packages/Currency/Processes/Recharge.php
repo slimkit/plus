@@ -25,6 +25,7 @@ use Illuminate\Http\Request;
 use Pingpp\Charge as PingppCharge;
 use Zhiyi\Plus\Packages\Currency\Order;
 use Zhiyi\Plus\Packages\Currency\Process;
+use Zhiyi\Plus\Repository\CurrencyConfig;
 use Zhiyi\Plus\Repository\WalletPingPlusPlus;
 use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 use Zhiyi\Plus\Services\Wallet\Charge as WalletChargeService;
@@ -141,11 +142,13 @@ class Recharge extends Process
         $currencyOrderModel->state = 1;
         $currencyOrderModel->target_id = $pingppCharge->order_no;
 
+        $config = app(CurrencyConfig::class)->get();
+
         $user = $this->checkUser($currencyOrderModel->user);
 
-        return DB::transaction(function () use ($user, $currencyOrderModel) {
+        return DB::transaction(function () use ($user, $currencyOrderModel, $config) {
             $currencyOrderModel->save();
-            $user->Currency->increment('sum', $currencyOrderModel->amount);
+            $user->Currency->increment('sum', $currencyOrderModel->amount * $config['recharge-ratio']);
         });
     }
 
