@@ -16,6 +16,7 @@ class CreateTestGroupWorkerProjectsTable extends Migration
         Schema::create('test_group_worker_projects', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->comment('Project Name');
+            $table->text('desc')->nullable()->comment('Project Desc');
             $table->string('branch')->comment('Project GitHub Repo Upload File Branch');
             $table->string('github_owner')->comment('Project A user or organization account');
             $table->string('github_repo')->comment('Project A repository name');
