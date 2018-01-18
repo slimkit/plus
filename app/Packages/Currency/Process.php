@@ -64,10 +64,10 @@ class Process
      */
     protected function checkWallet(UserModel $user): UserModel
     {
-        $currency = $user->Currency;
+        $currency = $user->currency;
 
         if (! $currency) {
-            $user->Currency()->create(['type' => $this->currency_type->id, 'sum' => 0]);
+            $user->currency()->create(['type' => $this->currency_type->id, 'sum' => 0]);
         }
 
         return $user;

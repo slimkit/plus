@@ -148,7 +148,7 @@ class Recharge extends Process
 
         return DB::transaction(function () use ($user, $currencyOrderModel, $config) {
             $currencyOrderModel->save();
-            $user->Currency->increment('sum', $currencyOrderModel->amount * $config['recharge-ratio']);
+            $user->currency->increment('sum', $currencyOrderModel->amount * $config['recharge-ratio']);
 
             return true;
         });
