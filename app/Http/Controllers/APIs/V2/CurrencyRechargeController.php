@@ -27,7 +27,7 @@ use Zhiyi\Plus\Packages\Currency\Processes\Recharge as RechargeProcess;
 class CurrencyRechargeController extends controller
 {
     /**
-     * 钱包流水
+     * 钱包流水.
      *
      * @param Request $request
      * @param CurrencyOrderModel $currencyOrder
