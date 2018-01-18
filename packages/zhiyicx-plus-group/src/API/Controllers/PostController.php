@@ -353,7 +353,7 @@ class PostController
      * @param Request $request
      * @return mixed
      */
-    public function userPosts(Request $request, Carbon $datetime)
+    public function userPosts(Request $request, Carbon $datetime, PostRepository $repository)
     {
         $limit = $request->get('limit', 15);
         $offset = $request->get('offset', 0);
@@ -382,9 +382,9 @@ class PostController
             ->offset($offset)
             ->get();
 
-        $items = $posts->map(function ($post) use ($user) {
-            $post->collected = $post->collected($user);
-            $post->liked = $post->liked($user);
+        $items = $posts->map(function ($post) use ($user, $repository) {
+            $repository->formatCommonList($user, $post); 
+
             return $post;
         }); 
 
