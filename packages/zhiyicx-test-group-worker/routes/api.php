@@ -24,8 +24,8 @@ Route::group([
 
     // Base route
     $api->any('/', API\HomeController::class)->name('api:test-group-worker');
-
-    // GitHub Accesses
     $api->get('/settings', API\SettingsController::class.'@index');
-    // $api->apiResource('github/accesses', API\AccessesController::class);
+    // GitHub Accesses
+    $api->post('/settings/github', API\GitHubAccessController::class.'@bind');
+    $api->delete('/settings/github', API\GitHubAccessController::class.'@unbind');
 });

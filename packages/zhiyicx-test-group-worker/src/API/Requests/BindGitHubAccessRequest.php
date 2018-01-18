@@ -6,7 +6,7 @@ namespace Zhiyi\Plus\Packages\TestGroupWorker\API\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreGitHubAccessRequest extends Request
+class BindGitHubAccessRequest extends Request
 {
     /**
      * Get the validation rules that apply to the request.
@@ -17,7 +17,7 @@ class StoreGitHubAccessRequest extends Request
     public function rules(): array
     {
         return [
-            'username' => 'required|string',
+            'login' => 'required|string',
             'password' => 'required|string',
         ];
     }
@@ -31,8 +31,8 @@ class StoreGitHubAccessRequest extends Request
     public function messages()
     {
         return [
-            'username.required' => '请输入 GotHub 用户名',
-            'username.string' => 'GitHub 用户名必须是字符串',
+            'login.required' => '请输入 GotHub 账号',
+            'login.string' => 'GitHub 账号必须是字符串',
             'password.required' => '请输入 GitHub 密码',
             'password.string' => '密码必须是字符串',
         ];

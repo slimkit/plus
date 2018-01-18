@@ -23,7 +23,7 @@ class SettingsController
         $user = $request->user();
         $access = $this->getAccessQuery()->find($user->id);
         $settings = [
-            'github-access' => $access->login,
+            'github-access' => $access->login ?? null,
         ];
 
         return response()->json($settings, 200);
