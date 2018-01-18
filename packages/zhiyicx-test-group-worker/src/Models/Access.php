@@ -14,4 +14,18 @@ class Access extends Model
      * @var string
      */
     protected $table = 'test_group_worker_accesses';
+
+    /**
+     * The primary key for the model.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'owner';
+
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
 }
