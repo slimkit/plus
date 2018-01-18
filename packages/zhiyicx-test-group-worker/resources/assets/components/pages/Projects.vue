@@ -6,14 +6,14 @@
         <el-card>
           <div slot="header">
             <span>新建一个项目</span>
-            <el-button style="float: right; padding: 3px 0" type="text">立即创建</el-button>
+            <el-button style="float: right; padding: 3px 0" type="text" @click="handleCreateProject">立即创建</el-button>
           </div>
           <el-form label-position="right" label-width="80px">
             <el-form-item label="项目名称">
-              <el-input type="text" placeholder="请输入项目名称"></el-input>
+              <el-input v-model="createForm.name" type="text" placeholder="请输入项目名称"></el-input>
             </el-form-item>
             <el-form-item label="项目描述">
-              <el-input type="textarea" :rows="3" placeholder="请输入项目描述"></el-input>
+              <el-input v-model="createForm.desc" type="textarea" :rows="3" placeholder="请输入项目描述"></el-input>
             </el-form-item>
           </el-form>
         </el-card>
@@ -49,6 +49,31 @@
 <script>
 export default {
   name: 'page-projects',
+  data: () => ({
+    createForm: { name: '', desc: '' },
+  }),
+  methods: {
+    /**
+     * Create project goto handle.
+     *
+     * @return {void}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    handleCreateProject() {
+      let query = {};
+      const { name, desc } = this.createForm;
+      if (name) {
+        query['name'] = name;
+      }
+      if (desc) {
+        query['desc'] = desc;
+      }
+      this.$router.push({
+        path: '/new-project',
+        query,
+      });
+    },
+  },
 };
 </script>
 
