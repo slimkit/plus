@@ -93,7 +93,7 @@ export default {
         const { username, message } = data;
         this.githubForm = { loading: false, login: '', password: '' };
         this.githubUsername = username;
-         this.$notify({
+        this.$notify({
           title: '成功',
           message: `添加 GitHub 账号「${username}」成功`,
           type: 'success',

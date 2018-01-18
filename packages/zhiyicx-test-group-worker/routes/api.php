@@ -28,4 +28,7 @@ Route::group([
     // GitHub Accesses
     $api->post('/settings/github', API\GitHubAccessController::class.'@bind');
     $api->delete('/settings/github', API\GitHubAccessController::class.'@unbind');
+
+    // Projects
+    $api->apiResource('/projects', API\ProjectsController::class);
 });
