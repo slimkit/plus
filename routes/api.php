@@ -540,7 +540,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
         $api->group(['prefix' => 'currency'], function (RouteContract $api) {
 
             // 积分流水
-            $api->get('/orders', API2\CurrencyRechargeController::class.'index');
+            $api->get('/orders', API2\CurrencyRechargeController::class.'@index');
 
             // 发起充值
             $api->post('/recharge', API2\CurrencyRechargeController::class.'@store');
