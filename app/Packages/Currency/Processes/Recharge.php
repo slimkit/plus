@@ -35,7 +35,7 @@ class Recharge extends Process
     // ping++订单前缀标识
     protected $PingppPrefix = 'C';
 
-    public function createOrder(int $owner_id, int $type, int $amount): CurrencyOrderModel
+    public function createOrder(int $owner_id, int $amount): CurrencyOrderModel
     {
         $user = $this->checkUser($owner_id);
 
@@ -46,7 +46,7 @@ class Recharge extends Process
         $order->owner_id = $user->id;
         $order->title = $title;
         $order->body = $body;
-        $order->type = $type;
+        $order->type = 1;
         $order->currency = $this->currency_type->id;
         $order->target_type = Order::TARGET_TYPE_RECHARGE;
         $order->amount = $amount;
@@ -70,7 +70,7 @@ class Recharge extends Process
     {
         if (app(WalletChargeService::class)->checkRechargeArgs($type, $extra)) {
             $transaction = function () use ($owner_id, $amount, $extra, $type) {
-                $order = $this->createOrder($owner_id, 1, $amount);
+                $order = $this->createOrder($owner_id, $amount);
                 $service = app(WalletChargeService::class)->setPrefix($this->PingppPrefix);
                 $pingppCharge = $service->createWithoutModel($order->id, $type, $order->amount, $order->title, $order->body, $extra);
 

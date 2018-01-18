@@ -24,7 +24,7 @@ use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\CurrencyType as CurrencyTypeModel;
 use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 
-abstract class Process
+class Process
 {
     /**
      * 货币类型.
@@ -73,6 +73,4 @@ abstract class Process
 
         return $user;
     }
-
-    abstract protected function createOrder(int $owner_id, int $type, int $amount): CurrencyOrderModel;
 }
