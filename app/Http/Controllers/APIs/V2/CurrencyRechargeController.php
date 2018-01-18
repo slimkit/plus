@@ -71,7 +71,7 @@ class CurrencyRechargeController extends controller
 
         $recharge = new RechargeProcess();
 
-        if (($result = $recharge->createPingPPOrder($user->id, $amount, $type, $extra) !== false)) {
+        if (($result = $recharge->createPingPPOrder( (int) $user->id, (int) $amount, $type, $extra) !== false)) {
             return response()->json($result, 201);
         }
 

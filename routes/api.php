@@ -547,6 +547,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // 取回凭据
             $api->get('/orders/{order}', API2\CurrencyRechargeController::class.'@retrieve');
+
+            // 发起提现
+            $api->post('/cash', API2\CurrencyCashController::class.'@store');
         });
     });
 });
