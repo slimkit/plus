@@ -9,16 +9,16 @@
         </el-dropdown-menu>
       </el-dropdown>
     </el-header>
-    <el-container direction="horizontal">
-      <el-aside width="200px">
+    <el-container direction="horizontal" class="app-container">
+      <el-aside width="240px">
         <el-menu :router="true" :default-active="menuActive">
           <el-menu-item index="/projects">
             <i class="el-icon-menu"></i>
-            <span slot="title">项目</span>
+            <span slot="title">项目管理</span>
           </el-menu-item>
           <el-menu-item index="/tasks">
             <i class="el-icon-tickets"></i>
-            <span slot="title">任务</span>
+            <span slot="title">待处理任务</span>
           </el-menu-item>
           <el-menu-item index="/setting">
             <i class="el-icon-setting"></i>
@@ -82,6 +82,10 @@ export default {
   justify-content: space-between;
   align-items: center;
   border-bottom: solid 1px #e6e6e6;
+}
+.app-container {
+  width: 1140px;
+  margin: 0 auto;
 }
 .app-title {
   color: #888;

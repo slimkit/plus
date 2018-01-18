@@ -2,3 +2,11 @@ html, body {
     padding: 0;
     margin: 0;
 }
+
+.el-menu-item:focus, .el-menu-item:hover {
+    color: #409EFF;
+    background-color: transparent;
+}
+.el-menu-item:hover i {
+    color: #409EFF;
+}
