@@ -43,7 +43,6 @@ Route::group([
     // 后台导航
     // @GET /admin/manages
     $route->get('/manages', 'HomeController@showManages');
-
     // Role
     // @Route /roles
     $route->group(['prefix' => 'roles'], function (RouteRegisterContract $route) {

@@ -36,7 +36,10 @@ class HomeController
 
         return view('welcome');
     }
-
+    public function testVue()
+    {
+        return view('testVue');
+    }
     public function isMobile()
     {
         // 如果有HTTP_X_WAP_PROFILE则一定是移动设备
