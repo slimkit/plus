@@ -1,5 +1,6 @@
 import 'element-ui/lib/theme-chalk/index.css';
 import './style.css';
+import 'github-markdown-css';
 import Vue from 'vue';
 import ElementUI from 'element-ui';
 import App from './App.vue';

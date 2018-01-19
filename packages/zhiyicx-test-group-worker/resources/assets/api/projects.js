@@ -13,3 +13,9 @@ export function all() {
     validateStatus: status => status === 200,
   });
 }
+
+export function show(id) {
+  return request.get('/projects/'+id, {
+    validateStatus: status => status === 200,
+  });
+}

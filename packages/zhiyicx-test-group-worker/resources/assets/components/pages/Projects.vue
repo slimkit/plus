@@ -36,7 +36,7 @@
           <div class="project-desc">
             {{ project.desc }}
             <p>
-              <el-button >进入项目</el-button>
+              <el-button @click="handleGoProjectHome(project.id)">进入项目</el-button>
             </p>
           </div>
 
@@ -56,6 +56,9 @@ export default {
     projects: [],
   }),
   methods: {
+    handleGoProjectHome(id) {
+      this.$router.push(`/projects/${id}`);
+    },
     /**
      * Create project goto handle.
      *

@@ -29,6 +29,23 @@ class ProjectsController
     }
 
     /**
+     * Show a project.
+     *
+     * @param int $project
+     * @return Illuminate\Http\JsonResponse
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function show(int $project): JsonResponse
+    {
+        $project = $this->getProjectQuery()->find($project);
+        if (! $project) {
+            return response()->json(['message' => '项目不存在'], 404);
+        }
+
+        return response()->json($project, 200);
+    }
+
+    /**
      * Create a project.
      *
      * @param \Zhiyi\Plus\Packages\TestGroupWorker\API\Requests\CreateProjectRequest $request

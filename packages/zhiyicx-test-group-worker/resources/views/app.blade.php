@@ -11,6 +11,7 @@
         window.accessToken = '{{ $accessToken }}';
         window.apiBaseUrl = '{{ route('api:test-group-worker') }}';
         window.logoutUrl = '{{ route('logout') }}';
+        window.githubBasicToken = '{{ $githubBasicToken }}';
     </script>
 </head>
 <body>
