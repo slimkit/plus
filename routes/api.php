@@ -539,6 +539,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
         // 积分部分
         $api->group(['prefix' => 'currency'], function (RouteContract $api) {
 
+            // 获取积分配置
+            $api->get('/', API2\CurrencyConfigController::class.'@show');
+
             // 积分流水
             $api->get('/orders', API2\CurrencyRechargeController::class.'@index');
 
