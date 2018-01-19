@@ -175,7 +175,7 @@ class Post
         $this->setModel($model);
         $this->model->load(['group', 'user']);
 
-        $this->model->group->joined = isset($this->user) ? $this->model->group->members()->where('user_id', $this->user->id)->where('audit', 1)->first() : null;
+        $this->model->group->joined = (isset($this->user) && $this->model->group) ? $this->model->group->members()->where('user_id', $this->user->id)->where('audit', 1)->first() : null;
 
         $this->formatRelations();
         $this->formatList();
