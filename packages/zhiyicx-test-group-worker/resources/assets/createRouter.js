@@ -1,11 +1,12 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Projects from './components/pages/Projects';
-import Setting from './components/pages/Setting';
+import Settings from './components/pages/Settings';
 import NewProject from './components/pages/NewProject';
 import Project from './components/pages/Project';
 
 import ProjectGeneral from './components/modules/project/General';
+import ProjectSettings from './components/modules/project/Settings';
 
 Vue.use(VueRouter);
 
@@ -15,7 +16,7 @@ export default new VueRouter({
   routes: [
     { path: '/', redirect: '/projects' },
     { path: '/projects', component: Projects },
-    { path: '/setting', component: Setting },
+    { path: '/setting', component: Settings },
     { path: '/new-project', component: NewProject },
     {
       path: '/projects/:id',
@@ -24,7 +25,7 @@ export default new VueRouter({
         { path: '', component: ProjectGeneral },
         { path: 'issues', component: ProjectGeneral },
         { path: 'tasks', component: ProjectGeneral },
-        { path: 'setting', component: ProjectGeneral },
+        { path: 'setting', component: ProjectSettings },
       ]
     },
   ]
