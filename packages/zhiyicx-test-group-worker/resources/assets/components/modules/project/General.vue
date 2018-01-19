@@ -9,7 +9,8 @@
 </template>
 
 <script>
-import github from '../../../api/github';
+import { readme } from '../../../api/projects';
+import PlusMessageBundle from 'plus-message-bundle';
 export default {
   name: 'module-project-general',
   props: {
@@ -28,23 +29,23 @@ export default {
      * @author Seven Du <shiweidu@outlook.com>
      */
     fetchReadme() {
-      const { github_owner, github_repo } = this.project;
       this.loading = true;
-      github.get(`/repos/${github_owner}/${github_repo}/readme`, {
-        validateStatus: status => status === 200,
-        headers: {
-          'Accept': 'application/vnd.github.v3.html',
-          'Authorization': github.basicToken(),
-        },
-      }).then(({ data }) => {
-        this.readme = data;
+      readme(this.project.id).then(({ data }) => {
+        this.readme = data.readme;
         this.loading = false;
-      }).catch();
+      }).catch(({ response: { data = {} } = {} }) => {
+        this.loading = true;
+        const Message = new PlusMessageBundle(data, '加载项目失败');
+        this.$notify({
+          title: '错误',
+          message: Message.getMessage(),
+          type: 'error',
+        });
+      });
     },
   },
   created() {
     this.fetchReadme();
-    console.log(this.project);
   }
 };
 </script>

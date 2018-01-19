@@ -111,18 +111,6 @@ export default {
    * @author Seven Du <shiweidu@outlook.com>
    */
   created() {
-    if (! window.githubBasicToken) {
-      this.$confirm('你还没有绑定 GitHub 账号，无法进入该页面，请前往「设置绑定」', '提示', {
-        confirmButtonText: '现在绑定',
-        type: 'warning',
-        center: true,
-        showClose: false,
-        showCancelButton: false,
-      }).then(() => {
-        this.$router.push('/setting');
-      });
-      return;
-    }
     this.fetchProject();
   }
 };

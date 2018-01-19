@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Packages\TestGroupWorker\Providers;
 
+use Zhiyi\Plus\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
@@ -34,6 +35,10 @@ class ModelServiceProvider extends ServiceProvider
         // User::macro('test-group-workers', function () {
         //     return $this->hasMany(\Zhiyi\Plus\Packages\TestGroupWorker\Models\test-group-worker::class);
         // });
+        
+        User::macro('githubAccess', function () {
+            return $this->hasOne(\Zhiyi\Plus\Packages\TestGroupWorker\Models\Access::class, 'owner', 'id');
+        });
     }
 
     /**

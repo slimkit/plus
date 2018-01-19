@@ -9,12 +9,43 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Github\Exception\RuntimeException;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Routing\Controller as BaseController;
 use Zhiyi\Plus\Packages\TestGroupWorker\Models\Access as AccessModel;
+use Zhiyi\Plus\Packages\TestGroupWorker\API\Middleware\CheckBindGitHub;
 use Zhiyi\Plus\Packages\TestGroupWorker\Models\Project as ProjectModel;
 use Zhiyi\Plus\Packages\TestGroupWorker\API\Requests\CreateProjectRequest;
 
-class ProjectsController
+class ProjectsController extends BaseController
 {
+    /**
+     * Create the Controller instance.
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function __construct() {
+        $this->middleware(CheckBindGitHub::class)->only('readme', 'store');
+    }
+
+    /**
+     * Get project readme.
+     *
+     * @param Request $request
+     * @param ProjectModel $project
+     * @return 
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function readme(Request $request, ProjectModel $project, GitHub $github): JsonResponse
+    {
+        $access = $request->user()->githubAccess;
+        $github->authenticate($access->login, $access->password, GitHub::AUTH_HTTP_PASSWORD);
+
+        $contents = $github->repos()->contents();
+        $contents->configure('html');
+        $readme = $contents->readme($project->github_owner, $project->github_repo);
+
+        return response()->json(['readme' => $readme], 200);
+    }
+
     /**
      * Get all projects.
      *
@@ -70,12 +101,8 @@ class ProjectsController
             return response()->json(['message' => '该仓库已被其他人添加'], 422);
         }
 
-        // 检查用户是否已添加 GitHub 账号
-        if (! ($access = $this->getAccessQuery()->find($user->id))) {
-            return response()->json(['message' => '请先进入「设置」绑定 GitHub 账号'], 422);
-        }
-
         // 添加 GitHub 账号认证
+        $access = $user->githubAccess;
         $github->authenticate($access->login, $access->password, GitHub::AUTH_HTTP_PASSWORD);
 
         // 检查仓库是否存在

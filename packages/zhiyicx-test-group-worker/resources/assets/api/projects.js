@@ -19,3 +19,9 @@ export function show(id) {
     validateStatus: status => status === 200,
   });
 }
+
+export function readme(id) {
+  return request.get(`/projects/${id}/readme`, {
+    validateStatus: status => status === 200,
+  });
+}

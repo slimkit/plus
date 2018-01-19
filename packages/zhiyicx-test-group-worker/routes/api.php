@@ -31,4 +31,5 @@ Route::group([
 
     // Projects
     $api->apiResource('/projects', API\ProjectsController::class);
+    $api->get('/projects/{project}/readme', API\ProjectsController::class.'@readme');
 });
