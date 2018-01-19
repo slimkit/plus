@@ -36,16 +36,9 @@ class HomeController extends BaseController
             abort(403, '您没有权限进入该应用');
         }
 
-        // GitHub Basic Token
-        $githubBasicToken = null;
-        if ($access = $this->getAccessQuery()->find($user->id)) {
-            $githubBasicToken = base64_encode($access->login.':'.$access->password);
-        }
-
         $variables = [
             'accessToken' => $request->session()->get('access_token'),
             'user' => $request->user(),
-            'githubBasicToken' => $githubBasicToken,
         ];
 
         return view('test-group-worker::app', $variables);
