@@ -16,7 +16,7 @@ export default new VueRouter({
   routes: [
     { path: '/', redirect: '/projects' },
     { path: '/projects', component: Projects },
-    { path: '/setting', component: Settings },
+    { path: '/settings', component: Settings },
     { path: '/new-project', component: NewProject },
     {
       path: '/projects/:id',
@@ -25,7 +25,7 @@ export default new VueRouter({
         { path: '', component: ProjectGeneral },
         { path: 'issues', component: ProjectGeneral },
         { path: 'tasks', component: ProjectGeneral },
-        { path: 'setting', component: ProjectSettings },
+        { path: 'settings', component: ProjectSettings },
       ]
     },
   ]

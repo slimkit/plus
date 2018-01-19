@@ -3,10 +3,10 @@
     <h4>基础设置</h4>
     <el-form label-position="top" :inline="false">
       <el-form-item label="项目名称">
-        <el-input type="text" placeholder="请输入项目名称"></el-input>
+        <el-input type="text" placeholder="请输入项目名称" v-model="name"></el-input>
       </el-form-item>
       <el-form-item label="项目描述">
-        <el-input type="textarea" :rows="3" placeholder="请输入项目描述"></el-input>
+        <el-input type="textarea" :rows="3" placeholder="请输入项目描述" v-model="desc"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary">修改信息</el-button>
@@ -24,3 +24,16 @@
     <el-button type="danger" style="margin-top: 24px;">移除项目</el-button>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'module-project-settings',
+  props: {
+    project: { required: true, type: Object },
+  },
+  data() {
+    const { name, desc } = this.project;
+    return { name, desc };
+  },
+};
+</script>

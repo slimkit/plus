@@ -21,7 +21,7 @@
       <el-menu-item :index="`/projects/${projectId}`">General</el-menu-item>
       <el-menu-item :index="`/projects/${projectId}/issues`">Issues</el-menu-item>
       <el-menu-item :index="`/projects/${projectId}/tasks`">Test Tasks</el-menu-item>
-      <el-menu-item :index="`/projects/${projectId}/setting`">Setting</el-menu-item>
+      <el-menu-item :index="`/projects/${projectId}/settings`">Settings</el-menu-item>
     </el-menu>
     <router-view v-if="loaded" :project="project" :color="headerBackgroundColor"></router-view>
   </div>
