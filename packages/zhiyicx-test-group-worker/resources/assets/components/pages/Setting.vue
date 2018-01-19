@@ -98,7 +98,6 @@ export default {
           message: `添加 GitHub 账号「${username}」成功`,
           type: 'success',
         });
-        window.location.reload();
       }).catch(({ response: { data = {} } = {} }) => {
         this.githubForm.loading = false;
         const Message = new PlusMessageBundle(data, '添加 GitHub 账号失败');
@@ -120,7 +119,6 @@ export default {
           message: '解绑 GitHub 账号成功',
           type: 'success',
         });
-        window.location.reload();
       }).catch(({ response: { data = {} } = {} }) => {
         this.unbindGitHubAccessLoading = false;
         const Message = new PlusMessageBundle(data, '解绑 GitHub 账号失败');
