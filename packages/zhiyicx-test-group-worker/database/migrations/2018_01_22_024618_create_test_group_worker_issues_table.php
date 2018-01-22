@@ -19,6 +19,7 @@ class CreateTestGroupWorkerIssuesTable extends Migration
             $table->integer('github_issue_id')->unsgined()->comment('GitHub Issue ID');
             $table->string('title')->comment('Issue Title');
             $table->integer('creator')->comment('The Issue Creator');
+            $table->tinyInteger('closed')->nullable()->default(0)->comment('Issues Closed');
             $table->timestamps();
         });
     }
