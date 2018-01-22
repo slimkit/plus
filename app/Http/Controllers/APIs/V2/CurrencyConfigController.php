@@ -22,7 +22,7 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Zhiyi\Plus\Repository\CurrencyConfig;
 
-class CurrencyConfigController extends controller
+class CurrencyConfigController extends Controller
 {
     /**
      * 获取积分相关配置.
