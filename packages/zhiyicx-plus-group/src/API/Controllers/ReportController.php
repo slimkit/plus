@@ -21,6 +21,11 @@ class ReportController
     {
         $auth_user = $request->user();
 
+        $reason = $request->input('reason');
+        if (strlen($reason) > 191) {
+            return response()->json(['message' => ['举报理由超出长度限制']], 422);
+        }
+
         $reportModel->user_id = $auth_user->id;
         $reportModel->target_user = $group->user_id;
         $reportModel->status = 0;
