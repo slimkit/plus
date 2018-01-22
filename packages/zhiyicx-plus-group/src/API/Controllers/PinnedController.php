@@ -562,11 +562,13 @@ class PinnedController extends Controller
             $pinnedModel->save();
 
             // 给用户发消息通知
-            $post->user->sendNotifyMessage(
-                'group:pinned-post', 
-                sprintf('%s,你的帖子《%s》已被系统管理员置顶', $post->user->name, $post->title), 
-                ['post' => $post, 'user' => $user, 'pinned' => $pinnedModel]
-            );
+            if ($user->id !== $post->user_id) {
+                $post->user->sendNotifyMessage(
+                    'group:pinned-post', 
+                    sprintf('%s,你的帖子《%s》已被系统管理员置顶', $post->user->name, $post->title), 
+                    ['post' => $post, 'user' => $user, 'pinned' => $pinnedModel]
+                );
+            }
         });
 
         return response()->json(['message' => '置顶成功', 'pinned' => $pinnedModel], 201);
