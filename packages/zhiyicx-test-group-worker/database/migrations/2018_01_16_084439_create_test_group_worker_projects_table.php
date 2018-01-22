@@ -20,8 +20,9 @@ class CreateTestGroupWorkerProjectsTable extends Migration
             $table->string('branch')->comment('Project GitHub Repo Upload File Branch');
             $table->string('github_owner')->comment('Project A user or organization account');
             $table->string('github_repo')->comment('Project A repository name');
-            $table->integer('issues_count')->unsgined()->comment('Issues Count');
-            $table->integer('task_count')->unsgined()->comment('Test Task Count');
+            $table->integer('issues_count')->unsgined()->nullable()->default(0)->comment('Issues Count');
+            $table->integer('closed_issues_count')->unsgined()->nullable()->default(0)->comment('Closed Issess Count');
+            $table->integer('task_count')->unsgined()->nullable()->default(0)->comment('Test Task Count');
             $table->integer('task_completed_count')->unsgined()->nullable()->default(0)->comment('Test Task Completed Count');
             $table->integer('creator')->unsgined()->comment('Project Creator');
             $table->timestamps();
