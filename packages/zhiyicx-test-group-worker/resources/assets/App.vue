@@ -20,7 +20,7 @@
             <i class="el-icon-tickets"></i>
             <span slot="title">待处理任务</span>
           </el-menu-item>
-          <el-menu-item index="/setting">
+          <el-menu-item index="/settings">
             <i class="el-icon-setting"></i>
             <span slot="title">设置</span>
           </el-menu-item>
