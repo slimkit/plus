@@ -33,6 +33,8 @@ class CurrencyConfigController extends controller
      */
     public function show(CurrencyConfig $config)
     {
-        return response()->json($config->get(), 200);
+        $configs = array_merge($config->get(), ['rule' => config('currency.rule', '')]);
+
+        return response()->json($configs, 200);
     }
 }
