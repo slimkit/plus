@@ -7,6 +7,7 @@ import Project from './components/pages/Project';
 
 import ProjectGeneral from './components/modules/project/General';
 import ProjectSettings from './components/modules/project/Settings';
+import ProjectIssues from './components/modules/project/Issues';
 
 Vue.use(VueRouter);
 
@@ -23,7 +24,7 @@ export default new VueRouter({
       component: Project,
       children: [
         { path: '', component: ProjectGeneral },
-        { path: 'issues', component: ProjectGeneral },
+        { path: 'issues', component: ProjectIssues },
         { path: 'tasks', component: ProjectGeneral },
         { path: 'settings', component: ProjectSettings },
       ]
