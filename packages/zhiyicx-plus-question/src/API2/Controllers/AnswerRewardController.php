@@ -111,6 +111,12 @@ class AnswerRewardController extends Controller
                 });
             })->flatten()->toArray();
 
+            // send notify
+            $respondent->sendNotifyMessage('question:answer-reward', trans('plus-question::answers.reward.get-reward'), [
+                'answer' => $answer,
+                'user' => $user,
+            ]);
+
             if (in_array($respondent->id, $allexpert)) {
                 $income = new ExpertIncomeModel();
                 $income->charge_id = $respondentCharge->id;
