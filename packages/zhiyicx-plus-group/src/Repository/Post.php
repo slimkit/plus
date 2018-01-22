@@ -157,6 +157,31 @@ class Post
     }
 
     /**
+     * 当前用户对帖子作者的关注状态
+     *
+     * @return Zhiyi\PlusGroup\Models\Post
+     * @author BS <414606094@qq.com>
+     */
+    public function formatPostUserRelations()
+    {
+        if (! $this->model->user) {
+            return $this->model;
+        }
+
+        $this->model->user->following = false;
+        $this->model->user->follower = false;
+
+        if (! $this->user) {
+            return $this->model;
+        }
+
+        $this->model->user->following = $this->user->hasFollwing($this->model->user);
+        $this->model->user->follower = $this->user->hasFollower($this->model->user);
+
+        return $this->model;
+    }
+
+    /**
      * 常规帖子列表格式化.
      *
      * @param UserModel $user
@@ -209,6 +234,7 @@ class Post
         $this->formatPinned();
         $this->previewComments();
         $this->formatRelations();
+        $this->formatPostUserRelations();
         $this->formatImages();
         $this->previewRewards();
 
