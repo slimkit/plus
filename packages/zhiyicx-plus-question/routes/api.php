@@ -108,6 +108,29 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
         $api->get('/experts', API2\RankController::class.'@expertIncome');
     });
 
+    // User
+    // @Route /api/v2/user
+    $api->group(['prefix' => 'user'], function (RouteRegisterContract $api) {
+
+        // User`s questions
+        // @Route /api/v2/user/questions
+        $api->group(['prefix' => 'questions'], function (RouteRegisterContract $api) {
+
+            // Get user`s questions
+            // @GET /api/v2/user/questions
+            $api->get('/', API2\UserQuestionController::class.'@questions');
+        });
+
+        // Q & A.
+        // @Route /api/v2/user/question-answer
+        $api->group(['prefix' => 'question-answer'], function (RouteRegisterContract $api) {
+
+            //Get user`s answer.
+            //@GET /api/v2/user/question-answer
+            $api->get('/', API2\UserAnswerController::class.'@index');
+        });
+    });
+
     // @Auth api.
     // @Route /api/v2
     $api->group(['middleware' => 'auth:api'], function (RouteRegisterContract $api) {
@@ -115,15 +138,6 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
         // User
         // @Route /api/v2/user
         $api->group(['prefix' => 'user'], function (RouteRegisterContract $api) {
-
-            // User`s questions
-            // @Route /api/v2/user/questions
-            $api->group(['prefix' => 'questions'], function (RouteRegisterContract $api) {
-
-                // Get user`s questions
-                // @GET /api/v2/user/questions
-                $api->get('/', API2\UserQuestionController::class.'@questions');
-            });
 
             // Starred question topics.
             // @Route /api/v2/user/question-topics
@@ -166,10 +180,6 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
             // Q & A.
             // @Route /api/v2/user/question-answer
             $api->group(['prefix' => 'question-answer'], function (RouteRegisterContract $api) {
-
-                //Get user`s answer.
-                //@GET /api/v2/user/question-answer
-                $api->get('/', API2\UserAnswerController::class.'@index');
 
                 // Q & A collect.
                 // @Route /api/v2/user/question-answer/collections

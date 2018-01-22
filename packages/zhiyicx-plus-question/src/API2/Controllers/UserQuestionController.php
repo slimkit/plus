@@ -99,12 +99,12 @@ class UserQuestionController extends Controller
     public function questions(Request $request, ResponseFactoryContract $response, ApplicationContract $app)
     {
         $type = $request->query('type', 'all');
+        $user_id = $request->has('user_id') ? (int) $request->query('user_id') : $request->user('api')->id ?? 0;
 
         if (! in_array($type, ['all', 'invitation', 'reward', 'other'])) {
             $type = 'all';
         }
-
-        return $response->json($app->call([$this, $type]), 200);
+        return $response->json($app->call([$this, $type], ['user_id' => $user_id]), 200);
     }
 
     /**
@@ -115,13 +115,12 @@ class UserQuestionController extends Controller
      * @param  Question $questionModel
      * @return Collection
      */
-    public function all(Request $request, QuestionModel $questionModel)
+    public function all(Request $request, QuestionModel $questionModel, int $user_id)
     {
-        $user = $request->user();
         $limit = $request->query('limit', 15);
         $after = $request->query('after', 0);
         $questions = $questionModel->with('user')
-        ->where('user_id', $user->id)
+        ->where('user_id', $user_id)
         ->when($after, function ($query) use ($after) {
             return $query->where('id', '<', $after);
         })
@@ -129,21 +128,21 @@ class UserQuestionController extends Controller
         ->orderBy('id', 'desc')
         ->get();
 
-        return $questionModel->getConnection()->transaction(function () use ($questions, $user) {
-            return $questions->map(function ($question) use ($user) {
+        return $questionModel->getConnection()->transaction(function () use ($questions, $user_id) {
+            return $questions->map(function ($question) use ($user_id) {
                 $question->answer = $question->answers()
                     ->with('user')
                     ->orderBy('id', 'desc')
                     ->first();
 
                 if ($question->answer) {
-                    if ($question->answer->anonymity && $question->answer->user_id !== $user->id) {
+                    if ($question->answer->anonymity && $question->answer->user_id !== $user_id) {
                         $question->answer->addHidden('user');
                         $question->answer->user_id = 0;
                     }
-                    $question->answer->liked = (bool) $question->answer->liked($user->id);
-                    $question->answer->collected = (bool) $question->answer->collected($user->id);
-                    $question->answer->rewarded = (bool) $question->answer->rewarders()->where('user_id', $user->id)->first();
+                    $question->answer->liked = (bool) $question->answer->liked($user_id);
+                    $question->answer->collected = (bool) $question->answer->collected($user_id);
+                    $question->answer->rewarded = (bool) $question->answer->rewarders()->where('user_id', $user_id)->first();
                 }
 
                 return $question;
@@ -159,16 +158,15 @@ class UserQuestionController extends Controller
      * @param  Question $questionModel
      * @return Collection
      */
-    public function invitation(Request $request, QuestionModel $questionModel)
+    public function invitation(Request $request, QuestionModel $questionModel, int $user_id)
     {
-        $user = $request->user();
         $limit = $request->query('limit', 15);
         $after = $request->query('after', 0);
         $questions = $questionModel->with('user')
         ->whereExists(function ($query) {
             return $query->from('question_invitation')->whereRaw('question_invitation.question_id = questions.id');
         })
-        ->where('user_id', $user->id)
+        ->where('user_id', $user_id)
         ->when($after, function ($query) use ($after) {
             return $query->where('id', '<', $after);
         })
@@ -176,21 +174,21 @@ class UserQuestionController extends Controller
         ->limit($limit)
         ->get();
 
-        return $questionModel->getConnection()->transaction(function () use ($questions, $user) {
-            return $questions->map(function ($question) use ($user) {
+        return $questionModel->getConnection()->transaction(function () use ($questions, $user_id) {
+            return $questions->map(function ($question) use ($user_id) {
                 $question->answer = $question->answers()
                     ->with('user')
                     ->orderBy('id', 'desc')
                     ->first();
 
                 if ($question->answer) {
-                    if ($question->answer->anonymity && $question->answer->user_id !== $user->id) {
+                    if ($question->answer->anonymity && $question->answer->user_id !== $user_id) {
                         $question->answer->addHidden('user');
                         $question->answer->user_id = 0;
                     }
-                    $question->answer->liked = (bool) $question->answer->liked($user->id);
-                    $question->answer->collected = (bool) $question->answer->collected($user->id);
-                    $question->answer->rewarded = (bool) $question->answer->rewarders()->where('user_id', $user->id)->first();
+                    $question->answer->liked = (bool) $question->answer->liked($user_id);
+                    $question->answer->collected = (bool) $question->answer->collected($user_id);
+                    $question->answer->rewarded = (bool) $question->answer->rewarders()->where('user_id', $user_id)->first();
                 }
 
                 return $question;
@@ -206,13 +204,12 @@ class UserQuestionController extends Controller
      * @param  Question $questionModel
      * @return Collection
      */
-    public function reward(Request $request, QuestionModel $questionModel)
+    public function reward(Request $request, QuestionModel $questionModel, int $user_id)
     {
-        $user = $request->user();
         $limit = $request->query('limit', 15);
         $after = $request->query('after', 0);
         $questions = $questionModel->with('user')
-        ->where('user_id', $user->id)
+        ->where('user_id', $user_id)
         ->where('amount', '>', 0)
         ->whereNotExists(function ($query) {
             return $query->from('question_invitation')->whereRaw('question_invitation.question_id = questions.id');
@@ -224,21 +221,21 @@ class UserQuestionController extends Controller
         ->orderBy('questions.id', 'desc')
         ->get();
 
-        return $questionModel->getConnection()->transaction(function () use ($questions, $user) {
-            return $questions->map(function ($question) use ($user) {
+        return $questionModel->getConnection()->transaction(function () use ($questions, $user_id) {
+            return $questions->map(function ($question) use ($user_id) {
                 $question->answer = $question->answers()
                     ->with('user')
                     ->orderBy('id', 'desc')
                     ->first();
 
                 if ($question->answer) {
-                    if ($question->answer->anonymity && $question->answer->user_id !== $user->id) {
+                    if ($question->answer->anonymity && $question->answer->user_id !== $user_id) {
                         $question->answer->addHidden('user');
                         $question->answer->user_id = 0;
                     }
-                    $question->answer->liked = (bool) $question->answer->liked($user->id);
-                    $question->answer->collected = (bool) $question->answer->collected($user->id);
-                    $question->answer->rewarded = (bool) $question->answer->rewarders()->where('user_id', $user->id)->first();
+                    $question->answer->liked = (bool) $question->answer->liked($user_id);
+                    $question->answer->collected = (bool) $question->answer->collected($user_id);
+                    $question->answer->rewarded = (bool) $question->answer->rewarders()->where('user_id', $user_id)->first();
                 }
 
                 return $question;
@@ -254,13 +251,12 @@ class UserQuestionController extends Controller
      * @param  Question $questionModel
      * @return Collection
      */
-    public function other(Request $request, QuestionModel $questionModel)
+    public function other(Request $request, QuestionModel $questionModel, int $user_id)
     {
-        $user = $request->user();
         $limit = $request->query('limit', 15);
         $after = $request->query('after', 0);
         $questions = $questionModel->with('user')
-        ->where('user_id', $user->id)
+        ->where('user_id', $user_id)
         ->where('amount', '=', 0)
         ->whereNotExists(function ($query) {
             return $query->from('question_invitation')->whereRaw('question_invitation.question_id = questions.id');
@@ -272,21 +268,21 @@ class UserQuestionController extends Controller
         ->orderBy('questions.id', 'desc')
         ->get();
 
-        return $questionModel->getConnection()->transaction(function () use ($questions, $user) {
-            return $questions->map(function ($question) use ($user) {
+        return $questionModel->getConnection()->transaction(function () use ($questions, $user_id) {
+            return $questions->map(function ($question) use ($user_id) {
                 $question->answer = $question->answers()
                     ->with('user')
                     ->orderBy('id', 'desc')
                     ->first();
 
                 if ($question->answer) {
-                    if ($question->answer->anonymity && $question->answer->user_id !== $user->id) {
+                    if ($question->answer->anonymity && $question->answer->user_id !== $user_id) {
                         $question->answer->addHidden('user');
                         $question->answer->user_id = 0;
                     }
-                    $question->answer->liked = (bool) $question->answer->liked($user->id);
-                    $question->answer->collected = (bool) $question->answer->collected($user->id);
-                    $question->answer->rewarded = (bool) $question->answer->rewarders()->where('user_id', $user->id)->first();
+                    $question->answer->liked = (bool) $question->answer->liked($user_id);
+                    $question->answer->collected = (bool) $question->answer->collected($user_id);
+                    $question->answer->rewarded = (bool) $question->answer->rewarders()->where('user_id', $user_id)->first();
                 }
 
                 return $question;

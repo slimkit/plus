@@ -19,11 +19,13 @@ class UserAnswerController extends Controller
     public function index(Request $request, ApplicationContract $app)
     {
         $type = $request->query('type', 'all');
+        $user_id = $request->has('user_id') ? (int) $request->query('user_id') : $request->user('api')->id ?? 0;
+
         if (! in_array($type, ['all', 'adoption', 'invitation', 'other'])) {
             $type = 'all';
         }
 
-        return response()->json($app->call([$this, $type]), 200);
+        return response()->json($app->call([$this, $type], ['user_id' => $user_id]), 200);
     }
 
     /**
@@ -34,14 +36,13 @@ class UserAnswerController extends Controller
      * @param  SlimKit\PlusQuestion\Models\Answer $answerModel
      * @return mixed
      */
-    public function all(Request $request, AnswerModel $answerModel)
+    public function all(Request $request, AnswerModel $answerModel, int $user_id)
     {
-        $user = $request->user();
         $limit = $request->query('limit', 15);
         $after = $request->query('after', 0);
 
         $answers = $answerModel
-            ->where('user_id', $user->id)
+            ->where('user_id', $user_id)
             ->with('user')
             ->when($after, function ($query) use ($after) {
                 return $query->where('id', '<', $after);
@@ -51,10 +52,10 @@ class UserAnswerController extends Controller
             })
             ->orderBy('id', 'desc')
             ->limit($limit)
-            ->get()->map(function ($answer) use ($user) {
-                $answer->liked = (bool) $answer->liked($user->id);
-                $answer->collected = (bool) $answer->collected($user->id);
-                $answer->rewarded = (bool) $answer->rewarders()->where('user_id', $user->id)->first();
+            ->get()->map(function ($answer) use ($user_id) {
+                $answer->liked = (bool) $answer->liked($user_id);
+                $answer->collected = (bool) $answer->collected($user_id);
+                $answer->rewarded = (bool) $answer->rewarders()->where('user_id', $user_id)->first();
 
                 return $answer;
             });
@@ -70,14 +71,13 @@ class UserAnswerController extends Controller
      * @param  SlimKit\PlusQuestion\Models\Answer $answerModel
      * @return mixed
      */
-    public function adoption(Request $request, AnswerModel $answerModel)
+    public function adoption(Request $request, AnswerModel $answerModel, int $user_id)
     {
-        $user = $request->user();
         $limit = $request->query('limit', 15);
         $after = $request->query('after', 0);
 
         $answers = $answerModel
-            ->where('user_id', $user->id)
+            ->where('user_id', $user_id)
             ->where('adoption', 1)
             ->with('user')
             ->when($after, function ($query) use ($after) {
@@ -88,10 +88,10 @@ class UserAnswerController extends Controller
             })
             ->orderBy('id', 'desc')
             ->limit($limit)
-            ->get()->map(function ($answer) use ($user) {
-                $answer->liked = (bool) $answer->liked($user->id);
-                $answer->collected = (bool) $answer->collected($user->id);
-                $answer->rewarded = (bool) $answer->rewarders()->where('user_id', $user->id)->first();
+            ->get()->map(function ($answer) use ($user_id) {
+                $answer->liked = (bool) $answer->liked($user_id);
+                $answer->collected = (bool) $answer->collected($user_id);
+                $answer->rewarded = (bool) $answer->rewarders()->where('user_id', $user_id)->first();
 
                 return $answer;
             });
@@ -107,14 +107,13 @@ class UserAnswerController extends Controller
      * @param  SlimKit\PlusQuestion\Models\Answer $answerModel
      * @return mixed
      */
-    public function invitation(Request $request, AnswerModel $answerModel)
+    public function invitation(Request $request, AnswerModel $answerModel, int $user_id)
     {
-        $user = $request->user();
         $limit = $request->query('limit', 15);
         $after = $request->query('after', 0);
 
         $answers = $answerModel
-            ->where('user_id', $user->id)
+            ->where('user_id', $user_id)
             ->where('invited', 1)
             ->with('user')
             ->when($after, function ($query) use ($after) {
@@ -125,10 +124,10 @@ class UserAnswerController extends Controller
             })
             ->orderBy('id', 'desc')
             ->limit($limit)
-            ->get()->map(function ($answer) use ($user) {
-                $answer->liked = (bool) $answer->liked($user->id);
-                $answer->collected = (bool) $answer->collected($user->id);
-                $answer->rewarded = (bool) $answer->rewarders()->where('user_id', $user->id)->first();
+            ->get()->map(function ($answer) use ($user_id) {
+                $answer->liked = (bool) $answer->liked($user_id);
+                $answer->collected = (bool) $answer->collected($user_id);
+                $answer->rewarded = (bool) $answer->rewarders()->where('user_id', $user_id)->first();
 
                 return $answer;
             });
@@ -144,14 +143,14 @@ class UserAnswerController extends Controller
      * @param  SlimKit\PlusQuestion\Models\Answer $answerModel
      * @return mixed
      */
-    public function other(Request $request, AnswerModel $answerModel)
+    public function other(Request $request, AnswerModel $answerModel, int $user_id)
     {
         $user = $request->user();
         $limit = $request->query('limit', 15);
         $after = $request->query('after', 0);
 
         $answers = $answerModel
-            ->where('user_id', $user->id)
+            ->where('user_id', $user_id)
             ->where('invited', 0)
             ->where('adoption', 0)
             ->with('user')
@@ -164,9 +163,9 @@ class UserAnswerController extends Controller
             ->orderBy('id', 'desc')
             ->limit($limit)
             ->get()->map(function ($answer) use ($user) {
-                $answer->liked = (bool) $answer->liked($user->id);
-                $answer->collected = (bool) $answer->collected($user->id);
-                $answer->rewarded = (bool) $answer->rewarders()->where('user_id', $user->id)->first();
+                $answer->liked = (bool) $answer->liked($user_id);
+                $answer->collected = (bool) $answer->collected($user_id);
+                $answer->rewarded = (bool) $answer->rewarders()->where('user_id', $user_id)->first();
 
                 return $answer;
             });
