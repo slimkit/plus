@@ -6,6 +6,7 @@ namespace Zhiyi\Plus\Packages\TestGroupWorker\API\Controllers;
 
 use Github\Client as GitHub;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use Github\Exception\RuntimeException;
 use Illuminate\Database\Eloquent\Builder;
@@ -14,6 +15,7 @@ use Zhiyi\Plus\Packages\TestGroupWorker\Models\Access as AccessModel;
 use Zhiyi\Plus\Packages\TestGroupWorker\API\Middleware\CheckBindGitHub;
 use Zhiyi\Plus\Packages\TestGroupWorker\Models\Project as ProjectModel;
 use Zhiyi\Plus\Packages\TestGroupWorker\API\Requests\CreateProjectRequest;
+use Zhiyi\Plus\Packages\TestGroupWorker\API\Requests\UpdateProjectRequest;
 
 class ProjectsController extends BaseController
 {
@@ -127,6 +129,15 @@ class ProjectsController extends BaseController
         $project->save();
 
         return response()->json(['id' => $project->id], 201);
+    }
+
+    public function update(UpdateProjectRequest $request, ProjectModel $project): Response
+    {
+        $project->name = $request->input('name');
+        $project->desc = $request->input('desc');
+        $project->save();
+
+        return response('', 204);
     }
 
     /**

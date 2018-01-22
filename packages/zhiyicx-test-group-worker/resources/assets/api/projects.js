@@ -25,3 +25,10 @@ export function readme(id) {
     validateStatus: status => status === 200,
   });
 }
+
+export function update(id, data) {
+  const { name, desc } = data;
+  return request.patch(`/projects/${id}`, { name, desc }, {
+    validateStatus: status => status === 204,
+  });
+}
