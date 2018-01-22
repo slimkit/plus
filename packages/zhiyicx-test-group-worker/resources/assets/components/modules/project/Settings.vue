@@ -9,7 +9,7 @@
         <el-input type="textarea" :rows="3" placeholder="请输入项目描述" v-model="project.desc" :disabled="submitting"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" v-loading="submitting" @click="handleSubmit">修改信息</el-button>
+        <el-button type="primary" :loading="submitting" @click="handleSubmit">修改信息</el-button>
       </el-form-item>
     </el-form>
 
