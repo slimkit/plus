@@ -100,9 +100,9 @@ class EaseMobController
     public function openRegister(Request $request)
     {
         $callback = function () use ($request) {
-            $user = $request->user();
-            $options['username'] = $user->id;
-            $options['password'] = $this->getImPwdHash($user->id);
+            $user_id = $request->user_id ?: $request->user()->id;
+            $options['username'] = $user_id;
+            $options['password'] = $this->getImPwdHash($user_id);
             $url = $this->url.'users';
 
             $data['headers'] = ['Content-Type' => 'application/json'];
@@ -154,11 +154,11 @@ class EaseMobController
             if ($this->register_type == 0) {
                 return $this->openRegister($request);
             }
-            $user = $request->user();
+            $user_id = $request->user_id ?: $request->user()->id;
             $url = $this->url.'users';
             $options = [
-                'username' => $user->id,
-                'password' => $this->getImPwdHash($user->id),
+                'username' => $user_id,
+                'password' => $this->getImPwdHash($user_id),
             ];
             $data['body'] = json_encode($options);
             $data['headers'] = [
@@ -245,11 +245,12 @@ class EaseMobController
     public function resetPassword(Request $request)
     {
         $callback = function () use ($request) {
-            $url = $this->url.'users/'.$request->user_id.'/password';
+            $user_id = $request->user_id ?: $request->user()->id;
+            $url = $this->url.'users/'.$user_id.'/password';
 
             $options = [
                 'oldpassword' => $request->old_pwd_hash,
-                'newpassword' => $this->getImPwdHash($request->user_id),
+                'newpassword' => $this->getImPwdHash($user_id),
             ];
             $data['body'] = json_encode($options);
             $data['headers'] = [
@@ -286,8 +287,8 @@ class EaseMobController
     public function getPassword(Request $request)
     {
         $callback = function () use ($request) {
-            $user = $request->user();
-            $url = $this->url.'users/'.$user->id;
+            $user_id = $request->user_id ?: $request->user()->id;
+            $url = $this->url.'users/'.$user_id;
             $data['headers'] = [
                 'Authorization' => $this->getToken(),
             ];
@@ -312,7 +313,7 @@ class EaseMobController
 
             return response()->json([
                 'message' => ['成功'],
-                'im_pwd_hash' => $this->getImPwdHash($user->id),
+                'im_pwd_hash' => $this->getImPwdHash($user_id),
             ])->setStatusCode(201);
         };
 
@@ -329,7 +330,8 @@ class EaseMobController
     public function deleteUser(Request $request)
     {
         $callback = function () use ($request) {
-            $url = $this->url.'users/'.$request->user_id;
+            $user_id = $request->user_id ?: $request->user()->id;
+            $url = $this->url.'users/'.$user_id;
             $data['headers'] = [
                 'Authorization' => $this->getToken(),
             ];
