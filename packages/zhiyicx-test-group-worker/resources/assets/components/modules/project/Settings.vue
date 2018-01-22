@@ -21,12 +21,12 @@
       :show-icon="true"
     >
     </el-alert>
-    <el-button type="danger" style="margin-top: 24px;">移除项目</el-button>
+    <el-button :loading="deleting" @click="handleDestory" type="danger" style="margin-top: 24px;">移除项目</el-button>
   </div>
 </template>
 
 <script>
-import { update } from '../../../api/projects';
+import { update, destory } from '../../../api/projects';
 import PlusMessageBundle from 'plus-message-bundle';
 export default {
   name: 'module-project-settings',
@@ -35,6 +35,7 @@ export default {
   },
   data: () => ({
     submitting: false,
+    deleting: false,
   }),
   methods: {
     /**
@@ -61,7 +62,42 @@ export default {
           type: 'error',
         });
       });
-    }
+    },
+
+    /**
+     * Destory a project handle.
+     *
+     * @return {void}
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    handleDestory() {
+      this.$confirm('确定要移除项目吗？', '提示', {
+        type: 'warning',
+        confirmButtonText: '移除项目',
+        cancelButtonText: '取消',
+        center: true,
+      }).then(() => {
+        this.deleting = true;
+        destory(this.project.id).then(() => {
+          this.$notify({
+            title: '成功',
+            message: '移除项目成功',
+            type: 'success',
+          });
+          this.$router.replace('/projects');
+        }).catch(({ response: { data = {} } = {} }) => {
+          this.deleting = false;
+          const message = new PlusMessageBundle(data, '移除失败');
+          this.$notify({
+            title: '错误',
+            message: message.getMessage(),
+            type: 'error',
+          });
+        });
+      }).catch(() => {
+        this.deleting = false;
+      });
+    },
   },
 };
 </script>

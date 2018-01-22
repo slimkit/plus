@@ -32,3 +32,9 @@ export function update(id, data) {
     validateStatus: status => status === 204,
   });
 }
+
+export function destory(id) {
+  return request.delete(`/projects/${id}`, {
+    validateStatus: status => status === 204,
+  });
+}

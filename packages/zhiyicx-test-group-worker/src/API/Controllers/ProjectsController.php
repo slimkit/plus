@@ -131,11 +131,33 @@ class ProjectsController extends BaseController
         return response()->json(['id' => $project->id], 201);
     }
 
+    /**
+     * Update a project.
+     *
+     * @param \Zhiyi\Plus\Packages\TestGroupWorker\API\Requests\UpdateProjectRequest $request
+     * @param \Zhiyi\Plus\Packages\TestGroupWorker\Models\Project $project
+     * @return \Illuminate\Http\Response
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function update(UpdateProjectRequest $request, ProjectModel $project): Response
     {
         $project->name = $request->input('name');
         $project->desc = $request->input('desc');
         $project->save();
+
+        return response('', 204);
+    }
+
+    /**
+     * Destory a project.
+     *
+     * @param \Zhiyi\Plus\Packages\TestGroupWorker\Models\Project $project
+     * @return \Illuminate\Http\Response
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function destroy(ProjectModel $project): Response
+    {
+        $project->delete();
 
         return response('', 204);
     }
