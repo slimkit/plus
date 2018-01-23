@@ -112,6 +112,7 @@ class GroupController extends EaseMobController
             $options['maxusers'] = $request->input('maxusers', 300);
             $options['members_only'] = (bool) $request->input('members_only', 0);
             $options['allowinvites'] = (bool) $request->input('allowinvites', 1);
+            $request->input('new_owner_user') > 0 && $options['newowner'] = $request->input('new_owner_user');
 
             $url = $this->url.'chatgroups/'.$im_group_id;
             $data['headers'] = [
@@ -134,6 +135,7 @@ class GroupController extends EaseMobController
             $options['group_face'] = '';
             $imGroup = ImGroup::where('im_group_id', $im_group_id)->first();
             $imGroup->type = $request->input('type', 0);
+            $request->input('new_owner_user') > 0 && $imGroup->user_id = $options['newowner'];
             if ($request->input('group_face', 0) > 0) {
                 $imGroup->group_face = $request->input('group_face', 0);
                 // 创建头像

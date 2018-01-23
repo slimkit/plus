@@ -58,6 +58,13 @@ class UpdateGroup extends FormRequest
             'public' => 'boolean|nullable',
             'members_only' => 'nullable',
             'allowinvites' => 'boolean|nullable',
+            'new_owner_user' => [
+                'integer',
+                'nullable',
+                Rule::exists('users', 'id')->where(function ($query) {
+                    $query->where('deleted_at', null);
+                }),
+            ]
         ];
     }
 
@@ -71,6 +78,7 @@ class UpdateGroup extends FormRequest
             'groupname.required' => '群组名称不能为空',
             'desc.required' => '群组简介不能为空',
             'group_face.exists' => '文件不存在或已经被使用',
+            'new_owner_user.exists' => '被转让用户不存在或已被删除',
         ];
     }
 }
