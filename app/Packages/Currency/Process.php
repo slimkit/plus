@@ -41,18 +41,23 @@ class Process
      * 检测用户模型.
      *
      * @param $user
-     * @return UserModel
+     * @return UserModel | bool
      * @author BS <414606094@qq.com>
      */
-    public function checkUser($user): UserModel
+    public function checkUser($user, $throw = true)
     {
         if (is_numeric($user)) {
-            return $this->checkWallet(
-                UserModel::findOrFail((int) $user)
-            );
-        } elseif ($user instanceof UserModel) {
-            return $this->checkWallet($user);
+            $user = UserModel::find((int) $user);
         }
+
+        if (! $user) {
+            if ($throw) {
+               throw new \Exception("找不到所属用户", 1);
+            }
+            return false;
+        }
+
+        return $this->checkWallet($user);
     }
 
     /**
