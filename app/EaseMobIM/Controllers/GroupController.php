@@ -98,12 +98,13 @@ class GroupController extends EaseMobController
      * 修改群信息.
      *
      * @param UpdateGroup $request
+     * @param UrlManager $urlManager
      * @return $this
      * @author ZsyD<1251992018@qq.com>
      */
-    public function update(UpdateGroup $request)
+    public function update(UpdateGroup $request, UrlManager $urlManager)
     {
-        $callback = function () use ($request) {
+        $callback = function () use ($request, $urlManager) {
             $im_group_id = $request->input('im_group_id');
             $options['groupname'] = $request->input('groupname');
             $options['desc'] = $request->input('desc');
@@ -165,10 +166,10 @@ class GroupController extends EaseMobController
                 ])->setStatusCode(202);
             }
 
-            return response()->json([
-                'message' => ['成功'],
-                'im_group_id' => $im_group_id,
-            ])->setStatusCode(201);
+            $options['im_group_id'] = $im_group_id;
+            $options['group_face'] = $fileWith ? $urlManager->make($fileWith->file) : '';
+
+            return response()->json($options)->setStatusCode(201);
         };
 
         return $this->getConfig($callback);
@@ -227,6 +228,7 @@ class GroupController extends EaseMobController
      * 获取群信息.
      *
      * @param Request $request
+     * @param UrlManager $urlManager
      * @return $this
      * @author ZsyD<1251992018@qq.com>
      */
