@@ -23,6 +23,7 @@ namespace Zhiyi\Plus\EaseMobIm;
 use GuzzleHttp\Client;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Cdn\UrlManager;
 use Zhiyi\Plus\Models\ImGroup;
 use Zhiyi\Plus\Models\FileWith;
 
@@ -229,9 +230,9 @@ class GroupController extends EaseMobController
      * @return $this
      * @author ZsyD<1251992018@qq.com>
      */
-    public function getGroup(Request $request)
+    public function getGroup(Request $request, UrlManager $urlManager)
     {
-        $callback = function () use ($request) {
+        $callback = function () use ($request, $urlManager) {
             $im_group_id = $request->query('im_group_id'); // 多个以“,”隔开
             $url = $this->url.'chatgroups/'.$im_group_id;
             $data['headers'] = [
@@ -258,10 +259,10 @@ class GroupController extends EaseMobController
                 $owner = $affiliations->pluck('owner')->filter();
                 $members = $affiliations->pluck('member')->filter();
                 $group->affiliations = $this->getUser($members, $owner);
-                $group->group_face = $group_face[$group->id]->face->id ?: 0;
+                $group->group_face = $group_face[$group->id]->face ? $urlManager->make($group_face[$group->id]->face->file) : '';
             }
 
-            return response()->json($groupCon)->setStatusCode(200);
+            return response()->json($groupCon->data)->setStatusCode(200);
         };
 
         return $this->getConfig($callback);

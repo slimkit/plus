@@ -33,7 +33,6 @@ class ImGroup extends Model
 
     public function face()
     {
-        return $this->hasOne(FileWith::class, 'id', 'group_face')
-            ->select('id', 'size');
+        return $this->hasOne(FileWith::class, 'id', 'group_face');
     }
 }
