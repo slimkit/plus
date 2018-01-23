@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Packages\TestGroupWorker\API\Requests;
 
-class BindGitHubAccessRequest extends Request
+class CreateTaskRequest extends Request
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,8 +15,11 @@ class BindGitHubAccessRequest extends Request
     public function rules(): array
     {
         return [
-            'login' => 'required|string',
-            'password' => 'required|string',
+            'title' => 'required|string',
+            'desc' => 'nullable|string',
+            'version' => 'required|string',
+            'start_at' => 'required|date',
+            'end_at' => 'required|data',
         ];
     }
 
@@ -28,11 +31,7 @@ class BindGitHubAccessRequest extends Request
      */
     public function messages()
     {
-        return [
-            'login.required' => '请输入 GotHub 账号',
-            'login.string' => 'GitHub 账号必须是字符串',
-            'password.required' => '请输入 GitHub 密码',
-            'password.string' => '密码必须是字符串',
-        ];
+        return [];
     }
+
 }
