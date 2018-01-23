@@ -11,7 +11,7 @@ use Zhiyi\Plus\Packages\TestGroupWorker\Models\Task as TaskModel;
 use Zhiyi\Plus\Packages\TestGroupWorker\API\Requests\CreateTaskRequest;
 use Zhiyi\Plus\Packages\TestGroupWorker\Models\Project as ProjectModel;
 
-class TesksController extends BaseController
+class TasksController extends BaseController
 {
     public function all(Request $request): JsonResponse
     {

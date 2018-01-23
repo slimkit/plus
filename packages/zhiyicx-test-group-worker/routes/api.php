@@ -32,4 +32,9 @@ Route::group([
     // Projects
     $api->apiResource('/projects', API\ProjectsController::class);
     $api->get('/projects/{project}/readme', API\ProjectsController::class.'@readme');
+
+    // Tasks
+    $api->get('/tasks', API\TasksController::class.'@all');
+    $api->get('/projects/{project}/tasks', API\TasksController::class.'@index');
+    $api->post('/projects/{project}/tasks', API\TasksController::class.'@store');
 });
