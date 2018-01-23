@@ -32,7 +32,4 @@ Route::group([
     // Projects
     $api->apiResource('/projects', API\ProjectsController::class);
     $api->get('/projects/{project}/readme', API\ProjectsController::class.'@readme');
-
-    // Project Issues
-    $api->apiResource('/projects/{project}/issues', API\ProjectIssuesController::class);
 });

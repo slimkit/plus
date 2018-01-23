@@ -19,8 +19,14 @@
     </header>
     <el-menu mode="horizontal" :default-active="$route.path" :active-text-color="headerBackgroundColor" router>
       <el-menu-item :index="`/projects/${projectId}`">General</el-menu-item>
-      <el-menu-item :index="`/projects/${projectId}/issues`">Issues</el-menu-item>
-      <el-menu-item :index="`/projects/${projectId}/tasks`">Test Tasks</el-menu-item>
+      <a class="el-menu-item issues-link" :href="`${githubRepoLink}/issues`" target="_blank">Issues</a>
+      <!-- <el-menu-item :index="`/projects/${projectId}/issues`">Issues</el-menu-item> -->
+      <!-- <el-menu-item :index="`/projects/${projectId}/tasks`">Test Tasks</el-menu-item> -->
+      <el-submenu index="tasks">
+        <template slot="title">Test Task</template>
+        <el-menu-item :index="`/projects/${projectId}/tasks`">Lists</el-menu-item>
+        <el-menu-item :index="`/projects/${projectId}/new-tasks`">Create Tesk</el-menu-item>
+      </el-submenu>
       <el-menu-item :index="`/projects/${projectId}/settings`">Settings</el-menu-item>
     </el-menu>
     <router-view v-if="loaded" :project="project" :color="headerBackgroundColor"></router-view>
@@ -144,5 +150,8 @@ export default {
       color: #fff;
     }
   }
-};
+}
+.issues-link {
+  text-decoration: none;
+}
 </style>

@@ -14,15 +14,15 @@
         <el-menu :router="true" :default-active="menuActive">
           <el-menu-item index="/projects">
             <i class="el-icon-menu"></i>
-            <span slot="title">项目管理</span>
+            <span slot="title">Projects</span>
           </el-menu-item>
           <el-menu-item index="/tasks">
             <i class="el-icon-tickets"></i>
-            <span slot="title">待处理任务</span>
+            <span slot="title">Tasks</span>
           </el-menu-item>
           <el-menu-item index="/settings">
             <i class="el-icon-setting"></i>
-            <span slot="title">设置</span>
+            <span slot="title">Settings</span>
           </el-menu-item>
         </el-menu>
       </el-aside>
