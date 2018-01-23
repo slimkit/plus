@@ -44,10 +44,9 @@ class User extends Process
         $extra = $this->checkDefaultParam($amount, $extra);
 
         return DB::transaction(function () use ($owner_id, $target_id, $amount, $extra) {
-
             $user = $this->checkUser($owner_id);
             $order = $this->createOrder($user, $amount, -1, $extra['order_title'], $extra['order_body'], $target_id);
-            
+
             $order->save();
             $user->currency->decrement('sum', $amount);
 
@@ -62,14 +61,14 @@ class User extends Process
     }
 
     /**
-     * 创建订单方法
+     * 创建订单方法.
      *
      * @param int $owner_id
      * @param int $amount
      * @param int $type
      * @param string $title
      * @param string $body
-     * @param int|integer $target_id
+     * @param int|int $target_id
      * @return Zhiyi\Plus\Models\CurrencyOrder
      * @author BS <414606094@qq.com>
      */

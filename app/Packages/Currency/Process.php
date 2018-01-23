@@ -52,8 +52,9 @@ class Process
 
         if (! $user) {
             if ($throw) {
-               throw new \Exception("找不到所属用户", 1);
+                throw new \Exception('找不到所属用户', 1);
             }
+
             return false;
         }
 
