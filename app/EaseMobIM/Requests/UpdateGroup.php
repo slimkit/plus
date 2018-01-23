@@ -64,7 +64,7 @@ class UpdateGroup extends FormRequest
                 Rule::exists('users', 'id')->where(function ($query) {
                     $query->where('deleted_at', null);
                 }),
-            ]
+            ],
         ];
     }
 
