@@ -71,6 +71,7 @@ class GroupController extends EaseMobController
             $imGroup->im_group_id = $res->data->groupid;
             $imGroup->user_id = $request->user()->id;
             $imGroup->type = $request->input('type', 0);
+            $imGroup->save();
 
             // 发送消息至群组
             $cmd_content = $request->user()->name.'创建了群聊！';
