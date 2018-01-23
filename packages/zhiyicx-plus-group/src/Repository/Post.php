@@ -175,8 +175,8 @@ class Post
             return $this->model;
         }
 
-        $this->model->user->following = $this->user->hasFollwing($this->model->user);
-        $this->model->user->follower = $this->user->hasFollower($this->model->user);
+        $this->model->user->following = $this->model->user->hasFollwing($this->user);
+        $this->model->user->follower = $this->model->user->hasFollower($this->user);
 
         return $this->model;
     }
