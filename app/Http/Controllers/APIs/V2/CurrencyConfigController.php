@@ -36,9 +36,9 @@ class CurrencyConfigController extends Controller
     {
         $configs = array_merge($config->get(), [
             'rule' => config('currency.rule', ''),
-            'recharge-rule' => config('currency.recharge.rule', '');
+            'recharge-rule' => config('currency.recharge.rule', ''),
             'cash' => ($cash = CommonConfig::where('name', 'cash')->where('namespace', 'wallet')->first()) ? json_decode($cash->value) : [],
-            'cash-rule' => config('currency.cash.rule', '');
+            'cash-rule' => config('currency.cash.rule', ''),
             'recharge-type' => ($recharge_type = CommonConfig::where('name', 'wallet:recharge-type')->where('namespace', 'common')->first()) ? json_decode($recharge_type->value) : [],
         ]);
 
