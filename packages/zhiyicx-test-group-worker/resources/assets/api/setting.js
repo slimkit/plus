@@ -1,7 +1,5 @@
 import axios from './axios';
 
-const request = axios();
-
 /**
  * Fetch all settings data.
  *
@@ -9,7 +7,7 @@ const request = axios();
  * @author Seven Du <shiweidu@outlook.com>
  */
 export function settings() {
-  return request.get('/settings', {
+  return axios().get('/settings', {
     validateStatus: status => status === 200,
   });
 }
@@ -23,7 +21,7 @@ export function settings() {
  * @author Seven Du <shiweidu@outlook.com>
  */
 export function githubBind(login, password) {
-  return request.post('/settings/github', { login, password }, {
+  return axios().post('/settings/github', { login, password }, {
     validateStatus: status => status === 201,
   });
 }
@@ -35,7 +33,7 @@ export function githubBind(login, password) {
  * @author Seven Du <shiweidu@outlook.com>
  */
 export function unbindGitHub() {
-  return request.delete('/settings/github', {
+  return axios().delete('/settings/github', {
     validateStatus: status => status === 204,
   });
 }
