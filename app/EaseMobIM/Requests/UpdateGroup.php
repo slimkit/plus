@@ -47,6 +47,7 @@ class UpdateGroup extends FormRequest
             'groupname' => 'required|string',
             'group_face' => [
                 'integer',
+                'nullable',
                 Rule::exists('file_withs', 'id')->where(function ($query) {
                     $query->where('channel', null);
                     $query->where('raw', null);

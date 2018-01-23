@@ -131,7 +131,7 @@ class GroupController extends EaseMobController
                     ],
                 ])->setStatusCode(500);
             }
-
+            $options['group_face'] = '';
             $imGroup = ImGroup::where('im_group_id', $im_group_id)->first();
             $imGroup->type = $request->input('type', 0);
             if ($request->input('group_face', 0) > 0) {
@@ -147,6 +147,8 @@ class GroupController extends EaseMobController
                     $fileWith->channel = 'im:group_face';
                     $fileWith->raw = $imGroup->id;
                     $fileWith->save();
+
+                    $options['group_face'] = $urlManager->make($fileWith->file);
                 }
             }
             if (! $imGroup->save()) {
@@ -168,7 +170,6 @@ class GroupController extends EaseMobController
             }
 
             $options['im_group_id'] = $im_group_id;
-            $options['group_face'] = $fileWith ? $urlManager->make($fileWith->file) : '';
 
             return response()->json($options)->setStatusCode(201);
         };
