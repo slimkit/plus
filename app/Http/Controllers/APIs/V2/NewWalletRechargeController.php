@@ -72,7 +72,7 @@ class NewWalletRechargeController extends Controller
     {
         $user = $request->user();
         $amount = $request->input('amount');
-        $extra = $request->input('extra');
+        $extra = $request->input('extra', []);
         $type = $request->input('type');
 
         if (($result = $manager->driver(Order::TARGET_TYPE_RECHARGE_PING_P_P)->create($user, $amount, $type, $extra)) !== false) {
