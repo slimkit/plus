@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Repository\CurrencyConfig;
 
 class CurrencyConfigController extends Controller
@@ -33,7 +34,11 @@ class CurrencyConfigController extends Controller
      */
     public function show(CurrencyConfig $config)
     {
-        $configs = array_merge($config->get(), ['rule' => config('currency.rule', '')]);
+        $configs = array_merge($config->get(), [
+            'rule' => config('currency.rule', ''),
+            'cash' => ($cash = CommonConfig::where('name', 'cash')->where('namespace', 'wallet')->first()) ? json_decode($cash->value) : [],
+            'recharge-type' => ($recharge_type = CommonConfig::where('name', 'wallet:recharge-type')->where('namespace', 'common')->first()) ? json_decode($recharge_type->value) : [],
+        ]);
 
         return response()->json($configs, 200);
     }
