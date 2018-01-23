@@ -133,26 +133,27 @@ class GroupController extends EaseMobController
             }
 
             $imGroup = ImGroup::where('im_group_id', $im_group_id)->first();
-            $imGroup->group_face = $request->input('group_face', 0);
             $imGroup->type = $request->input('type', 0);
+            if ($request->input('group_face', 0) > 0) {
+                $imGroup->group_face = $request->input('group_face', 0);
+                // 创建头像
+                $fileWith = FileWith::where('id', $imGroup->group_face)
+                    ->where('channel', null)
+                    ->where('raw', null)
+                    ->first();
 
-            // 创建头像
-            $fileWith = FileWith::where('id', $imGroup->group_face)
-                ->where('channel', null)
-                ->where('raw', null)
-                ->first();
-
+                // 保存群头像
+                if ($fileWith) {
+                    $fileWith->channel = 'im:group_face';
+                    $fileWith->raw = $imGroup->id;
+                    $fileWith->save();
+                }
+            }
             if (! $imGroup->save()) {
                 return response()->json([
                     'message' => ['修改失败'],
                     'group_id' => $im_group_id,
                 ])->setStatusCode(500);
-            }
-            // 保存群头像
-            if ($fileWith) {
-                $fileWith->channel = 'im:group_face';
-                $fileWith->raw = $imGroup->id;
-                $fileWith->save();
             }
 
             // 发送消息至群组
