@@ -20,13 +20,25 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Packages\Currency\Processes;
 
+use DB;
 use Zhiyi\Plus\Packages\Currency\Order;
 use Zhiyi\Plus\Packages\Currency\Process;
 use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 
 class User extends Process
 {
-    public function createOrder(int $owner_id, int $type, int $amount, string $title = '', string $body = '', int $target_id = 0): CurrencyOrderModel
+    /**
+     * 自动完成订单方法
+     *
+     * @param int $owner_id
+     * @param int $amount
+     * @param string $title
+     * @param string $body
+     * @param int|integer $target_id
+     * @return bool
+     * @author BS <414606094@qq.com>
+     */
+    public function complete(int $owner_id, int $amount, string $title = '', string $body = '', int $target_id = 0): bool
     {
         $user = $this->checkUser($owner_id);
         $target_user = $this->checkUser($target_id);
@@ -35,18 +47,19 @@ class User extends Process
         $order->owner_id = $user->id;
         $order->title = $title;
         $order->body = $body;
-        $order->type = $type;
+        $order->type = 1;
         $order->currency = $this->currency_type->id;
         $order->target_type = Order::TARGET_TYPE_USER;
         $order->target_id = $target_id;
         $order->amount = $amount;
+        $order->state = 1;
 
-        $order->save();
+        return DB::transaction(function () use ($order, $user, $target_user) {
+            $order->save();
+            $user->currency->decrement('sum', $amount);
+            $target_user->currency->increment('sum', $amount);
 
-        return $order;
-    }
-
-    public function complete()
-    {
+            return true;
+        });
     }
 }
