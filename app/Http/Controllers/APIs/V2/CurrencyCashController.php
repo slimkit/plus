@@ -23,7 +23,7 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 use Zhiyi\Plus\Http\Requests\API2\StoreCurrencyCash;
 use Zhiyi\Plus\Packages\Currency\Processes\Cash as CashProcess;
 
-class CurrencyCashController extends controller
+class CurrencyCashController extends Controller
 {
     /**
      * 发起提现订单.

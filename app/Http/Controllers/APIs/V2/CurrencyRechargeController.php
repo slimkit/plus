@@ -25,7 +25,7 @@ use Zhiyi\Plus\Http\Requests\API2\StoreCurrencyRecharge;
 use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 use Zhiyi\Plus\Packages\Currency\Processes\Recharge as RechargeProcess;
 
-class CurrencyRechargeController extends controller
+class CurrencyRechargeController extends Controller
 {
     /**
      * 钱包流水.
