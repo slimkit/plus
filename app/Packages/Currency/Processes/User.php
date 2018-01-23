@@ -28,13 +28,13 @@ use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 class User extends Process
 {
     /**
-     * 自动完成订单方法
+     * 自动完成订单方法.
      *
      * @param int $owner_id
      * @param int $amount
      * @param string $title
      * @param string $body
-     * @param int|integer $target_id
+     * @param int|int $target_id
      * @return bool
      * @author BS <414606094@qq.com>
      */
