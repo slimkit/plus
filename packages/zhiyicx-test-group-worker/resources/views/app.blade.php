@@ -11,6 +11,7 @@
         window.accessToken = '{{ $accessToken }}';
         window.apiBaseUrl = '{{ route('api:test-group-worker') }}';
         window.logoutUrl = '{{ route('logout') }}';
+        window.expires_in = {{ $expires_in }};
     </script>
 </head>
 <body>

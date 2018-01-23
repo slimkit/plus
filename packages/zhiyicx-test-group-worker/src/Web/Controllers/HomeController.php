@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Packages\TestGroupWorker\Web\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Routing\Controller as BaseController;
 use Zhiyi\Plus\Packages\TestGroupWorker\Models\Access as AccessModel;
@@ -24,6 +26,16 @@ class HomeController extends BaseController
     }
 
     /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\Guard
+     */
+    public function guard(): Guard
+    {
+        return Auth::guard('api');
+    }
+
+    /**
      * The test group worker entry.
      *
      * @return mixed
@@ -39,6 +51,7 @@ class HomeController extends BaseController
         $variables = [
             'accessToken' => $request->session()->get('access_token'),
             'user' => $request->user(),
+            'expires_in' => $this->guard()->factory()->getTTL() * 60,
         ];
 
         return view('test-group-worker::app', $variables);
