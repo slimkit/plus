@@ -96,7 +96,7 @@ export default {
         loading.close();
       }).catch(({ response: { data = {} } = {} }) => {
         loading.close();
-        const Message = new PlusMessageBundle(data, '获取项目列表失败, 是否重试？');
+        const Message = PlusMessageBundle(data, '获取项目列表失败, 是否重试？');
         this.$confirm(Message.getMessage(), '错误', {
           confirmButtonText: '重试',
           cancelButtonText: '取消',

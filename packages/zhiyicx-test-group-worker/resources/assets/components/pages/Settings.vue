@@ -64,7 +64,7 @@ export default {
         this.githubUsername = githubUsername;
       }).catch(({ response: { data = {} } = {} }) => {
         loading.close();
-        const Message = new PlusMessageBundle(data, '加载数据失败，是否重试？');
+        const Message = PlusMessageBundle(data, '加载数据失败，是否重试？');
         this.$confirm(Message.getMessage(), '错误', {
           confirmButtonText: '重试',
           cancelButtonText: '取消',
@@ -100,7 +100,7 @@ export default {
         });
       }).catch(({ response: { data = {} } = {} }) => {
         this.githubForm.loading = false;
-        const Message = new PlusMessageBundle(data, '添加 GitHub 账号失败');
+        const Message = PlusMessageBundle(data, '添加 GitHub 账号失败');
         this.$notify({
           title: '错误',
           message: Message.getMessage(),
@@ -121,7 +121,7 @@ export default {
         });
       }).catch(({ response: { data = {} } = {} }) => {
         this.unbindGitHubAccessLoading = false;
-        const Message = new PlusMessageBundle(data, '解绑 GitHub 账号失败');
+        const Message = PlusMessageBundle(data, '解绑 GitHub 账号失败');
         this.$notify({
           title: '错误',
           message:  Message.getMessage(),

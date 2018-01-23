@@ -55,7 +55,7 @@ export default {
         });
       }).catch(({ response: { data = {} } = {} }) => {
         this.submitting = false;
-        const message = new PlusMessageBundle(data, '修改失败');
+        const message = PlusMessageBundle(data, '修改失败');
         this.$notify({
           title: '错误',
           message: message.getMessage(),
@@ -87,7 +87,7 @@ export default {
           this.$router.replace('/projects');
         }).catch(({ response: { data = {} } = {} }) => {
           this.deleting = false;
-          const message = new PlusMessageBundle(data, '移除失败');
+          const message = PlusMessageBundle(data, '移除失败');
           this.$notify({
             title: '错误',
             message: message.getMessage(),

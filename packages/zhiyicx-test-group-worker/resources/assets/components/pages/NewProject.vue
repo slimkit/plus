@@ -67,7 +67,7 @@ export default {
         this.$router.replace(`/projects/${id}`);
       }).catch(({ response: { data = {} } = {} }) => {
         loading.close();
-        const Message = new PlusMessageBundle(data, '请求失败，请重试');
+        const Message = PlusMessageBundle(data, '请求失败，请重试');
         this.$notify({
           title: '错误',
           message: Message.getMessage(),

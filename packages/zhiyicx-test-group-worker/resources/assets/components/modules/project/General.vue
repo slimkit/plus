@@ -35,7 +35,7 @@ export default {
         this.loading = false;
       }).catch(({ response: { data = {} } = {} }) => {
         this.loading = true;
-        const Message = new PlusMessageBundle(data, '加载项目失败');
+        const Message = PlusMessageBundle(data, '加载项目失败');
         this.$notify({
           title: '错误',
           message: Message.getMessage(),
