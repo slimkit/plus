@@ -248,15 +248,19 @@ class GroupController extends EaseMobController
                     ],
                 ])->setStatusCode(500);
             }
+            // 获取群组头像
+            $group_face = ImGroup::with('face')->whereIn('im_group_id', collect($groupCon->data)->pluck('id'))
+                ->select('group_face', 'im_group_id')->get()->keyBy('im_group_id');
 
             foreach ($groupCon->data as $key => &$group) {
                 $affiliations = collect($group->affiliations);
                 $owner = $affiliations->pluck('owner')->filter();
                 $members = $affiliations->pluck('member')->filter();
                 $group->affiliations = $this->getUser($members, $owner);
+                $group->group_face = $group_face[$group->id]->face->id ?: 0;
             }
 
-            return response()->json($groupCon->data)->setStatusCode(200);
+            return response()->json($groupCon)->setStatusCode(200);
         };
 
         return $this->getConfig($callback);

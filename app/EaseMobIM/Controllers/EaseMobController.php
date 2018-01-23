@@ -245,23 +245,27 @@ class EaseMobController
     public function resetPassword(Request $request)
     {
         $callback = function () use ($request) {
+            // 判断用户是否注册过环信，兼容未注册用户
             $user_id = $request->user_id ?: $request->user()->id;
-            $url = $this->url.'users/'.$user_id.'/password';
-
-            $options = [
-                'oldpassword' => $request->old_pwd_hash,
-                'newpassword' => $this->getImPwdHash($user_id),
-            ];
-            $data['body'] = json_encode($options);
+            $url = $this->url.'users/'.$user_id;
             $data['headers'] = [
                 'Authorization' => $this->getToken(),
             ];
             $data['http_errors'] = false;
 
             $Client = new Client();
-            $result = $Client->request('put', $url, $data);
+            $result = $Client->request('get', $url, $data);
 
-            if ($result->getStatusCode() != 200) {
+            if ($result->getStatusCode() == 404) {
+                // 用户不存在时去注册环信用户
+                $result_ = $this->createUser($request);
+
+                if ($result_->getStatusCode() != 201) {
+                    return response()->json([
+                        'message' => ['未注册成功'],
+                    ])->setStatusCode(500);
+                }
+            } elseif ($result->getStatusCode() != 200) {
                 $error = $result->getBody()->getContents();
 
                 return response()->json([
@@ -269,6 +273,32 @@ class EaseMobController
                         json_decode($error)->error_description,
                     ],
                 ])->setStatusCode(500);
+            } else {
+                // 用户存在时，重置环信密码
+                $user_id = $request->user_id ?: $request->user()->id;
+                $url = $this->url.'users/'.$user_id.'/password';
+                $options = [
+                    'oldpassword' => $request->old_pwd_hash,
+                    'newpassword' => $this->getImPwdHash($user_id),
+                ];
+                $data['body'] = json_encode($options);
+                $data['headers'] = [
+                    'Authorization' => $this->getToken(),
+                ];
+                $data['http_errors'] = false;
+
+                $Client = new Client();
+                $result = $Client->request('put', $url, $data);
+
+                if ($result->getStatusCode() != 200) {
+                    $error = $result->getBody()->getContents();
+
+                    return response()->json([
+                        'message' => [
+                            json_decode($error)->error_description,
+                        ],
+                    ])->setStatusCode(500);
+                }
             }
 
             return response()->json([])->setStatusCode(201);
@@ -298,10 +328,13 @@ class EaseMobController
             $result = $Client->request('get', $url, $data);
 
             if ($result->getStatusCode() == 404) {
-                $result = $this->createUser($request);
-            }
-
-            if ($result->getStatusCode() != 200) {
+                $result_ = $this->createUser($request);
+                if ($result_->getStatusCode() != 201) {
+                    return response()->json([
+                        'message' => ['注册失败'],
+                    ])->setStatusCode(500);
+                }
+            } elseif ($result->getStatusCode() != 200) {
                 $error = $result->getBody()->getContents();
 
                 return response()->json([
