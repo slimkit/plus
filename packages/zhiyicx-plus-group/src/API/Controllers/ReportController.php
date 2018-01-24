@@ -22,7 +22,7 @@ class ReportController
         $auth_user = $request->user();
 
         $reason = $request->input('reason');
-        if (strlen($reason) > 191) {
+        if (strlen($reason) > 255) {
             return response()->json(['message' => ['举报理由超出长度限制']], 422);
         }
 
