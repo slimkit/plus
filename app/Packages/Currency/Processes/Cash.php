@@ -41,6 +41,9 @@ class Cash extends Process
         $user = $this->checkUser($owner_id);
         $config = app(CurrencyConfig::class)->get();
 
+        // 积分除兑换比例取整，保证兑换的人民币为分单位的整数
+        $amount = $amount - ($amount %  $config['recharge-ratio']); 
+
         $title = '积分提取';
         $body = sprintf('提取积分：%s%s%s', $amount, $this->currency_type->unit, $this->currency_type->name);
 
@@ -55,7 +58,7 @@ class Cash extends Process
         $order->amount = $amount;
 
         return DB::transaction(function () use ($order, $user, $config) {
-            $user->currency->decrement('sum', $order->amount * $config['recharge-ratio']);
+            $user->currency->decrement('sum', $order->amount);
             $order->save();
 
             return $order;

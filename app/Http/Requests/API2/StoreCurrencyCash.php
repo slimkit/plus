@@ -48,7 +48,7 @@ class StoreCurrencyCash extends FormRequest
         $currency = Currency::find($this->user()->id);
 
         return [
-            'amount' => 'required|int|min:1|max:'.$currency->sum / $config->get()['recharge-ratio'],
+            'amount' => 'required|int|min:100|max:'.$currency->sum,
         ];
     }
 
@@ -61,9 +61,9 @@ class StoreCurrencyCash extends FormRequest
     public function messages()
     {
         return [
-            'amount.required' => '请选择需要提取金额',
-            'amount.min' => '提取金额不合法',
-            'amount.max' => '账户余额不足',
+            'amount.required' => '请选择需要提取的积分',
+            'amount.min' => '提取积分不合法',
+            'amount.max' => '账户积分余额不足',
         ];
     }
 }
