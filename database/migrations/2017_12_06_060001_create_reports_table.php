@@ -36,7 +36,7 @@ class CreateReportsTable extends Migration
             $table->string('subject')->comment('被举报资源名');
             $table->morphs('reportable');
             $table->tinyInteger('status')->default(0)->comment('处理状态 0-待处理 1-已处理 2-已驳回');
-            $table->string('reason')->nullable()->comment('举报理由');
+            $table->string('reason', 255)->nullable()->comment('举报理由');
             $table->string('mark')->nullable()->comment('处理标记');
             $table->timestamps();
 
