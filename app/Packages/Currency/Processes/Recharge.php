@@ -25,6 +25,8 @@ use Illuminate\Http\Request;
 use Pingpp\Charge as PingppCharge;
 use Zhiyi\Plus\Packages\Currency\Order;
 use Zhiyi\Plus\Packages\Currency\Process;
+use Zhiyi\Plus\Repository\CurrencyConfig;
+use Zhiyi\Plus\Repository\WalletPingPlusPlus;
 use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 use Zhiyi\Plus\Services\Wallet\Charge as WalletChargeService;
 
@@ -33,15 +35,18 @@ class Recharge extends Process
     // ping++订单前缀标识
     protected $PingppPrefix = 'C';
 
-    public function createOrder(int $owner_id, string $title, string $body, int $type, int $amount): CurrencyOrderModel
+    public function createOrder(int $owner_id, int $amount): CurrencyOrderModel
     {
         $user = $this->checkUser($owner_id);
+
+        $title = '积分充值';
+        $body = sprintf('充值积分：%s%s%s', $amount, $this->currency_type->unit, $this->currency_type->name);
 
         $order = new CurrencyOrderModel();
         $order->owner_id = $user->id;
         $order->title = $title;
         $order->body = $body;
-        $order->type = $type;
+        $order->type = 1;
         $order->currency = $this->currency_type->id;
         $order->target_type = Order::TARGET_TYPE_RECHARGE;
         $order->amount = $amount;
@@ -63,12 +68,9 @@ class Recharge extends Process
      */
     public function createPingPPOrder(int $owner_id, int $amount, string $type, array $extra = [])
     {
-        $title = '积分充值';
-        $body = sprintf('充值积分：%s%s%s', $amount, $this->currency_type->unit, $this->currency_type->name);
-
         if (app(WalletChargeService::class)->checkRechargeArgs($type, $extra)) {
-            $transaction = function () use ($owner_id, $title, $body, $amount, $extra, $type) {
-                $order = $this->createOrder($owner_id, $title, $body, 1, $amount);
+            $transaction = function () use ($owner_id, $amount, $extra, $type) {
+                $order = $this->createOrder($owner_id, $amount);
                 $service = app(WalletChargeService::class)->setPrefix($this->PingppPrefix);
                 $pingppCharge = $service->createWithoutModel($order->id, $type, $order->amount, $order->title, $order->body, $extra);
 
@@ -140,11 +142,39 @@ class Recharge extends Process
         $currencyOrderModel->state = 1;
         $currencyOrderModel->target_id = $pingppCharge->order_no;
 
+        $config = app(CurrencyConfig::class)->get();
+
         $user = $this->checkUser($currencyOrderModel->user);
 
-        return DB::transaction(function () use ($user, $currencyOrderModel) {
+        return DB::transaction(function () use ($user, $currencyOrderModel, $config) {
             $currencyOrderModel->save();
-            $user->Currency->increment('sum', $currencyOrderModel->amount);
+            $user->currency->increment('sum', $currencyOrderModel->amount * $config['recharge-ratio']);
+
+            return true;
         });
+    }
+
+    /**
+     * 验证回调信息.
+     *
+     * @param Request $request
+     * @return boolen
+     * @author BS <414606094@qq.com>
+     */
+    protected function verifyWebHook(Request $request): bool
+    {
+        if ($request->json('type') !== 'charge.succeeded') {
+            return false;
+        }
+
+        $signature = $request->headers->get('x-pingplusplus-signature');
+        $pingPlusPlusPublicCertificate = app(WalletPingPlusPlus::class)->get()['public_key'] ?? null;
+        $signed = openssl_verify($request->getContent(), base64_decode($signature), $pingPlusPlusPublicCertificate, OPENSSL_ALGO_SHA256);
+
+        if (! $signed) {
+            return false;
+        }
+
+        return true;
     }
 }

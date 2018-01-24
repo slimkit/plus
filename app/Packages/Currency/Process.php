@@ -22,9 +22,8 @@ namespace Zhiyi\Plus\Packages\Currency;
 
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\CurrencyType as CurrencyTypeModel;
-use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 
-abstract class Process
+class Process
 {
     /**
      * 货币类型.
@@ -42,18 +41,24 @@ abstract class Process
      * 检测用户模型.
      *
      * @param $user
-     * @return UserModel
+     * @return UserModel | bool
      * @author BS <414606094@qq.com>
      */
-    public function checkUser($user): UserModel
+    public function checkUser($user, $throw = true)
     {
         if (is_numeric($user)) {
-            return $this->checkWallet(
-                UserModel::findOrFail((int) $user)
-            );
-        } elseif ($user instanceof UserModel) {
-            return $this->checkWallet($user);
+            $user = UserModel::find((int) $user);
         }
+
+        if (! $user) {
+            if ($throw) {
+                throw new \Exception('找不到所属用户', 1);
+            }
+
+            return false;
+        }
+
+        return $this->checkWallet($user);
     }
 
     /**
@@ -65,14 +70,10 @@ abstract class Process
      */
     protected function checkWallet(UserModel $user): UserModel
     {
-        $currency = $user->Currency;
-
-        if (! $currency) {
-            $user->Currency()->create(['type' => $this->currency_type->id, 'sum' => 0]);
+        if (! $user->currency) {
+            $user->currency = $user->currency()->create(['type' => $this->currency_type->id, 'sum' => 0]);
         }
 
         return $user;
     }
-
-    abstract protected function createOrder(int $owner_id, string $title, string $body, int $type, int $amount): CurrencyOrderModel;
 }

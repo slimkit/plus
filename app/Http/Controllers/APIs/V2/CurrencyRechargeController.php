@@ -21,61 +21,63 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Packages\Wallet\Order;
-use Zhiyi\Plus\Packages\Wallet\TypeManager;
-use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
-use Zhiyi\Plus\Http\Requests\API2\NewStoreWalletRecharge;
+use Zhiyi\Plus\Http\Requests\API2\StoreCurrencyRecharge;
+use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
+use Zhiyi\Plus\Packages\Currency\Processes\Recharge as RechargeProcess;
 
-class NewWalletRechargeController extends Controller
+class CurrencyRechargeController extends Controller
 {
-    protected $type = [
-        'income' => Order::TYPE_INCOME,
-        'expenses' => Order::TYPE_EXPENSES,
-    ];
-
     /**
-     * 钱包流水列表.
+     * 钱包流水.
      *
      * @param Request $request
-     * @param WalletOrderModel $walletOrderModel
+     * @param CurrencyOrderModel $currencyOrder
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function list(Request $request, WalletOrderModel $walletOrderModel)
+    public function index(Request $request, CurrencyOrderModel $currencyOrder)
     {
+        $user = $request->user();
+
         $limit = $request->query('limit', 15);
         $after = $request->query('after');
         $action = $request->query('action');
-        $user = $request->user();
-        $orders = $walletOrderModel->where('owner_id', $user->id)
+        $type = $request->query('type');
+
+        $orders = $currencyOrder->where('owner_id', $user->id)
             ->when($after, function ($query) use ($after) {
                 return $query->where('id', '<', $after);
             })
-            ->when(in_array($action, ['income', 'expenses']), function ($query) use ($action) {
-                return $query->where('type', $this->type[$action]);
+            ->when(in_array($action, ['recharge', 'cash']), function ($query) use ($action) {
+                return $query->where('target_type', $action);
+            })
+            ->when(in_array($type, [1, -1]), function ($query) use ($type) {
+                return $query->where('type', $type);
             })
             ->limit($limit)
+            ->orderBy('id', 'desc')
             ->get();
 
         return response()->json($orders, 200);
     }
 
     /**
-     * 创建充值订单.
+     * 发起充值订单.
      *
-     * @param NewStoreWalletRecharge $request
-     * @param TypeManager $manager
+     * @param StoreCurrencyRecharge $request
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function store(NewStoreWalletRecharge $request, TypeManager $manager)
+    public function store(StoreCurrencyRecharge $request)
     {
         $user = $request->user();
         $amount = $request->input('amount');
         $extra = $request->input('extra', []);
         $type = $request->input('type');
 
-        if (($result = $manager->driver(Order::TARGET_TYPE_RECHARGE_PING_P_P)->create($user, $amount, $type, $extra)) !== false) {
+        $recharge = new RechargeProcess();
+
+        if (($result = $recharge->createPingPPOrder((int) $user->id, (int) $amount, $type, $extra)) !== false) {
             return response()->json($result, 201);
         }
 
@@ -86,13 +88,13 @@ class NewWalletRechargeController extends Controller
      * 充值回调通知.
      *
      * @param Request $request
-     * @param TypeManager $manager
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function webhook(Request $request, TypeManager $manager)
+    public function webhook(Request $request)
     {
-        if (($result = $manager->driver(Order::TARGET_TYPE_RECHARGE_PING_P_P)->webhook($request)) === true) {
+        $webhook = new RechargeProcess();
+        if (($result = $webhook->webhook($request)) === true) {
             return response('通知成功');
         }
 
@@ -102,14 +104,15 @@ class NewWalletRechargeController extends Controller
     /**
      * 主动取回凭据.
      *
-     * @param WalletOrderModel &$walletOrder
+     * @param CurrencyOrderModel &$currencyOrder
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function retrieve(WalletOrderModel &$walletOrder)
+    public function retrieve(CurrencyOrderModel &$currencyOrder)
     {
-        if (($result = $manager->driver(Order::TARGET_TYPE_RECHARGE_PING_P_P)->retrieve($walletOrder)) === true) {
-            return response()->json($walletOrder, 200);
+        $retrieve = new RechargeProcess();
+        if (($result = $retrieve->retrieve($currencyOrder)) === true) {
+            return response()->json($currencyOrder, 200);
         }
 
         return response()->json(['message' => ['操作失败']], 500);

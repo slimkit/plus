@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -16,38 +18,31 @@
  * +----------------------------------------------------------------------+
  */
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
+namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-class CreateImGroupTable extends Migration
+use Zhiyi\Plus\Http\Requests\API2\StoreCurrencyCash;
+use Zhiyi\Plus\Packages\Currency\Processes\Cash as CashProcess;
+
+class CurrencyCashController extends Controller
 {
     /**
-     * Run the migrations.
+     * 发起提现订单.
      *
-     * @return void
+     * @param StoreCurrencyCash $request
+     * @return mixed
+     * @author BS <414606094@qq.com>
      */
-    public function up()
+    public function store(StoreCurrencyCash $request)
     {
-        Schema::create('im_group', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
-            $table->increments('id')->comment('表ID');
-            $table->string('im_group_id')->unique()->comment('环信群组ID');
-            $table->integer('user_id')->nullable()->default(0)->comment('用户ID');
-            $table->string('group_face')->nullable()->default(null)->comment('群组头像');
-            $table->tinyInteger('type')->nullable()->default(0)->comment('类型：0-群组 1-聊天室');
-            $table->timestamps();
-            $table->softDeletes();
-        });
-    }
+        $user = $request->user();
+        $amount = $request->input('amount');
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('im_group');
+        $cash = new CashProcess();
+
+        if (($result = $cash->createOrder($user->id, (int) $amount) !== false)) {
+            return response()->json(['message' => ['操作成功']], 201);
+        }
+
+        return response()->json(['message' => ['操作失败']], 500);
     }
 }

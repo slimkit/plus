@@ -134,7 +134,7 @@ class CommentController extends Controller
         $pinned = $pinnedModel->where('channel', 'news:comment')->where('raw', $comment->id)->where('state', 0)->first();
 
         $news->getConnection()->transaction(function () use ($user, $news, $comment, $pinned) {
-            if ($pinneds) {
+            if ($pinned) {
                 $user->wallet()->increment('balance', $pinned->amount);
             }
 

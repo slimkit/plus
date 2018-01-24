@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -16,38 +18,21 @@
  * +----------------------------------------------------------------------+
  */
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
+namespace Zhiyi\Plus\Models\Relations;
 
-class CreateImGroupTable extends Migration
+use Zhiyi\Plus\Models\NewWallet;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
+trait UserHasNewWallet
 {
     /**
-     * Run the migrations.
+     * User wallet.
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @author BS <414606094@qq.com>
      */
-    public function up()
+    public function newWallet(): HasOne
     {
-        Schema::create('im_group', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
-            $table->increments('id')->comment('表ID');
-            $table->string('im_group_id')->unique()->comment('环信群组ID');
-            $table->integer('user_id')->nullable()->default(0)->comment('用户ID');
-            $table->string('group_face')->nullable()->default(null)->comment('群组头像');
-            $table->tinyInteger('type')->nullable()->default(0)->comment('类型：0-群组 1-聊天室');
-            $table->timestamps();
-            $table->softDeletes();
-        });
-    }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('im_group');
+        return $this->hasOne(NewWallet::class, 'owner_id', 'id');
     }
 }

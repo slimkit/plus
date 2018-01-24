@@ -49,6 +49,8 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     $api->post('/pingpp/webhooks', API2\PingPlusPlusChargeWebHooks::class.'@webhook');
 
     $api->post('/plus-pay/webhooks', API2\NewWalletRechargeController::class.'@webhook');
+
+    $api->post('/currency/webhooks', API2\CurrencyRechargeController::class.'@webhook');
     /*
     | 应用启动配置.
     */
@@ -532,6 +534,28 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // 获取聊天记录Test
             $api->get('/group/message', EaseMobIm\EaseMobController::class.'@getMessage');
+        });
+
+        // 积分部分
+        $api->group(['prefix' => 'currency'], function (RouteContract $api) {
+
+            // 获取积分配置
+            $api->get('/', API2\CurrencyConfigController::class.'@show');
+
+            // 积分流水
+            $api->get('/orders', API2\CurrencyRechargeController::class.'@index');
+
+            // 发起充值
+            $api->post('/recharge', API2\CurrencyRechargeController::class.'@store');
+
+            // 取回凭据
+            $api->get('/orders/{order}', API2\CurrencyRechargeController::class.'@retrieve');
+
+            // 发起提现
+            $api->post('/cash', API2\CurrencyCashController::class.'@store');
+
+            // 通过积分购买付费节点
+            $api->post('/purchases/{node}', API2\PurchaseController::class.'@payByCurrency');
         });
     });
 });

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -16,38 +18,30 @@
  * +----------------------------------------------------------------------+
  */
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
+namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-class CreateImGroupTable extends Migration
+use Zhiyi\Plus\Models\CommonConfig;
+use Zhiyi\Plus\Repository\CurrencyConfig;
+
+class CurrencyConfigController extends Controller
 {
     /**
-     * Run the migrations.
+     * 获取积分相关配置.
      *
-     * @return void
+     * @param CurrencyConfig $config
+     * @return array
+     * @author BS <414606094@qq.com>
      */
-    public function up()
+    public function show(CurrencyConfig $config)
     {
-        Schema::create('im_group', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
-            $table->increments('id')->comment('表ID');
-            $table->string('im_group_id')->unique()->comment('环信群组ID');
-            $table->integer('user_id')->nullable()->default(0)->comment('用户ID');
-            $table->string('group_face')->nullable()->default(null)->comment('群组头像');
-            $table->tinyInteger('type')->nullable()->default(0)->comment('类型：0-群组 1-聊天室');
-            $table->timestamps();
-            $table->softDeletes();
-        });
-    }
+        $configs = array_merge($config->get(), [
+            'rule' => config('currency.rule', ''),
+            'recharge-rule' => config('currency.recharge.rule', ''),
+            'cash' => ($cash = CommonConfig::where('name', 'cash')->where('namespace', 'wallet')->first()) ? json_decode($cash->value) : [],
+            'cash-rule' => config('currency.cash.rule', ''),
+            'recharge-type' => ($recharge_type = CommonConfig::where('name', 'wallet:recharge-type')->where('namespace', 'common')->first()) ? json_decode($recharge_type->value) : [],
+        ]);
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('im_group');
+        return response()->json($configs, 200);
     }
 }
