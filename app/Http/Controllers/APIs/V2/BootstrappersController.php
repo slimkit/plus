@@ -38,7 +38,9 @@ class BootstrappersController extends Controller
      */
     public function show(BootstrapAPIsEventer $events, ResponseFactory $response, AdvertisingSpace $space, GoldType $goldType)
     {
-        $bootstrappers = [];
+        $bootstrappers = [
+            'server:version' => app()->version(),
+        ];
         foreach (CommonConfig::byNamespace('common')->get() as $bootstrapper) {
             $bootstrappers[$bootstrapper->name] = $this->formatValue($bootstrapper->value);
         }
