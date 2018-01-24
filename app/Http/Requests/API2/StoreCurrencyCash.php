@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Requests\API2;
 
-use Zhiyi\Plus\Models\Currency;
 use Zhiyi\Plus\Repository\CurrencyConfig;
 use Illuminate\Foundation\Http\FormRequest;
 
