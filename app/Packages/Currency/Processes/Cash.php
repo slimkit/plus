@@ -42,7 +42,7 @@ class Cash extends Process
         $config = app(CurrencyConfig::class)->get();
 
         // 积分除兑换比例取整，保证兑换的人民币为分单位的整数
-        $amount = $amount - ($amount %  $config['recharge-ratio']); 
+        $amount = $amount - ($amount % $config['recharge-ratio']);
 
         $title = '积分提取';
         $body = sprintf('提取积分：%s%s%s', $amount, $this->currency_type->unit, $this->currency_type->name);
