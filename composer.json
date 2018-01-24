@@ -130,9 +130,9 @@
         "symfony/polyfill-mbstring": "^1.4",
         "symfony/yaml": "^3.3",
         "tymon/jwt-auth": "1.0.0-rc.1",
-        "zhiyicx/plus-group": "1.1.0",
-        "zhiyicx/plus-question": "1.1.0",
-        "zhiyicx/test-group-worker": "1.1.0"
+        "zhiyicx/plus-group": "1.6.0",
+        "zhiyicx/plus-question": "1.6.0",
+        "zhiyicx/test-group-worker": "1.6.0"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
