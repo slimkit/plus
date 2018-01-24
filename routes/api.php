@@ -553,6 +553,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // 发起提现
             $api->post('/cash', API2\CurrencyCashController::class.'@store');
+
+            // 通过积分购买付费节点
+            $api->post('/purchases/{node}', API2\PurchaseController::class.'@payByCurrency');
         });
     });
 });
