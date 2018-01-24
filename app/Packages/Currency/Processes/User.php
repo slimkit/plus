@@ -43,15 +43,16 @@ class User extends Process
     {
         $extra = $this->checkDefaultParam($amount, $extra);
 
-        return DB::transaction(function () use ($owner_id, $target_id, $amount, $extra) {
-            $user = $this->checkUser($owner_id);
-            $order = $this->createOrder($user, $amount, -1, $extra['order_title'], $extra['order_body'], $target_id);
+        $user = $this->checkUser($owner_id);
+        $target_user = $this->checkUser($target_id, false);
 
+        return DB::transaction(function () use ($user, $target_id, $target_user, $amount, $extra) {
+            $order = $this->createOrder($user, $amount, -1, $extra['order_title'], $extra['order_body'], $target_id);
             $order->save();
             $user->currency->decrement('sum', $amount);
 
-            if ($target_user = $this->checkUser($target_id, false)) {
-                $target_order = $this->createOrder($target_user, $amount, 1, $extra['target_order_title'], $extra['target_order_body'], $owner_id);
+            if ($target_user) {
+                $target_order = $this->createOrder($target_user, $amount, 1, $extra['target_order_title'], $extra['target_order_body'], $user->id);
                 $target_user->currency->increment('sum', $amount);
                 $target_order->save();
             }
