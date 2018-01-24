@@ -42,12 +42,17 @@ class CurrencyRechargeController extends Controller
         $limit = $request->query('limit', 15);
         $after = $request->query('after');
         $action = $request->query('action');
+        $type = $request->query('type');
+
         $orders = $currencyOrder->where('owner_id', $user->id)
             ->when($after, function ($query) use ($after) {
                 return $query->where('id', '<', $after);
             })
             ->when(in_array($action, ['recharge', 'cash']), function ($query) use ($action) {
                 return $query->where('target_type', $action);
+            })
+            ->when(in_array($type, [1, -1]), function ($query) use ($type) {
+                return $query->where('type', $type);
             })
             ->limit($limit)
             ->orderBy('id', 'desc')
