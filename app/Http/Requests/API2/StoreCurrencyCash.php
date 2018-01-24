@@ -45,7 +45,7 @@ class StoreCurrencyCash extends FormRequest
      */
     public function rules(CurrencyConfig $config)
     {
-        $currency = Currency::find($this->user()->id);
+        $currency = $this->user()->currency()->firstOrCreate(['type' => 1], ['sum' => 0]);
 
         return [
             'amount' => 'required|int|min:100|max:'.$currency->sum,
