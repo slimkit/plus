@@ -145,7 +145,6 @@ class UserAnswerController extends Controller
      */
     public function other(Request $request, AnswerModel $answerModel, int $user_id)
     {
-        $user = $request->user();
         $limit = $request->query('limit', 15);
         $after = $request->query('after', 0);
 
@@ -162,7 +161,7 @@ class UserAnswerController extends Controller
             })
             ->orderBy('id', 'desc')
             ->limit($limit)
-            ->get()->map(function ($answer) use ($user) {
+            ->get()->map(function ($answer) use ($user_id) {
                 $answer->liked = (bool) $answer->liked($user_id);
                 $answer->collected = (bool) $answer->collected($user_id);
                 $answer->rewarded = (bool) $answer->rewarders()->where('user_id', $user_id)->first();
