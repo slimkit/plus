@@ -31,7 +31,7 @@ use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned as FeedPinnedM
 class NewPinnedController extends Controller
 {
     /**
-     * 申请动态评论置顶
+     * 申请动态评论置顶.
      *
      * @param Request $request
      * @param ResponseContract $response
@@ -62,7 +62,6 @@ class NewPinnedController extends Controller
         return app()->call([$this, 'validateBase'], [
             'pinned' => $pinned,
             'call' => function (FeedPinnedModel $pinned) use ($user, $comment, $feed) {
-
                 $process = new UserProcess();
                 $order = $process->prepayment($user->id, $pinned->amount, $feed->user_id, '申请动态评论置顶', sprintf('申请评论《%s》置顶', $comment->body));
 
@@ -87,7 +86,7 @@ class NewPinnedController extends Controller
     }
 
     /**
-     * 申请动态置顶
+     * 申请动态置顶.
      *
      * @param Request $request
      * @param FeedModel $feed
