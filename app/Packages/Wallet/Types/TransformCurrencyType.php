@@ -28,7 +28,7 @@ use Zhiyi\Plus\Packages\Wallet\TargetTypes\TransformCurrencyTarget;
 class TransformCurrencyType extends Type
 {
     /**
-     * 钱包兑换积分
+     * 钱包兑换积分.
      *
      * @param $owner
      * @param int $amount

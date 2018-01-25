@@ -21,11 +21,9 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Packages\Wallet\TargetTypes;
 
 use DB;
-use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Packages\Wallet\Wallet;
 use Zhiyi\Plus\Repository\CurrencyConfig;
 use Zhiyi\Plus\Packages\Currency\Processes\Recharge;
-use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
 
 class TransformCurrencyTarget extends Target
 {
@@ -45,7 +43,7 @@ class TransformCurrencyTarget extends Target
 
         $orderHandle = function () use ($order, $currency_amount) {
             // 钱包订单部分
-            $body = sprintf("充值%s积分", $currency_amount);
+            $body = sprintf('充值%s积分', $currency_amount);
             $order->body = $body;
             $order->state = 1;
 
