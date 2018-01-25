@@ -82,7 +82,7 @@ class User extends Process
         $order->type = $type;
         $order->target_id = $target_id;
         $order->currency = $this->currency_type->id;
-        $order->target_type = Order::TARGET_TYPE_RECHARGE;
+        $order->target_type = Order::TARGET_TYPE_USER;
         $order->amount = $amount;
 
         return $order;
