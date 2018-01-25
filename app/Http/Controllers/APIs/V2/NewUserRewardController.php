@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Packages\Wallet\Order;
@@ -55,11 +54,11 @@ class NewUserRewardController extends Controller
             return response()->json(['message' => ['用户不能打赏自己']], 403);
         }
 
-        if (!$user->newWallet || $user->newWallet->balance < $amount) {
+        if (! $user->newWallet || $user->newWallet->balance < $amount) {
             return response()->json(['message' => ['余额不足']], 403);
         }
 
-        if (!$target->wallet) {
+        if (! $target->wallet) {
             return response()->json(['message' => ['对方钱包信息有误']], 500);
         }
 
