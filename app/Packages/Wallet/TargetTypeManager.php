@@ -104,4 +104,18 @@ class TargetTypeManager extends Manager
 
         return $driver;
     }
+
+    /**
+     * Create Transform target type driver.
+     *
+     * @return \Zhiyi\Plus\Packages\TargetTypes\Target
+     * @author BS <414606094@qq.com>
+     */
+    protected function createTransformDriver(): Target
+    {
+        $driver = $this->app->make(TargetTypes\TransformCurrencyTarget::class);
+        $driver->setOrder($this->order);
+
+        return $driver;
+    }
 }

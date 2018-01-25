@@ -23,6 +23,7 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;
+use Zhiyi\Plus\Http\Requests\API2\StoreTransform;
 use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
 use Zhiyi\Plus\Http\Requests\API2\NewStoreWalletRecharge;
 
@@ -110,6 +111,26 @@ class NewWalletRechargeController extends Controller
     {
         if (($result = $manager->driver(Order::TARGET_TYPE_RECHARGE_PING_P_P)->retrieve($walletOrder)) === true) {
             return response()->json($walletOrder, 200);
+        }
+
+        return response()->json(['message' => ['操作失败']], 500);
+    }
+
+    /**
+     * 创建转换积分订单.
+     *
+     * @param Request $request
+     * @param TypeManager $manager
+     * @return mixed
+     * @author BS <414606094@qq.com>
+     */
+    public function transform(StoreTransform $request, TypeManager $manager)
+    {
+        $user = $request->user();
+        $amount = $request->input('amount');
+
+        if (($result = $manager->driver(Order::TARGET_TYPE_TRANSFORM)->transform($user, $amount)) === true) {
+            return response()->json(['message' => ['操作成功']], 201);
         }
 
         return response()->json(['message' => ['操作失败']], 500);

@@ -459,6 +459,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // 转账
             $api->post('/transfer', API2\TransferController::class.'@transfer');
+
+            // 转换积分
+            $api->post('/transform', API2\NewWalletRechargeController::class.'@transform');
         });
 
         /*
