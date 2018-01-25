@@ -33,7 +33,6 @@ class Order
     const TARGET_TYPE_TASK = 'task'; // 积分任务流程
     const TARGET_TYPE_RECHARGE = 'recharge'; // 充值流程
     const TARGET_TYPE_CASH = 'cash'; // 提现流程
-    const TARGET_TYPE_TRANSFORM = 'transform'; // 货币兑换流程
 
     /**
      * types.
