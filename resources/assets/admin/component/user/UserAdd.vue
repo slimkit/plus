@@ -91,7 +91,7 @@ const UserAddComponent = {
       this.adding = true;
       request.post(
         createRequestURI('users'),
-        { name: this.name, phone: this.phone, password: this.password },
+        { name: this.name, phone: this.phone, email: this.email, password: this.password },
         { validateStatus: status => status === 201 }
       ).then(({ data: { user_id: userId } }) => {
         this.$router.replace({ path: '/users/manage/'+userId });
