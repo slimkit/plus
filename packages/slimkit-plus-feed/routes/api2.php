@@ -64,6 +64,10 @@ Route::prefix('/feeds')->group(function () {
         Route::patch('/{feed}/comments/{comment}/pinneds/{pinned}', 'CommentPinnedController@pass');
         Route::delete('/{feed}/comments/{comment}/unpinned', 'CommentPinnedController@delete');
 
+        // 使用积分进行的置顶流程
+        Route::post('/{feed}/currency-pinneds', 'NewPinnedController@feedPinned');
+        Route::post('/{feed}/comments/{comment}/currency-pinneds', 'NewPinnedController@commentPinned');
+
         // 喜欢
         Route::post('/{feed}/like', 'LikeController@store');
         Route::delete('/{feed}/unlike', 'LikeController@destroy');
