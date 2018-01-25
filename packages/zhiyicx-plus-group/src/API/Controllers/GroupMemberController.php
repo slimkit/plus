@@ -294,13 +294,6 @@ class GroupMemberController
                         $message,
                         ['group' => $group]
                     );
-
-                    // 增加成员数
-                    $group->increment('users_count');
-
-                    // 保存成员状态
-                    $member->audit = $status;
-                    $member->save();
                 } else {
                     // 流水
                     $caharge->user_id = $member->user_id;
@@ -322,12 +315,21 @@ class GroupMemberController
                         $message,
                         ['group' => $group]
                     );
-
-                    // 删除待审成员
-                    $member->delete();
                 }
             }
             
+            if ($status === 1) {
+                // 增加成员数    
+                $group->increment('users_count');
+
+                // 保存成员状态
+                $member->audit = $status;
+                $member->save();
+            } else {
+                // 删除待审成员
+                $member->delete();
+            }
+
             // 保存成员审核记录
             if ($log = $member->logs()->where('status', 0)->where('auditer', null)->first()) {
                 $log->status = $status;
