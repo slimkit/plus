@@ -62,6 +62,79 @@ class User extends Process
     }
 
     /**
+     * 用户对用户预付款流程.
+     *
+     * @param int $owner_id
+     * @param int $amount
+     * @param int $target_id
+     * @param string $title
+     * @param string $body
+     * @return bool
+     * @author BS <414606094@qq.com>
+     */
+    public function prepayment(int $owner_id, int $amount, int $target_id, string $title, string $body): bool
+    {
+        $user = $this->checkUser($owner_id);
+
+        return DB::transaction(function () use ($user, $target_id, $target_user, $amount, $extra) {
+            $order = $this->createOrder($user, $amount, -1, $extra['order_title'], $extra['order_body'], $target_id);
+            $order->save();
+            $user->currency->decrement('sum', $amount);
+
+            return true;
+        });
+    }
+
+    /**
+     * 用户收款流程.
+     *
+     * @param int $owner_id
+     * @param int $amount
+     * @param int $target_id
+     * @param string $title
+     * @param string $body
+     * @return bool
+     * @author BS <414606094@qq.com>
+     */
+    public function receivables(int $owner_id, int $amount, int $target_id, string $title, string $body): bool
+    {
+        $user = $this->checkUser($owner_id);
+
+        return DB::transaction(function () use ($user, $target_id, $target_user, $amount, $extra) {
+            $order = $this->createOrder($user, $amount, 1, $extra['order_title'], $extra['order_body'], $target_id);
+            $order->save();
+            $user->currency->increment('sum', $amount);
+
+            return true;
+        });
+    }
+
+    /**
+     * 用户拒绝，对方回款流程.
+     *
+     * @param int $owner_id
+     * @param int $amount
+     * @param int $target_id
+     * @param string $title
+     * @param string $body
+     * @return bool
+     * @author BS <414606094@qq.com>
+     */
+    public function reject(int $owner_id, int $amount, int $target_id, string $title, string $body): bool
+    {
+        // 对方用户
+        $user = $this->checkUser($target_id);
+
+        return DB::transaction(function () use ($user, $owner_id, $target_user, $amount, $extra) {
+            $order = $this->createOrder($user, $amount, 1, $extra['order_title'], $extra['order_body'], $owner_id);
+            $order->save();
+            $user->currency->increment('sum', $amount);
+
+            return true;
+        });
+    }
+
+    /**
      * 创建订单方法.
      *
      * @param int $owner_id
