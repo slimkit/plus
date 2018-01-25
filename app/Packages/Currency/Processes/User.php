@@ -76,7 +76,7 @@ class User extends Process
     {
         $user = $this->checkUser($owner_id);
 
-        return DB::transaction(function () use ($user, $target_id, $target_user, $amount, $extra) {
+        return DB::transaction(function () use ($user, $target_id, $amount, $extra) {
             $order = $this->createOrder($user, $amount, -1, $extra['order_title'], $extra['order_body'], $target_id);
             $order->save();
             $user->currency->decrement('sum', $amount);
