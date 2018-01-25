@@ -49,6 +49,8 @@ Route::prefix('/feeds')->group(function () {
         Route::delete('/{feed}', 'FeedController@destroy');
         Route::patch('/{feed}/comment-paid', 'FeedPayController@commentPaid');
 
+        Route::delete('/{feed}/currency', 'FeedController@newDestroy');
+
         // 评论
         Route::post('/{feed}/comments', 'FeedCommentController@store')->middleware('sensitive:body');
         Route::delete('/{feed}/comments/{comment}', 'FeedCommentController@destroy');
@@ -67,6 +69,7 @@ Route::prefix('/feeds')->group(function () {
         // 使用积分进行的置顶流程
         Route::post('/{feed}/currency-pinneds', 'NewPinnedController@feedPinned');
         Route::post('/{feed}/comments/{comment}/currency-pinneds', 'NewPinnedController@commentPinned');
+        Route::patch('/{feed}/comments/{comment}/currency-pinneds/{pinned}', 'NewCommentPinnedController@pass');
 
         // 喜欢
         Route::post('/{feed}/like', 'LikeController@store');
@@ -88,4 +91,5 @@ Route::middleware('auth:api')->group(function () {
     // 评论固定审核
     Route::get('/user/feed-comment-pinneds', 'CommentPinnedController@index');
     Route::delete('/user/feed-comment-pinneds/{pinned}', 'CommentPinnedController@reject');
+    Route::delete('/user/feed-comment-currency-pinneds/{pinned}', 'NewCommentPinnedController@reject'); 
 });
