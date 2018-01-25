@@ -375,6 +375,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             // 打赏用户
             $api->post('/{target}/rewards', API2\UserRewardController::class.'@store');
 
+            // 新版打赏用户
+            $api->post('/{target}/new-rewards', API2\NewUserRewardController::class.'@store');
+
             /*
              * 解除手机号码绑定.
              *
