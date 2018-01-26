@@ -62,6 +62,22 @@ class Answer extends Model
         return $this->morphMany(Reward::class, 'rewardable');
     }
 
+    public function reward($user, $amount)
+    {
+        if ($user instanceof User) {
+            $user = $user->id;
+        }
+
+        return $this->getConnection()->transaction(function () use ($user, $amount) {
+            return $this->rewarders()->create([
+                'user_id' => $user,
+                'target_user' => $this->user_id,
+                'amount' => $amount,
+            ]);
+        });
+    }
+
+
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');

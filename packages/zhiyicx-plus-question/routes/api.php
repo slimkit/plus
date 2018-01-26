@@ -269,6 +269,9 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
             // @POST /api/v2/question-answers/:answer/rewarders
             $api->post('/{answer}/rewarders', API2\AnswerRewardController::class.'@store');
 
+            // 回答新版打赏
+            $api->post('/{answer}/new-rewards', API2\NewAnswerRewardController::class.'@store');
+
             // Like an answer.
             // @POST /api/v2/question-answers/:answer/likes
             $api->post('/{answer}/likes', API2\AnswerLikeController::class.'@store');
