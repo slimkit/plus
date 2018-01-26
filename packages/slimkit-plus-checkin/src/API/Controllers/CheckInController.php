@@ -25,6 +25,7 @@ use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use SlimKit\PlusCheckIn\Models\CheckinLog as CheckinLogModel;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
+use Zhiyi\Plus\Packages\Currency\Processes\Common as CommonProcess;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class CheckInController extends Controller
@@ -128,6 +129,58 @@ class CheckInController extends Controller
             // Save charge and attach balance.
             $user->walletCharges()->save($charge);
             $user->wallet()->increment('balance', $charge->amount);
+
+            // increment check-in count.
+            $extra = $user->extra ?: $user->extra()->firstOrCreate([]);
+            $extra->checkin_count += 1;
+            $extra->last_checkin_count = $lasted ? $extra->last_checkin_count + 1 : 1;
+            $extra->save();
+        });
+
+        return $response->make('', 204);
+    }
+
+    /**
+     * 签到增加积分.
+     *
+     * @param Request $request
+     * @param ResponseFactoryContract $response
+     * @param GateContract $gate
+     * @return mixed
+     * @author BS <414606094@qq.com>
+     */
+    public function newStore(Request $request, ResponseFactoryContract $response, GateContract $gate)
+    {
+        if (! $this->attach_balance) {
+            return $response->json(['message' => trans('plus-checkin::messages.unable')], 403);
+        } elseif ($gate->denies('create', CheckinLogModel::class)) {
+            return $response->json(['message' => trans('plus-checkin::messages.checked-in')], 403);
+        }
+
+        $user = $request->user();
+
+        // lasted
+        $date = $user->freshTimestamp()->subDay(1)->format('Y-m-d');
+        $lasted = (bool) $user->checkinLogs()
+            ->whereDate('created_at', $date)
+            ->first();
+
+        // Check-in -log.
+        $log = new CheckinLogModel();
+        $log->amount = $this->attach_balance;
+
+        // user charge.
+        $order = new CommonProcess();
+        $order = $order->createOrder($user->id, $log->amount, 1, trans('plus-checkin::messages.charge.subject'), trans('plus-checkin::messages.charge.subject'));
+
+        $user->getConnection()->transaction(function () use ($user, $log, $order, $lasted) {
+
+            // Save log
+            $user->checkinLogs()->save($log);
+
+            // Save charge and attach balance.
+            $order->save();
+            $user->currency()->firstOrCreate(['type' => 1], ['sum' => 0])->increment('sum', $order->amount);
 
             // increment check-in count.
             $extra = $user->extra ?: $user->extra()->firstOrCreate([]);
