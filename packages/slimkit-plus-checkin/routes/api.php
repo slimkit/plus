@@ -78,7 +78,7 @@ Route::group([
 
                 // 积分相关签到.
                 // @PUT /api/v2/user/checkin/currency
-                $api->put('/currency', API\CheckInController::class.'@newStore'); 
+                $api->put('/currency', API\CheckInController::class.'@newStore');
             });
         });
     });
