@@ -253,6 +253,27 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
             $api->put('/{question}/adoptions/{answer}', API2\QuestionAdoptionController::class.'@store');
         });
 
+        // Question.
+        // @Route /api/v2/currency-questions
+        $api->group(['prefix' => 'currency-questions'], function (RouteRegisterContract $api) {
+
+            // Publish a question.
+            // @Post /api/v2/currency-questions
+            $api->post('/', API2\NewQuestionController::class.'@store')->middleware('sensitive:body,subject');
+
+            // Update a question.
+            // $Patch /api/v2/currency-questions/:question
+            $api->patch('/{question}', API2\NewQuestionController::class.'@update')->middleware('sensitive:body,subject');
+
+            // Delete a question.
+            // @Delete /api/v2/currency-questions/:question
+            $api->delete('/{question}', API2\NewQuestionController::class.'@destory');
+
+            // Reset amount of a question.
+            // @Patch /api/v2/currency-questions/:question/amount
+            $api->patch('/{question}/amount', API2\NewQuestionController::class.'@resetAmount');
+        });
+
         // Question answers.
         // @Route /api/v2/question-answers
         $api->group(['prefix' => 'question-answers'], function (RouteRegisterContract $api) {
