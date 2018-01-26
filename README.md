@@ -58,7 +58,7 @@ Plus 是基于 Laravel 所开发，它拥有下面的几个主要特点：
 使用 Git 在你的电脑中执行克隆仓库命令：
 
 ```shell
-git close https://github.com/slimkit/thinksns-plus
+git clone https://github.com/slimkit/thinksns-plus
 ```
 
 进入该 Plus 目录并使用 Composer 进行依赖安装：
