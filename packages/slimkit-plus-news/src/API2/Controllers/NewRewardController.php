@@ -43,7 +43,7 @@ class NewRewardController extends Controller
     public function reward(Request $request, News $news, TypeManager $manager)
     {
         $amount = $request->input('amount');
-        if (!$amount || $amount < 0) {
+        if (! $amount || $amount < 0) {
             return response()->json(['amount' => ['请输入正确的打赏金额']], 422);
         }
 
@@ -55,7 +55,7 @@ class NewRewardController extends Controller
             return response()->json(['message' => ['不能打赏自己的发布的资讯']], 403);
         }
 
-        if (!$user->newWallet || $user->newWallet->balance < $amount) {
+        if (! $user->newWallet || $user->newWallet->balance < $amount) {
             return response()->json(['message' => ['余额不足']], 403);
         }
 
