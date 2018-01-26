@@ -78,6 +78,9 @@ Route::prefix('/feeds')->group(function () {
         // 打赏
         Route::post('/{feed}/rewards', 'RewardController@reward');
 
+        // 新版动态打赏
+        Route::post('/{feed}/new-rewards', 'NewRewardController@reward');
+
         // 举报
         Route::post('/{feed}/reports', 'ReportController@feed');
     });

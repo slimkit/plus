@@ -45,16 +45,15 @@ class NewRewardController extends Controller
                 'amount' => ['请输入正确的打赏金额'],
             ], 422);
         }
+        
         $user = $request->user();
-        $user->load('wallet');
-        $feed->load('user');
         $target = $feed->user;
 
         if ($user->id == $target->id) {
             return response()->json(['message' => ['不能打赏自己的发布的动态']], 403);
         }
 
-        if (! $user->wallet || $user->wallet->balance < $amount) {
+        if (! $user->newWallet || $user->newWallet->balance < $amount) {
             return response()->json([
                 'message' => ['余额不足'],
             ], 403);
@@ -85,37 +84,5 @@ class NewRewardController extends Controller
         } else {
             return response()->json(['message' => ['打赏失败']], 500);
         }
-    }
-
-    /**
-     * 一条动态的打赏列表.
-     *
-     * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  Feed $feed
-     * @return mix
-     */
-    public function index(Request $request, Feed $feed)
-    {
-        $limit = max(1, min(30, $request->query('limit', 15)));
-        $since = $request->query('since', 0);
-        $offset = $request->query('offset', 0);
-        $order = in_array($order = $request->query('order', 'desc'), ['asc', 'desc']) ? $order : 'desc';
-        $order_type = in_array($order_type = $request->query('order_type'), ['amount', 'date']) ? $order_type : 'date';
-        $fieldMap = [
-            'date' => 'id',
-            'amount' => 'amount',
-        ];
-        $rewardables = $feed->rewards()
-            ->with('user')
-            ->when($since, function ($query) use ($since, $order, $order_type, $fieldMap) {
-                return $query->where($fieldMap[$order_type], $order === 'asc' ? '>' : '<', $since);
-            })
-            ->limit($limit)
-            ->offset($offset)
-            ->orderBy($fieldMap[$order_type], $order)
-            ->get();
-
-        return response()->json($rewardables, 200);
     }
 }
