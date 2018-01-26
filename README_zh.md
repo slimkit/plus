@@ -1,14 +1,18 @@
-# ThinkSNS Plus
-
 <p align="center"><img src="public/plus.png"></p>
 
-- [English](readme.md)
+Plus (ThinkSNS Plus) 是一个使用 Laravel 开发，并且功能繁多且健壮的社交程序。Plus 是遵循 *PSR 规范* 代码统一，并功能快松耦合。你安装完成 Plus 并不意味着已经成功安装了所有功能，因为 Plus 使用 *模块化* 的
+原则，所以你安装完成后拥有了所有可以被请求的 REST 接口和后台管理面板，你可能还需要安装如下模块：
 
-> [完整的 ThinkSNS Plus 文档](https://slimkit.github.io/plus-docs/)
+- 一个对搜索引擎支持良好的大屏 Web 界面 👉 [ThinkSNS Plus PC](https://github.com/zhiyicx/plus-component-pcos)
+- 极大程度还原原生 APP 体验的 SPA (Single Page Application) 应用 👉 [ThinkSNS Plus SPA](https://github.com/zhiyicx/plus-component-h5)
+- 一个更加强大的大屏 Web 界面应用 (但它是收费的) 👉 [Plus PC](https://github.com/zhiyicx/plus-component-pc)
+
+> 如果你关注 ThinkSNS 所属公司更多开源产品，请看 👉 [ThinkSNS 官网](http://www.thinksns.com)
 
 ## Badges
 
-[![ThinkSNS Plus 技术交流群](https://img.shields.io/badge/QQ%20Group-651240785-6782d6.svg?style=flat-square)](//shang.qq.com/wpa/qunwpa?idkey=7a85a1f73b3da2b1106e10817bd3fb6414766ca7dfe102977ad698011fb01ea5)
+<!-- [![ThinkSNS Plus 技术交流群](https://img.shields.io/badge/QQ%20Group-651240785-6782d6.svg?style=flat-square)](//shang.qq.com/wpa/qunwpa?idkey=7a85a1f73b3da2b1106e10817bd3fb6414766ca7dfe102977ad698011fb01ea5) -->
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8320deaa80b8489f95fcedaae6df079d)](https://www.codacy.com/app/zhiyi/thinksns-plus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=slimkit/thinksns-plus&amp;utm_campaign=Badge_Grade)
 [![Style CI](https://styleci.io/repos/76627423/shield?branch=master)](https://styleci.io/repos/76627423)
 [![Composer publish version](https://img.shields.io/packagist/v/zhiyicx/thinksns-plus.svg?style=flat-square)](https://packagist.org/packages/zhiyicx/thinksns-plus)
 [![Composer publish preview version](https://img.shields.io/packagist/vpre/zhiyicx/thinksns-plus.svg?style=flat-square)](https://packagist.org/packages/zhiyicx/thinksns-plus)
@@ -17,59 +21,136 @@ Travis CI: [![Travis CI Build Status](https://img.shields.io/travis/slimkit/thin
 
 Circle CI: [![https://img.shields.io/circleci/project/github/slimkit/thinksns-plus.svg?style=flat-square](https://img.shields.io/travis/slimkit/thinksns-plus.svg?style=flat-square)](https://circleci.com/gh/slimkit/thinksns-plus)
 
-## 关于 ThinkSNS Plus
-
-ThinkSNS Plus 是基于 Laravel 开发的一个用户生态基础框架系统，支持动态拓展应用的接入和UI规范设计。
-
-更多关于 ThinkSNS Plus 请访问 [关于 ThinkSNS Plus](https://slimkit.github.io/plus-docs/core) 了解产品。
-
-> 欢迎访问官网：[http://www.thinksns.com](http://www.thinksns.com) 了解我们产品和团队。
-
-ThinkSNS Plus 有很多优秀应用，如：
-
-- [良好支持移动网页的 SPA 应用（h5）](https://github.com/zhiyicx/plus-component-h5)
-- [类似微博的动态流应用](https://github.com/slimkit/plus-component-feed)
-- [圈子](https://github.com/slimkit/plus-component-group)
-
-...更多请看 [https://slimkit.github.io/plus-docs/package](https://slimkit.github.io/plus-docs/package)
-
-ThinkSNS Plus 很强大，采用前后端分离架构，可以自由的选择需要的功能。同时这些应用支持很完善，安装也非常的简单。
-
 ## 特点
 
-基于 Laravel 开发的用户生态系统。
+Plus 是基于 Laravel 所开发，它拥有下面的几个主要特点：
 
-- REST ful 接口.
-- 后台管理采用 Vue.js 开发。
-- 很多优秀的官方拓展。
-- 完整并聚合在一起的文档，查阅方便。
-- 漂亮的移动端设计
-- 内置拓展开发脚手架，开发拓展很方便。
-- 使用 PHP 7 并启用严格模式。
-- 良好的多种数据库支持。
+1. 跟随 Laravel 一同升级，但是我们放弃 LTS 版本，长期的框架不变，虽然会趋于稳定，但是 Plus 是一款长期规划维护的开源项目，随时升级框架以便我们可以尽情的使用新的技术和特性
+2. 前后端分离，Plus 安装完成只拥有功能快的 REST 接口部分，可以利用接口开发任何形态的客户端
+3. 后台管理面板采用 Vue.js 开发
+4. 使用 PHP 7 严格模式，以数据类型来限制开发人员的不规范开发
+5. 完全符合 PSR 规范，代码风格选择的是比 PSR-2 更加严格的规范
+6. 完善的文档，是的！在开源社区中， 一个开源项目的文档很重要。
+
+## 文档
+
+你可以在我们的文档网站上看到所有文档 👉 [https://slimkit.github.io](https://slimkit.github.io)
+
+它被分为以下几个部分：
+
+- [快速开始 · 安装](https://slimkit.github.io/docs/server-getting-started-installation.html)
+- [指南](https://slimkit.github.io/docs/server-guides-package.html)
+- [REST API v2](https://slimkit.github.io/docs/api-v2-overview.html)
+
+当然，有一些并不在网站上，而是在 Plus 代码仓库中：
+
+- [贡献指南 & 贡献者感谢名单](https://github.com/slimkit/thinksns-plus/blob/master/CONTRIBUTING.md)
+- [行为守则](https://github.com/slimkit/thinksns-plus/blob/master/CODE_OF_CONDUCT.md)
 
 ## 安装
 
-安装 ThinkSNS Plus 非常简单，但是我们为你准备了更好的文档来供你阅读，请参阅[安装文档](https://slimkit.github.io/plus-docs/core/latest/getting-started/installed) 。
+安装 Plus 是一件非常简单的事情，但是你要先做到以下几点必须：
 
+1. PHP 版本必须大于 `7.0.12`
+2. 你已下载并安装过 `Composer`
+3. 你拥有一个 `MySQL` 或者 `PostgreSQL` 等数据库
+4. 你必须安装一个 Git 命令行工具
 
-## 支持
+使用 Git 在你的电脑中执行克隆仓库命令：
 
-你可以点击 [![ThinkSNS Plus 技术交流群](https://img.shields.io/badge/QQ%20Group-651240785-6782d6.svg?style=flat-square)](https://shang.qq.com/wpa/qunwpa?idkey=7a85a1f73b3da2b1106e10817bd3fb6414766ca7dfe102977ad698011fb01ea5) 加入我们的 QQ 群，如果链接失效或者无法点击，我们的群号是 `651240785`，你可以手动查找加入。
+```shell
+git close https://github.com/slimkit/thinksns-plus
+```
 
-我们的核心开发者、优秀开发者以及用户都在这里。
+进入该 Plus 目录并使用 Composer 进行依赖安装：
 
-## 贡献代码
+```shell
+cd thinksns-plus
+cp .env.example .env
+composer install
+```
 
-欢迎使用 Pull requests。对于重大变更，请先提出 Issue，和我们一起来讨论你想改变的内容。
+现在，打开你的 `.env` 文件配置数据库等各类信息。
 
-> 感谢你考虑为 ThinkSNS Plus 作出贡献！具体贡献指南可以在 [ThinkSNS Plus 文档](https://slimkit.github.io/plus-docs/core/latest/getting-started/contributions) 中查看。
+生成应用秘钥：
+
+```shell
+php artisan key:generate
+php artisan jwt:secret --force
+```
+
+生成数据表以及默认填充数据：
+
+```shell
+php artisan migrate --seed
+```
+
+软链公开磁盘并发布静态资产：
+
+```shell
+php artisan storage:link
+php artisan vendor:publish --all
+```
+
+运行 Plus 程序：
+
+```shell
+php artisan serve
+```
+
+现在你可以访问 `http://127.0.0.1:8000` 查看你安装的 Plus 程序了，但是上述只是一份简单的安装，更加详细或者可以运行在
+正式环境的安装指南请参阅 👉 [安装指南](https://slimkit.github.io/docs/server-getting-started-installation.html)
+
+## 交流 & 支持
+
+针对不同的用户，我们准备了两个 QQ 群，分别是：
+
+- 技术交流群：`651240785`，该群适合技术交流，不接受普通用户加入。
+- 用户交流群：`638051536`，该群所有人都可以加入并进行交流。
+
+## 贡献
+
+这个仓库的贡献者并不代表只是 Plus 的贡献者，我们也会把 Laravel 的贡献者加入感谢名单，因为他们为 Laravel 所做出的贡献，也使
+得 Plus 项目更加强大。
+
+Thank you to all the people who have already contributed to Plus!
+<a href="graphs/contributors"><img src="https://opencollective.com/thinksns-plus/contributors.svg?width=890" /></a>
+
+### [行为守则](https://github.com/slimkit/thinksns-plus/blob/master/CODE_OF_CONDUCT.md)
+
+我们按照开源项目社区的建议，为 Plus 提供了我们期望参与者遵守的行为准则，请 [阅读准则](https://github.com/slimkit/thinksns-plus/blob/master/CODE_OF_CONDUCT.md) 全文，以便了解哪些行为是我们不会容忍的。
+
+### [贡献指南](https://github.com/slimkit/thinksns-plus/blob/master/CONTRIBUTING.md)
+
+阅读我们的 [贡献指南](https://github.com/slimkit/thinksns-plus/blob/master/CONTRIBUTING.md)，了解我们的开发过程，
+如题提出错误修正或者建议，我们在贡献指南中包含了所有的贡献者名单。
 
 ## 赞助
 
-我们要感谢以下赞助商，资助我们 ThinkSNS Plus 的开发。如果你有兴趣成为赞助商，请访问 ThinkSNS Plus 的[码云页面](https://gitee.com/slimkit/thinksns-plus?donate=true)：
+首先，我们有一个特约赞助商 👉 [成都 · 智艺创想](http://www.zhiyicx.com)，该个月赞助商为 Plus 团队提供了一个开发的基础，提供工作场所以及提供商务处理事宜，并且开发了如下商业项目：
 
-- [成都 · 智艺创想](http://www.zhiyicx.com)
+- ThinkSNS Plus Android 客户端
+- ThinkSNS Plus iOS 客户端
+- 一个强大且全面的大屏 Web 界面应用
+- 问答模块
+- 圈子社群模块
+
+如果你对这些商业模块感兴趣，可以联系 QQ `3298713109` 了解更多细节。
+
+### 赞助商
+
+感谢所有赞助商！(如果你也支持这个项目，[√成为赞助商](https://opencollective.com/thinksns-plus#sponsor))
+
+<a href="https://opencollective.com/thinksns-plus/sponsor/0/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/thinksns-plus/sponsor/1/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/thinksns-plus/sponsor/2/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/thinksns-plus/sponsor/3/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/thinksns-plus/sponsor/4/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/thinksns-plus/sponsor/5/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/thinksns-plus/sponsor/6/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/thinksns-plus/sponsor/7/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/thinksns-plus/sponsor/8/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/thinksns-plus/sponsor/9/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/9/avatar.svg"></a>
 
 ## 优秀仓库推荐
 
