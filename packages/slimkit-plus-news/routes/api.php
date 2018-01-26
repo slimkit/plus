@@ -110,6 +110,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             // Reward news.
             $api->post('/{news}/rewards', API2\RewardController::class.'@reward');
 
+            // 新版打赏.
+            $api->post('/{news}/new-rewards', API2\NewRewardController::class.'@reward');
+
             // 点赞资讯
             $api->post('/{news}/likes', API2\LikeController::class.'@like');
 

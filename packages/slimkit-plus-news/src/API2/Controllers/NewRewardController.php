@@ -28,37 +28,38 @@ use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 class NewRewardController extends Controller
 {
     /**
+     * 元到分转换比列.
+     */
+    const RATIO = 100;
+
+    /**
      * 打赏一条资讯.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request      $request
-     * @param  News         $news
+     * @param  Request $request
+     * @param  News $news
      * @return mix
      */
     public function reward(Request $request, News $news, TypeManager $manager)
     {
         $amount = $request->input('amount');
-        if (! $amount || $amount < 0) {
-            return response()->json([
-                'amount' => ['请输入正确的打赏金额'],
-            ], 422);
+        if (!$amount || $amount < 0) {
+            return response()->json(['amount' => ['请输入正确的打赏金额']], 422);
         }
+
         $user = $request->user();
-        $user->load('wallet');
-        $news->load('user');
+
         $target = $news->user;
 
         if ($user->id == $target->id) {
             return response()->json(['message' => ['不能打赏自己的发布的资讯']], 403);
         }
 
-        if (! $user->wallet || $user->wallet->balance < $amount) {
-            return response()->json([
-                'message' => ['余额不足'],
-            ], 403);
+        if (!$user->newWallet || $user->newWallet->balance < $amount) {
+            return response()->json(['message' => ['余额不足']], 403);
         }
 
-        $money = $amount / 100;
+        $money = $amount / self::RATIO;
 
         // 记录订单
         $status = $manager->driver(Order::TARGET_TYPE_REWARD)->reward([
@@ -82,49 +83,5 @@ class NewRewardController extends Controller
         } else {
             return response()->json(['message' => ['打赏失败']], 500);
         }
-    }
-
-    /**
-     * 一条资讯的打赏列表.
-     *
-     * @author bs<414606094@qq.com>
-     * @param  Request $request
-     * @param  News    $news
-     * @return mix
-     */
-    public function index(Request $request, News $news)
-    {
-        $limit = max(1, min(30, $request->query('limit', 15)));
-        $since = $request->query('since', 0);
-        $offset = $request->query('offset', 0);
-        $order = in_array($order = $request->query('order', 'desc'), ['asc', 'desc']) ? $order : 'desc';
-        $order_type = in_array($order_type = $request->query('order_type'), ['amount', 'date']) ? $order_type : 'date';
-        $fieldMap = [
-            'date' => 'id',
-            'amount' => 'amount',
-        ];
-        $rewardables = $news->rewards()
-            ->with('user')
-            ->when($since, function ($query) use ($since, $order, $order_type, $fieldMap) {
-                return $query->where($fieldMap[$order_type], $order === 'asc' ? '>' : '<', $since);
-            })
-            ->offset($offset)
-            ->limit($limit)
-            ->orderBy($fieldMap[$order_type], $order)
-            ->get();
-
-        return response()->json($rewardables, 200);
-    }
-
-    /**
-     * 查看一条资讯的打赏统计
-     *
-     * @author bs<414606094@qq.com>
-     * @param  News   $news
-     * @return array
-     */
-    public function sum(News $news)
-    {
-        return response()->json($news->rewardCount(), 200);
     }
 }
