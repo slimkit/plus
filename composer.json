@@ -1,6 +1,6 @@
 {
     "name": "zhiyicx/thinksns-plus",
-    "description": "Use of Laravel framework to achieve the user ecosystem. （基于 Laravel 开发的用户生态系统。）",
+    "description": "一个使用 Laravel 并健壮的社交系统",
     "keywords": [
         "thinksns",
         "web",
