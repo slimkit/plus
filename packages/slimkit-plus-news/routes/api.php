@@ -141,6 +141,12 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             // 拒绝评论置顶
             $api->patch('/{news}/comments/{comment}/pinneds/{pinned}/reject', API2\CommentPinnedController::class.'@reject');
 
+            // 审核评论置顶
+            $api->patch('/{news}/comments/{comment}/currency-pinneds/{pinned}', API2\NewCommentPinnedController::class.'@accept');
+
+            // 拒绝评论置顶
+            $api->patch('/{news}/comments/{comment}/currency-pinneds/{pinned}/reject', API2\NewCommentPinnedController::class.'@reject');
+
             // 取消评论置顶
             $api->delete('/{news}/comments/{comment}/pinneds/{pinned}', API2\CommentPinnedController::class.'@destroy');
 
