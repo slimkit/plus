@@ -20,16 +20,14 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Packages\Currency\Processes;
 
-use DB;
 use Zhiyi\Plus\Packages\Currency\Order;
 use Zhiyi\Plus\Packages\Currency\Process;
-use Zhiyi\Plus\Repository\CurrencyConfig;
 use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 
 class Common extends Process
 {
     /**
-     * 创建默认积分流水订单
+     * 创建默认积分流水订单.
      *
      * @param int $owner_id
      * @param int $amount
