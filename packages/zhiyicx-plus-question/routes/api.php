@@ -206,6 +206,14 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
                 // @POST /api/v2/user/question-application/:question
                 $api->post('/{question}', API2\QuestionApplicationController::class.'@store');
             });
+
+            // Question application
+            // @Route /api/v2/user/question-application
+            $api->group(['prefix' => 'currency-question-application'], function (RouteRegisterContract $api) {
+                // 消耗积分申请精选
+                // @POST /api/v2/user/question-application/:question
+                $api->post('/{question}', API2\QuestionApplicationController::class.'@newStore');
+            });
         });
 
         // Question.
