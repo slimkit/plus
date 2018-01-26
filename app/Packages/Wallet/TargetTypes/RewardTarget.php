@@ -70,6 +70,17 @@ class RewardTarget extends Target
         return $result;
     }
 
+
+    /**
+     * return target Order.
+     *
+     * @return mixed
+     */
+    public function getTargetOrder()
+    {
+        return $this->targetRewardOrder->getOrderModel();
+    }
+
     /**
      * Send notification.
      *
