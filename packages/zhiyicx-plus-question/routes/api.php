@@ -314,6 +314,10 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
             // @POST /api/v2/question-answers/:answer/onlookers
             $api->post('/{answer}/onlookers', API2\AnswerOnlookersController::class.'@store');
 
+            // Onlookers an answer by currency.
+            // @POST /api/v2/question-answers/:answer/currency-onlookers
+            $api->post('/{answer}/currency-onlookers', API2\AnswerOnlookersController::class.'@newStore');
+
             // Cancel like an answer.
             // @DELETE /api/v2/question-answers/:answer/likes
             $api->delete('/{answer}/likes', API2\AnswerLikeController::class.'@destroy');
