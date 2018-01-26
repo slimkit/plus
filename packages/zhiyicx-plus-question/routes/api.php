@@ -272,6 +272,15 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
             // Reset amount of a question.
             // @Patch /api/v2/currency-questions/:question/amount
             $api->patch('/{question}/amount', API2\NewQuestionController::class.'@resetAmount');
+
+            // Answer.
+            // @Route /api/v2/question/:question/answers
+            $api->group(['prefix' => '{question}/answers'], function (RouteRegisterContract $api) {
+
+                // Send a answer for the question.
+                // @Post /api/v2/questions/:question/answers
+                $api->post('/', API2\AnswerController::class.'@newStore')->middleware('sensitive:body');
+            });
         });
 
         // Question answers.

@@ -8,6 +8,7 @@ use SlimKit\PlusQuestion\Models\Answer as AnswerModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use SlimKit\PlusQuestion\Models\Question as QuestionModel;
 use SlimKit\PlusQuestion\Services\Markdown as MarkdownService;
+use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use SlimKit\PlusQuestion\Models\TopicExpertIncome as ExpertIncomeModel;
 use SlimKit\PlusQuestion\API2\Requests\UpdateAnswer as UpdateAnswerRequest;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
@@ -312,5 +313,107 @@ class AnswerController extends Controller
         $answer->delete();
 
         return $response->make('', 204);
+    }
+
+    /**
+     * 积分相关新版回答问题接口.
+     *
+     * @param QuestionAnswerRequest $request
+     * @param ResponseFactoryContract $response
+     * @param AnswerModel $answer
+     * @param QuestionModel $question
+     * @return mixed
+     * @author BS <414606094@qq.com>
+     */
+    public function newStore(QuestionAnswerRequest $request,
+                          ResponseFactoryContract $response,
+                          AnswerModel $answer,
+                          QuestionModel $question)
+    {
+        $user = $request->user();
+
+        $anonymity = $request->input('anonymity') ? 1 : 0;
+        $body = $request->input('body');
+        $text_body = $request->input('text_body');
+
+        $images = $this->findMarkdownImageNotWithModels($body);
+
+        $answer->question_id = $question->id;
+        $answer->user_id = $user->id;
+        $answer->body = $body;
+        $answer->anonymity = $anonymity;
+        $answer->text_body = $text_body;
+
+        // 只有存在邀请列表并且没有参与过回答才可被指为邀请回答，否则为普通回答。
+        $answer->invited = in_array($user->id, $question->invitations->pluck('id')->toArray()) && ! $question->answers()
+            ->where('invited', 1)
+            ->where('user_id', $user->id)
+            ->first();
+
+        $question->getConnection()->transaction(function () use ($question, $answer, $images, $user) {
+
+            // Save Answer.
+            $question->answers()->save($answer);
+
+            // Count
+            $question->increment('answers_count', 1);
+            $user->extra()->firstOrCreate([])->increment('answers_count', 1);
+
+            // Update images.
+            $images->each(function ($image) use ($answer) {
+                $image->channel = 'question-answers:images';
+                $image->raw = $answer->id;
+                $image->save();
+            });
+
+            // Automaticity ?
+            if ($question->automaticity && $answer->invited) {
+
+                $process = new UserProcess();
+                $process->checkUser($user->id);
+                $order = $process->createOrder($user, $question->amount, 1, trans('plus-question::answers.charges.invited.subject'), trans('plus-question::answers.charges.invited.body', ['body' => $question->subject]), $question->user_id);
+                $user->currency()->increment('sum', $question->amount);
+                $order->save();
+
+                $question->load('topics.experts');
+                // get all expert of all the topics belongs to the question.
+                $allexpert = $question->topics->map(function ($topic) {
+                    return $topic->experts->map(function ($expert) {
+                        return $expert->id;
+                    });
+                })->flatten()->toArray();
+
+                // is the one of experts?
+                if (in_array($user->id, $allexpert)) {
+                    $income = new ExpertIncomeModel();
+                    $income->charge_id = $order->id;
+                    $income->user_id = $user->id;
+                    $income->amount = $order->amount;
+                    $income->type = 'answer';
+
+                    $income->save();
+                }
+            }
+        });
+
+        $message = trans(
+            $answer->invited
+                ? 'plus-question::answers.notifications.invited'
+                : 'plus-question::answers.notifications.answer',
+            ['user' => $user->name]
+        );
+
+        $answer->invited = (int) $answer->invited;
+
+        $question->user->sendNotifyMessage('question:answer', $message, [
+            'question' => $question,
+            'answer' => $answer,
+            'user' => $user,
+        ]);
+
+        return $response->json([
+            'message' => [trans('plus-question::messages.success')],
+            'answer' => $answer,
+        ], 201);
     }
 }
