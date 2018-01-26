@@ -70,7 +70,6 @@ class RewardTarget extends Target
         return $result;
     }
 
-
     /**
      * return target Order.
      *
