@@ -129,6 +129,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             // 申请评论置顶
             $api->post('/{news}/comments/{comment}/pinneds', API2\PinnedController::class.'@commentPinned');
 
+            // 通过积分申请评论置顶
+            $api->post('/{news}/comments/{comment}/currency-pinneds', API2\NewPinnedController::class.'@commentPinned');
+
             // 查看评论置顶
             $api->get('/comments/pinneds', API2\CommentPinnedController::class.'@index');
 
@@ -143,6 +146,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // 申请资讯置顶
             $api->post('/{news}/pinneds', API2\PinnedController::class.'@newsPinned');
+
+            // 通过积分申请资讯置顶
+            $api->post('/{news}/currency-pinneds', API2\NewPinnedController::class.'@newsPinned');
 
             // 评论一条资讯
             $api->post('/{news}/comments', API2\CommentController::class.'@store')->middleware('sensitive:body');
