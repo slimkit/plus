@@ -58,7 +58,7 @@ class Process
             return false;
         }
 
-        return $this->checkWallet($user);
+        return $this->checkCurrency($user);
     }
 
     /**
@@ -68,7 +68,7 @@ class Process
      * @return UserModel
      * @author BS <414606094@qq.com>
      */
-    protected function checkWallet(UserModel $user): UserModel
+    protected function checkCurrency(UserModel $user): UserModel
     {
         if (! $user->currency) {
             $user->currency = $user->currency()->create(['type' => $this->currency_type->id, 'sum' => 0]);
