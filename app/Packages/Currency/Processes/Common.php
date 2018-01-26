@@ -36,7 +36,7 @@ class Common extends Process
      * @return Zhiyi\Plus\Models\CurrencyOrder
      * @author BS <414606094@qq.com>
      */
-    public function createOrder(int $owner_id, int $amount, string $title, string $body): CurrencyOrderModel
+    public function createOrder(int $owner_id, int $amount, int $type, string $title, string $body): CurrencyOrderModel
     {
         $user = $this->checkUser($owner_id);
 
@@ -44,7 +44,7 @@ class Common extends Process
         $order->owner_id = $user->id;
         $order->title = $title;
         $order->body = $body;
-        $order->type = -1;
+        $order->type = $type;
         $order->currency = $this->currency_type->id;
         $order->target_type = Order::TARGET_TYPE_COMMON;
         $order->target_id = 0;
