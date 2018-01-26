@@ -14,3 +14,6 @@
 ### Fixed step:
 
 - [ ] fixed.
+
+<!-- Love thinksns-plus? Please consider supporting our collective:
+👉  https://opencollective.com/thinksns-plus/donate -->
