@@ -25,8 +25,6 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
-use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
-use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned as NewsPinnedModel;
 
@@ -94,7 +92,7 @@ class NewPinnedController extends Controller
      * 申请资讯评论置顶.
      *
      * @param Request $request
-     * @param NewsModel $news 
+     * @param NewsModel $news
      * @param CommentModel $comment
      * @param Carbon $dateTime
      * @return mixed
@@ -142,7 +140,6 @@ class NewPinnedController extends Controller
         return app()->call([$this, 'PinnedValidate'], [
             'pinned' => $pinned,
             'call' => function (NewsPinnedModel $pinned) use ($user, $comment, $news) {
-
                 $process = new UserProcess();
                 $order = $process->prepayment($user->id, $pinned->amount, $news->user_id, '申请资讯评论置顶', sprintf('申请评论《%s》置顶', $comment->body));
 
@@ -167,7 +164,7 @@ class NewPinnedController extends Controller
     }
 
     /**
-     * check Request
+     * check Request.
      *
      * @param Request $request
      * @param NewsPinnedModel $pinned
