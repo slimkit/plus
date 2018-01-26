@@ -45,7 +45,7 @@ class NewRewardController extends Controller
                 'amount' => ['请输入正确的打赏金额'],
             ], 422);
         }
-        
+
         $user = $request->user();
         $target = $feed->user;
 
