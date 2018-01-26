@@ -251,6 +251,10 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
             // Attach a adoption answer for question.
             // @PUT /api/v2/questions/:question/adoptions/:answer
             $api->put('/{question}/adoptions/{answer}', API2\QuestionAdoptionController::class.'@store');
+
+            // Attach a adoption answer for question by currency.
+            // @PUT /api/v2/questions/:question/adoptions/:answer
+            $api->put('/{question}/currency-adoptions/{answer}', API2\QuestionAdoptionController::class.'@newStore');
         });
 
         // Question.
