@@ -74,11 +74,23 @@ class CurrencyConfig
             ['value' => 100]
         );
 
+        $cash_max = CommonConfig::firstOrCreate(
+            ['name' => 'currency:cash-max', 'namespace' => 'currency'],
+            ['value' => 10000000]
+        );
+
+        $cash_min = CommonConfig::firstOrCreate(
+            ['name' => 'currency:cash-min', 'namespace' => 'currency'],
+            ['value' => 100]
+        );
+
         $datas = [
             'recharge-ratio' => (int) $ratio->value,
             'recharge-options' => (string) $options->value,
             'recharge-max' => (int) $max->value,
             'recharge-min' => (int) $min->value,
+            'cash-max' => (int) $cash_max->value,
+            'cash-min' => (int) $cash_min->value,
         ];
 
         $this->cache->forever($this->cacheKey(), $datas);

@@ -47,7 +47,7 @@ class StoreCurrencyCash extends FormRequest
         $currency = $this->user()->currency()->firstOrCreate(['type' => 1], ['sum' => 0]);
 
         return [
-            'amount' => 'required|int|min:100|max:'.$currency->sum,
+            'amount' => 'required|int|min:'.$config->get()['cash-min'].'|max:'.min($currency, $config->get()['cash-max']),
         ];
     }
 
@@ -62,7 +62,7 @@ class StoreCurrencyCash extends FormRequest
         return [
             'amount.required' => '请选择需要提取的积分',
             'amount.min' => '提取积分不合法',
-            'amount.max' => '账户积分余额不足',
+            'amount.max' => '账户积分余额不足或超出最大提现限制',
         ];
     }
 }
