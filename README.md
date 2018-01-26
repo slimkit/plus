@@ -1,17 +1,16 @@
-<p align="center"><img src="public/plus.png"></p>
+<p align="center"><img src="https://github.com/slimkit/thinksns-plus/blob/master/public/plus.png"></p>
 
-Plus (ThinkSNS Plus) 是一个使用 Laravel 开发，并且功能繁多且健壮的社交程序。Plus 是遵循 *PSR 规范* 代码统一，并功能快松耦合。你安装完成 Plus 并不意味着已经成功安装了所有功能，因为 Plus 使用 *模块化* 的
+Plus (ThinkSNS Plus) 是一个使用 Laravel 开发，并且功能繁多且健壮的社交程序。Plus 是遵循 **PSR 规范** 代码统一，并功能块松耦合。你安装完成 Plus 并不意味着已经成功安装了所有功能，因为 Plus 使用 **模块化** 的
 原则，所以你安装完成后拥有了所有可以被请求的 REST 接口和后台管理面板，你可能还需要安装如下模块：
 
 - 一个对搜索引擎支持良好的大屏 Web 界面 👉 [ThinkSNS Plus PC](https://github.com/zhiyicx/plus-component-pcos)
 - 极大程度还原原生 APP 体验的 SPA (Single Page Application) 应用 👉 [ThinkSNS Plus SPA](https://github.com/zhiyicx/plus-component-h5)
 - 一个更加强大的大屏 Web 界面应用 (但它是收费的) 👉 [Plus PC](https://github.com/zhiyicx/plus-component-pc)
 
-> 如果你关注 ThinkSNS 所属公司更多开源产品，请看 👉 [ThinkSNS 官网](http://www.thinksns.com)
+> 如果你关注 ThinkSNS 所属公司更多开源产品，请看[ThinkSNS 官网](http://www.thinksns.com)
 
 ## Badges
 
-<!-- [![ThinkSNS Plus 技术交流群](https://img.shields.io/badge/QQ%20Group-651240785-6782d6.svg?style=flat-square)](//shang.qq.com/wpa/qunwpa?idkey=7a85a1f73b3da2b1106e10817bd3fb6414766ca7dfe102977ad698011fb01ea5) -->
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8320deaa80b8489f95fcedaae6df079d)](https://www.codacy.com/app/zhiyi/thinksns-plus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=slimkit/thinksns-plus&amp;utm_campaign=Badge_Grade)
 [![Style CI](https://styleci.io/repos/76627423/shield?branch=master)](https://styleci.io/repos/76627423)
 [![Composer publish version](https://img.shields.io/packagist/v/zhiyicx/thinksns-plus.svg?style=flat-square)](https://packagist.org/packages/zhiyicx/thinksns-plus)
@@ -110,10 +109,9 @@ php artisan serve
 
 ## 贡献
 
-这个仓库的贡献者并不代表只是 Plus 的贡献者，我们也会把 Laravel 的贡献者加入感谢名单，因为他们为 Laravel 所做出的贡献，也使
-得 Plus 项目更加强大。
+这个仓库的贡献者并不代表只是 Plus 的贡献者，我们也会把 Laravel 的贡献者加入感谢名单，因为他们为 Laravel 所做出的贡献，也使得 Plus 项目更加强大。
 
-Thank you to all the people who have already contributed to Plus!
+感谢所有为 Plus 贡献的人！
 <a href="graphs/contributors"><img src="https://opencollective.com/thinksns-plus/contributors.svg?width=890" /></a>
 
 ### [行为守则](https://github.com/slimkit/thinksns-plus/blob/master/CODE_OF_CONDUCT.md)
@@ -127,7 +125,7 @@ Thank you to all the people who have already contributed to Plus!
 
 ## 赞助
 
-首先，我们有一个特约赞助商 👉 [成都 · 智艺创想](http://www.zhiyicx.com)，该个月赞助商为 Plus 团队提供了一个开发的基础，提供工作场所以及提供商务处理事宜，并且开发了如下商业项目：
+首先，我们有一个特约赞助商 👉 [成都 · 智艺创想](http://www.zhiyicx.com)，该赞助商为 Plus 团队提供了一个开发的基础，提供工作场所以及提供商务处理事宜，并且开发了如下商业项目：
 
 - ThinkSNS Plus Android 客户端
 - ThinkSNS Plus iOS 客户端
@@ -158,4 +156,4 @@ Thank you to all the people who have already contributed to Plus!
 
 ## 开源协议
 
-ThinkSNS Plus 代码遵循 Apache 2.0 许可证发布，请参阅完整的 [许可证文本](LICENSE)
+ThinkSNS Plus 代码遵循 Apache 2.0 许可证发布，请参阅完整的 [许可证文本](https://github.com/slimkit/thinksns-plus/blob/master/LICENSE)
