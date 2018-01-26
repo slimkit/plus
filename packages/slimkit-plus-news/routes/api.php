@@ -101,6 +101,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             // Update news contributes.
             $api->patch('/categories/{category}/news/{news}', API2\ContributeController::class.'@update')->middleware('sensitive:title,content,subject,from,author');
 
+            // Send news contributes by currency.
+            $api->post('/categories/{category}/currency-news', API2\ContributeController::class.'@newStore')->middleware('sensitive:title,content,subject,from,author');
+
             // Delete new contributes.
             $api->delete('/categories/{category}/news/{news}', API2\ContributeController::class.'@destroy');
 

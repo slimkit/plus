@@ -25,6 +25,7 @@ use Zhiyi\Plus\Models\Tag as TagModel;
 use Zhiyi\Plus\Concerns\FindMarkdownFileTrait;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
+use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
@@ -350,5 +351,92 @@ class ContributeController extends Controller
 
             return $response->json(['message' => ['申请成功']], 201);
         });
+    }
+
+    /**
+     * 提交资讯投稿申请.
+     *
+     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Requests\StoreContribute $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News $news
+     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate $category
+     * @return mixed
+     * @author BS <414606094@qq.com>
+     */
+    public function newStore(StoreContributeRequest $request,
+                          ResponseFactoryContract $response,
+                          NewsModel $news,
+                          NewsCateModel $category,
+                          TagModel $tagModel)
+    {
+        $user = $request->user();
+        $config = config('news.contribute');
+        $payAmount = config('news.pay_contribute');
+
+        if ($config['pay'] && $user->currency && $user->currency->sum < $payAmount) {
+            return $response->json(['message' => ['账户余额不足']], 422);
+        }
+
+        if ($config['verified'] && $user->verified === null) {
+            return $response->json(['message' => ['未认证用户不可投稿']], 422);
+        }
+
+        $map = $request->only(['title', 'content', 'subject']);
+        $map['from'] = $request->input('from') ?: '原创';
+        $map['author'] = $request->input('author') ?: $user->name;
+        $map['storage'] = $request->input('image');
+
+        $images = $this->findMarkdownImageNotWithModels($map['content'] ?: '');
+        $images[] = $this->app->call(function (FileWithModel $fileWith) use ($map) {
+            return $fileWith->where('id', $map['storage'])
+                ->where('channel', null)
+                ->where('raw', null)
+                ->first();
+        });
+        $images = $images->filter();
+
+        $tags = $tagModel->whereIn('id', is_array($request->input('tags')) ? $request->input('tags') : explode(',', $request->input('tags')))->get();
+        if (! $tags) {
+            return $response->json(['message' => ['填写的标签不存在或已删除']], 422);
+        }
+
+        foreach ($map as $key => $value) {
+            $news->$key = $value;
+        }
+        $news->digg_count = 0;
+        $news->comment_count = 0;
+        $news->hits = 0;
+        $news->is_recommend = 0;
+        $news->audit_status = 1;
+        $news->audit_count = 0;
+        $news->user_id = $user->id;
+        $news->contribute_amount = $payAmount;
+
+        if (! $category->news()->save($news)) {
+            return $response->json(['message' => ['投稿失败']])->setStatusCode(500);
+        }
+
+        try {
+            $category->getConnection()->transaction(function () use ($news, $images, $user, $payAmount, $config, $tags) {
+                $images->each(function (FileWithModel $fileWith) use ($news) {
+                    $fileWith->channel = 'news:image';
+                    $fileWith->raw = $news->id;
+
+                    $fileWith->save();
+                });
+
+                if ($config['pay']) {
+                    $process = new UserProcess();
+                    $process->prepayment($user->id, $payAmount, 0, '支付资讯投稿费用', sprintf('支付资讯《%s》投稿费用', $news->title));
+                }
+
+                $news->tags()->attach($tags);
+            });
+
+            return $response->json(['message' => ['投稿成功']], 201);
+        } catch (Exception $exception) {
+            $news->delete();
+            throw new $exception;
+        }
     }
 }
