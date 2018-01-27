@@ -26,7 +26,7 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 class AuxiliaryController extends Controller
 {
     /**
-     * 清除缓存
+     * 清除缓存.
      *
      * @return mixed
      * @author BS <414606094@qq.com>
