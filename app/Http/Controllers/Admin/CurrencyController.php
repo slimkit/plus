@@ -36,7 +36,7 @@ class CurrencyController extends Controller
 
     /**
      * 获取积分配置项.
-     * 
+     *
      * @param  CurrencyConfig $config
      * @return mixed
      */
@@ -47,18 +47,17 @@ class CurrencyController extends Controller
 
     /**
      * 更新积分基础配置.
-     * 
+     *
      * @param  Request $request
      * @return mixed
      */
     public function updateConfig(Request $request)
     {
-        foreach($request->all() as $key => $value) {
-            
-            $field = $key == 'recharge-options' ?  'recharge-option' : $key;
+        foreach ($request->all() as $key => $value) {
+            $field = $key == 'recharge-options' ? 'recharge-option' : $key;
 
             $config = CommonConfig::where('name', sprintf('currency:%s', $field))
-            ->where( 'namespace', 'currency')
+            ->where('namespace', 'currency')
             ->first();
 
             $config->value = $value;
@@ -70,4 +69,3 @@ class CurrencyController extends Controller
         return response()->json(['message' => '更新成功'], 201);
     }
 }
-
