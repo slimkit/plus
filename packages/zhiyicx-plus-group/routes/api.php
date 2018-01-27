@@ -265,6 +265,34 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
                 $api->patch('/posts/{post}/cancel', API\PinnedController::class.'@postPinnedCancel');
             });
 
+            // pinned routes.
+            $api->group(['prefix' => '/currency-pinned'], function (RouteRegisterContract $api) {
+
+                // 申请帖子置顶
+                // @post /api/v2/plus-group/pinned/posts/:post
+                $api->post('/posts/{post}', API\NewPinnedController::class.'@storePost');
+
+                // 通过帖子置顶
+                // @patch /api/v2/plus-group/pinned/posts/:post/accept
+                $api->patch('/posts/{post}/accept', API\NewPinnedController::class.'@acceptPost');
+
+                // 拒绝帖子置顶
+                // @patch /api/v2/plus-group/pinned/posts/:post/reject
+                $api->patch('/posts/{post}/reject', API\NewPinnedController::class.'@rejectPost');
+
+                // 申请评论帖子置顶
+                // @post /api/v2/plus-group/pinned/comments/:comment
+                $api->post('/comments/{comment}', API\NewPinnedController::class.'@storeComments');
+
+                // 接收帖子评论置顶
+                // @patch /api/v2/plus-group/pinned/comments/:comment/accept
+                $api->patch('/comments/{comment}/accept', API\NewPinnedController::class.'@acceptComments');
+
+                // 拒绝帖子评论置顶
+                // @patch /api/v2/plus-group/pinned/comments/:comment/reject
+                $api->patch('/comments/{comment}/reject', API\NewPinnedController::class.'@rejectComments');
+            });
+
             // report routes.
             $api->group(['prefix' => '/reports'], function (RouteRegisterContract $api) {
                 $api->get('/', API\GroupReportController::class.'@reports');
