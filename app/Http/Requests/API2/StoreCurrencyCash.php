@@ -47,7 +47,7 @@ class StoreCurrencyCash extends FormRequest
         $currency = $this->user()->currency()->firstOrCreate(['type' => 1], ['sum' => 0]);
 
         return [
-            'amount' => 'required|int|min:'.$config->get()['cash-min'].'|max:'.min($currency, $config->get()['cash-max']),
+            'amount' => 'required|int|min:'.$config->get()['cash-min'].'|max:'.min($currency->sum, $config->get()['cash-max']),
         ];
     }
 
