@@ -72,7 +72,7 @@ class NewWalletRechargeController extends Controller
     public function store(NewStoreWalletRecharge $request, TypeManager $manager)
     {
         $user = $request->user();
-        $amount = $request->input('amount');
+        $amount = (int) $request->input('amount');
         $extra = $request->input('extra', []);
         $type = $request->input('type');
 
@@ -127,7 +127,7 @@ class NewWalletRechargeController extends Controller
     public function transform(StoreTransform $request, TypeManager $manager)
     {
         $user = $request->user();
-        $amount = $request->input('amount');
+        $amount = (int) $request->input('amount');
 
         if (($result = $manager->driver(Order::TARGET_TYPE_TRANSFORM)->transform($user, $amount)) === true) {
             return response()->json(['message' => ['操作成功']], 201);

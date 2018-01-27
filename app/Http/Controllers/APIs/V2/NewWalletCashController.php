@@ -64,7 +64,7 @@ class NewWalletCashController extends Controller
      */
     public function store(StoreUserWallerCashPost $request, TypeManager $manager)
     {
-        $value = $request->input('value');
+        $value = (int) $request->input('value');
         $type = $request->input('type');
         $account = $request->input('account');
         $user = $request->user();
