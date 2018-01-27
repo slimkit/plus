@@ -362,4 +362,8 @@ Route::middleware('auth:web')
     Route::prefix('/auxiliary')->group(function () {
         Route::get('/clear', 'AuxiliaryController@cleanCache');
     });
+
+    /* ------------- 积分设置 -----------------*/
+    Route::get('currency/config', 'CurrencyController@showConfig');
+    Route::patch('currency/config', 'CurrencyController@updateConfig');
 });
