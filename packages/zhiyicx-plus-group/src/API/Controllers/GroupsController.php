@@ -703,7 +703,7 @@ class GroupsController
             return response()->json(['message' => '已加入该圈子或加圈申请正在审核中'], 422);
         }
 
-        if ($group->mode == 'paid' && ($user->wallet->balance < $group->money)) {
+        if ($group->mode == 'paid' && ($user->currency()->firstOrCreate(['type' => 1], ['sum' => 0])->sum < $group->money)) {
             return response()->json(['message' => '账户余额不足不能申请加入'], 422);
         }
 
