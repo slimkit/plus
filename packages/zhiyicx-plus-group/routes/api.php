@@ -199,6 +199,9 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
                 // @post /api/v2/plus-group/group-posts/:post/rewards
                 $api->post('/{post}/rewards', API\PostRewardController::class.'@store');
 
+                // 新版帖子打赏
+                $api->post('/{post}/new-rewards', API\NewPostRewardController::class.'@store');
+
                 // 收藏帖子.
                 // @post /api/v2/plus-group/group-posts/:post/collections
                 $api->post('/{post}/collections', API\PostCollectionController::class.'@store');
