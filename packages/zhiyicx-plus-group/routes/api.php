@@ -174,10 +174,17 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
                 // 圈主和管理员审核拒绝加圈
                 // @patch /api/v2/plus-group/groups/:group/members/:member/audit
                 $api->patch('/{group}/members/{member}/audit', API\GroupMemberController::class.'@audit');
+            });
+
+            $api->group(['prefix' => '/currency-groups'], function (RouteRegisterContract $api) {
+
+                // 积分相关新版加入圈子
+                // @put /api/v2/plus-group/groups/:group
+                $api->put('/{group}', API\GroupsController::class.'@newJoin');
 
                 // 积分相关新版圈主和管理员审核拒绝加圈
                 // @patch /api/v2/plus-group/groups/:group/members/:member/currency-audit
-                $api->patch('/{group}/members/{member}/currency-audit', API\GroupMemberController::class.'@newAudit');
+                $api->patch('/{group}/members/{member}/audit', API\GroupMemberController::class.'@newAudit');
             });
 
             // post auth route.

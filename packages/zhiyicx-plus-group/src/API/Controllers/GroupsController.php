@@ -16,6 +16,7 @@ use Zhiyi\PlusGroup\Models\Category as CategoryModel;
 use Zhiyi\Plus\Models\CommonConfig as CommonConfigModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\PlusGroup\Models\GroupMember as GroupMemberModel;
+use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Zhiyi\PlusGroup\Models\GroupMemberLog as GroupMemberLogModel;
 
@@ -682,5 +683,83 @@ class GroupsController
         return response()->json([
             'protocol' => $protocol ?? '',
         ], 200);
+    }
+
+    /**
+     * 新版积分相关加入圈子接口.
+     *
+     * @param Request $request
+     * @param GroupModel $group
+     * @return mixed
+     * @author BS <414606094@qq.com>
+     */
+    public function newJoin(Request $request, GroupModel $group)
+    {
+        $user = $request->user();
+
+        $member = $group->members()->where('user_id', $user->id)->first();
+
+        if (! is_null($member) && in_array($member->audit, [0, 1])) {
+            return response()->json(['message' => '已加入该圈子或加圈申请正在审核中'], 422);
+        }
+
+        if ($group->mode == 'paid' && ($user->wallet->balance < $group->money)) {
+            return response()->json(['message' => '账户余额不足不能申请加入'], 422);
+        }
+
+        DB::beginTransaction(); 
+
+        try {
+            if ($group->mode == 'paid') {
+                $process = new UserProcess();
+                $process->prepayment($user->id, $group->money, $group->founder->user_id, '加圈扣费', sprintf('加入《%s》圈子扣费', $group->name));
+            }
+
+            $member = new GroupMemberModel();
+            $member->user_id = $user->id;
+            $member->audit = in_array($group->mode, ['paid', 'private'])  ? 0 : 1;
+            $member->role = 'member';
+            $member->disabled = 0;
+            $group->members()->save($member);
+
+            if (in_array($group->mode, ['paid', 'private'])) {
+                $log = new GroupMemberLogModel();
+                $log->group_id = $group->id;
+                $log->user_id = $user->id;
+                $log->member_id = $member->id;
+                $log->status = 0;
+                $log->save();
+
+                $message = sprintf('%s申请加入圈子%s', $user->name, $group->name);
+            } else {
+                $group->increment('users_count');
+
+                $message = sprintf('%s加入了圈子%s', $user->name, $group->name);
+            }
+
+            $group->members()
+                ->whereIn('role', ['administrator', 'founder'])
+                ->where('audit', 1)
+                ->get()
+                ->map(function ($member) use($message, $group, $user) {
+                    $member->user->unreadCount()->firstOrCreate([])->increment('unread_group_join_count', 1);
+
+                    $member->user->sendNotifyMessage(
+                        'group:join',
+                        $message,
+                        ['group' => $group, 'user' => $user]);
+                });
+
+            DB::commit();
+
+            return response()->json([
+                'message' => in_array($group->mode, ['paid', 'private']) ? '申请成功，等待管理员审核' : '加圈成功'
+            ], 201);
+
+        } catch (\Exception $e) {
+
+            DB::rollback();
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 }
