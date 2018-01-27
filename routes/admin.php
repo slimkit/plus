@@ -357,4 +357,9 @@ Route::middleware('auth:web')
     Route::get('reports', 'ReportController@index');
     Route::patch('reports/{report}/deal', 'ReportController@deal');
     Route::patch('reports/{report}/reject', 'ReportController@reject');
+
+    /*-------------- 辅助功能 -----------------*/
+    Route::prefix('/auxiliary')->group(function () {
+        Route::get('/clear', 'AuxiliaryController@cleanCache');
+    });
 });
