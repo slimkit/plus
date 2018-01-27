@@ -10,6 +10,7 @@ use Zhiyi\PlusGroup\Models\Group as GroupModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\PlusGroup\Models\GroupMember as GroupMemberModel;
 use Zhiyi\PlusGroup\Models\GroupIncome as GroupIncomeModel;
+use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\PlusGroup\Models\GroupMemberLog as GroupMemberLogModel;
 
 class GroupMemberController
@@ -427,5 +428,107 @@ class GroupMemberController
         ]);
 
         return response()->json(['message' => ['操作成功']], 201);
+    }
+
+    /**
+     * 积分相关新版审核圈子成员接口.
+     *
+     * @param Request $request
+     * @param GroupModel $group
+     * @param GroupMemberModel $member
+     * @param Carbon $datetime
+     * @return mixed
+     * @author BS <414606094@qq.com>
+     */
+    public function newAudit(Request $request, GroupModel $group, GroupMemberModel $member, Carbon $datetime)
+    {
+        $user = $request->user();
+
+        $status = (int) $request->input('status');
+
+        if ($group->id !== $member->group_id) {
+            return response()->json(['message' => ['圈子和成员不匹配']], 403);
+        }
+
+        if (! in_array($status, [1, 2])) {
+            return response()->json(['message' => ['参数错误']], 422);
+        }
+
+        if (! $member->canBeSet($user)) {
+
+            return response()->json(['message' => ['权限不足']], 403);
+        }
+
+        if (in_array($member->audit, [1,2])) {
+            return response()->json(['message' => ['该成员已审核']], 403);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            
+            $caharge = new WalletChargeModel();
+
+            if ($group->mode == 'paid') {
+                if ($status === 1) {
+                    $process = new UserProcess();
+                    $process->receivables($group->founder->user_id, $group->money, $member->user_id, '用户加圈，审核通过', sprintf('用户%s申请加入《%s》圈子审核通过,圈主收益', $member->user->name, $group->name));
+
+                    /// 保存圈内收入流水
+                    $income = new GroupIncomeModel();
+                    $income->subject = sprintf('"%s "加入圈子', $member->user->name);
+                    $income->type = 1;
+                    $income->amount = $group->money;
+                    $income->user_id = $member->user_id;
+
+                    $group->incomes()->save($income);
+
+                    // 发送通知
+                    $message = sprintf("您申请加入的圈子%s已被审核通过", $group->name);
+                    $member->user->sendNotifyMessage(
+                        'group:join:accept',
+                        $message,
+                        ['group' => $group]
+                    );
+                } else {
+                    $process = new UserProcess();
+                    $process->reject($group->founder->user_id, $group->money, $member->user_id, '用户加圈，审核拒绝', sprintf('用户%s申请加入《%s》圈子审核拒绝,用户退款', $member->user->name, $group->name));
+
+                    // 发送通知
+                    $message = sprintf("您申请加入的圈子%s已被管理员拒绝", $group->name);
+                    $member->user->sendNotifyMessage(
+                        'group:join:reject',
+                        $message,
+                        ['group' => $group]
+                    );
+                }
+            }
+            
+            if ($status === 1) {
+                // 增加成员数    
+                $group->increment('users_count');
+
+                // 保存成员状态
+                $member->audit = $status;
+                $member->save();
+            } else {
+                // 删除待审成员
+                $member->delete();
+            }
+
+            // 保存成员审核记录
+            if ($log = $member->logs()->where('status', 0)->where('auditer', null)->first()) {
+                $log->status = $status;
+                $log->auditer = $user->id;
+                $log->audit_at = $datetime;
+                $log->save();
+            }
+
+            DB::commit();
+            return response()->json(['message' => ['审核成功']], 201);
+        } catch (\Exception $exception) {
+            DB::rollback();
+            return response()->json(['message' => [$exception->getMessage()]], 500);
+        }
     }
 }
