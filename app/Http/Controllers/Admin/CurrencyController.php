@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
+use DB;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Support\Configuration;
@@ -140,5 +141,23 @@ class CurrencyController extends Controller
         ->get();
 
         return response()->json($orders, 200);
+    }
+
+    /**
+     * 积分概览.
+     *
+     * @param Request $request
+     * @return mixed
+     * @author BS <414606094@qq.com>
+     */
+    public function overview(Request $request, OrderModel $orderModel)
+    {
+        $recharge = $orderModel->where('target_type', 'recharge')->select(DB::raw('count(id) as count, sum(amount) as sum'))->get();
+        $cash = $orderModel->where('target_type', 'cash')->select(DB::raw('count(id) as count, sum(amount) as sum'))->get();
+
+        return response()->json([
+            'recharge' => $recharge,
+            'cash' => $cash,
+        ], 200);
     }
 }
