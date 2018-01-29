@@ -9,6 +9,70 @@
 
             <div class="form-horizontal" v-else="loading">
                 <div class="form-group">
+                    <label class="control-label col-xs-2">积分规则</label>
+                    <div class="col-xs-4">
+                        <textarea class="form-control" v-model="currency.rule"></textarea>
+                    </div>
+                    <div class="col-xs-6 help-block">
+                        积分规则
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-xs-2">积分提现开关</label>
+                    <div class="col-xs-4">
+                        <label class="radio-inline">
+                            <input type="radio" :value="radio.on" v-model="currency.cash.status"> 开启
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" :value="radio.off" v-model="currency.cash.status"> 关闭
+                        </label>
+                    </div>
+                    <div class="col-xs-6 help-block">
+                        积分提现开关
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-xs-2">积分提现规则</label>
+                    <div class="col-xs-4">
+                        <textarea class="form-control" v-model="currency.cash.rule"></textarea>
+                    </div>
+                    <div class="col-xs-6 help-block">
+                        积分提现规则
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-xs-2">积分充值开关</label>
+                    <div class="col-xs-4">
+                        <label class="radio-inline">
+                            <input type="radio" :value="radio.on" v-model="currency.recharge.status"> 开启
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" :value="radio.off" v-model="currency.recharge.status"> 关闭
+                        </label>
+                    </div>
+                    <div class="col-xs-6 help-block">
+                        积分充值开关
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-xs-2">积分充值规则</label>
+                    <div class="col-xs-4">
+                        <textarea class="form-control" v-model="currency.recharge.rule"></textarea>
+                    </div>
+                    <div class="col-xs-6 help-block">
+                        积分充值规则
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="control-label col-xs-2"></label>
+                    <div class="col-xs-4">
+                      <ui-button type="button" class="btn btn-primary btn-block" @click="handleCurrencySubmit"></ui-button>
+                    </div>
+                    <div class="col-xs-6 help-block"></div>
+                </div>
+
+                <div class="form-group">
                     <label class="control-label col-xs-2">充值选项</label>
                     <div class="col-xs-4">
                         <input type="text" class="form-control" placeholder="充值选项，人民币分单位" v-model="config['recharge-options']">
@@ -66,7 +130,7 @@
                 <div class="form-group">
                     <label class="control-label col-xs-2"></label>
                     <div class="col-xs-4">
-                      <ui-button type="button" class="btn btn-primary" @click="handleSubmit"></ui-button>
+                      <ui-button type="button" class="btn btn-primary btn-block" @click="handleSubmit"></ui-button>
                     </div>
                     <div class="col-xs-6 help-block"></div>
                 </div>
@@ -80,12 +144,27 @@
     export default {
         data: () => ({
             loading: false,
+            radio: {
+                on: true,
+                off: false
+            },
             config:{},
+            currency: {
+                rule: null,
+                cash: { 
+                    status: true,
+                    rule: null,
+                },
+                recharge: {
+                    status: true,
+                    rule: null,
+                }
+            }
         }),
         methods: {
             handleSubmit({ stopProcessing }) {
                 request.patch(
-                  createRequestURI('currency/config'), this.config,
+                  createRequestURI('currency/config?type=detail'), this.config,
                 { validateStatus: status => status === 201}
                 )
                 .then(({data}) => {
@@ -96,20 +175,42 @@
                     this.$store.dispatch('alert-open', {type: 'danger', message: data});
                 });
             },
+            handleCurrencySubmit({ stopProcessing }) {
+                request.patch(
+                  createRequestURI('currency/config?type=basic'), this.currency,
+                { validateStatus: status => status === 201}
+                )
+                .then(({data}) => {
+                    stopProcessing();
+                    this.$store.dispatch('alert-open', {type: 'success', message: data});
+                }).catch(({response: {data = {message: '更新失败'}} = {}}) => {
+                    stopProcessing();
+                    this.$store.dispatch('alert-open', {type: 'danger', message: data});
+                });
+            }
         },
         created() {
             this.loading = true;
             request.get(createRequestURI('currency/config'), {
                 validateStatus: status => status === 200,
-            }).then(({data}) => {
+            }).then(({data: { basic_conf, detail_conf }}) => {
                 this.loading = false;
                 let conf = this.config;
-                conf['cash-min'] = data['cash-min'];
-                conf['cash-max'] = data['cash-max'];
-                conf['recharge-min'] = data['recharge-min'];
-                conf['recharge-max'] = data['recharge-max'];
-                conf['recharge-options'] = data['recharge-options'];
-                conf['recharge-ratio'] = data['recharge-ratio'];
+                let curr = this.currency;
+                // 基础配置
+                curr.rule = basic_conf['rule'];
+                curr.cash.rule = basic_conf['cash.rule'];
+                curr.cash.status = basic_conf['cash.status'];
+                curr.recharge.rule = basic_conf['recharge.rule'];
+                curr.recharge.status = basic_conf['recharge.status'];
+                // 详细配置
+                conf['cash-min'] = detail_conf['cash-min'];
+                conf['cash-max'] = detail_conf['cash-max'];
+                conf['recharge-min'] = detail_conf['recharge-min'];
+                conf['recharge-max'] = detail_conf['recharge-max'];
+                conf['recharge-options'] = detail_conf['recharge-options'];
+                conf['recharge-ratio'] = detail_conf['recharge-ratio'];
+
             }).catch(({response: {data = {message: '获取失败'}} = {}}) => {
                 this.loading = false;
                 this.$store.dispatch('alert-open', {type: 'danger', message: data});
