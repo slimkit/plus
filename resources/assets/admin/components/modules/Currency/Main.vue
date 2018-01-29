@@ -11,9 +11,9 @@
                 </span>
 
                 </div>
-            </nav>    
-            <router-view />
+            </nav>
             <module-alert></module-alert>
+            <router-view />
         </div>
     </div>
 </template>

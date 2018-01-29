@@ -75,7 +75,7 @@
                 <div class="form-group">
                     <label class="control-label col-xs-2">充值选项</label>
                     <div class="col-xs-4">
-                        <input type="text" class="form-control" placeholder="充值选项，人民币分单位" v-model="config['recharge-options']">
+                        <input type="text" class="form-control" placeholder="充值选项，人民币分单位" v-model="config['recharge-option']">
                     </div>
                     <div class="col-xs-6 help-block">
                         充值选项，人民币分单位，多个用半角,分割
@@ -208,7 +208,7 @@
                 conf['cash-max'] = detail_conf['cash-max'];
                 conf['recharge-min'] = detail_conf['recharge-min'];
                 conf['recharge-max'] = detail_conf['recharge-max'];
-                conf['recharge-options'] = detail_conf['recharge-options'];
+                conf['recharge-option'] = detail_conf['recharge-options'];
                 conf['recharge-ratio'] = detail_conf['recharge-ratio'];
 
             }).catch(({response: {data = {message: '获取失败'}} = {}}) => {

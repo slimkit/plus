@@ -58,16 +58,13 @@ class CurrencyController extends Controller
      */
     public function updateConfig(Request $request, Configuration $configuration)
     {
-        $type = (string) $request->input('type');
+        $type = (string) $request->query('type');
 
         if ($type == 'detail') {
-            foreach ($request->all() as $key => $value) {
-                $field = $key == 'recharge-options' ? 'recharge-option' : $key;
-
-                $config = CommonConfig::where('name', sprintf('currency:%s', $field))
+            foreach ($request->except('type') as $key => $value) {
+                $config = CommonConfig::where('name', sprintf('currency:%s', $key))
                 ->where('namespace', 'currency')
                 ->first();
-
                 $config->value = $value;
                 $config->save();
             }
