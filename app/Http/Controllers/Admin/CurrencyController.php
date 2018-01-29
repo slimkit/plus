@@ -25,6 +25,7 @@ use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Support\Configuration;
 use Zhiyi\Plus\Repository\CurrencyConfig;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\CurrencyOrder as OrderModel;
 
 class CurrencyController extends Controller
 {
@@ -101,5 +102,43 @@ class CurrencyController extends Controller
         $bootstrappers['recharge.status'] = config('currency.recharge.status', true);
 
         return $bootstrappers;
+    }
+
+    /**
+     * 积分流水.
+     *
+     * @param Request $request
+     * @param OrderModel $orderModel
+     * @return mixed
+     * @author BS <414606094@qq.com>
+     */
+    public function list(Request $request, OrderModel $orderModel)
+    {
+        $limit = $request->query('limit');
+        $after = $request->query('after');
+        $user = (int) $request->query('user');
+        $name = $request->query('name');
+        $action = $request->query('action');
+
+        $orders = $orderModel->when($after, function ($query) use ($after) {
+            return $query->where('id', '<', $after);
+        })
+        ->when($user, function ($query) use ($user) {
+            return $query->where('user_id', $user);
+        })
+        ->when($name, function ($query) use ($name) {
+            return $query->whereHas('user', function ($query) use ($name) {
+                return $query->where('name', 'like', '%'.$name);
+            });
+        })
+        ->when(in_array($action, [1, -1]), function ($query) use ($action) {
+            return $query->where('type', $action);
+        })
+        ->with('user')
+        ->limit($limit)
+        ->orderBy('id', 'desc')
+        ->get();
+
+        return response()->json($orders, 200);
     }
 }
