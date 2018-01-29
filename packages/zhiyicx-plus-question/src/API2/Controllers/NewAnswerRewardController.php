@@ -23,7 +23,7 @@ class NewAnswerRewardController extends Controller
 
     public function store(AnswerRewardRequest $request, ResponseFactoryContract $response, TypeManager $manager, AnswerModel $answer)
     {
-        $amount = $request->input('amount');
+        $amount = (int) $request->input('amount');
         $user = $request->user();
         $target = $answer->user;
 

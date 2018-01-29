@@ -32,7 +32,7 @@ class NewPostRewardController
         }
 
         if ($post->user_id)
-        $amount = $request->input('amount');
+        $amount = (int) $request->input('amount');
         if (! $amount || $amount < 0) {
             return response()->json([
                 'amount' => ['请输入正确的打赏金额'],
