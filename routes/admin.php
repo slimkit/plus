@@ -364,6 +364,11 @@ Route::middleware('auth:web')
     });
 
     /* ------------- 积分设置 -----------------*/
-    Route::get('currency/config', 'CurrencyController@showConfig');
-    Route::patch('currency/config', 'CurrencyController@updateConfig');
+    Route::prefix('/currency')->group(function () {
+        Route::get('/config', 'CurrencyController@showConfig');
+        Route::patch('/config', 'CurrencyController@updateConfig');
+
+        Route::get('/list', 'CurrencyController@list');
+        Route::get('/overview', 'CurrencyController@overview');
+    });
 });
