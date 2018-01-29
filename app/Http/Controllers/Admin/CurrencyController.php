@@ -98,29 +98,11 @@ class CurrencyController extends Controller
         $bootstrappers = [];
 
         $bootstrappers['rule'] = config('currency.rule', null);
-        $bootstrappers['cash.rule'] =  config('currency.cash.rule', null);
-        $bootstrappers['cash.status'] =  config('currency.cash.status', true);
+        $bootstrappers['cash.rule'] = config('currency.cash.rule', null);
+        $bootstrappers['cash.status'] = config('currency.cash.status', true);
         $bootstrappers['recharge.rule'] = config('currency.recharge.rule', null);
         $bootstrappers['recharge.status'] = config('currency.recharge.status', true);
 
         return $bootstrappers;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
