@@ -39,7 +39,7 @@ class NewRewardController extends Controller
      */
     public function reward(Request $request, Feed $feed, TypeManager $manager)
     {
-        $amount = $request->input('amount');
+        $amount = (int) $request->input('amount');
         if (! $amount || $amount < 0) {
             return response()->json([
                 'amount' => ['请输入正确的打赏金额'],
