@@ -20,11 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
-use DB;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\CommonConfig;
-use Zhiyi\Plus\Support\Configuration;
-use Zhiyi\Plus\Repository\CurrencyConfig;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\CurrencyOrder as OrderModel;
 
