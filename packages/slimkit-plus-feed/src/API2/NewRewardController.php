@@ -50,7 +50,7 @@ class NewRewardController extends Controller
         $target = $feed->user;
 
         if ($user->id == $target->id) {
-            return response()->json(['message' => ['不能打赏自己的发布的动态']], 403);
+            return response()->json(['message' => ['不能打赏自己的发布的动态']], 422);
         }
 
         if (! $user->newWallet || $user->newWallet->balance < $amount) {

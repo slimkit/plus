@@ -51,7 +51,7 @@ class NewUserRewardController extends Controller
         $user = $request->user();
 
         if ($user->id == $target->id) {
-            return response()->json(['message' => ['用户不能打赏自己']], 403);
+            return response()->json(['message' => ['用户不能打赏自己']], 422);
         }
 
         if (! $user->newWallet || $user->newWallet->balance < $amount) {
