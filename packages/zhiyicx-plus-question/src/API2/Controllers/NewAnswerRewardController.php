@@ -32,7 +32,7 @@ class NewAnswerRewardController extends Controller
         }
 
         if ($target->id === $user->id) {
-            return $response->json(['message' => ['用户不能自己打赏自己']]);
+            return $response->json(['message' => ['用户不能自己打赏自己']], 422);
         }
 
         if (!$user->newWallet || $user->newWallet->balance < $amount) {

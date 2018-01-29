@@ -41,7 +41,7 @@ class NewPostRewardController
         $user = $request->user();
 
         if ($post->user_id === $user->id) {
-            return response()->json(['message' => ['不能打赏自己发布的帖子']]);
+            return response()->json(['message' => ['不能打赏自己发布的帖子']], 422);
         }
         $user->load('wallet');
         $post->load('user');
