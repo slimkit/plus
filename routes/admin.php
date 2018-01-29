@@ -370,5 +370,9 @@ Route::middleware('auth:web')
 
         Route::get('/list', 'CurrencyController@list');
         Route::get('/overview', 'CurrencyController@overview');
+
+        Route::prefix('/cash')->group(function () {
+            Route::get('', 'CurrencyCashController@list');
+        });
     });
 });
