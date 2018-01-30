@@ -19,7 +19,6 @@
 namespace Zhiyi\Plus\Packages\Currency\Processes;
 
 use GuzzleHttp\Client;
-use Illuminate\Http\Request;
 use Zhiyi\Plus\Packages\Currency\Order;
 use Zhiyi\Plus\Packages\Currency\Process;
 use Zhiyi\Plus\Repository\CurrencyConfig;
@@ -46,7 +45,7 @@ class AppStorePay extends Process
      */
     public function verifyReceipt(array $receipt, CurrencyOrderModel $currencyOrder): bool
     {
-        $initialData = ["receipt-data" => $receipt, 'password' => $currencyOrder->id];
+        $initialData = ['receipt-data' => $receipt, 'password' => $currencyOrder->id];
         $body = json_encode($initialData);
 
         try {
@@ -134,7 +133,7 @@ class AppStorePay extends Process
     }
 
     /**
-     * 设置状态错误消息
+     * 设置状态错误消息.
      * @param $status
      */
     private function getStatusError($status): string
@@ -167,7 +166,7 @@ class AppStorePay extends Process
             default:
                 $error = '未知错误';
         }
-        
+
         return $error;
     }
 }
