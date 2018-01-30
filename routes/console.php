@@ -33,7 +33,7 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->describe('Display an inspiring quote');
 
-/**
+/*
  * app:key-generate command.
  */
 Artisan::command('app:key-generate', function () {
