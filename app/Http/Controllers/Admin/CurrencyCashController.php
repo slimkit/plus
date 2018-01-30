@@ -120,13 +120,13 @@ class CurrencyCashController extends Controller
                 $newWallet->save();
             }
             // 处理退还积分
-            if ($state === 2) {
+            if ($state === -1) {
                 $order->user->sendNotifyMessage(
                     'user-currency:cash',
-                    sprintf('积分提现申请审核通过,原因：%s', $mark),
+                    sprintf('积分提现申请被驳回,原因：%s', $mark),
                     ['order' => $order]
                 );
-                $order->user->currency->increment($order->amoun);
+                $order->user->currency->increment('sum',$order->amount);
             }
         });
 
