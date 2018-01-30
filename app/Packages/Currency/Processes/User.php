@@ -48,12 +48,14 @@ class User extends Process
 
         return DB::transaction(function () use ($user, $target_id, $target_user, $amount, $extra) {
             $order = $this->createOrder($user, $amount, -1, $extra['order_title'], $extra['order_body'], $target_id);
+            $order->state = 1;
             $order->save();
             $user->currency->decrement('sum', $amount);
 
             if ($target_user) {
                 $target_order = $this->createOrder($target_user, $amount, 1, $extra['target_order_title'], $extra['target_order_body'], $user->id);
                 $target_user->currency->increment('sum', $amount);
+                $target_order->state = 1;
                 $target_order->save();
             }
 
@@ -78,6 +80,7 @@ class User extends Process
 
         return DB::transaction(function () use ($user, $target_id, $amount, $title, $body) {
             $order = $this->createOrder($user, $amount, -1, $title, $body, $target_id);
+            $order->state = 1;
             $order->save();
             $user->currency->decrement('sum', $amount);
 
@@ -102,6 +105,7 @@ class User extends Process
 
         return DB::transaction(function () use ($user, $target_id, $amount, $title, $body) {
             $order = $this->createOrder($user, $amount, 1, $title, $body, $target_id);
+            $order->state = 1;
             $order->save();
             $user->currency->increment('sum', $amount);
 
