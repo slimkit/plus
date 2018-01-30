@@ -35,9 +35,9 @@ class AppStorePay extends Process
      */
     private $url = 'https://buy.itunes.apple.com/verifyReceipt';
 
-    public function __construct(boolen $sandbox = true)
+    public function __construct($sandbox = null)
     {
-        $this->sandbox = $sandbox;
+        $this->sandbox =  (bool) $sandbox;
     }
 
     /**
