@@ -37,57 +37,16 @@ class AppStorePay extends Process
     private $url = 'https://buy.itunes.apple.com/verifyReceipt';
 
     /**
-     * 返回交易id.
-     * @return mixed
-     */
-    public function getTransactionId()
-    {
-        return $this->returnData['receipt']['in_app'][0]['transaction_id'];
-    }
-
-    /**
-     * 查询数据是否有效.
-     * @param $productId
-     * @param \Closure $successCallBack
-     * @return bool
-     */
-    public function query($productId, \Closure $successCallBack)
-    {
-        if ($this->returnData) {
-            if ($this->returnData['status'] == 0) {
-                if ($productId == $this->returnData['receipt']['in_app'][0]['product_id']) {
-                    return call_user_func_array($successCallBack, [
-                        $this->getTransactionId(),
-                        $this->returnData,
-                    ]);
-                } else {
-                    $this->error = '非法的苹果商店product_id，这个凭证有可能是伪造的！';
-
-                    return false;
-                }
-            } else {
-                $this->error = '苹果服务器返回订单状态不正确!';
-
-                return false;
-            }
-        } else {
-            $this->error = '无效的苹果服务器返回数据！';
-
-            return false;
-        }
-    }
-
-    /**
      * 验证票据.
      *
-     * @param Request $request
+     * @param array $receipt
+     * @param Zhiyi\Plus\Models\CurrencyOrderModel
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function verifyReceipt(Request $request, CurrencyOrderModel $currencyOrder): bool
+    public function verifyReceipt(array $receipt, CurrencyOrderModel $currencyOrder): bool
     {
-        $receipt = $request->input('receipt', []);
-        $initialData = ['receipt-data' => $receipt, 'password' => $currencyOrder->id];
+        $initialData = ["receipt-data" => $receipt, 'password' => $currencyOrder->id];
         $body = json_encode($initialData);
 
         try {
@@ -175,7 +134,7 @@ class AppStorePay extends Process
     }
 
     /**
-     * 设置状态错误消息.
+     * 设置状态错误消息
      * @param $status
      */
     private function getStatusError($status): string
@@ -208,7 +167,7 @@ class AppStorePay extends Process
             default:
                 $error = '未知错误';
         }
-
+        
         return $error;
     }
 }
