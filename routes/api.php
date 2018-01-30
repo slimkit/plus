@@ -562,6 +562,12 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // 通过积分购买付费节点
             $api->post('/purchases/{node}', API2\PurchaseController::class.'@payByCurrency');
+
+            // 调用IAP发起充值
+            $api->post('/recharge/apply-pay', API2\CurrencyApplePayController::class.'@store');
+
+            // IAP支付完成后的验证
+            $api->post('/orders/{order}/apply-pay/verify', API2\CurrencyApplePayController::class.'@retrieve');
         });
     });
 });

@@ -58,12 +58,12 @@ class AppStorePay extends Process
 
             $data = json_decode($result, true);
             if ($data['status' !== 0]) {
-                throw new Exception($this->getStatusError($data['status']), 1);
+                throw new \Exception($this->getStatusError($data['status']), 1);
             }
 
             return $this->complete($currencyOrder);
         } catch (\Exception $exception) {
-            throw new Exception($exception->getMessage(), 1);
+            throw new \Exception($exception->getMessage(), 1);
         }
     }
 
