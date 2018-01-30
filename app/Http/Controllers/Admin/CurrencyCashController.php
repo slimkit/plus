@@ -126,7 +126,7 @@ class CurrencyCashController extends Controller
                     sprintf('积分提现申请被驳回,原因：%s', $mark),
                     ['order' => $order]
                 );
-                $order->user->currency->increment('sum',$order->amount);
+                $order->user->currency->increment('sum', $order->amount);
             }
         });
 
