@@ -58,7 +58,9 @@ class NewAnswerRewardController extends Controller
                     'message' => sprintf('你问答回复《%s》，被%s打赏%s元', $answer->body, $user->name, $money),
                 ],
             ], 'manual');
-
+            
+            // inrement rewarder_count
+            $answer->increment('rewarder_count');
             // check if the user is a expert, record income.
             $answer->question->load('topics.experts');
             // get all expert of all the topics belongs to the question.
