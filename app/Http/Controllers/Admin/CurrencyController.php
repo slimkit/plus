@@ -199,8 +199,9 @@ class CurrencyController extends Controller
         ->limit($limit)
         ->offset($offset)
         ->get()
-        ->map(function($item){
+        ->map(function ($item) {
             $item->setHidden(['password']);
+
             return $item;
         });
 
@@ -209,7 +210,7 @@ class CurrencyController extends Controller
 
     /**
      * 用户积分赋值.
-     * 
+     *
      * @param Request $request
      * @param Common  $common
      * @return \Illuminate\Http\JsonResponse
@@ -228,7 +229,7 @@ class CurrencyController extends Controller
             return response()->json(['message' => '该用户积分不足不能进行减少操作'], 403);
         }
 
-        $order = $common->createOrder($currency->owner_id , abs($num), ($num > 0 ? 1 : -1), '后台', '管理员操作');
+        $order = $common->createOrder($currency->owner_id, abs($num), ($num > 0 ? 1 : -1), '后台', '管理员操作');
         $order->save();
 
         $currency->sum += $num;
