@@ -140,7 +140,7 @@
 </template>
 
 <script>
-    import request, {createRequestURI} from '../../util/request';
+    import request, {createRequestURI} from '../../../util/request';
     export default {
         data: () => ({
             loading: false,

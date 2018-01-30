@@ -120,17 +120,21 @@ class CurrencyController extends Controller
         $user = (int) $request->query('user');
         $name = $request->query('name');
         $action = $request->query('action');
+        $state = $request->query('state');
 
         $query = $orderModel->when($user, function ($query) use ($user) {
-            return $query->where('user_id', $user);
+            return $query->where('owner_id', $user);
         })
         ->when($name, function ($query) use ($name) {
             return $query->whereHas('user', function ($query) use ($name) {
-                return $query->where('name', 'like', '%'.$name);
+                return $query->where('name', 'like', '%'.$name.'%');
             });
         })
         ->when(in_array($action, [1, -1]), function ($query) use ($action) {
             return $query->where('type', $action);
+        })
+        ->when(! is_null($state), function ($query) use ($state) {
+            return $query->where('state', $state);
         });
 
         $count = $query->count();
@@ -152,8 +156,8 @@ class CurrencyController extends Controller
      */
     public function overview(Request $request, OrderModel $orderModel)
     {
-        $recharge = $orderModel->where('target_type', 'recharge')->select(DB::raw('count(id) as count, sum(amount) as sum'))->get();
-        $cash = $orderModel->where('target_type', 'cash')->select(DB::raw('count(id) as count, sum(amount) as sum'))->get();
+        $recharge = $orderModel->where('target_type', 'recharge')->select(DB::raw('count(id) as count, sum(amount) as sum'))->first();
+        $cash = $orderModel->where('target_type', 'cash')->select(DB::raw('count(id) as count, sum(amount) as sum'))->first();
 
         return response()->json([
             'recharge' => $recharge,
