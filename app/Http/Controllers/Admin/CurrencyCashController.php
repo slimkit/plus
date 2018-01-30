@@ -37,11 +37,12 @@ class CurrencyCashController extends Controller
     public function list(Request $request, OrderModel $orderModel)
     {
         $limit = $request->query('limit', 15);
-        $after = $request->query('after');
+        $offset = $request->query('offset', 0);
         $state = (int) $request->query('state');
         $user = (int) $request->query('user');
         $name = $request->query('name');
-        $cashes = $orderModel->where('target_type', 'cash')
+
+        $query = $orderModel->where('target_type', 'cash')
         ->when(in_array($state, [-1, 0, 1]), function ($query) use ($state) {
             return $query->where('state', $state);
         })
@@ -52,15 +53,15 @@ class CurrencyCashController extends Controller
             return $query->whereHas('user', function ($query) use ($name) {
                 return $query->where('name', 'like', '%'.$name);
             });
-        })
-        ->when($after, function ($query) use ($after) {
-            return $query->where('id', '<', $after);
-        })
-        ->limit($limit)
+        });
+
+        $count = $query->count();
+        $cashes = $query->limit($limit)
+        ->offset($offset)
         ->orderBy('id', 'desc')
-        ->with('user')
+        ->with(['user.currency'])
         ->get();
 
-        return response()->json($cashes, 200);
+        return response()->json($cashes, 200, ['x-total' => $count]);
     }
 }

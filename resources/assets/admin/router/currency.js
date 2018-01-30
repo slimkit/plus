@@ -2,7 +2,7 @@ import Main from '../components/modules/Currency/Main';
 import Currency from '../components/pages/currency/Currency';
 import Statistics from '../components/pages/currency/Statistics';
 import Water from '../components/pages/currency/Water';
-import Cash from '../components/pages/Currency/Cash';
+import Cash from '../components/pages/currency/Cash';
 
 export default {
     path: 'currency',

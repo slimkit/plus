@@ -1,11 +1,14 @@
 <template>
     <div class="panel panel-default">
-        <div class="panel-heading">统计</div>
-        <div class="panel-heading text-right">
-            <router-link to="/currency/waters" class="btn btn-primary btn-xs">查看积分流水</router-link>
+        <div class="panel-heading">
+            统计
+            <router-link to="/currency/waters" class="btn btn-primary btn-xs pull-right">查看积分流水</router-link>
         </div>
         <div class="panel-body">
             <table class="table table-bordered">
+                <!-- 加载效果 -->
+                <table-loading :loadding="loading" :colspan-num="3"></table-loading>
+                <!-- 列表 -->
                 <thead>
                 <tr>
                     <th>类型</th>
@@ -35,6 +38,7 @@
                 items: [],
                 start: '',
                 end: '',
+                loading: true,
             }
         },
         filters: {
@@ -54,13 +58,14 @@
         },
         methods: {
             getWalletStatistics() {
-                this.loadding = true;
                 request.get(
                     createRequestURI(`currency/overview`),
                     {validateStatus: status => status === 200}
                 ).then(({data}) => {
+                    this.loading = false;
                     this.items = data;
                 }).catch(({response: {data: {errors = '加载数据失败，请重试'} = {}} = {}}) => {
+                    this.loading = false;
                     this.$store.dispatch('alert-open', {type: 'danger', message: data});
                 });
             },
