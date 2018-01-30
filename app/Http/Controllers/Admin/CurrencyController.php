@@ -21,12 +21,15 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use DB;
+use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\Currency;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Support\Configuration;
 use Zhiyi\Plus\Repository\CurrencyConfig;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\CurrencyOrder as OrderModel;
+use Zhiyi\Plus\Packages\Currency\Processes\Common;
 
 class CurrencyController extends Controller
 {
@@ -163,5 +166,74 @@ class CurrencyController extends Controller
             'recharge' => $recharge,
             'cash' => $cash,
         ], 200);
+    }
+
+    /**
+     * 获取用户积分信息.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index(Request $request)
+    {
+        $user = (int) $request->input('user');
+        $limit = (int) $request->input('limit', 15);
+        $offset = (int) $request->input('offset', 0);
+
+        $query = (new User())->newQuery();
+
+        $params = $request->only('name', 'email', 'phone');
+
+        foreach ($params as $key => $value) {
+            $query->when($value, function ($query) use ($key, $value) {
+                return $query->where($key, 'like', sprintf('%%%s%%', $value));
+            });
+        }
+
+        $query = $query->when($user, function ($query) use ($user) {
+            return $query->where('id', $user);
+        });
+
+        $count = $query->count('id');
+        $users = $query->with('currency')
+        ->limit($limit)
+        ->offset($offset)
+        ->get()
+        ->map(function($item){
+            $item->setHidden(['password']);
+            return $item;
+        });
+
+        return response()->json($users, 200, ['x-total' => $count]);
+    }
+
+    /**
+     * 用户积分赋值.
+     * 
+     * @param Request $request
+     * @param Common  $common
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function add(Request $request, Common $common)
+    {
+        if (! is_numeric($request->input('num')) || $request->input('num') == 0) {
+            return response()->json(['message' => '请输入正确的数值'], 422);
+        }
+
+        $num = (int) $request->input('num');
+
+        $currency = User::findOrFail($request->input('user_id'))->currency->firstOrCreate([]);
+
+        if ($num < 0 && $currency->sum < abs($num)) {
+            return response()->json(['message' => '该用户积分不足不能进行减少操作'], 403);
+        }
+
+        $order = $common->createOrder($currency->owner_id , abs($num), ($num > 0 ? 1 : -1), '后台', '管理员操作');
+        $order->save();
+
+        $currency->sum += $num;
+        $currency->save();
+
+        return response()->json(['message' => '操作成功', 'currency' => $currency], 200);
     }
 }

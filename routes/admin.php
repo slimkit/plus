@@ -365,6 +365,8 @@ Route::middleware('auth:web')
 
     /* ------------- 积分设置 -----------------*/
     Route::prefix('/currency')->group(function () {
+        Route::get('/', 'CurrencyController@index');
+        Route::post('/add', 'CurrencyController@add');
         Route::get('/config', 'CurrencyController@showConfig');
         Route::patch('/config', 'CurrencyController@updateConfig');
 

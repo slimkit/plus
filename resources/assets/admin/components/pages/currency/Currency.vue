@@ -1,220 +1,159 @@
 <template>
     <div class="panel panel-default">
-
-        <div class="panel-heading">配置</div>
-        
-        <div class="panel-body">
-            
-            <ui-loading v-if="loading"></ui-loading>
-
-            <div class="form-horizontal" v-else="loading">
+        <div class="panel-heading">积分流水</div>
+        <div class="panel-heading">
+            <div class="form-inline">
                 <div class="form-group">
-                    <label class="control-label col-xs-2">积分规则</label>
-                    <div class="col-xs-4">
-                        <textarea class="form-control" v-model="currency.rule"></textarea>
-                    </div>
-                    <div class="col-xs-6 help-block">
-                        积分规则
-                    </div>
+                	<input type="text" 
+                	class="form-control" 
+                	placeholder="用户名" 
+                	v-model="filters.name">
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-xs-2">积分提现开关</label>
-                    <div class="col-xs-4">
-                        <label class="radio-inline">
-                            <input type="radio" :value="radio.on" v-model="currency.cash.status"> 开启
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" :value="radio.off" v-model="currency.cash.status"> 关闭
-                        </label>
-                    </div>
-                    <div class="col-xs-6 help-block">
-                        积分提现开关
-                    </div>
+                	<input type="text" 
+                	class="form-control" 
+                	placeholder="用户ID" 
+                	v-model="filters.user">
                 </div>
+				<div class="form-group">
+					<input type="text"
+						   class="form-control"
+						   placeholder="用户名手机"
+						   v-model="filters.phone">
+				</div>
+				<div class="form-group">
+					<input type="text"
+						   class="form-control"
+						   placeholder="用户邮箱"
+						   v-model="filters.email">
+				</div>
                 <div class="form-group">
-                    <label class="control-label col-xs-2">积分提现规则</label>
-                    <div class="col-xs-4">
-                        <textarea class="form-control" v-model="currency.cash.rule"></textarea>
-                    </div>
-                    <div class="col-xs-6 help-block">
-                        积分提现规则
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-xs-2">积分充值开关</label>
-                    <div class="col-xs-4">
-                        <label class="radio-inline">
-                            <input type="radio" :value="radio.on" v-model="currency.recharge.status"> 开启
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" :value="radio.off" v-model="currency.recharge.status"> 关闭
-                        </label>
-                    </div>
-                    <div class="col-xs-6 help-block">
-                        积分充值开关
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-xs-2">积分充值规则</label>
-                    <div class="col-xs-4">
-                        <textarea class="form-control" v-model="currency.recharge.rule"></textarea>
-                    </div>
-                    <div class="col-xs-6 help-block">
-                        积分充值规则
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="control-label col-xs-2"></label>
-                    <div class="col-xs-4">
-                      <ui-button type="button" class="btn btn-primary btn-block" @click="handleCurrencySubmit"></ui-button>
-                    </div>
-                    <div class="col-xs-6 help-block"></div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-xs-2">充值选项</label>
-                    <div class="col-xs-4">
-                        <input type="text" class="form-control" placeholder="充值选项，人民币分单位" v-model="config['recharge-option']">
-                    </div>
-                    <div class="col-xs-6 help-block">
-                        充值选项，人民币分单位，多个用半角,分割
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-xs-2">兑换比例</label>
-                    <div class="col-xs-4">
-                        <input type="number" class="form-control" placeholder="兑换比例，人民币一分钱可兑换的积分数量" v-model="config['recharge-ratio']">
-                    </div>
-                    <div class="col-xs-6 help-block">
-                        兑换比例，人民币一分钱可兑换的积分数量，默认1:1
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-xs-2">单笔最小提现额度</label>
-                    <div class="col-xs-4">
-                        <input type="number" class="form-control" placeholder="单笔最小提现额度" v-model="config['cash-min']">
-                    </div>
-                    <div class="col-xs-6 help-block">
-                        用户单笔最小提现额度
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-xs-2">单笔最高提现额度</label>
-                    <div class="col-xs-4">
-                        <input type="number" class="form-control" placeholder="单笔最高提现额度" v-model="config['cash-max']">
-                    </div>
-                    <div class="col-xs-6 help-block">
-                        用户单笔最高提现额度
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-xs-2">单笔最小充值额度</label>
-                    <div class="col-xs-4">
-                        <input type="number" class="form-control" placeholder="单笔最小充值额度" v-model="config['recharge-min']">
-                    </div>
-                    <div class="col-xs-6 help-block">
-                        用户单笔最小充值额度
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-xs-2">单笔最高充值额度</label>
-                    <div class="col-xs-4">
-                        <input type="number" class="form-control" placeholder="单笔最高充值额度" v-model="config['recharge-max']">
-                    </div>
-                    <div class="col-xs-6 help-block">
-                        用户单笔最高充值额度
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-xs-2"></label>
-                    <div class="col-xs-4">
-                      <ui-button type="button" class="btn btn-primary btn-block" @click="handleSubmit"></ui-button>
-                    </div>
-                    <div class="col-xs-6 help-block"></div>
+                    <router-link :to="{ path: '', query: filters }" class="btn btn-default">确认</router-link>
                 </div>
             </div>
         </div>
+        <div class="panel-body">
+	        <!-- 流水列表 -->
+        	<table class="table table-bordered">
+		        <!-- 加载效果 -->
+		        <table-loading :loadding="loading" :colspan-num="7"></table-loading>
+				
+				<template v-if="!loading">
+					<thead>
+	        			<tr>
+	        				<th>用户ID</th>
+	        				<th>用户名</th>
+	        				<th>电话</th>
+	        				<th>邮箱</th>
+	        				<th>积分数量</th>
+	        				<th>操作</th>
+	        			</tr>
+	        		</thead>
+
+	        		<tbody>
+	        			<tr v-for="item in items">
+	        				<td>{{ item.id }}</td>
+	        				<td>{{ item.name }}</td>
+	        				<td>{{ item.phone }}</td>
+	        				<td>{{ item.email }}</td>
+	        				<td>{{ item.currency ? item.currency.sum : 0  }}</td>
+	        				<td>
+								<button class="btn btn-primary btn-sm" @click="handleAssign(item.id)">积分赋值</button>
+							</td>
+	        			</tr>
+	        		</tbody>
+				</template>
+
+        	</table>
+
+	        <ui-offset-paginator class="pagination" :total="total" :offset="offset" :limit="15">
+	          <template slot-scope="pagination">
+	            <li :class="(pagination.disabled ? 'disabled': '') + (pagination.currend ? 'active' : '')">
+	              <span v-if="pagination.disabled || pagination.currend">{{ pagination.page }}</span>
+	              <router-link v-else :to="buildRoute(pagination.offset)">{{ pagination.page }}</router-link>
+	            </li>
+	          </template>
+	        </ui-offset-paginator>
+        </div>
     </div>
 </template>
-
 <script>
     import request, {createRequestURI} from '../../../util/request';
-    export default {
-        data: () => ({
-            loading: false,
-            radio: {
-                on: true,
-                off: false
-            },
-            config:{},
-            currency: {
-                rule: null,
-                cash: { 
-                    status: true,
-                    rule: null,
-                },
-                recharge: {
-                    status: true,
-                    rule: null,
-                }
-            }
-        }),
-        methods: {
-            handleSubmit({ stopProcessing }) {
-                request.patch(
-                  createRequestURI('currency/config?type=detail'), this.config,
-                { validateStatus: status => status === 201}
-                )
-                .then(({data}) => {
-                    stopProcessing();
-                    this.$store.dispatch('alert-open', {type: 'success', message: data});
-                }).catch(({response: {data = {message: '获取失败'}} = {}}) => {
-                    stopProcessing();
-                    this.$store.dispatch('alert-open', {type: 'danger', message: data});
-                });
-            },
-            handleCurrencySubmit({ stopProcessing }) {
-                request.patch(
-                  createRequestURI('currency/config?type=basic'), this.currency,
-                { validateStatus: status => status === 201}
-                )
-                .then(({data}) => {
-                    stopProcessing();
-                    this.$store.dispatch('alert-open', {type: 'success', message: data});
-                }).catch(({response: {data = {message: '更新失败'}} = {}}) => {
-                    stopProcessing();
-                    this.$store.dispatch('alert-open', {type: 'danger', message: data});
-                });
-            }
-        },
-        created() {
-            this.loading = true;
-            request.get(createRequestURI('currency/config'), {
-                validateStatus: status => status === 200,
-            }).then(({data: { basic_conf, detail_conf }}) => {
-                this.loading = false;
-                let conf = this.config;
-                let curr = this.currency;
-                // 基础配置
-                curr.rule = basic_conf['rule'];
-                curr.cash.rule = basic_conf['cash.rule'];
-                curr.cash.status = basic_conf['cash.status'];
-                curr.recharge.rule = basic_conf['recharge.rule'];
-                curr.recharge.status = basic_conf['recharge.status'];
-                // 详细配置
-                conf['cash-min'] = detail_conf['cash-min'];
-                conf['cash-max'] = detail_conf['cash-max'];
-                conf['recharge-min'] = detail_conf['recharge-min'];
-                conf['recharge-max'] = detail_conf['recharge-max'];
-                conf['recharge-option'] = detail_conf['recharge-options'];
-                conf['recharge-ratio'] = detail_conf['recharge-ratio'];
 
-            }).catch(({response: {data = {message: '获取失败'}} = {}}) => {
-                this.loading = false;
-                this.$store.dispatch('alert-open', {type: 'danger', message: data});
-            });
-        }
-    };
+	export default {
+		data() {
+			return {
+				total: 0,
+				items: [],
+				filters: {
+					user: '',
+					name: '',
+					phone: '',
+					email: '',
+				},
+				loading: true,
+			}
+		},
+		watch: {
+			'$route': function ({ query }) {
+		      this.total = 0;
+		      this.getList(query);
+		    }
+		},
+		computed: {
+		    offset () {
+		      const { query: { offset = 0 } } = this.$route;
+
+		      return parseInt(offset);
+		    },
+		},
+		methods: {
+			getList(query = {}) {
+				this.loading = true;
+                request.get(createRequestURI('currency'),{
+                	validateStatus: status => status === 200, params: { 
+                		...query, limit: 15 
+                	}}
+                )
+                .then(({data, headers: { 'x-total': total }}) => {
+                	this.items = data;
+                	this.total = parseInt(total);
+                	this.loading = false;
+                }).catch(({response: {data = {message: '获取失败'}} = {}}) => {
+                	this.loading = false;
+                    this.$store.dispatch('alert-open', {type: 'danger', message: data});
+                });
+			},
+			handleAssign(uid) {
+				var num = prompt('请填写输入赋值数量(正整数增加,负整数减少)');
+				if (num === null) {
+					return;
+				}
+				if (! num) {
+					this.$store.dispatch('alert-open', {type: 'danger', message: { message: '数量类型错误'}});
+					return;
+				}
+                request.post(createRequestURI('currency/add'),
+                	{user_id: uid, num: num},
+                	{validateStatus: status => status === 200}
+                )
+                .then(({ data }) => {
+                	this.items.forEach( function(element, index) {
+                		if (element.id == uid) element.currency = data.currency;
+                	});
+                	this.$store.dispatch('alert-open', {type: 'success', message: data});
+                }).catch(({response: {data = {message: '获取失败'}} = {}}) => {
+                    this.$store.dispatch('alert-open', {type: 'danger', message: data});
+                });
+			},
+		    buildRoute(offset) {
+		       const { query } = this.$route;
+
+		      return { path: '/currency', query: { ...query, offset } };
+		    },
+		},
+		created() {
+			this.getList(this.$route.query);
+		}
+	}
 </script>
