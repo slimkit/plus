@@ -179,6 +179,7 @@ class CheckInController extends Controller
             $user->checkinLogs()->save($log);
 
             // Save charge and attach balance.
+            $order->state = 1;
             $order->save();
             $user->currency()->firstOrCreate(['type' => 1], ['sum' => 0])->increment('sum', $order->amount);
 
