@@ -1,7 +1,7 @@
 <template>
     <div class="panel panel-default">
 
-        <div class="panel-heading">积分基础配置</div>
+        <div class="panel-heading">配置</div>
         
         <div class="panel-body">
             

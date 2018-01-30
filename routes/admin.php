@@ -373,6 +373,7 @@ Route::middleware('auth:web')
 
         Route::prefix('/cash')->group(function () {
             Route::get('', 'CurrencyCashController@list');
+            Route::patch('/{order}/audit', 'CurrencyCashController@audit');
         });
     });
 });

@@ -42,7 +42,7 @@
 	        <!-- 流水列表 -->
         	<table class="table table-bordered">
 		        <!-- 加载效果 -->
-		        <table-loading :loadding="loading" :colspan-num="6"></table-loading>
+		        <table-loading :loadding="loading" :colspan-num="7"></table-loading>
 				
 				<template v-if="!loading">
 					<thead>
