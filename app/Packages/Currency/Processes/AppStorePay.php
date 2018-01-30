@@ -50,7 +50,7 @@ class AppStorePay extends Process
      */
     public function verifyReceipt(array $receipt, CurrencyOrderModel $currencyOrder): bool
     {
-        $initialData = ['receipt-data' => $receipt, 'password' => $currencyOrder->id];
+        $initialData = ['receipt-data' => $receipt];
         $body = json_encode($initialData);
 
         try {
