@@ -22,8 +22,8 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use DB;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Models\WalletOrder;
+use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Repository\CurrencyConfig;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\CurrencyOrder as OrderModel;
@@ -71,7 +71,7 @@ class CurrencyCashController extends Controller
 
     /**
      * 审核积分提现.
-     * 
+     *
      * @param  Request        $request
      * @param  OrderModel     $order
      * @param  CurrencyConfig $config
@@ -91,15 +91,14 @@ class CurrencyCashController extends Controller
         }
 
         DB::transaction(function () use ($mark, $state, $order, $config) {
-            
             $order->state = $state;
             $order->save();
 
             $currencyConfig = $config->get();
             if ($state === 1) {
                 $order->user->sendNotifyMessage(
-                    'user-currency:cash', 
-                    '积分提现申请审核通过', 
+                    'user-currency:cash',
+                    '积分提现申请审核通过',
                     ['order' => $order]
                 );
                 // 钱包变更记录.
@@ -123,7 +122,7 @@ class CurrencyCashController extends Controller
             // 处理退还积分
             if ($state === 2) {
                 $order->user->sendNotifyMessage(
-                    'user-currency:cash', 
+                    'user-currency:cash',
                     sprintf('积分提现申请审核通过,原因：%s', $mark),
                     ['order' => $order]
                 );
