@@ -37,7 +37,7 @@ class AppStorePay extends Process
 
     public function __construct($sandbox = null)
     {
-        $this->sandbox =  (bool) $sandbox;
+        $this->sandbox = (bool) $sandbox;
     }
 
     /**
