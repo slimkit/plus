@@ -116,15 +116,12 @@ class CurrencyController extends Controller
     public function list(Request $request, OrderModel $orderModel)
     {
         $limit = $request->query('limit', 15);
-        $after = $request->query('after');
+        $offset = $request->query('offset', 0);
         $user = (int) $request->query('user');
         $name = $request->query('name');
         $action = $request->query('action');
 
-        $orders = $orderModel->when($after, function ($query) use ($after) {
-            return $query->where('id', '<', $after);
-        })
-        ->when($user, function ($query) use ($user) {
+        $query = $orderModel->when($user, function ($query) use ($user) {
             return $query->where('user_id', $user);
         })
         ->when($name, function ($query) use ($name) {
@@ -134,13 +131,16 @@ class CurrencyController extends Controller
         })
         ->when(in_array($action, [1, -1]), function ($query) use ($action) {
             return $query->where('type', $action);
-        })
-        ->with('user')
+        });
+
+        $count = $query->count();
+        $orders = $query->with('user')
         ->limit($limit)
+        ->offset($offset)
         ->orderBy('id', 'desc')
         ->get();
 
-        return response()->json($orders, 200);
+        return response()->json($orders, 200, ['x-total' => $count]);
     }
 
     /**
