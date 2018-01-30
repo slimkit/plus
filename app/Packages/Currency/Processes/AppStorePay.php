@@ -35,6 +35,11 @@ class AppStorePay extends Process
      */
     private $url = 'https://buy.itunes.apple.com/verifyReceipt';
 
+    public function __construct(boolen $sandbox = true)
+    {
+        $this->sandbox = $sandbox;
+    }
+
     /**
      * 验证票据.
      *
@@ -66,14 +71,13 @@ class AppStorePay extends Process
      * 发送票据AppStore进行检验.
      *
      * @param $body
-     * @param bool $sandbox
      * @return mixed|\Psr\Http\Message\ResponseInterface
      */
-    protected function sendReceiptToAppStore($body, $sandbox = true)
+    protected function sendReceiptToAppStore($body)
     {
         $http = new Client();
 
-        $verifyUrl = $sandbox ? $this->testUrl : $this->url;
+        $verifyUrl = $this->sandbox ? $this->testUrl : $this->url;
 
         $result = $http->request('POST', $verifyUrl, [], $body);
 
