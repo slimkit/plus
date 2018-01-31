@@ -70,7 +70,7 @@ class CurrencyController extends Controller
                 $config = CommonConfig::where('name', sprintf('currency:%s', $key))
                 ->where('namespace', 'currency')
                 ->first();
-                $config->value = $value;
+                $config->value = ($key == 'recharge-option') ? str_replace('，', ',', $value) : $value;
                 $config->save();
             }
             $this->rep->flush();
