@@ -564,10 +564,10 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             $api->post('/purchases/{node}', API2\PurchaseController::class.'@payByCurrency');
 
             // 调用IAP发起充值
-            $api->post('/recharge/apple-pay', API2\CurrencyApplePayController::class.'@store');
+            $api->post('/recharge/apple-iap', API2\CurrencyApplePayController::class.'@store');
 
             // IAP支付完成后的验证
-            $api->post('/orders/{order}/apple-pay/verify', API2\CurrencyApplePayController::class.'@retrieve');
+            $api->post('/orders/{order}/apple-iap/verify', API2\CurrencyApplePayController::class.'@retrieve');
         });
     });
 });
