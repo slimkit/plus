@@ -84,7 +84,7 @@
                 <div class="form-group">
                     <label class="control-label col-xs-2">兑换比例</label>
                     <div class="col-xs-4">
-                        <input type="number" class="form-control" placeholder="兑换比例，人民币一分钱可兑换的积分数量" v-model="config['recharge-ratio']">
+                        <input type="number" class="form-control" placeholder="兑换比例，人民币一分钱可兑换的积分数量" v-model="config['recharge-ratio']" readonly>
                     </div>
                     <div class="col-xs-6 help-block">
                         兑换比例，人民币一分钱可兑换的积分数量，默认1:1

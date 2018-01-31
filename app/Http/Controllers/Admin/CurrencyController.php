@@ -223,7 +223,9 @@ class CurrencyController extends Controller
 
         $num = (int) $request->input('num');
 
-        $currency = User::findOrFail($request->input('user_id'))->currency()->firstOrCreate(['type' => 1], ['sum' => 0]);
+        $currency = User::findOrFail($request->input('user_id'))
+        ->currency()
+        ->firstOrCreate(['type' => 1], ['sum' => 0]);
 
         if ($num < 0 && $currency->sum < abs($num)) {
             return response()->json(['message' => '该用户积分不足不能进行减少操作'], 403);
