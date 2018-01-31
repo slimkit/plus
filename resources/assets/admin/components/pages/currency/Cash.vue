@@ -41,7 +41,6 @@
                         <th>用户ID</th>
                         <th>用户名</th>
                         <th>积分</th>
-                        <th>余额</th>
                         <th>状态</th>
                         <th>时间</th>
                         <th>操作</th>
@@ -52,7 +51,6 @@
                         <td>{{ item.owner_id }}</td>
                         <td>{{ item.user ? item.user.name : '未知' }}</td>
                         <td>{{ item.amount }}</td>
-                        <td>{{ item.user ? (item.user.currency ? item.user.currency.sum : 0) : 0 }}</td>
                         <td>{{ item.state | state }}</td>
                         <td>{{ item.created_at | localDate }}</td>
                         <td>
