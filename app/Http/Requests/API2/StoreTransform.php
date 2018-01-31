@@ -44,7 +44,7 @@ class StoreTransform extends FormRequest
      */
     public function rules(CurrencyConfig $config)
     {
-        $currency = $this->user()->newWallet()->firstOrCreate([], ['balance' => 0]);
+        $currency = $this->user()->newWallet()->firstOrCreate([], ['balance' => 0, 'total_income' => 0, 'total_expenses' => 0]);
 
         return [
             'amount' => 'required|int|min:100|max:'.$currency->balance,
