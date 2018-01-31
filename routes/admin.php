@@ -378,4 +378,9 @@ Route::middleware('auth:web')
             Route::patch('/{order}/audit', 'CurrencyCashController@audit');
         });
     });
+
+    Route::prefix('new-wallet')->group(function () {
+        Route::get('/statistics', 'NewWalletController@statistics');
+        Route::get('/waters', 'NewWalletController@waters');
+    });
 });
