@@ -32,7 +32,7 @@ class StoreCurrencyCash extends FormRequest
      */
     public function authorize()
     {
-        return $this->user();
+        return $this->user() && config('currency.cash.status', true);
     }
 
     /**
