@@ -76,6 +76,7 @@ export default {
         }
     },
     methods: {
+        
         handleAudit(id, state) {
             var mark = '';
             if (state == -1) {
