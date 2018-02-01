@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Http\Requests\API2\StoreCurrencyRecharge;
 use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 use Zhiyi\Plus\Packages\Currency\Processes\AppStorePay as AppStorePayProcess;
@@ -68,5 +69,19 @@ class CurrencyApplePayController extends Controller
         }
 
         return response()->json(['message' => ['操作失败']], 500);
+    }
+
+    /**
+     * apple商品列表.
+     *
+     * @param CommonConfig $config
+     * @return mixed
+     * @author BS <414606094@qq.com>
+     */
+    public function productList(CommonConfig $config)
+    {
+        $products = $config->where('name', 'product')->where('namespace', 'apple')->first() ? json_decode($cash->value) : [];
+
+        return response()->json($products);
     }
 }

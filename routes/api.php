@@ -568,6 +568,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // IAP支付完成后的验证
             $api->post('/orders/{order}/apple-iap/verify', API2\CurrencyApplePayController::class.'@retrieve');
+
+            // IAP商品列表
+            $api->get('/apple-iap/products', API2\CurrencyApplePayController::class.'@productList');
         });
     });
 });
