@@ -31,6 +31,18 @@
 						</div>
 						<div class="col-md-9 help-block">提现开启与关闭</div>
 					</div>
+                    <div class="form-group">
+                        <label for="" class="col-md-1 control-label">转换积分</label>
+                        <div class="col-md-2">
+                            <label class="radio-inline">
+                              <input type="radio" name="transform" :value="radio.on" v-model="walet.transform"> 开启
+                            </label>
+                            <label class="radio-inline">
+                              <input type="radio" name="transform" :value="radio.off" v-model="walet.transform"> 关闭
+                            </label>
+                        </div>
+                        <div class="col-md-9 help-block">钱包余额转换积分的开关</div>
+                    </div>
 					<div class="form-group">
 						<label for="" class="col-md-1 control-label"></label>
 						<div class="col-md-11">
@@ -55,6 +67,7 @@ export default {
       walet: {
         recharge: true,
         cash: true,
+        transform: true,
       }
 	}),
 	methods: {
@@ -64,6 +77,7 @@ export default {
         }).then(({ data = {} }) => {
           this.loading = false;
           this.walet.recharge = data.recharge.status;
+          this.walet.transform = data.transform.status;
           this.walet.cash = data.cash.status;
         }).catch(({ response: { data = { message: '加载钱包开关失败' } } = {} }) => {
           this.loading = false;
