@@ -126,10 +126,13 @@
 			},
 			handleAssign(uid) {
 				var num = prompt('请填写输入赋值数量(正整数增加,负整数减少)');
+				// 点击取消.
 				if (num === null) {
 					return;
 				}
-				if (! num) {
+				var reg = /^-?\d+$/;
+				// 验证参数正确性.
+				if (! num || !reg.test(num)) {
 					this.$store.dispatch('alert-open', {type: 'danger', message: { message: '数量类型错误'}});
 					return;
 				}

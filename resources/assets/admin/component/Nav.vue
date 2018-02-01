@@ -59,10 +59,10 @@
       <span class="glyphicon glyphicon-cog __icon"></span>
       清除缓存
     </a>
-    <router-link class="list-group-item __button" to="/gold" active-class="active" >
+<!--     <router-link class="list-group-item __button" to="/gold" active-class="active" >
       <span class="glyphicon glyphicon-usd __icon"></span>
       金币设置
-    </router-link>
+    </router-link> -->
     <!-- CDN -->
     <router-link class="list-group-item __button" to="/currency" active-class="active">
         <span class="glyphicon glyphicon-asterisk __icon"></span>
