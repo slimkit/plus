@@ -34,24 +34,6 @@ export default {
             loading: true,
         }
     },
-    filters: {
-        state(val) {
-            switch (val) {
-                case 0:
-                    return '待审核';
-                    break;
-                case 1:
-                    return '通过';
-                    break;
-                case -1:
-                    return '驳回';
-                    break;
-                default:
-                    return '未知';
-                    break;
-            }
-        }
-    },
     watch: {
         '$route': function ({query}) {
             this.total = 0;

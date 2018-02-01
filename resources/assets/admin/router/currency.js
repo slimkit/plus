@@ -1,4 +1,4 @@
-import Main from '../components/modules/Currency/Main';
+import Main from '../components/modules/currency/Main';
 import Config from '../components/pages/currency/Config';
 import Statistics from '../components/pages/currency/Statistics';
 import Water from '../components/pages/currency/Water';
