@@ -57,11 +57,11 @@ class StoreCurrencyCash extends FormRequest
      * @return array
      * @author BS <414606094@qq.com>
      */
-    public function messages()
+    public function messages(CurrencyConfig $config)
     {
         return [
             'amount.required' => '请选择需要提取的积分',
-            'amount.min' => '提取积分不合法',
+            'amount.min' => '最低提现金额：'.$config->get()['cash-min'],
             'amount.max' => '账户积分余额不足或超出最大提现限制',
         ];
     }
