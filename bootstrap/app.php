@@ -15,6 +15,8 @@ $app = new Zhiyi\Plus\Application(
     realpath(__DIR__.'/../')
 );
 
+
+
 /*
 |--------------------------------------------------------------------------
 | Bind Important Interfaces
