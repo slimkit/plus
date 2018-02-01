@@ -24,7 +24,7 @@
 </template>
 <script>
 import request, {createRequestURI} from '../../../util/request';
-import components from '../../modules/Currency';
+import components from '../../modules/currenc';
 export default {
     components: components,
     data() {
