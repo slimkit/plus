@@ -10,7 +10,7 @@
         </div>
         <div class="panel-body">
             <!-- list -->
-            <water-list :items="items" :loading="loading" :colspan-num="1"></water-list>
+            <water-list :items="items" :loading="loading"></water-list>
             <!-- paginator -->
             <ui-offset-paginator class="pagination" :total="total" :offset="offset" :limit="15">
                 <template slot-scope="pagination">

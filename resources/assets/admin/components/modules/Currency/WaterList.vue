@@ -2,7 +2,7 @@
     <ui-table>
         <!-- table loading -->
         <template slot="table-loading">
-            <table-loading :loadding="loading" :colspan-num="colspanNum"></table-loading>
+            <table-loading :loadding="loading" :colspan-num="7"></table-loading>
         </template>
         <template v-if="!loading">
             <!-- table header -->
@@ -44,10 +44,6 @@
                 type: Boolean,
                 default: true,
             },
-            colspanNum: {
-                type: Number,
-                default: 0
-            }
         },
         filters: {
             type(val) {
