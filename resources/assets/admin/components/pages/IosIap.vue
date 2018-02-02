@@ -6,20 +6,26 @@
 			<div class="panel-heading">苹果IAP设置</div>
 			<div class="panel-heading">
 				<div class="alert alert-success" style="margin-bottom:0;padding:4px;">
-					该设置仅对IOS端有效，商品添加，注意：添加的商品ID不能重复。
+					1、IOS端需要提交到APPStore审核时，需要开启该项开关。<br/>
+					2、开启只允许IAP开关时，IOS端将关闭钱包转积分和积分提现到钱包功能
 				</div>
 			</div>
 			<div class="panel-heading">
-				<div class="form-control">
-					<label for="">IOS APP 内购买：</label>
+				<div>
+					<label for="">IAP：</label>
 	                <label class="radio-inline">
 	                  <input type="radio" :value="radio.on" v-model="status"> 开启
 	                </label>
 	                <label class="radio-inline">
 	                  <input type="radio" :value="radio.off" v-model="status"> 关闭
 	                </label>
-	                <button class="btn btn-default btn-xs" @click="handleStatus">确认</button>
 				</div>
+				<br/>
+				<div>
+					<label for="">规则：</label>
+					<textarea class="form-control" v-model="rule"></textarea>
+				</div>
+				<button class="btn btn-default" @click="handleSubmit">确认</button>
 			</div>
 			<div class="panel-body">
 				<table class="table table-bordered">
@@ -70,6 +76,7 @@ export default {
 		return {
 			items: [],
 			status: null,
+			rule: '',
 			radio: {
 				on: true,
 				off: false,
@@ -103,10 +110,10 @@ export default {
                 this.$store.dispatch('alert-open', {type: 'danger', message: data});
             });
         },		
-        handleStatus() {
+        handleSubmit() {
             request.patch(
             	createRequestURI('currency/apple/config'), 
-            	{ IAP_only:this.status },
+            	{ IAP_only:this.status, rule: this.rule },
             	{ validateStatus: status => status === 201 }
             ).then(({ data })=> {
                 this.$store.dispatch('alert-open', {type: 'success', message: data});
