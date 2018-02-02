@@ -37,7 +37,7 @@ class CurrencyAppleController extends Controller
     {
         $config['IAP_only'] = config('currency.recharge.IAP.only', true);
         $config['rule'] = config('currecy.recharge.IAP.rule', '');
-        
+
         return response()->json($config, 200);
     }
 
