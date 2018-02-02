@@ -377,6 +377,15 @@ Route::middleware('auth:web')
             Route::get('', 'CurrencyCashController@list');
             Route::patch('/{order}/audit', 'CurrencyCashController@audit');
         });
+
+        Route::prefix('/apple')->group(function () {
+            Route::get('/config', 'CurrencyAppleController@getConfig');
+            Route::patch('/config', 'CurrencyAppleController@setConfig');
+
+            Route::get('/products', 'CurrencyAppleController@getProducts');
+            Route::post('/products', 'CurrencyAppleController@addProduct');
+            Route::delete('/products', 'CurrencyAppleController@delProduct');
+        });
     });
 
     Route::prefix('new-wallet')->group(function () {
