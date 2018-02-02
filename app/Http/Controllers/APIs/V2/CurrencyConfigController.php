@@ -39,6 +39,7 @@ class CurrencyConfigController extends Controller
             'recharge-rule' => config('currency.recharge.rule', ''),
             'cash' => ($cash = CommonConfig::where('name', 'cash')->where('namespace', 'wallet')->first()) ? json_decode($cash->value) : [],
             'cash-rule' => config('currency.cash.rule', ''),
+            'apple-IAP-rule' => config('currency.recharge.IAP.rule', ''),
             'recharge-type' => ($recharge_type = CommonConfig::where('name', 'wallet:recharge-type')->where('namespace', 'common')->first()) ? json_decode($recharge_type->value) : [],
         ]);
 

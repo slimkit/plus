@@ -35,7 +35,7 @@ class CurrencyAppleController extends Controller
      */
     public function getConfig()
     {
-        $config['IAP_only'] = config('currency.recharge.IAP_only', true);
+        $config['IAP_only'] = config('currency.recharge.IAP.only', true);
 
         return response()->json($config, 200);
     }
@@ -52,7 +52,7 @@ class CurrencyAppleController extends Controller
         $IAP_config = (bool) $request->input('IAP_only');
 
         $config = $configuration->getConfiguration();
-        $config->set('currency.recharge.IAP_only', $IAP_config);
+        $config->set('currency.recharge.IAP.only', $IAP_config);
         $configuration->save($config);
 
         return response()->json(['message' => ['保存成功']], 201);
