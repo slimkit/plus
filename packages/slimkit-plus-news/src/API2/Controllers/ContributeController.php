@@ -126,7 +126,7 @@ class ContributeController extends Controller
             return $response->json(['message' => ['未认证用户不可投稿']], 422);
         }
 
-        $map = $request->only(['title', 'content', 'subject']);
+        $map = $request->only(['title', 'content', 'subject', 'text_content']);
         $map['from'] = $request->input('from') ?: '原创';
         $map['author'] = $request->input('author') ?: $user->name;
         $map['storage'] = $request->input('image');
@@ -234,9 +234,10 @@ class ContributeController extends Controller
             'from' => 'nullable|string',
             'author' => 'nullable|string',
             'image' => 'nullable|int',
+            'text_content' => 'nullable|string',
         ]);
 
-        $map = $request->only(['title', 'subject', 'content', 'from', 'author']);
+        $map = $request->only(['title', 'subject', 'content', 'from', 'author', 'text_content']);
         $image = $this->app->call(function (FileWithModel $fileWith) use ($request) {
             $image = $request->input('image');
 
