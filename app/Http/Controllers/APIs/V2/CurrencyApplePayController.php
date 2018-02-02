@@ -80,7 +80,7 @@ class CurrencyApplePayController extends Controller
      */
     public function productList(CommonConfig $config)
     {
-        $products = $config->where('name', 'product')->where('namespace', 'apple')->first() ? json_decode($cash->value) : [];
+        $products = ($datas = $config->where('name', 'product')->where('namespace', 'apple')->first()) ? json_decode($cash->value) : [];
 
         return response()->json($products);
     }
