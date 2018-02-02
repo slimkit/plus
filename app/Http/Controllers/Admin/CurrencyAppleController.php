@@ -22,7 +22,6 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\CommonConfig;
-use Zhiyi\Plus\Support\Configuration;
 use Illuminate\Contracts\Config\Repository;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
@@ -83,7 +82,7 @@ class CurrencyAppleController extends Controller
         $addProductInfo = $request->only('product_id', 'name', 'apple_id', 'amount');
         $datas = $configModel->where('name', 'product')->where('namespace', 'apple')->first();
 
-        if (!$datas) {
+        if (! $datas) {
             CommonConfig::create(['name' => 'product', 'namespace' => 'apple', 'value' => json_encode([$addProductInfo])]);
 
             return response()->json(['message' => ['添加成功']], 201);
