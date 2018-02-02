@@ -54,7 +54,7 @@ class NewsController extends Controller
             return $query->where('id', '<', $after);
         })->when($key, function ($query) use ($key) {
             return $query->where('title', 'like', '%'.$key.'%');
-        })->take($limit)->select(['id', 'title', 'subject', 'created_at', 'updated_at', 'storage', 'cate_id', 'from', 'author', 'user_id', 'hits'])
+        })->take($limit)->select(['id', 'title', 'subject', 'created_at', 'updated_at', 'storage', 'cate_id', 'from', 'author', 'user_id', 'hits', 'text_content'])
         ->orderBy('id', 'desc')->get();
 
         $datas = $newsModel->getConnection()->transaction(function () use ($news, $user) {
@@ -88,7 +88,7 @@ class NewsController extends Controller
         ->when($cate, function ($query) use ($cate) {
             return $query->where('news.cate_id', $cate);
         })
-        ->select(['news.id', 'news.title', 'news.subject', 'news.created_at', 'news.updated_at', 'news.storage', 'news.cate_id', 'news.from', 'news.author', 'news.user_id', 'news.hits'])
+        ->select(['news.id', 'news.title', 'news.subject', 'news.created_at', 'news.updated_at', 'news.storage', 'news.cate_id', 'news.from', 'news.author', 'news.user_id', 'news.hits', 'news.text_content'])
         ->orderBy('id', 'desc')->get();
 
         return response()->json($newsModel->getConnection()->transaction(function () use ($news, $user) {
@@ -149,7 +149,7 @@ class NewsController extends Controller
                     });
                 });
             })
-            ->select(['id', 'title', 'subject', 'created_at', 'updated_at', 'storage', 'cate_id', 'from', 'author', 'user_id', 'hits'])
+            ->select(['id', 'title', 'subject', 'created_at', 'updated_at', 'storage', 'cate_id', 'from', 'author', 'user_id', 'hits', 'text_content'])
             ->where('audit_status', 0)
             ->where('id', '!=', $news->id)
             ->orderBy('id', 'desc')
