@@ -52,6 +52,11 @@
               <router-link to="/setting/sensitives" tag="li" active-class="active">
                 <a href="#">敏感词</a>
               </router-link>
+              
+              <!-- IOS IAP 设置 -->
+              <router-link to="/setting/ios-iap" tag="li" active-class="active">
+                <a href="#">IOS IAP</a>
+              </router-link>
 
               <router-link to="/setting/upload-setting" tag="li" active-class="active">
                 <a href="#">上传设置</a>
