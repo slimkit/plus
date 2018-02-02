@@ -1,13 +1,12 @@
 <template>
 <div class="clearfix">
     <div class="container-fluid">
+    	<module-alert></module-alert>
 		<div class="panel panel-default">
 			<div class="panel-heading">苹果IAP设置</div>
 			<div class="panel-heading">
 				<div class="alert alert-success" style="margin-bottom:0;padding:4px;">
-					1、该设置仅对IOS端有效。<br/>
-					3、商品添加，注意：添加的商品ID不能重复。<br>
-					2、编辑商品信息的时候，直接修改输入框内容，失去焦点后程序会自动提交。
+					该设置仅对IOS端有效，商品添加，注意：添加的商品ID不能重复。
 				</div>
 			</div>
 			<div class="panel-heading">
@@ -19,7 +18,7 @@
 	                <label class="radio-inline">
 	                  <input type="radio" :value="radio.off" v-model="status"> 关闭
 	                </label>
-	                <button class="btn btn-default btn-xs">确认</button>
+	                <button class="btn btn-default btn-xs" @click="handleStatus">确认</button>
 				</div>
 			</div>
 			<div class="panel-body">
@@ -28,26 +27,26 @@
 						<tr>
 							<th>#ID</th>
 							<th>名称</th>
-							<th>金额</th>
-							<th>appleId</th>
+							<th>金额(分)</th>
+							<th>apple id</th>
 							<th>操作</th>
 						</tr>		
 					</thead>
 					<tbody>
-						<tr>
-							<td><input type="number" value="1" class="form-control" @change="handleEdit"></td>
-							<td><input type="text" value="积分" class="form-control" @change="handleEdit"></td>
-							<td><input type="number" value="50" class="form-control" @change="handleEdit"></td>
-							<td><input type="text" value="id1233" class="form-control" @change="handleEdit"></td>
+						<tr v-for="item in items">
+							<td>{{ item.product_id }}</td>
+							<td>{{ item.name }}</td>
+							<td>{{ item.amount }}</td>
+							<td>{{ item.apple_id }}</td>
 							<td>
-								<button class="btn btn-danger btn-sm" @click="handleDelete">删除</button>
+								<button class="btn btn-danger btn-sm" @click="handleDelete(item.product_id)">删除</button>
 							</td>
 						</tr>
 						<tr>
-							<td><input type="number" v-model="good.id" class="form-control" placeholder="商品ID"></td>
-							<td><input type="text" v-model="good.name" class="form-control" placeholder="商品名称"></td>
-							<td><input type="number" v-model="good.price" class="form-control" placeholder="商品金额(分)"></td>
-							<td><input type="text" v-model="good.appid" class="form-control" placeholder="APPID"></td>
+							<td><input type="number" v-model="product.product_id" class="form-control" placeholder="产品ID"></td>
+							<td><input type="text" v-model="product.name" class="form-control" placeholder="产品名"></td>
+							<td><input type="number" v-model="product.amount" class="form-control" placeholder="产品定价(分)"></td>
+							<td><input type="text" v-model="product.apple_id" class="form-control" placeholder="apple id"></td>
 							<td>
 								<button class="btn btn-success btn-sm" @click="handleCreate">添加</button>
 							</td>
@@ -60,38 +59,102 @@
 </div>
 </template>
 <script>
+import Alert from '../modules/Alert';
+import request, { createRequestURI } from '../../util/request';
+
 export default {
+    components: {
+	    [Alert.name]: Alert,
+    },
 	data() {
 		return {
-			status: true,
+			items: [],
+			status: null,
 			radio: {
 				on: true,
 				off: false,
 			},
-			good: {
-				id: '',
+			product: {
+				product_id: '',
 				name: '',
-				price: '',
-				appid: '',
+				amount: '',
+				apple_id: '',
 			}
 		}
 	},
 	methods: {
-		handleStaus() {
-
+        getConfig() {
+            request.get(createRequestURI('currency/apple/config'), {
+            	validateStatus: status => status === 200
+            })
+            .then(({data}) => {
+                this.status = data.IAP_only;
+            }).catch(({response: {data = {message: '获取失败'}} = {}}) => {
+                this.$store.dispatch('alert-open', {type: 'danger', message: data});
+            });
+        },
+        getProducts() {
+            request.get(createRequestURI('currency/apple/products'), {
+            	validateStatus: status => status === 200
+            })
+            .then(({data}) => {
+                this.items = data;
+            }).catch(({response: {data = {message: '获取失败'}} = {}}) => {
+                this.$store.dispatch('alert-open', {type: 'danger', message: data});
+            });
+        },		
+        handleStatus() {
+            request.patch(
+            	createRequestURI('currency/apple/config'), 
+            	{ IAP_only:this.status },
+            	{ validateStatus: status => status === 201 }
+            ).then(({ data })=> {
+                this.$store.dispatch('alert-open', {type: 'success', message: data});
+            }).catch(({response: {data = {message: '获取失败'}} = {}}) => {
+                this.$store.dispatch('alert-open', {type: 'danger', message: data});
+            });
 		},
-		handleDelete() {
-
+		handleDelete(id) {
+			if (confirm('确定要删除嘛？')) {
+	            request.delete(
+	            	createRequestURI(`currency/apple/products?product_id=${id}`),
+	            	{validateStatus: status => status === 204}
+	            )
+	            .then(response => {
+	            	this.getProducts();
+	                this.$store.dispatch('alert-open', {type: 'success', message: { message: '删除成功'} });
+	            }).catch(({response: {data = {message: '添加失败'}} = {}}) => {
+	                this.$store.dispatch('alert-open', {type: 'danger', message: data});
+	            });
+			}
 		},
 		handleCreate() {
-			console.log(this.good);
+            request.post(createRequestURI('currency/apple/products'),
+            	{ ...this.product }, 
+            	{validateStatus: status => status === 201}
+            )
+            .then(({data}) => {
+            	this.getProducts();
+                this.$store.dispatch('alert-open', {type: 'success', message: data});
+            }).catch(({response: {data = {message: '添加失败'}} = {}}) => {
+                this.$store.dispatch('alert-open', {type: 'danger', message: data});
+            });
 		},
-		handleEdit(item) {
-
+		handleEdit(id, name, value) {
+            request.post(createRequestURI('currency/apple/products'),
+            	{ ...this.product }, 
+            	{validateStatus: status => status === 201}
+            )
+            .then(({data}) => {
+                this.$store.dispatch('alert-open', {type: 'success', message: data});
+            }).catch(({response: {data = {message: '添加失败'}} = {}}) => {
+                this.$store.dispatch('alert-open', {type: 'danger', message: data});
+            });
 		}
 	},
 	created() {
-
+		this.getConfig();
+		this.getProducts();
 	}
 }
 </script>

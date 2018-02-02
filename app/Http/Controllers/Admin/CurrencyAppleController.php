@@ -22,7 +22,7 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\CommonConfig;
-use Illuminate\Contracts\Config\Repository;
+use Zhiyi\Plus\Support\Configuration;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class CurrencyAppleController extends Controller
@@ -47,10 +47,13 @@ class CurrencyAppleController extends Controller
      * @param Repository $config
      * @author BS <414606094@qq.com>
      */
-    public function setConfig(Request $request, Repository $config)
+    public function setConfig(Request $request, Configuration $configuration)
     {
         $IAP_config = (bool) $request->input('IAP_only');
+
+        $config = $configuration->getConfiguration();
         $config->set('currency.recharge.IAP_only', $IAP_config);
+        $configuration->save($config);
 
         return response()->json(['message' => ['保存成功']], 201);
     }
@@ -109,6 +112,7 @@ class CurrencyAppleController extends Controller
     public function delProduct(Request $request, CommonConfig $configModel)
     {
         $datas = $configModel->where('name', 'product')->where('namespace', 'apple')->first();
+
         if (! $datas) {
             return response()->json(['message' => ['商品不存在']], 404);
         }
