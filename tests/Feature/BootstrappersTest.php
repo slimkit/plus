@@ -30,7 +30,7 @@ class ExampleTest extends TestCase
     public function testGetBootstrappers()
     {
         $response = $this->getJson('/api/v2/bootstrappers');
-        
+
         $response->assertStatus(200);
 
         $this->assertArrayHasKey('server:version', $response->json(), '版本号不存在');
@@ -38,9 +38,9 @@ class ExampleTest extends TestCase
         $this->assertArrayHasKey('wallet:cash', $response->json(), '钱包提现开关不存在');
 
         $this->assertArrayHasKey('wallet:recharge', $response->json(), '钱包充值开关不存在');
-   
+
         $this->assertArrayHasKey('currency:cash', $response->json(), '积分提现开关不存在');
-   
+
         $this->assertArrayHasKey('wallet:transform', $response->json(), '钱包转换积分开关不存在');
 
         $this->assertArrayHasKey('currency:recharge', $response->json(), '积分充值相关选项不存在');
@@ -77,6 +77,6 @@ class ExampleTest extends TestCase
 
         $this->assertArrayHasKey('content', $response->json()['registerSettings'], '服务条款内容不存在');
 
-        $this->assertArrayHasKey('type', $response->json()['registerSettings'], '不知道啥玩意不存在');// 文档缺失该项 
+        $this->assertArrayHasKey('type', $response->json()['registerSettings'], '不知道啥玩意不存在'); // 文档缺失该项
     }
 }
