@@ -511,6 +511,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             //批量注册环信用户
             $api->post('/register', EaseMobIm\EaseMobController::class.'@createUsers');
 
+            // 为未注册环信用户注册环信（兼容老用户）
+            $api->post('/register-old-users', EaseMobIm\EaseMobController::class.'@registerOldUsers');
+
             // 重置用户环信密码
             $api->put('/password', EaseMobIm\EaseMobController::class.'@resetPassword');
 
