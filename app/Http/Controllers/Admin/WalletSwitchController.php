@@ -46,6 +46,7 @@ class WalletSwitchController extends Controller
 
         $config->set('wallet.cash.status', $switch['cash']);
         $config->set('wallet.recharge.status', $switch['recharge']);
+        $config->set('wallet.transform.status', $switch['transform']);
 
         $configuration->save($config);
 
@@ -58,6 +59,7 @@ class WalletSwitchController extends Controller
 
         $config->set('wallet.cash.status', true);
         $config->set('wallet.recharge.status', true);
+        $config->set('wallet.transform.status', true);
 
         $configuration->save($config);
 

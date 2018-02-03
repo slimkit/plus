@@ -24,7 +24,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Illuminate\Database\Eloquent\Builder;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;
-use Zhiyi\Plus\Http\Requests\API2\StoreUserWallerCashPost;
+use Zhiyi\Plus\Http\Requests\API2\NewStoreUserWallerCashPost;
 
 class NewWalletCashController extends Controller
 {
@@ -58,13 +58,13 @@ class NewWalletCashController extends Controller
     /**
      * 提交提现申请.
      *
-     * @param \Zhiyi\Plus\Http\Requests\API2\StoreUserWallerCashPost $request
+     * @param \Zhiyi\Plus\Http\Requests\API2\NewStoreUserWallerCashPost $request
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function store(StoreUserWallerCashPost $request, TypeManager $manager)
+    public function store(NewStoreUserWallerCashPost $request, TypeManager $manager)
     {
-        $value = $request->input('value');
+        $value = (int) $request->input('value');
         $type = $request->input('type');
         $account = $request->input('account');
         $user = $request->user();

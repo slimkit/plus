@@ -49,6 +49,8 @@ Route::prefix('/feeds')->group(function () {
         Route::delete('/{feed}', 'FeedController@destroy');
         Route::patch('/{feed}/comment-paid', 'FeedPayController@commentPaid');
 
+        Route::delete('/{feed}/currency', 'FeedController@newDestroy');
+
         // 评论
         Route::post('/{feed}/comments', 'FeedCommentController@store')->middleware('sensitive:body');
         Route::delete('/{feed}/comments/{comment}', 'FeedCommentController@destroy');
@@ -64,12 +66,20 @@ Route::prefix('/feeds')->group(function () {
         Route::patch('/{feed}/comments/{comment}/pinneds/{pinned}', 'CommentPinnedController@pass');
         Route::delete('/{feed}/comments/{comment}/unpinned', 'CommentPinnedController@delete');
 
+        // 使用积分进行的置顶流程
+        Route::post('/{feed}/currency-pinneds', 'NewPinnedController@feedPinned');
+        Route::post('/{feed}/comments/{comment}/currency-pinneds', 'NewPinnedController@commentPinned');
+        Route::patch('/{feed}/comments/{comment}/currency-pinneds/{pinned}', 'NewCommentPinnedController@pass');
+
         // 喜欢
         Route::post('/{feed}/like', 'LikeController@store');
         Route::delete('/{feed}/unlike', 'LikeController@destroy');
 
         // 打赏
         Route::post('/{feed}/rewards', 'RewardController@reward');
+
+        // 新版动态打赏
+        Route::post('/{feed}/new-rewards', 'NewRewardController@reward');
 
         // 举报
         Route::post('/{feed}/reports', 'ReportController@feed');
@@ -84,4 +94,5 @@ Route::middleware('auth:api')->group(function () {
     // 评论固定审核
     Route::get('/user/feed-comment-pinneds', 'CommentPinnedController@index');
     Route::delete('/user/feed-comment-pinneds/{pinned}', 'CommentPinnedController@reject');
+    Route::delete('/user/feed-comment-currency-pinneds/{pinned}', 'NewCommentPinnedController@reject');
 });

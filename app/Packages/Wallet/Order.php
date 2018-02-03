@@ -31,6 +31,7 @@ class Order
     const TARGET_TYPE_RECHARGE_PING_P_P = 'recharge_ping_p_p'; // Ping ++ 充值
     const TARGET_TYPE_REWARD = 'reward';                       // 打赏
     const TARGET_TYPE_WITHDRAW = 'widthdraw';                  // 提现
+    const TARGET_TYPE_TRANSFORM = 'transform';                 // 兑换货币、积分
 
     /**
      * types.

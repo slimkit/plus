@@ -375,6 +375,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             // 打赏用户
             $api->post('/{target}/rewards', API2\UserRewardController::class.'@store');
 
+            // 新版打赏用户
+            $api->post('/{target}/new-rewards', API2\NewUserRewardController::class.'@store');
+
             /*
              * 解除手机号码绑定.
              *
@@ -459,6 +462,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // 转账
             $api->post('/transfer', API2\TransferController::class.'@transfer');
+
+            // 转换积分
+            $api->post('/transform', API2\NewWalletRechargeController::class.'@transform');
         });
 
         /*
@@ -556,6 +562,20 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // 通过积分购买付费节点
             $api->post('/purchases/{node}', API2\PurchaseController::class.'@payByCurrency');
+
+            // 调用IAP发起充值
+            $api->post('/recharge/apple-iap', API2\CurrencyApplePayController::class.'@store');
+
+            // IAP支付完成后的验证
+            $api->post('/orders/{order}/apple-iap/verify', API2\CurrencyApplePayController::class.'@retrieve');
+
+            // IAP商品列表
+            $api->get('/apple-iap/products', API2\CurrencyApplePayController::class.'@productList');
+
+            // 积分商城（待开发）
+            $api->get('/shop', function () {
+                return view('currency-developing');
+            });
         });
     });
 });

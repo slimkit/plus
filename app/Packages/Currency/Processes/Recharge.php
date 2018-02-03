@@ -39,6 +39,8 @@ class Recharge extends Process
     {
         $user = $this->checkUser($owner_id);
 
+        $config = app(CurrencyConfig::class)->get();
+
         $title = '积分充值';
         $body = sprintf('充值积分：%s%s%s', $amount, $this->currency_type->unit, $this->currency_type->name);
 
@@ -49,9 +51,7 @@ class Recharge extends Process
         $order->type = 1;
         $order->currency = $this->currency_type->id;
         $order->target_type = Order::TARGET_TYPE_RECHARGE;
-        $order->amount = $amount;
-
-        $order->save();
+        $order->amount = $amount * $config['recharge-ratio'];
 
         return $order;
     }
@@ -71,6 +71,7 @@ class Recharge extends Process
         if (app(WalletChargeService::class)->checkRechargeArgs($type, $extra)) {
             $transaction = function () use ($owner_id, $amount, $extra, $type) {
                 $order = $this->createOrder($owner_id, $amount);
+                $order->save();
                 $service = app(WalletChargeService::class)->setPrefix($this->PingppPrefix);
                 $pingppCharge = $service->createWithoutModel($order->id, $type, $order->amount, $order->title, $order->body, $extra);
 
@@ -148,7 +149,7 @@ class Recharge extends Process
 
         return DB::transaction(function () use ($user, $currencyOrderModel, $config) {
             $currencyOrderModel->save();
-            $user->currency->increment('sum', $currencyOrderModel->amount * $config['recharge-ratio']);
+            $user->currency->increment('sum', $currencyOrderModel->amount);
 
             return true;
         });

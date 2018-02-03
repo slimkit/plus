@@ -27,6 +27,7 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
+use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
@@ -488,6 +489,39 @@ class FeedController extends Controller
                 $user->wallet()->increment('balance', $charge->amount);
                 $user->walletCharges()->save($charge);
                 $pinned->delete();
+            }
+
+            $feed->delete();
+            $user->extra()->decrement('feeds_count', 1);
+        });
+
+        return $response->json(null, 204);
+    }
+
+    /**
+     * 新版删除动态接口，如有置顶申请讲退还相应积分.
+     *
+     * @param Request $request
+     * @param ResponseContract $response
+     * @param FeedModel $feed
+     * @return mixed
+     * @author BS <414606094@qq.com>
+     */
+    public function newDestroy(Request $request,
+                            ResponseContract $response,
+                            FeedModel $feed)
+    {
+        $user = $request->user();
+
+        if ($user->id !== $feed->user_id) {
+            return $response->json(['message' => '你没有权限删除动态'])->setStatusCode(403);
+        }
+
+        $feed->getConnection()->transaction(function () use ($feed, $user) {
+            if ($pinned = $feed->pinned()->where('user_id', $user->id)->where('expires_at', null)->first()) { // 存在未审核的置顶申请时退款
+
+                $process = new UserProcess();
+                $order = $process->reject(0, $pinned->amount, $user->id, '动态申请置顶退款', sprintf('退还申请置顶动态《%s》的款项', str_limit($feed->feed_content, 100)));
             }
 
             $feed->delete();

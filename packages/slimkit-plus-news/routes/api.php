@@ -101,6 +101,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             // Update news contributes.
             $api->patch('/categories/{category}/news/{news}', API2\ContributeController::class.'@update')->middleware('sensitive:title,content,subject,from,author');
 
+            // Send news contributes by currency.
+            $api->post('/categories/{category}/currency-news', API2\ContributeController::class.'@newStore')->middleware('sensitive:title,content,subject,from,author');
+
             // Delete new contributes.
             $api->delete('/categories/{category}/news/{news}', API2\ContributeController::class.'@destroy');
 
@@ -109,6 +112,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // Reward news.
             $api->post('/{news}/rewards', API2\RewardController::class.'@reward');
+
+            // 新版打赏.
+            $api->post('/{news}/new-rewards', API2\NewRewardController::class.'@reward');
 
             // 点赞资讯
             $api->post('/{news}/likes', API2\LikeController::class.'@like');
@@ -123,6 +129,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             // 申请评论置顶
             $api->post('/{news}/comments/{comment}/pinneds', API2\PinnedController::class.'@commentPinned');
 
+            // 通过积分申请评论置顶
+            $api->post('/{news}/comments/{comment}/currency-pinneds', API2\NewPinnedController::class.'@commentPinned');
+
             // 查看评论置顶
             $api->get('/comments/pinneds', API2\CommentPinnedController::class.'@index');
 
@@ -132,11 +141,20 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             // 拒绝评论置顶
             $api->patch('/{news}/comments/{comment}/pinneds/{pinned}/reject', API2\CommentPinnedController::class.'@reject');
 
+            // 审核评论置顶
+            $api->patch('/{news}/comments/{comment}/currency-pinneds/{pinned}', API2\NewCommentPinnedController::class.'@accept');
+
+            // 拒绝评论置顶
+            $api->patch('/{news}/comments/{comment}/currency-pinneds/{pinned}/reject', API2\NewCommentPinnedController::class.'@reject');
+
             // 取消评论置顶
             $api->delete('/{news}/comments/{comment}/pinneds/{pinned}', API2\CommentPinnedController::class.'@destroy');
 
             // 申请资讯置顶
             $api->post('/{news}/pinneds', API2\PinnedController::class.'@newsPinned');
+
+            // 通过积分申请资讯置顶
+            $api->post('/{news}/currency-pinneds', API2\NewPinnedController::class.'@newsPinned');
 
             // 评论一条资讯
             $api->post('/{news}/comments', API2\CommentController::class.'@store')->middleware('sensitive:body');

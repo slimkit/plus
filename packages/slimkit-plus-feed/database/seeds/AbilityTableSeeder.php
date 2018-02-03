@@ -73,18 +73,6 @@ class AbilityTableSeeder extends Seeder
                 'display_name' => '发送分享',
                 'description' => '用户发送分享权限',
             ],
-            'feed-comment' => [
-                'display_name' => '评论分享',
-                'description' => '用户评论分享权限',
-            ],
-            'feed-digg' => [
-                'display_name' => '点赞分享',
-                'description' => '用户点赞分享权限',
-            ],
-            'feed-collection' => [
-                'display_name' => '收藏分享',
-                'description' => '用户收藏分享权限',
-            ],
         ];
     }
 }

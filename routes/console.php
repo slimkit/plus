@@ -32,3 +32,15 @@ use Illuminate\Foundation\Inspiring;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->describe('Display an inspiring quote');
+
+/*
+ * app:key-generate command.
+ */
+Artisan::command('app:key-generate', function () {
+    $this->call('key:generate', [
+        '--force' => true,
+    ]);
+    $this->call('jwt:secret', [
+        '--force' => true,
+    ]);
+})->describe('Run `key:generate` and `jwt:secret` commands.');

@@ -1,5 +1,13 @@
+<style>
+  .alert-style {
+    position:fixed;
+    top:0;
+    width:100%;
+    z-index:9999;
+  }
+</style>
 <template>
-   <div class="alert" :class="type" role="alert" v-show="open">
+   <div class="alert alert-style" :class="type" role="alert" v-show="open">
      {{ message | plusMessageFirst('Todo') }}
    </div>
 </template>

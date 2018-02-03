@@ -38,7 +38,9 @@ class BootstrappersController extends Controller
      */
     public function show(BootstrapAPIsEventer $events, ResponseFactory $response, AdvertisingSpace $space, GoldType $goldType)
     {
-        $bootstrappers = [];
+        $bootstrappers = [
+            'server:version' => app()->version(),
+        ];
         foreach (CommonConfig::byNamespace('common')->get() as $bootstrapper) {
             $bootstrappers[$bootstrapper->name] = $this->formatValue($bootstrapper->value);
         }
@@ -52,9 +54,10 @@ class BootstrappersController extends Controller
 
         $bootstrappers['wallet:cash'] = ['open' => config('wallet.cash.status', true)];
         $bootstrappers['wallet:recharge'] = ['open' => config('wallet.recharge.status', true)];
+        $bootstrappers['wallet:transform'] = ['open' => config('wallet.transform.status', true)];
 
         $bootstrappers['currency:cash'] = ['open' => config('currency.cash.status', true)];
-        $bootstrappers['currency:recharge'] = ['open' => config('currency.recharge.status', true)];
+        $bootstrappers['currency:recharge'] = ['open' => config('currency.recharge.status', true), 'IAP_only' => config('currency.recharge.IAP.only', true)];
 
         $goldSetting = $goldType->where('status', 1)->select('name', 'unit')->first() ?? collect(['name' => '金币', 'unit' => '个']);
         $bootstrappers['site']['gold_name'] = $goldSetting;
