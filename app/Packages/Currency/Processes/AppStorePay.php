@@ -45,14 +45,14 @@ class AppStorePay extends Process
     /**
      * 验证票据.
      *
-     * @param array $receipt
+     * @param string $receipt
      * @param Zhiyi\Plus\Models\CurrencyOrderModel
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function verifyReceipt(array $receipt, CurrencyOrderModel $currencyOrder): bool
+    public function verifyReceipt(string $receipt, CurrencyOrderModel $currencyOrder): bool
     {
-        $initialData = ['receipt-data' => $receipt];
+        $initialData = ['receipt-data' => base64_encode($receipt)];
         $body = json_encode($initialData);
 
         try {

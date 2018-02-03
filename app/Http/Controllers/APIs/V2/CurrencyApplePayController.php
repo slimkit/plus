@@ -60,9 +60,6 @@ class CurrencyApplePayController extends Controller
     public function retrieve(Request $request, CurrencyOrderModel $currencyOrder)
     {
         $receipt = $request->input('receipt');
-        if (! is_array($receipt)) {
-            return response()->json(['message' => ['参数错误']], 422);
-        }
         $retrieve = new AppStorePayProcess();
         if (($result = $retrieve->verifyReceipt($receipt, $currencyOrder)) === true) {
             return response()->json($currencyOrder, 200);
