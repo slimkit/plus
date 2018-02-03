@@ -20,7 +20,7 @@ namespace Zhiyi\Plus\Tests\Feature;
 
 use Zhiyi\Plus\Tests\TestCase;
 
-class ExampleTest extends TestCase
+class BootstrappersTest extends TestCase
 {
     /**
      * A basic test example.
