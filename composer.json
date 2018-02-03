@@ -134,7 +134,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.6-dev"
+            "dev-master": "1.7-dev"
         },
         "laravel": {
             "dont-discover": []
