@@ -22,7 +22,7 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\CommonConfig;
-use Zhiyi\Plus\Http\Requests\API2\StoreCurrencyRecharge;
+use Zhiyi\Plus\Http\Requests\API2\StoreCurrencyAppleIAPRecharge;
 use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 use Zhiyi\Plus\Packages\Currency\Processes\AppStorePay as AppStorePayProcess;
 
@@ -31,11 +31,11 @@ class CurrencyApplePayController extends Controller
     /**
      * 发起充值订单.
      *
-     * @param StoreCurrencyRecharge $request
+     * @param StoreCurrencyAppleIAPRecharge $request
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function store(StoreCurrencyRecharge $request)
+    public function store(StoreCurrencyAppleIAPRecharge $request)
     {
         $user = $request->user();
         $amount = $request->input('amount');
