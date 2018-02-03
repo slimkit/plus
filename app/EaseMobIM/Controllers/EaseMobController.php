@@ -415,7 +415,7 @@ class EaseMobController
                 'msg' => $content,
             ],
             'from' => $from,
-            'ext' => (Object) $ext,
+            'ext' => (object) $ext,
         ];
         $data['body'] = json_encode($option);
         $Client = new Client();
