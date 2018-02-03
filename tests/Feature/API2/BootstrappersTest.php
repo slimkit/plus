@@ -16,7 +16,7 @@
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Tests\Feature;
+namespace Zhiyi\Plus\Tests\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
 
