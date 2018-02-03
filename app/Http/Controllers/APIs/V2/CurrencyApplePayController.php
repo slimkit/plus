@@ -22,8 +22,8 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\CommonConfig;
-use Zhiyi\Plus\Http\Requests\API2\StoreCurrencyAppleIAPRecharge;
 use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
+use Zhiyi\Plus\Http\Requests\API2\StoreCurrencyAppleIAPRecharge;
 use Zhiyi\Plus\Packages\Currency\Processes\AppStorePay as AppStorePayProcess;
 
 class CurrencyApplePayController extends Controller

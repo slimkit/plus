@@ -22,7 +22,6 @@ namespace Zhiyi\Plus\Http\Requests\API2;
 
 use Zhiyi\Plus\Repository\CurrencyConfig;
 use Illuminate\Foundation\Http\FormRequest;
-use Zhiyi\Plus\Repository\WalletRechargeType;
 
 class StoreCurrencyAppleIAPRecharge extends FormRequest
 {
