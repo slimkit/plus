@@ -80,7 +80,7 @@ class GroupController extends EaseMobController
                 'type' => 'ts_group_create',
                 'group_id' => $imGroup->im_group_id,
             ];
-            $isCmd = $this->sendCmd($cmd_content, [$imGroup->im_group_id], 'admin','chatgroups', $ext);
+            $isCmd = $this->sendCmd($cmd_content, [$imGroup->im_group_id], 'admin', 'chatgroups', $ext);
 
             if (! $isCmd) {
                 return response()->json([
@@ -170,8 +170,7 @@ class GroupController extends EaseMobController
                 'type' => 'ts_group_change',
                 'group_id' => $im_group_id,
             ];
-            $isCmd = $this->sendCmd($cmd_content, [$im_group_id], 'admin','chatgroups', $ext);
-
+            $isCmd = $this->sendCmd($cmd_content, [$im_group_id], 'admin', 'chatgroups', $ext);
 
             if (! $isCmd) {
                 return response()->json([
