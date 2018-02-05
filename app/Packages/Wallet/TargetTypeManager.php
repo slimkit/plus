@@ -99,7 +99,7 @@ class TargetTypeManager extends Manager
      */
     protected function createRechargePingPPDriver(): Target
     {
-        $driver = $this->app->make(TargetTypes\ReChargeTarget::class);
+        $driver = $this->app->make(TargetTypes\RechargeTarget::class);
         $driver->setOrder($this->order);
 
         return $driver;
