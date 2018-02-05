@@ -53,13 +53,14 @@ class CurrencyApplePayController extends Controller
      * 主动取回凭据.
      *
      * @param Request $request
-     * @param CurrencyOrderModel &$currencyOrder
+     * @param CurrencyOrderModel $currencyOrder
      * @return mixed
      * @author BS <414606094@qq.com>
      */
     public function retrieve(Request $request, CurrencyOrderModel $currencyOrder)
     {
-        $receipt = $request->file('receipt')->getContents();
+        $receipt = $request->file('receipt');
+        $receipt = file_get_contents($receipt->getRealPath());
         $retrieve = new AppStorePayProcess();
         if (($result = $retrieve->verifyReceipt($receipt, $currencyOrder)) === true) {
             return response()->json($currencyOrder, 200);
