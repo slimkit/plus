@@ -111,9 +111,8 @@ class RechargeType extends Type
      * @return boolen
      * @author BS <414606094@qq.com>
      */
-    public function complete(PingppCharge $pingppCharge, WalletOrderModel $order): bool
+    public function complete(WalletOrderModel $order): bool
     {
-        $walletOrder->target_id = $this->resolveChargeAccount($pingppCharge);
         $order = new Order($walletOrder);
 
         return $order->autoComplete();
