@@ -72,7 +72,7 @@ class Recharge extends Process
             $transaction = function () use ($owner_id, $amount, $extra, $type) {
                 $service = app(WalletChargeService::class)->setPrefix($this->PingppPrefix);
                 $pingppCharge = $service->createWithoutModel($order->id, $type, $order->amount, $order->title, $order->body, $extra);
-                $order->target_id = $pingppCharge->id
+                $order->target_id = $pingppCharge->id;
                 $order = $this->createOrder($owner_id, $amount);
                 $order->save();
 
