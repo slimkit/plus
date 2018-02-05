@@ -111,6 +111,7 @@ class AppStorePay extends Process
         $order->currency = $this->currency_type->id;
         $order->target_type = Order::TARGET_TYPE_RECHARGE;
         $order->amount = $amount * $config['recharge-ratio'];
+        $order->save();
 
         return $order;
     }
