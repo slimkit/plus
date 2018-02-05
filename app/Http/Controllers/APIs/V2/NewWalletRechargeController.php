@@ -107,7 +107,7 @@ class NewWalletRechargeController extends Controller
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function retrieve(WalletOrderModel $walletOrder)
+    public function retrieve(WalletOrderModel $walletOrder, TypeManager $manager)
     {
         if (($result = $manager->driver(Order::TARGET_TYPE_RECHARGE_PING_P_P)->retrieve($walletOrder)) === true) {
             return response()->json($walletOrder, 200);
