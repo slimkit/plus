@@ -70,7 +70,7 @@ class AuthLogoutTest extends TestCase
         $token = $this->guard()->login($this->user);
 
         $response = $this->getJson('/api/v2/auth/logout', [
-            'Authorization' => 'Bearer '.$token
+            'Authorization' => 'Bearer '.$token,
         ]);
 
         $response->assertStatus(200);
