@@ -70,10 +70,11 @@ class Recharge extends Process
     {
         if (app(WalletChargeService::class)->checkRechargeArgs($type, $extra)) {
             $transaction = function () use ($owner_id, $amount, $extra, $type) {
-                $order = $this->createOrder($owner_id, $amount);
-                $order->save();
                 $service = app(WalletChargeService::class)->setPrefix($this->PingppPrefix);
                 $pingppCharge = $service->createWithoutModel($order->id, $type, $order->amount, $order->title, $order->body, $extra);
+                $order->target_id = $pingppCharge->id
+                $order = $this->createOrder($owner_id, $amount);
+                $order->save();
 
                 return [
                     'pingpp_order' => $pingppCharge,
@@ -95,8 +96,7 @@ class Recharge extends Process
      */
     public function retrieve(CurrencyOrderModel $currencyOrderModel): bool
     {
-        $service = app(WalletChargeService::class)->setPrefix($this->PingppPrefix);
-        $charge_id = $service->formatChargeId($currencyOrderModel->id);
+        $charge_id = $service->formatChargeId($currencyOrderModel->target_id);
         $pingppCharge = $service->query($charge_id);
 
         if ($pingppCharge['paid'] === true) {

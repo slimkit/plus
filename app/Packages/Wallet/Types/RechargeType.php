@@ -49,9 +49,9 @@ class RechargeType extends Type
 
         if (app(WalletChargeService::class)->checkRechargeArgs($type, $extra)) {
             $transaction = function () use ($order, $extra, $type) {
-                $order->save();
                 $pingppCharge = app(WalletChargeService::class)->newCreate($order->getOrderModel(), $type, $extra);
-
+                $order->target_id = $pingppCharge->id;
+                $order->save();
                 return [
                     'pingpp_order' => $pingppCharge,
                     'order' => $order->getOrderModel(),
@@ -72,7 +72,7 @@ class RechargeType extends Type
      */
     public function retrieve(WalletOrderModel $walletOrder): bool
     {
-        $charge_id = app(WalletChargeService::class)->formatChargeId($walletOrder->id);
+        $charge_id = app(WalletChargeService::class)->formatChargeId($walletOrder->target_id);
         $pingppCharge = app(WalletChargeService::class)->query($charge_id);
 
         if ($pingppCharge['paid'] === true) {
