@@ -52,6 +52,7 @@ class RechargeType extends Type
                 $pingppCharge = app(WalletChargeService::class)->newCreate($order->getOrderModel(), $type, $extra);
                 $order->target_id = $pingppCharge->id;
                 $order->save();
+
                 return [
                     'pingpp_order' => $pingppCharge,
                     'order' => $order->getOrderModel(),
