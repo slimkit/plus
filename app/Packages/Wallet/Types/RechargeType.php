@@ -50,7 +50,7 @@ class RechargeType extends Type
         if (app(WalletChargeService::class)->checkRechargeArgs($type, $extra)) {
             $transaction = function () use ($order, $extra, $type) {
                 $pingppCharge = app(WalletChargeService::class)->newCreate($order->getOrderModel(), $type, $extra);
-                $order->target_id = $pingppCharge->id;
+                $order->getOrderModel()->target_id = $pingppCharge->id;
                 $order->save();
 
                 return [
