@@ -73,8 +73,7 @@ class RechargeType extends Type
      */
     public function retrieve(WalletOrderModel $walletOrder): bool
     {
-        $charge_id = app(WalletChargeService::class)->formatChargeId($walletOrder->target_id);
-        $pingppCharge = app(WalletChargeService::class)->query($charge_id);
+        $pingppCharge = app(WalletChargeService::class)->query($walletOrder->target_id);
 
         if ($pingppCharge['paid'] === true) {
             return $this->complete($pingppCharge, $walletOrder);

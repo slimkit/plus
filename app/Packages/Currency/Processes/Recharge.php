@@ -96,8 +96,7 @@ class Recharge extends Process
      */
     public function retrieve(CurrencyOrderModel $currencyOrderModel): bool
     {
-        $charge_id = $service->formatChargeId($currencyOrderModel->target_id);
-        $pingppCharge = $service->query($charge_id);
+        $pingppCharge = $service->query($currencyOrderModel->target_id);
 
         if ($pingppCharge['paid'] === true) {
             return $this->complete($pingppCharge, $currencyOrderModel);
