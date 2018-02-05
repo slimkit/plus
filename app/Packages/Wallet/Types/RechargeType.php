@@ -75,7 +75,7 @@ class RechargeType extends Type
         $pingppCharge = app(WalletChargeService::class)->query($walletOrder->target_id);
 
         if ($pingppCharge['paid'] === true) {
-            return $this->complete($pingppCharge, $walletOrder);
+            return $this->complete($walletOrder);
         }
 
         return false;
@@ -98,7 +98,7 @@ class RechargeType extends Type
                 return false;
             }
 
-            return $this->complete($pingppCharge, $walletOrder);
+            return $this->complete($walletOrder);
         }
 
         return false;
