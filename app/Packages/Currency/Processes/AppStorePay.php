@@ -57,8 +57,7 @@ class AppStorePay extends Process
 
         try {
             $result = $this->sendReceiptToAppStore($body);
-
-            $data = json_decode($result, true);
+            $data = json_decode($result->getBody()->getContents(), true);
             if ($data['status' !== 0]) {
                 throw new \Exception($this->getStatusError($data['status']), 1);
             }
