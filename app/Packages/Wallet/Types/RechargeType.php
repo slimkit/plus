@@ -22,7 +22,6 @@ namespace Zhiyi\Plus\Packages\Wallet\Types;
 
 use DB;
 use Illuminate\Http\Request;
-use Pingpp\Charge as PingppCharge;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Repository\WalletPingPlusPlus;
