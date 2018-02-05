@@ -110,7 +110,7 @@ class RechargeType extends Type
      * @return boolen
      * @author BS <414606094@qq.com>
      */
-    public function complete(WalletOrderModel $order): bool
+    public function complete(WalletOrderModel $walletOrder): bool
     {
         $order = new Order($walletOrder);
 
