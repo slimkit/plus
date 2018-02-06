@@ -18,10 +18,12 @@
 
 namespace Zhiyi\Plus\Packages\Currency\Processes;
 
+use DB;
 use GuzzleHttp\Client;
 use Zhiyi\Plus\Packages\Currency\Order;
 use Zhiyi\Plus\Packages\Currency\Process;
 use Zhiyi\Plus\Repository\CurrencyConfig;
+use Zhiyi\Plus\Models\CommonConfig as CommonConfigModel;
 use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 
 class AppStorePay extends Process
@@ -58,9 +60,16 @@ class AppStorePay extends Process
             $result = $this->sendReceiptToAppStore($initialData);
             $data = json_decode($result->getBody()->getContents(), true);
 
-            if ($data['status'] !== 0) {
+            if ($data['status'] === 21007) {
+                $this->sandbox = true;
+                return $this->verifyReceipt($receipt, $currencyOrder);
+            }
+
+            if ($data['status'] !== 0 && $data['status'] !== 21007) {
                 throw new \Exception($this->getStatusError($data['status']));
             }
+
+            $this->checkAppleOrder($data, $currencyOrder);
 
             return $this->complete($currencyOrder);
         } catch (\Exception $exception) {
@@ -136,6 +145,35 @@ class AppStorePay extends Process
 
             return true;
         });
+    }
+
+    /**
+     * 验证苹果收据与系统内订单是否一致.
+     *
+     * @param array $data
+     * @param CurrencyOrderModel $order
+     * @author BS <414606094@qq.com>
+     */
+    protected function checkAppleOrder(array $data, CurrencyOrderModel $order)
+    {
+        $products = CommonConfigModel::where('namespace', 'apple')->where('name', 'product')->first();
+
+        if (! $products) {
+            throw new \Exception('苹果IAP商品不存在');
+        }
+        $product = collect(json_decode($products->value, true))->where('product_id', $data['receipt']['in_app'][0]['product_id'])->first();
+
+        if (! $product) {
+            throw new \Exception("订单商品id不匹配");
+        }
+
+        if ($product['amount'] != $order->amount) {
+            throw new \Exception("订单金额不匹配");
+        }
+
+        if ($order->state != 0) {
+            throw new \Exception("订单已完成");
+        }
     }
 
     /**
