@@ -20,7 +20,10 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Tests\API2;
 
+use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Tests\TestCase;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class TestRankFeed extends TestCase
@@ -29,7 +32,7 @@ class TestRankFeed extends TestCase
 
     private $api = '/api/v2/feeds/ranks';
 
-    private $jsonStructure = ['id', 'name', 'sex', 'following', 'follower', 'avatar', 'bg', 'verified', 'extra'];
+    private $structure = ['id', 'name', 'sex', 'following', 'follower', 'avatar', 'bg', 'verified', 'extra'];
 
     /**
      * 前置条件.
@@ -38,14 +41,37 @@ class TestRankFeed extends TestCase
     {
         parent::setUp();
 
-        $jwtAuthToken = $this->app->make(\Zhiyi\Plus\Auth\JWTAuthToken::class);
-
-        $this->user = factory(\Zhiyi\Plus\Models\User::class)->create();
+        $this->user = factory(User::class)->create();
 
         $this->user->roles()->sync([2]);
+    }
 
-        $this->token = $jwtAuthToken->create($this->user);
+    public function testFeedRank()
+    {
+        $token = $this->guard()->login($this->user);
 
+        $this->addTestFeedData($token);
+
+        $response = $this->get($this->api.'?token='.$token);
+        $response
+                ->assertStatus(200)
+                ->assertJsonStructure([$this->structure]);
+    }
+
+    /**
+     * @return Guard
+     */
+    protected function guard(): Guard
+    {
+        return Auth::guard('api');
+    }
+
+    /**
+     * @param $token
+     * @return mixed
+     */
+    protected function addTestFeedData($token)
+    {
         $data = [
             'feed_content' => '单元测试动态数据',
             'feed_from' => 1,
@@ -57,21 +83,6 @@ class TestRankFeed extends TestCase
             'images' => [],
         ];
 
-        $this->feed = $this->post('/api/v2/feeds'.'?token='.$this->token, $data)->json();
-    }
-
-    public function testFeedRank()
-    {
-        // 动态日排行: GET /feeds/ranks
-        $res = $this->get($this->api, ['type' => 'day']);
-        $res->assertStatus(200)->assertJsonStructure([$this->jsonStructure]);
-
-        // 动态周排行: GET /feeds/ranks
-        $res = $this->get($this->api, ['type' => 'week']);
-        $res->assertStatus(200)->assertJsonStructure([$this->jsonStructure]);
-
-        // 动态月排行: GET /feeds/ranks
-        $res = $this->get($this->api, ['type' => 'mouth']);
-        $res->assertStatus(200)->assertJsonStructure([$this->jsonStructure]);
+        $this->feed = $this->post('api/v2/feeds' . '?token=' . $token, $data)->json();
     }
 }
