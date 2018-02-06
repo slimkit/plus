@@ -26,7 +26,7 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class TestRewardFeed extends TestCase
+class TestNewRewardFeed extends TestCase
 {
     use DatabaseTransactions;
 

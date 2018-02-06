@@ -20,7 +20,10 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Tests\API2;
 
+use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Tests\TestCase;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
@@ -30,6 +33,8 @@ class TestReportFeed extends TestCase
 
     private $api = '/api/v2/feeds';
 
+    private $user;
+
     /**
      * 前置条件.
      */
@@ -37,14 +42,36 @@ class TestReportFeed extends TestCase
     {
         parent::setUp();
 
-        $jwtAuthToken = $this->app->make(\Zhiyi\Plus\Auth\JWTAuthToken::class);
+        $this->user = factory(User::class)->create();
+    }
 
-        $this->user = factory(\Zhiyi\Plus\Models\User::class)->create();
-
+    public function testFeedRank()
+    {
         $this->user->roles()->sync([2]);
 
-        $this->token = $jwtAuthToken->create($this->user);
+        $token = $this->guard()->login($this->user);
 
+        $this->addTestFeedData($token);
+
+        $res = $this->post($this->api."/{$this->feed['id']}/reports?token=".$token);
+
+        $res->assertStatus(201)->assertJsonStructure(['message']);
+    }
+
+    /**
+     * @return Guard
+     */
+    protected function guard(): Guard
+    {
+        return Auth::guard('api');
+    }
+
+    /**
+     * @param $token
+     * @return mixed
+     */
+    protected function addTestFeedData($token)
+    {
         $data = [
             'feed_content' => '单元测试动态数据',
             'feed_from' => 1,
@@ -56,14 +83,6 @@ class TestReportFeed extends TestCase
             'images' => [],
         ];
 
-        $this->feed = $this->post('/api/v2/feeds'.'?token='.$this->token, $data)->json();
-    }
-
-    public function testFeedRank()
-    {
-        // 举报一个动态: POST /feeds/:feed/reports
-        $res = $this->post($this->api."/{$this->feed['id']}/reports?token=".$this->token);
-
-        $res->assertStatus(201)->assertJsonStructure(['message']);
+        $this->feed = $this->post('/api/v2/feeds?token='.$token, $data)->json();
     }
 }
