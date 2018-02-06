@@ -25,7 +25,6 @@ use Illuminate\Http\UploadedFile;
 use Zhiyi\Plus\Auth\JWTAuthToken;
 use Zhiyi\Plus\Models\User as UserModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
 class TestPostFeed extends TestCase
 {
@@ -51,73 +50,72 @@ class TestPostFeed extends TestCase
 
     private function getFileId()
     {
-        return $this->post('/api/v2/files?token=' . $this->token, [
-            'file' => UploadedFile::fake()->image('test.jpg')->size(200)
+        return $this->post('/api/v2/files?token='.$this->token, [
+            'file' => UploadedFile::fake()->image('test.jpg')->size(200),
         ])->json();
-
     }
 
     public function testPostFeed()
     {
         // 纯文本动态
-        $this->contentfeed = $this->post($this->api . '?token=' . $this->token, [
+        $this->contentfeed = $this->post($this->api.'?token='.$this->token, [
             'feed_content' => '测试动态',
             'feed_from' => 1,
-            'feed_mark' => time() . mt_rand(1000000, 9999999),
+            'feed_mark' => time().mt_rand(1000000, 9999999),
             'feed_latitude' => '',
             'feed_longtitude' => '',
             'feed_geohash' => '',
             'amount' => 100,
-            'images' => []
+            'images' => [],
         ]);
         // 图片动态
-        $this->imagefeed = $this->post($this->api . '?token=' . $this->token, [
+        $this->imagefeed = $this->post($this->api.'?token='.$this->token, [
             'feed_from' => 1,
-            'feed_mark' => time() . mt_rand(1000000, 9999999),
+            'feed_mark' => time().mt_rand(1000000, 9999999),
             'feed_latitude' => '',
             'feed_longtitude' => '',
             'feed_geohash' => '',
             'images' => [
-                ['id' => $this->getFileId()['id']]
-            ]
+                ['id' => $this->getFileId()['id']],
+            ],
         ]);
         // 图文动态
-        $this->imageContentfeed = $this->post($this->api . '?token=' . $this->token, [
+        $this->imageContentfeed = $this->post($this->api.'?token='.$this->token, [
             'feed_content' => '测试动态',
             'feed_from' => 1,
-            'feed_mark' => time() . mt_rand(1000000, 9999999),
+            'feed_mark' => time().mt_rand(1000000, 9999999),
             'feed_latitude' => '',
             'feed_longtitude' => '',
             'feed_geohash' => '',
             'images' => [
-                ['id' => $this->getFileId()['id']]
-            ]
+                ['id' => $this->getFileId()['id']],
+            ],
         ]);
 
         // 查看收费
-        $this->amountReadfeed = $this->post($this->api . '?token=' . $this->token, [
+        $this->amountReadfeed = $this->post($this->api.'?token='.$this->token, [
             'feed_content' => '测试动态',
             'feed_from' => 1,
-            'feed_mark' => time() . mt_rand(1000000, 9999999),
+            'feed_mark' => time().mt_rand(1000000, 9999999),
             'feed_latitude' => '',
             'feed_longtitude' => '',
             'feed_geohash' => '',
             'images' => [
-                ['id' => $this->getFileId()['id'], 'amount' => 100, 'type' => 'read']
-            ]
+                ['id' => $this->getFileId()['id'], 'amount' => 100, 'type' => 'read'],
+            ],
         ]);
 
         // 下载收费
-        $this->amountDownloadfeed = $this->post($this->api . '?token=' . $this->token, [
+        $this->amountDownloadfeed = $this->post($this->api.'?token='.$this->token, [
             'feed_content' => '测试动态',
             'feed_from' => 1,
-            'feed_mark' => time() . mt_rand(1000000, 9999999),
+            'feed_mark' => time().mt_rand(1000000, 9999999),
             'feed_latitude' => '',
             'feed_longtitude' => '',
             'feed_geohash' => '',
             'images' => [
-                ['id' => $this->getFileId()['id'], 'amount' => 100, 'type' => 'read']
-            ]
+                ['id' => $this->getFileId()['id'], 'amount' => 100, 'type' => 'read'],
+            ],
         ]);
 
         $this->contentfeed->assertStatus(201)->assertJsonStructure(['id', 'message']);
@@ -125,6 +123,5 @@ class TestPostFeed extends TestCase
         $this->imageContentfeed->assertStatus(201)->assertJsonStructure(['id', 'message']);
         $this->amountReadfeed->assertStatus(201)->assertJsonStructure(['id', 'message']);
         $this->amountDownloadfeed->assertStatus(201)->assertJsonStructure(['id', 'message']);
-
     }
 }

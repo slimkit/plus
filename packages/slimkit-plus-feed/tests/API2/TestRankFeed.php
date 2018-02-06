@@ -20,10 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Tests\API2;
 
-use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
 class TestRankFeed extends TestCase
 {
@@ -56,10 +54,10 @@ class TestRankFeed extends TestCase
             'feed_longtitude' => '',
             'feed_geohash' => '',
             'amount' => 100,
-            'images' => []
+            'images' => [],
         ];
 
-        $this->feed = $this->post('/api/v2/feeds' . '?token=' . $this->token, $data)->json();
+        $this->feed = $this->post('/api/v2/feeds'.'?token='.$this->token, $data)->json();
     }
 
     public function testFeedRank()

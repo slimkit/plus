@@ -55,11 +55,10 @@ class TestGetFeed extends TestCase
             'feed_longtitude' => '',
             'feed_geohash' => '',
             'amount' => 100,
-            'images' => []
+            'images' => [],
         ];
 
-        $this->feed = $this->post($this->api . '?token=' . $this->token, $data)->json();
-
+        $this->feed = $this->post($this->api.'?token='.$this->token, $data)->json();
     }
 
     public function testGetFeedList()
@@ -69,7 +68,7 @@ class TestGetFeed extends TestCase
         $res->assertStatus(200)->assertJsonStructure(['ad', 'pinned', 'feeds']);
 
         // 获取动态详情: GET /feeds/:feed
-        $res = $this->getJson($this->api . '/' . $this->feed['id']);
+        $res = $this->getJson($this->api.'/'.$this->feed['id']);
         $res->assertStatus(200)->assertJsonStructure([
             'id',
             'user_id',
@@ -91,7 +90,7 @@ class TestGetFeed extends TestCase
             'reward',
             'images',
             'paid_node',
-            'likes'
+            'likes',
         ]);
     }
 }

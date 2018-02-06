@@ -24,7 +24,6 @@ use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Tests\TestCase;
 use Zhiyi\Plus\Auth\JWTAuthToken;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
 class TestDeleteFeed extends TestCase
 {
@@ -55,15 +54,15 @@ class TestDeleteFeed extends TestCase
             'feed_longtitude' => '',
             'feed_geohash' => '',
             'amount' => 100,
-            'images' => []
+            'images' => [],
         ];
 
-        $this->feed = $this->post($this->apiUrl . '?token=' . $this->token, $data)->json();
+        $this->feed = $this->post($this->apiUrl.'?token='.$this->token, $data)->json();
     }
 
     public function testDeleteFeed()
     {
-        $res = $this->delete($this->apiUrl . "/{$this->feed['id']}?token=" . $this->token);
+        $res = $this->delete($this->apiUrl."/{$this->feed['id']}?token=".$this->token);
         $res->assertStatus(204);
     }
 }

@@ -20,11 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Tests\API2;
 
-use Zhiyi\Plus\Models\Comment;
-use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
 class TestLikeFeed extends TestCase
 {
@@ -52,16 +49,16 @@ class TestLikeFeed extends TestCase
             'feed_longtitude' => '',
             'feed_geohash' => '',
             'amount' => 100,
-            'images' => []
+            'images' => [],
         ];
 
-        $this->feed = $this->post($this->api . '?token=' . $this->token, $data)->json();
+        $this->feed = $this->post($this->api.'?token='.$this->token, $data)->json();
     }
 
     public function testLikeFeed()
     {
         // 点喜欢
-        $api = $this->api . "/{$this->feed['id']}/like?token=" . $this->token;
+        $api = $this->api."/{$this->feed['id']}/like?token=".$this->token;
         $res = $this->post($api);
 
         $this->response = $res->json();
@@ -69,12 +66,12 @@ class TestLikeFeed extends TestCase
         $res->assertJsonStructure(['message']);
 
         // 喜欢该动态的用户列表.
-        $api = $this->api . "/{$this->feed['id']}/likes?token=" . $this->token;
+        $api = $this->api."/{$this->feed['id']}/likes?token=".$this->token;
         $res = $this->get($api);
         $res->assertStatus(200);
 
         // 取消喜欢
-        $api = $this->api . "/{$this->feed['id']}/unlike?token=" . $this->token;
+        $api = $this->api."/{$this->feed['id']}/unlike?token=".$this->token;
         $res = $this->delete($api);
 
         $res->assertStatus(204);

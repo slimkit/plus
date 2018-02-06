@@ -21,18 +21,15 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Tests\API2;
 
 use Zhiyi\Plus\Models\User;
-use Zhiyi\Plus\Models\Reward;
 use Zhiyi\Plus\Tests\TestCase;
 use Zhiyi\Plus\Auth\JWTAuthToken;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
 class TestRewardFeed extends TestCase
 {
     use DatabaseTransactions;
 
     private $api = '/api/v2/feeds';
-
 
     public function setUp()
     {
@@ -50,7 +47,7 @@ class TestRewardFeed extends TestCase
         $this->user->wallet()->firstOrCreate([])->increment('balance', 1000000);
         $this->token = $jwtAuthToken->create($this->user);
 
-        $this->feed = $this->post($this->api . '?token=' . $this->rewardToken, [
+        $this->feed = $this->post($this->api.'?token='.$this->rewardToken, [
             'feed_content' => '单元测试动态数据',
             'feed_from' => 1,
             'feed_mark' => time(),
@@ -58,14 +55,14 @@ class TestRewardFeed extends TestCase
             'feed_longtitude' => '',
             'feed_geohash' => '',
             'amount' => 0,
-            'images' => []
+            'images' => [],
         ])->json();
     }
 
     public function testRewardFeed()
     {
         // 打赏用户动态.
-        $api = $this->api . "/{$this->feed['id']}/rewards?token=" . $this->rewardToken;
+        $api = $this->api."/{$this->feed['id']}/rewards?token=".$this->rewardToken;
         $res = $this->post($api, ['amount' => 50]);
 
         $res->assertStatus(201)->assertJsonStructure(['message']);
