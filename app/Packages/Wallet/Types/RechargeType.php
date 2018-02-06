@@ -22,7 +22,6 @@ namespace Zhiyi\Plus\Packages\Wallet\Types;
 
 use DB;
 use Illuminate\Http\Request;
-use Pingpp\Charge as PingppCharge;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Repository\WalletPingPlusPlus;
@@ -49,8 +48,9 @@ class RechargeType extends Type
 
         if (app(WalletChargeService::class)->checkRechargeArgs($type, $extra)) {
             $transaction = function () use ($order, $extra, $type) {
-                $order->save();
                 $pingppCharge = app(WalletChargeService::class)->newCreate($order->getOrderModel(), $type, $extra);
+                $order->getOrderModel()->target_id = $pingppCharge->id;
+                $order->save();
 
                 return [
                     'pingpp_order' => $pingppCharge,
@@ -72,11 +72,10 @@ class RechargeType extends Type
      */
     public function retrieve(WalletOrderModel $walletOrder): bool
     {
-        $charge_id = app(WalletChargeService::class)->formatChargeId($walletOrder->id);
-        $pingppCharge = app(WalletChargeService::class)->query($charge_id);
+        $pingppCharge = app(WalletChargeService::class)->query($walletOrder->target_id);
 
         if ($pingppCharge['paid'] === true) {
-            return $this->complete($pingppCharge, $walletOrder);
+            return $this->complete($walletOrder);
         }
 
         return false;
@@ -99,7 +98,7 @@ class RechargeType extends Type
                 return false;
             }
 
-            return $this->complete($pingppCharge, $walletOrder);
+            return $this->complete($walletOrder);
         }
 
         return false;
@@ -111,9 +110,8 @@ class RechargeType extends Type
      * @return boolen
      * @author BS <414606094@qq.com>
      */
-    public function complete(PingppCharge $pingppCharge, WalletOrderModel $order): bool
+    public function complete(WalletOrderModel $walletOrder): bool
     {
-        $walletOrder->target_id = $this->resolveChargeAccount($pingppCharge);
         $order = new Order($walletOrder);
 
         return $order->autoComplete();
