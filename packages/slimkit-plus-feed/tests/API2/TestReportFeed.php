@@ -25,7 +25,6 @@ use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
 class TestReportFeed extends TestCase
 {
