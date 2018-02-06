@@ -22,8 +22,8 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\CommonConfig;
-use Zhiyi\Plus\Http\Requests\API2\StoreCurrencyRecharge;
 use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
+use Zhiyi\Plus\Http\Requests\API2\StoreCurrencyAppleIAPRecharge;
 use Zhiyi\Plus\Packages\Currency\Processes\AppStorePay as AppStorePayProcess;
 
 class CurrencyApplePayController extends Controller
@@ -31,11 +31,11 @@ class CurrencyApplePayController extends Controller
     /**
      * 发起充值订单.
      *
-     * @param StoreCurrencyRecharge $request
+     * @param StoreCurrencyAppleIAPRecharge $request
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function store(StoreCurrencyRecharge $request)
+    public function store(StoreCurrencyAppleIAPRecharge $request)
     {
         $user = $request->user();
         $amount = $request->input('amount');
@@ -53,16 +53,14 @@ class CurrencyApplePayController extends Controller
      * 主动取回凭据.
      *
      * @param Request $request
-     * @param CurrencyOrderModel &$currencyOrder
+     * @param CurrencyOrderModel $currencyOrder
      * @return mixed
      * @author BS <414606094@qq.com>
      */
     public function retrieve(Request $request, CurrencyOrderModel $currencyOrder)
     {
-        $receipt = $request->input('receipt');
-        if (! is_array($receipt)) {
-            return response()->json(['message' => ['参数错误']], 422);
-        }
+        $receipt = $request->file('receipt');
+        $receipt = file_get_contents($receipt->getRealPath());
         $retrieve = new AppStorePayProcess();
         if (($result = $retrieve->verifyReceipt($receipt, $currencyOrder)) === true) {
             return response()->json($currencyOrder, 200);

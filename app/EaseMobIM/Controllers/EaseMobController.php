@@ -407,23 +407,93 @@ class EaseMobController
             'Authorization' => $this->getToken(),
         ];
         $data['http_errors'] = false;
-        $data['target_type'] = $target_type;
-        $data['target'] = $target;
-        $data['msg'] = [
-            'type' => 'cmd',
-            'msg' => $content,
+        $option = [
+            'target_type' => $target_type,
+            'target' => $target,
+            'msg' => [
+                'type' => 'cmd',
+                'msg' => $content,
+            ],
+            'from' => $from,
+            'ext' => (object) $ext,
         ];
-        $data['from'] = $from;
-        $data['ext'] = $ext;
-
+        $data['body'] = json_encode($option);
         $Client = new Client();
-        $result = $Client->request('get', $url, $data);
+        $result = $Client->request('post', $url, $data);
 
         if ($result->getStatusCode() != 200) {
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * 为未注册环信用户注册环信（兼容老用户）.
+     *
+     * @author ZsyD<1251992018@qq.com>
+     * @param Request $request
+     * @return mixed
+     */
+    public function registerOldUsers(Request $request)
+    {
+        $callback = function () use ($request) {
+            $url = $this->url.'users?limit=100000';
+            $data['headers'] = [
+                'Authorization' => $this->getToken(),
+            ];
+            $data['http_errors'] = false;
+
+            $Client = new Client();
+            $result = $Client->request('get', $url, $data);
+            $reCon = json_decode($result->getBody()->getContents());
+
+            if ($result->getStatusCode() != 200) {
+                return response()->json([
+                    'message' => [
+                        $reCon->error_description,
+                    ],
+                ])->setStatusCode(500);
+            }
+
+            $registered = collect($reCon->entities)->pluck('username')->filter();
+            $ids = User::whereNull('deleted_at')->pluck('id');
+            $unregistered = $ids->diff($registered);
+
+            if (! $unregistered->isEmpty()) {
+                if ($unregistered->count() > 20) {
+                    $unregistered_chuck = $unregistered->chunk(20);
+                    foreach ($unregistered_chuck as $v) {
+                        $request->user_ids = $v->toArray();
+                        $result_ = $this->createUsers($request);
+
+                        if ($result_->getStatusCode() != 201) {
+                            return response()->json([
+                                'message' => [json_decode($result_->getContent())->message],
+                                'unregistered' => $unregistered,
+                            ])->setStatusCode(500);
+                        }
+                        sleep(10);
+                    }
+                } else {
+                    $request->user_ids = $unregistered->toArray();
+                    $result_ = $this->createUsers($request);
+
+                    if ($result_->getStatusCode() != 201) {
+                        return response()->json([
+                            'message' => [json_decode($result_->getContent())->message],
+                            'unregistered' => $unregistered,
+                        ])->setStatusCode(500);
+                    }
+                }
+            }
+
+            return response()->json([
+                'message' => ['注册成功'],
+            ])->setStatusCode(201);
+        };
+
+        return $this->getConfig($callback);
     }
 
     public function getMessage()
