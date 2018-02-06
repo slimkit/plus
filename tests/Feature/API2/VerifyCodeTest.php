@@ -23,7 +23,6 @@ namespace Zhiyi\Plus\Tests\Feature\API2;
 use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Artisan;
 use Zhiyi\Plus\Models\User as UserModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
