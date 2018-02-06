@@ -52,19 +52,19 @@ class AppStorePay extends Process
      */
     public function verifyReceipt(string $receipt, CurrencyOrderModel $currencyOrder): bool
     {
-        $initialData = ['receipt-data' => base64_encode($receipt)];
-        $body = json_encode($initialData);
+        $initialData = ['receipt-data' => $receipt];
 
         try {
-            $result = $this->sendReceiptToAppStore($body);
+            $result = $this->sendReceiptToAppStore($initialData);
             $data = json_decode($result->getBody()->getContents(), true);
-            if ($data['status' !== 0]) {
-                throw new \Exception($this->getStatusError($data['status']), 1);
+
+            if ($data['status'] !== 0) {
+                throw new \Exception($this->getStatusError($data['status']));
             }
 
             return $this->complete($currencyOrder);
         } catch (\Exception $exception) {
-            throw new \Exception($exception->getMessage(), 1);
+            throw new \Exception($exception->getMessage());
         }
     }
 
@@ -76,11 +76,11 @@ class AppStorePay extends Process
      */
     protected function sendReceiptToAppStore($body)
     {
-        $http = new Client();
+        $http = new Client(['headers' => ['Content-Type' => 'application/json']]);
 
         $verifyUrl = $this->sandbox ? $this->testUrl : $this->url;
 
-        $result = $http->request('POST', $verifyUrl, [], $body);
+        $result = $http->request('POST', $verifyUrl, ['json' => $body]);
 
         return $result;
     }
