@@ -55,7 +55,7 @@ class CommentPinnedController extends Controller
             ->limit($limit)
             ->get();
 
-        $pinneds->load('news');
+        $pinneds->load(['news', 'user']);
 
         return response()->json($pinneds, 200);
     }
