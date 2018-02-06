@@ -92,7 +92,7 @@ class CurrencyAppleController extends Controller
 
             return response()->json(['message' => ['添加成功']], 201);
         }
-        $products = json_decode($datas->value);
+        $products = json_decode($datas->value, true);
         if (in_array($addProductInfo['product_id'], collect($products)->pluck('product_id')->toArray())) {
             return response()->json(['message' => ['产品id已存在']], 422);
         }
