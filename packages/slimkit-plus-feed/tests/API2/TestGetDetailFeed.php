@@ -20,18 +20,14 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Tests\API2;
 
-use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Support\Facades\Auth;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Auth\JWTAuthToken;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
 class TestGetDetailFeed extends TestCase
 {
     use DatabaseTransactions;
-    
+
     private $user;
 
     /**
