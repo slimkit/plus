@@ -2,7 +2,7 @@
 <html>
     <head>
       <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
-        <title>关于我们</title>
+        <title>苹果IAP帮助</title>
         <style>
             html, body {
                 height: 100%;
