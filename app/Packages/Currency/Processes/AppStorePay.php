@@ -37,26 +37,27 @@ class AppStorePay extends Process
 
     public function __construct($sandbox = null)
     {
+        parent::__construct();
+
         $this->sandbox = (bool) $sandbox;
     }
 
     /**
      * 验证票据.
      *
-     * @param array $receipt
+     * @param string $receipt
      * @param Zhiyi\Plus\Models\CurrencyOrderModel
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function verifyReceipt(array $receipt, CurrencyOrderModel $currencyOrder): bool
+    public function verifyReceipt(string $receipt, CurrencyOrderModel $currencyOrder): bool
     {
-        $initialData = ['receipt-data' => $receipt];
+        $initialData = ['receipt-data' => base64_encode($receipt)];
         $body = json_encode($initialData);
 
         try {
             $result = $this->sendReceiptToAppStore($body);
-
-            $data = json_decode($result, true);
+            $data = json_decode($result->getBody()->getContents(), true);
             if ($data['status' !== 0]) {
                 throw new \Exception($this->getStatusError($data['status']), 1);
             }
@@ -109,6 +110,7 @@ class AppStorePay extends Process
         $order->currency = $this->currency_type->id;
         $order->target_type = Order::TARGET_TYPE_RECHARGE;
         $order->amount = $amount * $config['recharge-ratio'];
+        $order->save();
 
         return $order;
     }
