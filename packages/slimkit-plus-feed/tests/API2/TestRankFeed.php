@@ -83,6 +83,6 @@ class TestRankFeed extends TestCase
             'images' => [],
         ];
 
-        $this->feed = $this->post('api/v2/feeds' . '?token=' . $token, $data)->json();
+        $this->feed = $this->post('api/v2/feeds'.'?token='.$token, $data)->json();
     }
 }
