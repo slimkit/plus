@@ -62,6 +62,7 @@ class AppStorePay extends Process
 
             if ($data['status'] === 21007) {
                 $this->sandbox = true;
+
                 return $this->verifyReceipt($receipt, $currencyOrder);
             }
 
@@ -164,15 +165,15 @@ class AppStorePay extends Process
         $product = collect(json_decode($products->value, true))->where('product_id', $data['receipt']['in_app'][0]['product_id'])->first();
 
         if (! $product) {
-            throw new \Exception("订单商品id不匹配");
+            throw new \Exception('订单商品id不匹配');
         }
 
         if ($product['amount'] != $order->amount) {
-            throw new \Exception("订单金额不匹配");
+            throw new \Exception('订单金额不匹配');
         }
 
         if ($order->state != 0) {
-            throw new \Exception("订单已完成");
+            throw new \Exception('订单已完成');
         }
     }
 
