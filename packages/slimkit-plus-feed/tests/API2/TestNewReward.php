@@ -58,9 +58,11 @@ class TestRewardFeed extends TestCase
 
         $this->addTestFeedData($ownerToken);
 
-        // 旧版打赏用户动态
-        $api = $this->api."/{$this->feed['id']}/rewards?token=".$otherToken;
+        // 新版打赏用户动态
+        $api = $this->api."/{$this->feed['id']}/new-rewards?token=".$otherToken;
+
         $response = $this->post($api, ['amount' => 10]);
+
         $response->assertJsonStructure(['message']);
     }
 
