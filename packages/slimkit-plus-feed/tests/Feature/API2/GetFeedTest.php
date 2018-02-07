@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace SlimKit\PlusFeed\Tests\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
-use Illuminate\Http\UploadedFile;
 use Zhiyi\Plus\Models\Role as RoleModel;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\Ability as AbilityModel;
@@ -140,6 +139,4 @@ class SendImageFeedTest extends TestCase
         $response
             ->assertStatus(200);
     }
-
-
 }

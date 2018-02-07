@@ -57,7 +57,7 @@ class SendImageFeedTest extends TestCase
     }
 
     /**
-     * 获取图片id
+     * 获取图片id.
      *
      * @param $user
      * @return array
@@ -67,7 +67,7 @@ class SendImageFeedTest extends TestCase
         $file = $this
             ->actingAs($user, 'api')
             ->json('POST', '/api/v2/files', [
-                    'file' => UploadedFile::fake()->image('test.jpg')->size(0.00)
+                    'file' => UploadedFile::fake()->image('test.jpg')->size(0.00),
                 ]
             )
             ->decodeResponseJson();
@@ -91,7 +91,7 @@ class SendImageFeedTest extends TestCase
                 'feed_mark' => intval(time().rand(1000, 9999)),
                 'images' => [
                     ['id' => $this->getFileId($user)],
-                ]
+                ],
             ]);
         $response
             ->assertStatus(201)
