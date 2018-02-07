@@ -101,7 +101,7 @@ class GetFeedCommentTest extends TestCase
      */
     public function testGetFeedComments()
     {
-        $user =$this->createUser();
+        $user = $this->createUser();
         $feed = $this->addFeed($user);
 
         $this->addFeedComment($user, $feed);
@@ -121,7 +121,7 @@ class GetFeedCommentTest extends TestCase
      */
     public function testNotAuthGetFeedComments()
     {
-        $user =$this->createUser();
+        $user = $this->createUser();
         $feed = $this->addFeed($user);
 
         $this->addFeedComment($user, $feed);
@@ -140,7 +140,7 @@ class GetFeedCommentTest extends TestCase
      */
     public function testGetFeedCommentDetail()
     {
-        $user =$this->createUser();
+        $user = $this->createUser();
         $feed = $this->addFeed($user);
         $comment = $this->addFeedComment($user, $feed);
 
@@ -153,7 +153,6 @@ class GetFeedCommentTest extends TestCase
             ->assertJsonStructure(['body', 'user_id']);
     }
 
-
     /**
      * 测试动态评论详情 用户未登录状态.
      *
@@ -161,7 +160,7 @@ class GetFeedCommentTest extends TestCase
      */
     public function testNotAuthGetFeedCommentDetail()
     {
-        $user =$this->createUser();
+        $user = $this->createUser();
         $feed = $this->addFeed($user);
         $comment = $this->addFeedComment($user, $feed);
 
@@ -172,5 +171,4 @@ class GetFeedCommentTest extends TestCase
             ->assertStatus(200)
             ->assertJsonStructure(['body', 'user_id']);
     }
-
 }
