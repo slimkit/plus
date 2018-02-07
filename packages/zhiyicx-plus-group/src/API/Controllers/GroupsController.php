@@ -580,6 +580,62 @@ class GroupsController
     }
     
     /**
+     * 获取他人的圈子列表.
+     *
+     * @param Request $request
+     * @param GroupModel $groupModel
+     * @return mixed
+     * @author BS <414606094@qq.com>
+     */
+    public function othersGroups(Request $request, GroupModel $groupModel)
+    {
+        $user_id = $request->query('user_id', 0);
+
+        $type = $request->query('type');
+        $limit = (int) $request->query('limit', 15);
+        $offset = (int) $request->query('offset', 0);
+
+        $type = in_array($type, ['join']) ? $type : 'join';
+
+        $groups = $group->when($type, function ($query) use ($type, $user_id) {
+            switch ($type) {
+                case 'join':
+                    return $query->whereHas('members', function ($query) use ($user_id) {
+                        return $query->where('user_id', $user_id)->where('audit', 1);
+                    });
+                    break;
+                default:
+                    return $query->whereHas('members', function ($query) use ($user_id) {
+                        return $query->where('user_id', $user_id)->where('audit', 1);
+                    });
+                    break;
+            }
+        })
+        ->limit($limit)
+        ->offset($offset)
+        ->get();
+
+        $joined = GroupMemberModel::whereIn('group_id', $groups->map->id)
+            ->where('user_id', $user_id)
+            ->get();
+
+        $groups = $groups->map(function (GroupModel $group) use ($joined) {
+            $group->joined = null;
+            $joined->each(function (GroupMemberModel $member) use ($group) {
+                if ($member->group_id === $group->id && $member->audit === 1) {
+                    $group->joined = $member;
+
+                    return false;
+                }
+            });
+
+            return $group;
+        });
+
+        return response()->json($groups, 200);
+    }
+
+    /**
      * 设置圈子权限.
      */
     public function permissions(Request $request, GroupModel $group)
