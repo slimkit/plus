@@ -67,7 +67,7 @@ class LikeFeedTest extends TestCase
             ->json('POST', '/api/v2/feeds', [
                 'feed_content' => 'test',
                 'feed_from' => 5,
-                'feed_mark' => intval(time() . rand(1000, 9999)),
+                'feed_mark' => intval(time().rand(1000, 9999)),
             ])
             ->decodeResponseJson();
 
@@ -108,7 +108,7 @@ class LikeFeedTest extends TestCase
     }
 
     /**
-     * 取消点赞
+     * 取消点赞.
      *
      * @return mixed
      */
