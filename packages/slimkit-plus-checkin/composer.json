@@ -16,6 +16,11 @@
             "SlimKit\\PlusCheckIn\\Seeds\\": "database/seeds/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "SlimKit\\PlusCheckIn\\Tests\\": "tests/"
+        }
+    },
     "config": {
         "sort-packages": true
     },
