@@ -29,6 +29,18 @@ class CheckinTest extends TestCase
     use DatabaseTransactions;
 
     /**
+     * Set the test up.
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        config('checkin.open', true);
+    }
+
+    /**
      * Test get checkin ranks.
      *
      * @return void

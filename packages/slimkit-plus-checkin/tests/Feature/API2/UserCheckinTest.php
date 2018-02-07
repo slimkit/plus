@@ -29,6 +29,18 @@ class UserCheckinTest extends TestCase
     use DatabaseTransactions;
 
     /**
+     * Set the test up.
+     *
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        config('checkin.open', true);
+    }
+
+    /**
      * Test Not login request.
      *
      * @return void
