@@ -37,7 +37,9 @@ class CheckinTest extends TestCase
     {
         parent::setUp();
 
-        config('checkin.open', true);
+        config([
+            'checkin.open' => true,
+        ]);
     }
 
     /**
