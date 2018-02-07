@@ -111,6 +111,5 @@ class DeleteFeedTest extends TestCase
             ->json('DELETE', "/api/v2/feeds/{$feed}/comments/{$comm}");
         $response
             ->assertStatus(204);
-
     }
 }
