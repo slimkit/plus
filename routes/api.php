@@ -218,6 +218,11 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     // Retrieve user password.
     $api->put('/user/retrieve-password', API2\ResetPasswordController::class.'@retrieve');
 
+    // IAP帮助页
+    $api->get('/currency/apple-iap/help', function () {
+        return view('apple-iap-help');
+    });
+
     /*
     |-----------------------------------------------------------------------
     | Define a route that requires user authentication.

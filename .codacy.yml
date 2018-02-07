@@ -1,0 +1,9 @@
+---
+exclude_paths:
+    - packages/*/tests/
+    - packages/*/resources/
+    - vendor/
+    - public/
+    - resources/
+    - routes/
+    - storage/
