@@ -111,7 +111,7 @@ class SendFeedCommentTest extends TestCase
             ->actingAs($owner, 'api')
             ->json('POST', "/api/v2/feeds/{$feed}/comments", [
                 'body' => 'test',
-                'reply_user' => $other->id
+                'reply_user' => $other->id,
             ]);
         $response
             ->assertStatus(201)
