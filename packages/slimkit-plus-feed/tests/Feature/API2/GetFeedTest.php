@@ -26,7 +26,7 @@ use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\Ability as AbilityModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class SendImageFeedTest extends TestCase
+class GetFeedTest extends TestCase
 {
     use DatabaseTransactions;
 
