@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace SlimKit\PlusCheckIn\Tests\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\User as UserModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CheckinRanksTest extends TestCase
