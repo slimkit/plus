@@ -49,7 +49,7 @@ class TestNewRewardFeed extends TestCase
             ->firstOrCreate([
             'balance' => 10000,
             'total_income' => 0,
-            'total_expenses' => 0
+            'total_expenses' => 0,
         ]);
     }
 
