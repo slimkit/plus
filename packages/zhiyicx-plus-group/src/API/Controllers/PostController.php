@@ -376,6 +376,9 @@ class PostController
                         break;
                 }
             })
+            ->whereHas('group', function ($query) {
+                return $query->where('audit', 1);
+            })
             ->where('user_id', $user->id)
             ->orderBy('id', 'desc')
             ->limit($limit)
