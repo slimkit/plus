@@ -91,7 +91,7 @@ class SendImageFeedTest extends TestCase
                 'images' => [
                     ['id' => $this->getFileId($user)],
                 ],
-            ])->dump();
+            ]);
         $response
             ->assertStatus(201)
             ->assertJsonStructure(['id', 'message']);
