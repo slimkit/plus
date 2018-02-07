@@ -42,6 +42,8 @@ class PostFeedTest extends TestCase
     {
         parent::setUp();
 
+        $this->withMiddleware(['ability']);
+
         $this->user = factory(UserModel::class)->create();
     }
 

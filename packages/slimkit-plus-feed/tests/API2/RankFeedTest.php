@@ -41,6 +41,8 @@ class RankFeedTest extends TestCase
     {
         parent::setUp();
 
+        $this->withMiddleware(['ability']);
+
         $this->user = factory(User::class)->create();
 
         $this->user->roles()->sync([2]);

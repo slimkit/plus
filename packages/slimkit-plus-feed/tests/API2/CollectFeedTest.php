@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Tests\API2;
 
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -40,6 +41,8 @@ class CollectFeedTest extends TestCase
     public function setUp()
     {
         parent::setUp();
+
+        $this->withMiddleware(['ability']);
 
         $this->user = factory(User::class)->create();
 

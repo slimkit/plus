@@ -37,9 +37,9 @@ class GetDetailFeedTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = factory(User::class)->create();
+        $this->withMiddleware(['ability']);
 
-        $this->user->roles()->sync([2]);
+        $this->user = factory(User::class)->create();
     }
 
     public function testGetFeedList()

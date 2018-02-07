@@ -38,6 +38,8 @@ class NewRewardFeedTest extends TestCase
     {
         parent::setUp();
 
+        $this->withMiddleware(['ability']);
+
         $this->owner = factory(User::class)->create();
 
         $this->owner->roles()->sync([2]);

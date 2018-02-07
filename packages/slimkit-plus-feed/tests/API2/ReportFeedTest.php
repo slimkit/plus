@@ -41,6 +41,8 @@ class ReportFeedTest extends TestCase
     {
         parent::setUp();
 
+        $this->withMiddleware(['ability']);
+
         $this->user = factory(User::class)->create();
     }
 

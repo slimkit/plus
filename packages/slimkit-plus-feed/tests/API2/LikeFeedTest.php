@@ -38,6 +38,8 @@ class LikeFeedTest extends TestCase
     {
         parent::setUp();
 
+        $this->withMiddleware(['ability']);
+
         $this->user = factory(User::class)->create();
     }
 

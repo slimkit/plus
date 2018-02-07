@@ -50,7 +50,7 @@ class DeleteFeedTest extends TestCase
 
         $token = $this->guard()->login($this->user);
 
-        $this->addTestFeedData($token);
+        $this->withMiddleware(['ability']);
 
         $this->delete($this->api."/{$this->feed['id']}?token=".$token)->assertStatus(204);
     }
