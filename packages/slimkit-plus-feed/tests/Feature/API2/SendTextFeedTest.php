@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace SlimKit\PlusFeed\Tests\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\Role as RoleModel;
+use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\Ability as AbilityModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -46,7 +46,7 @@ class SendTextFeedTest extends TestCase
         });
         $role = factory(RoleModel::class)
             ->create([
-                'name' => 'test'
+                'name' => 'test',
             ]);
         $role
             ->abilities()
