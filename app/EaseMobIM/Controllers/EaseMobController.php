@@ -390,7 +390,7 @@ class EaseMobController
     }
 
     /**
-     * 发送透传消息 [群组相关时需要].
+     * 发送普通消息 [群组相关时需要].
      *
      * @param string $content       消息内容
      * @param array  $target        消息发送对象
@@ -411,7 +411,7 @@ class EaseMobController
             'target_type' => $target_type,
             'target' => $target,
             'msg' => [
-                'type' => 'cmd',
+                'type' => 'txt',
                 'msg' => $content,
             ],
             'from' => $from,
