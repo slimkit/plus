@@ -58,19 +58,19 @@ class PinnedFeedTest extends TestCase
 
         // 动态置顶: POST /feeds/:feed/pinneds
         $feedPinned = $this->post(
-            $this->api . "/{$this->feed['id']}/pinneds?token=" . $token,
+            $this->api."/{$this->feed['id']}/pinneds?token=".$token,
             $data
         );
         $feedPinned->assertStatus(201)->assertJsonStructure(['message']);
 
         // 动态评论置顶 POST /feeds/:feed/comments/:comment/pinneds
         $commentPinned = $this->post(
-            $this->api . "/{$this->feed['id']}/comments/{$this->comment['comment']['id']}/pinneds?token=" . $token,
+            $this->api."/{$this->feed['id']}/comments/{$this->comment['comment']['id']}/pinneds?token=".$token,
             $data);
         $commentPinned->assertStatus(201)->assertJsonStructure(['message']);
 
         // 动态评论置顶审核列表: GET /user/feed-comment-pinneds
-        $this->get('/api/v2/user/feed-comment-pinneds?token=' . $token)
+        $this->get('/api/v2/user/feed-comment-pinneds?token='.$token)
             ->assertStatus(200)
             ->assertJsonStructure([
                 [
@@ -87,7 +87,7 @@ class PinnedFeedTest extends TestCase
                     'target_user',
                     'raw',
                     'feed',
-                    'comment'
+                    'comment',
                 ],
             ]);
 
@@ -121,10 +121,10 @@ class PinnedFeedTest extends TestCase
             'images' => [],
         ];
 
-        $this->feed = $this->post($this->api . '?token=' . $token, $data)->json();
+        $this->feed = $this->post($this->api.'?token='.$token, $data)->json();
 
         $this->comment = $this->post(
-            $this->api . "/{$this->feed['id']}/comments?token=" . $token,
+            $this->api."/{$this->feed['id']}/comments?token=".$token,
             ['body' => '测试评论']
         )->json();
     }

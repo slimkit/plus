@@ -52,7 +52,7 @@ class DeleteFeedTest extends TestCase
 
         $this->addTestFeedData($token);
 
-        $this->delete($this->api . "/{$this->feed['id']}?token=" . $token)->assertStatus(204);
+        $this->delete($this->api."/{$this->feed['id']}?token=".$token)->assertStatus(204);
     }
 
     /**
@@ -80,6 +80,6 @@ class DeleteFeedTest extends TestCase
             'images' => [],
         ];
 
-        $this->feed = $this->post($this->api . '?token=' . $token, $data)->json();
+        $this->feed = $this->post($this->api.'?token='.$token, $data)->json();
     }
 }

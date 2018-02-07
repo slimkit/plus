@@ -41,7 +41,6 @@ class LikeFeedTest extends TestCase
         $this->user = factory(User::class)->create();
     }
 
-
     public function testLikeFeed()
     {
         $this->user->roles()->sync([2]);
@@ -50,7 +49,7 @@ class LikeFeedTest extends TestCase
 
         $this->addTestFeedData($token);
         // 点喜欢
-        $api = $this->api . "/{$this->feed['id']}/like?token=" . $token;
+        $api = $this->api."/{$this->feed['id']}/like?token=".$token;
         $res = $this->post($api);
 
         $this->response = $res->json();
@@ -58,12 +57,12 @@ class LikeFeedTest extends TestCase
         $res->assertJsonStructure(['message']);
 
         // 喜欢该动态的用户列表.
-        $api = $this->api . "/{$this->feed['id']}/likes?token=" . $token;
+        $api = $this->api."/{$this->feed['id']}/likes?token=".$token;
         $res = $this->get($api);
         $res->assertStatus(200);
 
         // 取消喜欢
-        $api = $this->api . "/{$this->feed['id']}/unlike?token=" . $token;
+        $api = $this->api."/{$this->feed['id']}/unlike?token=".$token;
         $res = $this->delete($api);
 
         $res->assertStatus(204);
@@ -94,6 +93,6 @@ class LikeFeedTest extends TestCase
             'images' => [],
         ];
 
-        $this->feed = $this->post($this->api . '?token=' . $token, $data)->json();
+        $this->feed = $this->post($this->api.'?token='.$token, $data)->json();
     }
 }

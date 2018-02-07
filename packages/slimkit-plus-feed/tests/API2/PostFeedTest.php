@@ -51,7 +51,7 @@ class PostFeedTest extends TestCase
      */
     private function getFileId($token)
     {
-        return $this->post('/api/v2/files?token=' . $token, [
+        return $this->post('/api/v2/files?token='.$token, [
             'file' => UploadedFile::fake()->image('test.jpg')->size(200),
         ])->json();
     }
@@ -63,10 +63,10 @@ class PostFeedTest extends TestCase
         $token = $this->guard()->login($this->user);
 
         // 纯文本动态
-        $this->contentfeed = $this->post($this->api . '?token=' . $token, [
+        $this->contentfeed = $this->post($this->api.'?token='.$token, [
             'feed_content' => '测试动态',
             'feed_from' => 1,
-            'feed_mark' => time() . mt_rand(1000000, 9999999),
+            'feed_mark' => time().mt_rand(1000000, 9999999),
             'feed_latitude' => '',
             'feed_longtitude' => '',
             'feed_geohash' => '',
@@ -75,9 +75,9 @@ class PostFeedTest extends TestCase
         ]);
 
         // 图片动态
-        $this->imagefeed = $this->post($this->api . '?token=' . $token, [
+        $this->imagefeed = $this->post($this->api.'?token='.$token, [
             'feed_from' => 1,
-            'feed_mark' => time() . mt_rand(1000000, 9999999),
+            'feed_mark' => time().mt_rand(1000000, 9999999),
             'feed_latitude' => '',
             'feed_longtitude' => '',
             'feed_geohash' => '',
@@ -86,10 +86,10 @@ class PostFeedTest extends TestCase
             ],
         ]);
 
-        $this->imageContentfeed = $this->post($this->api . '?token=' . $token, [
+        $this->imageContentfeed = $this->post($this->api.'?token='.$token, [
             'feed_content' => '测试动态',
             'feed_from' => 1,
-            'feed_mark' => time() . mt_rand(1000000, 9999999),
+            'feed_mark' => time().mt_rand(1000000, 9999999),
             'feed_latitude' => '',
             'feed_longtitude' => '',
             'feed_geohash' => '',
@@ -99,10 +99,10 @@ class PostFeedTest extends TestCase
         ]);
 
         // 查看收费
-        $this->amountReadfeed = $this->post($this->api . '?token=' . $token, [
+        $this->amountReadfeed = $this->post($this->api.'?token='.$token, [
             'feed_content' => '测试动态',
             'feed_from' => 1,
-            'feed_mark' => time() . mt_rand(1000000, 9999999),
+            'feed_mark' => time().mt_rand(1000000, 9999999),
             'feed_latitude' => '',
             'feed_longtitude' => '',
             'feed_geohash' => '',
@@ -112,10 +112,10 @@ class PostFeedTest extends TestCase
         ]);
 
         // 下载收费
-        $this->amountDownloadfeed = $this->post($this->api . '?token=' . $token, [
+        $this->amountDownloadfeed = $this->post($this->api.'?token='.$token, [
             'feed_content' => '测试动态',
             'feed_from' => 1,
-            'feed_mark' => time() . mt_rand(1000000, 9999999),
+            'feed_mark' => time().mt_rand(1000000, 9999999),
             'feed_latitude' => '',
             'feed_longtitude' => '',
             'feed_geohash' => '',

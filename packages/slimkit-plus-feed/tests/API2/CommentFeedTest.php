@@ -75,7 +75,6 @@ class CommentFeedTest extends TestCase
 
         $response->assertStatus(200)
                  ->assertJsonStructure(['pinneds', 'comments']);
-
     }
 
     /**
@@ -85,11 +84,10 @@ class CommentFeedTest extends TestCase
      */
     public function testGetFeedCommentDetail()
     {
-
         $comment = $this->commentFeed()->json();
 
         $response = $this->actingAs($this->user, 'api')
-                         ->get($this->api . "/{$this->feed['id']}/comments/{$comment['comment']['id']}");
+                         ->get($this->api."/{$this->feed['id']}/comments/{$comment['comment']['id']}");
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -103,7 +101,6 @@ class CommentFeedTest extends TestCase
                 'created_at',
                 'updated_at',
             ]);
-
     }
 
     /**
@@ -120,7 +117,6 @@ class CommentFeedTest extends TestCase
 
         $response->assertStatus(204);
     }
-
 
     /**
      * 评论动态.
