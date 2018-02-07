@@ -41,7 +41,7 @@ class CheckinRanksTest extends TestCase
             ->assertStatus(200)
             ->assertHeader('Content-Type', 'application/json')
             ->decodeResponseJson();
-        
+
         $this->assertTrue(
             is_array($json)
         );
