@@ -81,7 +81,7 @@ class LocationController extends Controller
     {
         $hots = $configMModel->byNamespace('common')
             ->byName('hots_area')
-            ->value('value');
+            ->value('value') ?? '';
 
         $hots = collect(json_decode($hots, true))
             ->sortByDesc('sort')
