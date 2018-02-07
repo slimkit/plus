@@ -46,7 +46,6 @@ class CommentFeedTest extends TestCase
 
         $this->user = factory(User::class)->create();
 
-
         $this->addTestFeedData($this->user);
     }
 
