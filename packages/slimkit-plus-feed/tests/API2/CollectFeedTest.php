@@ -24,37 +24,13 @@ use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class TestGetFeed extends TestCase
+class CollectFeedTest extends TestCase
 {
     use DatabaseTransactions;
 
-    private $api = '/api/v2/feeds';
+    protected $api = '/api/v2/feeds';
 
-    private $user;
-
-    private $structure = [
-        'id',
-        'user_id',
-        'feed_content',
-        'feed_from',
-        'like_count',
-        'feed_view_count',
-        'feed_comment_count',
-        'feed_latitude',
-        'feed_longtitude',
-        'feed_geohash',
-        'audit_status',
-        'feed_mark',
-        'created_at',
-        'updated_at',
-        'deleted_at',
-        'has_collect',
-        'has_like',
-        'reward',
-        'images',
-        'paid_node',
-        'likes',
-    ];
+    protected $user;
 
     /**
      * 前置条件.
@@ -73,31 +49,44 @@ class TestGetFeed extends TestCase
     }
 
     /**
-     * 获取动态列表.
+     * 获取收藏列表.
      *
      * @return void
      */
-    public function testGetFeedList()
+    public function testCollectFeedList()
     {
-        $response = $this->actingAs($this->user, 'api')->get($this->api);
+        $response = $this->actingAs($this->user, 'api')->get($this->api.'/collections');
 
         $response
             ->assertStatus(200)
-            ->assertJsonStructure(['ad', 'pinned', 'feeds']);
+            ->assertJsonStructure([]);
     }
 
     /**
-     * 获取动态详情.
+     * 动态收藏.
      *
      * @return void
      */
-    public function testGetFeedDetail()
+    public function testCollectFeed()
     {
-        $response = $this->actingAs($this->user, 'api')->get($this->api.'/'.$this->feed['id']);
+        $response = $this->actingAs($this->user, 'api')
+                         ->post($this->api."/{$this->feed['id']}/collections");
 
-        $response
-            ->assertStatus(200)
-            ->assertJsonStructure($this->structure);
+        $response->assertStatus(201)
+                 ->assertJsonStructure(['message']);
+    }
+
+    /**
+     * 取消动态收藏.
+     *
+     * @return void
+     */
+    public function testUnCollectFeed()
+    {
+        $response = $this->actingAs($this->user, 'api')
+                         ->delete($this->api."/{$this->feed['id']}/uncollect");
+
+        $response->assertStatus(204);
     }
 
     /**
@@ -119,8 +108,6 @@ class TestGetFeed extends TestCase
             'images' => [],
         ];
 
-        $this->feed = $this->actingAs($user, 'api')
-            ->post($this->api, $data)
-            ->json();
+        $this->feed = $this->actingAs($user, 'api')->post($this->api, $data)->json();
     }
 }

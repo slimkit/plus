@@ -22,80 +22,52 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Tests\API2;
 
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Tests\TestCase;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class TestCollectFeed extends TestCase
+class DeleteFeedTest extends TestCase
 {
     use DatabaseTransactions;
 
-    protected $api = '/api/v2/feeds';
+    private $api = '/api/v2/feeds';
 
-    protected $user;
+    private $user;
 
     /**
      * 前置条件.
-     *
-     * @return void
      */
     public function setUp()
     {
         parent::setUp();
 
         $this->user = factory(User::class)->create();
+    }
 
+    public function testDeleteFeed()
+    {
         $this->user->roles()->sync([2]);
 
-        $this->addTestFeedData($this->user);
+        $token = $this->guard()->login($this->user);
+
+        $this->addTestFeedData($token);
+
+        $this->delete($this->api . "/{$this->feed['id']}?token=" . $token)->assertStatus(204);
     }
 
     /**
-     * 获取收藏列表.
-     *
-     * @return void
+     * @return Guard
      */
-    public function testCollectFeedList()
+    protected function guard(): Guard
     {
-        $response = $this->actingAs($this->user, 'api')->get($this->api.'/collections');
-
-        $response
-            ->assertStatus(200)
-            ->assertJsonStructure([]);
+        return Auth::guard('api');
     }
 
     /**
-     * 动态收藏.
-     *
-     * @return void
+     * @param $token
+     * @return mixed
      */
-    public function testCollectFeed()
-    {
-        $response = $this->actingAs($this->user, 'api')
-                         ->post($this->api."/{$this->feed['id']}/collections");
-
-        $response->assertStatus(201)
-                 ->assertJsonStructure(['message']);
-    }
-
-    /**
-     * 取消动态收藏.
-     *
-     * @return void
-     */
-    public function testUnCollectFeed()
-    {
-        $response = $this->actingAs($this->user, 'api')
-                         ->delete($this->api."/{$this->feed['id']}/uncollect");
-
-        $response->assertStatus(204);
-    }
-
-    /**
-     * 填充动态数据.
-     *
-     * @param $user
-     * @return void
-     */
-    protected function addTestFeedData($user)
+    protected function addTestFeedData($token)
     {
         $data = [
             'feed_content' => '单元测试动态数据',
@@ -108,6 +80,6 @@ class TestCollectFeed extends TestCase
             'images' => [],
         ];
 
-        $this->feed = $this->actingAs($user, 'api')->post($this->api, $data)->json();
+        $this->feed = $this->post($this->api . '?token=' . $token, $data)->json();
     }
 }

@@ -21,21 +21,21 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Tests\API2;
 
 use Zhiyi\Plus\Models\User;
+use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
-class TestReportFeed extends TestCase
+class PinnedFeedTest extends TestCase
 {
     use DatabaseTransactions;
 
     private $api = '/api/v2/feeds';
 
-    private $user;
-
     /**
-     * 前置条件.
+     * 接口测试前置条件.
      */
     public function setUp()
     {
@@ -44,17 +44,56 @@ class TestReportFeed extends TestCase
         $this->user = factory(User::class)->create();
     }
 
-    public function testFeedRank()
+    public function testCollectFeed()
     {
         $this->user->roles()->sync([2]);
+
+        $this->user->wallet()->firstOrCreate([])->increment('balance', 1000000);
 
         $token = $this->guard()->login($this->user);
 
         $this->addTestFeedData($token);
 
-        $res = $this->post($this->api."/{$this->feed['id']}/reports?token=".$token);
+        $data = ['amount' => 100, 'day' => 1];
 
-        $res->assertStatus(201)->assertJsonStructure(['message']);
+        // 动态置顶: POST /feeds/:feed/pinneds
+        $feedPinned = $this->post(
+            $this->api . "/{$this->feed['id']}/pinneds?token=" . $token,
+            $data
+        );
+        $feedPinned->assertStatus(201)->assertJsonStructure(['message']);
+
+        // 动态评论置顶 POST /feeds/:feed/comments/:comment/pinneds
+        $commentPinned = $this->post(
+            $this->api . "/{$this->feed['id']}/comments/{$this->comment['comment']['id']}/pinneds?token=" . $token,
+            $data);
+        $commentPinned->assertStatus(201)->assertJsonStructure(['message']);
+
+        // 动态评论置顶审核列表: GET /user/feed-comment-pinneds
+        $this->get('/api/v2/user/feed-comment-pinneds?token=' . $token)
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                [
+                    'id',
+                    'channel',
+                    'raw',
+                    'target',
+                    'user_id',
+                    'amount',
+                    'day',
+                    'expires_at',
+                    'created_at',
+                    'updated_at',
+                    'target_user',
+                    'raw',
+                    'feed',
+                    'comment'
+                ],
+            ]);
+
+        // 评论置顶审核通过: PATCH /feeds/:feed/comments/:comment/pinneds/:pinned
+//        $res = $this->get($this->api . "{$this->feed['id']}/comments/{$this->comment['comment']['id']}/pinneds/:pinned?token=" . $token);
+//        $res->assertStatus(200)->assertJsonStructure([]);
     }
 
     /**
@@ -82,6 +121,11 @@ class TestReportFeed extends TestCase
             'images' => [],
         ];
 
-        $this->feed = $this->post('/api/v2/feeds?token='.$token, $data)->json();
+        $this->feed = $this->post($this->api . '?token=' . $token, $data)->json();
+
+        $this->comment = $this->post(
+            $this->api . "/{$this->feed['id']}/comments?token=" . $token,
+            ['body' => '测试评论']
+        )->json();
     }
 }

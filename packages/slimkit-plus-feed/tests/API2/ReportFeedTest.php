@@ -20,27 +20,57 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Tests\API2;
 
+use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Tests\TestCase;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class TestLikeFeed extends TestCase
+class ReportFeedTest extends TestCase
 {
     use DatabaseTransactions;
 
     private $api = '/api/v2/feeds';
 
+    private $user;
+
+    /**
+     * 前置条件.
+     */
     public function setUp()
     {
         parent::setUp();
 
-        $jwtAuthToken = $this->app->make(\Zhiyi\Plus\Auth\JWTAuthToken::class);
+        $this->user = factory(User::class)->create();
+    }
 
-        $this->user = factory(\Zhiyi\Plus\Models\User::class)->create();
-
+    public function testFeedRank()
+    {
         $this->user->roles()->sync([2]);
 
-        $this->token = $jwtAuthToken->create($this->user);
+        $token = $this->guard()->login($this->user);
 
+        $this->addTestFeedData($token);
+
+        $res = $this->post($this->api."/{$this->feed['id']}/reports?token=".$token);
+
+        $res->assertStatus(201)->assertJsonStructure(['message']);
+    }
+
+    /**
+     * @return Guard
+     */
+    protected function guard(): Guard
+    {
+        return Auth::guard('api');
+    }
+
+    /**
+     * @param $token
+     * @return mixed
+     */
+    protected function addTestFeedData($token)
+    {
         $data = [
             'feed_content' => '单元测试动态数据',
             'feed_from' => 1,
@@ -52,28 +82,6 @@ class TestLikeFeed extends TestCase
             'images' => [],
         ];
 
-        $this->feed = $this->post($this->api.'?token='.$this->token, $data)->json();
-    }
-
-    public function testLikeFeed()
-    {
-        // 点喜欢
-        $api = $this->api."/{$this->feed['id']}/like?token=".$this->token;
-        $res = $this->post($api);
-
-        $this->response = $res->json();
-        $res->assertStatus(201);
-        $res->assertJsonStructure(['message']);
-
-        // 喜欢该动态的用户列表.
-        $api = $this->api."/{$this->feed['id']}/likes?token=".$this->token;
-        $res = $this->get($api);
-        $res->assertStatus(200);
-
-        // 取消喜欢
-        $api = $this->api."/{$this->feed['id']}/unlike?token=".$this->token;
-        $res = $this->delete($api);
-
-        $res->assertStatus(204);
+        $this->feed = $this->post('/api/v2/feeds?token='.$token, $data)->json();
     }
 }

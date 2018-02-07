@@ -22,55 +22,54 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Tests\API2;
 
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Tests\TestCase;
-use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class TestRankFeed extends TestCase
+class NewRewardFeedTest extends TestCase
 {
     use DatabaseTransactions;
 
-    private $api = '/api/v2/feeds/ranks';
+    private $api = '/api/v2/feeds';
 
-    private $structure = ['id', 'name', 'sex', 'following', 'follower', 'avatar', 'bg', 'verified', 'extra'];
+    private $owner;
 
-    /**
-     * 前置条件.
-     */
+    private $other;
+
     public function setUp()
     {
         parent::setUp();
 
-        $this->user = factory(User::class)->create();
+        $this->owner = factory(User::class)->create();
 
-        $this->user->roles()->sync([2]);
+        $this->owner->roles()->sync([2]);
+
+        $this->other = factory(User::class)->create();
+
+        $this->other
+            ->newWallet()
+            ->firstOrCreate([
+            'balance' => 10000,
+            'total_income' => 0,
+            'total_expenses' => 0,
+        ]);
     }
 
-    public function testFeedRank()
+    public function testRewardFeed()
     {
-        $token = $this->guard()->login($this->user);
+        $this->addTestFeedData($this->owner);
 
-        $this->addTestFeedData($token);
+        $response = $this->actingAs($this->other, 'api')
+            ->post($this->api."/{$this->feed['id']}/new-rewards", ['amount' => 10]);
 
-        $response = $this->get($this->api.'?token='.$token);
         $response
-                ->assertStatus(200)
-                ->assertJsonStructure([$this->structure]);
-    }
-
-    /**
-     * @return Guard
-     */
-    protected function guard(): Guard
-    {
-        return Auth::guard('api');
+            ->assertStatus(201)
+            ->assertJsonStructure(['message']);
     }
 
     /**
      * @param $token
      * @return mixed
      */
-    protected function addTestFeedData($token)
+    protected function addTestFeedData($user)
     {
         $data = [
             'feed_content' => '单元测试动态数据',
@@ -79,10 +78,12 @@ class TestRankFeed extends TestCase
             'feed_latitude' => '',
             'feed_longtitude' => '',
             'feed_geohash' => '',
-            'amount' => 100,
+            'amount' => 0,
             'images' => [],
         ];
 
-        $this->feed = $this->post('api/v2/feeds'.'?token='.$token, $data)->json();
+        $this->feed = $this->actingAs($user, 'api')
+            ->post('/api/v2/feeds', $data)
+            ->json();
     }
 }

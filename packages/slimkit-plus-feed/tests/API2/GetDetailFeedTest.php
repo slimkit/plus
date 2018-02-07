@@ -24,46 +24,57 @@ use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class TestRewardFeed extends TestCase
+class GetDetailFeedTest extends TestCase
 {
     use DatabaseTransactions;
 
-    private $api = '/api/v2/feeds';
+    private $user;
 
-    private $owner;
-
-    private $other;
-
+    /**
+     * 前置条件.
+     */
     public function setUp()
     {
         parent::setUp();
 
-        $this->owner = factory(User::class)->create();
+        $this->user = factory(User::class)->create();
 
-        $this->owner->roles()->sync([2]);
-
-        $this->other = factory(User::class)->create();
-
-        $this->other->roles()->sync([2]);
-
-        $this->other->wallet()
-            ->firstOrCreate([])
-            ->increment('balance', 100000);
+        $this->user->roles()->sync([2]);
     }
 
-    public function testRewardFeed()
+    public function testGetFeedList()
     {
-        $this->addTestFeedData($this->owner);
+        $this->addTestFeedData($this->user);
 
-        $response = $this->actingAs($this->other, 'api')
-            ->post($this->api."/{$this->feed['id']}/rewards", ['amount' => 10]);
-        $response
-            ->assertStatus(201)
-            ->assertJsonStructure(['message']);
+        $response = $this->get('/api/v2/feeds/'.$this->feed['id']);
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'id',
+                'user_id',
+                'feed_content',
+                'feed_from',
+                'like_count',
+                'feed_view_count',
+                'feed_comment_count',
+                'feed_latitude',
+                'feed_longtitude',
+                'feed_geohash',
+                'audit_status',
+                'feed_mark',
+                'created_at',
+                'updated_at',
+                'deleted_at',
+                'has_collect',
+                'has_like',
+                'reward',
+                'images',
+                'paid_node',
+                'likes',
+            ]);
     }
 
     /**
-     * @param $token
+     * @param $user
      * @return mixed
      */
     protected function addTestFeedData($user)
@@ -79,8 +90,6 @@ class TestRewardFeed extends TestCase
             'images' => [],
         ];
 
-        $this->feed = $this->actingAs($user, 'api')
-            ->post('/api/v2/feeds?token=', $data)
-            ->json();
+        $this->feed = $this->actingAs($user, 'api')->post('api/v2/feeds', $data)->json();
     }
 }

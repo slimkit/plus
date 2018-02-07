@@ -22,54 +22,66 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Tests\API2;
 
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Tests\TestCase;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class TestNewRewardFeed extends TestCase
+class LikeFeedTest extends TestCase
 {
     use DatabaseTransactions;
 
     private $api = '/api/v2/feeds';
 
-    private $owner;
-
-    private $other;
+    private $user;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->owner = factory(User::class)->create();
-
-        $this->owner->roles()->sync([2]);
-
-        $this->other = factory(User::class)->create();
-
-        $this->other
-            ->newWallet()
-            ->firstOrCreate([
-            'balance' => 10000,
-            'total_income' => 0,
-            'total_expenses' => 0,
-        ]);
+        $this->user = factory(User::class)->create();
     }
 
-    public function testRewardFeed()
+
+    public function testLikeFeed()
     {
-        $this->addTestFeedData($this->owner);
+        $this->user->roles()->sync([2]);
 
-        $response = $this->actingAs($this->other, 'api')
-            ->post($this->api."/{$this->feed['id']}/new-rewards", ['amount' => 10]);
+        $token = $this->guard()->login($this->user);
 
-        $response
-            ->assertStatus(201)
-            ->assertJsonStructure(['message']);
+        $this->addTestFeedData($token);
+        // 点喜欢
+        $api = $this->api . "/{$this->feed['id']}/like?token=" . $token;
+        $res = $this->post($api);
+
+        $this->response = $res->json();
+        $res->assertStatus(201);
+        $res->assertJsonStructure(['message']);
+
+        // 喜欢该动态的用户列表.
+        $api = $this->api . "/{$this->feed['id']}/likes?token=" . $token;
+        $res = $this->get($api);
+        $res->assertStatus(200);
+
+        // 取消喜欢
+        $api = $this->api . "/{$this->feed['id']}/unlike?token=" . $token;
+        $res = $this->delete($api);
+
+        $res->assertStatus(204);
+    }
+
+    /**
+     * @return Guard
+     */
+    protected function guard(): Guard
+    {
+        return Auth::guard('api');
     }
 
     /**
      * @param $token
      * @return mixed
      */
-    protected function addTestFeedData($user)
+    protected function addTestFeedData($token)
     {
         $data = [
             'feed_content' => '单元测试动态数据',
@@ -78,12 +90,10 @@ class TestNewRewardFeed extends TestCase
             'feed_latitude' => '',
             'feed_longtitude' => '',
             'feed_geohash' => '',
-            'amount' => 0,
+            'amount' => 100,
             'images' => [],
         ];
 
-        $this->feed = $this->actingAs($user, 'api')
-            ->post('/api/v2/feeds', $data)
-            ->json();
+        $this->feed = $this->post($this->api . '?token=' . $token, $data)->json();
     }
 }

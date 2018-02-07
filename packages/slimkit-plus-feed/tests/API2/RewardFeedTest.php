@@ -24,57 +24,46 @@ use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class TestGetDetailFeed extends TestCase
+class RewardFeedTest extends TestCase
 {
     use DatabaseTransactions;
 
-    private $user;
+    private $api = '/api/v2/feeds';
 
-    /**
-     * 前置条件.
-     */
+    private $owner;
+
+    private $other;
+
     public function setUp()
     {
         parent::setUp();
 
-        $this->user = factory(User::class)->create();
+        $this->owner = factory(User::class)->create();
 
-        $this->user->roles()->sync([2]);
+        $this->owner->roles()->sync([2]);
+
+        $this->other = factory(User::class)->create();
+
+        $this->other->roles()->sync([2]);
+
+        $this->other->wallet()
+            ->firstOrCreate([])
+            ->increment('balance', 100000);
     }
 
-    public function testGetFeedList()
+    public function testRewardFeed()
     {
-        $this->addTestFeedData($this->user);
+        $this->addTestFeedData($this->owner);
 
-        $response = $this->get('/api/v2/feeds/'.$this->feed['id']);
-        $response->assertStatus(200)
-            ->assertJsonStructure([
-                'id',
-                'user_id',
-                'feed_content',
-                'feed_from',
-                'like_count',
-                'feed_view_count',
-                'feed_comment_count',
-                'feed_latitude',
-                'feed_longtitude',
-                'feed_geohash',
-                'audit_status',
-                'feed_mark',
-                'created_at',
-                'updated_at',
-                'deleted_at',
-                'has_collect',
-                'has_like',
-                'reward',
-                'images',
-                'paid_node',
-                'likes',
-            ]);
+        $response = $this->actingAs($this->other, 'api')
+            ->post($this->api."/{$this->feed['id']}/rewards", ['amount' => 10]);
+        $response
+            ->assertStatus(201)
+            ->assertJsonStructure(['message']);
     }
 
     /**
-     * @param $user
+     * @param $token
      * @return mixed
      */
     protected function addTestFeedData($user)
@@ -90,6 +79,8 @@ class TestGetDetailFeed extends TestCase
             'images' => [],
         ];
 
-        $this->feed = $this->actingAs($user, 'api')->post('api/v2/feeds', $data)->json();
+        $this->feed = $this->actingAs($user, 'api')
+            ->post('/api/v2/feeds?token=', $data)
+            ->json();
     }
 }
