@@ -22,8 +22,6 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Tests\API2;
 
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Tests\TestCase;
-use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class TestNewRewardFeed extends TestCase
@@ -46,39 +44,32 @@ class TestNewRewardFeed extends TestCase
 
         $this->other = factory(User::class)->create();
 
-        $this->other->roles()->sync([2]);
-
-        $this->other->wallet()->firstOrCreate([])->increment('balance', 100000);
+        $this->other
+            ->newWallet()
+            ->firstOrCreate([
+            'balance' => 10000,
+            'total_income' => 0,
+            'total_expenses' => 0
+        ]);
     }
 
     public function testRewardFeed()
     {
-        $ownerToken = $this->guard()->login($this->owner);
-        $otherToken = $this->guard()->login($this->other);
+        $this->addTestFeedData($this->owner);
 
-        $this->addTestFeedData($ownerToken);
+        $response = $this->actingAs($this->other, 'api')
+            ->post($this->api."/{$this->feed['id']}/new-rewards", ['amount' => 10]);
 
-        // 新版打赏用户动态
-        $api = $this->api."/{$this->feed['id']}/new-rewards?token=".$otherToken;
-
-        $response = $this->post($api, ['amount' => 10]);
-
-        $response->assertJsonStructure(['message']);
-    }
-
-    /**
-     * @return Guard
-     */
-    protected function guard(): Guard
-    {
-        return Auth::guard('api');
+        $response
+            ->assertStatus(201)
+            ->assertJsonStructure(['message']);
     }
 
     /**
      * @param $token
      * @return mixed
      */
-    protected function addTestFeedData($token)
+    protected function addTestFeedData($user)
     {
         $data = [
             'feed_content' => '单元测试动态数据',
@@ -87,10 +78,12 @@ class TestNewRewardFeed extends TestCase
             'feed_latitude' => '',
             'feed_longtitude' => '',
             'feed_geohash' => '',
-            'amount' => 100,
+            'amount' => 0,
             'images' => [],
         ];
 
-        $this->feed = $this->post('/api/v2/feeds?token='.$token, $data)->json();
+        $this->feed = $this->actingAs($user, 'api')
+            ->post('/api/v2/feeds', $data)
+            ->json();
     }
 }
