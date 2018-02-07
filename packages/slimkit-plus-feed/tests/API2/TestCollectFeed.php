@@ -76,7 +76,6 @@ class TestCollectFeed extends TestCase
                  ->assertJsonStructure(['message']);
     }
 
-
     /**
      * 取消动态收藏.
      *
@@ -89,7 +88,6 @@ class TestCollectFeed extends TestCase
 
         $response->assertStatus(204);
     }
-
 
     /**
      * 填充动态数据.
