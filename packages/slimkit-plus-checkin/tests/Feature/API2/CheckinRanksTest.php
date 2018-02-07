@@ -35,12 +35,13 @@ class CheckinRanksTest extends TestCase
      */
     public function testGetRanks()
     {
-        $json = $this
-            ->json('GET', '/api/v2/checkin-ranks')
+        $response = $this->json('GET', '/api/v2/checkin-ranks');
+        $response->dump();
+        $json = $response
             ->assertStatus(200)
             ->assertHeader('Content-Type', 'application/json')
             ->decodeResponseJson();
-
+        
         $this->assertTrue(
             is_array($json)
         );
