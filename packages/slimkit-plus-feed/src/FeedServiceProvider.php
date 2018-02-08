@@ -86,7 +86,7 @@ class FeedServiceProvider extends ServiceProvider
         $this
             ->app
             ->make('Illuminate\Database\Eloquent\Factory')
-            ->load(__DIR__ . '/../database/factories');
+            ->load(__DIR__.'/../database/factories');
     }
 
     /**

@@ -26,4 +26,3 @@ $factory->define(\Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed::class
         'feed_mark' => intval(time().rand(1000, 9999)),
     ];
 });
-
