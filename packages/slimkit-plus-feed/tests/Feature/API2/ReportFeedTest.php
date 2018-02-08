@@ -87,10 +87,9 @@ class ReportFeedTest extends TestCase
         $feed = $this->addFeed($other);
 
         $response = $this
-            ->json('POST', "/api/v2/feeds/{$feed}/reports", [ 'reason' => '测试']);
+            ->json('POST', "/api/v2/feeds/{$feed}/reports", ['reason' => '测试']);
         $response
             ->assertStatus(201)
             ->assertJsonStructure(['message']);
     }
 }
-
