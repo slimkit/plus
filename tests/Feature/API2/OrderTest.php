@@ -78,7 +78,7 @@ class OrderTest extends TestCase
     }
 
     /**
-     * 断言订单基本结构
+     * 断言订单基本结构.
      *
      * @param array $singleData
      * @return void
