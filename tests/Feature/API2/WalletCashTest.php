@@ -21,8 +21,6 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Tests\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
-use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Support\Facades\Auth;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Repository\UserWalletCashType;
 use Zhiyi\Plus\Models\WalletCash as WalletCashModel;
