@@ -25,10 +25,60 @@ use Zhiyi\Plus\Models\Role as RoleModel;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\Ability as AbilityModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
 class RewardFeedTest extends TestCase
 {
     use DatabaseTransactions;
+
+    protected $owner;
+
+    protected $other;
+
+    protected $feed;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->owner = $this->createUser();
+
+        $this->other = $this->createUser();
+
+        $this->feed = factory(Feed::class)->create([
+            'user_id' => $this->owner->id,
+        ]);
+    }
+
+    /**
+     * 测试旧版打赏接口.
+     *
+     * @return mixed
+     */
+    public function testRewardFeed()
+    {
+        $response = $this
+            ->actingAs($this->other, 'api')
+            ->json('POST', "/api/v2/feeds/{$this->feed->id}/rewards", ['amount' => 10]);
+
+        $response
+            ->assertStatus(201)
+            ->assertJsonStructure(['message']);
+    }
+
+    /**
+     * 获取动态打赏列表.
+     *
+     * @return mixed
+     */
+    public function testRewardFeedList()
+    {
+        $response = $this
+            ->actingAs($this->other, 'api')
+            ->json('get', "/api/v2/feeds/{$this->feed->id}/rewards");
+        $response
+            ->assertStatus(200);
+    }
 
     /**
      * Create the test need user.
@@ -55,43 +105,5 @@ class RewardFeedTest extends TestCase
         $user->roles()->sync($role);
 
         return $user;
-    }
-
-    /**
-     * 添加测试动态.
-     *
-     * @param $user
-     * @return mixed
-     */
-    protected function addFeed($user)
-    {
-        $response = $this->actingAs($user, 'api')
-            ->json('POST', '/api/v2/feeds', [
-                'feed_content' => 'test',
-                'feed_from' => 5,
-                'feed_mark' => intval(time().rand(1000, 9999)),
-            ])
-            ->decodeResponseJson();
-
-        return $response['id'];
-    }
-
-    /**
-     * 测试旧版打赏接口.
-     *
-     * @return mixed
-     */
-    public function testRewardFeed()
-    {
-        $owner = $this->createUser();
-        $other = $this->createUser();
-        $feed = $this->addFeed($owner);
-
-        $response = $this
-            ->actingAs($other, 'api')
-            ->json('POST', "/api/v2/feeds/{$feed}/rewards", ['amount' => 10]);
-        $response
-            ->assertStatus(201)
-            ->assertJsonStructure(['message']);
     }
 }
