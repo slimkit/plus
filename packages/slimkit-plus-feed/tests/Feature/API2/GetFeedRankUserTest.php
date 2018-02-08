@@ -26,7 +26,7 @@ use Zhiyi\Plus\Models\User as UserModel;
 class GetFeedRankUserTest extends TestCase
 {
     /**
-     * 获取动态排行
+     * 获取动态排行.
      *
      * @return mixed
      */
