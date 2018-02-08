@@ -130,7 +130,7 @@ class NewWalletRechargeController extends Controller
         $user = $request->user();
         $amount = (int) $request->input('amount');
 
-        if (($result = $manager->driver(Order::TARGET_TYPE_TRANSFORM)->transform($user, $amount)) === true) {
+        if ($manager->driver(Order::TARGET_TYPE_TRANSFORM)->transform($user, $amount) === true) {
             return response()->json(['message' => ['操作成功']], 201);
         }
 
