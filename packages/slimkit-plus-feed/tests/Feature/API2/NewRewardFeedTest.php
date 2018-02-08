@@ -21,63 +21,31 @@ declare(strict_types=1);
 namespace SlimKit\PlusFeed\Tests\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\Role as RoleModel;
 use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\Models\Ability as AbilityModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
 class NewRewardFeedTest extends TestCase
 {
     use DatabaseTransactions;
 
-    /**
-     * Create the test need user.
-     *
-     * @return \Zhiyi\Plus\Models\User
-     */
-    protected function createUser(): UserModel
+    protected $owner;
+
+    protected $other;
+
+    protected $feed;
+
+    public function setUp()
     {
-        $user = factory(UserModel::class)->create();
-        $user->newWallet()->firstOrCreate([
-            'balance' => 1000,
-            'total_income' => 0,
-            'total_expenses' => 0,
+        parent::setUp();
+
+        $this->owner = factory(UserModel::class)->create();
+
+        $this->other = factory(UserModel::class)->create();
+
+        $this->feed = factory(Feed::class)->create([
+            'user_id' => $this->owner->id,
         ]);
-        $ability = AbilityModel::where('name', 'feed-post')->firstOr(function () {
-            return factory(AbilityModel::class)->create([
-                'name' => 'feed-post',
-            ]);
-        });
-        $role = RoleModel::where('name', 'test')->firstOr(function () {
-            return factory(RoleModel::class)->create([
-                'name' => 'test',
-            ]);
-        });
-        $role
-            ->abilities()
-            ->sync($ability);
-        $user->roles()->sync($role);
-
-        return $user;
-    }
-
-    /**
-     * 添加测试动态.
-     *
-     * @param $user
-     * @return mixed
-     */
-    protected function addFeed($user)
-    {
-        $response = $this->actingAs($user, 'api')
-            ->json('POST', '/api/v2/feeds', [
-                'feed_content' => 'test',
-                'feed_from' => 5,
-                'feed_mark' => intval(time().rand(1000, 9999)),
-            ])
-            ->decodeResponseJson();
-
-        return $response['id'];
     }
 
     /**
@@ -87,13 +55,16 @@ class NewRewardFeedTest extends TestCase
      */
     public function testRewardFeed()
     {
-        $owner = $this->createUser();
-        $other = $this->createUser();
-        $feed = $this->addFeed($owner);
+        $this->other->newWallet()->firstOrCreate([
+            'balance' => 1000,
+            'total_income' => 0,
+            'total_expenses' => 0,
+        ]);
 
         $response = $this
-            ->actingAs($other, 'api')
-            ->json('POST', "/api/v2/feeds/{$feed}/new-rewards", ['amount' => 10]);
+            ->actingAs($this->other, 'api')
+            ->json('POST', "/api/v2/feeds/{$this->feed->id}/new-rewards", ['amount' => 10]);
+
         $response
             ->assertStatus(201)
             ->assertJsonStructure(['message']);
