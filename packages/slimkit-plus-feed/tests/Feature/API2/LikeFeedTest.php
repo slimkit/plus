@@ -40,7 +40,7 @@ class LikeFeedTest extends TestCase
 
         $this->user = $this->createUser();
 
-        $this->feed  = $this->addFeed($this->createUser());
+        $this->feed = $this->addFeed($this->createUser());
     }
 
     /**

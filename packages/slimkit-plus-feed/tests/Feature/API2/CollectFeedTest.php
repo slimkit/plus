@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace SlimKit\PlusFeed\Tests\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\Role as RoleModel;
+use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\Ability as AbilityModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -70,7 +70,7 @@ class CollectFeedTest extends TestCase
 
         $response = $this
             ->actingAs($this->user, 'api')
-            ->json('GET', "/api/v2/feeds/collections");
+            ->json('GET', '/api/v2/feeds/collections');
 
         $response
             ->assertStatus(200);
