@@ -82,11 +82,11 @@ class ReportFeedTest extends TestCase
      */
     public function testReportFeed()
     {
-        $owner = $this->createUser();
-        $other = $this->createUser();
-        $feed = $this->addFeed($other);
+        $user = $this->createUser();
+        $feed = $this->addFeed($this->createUser());
 
         $response = $this
+            ->actingAs($user, 'api')
             ->json('POST', "/api/v2/feeds/{$feed}/reports", ['reason' => '测试']);
         $response
             ->assertStatus(201)
