@@ -22,7 +22,6 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use DB;
 use Carbon\Carbon;
-use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\WalletCash;
 use Zhiyi\Plus\Models\WalletCharge;
@@ -150,7 +149,6 @@ class WalletStatisticsController extends Controller
     {
         $start = Carbon::parse($startDate)->startOfDay()->toDateTimeString();
         $end = Carbon::parse($endDate)->endOfDay()->toDateTimeString();
-        $model = new User();
 
         return [$start, $end];
     }

@@ -358,14 +358,8 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function mail(Request $request, Repository $config, ResponseFactory $response)
+    public function mail(Repository $config, ResponseFactory $response)
     {
-        // if (! $request->user()->ability('admin:mail:show')) {
-        //     return response()->json([
-        //         'message' => '没有权限查看该项信息',
-        //     ])->setStatusCode(403);
-        // }
-
         $driver = $config->get('mail.driver', 'smtp');
         $host = $config->get('mail.host');
         $port = $config->get('mail.port');

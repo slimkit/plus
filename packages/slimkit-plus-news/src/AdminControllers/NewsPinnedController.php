@@ -183,7 +183,7 @@ class NewsPinnedController extends Controller
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function cancel(Request $request, News $news, Carbon $datetime)
+    public function cancel(News $news, Carbon $datetime)
     {
         if (! $pinned = $news->pinned()->whereDate('expires_at', '>=', $datetime)->first()) {
             return response()->json(['message' => ['该资讯没有被置顶']], 402);

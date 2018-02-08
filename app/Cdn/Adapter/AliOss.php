@@ -100,7 +100,7 @@ class AliOss implements FileUrlGeneratorContract
      */
     public function refresh(Refresh $refresh)
     {
-        $files = [];
+        // $files = [];
         foreach ($refresh->getDirs() as $dir) {
             $query = [
                 'prefix' => $dir,
@@ -111,7 +111,7 @@ class AliOss implements FileUrlGeneratorContract
             $objectList = $listObjectInfo->getObjectList();
 
             $delete = [];
-            foreach ($objectList as $key => $object) {
+            foreach ($objectList as $object) {
                 $delete[] = $object->getKey();
             }
 

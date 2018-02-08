@@ -43,7 +43,8 @@ install:
   - php artisan vendor:publish --all -vvv
 
 script:
-  - php vendor/bin/phpunit --coverage-clover=./storage/logs/coverage.xml
+  - php vendor/bin/phpunit --coverage-clover=coverage.xml
 
 after_script:
-  - php vendor/bin/codacycoverage clover ./storage/logs/coverage.xml
+  - php vendor/bin/codacycoverage clover coverage.xml
+  - bash <(curl -s https://codecov.io/bash)

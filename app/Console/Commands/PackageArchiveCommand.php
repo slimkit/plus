@@ -85,14 +85,27 @@ class PackageArchiveCommand extends Command
     }
 
     /**
+     * Escapes a string to be used as a shell argument.
+     *
+     * @param string $argument
+     * @return string
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function escapeArgument(string $argument): string
+    {
+        return forward_static_call([ProcessUtils::class, 'escapeArgument'], $argument);
+    }
+
+    /**
      * Get the composer command for the environment.
      *
      * @return string
      */
     protected function findComposer($workingPath)
     {
-        $phpScript = ProcessUtils::escapeArgument(
-            app(PhpExecutableFinder::class)->find(false)
+        $includeArgs = false;
+        $phpScript = $this->escapeArgument(
+            (new PhpExecutableFinder)->find($includeArgs)
         );
 
         if ($this->filesystem->exists($workingPath.'/composer.phar')) {
