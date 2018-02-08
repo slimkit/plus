@@ -44,6 +44,10 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
             // @get /api/v2/plus-group/groups/protocol
             $api->get('/protocol', API\GroupsController::class.'@protocol');
 
+            // 查看用户相关的圈子.
+            // @get /api/v2/plus-group/groups/othersGroups
+            $api->get('/users', API\GroupsController::class.'@othersGroups');
+
             // get groups.
             // @get /api/v2/plus-group/groups
             $api->get('/', API\GroupsController::class.'@groups');

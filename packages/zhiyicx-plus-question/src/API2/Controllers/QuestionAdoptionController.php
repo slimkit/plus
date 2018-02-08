@@ -90,7 +90,7 @@ class QuestionAdoptionController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function store(Request $request,
+    public function newStore(Request $request,
                           ResponseFactoryContract $response,
                           QuestionModel $question,
                           AnswerModel $answer)
