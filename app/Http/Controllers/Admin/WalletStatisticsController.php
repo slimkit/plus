@@ -22,7 +22,6 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use DB;
 use Carbon\Carbon;
-use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\WalletCash;
 use Zhiyi\Plus\Models\WalletCharge;
