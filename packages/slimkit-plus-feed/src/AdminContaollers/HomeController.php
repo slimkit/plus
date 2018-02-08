@@ -26,7 +26,6 @@ use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Support\Configuration;
 use Zhiyi\Plus\Repository\WalletRatio;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Illuminate\Contracts\Foundation\Application;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
 
