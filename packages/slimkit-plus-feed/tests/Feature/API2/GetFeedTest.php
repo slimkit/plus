@@ -20,12 +20,10 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusFeed\Tests\Feature\API2;
 
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\Role as RoleModel;
 use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\Models\Ability as AbilityModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
 class GetFeedTest extends TestCase
 {
@@ -42,7 +40,7 @@ class GetFeedTest extends TestCase
         $this->user = factory(UserModel::class)->create();
 
         $this->feed = factory(Feed::class)->create([
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
         ]);
     }
 
