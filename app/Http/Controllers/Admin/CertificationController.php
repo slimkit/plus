@@ -193,8 +193,6 @@ class CertificationController extends Controller
             $updateData['files'] = $fileIds;
         }
 
-        $data = $certification->data;
-
         $certification->data = array_merge($certification->data, array_filter($updateData));
         $certification->status = 1;
         $certification->certification_name = $type;
