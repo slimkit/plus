@@ -215,7 +215,7 @@ class FeedController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function follow(Request $request, ResponseContract $response, FeedModel $model, FeedRepository $repository, Carbon $datetime)
+    public function follow(Request $request, FeedModel $model, FeedRepository $repository, Carbon $datetime)
     {
         if (is_null($user = $request->user('api'))) {
             abort(401);

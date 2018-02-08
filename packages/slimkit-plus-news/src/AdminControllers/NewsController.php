@@ -168,7 +168,7 @@ class NewsController extends Controller
         return response()->json($news->id)->setStatusCode(201);
     }
 
-    public function recommend(Request $request, News $news)
+    public function recommend(News $news)
     {
         $news->is_recommend = abs($news->is_recommend - 1);
         $news->save();

@@ -75,7 +75,7 @@ class TagController extends Controller
     }
 
     // 获取单个tag信息
-    public function tag(Request $request, TagModel $tag)
+    public function tag(TagModel $tag)
     {
         return response()->json($tag)->setStatusCode(200);
     }

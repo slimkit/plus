@@ -142,7 +142,7 @@ class FeedPinnedController extends Controller
      * @param  FeedPinned $pinned  [description]
      * @return [type]              [description]
      */
-    public function destroy(Request $request, Feed $feed, FeedPinned $pinned)
+    public function destroy(Feed $feed, FeedPinned $pinned)
     {
         $pinned->where('target', $feed->id)
             ->where('channel', 'feed')
