@@ -41,7 +41,7 @@ class NewRewardFeedTest extends TestCase
         $user->newWallet()->firstOrCreate([
             'balance' => 1000,
             'total_income' => 0,
-            'total_expenses' => 0
+            'total_expenses' => 0,
         ]);
         $ability = AbilityModel::where('name', 'feed-post')->firstOr(function () {
             return factory(AbilityModel::class)->create([
@@ -81,7 +81,7 @@ class NewRewardFeedTest extends TestCase
     }
 
     /**
-     * 测试新版打赏接口
+     * 测试新版打赏接口.
      *
      * @return mixed
      */

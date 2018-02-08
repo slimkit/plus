@@ -77,7 +77,7 @@ class RewardFeedTest extends TestCase
     }
 
     /**
-     * 测试旧版打赏接口
+     * 测试旧版打赏接口.
      *
      * @return mixed
      */
