@@ -28,6 +28,7 @@ class HomeController extends Controller
             'switch' => config('question.app.switch'),
             'apply_amount' => config('question.apply_amount'),
             'onlookers_amount' => config('question.onlookers_amount'),
+            'anonymity_rule' => config('question.anonymity_rule'),
         ]);
     }
 
@@ -44,11 +45,13 @@ class HomeController extends Controller
         $switch = (bool) $request->input('switch');
         $apply_amount = (int) $request->input('apply_amount');
         $onlookers_amount = (int) $request->input('onlookers_amount');
+        $anonymity_rule = (string) $request->input('anonymity_rule');
 
         $config->set([
             'question.app.switch' => $switch,
             'question.apply_amount' => $apply_amount,
             'question.onlookers_amount' => $onlookers_amount,
+            'question.anonymity_rule' => $anonymity_rule,
         ]);
 
         return response()->json(['message' => '设置成功'], 201);

@@ -2,6 +2,9 @@
 
 return [
 
+    /**
+     * 应用开关
+     */
     'app' => [
         'switch' => false,
     ],
@@ -27,4 +30,9 @@ return [
     */
 
     'onlookers_amount' => 100,
+
+    /**
+     * 匿名规则
+     */
+    'anonymity_rule' => '匿名规则',
 ];

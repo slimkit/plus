@@ -48,6 +48,17 @@
             设置答案围观金额，单位为真实货币「分」，前台展示为根据金币比例换算后的数值和单位。
           </span>
         </div>
+        
+        <!-- 匿名规则 -->
+        <div class="form-group">
+            <label class="control-label col-xs-2">匿名规则</label>
+            <div class="col-xs-4">
+                <textarea class="form-control" v-model="anonymity_rule"></textarea>
+            </div>
+            <div class="col-xs-6 help-block">
+                匿名规则
+            </div>
+        </div>
 
         <!-- Submit -->
         <div class="form-group">
@@ -82,6 +93,7 @@ export default {
     open: false,
     apply_amount: 0,
     onlookers_amount: 0,
+    anonymity_rule: '',
     message: {
       open: false,
       type: '',
@@ -103,6 +115,7 @@ export default {
         switch: this.open,
         apply_amount: this.apply_amount,
         onlookers_amount: this.onlookers_amount,
+        anonymity_rule: this.anonymity_rule,
       }, {
         validateStatus: status => status === 201
       }).then(({ data }) => {
@@ -122,6 +135,7 @@ export default {
       this.open = data.switch;
       this.apply_amount = data.apply_amount;
       this.onlookers_amount = data.onlookers_amount;
+      this.anonymity_rule = data.anonymity_rule;
     }).catch(({ response: { data = {} } = {} } = {}) => {
       this.publishMessage(data, 'danger');
     });

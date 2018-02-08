@@ -17,6 +17,9 @@ use Illuminate\Contracts\Routing\Registrar as RouteRegisterContract;
 
 Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
 
+    // config of questions package
+    $api->get('/question-configs', API2\QuestionConfigController::class.'@get');
+
     // Question topics.
     // @Route /api/v2/question-topics
     $api->group(['prefix' => 'question-topics'], function (RouteRegisterContract $api) {
