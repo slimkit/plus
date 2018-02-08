@@ -220,7 +220,7 @@ class CommentController extends Controller
      * @param  Carbon     $datetime [description]
      * @return [type]               [description]
      */
-    public function accept(Request $request, Comment $comment, FeedPinned $pinned, Carbon $datetime)
+    public function accept(Comment $comment, FeedPinned $pinned, Carbon $datetime)
     {
         $date = $datetime->addDay($pinned->day)->toDateTimeString();
         $pinned->expires_at = $date;

@@ -85,7 +85,7 @@ class LikeController extends Controller
     public function store(Request $request, ResponseContract $response, FeedModel $feed)
     {
         $user = $request->user();
-        $like = $feed->like($user);
+        $feed->like($user);
 
         if ($feed->user_id !== $user->id) {
             $feed->user->unreadCount()->firstOrCreate([])->increment('unread_likes_count', 1);

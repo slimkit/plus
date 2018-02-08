@@ -77,7 +77,7 @@ class CurrencyCashController extends Controller
      * @param  CurrencyConfig $config
      * @return mixed
      */
-    public function audit(Request $request, OrderModel $order, CurrencyConfig $config)
+    public function audit(Request $request, OrderModel $order)
     {
         $mark = $request->input('mark');
         $state = (int) $request->input('state');
@@ -90,11 +90,10 @@ class CurrencyCashController extends Controller
             return response()->json(['message' => '参数错误'], 422);
         }
 
-        DB::transaction(function () use ($mark, $state, $order, $config) {
+        DB::transaction(function () use ($mark, $state, $order) {
             $order->state = $state;
             $order->save();
 
-            $currencyConfig = $config->get();
             if ($state === 1) {
                 $order->user->sendNotifyMessage(
                     'user-currency:cash',

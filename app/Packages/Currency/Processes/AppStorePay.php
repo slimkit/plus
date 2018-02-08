@@ -135,12 +135,9 @@ class AppStorePay extends Process
     private function complete(CurrencyOrderModel $currencyOrderModel): bool
     {
         $currencyOrderModel->state = 1;
-
-        $config = app(CurrencyConfig::class)->get();
-
         $user = $this->checkUser($currencyOrderModel->user);
 
-        return DB::transaction(function () use ($user, $currencyOrderModel, $config) {
+        return DB::transaction(function () use ($user, $currencyOrderModel) {
             $currencyOrderModel->save();
             $user->currency->increment('sum', $currencyOrderModel->amount);
 

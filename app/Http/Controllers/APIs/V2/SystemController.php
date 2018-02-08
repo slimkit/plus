@@ -56,7 +56,7 @@ class SystemController extends Controller
     public function about()
     {
         if (! is_null(config('site.about_url'))) {
-            return redirect(config('site.about_url'), $status = 302);
+            return redirect(config('site.about_url'), 302);
         }
 
         return view('about');

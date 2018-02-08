@@ -181,7 +181,7 @@ class UserController extends Controller
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function handleUnFamous(Request $request, User $user, Famous $famous)
+    public function handleUnFamous(User $user, Famous $famous)
     {
         $f = $famous->where('user_id', '=', $user->id)->first();
 
@@ -199,12 +199,12 @@ class UserController extends Controller
      */
     public function recommends(Request $request)
     {
-        $sort = $request->query('sort');
+        // $sort = $request->query('sort');
         $userId = $request->query('userId');
         $email = $request->query('email');
         $name = $request->query('name');
         $phone = $request->query('phone');
-        $role = $request->query('role');
+        // $role = $request->query('role');
         $perPage = $request->query('perPage', 1);
         $showRole = $request->has('show_role');
         $datas = [
@@ -535,7 +535,7 @@ class UserController extends Controller
      * @param  User    $user    [description]
      * @return [type]           [description]
      */
-    public function handleUnRecommend(Request $request, User $user, UserRecommended $recommend)
+    public function handleUnRecommend(User $user, UserRecommended $recommend)
     {
         $user = $recommend->where('user_id', '=', $user->id)->first();
         if (! $user) {

@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Requests\API2;
 
-use Zhiyi\Plus\Repository\CurrencyConfig;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTransform extends FormRequest
@@ -30,19 +29,18 @@ class StoreTransform extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return $this->user();
+        return (bool) $this->user();
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @param \Zhiyi\Plus\Repository\WalletRechargeType $repository
      * @return array
      * @author BS <414606094@qq.com>
      */
-    public function rules(CurrencyConfig $config)
+    public function rules(): array
     {
         $currency = $this->user()->newWallet()->firstOrCreate([], ['balance' => 0, 'total_income' => 0, 'total_expenses' => 0]);
 
@@ -57,7 +55,7 @@ class StoreTransform extends FormRequest
      * @return array
      * @author BS <414606094@qq.com>
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'amount.required' => '请选择需要转换的余额',

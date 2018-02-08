@@ -215,7 +215,7 @@ class FeedController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function follow(Request $request, ResponseContract $response, FeedModel $model, FeedRepository $repository, Carbon $datetime)
+    public function follow(Request $request, FeedModel $model, FeedRepository $repository, Carbon $datetime)
     {
         if (is_null($user = $request->user('api'))) {
             abort(401);
@@ -521,7 +521,7 @@ class FeedController extends Controller
             if ($pinned = $feed->pinned()->where('user_id', $user->id)->where('expires_at', null)->first()) { // 存在未审核的置顶申请时退款
 
                 $process = new UserProcess();
-                $order = $process->reject(0, $pinned->amount, $user->id, '动态申请置顶退款', sprintf('退还申请置顶动态《%s》的款项', str_limit($feed->feed_content, 100)));
+                $process->reject(0, $pinned->amount, $user->id, '动态申请置顶退款', sprintf('退还申请置顶动态《%s》的款项', str_limit($feed->feed_content, 100)));
             }
 
             $feed->delete();

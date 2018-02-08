@@ -84,7 +84,7 @@ class RoleSeeder extends Seeder
      */
     protected function createDisabledRole()
     {
-        $role = Role::create([
+        Role::create([
             'name' => 'disabler',
             'display_name' => '禁用用户',
             'description' => '被禁止登录用户， 需要手动设置',

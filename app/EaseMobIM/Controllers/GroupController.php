@@ -268,7 +268,7 @@ class GroupController extends EaseMobController
             $group_face = ImGroup::with('face')->whereIn('im_group_id', collect($groupCon->data)->pluck('id'))
                 ->select('group_face', 'im_group_id')->get()->keyBy('im_group_id');
 
-            foreach ($groupCon->data as $key => &$group) {
+            foreach ($groupCon->data as &$group) {
                 $affiliations = collect($group->affiliations);
                 $owner = $affiliations->pluck('owner')->filter();
                 $members = $affiliations->pluck('member')->filter();

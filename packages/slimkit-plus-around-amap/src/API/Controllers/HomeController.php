@@ -77,7 +77,6 @@ class HomeController extends Controller
     {
         $this->http = new GuzzleHttpClient();
         $conf = $config->getConfigurationBase();
-        $around = [];
 
         $this->_amap_sig = array_get($conf, 'around-amap.amap-sig') ?? '';
         $this->_amap_key = array_get($conf, 'around-amap.amap-key') ?? '';
@@ -267,8 +266,6 @@ class HomeController extends Controller
      */
     public function getArounds(Request $request, ResponseFactory $response)
     {
-        $user = $request->user('api')->id ?? 0;
-
         $latitude = $request->input('latitude', '');
         $longitude = $request->input('longitude', '');
 

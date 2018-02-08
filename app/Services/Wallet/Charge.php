@@ -259,12 +259,12 @@ class Charge
         return false;
     }
 
-    protected function checkApplepayUpacpExtra(array $extra): bool
+    protected function checkApplepayUpacpExtra(): bool
     {
         return true;
     }
 
-    protected function checkAlipayExtra(array $extra): bool
+    protected function checkAlipayExtra(): bool
     {
         return true;
     }
@@ -284,7 +284,7 @@ class Charge
         return in_array('success_url', $extra);
     }
 
-    protected function checkWxExtra(array $extra): bool
+    protected function checkWxExtra(): bool
     {
         return true;
     }

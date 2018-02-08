@@ -37,7 +37,7 @@ class NewsApplyLogController extends Controller
     public function index(Request $request, NewsApplyLog $model)
     {
         $limit = $request->query('limit', 15);
-        $offset = $request->query('offset', 0);
+        // $offset = $request->query('offset', 0);
         $key = $request->query('key');
         $user_id = $request->query('user_id');
         $news_id = $request->query('news_id');
@@ -50,7 +50,7 @@ class NewsApplyLogController extends Controller
                 return $query->where('news.title', 'like', '%'.$key.'%');
             })->withTrashed();
         });
-        $total = $query->count();
+        // $total = $query->count();
         $datas = $query->limit($limit)->with(['news' => function ($query) {
             return $query->withTrashed();
         }, 'user'])->get();
@@ -58,7 +58,7 @@ class NewsApplyLogController extends Controller
         return response()->json($datas, 200);
     }
 
-    public function accept(Request $request, NewsApplyLog $log)
+    public function accept(NewsApplyLog $log)
     {
         $log->getConnection()->transaction(function () use ($log) {
             $log->load(['news', 'user']);
