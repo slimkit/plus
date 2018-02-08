@@ -93,7 +93,7 @@ class PackageArchiveCommand extends Command
      */
     protected function escapeArgument(string $argument): string
     {
-        return ProcessUtils::escapeArgument($argument);
+        return forward_static_call([ProcessUtils::class, 'escapeArgument'], $argument);
     }
 
     /**
