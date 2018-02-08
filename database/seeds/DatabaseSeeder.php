@@ -28,8 +28,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(UsersTableSeeder::class);
-        $this->call(UserProfileSettingsTableSeeder::class);
-        $this->call(UserProfileSettingLinksTableSeeder::class);
         $this->call(CertificationCategoryTableSeeder::class); // 用户认证类型
         $this->call(AdvertisingSpaceTableSeeder::class); // 广告位类型
         $this->call(PackagesSeeder::class); // Packages seeder.

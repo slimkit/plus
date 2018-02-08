@@ -41,7 +41,7 @@ class WalletChargeController extends Controller
         $limit = intval($request->query('limit', 15));
         $after = $request->query('after');
         $action = $request->query('action');
-        $filter = $request->query('filter');
+        // $filter = $request->query('filter');
         $charges = $request
             ->user()
             ->walletCharges()

@@ -26,7 +26,6 @@ use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Support\Configuration;
 use Zhiyi\Plus\Repository\WalletRatio;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Illuminate\Contracts\Foundation\Application;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
 
@@ -53,10 +52,10 @@ class HomeController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function statistics(Application $app, Request $request, Feed $feedModel, Comment $commentModel, Carbon $datetime)
+    public function statistics(Request $request, Feed $feedModel, Comment $commentModel, Carbon $datetime)
     {
         $type = $request->query('type', 'all');
-        $now = $datetime->now();
+        // $now = $datetime->now();
         $feedPinned = $commentPinned = new FeedPinned();
         switch ($type) {
             // 查询总统计信息

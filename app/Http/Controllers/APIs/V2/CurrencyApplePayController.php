@@ -62,7 +62,7 @@ class CurrencyApplePayController extends Controller
         $receipt = $request->input('receipt');
 
         $retrieve = new AppStorePayProcess();
-        if (($result = $retrieve->verifyReceipt($receipt, $order)) === true) {
+        if ($retrieve->verifyReceipt($receipt, $order) === true) {
             return response()->json($order, 200);
         }
 

@@ -128,7 +128,7 @@ class CommentController extends Controller
     {
         $user = $request->user();
         if ($comment->user_id !== $user->id) {
-            return $response->json(['message' => ['没有权限']], 403);
+            return response()->json(['message' => ['没有权限']], 403);
         }
 
         $pinned = $pinnedModel->where('channel', 'news:comment')->where('raw', $comment->id)->where('state', 0)->first();

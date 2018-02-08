@@ -19,3 +19,4 @@ Homestead.yaml
 /public/storage
 /storage/*.key
 /vendor
+/resources/views/vendor

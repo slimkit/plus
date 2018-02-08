@@ -30,7 +30,7 @@ use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsRecommend;
  */
 class NewsRecommendController extends Controller
 {
-    public function getRecommendList(Request $request)
+    public function getRecommendList()
     {
         $datas = NewsRecommend::orderBy('id', 'desc')
             ->with('cover')

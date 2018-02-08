@@ -165,7 +165,7 @@ class CurrencyController extends Controller
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function overview(Request $request, OrderModel $orderModel)
+    public function overview(OrderModel $orderModel)
     {
         $recharge = $orderModel->where('target_type', 'recharge')->select(DB::raw('count(id) as count, sum(amount) as sum'))->first();
         $cash = $orderModel->where('target_type', 'cash')->select(DB::raw('count(id) as count, sum(amount) as sum'))->first();

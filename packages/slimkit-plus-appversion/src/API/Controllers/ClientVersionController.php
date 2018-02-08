@@ -35,7 +35,7 @@ class ClientVersionController
      */
     public function index(Request $request, ClientVersion $versionModel)
     {
-        $version_code = $request->query('version_code', 0);
+        // $version_code = $request->query('version_code', 0);
         $type = $request->query('type');
         $limit = $request->query('limit', 15);
         $after = $request->query('after');

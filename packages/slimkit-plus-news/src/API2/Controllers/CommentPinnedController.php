@@ -199,7 +199,6 @@ class CommentPinnedController extends Controller
      * @param \Illuminate\Contracts\Routing\ResponseFactory $response
      * @param \Carbon\Carbon $dateTime
      * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News $news
-     * @param \Zhiyi\Plus\Models\Comment $comment
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -207,11 +206,9 @@ class CommentPinnedController extends Controller
                            ResponseContract $response,
                            Carbon $dateTime,
                            NewsModel $news,
-                           CommentModel $comment,
                            NewsPinnedModel $pinned)
     {
         $user = $request->user();
-        // $pinned = $news->pinnedComments()->newPivotStatementForId($comment->id)->first();
         if ($user->id !== $news->user_id) {
             return $response->json(['message' => ['你没有权限操作']], 403);
         } elseif (! $pinned) {
