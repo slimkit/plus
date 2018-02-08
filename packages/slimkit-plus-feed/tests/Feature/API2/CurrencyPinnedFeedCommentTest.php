@@ -76,7 +76,7 @@ class CurrencyPinnedFeedCommentTest extends TestCase
             ->json('POST', "/api/v2/feeds/{$this->feed->id}/comments/{$this->comment->id}/currency-pinneds", [
                 'amount' => 100,
                 'day' => 1,
-            ])->dump();
+            ]);
         $response
             ->assertStatus(201)
             ->assertJsonStructure(['message']);
