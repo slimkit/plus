@@ -29,7 +29,6 @@ use Illuminate\Support\Facades\Storage;
 use Zhiyi\Plus\Models\File as FileModel;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Cdn\UrlManager as CdnUrlManager;
 use Slimkit\PlusAppversion\Models\ClientVersion;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Slimkit\PlusAppversion\API\Requests\ApkUpload;
