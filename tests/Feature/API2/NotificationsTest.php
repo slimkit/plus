@@ -71,7 +71,7 @@ class NotificationsTest extends TestCase
         $response->assertStatus(200)->assertHeader('Unread-Notification-Limit');
 
         $single = $response->json()[0];
-        
+
         $this->assertArrayHasKey('id', $single);
         $this->assertArrayHasKey('read_at', $single);
         $this->assertArrayHasKey('data', $single);
