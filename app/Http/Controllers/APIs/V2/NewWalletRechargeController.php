@@ -56,6 +56,7 @@ class NewWalletRechargeController extends Controller
                 return $query->where('type', $this->type[$action]);
             })
             ->limit($limit)
+            ->orderBy('id', 'desc')
             ->get();
 
         return response()->json($orders, 200);

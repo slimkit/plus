@@ -96,7 +96,7 @@ class Recharge extends Process
      */
     public function retrieve(CurrencyOrderModel $currencyOrderModel): bool
     {
-        $pingppCharge = $service->query($currencyOrderModel->target_id);
+        $pingppCharge = app(WalletChargeService::class)->query($currencyOrderModel->target_id);
 
         if ($pingppCharge['paid'] === true) {
             return $this->complete($pingppCharge, $currencyOrderModel);
@@ -140,7 +140,6 @@ class Recharge extends Process
     private function complete(PingppCharge $pingppCharge, CurrencyOrderModel $currencyOrderModel): bool
     {
         $currencyOrderModel->state = 1;
-        $currencyOrderModel->target_id = $pingppCharge->order_no;
 
         $config = app(CurrencyConfig::class)->get();
 

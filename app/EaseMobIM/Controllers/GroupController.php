@@ -321,7 +321,7 @@ class GroupController extends EaseMobController
             });
         }
 
-        return $users;
+        return $users->sortByDesc('is_owner')->values();
     }
 
     /**
