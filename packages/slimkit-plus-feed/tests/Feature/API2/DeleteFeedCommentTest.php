@@ -26,7 +26,7 @@ use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\Ability as AbilityModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class DeleteFeedTest extends TestCase
+class DeleteFeedCommentTest extends TestCase
 {
     use DatabaseTransactions;
 
