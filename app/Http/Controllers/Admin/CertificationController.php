@@ -258,7 +258,7 @@ class CertificationController extends Controller
         return $baseRules;
     }
 
-    public function messages(Request $request)
+    public function messages()
     {
         $messages = [
             'name.required' => '姓名未提供',
