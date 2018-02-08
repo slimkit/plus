@@ -21,12 +21,12 @@ declare(strict_types=1);
 namespace SlimKit\PlusFeed\Tests\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\Role as RoleModel;
 use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Models\Role as RoleModel;
 use Zhiyi\Plus\Models\Ability as AbilityModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class LikeFeedTest extends TestCase
+class CollectFeedTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -40,53 +40,74 @@ class LikeFeedTest extends TestCase
 
         $this->user = $this->createUser();
 
-        $this->feed  = $this->addFeed($this->createUser());
+        $this->feed = $this->addFeed($this->createUser());
     }
 
     /**
-     * 给动态点赞.
+     * 收藏动态.
      *
      * @return mixed
      */
-    public function testLikeFeed()
+    public function testLikeCollect()
     {
         $response = $this
             ->actingAs($this->user, 'api')
-            ->json('POST', "/api/v2/feeds/{$this->feed}/like");
+            ->json('POST', "/api/v2/feeds/{$this->feed}/collections");
+
         $response
             ->assertStatus(201)
             ->assertJsonStructure(['message']);
     }
 
     /**
-     * 喜欢的人列表.
+     * 收藏列表.
      *
      * @return mixed
      */
-    public function testGetFeedLikePerson()
+    public function testGetFeedCollections()
     {
-        $user = $this->createUser();
-        $feed = $this->addFeed($user);
+        $feed = $this->addFeed($this->user);
 
         $response = $this
             ->actingAs($this->user, 'api')
-            ->json('GET', "/api/v2/feeds/{$this->feed}/likes");
+            ->json('GET', "/api/v2/feeds/collections");
+
         $response
             ->assertStatus(200);
     }
 
     /**
-     * 取消点赞.
+     * 取消收藏.
      *
      * @return mixed
      */
-    public function testUnLikeFeed()
+    public function testUnCollectFeed()
     {
         $response = $this
             ->actingAs($this->user, 'api')
-            ->json('DELETE', "/api/v2/feeds/{$this->feed}/unlike");
+            ->json('DELETE', "/api/v2/feeds/{$this->feed}/uncollect");
+
         $response
             ->assertStatus(204);
+    }
+
+    /**
+     * 添加测试动态.
+     *
+     * @param $user
+     * @return mixed
+     */
+    protected function addFeed($user)
+    {
+        $response = $this->actingAs($user, 'api')
+            ->json('POST', '/api/v2/feeds', [
+                'feed_content' => 'test',
+                'feed_from' => 5,
+                'feed_mark' => intval(time().rand(1000, 9999)),
+            ])
+            ->decodeResponseJson();
+
+        return $response['id'];
     }
 
     /**
@@ -113,24 +134,5 @@ class LikeFeedTest extends TestCase
         $user->roles()->sync($role);
 
         return $user;
-    }
-
-    /**
-     * 添加测试动态.
-     *
-     * @param $user
-     * @return mixed
-     */
-    protected function addFeed($user)
-    {
-        $response = $this->actingAs($user, 'api')
-            ->json('POST', '/api/v2/feeds', [
-                'feed_content' => 'test',
-                'feed_from' => 5,
-                'feed_mark' => intval(time().rand(1000, 9999)),
-            ])
-            ->decodeResponseJson();
-
-        return $response['id'];
     }
 }
