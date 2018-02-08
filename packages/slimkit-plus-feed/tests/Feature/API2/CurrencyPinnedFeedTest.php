@@ -84,7 +84,7 @@ class CurrencyPinnedFeedTest extends TestCase
     {
         $this->user->currency()->firstOrCreate([
             'sum' => 1000,
-            'type' => 1
+            'type' => 1,
         ]);
 
         $response = $this
