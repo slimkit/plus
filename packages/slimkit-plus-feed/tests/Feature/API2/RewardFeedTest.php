@@ -21,9 +21,7 @@ declare(strict_types=1);
 namespace SlimKit\PlusFeed\Tests\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\Role as RoleModel;
 use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\Models\Ability as AbilityModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
@@ -41,9 +39,9 @@ class RewardFeedTest extends TestCase
     {
         parent::setUp();
 
-        $this->owner = $this->createUser();
+        $this->owner = factory(UserModel::class)->create();
 
-        $this->other = $this->createUser();
+        $this->other = factory(UserModel::class)->create();
 
         $this->feed = factory(Feed::class)->create([
             'user_id' => $this->owner->id,
@@ -57,6 +55,8 @@ class RewardFeedTest extends TestCase
      */
     public function testRewardFeed()
     {
+        $this->other->wallet()->increment('balance', 1000);
+
         $response = $this
             ->actingAs($this->other, 'api')
             ->json('POST', "/api/v2/feeds/{$this->feed->id}/rewards", ['amount' => 10]);
@@ -78,32 +78,5 @@ class RewardFeedTest extends TestCase
             ->json('get', "/api/v2/feeds/{$this->feed->id}/rewards");
         $response
             ->assertStatus(200);
-    }
-
-    /**
-     * Create the test need user.
-     *
-     * @return \Zhiyi\Plus\Models\User
-     */
-    protected function createUser(): UserModel
-    {
-        $user = factory(UserModel::class)->create();
-        $user->wallet()->increment('balance', 10000);
-        $ability = AbilityModel::where('name', 'feed-post')->firstOr(function () {
-            return factory(AbilityModel::class)->create([
-                'name' => 'feed-post',
-            ]);
-        });
-        $role = RoleModel::where('name', 'test')->firstOr(function () {
-            return factory(RoleModel::class)->create([
-                'name' => 'test',
-            ]);
-        });
-        $role
-            ->abilities()
-            ->sync($ability);
-        $user->roles()->sync($role);
-
-        return $user;
     }
 }
