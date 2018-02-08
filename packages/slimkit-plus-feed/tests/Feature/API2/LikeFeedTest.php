@@ -21,10 +21,9 @@ declare(strict_types=1);
 namespace SlimKit\PlusFeed\Tests\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\Role as RoleModel;
 use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\Models\Ability as AbilityModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
 class LikeFeedTest extends TestCase
 {
@@ -38,9 +37,11 @@ class LikeFeedTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = $this->createUser();
+        $this->user = factory(UserModel::class)->create();
 
-        $this->feed = $this->addFeed($this->createUser());
+        $this->feed = factory(Feed::class)->create([
+            'user_id' => $this->user->id,
+        ]);
     }
 
     /**
@@ -51,8 +52,9 @@ class LikeFeedTest extends TestCase
     public function testLikeFeed()
     {
         $response = $this
+
             ->actingAs($this->user, 'api')
-            ->json('POST', "/api/v2/feeds/{$this->feed}/like");
+            ->json('POST', "/api/v2/feeds/{$this->feed->id}/like");
         $response
             ->assertStatus(201)
             ->assertJsonStructure(['message']);
@@ -65,12 +67,9 @@ class LikeFeedTest extends TestCase
      */
     public function testGetFeedLikePerson()
     {
-        $user = $this->createUser();
-        $feed = $this->addFeed($user);
-
         $response = $this
             ->actingAs($this->user, 'api')
-            ->json('GET', "/api/v2/feeds/{$this->feed}/likes");
+            ->json('GET', "/api/v2/feeds/{$this->feed->id}/likes");
         $response
             ->assertStatus(200);
     }
@@ -84,53 +83,8 @@ class LikeFeedTest extends TestCase
     {
         $response = $this
             ->actingAs($this->user, 'api')
-            ->json('DELETE', "/api/v2/feeds/{$this->feed}/unlike");
+            ->json('DELETE', "/api/v2/feeds/{$this->feed->id}/unlike");
         $response
             ->assertStatus(204);
-    }
-
-    /**
-     * Create the test need user.
-     *
-     * @return \Zhiyi\Plus\Models\User
-     */
-    protected function createUser(): UserModel
-    {
-        $user = factory(UserModel::class)->create();
-        $ability = AbilityModel::where('name', 'feed-post')->firstOr(function () {
-            return factory(AbilityModel::class)->create([
-                'name' => 'feed-post',
-            ]);
-        });
-        $role = RoleModel::where('name', 'test')->firstOr(function () {
-            return factory(RoleModel::class)->create([
-                'name' => 'test',
-            ]);
-        });
-        $role
-            ->abilities()
-            ->sync($ability);
-        $user->roles()->sync($role);
-
-        return $user;
-    }
-
-    /**
-     * 添加测试动态.
-     *
-     * @param $user
-     * @return mixed
-     */
-    protected function addFeed($user)
-    {
-        $response = $this->actingAs($user, 'api')
-            ->json('POST', '/api/v2/feeds', [
-                'feed_content' => 'test',
-                'feed_from' => 5,
-                'feed_mark' => intval(time().rand(1000, 9999)),
-            ])
-            ->decodeResponseJson();
-
-        return $response['id'];
     }
 }
