@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusFeed\Tests\Feature\API2;
 
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 use Zhiyi\Plus\Tests\TestCase;
 use Zhiyi\Plus\Models\Role as RoleModel;
 use Zhiyi\Plus\Models\User as UserModel;
@@ -30,48 +31,19 @@ class GetFeedTest extends TestCase
 {
     use DatabaseTransactions;
 
-    /**
-     * Create the test need user.
-     *
-     * @return \Zhiyi\Plus\Models\User
-     */
-    protected function createUser(): UserModel
+    protected $user;
+
+    protected $feed;
+
+    public function setUp()
     {
-        $user = factory(UserModel::class)->create();
-        $ability = AbilityModel::where('name', 'feed-post')->firstOr(function () {
-            return factory(AbilityModel::class)->create([
-                'name' => 'feed-post',
-            ]);
-        });
-        $role = factory(RoleModel::class)
-            ->create([
-                'name' => 'test',
-            ]);
-        $role
-            ->abilities()
-            ->sync($ability);
-        $user->roles()->sync($role);
+        parent::setUp();
 
-        return $user;
-    }
+        $this->user = factory(UserModel::class)->create();
 
-    /**
-     * 添加测试动态.
-     *
-     * @param $user
-     * @return mixed
-     */
-    protected function addFeed($user)
-    {
-        $response = $this->actingAs($user, 'api')
-            ->json('POST', '/api/v2/feeds', [
-                'feed_content' => 'test',
-                'feed_from' => 5,
-                'feed_mark' => intval(time().rand(1000, 9999)),
-            ])
-            ->decodeResponseJson();
-
-        return $response['id'];
+        $this->feed = factory(Feed::class)->create([
+            'user_id' => $this->user->id
+        ]);
     }
 
     /**
@@ -81,11 +53,7 @@ class GetFeedTest extends TestCase
      */
     public function testGetFeeds()
     {
-        $user = $this->createUser();
-
-        $this->addFeed($user);
-
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($this->user, 'api')
             ->json('GET', '/api/v2/feeds');
         $response
             ->assertStatus(200)
@@ -99,12 +67,8 @@ class GetFeedTest extends TestCase
      */
     public function testGetFeed()
     {
-        $user = $this->createUser();
-
-        $feed = $this->addFeed($user);
-
-        $response = $this->actingAs($user, 'api')
-            ->json('GET', '/api/v2/feeds/'.$feed);
+        $response = $this->actingAs($this->user, 'api')
+            ->json('GET', '/api/v2/feeds/'.$this->feed->id);
         $response
             ->assertStatus(200);
     }
@@ -114,10 +78,6 @@ class GetFeedTest extends TestCase
      */
     public function testNotAuthGetFeeds()
     {
-        $user = $this->createUser();
-
-        $this->addFeed($user);
-
         $response = $this->json('GET', '/api/v2/feeds');
         $response
             ->assertStatus(200)
@@ -131,11 +91,7 @@ class GetFeedTest extends TestCase
      */
     public function testNotAuthGetFeed()
     {
-        $user = $this->createUser();
-
-        $feed = $this->addFeed($user);
-
-        $response = $this->json('GET', '/api/v2/feeds/'.$feed);
+        $response = $this->json('GET', '/api/v2/feeds/'.$this->feed->id);
         $response
             ->assertStatus(200);
     }
