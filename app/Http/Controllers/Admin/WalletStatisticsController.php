@@ -150,7 +150,6 @@ class WalletStatisticsController extends Controller
     {
         $start = Carbon::parse($startDate)->startOfDay()->toDateTimeString();
         $end = Carbon::parse($endDate)->endOfDay()->toDateTimeString();
-        $model = new User();
 
         return [$start, $end];
     }

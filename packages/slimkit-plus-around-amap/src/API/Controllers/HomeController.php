@@ -77,7 +77,6 @@ class HomeController extends Controller
     {
         $this->http = new GuzzleHttpClient();
         $conf = $config->getConfigurationBase();
-        $around = [];
 
         $this->_amap_sig = array_get($conf, 'around-amap.amap-sig') ?? '';
         $this->_amap_key = array_get($conf, 'around-amap.amap-key') ?? '';

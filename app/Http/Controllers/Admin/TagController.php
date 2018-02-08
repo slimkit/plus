@@ -64,7 +64,7 @@ class TagController extends Controller
     public function categories(Request $request)
     {
         $limit = $request->input('per_page', 20);
-        $page = $request->input('page', 1);
+        // $page = $request->input('page', 1);
 
         $categories = TagCategoryModel::withCount('tags')
             ->orderBy('weight', 'desc')

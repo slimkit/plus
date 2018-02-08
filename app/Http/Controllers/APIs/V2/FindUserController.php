@@ -190,7 +190,7 @@ class FindUserController extends Controller
 
         $limit = $request->input('limit', 15);
         $offset = $request->input('offset', 0);
-        $recommends = $users = [];
+        // $recommends = $users = [];
 
         $tags = $u->tags()->select('tag_id')->get();
         $tags = array_pluck($tags, 'tag_id');
