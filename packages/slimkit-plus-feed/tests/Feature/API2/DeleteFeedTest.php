@@ -51,7 +51,6 @@ class DeleteFeedTest extends TestCase
      */
     public function testDeleteFeed()
     {
-
         $response = $this
             ->actingAs($this->user, 'api')
             ->json('DELETE', '/api/v2/feeds/'.$this->feed->id);
