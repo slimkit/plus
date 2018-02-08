@@ -180,7 +180,7 @@ class FindUserController extends Controller
     /**
      * 通过标签推荐用户. 未登录则返回空数组.
      */
-    public function findByTags(Request $request, TaggableModel $taggable, ResponseContract $response, UserRecommendedModel $userRecommended, UserModel $userModel)
+    public function findByTags(Request $request, TaggableModel $taggable, ResponseContract $response, UserModel $userModel)
     {
         $u = $request->user('api');
 

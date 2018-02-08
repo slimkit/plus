@@ -72,10 +72,8 @@ class FeedPinnedController extends Controller
     }
 
     // 拒绝动态置顶申请
-    public function reject(FeedPinned $pinned, Carbon $datetime)
+    public function reject(FeedPinned $pinned)
     {
-        // $pinned->expires_at = $datetime;
-
         $charge = new WalletChargeModel();
         $charge->user_id = $pinned->user_id;
         $charge->channel = 'system';
@@ -146,7 +144,7 @@ class FeedPinnedController extends Controller
      */
     public function destroy(Request $request, Feed $feed, FeedPinned $pinned)
     {
-        $pinnedNode = $pinned->where('target', $feed->id)
+        $pinned->where('target', $feed->id)
             ->where('channel', 'feed')
             ->delete();
 

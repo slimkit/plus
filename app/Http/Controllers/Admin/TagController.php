@@ -37,7 +37,7 @@ class TagController extends Controller
      */
     public function lists(Request $request, TagModel $tag_model)
     {
-        $page = $request->input('page', 1);
+        // $page = $request->input('page', 1);
         $limit = $request->input('per_page', 20);
         $cate = $request->input('category', 0);
         $keyword = $request->input('keyword');

@@ -49,7 +49,7 @@ class AdvertisingController extends Controller
      * @param  AdvertisingSpace $space
      * @return mix
      */
-    public function advertising(Request $request, AdvertisingSpace $space)
+    public function advertising(AdvertisingSpace $space)
     {
         $space->load(['advertising' => function ($query) {
             return $query->orderBy('sort', 'asc');

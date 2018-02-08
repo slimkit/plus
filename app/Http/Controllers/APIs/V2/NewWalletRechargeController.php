@@ -94,7 +94,7 @@ class NewWalletRechargeController extends Controller
      */
     public function webhook(Request $request, TypeManager $manager)
     {
-        if (($result = $manager->driver(Order::TARGET_TYPE_RECHARGE_PING_P_P)->webhook($request)) === true) {
+        if ($manager->driver(Order::TARGET_TYPE_RECHARGE_PING_P_P)->webhook($request) === true) {
             return response('通知成功');
         }
 
@@ -110,7 +110,7 @@ class NewWalletRechargeController extends Controller
      */
     public function retrieve(WalletOrderModel $order, TypeManager $manager)
     {
-        if (($result = $manager->driver(Order::TARGET_TYPE_RECHARGE_PING_P_P)->retrieve($order)) === true) {
+        if ($manager->driver(Order::TARGET_TYPE_RECHARGE_PING_P_P)->retrieve($order) === true) {
             return response()->json($order, 200);
         }
 

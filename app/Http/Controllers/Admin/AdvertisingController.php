@@ -147,37 +147,6 @@ class AdvertisingController extends Controller
         }
     }
 
-    private function byAdTypeGetData($type, array $data)
-    {
-        $items = [];
-
-        switch ($type) {
-            case 'image':
-                $items['image'] = $data['image'];
-                $items['link'] = $data['link'];
-                $items['title'] = $data['title'] ?? '';
-                $items['duration'] = (int) $data['duration'] ?? 3;
-                break;
-            case 'feed:analog':
-                $items['avatar'] = $data['avatar'];
-                $items['name'] = $data['name'];
-                $items['content'] = $data['content'];
-                $items['image'] = $data['image'];
-                $items['time'] = Carbon::parse($data['time'])->toDateTimeString();
-                $items['link'] = $data['link'];
-                break;
-            case 'news:analog':
-                $items['title'] = $data['title'];
-                $items['image'] = $data['image'];
-                $items['from'] = $data['from'];
-                $items['time'] = Carbon::parse($data['time'])->toDateTimeString();
-                $items['link'] = $data['link'];
-                break;
-        }
-
-        return $items;
-    }
-
     private function basisRule()
     {
         return [
@@ -198,59 +167,6 @@ class AdvertisingController extends Controller
             'space_id.numeric' => '广告位格式错误',
             'sort.required' => '广告排序必填',
             'sort.numeric' => '广告排序类型格式错误',
-        ];
-    }
-
-    private function dataRule()
-    {
-        $rule = [];
-
-        switch (request()->get('type')) {
-            case 'image':
-                $rule = [
-                    'data.image' => 'required|url',
-                    'data.link'  => 'required|url',
-                ];
-                break;
-            case 'feed:analog':
-                $rule = [
-                    'data.image' => 'required|url',
-                    'data.link'  => 'required|url',
-                    'data.time' => 'required|date',
-                    'data.content' => 'required',
-                    'data.avatar' => 'required|url',
-                    'data.name' => 'required',
-                ];
-                break;
-            case 'news:analog':
-                $rule = [
-                    'data.image' => 'required|url',
-                    'data.link'  => 'required|url',
-                    'data.time' => 'required|date',
-                    'data.title' => 'required',
-                    'data.from' => 'required',
-                ];
-                break;
-        }
-
-        return $rule;
-    }
-
-    private function dataMsg()
-    {
-        return [
-           'data.image.required' => '广告图链接不能为空',
-           'data.image.url' => '广告图链接无效',
-           'data.link.required' => '广告链接不能为空',
-           'data.link.url' => '广告链接无效',
-           'data.avatar.required' => '头像图链接必填',
-           'data.avatar.url' => '头像图链接无效',
-           'data.time.required' => '时间必填',
-           'data.content.required' => '内容必填',
-           'data.time.date' => '时间格式错误',
-           'data.from.required' => '来源必填',
-           'data.title.required' => '标题必填',
-           'data.name.required' => '用户名必填',
         ];
     }
 
