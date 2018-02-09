@@ -28,7 +28,6 @@ use Zhiyi\Plus\Support\PinnedsNotificationEventer;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentNews\base_path as component_base_path;
 
 class NewsServiceProvider extends ServiceProvider
