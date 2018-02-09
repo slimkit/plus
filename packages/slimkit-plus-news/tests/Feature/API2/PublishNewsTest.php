@@ -52,10 +52,10 @@ class PublishNewsTest extends TestCase
                 'image' => null,
                 'author' => 'test',
                 'text_content' => 'test',
-            ])->dump();
-//        $response
-//            ->assertStatus(201)
-//            ->assertJsonStructure(['message']);
+            ]);
+        $response
+            ->assertStatus(201)
+            ->assertJsonStructure(['message']);
     }
 
     /**
