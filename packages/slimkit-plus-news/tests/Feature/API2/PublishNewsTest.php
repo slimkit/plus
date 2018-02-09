@@ -49,6 +49,7 @@ class PublishNewsTest extends TestCase
                 'content' => 'test',
                 'tags' => $this->createTags(),
                 'from' => 'test',
+                'iamge' => null,
                 'author' => 'test',
                 'text_content' => 'test',
             ]);
