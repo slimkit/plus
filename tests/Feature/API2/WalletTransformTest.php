@@ -22,7 +22,6 @@ namespace Zhiyi\Plus\Tests\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
 use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\Models\WalletCash as WalletCashModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class WalletTransformTest extends TestCase
@@ -40,7 +39,7 @@ class WalletTransformTest extends TestCase
     }
 
     /**
-     * 测试发起转换积分
+     * 测试发起转换积分.
      *
      * @return void
      * @author BS <414606094@qq.com>
