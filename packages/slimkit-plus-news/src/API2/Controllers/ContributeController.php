@@ -118,11 +118,11 @@ class ContributeController extends Controller
         $config = config('news.contribute');
         $payAmount = config('news.pay_contribute');
 
-        if ($config['pay'] && $user->wallet->balance < $payAmount) {
+        if (isset($config['pay']) && $user->wallet->balance < $payAmount) {
             return $response->json(['message' => ['账户余额不足']], 422);
         }
 
-        if ($config['verified'] && $user->verified === null) {
+        if (isset($config['verified']) && $user->verified === null) {
             return $response->json(['message' => ['未认证用户不可投稿']], 422);
         }
 
@@ -178,7 +178,7 @@ class ContributeController extends Controller
                     $fileWith->save();
                 });
 
-                if ($config['pay']) {
+                if (isset($config['pay'])) {
                     $user->wallet()->decrement('balance', $charge->amount);
                     $charge->save();
                 }
