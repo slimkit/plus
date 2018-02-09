@@ -28,7 +28,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate as NewsCateModel;
 
-class EditPublishNewsTest extends TestCase
+class DeletePublishNewsTest extends TestCase
 {
     use DatabaseTransactions;
 
