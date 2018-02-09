@@ -25,7 +25,6 @@ use Zhiyi\Plus\Models\Tag as TagModel;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\TagCategory as TagCateModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsMdoel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate as NewsCateModel;
 
 class PublishNewsTest extends TestCase
@@ -51,7 +50,7 @@ class PublishNewsTest extends TestCase
                 'tags' => $this->createTags(),
                 'from' => 'test',
                 'author' => 'test',
-                'text_content' => 'test'
+                'text_content' => 'test',
             ]);
         $response
             ->assertStatus(201)

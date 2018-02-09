@@ -20,6 +20,6 @@ use Faker\Generator as Faker;
 
 $factory->define(Zhiyi\Plus\Models\Tag::class, function (Faker $faker) {
     return [
-        'name' => $faker->unique()->firstName
+        'name' => $faker->unique()->firstName,
     ];
 });

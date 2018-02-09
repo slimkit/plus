@@ -21,6 +21,6 @@ use Faker\Generator as Faker;
 $factory->define(Zhiyi\Plus\Models\TagCategory::class, function (Faker $faker) {
     return [
         'name' => $faker->firstName,
-        'weight' => $faker->numberBetween(100, 999)
+        'weight' => $faker->numberBetween(100, 999),
     ];
 });
