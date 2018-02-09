@@ -25,5 +25,6 @@ $factory->define(\Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News::class
         'content' => $faker->text,
         'from' => $faker->firstName,
         'text_content' => $faker->text,
+        'author' => $faker->name,
     ];
 });
