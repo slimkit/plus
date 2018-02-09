@@ -107,4 +107,20 @@ class GetNewsListTest extends TestCase
             ->assertStatus(200)
             ->assertJsonCount(0);
     }
+
+    /**
+     * 获取单条资讯.
+     *
+     * @return mixed
+     */
+    public function testGetSingleNews()
+    {
+        $id = $this->news->pluck('id')->random();
+
+        $response = $this
+            ->actingAs($this->user, 'api')
+            ->json('GET', "/api/v2/news/{$id}/correlations");
+        $response
+            ->assertStatus(200);
+    }
 }
