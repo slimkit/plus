@@ -50,7 +50,7 @@ class GetPublishNewsListTest extends TestCase
 
         $response = $this
             ->actingAs($user, 'api')
-            ->json('get', "/api/v2/user/news/contributes");
+            ->json('get', '/api/v2/user/news/contributes');
         $response
             ->assertStatus(200)
             ->assertJsonCount(6);
