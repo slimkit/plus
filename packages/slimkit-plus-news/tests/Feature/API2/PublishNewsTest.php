@@ -55,7 +55,7 @@ class PublishNewsTest extends TestCase
             ]);
         $response
             ->assertStatus(201)
-            ->assertJsonStructure(['message']);
+            ->assertJsonStructure(['message'])->dump();
     }
 
     /**
