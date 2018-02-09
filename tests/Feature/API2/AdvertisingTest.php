@@ -21,8 +21,6 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Tests\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Zhiyi\Plus\Models\Advertising as AdvertisingModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
