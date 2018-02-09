@@ -66,6 +66,8 @@ class NewsServiceProvider extends ServiceProvider
                 'news:pay_conyribute' => (int) $this->app->make(ConfigRepository::class)->get('news.pay_conyribute'),
             ];
         });
+
+        $this->app->make('Illuminate\Database\Eloquent\Factory')->load(__DIR__.'/../../database/factories');
     }
 
     /**
