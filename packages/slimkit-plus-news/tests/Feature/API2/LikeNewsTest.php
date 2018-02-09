@@ -21,9 +21,8 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\Like as LikeModel;
-use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Models\User as UserModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate as NewsCateModel;
@@ -76,7 +75,7 @@ class LikeNewsTest extends TestCase
             'user_id' => $this->user->id,
             'target_user' => $this->user->id,
             'likeable_id' => $this->news->id,
-            'likeable_type' => 'news'
+            'likeable_type' => 'news',
         ]);
         $response = $this
             ->actingAs($this->user, 'api')
@@ -84,5 +83,4 @@ class LikeNewsTest extends TestCase
         $response
             ->assertStatus(204);
     }
-
 }
