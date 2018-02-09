@@ -21,9 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\Tag as TagModel;
 use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\Models\TagCategory as TagCateModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate as NewsCateModel;
@@ -49,7 +47,6 @@ class GetNewsListTest extends TestCase
             'cate_id' => $this->cate->id,
             'audit_status' => 0,
         ]);
-
     }
 
     /**
@@ -61,7 +58,7 @@ class GetNewsListTest extends TestCase
     {
         $response = $this
             ->actingAs($this->user, 'api')
-            ->json('GET', "/api/v2/news");
+            ->json('GET', '/api/v2/news');
         $response
             ->assertStatus(200);
     }
