@@ -32,10 +32,9 @@ class GetNewsRankTest extends TestCase
     public function testCollectNews()
     {
         $response = $this
-            ->json('get', "/api/v2/news/ranks");
+            ->json('get', '/api/v2/news/ranks');
         $response
             ->assertStatus(200)
             ->assertJsonStructure([]);
-
     }
 }
