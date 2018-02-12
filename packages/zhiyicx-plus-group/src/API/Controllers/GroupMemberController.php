@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\PlusGroup\API\Controllers;
 
 use DB;
@@ -8,8 +24,8 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\PlusGroup\Models\Group as GroupModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
-use Zhiyi\PlusGroup\Models\GroupMember as GroupMemberModel;
 use Zhiyi\PlusGroup\Models\GroupIncome as GroupIncomeModel;
+use Zhiyi\PlusGroup\Models\GroupMember as GroupMemberModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\PlusGroup\Models\GroupMemberLog as GroupMemberLogModel;
 
@@ -51,7 +67,7 @@ class GroupMemberController
                 case 'audit_user':
                     return $query->where('disabled', 0)->where('audit', 1);
                     break;
-                    
+
                 case 'audit':
 
                     return $query->where('audit', 0);
@@ -87,14 +103,12 @@ class GroupMemberController
     public function remove(Request $request, GroupModel $group, GroupMemberModel $member)
     {
         $user = $request->user();
-        
+
         if ($member->audit == 0) {
-            
             return response()->json(['message' => ['待审核成员不能进行该操作']], 403);
         }
 
         if (! $member->canBeSet($user)) {
-            
             return response()->json(['message' => ['权限不足']], 403);
         }
 
@@ -116,17 +130,14 @@ class GroupMemberController
         $user = $request->user();
 
         if ($member->audit == 0) {
-            
             return response()->json(['message' => ['待审核成员不能进行该操作']], 403);
         }
 
         if (! $member->canBeSetManager($user)) {
-            
             return response()->json(['message' => ['权限不足']], 403);
         }
 
         if ($group->members()->where('role', 'administrator')->count() >= 5) {
-            
             return response()->json(['message' => ['最多设置5个管理员']], 422);
         }
 
@@ -150,7 +161,6 @@ class GroupMemberController
         $user = $request->user();
 
         if ($member->audit == 0) {
-            
             return response()->json(['message' => ['待审核成员不能进行该操作']], 403);
         }
 
@@ -159,7 +169,6 @@ class GroupMemberController
         }
 
         if (! $member->canBeSetManager($user)) {
-            
             return response()->json(['message' => ['权限不足']], 403);
         }
 
@@ -180,14 +189,12 @@ class GroupMemberController
     public function setBlacklist(Request $request, GroupModel $group, GroupMemberModel $member)
     {
         $user = $request->user();
-        
+
         if ($member->audit == 0) {
-            
             return response()->json(['message' => ['待审核成员不能进行该操作']], 403);
         }
 
         if (! $member->canBeSet($user)) {
-            
             return response()->json(['message' => ['权限不足']], 403);
         }
 
@@ -211,12 +218,10 @@ class GroupMemberController
         $user = $request->user();
 
         if ($member->audit == 0) {
-            
             return response()->json(['message' => ['待审核成员不能进行该操作']], 403);
         }
 
         if (! $member->canBeSet($user)) {
-            
             return response()->json(['message' => ['权限不足']], 403);
         }
 
@@ -249,18 +254,16 @@ class GroupMemberController
         }
 
         if (! $member->canBeSet($user)) {
-
             return response()->json(['message' => ['权限不足']], 403);
         }
 
-        if (in_array($member->audit, [1,2])) {
+        if (in_array($member->audit, [1, 2])) {
             return response()->json(['message' => ['该成员已审核']], 403);
         }
 
         DB::beginTransaction();
 
         try {
-            
             $caharge = new WalletChargeModel();
 
             if ($group->mode == 'paid') {
@@ -289,7 +292,7 @@ class GroupMemberController
                     $group->founder->user->wallet()->increment('balance', $group->money);
 
                     // 发送通知
-                    $message = sprintf("您申请加入的圈子%s已被审核通过", $group->name);
+                    $message = sprintf('您申请加入的圈子%s已被审核通过', $group->name);
                     $member->user->sendNotifyMessage(
                         'group:join:accept',
                         $message,
@@ -310,7 +313,7 @@ class GroupMemberController
                     $member->user->wallet()->increment('balance', $group->money);
 
                     // 发送通知
-                    $message = sprintf("您申请加入的圈子%s已被管理员拒绝", $group->name);
+                    $message = sprintf('您申请加入的圈子%s已被管理员拒绝', $group->name);
                     $member->user->sendNotifyMessage(
                         'group:join:reject',
                         $message,
@@ -318,9 +321,9 @@ class GroupMemberController
                     );
                 }
             }
-            
+
             if ($status === 1) {
-                // 增加成员数    
+                // 增加成员数
                 $group->increment('users_count');
 
                 // 保存成员状态
@@ -340,16 +343,18 @@ class GroupMemberController
             }
 
             DB::commit();
+
             return response()->json(['message' => ['审核成功']], 201);
         } catch (\Exception $exception) {
             DB::rollback();
+
             return response()->json(['message' => [$exception->getMessage()]], 500);
         }
     }
 
     /**
      * 用户所有圈子下面未审核的成员列表.
-     * 
+     *
      * @param  Request $request [description]
      * @return [type]           [description]
      */
@@ -365,7 +370,7 @@ class GroupMemberController
             $user->unreadCount()->update(['unread_group_join_count' => 0]);
         }
 
-        $groupIds =  GroupModel::select('id')->whereHas('members', function($query) use($user) {
+        $groupIds = GroupModel::select('id')->whereHas('members', function ($query) use ($user) {
             return $query->where('user_id', $user->id)->whereIn('role', ['founder', 'administrator']);
         })
         ->when($group_ids, function ($query) use ($group_ids) {
@@ -424,7 +429,7 @@ class GroupMemberController
 
         $target_user->sendNotifyMessage('group:transfer', sprintf('%s已将圈子%s转让给你', $user->name, $group->name), [
             'user' => $user,
-            'group' => $group
+            'group' => $group,
         ]);
 
         return response()->json(['message' => ['操作成功']], 201);
@@ -455,18 +460,16 @@ class GroupMemberController
         }
 
         if (! $member->canBeSet($user)) {
-
             return response()->json(['message' => ['权限不足']], 403);
         }
 
-        if (in_array($member->audit, [1,2])) {
+        if (in_array($member->audit, [1, 2])) {
             return response()->json(['message' => ['该成员已审核']], 403);
         }
 
         DB::beginTransaction();
 
         try {
-            
             $caharge = new WalletChargeModel();
 
             if ($group->mode == 'paid') {
@@ -484,7 +487,7 @@ class GroupMemberController
                     $group->incomes()->save($income);
 
                     // 发送通知
-                    $message = sprintf("您申请加入的圈子%s已被审核通过", $group->name);
+                    $message = sprintf('您申请加入的圈子%s已被审核通过', $group->name);
                     $member->user->sendNotifyMessage(
                         'group:join:accept',
                         $message,
@@ -495,7 +498,7 @@ class GroupMemberController
                     $process->reject($group->founder->user_id, $group->money, $member->user_id, '用户加圈，审核拒绝', sprintf('用户%s申请加入《%s》圈子审核拒绝,用户退款', $member->user->name, $group->name));
 
                     // 发送通知
-                    $message = sprintf("您申请加入的圈子%s已被管理员拒绝", $group->name);
+                    $message = sprintf('您申请加入的圈子%s已被管理员拒绝', $group->name);
                     $member->user->sendNotifyMessage(
                         'group:join:reject',
                         $message,
@@ -503,9 +506,9 @@ class GroupMemberController
                     );
                 }
             }
-            
+
             if ($status === 1) {
-                // 增加成员数    
+                // 增加成员数
                 $group->increment('users_count');
 
                 // 保存成员状态
@@ -525,9 +528,11 @@ class GroupMemberController
             }
 
             DB::commit();
+
             return response()->json(['message' => ['审核成功']], 201);
         } catch (\Exception $exception) {
             DB::rollback();
+
             return response()->json(['message' => [$exception->getMessage()]], 500);
         }
     }

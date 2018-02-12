@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\PlusGroup\Models;
 
 use Zhiyi\Plus\Models\Tag;
@@ -12,7 +28,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Group extends Model
 {
     use HasAvatar, SoftDeletes;
-    
+
     /**
      * The table associated with the model.
      *
@@ -56,7 +72,7 @@ class Group extends Model
     }
 
     /**
-     * The tags of the group
+     * The tags of the group.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      * @author Seven Du <shiweidu@outlook.com>
@@ -122,7 +138,7 @@ class Group extends Model
     }
 
     /**
-     * 圈子帖子
+     * 圈子帖子.
      *
      * @return \Illuminate\Database\Eloquent\Relations\hasMany
      * @author BS <414606094@qq.com>
@@ -131,7 +147,7 @@ class Group extends Model
     {
         return $this->hasMany(Post::class, 'group_id', 'id');
     }
-    
+
     public function category()
     {
         return $this->hasOne(Category::class, 'id', 'category_id');
@@ -157,7 +173,7 @@ class Group extends Model
      * 用户在当前圈子是否有管理权限.
      *
      * @param $user
-     * @return boolean
+     * @return bool
      * @author BS <414606094@qq.com>
      */
     public function isManager($user)

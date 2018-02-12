@@ -1,9 +1,24 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\PlusGroup\Admin\Controllers;
 
 use DB;
-use Validator;
 use Geohash\Geohash;
 use Illuminate\Http\Request;
 use Zhiyi\PlusGroup\Models\Group as  GroupModel;
@@ -20,6 +35,7 @@ class GroupController
 
         if ($type && $type == 'all') {
             $groups = GroupModel::select('id', 'name')->get();
+
             return response()->json($groups, 200);
         }
 
@@ -30,7 +46,7 @@ class GroupController
 
         $builder = GroupModel::with(['user', 'category', 'recommend']);
 
-        foreach($data as $key => $value) {
+        foreach ($data as $key => $value) {
             if ($value && in_array($key, ['category_id', 'audit', 'mode'])) {
                 $builder = $builder->where($key, $value);
             }
@@ -47,7 +63,7 @@ class GroupController
         ->when(isset($data['pinned']), function ($query) {
             return $query->has('recommend');
         })
-        ->when($type && $type =='trash', function($query) {
+        ->when($type && $type == 'trash', function ($query) {
             return $query->onlyTrashed();
         });
 
@@ -65,10 +81,10 @@ class GroupController
 
         try {
             $group = new GroupModel;
-            foreach($data as $key => $value) {
+            foreach ($data as $key => $value) {
                 $group->{$key} = $value;
             }
-              
+
             // 地理位置
             if (isset($data['location'])) {
                 $group->geo_hash = Geohash::encode($data['latitude'], $data['longitude']);
@@ -94,9 +110,9 @@ class GroupController
 
             if ((int) $request->input('recommend')) {
                 RecommendModel::create([
-                    'group_id' => $group->id, 
-                    'sort_by' => 1000, 
-                    'referrer' => $request->user()->id
+                    'group_id' => $group->id,
+                    'sort_by' => 1000,
+                    'referrer' => $request->user()->id,
                 ]);
             }
 
@@ -113,9 +129,11 @@ class GroupController
             $group->storeAvatar($avatar);
 
             DB::commit();
+
             return response()->json(['message' => '添加成功'], 201);
         } catch (\Exception $e) {
             DB::rollback();
+
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
@@ -123,13 +141,13 @@ class GroupController
     public function getRequestOnly(Request $request)
     {
         return $request->only(
-            'name', 
-            'category_id', 
-            'user_id', 
-            'mode', 
-            'money', 
-            'audit', 
-            'summary', 
+            'name',
+            'category_id',
+            'user_id',
+            'mode',
+            'money',
+            'audit',
+            'summary',
             'notice',
             'location',
             'latitude',
@@ -147,22 +165,21 @@ class GroupController
         } else {
             $group->group_founder = $group->user;
         }
-        
+
         return response()->json($group, 200);
     }
 
     public function update(UpdateRequest $request, GroupModel $group)
     {
         $data = $this->getRequestOnly($request);
-       
+
         DB::beginTransaction();
 
         try {
-
-            foreach($data as $key => $value) {
+            foreach ($data as $key => $value) {
                 $group->{$key} = $value;
             }
-          
+
             // 地理位置
             if (isset($data['location'])) {
                 $group->geo_hash = Geohash::encode($data['latitude'], $data['longitude']);
@@ -188,9 +205,9 @@ class GroupController
             $recommend = (int) $request->input('recommend');
             if ($recommend && ! RecommendModel::where('group_id', $group->id)->count()) {
                 RecommendModel::create([
-                    'group_id' => $group->id, 
-                    'sort_by' => 1000, 
-                    'referrer' => $request->user()->id
+                    'group_id' => $group->id,
+                    'sort_by' => 1000,
+                    'referrer' => $request->user()->id,
                 ]);
             } else {
                 $group->recommend()->delete();
@@ -201,16 +218,18 @@ class GroupController
             }
 
             DB::commit();
+
             return response()->json(['message' => '修改成功'], 201);
         } catch (\Exception $e) {
             DB::rollback();
+
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 
     /**
      * 解散圈子(软删除).
-     * 
+     *
      * @param  GroupModel $group
      * @return mixed
      */
@@ -223,7 +242,7 @@ class GroupController
 
     /**
      * 圈子推荐.
-     * 
+     *
      * @param  GroupModel $group
      * @return mixed
      */
@@ -231,9 +250,9 @@ class GroupController
     {
         if (! $group->recommend) {
             RecommendModel::create([
-                'group_id' => $group->id, 
+                'group_id' => $group->id,
                 'sort_by' => 1000,
-                'referrer' => $request->user()->id
+                'referrer' => $request->user()->id,
             ]);
         } else {
             $group->recommend()->delete();
@@ -243,7 +262,7 @@ class GroupController
     }
 
     /**
-     * 圈子启动和关闭. 
+     * 圈子启动和关闭.
      *
      * @param  GroupModel $group
      * @return mixed
@@ -252,14 +271,13 @@ class GroupController
     {
         $audit = $request->input('audit');
 
-        if (! in_array($audit, [1,2,3])) {
+        if (! in_array($audit, [1, 2, 3])) {
             return response()->json(['message' => '参数错误'], 403);
         }
 
         $message = sprintf('%s,你创建的《%s》圈子审核已通过', $group->user->name, $group->name);
 
         if ($audit == 1 && $group->audit != 3) {
-            
             $member = new MemberModel();
             $member->user_id = $group->user_id;
             $member->group_id = $group->id;
@@ -291,16 +309,14 @@ class GroupController
             'group' => $group,
         ]);
 
-        
-       return response()->json(['message' => '操作成功'], 201);
+        return response()->json(['message' => '操作成功'], 201);
     }
-
 
     /**
      * 恢复圈子.
-     * 
+     *
      * @param  GroupModel $group
-     * @return mixed           
+     * @return mixed
      */
     public function restore(int $id)
     {

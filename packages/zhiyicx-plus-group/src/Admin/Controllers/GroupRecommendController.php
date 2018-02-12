@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\PlusGroup\Admin\Controllers;
 
 use Carbon\Carbon;
@@ -8,10 +24,9 @@ use Zhiyi\PlusGroup\Models\GroupRecommend as RecommendModel;
 
 class GroupRecommendController
 {
-
     /**
      * 列表.
-     * 
+     *
      * @param  Request $request
      * @return miexed
      */
@@ -27,9 +42,9 @@ class GroupRecommendController
         $end = $request->query('end');
 
         $query = RecommendModel::with([
-            'referrer', 
-            'group.founder.user', 
-            'group.category'
+            'referrer',
+            'group.founder.user',
+            'group.category',
         ])
         ->has('group');
 
@@ -42,9 +57,10 @@ class GroupRecommendController
             if ($start) {
                 $query->where('created_at', '>=', Carbon::parse($start)->startOfDay());
             }
-            if ($end) {   
+            if ($end) {
                 $query->where('created_at', '<', Carbon::parse($end)->endOfDay());
             }
+
             return $query;
         })
         ->when($category, function ($query) use ($category) {
@@ -69,10 +85,10 @@ class GroupRecommendController
 
     /**
      * 推荐排序.
-     * 
+     *
      * @param  Request        $request
      * @param  RecommendModel $recommend
-     * @return miexed              
+     * @return miexed
      */
     public function sort(Request $request, RecommendModel $recommend)
     {
@@ -86,7 +102,7 @@ class GroupRecommendController
 
     /**
      * 移除推荐.
-     * 
+     *
      * @param  RecommendModel $recommend
      * @return mixed
      */

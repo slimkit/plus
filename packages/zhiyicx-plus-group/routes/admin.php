@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 use Illuminate\Support\Facades\Route;
 use Zhiyi\PlusGroup\Admin\Controllers as Admin;
 use Illuminate\Contracts\Routing\Registrar as RouteRegisterContract;
@@ -21,7 +37,7 @@ Route::group(['prefix' => 'group-admin'], function (RouteRegisterContract $route
     $route->get('/', Admin\HomeController::class.'@index')->name('plus-group:admin-home');
 
     // statistics
-    $route->get('/statistics',  Admin\HomeController::class.'@statistics');
+    $route->get('/statistics', Admin\HomeController::class.'@statistics');
 
     // config setting
     $route->get('/config', Admin\HomeController::class.'@config');
@@ -58,7 +74,6 @@ Route::group(['prefix' => 'group-admin'], function (RouteRegisterContract $route
     $route->patch('/pinned/posts/{post}/accept', Admin\PinnedController::class.'@acceptPost');
     $route->patch('/pinned/posts/{post}/revocation', Admin\PinnedController::class.'@revocationPost');
 
-
     // group member
     $route->get('groups/{group}/members', Admin\GroupMemberController::class.'@members');
     $route->patch('members/{member}/role', Admin\GroupMemberController::class.'@role');
@@ -73,5 +88,4 @@ Route::group(['prefix' => 'group-admin'], function (RouteRegisterContract $route
     $route->get('recommends', Admin\GroupRecommendController::class.'@index');
     $route->delete('recommends/{recommend}', Admin\GroupRecommendController::class.'@remove');
     $route->patch('recommends/{recommend}/sort', Admin\GroupRecommendController::class.'@sort');
-
 });

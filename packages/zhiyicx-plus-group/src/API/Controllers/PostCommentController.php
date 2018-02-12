@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\PlusGroup\API\Controllers;
 
 use Carbon\Carbon;
@@ -24,7 +40,7 @@ class PostCommentController
     {
         $limit = $request->query('limit', 15);
         $after = $request->query('after', 0);
-        $datas = $post->comments()->when($after, function ($query) use($after){
+        $datas = $post->comments()->when($after, function ($query) use ($after) {
             return $query->where('id', '<', $after);
         })
         ->with(['user', 'reply'])
@@ -52,7 +68,7 @@ class PostCommentController
             return $query->from('group_pinneds')->whereRaw('group_pinneds.target = comments.id')
                 ->where('group_pinneds.raw', $post->id)
                 ->where('expires_at', '>', $datetime);
-        })->with('user')->get();    
+        })->with('user')->get();
     }
 
     /**
@@ -76,7 +92,7 @@ class PostCommentController
             return response()->json(['message' => ['您已被该圈子拉黑，无法发送评论']], 403);
         }
 
-        if ($group->model != 'public' && ! $member ) {
+        if ($group->model != 'public' && ! $member) {
             return response()->json(['message' => ['您没有评论权限']], 403);
         }
 

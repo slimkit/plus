@@ -1,10 +1,25 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace SlimKit\PlusQuestion\Admin\Controllers;
 
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Zhiyi\Plus\Models\Reward as RewardModel;
 use SlimKit\PlusQuestion\Models\Topic as TopicModel;
 use SlimKit\PlusQuestion\Models\Answer as AnswerModel;
@@ -78,7 +93,7 @@ class TopicController extends Controller
 
         return $topic->storeAvatar($avatar)
             ? response()->json('', 204)
-            : response()->json(['message' => ['上传失败']], 500);        
+            : response()->json(['message' => ['上传失败']], 500);
     }
 
     /**
@@ -129,7 +144,7 @@ class TopicController extends Controller
     /**
      * 删除话题.
      *
-     * @param TopicModel $topic 
+     * @param TopicModel $topic
      * @return mixed
      * @author BS <414606094@qq.com>
      */
@@ -168,11 +183,11 @@ class TopicController extends Controller
         $offset = $request->query('offset', 0);
         $user = $request->query('name');
 
-        $query = $topic->followers()->when($user, function ($query) use($user) {
-                return $query->where('name', 'like', sprintf('%%%s%%', $user));
-            })
+        $query = $topic->followers()->when($user, function ($query) use ($user) {
+            return $query->where('name', 'like', sprintf('%%%s%%', $user));
+        })
             ->selectRaw('*,topic_user.created_at as follow_time');
-        
+
         $total = $query->count();
 
         return response()->json($query->limit($limit)->offset($offset)->get()->map(function ($follower) use ($answer, $question, $reward) {
@@ -279,10 +294,10 @@ class TopicController extends Controller
 
     /**
      * 话题专家排序.
-     * 
+     *
      * @param  Request    $request
      * @param  TopicModel $topic
-     * @param  User       $user 
+     * @param  User       $user
      * @return mixed
      */
     public function sortExperts(Request $request, TopicModel $topic, User $user)
@@ -296,9 +311,9 @@ class TopicController extends Controller
 
     /**
      * 话题排序.
-     * 
+     *
      * @param  Request    $request
-     * @param  TopicModel $topic  
+     * @param  TopicModel $topic
      * @return mixed
      */
     public function sort(Request $request, TopicModel $topic)
@@ -313,16 +328,16 @@ class TopicController extends Controller
 
     /**
      * 话题开启.
-     * 
+     *
      * @param  Request    $request
      * @param  TopicModel $topic
      * @return mixed
      */
     public function status(Request $request, TopicModel $topic)
     {
-        $topic->status = !$topic->status;
+        $topic->status = ! $topic->status;
         $topic->save();
-        
+
         return response()->json('', 204);
     }
 }

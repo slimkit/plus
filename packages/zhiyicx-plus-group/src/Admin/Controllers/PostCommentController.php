@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\PlusGroup\Admin\Controllers;
 
 use Carbon\Carbon;
@@ -9,7 +25,7 @@ use Zhiyi\Plus\Models\Comment as CommentModel;
 class PostCommentController
 {
     /**
-     * 帖子评论列表
+     * 帖子评论列表.
      *
      * @param Request $request
      * @param CommentModel $comment
@@ -22,21 +38,22 @@ class PostCommentController
         $start = $request->query('start');
         $postId = $request->query('post_id');
         $keyword = $request->query('keyword');
-        
-    	$offset = $request->query('offset', 0);
-    	$limit = $request->query('limit', 15);
+
+        $offset = $request->query('offset', 0);
+        $limit = $request->query('limit', 15);
 
         $query = $comment->where('commentable_type', 'group-posts')
         ->when($postId, function ($query) use ($postId) {
-        	return $query->where('commentable_id', $postId);
+            return $query->where('commentable_id', $postId);
         })
         ->when($start || $end, function ($query) use ($start, $end) {
             if ($start) {
                 $query->where('created_at', '>=', Carbon::parse($start)->startOfDay());
             }
-            if ($end) {   
+            if ($end) {
                 $query->where('created_at', '<', Carbon::parse($end)->endOfDay());
             }
+
             return $query;
         })
         ->when($user, function ($query) use ($user) {

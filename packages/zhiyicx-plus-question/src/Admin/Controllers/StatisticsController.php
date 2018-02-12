@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace SlimKit\PlusQuestion\Admin\Controllers;
 
 use Illuminate\Http\Request;
@@ -22,7 +38,7 @@ class StatisticsController extends Controller
         $handles = [
             'all' => function ($query) {
                 return $query;
-            }, 
+            },
             'today' => function ($query) {
                 return $query->whereDate('created_at',
                     Carbon::now()->format('Y-m-d')
@@ -63,7 +79,7 @@ class StatisticsController extends Controller
             },
             'reward' => function (callable $handler) {
                 return $handler(AnswerOnlookerModel::query())->sum('amount');
-            }
+            },
         ];
 
         return response()->json(array_map(function (callable $handler) use ($handles, $type) {

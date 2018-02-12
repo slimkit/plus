@@ -1,9 +1,24 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\PlusGroup\API\Controllers;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;
 use Zhiyi\PlusGroup\Models\Post as GroupPostModel;
@@ -31,8 +46,9 @@ class NewPostRewardController
             return response()->json(['message' => ['打赏功能已关闭']], 422);
         }
 
-        if ($post->user_id)
-        $amount = (int) $request->input('amount');
+        if ($post->user_id) {
+            $amount = (int) $request->input('amount');
+        }
         if (! $amount || $amount < 0) {
             return response()->json([
                 'amount' => ['请输入正确的打赏金额'],

@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\PlusGroup\Admin\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -26,10 +42,11 @@ class UpdateGroupRequest extends FormRequest
     public function rules(): array
     {
         $id = (int) $this->segment(3);
+
         return [
             'name' => 'required|string|unique:groups,name,'.$id,
             'avatar' => 'image|max:2048',
-            'category_id' => 'required|integer|exists:group_categories,id', 
+            'category_id' => 'required|integer|exists:group_categories,id',
             'tags' => 'required|string',
             'tags.*' => 'required|integer|exists:tags,id',
             'longitude' => 'required_with:latitude|string',

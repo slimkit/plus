@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace SlimKit\PlusQuestion\Admin\Controllers;
 
 use Illuminate\Http\Request;
@@ -73,7 +89,6 @@ class QuestionApplicationRecordController extends Controller
         $application->status = 1;
 
         $application->getConnection()->transaction(function () use ($application) {
-
             $application->question->excellent = 1;
 
             $application->question->save();
@@ -109,7 +124,6 @@ class QuestionApplicationRecordController extends Controller
         $application->status = 2;
 
         $application->getConnection()->transaction(function () use ($application) {
-
             $charge = new WalletChargeModel();
             $charge->user_id = $application->user->id;
             $charge->channel = 'system';
@@ -128,6 +142,6 @@ class QuestionApplicationRecordController extends Controller
             ]);
         });
 
-        return response()->json(['message' => '操作成功'], 204);  
+        return response()->json(['message' => '操作成功'], 204);
     }
 }

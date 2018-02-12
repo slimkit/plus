@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\PlusGroup\API\Controllers;
 
 use DB;
@@ -7,22 +23,20 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\PlusGroup\Models\Post;
 use Zhiyi\PlusGroup\Models\Group;
-use Zhiyi\PlusGroup\Models\Category;
-use Zhiyi\PlusGroup\Models\GroupMember;
 use Illuminate\Database\Eloquent\Model;
+use Zhiyi\PlusGroup\Models\GroupMember;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
-use Zhiyi\PlusGroup\API\Requests\CreateFeedRequest;
 use Zhiyi\PlusGroup\Repository\Post as PostRepository;
 use Zhiyi\PlusGroup\API\Requests\CreateGroupPostRequest;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 
 class PostController
 {
-	/**
-	 * Get post list.
+    /**
+     * Get post list.
      *
-	 * @return json.
-	 */
+     * @return json.
+     */
     public function index(Request $request, Group $group, PostRepository $repository)
     {
         $limit = $request->get('limit', 15);
@@ -30,7 +44,7 @@ class PostController
         $type = $request->get('type');
 
         $posts = $group->posts()->when($type && $type == 'latest_reply', function ($query) use ($type) {
-            return $query->leftJoin('comments', function ($join){
+            return $query->leftJoin('comments', function ($join) {
                 $join->on('group_posts.id', '=', 'comments.commentable_id')
                     ->where('commentable_type', '=', 'group-posts')
                     ->orderBy('comments.created_at', 'desc');
@@ -48,7 +62,7 @@ class PostController
             'group_posts.likes_count',
             'group_posts.views_count',
             'group_posts.comments_count',
-            'group_posts.created_at'
+            'group_posts.created_at',
         ])
         ->with(['user', 'images'])
         ->offset($offset)
@@ -95,7 +109,6 @@ class PostController
         });
     }
 
-
     /**
      * Get a post.
      *
@@ -106,7 +119,7 @@ class PostController
         $user = $request->user('api') ?? 0;
 
         $post->increment('views_count');
-        
+
         $repository->formatCommonDetail($user, $post);
 
         return response()->json($post, 200);
@@ -147,7 +160,6 @@ class PostController
         DB::beginTransaction();
 
         try {
-
             $post = Post::create($this->fillRequestData($request, $group));
 
             $group->increment('posts_count');
@@ -159,10 +171,11 @@ class PostController
             $this->syncPostToFeed($request, $group, $fileWiths);
 
             DB::commit();
+
             return response()->json(['message' => '操作成功', 'post' => $repository->formatCommonDetail($user, $post)], 201);
         } catch (\Exception $e) {
-
             DB::rollback();
+
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
@@ -187,7 +200,6 @@ class PostController
         DB::beginTransaction();
 
         try {
-
             if ($fileWiths->count()) {
                 FileWithModel::where('raw', $post->id)->where('channel', 'group:post:image')->delete();
             }
@@ -201,13 +213,13 @@ class PostController
             $this->syncPostToFeed($request, $group, $fileWiths);
 
             DB::commit();
+
             return response()->json(['message' => '操作成功', 'post' => $repository->formatCommonDetail($user, $post)], 201);
         } catch (\Exception $e) {
-
             DB::rollback();
+
             return response()->json(['message', $e->getMessage()], 500);
         }
-
     }
 
     /**
@@ -268,7 +280,6 @@ class PostController
         return $feed;
     }
 
-
     /**
      * 创建文件使用模型.
      *
@@ -328,7 +339,7 @@ class PostController
             ->where('user_id', $user->id)
             ->where('group_id', $group->id)
             ->first();
-        
+
         if ($group->id != $post->group_id) {
             return response()->json(['message' => '操作资源不匹配'], 403);
         }
@@ -337,7 +348,7 @@ class PostController
             return response()->json(['message' => '无操作权限'], 403);
         }
 
-        if ($post->user_id != $user->id && !in_array($member->role, ['administrator', 'founder'])) {
+        if ($post->user_id != $user->id && ! in_array($member->role, ['administrator', 'founder'])) {
             return response()->json(['message' => '无操作权限'], 403);
         }
 
@@ -386,10 +397,10 @@ class PostController
             ->get();
 
         $items = $posts->map(function ($post) use ($user, $repository) {
-            $repository->formatCommonList($user, $post); 
+            $repository->formatCommonList($user, $post);
 
             return $post;
-        }); 
+        });
 
         return response()->json($items, 200);
     }
@@ -416,15 +427,15 @@ class PostController
         })
         ->when($userId, function ($query) use ($userId) {
             // 登陆状态 可以检索public和已加入圈子的帖子
-           return $query->whereHas('group.members', function ($query) use ($userId) {
-               return $query->where('audit', 1)->where('user_id', $userId)
+            return $query->whereHas('group.members', function ($query) use ($userId) {
+                return $query->where('audit', 1)->where('user_id', $userId)
                    ->where('disabled', 0)->whereIn('mode', ['public', 'paid', 'private'])->orWhere('mode', 'public');
-           });
+            });
         }, function ($query) {
             // 未登陆 只能搜索mode为public下面帖子
-           return $query->whereHas('group', function ($query) {
+            return $query->whereHas('group', function ($query) {
                 return $query->where('mode', 'public');
-           });
+            });
         })
         ->when($groupId, function ($query) use ($groupId) {
             return $query->where('group_id', $groupId);
@@ -440,7 +451,7 @@ class PostController
         $user = $request->user('api')->id ?? null;
 
         $items = $posts->map(function ($post) use ($user, $repository) {
-            $repository->formatCommonList($user, $post); 
+            $repository->formatCommonList($user, $post);
 
             return $post;
         });

@@ -1,15 +1,30 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\PlusGroup\Admin\Controllers;
 
 use Carbon\Carbon;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\PlusGroup\Models\GroupMember as MemberModel;
 use Zhiyi\PlusGroup\Models\Post as PostModel;
-use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\PlusGroup\Models\Pinned as PinnedModel;
+use Zhiyi\PlusGroup\Models\GroupMember as MemberModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 
 class PinnedController extends Controller
@@ -37,7 +52,7 @@ class PinnedController extends Controller
 
         $day = $request->input('day');
 
-        $target_user = $post->group->user;// ?
+        $target_user = $post->group->user; // ?
 
         $this->validateBase($request, $user);
 
@@ -67,7 +82,7 @@ class PinnedController extends Controller
     }
 
     /**
-     * 接受置顶帖子
+     * 接受置顶帖子.
      *
      * @param Request $request
      * @param PostModel $post
@@ -77,7 +92,7 @@ class PinnedController extends Controller
      * @return mixed
      * @author hh <915664508@qq.com>
      */
-    public function acceptPost(Request $request, PostModel $post, PinnedModel $pinnedModel, Carbon $datetime,  WalletChargeModel $chargeModel)
+    public function acceptPost(Request $request, PostModel $post, PinnedModel $pinnedModel, Carbon $datetime, WalletChargeModel $chargeModel)
     {
         $user = $post->user;
 
@@ -119,7 +134,6 @@ class PinnedController extends Controller
                 'user' => $user,
                 'pinned' => $pinned,
             ]);
-
         });
 
         $pinned->expires_state = $pinned->expires_at > $datetime->now()->toDateTimeString();
@@ -128,7 +142,7 @@ class PinnedController extends Controller
     }
 
     /**
-     * 拒接置顶帖子
+     * 拒接置顶帖子.
      *
      * @param Request $request
      * @param PostModel $post
@@ -150,7 +164,6 @@ class PinnedController extends Controller
         if (! $pinned) {
             return response()->json(['message' => '置顶不存在或已被审核'], 403);
         }
-
 
         $pinned->expires_at = $datetime->toDateTimeString();
         $pinned->status = 2;
@@ -184,7 +197,6 @@ class PinnedController extends Controller
         return response()->json(['message' => '拒绝成功', 'pinned' => $pinned], 201);
     }
 
-
     /**
      * 帖子置顶撤销.
      *
@@ -211,7 +223,7 @@ class PinnedController extends Controller
         $pinned->save();
 
         $pinned->expires_state = $pinned->expires_at > $datetime->now()->toDateTimeString();
-        
+
         return response()->json(['message' => '撤销成功', 'pinned' => $pinned], 201);
     }
 

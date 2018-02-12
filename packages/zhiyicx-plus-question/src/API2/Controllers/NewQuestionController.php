@@ -1,12 +1,27 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace SlimKit\PlusQuestion\API2\Controllers;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Concerns\FindMarkdownFileTrait;
 use SlimKit\PlusQuestion\Models\Topic as TopicModel;
-use SlimKit\PlusQuestion\Models\Answer as AnswerModel;
 use SlimKit\PlusQuestion\Models\Question as QuestionModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
@@ -269,7 +284,6 @@ class NewQuestionController extends Controller
                 $user->wallet()->increment('balance', $applylog->amount);
                 $process = new UserProcess();
                 $process->reject(0, $applylog->amount, $question->user_id, trans('plus-question::questions.application.退还问题申精费用'), trans('plus-question::questions.application.退还问题《:subject》的申精费用', ['subject' => $question->subject]));
-
             }
 
             $question->topics()->decrement('questions_count', 1);

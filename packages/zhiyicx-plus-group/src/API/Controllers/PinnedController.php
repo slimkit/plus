@@ -1,12 +1,28 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\PlusGroup\API\Controllers;
 
 use Carbon\Carbon;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\PlusGroup\Models\GroupMember;
+use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\PlusGroup\Models\Post as PostModel;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\PlusGroup\Models\Pinned as PinnedModel;
@@ -17,9 +33,9 @@ use Zhiyi\PlusGroup\Models\GroupIncome as GroupIncomeModel;
 class PinnedController extends Controller
 {
     /**
-     * 帖子申请置顶列表
+     * 帖子申请置顶列表.
      *
-     * @param Request $request 
+     * @param Request $request
      * @param PinnedModel $pinnedModel
      * @return mixed
      * @author BS <414606094@qq.com>
@@ -74,7 +90,7 @@ class PinnedController extends Controller
         if (! $member || ($post->user_id !== $user->id && ! in_array($member->role, ['founder', 'administrator']))) {
             return response()->json(['message' => '无权限操作'], 403);
         }
-        
+
         if ($post->pinned()->where('user_id', $user->id)->where(function ($query) use ($datetime) {
             return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
         })->first()) {
@@ -109,7 +125,7 @@ class PinnedController extends Controller
         $chargeModel->status = 1;
 
         $post->getConnection()->transaction(function () use ($chargeModel, $user, $pinnedModel, $target_user, $amount, $post) {
-            
+
             // 扣除余额
             $user->wallet()->decrement('balance', $amount);
 
@@ -131,7 +147,7 @@ class PinnedController extends Controller
     }
 
     /**
-     * 接受置顶帖子
+     * 接受置顶帖子.
      *
      * @param Request $request
      * @param PostModel $post
@@ -164,7 +180,7 @@ class PinnedController extends Controller
         $chargeModel->status = 1;
 
         $income->group_id = $post->group->id;
-        $income->subject = sprintf("置顶帖子《%s》收入", $post->title);
+        $income->subject = sprintf('置顶帖子《%s》收入', $post->title);
         $income->type = 2;
         $income->amount = $pinned->amount;
         $income->user_id = $target_user->id;
@@ -188,14 +204,13 @@ class PinnedController extends Controller
                 'user' => $user,
                 'pinned' => $pinned,
             ]);
-
         });
 
         return response()->json(['message' => '审核成功'], 201);
     }
 
     /**
-     * 拒接置顶帖子
+     * 拒接置顶帖子.
      *
      * @param Request $request
      * @param PostModel $post
@@ -296,14 +311,14 @@ class PinnedController extends Controller
     {
         $user = $request->user();
 
-       if ($pinnedModel->where('channel', 'comment')->where('target', $comment->id)->where('user_id', $user->id)->where(function ($query) use ($datetime) {
-           return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
-       })->first()) {
-           return response()->json(['message' => ['已经申请过']])->setStatusCode(422);
-       }
-       if ($comment->commentable_type !== 'group-posts') {
-           return response()->json(['message' => ['不允许该操作']], 422);
-       }
+        if ($pinnedModel->where('channel', 'comment')->where('target', $comment->id)->where('user_id', $user->id)->where(function ($query) use ($datetime) {
+            return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
+        })->first()) {
+            return response()->json(['message' => ['已经申请过']])->setStatusCode(422);
+        }
+        if ($comment->commentable_type !== 'group-posts') {
+            return response()->json(['message' => ['不允许该操作']], 422);
+        }
 
         $post = $postModel->where('id', $comment->commentable_id)->first();
 
@@ -346,7 +361,7 @@ class PinnedController extends Controller
         $chargeModel->status = 1;
 
         $post->getConnection()->transaction(function () use ($chargeModel, $user, $pinnedModel, $target_user, $amount, $post, $comment) {
-            
+
             // 扣除余额
             $user->wallet()->decrement('balance', $amount);
 
@@ -369,7 +384,7 @@ class PinnedController extends Controller
     }
 
     /**
-     * 通过评论置顶
+     * 通过评论置顶.
      *
      * @param Request $request
      * @param CommentModel $comment
@@ -426,7 +441,7 @@ class PinnedController extends Controller
     }
 
     /**
-     * 拒绝置顶评论
+     * 拒绝置顶评论.
      *
      * @param Request $request
      * @param CommentModel $comment
@@ -522,7 +537,7 @@ class PinnedController extends Controller
     public function postPinnedCreate(Request $request, PostModel $post, PinnedModel $pinnedModel, Carbon $datetime)
     {
         $user = $request->user();
-        
+
         $count = MemberModel::whereIn('role', ['founder', 'administrator'])
         ->where('user_id', $user->id)
         ->where('disabled', 0)
@@ -564,8 +579,8 @@ class PinnedController extends Controller
             // 给用户发消息通知
             if ($user->id !== $post->user_id) {
                 $post->user->sendNotifyMessage(
-                    'group:pinned-post', 
-                    sprintf('%s,你的帖子《%s》已被系统管理员置顶', $post->user->name, $post->title), 
+                    'group:pinned-post',
+                    sprintf('%s,你的帖子《%s》已被系统管理员置顶', $post->user->name, $post->title),
                     ['post' => $post, 'user' => $user, 'pinned' => $pinnedModel]
                 );
             }
@@ -598,7 +613,7 @@ class PinnedController extends Controller
 
         $pinned->expires_at = $datetime->toDateTimeString();
         $pinned->save();
-        
+
         return response()->json(['message' => '取消置顶成功', 'pinned' => $pinned], 201);
     }
 }

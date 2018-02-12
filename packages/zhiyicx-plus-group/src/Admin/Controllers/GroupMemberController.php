@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\PlusGroup\Admin\Controllers;
 
 use Illuminate\Http\Request;
@@ -19,21 +35,21 @@ class GroupMemberController
         $offset = (int) $request->query('offset', 0);
 
         $query = $group->members()
-        ->when(! is_null($audit), function($query) use($audit) {
+        ->when(! is_null($audit), function ($query) use ($audit) {
             return $query->where('audit', $audit);
         })
-        ->when($role, function($query) use($role) {
+        ->when($role, function ($query) use ($role) {
             return $query->where('role', $role);
         })
-        ->when(! is_null($disable), function($query) use($disable) {
+        ->when(! is_null($disable), function ($query) use ($disable) {
             return $query->where('disabled', $disable);
         })
-        ->when($user, function($query) use($user) {
-            return $query->whereHas('user', function($query) use ($user) {
+        ->when($user, function ($query) use ($user) {
+            return $query->whereHas('user', function ($query) use ($user) {
                 return $query->where('name', 'like', sprintf('%%%s%%', $user));
             });
         });
-        
+
         $count = $query->count();
         $items = $query->with(['user', 'group'])
         ->limit($limit)
@@ -45,7 +61,7 @@ class GroupMemberController
 
     /**
      * 设置圈子角色.
-     * 
+     *
      * @param  Request     $request
      * @param  GroupMember $member
      * @return mixed
@@ -54,7 +70,7 @@ class GroupMemberController
     {
         $role = $request->input('role');
 
-        if (! $role || !in_array($role, ['member', 'founder', 'administrator'])) {
+        if (! $role || ! in_array($role, ['member', 'founder', 'administrator'])) {
             return response()->json(['message' => '错误的参数'], 422);
         }
 
@@ -86,8 +102,8 @@ class GroupMemberController
             $founder->save();
 
             $founder->user->sendNotifyMessage(
-                'group:member:role', 
-                sprintf('系统管理员将你设置成"%s"圈子的成员', $group->name), 
+                'group:member:role',
+                sprintf('系统管理员将你设置成"%s"圈子的成员', $group->name),
                 ['user' => $founder->user, 'group' => $group]
             );
         }
@@ -97,8 +113,8 @@ class GroupMemberController
 
         // 发送系统通知
         $user->sendNotifyMessage(
-            'group:member:role', 
-            sprintf('系统管理员将你设置成"%s"圈子的%s', $group->name, $this->getNameByRole($role)), 
+            'group:member:role',
+            sprintf('系统管理员将你设置成"%s"圈子的%s', $group->name, $this->getNameByRole($role)),
             ['user' => $user, 'group' => $group]
         );
 
@@ -107,7 +123,7 @@ class GroupMemberController
 
     /**
      * 通过角色获取角色名.
-     * 
+     *
      * @param  string $role
      * @return string
      */
@@ -128,7 +144,7 @@ class GroupMemberController
 
     /**
      * 踢出圈子.
-     * 
+     *
      * @param  MemberModel $member
      * @return mixed
      */
@@ -140,12 +156,12 @@ class GroupMemberController
         if ($member->role == 'founder') {
             return response()->json(['message' => '圈主不能被踢出'], 403);
         }
-        
+
         $member->group()->decrement('users_count');
 
         $user->sendNotifyMessage(
-            'group:member:remove', 
-            sprintf('你已被系统管理员移除“%s”圈子', $group->name), 
+            'group:member:remove',
+            sprintf('你已被系统管理员移除“%s”圈子', $group->name),
             ['user' => $user, 'group' => $group]
         );
 
@@ -156,7 +172,7 @@ class GroupMemberController
 
     /**
      * 拉黑.
-     * 
+     *
      * @param  MemberModel $member
      * @return mixed
      */
@@ -178,13 +194,11 @@ class GroupMemberController
         $group = $member->group;
 
         $user->sendNotifyMessage(
-            'group:member:blacklist', 
-            sprintf('你已被系统管理员%s“%s”圈子黑名单', ($disable ? '加入' : '移除'), $group->name), 
+            'group:member:blacklist',
+            sprintf('你已被系统管理员%s“%s”圈子黑名单', ($disable ? '加入' : '移除'), $group->name),
             ['user' => $user, 'group' => $group]
         );
 
         return response()->json(['message' => $disable ? '加入黑名单成功' : '解除黑名单成功'], 201);
     }
-
-
 }

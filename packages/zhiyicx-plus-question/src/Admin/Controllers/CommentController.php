@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace SlimKit\PlusQuestion\Admin\Controllers;
 
 use DB;
@@ -38,7 +54,7 @@ class CommentController extends Controller
         })
         ->where(function ($query) use ($question, $answerUser) { // 根据所属问题或回答资源条件筛选
             return $query->where(function ($query) use ($question) { // 根据问题标题筛选
-                return $query ->when($question, function ($query) use ($question) {
+                return $query->when($question, function ($query) use ($question) {
                     return $query->where('commentable_type', 'questions')->whereExists(function ($query) use ($question) {
                         return $query->from('questions')->whereRaw('questions.id = comments.commentable_id')->where('id', $question);
                     });
@@ -70,9 +86,10 @@ class CommentController extends Controller
                     $typeKey = $type;
                     break;
             }
+
             return $query->where('commentable_type', $typeKey);
         })
-        ->when((! $type && ! $question && ! $answerUser ), function ($query) { // 未筛选时限制查询评论范围
+        ->when((! $type && ! $question && ! $answerUser), function ($query) { // 未筛选时限制查询评论范围
             return $query->whereIn('commentable_type', ['questions', 'question-answers']);
         });
 
@@ -108,6 +125,7 @@ class CommentController extends Controller
             $comment->delete();
         } catch (QueryException $e) {
             DB::rollBack();
+
             return response()->json([
                 'message' => $e->errorInfo,
             ])->setStatusCode(500);

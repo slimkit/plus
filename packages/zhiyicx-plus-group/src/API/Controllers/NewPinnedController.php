@@ -1,16 +1,31 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\PlusGroup\API\Controllers;
 
 use Carbon\Carbon;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\PlusGroup\Models\GroupMember;
+use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\PlusGroup\Models\Post as PostModel;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\PlusGroup\Models\Pinned as PinnedModel;
-use Zhiyi\PlusGroup\Models\GroupMember as MemberModel;
 use Zhiyi\PlusGroup\Models\GroupIncome as GroupIncomeModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
@@ -40,7 +55,7 @@ class NewPinnedController extends Controller
         if (! $member || ($post->user_id !== $user->id && ! in_array($member->role, ['founder', 'administrator']))) {
             return response()->json(['message' => '无权限操作'], 403);
         }
-        
+
         if ($post->pinned()->where('user_id', $user->id)->where(function ($query) use ($datetime) {
             return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
         })->first()) {
@@ -66,7 +81,6 @@ class NewPinnedController extends Controller
         $pinnedModel->status = 0;
 
         $post->getConnection()->transaction(function () use ($user, $pinnedModel, $target_user, $amount, $post) {
-            
             $process = new UserProcess();
             $process->prepayment($user->id, $amount, $target_user->id, '帖子申请置顶', sprintf('申请置顶帖子《%s》', $post->title));
 
@@ -85,7 +99,7 @@ class NewPinnedController extends Controller
     }
 
     /**
-     * 接受置顶帖子
+     * 接受置顶帖子.
      *
      * @param Request $request
      * @param PostModel $post
@@ -108,13 +122,12 @@ class NewPinnedController extends Controller
         $pinned->status = 1;
 
         $income->group_id = $post->group->id;
-        $income->subject = sprintf("置顶帖子《%s》收入", $post->title);
+        $income->subject = sprintf('置顶帖子《%s》收入', $post->title);
         $income->type = 2;
         $income->amount = $pinned->amount;
         $income->user_id = $target_user->id;
 
         $post->getConnection()->transaction(function () use ($pinned, $user, $target_user, $post, $income) {
-
             $process = new Processes();
             $process->receivables($user->id, $pinned->amount, $target_user->id, '帖子置顶收入', sprintf('接受置顶帖子《%s》的收入', $post->title));
 
@@ -130,14 +143,13 @@ class NewPinnedController extends Controller
                 'user' => $user,
                 'pinned' => $pinned,
             ]);
-
         });
 
         return response()->json(['message' => '审核成功'], 201);
     }
 
     /**
-     * 拒接置顶帖子
+     * 拒接置顶帖子.
      *
      * @param Request $request
      * @param PostModel $post
@@ -160,7 +172,6 @@ class NewPinnedController extends Controller
         $pinned->status = 2;
 
         $post->getConnection()->transaction(function () use ($pinned, $user, $target_user, $post) {
-
             $process = new UserProcess();
             $process->reject($user->id, $pinned->amount, $target_user->id, '退还帖子置顶申请金额', sprintf('退还申请置顶帖子《%s》的金额', $post->title));
 
@@ -193,14 +204,14 @@ class NewPinnedController extends Controller
     {
         $user = $request->user();
 
-       if ($pinnedModel->where('channel', 'comment')->where('target', $comment->id)->where('user_id', $user->id)->where(function ($query) use ($datetime) {
-           return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
-       })->first()) {
-           return response()->json(['message' => ['已经申请过']])->setStatusCode(422);
-       }
-       if ($comment->commentable_type !== 'group-posts') {
-           return response()->json(['message' => ['不允许该操作']], 422);
-       }
+        if ($pinnedModel->where('channel', 'comment')->where('target', $comment->id)->where('user_id', $user->id)->where(function ($query) use ($datetime) {
+            return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
+        })->first()) {
+            return response()->json(['message' => ['已经申请过']])->setStatusCode(422);
+        }
+        if ($comment->commentable_type !== 'group-posts') {
+            return response()->json(['message' => ['不允许该操作']], 422);
+        }
 
         $post = $postModel->where('id', $comment->commentable_id)->first();
 
@@ -234,7 +245,6 @@ class NewPinnedController extends Controller
         $pinnedModel->status = 0;
 
         $post->getConnection()->transaction(function () use ($user, $pinnedModel, $target_user, $amount, $post, $comment) {
-            
             $process = new UserProcess();
             $process->prepayment($user->id, $amount, $target_user->id, '评论申请置顶', sprintf('在帖子《%s》申请评论置顶', $post->title));
 
@@ -254,7 +264,7 @@ class NewPinnedController extends Controller
     }
 
     /**
-     * 通过评论置顶
+     * 通过评论置顶.
      *
      * @param Request $request
      * @param CommentModel $comment
@@ -279,7 +289,6 @@ class NewPinnedController extends Controller
         $pinned->status = 1;
 
         $post->getConnection()->transaction(function () use ($pinned, $user, $target_user, $comment, $post) {
-
             $process = new Processes();
             $process->receivables($user->id, $pinned->amount, $target_user->id, '帖子内置顶评论收入', sprintf('帖子《%s》下置顶评论收入的金额', $post->title));
 
@@ -299,7 +308,7 @@ class NewPinnedController extends Controller
     }
 
     /**
-     * 拒绝置顶评论
+     * 拒绝置顶评论.
      *
      * @param Request $request
      * @param CommentModel $comment
@@ -324,7 +333,6 @@ class NewPinnedController extends Controller
         $pinned->status = 2;
 
         $post->getConnection()->transaction(function () use ($pinned, $user, $target_user, $comment, $post) {
-
             $process = new UserProcess();
             $process->reject($user->id, $pinned->amount, $target_user->id, '退还帖子内置顶评论申请金额', sprintf('退还帖子《%s》下置顶评论申请的金额', $post->title));
 

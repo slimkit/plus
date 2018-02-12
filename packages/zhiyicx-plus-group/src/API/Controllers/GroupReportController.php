@@ -1,21 +1,35 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\PlusGroup\API\Controllers;
 
 use DB;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\Report as ReportModel;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\PlusGroup\Models\Group as GroupModel;
 use Zhiyi\PlusGroup\Models\GroupMember;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\Report as ReportModel;
 use Zhiyi\PlusGroup\Models\Post as PostModel;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\PlusGroup\Models\GroupReport as GroupReportModel;
 
 class GroupReportController extends Controller
 {
-
     /**
      * 举报列表.
      *
@@ -57,8 +71,9 @@ class GroupReportController extends Controller
             ->limit($limit)
             ->get();
 
-        $items = $reports->map(function($item) {
+        $items = $reports->map(function ($item) {
             $item->resource = $item->resource;
+
             return $item;
         });
 
@@ -83,7 +98,7 @@ class GroupReportController extends Controller
             $reportModel->target_user = $post->user_id;
             $reportModel->status = 0;
             $reportModel->reason = $request->input('content');
-            $reportModel->subject = sprintf('圈子帖子：%s',  empty($post->body) ? $post->id : mb_substr($post->body, 0, 50));
+            $reportModel->subject = sprintf('圈子帖子：%s', empty($post->body) ? $post->id : mb_substr($post->body, 0, 50));
             $post->reports()->save($reportModel);
         } else {
             $report = new GroupReportModel();
@@ -107,6 +122,7 @@ class GroupReportController extends Controller
                         ['post' => $post]);
                 });
         }
+
         return response()->json(['message' => '举报成功'], 201);
     }
 
@@ -133,7 +149,7 @@ class GroupReportController extends Controller
             $reportModel->target_user = $comment->user_id;
             $reportModel->status = 0;
             $reportModel->reason = $request->input('content');
-            $reportModel->subject = sprintf('圈子帖子评论：%s',  empty($comment->body) ? $comment->id : mb_substr($comment->body, 0, 50));
+            $reportModel->subject = sprintf('圈子帖子评论：%s', empty($comment->body) ? $comment->id : mb_substr($comment->body, 0, 50));
             $comment->reports()->save($reportModel);
         } else {
             $post = $postModel->find($comment->commentable_id);
@@ -160,6 +176,7 @@ class GroupReportController extends Controller
                     );
                 });
         }
+
         return response()->json(['message' => '举报成功'], 201);
     }
 
@@ -172,7 +189,7 @@ class GroupReportController extends Controller
      */
     public function accept(Request $request, GroupReportModel $report)
     {
-        $cause =  $request->input('cause');
+        $cause = $request->input('cause');
 
         if (in_array($report->status, [1, 2])) {
             return response()->json(['message' => '举报已处理'], 422);
@@ -211,10 +228,11 @@ class GroupReportController extends Controller
             }
 
             DB::commit();
+
             return response()->json(['message' => '审核成功'], 201);
         } catch (\Exception $exception) {
-
             DB::rollback();
+
             return response()->json(['message' => $exception->getMessage()], 500);
         }
     }
@@ -228,7 +246,7 @@ class GroupReportController extends Controller
      */
     public function reject(Request $request, GroupReportModel $report)
     {
-        $cause =  $request->input('cause');
+        $cause = $request->input('cause');
 
         if (in_array($report->status, [1, 2])) {
             return response()->json(['message' => '举报已处理'], 422);

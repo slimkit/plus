@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace SlimKit\PlusQuestion\API2\Controllers;
 
 use Illuminate\Http\Request;
@@ -33,15 +49,15 @@ class QuestionAdoptionController extends Controller
         if ($question->user_id !== $user->id) {
             return $response->json(['message' => [trans('plus-question::questions.adoption.not-owner')]], 403);
 
-            // Is the answer to this question?
+        // Is the answer to this question?
         } elseif ($answer->question_id !== $question->id) {
             return $response->json(['message' => [trans('plus-question::questions.adoption.non')]], 422);
 
-            // Are the questions and answers the owners?
+        // Are the questions and answers the owners?
         } elseif ($answer->user_id === $question->user_id) {
             return $response->json(['message' => [trans('plus-question::questions.adoption.own-answer')]], 422);
 
-            // Have you ever submitted a question or has this question already answered?
+        // Have you ever submitted a question or has this question already answered?
         } elseif ($answer->adoption || ($adoption = $question->answers()->where('adoption', 1)->first())) {
             return $response->json(['message' => [trans('plus-question::questions.adoption.already')]], 422);
         }
@@ -102,15 +118,15 @@ class QuestionAdoptionController extends Controller
         if ($question->user_id !== $user->id) {
             return $response->json(['message' => [trans('plus-question::questions.adoption.not-owner')]], 403);
 
-            // Is the answer to this question?
+        // Is the answer to this question?
         } elseif ($answer->question_id !== $question->id) {
             return $response->json(['message' => [trans('plus-question::questions.adoption.non')]], 422);
 
-            // Are the questions and answers the owners?
+        // Are the questions and answers the owners?
         } elseif ($answer->user_id === $question->user_id) {
             return $response->json(['message' => [trans('plus-question::questions.adoption.own-answer')]], 422);
 
-            // Have you ever submitted a question or has this question already answered?
+        // Have you ever submitted a question or has this question already answered?
         } elseif ($answer->adoption || ($adoption = $question->answers()->where('adoption', 1)->first())) {
             return $response->json(['message' => [trans('plus-question::questions.adoption.already')]], 422);
         }

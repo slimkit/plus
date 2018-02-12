@@ -1,15 +1,26 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace SlimKit\PlusQuestion\API2\Controllers;
 
-use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\WalletOrder;
 use Zhiyi\Plus\Packages\Wallet\Order;
-use Zhiyi\Plus\Packages\Wallet\Wallet;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;
-use Zhiyi\Plus\Models\Reward as RewardModel;
 use SlimKit\PlusQuestion\Models\Answer as AnswerModel;
-use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use SlimKit\PlusQuestion\Models\TopicExpertIncome as ExpertIncomeModel;
 use SlimKit\PlusQuestion\API2\Requests\AnswerReward as AnswerRewardRequest;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
@@ -27,7 +38,7 @@ class NewAnswerRewardController extends Controller
         $user = $request->user();
         $target = $answer->user;
 
-        if (!$target) {
+        if (! $target) {
             return $response->json(['message' => [trans('plus-question::answers.reward.not-user')]], 422);
         }
 
@@ -35,12 +46,11 @@ class NewAnswerRewardController extends Controller
             return $response->json(['message' => ['用户不能自己打赏自己']], 422);
         }
 
-        if (!$user->newWallet || $user->newWallet->balance < $amount) {
+        if (! $user->newWallet || $user->newWallet->balance < $amount) {
             return response()->json(['message' => ['余额不足']], 403);
         }
 
         return $response->json($answer->getConnection()->transaction(function () use ($answer, $user, $target, $amount, $manager) {
-
             $money = $amount / self::RATIO;
 
             $targetOrder = $manager->driver(Order::TARGET_TYPE_REWARD)->reward([
@@ -58,7 +68,7 @@ class NewAnswerRewardController extends Controller
                     'message' => sprintf('你问答回复《%s》，被%s打赏%s元', $answer->body, $user->name, $money),
                 ],
             ], 'manual');
-            
+
             // inrement rewarder_count
             $answer->increment('rewarder_count');
             // check if the user is a expert, record income.
@@ -82,7 +92,5 @@ class NewAnswerRewardController extends Controller
 
             return ['message' => trans('plus-question::messages.success')];
         }));
-
-
     }
 }

@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 use Illuminate\Support\Facades\Route;
 use Zhiyi\PlusGroup\API\Controllers as API;
 use Illuminate\Contracts\Routing\Registrar as RouteRegisterContract;
@@ -54,7 +70,7 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
 
             // get a group info.
             // @get /api/v2/plus-group/groups/:group
-             $api->get('/{group}', API\GroupsController::class.'@show')->where(['group' => '[0-9]+']);
+            $api->get('/{group}', API\GroupsController::class.'@show')->where(['group' => '[0-9]+']);
 
             // get list of posts.
             // @get /api/v2/plus-group/groups/:group/posts
@@ -105,7 +121,6 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
 
         // Auth routes.
         $api->group(['middleware' => 'auth:api'], function (RouteRegisterContract $api) {
-
             $api->group(['prefix' => '/categories'], function (RouteRegisterContract $api) {
 
                 // Create a group.
@@ -154,7 +169,7 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
                 // set managers of group
                 // @put /api/v2/plus-group/groups/:group/managers/:member
                 $api->put('/{group}/managers/{member}', API\GroupMemberController::class.'@setManager');
-                
+
                 // remove managers of group
                 // @put /api/v2/plus-group/groups/:group/managers/:member
                 $api->delete('/{group}/managers/{member}', API\GroupMemberController::class.'@removeManager');
@@ -162,7 +177,7 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
                 // set blacklist of group
                 // @put /api/v2/plus-group/groups/:group/blacklist/:member
                 $api->put('/{group}/blacklist/{member}', API\GroupMemberController::class.'@setBlacklist');
-                
+
                 // remove blacklist of group
                 // @delete /api/v2/plus-group/groups/:group/blacklist/:member
                 $api->delete('/{group}/blacklist/{member}', API\GroupMemberController::class.'@removeBlacklist');
@@ -196,7 +211,7 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
 
                 // create a comment for a group post.
                 // @post /api/v2/plus-group/group-posts/:post/comments
-                $api->post('/{post}/comments', API\PostCommentController::class.'@store')->middleware('sensitive:body');;
+                $api->post('/{post}/comments', API\PostCommentController::class.'@store')->middleware('sensitive:body');
 
                 // delete a comment for a group post.
                 // @delete /api/v2/plus-group/group-posts/:post/comments/:comment
@@ -308,7 +323,6 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
                 $api->patch('/{report}/accept', API\GroupReportController::class.'@accept');
                 // 拒绝举报审核
                 $api->patch('/{report}/reject', API\GroupReportController::class.'@reject');
-
             });
 
             // 用户收藏的帖子.
