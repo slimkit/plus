@@ -21,8 +21,6 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Tests\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -73,7 +71,7 @@ class ReportTest extends TestCase
             'reply_user' => 0,
             'body' => '测试',
             'commentable_id' => 1,
-            'commentable_type' => 'system'
+            'commentable_type' => 'system',
         ]);
 
         $response = $this->actingAs($this->user, 'api')->json('POST', 'api/v2/report/comments/'.$comment->id);
