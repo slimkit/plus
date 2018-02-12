@@ -24,6 +24,7 @@ use Zhiyi\Plus\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Zhiyi\Plus\Support\ManageRepository;
 use Zhiyi\Plus\Support\BootstrapAPIsEventer;
+use Zhiyi\Plus\Support\PinnedsNotificationEventer;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
@@ -64,6 +65,22 @@ class NewsServiceProvider extends ServiceProvider
             return [
                 'news:contribute' => $this->app->make(ConfigRepository::class)->get('news.contribute'),
                 'news:pay_conyribute' => (int) $this->app->make(ConfigRepository::class)->get('news.pay_conyribute'),
+            ];
+        });
+
+        // 注册置顶审核通知事件
+        $this->app->make(PinnedsNotificationEventer::class)->listen(function () {
+            return [
+                'name' => 'news-comments',
+                'namespace' => \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned::class,
+                'owner_prefix' => 'target_user',
+                'wherecolumn' => function ($query) {
+                    return $query->where('expires_at', null)->where('channel', 'news:comment')->whereExists(function ($query) {
+                        return $query->from('news')->whereRaw('news_pinneds.target = news.id')->where('deleted_at', null);
+                    })->whereExists(function ($query) {
+                        return $query->from('comments')->whereRaw('news_pinneds.raw = comments.id');
+                    });
+                },
             ];
         });
 
