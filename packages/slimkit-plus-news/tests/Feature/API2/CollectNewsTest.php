@@ -20,10 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Feature\API2;
 
-use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\Tests\TestCase;
 use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\Models\Collection as CollectionModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate as NewsCateModel;
@@ -76,7 +74,7 @@ class CollectNewsTest extends TestCase
 
         $response = $this
             ->actingAs($this->user, 'api')
-            ->json('GET', "/api/v2/news/collections");
+            ->json('GET', '/api/v2/news/collections');
         $response
             ->assertStatus(200)
             ->assertJsonStructure([]);
