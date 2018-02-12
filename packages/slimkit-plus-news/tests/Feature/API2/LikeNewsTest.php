@@ -71,12 +71,8 @@ class LikeNewsTest extends TestCase
      */
     public function testUnLikeNews()
     {
-        factory(LikeModel::class)->create([
-            'user_id' => $this->user->id,
-            'target_user' => $this->user->id,
-            'likeable_id' => $this->news->id,
-            'likeable_type' => 'news',
-        ]);
+        $this->news->like($this->user->id);
+
         $response = $this
             ->actingAs($this->user, 'api')
             ->json('DELETE', "/api/v2/news/{$this->news->id}/likes");
