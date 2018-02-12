@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Feature\API2;
 
-use Carbon\Carbon;
 use Zhiyi\Plus\Tests\TestCase;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\Comment as CommentModel;
@@ -65,14 +64,12 @@ class PinnedNewsTest extends TestCase
         $response
             ->assertStatus(201)
             ->assertJsonStructure(['message']);
-
     }
 
     /**
      * 查看申请置顶的资讯列表.
      *
      * @return mixed
-     *
      */
     public function testGetNewsPinneds()
     {
@@ -88,7 +85,6 @@ class PinnedNewsTest extends TestCase
      * 资讯评论申请置顶.
      *
      * @return mixed
-     *
      */
     public function testPinnedNewsComment()
     {
@@ -119,7 +115,6 @@ class PinnedNewsTest extends TestCase
      * 查看资讯中申请置顶的评论列表.
      *
      * @return mixed
-     *
      */
     public function testGetNewsCommentPinneds()
     {
@@ -132,7 +127,7 @@ class PinnedNewsTest extends TestCase
     }
 
     /**
-     * 通过审核评论置顶
+     * 通过审核评论置顶.
      *
      * @return mixed
      */
@@ -172,7 +167,7 @@ class PinnedNewsTest extends TestCase
     }
 
     /**
-     * 拒绝审核评论置顶
+     * 拒绝审核评论置顶.
      *
      * @return mixed
      */
@@ -211,7 +206,7 @@ class PinnedNewsTest extends TestCase
     }
 
     /**
-     * 取消评论置顶
+     * 取消评论置顶.
      *
      * @return mixed
      */
@@ -248,5 +243,4 @@ class PinnedNewsTest extends TestCase
         $response
             ->assertStatus(204);
     }
-
 }
