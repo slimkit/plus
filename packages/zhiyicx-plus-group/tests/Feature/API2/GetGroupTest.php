@@ -204,4 +204,17 @@ class GetGroupTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    /**
+     * 获取附近圈子
+     * 
+     * @return mixed
+     */
+    public function testGetRoundGroups()
+    {
+        $response = $this
+            ->json('GET', '/api/v2/plus-group/round/groups');
+
+        $response->assertStatus(200);
+    }
 }
