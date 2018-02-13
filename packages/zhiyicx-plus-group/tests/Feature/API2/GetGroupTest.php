@@ -191,4 +191,17 @@ class GetGroupTest extends TestCase
             ->assertStatus(200)
             ->assertJsonStructure(['count']);
     }
+
+    /**
+     * 获取圈子协议.
+     *
+     * @return mixed
+     */
+    public function testGetGroupProtocol()
+    {
+        $response = $this
+            ->json('GET', "/api/v2/plus-group/groups/protocol");
+
+        $response->assertStatus(200);
+    }
 }
