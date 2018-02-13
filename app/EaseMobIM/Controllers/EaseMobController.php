@@ -194,7 +194,7 @@ class EaseMobController
     public function createUsers(Request $request)
     {
         $callback = function () use ($request) {
-            $user_ids = $request->input('user_ids');
+            $user_ids = $request->user_ids ?: $request->input('user_ids');
             $user_ids = is_array($user_ids) ? $user_ids : explode(',', $user_ids);
             $options = [];
             $users = User::when($user_ids, function ($query) use ($user_ids) {

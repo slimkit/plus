@@ -18,11 +18,15 @@
 
 use Faker\Generator as Faker;
 
-$factory->define(\Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed::class, function (Faker $faker) {
+$factory->define(Zhiyi\Plus\Models\WalletCash::class, function (Faker $faker) {
+    static $user_id;
+
     return [
-        'feed_content' => $faker->shuffle(),
-        'feed_from' => 5,
-        'user_id' => $faker->randomNumber(),
-        'feed_mark' => $faker->unique()->randomNumber(),
+        'user_id' => $user_id,
+        'type' => 'alipay',
+        'account' => '1212121212',
+        'value' => random_int(1, 999999),
+        'status' => rand(0, 2),
+        'remark' => '',
     ];
 });

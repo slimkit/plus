@@ -18,11 +18,15 @@
 
 use Faker\Generator as Faker;
 
-$factory->define(\Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed::class, function (Faker $faker) {
+$factory->define(Zhiyi\Plus\Models\Advertising::class, function (Faker $faker) {
     return [
-        'feed_content' => $faker->shuffle(),
-        'feed_from' => 5,
-        'user_id' => $faker->randomNumber(),
-        'feed_mark' => $faker->unique()->randomNumber(),
+        'space_id' => 1,
+        'title' => '测试标题',
+        'type' => 'image',
+        'data' => [
+            'image' => 'http://xxx/xxx.jpg',
+            'url' => 'http://www.xxxxx.com',
+        ],
+        'sort' => 0,
     ];
 });

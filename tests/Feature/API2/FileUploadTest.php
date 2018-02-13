@@ -18,55 +18,55 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace SlimKit\PlusFeed\Tests\Feature\API2;
+namespace Zhiyi\Plus\Tests\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Zhiyi\Plus\Models\User as UserModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
-class NewRewardFeedTest extends TestCase
+class FileUploadTest extends TestCase
 {
     use DatabaseTransactions;
 
-    protected $owner;
+    /**
+     * The test user.
+     *
+     * @var Zhiyi\Plus\Models\User
+     */
+    protected $user;
 
-    protected $other;
-
-    protected $feed;
-
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 
-        $this->owner = factory(UserModel::class)->create();
-
-        $this->other = factory(UserModel::class)->create();
-
-        $this->feed = factory(Feed::class)->create([
-            'user_id' => $this->owner->id,
-        ]);
+        $this->user = factory(UserModel::class)->create();
     }
 
     /**
-     * 测试新版打赏接口.
+     * 测试上传文件.
      *
-     * @return mixed
+     * @return void
+     * @author BS <414606094@qq.com>
      */
-    public function testRewardFeed()
+    public function testUploadFile()
     {
-        $this->other->newWallet()->firstOrCreate([
-            'balance' => 1000,
-            'total_income' => 0,
-            'total_expenses' => 0,
-        ]);
+        Storage::fake('public');
+        $file = UploadedFile::fake()->image('test.jpg');
+        $hash = md5_file((string) $file);
 
         $response = $this
-            ->actingAs($this->other, 'api')
-            ->json('POST', "/api/v2/feeds/{$this->feed->id}/new-rewards", ['amount' => 10]);
+            ->actingAs($this->user, 'api')
+            ->json('POST', '/api/v2/files', ['file' => $file]);
 
-        $response
-            ->assertStatus(201)
-            ->assertJsonStructure(['message']);
+        $response->assertStatus(201)->assertJsonStructure(['id', 'message']);
+    }
+
+    protected function tearDown()
+    {
+        $this->user->forceDelete();
+
+        parent::tearDown();
     }
 }

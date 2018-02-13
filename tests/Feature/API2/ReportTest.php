@@ -18,73 +18,72 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace SlimKit\PlusFeed\Tests\Feature\API2;
+namespace Zhiyi\Plus\Tests\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
 use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Models\Comment as CommentModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
-class LikeFeedTest extends TestCase
+class ReportTest extends TestCase
 {
     use DatabaseTransactions;
 
+    /**
+     * The test user.
+     *
+     * @var Zhiyi\Plus\Models\User
+     */
     protected $user;
 
-    protected $feed;
-
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 
         $this->user = factory(UserModel::class)->create();
+        $this->target_user = factory(UserModel::class)->create();
+    }
 
-        $this->feed = factory(Feed::class)->create([
-            'user_id' => $this->user->id,
+    /**
+     * 测试举报用户.
+     *
+     * @return void
+     * @author BS <414606094@qq.com>
+     */
+    public function testReportUser()
+    {
+        $response = $this->actingAs($this->user, 'api')->json('POST', 'api/v2/report/users/'.$this->target_user->id);
+
+        $response->assertStatus(201);
+    }
+
+    /**
+     * 测试举报评论.
+     *
+     * @return void
+     * @author BS <414606094@qq.com>
+     */
+    public function testReportComment()
+    {
+        $comment = factory(CommentModel::class)->create([
+            'user_id' => $this->target_user->id,
+            'target_user' => $this->user->id,
+            'reply_user' => 0,
+            'body' => '测试',
+            'commentable_id' => 1,
+            'commentable_type' => 'system',
         ]);
+
+        $response = $this->actingAs($this->user, 'api')->json('POST', 'api/v2/report/comments/'.$comment->id);
+
+        $response->assertStatus(201);
     }
 
-    /**
-     * 给动态点赞.
-     *
-     * @return mixed
-     */
-    public function testLikeFeed()
+    protected function tearDown()
     {
-        $response = $this
+        $this->user->forceDelete();
+        $this->target_user->forceDelete();
 
-            ->actingAs($this->user, 'api')
-            ->json('POST', "/api/v2/feeds/{$this->feed->id}/like");
-        $response
-            ->assertStatus(201)
-            ->assertJsonStructure(['message']);
-    }
-
-    /**
-     * 喜欢的人列表.
-     *
-     * @return mixed
-     */
-    public function testGetFeedLikePerson()
-    {
-        $response = $this
-            ->actingAs($this->user, 'api')
-            ->json('GET', "/api/v2/feeds/{$this->feed->id}/likes");
-        $response
-            ->assertStatus(200);
-    }
-
-    /**
-     * 取消点赞.
-     *
-     * @return mixed
-     */
-    public function testUnLikeFeed()
-    {
-        $response = $this
-            ->actingAs($this->user, 'api')
-            ->json('DELETE', "/api/v2/feeds/{$this->feed->id}/unlike");
-        $response
-            ->assertStatus(204);
+        parent::tearDown();
     }
 }

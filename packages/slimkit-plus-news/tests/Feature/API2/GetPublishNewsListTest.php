@@ -18,55 +18,56 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace SlimKit\PlusFeed\Tests\Feature\API2;
+namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
+use Zhiyi\Plus\Models\Tag as TagModel;
 use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Models\TagCategory as TagCateModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate as NewsCateModel;
 
-class NewRewardFeedTest extends TestCase
+class GetPublishNewsListTest extends TestCase
 {
     use DatabaseTransactions;
 
-    protected $owner;
-
-    protected $other;
-
-    protected $feed;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->owner = factory(UserModel::class)->create();
-
-        $this->other = factory(UserModel::class)->create();
-
-        $this->feed = factory(Feed::class)->create([
-            'user_id' => $this->owner->id,
-        ]);
-    }
-
     /**
-     * 测试新版打赏接口.
+     * 编辑驳回状态编辑投稿.
      *
      * @return mixed
      */
-    public function testRewardFeed()
+    public function testGetPublishNewsList()
     {
-        $this->other->newWallet()->firstOrCreate([
-            'balance' => 1000,
-            'total_income' => 0,
-            'total_expenses' => 0,
+        $user = factory(UserModel::class)->create();
+        $cate = factory(NewsCateModel::class)->create();
+
+        $news = factory(NewsModel::class, 6)->create([
+            'user_id' => $user->id,
+            'cate_id' => $cate->id,
+            'audit_status' => 3,
         ]);
 
         $response = $this
-            ->actingAs($this->other, 'api')
-            ->json('POST', "/api/v2/feeds/{$this->feed->id}/new-rewards", ['amount' => 10]);
-
+            ->actingAs($user, 'api')
+            ->json('get', '/api/v2/user/news/contributes');
         $response
-            ->assertStatus(201)
-            ->assertJsonStructure(['message']);
+            ->assertStatus(200)
+            ->assertJsonCount(6);
+    }
+
+    /**
+     * 创建所需标签.
+     *
+     * @return mixed
+     */
+    protected function createTags()
+    {
+        $cate = factory(TagCateModel::class)->create();
+        $tags = factory(TagModel::class, 3)->create([
+            'tag_category_id' => $cate->id,
+        ]);
+
+        return $tags->pluck('id')->implode(',');
     }
 }

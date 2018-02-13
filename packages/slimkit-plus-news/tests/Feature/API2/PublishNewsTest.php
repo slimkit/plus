@@ -18,65 +18,58 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace SlimKit\PlusFeed\Tests\Feature\API2;
+namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
+use Zhiyi\Plus\Models\Tag as TagModel;
 use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Models\TagCategory as TagCateModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate as NewsCateModel;
 
-class RewardFeedTest extends TestCase
+class PublishNewsTest extends TestCase
 {
     use DatabaseTransactions;
 
-    protected $owner;
-
-    protected $other;
-
-    protected $feed;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->owner = factory(UserModel::class)->create();
-
-        $this->other = factory(UserModel::class)->create();
-
-        $this->feed = factory(Feed::class)->create([
-            'user_id' => $this->owner->id,
-        ]);
-    }
-
     /**
-     * 测试旧版打赏接口.
+     * 发布一个资讯.
      *
      * @return mixed
      */
-    public function testRewardFeed()
+    public function testPublishNews()
     {
-        $this->other->wallet()->increment('balance', 1000);
+        $user = factory(UserModel::class)->create();
+        $cate = factory(NewsCateModel::class)->create();
 
         $response = $this
-            ->actingAs($this->other, 'api')
-            ->json('POST', "/api/v2/feeds/{$this->feed->id}/rewards", ['amount' => 10]);
-
+            ->actingAs($user, 'api')
+            ->json('POST', "/api/v2/news/categories/{$cate->id}/news", [
+                'title' => 'test',
+                'subject' => 'test',
+                'content' => 'test',
+                'tags' => $this->createTags(),
+                'from' => 'test',
+                'image' => null,
+                'author' => 'test',
+                'text_content' => 'test',
+            ]);
         $response
             ->assertStatus(201)
             ->assertJsonStructure(['message']);
     }
 
     /**
-     * 获取动态打赏列表.
+     * 创建所需标签.
      *
      * @return mixed
      */
-    public function testRewardFeedList()
+    protected function createTags()
     {
-        $response = $this
-            ->actingAs($this->other, 'api')
-            ->json('get', "/api/v2/feeds/{$this->feed->id}/rewards");
-        $response
-            ->assertStatus(200);
+        $cate = factory(TagCateModel::class)->create();
+        $tags = factory(TagModel::class, 3)->create([
+            'tag_category_id' => $cate->id,
+        ]);
+
+        return $tags->pluck('id')->implode(',');
     }
 }

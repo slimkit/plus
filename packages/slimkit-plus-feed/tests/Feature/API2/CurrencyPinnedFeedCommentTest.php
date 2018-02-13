@@ -22,10 +22,11 @@ namespace SlimKit\PlusFeed\Tests\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
 use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Models\Comment as CommentModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
-class NewRewardFeedTest extends TestCase
+class CurrencyPinnedFeedCommentTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -34,6 +35,8 @@ class NewRewardFeedTest extends TestCase
     protected $other;
 
     protected $feed;
+
+    protected $comment;
 
     public function setUp()
     {
@@ -46,25 +49,34 @@ class NewRewardFeedTest extends TestCase
         $this->feed = factory(Feed::class)->create([
             'user_id' => $this->owner->id,
         ]);
+
+        $this->comment = factory(CommentModel::class)->create([
+            'user_id' => $this->other->id,
+            'target_user' => $this->other->id,
+            'body' => 'test',
+            'commentable_id' => $this->feed->id,
+            'commentable_type' => 'feeds',
+        ]);
     }
 
     /**
-     * 测试新版打赏接口.
+     * 积分申请动态评论置顶.
      *
      * @return mixed
      */
-    public function testRewardFeed()
+    public function testPinnedFeedComment()
     {
-        $this->other->newWallet()->firstOrCreate([
-            'balance' => 1000,
-            'total_income' => 0,
-            'total_expenses' => 0,
+        $this->other->currency()->firstOrCreate([
+            'sum' => 1000,
+            'type' => 1,
         ]);
 
         $response = $this
             ->actingAs($this->other, 'api')
-            ->json('POST', "/api/v2/feeds/{$this->feed->id}/new-rewards", ['amount' => 10]);
-
+            ->json('POST', "/api/v2/feeds/{$this->feed->id}/comments/{$this->comment->id}/currency-pinneds", [
+                'amount' => 100,
+                'day' => 1,
+            ]);
         $response
             ->assertStatus(201)
             ->assertJsonStructure(['message']);

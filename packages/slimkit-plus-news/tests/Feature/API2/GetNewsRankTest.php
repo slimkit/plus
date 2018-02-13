@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -16,13 +18,23 @@
  * +----------------------------------------------------------------------+
  */
 
-use Faker\Generator as Faker;
+namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Feature\API2;
 
-$factory->define(\Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed::class, function (Faker $faker) {
-    return [
-        'feed_content' => $faker->shuffle(),
-        'feed_from' => 5,
-        'user_id' => $faker->randomNumber(),
-        'feed_mark' => $faker->unique()->randomNumber(),
-    ];
-});
+use Zhiyi\Plus\Tests\TestCase;
+
+class GetNewsRankTest extends TestCase
+{
+    /**
+     * 资讯排行榜.
+     *
+     * @return mixed
+     */
+    public function testCollectNews()
+    {
+        $response = $this
+            ->json('get', '/api/v2/news/ranks');
+        $response
+            ->assertStatus(200)
+            ->assertJsonStructure([]);
+    }
+}
