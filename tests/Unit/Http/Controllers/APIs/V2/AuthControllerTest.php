@@ -220,7 +220,7 @@ class AuthControllerTest extends TestCase
             'access_token' => 'token',
             'token_type' => 'bearer',
             'expires_in' => 60,
-            'refresh_ttl' => 20160,
+            'refresh_ttl' => '40320',
         ];
         $this->assertEquals($original, $result->getOriginalContent());
     }
