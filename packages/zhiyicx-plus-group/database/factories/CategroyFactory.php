@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -18,32 +16,10 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\PlusGroup\Tests\Feature\API2;
+use Faker\Generator as Faker;
 
-use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\PlusGroup\Models\Category as CategoryModel;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-
-class GetGroupCategoriesTest extends TestCase
-{
-    use DatabaseTransactions;
-    /**
-     * 测试获取圈子分类接口.
-     *
-     * @return mixed
-     */
-    public function testGetGroupCategories()
-    {
-        $cate = factory(CategoryModel::class)->create();
-        $user = factory(UserModel::class)->create();
-        $response = $this
-            ->actingAs($user, 'api')
-            ->json('GET', '/api/v2/plus-group/categories');
-        $response
-            ->assertStatus(200)
-            ->assertJsonStructure([
-                ['id', 'name', 'sort_by']
-            ]);
-    }
-}
+$factory->define(\Zhiyi\PlusGroup\Models\Category::class, function (Faker $faker) {
+    return [
+        'name' => $faker->name,
+    ];
+});

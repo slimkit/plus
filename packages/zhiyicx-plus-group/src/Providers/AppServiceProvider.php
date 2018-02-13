@@ -88,6 +88,11 @@ class AppServiceProvider extends ServiceProvider
                 },
             ];
         });
+
+        $this
+            ->app
+            ->make('Illuminate\Database\Eloquent\Factory')
+            ->load(__DIR__.'/../../database/factories');
     }
 
     /**

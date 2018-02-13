@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -18,32 +16,12 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\PlusGroup\Tests\Feature\API2;
-
-use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\PlusGroup\Models\Category as CategoryModel;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-
-class GetGroupCategoriesTest extends TestCase
-{
-    use DatabaseTransactions;
-    /**
-     * 测试获取圈子分类接口.
-     *
-     * @return mixed
-     */
-    public function testGetGroupCategories()
-    {
-        $cate = factory(CategoryModel::class)->create();
-        $user = factory(UserModel::class)->create();
-        $response = $this
-            ->actingAs($user, 'api')
-            ->json('GET', '/api/v2/plus-group/categories');
-        $response
-            ->assertStatus(200)
-            ->assertJsonStructure([
-                ['id', 'name', 'sort_by']
-            ]);
-    }
-}
+return [
+    'group_reward' => [
+        'status' => true, // 用户打赏开关
+    ],
+    'group_create' => [
+        'need_verified' => false, // 创建圈子是否需要用户认证
+    ],
+    'report_handle' => 'founder', // 举报处理配置 founder 仅圈主 admin 仅平台管理员
+];
