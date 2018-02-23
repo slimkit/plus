@@ -106,7 +106,7 @@ function getShort($str, $length = 40, $ext = '')
     $str = strip_tags($str);
     $str = htmlspecialchars_decode($str);
     $strlenth = 0;
-    $out = '';
+    // $out = '';
     $output = '';
     preg_match_all("/[\x01-\x7f]|[\xc2-\xdf][\x80-\xbf]|[\xe0-\xef][\x80-\xbf]{2}|[\xf0-\xff][\x80-\xbf]{3}/", $str, $match);
     foreach ($match[0] as $v) {

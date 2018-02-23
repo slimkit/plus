@@ -45,7 +45,9 @@ class User extends Authenticatable implements JWTSubject
         Relations\UserHasComment,
         Relations\UserHasReward,
         Relations\UserHasRole,
-        Relations\UserHasLike;
+        Relations\UserHasLike,
+        Relations\UserHasCurrency,
+        Relations\UserHasNewWallet;
 
     /**
      * The attributes that are mass assignable.
@@ -288,49 +290,6 @@ class User extends Authenticatable implements JWTSubject
     public function verifyPassword(string $password): bool
     {
         return $this->password && app('hash')->check($password, $this->password);
-    }
-
-    /**
-     * 用户资料.
-     *
-     * @return [type] [description]
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     * @homepage http://medz.cn
-     */
-    public function datas()
-    {
-        $table = app(UserProfileSettingLink::class)->getTable();
-
-        return $this->belongsToMany(UserProfileSetting::class, $table, 'user_id', 'user_profile_setting_id')
-            ->withPivot('user_profile_setting_data', 'user_id')
-            ->withTimestamps();
-    }
-
-    /**
-     * 更新用户资料.
-     *
-     * @param array $attributes Update the profile data
-     *                          参考：https://laravel-china.org/docs/5.3/eloquent-relationships#updating-many-to-many-relationships
-     *
-     * @return [type] [description]
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     * @homepage http://medz.cn
-     */
-    public function syncData(array $attributes)
-    {
-        if (! $attributes) {
-            return false;
-        }
-
-        foreach ($attributes as &$value) {
-            $value = [
-                'user_profile_setting_data' => $value,
-            ];
-        }
-
-        return $this->datas()->sync($attributes, false);
     }
 
     /**

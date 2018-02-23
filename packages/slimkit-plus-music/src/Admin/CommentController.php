@@ -135,7 +135,7 @@ class CommentController extends Controller
      * @param  Comment $comment
      * @return json
      */
-    public function delete(Request $request, Music $music, Comment $comment)
+    public function delete(Music $music, Comment $comment)
     {
         $comment->load('user');
 
@@ -158,7 +158,7 @@ class CommentController extends Controller
      * @param  Comment      $comment
      * @return json
      */
-    public function specialDelete(Request $request, MusicSpecial $special, Comment $comment)
+    public function specialDelete(MusicSpecial $special, Comment $comment)
     {
         $comment->load('user');
 

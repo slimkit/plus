@@ -23,6 +23,7 @@ namespace Zhiyi\Plus\EaseMobIm;
 use GuzzleHttp\Client;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Cdn\UrlManager;
 use Zhiyi\Plus\Models\ImGroup;
 use Zhiyi\Plus\Models\FileWith;
 
@@ -46,7 +47,7 @@ class GroupController extends EaseMobController
             $options['members_only'] = (bool) $request->input('members_only', 0);
             $options['allowinvites'] = (bool) $request->input('allowinvites', 1);
             $options['owner'] = (string) $request->user()->id;
-            $request->input('members') && $options['members'] = $request->input('members');
+            $request->input('members') && $options['members'] = explode(',', $request->input('members'));
 
             $url = $this->url.'chatgroups';
             $data['headers'] = [
@@ -70,29 +71,16 @@ class GroupController extends EaseMobController
 
             $imGroup->im_group_id = $res->data->groupid;
             $imGroup->user_id = $request->user()->id;
-            $imGroup->group_face = $request->input('group_face', 0);
             $imGroup->type = $request->input('type', 0);
-
-            // 创建头像
-            $fileWith = FileWith::where('id', $imGroup->group_face)
-                ->where('channel', null)
-                ->where('raw', null)
-                ->first();
-
-            if (! $imGroup->save()) {
-                return response()->json([
-                    'message' => ['创建失败'],
-                    'group_id' => $res->error_description,
-                ])->setStatusCode(500);
-            }
-            // 保存群头像
-            $fileWith->channel = 'im:group_face';
-            $fileWith->raw = $imGroup->id;
-            $fileWith->save();
+            $imGroup->save();
 
             // 发送消息至群组
             $cmd_content = $request->user()->name.'创建了群聊！';
-            $isCmd = $this->sendCmd($cmd_content, [$imGroup->im_group_id]);
+            $ext = [
+                'type' => 'ts_group_create',
+                'group_id' => $imGroup->im_group_id,
+            ];
+            $isCmd = $this->sendCmd($cmd_content, [$imGroup->im_group_id], 'admin', 'chatgroups', $ext);
 
             if (! $isCmd) {
                 return response()->json([
@@ -114,12 +102,13 @@ class GroupController extends EaseMobController
      * 修改群信息.
      *
      * @param UpdateGroup $request
+     * @param UrlManager $urlManager
      * @return $this
      * @author ZsyD<1251992018@qq.com>
      */
-    public function update(UpdateGroup $request)
+    public function update(UpdateGroup $request, UrlManager $urlManager)
     {
-        $callback = function () use ($request) {
+        $callback = function () use ($request, $urlManager) {
             $im_group_id = $request->input('im_group_id');
             $options['groupname'] = $request->input('groupname');
             $options['desc'] = $request->input('desc');
@@ -127,6 +116,7 @@ class GroupController extends EaseMobController
             $options['maxusers'] = $request->input('maxusers', 300);
             $options['members_only'] = (bool) $request->input('members_only', 0);
             $options['allowinvites'] = (bool) $request->input('allowinvites', 1);
+            $request->input('new_owner_user') > 0 && $options['newowner'] = $request->input('new_owner_user');
 
             $url = $this->url.'chatgroups/'.$im_group_id;
             $data['headers'] = [
@@ -146,33 +136,41 @@ class GroupController extends EaseMobController
                     ],
                 ])->setStatusCode(500);
             }
-
+            $options['group_face'] = '';
             $imGroup = ImGroup::where('im_group_id', $im_group_id)->first();
-            $imGroup->group_face = $request->input('group_face', 0);
             $imGroup->type = $request->input('type', 0);
+            $request->input('new_owner_user') > 0 && $imGroup->user_id = $options['newowner'];
+            if ($request->input('group_face', 0) > 0) {
+                $imGroup->group_face = $request->input('group_face', 0);
+                // 创建头像
+                $fileWith = FileWith::where('id', $imGroup->group_face)
+                    ->where('channel', null)
+                    ->where('raw', null)
+                    ->first();
 
-            // 创建头像
-            $fileWith = FileWith::where('id', $imGroup->group_face)
-                ->where('channel', null)
-                ->where('raw', null)
-                ->first();
+                // 保存群头像
+                if ($fileWith) {
+                    $fileWith->channel = 'im:group_face';
+                    $fileWith->raw = $imGroup->id;
+                    $fileWith->save();
 
+                    $options['group_face'] = $urlManager->make($fileWith->file);
+                }
+            }
             if (! $imGroup->save()) {
                 return response()->json([
                     'message' => ['修改失败'],
                     'group_id' => $im_group_id,
                 ])->setStatusCode(500);
             }
-            // 保存群头像
-            if ($fileWith) {
-                $fileWith->channel = 'im:group_face';
-                $fileWith->raw = $imGroup->id;
-                $fileWith->save();
-            }
 
             // 发送消息至群组
             $cmd_content = $request->user()->name.'修改了群信息！';
-            $isCmd = $this->sendCmd($cmd_content, [$im_group_id]);
+            $ext = [
+                'type' => 'ts_group_change',
+                'group_id' => $im_group_id,
+            ];
+            $isCmd = $this->sendCmd($cmd_content, [$im_group_id], 'admin', 'chatgroups', $ext);
 
             if (! $isCmd) {
                 return response()->json([
@@ -181,10 +179,9 @@ class GroupController extends EaseMobController
                 ])->setStatusCode(202);
             }
 
-            return response()->json([
-                'message' => ['成功'],
-                'im_group_id' => $im_group_id,
-            ])->setStatusCode(201);
+            $options['im_group_id'] = $im_group_id;
+
+            return response()->json($options)->setStatusCode(201);
         };
 
         return $this->getConfig($callback);
@@ -243,12 +240,13 @@ class GroupController extends EaseMobController
      * 获取群信息.
      *
      * @param Request $request
+     * @param UrlManager $urlManager
      * @return $this
      * @author ZsyD<1251992018@qq.com>
      */
-    public function getGroup(Request $request)
+    public function getGroup(Request $request, UrlManager $urlManager)
     {
-        $callback = function () use ($request) {
+        $callback = function () use ($request, $urlManager) {
             $im_group_id = $request->query('im_group_id'); // 多个以“,”隔开
             $url = $this->url.'chatgroups/'.$im_group_id;
             $data['headers'] = [
@@ -266,18 +264,19 @@ class GroupController extends EaseMobController
                     ],
                 ])->setStatusCode(500);
             }
+            // 获取群组头像
+            $group_face = ImGroup::with('face')->whereIn('im_group_id', collect($groupCon->data)->pluck('id'))
+                ->select('group_face', 'im_group_id')->get()->keyBy('im_group_id');
 
-            foreach ($groupCon->data as $key => &$group) {
+            foreach ($groupCon->data as &$group) {
                 $affiliations = collect($group->affiliations);
                 $owner = $affiliations->pluck('owner')->filter();
                 $members = $affiliations->pluck('member')->filter();
                 $group->affiliations = $this->getUser($members, $owner);
+                $group->group_face = $group_face[$group->id]->face ? $urlManager->make($group_face[$group->id]->face->file) : '';
             }
 
-            return response()->json([
-                'message' => ['获取成功'],
-                'im_groups' => $groupCon->data,
-            ])->setStatusCode(200);
+            return response()->json($groupCon->data)->setStatusCode(200);
         };
 
         return $this->getConfig($callback);
@@ -311,7 +310,8 @@ class GroupController extends EaseMobController
      */
     private function getUser($members, $owner)
     {
-        $users = User::whereIn('id', $owner->merge($members))->get();
+        $user = new User();
+        $users = $user->whereIn('id', $owner->merge($members))->with('certification')->get();
         $admin = $owner->values()[0];
         if ($users) {
             $users->map(function ($user) use ($admin) {
@@ -321,7 +321,7 @@ class GroupController extends EaseMobController
             });
         }
 
-        return $users;
+        return $users->sortByDesc('is_owner')->values();
     }
 
     /**
@@ -363,7 +363,11 @@ class GroupController extends EaseMobController
             }
             // 发送消息至群组
             $cmd_content = $request->user()->name.'邀请了'.$names.'加入了群聊。';
-            $isCmd = $this->sendCmd($cmd_content, [$im_group_id]);
+            $ext = [
+                'type' => 'ts_user_join',
+                'uid' => $option['usernames'],
+            ];
+            $isCmd = $this->sendCmd($cmd_content, [$im_group_id], 'admin', 'chatgroups', $ext);
 
             if (! $isCmd) {
                 return response()->json([
@@ -416,7 +420,11 @@ class GroupController extends EaseMobController
             }
             // 发送消息至群组
             $cmd_content = $request->user()->name.'已将'.$names.'移出群聊。';
-            $isCmd = $this->sendCmd($cmd_content, [$im_group_id]);
+            $ext = [
+                'type' => 'ts_user_exit',
+                'uid' => $members,
+            ];
+            $isCmd = $this->sendCmd($cmd_content, [$im_group_id], 'admin', 'chatgroups', $ext);
 
             if (! $isCmd) {
                 return response()->json([

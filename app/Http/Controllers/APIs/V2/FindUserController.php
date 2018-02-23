@@ -180,7 +180,7 @@ class FindUserController extends Controller
     /**
      * 通过标签推荐用户. 未登录则返回空数组.
      */
-    public function findByTags(Request $request, TaggableModel $taggable, ResponseContract $response, UserRecommendedModel $userRecommended, UserModel $userModel)
+    public function findByTags(Request $request, TaggableModel $taggable, ResponseContract $response)
     {
         $u = $request->user('api');
 
@@ -190,7 +190,7 @@ class FindUserController extends Controller
 
         $limit = $request->input('limit', 15);
         $offset = $request->input('offset', 0);
-        $recommends = $users = [];
+        // $recommends = $users = [];
 
         $tags = $u->tags()->select('tag_id')->get();
         $tags = array_pluck($tags, 'tag_id');

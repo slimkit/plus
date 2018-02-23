@@ -74,12 +74,11 @@ trait FeedHasLike
     public function like($user)
     {
         if ($user instanceof User) {
-            $user_name = $user->name;
             $user = $user->id;
         }
         $this->forgetLike($user);
 
-        return $this->getConnection()->transaction(function () use ($user, $user_name) {
+        return $this->getConnection()->transaction(function () use ($user) {
             $this->increment('like_count', 1);
 
             // 增加用户点赞数

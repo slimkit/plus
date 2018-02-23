@@ -16,6 +16,7 @@ import RechargeType from '../component/wallet/RechargeType';
 import PingPlusPlus from '../component/wallet/PingPlusPlus';
 import PayRatio from '../component/wallet/PayRatio';
 import Switch from '../component/wallet/Switch';
+import Water from '../component/wallet/Water';
 
 const walletRouter = {
   path: 'wallet',
@@ -31,6 +32,7 @@ const walletRouter = {
     { path: 'pay/type', component: RechargeType },
     { path: 'pay/pingpp', component: PingPlusPlus },
     { path: 'pay/switch', component: Switch },
+    { path: 'waters', component: Water }
   ]
 };
 

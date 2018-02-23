@@ -34,6 +34,7 @@ class Roles extends Migration
             $table->string('name', 100);
             $table->string('display_name')->nullable();
             $table->string('description')->nullable();
+            $table->tinyInteger('non_delete')->nullable()->default(0);
             $table->timestamps();
 
             $table->unique('name');

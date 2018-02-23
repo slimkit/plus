@@ -31,7 +31,7 @@ class CertificationCategoryController extends Controller
      * @param Request $request
      * @author: huhao <915664508@qq.com>
      */
-    public function certifications(Request $request)
+    public function certifications()
     {
         $items = CertificationCategory::get();
 

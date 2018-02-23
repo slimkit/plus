@@ -267,7 +267,7 @@ class FeedController extends Controller
         return response(null, 204);
     }
 
-    public function show(Request $request, Feed $feed)
+    public function show(Feed $feed)
     {
         $feed->load([
             'user',

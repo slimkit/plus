@@ -128,13 +128,13 @@ class CommentController extends Controller
     {
         $user = $request->user();
         if ($comment->user_id !== $user->id) {
-            return $response->json(['message' => ['没有权限']], 403);
+            return response()->json(['message' => ['没有权限']], 403);
         }
 
         $pinned = $pinnedModel->where('channel', 'news:comment')->where('raw', $comment->id)->where('state', 0)->first();
 
         $news->getConnection()->transaction(function () use ($user, $news, $comment, $pinned) {
-            if ($pinneds) {
+            if ($pinned) {
                 $user->wallet()->increment('balance', $pinned->amount);
             }
 

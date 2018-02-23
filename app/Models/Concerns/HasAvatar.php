@@ -120,10 +120,6 @@ trait HasAvatar
         $path = pathinfo($filename, PATHINFO_DIRNAME);
         $name = pathinfo($filename, PATHINFO_BASENAME).'.'.$extension;
 
-        $disk = $this->filesystem()->disk(
-            config('cdn.generators.filesystem.disk')
-        );
-
         $files = array_reduce($this->getAvatarExtensions(), function (array $collect, $extension) use ($filename) {
             $collect[] = $filename.'.'.$extension;
 

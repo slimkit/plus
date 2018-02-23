@@ -298,9 +298,9 @@ class SiteController extends Controller
             return $response->json(['error' => ['地区不能小于两级']], 422);
         }
 
-        $hots = json_decode($this->commonCinfigModel->byNamespace('common')
+        $hots = $value = $this->commonCinfigModel->byNamespace('common')
                 ->byName('hots_area')
-                ->value('value'), true) ?: [];
+                ->value('value') ? json_decode($value, true) : [];
 
         if ($update) {
             $this->unsetHotArea($hots, $areaStr);
@@ -358,14 +358,8 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function mail(Request $request, Repository $config, ResponseFactory $response)
+    public function mail(Repository $config, ResponseFactory $response)
     {
-        // if (! $request->user()->ability('admin:mail:show')) {
-        //     return response()->json([
-        //         'message' => '没有权限查看该项信息',
-        //     ])->setStatusCode(403);
-        // }
-
         $driver = $config->get('mail.driver', 'smtp');
         $host = $config->get('mail.host');
         $port = $config->get('mail.port');

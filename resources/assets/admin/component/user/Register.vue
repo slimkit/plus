@@ -28,9 +28,9 @@
 									<label class="radio-inline">
 							    	<input type="radio" name="type" disabled="disabled" value="invited" v-model="type" /> 仅邀请注册
 							    </label>
-							    <label class="radio-inline">
+<!-- 							    <label class="radio-inline">
 							    	<input type="radio" name="type" disabled="disabled" value="thirdPart" v-model="type" /> 仅第三方绑定
-							    </label>
+							    </label> -->
 							</div>
 						</div>
 				      </div>
@@ -49,9 +49,9 @@
 										<label class="radio-inline">
 								    	<input type="radio" name="method" value="mail-only" v-model="method" /> 仅邮箱
 								    </label>
-								    <label class="radio-inline">
+			<!-- 					    <label class="radio-inline">
 								    	<input type="radio" name="method" value="all" v-model="method" /> 手机或邮箱或第三方
-								    </label>
+								    </label> -->
 								</div>
 							</div>
 					    </div>

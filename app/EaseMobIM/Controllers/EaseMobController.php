@@ -100,8 +100,9 @@ class EaseMobController
     public function openRegister(Request $request)
     {
         $callback = function () use ($request) {
-            $options['username'] = $request->user_id;
-            $options['password'] = $this->getImPwdHash($request->user_id);
+            $user_id = $request->user_id ?: $request->user()->id;
+            $options['username'] = $user_id;
+            $options['password'] = $this->getImPwdHash($user_id);
             $url = $this->url.'users';
 
             $data['headers'] = ['Content-Type' => 'application/json'];
@@ -153,11 +154,11 @@ class EaseMobController
             if ($this->register_type == 0) {
                 return $this->openRegister($request);
             }
-
+            $user_id = $request->user_id ?: $request->user()->id;
             $url = $this->url.'users';
             $options = [
-                'username' => $request->user_id,
-                'password' => $this->getImPwdHash($request->user_id),
+                'username' => $user_id,
+                'password' => $this->getImPwdHash($user_id),
             ];
             $data['body'] = json_encode($options);
             $data['headers'] = [
@@ -193,7 +194,7 @@ class EaseMobController
     public function createUsers(Request $request)
     {
         $callback = function () use ($request) {
-            $user_ids = $request->input('user_ids');
+            $user_ids = $request->user_ids ?: $request->input('user_ids');
             $user_ids = is_array($user_ids) ? $user_ids : explode(',', $user_ids);
             $options = [];
             $users = User::when($user_ids, function ($query) use ($user_ids) {
@@ -244,22 +245,27 @@ class EaseMobController
     public function resetPassword(Request $request)
     {
         $callback = function () use ($request) {
-            $url = $this->url.'users/'.$request->user_id.'/password';
-
-            $options = [
-                'oldpassword' => $request->old_pwd_hash,
-                'newpassword' => $this->getImPwdHash($request->user_id),
-            ];
-            $data['body'] = json_encode($options);
+            // 判断用户是否注册过环信，兼容未注册用户
+            $user_id = $request->user_id ?: $request->user()->id;
+            $url = $this->url.'users/'.$user_id;
             $data['headers'] = [
                 'Authorization' => $this->getToken(),
             ];
             $data['http_errors'] = false;
 
             $Client = new Client();
-            $result = $Client->request('put', $url, $data);
+            $result = $Client->request('get', $url, $data);
 
-            if ($result->getStatusCode() != 200) {
+            if ($result->getStatusCode() == 404) {
+                // 用户不存在时去注册环信用户
+                $result_ = $this->createUser($request);
+
+                if ($result_->getStatusCode() != 201) {
+                    return response()->json([
+                        'message' => ['未注册成功'],
+                    ])->setStatusCode(500);
+                }
+            } elseif ($result->getStatusCode() != 200) {
                 $error = $result->getBody()->getContents();
 
                 return response()->json([
@@ -267,6 +273,32 @@ class EaseMobController
                         json_decode($error)->error_description,
                     ],
                 ])->setStatusCode(500);
+            } else {
+                // 用户存在时，重置环信密码
+                $user_id = $request->user_id ?: $request->user()->id;
+                $url = $this->url.'users/'.$user_id.'/password';
+                $options = [
+                    'oldpassword' => $request->old_pwd_hash,
+                    'newpassword' => $this->getImPwdHash($user_id),
+                ];
+                $data['body'] = json_encode($options);
+                $data['headers'] = [
+                    'Authorization' => $this->getToken(),
+                ];
+                $data['http_errors'] = false;
+
+                $Client = new Client();
+                $result = $Client->request('put', $url, $data);
+
+                if ($result->getStatusCode() != 200) {
+                    $error = $result->getBody()->getContents();
+
+                    return response()->json([
+                        'message' => [
+                            json_decode($error)->error_description,
+                        ],
+                    ])->setStatusCode(500);
+                }
             }
 
             return response()->json([])->setStatusCode(201);
@@ -285,8 +317,8 @@ class EaseMobController
     public function getPassword(Request $request)
     {
         $callback = function () use ($request) {
-            $user = $request->user();
-            $url = $this->url.'users/'.$user->id;
+            $user_id = $request->user_id ?: $request->user()->id;
+            $url = $this->url.'users/'.$user_id;
             $data['headers'] = [
                 'Authorization' => $this->getToken(),
             ];
@@ -296,10 +328,13 @@ class EaseMobController
             $result = $Client->request('get', $url, $data);
 
             if ($result->getStatusCode() == 404) {
-                $result = $this->createUser($request);
-            }
-
-            if ($result->getStatusCode() != 200) {
+                $result_ = $this->createUser($request);
+                if ($result_->getStatusCode() != 201) {
+                    return response()->json([
+                        'message' => ['注册失败'],
+                    ])->setStatusCode(500);
+                }
+            } elseif ($result->getStatusCode() != 200) {
                 $error = $result->getBody()->getContents();
 
                 return response()->json([
@@ -311,7 +346,7 @@ class EaseMobController
 
             return response()->json([
                 'message' => ['成功'],
-                'im_pwd_hash' => $this->getImPwdHash($user->id),
+                'im_pwd_hash' => $this->getImPwdHash($user_id),
             ])->setStatusCode(201);
         };
 
@@ -328,7 +363,8 @@ class EaseMobController
     public function deleteUser(Request $request)
     {
         $callback = function () use ($request) {
-            $url = $this->url.'users/'.$request->user_id;
+            $user_id = $request->user_id ?: $request->user()->id;
+            $url = $this->url.'users/'.$user_id;
             $data['headers'] = [
                 'Authorization' => $this->getToken(),
             ];
@@ -354,7 +390,7 @@ class EaseMobController
     }
 
     /**
-     * 发送透传消息 [群组相关时需要].
+     * 发送普通消息 [群组相关时需要].
      *
      * @param string $content       消息内容
      * @param array  $target        消息发送对象
@@ -371,23 +407,93 @@ class EaseMobController
             'Authorization' => $this->getToken(),
         ];
         $data['http_errors'] = false;
-        $data['target_type'] = $target_type;
-        $data['target'] = $target;
-        $data['msg'] = [
-            'type' => 'cmd',
-            'msg' => $content,
+        $option = [
+            'target_type' => $target_type,
+            'target' => $target,
+            'msg' => [
+                'type' => 'txt',
+                'msg' => $content,
+            ],
+            'from' => $from,
+            'ext' => (object) $ext,
         ];
-        $data['from'] = $from;
-        $data['ext'] = $ext;
-
+        $data['body'] = json_encode($option);
         $Client = new Client();
-        $result = $Client->request('get', $url, $data);
+        $result = $Client->request('post', $url, $data);
 
         if ($result->getStatusCode() != 200) {
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * 为未注册环信用户注册环信（兼容老用户）.
+     *
+     * @author ZsyD<1251992018@qq.com>
+     * @param Request $request
+     * @return mixed
+     */
+    public function registerOldUsers(Request $request)
+    {
+        $callback = function () use ($request) {
+            $url = $this->url.'users?limit=100000';
+            $data['headers'] = [
+                'Authorization' => $this->getToken(),
+            ];
+            $data['http_errors'] = false;
+
+            $Client = new Client();
+            $result = $Client->request('get', $url, $data);
+            $reCon = json_decode($result->getBody()->getContents());
+
+            if ($result->getStatusCode() != 200) {
+                return response()->json([
+                    'message' => [
+                        $reCon->error_description,
+                    ],
+                ])->setStatusCode(500);
+            }
+
+            $registered = collect($reCon->entities)->pluck('username')->filter();
+            $ids = User::whereNull('deleted_at')->pluck('id');
+            $unregistered = $ids->diff($registered);
+
+            if (! $unregistered->isEmpty()) {
+                if ($unregistered->count() > 20) {
+                    $unregistered_chuck = $unregistered->chunk(20);
+                    foreach ($unregistered_chuck as $v) {
+                        $request->user_ids = $v->toArray();
+                        $result_ = $this->createUsers($request);
+
+                        if ($result_->getStatusCode() != 201) {
+                            return response()->json([
+                                'message' => [json_decode($result_->getContent())->message],
+                                'unregistered' => $unregistered,
+                            ])->setStatusCode(500);
+                        }
+                        sleep(10);
+                    }
+                } else {
+                    $request->user_ids = $unregistered->toArray();
+                    $result_ = $this->createUsers($request);
+
+                    if ($result_->getStatusCode() != 201) {
+                        return response()->json([
+                            'message' => [json_decode($result_->getContent())->message],
+                            'unregistered' => $unregistered,
+                        ])->setStatusCode(500);
+                    }
+                }
+            }
+
+            return response()->json([
+                'message' => ['注册成功'],
+            ])->setStatusCode(201);
+        };
+
+        return $this->getConfig($callback);
     }
 
     public function getMessage()

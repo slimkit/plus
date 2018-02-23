@@ -16,6 +16,7 @@ import goldRouter from './gold';
 import rewardRouter from './reward';
 import cdnRoutes from './cdn';
 import reportRoutes from './report';
+import currencyRoutes from './currency';
 
 // components.
 import Login from '../component/Login';
@@ -45,7 +46,8 @@ const childrenRoutes = [
   goldRouter,
   rewardRouter,
   cdnRoutes,
-  reportRoutes
+  reportRoutes,
+  currencyRoutes
 ];
 
 const router = new VueRouter({

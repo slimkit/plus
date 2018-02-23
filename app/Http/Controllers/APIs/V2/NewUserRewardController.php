@@ -28,42 +28,41 @@ use Zhiyi\Plus\Packages\Wallet\TypeManager;
 class NewUserRewardController extends Controller
 {
     /**
-     * 打赏用户.
+     * 元到分转换比列.
+     */
+    const RATIO = 100;
+
+    /**
+     * 新版打赏用户.
      *
-     * @author bs<414606094@qq.com>
-     * @param  Request      $request
-     * @param  User         $target
-     * @return json
+     * @param Request $request
+     * @param User $target
+     * @param TypeManager $manager
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request, User $target, TypeManager $manager)
     {
-        $amount = $request->input('amount');
+        $amount = (int) $request->input('amount');
+
         if (! $amount || $amount < 0) {
-            return response()->json([
-                'amount' => ['请输入正确的打赏金额'],
-            ], 422);
+            return response()->json(['amount' => ['请输入正确的打赏金额']], 422);
         }
+
         $user = $request->user();
-        $user->load('wallet');
 
         if ($user->id == $target->id) {
-            return response()->json(['message' => ['用户不能打赏自己']], 403);
+            return response()->json(['message' => ['用户不能打赏自己']], 422);
         }
 
-        if (! $user->wallet || $user->wallet->balance < $amount) {
-            return response()->json([
-                'message' => ['余额不足'],
-            ], 403);
+        if (! $user->newWallet || $user->newWallet->balance < $amount) {
+            return response()->json(['message' => ['余额不足']], 403);
         }
 
         if (! $target->wallet) {
-            return response()->json([
-                'message' => ['对方钱包信息有误'],
-            ], 500);
+            return response()->json(['message' => ['对方钱包信息有误']], 500);
         }
 
-        // 记录订单
-        $money = ($amount / 100);
+        $money = ($amount / self::RATIO);
 
         $status = $manager->driver(Order::TARGET_TYPE_REWARD)->reward([
             'reward_resource' => $user,

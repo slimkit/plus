@@ -44,4 +44,6 @@ class Currency extends Model
      * @var bool
      */
     public $incrementing = false;
+
+    public $fillable = ['owner_id', 'type', 'sum'];
 }

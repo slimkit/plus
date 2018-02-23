@@ -86,7 +86,7 @@ class VerificationCode extends Notification implements ShouldQueue
     {
         return new Messages\VerificationCodeMessage(
             new ConfigRepository($config->get('channels.code')),
-            $notifiable->code
+            (int) $notifiable->code
         );
     }
 

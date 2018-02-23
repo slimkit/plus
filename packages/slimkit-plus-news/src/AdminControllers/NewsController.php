@@ -45,7 +45,7 @@ class NewsController extends Controller
     public function getNewsList(Request $request, Carbon $datetime)
     {
         $cate_id = $request->cate_id ?? '';
-        $max_id = $request->max_id;
+        // $max_id = $request->max_id;
         $limit = $request->limit ?? 15;
         $key = $request->key;
         $state = $request->state ?? null;
@@ -110,7 +110,7 @@ class NewsController extends Controller
 
     public function doSaveNews(Request $request, TagModel $tagModel)
     {
-        $type = $request->type ?? 1; // 1 待审核 2 草稿
+        // $type = $request->type ?? 1; // 1 待审核 2 草稿
 
         // if (! $request->storage_id) {
         //     return response()->json(static::createJsonData([
@@ -124,7 +124,7 @@ class NewsController extends Controller
 
         $tags = $tagModel->whereIn('id', is_array($request->input('tags')) ? $request->input('tags') : explode(',', $request->input('tags')))->get();
         if (! $tags) {
-            return $response->json(['message' => ['填写的标签不存在或已删除']], 422);
+            return response()->json(['message' => ['填写的标签不存在或已删除']], 422);
         }
 
         if ($request->news_id) {
@@ -168,7 +168,7 @@ class NewsController extends Controller
         return response()->json($news->id)->setStatusCode(201);
     }
 
-    public function recommend(Request $request, News $news)
+    public function recommend(News $news)
     {
         $news->is_recommend = abs($news->is_recommend - 1);
         $news->save();

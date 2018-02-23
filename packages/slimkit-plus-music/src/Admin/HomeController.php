@@ -89,7 +89,7 @@ class HomeController extends Controller
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function showSpecial(Request $request, MusicSpecial $special, CdnUrlManager $cdn)
+    public function showSpecial(Request $request, MusicSpecial $special)
     {
         $name = $request->query('name', '');
         $limit = $request->query('limit', 20);
@@ -116,7 +116,7 @@ class HomeController extends Controller
      * @param  MusicSpecial $special [description]
      * @return [type]                [description]
      */
-    public function specialDetail(Request $request, MusicSpecial $special, CdnUrlManager $cdn)
+    public function specialDetail(MusicSpecial $special, CdnUrlManager $cdn)
     {
         $special->load(['storage', 'paidNode']);
         $storage = FileWithModel::find($special->storage);

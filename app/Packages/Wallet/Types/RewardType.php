@@ -34,7 +34,7 @@ class RewardType extends Type
      * @param $extra
      * @return bool
      */
-    public function reward($data)
+    public function reward($data, $type = 'auto')
     {
         $rewardOrder = $data['order'];
 
@@ -43,7 +43,15 @@ class RewardType extends Type
 
         $order = $this->createOrder($owner, $target, $rewardOrder['amount'], $rewardOrder['user_order_body']);
 
-        return $order->autoComplete($data);
+        if ($type == 'manual') {
+            $target = new RewardTarget();
+            $target->setOrder($order);
+            $target->handle($data);
+
+            return $target->getTargetOrder();
+        } else {
+            return $order->autoComplete($data);
+        }
     }
 
     /**

@@ -37,7 +37,7 @@ class TagController extends Controller
      */
     public function lists(Request $request, TagModel $tag_model)
     {
-        $page = $request->input('page', 1);
+        // $page = $request->input('page', 1);
         $limit = $request->input('per_page', 20);
         $cate = $request->input('category', 0);
         $keyword = $request->input('keyword');
@@ -64,7 +64,7 @@ class TagController extends Controller
     public function categories(Request $request)
     {
         $limit = $request->input('per_page', 20);
-        $page = $request->input('page', 1);
+        // $page = $request->input('page', 1);
 
         $categories = TagCategoryModel::withCount('tags')
             ->orderBy('weight', 'desc')
@@ -75,7 +75,7 @@ class TagController extends Controller
     }
 
     // 获取单个tag信息
-    public function tag(Request $request, TagModel $tag)
+    public function tag(TagModel $tag)
     {
         return response()->json($tag)->setStatusCode(200);
     }

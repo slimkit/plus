@@ -24,6 +24,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
+use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 
 class PurchaseController extends Controller
@@ -45,16 +46,6 @@ class PurchaseController extends Controller
 
         return $response->json($node)->setStatusCode(200);
     }
-
-    /**
-     * 支付节点费用.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Models\PaidNode $node
-     * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
-     */
 
     /**
      * 支付节点费用.
@@ -133,5 +124,53 @@ class PurchaseController extends Controller
         return $response->json([
             'message' => ['付费成功'],
         ])->setStatusCode(201);
+    }
+
+    /**
+     * 使用积分购买付费节点.
+     *
+     * @param Request $request
+     * @param CacheContract $cache
+     * @param PaidNodeModel $node
+     * @return mixed
+     * @author BS <414606094@qq.com>
+     */
+    public function payByCurrency(Request $request, CacheContract $cache, PaidNodeModel $node)
+    {
+        $user = $request->user();
+        $user->load('currency');
+        $nodeUser = $node->user;
+
+        if ($node->paid($user->id)) {
+            return response()->json([
+                'message' => ['已经支付费用不能重复支付'],
+            ])->setStatusCode(422);
+        } elseif (! $user->currency || $user->currency->sum < $node->amount) {
+            return response()->json([
+                'message' => ['余额不足'],
+            ])->setStatusCode(403);
+        }
+
+        $process = new UserProcess();
+
+        $extra = [
+            'order_title' => $node->subject,
+            'order_body' => $node->body,
+            'target_order_title' => '被'.$node->subject,
+            'target_order_body' => '被'.$node->body,
+        ];
+
+        if ($process->complete($user->id, $node->amount, $nodeUser ? $nodeUser->id : 0, $extra) === true) {
+            // 插入购买用户
+            $node->users()->sync($user->id, false);
+            $cacheKey = sprintf('paid:%s,%s', $node->id, $user->id);
+            $cache->forget($cacheKey);
+
+            return response()->json([
+                'message' => ['付费成功'],
+            ])->setStatusCode(201);
+        }
+
+        return response()->json(['message' => ['操作失败']], 500);
     }
 }

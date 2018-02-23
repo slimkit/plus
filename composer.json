@@ -1,6 +1,6 @@
 {
     "name": "zhiyicx/thinksns-plus",
-    "description": "Use of Laravel framework to achieve the user ecosystem. （基于 Laravel 开发的用户生态系统。）",
+    "description": "一个使用 Laravel 并健壮的社交系统",
     "keywords": [
         "thinksns",
         "web",
@@ -91,25 +91,25 @@
         "intervention/image": "^2.3",
         "jpush/jpush": "^3.5",
         "laravel/framework": "5.5.*",
-        "overtrue/easy-sms": "^0.0.10",
+        "overtrue/easy-sms": "^1.0",
         "pingplusplus/pingpp-php": "^2.2",
         "predis/predis": "^1.1",
-        "slimkit/plus-appversion": "1.1.0",
-        "slimkit/plus-around-amap": "1.1.0",
-        "slimkit/plus-checkin": "1.1.0",
-        "slimkit/plus-feed": "1.1.0",
-        "slimkit/plus-id": "1.1.0",
-        "slimkit/plus-music": "1.1.0",
-        "slimkit/plus-news": "1.1.0",
-        "slimkit/plus-socialite": "1.1.0",
+        "slimkit/plus-appversion": "1.7.0",
+        "slimkit/plus-around-amap": "1.7.0",
+        "slimkit/plus-checkin": "1.7.0",
+        "slimkit/plus-feed": "1.7.0",
+        "slimkit/plus-id": "1.7.0",
+        "slimkit/plus-music": "1.7.0",
+        "slimkit/plus-news": "1.7.0",
+        "slimkit/plus-socialite": "1.7.0",
         "symfony/finder": "~3.3",
         "symfony/polyfill-mbstring": "^1.4",
         "symfony/yaml": "^3.3",
         "tymon/jwt-auth": "1.0.0-rc.1"
     },
     "require-dev": {
+        "codacy/coverage": "^1.4",
         "filp/whoops": "~2.0",
-        "codacy/coverage": "^1.0",
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "~1.0",
         "phpunit/phpunit": "~6.0",
@@ -134,7 +134,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.1-dev"
+            "dev-master": "1.7-dev"
         },
         "laravel": {
             "dont-discover": []
@@ -155,6 +155,9 @@
     "config": {
         "preferred-install": "dist",
         "sort-packages": true,
-        "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "platform": {
+            "php": "7.0"
+        }
     }
 }

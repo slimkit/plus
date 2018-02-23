@@ -21,7 +21,7 @@
             </router-link>
 
             <!-- 流水 -->
-            <router-link to="/wallet/accounts" tag="li" active-class="active">
+            <router-link to="/wallet/waters" tag="li" active-class="active">
               <a href="#">流水</a>
             </router-link>
 

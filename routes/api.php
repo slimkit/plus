@@ -49,6 +49,8 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     $api->post('/pingpp/webhooks', API2\PingPlusPlusChargeWebHooks::class.'@webhook');
 
     $api->post('/plus-pay/webhooks', API2\NewWalletRechargeController::class.'@webhook');
+
+    $api->post('/currency/webhooks', API2\CurrencyRechargeController::class.'@webhook');
     /*
     | 应用启动配置.
     */
@@ -216,6 +218,11 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     // Retrieve user password.
     $api->put('/user/retrieve-password', API2\ResetPasswordController::class.'@retrieve');
 
+    // IAP帮助页
+    $api->get('/currency/apple-iap/help', function () {
+        return view('apple-iap-help');
+    });
+
     /*
     |-----------------------------------------------------------------------
     | Define a route that requires user authentication.
@@ -373,6 +380,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             // 打赏用户
             $api->post('/{target}/rewards', API2\UserRewardController::class.'@store');
 
+            // 新版打赏用户
+            $api->post('/{target}/new-rewards', API2\NewUserRewardController::class.'@store');
+
             /*
              * 解除手机号码绑定.
              *
@@ -437,13 +447,14 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             $api->get('/charges/{charge}', API2\WalletChargeController::class.'@show');
         });
 
+        // 新版钱包
         $api->group(['prefix' => 'plus-pay'], function (RouteContract $api) {
 
             // 获取提现记录
             $api->get('/cashes', API2\NewWalletCashController::class.'@show');
 
             // 发起提现申请
-            $api->post('/cashes', API2\NewWalletCashController::class.'@store')->middleware('operation');
+            $api->post('/cashes', API2\NewWalletCashController::class.'@store');
 
             // 发起充值
             $api->post('/recharge', API2\NewWalletRechargeController::class.'@store');
@@ -455,7 +466,10 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             $api->get('/orders/{order}', API2\NewWalletRechargeController::class.'@retrieve');
 
             // 转账
-            $api->post('/transfer', API2\TransferController::class.'@transfer')->middleware('operation');
+            $api->post('/transfer', API2\TransferController::class.'@transfer');
+
+            // 转换积分
+            $api->post('/transform', API2\NewWalletRechargeController::class.'@transform');
         });
 
         /*
@@ -502,6 +516,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             //批量注册环信用户
             $api->post('/register', EaseMobIm\EaseMobController::class.'@createUsers');
 
+            // 为未注册环信用户注册环信（兼容老用户）
+            $api->post('/register-old-users', EaseMobIm\EaseMobController::class.'@registerOldUsers');
+
             // 重置用户环信密码
             $api->put('/password', EaseMobIm\EaseMobController::class.'@resetPassword');
 
@@ -531,6 +548,42 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // 获取聊天记录Test
             $api->get('/group/message', EaseMobIm\EaseMobController::class.'@getMessage');
+        });
+
+        // 积分部分
+        $api->group(['prefix' => 'currency'], function (RouteContract $api) {
+
+            // 获取积分配置
+            $api->get('/', API2\CurrencyConfigController::class.'@show');
+
+            // 积分流水
+            $api->get('/orders', API2\CurrencyRechargeController::class.'@index');
+
+            // 发起充值
+            $api->post('/recharge', API2\CurrencyRechargeController::class.'@store');
+
+            // 取回凭据
+            $api->get('/orders/{order}', API2\CurrencyRechargeController::class.'@retrieve');
+
+            // 发起提现
+            $api->post('/cash', API2\CurrencyCashController::class.'@store');
+
+            // 通过积分购买付费节点
+            $api->post('/purchases/{node}', API2\PurchaseController::class.'@payByCurrency');
+
+            // 调用IAP发起充值
+            $api->post('/recharge/apple-iap', API2\CurrencyApplePayController::class.'@store');
+
+            // IAP支付完成后的验证
+            $api->post('/orders/{order}/apple-iap/verify', API2\CurrencyApplePayController::class.'@retrieve');
+
+            // IAP商品列表
+            $api->get('/apple-iap/products', API2\CurrencyApplePayController::class.'@productList');
+
+            // 积分商城（待开发）
+            $api->get('/shop', function () {
+                return view('currency-developing');
+            });
         });
     });
 });

@@ -193,8 +193,6 @@ class CertificationController extends Controller
             $updateData['files'] = $fileIds;
         }
 
-        $data = $certification->data;
-
         $certification->data = array_merge($certification->data, array_filter($updateData));
         $certification->status = 1;
         $certification->certification_name = $type;
@@ -260,7 +258,7 @@ class CertificationController extends Controller
         return $baseRules;
     }
 
-    public function messages(Request $request)
+    public function messages()
     {
         $messages = [
             'name.required' => '姓名未提供',

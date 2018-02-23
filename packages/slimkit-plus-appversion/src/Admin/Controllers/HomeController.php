@@ -29,7 +29,6 @@ use Illuminate\Support\Facades\Storage;
 use Zhiyi\Plus\Models\File as FileModel;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Cdn\UrlManager as CdnUrlManager;
 use Slimkit\PlusAppversion\Models\ClientVersion;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Slimkit\PlusAppversion\API\Requests\ApkUpload;
@@ -38,7 +37,7 @@ use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 
 class HomeController extends Controller
 {
-    public function storage(ApkUpload $request, ResponseContract $response, CdnUrlManager $cdn, Carbon $dateTime, FileModel $fileModel, FileWithModel $fileWith)
+    public function storage(ApkUpload $request, ResponseContract $response, Carbon $dateTime, FileModel $fileModel, FileWithModel $fileWith)
     {
         $fileModel = $this->validateFileInDatabase($fileModel, $file = $request->file('file'), function (UploadedFile $file, string $md5) use ($fileModel, $dateTime): FileModel {
             $path = $dateTime->format('Y/m/d/Hi');
@@ -77,7 +76,7 @@ class HomeController extends Controller
      */
     protected function validateFileInDatabase(FileModel $fileModel, UploadedFile $file, callable $call): FileModel
     {
-        $hash = md5_file($file);
+        $hash = md5_file($file->getRealPath());
 
         return $fileModel->where('hash', $hash)->firstOr(function () use ($file, $call, $hash): FileModel {
             return call_user_func_array($call, [$file, $hash]);
@@ -120,7 +119,7 @@ class HomeController extends Controller
         ]);
     }
 
-    public function currentVersion(Request $request, ClientVersion $clientVersionModel)
+    public function currentVersion(ClientVersion $clientVersionModel)
     {
         $version['android'] = $clientVersionModel->where('type', 'android')->orderBy('id', 'desc')->first() ?? null;
         $version['ios'] = $clientVersionModel->where('type', 'ios')->orderBy('id', 'desc')->first() ?? null;
@@ -200,7 +199,7 @@ class HomeController extends Controller
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function status(Request $request)
+    public function status()
     {
         $status = config('plus-appversion');
 

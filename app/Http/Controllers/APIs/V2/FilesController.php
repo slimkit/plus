@@ -57,7 +57,7 @@ class FilesController extends Controller
         if (
             ($fileWith->paidNode instanceof PaidNodeModel &&
             $fileWith->paidNode->paid($user->id ?? 0) === false) &&
-            ($fileWith->paidNode->extra === 'read' || (! $extra['width'] && $extra['height']))
+            ($fileWith->paidNode->extra === 'read' || (! isset($extra['width']) && isset($extra['height'])))
         ) {
             $extra['blur'] = (int) config('image.blur', 96);
         }

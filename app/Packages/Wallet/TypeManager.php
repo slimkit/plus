@@ -79,4 +79,15 @@ class TypeManager extends Manager
     {
         return $this->app->make(Types\RechargeType::class);
     }
+
+    /**
+     * Create transform driver.
+     *
+     * @return \Zhiyi\Plus\Packages\Wallet\Types\Type
+     * @author BS <414606094@qq.com>
+     */
+    protected function createTransformDriver(): Type
+    {
+        return $this->app->make(Types\TransformCurrencyType::class);
+    }
 }

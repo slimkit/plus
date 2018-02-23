@@ -211,7 +211,7 @@ class SingerController extends Controller
 
         try {
             $singer->saveOrFail();
-            $singer->getConnection()->transaction(function ($query) use ($singer, $fileWith) {
+            $singer->getConnection()->transaction(function () use ($singer, $fileWith) {
                 $fileWith && $this->saveFileWith($fileWith, $singer);
             });
         } catch (\Exception $e) {

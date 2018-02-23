@@ -102,7 +102,7 @@ class WalletConfigController extends Controller
         $value = $item->value;
         $with = $this->aliases[$name] ?? [];
         $alias = $with['alias'] ?? $name;
-        $type = $with['type'] ?? false;
+        $type = $with['type'] ?? '';
         $options->offsetSet($alias, $this->formatData($type, $value));
     }
 

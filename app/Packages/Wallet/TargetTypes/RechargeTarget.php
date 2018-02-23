@@ -40,7 +40,7 @@ class RechargeTarget extends Target
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function handle($type, $account): bool
+    public function handle(): bool
     {
         if (! $this->order->hasWait()) {
             return true;
@@ -48,7 +48,7 @@ class RechargeTarget extends Target
 
         $this->initWallet();
 
-        $orderHandle = function () use ($type, $account) {
+        $orderHandle = function () {
             $this->order->saveStateSuccess();
             $this->wallet->{$this->method[$this->order->getOrderModel()->type]}($this->order->getOrderModel()->amount);
 

@@ -57,6 +57,21 @@ class Charge
     private $prefix = 'a';
 
     /**
+     * 支持的订单类型.
+     *
+     * @var array
+     */
+    protected $allowType = [
+        'applepay_upacp',
+        'alipay',
+        'alipay_wap',
+        'alipay_pc_direct',
+        'alipay_qr',
+        'wx',
+        'wx_wap',
+    ];
+
+    /**
      * Create the service instance.
      *
      * @param \Zhiyi\Plus\Repository\WalletPingPlusPlus $repository
@@ -145,6 +160,33 @@ class Charge
     }
 
     /**
+     * 不使用任何数据模型创建ping++订单.
+     *
+     * @param int $id
+     * @param string $type
+     * @param int $amount
+     * @param string $title
+     * @param string $body
+     * @param array $extra
+     * @return array
+     * @author BS <414606094@qq.com>
+     */
+    public function createWithoutModel(int $id, string $type, int $amount, string $title, string $body, array $extra)
+    {
+        return PingppCharge::create([
+            'order_no' => $this->formatChargeId($id),
+            'amount' => $amount,
+            'app' => ['id' => $this->appId],
+            'channel' => $type,
+            'currency' => 'cny', // 目前只支持 cny
+            'client_ip' => request()->getClientIp(),
+            'subject' => $title,
+            'body' => $body,
+            'extra' => $extra,
+        ]);
+    }
+
+    /**
      * Format charge id.
      *
      * @param int $chargeId
@@ -198,5 +240,57 @@ class Charge
         $this->prefix = $prefix;
 
         return $this;
+    }
+
+    /**
+     * 检测支付方式及额外参数.
+     *
+     * @param string $type
+     * @param array $extra
+     * @return boolen
+     * @author BS <414606094@qq.com>
+     */
+    public function checkRechargeArgs(string $type, array $extra): bool
+    {
+        if (in_array($type, $this->allowType)) {
+            return $this->{camel_case('check_'.$type.'_extra')}($extra);
+        }
+
+        return false;
+    }
+
+    protected function checkApplepayUpacpExtra(): bool
+    {
+        return true;
+    }
+
+    protected function checkAlipayExtra(): bool
+    {
+        return true;
+    }
+
+    protected function checkAlipayWapExtra(array $extra): bool
+    {
+        return in_array('success_url', $extra);
+    }
+
+    protected function checkAlipayPcDirectExtra(array $extra): bool
+    {
+        return in_array('success_url', $extra);
+    }
+
+    protected function checkAlipayQrExtra(array $extra): bool
+    {
+        return in_array('success_url', $extra);
+    }
+
+    protected function checkWxExtra(): bool
+    {
+        return true;
+    }
+
+    protected function checkWxWapExtra(array $extra): bool
+    {
+        return in_array('success_url', $extra);
     }
 }

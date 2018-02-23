@@ -22,7 +22,6 @@ namespace Zhiyi\Plus\Packages\Wallet\Types;
 
 use DB;
 use Illuminate\Http\Request;
-use Pingpp\Charge as PingppCharge;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Repository\WalletPingPlusPlus;
@@ -32,16 +31,6 @@ use Zhiyi\Plus\Services\Wallet\Charge as WalletChargeService;
 
 class RechargeType extends Type
 {
-    protected $allowType = [
-        'applepay_upacp',
-        'alipay',
-        'alipay_wap',
-        'alipay_pc_direct',
-        'alipay_qr',
-        'wx',
-        'wx_wap',
-    ];
-
     /**
      * 创建充值订单.
      *
@@ -57,10 +46,11 @@ class RechargeType extends Type
         $owner = $this->checkUserId($owner);
         $order = $this->createOrder($owner, $amount);
 
-        if ($this->checkRechargeArgs($type, $extra)) {
+        if (app(WalletChargeService::class)->checkRechargeArgs($type, $extra)) {
             $transaction = function () use ($order, $extra, $type) {
-                $order->save();
                 $pingppCharge = app(WalletChargeService::class)->newCreate($order->getOrderModel(), $type, $extra);
+                $order->getOrderModel()->target_id = $pingppCharge->id;
+                $order->save();
 
                 return [
                     'pingpp_order' => $pingppCharge,
@@ -82,11 +72,10 @@ class RechargeType extends Type
      */
     public function retrieve(WalletOrderModel $walletOrder): bool
     {
-        $charge_id = app(WalletChargeService::class)->formatChargeId($walletOrder->id);
-        $pingppCharge = app(WalletChargeService::class)->query($charge_id);
+        $pingppCharge = app(WalletChargeService::class)->query($walletOrder->target_id);
 
         if ($pingppCharge['paid'] === true) {
-            return $this->complete($pingppCharge, $walletOrder);
+            return $this->complete($walletOrder);
         }
 
         return false;
@@ -109,7 +98,7 @@ class RechargeType extends Type
                 return false;
             }
 
-            return $this->complete($pingppCharge, $walletOrder);
+            return $this->complete($walletOrder);
         }
 
         return false;
@@ -121,9 +110,8 @@ class RechargeType extends Type
      * @return boolen
      * @author BS <414606094@qq.com>
      */
-    public function complete(PingppCharge $pingppCharge, WalletOrderModel $order): bool
+    public function complete(WalletOrderModel $walletOrder): bool
     {
-        $walletOrder->target_id = $this->resolveChargeAccount($pingppCharge);
         $order = new Order($walletOrder);
 
         return $order->autoComplete();
@@ -166,58 +154,6 @@ class RechargeType extends Type
         $order->state = Order::STATE_WAIT;
 
         return new Order($order);
-    }
-
-    /**
-     * 检测支付方式及额外参数.
-     *
-     * @param string $type
-     * @param array $extra
-     * @return boolen
-     * @author BS <414606094@qq.com>
-     */
-    protected function checkRechargeArgs(string $type, array $extra): bool
-    {
-        if (in_array($type, $this->allowType)) {
-            return $this->{camel_case('check_'.$type.'_extra')}($extra);
-        }
-
-        return false;
-    }
-
-    protected function checkApplepayUpacpExtra(array $extra): bool
-    {
-        return true;
-    }
-
-    protected function checkAlipayExtra(array $extra): bool
-    {
-        return true;
-    }
-
-    protected function checkAlipayWapExtra(array $extra): bool
-    {
-        return in_array('success_url', $extra);
-    }
-
-    protected function checkAlipayPcDirectExtra(array $extra): bool
-    {
-        return in_array('success_url', $extra);
-    }
-
-    protected function checkAlipayQrExtra(array $extra): bool
-    {
-        return in_array('success_url', $extra);
-    }
-
-    protected function checkWxExtra(array $extra): bool
-    {
-        return true;
-    }
-
-    protected function checkWxWapExtra(array $extra): bool
-    {
-        return in_array('success_url', $extra);
     }
 
     /**

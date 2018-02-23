@@ -52,7 +52,7 @@ class PackageHandlerCommand extends Command
         $name = $this->argument('name');
         if (! $name) {
             return $this->displayHandles();
-        } elseif (! ($handler = PackageHandler::getHandles()[$name] ?? false)) {
+        } elseif (! ($handler = $this->getHandles()[$name] ?? false)) {
             throw new RuntimeException('The handler not exist.');
         }
 
@@ -65,6 +65,17 @@ class PackageHandlerCommand extends Command
     }
 
     /**
+     * Get package handles.
+     *
+     * @return array
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function getHandles(): array
+    {
+        return PackageHandler::getHandles();
+    }
+
+    /**
      * display handle.
      *
      * @return mixed
@@ -72,7 +83,7 @@ class PackageHandlerCommand extends Command
      */
     protected function displayHandles()
     {
-        foreach (PackageHandler::getHandles() as $name => $handler) {
+        foreach ($this->getHandles() as $name => $handler) {
             $this->warn($name);
             $this->displayMethod($name, $this->resolveHandler($handler));
         }

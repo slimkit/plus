@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\Models\Advertising;
 use Zhiyi\Plus\Models\AdvertisingSpace;
 
@@ -30,11 +31,10 @@ class AdvertisingController extends Controller
      * Get installed ad slot information.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request          $request
      * @param  AdvertisingSpace $space
      * @return mix
      */
-    public function index(Request $request, AdvertisingSpace $space)
+    public function index(AdvertisingSpace $space): JsonResponse
     {
         $space = $space->select('id', 'channel', 'space', 'alias', 'allow_type', 'format', 'created_at', 'updated_at')->get();
 
@@ -49,7 +49,7 @@ class AdvertisingController extends Controller
      * @param  AdvertisingSpace $space
      * @return mix
      */
-    public function advertising(Request $request, AdvertisingSpace $space)
+    public function advertising(AdvertisingSpace $space)
     {
         $space->load(['advertising' => function ($query) {
             return $query->orderBy('sort', 'asc');

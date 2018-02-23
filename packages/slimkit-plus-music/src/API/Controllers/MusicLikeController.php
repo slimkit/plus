@@ -42,7 +42,7 @@ class MusicLikeController extends Controller
                 'message' => ['已赞过该歌曲'],
             ])->setStatusCode(422);
         }
-        $like = $music->like($user);
+        $music->like($user);
 
         return response()->json([
             'message' => ['点赞成功'],

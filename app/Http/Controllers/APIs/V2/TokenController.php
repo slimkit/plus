@@ -57,6 +57,8 @@ class TokenController extends Controller
                     'phone'  => $user->phone,
                     'email'  => $user->email,
                     'wallet' => $user->wallet,
+                    'new_wallet' => $user->newWallet,
+                    'currency' => $user->currency,
                 ]),
                 'ttl' => config('jwt.ttl'),
                 'refresh_ttl' => config('jwt.refresh_ttl'),

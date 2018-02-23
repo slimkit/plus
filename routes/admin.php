@@ -357,4 +357,39 @@ Route::middleware('auth:web')
     Route::get('reports', 'ReportController@index');
     Route::patch('reports/{report}/deal', 'ReportController@deal');
     Route::patch('reports/{report}/reject', 'ReportController@reject');
+
+    /*-------------- 辅助功能 -----------------*/
+    Route::prefix('/auxiliary')->group(function () {
+        Route::get('/clear', 'AuxiliaryController@cleanCache');
+    });
+
+    /* ------------- 积分设置 -----------------*/
+    Route::prefix('/currency')->group(function () {
+        Route::get('/', 'CurrencyController@index');
+        Route::post('/add', 'CurrencyController@add');
+        Route::get('/config', 'CurrencyController@showConfig');
+        Route::patch('/config', 'CurrencyController@updateConfig');
+
+        Route::get('/list', 'CurrencyController@list');
+        Route::get('/overview', 'CurrencyController@overview');
+
+        Route::prefix('/cash')->group(function () {
+            Route::get('', 'CurrencyCashController@list');
+            Route::patch('/{order}/audit', 'CurrencyCashController@audit');
+        });
+
+        Route::prefix('/apple')->group(function () {
+            Route::get('/config', 'CurrencyAppleController@getConfig');
+            Route::patch('/config', 'CurrencyAppleController@setConfig');
+
+            Route::get('/products', 'CurrencyAppleController@getProducts');
+            Route::post('/products', 'CurrencyAppleController@addProduct');
+            Route::delete('/products', 'CurrencyAppleController@delProduct');
+        });
+    });
+
+    Route::prefix('new-wallet')->group(function () {
+        Route::get('/statistics', 'NewWalletController@statistics');
+        Route::get('/waters', 'NewWalletController@waters');
+    });
 });

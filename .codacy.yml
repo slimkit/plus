@@ -1,0 +1,17 @@
+---
+exclude_paths:
+    - config/
+    - database/
+    - docs/
+    - packages/*/assets/
+    - packages/*/config/
+    - packages/*/database/
+    - packages/*/resources/
+    - packages/*/routes/
+    - packages/*/tests/
+    - public/
+    - resources/
+    - routes/
+    - storage/
+    - tests/
+    - vendor/

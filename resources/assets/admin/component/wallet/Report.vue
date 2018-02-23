@@ -13,36 +13,22 @@
             {{ message.error }}
         </div>
         <div class="panel panel-default">
-          <div class="panel-heading">
-            <div class="form-inline">
-  	          <div class="form-group">
-                <div class="input-group">
-                  <input type="date" class="form-control" v-model="filter.start">
-                  <div class="input-group-addon">-</div>
-                  <input type="date" class="form-control" v-model="filter.end"> 
-                </div>
-  	          </div>
-              <div class="form-group">
-                <button class="btn btn-default" @click.prevent="getWalletStatistics">确认</button>
-              </div>
-            </div>
-          </div>
           <div class="panel-body">
           	<table class="table table-striped">
           	  <thead>
           	  	<tr>
           	  	  <th>类型</th>
-          	  	  <th>总笔数</th>
-          	  	  <th>总金额（元）</th>
+          	  	  <th>总数量</th>
+          	  	  <th>中金额（单位:分）</th>
           	  	</tr>
           	  </thead>
           	  <tbody>
                 <!-- 加载 -->
                 <table-loading :loadding="loadding" :colspan-num="7"></table-loading>
-          	  	<tr  v-for="item in items" v-show="!loadding">
-          	  	  <td>{{ item.type }}</td>
-          	  	  <td>{{ item.num }}</td>
-          	  	  <td>{{ item.total_amount / 100 ? item.total_amount / 100 : 0 }}</td>
+          	  	<tr  v-for="(item, key) in items" v-show="!loadding">
+          	  	  <td>{{ key | type }}</td>
+          	  	  <td>{{ item.count }}</td>
+          	  	  <td>{{ item.sum }}</td>
           	  	</tr>
           	  </tbody>
           	</table>
@@ -67,26 +53,30 @@ const ReportComponent = {
       	error: null,
       }
     }),
+    filters: {
+      type(val) {
+        if (val == 'expenditure') {
+          return '支出';
+        } else if(val == 'income') {
+          return '收入';
+        } else {
+          return '未知';
+        }
+      }
+    },
     methods: {
       getWalletStatistics() {
       	this.loadding = true;
-      	let query = this.getQueryParams();
         request.get(
-          createRequestURI(`wallet/statistics${query}`),
+          createRequestURI(`new-wallet/statistics`),
           { validateStatus: status => status === 200 }
-        ).then(response => {
+        ).then(({ data = {}}) => {
           this.loadding = false;
-          this.items = response.data;
+          this.items = data;
         }).catch(({ response: { data: { errors = '加载数据失败，请重试' } = {} } = {} }) => {
           this.loadding = false;
           this.message.error = errors;
         });
-      },
-      getQueryParams() {
-        let query = '?';
-        query += 'start=' + this.filter.start;
-        query += '&end=' + this.filter.end;
-        return query;
       },
     },
     created () {
