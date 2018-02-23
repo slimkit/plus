@@ -30,7 +30,7 @@ class AdvertisingSpaceSeeder extends Seeder
      */
     public function run()
     {
-        AdvertisingSpace::firstOrCreate([
+        AdvertisingSpace::create([
             'channel' => 'group',
             'space' => 'group:index:top',
             'alias' => '移动端圈子首页顶部广告',

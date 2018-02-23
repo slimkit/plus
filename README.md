@@ -112,7 +112,7 @@ php artisan serve
 这个仓库的贡献者并不代表只是 Plus 的贡献者，我们也会把 Laravel 的贡献者加入感谢名单，因为他们为 Laravel 所做出的贡献，也使得 Plus 项目更加强大。
 
 感谢所有为 Plus 贡献的人！
-<a href="graphs/contributors"><img src="https://opencollective.com/thinksns-plus/contributors.svg?width=890" /></a>
+<a href="https://github.com/slimkit/thinksns-plus/graphs/contributors"><img src="https://opencollective.com/thinksns-plus/contributors.svg?width=890" /></a>
 
 ### [行为守则](https://github.com/slimkit/thinksns-plus/blob/master/CODE_OF_CONDUCT.md)
 
