@@ -1,0 +1,136 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
+namespace Zhiyi\PlusGroup\Tests\Feature\API2;
+
+use Zhiyi\Plus\Tests\TestCase;
+use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\PlusGroup\Models\Group as GroupModel;
+use Zhiyi\PlusGroup\Models\Category as CateModel;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Zhiyi\PlusGroup\Models\GroupMember as GroupMemberModel;
+use Zhiyi\PlusGroup\Models\GroupMemberLog as GroupMemberLogModel;
+use Zhiyi\PlusGroup\Models\GroupRecommend as GroupRecommendModel;
+
+class GetGroupMemberTest extends TestCase
+{
+    use DatabaseTransactions;
+
+    /**
+     * 某个圈子成员列表.
+     *
+     * @return mixed
+     */
+    public function testGetGroupMembers()
+    {
+        $user = factory(UserModel::class)->create();
+        $group = $this->createGroupByUser($user);
+
+        $response = $this
+            ->actingAs($user, 'api')
+            ->json('GET', "/api/v2/plus-group/groups/{$group->id}/members");
+        $response
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                ['id', 'group_id', 'user_id', 'user', 'role', 'audit', 'disabled']
+            ]);
+    }
+
+    /**
+     * 圈子审核成员记录列表.
+     *
+     * @return mixed
+     */
+    public function testGetGroupAuditMembers()
+    {
+        $user = factory(UserModel::class)->create();
+        $other = factory(UserModel::class)->create();
+        $group = $this->createGroupByUser($user);
+        $member = $this->addMemberToGroup($group, $other, 'member', 0, 0);
+
+        $response = $this
+            ->actingAs($user, 'api')
+            ->json('GET', '/api/v2/plus-group/user-group-audit-members');
+        $response
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                ['id', 'user_id', 'group_id', 'member_id', 'status', 'user']
+            ]);
+    }
+
+    /**
+     * 创建圈子.
+     *
+     * @param UserModel $user
+     * @return GroupModel
+     */
+    protected function createGroupByUser(UserModel $user, $mode='public'): GroupModel
+    {
+        $cate = factory(CateModel::class)->create();
+        $group = factory(GroupModel::class)->create([
+            'user_id' => $user->id,
+            'category_id' => $cate->id,
+            'mode' => $mode,
+            'money' => $mode == 'paid' ? 10 : 0,
+        ]);
+
+        $memberModel = new GroupMemberModel();
+        $memberModel->user_id = $user->id;
+        $memberModel->group_id = $group->id;
+        $memberModel->audit = 1;
+        $memberModel->role = 'founder';
+        $memberModel->save();
+
+        return $group;
+    }
+
+    /**
+     * 添加成员到圈子.
+     *
+     * @param GroupModel $group
+     * @param UserModel $user
+     * @param string $role
+     * @return GroupMemberModel
+     */
+    protected function addMemberToGroup(
+        GroupModel $group,
+        UserModel $user,
+        $role = 'member',
+        $disabled = 0,
+        $audit = 1): GroupMemberModel
+    {
+        $memberModel = new GroupMemberModel();
+        $memberModel->user_id = $user->id;
+        $memberModel->group_id = $group->id;
+        $memberModel->audit = $audit;
+        $memberModel->role = $role;
+        $memberModel->disabled = $disabled;
+        $memberModel->save();
+
+        $memberLogModel = new GroupMemberLogModel();
+        $memberLogModel->group_id = $group->id;
+        $memberLogModel->user_id = $user->id;
+        $memberLogModel->member_id = $memberModel->id;
+        $memberLogModel->status = 0;
+        $memberLogModel->save();
+
+        return $memberModel;
+    }
+}
