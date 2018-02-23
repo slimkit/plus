@@ -5,7 +5,7 @@ general:
 
 machine:
     node:
-        version: 7
+        version: 6
     environment:
         TRAVIS_REPO_SLUG: zhiyicx/thinksns-plus
         # YARN_VERSION: 0.21.3
@@ -23,6 +23,7 @@ dependencies:
         #     fi
     override:
         - npm install
+        - npm rebuild node-sass --force
         - mv .env.example .env
     # cache_directories:
     #     - ~/.yarn
