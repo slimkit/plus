@@ -5,7 +5,7 @@ general:
 
 machine:
     node:
-        version: 6
+        version: 7
     environment:
         TRAVIS_REPO_SLUG: zhiyicx/thinksns-plus
         # YARN_VERSION: 0.21.3
