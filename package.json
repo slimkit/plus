@@ -15,7 +15,7 @@
         "babel-preset-env": "^1.6.1",
         "babel-preset-stage-2": "^6.24.1",
         "cross-env": "^5.1",
-        "laravel-mix": "^2.0",
+        "laravel-mix": "^2.0"
     },
     "dependencies": {
         "axios": "^0.18",
