@@ -22,100 +22,137 @@ namespace Zhiyi\PlusGroup\Tests\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
 use Zhiyi\Plus\Models\User as UserModel;
-use Illuminate\Foundation\Testing\TestResponse;
 use Zhiyi\PlusGroup\Models\Group as GroupModel;
 use Zhiyi\PlusGroup\Models\Category as CateModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Zhiyi\PlusGroup\Models\GroupMember as GroupMemberModel;
 use Zhiyi\PlusGroup\Models\GroupRecommend as GroupRecommendModel;
 
-class EditGroupTest extends TestCase
+class ManagementGroupMemberTest extends TestCase
 {
     use DatabaseTransactions;
 
     /**
-     * 修改未审核的圈子.
+     * 移除圈子成员.
      *
      * @return mixed
      */
-    public function testEditNotAuditGroup()
+    public function testRemoveGroupMember()
     {
         $user = factory(UserModel::class)->create();
-        $group = $this->createGroupByUser($user, 'public', 0);
+        $other = factory(UserModel::class)->create();
+        $group = $this->createGroupByUser($user);
+        $member = $this->addMemberToGroup($group, $other);
 
         $response = $this
             ->actingAs($user, 'api')
-            ->json('POST', "/api/v2/plus-group/groups/{$group->id}", [
-                'name' => 'test',
-                'summary' => 'test',
-            ]);
-
-        $response
-            ->assertStatus(403);
-    }
-
-    /**
-     * 修改已审核的圈子.
-     *
-     * @return mixed
-     */
-    public function testEditAuditGroup()
-    {
-        $user = factory(UserModel::class)->create();
-        $group = $this->createGroupByUser($user, 'public', 1);
-
-        $response = $this
-            ->actingAs($user, 'api')
-            ->json('POST', "/api/v2/plus-group/groups/{$group->id}", [
-                'name' => 'test',
-                'summary' => 'test',
-            ]);
-
-        $response
-            ->assertStatus(200);
-    }
-
-    /**
-     * 更改发帖权限.
-     *
-     * @return mixed
-     */
-    public function testEditPostPermissionGroup()
-    {
-        $user = factory(UserModel::class)->create();
-        $group = $this->createGroupByUser($user, 'public', 1);
-
-        $response = $this
-            ->actingAs($user, 'api')
-            ->json('PATCH', "/api/v2/plus-group/groups/{$group->id}/permissions", [
-                'permissions' => ['administrator', 'founder']
-            ]);
+            ->json('DELETE', "/api/v2/plus-group/groups/{$group->id}/members/$member->id");
 
         $response
             ->assertStatus(204);
     }
 
     /**
-     * 转让圈子.
+     * 设置成员为管理员.
      *
      * @return mixed
      */
-    public function testTransferGroup()
+    public function testSetGroupAdmin()
     {
         $user = factory(UserModel::class)->create();
         $other = factory(UserModel::class)->create();
-        $group = $this->createGroupByUser($user, 'public', 1);
+        $group = $this->createGroupByUser($user);
         $member = $this->addMemberToGroup($group, $other);
 
         $response = $this
             ->actingAs($user, 'api')
-            ->json('PATCH', "/api/v2/plus-group/groups/{$group->id}/owner", [
-                'target' => $other->id
-            ]);
+            ->json('PUT', "/api/v2/plus-group/groups/{$group->id}/managers/{$member->id}");
 
         $response
             ->assertStatus(201)
             ->assertJsonStructure(['message']);
+    }
+
+    /**
+     * 移除圈子管理员.
+     *
+     * @return mixed
+     */
+    public function testRemoveGroupAdmin()
+    {
+        $user = factory(UserModel::class)->create();
+        $other = factory(UserModel::class)->create();
+        $group = $this->createGroupByUser($user);
+        $member = $this->addMemberToGroup($group, $other, 'administrator');
+
+        $response = $this
+            ->actingAs($user, 'api')
+            ->json('DELETE', "/api/v2/plus-group/groups/{$group->id}/managers/{$member->id}");
+
+        $response
+            ->assertStatus(204);
+    }
+
+    /**
+     * 添加圈子成员到黑名单.
+     *
+     * @return mixed
+     */
+    public function testGroupMemberToBlacklist()
+    {
+        $user = factory(UserModel::class)->create();
+        $other = factory(UserModel::class)->create();
+        $group = $this->createGroupByUser($user);
+        $member = $this->addMemberToGroup($group, $other);
+
+        $response = $this
+            ->actingAs($user, 'api')
+            ->json('PUT', "/api/v2/plus-group/groups/{$group->id}/blacklist/{$member->id}");
+
+        $response
+            ->assertStatus(201);
+    }
+
+    /**
+     * 移除圈子黑名单.
+     *
+     * @return mixed
+     */
+    public function testRemoveBlacklistGroupMember()
+    {
+        $user = factory(UserModel::class)->create();
+        $other = factory(UserModel::class)->create();
+        $group = $this->createGroupByUser($user);
+        $member = $this->addMemberToGroup($group, $other, 'member', 1);
+
+        $response = $this
+            ->actingAs($user, 'api')
+            ->json('DELETE', "/api/v2/plus-group/groups/{$group->id}/blacklist/{$member->id}");
+
+        $response
+            ->assertStatus(204);
+    }
+
+    /**
+     * 审核加圈请求.
+     *
+     * @return mixed
+     */
+    public function testAuditJoinGroup()
+    {
+        $user = factory(UserModel::class)->create();
+        $other = factory(UserModel::class)->create();
+        $group = $this->createGroupByUser($user);
+        $member = $this->addMemberToGroup($group, $other, 'member', 1, 0);
+
+        $response = $this
+            ->actingAs($user, 'api')
+            ->json('PATCH', "/api/v2/plus-group/groups/{$group->id}/members/{$member->id}/audit", [
+                'status' => 1
+            ]);
+
+        $response
+            ->assertStatus(201);
     }
 
     /**
@@ -124,7 +161,7 @@ class EditGroupTest extends TestCase
      * @param UserModel $user
      * @return GroupModel
      */
-    protected function createGroupByUser(UserModel $user, $mode='public', $groupAudit = 1): GroupModel
+    protected function createGroupByUser(UserModel $user, $mode='public'): GroupModel
     {
         $cate = factory(CateModel::class)->create();
         $group = factory(GroupModel::class)->create([
@@ -132,7 +169,6 @@ class EditGroupTest extends TestCase
             'category_id' => $cate->id,
             'mode' => $mode,
             'money' => $mode == 'paid' ? 10 : 0,
-            'audit' => $groupAudit,
         ]);
 
         $memberModel = new GroupMemberModel();
