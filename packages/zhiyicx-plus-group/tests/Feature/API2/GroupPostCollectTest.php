@@ -31,7 +31,7 @@ use Zhiyi\PlusGroup\Models\GroupMember as GroupMemberModel;
 use Zhiyi\PlusGroup\Models\GroupReport as GroupReportModel;
 use Zhiyi\PlusGroup\Models\GroupRecommend as GroupRecommendModel;
 
-class GroupPostLikeTest extends TestCase
+class GroupPostCollectTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -53,15 +53,15 @@ class GroupPostLikeTest extends TestCase
     }
 
     /**
-     * 帖子喜欢.
+     * 帖子收藏.
      *
      * @return mixed
      */
-    public function testGroupPostLike()
+    public function testGroupPostCollect()
     {
         $response = $this
             ->actingAs($this->user, 'api')
-            ->json('POST', "/api/v2/plus-group/group-posts/{$this->post->id}/likes");
+            ->json('POST', "/api/v2/plus-group/group-posts/{$this->post->id}/collections");
         $response
             ->assertStatus(201)
             ->assertJsonStructure(['message']);
@@ -72,31 +72,48 @@ class GroupPostLikeTest extends TestCase
      *
      * @return mixed
      */
-    public function testGroupPostLikeList()
+    public function testGroupPostCollectList()
     {
-        $this->post->like($this->user);
+        $this->post->collect($this->user);
         $response = $this
             ->actingAs($this->user, 'api')
-            ->json('GET', "/api/v2/plus-group/group-posts/{$this->post->id}/likes");
+            ->json('GET', "/api/v2/plus-group/user-post-collections");
         $response
             ->assertStatus(200)
             ->assertJsonStructure([
-                ['id', 'user_id', 'target_user', 'likeable_id', 'likeable_type', 'user']
+                [
+                    'id',
+                    'group_id',
+                    'user_id',
+                    'title',
+                    'summary',
+                    'likes_count',
+                    'comments_count',
+                    'views_count',
+                    'created_at',
+                    'updated_at',
+                    'collected',
+                    'liked',
+                    'comments',
+                    'images',
+                    'user',
+                    'group'
+                ]
             ]);
     }
 
     /**
-     * 取消帖子喜欢.
+     * 取消帖子收藏.
      *
      * @return mixed
      */
-    public function testCancelGroupPostLike()
+    public function testCancelGroupPostUnCollect()
     {
-        $this->post->like($this->user);
-        
+        $this->post->collect($this->user);
+
         $response = $this
             ->actingAs($this->user, 'api')
-            ->json('DELETE', "/api/v2/plus-group/group-posts/{$this->post->id}/likes");
+            ->json('DELETE', "/api/v2/plus-group/group-posts/{$this->post->id}/uncollect");
         $response
             ->assertStatus(204);
     }
