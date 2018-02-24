@@ -128,7 +128,7 @@ class NewPinnedController extends Controller
         $income->user_id = $target_user->id;
 
         $post->getConnection()->transaction(function () use ($pinned, $user, $target_user, $post, $income) {
-            $process = new Processes();
+            $process = new UserProcess();
             $process->receivables($user->id, $pinned->amount, $target_user->id, '帖子置顶收入', sprintf('接受置顶帖子《%s》的收入', $post->title));
 
             // 保存置顶
@@ -245,6 +245,7 @@ class NewPinnedController extends Controller
         $pinnedModel->status = 0;
 
         $post->getConnection()->transaction(function () use ($user, $pinnedModel, $target_user, $amount, $post, $comment) {
+
             $process = new UserProcess();
             $process->prepayment($user->id, $amount, $target_user->id, '评论申请置顶', sprintf('在帖子《%s》申请评论置顶', $post->title));
 
@@ -289,7 +290,7 @@ class NewPinnedController extends Controller
         $pinned->status = 1;
 
         $post->getConnection()->transaction(function () use ($pinned, $user, $target_user, $comment, $post) {
-            $process = new Processes();
+            $process = new UserProcess();
             $process->receivables($user->id, $pinned->amount, $target_user->id, '帖子内置顶评论收入', sprintf('帖子《%s》下置顶评论收入的金额', $post->title));
 
             // 保存置顶
@@ -362,7 +363,7 @@ class NewPinnedController extends Controller
      */
     protected function validateBase(Request $request, User $user)
     {
-        $currency = $this->user()->currency()->firstOrCreate(['type' => 1], ['sum' => 0]);
+        $currency = $user->currency()->firstOrCreate(['type' => 1], ['sum' => 0]);
         $rules = [
             'amount' => [
                 'required',
