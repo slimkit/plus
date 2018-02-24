@@ -23,6 +23,7 @@ namespace Zhiyi\Plus\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Config\Repository;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Console\Input\InputOption;
 
 class PackageCreateCommand extends Command
 {
@@ -77,6 +78,9 @@ class PackageCreateCommand extends Command
         $outputPath = $this
             ->getLaravel()
             ->resourcePath(sprintf('repositorie/sources/%s-%s', $vendor, $name));
+        if ($this->option('new')) {
+            $outputPath = base_path(sprintf('packages/%s-%s', $vendor, $name));
+        }
 
         if (is_dir($outputPath) && file_exists($outputPath)) {
             throw new \RuntimeException(sprintf('Will the directory "%s" already exist', $outputPath));
@@ -226,5 +230,18 @@ class PackageCreateCommand extends Command
                 'sort-packages' => true,
             ],
         ]);
+    }
+
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function getOptions()
+    {
+        return [
+            ['new', null, InputOption::VALUE_NONE, 'Create a new package to /packages path.'],
+        ];
     }
 }
