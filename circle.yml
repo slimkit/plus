@@ -23,6 +23,7 @@ dependencies:
         #     fi
     override:
         - npm install
+        - npm rebuild node-sass --force
         - mv .env.example .env
     # cache_directories:
     #     - ~/.yarn

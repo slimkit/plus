@@ -1,6 +1,5 @@
 .idea
 .DS_Store
-.env
 .vagrant
 .plus.yml
 
@@ -8,8 +7,6 @@ composer.lock
 yarn.lock
 yarn-error.log
 npm-debug.log
-Homestead.json
-Homestead.yaml
 
 /config/component.php
 /config/component_routes.php
@@ -20,3 +17,11 @@ Homestead.yaml
 /storage/*.key
 /vendor
 /resources/views/vendor
+/.idea
+/.vscode
+/.vagrant
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+.env

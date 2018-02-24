@@ -6,10 +6,10 @@
     "require": {
         "php": ">=7.0",
         "guzzlehttp/guzzle": "^6.3",
-        "illuminate/console": "^5.5",
-        "illuminate/contracts": "^5.5",
-        "illuminate/database": "^5.5",
-        "illuminate/support": "^5.5"
+        "illuminate/console": "5.6.*",
+        "illuminate/contracts": "5.6.*",
+        "illuminate/database": "5.6.*",
+        "illuminate/support": "5.6.*"
     },
     "autoload": {
         "psr-4": {
@@ -28,5 +28,5 @@
             ]
         }
     },
-    "version": "1.6.1"
+    "version": "1.7.0"
 }

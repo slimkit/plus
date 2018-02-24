@@ -16,20 +16,10 @@
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Tests\Feature;
+use Faker\Generator as Faker;
 
-use Zhiyi\Plus\Tests\TestCase;
-
-class ExampleTest extends TestCase
-{
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testBasicTest()
-    {
-        $response = $this->get('/');
-        $response->assertStatus(200);
-    }
-}
+$factory->define(Zhiyi\Plus\Models\Role::class, function (Faker $faker) {
+    return [
+        //
+    ];
+});

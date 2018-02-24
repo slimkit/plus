@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -16,35 +18,52 @@
  * +----------------------------------------------------------------------+
  */
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
+namespace Zhiyi\Plus\Tests\Feature\API2;
 
-class CreateUserProfileSettingLinks extends Migration
+use Zhiyi\Plus\Tests\TestCase;
+use Zhiyi\Plus\Models\User as UserModel;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+
+class AuthLoginTest extends TestCase
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
+    use DatabaseTransactions;
+
+    protected $user;
+
+    protected function setUp()
     {
-        Schema::create('user_profile_setting_links', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id')->comment('资料关联用户id');
-            $table->integer('user_profile_setting_id')->comment('资料项id');
-            $table->mediumText('user_profile_setting_data')->comment('资料项内容');
-            $table->timestamps();
-        });
+        parent::setUp();
+
+        $this->user = factory(UserModel::class)->create();
     }
 
     /**
-     * Reverse the migrations.
+     * Test User ID login.
      *
      * @return void
+     * @author Seven Du <shiweidu@outlook.com>
      */
-    public function down()
+    public function testUserLogin()
     {
-        Schema::dropIfExists('user_profile_setting_links');
+        $response = $this->json('POST', 'api/v2/auth/login', [
+            'login' => $this->user->id,
+            'password' => 'secret',
+        ]);
+
+        $this->assertLoginResponse($response);
+    }
+
+    /**
+     * Assert login response.
+     *
+     * @param [type] $response
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function assertLoginResponse($response)
+    {
+        $response
+            ->assertStatus(200)
+            ->assertJsonStructure(['access_token', 'token_type', 'expires_in']);
     }
 }

@@ -21,6 +21,11 @@
             "Zhiyi\\Component\\ZhiyiPlus\\PlusComponentFeed\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "SlimKit\\PlusFeed\\Tests\\": "tests/"
+        }
+    },
     "extra": {
         "laravel": {
             "providers": [
@@ -28,5 +33,5 @@
             ]
         }
     },
-    "version": "1.6.1"
+    "version": "1.7.0"
 }

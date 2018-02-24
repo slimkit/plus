@@ -219,11 +219,7 @@ class PackageCreateCommand extends Command
             'type' => 'library',
             'license' => 'MIT',
             'require' => [
-                'php' => '>=7.0',
-                'illuminate/console' => '^5.5',
-                'illuminate/contracts' => '^5.5',
-                'illuminate/database' => '^5.5',
-                'illuminate/support' => '^5.5',
+                'php' => '>=7.1.3',
             ],
             'autoload' => [],
             'config' => [

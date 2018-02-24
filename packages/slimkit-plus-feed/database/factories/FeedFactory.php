@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -18,42 +16,13 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Models;
+use Faker\Generator as Faker;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-
-class UserProfileSettingLink extends Model
-{
-    protected $fillable = [
-        'user_id',
-        'user_profile_setting_id',
-        'user_profile_setting_data',
+$factory->define(\Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed::class, function (Faker $faker) {
+    return [
+        'feed_content' => $faker->shuffle(),
+        'feed_from' => 5,
+        'user_id' => $faker->randomNumber(),
+        'feed_mark' => $faker->unique()->randomNumber(),
     ];
-
-    protected $hidden = [
-        'user_profile_setting_id',
-        'user_profile_setting_data',
-    ];
-
-    /**
-     * 通过用户id查找扩展资料.
-     *
-     * @Author   Wayne[qiaobin@zhiyicx.com]
-     * @DateTime 2017-01-18T00:26:33+0800
-     *
-     * @param Builder $query   [description]
-     * @param int     $user_id [description]
-     *
-     * @return [type] [description]
-     */
-    public function scopeByUserId(Builder $query, int $user_id): Builder
-    {
-        return $query->where('user_id', $user_id);
-    }
-
-    public function name()
-    {
-        return $this->belongsTo(UserProfileSetting::class, 'user_profile_setting_id', 'id');
-    }
-}
+});
