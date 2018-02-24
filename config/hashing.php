@@ -16,26 +16,21 @@
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Tests;
+return [
 
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Contracts\Console\Kernel;
+    /*
+    |--------------------------------------------------------------------------
+    | Default Hash Driver
+    |--------------------------------------------------------------------------
+    |
+    | This option controls the default hash driver that will be used to hash
+    | passwords for your application. By default, the bcrypt algorithm is
+    | used; however, you remain free to modify this option if you wish.
+    |
+    | Supported: "bcrypt", "argon"
+    |
+    */
 
-trait CreatesApplication
-{
-    /**
-     * Creates the application.
-     *
-     * @return \Illuminate\Foundation\Application
-     */
-    public function createApplication()
-    {
-        $app = require __DIR__.'/../bootstrap/app.php';
+    'driver' => 'bcrypt',
 
-        $app->make(Kernel::class)->bootstrap();
-
-        Hash::driver('bcrypt')->setRounds(4);
-
-        return $app;
-    }
-}
+];
