@@ -97,14 +97,6 @@
                 "symlink": true,
                 "plus-soft": true
             }
-        },
-        {
-            "type": "path",
-            "url": "packages/zhiyicx-test-group-worker",
-            "options": {
-                "symlink": true,
-                "plus-soft": true
-            }
         }
     ],
     "require": {
@@ -131,8 +123,7 @@
         "symfony/yaml": "^4.0",
         "tymon/jwt-auth": "1.0.0-rc.2",
         "zhiyicx/plus-group": "1.7.0",
-        "zhiyicx/plus-question": "1.7.0",
-        "zhiyicx/test-group-worker": "1.7.0"
+        "zhiyicx/plus-question": "1.7.0"
     },
     "require-dev": {
         "codacy/coverage": "^1.4",
