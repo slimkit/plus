@@ -33,6 +33,6 @@ class PackagesSeeder extends Seeder
         $this->call(\SlimKit\Plus\Packages\Feed\Seeds\DatabaseSeeder::class);
         $this->call(\Zhiyi\Plus\Packages\Music\Seeds\DatabaseSeeder::class);
         $this->call(\Zhiyi\PlusGroup\Seeds\DatabaseSeeder::class);
-        $this->Call(\Zhiyi\Plus\Packages\TestGroupWorker\Seeds\DatabaseSeeder::class);
+        // $this->Call(\Zhiyi\Plus\Packages\TestGroupWorker\Seeds\DatabaseSeeder::class);
     }
 }
