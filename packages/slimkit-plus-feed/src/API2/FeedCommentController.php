@@ -153,7 +153,7 @@ class FeedCommentController extends Controller
             $replyUser->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
             app(Push::class)->push(sprintf('%s 回复了您的评论', $user->name), (string) $replyUser->id, ['channel' => 'feed:comment-reply']);
         }
-        $comment->load('user');
+        $comment->load(['user', 'reply']);
 
         return $response->json([
             'message' => ['操作成功'],
