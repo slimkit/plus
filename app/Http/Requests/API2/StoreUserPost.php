@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Requests\API2;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreUserPost extends FormRequest
@@ -48,6 +49,13 @@ class StoreUserPost extends FormRequest
             'password' => 'required|string',
             'verifiable_code' => 'required',
             'verifiable_type' => 'required|string|in:mail,sms',
+            'name' => [
+                'required',
+                'username',
+                'display_length:2,12',
+                Rule::notIn(config('site.reserved_nickname')),
+                'unique:users,name',
+            ],
         ];
     }
 
@@ -71,6 +79,7 @@ class StoreUserPost extends FormRequest
             'name.username' => '用户名只能以非特殊字符和数字开头，不能包含特殊字符',
             'name.display_length' => '用户名长度不合法',
             'name.unique' => '用户名已经被其他用户所使用',
+            'name.not_in' => '系统保留用户名，禁止使用',
             'password.required' => '请输入密码',
             'verifiable_code.required' => '请输入验证码',
             'verifiable_type.required' => '非法请求',
