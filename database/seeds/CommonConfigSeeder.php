@@ -17,7 +17,7 @@
  */
 
 use Illuminate\Database\Seeder;
-use Zhiy\Plus\Models\CommonConfig;
+use Zhiyi\Plus\Models\CommonConfig;
 
 class CommonConfigSeeder extends Seeder
 {
