@@ -22,7 +22,7 @@ use Zhiy\Plus\Models\CommonConfig;
 class CommonConfigSeeder extends Seeder
 {
     /**
-     * 添加注册用户的默认用户组
+     * 添加注册用户的默认用户组.
      *
      * @return void
      */
@@ -31,7 +31,7 @@ class CommonConfigSeeder extends Seeder
         CommonConfig::create([
             'name' => 'default_role',
             'namespace' => 'user',
-            'value' => 2
+            'value' => 2,
         ]);
     }
 }
