@@ -71,7 +71,7 @@ class NewPostRewardController
         $money = $amount / self::RATIO;
 
         $status = $manager->driver(Order::TARGET_TYPE_REWARD)->reward([
-            'reward_resource' => $user,
+            'reward_resource' => $post,
             'order' => [
                 'user' => $user,
                 'target' => $target,

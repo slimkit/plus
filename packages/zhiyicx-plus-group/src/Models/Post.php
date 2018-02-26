@@ -30,7 +30,8 @@ class Post extends Model
 {
     use SoftDeletes,
         Relations\PostHasLike,
-        Relations\PostHasCollect;
+        Relations\PostHasCollect,
+        Relations\PostHasReward;
     /**
      * The table associated with the model.
      *
@@ -83,17 +84,6 @@ class Post extends Model
     {
         return $this->hasOne(Pinned::class, 'target', 'id')
             ->where('channel', 'post');
-    }
-
-    /**
-     * Rewards of post.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\morphToMany
-     * @author BS <414606094@qq.com>
-     */
-    public function rewards()
-    {
-        return $this->morphMany(Reward::class, 'rewardable');
     }
 
     /**
