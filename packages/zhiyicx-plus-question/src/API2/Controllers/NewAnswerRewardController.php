@@ -18,11 +18,12 @@
 
 namespace SlimKit\PlusQuestion\API2\Controllers;
 
+use Illuminate\Http\Request;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;
 use SlimKit\PlusQuestion\Models\Answer as AnswerModel;
 use SlimKit\PlusQuestion\Models\TopicExpertIncome as ExpertIncomeModel;
-use SlimKit\PlusQuestion\API2\Requests\AnswerReward as AnswerRewardRequest;
+use SlimKit\PlusQuestion\API2\Requests\NewAnswerReward as NewAnswerRewardRequest;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class NewAnswerRewardController extends Controller
@@ -32,7 +33,7 @@ class NewAnswerRewardController extends Controller
      */
     const RATIO = 100;
 
-    public function store(AnswerRewardRequest $request, ResponseFactoryContract $response, TypeManager $manager, AnswerModel $answer)
+    public function store(NewAnswerRewardRequest $request, ResponseFactoryContract $response, TypeManager $manager, AnswerModel $answer)
     {
         $amount = (int) $request->input('amount');
         $user = $request->user();
@@ -71,6 +72,8 @@ class NewAnswerRewardController extends Controller
 
             // inrement rewarder_count
             $answer->increment('rewarder_count');
+            // inrement rewards_amount
+            $answer->increment('rewards_amount', $amount);
             // check if the user is a expert, record income.
             $answer->question->load('topics.experts');
             // get all expert of all the topics belongs to the question.
