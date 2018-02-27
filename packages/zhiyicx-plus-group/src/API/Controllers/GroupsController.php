@@ -610,7 +610,7 @@ class GroupsController
 
         $type = in_array($type, ['join']) ? $type : 'join';
 
-        $groups = $group->when($type, function ($query) use ($type, $user_id) {
+        $groups = $groupModel->when($type, function ($query) use ($type, $user_id) {
             switch ($type) {
                 case 'join':
                     return $query->whereHas('members', function ($query) use ($user_id) {
