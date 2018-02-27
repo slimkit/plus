@@ -16,34 +16,22 @@
  * +----------------------------------------------------------------------+
  */
 
-if (! Route::has('home')) {
+use Illuminate\Database\Seeder;
+use Zhiyi\Plus\Models\CommonConfig;
+
+class CommonConfigSeeder extends Seeder
+{
     /**
-     * Get front “/” route.
+     * 添加注册用户的默认用户组.
      *
-     * @var \Illuminate\Routing\Route
+     * @return void
      */
-    $route = array_get(Route::getRoutes()->get('GET'), '/');
-
-    // Not defined "/" route,
-    // Create a default "/" route.
-    if (! $route) {
-        $route = Route::get('/', 'HomeController@welcome');
+    public function run()
+    {
+        CommonConfig::create([
+            'name' => 'default_role',
+            'namespace' => 'user',
+            'value' => 2,
+        ]);
     }
-
-    // Set "/" route name as "home"
-    $route->name('home');
 }
-
-if (! Route::has('login')) {
-    Route::get('/auth/login', 'Auth\\LoginController@showLoginForm')->name('login');
-}
-
-if (! Route::has('logout')) {
-    Route::any('auth/logout', 'Auth\\LoginController@logout')->name('logout');
-}
-
-Route::post('/auth/login', 'Auth\\LoginController@login');
-
-Route::prefix('admin')
-    ->namespace('Admin')
-    ->group(base_path('routes/admin.php'));
