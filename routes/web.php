@@ -16,15 +16,15 @@
  * +----------------------------------------------------------------------+
  */
 
-// if (! Route::getRoutes()->hasNamedRoute('home')) {
+if (! Route::has('home')) {
     Route::get('/', 'HomeController@welcome')->name('home');
-// }
+}
 
-if (! Route::getRoutes()->hasNamedRoute('login')) {
+if (! Route::has('login')) {
     Route::get('/auth/login', 'Auth\\LoginController@showLoginForm')->name('login');
 }
 
-if (! Route::getRoutes()->hasNamedRoute('logout')) {
+if (! Route::has('logout')) {
     Route::any('auth/logout', 'Auth\\LoginController@logout')->name('logout');
 }
 
