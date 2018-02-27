@@ -17,7 +17,21 @@
  */
 
 if (! Route::has('home')) {
-    Route::get('/', 'HomeController@welcome')->name('home');
+    /**
+     * Get front “/” route.
+     *
+     * @var \Illuminate\Routing\Route
+     */
+    $route = array_get(Route::getRoutes()->get('GET'), '/');
+
+    // Not defined "/" route,
+    // Create a default "/" route.
+    if (! $route) {
+        $route = Route::get('/', 'HomeController@welcome');
+    }
+
+    // Set "/" route name as "home"
+    $route->name('home');
 }
 
 if (! Route::has('login')) {
