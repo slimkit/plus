@@ -546,7 +546,8 @@ class GroupsController
                 case 'join':
                     return $query->whereHas('members', function ($query) use ($user) {
                         return $query->where('user_id', $user->id)->where('audit', 1);
-                    });
+                    })
+                    ->where('audit', 1);
                     break;
                 case 'audit':
                     return $query->where(function ($query) use ($user) {
