@@ -40,19 +40,19 @@ class RecommendController
         $offset = (int) $request->query('offset', 0);
         $type = $request->query('type');
 
-        $recommends = $recommendModel->where('disable', 0)->with(['group' => function ($query) {
+        $recommends = $recommendModel->where('disable', 0)
+        ->whereHas('group', function ($query) {
             return $query->where('audit', 1);
-        }])
-        ->has('group')
-        ->limit($limit)
+        })
         ->when($type == 'random', function ($query) {
             return $query->inRandomOrder();
         })
-        ->offset($offset)
         ->orderBy('sort_by', 'asc')
+        ->offset($offset)
+        ->limit($limit)
         ->get();
 
-        $joined = GroupMemberModel::whereIn('group_id', $recommends->map->group->map->id)
+        $joined = GroupMemberModel::whereIn('group_id', $recommends->map->group->map->id ?? [])
             ->where('user_id', $user_id)
             ->get();
 
