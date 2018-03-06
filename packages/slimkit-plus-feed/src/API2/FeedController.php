@@ -284,6 +284,7 @@ class FeedController extends Controller
 
         // 启用获取事物，避免多次 sql 查询造成查询连接过多.
         return $feed->getConnection()->transaction(function () use ($feed, $repository, $user) {
+            $feed->load('user');
             $feed->has_collect = $feed->collected($user);
             $feed->has_like = $feed->liked($user);
             $feed->reward = $feed->rewardCount();

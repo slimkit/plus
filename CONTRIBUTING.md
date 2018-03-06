@@ -39,7 +39,7 @@ You can also reach us at hello@thinksns-plus.opencollective.com.
 ### Contributors
 
 Thank you to all the people who have already contributed to thinksns-plus!
-<a href="graphs/contributors"><img src="https://opencollective.com/thinksns-plus/contributors.svg?width=890" /></a>
+<a href="https://github.com/slimkit/thinksns-plus/graphs/contributors"><img src="https://opencollective.com/thinksns-plus/contributors.svg?width=890" /></a>
 
 
 ### Backers

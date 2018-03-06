@@ -64,7 +64,7 @@ class CateController extends Controller
     public function follow(Request $request, NewsCateFollow $followModel)
     {
         $uid = $request->user()->id;
-        $follows = $request->input('follows', null);
+        $follows = $request->input('follows', '');
 
         $followModel->updateOrCreate(['user_id' => $uid], ['follows' => $follows]);
 

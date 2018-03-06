@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\ProcessUtils;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\ProcessUtils;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Process\PhpExecutableFinder;
 
@@ -85,15 +85,14 @@ class PackageArchiveCommand extends Command
     }
 
     /**
-     * Escapes a string to be used as a shell argument.
+     * Determine the proper PHP executable.
      *
-     * @param string $argument
      * @return string
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function escapeArgument(string $argument): string
+    public static function phpBinary()
     {
-        return forward_static_call([ProcessUtils::class, 'escapeArgument'], $argument);
+        return ProcessUtils::escapeArgument((new PhpExecutableFinder)->find(false));
     }
 
     /**
@@ -103,17 +102,14 @@ class PackageArchiveCommand extends Command
      */
     protected function findComposer($workingPath)
     {
-        $includeArgs = false;
-        $phpScript = $this->escapeArgument(
-            (new PhpExecutableFinder)->find($includeArgs)
-        );
+        $phpBinary = static::phpBinary();
 
         if ($this->filesystem->exists($workingPath.'/composer.phar')) {
-            return sprintf('%s composer.phar', $phpScript);
+            return sprintf('%s composer.phar', $phpBinary);
         }
 
         if ($this->filesystem->exists(getcwd().'/composer.phar')) {
-            return sprintf('%s %s/composer.phar', $phpScript, getcwd());
+            return sprintf('%s %s/composer.phar', $phpBinary, getcwd());
         }
 
         return 'composer';

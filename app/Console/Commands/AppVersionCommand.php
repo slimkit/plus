@@ -95,6 +95,7 @@ class AppVersionCommand extends Command
     protected function savePackage(string $filename, Repository $repository)
     {
         $contents = json_encode($repository->all(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        $contents += PHP_EOL;
         file_put_contents($filename, $contents);
     }
 
