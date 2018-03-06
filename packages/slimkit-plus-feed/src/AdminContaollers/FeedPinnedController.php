@@ -23,10 +23,9 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\AdminControllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
 
 class FeedPinnedController extends Controller
 {
