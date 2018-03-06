@@ -12,6 +12,7 @@ Plus (ThinkSNS Plus) 是一个使用 Laravel 开发，并且功能繁多且健�
 ## Badges
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8320deaa80b8489f95fcedaae6df079d)](https://www.codacy.com/app/zhiyi/thinksns-plus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=slimkit/thinksns-plus&amp;utm_campaign=Badge_Grade)
+[![codecov](https://codecov.io/gh/slimkit/thinksns-plus/branch/master/graph/badge.svg)](https://codecov.io/gh/slimkit/thinksns-plus)
 [![Style CI](https://styleci.io/repos/76627423/shield?branch=master)](https://styleci.io/repos/76627423)
 [![Composer publish version](https://img.shields.io/packagist/v/zhiyicx/thinksns-plus.svg?style=flat-square)](https://packagist.org/packages/zhiyicx/thinksns-plus)
 [![Composer publish preview version](https://img.shields.io/packagist/vpre/zhiyicx/thinksns-plus.svg?style=flat-square)](https://packagist.org/packages/zhiyicx/thinksns-plus)
