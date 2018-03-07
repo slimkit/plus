@@ -24,6 +24,22 @@
         <span class="col-sm-6 help-block">设置「阿里云-对象存储」的存储空间对应的访问域名(endpoint)。</span>
       </div>
 
+      <!-- 是否有cdn加速域名 -->
+      <div class="form-group">
+        <label class="col-sm-2 control-label">是否cdn加速</label>
+        <div class="col-sm-4 radio">
+          <label for="one">
+            <input type="radio" id="one" :value="true" v-model="isCname">
+            已加速
+          </label>
+          <label for="two">
+            <input type="radio" id="two" :value="false" v-model="isCname">
+            未加速
+          </label>
+        </div>
+        <span class="col-sm-6 help-block">如果此处设置已加速, 访问域名请设置为绑定的cdn加速域名</span>
+      </div>
+
       <!-- Acces Key -->
       <div class="form-group">
         <label class="col-sm-2 control-label">Access Key</label>
@@ -109,6 +125,7 @@ export default {
     expires: 3600,
     ssl: false,
     isPublic: true,
+    isCname: false
   }),
   methods: {
     handleSubmit ({ stopProcessing }) {
@@ -119,7 +136,8 @@ export default {
         AccessKeyId: this.AccessKeyId,
         AccessKeySecret: this.AccessKeySecret,
         ssl: this.ssl,
-        isPublic: this.isPublic
+        isPublic: this.isPublic,
+        isCname: this.isCname
       };
       request.post(createRequestURI('cdn/alioss'), params, {
         validateStatus: status => status === 201,
@@ -136,7 +154,7 @@ export default {
     this.loading = true;
     request.get(createRequestURI('cdn/alioss'), {
       validateStatus: status => status === 200,
-    }).then(({ data: { bucket, endpoint, expires, AccessKeyId, AccessKeySecret, ssl, isPublic } }) => {
+    }).then(({ data: { bucket, endpoint, expires, AccessKeyId, AccessKeySecret, ssl, isPublic, isCname } }) => {
       this.loading = false;
       this.bucket = bucket;
       this.endpoint = endpoint;
@@ -144,6 +162,7 @@ export default {
       this.isPublic = !! isPublic;
       this.AccessKeyId = AccessKeyId;
       this.AccessKeySecret = AccessKeySecret;
+      this.isCname = !! isCname;
       this.expires = expires;
     }).catch(({ response: { data = { message: '加载失败，请刷新重试！' } } }) => {
       this.loading = false;

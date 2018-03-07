@@ -184,6 +184,7 @@ class CdnController extends Controller
             'ssl' => (bool) config('cdn.generators.alioss.ssl'),
             'isPublic' => (bool) config('cdn.generators.alioss.public'),
             'expires' => (int) config('cdn.generators.alioss.expires'),
+            'isCname' => (bool) config('cdn.generators.alioss.cname'),
         ], 200);
     }
 
@@ -206,6 +207,7 @@ class CdnController extends Controller
             'cdn.generators.alioss.ssl' => (bool) $request->input('ssl'),
             'cdn.generators.alioss.public' => (bool) $request->input('isPublic'),
             'cdn.generators.alioss.expires' => (int) $request->input('expires'),
+            'cdn.generators.alioss.cname' => (bool) $request->input('isCname'),
         ]);
 
         return response()->json(['message' => '设置成功'], 201);
