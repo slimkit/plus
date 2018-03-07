@@ -219,8 +219,8 @@ class AuthControllerTest extends TestCase
         $original = [
             'access_token' => 'token',
             'token_type' => 'bearer',
-            'expires_in' => 60,
-            'refresh_ttl' => '40320',
+            'expires_in' => config('jwt.ttl'),
+            'refresh_ttl' => config('jwt.refresh_ttl'),
         ];
         $this->assertEquals($original, $result->getOriginalContent());
     }
