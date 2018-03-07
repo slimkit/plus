@@ -194,12 +194,12 @@ class AuthControllerTest extends TestCase
         // Mock stdClass::getTTL method
         $stdClass->expects($this->exactly(1))
                  ->method('getTTL')
-                 ->will($this->returnValue(60));
+                 ->will($this->returnValue($ttl = 60));
 
         // Mock JWTGuard::refresh method
         $guard->expects($this->exactly(1))
               ->method('refresh')
-              ->will($this->returnValue('token'));
+              ->will($this->returnValue($token = 'token'));
 
         // Mock JWTGuard::factory method
         $guard->expects($this->exactly(1))
@@ -217,9 +217,9 @@ class AuthControllerTest extends TestCase
         $this->assertInstanceOf(JsonResponse::class, $result);
 
         $original = [
-            'access_token' => 'token',
+            'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => config('jwt.ttl'),
+            'expires_in' => $ttl,
             'refresh_ttl' => config('jwt.refresh_ttl'),
         ];
         $this->assertEquals($original, $result->getOriginalContent());
