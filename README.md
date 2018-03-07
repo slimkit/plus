@@ -51,33 +51,18 @@ Plus 是基于 Laravel 所开发，它拥有下面的几个主要特点：
 
 安装 Plus 是一件非常简单的事情，但是你要先做到以下几点必须：
 
-1. PHP 版本必须大于 `7.1.3`
-2. 你已下载并安装过 `Composer`
-3. 你拥有一个 `MySQL` 或者 `PostgreSQL` 等数据库
-4. 你必须安装一个 Git 命令行工具
+- PHP 版本必须大于 `7.1.3`
+- 你已下载并安装过 `Composer`
+- 你拥有一个 `MySQL` 或者 `PostgreSQL` 等数据库
 
-使用 Git 在你的电脑中执行克隆仓库命令：
-
-```shell
-git clone https://github.com/slimkit/thinksns-plus
-```
-
-进入该 Plus 目录并使用 Composer 进行依赖安装：
+下载程序：
 
 ```shell
+composer create-project zhiyicx/thinksns-plus
 cd thinksns-plus
-cp .env.example .env
-composer install
 ```
 
-现在，打开你的 `.env` 文件配置数据库等各类信息。
-
-生成应用秘钥：
-
-```shell
-php artisan key:generate
-php artisan jwt:secret --force
-```
+> 现在，打开你的 `.env` 文件配置数据库等各类信息，然后执行后面的步骤！
 
 生成数据表以及默认填充数据：
 
