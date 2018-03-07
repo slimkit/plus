@@ -87,7 +87,6 @@ class NewsController extends Controller
     public function getRecycleList(Request $request)
     {
         $cate_id = $request->cate_id ?? '';
-        $max_id = $request->max_id;
         $limit = $request->limit ?? 15;
         $key = $request->key;
 

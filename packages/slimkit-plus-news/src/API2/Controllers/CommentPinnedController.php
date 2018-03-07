@@ -206,7 +206,6 @@ class CommentPinnedController extends Controller
                            ResponseContract $response,
                            Carbon $dateTime,
                            NewsModel $news,
-                           CommentModel $comment,
                            NewsPinnedModel $pinned)
     {
         $user = $request->user();

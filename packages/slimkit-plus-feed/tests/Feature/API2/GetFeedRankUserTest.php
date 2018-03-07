@@ -32,8 +32,6 @@ class GetFeedRankUserTest extends TestCase
      */
     public function testGetFeedRankUser()
     {
-        $user = factory(UserModel::class);
-
         $response = $this
             ->json('GET', '/api/v2/feeds/ranks');
         $response
