@@ -285,11 +285,9 @@ class CommentController extends Controller
 
     /**
      * 驳回评论置顶.
-     * @param  Carbon     $datetime [description]
-     * @param  FeedPinned $pinned   [description]
-     * @return [type]               [description]
+     * @param  FeedPinned $pinned
      */
-    public function reject(FeedPinned $pinned, Carbon $datetime)
+    public function reject(FeedPinned $pinned)
     {
         $pinned->delete();
 
