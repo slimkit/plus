@@ -136,7 +136,7 @@ export default {
                 this.publishMessage({ success: "操作成功" }, "success");
                 this.update();
             }).catch(err => {
-                console.log(err);
+                this.update();
                 this.publishMessage({ danger: "操作失败" }, "danger");
             });
         },
@@ -150,13 +150,15 @@ export default {
         deleteNews({ id, audit_status }) {
             admin.delete(`/news/del/${id}/news`, {
                 validateStatus: status => status === 204,
-                is_del: audit_status > 3
+                data: {
+                    is_del: audit_status > 3
+                }
             }).then(() => {
                 this.publishMessage({ success: "删除成功" }, "success");
                 this.update();
             }).catch(err => {
-                console.log(err);
                 this.publishMessage({ danger: "删除失败" }, "danger");
+                this.update();
             })
         },
 

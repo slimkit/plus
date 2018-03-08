@@ -69,16 +69,19 @@ class UserController extends Controller
         if ($showRole) {
             $datas['roles'] = Role::all();
         }
-
         // user id
         if ($userId && $users = $builder->where('id', $userId)->paginate($perPage)) {
-            $datas['page'] = $users->map(function ($user) {
+            $datas['users'] = $users->map(function ($user) {
                 $user->setHidden([]);
                 $user->load('recommended');
                 $user->load('famous');
 
                 return $user;
             });
+
+            $datas['page']['last_page'] = $users->lastPage();
+            $datas['page']['current_page'] = $users->currentPage();
+            $datas['page']['total'] = $users->total();
 
             return response()->json($datas)->setStatusCode(200);
         }
