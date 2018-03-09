@@ -96,7 +96,8 @@ class AnswerCollectController extends Controller
 
         return $response->json($collections->map(function ($collection) use ($user) {
             // 如果是需要围观支付的答案
-            if ($collection->collectible->question &&
+            if ($collection->collectible && 
+                $collection->collectible->question &&
                 $collection->collectible->question->look &&
                 $collection->collectible->invited &&
                 $user->id !== $collection->collectible->user_id &&
