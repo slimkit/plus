@@ -108,11 +108,13 @@ class AnswerCollectController extends Controller
             }
 
             // 如果为匿名回答且回答者不是当前用户
-            if ($collection->collectible->anonymity && $collection->collectible->user_id !== $user->id) {
+            if ($collection->collectible && $collection->collectible->anonymity && $collection->collectible->user_id !== $user->id) {
                 $collection->collectible->user_id = 0;
             }
 
-            $collection->collectible->addHidden('question', 'onlookers');
+            if ($collection->collectible) {
+                $collection->collectible->addHidden('question', 'onlookers');
+            }
 
             return $collection;
         }))->setStatusCode(200);
