@@ -113,9 +113,10 @@ class AnswerCollectController extends Controller
                 }
 
                 $collection->collectible->addHidden('question', 'onlookers');
-                
-                return $collection;
             }
+
+            return $collection;
+            
         }))->setStatusCode(200);
     }
 }
