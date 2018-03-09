@@ -559,7 +559,13 @@ class GroupsController
                     });
                     break;
                 case 'allow_post':
-                    return $query->select('groups.*')->join('group_members', 'groups.id', '=', 'group_members.group_id')->where('group_members.user_id', $user->id)->where('group_members.disabled', 0)->where('group_members.audit', 1)->whereRaw('FIND_IN_SET(`group_members`.`role`, `groups`.`permissions`)');
+                    return $query->select('groups.*')
+                    ->join('group_members', 'groups.id', '=', 'group_members.group_id')
+                    ->where('groups.audit', 1)
+                    ->where('group_members.user_id', $user->id)
+                    ->where('group_members.disabled', 0)
+                    ->where('group_members.audit', 1)
+                    ->whereRaw('FIND_IN_SET(`group_members`.`role`, `groups`.`permissions`)');
                     break;
                 default:
                     return $query->whereHas('members', function ($query) use ($user) {
