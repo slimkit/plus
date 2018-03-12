@@ -32,5 +32,5 @@ return [
     'web' => [
         'open' => false,
         'uri' => null,
-    ]
+    ],
 ];
