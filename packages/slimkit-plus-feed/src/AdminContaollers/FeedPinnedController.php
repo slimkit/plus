@@ -81,7 +81,7 @@ class FeedPinnedController extends Controller
         );
 
         $pinned->getConnection()->transaction(function () use ($pinned, $body, $userProcess) {
-            $order = $userProcess->reject(
+            $order = $userProcess->receivables(
                 $pinned->user_id,
                 $pinned->amount,
                 $pinned->feed->user_id,
