@@ -227,7 +227,7 @@ class DeletedFeed extends Component
                 ''
               }
               
-              <Button raised onClick={ () => this.handleGetDatas() } color="primary" className={classes.button}>
+              <Button onClick={ () => this.handleGetDatas() } color="primary" className={classes.button}>
                 筛选
               </Button>
             </form>
@@ -291,7 +291,6 @@ class DeletedFeed extends Component
 
         </Grid>
         <Button
-          raised
           color="primary"
           className={classes.loadMoreBtn}
           onTouchTap={() => this.handleLoadMoreFeed()}
@@ -300,7 +299,7 @@ class DeletedFeed extends Component
           共[{params.total}]条动态，当前第[{params.current_page}]页/共[{params.last_page}]页{this.state.loadMoreBtnText}
           <CircularProgress
             className={this.state.loading ? classes.progress : classes.progeessHide}
-            color="accent"
+            color="primary"
             size={30}
           />
         </Button>
@@ -335,7 +334,7 @@ class DeletedFeed extends Component
           open={!! snackbar.open}
           message={snackbar.message}
           autoHideDuration={3e3}
-          onRequestClose={() => this.handleSnackbarClose()}
+          onClose={() => this.handleSnackbarClose()}
           action={[
             <IconButton
               key="snackbar.close"
@@ -350,7 +349,7 @@ class DeletedFeed extends Component
         <Drawer
           open={!! drawer}
           anchor="right"
-          onRequestClose={() => this.handleDrawerClose()}
+          onClose={() => this.handleDrawerClose()}
         >
           {this.makeDrawerContent(drawer)}
         </Drawer>

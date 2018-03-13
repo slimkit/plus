@@ -170,6 +170,8 @@ class Home extends Component
     });
   }
 
+  
+
   render() {
     const { classes } = this.props;
     const { feeds = 0, comments = 0, close, open, data, type, drawerOpen } = this.state;
@@ -179,7 +181,7 @@ class Home extends Component
         <Drawer
           anchor="right"
           open={drawerOpen}
-          onRequestClose={() => {this.setState({ drawerOpen: false, type: ''})}}
+          onClose={() => {this.setState({ drawerOpen: false, type: ''})}}
         >
           <div tabIndex={0} role="button">
             <List className={classes.drawer} subheader={<ListSubheader>动态数据统计</ListSubheader>}>
@@ -498,7 +500,7 @@ class Home extends Component
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           open={open}
-          onRequestClose={this.handleRequestClose}
+          onClose={this.handleRequestClose}
           SnackbarContentProps={{
             'aria-describedby': 'message-id',
           }}
