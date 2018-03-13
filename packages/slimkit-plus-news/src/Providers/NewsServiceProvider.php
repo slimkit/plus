@@ -64,7 +64,7 @@ class NewsServiceProvider extends ServiceProvider
         $this->app->make(BootstrapAPIsEventer::class)->listen('v2', function () {
             return [
                 'news:contribute' => $this->app->make(ConfigRepository::class)->get('news.contribute'),
-                'news:pay_conyribute' => (int) $this->app->make(ConfigRepository::class)->get('news.pay_conyribute'),
+                'news:pay_conyribute' => (int) $this->app->make(ConfigRepository::class)->get('news.pay_contribute'),
             ];
         });
 
