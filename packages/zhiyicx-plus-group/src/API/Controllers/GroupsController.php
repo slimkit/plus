@@ -146,7 +146,7 @@ class GroupsController
 
             DB::commit();
 
-            return response()->json(['message' => '创建成功', 'group' => $group]);
+            return response()->json(['message' => '创建成功，等待审核', 'group' => $group]);
         } catch (\Exception $e) {
             DB::rollback();
 
