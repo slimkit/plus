@@ -113,7 +113,7 @@ class NewsController extends Controller
         if ($news->audit_status == 4) {
             abort(404);
         }
-        
+
         $user = $request->user('api')->id ?? 0;
 
         $news = $news->getConnection()->transaction(function () use ($user, $news, $datetime) {
