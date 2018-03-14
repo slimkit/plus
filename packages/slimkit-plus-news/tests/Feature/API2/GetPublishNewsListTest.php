@@ -42,7 +42,7 @@ class GetPublishNewsListTest extends TestCase
         $user = factory(UserModel::class)->create();
         $cate = factory(NewsCateModel::class)->create();
 
-        $news = factory(NewsModel::class, 6)->create([
+        factory(NewsModel::class, 6)->create([
             'user_id' => $user->id,
             'cate_id' => $cate->id,
             'audit_status' => 3,

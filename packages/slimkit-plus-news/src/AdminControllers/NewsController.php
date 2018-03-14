@@ -87,7 +87,6 @@ class NewsController extends Controller
     public function getRecycleList(Request $request)
     {
         $cate_id = $request->cate_id ?? '';
-        $max_id = $request->max_id;
         $limit = $request->limit ?? 15;
         $key = $request->key;
 
@@ -99,7 +98,6 @@ class NewsController extends Controller
             ->when($cate_id > 0, function ($query) use ($cate_id) {
                 $query->where('cate_id', $cate_id);
             })
-            ->withTrashed()
             ->whereIn('audit_status', [4, 5])
             ->orderBy('id', 'desc')
             ->with('user', 'tags')
@@ -137,7 +135,7 @@ class NewsController extends Controller
                 $news->from = $request->from ?: '原创';
                 $news->cate_id = $request->cate_id;
                 $news->author = $request->author;
-                // $news->audit_status = $type;
+                $news->audit_status = 0;
                 $news->save();
                 $news->tags()->detach();
                 $news->tags()->attach($tags);
@@ -233,7 +231,6 @@ class NewsController extends Controller
         if (! $is_del) {
             $news->audit_status = 4;
             $news->save();
-            $news->delete();
 
             return response()->json(['message' => ['已添加到回收站']], 204);
         } else {

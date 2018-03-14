@@ -54,7 +54,6 @@ class FileUploadTest extends TestCase
     {
         Storage::fake('public');
         $file = UploadedFile::fake()->image('test.jpg');
-        $hash = md5_file((string) $file);
 
         $response = $this
             ->actingAs($this->user, 'api')
