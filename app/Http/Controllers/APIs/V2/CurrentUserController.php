@@ -294,16 +294,14 @@ class CurrentUserController extends Controller
     {
         $user = $request->user();
         $limit = $request->query('limit', 15);
-        $after = $request->query('after', false);
+        $offset = $request->query('offset', false);
         $keyword = $request->query('keyword', null);
 
         $followings = $user->mutual()
             ->when($keyword, function ($query) use ($keyword) {
                 return $query->where('name', 'like', "%{$keyword}%");
             })
-            ->when($after, function ($query) use ($after, $user) {
-                return $query->where($user->getQualifiedKeyName(), '<', $after);
-            })
+            ->offset($offset)
             ->limit($limit)
             ->orderBy('id', 'desc')
             ->get();

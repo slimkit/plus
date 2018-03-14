@@ -298,9 +298,13 @@ class SiteController extends Controller
             return $response->json(['error' => ['地区不能小于两级']], 422);
         }
 
-        $hots = $value = $this->commonCinfigModel->byNamespace('common')
+        $hots = [];
+        $items = $this->commonCinfigModel->byNamespace('common')
                 ->byName('hots_area')
-                ->value('value') ? json_decode($value, true) : [];
+                ->value('value');
+        if ($items) {
+            $hots = json_decode($items, true);
+        }
 
         if ($update) {
             $this->unsetHotArea($hots, $areaStr);

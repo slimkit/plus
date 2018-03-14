@@ -165,7 +165,12 @@ class GroupController extends EaseMobController
             }
 
             // 发送消息至群组
-            $cmd_content = $request->user()->name.'修改了群信息！';
+            if (isset($options['newowner'])) {
+                $newowner = User::where('id', $options['newowner'])->pluck('name');
+                $cmd_content = $newowner.'已成为新群主！';
+            } else {
+                $cmd_content = $request->user()->name.'修改了群信息！';
+            }
             $ext = [
                 'type' => 'ts_group_change',
                 'group_id' => $im_group_id,
