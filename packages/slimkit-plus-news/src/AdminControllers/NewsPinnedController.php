@@ -23,8 +23,8 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\AdminControllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
+use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned;
 
 class NewsPinnedController extends Controller
@@ -112,32 +112,30 @@ class NewsPinnedController extends Controller
         return response()->json([], 204);
     }
 
-    public function reject(NewsPinned $pinned, Carbon $datetime)
+    public function reject(NewsPinned $pinned, Carbon $datetime, UserProcess $userProcess)
     {
         $pinned->state = 2;
         $pinned->expires_at = $datetime;
 
-        $charge = new WalletChargeModel();
-        $charge->user_id = $pinned->user_id;
-        $charge->channel = 'system';
-        $charge->action = 1;
-        $charge->amount = $pinned->amount;
-        $charge->subject = '退还资讯置顶申请费用';
-        $charge->body = sprintf('退还资讯《%s》的置顶申请费用', $pinned->news->title);
-        $charge->status = 1;
-
-        $pinned->getConnection()->transaction(function () use ($pinned, $charge) {
+        $pinned->getConnection()->transaction(function () use ($pinned, $userProcess) {
             $pinned->save();
-            $pinned->user->wallet()->increment('balance', $charge->amount);
-            $charge->save();
-
-            $pinned->user->sendNotifyMessage('news:pinned:reject', sprintf('资讯《%s》的置顶申请已被驳回', $pinned->news->title), [
-                'news' => $pinned->news,
-                'pinned' => $pinned,
-            ]);
+            $newTitile = $pinned->news->title;
+            $body = sprintf('资讯《%s》的置顶申请已被驳回，退还%s积分', $newTitile, $pinned->amount);
+            $userProcess->receivables(
+                $pinned->user_id,
+                $pinned->amount,
+                $pinned->news->user_id,
+                '退还资讯置顶申请费用',
+                $body
+            );
+            $pinned->user->sendNotifyMessage(
+                'news:pinned:reject',
+                $body,
+                ['news' => $pinned->news, 'pinned' => $pinned]
+            );
         });
 
-        return response()->json([], 204);
+        return response()->json(null, 204);
     }
 
     /**
