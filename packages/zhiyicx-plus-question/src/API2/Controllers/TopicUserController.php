@@ -47,6 +47,7 @@ class TopicUserController extends Controller
             ->when($after, function ($query) use ($after) {
                 return $query->where('id', '<', $after);
             })
+            ->where('status', 0)
             ->orderBy('id', 'desc')
             ->limit($limit)
             ->get();

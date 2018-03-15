@@ -48,6 +48,7 @@ class TopicController extends Controller
         $topics = $topicModel->when($name, function (Builder $query) use ($name) {
             return $query->where('name', 'like', '%'.$name.'%');
         })
+        ->where('status', 0)
         ->orderBy('sort', 'desc')
         ->orderBy('follows_count', 'desc')
         ->limit($limit)
