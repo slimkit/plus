@@ -42,7 +42,7 @@ class GroupMemberController
      */
     public function index(Request $request, GroupModel $group)
     {
-        $type = in_array($request->query('type'), ['all', 'manager', 'member', 'blacklist', 'audit', 'audit_user']) ? $request->query('type') : 'all';
+        $type = in_array($request->query('type'), ['all', 'founder', 'manager', 'member', 'blacklist', 'audit', 'audit_user']) ? $request->query('type') : 'all';
         $limit = $request->query('limit', 15);
         $after = $request->query('after', 0);
         $name = $request->query('name');
@@ -71,6 +71,9 @@ class GroupMemberController
                 case 'audit':
 
                     return $query->where('audit', 0);
+                    break;
+                case 'founder':
+                    return $query->where('role', 'founder');
                     break;
             }
         })
