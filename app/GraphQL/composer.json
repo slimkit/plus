@@ -1,0 +1,20 @@
+{
+    "name": "slimkit/plus-graphql",
+    "description": "The Package create Plus GraphQL API.",
+    "type": "library",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Seven Du",
+            "email": "shiweidu@outlook.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "SlimKit\\Plus\\GraphQL\\": "src/"
+        }
+    },
+    "require": {
+        "webonyx/graphql-php": "^0.11.5"
+    }
+}

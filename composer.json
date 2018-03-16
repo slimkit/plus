@@ -106,7 +106,8 @@
         "slimkit/plus-socialite": "1.7.0",
         "symfony/finder": "^4.0",
         "symfony/yaml": "^4.0",
-        "tymon/jwt-auth": "1.0.0-rc.2"
+        "tymon/jwt-auth": "1.0.0-rc.2",
+        "webonyx/graphql-php": "^0.11.5"
     },
     "require-dev": {
         "codacy/coverage": "^1.4",
@@ -125,7 +126,8 @@
             "database/factories"
         ],
         "psr-4": {
-            "Zhiyi\\Plus\\": "app/"
+            "Zhiyi\\Plus\\": "app/",
+            "SlimKit\\Plus\\GraphQL\\": "app/GraphQL/src/"
         }
     },
     "autoload-dev": {
