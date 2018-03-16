@@ -52,19 +52,6 @@ return [
     */
 
     'guards' => [
-        'session' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
-        'jwt' => [
-            'driver' => 'jwt',
-            'provider' => 'users',
-        ],
-        'single-token' => [
-            'driver' => 'api',
-            'provider' => 'users',
-        ],
-
         'web' => [
             'driver'   => 'session',
             'provider' => 'users',
