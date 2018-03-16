@@ -116,6 +116,7 @@ class GroupMemberController
         }
 
         $member->delete();
+        $group->decrement('users_count');
 
         return response()->json(['message' => ['操作成功']], 204);
     }
