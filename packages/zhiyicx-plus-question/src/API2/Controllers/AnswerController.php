@@ -48,8 +48,8 @@ class AnswerController extends Controller
         $offset = max(0, $request->query('offset', 0));
         $limit = max(1, min(30, $request->query('limit', 15)));
         $orderMap = [
-            'time' => 'id',
-            'default' => 'likes_count',
+            'time' => 'id desc, likes_count desc',
+            'default' => 'likes_count desc, id desc',
         ];
         $orderType = in_array($orderType = $request->query('order_type', 'default'), array_keys($orderMap)) ? $orderType : 'default';
 
@@ -57,7 +57,7 @@ class AnswerController extends Controller
             ->with('user')
             ->where('invited', 0)
             ->where('adoption', 0)
-            ->orderBy($orderMap[$orderType], 'desc')
+            ->orderByRaw($orderMap[$orderType])
             ->offset($offset)
             ->limit($limit)
             ->get();
