@@ -540,4 +540,22 @@ class GroupMemberController
             return response()->json(['message' => [$exception->getMessage()]], 500);
         }
     }
+
+    /**
+     * 圈子角色统计.
+     * 
+     * @param  Request    $request
+     * @param  GroupModel $group
+     * @return mixed
+     */
+    public function count(Request $request, GroupModel $group)
+    {
+        $query = $group->members->where('audit', 1)->where('disabled', 0);
+
+        return response()->json([
+            'member_count' => $query->where('role', 'member')->count(),
+            'founder_count' => $query->where('role', 'founder')->count(),
+            'admin_count' => $query->where('role', 'administrator')->count(),
+        ], 200);
+    }
 }
