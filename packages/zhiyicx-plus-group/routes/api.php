@@ -86,7 +86,7 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
 
             // 圈子成员角色数量统计.
             // @get /api/v2/plus-group/groups/:group/member/count
-            $api->get('/{group}/member/count', API\GroupMemberController::class.'@count');
+            $api->get('/{group}/role/count', API\GroupMemberController::class.'@roleCount');
         });
 
         $api->group(['prefix' => 'recommend'], function (RouteRegisterContract $api) {
