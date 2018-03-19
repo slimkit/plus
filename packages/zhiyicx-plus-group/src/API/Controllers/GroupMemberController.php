@@ -554,7 +554,7 @@ class GroupMemberController
 
         return response()->json([
             'member_count' => $query->where('role', 'member')->count(),
-            'admin_count' => $query->where('role', 'administrator')->count(),
+            'admin_count' => $query->whereIn('role', ['administrator', 'founder'])->count(),
         ], 200);
     }
 }
