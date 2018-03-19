@@ -52,7 +52,7 @@ class GroupMemberController
                 case 'manager':
 
                     return $query->where(function ($query) {
-                        return $query->where('role', 'administrator');
+                        return $query->whereIn('role', ['administrator', 'founder']);
                     })->where('disabled', 0)->where('audit', 1);
                     break;
                 case 'member':
