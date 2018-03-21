@@ -103,7 +103,7 @@ class Feed
         return $this->model->setRelation('likes', $this->cache->remember($cacheKey, $minutes, function () {
             if (! $this->model->relationLoaded('likes')) {
                 $this->model->load(['likes' => function ($query) {
-                    $query->limit(8)->orderBy('id', 'desc');
+                    $query->with('user')->limit(8)->orderBy('id', 'desc');
                 }]);
             }
 
