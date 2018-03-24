@@ -199,7 +199,7 @@ class PayControl extends Component
           open={!! snackbar.open}
           message={snackbar.message}
           autoHideDuration={3e3}
-          onRequestClose={() => this.handleSnackbarClose()}
+          onClose={() => this.handleSnackbarClose()}
           action={[
             <IconButton
               key="snackbar.close"

@@ -34,6 +34,8 @@ import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
 import getQuery from '../utils/getQuery';
 import { localDateToUTC, localDate } from '../utils/dateProcess';
+import purple from 'material-ui/colors/purple';
+const accent = purple['A200'];
 
 import request, { createRequestURI } from '../utils/request';
 import { showAmount } from '../utils/balance';
@@ -289,7 +291,7 @@ class Feed extends Component
                 ''
               }
               
-              <Button raised onClick={ () => this.handleGetDatas() } color="primary" className={classes.button}>
+              <Button onClick={ () => this.handleGetDatas() } color="primary" className={classes.button}>
                 筛选
               </Button>
             </form>
@@ -344,7 +346,6 @@ class Feed extends Component
 
         </Grid>
         <Button
-          raised
           color="primary"
           className={classes.loadMoreBtn}
           onTouchTap={() => this.handleLoadMoreFeed()}
@@ -353,7 +354,7 @@ class Feed extends Component
           共[{this.state.params.total}]条动态，当前第[{this.state.params.current_page}]页/共[{this.state.params.last_page}]页 {this.state.loadMoreBtnText}
           <CircularProgress
             className={this.state.loading ? classes.progress : classes.progeessHide}
-            color="accent"
+            color="primary"
             size={30}
           />
         </Button>
@@ -425,7 +426,7 @@ class Feed extends Component
           open={!! snackbar.open}
           message={snackbar.message}
           autoHideDuration={3e3}
-          onRequestClose={() => this.handleSnackbarClose()}
+          onClose={() => this.handleSnackbarClose()}
           action={[
             <IconButton
               key="snackbar.close"
@@ -440,11 +441,11 @@ class Feed extends Component
         <Drawer
           open={!! drawer}
           anchor="right"
-          onRequestClose={() => this.handleDrawerClose()}
+          onClose={() => this.handleDrawerClose()}
         >
           {this.makeDrawerContent(drawer)}
         </Drawer>
-        <Dialog open={!! pinned} onRequestClose={ () => this.handleAuditDialogColse()}>
+        <Dialog open={!! pinned} onClose={ () => this.handleAuditDialogColse()}>
           {this.doPinnedAudit(pinned)}
         </Dialog>
  
@@ -851,14 +852,14 @@ class Feed extends Component
       expires_at 
         ?
           <Button 
-            color="accent" 
+            color="primary" 
             onTouchTap={() => this.handleOpenDeleteDialog(feed)}
           >
             置顶到期时间{new Date(expires_at) < new Date ? '[已过期]' : ''}: {localDate(expires_at)} | {showAmount(amount)}
           </Button>
         :
           <Button
-            color="accent"
+            color="primary"
             onTouchTap={()=> this.handleOpenPinnedDialog(feed)}
           >
             申请置顶：{day} 天, 费用 {showAmount(amount)}

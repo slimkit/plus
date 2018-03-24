@@ -61,7 +61,7 @@ class Group
             $this->error = '圈子审核未通过或被拒绝';
             $this->status = 422;
 
-            return false
+            return false;
         }
 
         return true;

@@ -60,13 +60,13 @@ class NewAnswerRewardController extends Controller
                     'user' => $user,
                     'target' => $target,
                     'amount' => $amount,
-                    'user_order_body' => sprintf('打赏问答回复，钱包扣除%s元', $money),
-                    'target_order_body' => sprintf('问答回复被打赏，钱包增加%s元', $money),
+                    'user_order_body' => sprintf('打赏问答回答，钱包扣除%s元', $money),
+                    'target_order_body' => sprintf('问答回答被打赏，钱包增加%s元', $money),
                 ],
                 'notice' => [
                     'type' => 'question:answer-reward',
                     'detail' => ['user' => $user, 'answer' => $answer],
-                    'message' => sprintf('你问答回复《%s》，被%s打赏%s元', $answer->body, $user->name, $money),
+                    'message' => sprintf('你问答回答《%s》，被%s打赏%s元', $answer->body, $user->name, $money),
                 ],
             ], 'manual');
 

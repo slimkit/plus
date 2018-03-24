@@ -95,25 +95,28 @@ class AnswerCollectController extends Controller
             ->get();
 
         return $response->json($collections->map(function ($collection) use ($user) {
-            // 如果是需要围观支付的答案
-            if ($collection->collectible->question &&
-                $collection->collectible->question->look &&
-                $collection->collectible->invited &&
-                $user->id !== $collection->collectible->user_id &&
-                $collection->collectible->onlookers->isEmpty()
-            ) {
-                $collection->collectible->could = false;
-                $collection->collectible->body = null;
-            }
+            if ($collection->collectible) {
+                // 如果是需要围观支付的答案
+                if ($collection->collectible->question &&
+                    $collection->collectible->question->look &&
+                    $collection->collectible->invited &&
+                    $user->id !== $collection->collectible->user_id &&
+                    $collection->collectible->onlookers->isEmpty()
+                ) {
+                    $collection->collectible->could = false;
+                    $collection->collectible->body = null;
+                }
 
-            // 如果为匿名回答且回答者不是当前用户
-            if ($collection->collectible->anonymity && $collection->collectible->user_id !== $user->id) {
-                $collection->collectible->user_id = 0;
-            }
+                // 如果为匿名回答且回答者不是当前用户
+                if ($collection->collectible->anonymity && $collection->collectible->user_id !== $user->id) {
+                    $collection->collectible->user_id = 0;
+                }
 
-            $collection->collectible->addHidden('question', 'onlookers');
+                $collection->collectible->addHidden('question', 'onlookers');
+            }
 
             return $collection;
+            
         }))->setStatusCode(200);
     }
 }

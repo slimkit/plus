@@ -493,14 +493,14 @@ class Comment extends Component
       expires_at 
         ?
           <Button 
-            color="accent"
+            color="primary"
             onTouchTap={ () => this.handlePinnedOpen(comment) }
           >
             置顶到期时间{ new Date(expires_at) < new Date() ? '[已过期]' : ''}: {localDate(expires_at)} | {showAmount(amount)}
           </Button>
         :
           <Button 
-            color="accent"
+            color="primary"
             onTouchTap={ () => this.handlePinnedOpen(comment) }
           >
             申请置顶：{day} 天, 费用 {showAmount(amount)}
@@ -620,7 +620,7 @@ class Comment extends Component
                 ''
               }
               
-              <Button raised onClick={ () => this.handleGetDatas() } color="primary" className={classes.button}>
+              <Button onClick={ () => this.handleGetDatas() } color="primary" className={classes.button}>
                 筛选
               </Button>
             </form>
@@ -671,7 +671,6 @@ class Comment extends Component
           ))}
         </Grid>
         <Button
-          raised
           color="primary"
           className={classes.loadMoreBtn}
           onTouchTap={() => this.handleLoadMoreComments()}
@@ -680,7 +679,7 @@ class Comment extends Component
           共[{this.state.total}]条评论，当前第[{this.state.currentPage}]页/共[{this.state.lastPage}]页 {this.state.loadMoreBtnText}
           <CircularProgress
             className={this.state.loading ? classes.progress : classes.progeessHide}
-            color="accent"
+            color="primary"
             size={30}
           />
         </Button>
@@ -802,7 +801,7 @@ class Comment extends Component
           open={!! snackbar.open}
           message={snackbar.message}
           autoHideDuration={3e3}
-          onRequestClose={() => this.handleSnackbarClose()}
+          onClose={() => this.handleSnackbarClose()}
           action={[
             <IconButton
               key="snackbar.close"
@@ -816,12 +815,12 @@ class Comment extends Component
         <Drawer
           open={!! drawer}
           anchor="right"
-          onRequestClose={() => this.handleDrawerClose()}
+          onClose={() => this.handleDrawerClose()}
         >
           {this.makeDrawerContent(feed)}
         </Drawer>
 
-        <Dialog open={!! pinned} onRequestClose={ () => this.handleRequestClose()}>
+        <Dialog open={!! pinned} onClose={ () => this.handleRequestClose()}>
           {this.doPinnedAudit(pinned)}
         </Dialog>
       </div>

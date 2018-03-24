@@ -219,9 +219,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     $api->put('/user/retrieve-password', API2\ResetPasswordController::class.'@retrieve');
 
     // IAP帮助页
-    $api->get('/currency/apple-iap/help', function () {
-        return view('apple-iap-help');
-    });
+    $api->view('/currency/apple-iap/help', 'apple-iap-help');
 
     /*
     |-----------------------------------------------------------------------

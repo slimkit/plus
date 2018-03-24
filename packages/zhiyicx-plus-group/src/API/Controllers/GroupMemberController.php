@@ -42,7 +42,7 @@ class GroupMemberController
      */
     public function index(Request $request, GroupModel $group)
     {
-        $type = in_array($request->query('type'), ['all', 'manager', 'member', 'blacklist', 'audit', 'audit_user']) ? $request->query('type') : 'all';
+        $type = in_array($request->query('type'), ['all', 'founder', 'manager', 'member', 'blacklist', 'audit', 'audit_user']) ? $request->query('type') : 'all';
         $limit = $request->query('limit', 15);
         $after = $request->query('after', 0);
         $name = $request->query('name');
@@ -52,7 +52,7 @@ class GroupMemberController
                 case 'manager':
 
                     return $query->where(function ($query) {
-                        return $query->where('role', 'administrator');
+                        return $query->whereIn('role', ['administrator', 'founder']);
                     })->where('disabled', 0)->where('audit', 1);
                     break;
                 case 'member':
@@ -71,6 +71,9 @@ class GroupMemberController
                 case 'audit':
 
                     return $query->where('audit', 0);
+                    break;
+                case 'founder':
+                    return $query->where('role', 'founder');
                     break;
             }
         })
@@ -113,6 +116,7 @@ class GroupMemberController
         }
 
         $member->delete();
+        $group->decrement('users_count');
 
         return response()->json(['message' => ['操作成功']], 204);
     }
@@ -535,5 +539,22 @@ class GroupMemberController
 
             return response()->json(['message' => [$exception->getMessage()]], 500);
         }
+    }
+
+    /**
+     * 圈子角色统计.
+     * 
+     * @param  Request    $request
+     * @param  GroupModel $group
+     * @return mixed
+     */
+    public function roleCount(Request $request, GroupModel $group)
+    {
+        $query = $group->members->where('audit', 1)->where('disabled', 0);
+
+        return response()->json([
+            'member_count' => $query->where('role', 'member')->count(),
+            'admin_count' => $query->whereIn('role', ['administrator', 'founder'])->count(),
+        ], 200);
     }
 }
