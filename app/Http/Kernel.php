@@ -32,6 +32,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
+        \Medz\Cors\Laravel\Middleware\Cors::class,
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \Zhiyi\Plus\Http\Middleware\TrimStrings::class,
@@ -56,7 +57,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            \Zhiyi\Plus\Http\Middleware\Cors::class,
+            'cors-should',
             'throttle:120,1',
             'bindings',
         ],
@@ -79,6 +80,7 @@ class Kernel extends HttpKernel
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        'cors-should' => \Medz\Cors\Laravel\Middleware\ShouldGroup::class,
         'guest' => \Zhiyi\Plus\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'ability'    => \Zhiyi\Plus\Http\Middleware\UserAbility::class,

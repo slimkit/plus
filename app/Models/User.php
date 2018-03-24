@@ -316,6 +316,6 @@ class User extends Authenticatable implements JWTSubject
 
     public function getImPwdHash()
     {
-        return md5($this->password);
+        return $this->password ? md5($this->password) : md5('123456');
     }
 }
