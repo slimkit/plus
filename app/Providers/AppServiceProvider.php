@@ -110,8 +110,7 @@ class AppServiceProvider extends ServiceProvider
 
         list($min, $max) = $parameters;
 
-        preg_match_all('/[a-zA-Z0-9_]/', $value, $single);
-        $length = count($single[0]) / 2 + mb_strlen(preg_replace('([a-zA-Z0-9_])', '', $value));
+        $length = strlen(mb_convert_encoding($value, 'GB18030', 'UTF-8')) / 2;
 
         return $length >= $min && $length <= $max;
     }
