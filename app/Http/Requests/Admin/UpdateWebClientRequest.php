@@ -45,11 +45,11 @@ class UpdateWebClientRequest extends FormRequest
     {
         return [
             'web' => 'array',
-            'web.url' => 'string|url',
-            'web.open' => 'boolean',
+            'web.url' => 'nullable|string|url',
+            'web.open' => 'nullable|boolean',
             'spa' => 'array',
-            'spa.url' => 'string|url',
-            'spa.open' => 'boolean',
+            'spa.url' => 'nullable|string|url',
+            'spa.open' => 'nullable|boolean',
         ];
     }
 }
