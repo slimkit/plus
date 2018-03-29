@@ -44,8 +44,8 @@ Plus 是基于 Laravel 所开发，它拥有下面的几个主要特点：
 
 当然，有一些并不在网站上，而是在 Plus 代码仓库中：
 
-- [贡献指南 & 贡献者感谢名单](https://github.com/slimkit/thinksns-plus/blob/master/CONTRIBUTING.md)
-- [行为守则](https://github.com/slimkit/thinksns-plus/blob/master/CODE_OF_CONDUCT.md)
+- [贡献指南 & 贡献者感谢名单](https://github.com/slimkit/thinksns-plus/blob/master/.github/CONTRIBUTING.md)
+- [行为守则](https://github.com/slimkit/thinksns-plus/blob/master/.github/CODE_OF_CONDUCT.md)
 
 ## 安装
 
@@ -100,13 +100,13 @@ php artisan serve
 感谢所有为 Plus 贡献的人！
 <a href="https://github.com/slimkit/thinksns-plus/graphs/contributors"><img src="https://opencollective.com/thinksns-plus/contributors.svg?width=890" /></a>
 
-### [行为守则](https://github.com/slimkit/thinksns-plus/blob/master/CODE_OF_CONDUCT.md)
+### [行为守则](https://github.com/slimkit/thinksns-plus/blob/master/.github/CODE_OF_CONDUCT.md)
 
 我们按照开源项目社区的建议，为 Plus 提供了我们期望参与者遵守的行为准则，请 [阅读准则](https://github.com/slimkit/thinksns-plus/blob/master/CODE_OF_CONDUCT.md) 全文，以便了解哪些行为是我们不会容忍的。
 
-### [贡献指南](https://github.com/slimkit/thinksns-plus/blob/master/CONTRIBUTING.md)
+### [贡献指南](https://github.com/slimkit/thinksns-plus/blob/master/.github/CONTRIBUTING.md)
 
-阅读我们的 [贡献指南](https://github.com/slimkit/thinksns-plus/blob/master/CONTRIBUTING.md)，了解我们的开发过程，
+阅读我们的 [贡献指南](https://github.com/slimkit/thinksns-plus/blob/master/.github/CONTRIBUTING.md)，了解我们的开发过程，
 如题提出错误修正或者建议，我们在贡献指南中包含了所有的贡献者名单。
 
 ## 赞助
