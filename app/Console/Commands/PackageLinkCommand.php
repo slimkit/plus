@@ -66,6 +66,7 @@ class PackageLinkCommand extends Command
      */
     public function handle()
     {
+        $this->warn('The command be removed soon.');
         $package = $this->getPackageInput();
 
         $target = $this->getSourceDir($package);

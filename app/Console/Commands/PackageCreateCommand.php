@@ -81,6 +81,7 @@ class PackageCreateCommand extends Command
             $outputPath = $this
                 ->getLaravel()
                 ->resourcePath(sprintf('repositorie/sources/%s-%s', $vendor, $name));
+            $this->warn('`package:archive` and `package:create --old` be removed soon.');
         }
 
         if (is_dir($outputPath) && file_exists($outputPath)) {
