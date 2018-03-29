@@ -75,11 +75,12 @@ class PackageCreateCommand extends Command
             $this->formatNamespace($namespace.'\\Providers\\RouteServiceProvider'),
         ]);
 
-        $outputPath = $this
-            ->getLaravel()
-            ->resourcePath(sprintf('repositorie/sources/%s-%s', $vendor, $name));
-        if ($this->option('new')) {
-            $outputPath = base_path(sprintf('packages/%s-%s', $vendor, $name));
+        // Get output path.
+        $outputPath = base_path(sprintf('packages/%s-%s', $vendor, $name));
+        if ($this->option('old')) {
+            $outputPath = $this
+                ->getLaravel()
+                ->resourcePath(sprintf('repositorie/sources/%s-%s', $vendor, $name));
         }
 
         if (is_dir($outputPath) && file_exists($outputPath)) {
@@ -241,7 +242,7 @@ class PackageCreateCommand extends Command
     protected function getOptions()
     {
         return [
-            ['new', null, InputOption::VALUE_NONE, 'Create a new package to /packages path.'],
+            ['old', null, InputOption::VALUE_NONE, 'Create a old package.'],
         ];
     }
 }
