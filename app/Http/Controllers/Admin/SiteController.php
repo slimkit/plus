@@ -442,7 +442,7 @@ class SiteController extends Controller
             'agent' => $_SERVER['HTTP_USER_AGENT'],
             'protocol' => $_SERVER['SERVER_PROTOCOL'],
             'method' => $_SERVER['REQUEST_METHOD'],
-            'laravel_version' => app()::VERSION,
+            'laravel_version' => app()->getLaravelVersion(),
             'max_upload_size' => ini_get('upload_max_filesize'),
             'execute_time' => ini_get('max_execution_time').'秒',
             'server_date' => date('Y年n月j日 H:i:s'),

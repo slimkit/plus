@@ -155,6 +155,10 @@ Route::group([
          */
         $route->delete('/{sensitive}', 'SensitiveController@destroy');
     });
+
+    // web clients
+    $route->get('settings/web-clients', 'WebClientsController@fetch');
+    $route->patch('settings/web-clients', 'WebClientsController@update');
 });
 
 Route::middleware('auth:web')

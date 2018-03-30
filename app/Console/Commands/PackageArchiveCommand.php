@@ -68,6 +68,7 @@ class PackageArchiveCommand extends Command
      */
     public function handle()
     {
+        $this->warn('`package:archive` and `package:create --old` be removed soon.');
         $package = $this->getPackageInput();
         $dir = $this->getSourceDir($package);
 
