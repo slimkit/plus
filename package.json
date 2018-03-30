@@ -15,7 +15,8 @@
         "babel-preset-env": "^1.6.1",
         "babel-preset-stage-2": "^6.24.1",
         "cross-env": "^5.1",
-        "laravel-mix": "^2.0"
+        "laravel-mix": "^2.0",
+        "vue-template-compiler": "^2.5.16"
     },
     "dependencies": {
         "axios": "^0.18",
@@ -30,7 +31,8 @@
         "markdown-it": "^8.4.0",
         "opencollective": "^1.0.3",
         "plus-message-bundle": "^1.0",
-        "vue": "^2.5.13",
+        "simkit-bootstrap-ui-kit": "^0.0.3",
+        "vue": "^2.5.16",
         "vue-echarts-v3": "^1.0.18",
         "vue-router": "^3.0.1",
         "vuex": "^3.0.1",
