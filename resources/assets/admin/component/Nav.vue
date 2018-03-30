@@ -55,15 +55,6 @@
       <span class="glyphicon glyphicon-cog __icon"></span>
       系统设置
     </router-link>
-    <a href="javascript:;" class="list-group-item __button" @click="clearSiteCache">
-      <span class="glyphicon glyphicon-cog __icon"></span>
-      清除缓存
-    </a>
-<!--     <router-link class="list-group-item __button" to="/gold" active-class="active" >
-      <span class="glyphicon glyphicon-usd __icon"></span>
-      金币设置
-    </router-link> -->
-    <!-- CDN -->
     <router-link class="list-group-item __button" to="/currency" active-class="active">
         <span class="glyphicon glyphicon-asterisk __icon"></span>
         积分设置
@@ -131,17 +122,6 @@ const nav = {
     ...mapGetters({
       manages: MANAGES_GET
     })
-  },
-  methods: {
-    clearSiteCache() {
-        request.get(createRequestURI('auxiliary/clear'),
-        { validateStatus: status => status === 200})
-        .then(({data}) => {
-            window.alert('清除成功');
-        }).catch(({response: {data = {message: '获取失败'}} = {}}) => {
-            window.alert('清除失败');
-        });
-    }
   },
   created() {
     this.$store.dispatch(MANAGES_SET, cb => request.get(

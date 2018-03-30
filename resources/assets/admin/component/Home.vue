@@ -75,6 +75,7 @@ $lefyNavWidth: 240px;
     <!-- The content container. -->
     <router-view class="pull-right context-container"></router-view>
     <!-- End content container. -->
+    <module-alert></module-alert>
   </div>
 </template>
 
@@ -86,6 +87,7 @@ import DefaultAvatar from '../icons/default-avatar';
 
 // components.
 import Nav from './Nav';
+import Alert from '../components/modules/Alert';
 
 const home = {
   computed: {
@@ -98,7 +100,8 @@ const home = {
   },
   components: {
     'system-nav': Nav,
-    'default-avatar': DefaultAvatar
+    'default-avatar': DefaultAvatar,
+    [Alert.name]: Alert,
   }
 };
 

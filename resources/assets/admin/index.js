@@ -3,6 +3,7 @@ import { sync } from 'vuex-router-sync';
 import App from './App.vue';
 import store from './store';
 import router from './router';
+import BootstrapKit from 'simkit-bootstrap-ui-kit';
 import './component/commons';
 
 // Filters
@@ -26,6 +27,9 @@ import './components/commons';
 // sync the router with the vuex store.
 // this registers `store.state.route`
 sync(store, router);
+
+// Using `slimkit-bootstrap-ui-kit` package.
+Vue.use(BootstrapKit);
 
 // create the app instance.
 // here we inject the router and store to all child components,
