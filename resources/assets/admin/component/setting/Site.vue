@@ -135,76 +135,82 @@
         </div>
       </div>
     </div>
+
+  <!-- Clear cache -->
+  <clear-cache></clear-cache>
+
 </div>
 </template>
 <script>
 import request, { createRequestURI } from '../../util/request';
 import PlusMessageBundle from 'plus-message-bundle';
-const Site = {
-    
-    data: () => ({
-        loadding: true,
-        radio: {
-          on: true,
-          off: false,
+import ClearCache from '../../components/modules/setting/ClearCache';
+export default {
+  components: {
+    'clear-cache': ClearCache,
+  },
+  data: () => ({
+      loadding: true,
+      radio: {
+        on: true,
+        off: false,
+      },
+      site: {
+        gold: {
+          status: true,
         },
-        site: {
-          gold: {
-            status: true,
-          },
-          reward: {
-            status: true,
-            amounts: '',
-          },
-          reserved_nickname: '',
-          client_email: '',
-          user_invite_template: '',
-          anonymous: {
-            status: false,
-            rule: ''
-          },
-          about_url:null,
+        reward: {
+          status: true,
+          amounts: '',
         },
-        message: {
-          error: null,
-          success: null,
-        }
-    }),
-    methods: {
-      getSiteConfigures () {
-        this.loadding = true;
-        request.get(createRequestURI('site/configures'), {
-          validateStatus: status => status === 200,
-        }).then(({ data = {} }) => {
-          this.loadding = false;
-          this.site = { ...this.site, ...data };
-        }).catch(({ response: { data = { message: '加载站点配置失败' } } = {} }) => {
-          this.loadding = false;
-          this.message.error = (new PlusMessageBundle).getMessage();
-        });
+        reserved_nickname: '',
+        client_email: '',
+        user_invite_template: '',
+        anonymous: {
+          status: false,
+          rule: ''
+        },
+        about_url:null,
       },
-      updateSiteConfigure () {
-        $("#submit-btn").button('loading');
-        request.put(
-          createRequestURI('update/site/configure'),
-          { site: this.site },
-          { validateStatus: status => status === 201 }
-        ).then(({ data: { message: [ message ] = [] } }) => {
-          $("#submit-btn").button('reset');
-          this.message.success = message;
-        }).catch(({ response: { data = {} } = {} }) => {
-          let Message = new PlusMessageBundle(data);
-          this.message.error = Message.getMessage();
-        });
-      },
-      validate () {
-        let site = this.site;
-        return (site.status && !site.off_reason) ? false : true;
-      },
+      message: {
+        error: null,
+        success: null,
+      }
+  }),
+  methods: {
+    getSiteConfigures () {
+      this.loadding = true;
+      request.get(createRequestURI('site/configures'), {
+        validateStatus: status => status === 200,
+      }).then(({ data = {} }) => {
+        this.loadding = false;
+        this.site = { ...this.site, ...data };
+      }).catch(({ response: { data = { message: '加载站点配置失败' } } = {} }) => {
+        this.loadding = false;
+        this.message.error = (new PlusMessageBundle).getMessage();
+      });
     },
-    created () {
-      this.getSiteConfigures();
+    updateSiteConfigure () {
+      $("#submit-btn").button('loading');
+      request.put(
+        createRequestURI('update/site/configure'),
+        { site: this.site },
+        { validateStatus: status => status === 201 }
+      ).then(({ data: { message: [ message ] = [] } }) => {
+        $("#submit-btn").button('reset');
+        this.message.success = message;
+      }).catch(({ response: { data = {} } = {} }) => {
+        let Message = new PlusMessageBundle(data);
+        this.message.error = Message.getMessage();
+      });
     },
+    validate () {
+      let site = this.site;
+      return (site.status && !site.off_reason) ? false : true;
+    },
+  },
+  created () {
+    this.getSiteConfigures();
+  },
 };
-export default Site;
 </script>
