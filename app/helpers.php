@@ -125,3 +125,18 @@ function filterUrlStringLength(string $data, int $length = 0): string
 
     return $value;
 }
+
+/**
+ * 根据mime判断文件类型
+ * @Author   Wayne
+ * @DateTime 2018-04-02
+ * @Email    qiaobin@zhiyicx.com
+ * @param    string
+ * @return   Boolean
+ */
+function isImage($mimeType)
+{
+    $imgMimeType = ['image/jpeg', 'image/gif', 'image/png', 'image/bmp'];
+
+    return in_array($mimeType, $imgMimeType);
+}

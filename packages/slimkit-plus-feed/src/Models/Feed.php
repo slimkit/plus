@@ -34,7 +34,8 @@ class Feed extends Model
     use SoftDeletes,
         Concerns\HasFeedCollect,
         Relations\FeedHasReward,
-        Relations\FeedHasLike;
+        Relations\FeedHasLike,
+        Relations\FeedHasVideo;
 
     /**
      * The model table name.
@@ -63,7 +64,7 @@ class Feed extends Model
      *
      * @var array
      */
-    protected $with = ['images', 'paidNode'];
+    protected $with = ['images', 'paidNode', 'video'];
 
     /**
      * Has feed pinned.

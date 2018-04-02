@@ -22,6 +22,7 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\isImage;
 use Illuminate\Http\UploadedFile;
 use Zhiyi\Plus\Models\File as FileModel;
 use Zhiyi\Plus\Models\User as UserModel;
@@ -54,8 +55,7 @@ class FilesController extends Controller
             'blur' => $request->query('b'),
         ]);
 
-        if (
-            ($fileWith->paidNode instanceof PaidNodeModel &&
+        if (($fileWith->paidNode instanceof PaidNodeModel &&
             $fileWith->paidNode->paid($user->id ?? 0) === false) &&
             ($fileWith->paidNode->extra === 'read' || (! isset($extra['width']) && isset($extra['height'])))
         ) {
@@ -95,20 +95,20 @@ class FilesController extends Controller
      */
     public function store(StoreUploadFileRequest $request, ResponseContract $response, Carbon $dateTime, FileModel $fileModel, FileWithModel $fileWith)
     {
-        $fileModel = $this->validateFileInDatabase($fileModel, $file = $request->file('file'), function (UploadedFile $file, string $md5) use ($fileModel, $dateTime): FileModel {
+        $clientHeight = $request->input('height', 0);
+        $clientWidth = $request->input('width', 0);
+        $fileModel = $this->validateFileInDatabase($fileModel, $file = $request->file('file'), function (UploadedFile $file, string $md5) use ($fileModel, $dateTime, $clientWidth, $clientHeight): FileModel {
             list($width, $height) = ($imageInfo = @getimagesize($file->getRealPath())) === false ? [null, null] : $imageInfo;
             $path = $dateTime->format('Y/m/d/Hi');
-
             if (($filename = $file->store($path, config('cdn.generators.filesystem.disk'))) === false) {
                 abort(500, '上传失败');
             }
-
             $fileModel->filename = $filename;
             $fileModel->hash = $md5;
             $fileModel->origin_filename = $file->getClientOriginalName();
             $fileModel->mime = $file->getClientMimeType();
-            $fileModel->width = $width;
-            $fileModel->height = $height;
+            $fileModel->width = !isImage($fileModel->mime) ? $clientWidth : $width;
+            $fileModel->height = !isImage($clientHeight) ? $clientHeight : $height;
             $fileModel->saveOrFail();
 
             return $fileModel;
