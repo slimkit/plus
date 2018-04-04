@@ -108,7 +108,7 @@ class FilesController extends Controller
             $fileModel->origin_filename = $file->getClientOriginalName();
             $fileModel->mime = $file->getClientMimeType();
             $fileModel->width = !isImage($fileModel->mime) ? $clientWidth : $width;
-            $fileModel->height = !isImage($clientHeight) ? $clientHeight : $height;
+            $fileModel->height = !isImage($fileModel->mime) ? $clientHeight : $height;
             $fileModel->saveOrFail();
 
             return $fileModel;
