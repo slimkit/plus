@@ -25,6 +25,7 @@ use Zhiyi\Plus\Models\Report;
 use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Models\FileWith;
 use Zhiyi\Plus\Models\PaidNode;
+use Zhiyi\Plus\Models\BlackList;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -87,6 +88,11 @@ class Feed extends Model
     {
         return $this->hasMany(FileWith::class, 'raw', 'id')
             ->where('channel', 'feed:image');
+    }
+
+    public function blacks()
+    {
+        return $this->hasMany(BlackList::class, 'target_id', 'user_id');
     }
 
     /**

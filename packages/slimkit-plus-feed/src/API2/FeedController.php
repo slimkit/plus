@@ -121,12 +121,15 @@ class FeedController extends Controller
         })->when(isset($search), function ($query) use ($search) {
             return $query->where('feed_content', 'LIKE', '%'.$search.'%');
         })
+        ->whereDoesntHave('blacks', function ($query) use ($user) {
+            $query->where('user_id', $user);
+        })
         ->orderBy('id', 'desc')
         ->with([
             'pinnedComments' => function ($query) use ($datetime) {
                 return $query->with('user')->where('expires_at', '>', $datetime)->limit(5);
             },
-            'user',
+            'user'
         ])
         ->limit($limit)
         ->get();
@@ -465,10 +468,11 @@ class FeedController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function destroy(Request $request,
-                            ResponseContract $response,
-                            FeedModel $feed)
-    {
+    public function destroy(
+        Request $request,
+        ResponseContract $response,
+        FeedModel $feed
+    ) {
         $user = $request->user();
 
         if ($user->id !== $feed->user_id) {
@@ -508,10 +512,11 @@ class FeedController extends Controller
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function newDestroy(Request $request,
-                            ResponseContract $response,
-                            FeedModel $feed)
-    {
+    public function newDestroy(
+        Request $request,
+        ResponseContract $response,
+        FeedModel $feed
+    ) {
         $user = $request->user();
 
         if ($user->id !== $feed->user_id) {
@@ -520,7 +525,6 @@ class FeedController extends Controller
 
         $feed->getConnection()->transaction(function () use ($feed, $user) {
             if ($pinned = $feed->pinned()->where('user_id', $user->id)->where('expires_at', null)->first()) { // 存在未审核的置顶申请时退款
-
                 $process = new UserProcess();
                 $process->reject(0, $pinned->amount, $user->id, '动态申请置顶退款', sprintf('退还申请置顶动态《%s》的款项', str_limit($feed->feed_content, 100)));
             }
