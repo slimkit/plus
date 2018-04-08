@@ -40,15 +40,21 @@
         </form>
       </div>
     </div>
+
+    <!-- cors setting panel -->
+    <cors />
+
   </div>
 </template>
 
 <script>
 import request, { createRequestURI } from '../../util/request';
 import PostCover from './PostCover';
+import Cors from '../../components/modules/setting/Cors';
 const backEndSetting = {
   components:{
-    PostCover
+    'post-cover': PostCover,
+    'cors': Cors,
   },
   data: () => ({
     btnLoading: false,
