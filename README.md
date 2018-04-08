@@ -90,7 +90,7 @@ php artisan serve
 
 针对不同的用户，我们准备了两个 QQ 群，分别是：
 
-- 技术交流群：`NjUxMjQwNzg1`，该群适合技术交流，不接受普通用户加入。（解码提示：`*toa`）
+- 技术交流群：`NjUxMjQwNzg1`，该群适合技术交流，不接受普通用户加入。（解码提示：`atoa`）
 - 用户交流群：`638051536`，该群所有人都可以加入并进行交流。
 
 ## 贡献
@@ -102,7 +102,7 @@ php artisan serve
 
 ### [行为守则](https://github.com/slimkit/thinksns-plus/blob/master/.github/CODE_OF_CONDUCT.md)
 
-我们按照开源项目社区的建议，为 Plus 提供了我们期望参与者遵守的行为准则，请 [阅读准则](https://github.com/slimkit/thinksns-plus/blob/master/CODE_OF_CONDUCT.md) 全文，以便了解哪些行为是我们不会容忍的。
+我们按照开源项目社区的建议，为 Plus 提供了我们期望参与者遵守的行为准则，请 [阅读准则](https://github.com/slimkit/thinksns-plus/blob/master/.github/CODE_OF_CONDUCT.md) 全文，以便了解哪些行为是我们不会容忍的。
 
 ### [贡献指南](https://github.com/slimkit/thinksns-plus/blob/master/.github/CONTRIBUTING.md)
 
