@@ -9,7 +9,6 @@ const state = {
 
 const mutations = {
   change (state, { open = false, type = '', message = '', defaultMessage = '😢发生错误咯' }) {
-    console.log(message, defaultMessage);
     state.open = open;
     state.type = type;
     state.message = message || defaultMessage;
