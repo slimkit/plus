@@ -31,7 +31,7 @@
         "markdown-it": "^8.4.0",
         "opencollective": "^1.0.3",
         "plus-message-bundle": "^1.0",
-        "simkit-bootstrap-ui-kit": "^0.0.3",
+        "simkit-bootstrap-ui-kit": "^1.1.0",
         "vue": "^2.5.16",
         "vue-echarts-v3": "^1.0.18",
         "vue-router": "^3.0.1",
