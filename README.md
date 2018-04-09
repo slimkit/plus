@@ -141,10 +141,8 @@ php artisan serve
 
 - [Notadd](https://github.com/notadd/notadd) 基于 Laravel 的下一代开发框架。
 
-## 开源协议
+## License
 
 ThinkSNS Plus 代码遵循 Apache 2.0 许可证发布，请参阅完整的 [许可证文本](https://github.com/slimkit/thinksns-plus/blob/master/LICENSE)
 
-
-## License
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fslimkit%2Fthinksns-plus.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fslimkit%2Fthinksns-plus?ref=badge_large)
