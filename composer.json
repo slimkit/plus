@@ -93,7 +93,7 @@
         "jpush/jpush": "^3.5",
         "laravel/framework": "5.6.*",
         "laravel/tinker": "~1.0",
-        "medz/cors": "^1.0",
+        "medz/cors": "^1.1",
         "overtrue/easy-sms": "^1.0",
         "pingplusplus/pingpp-php": "^2.2",
         "predis/predis": "^1.1",
