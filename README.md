@@ -16,6 +16,7 @@ Plus (ThinkSNS Plus) 是一个使用 Laravel 开发，并且功能繁多且健�
 [![Style CI](https://styleci.io/repos/76627423/shield?branch=master)](https://styleci.io/repos/76627423)
 [![Composer publish version](https://img.shields.io/packagist/v/zhiyicx/thinksns-plus.svg?style=flat-square)](https://packagist.org/packages/zhiyicx/thinksns-plus)
 [![Composer publish preview version](https://img.shields.io/packagist/vpre/zhiyicx/thinksns-plus.svg?style=flat-square)](https://packagist.org/packages/zhiyicx/thinksns-plus)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fslimkit%2Fthinksns-plus.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fslimkit%2Fthinksns-plus?ref=badge_shield)
 
 Travis CI: [![Travis CI Build Status](https://img.shields.io/travis/slimkit/thinksns-plus.svg?style=flat-square)](https://travis-ci.org/slimkit/thinksns-plus)
 
@@ -143,3 +144,7 @@ php artisan serve
 ## 开源协议
 
 ThinkSNS Plus 代码遵循 Apache 2.0 许可证发布，请参阅完整的 [许可证文本](https://github.com/slimkit/thinksns-plus/blob/master/LICENSE)
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fslimkit%2Fthinksns-plus.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fslimkit%2Fthinksns-plus?ref=badge_large)
