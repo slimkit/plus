@@ -19,8 +19,8 @@
 namespace Zhiyi\PlusGroup\API\Controllers;
 
 use DB;
+use Lvht\GeoHash;
 use Carbon\Carbon;
-use Zhiyi\Plus\Models\Geohash;
 use Illuminate\Http\Request;
 use Zhiyi\PlusGroup\Models\Group as GroupModel;
 use Zhiyi\PlusGroup\API\Requests\CreateGroupRequest;
@@ -702,7 +702,7 @@ class GroupsController
         $limit = (int) $request->query('limit', 15);
         $offset = (int) $request->query('offset', 0);
 
-        $geohash = Geohash::encode($latitude, $longitude);
+        $geohash = GeoHash::encode($latitude, $longitude);
         $geohash = substr($geohash, 0, 4); // 约20km
 
         $groups = GroupModel::where('audit', 1)

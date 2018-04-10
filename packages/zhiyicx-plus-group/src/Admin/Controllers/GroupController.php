@@ -19,7 +19,7 @@
 namespace Zhiyi\PlusGroup\Admin\Controllers;
 
 use DB;
-use Zhiyi\Plus\Modles\Geohash;
+use Lvht\GeoHash;
 use Illuminate\Http\Request;
 use Zhiyi\PlusGroup\Models\Group as  GroupModel;
 use Zhiyi\PlusGroup\Models\GroupMember as MemberModel;
@@ -87,7 +87,7 @@ class GroupController
 
             // 地理位置
             if (isset($data['location'])) {
-                $group->geo_hash = Geohash::encode($data['latitude'], $data['longitude']);
+                $group->geo_hash = GeoHash::encode($data['latitude'], $data['longitude']);
             }
 
             // 发帖权限
@@ -182,7 +182,7 @@ class GroupController
 
             // 地理位置
             if (isset($data['location'])) {
-                $group->geo_hash = Geohash::encode($data['latitude'], $data['longitude']);
+                $group->geo_hash = GeoHash::encode($data['latitude'], $data['longitude']);
             }
 
             // 发帖权限
