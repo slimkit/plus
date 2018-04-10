@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import { Button, ButtonGroup } from 'element-ui';
 import ImgCropper from './imgCropper'
 const prefixCls = 'v-img-cropper'
 
@@ -37,17 +36,20 @@ ImgCropper.newInstance = properties => {
     }),
     render (h) {
       let headerVNodes = []
-      headerVNodes.push(h(ButtonGroup, {
+      headerVNodes.push(h('div', {
         attrs: {
-          class: `${prefixCls}-header el-button-group`
+          class: `${prefixCls}-header group`
         }
-      }, [h(Button,{
+      }, [h("button",{
+        attrs: {
+          class: 'btn btn-default'
+        },
         on: {
           click: this.close
         }
-      },'取消'),h(Button,{
-        props:{
-          type: "primary"
+      },'取消'),h('button',{
+        attrs: {
+          class: 'btn btn-primary'
         },
         on: {
           click: this.ok
@@ -90,7 +92,7 @@ ImgCropper.newInstance = properties => {
         this.remove()
       },
       ok () {
-        let data = this.$children[1].cropper.getCroppedCanvas({
+        let data = this.$children[0].cropper.getCroppedCanvas({
           width: 500,
           height: 500
         })
@@ -120,7 +122,7 @@ ImgCropper.newInstance = properties => {
 
   const component = Instance.$mount()
   document.body.appendChild(component.$el)
-  const cropper = Instance.$children[1]
+  const cropper = Instance.$children[0]
   return {
     show (option) {
       if ('url' in option) {
