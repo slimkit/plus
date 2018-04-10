@@ -93,7 +93,6 @@ const getFileUrl = file => {
   return url;
 };
 import { admin } from '../../axios';
-import VueCoreImageUpload from 'vue-core-image-upload'
 export default {
   components: {
     'vue-core-image-upload': VueCoreImageUpload,
@@ -198,7 +197,6 @@ export default {
         },
         onOk(canvas) {
           canvas.toBlob(blob => {
-            let param = new FormData();
             param.append('avatar', blob);
             let config = { headers: { "Content-Type": "multipart/form-data" } };
             admin
