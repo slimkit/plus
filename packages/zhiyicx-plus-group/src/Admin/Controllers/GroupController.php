@@ -19,7 +19,7 @@
 namespace Zhiyi\PlusGroup\Admin\Controllers;
 
 use DB;
-use Geohash\Geohash;
+use Zhiyi\Plus\Modles\Geohash;
 use Illuminate\Http\Request;
 use Zhiyi\PlusGroup\Models\Group as  GroupModel;
 use Zhiyi\PlusGroup\Models\GroupMember as MemberModel;
