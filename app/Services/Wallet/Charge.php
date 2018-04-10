@@ -271,17 +271,17 @@ class Charge
 
     protected function checkAlipayWapExtra(array $extra): bool
     {
-        return in_array('success_url', $extra);
+        return array_key_exists('success_url', $extra);
     }
 
     protected function checkAlipayPcDirectExtra(array $extra): bool
     {
-        return in_array('success_url', $extra);
+        return array_key_exists('success_url', $extra);
     }
 
     protected function checkAlipayQrExtra(array $extra): bool
     {
-        return in_array('success_url', $extra);
+        return array_key_exists('success_url', $extra);
     }
 
     protected function checkWxExtra(): bool
@@ -291,6 +291,6 @@ class Charge
 
     protected function checkWxWapExtra(array $extra): bool
     {
-        return in_array('success_url', $extra);
+        return array_key_exists('success_url', $extra);
     }
 }
