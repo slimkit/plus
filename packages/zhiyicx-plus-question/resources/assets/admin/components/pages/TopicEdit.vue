@@ -37,20 +37,8 @@
         <div class="form-group">
           <label class="col-sm-2 control-label">头像</label>
           <div class="col-sm-6">
-            <vue-core-image-upload
-              class="btn btn-default"
-              crop="local"
-              inputOfFile="avatar"
-              @imagechanged="imagechanged"
-              @errorhandle="errorhandle"
-              :max-file-size="5242880"
-              :cropBtn="{ok: '上传', cancel: '取消'}"
-              :isXhr="false"
-              :maxWidth="150"
-              :maxHeight="150"
-              inputAccept="image/*"
-              text="点击上传">
-            </vue-core-image-upload>
+            <button class="btn btn-default" @click='chooseImg'>上传头像</button>
+            <input type="file" ref='uploadFile' style="display: none !important" @change='getImg' accept="image/gif, image/jpeg, image/png">
           </div>
           <span class="col-sm-4 help-block">
             需要更新头像，请选择头像后点击上传按钮更新。
@@ -90,6 +78,20 @@
 </template>
 
 <script>
+const getFileUrl = file => {
+  let url = null;
+  if (window.createObjectURL !== undefined) {
+    // basic
+    url = window.createObjectURL(file);
+  } else if (window.URL !== undefined) {
+    // mozilla(firefox)
+    url = window.URL.createObjectURL(file);
+  } else if (window.webkitURL !== undefined) {
+    // webkit or chrome
+    url = window.webkitURL.createObjectURL(file);
+  }
+  return url;
+};
 import { admin } from '../../axios';
 import VueCoreImageUpload from 'vue-core-image-upload'
 export default {
@@ -171,7 +173,6 @@ export default {
 
     imagechanged(res) {
       let blob = this.dataURItoBlob(res);
-      console.log(blob);
       const params = new FormData();
       params.append('avatar', blob);
       admin.post(`/topics/${this.id}/avatar`, params, {
@@ -184,21 +185,43 @@ export default {
         this.publishMessage(data, 'danger');
       });
     },
-    // file base64 to blob
-    dataURItoBlob (dataURI) {
-      var byteString = atob(dataURI.split(',')[1]);
-      var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-      var ab = new window.ArrayBuffer(byteString.length);
-      var ia = new window.Uint8Array(ab);
-      for (var i = 0; i < byteString.length; i++) {
-          ia[i] = byteString.charCodeAt(i);
-      }
-      return new window.Blob([ab], {type: mimeString});
+    getImg(e) {
+      const vm = this;
+      const files = e.target.files || e.dataTransfer.files;
+      if (!files.length) return;
+      const img = files[0];
+      this.$ImgCropper.show({
+        url: getFileUrl(img),
+        round: false,
+        onCancel() {
+          vm.$refs.uploadFile.value = null;
+        },
+        onOk(canvas) {
+          canvas.toBlob(blob => {
+            let param = new FormData();
+            param.append('avatar', blob);
+            let config = { headers: { "Content-Type": "multipart/form-data" } };
+            admin
+              .post(`/topics/${vm.id}/avatar`, param, config)
+              .then(({data: { id }}) => {
+                vm.$refs.uploadFile.value = null;
+                var reader = new FileReader();
+                reader.readAsDataURL(blob); 
+                reader.onloadend = function() {              
+                  vm.avatar = reader.result;
+                }
+              });
+          }, img.type || "image/png");
+        }
+      });
     },
-
     errorhandle (error) {
       this.publishMessage({message: error}, 'danger');
-    }
+    },
+
+    chooseImg() {
+      this.$refs.uploadFile.click();
+    },
   },
   created () {
     this.loading = true;
