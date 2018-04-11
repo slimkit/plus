@@ -176,6 +176,9 @@ class FeedController extends Controller
         ->when((bool) $after, function ($query) use ($after) {
             return $query->where('likes.likeable_id', '<', $after);
         })
+        ->whereDoesntHave('blacks', function ($query) use ($user) {
+            $query->where('user_id', $user);
+        })
         ->groupBy('likeable_id')
         ->orderBy('likeable_id', 'desc')
         ->limit($limit)
@@ -234,6 +237,9 @@ class FeedController extends Controller
         ->where(function ($query) use ($user) {
             $query->whereColumn('feeds.user_id', '=', 'user_follow.target')
             ->orWhere('feeds.user_id', $user->id);
+        })
+        ->whereDoesntHave('blacks', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
         })
         ->with([
         'pinnedComments' => function ($query) use ($datetime) {
