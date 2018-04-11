@@ -19,8 +19,8 @@
 namespace Zhiyi\PlusGroup\API\Controllers;
 
 use DB;
+use Lvht\GeoHash;
 use Carbon\Carbon;
-use Geohash\Geohash;
 use Illuminate\Http\Request;
 use Zhiyi\PlusGroup\Models\Group as GroupModel;
 use Zhiyi\PlusGroup\API\Requests\CreateGroupRequest;
@@ -334,7 +334,8 @@ class GroupsController
                     $member->user->sendNotifyMessage(
                         'group:join',
                         $message,
-                        ['group' => $group, 'user' => $user]);
+                        ['group' => $group, 'user' => $user]
+                    );
                 });
 
             DB::commit();
@@ -402,12 +403,12 @@ class GroupsController
         $groups = $builder->when($keyword, function ($query) use ($keyword) {
             return $query->where('name', 'like', sprintf('%%%s%%', $keyword));
         })
-       ->when($categoryId, function ($query) use ($categoryId) {
-           return $query->where('category_id', $categoryId);
-       })
-       ->offset($offset)
-       ->limit($limit)
-       ->get();
+        ->when($categoryId, function ($query) use ($categoryId) {
+            return $query->where('category_id', $categoryId);
+        })
+        ->offset($offset)
+        ->limit($limit)
+        ->get();
 
         $user_id = $request->user('api')->id ?? 0;
 
@@ -701,7 +702,7 @@ class GroupsController
         $limit = (int) $request->query('limit', 15);
         $offset = (int) $request->query('offset', 0);
 
-        $geohash = Geohash::encode($latitude, $longitude);
+        $geohash = GeoHash::encode($latitude, $longitude);
         $geohash = substr($geohash, 0, 4); // 约20km
 
         $groups = GroupModel::where('audit', 1)
@@ -822,7 +823,8 @@ class GroupsController
                     $member->user->sendNotifyMessage(
                         'group:join',
                         $message,
-                        ['group' => $group, 'user' => $user]);
+                        ['group' => $group, 'user' => $user]
+                    );
                 });
 
             DB::commit();

@@ -123,12 +123,15 @@ class FeedController extends Controller
         })->when(isset($search), function ($query) use ($search) {
             return $query->where('feed_content', 'LIKE', '%'.$search.'%');
         })
+        ->whereDoesntHave('blacks', function ($query) use ($user) {
+            $query->where('user_id', $user);
+        })
         ->orderBy('id', 'desc')
         ->with([
-        'pinnedComments' => function ($query) use ($datetime) {
-            return $query->with('user')->where('expires_at', '>', $datetime)->limit(5);
-        },
-        'user',
+            'pinnedComments' => function ($query) use ($datetime) {
+                return $query->with('user')->where('expires_at', '>', $datetime)->limit(5);
+            },
+            'user'
         ])
         ->limit($limit)
         ->get();

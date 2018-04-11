@@ -19,6 +19,8 @@
 namespace SlimKit\PlusQuestion\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use SlimKit\PlusQuestion\Models\Question;
+use SlimKit\PlusQuestion\Observers\QuestionObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -51,6 +53,9 @@ class AppServiceProvider extends ServiceProvider
         $this->publishes([
             $this->app->make('path.question.assets') => $this->app->PublicPath().'/assets/question-answer',
         ], 'public');
+
+        // Question observe.
+        Question::observe(QuestionObserver::class);
     }
 
     /**
