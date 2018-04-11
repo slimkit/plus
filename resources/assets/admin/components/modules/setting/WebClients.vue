@@ -8,7 +8,7 @@
       <div class="panel-body">
         
         <!-- loading -->
-        <bootstrap-ui-kit:ui-loading v-if="loading" />
+        <sb-ui-loading v-if="loading" />
 
         <!-- form -->
         <div class="form-horizontal" v-else>
@@ -69,7 +69,7 @@
 
           <!-- submit button -->
           <div class="col-sm-10 col-sm-offset-2">
-            <bootstrap-ui-kit:ui-button class="btn btn-primary" @click="handleSubmit" />
+            <sb-ui-button class="btn btn-primary" @click="handleSubmit" />
           </div>
 
         </div>

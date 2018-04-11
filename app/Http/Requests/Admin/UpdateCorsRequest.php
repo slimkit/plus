@@ -18,39 +18,38 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Models;
+namespace Zhiyi\Plus\Http\Requests\Admin;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\FormRequest;
 
-class JWTCache extends Model
+class UpdateCorsRequest extends FormRequest
 {
     /**
-     * The table associated with the model.
+     * Determine if the user is authorized to make this request.
      *
-     * @var string
+     * @return bool
+     * @author Seven Du <shiweidu@outlook.com>
      */
-    protected $table = 'jwt_caches';
+    public function authorize(): bool
+    {
+        return true;
+    }
 
     /**
-     * The primary key for the model.
+     * Get the validation rules that apply to the request.
      *
-     * @var string
+     * @return array
+     * @author Seven Du <shiweidu@outlook.com>
      */
-    protected $primaryKey = 'key';
-
-    /**
-     * Indicates if the IDs are auto-incrementing.
-     *
-     * @var bool
-     */
-    public $incrementing = false;
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'value' => 'array',
-    ];
+    public function rules(): array
+    {
+        return [
+            'credentiails' => 'required|boolean',
+            'allowHeaders' => 'required|array',
+            'exposeHeaders' => 'nullable|array',
+            'origins' => 'required|array',
+            'methods' => 'required|array',
+            'maxAge' => 'required|numeric',
+        ];
+    }
 }

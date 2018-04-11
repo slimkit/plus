@@ -159,6 +159,10 @@ Route::group([
     // web clients
     $route->get('settings/web-clients', 'WebClientsController@fetch');
     $route->patch('settings/web-clients', 'WebClientsController@update');
+
+    // CORS
+    $route->get('settings/cors', 'CorsController@fetch');
+    $route->put('settings/cors', 'CorsController@update');
 });
 
 Route::middleware('auth:web')
