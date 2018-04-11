@@ -22,8 +22,8 @@
           <table-loading :loadding="loading" :colspan-num="10"></table-loading>
           <tr v-for="item in items">
             <td>{{ item.id }}</td>
-            <td>{{ item.user.name }}</td>
-            <td>{{ item.target.name }}</td>
+            <td>{{ item.user ? item.user.name : '未知' }}</td>
+            <td>{{ item.target ? item.target.name : '未知' }}</td>
             <td>{{ item.subject }}</td>
             <td>{{ item.reportable_type | moduleName }}</td>
             <td>{{ item.status | status }}</td>
