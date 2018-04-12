@@ -73,17 +73,19 @@ class FeedController extends Controller
         }
 
         $feeds = $feedModel->select('feeds.*')
-        ->join('feed_pinneds', function ($join) use ($datetime) {
-            return $join->on('feeds.id', '=', 'feed_pinneds.target')->where('channel', 'feed')->where('expires_at', '>', $datetime);
-        })
-        ->with([
-            'pinnedComments' => function ($query) use ($datetime) {
-                return $query->where('expires_at', '>', $datetime)->limit(5);
-            },
-            'user',
-        ])
-        ->orderBy('feeds.id', 'desc')
-        ->get();
+            ->join('feed_pinneds', function ($join) use ($datetime) {
+                return $join->on('feeds.id', '=', 'feed_pinneds.target')->where('channel', 'feed')->where('expires_at', '>', $datetime);
+            })
+            ->with([
+                'pinnedComments' => function ($query) use ($datetime) {
+                    return $query->where('expires_at', '>', $datetime)->limit(5);
+                },
+                'user' => function ($query) {
+                    return $query->withTrashed();
+                },
+            ])
+            ->orderBy('feeds.id', 'desc')
+            ->get();
 
         $user = $request->user('api')->id ?? 0;
 
@@ -131,7 +133,9 @@ class FeedController extends Controller
             'pinnedComments' => function ($query) use ($datetime) {
                 return $query->with('user')->where('expires_at', '>', $datetime)->limit(5);
             },
-            'user'
+            'user' => function ($query) {
+                return $query->withTrashed();
+            },
         ])
         ->limit($limit)
         ->get();
@@ -185,14 +189,16 @@ class FeedController extends Controller
         ->pluck('likeable_id');
 
         $feeds = FeedModel::whereIn('id', $ids)
-        ->with([
-            'pinnedComments' => function ($query) use ($dateTime) {
-                return $query->with('user')->where('expires_at', '>', $dateTime)->limit(5);
-            },
-            'user',
-        ])
-        ->orderBy('id', 'desc')
-        ->get();
+            ->with([
+                'pinnedComments' => function ($query) use ($dateTime) {
+                    return $query->with('user')->where('expires_at', '>', $dateTime)->limit(5);
+                },
+                'user' => function ($query) {
+                    return $query->withTrashed();
+                },
+            ])
+            ->orderBy('id', 'desc')
+            ->get();
 
         return $model->getConnection()->transaction(function () use ($feeds, $repository, $user) {
             return $feeds->map(function ($feed) use ($repository, $user) {
@@ -242,10 +248,12 @@ class FeedController extends Controller
             $query->where('user_id', $user->id);
         })
         ->with([
-        'pinnedComments' => function ($query) use ($datetime) {
-            return $query->with('user')->where('expires_at', '>', $datetime)->limit(5);
-        },
-        'user',
+            'pinnedComments' => function ($query) use ($datetime) {
+                return $query->with('user')->where('expires_at', '>', $datetime)->limit(5);
+            },
+            'user' => function ($query) {
+                return $query->withTrashed();
+            },
         ])
         ->when((bool) $after, function ($query) use ($after) {
             return $query->where('feeds.id', '<', $after);
@@ -633,27 +641,29 @@ class FeedController extends Controller
         $screen = $request->query('screen');
 
         $feeds = $feedModel->where('user_id', $current_user)
-        ->when($screen, function ($query) use ($datetime, $screen) {
-            switch ($screen) {
-                case 'pinned':
-                    $query->whereHas('pinned', function ($query) use ($datetime) {
-                        $query->where('expires_at', '>', $datetime);
-                    });
-                    break;
-                case 'paid':
-                    $query->whereHas('paidNode');
-                    break;
-            }
-        })
-        ->when($after, function ($query) use ($after) {
-            return $query->where('id', '<', $after);
-        })
-        ->with(['pinnedComments' => function ($query) use ($datetime) {
-            return $query->where('expires_at', '>', $datetime)->limit(5);
-        }, 'user'])
-        ->orderBy('id', 'desc')
-        ->limit($limit)
-        ->get();
+            ->when($screen, function ($query) use ($datetime, $screen) {
+                switch ($screen) {
+                    case 'pinned':
+                        $query->whereHas('pinned', function ($query) use ($datetime) {
+                            $query->where('expires_at', '>', $datetime);
+                        });
+                        break;
+                    case 'paid':
+                        $query->whereHas('paidNode');
+                        break;
+                }
+            })
+            ->when($after, function ($query) use ($after) {
+                return $query->where('id', '<', $after);
+            })
+            ->with(['pinnedComments' => function ($query) use ($datetime) {
+                return $query->where('expires_at', '>', $datetime)->limit(5);
+            }, 'user' => function ($query) {
+                return $query->withTrashed();
+            }])
+            ->orderBy('id', 'desc')
+            ->limit($limit)
+            ->get();
 
         return $feedModel->getConnection()->transaction(function () use ($feeds, $repository, $user) {
             return $feeds->map(function (FeedModel $feed) use ($repository, $user) {

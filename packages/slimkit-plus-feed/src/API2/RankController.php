@@ -65,7 +65,8 @@ class RankController extends Controller
         ->where('feeds.created_at', '>', $date)
         ->where('audit_status', 1)
         ->with(['user' => function ($query) {
-            return $query->select('id', 'name', 'sex');
+            return $query->select('id', 'name', 'sex')
+                ->withTrashed();
         }, 'user.extra'])
         ->groupBy('user_id')
         ->orderBy('count', 'desc')
