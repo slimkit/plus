@@ -84,7 +84,7 @@ class FeedCollectionController extends Controller
             },
             // 需要获取软删除用户
             'user' => function ($query) {
-                return $query->->withTrashed();
+                return $query->withTrashed();
             },
         ])
         ->select('feeds.*')
