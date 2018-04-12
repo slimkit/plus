@@ -78,7 +78,9 @@ class FeedController extends Controller
                 'pinnedComments' => function ($query) use ($datetime) {
                     return $query->where('expires_at', '>', $datetime)->limit(5);
                 },
-                'user',
+                'user' => function ($query) {
+                    return $query->withTrashed();
+                },
             ])
             ->orderBy('feeds.id', 'desc')
             ->get();
@@ -126,7 +128,9 @@ class FeedController extends Controller
             'pinnedComments' => function ($query) use ($datetime) {
                 return $query->with('user')->where('expires_at', '>', $datetime)->limit(5);
             },
-            'user',
+            'user' => function ($query) {
+                return $query->withTrashed();
+            },
         ])
         ->limit($limit)
         ->get();
@@ -181,7 +185,9 @@ class FeedController extends Controller
                 'pinnedComments' => function ($query) use ($dateTime) {
                     return $query->with('user')->where('expires_at', '>', $dateTime)->limit(5);
                 },
-                'user',
+                'user' => function ($query) {
+                    return $query->withTrashed();
+                },
             ])
             ->orderBy('id', 'desc')
             ->get();
@@ -234,7 +240,9 @@ class FeedController extends Controller
             'pinnedComments' => function ($query) use ($datetime) {
                 return $query->with('user')->where('expires_at', '>', $datetime)->limit(5);
             },
-            'user',
+            'user' => function ($query) {
+                return $query->withTrashed();
+            },
         ])
         ->when((bool) $after, function ($query) use ($after) {
             return $query->where('feeds.id', '<', $after);
@@ -567,7 +575,9 @@ class FeedController extends Controller
             })
             ->with(['pinnedComments' => function ($query) use ($datetime) {
                 return $query->where('expires_at', '>', $datetime)->limit(5);
-            }, 'user'])
+            }, 'user' => function ($query) {
+                return $query->withTrashed();
+            }])
             ->orderBy('id', 'desc')
             ->limit($limit)
             ->get();

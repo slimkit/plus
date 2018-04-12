@@ -44,7 +44,9 @@ class LikeController extends Controller
         $userID = $request->user('api')->id ?? 0;
         $likes = $feed->likes()
             ->whereHas('user')
-            ->with('user')
+            ->with(['user' => function ($query) {
+                return $query->withTrashed();
+            }])
             ->when($after, function ($query) use ($after) {
                 return $query->where('id', '<', $after);
             })

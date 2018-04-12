@@ -82,7 +82,10 @@ class FeedCollectionController extends Controller
             'pinnedComments' => function ($query) {
                 return $query->limit(5);
             },
-            'user',
+            // 需要获取软删除用户
+            'user' => function ($query) {
+                return $query->->withTrashed();
+            },
         ])
         ->select('feeds.*')
         ->orderBy('feed_collections.created_at', 'desc')

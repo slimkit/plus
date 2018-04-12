@@ -82,7 +82,9 @@ class MusicCommentController extends Controller
         $limit = $request->query('limit', 15);
         $comments = $music->comments()->when($max_id, function ($query) use ($max_id) {
             return $query->where('id', '<', $max_id);
-        })->with(['user', 'reply'])->limit($limit)->orderBy('id', 'desc')->get();
+        })->with(['user' => function ($query) {
+            return $query->withTrashed();
+        }, 'reply'])->limit($limit)->orderBy('id', 'desc')->get();
 
         return response()->json($comments, 200);
     }
