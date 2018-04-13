@@ -41,12 +41,12 @@ class UserFollowingTest extends TestCase
         $this->target = factory(UserModel::class)->create();
     }
 
-    protected function setDown()
+    protected function tearDown()
     {
         $this->user->forceDelete();
         $this->target->forceDelete();
 
-        parent::setDown();
+        parent::tearDown();
     }
 
     public function testAttachFollowingUser()
