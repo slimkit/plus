@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Admin\Controllers;
 
-use Zhiyi\Plus\Admin\Requests\UpdateImHelperUserRequest;
-use Zhiyi\Plus\Support\Configuration;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
+use Zhiyi\Plus\Support\Configuration;
+use Zhiyi\Plus\Admin\Requests\UpdateImHelperUserRequest;
 
 class ImHelperUserController extends Controller
 {

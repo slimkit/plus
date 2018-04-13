@@ -19,8 +19,8 @@ declare(strict_types=1);
  */
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Contracts\Routing\Registrar as RouteContract;
 use Zhiyi\Plus\Admin\Controllers as AdminControllers;
+use Illuminate\Contracts\Routing\Registrar as RouteContract;
 
 Route::middleware(['auth:web', 'admin'])->prefix('admin')->group(function (RouteContract $route) {
     $route->get('im/helper-user', AdminControllers\ImHelperUserController::class.'@fetch');
