@@ -21,7 +21,9 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Exceptions;
 
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -82,5 +84,20 @@ class Handler extends ExceptionHandler
     protected function invalidJson($request, \Illuminate\Validation\ValidationException $exception)
     {
         return parent::invalidJson($request, new ValidationException($exception));
+    }
+
+    /**
+     * Prepare exception for rendering.
+     *
+     * @param  \Exception  $e
+     * @return \Exception
+     */
+    protected function prepareException(Exception $e)
+    {
+        if ($e instanceof ModelNotFoundException) {
+            $e = new NotFoundHttpException('内容不存在', $e);
+        }
+
+        return parent::prepareException($e);
     }
 }
