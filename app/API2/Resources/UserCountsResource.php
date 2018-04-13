@@ -34,4 +34,9 @@ class UserCountsResource extends JsonResource
             ],
         ];
     }
+
+    public function withResponse($request, $response)
+    {
+        $response->setStatusCode(200);
+    }
 }
