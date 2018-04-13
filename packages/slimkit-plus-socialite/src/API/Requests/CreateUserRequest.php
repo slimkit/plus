@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusSocialite\API\Requests;
 
+use Illuminate\Validation\Rule;
+
 class CreateUserRequest extends AccessTokenRequest
 {
     /**
@@ -31,7 +33,25 @@ class CreateUserRequest extends AccessTokenRequest
     public function rules(): array
     {
         return array_merge(parent::rules(), [
-            'name' => 'required|string|username|display_length:2,12|unique:users,name',
+            'name' => [
+                'required',
+                'string',
+                'username',
+                'display_length,2,12',
+                Rule::notIn(config('site.reserved_nickname')),
+                'unique:users,name'
+            ],
+        ]);
+    }
+
+    public function messages(): array
+    {
+        return array_merge(parent::messages(), [
+            'name.required' => '请输入用户名',
+            'name.username' => '用户名只能以非特殊字符和数字开头，不能包含特殊字符',
+            'name.display_length' => '用户名长度不合法',
+            'name.unique' => '用户名已经被其他用户所使用',
+            'name.not_in' => '系统保留用户名，禁止使用',
         ]);
     }
 }
