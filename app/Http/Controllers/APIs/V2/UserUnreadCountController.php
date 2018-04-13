@@ -76,7 +76,7 @@ class UserUnreadCountController extends Controller
                 ->where($pinnedModels['owner_prefix'], $user->id)
                 ->where($pinnedModels['wherecolumn'])
                 ->first();
-            if (! $pinned || (!$pinned->time && !$pinned->count)) {
+            if (! $pinned || (! $pinned->time && ! $pinned->count)) {
                 return [];
             }
 
