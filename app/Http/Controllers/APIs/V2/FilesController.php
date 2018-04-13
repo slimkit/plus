@@ -107,8 +107,8 @@ class FilesController extends Controller
             $fileModel->hash = $md5;
             $fileModel->origin_filename = $file->getClientOriginalName();
             $fileModel->mime = $file->getClientMimeType();
-            $fileModel->width = !isImage($fileModel->mime) ? $clientWidth : $width;
-            $fileModel->height = !isImage($fileModel->mime) ? $clientHeight : $height;
+            $fileModel->width =  $width ?? $clientWidth;
+            $fileModel->height =  $height ?? $clientHeight;
             $fileModel->saveOrFail();
 
             return $fileModel;
