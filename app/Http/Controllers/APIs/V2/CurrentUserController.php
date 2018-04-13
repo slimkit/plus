@@ -21,11 +21,10 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\Models\VerificationCode as VerificationCodeModel;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Models\UserFollow as UserFollowModel;
+use Zhiyi\Plus\Models\VerificationCode as VerificationCodeModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class CurrentUserController extends Controller
@@ -313,7 +312,7 @@ class CurrentUserController extends Controller
                 }
 
                 return response('', 204);
-        });
+            });
     }
 
     /**

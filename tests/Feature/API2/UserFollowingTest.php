@@ -29,7 +29,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class UserFollowingTest extends TestCase
 {
     use DatabaseTransactions;
-    
+
     protected $user;
     protected $target;
 
