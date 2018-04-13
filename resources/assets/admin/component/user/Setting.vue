@@ -48,13 +48,21 @@
       </div>
 
     </div>
+
+    <!-- Im helper user module. -->
+    <im-helper-user-module></im-helper-user-module>
+
   </div>
 </template>
 
 <script>
 import request, { createRequestURI } from '../../util/request';
+import ImHelperUserModule from '../../components/modules/users/im-helper-user.module';
 
 const UserSettingComponent = {
+  components: {
+    'im-helper-user-module': ImHelperUserModule,
+  },
   data: () => ({
     loadding: {
       state: 0,
