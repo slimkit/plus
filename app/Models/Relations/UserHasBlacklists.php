@@ -25,7 +25,7 @@ use Zhiyi\Plus\Models\BlackList;
 trait UserHasBlackLists
 {
     /**
-     * get blacklists of current user
+     * get blacklists of current user.
      * @Author   Wayne
      * @DateTime 2018-04-08
      * @Email    qiaobin@zhiyicx.com
