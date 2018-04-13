@@ -180,15 +180,15 @@ class FeedController extends Controller
         ->when((bool) $after, function ($query) use ($after) {
             return $query->where('likes.likeable_id', '<', $after);
         })
-        ->whereDoesntHave('blacks', function ($query) use ($user) {
-            $query->where('user_id', $user);
-        })
         ->groupBy('likeable_id')
         ->orderBy('likeable_id', 'desc')
         ->limit($limit)
         ->pluck('likeable_id');
 
         $feeds = FeedModel::whereIn('id', $ids)
+            ->whereDoesntHave('blacks', function ($query) use ($user) {
+                $query->where('user_id', $user);
+            })
             ->with([
                 'pinnedComments' => function ($query) use ($dateTime) {
                     return $query->with('user')->where('expires_at', '>', $dateTime)->limit(5);
