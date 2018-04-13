@@ -55,6 +55,7 @@ class StoreFeedPost extends FormRequest
             'feed_geohash' => 'required_with:feed_latitude,feed_longtitude',
             'amount' => 'nullable|integer',
             'images' => ['required_without:feed_content', 'array'],
+            'video' => ['required_without_all:feed_content,images', 'array'],
             'images.*.id' => [
                 'required_with:images',
                 'distinct',
@@ -65,6 +66,20 @@ class StoreFeedPost extends FormRequest
             ],
             'images.*.amount' => ['required_with:images.*.type', 'integer'],
             'images.*.type' => ['required_with:images.*.amount', 'string', 'in:read,download'],
+            'video.video_id' => [
+                'required_with:video',
+                Rule::exists('file_withs', 'id')->where(function ($query) {
+                    $query->where('channel', null);
+                    $query->where('raw', null);
+                }),
+            ],
+            'video.cover_id' => [
+                'required_with:video',
+                Rule::exists('file_withs', 'id')->where(function ($query) {
+                    $query->where('channel', null);
+                    $query->where('raw', null);
+                }),
+            ],
         ];
     }
 
@@ -95,6 +110,10 @@ class StoreFeedPost extends FormRequest
             'images.*.type.in' => '文件请求类型错误',
             'images.*.amount.required_with' => '文件请求参数类型错误',
             'images.*.amount.integer' => '文件请求参数不合法',
+            'video.video_id.required_without' => '发送的视频文件不存在',
+            'video.video_id.exists' => '视频已被使用',
+            'video.cover_id.required_without' => '视频封面不存在',
+            'video.cover_id.exists' => '视频封面已被使用',
         ];
     }
 

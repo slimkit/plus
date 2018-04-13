@@ -25,6 +25,7 @@ use Zhiyi\Plus\Models\Report;
 use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Models\FileWith;
 use Zhiyi\Plus\Models\PaidNode;
+use Zhiyi\Plus\Models\BlackList;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -34,7 +35,8 @@ class Feed extends Model
     use SoftDeletes,
         Concerns\HasFeedCollect,
         Relations\FeedHasReward,
-        Relations\FeedHasLike;
+        Relations\FeedHasLike,
+        Relations\FeedHasVideo;
 
     /**
      * The model table name.
@@ -63,7 +65,7 @@ class Feed extends Model
      *
      * @var array
      */
-    protected $with = ['images', 'paidNode'];
+    protected $with = ['images', 'paidNode', 'video'];
 
     /**
      * Has feed pinned.
@@ -75,6 +77,18 @@ class Feed extends Model
     {
         return $this->hasOne(FeedPinned::class, 'target', 'id')
             ->where('channel', 'feed');
+    }
+
+    /**
+     * blacklists of current user
+     * @Author   Wayne
+     * @DateTime 2018-04-13
+     * @Email    qiaobin@zhiyicx.com
+     * @return   [type]              [description]
+     */
+    public function blacks()
+    {
+        return $this->hasMany(BlackList::class, 'target_id', 'user_id');
     }
 
     /**

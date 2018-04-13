@@ -28,6 +28,7 @@ use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedVideo;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
@@ -120,8 +121,12 @@ class FeedController extends Controller
 
         $feeds = $feedModel->when($after, function ($query) use ($after) {
             return $query->where('id', '<', $after);
-        })->when(isset($search), function ($query) use ($search) {
+        })
+        ->when(isset($search), function ($query) use ($search) {
             return $query->where('feed_content', 'LIKE', '%'.$search.'%');
+        })
+        ->whereDoesntHave('blacks', function ($query) use ($user) {
+            $query->where('user_id', $user);
         })
         ->orderBy('id', 'desc')
         ->with([
@@ -181,6 +186,9 @@ class FeedController extends Controller
             ->pluck('likeable_id');
 
         $feeds = FeedModel::whereIn('id', $ids)
+            ->whereDoesntHave('blacks', function ($query) use ($user) {
+                $query->where('user_id', $user);
+            })
             ->with([
                 'pinnedComments' => function ($query) use ($dateTime) {
                     return $query->with('user')->where('expires_at', '>', $dateTime)->limit(5);
@@ -231,6 +239,9 @@ class FeedController extends Controller
         $after = $request->query('after');
         $feeds = $model->leftJoin('user_follow', function ($join) use ($user) {
             $join->where('user_follow.user_id', $user->id);
+        })
+        ->whereDoesntHave('blacks', function ($query) use ($user) {
+            $query->where('user_id', $user);
         })
         ->where(function ($query) use ($user) {
             $query->whereColumn('feeds.user_id', '=', 'user_follow.target')
@@ -320,13 +331,16 @@ class FeedController extends Controller
 
         $paidNodes = $this->makePaidNode($request);
         $fileWiths = $this->makeFileWith($request);
+        $videoWith = $this->makeVideoWith($request);
+        $videoCoverWith = $this->makeVideoCoverWith($request);
 
         try {
             $feed->saveOrFail();
-            $feed->getConnection()->transaction(function () use ($request, $feed, $paidNodes, $fileWiths, $user) {
+            $feed->getConnection()->transaction(function () use ($request, $feed, $paidNodes, $fileWiths, $user, $videoWith, $videoCoverWith) {
                 $this->saveFeedPaidNode($request, $feed);
                 $this->saveFeedFilePaidNode($paidNodes, $feed);
                 $this->saveFeedFileWith($fileWiths, $feed);
+                $videoWith && $this->saveFeedVideoWith($videoWith, $videoCoverWith, $feed);
                 $user->extra()->firstOrCreate([])->increment('feeds_count', 1);
             });
         } catch (\Exception $e) {
@@ -359,6 +373,46 @@ class FeedController extends Controller
         ->get();
     }
 
+     /**
+     * 获取动态视频
+     * @Author   Wayne
+     * @DateTime 2018-04-02
+     * @Email    qiaobin@zhiyicx.com
+     * @param    StoreFeedPostRequest $request [description]
+     * @return   [type]                        [description]
+     */
+    protected function makeVideoWith(StoreFeedPostRequest $request)
+    {
+        $video = $request->input('video');
+        return FileWithModel::where(
+            'id',
+            $video['video_id']
+        )->where('channel', null)
+        ->where('raw', null)
+        ->where('user_id', $request->user()->id)
+        ->first();
+    }
+    /**
+     * 获取段视频封面
+     * @Author   Wayne
+     * @DateTime 2018-04-02
+     * @Email    qiaobin@zhiyicx.com
+     * @param    StoreFeedPostRequest $request [description]
+     * @return   [type]                        [description]
+     */
+    protected function makeVideoCoverWith(StoreFeedPostRequest $request)
+    {
+        $video = $request->input('video');
+        return FileWithModel::where(
+            'id',
+            $video['cover_id']
+        )->where('channel', null)
+        ->where('raw', null)
+        ->where('user_id', $request->user()->id)
+        ->first();
+    }
+
+
     /**
      * 创建付费节点模型.
      *
@@ -378,6 +432,36 @@ class FeedController extends Controller
             $paidNode->extra = $item['type'];
 
             return $paidNode;
+        });
+    }
+
+    /**
+     * 保存视频
+     * @Author   Wayne
+     * @DateTime 2018-04-02
+     * @Email    qiaobin@zhiyicx.com
+     * @param    [type]              $videoWith      [description]
+     * @param    [type]              $videoCoverWith [description]
+     * @param    FeedModel           $feed           [description]
+     * @return   [type]                              [description]
+     */
+    protected function saveFeedVideoWith($videoWith, $videoCoverWith, FeedModel $feed)
+    {
+        $video = new FeedVideo();
+        DB::transaction(function () use ($feed, $video, $videoWith, $videoCoverWith) {
+            $videoWith->channel = 'feed:video';
+            $videoCoverWith->channel = 'feed:video:cover';
+            $videoWith->raw = $feed->id;
+            $videoCoverWith->raw = $feed->id;
+            $videoWith->save();
+            $videoCoverWith->save();
+            $video->video_id = $videoWith->id;
+            $video->cover_id = $videoCoverWith->id;
+            $video->user_id = $feed->user_id;
+            $video->feed_id = $feed->id;
+            $video->width = $videoWith->file->width;
+            $video->height = $videoWith->file->height;
+            $video->save();
         });
     }
 
@@ -473,10 +557,11 @@ class FeedController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function destroy(Request $request,
-                            ResponseContract $response,
-                            FeedModel $feed)
-    {
+    public function destroy(
+        Request $request,
+        ResponseContract $response,
+        FeedModel $feed
+    ) {
         $user = $request->user();
 
         if ($user->id !== $feed->user_id) {
@@ -516,10 +601,11 @@ class FeedController extends Controller
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function newDestroy(Request $request,
-                            ResponseContract $response,
-                            FeedModel $feed)
-    {
+    public function newDestroy(
+        Request $request,
+        ResponseContract $response,
+        FeedModel $feed
+    ) {
         $user = $request->user();
 
         if ($user->id !== $feed->user_id) {
@@ -528,7 +614,6 @@ class FeedController extends Controller
 
         $feed->getConnection()->transaction(function () use ($feed, $user) {
             if ($pinned = $feed->pinned()->where('user_id', $user->id)->where('expires_at', null)->first()) { // 存在未审核的置顶申请时退款
-
                 $process = new UserProcess();
                 $process->reject(0, $pinned->amount, $user->id, '动态申请置顶退款', sprintf('退还申请置顶动态《%s》的款项', str_limit($feed->feed_content, 100)));
             }
