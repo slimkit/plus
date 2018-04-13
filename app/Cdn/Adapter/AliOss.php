@@ -297,7 +297,7 @@ class AliOss implements FileUrlGeneratorContract
      */
     protected function getBaseURI(string $endpoint = ''): string
     {
-        $endpoint = $this->isCname ? $this->endpoint : $this->bucket . '.' . $this->endpoint;
+        $endpoint = $this->isCname ? $this->endpoint : $this->bucket.'.'.$this->endpoint;
         // 去除协议头，保留 hostname 部分。
         if (strpos($endpoint, 'http://') === 0) {
             $endpoint = substr($endpoint, strlen('http://'));
