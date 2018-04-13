@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -15,6 +17,7 @@ declare(strict_types=1);
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Relations;
 
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedVideo;

@@ -373,8 +373,8 @@ class FeedController extends Controller
         ->get();
     }
 
-     /**
-     * 获取动态视频
+    /**
+     * 获取动态视频.
      * @Author   Wayne
      * @DateTime 2018-04-02
      * @Email    qiaobin@zhiyicx.com
@@ -384,6 +384,7 @@ class FeedController extends Controller
     protected function makeVideoWith(StoreFeedPostRequest $request)
     {
         $video = $request->input('video');
+
         return FileWithModel::where(
             'id',
             $video['video_id']
@@ -392,8 +393,9 @@ class FeedController extends Controller
         ->where('user_id', $request->user()->id)
         ->first();
     }
+
     /**
-     * 获取段视频封面
+     * 获取段视频封面.
      * @Author   Wayne
      * @DateTime 2018-04-02
      * @Email    qiaobin@zhiyicx.com
@@ -403,6 +405,7 @@ class FeedController extends Controller
     protected function makeVideoCoverWith(StoreFeedPostRequest $request)
     {
         $video = $request->input('video');
+
         return FileWithModel::where(
             'id',
             $video['cover_id']
@@ -411,7 +414,6 @@ class FeedController extends Controller
         ->where('user_id', $request->user()->id)
         ->first();
     }
-
 
     /**
      * 创建付费节点模型.
@@ -436,7 +438,7 @@ class FeedController extends Controller
     }
 
     /**
-     * 保存视频
+     * 保存视频.
      * @Author   Wayne
      * @DateTime 2018-04-02
      * @Email    qiaobin@zhiyicx.com

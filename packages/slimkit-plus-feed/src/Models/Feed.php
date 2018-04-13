@@ -80,7 +80,7 @@ class Feed extends Model
     }
 
     /**
-     * blacklists of current user
+     * blacklists of current user.
      * @Author   Wayne
      * @DateTime 2018-04-13
      * @Email    qiaobin@zhiyicx.com
