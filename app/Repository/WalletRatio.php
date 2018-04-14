@@ -54,7 +54,7 @@ class WalletRatio
     public function get(): int
     {
         if ($this->cache->has($this->cacheKey())) {
-            return $this->cache->get($this->cacheKey());
+            return (int) $this->cache->get($this->cacheKey());
         }
 
         $model = CommonConfig::firstOrCreate(

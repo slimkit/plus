@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -18,21 +16,10 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Models\Relations;
+use Faker\Generator as Faker;
 
-use Zhiyi\Plus\Models\BlackList;
-
-trait UserHasBlackLists
-{
-    /**
-     * get blacklists of current user.
-     * @Author   Wayne
-     * @DateTime 2018-04-08
-     * @Email    qiaobin@zhiyicx.com
-     * @return   [type]              [description]
-     */
-    public function blacklists()
-    {
-        return $this->hasMany(BlackList::class, 'user_id', 'id');
-    }
-}
+$factory->define(Zhiyi\Plus\Model\UserCount::class, function (Faker $faker) {
+    return [
+        //
+    ];
+});

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -18,21 +16,38 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Models\Relations;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
-use Zhiyi\Plus\Models\BlackList;
-
-trait UserHasBlackLists
+class CreateUserCountsTable extends Migration
 {
     /**
-     * get blacklists of current user.
-     * @Author   Wayne
-     * @DateTime 2018-04-08
-     * @Email    qiaobin@zhiyicx.com
-     * @return   [type]              [description]
+     * Run the migrations.
+     *
+     * @return void
      */
-    public function blacklists()
+    public function up()
     {
-        return $this->hasMany(BlackList::class, 'user_id', 'id');
+        Schema::create('user_counts', function (Blueprint $table) {
+            $table->integer('user_id')->unsigned()->comment('所有者 ID');
+            $table->string('type', 100)->comment('统计类型');
+            $table->integer('total')->nullable()->default(0)->comment('统计总数');
+            $table->timestamp('read_at')->nullable();
+            $table->timestamps();
+
+            $table->primary(['user_id', 'type']);
+            $table->index('user_id');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('user_counts');
     }
 }

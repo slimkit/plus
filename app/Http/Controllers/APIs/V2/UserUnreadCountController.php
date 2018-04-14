@@ -22,9 +22,11 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Zhiyi\Plus\Models\Like as LikeModel;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\Plus\Support\PinnedsNotificationEventer;
+use Zhiyi\Plus\Models\Conversation as ConversationModel;
 
 class UserUnreadCountController extends Controller
 {
@@ -69,16 +71,48 @@ class UserUnreadCountController extends Controller
         $pinneds = $eventer->dispatch()->mapWithKeys(function ($pinnedModels) use ($user) {
             $model = new $pinnedModels['namespace']();
 
-            $pinneds[$pinnedModels['name']] = $model->select(DB::raw('max(created_at) as time, count(*) as count'))->where($pinnedModels['owner_prefix'], $user->id)->where($pinnedModels['wherecolumn'])->first()->toArray();
+            $pinned = $model
+                ->select(DB::raw('max(created_at) as time, count(*) as count'))
+                ->where($pinnedModels['owner_prefix'], $user->id)
+                ->where($pinnedModels['wherecolumn'])
+                ->first();
+            if (! $pinned || (! $pinned->time && ! $pinned->count)) {
+                return [];
+            }
 
-            return $pinneds;
+            return [
+                $pinnedModels['name'] => $pinned,
+            ];
         });
 
-        return response()->json([
+        $lastSystem = ConversationModel::where('type', 'system')
+            ->where('to_user_id', $user->id)
+            ->latest()
+            ->first();
+        if ($lastSystem) {
+            $lastSystem = $lastSystem->toArray();
+        }
+
+        $result = array_filter([
             'counts' => $counts,
             'comments' => $comments,
             'likes' => $likes,
             'pinneds' => $pinneds,
-        ], 200);
+            'system' => $lastSystem,
+        ], function ($item) {
+            if (is_null($item)) {
+                return false;
+            } elseif ($item instanceof Collection) {
+                return $item->isNotEmpty();
+            }
+
+            return true;
+        });
+
+        if (empty($result)) {
+            $result = new \stdClass();
+        }
+
+        return response()->json($result, 200);
     }
 }

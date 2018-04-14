@@ -80,6 +80,18 @@ class Feed extends Model
     }
 
     /**
+     * blacklists of current user.
+     * @Author   Wayne
+     * @DateTime 2018-04-13
+     * @Email    qiaobin@zhiyicx.com
+     * @return   [type]              [description]
+     */
+    public function blacks()
+    {
+        return $this->hasMany(BlackList::class, 'target_id', 'user_id');
+    }
+
+    /**
      * Get feed images.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

@@ -18,12 +18,23 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace SlimKit\PlusSocialite\API\Requests;
+namespace Zhiyi\Plus\Admin\Requests;
 
-use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Http\FormRequest;
 
-class CreateUserRequest extends AccessTokenRequest
+class UpdateImHelperUserRequest extends FormRequest
 {
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -32,26 +43,23 @@ class CreateUserRequest extends AccessTokenRequest
      */
     public function rules(): array
     {
-        return array_merge(parent::rules(), [
-            'name' => [
-                'required',
-                'string',
-                'username',
-                'display_length,2,12',
-                Rule::notIn(config('site.reserved_nickname')),
-                'unique:users,name',
-            ],
-        ]);
+        return [
+            'user' => 'required|integer|exists:users,id',
+        ];
     }
 
+    /**
+     * Get the validation message that apply to the request.
+     *
+     * @return array
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function messages(): array
     {
-        return array_merge(parent::messages(), [
-            'name.required' => '请输入用户名',
-            'name.username' => '用户名只能以非特殊字符和数字开头，不能包含特殊字符',
-            'name.display_length' => '用户名长度不合法',
-            'name.unique' => '用户名已经被其他用户所使用',
-            'name.not_in' => '系统保留用户名，禁止使用',
-        ]);
+        return [
+            'user.required' => '请输入助手用户 ID',
+            'user.integer' => '输入的助手用户 ID 不合法，必须是整数类型',
+            'user.exists' => '设置的助手用户不存在',
+        ];
     }
 }

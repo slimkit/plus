@@ -18,40 +18,38 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace SlimKit\PlusSocialite\API\Requests;
+namespace Zhiyi\Plus\Admin\Controllers;
 
-use Illuminate\Validation\Rule;
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
+use Zhiyi\Plus\Support\Configuration;
+use Zhiyi\Plus\Admin\Requests\UpdateImHelperUserRequest;
 
-class CreateUserRequest extends AccessTokenRequest
+class ImHelperUserController extends Controller
 {
     /**
-     * Get the validation rules that apply to the request.
+     * Fetch im helper user id.
      *
-     * @return array
+     * @return \Illuminate\Http\JsonResponse
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function rules(): array
+    public function fetch(): JsonResponse
     {
-        return array_merge(parent::rules(), [
-            'name' => [
-                'required',
-                'string',
-                'username',
-                'display_length,2,12',
-                Rule::notIn(config('site.reserved_nickname')),
-                'unique:users,name',
-            ],
-        ]);
+        return response()->json(['user' => config('im.helper-user')], 200);
     }
 
-    public function messages(): array
+    /**
+     * Update im helper user id.
+     *
+     * @param \Zhiyi\Plus\Admin\Requests\UpdateImHelperUserRequest $request
+     * @param \Zhiyi\Plus\Support\Configuration $config
+     * @return \Illuminate\Http\Response
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function update(UpdateImHelperUserRequest $request, Configuration $config): Response
     {
-        return array_merge(parent::messages(), [
-            'name.required' => '请输入用户名',
-            'name.username' => '用户名只能以非特殊字符和数字开头，不能包含特殊字符',
-            'name.display_length' => '用户名长度不合法',
-            'name.unique' => '用户名已经被其他用户所使用',
-            'name.not_in' => '系统保留用户名，禁止使用',
-        ]);
+        $config->set('im.helper-user', $request->input('user'));
+
+        return response('', 204);
     }
 }

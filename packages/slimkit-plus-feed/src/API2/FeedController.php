@@ -22,7 +22,6 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\Like as LikeModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
@@ -55,9 +54,9 @@ class FeedController extends Controller
         }
 
         return $response->json([
-        'ad' => $app->call([$this, 'getAd']),
-        'pinned' => $app->call([$this, 'getPinnedFeeds']),
-        'feeds' => $app->call([$this, $type]),
+            'ad' => $app->call([$this, 'getAd']),
+            'pinned' => $app->call([$this, 'getPinnedFeeds']),
+            'feeds' => $app->call([$this, $type]),
         ])->setStatusCode(200);
     }
 
@@ -122,7 +121,8 @@ class FeedController extends Controller
 
         $feeds = $feedModel->when($after, function ($query) use ($after) {
             return $query->where('id', '<', $after);
-        })->when(isset($search), function ($query) use ($search) {
+        })
+        ->when(isset($search), function ($query) use ($search) {
             return $query->where('feed_content', 'LIKE', '%'.$search.'%');
         })
         ->whereDoesntHave('blacks', function ($query) use ($user) {
@@ -172,18 +172,18 @@ class FeedController extends Controller
         $user = $request->user('api')->id ?? 0;
 
         $ids = $model->where('likeable_type', 'feeds')
-        ->join('feeds', function ($query) {
-            $query->on('feeds.id', '=', 'likes.likeable_id');
-        })
-        ->select('likeable_id', $model->getConnection()->raw('COUNT(likes.id) as count'))
-        ->where('likes.created_at', '>', $dateTime->subMonth())
-        ->when((bool) $after, function ($query) use ($after) {
-            return $query->where('likes.likeable_id', '<', $after);
-        })
-        ->groupBy('likeable_id')
-        ->orderBy('likeable_id', 'desc')
-        ->limit($limit)
-        ->pluck('likeable_id');
+            ->join('feeds', function ($query) {
+                $query->on('feeds.id', '=', 'likes.likeable_id');
+            })
+            ->select('likeable_id', $model->getConnection()->raw('COUNT(likes.id) as count'))
+            ->where('likes.created_at', '>', $dateTime->subMonth())
+            ->when((bool) $after, function ($query) use ($after) {
+                return $query->where('likes.likeable_id', '<', $after);
+            })
+            ->groupBy('likeable_id')
+            ->orderBy('likeable_id', 'desc')
+            ->limit($limit)
+            ->pluck('likeable_id');
 
         $feeds = FeedModel::whereIn('id', $ids)
             ->whereDoesntHave('blacks', function ($query) use ($user) {
@@ -240,12 +240,12 @@ class FeedController extends Controller
         $feeds = $model->leftJoin('user_follow', function ($join) use ($user) {
             $join->where('user_follow.user_id', $user->id);
         })
+        ->whereDoesntHave('blacks', function ($query) use ($user) {
+            $query->where('user_id', $user);
+        })
         ->where(function ($query) use ($user) {
             $query->whereColumn('feeds.user_id', '=', 'user_follow.target')
-            ->orWhere('feeds.user_id', $user->id);
-        })
-        ->whereDoesntHave('blacks', function ($query) use ($user) {
-            $query->where('user_id', $user->id);
+                ->orWhere('feeds.user_id', $user->id);
         })
         ->with([
             'pinnedComments' => function ($query) use ($datetime) {
@@ -292,11 +292,12 @@ class FeedController extends Controller
     {
         $user = $request->user('api')->id ?? 0;
         $feed = $repository->find($feed);
+
         if ($feed->paidNode !== null && $feed->paidNode->paid($user) === false) {
             return response()->json([
-            'message' => ['请购买动态'],
-            'paid_node' => $feed->paidNode->id,
-            'amount' => $feed->paidNode->amount,
+                'message' => ['请购买动态'],
+                'paid_node' => $feed->paidNode->id,
+                'amount' => $feed->paidNode->amount,
             ])->setStatusCode(403);
         }
 
@@ -306,7 +307,8 @@ class FeedController extends Controller
             $feed->has_collect = $feed->collected($user);
             $feed->has_like = $feed->liked($user);
             $feed->reward = $feed->rewardCount();
-            // $repository->();
+
+            $repository->images();
             $repository->previewLike();
 
             $feed->increment('feed_view_count');
@@ -372,7 +374,7 @@ class FeedController extends Controller
     }
 
     /**
-     * 获取动态视频
+     * 获取动态视频.
      * @Author   Wayne
      * @DateTime 2018-04-02
      * @Email    qiaobin@zhiyicx.com
@@ -382,6 +384,7 @@ class FeedController extends Controller
     protected function makeVideoWith(StoreFeedPostRequest $request)
     {
         $video = $request->input('video');
+
         return FileWithModel::where(
             'id',
             $video['video_id']
@@ -392,7 +395,7 @@ class FeedController extends Controller
     }
 
     /**
-     * 获取段视频封面
+     * 获取段视频封面.
      * @Author   Wayne
      * @DateTime 2018-04-02
      * @Email    qiaobin@zhiyicx.com
@@ -402,6 +405,7 @@ class FeedController extends Controller
     protected function makeVideoCoverWith(StoreFeedPostRequest $request)
     {
         $video = $request->input('video');
+
         return FileWithModel::where(
             'id',
             $video['cover_id']
@@ -434,24 +438,7 @@ class FeedController extends Controller
     }
 
     /**
-     * 保存分享图片使用.
-     *
-     * @param array $fileWiths
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
-     * @return void
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    protected function saveFeedFileWith($fileWiths, FeedModel $feed)
-    {
-        foreach ($fileWiths as $fileWith) {
-            $fileWith->channel = 'feed:image';
-            $fileWith->raw = $feed->id;
-            $fileWith->save();
-        }
-    }
-
-    /**
-     * 保存视频
+     * 保存视频.
      * @Author   Wayne
      * @DateTime 2018-04-02
      * @Email    qiaobin@zhiyicx.com
@@ -478,6 +465,23 @@ class FeedController extends Controller
             $video->height = $videoWith->file->height;
             $video->save();
         });
+    }
+
+    /**
+     * 保存分享图片使用.
+     *
+     * @param array $fileWiths
+     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    protected function saveFeedFileWith($fileWiths, FeedModel $feed)
+    {
+        foreach ($fileWiths as $fileWith) {
+            $fileWith->channel = 'feed:image';
+            $fileWith->raw = $feed->id;
+            $fileWith->save();
+        }
     }
 
     /**
@@ -516,12 +520,12 @@ class FeedController extends Controller
 
         $paidNode = new PaidNodeModel();
         $paidNode->amount = $amount;
-            $paidNode->channel = 'feed';
-            $paidNode->raw = $feed->id;
-            $paidNode->subject = sprintf('购买动态《%s》', str_limit($feed->feed_content, 100, '...'));
-            $paidNode->body = $paidNode->subject;
-            $paidNode->user_id = $feed->user_id;
-            $paidNode->save();
+        $paidNode->channel = 'feed';
+        $paidNode->raw = $feed->id;
+        $paidNode->subject = sprintf('购买动态《%s》', str_limit($feed->feed_content, 100, '...'));
+        $paidNode->body = $paidNode->subject;
+        $paidNode->user_id = $feed->user_id;
+        $paidNode->save();
     }
 
     /**

@@ -18,21 +18,13 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Models\Relations;
+namespace Zhiyi\Plus\Admin\Controllers;
 
-use Zhiyi\Plus\Models\BlackList;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-trait UserHasBlackLists
+class Controller extends \Illuminate\Routing\Controller
 {
-    /**
-     * get blacklists of current user.
-     * @Author   Wayne
-     * @DateTime 2018-04-08
-     * @Email    qiaobin@zhiyicx.com
-     * @return   [type]              [description]
-     */
-    public function blacklists()
-    {
-        return $this->hasMany(BlackList::class, 'user_id', 'id');
-    }
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 }

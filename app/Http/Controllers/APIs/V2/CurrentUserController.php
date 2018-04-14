@@ -22,6 +22,8 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
+use Zhiyi\Plus\Models\UserFollow as UserFollowModel;
 use Zhiyi\Plus\Models\VerificationCode as VerificationCodeModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
@@ -236,50 +238,81 @@ class CurrentUserController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function attachFollowingUser(Request $request, ResponseFactoryContract $response, UserModel $target)
+    public function attachFollowingUser(Request $request, UserModel $target)
     {
         $user = $request->user();
 
         if ($user->id === $target->id) {
-            return $response->json(['message' => ['不可对自己进行操作']], 422);
+            return response()->json(['message' => ['不可对自己进行操作']], 422);
         } elseif ($user->hasFollwing($target)) {
-            return $response->json(['message' => ['非法的操作']], 422);
+            return response()->json(['message' => ['非法的操作']], 422);
+        }
+        $userFollowingCount = UserCountModel::where('user_id', $target->id)
+            ->where('type', 'user-following')
+            ->first();
+        if (! $userFollowingCount) {
+            $userFollowingCount = new UserCountModel();
+            $userFollowingCount->user_id = $target->id;
+            $userFollowingCount->type = 'user-following';
         }
 
-        return $user->getConnection()->transaction(function () use ($user, $target, $response) {
-            $user->followings()->attach($target);
-            $user->extra()->firstOrCreate([])->increment('followings_count', 1);
-            $target->extra()->firstOrCreate([])->increment('followers_count', 1);
+        return $user
+            ->getConnection()
+            ->transaction(function () use ($user, $target, $userFollowingCount) {
+                $user->followings()->attach($target);
+                $user->extra()->firstOrCreate([])->increment('followings_count', 1);
+                $target->extra()->firstOrCreate([])->increment('followers_count', 1);
 
-            $message = sprintf('%s关注了你，去看看吧', $user->name);
-            $target->sendNotifyMessage('user:follow', $message, [
-                'user' => $user,
-            ]);
+                $userFollowingCount->total += 1;
+                $userFollowingCount->save();
 
-            return $response->make(null, 204);
-        });
+                return response('', 204);
+            });
     }
 
     /**
      * detach a following user.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
      * @param \Zhiyi\Plus\Models\User $target
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function detachFollowingUser(Request $request, ResponseFactoryContract $response, UserModel $target)
+    public function detachFollowingUser(Request $request, UserModel $target)
     {
         $user = $request->user();
 
-        return $user->getConnection()->transaction(function () use ($user, $target, $response) {
-            $user->followings()->detach($target);
-            $user->extra()->decrement('followings_count', 1);
-            $target->extra()->decrement('followers_count', 1);
+        $userFollowingCount = UserCountModel::where('user_id', $target->id)
+            ->where('type', 'user-following')
+            ->first();
+        if (! $userFollowingCount) {
+            $userFollowingCount = new UserCountModel();
+            $userFollowingCount->user_id = $target->id;
+            $userFollowingCount->type = 'user-following';
+        }
 
-            return $response->make('', 204);
-        });
+        $userFollowing = UserFollowModel::where('user_id', $user->id)
+            ->where('target', $target->id)
+            ->first();
+
+        return $user
+            ->getConnection()
+            ->transaction(function () use ($user, $target, $userFollowingCount, $userFollowing) {
+                $user->followings()->detach($target);
+                $user->extra()->decrement('followings_count', 1);
+                $target->extra()->decrement('followers_count', 1);
+
+                if (
+                    $userFollowing &&
+                    $userFollowingCount->total &&
+                    $userFollowing->updated_at->gte($userFollowingCount->read_at)
+                ) {
+                    $userFollowingCount->total -= 1;
+                    $userFollowingCount->save();
+                }
+
+                return response('', 204);
+            });
     }
 
     /**

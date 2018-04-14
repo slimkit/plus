@@ -18,21 +18,11 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Models\Relations;
+use Illuminate\Support\Facades\Route;
+use Zhiyi\Plus\Admin\Controllers as AdminControllers;
+use Illuminate\Contracts\Routing\Registrar as RouteContract;
 
-use Zhiyi\Plus\Models\BlackList;
-
-trait UserHasBlackLists
-{
-    /**
-     * get blacklists of current user.
-     * @Author   Wayne
-     * @DateTime 2018-04-08
-     * @Email    qiaobin@zhiyicx.com
-     * @return   [type]              [description]
-     */
-    public function blacklists()
-    {
-        return $this->hasMany(BlackList::class, 'user_id', 'id');
-    }
-}
+Route::middleware(['auth:web', 'admin'])->prefix('admin')->group(function (RouteContract $route) {
+    $route->get('im/helper-user', AdminControllers\ImHelperUserController::class.'@fetch');
+    $route->put('im/helper-user', AdminControllers\ImHelperUserController::class.'@update');
+});

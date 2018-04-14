@@ -18,21 +18,25 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Models\Relations;
+namespace Zhiyi\Plus\API2\Resources;
 
-use Zhiyi\Plus\Models\BlackList;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-trait UserHasBlackLists
+class UserCountsResource extends JsonResource
 {
-    /**
-     * get blacklists of current user.
-     * @Author   Wayne
-     * @DateTime 2018-04-08
-     * @Email    qiaobin@zhiyicx.com
-     * @return   [type]              [description]
-     */
-    public function blacklists()
+    public function toArray($request): array
     {
-        return $this->hasMany(BlackList::class, 'user_id', 'id');
+        static::withoutWrapping();
+
+        return [
+            'user' => [
+                'following' => $this['user-following'] ?? 0,
+            ],
+        ];
+    }
+
+    public function withResponse($request, $response)
+    {
+        $response->setStatusCode(200);
     }
 }

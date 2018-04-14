@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -18,21 +16,23 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Models\Relations;
+namespace Zhiyi\Plus\Models;
 
-use Zhiyi\Plus\Models\BlackList;
+use Illuminate\Database\Eloquent\Model;
 
-trait UserHasBlackLists
+class UserCount extends Model
 {
     /**
-     * get blacklists of current user.
-     * @Author   Wayne
-     * @DateTime 2018-04-08
-     * @Email    qiaobin@zhiyicx.com
-     * @return   [type]              [description]
+     * The primary key for the model.
+     *
+     * @var string
      */
-    public function blacklists()
-    {
-        return $this->hasMany(BlackList::class, 'user_id', 'id');
-    }
+    protected $primaryKey = 'user_id';
+
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
 }

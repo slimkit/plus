@@ -65,9 +65,8 @@ class AliOss implements FileUrlGeneratorContract
         $this->ssl = config('cdn.generators.alioss.ssl', false);
         $this->public = config('cdn.generators.alioss.public', true);
         $this->expires = config('cdn.generators.alioss.expires', 3600);
-        $this->isCname = config('cdn.generators.alioss.cname', false);
 
-        $this->client = new OssClient($this->accessKeyId, $this->accessKeySecret, $this->endpoint, $this->isCname);
+        $this->client = new OssClient($this->accessKeyId, $this->accessKeySecret, $this->endpoint);
         $this->client->setUseSSL($this->ssl);
     }
 
@@ -81,7 +80,6 @@ class AliOss implements FileUrlGeneratorContract
      */
     public function url(string $filename, array $extra = []):string
     {
-        dd($extra);
         // 过滤目录分隔符.
         $filename = $this->filterSlash($filename);
 
@@ -299,7 +297,7 @@ class AliOss implements FileUrlGeneratorContract
      */
     protected function getBaseURI(string $endpoint = ''): string
     {
-        $endpoint = $this->isCname ? $this->endpoint : $this->bucket . '.' . $this->endpoint;
+        $endpoint = $this->isCname ? $this->endpoint : $this->bucket.'.'.$this->endpoint;
         // 去除协议头，保留 hostname 部分。
         if (strpos($endpoint, 'http://') === 0) {
             $endpoint = substr($endpoint, strlen('http://'));

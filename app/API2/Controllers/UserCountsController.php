@@ -18,40 +18,44 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace SlimKit\PlusSocialite\API\Requests;
+namespace Zhiyi\Plus\API2\Controllers;
 
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Carbon;
+use Zhiyi\Plus\API2\Resources\UserCountsResource;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 
-class CreateUserRequest extends AccessTokenRequest
+class UserCountsController extends Controller
 {
     /**
-     * Get the validation rules that apply to the request.
+     * Create the Controller instance.
      *
-     * @return array
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function rules(): array
+    public function __construct()
     {
-        return array_merge(parent::rules(), [
-            'name' => [
-                'required',
-                'string',
-                'username',
-                'display_length,2,12',
-                Rule::notIn(config('site.reserved_nickname')),
-                'unique:users,name',
-            ],
-        ]);
+        $this->middleware('auth:api');
     }
 
-    public function messages(): array
+    /**
+     * The route controller to callable handle.
+     *
+     * @return \Zhiyi\Plus\API2\Resources\UserCountsResource
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function __invoke(): UserCountsResource
     {
-        return array_merge(parent::messages(), [
-            'name.required' => '请输入用户名',
-            'name.username' => '用户名只能以非特殊字符和数字开头，不能包含特殊字符',
-            'name.display_length' => '用户名长度不合法',
-            'name.unique' => '用户名已经被其他用户所使用',
-            'name.not_in' => '系统保留用户名，禁止使用',
-        ]);
+        $user = $this->request()->user();
+        $counts = UserCountModel::where('user_id', $user->id)->get();
+        $now = new Carbon();
+        $data = [];
+        $counts->each(function (UserCountModel $count) use ($now, &$data) {
+            $data[$count->type] = $count->total;
+
+            $count->total = 0;
+            $count->read_at = $now;
+            $count->save();
+        });
+
+        return new UserCountsResource($data);
     }
 }

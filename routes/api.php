@@ -587,4 +587,6 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             });
         });
     });
+
+    $api->get('user/counts', \Zhiyi\Plus\API2\Controllers\UserCountsController::class);
 });
