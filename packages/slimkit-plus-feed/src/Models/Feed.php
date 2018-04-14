@@ -102,12 +102,7 @@ class Feed extends Model
         return $this->hasMany(FileWith::class, 'raw', 'id')
             ->where('channel', 'feed:image');
     }
-
-    public function blacks()
-    {
-        return $this->hasMany(BlackList::class, 'target_id', 'user_id');
-    }
-
+    
     /**
      * 动态付费节点.
      *
