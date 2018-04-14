@@ -37,7 +37,7 @@ class CreateUserRequest extends AccessTokenRequest
                 'required',
                 'string',
                 'username',
-                'display_length,2,12',
+                'display_length:2,12',
                 Rule::notIn(config('site.reserved_nickname')),
                 'unique:users,name',
             ],
