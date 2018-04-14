@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models;
 
-use Zhiyi\Plus\Models\BlackList;
 use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
@@ -48,7 +47,7 @@ class Comment extends Model
     }
 
     /**
-     * 被回复者
+     * 被回复者.
      * @Author   Wayne
      * @DateTime 2018-04-14
      * @Email    qiaobin@zhiyicx.com
@@ -58,14 +57,14 @@ class Comment extends Model
     {
         return $this->belongsTo(User::class, 'target_user', 'id');
     }
-    
+
     public function blacks()
     {
         return $this->hasMany(BlackList::class, 'target_id', 'user_id');
     }
 
     /**
-     * 被回复者
+     * 被回复者.
      * @Author   Wayne
      * @DateTime 2018-04-14
      * @Email    qiaobin@zhiyicx.com
