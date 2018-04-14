@@ -106,29 +106,29 @@
 </template>
 
 <script>
-import Select from './Select';
-import request, { createRequestURI } from '../../../util/request';
+import Select from "./Select";
+import request, { createRequestURI } from "../../../util/request";
 export default {
-  name: 'module-cdn-alioss',
+  name: "module-cdn-alioss",
   components: {
-    [Select.name]: Select,
+    [Select.name]: Select
   },
   props: {
-    handleSelect: { type: Function, required: true },
+    handleSelect: { type: Function, required: true }
   },
   data: () => ({
     loading: false,
-    bucket: '',
-    endpoint: '',
-    AccessKeyId: '',
-    AccessKeySecret: '',
+    bucket: "",
+    endpoint: "",
+    AccessKeyId: "",
+    AccessKeySecret: "",
     expires: 3600,
     ssl: false,
     isPublic: true,
     isCname: false
   }),
   methods: {
-    handleSubmit ({ stopProcessing }) {
+    handleSubmit({ stopProcessing }) {
       const params = {
         bucket: this.bucket,
         endpoint: this.endpoint,
@@ -139,35 +139,59 @@ export default {
         isPublic: this.isPublic,
         isCname: this.isCname
       };
-      request.post(createRequestURI('cdn/alioss'), params, {
-        validateStatus: status => status === 201,
-      }).then(({ data }) => {
-        this.$store.dispatch('alert-open', { type: 'success', message: data });
-        stopProcessing();
-      }).catch(({ response: { data = { message: '设置失败，请重试！' } } }) => {
-        this.$store.dispatch('alert-open', { type: 'danger', message: data });
-        stopProcessing();
-      });
+      request
+        .post(createRequestURI("cdn/alioss"), params, {
+          validateStatus: status => status === 201
+        })
+        .then(({ data }) => {
+          this.$store.dispatch("alert-open", {
+            type: "success",
+            message: data
+          });
+          stopProcessing();
+        })
+        .catch(({ response: { data = { message: "设置失败，请重试！" } } }) => {
+          this.$store.dispatch("alert-open", { type: "danger", message: data });
+          stopProcessing();
+        });
     }
   },
-  created () {
+  created() {
     this.loading = true;
-    request.get(createRequestURI('cdn/alioss'), {
-      validateStatus: status => status === 200,
-    }).then(({ data: { bucket, endpoint, expires, AccessKeyId, AccessKeySecret, ssl, isPublic, isCname } }) => {
-      this.loading = false;
-      this.bucket = bucket;
-      this.endpoint = endpoint;
-      this.ssl = !! ssl;
-      this.isPublic = !! isPublic;
-      this.AccessKeyId = AccessKeyId;
-      this.AccessKeySecret = AccessKeySecret;
-      this.isCname = !! isCname;
-      this.expires = expires;
-    }).catch(({ response: { data = { message: '加载失败，请刷新重试！' } } }) => {
-      this.loading = false;
-      this.$store.dispatch('alert-open', { type: 'danger', message: data });
-    });
+    request
+      .get(createRequestURI("cdn/alioss"), {
+        validateStatus: status => status === 200
+      })
+      .then(
+        ({
+          data: {
+            bucket,
+            endpoint,
+            expires,
+            AccessKeyId,
+            AccessKeySecret,
+            ssl,
+            isPublic,
+            isCname
+          }
+        }) => {
+          this.loading = false;
+          this.bucket = bucket;
+          this.endpoint = endpoint;
+          this.ssl = !!ssl;
+          this.isPublic = !!isPublic;
+          this.AccessKeyId = AccessKeyId;
+          this.AccessKeySecret = AccessKeySecret;
+          this.isCname = !!isCname;
+          this.expires = expires;
+        }
+      )
+      .catch(
+        ({ response: { data = { message: "加载失败，请刷新重试！" } } }) => {
+          this.loading = false;
+          this.$store.dispatch("alert-open", { type: "danger", message: data });
+        }
+      );
   }
 };
 </script>

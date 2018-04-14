@@ -24,6 +24,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserCountsResource extends JsonResource
 {
+    /**
+     * The resource to array.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return array
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function toArray($request): array
     {
         static::withoutWrapping();
@@ -35,6 +42,14 @@ class UserCountsResource extends JsonResource
         ];
     }
 
+    /**
+     * with response that the resource.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illiminate\Http\Response $response
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function withResponse($request, $response)
     {
         $response->setStatusCode(200);
