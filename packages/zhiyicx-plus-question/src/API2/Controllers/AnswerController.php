@@ -54,6 +54,9 @@ class AnswerController extends Controller
         $orderType = in_array($orderType = $request->query('order_type', 'default'), array_keys($orderMap)) ? $orderType : 'default';
 
         $answers = $question->answers()
+            ->whereDoesntHave('blacks', function ($query) use ($user) {
+                $query->where('user_id', $userID);
+            })
             ->with('user')
             ->where('invited', 0)
             ->where('adoption', 0)
@@ -157,11 +160,12 @@ class AnswerController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function store(QuestionAnswerRequest $request,
-                          ResponseFactoryContract $response,
-                          AnswerModel $answer,
-                          QuestionModel $question)
-    {
+    public function store(
+        QuestionAnswerRequest $request,
+        ResponseFactoryContract $response,
+        AnswerModel $answer,
+        QuestionModel $question
+    ) {
         $user = $request->user();
 
         $anonymity = $request->input('anonymity') ? 1 : 0;
@@ -265,10 +269,11 @@ class AnswerController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function update(UpdateAnswerRequest $request,
-                           ResponseFactoryContract $response,
-                           AnswerModel $answer)
-    {
+    public function update(
+        UpdateAnswerRequest $request,
+        ResponseFactoryContract $response,
+        AnswerModel $answer
+    ) {
         $user = $request->user();
 
         if ($user->id !== $answer->user_id) {
@@ -340,11 +345,12 @@ class AnswerController extends Controller
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function newStore(QuestionAnswerRequest $request,
-                          ResponseFactoryContract $response,
-                          AnswerModel $answer,
-                          QuestionModel $question)
-    {
+    public function newStore(
+        QuestionAnswerRequest $request,
+        ResponseFactoryContract $response,
+        AnswerModel $answer,
+        QuestionModel $question
+    ) {
         $user = $request->user();
 
         $anonymity = $request->input('anonymity') ? 1 : 0;

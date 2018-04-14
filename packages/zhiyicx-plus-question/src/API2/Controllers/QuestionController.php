@@ -81,12 +81,14 @@ class QuestionController extends Controller
         ];
         $type = in_array($type = $request->query('type', 'new'), array_keys($map)) ? $type : 'new';
         call_user_func($map[$type], $query = $questionModel
+            ->whereDoesntHave('blacks', function ($query) use ($user) {
+                $query->where('user_id', $userID);
+            })
             ->when($subject, function ($query) use ($subject) {
                 return $query->where('subject', 'like', '%'.$subject.'%');
             })
             ->limit($limit)
-            ->offset($offset)
-        );
+            ->offset($offset));
         $questions = $query->get();
         $questions->load('user');
 
@@ -97,6 +99,9 @@ class QuestionController extends Controller
             }
 
             $question->answer = $question->answers()
+                ->whereDoesntHave('blacks', function ($query) use ($user) {
+                    $query->where('user_id', $userID);
+                })
                 ->with('user')
                 ->orderBy('id', 'desc')
                 ->first();
@@ -224,13 +229,14 @@ class QuestionController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function store(PublishQuestionRequest $request,
-                          ResponseFactoryContract $response,
-                          QuestionModel $question,
-                          TopicModel $topicModel,
-                          UserModel $userModel,
-                          WalletChargeModel $charge)
-    {
+    public function store(
+        PublishQuestionRequest $request,
+        ResponseFactoryContract $response,
+        QuestionModel $question,
+        TopicModel $topicModel,
+        UserModel $userModel,
+        WalletChargeModel $charge
+    ) {
         $user = $request->user();
 
         // Get question base data.
@@ -281,15 +287,19 @@ class QuestionController extends Controller
         $charge->status = 1;
 
         try {
-
             // Save question.
             $user->questions()->save($question);
 
             // Save relation.
             $user->getConnection()->transaction(function () use (
-                $question, $user, $topics, $users,
-                $topicModel, $topicsIDs,
-                $charge, $images
+                $question,
+                $user,
+                $topics,
+                $users,
+                $topicModel,
+                $topicsIDs,
+                $charge,
+                $images
             ) {
 
                 // Sync topics.
@@ -323,7 +333,6 @@ class QuestionController extends Controller
                 });
             });
         } catch (\Exception $exception) {
-
             // Delete Question.
             $question->delete();
 
@@ -360,10 +369,11 @@ class QuestionController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function update(UpdateQuestionRequest $request,
-                           ResponseFactoryContract $response,
-                           QuestionModel $question)
-    {
+    public function update(
+        UpdateQuestionRequest $request,
+        ResponseFactoryContract $response,
+        QuestionModel $question
+    ) {
         $user = $request->user();
 
         $anonymity = $request->input('anonymity', $question->anonymity) ? 1 : 0;
@@ -425,11 +435,12 @@ class QuestionController extends Controller
      * @param \Zhiyi\Plus\Models\WalletCharge $charge
      * @return mixed
      */
-    public function resetAmount(Request $request,
-                                ResponseFactoryContract $response,
-                                QuestionModel $question,
-                                WalletChargeModel $charge)
-    {
+    public function resetAmount(
+        Request $request,
+        ResponseFactoryContract $response,
+        QuestionModel $question,
+        WalletChargeModel $charge
+    ) {
         $user = $request->user();
         if ($question->user_id !== $user->id) {
             return $response->json(['message' => [trans('plus-question::questions.not-owner')]], 403);
@@ -465,10 +476,11 @@ class QuestionController extends Controller
      * @param  \SlimKit\PlusQuestion\Models\Question $question
      * @return mixed
      */
-    public function destory(Request $request,
-                            ResponseFactoryContract $response,
-                            QuestionModel $question)
-    {
+    public function destory(
+        Request $request,
+        ResponseFactoryContract $response,
+        QuestionModel $question
+    ) {
         $user = $request->user();
         if ($question->user_id !== $user->id) {
             return $response->json(['message' => [trans('plus-question::questions.not-owner')]], 403);
