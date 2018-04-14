@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Utils\Markdown;
 use Zhiyi\Plus\Models\Tag as TagModel;
 use Zhiyi\Plus\Concerns\FindMarkdownFileTrait;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
@@ -127,6 +128,7 @@ class ContributeController extends Controller
         }
 
         $map = $request->only(['title', 'content', 'subject', 'text_content']);
+        $map['content'] = $this->app->make(Markdown::class)->safetyMarkdown($map['content']);
         $map['from'] = $request->input('from') ?: '原创';
         $map['author'] = $request->input('author') ?: $user->name;
         $map['storage'] = $request->input('image');
@@ -247,7 +249,11 @@ class ContributeController extends Controller
                 ->first();
         });
 
-        $images = ! $map['content'] ? collect([]) : $this->findMarkdownImageNotWithModels($map['content']);
+        $images = collect([]);
+        if ($map['content']) {
+            $map['content'] = $this->app->make(Markdown::class)->safetyMarkdown($map['content']);
+            $images = $this->findMarkdownImageNotWithModels($map['content']);
+        }
 
         if ($image) {
             $map['storage'] = $image->id;
