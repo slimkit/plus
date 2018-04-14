@@ -45,6 +45,9 @@ class NewsController extends Controller
         $cate_id = $request->query('cate_id');
 
         $news = $newsModel->where('audit_status', 0)
+        ->whereDoesntHave('blacks', function ($query) use ($user) {
+            $query->where('user_id', $user);
+        })
         ->when($is_recommend, function ($query) use ($is_recommend) {
             return $query->where('is_recommend', $is_recommend);
         })

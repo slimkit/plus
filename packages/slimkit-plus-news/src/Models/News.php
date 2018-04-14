@@ -25,6 +25,7 @@ use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\Report;
 use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Models\FileWith;
+use Zhiyi\Plus\Models\BlackList;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -61,6 +62,18 @@ class News extends Model
     public function category()
     {
         return $this->hasOne(NewsCate::class, 'id', 'cate_id');
+    }
+
+    /**
+     * black list of current user.
+     * @Author   Wayne
+     * @DateTime 2018-04-14
+     * @Email    qiaobin@zhiyicx.com
+     * @return   [type]              [description]
+     */
+    public function blacks()
+    {
+        return $this->hasMany(BlackList::class, 'target_id', 'user_id');
     }
 
     /**
