@@ -54,7 +54,7 @@ class UserController extends Controller
         })->when($name, function ($query) use ($name) {
             return $query->where('name', 'like', sprintf('%%%s%%', $name));
         })->when(! empty($ids), function ($query) use ($ids) {
-            return $query->whereIn('id', $ids);
+            return $query->whereIn('id', $ids)->withTrashed();
         })->limit($limit)
           ->orderby('id', $order)
           ->get();
@@ -77,8 +77,12 @@ class UserController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function show(Request $request, User $user)
+    public function show(Request $request, int $user)
     {
+        $user = User::withTrashed()
+            ->where('id', $user)
+            ->firstOrFail();
+
         // 我关注的处理
         $this->hasFollowing($request, $user);
         // 处理关注我的
