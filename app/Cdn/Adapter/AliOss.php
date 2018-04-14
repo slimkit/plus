@@ -184,7 +184,7 @@ class AliOss implements FileUrlGeneratorContract
                 ],
                 'blur,r_50,s_%d' => [
                     'confirm' => (bool) $blur,
-                    'params' => [$blur],
+                    'params' => [intval($blur / 2)],
                 ],
             ])->map(function ($value, $key) {
                 if (! $value['confirm']) {
@@ -298,7 +298,7 @@ class AliOss implements FileUrlGeneratorContract
      */
     protected function getBaseURI(string $endpoint = ''): string
     {
-        $endpoint = $endpoint ?: $this->endpoint;
+        $endpoint = $this->isCname ? $this->endpoint : $this->bucket.'.'.$this->endpoint;
         // 去除协议头，保留 hostname 部分。
         if (strpos($endpoint, 'http://') === 0) {
             $endpoint = substr($endpoint, strlen('http://'));
