@@ -58,6 +58,9 @@ class GroupsController
         $offset = (int) $request->query('offset', 0);
 
         $groups = GroupModel::where('audit', 1)
+            ->whereDoesntHave('blacks', function ($query) use ($user) {
+                $query->where('user_id', $user_id);
+            })
             ->where('category_id', $category)
             ->limit($limit)
             ->offset($offset)

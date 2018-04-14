@@ -38,11 +38,16 @@ class PostCommentController
      */
     public function get(Request $request, GroupPostModel $post)
     {
+        $user = $request->user('api')->id ?? 0;
         $limit = $request->query('limit', 15);
         $after = $request->query('after', 0);
-        $datas = $post->comments()->when($after, function ($query) use ($after) {
-            return $query->where('id', '<', $after);
-        })
+        $datas = $post->comments()
+            ->whereDoesntHave('blacks', function ($query) use ($user) {
+                $query->where('user_id', $user);
+            })
+            ->when($after, function ($query) use ($after) {
+                return $query->where('id', '<', $after);
+            })
         ->with(['user', 'reply'])
         ->limit($limit)
         ->orderBy('id', 'desc')

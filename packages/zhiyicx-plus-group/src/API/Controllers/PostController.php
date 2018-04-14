@@ -39,20 +39,25 @@ class PostController
      */
     public function index(Request $request, Group $group, PostRepository $repository)
     {
+        $user = $request->user('api')->id ?? 0;
         $limit = $request->get('limit', 15);
         $offset = $request->get('offset', 0);
         $type = $request->get('type');
 
-        $posts = $group->posts()->when($type && $type == 'latest_reply', function ($query) use ($type) {
-            return $query->leftJoin('comments', function ($join) {
-                $join->on('group_posts.id', '=', 'comments.commentable_id')
+        $posts = $group->posts()
+            ->whereDoesntHave('blacks', function ($query) use ($user) {
+                $query->where('user_id', $user);
+            })
+            ->when($type && $type == 'latest_reply', function ($query) use ($type) {
+                return $query->leftJoin('comments', function ($join) {
+                    $join->on('group_posts.id', '=', 'comments.commentable_id')
                     ->where('commentable_type', '=', 'group-posts')
                     ->orderBy('comments.created_at', 'desc');
+                })
+                ->orderBy('comments.created_at', 'desc');
+            }, function ($query) {
+                return $query->orderBy('id', 'desc');
             })
-            ->orderBy('comments.created_at', 'desc');
-        }, function ($query) {
-            return $query->orderBy('id', 'desc');
-        })
         ->select([
             'group_posts.id',
             'group_posts.group_id',
