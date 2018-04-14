@@ -18,13 +18,28 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-use Illuminate\Support\Facades\Route;
-use Zhiyi\Plus\Admin\Controllers as AdminControllers;
-use Illuminate\Contracts\Routing\Registrar as RouteContract;
+namespace Zhiyi\Plus\Admin\Resources;
 
-Route::middleware(['auth:web', 'admin'])->prefix('admin')->group(function (RouteContract $route) {
-    $route->get('im/helper-user', AdminControllers\ImHelperUserController::class.'@fetch');
-    $route->put('im/helper-user', AdminControllers\ImHelperUserController::class.'@update');
-    $route->get('trashed-users', AdminControllers\UserTrashedController::class.'@index');
-    $route->delete('trashed-users/{user}', AdminControllers\UserTrashedController::class.'@restore');
-});
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
+
+class TrashedUserResource extends JsonResource
+{
+    /**
+     * The resource to array handle.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return array
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function toArray($request): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'deleted_at' => Carbon::parse($this->deleted_at)->toIso8601ZuluString(),
+        ];
+    }
+}

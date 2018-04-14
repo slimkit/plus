@@ -14,6 +14,11 @@
             <span class="glyphicon glyphicon-plus"></span>
             添加
           </router-link>
+          <span class="pull-right">&nbsp;\&nbsp;</span>
+          <router-link tag="a" class="btn btn-link pull-right btn-xs" to="/users/trashed" role="button">
+            <span class="glyphicon glyphicon-warning-sign"></span>
+            停用管理
+          </router-link>
         </div>
       <div class="panel-heading">
         <!-- 搜索用户 -->
@@ -138,7 +143,7 @@
                 <button v-if="deleteIds.indexOf(user.id) !== -1" type="button" class="btn btn-danger btn-sm" disabled="disabled">
                   <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
                 </button>
-                <button v-else type="button" class="btn btn-danger btn-sm" @click="deleteUser(user.id)">删除</button>
+                <button v-else type="button" class="btn btn-danger btn-sm" @click="deleteUser(user.id)">停用</button>
               </td>
             </tr>
           </tbody>
@@ -387,7 +392,7 @@ const ManageComponent = {
       });
     },
     deleteUser (userId) {
-      if (window.confirm('确定要删除用户吗？')) {
+      if (window.confirm('确定要停用用户吗？')) {
         this.deleteIds = [ ...this.deleteIds, userId ];
         request.delete(
           createRequestURI(`users/${userId}`),
@@ -401,7 +406,7 @@ const ManageComponent = {
             }
           });
           this.users = users;
-        }).catch(({ response: { data: { errors = ['删除失败'] } = {} } = {} }) => {
+        }).catch(({ response: { data: { errors = ['操作失败'] } = {} } = {} }) => {
           this.deleteIdsUnTo(userId);
           this.error = lodash.values(errors).pop();
         });

@@ -120,7 +120,6 @@ export default {
       this.loading = false;
     }).catch(({ response: { data } }) => {
       this.$store.dispatch('alert-open', { type: 'danger', message: data });
-      event.stopProcessing();
     });
   }
 };

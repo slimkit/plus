@@ -27,6 +27,7 @@ use Zhiyi\Plus\Packages\Wallet\TypeManager;
 use function Zhiyi\Plus\validateChinaPhoneNumber;
 use Zhiyi\Plus\Packages\Wallet\TargetTypeManager;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\Resources\Json\Resource;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+        Resource::withoutWrapping();
         // 注册验证规则.
         $this->registerValidator();
     }
