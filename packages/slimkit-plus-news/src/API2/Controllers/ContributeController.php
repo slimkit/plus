@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Utils\Markdown;
 use Zhiyi\Plus\Models\Tag as TagModel;
 use Zhiyi\Plus\Concerns\FindMarkdownFileTrait;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
@@ -31,7 +32,6 @@ use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate as NewsCateModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Requests\StoreContribute as StoreContributeRequest;
-use Zhiyi\Plus\Utils\Markdown;
 
 class ContributeController extends Controller
 {
@@ -251,8 +251,8 @@ class ContributeController extends Controller
 
         $images = collect([]);
         if ($map['content']) {
-          $map['content'] = $this->app->make(Markdown::class)->safetyMarkdown($map['content']);
-          $images = $this->findMarkdownImageNotWithModels($map['content']);
+            $map['content'] = $this->app->make(Markdown::class)->safetyMarkdown($map['content']);
+            $images = $this->findMarkdownImageNotWithModels($map['content']);
         }
 
         if ($image) {
