@@ -65,8 +65,9 @@ class AliOss implements FileUrlGeneratorContract
         $this->ssl = config('cdn.generators.alioss.ssl', false);
         $this->public = config('cdn.generators.alioss.public', true);
         $this->expires = config('cdn.generators.alioss.expires', 3600);
+        $this->isCname = config('cdn.generators.alioss.cname', false);
 
-        $this->client = new OssClient($this->accessKeyId, $this->accessKeySecret, $this->endpoint);
+        $this->client = new OssClient($this->accessKeyId, $this->accessKeySecret, $this->endpoint, $this->isCname);
         $this->client->setUseSSL($this->ssl);
     }
 
