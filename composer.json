@@ -111,7 +111,6 @@
     },
     "require-dev": {
         "codacy/coverage": "^1.4",
-        "codedungeon/phpunit-result-printer": "^0.11.0",
         "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "~1.0",
