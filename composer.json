@@ -86,6 +86,8 @@
     "require": {
         "php": ">=7.1.3",
         "doctrine/dbal": "^2.5",
+        "erusev/parsedown": "^1.7",
+        "ezyang/htmlpurifier": "^4.10",
         "fideloper/proxy": "~4.0",
         "guzzlehttp/guzzle": "^6.3",
         "intervention/image": "^2.3",
@@ -93,6 +95,7 @@
         "jpush/jpush": "^3.5",
         "laravel/framework": "5.6.*",
         "laravel/tinker": "~1.0",
+        "league/html-to-markdown": "^4.6",
         "medz/cors": "^1.1",
         "overtrue/easy-sms": "^1.0",
         "pingplusplus/pingpp-php": "^2.2",
