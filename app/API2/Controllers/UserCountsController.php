@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\API2\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Zhiyi\Plus\API2\Resources\UserCountsResource;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
@@ -39,12 +40,13 @@ class UserCountsController extends Controller
     /**
      * The route controller to callable handle.
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Zhiyi\Plus\API2\Resources\UserCountsResource
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function __invoke(): UserCountsResource
+    public function __invoke(Request $request): UserCountsResource
     {
-        $user = $this->request()->user();
+        $user = $request->user();
         $counts = UserCountModel::where('user_id', $user->id)->get();
         $now = new Carbon();
         $data = [];
