@@ -22,6 +22,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\Like as LikeModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
@@ -457,6 +458,7 @@ class FeedController extends Controller
             $videoCoverWith->raw = $feed->id;
             $videoWith->save();
             $videoCoverWith->save();
+
             $video->video_id = $videoWith->id;
             $video->cover_id = $videoCoverWith->id;
             $video->user_id = $feed->user_id;

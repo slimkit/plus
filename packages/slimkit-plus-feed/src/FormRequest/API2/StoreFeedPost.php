@@ -46,15 +46,16 @@ class StoreFeedPost extends FormRequest
      */
     public function rules(): array
     {
+        // dd($this->request);
         return [
-            'feed_content' => ['required_without:images'],
+            'feed_content' => ['required_without_all:images,video'],
             'feed_from' => 'required|numeric|in:1,2,3,4,5',
             'feed_mark' => 'required|unique:feeds,feed_mark',
             'feed_latitude' => 'required_with:feed_longtitude,feed_geohash',
             'feed_longtitude' => 'required_with:feed_latitude,feed_geohash',
             'feed_geohash' => 'required_with:feed_latitude,feed_longtitude',
             'amount' => 'nullable|integer',
-            'images' => ['required_without:feed_content', 'array'],
+            'images' => ['required_without_all:feed_content,video', 'array'],
             'video' => ['required_without_all:feed_content,images', 'array'],
             'images.*.id' => [
                 'required_with:images',
