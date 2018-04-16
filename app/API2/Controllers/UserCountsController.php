@@ -58,7 +58,7 @@ class UserCountsController extends Controller
     }
 
     /**
-     * 重置某项为度数为0
+     * 重置某项为度数为0.
      * @Author   Wayne
      * @DateTime 2018-04-16
      * @Email    qiaobin@zhiyicx.com
@@ -70,11 +70,11 @@ class UserCountsController extends Controller
         $type = $request->input('type', '');
         $user = $request->user();
         $now = new Carbon();
-        UserCountModel::where('type', 'user-' . $type)
+        UserCountModel::where('type', 'user-'.$type)
             ->where('user_id', $user->id)
             ->update([
                 'total' => 0,
-                'read_at' => $now
+                'read_at' => $now,
             ]);
 
         return response()->json('', 204);
