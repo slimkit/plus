@@ -46,11 +46,30 @@ class Comment extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    /**
+     * 被回复者.
+     * @Author   Wayne
+     * @DateTime 2018-04-14
+     * @Email    qiaobin@zhiyicx.com
+     * @return   [type]              [description]
+     */
     public function target()
     {
         return $this->belongsTo(User::class, 'target_user', 'id');
     }
 
+    public function blacks()
+    {
+        return $this->hasMany(BlackList::class, 'target_id', 'user_id');
+    }
+
+    /**
+     * 被回复者.
+     * @Author   Wayne
+     * @DateTime 2018-04-14
+     * @Email    qiaobin@zhiyicx.com
+     * @return   [type]              [description]
+     */
     public function reply()
     {
         return $this->belongsTo(User::class, 'reply_user', 'id');

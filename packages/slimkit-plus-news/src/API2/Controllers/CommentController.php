@@ -82,11 +82,20 @@ class CommentController extends Controller
      */
     public function index(Request $request, news $news)
     {
+        $user = $request->user('api')->id ?? 0;
         $after = $request->input('after');
         $limit = $request->input('limit', 15);
-        $comments = $news->comments()->when($after, function ($query) use ($after) {
-            return $query->where('id', '<', $after);
-        })->limit($limit)->with(['user', 'reply'])->orderBy('id', 'desc')->get();
+        $comments = $news->comments()
+            ->whereDoesntHave('blacks', function ($query) use ($user) {
+                $query->where('user_id', $user);
+            })
+            ->when($after, function ($query) use ($after) {
+                return $query->where('id', '<', $after);
+            })
+            ->limit($limit)
+            ->with(['user', 'reply'])
+            ->orderBy('id', 'desc')
+            ->get();
 
         return response()->json([
             'pinneds' => ! $after ? app()->call([$this, 'pinneds'], ['news' => $news]) : [],

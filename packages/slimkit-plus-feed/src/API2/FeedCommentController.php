@@ -42,10 +42,14 @@ class FeedCommentController extends Controller
      */
     public function index(Request $request, ResponseFactoryContract $response, FeedModel $feed)
     {
+        $user = $request->user('api')->id ?? 0;
         $limit = $request->query('limit', 15);
         $after = $request->query('after', false);
 
         $comments = $feed->comments()
+            ->whereDoesntHave('blacks', function ($query) use ($user) {
+                $query->where('user_id', $user);
+            })
             ->when($after, function ($query) use ($after) {
                 return $query->where('id', '<', $after);
             })
@@ -131,11 +135,12 @@ class FeedCommentController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function store(CommentFormRequest $request,
-                          ResponseFactoryContract $response,
-                          FeedModel $feed,
-                          CommentModel $comment)
-    {
+    public function store(
+        CommentFormRequest $request,
+        ResponseFactoryContract $response,
+        FeedModel $feed,
+        CommentModel $comment
+    ) {
         $replyUser = intval($request->input('reply_user', 0));
         $body = $request->input('body');
         $user = $request->user();

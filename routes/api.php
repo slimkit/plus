@@ -588,5 +588,13 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
         });
     });
 
-    $api->get('user/counts', \Zhiyi\Plus\API2\Controllers\UserCountsController::class);
+    /*
+     * 获取用户未读数信息
+     */
+    $api->get('/user/counts', \Zhiyi\Plus\API2\Controllers\UserCountsController::class.'@count');
+
+    /*
+     * 重置未读信息
+     */
+    $api->patch('/user/counts', \Zhiyi\Plus\API2\Controllers\UserCountsController::class.'@reset');
 });
