@@ -44,20 +44,39 @@ class UserCountsController extends Controller
      * @return \Zhiyi\Plus\API2\Resources\UserCountsResource
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function __invoke(Request $request): UserCountsResource
+    public function count(Request $request): UserCountsResource
     {
         $user = $request->user();
         $counts = UserCountModel::where('user_id', $user->id)->get();
-        $now = new Carbon();
+        // $now = new Carbon();
         $data = [];
-        $counts->each(function (UserCountModel $count) use ($now, &$data) {
+        $counts->each(function (UserCountModel $count) use (&$data) {
             $data[$count->type] = $count->total;
-
-            $count->total = 0;
-            $count->read_at = $now;
-            $count->save();
         });
 
         return new UserCountsResource($data);
+    }
+
+    /**
+     * 重置某项为度数为0
+     * @Author   Wayne
+     * @DateTime 2018-04-16
+     * @Email    qiaobin@zhiyicx.com
+     * @param    Request             $request [description]
+     * @return   [type]                       [description]
+     */
+    public function reset(Request $request)
+    {
+        $type = $request->input('type', '');
+        $user = $request->user();
+        $now = new Carbon();
+        UserCountModel::where('type', 'user-' . $type)
+            ->where('user_id', $user->id)
+            ->update([
+                'total' => 0,
+                'read_at' => $now
+            ]);
+
+        return response()->json('', 204);
     }
 }

@@ -46,7 +46,6 @@ class StoreFeedPost extends FormRequest
      */
     public function rules(): array
     {
-        // dd($this->request);
         return [
             'feed_content' => ['required_without_all:images,video'],
             'feed_from' => 'required|numeric|in:1,2,3,4,5',
