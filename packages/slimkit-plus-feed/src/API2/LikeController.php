@@ -23,6 +23,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 
@@ -90,7 +91,17 @@ class LikeController extends Controller
         $feed->like($user);
 
         if ($feed->user_id !== $user->id) {
+            // 添加被赞的未读数
             $feed->user->unreadCount()->firstOrCreate([])->increment('unread_likes_count', 1);
+            // 新未读统计 1.8启用
+            $userLikedCount = UserCountModel::firstOrNew([
+                'type' => 'user-liked',
+                'user_id' => $feed->user->id
+            ]);
+            
+            $userLikedCount->total += 1;
+            $userLikedCount->save();
+            
             app(push::class)->push(sprintf('%s 点赞了你的动态', $user->name), (string) $feed->user->id, ['channel' => 'feed:digg']);
         }
 

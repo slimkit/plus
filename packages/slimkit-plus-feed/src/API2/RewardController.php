@@ -25,6 +25,7 @@ use Zhiyi\Plus\Models\GoldType;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\WalletCharge;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
 class RewardController extends Controller
@@ -71,6 +72,15 @@ class RewardController extends Controller
             ], 403);
         }
 
+
+        // 系统消息未读数预处理, 事务中只做保存操作
+        $userCount = UserCountModel::firstOrNew([
+            'user_id' => $current_user->id,
+            'type' => 'user-system'
+        ]);
+
+        $userCount->total += 1;
+
         $user->getConnection()->transaction(function () use ($user, $feed, $charge, $current_user, $amount) {
             // 扣除操作用户余额
             $user->wallet()->decrement('balance', $amount);
@@ -87,6 +97,8 @@ class RewardController extends Controller
             $userCharge->body = sprintf('打赏动态《%s》', $feed_title);
             $userCharge->status = 1;
             $user->walletCharges()->save($userCharge);
+            // 增加系统通知未读数
+            $userCount->save();
 
             if ($current_user->wallet) {
                 // 增加对应用户余额
