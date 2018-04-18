@@ -42,40 +42,57 @@
 </template>
 
 <script>
-import request, { createRequestURI } from '../../../util/request';
+import request, { createRequestURI } from "../../../util/request";
 export default {
   data: () => ({
     loading: true,
-    user: null,
+    user: null
   }),
   methods: {
     handleSubmit(event) {
-      if (!this.user) {
-        this.$store.dispatch('alert-open', { type: 'danger', message: '请输入正确的小助手用户 ID' });
-        event.stopProcessing();
-        return;
-      }
+      // if (!this.user) {
+      //   this.$store.dispatch('alert-open', { type: 'danger', message: '请输入正确的小助手用户 ID' });
+      //   event.stopProcessing();
+      //   return;
+      // }
 
-      request.put(createRequestURI('im/helper-user'), { user: this.user }, {
-        validateStatus: status => status === 204,
-      }).then(() => {
-        this.$store.dispatch('alert-open', { type: 'success', message: '设置成功！' });
-      }).catch(({ response: { data: message = '提交失败！' } }) => {
-        this.$store.dispatch('alert-open', { type: 'danger', message });
-      }).finally(() => {
-        event.stopProcessing();
-      });
+      request
+        .put(
+          createRequestURI("im/helper-user"),
+          { user: this.user },
+          {
+            validateStatus: status => status === 204
+          }
+        )
+        .then(() => {
+          this.$store.dispatch("alert-open", {
+            type: "success",
+            message: "设置成功！"
+          });
+        })
+        .catch(({ response: { data: message = "提交失败！" } }) => {
+          this.$store.dispatch("alert-open", { type: "danger", message });
+        })
+        .finally(() => {
+          event.stopProcessing();
+        });
     }
   },
   created() {
-    request.get(createRequestURI('im/helper-user'), {
-      validateStatus: status => status === 200,
-    }).then(({ data }) => {
-      this.user = data.user;
-      this.loading = false;
-    }).catch(() => {
-      this.$store.dispatch('alert-open', { type: 'danger', message: '获取小助手失败！' });
-    });
+    request
+      .get(createRequestURI("im/helper-user"), {
+        validateStatus: status => status === 200
+      })
+      .then(({ data }) => {
+        this.user = data.user;
+        this.loading = false;
+      })
+      .catch(() => {
+        this.$store.dispatch("alert-open", {
+          type: "danger",
+          message: "获取小助手失败！"
+        });
+      });
   }
 };
 </script>

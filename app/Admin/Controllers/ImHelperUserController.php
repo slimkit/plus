@@ -49,7 +49,7 @@ class ImHelperUserController extends Controller
     // public function update(UpdateImHelperUserRequest $request, Configuration $config): Response
     public function update(Requests $request, Configuration $config): Response
     {
-        $config->set('im.helper-user', $request->input('user', 0));
+        $config->set('im.helper-user', $request->input('user', ''));
 
         return response('', 204);
     }
