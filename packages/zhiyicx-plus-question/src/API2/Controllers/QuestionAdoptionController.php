@@ -19,6 +19,7 @@
 namespace SlimKit\PlusQuestion\API2\Controllers;
 
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use SlimKit\PlusQuestion\Models\Answer as AnswerModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use SlimKit\PlusQuestion\Models\Question as QuestionModel;
@@ -37,11 +38,12 @@ class QuestionAdoptionController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function store(Request $request,
-                          ResponseFactoryContract $response,
-                          QuestionModel $question,
-                          AnswerModel $answer)
-    {
+    public function store(
+        Request $request,
+        ResponseFactoryContract $response,
+        QuestionModel $question,
+        AnswerModel $answer
+    ) {
         $user = $request->user();
         $answer->load('user');
 
@@ -93,6 +95,13 @@ class QuestionAdoptionController extends Controller
             'answer' => $answer,
         ]);
 
+        $userCount = UserCountModel::firstOrNew([
+          'type' => 'user-system',
+          'user_id' => $answer->user_id
+        ]);
+        $userCount->total += 1;
+        $userCount->save();
+
         return $response->json(['message' => [trans('plus-question::messages.success')]], 201);
     }
 
@@ -106,11 +115,12 @@ class QuestionAdoptionController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function newStore(Request $request,
-                          ResponseFactoryContract $response,
-                          QuestionModel $question,
-                          AnswerModel $answer)
-    {
+    public function newStore(
+        Request $request,
+        ResponseFactoryContract $response,
+        QuestionModel $question,
+        AnswerModel $answer
+    ) {
         $user = $request->user();
         $answer->load('user');
 
@@ -151,6 +161,12 @@ class QuestionAdoptionController extends Controller
             'question' => $question,
             'answer' => $answer,
         ]);
+        $userCount = UserCountModel::firstOrNew([
+          'type' => 'user-system',
+          'user_id' => $answer->user_id
+        ]);
+        $userCount->total += 1;
+        $userCount->save();
 
         return $response->json(['message' => [trans('plus-question::messages.success')]], 201);
     }

@@ -45,6 +45,14 @@ class AnswerLikeController extends Controller
         $answer->user->extra()->firstOrCreate([])->increment('likes_count', 1);
         if ($answer->user_id !== $user->id) {
             $answer->user->unreadCount()->firstOrCreate([])->increment('unread_likes_count', 1);
+            // 1.8启用, 新版未读消息提醒
+            $userCount = UserCountModel::firstOrNew([
+                'type' => 'user-liked',
+                'user_id' => $answer->user->id
+            ]);
+            $userCount->total += 1;
+            $userCount->save();
+            
             app(push::class)->push(sprintf('%s点赞了你的回答', $user->name), (string) $answer->user->id, ['channel' => 'question-answer:like']);
         }
 

@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\WalletCharge;
 use SlimKit\PlusQuestion\Models\Answer;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
 class AnswerOnlookersController extends Controller
@@ -99,6 +100,14 @@ class AnswerOnlookersController extends Controller
                 'answer' => $answer,
             ]);
 
+            // 1.8启用, 新版未读消息提醒
+            $userCount = UserCountModel::firstOrNew([
+                'type' => 'user-system',
+                'user_id' => $target->id
+            ]);
+            $userCount->total += 1;
+            $userCount->save();
+
             // 保存围观记录
             $answer->onlookers()->attach($user->id, ['amount' => $this->onlookers_amount]);
         });
@@ -161,6 +170,13 @@ class AnswerOnlookersController extends Controller
                 'question' => $answer->question,
                 'answer' => $answer,
             ]);
+            // 1.8启用, 新版未读消息提醒
+            $userCount = UserCountModel::firstOrNew([
+                'type' => 'user-system',
+                'user_id' => $target->id
+            ]);
+            $userCount->total += 1;
+            $userCount->save();
 
             // 保存围观记录
             $answer->onlookers()->attach($user->id, ['amount' => $this->onlookers_amount]);

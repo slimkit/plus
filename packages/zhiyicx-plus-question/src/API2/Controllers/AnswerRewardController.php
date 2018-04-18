@@ -20,6 +20,7 @@ namespace SlimKit\PlusQuestion\API2\Controllers;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Reward as RewardModel;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use SlimKit\PlusQuestion\Models\Answer as AnswerModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use SlimKit\PlusQuestion\Models\TopicExpertIncome as ExpertIncomeModel;
@@ -132,6 +133,13 @@ class AnswerRewardController extends Controller
                 'answer' => $answer,
                 'user' => $user,
             ]);
+            // 1.8启用, 新版未读消息提醒
+            $userCount = UserCountModel::firstOrNew([
+                'type' => 'user-system',
+                'user_id' => $respondent->id
+            ]);
+            $userCount->total += 1;
+            $userCount->save();
 
             if (in_array($respondent->id, $allexpert)) {
                 $income = new ExpertIncomeModel();

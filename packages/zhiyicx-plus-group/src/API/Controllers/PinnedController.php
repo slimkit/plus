@@ -124,6 +124,13 @@ class PinnedController extends Controller
         $chargeModel->body = sprintf('申请置顶帖子《%s》', $post->title);
         $chargeModel->status = 1;
 
+        // 1.8启用, 新版未读消息提醒
+        $userCount = UserCountModel::firstOrNew([
+            'type' => 'user-post-pinned',
+            'user_id' => $target_user->id
+        ]);
+        $userCount->total += 1;
+
         $post->getConnection()->transaction(function () use ($chargeModel, $user, $pinnedModel, $target_user, $amount, $post) {
 
             // 扣除余额
@@ -141,6 +148,7 @@ class PinnedController extends Controller
                 'user' => $user,
                 'pinned' => $pinnedModel,
             ]);
+            $userCount->save();
         });
 
         return response()->json(['message' => ['申请成功']], 201);
@@ -184,6 +192,12 @@ class PinnedController extends Controller
         $income->type = 2;
         $income->amount = $pinned->amount;
         $income->user_id = $target_user->id;
+        // 1.8启用, 新版未读消息提醒
+        $userCount = UserCountModel::firstOrNew([
+            'type' => 'user-system',
+            'user_id' => $target_user->id
+        ]);
+        $userCount->total += 1;
 
         $post->getConnection()->transaction(function () use ($pinned, $user, $chargeModel, $target_user, $post, $income) {
             // 增加余额
@@ -204,6 +218,7 @@ class PinnedController extends Controller
                 'user' => $user,
                 'pinned' => $pinned,
             ]);
+            $userCount->save();
         });
 
         return response()->json(['message' => '审核成功'], 201);
@@ -241,6 +256,12 @@ class PinnedController extends Controller
         $chargeModel->subject = '退还帖子置顶申请金额';
         $chargeModel->body = sprintf('退还申请置顶帖子《%s》的金额', $post->title);
         $chargeModel->status = 1;
+        // 1.8启用, 新版未读消息提醒
+        $userCount = UserCountModel::firstOrNew([
+            'type' => 'user-system',
+            'user_id' => $target_user->id
+        ]);
+        $userCount->total += 1;
 
         $post->getConnection()->transaction(function () use ($pinned, $user, $chargeModel, $target_user, $post) {
             // 退还余额
@@ -258,6 +279,7 @@ class PinnedController extends Controller
                 'user' => $user,
                 'pinned' => $pinned,
             ]);
+            $userCount->save();
         });
 
         return response()->json(['message' => ['审核成功']], 201);
@@ -359,6 +381,12 @@ class PinnedController extends Controller
         $chargeModel->subject = '评论申请置顶';
         $chargeModel->body = sprintf('在帖子《%s》申请评论置顶', $post->title);
         $chargeModel->status = 1;
+        // 1.8启用, 新版未读消息提醒
+        $userCount = UserCountModel::firstOrNew([
+            'type' => 'user-post-comment-pinned',
+            'user_id' => $target_user->id
+        ]);
+        $userCount->total += 1;
 
         $post->getConnection()->transaction(function () use ($chargeModel, $user, $pinnedModel, $target_user, $amount, $post, $comment) {
 
@@ -378,6 +406,7 @@ class PinnedController extends Controller
                 'user' => $user,
                 'pinned' => $pinnedModel,
             ]);
+            $userCount->save();
         });
 
         return response()->json(['message' => ['申请成功']], 201);
@@ -417,6 +446,12 @@ class PinnedController extends Controller
         $chargeModel->subject = '帖子内置顶评论收入';
         $chargeModel->body = sprintf('帖子《%s》下置顶评论收入的金额', $post->title);
         $chargeModel->status = 1;
+        // 1.8启用, 新版未读消息提醒
+        $userCount = UserCountModel::firstOrNew([
+            'type' => 'user-system',
+            'user_id' => $target_user->id
+        ]);
+        $userCount->total += 1;
 
         $post->getConnection()->transaction(function () use ($pinned, $user, $chargeModel, $target_user, $comment, $post) {
             // 增加余额
@@ -435,6 +470,7 @@ class PinnedController extends Controller
                 'user' => $user,
                 'pinned' => $pinned,
             ]);
+            $userCount->save();
         });
 
         return response()->json(['message' => ['审核成功']], 201);

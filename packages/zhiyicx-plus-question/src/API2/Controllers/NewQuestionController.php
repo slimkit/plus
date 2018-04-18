@@ -21,6 +21,7 @@ namespace SlimKit\PlusQuestion\API2\Controllers;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Concerns\FindMarkdownFileTrait;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use SlimKit\PlusQuestion\Models\Topic as TopicModel;
 use SlimKit\PlusQuestion\Models\Question as QuestionModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
@@ -43,12 +44,13 @@ class NewQuestionController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function store(PublishQuestionRequest $request,
-                          ResponseFactoryContract $response,
-                          QuestionModel $question,
-                          TopicModel $topicModel,
-                          UserModel $userModel)
-    {
+    public function store(
+        PublishQuestionRequest $request,
+        ResponseFactoryContract $response,
+        QuestionModel $question,
+        TopicModel $topicModel,
+        UserModel $userModel
+    ) {
         $user = $request->user();
 
         // Get question base data.
@@ -90,14 +92,17 @@ class NewQuestionController extends Controller
         $question->watchers_count = 1;  // 默认自己关注
 
         try {
-
             // Save question.
             $user->questions()->save($question);
 
             // Save relation.
             $user->getConnection()->transaction(function () use (
-                $question, $user, $topics, $users,
-                $topicModel, $topicsIDs,
+                $question,
+                $user,
+                $topics,
+                $users,
+                $topicModel,
+                $topicsIDs,
                 $images
             ) {
 
@@ -132,15 +137,22 @@ class NewQuestionController extends Controller
                 });
             });
         } catch (\Exception $exception) {
-
             // Delete Question.
             $question->delete();
 
             throw $exception;
         }
-
+        $userCountModel = new UserCountModel();
         // 给用户发送邀请通知.
-        $users->each(function (UserModel $item) use ($user, $question) {
+        $users->each(function (UserModel $item) use ($user, $question, $userCountModel) {
+            $userCount = $userCountModel->firstOrNew([
+                'type' => 'user-system',
+                'user_id' => $item->id
+            ]);
+            $userCount->total += 1;
+            $userCount->save();
+            unset($userCount);
+            
             $item->sendNotifyMessage(
                 'question',
                 trans('plus-question::questions.invitation', [
@@ -169,10 +181,11 @@ class NewQuestionController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function update(UpdateQuestionRequest $request,
-                           ResponseFactoryContract $response,
-                           QuestionModel $question)
-    {
+    public function update(
+        UpdateQuestionRequest $request,
+        ResponseFactoryContract $response,
+        QuestionModel $question
+    ) {
         $user = $request->user();
 
         $anonymity = $request->input('anonymity', $question->anonymity) ? 1 : 0;
@@ -233,10 +246,11 @@ class NewQuestionController extends Controller
      * @param \SlimKit\PlusQuestion\Models\Question $question
      * @return mixed
      */
-    public function resetAmount(Request $request,
-                                ResponseFactoryContract $response,
-                                QuestionModel $question)
-    {
+    public function resetAmount(
+        Request $request,
+        ResponseFactoryContract $response,
+        QuestionModel $question
+    ) {
         $user = $request->user();
         if ($question->user_id !== $user->id) {
             return $response->json(['message' => [trans('plus-question::questions.not-owner')]], 403);
@@ -263,10 +277,11 @@ class NewQuestionController extends Controller
      * @param  \SlimKit\PlusQuestion\Models\Question $question
      * @return mixed
      */
-    public function destory(Request $request,
-                            ResponseFactoryContract $response,
-                            QuestionModel $question)
-    {
+    public function destory(
+        Request $request,
+        ResponseFactoryContract $response,
+        QuestionModel $question
+    ) {
         $user = $request->user();
         if ($question->user_id !== $user->id) {
             return $response->json(['message' => [trans('plus-question::questions.not-owner')]], 403);

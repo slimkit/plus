@@ -23,6 +23,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\PlusGroup\Models\Group as GroupModel;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\PlusGroup\Models\GroupIncome as GroupIncomeModel;
 use Zhiyi\PlusGroup\Models\GroupMember as GroupMemberModel;
@@ -50,18 +51,15 @@ class GroupMemberController
         $users = $group->members()->when($type !== 'all', function ($query) use ($type) {
             switch ($type) {
                 case 'manager':
-
                     return $query->where(function ($query) {
                         return $query->whereIn('role', ['administrator', 'founder']);
                     })->where('disabled', 0)->where('audit', 1);
                     break;
                 case 'member':
-
                     return $query->where('role', 'member')->where('disabled', 0)->where('audit', 1);
                     break;
 
                 case 'blacklist':
-
                     return $query->where('disabled', 1)->where('audit', 1);
                     break;
                 case 'audit_user':
@@ -69,7 +67,6 @@ class GroupMemberController
                     break;
 
                 case 'audit':
-
                     return $query->where('audit', 0);
                     break;
                 case 'founder':
@@ -294,7 +291,6 @@ class GroupMemberController
 
                     // 用户加钱
                     $group->founder->user->wallet()->increment('balance', $group->money);
-
                     // 发送通知
                     $message = sprintf('您申请加入的圈子%s已被审核通过', $group->name);
                     $member->user->sendNotifyMessage(
@@ -324,6 +320,13 @@ class GroupMemberController
                         ['group' => $group]
                     );
                 }
+                // 1.8启用, 新版未读消息提醒
+                $userCount = UserCountModel::firstOrNew([
+                    'type' => 'user-system',
+                    'user_id' => $member->user_id
+                ]);
+                $userCount->total += 1;
+                $userCount->save();
             }
 
             if ($status === 1) {
@@ -431,6 +434,14 @@ class GroupMemberController
         $target->user_id = $user->id;
         $target->save();
 
+        // 1.8启用, 新版未读消息提醒
+        $userCount = UserCountModel::firstOrNew([
+            'type' => 'user-system',
+            'user_id' => $target->user_id
+        ]);
+        $userCount->total += 1;
+        $userCount->save();
+
         $target_user->sendNotifyMessage('group:transfer', sprintf('%s已将圈子%s转让给你', $user->name, $group->name), [
             'user' => $user,
             'group' => $group,
@@ -489,7 +500,6 @@ class GroupMemberController
                     $income->user_id = $member->user_id;
 
                     $group->incomes()->save($income);
-
                     // 发送通知
                     $message = sprintf('您申请加入的圈子%s已被审核通过', $group->name);
                     $member->user->sendNotifyMessage(
@@ -500,7 +510,6 @@ class GroupMemberController
                 } else {
                     $process = new UserProcess();
                     $process->reject($group->founder->user_id, $group->money, $member->user_id, '用户加圈，审核拒绝', sprintf('用户%s申请加入《%s》圈子审核拒绝,用户退款', $member->user->name, $group->name));
-
                     // 发送通知
                     $message = sprintf('您申请加入的圈子%s已被管理员拒绝', $group->name);
                     $member->user->sendNotifyMessage(
@@ -509,6 +518,13 @@ class GroupMemberController
                         ['group' => $group]
                     );
                 }
+                // 1.8启用, 新版未读消息提醒
+                $userCount = UserCountModel::firstOrNew([
+                    'type' => 'user-system',
+                    'user_id' => $member->user_id
+                ]);
+                $userCount->total += 1;
+                $userCount->save();
             }
 
             if ($status === 1) {
@@ -543,7 +559,7 @@ class GroupMemberController
 
     /**
      * 圈子角色统计.
-     * 
+     *
      * @param  Request    $request
      * @param  GroupModel $group
      * @return mixed

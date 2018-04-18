@@ -21,6 +21,7 @@ namespace SlimKit\PlusQuestion\API2\Controllers;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Models\Comment;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use SlimKit\PlusQuestion\API2\Requests\CommentRequest;
 use SlimKit\PlusQuestion\Models\Answer as AnswerModel;
 use SlimKit\PlusQuestion\Models\Question as QuestionModel;
@@ -88,6 +89,14 @@ class CommentController extends Controller
             $user->extra()->firstOrCreate([])->increment('comments_count', 1);
             if ($question->user_id !== $user->id) {
                 $question->user->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
+                // 1.8启用, 新版未读消息提醒
+                $userCount = UserCountModel::firstOrNew([
+                    'type' => 'user-commented',
+                    'user_id' => $question->user_id
+                ]);
+                $userCount->total += 1;
+                $userCount->save();
+
                 app(Push::class)->push(sprintf('%s评论了你的问题', $user->name), (string) $question->user->id, ['channel' => 'question:comment']);
             }
         });
@@ -95,6 +104,14 @@ class CommentController extends Controller
         if ($replyUser && $replyUser !== $user->id && $replyUser !== $question->user_id) {
             $replyUser = $user->newQuery()->where('id', $replyUser)->first();
             $replyUser->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
+            // 1.8启用, 新版未读消息提醒
+            $userCount = UserCountModel::firstOrNew([
+                'type' => 'user-commented',
+                'user_id' => $replyUser->id
+            ]);
+            $userCount->total += 1;
+            $userCount->save();
+
             app(Push::class)->push(sprintf('%s回复了您的评论', $user->name), (string) $replyUser->id, ['channel' => 'question:comment-reply']);
         }
 
@@ -124,6 +141,13 @@ class CommentController extends Controller
             $user->extra()->firstOrCreate([])->increment('comments_count', 1);
             if ($answer->user_id !== $user->id) {
                 $answer->user->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
+                // 1.8启用, 新版未读消息提醒
+                $userCount = UserCountModel::firstOrNew([
+                    'type' => 'user-commented',
+                    'user_id' => $answer->user_id
+                ]);
+                $userCount->total += 1;
+                $userCount->save();
                 app(Push::class)->push(sprintf('%s评论了你的回答', $user->name), (string) $answer->user->id, ['channel' => 'answer:comment']);
             }
         });
@@ -132,6 +156,13 @@ class CommentController extends Controller
         if ($replyUser && $replyUser !== $user->id && $replyUser !== $answer->user_id) {
             $replyUser = $user->newQuery()->where('id', $replyUser)->first();
             $replyUser->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
+            // 1.8启用, 新版未读消息提醒
+            $userCount = UserCountModel::firstOrNew([
+                'type' => 'user-commented',
+                'user_id' => $replyUser->id
+            ]);
+            $userCount->total += 1;
+            $userCount->save();
             app(Push::class)->push(sprintf('%s回复了您的评论', $user->name), (string) $replyUser->id, ['channel' => 'answer:comment-reply']);
         }
 

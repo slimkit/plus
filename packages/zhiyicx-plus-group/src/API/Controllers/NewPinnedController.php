@@ -26,6 +26,7 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\PlusGroup\Models\Post as PostModel;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\PlusGroup\Models\Pinned as PinnedModel;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\PlusGroup\Models\GroupIncome as GroupIncomeModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
@@ -79,10 +80,17 @@ class NewPinnedController extends Controller
         $pinnedModel->amount = $amount;
         $pinnedModel->day = $day;
         $pinnedModel->status = 0;
+        // 1.8启用, 新版未读消息提醒
+        $userCount = UserCountModel::firstOrNew([
+            'type' => 'user-post-pinned',
+            'user_id' => $target_user->id
+        ]);
+
+        $userCount->total += 1;
 
         $post->getConnection()->transaction(function () use ($user, $pinnedModel, $target_user, $amount, $post) {
             $process = new UserProcess();
-            $process->prepayment($user->id, $amount, $target_user->id, '帖子申请置顶', sprintf('申请置顶帖子《%s》', $post->title));
+            $process->prepayment($user->id, $amount, $target_user->id, '申请帖子置顶', sprintf('申请置顶帖子《%s》', $post->title));
 
             // 保存置顶请求
             $pinnedModel->save();
@@ -93,6 +101,8 @@ class NewPinnedController extends Controller
                 'user' => $user,
                 'pinned' => $pinnedModel,
             ]);
+
+            $userCount->save();
         });
 
         return response()->json(['message' => ['申请成功']], 201);
@@ -127,6 +137,13 @@ class NewPinnedController extends Controller
         $income->amount = $pinned->amount;
         $income->user_id = $target_user->id;
 
+        // 1.8启用, 新版未读消息提醒
+        $userCount = UserCountModel::firstOrNew([
+            'type' => 'user-system',
+            'user_id' => $target_user->id
+        ]);
+        $userCount->total += 1;
+
         $post->getConnection()->transaction(function () use ($pinned, $user, $target_user, $post, $income) {
             $process = new UserProcess();
             $process->receivables($user->id, $pinned->amount, $target_user->id, '帖子置顶收入', sprintf('接受置顶帖子《%s》的收入', $post->title));
@@ -143,6 +160,8 @@ class NewPinnedController extends Controller
                 'user' => $user,
                 'pinned' => $pinned,
             ]);
+
+            $userCount->save();
         });
 
         return response()->json(['message' => '审核成功'], 201);
@@ -170,6 +189,12 @@ class NewPinnedController extends Controller
 
         $pinned->expires_at = $datetime;
         $pinned->status = 2;
+        // 1.8启用, 新版未读消息提醒
+        $userCount = UserCountModel::firstOrNew([
+            'type' => 'user-system',
+            'user_id' => $target_user->id
+        ]);
+        $userCount->total += 1;
 
         $post->getConnection()->transaction(function () use ($pinned, $user, $target_user, $post) {
             $process = new UserProcess();
@@ -184,6 +209,7 @@ class NewPinnedController extends Controller
                 'user' => $user,
                 'pinned' => $pinned,
             ]);
+            $userCount->save();
         });
 
         return response()->json(['message' => ['审核成功']], 201);
@@ -243,6 +269,12 @@ class NewPinnedController extends Controller
         $pinnedModel->amount = $amount;
         $pinnedModel->day = $day;
         $pinnedModel->status = 0;
+        // 1.8启用, 新版未读消息提醒
+        $userCount = UserCountModel::firstOrNew([
+            'type' => 'user-post-comment-pinned',
+            'user_id' => $target_user->id
+        ]);
+        $userCount->total += 1;
 
         $post->getConnection()->transaction(function () use ($user, $pinnedModel, $target_user, $amount, $post, $comment) {
 
@@ -259,6 +291,7 @@ class NewPinnedController extends Controller
                 'user' => $user,
                 'pinned' => $pinnedModel,
             ]);
+            $userCount->save();
         });
 
         return response()->json(['message' => ['申请成功']], 201);
@@ -288,6 +321,12 @@ class NewPinnedController extends Controller
 
         $pinned->expires_at = $datetime->addDay($pinned->day);
         $pinned->status = 1;
+        // 1.8启用, 新版未读消息提醒
+        $userCount = UserCountModel::firstOrNew([
+            'type' => 'user-system',
+            'user_id' => $target_user->id
+        ]);
+        $userCount->total += 1;
 
         $post->getConnection()->transaction(function () use ($pinned, $user, $target_user, $comment, $post) {
             $process = new UserProcess();
@@ -303,6 +342,7 @@ class NewPinnedController extends Controller
                 'user' => $user,
                 'pinned' => $pinned,
             ]);
+            $userCount->save();
         });
 
         return response()->json(['message' => ['审核成功']], 201);
@@ -332,6 +372,12 @@ class NewPinnedController extends Controller
 
         $pinned->expires_at = $datetime;
         $pinned->status = 2;
+        // 1.8启用, 新版未读消息提醒
+        $userCount = UserCountModel::firstOrNew([
+            'type' => 'user-system',
+            'user_id' => $target_user->id
+        ]);
+        $userCount->total += 1;
 
         $post->getConnection()->transaction(function () use ($pinned, $user, $target_user, $comment, $post) {
             $process = new UserProcess();
@@ -347,6 +393,7 @@ class NewPinnedController extends Controller
                 'user' => $user,
                 'pinned' => $pinned,
             ]);
+            $userCount->save();
         });
 
         return response()->json(['message' => ['审核成功']], 201);

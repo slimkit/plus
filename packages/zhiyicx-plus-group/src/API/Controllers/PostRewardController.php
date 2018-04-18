@@ -104,6 +104,13 @@ class PostRewardController
 
                 // 添加被打赏通知
                 $notice = sprintf('你的帖子《%s》被%s打赏%s%s', $post->title, $user->name, $amount * $this->wallet_ratio / 10000, $this->goldName);
+                // 1.8启用, 新版未读消息提醒
+                $userCount = UserCountModel::firstOrNew([
+                    'type' => 'user-system',
+                    'user_id' => $current_user->id
+                ]);
+                $userCount->total += 1;
+                $userCount->save();
                 $post->addHidden('body');
                 $current_user->sendNotifyMessage('group:post:reward', $notice, [
                     'post' => $post,

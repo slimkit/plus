@@ -21,6 +21,7 @@ namespace Zhiyi\PlusGroup\API\Controllers;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Services\Push;
 use Zhiyi\PlusGroup\Models\GroupMember;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\PlusGroup\Models\Post as GroupPostModel;
 
 class PostLikeController
@@ -94,9 +95,16 @@ class PostLikeController
             return response()->json(['message' => ['您已被该圈子拉黑，无法进行该操作']], 403);
         }
 
-        $like = $post->like($user);
+        $post->like($user);
 
         if ($post->user_id !== $user->id) {
+            // 1.8启用, 新版未读消息提醒
+            $userCount = UserCountModel::firstOrNew([
+                'type' => 'user-liked',
+                'user_id' => $post->user_id
+            ]);
+            $userCount->total += 1;
+            $userCount->save();
             $post->user->unreadCount()->firstOrCreate([])->increment('unread_likes_count', 1);
             app(Push::class)->push(sprintf('%s 点赞了你的帖子', $user->name), (string) $post->user_id, ['channel' => 'post:like']);
         }

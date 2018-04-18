@@ -70,6 +70,14 @@ class NewAnswerRewardController extends Controller
                 ],
             ], 'manual');
 
+            // 1.8启用, 新版未读消息提醒
+            $userCount = UserCountModel::firstOrNew([
+                'type' => 'user-system',
+                'user_id' => $target->id
+            ]);
+            $userCount->total += 1;
+            $userCount->save();
+
             // inrement rewarder_count
             $answer->increment('rewarder_count');
             // inrement rewards_amount

@@ -24,6 +24,7 @@ use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\PlusGroup\Models\Post as GroupPostModel;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\PlusGroup\API\Requests\StoreComment as StoreCommentRequest;
 
 class PostCommentController
@@ -113,13 +114,27 @@ class PostCommentController
 
             if ($post->user_id !== $user->id) {
                 $post->user->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
+                // 1.8启用, 新版未读消息提醒
+                $userCount = UserCountModel::firstOrNew([
+                    'type' => 'user-commented',
+                    'user_id' => $post->user_id
+                ]);
+                $userCount->total += 1;
                 app(Push::class)->push(sprintf('%s评论了你的帖子', $user->name), (string) $post->user->id, ['channel' => 'group:comment']);
+                $userCount->save();
             }
 
             if ($reply && $reply !== $user->id && $reply !== $post->user_id) {
+                // 1.8启用, 新版未读消息提醒
+                $userCount = UserCountModel::firstOrNew([
+                    'type' => 'user-commented',
+                    'user_id' => $replyUser->id
+                ]);
+                $userCount->total += 1;
                 $replyUser = app(UserModel::class)->find($reply);
                 $replyUser->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
                 app(Push::class)->push(sprintf('%s回复了你的评论', $user->name), (string) $replyUser->id, ['channel' => 'group:comment-reply']);
+                $userCount->save();
             }
 
             $commentModel->load(['user', 'reply', 'target']);

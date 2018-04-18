@@ -21,6 +21,7 @@ namespace SlimKit\PlusQuestion\API2\Controllers;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Concerns\FindMarkdownFileTrait;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use SlimKit\PlusQuestion\Models\Topic as TopicModel;
 use SlimKit\PlusQuestion\Models\Answer as AnswerModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
@@ -338,9 +339,17 @@ class QuestionController extends Controller
 
             throw $exception;
         }
-
+        $userCountModel = new UserCountModel();
         // 给用户发送邀请通知.
         $users->each(function (UserModel $item) use ($user, $question) {
+            $userCount = $userCountModel->firstOrNew([
+                'type' => 'user-system',
+                'user_id' => $item->id
+            ]);
+            $userCount->total += 1;
+            $userCount->save();
+            unset($userCount);
+
             $item->sendNotifyMessage(
                 'question',
                 trans('plus-question::questions.invitation', [
