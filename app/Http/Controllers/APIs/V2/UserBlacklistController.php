@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
@@ -9,7 +25,7 @@ use Zhiyi\Plus\Models\BlackList as UserBlacklistModel;
 class UserBlacklistController extends Controller
 {
     /**
-     * 加入黑名单
+     * 加入黑名单.
      * @Author   Wayne
      * @DateTime 2018-04-17
      * @Email    qiaobin@zhiyicx.com
@@ -23,7 +39,7 @@ class UserBlacklistController extends Controller
         $user_id = $request->user()->id;
         $record = $blackList->where(['user_id' => $user_id, 'target_id' => $target_id])
             ->first();
-        if (!$record) {
+        if (! $record) {
             $record = new UserBlacklistModel();
             $record->user_id = $user_id;
             $record->target_id = $target_id;
@@ -35,7 +51,7 @@ class UserBlacklistController extends Controller
     }
 
     /**
-     * 移出黑名单
+     * 移出黑名单.
      * @Author   Wayne
      * @DateTime 2018-04-17
      * @Email    qiaobin@zhiyicx.com
@@ -49,7 +65,7 @@ class UserBlacklistController extends Controller
         $user_id = $request->user()->id;
         $blackList->where(['user_id' => $user_id, 'target_id' => $target_id])
             ->delete();
-        
+
         return response()->json('', 204);
     }
 
@@ -75,6 +91,7 @@ class UserBlacklistController extends Controller
         $blacks = $blacks->map(function ($black) {
             return $black->user;
         });
+
         return response()->json(['data' => $blacks], 200);
     }
 }

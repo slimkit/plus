@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models;
 
-use Zhiyi\Plus\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class BlackList extends Model
