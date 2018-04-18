@@ -24,6 +24,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\PlusGroup\Models\Post as PostModel;
 use Zhiyi\PlusGroup\Models\Pinned as PinnedModel;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\PlusGroup\Models\GroupMember as MemberModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 
@@ -65,15 +66,22 @@ class PinnedController extends Controller
         $pinnedModel->status = 1;
         $pinnedModel->expires_at = $datetime->addDay($day)->toDateTimeString();
 
+        // 1.8启用, 用户未读消息
+        $userCount = UserCountModel::firstOrNew([
+            'type' => 'user-system',
+            'user_id' => $user->id
+        ]);
+        $userCount->total += 1;
+
         $post->getConnection()->transaction(function () use ($user, $pinnedModel, $post) {
             // 保存置顶请求
             $pinnedModel->save();
-
             // 给用户发消息通知
             $user->sendNotifyMessage('group:pinned-post', sprintf('%s,你的帖子《%s》已被系统管理员置顶', $user->name, $post->title), ['post' => $post,
                 'user' => $user,
                 'pinned' => $pinnedModel,
             ]);
+            $userCount->save();
         });
 
         $pinnedModel->expires_state = $pinnedModel->expires_at > $datetime->now()->toDateTimeString();
@@ -120,11 +128,17 @@ class PinnedController extends Controller
         $chargeModel->subject = '帖子置顶收入';
         $chargeModel->body = sprintf('接受置顶帖子《%s》的收入', $post->title);
         $chargeModel->status = 1;
+        // 1.8启用, 新版未读消息数
+        $userCount = UserCountModel::firstOrNew([
+            'type' => 'user-system',
+            'user_id' => $user->id
+        ]);
+        $userCount->total += 1;
 
         $post->getConnection()->transaction(function () use ($pinned, $user, $chargeModel, $post, $founder) {
             // 保存置顶
             $pinned->save();
-
+            $userCount->save();
             // 保存收入记录
             $chargeModel->save();
 
@@ -176,6 +190,13 @@ class PinnedController extends Controller
         $chargeModel->body = sprintf('退还申请置顶帖子《%s》的金额', $post->title);
         $chargeModel->status = 1;
 
+        // 1.8启用, 新版未读消息
+        $userCount = UserCountModel::firstOrNew([
+            'type' => 'user-system',
+            'user_id' => $user->id
+        ]);
+        $userCount->total += 1;
+
         $post->getConnection()->transaction(function () use ($pinned, $chargeModel, $user, $post) {
             // 退还余额
             $user->wallet()->increment('balance', $pinned->amount);
@@ -192,6 +213,7 @@ class PinnedController extends Controller
                 'user' => $user,
                 'pinned' => $pinned,
             ]);
+            $userCount->save();
         });
 
         return response()->json(['message' => '拒绝成功', 'pinned' => $pinned], 201);
