@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
@@ -43,13 +44,14 @@ class NewCommentPinnedController extends Controller
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function accept(Request $request,
-                            ResponseContract $response,
-                            Carbon $dateTime,
-                            NewsModel $news,
-                            CommentModel $comment,
-                            NewsPinnedModel $pinned)
-    {
+    public function accept(
+        Request $request,
+        ResponseContract $response,
+        Carbon $dateTime,
+        NewsModel $news,
+        CommentModel $comment,
+        NewsPinnedModel $pinned
+    ) {
         $user = $request->user();
         if ($user->id !== $news->user_id) {
             abort(403, '你没有权限操作');
@@ -75,6 +77,15 @@ class NewCommentPinnedController extends Controller
                 'pinned' => $pinned,
             ]);
 
+            // 系统消息未读数预处理, 事务中只做保存操作
+            $userCount = UserCountModel::firstOrNew([
+                'user_id' => $pinned->user_id,
+                'type' => 'user-system'
+            ]);
+
+            $userCount->total += 1;
+            $userCount->save();
+
             return $response->json(['message' => ['置顶成功']], 201);
         }
 
@@ -93,13 +104,14 @@ class NewCommentPinnedController extends Controller
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function reject(Request $request,
-                            NewsModel $news,
-                            CommentModel $comment,
-                            NewsPinnedModel $pinned,
-                            ResponseContract $response,
-                            Carbon $dateTime)
-    {
+    public function reject(
+        Request $request,
+        NewsModel $news,
+        CommentModel $comment,
+        NewsPinnedModel $pinned,
+        ResponseContract $response,
+        Carbon $dateTime
+    ) {
         $user = $request->user();
         if ($user->id !== $pinned->target_user || $pinned->channel !== 'news:comment') {
             return $response->json(['message' => ['无效操作']], 422);
@@ -124,6 +136,15 @@ class NewCommentPinnedController extends Controller
                 'comment' => $comment,
                 'pinned' => $pinned,
             ]);
+
+            // 系统消息未读数预处理, 事务中只做保存操作
+            $userCount = UserCountModel::firstOrNew([
+                'user_id' => $pinned->user_id,
+                'type' => 'user-system'
+            ]);
+
+            $userCount->total += 1;
+            $userCount->save();
 
             return $response->json(null, 204);
         }

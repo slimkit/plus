@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned as NewsPinnedModel;
@@ -153,6 +154,14 @@ class NewPinnedController extends Controller
                             'comment' => $comment,
                             'pinned' => $pinned,
                         ]);
+                        // 增加资讯评论置顶申请未读数
+                        $userCount = UserCountModel::firstOrNew([
+                            'type' => 'user-news-comment-pinned',
+                            'user_id' => $news->user_id
+                        ]);
+                        
+                        $userCount->total += 1;
+                        $userCount->save();
                     }
 
                     return response()->json(['message' => ['申请成功']], 201);
