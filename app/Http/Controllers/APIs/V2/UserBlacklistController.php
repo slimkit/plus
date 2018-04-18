@@ -92,6 +92,6 @@ class UserBlacklistController extends Controller
             return $black->user;
         });
 
-        return response()->json(['data' => $blacks], 200);
+        return response()->json($blacks, 200);
     }
 }
