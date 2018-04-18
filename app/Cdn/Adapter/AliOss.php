@@ -188,7 +188,7 @@ class AliOss implements FileUrlGeneratorContract
                 ],
                 'auto-orient,%d' => [
                     'confirm' => true,
-                    'params' => [1]
+                    'params' => [1],
                 ],
             ])->map(function ($value, $key) {
                 if (! $value['confirm']) {
