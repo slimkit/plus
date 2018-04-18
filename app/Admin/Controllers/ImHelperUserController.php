@@ -46,9 +46,10 @@ class ImHelperUserController extends Controller
      * @return \Illuminate\Http\Response
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function update(UpdateImHelperUserRequest $request, Configuration $config): Response
+    // public function update(UpdateImHelperUserRequest $request, Configuration $config): Response
+    public function update(Requests $request, Configuration $config): Response
     {
-        $config->set('im.helper-user', $request->input('user'));
+        $config->set('im.helper-user', $request->input('user', 0));
 
         return response('', 204);
     }
