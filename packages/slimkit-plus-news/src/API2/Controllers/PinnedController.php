@@ -20,10 +20,11 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Modelw\UserCount as UserCountModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
@@ -175,6 +176,15 @@ class PinnedController extends Controller
                     'pinned' => $pinned,
                     'call' => $news->user ? function () use ($user, $comment, $news, $pinned) {
                         $message = sprintf('%s 在你发布的资讯中申请评论置顶', $user->name);
+                        // 增加资讯评论申请置顶的未读消息数量
+                        $userCount = UserCountModel::firstOrNew([
+                            'user_id' => $user->id,
+                            'type' => 'user-news-comment-pinned',
+                        ]);
+
+                        $userCount->total += 1;
+                        $userCount->save();
+
                         $news->user->sendNotifyMessage('news:pinned-comment', $message, [
                             'news' => $news,
                             'user' => $user,
@@ -197,13 +207,15 @@ class PinnedController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function save(Request $request,
-                         ResponseContract $response,
-                         WalletChargeModel $charge,
-                         NewsPinnedModel $pinned,
-                         callable $call = null)
-    {
+    public function save(
+        Request $request,
+        ResponseContract $response,
+        WalletChargeModel $charge,
+        NewsPinnedModel $pinned,
+        callable $call = null
+    ) {
         $user = $request->user();
+
         $user->getConnection()->transaction(function () use ($user, $charge, $pinned) {
             $user->wallet()->decrement('balance', $charge->amount);
             $user->walletCharges()->save($charge);

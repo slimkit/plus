@@ -30,13 +30,14 @@ class CreateUserCountsTable extends Migration
     public function up()
     {
         Schema::create('user_counts', function (Blueprint $table) {
+            $table->increments('id')->unsigned()->comment('自增主键');
             $table->integer('user_id')->unsigned()->comment('所有者 ID');
             $table->string('type', 100)->comment('统计类型');
             $table->integer('total')->nullable()->default(0)->comment('统计总数');
             $table->timestamp('read_at')->nullable();
             $table->timestamps();
 
-            $table->primary(['user_id', 'type']);
+            // $table->unique('user_id', 'type');
             $table->index('user_id');
         });
     }

@@ -23,6 +23,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\AdminControllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned;
@@ -102,8 +103,17 @@ class NewsPinnedController extends Controller
     {
         $pinned->state = 1;
         $pinned->expires_at = $datetime->addDay($pinned->day);
-
         $pinned->save();
+
+        // 审核通过后增加未读数
+        $userCount = UserCountModel::firstOrNew([
+            'user_id' => $pinned->user_id,
+            'type' => 'user-system',
+        ]);
+
+        $userCount->total += 1;
+        $userCount->save();
+
         $pinned->user->sendNotifyMessage('news:pinned:accept', sprintf('你申请的资讯《%s》已被置顶', $pinned->news->title), [
             'news' => $pinned->news,
             'pinned' => $pinned,
@@ -116,9 +126,15 @@ class NewsPinnedController extends Controller
     {
         $pinned->state = 2;
         $pinned->expires_at = $datetime;
+        $userCount = UserCountModel::firstOrNew([
+            'user_id' => $pinned->user_id,
+            'type' => 'user-system',
+        ]);
 
+        $userCount->total += 1;
         $pinned->getConnection()->transaction(function () use ($pinned, $userProcess) {
             $pinned->save();
+            $userCount->save();
             $newTitile = $pinned->news->title;
             $body = sprintf('资讯《%s》的置顶申请已被驳回，退还%s积分', $newTitile, $pinned->amount);
             $userProcess->receivables(

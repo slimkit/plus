@@ -399,6 +399,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             $api->post('/black/{targetUser}', API2\UserBlacklistController::class.'@black');
             $api->delete('/black/{targetUser}', API2\UserBlacklistController::class.'@unBlack');
+            $api->get('/blacks', API2\UserBlacklistController::class.'@blackList');
         });
 
         /*

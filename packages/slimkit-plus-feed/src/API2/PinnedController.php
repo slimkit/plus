@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
@@ -95,6 +96,15 @@ class PinnedController extends Controller
                     'pinned' => $pinned,
                     'call' => $feed->user ? function () use ($user, $comment, $feed, $pinned) {
                         $message = sprintf('%s 在你发布的动态中申请评论置顶', $user->name);
+                        // 增加动态评论置顶申请未读数
+                        $userCount = UserCountModel::firstOrNew([
+                            'user_id' => $feed->user->id,
+                            'type' => 'user-feed-comment-pinned',
+                        ]);
+
+                        $userCount->total += 1;
+                        $userCount->save();
+
                         $feed->user->sendNotifyMessage('feed:pinned-comment', $message, [
                             'feed' => $feed,
                             'user' => $user,
@@ -163,12 +173,13 @@ class PinnedController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function save(Request $request,
-                         ResponseContract $response,
-                         WalletChargeModel $charge,
-                         FeedPinnedModel $pinned,
-                         callable $call = null)
-    {
+    public function save(
+        Request $request,
+        ResponseContract $response,
+        WalletChargeModel $charge,
+        FeedPinnedModel $pinned,
+        callable $call = null
+    ) {
         $user = $request->user();
         $user->getConnection()->transaction(function () use ($user, $charge, $pinned) {
             $user->wallet()->decrement('balance', $charge->amount);

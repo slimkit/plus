@@ -247,14 +247,10 @@ class CurrentUserController extends Controller
         } elseif ($user->hasFollwing($target)) {
             return response()->json(['message' => ['非法的操作']], 422);
         }
-        $userFollowingCount = UserCountModel::where('user_id', $target->id)
-            ->where('type', 'user-following')
-            ->first();
-        if (! $userFollowingCount) {
-            $userFollowingCount = new UserCountModel();
-            $userFollowingCount->user_id = $target->id;
-            $userFollowingCount->type = 'user-following';
-        }
+        $userFollowingCount = UserCountModel::firstOrNew([
+            'type' => 'user-following',
+            'user_id' => $target->id,
+        ]);
 
         return $user
             ->getConnection()
@@ -282,14 +278,10 @@ class CurrentUserController extends Controller
     {
         $user = $request->user();
 
-        $userFollowingCount = UserCountModel::where('user_id', $target->id)
-            ->where('type', 'user-following')
-            ->first();
-        if (! $userFollowingCount) {
-            $userFollowingCount = new UserCountModel();
-            $userFollowingCount->user_id = $target->id;
-            $userFollowingCount->type = 'user-following';
-        }
+        $userFollowingCount = UserCountModel::firstOrNew([
+            'type' => 'user-following',
+            'user_id' => $target->id,
+        ]);
 
         $userFollowing = UserFollowModel::where('user_id', $user->id)
             ->where('target', $target->id)
@@ -302,8 +294,7 @@ class CurrentUserController extends Controller
                 $user->extra()->decrement('followings_count', 1);
                 $target->extra()->decrement('followers_count', 1);
 
-                if (
-                    $userFollowing &&
+                if ($userFollowing &&
                     $userFollowingCount->total &&
                     $userFollowing->updated_at->gte($userFollowingCount->read_at)
                 ) {
