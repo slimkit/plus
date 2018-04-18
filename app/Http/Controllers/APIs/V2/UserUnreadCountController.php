@@ -42,7 +42,7 @@ class UserUnreadCountController extends Controller
     public function index(Request $request, CommentModel $commentModel, LikeModel $likeModel, PinnedsNotificationEventer $eventer)
     {
         $user = $request->user();
-        $counts = $user->unreadCount;
+        $counts = $user->unreadCount ?? new \stdClass();
 
         // 查询最近几条评论记录
         $comments = $commentModel->select('user_id', DB::raw('max(id) as id, max(created_at) as time'))
@@ -85,14 +85,22 @@ class UserUnreadCountController extends Controller
             ];
         });
 
-        $lastSystem = ConversationModel::where('type', 'system')
-            ->where('to_user_id', $user->id)
+        // $lastSystem = ConversationModel::where('type', 'system')
+        //     ->where('to_user_id', $user->id)
+        //     ->latest()
+        //     ->first();
+        $lastSystem = $user->notifications()
             ->latest()
             ->first();
         if ($lastSystem) {
             $lastSystem = $lastSystem->toArray();
         }
 
+        $systemUnreadCount = $user->notifications()
+            ->whereNull('read_at')
+            ->count();
+
+        $counts->system = $systemUnreadCount ?? 0;
         $result = array_filter([
             'counts' => $counts,
             'comments' => $comments,
