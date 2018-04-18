@@ -179,12 +179,12 @@ class PinnedController extends Controller
                         // 增加资讯评论申请置顶的未读消息数量
                         $userCount = UserCountModel::firstOrNew([
                             'user_id' => $user->id,
-                            'type' => 'user-news-comment-pinned'
+                            'type' => 'user-news-comment-pinned',
                         ]);
-                        
+
                         $userCount->total += 1;
                         $userCount->save();
-                        
+
                         $news->user->sendNotifyMessage('news:pinned-comment', $message, [
                             'news' => $news,
                             'user' => $user,

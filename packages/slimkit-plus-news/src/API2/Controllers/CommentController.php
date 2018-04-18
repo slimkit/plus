@@ -61,9 +61,9 @@ class CommentController extends Controller
                 // 新, 1.8启用
                 $userCommentedCount = UserCountModel::firstOrNew([
                     'type' => 'user-commented',
-                    'user_id' => $news->user->id
+                    'user_id' => $news->user->id,
                 ]);
-                
+
                 $userCommentedCount->total += 1;
                 $userCommentedCount->save();
                 // 推送
@@ -79,9 +79,9 @@ class CommentController extends Controller
             // 新, 1.8启用
             $userCommentedCount = UserCountModel::firstOrNew([
                 'type' => 'user-commented',
-                'user_id' => $news->user->id
+                'user_id' => $news->user->id,
             ]);
-            
+
             $userCommentedCount->total += 1;
             $userCommentedCount->save();
             // 推送

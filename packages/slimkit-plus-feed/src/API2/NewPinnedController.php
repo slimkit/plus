@@ -30,7 +30,7 @@ use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned as FeedPinnedModel;
 
 /**
- * 积分申请置顶控制器
+ * 积分申请置顶控制器.
  */
 class NewPinnedController extends Controller
 {
@@ -82,9 +82,9 @@ class NewPinnedController extends Controller
                         // 增加动态评论置顶申请未读数
                         $userCount = UserCountModel::firstOrNew([
                             'user_id' => $feed->user->id,
-                            'type' => 'user-feed-comment-pinned'
+                            'type' => 'user-feed-comment-pinned',
                         ]);
-                        
+
                         $userCount->total += 1;
                         $userCount->save();
                     }

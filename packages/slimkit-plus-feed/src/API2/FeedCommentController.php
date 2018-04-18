@@ -23,9 +23,9 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Services\Push;
-use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2\StoreFeedComment as CommentFormRequest;
@@ -162,9 +162,9 @@ class FeedCommentController extends Controller
                 // 新, 1.8启用
                 $userCommentedCount = UserCountModel::firstOrNew([
                     'type' => 'user-commented',
-                    'user_id' => $feed->user->id
+                    'user_id' => $feed->user->id,
                 ]);
-                
+
                 $userCommentedCount->total += 1;
                 $userCommentedCount->save();
                 // 推送
@@ -181,7 +181,7 @@ class FeedCommentController extends Controller
             // 新, 1.8启用
             $userCommentedCount = UserCountModel::firstOrNew([
                 'type' => 'user-commented',
-                'user_id' => $replyUser->id
+                'user_id' => $replyUser->id,
             ]);
 
             $userCommentedCount->total += 1;

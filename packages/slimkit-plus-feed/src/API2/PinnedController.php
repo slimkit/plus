@@ -99,9 +99,9 @@ class PinnedController extends Controller
                         // 增加动态评论置顶申请未读数
                         $userCount = UserCountModel::firstOrNew([
                             'user_id' => $feed->user->id,
-                            'type' => 'user-feed-comment-pinned'
+                            'type' => 'user-feed-comment-pinned',
                         ]);
-                        
+
                         $userCount->total += 1;
                         $userCount->save();
 

@@ -104,11 +104,11 @@ class NewsPinnedController extends Controller
         $pinned->state = 1;
         $pinned->expires_at = $datetime->addDay($pinned->day);
         $pinned->save();
-        
+
         // 审核通过后增加未读数
         $userCount = UserCountModel::firstOrNew([
             'user_id' => $pinned->user_id,
-            'type' => 'user-system'
+            'type' => 'user-system',
         ]);
 
         $userCount->total += 1;
@@ -128,7 +128,7 @@ class NewsPinnedController extends Controller
         $pinned->expires_at = $datetime;
         $userCount = UserCountModel::firstOrNew([
             'user_id' => $pinned->user_id,
-            'type' => 'user-system'
+            'type' => 'user-system',
         ]);
 
         $userCount->total += 1;

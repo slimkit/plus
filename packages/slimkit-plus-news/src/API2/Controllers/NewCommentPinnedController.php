@@ -80,7 +80,7 @@ class NewCommentPinnedController extends Controller
             // 系统消息未读数预处理, 事务中只做保存操作
             $userCount = UserCountModel::firstOrNew([
                 'user_id' => $pinned->user_id,
-                'type' => 'user-system'
+                'type' => 'user-system',
             ]);
 
             $userCount->total += 1;
@@ -140,7 +140,7 @@ class NewCommentPinnedController extends Controller
             // 系统消息未读数预处理, 事务中只做保存操作
             $userCount = UserCountModel::firstOrNew([
                 'user_id' => $pinned->user_id,
-                'type' => 'user-system'
+                'type' => 'user-system',
             ]);
 
             $userCount->total += 1;

@@ -96,12 +96,12 @@ class LikeController extends Controller
             // 新未读统计 1.8启用
             $userLikedCount = UserCountModel::firstOrNew([
                 'type' => 'user-liked',
-                'user_id' => $feed->user->id
+                'user_id' => $feed->user->id,
             ]);
-            
+
             $userLikedCount->total += 1;
             $userLikedCount->save();
-            
+
             app(push::class)->push(sprintf('%s 点赞了你的动态', $user->name), (string) $feed->user->id, ['channel' => 'feed:digg']);
         }
 

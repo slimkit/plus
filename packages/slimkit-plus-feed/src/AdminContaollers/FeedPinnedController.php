@@ -72,7 +72,7 @@ class FeedPinnedController extends Controller
         // 审核通过后增加系统通知的未读数
         $userCount = UserCountModel::firstOrNew([
             'type' => 'user-system',
-            'user_id' => $pinned->user_id
+            'user_id' => $pinned->user_id,
         ]);
 
         $userCount->total += 1;
@@ -93,7 +93,7 @@ class FeedPinnedController extends Controller
         // 审核未通过, 增加系统通知的未读数
         $userCount = UserCountModel::firstOrNew([
             'type' => 'user-system',
-            'user_id' => $pinned->user_id
+            'user_id' => $pinned->user_id,
         ]);
         $userCount->total += 1;
 
@@ -127,7 +127,7 @@ class FeedPinnedController extends Controller
 
         $userCount = UserCountModel::firstOrNew([
             'type' => 'user-system',
-            'user_id' => $pinned->user_id
+            'user_id' => $pinned->user_id,
         ]);
         $userCount->total += 1;
 
@@ -164,7 +164,7 @@ class FeedPinnedController extends Controller
                 'pinned' => $pinned,
             ]);
             $userCount->save();
-            
+
             return response()->json(['message' => ['操作成功'], 'data' => $pinned], 201);
         }
     }

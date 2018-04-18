@@ -249,7 +249,7 @@ class CurrentUserController extends Controller
         }
         $userFollowingCount = UserCountModel::firstOrNew([
             'type' => 'user-following',
-            'user_id' => $target->id
+            'user_id' => $target->id,
         ]);
 
         return $user
@@ -280,7 +280,7 @@ class CurrentUserController extends Controller
 
         $userFollowingCount = UserCountModel::firstOrNew([
             'type' => 'user-following',
-            'user_id' => $target->id
+            'user_id' => $target->id,
         ]);
 
         $userFollowing = UserFollowModel::where('user_id', $user->id)

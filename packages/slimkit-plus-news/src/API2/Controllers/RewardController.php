@@ -74,7 +74,7 @@ class RewardController extends Controller
         // 系统消息未读数预处理, 事务中只做保存操作
         $userCount = UserCountModel::firstOrNew([
             'user_id' => $user->id,
-            'type' => 'user-system'
+            'type' => 'user-system',
         ]);
 
         $userCount->total += 1;

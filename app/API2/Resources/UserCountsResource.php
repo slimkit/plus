@@ -36,8 +36,7 @@ class UserCountsResource extends JsonResource
         static::withoutWrapping();
 
         return [
-            'user' =>
-            [
+            'user' => [
                 'following' => $this['following'] ?? 0,
                 'liked' => $this['user-liked'] ?? 0,
                 'commented' => $this['user-commented'] ?? 0,

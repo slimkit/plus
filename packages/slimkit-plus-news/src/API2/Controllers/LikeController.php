@@ -52,12 +52,12 @@ class LikeController extends Controller
             // 新未读统计 1.8启用
             $userLikedCount = UserCountModel::firstOrNew([
                 'type' => 'user-liked',
-                'user_id' => $news->user->id
+                'user_id' => $news->user->id,
             ]);
-            
+
             $userLikedCount->total += 1;
             $userLikedCount->save();
-            
+
             app(push::class)->push(sprintf('%s点赞了你的资讯', $user->name), (string) $news->user->id, ['channel' => 'news:like']);
         }
 
