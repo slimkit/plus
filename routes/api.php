@@ -219,9 +219,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     $api->put('/user/retrieve-password', API2\ResetPasswordController::class.'@retrieve');
 
     // IAP帮助页
-    $api->get('/currency/apple-iap/help', function () {
-        return view('apple-iap-help');
-    });
+    $api->view('/currency/apple-iap/help', 'apple-iap-help');
 
     /*
     |-----------------------------------------------------------------------
@@ -398,6 +396,10 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
              * @author Seven Du <shiweidu@outlook.com>
              */
             $api->delete('/email', API2\UserEmailController::class.'@delete');
+
+            $api->post('/black/{targetUser}', API2\UserBlacklistController::class.'@black');
+            $api->delete('/black/{targetUser}', API2\UserBlacklistController::class.'@unBlack');
+            $api->get('/blacks', API2\UserBlacklistController::class.'@blackList');
         });
 
         /*
