@@ -28,6 +28,7 @@ use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Requests\StoreNewsComment;
 
 class CommentController extends Controller
 {
@@ -40,16 +41,18 @@ class CommentController extends Controller
      * @param  Comment $comment
      * @return mix
      */
-    public function store(Request $request, News $news, Comment $comment)
+    public function store(StoreNewsComment $request, News $news, Comment $comment)
     {
         $replyUser = intval($request->input('reply_user', 0));
         $body = $request->input('body');
         $user = $request->user();
+        $mark = $request->input('comment_mark', '');
 
         $comment->user_id = $user->id;
         $comment->reply_user = $replyUser;
         $comment->target_user = $news->user_id;
         $comment->body = $body;
+        $comment->comment_mark = $mark;
 
         $news->getConnection()->transaction(function () use ($news, $comment, $user) {
             $news->comments()->save($comment);

@@ -145,11 +145,13 @@ class FeedCommentController extends Controller
         $replyUser = intval($request->input('reply_user', 0));
         $body = $request->input('body');
         $user = $request->user();
+        $mark = $request->input('comment_mark', '');
 
         $comment->user_id = $user->id;
         $comment->reply_user = $replyUser;
         $comment->target_user = $feed->user_id;
         $comment->body = $body;
+        $comment->comment_mark = $mark;
 
         $feed->getConnection()->transaction(function () use ($feed, $user, $comment) {
             $feed->comments()->save($comment);

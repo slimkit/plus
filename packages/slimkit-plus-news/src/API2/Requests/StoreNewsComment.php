@@ -18,13 +18,13 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2;
+namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Requests;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreFeedComment extends FormRequest
+class StoreNewsComment extends FormRequest
 {
     /**
      * authorization check.
@@ -64,10 +64,10 @@ class StoreFeedComment extends FormRequest
     {
         return [
             'reply_user.reply_user' => '发送数据类型错误',
-            'reply_user.exists' => '操作的用户不存在',
-            'body.required' => '内容不能为空',
-            'body.string' => '内容必须是字符串',
-            'body.display_length' => '内容超出长度限制'
+            'reply_user.exists' => '被回复用户不存在',
+            'body.required' => '评论内容不能为空',
+            'body.string' => '评论内容必须是文字',
+            'body.display_length' => '内容超出长度限制',
         ];
     }
 }
