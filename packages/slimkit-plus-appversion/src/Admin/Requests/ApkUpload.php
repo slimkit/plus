@@ -42,7 +42,7 @@ class ApkUpload extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'required|max:51200|file',
+            'file' => 'required|max:102400|file',
         ];
     }
 
