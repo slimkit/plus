@@ -194,6 +194,7 @@ class CurrentUserController extends Controller
             return $response->json($followers->map(function (UserModel $item) use ($user) {
                 $item->following = true;
                 $item->follower = $item->hasFollower($user);
+                $item->blacked = $user->blacked($item);
 
                 return $item;
             }))->setStatusCode(200);
@@ -223,6 +224,7 @@ class CurrentUserController extends Controller
             return $response->json($followings->map(function (UserModel $item) use ($user) {
                 $item->following = $item->hasFollwing($user);
                 $item->follower = true;
+                $item->blacked = $user->blacked($item);
 
                 return $item;
             }))->setStatusCode(200);
@@ -334,6 +336,7 @@ class CurrentUserController extends Controller
             return $response->json($followings->map(function (UserModel $item) use ($user) {
                 $item->following = true;
                 $item->follower = true;
+                $item->blacked = $user->blacked($item);
 
                 return $item;
             }))->setStatusCode(200);

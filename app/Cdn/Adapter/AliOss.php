@@ -186,11 +186,6 @@ class AliOss implements FileUrlGeneratorContract
                     'confirm' => (bool) $blur,
                     'params' => [intval($blur / 2)],
                 ],
-                // 自然显示图片
-                'auto-orient' => [
-                    'confirm' => true,
-                    'params' => 1
-                ],
             ])->map(function ($value, $key) {
                 if (! $value['confirm']) {
                     return null;

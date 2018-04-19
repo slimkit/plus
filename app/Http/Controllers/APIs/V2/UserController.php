@@ -63,7 +63,7 @@ class UserController extends Controller
             return $users->map(function (User $item) use ($user) {
                 $item->following = $item->hasFollwing($user);
                 $item->follower = $item->hasFollower($user);
-
+                $item->blacked = $user->blacked($item);
                 return $item;
             });
         }))->setStatusCode(200);
@@ -87,6 +87,8 @@ class UserController extends Controller
         $this->hasFollowing($request, $user);
         // 处理关注我的
         $this->hasFollower($request, $user);
+        // 处理黑名单
+        $this->hasBlacked($request, $user);
 
         return response()->json($user, 200);
     }
@@ -169,5 +171,12 @@ class UserController extends Controller
         $currentUser = $request->user('api');
         $hasUser = (int) $request->query('follower', $currentUser ? $currentUser->id : 0);
         $user['follower'] = $user->hasFollower($hasUser);
+    }
+
+    protected function hasBlacked(Request $request, User &$user)
+    {
+        $currentUser = $request->user('api');
+        $hasUser = (int) $request->query('blacked', $currentUser ? $currentUser->id : 0);
+        $user['blacked'] = $currentUser->blacked($user);
     }
 }

@@ -64,7 +64,7 @@ class BootstrappersController extends Controller
 
         $currency = CurrencyType::where('enable', 1)->first() ?? collect(['name' => '积分', 'unit' => '']);
         $bootstrappers['site']['currency_name'] = $currency;
-        $bootstrappers['im:helper-user'] = config('im.helper-user');
+        config('im.helper-user') && $bootstrappers['im:helper-user'] = config('im.helper-user');
 
         return $response->json($events->dispatch('v2', [$bootstrappers]), 200);
     }
