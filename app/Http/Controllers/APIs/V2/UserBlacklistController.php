@@ -96,6 +96,7 @@ class UserBlacklistController extends Controller
         $limit = $request->input('limit', 15);
         $blacks = $user->blacklists()
             ->with('user')
+            ->latest()
             ->limit($limit)
             ->offset($offset)
             ->get();
