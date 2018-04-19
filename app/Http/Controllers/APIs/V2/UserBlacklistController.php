@@ -50,6 +50,7 @@ class UserBlacklistController extends Controller
         $record->save();
         $cacheKey = sprintf('user-blacked:%s,%s', $target_id, $user_id);
         Cache::forever($cacheKey, true);
+
         return response()->json(['message' => '操作成功'], 201);
     }
 
@@ -70,6 +71,7 @@ class UserBlacklistController extends Controller
             ->delete();
         $cacheKey = sprintf('user-blacked:%s,%s', $target_id, $user_id);
         Cache::forget($cacheKey);
+
         return response()->json('', 204);
     }
 
@@ -94,6 +96,7 @@ class UserBlacklistController extends Controller
 
         $blacks = $blacks->map(function ($black) use ($user) {
             $black->user->blacked = true;
+
             return $black->user;
         });
 
