@@ -49,8 +49,8 @@ class StoreNewsComment extends FormRequest
             'reply_user' => ['nullable', 'integer', 'exists:users,id'],
             'body' => ['required', 'string', 'display_length:255'],
             'comment_mark' => [
-                Rule::notIn([Cache::get('comment_mark_'.$this->input('comment_mark'))])
-            ]
+                Rule::notIn([Cache::get('comment_mark_'.$this->input('comment_mark'))]),
+            ],
         ];
     }
 
