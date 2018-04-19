@@ -18,6 +18,8 @@
 
 namespace SlimKit\PlusQuestion\API2\Requests;
 
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CommentRequest extends FormRequest
@@ -43,6 +45,9 @@ class CommentRequest extends FormRequest
     {
         return [
             'body' => 'required|string|min:1|max:255',
+            'comment_mark' => [
+                Rule::notIn([Cache::get('comment_mark_'.$this->input('comment_mark'))])
+            ],
         ];
     }
 

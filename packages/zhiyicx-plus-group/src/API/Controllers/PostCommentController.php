@@ -91,6 +91,7 @@ class PostCommentController
         $body = $request->input('body');
         $reply = $request->input('reply_user', 0);
         $user = $request->user();
+        $mark = $request->input('comment_mark', '');
 
         $group = $post->group;
         $member = $group->members()->where('user_id', $user->id)->where('audit', 1)->first();
@@ -106,6 +107,7 @@ class PostCommentController
         $commentModel->target_user = $post->user_id;
         $commentModel->reply_user = $reply;
         $commentModel->body = $body;
+        $commentModel->comment_mark = $mark;
 
         $post->getConnection()->transaction(function () use ($post, $commentModel, $reply, $user) {
             $post->comments()->save($commentModel);

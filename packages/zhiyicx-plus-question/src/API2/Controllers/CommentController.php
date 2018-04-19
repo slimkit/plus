@@ -77,11 +77,13 @@ class CommentController extends Controller
         $replyUser = intval($request->input('reply_user', 0));
         $body = $request->input('body');
         $user = $request->user();
+        $mark = $request->input('comment_mark', '');
 
         $comment->user_id = $user->id;
         $comment->target_user = $question->user_id;
         $comment->reply_user = $replyUser;
         $comment->body = $body;
+        $comment->comment_mark = $mark;
 
         $question->getConnection()->transaction(function () use ($question, $comment, $user) {
             $question->comments()->save($comment);
@@ -129,11 +131,13 @@ class CommentController extends Controller
         $replyUser = intval($request->input('reply_user', 0));
         $body = $request->input('body');
         $user = $request->user();
+        $mark = $request->input('comment_mark', '');
 
         $comment->user_id = $user->id;
         $comment->target_user = $answer->user_id;
         $comment->reply_user = $replyUser;
         $comment->body = $body;
+        $comment->comment_mark = $mark;
 
         $answer->getConnection()->transaction(function () use ($comment, $user, $answer) {
             $answer->comments()->save($comment);

@@ -18,6 +18,8 @@
 
 namespace  Zhiyi\PlusGroup\API\Requests;
 
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreComment extends FormRequest
@@ -44,6 +46,9 @@ class StoreComment extends FormRequest
         return [
             'reply_user' => ['nullable', 'integer', 'exists:users,id'],
             'body' => ['required', 'string', 'display_length:255'],
+            'comment_mark' => [
+                Rule::notIn([Cache::get('comment_mark_'.$this->input('comment_mark'))])
+            ],
         ];
     }
 
