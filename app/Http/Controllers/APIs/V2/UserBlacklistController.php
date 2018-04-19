@@ -90,6 +90,7 @@ class UserBlacklistController extends Controller
 
         $blacks = $blacks->map(function ($black) use ($user) {
             $black->user->blacked = $user->blacked($black->user);
+
             return $black->user;
         });
 
