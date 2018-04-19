@@ -82,7 +82,7 @@ class QuestionController extends Controller
         ];
         $type = in_array($type = $request->query('type', 'new'), array_keys($map)) ? $type : 'new';
         call_user_func($map[$type], $query = $questionModel
-            ->whereDoesntHave('blacks', function ($query) use ($user) {
+            ->whereDoesntHave('blacks', function ($query) use ($userID) {
                 $query->where('user_id', $userID);
             })
             ->when($subject, function ($query) use ($subject) {
@@ -100,7 +100,7 @@ class QuestionController extends Controller
             }
 
             $question->answer = $question->answers()
-                ->whereDoesntHave('blacks', function ($query) use ($user) {
+                ->whereDoesntHave('blacks', function ($query) use ($userID) {
                     $query->where('user_id', $userID);
                 })
                 ->with('user')

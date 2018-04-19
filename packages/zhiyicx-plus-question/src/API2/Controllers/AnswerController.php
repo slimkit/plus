@@ -55,7 +55,7 @@ class AnswerController extends Controller
         $orderType = in_array($orderType = $request->query('order_type', 'default'), array_keys($orderMap)) ? $orderType : 'default';
 
         $answers = $question->answers()
-            ->whereDoesntHave('blacks', function ($query) use ($user) {
+            ->whereDoesntHave('blacks', function ($query) use ($userID) {
                 $query->where('user_id', $userID);
             })
             ->with('user')
