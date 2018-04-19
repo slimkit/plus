@@ -37,6 +37,7 @@ trait UserHasBlackLists
     {
         return $this->hasMany(BlackList::class, 'user_id', 'id');
     }
+
     /**
      * is user blacked by current_user.
      * @Author   Wayne

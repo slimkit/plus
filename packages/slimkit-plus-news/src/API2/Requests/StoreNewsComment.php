@@ -18,36 +18,44 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Slimkit\PlusAppversion\API\Requests;
+namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Requests;
 
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ApkUpload extends FormRequest
+class StoreNewsComment extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * authorization check.
      *
      * @return bool
+     * @author Seven Du <shiweidu@outlook.com>
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return $this->user();
+        return $this->user() ? true : false;
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * get the validator rules.
      *
      * @return array
+     * @author Seven Du <shiweidu@outlook.com>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'file' => 'required|max:102400|file',
+            'reply_user' => ['nullable', 'integer', 'exists:users,id'],
+            'body' => ['required', 'string', 'display_length:255'],
+            'comment_mark' => [
+                Rule::notIn([Cache::get('comment_mark_'.$this->input('comment_mark'))])
+            ]
         ];
     }
 
     /**
-     * Get the validation message that apply to the request.
+     * Get the validator messages.
      *
      * @return array
      * @author Seven Du <shiweidu@outlook.com>
@@ -55,10 +63,11 @@ class ApkUpload extends FormRequest
     public function messages(): array
     {
         return [
-            'file.required' => '没有上传文件或者上传错误',
-            'file.max' => '文件上传超出服务器限制',
-            'file.file' => '文件上传失败',
-            'file:mimes' => '文件格式错误',
+            'reply_user.reply_user' => '发送数据类型错误',
+            'reply_user.exists' => '被回复用户不存在',
+            'body.required' => '评论内容不能为空',
+            'body.string' => '评论内容必须是文字',
+            'body.display_length' => '内容超出长度限制',
         ];
     }
 }

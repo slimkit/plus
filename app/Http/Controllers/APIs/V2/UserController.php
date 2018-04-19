@@ -64,6 +64,7 @@ class UserController extends Controller
                 $item->following = $item->hasFollwing($user);
                 $item->follower = $item->hasFollower($user);
                 $item->blacked = $user->blacked($item);
+
                 return $item;
             });
         }))->setStatusCode(200);

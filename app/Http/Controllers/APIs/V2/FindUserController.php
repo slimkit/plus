@@ -91,6 +91,7 @@ class FindUserController extends Controller
                 $user->following = $user->hasFollwing($user_id);
                 $user->follower = $user->hasFollower($user_id);
                 $user->blacked = $currentUser ? $currentUser->blacked($user) : false;
+
                 return $user;
             })
         )
@@ -178,6 +179,7 @@ class FindUserController extends Controller
                 $user->following = $user->hasFollwing($user_id);
                 $user->follower = $user->hasFollower($user_id);
                 $user->blacked = $currentUser ? $currentUser->blacked($user) : false;
+
                 return $user;
             })
         )
@@ -222,6 +224,7 @@ class FindUserController extends Controller
                 $user->user->following = $user->user->hasFollwing($currentUser);
                 $user->user->follower = $user->user->hasFollower($currentUser);
                 $user->user->blacked = $currentUser->blacked($user->user);
+
                 return $user->user;
             })
         )
@@ -240,7 +243,7 @@ class FindUserController extends Controller
         if (! $phones) {
             abort(422, '请传递手机号码');
         }
-        if (!is_array($phones)) {
+        if (! is_array($phones)) {
             $phones = explode(',', $phones);
         }
 
@@ -249,7 +252,7 @@ class FindUserController extends Controller
             ->whereIn('phone', $phones)
             ->limit(100)
             ->get();
-        
+
         return $response->json(
             $users->map(function ($user) use ($user_id, $currentUser) {
                 $user->following = $user->hasFollwing($user_id);

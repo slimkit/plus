@@ -20,6 +20,7 @@
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\BlackList as UserBlacklistModel;
 
@@ -47,6 +48,8 @@ class UserBlacklistController extends Controller
         }
 
         $record->save();
+        $cacheKey = sprintf('user-blacked:%s,%s', $target_id, $user_id);
+        Cache::forever($cacheKey, true);
 
         return response()->json(['message' => '操作成功'], 201);
     }
@@ -66,6 +69,8 @@ class UserBlacklistController extends Controller
         $user_id = $request->user()->id;
         $blackList->where(['user_id' => $user_id, 'target_id' => $target_id])
             ->delete();
+        $cacheKey = sprintf('user-blacked:%s,%s', $target_id, $user_id);
+        Cache::forget($cacheKey);
 
         return response()->json('', 204);
     }
@@ -90,7 +95,8 @@ class UserBlacklistController extends Controller
             ->get();
 
         $blacks = $blacks->map(function ($black) use ($user) {
-            $black->user->blacked = $user->blacked($black->user);
+            $black->user->blacked = true;
+
             return $black->user;
         });
 

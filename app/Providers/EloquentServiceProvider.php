@@ -18,47 +18,31 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Slimkit\PlusAppversion\API\Requests;
+namespace Zhiyi\Plus\Providers;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Zhiyi\Plus\Models as Models;
+use Zhiyi\Plus\Observers as Observers;
+use Illuminate\Support\ServiceProvider;
 
-class ApkUpload extends FormRequest
+class EloquentServiceProvider extends ServiceProvider
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Bootstrap services.
      *
-     * @return bool
+     * @return void
      */
-    public function authorize()
+    public function boot()
     {
-        return $this->user();
+        Models\Comment::observe(Observers\CommentObserver::class);
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Register services.
      *
-     * @return array
+     * @return void
      */
-    public function rules()
+    public function register()
     {
-        return [
-            'file' => 'required|max:102400|file',
-        ];
-    }
-
-    /**
-     * Get the validation message that apply to the request.
-     *
-     * @return array
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function messages(): array
-    {
-        return [
-            'file.required' => '没有上传文件或者上传错误',
-            'file.max' => '文件上传超出服务器限制',
-            'file.file' => '文件上传失败',
-            'file:mimes' => '文件格式错误',
-        ];
+        //
     }
 }

@@ -18,47 +18,17 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Slimkit\PlusAppversion\API\Requests;
+namespace Zhiyi\Plus\Observers;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Zhiyi\Plus\Models\Comment;
+use Illuminate\Support\Facades\Cache;
 
-class ApkUpload extends FormRequest
+class CommentObserver
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function creating(Comment $comment)
     {
-        return $this->user();
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        return [
-            'file' => 'required|max:102400|file',
-        ];
-    }
-
-    /**
-     * Get the validation message that apply to the request.
-     *
-     * @return array
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function messages(): array
-    {
-        return [
-            'file.required' => '没有上传文件或者上传错误',
-            'file.max' => '文件上传超出服务器限制',
-            'file.file' => '文件上传失败',
-            'file:mimes' => '文件格式错误',
-        ];
+        // 设置重复内容锁
+        Cache::put('comment_mark_'.$comment->comment_mark, $comment->comment_mark, 3);
+        unset($comment->comment_mark);
     }
 }
