@@ -52,7 +52,7 @@ trait UserHasBlackLists
             $user = $user->id;
         }
 
-        $cacheKey = sprintf('user-blacked:%s,%s', $this->id, $user);
+        $cacheKey = sprintf('user-blacked:%s,%s', $user, $this->id);
         if (Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
         }
