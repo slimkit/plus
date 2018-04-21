@@ -49,8 +49,8 @@ class StoreFeedComment extends FormRequest
             'reply_user' => ['nullable', 'integer', 'exists:users,id'],
             'body' => ['required', 'string', 'display_length:255'],
             'comment_mark' => [
-                Rule::notIn([Cache::get('comment_mark_'.$this->input('comment_mark'))])
-            ]
+                Rule::notIn([Cache::get('comment_mark_'.$this->input('comment_mark'))]),
+            ],
         ];
     }
 
@@ -67,7 +67,7 @@ class StoreFeedComment extends FormRequest
             'reply_user.exists' => '操作的用户不存在',
             'body.required' => '内容不能为空',
             'body.string' => '内容必须是字符串',
-            'body.display_length' => '内容超出长度限制'
+            'body.display_length' => '内容超出长度限制',
         ];
     }
 }

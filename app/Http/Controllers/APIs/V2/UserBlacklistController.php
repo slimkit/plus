@@ -39,6 +39,9 @@ class UserBlacklistController extends Controller
     {
         $target_id = $targetUser->id;
         $user_id = $request->user()->id;
+        if ($target_id === $user_id) {
+            return response()->json(['message' => '不能将自己加入黑名单'], 422);
+        }
         $record = $blackList->where(['user_id' => $user_id, 'target_id' => $target_id])
             ->first();
         if (! $record) {
@@ -67,6 +70,9 @@ class UserBlacklistController extends Controller
     {
         $target_id = $targetUser->id;
         $user_id = $request->user()->id;
+        if ($target_id === $user_id) {
+            return response()->json(['message' => '不能对自己进行操作'], 422);
+        }
         $blackList->where(['user_id' => $user_id, 'target_id' => $target_id])
             ->delete();
         $cacheKey = sprintf('user-blacked:%s,%s', $target_id, $user_id);
@@ -90,6 +96,7 @@ class UserBlacklistController extends Controller
         $limit = $request->input('limit', 15);
         $blacks = $user->blacklists()
             ->with('user')
+            ->latest()
             ->limit($limit)
             ->offset($offset)
             ->get();
