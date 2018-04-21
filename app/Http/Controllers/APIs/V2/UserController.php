@@ -42,7 +42,7 @@ class UserController extends Controller
      */
     public function index(Request $request, ResponseFactoryContract $response, User $model)
     {
-        $user = $request->user('api') ?: 0;
+        $user = $request->user('api');
         $ids = array_filter(explode(',', $request->query('id', '')));
         $limit = max(min($request->query('limit', 15), 50), 1);
         $order = in_array($order = $request->query('order', 'desc'), ['asc', 'desc']) ? $order : 'desc';
@@ -61,9 +61,9 @@ class UserController extends Controller
 
         return $response->json($model->getConnection()->transaction(function () use ($users, $user) {
             return $users->map(function (User $item) use ($user) {
-                $item->following = $item->hasFollwing($user);
-                $item->follower = $item->hasFollower($user);
-                $item->blacked = $user->blacked($item);
+                $item->following = $item->hasFollwing($user->id ?? 0);
+                $item->follower = $item->hasFollower($user->id ?? 0);
+                $item->blacked = $user ? $user->blacked($item) : false;
 
                 return $item;
             });
@@ -177,7 +177,6 @@ class UserController extends Controller
     protected function hasBlacked(Request $request, User &$user)
     {
         $currentUser = $request->user('api');
-        $hasUser = (int) $request->query('blacked', $currentUser ? $currentUser->id : 0);
-        $user['blacked'] = $currentUser->blacked($user);
+        $user['blacked'] = $currentUser ? $currentUser->blacked($user) : false;
     }
 }
