@@ -30,35 +30,38 @@
 </template>
 
 <script>
-import components from '../modules/cdn';
-import Alert from '../modules/Alert';
-import request, { createRequestURI } from '../../util/request';
+import components from "../modules/cdn";
+import Alert from "../modules/Alert";
+import request, { createRequestURI } from "../../util/request";
 export default {
-  name: 'page-cdn',
+  name: "page-cdn",
   components: {
     ...components,
-    [Alert.name]: Alert,
+    [Alert.name]: Alert
   },
   data: () => ({
-    selecetd: 'filesystem',
-    loading: false,
+    selecetd: "filesystem",
+    loading: false
   }),
   methods: {
-    handleSelect (cdn) {
+    handleSelect(cdn) {
       this.selecetd = cdn;
     }
   },
-  created () {
+  created() {
     this.loading = true;
-    request.get(createRequestURI('cdn/seleced'), {
-      validateStatus: status => status === 200,
-    }).then(({ data: { seleced: cdn = 'filesystem' } }) => {
-      this.selecetd = cdn;
-      this.loading = false;
-    }).catch(({ response: { data = { message: '获取失败' } } = {} }) => {
-      this.loading = false;
-      this.$store.dispatch('alert-open', { type: 'danger', message: data });
-    });
+    request
+      .get(createRequestURI("cdn/selected"), {
+        validateStatus: status => status === 200
+      })
+      .then(({ data: { seleced: cdn = "filesystem" } }) => {
+        this.selecetd = cdn;
+        this.loading = false;
+      })
+      .catch(({ response: { data = { message: "获取失败" } } = {} }) => {
+        this.loading = false;
+        this.$store.dispatch("alert-open", { type: "danger", message: data });
+      });
   }
 };
 </script>
