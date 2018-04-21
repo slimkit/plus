@@ -95,7 +95,7 @@ Route::group([
     $route->group(['prefix' => 'cdn'], function (RouteRegisterContract $route) {
 
         // Get cdn selected
-        $route->get('/seleced', 'CdnController@getCdnSelected');
+        $route->get('/selected', 'CdnController@getCdnSelected');
 
         // Local.
         $route->get('/filesystem/disk', 'CdnController@getFilesystemDisk');
