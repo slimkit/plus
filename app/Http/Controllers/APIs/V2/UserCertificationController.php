@@ -54,11 +54,12 @@ class UserCertificationController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function store(UserCertificationRequest $request,
-                          ResponseFactoryContract $response,
-                          CertificationModel $certification,
-                          FileWithModel $fileWithModel)
-    {
+    public function store(
+        UserCertificationRequest $request,
+        ResponseFactoryContract $response,
+        CertificationModel $certification,
+        FileWithModel $fileWithModel
+    ) {
         $user = $request->user();
         $type = $request->input('type');
         $data = $request->only(['name', 'phone', 'number', 'desc']);
@@ -81,7 +82,7 @@ class UserCertificationController extends Controller
             });
             $user->certification()->save($certification);
 
-            return $response->json(['message' => ['申请成功，等待审核']])->setStatusCode(201);
+            return $response->json(['message' => ['提交成功，等待审核']])->setStatusCode(201);
         });
     }
 
@@ -94,10 +95,11 @@ class UserCertificationController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function update(UserCertificationRequest $request,
-                           ResponseFactoryContract $response,
-                           FileWithModel $fileWithModel)
-    {
+    public function update(
+        UserCertificationRequest $request,
+        ResponseFactoryContract $response,
+        FileWithModel $fileWithModel
+    ) {
         $user = $request->user();
         $type = $request->input('type');
         $certification = $user->certification;
