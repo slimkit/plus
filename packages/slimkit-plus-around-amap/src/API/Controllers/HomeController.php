@@ -317,7 +317,7 @@ class HomeController extends Controller
         $sig = md5($parmas.$this->_amap_sig);
         $parmas .= '&sig='.$sig;
 
-        $response = json_decode($client->request('get', $this->_getgeo_uri.$parmas)->getBody());
+        $response = json_decode($client->request('get', $this->_getgeo_uri.$parmas)->getBody()->getContents());
 
         if ($response->status) {
             return response()->json($response)->setStatusCode(200);
