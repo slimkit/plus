@@ -54,6 +54,7 @@ class FindUserController extends Controller
                 'user',
             ])
             ->orderBy('followers_count', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->get();
 
         return $response->json(
@@ -182,9 +183,9 @@ class FindUserController extends Controller
      */
     public function findByTags(Request $request, TaggableModel $taggable, ResponseContract $response)
     {
-        $u = $request->user('api');
+        $currentUser = $request->user('api');
 
-        if (! $u) {
+        if (! $currentUser) {
             return response()->json([])->setStatusCode(200);
         }
 
@@ -192,11 +193,11 @@ class FindUserController extends Controller
         $offset = $request->input('offset', 0);
         // $recommends = $users = [];
 
-        $tags = $u->tags()->select('tag_id')->get();
+        $tags = $currentUser->tags()->select('tag_id')->get();
         $tags = array_pluck($tags, 'tag_id');
         // 根据用户标签获取用户
         $users = $taggable->whereIn('tag_id', $tags)
-            ->where('taggable_id', '<>', $u)
+            ->where('taggable_id', '<>', $currentUser->id)
             ->where('taggable_type', 'users')
             ->whereExists(function ($query) {
                 return $query->from('users')->whereRaw('users.id = taggables.taggable_id')->where('deleted_at', null);
@@ -211,9 +212,9 @@ class FindUserController extends Controller
             ->get();
 
         return $response->json(
-            $users->map(function ($user) use ($u) {
-                $user->user->following = $user->user->hasFollwing($u);
-                $user->user->follower = $user->user->hasFollower($u);
+            $users->map(function ($user) use ($currentUser) {
+                $user->user->following = $user->user->hasFollwing($currentUser);
+                $user->user->follower = $user->user->hasFollower($currentUser);
 
                 return $user->user;
             })
