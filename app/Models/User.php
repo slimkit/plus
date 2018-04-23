@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models;
 
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
@@ -126,8 +128,13 @@ class User extends Authenticatable implements JWTSubject
         if (! $this->avatarPath()) {
             return null;
         }
+        // 获取头像更新时间
+        $lastModified = Cache::get('avatar_'.$this->id.'_lastModified_at');
+        if (!$lastModified) {
+            $lastModified = Storage::disk(config('cdn.generators.filesystem.disk'))->lastModified($this->avatarPath());
+        }
 
-        return action('\\'.UserAvatarController::class.'@show', ['user' => $this]);
+        return action('\\'.UserAvatarController::class.'@show', ['user' => $this]).'?v='.$lastModified;
     }
 
     /**
