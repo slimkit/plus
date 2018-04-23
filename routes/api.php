@@ -583,9 +583,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             $api->get('/apple-iap/products', API2\CurrencyApplePayController::class.'@productList');
 
             // 积分商城（待开发）
-            $api->get('/shop', function () {
-                return view('currency-developing');
-            });
+            $api->view('/show', 'currency-developing');
         });
     });
 
