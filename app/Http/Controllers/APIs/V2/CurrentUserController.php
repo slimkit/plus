@@ -260,6 +260,7 @@ class CurrentUserController extends Controller
                 $user->followings()->attach($target);
                 $user->extra()->firstOrCreate([])->increment('followings_count', 1);
                 $target->extra()->firstOrCreate([])->increment('followers_count', 1);
+
                 // 检测当前用户是否已经被关注, 如果被关注, 好友数量+1
                 if ($target->hasFollwing($user)) {
                     $userMutualCount = UserCountModel::firstOrNew([

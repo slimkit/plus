@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Models\Concerns;
 
 use Zhiyi\Plus\Cdn\Refresh;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Filesystem\FilesystemManager;
@@ -129,7 +130,7 @@ trait HasAvatar
         app(CdnUrlFactoryContract::class)->generator()->refresh(new Refresh($files, [$filename]));
         // 头像更新时间
         $now = new Carbon();
-        Cache:forever('avatar_'.$this->id.'_lastModified_at', $now->timestamp);
+        Cache::forever('avatar_'.$this->id.'_lastModified_at', $now->timestamp);
         
         return $avatar->storeAs($path, $name, config('cdn.generators.filesystem.disk'));
     }

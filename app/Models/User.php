@@ -130,7 +130,7 @@ class User extends Authenticatable implements JWTSubject
         }
         // 获取头像更新时间
         $lastModified = Cache::get('avatar_'.$this->id.'_lastModified_at');
-        if (!$lastModified) {
+        if (! $lastModified) {
             $lastModified = Storage::disk(config('cdn.generators.filesystem.disk'))->lastModified($this->avatarPath());
         }
 
