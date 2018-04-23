@@ -261,6 +261,14 @@ class CurrentUserController extends Controller
                 $user->extra()->firstOrCreate([])->increment('followings_count', 1);
                 $target->extra()->firstOrCreate([])->increment('followers_count', 1);
 
+                if ($target->hasFollwing($user)) {
+                    $userMutualCount = UserCountModel::firstOrNew([
+                        'type' => 'user-mutual',
+                        'user_id' => $target->id,
+                    ]);
+                    $userMutualCount->total += 1;
+                    $userMutualCount->save();
+                }
                 $userFollowingCount->total += 1;
                 $userFollowingCount->save();
 
