@@ -260,7 +260,15 @@ class CurrentUserController extends Controller
                 $user->followings()->attach($target);
                 $user->extra()->firstOrCreate([])->increment('followings_count', 1);
                 $target->extra()->firstOrCreate([])->increment('followers_count', 1);
-
+                // 检测当前用户是否已经被关注, 如果被关注, 好友数量+1
+                if ($target->hasFollwing($user)) {
+                    $userMutualCount = UserCountModel::firstOrNew([
+                        'type' => 'user-mutual',
+                        'user_id' => $target->id,
+                    ]);
+                    $userMutualCount->total += 1;
+                    $userMutualCount->save();
+                }
                 $userFollowingCount->total += 1;
                 $userFollowingCount->save();
 
@@ -322,7 +330,6 @@ class CurrentUserController extends Controller
         $limit = $request->query('limit', 15);
         $offset = $request->query('offset', false);
         $keyword = $request->query('keyword', null);
-
         $followings = $user->mutual()
             ->when($keyword, function ($query) use ($keyword) {
                 return $query->where('name', 'like', "%{$keyword}%");
