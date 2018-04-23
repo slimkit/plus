@@ -114,7 +114,7 @@ class FeedCommentController extends Controller
     {
         $user = $request->user();
         if ($comment->user_id !== $user->id) {
-            return $response->json(['message' => ['没有权限']], 403);
+            return $response->json(['message' => '没有权限'], 403);
         }
 
         $feed->getConnection()->transaction(function () use ($user, $feed, $comment) {
@@ -195,7 +195,7 @@ class FeedCommentController extends Controller
         $comment->load('user');
 
         return $response->json([
-            'message' => ['操作成功'],
+            'message' => '操作成功',
             'comment' => $comment,
         ])->setStatusCode(201);
     }

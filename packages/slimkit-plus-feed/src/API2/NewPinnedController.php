@@ -49,11 +49,11 @@ class NewPinnedController extends Controller
     {
         $user = $request->user();
         if ($comment->user_id !== $user->id) {
-            return response()->json(['message' => ['你没有权限申请']])->setStatusCode(403);
+            return response()->json(['message' => '你没有权限申请'])->setStatusCode(403);
         } elseif ($feed->pinnedComments()->newPivotStatementForId($comment->id)->where(function ($query) use ($datetime) {
             return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
         })->first()) {
-            return response()->json(['message' => ['已经申请过']])->setStatusCode(422);
+            return response()->json(['message' => '已经申请过'])->setStatusCode(422);
         }
 
         $pinned = new FeedPinnedModel();
@@ -111,11 +111,11 @@ class NewPinnedController extends Controller
         $user = $request->user();
 
         if ($feed->user_id !== $user->id) {
-            return response()->json(['message' => ['你没有权限申请']])->setStatusCode(403);
+            return response()->json(['message' => '你没有权限申请'])->setStatusCode(403);
         } elseif ($feed->pinned()->where('user_id', $user->id)->where(function ($query) use ($datetime) {
             return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
         })->first()) {
-            return response()->json(['message' => ['已经申请过']])->setStatusCode(422);
+            return response()->json(['message' => '已经申请过'])->setStatusCode(422);
         }
 
         $pinned = new FeedPinnedModel();

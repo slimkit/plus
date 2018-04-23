@@ -58,17 +58,16 @@ class RewardController extends Controller
         $amount = $request->input('amount');
         if (! $amount || $amount < 0) {
             return response()->json([
-                'amount' => ['请输入正确的打赏金额'],
+                'amount' => '请输入正确的打赏金额',
             ], 422);
         }
         $user = $request->user();
         $user->load('wallet');
         $feed->load('user');
         $current_user = $feed->user;
-
         if (! $user->wallet || $user->wallet->balance < $amount) {
             return response()->json([
-                'message' => ['余额不足'],
+                'message' => '余额不足',
             ], 403);
         }
 
@@ -80,7 +79,7 @@ class RewardController extends Controller
 
         $userCount->total += 1;
 
-        $user->getConnection()->transaction(function () use ($user, $feed, $charge, $current_user, $amount) {
+        $user->getConnection()->transaction(function () use ($user, $feed, $charge, $current_user, $amount, $userCount) {
             // 扣除操作用户余额
             $user->wallet()->decrement('balance', $amount);
 
@@ -126,7 +125,7 @@ class RewardController extends Controller
         });
 
         return response()->json([
-            'message' => ['打赏成功'],
+            'message' => '打赏成功',
         ], 201);
     }
 
