@@ -155,7 +155,7 @@ class HomeController extends Controller
         $longitude = $request->input('longitude', '');
         $aroundAmap = $around->find($user->id);
         $_id = $aroundAmap['_id'];
-        if (!$_id) {
+        if (! $_id) {
             return $response->json(['message' => '系统错误, 请联系管理员'], 500);
         }
 
@@ -281,6 +281,7 @@ class HomeController extends Controller
         if ($results->status) {
             return response()->json($results)->setStatusCode(200);
         }
+
         return $response->json(['message' => $this->errors[$results->info] ?? '未知错误'], 500);
     }
 }
