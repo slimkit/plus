@@ -130,7 +130,7 @@ trait HasAvatar
         // 头像更新时间
         $now = new Carbon();
         Cache:forever('avatar_'.$this->id.'_lastModified_at', $now->timestamp);
-        
+
         return $avatar->storeAs($path, $name, config('cdn.generators.filesystem.disk'));
     }
 
