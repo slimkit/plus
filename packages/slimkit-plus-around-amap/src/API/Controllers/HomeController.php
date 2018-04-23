@@ -80,10 +80,6 @@ class HomeController extends Controller
         $this->_amap_sig = array_get($conf, 'around-amap.amap-sig') ?? '';
         $this->_amap_key = array_get($conf, 'around-amap.amap-key') ?? '';
         $this->_amap_tableId = array_get($conf, 'around-amap.amap-tableid') ?? '';
-
-        if (! $this->_amap_key || ! $this->_amap_sig || ! $this->_amap_tableId) {
-            abort(500, '配置信息错误，请联系管理员');
-        }
     }
 
     // 数据总线
@@ -107,10 +103,10 @@ class HomeController extends Controller
         $latitude = $request->input('latitude', '');
         $longitude = $request->input('longitude', '');
         if (! $latitude) {
-            abort(400, '请传递GPS纬度坐标');
+            return $response->json(['message' => '请传递GPS纬度坐标'], 400);
         }
         if (! $longitude) {
-            abort(400, '请传递GPS经度坐标');
+            return $response->json(['message' => '请传递GPS经度坐标'], 400);
         }
         $around->user_id = $user->id;
         $around->longitude = $longitude;
@@ -145,7 +141,7 @@ class HomeController extends Controller
 
             return $response->json(['message' => '位置创建成功', '_id' => $result['_id']])->setStatusCode(201);
         } else {
-            abort(500, $this->errors[$result['info']] ?? '未知错误');
+            return $response->json(['message' => $this->errors[$result['info']] ?? '未知错误'], 500);
         }
     }
 
@@ -159,12 +155,15 @@ class HomeController extends Controller
         $longitude = $request->input('longitude', '');
         $aroundAmap = $around->find($user->id);
         $_id = $aroundAmap['_id'];
-        $_id ?? abort(422, '请先创建高德数据, 请联系管理员');
+        if (!$_id) {
+            return $response->json(['message' => '系统错误, 请联系管理员'], 500);
+        }
+
         if (! $latitude) {
-            abort(400, '纬度坐标获取失败');
+            return $response->json(['message' => '纬度坐标获取失败'], 400);
         }
         if (! $longitude) {
-            abort(400, '经度坐标获取失败');
+            return $response->json(['message' => '经度坐标获取失败'], 400);
         }
         $_location = $longitude.','.$latitude;
         $data = json_encode([
@@ -195,7 +194,7 @@ class HomeController extends Controller
 
             return $response->json(['message' => '位置更新成功'])->setStatusCode(201);
         } else {
-            abort(500, $this->errors[$result['info']] ?? '未知错误');
+            return $response->json(['message' => $this->errors[$result['info']] ?? '未知错误'], 500);
         }
     }
 
@@ -208,27 +207,27 @@ class HomeController extends Controller
         $aroundAmap = $around->find($user->id);
         $_id = $aroundAmap['_id'];
         $parmas = [
-            'ids' => $_id,
-            'key' => $this->_amap_key,
-            'tableid' => $this->_amap_tableId,
+        'ids' => $_id,
+        'key' => $this->_amap_key,
+        'tableid' => $this->_amap_tableId,
         ];
         $sig = md5(urldecode(http_build_query($parmas, '', '&')).$this->_amap_sig);
         $parmas['sig'] = $sig;
         $result = json_decode($this->http->post($this->_delete_uri, [
-            'form_params' => $parmas,
-            'headers' => [
-                    'Content-Type' => 'application/x-www-form-urlencoded',
-                ],
-            ])
-            ->getBody()
-            ->getContents(), true);
+        'form_params' => $parmas,
+        'headers' => [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+            ],
+        ])
+        ->getBody()
+        ->getContents(), true);
 
         if ($result['status'] && ! $result['fail']) {
             $aroundAmap->delete();
 
             return $response->json()->setStatusCode(204);
         } else {
-            abort(500, $this->errors[$result['info']] ?? '未知错误');
+            return $response->json(['message' => $this->errors[$result['info']] ?? '未知错误'], 500);
         }
     }
 
@@ -240,10 +239,10 @@ class HomeController extends Controller
         $latitude = $request->input('latitude', '');
         $longitude = $request->input('longitude', '');
         if (! $latitude) {
-            abort(400, '纬度坐标获取失败');
+            return $response->json(['message' => '纬度坐标获取失败'], 400);
         }
         if (! $longitude) {
-            abort(400, '经度坐标获取失败');
+            $response->json(['message' => '经度坐标获取失败'], 400);
         }
         $center = $longitude.','.$latitude;
         // 查询半径
@@ -256,32 +255,32 @@ class HomeController extends Controller
         // 计算数字签名
         $sig = md5($prams.$this->_amap_sig);
         $uri = $prams."&sig={$sig}";
-        $results = json_decode(file_get_contents($this->_search_uri.$uri));
+        // $results = json_decode(file_get_contents($this->_search_uri.$uri));
+        $results = json_decode($this->http->get($this->_search_uri.$uri)->getBody()->getContents());
         if ($results->status) {
             return $response->json($results->datas)->setStatusCode(200);
         } else {
-            abort(500, $this->errors[$results->info] ?? '未知错误');
+            return $response->json(['message' => $this->errors[$results->info] ?? '未知错误'], 500);
         }
     }
 
     /**
      * 地址换取经纬度.
      */
-    public function getGeo(Request $request, GuzzleHttpClient $client)
+    public function getGeo(Request $request, ResponseFactory $response)
     {
         $address = urlencode($request->input('address', ''));
         if (! $address) {
-            abort(400, '请输入要获取的地址');
+            $response->json(['message' => '请输入要获取的地址'], 400);
         }
         $address = urldecode($address);
         $parmas = "address={$address}&key={$this->_amap_key}";
         $sig = md5($parmas.$this->_amap_sig);
         $parmas .= '&sig='.$sig;
-        $response = json_decode($client->request('get', $this->_getgeo_uri.$parmas)->getBody()->getContents());
-        if ($response->status) {
-            return response()->json($response)->setStatusCode(200);
+        $results = json_decode($this->http->get($this->_getgeo_uri.$parmas)->getBody()->getContents());
+        if ($results->status) {
+            return response()->json($results)->setStatusCode(200);
         }
-
-        abort(500, $this->errors[$response->info] ?? '未知错误');
+        return $response->json(['message' => $this->errors[$results->info] ?? '未知错误'], 500);
     }
 }
