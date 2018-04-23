@@ -238,7 +238,7 @@ class Qiniu implements FileUrlGeneratorContract
     {
         $width = max(0, intval(array_get($extra, 'width', 0)));
         $height = max(0, intval(array_get($extra, 'height', 0)));
-        $quality = min(100, max(0, intval($extra['quality'] ?? 0)));
+        $quality = min(100, max(0, intval($extra['quality'] ?? 100)));
         $blur = max(0, intval($extra['blur'] ?? 0));
         $processor = $this->makeImageProcessor($width, $height, $quality, $blur);
         $url = sprintf('%s/%s?%s', $this->domain, $filename, $processor);
@@ -292,7 +292,7 @@ class Qiniu implements FileUrlGeneratorContract
      */
     private function makeImageProcessor(int $width, int $height, int $quality, int $blur): string
     {
-        return sprintf('imageslim|imageView2/2/w/%d/h/%d/q/%d|imageMogr2/blur/50x%d', $width, $height, $quality, $blur);
+        return sprintf('imageView2/2/w/%d/h/%d/q/%d|imageMogr2/blur/50x%d/quality/%d', $width, $height, $quality, $blur, $quality);
     }
 
     /**
