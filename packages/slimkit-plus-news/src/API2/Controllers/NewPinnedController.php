@@ -161,6 +161,7 @@ class NewPinnedController extends Controller
                         $userCount->total += 1;
                         $userCount->save();
                     }
+
                     return response()->json(['message' => '申请成功'], 201);
                 }
 

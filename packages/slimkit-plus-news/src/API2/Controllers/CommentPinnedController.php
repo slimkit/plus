@@ -140,7 +140,7 @@ class CommentPinnedController extends Controller
 
             $userCount->total += 1;
             $userCount->save();
-            
+
             return $response->json(['message' => '置顶成功'], 201);
         });
     }
