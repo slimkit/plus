@@ -222,8 +222,8 @@ class FindUserController extends Controller
 
         return $response->json(
             $users->map(function ($user) use ($currentUser) {
-                $user->user->following = $user->user->hasFollwing($currentUser);
-                $user->user->follower = $user->user->hasFollower($currentUser);
+                $user->user->following = $user->user->hasFollwing($currentUser->id);
+                $user->user->follower = $user->user->hasFollower($currentUser->id);
                 $user->user->blacked = $currentUser->blacked($user->user);
 
                 return $user->user;
