@@ -264,9 +264,10 @@ class HomeController extends Controller
                         unset($datas[$key]);
                     }
                 }
-                 $datas = collect(array_values($datas));
+                $datas = collect(array_values($datas));
             }
-             return $response->json($datas)->setStatusCode(200);
+
+            return $response->json($datas)->setStatusCode(200);
         } else {
             return $response->json(['message' => $this->errors[$results->info] ?? '未知错误'], 500);
         }
