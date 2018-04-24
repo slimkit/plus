@@ -218,7 +218,7 @@ class NewsController extends Controller
             ]);
             $userCount = UserCountModel::firstOrNew([
                 'type' => 'user-system',
-                'user_id' => $news->user_id
+                'user_id' => $news->user_id,
             ]);
             $userCount->total += 1;
             $userCount->save();
