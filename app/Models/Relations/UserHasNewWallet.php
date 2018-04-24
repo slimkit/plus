@@ -39,7 +39,7 @@ trait UserHasNewWallet
                 'owner_id' => $user->id,
                 'balance' => 0,
                 'total_income' => 0,
-                'total_expenses' => 0
+                'total_expenses' => 0,
             ]);
 
             if ($wallet === false) {
