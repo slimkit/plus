@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 return [
 
     /*
@@ -21,25 +37,24 @@ return [
      * To trust one or more specific proxies that connect
      * directly to your server, use an array of IP addresses:
      */
-     # 'proxies' => ['192.168.1.1'],
+     // 'proxies' => ['192.168.1.1'],
 
     /*
      * Or, to trust all proxies that connect
      * directly to your server, use a "*"
      */
-     # 'proxies' => '*',
+     // 'proxies' => '*',
 
     /*
      * Which headers to use to detect proxy related data (For, Host, Proto, Port)
-     * 
+     *
      * Options include:
-     * 
+     *
      * - Illuminate\Http\Request::HEADER_X_FORWARDED_ALL (use all x-forwarded-* headers to establish trust)
      * - Illuminate\Http\Request::HEADER_FORWARDED (use the FORWARDED header to establish trust)
-     * 
+     *
      * @link https://symfony.com/doc/current/deployment/proxies.html
      */
     'headers' => Illuminate\Http\Request::HEADER_X_FORWARDED_ALL,
 
-    
 ];
