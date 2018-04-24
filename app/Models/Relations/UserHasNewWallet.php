@@ -26,6 +26,34 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 trait UserHasNewWallet
 {
     /**
+     * Bootstrap the trait.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public static function bootUserHasNewWallet()
+    {
+        // 用户创建后事件
+        static::created(function ($user) {
+            $wallet = NewWallet::firstOrCreate([
+                'owner_id' => $user->id,
+                'balance' => 0,
+                'total_income' => 0,
+                'total_expenses' => 0
+            ]);
+
+            if ($wallet === false) {
+                return false;
+            }
+        });
+
+        // 用户删除后事件
+        // static::deleted(function ($user) {
+        //     $user->wallet()->delete();
+        // });
+    }
+
+    /**
      * User wallet.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne

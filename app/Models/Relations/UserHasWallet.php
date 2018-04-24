@@ -46,9 +46,9 @@ trait UserHasWallet
         });
 
         // 用户删除后事件
-        static::deleted(function ($user) {
-            $user->wallet()->delete();
-        });
+        // static::deleted(function ($user) {
+        //     $user->wallet()->delete();
+        // });
     }
 
     /**
