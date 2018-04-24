@@ -64,7 +64,7 @@ class PinnedController extends Controller
         $user = $request->user();
 
         if ($user->id !== $news->user_id) {
-            return response()->json(['message' => ['没有权限申请']], 403);
+            return response()->json(['message' => '没有权限申请'], 403);
         }
 
         if ($news
@@ -73,7 +73,7 @@ class PinnedController extends Controller
             ->where('expires_at', '>', $dateTime)
             ->count()
         ) {
-            return response()->json(['message' => ['已经申请过']], 422);
+            return response()->json(['message' => '已经申请过'], 422);
         }
 
         if ($news
@@ -81,7 +81,7 @@ class PinnedController extends Controller
             ->where('state', 0)
             ->count()
         ) {
-            return response()->json(['message' => ['已经申请过,请等待审核']], 422);
+            return response()->json(['message' => '已经申请过,请等待审核'], 422);
         }
 
         $pinned = new NewsPinnedModel();
@@ -125,7 +125,7 @@ class PinnedController extends Controller
         $user = $request->user();
 
         if ($user->id !== $comment->user_id) {
-            return response()->json(['message' => ['没有权限申请']], 403);
+            return response()->json(['message' => '没有权限申请'], 403);
         }
 
         if ($news
@@ -137,7 +137,7 @@ class PinnedController extends Controller
             ->where('expires_at', '>', $dateTime)
             ->count()
         ) {
-            return response()->json(['message' => ['已经申请过']], 422);
+            return response()->json(['message' => '已经申请过'], 422);
         }
 
         if ($news
@@ -148,7 +148,7 @@ class PinnedController extends Controller
             ->where('state', 0)
             ->count()
         ) {
-            return response()->json(['message' => ['已经申请过,请等待审核']], 422);
+            return response()->json(['message' => '已经申请过,请等待审核'], 422);
         }
 
         $pinned = new NewsPinnedModel();
@@ -226,7 +226,7 @@ class PinnedController extends Controller
             call_user_func($call);
         }
 
-        return $response->json(['message' => ['申请成功']])->setStatusCode(201);
+        return $response->json(['message' => '申请成功'])->setStatusCode(201);
     }
 
     /**

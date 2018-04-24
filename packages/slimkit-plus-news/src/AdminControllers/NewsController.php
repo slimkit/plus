@@ -27,6 +27,7 @@ use Illuminate\Support\Carbon;
 use Zhiyi\Plus\Models\FileWith;
 use Zhiyi\Plus\Models\Tag as TagModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 use function zhiyi\Component\ZhiyiPlus\PlusComponentNews\getShort;
@@ -215,6 +216,12 @@ class NewsController extends Controller
             $news->user->sendNotifyMessage($channel, $message, [
                 'news' => $news,
             ]);
+            $userCount = UserCountModel::firstOrNew([
+                'type' => 'user-system',
+                'user_id' => $news->user_id
+            ]);
+            $userCount->total += 1;
+            $userCount->save();
 
             return response()->json(['message' => ['操作成功']])->setStatusCode(204);
         }

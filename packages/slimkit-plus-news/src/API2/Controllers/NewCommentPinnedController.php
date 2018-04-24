@@ -54,9 +54,9 @@ class NewCommentPinnedController extends Controller
     ) {
         $user = $request->user();
         if ($user->id !== $news->user_id) {
-            abort(403, '你没有权限操作');
+            return $response->json(['message' => '你没有权限操作'], 403);
         } elseif ($pinned->expires_at) {
-            abort(422, '已操作，请勿重复发起');
+            return $response->json(['message' => '已操作，请勿重复发起'], 422);
         }
 
         // 设置置顶时间
@@ -86,10 +86,10 @@ class NewCommentPinnedController extends Controller
             $userCount->total += 1;
             $userCount->save();
 
-            return $response->json(['message' => ['置顶成功']], 201);
+            return $response->json(['message' => '置顶成功'], 201);
         }
 
-        return $response->json(['message' => ['操作失败']], 500);
+        return $response->json(['message' => '操作失败'], 500);
     }
 
     /**
@@ -114,9 +114,9 @@ class NewCommentPinnedController extends Controller
     ) {
         $user = $request->user();
         if ($user->id !== $pinned->target_user || $pinned->channel !== 'news:comment') {
-            return $response->json(['message' => ['无效操作']], 422);
+            return $response->json(['message' => '无效操作'], 422);
         } elseif ($pinned->expires_at) {
-            return $response->json(['message' => ['已被处理']], 422);
+            return $response->json(['message' => '已被处理'], 422);
         }
 
         $pinned->load(['comment']);
@@ -149,6 +149,6 @@ class NewCommentPinnedController extends Controller
             return $response->json(null, 204);
         }
 
-        return $response->json(['message' => ['操作失败']], 500);
+        return $response->json(['message' => '操作失败'], 500);
     }
 }
