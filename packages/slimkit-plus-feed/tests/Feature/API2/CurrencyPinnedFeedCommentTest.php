@@ -66,7 +66,7 @@ class CurrencyPinnedFeedCommentTest extends TestCase
      */
     public function testPinnedFeedComment()
     {
-        $this->other->currency()->firstOrCreate([
+        $this->other->currency()->update([
             'sum' => 1000,
             'type' => 1,
         ]);

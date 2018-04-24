@@ -86,11 +86,42 @@ class PinnedNewsTest extends TestCase
      *
      * @return mixed
      */
-    public function testPinnedNewsComment()
+    // public function testPinnedNewsComment()
+    // {
+    //     $other = factory(UserModel::class)->create();
+    //     $other->wallet()->increment('balance', 100);
+
+    //     $comment = factory(CommentModel::class)->create([
+    //         'user_id' =>    $other->id,
+    //         'target_user' => 0,
+    //         'body' => 'test',
+    //         'commentable_id' => $this->news->id,
+    //         'commentable_type' => 'news',
+    //     ]);
+
+    //     $response = $this
+    //         ->actingAs($other, 'api')
+    //         ->json('POST', "/api/v2/news/{$this->news->id}/comments/{$comment->id}/pinneds", [
+    //             'amount' => 100,
+    //             'day' => 1,
+    //         ]);
+
+    //     $response
+    //         ->assertStatus(201)
+    //         ->assertJsonStructure(['message']);
+    // }
+
+    /**
+     * 测试新版的评论置顶请求
+     * @Author   Wayne
+     * @DateTime 2018-04-24
+     * @Email    qiaobin@zhiyicx.com
+     * @return   [type]              [description]
+     */
+    public function testNewPinnedNewsComment()
     {
         $other = factory(UserModel::class)->create();
-        $other->wallet()->increment('balance', 100);
-
+        $other->currency()->increment('sum', 100);
         $comment = factory(CommentModel::class)->create([
             'user_id' =>    $other->id,
             'target_user' => 0,
@@ -101,11 +132,10 @@ class PinnedNewsTest extends TestCase
 
         $response = $this
             ->actingAs($other, 'api')
-            ->json('POST', "/api/v2/news/{$this->news->id}/comments/{$comment->id}/pinneds", [
+            ->json('POST', "/api/v2/news/{$this->news->id}/comments/{$comment->id}/currency-pinneds", [
                 'amount' => 100,
                 'day' => 1,
             ]);
-
         $response
             ->assertStatus(201)
             ->assertJsonStructure(['message']);

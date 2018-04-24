@@ -84,7 +84,7 @@ class CurrencyNewsTest extends TestCase
     public function testCurrencyPinnedNews()
     {
         $user = factory(UserModel::class)->create();
-        $user->currency()->firstOrCreate([
+        $user->currency()->update([
             'sum' => 1000,
             'type' => 1,
         ]);
@@ -117,7 +117,7 @@ class CurrencyNewsTest extends TestCase
     {
         $user = factory(UserModel::class)->create();
         $other = factory(UserModel::class)->create();
-        $other->currency()->firstOrCreate([
+        $other->currency()->update([
             'sum' => 1000,
             'type' => 1,
         ]);
