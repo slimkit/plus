@@ -67,6 +67,6 @@ class UserCountsTest extends TestCase
             ->first();
 
         $this->assertNotNull($followingCount);
-        $this->assertEquals(0, $followingCount->total);
+        $this->assertEquals(1, $followingCount->total);
     }
 }

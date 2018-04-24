@@ -236,6 +236,7 @@ class HomeController extends Controller
      */
     public function getArounds(Request $request, ResponseFactory $response)
     {
+        $user = $request->user('api');
         $latitude = $request->input('latitude', '');
         $longitude = $request->input('longitude', '');
         if (! $latitude) {
@@ -258,15 +259,17 @@ class HomeController extends Controller
         // $results = json_decode(file_get_contents($this->_search_uri.$uri));
         $results = json_decode($this->http->get($this->_search_uri.$uri)->getBody()->getContents());
         if ($results->status) {
+            $datas = $results->datas;
             if ($user) {
                 foreach ($datas as $key => $data) {
                     if ($data->user_id === $user) {
                         unset($datas[$key]);
                     }
                 }
-                 $datas = collect(array_values($datas));
+                $datas = collect(array_values($datas));
             }
-             return $response->json($datas)->setStatusCode(200);
+
+            return $response->json($datas)->setStatusCode(200);
         } else {
             return $response->json(['message' => $this->errors[$results->info] ?? '未知错误'], 500);
         }
