@@ -35,12 +35,12 @@ trait UserHasNewWallet
     {
         // 用户创建后事件
         static::created(function ($user) {
-            $wallet = NewWallet::firstOrCreate([
-                'owner_id' => $user->id,
-                'balance' => 0,
-                'total_income' => 0,
-                'total_expenses' => 0,
-            ]);
+            $wallet = new NewWallet();
+            $wallet->owner_id = $user->id;
+            $wallet->balance = 0;
+            $wallet->total_income = 0;
+            $wallet->total_expenses = 0;
+            $wallet->save();
 
             if ($wallet === false) {
                 return false;
