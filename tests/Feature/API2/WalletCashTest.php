@@ -37,7 +37,7 @@ class WalletCashTest extends TestCase
         parent::setUp();
 
         $this->user = factory(UserModel::class)->create();
-        $this->user->newWallet()->create(['balance' => 999999, 'total_income' => 0, 'total_expenses' => 0]);
+        $this->user->newWallet()->update(['balance' => 999999, 'total_income' => 0, 'total_expenses' => 0]);
 
         factory(WalletCashModel::class)->create(['user_id' => $this->user->id]);
         factory(WalletCashModel::class)->create(['user_id' => $this->user->id]);

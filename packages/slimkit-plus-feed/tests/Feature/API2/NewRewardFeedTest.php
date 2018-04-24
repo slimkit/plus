@@ -55,11 +55,7 @@ class NewRewardFeedTest extends TestCase
      */
     public function testRewardFeed()
     {
-        $this->other->newWallet()->firstOrCreate([
-            'balance' => 1000,
-            'total_income' => 0,
-            'total_expenses' => 0,
-        ]);
+        $this->other->newWallet()->increment('balance', 1000);
 
         $response = $this
             ->actingAs($this->other, 'api')
