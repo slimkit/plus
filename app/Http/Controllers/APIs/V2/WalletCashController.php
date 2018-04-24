@@ -82,7 +82,7 @@ class WalletCashController extends Controller
         });
 
         return response()
-            ->json(['message' => ['提交申请成功']])
+            ->json(['message' => '提交申请成功'])
             ->setStatusCode(201);
     }
 }

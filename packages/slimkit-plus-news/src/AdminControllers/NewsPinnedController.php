@@ -92,7 +92,7 @@ class NewsPinnedController extends Controller
         }
 
         if ($pinned->expires_at !== null) {
-            return response()->json(['message' => ['该记录已被处理']], 403);
+            return response()->json(['message' => '该记录已被处理'], 403);
         }
 
         return $this->{$action}($pinned, $datetime);
@@ -169,7 +169,7 @@ class NewsPinnedController extends Controller
             'pinned' => $pinned,
         ]);
 
-        return response()->json(['message' => ['操作成功']], 201);
+        return response()->json(['message' => '操作成功'], 201);
     }
 
     /**
@@ -184,12 +184,12 @@ class NewsPinnedController extends Controller
     public function cancel(News $news, Carbon $datetime)
     {
         if (! $pinned = $news->pinned()->whereDate('expires_at', '>=', $datetime)->first()) {
-            return response()->json(['message' => ['该资讯没有被置顶']], 402);
+            return response()->json(['message' => '该资讯没有被置顶'], 402);
         }
 
         $pinned->expires_at = $datetime;
         $pinned->save();
 
-        return response()->json(['message' => ['设置成功']], 201);
+        return response()->json(['message' => '设置成功'], 201);
     }
 }

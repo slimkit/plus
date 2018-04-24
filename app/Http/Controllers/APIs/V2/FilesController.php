@@ -54,8 +54,7 @@ class FilesController extends Controller
             'blur' => $request->query('b'),
         ]);
 
-        if (
-            ($fileWith->paidNode instanceof PaidNodeModel &&
+        if (($fileWith->paidNode instanceof PaidNodeModel &&
             $fileWith->paidNode->paid($user->id ?? 0) === false) &&
             ($fileWith->paidNode->extra === 'read' || (! isset($extra['width']) && isset($extra['height'])))
         ) {
@@ -117,7 +116,7 @@ class FilesController extends Controller
         $fileWith = $this->resolveFileWith($fileWith, $request->user(), $fileModel);
 
         return $response->json([
-            'message' => ['上传成功'],
+            'message' => '上传成功',
             'id' => $fileWith->id,
         ])->setStatusCode(201);
     }
@@ -143,7 +142,7 @@ class FilesController extends Controller
         $fileWith = $this->resolveFileWith($fileWith, $request->user(), $file);
 
         return $response->json([
-            'message' => ['success'],
+            'message' => 'success',
             'id' => $fileWith->id,
         ])->setStatusCode(200);
     }

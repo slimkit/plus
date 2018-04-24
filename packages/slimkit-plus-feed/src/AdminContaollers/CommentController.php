@@ -90,7 +90,6 @@ class CommentController extends Controller
                 $etime = $datetime->today();
                 break;
             default:
-
                 break;
         }
 
@@ -111,25 +110,32 @@ class CommentController extends Controller
         $commentModel = $commentModel->with(['user'])
             ->with(['target', 'reply', 'user'])
             ->where('commentable_type', '=', 'feeds')
-            ->when($feed, function ($query) use ($feed) { // 根据资源（动态）id查询
+            ->when($feed, function ($query) use ($feed) {
+                // 根据资源（动态）id查询
                 return $query->where('commentable_id', $feed);
             })
-            ->when($id, function ($query) use ($id) { // 根据评论id查询
+            ->when($id, function ($query) use ($id) {
+                // 根据评论id查询
                 return $query->where('id', $id);
             })
-            ->when($users, function ($query) use ($users) {  // 根据发布者id查询
+            ->when($users, function ($query) use ($users) {
+                // 根据发布者id查询
                 return $query->whereIn('user_id', $users);
             })
-            ->when($target_user, function ($query) use ($target_user) {  // 根据资源（动态）作者id查询
+            ->when($target_user, function ($query) use ($target_user) {
+                // 根据资源（动态）作者id查询
                 return $query->where('target_user', $target_user);
             })
-            ->when($keyword, function ($query) use ($keyword) {  // 根据内容关键字查询
+            ->when($keyword, function ($query) use ($keyword) {
+                // 根据内容关键字查询
                 return $query->where('body', 'like', '%'.$keyword.'%');
             })
-            ->when($stime, function ($query) use ($stime) {  // 根据起始时间筛选
+            ->when($stime, function ($query) use ($stime) {
+                // 根据起始时间筛选
                 return $query->whereDate('created_at', '>=', $stime);
             })
-            ->when($etime, function ($query) use ($etime) {  // 根据截至时间筛选
+            ->when($etime, function ($query) use ($etime) {
+                // 根据截至时间筛选
                 return $query->whereDate('created_at', '<=', $etime);
             })
             ->when(($top && $top !== 'all' && ! $pinned_etime && ! $pinned_stime), function ($query) use ($pinned_type, $top, $datetime) {
@@ -229,14 +235,14 @@ class CommentController extends Controller
 
         $pinned->user->sendNotifyMessage(
             'feed-comment:pass',
-            sprintf('你的评论《%s》已被管理员设置为置顶', str_limit($pinned->comment->body, 100)
-        ),
-        [
+            sprintf('你的评论《%s》已被管理员设置为置顶', str_limit($pinned->comment->body, 100)),
+            [
             'comment' => $comment,
             'pinned' => $pinned,
-        ]);
+            ]
+        );
 
-        return response()->json(['message' => ['操作成功'], 'data' => $pinned], 201);
+        return response()->json(['message' => '操作成功', 'data' => $pinned], 201);
     }
 
     public function set(Request $request, Comment $comment, FeedPinned $pinned, Carbon $datetime)
@@ -265,7 +271,7 @@ class CommentController extends Controller
                 'pinned' => $pinned,
             ]);
 
-            return response()->json(['message' => ['操作成功'], 'data' => $pinned], 201);
+            return response()->json(['message' => '操作成功', 'data' => $pinned], 201);
         } else {
             $date = new Carbon($pinnedNode->expires_at);
             $datetime = $date->addDay($time);
@@ -279,7 +285,7 @@ class CommentController extends Controller
                 'pinned' => $pinnedNode,
             ]);
 
-            return response()->json(['message' => ['操作成功'], 'data' => $pinnedNode], 201);
+            return response()->json(['message' => '操作成功', 'data' => $pinnedNode], 201);
         }
     }
 
@@ -291,6 +297,6 @@ class CommentController extends Controller
     {
         $pinned->delete();
 
-        return response()->json(['message' => ['删除成功']], 204);
+        return response()->json(['message' => '删除成功'], 204);
     }
 }

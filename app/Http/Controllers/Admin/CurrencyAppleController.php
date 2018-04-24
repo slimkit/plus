@@ -57,7 +57,7 @@ class CurrencyAppleController extends Controller
         $config->set('currency.recharge.IAP.rule', $request->input('rule', ''));
         $configuration->save($config);
 
-        return response()->json(['message' => ['保存成功']], 201);
+        return response()->json(['message' => '保存成功'], 201);
     }
 
     /**
@@ -90,17 +90,17 @@ class CurrencyAppleController extends Controller
         if (! $datas) {
             CommonConfig::create(['name' => 'product', 'namespace' => 'apple', 'value' => json_encode([$addProductInfo])]);
 
-            return response()->json(['message' => ['添加成功']], 201);
+            return response()->json(['message' => '添加成功'], 201);
         }
         $products = json_decode($datas->value, true);
         if (in_array($addProductInfo['product_id'], collect($products)->pluck('product_id')->toArray())) {
-            return response()->json(['message' => ['产品id已存在']], 422);
+            return response()->json(['message' => '产品id已存在'], 422);
         }
 
         $datas->value = json_encode(array_merge($products, [$addProductInfo]));
         $datas->save();
 
-        return response()->json(['message' => ['添加成功']], 201);
+        return response()->json(['message' => '添加成功'], 201);
     }
 
     /**
@@ -116,20 +116,20 @@ class CurrencyAppleController extends Controller
         $datas = $configModel->where('name', 'product')->where('namespace', 'apple')->first();
 
         if (! $datas) {
-            return response()->json(['message' => ['商品不存在']], 404);
+            return response()->json(['message' => '商品不存在'], 404);
         }
 
         $products = collect(json_decode($datas->value));
         $product_id = $request->input('product_id');
         if (! in_array($product_id, $products->pluck('product_id')->toArray())) {
-            return response()->json(['message' => ['商品不存在']], 404);
+            return response()->json(['message' => '商品不存在'], 404);
         }
 
         $products = $products->where('product_id', '!=', $product_id)->all();
         $datas->value = json_encode($products);
         $datas->save();
 
-        return response()->json(['message' => ['删除成功']], 204);
+        return response()->json(['message' => '删除成功'], 204);
     }
 
     protected function getProductRule()

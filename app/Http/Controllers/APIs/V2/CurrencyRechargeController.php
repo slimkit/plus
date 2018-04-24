@@ -81,7 +81,7 @@ class CurrencyRechargeController extends Controller
             return response()->json($result, 201);
         }
 
-        return response()->json(['message' => ['操作失败']], 500);
+        return response()->json(['message' => '操作失败'], 500);
     }
 
     /**

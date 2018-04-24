@@ -75,7 +75,7 @@ class WalletLabelController extends Controller
 
         if (in_array($label, $_labels = json_decode($labels->value, true))) {
             return response()
-                ->json(['messages' => ['选项已经存在，请输入新的选项']])
+                ->json(['messages' => '选项已经存在，请输入新的选项'])
                 ->setStatusCode(422);
         }
 
@@ -85,12 +85,12 @@ class WalletLabelController extends Controller
 
         if ($labels->save()) {
             return response()
-                ->json(['messages' => ['创建成功']])
+                ->json(['messages' => '创建成功'])
                 ->setStatusCode(201);
         }
 
         return response()
-            ->json(['messages' => ['创建失败']])
+            ->json(['messages' => '创建失败'])
             ->setStatusCode(500);
     }
 
@@ -123,7 +123,7 @@ class WalletLabelController extends Controller
         }
 
         return response()
-            ->json(['message' => ['删除失败']])
+            ->json(['message' => '删除失败'])
             ->setStatusCode(500);
     }
 }

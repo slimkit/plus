@@ -53,9 +53,9 @@ class GoldTypeController extends Controller
         }
 
         if (GoldType::create($request->all())) {
-            return response()->json(['message' => ['添加类别成功']], 201);
+            return response()->json(['message' => '添加类别成功'], 201);
         } else {
-            return response()->json(['message' => ['添加类别失败']], 500);
+            return response()->json(['message' => '添加类别失败'], 500);
         }
     }
 

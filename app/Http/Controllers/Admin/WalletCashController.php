@@ -59,7 +59,7 @@ class WalletCashController extends Controller
 
         if (empty($items)) {
             return response()
-                ->json(['message' => ['没有检索到数据']])
+                ->json(['message' => '没有检索到数据'])
                 ->setStatusCode(404);
         }
 
@@ -88,7 +88,7 @@ class WalletCashController extends Controller
 
         if (! $remark) {
             return response()
-                ->json(['remark' => ['请输入备注信息']])
+                ->json(['remark' => '请输入备注信息'])
                 ->setStatusCode(422);
         }
 
@@ -118,7 +118,7 @@ class WalletCashController extends Controller
         });
 
         return response()
-            ->json(['message' => ['操作成功']])
+            ->json(['message' => '操作成功'])
             ->setStatusCode(201);
     }
 
@@ -136,7 +136,7 @@ class WalletCashController extends Controller
 
         if (! $remark) {
             return response()
-                ->json(['remark' => ['请输入备注信息']])
+                ->json(['remark' => '请输入备注信息'])
                 ->setStatusCode(422);
         }
 
@@ -167,7 +167,7 @@ class WalletCashController extends Controller
         });
 
         return response()
-            ->json(['message' => ['操作成功']])
+            ->json(['message' => '操作成功'])
             ->setStatusCode(201);
     }
 }

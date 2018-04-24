@@ -41,9 +41,9 @@ class TransferController extends Controller
         $amount = $request->input('amount');
 
         if ($manager->driver(Order::TARGET_TYPE_USER)->transfer($user, $target, $amount) === true) {
-            return response()->json(['message' => ['转账成功']], 201); // 成功
+            return response()->json(['message' => '转账成功'], 201); // 成功
         }
 
-        return response()->json(['message' => ['操作失败，请稍后重试']], 500); // 失败
+        return response()->json(['message' => '操作失败，请稍后重试'], 500); // 失败
     }
 }

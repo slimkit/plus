@@ -55,14 +55,14 @@ class WalletRatioController extends Controller
 
         if ($ratio < 1 || $ratio > 1000) {
             return $response
-                ->json(['message' => ['转换比例只能在 1 - 1000 之间']])
+                ->json(['message' => '转换比例只能在 1 - 1000 之间'])
                 ->setStatusCode(422);
         }
 
         $repository->store($ratio);
 
         return $response
-            ->json(['message' => ['更新成功']])
+            ->json(['message' => '更新成功'])
             ->setStatusCode(201);
     }
 }

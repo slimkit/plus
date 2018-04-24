@@ -45,21 +45,21 @@ class NewUserRewardController extends Controller
         $amount = (int) $request->input('amount');
 
         if (! $amount || $amount < 0) {
-            return response()->json(['amount' => ['请输入正确的打赏金额']], 422);
+            return response()->json(['amount' => '请输入正确的打赏金额'], 422);
         }
 
         $user = $request->user();
 
         if ($user->id == $target->id) {
-            return response()->json(['message' => ['用户不能打赏自己']], 422);
+            return response()->json(['message' => '用户不能打赏自己'], 422);
         }
 
         if (! $user->newWallet || $user->newWallet->balance < $amount) {
-            return response()->json(['message' => ['余额不足']], 403);
+            return response()->json(['message' => '余额不足'], 403);
         }
 
         if (! $target->wallet) {
-            return response()->json(['message' => ['对方钱包信息有误']], 500);
+            return response()->json(['message' => '对方钱包信息有误'], 500);
         }
 
         $money = ($amount / self::RATIO);
@@ -81,9 +81,9 @@ class NewUserRewardController extends Controller
         ]);
 
         if ($status === true) {
-            return response()->json(['message' => ['打赏成功']], 201);
+            return response()->json(['message' => '打赏成功'], 201);
         } else {
-            return response()->json(['message' => ['打赏失败']], 500);
+            return response()->json(['message' => '打赏失败'], 500);
         }
     }
 }

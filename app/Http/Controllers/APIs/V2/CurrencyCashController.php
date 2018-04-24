@@ -40,9 +40,9 @@ class CurrencyCashController extends Controller
         $cash = new CashProcess();
 
         if ($cash->createOrder($user->id, (int) $amount) !== false) {
-            return response()->json(['message' => ['积分提取申请已提交，请等待审核']], 201);
+            return response()->json(['message' => '积分提取申请已提交，请等待审核'], 201);
         }
 
-        return response()->json(['message' => ['操作失败']], 500);
+        return response()->json(['message' => '操作失败'], 500);
     }
 }

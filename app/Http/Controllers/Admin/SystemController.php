@@ -39,7 +39,7 @@ class SystemController extends Controller
     {
         if (! $request->user()->ability('admin:notice:send')) {
             return response()->json([
-                'errors' => ['你没有发送系统通知的权限'],
+                'errors' => '你没有发送系统通知的权限',
             ])->setStatusCode(403);
         }
 

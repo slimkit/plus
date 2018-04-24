@@ -42,7 +42,7 @@ class SystemController extends Controller
         $feedback->save();
 
         return response()->json([
-            'message' => ['反馈成功'],
+            'message' => '反馈成功',
             'data' => $feedback,
         ])->setStatusCode(201);
     }
