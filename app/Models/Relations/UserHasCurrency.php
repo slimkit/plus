@@ -24,6 +24,20 @@ use Zhiyi\Plus\Models\Currency;
 
 trait UserHasCurrency
 {
+    public static function bootUserHasCurrency()
+    {
+        // 用户创建后事件
+        static::created(function ($user) {
+            $currency = Currency::firstOrCreate(
+                ['owner_id' => $user->id],
+                ['type' => 1, 'sum' => 0]
+            );
+
+            if ($currency === false) {
+                return false;
+            }
+        });
+    }
     /**
      * user has currencies.
      *
