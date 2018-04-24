@@ -276,7 +276,7 @@ class NewPinnedController extends Controller
         ]);
         $userCount->total += 1;
 
-        $post->getConnection()->transaction(function () use ($user, $pinnedModel, $target_user, $amount, $post, $comment) {
+        $post->getConnection()->transaction(function () use ($user, $pinnedModel, $target_user, $amount, $post, $comment, $userCount) {
 
             $process = new UserProcess();
             $process->prepayment($user->id, $amount, $target_user->id, '评论申请置顶', sprintf('在帖子《%s》申请评论置顶', $post->title));
@@ -328,7 +328,7 @@ class NewPinnedController extends Controller
         ]);
         $userCount->total += 1;
 
-        $post->getConnection()->transaction(function () use ($pinned, $user, $target_user, $comment, $post) {
+        $post->getConnection()->transaction(function () use ($pinned, $user, $target_user, $comment, $post, $userCount) {
             $process = new UserProcess();
             $process->receivables($user->id, $pinned->amount, $target_user->id, '帖子内置顶评论收入', sprintf('帖子《%s》下置顶评论收入的金额', $post->title));
 
@@ -379,7 +379,7 @@ class NewPinnedController extends Controller
         ]);
         $userCount->total += 1;
 
-        $post->getConnection()->transaction(function () use ($pinned, $user, $target_user, $comment, $post) {
+        $post->getConnection()->transaction(function () use ($pinned, $user, $target_user, $comment, $post, $userCount) {
             $process = new UserProcess();
             $process->reject($user->id, $pinned->amount, $target_user->id, '退还帖子内置顶评论申请金额', sprintf('退还帖子《%s》下置顶评论申请的金额', $post->title));
 

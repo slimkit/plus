@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;
 use Zhiyi\PlusGroup\Models\Post as GroupPostModel;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 
 class NewPostRewardController
@@ -43,7 +44,7 @@ class NewPostRewardController
     public function store(Request $request, GroupPostModel $post, TypeManager $manager, ConfigRepository $config)
     {
         if (! $config->get('plus-group.group_reward.status')) {
-            return response()->json(['message' => ['打赏功能已关闭']], 422);
+            return response()->json(['message' => '打赏功能已关闭'], 422);
         }
 
         if ($post->user_id) {
@@ -51,20 +52,20 @@ class NewPostRewardController
         }
         if (! $amount || $amount < 0) {
             return response()->json([
-                'amount' => ['请输入正确的打赏金额'],
+                'message' => '请输入正确的打赏金额',
             ], 422);
         }
         $user = $request->user();
 
         if ($post->user_id === $user->id) {
-            return response()->json(['message' => ['不能打赏自己发布的帖子']], 422);
+            return response()->json(['message' => '不能打赏自己发布的帖子'], 422);
         }
         $user->load('wallet');
         $post->load('user');
         $target = $post->user;
 
         if (! $user->newWallet || $user->newWallet->balance < $amount) {
-            return response()->json(['message' => ['余额不足']], 403);
+            return response()->json(['message' => '余额不足'], 403);
         }
 
         // 记录订单
@@ -75,7 +76,6 @@ class NewPostRewardController
             'user_id' => $target->id
         ]);
         $userCount->total += 1;
-
         $status = $manager->driver(Order::TARGET_TYPE_REWARD)->reward([
             'reward_resource' => $post,
             'order' => [
@@ -94,9 +94,9 @@ class NewPostRewardController
 
         if ($status === true) {
             $userCount->save();
-            return response()->json(['message' => ['打赏成功']], 201);
+            return response()->json(['message' => '打赏成功'], 201);
         } else {
-            return response()->json(['message' => ['打赏失败']], 500);
+            return response()->json(['message' => '打赏失败'], 500);
         }
     }
 }

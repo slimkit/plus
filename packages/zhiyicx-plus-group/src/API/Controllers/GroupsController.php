@@ -58,9 +58,7 @@ class GroupsController
         $offset = (int) $request->query('offset', 0);
 
         $groups = GroupModel::where('audit', 1)
-            ->whereDoesntHave('blacks', function ($query) use ($user) {
-                $query->where('user_id', $user_id);
-            })
+            
             ->where('category_id', $category)
             ->limit($limit)
             ->offset($offset)
@@ -70,7 +68,7 @@ class GroupsController
         $joined = GroupMemberModel::whereIn('group_id', $groups->map->id)
             ->where('user_id', $user_id)
             ->get();
-
+        
         $groups = $groups->map(function (GroupModel $group) use ($joined) {
             $group->joined = null;
             $joined->each(function (GroupMemberModel $member) use ($group) {

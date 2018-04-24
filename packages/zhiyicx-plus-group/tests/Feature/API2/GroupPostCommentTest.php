@@ -53,6 +53,7 @@ class GroupPostCommentTest extends TestCase
             ->actingAs($user, 'api')
             ->json('POST', "/api/v2/plus-group/group-posts/{$post->id}/comments", [
                 'body' => 'test',
+                'comment_mark' => rand(1000, 9999)
             ]);
         $response
             ->assertStatus(201)
@@ -125,7 +126,7 @@ class GroupPostCommentTest extends TestCase
      * @param UserModel $user
      * @return GroupModel
      */
-    protected function createGroupByUser(UserModel $user, $mode='public'): GroupModel
+    protected function createGroupByUser(UserModel $user, $mode = 'public'): GroupModel
     {
         $cate = factory(CateModel::class)->create();
         $group = factory(GroupModel::class)->create([

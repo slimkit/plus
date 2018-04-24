@@ -73,8 +73,7 @@ class GroupPostPinnedTest extends TestCase
      */
     public function testGroupPostCommentPinned()
     {
-        $this->other->currency()->firstOrCreate(
-            ['type' => 1],
+        $this->other->currency()->update(
             ['sum' => 1000]
         );
         $response = $this
@@ -148,7 +147,7 @@ class GroupPostPinnedTest extends TestCase
      * @param UserModel $user
      * @return GroupModel
      */
-    protected function createGroupByUser(UserModel $user, $mode='public'): GroupModel
+    protected function createGroupByUser(UserModel $user, $mode = 'public'): GroupModel
     {
         $cate = factory(CateModel::class)->create();
         $group = factory(GroupModel::class)->create([

@@ -161,7 +161,7 @@ class ManagementGroupMemberTest extends TestCase
      * @param UserModel $user
      * @return GroupModel
      */
-    protected function createGroupByUser(UserModel $user, $mode='public'): GroupModel
+    protected function createGroupByUser(UserModel $user, $mode = 'public'): GroupModel
     {
         $cate = factory(CateModel::class)->create();
         $group = factory(GroupModel::class)->create([
@@ -194,8 +194,8 @@ class ManagementGroupMemberTest extends TestCase
         UserModel $user,
         $role = 'member',
         $disabled = 0,
-        $audit = 1): GroupMemberModel
-    {
+        $audit = 1
+    ): GroupMemberModel {
         $memberModel = new GroupMemberModel();
         $memberModel->user_id = $user->id;
         $memberModel->group_id = $group->id;
@@ -203,6 +203,7 @@ class ManagementGroupMemberTest extends TestCase
         $memberModel->role = $role;
         $memberModel->disabled = $disabled;
         $memberModel->save();
+        $group->increment('users_count');
 
         return $memberModel;
     }

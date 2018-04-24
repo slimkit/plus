@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\GoldType;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\WalletCharge;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\PlusGroup\Models\Post as GroupPostModel;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 

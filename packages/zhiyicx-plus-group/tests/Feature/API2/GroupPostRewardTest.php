@@ -64,7 +64,7 @@ class GroupPostRewardTest extends TestCase
         $response = $this
             ->actingAs($this->other, 'api')
             ->json('POST', "/api/v2/plus-group/group-posts/{$this->post->id}/rewards", [
-                'amount' => 10
+                'amount' => 100
             ]);
         $response
             ->assertStatus(201)
@@ -79,7 +79,7 @@ class GroupPostRewardTest extends TestCase
     public function testGroupPostNewReward()
     {
         config(['plus-group.group_reward.status' => true]);
-        $this->other->NewWallet()->create([
+        $this->other->NewWallet()->update([
             'balance' => 1000,
             'total_income' => 0,
             'total_expenses' => 0,
@@ -87,7 +87,7 @@ class GroupPostRewardTest extends TestCase
         $response = $this
             ->actingAs($this->other, 'api')
             ->json('POST', "/api/v2/plus-group/group-posts/{$this->post->id}/new-rewards", [
-                'amount' => 10
+                'amount' => 1000
             ]);
         $response
             ->assertStatus(201)
@@ -102,7 +102,7 @@ class GroupPostRewardTest extends TestCase
     public function testGroupPostRewardList()
     {
         config(['plus-group.group_reward.status' => true]);
-        $this->user->NewWallet()->create([
+        $this->user->NewWallet()->update([
             'balance' => 1000,
             'total_income' => 0,
             'total_expenses' => 0,
@@ -122,7 +122,7 @@ class GroupPostRewardTest extends TestCase
      * @param UserModel $user
      * @return GroupModel
      */
-    protected function createGroupByUser(UserModel $user, $mode='public'): GroupModel
+    protected function createGroupByUser(UserModel $user, $mode = 'public'): GroupModel
     {
         $cate = factory(CateModel::class)->create();
         $group = factory(GroupModel::class)->create([
