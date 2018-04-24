@@ -57,36 +57,35 @@ class RewardController extends Controller
         $amount = $request->input('amount');
         if (! $amount || $amount < 0) {
             return response()->json([
-                'amount' => ['请输入正确的打赏金额'],
+                'amount' => '请输入正确的打赏金额',
             ], 422);
         }
         $user = $request->user();
         $user->load('wallet');
         $news->load('user');
-        $current_user = $news->user;
+        $targetUser = $news->user;
 
         if (! $user->wallet || $user->wallet->balance < $amount) {
             return response()->json([
-                'message' => ['余额不足'],
+                'message' => '余额不足',
             ], 403);
         }
 
         // 系统消息未读数预处理, 事务中只做保存操作
         $userCount = UserCountModel::firstOrNew([
-            'user_id' => $user->id,
+            'user_id' => $targetUser->id,
             'type' => 'user-system',
         ]);
 
         $userCount->total += 1;
-
-        $user->getConnection()->transaction(function () use ($user, $news, $charge, $current_user, $amount) {
+        $user->getConnection()->transaction(function () use ($user, $news, $charge, $targetUser, $amount, $userCount) {
             // 扣除操作用户余额
             $user->wallet()->decrement('balance', $amount);
 
             // 扣费记录
             $userCharge = clone $charge;
             $userCharge->channel = 'user';
-            $userCharge->account = $current_user->id;
+            $userCharge->account = $targetUser->id;
             $userCharge->subject = '资讯打赏';
             $userCharge->action = 0;
             $userCharge->amount = $amount;
@@ -94,14 +93,11 @@ class RewardController extends Controller
             $userCharge->status = 1;
             $user->walletCharges()->save($userCharge);
 
-            // 保存系统未读数
-            $userCount->save();
+            if ($targetUser->wallet) {
+                // 旧版钱包增加对应用户余额
+                $targetUser->wallet()->increment('balance', $amount);
 
-            if ($current_user->wallet) {
-                // 增加对应用户余额
-                $current_user->wallet()->increment('balance', $amount);
-
-                $charge->user_id = $current_user->id;
+                $charge->user_id = $targetUser->id;
                 $charge->channel = 'user';
                 $charge->account = $user->id;
                 $charge->subject = '资讯被打赏';
@@ -113,18 +109,19 @@ class RewardController extends Controller
 
                 // 添加被打赏通知
                 $currentNotice = sprintf('你的资讯《%s》被%s打赏%s%s', $news->title, $user->name, $amount * $this->wallet_ratio / 10000, $this->goldName);
-                $current_user->sendNotifyMessage('news:reward', $currentNotice, [
+                $targetUser->sendNotifyMessage('news:reward', $currentNotice, [
                     'news' => $news,
                     'user' => $user,
                 ]);
+                // 保存系统未读数
+                $userCount->save();
             }
-
             // 打赏记录
             $news->reward($user, $amount);
         });
 
         return response()->json([
-            'message' => ['打赏成功'],
+            'message' => '打赏成功',
         ], 201);
     }
 

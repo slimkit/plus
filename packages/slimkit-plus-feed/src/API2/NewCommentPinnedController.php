@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Models\userCount as UserCountModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
@@ -43,13 +44,14 @@ class NewCommentPinnedController extends Controller
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function pass(Request $request,
-                         ResponseContract $response,
-                         Carbon $dateTime,
-                         FeedModel $feed,
-                         CommentModel $comment,
-                         FeedPinnedModel $pinned)
-    {
+    public function pass(
+        Request $request,
+        ResponseContract $response,
+        Carbon $dateTime,
+        FeedModel $feed,
+        CommentModel $comment,
+        FeedPinnedModel $pinned
+    ) {
         $user = $request->user();
 
         if ($user->id !== $feed->user_id) {
@@ -75,6 +77,14 @@ class NewCommentPinnedController extends Controller
                 'pinned' => $pinned,
             ]);
 
+            $userCount = UserCountModel::firstOrNew([
+                'type' => 'user-system',
+                'user_id' => $pinned->user_id,
+            ]);
+
+            $userCount->total += 1;
+            $userCount->save();
+
             return $response->json(['message' => ['置顶成功']], 201);
         }
 
@@ -91,11 +101,12 @@ class NewCommentPinnedController extends Controller
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function reject(Request $request,
-                           ResponseContract $response,
-                           Carbon $dateTime,
-                           FeedPinnedModel $pinned)
-    {
+    public function reject(
+        Request $request,
+        ResponseContract $response,
+        Carbon $dateTime,
+        FeedPinnedModel $pinned
+    ) {
         $user = $request->user();
 
         if ($user->id !== $pinned->target_user || $pinned->channel !== 'comment') {
@@ -118,6 +129,13 @@ class NewCommentPinnedController extends Controller
                 'comment' => $pinned->comment,
                 'pinned' => $pinned,
             ]);
+
+            $userCount = UserCountModel::firstOrNew([
+                'type' => 'user-system',
+                'user_id' => $pinned->user_id,
+            ]);
+            $userCount->total += 1;
+            $userCount->save();
 
             return $response->json(null, 204);
         }

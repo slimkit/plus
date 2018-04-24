@@ -36,7 +36,7 @@ class WalletTransferTest extends TestCase
 
         $this->user = factory(UserModel::class)->create();
         $this->target_user = factory(UserModel::class)->create();
-        $this->user->newWallet()->create(['balance' => 999999, 'total_income' => 0, 'total_expenses' => 0]);
+        $this->user->newWallet()->update(['balance' => 999999, 'total_income' => 0, 'total_expenses' => 0]);
     }
 
     /**

@@ -105,7 +105,7 @@ class LikeController extends Controller
             app(push::class)->push(sprintf('%s 点赞了你的动态', $user->name), (string) $feed->user->id, ['channel' => 'feed:digg']);
         }
 
-        return $response->json(['message' => ['操作成功']])->setStatusCode(201);
+        return $response->json(['message' => '操作成功'])->setStatusCode(201);
     }
 
     /**
@@ -122,6 +122,6 @@ class LikeController extends Controller
         $user = $request->user();
         $feed->unlike($user);
 
-        return $response->json(['message' => ['操作成功']])->setStatusCode(204);
+        return $response->json(['message' => '操作成功'])->setStatusCode(204);
     }
 }

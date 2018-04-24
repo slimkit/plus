@@ -62,6 +62,7 @@ class RewardNewsTest extends TestCase
             ->json('POST', "/api/v2/news/{$this->news->id}/rewards", [
                 'amount' => 100,
             ]);
+
         $response
             ->assertStatus(201)
             ->assertJsonStructure(['message']);
@@ -75,12 +76,7 @@ class RewardNewsTest extends TestCase
     public function testNewRewardNews()
     {
         $other = factory(UserModel::class)->create();
-
-        $other->newWallet()->create([
-            'balance' => 1000,
-            'total_income' => 0,
-            'total_expenses' => 0,
-        ]);
+        $other->newWallet()->increment('balance', 1000);
 
         $response = $this
             ->actingAs($other, 'api')

@@ -82,7 +82,7 @@ class CurrencyPinnedFeedTest extends TestCase
      */
     public function testCurrencyPinnedFeed()
     {
-        $this->user->currency()->firstOrCreate([
+        $this->user->currency()->update([
             'sum' => 1000,
             'type' => 1,
         ]);

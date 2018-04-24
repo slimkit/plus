@@ -47,6 +47,7 @@ class RanksController extends Controller
             return $query->withTrashed();
         }])
             ->orderBy('checkin_count', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->offset($offset)
             ->limit($limit)
             ->get()

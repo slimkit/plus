@@ -57,11 +57,13 @@ class CommentNewsTest extends TestCase
      */
     public function testCommentNews()
     {
+        $other = factory(UserModel::class)->create();
         $response = $this
             ->actingAs($this->user, 'api')
             ->json('POST', "/api/v2/news/{$this->news->id}/comments", [
                 'body' => 'test',
-                'reply_user' => 0,
+                'reply_user' => $other->id,
+                'comment_mark' => rand(1000, 9999),
             ]);
         $response
             ->assertStatus(201);

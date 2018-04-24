@@ -41,7 +41,7 @@ class LikeController extends Controller
         $user = $request->user();
         if ($news->liked($user)) {
             return response()->json([
-                'message' => ['已赞过该资讯'],
+                'message' => '已赞过该资讯',
             ])->setStatusCode(400);
         }
 
@@ -77,7 +77,7 @@ class LikeController extends Controller
         $user = $request->user();
         if (! $news->liked($user)) {
             return response()->json([
-                'message' => ['未对该资讯点赞'],
+                'message' => '未对该资讯点赞',
             ])->setStatusCode(400);
         }
 

@@ -42,12 +42,12 @@ class FeedCollectionController extends Controller
         $user = $request->user()->id;
 
         if ($feed->collected($user)) {
-            return $response->json(['message' => ['已经收藏过']])->setStatusCode(422);
+            return $response->json(['message' => '已经收藏过'])->setStatusCode(422);
         }
 
         $feed->collect($user);
 
-        return $response->json(['message' => ['收藏成功']])->setStatusCode(201);
+        return $response->json(['message' => '收藏成功'])->setStatusCode(201);
     }
 
     /**

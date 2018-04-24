@@ -132,7 +132,7 @@ class NewsPinnedController extends Controller
         ]);
 
         $userCount->total += 1;
-        $pinned->getConnection()->transaction(function () use ($pinned, $userProcess) {
+        $pinned->getConnection()->transaction(function () use ($pinned, $userProcess, $userCount) {
             $pinned->save();
             $userCount->save();
             $newTitile = $pinned->news->title;

@@ -24,6 +24,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
 class NewRewardController extends Controller
@@ -42,7 +43,7 @@ class NewRewardController extends Controller
         $amount = (int) $request->input('amount');
         if (! $amount || $amount < 0) {
             return response()->json([
-                'amount' => ['请输入正确的打赏金额'],
+                'amount' => '请输入正确的打赏金额',
             ], 422);
         }
 
@@ -50,12 +51,12 @@ class NewRewardController extends Controller
         $target = $feed->user;
 
         if ($user->id == $target->id) {
-            return response()->json(['message' => ['不能打赏自己的发布的动态']], 422);
+            return response()->json(['message' => '不能打赏自己的发布的动态'], 422);
         }
 
         if (! $user->newWallet || $user->newWallet->balance < $amount) {
             return response()->json([
-                'message' => ['余额不足'],
+                'message' => '余额不足',
             ], 403);
         }
 
@@ -80,9 +81,18 @@ class NewRewardController extends Controller
         ]);
 
         if ($status === true) {
-            return response()->json(['message' => ['打赏成功']], 201);
+            // 增加被打赏未读数
+            $userCount = UserCountModel::firstOrNew([
+                'user_id' => $target->id,
+                'type' => 'user-system',
+            ]);
+
+            $userCount->total += 1;
+            $userCount->save();
+
+            return response()->json(['message' => '打赏成功'], 201);
         } else {
-            return response()->json(['message' => ['打赏失败']], 500);
+            return response()->json(['message' => '打赏失败'], 500);
         }
     }
 }

@@ -45,7 +45,7 @@ class NewPinnedController extends Controller
         $user = $request->user();
 
         if ($user->id !== $news->user_id) {
-            return response()->json(['message' => ['没有权限申请']], 403);
+            return response()->json(['message' => '没有权限申请'], 403);
         }
 
         if ($news
@@ -54,7 +54,7 @@ class NewPinnedController extends Controller
             ->where('expires_at', '>', $dateTime)
             ->count()
         ) {
-            return response()->json(['message' => ['已经申请过']], 422);
+            return response()->json(['message' => '已经申请过'], 422);
         }
 
         if ($news
@@ -62,7 +62,7 @@ class NewPinnedController extends Controller
             ->where('state', 0)
             ->count()
         ) {
-            return response()->json(['message' => ['已经申请过,请等待审核']], 422);
+            return response()->json(['message' => '已经申请过,请等待审核'], 422);
         }
 
         $pinned = new NewsPinnedModel();
@@ -81,10 +81,10 @@ class NewPinnedController extends Controller
                 if ($order) {
                     $pinned->save();
 
-                    return response()->json(['message' => ['申请成功']], 201);
+                    return response()->json(['message' => '申请成功'], 201);
                 }
 
-                return response()->json(['message' => ['操作失败']], 500);
+                return response()->json(['message' => '操作失败'], 500);
             },
         ]);
     }
@@ -104,7 +104,7 @@ class NewPinnedController extends Controller
         $user = $request->user();
 
         if ($user->id !== $comment->user_id) {
-            return response()->json(['message' => ['没有权限申请']], 403);
+            return response()->json(['message' => '没有权限申请'], 403);
         }
 
         if ($news
@@ -116,7 +116,7 @@ class NewPinnedController extends Controller
             ->where('expires_at', '>', $dateTime)
             ->count()
         ) {
-            return response()->json(['message' => ['已经申请过']], 422);
+            return response()->json(['message' => '已经申请过'], 422);
         }
 
         if ($news
@@ -127,7 +127,7 @@ class NewPinnedController extends Controller
             ->where('state', 0)
             ->count()
         ) {
-            return response()->json(['message' => ['已经申请过,请等待审核']], 422);
+            return response()->json(['message' => '已经申请过,请等待审核'], 422);
         }
 
         $pinned = new NewsPinnedModel();
@@ -143,9 +143,7 @@ class NewPinnedController extends Controller
             'call' => function (NewsPinnedModel $pinned) use ($user, $comment, $news) {
                 $process = new UserProcess();
                 $order = $process->prepayment($user->id, $pinned->amount, $news->user_id, '申请资讯评论置顶', sprintf('申请评论《%s》置顶', $comment->body));
-
                 if ($order) {
-                    $pinned->save();
                     if ($news->user) {
                         $message = sprintf('%s 在你发布的资讯中申请评论置顶', $user->name);
                         $news->user->sendNotifyMessage('news:pinned-comment', $message, [
@@ -157,17 +155,17 @@ class NewPinnedController extends Controller
                         // 增加资讯评论置顶申请未读数
                         $userCount = UserCountModel::firstOrNew([
                             'type' => 'user-news-comment-pinned',
-                            'user_id' => $news->user_id,
+                            'user_id' => $news->user->id,
                         ]);
 
                         $userCount->total += 1;
                         $userCount->save();
                     }
 
-                    return response()->json(['message' => ['申请成功']], 201);
+                    return response()->json(['message' => '申请成功'], 201);
                 }
 
-                return response()->json(['message' => ['操作失败']], 500);
+                return response()->json(['message' => '操作失败'], 500);
             },
         ]);
     }

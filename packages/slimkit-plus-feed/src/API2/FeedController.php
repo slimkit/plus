@@ -296,7 +296,7 @@ class FeedController extends Controller
 
         if ($feed->paidNode !== null && $feed->paidNode->paid($user) === false) {
             return response()->json([
-                'message' => ['请购买动态'],
+                'message' => '请购买动态',
                 'paid_node' => $feed->paidNode->id,
                 'amount' => $feed->paidNode->amount,
             ])->setStatusCode(403);

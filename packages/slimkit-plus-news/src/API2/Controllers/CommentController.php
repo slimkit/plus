@@ -82,7 +82,7 @@ class CommentController extends Controller
             // 新, 1.8启用
             $userCommentedCount = UserCountModel::firstOrNew([
                 'type' => 'user-commented',
-                'user_id' => $news->user->id,
+                'user_id' => $replyUser->id,
             ]);
 
             $userCommentedCount->total += 1;
@@ -93,7 +93,7 @@ class CommentController extends Controller
         }
 
         return response()->json([
-            'message' => ['操作成功'],
+            'message' => '操作成功',
             'comment' => $comment,
         ])->setStatusCode(201);
     }
@@ -163,7 +163,7 @@ class CommentController extends Controller
     {
         $user = $request->user();
         if ($comment->user_id !== $user->id) {
-            return response()->json(['message' => ['没有权限']], 403);
+            return response()->json(['message' => '没有权限'], 403);
         }
 
         $pinned = $pinnedModel->where('channel', 'news:comment')->where('raw', $comment->id)->where('state', 0)->first();
