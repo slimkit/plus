@@ -63,7 +63,7 @@ class CommentNewsTest extends TestCase
             ->json('POST', "/api/v2/news/{$this->news->id}/comments", [
                 'body' => 'test',
                 'reply_user' => $other->id,
-                'comment_mark' => rand(1000, 9999)
+                'comment_mark' => rand(1000, 9999),
             ]);
         $response
             ->assertStatus(201);
