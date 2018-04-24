@@ -82,7 +82,7 @@ class UserCertificationController extends Controller
             });
             $user->certification()->save($certification);
 
-            return $response->json(['message' => ['申请成功，等待审核']])->setStatusCode(201);
+            return $response->json(['message' => ['提交成功，等待审核']])->setStatusCode(201);
         });
     }
 

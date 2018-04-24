@@ -247,8 +247,8 @@ class HomeController extends Controller
         $center = $longitude.','.$latitude;
         // 查询半径
         $radius = $request->input('radius', 3000); // 默认3km范围的用户, 最大为50km
-        $limit = $request->input('limit', 20); // 默认20条数据
         $page = $request->input('page', 1);
+        $limit = $request->input('limit', ($page === 1 && $user) ? 16 : 15); // 默认15条数据
         $searchtype = 0; // 搜索半径代表类型 默认为0， 直线距离
         // 组装参数
         $prams = "center={$center}&key={$this->_amap_key}&limit={$limit}&page={$page}&radius={$radius}&searchtype={$searchtype}&tableid={$this->_amap_tableId}";
@@ -258,7 +258,15 @@ class HomeController extends Controller
         // $results = json_decode(file_get_contents($this->_search_uri.$uri));
         $results = json_decode($this->http->get($this->_search_uri.$uri)->getBody()->getContents());
         if ($results->status) {
-            return $response->json($results->datas)->setStatusCode(200);
+            if ($user) {
+                foreach ($datas as $key => $data) {
+                    if ($data->user_id === $user) {
+                        unset($datas[$key]);
+                    }
+                }
+                 $datas = collect(array_values($datas));
+            }
+             return $response->json($datas)->setStatusCode(200);
         } else {
             return $response->json(['message' => $this->errors[$results->info] ?? '未知错误'], 500);
         }
