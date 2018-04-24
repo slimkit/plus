@@ -26,6 +26,7 @@ use Zhiyi\Plus\Models\WalletOrder;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Repository\CurrencyConfig;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\NewWallet as NewWalletModel;
 use Zhiyi\Plus\Models\CurrencyOrder as OrderModel;
 
 class CurrencyCashController extends Controller
@@ -114,6 +115,11 @@ class CurrencyCashController extends Controller
                 $walletOrderModel->save();
                 // 用户钱包变更
                 $newWallet = $order->user->newWallet;
+                if (!$newWallet) {
+                    $newWallet = new NewWalletModel();
+                    $newWallet->owner_id = $order->owner_id;
+                    $newWallet->total_expenses = 0;
+                }
                 $newWallet->balance += $order->amount;
                 $newWallet->total_income += $order->amount;
                 $newWallet->save();
