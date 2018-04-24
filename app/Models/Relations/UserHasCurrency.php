@@ -38,6 +38,7 @@ trait UserHasCurrency
             }
         });
     }
+
     /**
      * user has currencies.
      *
