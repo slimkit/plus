@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
@@ -139,7 +140,7 @@ class CommentPinnedController extends Controller
 
             $userCount->total += 1;
             $userCount->save();
-
+            
             return $response->json(['message' => '置顶成功'], 201);
         });
     }

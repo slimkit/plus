@@ -143,9 +143,7 @@ class NewPinnedController extends Controller
             'call' => function (NewsPinnedModel $pinned) use ($user, $comment, $news) {
                 $process = new UserProcess();
                 $order = $process->prepayment($user->id, $pinned->amount, $news->user_id, '申请资讯评论置顶', sprintf('申请评论《%s》置顶', $comment->body));
-
                 if ($order) {
-                    $pinned->save();
                     if ($news->user) {
                         $message = sprintf('%s 在你发布的资讯中申请评论置顶', $user->name);
                         $news->user->sendNotifyMessage('news:pinned-comment', $message, [
@@ -157,13 +155,12 @@ class NewPinnedController extends Controller
                         // 增加资讯评论置顶申请未读数
                         $userCount = UserCountModel::firstOrNew([
                             'type' => 'user-news-comment-pinned',
-                            'user_id' => $news->user_id,
+                            'user_id' => $news->user->id,
                         ]);
 
                         $userCount->total += 1;
                         $userCount->save();
                     }
-
                     return response()->json(['message' => '申请成功'], 201);
                 }
 
