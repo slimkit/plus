@@ -236,7 +236,7 @@ class HomeController extends Controller
      */
     public function getArounds(Request $request, ResponseFactory $response)
     {
-        $user = $request->user('api');
+        $user = $request->user('api')->id ?? 0;
         $latitude = $request->input('latitude', '');
         $longitude = $request->input('longitude', '');
         if (! $latitude) {
