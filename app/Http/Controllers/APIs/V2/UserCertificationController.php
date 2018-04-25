@@ -40,7 +40,7 @@ class UserCertificationController extends Controller
     public function show(Request $request, ResponseFactoryContract $response)
     {
         $user = $request->user();
-        if (!$user->certification) {
+        if (! $user->certification) {
             return $response->json($user->certification, 200);
         }
         $info = $user->certification->data;
