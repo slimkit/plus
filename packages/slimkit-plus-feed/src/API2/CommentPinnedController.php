@@ -56,7 +56,7 @@ class CommentPinnedController extends Controller
             ->limit($limit)
             ->get();
 
-        $pinneds->load('feed');
+        $pinneds->load(['feed', 'user']);
 
         return response()->json($pinneds, 200);
     }
@@ -109,7 +109,7 @@ class CommentPinnedController extends Controller
 
         $userCount->total += 1;
 
-        return $feed->getConnection()->transaction(function () use ($response, $pinned, $comment, $user, $charge) {
+        return $feed->getConnection()->transaction(function () use ($response, $pinned, $comment, $user, $charge, $userCount) {
             $pinned->save();
             $comment->save();
             $user->wallet()->increment('balance', $charge->amount);
@@ -158,7 +158,7 @@ class CommentPinnedController extends Controller
 
         $userCount->total += 1;
 
-        return $pinned->getConnection()->transaction(function () use ($response, $charge, $pinned, $dateTime) {
+        return $pinned->getConnection()->transaction(function () use ($response, $charge, $pinned, $dateTime, $userCount) {
             $charge->save();
             $pinned->user->wallet()->increment('balance', $pinned->amount);
             $pinned->expires_at = $dateTime;
