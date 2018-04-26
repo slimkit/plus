@@ -72,13 +72,13 @@ class NewPinnedController extends Controller
                 if ($order) {
                     $pinned->save();
                     if ($feed->user) {
-                        $message = sprintf('%s 在你发布的动态中申请评论置顶', $user->name);
-                        $feed->user->sendNotifyMessage('feed:pinned-comment', $message, [
-                            'feed' => $feed,
-                            'user' => $user,
-                            'comment' => $comment,
-                            'pinned' => $pinned,
-                        ]);
+                        // $message = sprintf('%s 在你发布的动态中申请评论置顶', $user->name);
+                        // $feed->user->sendNotifyMessage('feed:pinned-comment', $message, [
+                        //     'feed' => $feed,
+                        //     'user' => $user,
+                        //     'comment' => $comment,
+                        //     'pinned' => $pinned,
+                        // ]);
                         // 增加动态评论置顶申请未读数
                         $userCount = UserCountModel::firstOrNew([
                             'user_id' => $feed->user->id,

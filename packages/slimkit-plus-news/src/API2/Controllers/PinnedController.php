@@ -175,7 +175,7 @@ class PinnedController extends Controller
                     'charge' => $charge,
                     'pinned' => $pinned,
                     'call' => $news->user ? function () use ($user, $comment, $news, $pinned) {
-                        $message = sprintf('%s 在你发布的资讯中申请评论置顶', $user->name);
+                        // $message = sprintf('%s 在你发布的资讯中申请评论置顶', $user->name);
                         // 增加资讯评论申请置顶的未读消息数量
                         $userCount = UserCountModel::firstOrNew([
                             'user_id' => $news->user->id,
@@ -185,12 +185,12 @@ class PinnedController extends Controller
                         $userCount->total += 1;
                         $userCount->save();
 
-                        $news->user->sendNotifyMessage('news:pinned-comment', $message, [
-                            'news' => $news,
-                            'user' => $user,
-                            'comment' => $comment,
-                            'pinned' => $pinned,
-                        ]);
+                        // $news->user->sendNotifyMessage('news:pinned-comment', $message, [
+                        //     'news' => $news,
+                        //     'user' => $user,
+                        //     'comment' => $comment,
+                        //     'pinned' => $pinned,
+                        // ]);
                     } : null,
                 ]);
             },
