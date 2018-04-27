@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Log;
+use Image;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use function Zhiyi\Plus\isImage;
@@ -101,19 +103,24 @@ class FilesController extends Controller
             list($width, $height) = ($imageInfo = @getimagesize($file->getRealPath())) === false ? [null, null] : $imageInfo;
             $path = $dateTime->format('Y/m/d/Hi');
             if (($filename = $file->store($path, config('cdn.generators.filesystem.disk'))) === false) {
-                abort(500, '上传失败');
+                return $response->json(['message' => '上传失败'], 500);
             }
+            $needOrientate = false;
             $fileModel->filename = $filename;
             $fileModel->hash = $md5;
             $fileModel->origin_filename = $file->getClientOriginalName();
             $fileModel->mime = $file->getClientMimeType();
-            $fileModel->width =  $width ?? $clientWidth;
-            $fileModel->height =  $height ?? $clientHeight;
+            // 上传文件为图片时, 获取exif信息, 设置高宽
+            if ($file->getClientOriginalExtension() !== 'mp4') {
+                $exifInfo =  Image::make($file->getRealPath())->exif();
+                isset($exifInfo['Orientation']) && in_array($exifInfo['Orientation'], [6, 8]) && $needOrientate = true;
+            }
+            $fileModel->width = ($needOrientate ? $height : $width) ?? $clientWidth;
+            $fileModel->height = ($needOrientate ? $width : $height) ?? $clientHeight;
             $fileModel->saveOrFail();
 
             return $fileModel;
         });
-
         $fileWith = $this->resolveFileWith($fileWith, $request->user(), $fileModel);
 
         return $response->json([

@@ -45,7 +45,7 @@ class StoreUploadFile extends FormRequest
         $max = config::get('files.upload_max_size', 10240);
 
         return [
-            'file' => 'required|max:'.$max.'|file|mimes:jpeg,bmp,png,gif,txt,mp4',
+            'file' => 'required|max:'.$max.'|file|mimes:jpeg,bmp,png,gif,mp4',
         ];
     }
 
