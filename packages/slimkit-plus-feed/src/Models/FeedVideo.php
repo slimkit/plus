@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Model;
 class FeedVideo extends Model
 {
     protected $hidden = ['id', 'user_id', 'updated_at', 'created_at', 'feed_id'];
+
     public function fileWith()
     {
         return $this->hasOne(FileWith::class, 'id', 'video_id');
