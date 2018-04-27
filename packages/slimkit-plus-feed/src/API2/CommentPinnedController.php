@@ -58,8 +58,11 @@ class CommentPinnedController extends Controller
             ->get();
 
         $pinneds = $pinneds->load(['feed', 'user'])->map(function ($pinned) use ($repository, $user) {
-            $repository->setModel($pinned->feed);
-            $repository->format($user->id);
+            if ($pinned->feed && $pinned->feed instanceof FeedModel) {
+                $repository->setModel($pinned->feed);
+                $repository->images();
+                $repository->format($user->id);
+            }
 
             return $pinned;
         });
