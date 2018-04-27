@@ -28,6 +28,7 @@ use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed as FeedRepository;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned as FeedPinnedModel;
 
 class CommentPinnedController extends Controller
@@ -40,7 +41,7 @@ class CommentPinnedController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function index(Request $request, FeedPinnedModel $model)
+    public function index(Request $request, FeedPinnedModel $model, FeedRepository $repository)
     {
         $user = $request->user();
         $limit = $request->query('limit', 15);
@@ -56,7 +57,12 @@ class CommentPinnedController extends Controller
             ->limit($limit)
             ->get();
 
-        $pinneds->load(['feed', 'user']);
+        $pinneds = $pinneds->load(['feed', 'user'])->map(function ($pinned) use ($repository, $user) {
+            $repository->setModel($pinned->feed);
+            $repository->format($user->id);
+
+            return $pinned;
+        });
 
         return response()->json($pinneds, 200);
     }

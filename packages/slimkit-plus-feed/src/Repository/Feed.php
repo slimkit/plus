@@ -124,7 +124,7 @@ class Feed
             $image = [
                 'file' => $item->id,
                 'size' => $item->size,
-                'mime' => $item->file['mime']
+                'mime' => $item->file->mime,
             ];
             if ($item->paidNode !== null) {
                 $image['amount'] = $item->paidNode->amount;

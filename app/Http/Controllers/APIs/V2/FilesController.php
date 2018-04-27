@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Log;
 use Image;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -112,7 +111,7 @@ class FilesController extends Controller
             $fileModel->mime = $file->getClientMimeType();
             // 上传文件为图片时, 获取exif信息, 设置高宽
             if ($file->getClientOriginalExtension() !== 'mp4') {
-                $exifInfo =  Image::make($file->getRealPath())->exif();
+                $exifInfo = Image::make($file->getRealPath())->exif();
                 isset($exifInfo['Orientation']) && in_array($exifInfo['Orientation'], [6, 8]) && $needOrientate = true;
             }
             $fileModel->width = ($needOrientate ? $height : $width) ?? $clientWidth;
