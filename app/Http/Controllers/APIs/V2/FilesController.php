@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Log;
+use Image;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -54,8 +56,7 @@ class FilesController extends Controller
             'blur' => $request->query('b'),
         ]);
 
-        if (
-            ($fileWith->paidNode instanceof PaidNodeModel &&
+        if (($fileWith->paidNode instanceof PaidNodeModel &&
             $fileWith->paidNode->paid($user->id ?? 0) === false) &&
             ($fileWith->paidNode->extra === 'read' || (! isset($extra['width']) && isset($extra['height'])))
         ) {
@@ -95,25 +96,32 @@ class FilesController extends Controller
      */
     public function store(StoreUploadFileRequest $request, ResponseContract $response, Carbon $dateTime, FileModel $fileModel, FileWithModel $fileWith)
     {
-        $fileModel = $this->validateFileInDatabase($fileModel, $file = $request->file('file'), function (UploadedFile $file, string $md5) use ($fileModel, $dateTime): FileModel {
+        $clientHeight = $request->input('height', 0);
+        $clientWidth = $request->input('width', 0);
+        $fileModel = $this->validateFileInDatabase($fileModel, $file = $request->file('file'), function (UploadedFile $file, string $md5) use ($fileModel, $dateTime, $clientWidth, $clientHeight): FileModel {
             list($width, $height) = ($imageInfo = @getimagesize($file->getRealPath())) === false ? [null, null] : $imageInfo;
             $path = $dateTime->format('Y/m/d/Hi');
 
             if (($filename = $file->store($path, config('cdn.generators.filesystem.disk'))) === false) {
-                abort(500, '上传失败');
+                return $response->json(['message' => '上传失败'], 500);
             }
 
+            $needOrientate = false;
             $fileModel->filename = $filename;
             $fileModel->hash = $md5;
             $fileModel->origin_filename = $file->getClientOriginalName();
             $fileModel->mime = $file->getClientMimeType();
-            $fileModel->width = $width;
-            $fileModel->height = $height;
+            // 上传文件为图片时, 获取exif信息, 设置高宽
+            if ($file->getClientOriginalExtension() !== 'mp4') {
+                $exifInfo =  Image::make($file->getRealPath())->exif();
+                isset($exifInfo['Orientation']) && in_array($exifInfo['Orientation'], [6, 8]) && $needOrientate = true;
+            }
+            $fileModel->width = ($needOrientate ? $height : $width) ?? $clientWidth;
+            $fileModel->height = ($needOrientate ? $width : $height) ?? $clientHeight;
             $fileModel->saveOrFail();
 
             return $fileModel;
         });
-
         $fileWith = $this->resolveFileWith($fileWith, $request->user(), $fileModel);
 
         return $response->json([
