@@ -58,7 +58,7 @@ class LikeController extends Controller
             $userLikedCount->total += 1;
             $userLikedCount->save();
 
-            app(push::class)->push(sprintf('%s点赞了你的资讯', $user->name), (string) $news->user->id, ['channel' => 'news:like']);
+            app(Push::class)->push(sprintf('%s点赞了你的资讯', $user->name), (string) $news->user->id, ['channel' => 'news:like']);
         }
 
         return response()->json()->setStatusCode(201);

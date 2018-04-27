@@ -194,7 +194,7 @@ class MusicCommentController extends Controller
         if ($replyUser && $replyUser !== $user->id) {
             $replyUser = $user->newQuery()->where('id', $replyUser)->first();
             $replyUser->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
-            app(push::class)->push(sprintf('%s 回复了您的评论', $user->name), (string) $replyUser->id, ['channel' => 'music:special-comment-reply']);
+            app(Push::class)->push(sprintf('%s 回复了您的评论', $user->name), (string) $replyUser->id, ['channel' => 'music:special-comment-reply']);
         }
 
         return response()->json([
