@@ -112,9 +112,9 @@ class UserNotificationController extends Controller
         // 清空用户未读系统通知未读数
         $userCount = UserCount::firstOrNew([
             'user_id' => $request->user()->id,
-            'type' => 'user-system'
+            'type' => 'user-system',
         ]);
-        
+
         $userCount->total -= 1;
         $userCount->save();
 
@@ -134,11 +134,12 @@ class UserNotificationController extends Controller
         // 清空用户未读系统通知未读数
         $userCount = UserCount::firstOrNew([
             'user_id' => $request->user()->id,
-            'type' => 'user-system'
+            'type' => 'user-system',
         ]);
-        
+
         $userCount->total = 0;
         $userCount->save();
+
         return response()->json(['message' => '操作成功'])->setStatusCode(201);
     }
 }

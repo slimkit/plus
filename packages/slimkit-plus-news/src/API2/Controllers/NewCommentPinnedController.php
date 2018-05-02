@@ -76,7 +76,7 @@ class NewCommentPinnedController extends Controller
                 'comment' => $comment,
                 'pinned' => $pinned,
             ]);
-            
+
             // 获取发起置顶申请的用户未读系统通知数量
             $unreadCount = $comment->user
                 ->unreadNotifications()
@@ -94,11 +94,11 @@ class NewCommentPinnedController extends Controller
                 ->where('target_user', $user->id)
                 ->whereNull('expires_at')
                 ->count();
-                
+
             $userCount = $userCount->newQuery()
                 ->firstOrNew([
                     'user_id' => $user->id,
-                    'type' => 'user-news-comment-pinned'
+                    'type' => 'user-news-comment-pinned',
                 ]);
             $userCount->total = $unreadCount;
             $userCount->save();
@@ -164,7 +164,7 @@ class NewCommentPinnedController extends Controller
             ]);
             $userCount->total = $unreadCount;
             $userCount->save();
-            
+
             // 资讯所有者的资讯评论置顶申请未读数更新
             $unreadCount = $pinned->newQuery()
                 ->where('channel', 'news:comment')
@@ -174,7 +174,7 @@ class NewCommentPinnedController extends Controller
             $userCount = $userCount->newQuery()
                 ->firstOrNew([
                     'user_id' => $user->id,
-                    'type' => 'user-news-comment-pinned'
+                    'type' => 'user-news-comment-pinned',
                 ]);
             $userCount->total = $unreadCount;
             $userCount->save();

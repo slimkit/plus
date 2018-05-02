@@ -236,7 +236,7 @@ class HomeController extends Controller
      */
     public function getArounds(Request $request, ResponseFactory $response)
     {
-        $user = $request->user('api');
+        $user = $request->user('api')->id ?? 0;
         $latitude = $request->input('latitude', '');
         $longitude = $request->input('longitude', '');
         if (! $latitude) {
@@ -256,7 +256,6 @@ class HomeController extends Controller
         // 计算数字签名
         $sig = md5($prams.$this->_amap_sig);
         $uri = $prams."&sig={$sig}";
-        // $results = json_decode(file_get_contents($this->_search_uri.$uri));
         $results = json_decode($this->http->get($this->_search_uri.$uri)->getBody()->getContents());
         if ($results->status) {
             $datas = $results->datas;
