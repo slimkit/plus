@@ -65,6 +65,16 @@ class NewCommentPinnedController extends Controller
         }
 
         $pinned->expires_at = $dateTime->addDay($pinned->day);
+        // 申请动态置顶的用户, 更新系统消息未读数
+        $userUnreadCount = $pinned->user
+            ->unreadNotifications()
+            ->count();
+        $userCount = UserCountModel::firstOrNew([
+                'type' => 'user-system',
+                'user_id' => $pinned->user_id,
+            ]);
+
+        $userCount->total = $userUnreadCount + 1;
 
         $process = new UserProcess();
         $order = $process->receivables($user->id, $pinned->amount, $pinned->user_id, '置顶动态评论', sprintf('置顶评论《%s》', str_limit($comment->body, 100, '...')));
@@ -76,13 +86,19 @@ class NewCommentPinnedController extends Controller
                 'comment' => $comment,
                 'pinned' => $pinned,
             ]);
-
-            $userCount = UserCountModel::firstOrNew([
-                'type' => 'user-system',
-                'user_id' => $pinned->user_id,
-            ]);
-
-            $userCount->total += 1;
+            $userCount->save();
+            // 更新当前用户动态置顶评论审核未读数
+            $userUnreadCount = $pinned->newQuery()
+                ->where('channel', 'comment')
+                ->where('target_user', $user->id)
+                ->whereNull('expires_at')
+                ->count();
+            $userCount = $userCount->newQuery()
+                ->firstOrNew([
+                    'user_id' => $user->id,
+                    'type' => 'user-feed-comment-pinned'
+                ]);
+            $userCount->total = $userUnreadCount;
             $userCount->save();
 
             return $response->json(['message' => ['置顶成功']], 201);
@@ -120,6 +136,16 @@ class NewCommentPinnedController extends Controller
         // 拒绝凭据
         $process = new UserProcess();
         $order = $process->reject($user->id, $pinned->amount, $pinned->user_id, '被拒动态评论置顶', sprintf('被拒动态评论《%s》申请，退还申请金额', str_limit($pinned->comment->body ?? 'null', 100, '...')));
+        // 申请动态置顶的用户, 更新系统消息未读数
+        $userUnreadCount = $pinned->user
+            ->unreadNotifications()
+            ->count();
+        $userCount = UserCountModel::firstOrNew([
+                'type' => 'user-system',
+                'user_id' => $pinned->user_id,
+            ]);
+
+        $userCount->total = $userUnreadCount + 1;
 
         if ($order) {
             $pinned->expires_at = $dateTime;
@@ -129,12 +155,19 @@ class NewCommentPinnedController extends Controller
                 'comment' => $pinned->comment,
                 'pinned' => $pinned,
             ]);
-
+            $userCount->save();
+            
+            // 更新动态所有者的动态评论置顶审核未读数
+            $userUnreadCount = $pinned->newQuery()
+                ->where('target_user', $user->id)
+                ->where('channel', 'feed')
+                ->whereNull('expires_at')
+                ->count();
             $userCount = UserCountModel::firstOrNew([
-                'type' => 'user-system',
-                'user_id' => $pinned->user_id,
+                'user_id' => $user->id,
+                'type' => 'feed-comment-pinned',
             ]);
-            $userCount->total += 1;
+            $userCount->total = $userUnreadCount;
             $userCount->save();
 
             return $response->json(null, 204);

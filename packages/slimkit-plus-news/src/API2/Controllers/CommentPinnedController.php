@@ -132,13 +132,31 @@ class CommentPinnedController extends Controller
                 'comment' => $comment,
                 'pinned' => $pinned,
             ]);
-            // 系统消息未读数预处理, 事务中只做保存操作
+
+            // 获取发起置顶申请的用户未读系统通知数量
+            $unreadCount = $comment->user
+                ->unreadNotifications()
+                ->count();
             $userCount = UserCountModel::firstOrNew([
                 'user_id' => $pinned->user_id,
                 'type' => 'user-system',
             ]);
-
-            $userCount->total += 1;
+            $userCount->total = $unreadCount;
+            $userCount->save();
+            
+            // 资讯所有者的资讯评论置顶申请未读数更新
+            $unreadCount = $pinned->newQuery()
+                ->where('channel', 'news:comment')
+                ->where('target_user', $user->id)
+                ->whereNull('expires_at')
+                ->count();
+                
+            $userCount = $userCount->newQuery()
+                ->firstOrNew([
+                    'user_id' => $user->id,
+                    'type' => 'user-news-comment-pinned'
+                ]);
+            $userCount->total = $unreadCount;
             $userCount->save();
 
             return $response->json(['message' => '置顶成功'], 201);
@@ -198,13 +216,29 @@ class CommentPinnedController extends Controller
                 'comment' => $comment,
                 'pinned' => $pinned,
             ]);
-            // 系统消息未读数预处理, 事务中只做保存操作
+            // 获取发起置顶申请的用户未读系统通知数量
+            $unreadCount = $comment->user
+                ->unreadNotifications()
+                ->count();
             $userCount = UserCountModel::firstOrNew([
                 'user_id' => $pinned->user_id,
                 'type' => 'user-system',
             ]);
-
-            $userCount->total += 1;
+            $userCount->total = $unreadCount;
+            $userCount->save();
+            
+            // 资讯所有者的资讯评论置顶申请未读数更新
+            $unreadCount = $pinned->newQuery()
+                ->where('channel', 'news:comment')
+                ->where('target_user', $user->id)
+                ->whereNull('expires_at')
+                ->count();
+            $userCount = $userCount->newQuery()
+                ->firstOrNew([
+                    'user_id' => $user->id,
+                    'type' => 'user-news-comment-pinned'
+                ]);
+            $userCount->total = $unreadCount;
             $userCount->save();
 
             return $response->json(null, 204);

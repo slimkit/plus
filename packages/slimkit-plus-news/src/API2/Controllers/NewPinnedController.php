@@ -152,13 +152,20 @@ class NewPinnedController extends Controller
                         //     'comment' => $comment,
                         //     'pinned' => $pinned,
                         // ]);
+                        // 查询资讯用户未审核的资讯评论数量
                         // 增加资讯评论置顶申请未读数
+                        $unreadPinned = $pinned->newQuery()
+                            ->where('target_user', $news->user_id)
+                            ->where('channel', 'news:comment')
+                            ->whereNull('expires_at')
+                            ->count();
+
                         $userCount = UserCountModel::firstOrNew([
                             'type' => 'user-news-comment-pinned',
                             'user_id' => $news->user->id,
                         ]);
 
-                        $userCount->total += 1;
+                        $userCount->total = $unreadPinned;
                         $userCount->save();
                     }
 
