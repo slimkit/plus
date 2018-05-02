@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Image;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -28,6 +29,7 @@ use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Cdn\UrlManager as CdnUrlManager;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
+use Intervention\Image\Commands\OrientateCommand;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Zhiyi\Plus\Http\Requests\API2\StoreUploadFile as StoreUploadFileRequest;
 
@@ -95,13 +97,14 @@ class FilesController extends Controller
     public function store(StoreUploadFileRequest $request, ResponseContract $response, Carbon $dateTime, FileModel $fileModel, FileWithModel $fileWith)
     {
         $fileModel = $this->validateFileInDatabase($fileModel, $file = $request->file('file'), function (UploadedFile $file, string $md5) use ($fileModel, $dateTime): FileModel {
+            // 图片做旋转处理
+            Image::make($file->getRealPath())->orientate()->save($file->getRealPath(), 100);
+            
             list($width, $height) = ($imageInfo = @getimagesize($file->getRealPath())) === false ? [null, null] : $imageInfo;
             $path = $dateTime->format('Y/m/d/Hi');
-
             if (($filename = $file->store($path, config('cdn.generators.filesystem.disk'))) === false) {
-                abort(500, '上传失败');
+                return $response->json(['message' => '上传失败'], 500);
             }
-
             $fileModel->filename = $filename;
             $fileModel->hash = $md5;
             $fileModel->origin_filename = $file->getClientOriginalName();
@@ -112,7 +115,6 @@ class FilesController extends Controller
 
             return $fileModel;
         });
-
         $fileWith = $this->resolveFileWith($fileWith, $request->user(), $fileModel);
 
         return $response->json([
