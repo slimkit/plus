@@ -177,7 +177,7 @@ class CommentPinnedController extends Controller
         $charge->subject = '被拒动态评论置顶';
         $charge->body = sprintf('被拒动态评论《%s》申请，退还申请金额', str_limit($pinned->comment->body ?? 'null', 100, '...'));
         $charge->status = 1;
-        
+
         // 申请内容置顶的用户的未读系统通知
         $userUnreadCount = $pinned->user
             ->unreadNotifications()

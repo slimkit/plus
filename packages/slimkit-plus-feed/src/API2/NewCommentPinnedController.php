@@ -96,7 +96,7 @@ class NewCommentPinnedController extends Controller
             $userCount = $userCount->newQuery()
                 ->firstOrNew([
                     'user_id' => $user->id,
-                    'type' => 'user-feed-comment-pinned'
+                    'type' => 'user-feed-comment-pinned',
                 ]);
             $userCount->total = $userUnreadCount;
             $userCount->save();
@@ -156,7 +156,7 @@ class NewCommentPinnedController extends Controller
                 'pinned' => $pinned,
             ]);
             $userCount->save();
-            
+
             // 更新动态所有者的动态评论置顶审核未读数
             $userUnreadCount = $pinned->newQuery()
                 ->where('target_user', $user->id)
