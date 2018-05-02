@@ -24,7 +24,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
-use Zhiyi\Plus\Modelw\UserCount as UserCountModel;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
@@ -176,13 +176,20 @@ class PinnedController extends Controller
                     'pinned' => $pinned,
                     'call' => $news->user ? function () use ($user, $comment, $news, $pinned) {
                         // $message = sprintf('%s 在你发布的资讯中申请评论置顶', $user->name);
+                        // 获取资讯发布者未处理的评论置顶申请数量
+                        $unreadCount = $pinned->newQuery()
+                            ->where('target_user', $news->user_id)
+                            ->where('channel', 'news:comment')
+                            ->whereNull('expires_at')
+                            ->count();
+
                         // 增加资讯评论申请置顶的未读消息数量
                         $userCount = UserCountModel::firstOrNew([
                             'user_id' => $news->user->id,
                             'type' => 'user-news-comment-pinned',
                         ]);
 
-                        $userCount->total += 1;
+                        $userCount->total = $unreadCount;
                         $userCount->save();
 
                         // $news->user->sendNotifyMessage('news:pinned-comment', $message, [
@@ -225,7 +232,7 @@ class PinnedController extends Controller
             call_user_func($call);
         }
 
-        return $response->json(['message' => '申请成功'])->setStatusCode(201);
+        return $response->json(['message' => '提交成功, 等待审核'])->setStatusCode(201);
     }
 
     /**

@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\UserCount;
 use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
 
 // use Illuminate\Notifications\DatabaseNotification as NotificationModel;
@@ -83,7 +84,7 @@ class UserNotificationController extends Controller
             ->first(['id', 'read_at', 'data', 'created_at']);
 
         if (! $notification) {
-            return $response->json(['message' => ['通知不存在或者已被删除']])->setStatusCode(404);
+            return $response->json(['message' => '通知不存在或者已被删除'])->setStatusCode(404);
         }
 
         $notification->markAsRead();
@@ -108,8 +109,16 @@ class UserNotificationController extends Controller
         ));
 
         $request->user()->unreadNotifications()->whereIn('id', $notifications)->get()->markAsRead();
+        // 清空用户未读系统通知未读数
+        $userCount = UserCount::firstOrNew([
+            'user_id' => $request->user()->id,
+            'type' => 'user-system'
+        ]);
+        
+        $userCount->total -= 1;
+        $userCount->save();
 
-        return $response->json(['message' => ['操作成功']])->setStatusCode(201);
+        return $response->json(['message' => '操作成功'])->setStatusCode(201);
     }
 
     /**
@@ -122,7 +131,14 @@ class UserNotificationController extends Controller
     public function markAllAsRead(Request $request)
     {
         $request->user()->unreadNotifications()->where('read_at', null)->get()->markAsRead();
-
-        return response()->json(['message' => ['操作成功']])->setStatusCode(201);
+        // 清空用户未读系统通知未读数
+        $userCount = UserCount::firstOrNew([
+            'user_id' => $request->user()->id,
+            'type' => 'user-system'
+        ]);
+        
+        $userCount->total = 0;
+        $userCount->save();
+        return response()->json(['message' => '操作成功'])->setStatusCode(201);
     }
 }
