@@ -81,7 +81,7 @@ class PostCommentController
             })
             ->select('comments.*')
             ->orderBy('group_pinneds.amount', 'desc')
-            ->orderBy('group_pinneds.expires_at', 'desc')
+            ->orderBy('group_pinneds.created_at', 'desc')
             ->with('user')
             ->get();
     }

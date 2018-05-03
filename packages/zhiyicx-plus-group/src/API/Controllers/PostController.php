@@ -110,7 +110,7 @@ class PostController
         })
         ->select('group_posts.*')
         ->orderBy('group_pinneds.amount', 'desc')
-        ->orderBy('group_pinneds.expires_at', 'desc')
+        ->orderBy('group_pinneds.created_at', 'desc')
         ->with(['user', 'images'])
         ->get();
         
