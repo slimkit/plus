@@ -79,12 +79,14 @@ class NewRewardController extends Controller
         ]);
 
         // 增加被打赏未读数
+        $userUnreadCount = $target->unreadNotifications()
+            ->count();
         $userCount = UserCountModel::firstOrNew([
             'type' => 'user-system',
             'user_id' => $target->id,
         ]);
 
-        $userCount->total += 1;
+        $userCount->total = $userUnreadCount;
         $userCount->save();
 
         if ($status === true) {

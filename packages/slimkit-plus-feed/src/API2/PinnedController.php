@@ -69,7 +69,7 @@ class PinnedController extends Controller
         } elseif ($feed->pinnedComments()->newPivotStatementForId($comment->id)->where(function ($query) use ($datetime) {
             return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
         })->first()) {
-            return $response->json(['message' => '已经申请过'])->setStatusCode(422);
+            return $response->json(['message' => '已申请过置顶, 请等待审核'])->setStatusCode(422);
         }
 
         $pinned = new FeedPinnedModel();
@@ -97,12 +97,18 @@ class PinnedController extends Controller
                     'call' => $feed->user ? function () use ($user, $comment, $feed, $pinned) {
                         // $message = sprintf('%s 在你发布的动态中申请评论置顶', $user->name);
                         // 增加动态评论置顶申请未读数
+                        $userUnReadCount = $pinned->newQuery()
+                            ->where('target_user', $feed->user_id)
+                            ->where('channel', 'comment')
+                            ->whereNull('expires_at')
+                            ->count();
+
                         $userCount = UserCountModel::firstOrNew([
                             'user_id' => $feed->user->id,
                             'type' => 'user-feed-comment-pinned',
                         ]);
 
-                        $userCount->total += 1;
+                        $userCount->total = $userUnReadCount;
                         $userCount->save();
 
                         // $feed->user->sendNotifyMessage('feed:pinned-comment', $message, [
@@ -135,7 +141,7 @@ class PinnedController extends Controller
         } elseif ($feed->pinned()->where('user_id', $user->id)->where(function ($query) use ($datetime) {
             return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
         })->first()) {
-            return $response->json(['message' => '已经申请过'])->setStatusCode(422);
+            return $response->json(['message' => '已经申请过动态置顶, 请等待审核'])->setStatusCode(422);
         }
 
         $pinned = new FeedPinnedModel();

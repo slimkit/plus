@@ -144,10 +144,10 @@ class CommentPinnedController extends Controller
                 'user_id' => $user->id,
                 'type' => 'feed-comment-pinned',
             ]);
-            $userCount->total = $userUnreadCount;
+            $userCount->total = $userUnreadCount + 1;
             $userCount->save();
 
-            return $response->json(['message' => ['置顶成功']], 201);
+            return $response->json(['message' => '置顶成功'], 201);
         });
     }
 

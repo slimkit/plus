@@ -72,12 +72,14 @@ class RewardController extends Controller
         }
 
         // 系统消息未读数预处理, 事务中只做保存操作
+        $userUnreadCount = $targetUser->unreadNotifications()
+            ->count();
         $userCount = UserCountModel::firstOrNew([
             'user_id' => $targetUser->id,
             'type' => 'user-system',
         ]);
 
-        $userCount->total += 1;
+        $userCount->total = $userUnreadCount + 1;
         $user->getConnection()->transaction(function () use ($user, $news, $charge, $targetUser, $amount, $userCount) {
             // 扣除操作用户余额
             $user->wallet()->decrement('balance', $amount);
