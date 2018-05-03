@@ -81,6 +81,8 @@ class FeedCommentController extends Controller
                 return $query->withTrashed();
             }, 'reply'])
             ->where('expires_at', '>', $dateTime)
+            ->orderBy('amount', 'desc')
+            ->orderBy('created_at', 'desc')
             ->get();
     }
 
