@@ -22,6 +22,7 @@ use DB;
 use Lvht\GeoHash;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\UserCount;
 use Zhiyi\PlusGroup\Models\Group as GroupModel;
 use Zhiyi\PlusGroup\API\Requests\CreateGroupRequest;
 use Zhiyi\PlusGroup\API\Requests\UpdateGroupRequest;
@@ -318,31 +319,51 @@ class GroupsController
                 $log->status = 0;
                 $log->save();
 
+
                 $message = sprintf('%s申请加入圈子%s', $user->name, $group->name);
             } else {
                 $group->increment('users_count');
 
                 $message = sprintf('%s加入了圈子%s', $user->name, $group->name);
             }
-
             $group->members()
                 ->whereIn('role', ['administrator', 'founder'])
                 ->where('audit', 1)
                 ->get()
-                ->map(function ($member) use ($message, $group, $user) {
+                ->map(function ($member) use ($group, $user, $message) {
+                    // 旧版消息提醒
                     $member->user->unreadCount()->firstOrCreate([])->increment('unread_group_join_count', 1);
-
                     $member->user->sendNotifyMessage(
                         'group:join',
                         $message,
                         ['group' => $group, 'user' => $user]
                     );
+
+                    // 新消息提醒, 非免费圈子需要给管理员发送未读数
+                    if (in_array($group->mode, ['paid', 'private'])) {
+                        $groups = $member->newQuery()
+                            ->whereIn('role', ['administrator', 'founder'])
+                            ->where('audit', 1)
+                            ->where('user_id', $member->user_id)
+                            ->get()
+                            ->pluck('group_id');
+                        $auditings = $member->newQuery()
+                            ->whereIn('group_id', $groups)
+                            ->where('audit', 0)
+                            ->count();
+                        $userCount = UserCount::firstOrNew([
+                            'type' => 'user-group-join-pinned',
+                            'user_id' => $member->user_id
+                        ]);
+                        // 解决事务提交前, 加圈申请未写入数据库导致数据量少1条的问题
+                        $userCount->total = $auditings + 1;
+                        $userCount->save();
+                    }
                 });
 
             DB::commit();
-
             return response()->json([
-                'message' => in_array($group->mode, ['paid', 'private']) ? '申请成功，等待管理员审核' : '加圈成功',
+                'message' => in_array($group->mode, ['paid', 'private']) ? '申请已提交，等待管理员审核' : '加圈成功',
             ], 201);
         } catch (\Exception $e) {
             DB::rollback();
@@ -819,13 +840,33 @@ class GroupsController
                 ->where('audit', 1)
                 ->get()
                 ->map(function ($member) use ($message, $group, $user) {
+                    // 旧版发送系统通知, 暂不删除
                     $member->user->unreadCount()->firstOrCreate([])->increment('unread_group_join_count', 1);
-
                     $member->user->sendNotifyMessage(
                         'group:join',
                         $message,
                         ['group' => $group, 'user' => $user]
                     );
+                    // 新消息提醒, 非免费圈子需要给管理员发送未读数
+                    if (in_array($group->mode, ['paid', 'private'])) {
+                        $groups = $member->newQuery()
+                            ->whereIn('role', ['administrator', 'founder'])
+                            ->where('audit', 1)
+                            ->where('user_id', $member->user_id)
+                            ->get()
+                            ->pluck('group_id');
+                        $auditings = $member->newQuery()
+                            ->whereIn('group_id', $groups)
+                            ->where('audit', 0)
+                            ->count();
+                        $userCount = UserCount::firstOrNew([
+                            'type' => 'user-group-join-pinned',
+                            'user_id' => $member->user_id
+                        ]);
+                        // 解决事务提交前, 加圈申请未写入数据库导致数据量少1条的问题
+                        $userCount->total = $auditings + 1;
+                        $userCount->save();
+                    }
                 });
 
             DB::commit();
