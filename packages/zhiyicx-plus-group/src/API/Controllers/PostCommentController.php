@@ -71,10 +71,19 @@ class PostCommentController
     public function pinneds(Carbon $datetime, GroupPostModel $post)
     {
         return $post->comments()->whereExists(function ($query) use ($post, $datetime) {
-            return $query->from('group_pinneds')->whereRaw('group_pinneds.target = comments.id')
-                ->where('group_pinneds.raw', $post->id)
-                ->where('expires_at', '>', $datetime);
-        })->with('user')->get();
+                return $query->from('group_pinneds')->whereRaw('group_pinneds.target = comments.id')
+                    ->where('group_pinneds.raw', $post->id)
+                    ->where('expires_at', '>', $datetime);
+        })
+            ->join('group_pinneds', function ($join) use ($datetime) {
+                return $join->on('group_pinneds.target', '=', 'comments.id')
+                    ->where('group_pinneds.raw', '>', 0);
+            })
+            ->select('comments.*')
+            ->orderBy('group_pinneds.amount', 'desc')
+            ->orderBy('group_pinneds.expires_at', 'desc')
+            ->with('user')
+            ->get();
     }
 
     /**

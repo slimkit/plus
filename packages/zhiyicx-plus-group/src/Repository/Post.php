@@ -125,12 +125,18 @@ class Post
     public function previewComments()
     {
         $comments = collect([]);
-
         $pinnedComments = $this->model->comments()->whereExists(function ($query) {
             return $query->from('group_pinneds')->whereRaw('group_pinneds.target = comments.id')
                 ->where('channel', 'comment')
                 ->where('expires_at', '>', $this->datetime);
         })
+        ->join('group_pinneds', function ($join) {
+                return $join->on('group_pinneds.target', '=', 'comments.id')
+                    ->where('group_pinneds.raw', '>', 0);
+        })
+        ->select('comments.*')
+        ->orderBy('group_pinneds.amount', 'desc')
+        ->orderBy('group_pinneds.expires_at', 'desc')
         ->with(['user', 'reply'])
         ->get();
 

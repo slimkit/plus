@@ -104,9 +104,16 @@ class PostController
         $pinneds = $group->posts()->whereHas('pinned', function ($query) use ($datetime) {
             return $query->where('expires_at', '>', $datetime);
         })
+        ->join('group_pinneds', function ($join) use ($datetime) {
+            return $join->on('group_pinneds.target', '=', 'group_posts.id')
+                ->where('group_pinneds.raw', 0);
+        })
+        ->select('group_posts.*')
+        ->orderBy('group_pinneds.amount', 'desc')
+        ->orderBy('group_pinneds.expires_at', 'desc')
         ->with(['user', 'images'])
         ->get();
-
+        
         return $pinneds->map(function ($post) use ($user, $repository) {
             $repository->formatCommonList($user, $post);
 
