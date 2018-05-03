@@ -163,7 +163,7 @@ class NewPinnedController extends Controller
             'amount' => [
                 'required',
                 'integer',
-                'min:1',
+                'min:0',
                 'max:'.$currency->sum,
             ],
             'day' => [
