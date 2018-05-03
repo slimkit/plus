@@ -247,19 +247,19 @@ class GroupMemberController
         $status = (int) $request->input('status');
 
         if ($group->id !== $member->group_id) {
-            return response()->json(['message' => ['圈子和成员不匹配']], 403);
+            return response()->json(['message' => '圈子和成员不匹配'], 403);
         }
 
         if (! in_array($status, [1, 2])) {
-            return response()->json(['message' => ['参数错误']], 422);
+            return response()->json(['message' => '参数错误'], 422);
         }
 
         if (! $member->canBeSet($user)) {
-            return response()->json(['message' => ['权限不足']], 403);
+            return response()->json(['message' => '权限不足'], 403);
         }
 
         if (in_array($member->audit, [1, 2])) {
-            return response()->json(['message' => ['该成员已审核']], 403);
+            return response()->json(['message' => '该成员已审核'], 403);
         }
 
         DB::beginTransaction();
@@ -320,13 +320,49 @@ class GroupMemberController
                         ['group' => $group]
                     );
                 }
-                // 1.8启用, 新版未读消息提醒
+                // 1.8启用, 新版未读消息提醒「被审核者的未读系统通知更新」
+                $userUnReadCount = $member->user
+                    ->unreadNotifications()
+                    ->count();
                 $userCount = UserCountModel::firstOrNew([
                     'type' => 'user-system',
                     'user_id' => $member->user_id
                 ]);
-                $userCount->total += 1;
+                $userCount->total = $userUnReadCount;
                 $userCount->save();
+                // 1.8启用, 新版未读消息提醒, 「圈主/管理员未操作的加圈申请
+                // 新版系统通知
+                $group->members()
+                    ->whereIn('role', ['administrator', 'founder'])
+                    ->where('audit', 1)
+                    ->get()
+                    ->map(function ($member) use ($message, $group, $user) {
+                        // 查询当前管理员/圈主管理的圈子
+                        $groups = GroupMemberModel::whereIn('role', ['founder', 'administrator'])
+                            ->where('user_id', $member->user_id)
+                            ->where('audit', 1)
+                            ->get()
+                            ->pluck('group_id');
+                        // 查看管理的圈子的待审核入圈用户数量
+                        $userUnReadCount = GroupMemberModel::where('role', 'member')
+                            ->where('audit', 0)
+                            ->whereIn('group_id', $groups)
+                            ->count();
+                        // 设置未读数
+                        $userCount = UserCount::firstOrNew([
+                            'user_id' => $member->user_id,
+                            'type' => 'user-group-join-pinned'
+                        ]);
+                        $userCount->total = $userUnReadCount;
+                        $userCount->save();
+                        // 旧版消息提醒
+                        $member->user->unreadCount()->firstOrCreate([])->increment('unread_group_join_count', 1);
+                        $member->user->sendNotifyMessage(
+                            'group:join',
+                            $message,
+                            ['group' => $group, 'user' => $user]
+                        );
+                    });
             }
 
             if ($status === 1) {
@@ -500,34 +536,20 @@ class GroupMemberController
                     $income->user_id = $member->user_id;
 
                     $group->incomes()->save($income);
-                    // 发送通知
-                    $message = sprintf('您申请加入的圈子%s已被审核通过', $group->name);
-                    $member->user->sendNotifyMessage(
-                        'group:join:accept',
-                        $message,
-                        ['group' => $group]
-                    );
                 } else {
                     $process = new UserProcess();
                     $process->reject($group->founder->user_id, $group->money, $member->user_id, '用户加圈，审核拒绝', sprintf('用户%s申请加入《%s》圈子审核拒绝,用户退款', $member->user->name, $group->name));
-                    // 发送通知
-                    $message = sprintf('您申请加入的圈子%s已被管理员拒绝', $group->name);
-                    $member->user->sendNotifyMessage(
-                        'group:join:reject',
-                        $message,
-                        ['group' => $group]
-                    );
                 }
-                // 1.8启用, 新版未读消息提醒
-                $userCount = UserCountModel::firstOrNew([
-                    'type' => 'user-system',
-                    'user_id' => $member->user_id
-                ]);
-                $userCount->total += 1;
-                $userCount->save();
             }
 
             if ($status === 1) {
+                // 发送通知
+                $message = sprintf('您申请加入的圈子%s已被审核通过', $group->name);
+                $member->user->sendNotifyMessage(
+                    'group:join:accept',
+                    $message,
+                    ['group' => $group]
+                );
                 // 增加成员数
                 $group->increment('users_count');
 
@@ -535,6 +557,13 @@ class GroupMemberController
                 $member->audit = $status;
                 $member->save();
             } else {
+                // 发送通知
+                $message = sprintf('您申请加入的圈子%s已被管理员拒绝', $group->name);
+                $member->user->sendNotifyMessage(
+                    'group:join:reject',
+                    $message,
+                    ['group' => $group]
+                );
                 // 删除待审成员
                 $member->delete();
             }
@@ -548,6 +577,41 @@ class GroupMemberController
             }
 
             DB::commit();
+            // 需要审核的圈子, 更新加圈审核的未读数
+            $group->members()
+                ->whereIn('role', ['administrator', 'founder'])
+                ->where('audit', 1)
+                ->get()
+                ->map(function ($member) use ($group, $user) {
+                    // 查询当前管理员/圈主管理的圈子
+                    $groups = GroupMemberModel::whereIn('role', ['founder', 'administrator'])
+                        ->where('user_id', $member->user_id)
+                        ->where('audit', 1)
+                        ->get()
+                        ->pluck('group_id');
+                    // 查看管理的圈子的待审核入圈用户数量
+                    $userUnReadCount = GroupMemberModel::where('role', 'member')
+                        ->where('audit', 0)
+                        ->whereIn('group_id', $groups)
+                        ->count();
+                    // 设置未读数
+                    $userCount = UserCountModel::firstOrNew([
+                        'user_id' => $member->user_id,
+                        'type' => 'user-group-join-pinned'
+                    ]);
+                    $userCount->total = $userUnReadCount;
+                    $userCount->save();
+                });
+            // 更新用户未读系统通知
+            $userUnReadCount = $member->user
+                ->unreadNotifications()
+                ->count();
+            $userCount = UserCountModel::firstOrNew([
+                'type' => 'user-system',
+                'user_id' => $member->user_id
+            ]);
+            $userCount->total = $userUnReadCount;
+            $userCount->save();
 
             return response()->json(['message' => ['审核成功']], 201);
         } catch (\Exception $exception) {

@@ -74,4 +74,16 @@ class GroupMember extends Model
 
         return boolval($count);
     }
+
+    /**
+     * 通过成员所在的圈子,获取相关的帖子
+     * @Author   Wayne
+     * @DateTime 2018-05-03
+     * @Email    qiaobin@zhiyicx.com
+     * @return   [type]              [description]
+     */
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'group_id', 'group_id');
+    }
 }
