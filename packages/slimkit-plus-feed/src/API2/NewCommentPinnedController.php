@@ -55,13 +55,13 @@ class NewCommentPinnedController extends Controller
         $user = $request->user();
 
         if ($user->id !== $feed->user_id) {
-            return $response->json(['message' => ['你没有权限操作']], 403);
+            return $response->json(['message' => '你没有权限操作'], 403);
         } elseif ($pinned->expires_at) {
-            return $response->json(['message' => ['已操作，请勿重复发起']], 422);
+            return $response->json(['message' => '已操作，请勿重复发起'], 422);
         }
 
         if ($pinned->channel !== 'comment') {
-            return $response->json(['message' => ['参数错误']], 422);
+            return $response->json(['message' => '参数错误'], 422);
         }
 
         $pinned->expires_at = $dateTime->addDay($pinned->day);

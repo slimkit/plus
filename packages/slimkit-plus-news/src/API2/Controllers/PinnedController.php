@@ -81,7 +81,7 @@ class PinnedController extends Controller
             ->where('state', 0)
             ->count()
         ) {
-            return response()->json(['message' => '已经申请过,请等待审核'], 422);
+            return response()->json(['message' => '已经申请过置顶,请等待审核'], 422);
         }
 
         $pinned = new NewsPinnedModel();

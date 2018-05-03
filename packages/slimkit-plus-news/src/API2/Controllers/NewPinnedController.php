@@ -62,7 +62,7 @@ class NewPinnedController extends Controller
             ->where('state', 0)
             ->count()
         ) {
-            return response()->json(['message' => '已经申请过,请等待审核'], 422);
+            return response()->json(['message' => '已申请过置顶,请等待审核'], 422);
         }
 
         $pinned = new NewsPinnedModel();
@@ -116,7 +116,7 @@ class NewPinnedController extends Controller
             ->where('expires_at', '>', $dateTime)
             ->count()
         ) {
-            return response()->json(['message' => '已经申请过'], 422);
+            return response()->json(['message' => '已申请过置顶,请等待审核'], 422);
         }
 
         if ($news

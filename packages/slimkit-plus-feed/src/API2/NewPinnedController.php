@@ -53,7 +53,7 @@ class NewPinnedController extends Controller
         } elseif ($feed->pinnedComments()->newPivotStatementForId($comment->id)->where(function ($query) use ($datetime) {
             return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
         })->first()) {
-            return response()->json(['message' => '已经申请过'])->setStatusCode(422);
+            return response()->json(['message' => '已申请过置顶, 请等待审核'])->setStatusCode(422);
         }
 
         $pinned = new FeedPinnedModel();
@@ -80,19 +80,24 @@ class NewPinnedController extends Controller
                         //     'pinned' => $pinned,
                         // ]);
                         // 增加动态评论置顶申请未读数
+                        $userUnReadCount = $pinned->newQuery()
+                            ->where('target_user', $feed->user_id)
+                            ->where('channel', 'comment')
+                            ->whereNull('expires_at')
+                            ->count();
                         $userCount = UserCountModel::firstOrNew([
                             'user_id' => $feed->user->id,
                             'type' => 'user-feed-comment-pinned',
                         ]);
 
-                        $userCount->total += 1;
+                        $userCount->total = $userUnReadCount;
                         $userCount->save();
                     }
 
-                    return response()->json(['message' => ['申请成功']], 201);
+                    return response()->json(['message' => '申请成功'], 201);
                 }
 
-                return response()->json(['message' => ['操作失败']], 500);
+                return response()->json(['message' => '操作失败'], 500);
             },
         ]);
     }
@@ -132,10 +137,10 @@ class NewPinnedController extends Controller
                 if ($order) {
                     $pinned->save();
 
-                    return response()->json(['message' => ['申请成功']], 201);
+                    return response()->json(['message' => '提交成功,等待审核'], 201);
                 }
 
-                return response()->json(['message' => ['操作失败']], 500);
+                return response()->json(['message' => '操作失败'], 500);
             },
         ]);
     }
