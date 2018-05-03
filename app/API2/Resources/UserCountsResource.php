@@ -44,6 +44,9 @@ class UserCountsResource extends JsonResource
                 'news-comment-pinned' => $this['user-news-comment-pinned'] ?? 0,
                 'feed-comment-pinned' => $this['user-feed-comment-pinned'] ?? 0,
                 'mutual' => $this['user-mutual'] ?? 0,
+                'group-join-pinned' => $this['user-group-join-pinned'] ?? 0,
+                'post-comment-pinned' => $this['user-post-comment-pinned'] ?? 0,
+                'post-pinned' => $this['user-post-pinned'] ?? 0,
             ],
         ];
     }
