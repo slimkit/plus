@@ -70,12 +70,7 @@ class NewPostRewardController
 
         // 记录订单
         $money = $amount / self::RATIO;
-        // 1.8启用, 新版未读消息提醒
-        $userCount = UserCountModel::firstOrNew([
-            'type' => 'user-system',
-            'user_id' => $target->id
-        ]);
-        $userCount->total += 1;
+    
         $status = $manager->driver(Order::TARGET_TYPE_REWARD)->reward([
             'reward_resource' => $post,
             'order' => [
@@ -93,7 +88,16 @@ class NewPostRewardController
         ]);
 
         if ($status === true) {
+            // 1.8启用, 新版未读消息提醒
+            $userUnreadCount = $target->unreadNotifications()
+                ->count();
+            $userCount = UserCountModel::firstOrNew([
+                'type' => 'user-system',
+                'user_id' => $target->id
+            ]);
+            $userCount->total = $userUnreadCount + 1;
             $userCount->save();
+            
             return response()->json(['message' => '打赏成功'], 201);
         } else {
             return response()->json(['message' => '打赏失败'], 500);
