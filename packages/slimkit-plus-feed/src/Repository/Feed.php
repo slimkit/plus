@@ -183,7 +183,13 @@ class Feed
     {
         $comments = collect([]);
 
-        $pinnedComments = $this->model->pinnedComments()->with('user')->where('expires_at', '>', $this->dateTime)->get();
+        $pinnedComments = $this->model
+            ->pinnedComments()
+            ->with('user')
+            ->where('expires_at', '>', $this->dateTime)
+            ->orderBy('amount', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         if ($pinnedComments->count() < 5) {
             $comments = $this->model->comments()

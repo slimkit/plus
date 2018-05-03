@@ -84,7 +84,8 @@ class FeedController extends Controller
                     return $query->withTrashed();
                 },
             ])
-            ->orderBy('feeds.id', 'desc')
+            ->orderBy('feed_pinneds.amount', 'desc')
+            ->orderBy('feed_pinneds.created_at', 'desc')
             ->get();
 
         $user = $request->user('api')->id ?? 0;
