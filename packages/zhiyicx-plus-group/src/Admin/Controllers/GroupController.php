@@ -21,6 +21,7 @@ namespace Zhiyi\PlusGroup\Admin\Controllers;
 use DB;
 use Lvht\GeoHash;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\UserCount;
 use Zhiyi\PlusGroup\Models\Group as  GroupModel;
 use Zhiyi\PlusGroup\Models\GroupMember as MemberModel;
 use Zhiyi\PlusGroup\Models\GroupRecommend as RecommendModel;
@@ -308,6 +309,15 @@ class GroupController
             'user' => $group->user,
             'group' => $group,
         ]);
+        // 新版未读消息
+        $userUnreadCount = $group->user->unreadNotifications()
+            ->count();
+        $userCount = UserCount::firstOrNew([
+            'user_id' => $group->user->id,
+            'type' => 'user-system'
+        ]);
+        $userCount->total = $userUnreadCount;
+        $userCount->save();
 
         return response()->json(['message' => '操作成功'], 201);
     }
