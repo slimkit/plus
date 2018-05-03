@@ -18,6 +18,7 @@
 
 namespace Zhiyi\PlusGroup\API\Controllers;
 
+use DB;
 use Carbon\Carbon;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
@@ -27,6 +28,7 @@ use Zhiyi\PlusGroup\Models\Post as PostModel;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\PlusGroup\Models\Pinned as PinnedModel;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
+use Zhiyi\PlusGroup\Models\GroupMember as MemberModel;
 use Zhiyi\PlusGroup\Models\GroupIncome as GroupIncomeModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
@@ -80,15 +82,35 @@ class NewPinnedController extends Controller
         $pinnedModel->amount = $amount;
         $pinnedModel->day = $day;
         $pinnedModel->status = 0;
+        $pinneds = MemberModel::where('user_id', $target_user->id)
+            ->where('role', 'founder')
+            ->with(['posts' => function ($query) {
+                return $query->whereExists(function ($query) {
+                    $query->select(DB::raw('id'))
+                      ->from('group_pinneds')
+                      ->whereRaw('group_pinneds.target = group_posts.id')
+                      ->whereRaw('group_pinneds.raw = 0')
+                      ->whereNull('expires_at');
+                });
+            }])
+            ->get()
+            ->pluck('posts');
+        $arrays = [];
+        $pinneds->map(function ($pinned) use (&$arrays) {
+            $pinned = $pinned->toArray();
+            if ($pinned) {
+                $arrays = array_merge($arrays, $pinned);
+            }
+        });
         // 1.8启用, 新版未读消息提醒
         $userCount = UserCountModel::firstOrNew([
             'type' => 'user-post-pinned',
             'user_id' => $target_user->id
         ]);
 
-        $userCount->total += 1;
+        $userCount->total = count($arrays) + 1;
 
-        $post->getConnection()->transaction(function () use ($user, $pinnedModel, $target_user, $amount, $post) {
+        $post->getConnection()->transaction(function () use ($user, $pinnedModel, $target_user, $amount, $post, $userCount) {
             $process = new UserProcess();
             $process->prepayment($user->id, $amount, $target_user->id, '申请帖子置顶', sprintf('申请置顶帖子《%s》', $post->title));
 
@@ -96,16 +118,16 @@ class NewPinnedController extends Controller
             $pinnedModel->save();
 
             // 给圈主发送通知
-            $target_user->sendNotifyMessage('group:pinned-post', sprintf('%s申请帖子《%s》置顶', $user->name, $post->title), [
-                'post' => $post,
-                'user' => $user,
-                'pinned' => $pinnedModel,
-            ]);
+            // $target_user->sendNotifyMessage('group:pinned-post', sprintf('%s申请帖子《%s》置顶', $user->name, $post->title), [
+            //     'post' => $post,
+            //     'user' => $user,
+            //     'pinned' => $pinnedModel,
+            // ]);
 
             $userCount->save();
         });
 
-        return response()->json(['message' => ['申请成功']], 201);
+        return response()->json(['message' => '申请成功'], 201);
     }
 
     /**
@@ -123,7 +145,7 @@ class NewPinnedController extends Controller
         $user = $request->user();
         $pinned = $pinnedModel->where('channel', 'post')->where('target', $post->id)->whereNull('expires_at')->first();
         if ($user->id != $post->group->founder->user_id || ! $pinned) {
-            return response()->json(['message' => ['没有权限操作']], 403);
+            return response()->json(['message' => '没有权限操作'], 403);
         }
 
         $target_user = $post->user;
@@ -138,22 +160,49 @@ class NewPinnedController extends Controller
         $income->user_id = $target_user->id;
 
         // 1.8启用, 新版未读消息提醒
+        $userUnreadCount = $target_user->unreadNotifications()
+            ->count();
         $userCount = UserCountModel::firstOrNew([
             'type' => 'user-system',
             'user_id' => $target_user->id
         ]);
-        $userCount->total += 1;
+        $userCount->total = $userUnreadCount + 1;
+        // 圈主未操作的帖子置顶审核更新
+        $pinneds = MemberModel::where('user_id', $target_user->id)
+            ->where('role', 'founder')
+            ->with(['posts' => function ($query) {
+                return $query->whereExists(function ($query) {
+                    $query->select(DB::raw('id'))
+                      ->from('group_pinneds')
+                      ->whereRaw('group_pinneds.target = group_posts.id')
+                      ->whereRaw('group_pinneds.raw = 0')
+                      ->whereNull('expires_at');
+                });
+            }])
+            ->get()
+            ->pluck('posts');
+        $arrays = [];
+        $pinneds->map(function ($pinned) use (&$arrays) {
+            $pinned = $pinned->toArray();
+            if ($pinned) {
+                $arrays = array_merge($arrays, $pinned);
+            }
+        });
+        // 1.8启用, 新版未读消息提醒
+        $founderCount = UserCountModel::firstOrNew([
+            'type' => 'user-post-pinned',
+            'user_id' => $target_user->id
+        ]);
 
-        $post->getConnection()->transaction(function () use ($pinned, $user, $target_user, $post, $income) {
+        $founderCount->total = count($arrays) ? count($arrays) - 1 : 0;
+
+        $post->getConnection()->transaction(function () use ($pinned, $user, $target_user, $post, $income, $userCount, $founderCount) {
             $process = new UserProcess();
             $process->receivables($user->id, $pinned->amount, $target_user->id, '帖子置顶收入', sprintf('接受置顶帖子《%s》的收入', $post->title));
-
             // 保存置顶
             $pinned->save();
-
             // 保存圈子收入流水
             $income->save();
-
             // 给帖子作者(申请者)发送通知
             $target_user->sendNotifyMessage('group:pinned-post:accept', sprintf('申请帖子《%s》置顶已通过', $post->title), [
                 'post' => $post,
@@ -162,6 +211,7 @@ class NewPinnedController extends Controller
             ]);
 
             $userCount->save();
+            $founderCount->save();
         });
 
         return response()->json(['message' => '审核成功'], 201);
@@ -182,7 +232,7 @@ class NewPinnedController extends Controller
         $user = $request->user();
         $pinned = $pinnedModel->where('channel', 'post')->where('target', $post->id)->whereNull('expires_at')->first();
         if ($user->id != $post->group->founder->user_id || ! $pinned) {
-            return response()->json(['message' => ['没有权限操作']], 403);
+            return response()->json(['message' => '没有权限操作'], 403);
         }
 
         $target_user = $post->user;
@@ -190,19 +240,47 @@ class NewPinnedController extends Controller
         $pinned->expires_at = $datetime;
         $pinned->status = 2;
         // 1.8启用, 新版未读消息提醒
+        $userUnreadCount = $target_user->unreadNotifications()
+            ->count();
         $userCount = UserCountModel::firstOrNew([
             'type' => 'user-system',
             'user_id' => $target_user->id
         ]);
-        $userCount->total += 1;
+        $userCount->total = $userUnreadCount + 1;
+        // 圈主未操作的帖子置顶审核更新
+        $pinneds = MemberModel::where('user_id', $target_user->id)
+            ->where('role', 'founder')
+            ->with(['posts' => function ($query) {
+                return $query->whereExists(function ($query) {
+                    $query->select(DB::raw('id'))
+                      ->from('group_pinneds')
+                      ->whereRaw('group_pinneds.target = group_posts.id')
+                      ->whereRaw('group_pinneds.raw = 0')
+                      ->whereNull('expires_at');
+                });
+            }])
+            ->get()
+            ->pluck('posts');
+        $arrays = [];
+        $pinneds->map(function ($pinned) use (&$arrays) {
+            $pinned = $pinned->toArray();
+            if ($pinned) {
+                $arrays = array_merge($arrays, $pinned);
+            }
+        });
+        // 1.8启用, 新版未读消息提醒
+        $founderCount = UserCountModel::firstOrNew([
+            'type' => 'user-post-pinned',
+            'user_id' => $target_user->id
+        ]);
 
-        $post->getConnection()->transaction(function () use ($pinned, $user, $target_user, $post) {
+        $founderCount->total = count($arrays) ? count($arrays) - 1 : 0;
+
+        $post->getConnection()->transaction(function () use ($pinned, $user, $target_user, $post, $userCount, $founderCount) {
             $process = new UserProcess();
             $process->reject($user->id, $pinned->amount, $target_user->id, '退还帖子置顶申请金额', sprintf('退还申请置顶帖子《%s》的金额', $post->title));
-
             // 记录置顶拒绝操作
             $pinned->save();
-
             // 给帖子作者(申请者)发送通知
             $target_user->sendNotifyMessage('group:pinned-post:reject', sprintf('申请帖子《%s》置顶已被拒绝', $post->title), [
                 'post' => $post,
@@ -210,9 +288,10 @@ class NewPinnedController extends Controller
                 'pinned' => $pinned,
             ]);
             $userCount->save();
+            $founderCount->save();
         });
 
-        return response()->json(['message' => ['审核成功']], 201);
+        return response()->json(['message' => '审核成功'], 201);
     }
 
     /**
@@ -270,13 +349,21 @@ class NewPinnedController extends Controller
         $pinnedModel->day = $day;
         $pinnedModel->status = 0;
         // 1.8启用, 新版未读消息提醒
-        $userCount = UserCountModel::firstOrNew([
+        // 帖子作者置顶审核更新
+        $UserUnreadCount = pinnedModel::where('target_user', $target_user->id)
+            ->where('channel', 'comment')
+            ->whereNull('expires_at')
+            ->count();
+        
+        // 1.8启用, 新版未读消息提醒
+        $founderCount = UserCountModel::firstOrNew([
             'type' => 'user-post-comment-pinned',
             'user_id' => $target_user->id
         ]);
-        $userCount->total += 1;
 
-        $post->getConnection()->transaction(function () use ($user, $pinnedModel, $target_user, $amount, $post, $comment, $userCount) {
+        $founderCount->total = $UserUnreadCount + 1;
+
+        $post->getConnection()->transaction(function () use ($user, $pinnedModel, $target_user, $amount, $post, $comment, $founderCount) {
 
             $process = new UserProcess();
             $process->prepayment($user->id, $amount, $target_user->id, '评论申请置顶', sprintf('在帖子《%s》申请评论置顶', $post->title));
@@ -291,7 +378,7 @@ class NewPinnedController extends Controller
                 'user' => $user,
                 'pinned' => $pinnedModel,
             ]);
-            $userCount->save();
+            $founderCount->save();
         });
 
         return response()->json(['message' => ['申请成功']], 201);
@@ -322,13 +409,28 @@ class NewPinnedController extends Controller
         $pinned->expires_at = $datetime->addDay($pinned->day);
         $pinned->status = 1;
         // 1.8启用, 新版未读消息提醒
+        $userUnreadCount = $target_user->unreadNotifications()
+            ->count();
         $userCount = UserCountModel::firstOrNew([
             'type' => 'user-system',
             'user_id' => $target_user->id
         ]);
-        $userCount->total += 1;
+        $userCount->total = $userUnreadCount + 1;
+        // 帖子作者置顶审核更新
+        $userUnreadCount = pinnedModel::where('target_user', $user->id)
+            ->where('channel', 'comment')
+            ->whereNull('expires_at')
+            ->count();
+        
+        // 1.8启用, 新版未读消息提醒
+        $founderCount = UserCountModel::firstOrNew([
+            'type' => 'user-post-comment-pinned',
+            'user_id' => $user->id
+        ]);
 
-        $post->getConnection()->transaction(function () use ($pinned, $user, $target_user, $comment, $post, $userCount) {
+        $founderCount->total = $userUnreadCount ? $userUnreadCount - 1 : 0;
+
+        $post->getConnection()->transaction(function () use ($pinned, $user, $target_user, $comment, $post, $founderCount, $userCount) {
             $process = new UserProcess();
             $process->receivables($user->id, $pinned->amount, $target_user->id, '帖子内置顶评论收入', sprintf('帖子《%s》下置顶评论收入的金额', $post->title));
 
@@ -342,6 +444,7 @@ class NewPinnedController extends Controller
                 'user' => $user,
                 'pinned' => $pinned,
             ]);
+            $founderCount->save();
             $userCount->save();
         });
 
@@ -373,13 +476,29 @@ class NewPinnedController extends Controller
         $pinned->expires_at = $datetime;
         $pinned->status = 2;
         // 1.8启用, 新版未读消息提醒
+        $userUnreadCount = $target_user->unreadNotifications()
+            ->count();
         $userCount = UserCountModel::firstOrNew([
             'type' => 'user-system',
             'user_id' => $target_user->id
         ]);
-        $userCount->total += 1;
+        $userCount->total = $userUnreadCount + 1;
 
-        $post->getConnection()->transaction(function () use ($pinned, $user, $target_user, $comment, $post, $userCount) {
+        // 帖子作者置顶审核更新
+        $userUnreadCount = pinnedModel::where('target_user', $user->id)
+            ->where('channel', 'comment')
+            ->whereNull('expires_at')
+            ->count();
+        
+        // 1.8启用, 新版未读消息提醒
+        $founderCount = UserCountModel::firstOrNew([
+            'type' => 'user-post-comment-pinned',
+            'user_id' => $user->id
+        ]);
+
+        $founderCount->total = $userUnreadCount ? $userUnreadCount - 1 : 0;
+
+        $post->getConnection()->transaction(function () use ($pinned, $user, $target_user, $comment, $post, $founderCount, $userCount) {
             $process = new UserProcess();
             $process->reject($user->id, $pinned->amount, $target_user->id, '退还帖子内置顶评论申请金额', sprintf('退还帖子《%s》下置顶评论申请的金额', $post->title));
 
@@ -394,6 +513,7 @@ class NewPinnedController extends Controller
                 'pinned' => $pinned,
             ]);
             $userCount->save();
+            $founderCount->save();
         });
 
         return response()->json(['message' => ['审核成功']], 201);
