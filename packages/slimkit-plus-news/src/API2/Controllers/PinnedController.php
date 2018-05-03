@@ -250,7 +250,7 @@ class PinnedController extends Controller
             'amount' => [
                 'required',
                 'integer',
-                'min:1',
+                'min:0',
                 'max:'.$user->wallet->balance,
             ],
             'day' => [
