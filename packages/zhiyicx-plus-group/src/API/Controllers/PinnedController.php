@@ -21,6 +21,7 @@ namespace Zhiyi\PlusGroup\API\Controllers;
 use Carbon\Carbon;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\UserCount;
 use Zhiyi\PlusGroup\Models\GroupMember;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\PlusGroup\Models\Post as PostModel;
@@ -146,7 +147,7 @@ class PinnedController extends Controller
             }
         });
         // 1.8启用, 新版未读消息提醒
-        $userCount = UserCountModel::firstOrNew([
+        $userCount = UserCount::firstOrNew([
             'type' => 'user-post-pinned',
             'user_id' => $target_user->id
         ]);
@@ -218,7 +219,7 @@ class PinnedController extends Controller
         // 1.8启用, 新版未读消息提醒, 通知被审核者
         $userUnreadCount = $target_user->unreadNotifications()
             ->count();
-        $userCount = UserCountModel::firstOrNew([
+        $userCount = UserCount::firstOrNew([
             'type' => 'user-system',
             'user_id' => $target_user->id
         ]);
@@ -246,7 +247,7 @@ class PinnedController extends Controller
             }
         });
         // 1.8启用, 新版未读消息提醒, 更新圈主的未审核置顶申请
-        $founderCount = UserCountModel::firstOrNew([
+        $founderCount = UserCount::firstOrNew([
             'type' => 'user-post-pinned',
             'user_id' => $target_user->id
         ]);
@@ -315,7 +316,7 @@ class PinnedController extends Controller
         // 1.8启用, 新版未读消息提醒, 通知被审核者
         $userUnreadCount = $target_user->unreadNotifications()
             ->count();
-        $userCount = UserCountModel::firstOrNew([
+        $userCount = UserCount::firstOrNew([
             'type' => 'user-system',
             'user_id' => $target_user->id
         ]);
@@ -343,7 +344,7 @@ class PinnedController extends Controller
             }
         });
         // 1.8启用, 新版未读消息提醒, 更新圈主的未审核置顶申请
-        $founderCount = UserCountModel::firstOrNew([
+        $founderCount = UserCount::firstOrNew([
             'type' => 'user-post-pinned',
             'user_id' => $target_user->id
         ]);
@@ -472,18 +473,18 @@ class PinnedController extends Controller
         // 1.8启用, 新版未读消息提醒
         $userUnreadCount = $target_user->unreadNotifications()
             ->count();
-        $userCount = UserCountModel::firstOrNew([
+        $userCount = UserCount::firstOrNew([
             'type' => 'user-post-comment-pinned',
             'user_id' => $target_user->id
         ]);
         $userCount->total = $userUnreadCount + 1;
-        $userCount = UserCountModel::firstOrNew([
+        $userCount = UserCount::firstOrNew([
             'type' => 'user-post-comment-pinned',
             'user_id' => $target_user->id
         ]);
         $userCount->total += 1;
 
-        $post->getConnection()->transaction(function () use ($chargeModel, $user, $pinnedModel, $target_user, $amount, $post, $comment) {
+        $post->getConnection()->transaction(function () use ($chargeModel, $user, $pinnedModel, $target_user, $amount, $post, $comment, $userCount) {
 
             // 扣除余额
             $user->wallet()->decrement('balance', $amount);
@@ -542,13 +543,13 @@ class PinnedController extends Controller
         $chargeModel->body = sprintf('帖子《%s》下置顶评论收入的金额', $post->title);
         $chargeModel->status = 1;
         // 1.8启用, 新版未读消息提醒
-        $userCount = UserCountModel::firstOrNew([
+        $userCount = UserCount::firstOrNew([
             'type' => 'user-system',
             'user_id' => $target_user->id
         ]);
         $userCount->total += 1;
 
-        $post->getConnection()->transaction(function () use ($pinned, $user, $chargeModel, $target_user, $comment, $post) {
+        $post->getConnection()->transaction(function () use ($pinned, $user, $chargeModel, $target_user, $comment, $post, $userCount) {
             // 增加余额
             $user->wallet()->increment('balance', $pinned->amount);
 
