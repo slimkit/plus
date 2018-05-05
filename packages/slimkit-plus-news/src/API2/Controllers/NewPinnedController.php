@@ -144,6 +144,7 @@ class NewPinnedController extends Controller
                 $process = new UserProcess();
                 $order = $process->prepayment($user->id, $pinned->amount, $news->user_id, '申请资讯评论置顶', sprintf('申请评论《%s》置顶', $comment->body));
                 if ($order) {
+                    $pinned->save();
                     if ($news->user) {
                         // $message = sprintf('%s 在你发布的资讯中申请评论置顶', $user->name);
                         // $news->user->sendNotifyMessage('news:pinned-comment', $message, [

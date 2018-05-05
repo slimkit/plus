@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Packages\Wallet;
 
+use RuntimeException;
 use Illuminate\Support\Manager;
 use Zhiyi\Plus\Packages\Wallet\Types\Type;
 
@@ -33,7 +34,7 @@ class TypeManager extends Manager
      */
     public function getDefaultDriver()
     {
-        return Order::TARGET_TYPE_USER;
+        throw new RuntimeException('The manager not support default driver.');
     }
 
     /**
