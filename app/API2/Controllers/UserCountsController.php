@@ -68,7 +68,7 @@ class UserCountsController extends Controller
     public function reset(Request $request)
     {
         $type = $request->input('type', '');
-        if (!in_array($type, ['commented', 'liked', 'system', 'group-post-pinned', 'post-comment-pinned', 'feed-comment-pinned', 'news-comment-pinned', 'post-pinned', 'mutual', 'following', 'group-join-pinned'])) {
+        if (! in_array($type, ['commented', 'liked', 'system', 'group-post-pinned', 'post-comment-pinned', 'feed-comment-pinned', 'news-comment-pinned', 'post-pinned', 'mutual', 'following', 'group-join-pinned'])) {
             return response()->json(['message' => '非法请求'], 422);
         }
         $user = $request->user();
