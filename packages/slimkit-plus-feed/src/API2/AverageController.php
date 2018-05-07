@@ -41,14 +41,14 @@ class AverageController extends Controller
         // 动态置顶平均数
         $average = $pinned->averages('feed', $date->subWeek());
         if ($average['total_amount'] && $average['total_day']) {
-            $averages['feed'] = intval($average['total_amount'] / $average['total_day']);
+            $averages['feed'] = ceil($average['total_amount'] / $average['total_day']);
         } else {
             $averages['feed'] = 100;
         }
         // 评论置顶平均数
         $average = $pinned->averages('comment', $date->subWeek());
         if ($average['total_amount'] && $average['total_day']) {
-            $averages['comment'] = intval($average['total_amount'] / $average['total_day']);
+            $averages['comment'] = ceil($average['total_amount'] / $average['total_day']);
         } else {
             $averages['comment'] = 100;
         }
