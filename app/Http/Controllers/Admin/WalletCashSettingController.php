@@ -71,7 +71,7 @@ class WalletCashSettingController extends Controller
         );
 
         return response()
-            ->json(['messages' => ['更新成功']])
+            ->json(['messages' => '更新成功'])
             ->setStatusCode(201);
     }
 }

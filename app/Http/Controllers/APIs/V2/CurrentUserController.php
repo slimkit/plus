@@ -79,7 +79,7 @@ class CurrentUserController extends Controller
             ? $user->newQuery()->where('name', $name)->where('id', '!=', $user->id)->first()
             : null;
         if ($target) {
-            return $response->json(['name' => ['用户名已被使用']], 422);
+            return $response->json(['name' => '用户名已被使用'], 422);
         }
 
         foreach ($request->only(['name', 'bio', 'sex', 'location']) as $key => $value) {
@@ -90,7 +90,7 @@ class CurrentUserController extends Controller
 
         return $user->save()
             ? $response->make('', 204)
-            : $response->json(['message' => ['更新失败']], 500);
+            : $response->json(['message' => '更新失败'], 500);
     }
 
     /**
@@ -110,7 +110,7 @@ class CurrentUserController extends Controller
         $code = $request->input('verifiable_code');
 
         if (($email && $phone) || (! $email && ! $phone)) {
-            return $response->json(['message' => ['非法操作']], 422);
+            return $response->json(['message' => '非法操作'], 422);
         }
 
         $this->validate($request, [
@@ -128,7 +128,7 @@ class CurrentUserController extends Controller
             ->first();
 
         if ($target) {
-            return $response->json([$field => ['已经被使用']], 422);
+            return $response->json([$field => '已经被使用'], 422);
         }
 
         $code = $model->where('account', $$field)
@@ -136,7 +136,7 @@ class CurrentUserController extends Controller
             ->first();
 
         if (! $code) {
-            return $response->json(['message' => ['验证码错误或者已失效']], 422);
+            return $response->json(['message' => '验证码错误或者已失效'], 422);
         }
 
         $user->$field = $$field;
@@ -144,7 +144,7 @@ class CurrentUserController extends Controller
 
         return $user->save()
             ? $response->make('', 204)
-            : $response->json(['message' => ['操作失败']], 500);
+            : $response->json(['message' => '操作失败'], 500);
     }
 
     /**
@@ -166,7 +166,7 @@ class CurrentUserController extends Controller
 
         return $request->user()->storeAvatar($image, 'user-bg')
             ? $response->make('', 204)
-            : $response->json(['message' => ['上传失败']], 500);
+            : $response->json(['message' => '上传失败'], 500);
     }
 
     /**
@@ -241,9 +241,9 @@ class CurrentUserController extends Controller
         $user = $request->user();
 
         if ($user->id === $target->id) {
-            return $response->json(['message' => ['不可对自己进行操作']], 422);
+            return $response->json(['message' => '不可对自己进行操作'], 422);
         } elseif ($user->hasFollwing($target)) {
-            return $response->json(['message' => ['非法的操作']], 422);
+            return $response->json(['message' => '非法的操作'], 422);
         }
 
         return $user->getConnection()->transaction(function () use ($user, $target, $response) {

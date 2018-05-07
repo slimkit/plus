@@ -71,7 +71,7 @@ class NewWalletCashController extends Controller
 
         if ($manager->driver(Order::TARGET_TYPE_WITHDRAW)->widthdraw($user, $value, $type, $account) === true) {
             return response()
-                ->json(['message' => ['提交申请成功']])
+                ->json(['message' => '提交申请成功'])
                 ->setStatusCode(201);
         }
 

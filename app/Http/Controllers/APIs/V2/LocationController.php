@@ -40,7 +40,7 @@ class LocationController extends Controller
     {
         $name = $request->query('name');
         if (! $name) {
-            return $response->json(['name' => ['必须输入搜索关键词']], 422);
+            return $response->json(['name' => '必须输入搜索关键词'], 422);
         }
 
         $areas = $model->with('parent', 'items')

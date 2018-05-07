@@ -77,7 +77,7 @@ class VerifyCodeController extends Controller
             break;
         }
 
-        return response()->json(['message' => ['获取成功']], 202);
+        return response()->json(['message' => '获取成功'], 202);
     }
 
     /**
@@ -96,7 +96,7 @@ class VerifyCodeController extends Controller
         $data['channel'] = $channel;
         $model = factory(VerificationCode::class)->create($data);
         $model->notify(
-             new \Zhiyi\Plus\Notifications\VerificationCode($model)
+            new \Zhiyi\Plus\Notifications\VerificationCode($model)
         );
     }
 

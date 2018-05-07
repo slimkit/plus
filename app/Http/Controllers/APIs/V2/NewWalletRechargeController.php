@@ -81,7 +81,7 @@ class NewWalletRechargeController extends Controller
             return response()->json($result, 201);
         }
 
-        return response()->json(['message' => ['操作失败']], 500);
+        return response()->json(['message' => '操作失败'], 500);
     }
 
     /**
@@ -114,7 +114,7 @@ class NewWalletRechargeController extends Controller
             return response()->json($order, 200);
         }
 
-        return response()->json(['message' => ['操作失败']], 500);
+        return response()->json(['message' => '操作失败'], 500);
     }
 
     /**
@@ -131,9 +131,9 @@ class NewWalletRechargeController extends Controller
         $amount = (int) $request->input('amount');
 
         if ($manager->driver(Order::TARGET_TYPE_TRANSFORM)->transform($user, $amount) === true) {
-            return response()->json(['message' => ['操作成功']], 201);
+            return response()->json(['message' => '操作成功'], 201);
         }
 
-        return response()->json(['message' => ['操作失败']], 500);
+        return response()->json(['message' => '操作失败'], 500);
     }
 }

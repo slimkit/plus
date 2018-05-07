@@ -45,11 +45,11 @@ class TokenController extends Controller
         $user = $model->where(username($login), $login)->with('wallet')->withCount('administrator')->first();
 
         if (! $user) {
-            return $response->json(['login' => ['用户不存在']], 404);
+            return $response->json(['login' => '用户不存在'], 404);
         } elseif (! $user->verifyPassword($password)) {
-            return $response->json(['password' => ['密码错误']], 422);
+            return $response->json(['password' => '密码错误'], 422);
         } elseif ($user->roles->whereStrict('id', 3)->isNotEmpty()) { // 禁止登录用户
-            return $response->json(['message' => ['你已被禁止登陆']], 422);
+            return $response->json(['message' => '你已被禁止登陆'], 422);
         } elseif (($token = $jwtAuthToken->create($user))) {
             return $response->json([
                 'token' => $token,
@@ -80,7 +80,7 @@ class TokenController extends Controller
     public function refresh(ResponseFactoryContract $response, JWTAuthToken $jwtAuthToken, string $token)
     {
         if (! ($token = $jwtAuthToken->refresh($token))) {
-            return $response->json(['message' => ['Failed to refresh token.']], 500);
+            return $response->json(['message' => 'Failed to refresh token.'], 500);
         }
 
         return $response->json([

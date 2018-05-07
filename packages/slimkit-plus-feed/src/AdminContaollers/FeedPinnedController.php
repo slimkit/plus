@@ -52,7 +52,7 @@ class FeedPinnedController extends Controller
         }
 
         if ($pinned->expires_at !== null) {
-            return response()->json(['message' => ['该记录已被处理']], 403);
+            return response()->json(['message' => '该记录已被处理'], 403);
         }
 
         return $this->{$action}($pinned, $datetime);
@@ -123,7 +123,7 @@ class FeedPinnedController extends Controller
                 'pinned' => $pinned,
             ]);
 
-            return response()->json(['message' => ['操作成功'], 'data' => $pinned], 201);
+            return response()->json(['message' => '操作成功', 'data' => $pinned], 201);
         } else {
             $pinned = FeedPinned::find($pinned);
             $date = new Carbon($pinned->expires_at);
@@ -137,7 +137,7 @@ class FeedPinnedController extends Controller
                 'pinned' => $pinned,
             ]);
 
-            return response()->json(['message' => ['操作成功'], 'data' => $pinned], 201);
+            return response()->json(['message' => '操作成功', 'data' => $pinned], 201);
         }
     }
 

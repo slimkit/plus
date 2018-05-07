@@ -46,7 +46,7 @@ class CurrencyApplePayController extends Controller
             return response()->json($result, 201);
         }
 
-        return response()->json(['message' => ['操作失败']], 500);
+        return response()->json(['message' => '操作失败'], 500);
     }
 
     /**
@@ -66,7 +66,7 @@ class CurrencyApplePayController extends Controller
             return response()->json($order, 200);
         }
 
-        return response()->json(['message' => ['操作失败']], 500);
+        return response()->json(['message' => '操作失败'], 500);
     }
 
     /**

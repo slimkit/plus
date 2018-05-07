@@ -46,7 +46,7 @@ class UserController extends Controller
     {
         if (! $request->user()->ability('admin:user:show')) {
             return response()->json([
-                'errors' => ['你没有权限查管理用户'],
+                'errors' => '你没有权限查管理用户',
             ])->setStatusCode(403);
         }
 
@@ -390,25 +390,24 @@ class UserController extends Controller
         $user->createPassword($request->input('password'));
 
         if ($user->save()) {
-
             // 环信用户注册
             $easeMob = new EaseMobController();
             $request->user_id = $user->id;
             $im = $easeMob->createUser($request);
             if ($im->getStatusCode() != 201) {
                 return response()->json([
-                    'message' => ['环信用户注册失败'],
+                    'message' => '环信用户注册失败',
                 ])->setStatusCode(400);
             }
 
             return response()->json([
-                'message' => ['成功'],
+                'message' => '成功',
                 'user_id' => $user->id,
             ])->setStatusCode(201);
         }
 
         return response()->json([
-            'message' => ['添加失败'],
+            'message' => '添加失败',
         ])->setStatusCode(400);
     }
 
@@ -423,7 +422,7 @@ class UserController extends Controller
     {
         if (! $request->user()->ability('admin:user:delete')) {
             return response()->json([
-                'errors' => ['你没有删除用户的权限'],
+                'errors' => '你没有删除用户的权限',
             ])->setStatusCode(403);
         }
 
@@ -443,7 +442,7 @@ class UserController extends Controller
     {
         if (! $request->user()->ability('admin:user:show')) {
             return response()->json([
-                'errors' => ['你没有权限执行该操作'],
+                'errors' => '你没有权限执行该操作',
             ])->setStatusCode(403);
         }
 
@@ -508,7 +507,7 @@ class UserController extends Controller
 
         return response()
             ->json([
-                'message' => ['更新成功!'],
+                'message' => '更新成功!',
             ])
             ->setStatusCode(201);
     }

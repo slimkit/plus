@@ -82,8 +82,7 @@ class CertificationController extends Controller
                 COUNT(CASE WHEN status=0 THEN 1 ELSE NULL END ) AS `待审核用户：`,
                 COUNT(CASE WHEN status=1 THEN 1 ELSE NULL END ) AS `已认证用户：`,
                 COUNT(CASE WHEN status=2 THEN 1 ELSE NULL END ) AS `驳回用户：` 
-            FROM `certifications`'
-        );
+            FROM `certifications`');
 
         return $counts;
     }
@@ -129,7 +128,7 @@ class CertificationController extends Controller
         $content = $request->input('reject_content');
 
         if ($content === null || ! $content) {
-            return response()->json(['message' => ['请填写驳回理由']], 422);
+            return response()->json(['message' => '请填写驳回理由'], 422);
         }
 
         $data = $certification->data;
@@ -139,13 +138,13 @@ class CertificationController extends Controller
         $certification->examiner = Auth::user()->id;
 
         if ($certification->save()) {
-            $certification->user->sendNotifyMessage('user-certification:reject', sprintf('你申请的身份认证已被驳回，驳回理由为%s', $content), [
+            $certification->user->sendNotifyMessage('user-certification:reject', sprintf('你申请的身份认证已被驳回，驳回理由为: %s', $content), [
                 'certification' => $certification,
             ]);
 
-            return response()->json(['message' => ['驳回成功']], 201);
+            return response()->json(['message' => '驳回成功'], 201);
         } else {
-            return response()->json(['message' => ['驳回失败，请稍后再试']], 500);
+            return response()->json(['message' => '驳回失败，请稍后再试'], 500);
         }
     }
 
@@ -205,7 +204,7 @@ class CertificationController extends Controller
             });
             $certification->save();
 
-            return response()->json(['message' => ['修改成功']], 201);
+            return response()->json(['message' => '修改成功'], 201);
         });
     }
 
@@ -287,20 +286,21 @@ class CertificationController extends Controller
      * @param FileWithModel $fileWithModel
      * @return \Illuminate\Http\JsonResponse|mixed
      */
-    public function store(Request $request,
-                          Certification $certification,
-                          FileWithModel $fileWithModel)
-    {
+    public function store(
+        Request $request,
+        Certification $certification,
+        FileWithModel $fileWithModel
+    ) {
         $this->validate($request, $this->rules($request), $this->messages($request));
 
         $userId = (int) $request->input('user_id');
         if (! $userId) {
-            return response()->json(['message' => ['用户ID不存在']], 422);
+            return response()->json(['message' => '用户ID不存在'], 422);
         }
 
         $count = Certification::where('user_id', $userId)->count();
         if ($count) {
-            return response()->json(['message' => ['该用户已提交过认证']], 422);
+            return response()->json(['message' => '该用户已提交过认证'], 422);
         }
 
         $type = $request->input('type');
@@ -327,7 +327,7 @@ class CertificationController extends Controller
             $user->certification()->save($certification);
 
             return response()->json([
-                'message' => ['添加认证成功'],
+                'message' => '添加认证成功',
                 'certification_id' => $user->certification->id,
             ])->setStatusCode(201);
         });

@@ -51,7 +51,7 @@ class WalletChargeController extends Controller
 
         if (empty($items)) {
             return $response
-                ->json(['message' => ['没有数据']])
+                ->json(['message' => '没有数据'])
                 ->setStatusCode(404);
         }
 
