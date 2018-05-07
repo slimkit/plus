@@ -62,13 +62,22 @@ class NewPinnedController extends Controller
         $pinned->target = $comment->id;
         $pinned->raw = $feed->id;
         $pinned->target_user = $feed->user_id;
-
+    
         return app()->call([$this, 'validateBase'], [
             'pinned' => $pinned,
             'call' => function (FeedPinnedModel $pinned) use ($user, $comment, $feed) {
+                
                 $process = new UserProcess();
-                $order = $process->prepayment($user->id, $pinned->amount, $feed->user_id, '申请动态评论置顶', sprintf('申请评论《%s》置顶', $comment->body));
-
+                // $order = $process->prepayment($user->id, $pinned->amount, $feed->user_id, '申请动态评论置顶', sprintf('申请评论《%s》置顶', $comment->body));
+                $message = '提交成功,等待审核';
+                if ($pinned->amount) {
+                    $order = $process->prepayment($user->id, $pinned->amount, $feed->user_id, '申请动态评论置顶', sprintf('申请评论《%s》置顶', $comment->body));
+                    if ($feed->user_id === $user->id) {
+                        $dateTime = new Carbon();
+                        $pinned->expires_at = $dateTime->addDay($pinned->day);
+                        $message = '置顶成功';
+                    }
+                }
                 if ($order) {
                     $pinned->save();
                     if ($feed->user) {
@@ -94,7 +103,7 @@ class NewPinnedController extends Controller
                         $userCount->save();
                     }
 
-                    return response()->json(['message' => '申请成功'], 201);
+                    return response()->json(['message' => $message], 201);
                 }
 
                 return response()->json(['message' => '操作失败'], 500);
