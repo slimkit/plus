@@ -91,7 +91,7 @@ class FeedController extends Controller
         $user = $request->user('api')->id ?? 0;
         $ids = $feeds->pluck('id');
         $feedModel->whereIn('id', $ids)->increment('feed_view_count');
-        
+
         return $feedModel->getConnection()->transaction(function () use ($feeds, $repository, $user) {
             return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
                 $repository->setModel($feed);
@@ -122,7 +122,7 @@ class FeedController extends Controller
         $after = $request->query('after');
         $user = $request->user('api')->id ?? 0;
         $search = $request->query('search');
-        
+
         $feeds = $feedModel->when($after, function ($query) use ($after) {
             return $query->where('id', '<', $after);
         })
@@ -156,7 +156,7 @@ class FeedController extends Controller
 
                 $feed->has_collect = $feed->collected($user);
                 $feed->has_like = $feed->liked($user);
-                
+
                 return $feed;
             });
         });
@@ -275,7 +275,6 @@ class FeedController extends Controller
         $feedModel->whereIn('id', $ids)->increment('feed_view_count');
 
         return $model->getConnection()->transaction(function () use ($repository, $user, $feeds) {
-            
             return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
                 $repository->setModel($feed);
                 $repository->images();
