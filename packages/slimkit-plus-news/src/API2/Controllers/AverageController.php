@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
@@ -35,22 +34,22 @@ class AverageController extends Controller
      * @param ResponseContract $response
      * @return object
      */
-    public function show(Request $request, Carbon $date, NewsPinned $pinned, ResponseContract $response)
+    public function show(Carbon $date, NewsPinned $pinned, ResponseContract $response)
     {
         $averages = [];
         // 资讯置顶平均数
-        $average = $pinned->averages('feed', $date->subWeek());
+        $average = $pinned->averages('news', $date->subWeek());
         if ($average['total_amount'] && $average['total_day']) {
-            $averages['feed'] = ceil($average['total_amount'] / $average['total_day']);
+            $averages['news'] = ceil($average['total_amount'] / $average['total_day']);
         } else {
-            $averages['feed'] = 100;
+            $averages['news'] = 100;
         }
         // 评论置顶平均数
-        $average = $pinned->averages('comment', $date->subWeek());
+        $average = $pinned->averages('news:comment', $date->subWeek());
         if ($average['total_amount'] && $average['total_day']) {
-            $averages['comment'] = ceil($average['total_amount'] / $average['total_day']);
+            $averages['news_comment'] = ceil($average['total_amount'] / $average['total_day']);
         } else {
-            $averages['comment'] = 100;
+            $averages['news_comment'] = 100;
         }
 
         return $response->json($averages, 200);

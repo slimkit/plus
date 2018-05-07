@@ -75,8 +75,6 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
         // 获取资讯排行
         $api->get('/ranks', API2\RankController::class.'@index');
-        // 获取平均置顶积分
-        Route::get('/average', API2\AverageController::class.'@show');
     });
 
     /*
@@ -93,7 +91,8 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
         // News contributes.
         $api->group(['prefix' => '/news'], function (RouteContract $api) {
-
+            // 获取平均置顶积分
+            $api->get('/average', API2\AverageController::class.'@show');
             // 关注资讯分类
             $api->patch('/categories/follows', API2\CateController::class.'@follow');
 

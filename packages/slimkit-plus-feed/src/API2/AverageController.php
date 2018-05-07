@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
@@ -35,7 +34,7 @@ class AverageController extends Controller
      * @param ResponseContract $response
      * @return object
      */
-    public function show(Request $request, Carbon $date, FeedPinned $pinned, ResponseContract $response)
+    public function show(Carbon $date, FeedPinned $pinned, ResponseContract $response)
     {
         $averages = [];
         // 动态置顶平均数
@@ -48,9 +47,9 @@ class AverageController extends Controller
         // 评论置顶平均数
         $average = $pinned->averages('comment', $date->subWeek());
         if ($average['total_amount'] && $average['total_day']) {
-            $averages['comment'] = ceil($average['total_amount'] / $average['total_day']);
+            $averages['feed_comment'] = ceil($average['total_amount'] / $average['total_day']);
         } else {
-            $averages['comment'] = 100;
+            $averages['feed_comment'] = 100;
         }
 
         return $response->json($averages, 200);
