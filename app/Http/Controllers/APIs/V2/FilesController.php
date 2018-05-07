@@ -97,8 +97,10 @@ class FilesController extends Controller
     {
         $fileModel = $this->validateFileInDatabase($fileModel, $file = $request->file('file'), function (UploadedFile $file, string $md5) use ($fileModel, $dateTime): FileModel {
             // 图片做旋转处理
-            Image::make($file->getRealPath())->orientate()->save($file->getRealPath(), 100);
-
+            if (! in_array($file->getClientMimeType(), ['video/mp4', 'image/gif'])) {
+                Image::make($file->getRealPath())->orientate()->save($file->getRealPath(), 100);
+            }
+            
             list($width, $height) = ($imageInfo = @getimagesize($file->getRealPath())) === false ? [null, null] : $imageInfo;
             $path = $dateTime->format('Y/m/d/Hi');
             if (($filename = $file->store($path, config('cdn.generators.filesystem.disk'))) === false) {
