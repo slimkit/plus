@@ -55,9 +55,9 @@ class FeedController extends Controller
         }
 
         return $response->json([
-            'ad' => $app->call([$this, 'getAd']),
-            'pinned' => $app->call([$this, 'getPinnedFeeds']),
-            'feeds' => $app->call([$this, $type]),
+        'ad' => $app->call([$this, 'getAd']),
+        'pinned' => $app->call([$this, 'getPinnedFeeds']),
+        'feeds' => $app->call([$this, $type]),
         ])->setStatusCode(200);
     }
 
@@ -73,20 +73,20 @@ class FeedController extends Controller
         }
 
         $feeds = $feedModel->select('feeds.*')
-            ->join('feed_pinneds', function ($join) use ($datetime) {
-                return $join->on('feeds.id', '=', 'feed_pinneds.target')->where('channel', 'feed')->where('expires_at', '>', $datetime);
-            })
-            ->with([
-                'pinnedComments' => function ($query) use ($datetime) {
-                    return $query->where('expires_at', '>', $datetime)->limit(5);
-                },
-                'user' => function ($query) {
-                    return $query->withTrashed();
-                },
-            ])
-            ->orderBy('feed_pinneds.amount', 'desc')
-            ->orderBy('feed_pinneds.created_at', 'desc')
-            ->get();
+        ->join('feed_pinneds', function ($join) use ($datetime) {
+            return $join->on('feeds.id', '=', 'feed_pinneds.target')->where('channel', 'feed')->where('expires_at', '>', $datetime);
+        })
+        ->with([
+            'pinnedComments' => function ($query) use ($datetime) {
+                return $query->where('expires_at', '>', $datetime)->limit(5);
+            },
+            'user' => function ($query) {
+                return $query->withTrashed();
+            },
+        ])
+        ->orderBy('feed_pinneds.amount', 'desc')
+        ->orderBy('feed_pinneds.created_at', 'desc')
+        ->get();
 
         $user = $request->user('api')->id ?? 0;
         $ids = $feeds->pluck('id');
@@ -134,12 +134,12 @@ class FeedController extends Controller
         })
         ->orderBy('id', 'desc')
         ->with([
-            'pinnedComments' => function ($query) use ($datetime) {
-                return $query->with('user')->where('expires_at', '>', $datetime)->limit(5);
-            },
-            'user' => function ($query) {
-                return $query->withTrashed();
-            },
+        'pinnedComments' => function ($query) use ($datetime) {
+            return $query->with('user')->where('expires_at', '>', $datetime)->limit(5);
+        },
+        'user' => function ($query) {
+            return $query->withTrashed();
+        },
         ])
         ->limit($limit)
         ->get();
@@ -227,16 +227,16 @@ class FeedController extends Controller
         });
     }
 
-    /**
-     * Get user follow user feeds.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $model
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed $repository
-     * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
-     */
+        /**
+        * Get user follow user feeds.
+        *
+        * @param \Illuminate\Http\Request $request
+        * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+        * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $model
+        * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed $repository
+        * @return mixed
+        * @author Seven Du <shiweidu@outlook.com>
+        */
     public function follow(Request $request, FeedModel $model, FeedRepository $repository, Carbon $datetime)
     {
         if (is_null($user = $request->user('api'))) {
@@ -290,15 +290,15 @@ class FeedController extends Controller
         });
     }
 
-    /**
-     * get single feed info.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed $repository
-     * @param int $feed
-     * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
-     */
+        /**
+        * get single feed info.
+        *
+        * @param \Illuminate\Http\Request $request
+        * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed $repository
+        * @param int $feed
+        * @return mixed
+        * @author Seven Du <shiweidu@outlook.com>
+        */
     public function show(Request $request, FeedRepository $repository, int $feed)
     {
         $user = $request->user('api')->id ?? 0;
@@ -328,13 +328,13 @@ class FeedController extends Controller
         });
     }
 
-    /**
-     * 储存分享.
-     *
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2\StoreFeedPost $request
-     * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
-     */
+        /**
+        * 储存分享.
+        *
+        * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2\StoreFeedPost $request
+        * @return mixed
+        * @author Seven Du <shiweidu@outlook.com>
+        */
     public function store(StoreFeedPostRequest $request)
     {
         $user = $request->user();
@@ -362,13 +362,13 @@ class FeedController extends Controller
         return response()->json(['message' => ['发布成功'], 'id' => $feed->id])->setStatusCode(201);
     }
 
-    /**
-     * 创建文件使用模型.
-     *
-     * @param StoreFeedPostRequest $request
-     * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
-     */
+        /**
+        * 创建文件使用模型.
+        *
+        * @param StoreFeedPostRequest $request
+        * @return mixed
+        * @author Seven Du <shiweidu@outlook.com>
+        */
     protected function makeFileWith(StoreFeedPostRequest $request)
     {
         return FileWithModel::whereIn(
@@ -384,14 +384,14 @@ class FeedController extends Controller
         ->get();
     }
 
-    /**
-     * 获取动态视频.
-     * @Author   Wayne
-     * @DateTime 2018-04-02
-     * @Email    qiaobin@zhiyicx.com
-     * @param    StoreFeedPostRequest $request [description]
-     * @return   [type]                        [description]
-     */
+        /**
+        * 获取动态视频.
+        * @Author   Wayne
+        * @DateTime 2018-04-02
+        * @Email    qiaobin@zhiyicx.com
+        * @param    StoreFeedPostRequest $request [description]
+        * @return   [type]                        [description]
+        */
     protected function makeVideoWith(StoreFeedPostRequest $request)
     {
         $video = $request->input('video');
@@ -405,14 +405,14 @@ class FeedController extends Controller
         ->first();
     }
 
-    /**
-     * 获取段视频封面.
-     * @Author   Wayne
-     * @DateTime 2018-04-02
-     * @Email    qiaobin@zhiyicx.com
-     * @param    StoreFeedPostRequest $request [description]
-     * @return   [type]                        [description]
-     */
+        /**
+        * 获取段视频封面.
+        * @Author   Wayne
+        * @DateTime 2018-04-02
+        * @Email    qiaobin@zhiyicx.com
+        * @param    StoreFeedPostRequest $request [description]
+        * @return   [type]                        [description]
+        */
     protected function makeVideoCoverWith(StoreFeedPostRequest $request)
     {
         $video = $request->input('video');
@@ -426,13 +426,13 @@ class FeedController extends Controller
         ->first();
     }
 
-    /**
-     * 创建付费节点模型.
-     *
-     * @param StoreFeedPostRequest $request
-     * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
-     */
+        /**
+        * 创建付费节点模型.
+        *
+        * @param StoreFeedPostRequest $request
+        * @return mixed
+        * @author Seven Du <shiweidu@outlook.com>
+        */
     protected function makePaidNode(StoreFeedPostRequest $request)
     {
         return collect($request->input('images'))->filter(function (array $item) {
@@ -448,16 +448,16 @@ class FeedController extends Controller
         });
     }
 
-    /**
-     * 保存视频.
-     * @Author   Wayne
-     * @DateTime 2018-04-02
-     * @Email    qiaobin@zhiyicx.com
-     * @param    [type]              $videoWith      [description]
-     * @param    [type]              $videoCoverWith [description]
-     * @param    FeedModel           $feed           [description]
-     * @return   [type]                              [description]
-     */
+        /**
+        * 保存视频.
+        * @Author   Wayne
+        * @DateTime 2018-04-02
+        * @Email    qiaobin@zhiyicx.com
+        * @param    [type]              $videoWith      [description]
+        * @param    [type]              $videoCoverWith [description]
+        * @param    FeedModel           $feed           [description]
+        * @return   [type]                              [description]
+        */
     protected function saveFeedVideoWith($videoWith, $videoCoverWith, FeedModel $feed)
     {
         $video = new FeedVideo();
@@ -479,14 +479,14 @@ class FeedController extends Controller
         });
     }
 
-    /**
-     * 保存分享图片使用.
-     *
-     * @param array $fileWiths
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
-     * @return void
-     * @author Seven Du <shiweidu@outlook.com>
-     */
+        /**
+        * 保存分享图片使用.
+        *
+        * @param array $fileWiths
+        * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
+        * @return void
+        * @author Seven Du <shiweidu@outlook.com>
+        */
     protected function saveFeedFileWith($fileWiths, FeedModel $feed)
     {
         foreach ($fileWiths as $fileWith) {
@@ -496,14 +496,14 @@ class FeedController extends Controller
         }
     }
 
-    /**
-     * 保存分享文件付费节点.
-     *
-     * @param array $nodes
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
-     * @return void
-     * @author Seven Du <shiweidu@outlook.com>
-     */
+        /**
+        * 保存分享文件付费节点.
+        *
+        * @param array $nodes
+        * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
+        * @return void
+        * @author Seven Du <shiweidu@outlook.com>
+        */
     protected function saveFeedFilePaidNode($nodes, FeedModel $feed)
     {
         foreach ($nodes as $node) {
@@ -514,14 +514,14 @@ class FeedController extends Controller
         }
     }
 
-    /**
-     * 保存分享付费节点.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
-     * @return void
-     * @author Seven Du <shiweidu@outlook.com>
-     */
+        /**
+        * 保存分享付费节点.
+        *
+        * @param \Illuminate\Http\Request $request
+        * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
+        * @return void
+        * @author Seven Du <shiweidu@outlook.com>
+        */
     protected function saveFeedPaidNode(Request $request, FeedModel $feed)
     {
         $amount = $request->input('amount');
@@ -540,14 +540,14 @@ class FeedController extends Controller
         $paidNode->save();
     }
 
-    /**
-     * Fill initial feed data.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
-     * @return \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed
-     * @author Seven Du <shiweidu@outlook.com>
-     */
+        /**
+        * Fill initial feed data.
+        *
+        * @param \Illuminate\Http\Request $request
+        * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
+        * @return \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed
+        * @author Seven Du <shiweidu@outlook.com>
+        */
     protected function fillFeedBaseData(Request $request, FeedModel $feed): FeedModel
     {
         foreach ($request->only(['feed_content', 'feed_from', 'feed_mark', 'feed_latitude', 'feed_longtitude', 'feed_geohash']) as $key => $value) {
@@ -562,16 +562,16 @@ class FeedController extends Controller
         return $feed;
     }
 
-    /**
-     * Delete comment.
-     *
-     * @param Request $request
-     * @param ResponseContract $response
-     * @param FeedRepository $repository
-     * @param FeedModel $feed
-     * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
-     */
+        /**
+        * Delete comment.
+        *
+        * @param Request $request
+        * @param ResponseContract $response
+        * @param FeedRepository $repository
+        * @param FeedModel $feed
+        * @return mixed
+        * @author Seven Du <shiweidu@outlook.com>
+        */
     public function destroy(
         Request $request,
         ResponseContract $response,
@@ -607,15 +607,15 @@ class FeedController extends Controller
         return $response->json(null, 204);
     }
 
-    /**
-     * 新版删除动态接口，如有置顶申请讲退还相应积分.
-     *
-     * @param Request $request
-     * @param ResponseContract $response
-     * @param FeedModel $feed
-     * @return mixed
-     * @author BS <414606094@qq.com>
-     */
+        /**
+        * 新版删除动态接口，如有置顶申请讲退还相应积分.
+        *
+        * @param Request $request
+        * @param ResponseContract $response
+        * @param FeedModel $feed
+        * @return mixed
+        * @author BS <414606094@qq.com>
+        */
     public function newDestroy(
         Request $request,
         ResponseContract $response,
@@ -640,15 +640,15 @@ class FeedController extends Controller
         return $response->json(null, 204);
     }
 
-    /**
-     * 获取某个用户的动态列表.
-     *
-     * @author bs<414606094@qq.com>
-     * @param  Request        $request
-     * @param  FeedModel      $feedModel
-     * @param  FeedRepository $repository
-     * @return mixed
-     */
+        /**
+        * 获取某个用户的动态列表.
+        *
+        * @author bs<414606094@qq.com>
+        * @param  Request        $request
+        * @param  FeedModel      $feedModel
+        * @param  FeedRepository $repository
+        * @return mixed
+        */
     public function users(Request $request, FeedModel $feedModel, FeedRepository $repository, Carbon $datetime)
     {
         $user = $request->user('api')->id ?? 0;
@@ -658,29 +658,29 @@ class FeedController extends Controller
         $screen = $request->query('screen');
 
         $feeds = $feedModel->where('user_id', $current_user)
-            ->when($screen, function ($query) use ($datetime, $screen) {
-                switch ($screen) {
-                    case 'pinned':
-                        $query->whereHas('pinned', function ($query) use ($datetime) {
-                            $query->where('expires_at', '>', $datetime);
-                        });
-                        break;
-                    case 'paid':
-                        $query->whereHas('paidNode');
-                        break;
-                }
-            })
-            ->when($after, function ($query) use ($after) {
-                return $query->where('id', '<', $after);
-            })
-            ->with(['pinnedComments' => function ($query) use ($datetime) {
-                return $query->where('expires_at', '>', $datetime)->limit(5);
-            }, 'user' => function ($query) {
-                return $query->withTrashed();
-            }])
-            ->orderBy('id', 'desc')
-            ->limit($limit)
-            ->get();
+        ->when($screen, function ($query) use ($datetime, $screen) {
+            switch ($screen) {
+                case 'pinned':
+                    $query->whereHas('pinned', function ($query) use ($datetime) {
+                        $query->where('expires_at', '>', $datetime);
+                    });
+                    break;
+                case 'paid':
+                    $query->whereHas('paidNode');
+                    break;
+            }
+        })
+        ->when($after, function ($query) use ($after) {
+            return $query->where('id', '<', $after);
+        })
+        ->with(['pinnedComments' => function ($query) use ($datetime) {
+            return $query->where('expires_at', '>', $datetime)->limit(5);
+        }, 'user' => function ($query) {
+            return $query->withTrashed();
+        }])
+        ->orderBy('id', 'desc')
+        ->limit($limit)
+        ->get();
 
         return $feedModel->getConnection()->transaction(function () use ($feeds, $repository, $user) {
             return $feeds->map(function (FeedModel $feed) use ($repository, $user) {

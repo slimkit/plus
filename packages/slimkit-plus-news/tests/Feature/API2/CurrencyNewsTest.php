@@ -100,7 +100,7 @@ class CurrencyNewsTest extends TestCase
         $response = $this
             ->actingAs($user, 'api')
             ->json('POST', "/api/v2/news/{$news->id}/currency-pinneds", [
-                'amount' => 100,
+                'amount' => 1000,
                 'day' => 1,
             ]);
         $response

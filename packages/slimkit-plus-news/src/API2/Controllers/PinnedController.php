@@ -68,18 +68,18 @@ class PinnedController extends Controller
         }
 
         if ($news
-            ->pinned()
-            ->where('state', 1)
-            ->where('expires_at', '>', $dateTime)
-            ->count()
+        ->pinned()
+        ->where('state', 1)
+        ->where('expires_at', '>', $dateTime)
+        ->count()
         ) {
             return response()->json(['message' => '已经申请过'], 422);
         }
 
         if ($news
-            ->pinned()
-            ->where('state', 0)
-            ->count()
+        ->pinned()
+        ->where('state', 0)
+        ->count()
         ) {
             return response()->json(['message' => '已经申请过置顶,请等待审核'], 422);
         }
@@ -92,23 +92,23 @@ class PinnedController extends Controller
         $pinned->state = 0;
 
         return $this->app->call([$this, 'PinnedValidate'], [
-            'pinned' => $pinned,
-            'call' => function (WalletChargeModel $charge, NewsPinnedModel $pinned) use ($user, $news) {
-                $charge->user_id = $user->id;
-                $charge->channel = 'user';
-                $charge->account = $user->id;
-                $charge->action = 0;
-                $charge->amount = $pinned->amount;
-                $charge->subject = '申请资讯置顶';
-                $charge->body = sprintf('申请资讯《%s》置顶', $news->title);
-                $charge->status = 1;
+        'pinned' => $pinned,
+        'call' => function (WalletChargeModel $charge, NewsPinnedModel $pinned) use ($user, $news) {
+            $charge->user_id = $user->id;
+            $charge->channel = 'user';
+            $charge->account = $user->id;
+            $charge->action = 0;
+            $charge->amount = $pinned->amount;
+            $charge->subject = '申请资讯置顶';
+            $charge->body = sprintf('申请资讯《%s》置顶', $news->title);
+            $charge->status = 1;
 
-                return $this->app->call([$this, 'save'], [
-                    'charge' => $charge,
-                    'pinned' => $pinned,
-                    'call' => null,
-                ]);
-            },
+            return $this->app->call([$this, 'save'], [
+                'charge' => $charge,
+                'pinned' => $pinned,
+                'call' => null,
+            ]);
+        },
         ]);
     }
 
@@ -129,24 +129,24 @@ class PinnedController extends Controller
         }
 
         if ($news
-            ->pinnedComments()
-            ->newPivotStatementForId($comment->id)
-            ->where('user_id', $user->id)
-            ->where('channel', 'news:comment')
-            ->where('state', 1)
-            ->where('expires_at', '>', $dateTime)
-            ->count()
+        ->pinnedComments()
+        ->newPivotStatementForId($comment->id)
+        ->where('user_id', $user->id)
+        ->where('channel', 'news:comment')
+        ->where('state', 1)
+        ->where('expires_at', '>', $dateTime)
+        ->count()
         ) {
             return response()->json(['message' => '已经申请过'], 422);
         }
 
         if ($news
-            ->pinnedComments()
-            ->newPivotStatementForId($comment->id)
-            ->where('user_id', $user->id)
-            ->where('channel', 'news:comment')
-            ->where('state', 0)
-            ->count()
+        ->pinnedComments()
+        ->newPivotStatementForId($comment->id)
+        ->where('user_id', $user->id)
+        ->where('channel', 'news:comment')
+        ->where('state', 0)
+        ->count()
         ) {
             return response()->json(['message' => '已经申请过,请等待审核'], 422);
         }
@@ -160,47 +160,48 @@ class PinnedController extends Controller
         $pinned->state = 0;
 
         return $this->app->call([$this, 'PinnedValidate'], [
-            'pinned' => $pinned,
-            'call' => function (WalletChargeModel $charge, NewsPinnedModel $pinned) use ($user, $comment, $news) {
-                $charge->user_id = $user->id;
-                $charge->channel = 'user';
-                $charge->account = $user->id;
-                $charge->action = 0;
-                $charge->amount = $pinned->amount;
-                $charge->subject = '申请资讯评论置顶';
-                $charge->body = sprintf('申请评论《%s》置顶', $comment->body);
-                $charge->status = 1;
+        'pinned' => $pinned,
+        'call' => function (WalletChargeModel $charge, NewsPinnedModel $pinned) use ($user, $comment, $news) {
+            $charge->user_id = $user->id;
+            $charge->channel = 'user';
+            $charge->account = $user->id;
+            $charge->action = 0;
+            $charge->amount = $pinned->amount;
+            $charge->subject = '申请资讯评论置顶';
+            $charge->body = sprintf('申请评论《%s》置顶', $comment->body);
+            $charge->status = 1;
 
-                return $this->app->call([$this, 'save'], [
-                    'charge' => $charge,
-                    'pinned' => $pinned,
-                    'call' => $news->user ? function () use ($user, $comment, $news, $pinned) {
-                        // $message = sprintf('%s 在你发布的资讯中申请评论置顶', $user->name);
-                        // 获取资讯发布者未处理的评论置顶申请数量
-                        $unreadCount = $pinned->newQuery()
-                            ->where('target_user', $news->user_id)
-                            ->where('channel', 'news:comment')
-                            ->whereNull('expires_at')
-                            ->count();
+            return $this->app->call([$this, 'save'], [
+                'charge' => $charge,
+                'pinned' => $pinned,
+                'news' => $news,
+                'call' => $news->user ? function () use ($user, $comment, $news, $pinned) {
+                    // $message = sprintf('%s 在你发布的资讯中申请评论置顶', $user->name);
+                    // 获取资讯发布者未处理的评论置顶申请数量
+                    $unreadCount = $pinned->newQuery()
+                        ->where('target_user', $news->user_id)
+                        ->where('channel', 'news:comment')
+                        ->whereNull('expires_at')
+                        ->count();
 
-                        // 增加资讯评论申请置顶的未读消息数量
-                        $userCount = UserCountModel::firstOrNew([
-                            'user_id' => $news->user->id,
-                            'type' => 'user-news-comment-pinned',
-                        ]);
+                    // 增加资讯评论申请置顶的未读消息数量
+                    $userCount = UserCountModel::firstOrNew([
+                        'user_id' => $news->user->id,
+                        'type' => 'user-news-comment-pinned',
+                    ]);
 
-                        $userCount->total = $unreadCount;
-                        $userCount->save();
+                    $userCount->total = $unreadCount;
+                    $userCount->save();
 
-                        // $news->user->sendNotifyMessage('news:pinned-comment', $message, [
-                        //     'news' => $news,
-                        //     'user' => $user,
-                        //     'comment' => $comment,
-                        //     'pinned' => $pinned,
-                        // ]);
-                    } : null,
-                ]);
-            },
+                    // $news->user->sendNotifyMessage('news:pinned-comment', $message, [
+                    //     'news' => $news,
+                    //     'user' => $user,
+                    //     'comment' => $comment,
+                    //     'pinned' => $pinned,
+                    // ]);
+                } : null,
+            ]);
+        },
         ]);
     }
 
@@ -219,20 +220,26 @@ class PinnedController extends Controller
         ResponseContract $response,
         WalletChargeModel $charge,
         NewsPinnedModel $pinned,
+        NewsModel $news,
         callable $call = null
     ) {
         $user = $request->user();
 
-        $user->getConnection()->transaction(function () use ($user, $charge, $pinned) {
+        $user->getConnection()->transaction(function () use ($user, $charge, $pinned, $news) {
             $user->wallet()->decrement('balance', $charge->amount);
             $user->walletCharges()->save($charge);
+            if ($news->user_id === $pinned->user_id) {
+                $dateTime = new Carbon();
+                $pinned->state = 1;
+                $pinned->expires_at = $dateTime->addDay($pinned->day);
+            }
             $pinned->save();
         });
         if ($call !== null) {
             call_user_func($call);
         }
 
-        return $response->json(['message' => '提交成功, 等待审核'])->setStatusCode(201);
+        return $response->json(['message' => $news->user_id === $pinned->user_id ? '置顶成功' : '提交成功, 等待审核'])->setStatusCode(201);
     }
 
     /**

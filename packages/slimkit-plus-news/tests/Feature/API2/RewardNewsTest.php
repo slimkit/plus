@@ -77,7 +77,6 @@ class RewardNewsTest extends TestCase
     {
         $other = factory(UserModel::class)->create();
         $other->newWallet()->increment('balance', 1000);
-
         $response = $this
             ->actingAs($other, 'api')
             ->json('POST', "/api/v2/news/{$this->news->id}/new-rewards", [
