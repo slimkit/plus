@@ -35,7 +35,6 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
 
     // plus-group
     $api->group(['prefix' => 'plus-group'], function (RouteRegisterContract $api) {
-
         // Group categories.
         // @Route /api/v2/plus-group
         $api->group(['prefix' => '/categories'], function (RouteRegisterContract $api) {
@@ -125,6 +124,8 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
 
         // Auth routes.
         $api->group(['middleware' => 'auth:api'], function (RouteRegisterContract $api) {
+            $api->get('/average', API\AverageController::class.'@show');
+
             $api->group(['prefix' => '/categories'], function (RouteRegisterContract $api) {
 
                 // Create a group.

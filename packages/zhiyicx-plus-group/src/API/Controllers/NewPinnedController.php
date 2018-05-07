@@ -19,9 +19,9 @@
 namespace Zhiyi\PlusGroup\API\Controllers;
 
 use DB;
-use Carbon\Carbon;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Zhiyi\PlusGroup\Models\GroupMember;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\PlusGroup\Models\Post as PostModel;

@@ -62,4 +62,19 @@ class Pinned extends Model
     {
         return $this->hasOne(CommentModel::class, 'id', 'target');
     }
+
+    public function averages($type = 'post', $date = '')
+    {
+        return self::newQuery()
+            ->where('channel', $type)
+            ->whereNotNull('expires_at')
+            ->where('amount', '>', 0)
+            ->where('day', '>', 0)
+            ->where('created_at', '>', $date)
+            ->first([
+                \DB::raw('SUM(day) as total_day'),
+                \DB::raw('SUM(amount) as total_amount')
+            ])
+            ->toArray();
+    }
 }
