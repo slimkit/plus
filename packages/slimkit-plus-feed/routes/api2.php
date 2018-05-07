@@ -21,7 +21,6 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('/feeds')->group(function () {
-
     // 动态
     Route::get('/', 'FeedController@index');
     Route::get('/{feed}', 'FeedController@show')->where(['feed' => '[0-9]+']);
@@ -83,6 +82,9 @@ Route::prefix('/feeds')->group(function () {
 
         // 举报
         Route::post('/{feed}/reports', 'ReportController@feed');
+
+        // 获取平均置顶积分
+        Route::get('/average', 'AverageController@show');
     });
 });
 
