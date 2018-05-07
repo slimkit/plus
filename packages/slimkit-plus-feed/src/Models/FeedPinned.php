@@ -63,7 +63,8 @@ class FeedPinned extends Model
         return $this->hasOne(CommentModel::class, 'id', 'target');
     }
 
-    public function averages($type = 'feed', $date = '') {
+    public function averages($type = 'feed', $date = '')
+    {
         return self::newQuery()
             ->where('channel', '=', $type)
             ->whereNotNull('expires_at')
@@ -72,7 +73,7 @@ class FeedPinned extends Model
             ->where('day', '>', 0)
             ->first([
                 \DB::raw('SUM(day) as total_day'),
-                \DB::raw('SUM(amount) as total_amount')
+                \DB::raw('SUM(amount) as total_amount'),
             ])
             ->toArray();
     }

@@ -47,7 +47,8 @@ class NewsPinned extends Model
         return $this->hasOne(CommentModel::class, 'id', 'raw');
     }
 
-    public function averages($type = 'news', $date = '') {
+    public function averages($type = 'news', $date = '')
+    {
         return self::newQuery()
             ->where('channel', '=', $type)
             ->whereNotNull('expires_at')
@@ -56,7 +57,7 @@ class NewsPinned extends Model
             ->where('day', '>', 0)
             ->first([
                 \DB::raw('SUM(day) as total_day'),
-                \DB::raw('SUM(amount) as total_amount')
+                \DB::raw('SUM(amount) as total_amount'),
             ])
             ->toArray();
     }

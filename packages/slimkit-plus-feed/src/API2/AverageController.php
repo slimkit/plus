@@ -33,22 +33,21 @@ class AverageController extends Controller
      * @param Carbon           $date
      * @param FeedPinned       $pinned
      * @param ResponseContract $response
-     * @return Object
+     * @return object
      */
     public function show(Request $request, Carbon $date, FeedPinned $pinned, ResponseContract $response)
     {
         $averages = [];
         // 动态置顶平均数
         $average = $pinned->averages('feed', $date->subWeek());
-        if($average['total_amount'] && $average['total_day']) {
+        if ($average['total_amount'] && $average['total_day']) {
             $averages['feed'] = intval($average['total_amount'] / $average['total_day']);
         } else {
             $averages['feed'] = 100;
         }
         // 评论置顶平均数
         $average = $pinned->averages('comment', $date->subWeek());
-        if($average['total_amount'] && $average['total_day']) {
-
+        if ($average['total_amount'] && $average['total_day']) {
             $averages['comment'] = intval($average['total_amount'] / $average['total_day']);
         } else {
             $averages['comment'] = 100;
