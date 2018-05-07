@@ -173,6 +173,7 @@ class PinnedController extends Controller
                 return $this->app->call([$this, 'save'], [
                     'charge' => $charge,
                     'pinned' => $pinned,
+                    'news' => $news,
                     'call' => $news->user ? function () use ($user, $comment, $news, $pinned) {
                         $message = sprintf('%s 在你发布的资讯中申请评论置顶', $user->name);
                         $news->user->sendNotifyMessage('news:pinned-comment', $message, [
@@ -197,16 +198,23 @@ class PinnedController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function save(Request $request,
-                         ResponseContract $response,
-                         WalletChargeModel $charge,
-                         NewsPinnedModel $pinned,
-                         callable $call = null)
-    {
+    public function save(
+        Request $request,
+        ResponseContract $response,
+        WalletChargeModel $charge,
+        NewsPinnedModel $pinned,
+        NewsModel $news,
+        callable $call = null
+    ) {
         $user = $request->user();
         $user->getConnection()->transaction(function () use ($user, $charge, $pinned) {
             $user->wallet()->decrement('balance', $charge->amount);
             $user->walletCharges()->save($charge);
+            if ($news->user_id === $pinned->user_id) {
+                $dateTime = new Carbon();
+                $pinned->state = 1;
+                $pinned->expires_at = $dateTime->addDay($pinned->day);
+            }
             $pinned->save();
         });
 
@@ -214,7 +222,7 @@ class PinnedController extends Controller
             call_user_func($call);
         }
 
-        return $response->json(['message' => ['申请成功']])->setStatusCode(201);
+        return $response->json(['message' => $news->user_id === $pinned->user_id ? '置顶成功' : '提交成功, 等待审核'])->setStatusCode(201);
     }
 
     /**

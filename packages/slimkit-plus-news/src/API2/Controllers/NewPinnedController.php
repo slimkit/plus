@@ -70,6 +70,13 @@ class NewPinnedController extends Controller
         $pinned->channel = 'news';
         $pinned->target_user = 0;
         $pinned->state = 0;
+        if ($news->user_id === $user->id) {
+            $dateTime = new Carbon();
+            $pinned->expires_at = $dateTime->addDay($pinned->day);
+            $pinned->save();
+
+            return response()->json(['message' => '置顶成功'], 201);
+        }
 
         return app()->call([$this, 'PinnedValidate'], [
             'pinned' => $pinned,
@@ -141,8 +148,16 @@ class NewPinnedController extends Controller
             'pinned' => $pinned,
             'call' => function (NewsPinnedModel $pinned) use ($user, $comment, $news) {
                 $process = new UserProcess();
-                $order = $process->prepayment($user->id, $pinned->amount, $news->user_id, '申请资讯评论置顶', sprintf('申请评论《%s》置顶', $comment->body));
-
+                $message = '提交成功,等待审核';
+                if ($pinned->amount) {
+                    $order = $process->prepayment($user->id, $pinned->amount, $news->user_id, '申请资讯评论置顶', sprintf('申请评论《%s》置顶', $comment->body));
+                    if ($news->user_id === $user->id) {
+                        $dateTime = new Carbon();
+                        $pinned->expires_at = $dateTime->addDay($pinned->day);
+                        $pinned->state = 1;
+                        $message = '置顶成功';
+                    }
+                }
                 if ($order) {
                     $pinned->save();
                     if ($news->user) {
@@ -155,7 +170,7 @@ class NewPinnedController extends Controller
                         ]);
                     }
 
-                    return response()->json(['message' => ['申请成功']], 201);
+                    return response()->json(['message' => $message], 201);
                 }
 
                 return response()->json(['message' => ['操作失败']], 500);
