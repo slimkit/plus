@@ -556,6 +556,7 @@ class FeedController extends Controller
 
         $feed->feed_client_id = $request->ip();
         $feed->audit_status = 1;
+        $feed->feed_view_count = 1;
         $feed->user_id = $request->user()->id;
 
         return $feed;
