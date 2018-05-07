@@ -75,6 +75,8 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
         // 获取资讯排行
         $api->get('/ranks', API2\RankController::class.'@index');
+        // 获取平均置顶积分
+        Route::get('/average', API2\AverageController::class.'@show');
     });
 
     /*
@@ -171,13 +173,15 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // 取消收藏资讯
             $api->delete('/{news}/collections', API2\CollectionController::class.'@cancel');
-        });
 
+
+        });
         // Users API.
         $api->group(['prefix' => 'user'], function (RouteContract $api) {
 
             // 用户资讯列表.
             $api->get('/news/contributes', API2\ContributeController::class.'@index');
         });
+
     });
 });
