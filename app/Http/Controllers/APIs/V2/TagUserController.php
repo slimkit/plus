@@ -106,6 +106,7 @@ class TagUserController extends Controller
     public function userTgas(ResponseFactoryContract $response, int $user)
     {
         $user = UserModel::withTrashed()->find($user);
+
         return $response->json($user->tags, 200);
     }
 }
