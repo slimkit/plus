@@ -93,6 +93,7 @@ class PinnedController extends Controller
                 return $this->app->call([$this, 'save'], [
                     'charge' => $charge,
                     'pinned' => $pinned,
+                    'feed' => $feed,
                     'call' => $feed->user ? function () use ($user, $comment, $feed, $pinned) {
                         $message = sprintf('%s 在你发布的动态中申请评论置顶', $user->name);
                         $feed->user->sendNotifyMessage('feed:pinned-comment', $message, [
@@ -163,14 +164,23 @@ class PinnedController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function save(Request $request,
-                         ResponseContract $response,
-                         WalletChargeModel $charge,
-                         FeedPinnedModel $pinned,
-                         callable $call = null)
-    {
+    public function save(
+        Request $request,
+        ResponseContract $response,
+        WalletChargeModel $charge,
+        FeedPinnedModel $pinned,
+        FeedModel $feed,
+        callable $call = null
+    ) {
         $user = $request->user();
-        $user->getConnection()->transaction(function () use ($user, $charge, $pinned) {
+        $user->getConnection()->transaction(function () use ($user, $charge, $pinned, $feed) {
+            if ($feed->user_id === $user->id) {
+                $dateTime = new Carbon();
+                $pinned->expires_at = $dateTime->addDay($pinned->day);
+                $pinned->save();
+
+                return $response->json(['message' => '置顶成功'], 201);
+            }
             $user->wallet()->decrement('balance', $charge->amount);
             $user->walletCharges()->save($charge);
             $pinned->save();
