@@ -207,7 +207,7 @@ class FeedController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
-        $feedModel->whereIn('id', $ids)->increment('feed_view_count');
+        FeedModel::whereIn('id', $ids)->increment('feed_view_count');
 
         return $model->getConnection()->transaction(function () use ($feeds, $repository, $user) {
             return $feeds->map(function ($feed) use ($repository, $user) {
@@ -272,7 +272,7 @@ class FeedController extends Controller
         ->limit($limit)
         ->get();
         $ids = $feeds->pluck('id');
-        $feedModel->whereIn('id', $ids)->increment('feed_view_count');
+        $model->whereIn('id', $ids)->increment('feed_view_count');
 
         return $model->getConnection()->transaction(function () use ($repository, $user, $feeds) {
             
