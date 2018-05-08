@@ -91,7 +91,7 @@ class RewardController extends Controller
             $userCharge->subject = '资讯打赏';
             $userCharge->action = 0;
             $userCharge->amount = $amount;
-            $userCharge->body = sprintf('打赏资讯《%s》', $news->title);
+            $userCharge->body = sprintf('打赏资讯"%s"', $news->title);
             $userCharge->status = 1;
             $user->walletCharges()->save($userCharge);
 
@@ -105,12 +105,12 @@ class RewardController extends Controller
                 $charge->subject = '资讯被打赏';
                 $charge->action = 1;
                 $charge->amount = $amount;
-                $charge->body = sprintf('资讯《%s》被打赏', $news->title);
+                $charge->body = sprintf('资讯"%s"被打赏', $news->title);
                 $charge->status = 1;
                 $charge->save();
 
                 // 添加被打赏通知
-                $currentNotice = sprintf('你的资讯《%s》被%s打赏%s%s', $news->title, $user->name, $amount * $this->wallet_ratio / 10000, $this->goldName);
+                $currentNotice = sprintf('你的资讯"%s"被%s打赏%s%s', $news->title, $user->name, $amount * $this->wallet_ratio / 10000, $this->goldName);
                 $targetUser->sendNotifyMessage('news:reward', $currentNotice, [
                     'news' => $news,
                     'user' => $user,

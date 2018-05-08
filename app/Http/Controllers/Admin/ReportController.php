@@ -70,7 +70,7 @@ class ReportController extends Controller
         $report->save();
 
         if ($report->user) {
-            $report->user->sendNotifyMessage('user-report:notice', '您的举报已被后台处理：'.$mark, [
+            $report->user->sendNotifyMessage('user-report:notice', '你的举报已被平台处理', [
                 'report' => $report,
             ]);
         }
@@ -102,7 +102,7 @@ class ReportController extends Controller
         $report->save();
 
         if ($report->user) {
-            $report->user->sendNotifyMessage('user-report:notice', '您的举报已被后台驳回，原因是：'.$mark, [
+            $report->user->sendNotifyMessage('user-report:notice', '你的举报已被平台处理', [
                 'report' => $report,
             ]);
         }

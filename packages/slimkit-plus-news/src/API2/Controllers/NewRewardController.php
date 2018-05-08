@@ -68,13 +68,13 @@ class NewRewardController extends Controller
                 'user' => $user,
                 'target' => $target,
                 'amount' => $amount,
-                'user_order_body' => sprintf('打赏《%s》资讯，钱包扣除%s元', $news->title, $money),
-                'target_order_body' => sprintf('资讯《%s》被打赏，钱包增加%s元', $news->title, $money),
+                'user_order_body' => sprintf('打赏“%s”的资讯“%s”，钱包扣除%s元', $target->name, $news->title, $money),
+                'target_order_body' => sprintf('“%s”打赏了你的资讯“%s”，钱包增加%s元', $user->name, $news->title, $money),
             ],
             'notice' => [
                 'type' => 'news:reward',
                 'detail' => ['user' => $user, 'news' => $news],
-                'message' => sprintf('你的资讯《%s》被用户%s打赏%s元', $news->title, $user->name, $money),
+                'message' => sprintf('“%s”打赏了你的资讯“%s”%s元', $user->name, $news->title,  $money),
             ],
         ]);
 

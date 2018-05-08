@@ -76,9 +76,9 @@ class NewPinnedController extends Controller
                     $message = '置顶成功';
                     $order = ! $pinned->amount
                         ? true
-                        : $process->prepayment($user->id, $pinned->amount, $feed->user_id, '申请动态评论置顶', sprintf('申请评论《%s》置顶', $comment->body));
+                        : $process->prepayment($user->id, $pinned->amount, $feed->user_id, '申请动态评论置顶', sprintf('申请评论“%s”置顶', $comment->body));
                 } else {
-                    $order = $process->prepayment($user->id, $pinned->amount, $feed->user_id, '申请动态评论置顶', sprintf('申请评论《%s》置顶', $comment->body));
+                    $order = $process->prepayment($user->id, $pinned->amount, $feed->user_id, '申请动态评论置顶', sprintf('申请评论“%s”置顶', $comment->body));
                 }
 
                 if ($order) {

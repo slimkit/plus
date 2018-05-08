@@ -20,10 +20,12 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Log;
 use Image;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use function Psy\debug;
 use Zhiyi\Plus\Models\File as FileModel;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Cdn\UrlManager as CdnUrlManager;
@@ -97,6 +99,7 @@ class FilesController extends Controller
     {
         $clientHeight = $request->input('height', 0);
         $clientWidth = $request->input('width', 0);
+        Log::debug(['height' => $clientHeight, 'width' => $clientWidth]);
         $fileModel = $this->validateFileInDatabase($fileModel, $file = $request->file('file'), function (UploadedFile $file, string $md5) use ($fileModel, $dateTime, $clientWidth, $clientHeight): FileModel {
             // 图片做旋转处理
             if (! in_array($file->getClientMimeType(), ['video/mp4', 'image/gif'])) {

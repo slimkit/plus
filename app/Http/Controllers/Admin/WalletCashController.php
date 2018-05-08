@@ -111,7 +111,7 @@ class WalletCashController extends Controller
             $charge->save();
             $cash->save();
 
-            $cash->user->sendNotifyMessage('user-cash:passed', '您申请的体现已通过，请注意查收', [
+            $cash->user->sendNotifyMessage('user-cash:passed', '你的提现申请已通过', [
                 'charge' => $charge,
                 'cash' => $cash,
             ]);
@@ -160,7 +160,7 @@ class WalletCashController extends Controller
             $charge->save();
             $cash->save();
 
-            $cash->user->sendNotifyMessage('user-cash:refuse', sprintf('您申请的体现已被拒绝，原因为：%s', $remark), [
+            $cash->user->sendNotifyMessage('user-cash:refuse', sprintf('你的提现申请已被拒绝，原因为：%s', $remark), [
                 'charge' => $charge,
                 'cash' => $cash,
             ]);
