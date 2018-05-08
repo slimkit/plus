@@ -37,7 +37,7 @@ class TagUserController extends Controller
      */
     public function index(Request $request, ResponseFactoryContract $response)
     {
-        return $this->userTgas($response, $request->user());
+        return $this->userTgas($response, $request->user()->id);
     }
 
     /**
