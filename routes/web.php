@@ -42,7 +42,7 @@ if (! Route::has('logout')) {
     Route::any('auth/logout', 'Auth\\LoginController@logout')->name('logout');
 }
 
-if(!Route::has('redirect')) {
+if (! Route::has('redirect')) {
     Route::get('/redirect', 'HomeController@redirect')->name('redirect');
 }
 

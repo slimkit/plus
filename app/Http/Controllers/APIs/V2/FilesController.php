@@ -22,7 +22,6 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Image;
 use Carbon\Carbon;
-use function Psy\debug;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Zhiyi\Plus\Models\File as FileModel;

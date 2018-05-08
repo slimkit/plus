@@ -52,8 +52,9 @@ class HomeController
         $target = $request->input('target', '');
         $isUrl = filter_var($target, FILTER_VALIDATE_URL, FILTER_VALIDATE_IP);
         $redirect = '';
-        if($isUrl !== false ) {
+        if ($isUrl !== false) {
             $redirect = $isUrl;
+
             return view('redirect', ['redirect' => $redirect]);
         }
 
@@ -61,13 +62,13 @@ class HomeController
         $config = config('http');
         $web = $config['web'];
         $spa = $config['spa'];
-        if($agent->isMobile() && $spa['open']) {
-            $redirect = trim($spa['url'], '/') . $target;
+        if ($agent->isMobile() && $spa['open']) {
+            $redirect = trim($spa['url'], '/').$target;
 
             return view('redirect', ['redirect' => $redirect]);
         }
         if ($web['open']) {
-            $redirect = trim(config('app.url'), '/') . $target;
+            $redirect = trim(config('app.url'), '/').$target;
 
             return view('redirect', ['redirect' => $redirect]);
         }
