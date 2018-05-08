@@ -79,7 +79,7 @@ class UserRewardController extends Controller
             ->count();
         $userCount = UserCount::firstOrNew([
             'type' => 'user-system',
-            'user_id' => $target->id
+            'user_id' => $target->id,
         ]);
         $userCount->total = $userUnreadCount + 1;
 

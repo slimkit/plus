@@ -61,7 +61,7 @@ class NewRewardController extends Controller
         }
 
         $feedTitle = str_limit($feed->feed_content, 100, '...');
-        $feedTitle = ($feedTitle ? "“${feedTitle}”" : "");
+        $feedTitle = ($feedTitle ? "“${feedTitle}”" : '');
         $money = $amount / 100;
 
         // 记录订单
@@ -77,7 +77,7 @@ class NewRewardController extends Controller
             'notice' => [
                 'type' => 'feed:reward',
                 'detail' => ['feed' => $feed, 'user' => $user],
-                'message' => sprintf('“%s”打赏了你的动态%s%s元',$user->name, $feedTitle,  $money),
+                'message' => sprintf('“%s”打赏了你的动态%s%s元', $user->name, $feedTitle, $money),
             ],
         ]);
 
