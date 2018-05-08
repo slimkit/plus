@@ -69,14 +69,18 @@ class NewPinnedController extends Controller
                 $process = new UserProcess();
                 // $order = $process->prepayment($user->id, $pinned->amount, $feed->user_id, '申请动态评论置顶', sprintf('申请评论《%s》置顶', $comment->body));
                 $message = '提交成功,等待审核';
-                if ($pinned->amount) {
+                $order = false;
+                if ($feed->user_id === $user->id) {
+                    $dateTime = new Carbon();
+                    $pinned->expires_at = $dateTime->addDay($pinned->day);
+                    $message = '置顶成功';
+                    $order = !$pinned->amount
+                        ? true
+                        : $process->prepayment($user->id, $pinned->amount, $feed->user_id, '申请动态评论置顶', sprintf('申请评论《%s》置顶', $comment->body));
+                } else {
                     $order = $process->prepayment($user->id, $pinned->amount, $feed->user_id, '申请动态评论置顶', sprintf('申请评论《%s》置顶', $comment->body));
-                    if ($feed->user_id === $user->id) {
-                        $dateTime = new Carbon();
-                        $pinned->expires_at = $dateTime->addDay($pinned->day);
-                        $message = '置顶成功';
-                    }
                 }
+
                 if ($order) {
                     $pinned->save();
                     if ($feed->user) {
