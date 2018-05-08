@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
+use Log;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
@@ -77,7 +78,7 @@ class NewCommentPinnedController extends Controller
         $userCount->total = $userUnreadCount + 1;
 
         $process = new UserProcess();
-        $order = $process->receivables($user->id, $pinned->amount, $pinned->user_id, '置顶动态评论', sprintf('置顶评论《%s》', str_limit($comment->body, 100, '...')));
+        $order = $process->receivables($user->id, $pinned->amount, $pinned->user_id, '置顶动态评论', sprintf('置顶评论“%s”', str_limit($comment->body, 100, '...')));
 
         if ($order) {
             $pinned->save();
@@ -101,10 +102,10 @@ class NewCommentPinnedController extends Controller
             $userCount->total = $userUnreadCount;
             $userCount->save();
 
-            return $response->json(['message' => ['置顶成功']], 201);
+            return $response->json(['message' => '置顶成功'], 201);
         }
 
-        return $response->json(['message' => ['操作失败']], 500);
+        return $response->json(['message' => '操作失败'], 500);
     }
 
     /**
@@ -126,16 +127,16 @@ class NewCommentPinnedController extends Controller
         $user = $request->user();
 
         if ($user->id !== $pinned->target_user || $pinned->channel !== 'comment') {
-            return $response->json(['message' => ['无效操作']], 422);
+            return $response->json(['message' => '无效操作'], 422);
         } elseif ($pinned->expires_at) {
-            return $response->json(['message' => ['已被处理']], 422);
+            return $response->json(['message' => '已被处理'], 422);
         }
 
         $pinned->load(['comment']);
 
         // 拒绝凭据
         $process = new UserProcess();
-        $order = $process->reject($user->id, $pinned->amount, $pinned->user_id, '被拒动态评论置顶', sprintf('被拒动态评论《%s》申请，退还申请金额', str_limit($pinned->comment->body ?? 'null', 100, '...')));
+        $order = $process->reject($user->id, $pinned->amount, $pinned->user_id, '被拒动态评论置顶', sprintf('被拒动态评论“%s”申请，退还申请金额', str_limit($pinned->comment->body ?? 'null', 100, '...')));
         // 申请动态置顶的用户, 更新系统消息未读数
         $userUnreadCount = $pinned->user
             ->unreadNotifications()
@@ -160,19 +161,21 @@ class NewCommentPinnedController extends Controller
             // 更新动态所有者的动态评论置顶审核未读数
             $userUnreadCount = $pinned->newQuery()
                 ->where('target_user', $user->id)
-                ->where('channel', 'feed')
+                ->where('channel', 'comment')
                 ->whereNull('expires_at')
                 ->count();
+            Log::debug($userUnreadCount);
             $userCount = UserCountModel::firstOrNew([
                 'user_id' => $user->id,
-                'type' => 'feed-comment-pinned',
+                'type' => 'user-feed-comment-pinned',
             ]);
-            $userCount->total = $userUnreadCount;
+            $userCount->total = $userUnreadCount - 1;
+            Log::debug($userCount);
             $userCount->save();
 
             return $response->json(null, 204);
         }
 
-        return $response->json(['message' => ['操作失败']], 500);
+        return $response->json(['message' => '操作失败'], 500);
     }
 }

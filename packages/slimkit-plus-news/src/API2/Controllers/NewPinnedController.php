@@ -151,19 +151,19 @@ class NewPinnedController extends Controller
             'call' => function (NewsPinnedModel $pinned) use ($user, $comment, $news) {
                 $process = new UserProcess();
                 $message = '提交成功,等待审核';
-                    $order = false;
+                $order = false;
 
-                    if ($news->user_id === $user->id) {
-                        $dateTime = new Carbon();
-                        $pinned->expires_at = $dateTime->addDay($pinned->day);
-                        $pinned->state = 1;
-                        $message = '置顶成功';
-                        $order = !$pinned->amount
+                if ($news->user_id === $user->id) {
+                    $dateTime = new Carbon();
+                    $pinned->expires_at = $dateTime->addDay($pinned->day);
+                    $pinned->state = 1;
+                    $message = '置顶成功';
+                    $order = ! $pinned->amount
                                 ? true
                                 : $process->prepayment($user->id, $pinned->amount, $news->user_id, '申请资讯评论置顶', sprintf('申请评论《%s》置顶', $comment->body));
-                    } else {
-                        $order = $process->prepayment($user->id, $pinned->amount, $news->user_id, '申请资讯评论置顶', sprintf('申请评论《%s》置顶', $comment->body));
-                    }
+                } else {
+                    $order = $process->prepayment($user->id, $pinned->amount, $news->user_id, '申请资讯评论置顶', sprintf('申请评论《%s》置顶', $comment->body));
+                }
                 if ($order) {
                     $pinned->save();
                     if ($news->user) {

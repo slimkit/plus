@@ -23,6 +23,7 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\GoldType;
+use Zhiyi\Plus\Models\UserCount;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\WalletCharge;
 
@@ -38,7 +39,7 @@ class UserRewardController extends Controller
     {
         $walletConfig = $configModel->where('name', 'wallet:ratio')->first();
 
-        $this->goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '金币';
+        $this->goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '元';
         $this->wallet_ratio = $walletConfig->value ?? 100;
     }
 
@@ -74,7 +75,15 @@ class UserRewardController extends Controller
             ], 500);
         }
 
-        $user->getConnection()->transaction(function () use ($user, $target, $chargeModel, $amount) {
+        $userUnreadCount = $target->unreadNotifications()
+            ->count();
+        $userCount = UserCount::firstOrNew([
+            'type' => 'user-system',
+            'user_id' => $target->id,
+        ]);
+        $userCount->total = $userUnreadCount + 1;
+
+        $user->getConnection()->transaction(function () use ($user, $target, $chargeModel, $amount, $userCount) {
             // 扣除操作用户余额
             $user->wallet()->decrement('balance', $amount);
 
@@ -105,10 +114,11 @@ class UserRewardController extends Controller
 
             if ($user->id !== $target->id) {
                 // 添加被打赏通知
-                $targetNotice = sprintf('你被%s打赏%s%s', $user->name, $amount * $this->wallet_ratio / 10000, $this->goldName);
+                $targetNotice = sprintf('“%s”打赏了你%s%s', $user->name, $amount * $this->wallet_ratio / 10000, $this->goldName);
                 $target->sendNotifyMessage('user:reward', $targetNotice, [
                     'user' => $user,
                 ]);
+                $userCount->save();
             }
 
             // 打赏记录

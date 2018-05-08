@@ -61,6 +61,7 @@ class NewRewardController extends Controller
         }
 
         $feedTitle = str_limit($feed->feed_content, 100, '...');
+        $feedTitle = ($feedTitle ? "“${feedTitle}”" : '');
         $money = $amount / 100;
 
         // 记录订单
@@ -70,13 +71,13 @@ class NewRewardController extends Controller
                 'user' => $user,
                 'target' => $target,
                 'amount' => $amount,
-                'user_order_body' => sprintf('打赏动态《%s》，钱包扣除%s元', $feedTitle, $money),
-                'target_order_body' => sprintf('动态《%s》被打赏，钱包增加%s元', $feedTitle, $money),
+                'user_order_body' => sprintf('打赏“%s”的动态%s，钱包扣除%s元', $target->name, $feedTitle, $money),
+                'target_order_body' => sprintf('“%s”打赏了你的动态%s，钱包增加%s元', $user->name, $feedTitle, $money),
             ],
             'notice' => [
                 'type' => 'feed:reward',
                 'detail' => ['feed' => $feed, 'user' => $user],
-                'message' => sprintf('你的《%s》动态被用户%s打赏%s元', $feedTitle, $user->name, $money),
+                'message' => sprintf('“%s”打赏了你的动态%s%s元', $user->name, $feedTitle, $money),
             ],
         ]);
 

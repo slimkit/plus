@@ -143,7 +143,7 @@
                 <button v-if="deleteIds.indexOf(user.id) !== -1" type="button" class="btn btn-danger btn-sm" disabled="disabled">
                   <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
                 </button>
-                <button v-else type="button" class="btn btn-danger btn-sm" @click="deleteUser(user.id)">停用</button>
+                <button v-else type="button" class="btn btn-danger btn-sm" @click="deleteUser(user.id)">禁用</button>
               </td>
             </tr>
           </tbody>
@@ -392,7 +392,7 @@ const ManageComponent = {
       });
     },
     deleteUser (userId) {
-      if (window.confirm('确定要停用用户吗？')) {
+      if (window.confirm('确定要禁止用户吗？')) {
         this.deleteIds = [ ...this.deleteIds, userId ];
         request.delete(
           createRequestURI(`users/${userId}`),
