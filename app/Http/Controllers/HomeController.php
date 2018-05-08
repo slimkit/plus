@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers;
 
 use Jenssegers\Agent\Agent;
+use Illuminate\Http\Request;
 
 class HomeController
 {
@@ -43,6 +44,34 @@ class HomeController
         }
 
         // By default, view welcome page.
+        return view('welcome');
+    }
+
+    public function redirect(Request $request, Agent $agent)
+    {
+        $target = $request->input('target', '');
+        $isUrl = filter_var($target, FILTER_VALIDATE_URL, FILTER_VALIDATE_IP);
+        $redirect = '';
+        if($isUrl !== false ) {
+            $redirect = $isUrl;
+            return view('redirect', ['redirect' => $redirect]);
+        }
+
+        $agent->isMobile();
+        $config = config('http');
+        $web = $config['web'];
+        $spa = $config['spa'];
+        if($agent->isMobile() && $spa['open']) {
+            $redirect = trim($spa['url'], '/') . $target;
+
+            return view('redirect', ['redirect' => $redirect]);
+        }
+        if ($web['open']) {
+            $redirect = trim(config('app.url'), '/') . $target;
+
+            return view('redirect', ['redirect' => $redirect]);
+        }
+
         return view('welcome');
     }
 }
