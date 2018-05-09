@@ -107,7 +107,7 @@ class AuthController extends Controller
     {
         return $this->response()->json([
             'access_token' => $token,
-            'token_type' => 'bearer',
+            'token_type' => 'Bearer',
             'expires_in' => $this->guard()->factory()->getTTL(),
             'refresh_ttl' => config('jwt.refresh_ttl'),
         ]);
