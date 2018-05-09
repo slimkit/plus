@@ -224,8 +224,7 @@ class PinnedController extends Controller
         callable $call = null
     ) {
         $user = $request->user();
-
-        $user->getConnection()->transaction(function () use ($user, $charge, $pinned) {
+        $user->getConnection()->transaction(function () use ($user, $charge, $pinned, $news) {
             $user->wallet()->decrement('balance', $charge->amount);
             $user->walletCharges()->save($charge);
             if ($news->user_id === $pinned->user_id) {
