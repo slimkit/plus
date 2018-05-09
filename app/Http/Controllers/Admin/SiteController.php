@@ -234,7 +234,7 @@ class SiteController extends Controller
     {
         if (! $request->user()->ability('admin:area:update')) {
             return response()->json([
-                'error' => ['你没有更新地区权限'],
+                'error' => '你没有更新地区权限',
             ])->setStatusCode(403);
         }
 
@@ -254,7 +254,7 @@ class SiteController extends Controller
         $area->$key = $value;
         if (! $area->save()) {
             return response()->json([
-                'error' => ['数据更新失败'],
+                'error' => '数据更新失败',
             ])->setStatusCode(500);
         }
 
@@ -295,18 +295,22 @@ class SiteController extends Controller
         $sort = (int) $request->input('sort', 0);
 
         if (! $update && count(explode(' ', $areaStr)) < 2) {
-            return $response->json(['error' => ['地区不能小于两级']], 422);
+            return $response->json(['error' => '地区不能小于两级'], 422);
         }
 
-        $hots = $value = $this->commonCinfigModel->byNamespace('common')
+        $hots = [];
+        $items = $this->commonCinfigModel->byNamespace('common')
                 ->byName('hots_area')
-                ->value('value') ? json_decode($value, true) : [];
+                ->value('value');
+        if ($items) {
+            $hots = json_decode($items, true);
+        }
 
         if ($update) {
             $this->unsetHotArea($hots, $areaStr);
         } else {
             if ($this->hotAreaExists($hots, $areaStr)) {
-                return $response->json(['error' => ['热门城市已存在']], 422);
+                return $response->json(['error' => '热门城市已存在'], 422);
             }
             $hots[] = ['name' => $areaStr, 'sort' => $sort];
         }
@@ -438,7 +442,7 @@ class SiteController extends Controller
             'agent' => $_SERVER['HTTP_USER_AGENT'],
             'protocol' => $_SERVER['SERVER_PROTOCOL'],
             'method' => $_SERVER['REQUEST_METHOD'],
-            'laravel_version' => app()::VERSION,
+            'laravel_version' => app()->getLaravelVersion(),
             'max_upload_size' => ini_get('upload_max_filesize'),
             'execute_time' => ini_get('max_execution_time').'秒',
             'server_date' => date('Y年n月j日 H:i:s'),
@@ -520,7 +524,7 @@ class SiteController extends Controller
 
         $configuration->save($config);
 
-        return response()->json(['message' => ['更新站点配置成功']], 201);
+        return response()->json(['message' => '更新站点配置成功'], 201);
     }
 
     /**
@@ -541,6 +545,6 @@ class SiteController extends Controller
     {
         $config->set('site.background.logo', $request->input('logo_src'));
 
-        return response()->json(['message' => ['保存成功']], 201);
+        return response()->json(['message' => '保存成功'], 201);
     }
 }

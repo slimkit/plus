@@ -32,7 +32,6 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
-        \Zhiyi\Plus\Http\Middleware\CrossDomain::class,
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \Zhiyi\Plus\Http\Middleware\TrimStrings::class,
@@ -57,6 +56,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
+            \Zhiyi\Plus\Http\Middleware\Cors::class,
             'throttle:120,1',
             'bindings',
         ],

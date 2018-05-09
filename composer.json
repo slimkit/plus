@@ -89,20 +89,21 @@
         "fideloper/proxy": "~4.0",
         "guzzlehttp/guzzle": "^6.3",
         "intervention/image": "^2.3",
+        "jenssegers/agent": "^2.6",
         "jpush/jpush": "^3.5",
         "laravel/framework": "5.6.*",
         "laravel/tinker": "~1.0",
         "overtrue/easy-sms": "^1.0",
         "pingplusplus/pingpp-php": "^2.2",
         "predis/predis": "^1.1",
-        "slimkit/plus-appversion": "1.7.0",
-        "slimkit/plus-around-amap": "1.7.0",
-        "slimkit/plus-checkin": "1.7.0",
-        "slimkit/plus-feed": "1.7.0",
-        "slimkit/plus-id": "1.7.0",
-        "slimkit/plus-music": "1.7.0",
-        "slimkit/plus-news": "1.7.0",
-        "slimkit/plus-socialite": "1.7.0",
+        "slimkit/plus-appversion": "1.7.5",
+        "slimkit/plus-around-amap": "1.7.5",
+        "slimkit/plus-checkin": "1.7.5",
+        "slimkit/plus-feed": "1.7.5",
+        "slimkit/plus-id": "1.7.5",
+        "slimkit/plus-music": "1.7.5",
+        "slimkit/plus-news": "1.7.5",
+        "slimkit/plus-socialite": "1.7.5",
         "symfony/finder": "^4.0",
         "symfony/yaml": "^4.0",
         "tymon/jwt-auth": "1.0.0-rc.2"
@@ -145,7 +146,8 @@
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
-            "@php artisan key:generate"
+            "@php artisan key:generate",
+            "@php artisan jwt:secret --force"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",

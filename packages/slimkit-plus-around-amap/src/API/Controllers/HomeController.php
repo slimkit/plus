@@ -77,23 +77,16 @@ class HomeController extends Controller
     {
         $this->http = new GuzzleHttpClient();
         $conf = $config->getConfigurationBase();
-
         $this->_amap_sig = array_get($conf, 'around-amap.amap-sig') ?? '';
         $this->_amap_key = array_get($conf, 'around-amap.amap-key') ?? '';
         $this->_amap_tableId = array_get($conf, 'around-amap.amap-tableid') ?? '';
-
-        if (! $this->_amap_key || ! $this->_amap_sig || ! $this->_amap_tableId) {
-            abort(500, '配置信息错误，请联系管理员');
-        }
     }
 
     // 数据总线
     public function index(Request $request, AroundAmapModel $around, ResponseFactory $response)
     {
         $user = $request->user();
-
         $aroundAmap = $around->find($user->id);
-
         if (! $aroundAmap) {
             return $this->create($request, $around, $response);
         } else {
@@ -107,43 +100,32 @@ class HomeController extends Controller
     public function create(Request $request, AroundAmapModel $around, ResponseFactory $response)
     {
         $user = $request->user();
-
         $latitude = $request->input('latitude', '');
         $longitude = $request->input('longitude', '');
-
         if (! $latitude) {
-            abort(400, '请传递GPS纬度坐标');
+            return $response->json(['message' => '请传递GPS纬度坐标'], 400);
         }
-
         if (! $longitude) {
-            abort(400, '请传递GPS经度坐标');
+            return $response->json(['message' => '请传递GPS经度坐标'], 400);
         }
-
         $around->user_id = $user->id;
         $around->longitude = $longitude;
         $around->latitude = $latitude;
-
         $_location = $longitude.','.$latitude;
-
         $localtype = 1; // 采用经纬度方式
-
         $data = json_encode([
             '_location' => $_location,
             '_name' => $user->name,
             'user_id' => $user->id,
         ]);
-
         $prams = [
             'data' => $data,
             'key' => $this->_amap_key,
             'localtype' => $localtype,
             'tableid' => $this->_amap_tableId,
         ];
-
         $sig = md5(urldecode(http_build_query($prams, '', '&')).$this->_amap_sig);
-
         $prams['sig'] = $sig;
-
         $result = json_decode($this->http->post($this->_create_uri, [
                 'form_params' => $prams,
                 'headers' => [
@@ -159,7 +141,7 @@ class HomeController extends Controller
 
             return $response->json(['message' => '位置创建成功', '_id' => $result['_id']])->setStatusCode(201);
         } else {
-            abort(500, $this->errors[$result['info']] ?? '未知错误');
+            return $response->json(['message' => $this->errors[$result['info']] ?? '未知错误'], 500);
         }
     }
 
@@ -169,40 +151,34 @@ class HomeController extends Controller
     public function update(Request $request, ResponseFactory $response, AroundAmapModel $around)
     {
         $user = $request->user();
-
         $latitude = $request->input('latitude', '');
         $longitude = $request->input('longitude', '');
         $aroundAmap = $around->find($user->id);
         $_id = $aroundAmap['_id'];
-
-        $_id ?? abort(422, '请先创建高德数据');
+        if (! $_id) {
+            return $response->json(['message' => '系统错误, 请联系管理员'], 500);
+        }
 
         if (! $latitude) {
-            abort(400, '请传递GPS纬度坐标');
+            return $response->json(['message' => '纬度坐标获取失败'], 400);
         }
-
         if (! $longitude) {
-            abort(400, '请传递GPS经度坐标');
+            return $response->json(['message' => '经度坐标获取失败'], 400);
         }
-
         $_location = $longitude.','.$latitude;
-
         $data = json_encode([
             '_id' => $_id,
             '_location' => $_location,
             '_name' => $user->name,
 
         ]);
-
         $prams = [
             'data' => $data,
             'key' => $this->_amap_key,
             'tableid' => $this->_amap_tableId,
         ];
         $sig = md5(urldecode(http_build_query($prams, '', '&')).$this->_amap_sig);
-
         $prams['sig'] = $sig;
-
         $result = json_decode($this->http->post($this->_update_uri, [
                 'form_params' => $prams,
                 'headers' => [
@@ -218,7 +194,7 @@ class HomeController extends Controller
 
             return $response->json(['message' => '位置更新成功'])->setStatusCode(201);
         } else {
-            abort(500, $this->errors[$result['info']] ?? '未知错误');
+            return $response->json(['message' => $this->errors[$result['info']] ?? '未知错误'], 500);
         }
     }
 
@@ -228,36 +204,30 @@ class HomeController extends Controller
     public function delete(Request $request, ResponseFactory $response, AroundAmapModel $around)
     {
         $user = $request->user();
-
         $aroundAmap = $around->find($user->id);
-
         $_id = $aroundAmap['_id'];
-
         $parmas = [
-            'ids' => $_id,
-            'key' => $this->_amap_key,
-            'tableid' => $this->_amap_tableId,
+        'ids' => $_id,
+        'key' => $this->_amap_key,
+        'tableid' => $this->_amap_tableId,
         ];
-
         $sig = md5(urldecode(http_build_query($parmas, '', '&')).$this->_amap_sig);
-
         $parmas['sig'] = $sig;
-
         $result = json_decode($this->http->post($this->_delete_uri, [
-            'form_params' => $parmas,
-            'headers' => [
-                    'Content-Type' => 'application/x-www-form-urlencoded',
-                ],
-            ])
-            ->getBody()
-            ->getContents(), true);
+        'form_params' => $parmas,
+        'headers' => [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+            ],
+        ])
+        ->getBody()
+        ->getContents(), true);
 
         if ($result['status'] && ! $result['fail']) {
             $aroundAmap->delete();
 
             return $response->json()->setStatusCode(204);
         } else {
-            abort(500, $this->errors[$result['info']] ?? '未知错误');
+            return $response->json(['message' => $this->errors[$result['info']] ?? '未知错误'], 500);
         }
     }
 
@@ -266,63 +236,62 @@ class HomeController extends Controller
      */
     public function getArounds(Request $request, ResponseFactory $response)
     {
+        $user = $request->user('api')->id ?? 0;
         $latitude = $request->input('latitude', '');
         $longitude = $request->input('longitude', '');
-
         if (! $latitude) {
-            abort(400, '请传递中心GPS纬度');
+            return $response->json(['message' => '纬度坐标获取失败'], 400);
         }
-
         if (! $longitude) {
-            abort(400, '请传递中心GPS经度');
+            $response->json(['message' => '经度坐标获取失败'], 400);
         }
-
         $center = $longitude.','.$latitude;
-
         // 查询半径
         $radius = $request->input('radius', 3000); // 默认3km范围的用户, 最大为50km
-        $limit = $request->input('limit', 20); // 默认20条数据
         $page = $request->input('page', 1);
+        $limit = $request->input('limit', ($page === 1 && $user) ? 16 : 15); // 默认15条数据
         $searchtype = 0; // 搜索半径代表类型 默认为0， 直线距离
-
         // 组装参数
         $prams = "center={$center}&key={$this->_amap_key}&limit={$limit}&page={$page}&radius={$radius}&searchtype={$searchtype}&tableid={$this->_amap_tableId}";
-
         // 计算数字签名
         $sig = md5($prams.$this->_amap_sig);
-
         $uri = $prams."&sig={$sig}";
-
-        $results = json_decode(file_get_contents($this->_search_uri.$uri));
+        $results = json_decode($this->http->get($this->_search_uri.$uri)->getBody()->getContents());
         if ($results->status) {
-            return $response->json($results->datas)->setStatusCode(200);
+            $datas = $results->datas;
+            if ($user) {
+                foreach ($datas as $key => $data) {
+                    if ($data->user_id === $user) {
+                        unset($datas[$key]);
+                    }
+                }
+                $datas = collect(array_values($datas));
+            }
+
+            return $response->json($datas)->setStatusCode(200);
         } else {
-            abort(500, $this->errors[$results->info] ?? '未知错误');
+            return $response->json(['message' => $this->errors[$results->info] ?? '未知错误'], 500);
         }
     }
 
     /**
      * 地址换取经纬度.
      */
-    public function getGeo(Request $request, GuzzleHttpClient $client)
+    public function getGeo(Request $request, ResponseFactory $response)
     {
         $address = urlencode($request->input('address', ''));
         if (! $address) {
-            abort(400, '请传递定位地址');
+            $response->json(['message' => '请输入要获取的地址'], 400);
         }
-
         $address = urldecode($address);
-
         $parmas = "address={$address}&key={$this->_amap_key}";
         $sig = md5($parmas.$this->_amap_sig);
         $parmas .= '&sig='.$sig;
-
-        $response = json_decode($client->request('get', $this->_getgeo_uri.$parmas)->getBody());
-
-        if ($response->status) {
-            return response()->json($response)->setStatusCode(200);
+        $results = json_decode($this->http->get($this->_getgeo_uri.$parmas)->getBody()->getContents());
+        if ($results->status) {
+            return response()->json($results)->setStatusCode(200);
         }
 
-        abort(500, $this->errors[$response->info] ?? '未知错误');
+        return $response->json(['message' => $this->errors[$results->info] ?? '未知错误'], 500);
     }
 }

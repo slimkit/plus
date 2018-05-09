@@ -126,7 +126,7 @@ class MusicCommentController extends Controller
     {
         $user = $request->user();
         if ($comment->user_id !== $user->id) {
-            return $response->json(['message' => ['没有权限']], 403);
+            return response()->json(['message' => ['没有权限']], 403);
         }
 
         $special->getConnection()->transaction(function () use ($user, $special, $comment) {

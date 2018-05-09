@@ -78,12 +78,12 @@ class ReportController extends Controller
         if ($report->target) {
             $report->target->sendNotifyMessage(
                 'user-report:notice',
-                '你的'.$report->subject.'已被举报',
-                ['report' => $report]
+                '你的「'.$report->subject.'」已被举报',
+                ['repot' => $report]
             );
         }
 
-        return response()->json(['message' => ['操作成功']], 201);
+        return response()->json(['message' => '操作成功'], 201);
     }
 
     /**
@@ -107,7 +107,7 @@ class ReportController extends Controller
             ]);
         }
 
-        return response()->json(['message' => ['操作成功']], 201);
+        return response()->json(['message' => '操作成功'], 201);
     }
 
     /**

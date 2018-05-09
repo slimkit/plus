@@ -80,7 +80,7 @@ class FileUploadedTest extends TestCase
         $file = UploadedFile::fake()->image('test.jpg');
         $hash = md5_file((string) $file);
 
-        $model = factory(FileModel::class)->create([
+        factory(FileModel::class)->create([
             'hash' => $hash,
             'origin_filename' => 'test.jpg',
             'filename' => 'test.jpg',

@@ -57,8 +57,8 @@
                         <table-loading :loadding="loadding" :colspan-num="6"></table-loading>
                         <tr v-for="reward in rewards">
                           <td>{{ reward.id }}</td>
-                          <td>{{ reward.user.name }}</td>
-                          <td>{{ reward.target.name }}</td>
+                          <td>{{ reward.user ? reward.user.name : '未知' }}</td>
+                          <td>{{ reward.target ? reward.target.name : '未知' }}</td>
                           <td>{{ reward.amount / 100 }}</td>
                           <td v-if="reward.rewardable_type=='feeds'">动态</td>
                           <td v-else-if="reward.rewardable_type=='news'">咨询</td>

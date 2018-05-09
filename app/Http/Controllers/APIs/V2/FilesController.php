@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Image;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -54,8 +55,7 @@ class FilesController extends Controller
             'blur' => $request->query('b'),
         ]);
 
-        if (
-            ($fileWith->paidNode instanceof PaidNodeModel &&
+        if (($fileWith->paidNode instanceof PaidNodeModel &&
             $fileWith->paidNode->paid($user->id ?? 0) === false) &&
             ($fileWith->paidNode->extra === 'read' || (! isset($extra['width']) && isset($extra['height'])))
         ) {
@@ -96,13 +96,14 @@ class FilesController extends Controller
     public function store(StoreUploadFileRequest $request, ResponseContract $response, Carbon $dateTime, FileModel $fileModel, FileWithModel $fileWith)
     {
         $fileModel = $this->validateFileInDatabase($fileModel, $file = $request->file('file'), function (UploadedFile $file, string $md5) use ($fileModel, $dateTime): FileModel {
+            // 图片做旋转处理
+            Image::make($file->getRealPath())->orientate()->save($file->getRealPath(), 100);
+
             list($width, $height) = ($imageInfo = @getimagesize($file->getRealPath())) === false ? [null, null] : $imageInfo;
             $path = $dateTime->format('Y/m/d/Hi');
-
             if (($filename = $file->store($path, config('cdn.generators.filesystem.disk'))) === false) {
-                abort(500, '上传失败');
+                return $response->json(['message' => '上传失败'], 500);
             }
-
             $fileModel->filename = $filename;
             $fileModel->hash = $md5;
             $fileModel->origin_filename = $file->getClientOriginalName();
@@ -113,11 +114,10 @@ class FilesController extends Controller
 
             return $fileModel;
         });
-
         $fileWith = $this->resolveFileWith($fileWith, $request->user(), $fileModel);
 
         return $response->json([
-            'message' => ['上传成功'],
+            'message' => '上传成功',
             'id' => $fileWith->id,
         ])->setStatusCode(201);
     }
@@ -143,7 +143,7 @@ class FilesController extends Controller
         $fileWith = $this->resolveFileWith($fileWith, $request->user(), $file);
 
         return $response->json([
-            'message' => ['success'],
+            'message' => 'success',
             'id' => $fileWith->id,
         ])->setStatusCode(200);
     }

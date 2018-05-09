@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace SlimKit\PlusFeed\Tests\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\User as UserModel;
 
 class GetFeedRankUserTest extends TestCase
 {
@@ -32,8 +31,6 @@ class GetFeedRankUserTest extends TestCase
      */
     public function testGetFeedRankUser()
     {
-        $user = factory(UserModel::class);
-
         $response = $this
             ->json('GET', '/api/v2/feeds/ranks');
         $response

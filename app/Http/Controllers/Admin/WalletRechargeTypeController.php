@@ -60,7 +60,7 @@ class WalletRechargeTypeController extends Controller
         );
 
         return $response
-            ->json(['message' => ['更新成功']])
+            ->json(['message' => '更新成功'])
             ->setStatusCode(201);
     }
 

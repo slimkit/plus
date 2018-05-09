@@ -84,6 +84,8 @@ class FeedController extends Controller
             ->get();
 
         $user = $request->user('api')->id ?? 0;
+        $ids = $feeds->pluck('id');
+        $feedModel->whereIn('id', $ids)->increment('feed_view_count');
 
         return $feedModel->getConnection()->transaction(function () use ($feeds, $repository, $user) {
             return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
@@ -130,6 +132,9 @@ class FeedController extends Controller
         ])
         ->limit($limit)
         ->get();
+
+        $ids = $feeds->pluck('id');
+        $feedModel->whereIn('id', $ids)->increment('feed_view_count');
 
         return $feedModel->getConnection()->transaction(function () use ($feeds, $repository, $user) {
             return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
@@ -186,12 +191,13 @@ class FeedController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
-        return $model->getConnection()->transaction(function () use ($feeds, $repository, $user) {
+        $feedModel->whereIn('id', $ids)->increment('feed_view_count');
+
+        return $model->getConnection()->transaction(function () use ($feeds, $repository, $user, $ids, $feedModel) {
             return $feeds->map(function ($feed) use ($repository, $user) {
                 if (! $feed) {
                     return null;
                 }
-
                 $repository->setModel($feed);
                 $repository->images();
                 $repository->format($user);
@@ -244,6 +250,8 @@ class FeedController extends Controller
         ->orderBy('feeds.id', 'desc')
         ->limit($limit)
         ->get();
+        $ids = $feeds->pluck('id');
+        $feedModel->whereIn('id', $ids)->increment('feed_view_count');
 
         return $model->getConnection()->transaction(function () use ($repository, $user, $feeds) {
             return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
@@ -465,10 +473,11 @@ class FeedController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function destroy(Request $request,
-                            ResponseContract $response,
-                            FeedModel $feed)
-    {
+    public function destroy(
+        Request $request,
+        ResponseContract $response,
+        FeedModel $feed
+    ) {
         $user = $request->user();
 
         if ($user->id !== $feed->user_id) {
@@ -508,10 +517,11 @@ class FeedController extends Controller
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function newDestroy(Request $request,
-                            ResponseContract $response,
-                            FeedModel $feed)
-    {
+    public function newDestroy(
+        Request $request,
+        ResponseContract $response,
+        FeedModel $feed
+    ) {
         $user = $request->user();
 
         if ($user->id !== $feed->user_id) {
@@ -520,7 +530,6 @@ class FeedController extends Controller
 
         $feed->getConnection()->transaction(function () use ($feed, $user) {
             if ($pinned = $feed->pinned()->where('user_id', $user->id)->where('expires_at', null)->first()) { // 存在未审核的置顶申请时退款
-
                 $process = new UserProcess();
                 $process->reject(0, $pinned->amount, $user->id, '动态申请置顶退款', sprintf('退还申请置顶动态《%s》的款项', str_limit($feed->feed_content, 100)));
             }

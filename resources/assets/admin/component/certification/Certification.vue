@@ -48,20 +48,20 @@
                 <!-- 认证列表 -->
                 <table class="table table-striped">
                     <thead>
-                        <tr>
-                            <th>用户名</th>
-                            <th>真实姓名</th>
-                            <th>机构名称</th>
-                            <th>机构地址</th>
-                            <th>手机号码</th>
-                            <th>身份证号码</th>
-                            <th>认证类型</th>
-                            <th>认证描述</th>
-                            <th>认证资料</th>
-                            <th>认证状态</th>
-                            <th>认证时间</th>
-                            <th>操作</th>
-                        </tr>
+                      <tr>
+                        <th width="5%">用户名</th>
+                        <th width="6%">真实姓名</th>
+                        <th width="8%">机构名称</th>
+                        <th width="8%">机构地址</th>
+                        <th width="7%">手机号码</th>
+                        <th width="10%">身份证号码</th>
+                        <th width="6%">认证类型</th>
+                        <th width="20%">认证描述</th>
+                        <th width="8%">认证资料</th>
+                        <th width="8%">认证状态</th>
+                        <th width="8%">认证时间</th>
+                        <th width="5%">操作</th>
+                      </tr>
                     </thead>
                     <tbody>
                         <!-- 加载 -->
@@ -164,199 +164,224 @@
 </template>
 
 <script>
-import request, { createRequestURI } from '../../util/request';
+import request, { createRequestURI } from "../../util/request";
 
 const certificationComponent = {
-    data: () => ({
-        loadding: true,
-        total: 0,
-        counts: [],
-        categories: [],
-        certifications: [],
-        attachmentPath: '/api/v2/files/',
-        reject: {
-          id: '',
-          content:'',
-          message: '',
-        },
-        pass: {
-          id: '',
-          desc: '',
-          message: '',
-        },
-        filter: {
-          keyword: '',
-          status: '',
-          certification_name: '',
-        },
-        message: {
-          error: null,
-          success: null,
-        },
-        statuss: {
-          display: ['待审核', '已审核' , '已驳回'],
-          data:[
-            {status: '全部', value: ''},
-            {status: '待审核', value: 0},
-            {status: '已审核', value: 1},
-            {status: '已驳回', value: 2},
-          ]
-        },
-    }),
-    
-    watch: {
-      '$route': function ($route) {
-        this.total = 0;
-        this.getCertifications({ ...$route.query });
-      },
+  data: () => ({
+    loadding: true,
+    total: 0,
+    counts: [],
+    categories: [],
+    certifications: [],
+    attachmentPath: "/api/v2/files/",
+    reject: {
+      id: "",
+      content: "",
+      message: ""
+    },
+    pass: {
+      id: "",
+      desc: "",
+      message: ""
+    },
+    filter: {
+      keyword: "",
+      status: "",
+      certification_name: ""
+    },
+    message: {
+      error: null,
+      success: null
+    },
+    statuss: {
+      display: ["待审核", "已审核", "已驳回"],
+      data: [
+        { status: "全部", value: "" },
+        { status: "待审核", value: 0 },
+        { status: "已审核", value: 1 },
+        { status: "已驳回", value: 2 }
+      ]
+    }
+  }),
+
+  watch: {
+    $route: function($route) {
+      this.total = 0;
+      this.getCertifications({ ...$route.query });
+    }
+  },
+
+  computed: {
+    offset() {
+      const {
+        query: { offset = 0 }
+      } = this.$route;
+      return parseInt(offset);
+    },
+    searchQuery() {
+      return { ...this.filter, offset: 0 };
+    }
+  },
+
+  methods: {
+    /**
+     * Update certifcation status.
+     *
+     * @param {Integer} id
+     * @param {Integer} status
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    updateItemStatus(id, status) {
+      this.certifications = this.certifications.map(certification => {
+        if (parseInt(id) === parseInt(certification.id)) {
+          return { ...certification, status };
+        }
+
+        return certification;
+      });
     },
 
-    computed: {
-      offset () {
-        const { query: { offset = 0 } } = this.$route;
-        return parseInt(offset);
-      },
-      searchQuery () {
-        return { ...this.filter, offset: 0 };
-      },
-    },
-
-    methods: {
-      /**
-       * Update certifcation status.
-       *
-       * @param {Integer} id
-       * @param {Integer} status
-       * @return void
-       * @author Seven Du <shiweidu@outlook.com>
-       */
-      updateItemStatus(id, status) {
-        this.certifications = this.certifications.map((certification) => {
-          if (parseInt(id) === parseInt(certification.id)) {
-            return { ...certification, status };
-          }
-
-          return certification;
-        });
-      },
-
-        /**
-         * 获取认证类型
-         */
-        getCertificationCategories () {
-          return new Promise((resolve, reject) => {
-            request.get(
-              createRequestURI('certification/categories'),
-              {validateStatus: status => status === 200}
-            ).then(response => {
-              resolve(response.data);
-            }).catch(({ response: { data: { errors = ['加载认证栏目失败详情失败'] } = {} } = {} }) => {
-              reject(errors); 
-            }); 
-          });
-        },
-        /**
-         * 获取认证列表
-         */
-        getCertifications (query = {}) {
-          this.loadding = true;
-          this.certifications = []; 
-          request.get(
-            createRequestURI(`certifications`),
-            { 
-              validateStatus: status => status === 200,
-              params: { ...query, limit: 15 },
+    /**
+     * 获取认证类型
+     */
+    getCertificationCategories() {
+      return new Promise((resolve, reject) => {
+        request
+          .get(createRequestURI("certification/categories"), {
+            validateStatus: status => status === 200
+          })
+          .then(response => {
+            resolve(response.data);
+          })
+          .catch(
+            ({
+              response: {
+                data: { errors = ["加载认证栏目失败详情失败"] } = {}
+              } = {}
+            }) => {
+              reject(errors);
             }
-          ).then(({ data, headers: { 'x-certifications-total': total } }) => {
-            this.loadding = false;
-            this.total = parseInt(total);
-            this.certifications = data.items;
-            this.counts = (data.counts)[0];
-          }).catch(({ response: { data: { errors = ['加载失败'] } = {} } = {} }) => {
+          );
+      });
+    },
+    /**
+     * 获取认证列表
+     */
+    getCertifications(query = {}) {
+      this.loadding = true;
+      this.certifications = [];
+      request
+        .get(createRequestURI(`certifications`), {
+          validateStatus: status => status === 200,
+          params: { ...query, limit: 15 }
+        })
+        .then(({ data, headers: { "x-certifications-total": total } }) => {
+          this.loadding = false;
+          this.total = parseInt(total);
+          this.certifications = data.items;
+          this.counts = data.counts[0];
+        })
+        .catch(
+          ({ response: { data: { errors = ["加载失败"] } = {} } = {} }) => {
             this.loadding = false;
             let Message = new plusMessageBundle(errors);
             this.message.error = Message.getMessage();
-          });
-        },
-        /**
-         * 打开通过认证模态框
-         */
-        openPassModal (index) {
-          let certification = this.certifications[index];
-
-          this.pass.id = certification.id;
-          this.pass.desc = certification.data.desc;
-
-          $('#passModal').modal('show');
-        },
-        /**
-         * 处理通过认证
-         */
-        passCertification () {
-          let {desc: desc, id: id} = this.pass;
-          request.patch(
-            createRequestURI('certifications/' + id + '/pass'),
-            {desc: desc},
-            {validateStatus: status => status === 201}
-          ).then(({ data: { message: [ message ] = [] } }) => {
-            $('#passModal').modal('hide');
-            this.message.success = message;
-            this.updateItemStatus(id, 1);
-            // this.getCertifications(this.$route.query);
-          }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {
-            this.pass.message = message;
-          });
-        },
-        /**
-         * 驳回认证
-         */
-        rejectCertification () {
-          if ( !this.reject.content ) {
-            this.reject.message = '请填写驳回原因';
-            return;
           }
-          let {id: id, content: content} = this.reject;
-          request.patch(
-            createRequestURI('certifications/' + id + '/reject'),
-            {reject_content: content},
-            {validateStatus: status => status === 201}
-          ).then(({ data: { message: [ message ] = [] } }) => {
-            this.message.success = message;
-            this.updateItemStatus(id, 2);
-            // this.getCertifications(this.$route.query);
-            $('#rejectModal').modal('hide')
-          }).catch(({ response: { data: { message: [ message ] = [] } = {} } = {} }) => {
-            this.message.error = message;
-            $('#rejectModal').modal('hide')
-          });
-        },
-        /**
-         * 打开驳回弹层
-         */
-        openRejectModal (id) {
-          this.reject.id = id;
-          this.reject.content = '';
-          this.reject.message = '';
-          $('#rejectModal').modal('show');
-        },
-        offsetPage(offset) {
-          return { path: '/certifications', query: { ...this.filter, offset } };
-        },
+        );
     },
-    created () {
-      let promise = this.getCertificationCategories();
-      promise.then(data => {
+    /**
+     * 打开通过认证模态框
+     */
+    openPassModal(index) {
+      let certification = this.certifications[index];
+
+      this.pass.id = certification.id;
+      this.pass.desc = certification.data.desc;
+
+      $("#passModal").modal("show");
+    },
+    /**
+     * 处理通过认证
+     */
+    passCertification() {
+      let { desc: desc, id: id } = this.pass;
+      request
+        .patch(
+          createRequestURI("certifications/" + id + "/pass"),
+          { desc: desc },
+          { validateStatus: status => status === 201 }
+        )
+        .then(({ data: { message: [message] = [] } }) => {
+          $("#passModal").modal("hide");
+          this.message.success = message;
+          this.updateItemStatus(id, 1);
+          // this.getCertifications(this.$route.query);
+        })
+        .catch(
+          ({ response: { data: { message: [message] = [] } = {} } = {} }) => {
+            this.pass.message = message;
+          }
+        );
+    },
+    /**
+     * 驳回认证
+     */
+    rejectCertification() {
+      if (!this.reject.content) {
+        this.reject.message = "请填写驳回原因";
+        return;
+      }
+      let { id: id, content: content } = this.reject;
+      request
+        .patch(
+          createRequestURI("certifications/" + id + "/reject"),
+          { reject_content: content },
+          { validateStatus: status => status === 201 }
+        )
+        .then(({ data: { message: [message] = [] } }) => {
+          this.message.success = message;
+          this.updateItemStatus(id, 2);
+          // this.getCertifications(this.$route.query);
+          $("#rejectModal").modal("hide");
+        })
+        .catch(
+          ({ response: { data: { message: [message] = [] } = {} } = {} }) => {
+            this.message.error = message;
+            $("#rejectModal").modal("hide");
+          }
+        );
+    },
+    /**
+     * 打开驳回弹层
+     */
+    openRejectModal(id) {
+      this.reject.id = id;
+      this.reject.content = "";
+      this.reject.message = "";
+      $("#rejectModal").modal("show");
+    },
+    offsetPage(offset) {
+      return { path: "/certifications", query: { ...this.filter, offset } };
+    }
+  },
+  created() {
+    let promise = this.getCertificationCategories();
+    promise.then(
+      data => {
         this.loadding = false;
         if (data.length) {
           this.categories.data = data;
           this.getCertifications(this.$route.query);
         } else {
-          this.message.error = '认证类型加载失败';
+          this.message.error = "认证类型加载失败";
         }
-      }, error => {
-         this.message.error = error;
-      });
-    },
+      },
+      error => {
+        this.message.error = error;
+      }
+    );
+  }
 };
 export default certificationComponent;
 </script>

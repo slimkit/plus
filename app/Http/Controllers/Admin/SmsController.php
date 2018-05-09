@@ -91,7 +91,7 @@ class SmsController extends Controller
         $type = $request->input('type');
 
         if (! is_array($gateways) || ! $type) {
-            return response(['message' => ['数据格式错误或类型参数错误']], 422);
+            return response(['message' => '数据格式错误或类型参数错误'], 422);
         }
 
         $config = $store->getConfiguration();
@@ -102,7 +102,7 @@ class SmsController extends Controller
 
         $store->save($config);
 
-        return response(['message' => ['更新成功']], 201);
+        return response(['message' => '更新成功'], 201);
     }
 
     /**
@@ -117,7 +117,7 @@ class SmsController extends Controller
     public function showOption(Repository $config, ResponseFactory $response, string $driver)
     {
         if (! in_array($driver, array_keys($config->get('sms.gateways')))) {
-            return $response->json(['message' => ['当前驱动不存在于系统中']], 422);
+            return $response->json(['message' => '当前驱动不存在于系统中'], 422);
         }
 
         $data = $config->get(sprintf('sms.gateways.%s', $driver), []);
@@ -147,7 +147,7 @@ class SmsController extends Controller
 
         $store->save($config);
 
-        return $response->json(['message' => ['更新成功']], 201);
+        return $response->json(['message' => '更新成功'], 201);
     }
 
     /**
@@ -172,7 +172,7 @@ class SmsController extends Controller
 
         $store->save($config);
 
-        return response()->json(['message' => ['更新成功']], 201);
+        return response()->json(['message' => '更新成功'], 201);
     }
 
     /**
@@ -197,7 +197,7 @@ class SmsController extends Controller
 
         $store->save($config);
 
-        return response()->json(['message' => ['更新成功']], 201);
+        return response()->json(['message' => '更新成功'], 201);
     }
 
     /**
@@ -246,6 +246,6 @@ class SmsController extends Controller
 
         $store->save($config);
 
-        return response()->json(['message' => ['更新成功']], 201);
+        return response()->json(['message' => '更新成功'], 201);
     }
 }

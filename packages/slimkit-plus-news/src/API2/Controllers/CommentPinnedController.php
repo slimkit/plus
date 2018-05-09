@@ -206,9 +206,10 @@ class CommentPinnedController extends Controller
                            ResponseContract $response,
                            Carbon $dateTime,
                            NewsModel $news,
-                           CommentModel $comment,
+                           $comment,
                            NewsPinnedModel $pinned)
     {
+        unset($comment);
         $user = $request->user();
         if ($user->id !== $news->user_id) {
             return $response->json(['message' => ['你没有权限操作']], 403);

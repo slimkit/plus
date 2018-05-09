@@ -83,12 +83,12 @@ class GoldRuleController extends Controller
         $incremental = (int) $request->input('incremental');
 
         if ($incremental === 0) {
-            return response()->json(['message' => ['增量不能为0']], 422);
+            return response()->json(['message' => '增量不能为0'], 422);
         }
 
         GoldRule::create($request->all());
 
-        return response()->json(['message' => ['添加金币规则成功']], 201);
+        return response()->json(['message' => '添加金币规则成功'], 201);
     }
 
     /**

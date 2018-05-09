@@ -4,6 +4,7 @@
     top:0;
     width:100%;
     z-index:9999;
+    border-radius: 0;
   }
 </style>
 <template>

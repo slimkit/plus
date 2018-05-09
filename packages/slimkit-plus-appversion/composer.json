@@ -5,7 +5,6 @@
     "license": "MIT",
     "require": {
         "php": ">=7.0",
-        "alexfloppy/php-apk-parser-php7": "^2.0",
         "illuminate/console": "5.6.*",
         "illuminate/contracts": "5.6.*",
         "illuminate/database": "5.6.*",
@@ -29,5 +28,5 @@
             ]
         }
     },
-    "version": "1.7.0"
+    "version": "1.7.5"
 }

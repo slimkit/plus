@@ -55,6 +55,6 @@ class FileController extends Controller
     {
         $config->set('files.upload_max_size', $request->input('max_size'));
 
-        return response()->json(['message' => ['保存成功']], 201);
+        return response()->json(['message' => '保存成功'], 201);
     }
 }

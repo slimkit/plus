@@ -95,7 +95,7 @@ Route::group([
     $route->group(['prefix' => 'cdn'], function (RouteRegisterContract $route) {
 
         // Get cdn selected
-        $route->get('/seleced', 'CdnController@getCdnSelected');
+        $route->get('/selected', 'CdnController@getCdnSelected');
 
         // Local.
         $route->get('/filesystem/disk', 'CdnController@getFilesystemDisk');
@@ -155,6 +155,10 @@ Route::group([
          */
         $route->delete('/{sensitive}', 'SensitiveController@destroy');
     });
+
+    // web clients
+    $route->get('settings/web-clients', 'WebClientsController@fetch');
+    $route->patch('settings/web-clients', 'WebClientsController@update');
 });
 
 Route::middleware('auth:web')

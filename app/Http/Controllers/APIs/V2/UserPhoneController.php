@@ -52,9 +52,9 @@ class UserPhoneController extends Controller
             ->first();
 
         if (! $user->verifyPassword($password)) {
-            return $response->json(['message' => ['密码错误']], 422);
+            return $response->json(['message' => '密码错误'], 422);
         } elseif (! $verify) {
-            return $response->json(['message' => ['验证码错误或者已失效']], 422);
+            return $response->json(['message' => '验证码错误或者已失效'], 422);
         }
 
         $user->getConnection()->transaction(function () use ($user, $verify) {

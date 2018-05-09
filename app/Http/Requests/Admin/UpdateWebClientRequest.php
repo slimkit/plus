@@ -18,31 +18,38 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Http\Controllers;
+namespace Zhiyi\Plus\Http\Requests\Admin;
 
-use Jenssegers\Agent\Agent;
+use Illuminate\Foundation\Http\FormRequest;
 
-class HomeController
+class UpdateWebClientRequest extends FormRequest
 {
     /**
-     * Home page.
+     * Determine if the user is authorized to make this request.
      *
-     * @param \Jenssegers\Agent\Agent $agent
-     * @return mixed
+     * @return bool
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function welcome(Agent $agent)
+    public function authorize(): bool
     {
-        // If request client is mobile and opened SPA.
-        if ($agent->isMobile() && config('http.spa.open')) {
-            return redirect(config('http.spa.url'));
+        return true;
+    }
 
-        // If web is opened.
-        } elseif (config('http.web.open')) {
-            return redirect(config('http.web.url'));
-        }
-
-        // By default, view welcome page.
-        return view('welcome');
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function rules(): array
+    {
+        return [
+            'web' => 'array',
+            'web.url' => 'nullable|string|url',
+            'web.open' => 'nullable|boolean',
+            'spa' => 'array',
+            'spa.url' => 'nullable|string|url',
+            'spa.open' => 'nullable|boolean',
+        ];
     }
 }

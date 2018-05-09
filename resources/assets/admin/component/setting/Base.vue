@@ -78,14 +78,22 @@
         </form>
       </div>
     </div>
+
+    <!-- web clients -->
+    <web-clients />
+
   </div>
 </template>
 
 <script>
 import { SETTINGS_SITE_UPDATE } from '../../store/types';
 import request, { createRequestURI } from '../../util/request';
+import WebClients from '../../components/modules/setting/WebClients';
 
 const settingBase = {
+  components: {
+    'web-clients': WebClients,
+  },
   data: () => ({
     btnLoading: false,
     loadding: true,

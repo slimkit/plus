@@ -83,7 +83,7 @@ class UserNotificationController extends Controller
             ->first(['id', 'read_at', 'data', 'created_at']);
 
         if (! $notification) {
-            return $response->json(['message' => ['通知不存在或者已被删除']])->setStatusCode(404);
+            return $response->json(['message' => '通知不存在或者已被删除'])->setStatusCode(404);
         }
 
         $notification->markAsRead();
@@ -123,6 +123,6 @@ class UserNotificationController extends Controller
     {
         $request->user()->unreadNotifications()->where('read_at', null)->get()->markAsRead();
 
-        return response()->json(['message' => ['操作成功']])->setStatusCode(201);
+        return response()->json(['message' => '操作成功'])->setStatusCode(201);
     }
 }
