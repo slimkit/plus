@@ -218,7 +218,7 @@ class AuthControllerTest extends TestCase
 
         $original = [
             'access_token' => $token,
-            'token_type' => 'bearer',
+            'token_type' => 'Bearer',
             'expires_in' => $ttl,
             'refresh_ttl' => config('jwt.refresh_ttl'),
         ];
