@@ -20,6 +20,7 @@ import CloseIcon from 'material-ui-icons/Close';
 
 import withStyles from 'material-ui/styles/withStyles';
 import request, { createRequestURI } from '../utils/request';
+import _ from "lodash";
 
 const styles = (theme:object) => ({
   root: {
@@ -73,6 +74,15 @@ class PayControl extends Component
   };
   saveItem () {
     const { payItems, textLength } = this.state;
+    if(_.split(payItems, ',').findIndex( item => {
+      return item < 1;
+    }) !== -1) {
+        this.handleSnackbar({
+            message: '付费选项不能小于1!',
+            open: true,
+        });
+        return false;
+    }
     request.patch(createRequestURI('paycontrol'), {
       payItems,
       textLength
@@ -132,15 +142,15 @@ class PayControl extends Component
                   付费选项
                 </Typography>
                 <Typography component="div">
-                  <p>发布付费动态时的金额选项，最少为0.01元</p>
-                  <p>少于0.01元时会出现意想不到的支付错误，请慎重填写</p>
+                  <p>发布付费动态时的所需积分选项，最少为1个积分</p>
                   <p>3个选项，请用半角","隔开</p>
                 </Typography>
               </CardContent>
 
               <CardContent>
                 <TextField
-                  label="金额选项"
+                  label="付费选项"
+                  label="付费选项"
                   className={classes.textField}
                   value={this.state.payItems}
                   onChange={this.handleChange}

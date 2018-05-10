@@ -125,12 +125,6 @@ class FeedPinnedController extends Controller
         $time = intval($request->input('day'));
         $pinned = $request->input('pinned');
 
-        $userCount = UserCountModel::firstOrNew([
-            'type' => 'user-system',
-            'user_id' => $pinned->user_id,
-        ]);
-        $userCount->total += 1;
-
         if (! $pinned) {
             $datetime = $datetime->addDay($time);
             $pinned = new FeedPinned();
@@ -148,6 +142,11 @@ class FeedPinnedController extends Controller
                 'feed' => $feed,
                 'pinned' => $pinned,
             ]);
+            $userCount = UserCountModel::firstOrNew([
+                'type' => 'user-system',
+                'user_id' => $pinned->user_id,
+            ]);
+            $userCount->total += 1;
             $userCount->save();
 
             return response()->json(['message' => ['操作成功'], 'data' => $pinned], 201);
@@ -163,9 +162,14 @@ class FeedPinnedController extends Controller
                 'feed' => $feed,
                 'pinned' => $pinned,
             ]);
+            $userCount = UserCountModel::firstOrNew([
+                'type' => 'user-system',
+                'user_id' => $pinned->user_id,
+            ]);
+            $userCount->total += 1;
             $userCount->save();
 
-            return response()->json(['message' => ['操作成功'], 'data' => $pinned], 201);
+            return response()->json(['message' => '操作成功', 'data' => $pinned], 201);
         }
     }
 

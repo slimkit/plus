@@ -640,7 +640,7 @@ class Feed extends Component
         { paid_node && (
 
           <Typography component="span" className={classes.amoutShow}>
-            文字收费：{paid_node.amount  / 100} 元
+            文字收费：{paid_node.amount } 积分
           </Typography>
           )
         }
@@ -662,7 +662,7 @@ class Feed extends Component
                 (paid_node.extra === 'read' ? '查看' : '下载') +
                 '收费：' +
                 (paid_node.amount / 100 ) +
-                ' 元'
+                ' 积分'
               }
               className={classes.drawerImageTitle}
             />)
@@ -862,7 +862,7 @@ class Feed extends Component
             color="primary"
             onTouchTap={()=> this.handleOpenPinnedDialog(feed)}
           >
-            申请置顶：{day} 天, 费用 {showAmount(amount)}
+            申请置顶：{day} 天, 积分 {showAmount(amount)}
           </Button>
     );
   };
