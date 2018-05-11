@@ -175,24 +175,10 @@ class FeedController extends Controller
     public function hot(Request $request, LikeModel $model, FeedRepository $repository, Carbon $dateTime)
     {
         $limit = $request->query('limit', 15);
-        $after = $request->query('after');
+        $offset = $request->query('offset', 0);
         $user = $request->user('api')->id ?? 0;
 
-        $ids = $model->where('likeable_type', 'feeds')
-            ->join('feeds', function ($query) {
-                $query->on('feeds.id', '=', 'likes.likeable_id');
-            })
-            ->select('likeable_id', $model->getConnection()->raw('COUNT(likes.id) as count'))
-            ->where('likes.created_at', '>', $dateTime->subMonth())
-            ->when((bool) $after, function ($query) use ($after) {
-                return $query->where('likes.likeable_id', '<', $after);
-            })
-            ->groupBy('likeable_id')
-            ->orderBy('likeable_id', 'desc')
-            ->limit($limit)
-            ->pluck('likeable_id');
-
-        $feeds = FeedModel::whereIn('id', $ids)
+        $feeds = FeedModel::where('created_at', '>', $dateTime->subDay(config('feed.duration', 7)))
             ->whereDoesntHave('blacks', function ($query) use ($user) {
                 $query->where('user_id', $user);
             })
@@ -204,10 +190,13 @@ class FeedController extends Controller
                     return $query->withTrashed();
                 },
             ])
-            ->orderBy('id', 'desc')
+            ->select('*', $model->getConnection()->raw('(feed_view_count + (feed_comment_count * 10) + (like_count * 5)) as popular'))
+            ->limit($limit)
+            ->offset($offset)
+            ->orderBy('popular', 'desc')
             ->get();
 
-        FeedModel::whereIn('id', $ids)->increment('feed_view_count');
+        FeedModel::whereIn('id', $feeds->pluck('id'))->increment('feed_view_count');
 
         return $model->getConnection()->transaction(function () use ($feeds, $repository, $user) {
             return $feeds->map(function ($feed) use ($repository, $user) {
