@@ -59,7 +59,7 @@ class FeedController extends Controller
 
         return $response->json([
 //            'ad' => $app->call([$this, 'getAd']),
-            'pinned' => ($type === 'follow' || $offset || $after ) ? [] : $app->call([$this, 'getPinnedFeeds']),
+            'pinned' => ($type === 'follow' || $offset || $after) ? [] : $app->call([$this, 'getPinnedFeeds']),
             'feeds' => $app->call([$this, $type]),
             ])
             ->setStatusCode(200);
