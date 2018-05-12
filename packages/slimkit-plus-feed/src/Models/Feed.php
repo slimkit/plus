@@ -148,9 +148,10 @@ class Feed extends Model
     }
 
     /**
-     * comments are pinneding
+     * comments are pinneding.
      */
-    public function pinnedingComments() {
+    public function pinnedingComments()
+    {
         return $this->hasMany(FeedPinned::class, 'raw', 'id')
             ->where('channel', 'comment')
             ->whereNull('expires_at');

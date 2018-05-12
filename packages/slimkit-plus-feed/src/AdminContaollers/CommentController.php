@@ -201,7 +201,7 @@ class CommentController extends Controller
                 ->where('target', $comment->id)
                 ->where('channel', 'comment')
                 ->first();
-            if($pinnedComment) {
+            if ($pinnedComment) {
                 $process = new UserProcess();
                 $process->reject(0, $pinnedComment->amount, $pinnedComment->user_id, '评论申请置顶退款', '退还在动态申请置顶的评论的款项');
                 $pinnedComment->delete();
@@ -213,7 +213,7 @@ class CommentController extends Controller
                 ->count();
             $userCount = UserCount::firstOrNew([
                 'type' => 'user-feed-comment-pinned',
-                'user_id' => $comment->target_user
+                'user_id' => $comment->target_user,
             ]);
 
             $userCount->total = $unReadCount;

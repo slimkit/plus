@@ -637,7 +637,7 @@ class FeedController extends Controller
             $process = new UserProcess();
             $userCount = UserCount::firstOrNew([
                 'type' => 'user-feed-comment-pinned',
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ]);
             if ($pinned = $feed->pinned()->where('user_id', $user->id)->where('expires_at', null)->first()) { // 存在未审核的置顶申请时退款
 
@@ -645,7 +645,7 @@ class FeedController extends Controller
             }
             $pinnedComments = $feed->pinnedingComments()
                 ->get();
-            $pinnedComments->map(function( $comment ) use ($process, $feed) {
+            $pinnedComments->map(function ($comment) use ($process, $feed) {
                 $process->reject(0, $comment->amount, $comment->user_id, '评论申请置顶退款', sprintf('退还在动态《%s》申请评论置顶的款项', str_limit($feed->feed_content, 100)));
                 $comment->delete();
             });

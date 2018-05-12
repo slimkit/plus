@@ -125,7 +125,7 @@ class FeedCommentController extends Controller
             ->where('user_id', $user->id)
             ->first();
         $feed->getConnection()->transaction(function () use ($user, $feed, $comment, $pinnedComment) {
-            if($pinnedComment) {
+            if ($pinnedComment) {
                 $pinnedComment->delete();
                 $userUnredCount = $pinnedComment->newQuery()
                     ->whereNull('expires_at')
@@ -136,7 +136,7 @@ class FeedCommentController extends Controller
                 $process->reject(0, $pinnedComment->amount, $user->id, '评论申请置顶退款', sprintf('退还在动态《%s》申请置顶的评论的款项', str_limit($feed->feed_content, 100)));
                 $userCount = UserCountModel::firstOrNew([
                     'user_id' => $feed->user_id,
-                    'type' => 'user-feed-comment-pinned'
+                    'type' => 'user-feed-comment-pinned',
                 ]);
                 $userCount->total = $userUnredCount;
                 $userCount->save();
