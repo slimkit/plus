@@ -23,9 +23,12 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\AdminControllers;
 use Carbon\Carbon;
 use Zhiyi\plus\Models\User;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\UserCount;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
+use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
 
 class FeedController extends Controller
 {
@@ -261,8 +264,38 @@ class FeedController extends Controller
      */
     public function destroy(CacheContract $cache, Feed $feed)
     {
-        $feed->delete();
-        $cache->forget(sprintf('feed:%s', $feed->id));
+        $pinnedComments = FeedPinned::whereNull('expires_at')
+            ->where('raw', $feed->id)
+            ->where('channel', 'comment')
+            ->get();
+        $process = new UserProcess();
+        $feed->getConnection()->transaction(function () use ($pinnedComments, $feed, $process, $cache) {
+            $pinnedComments->map(function($comment) use ($process, $feed, $pinnedComments){
+                $process->reject(0, $comment->amount, $comment->user_id, '评论申请置顶退款', sprintf('退还在动态《%s》申请置顶的评论的款项', str_limit($feed->feed_content, 100)));
+                $comment->delete();
+            });
+            // 删除动态申请置顶
+            $pinnedFeed = FeedPinned::where('channel', 'feed')
+                ->where('target', $feed->id)
+                ->first();
+            if($pinnedFeed) {
+                $process->reject(0, $pinnedFeed->amount, $pinnedFeed->user_id, '动态申请置顶退款', sprintf('退还动态《%s》申请置顶的款项', str_limit($feed->feed_content, 100)));
+                $pinnedFeed->delete();
+            }
+            $feed->delete();
+            $cache->forget(sprintf('feed:%s', $feed->id));
+        });
+        $userUnreadCount = FeedPinned::whereNull('expires_at')
+            ->where('target_user', $feed->user_id)
+            ->where('channel', 'comment')
+            ->count();
+
+        $userCount = UserCount::firstOrNew([
+            'type' => 'user-feed-comment-pinned',
+            'user_id' => $feed->user_id
+        ]);
+        $userCount->total = $userUnreadCount;
+        $userCount->save();
 
         return response(null, 204);
     }

@@ -71,6 +71,7 @@ class NewPinnedController extends Controller
         $pinned->channel = 'news';
         $pinned->target_user = 0;
         $pinned->state = 0;
+        $pinned->amount = $request->input('amount');
 
         return app()->call([$this, 'PinnedValidate'], [
             'pinned' => $pinned,
@@ -145,6 +146,7 @@ class NewPinnedController extends Controller
         $pinned->channel = 'news:comment';
         $pinned->target_user = $news->user_id ?? 0;
         $pinned->state = 0;
+        $pinned->amount = $request->input('amount');
 
         return app()->call([$this, 'PinnedValidate'], [
             'pinned' => $pinned,

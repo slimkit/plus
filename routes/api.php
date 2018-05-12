@@ -137,7 +137,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
     tap($api->get('/files/{fileWith}', API2\FilesController::class.'@show'), function ($route) {
         $route->setAction(array_merge($route->getAction(), [
-            'middleware' => 'bindings',
+            'middleware' => ['cors-should', 'bindings'],
         ]));
     });
 
@@ -200,7 +200,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
         tap($api->get('/{user}/avatar', API2\UserAvatarController::class.'@show'), function ($route) {
             $route->setAction(array_merge($route->getAction(), [
-                'middleware' => 'bindings',
+                'middleware' => ['cors-should', 'bindings'],
             ]));
         });
 

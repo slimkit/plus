@@ -169,7 +169,7 @@ class NewCommentPinnedController extends Controller
                 'user_id' => $user->id,
                 'type' => 'user-feed-comment-pinned',
             ]);
-            $userCount->total = $userUnreadCount - 1;
+            $userCount->total = $userUnreadCount;
             Log::debug($userCount);
             $userCount->save();
 

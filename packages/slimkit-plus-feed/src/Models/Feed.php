@@ -148,6 +148,15 @@ class Feed extends Model
     }
 
     /**
+     * comments are pinneding
+     */
+    public function pinnedingComments() {
+        return $this->hasMany(FeedPinned::class, 'raw', 'id')
+            ->where('channel', 'comment')
+            ->whereNull('expires_at');
+    }
+
+    /**
      * find the data from the user id.
      * @param  Builder $query [description]
      * @param  string  $phone [description]

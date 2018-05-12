@@ -25,9 +25,11 @@ use Carbon\Carbon;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Comment;
+use Zhiyi\Plus\Models\UserCount;
 use Illuminate\Database\QueryException;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
+use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Traits\PaginatorPage;
 
@@ -195,6 +197,28 @@ class CommentController extends Controller
     {
         DB::beginTransaction();
         try {
+            $pinnedComment = FeedPinned::whereNull('expires_at')
+                ->where('target', $comment->id)
+                ->where('channel', 'comment')
+                ->first();
+            if($pinnedComment) {
+                $process = new UserProcess();
+                $process->reject(0, $pinnedComment->amount, $pinnedComment->user_id, '评论申请置顶退款', '退还在动态申请置顶的评论的款项');
+                $pinnedComment->delete();
+            }
+            // 统计被评论用户未操作的动态评论置顶
+            $unReadCount = FeedPinned::whereNull('expires_at')
+                ->where('channel', 'comment')
+                ->where('target_user', $comment->target_user)
+                ->count();
+            $userCount = UserCount::firstOrNew([
+                'type' => 'user-feed-comment-pinned',
+                'user_id' => $comment->target_user
+            ]);
+
+            $userCount->total = $unReadCount;
+            $userCount->save();
+
             $feed = new Feed();
             $feed->where('id', $comment->commentable_id)->decrement('feed_comment_count'); // 统计相关动态评论数量
 
