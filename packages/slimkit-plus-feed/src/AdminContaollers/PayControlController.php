@@ -58,7 +58,7 @@ class PayControlController extends Controller
         if ($paycontrol) {
             $paycontrol = explode(',', $paycontrol);
             foreach ($paycontrol as $key => $item) {
-                $paycontrol[$key] = $item * 100;
+                $paycontrol[$key] = $item;
             }
         }
 

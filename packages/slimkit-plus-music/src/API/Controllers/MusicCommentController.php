@@ -63,7 +63,7 @@ class MusicCommentController extends Controller
         }
 
         return response()->json([
-            'message' => ['操作成功'],
+            'message' => '操作成功',
             'comment' => $comment,
         ])->setStatusCode(201);
     }
