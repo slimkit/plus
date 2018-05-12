@@ -26,6 +26,8 @@ use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
+use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2\StoreFeedComment as CommentFormRequest;
@@ -118,8 +120,27 @@ class FeedCommentController extends Controller
         if ($comment->user_id !== $user->id) {
             return $response->json(['message' => '没有权限'], 403);
         }
-
-        $feed->getConnection()->transaction(function () use ($user, $feed, $comment) {
+        $pinnedComment = FeedPinned::whereNull('expires_at')
+            ->where('target', $comment->id)
+            ->where('user_id', $user->id)
+            ->first();
+        $feed->getConnection()->transaction(function () use ($user, $feed, $comment, $pinnedComment) {
+            if($pinnedComment) {
+                $pinnedComment->delete();
+                $userUnredCount = $pinnedComment->newQuery()
+                    ->whereNull('expires_at')
+                    ->where('target_user', $feed->user_id)
+                    ->where('channel', 'comment')
+                    ->count();
+                $process = new UserProcess();
+                $process->reject(0, $pinnedComment->amount, $user->id, '评论申请置顶退款', sprintf('退还在动态《%s》申请置顶的评论的款项', str_limit($feed->feed_content, 100)));
+                $userCount = UserCountModel::firstOrNew([
+                    'user_id' => $feed->user_id,
+                    'type' => 'user-feed-comment-pinned'
+                ]);
+                $userCount->total = $userUnredCount;
+                $userCount->save();
+            }
             $feed->decrement('feed_comment_count', 1);
             $user->extra()->decrement('comments_count', 1);
             $comment->delete();

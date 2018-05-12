@@ -22,6 +22,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\UserCount;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\Like as LikeModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
@@ -30,6 +31,7 @@ use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedVideo;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
@@ -49,15 +51,16 @@ class FeedController extends Controller
     public function index(Request $request, ApplicationContract $app, ResponseContract $response)
     {
         $type = $request->query('type', 'new');
-
+        $offset = $request->query('offset', 0);
+        $after = $request->query('after', 0);
         if (! in_array($type, ['new', 'hot', 'follow', 'users'])) {
             $type = 'new';
         }
 
         return $response->json([
-            'ad' => $app->call([$this, 'getAd']),
-            'pinned' => $app->call([$this, 'getPinnedFeeds']),
-            'feeds' => $app->call([$this, $type]),
+//        'ad' => $app->call([$this, 'getAd']),
+        'pinned' => ($offset || $after || $type === 'follow') ? [] : $app->call([$this, 'getPinnedFeeds']),
+        'feeds' => $app->call([$this, $type]),
         ])->setStatusCode(200);
     }
 
@@ -580,7 +583,6 @@ class FeedController extends Controller
         if ($user->id !== $feed->user_id) {
             return $response->json(['message' => '你没有权限删除动态'])->setStatusCode(403);
         }
-
         $feed->getConnection()->transaction(function () use ($feed, $user) {
             if ($pinned = $feed->pinned()->where('user_id', $user->id)->where('expires_at', null)->first()) { // 存在未审核的置顶申请时退款
                 $charge = new WalletChargeModel();
@@ -625,12 +627,31 @@ class FeedController extends Controller
             return $response->json(['message' => '你没有权限删除动态'])->setStatusCode(403);
         }
 
-        $feed->getConnection()->transaction(function () use ($feed, $user) {
+        // 统计当前用户未操作的动态评论置顶
+        $unReadCount = FeedPinned::where('channel', 'comment')
+            ->where('target_user', $user->id)
+            ->whereNull('expires_at')
+            ->count();
+
+        $feed->getConnection()->transaction(function () use ($feed, $user, $unReadCount) {
+            $process = new UserProcess();
+            $userCount = UserCount::firstOrNew([
+                'type' => 'user-feed-comment-pinned',
+                'user_id' => $user->id
+            ]);
             if ($pinned = $feed->pinned()->where('user_id', $user->id)->where('expires_at', null)->first()) { // 存在未审核的置顶申请时退款
-                $process = new UserProcess();
+
                 $process->reject(0, $pinned->amount, $user->id, '动态申请置顶退款', sprintf('退还申请置顶动态《%s》的款项', str_limit($feed->feed_content, 100)));
             }
-
+            $pinnedComments = $feed->pinnedingComments()
+                ->get();
+            $pinnedComments->map(function( $comment ) use ($process, $feed) {
+                $process->reject(0, $comment->amount, $comment->user_id, '评论申请置顶退款', sprintf('退还在动态《%s》申请评论置顶的款项', str_limit($feed->feed_content, 100)));
+                $comment->delete();
+            });
+            // 更新未被操作的评论置顶
+            $userCount->total = $unReadCount - $pinnedComments->count();
+            $userCount->save();
             $feed->delete();
             $user->extra()->decrement('feeds_count', 1);
         });

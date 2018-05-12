@@ -100,6 +100,7 @@ class FilesController extends Controller
         $fileModel = $this->validateFileInDatabase($fileModel, $file = $request->file('file'), function (UploadedFile $file, string $md5) use ($fileModel, $dateTime, $clientWidth, $clientHeight): FileModel {
             // 图片做旋转处理
             if (! in_array($file->getClientMimeType(), ['video/mp4', 'image/gif'])) {
+                ini_set('memory_limit', '-1');
                 Image::make($file->getRealPath())->orientate()->save($file->getRealPath(), 100);
             }
             list($width, $height) = ($imageInfo = @getimagesize($file->getRealPath())) === false ? [null, null] : $imageInfo;
