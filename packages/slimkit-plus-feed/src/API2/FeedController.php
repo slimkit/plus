@@ -55,10 +55,12 @@ class FeedController extends Controller
         }
 
         return $response->json([
-        'ad' => $app->call([$this, 'getAd']),
-        'pinned' => $app->call([$this, 'getPinnedFeeds']),
-        'feeds' => $app->call([$this, $type]),
-        ])->setStatusCode(200);
+
+//            'ad' => $app->call([$this, 'getAd']),
+            'pinned' => ($type === 'follow' || $offset || $after ) ? [] : $app->call([$this, 'getPinnedFeeds']),
+            'feeds' => $app->call([$this, $type]),
+            ])
+            ->setStatusCode(200);
     }
 
     public function getAd()
@@ -165,16 +167,18 @@ class FeedController extends Controller
     /**
      * Get hot feeds.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedDigg $model
+     * @param \Illuminate\Http\Request                                     $request
+     * @param LikeModel                                                    $model
      * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed $repository
-     * @param \Carbon\Carbon $dateTime
+     * @param \Carbon\Carbon                                               $dateTime
      * @return mixed
+     * @throws \Throwable
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function hot(Request $request, LikeModel $model, FeedRepository $repository, Carbon $dateTime)
     {
         $limit = $request->query('limit', 15);
+
         $offset = $request->query('offset', 0);
         $user = $request->user('api')->id ?? 0;
 
@@ -348,7 +352,7 @@ class FeedController extends Controller
             throw $e;
         }
 
-        return response()->json(['message' => ['发布成功'], 'id' => $feed->id])->setStatusCode(201);
+        return response()->json(['message' => '发布成功', 'id' => $feed->id])->setStatusCode(201);
     }
 
         /**
@@ -616,12 +620,32 @@ class FeedController extends Controller
             return $response->json(['message' => '你没有权限删除动态'])->setStatusCode(403);
         }
 
-        $feed->getConnection()->transaction(function () use ($feed, $user) {
+
+        // 统计当前用户未操作的动态评论置顶
+        $unReadCount = FeedPinned::where('channel', 'comment')
+            ->where('target_user', $user->id)
+            ->whereNull('expires_at')
+            ->count();
+
+        $feed->getConnection()->transaction(function () use ($feed, $user, $unReadCount) {
+            $process = new UserProcess();
+            $userCount = UserCount::firstOrNew([
+                'type' => 'user-feed-comment-pinned',
+                'user_id' => $user->id,
+            ]);
             if ($pinned = $feed->pinned()->where('user_id', $user->id)->where('expires_at', null)->first()) { // 存在未审核的置顶申请时退款
                 $process = new UserProcess();
                 $process->reject(0, $pinned->amount, $user->id, '动态申请置顶退款', sprintf('退还申请置顶动态《%s》的款项', str_limit($feed->feed_content, 100)));
             }
-
+            $pinnedComments = $feed->pinnedingComments()
+                ->get();
+            $pinnedComments->map(function ($comment) use ($process, $feed) {
+                $process->reject(0, $comment->amount, $comment->user_id, '评论申请置顶退款', sprintf('退还在动态《%s》申请评论置顶的款项', str_limit($feed->feed_content, 100)));
+                $comment->delete();
+            });
+            // 更新未被操作的评论置顶
+            $userCount->total = $unReadCount - $pinnedComments->count();
+            $userCount->save();
             $feed->delete();
             $user->extra()->decrement('feeds_count', 1);
         });

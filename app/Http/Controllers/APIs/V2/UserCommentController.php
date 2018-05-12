@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Log;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
@@ -61,7 +60,7 @@ class UserCommentController extends Controller
             $user->unreadCount()->decrement('unread_comments_count', $user->unreadCount->unread_comments_count);
         }
 //        return $model->getConnection()->transaction(function () use ($comments, $response) {
-            return $response->json($comments, 200);
+        return $response->json($comments, 200);
 //        });
     }
 }

@@ -270,7 +270,7 @@ class FeedController extends Controller
             ->get();
         $process = new UserProcess();
         $feed->getConnection()->transaction(function () use ($pinnedComments, $feed, $process, $cache) {
-            $pinnedComments->map(function($comment) use ($process, $feed, $pinnedComments){
+            $pinnedComments->map(function ($comment) use ($process, $feed, $pinnedComments) {
                 $process->reject(0, $comment->amount, $comment->user_id, '评论申请置顶退款', sprintf('退还在动态《%s》申请置顶的评论的款项', str_limit($feed->feed_content, 100)));
                 $comment->delete();
             });
@@ -278,7 +278,7 @@ class FeedController extends Controller
             $pinnedFeed = FeedPinned::where('channel', 'feed')
                 ->where('target', $feed->id)
                 ->first();
-            if($pinnedFeed) {
+            if ($pinnedFeed) {
                 $process->reject(0, $pinnedFeed->amount, $pinnedFeed->user_id, '动态申请置顶退款', sprintf('退还动态《%s》申请置顶的款项', str_limit($feed->feed_content, 100)));
                 $pinnedFeed->delete();
             }
@@ -292,7 +292,7 @@ class FeedController extends Controller
 
         $userCount = UserCount::firstOrNew([
             'type' => 'user-feed-comment-pinned',
-            'user_id' => $feed->user_id
+            'user_id' => $feed->user_id,
         ]);
         $userCount->total = $userUnreadCount;
         $userCount->save();
