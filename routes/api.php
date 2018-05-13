@@ -538,6 +538,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // 获取指定群组信息
             $api->get('/group', EaseMobIm\GroupController::class.'@getGroup');
+            $api->get('/groups', EaseMobIm\GroupController::class.'@newGetGroup');
 
             // 获取群头像
             $api->get('/group/face', EaseMobIm\GroupController::class.'@getGroupFace');

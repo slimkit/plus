@@ -57,7 +57,7 @@ class UserRewardController extends Controller
         $amount = $request->input('amount');
         if (! $amount || $amount < 0) {
             return response()->json([
-                'amount' => ['请输入正确的打赏金额'],
+                'amount' => '请输入正确的打赏金额',
             ], 422);
         }
         $user = $request->user();
@@ -65,13 +65,13 @@ class UserRewardController extends Controller
 
         if (! $user->wallet || $user->wallet->balance < $amount) {
             return response()->json([
-                'message' => ['余额不足'],
+                'message' => '余额不足',
             ], 403);
         }
 
         if (! $target->wallet) {
             return response()->json([
-                'message' => ['对方钱包信息有误'],
+                'message' => '对方钱包信息有误',
             ], 500);
         }
 
