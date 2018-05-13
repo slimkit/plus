@@ -63,7 +63,7 @@ class MusicCommentController extends Controller
             $replyUser = $user->newQuery()->where('id', $replyUser)->first();
             $userCount = UserCount::firstOrNew([
                 'type' => 'user-commented',
-                'user_id' => $replyUser
+                'user_id' => $replyUser,
             ]);
             $userCount->total += 1;
             $userCount->save();
@@ -205,7 +205,7 @@ class MusicCommentController extends Controller
         if ($replyUser && $replyUser !== $user->id) {
             $userCount = UserCount::firstOrNew([
                 'type' => 'user-commented',
-                'user_id' => $replyUser
+                'user_id' => $replyUser,
             ]);
             $userCount->total += 1;
             $userCount->save();
