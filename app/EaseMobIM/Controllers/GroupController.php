@@ -274,10 +274,10 @@ class GroupController extends EaseMobController
                 ->select('group_face', 'im_group_id')->get()->keyBy('im_group_id');
 
             foreach ($groupCon->data as &$group) {
-                $affiliations = collect($group->affiliations);
-                $owner = $affiliations->pluck('owner')->filter();
-                $members = $affiliations->pluck('member')->filter();
-                $group->affiliations = $this->getUser($members, $owner);
+                // $affiliations = collect($group->affiliations);
+                // $owner = $affiliations->pluck('owner')->filter();
+                // $members = $affiliations->pluck('member')->filter();
+                // $group->affiliations = $this->getUser($members, $owner);
                 $group->group_face = $group_face[$group->id]->face ? $urlManager->make($group_face[$group->id]->face->file) : '';
             }
 
