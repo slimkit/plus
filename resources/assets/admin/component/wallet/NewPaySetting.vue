@@ -17,50 +17,83 @@
           <p>ThinkSNS+增加使用微信支付/支付宝支付</p>
           <footer>服务器必须安装 OpenSSL 的 PHP 拓展。</footer>
           <footer>微信支付通知地址为 <code>/api/v2/wechatPay/notify</code></footer>
-          <footer>支付宝通知地址为 <code>/api/v2/alipay/notify</code></footer>
+          <footer><a href="https://pay.weixin.qq.com/wiki/doc/api/index.html">开发文档</a></footer>
         </blockquote>
 
         <!-- APP ID -->
         <div class="form-group">
-          <label class="col-sm-2 control-label">应用 ID</label>
+          <label class="col-sm-2 control-label">微信公众号APPID</label>
           <div class="col-sm-4">
-            <input type="text" class="form-control" placeholder="输入应用 ID">
+            <input type="text" class="form-control" placeholder="输入 微信公众号APPID" v-model="wechatPayAppId">
           </div>
           <span class="col-sm-6 help-block">
-            请输入应用ID。
+            请输入 微信公众号APPID。
           </span>
         </div>
 
         <!-- Secret Key -->
         <div class="form-group">
-          <label class="col-sm-2 control-label">Secret Key</label>
+          <label class="col-sm-2 control-label">微信公众号APIKEY</label>
           <div class="col-sm-4">
-            <input type="text" class="form-control" placeholder="请输入 Secret Key">
+            <input type="text" class="form-control" placeholder="请输入 微信公众号APIKEY" v-model="wechatPayApiKey">
           </div>
           <span class="col-sm-6 help-block">
-            输入 Secret Key，非上线环境请输入 Test Secret Key，正式环境请输入 Live Secret Key。
+            输入 微信公众号APIKEY。
           </span>
         </div>
 
         <!-- Ping++ public key -->
         <div class="form-group">
-          <label class="col-sm-2 control-label">Ping++ 公钥</label>
+          <label class="col-sm-2 control-label">微信公众号MCHID</label>
           <div class="col-sm-4">
-            <textarea class="form-control" rows="3"></textarea>
+            <input type="text" class="form-control" placeholder="请输入 微信公众号MCHID" v-model="wechatPayMchId">
           </div>
           <span class="col-sm-6 help-block">
-            用于 Webhooks 回调时验证其正确性，不设置或者错误设置会造成所有异步通知的订单用户支付成功，但是不会到账。
+            输入 微信公众号MCHID
           </span>
         </div>
-
-        <!-- local private key -->
+        <hr />
+        <blockquote>
+          <p>支付宝支付设置</p>
+          <footer>服务器必须安装 OpenSSL 的 PHP 拓展。</footer>
+          <footer>支付宝通知地址为 <code>/api/v2/alipay/notify</code></footer>
+          <footer><a href="https://docs.open.alipay.com/">开发中心</a></footer>
+        </blockquote>
         <div class="form-group">
-          <label class="col-sm-2 control-label">商户私钥</label>
+          <label class="col-sm-2 control-label">支付宝APPId</label>
           <div class="col-sm-4">
-            <textarea class="form-control" rows="3" ></textarea>
+            <input type="text" class="form-control" placeholder="请输入 微信公众号MCHID" v-model="alipayAppid">
           </div>
           <span class="col-sm-6 help-block">
-            商户私钥是与 Ping++ 服务器交互的认证凭据，可以「<a href="">点击这里</a>」获取一对 公／私钥，获取后倾妥善保管，公钥设置到 Ping++ 中，私钥设置在这里。
+            输入 支付宝appId
+          </span>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">支付宝签名算法</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" placeholder="请输入 支付宝签名算法" v-model="alipaySignType">
+          </div>
+          <span class="col-sm-6 help-block">
+            商户生成签名字符串所使用的签名算法类型，目前支持RSA2和RSA，推荐使用RSA2 <a href="https://docs.open.alipay.com/291/105971/">签名生成教程</a>
+          </span>
+        </div>
+        <!-- local private key -->
+        <div class="form-group">
+          <label class="col-sm-2 control-label">支付宝公钥</label>
+          <div class="col-sm-4">
+            <textarea placeholder="填写支付宝管理页面设置的公钥" class="form-control" rows="4"  v-model="alipayPublicKey"></textarea>
+          </div>
+          <span class="col-sm-6 help-block">
+            填写支付宝管理页面设置的公钥
+          </span>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">支付宝密钥</label>
+          <div class="col-sm-4">
+            <textarea placeholder="填写支付宝管理页面设置的密钥" class="form-control" rows="4" v-model="alipaySecretKey"></textarea>
+          </div>
+          <span class="col-sm-6 help-block">
+            填写支付宝管理页面设置的密钥
           </span>
         </div>
 
@@ -102,6 +135,19 @@ export default {
       message: "",
       status: 0
     },
+    config: {
+      wechatPay: {
+        appId: "",
+        apiKey: "",
+        mchId: ""
+      },
+      alipay: {
+        appId: "",
+        publicKey: "",
+        secretKey: "",
+        signType: "RSA2"
+      }
+    },
     alert: {
       status: false,
       type: "info",
@@ -117,15 +163,18 @@ export default {
           validateStatus: status => status === 200
         })
         .then(({ data }) => {
-          console.log(data);
+          this.config = { ...data };
           this.load.status = 1;
         });
     },
     storeSetting() {
-      const params = {};
+      const {
+        config: { wechatPay, alipay }
+      } = this;
+      const params = { wechatPay, alipay };
       request
         .post(createRequestURI("wallet/newPaySetting"), {
-          params,
+          ...params,
           validateStatus: status => status === 201
         })
         .then(({ data }) => {
@@ -133,7 +182,86 @@ export default {
         });
     }
   },
-  computed: {},
+  computed: {
+    wechatPay() {
+      const { config: { wechatPay = {} } = {} } = this;
+      return wechatPay;
+    },
+    alipay() {
+      const { config: { alipay = {} } = {} } = this;
+      return alipay;
+    },
+    wechatPayAppId: {
+      get: function() {
+        return this.wechatPay.appId || "";
+      },
+      set: function(appId) {
+        const wechatPay = this.config.wechatPay || {};
+        wechatPay.appId = appId;
+        this.config = { ...this.config, wechatPay };
+      }
+    },
+    wechatPayMchId: {
+      get: function() {
+        return this.wechatPay.mchId || "";
+      },
+      set: function(mchId) {
+        const wechatPay = this.config.wechatPay || {};
+        wechatPay.mchId = mchId;
+        this.config = { ...this.config, wechatPay };
+      }
+    },
+    wechatPayApiKey: {
+      get: function() {
+        return this.wechatPay.apiKey || "";
+      },
+      set: function(apiKey) {
+        const wechatPay = this.config.wechatPay || {};
+        wechatPay.apiKey = apiKey;
+        this.config = { ...this.config, wechatPay };
+      }
+    },
+    alipayAppid: {
+      get: function() {
+        return this.alipay.appId || "";
+      },
+      set: function(appId) {
+        const alipay = this.config.alipay || {};
+        alipay.appId = appId;
+        this.config = { ...this.config, alipay };
+      }
+    },
+    alipaySignType: {
+      get: function() {
+        return this.alipay.signType || "";
+      },
+      set: function(signType) {
+        const alipay = this.config.alipay || {};
+        alipay.signType = signType;
+        this.config = { ...this.config, alipay };
+      }
+    },
+    alipayPublicKey: {
+      get: function() {
+        return this.alipay.publicKey || "";
+      },
+      set: function(publicKey) {
+        const alipay = this.config.alipay || {};
+        alipay.publicKey = publicKey;
+        this.config = { ...this.config, alipay };
+      }
+    },
+    alipaySecretKey: {
+      get: function() {
+        return this.alipay.secretKey || "";
+      },
+      set: function(secretKey) {
+        const alipay = this.config.alipay || {};
+        alipay.secretKey = secretKey;
+        this.config = { ...this.config, alipay };
+      }
+    }
+  },
   created() {
     this.getSetting();
   }
