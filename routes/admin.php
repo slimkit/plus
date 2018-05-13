@@ -210,6 +210,10 @@ Route::middleware('auth:web')
         // 钱包开关
         Route::get('/switch', 'WalletSwitchController@show');
         Route::patch('/switch', 'WalletSwitchController@update');
+
+        // 原生支付
+        Route::get('/newPaySetting', 'NewPaySettingController@index');
+        Route::post('/newPaySetting', 'NewPaySettingController@store');
     });
 
     // SMS 相关
