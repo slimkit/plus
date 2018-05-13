@@ -186,10 +186,10 @@ class FeedController extends Controller
              })
              ->with([
                  'pinnedComments' => function ($query) use ($dateTime) {
-                    return $query->with('user')->where('expires_at', '>', $dateTime)->limit(5);
+                     return $query->with('user')->where('expires_at', '>', $dateTime)->limit(5);
                  },
                  'user' => function ($query) {
-                             return $query->withTrashed();
+                     return $query->withTrashed();
                  },
              ])
              ->select('*', $model->getConnection()->raw('(feed_view_count + (feed_comment_count * 10) + (like_count * 5)) as popular'))
