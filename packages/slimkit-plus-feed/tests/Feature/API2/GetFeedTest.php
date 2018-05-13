@@ -55,7 +55,7 @@ class GetFeedTest extends TestCase
             ->json('GET', '/api/v2/feeds');
         $response
             ->assertStatus(200)
-            ->assertJsonStructure(['ad', 'pinned', 'feeds']);
+            ->assertJsonStructure(['pinned', 'feeds']);
     }
 
     /**
@@ -79,7 +79,7 @@ class GetFeedTest extends TestCase
         $response = $this->json('GET', '/api/v2/feeds');
         $response
             ->assertStatus(200)
-            ->assertJsonStructure(['ad', 'pinned', 'feeds']);
+            ->assertJsonStructure(['pinned', 'feeds']);
     }
 
     /**
