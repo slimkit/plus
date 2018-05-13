@@ -51,18 +51,16 @@ class FeedController extends Controller
     public function index(Request $request, ApplicationContract $app, ResponseContract $response)
     {
         $type = $request->query('type', 'new');
-        $offset = $request->query('offset', 0);
-        $after = $request->query('after', 0);
         if (! in_array($type, ['new', 'hot', 'follow', 'users'])) {
             $type = 'new';
         }
 
         return $response->json([
-//            'ad' => $app->call([$this, 'getAd']),
-            'pinned' => ($type === 'follow' || $offset || $after) ? [] : $app->call([$this, 'getPinnedFeeds']),
+        // 'ad' => $app->call([$this, 'getAd']),
+            'pinned' => $app->call([$this, 'getPinnedFeeds']),
             'feeds' => $app->call([$this, $type]),
-            ])
-            ->setStatusCode(200);
+        ])
+        ->setStatusCode(200);
     }
 
     public function getAd()
@@ -72,7 +70,7 @@ class FeedController extends Controller
 
     public function getPinnedFeeds(Request $request, FeedModel $feedModel, FeedRepository $repository, Carbon $datetime)
     {
-        if ($request->query('after')) {
+        if ($request->query('after') || $request->query('type') === 'follow' || $request->query('offset')) {
             return collect([]);
         }
 
@@ -182,23 +180,23 @@ class FeedController extends Controller
         $offset = $request->query('offset');
         $user = $request->user('api')->id ?? 0;
 
-        $feeds = FeedModel::whereIn('id', $ids)
-            ->whereDoesntHave('blacks', function ($query) use ($user) {
-                $query->where('user_id', $user);
-            })
-            ->with([
-                'pinnedComments' => function ($query) use ($dateTime) {
+        $feeds = FeedModel::where('created_at', '>', $dateTime->subDay(config('feed.duration', 7)))
+             ->whereDoesntHave('blacks', function ($query) use ($user) {
+                 $query->where('user_id', $user);
+             })
+             ->with([
+                 'pinnedComments' => function ($query) use ($dateTime) {
                     return $query->with('user')->where('expires_at', '>', $dateTime)->limit(5);
-                },
-                'user' => function ($query) {
-                    return $query->withTrashed();
-                },
-            ])
-            ->select('*', $model->getConnection()->raw('(feed_view_count + (feed_comment_count * 10) + (like_count * 5)) as popular'))
-            ->orderBy('id', 'desc')
-            ->limit($limit)
-            ->offset($offset)
-            ->get();
+                 },
+                 'user' => function ($query) {
+                             return $query->withTrashed();
+                 },
+             ])
+             ->select('*', $model->getConnection()->raw('(feed_view_count + (feed_comment_count * 10) + (like_count * 5)) as popular'))
+             ->limit($limit)
+             ->offset($offset)
+             ->orderBy('popular', 'desc')
+             ->get();
 
         FeedModel::whereIn('id', $feeds->pluck('id'))->increment('feed_view_count');
 
@@ -211,7 +209,6 @@ class FeedController extends Controller
                 $repository->images();
                 $repository->format($user);
                 $repository->previewComments();
-
                 $feed->has_collect = $feed->collected($user);
                 $feed->has_like = $feed->liked($user);
 
@@ -223,11 +220,12 @@ class FeedController extends Controller
     /**
      * Get user follow user feeds.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $model
+     * @param \Illuminate\Http\Request                                     $request
+     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed     $model
      * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed $repository
+     * @param Carbon                                                       $datetime
      * @return mixed
+     * @throws \Throwable
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function follow(Request $request, FeedModel $model, FeedRepository $repository, Carbon $datetime)
@@ -630,7 +628,6 @@ class FeedController extends Controller
                 'user_id' => $user->id,
             ]);
             if ($pinned = $feed->pinned()->where('user_id', $user->id)->where('expires_at', null)->first()) { // 存在未审核的置顶申请时退款
-
                 $process->reject(0, $pinned->amount, $user->id, '动态申请置顶退款', sprintf('退还申请置顶动态《%s》的款项', str_limit($feed->feed_content, 100)));
             }
             $pinnedComments = $feed->pinnedingComments()
