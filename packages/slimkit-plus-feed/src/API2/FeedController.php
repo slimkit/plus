@@ -22,6 +22,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\UserCount;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\Like as LikeModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
@@ -30,6 +31,7 @@ use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedVideo;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
@@ -49,18 +51,16 @@ class FeedController extends Controller
     public function index(Request $request, ApplicationContract $app, ResponseContract $response)
     {
         $type = $request->query('type', 'new');
-
         if (! in_array($type, ['new', 'hot', 'follow', 'users'])) {
             $type = 'new';
         }
 
         return $response->json([
-
-//            'ad' => $app->call([$this, 'getAd']),
-            'pinned' => $app->call([$this, 'getPinnedFeeds']),
-            'feeds' => $app->call([$this, $type]),
-            ])
-            ->setStatusCode(200);
+        // 'ad' => $app->call([$this, 'getAd']),
+        'pinned' => $app->call([$this, 'getPinnedFeeds']),
+        'feeds' => $app->call([$this, $type]),
+        ])
+        ->setStatusCode(200);
     }
 
     public function getAd()
@@ -177,28 +177,27 @@ class FeedController extends Controller
      */
     public function hot(Request $request, LikeModel $model, FeedRepository $repository, Carbon $dateTime)
     {
-        $limit = $request->query('limit', 15);
-
+        $limit = $request->query('limit', config('app.data_limit', 15));
         $offset = $request->query('offset', 0);
         $user = $request->user('api')->id ?? 0;
 
         $feeds = FeedModel::where('created_at', '>', $dateTime->subDay(config('feed.duration', 7)))
-            ->whereDoesntHave('blacks', function ($query) use ($user) {
-                $query->where('user_id', $user);
-            })
-            ->with([
-                'pinnedComments' => function ($query) use ($dateTime) {
-                    return $query->with('user')->where('expires_at', '>', $dateTime)->limit(5);
-                },
-                'user' => function ($query) {
-                    return $query->withTrashed();
-                },
-            ])
-            ->select('*', $model->getConnection()->raw('(feed_view_count + (feed_comment_count * 10) + (like_count * 5)) as popular'))
-            ->limit($limit)
-            ->offset($offset)
-            ->orderBy('popular', 'desc')
-            ->get();
+        ->whereDoesntHave('blacks', function ($query) use ($user) {
+            $query->where('user_id', $user);
+        })
+        ->with([
+            'pinnedComments' => function ($query) use ($dateTime) {
+                return $query->with('user')->where('expires_at', '>', $dateTime)->limit(5);
+            },
+            'user' => function ($query) {
+                return $query->withTrashed();
+            },
+        ])
+        ->select('*', $model->getConnection()->raw('(feed_view_count + (feed_comment_count * 10) + (like_count * 5)) as popular'))
+        ->limit($limit)
+        ->offset($offset)
+        ->orderBy('popular', 'desc')
+        ->get();
 
         FeedModel::whereIn('id', $feeds->pluck('id'))->increment('feed_view_count');
 
@@ -211,7 +210,6 @@ class FeedController extends Controller
                 $repository->images();
                 $repository->format($user);
                 $repository->previewComments();
-
                 $feed->has_collect = $feed->collected($user);
                 $feed->has_like = $feed->liked($user);
 
@@ -219,17 +217,17 @@ class FeedController extends Controller
             });
         });
     }
-
-        /**
-        * Get user follow user feeds.
-        *
-        * @param \Illuminate\Http\Request $request
-        * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-        * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $model
-        * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed $repository
-        * @return mixed
-        * @author Seven Du <shiweidu@outlook.com>
-        */
+    /**
+     * Get user follow user feeds.
+     *
+     * @param \Illuminate\Http\Request                                     $request
+     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed     $model
+     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed $repository
+     * @param Carbon                                                       $datetime
+     * @return mixed
+     * @throws \Throwable
+     * @author Seven Du <shiweidu@outlook.com>
+     */
     public function follow(Request $request, FeedModel $model, FeedRepository $repository, Carbon $datetime)
     {
         if (is_null($user = $request->user('api'))) {
