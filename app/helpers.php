@@ -28,7 +28,7 @@ namespace Zhiyi\Plus;
  */
 function validateChinaPhoneNumber(string $number): bool
 {
-    return (bool) preg_match('/^(\+?0?86\-?)?((13\d|14[57]|15[^4,\D]|17[3678]|18\d)\d{8}|170[059]\d{7})$/', $number);
+    return (bool) preg_match('/^(\+?0?86\-?)?1[3-9]\d{9}$/', $number);
 }
 
 /**
