@@ -17,6 +17,7 @@ declare(strict_types=1);
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Log;
@@ -32,6 +33,7 @@ class PayController
     {
         Log::debug($request->all());
     }
+
     /**
      * @param Request  $request
      * @param Carbon   $dateTime
@@ -44,7 +46,7 @@ class PayController
         $amount = $request->input('amount', 0);
         $from = $request->input('from');
 
-        if (!$amount) {
+        if (! $amount) {
             return $response->json(['message' => '提交的信息不完整'], 422);
         }
 
@@ -55,9 +57,9 @@ class PayController
         $gateWay->setAlipayPublicKey('MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnXjCbrQf0c7VAxnMevkgD0bfBY+bn3j1b/xXkwvu3az8Ai2AKyTwBkIi16JVdTAhcnSu+VkkI3dm9VB4+lY8XH+/TTFSL1wSBQi2tRnY/sjmcADB1Y9Ea1YeLmiZA1x1yipJuzFOAHE82QE7H52GQYBSQKxVlCQiVjZtg7n/+u0tD9rlI6kqO+zxdl17oTegCOLdveqYaGYaceqX0tYod4WgaivN6RFGCDyIdihNHIAN8bU3q9JMHD6K6p7MFvgR42KALgYXgJ7odfeQoi9g09E/CWpqNhqXOh8XdvbgHkDJp60uSbr7D3+EFHAUgAys9ZZBiHxo6JXZIVS7Tc3VJQIDAQAB');
         $gateWay->setNotifyUrl('http://test-plus.zhibocloud.cn/ssh');
 
-        $order->out_trade_no = date('YmdHis') . mt_rand(1000, 9999) . 'Thinksns-plus';
+        $order->out_trade_no = date('YmdHis').mt_rand(1000, 9999).'Thinksns-plus';
         $order->subject = '测试内容';
-        $order->content = '在' . config('app.name') . '充值'. $amount / 100 . '元';
+        $order->content = '在'.config('app.name').'充值'.$amount / 100 .'元';
         $order->amount = $amount;
         $order->product_code = 'FAST_INSTANT_TRADE_PAY';
         $order->user_id = $user->id ?? 0;
@@ -75,8 +77,10 @@ class PayController
         if ($result->isSuccessful()) {
             Log::debug($result->getOrderString());
             $order->save();
+
             return $response->json($result->getOrderString(), 201);
         }
+
         return $response->json(['message' => '创建支付宝订单失败'], 422);
     }
 
@@ -88,7 +92,7 @@ class PayController
         $from = $request->input('from', 3);
         $isUrl = $request->input('url', 1);
 
-        if (!$amount) {
+        if (! $amount) {
             return $response->json(['message' => '提交的信息不完整'], 422);
         }
 
@@ -100,10 +104,10 @@ class PayController
         $gateWay->setNotifyUrl('http://test-plus.zhibocloud.cn/ssh');
         $gateWay->setReturnUrl($redirect);
 
-        $order->out_trade_no = date('YmdHis') . mt_rand(1000, 9999) . 'Thinksns-plus';
+        $order->out_trade_no = date('YmdHis').mt_rand(1000, 9999).'Thinksns-plus';
         $order->subject = '测试内容';
-        $order->body = '在' . config('app.name') . '充值'. $amount / 100 . '元';
-        ;
+        $order->body = '在'.config('app.name').'充值'.$amount / 100 .'元';
+
         $order->amount = $amount;
         $order->product_code = 'FAST_INSTANT_TRADE_PAY';
         $order->user_id = $user->id ?? 0;
@@ -122,6 +126,7 @@ class PayController
 
             return $response->json(($isUrl ? $result->getRedirectUrl() : $result->getRedirectData()), 201);
         }
+
         return $response->json(['message' => '创建支付宝订单失败'], 422);
     }
 
@@ -137,7 +142,7 @@ class PayController
         $amount = $request->input('amount', 0);
         $from = $request->input('from');
 
-        if (!$amount) {
+        if (! $amount) {
             return $response->json(['message' => '提交的信息不完整'], 422);
         }
 
@@ -147,9 +152,9 @@ class PayController
         $gateWay->setMchId('1486014122');
         $gateWay->setNotifyUrl('http://test-plus.zhibocloud.cn/ssh/wechat');
 
-        $order->out_trade_no = date('YmdHis') . mt_rand(1000, 9999) . 'Thinksns-plus';
+        $order->out_trade_no = date('YmdHis').mt_rand(1000, 9999).'Thinksns-plus';
         $order->subject = '测试内容';
-        $order->content = '在' . config('app.name') . '充值'. $amount / 100 . '元';
+        $order->content = '在'.config('app.name').'充值'.$amount / 100 .'元';
         $order->amount = $amount;
         $order->product_code = 'FAST_INSTANT_TRADE_PAY';
         $order->user_id = $user->id ?? 0;
@@ -160,9 +165,9 @@ class PayController
             'out_trade_no'      => $order->out_trade_no,
             'total_fee'         => $amount,
             'spbill_create_ip'  => $request->getClientIp(),
-            'fee_type'          => 'CNY'
+            'fee_type'          => 'CNY',
         ];
-        $request  = $gateWay->purchase($wechatOrder)->send();
+        $request = $gateWay->purchase($wechatOrder)->send();
 
         if ($request->isSuccessful()) {
             return $response->json($request->getAppOrderData(), 201);
@@ -183,7 +188,7 @@ class PayController
         $amount = $request->input('amount', 0);
         $from = $request->input('from');
 
-        if (!$amount) {
+        if (! $amount) {
             return $response->json(['message' => '提交的信息不完整'], 422);
         }
 
@@ -193,9 +198,9 @@ class PayController
         $gateWay->setMchId('1486014122');
         $gateWay->setNotifyUrl('http://test-plus.zhibocloud.cn/ssh/wechat');
 
-        $order->out_trade_no = date('YmdHis') . mt_rand(1000, 9999) . 'Thinksns-plus';
+        $order->out_trade_no = date('YmdHis').mt_rand(1000, 9999).'Thinksns-plus';
         $order->subject = '测试内容';
-        $order->content = '在' . config('app.name') . '充值'. $amount / 100 . '元';
+        $order->content = '在'.config('app.name').'充值'.$amount / 100 .'元';
         $order->amount = $amount;
         $order->product_code = 'FAST_INSTANT_TRADE_PAY';
         $order->user_id = $user->id ?? 0;
@@ -206,9 +211,9 @@ class PayController
             'out_trade_no'      => $order->out_trade_no,
             'total_fee'         => $amount,
             'spbill_create_ip'  => $request->getClientIp(),
-            'fee_type'          => 'CNY'
+            'fee_type'          => 'CNY',
         ];
-        $request  = $gateWay->purchase($wechatOrder)->send();
+        $request = $gateWay->purchase($wechatOrder)->send();
 
         if ($request->isSuccessful()) {
             return $response->json($request->getJsOrderData(), 201);

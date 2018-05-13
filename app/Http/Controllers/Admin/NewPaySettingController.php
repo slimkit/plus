@@ -36,7 +36,7 @@ class NewPaySettingController extends Controller
     public function store(Request $request, ConfigurationRepository $config)
     {
         $data = $request->only('wechatPay', 'alipay');
-        
+
         $config->set('newPay', $data);
 
         return response()->json(['message' => '操作成功'], 201);
