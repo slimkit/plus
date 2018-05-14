@@ -45,12 +45,16 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     | obtain the current authentication user, use `$request-> user ('api')`.
     |
     */
+    $api->get('/pay/alipay/orders', API2\PayController::class.'@getAlipayOrder');
+    $api->get('/pay/alipay-wap/orders', API2\PayController::class.'@getAlipayWapOrder');
 
     $api->post('/pingpp/webhooks', API2\PingPlusPlusChargeWebHooks::class.'@webhook');
 
     $api->post('/plus-pay/webhooks', API2\NewWalletRechargeController::class.'@webhook');
 
     $api->post('/currency/webhooks', API2\CurrencyRechargeController::class.'@webhook');
+
+    $api->post('/alipay/notify', API2\PayController::class.'@alipayNotify');
     /*
     | 应用启动配置.
     */
