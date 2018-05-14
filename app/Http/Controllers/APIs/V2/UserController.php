@@ -132,7 +132,7 @@ class UserController extends Controller
 
         $verify->delete();
         if (! $user->save()) {
-            return $response->json(['message' => ['注册失败']], 500);
+            return $response->json(['message' => '注册失败'], 500);
         }
 
         $user->roles()->sync($role->value);

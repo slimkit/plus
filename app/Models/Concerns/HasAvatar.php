@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models\Concerns;
 
+use Image;
 use Zhiyi\Plus\Cdn\Refresh;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\UploadedFile;
@@ -113,11 +114,16 @@ trait HasAvatar
      */
     public function storeAvatar(UploadedFile $avatar, string $prefix = '')
     {
+
         $extension = strtolower($avatar->extension());
         if (! in_array($extension, $this->getAvatarExtensions())) {
             throw new \Exception('保存的头像格式不符合要求');
         }
-
+        if ($extension !== 'gif') {
+            ini_set('memory_limit', '-1');
+            Image::make($avatar->getRealPath())->orientate()->save($avatar->getRealPath(), 100);
+        }
+        
         $filename = $this->makeAvatarPath($prefix);
         $path = pathinfo($filename, PATHINFO_DIRNAME);
         $name = pathinfo($filename, PATHINFO_BASENAME).'.'.$extension;
@@ -130,7 +136,7 @@ trait HasAvatar
         app(CdnUrlFactoryContract::class)->generator()->refresh(new Refresh($files, [$filename]));
         // 头像更新时间
         $now = new Carbon();
-        Cache::forever('avatar_'.$this->id.'_lastModified_at', $now->timestamp);
+        Cache::forever('avatar_'.$this->id.$prefix.'_lastModified_at', $now->timestamp);
 
         return $avatar->storeAs($path, $name, config('cdn.generators.filesystem.disk'));
     }
