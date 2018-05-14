@@ -59,12 +59,12 @@ class UserAvatarController extends Controller
 
         $avatar = $request->file('avatar');
         if (! $avatar->isValid()) {
-            return $response->json(['messages' => [$avatar->getErrorMessage()]], 400);
+            return $response->json(['messages' => $avatar->getErrorMessage()], 400);
         }
 
         return $request->user()->storeAvatar($avatar)
             ? $response->make('', 204)
-            : $response->json(['message' => ['上传失败']], 500);
+            : $response->json(['message' => '上传失败'], 500);
     }
 
     /**

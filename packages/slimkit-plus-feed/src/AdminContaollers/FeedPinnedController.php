@@ -97,7 +97,7 @@ class FeedPinnedController extends Controller
         ]);
         $userCount->total += 1;
 
-        $pinned->getConnection()->transaction(function () use ($pinned, $body, $userProcess) {
+        $pinned->getConnection()->transaction(function () use ($pinned, $body, $userProcess, $userCount) {
             $order = $userProcess->receivables(
                 $pinned->user_id,
                 $pinned->amount,
