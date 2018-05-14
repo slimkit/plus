@@ -114,7 +114,6 @@ trait HasAvatar
      */
     public function storeAvatar(UploadedFile $avatar, string $prefix = '')
     {
-
         $extension = strtolower($avatar->extension());
         if (! in_array($extension, $this->getAvatarExtensions())) {
             throw new \Exception('保存的头像格式不符合要求');
@@ -123,7 +122,7 @@ trait HasAvatar
             ini_set('memory_limit', '-1');
             Image::make($avatar->getRealPath())->orientate()->save($avatar->getRealPath(), 100);
         }
-        
+
         $filename = $this->makeAvatarPath($prefix);
         $path = pathinfo($filename, PATHINFO_DIRNAME);
         $name = pathinfo($filename, PATHINFO_BASENAME).'.'.$extension;

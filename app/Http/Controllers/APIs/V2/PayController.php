@@ -147,7 +147,7 @@ class PayController
     }
 
     /**
-     * 支付宝通知方法
+     * 支付宝通知方法.
      * @Author   Wayne
      * @DateTime 2018-05-14
      * @Email    qiaobin@zhiyicx.com

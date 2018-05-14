@@ -133,7 +133,7 @@ class User extends Authenticatable implements JWTSubject
         if (! $lastModified) {
             $lastModified = Storage::disk(config('cdn.generators.filesystem.disk'))->exists($this->avatarPath()) ?
              Storage::disk(config('cdn.generators.filesystem.disk'))->lastModified($this->avatarPath(''))
-             : "";
+             : '';
         }
 
         return action('\\'.UserAvatarController::class.'@show', ['user' => $this]).'?v='.$lastModified;
@@ -152,9 +152,9 @@ class User extends Authenticatable implements JWTSubject
         if (! $lastModified) {
             $lastModified = Storage::disk(config('cdn.generators.filesystem.disk'))->exists($this->avatarPath('user-bg')) ?
              Storage::disk(config('cdn.generators.filesystem.disk'))->lastModified($this->avatarPath('user-bg'))
-             : "";
+             : '';
         }
-        
+
         return $lastModified ? $this->avatar(0, 'user-bg').'?v='.$lastModified : $this->avatar(0, 'user-bg');
     }
 
