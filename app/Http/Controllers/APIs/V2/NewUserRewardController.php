@@ -91,6 +91,7 @@ class NewUserRewardController extends Controller
 
         if ($status === true) {
             $userCount->save();
+
             return response()->json(['message' => '打赏成功'], 201);
         } else {
             return response()->json(['message' => '打赏失败'], 500);
