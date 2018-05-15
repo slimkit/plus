@@ -36,7 +36,7 @@ class CorsController
     public function fetch(): JsonResponse
     {
         return response()->json([
-            'credentiails' => (bool) config('cors.allow-credentiails'),
+            'credentials' => (bool) config('cors.allow-credentials'),
             'allowHeaders' => (array) config('cors.allow-headers'),
             'exposeHeaders' => (array) config('cors.expose-headers'),
             'origins' => (array) config('cors.origins'),
@@ -48,7 +48,7 @@ class CorsController
     public function update(UpdateCorsRequest $request, Configuration $config): Response
     {
         $config->set([
-            'cors.allow-credentiails' => (bool) $request->input('credentiails'),
+            'cors.allow-credentials' => (bool) $request->input('credentials'),
             'cors.allow-headers' => $request->input('allowHeaders'),
             'cors.expose-headers' => $request->input('exposeHeaders'),
             'cors.origins' => $request->input('origins'),

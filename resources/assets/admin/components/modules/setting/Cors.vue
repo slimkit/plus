@@ -18,10 +18,10 @@
           <label class="col-sm-4 control-label">Access-Control-Allow-Credentials</label>
           <div class="col-sm-4">
             <label class="radio-inline">
-              <input type="radio" :value="true" v-model="cors.credentiails">&nbsp;true
+              <input type="radio" :value="true" v-model="cors.credentials">&nbsp;true
             </label>
             <label class="radio-inline">
-              <input type="radio" :value="false" v-model="cors.credentiails">&nbsp;false
+              <input type="radio" :value="false" v-model="cors.credentials">&nbsp;false
             </label>
           </div>
           <div class="col-sm-4 help-block">
@@ -242,7 +242,7 @@ export default {
   data: () => ({
     loading: true,
     cors: {
-      credentiails: false,
+      credentials: false,
       allowHeaders: [],
       exposeHeaders: [],
       origins: [],
