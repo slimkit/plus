@@ -70,6 +70,7 @@ class FeedController extends Controller
 
     public function getPinnedFeeds(Request $request, FeedModel $feedModel, FeedRepository $repository, Carbon $datetime)
     {
+        $user = $request->user('api')->id ?? 0;
         if ($request->query('after') || $request->query('type') === 'follow' || $request->query('offset')) {
             return collect([]);
         }
@@ -77,6 +78,9 @@ class FeedController extends Controller
         $feeds = $feedModel->select('feeds.*')
             ->join('feed_pinneds', function ($join) use ($datetime) {
                 return $join->on('feeds.id', '=', 'feed_pinneds.target')->where('channel', 'feed')->where('expires_at', '>', $datetime);
+            })
+            ->whereDoesntHave('blacks', function ($query) use ($user) {
+                $query->where('user_id', $user);
             })
             ->with([
                 'pinnedComments' => function ($query) use ($datetime) {
@@ -239,29 +243,29 @@ class FeedController extends Controller
         $feeds = $model->leftJoin('user_follow', function ($join) use ($user) {
             $join->where('user_follow.user_id', $user->id);
         })
-        ->whereDoesntHave('blacks', function ($query) use ($user) {
-            $query->where('user_id', $user);
-        })
-        ->where(function ($query) use ($user) {
-            $query->whereColumn('feeds.user_id', '=', 'user_follow.target')
-                ->orWhere('feeds.user_id', $user->id);
-        })
-        ->with([
-            'pinnedComments' => function ($query) use ($datetime) {
-                return $query->with('user')->where('expires_at', '>', $datetime)->limit(5);
-            },
-            'user' => function ($query) {
-                return $query->withTrashed();
-            },
-        ])
-        ->when((bool) $after, function ($query) use ($after) {
-            return $query->where('feeds.id', '<', $after);
-        })
-        ->distinct()
-        ->select('feeds.*')
-        ->orderBy('feeds.id', 'desc')
-        ->limit($limit)
-        ->get();
+            ->whereDoesntHave('blacks', function ($query) use ($user) {
+                $query->where('user_id', $user);
+            })
+            ->where(function ($query) use ($user) {
+                $query->whereColumn('feeds.user_id', '=', 'user_follow.target')
+                    ->orWhere('feeds.user_id', $user->id);
+            })
+            ->with([
+                'pinnedComments' => function ($query) use ($datetime) {
+                    return $query->with('user')->where('expires_at', '>', $datetime)->limit(5);
+                },
+                'user' => function ($query) {
+                    return $query->withTrashed();
+                },
+            ])
+            ->when((bool) $after, function ($query) use ($after) {
+                return $query->where('feeds.id', '<', $after);
+            })
+            ->distinct()
+            ->select('feeds.*')
+            ->orderBy('feeds.id', 'desc')
+            ->limit($limit)
+            ->get();
         $ids = $feeds->pluck('id');
         $model->whereIn('id', $ids)->increment('feed_view_count');
 
