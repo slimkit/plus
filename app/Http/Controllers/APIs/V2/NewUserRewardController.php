@@ -22,6 +22,7 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\UserCount;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;
 
@@ -64,6 +65,14 @@ class NewUserRewardController extends Controller
 
         $money = ($amount / self::RATIO);
 
+        $userUnreadCount = $target->unreadNotifications()
+            ->count();
+        $userCount = UserCount::firstOrNew([
+            'type' => 'user-system',
+            'user_id' => $target->id,
+        ]);
+        $userCount->total = $userUnreadCount + 1;
+
         $status = $manager->driver(Order::TARGET_TYPE_REWARD)->reward([
             'reward_resource' => $user,
             'order' => [
@@ -81,6 +90,8 @@ class NewUserRewardController extends Controller
         ]);
 
         if ($status === true) {
+            $userCount->save();
+
             return response()->json(['message' => '打赏成功'], 201);
         } else {
             return response()->json(['message' => '打赏失败'], 500);

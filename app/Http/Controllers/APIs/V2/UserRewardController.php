@@ -126,7 +126,7 @@ class UserRewardController extends Controller
         });
 
         return response()->json([
-            'message' => ['打赏成功'],
+            'message' => '打赏成功',
         ], 201);
     }
 }
