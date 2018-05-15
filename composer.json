@@ -98,7 +98,7 @@
         "league/html-to-markdown": "^4.6",
         "lokielse/omnipay-alipay": "~3",
         "lokielse/omnipay-wechatpay": "~3",
-        "medz/cors": "^1.1",
+        "medz/cors": "^1.3",
         "omnipay/omnipay": "~3",
         "overtrue/easy-sms": "^1.0",
         "pingplusplus/pingpp-php": "^2.2",
