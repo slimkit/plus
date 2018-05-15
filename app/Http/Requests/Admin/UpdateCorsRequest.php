@@ -44,7 +44,7 @@ class UpdateCorsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'credentiails' => 'required|boolean',
+            'credentials' => 'required|boolean',
             'allowHeaders' => 'required|array',
             'exposeHeaders' => 'nullable|array',
             'origins' => 'required|array',
