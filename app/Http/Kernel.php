@@ -80,6 +80,7 @@ class Kernel extends HttpKernel
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \Zhiyi\Plus\Http\Middleware\RedirectIfAuthenticated::class,
+        'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'ability'    => \Zhiyi\Plus\Http\Middleware\UserAbility::class,
         'sensitive'  => \Zhiyi\Plus\Http\Middleware\DisposeSensitive::class,

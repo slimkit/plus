@@ -58,11 +58,10 @@ class NewPinnedController extends Controller
         $pinned->target = $comment->id;
         $pinned->raw = $feed->id;
         $pinned->target_user = $feed->user_id;
-    
+
         return app()->call([$this, 'validateBase'], [
             'pinned' => $pinned,
             'call' => function (FeedPinnedModel $pinned) use ($user, $comment, $feed) {
-                
                 $process = new UserProcess();
                 // $order = $process->prepayment($user->id, $pinned->amount, $feed->user_id, '申请动态评论置顶', sprintf('申请评论《%s》置顶', $comment->body));
                 $message = '提交成功,等待审核';
