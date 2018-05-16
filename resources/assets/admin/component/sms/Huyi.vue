@@ -2,7 +2,7 @@
   <div class="container-fluid" style="margin-top:10px;">
     <div class="panel panel-default">
       <!-- Title -->
-      <div class="panel-heading">短信 - 模版配置</div>
+      <div class="panel-heading">互亿无线 - 驱动配置</div>
       <!-- Loading -->
       <div v-if="loadding.state === 0" class="panel-body text-center">
         <span class="glyphicon glyphicon-refresh component-loadding-icon"></span>
@@ -10,43 +10,21 @@
       </div>
       <!-- Body -->
       <div v-else-if="loadding.state === 1" class="panel-body form-horizontal">
-        <!-- 阿里大于短信模板 -->
+        <!-- App key -->
         <div class="form-group">
-          <label class="col-sm-2 control-label" for="template-id">阿里大于</label>
+          <label for="app-key" class="col-sm-2 control-label">Api Key</label>
           <div class="col-sm-4">
-            <input type="text" name="template_id" class="form-control" id="template-id" placeholder="请输入短信模板id" aria-describedby="template-id-help" v-model="options.alidayu_template_id">
+            <input type="text" name="api_key" class="form-control" id="app-key" placeholder="请输入应用 Api Id" aria-describedby="app-key-help" v-model="options.api_id">
           </div>
           <div class="col-sm-6">
-            <span class="help-block" id="template-id-help">请输入短信模板id</span>
+            <span id="app-key-help" class="help-block">输入应用 Api Id 信息</span>
           </div>
-        </div>
-        <!-- 阿里云短信模板 -->
-        <div class="form-group">
-          <label class="col-sm-2 control-label" for="template-id">阿里云</label>
+          <label for="app-key" class="col-sm-2 control-label">Api Id</label>
           <div class="col-sm-4">
-            <input type="text" name="template_id" class="form-control" id="template-id" placeholder="请输入短信模板id" aria-describedby="template-id-help" v-model="options.aliyun_template_id">
+            <input type="text" name="api_key" class="form-control" id="app-key" placeholder="请输入应用 Api Key" aria-describedby="app-key-help" v-model="options.api_key">
           </div>
           <div class="col-sm-6">
-            <span class="help-block" id="template-id-help">请输入短信模板id</span>
-          </div>
-        </div>
-        <!-- 云片短信模板 -->
-        <div class="form-group">
-          <label class="col-sm-2 control-label" for="template-id">云片</label>
-          <div class="col-sm-4">
-            <input type="text" name="template_id" class="form-control" id="template-id" placeholder="请输入短信模板" aria-describedby="template-id-help" v-model="options.yunpian_template_content">
-          </div>
-          <div class="col-sm-6">
-            <span class="help-block" id="template-id-help">输入应用 content 信息,例:你的短信验证是：:code，注:code为变量</span>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-sm-2 control-label" for="template-id">互亿无线</label>
-          <div class="col-sm-4">
-            <input type="text" name="template_id" class="form-control" id="template-id" placeholder="请输入短信模板" aria-describedby="template-id-help" v-model="options.huyi_template_content">
-          </div>
-          <div class="col-sm-6">
-            <span class="help-block" id="template-id-help">输入应用 content 信息,例:你的短信验证是：:code，注:code为变量</span>
+            <span id="app-key-help" class="help-block">输入应用 Api Key 信息</span>
           </div>
         </div>
         <!-- button -->
@@ -75,7 +53,7 @@
 <script>
 import request, { createRequestURI } from "../../util/request";
 
-const TemplateComponent = {
+const YunpianComponent = {
   data: () => ({
     loadding: {
       state: 0,
@@ -92,7 +70,7 @@ const TemplateComponent = {
     request() {
       this.loadding.state = 0;
       request
-        .get(createRequestURI("sms/templates"), {
+        .get(createRequestURI("sms/driver/huyi"), {
           validateStatus: status => status === 200
         })
         .then(({ data = {} }) => {
@@ -111,23 +89,12 @@ const TemplateComponent = {
         );
     },
     submitHandle() {
-      const {
-        alidayu_template_id = null,
-        aliyun_template_id = null,
-        yunpian_template_content = null,
-        huyi_template_content = null
-      } = this.options;
-      console.log(this.options);
+      const { api_key = null, api_id = null, content = null } = this.options;
       this.submit.state = true;
       request
         .patch(
-          createRequestURI("sms/update/templates"),
-          {
-            alidayu_template_id,
-            aliyun_template_id,
-            yunpian_template_content,
-            huyi_template_content
-          },
+          createRequestURI("sms/driver/huyi"),
+          { api_key, api_id, content },
           { validateStatus: status => status === 201 }
         )
         .then(({ data: { message: [message = "提交成功"] = [] } }) => {
@@ -153,5 +120,5 @@ const TemplateComponent = {
   }
 };
 
-export default TemplateComponent;
+export default YunpianComponent;
 </script>

@@ -200,6 +200,20 @@ class SmsController extends Controller
         return response()->json(['message' => ['更新成功']], 201);
     }
 
+    public function updateHuyiOption(Configuration $store, Request $request)
+    {
+        $config = $store->getConfiguration();
+
+        $config->set(
+            'sms.gateways.huyi',
+            $request->only(['api_key', 'api_id', 'content'])
+        );
+
+        $store->save($config);
+
+        return response()->json(['message' => ['更新成功']], 201);
+    }
+
     /**
      * Get SMS driver Template configuration information.
      *
@@ -213,6 +227,7 @@ class SmsController extends Controller
         $data['alidayu_template_id'] = $config->get('sms.channels.code.alidayu.template');
         $data['aliyun_template_id'] = $config->get('sms.channels.code.aliyun.template');
         $data['yunpian_template_content'] = $config->get('sms.channels.code.yunpian.content');
+        $data['huyi_template_content'] = $config->get('sms.channels.code.huyi.content');
 
         return response()->json($data, 200);
     }
@@ -242,6 +257,11 @@ class SmsController extends Controller
         $config->set(
             'sms.channels.code.yunpian.content',
             $request->input('yunpian_template_content')
+        );
+
+        $config->set(
+            'sms.channels.code.huyi.content',
+            $request->input('huyi_template_content')
         );
 
         $store->save($config);

@@ -86,12 +86,19 @@ return [
         'yunpian' => [
             'api_key' => null,
         ],
+
+        // 互亿无线
+        'huyi' => [
+            'api_id' => null,
+            'api_key' => null,
+        ],
     ],
 
     'gateway_aliases' => [
         'aliyun' => \Overtrue\EasySms\Gateways\AliyunGateway::class,
         'alidayu' => \Overtrue\EasySms\Gateways\AlidayuGateway::class,
         'yunpian' => \Overtrue\EasySms\Gateways\YunpianGateway::class,
+        'huyi' => \Overtrue\EasySms\Gateways\HuyiGateway::class,
     ],
 
     /*
@@ -116,6 +123,9 @@ return [
                 ':code' => 'code',
             ],
             'yunpian' => [
+                'content' => null,
+            ],
+            'huyi' => [
                 'content' => null,
             ],
         ],

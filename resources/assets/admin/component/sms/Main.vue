@@ -27,6 +27,9 @@
             <router-link to="/sms/yunpian" tag="li" active-class="active">
               <a href="#">云片</a>
             </router-link>
+            <router-link to="/sms/huyi" tag="li" active-class="active">
+              <a href="#">互亿无线</a>
+            </router-link>
           </ul>
         </div>    
       </div>
