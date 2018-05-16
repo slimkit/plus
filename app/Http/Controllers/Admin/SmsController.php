@@ -228,7 +228,7 @@ class SmsController extends Controller
         $data['aliyun_template_id'] = $config->get('sms.channels.code.aliyun.template');
         $data['yunpian_template_content'] = $config->get('sms.channels.code.yunpian.content');
         $data['huyi_template_content'] = $config->get('sms.channels.code.huyi.content');
-        
+
         return response()->json($data, 200);
     }
 

@@ -90,8 +90,8 @@ return [
         // 互亿无线
         'huyi' => [
             'api_id' => null,
-            'api_key' => null
-        ]
+            'api_key' => null,
+        ],
     ],
 
     'gateway_aliases' => [
@@ -126,7 +126,7 @@ return [
                 'content' => null,
             ],
             'huyi' => [
-                'content' => null
+                'content' => null,
             ],
         ],
     ],
