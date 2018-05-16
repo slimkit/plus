@@ -251,7 +251,7 @@ class FeedController extends Controller
         ->limit($limit)
         ->get();
         $ids = $feeds->pluck('id');
-        $feedModel->whereIn('id', $ids)->increment('feed_view_count');
+        $model->whereIn('id', $ids)->increment('feed_view_count');
 
         return $model->getConnection()->transaction(function () use ($repository, $user, $feeds) {
             return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
