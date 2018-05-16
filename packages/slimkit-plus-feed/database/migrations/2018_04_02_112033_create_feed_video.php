@@ -37,9 +37,6 @@ class CreateFeedVideo extends Migration
             $table->integer('feed_id')->unsigned()->comment('所属动态id');
             $table->integer('height')->unsigned()->comment('视频高度');
             $table->integer('width')->unsigned()->comment('视频宽度');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('video_id')->references('id')->on('file_withs');
-            $table->foreign('feed_id')->references('id')->on('feeds');
             $table->timestamps();
         });
     }
