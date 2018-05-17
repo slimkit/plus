@@ -97,7 +97,7 @@ class CommentController extends Controller
             $replyUser->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
             app(Push::class)->push(sprintf('%s回复了您的评论', $user->name), (string) $replyUser->id, ['channel' => 'question:comment-reply']);
         }
-
+        $comment->load('user', 'target', 'reply');
         return response()->json([
             'message' => ['操作成功'],
             'comment' => $comment,
@@ -134,7 +134,7 @@ class CommentController extends Controller
             $replyUser->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
             app(Push::class)->push(sprintf('%s回复了您的评论', $user->name), (string) $replyUser->id, ['channel' => 'answer:comment-reply']);
         }
-
+        $comment->load('user', 'target', 'reply');
         return response()->json([
             'message' => ['操作成功'],
             'comment' => $comment,
