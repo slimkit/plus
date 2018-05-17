@@ -194,9 +194,9 @@ class FeedController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
-        $feedModel->whereIn('id', $ids)->increment('feed_view_count');
+        FeedModel::whereIn('id', $ids)->increment('feed_view_count');
 
-        return $model->getConnection()->transaction(function () use ($feeds, $repository, $user, $ids, $feedModel) {
+        return $model->getConnection()->transaction(function () use ($feeds, $repository, $user, $ids) {
             return $feeds->map(function ($feed) use ($repository, $user) {
                 if (! $feed) {
                     return null;
