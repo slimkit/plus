@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Services\Push;
 use SlimKit\PlusQuestion\Models\Answer;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 
 class AnswerLikeController extends Controller
 {
