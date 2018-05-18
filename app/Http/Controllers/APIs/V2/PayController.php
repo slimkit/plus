@@ -110,19 +110,22 @@ class PayController
         $user = $request->user();
         $amount = $request->input('amount', 0);
         $redirect = $request->input('redirect', '');
-        $from = $request->input('from', 3);
+        $from = $request->input('from', 0);
         $isUrl = $request->input('url', 1);
 
         if (! $amount) {
             return $response->json(['message' => '提交的信息不完整'], 422);
         }
-
+        if (! $from !== 1 && $from !== 2) {
+            return $response->json(['message' => '请求来源非法'], 403);
+        }
         $config = array_filter(config('newPay.alipay'));
         // 支付宝配置必须包含signType, appId, secretKey, publicKey, 缺一不可
         if (count($config) < 4) {
             return $response->json(['message' => '系统错误,请联系小助手'], 500);
         }
-        $gateWay = Omnipay::create('Alipay_AopWap');
+        $gateWayName = $from === 1 ? 'Alipay_AopPage' : 'Alipay_AopWap';
+        $gateWay = Omnipay::create($gateWayName);
         // 签名方法
         $gateWay->setSignType($config['signType']);
         // appId
