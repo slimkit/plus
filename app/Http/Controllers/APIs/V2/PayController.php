@@ -362,5 +362,7 @@ class PayController
         $order->type = 1;
         $order->amount = $amount;
         $order->state = 0;
+
+        return $order;
     }
 }
