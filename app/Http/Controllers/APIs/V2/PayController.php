@@ -27,6 +27,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Zhiyi\Plus\Models\NativePayOrder;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 
 class PayController
@@ -139,7 +140,7 @@ class PayController
         $order->user_id = $user->id ?? 0;
         $order->from = $from;
         $walletCharge = $this->createChargeModel($request, 'Alipay-Native');
-
+        $walletOrder = $this->createOrderModel($user->id, intval($amount), 'Native-Alipay', $order->subject);
         $result = $gateWay->purchase()->setBizContent([
             'subject'      => $order->subject,
             'out_trade_no' => $order->out_trade_no,
@@ -150,21 +151,19 @@ class PayController
         ])->send();
 
         if ($result->isSuccessful()) {
-            if ($result->isSuccessful()) {
-                DB::transaction(function() use ($order, $walletCharge, $response) {
-                    try {
-                        $order->save();
-                        $walletCharge->charge_id = $order->id;
-                        $walletCharge->save();
-                    } catch (\Exception $e) {
-                        DB::rollback();
-                        return $response->json(['message' => '创建支付宝订单失败'], 422);
-                    }
-                }, 1);
-                return $response->json($result->getOrderString(), 201);
-            }
-
-            return $response->json(($isUrl ? $result->getRedirectUrl() : $result->getRedirectData()), 201);
+            DB::transaction(function() use ($order, $walletCharge, $response, $isUrl, $result, $walletOrder) {
+                try {
+                    $order->save();
+                    $walletOrder->target_id = $order->id;
+                    $walletCharge->charge_id = $order->id;
+                    $walletCharge->save();
+                    $walletOrder->save();
+                    return $response->json(($isUrl ? $result->getRedirectUrl() : $result->getRedirectData()), 201);
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    return $response->json(['message' => '创建支付宝订单失败'], 422);
+                }
+            }, 1);
         }
 
         return $response->json(['message' => '创建支付宝订单失败'], 422);
@@ -203,15 +202,25 @@ class PayController
             $response = $res->send();
             if ($response->isPaid()) {
                 $order = $orderModel->where('out_trade_no', $data['out_trade_no'])
-                ->first();
-                if(!$order) {
+                    ->first();
+                if(!$order || $order->status === 1) {
                     die('fail');
+                }
+                $walletOrder = WalletOrderModel::where('target_id', $order->id)->first();
+                if($walletOrder) {
+                    $walletOrder->target_id = $data['trade_no'];
+                    $walletOrder->state = 1;
                 }
                 $order->status = 1;
                 $order->trade_no = $data['trade_no'];
                 $order->save();
-                $order->walletCharge()->status = 1;
-                $order->walletCharge()->save();
+                $order->walletCharge->status = 1;
+                $order->walletCharge->transaction_no = $data['trade_no'];
+                $order->walletCharge->account = $data['buyer_id'];
+                $order->walletCharge->save();
+                $walletOrder->save();
+                $order->user->newWallet()->increment('balance', $order->amount);
+                $order->user->newWallet()->increment('total_income', $order->amount);
                 die('success');
             } else {
                 die('fail');
@@ -219,6 +228,12 @@ class PayController
         } catch (Exception $e) {
             die('fail');
         }
+    }
+
+    public function getOrder(NativePayOrder $order, ResponseFactory $response) {
+       $order->load('user', 'walletCharge');
+
+       return $response->json($order, 200);
     }
 
     /**
@@ -334,5 +349,18 @@ class PayController
         $charge->status = 0; // 待操作状态
 
         return $charge;
+    }
+
+    protected function createOrderModel(int $owner, int $amount, string $target_type, string $title): WalletOrderModel
+    {
+        $order = new WalletOrderModel();
+        $order->owner_id = $owner;
+        $order->target_type = $target_type;
+        $order->target_id = 0;
+        $order->title = $title;
+        $order->body = '余额充值';
+        $order->type = 1;
+        $order->amount = $amount;
+        $order->state = 0;
     }
 }
