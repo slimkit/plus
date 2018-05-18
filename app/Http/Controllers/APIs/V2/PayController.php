@@ -73,6 +73,7 @@ class PayController
         $order->from = $from;
         $order->type = 'alipay';
         $walletCharge = $this->createChargeModel($request, 'Alipay-Native');
+        $walletOrder = $this->createOrderModel($user->id, intval($amount), 'Native-Alipay', $order->subject);
 
         $result = $gateWay->purchase()->setBizContent([
             'subject'      => $order->subject,
@@ -83,18 +84,22 @@ class PayController
             'timeout_express' => '10m',
         ])->send();
 
+
         if ($result->isSuccessful()) {
-            DB::transaction(function() use ($order, $walletCharge, $response) {
+            return DB::transaction(function() use ($order, $walletCharge, $response, $isUrl, $result, $walletOrder) {
                 try {
                     $order->save();
+                    $walletOrder->target_id = $order->id;
                     $walletCharge->charge_id = $order->id;
                     $walletCharge->save();
+                    $walletOrder->save();
+
+                    return $response->json($result->getOrderString(), 201);
                 } catch (Exception $e) {
                     DB::rollback();
                     return $response->json(['message' => '创建支付宝订单失败'], 422);
                 }
             }, 1);
-            return $response->json($result->getOrderString(), 201);
         }
 
         return $response->json(['message' => '创建支付宝订单失败'], 422);

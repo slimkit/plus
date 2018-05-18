@@ -455,7 +455,8 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
         // 新版支付
         $api->group(['prefix' => 'pay'], function(RouteContract $api) {
             $api->get('/alipay/orders', API2\PayController::class.'@getAlipayOrder');
-            $api->get('/alipay-wap/orders', API2\PayController::class.'@getAlipayWapOrder');
+            $api->post('/alipay/ordders', API2\PayController::class.'@getAlipayOrder');
+            $api->post('/alipay-wap/orders', API2\PayController::class.'@getAlipayWapOrder');
         });
 
         // 新版钱包
