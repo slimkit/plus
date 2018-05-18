@@ -21,6 +21,7 @@ namespace SlimKit\PlusQuestion\API2\Controllers;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use SlimKit\PlusQuestion\Models\Answer as AnswerModel;
 use SlimKit\PlusQuestion\Models\TopicExpertIncome as ExpertIncomeModel;
 use SlimKit\PlusQuestion\API2\Requests\NewAnswerReward as NewAnswerRewardRequest;
