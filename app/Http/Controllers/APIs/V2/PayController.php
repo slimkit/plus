@@ -86,7 +86,7 @@ class PayController
 
 
         if ($result->isSuccessful()) {
-            return DB::transaction(function() use ($order, $walletCharge, $response, $isUrl, $result, $walletOrder) {
+            return DB::transaction(function() use ($order, $walletCharge, $response, $result, $walletOrder) {
                 try {
                     $order->save();
                     $walletOrder->target_id = $order->id;
@@ -110,7 +110,7 @@ class PayController
         $user = $request->user();
         $amount = $request->input('amount', 0);
         $redirect = $request->input('redirect', '');
-        $from = $request->input('from', 0);
+        $from = intval($request->input('from', 0));
         $isUrl = $request->input('url', 1);
 
         if (! $amount) {
