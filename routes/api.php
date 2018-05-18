@@ -46,7 +46,6 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     |
     */
 
-
     $api->post('/pingpp/webhooks', API2\PingPlusPlusChargeWebHooks::class.'@webhook');
 
     $api->post('/plus-pay/webhooks', API2\NewWalletRechargeController::class.'@webhook');
@@ -453,7 +452,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
         });
 
         // 新版支付
-        $api->group(['prefix' => 'pay'], function(RouteContract $api) {
+        $api->group(['prefix' => 'pay'], function (RouteContract $api) {
             $api->get('/alipay/orders', API2\PayController::class.'@getAlipayOrder');
             $api->post('/alipay/orders', API2\PayController::class.'@getAlipayOrder');
             $api->post('/alipay-wap/orders', API2\PayController::class.'@getAlipayWapOrder');

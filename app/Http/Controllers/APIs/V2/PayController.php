@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
-use Log;
 use DB;
+use Log;
 use Omnipay\Omnipay;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -84,9 +84,8 @@ class PayController
             'timeout_express' => '10m',
         ])->send();
 
-
         if ($result->isSuccessful()) {
-            return DB::transaction(function() use ($order, $walletCharge, $response, $result, $walletOrder) {
+            return DB::transaction(function () use ($order, $walletCharge, $response, $result, $walletOrder) {
                 try {
                     $order->save();
                     $walletOrder->target_id = $order->id;
@@ -97,6 +96,7 @@ class PayController
                     return $response->json($result->getOrderString(), 201);
                 } catch (Exception $e) {
                     DB::rollback();
+
                     return $response->json(['message' => '创建支付宝订单失败'], 422);
                 }
             }, 1);
@@ -116,7 +116,7 @@ class PayController
         if (! $amount) {
             return $response->json(['message' => '提交的信息不完整'], 422);
         }
-        if ( $from !== 1 && $from !== 2) {
+        if ($from !== 1 && $from !== 2) {
             return $response->json(['message' => '请求来源非法'], 403);
         }
         $config = array_filter(config('newPay.alipay'));
@@ -160,16 +160,18 @@ class PayController
         ])->send();
 
         if ($result->isSuccessful()) {
-            return DB::transaction(function() use ($order, $walletCharge, $response, $isUrl, $result, $walletOrder) {
+            return DB::transaction(function () use ($order, $walletCharge, $response, $isUrl, $result, $walletOrder) {
                 try {
                     $order->save();
                     $walletOrder->target_id = $order->id;
                     $walletCharge->charge_id = $order->id;
                     $walletCharge->save();
                     $walletOrder->save();
+
                     return $response->json(($isUrl ? $result->getRedirectUrl() : $result->getRedirectData()), 201);
                 } catch (\Exception $e) {
                     DB::rollback();
+
                     return $response->json(['message' => '创建支付宝订单失败'], 422);
                 }
             }, 1);
@@ -212,11 +214,11 @@ class PayController
             if ($response->isPaid()) {
                 $order = $orderModel->where('out_trade_no', $data['out_trade_no'])
                     ->first();
-                if(!$order || $order->status === 1) {
+                if (! $order || $order->status === 1) {
                     die('fail');
                 }
                 $walletOrder = WalletOrderModel::where('target_id', $order->id)->first();
-                if($walletOrder) {
+                if ($walletOrder) {
                     $walletOrder->target_id = $data['trade_no'];
                     $walletOrder->state = 1;
                 }
@@ -239,10 +241,11 @@ class PayController
         }
     }
 
-    public function getOrder(NativePayOrder $order, ResponseFactory $response) {
-       $order->load('user', 'walletCharge');
+    public function getOrder(NativePayOrder $order, ResponseFactory $response)
+    {
+        $order->load('user', 'walletCharge');
 
-       return $response->json($order, 200);
+        return $response->json($order, 200);
     }
 
     /**
