@@ -138,7 +138,6 @@ class PayController
         ])->send();
 
         if ($result->isSuccessful()) {
-            Log::debug($result->getRedirectUrl());
 
             return $response->json(($isUrl ? $result->getRedirectUrl() : $result->getRedirectData()), 201);
         }
@@ -163,7 +162,7 @@ class PayController
         if (count($config) < 4) {
             die('fail');
         }
-        $gateWay = Omnipay::create('Alipay_AopWap');
+        $gateWay = Omnipay::create('Alipay_AopApp');
         // 签名方法
         $gateWay->setSignType($config['signType']);
         // appId
@@ -172,21 +171,26 @@ class PayController
         $gateWay->setPrivateKey($config['secretKey']);
         // 公钥
         $gateWay->setAlipayPublicKey($config['publicKey']);
+
         $res = $gateWay->completePurchase();
         $res->setParams($_POST);
         try {
             $response = $res->send();
+            Log::debug($response->isPaid());
             if ($response->isPaid()) {
                 $order = $orderModel->where('out_trade_no', $data['out_trade_no'])
                 ->first();
-                $order->status = true;
+                $order->status = 1;
                 $order->save();
-
+                Log::debug($order);
+                Log::debug('success')
                 die('success');
             } else {
+                Log::debug('fail1');
                 die('fail');
             }
         } catch (Exception $e) {
+            Log::debug('fail2')
             die('fail');
         }
     }
