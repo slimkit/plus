@@ -141,6 +141,7 @@ class PayController
         $order->from = $from;
         $walletCharge = $this->createChargeModel($request, 'Alipay-Native');
         $walletOrder = $this->createOrderModel($user->id, intval($amount), 'Native-Alipay', $order->subject);
+
         $result = $gateWay->purchase()->setBizContent([
             'subject'      => $order->subject,
             'out_trade_no' => $order->out_trade_no,
@@ -151,7 +152,7 @@ class PayController
         ])->send();
 
         if ($result->isSuccessful()) {
-            DB::transaction(function() use ($order, $walletCharge, $response, $isUrl, $result, $walletOrder) {
+            return DB::transaction(function() use ($order, $walletCharge, $response, $isUrl, $result, $walletOrder) {
                 try {
                     $order->save();
                     $walletOrder->target_id = $order->id;
