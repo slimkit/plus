@@ -116,7 +116,7 @@ class PayController
         if (! $amount) {
             return $response->json(['message' => '提交的信息不完整'], 422);
         }
-        if (! $from !== 1 && $from !== 2) {
+        if ( $from !== 1 && $from !== 2) {
             return $response->json(['message' => '请求来源非法'], 403);
         }
         $config = array_filter(config('newPay.alipay'));
