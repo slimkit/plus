@@ -44,7 +44,7 @@ class PayController
      */
     public function getAlipayOrder(Request $request, ResponseFactory $response, NativePayOrder $order)
     {
-        $user = $request->user('api');
+        $user = $request->user();
         $amount = $request->input('amount', 0);
         $from = $request->input('from');
 
@@ -68,7 +68,7 @@ class PayController
         $order->content = '在'.config('app.name').'充值余额'.$amount / 100 .'元';
         $order->amount = $amount;
         $order->product_code = 'FAST_INSTANT_TRADE_PAY';
-        $order->user_id = $user->id ?? 0;
+        $order->user_id = $user->id;
         $order->from = $from;
         $order->type = 'alipay';
         $walletCharge = $this->createChargeModel($request, 'Alipay-Native');
@@ -229,7 +229,7 @@ class PayController
      */
     public function getWechatOrder(Request $request, ResponseFactory $response, NativePayOrder $order)
     {
-        $user = $request->user('api');
+        $user = $request->user();
         $amount = $request->input('amount', 0);
         $from = $request->input('from');
 
@@ -248,7 +248,7 @@ class PayController
         $order->content = '在'.config('app.name').'充值余额'.$amount / 100 .'元';
         $order->amount = $amount;
         $order->product_code = 'APP';
-        $order->user_id = $user->id ?? 0;
+        $order->user_id = $user->id;
         $order->from = $from;
         $order->type = 'wechat';
         $walletCharge = $this->createChargeModel($request, 'Wechat-Native');
@@ -280,7 +280,7 @@ class PayController
      */
     public function getWechatWapOrder(Request $request, ResponseFactory $response, NativePayOrder $order)
     {
-        $user = $request->user('api');
+        $user = $request->user();
         $amount = $request->input('amount', 0);
         $from = $request->input('from');
 
@@ -299,7 +299,7 @@ class PayController
         $order->content = '在'.config('app.name').'充值余额'.$amount / 100 .'元';
         $order->amount = $amount;
         $order->product_code = 'JSAPI';
-        $order->user_id = $user->id ?? 0;
+        $order->user_id = $user->id;
         $order->from = $from;
         $order->type = 'wechat';
         $walletCharge = $this->createChargeModel($request, 'Wechat-Native');
