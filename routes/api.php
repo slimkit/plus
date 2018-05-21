@@ -452,7 +452,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
         });
 
         // 新版支付
-        $api->group(['prefix' => 'pay'], function (RouteContract $api) {
+        $api->group(['prefix' => 'walletRecharge'], function (RouteContract $api) {
             $api->post('/orders', API2\PayController::class.'@entry');
             $api->post('/checkOrders', API2\PayController::class.'@checkAlipayOrder');
         });

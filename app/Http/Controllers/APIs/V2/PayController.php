@@ -43,7 +43,7 @@ class PayController extends Controller
     public function entry(Request $request, ApplicationContract $app, ResponseContract $response)
     {
         $type = $request->input('type');
-        if (! in_array($type, ['alipayOrder', 'alipayWapOrder', 'wechatOrder', 'wechatWapOrder'])) {
+        if (! in_array($type, ['AlipayOrder', 'AlipayWapOrder', 'WechatOrder', 'WechatWapOrder'])) {
             return $response->json(['message' => '非法请求'], 422);
         }
 
@@ -106,7 +106,7 @@ class PayController extends Controller
                     $walletCharge->save();
                     $walletOrder->save();
 
-                    return $response->json($result->getOrderString(), 201);
+                    return $response->json(['message' => '订单创建成功', 'data' => $result->getOrderString()], 201);
                 } catch (Exception $e) {
                     DB::rollback();
 
@@ -124,6 +124,7 @@ class PayController extends Controller
         $amount = $request->input('amount', 0);
         $redirect = $request->input('redirect', '');
         $from = intval($request->input('from', 0));
+
         $isUrl = $request->input('url', 1);
 
         if (! $amount) {
@@ -245,11 +246,30 @@ class PayController extends Controller
         }
     }
 
-    public function checkAlipayOrder(Request $request, ResponseFactory $response, WalletOrderModel $orderModel, WalletChargeModel $chargeModel)
+    public function checkAlipayOrder(Request $request, ResponseFactory $response, WalletOrderModel $orderModel, WalletChargeModel $chargeModel, NativePayOrder $nativePayOrder)
     {
         $memo = $request->input('memo');
         $result = $request->input('result');
-        dd($result['alipay_trade_app_pay_response']['out_trade_no']);
+        $resultFormat = json_decode($result, true);
+        $out_trade_no = $resultFormat['alipay_trade_app_pay_response']['out_trade_no'];
+        // 验证订单合法性
+        if (! $out_trade_no) {
+            return $response->json(['message' => '充值信息有误'], 422);
+        }
+        $order = $nativePayOrder->where('out_trade_no', $out_trade_no)
+            ->first();
+        if (! $order) {
+            return $response->json(['message' => '订单不存在'], 404);
+        }
+
+        // 已经通过异步通知处理了
+        if ($order->status === 1) {
+            return $response->json(['message' => '交易完成'], 200);
+        }
+        if ($order->status === 2) {
+            return $response->json(['message' => '交易失败'], 200);
+        }
+        $config = config('newPay.alipay');
         $resultStatus = $request->input('resultStatus');
         $gateWay = Omnipay::create('Alipay_AopApp');
         // 签名方法
@@ -267,13 +287,23 @@ class PayController extends Controller
             'result' => $result,
             'resultStatus' => $resultStatus
         ]);
+        $walletOrder = WalletOrderModel::where('target_id', $order->id)->first();
+
         try {
-            $response = $request->send();
-            if ($response->isPaid()) {
-                // $walletCharge = $orderModel->where()
+            $callback = $res->send();
+            if ($callback->isPaid()) {
+                if ($walletOrder) {
+                    $this->resolveWalletOrder($walletOrder, $result);
+                }
+                $this->resolveWalletCharge($order->walletCharge, $result);
+                $this->resolveUserWallet($order);
+
+                return $response->json(['message' => '交易成功'], 201);
             } else {
+                return $response->json(['message' => '交易处理中'], 202);
             }
         } catch (Exception $e) {
+            return $response->json(['message' => '交易结果未知，请等待'], 202);
         }
     }
 
