@@ -41,7 +41,7 @@ class PayController extends Controller
     public function checkStatus(Request $request, ResponseFactory $response, ApplicationContract $app)
     {
         $type = $request->input('type');
-        if (!in_array($type, ['AlipayOrder', 'WechatOrder'])) {
+        if (! in_array($type, ['AlipayOrder', 'WechatOrder'])) {
             return $response->json(['message' => '非法请求', 422]);
         }
 
@@ -245,7 +245,6 @@ class PayController extends Controller
         try {
             $response = $res->send();
             if ($response->isPaid()) {
-
                 $this->resolveNativePayOrder($order, $data);
                 $walletOrder = WalletOrderModel::where('target_id', $order->id)->first();
                 if ($walletOrder) {
@@ -400,7 +399,7 @@ class PayController extends Controller
         $from = $request->input('from');
         $openId = $request->input('openId', '');
         $config = array_filter(config('newPay.wechatPay'));
-        if(!$openId) {
+        if (! $openId) {
             return $response->json(['message' => '系统错误,请联系小助手'], 500);
         }
         // 微信配置必须包含, appId, apiKey, mchId, 缺一不可
@@ -455,7 +454,8 @@ class PayController extends Controller
         return $response->json(['message' => '创建微信订单失败'], 422);
     }
 
-    public function wechatNotify(WalletChargeModel $walletCharge, WalletOrderModel $walletOrder, NativePayOrder $order, ResponseFactory $response) {
+    public function wechatNotify(WalletChargeModel $walletCharge, WalletOrderModel $walletOrder, NativePayOrder $order, ResponseFactory $response)
+    {
         $data = file_get_contents('php://input');
         Log::debug($data);
         $config = array_filter(config('newPay.wechatPay'));
@@ -463,19 +463,19 @@ class PayController extends Controller
         if (count($config) < 3) {
             return $response->json(['message' => '系统错误,请联系小助手'], 500);
         }
-        $gateway    = Omnipay::create('WechatPay_App');
+        $gateway = Omnipay::create('WechatPay_App');
         $gateway->setAppId($config['app_id']);
         $gateway->setMchId($config['mch_id']);
         $gateway->setApiKey($config['api_key']);
 
         $res = $gateway->completePurchase([
-            'request_params' => $data
+            'request_params' => $data,
         ])->send();
 
         if ($res->isPaid()) {
             //pay success
             Log::debug($res->getRequestData());
-        }else{
+        } else {
             //pay fail
         }
     }
