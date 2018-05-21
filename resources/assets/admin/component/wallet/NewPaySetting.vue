@@ -105,6 +105,19 @@
             填写支付宝管理页面设置的密钥
           </span>
         </div>
+        <hr>
+        <blockquote>
+          <p>内部订单识别标识</p>
+        </blockquote>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">支付宝密钥</label>
+          <div class="col-sm-4">
+            <input placeholder="填写内部订单标识" class="form-control" rows="4" v-model="outTradeNoSign" />
+          </div>
+          <span class="col-sm-6 help-block">
+            填写内部订单标识，默认是时间+4位随机字符，标识填写请参考支付宝以及微信的内部订单号标识为准
+          </span>
+        </div>
 
         <!-- 提交按钮 -->
         <div class="form-group">
@@ -156,7 +169,8 @@ export default {
         secretKey: "",
         signType: "RSA2",
           alipayAlipayKey: ""
-      }
+      },
+        sign: ""
     },
     alert: {
       status: false,
@@ -179,9 +193,9 @@ export default {
     },
     storeSetting() {
       const {
-        config: { wechatPay, alipay }
+        config: { wechatPay, alipay, sign}
       } = this;
-      const params = { wechatPay, alipay };
+      const params = { wechatPay, alipay, sign };
       request
         .post(createRequestURI("wallet/newPaySetting"), {
           ...params,
@@ -280,7 +294,15 @@ export default {
         alipay.secretKey = secretKey;
         this.config = { ...this.config, alipay };
       }
-    }
+    },
+      outTradeNoSign: {
+          get: function() {
+              return this.config.sign || "";
+          },
+          set: function(sign) {
+              this.config.sign = sign;
+          }
+      }
   },
   created() {
     this.getSetting();

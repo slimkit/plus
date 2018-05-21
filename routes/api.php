@@ -53,6 +53,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     $api->post('/currency/webhooks', API2\CurrencyRechargeController::class.'@webhook');
 
     $api->post('/alipay/notify', API2\PayController::class.'@alipayNotify');
+    $api->post('/wechat/notify', API2\PayController::class.'@wechatNotify');
     /*
     | 应用启动配置.
     */
@@ -453,8 +454,11 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
         // 新版支付
         $api->group(['prefix' => 'walletRecharge'], function (RouteContract $api) {
+            // 申请凭据入口
             $api->post('/orders', API2\PayController::class.'@entry');
-            $api->post('/checkOrders', API2\PayController::class.'@checkAlipayOrder');
+
+            // 手动检测订单的支付状态
+            $api->post('/check', API2\PayController::class.'@checkStatus');
         });
 
         // 新版钱包
