@@ -79,12 +79,21 @@
         </div>
         <!-- local private key -->
         <div class="form-group">
-          <label class="col-sm-2 control-label">支付宝公钥</label>
+          <label class="col-sm-2 control-label">支付宝应用公钥</label>
           <div class="col-sm-4">
-            <textarea placeholder="填写支付宝管理页面设置的公钥" class="form-control" rows="4"  v-model="alipayPublicKey"></textarea>
+            <textarea placeholder="填写支付宝管理页面设置的应用公钥" class="form-control" rows="4"  v-model="alipayPublicKey"></textarea>
           </div>
           <span class="col-sm-6 help-block">
-            填写支付宝管理页面设置的公钥
+            填写支付宝管理页面设置的应用公钥
+          </span>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">支付宝公钥</label>
+          <div class="col-sm-4">
+            <textarea placeholder="填写支付宝管理页面设置的支付宝公钥" class="form-control" rows="4"  v-model="alipayAliPayKey"></textarea>
+          </div>
+          <span class="col-sm-6 help-block">
+            填写支付宝管理页面设置的支付宝公钥
           </span>
         </div>
         <div class="form-group">
@@ -145,7 +154,8 @@ export default {
         appId: "",
         publicKey: "",
         secretKey: "",
-        signType: "RSA2"
+        signType: "RSA2",
+          alipayAlipayKey: ""
       }
     },
     alert: {
@@ -251,6 +261,16 @@ export default {
         this.config = { ...this.config, alipay };
       }
     },
+      alipayAliPayKey: {
+        get: function() {
+            return this.alipay.alipayKey || "";
+        },
+          set: function(alipayKey) {
+              const alipay = this.config.alipay || {};
+              alipay.alipayKey = alipayKey;
+              this.config = { ...this.config, alipay };
+          }
+      },
     alipaySecretKey: {
       get: function() {
         return this.alipay.secretKey || "";
