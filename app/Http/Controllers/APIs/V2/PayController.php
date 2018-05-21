@@ -211,6 +211,14 @@ class PayController extends Controller
         if (count($config) < 4) {
             die('fail');
         }
+        $order = $orderModel->where('out_trade_no', $data['out_trade_no'])
+            ->first();
+        if (! $order || $order->status === 1) {
+            die('fail');
+        }
+        if ($order->amount !== $data['amount'] * 100) {
+            return $response->json(['message' => '订单金额有误，请联系小助手'], 422);
+        }
         $gateWay = Omnipay::create('Alipay_AopApp');
         // 签名方法
         $gateWay->setSignType($config['signType']);
@@ -226,11 +234,7 @@ class PayController extends Controller
         try {
             $response = $res->send();
             if ($response->isPaid()) {
-                $order = $orderModel->where('out_trade_no', $data['out_trade_no'])
-                    ->first();
-                if (! $order || $order->status === 1) {
-                    die('fail');
-                }
+
                 $this->resolveNativePayOrder($order, $data);
                 $walletOrder = WalletOrderModel::where('target_id', $order->id)->first();
                 if ($walletOrder) {
@@ -262,7 +266,9 @@ class PayController extends Controller
         if (! $order) {
             return $response->json(['message' => '订单不存在'], 404);
         }
-
+        if ($order->amount !== $resultFormat['alipay_trade_app_pay_response']['amount'] * 100) {
+            return $response->json(['message' => '订单金额有误，请联系小助手'], 422);
+        }
         // 已经通过异步通知处理了
         if ($order->status === 1) {
             return $response->json(['message' => '交易完成'], 200);
