@@ -234,7 +234,6 @@ class PayController extends Controller
         try {
             $response = $res->send();
             if ($response->isPaid()) {
-
                 $this->resolveNativePayOrder($order, $data);
                 $walletOrder = WalletOrderModel::where('target_id', $order->id)->first();
                 if ($walletOrder) {
