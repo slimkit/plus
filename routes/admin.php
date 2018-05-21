@@ -211,7 +211,7 @@ Route::middleware('auth:web')
         Route::get('/switch', 'WalletSwitchController@show');
         Route::patch('/switch', 'WalletSwitchController@update');
 
-        // 原生支付
+        // 原生支付配置设置
         Route::get('/newPaySetting', 'NewPaySettingController@index');
         Route::post('/newPaySetting', 'NewPaySettingController@store');
     });
