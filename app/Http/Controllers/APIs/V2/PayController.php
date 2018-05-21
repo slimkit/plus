@@ -450,7 +450,7 @@ class PayController extends Controller
     {
         $order->status = 1;
         $order->transaction_no = $data['trade_no'];
-        $order->account = $data['buyer_id'] ?? "";
+        $order->account = $data['buyer_id'] ?? '';
         $order->save();
     }
 
