@@ -26,15 +26,28 @@ use Omnipay\Omnipay;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Zhiyi\Plus\Models\NativePayOrder;
+use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
+use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
+use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
-class PayController
+class PayController extends Controller
 {
     public function checkStatus(Request $request)
     {
         Log::debug($request->all());
+    }
+
+    public function entry(Request $request, ApplicationContract $app, ResponseContract $response)
+    {
+        $type = $request->input('type');
+        if (! in_array($type, ['alipayOrder', 'alipayWapOrder', 'wechatOrder', 'wechatWapOrder'])) {
+            return $response->json(['message' => '非法请求'], 422);
+        }
+
+        return $app->call([$this, 'get'.$type]);
     }
 
     /**
@@ -219,19 +232,10 @@ class PayController
                 }
                 $walletOrder = WalletOrderModel::where('target_id', $order->id)->first();
                 if ($walletOrder) {
-                    $walletOrder->target_id = $data['trade_no'];
-                    $walletOrder->state = 1;
+                    $this->resolveWalletOrder($walletOrder, $data);
                 }
-                $order->status = 1;
-                $order->trade_no = $data['trade_no'];
-                $order->save();
-                $order->walletCharge->status = 1;
-                $order->walletCharge->transaction_no = $data['trade_no'];
-                $order->walletCharge->account = $data['buyer_id'];
-                $order->walletCharge->save();
-                $walletOrder->save();
-                $order->user->newWallet()->increment('balance', $order->amount);
-                $order->user->newWallet()->increment('total_income', $order->amount);
+                $this->resolveWalletCharge($order->walletCharge, $data);
+                $this->resolveUserWallet($order);
                 die('success');
             } else {
                 die('fail');
@@ -241,11 +245,36 @@ class PayController
         }
     }
 
-    public function getOrder(NativePayOrder $order, ResponseFactory $response)
+    public function checkAlipayOrder(Request $request, ResponseFactory $response, WalletOrderModel $orderModel, WalletChargeModel $chargeModel)
     {
-        $order->load('user', 'walletCharge');
+        $memo = $request->input('memo');
+        $result = $request->input('result');
+        dd($result['alipay_trade_app_pay_response']['out_trade_no']);
+        $resultStatus = $request->input('resultStatus');
+        $gateWay = Omnipay::create('Alipay_AopApp');
+        // 签名方法
+        $gateWay->setSignType($config['signType']);
+        // appId
+        $gateWay->setAppId($config['appId']);
+        // 密钥
+        $gateWay->setPrivateKey($config['secretKey']);
+        // 公钥
+        $gateWay->setAlipayPublicKey($config['publicKey']);
 
-        return $response->json($order, 200);
+        $res = $gateWay->completePurchase();
+        $res->setParams([
+            'memo' => $memo,
+            'result' => $result,
+            'resultStatus' => $resultStatus
+        ]);
+        try {
+            $response = $request->send();
+            if ($response->isPaid()) {
+                // $walletCharge = $orderModel->where()
+            } else {
+            }
+        } catch (Exception $e) {
+        }
     }
 
     /**
@@ -376,5 +405,32 @@ class PayController
         $order->state = 0;
 
         return $order;
+    }
+    protected function resolveNativePayOrder(NativePayOrder $order, $data)
+    {
+        $order->status = 1;
+        $order->trade_no = $data['trade_no'];
+        $order->save();
+    }
+    protected function resolveWalletCharge(WalletCharge $order, $data)
+    {
+        $order->status = 1;
+        $order->transaction_no = $data['trade_no'];
+        $order->account = $data['buyer_id'];
+        $order->save();
+    }
+
+    protected function resolveWalletOrder(WalletOrder $order, $data)
+    {
+        $order->target_id = $data['trade_no'];
+        $order->state = 1;
+
+        $order->save();
+    }
+
+    protected function resolveUserWallet(NativePayOrder $order)
+    {
+        $order->user->newWallet()->increment('balance', $order->amount);
+        $order->user->newWallet()->increment('total_income', $order->amount);
     }
 }
