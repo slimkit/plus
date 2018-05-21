@@ -449,6 +449,12 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             $api->get('/charges/{charge}', API2\WalletChargeController::class.'@show');
         });
 
+        // 新版支付
+        $api->group(['prefix' => 'walletRecharge'], function (RouteContract $api) {
+            $api->post('/orders', API2\PayController::class.'@entry');
+            $api->post('/checkOrders', API2\PayController::class.'@checkAlipayOrder');
+        });
+
         // 新版钱包
         $api->group(['prefix' => 'plus-pay'], function (RouteContract $api) {
 

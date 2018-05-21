@@ -72,7 +72,9 @@ class WalletLabelController extends Controller
         $this->validate($request, $rules, $messages);
 
         $label = intval($request->input('label'));
-
+        if (count(json_decode($labels->value, true)) === 6) {
+            return response()->json(['message' => ['最多只能设置6个选项']], 422);
+        }
         if (in_array($label, $_labels = json_decode($labels->value, true))) {
             return response()
                 ->json(['messages' => ['选项已经存在，请输入新的选项']])
