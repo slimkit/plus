@@ -223,6 +223,7 @@ class PayController extends Controller
                 if (! $order || $order->status === 1) {
                     die('fail');
                 }
+                $this->resolveNativePayOrder($order, $data);
                 $walletOrder = WalletOrderModel::where('target_id', $order->id)->first();
                 if ($walletOrder) {
                     $this->resolveWalletOrder($walletOrder, $data);
@@ -271,7 +272,7 @@ class PayController extends Controller
         // 密钥
         $gateWay->setPrivateKey($config['secretKey']);
         // 公钥
-        $gateWay->setAlipayPublicKey($config['publicKey']);
+        $gateWay->setAlipayPublicKey($config['alipayKey']);
 
         $res = $gateWay->completePurchase();
         $res->setParams([
@@ -284,10 +285,11 @@ class PayController extends Controller
         try {
             $callback = $res->send();
             if ($callback->isPaid()) {
+                $this->resolveNativePayOrder($order, $resultFormat['alipay_trade_app_pay_response']);
                 if ($walletOrder) {
-                    $this->resolveWalletOrder($walletOrder, $result);
+                    $this->resolveWalletOrder($walletOrder, $resultFormat['alipay_trade_app_pay_response']);
                 }
-                $this->resolveWalletCharge($order->walletCharge, $result);
+                $this->resolveWalletCharge($order->walletCharge, $resultFormat['alipay_trade_app_pay_response']);
                 $this->resolveUserWallet($order);
 
                 return $response->json(['message' => '交易成功'], 201);
@@ -437,15 +439,15 @@ class PayController extends Controller
         $order->save();
     }
 
-    protected function resolveWalletCharge(WalletCharge $order, $data)
+    protected function resolveWalletCharge(WalletChargeModel $order, $data)
     {
         $order->status = 1;
         $order->transaction_no = $data['trade_no'];
-        $order->account = $data['buyer_id'];
+        $order->account = $data['buyer_id'] ?? "";
         $order->save();
     }
 
-    protected function resolveWalletOrder(WalletOrder $order, $data)
+    protected function resolveWalletOrder(WalletOrderModel $order, $data)
     {
         $order->target_id = $data['trade_no'];
         $order->state = 1;
