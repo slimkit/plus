@@ -285,7 +285,7 @@ class PayController extends Controller
         $res->setParams([
             'memo' => $memo,
             'result' => $result,
-            'resultStatus' => $resultStatus
+            'resultStatus' => $resultStatus,
         ]);
         $walletOrder = WalletOrderModel::where('target_id', $order->id)->first();
 
@@ -436,12 +436,14 @@ class PayController extends Controller
 
         return $order;
     }
+
     protected function resolveNativePayOrder(NativePayOrder $order, $data)
     {
         $order->status = 1;
         $order->trade_no = $data['trade_no'];
         $order->save();
     }
+
     protected function resolveWalletCharge(WalletCharge $order, $data)
     {
         $order->status = 1;
