@@ -139,7 +139,8 @@ php artisan serve
 
 ## 优秀仓库推荐
 
-- [Notadd](https://github.com/notadd/notadd) 基于 Laravel 的下一代开发框架。
+- [Notadd](https://github.com/notadd/notadd) 基于 Laravel 的下一代开发框架
+- [Swoft](https://www.swoft.org) 基于 Swoole 原生协程的新时代 PHP 全栈式协程框架
 
 ## License
 
