@@ -17,6 +17,7 @@ declare(strict_types=1);
  * | Homepage: www.thinksns.com                                           |
  * +----------------------------------------------------------------------+
  */
+
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use DB;
@@ -58,7 +59,7 @@ class PayController extends Controller
         $amount = $request->input('amount', 0);
         $from = $request->input('from');
         $config = config('newPay.alipay');
-        if (!$amount) {
+        if (! $amount) {
             return $response->json(['message' => '提交的信息不完整'], 422);
         }
 
@@ -106,6 +107,7 @@ class PayController extends Controller
                 }
             }, 1);
         }
+
         return $response->json(['message' => '创建支付宝订单失败'], 422);
     }
 
@@ -118,7 +120,7 @@ class PayController extends Controller
 
         $isUrl = $request->input('url', 1);
 
-        if (!$amount) {
+        if (! $amount) {
             return $response->json(['message' => '提交的信息不完整'], 422);
         }
         if ($from !== 1 && $from !== 2) {
@@ -181,6 +183,7 @@ class PayController extends Controller
                 }
             }, 1);
         }
+
         return $response->json(['message' => '创建支付宝订单失败'], 422);
     }
 
@@ -252,7 +255,7 @@ class PayController extends Controller
         }
         $order = $nativePayOrder->where('out_trade_no', $out_trade_no)
             ->first();
-        if (!$order) {
+        if (! $order) {
             return $response->json(['message' => '订单不存在'], 404);
         }
         if ($order->amount != $resultFormat['alipay_trade_app_pay_response']['total_amount'] * 100) {
@@ -349,9 +352,9 @@ class PayController extends Controller
             'out_trade_no'      => $order->out_trade_no,
             'total_fee'         => $amount,
             'spbill_create_ip'  => $request->getClientIp(),
-            'fee_type'          => 'CNY'
+            'fee_type'          => 'CNY',
         ];
-        $request  = $gateWay->purchase($wechatOrder)->send();
+        $request = $gateWay->purchase($wechatOrder)->send();
 
         if ($request->isSuccessful()) {
             $order->save();
@@ -419,7 +422,7 @@ class PayController extends Controller
             'fee_type'          => 'CNY',
             'openid'           => $openId,
         ];
-        $request  = $gateWay->purchase($wechatOrder)->send();
+        $request = $gateWay->purchase($wechatOrder)->send();
 
         if ($request->isSuccessful()) {
             $order->save();
@@ -451,11 +454,11 @@ class PayController extends Controller
         $res = $gateway->completePurchase([
             'request_params' => $data,
         ])->send();
-        if ( $res->isPaid() ) {
+        if ($res->isPaid()) {
             $requestData = $res->getRequestData();
             $payOrder = $orderModel->where('out_trade_no', $requestData['out_trade_no'])
                 ->first();
-            if ( !$payOrder || ($payOrder->amount != $requestData['total_fee']) ) {
+            if (! $payOrder || ($payOrder->amount != $requestData['total_fee'])) {
                 die('<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>');
             }
             $walletOrder = $walletOrderModel->where('target_id', $payOrder->id)
@@ -468,7 +471,7 @@ class PayController extends Controller
             $this->resolveNativePayOrder($payOrder, $data);
             $this->resolveWalletCharge($payOrder->walletCharge, $data);
             $this->resolveUserWallet($payOrder);
-            if ( $walletOrder ) {
+            if ($walletOrder) {
                 $this->resolveWalletOrder($walletOrder, $data);
             }
 
