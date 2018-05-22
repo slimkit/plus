@@ -34,7 +34,7 @@ const walletRouter = {
     { path: 'pay/pingpp', component: PingPlusPlus },
     { path: 'pay/switch', component: Switch },
     { path: 'waters', component: Water },
-      { path: 'pay/newPaySetting', component: NewPaySetting }
+      { path: 'newPaySetting', component: NewPaySetting }
   ]
 };
 
