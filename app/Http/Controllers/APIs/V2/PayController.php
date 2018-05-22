@@ -34,7 +34,6 @@ use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 class PayController extends Controller
 {
-
     /*
      * 创建支付订单
      */
