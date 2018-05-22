@@ -33,7 +33,6 @@ use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 class PayController extends Controller
 {
-
     /*
      * 创建支付订单
      */
@@ -207,7 +206,7 @@ class PayController extends Controller
         if (! $order || $order->status === 1) {
             die('fail');
         }
-        if ($order->amount !== $data['amount'] * 100) {
+        if ($order->amount !== $data['total_amount'] * 100) {
             return $response->json(['message' => '订单金额有误，请联系小助手'], 422);
         }
         $gateWay = Omnipay::create('Alipay_AopApp');
@@ -256,7 +255,7 @@ class PayController extends Controller
         if (! $order) {
             return $response->json(['message' => '订单不存在'], 404);
         }
-        if ($order->amount !== $resultFormat['alipay_trade_app_pay_response']['amount'] * 100) {
+        if ($order->amount !== $resultFormat['alipay_trade_app_pay_response']['total_amount'] * 100) {
             return $response->json(['message' => '订单金额有误，请联系小助手'], 422);
         }
         // 已经通过异步通知处理了
@@ -452,10 +451,13 @@ class PayController extends Controller
         $res = $gateway->completePurchase([
             'request_params' => $data,
         ])->send();
-        if ($res->isPaid()) {
+        if ( $res->isPaid() ) {
             $requestData = $res->getRequestData();
             $payOrder = $orderModel->where('out_trade_no', $requestData['out_trade_no'])
                 ->first();
+            if ( !$payOrder || $payOrder->amount != $requestData['total_fee'] ) {
+                die('<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>');
+            }
             $walletOrder = $walletOrderModel->where('target_id', $payOrder->id)
                 ->first();
             $data = [
@@ -466,7 +468,9 @@ class PayController extends Controller
             $this->resolveNativePayOrder($payOrder, $data);
             $this->resolveWalletCharge($payOrder->walletCharge, $data);
             $this->resolveUserWallet($payOrder);
-            $this->resolveWalletOrder($walletOrder, $data);
+            if ( $walletOrder ) {
+                $this->resolveWalletOrder($walletOrder, $data);
+            }
 
             die('<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>');
         } else {
