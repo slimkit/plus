@@ -456,11 +456,11 @@ class PayController extends Controller
         $res = $gateway->completePurchase([
             'request_params' => $data,
         ])->send();
-        if ( $res->isPaid() ) {
+        if ($res->isPaid()) {
             $requestData = $res->getRequestData();
             $payOrder = $orderModel->where('out_trade_no', $requestData['out_trade_no'])
                 ->first();
-            if ( !$payOrder || $payOrder->amount != $requestData['total_fee'] ) {
+            if (! $payOrder || $payOrder->amount != $requestData['total_fee']) {
                 die('<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>');
             }
             $walletOrder = $walletOrderModel->where('target_id', $payOrder->id)
@@ -473,7 +473,7 @@ class PayController extends Controller
             $this->resolveNativePayOrder($payOrder, $data);
             $this->resolveWalletCharge($payOrder->walletCharge, $data);
             $this->resolveUserWallet($payOrder);
-            if ( $walletOrder ) {
+            if ($walletOrder) {
                 $this->resolveWalletOrder($walletOrder, $data);
             }
 
