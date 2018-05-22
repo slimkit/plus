@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use DB;
-use Log;
 use Omnipay\Omnipay;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -454,29 +453,41 @@ class PayController extends Controller
         return $response->json(['message' => '创建微信订单失败'], 422);
     }
 
-    public function wechatNotify(WalletChargeModel $walletCharge, WalletOrderModel $walletOrder, NativePayOrder $order, ResponseFactory $response)
+    public function wechatNotify(WalletChargeModel $walletChargeModel, WalletOrderModel $walletOrderModel, NativePayOrder $orderModel, ResponseFactory $response)
     {
         $data = file_get_contents('php://input');
-        Log::debug($data);
         $config = array_filter(config('newPay.wechatPay'));
         // 微信配置必须包含, appId, apiKey, mchId, 缺一不可
         if (count($config) < 3) {
             return $response->json(['message' => '系统错误,请联系小助手'], 500);
         }
         $gateway = Omnipay::create('WechatPay_App');
-        $gateway->setAppId($config['app_id']);
-        $gateway->setMchId($config['mch_id']);
-        $gateway->setApiKey($config['api_key']);
+        $gateway->setAppId($config['appId']);
+        $gateway->setMchId($config['mchId']);
+        $gateway->setApiKey($config['apiKey']);
 
         $res = $gateway->completePurchase([
             'request_params' => $data,
         ])->send();
-
         if ($res->isPaid()) {
-            //pay success
-            Log::debug($res->getRequestData());
+            $requestData = $res->getRequest();
+            $payOrder = $orderModel->where('out_trade_no', $requestData['out_trade_no'])
+                ->first();
+            $walletOrder = $walletOrderModel->where('target_id', $payOrder->id)
+                ->first();
+            $data = [
+                'trade_no' => $requestData['transaction_id'],
+                'buyer_id' => $requestData['openid']
+            ];
+
+            $this->resolveNativePayOrder($payOrder, $data);
+            $this->resolveWalletCharge($payOrder->walletCharge, $data);
+            $this->resolveUserWallet($payOrder);
+            $this->resolveWalletOrder($walletOrder, $data);
+
+            die('<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>');
         } else {
-            //pay fail
+            die('<xml><return_code><![CDATA[FAIL]]></return_code></xml>');
         }
     }
 
