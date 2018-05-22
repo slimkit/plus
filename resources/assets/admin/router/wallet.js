@@ -23,18 +23,18 @@ const walletRouter = {
   path: "wallet",
   component: Main,
   children: [
-    { path: "", component: Report },
-    { path: "accounts", component: Accounts },
-    { path: "cash", component: Cash },
-    { path: "cash/setting", component: CashSetting },
-    { path: "pay/option", component: PayOption },
-    { path: "pay/rule", component: PayRule },
-    { path: "pay/ratio", component: PayRatio },
-    { path: "pay/type", component: RechargeType },
-    { path: "pay/pingpp", component: PingPlusPlus },
-    { path: "pay/switch", component: Switch },
-    { path: "waters", component: Water },
-    { path: "new-pay-setting", component: NewPaySetting }
+    { path: '', component: Report },
+    { path: 'accounts', component: Accounts },
+    { path: 'cash', component: Cash },
+    { path: 'cash/setting', component: CashSetting },
+    { path: 'pay/option', component: PayOption },
+    { path: 'pay/rule', component: PayRule },
+    { path: 'pay/ratio', component: PayRatio },
+    { path: 'pay/type', component: RechargeType },
+    { path: 'pay/pingpp', component: PingPlusPlus },
+    { path: 'pay/switch', component: Switch },
+    { path: 'waters', component: Water },
+      { path: 'newPaySetting', component: NewPaySetting }
   ]
 };
 
