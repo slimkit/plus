@@ -477,7 +477,7 @@ class PayController extends Controller
                 ->first();
             $data = [
                 'trade_no' => $requestData['transaction_id'],
-                'buyer_id' => $requestData['openid']
+                'buyer_id' => $requestData['openid'],
             ];
 
             $this->resolveNativePayOrder($payOrder, $data);
