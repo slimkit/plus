@@ -457,8 +457,8 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             // 申请凭据入口
             $api->post('/orders', API2\PayController::class.'@entry');
 
-            // 手动检测订单的支付状态
-            $api->post('/check', API2\PayController::class.'@checkStatus');
+            // 手动检测支付宝订单的支付状态
+            $api->post('/checkOrders', API2\PayController::class.'@checkAlipayOrder');
         });
 
         // 新版钱包
