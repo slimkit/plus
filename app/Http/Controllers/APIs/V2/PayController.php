@@ -33,18 +33,6 @@ use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 class PayController extends Controller
 {
-    /*
-     * 手动检测订单的状态
-     */
-    public function checkStatus(Request $request, ResponseFactory $response, ApplicationContract $app)
-    {
-        $type = $request->input('type');
-        if (! in_array($type, ['AlipayOrder', 'WechatOrder'])) {
-            return $response->json(['message' => '非法请求', 422]);
-        }
-
-        return $app->call([$this, 'check'.$type]);
-    }
 
     /*
      * 创建支付订单
@@ -465,7 +453,7 @@ class PayController extends Controller
             'request_params' => $data,
         ])->send();
         if ($res->isPaid()) {
-            $requestData = $res->getRequest();
+            $requestData = $res->getRequestData();
             $payOrder = $orderModel->where('out_trade_no', $requestData['out_trade_no'])
                 ->first();
             $walletOrder = $walletOrderModel->where('target_id', $payOrder->id)
