@@ -137,8 +137,9 @@ php artisan serve
 <a href="https://opencollective.com/thinksns-plus/sponsor/8/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/8/avatar.svg"></a>
 <a href="https://opencollective.com/thinksns-plus/sponsor/9/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/9/avatar.svg"></a>
 
-## 优秀仓库推荐
+## 优秀项目推荐
 
+- [PHP CORS](https://github.com/medz/cors) 专为 PHP 开发的“跨域资源共享”中间件，快速解决 PHP 设置跨域问题
 - [Notadd](https://github.com/notadd/notadd) 基于 Laravel 的下一代开发框架
 - [Swoft](https://www.swoft.org) 基于 Swoole 原生协程的新时代 PHP 全栈式协程框架
 
