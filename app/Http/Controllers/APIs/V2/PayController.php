@@ -58,7 +58,7 @@ class PayController extends Controller
         $amount = $request->input('amount', 0);
         $from = $request->input('from');
         $config = config('newPay.alipay');
-        if(!$amount) {
+        if (!$amount) {
             return $response->json(['message' => '提交的信息不完整'], 422);
         }
 
@@ -118,7 +118,7 @@ class PayController extends Controller
 
         $isUrl = $request->input('url', 1);
 
-        if(!$amount) {
+        if (!$amount) {
             return $response->json(['message' => '提交的信息不完整'], 422);
         }
         if ($from !== 1 && $from !== 2) {
@@ -206,7 +206,7 @@ class PayController extends Controller
         if (! $order || $order->status === 1) {
             die('fail');
         }
-        if ($order->amount !== $data['total_amount'] * 100) {
+        if ($order->amount != $data['total_amount'] * 100) {
             return $response->json(['message' => '订单金额有误，请联系小助手'], 422);
         }
         $gateWay = Omnipay::create('Alipay_AopApp');
@@ -252,10 +252,10 @@ class PayController extends Controller
         }
         $order = $nativePayOrder->where('out_trade_no', $out_trade_no)
             ->first();
-        if (! $order) {
+        if (!$order) {
             return $response->json(['message' => '订单不存在'], 404);
         }
-        if ($order->amount !== $resultFormat['alipay_trade_app_pay_response']['total_amount'] * 100) {
+        if ($order->amount != $resultFormat['alipay_trade_app_pay_response']['total_amount'] * 100) {
             return $response->json(['message' => '订单金额有误，请联系小助手'], 422);
         }
         // 已经通过异步通知处理了
@@ -455,7 +455,7 @@ class PayController extends Controller
             $requestData = $res->getRequestData();
             $payOrder = $orderModel->where('out_trade_no', $requestData['out_trade_no'])
                 ->first();
-            if ( !$payOrder || $payOrder->amount != $requestData['total_fee'] ) {
+            if ( !$payOrder || ($payOrder->amount != $requestData['total_fee']) ) {
                 die('<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>');
             }
             $walletOrder = $walletOrderModel->where('target_id', $payOrder->id)
