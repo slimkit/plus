@@ -10,7 +10,7 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Boorstrap the service provider.
+     * Bootstrap the service provider.
      *
      * @return void
      */
@@ -56,7 +56,7 @@ class AppServiceProvider extends ServiceProvider
         $this->registerCoreContainerAliases();
 
         // Register singletons.
-        $this->registerSingletions();
+        $this->registerSingletons();
 
         // Register Plus package handlers.
         $this->registerPackageHandlers();
@@ -89,7 +89,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function registerSingletions()
+    protected function registerSingletons()
     {
         // Owner handler.
         $this->app->singleton('{name}:handler', function () {
