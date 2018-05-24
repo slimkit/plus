@@ -24,19 +24,36 @@ use DB;
 use Omnipay\Omnipay;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\NativePayOrder;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
+use Zhiyi\Plus\Packages\Currency\Processes\Recharge;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
+use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
-class PayController extends Controller
+/**
+ * 原生积分充值
+ * Class CurrencyPayController
+ * @package Zhiyi\Plus\Http\Controllers\APIs\
+ */
+class CurrencyPayController extends Controller
 {
+    protected $ratio = 1;
     /*
      * 创建支付订单
      */
+    public function __construct()
+    {
+        $ratio = CommonConfig::where('namespace' ,'currency')
+            ->where('name', 'currency:recharge-ratio')
+            ->value('value');
+
+        $ratio && $this->ratio = $ratio;
+    }
+
     public function entry(Request $request, ApplicationContract $app, ResponseContract $response)
     {
         $type = $request->input('type');
@@ -71,15 +88,15 @@ class PayController extends Controller
         $gateWay->setNotifyUrl(config('app.url', '/ap2/v2/alipay/notify'));
 
         $order->out_trade_no = date('YmdHis').mt_rand(1000, 9999).config('newPay.sign');
-        $order->subject = '钱包充值';
-        $order->content = '在'.config('app.name').'充值余额'.$amount / 100 .'元';
+        $order->subject = '积分充值';
+        $order->content = sprintf('在%s充值积分：%d', $config('app.name'), $amount * $this->ratio);
         $order->amount = $amount;
         $order->product_code = 'FAST_INSTANT_TRADE_PAY';
         $order->user_id = $user->id;
         $order->from = $from;
         $order->type = 'alipay';
         $walletCharge = $this->createChargeModel($request, 'Alipay-Native');
-        $walletOrder = $this->createOrderModel($user->id, intval($amount), 'Native-Alipay', $order->subject);
+        $currencyOrder = $this->createOrderModel($user->id, intval($amount), 'Native-Alipay', $order->subject);
 
         $result = $gateWay->purchase()->setBizContent([
             'subject'      => $order->subject,
@@ -91,13 +108,13 @@ class PayController extends Controller
         ])->send();
 
         if ($result->isSuccessful()) {
-            return DB::transaction(function () use ($order, $walletCharge, $response, $result, $walletOrder) {
+            return DB::transaction(function () use ($order, $walletCharge, $response, $result, $currencyOrder) {
                 try {
                     $order->save();
-                    $walletOrder->target_id = $order->id;
+                    $currencyOrder->target_id = $order->id;
                     $walletCharge->charge_id = $order->id;
                     $walletCharge->save();
-                    $walletOrder->save();
+                    $currencyOrder->save();
 
                     return $response->json(['message' => '订单创建成功', 'data' => $result->getOrderString()], 201);
                 } catch (Exception $e) {
@@ -147,15 +164,15 @@ class PayController extends Controller
         $gateWay->setReturnUrl($redirect);
 
         $order->out_trade_no = date('YmdHis').mt_rand(1000, 9999).config('app.name');
-        $order->subject = '钱包充值';
-        $order->content = '在'.config('app.name').'充值余额'.$amount / 100 .'元';
+        $order->subject = '积分充值';
+        $order->content = sprintf('在%s充值积分%d', config('app.name'), $amount * $this->ratio);
         $order->type = 'alipay';
         $order->amount = $amount;
         $order->product_code = 'FAST_INSTANT_TRADE_PAY';
         $order->user_id = $user->id ?? 0;
         $order->from = $from;
         $walletCharge = $this->createChargeModel($request, 'Alipay-Native');
-        $walletOrder = $this->createOrderModel($user->id, intval($amount), 'Native-Alipay', $order->subject);
+        $currencyOrder = $this->createOrderModel($user->id, intval($amount), 'Native-Alipay', $order->subject);
 
         $result = $gateWay->purchase()->setBizContent([
             'subject'      => $order->subject,
@@ -167,13 +184,13 @@ class PayController extends Controller
         ])->send();
 
         if ($result->isSuccessful()) {
-            return DB::transaction(function () use ($order, $walletCharge, $response, $isUrl, $result, $walletOrder) {
+            return DB::transaction(function () use ($order, $walletCharge, $response, $isUrl, $result, $currencyOrder) {
                 try {
                     $order->save();
-                    $walletOrder->target_id = $order->id;
+                    $currencyOrder->target_id = $order->id;
                     $walletCharge->charge_id = $order->id;
                     $walletCharge->save();
-                    $walletOrder->save();
+                    $currencyOrder->save();
 
                     return $response->json(($isUrl ? $result->getRedirectUrl() : $result->getRedirectData()), 201);
                 } catch (\Exception $e) {
@@ -210,7 +227,7 @@ class PayController extends Controller
             die('fail');
         }
         if ($order->amount != $data['total_amount'] * 100) {
-            return $response->json(['message' => '订单金额有误，请联系小助手'], 422);
+            die('fail');
         }
         $gateWay = Omnipay::create('Alipay_AopApp');
         // 签名方法
@@ -228,12 +245,12 @@ class PayController extends Controller
             $response = $res->send();
             if ($response->isPaid()) {
                 $this->resolveNativePayOrder($order, $data);
-                $walletOrder = WalletOrderModel::where('target_id', $order->id)->first();
-                if ($walletOrder) {
-                    $this->resolveWalletOrder($walletOrder, $data);
+                $currencyOrder = CurrencyOrderModel::where('target_id', $order->id)->first();
+                if ($currencyOrder) {
+                    $this->resolveWalletOrder($currencyOrder, $data);
                 }
                 $this->resolveWalletCharge($order->walletCharge, $data);
-                $this->resolveUserWallet($order);
+                $this->resolveUserCurrency($order);
                 die('success');
             } else {
                 die('fail');
@@ -243,7 +260,7 @@ class PayController extends Controller
         }
     }
 
-    public function checkAlipayOrder(Request $request, ResponseFactory $response, WalletOrderModel $orderModel, WalletChargeModel $chargeModel, NativePayOrder $nativePayOrder)
+    public function checkAlipayOrder(Request $request, ResponseFactory $response, CurrencyOrderModel $orderModel, WalletChargeModel $chargeModel, NativePayOrder $nativePayOrder)
     {
         $memo = $request->input('memo');
         $result = $request->input('result');
@@ -286,17 +303,17 @@ class PayController extends Controller
             'result' => $result,
             'resultStatus' => $resultStatus,
         ]);
-        $walletOrder = WalletOrderModel::where('target_id', $order->id)->first();
+        $currencyOrder = $orderModel->where('target_id', $order->id)->first();
 
         try {
             $callback = $res->send();
             if ($callback->isPaid()) {
                 $this->resolveNativePayOrder($order, $resultFormat['alipay_trade_app_pay_response']);
-                if ($walletOrder) {
-                    $this->resolveWalletOrder($walletOrder, $resultFormat['alipay_trade_app_pay_response']);
+                if ($currencyOrder) {
+                    $this->resolveCurrencyOrder($currencyOrder, $resultFormat['alipay_trade_app_pay_response']);
                 }
                 $this->resolveWalletCharge($order->walletCharge, $resultFormat['alipay_trade_app_pay_response']);
-                $this->resolveUserWallet($order);
+                $this->resolveUserCurrency($order);
 
                 return $response->json(['message' => '充值成功'], 201);
             } else {
@@ -320,6 +337,7 @@ class PayController extends Controller
         $from = $request->input('from');
         $config = array_filter(config('newPay.wechatPay'));
         // 微信配置必须包含, appId, apiKey, mchId, 缺一不可
+
         if (count($config) < 3) {
             return $response->json(['message' => '系统错误,请联系小助手'], 500);
         }
@@ -337,16 +355,15 @@ class PayController extends Controller
         $gateWay->setNotifyUrl(config('app.url').'/api/v2/wechat/notify');
 
         $order->out_trade_no = date('YmdHis').mt_rand(1000, 9999).config('newPay.sign');
-        $order->subject = '钱包充值';
-        $order->content = '在'.config('app.name').'充值余额'.$amount / 100 .'元';
-
+        $order->subject = '积分充值';
+        $order->content = sprintf('在%s充值积分%d', config('app.name'), $amount * $this->ratio);
         $order->amount = $amount;
         $order->product_code = 'APP';
         $order->user_id = $user->id;
         $order->from = $from;
         $order->type = 'wechat';
         $walletCharge = $this->createChargeModel($request, 'Wechat-Native');
-        $walletOrder = $this->createOrderModel($user->id, intval($amount), 'Wechat-Alipay', $order->subject);
+        $currencyOrder = $this->createOrderModel($user->id, intval($amount), 'Wechat-Alipay', $order->subject);
         $wechatOrder = [
             'body'              => $order->content,
             'out_trade_no'      => $order->out_trade_no,
@@ -359,9 +376,9 @@ class PayController extends Controller
         if ($request->isSuccessful()) {
             $order->save();
             $walletCharge->charge_id = $order->id;
-            $walletOrder->target_id = $order->id;
+            $currencyOrder->target_id = $order->id;
             $walletCharge->save();
-            $walletOrder->save();
+            $currencyOrder->save();
 
             return $response->json(['message' => '订单创建成功', 'data' => $request->getAppOrderData()], 201);
         }
@@ -404,16 +421,16 @@ class PayController extends Controller
         $gateWay->setNotifyUrl(config('app.url').'/api/v2/wechat/notify');
 
         $order->out_trade_no = date('YmdHis').mt_rand(1000, 9999).config('newPay.sign');
-        $order->subject = '钱包充值';
-        $order->content = '在'.config('app.name').'充值余额'.$amount / 100 .'元';
-
+        $order->subject = '积分充值';
+//        $order->content = '在'.config('app.name').'充值积分'.$amount;
+        $order->content = sprintf('在%s充值积分%d', config('app.name'), $amount * $this->ratio);
         $order->amount = $amount;
         $order->product_code = 'JSAPI';
         $order->user_id = $user->id;
         $order->from = $from;
         $order->type = 'wechat';
         $walletCharge = $this->createChargeModel($request, 'Wechat-Native');
-        $walletOrder = $this->createOrderModel($user->id, intval($amount), 'Wechat-Alipay', $order->subject);
+        $currencyOrder = $this->createOrderModel($user->id, intval($amount), 'Wechat-Alipay', $order->subject);
         $wechatOrder = [
             'body'              => $order->content,
             'out_trade_no'      => $order->out_trade_no,
@@ -428,9 +445,9 @@ class PayController extends Controller
             $order->save();
 
             $walletCharge->charge_id = $order->id;
-            $walletOrder->target_id = $order->id;
+            $currencyOrder->target_id = $order->id;
             $walletCharge->save();
-            $walletOrder->save();
+            $currencyOrder->save();
 
             return $response->json(['message' => '订单创建成功', 'data' => $request->getJsOrderData()], 201);
         }
@@ -438,7 +455,7 @@ class PayController extends Controller
         return $response->json(['message' => '创建微信订单失败'], 422);
     }
 
-    public function wechatNotify(WalletChargeModel $walletChargeModel, WalletOrderModel $walletOrderModel, NativePayOrder $orderModel, ResponseFactory $response)
+    public function wechatNotify(CurrencyOrderModel $currencyOrderModel, NativePayOrder $orderModel, ResponseFactory $response)
     {
         $data = file_get_contents('php://input');
         $config = array_filter(config('newPay.wechatPay'));
@@ -461,7 +478,7 @@ class PayController extends Controller
             if (! $payOrder || ($payOrder->amount != $requestData['total_fee'])) {
                 die('<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>');
             }
-            $walletOrder = $walletOrderModel->where('target_id', $payOrder->id)
+            $currencyOrder = $currencyOrderModel->where('target_id', $payOrder->id)
                 ->first();
             $data = [
                 'trade_no' => $requestData['transaction_id'],
@@ -470,9 +487,9 @@ class PayController extends Controller
 
             $this->resolveNativePayOrder($payOrder, $data);
             $this->resolveWalletCharge($payOrder->walletCharge, $data);
-            $this->resolveUserWallet($payOrder);
-            if ($walletOrder) {
-                $this->resolveWalletOrder($walletOrder, $data);
+            $this->resolveUserCurrency($payOrder);
+            if ($currencyOrder) {
+                $this->resolveCurrencyOrder($currencyOrder, $data);
             }
 
             die('<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>');
@@ -488,26 +505,20 @@ class PayController extends Controller
         $charge->channel = $channel;
         $charge->action = 1; // 充值都是为 增项
         $charge->amount = intval($request->input('amount'));
-        $charge->subject = '余额充值';
-        $charge->body = '账户余额充值';
+        $charge->subject = '积分充值';
+        $charge->body = '积分充值';
         $charge->status = 0; // 待操作状态
 
         return $charge;
     }
 
-    protected function createOrderModel(int $owner, int $amount, string $target_type, string $title): WalletOrderModel
+    protected function createOrderModel(int $owner, int $amount, string $target_type, string $title): CurrencyOrderModel
     {
-        $order = new WalletOrderModel();
-        $order->owner_id = $owner;
-        $order->target_type = $target_type;
-        $order->target_id = 0;
-        $order->title = $title;
-        $order->body = '余额充值';
-        $order->type = 1;
-        $order->amount = $amount;
-        $order->state = 0;
+        $recharge = new Recharge();
+        $order = $recharge->createOrder($owner, $amount * $this->ratio);
 
         return $order;
+
     }
 
     protected function resolveNativePayOrder(NativePayOrder $order, $data)
@@ -525,16 +536,15 @@ class PayController extends Controller
         $order->save();
     }
 
-    protected function resolveWalletOrder(WalletOrderModel $order, $data)
+    protected function resolveCurrencyOrder(CurrencyOrderModel $order, $data)
     {
         $order->target_id = $data['trade_no'];
         $order->state = 1;
         $order->save();
     }
 
-    protected function resolveUserWallet(NativePayOrder $order)
+    protected function resolveUserCurrency(NativePayOrder $order)
     {
-        $order->user->newWallet()->increment('balance', $order->amount);
-        $order->user->newWallet()->increment('total_income', $order->amount);
+        $order->user->currency()->increment('sum', $order->amount);
     }
 }
