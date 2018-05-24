@@ -36,18 +36,18 @@ use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 /**
  * 原生积分充值
- * Class CurrencyPayController
- * @package Zhiyi\Plus\Http\Controllers\APIs\
+ * Class CurrencyPayController.
  */
 class CurrencyPayController extends Controller
 {
     protected $ratio = 1;
+
     /*
      * 创建支付订单
      */
     public function __construct()
     {
-        $ratio = CommonConfig::where('namespace' ,'currency')
+        $ratio = CommonConfig::where('namespace', 'currency')
             ->where('name', 'currency:recharge-ratio')
             ->value('value');
 
@@ -518,7 +518,6 @@ class CurrencyPayController extends Controller
         $order = $recharge->createOrder($owner, $amount * $this->ratio);
 
         return $order;
-
     }
 
     protected function resolveNativePayOrder(NativePayOrder $order, $data)
