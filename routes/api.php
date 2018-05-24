@@ -461,6 +461,11 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             $api->post('/checkOrders', API2\PayController::class.'@checkAlipayOrder');
         });
 
+        $api->group(['prefix' => 'currencyRecharge'], function (RouteContract $api) {
+            $api->post('/orders', API2\CurrencyPayController::class.'@entry');
+            $api->post('/checkOrders', API2\CurrencyPayController::class.'@checkAlipayOrder');
+        });
+
         // 新版钱包
         $api->group(['prefix' => 'plus-pay'], function (RouteContract $api) {
 
