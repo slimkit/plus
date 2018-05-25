@@ -55,7 +55,7 @@ class NewRewardFeedTest extends TestCase
      */
     public function testRewardFeed()
     {
-        $this->other->newWallet()->increment('balance', 1000);
+        $this->other->currency()->increment('sum', 1000);
 
         $response = $this
             ->actingAs($this->other, 'api')
