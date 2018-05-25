@@ -36,6 +36,7 @@ class NewUserRewardController extends Controller
     {
         $this->goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '积分';
     }
+
     /**
      * 新版打赏用户.
      *
@@ -78,7 +79,6 @@ class NewUserRewardController extends Controller
         $paid = $processer->receivables($target->id, $amount, $user->id, sprintf('“%s”打赏了你', $user->name), sprintf('用户“%s”打赏了你”，%s增加%s', $user->name, $this->goldName, $amount));
 
         if ($user->id !== $target->id) {
-
             $userCount->save();
         }
 
