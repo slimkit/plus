@@ -77,7 +77,9 @@ class NewRewardController extends Controller
 
             $userCount->total = $userUnreadCount;
             $userCount->save();
-
+            // 打赏记录
+            $news->reward($user, $amount);
+            
             return response()->json(['message' => '打赏成功'], 201);
         } else {
             return response()->json(['message' => '打赏失败'], 500);
