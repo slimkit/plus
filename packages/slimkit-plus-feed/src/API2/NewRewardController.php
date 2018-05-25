@@ -71,7 +71,7 @@ class NewRewardController extends Controller
         if ($pay && $paid) {
             $target->sendNotifyMessage('feed:reward', sprintf('“%s”打赏了你的动态', $target->name), [
                 'feed' => $feed,
-                'user' => $user
+                'user' => $user,
             ]);
             // 增加被打赏未读数
             $userCount = UserCountModel::firstOrNew([

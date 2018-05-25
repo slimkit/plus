@@ -65,7 +65,7 @@ class NewRewardController extends Controller
         if ($pay && $paid) {
             $target->sendNotifyMessage('news:reward', sprintf('“%s”打赏了你的资讯', $user->name), [
                 'feed' => $news,
-                'user' => $user
+                'user' => $user,
             ]);
             // 增加被打赏未读数
             $userUnreadCount = $target->unreadNotifications()

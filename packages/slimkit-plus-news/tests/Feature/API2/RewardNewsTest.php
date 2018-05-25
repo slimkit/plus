@@ -56,7 +56,7 @@ class RewardNewsTest extends TestCase
      */
     public function testRewardNews()
     {
-        $this->user->wallet()->increment('balance', 100);
+        $this->user->currency()->sum('sum', 100);
         $response = $this
             ->actingAs($this->user, 'api')
             ->json('POST', "/api/v2/news/{$this->news->id}/rewards", [
@@ -76,7 +76,7 @@ class RewardNewsTest extends TestCase
     public function testNewRewardNews()
     {
         $other = factory(UserModel::class)->create();
-        $other->newWallet()->increment('balance', 1000);
+        $other->currency()->increment('sum', 100);
         $response = $this
             ->actingAs($other, 'api')
             ->json('POST', "/api/v2/news/{$this->news->id}/new-rewards", [

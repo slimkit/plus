@@ -57,7 +57,7 @@ class UserRewardController extends Controller
         }
         $user = $request->user();
 
-        if (! $user-> currency || $user->currency->sum < $amount) {
+        if (! $user->currency || $user->currency->sum < $amount) {
             return response()->json([
                 'message' => '积分不足',
             ], 403);
