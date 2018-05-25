@@ -72,110 +72,119 @@
 	</div>	
 </template>
 <script>
-import request, { createRequestURI } from '../../util/request';
+import request, { createRequestURI } from "../../util/request";
 
-export default{
+export default {
 	data() {
 		return {
 			items: [],
 			total: 0,
 			loading: true,
 			filters: {
-				user: '',
-				state: '',
+				user: "",
+				state: ""
 			}
-		}
+		};
 	},
 	filters: {
 		targetType(val) {
 			switch (val) {
-				case 'user':
-					return '用户之间转账';
+				case "user":
+					return "用户之间转账";
 					break;
-				case 'recharge_ping_p_p':
-					return 'Ping ++ 充值';
+				case "recharge_ping_p_p":
+					return "Ping ++ 充值";
 					break;
-				case 'reward':
-					return '打赏';
+				case "Wechat-Native":
+					return "微信充值";
 					break;
-				case 'widthdraw':
-					return '提现';
+				case "Alipay-Native":
+					return "支付宝充值";
 					break;
-				case 'transform':
-					return '兑换货币、积分';
+				case "reward":
+					return "打赏";
+					break;
+				case "widthdraw":
+					return "提现";
+					break;
+				case "transform":
+					return "兑换货币、积分";
 					break;
 				default:
-					return '未知';
+					return "未知";
 					break;
 			}
 		},
 		action(val) {
 			switch (val) {
 				case 1:
-					return '增加';
+					return "增加";
 					break;
 				case -1:
-					return '减少';
+					return "减少";
 					break;
 				default:
-					return '未知';
+					return "未知";
 					break;
 			}
 		},
 		state(val) {
 			switch (val) {
 				case 0:
-					return '等待';
+					return "等待";
 					break;
 				case 1:
-					return '成功';
+					return "成功";
 					break;
 				case -1:
-					return '失败';
+					return "失败";
 					break;
 				default:
-					return '未知';
+					return "未知";
 					break;
 			}
 		}
 	},
-    watch: {
-        '$route': function ({query}) {
-            this.total = 0;
-            this.getList(query);
-        }
-    },
-    computed: {
-        offset() {
-            const {query: {offset = 0}} = this.$route;
+	watch: {
+		$route: function({ query }) {
+			this.total = 0;
+			this.getList(query);
+		}
+	},
+	computed: {
+		offset() {
+			const { query: { offset = 0 } } = this.$route;
 
-            return parseInt(offset);
-        },
-    },
+			return parseInt(offset);
+		}
+	},
 	methods: {
 		getList(query = {}) {
 			this.loading = true;
-			request.get(createRequestURI('new-wallet/waters'), {
-	          validateStatus: status => status === 200,
-	          params: {...query, limit: 15}
-	        }).then(({ data = [], headers: {'x-total': total} }) => {
-	        	this.items = data;
-                this.total = parseInt(total);
-	          	this.loading = false;
-	        }).catch(({ response: { data = { message: '加载流水失败' } } = {} }) => {
-	          	this.loading = false;
-	          	window.alert(message);
-	        });
+			request
+				.get(createRequestURI("new-wallet/waters"), {
+					validateStatus: status => status === 200,
+					params: { ...query, limit: 15 }
+				})
+				.then(({ data = [], headers: { "x-total": total } }) => {
+					this.items = data;
+					this.total = parseInt(total);
+					this.loading = false;
+				})
+				.catch(({ response: { data = { message: "加载流水失败" } } = {} }) => {
+					this.loading = false;
+					window.alert(message);
+				});
 		},
-        buildRoute(offset) {
-            const {query} = this.$route;
+		buildRoute(offset) {
+			const { query } = this.$route;
 
-            return {path: '/wallet/waters', query: {...query, offset}};
-        },
+			return { path: "/wallet/waters", query: { ...query, offset } };
+		}
 	},
 	created() {
-        const {query} = this.$route;
-        this.getList(query);
+		const { query } = this.$route;
+		this.getList(query);
 	}
-}
+};
 </script>
