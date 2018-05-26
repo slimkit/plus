@@ -72,12 +72,6 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
         $api->any('refresh', API2\AuthController::class.'@refresh');
     });
 
-    // Create user authentication token
-    $api->post('/tokens', API2\TokenController::class.'@store');
-
-    // Refresh token
-    $api->patch('/tokens/{token}', API2\TokenController::class.'@refresh');
-
     // Search location.
     $api->get('/locations/search', API2\LocationController::class.'@search');
 
