@@ -19,10 +19,12 @@
 namespace SlimKit\PlusQuestion\API2\Controllers;
 
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\GoldType;
 use Zhiyi\Plus\Models\Reward as RewardModel;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use SlimKit\PlusQuestion\Models\Answer as AnswerModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
+use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use SlimKit\PlusQuestion\Models\TopicExpertIncome as ExpertIncomeModel;
 use SlimKit\PlusQuestion\API2\Requests\AnswerReward as AnswerRewardRequest;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
@@ -67,58 +69,25 @@ class AnswerRewardController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function store(AnswerRewardRequest $request, ResponseFactoryContract $response, AnswerModel $answer)
+    public function store(AnswerRewardRequest $request, ResponseFactoryContract $response, AnswerModel $answer, GoldType $goldModel, UserProcess $process)
     {
+        $goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '积分';
         $amount = $request->input('amount');
         $user = $request->user();
         $respondent = $answer->user;
 
         if (! $respondent) {
-            return $response->json(['message' => [trans('plus-question::answers.reward.not-user')]], 422);
+            return $response->json(['message' => trans('plus-question::answers.reward.not-user')], 422);
         }
 
-        $userCharge = new WalletChargeModel();
-        $userCharge->user_id = $user->id;
-        $userCharge->channel = 'user';
-        $userCharge->account = $respondent->id;
-        $userCharge->action = 0;
-        $userCharge->amount = $amount;
-        $userCharge->subject = trans('plus-question::answers.reward.send-reward');
-        $userCharge->body = $userCharge->subject;
-        $userCharge->status = 1;
+        if (! $user->currency || $user->currency->sum < $amount) {
+            return $response->json(['message' => $goldName.'不足'], 403);
+        }
 
-        $respondentCharge = new WalletChargeModel();
-        $respondentCharge->user_id = $respondent->id;
-        $respondentCharge->channel = 'user';
-        $respondentCharge->account = $user->id;
-        $respondentCharge->action = 1;
-        $respondentCharge->amount = $amount;
-        $respondentCharge->subject = trans('plus-question::answers.reward.get-reward');
-        $respondentCharge->body = $respondentCharge->subject;
-        $respondentCharge->status = 1;
+        return $response->json($answer->getConnection()->transaction(function () use ($answer, $user, $respondent, $process) {
 
-        return $response->json($answer->getConnection()->transaction(function () use ($answer, $user, $respondent, $userCharge, $respondentCharge) {
-
-            // 增减相应钱包
-            $user->wallet()->decrement('balance', $userCharge->amount);
-            $respondent->wallet()->increment('balance', $userCharge->amount);
-
-            // Save log.
-            $reward = new RewardModel();
-            $reward->user_id = $user->id;
-            $reward->target_user = $respondent->id;
-            $reward->amount = $userCharge->amount;
-            $answer->rewarders()->save($reward);
-
-            // increment reward for the answer.
-            $answer->rewards_amount += $userCharge->amount;
-            $answer->rewarder_count += 1;
-            $answer->save();
-
-            // save user charge.
-            $userCharge->save();
-            $respondentCharge->save();
-
+            $process->prepayment($user->id, $amount, $respondent->id, sprintf('打赏“%s”的回答', $respondent->name), sprintf('打赏“%s”的回答，%s扣除%s', $respondent->name, $this->goldName, $amount));
+            $process->receivables($respondent->id, $amount, $user->id, sprintf('“%s”打赏了你的帖子', $user->name), sprintf('“%s”打赏了你的回答，%s增加%s', $user->name, $this->goldName, $amount));
             // check if the user is a expert, record income.
             $answer->question->load('topics.experts');
             // get all expert of all the topics belongs to the question.

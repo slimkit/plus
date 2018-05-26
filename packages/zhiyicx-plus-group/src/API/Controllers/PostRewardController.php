@@ -20,11 +20,10 @@ namespace Zhiyi\PlusGroup\API\Controllers;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\GoldType;
-use Zhiyi\Plus\Models\CommonConfig;
-use Zhiyi\Plus\Models\WalletCharge;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\PlusGroup\Models\Post as GroupPostModel;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
+use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
 class PostRewardController
 {
@@ -34,12 +33,9 @@ class PostRewardController
     // 系统内货币与真实货币兑换比例
     protected $wallet_ratio;
 
-    public function __construct(GoldType $goldModel, CommonConfig $configModel)
+    public function __construct(GoldType $goldModel)
     {
-        $walletConfig = $configModel->where('name', 'wallet:ratio')->first();
-
-        $this->goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '金币';
-        $this->wallet_ratio = $walletConfig ? $walletConfig->value : 100;
+        $this->goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '积分';
     }
 
     /**
@@ -47,64 +43,39 @@ class PostRewardController
      *
      * @param Request $request
      * @param GroupPostModel $post
-     * @param WalletCharge $charge
+     * @param UserProcess $process
+     * @param   ConfigRepository $config
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function store(Request $request, GroupPostModel $post, WalletCharge $charge, ConfigRepository $config)
+    public function store(Request $request, GroupPostModel $post, UserProcess $process, ConfigRepository $config)
     {
         if (! $config->get('plus-group.group_reward.status')) {
-            return response()->json(['message' => ['打赏功能已关闭']], 422);
+            return response()->json(['message' => '打赏功能已关闭'], 422);
         }
 
         $amount = $request->input('amount');
         if (! $amount || $amount < 0) {
             return response()->json([
-                'amount' => ['请输入正确的打赏金额'],
+                'amount' => '请输入正确的'.$goldName.'数量',
             ], 422);
         }
         $user = $request->user();
-        $user->load('wallet');
         $post->load('user');
         $current_user = $post->user;
 
-        if (! $user->wallet || $user->wallet->balance < $amount) {
+        if (! $user->currency || $user->currency->sum < $amount) {
             return response()->json([
-                'message' => ['余额不足'],
+                'message' => $goldName.'不足',
             ], 403);
         }
 
-        $user->getConnection()->transaction(function () use ($user, $post, $charge, $current_user, $amount) {
-            // 扣除操作用户余额
-            $user->wallet()->decrement('balance', $amount);
-
-            // 扣费记录
-            $userCharge = clone $charge;
-            $userCharge->channel = 'user';
-            $userCharge->account = $current_user->id;
-            $userCharge->subject = '打赏帖子';
-            $userCharge->action = 0;
-            $userCharge->amount = $amount;
-            $userCharge->body = sprintf('打赏帖子《%s》', $post->title);
-            $userCharge->status = 1;
-            $user->walletCharges()->save($userCharge);
-
-            if ($current_user->wallet) {
-                // 增加对应用户余额
-                $current_user->wallet()->increment('balance', $amount);
-
-                $charge->user_id = $current_user->id;
-                $charge->channel = 'user';
-                $charge->account = $user->id;
-                $charge->subject = '贴子被打赏';
-                $charge->action = 1;
-                $charge->amount = $amount;
-                $charge->body = sprintf('帖子《%s》被打赏', $post->title);
-                $charge->status = 1;
-                $charge->save();
-
+        $user->getConnection()->transaction(function () use ($user, $post, $charge, $current_user, $amount, $process) {
+            if ($current_user->currency) {
+                $process->prepayment($user->id, $amount, $current_user->id, sprintf('打赏“%s”的帖子', $current_user->name, $post->title, $amount), sprintf('打赏“%s”的帖子，%s扣除%s', $current_user->name, $this->goldName, $amount));
+                $process->receivables($current_user->id, $amount, $user->id, sprintf('“%s”打赏了你的帖子', $user->name), sprintf('“%s”打赏了你的帖子，%s增加%s', $user->name, $this->goldName, $amount));
                 // 添加被打赏通知
-                $notice = sprintf('你的帖子《%s》被%s打赏%s%s', $post->title, $user->name, $amount * $this->wallet_ratio / 10000, $this->goldName);
+                $notice = sprintf('你的帖子《%s》被%s打赏%s%s', $post->title, $user->name, $amount, $this->goldName);
                 // 1.8启用, 新版未读消息提醒
                 $userCount = UserCountModel::firstOrNew([
                     'type' => 'user-system',
@@ -117,14 +88,13 @@ class PostRewardController
                     'post' => $post,
                     'user' => $user,
                 ]);
+                // 打赏记录
+                $post->rewards()->create([
+                    'user_id' => $user->id,
+                    'target_user' => $current_user->id,
+                    'amount' => $amount,
+                ]);
             }
-
-            // 打赏记录
-            $post->rewards()->create([
-                'user_id' => $user->id,
-                'target_user' => $current_user->id,
-                'amount' => $amount,
-            ]);
         });
 
         return response()->json([

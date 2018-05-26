@@ -19,19 +19,14 @@
 namespace Zhiyi\PlusGroup\API\Controllers;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Packages\Wallet\Order;
-use Zhiyi\Plus\Packages\Wallet\TypeManager;
+use Zhiyi\Plus\Models\GoldType;
 use Zhiyi\PlusGroup\Models\Post as GroupPostModel;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
+use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
 class NewPostRewardController
 {
-    /**
-     * 元到分转换比列.
-     */
-    const RATIO = 100;
-
     /**
      * 打赏操作.
      *
@@ -41,18 +36,18 @@ class NewPostRewardController
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function store(Request $request, GroupPostModel $post, TypeManager $manager, ConfigRepository $config)
+    public function store(Request $request, GroupPostModel $post, UserProcess $process, ConfigRepository $config, GoldType $goldModel)
     {
         if (! $config->get('plus-group.group_reward.status')) {
             return response()->json(['message' => '打赏功能已关闭'], 422);
         }
-
+        $goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '积分';
         if ($post->user_id) {
             $amount = (int) $request->input('amount');
         }
         if (! $amount || $amount < 0) {
             return response()->json([
-                'message' => '请输入正确的打赏金额',
+                'message' => '请输入正确的'.$goldName.'数量',
             ], 422);
         }
         $user = $request->user();
@@ -60,34 +55,22 @@ class NewPostRewardController
         if ($post->user_id === $user->id) {
             return response()->json(['message' => '不能打赏自己发布的帖子'], 422);
         }
-        $user->load('wallet');
         $post->load('user');
         $target = $post->user;
 
         if (! $user->newWallet || $user->newWallet->balance < $amount) {
-            return response()->json(['message' => '余额不足'], 403);
+            return response()->json(['message' => $goldName.'不足'], 403);
         }
+        $pay = $process->prepayment($user->id, $amount, $target->id, sprintf('打赏“%s”的帖子', $target->name, $post->title, $amount), sprintf('打赏“%s”的帖子，%s扣除%s', $target->name, $goldName, $amount));
 
-        // 记录订单
-        $money = $amount / self::RATIO;
-    
-        $status = $manager->driver(Order::TARGET_TYPE_REWARD)->reward([
-            'reward_resource' => $post,
-            'order' => [
+        $paid = $process->receivables($target->id, $amount, $user->id, sprintf('“%s”打赏了你的帖子', $user->name), sprintf('“%s”打赏了你的帖子，%s增加%s', $user->name, $goldName, $amount));
+
+        if ($pay && $paid) {
+            $notice = sprintf('“%s”打赏了你的帖子', $user->name);
+            $target->sendNotifyMessage('group:post:reward', $notice, [
+                'post' => $post,
                 'user' => $user,
-                'target' => $target,
-                'amount' => $amount,
-                'user_order_body' => sprintf('打赏帖子《%s》，钱包扣除%s元', $post->title, $money),
-                'target_order_body' => sprintf('帖子《%s》被打赏，钱包增加%s元', $post->title, $money),
-            ],
-            'notice' => [
-                'type' => 'group:post:reward',
-                'detail' => ['user' => $user, 'post' => $post],
-                'message' => sprintf('你的帖子《%s》被用户%s打赏%s元', $post->title, $user->name, $money),
-            ],
-        ]);
-
-        if ($status === true) {
+            ]);
             // 1.8启用, 新版未读消息提醒
             $userUnreadCount = $target->unreadNotifications()
                 ->count();
@@ -95,9 +78,14 @@ class NewPostRewardController
                 'type' => 'user-system',
                 'user_id' => $target->id
             ]);
-            $userCount->total = $userUnreadCount + 1;
+            $userCount->total = $userUnreadCount;
             $userCount->save();
-            
+            // 打赏记录
+            $post->rewards()->create([
+                'user_id' => $user->id,
+                'target_user' => $target->id,
+                'amount' => $amount,
+            ]);
             return response()->json(['message' => '打赏成功'], 201);
         } else {
             return response()->json(['message' => '打赏失败'], 500);

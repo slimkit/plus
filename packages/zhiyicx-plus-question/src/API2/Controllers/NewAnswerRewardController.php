@@ -19,10 +19,10 @@
 namespace SlimKit\PlusQuestion\API2\Controllers;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Packages\Wallet\Order;
-use Zhiyi\Plus\Packages\Wallet\TypeManager;
+use Zhiyi\Plus\Models\GoldType;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use SlimKit\PlusQuestion\Models\Answer as AnswerModel;
+use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use SlimKit\PlusQuestion\Models\TopicExpertIncome as ExpertIncomeModel;
 use SlimKit\PlusQuestion\API2\Requests\NewAnswerReward as NewAnswerRewardRequest;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
@@ -34,8 +34,9 @@ class NewAnswerRewardController extends Controller
      */
     const RATIO = 100;
 
-    public function store(NewAnswerRewardRequest $request, ResponseFactoryContract $response, TypeManager $manager, AnswerModel $answer)
+    public function store(NewAnswerRewardRequest $request, ResponseFactoryContract $response, UserProcess $process, AnswerModel $answer, GoldType $goldModel)
     {
+        $goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '积分';
         $amount = (int) $request->input('amount');
         $user = $request->user();
         $target = $answer->user;
@@ -45,32 +46,37 @@ class NewAnswerRewardController extends Controller
         }
 
         if ($target->id === $user->id) {
-            return $response->json(['message' => ['用户不能自己打赏自己']], 422);
+            return $response->json(['message' => '不能打赏自己'], 422);
         }
 
-        if (! $user->newWallet || $user->newWallet->balance < $amount) {
-            return response()->json(['message' => ['余额不足']], 403);
+        if (! $user->currency || $user->currency->sum < $amount) {
+            return response()->json(['message' => $goldName.'不足'], 403);
         }
 
-        return $response->json($answer->getConnection()->transaction(function () use ($answer, $user, $target, $amount, $manager) {
-            $money = $amount / self::RATIO;
+        return $response->json($answer->getConnection()->transaction(function () use ($answer, $user, $target, $amount, $process, $goldName) {
+            $process->prepayment($user->id, $amount, $target->id, sprintf('打赏“%s”的回答', $target->name), sprintf('打赏“%s”的回答，%s扣除%s', $target->name, $goldName, $amount));
+            $process->receivables($target->id, $amount, $user->id, sprintf('“%s”打赏了你的回答', $user->name), sprintf('“%s”打赏了你的回答，%s增加%s', $user->name, $goldName, $amount));
+            // $money = $amount / self::RATIO;
 
-            $targetOrder = $manager->driver(Order::TARGET_TYPE_REWARD)->reward([
-                'reward_resource' => $answer,
-                'order' => [
-                    'user' => $user,
-                    'target' => $target,
-                    'amount' => $amount,
-                    'user_order_body' => sprintf('打赏问答回答，钱包扣除%s元', $money),
-                    'target_order_body' => sprintf('问答回答被打赏，钱包增加%s元', $money),
-                ],
-                'notice' => [
-                    'type' => 'question:answer-reward',
-                    'detail' => ['user' => $user, 'answer' => $answer],
-                    'message' => sprintf('你问答回答《%s》，被%s打赏%s元', $answer->body, $user->name, $money),
-                ],
-            ], 'manual');
-
+            // $targetOrder = $manager->driver(Order::TARGET_TYPE_REWARD)->reward([
+            //     'reward_resource' => $answer,
+            //     'order' => [
+            //         'user' => $user,
+            //         'target' => $target,
+            //         'amount' => $amount,
+            //         'user_order_body' => sprintf('打赏问答回答，钱包扣除%s元', $money),
+            //         'target_order_body' => sprintf('问答回答被打赏，钱包增加%s元', $money),
+            //     ],
+            //     'notice' => [
+            //         'type' => 'question:answer-reward',
+            //         'detail' => ['user' => $user, 'answer' => $answer],
+            //         'message' => sprintf('你问答回答《%s》，被%s打赏%s元', $answer->body, $user->name, $money),
+            //     ],
+            // ], 'manual');
+            $target->sendNotifyMessage('question:answer-reward', sprintf('“%s”打赏了你的回答', $user->name), [
+                'answer' => $answer,
+                'user' => $user,
+            ]);
             // 1.8启用, 新版未读消息提醒
             $userCount = UserCountModel::firstOrNew([
                 'type' => 'user-system',
@@ -94,7 +100,7 @@ class NewAnswerRewardController extends Controller
 
             if (in_array($target->id, $allexpert)) {
                 $income = new ExpertIncomeModel();
-                $income->charge_id = $targetOrder->id;
+                // $income->charge_id = $targetOrder->id;
                 $income->user_id = $target->id;
                 $income->amount = $amount;
                 $income->type = 'reward';
