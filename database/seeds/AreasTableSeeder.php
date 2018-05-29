@@ -26,7 +26,7 @@ class AreasTableSeeder extends Seeder
      *
      * @var array
      */
-    protected static $regions;
+    protected static $regions = [];
 
     /**
      * Create the seeder instance.
