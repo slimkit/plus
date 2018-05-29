@@ -80,7 +80,7 @@ class AreasTableSeeder extends Seeder
             $province = $this->advance($output, (bool) $provinceName, $china->id, (string) $provinceName);
             $city = $this->advance($output, $province && $cityName, $province->id ?? 0, (string) $cityName);
             $county = $this->advance($output, $city && $countyName, $city->id ?? 0, (string) $countyName);
-            $this->advance($output, !$county && $province && $countyName, $province->id ?? 0, (string) $countyName);
+            $this->advance($output, ! $county && $province && $countyName, $province->id ?? 0, (string) $countyName);
         }
 
         $output->progressFinish();
@@ -92,7 +92,7 @@ class AreasTableSeeder extends Seeder
         if (! $condition) {
             return null;
         }
-        
+
         $area = Area::where('name', $name)->where('pid', $parentId)->first();
         if (! $area) {
             $area = new Area();
