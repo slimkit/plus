@@ -23,17 +23,18 @@ class AreasTableSeeder extends Seeder
 {
     /**
      * Seeder need all regions.
-     * 
+     *
      * @var array
      */
     protected static $regions;
 
     /**
      * Create the seeder instance.
-     * 
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function __construct() {
+    public function __construct()
+    {
         if (empty(static::$regions) && config('app.env') !== 'testing') {
             static::$regions = json_decode(
                 file_get_contents(MEDZ_GBT2260_RAW_PATH), true
@@ -43,11 +44,12 @@ class AreasTableSeeder extends Seeder
 
     /**
      * The seeder handler.
-     * 
+     *
      * @return void
      * @author Seven Du <shiweidu@outloo.com>
      */
-    public function run() {
+    public function run()
+    {
         $output = $this->command->getOutput();
         $china = new Area();
         $china->name = '中国';
@@ -107,7 +109,7 @@ class AreasTableSeeder extends Seeder
                     $county->save();
                     $output->progressAdvance(1);
                 }
-            } else if ($province && $countyName) {
+            } elseif ($province && $countyName) {
                 $county = Area::where('name', $countyName)->where('pid', $province->id)->first();
                 if (! $county) {
                     $county = new Area();
