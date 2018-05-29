@@ -18,6 +18,7 @@
 
 use Zhiyi\Plus\Models\Area;
 use Illuminate\Database\Seeder;
+use Illuminate\Console\OutputStyle;
 
 class AreasTableSeeder extends Seeder
 {
@@ -76,52 +77,31 @@ class AreasTableSeeder extends Seeder
                 || ($countyRrgionCode === $cityRegionCode)
             ) ? null : $countyName;
 
-            $province = null;
-            if ($provinceName) {
-                $province = Area::where('name', $provinceName)->where('pid', $china->id)->first();
-                if (! $province) {
-                    $province = new Area();
-                    $province->name = $provinceName;
-                    $province->pid = $china->id;
-                    $province->save();
-                    $output->progressAdvance(1);
-                }
-            }
-
-            $city = null;
-            if ($province && $cityName) {
-                $city = Area::where('name', $cityName)->where('pid', $province->id)->first();
-                if (! $city) {
-                    $city = new Area();
-                    $city->name = $cityName;
-                    $city->pid = $province->id;
-                    $city->save();
-                    $output->progressAdvance(1);
-                }
-            }
-
-            if ($city && $countyName) {
-                $county = Area::where('name', $countyName)->where('pid', $city->id)->first();
-                if (! $county) {
-                    $county = new Area();
-                    $county->name = $countyName;
-                    $county->pid = $city->id;
-                    $county->save();
-                    $output->progressAdvance(1);
-                }
-            } elseif ($province && $countyName) {
-                $county = Area::where('name', $countyName)->where('pid', $province->id)->first();
-                if (! $county) {
-                    $county = new Area();
-                    $county->name = $countyName;
-                    $county->pid = $province->id;
-                    $county->save();
-                    $output->progressAdvance(1);
-                }
-            }
+            $province = $this->advance($output, (bool) $provinceName, $china->id, (string) $provinceName);
+            $city = $this->advance($output, $province && $cityName, $province->id ?? 0, (string) $cityName);
+            $county = $this->advance($output, $city && $countyName, $city->id ?? 0, (string) $countyName);
+            $this->advance($output, !$county && $province && $countyName, $province->id ?? 0, (string) $countyName);
         }
 
         $output->progressFinish();
         $output->newLine();
+    }
+
+    private function advance(OutputStyle $output, bool $condition, int $parentId, string $name)
+    {
+        if (! $condition) {
+            return null;
+        }
+        
+        $area = Area::where('name', $name)->where('pid', $parentId)->first();
+        if (! $area) {
+            $area = new Area();
+            $area->name = $name;
+            $area->pid = $parentId;
+            $area->save();
+            $output->progressAdvance(1);
+        }
+
+        return $area;
     }
 }
