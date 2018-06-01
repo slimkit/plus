@@ -41,7 +41,7 @@ class CateController extends Controller
 
         // 我订阅的分类
         $follows = NewsCateFollow::where('user_id', $user_id)->first();
-        if ($follows && $follows->follows) {
+        if ($follows && ! $follows->follows) {
             $follows_array = explode(',', $follows->follows);
         } else {
             $follows_array = NewsCate::orderBy('rank', 'desc')->take(5)->pluck('id')->toArray();
