@@ -237,7 +237,7 @@ class CurrencyPayController extends Controller
         // 密钥
         $gateWay->setPrivateKey($config['secretKey']);
         // 公钥
-        $gateWay->setAlipayPublicKey($config['publicKey']);
+        $gateWay->setAlipayPublicKey($config['alipayKey']);
 
         $res = $gateWay->completePurchase();
         $res->setParams($_POST);
@@ -260,7 +260,7 @@ class CurrencyPayController extends Controller
         }
     }
 
-    public function checkAlipayOrder(Request $request, ResponseFactory $response, CurrencyOrderModel $orderModel, WalletChargeModel $chargeModel, NativePayOrder $nativePayOrder)
+    public function checkAlipayOrder(Request $request, ResponseFactory $response, CurrencyOrderModel $orderModel, NativePayOrder $nativePayOrder)
     {
         $memo = $request->input('memo');
         $result = $request->input('result');
