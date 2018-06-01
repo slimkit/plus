@@ -220,7 +220,7 @@ class PayController extends Controller
         // 密钥
         $gateWay->setPrivateKey($config['secretKey']);
         // 公钥
-        $gateWay->setAlipayPublicKey($config['publicKey']);
+        $gateWay->setAlipayPublicKey($config['alipayKey']);
 
         $res = $gateWay->completePurchase();
         $res->setParams($_POST);
