@@ -97,7 +97,7 @@ class FilesController extends Controller
     {
         $clientHeight = $request->input('height', 0);
         $clientWidth = $request->input('width', 0);
-        $fileModel = $this->validateFileInDatabase($fileModel, $file = $request->file('file'), function (UploadedFile $file, string $md5) use ($fileModel, $dateTime, $clientWidth, $clientHeight): FileModel {
+        $fileModel = $this->validateFileInDatabase($fileModel, $file = $request->file('file'), function (UploadedFile $file, string $md5) use ($fileModel, $dateTime, $clientWidth, $clientHeight, $response): FileModel {
             // 图片做旋转处理
             if (! in_array($file->getClientMimeType(), ['video/mp4', 'image/gif'])) {
                 ini_set('memory_limit', '-1');
