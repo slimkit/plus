@@ -168,9 +168,9 @@ export default {
         publicKey: "",
         secretKey: "",
         signType: "RSA2",
-          alipayAlipayKey: ""
+        alipayAlipayKey: ""
       },
-        sign: ""
+      sign: ""
     },
     alert: {
       status: false,
@@ -192,9 +192,7 @@ export default {
         });
     },
     storeSetting() {
-      const {
-        config: { wechatPay, alipay, sign}
-      } = this;
+      const { config: { wechatPay, alipay, sign } } = this;
       const params = { wechatPay, alipay, sign };
       request
         .post(createRequestURI("wallet/newPaySetting"), {
@@ -275,16 +273,16 @@ export default {
         this.config = { ...this.config, alipay };
       }
     },
-      alipayAliPayKey: {
-        get: function() {
-            return this.alipay.alipayKey || "";
-        },
-          set: function(alipayKey) {
-              const alipay = this.config.alipay || {};
-              alipay.alipayKey = alipayKey;
-              this.config = { ...this.config, alipay };
-          }
+    alipayAliPayKey: {
+      get: function() {
+        return this.alipay.alipayKey || "";
       },
+      set: function(alipayKey) {
+        const alipay = this.config.alipay || {};
+        alipay.alipayKey = alipayKey;
+        this.config = { ...this.config, alipay };
+      }
+    },
     alipaySecretKey: {
       get: function() {
         return this.alipay.secretKey || "";
@@ -295,20 +293,17 @@ export default {
         this.config = { ...this.config, alipay };
       }
     },
-      outTradeNoSign: {
-          get: function() {
-              return this.config.sign || "";
-          },
-          set: function(sign) {
-              this.config.sign = sign;
-          }
+    outTradeNoSign: {
+      get: function() {
+        return this.config.sign || "";
+      },
+      set: function(sign) {
+        this.config.sign = sign;
       }
+    }
   },
   created() {
     this.getSetting();
   }
 };
 </script>
-
-<style scoped>
-</style>
