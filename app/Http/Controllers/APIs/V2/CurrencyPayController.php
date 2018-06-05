@@ -164,7 +164,7 @@ class CurrencyPayController extends Controller
         // 支付成功后返回地址
         $gateWay->setReturnUrl($redirect);
 
-        $order->out_trade_no = date('YmdHis').mt_rand(1000, 9999).config('app.name');
+        $order->out_trade_no = date('YmdHis').mt_rand(1000, 9999).config('newPay.sign');
         $order->subject = '积分充值';
         $order->content = sprintf('在%s充值积分%d', config('app.name'), $amount * $this->ratio);
         $order->type = 'alipay';
