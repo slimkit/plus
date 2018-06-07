@@ -89,6 +89,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     // Get a html for about us.
     $api->get('/aboutus', API2\SystemController::class.'@about');
 
+    // 注册协议
+    $api->get('/agreement', API2\SystemController::class.'@agreement');
+
     // Get all tags.
     // @Get /api/v2/tags
     $api->get('/tags', API2\TagController::class.'@index');
