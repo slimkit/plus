@@ -63,6 +63,19 @@ class SystemController extends Controller
     }
 
     /**
+     * 注册协议
+     *
+     * @author Foreach<791477842@qq.com>
+     * @return html
+     */
+    public function agreement()
+    {
+        $content = \Parsedown::instance()->setMarkupEscaped(true)->text(config('registerSettings.content', ''));
+        return view('agreement', ['content' => $content]);
+    }
+
+
+    /**
      * 获取系统会话列表.
      *
      * @author bs<414606094@qq.com>
