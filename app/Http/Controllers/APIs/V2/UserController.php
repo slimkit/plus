@@ -128,7 +128,10 @@ class UserController extends Controller
         $user->phone = $phone;
         $user->email = $email;
         $user->name = $name;
-        $user->createPassword($password);
+
+        if ($password !== null) {
+            $user->createPassword($password);
+        }
 
         $verify->delete();
         if (! $user->save()) {
