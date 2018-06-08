@@ -20,11 +20,13 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
+use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use function Zhiyi\Plus\username;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Auth;
+use Zhiyi\Plus\Models\VerificationCode;
 
 class AuthController extends Controller
 {
@@ -58,8 +60,34 @@ class AuthController extends Controller
     public function login(Request $request): JsonResponse
     {
         $login = (string) $request->input('login', '');
+        $code = $request->input('verifiable_code');
+        $field = username($login);
+
+        if ($code !== null && in_array($field, ['phone', 'email'])) {
+            $verify = VerificationCode::where('account', $login)
+                ->where('channel', $field == 'phone' ? 'sms' : 'mail')
+                ->where('code', $code)
+                ->byValid(120)
+                ->orderby('id', 'desc')
+                ->first();
+
+            if (! $verify) {
+                return $this->response()->json(['message' => '验证码错误或者已失效'], 422);
+            }
+
+            $verify->delete();
+
+            if ($user = User::where($field, $login)->first()) {
+                return $this->respondWithToken($this->guard()->login($user));
+            }
+
+            return $this->response()->json([
+                'message' => sprintf('%s还没有注册', $field == 'phone' ? '手机号' : '邮箱')
+            ], 422);
+        }
+
         $credentials = [
-            username($login) => $login,
+            $field => $login,
             'password' => $request->input('password', ''),
         ];
 
