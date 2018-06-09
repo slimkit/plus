@@ -163,7 +163,7 @@ class Feed extends Model
      * @param  string  $phone [description]
      * @return [type]         [description]
      */
-    public function scopeByUserId(Builder $query, integer $userId): Builder
+    public function scopeByUserId(Builder $query, int $userId): Builder
     {
         return $query->where('user_id', $userId);
     }
