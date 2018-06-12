@@ -60,7 +60,7 @@ class NewUserRewardController extends Controller
         }
 
         if (! $user->currency || $user->currency->sum < $amount) {
-            return response()->json(['message' => $this->goldName.'不足'], 403);
+            return response()->json(['message' => '余额不足'], 403);
         }
 
         if (! $target->currency) {

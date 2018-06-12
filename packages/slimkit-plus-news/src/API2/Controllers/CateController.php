@@ -41,10 +41,13 @@ class CateController extends Controller
 
         // 我订阅的分类
         $follows = NewsCateFollow::where('user_id', $user_id)->first();
-        if ($follows && ! $follows->follows) {
-            $follows_array = explode(',', $follows->follows);
-        } else {
+        $follows_array = [];
+        // 第一次使用，默认返回5个
+        if (! $follows) {
             $follows_array = NewsCate::orderBy('rank', 'desc')->take(5)->pluck('id')->toArray();
+        }
+        if ($follows && $follows->follows) {
+            $follows_array = explode(',', $follows->follows);
         }
         // 更多分类
         $datas = ['my_cates' => [], 'more_cates' => []];
