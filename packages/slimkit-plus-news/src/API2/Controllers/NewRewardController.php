@@ -55,7 +55,7 @@ class NewRewardController extends Controller
             return response()->json(['message' => '不能打赏自己的发布的资讯'], 422);
         }
         if (! $user->currency || $user->currency->sum < $amount) {
-            return response()->json(['message' => $goldName.'不足'], 403);
+            return response()->json(['message' => '余额不足'], 403);
         }
 
         // 记录订单
