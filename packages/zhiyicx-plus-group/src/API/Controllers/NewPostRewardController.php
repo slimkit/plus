@@ -59,7 +59,7 @@ class NewPostRewardController
         $target = $post->user;
 
         if (! $user->newWallet || $user->newWallet->balance < $amount) {
-            return response()->json(['message' => $goldName.'不足'], 403);
+            return response()->json(['message' => '余额不足'], 403);
         }
         $pay = $process->prepayment($user->id, $amount, $target->id, sprintf('打赏“%s”的帖子', $target->name, $post->title, $amount), sprintf('打赏“%s”的帖子，%s扣除%s', $target->name, $goldName, $amount));
 

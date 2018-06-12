@@ -50,7 +50,7 @@ class NewAnswerRewardController extends Controller
         }
 
         if (! $user->currency || $user->currency->sum < $amount) {
-            return response()->json(['message' => $goldName.'不足'], 403);
+            return response()->json(['message' => '余额不足'], 403);
         }
 
         return $response->json($answer->getConnection()->transaction(function () use ($answer, $user, $target, $amount, $process, $goldName) {
