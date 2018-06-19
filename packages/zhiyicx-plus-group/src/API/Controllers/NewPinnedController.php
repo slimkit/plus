@@ -37,11 +37,12 @@ class NewPinnedController extends Controller
     /**
      * 申请帖子置顶.
      *
-     * @param Request $request
-     * @param PostModel $post
+     * @param Request     $request
+     * @param PostModel   $post
      * @param PinnedModel $pinnedModel
-     * @param Carbon $datetime
+     * @param Carbon      $datetime
      * @return mixed
+     * @throws \Throwable
      * @author BS <414606094@qq.com>
      */
     public function storePost(Request $request, PostModel $post, PinnedModel $pinnedModel, Carbon $datetime)
@@ -55,17 +56,17 @@ class NewPinnedController extends Controller
         // 是否有权限进行置顶
         $bool = ! $member || in_array($member->audit, [0, 2]) || $member->disabled === 1;
 
-        if (! $member || ($post->user_id !== $user->id && ! in_array($member->role, ['founder', 'administrator']))) {
-            return response()->json(['message' => '无权限操作'], 403);
+        if ($bool || ($post->user_id !== $user->id && ! in_array($member->role, ['founder', 'administrator']))) {
+            return response()->json(['message' => '没有权限'], 403);
         }
 
         if ($post->pinned()->where('user_id', $user->id)->where(function ($query) use ($datetime) {
             return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
         })->first()) {
-            return response()->json(['message' => ['已经申请过']])->setStatusCode(422);
+            return response()->json(['message' => '已经申请过'])->setStatusCode(422);
         }
         if (! $post->group->user) {
-            return response()->json(['message' => ['不允许该操作']], 422);
+            return response()->json(['message' => '不允许该操作'], 422);
         }
 
         $target_user = $post->group->founder->user;
@@ -133,11 +134,13 @@ class NewPinnedController extends Controller
     /**
      * 接受置顶帖子.
      *
-     * @param Request $request
-     * @param PostModel $post
-     * @param PinnedModel $pinnedModel
-     * @param Carbon $datetime
+     * @param Request          $request
+     * @param PostModel        $post
+     * @param PinnedModel      $pinnedModel
+     * @param Carbon           $datetime
+     * @param GroupIncomeModel $income
      * @return mixed
+     * @throws \Throwable
      * @author BS <414606094@qq.com>
      */
     public function acceptPost(Request $request, PostModel $post, PinnedModel $pinnedModel, Carbon $datetime, GroupIncomeModel $income)
@@ -220,11 +223,12 @@ class NewPinnedController extends Controller
     /**
      * 拒接置顶帖子.
      *
-     * @param Request $request
-     * @param PostModel $post
+     * @param Request     $request
+     * @param PostModel   $post
      * @param PinnedModel $pinnedModel
-     * @param Carbon $datetime
+     * @param Carbon      $datetime
      * @return mixed
+     * @throws \Throwable
      * @author BS <414606094@qq.com>
      */
     public function rejectPost(Request $request, PostModel $post, PinnedModel $pinnedModel, Carbon $datetime)
@@ -312,16 +316,16 @@ class NewPinnedController extends Controller
         if ($pinnedModel->where('channel', 'comment')->where('target', $comment->id)->where('user_id', $user->id)->where(function ($query) use ($datetime) {
             return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
         })->first()) {
-            return response()->json(['message' => ['已经申请过']])->setStatusCode(422);
+            return response()->json(['message' => '已经申请过'])->setStatusCode(422);
         }
         if ($comment->commentable_type !== 'group-posts') {
-            return response()->json(['message' => ['不允许该操作']], 422);
+            return response()->json(['message' => '不允许该操作'], 422);
         }
 
         $post = $postModel->where('id', $comment->commentable_id)->first();
 
         if (! $post || ! $post->user) {
-            return response()->json(['message' => ['不允许该操作']], 422);
+            return response()->json(['message' => '不允许该操作'], 422);
         }
 
         $member = GroupMember::where('user_id', $user->id)
@@ -329,7 +333,8 @@ class NewPinnedController extends Controller
             ->first();
 
         // 是否有权限进行置顶
-        if (! $member || ($comment->user_id !== $user->id && ! in_array($member->role, ['founder', 'administrator']))) {
+        $bool = ! $member || in_array($member->audit, [0, 2]) || $member->disabled === 1;
+        if ($bool || ($comment->user_id !== $user->id && ! in_array($member->role, ['founder', 'administrator']))) {
             return response()->json(['message' => '无权限操作'], 403);
         }
 

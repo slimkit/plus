@@ -18,6 +18,7 @@
 
 namespace Zhiyi\PlusGroup\API\Controllers;
 
+use DB;
 use Carbon\Carbon;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
@@ -69,12 +70,13 @@ class PinnedController extends Controller
     /**
      * 申请帖子置顶.
      *
-     * @param Request $request
-     * @param PostModel $post
-     * @param PinnedModel $pinnedModel
-     * @param Carbon $datetime
+     * @param Request           $request
+     * @param PostModel         $post
+     * @param PinnedModel       $pinnedModel
+     * @param Carbon            $datetime
      * @param WalletChargeModel $chargeModel
      * @return mixed
+     * @throws \Throwable
      * @author BS <414606094@qq.com>
      */
     public function storePost(Request $request, PostModel $post, PinnedModel $pinnedModel, Carbon $datetime, WalletChargeModel $chargeModel)
@@ -88,7 +90,7 @@ class PinnedController extends Controller
         // 是否有权限进行置顶
         $bool = ! $member || in_array($member->audit, [0, 2]) || $member->disabled === 1;
 
-        if (! $member || ($post->user_id !== $user->id && ! in_array($member->role, ['founder', 'administrator']))) {
+        if ($bool || ($post->user_id !== $user->id && ! in_array($member->role, ['founder', 'administrator']))) {
             return response()->json(['message' => '无权限操作'], 403);
         }
 
@@ -425,16 +427,16 @@ class PinnedController extends Controller
         if ($pinnedModel->where('channel', 'comment')->where('target', $comment->id)->where('user_id', $user->id)->where(function ($query) use ($datetime) {
             return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
         })->first()) {
-            return response()->json(['message' => ['已经申请过']])->setStatusCode(422);
+            return response()->json(['message' => '已经申请过'])->setStatusCode(422);
         }
         if ($comment->commentable_type !== 'group-posts') {
-            return response()->json(['message' => ['不允许该操作']], 422);
+            return response()->json(['message' => '不允许该操作'], 422);
         }
 
         $post = $postModel->where('id', $comment->commentable_id)->first();
 
         if (! $post || ! $post->user) {
-            return response()->json(['message' => ['不允许该操作']], 422);
+            return response()->json(['message' => '不允许该操作'], 422);
         }
 
         $member = GroupMember::where('user_id', $user->id)
@@ -442,7 +444,8 @@ class PinnedController extends Controller
             ->first();
 
         // 是否有权限进行置顶
-        if (! $member || ($comment->user_id !== $user->id && ! in_array($member->role, ['founder', 'administrator']))) {
+        $bool = ! $member || in_array($member->audit, [0, 2]) || $member->disabled === 1;
+        if ($bool || ($comment->user_id !== $user->id && ! in_array($member->role, ['founder', 'administrator']))) {
             return response()->json(['message' => '无权限操作'], 403);
         }
 
@@ -505,7 +508,7 @@ class PinnedController extends Controller
             $userCount->save();
         });
 
-        return response()->json(['message' => ['申请成功']], 201);
+        return response()->json(['message' => '申请成功'], 201);
     }
 
     /**
@@ -526,7 +529,7 @@ class PinnedController extends Controller
         $pinned = $pinnedModel->where('channel', 'comment')->where('target', $comment->id)->whereNull('expires_at')->first();
         $post = $postModel->where('id', $comment->commentable_id)->first();
         if ($user->id != $post->user_id || ! $pinned || ! $post) {
-            return response()->json(['message' => ['没有权限操作']], 403);
+            return response()->json(['message' => '没有权限操作'], 403);
         }
 
         $target_user = $comment->user;
@@ -569,7 +572,7 @@ class PinnedController extends Controller
             $userCount->save();
         });
 
-        return response()->json(['message' => ['审核成功']], 201);
+        return response()->json(['message' => '审核成功'], 201);
     }
 
     /**
@@ -590,7 +593,7 @@ class PinnedController extends Controller
         $pinned = $pinnedModel->where('channel', 'comment')->where('target', $comment->id)->whereNull('expires_at')->first();
         $post = $postModel->where('id', $comment->commentable_id)->first();
         if ($user->id != $post->user_id || ! $pinned || ! $post) {
-            return response()->json(['message' => ['没有权限操作']], 403);
+            return response()->json(['message' => '没有权限操作'], 403);
         }
 
         $target_user = $comment->user;
@@ -626,7 +629,7 @@ class PinnedController extends Controller
             ]);
         });
 
-        return response()->json(['message' => ['审核成功']], 201);
+        return response()->json(['message' => '审核成功'], 201);
     }
 
     /**
@@ -746,6 +749,6 @@ class PinnedController extends Controller
         $pinned->expires_at = $datetime->toDateTimeString();
         $pinned->save();
 
-        return response()->json(['message' => '取消置顶成功', 'pinned' => $pinned], 201);
+        return response()->json(['message' => 's取消置顶成功', 'pinned' => $pinned], 201);
     }
 }
