@@ -23,9 +23,11 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\PlusGroup\Models\Pinned;
 use Zhiyi\PlusGroup\Models\Post as GroupPostModel;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\PlusGroup\API\Requests\StoreComment as StoreCommentRequest;
+use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
 class PostCommentController
 {
@@ -89,10 +91,11 @@ class PostCommentController
     /**
      * store a comment for a group post.
      *
-     * @param Request $request
-     * @param GroupPostModel $post
-     * @param CommentModel $commentModel
+     * @param StoreCommentRequest $request
+     * @param GroupPostModel      $post
+     * @param CommentModel        $commentModel
      * @return mixed
+     * @throws \Throwable
      * @author BS <414606094@qq.com>
      */
     public function store(StoreCommentRequest $request, GroupPostModel $post, CommentModel $commentModel)
@@ -105,11 +108,11 @@ class PostCommentController
         $group = $post->group;
         $member = $group->members()->where('user_id', $user->id)->where('audit', 1)->first();
         if ($member && $member->disabled == 1) {
-            return response()->json(['message' => ['您已被该圈子拉黑，无法发送评论']], 403);
+            return response()->json(['message' => '您已被该圈子拉黑，无法发送评论'], 403);
         }
 
         if ($group->model != 'public' && ! $member) {
-            return response()->json(['message' => ['您没有评论权限']], 403);
+            return response()->json(['message' => '您没有评论权限'], 403);
         }
 
         $commentModel->user_id = $user->id;
@@ -139,7 +142,7 @@ class PostCommentController
                 // 1.8启用, 新版未读消息提醒
                 $userCount = UserCountModel::firstOrNew([
                     'type' => 'user-commented',
-                    'user_id' => $replyUser->id
+                    'user_id' => $reply
                 ]);
                 $userCount->total += 1;
                 $replyUser = app(UserModel::class)->find($reply);
@@ -160,20 +163,28 @@ class PostCommentController
     /**
      * delete a comment.
      *
-     * @param Request $request
+     * @param Request        $request
      * @param GroupPostModel $post
-     * @param CommentModel $comment
+     * @param CommentModel   $comment
      * @return mixed
+     * @throws \Throwable
      * @author BS <414606094@qq.com>
      */
     public function delete(Request $request, GroupPostModel $post, CommentModel $comment)
     {
         $user = $request->user();
         if ($user->id !== $comment->user_id && ! $post->group->isManager($user)) {
-            return response()->json(['message' => ['没有权限']], 403);
+            return response()->json(['message' => '没有权限'], 403);
         }
-
-        $post->getConnection()->transaction(function () use ($post, $comment, $user) {
+        $pinned = Pinned::where('user_id', $user->id)
+            ->where('target', $comment->id)
+            ->where('channel', 'comment')
+            ->first();
+        $post->getConnection()->transaction(function () use ($post, $comment, $user, $pinned) {
+            if ($pinned) {
+                $process = new UserProcess();
+                $process->reject($user->id, $pinned->amount, $comment->user_id, '退还帖子内置顶评论申请金额', sprintf('退还帖子《%s》下置顶评论申请的金额', $post->title));
+            }
             $post->decrement('comments_count', 1);
             $user->extra()->decrement('comments_count', 1);
             $comment->delete();

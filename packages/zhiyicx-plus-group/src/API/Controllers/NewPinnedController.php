@@ -486,7 +486,7 @@ class NewPinnedController extends Controller
         $pinned = $pinnedModel->where('channel', 'comment')->where('target', $comment->id)->whereNull('expires_at')->first();
         $post = $postModel->where('id', $comment->commentable_id)->first();
         if ($user->id != $post->user_id || ! $pinned || ! $post) {
-            return response()->json(['message' => ['没有权限操作']], 403);
+            return response()->json(['message' => '没有权限操作'], 403);
         }
 
         $target_user = $comment->user;
