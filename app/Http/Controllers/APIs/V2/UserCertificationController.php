@@ -62,10 +62,11 @@ class UserCertificationController extends Controller
      * Send certification.
      *
      * @param \Zhiyi\Plus\Http\Requests\API2\UserCertification $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Plus\Models\Certification $certification
-     * @param \Zhiyi\Plus\Models\FileWith $fileWithModel
+     * @param \Illuminate\Contracts\Routing\ResponseFactory    $response
+     * @param \Zhiyi\Plus\Models\Certification                 $certification
+     * @param \Zhiyi\Plus\Models\FileWith                      $fileWithModel
      * @return mixed
+     * @throws \Throwable
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function store(
@@ -76,6 +77,9 @@ class UserCertificationController extends Controller
     ) {
         $user = $request->user();
         $type = $request->input('type');
+        if ($certification->where('user_id', $user->id)->where('status', 2)->count('id')) {
+            return response()->json(['message' => '已有认证处于待审核状态'], 422);
+        }
         $data = $request->only(['name', 'phone', 'number', 'desc']);
         $files = $this->findNotWithFileModels($request, $fileWithModel);
 
