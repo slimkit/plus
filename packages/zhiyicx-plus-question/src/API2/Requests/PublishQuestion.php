@@ -42,10 +42,10 @@ class PublishQuestion extends FormRequest
     public function rules(): array
     {
         return [
-            'subject' => ['bail', 'required', 'min:2', 'max:50', 'regex:/[?|？]$/is'],
+            'subject' => ['bail', 'required', 'max:255', 'regex:/[?|？]$/is'],
             'body' => 'nullable|string',
             'anonymity' => 'nullable|integer|in:0,1',
-            'amount' => 'nullable|integer|max:'.$this->user()->currency->sum,
+            'amount' => 'nullable|integer|max:'.$this->user()->wallet->balance,
             'look' => 'nullable|integer|in:0,1',
             'topics' => 'bail|required|array',
             'topics.*.id' => 'bail|required_with:topics|distinct|exists:topics,id',

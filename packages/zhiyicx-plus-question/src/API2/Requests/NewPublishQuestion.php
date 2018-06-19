@@ -44,7 +44,7 @@ class NewPublishQuestion extends FormRequest
         $currency = $this->user()->currency()->firstOrCreate(['type' => 1], ['sum' => 0]);
 
         return [
-            'subject' => ['bail', 'required', 'max:255', 'regex:/[?|？]$/is'],
+            'subject' => ['bail', 'required', 'min:2', 'max:50', 'regex:/[?|？]$/is'],
             'body' => 'nullable|string',
             'anonymity' => 'nullable|integer|in:0,1',
             'amount' => 'nullable|integer|max:'.$currency->sum,

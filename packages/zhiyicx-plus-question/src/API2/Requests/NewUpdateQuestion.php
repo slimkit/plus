@@ -44,7 +44,7 @@ class NewUpdateQuestion extends FormRequest
         $currency = $this->user()->currency()->firstOrCreate(['type' => 1], ['sum' => 0]);
 
         return [
-            'subject' => ['required_without_all:body,anonymity,topics,amount', 'nullable', 'string', 'max:255', 'regex:/[?|？]$/is'],
+            'subject' => ['required_without_all:body,anonymity,topics,amount', 'nullable', 'string', 'min:2', 'max:50', 'regex:/[?|？]$/is'],
             'body' => 'required_without_all:subject,anonymity,topics,amount|nullable|string',
             'anonymity' => 'required_without_all:subject,body,topics,amount|nullable',
             'topics' => 'required_without_all:subject,body,anonymity,amount|nullable|array',
