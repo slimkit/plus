@@ -112,8 +112,21 @@ class NewPinnedController extends Controller
 
         $userCount->total = count($arrays) + 1;
 
-        $post->getConnection()->transaction(function () use ($user, $pinnedModel, $target_user, $amount, $post, $userCount) {
+        return $post->getConnection()->transaction(function () use ($user, $pinnedModel, $target_user, $amount, $post, $userCount, $member) {
             $process = new UserProcess();
+            $message = '操作成功, 等待审核';
+            // 管理员主动置顶帖子
+            if (in_array($member->role, ['founder', 'administrator'])) {
+                $message = '置顶成功';
+                $dateTime = new Carbon();
+                $pinnedModel->expires_at = $dateTime->addDay($pinnedModel->day);
+                $pinnedModel->status = 1;
+                $pinnedModel->amount && $process->prepayment($user->id, $amount, $target_user->id, '评论申请置顶', sprintf('在帖子《%s》申请评论置顶', $post->title));
+                // 保存置顶请求
+                $pinnedModel->save();
+
+                return response()->json(['message' => $message], 201);
+            }
             $process->prepayment($user->id, $amount, $target_user->id, '申请帖子置顶', sprintf('申请置顶帖子《%s》', $post->title));
 
             // 保存置顶请求
@@ -127,9 +140,9 @@ class NewPinnedController extends Controller
             // ]);
 
             $userCount->save();
-        });
 
-        return response()->json(['message' => '申请成功'], 201);
+            return response()->json(['message' => $message], 201);
+        });
     }
 
     /**

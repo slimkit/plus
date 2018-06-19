@@ -97,10 +97,10 @@ class PinnedController extends Controller
         if ($post->pinned()->where('user_id', $user->id)->where(function ($query) use ($datetime) {
             return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
         })->first()) {
-            return response()->json(['message' => ['已经申请过']])->setStatusCode(422);
+            return response()->json(['message' => '已经申请过'])->setStatusCode(422);
         }
         if (! $post->group->user) {
-            return response()->json(['message' => ['不允许该操作']], 422);
+            return response()->json(['message' => '不允许该操作'], 422);
         }
 
         $target_user = $post->group->founder->user;
@@ -176,18 +176,20 @@ class PinnedController extends Controller
             $userCount->save();
         });
 
-        return response()->json(['message' => ['申请成功']], 201);
+        return response()->json(['message' => '申请成功'], 201);
     }
 
     /**
      * 接受置顶帖子.
      *
-     * @param Request $request
-     * @param PostModel $post
-     * @param PinnedModel $pinnedModel
-     * @param Carbon $datetime
+     * @param Request           $request
+     * @param PostModel         $post
+     * @param PinnedModel       $pinnedModel
+     * @param Carbon            $datetime
      * @param WalletChargeModel $chargeModel
+     * @param GroupIncomeModel  $income
      * @return mixed
+     * @throws \Throwable
      * @author BS <414606094@qq.com>
      */
     public function acceptPost(Request $request, PostModel $post, PinnedModel $pinnedModel, Carbon $datetime, WalletChargeModel $chargeModel, GroupIncomeModel $income)
@@ -285,12 +287,13 @@ class PinnedController extends Controller
     /**
      * 拒接置顶帖子.
      *
-     * @param Request $request
-     * @param PostModel $post
-     * @param PinnedModel $pinnedModel
-     * @param Carbon $datetime
+     * @param Request           $request
+     * @param PostModel         $post
+     * @param PinnedModel       $pinnedModel
+     * @param Carbon            $datetime
      * @param WalletChargeModel $chargeModel
      * @return mixed
+     * @throws \Throwable
      * @author BS <414606094@qq.com>
      */
     public function rejectPost(Request $request, PostModel $post, PinnedModel $pinnedModel, Carbon $datetime, WalletChargeModel $chargeModel)
@@ -636,8 +639,7 @@ class PinnedController extends Controller
      * 基础验证.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned $pinned
-     * @param callable $call
+     * @param User                     $user
      * @return mixed
      * @author BS <414606094@qq.com>
      */
