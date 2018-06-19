@@ -40,10 +40,14 @@ class ReportController extends Controller
         if ($question->user_id === $auth_user->id) {
             return response()->json(['message' => '不能举报自己'], 403);
         }
+        $reson = $request->input('reason');
+        if (! $reson) {
+            return response()->json(['message' => '请输入举报原因'], 422);
+        }
         $reportModel->user_id = $auth_user->id;
         $reportModel->target_user = $question->user_id;
         $reportModel->status = 0;
-        $reportModel->reason = $request->input('reason');
+        $reportModel->reason = $reson;
         $reportModel->subject = sprintf('问题：%s', $question->subject);
 
         $question->reports()->save($reportModel);
@@ -66,14 +70,18 @@ class ReportController extends Controller
         if ($answer->user_id === $auth_user->id) {
             return response()->json(['message' => '不能举报自己'], 403);
         }
+        $reson = $request->input('reason');
+        if (! $reson) {
+            return response()->json(['message' => '请输入举报原因'], 422);
+        }
         $reportModel->user_id = $auth_user->id;
         $reportModel->target_user = $answer->user_id;
         $reportModel->status = 0;
-        $reportModel->reason = $request->input('reason');
+        $reportModel->reason = $reson;
         $reportModel->subject = sprintf('问题回答：%s', mb_substr($answer->body, 0, 50));
 
         $answer->reports()->save($reportModel);
 
-        return response()->json(['message' => ['操作成功']], 201);
+        return response()->json(['message' => '操作成功'], 201);
     }
 }
