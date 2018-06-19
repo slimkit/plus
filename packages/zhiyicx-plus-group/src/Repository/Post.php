@@ -67,7 +67,7 @@ class Post
     /**
      * 格式化图片内容.
      *
-     * @return Zhiyi\PlusGroup\Models\Post
+     * @return PostModel
      * @author BS <414606094@qq.com>
      */
     public function formatImages()
@@ -77,7 +77,7 @@ class Post
         unset($this->model->images);
 
         $this->model->images = $images->map(function ($image) {
-            return ['id' => $image->id, 'size' => $image->size];
+            return ['id' => $image->id, 'size' => $image->size, 'mime' => $image->file->mime ?? ''];
         });
 
         return $this->model;
@@ -86,7 +86,7 @@ class Post
     /**
      * 规整帖子与当前用户关系.
      *
-     * @return Zhiyi\PlusGroup\Models\Post
+     * @return PostModel
      * @author BS <414606094@qq.com>
      */
     public function formatRelations()
@@ -106,7 +106,7 @@ class Post
     /**
      * 检测帖子置顶状态.
      *
-     * @return Zhiyi\PlusGroup\Models\Post
+     * @return PostModel
      * @author BS <414606094@qq.com>
      */
     public function formatPinned()
@@ -119,7 +119,7 @@ class Post
     /**
      * 帖子列表取五条评论，置顶优先.
      *
-     * @return Zhiyi\PlusGroup\Models\Post
+     * @return PostModel
      * @author BS <414606094@qq.com>
      */
     public function previewComments()
@@ -161,7 +161,7 @@ class Post
     /**
      * 帖子打赏统计.
      *
-     * @return Zhiyi\PlusGroup\Models\Post
+     * @return PostModel
      * @author BS <414606094@qq.com>
      */
     public function previewRewards()
@@ -181,7 +181,7 @@ class Post
     /**
      * 当前用户对帖子作者的关注状态
      *
-     * @return Zhiyi\PlusGroup\Models\Post
+     * @return PostModel
      * @author BS <414606094@qq.com>
      */
     public function formatPostUserRelations()
@@ -208,7 +208,7 @@ class Post
      *
      * @param UserModel $user
      * @param PostModel $model
-     * @return Zhiyi\PlusGroup\Models\Post
+     * @return PostModel
      * @author BS <414606094@qq.com>
      */
     public function formatCommonList($user, PostModel $model)
@@ -237,7 +237,7 @@ class Post
      *
      * @param UserModel $user
      * @param PostModel $model
-     * @return Zhiyi\PlusGroup\Models\Post
+     * @return PostModel
      * @author BS <414606094@qq.com>
      */
     public function formatCommonDetail($user, PostModel $model)
