@@ -54,6 +54,7 @@ class NewPinnedController extends Controller
             ->first();
 
         // 是否有权限进行置顶
+
         $bool = ! $member || in_array($member->audit, [0, 2]) || $member->disabled === 1;
 
         if ($bool || ($post->user_id !== $user->id && ! in_array($member->role, ['founder', 'administrator']))) {
@@ -368,14 +369,26 @@ class NewPinnedController extends Controller
 
         $founderCount->total = $UserUnreadCount + 1;
 
-        $post->getConnection()->transaction(function () use ($user, $pinnedModel, $target_user, $amount, $post, $comment, $founderCount) {
+        return $post->getConnection()->transaction(function () use ($user, $pinnedModel, $target_user, $amount, $post, $comment, $founderCount) {
 
             $process = new UserProcess();
-            $process->prepayment($user->id, $amount, $target_user->id, '评论申请置顶', sprintf('在帖子《%s》申请评论置顶', $post->title));
+            $message = '提交成功，等待审核';
+            // 自己帖子下的评论置顶
+            if ($target_user->id === $user->id) {
+                $message = '置顶成功';
+                $dateTime = new Carbon();
+                $pinnedModel->expires_at = $dateTime->addDay($pinnedModel->day);
+                $pinnedModel->status = 1;
+                $pinnedModel->amount && $process->prepayment($user->id, $amount, $target_user->id, '评论申请置顶', sprintf('在帖子《%s》申请评论置顶', $post->title));
+                // 保存置顶请求
+                $pinnedModel->save();
 
+                return response()->json(['message' => $message], 201);
+            }
+
+            $process->prepayment($user->id, $amount, $target_user->id, '评论申请置顶', sprintf('在帖子《%s》申请评论置顶', $post->title));
             // 保存置顶请求
             $pinnedModel->save();
-
             // 给帖子作者发送通知
             $target_user->sendNotifyMessage('group:pinned-comment', sprintf('%s申请在帖子《%s》置顶评论', $user->name, $post->title), [
                 'comment' => $comment,
@@ -384,9 +397,9 @@ class NewPinnedController extends Controller
                 'pinned' => $pinnedModel,
             ]);
             $founderCount->save();
-        });
 
-        return response()->json(['message' => ['申请成功']], 201);
+            return response()->json(['message' => $message], 201);
+        });
     }
 
     /**
