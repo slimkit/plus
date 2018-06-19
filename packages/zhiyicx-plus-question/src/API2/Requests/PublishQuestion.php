@@ -45,7 +45,7 @@ class PublishQuestion extends FormRequest
             'subject' => ['bail', 'required', 'max:50', 'regex:/[?|？]$/is'],
             'body' => 'nullable|string',
             'anonymity' => 'nullable|integer|in:0,1',
-            'amount' => 'nullable|integer|max:'.$this->user()->wallet->balance,
+            'amount' => 'nullable|integer|max:'.$this->user()->currency->sum,
             'look' => 'nullable|integer|in:0,1',
             'topics' => 'bail|required|array',
             'topics.*.id' => 'bail|required_with:topics|distinct|exists:topics,id',
