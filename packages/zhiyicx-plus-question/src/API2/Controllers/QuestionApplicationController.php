@@ -38,10 +38,10 @@ class QuestionApplicationController extends Controller
      * Add an application for a question.
      *
      * @author bs<414606094@qq.com>
-     * @param  Illuminate\Http\Request $request
-     * @param  SlimKit\PlusQuestion\Models\Question $question
-     * @param  Zhiyi\Plus\Models\WalletCharge $charge
-     * @param  SlimKit\PlusQuestion\Models\QuestionApplication $application
+     * @param Request             $request
+     * @param Question            $question
+     * @param WalletCharge        $charge
+     * @param QuestionApplication $application
      * @return mixed
      */
     public function store(Request $request, Question $question, WalletCharge $charge, QuestionApplication $application)
@@ -68,8 +68,8 @@ class QuestionApplicationController extends Controller
             $charge->channel = 'system';
             $charge->action = 0;
             $charge->amount = $this->apply_amount;
-            $charge->subject = trans('plus-question::questions.application.支付问题申精费用');
-            $charge->body = trans('plus-question::questions.application.支付问题《:subject》的申精费用', ['subject' => $question->subject]);
+            $charge->subject = trans('plus-question::questions.application.支付问题申精积分');
+            $charge->body = trans('plus-question::questions.application.支付问题《:subject》的申精积分', ['subject' => $question->subject]);
             $charge->status = 1;
             $charge->save();
 
@@ -89,9 +89,9 @@ class QuestionApplicationController extends Controller
      * 新版消耗积分申请精选接口.
      *
      * @author bs<414606094@qq.com>
-     * @param  Illuminate\Http\Request $request
-     * @param  SlimKit\PlusQuestion\Models\Question $question
-     * @param  SlimKit\PlusQuestion\Models\QuestionApplication $application
+     * @param Request             $request
+     * @param Question            $question
+     * @param QuestionApplication $application
      * @return mixed
      */
     public function newStore(Request $request, Question $question, QuestionApplication $application)
@@ -105,13 +105,13 @@ class QuestionApplicationController extends Controller
             return response()->json(['message' => [trans('plus-question::questions.application.already-exists')]], 422);
         }
 
-        if ($user->wallet->balance < $this->apply_amount) {
+        if ($user->currency->sum < $this->apply_amount) {
             return response()->json(['message' => [trans('plus-question::questions.Insufficient balance')]], 422);
         }
 
         $user->getConnection()->transaction(function () use ($user, $question, $application) {
             $process = new UserProcess();
-            $process->prepayment($user->id, $this->apply_amount, 0, trans('plus-question::questions.application.支付问题申精费用'), trans('plus-question::questions.application.支付问题《:subject》的申精费用', ['subject' => $question->subject]));
+            $process->prepayment($user->id, $this->apply_amount, 0, trans('plus-question::questions.application.支付问题申精积分'), trans('plus-question::questions.application.支付问题《:subject》的申精积分', ['subject' => $question->subject]));
 
             // 保存申请记录
             $application->user_id = $user->id;
