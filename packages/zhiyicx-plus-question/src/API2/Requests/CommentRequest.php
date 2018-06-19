@@ -45,6 +45,7 @@ class CommentRequest extends FormRequest
     {
         return [
             'body' => 'required|string|min:1|max:255',
+            'reply_user' => 'not_in:'.$this->user()->id,
             'comment_mark' => [
                 Rule::notIn([Cache::get('comment_mark_'.$this->input('comment_mark'))])
             ],
@@ -62,6 +63,7 @@ class CommentRequest extends FormRequest
         return [
             'body.requered' => '评论内容不能为空',
             'body.max' => '不能超过255个字',
+            'reply_user.not_in' => '不能回复自己',
         ];
     }
 
