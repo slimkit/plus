@@ -154,11 +154,11 @@ class AnswerController extends Controller
      * Append answer to question.
      *
      * @param \SlimKit\PlusQuestion\API2\Requests\QuestionAnswer $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \SlimKit\PlusQuestion\Models\Answer $answer
-     * @param \SlimKit\PlusQuestion\Models\Question $question
-     * @param \SlimKit\PlusQuestion\Models\Expert $expert
+     * @param \Illuminate\Contracts\Routing\ResponseFactory      $response
+     * @param \SlimKit\PlusQuestion\Models\Answer                $answer
+     * @param \SlimKit\PlusQuestion\Models\Question              $question
      * @return mixed
+     * @throws \Throwable
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function store(
@@ -168,7 +168,10 @@ class AnswerController extends Controller
         QuestionModel $question
     ) {
         $user = $request->user();
-
+        if ($answer->where('question_id', $question->id)
+            ->where('user_id', $user->id)->count('id')) {
+            return $response->json(['message' => '你已回答过该问题'], 422);
+        }
         $anonymity = $request->input('anonymity') ? 1 : 0;
         $body = $request->input('body');
         $text_body = $request->input('text_body');
