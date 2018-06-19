@@ -341,7 +341,7 @@ class QuestionController extends Controller
         }
         $userCountModel = new UserCountModel();
         // 给用户发送邀请通知.
-        $users->each(function (UserModel $item) use ($user, $question) {
+        $users->each(function (UserModel $item) use ($user, $question, $userCountModel) {
             $userCount = $userCountModel->firstOrNew([
                 'type' => 'user-system',
                 'user_id' => $item->id
@@ -373,9 +373,10 @@ class QuestionController extends Controller
      * Update a question.
      *
      * @param \SlimKit\PlusQuestion\API2\Requests\UpdateQuestion $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \SlimKit\PlusQuestion\Models\Question $question
+     * @param \Illuminate\Contracts\Routing\ResponseFactory      $response
+     * @param \SlimKit\PlusQuestion\Models\Question              $question
      * @return mixed
+     * @throws \Throwable
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function update(

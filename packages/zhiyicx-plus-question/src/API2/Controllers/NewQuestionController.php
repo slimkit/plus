@@ -36,12 +36,13 @@ class NewQuestionController extends Controller
     /**
      * Publish a question.
      *
-     * @param \SlimKit\PlusQuestion\API2\Requests\PublishQuestion $request
+     * @param PublishQuestionRequest                        $request
      * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \SlimKit\PlusQuestion\Models\Question $question
-     * @param \SlimKit\PlusQuestion\Models\Topic $topicModel
-     * @param \SlimKit\PlusQuestion\Models\User $userModel
+     * @param \SlimKit\PlusQuestion\Models\Question         $question
+     * @param \SlimKit\PlusQuestion\Models\Topic            $topicModel
+     * @param UserModel                                     $userModel
      * @return mixed
+     * @throws \Exception
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function store(
@@ -67,13 +68,13 @@ class NewQuestionController extends Controller
         $images = $this->findMarkdownImageNotWithModels($body ?: '');
 
         if ($automaticity && ! $amount) {
-            return $response->json(['amount' => [trans('plus-question::questions.回答自动入账必须设置悬赏总额')]], 422);
+            return $response->json(['amount' => trans('plus-question::questions.回答自动入账必须设置悬赏总额')], 422);
         } elseif ($automaticity && count($usersIDs) !== 1) {
-            return $response->json(['invitations' => [trans('plus-question::questions.回答自动入账只能邀请一人')]], 422);
+            return $response->json(['invitations' => trans('plus-question::questions.回答自动入账只能邀请一人')], 422);
         } elseif ($look && ! $automaticity) {
-            return $response->json(['automaticity' => [trans('plus-question::questions.开启围观必须设置自动入账')]], 422);
+            return $response->json(['automaticity' => trans('plus-question::questions.开启围观必须设置自动入账')], 422);
         } elseif ($look && ! $amount) {
-            return $response->json(['amount' => [trans('plus-question::question.开启围观必须设置悬赏金额')]], 422);
+            return $response->json(['amount' => trans('plus-question::question.开启围观必须设置悬赏金额')], 422);
         }
 
         // Find topics.
@@ -167,7 +168,7 @@ class NewQuestionController extends Controller
         });
 
         return $response->json([
-            'message' => [trans('plus-question::messages.success')],
+            'message' => trans('plus-question::messages.success'),
             'question' => $question,
         ], 201);
     }
@@ -175,10 +176,11 @@ class NewQuestionController extends Controller
     /**
      * Update a question.
      *
-     * @param \SlimKit\PlusQuestion\API2\Requests\UpdateQuestion $request
+     * @param UpdateQuestionRequest                         $request
      * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \SlimKit\PlusQuestion\Models\Question $question
+     * @param \SlimKit\PlusQuestion\Models\Question         $question
      * @return mixed
+     * @throws \Throwable
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function update(
@@ -200,10 +202,10 @@ class NewQuestionController extends Controller
         $amount = $request->input('amount');
         if ($amount) {
             if ($question->user_id !== $user->id) {
-                return $response->json(['message' => [trans('plus-question::questions.not-owner')]], 403);
+                return $response->json(['message' => trans('plus-question::questions.not-owner')], 403);
             }
             if (($question->amount !== 0 && $question->invitations()->first()) || $question->answers()->where('adoption', 1)->first()) {
-                return $response->json(['message' => [trans('plus-question::questions.该问题无法设置悬赏')]], 403);
+                return $response->json(['message' => trans('plus-question::questions.该问题无法设置悬赏')], 403);
             }
         }
 
@@ -241,10 +243,11 @@ class NewQuestionController extends Controller
      * Reset amount for a question.
      *
      * @author bs<414606094@qq.com>
-     * @param \SlimKit\PlusQuestion\API2\Requests\UpdateQuestion $request
+     * @param Request                                       $request
      * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \SlimKit\PlusQuestion\Models\Question $question
+     * @param \SlimKit\PlusQuestion\Models\Question         $question
      * @return mixed
+     * @throws \Throwable
      */
     public function resetAmount(
         Request $request,
@@ -253,10 +256,10 @@ class NewQuestionController extends Controller
     ) {
         $user = $request->user();
         if ($question->user_id !== $user->id) {
-            return $response->json(['message' => [trans('plus-question::questions.not-owner')]], 403);
+            return $response->json(['message' => trans('plus-question::questions.not-owner')], 403);
         }
         if (($question->amount !== 0 && $question->invitations()->first()) || $question->answers()->where('adoption', 1)->first()) {
-            return $response->json(['message' => [trans('plus-question::questions.该问题无法设置悬赏')]], 403);
+            return $response->json(['message' => trans('plus-question::questions.该问题无法设置悬赏')], 403);
         }
 
         $question->amount = $request->input('amount', 0);
@@ -272,9 +275,9 @@ class NewQuestionController extends Controller
 
     /**
      * @author bs<414606094@qq.com>
-     * @param  Illuminate\Http\Request $request
+     * @param Request                                        $request
      * @param  \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param  \SlimKit\PlusQuestion\Models\Question $question
+     * @param  \SlimKit\PlusQuestion\Models\Question         $question
      * @return mixed
      */
     public function destory(
@@ -284,7 +287,7 @@ class NewQuestionController extends Controller
     ) {
         $user = $request->user();
         if ($question->user_id !== $user->id) {
-            return $response->json(['message' => [trans('plus-question::questions.not-owner')]], 403);
+            return $response->json(['message' => trans('plus-question::questions.not-owner')], 403);
         }
 
         $user->getConnection()->transaction(function () use ($user, $question) {
