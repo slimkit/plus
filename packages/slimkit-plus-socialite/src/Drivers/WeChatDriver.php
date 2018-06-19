@@ -69,6 +69,6 @@ class WeChatDriver extends DriverAbstract
             $abort(500, sprintf('%s (#%s)', $resuilt['errmsg'], $resuilt['errcode']));
         });
 
-        return (string) $resuilt['unionid'];
+        return (string) isset($resuilt['unionid']) ? $resuilt['unionid'] : $resuilt['openid'];
     }
 }
