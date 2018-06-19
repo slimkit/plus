@@ -189,7 +189,7 @@ class PinnedController extends Controller
         callable $call = null
     ) {
         $user = $request->user();
-        $user->getConnection()->transaction(function () use ($user, $charge, $pinned, $feed) {
+        $user->getConnection()->transaction(function () use ($user, $charge, $pinned, $feed, $response) {
             if ($feed->user_id === $user->id) {
                 $dateTime = new Carbon();
                 $pinned->expires_at = $dateTime->addDay($pinned->day);
