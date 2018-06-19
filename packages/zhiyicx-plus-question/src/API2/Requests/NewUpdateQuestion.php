@@ -47,7 +47,7 @@ class NewUpdateQuestion extends FormRequest
             'subject' => ['required_without_all:body,anonymity,topics,amount', 'nullable', 'string', 'min:2', 'max:50', 'regex:/[?|？]$/is'],
             'body' => 'required_without_all:subject,anonymity,topics,amount|nullable|string',
             'anonymity' => 'required_without_all:subject,body,topics,amount|nullable',
-            'topics' => 'required_without_all:subject,body,anonymity,amount|nullable|array',
+            'topics' => 'required_without_all:subject,body,anonymity,amount|nullable|array|between:1,5',
             'topics.*.id' => 'required_with:topics|distinct|exists:topics,id',
             'amount' => 'required_without_all:subject,body,anonymity,topics|int|max:'.$currency->sum,
         ];
@@ -64,6 +64,7 @@ class NewUpdateQuestion extends FormRequest
         return [
             'subject.regex' => trans('plus-question::questions.Attribute must end with a question mark'),
             'amount.max' => trans('plus-question::questions.Insufficient balance'),
+            'topics.between' => '话题必须在1到5个之间',
         ];
     }
 
