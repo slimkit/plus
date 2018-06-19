@@ -37,7 +37,9 @@ class ReportController extends Controller
     public function question(Request $request, QuestionModel $question, ReportModel $reportModel)
     {
         $auth_user = $request->user();
-
+        if ($question->user_id === $auth_user->id) {
+            return response()->json(['message' => '不能举报自己'], 403);
+        }
         $reportModel->user_id = $auth_user->id;
         $reportModel->target_user = $question->user_id;
         $reportModel->status = 0;
@@ -46,7 +48,7 @@ class ReportController extends Controller
 
         $question->reports()->save($reportModel);
 
-        return response()->json(['message' => ['操作成功']], 201);
+        return response()->json(['message' => '操作成功'], 201);
     }
 
     /**
@@ -61,7 +63,9 @@ class ReportController extends Controller
     public function answer(Request $request, AnswerModel $answer, ReportModel $reportModel)
     {
         $auth_user = $request->user();
-
+        if ($answer->user_id === $auth_user->id) {
+            return response()->json(['message' => '不能举报自己'], 403);
+        }
         $reportModel->user_id = $auth_user->id;
         $reportModel->target_user = $answer->user_id;
         $reportModel->status = 0;
