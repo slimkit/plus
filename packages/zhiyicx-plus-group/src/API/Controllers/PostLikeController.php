@@ -29,9 +29,10 @@ class PostLikeController
     /**
      * list of likes.
      *
-     * @param Request $request
+     * @param Request        $request
      * @param GroupPostModel $post
      * @return mixed
+     * @throws \Throwable
      * @author BS <414606094@qq.com>
      */
     public function index(Request $request, GroupPostModel $post)
@@ -82,17 +83,17 @@ class PostLikeController
         $user = $request->user();
 
         if ($post->liked($user)) {
-            return response()->json(['message' => ['已经赞过，请勿重复操作']], 422);
+            return response()->json(['message' => '已经赞过，请勿重复操作'], 422);
         }
 
         $group = $post->group;
         $member = $group->members()->where('user_id', $user->id)->where('audit', 1)->first();
         if ($group->model != 'public' && ! $member) {
-            return response()->json(['message' => ['您没有评论权限']], 403);
+            return response()->json(['message' => '您没有点赞权限'], 403);
         }
 
         if ($member && $member->disabled == 1) {
-            return response()->json(['message' => ['您已被该圈子拉黑，无法进行该操作']], 403);
+            return response()->json(['message' => '您已被该圈子拉黑，无法进行该操作'], 403);
         }
 
         $post->like($user);
@@ -109,7 +110,7 @@ class PostLikeController
             app(Push::class)->push(sprintf('%s 点赞了你的帖子', $user->name), (string) $post->user_id, ['channel' => 'post:like']);
         }
 
-        return response()->json(['message' => ['操作成功']])->setStatusCode(201);
+        return response()->json(['message' => '操作成功'])->setStatusCode(201);
     }
 
     /**
@@ -124,7 +125,7 @@ class PostLikeController
     {
         $user = $request->user();
         if (! $post->liked($user)) {
-            return response()->json(['message' => ['尚未点赞']], 422);
+            return response()->json(['message' => '尚未点赞'], 422);
         }
 
         $post->unlike($user);
