@@ -123,6 +123,7 @@ class PostController
      * Get a post.
      *
      * @param Post $post
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request, Group $group, Post $post, PostRepository $repository)
     {
@@ -142,6 +143,7 @@ class PostController
      * @param Group                  $group
      * @param PostRepository         $repository
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
     public function store(CreateGroupPostRequest $request, Group $group, PostRepository $repository)
     {
@@ -199,7 +201,9 @@ class PostController
      * @param CreateGroupPostRequest $request
      * @param Group                  $group
      * @param Post                   $post
+     * @param PostRepository         $repository
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
     public function update(CreateGroupPostRequest $request, Group $group, Post $post, PostRepository $repository)
     {
@@ -281,8 +285,8 @@ class PostController
      *
      * @param \Illuminate\Http\Request                                 $request
      * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
-     * @return \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed
      * @author Seven Du <shiweidu@outlook.com>
+     * @return FeedModel
      */
     protected function fillFeedBaseData(Request $request, FeedModel $feed)
     : FeedModel
@@ -319,7 +323,6 @@ class PostController
      * By model save file with.
      *
      * @param Model   $model
-     * @param Request $request
      * @param         $fileWiths
      */
     protected function saveFileWithByModel(Model $model, $fileWiths)
@@ -435,10 +438,10 @@ class PostController
     {
         $userId = $request->user('api')->id ?? 0;
 
-        $keyword = $request->get('keyword');
+        $keyword = $request->query('keyword');
         $limit = (int)$request->query('limit', 15);
-        $offset = (int)$request->get('offset', 0);
-        $groupId = (int)$request->get('group_id', 0);
+        $offset = (int)$request->query('offset', 0);
+        $groupId = (int)$request->query('group_id', 0);
 
         $builder = Post::with(['user', 'group']);
 
