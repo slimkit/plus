@@ -51,28 +51,28 @@ class PostController
             ->when($type && $type == 'latest_reply', function ($query) use ($type) {
                 return $query->leftJoin('comments', function ($join) {
                     $join->on('group_posts.id', '=', 'comments.commentable_id')
-                    ->where('commentable_type', '=', 'group-posts')
-                    ->orderBy('comments.created_at', 'desc');
+                        ->where('commentable_type', '=', 'group-posts')
+                        ->orderBy('comments.created_at', 'desc');
                 })
-                ->orderBy('comments.created_at', 'desc');
+                    ->orderBy('comments.created_at', 'desc');
             }, function ($query) {
                 return $query->orderBy('id', 'desc');
             })
-        ->select([
-            'group_posts.id',
-            'group_posts.group_id',
-            'group_posts.title',
-            'group_posts.user_id',
-            'group_posts.summary',
-            'group_posts.likes_count',
-            'group_posts.views_count',
-            'group_posts.comments_count',
-            'group_posts.created_at',
-        ])
-        ->with(['user', 'images'])
-        ->offset($offset)
-        ->limit($limit)
-        ->get();
+            ->select([
+                'group_posts.id',
+                'group_posts.group_id',
+                'group_posts.title',
+                'group_posts.user_id',
+                'group_posts.summary',
+                'group_posts.likes_count',
+                'group_posts.views_count',
+                'group_posts.comments_count',
+                'group_posts.created_at',
+            ])
+            ->with(['user', 'images'])
+            ->offset($offset)
+            ->limit($limit)
+            ->get();
 
         $user = $request->user('api') ?? 0;
 
@@ -92,28 +92,26 @@ class PostController
      * 获取一个圈子的置顶帖子.
      *
      * @param Request $request
-     * @param Group $group
-     * @param Carbon $datetime
+     * @param Group   $group
+     * @param Carbon  $datetime
      * @return mixed
      * @author BS <414606094@qq.com>
      */
     public function pinneds(Request $request, Group $group, Carbon $datetime, PostRepository $repository)
     {
-        $user = $request->user();
-
+        $user = $request->user('api')->id ?? null;
         $pinneds = $group->posts()->whereHas('pinned', function ($query) use ($datetime) {
             return $query->where('expires_at', '>', $datetime);
         })
-        ->join('group_pinneds', function ($join) use ($datetime) {
-            return $join->on('group_pinneds.target', '=', 'group_posts.id')
-                ->where('group_pinneds.raw', 0);
-        })
-        ->select('group_posts.*')
-        ->orderBy('group_pinneds.amount', 'desc')
-        ->orderBy('group_pinneds.created_at', 'desc')
-        ->with(['user', 'images'])
-        ->get();
-        
+            ->join('group_pinneds', function ($join) use ($datetime) {
+                return $join->on('group_pinneds.target', '=', 'group_posts.id')
+                    ->where('group_pinneds.raw', 0);
+            })
+            ->select('group_posts.*')
+            ->orderBy('group_pinneds.amount', 'desc')
+            ->orderBy('group_pinneds.created_at', 'desc')
+            ->with(['user', 'images'])
+            ->get();
         return $pinneds->map(function ($post) use ($user, $repository) {
             $repository->formatCommonList($user, $post);
 
@@ -140,8 +138,10 @@ class PostController
     /**
      * 发布帖子.
      *
-     * @param Request $request
-     * @param $group
+     * @param CreateGroupPostRequest $request
+     * @param Group                  $group
+     * @param PostRepository         $repository
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(CreateGroupPostRequest $request, Group $group, PostRepository $repository)
     {
@@ -160,10 +160,10 @@ class PostController
         }
 
         if ($member->audit != 1 || $member->disabled == 1) {
-            return response()->json(['message' => '审核未通过或已被拉黑,不能进行发帖'], 403);
+            return response()->json(['message' => '审核未通过或已被加入黑名单,不能进行发帖'], 403);
         }
 
-        if (! in_array($member->role, explode(',', $group->permissions))) {
+        if (!in_array($member->role, explode(',', $group->permissions))) {
             return response()->json(['message' => '没有发帖权限'], 422);
         }
 
@@ -185,7 +185,8 @@ class PostController
             DB::commit();
 
             return response()->json(['message' => '操作成功', 'post' => $repository->formatCommonDetail($user, $post)], 201);
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             DB::rollback();
 
             return response()->json(['message' => $e->getMessage()], 500);
@@ -196,8 +197,9 @@ class PostController
      * Update a group post.
      *
      * @param CreateGroupPostRequest $request
-     * @param Group $group
-     * @param Post $post
+     * @param Group                  $group
+     * @param Post                   $post
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(CreateGroupPostRequest $request, Group $group, Post $post, PostRepository $repository)
     {
@@ -227,7 +229,8 @@ class PostController
             DB::commit();
 
             return response()->json(['message' => '操作成功', 'post' => $repository->formatCommonDetail($user, $post)], 201);
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             DB::rollback();
 
             return response()->json(['message', $e->getMessage()], 500);
@@ -238,7 +241,7 @@ class PostController
      * Fill request data.
      *
      * @param CreateGroupPostRequest $request
-     * @param Group $group
+     * @param Group                  $group
      * @return array
      */
     protected function fillRequestData(CreateGroupPostRequest $request, Group $group)
@@ -254,12 +257,13 @@ class PostController
      * Sync to feed.
      *
      * @param Request $request
-     * @param $fileWiths
-     * @throws \Exception
+     * @param Group   $group
+     * @param         $fileWiths
+     * @throws \Throwable
      */
     protected function syncPostToFeed(Request $request, Group $group, $fileWiths)
     {
-        $sync = (int) $request->input('sync_feed');
+        $sync = (int)$request->input('sync_feed');
 
         if ($group->allow_feed && $sync == 1) {
             $user = $request->user();
@@ -275,15 +279,16 @@ class PostController
     /**
      * Fill initial feed data.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request                                 $request
      * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
      * @return \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function fillFeedBaseData(Request $request, FeedModel $feed): FeedModel
+    protected function fillFeedBaseData(Request $request, FeedModel $feed)
+    : FeedModel
     {
         $feed->feed_from = $request->input('feed_from');
-        $feed->feed_mark = $request->user()->id.time();
+        $feed->feed_mark = $request->user()->id . time();
         $feed->feed_content = $request->input('summary');
         $feed->feed_client_id = $request->ip();
         $feed->audit_status = 1;
@@ -295,7 +300,7 @@ class PostController
     /**
      * 创建文件使用模型.
      *
-     * @param StoreFeedPostRequest $request
+     * @param Request $request
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
@@ -313,9 +318,9 @@ class PostController
     /**
      * By model save file with.
      *
-     * @param Model $model
+     * @param Model   $model
      * @param Request $request
-     * @param $fileWiths
+     * @param         $fileWiths
      */
     protected function saveFileWithByModel(Model $model, $fileWiths)
     {
@@ -341,7 +346,10 @@ class PostController
     /**
      * Delete post.
      *
-     * @param Post $post
+     * @param Group $group
+     * @param Post  $post
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function delete(Group $group, Post $post)
     {
@@ -360,7 +368,7 @@ class PostController
             return response()->json(['message' => '无操作权限'], 403);
         }
 
-        if ($post->user_id != $user->id && ! in_array($member->role, ['administrator', 'founder'])) {
+        if ($post->user_id != $user->id && !in_array($member->role, ['administrator', 'founder'])) {
             return response()->json(['message' => '无操作权限'], 403);
         }
 
@@ -428,37 +436,37 @@ class PostController
         $userId = $request->user('api')->id ?? 0;
 
         $keyword = $request->get('keyword');
-        $limit = (int) $request->query('limit', 15);
-        $offset = (int) $request->get('offset', 0);
-        $groupId = (int) $request->get('group_id', 0);
+        $limit = (int)$request->query('limit', 15);
+        $offset = (int)$request->get('offset', 0);
+        $groupId = (int)$request->get('group_id', 0);
 
         $builder = Post::with(['user', 'group']);
 
         $posts = $builder->when($keyword, function ($query) use ($keyword) {
             return $query->where('title', 'like', sprintf('%%%s%%', $keyword));
         })
-        ->when($userId, function ($query) use ($userId) {
-            // 登陆状态 可以检索public和已加入圈子的帖子
-            return $query->whereHas('group.members', function ($query) use ($userId) {
-                return $query->where('audit', 1)->where('user_id', $userId)
-                   ->where('disabled', 0)->whereIn('mode', ['public', 'paid', 'private'])->orWhere('mode', 'public');
-            });
-        }, function ($query) {
-            // 未登陆 只能搜索mode为public下面帖子
-            return $query->whereHas('group', function ($query) {
-                return $query->where('mode', 'public');
-            });
-        })
-        ->when($groupId, function ($query) use ($groupId) {
-            return $query->where('group_id', $groupId);
-        })
-        ->whereHas('group', function ($query) {
-            return $query->where('audit', 1);
-        })
-        ->orderBy('id', 'desc')
-        ->offset($offset)
-        ->limit($limit)
-        ->get();
+            ->when($userId, function ($query) use ($userId) {
+                // 登陆状态 可以检索public和已加入圈子的帖子
+                return $query->whereHas('group.members', function ($query) use ($userId) {
+                    return $query->where('audit', 1)->where('user_id', $userId)
+                        ->where('disabled', 0)->whereIn('mode', ['public', 'paid', 'private'])->orWhere('mode', 'public');
+                });
+            }, function ($query) {
+                // 未登陆 只能搜索mode为public下面帖子
+                return $query->whereHas('group', function ($query) {
+                    return $query->where('mode', 'public');
+                });
+            })
+            ->when($groupId, function ($query) use ($groupId) {
+                return $query->where('group_id', $groupId);
+            })
+            ->whereHas('group', function ($query) {
+                return $query->where('audit', 1);
+            })
+            ->orderBy('id', 'desc')
+            ->offset($offset)
+            ->limit($limit)
+            ->get();
 
         $user = $request->user('api')->id ?? null;
 
