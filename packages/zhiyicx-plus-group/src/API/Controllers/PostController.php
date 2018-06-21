@@ -48,15 +48,12 @@ class PostController
             ->whereDoesntHave('blacks', function ($query) use ($user) {
                 $query->where('user_id', $user);
             })
+            ->groupBy('group_posts.id')
             ->when($type && $type == 'latest_reply', function ($query) use ($type) {
                 return $query->leftJoin('comments', function ($join) {
                     $join->on('group_posts.id', '=', 'comments.commentable_id')
-                        ->where('commentable_type', '=', 'group-posts')
-                        ->orderBy('comments.created_at', 'desc');
-                })
-                    ->orderBy('comments.created_at', 'desc');
-            }, function ($query) {
-                return $query->orderBy('id', 'desc');
+                        ->where('commentable_type', '=', 'group-posts');
+                });
             })
             ->select([
                 'group_posts.id',
@@ -70,6 +67,7 @@ class PostController
                 'group_posts.created_at',
             ])
             ->with(['user', 'images'])
+            ->orderBy($type === 'last_reply' ? 'comments.created_at' : 'id', 'desc')
             ->offset($offset)
             ->limit($limit)
             ->get();
@@ -87,6 +85,7 @@ class PostController
             'posts' => $items,
         ], 200);
     }
+
 
     /**
      * 获取一个圈子的置顶帖子.
