@@ -111,7 +111,7 @@ class AnswerCollectController extends Controller
                 if ($collection->collectible->anonymity && $collection->collectible->user_id !== $user->id) {
                     $collection->collectible->user_id = 0;
                 }
-
+                $collection->collectible->liked = $collection->collectible->liked($user);
                 $collection->collectible->addHidden('question', 'onlookers');
             }
 
