@@ -751,6 +751,6 @@ class PinnedController extends Controller
         $pinned->expires_at = $datetime->toDateTimeString();
         $pinned->save();
 
-        return response()->json(['message' => 's取消置顶成功', 'pinned' => $pinned], 201);
+        return response()->json(['message' => '取消置顶成功', 'pinned' => $pinned], 201);
     }
 }

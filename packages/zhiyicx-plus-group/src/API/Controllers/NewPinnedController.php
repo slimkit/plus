@@ -435,7 +435,7 @@ class NewPinnedController extends Controller
         $pinned = $pinnedModel->where('channel', 'comment')->where('target', $comment->id)->whereNull('expires_at')->first();
         $post = $postModel->where('id', $comment->commentable_id)->first();
         if ($user->id != $post->user_id || ! $pinned || ! $post) {
-            return response()->json(['message' => ['没有权限操作']], 403);
+            return response()->json(['message' => '没有权限操作'], 403);
         }
 
         $target_user = $comment->user;
@@ -482,7 +482,7 @@ class NewPinnedController extends Controller
             $userCount->save();
         });
 
-        return response()->json(['message' => ['审核成功']], 201);
+        return response()->json(['message' => '审核成功'], 201);
     }
 
     /**
@@ -550,15 +550,14 @@ class NewPinnedController extends Controller
             $founderCount->save();
         });
 
-        return response()->json(['message' => ['审核成功']], 201);
+        return response()->json(['message' => '审核成功'], 201);
     }
 
     /**
      * 基础验证.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned $pinned
-     * @param callable $call
+     * @param User                     $user
      * @return mixed
      * @author BS <414606094@qq.com>
      */
