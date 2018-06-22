@@ -87,9 +87,12 @@ class PostLikeController
         }
 
         $group = $post->group;
-        $member = $group->members()->where('user_id', $user->id)->where('audit', 1)->first();
-        if ($group->model != 'public' && ! $member) {
-            return response()->json(['message' => '您没有点赞权限'], 403);
+        $member = $group->members()
+            ->where('user_id', $user->id)
+            ->where('audit', 1)
+            ->first();
+        if ($group->mode != 'public' && ! $member) {
+            return response()->json(['message' => '你没有点赞权限'], 403);
         }
 
         if ($member && $member->disabled == 1) {
