@@ -64,10 +64,11 @@ class AnswerRewardController extends Controller
      * Give a reward.
      *
      * @param \SlimKit\PlusQuestion\API2\Requests\AnswerReward $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \SlimKit\PlusQuestion\Models\Answer $answer
+     * @param \Illuminate\Contracts\Routing\ResponseFactory    $response
+     * @param \SlimKit\PlusQuestion\Models\Answer              $answer
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
+     * @throws \Throwable
      */
     public function store(AnswerRewardRequest $request, ResponseFactoryContract $response, AnswerModel $answer, GoldType $goldModel, UserProcess $process)
     {
@@ -84,8 +85,8 @@ class AnswerRewardController extends Controller
             return $response->json(['message' => $goldName.'不足'], 403);
         }
 
-        return $response->json($answer->getConnection()->transaction(function () use ($answer, $user, $respondent, $process) {
-
+        return $response->json($answer->getConnection()->transaction(function () use ($answer, $user, $respondent, $process, $amount) {
+            $answer->reward($user, $amount);
             $process->prepayment($user->id, $amount, $respondent->id, sprintf('打赏“%s”的回答', $respondent->name), sprintf('打赏“%s”的回答，%s扣除%s', $respondent->name, $this->goldName, $amount));
             $process->receivables($respondent->id, $amount, $user->id, sprintf('“%s”打赏了你的帖子', $user->name), sprintf('“%s”打赏了你的回答，%s增加%s', $user->name, $this->goldName, $amount));
             // check if the user is a expert, record income.
@@ -112,9 +113,9 @@ class AnswerRewardController extends Controller
 
             if (in_array($respondent->id, $allexpert)) {
                 $income = new ExpertIncomeModel();
-                $income->charge_id = $respondentCharge->id;
+                $income->charge_id = $respondent->id;
                 $income->user_id = $respondent->id;
-                $income->amount = $respondentCharge->amount;
+                $income->amount = $respondent->amount;
                 $income->type = 'reward';
 
                 $income->save();
