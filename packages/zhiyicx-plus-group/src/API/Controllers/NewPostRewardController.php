@@ -30,10 +30,13 @@ class NewPostRewardController
     /**
      * 打赏操作.
      *
-     * @param Request $request
-     * @param GroupPostModel $post
-     * @param WalletCharge $charge
+     * @param Request          $request
+     * @param GroupPostModel   $post
+     * @param UserProcess      $process
+     * @param ConfigRepository $config
+     * @param GoldType         $goldModel
      * @return mixed
+     * @throws \Exception
      * @author BS <414606094@qq.com>
      */
     public function store(Request $request, GroupPostModel $post, UserProcess $process, ConfigRepository $config, GoldType $goldModel)
@@ -58,8 +61,8 @@ class NewPostRewardController
         $post->load('user');
         $target = $post->user;
 
-        if (! $user->newWallet || $user->newWallet->balance < $amount) {
-            return response()->json(['message' => '余额不足'], 403);
+        if (! $user->currency || $user->currency->sum < $amount) {
+            return response()->json(['message' => $goldName.'不足'], 403);
         }
         $pay = $process->prepayment($user->id, $amount, $target->id, sprintf('打赏“%s”的帖子', $target->name, $post->title, $amount), sprintf('打赏“%s”的帖子，%s扣除%s', $target->name, $goldName, $amount));
 
