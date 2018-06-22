@@ -70,12 +70,15 @@ class NewPinnedController extends Controller
             return response()->json(['message' => '不允许该操作'], 422);
         }
 
+        $amount = $request->input('amount');
+        $day = $request->input('day');
+        if (! $user->currency || $user->currency->sum < $amount) {
+            return response()->json(['message' => '积分不足'], 403);
+        }
+
         $target_user = $post->group->founder->user;
 
         $this->validateBase($request, $user);
-
-        $amount = $request->input('amount');
-        $day = $request->input('day');
 
         $pinnedModel->channel = 'post';
         $pinnedModel->target = $post->id;
