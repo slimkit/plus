@@ -36,12 +36,12 @@ class NewAnswerReward extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return void
+     * @return array
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function rules(): array
     {
-        $balance = $this->user()->newWallet->balance ?? 0;
+        $balance = $this->user()->currency->sum ?? 0;
 
         return [
             'amount' => ['required', 'integer', 'min:1', 'max:'.$balance],
