@@ -48,13 +48,16 @@ class PostController
             ->whereDoesntHave('blacks', function ($query) use ($user) {
                 $query->where('user_id', $user);
             })
-            ->groupBy('group_posts.id')
             ->when($type && $type == 'latest_reply', function ($query) use ($type) {
                 return $query->leftJoin('comments', function ($join) {
                     $join->on('group_posts.id', '=', 'comments.commentable_id')
-                        ->where('commentable_type', '=', 'group-posts');
-                });
-            })
+                        ->where('commentable_type', '=', 'group-posts')
+                        ->orderBy('comments.created_at', 'desc');
+                    })
+                    ->orderBy('comments.created_at', 'desc');
+                }, function ($query) {
+                    return $query->orderBy('id', 'desc');
+                })
             ->select([
                 'group_posts.id',
                 'group_posts.group_id',
@@ -71,15 +74,11 @@ class PostController
             ->offset($offset)
             ->limit($limit)
             ->get();
-
         $user = $request->user('api') ?? 0;
-
         $items = $posts->map(function ($post) use ($user, $repository) {
             $repository->formatCommonList($user, $post);
-
             return $post;
         });
-
         return response()->json([
             'pinneds' => ($type == 'latest_reply' || $offset > 0) ? collect([]) : app()->call([$this, 'pinneds'], ['group' => $group]),
             'posts' => $items,
