@@ -249,7 +249,7 @@ class CurrencyPayController extends Controller
                 $this->resolveNativePayOrder($order, $data);
                 $currencyOrder = CurrencyOrderModel::where('target_id', $order->id)->first();
                 if ($currencyOrder) {
-                    $this->resolveWalletOrder($currencyOrder, $data);
+                    $this->resolveCurrencyOrder($currencyOrder, $data);
                 }
                 $this->resolveWalletCharge($order->walletCharge, $data);
                 $this->resolveUserCurrency($order);
