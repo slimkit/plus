@@ -195,9 +195,10 @@ class PayController extends Controller
      * @Author   Wayne
      * @DateTime 2018-05-14
      * @Email    qiaobin@zhiyicx.com
-     * @param    Request             $request    [description]
-     * @param    NativePayOrder      $orderModel [description]
-     * @return   [type]                          [description]
+     * @param    Request        $request [description]
+     * @param    NativePayOrder $orderModel [description]
+     * @param ResponseContract  $response
+     * @return \Illuminate\Http\JsonResponse [type]                          [description]
      */
     public function alipayNotify(Request $request, NativePayOrder $orderModel, ResponseFactory $response)
     {
@@ -222,7 +223,7 @@ class PayController extends Controller
         $gateWay->setAppId($config['appId']);
         // 密钥
         $gateWay->setPrivateKey($config['secretKey']);
-        // 公钥
+        // 支付宝公钥, 非应用公钥
         $gateWay->setAlipayPublicKey($config['alipayKey']);
 
         $res = $gateWay->completePurchase();
@@ -232,7 +233,7 @@ class PayController extends Controller
             if ($response->isPaid()) {
                 $this->resolveNativePayOrder($order, $data);
                 $type = 'currency';
-                $orderUnknow = ChargeOrderModel::where('target_id', $order->id)->first();
+                $orderUnknow = CurrencyOrderModel::where('target_id', $order->id)->first();
                 if (! $orderUnknow) {
                     $type = 'wallet';
                     $orderUnknow = WalletOrderModel::where('target_id', $order->id)->first();
@@ -334,9 +335,9 @@ class PayController extends Controller
     }
 
     /**=
-     * @param Request  $request
-     * @param Carbon   $dateTime
-     * @param Response $response
+     * @param Request          $request
+     * @param ResponseContract $response
+     * @param NativePayOrder   $order
      * @return \Illuminate\Http\JsonResponse
      */
     public function getWechatOrder(Request $request, ResponseFactory $response, NativePayOrder $order)
@@ -396,9 +397,9 @@ class PayController extends Controller
     }
 
     /**
-     * @param Request  $request
-     * @param Carbon   $dateTime
-     * @param Response $response
+     * @param Request          $request
+     * @param ResponseContract $response
+     * @param NativePayOrder   $order
      * @return \Illuminate\Http\JsonResponse
      */
     public function getWechatWapOrder(Request $request, ResponseFactory $response, NativePayOrder $order)
