@@ -1,6 +1,6 @@
 {
-    "name": "zhiyicx/thinksns-plus",
-    "description": "一个使用 Laravel 并健壮的社交系统",
+    "name": "slimkit/plus",
+    "description": "A powerful, easy-to-develop social system built with Laravel.",
     "keywords": [
         "thinksns",
         "web",
