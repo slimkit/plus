@@ -100,7 +100,13 @@ class Application extends LaravelApplication
      */
     public function vendorYamlFilePath(): string
     {
-        return $this->environmentPath().DIRECTORY_SEPARATOR.$this->vendorYamlFile();
+        return $this->storagePath()
+            .DIRECTORY_SEPARATOR
+            .'app'
+            .DIRECTORY_SEPARATOR
+            .'config'
+            .DIRECTORY_SEPARATOR
+            .$this->vendorYamlFile();
     }
 
     /**
