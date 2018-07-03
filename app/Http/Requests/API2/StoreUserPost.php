@@ -46,7 +46,7 @@ class StoreUserPost extends FormRequest
             'phone' => 'required_without:email|cn_phone|unique:users,phone',
             'email' => 'required_without:phone|email|max:128|unique:users,email',
             'name' => 'required|username|display_length:2,12|unique:users,name',
-            'password' => 'required|string',
+            'password' => 'nullable|string',
             'verifiable_code' => 'required',
             'verifiable_type' => 'required|string|in:mail,sms',
             'name' => [
@@ -80,7 +80,6 @@ class StoreUserPost extends FormRequest
             'name.display_length' => '用户名长度不合法',
             'name.unique' => '用户名已经被其他用户所使用',
             'name.not_in' => '系统保留用户名，禁止使用',
-            'password.required' => '请输入密码',
             'verifiable_code.required' => '请输入验证码',
             'verifiable_type.required' => '非法请求',
             'verifiable_type.in' => '非法的请求参数',

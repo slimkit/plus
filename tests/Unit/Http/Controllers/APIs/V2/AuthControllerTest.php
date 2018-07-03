@@ -84,9 +84,13 @@ class AuthControllerTest extends TestCase
             ['login', '', '1'],
             ['password', '', 'password'],
         ];
-        $request->expects($this->exactly(4))
+        $request->expects($this->exactly(6))
                 ->method('input')
-                ->withConsecutive([$this->equalTo('login')], [$this->equalTo('password')])
+                ->withConsecutive(
+                    [$this->equalTo('login')],
+                    [$this->equalTo('verifiable_code')],
+                    [$this->equalTo('password')]
+                )
                 ->will($this->returnValueMap($map));
 
         // Mock JsonResponse::json method
