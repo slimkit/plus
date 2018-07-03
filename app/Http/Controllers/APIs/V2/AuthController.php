@@ -82,7 +82,7 @@ class AuthController extends Controller
             }
 
             return $this->response()->json([
-                'message' => sprintf('%s还没有注册', $field == 'phone' ? '手机号' : '邮箱')
+                'message' => sprintf('%s还没有注册', $field == 'phone' ? '手机号' : '邮箱'),
             ], 422);
         }
 
