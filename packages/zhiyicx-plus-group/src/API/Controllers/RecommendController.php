@@ -41,8 +41,11 @@ class RecommendController
         $type = $request->query('type');
 
         $recommends = $recommendModel->where('disable', 0)
-        ->whereHas('group', function ($query) {
-            return $query->where('audit', 1);
+        ->whereHas('group', function ($query) use ($user_id) {
+            return $query->where('audit', 1)
+                ->whereDoesntHave('members', function ($query) use ($user_id) {
+                    $query->where('user_id', $user_id);
+                });
         })
         ->when($type == 'random', function ($query) {
             return $query->inRandomOrder();
