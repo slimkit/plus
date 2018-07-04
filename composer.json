@@ -89,6 +89,7 @@
         "erusev/parsedown": "^1.7",
         "ezyang/htmlpurifier": "^4.10",
         "fideloper/proxy": "^4.0",
+        "fzaninotto/faker": "^1.7",
         "guzzlehttp/guzzle": "^6.3",
         "intervention/image": "^2.3",
         "jenssegers/agent": "^2.6",
@@ -119,7 +120,6 @@
     "require-dev": {
         "codacy/coverage": "^1.4",
         "filp/whoops": "^2.0",
-        "fzaninotto/faker": "^1.4",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^2.0",
         "phpunit/phpunit": "^7.0"
