@@ -26,8 +26,8 @@ Plus (ThinkSNS+) 是一个使用 Laravel 开发，并且功能繁多且健壮的
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8320deaa80b8489f95fcedaae6df079d)](https://www.codacy.com/app/zhiyi/thinksns-plus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=slimkit/thinksns-plus&amp;utm_campaign=Badge_Grade)
 [![codecov](https://codecov.io/gh/slimkit/thinksns-plus/branch/master/graph/badge.svg)](https://codecov.io/gh/slimkit/thinksns-plus)
 [![Style CI](https://styleci.io/repos/76627423/shield?branch=master)](https://styleci.io/repos/76627423)
-[![Composer publish version](https://img.shields.io/packagist/v/zhiyicx/thinksns-plus.svg?style=flat-square)](https://packagist.org/packages/zhiyicx/thinksns-plus)
-[![Composer publish preview version](https://img.shields.io/packagist/vpre/zhiyicx/thinksns-plus.svg?style=flat-square)](https://packagist.org/packages/zhiyicx/thinksns-plus)
+[![Composer publish version](https://img.shields.io/packagist/v/slimkit/plus.svg?style=flat-square)](https://packagist.org/packages/slimkit/plus)
+[![Composer publish preview version](https://img.shields.io/packagist/vpre/slimkit/plus.svg?style=flat-square)](https://packagist.org/packages/slimkit/plus)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fslimkit%2Fthinksns-plus.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fslimkit%2Fthinksns-plus?ref=badge_shield)
 
 Travis CI: [![Travis CI Build Status](https://img.shields.io/travis/slimkit/plus.svg?style=flat-square)](https://travis-ci.org/slimkit/plus)
