@@ -45,6 +45,7 @@ class AboutUsController extends Controller
 //        dd($request->input('url'));
         $config->set('site.aboutUs.url', $request->input('url'));
         $config->set('site.aboutUs.content', $request->input('content'));
+
         return response('', 204);
     }
 }

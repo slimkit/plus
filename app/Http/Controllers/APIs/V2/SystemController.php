@@ -59,8 +59,9 @@ class SystemController extends Controller
             return redirect(config('site.aboutUs.url'), 302);
         }
         $body = config('site.aboutUs.content', '');
-        $body = preg_replace('/\@\!\[(.*?)\]\((\d+)\)/i', '![$1](' . config('app.url') . '/api/v2/files/$2)', $body);
+        $body = preg_replace('/\@\!\[(.*?)\]\((\d+)\)/i', '![$1]('.config('app.url').'/api/v2/files/$2)', $body);
         $content = htmlspecialchars_decode(\Parsedown::instance()->setMarkupEscaped(true)->text($body));
+
         return view('about', ['content' => $content]);
     }
 
