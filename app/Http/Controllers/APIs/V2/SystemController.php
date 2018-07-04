@@ -55,11 +55,13 @@ class SystemController extends Controller
      */
     public function about()
     {
-        if (! is_null(config('site.about_url'))) {
-            return redirect(config('site.about_url'), 302);
+        if (! is_null(config('site.aboutUs.url'))) {
+            return redirect(config('site.aboutUs.url'), 302);
         }
-
-        return view('about');
+        $body = config('site.aboutUs.content', '');
+        $body = preg_replace('/\@\!\[(.*?)\]\((\d+)\)/i', '![$1](' . config('app.url') . '/api/v2/files/$2)', $body);
+        $content = htmlspecialchars_decode(\Parsedown::instance()->setMarkupEscaped(true)->text($body));
+        return view('about', ['content' => $content]);
     }
 
     /**
