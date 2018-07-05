@@ -20,7 +20,9 @@ namespace Zhiyi\PlusGroup\Admin\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Zhiyi\PlusGroup\Models\Group;
 use Zhiyi\PlusGroup\Models\Post as PostModel;
+use Zhiyi\PlusGroup\Models\Post;
 
 class GroupPostController
 {
@@ -79,9 +81,9 @@ class GroupPostController
         return response()->json($posts, 200, ['x-total' => $count]);
     }
 
-    public function delete(int $postId, int $groupId)
+    public function delete(Group $groupId, Post $post)
     {
-        PostModel::find($groupId)->delete();
+        $post->delete();
 
         return response()->json(null, 204);
     }
