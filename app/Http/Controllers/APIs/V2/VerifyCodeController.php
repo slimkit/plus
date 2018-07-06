@@ -77,6 +77,7 @@ class VerifyCodeController extends Controller
                 ]);
             } catch (\Exception $e) {
                 \Log::error($e);
+
                 return response()->json(['message' => '验证码发送失败'], 400);
             }
             break;
