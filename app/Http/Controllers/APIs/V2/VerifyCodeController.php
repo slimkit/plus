@@ -71,9 +71,14 @@ class VerifyCodeController extends Controller
                 continue;
             }
 
-            $this->send($account, $channel, [
-                'user_id' => $user,
-            ]);
+            try {
+                $this->send($account, $channel, [
+                    'user_id' => $user,
+                ]);
+            } catch (\Exception $e) {
+                \Log::error($e);
+                return response()->json(['message' => '验证码发送失败'], 400);
+            }
             break;
         }
 
