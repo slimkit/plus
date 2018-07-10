@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -58,10 +58,11 @@ class ContributeController extends Controller
     /**
      * 获取投稿列表.
      *
-     * @param Request $request
+     * @param Request                 $request
      * @param ResponseFactoryContract $response
-     * @param NewsModel $model
+     * @param NewsModel               $model
      * @return mixed
+     * @throws \Throwable
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function index(Request $request, ResponseFactoryContract $response, NewsModel $model)
@@ -102,10 +103,13 @@ class ContributeController extends Controller
      * 提交资讯投稿申请.
      *
      * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Requests\StoreContribute $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News $news
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate $category
+     * @param \Illuminate\Contracts\Routing\ResponseFactory                              $response
+     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News                   $news
+     * @param WalletChargeModel                                                          $charge
+     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate               $category
+     * @param TagModel                                                                   $tagModel
      * @return mixed
+     * @throws \Throwable
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function store(
@@ -199,11 +203,13 @@ class ContributeController extends Controller
     /**
      * 修改投稿稿件.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param \Illuminate\Http\Request                                     $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory                $response
      * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate $category
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News $news
+     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News     $news
+     * @param TagModel                                                     $tagModel
      * @return mixed
+     * @throws \Throwable
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function update(
@@ -291,11 +297,12 @@ class ContributeController extends Controller
     /**
      * 删除投稿.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param \Illuminate\Http\Request                                     $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory                $response
      * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate $category
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News $news
+     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News     $news
      * @return mixed
+     * @throws \Throwable
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function destroy(
@@ -332,11 +339,12 @@ class ContributeController extends Controller
     /**
      * 撤销投稿，申请退款.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
+     * @param \Illuminate\Http\Request                                     $request
+     * @param \Illuminate\Contracts\Routing\ResponseFactory                $response
      * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate $category
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News $news
+     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News     $news
      * @return mixed
+     * @throws \Throwable
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function revoked(
@@ -368,10 +376,12 @@ class ContributeController extends Controller
      * 提交资讯投稿申请.
      *
      * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Requests\StoreContribute $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News $news
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate $category
+     * @param \Illuminate\Contracts\Routing\ResponseFactory                              $response
+     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News                   $news
+     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate               $category
+     * @param TagModel                                                                   $tagModel
      * @return mixed
+     * @throws \Throwable
      * @author BS <414606094@qq.com>
      */
     public function newStore(
@@ -383,14 +393,14 @@ class ContributeController extends Controller
     ) {
         $user = $request->user();
         $config = config('news.contribute');
-        $payAmount = config('news.pay_contribute');
+        $payAmount = intval(config('news.pay_contribute'));
 
         if ($config['pay'] && $user->currency && $user->currency->sum < $payAmount) {
-            return $response->json(['message' => '账户余额不足'], 422);
+            return $response->json(['message' => '账户余额不足'], 403);
         }
 
         if ($config['verified'] && $user->verified === null) {
-            return $response->json(['message' => '未认证用户不可投稿'], 422);
+            return $response->json(['message' => '未认证用户不可投稿'], 403);
         }
 
         $map = $request->only(['title', 'content', 'subject']);
@@ -399,6 +409,16 @@ class ContributeController extends Controller
         $map['storage'] = $request->input('image');
 
         $images = $this->findMarkdownImageNotWithModels($map['content'] ?: '');
+        // 提取内容中的图片，用于列表种的多种UI展示
+        $map['images'] = $images->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'width' => $item->file->width,
+                'height' => $item->file->height,
+                'mime' => $item->file->mime,
+            ];
+        });
+
         $images[] = $this->app->call(function (FileWithModel $fileWith) use ($map) {
             return $fileWith->where('id', $map['storage'])
                 ->where('channel', null)
@@ -406,7 +426,6 @@ class ContributeController extends Controller
                 ->first();
         });
         $images = $images->filter();
-
         $tags = $tagModel->whereIn('id', is_array($request->input('tags')) ? $request->input('tags') : explode(',', $request->input('tags')))->get();
         if (! $tags) {
             return $response->json(['message' => '填写的标签不存在或已删除'], 422);
@@ -439,7 +458,7 @@ class ContributeController extends Controller
 
                 if ($config['pay']) {
                     $process = new UserProcess();
-                    $process->prepayment($user->id, $payAmount, 0, '支付资讯投稿费用', sprintf('支付资讯《%s》投稿费用', $news->title));
+                    $process->prepayment($user->id, $payAmount, 0, '支付资讯投稿所需积分', sprintf('支付资讯《%s》投稿所需积分', $news->title));
                 }
 
                 $news->tags()->attach($tags);

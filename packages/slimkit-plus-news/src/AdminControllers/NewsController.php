@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -21,12 +21,13 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\AdminControllers;
 
 use DB;
-use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Zhiyi\Plus\Models\FileWith;
 use Zhiyi\Plus\Models\Tag as TagModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use function Zhiyi\Plus\findMarkdownImageIDs;
+use Zhiyi\Plus\Concerns\FindMarkdownFileTrait;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
@@ -38,6 +39,8 @@ use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCollection;
  */
 class NewsController extends Controller
 {
+    use FindMarkdownFileTrait;
+
     /**
      * 资讯列表.
      * @param  $cate_id [分类ID]
@@ -52,7 +55,6 @@ class NewsController extends Controller
         $state = $request->state ?? null;
         $recommend = $request->recommend == 'true' ? 1 : 0;
 
-        // if ($cate_id) {
         $datas = News::where(function ($query) use ($key) {
             if ($key) {
                 return $query->where('news.title', 'like', '%'.$key.'%');
@@ -107,6 +109,12 @@ class NewsController extends Controller
         return response()->json($datas)->setStatusCode(200);
     }
 
+    /**
+     * @param Request  $request
+     * @param TagModel $tagModel
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
+     */
     public function doSaveNews(Request $request, TagModel $tagModel)
     {
         $content = $request->input('content');
@@ -116,11 +124,25 @@ class NewsController extends Controller
 
         $tags = $tagModel->whereIn('id', is_array($request->input('tags')) ? $request->input('tags') : explode(',', $request->input('tags')))->get();
         if (! $tags) {
-            return response()->json(['message' => ['填写的标签不存在或已删除']], 422);
+            return response()->json(['message' => '填写的标签不存在或已删除'], 422);
         }
+        $images = $this->findMarkdownImageNotWithModels($content ?: '');
 
+        $allImages = findMarkdownImageIDs($content ?: '');
+        $allImages = FileWith::whereIn('id', $allImages)
+            ->orderByRaw("FIELD(id, '".implode("','", $allImages)."')")
+            ->get();
+        $formatImages = $allImages->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'width' => $item->file->height,
+                'height' => $item->file->height,
+                'mime' => $item->file->mime,
+            ];
+        });
+        $news = null;
         if ($request->news_id) {
-            $news = News::find($request->news_id);
+            $news = News::where('id', $request->news_id)->first();
             if ($news) {
                 $news->title = $request->title;
                 $news->subject = $request->subject ?: getShort($content, 60);
@@ -130,9 +152,22 @@ class NewsController extends Controller
                 $news->cate_id = $request->cate_id;
                 $news->author = $request->author;
                 $news->audit_status = 0;
+                $news->images = $formatImages;
+
                 $news->save();
-                $news->tags()->detach();
-                $news->tags()->attach($tags);
+                if ($request->storage) {
+                    $images->push(FileWith::where('id', $request->storage)
+                        ->whereNull('channel')
+                        ->whereNull('raw')
+                        ->first());
+                }
+                $news->getConnection()->transaction(function () use ($news, $images, $tags) {
+                    $news->tags()->detach();
+                    $news->tags()->attach($tags);
+                    $this->resolveFileWith($news, $images);
+                });
+
+                return response()->json($news->id)->setStatusCode(201);
             }
         } else {
             $news = new News();
@@ -144,20 +179,27 @@ class NewsController extends Controller
             $news->from = $request->from ?: '原创';
             $news->cate_id = $request->cate_id;
             $news->author = $request->author;
-            // $news->audit_status = $type;
+            $news->images = $formatImages;
             $news->save();
-            $news->tags()->attach($tags);
-        }
-        if ($request->storage_id) {
-            $fileWith = FileWith::find($request->storage);
-            if ($fileWith) {
-                $fileWith->channel = 'news:storage';
-                $fileWith->raw = $news->id;
-                $fileWith->save();
+            if ($request->storage) {
+                $images->push(FileWith::find($request->storage));
             }
-        }
+            $news->getConnection()->transaction(function () use ($news, $images, $tags) {
+                $news->tags()->attach($tags);
+                $this->resolveFileWith($news, $images);
+            });
 
-        return response()->json($news->id)->setStatusCode(201);
+            return response()->json($news->id)->setStatusCode(201);
+        }
+    }
+
+    protected function resolveFileWith(News $news, $fileWiths)
+    {
+        $fileWiths->filter()->each(function (FileWith $fileWith) use ($news) {
+            $fileWith->channel = 'news:image';
+            $fileWith->raw = $news->id;
+            $fileWith->save();
+        });
     }
 
     public function recommend(News $news)

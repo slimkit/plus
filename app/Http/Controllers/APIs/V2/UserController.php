@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -24,6 +24,7 @@ use RuntimeException;
 use Tymon\JWTAuth\JWTAuth;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\username;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\VerificationCode;
 use Zhiyi\Plus\Http\Requests\API2\StoreUserPost;
@@ -74,15 +75,18 @@ class UserController extends Controller
      *  Get user.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Plus\Models\User $user
+     * @param string $user
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function show(Request $request, int $user)
+    public function show(Request $request, string $user)
     {
+        $field = username($user);
         $user = User::withTrashed()
-            ->where('id', $user)
+            ->where($field, $user)
             ->firstOrFail();
+
+        $user->makeVisible($field);
 
         // 我关注的处理
         $this->hasFollowing($request, $user);
@@ -128,7 +132,10 @@ class UserController extends Controller
         $user->phone = $phone;
         $user->email = $email;
         $user->name = $name;
-        $user->createPassword($password);
+
+        if ($password !== null) {
+            $user->createPassword($password);
+        }
 
         $verify->delete();
         if (! $user->save()) {

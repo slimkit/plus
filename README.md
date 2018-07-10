@@ -1,6 +1,18 @@
-<p align="center"><img src="https://github.com/slimkit/thinksns-plus/raw/master/public/plus.png"></p>
+<p align="center">
+	<a href="http://www.thinksns.com" rel="noopener" target="_blank"><img src="https://github.com/slimkit/plus/raw/master/public/plus.png" alt="Plus (ThinkSNS+) Logo"></a>
+</p>
 
-Plus (ThinkSNS Plus) 是一个使用 Laravel 开发，并且功能繁多且健壮的社交程序。Plus 是遵循 **PSR 规范** 代码统一，并功能块松耦合。你安装完成 Plus 并不意味着已经成功安装了所有功能，因为 Plus 使用 **模块化** 的
+<h1 align="center">Plus (ThinkSNS+)</h1>
+
+<div align="center">
+
+[Plus (ThinkSNS+)](http://www.thinksns.com) 是使用 [Laravel](https://laravel.com/) 框架开发；一个功能强大、易于开发和动态拓展的社交系统。
+
+</div>
+
+## 简介
+
+Plus (ThinkSNS+) 是一个使用 Laravel 开发，并且功能繁多且健壮的社交程序。Plus 是遵循 **PSR 规范** 代码统一，并功能块松耦合。你安装完成 Plus 并不意味着已经成功安装了所有功能，因为 Plus 使用 **模块化** 的
 原则，所以你安装完成后拥有了所有可以被请求的 REST 接口和后台管理面板，你可能还需要安装如下模块：
 
 - 一个对搜索引擎支持良好的大屏 Web 界面 👉 [ThinkSNS Plus PC](https://github.com/zhiyicx/plus-component-pcos)
@@ -14,13 +26,13 @@ Plus (ThinkSNS Plus) 是一个使用 Laravel 开发，并且功能繁多且健�
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8320deaa80b8489f95fcedaae6df079d)](https://www.codacy.com/app/zhiyi/thinksns-plus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=slimkit/thinksns-plus&amp;utm_campaign=Badge_Grade)
 [![codecov](https://codecov.io/gh/slimkit/thinksns-plus/branch/master/graph/badge.svg)](https://codecov.io/gh/slimkit/thinksns-plus)
 [![Style CI](https://styleci.io/repos/76627423/shield?branch=master)](https://styleci.io/repos/76627423)
-[![Composer publish version](https://img.shields.io/packagist/v/zhiyicx/thinksns-plus.svg?style=flat-square)](https://packagist.org/packages/zhiyicx/thinksns-plus)
-[![Composer publish preview version](https://img.shields.io/packagist/vpre/zhiyicx/thinksns-plus.svg?style=flat-square)](https://packagist.org/packages/zhiyicx/thinksns-plus)
+[![Composer publish version](https://img.shields.io/packagist/v/slimkit/plus.svg?style=flat-square)](https://packagist.org/packages/slimkit/plus)
+[![Composer publish preview version](https://img.shields.io/packagist/vpre/slimkit/plus.svg?style=flat-square)](https://packagist.org/packages/slimkit/plus)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fslimkit%2Fthinksns-plus.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fslimkit%2Fthinksns-plus?ref=badge_shield)
 
-Travis CI: [![Travis CI Build Status](https://img.shields.io/travis/slimkit/thinksns-plus.svg?style=flat-square)](https://travis-ci.org/slimkit/thinksns-plus)
+Travis CI: [![Travis CI Build Status](https://img.shields.io/travis/slimkit/plus.svg?style=flat-square)](https://travis-ci.org/slimkit/plus)
 
-Circle CI: [![https://img.shields.io/circleci/project/github/slimkit/thinksns-plus.svg?style=flat-square](https://img.shields.io/travis/slimkit/thinksns-plus.svg?style=flat-square)](https://circleci.com/gh/slimkit/thinksns-plus)
+Circle CI: [![https://img.shields.io/circleci/project/github/slimkit/plus.svg?style=flat-square](https://img.shields.io/travis/slimkit/plus.svg?style=flat-square)](https://circleci.com/gh/slimkit/plus)
 
 ## 特点
 
@@ -45,8 +57,8 @@ Plus 是基于 Laravel 所开发，它拥有下面的几个主要特点：
 
 当然，有一些并不在网站上，而是在 Plus 代码仓库中：
 
-- [贡献指南 & 贡献者感谢名单](https://github.com/slimkit/thinksns-plus/blob/master/.github/CONTRIBUTING.md)
-- [行为守则](https://github.com/slimkit/thinksns-plus/blob/master/.github/CODE_OF_CONDUCT.md)
+- [贡献指南 & 贡献者感谢名单](https://github.com/slimkit/plus/blob/master/.github/CONTRIBUTING.md)
+- [行为守则](https://github.com/slimkit/plus/blob/master/.github/CODE_OF_CONDUCT.md)
 
 ## 安装
 
@@ -59,8 +71,8 @@ Plus 是基于 Laravel 所开发，它拥有下面的几个主要特点：
 下载程序：
 
 ```shell
-composer create-project zhiyicx/thinksns-plus
-cd thinksns-plus
+composer create-project slimkit/plus
+cd plus
 ```
 
 > 现在，打开你的 `.env` 文件配置数据库等各类信息，然后执行后面的步骤！
@@ -96,15 +108,15 @@ php artisan serve
 这个仓库的贡献者并不代表只是 Plus 的贡献者，我们也会把 Laravel 的贡献者加入感谢名单，因为他们为 Laravel 所做出的贡献，也使得 Plus 项目更加强大。
 
 感谢所有为 Plus 贡献的人！
-<a href="https://github.com/slimkit/thinksns-plus/graphs/contributors"><img src="https://opencollective.com/thinksns-plus/contributors.svg?width=890" /></a>
+<a href="https://github.com/slimkit/plus/graphs/contributors"><img src="https://opencollective.com/plus/contributors.svg?width=890" /></a>
 
-### [行为守则](https://github.com/slimkit/thinksns-plus/blob/master/.github/CODE_OF_CONDUCT.md)
+### [行为守则](https://github.com/slimkit/plus/blob/master/.github/CODE_OF_CONDUCT.md)
 
-我们按照开源项目社区的建议，为 Plus 提供了我们期望参与者遵守的行为准则，请 [阅读准则](https://github.com/slimkit/thinksns-plus/blob/master/.github/CODE_OF_CONDUCT.md) 全文，以便了解哪些行为是我们不会容忍的。
+我们按照开源项目社区的建议，为 Plus 提供了我们期望参与者遵守的行为准则，请 [阅读准则](https://github.com/slimkit/plus/blob/master/.github/CODE_OF_CONDUCT.md) 全文，以便了解哪些行为是我们不会容忍的。
 
-### [贡献指南](https://github.com/slimkit/thinksns-plus/blob/master/.github/CONTRIBUTING.md)
+### [贡献指南](https://github.com/slimkit/plus/blob/master/.github/CONTRIBUTING.md)
 
-阅读我们的 [贡献指南](https://github.com/slimkit/thinksns-plus/blob/master/.github/CONTRIBUTING.md)，了解我们的开发过程，
+阅读我们的 [贡献指南](https://github.com/slimkit/plus/blob/master/.github/CONTRIBUTING.md)，了解我们的开发过程，
 如题提出错误修正或者建议，我们在贡献指南中包含了所有的贡献者名单。
 
 ## 赞助
@@ -141,6 +153,6 @@ php artisan serve
 
 ## License
 
-ThinkSNS Plus 代码遵循 Apache 2.0 许可证发布，请参阅完整的 [许可证文本](https://github.com/slimkit/thinksns-plus/blob/master/LICENSE)
+ThinkSNS Plus 代码遵循 Apache 2.0 许可证发布，请参阅完整的 [许可证文本](https://github.com/slimkit/plus/blob/master/LICENSE)
 
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fslimkit%2Fthinksns-plus.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fslimkit%2Fthinksns-plus?ref=badge_large)
