@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models;
 
+use Illuminate\Support\Collection;
 use Zhiyi\Plus\Models\Tag;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\Report;
@@ -170,5 +171,13 @@ class News extends Model
     public function reports()
     {
         return $this->morphMany(Report::class, 'reportable');
+    }
+
+    public function getImagesAttribute($value) {
+        return $value ? json_decode($value, true) : null;
+    }
+
+    public function setImagesAttribute(Collection $images) {
+        $this->attributes['images'] = $images->isEmpty() ? null : json_encode($images);
     }
 }

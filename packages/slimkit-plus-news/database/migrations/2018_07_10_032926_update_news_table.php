@@ -30,7 +30,7 @@ class UpdateNewsTable extends Migration
     public function up()
     {
         Schema::table('news', function (Blueprint $table) {
-            $table->json('images')->nullable()->comment('内容中的图片资源，用于多种展示方式');
+            $table->text('images')->nullable()->comment('内容中的图片资源，用于多种展示方式');
         });
     }
 

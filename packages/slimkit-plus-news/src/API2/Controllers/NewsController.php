@@ -62,7 +62,6 @@ class NewsController extends Controller
 
         $datas = $newsModel->getConnection()->transaction(function () use ($news, $user) {
             return $news->each(function ($data) use ($user) {
-                $data->images && $data->images = json_decode($data->images);
                 $data->has_collect = $data->collected($user);
                 $data->has_like = $data->liked($user);
                 unset($data->pinned);
