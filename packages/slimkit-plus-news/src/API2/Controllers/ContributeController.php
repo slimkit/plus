@@ -415,7 +415,7 @@ class ContributeController extends Controller
                 'id' => $item->id,
                 'width' => $item->file->width,
                 'height' => $item->file->height,
-                'mime' => $item->file->mime
+                'mime' => $item->file->mime,
             ];
         });
 

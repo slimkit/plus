@@ -23,7 +23,6 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate;
 
 class NewsController extends Controller
 {
