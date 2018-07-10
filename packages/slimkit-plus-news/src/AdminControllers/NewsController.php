@@ -24,9 +24,9 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Zhiyi\Plus\Models\FileWith;
-use function Zhiyi\Plus\findMarkdownImageIDs;
 use Zhiyi\Plus\Models\Tag as TagModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use function Zhiyi\Plus\findMarkdownImageIDs;
 use Zhiyi\Plus\Concerns\FindMarkdownFileTrait;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
@@ -40,6 +40,7 @@ use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCollection;
 class NewsController extends Controller
 {
     use FindMarkdownFileTrait;
+
     /**
      * 资讯列表.
      * @param  $cate_id [分类ID]
@@ -129,7 +130,7 @@ class NewsController extends Controller
 
         $allImages = findMarkdownImageIDs($content ?: '');
         $allImages = FileWith::whereIn('id', $allImages)
-            ->orderByRaw("FIELD(id, '" . implode("','", $allImages) . "')")
+            ->orderByRaw("FIELD(id, '".implode("','", $allImages)."')")
             ->get();
         $formatImages = $allImages->map(function ($item) {
             return [
@@ -192,8 +193,9 @@ class NewsController extends Controller
         }
     }
 
-    protected function resolveFileWith(News $news, $fileWiths) {
-        $fileWiths->filter()->each(function(FileWith $fileWith) use ($news) {
+    protected function resolveFileWith(News $news, $fileWiths)
+    {
+        $fileWiths->filter()->each(function (FileWith $fileWith) use ($news) {
             $fileWith->channel = 'news:image';
             $fileWith->raw = $news->id;
             $fileWith->save();
