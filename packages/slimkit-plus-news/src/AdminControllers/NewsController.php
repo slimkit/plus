@@ -109,15 +109,8 @@ class NewsController extends Controller
 
     public function doSaveNews(Request $request, TagModel $tagModel)
     {
-        // $type = $request->type ?? 1; // 1 待审核 2 草稿
-
-        // if (! $request->storage_id) {
-        //     return response()->json(static::createJsonData([
-        //         'status' => false,
-        //         'message' => '没有上传封面图片',
-        //     ]));
-        // }
-        if (mb_strlen($request->content, 'utf8') > 10000) {
+        $content = $request->input('content');
+        if (mb_strlen($content, 'utf8') > 10000) {
             return response()->json(['message' => ['内容不能大于10000字']], 422);
         }
 
@@ -130,8 +123,8 @@ class NewsController extends Controller
             $news = News::find($request->news_id);
             if ($news) {
                 $news->title = $request->title;
-                $news->subject = $request->subject ?: getShort($request->content, 60);
-                $news->content = $request->content;
+                $news->subject = $request->subject ?: getShort($content, 60);
+                $news->content = $content;
                 $news->storage = $request->storage;
                 $news->from = $request->from ?: '原创';
                 $news->cate_id = $request->cate_id;
@@ -144,9 +137,9 @@ class NewsController extends Controller
         } else {
             $news = new News();
             $news->title = $request->title;
-            $news->subject = $request->subject ?: getShort($request->content, 60);
+            $news->subject = $request->subject ?: getShort($content, 60);
             $news->user_id = $request->user()->id;
-            $news->content = $request->content;
+            $news->content = $content;
             $news->storage = $request->storage;
             $news->from = $request->from ?: '原创';
             $news->cate_id = $request->cate_id;

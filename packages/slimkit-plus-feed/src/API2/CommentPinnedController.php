@@ -53,6 +53,7 @@ class CommentPinnedController extends Controller
             ->when(boolval($after), function ($query) use ($after) {
                 return $query->where('id', '<', $after);
             })
+            ->orderBy('expires_at', 'asc')
             ->orderBy('id', 'desc')
             ->limit($limit)
             ->get();
