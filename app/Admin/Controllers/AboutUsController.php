@@ -18,15 +18,34 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-use Illuminate\Support\Facades\Route;
-use Zhiyi\Plus\Admin\Controllers as AdminControllers;
-use Illuminate\Contracts\Routing\Registrar as RouteContract;
+namespace Zhiyi\Plus\Admin\Controllers;
 
-Route::middleware(['auth:web', 'admin'])->prefix('admin')->group(function (RouteContract $route) {
-    $route->get('im/helper-user', AdminControllers\ImHelperUserController::class.'@fetch');
-    $route->put('im/helper-user', AdminControllers\ImHelperUserController::class.'@update');
-    $route->get('trashed-users', AdminControllers\UserTrashedController::class.'@index');
-    $route->delete('trashed-users/{user}', AdminControllers\UserTrashedController::class.'@restore');
-    $route->get('about-us', AdminControllers\AboutUsController::class.'@show');
-    $route->patch('about-us', AdminControllers\AboutUsController::class.'@store');
-});
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
+use Zhiyi\Plus\Support\Configuration;
+
+class AboutUsController extends Controller
+{
+    /**
+     * @return JsonResponse
+     */
+    public function show(): JsonResponse
+    {
+        return response()->json(['aboutUs' => config('site.aboutUs')], 200);
+    }
+
+    /**
+     * @param Request       $request
+     * @param Configuration $config
+     * @return Response
+     */
+    public function store(Request $request, Configuration $config): Response
+    {
+//        dd($request->input('url'));
+        $config->set('site.aboutUs.url', $request->input('url'));
+        $config->set('site.aboutUs.content', $request->input('content'));
+
+        return response('', 204);
+    }
+}
