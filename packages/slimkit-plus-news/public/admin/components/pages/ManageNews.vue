@@ -100,14 +100,20 @@
                 <div class="form-group">
                     <label for="content" class="col-sm-1 control-label">正文</label>
                     <div class="col-sm-11">
-                        <module-editor v-model="news.content"></module-editor>
+                        <mavon-editor
+                            ref="editor"
+                            v-model="news.content"
+                            :apiHost="apiHost"
+                            @imgAdd="$imgAdd"
+                        >
+                                
+                            </mavon-editor>
                     </div>
                 </div>
             </div>
         </div>
         <div class="panel-footer">
             <div class="btn-group">
-                <!-- <button class="btn btn-sm btn-primary">存草稿</button> -->
                 <button class="btn btn-sm btn-default" @click="checkParams" @keydown.ctrl.alt.s.prevent.stop="checkParams">保存</button>
                 <button class="btn btn-sm btn-default" onclick="window.history.go(-1)">返回</button>
             </div>
@@ -118,13 +124,22 @@
     </div>
 </template>
 <script>
-import { admin } from "../../axios";
+import { mavonEditor } from "@slimkit/plus-editor";
+import "@slimkit/plus-editor/dist/css/index.css";
+import "highlight.js/styles/github.css";
+import { admin, api } from "../../axios";
 import components from "../modules/managenews";
+const apiHost =
+    document.head.querySelector('meta[name="domain"]').content || "";
 export default {
     name: "manage-news",
-    components,
+    components: {
+        ...components,
+        mavonEditor
+    },
     data() {
-        return({
+        return {
+            apiHost,
             cates: [],
             news: {
                 titlle: "",
@@ -134,7 +149,7 @@ export default {
                 content: "",
                 image: {},
                 tags: [],
-                category: {},
+                category: {}
             },
 
             // 组装数据
@@ -142,15 +157,15 @@ export default {
                 news_id: "",
                 cate_id: "",
                 storage: "",
-                tags: [],
+                tags: []
             },
 
             message: {
                 open: false,
-                type: '',
+                type: "",
                 data: {}
             }
-        });
+        };
     },
     computed: {
         cateID() {
@@ -163,16 +178,55 @@ export default {
             return image ? image.id : undefined;
         },
         tagsIDs() {
-            let r = (this.news.tags.map((tag) => {
+            let r = this.news.tags.map(tag => {
                 return tag.id;
-            }));
+            });
 
             this.params.tags = r;
             return r;
-        },
+        }
     },
     methods: {
+        /**
+         * 文件上传.
+         * @param  {Object}   file
+         * @param  {Function} callback
+         * @return {void}
+         */
+        uploadFile(file, callback) {
+            let param = new FormData();
+            param.append("file", file);
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
 
+            reader.onload = function(e) {
+                api
+                    .post("files", param, {
+                        validateStatus: status => status === 201
+                    })
+                    .then(response => {
+                        callback(response.data.id);
+                    })
+                    .catch(error => {
+                        this.publishMessage(err, "error");
+                    });
+            };
+        },
+        /**
+         * [$imgAdd description]
+         * @Author   Wayne
+         * @DateTime 2018-07-10
+         * @Email    qiaobin@zhiyicx.com
+         * @return   {[type]}            [description]
+         */
+        $imgAdd(pos, $file) {
+            // 第一步.将图片上传到服务器.
+            var formdata = new FormData();
+            formdata.append("file", $file);
+            this.uploadFile($file, id => {
+                this.$refs.editor.$img2Url(pos, id);
+            });
+        },
         /**
          * 显示提示信息
          * @param  {Object} data
@@ -193,14 +247,17 @@ export default {
          * @return {void}
          */
         getCates(cb) {
-            admin.get(`/news/cates`, {
-                validateStatus: status => status === 200,
-            }).then(({ data = [] }) => {
-                this.cates = [...data];
-                cb();
-            }).catch(err => {
-                this.publishMessage(err, "danger");
-            });
+            admin
+                .get(`/news/cates`, {
+                    validateStatus: status => status === 200
+                })
+                .then(({ data = [] }) => {
+                    this.cates = [...data];
+                    cb();
+                })
+                .catch(err => {
+                    this.publishMessage(err, "danger");
+                });
         },
 
         /**
@@ -209,13 +266,16 @@ export default {
          * @return {void}
          */
         getNewsById(id) {
-            admin.get(`/news/info/${id}`, {
-                validateStatus: status => status === 200,
-            }).then(({ data = {} }) => {
-                this.news = { ...this.news, ...data };
-            }).catch((err) => {
-                this.publishMessage(err, "danger");
-            });
+            admin
+                .get(`/news/info/${id}`, {
+                    validateStatus: status => status === 200
+                })
+                .then(({ data = {} }) => {
+                    this.news = { ...this.news, ...data };
+                })
+                .catch(err => {
+                    this.publishMessage(err, "danger");
+                });
         },
 
         /**
@@ -225,22 +285,30 @@ export default {
          * @return {Boolean}
          */
         isVoid(val, tips) {
-            if(val) { return true }
+            if (val) {
+                return true;
+            }
             this.publishMessage({ input: tips }, "danger");
             return false;
         },
 
         /**
-         * 表单验证 
+         * 表单验证
          * @return {[type]}
          */
         checkParams() {
             const { title, content, author, subject, from } = this.news;
 
             let params = this.params;
-            Object.assign(params, { title, content, author, subject, from: from || "原创" });
+            Object.assign(params, {
+                title,
+                content,
+                author,
+                subject,
+                from: from || "原创"
+            });
 
-            if(params.tags.length === 0) {
+            if (params.tags.length === 0) {
                 this.publishMessage({ input: "请选择资讯标签" }, "danger");
                 return false;
             }
@@ -250,35 +318,43 @@ export default {
                 author: { value: author, tips: "发布者不能为空" },
                 content: { value: content, tips: "内容不能为空" },
                 cate_id: { value: params.cate_id, tips: "请选择资讯分类" }
-            }
+            };
 
-            return Object.keys(rule).map((key) => {
-                return this.isVoid(rule[key].value, rule[key].tips);
-            }).indexOf(false) === -1 ? this.doSave(params) : false;
-
+            return Object.keys(rule)
+                .map(key => {
+                    return this.isVoid(rule[key].value, rule[key].tips);
+                })
+                .indexOf(false) === -1
+                ? this.doSave(params)
+                : false;
         },
 
         doSave(params) {
-            admin.post('/news/handle_news', {
-                ...params,
-                validateStatus: status => status === 201,
-            }).then(({ data }) => {
-                this.params.news_id = data;
-                this.publishMessage({ message: "保存成功!" }, "success");
-            }).catch(err => {
-                console.log(err);
-                this.publishMessage(err, "error");
-            })
+            admin
+                .post("/news/handle_news", {
+                    ...params,
+                    validateStatus: status => status === 201
+                })
+                .then(({ data }) => {
+                    this.params.news_id = data;
+                    this.publishMessage({ message: "保存成功!" }, "success");
+                    setTimeout(() => {
+                        this.$router.go(-1);
+                    }, 800);
+                })
+                .catch(err => {
+                    this.publishMessage(err, "error");
+                });
         }
     },
     created() {
         this.getCates(() => {
             let id = this.$route.params.newsID;
-            if(id > 0) {
+            if (id > 0) {
                 this.params.news_id = id;
                 this.getNewsById(id);
             }
         });
     }
-}
+};
 </script>
