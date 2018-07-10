@@ -16,7 +16,7 @@
                 'logged'    => $logged,
                 'user'      => $user,
                 'token'     => $token,
-
+                'domain'    => config('app.url')
             ])
         !!};
     </script>
