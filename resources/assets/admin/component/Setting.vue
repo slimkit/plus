@@ -65,7 +65,9 @@
               <router-link to="/setting/server" tag="li" active-class="active">
                 <a href="#">服务器信息</a> 
               </router-link>
-
+              <router-link to="/setting/about" tag="li" active-class="active">
+                <a href="#">关于我们</a>
+              </router-link>
             </ul>
             <!-- End settings nav. -->
           </div>

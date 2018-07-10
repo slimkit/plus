@@ -118,8 +118,8 @@ class NewsController extends Controller
     public function doSaveNews(Request $request, TagModel $tagModel)
     {
         $content = $request->input('content');
-        if (mb_strlen($request->input('content'), 'utf8') > 10000) {
-            return response()->json(['message' => '内容不能大于10000字'], 422);
+        if (mb_strlen($content, 'utf8') > 10000) {
+            return response()->json(['message' => ['内容不能大于10000字']], 422);
         }
 
         $tags = $tagModel->whereIn('id', is_array($request->input('tags')) ? $request->input('tags') : explode(',', $request->input('tags')))->get();

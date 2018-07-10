@@ -23,6 +23,7 @@ import FileSetting from '../components/modules/file/Setting'
 
 import Security from '../component/setting/Security';
 import IosIap from '../components/pages/IosIap';
+import About from "../component/setting/About";
 
 const settingRouter = {
   path: 'setting',
@@ -43,6 +44,7 @@ const settingRouter = {
     { path: 'upload-setting', component: FileSetting },
     { path: 'security', component: Security },
     { path: 'ios-iap', component: IosIap },
+      { path: 'about', component: About}
   ]
 };
 
