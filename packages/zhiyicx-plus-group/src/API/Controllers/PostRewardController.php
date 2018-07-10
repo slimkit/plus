@@ -57,21 +57,21 @@ class PostRewardController
         $amount = $request->input('amount');
         if (! $amount || $amount < 0) {
             return response()->json([
-                'amount' => '请输入正确的'.$goldName.'数量',
+                'amount' => '请输入正确的'.$this->goldName.'数量',
             ], 422);
         }
         $user = $request->user();
         $post->load('user');
         $current_user = $post->user;
 
-        if (! $user->currency || $user->currency->sum < $amount) {
+        if (! $user->wallet || $user->wallet->balance < $amount) {
             return response()->json([
-                'message' => $goldName.'不足',
+                'message' => $this->goldName.'不足',
             ], 403);
         }
 
-        $user->getConnection()->transaction(function () use ($user, $post, $charge, $current_user, $amount, $process) {
-            if ($current_user->currency) {
+        $user->getConnection()->transaction(function () use ($user, $post, $current_user, $amount, $process) {
+            if ($current_user->wallet) {
                 $process->prepayment($user->id, $amount, $current_user->id, sprintf('打赏“%s”的帖子', $current_user->name, $post->title, $amount), sprintf('打赏“%s”的帖子，%s扣除%s', $current_user->name, $this->goldName, $amount));
                 $process->receivables($current_user->id, $amount, $user->id, sprintf('“%s”打赏了你的帖子', $user->name), sprintf('“%s”打赏了你的帖子，%s增加%s', $user->name, $this->goldName, $amount));
                 // 添加被打赏通知

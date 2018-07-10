@@ -79,10 +79,8 @@ class GroupPostRewardTest extends TestCase
     public function testGroupPostNewReward()
     {
         config(['plus-group.group_reward.status' => true]);
-        $this->other->NewWallet()->update([
-            'balance' => 1000,
-            'total_income' => 0,
-            'total_expenses' => 0,
+        $this->other->currency()->update([
+            'sum' => 1000,
         ]);
         $response = $this
             ->actingAs($this->other, 'api')
