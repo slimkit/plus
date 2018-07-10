@@ -50,7 +50,7 @@ class StoreContribute extends FormRequest
      */
     protected function failedAuthorization()
     {
-        throw new HttpException('403', '你没有权限投稿');
+        throw new HttpException(403, '你没有权限投稿');
     }
 
     /**

@@ -34,6 +34,7 @@ class NewsController extends Controller
      * @param  Request $request
      * @param  News    $newsModel
      * @return json
+     * @throws \Throwable
      */
     public function index(Request $request, News $newsModel)
     {
@@ -57,11 +58,12 @@ class NewsController extends Controller
             return $query->where('id', '<', $after);
         })->when($key, function ($query) use ($key) {
             return $query->where('title', 'like', '%'.$key.'%');
-        })->take($limit)->select(['id', 'title', 'subject', 'created_at', 'updated_at', 'storage', 'cate_id', 'from', 'author', 'user_id', 'hits', 'text_content'])
+        })->take($limit)->select(['id', 'title', 'subject', 'created_at', 'updated_at', 'storage', 'cate_id', 'from', 'author', 'user_id', 'hits', 'text_content', 'images'])
         ->orderBy('id', 'desc')->get();
 
         $datas = $newsModel->getConnection()->transaction(function () use ($news, $user) {
             return $news->each(function ($data) use ($user) {
+                $data->images && $data->images = json_decode($data->images);
                 $data->has_collect = $data->collected($user);
                 $data->has_like = $data->liked($user);
                 unset($data->pinned);
@@ -75,10 +77,11 @@ class NewsController extends Controller
      * 获取一个分类的置顶资讯.
      *
      * @author bs<414606094@qq.com>
-     * @param  Request  $request
-     * @param  NewsCate $cate
-     * @param  Carbon   $datetime
+     * @param  Request $request
+     * @param News     $newsModel
+     * @param  Carbon  $datetime
      * @return json
+     * @throws \Throwable
      */
     public function pinned(Request $request, News $newsModel, Carbon $datetime)
     {
@@ -111,7 +114,9 @@ class NewsController extends Controller
      * @author bs<414606094@qq.com>
      * @param  Request $request
      * @param  News    $news
+     * @param Carbon   $datetime
      * @return json
+     * @throws \Throwable
      */
     public function detail(Request $request, News $news, Carbon $datetime)
     {
@@ -127,7 +132,7 @@ class NewsController extends Controller
             $news->has_collect = $news->collected($user);
             $news->has_like = $news->liked($user);
             $news->is_pinned = ! (bool) $news->pinned()->where('state', 1)->where('expires_at', '>', $datetime)->get()->isEmpty();
-            $news->addHidden('pinned');
+            $news->addHidden(['images', 'pinned']);
 
             return $news;
         });
@@ -142,6 +147,7 @@ class NewsController extends Controller
      * @param  Request $request
      * @param  News    $news
      * @return json
+     * @throws \Throwable
      */
     public function correlation(Request $request, News $news)
     {
