@@ -43,6 +43,7 @@ import { mavonEditor } from "@slimkit/plus-editor";
 import "@slimkit/plus-editor/dist/css/index.css";
 import "highlight.js/styles/github.css";
 import { uploadFile } from "../../util/upload";
+const domain = window.TS.domain || "";
 export default {
     name: "AboutUs",
     components: {
@@ -50,7 +51,7 @@ export default {
     },
     data: () => ({
         content: "",
-        apiHost: "http://thinksns-plus.io",
+        apiHost: domain,
         loadding: true,
         url: "",
         message: ""
