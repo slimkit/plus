@@ -46,7 +46,7 @@ class CurrentUserController extends Controller
         $friends_count = $user->mutual()->get()->count();
         $user->friends_count = $friends_count;
         $user->initial_password = (bool) $user->password;
-        
+
         return $response->json($user, 200);
     }
 
