@@ -49,10 +49,10 @@
                             <span class="label label-success" v-for="tag in checkedTags" style="margin-left:2px;">{{ tag }}</span>
                         </div>
                         <span class="input-group-btn">
-		     	<button class="btn btn-default" @click="tagShow=!tagShow">
-		     	<i class="glyphicon glyphicon-tags"></i>
-		     	</button>
-		      </span>
+                <button class="btn btn-default" @click="tagShow=!tagShow">
+                <i class="glyphicon glyphicon-tags"></i>
+                </button>
+              </span>
                     </div>
                     <div v-for="tag in tags" v-show="tagShow">
                         <span class="help-block">{{ tag.name }}</span>
@@ -74,8 +74,8 @@
                     <div class="input-group">
                         <div class="form-control" style="font-size:6px;">{{ group.location }}</div>
                         <span class="input-group-btn">
-		        <button class="btn btn-default" @click="mapShow=!mapShow"><i class="glyphicon glyphicon-map-marker"></i></button>
-		      </span>
+                <button class="btn btn-default" @click="mapShow=!mapShow"><i class="glyphicon glyphicon-map-marker"></i></button>
+              </span>
                     </div>
                     <geo-map @locationCall="getLocationCall" v-show="mapShow"></geo-map>
                 </div>
@@ -175,7 +175,7 @@
 
             <!-- 简介 -->
             <div class="form-group">
-                <label class="control-label col-xs-2"><span class="text-danger">*</span>简介</label>
+                <label class="control-label col-xs-2">简介</label>
                 <div class="col-xs-7">
                     <textarea class="form-control" maxlength="255" v-model="group.summary"></textarea>
                 </div>
@@ -186,7 +186,7 @@
 
             <!-- 公告 -->
             <div class="form-group">
-                <label class="control-label col-xs-2"><span class="text-danger">*</span>公告</label>
+                <label class="control-label col-xs-2">公告</label>
                 <div class="col-xs-7">
                     <textarea class="form-control" maxlength="2000" v-model="group.notice"></textarea>
                 </div>
@@ -206,99 +206,104 @@
     </ui-panle>
 </template>
 <script>
-    import SearchUser from '../modules/SearchUser';
-    import GeoMap from '../modules/GeoMap';
-    import {admin, api} from '../../axios';
-    import lodash from 'lodash';
+import SearchUser from "../modules/SearchUser";
+import GeoMap from "../modules/GeoMap";
+import { admin, api } from "../../axios";
+import lodash from "lodash";
 
-    const getFileUrl = (file) => {
-        let url = null;
-        if (window.createObjectURL != undefined) { // basic
-            url = window.createObjectURL(file);
-        } else if (window.URL != undefined) { // mozilla(firefox)
-            url = window.URL.createObjectURL(file);
-        } else if (window.webkitURL != undefined) { // webkit or chrome
-            url = window.webkitURL.createObjectURL(file);
-        }
-        return url;
+const getFileUrl = file => {
+    let url = null;
+    if (window.createObjectURL != undefined) {
+        // basic
+        url = window.createObjectURL(file);
+    } else if (window.URL != undefined) {
+        // mozilla(firefox)
+        url = window.URL.createObjectURL(file);
+    } else if (window.webkitURL != undefined) {
+        // webkit or chrome
+        url = window.webkitURL.createObjectURL(file);
     }
+    return url;
+};
 
-    export default ({
-        components: {
-            'module-search-user': SearchUser,
-            'geo-map': GeoMap
-        },
-        data() {
-            const _self = this;
-            return {
-                id: null,
-                cates: [],
+export default {
+    components: {
+        "module-search-user": SearchUser,
+        "geo-map": GeoMap
+    },
+    data() {
+        const _self = this;
+        return {
+            id: null,
+            cates: [],
+            tags: [],
+            tagShow: false,
+            checkedTags: [],
+            mapShow: false,
+            paid: false,
+            avatarUrl: null,
+            mode: null,
+            group: {
+                name: null,
+                avatar: null,
+                user_id: null,
+                category_id: null,
+                mode: "public",
+                permissions: 3,
+                recommend: 0,
+                audit: 1,
+                allow_feed: null,
                 tags: [],
-                tagShow: false,
-                checkedTags: [],
-                mapShow: false,
-                paid: false,
-                avatarUrl: null,
-                mode: null,
-                group: {
-                    name: null,
-                    avatar: null,
-                    user_id: null,
-                    category_id: null,
-                    mode: 'public',
-                    permissions: 3,
-                    recommend: 0,
-                    audit: 1,
-                    allow_feed: null,
-                    tags: [],
-                    money: 0,
-                    summary: null,
-                    notice: null,
-                    location: null,
-                    latitude: null,
-                    longitude: null,
-                },
+                money: 0,
+                summary: null,
+                notice: null,
+                location: null,
+                latitude: null,
+                longitude: null
             }
+        };
+    },
+    watch: {
+        "group.mode"(val) {
+            this.paid = val == "paid" ? (this.paid = true) : false;
+        }
+    },
+    methods: {
+        /**
+         * Get categories.
+         * @return void
+         */
+        getCategories() {
+            admin
+                .get("categories?type=all", {
+                    validateStatus: status => status === 200,
+                    params: {}
+                })
+                .then(({ data = [] }) => {
+                    this.cates = data;
+                });
         },
-        watch: {
-            'group.mode'(val) {
-                this.paid = (val == 'paid' ? this.paid = true : false)
-            }
-        },
-        methods: {
-            /**
-             * Get categories.
-             * @return void
-             */
-            getCategories() {
-                admin.get(
-                    'categories?type=all', {
-                        validateStatus: status => status === 200,
-                        params: {},
-                    })
-                    .then(({data = []}) => {
-                        this.cates = data;
-                    })
-            },
-            /**
-             * Get tags.
-             * @return void
-             */
-            getTags() {
-                api.get(
-                    'tags', {
-                        validateStatus: status => status === 200,
-                        params: {},
-                    }).then(({data = []}) => {
+        /**
+         * Get tags.
+         * @return void
+         */
+        getTags() {
+            api
+                .get("tags", {
+                    validateStatus: status => status === 200,
+                    params: {}
+                })
+                .then(({ data = [] }) => {
                     this.tags = data;
                 });
-            },
-            getGroup() {
-                admin.get(
-                    `groups/${this.id}`, {
-                        validateStatus: status => status === 200,
-                        params: {},
-                    }).then(({data = []}) => {
+        },
+        getGroup() {
+            admin
+                .get(`groups/${this.id}`, {
+                    validateStatus: status => status === 200,
+                    params: {}
+                })
+                .then(({ data = [] }) => {
                     const {
                         name,
                         category_id,
@@ -331,7 +336,7 @@
                     group.summary = summary;
                     group.notice = notice;
                     group.recommend = recommend ? 1 : 0;
-                    group.permissions = permissions.split(',').length;
+                    group.permissions = permissions.split(",").length;
                     group.tags = this.setTag(tags);
                     group.location = location;
                     group.latitude = latitude;
@@ -340,114 +345,137 @@
                     group.allow_feed = allow_feed;
                     this.mode = mode;
                 });
-            },
-            setTag(tags) {
-                let ids = [], _this = this;
-                tags.forEach(item => {
-                    _this.checkedTags.push(item.name);
-                    ids.push(item.id);
-                });
-                return ids;
-            },
-            /**
-             * Search user call.
-             * @param  options.id: user
-             * @return void
-             */
-            searchUserCall({id: user}) {
-                this.group.user_id = user;
-            },
-            /**
-             * Check tag.
-             * @param  item
-             * @return void
-             */
-            handleCheckbox(e, item) {
-                let index = lodash.indexOf(this.group.tags, item.id);
-                let nameIndex = lodash.indexOf(this.checkedTags, item.name);
+        },
+        setTag(tags) {
+            let ids = [],
+                _this = this;
+            tags.forEach(item => {
+                _this.checkedTags.push(item.name);
+                ids.push(item.id);
+            });
+            return ids;
+        },
+        /**
+         * Search user call.
+         * @param  options.id: user
+         * @return void
+         */
+        searchUserCall({ id: user }) {
+            this.group.user_id = user;
+        },
+        /**
+         * Check tag.
+         * @param  item
+         * @return void
+         */
+        handleCheckbox(e, item) {
+            let index = lodash.indexOf(this.group.tags, item.id);
+            let nameIndex = lodash.indexOf(this.checkedTags, item.name);
 
-                if (index === -1) {
-                    if (this.group.tags.length > 4) return e.target.checked = false;
-                    this.checkedTags = [item.name, ...this.checkedTags];
-                    this.group.tags = [item.id, ...this.group.tags];
-                } else {
-                    this.group.tags.splice(index, 1);
-                    this.checkedTags.splice(nameIndex, 1);
-                }
-            },
-            /**
-             * 高德定位回调.
-             * @param  val
-             * @return void
-             */
-            getLocationCall(val) {
-                const {lat, lng, address} = val;
-                this.group.latitude = lat;
-                this.group.longitude = lng;
-                this.group.location = address;
-            },
-            /**
-             * Handle sumbit.
-             * @return void
-             */
-            handleSubmit() {
-                let params = new FormData();
-                Array.from(Object.keys(this.group)).filter((key) => !lodash.isNull(this.group[key])).forEach(k => {
-                    params.append(k, this.group[k]);
-                });
-                admin.post(
-                    `groups/${this.id}`, params,
-                    {validateStatus: status => status === 201})
-                    .then(({data}) => {
-                        this.$store.dispatch('alert-open', {type: 'success', message: data});
-                        setTimeout(() => {
-                            this.$router.replace({path: '/groups'});
-                        }, 3000);
-                    }).catch(({response: {data = {message: '创建失败'}} = {}}) => {
-                    this.$store.dispatch('alert-open', {type: 'danger', message: data});
-                });
-            },
-            uploadAvatar(e) {
-                let files = e.target.files;
-                if (!files.length) {
-                    return this.$store.dispatch('alert-open', {type: 'danger', message: {'message': '请选择图片'}});
-                }
-                if (files[0].size / 1024000 > 2) {
-                    return this.$store.dispatch('alert-open', {type: 'danger', message: {'message': '请选择图片'}});
-                }
-                let vm = this;
-                this.$ImgCropper.show({
-                    url: getFileUrl(files[0]),
-                    round: false,
-                    onCancel() {
-                        vm.$refs.uploadFile.value = null;
-                    },
-                    onOk(data) {
-                        vm.avatarUrl = data;
-                        vm.group.avatar = vm.dataURItoBlob(data);
-                        vm.$refs.uploadFile.value = null;
-                    },
-                });
-            },
-            dataURItoBlob(dataURI) {
-                let byteString = atob(dataURI.split(',')[1]);
-                let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-                let ab = new window.ArrayBuffer(byteString.length);
-                let ia = new window.Uint8Array(ab);
-                for (let i = 0; i < byteString.length; i++) {
-                    ia[i] = byteString.charCodeAt(i);
-                }
-                return new window.Blob([ab], {type: mimeString});
-            },
-            lodashIndexOf(id, ids) {
-                return lodash.indexOf(ids, id);
+            if (index === -1) {
+                if (this.group.tags.length > 4)
+                    return (e.target.checked = false);
+                this.checkedTags = [item.name, ...this.checkedTags];
+                this.group.tags = [item.id, ...this.group.tags];
+            } else {
+                this.group.tags.splice(index, 1);
+                this.checkedTags.splice(nameIndex, 1);
             }
         },
-        created() {
-            this.id = this.$route.params.id;
-            this.getCategories();
-            this.getTags();
-            this.getGroup();
+        /**
+         * 高德定位回调.
+         * @param  val
+         * @return void
+         */
+        getLocationCall(val) {
+            const { lat, lng, address } = val;
+            this.group.latitude = lat;
+            this.group.longitude = lng;
+            this.group.location = address;
+        },
+        /**
+         * Handle sumbit.
+         * @return void
+         */
+        handleSubmit() {
+            let params = new FormData();
+            Array.from(Object.keys(this.group))
+                .filter(key => !lodash.isNull(this.group[key]))
+                .forEach(k => {
+                    params.append(k, this.group[k]);
+                });
+            admin
+                .post(`groups/${this.id}`, params, {
+                    validateStatus: status => status === 201
+                })
+                .then(({ data }) => {
+                    this.$store.dispatch("alert-open", {
+                        type: "success",
+                        message: data
+                    });
+                    setTimeout(() => {
+                        this.$router.replace({ path: "/groups" });
+                    }, 3000);
+                })
+                .catch(
+                    ({ response: { data = { message: "创建失败" } } = {} }) => {
+                        this.$store.dispatch("alert-open", {
+                            type: "danger",
+                            message: data
+                        });
+                    }
+                );
+        },
+        uploadAvatar(e) {
+            let files = e.target.files;
+            if (!files.length) {
+                return this.$store.dispatch("alert-open", {
+                    type: "danger",
+                    message: { message: "请选择图片" }
+                });
+            }
+            if (files[0].size / 1024000 > 2) {
+                return this.$store.dispatch("alert-open", {
+                    type: "danger",
+                    message: { message: "请选择图片" }
+                });
+            }
+            let vm = this;
+            this.$ImgCropper.show({
+                url: getFileUrl(files[0]),
+                round: false,
+                onCancel() {
+                    vm.$refs.uploadFile.value = null;
+                },
+                onOk(data) {
+                    vm.avatarUrl = data;
+                    vm.group.avatar = vm.dataURItoBlob(data);
+                    vm.$refs.uploadFile.value = null;
+                }
+            });
+        },
+        dataURItoBlob(dataURI) {
+            let byteString = atob(dataURI.split(",")[1]);
+            let mimeString = dataURI
+                .split(",")[0]
+                .split(":")[1]
+                .split(";")[0];
+            let ab = new window.ArrayBuffer(byteString.length);
+            let ia = new window.Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            return new window.Blob([ab], { type: mimeString });
+        },
+        lodashIndexOf(id, ids) {
+            return lodash.indexOf(ids, id);
         }
-    });
+    },
+    created() {
+        this.id = this.$route.params.id;
+        this.getCategories();
+        this.getTags();
+        this.getGroup();
+    }
+};
 </script>
