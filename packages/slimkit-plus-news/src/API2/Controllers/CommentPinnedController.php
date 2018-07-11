@@ -52,6 +52,13 @@ class CommentPinnedController extends Controller
             ->when(boolval($after), function ($query) use ($after) {
                 return $query->where('id', '<', $after);
             })
+            ->orderByRaw('
+                CASE
+                    WHEN (`state` = 0) THEN 1
+                    WHEN (`state` <> 0 ) THEN 2
+                    END ASC'
+            )
+            ->orderBy('created_at', 'desc')
             ->orderBy('id', 'desc')
             ->limit($limit)
             ->get();
