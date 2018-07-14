@@ -133,4 +133,15 @@ class Application extends LaravelApplication
             }
         }
     }
+
+    /**
+     * The app configure path.
+     * @param  string $path
+     * @return string
+     */
+    public function appConfigurePath(?string $path): string
+    {
+
+        return $this->basePath().'/storage/configure/'.($path ?: '');
+    }
 }
