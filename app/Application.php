@@ -70,23 +70,22 @@ class Application extends LaravelApplication
      * Register the core class aliases in the container.
      *
      * @return void
-     * @author Seven Du <shiweidu@outlook.com>
      */
     public function registerCoreContainerAliases()
     {
+        // Register parent core container aliases.
         parent::registerCoreContainerAliases();
 
-        $aliases = [
+        // Register the app core container aliased.
+        foreach ([
             'app' => [static::class],
             'cdn' => [
                 \Zhiyi\Plus\Contracts\Cdn\UrlFactory::class,
                 \Zhiyi\Plus\Cdn\UrlManager::class,
             ],
-        ];
-
-        foreach ($aliases as $key => $aliases) {
+        ] as $abstract => $aliases) {
             foreach ($aliases as $alias) {
-                $this->alias($key, $alias);
+                $this->alias($abstract, $alias);
             }
         }
     }
