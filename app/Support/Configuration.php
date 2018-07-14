@@ -128,7 +128,7 @@ class Configuration
      * @return array
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function parse(array $target, string $pre = '', array $org = []): array
+    public function parse(array $target, string $pre = '', array $org = []): array
     {
         if (! is_array($target)) {
             return [];
@@ -138,7 +138,7 @@ class Configuration
             $key = $pre ? $pre.'.'.$key : $key;
             $value = value($value);
 
-            if (is_array($value) || (is_object($value) && $value = (array) $value)) {
+            if (is_array($value) && array_keys($value) !== range(0, count($value) - 1)) {
                 $org = $this->parse($value, $key, $org);
                 continue;
             }
