@@ -32,13 +32,6 @@ class Application extends LaravelApplication
     const VERSION = '1.9.0';
 
     /**
-     * The core vendor YAML file.
-     *
-     * @var string.
-     */
-    protected $vendorYamlFile;
-
-    /**
      * Create a new Illuminate application instance.
      *
      * @param string|null $basePath
@@ -53,6 +46,9 @@ class Application extends LaravelApplication
             $app->make(\Zhiyi\Plus\Bootstrap\LoadConfiguration::class)
                 ->handle();
         });
+
+        // Use environment path.
+        $this->useEnvironmentPath($this->appConfigurePath());
     }
 
     /**
@@ -95,9 +91,9 @@ class Application extends LaravelApplication
      * @param  string $path
      * @return string
      */
-    public function appConfigurePath(?string $path): string
+    public function appConfigurePath(string $path = ''): string
     {
-        return $this->basePath().'/storage/configure/'.($path ?: '');
+        return $this->basePath().'/storage/configure'.($path ? DIRECTORY_SEPARATOR.$path : '');
     }
 
     /**
