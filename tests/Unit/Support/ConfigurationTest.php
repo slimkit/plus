@@ -25,27 +25,27 @@ use Zhiyi\Plus\Support\Configuration;
 
 class ConfigurationTest extends TestCase
 {
-	/**
-	 * Test parse method.
-	 *
-	 * @return void
-	 */
-	public function testParse()
-	{
-		$instance = new Configuration($this->app);
-		$origin = [
-			'app1' => [1, 2, 4],
-			'app2' => [
-				'a' => 'a',
-				'b' => 'b',
-			],
-		];
-		$value = [
-			'app1' => [1, 2, 4],
-			'app2.a' => 'a',
-			'app2.b' => 'b',
-		];
+    /**
+     * Test parse method.
+     *
+     * @return void
+     */
+    public function testParse()
+    {
+        $instance = new Configuration($this->app);
+        $origin = [
+            'app1' => [1, 2, 4],
+            'app2' => [
+                'a' => 'a',
+                'b' => 'b',
+            ],
+        ];
+        $value = [
+            'app1' => [1, 2, 4],
+            'app2.a' => 'a',
+            'app2.b' => 'b',
+        ];
 
-		$this->assertEquals($value, $instance->parse($origin));
-	}
+        $this->assertEquals($value, $instance->parse($origin));
+    }
 }
