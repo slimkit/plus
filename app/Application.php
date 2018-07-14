@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Zhiyi\Plus;
 
 use Illuminate\Foundation\Application as LaravelApplication;
-use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 class Application extends LaravelApplication
 {
