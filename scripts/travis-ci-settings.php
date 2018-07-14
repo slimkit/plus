@@ -17,7 +17,7 @@ switch ($db) {
             'DB_PASSWORD' => 'postgres',
         ];
         break;
-    
+
     case 'mysql':
     default:
         $connection = [
@@ -40,7 +40,7 @@ $basePath = dirname(__DIR__);
 
 $env = file_get_contents($basePath.'/storage/configure/.env.example');
 foreach ($connection as $key => $value) {
-	$env .= PHP_EOL.$key.'='.$value.PHP_EOL;
+    $env .= PHP_EOL.$key.'='.$value.PHP_EOL;
 }
 
 file_put_contents($basePath.'/storage/configure/.env', $env);
