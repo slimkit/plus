@@ -68,48 +68,6 @@ class Application extends LaravelApplication
     }
 
     /**
-     * Set load vendor environment yaml file to be loaded during bootstrapping.
-     *
-     * @param string $file
-     * @return $this
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function loadVendorYamlFrom(string $file): ApplicationContract
-    {
-        $this->vendorYamlFile = $file;
-
-        return $this;
-    }
-
-    /**
-     * Get the environment yaml file the application using.
-     *
-     * @return string
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function vendorYamlFile(): string
-    {
-        return $this->vendorYamlFile ?: '.plus.yml';
-    }
-
-    /**
-     * Get the fully qualified path to the environment yaml file.
-     *
-     * @return string
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function vendorYamlFilePath(): string
-    {
-        return $this->storagePath()
-            .DIRECTORY_SEPARATOR
-            .'app'
-            .DIRECTORY_SEPARATOR
-            .'config'
-            .DIRECTORY_SEPARATOR
-            .$this->vendorYamlFile();
-    }
-
-    /**
      * Register the core class aliases in the container.
      *
      * @return void
@@ -142,5 +100,14 @@ class Application extends LaravelApplication
     public function appConfigurePath(?string $path): string
     {
         return $this->basePath().'/storage/configure/'.($path ?: '');
+    }
+
+    /**
+     * Get the app YAML configure filename.
+     * @return string
+     */
+    public function appYamlConfigureFile(): string
+    {
+        return $this->appConfigurePath('plus.yml');
     }
 }

@@ -53,7 +53,7 @@ class Configuration
     public function getConfiguration(): RepositoryContract
     {
         $items = [];
-        if ($this->files->exists($file = $this->app->vendorYamlFilePath())) {
+        if ($this->files->exists($file = $this->app->appYamlConfigureFile())) {
             $items = $this->app->make(Parser::class)->parse(
                 $this->files->get($file)
             ) ?: $items;
@@ -107,14 +107,14 @@ class Configuration
         //
         // This is useful in custom configuration file storage,
         // and you can avoid the direct save of the error.
-        $target = dirname($this->app->vendorYamlFilePath());
+        $target = dirname($this->app->appYamlConfigureFile());
         if (! $this->files->isDirectory($target)) {
             $this->files->makeDirectory($target, 0755, true);
         }
 
         // Save the configuration into the YAML file.
         $this->files->put(
-            $this->app->vendorYamlFilePath(),
+            $this->app->appYamlConfigureFile(),
             $this->app->make(Dumper::class)->dump($config->all(), 10)
         );
     }
