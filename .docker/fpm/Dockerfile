@@ -55,9 +55,9 @@ RUN { \
 
 # Install Composer
 # see https://getcomposer.org/download/
-RUN curl -s http://getcomposer.org/installer | php \
-	&& echo "export PATH=${PATH}:/var/www/vendor/bin" >> ~/.bashrc && \
-	&& mv composer.phar /usr/local/bin/composer
+RUN curl -s http://getcomposer.org/installer | php; \
+	echo "export PATH=${PATH}:/var/www/vendor/bin" >> ~/.bashrc; \
+	mv composer.phar /usr/local/bin/composer
 
 ## Load Plus(ThinkSNS+)
 COPY ../.. /usr/src/plus
