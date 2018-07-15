@@ -27,7 +27,7 @@ RUN set -ex; \
 	pecl install channel://pecl.php.net/mcrypt-1.0.1; \
 	pecl install memcached; \
 	docker-php-ext-enable mcrypt; \
-	docker-php-ext-enable memcached \
+	docker-php-ext-enable memcached; \
 # reset apt-mark's "manual" list so that "purge --auto-remove" will remove all build dependencies
 	apt-mark auto '.*' > /dev/null; \
 	apt-mark manual $savedAptMark; \
