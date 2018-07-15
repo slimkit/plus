@@ -61,7 +61,6 @@ RUN curl -s http://getcomposer.org/installer | php; \
 
 ## Load Plus(ThinkSNS+)
 COPY . /usr/src/plus
-RUN ls -al /usr/src/plus
 RUN set -ex; \
 	rm -rf /var/www; \
 	mkdir /var/www; \
