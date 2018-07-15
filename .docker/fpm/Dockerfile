@@ -72,7 +72,8 @@ RUN set -ex; \
 		--no-dev \
 		--optimize-autoloader \
 		--classmap-authoritative \
-	;
+		--ignore-platform-reqs \
+		--working-dir=/usr/src/plus
 
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
