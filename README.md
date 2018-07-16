@@ -8,6 +8,12 @@
 
 [Plus (ThinkSNS+)](http://www.thinksns.com) 是使用 [Laravel](https://laravel.com/) 框架开发；一个功能强大、易于开发和动态拓展的社交系统。
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8320deaa80b8489f95fcedaae6df079d)](https://www.codacy.com/app/slimkit/plus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=slimkit/plus&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/8320deaa80b8489f95fcedaae6df079d)](https://www.codacy.com/app/slimkit/plus?utm_source=github.com&utm_medium=referral&utm_content=slimkit/plus&utm_campaign=Badge_Coverage)
+[![StyleCI](https://github.styleci.io/repos/76627423/shield?branch=master)](https://github.styleci.io/repos/76627423)
+[![Build Status](https://travis-ci.org/slimkit/plus.svg?branch=master)](https://travis-ci.org/slimkit/plus)
+[![CircleCI](https://circleci.com/gh/slimkit/plus/tree/master.svg?style=svg)](https://circleci.com/gh/slimkit/plus/tree/master)
+
 </div>
 
 ## 简介
@@ -20,19 +26,6 @@ Plus (ThinkSNS+) 是一个使用 Laravel 开发，并且功能繁多且健壮的
 - 一个更加强大的大屏 Web 界面应用 (但它是收费的) 👉 [Plus PC](https://github.com/zhiyicx/plus-component-pc)
 
 > 如果你关注 ThinkSNS 所属公司更多开源产品，请看[ThinkSNS 官网](http://www.thinksns.com)
-
-## Badges
-
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8320deaa80b8489f95fcedaae6df079d)](https://www.codacy.com/app/zhiyi/thinksns-plus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=slimkit/thinksns-plus&amp;utm_campaign=Badge_Grade)
-[![codecov](https://codecov.io/gh/slimkit/thinksns-plus/branch/master/graph/badge.svg)](https://codecov.io/gh/slimkit/thinksns-plus)
-[![Style CI](https://styleci.io/repos/76627423/shield?branch=master)](https://styleci.io/repos/76627423)
-[![Composer publish version](https://img.shields.io/packagist/v/slimkit/plus.svg?style=flat-square)](https://packagist.org/packages/slimkit/plus)
-[![Composer publish preview version](https://img.shields.io/packagist/vpre/slimkit/plus.svg?style=flat-square)](https://packagist.org/packages/slimkit/plus)
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fslimkit%2Fthinksns-plus.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fslimkit%2Fthinksns-plus?ref=badge_shield)
-
-Travis CI: [![Travis CI Build Status](https://img.shields.io/travis/slimkit/plus.svg?style=flat-square)](https://travis-ci.org/slimkit/plus)
-
-Circle CI: [![https://img.shields.io/circleci/project/github/slimkit/plus.svg?style=flat-square](https://img.shields.io/travis/slimkit/plus.svg?style=flat-square)](https://circleci.com/gh/slimkit/plus)
 
 ## 特点
 
