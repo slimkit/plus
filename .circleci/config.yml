@@ -18,7 +18,7 @@ jobs:
   back_end:
     working_directory: ~/plus
     docker:
-      - image: circleci/php:7.1-node-browsers
+      - image: circleci/php:7.1-cli-stretch-node-browsers
       - image: circleci/circleci:5.7
     steps:
       - checkout
