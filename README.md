@@ -13,6 +13,7 @@
 [![StyleCI](https://github.styleci.io/repos/76627423/shield?branch=master)](https://github.styleci.io/repos/76627423)
 [![Build Status](https://travis-ci.org/slimkit/plus.svg?branch=master)](https://travis-ci.org/slimkit/plus)
 [![CircleCI](https://circleci.com/gh/slimkit/plus/tree/master.svg?style=svg)](https://circleci.com/gh/slimkit/plus/tree/master)
+[![QQ Group](https://img.shields.io/badge/QQ%20Group-651240785-red.svg?longCache=true&style=flat-square)](//shang.qq.com/wpa/qunwpa?idkey=01b61bdf8a7efc2a40ab4caab2d14793f340e5fe5d09aa0c2c17f3115a579678)
 
 </div>
 
