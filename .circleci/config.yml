@@ -3,7 +3,7 @@ jobs:
   front_end:
     working_directory: ~/plus
     docker:
-      - circleci/node:10
+      - image: circleci/node:10
     steps:
       - checkout
       - run:
@@ -18,8 +18,8 @@ jobs:
   back_end:
     working_directory: ~/plus
     docker:
-      - circleci/php:7.1-node-browsers
-      - circleci/circleci:5.7
+      - image: circleci/php:7.1-node-browsers
+      - image: circleci/circleci:5.7
     steps:
       - checkout
       - restore_cache:
