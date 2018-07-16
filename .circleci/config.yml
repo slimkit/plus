@@ -1,7 +1,6 @@
 version: 2
-
 jobs:
-  front-end:
+  front_end:
     working_directory: ~/plus
     docker:
       - circleci/node:10
@@ -16,8 +15,7 @@ jobs:
       - run:
           name: "Run Production"
           command: "npm run production"
-
-  back-end:
+  back_end:
     working_directory: ~/plus
     docker:
       - circleci/php:7.1-node-browsers
@@ -58,10 +56,9 @@ jobs:
       - run:
           name: "Publish Codecov"
           command: "bash <(curl -s https://codecov.io/bash)"
-
 workflows:
   version: 2
   all:
     jobs:
-      - front-end
-      - back-end
+      - front_end
+      - back_end
