@@ -20,6 +20,7 @@
         "vue-template-compiler": "^2.5.16"
     },
     "dependencies": {
+        "@slimkit/plus-editor": "^0.0.3",
         "axios": "^0.18",
         "bootstrap-sass": "^3.3.7",
         "chart.js": "^2.7.2",
