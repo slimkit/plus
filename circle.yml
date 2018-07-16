@@ -5,9 +5,13 @@ general:
 
 machine:
     node:
-        version: 6
+        version:
+            - 6
+            - 7
+            - 9
+            - 10
     environment:
-        TRAVIS_REPO_SLUG: zhiyicx/thinksns-plus
+        TRAVIS_REPO_SLUG: slimkit/plus
         # YARN_VERSION: 0.21.3
         # PATH: "${PATH}:${HOME}/.yarn/bin"
 
@@ -24,7 +28,6 @@ dependencies:
     override:
         - npm install
         - npm rebuild node-sass --force
-        - mv .env.example .env
     # cache_directories:
     #     - ~/.yarn
 
