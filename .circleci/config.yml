@@ -19,7 +19,16 @@ jobs:
     working_directory: ~/plus
     docker:
       - image: circleci/php:7.1-node-browsers
+        environment:
+          APP_ENV: testing
+          APP_DEBUG: true
+          DB_HOST: mysql
+          DB_USERNAME: root
+          DB_PASSWORD: null
+          DB_DATABASE: "plus"
       - image: circleci/mysql:5.7
+        environment:
+          MYSQL_DATABASE: plus
     steps:
       - checkout
       - restore_cache:
@@ -32,12 +41,6 @@ jobs:
           key: dependencies-{{ checksum "composer.json" }}
           paths:
             - vendor
-      - run:
-          name: "Create Database"
-          command: "mysql -e \"CREATE DATABASE IF NOT EXISTS plus;\""
-      - run:
-          name: "Create CI `.env`"
-          command: "php ./scripts/travis-ci-settings.php mysql"
       - run:
           name: "Generate Keys"
           command: "php artisan app:key-generate"
