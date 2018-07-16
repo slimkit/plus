@@ -22,6 +22,7 @@ jobs:
         environment:
           APP_ENV: testing
           APP_DEBUG: true
+          DB_CONNECTION: mysql
           DB_HOST: mysql
           DB_USERNAME: root
           DB_PASSWORD: null
