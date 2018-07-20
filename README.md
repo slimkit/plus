@@ -127,18 +127,18 @@ php artisan serve
 
 ### 赞助商
 
-感谢所有赞助商！(如果你也支持这个项目，[√成为赞助商](https://opencollective.com/thinksns-plus#sponsor))
+感谢所有赞助商！(如果你也支持这个项目，[√成为赞助商](https://opencollective.com/plus#sponsor))
 
-<a href="https://opencollective.com/thinksns-plus/sponsor/0/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/thinksns-plus/sponsor/1/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/thinksns-plus/sponsor/2/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/thinksns-plus/sponsor/3/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/3/avatar.svg"></a>
-<a href="https://opencollective.com/thinksns-plus/sponsor/4/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/4/avatar.svg"></a>
-<a href="https://opencollective.com/thinksns-plus/sponsor/5/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/5/avatar.svg"></a>
-<a href="https://opencollective.com/thinksns-plus/sponsor/6/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/6/avatar.svg"></a>
-<a href="https://opencollective.com/thinksns-plus/sponsor/7/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/7/avatar.svg"></a>
-<a href="https://opencollective.com/thinksns-plus/sponsor/8/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/8/avatar.svg"></a>
-<a href="https://opencollective.com/thinksns-plus/sponsor/9/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/9/avatar.svg"></a>
+<a href="https://opencollective.com/plus/sponsor/0/website" target="_blank"><img src="https://opencollective.com/plus/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/plus/sponsor/1/website" target="_blank"><img src="https://opencollective.com/plus/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/plus/sponsor/2/website" target="_blank"><img src="https://opencollective.com/plus/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/plus/sponsor/3/website" target="_blank"><img src="https://opencollective.com/plus/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/plus/sponsor/4/website" target="_blank"><img src="https://opencollective.com/plus/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/plus/sponsor/5/website" target="_blank"><img src="https://opencollective.com/plus/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/plus/sponsor/6/website" target="_blank"><img src="https://opencollective.com/plus/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/plus/sponsor/7/website" target="_blank"><img src="https://opencollective.com/plus/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/plus/sponsor/8/website" target="_blank"><img src="https://opencollective.com/plus/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/plus/sponsor/9/website" target="_blank"><img src="https://opencollective.com/plus/sponsor/9/avatar.svg"></a>
 
 ## 优秀项目推荐
 
@@ -151,4 +151,4 @@ ThinkSNS Plus 代码遵循 Apache 2.0 许可证发布，请参阅完整的 [许�
 
 Copyright © 2018 Chengdu [ZhiYiChuangXiang](http://zhiyicx.com) Technology Co., Ltd. All rights reserved.
 
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fslimkit%2Fthinksns-plus.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fslimkit%2Fthinksns-plus?ref=badge_large)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fslimkit%2Fplus.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fslimkit%2Fplus?ref=badge_large)
