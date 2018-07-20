@@ -27,7 +27,7 @@ jobs:
           DB_PORT: 3306
           DB_USERNAME: root
           DB_PASSWORD: null
-          DB_DATABASE: "plus"
+          DB_DATABASE: plus
       - image: circleci/mysql:5.7
         environment:
           MYSQL_DATABASE: plus
@@ -46,6 +46,9 @@ jobs:
       - run:
           name: "Create `.env`"
           command: "cp ./storage/configure/.env.example storage/configure/.env"
+      - run:
+          name: "test ENV"
+          command: env
       - run:
           name: "Generate Keys"
           command: "php artisan app:key-generate"
