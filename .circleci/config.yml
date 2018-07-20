@@ -36,13 +36,13 @@ jobs:
             - vendor
       - run:
           name: "Generate Keys"
-          command: "php artisan app:key-generate"
+          command: "php artisan app:key-generate --env=circleci"
       - run:
           name: "Run Database Migrate"
-          command: "php artisan migrate -vvv"
+          command: "php artisan migrate --env=circleci -vvv"
       - run:
           name: "Run Database Seeder"
-          command: "php artisan db:seed -vvv"
+          command: "php artisan db:seed --env=circleci -vvv"
       - run:
           name: "Run Tests"
           command: "php vendor/bin/phpunit --coverage-clover=coverage.xml"
