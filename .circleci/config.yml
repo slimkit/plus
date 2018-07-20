@@ -19,15 +19,6 @@ jobs:
     working_directory: ~/plus
     docker:
       - image: circleci/php:7.1-node-browsers
-        environment:
-          APP_ENV: testing
-          APP_DEBUG: true
-          DB_CONNECTION: mysql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_USERNAME: root
-          DB_PASSWORD: null
-          DB_DATABASE: plus
       - image: circleci/mysql:5.7
         environment:
           MYSQL_DATABASE: plus
@@ -47,8 +38,8 @@ jobs:
           name: "Create `.env`"
           command: "cp ./storage/configure/.env.example storage/configure/.env"
       - run:
-          name: "test ENV"
-          command: env
+          name: "Setting Circle CI Database"
+          command: "php ./scripts/circle-ci-settings.php"
       - run:
           name: "Generate Keys"
           command: "php artisan app:key-generate"
