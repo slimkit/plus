@@ -36,7 +36,7 @@ use Illuminate\Http\JsonResponse;
       *
       * @param \Zhiyi\Plus\Requests\Feed\TopicIndex $request
       * @param \Zhiyi\Plus\Models\FeedTopic $model
-      * @return //
+      * @return \Illuminate\Http\JsonResponse
       */
      public function index(IndexRequest $request, FeedTopicModel $model): JsonResponse
      {
