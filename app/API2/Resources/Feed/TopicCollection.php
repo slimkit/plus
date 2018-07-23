@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\API2\Resources\Feed;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Resources\Json\ResourceCollection;
-use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
 use Zhiyi\Plus\Utils\DateTimeToIso8601ZuluString;
+use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class TopicCollection extends ResourceCollection
 {
@@ -31,7 +31,7 @@ class TopicCollection extends ResourceCollection
 
     /**
      * The collection to array.
-     * 
+     *
      * @param \Illuminate\Http\Request $request
      * @return array
      */
@@ -48,7 +48,7 @@ class TopicCollection extends ResourceCollection
 
     /**
      * The collection tem to array.
-     * 
+     *
      * @param \Zhiyi\Plus\Models\FeedTopic $item
      * @return array
      */

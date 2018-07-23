@@ -623,9 +623,9 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
         // Feed Topics Group
         // @Route /api/v2/feed/topics
         $api->group(['prefix' => 'topics'], function (RouteContract $api) {
-            /**
+            /*
              * Topic Index
-             * 
+             *
              * @Get /api/v2/feed/topics
              * @Param::query {q} Search topic name keyword.
              * @Param::query {limit} Featch data limit.

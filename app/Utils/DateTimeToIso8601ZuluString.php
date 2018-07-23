@@ -26,7 +26,7 @@ trait DateTimeToIso8601ZuluString
 {
     /**
      * DateTime to ISO 8601 Zulu time.
-     * 
+     *
      * @param {\DateTime|string|null} $dateTime
      * @return string
      */
@@ -34,7 +34,7 @@ trait DateTimeToIso8601ZuluString
     {
         if (is_null($dateTime) || empty($dateTime)) {
             return null;
-        } elseif (!($dateTime instanceof Carbon)) {
+        } elseif (! ($dateTime instanceof Carbon)) {
             $dateTime = new Carbon($dateTime);
         }
 

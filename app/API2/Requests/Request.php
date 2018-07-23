@@ -26,7 +26,7 @@ class Request extends FormRequest
 {
     /**
      * Get request authorize.
-     * 
+     *
      * @return bool
      */
     public function authorize(): bool
@@ -36,7 +36,7 @@ class Request extends FormRequest
 
     /**
      * Get custom message from validateor rules.
-     * 
+     *
      * @return array
      */
     public function rules(): array

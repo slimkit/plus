@@ -18,35 +18,34 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
- namespace Zhiyi\Plus\API2\Controllers\Feed;
+namespace Zhiyi\Plus\API2\Controllers\Feed;
 
- use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Http\JsonResponse;
  use Illuminate\Database\Eloquent\Model;
- use Illuminate\Http\JsonResponse;
- use Symfony\Component\HttpFoundation\Response;
  use Zhiyi\Plus\API2\Controllers\Controller;
- use Zhiyi\Plus\API2\Requests\Feed\TopicIndex as IndexRequest;
- use Zhiyi\Plus\API2\Resources\Feed\TopicCollection;
+ use Symfony\Component\HttpFoundation\Response;
  use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
+ use Zhiyi\Plus\API2\Resources\Feed\TopicCollection;
+ use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+ use Zhiyi\Plus\API2\Requests\Feed\TopicIndex as IndexRequest;
 
  class Topic extends Controller
  {
+     /**
+      * List topics.
+      *
+      * @param \Zhiyi\Plus\Requests\Feed\TopicIndex $request
+      * @param \Zhiyi\Plus\Models\FeedTopic $model
+      * @return //
+      */
+     public function index(IndexRequest $request, FeedTopicModel $model): JsonResponse
+     {
+         // Get query data `id` order direction.
+         // Value: `asc` or `desc`
+         $direction = $request->query('direction', 'desc');
 
-    /**
-     * List topics.
-     * 
-     * @param \Zhiyi\Plus\Requests\Feed\TopicIndex $request
-     * @param \Zhiyi\Plus\Models\FeedTopic $model
-     * @return //
-     */
-    public function index(IndexRequest $request, FeedTopicModel $model): JsonResponse
-    {
-        // Get query data `id` order direction.
-        // Value: `asc` or `desc`
-        $direction = $request->query('direction', 'desc');
-
-        // Query database data.
-        $result = $model
+         // Query database data.
+         $result = $model
             ->query()
 
             // If `$request->query('q')` param exists,
@@ -76,12 +75,12 @@ declare(strict_types=1);
             // Run the SQL query, return a collection.
             // instanceof \Illuminate\Support\Collection
             ->get();
-        
-        // Create the action response.
-        $response = (new TopicCollection($result))
+
+         // Create the action response.
+         $response = (new TopicCollection($result))
             ->response()
             ->setStatusCode(Response::HTTP_OK /* 200 */);
-        
-        return $response;
-    }
+
+         return $response;
+     }
  }

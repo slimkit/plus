@@ -26,7 +26,7 @@ class TopicIndex extends Request
 {
     /**
      * Get the validator rules.
-     * 
+     *
      * @return array
      */
     public function rules(): array
@@ -41,7 +41,7 @@ class TopicIndex extends Request
 
     /**
      * Get the validator error messages.
-     * 
+     *
      * @return array
      */
     public function messages(): array
