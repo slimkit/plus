@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -30,5 +32,5 @@ class FeedTopicLink extends Pivot
     /**
      * Indicates if the IDs are auto-incrementing.
      */
-    protected $incrementing = false;
+    public $incrementing = false;
 }
