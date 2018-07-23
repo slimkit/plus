@@ -55,5 +55,14 @@ class LoadConfiguration
         $this->app->config->set(
             $this->configuration->getConfigurationBase()
         );
+        $config = $this->app->config;
+
+        $this->app->detectEnvironment(function () use ($config) {
+            return $config->get('app.env', 'production');
+        });
+
+        date_default_timezone_set($config->get('app.timezone', 'UTC'));
+
+        $loaded = true;
     }
 }
