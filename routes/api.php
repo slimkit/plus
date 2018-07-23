@@ -616,4 +616,33 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
      * 重置未读信息
      */
     $api->patch('/user/counts', \Zhiyi\Plus\API2\Controllers\UserCountsController::class.'@reset');
+
+    // Feed group
+    // @Route /api/v2/feed
+    $api->group(['prefix' => 'feed'], function (RouteContract $api) {
+        // Feed Topics Group
+        // @Route /api/v2/feed/topics
+        $api->group(['prefix' => 'topics'], function (RouteContract $api) {
+            /**
+             * Topic Index
+             * 
+             * @Get /api/v2/feed/topics
+             * @Param::query {q} Search topic name keyword.
+             * @Param::query {limit} Featch data limit.
+             * @Param::query {index} Featch data start index.
+             * @Param::query {direction} Can be one of `asc` or `desc`.
+             * @Response::headers('Status', 200, 'OK')
+             * @Response::json
+             *  <pre>
+             *  [{
+             *   "id": 1,        // Topic ID
+             *   "name": "Plus", // Topic name
+             *   "logo": 2,      // Topic logo, file with ID
+             *   "created_at": "2018-07-23T15:04:23Z" // Topic created datetime
+             *  }]
+             *  </pre>
+             */
+            $api->get('', \Zhiyi\Plus\API2\Controllers\Feed\Topic::class.'@index');
+        });
+    });
 });
