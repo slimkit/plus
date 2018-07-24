@@ -24,20 +24,46 @@ use Zhiyi\Plus\Models\FeedTopic;
 
 class Models
 {
+    /**
+     * Key by classname const.
+     * @var string
+     */
     public const KEY_BY_CLASSNAME = 'classname';
+
+    /**
+     * Key by class alise const,
+     * @var string
+     */
     public const KEY_BY_CLASS_ALIAS = 'class alias';
 
+    /**
+     * Types.
+     * @var array
+     */
     public static $types = [
         FeedTopic::class => 'types/models/feed-topics',
     ];
 
-    public function get(?string $keyBy = self::KEY_BY_CLASSNAME, ?string $key = null): ?string
+    /**
+     * Get classname alise or get alias classname.
+     *
+     * @param string $keyBy
+     * @param string $key
+     * @return string|null
+     */
+    public function get(string $key = null, ?string $keyBy = self::KEY_BY_CLASSNAME): ?string
     {
         $types = $this->all($keyBy);
 
         return $types[$key] ?? null;
     }
 
+    /**
+     * Get all types.
+     *
+     * @param string $keyBy
+     * @return array
+     */
     public function all(?string $keyBy = self::KEY_BY_CLASSNAME): array
     {
         if ($keyBy === static::KEY_BY_CLASS_ALIAS) {

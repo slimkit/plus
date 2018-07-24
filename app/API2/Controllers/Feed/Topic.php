@@ -154,7 +154,7 @@ class Topic extends Controller
             // topic `id` to `raw` column.
             // Reset FileWith owner for the authenticated auth.
             if ($with instanceof FileWithModel) {
-                $with->channel = $types->get(ModelsTypes::KEY_BY_CLASSNAME, FeedTopicModel::class);
+                $with->channel = $types->get(FeedTopicModel::class, ModelsTypes::KEY_BY_CLASSNAME);
                 $with->raw = $topic->id;
                 $with->user_id = $user->id;
                 $with->save();
