@@ -28,6 +28,7 @@ use Zhiyi\Plus\Models\Like as LikeModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
+use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedVideo;
@@ -37,6 +38,7 @@ use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed as FeedRepository;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2\StoreFeedPost as StoreFeedPostRequest;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class FeedController extends Controller
 {
@@ -321,39 +323,95 @@ class FeedController extends Controller
             return response()->json($repository->format($user))->setStatusCode(200);
         });
     }
+    
+    /**
+     * Make feed link topics.
+     *
+     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2\StoreFeedPost $request
+     * @return array
+     */
+    private function makeFeedLinkTopics(StoreFeedPostRequest $request): array
+    {
+        $topics = array_map(function($item): ?int {
+            if (is_numeric($item) || $item == (int) $item) {
+                return (int) $item;
+            }
+
+            throw new UnprocessableEntityHttpException('发布的话题存在非法数据');
+        }, (array) $request->input('topics'));
+
+        $topicsCount = count($topics);
+        if ($topicsCount === 0) {
+            return [];
+        } else if ($topicsCount > 5) {
+            throw new UnprocessableEntityHttpException('话题最多允许五个');
+        }
+        
+        $topics = array_values(array_filter($topics));
+        $topicsModelIDs = (new FeedTopicModel)
+            ->query()
+            ->whereIn('id', $topics)
+            ->select('id')
+            ->get()
+            ->pluck('id');
+        
+        if ($topicsModelIDs->diff($topics)->isNotEmpty()) {
+            throw new UnprocessableEntityHttpException('不合法的话题数据，部分话题不存在');
+        }
+
+        return $topicsModelIDs->all();
+    }
 
     /**
-     * 储存分享.
+     * Link feed to topics and increment topic followers_count column.
+     *
+     * @param array $topics
+     * @param Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed $feed
+     * @return void
+     */
+    private function linkFeedToTopics(array $topics, FeedModel $feed): void
+    {
+        if (empty($topics)) {
+            return;
+        }
+
+        $feed->topics()->sync($topics);
+        $query = (new FeedTopicModel)->query();
+        $query->whereIn('id', $topics)->increment('followers_count', 1);
+    }
+
+    /**
+     * Create an feed.
      *
      * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2\StoreFeedPost $request
      * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
      */
     public function store(StoreFeedPostRequest $request)
     {
         $user = $request->user();
         $feed = $this->fillFeedBaseData($request, new FeedModel());
+        $topics = $this->makeFeedLinkTopics($request);
 
         $paidNodes = $this->makePaidNode($request);
         $fileWiths = $this->makeFileWith($request);
         $videoWith = $this->makeVideoWith($request);
         $videoCoverWith = $this->makeVideoCoverWith($request);
 
-        try {
-            $feed->saveOrFail();
-            $feed->getConnection()->transaction(function () use ($request, $feed, $paidNodes, $fileWiths, $user, $videoWith, $videoCoverWith) {
-                $this->saveFeedPaidNode($request, $feed);
-                $this->saveFeedFilePaidNode($paidNodes, $feed);
-                $this->saveFeedFileWith($fileWiths, $feed);
-                $videoWith && $this->saveFeedVideoWith($videoWith, $videoCoverWith, $feed);
-                $user->extra()->firstOrCreate([])->increment('feeds_count', 1);
-            });
-        } catch (\Exception $e) {
-            $feed->delete();
-            throw $e;
-        }
+        return $user->getConnection()->transaction(function () use ($request, $feed, $topics, $paidNodes, $fileWiths, $videoWith, $videoCoverWith, $user) {
+            $feed->save();
+            $this->saveFeedPaidNode($request, $feed);
+            $this->saveFeedFilePaidNode($paidNodes, $feed);
+            $this->saveFeedFileWith($fileWiths, $feed);
+            $this->linkFeedToTopics($topics, $feed);
 
-        return response()->json(['message' => '发布成功', 'id' => $feed->id])->setStatusCode(201);
+            if ($videoWith) {
+                $this->saveFeedVideoWith($videoWith, $videoCoverWith, $feed);
+            }
+
+            $user->extra()->firstOrCreate([])->increment('feeds_count', 1);
+
+            return response()->json(['message' => '发布成功', 'id' => $feed->id])->setStatusCode(201);
+        });
     }
 
     /**

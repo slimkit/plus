@@ -80,6 +80,8 @@ class StoreFeedPost extends FormRequest
                     $query->where('raw', null);
                 }),
             ],
+            'topics' => ['nullable', 'array'],
+            'topics.*' => ['required_with:topics', 'integer', 'min:1'],
         ];
     }
 
@@ -114,6 +116,10 @@ class StoreFeedPost extends FormRequest
             'video.video_id.exists' => '视频已被使用',
             'video.cover_id.required_without' => '视频封面不存在',
             'video.cover_id.exists' => '视频封面已被使用',
+            'topics.array' => '话题内容错误',
+            'topics.*.required_with' => '话题数据不合法',
+            'topics.*.integer' => '话题数据必须是合法内容',
+            'topics.*.min' => '话题不存在',
         ];
     }
 
