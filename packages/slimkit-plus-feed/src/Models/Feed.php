@@ -29,6 +29,7 @@ use Zhiyi\Plus\Models\BlackList;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Zhiyi\Plus\Models\FeedTopicLink as FeedTopicLinkModel;
 
@@ -225,7 +226,7 @@ class Feed extends Model
         $table = (new FeedTopicLinkModel)->getTable();
 
         return $this
-            ->belongsToMany(FeedTopic::class, $table, 'feed_id', 'topic_id')
+            ->belongsToMany(FeedTopicModel::class, $table, 'feed_id', 'topic_id')
             ->using(FeedTopicLinkModel::class);
     }
 }
