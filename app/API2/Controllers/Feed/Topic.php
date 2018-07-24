@@ -40,8 +40,14 @@ class Topic extends Controller
      */
     public function __construct()
     {
+        // Add Auth(api) middleware.
         $this
             ->middleware('auth:api')
+            ->only(['create']);
+        
+        // Add DisposeSensitive middleware.
+        $this
+            ->middleware('sensitive:name,desc')
             ->only(['create']);
     }
 
