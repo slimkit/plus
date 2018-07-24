@@ -38,7 +38,7 @@ class TopicFollow extends Controller
 
     /**
      * Follow a topic.
-     * 
+     *
      * @param \Illuminate\Http\Request $request
      * @param \Zhiyi\Plus\Models\FeedTopic $model
      * @param int $topicID
@@ -56,7 +56,7 @@ class TopicFollow extends Controller
             ->first();
 
         // If the topic Non-existent, throw a not found exception.
-        if (!$topic) {
+        if (! $topic) {
             throw new NotFoundHttpException('关注的话题不存在');
         }
 

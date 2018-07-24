@@ -663,7 +663,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
     /*
      * Follow a topic.
-     * 
+     *
      * @Put /api/v2/user/feed-topics/:topicID
      * @Response::header('Status', 204, 'No Content')
      */
