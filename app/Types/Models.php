@@ -31,7 +31,7 @@ class Models
     public const KEY_BY_CLASSNAME = 'classname';
 
     /**
-     * Key by class alise const,
+     * Key by class alise const,.
      * @var string
      */
     public const KEY_BY_CLASS_ALIAS = 'class alias';
