@@ -100,7 +100,7 @@ class Topic extends Controller
 
     /**
      * Create an topic.
-     * 
+     *
      * @param \Zhiyi\Plus\API2\Requests\Feed\CreateTopic $request
      * @param \Zhiyi\Plus\Types\Models $types
      * @return \Illuminate\Http\JsonResponse
@@ -109,7 +109,7 @@ class Topic extends Controller
     {
         // Create feed topic module
         $topic = new FeedTopicModel;
-        foreach($request->only(['name', 'logo', 'desc']) as $key => $value) {
+        foreach ($request->only(['name', 'logo', 'desc']) as $key => $value) {
             $topic->{$key} = $value;
         }
 

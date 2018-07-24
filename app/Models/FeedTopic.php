@@ -32,12 +32,13 @@ class FeedTopic extends Model
 
     /**
      * Topic belongs to many relation.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function followers(): BelongsToMany
     {
         $table = (new FeedTopicFollower)->getTable();
+
         return $this
             ->belongsToMany(User::class, $table, 'topic_id', 'user_id')
             ->withPivot('index', Model::CREATED_AT)

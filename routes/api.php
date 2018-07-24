@@ -645,7 +645,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             /*
              * Create an topic
-             * 
+             *
              * @Post /api/v2/feed/topics
              * @Param::input('name', 'string', 'The name of the topic.')
              * @Param::input('desc', 'string', 'The desc of the topic.')

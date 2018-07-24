@@ -27,7 +27,7 @@ class Models
     public const KEY_BY_CLASSNAME = 'classname';
     public const KEY_BY_CLASS_ALIAS = 'class alias';
 
-    static $types = [
+    public static $types = [
         FeedTopic::class => 'types/models/feed-topics',
     ];
 
