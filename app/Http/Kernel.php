@@ -33,7 +33,7 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \Medz\Cors\Laravel\Middleware\Cors::class,
-        \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
+        \Zhiyi\Plus\Http\Middleware\CheckForMaintenanceMode::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \Zhiyi\Plus\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
