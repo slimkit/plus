@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -48,7 +48,7 @@ class ReportController extends Controller
 
         $user->reports()->save($reportModel);
 
-        return response()->json(['message' => '操作成功'], 201);
+        return response()->json(['message' => ['操作成功']], 201);
     }
 
     /**
@@ -72,6 +72,6 @@ class ReportController extends Controller
 
         $comment->reports()->save($reportModel);
 
-        return response()->json(['message' => '操作成功'], 201);
+        return response()->json(['message' => ['操作成功']], 201);
     }
 }

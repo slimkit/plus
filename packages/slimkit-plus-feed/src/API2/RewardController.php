@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -25,6 +25,7 @@ use Zhiyi\Plus\Models\GoldType;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\WalletCharge;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
 class RewardController extends Controller
@@ -57,26 +58,33 @@ class RewardController extends Controller
         $amount = $request->input('amount');
         if (! $amount || $amount < 0) {
             return response()->json([
-                'amount' => ['请输入正确的打赏金额'],
+                'amount' => '请输入正确的打赏金额',
             ], 422);
         }
         $user = $request->user();
         $user->load('wallet');
         $feed->load('user');
         $current_user = $feed->user;
-
         if (! $user->wallet || $user->wallet->balance < $amount) {
             return response()->json([
-                'message' => ['余额不足'],
+                'message' => '余额不足',
             ], 403);
         }
 
-        $user->getConnection()->transaction(function () use ($user, $feed, $charge, $current_user, $amount) {
+        // 系统消息未读数预处理, 事务中只做保存操作
+        $userCount = UserCountModel::firstOrNew([
+            'user_id' => $current_user->id,
+            'type' => 'user-system',
+        ]);
+
+        $userCount->total += 1;
+
+        $user->getConnection()->transaction(function () use ($user, $feed, $charge, $current_user, $amount, $userCount) {
             // 扣除操作用户余额
             $user->wallet()->decrement('balance', $amount);
 
             $feed_title = str_limit($feed->feed_content, 100, '...');
-
+            $feed_title = $feed_title ? "“${feed_title}”" : '';
             // 扣费记录
             $userCharge = clone $charge;
             $userCharge->channel = 'user';
@@ -84,9 +92,11 @@ class RewardController extends Controller
             $userCharge->subject = '打赏动态';
             $userCharge->action = 0;
             $userCharge->amount = $amount;
-            $userCharge->body = sprintf('打赏动态《%s》', $feed_title);
+            $userCharge->body = sprintf('打赏“%s”的动态%s', $current_user->name, $feed_title);
             $userCharge->status = 1;
             $user->walletCharges()->save($userCharge);
+            // 增加系统通知未读数
+            $userCount->save();
 
             if ($current_user->wallet) {
                 // 增加对应用户余额
@@ -98,12 +108,12 @@ class RewardController extends Controller
                 $charge->subject = '动态被打赏';
                 $charge->action = 1;
                 $charge->amount = $amount;
-                $charge->body = sprintf('动态《%s》被打赏', $feed_title);
+                $charge->body = sprintf('“%s”打赏了你的动态%s', $user->name, $feed_title);
                 $charge->status = 1;
                 $charge->save();
 
                 // 添加被打赏通知
-                $notice = sprintf('你的动态《%s》被%s打赏%s%s', $feed_title, $user->name, $amount * $this->wallet_ratio / 10000, $this->goldName);
+                $notice = sprintf('“%s”打赏了你的动态%s%s元', $user->name, $feed_title, $amount * $this->wallet_ratio / 10000, $this->goldName);
                 $current_user->sendNotifyMessage('feed:reward', $notice, [
                     'feed' => $feed,
                     'user' => $user,
@@ -115,7 +125,7 @@ class RewardController extends Controller
         });
 
         return response()->json([
-            'message' => ['打赏成功'],
+            'message' => '打赏成功',
         ], 201);
     }
 

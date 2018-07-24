@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -249,6 +249,44 @@ class GroupController extends EaseMobController
      * @return $this
      * @author ZsyD<1251992018@qq.com>
      */
+    public function newGetGroup(Request $request, UrlManager $urlManager)
+    {
+        $callback = function () use ($request, $urlManager) {
+            $im_group_id = $request->query('im_group_id'); // 多个以“,”隔开
+            $url = $this->url.'chatgroups/'.$im_group_id;
+            $data['headers'] = [
+                'Authorization' => $this->getToken(),
+            ];
+            $data['http_errors'] = false;
+            $Client = new Client();
+            $result = $Client->request('get', $url, $data);
+            $groupCon = json_decode($result->getBody()->getContents());
+
+            if ($result->getStatusCode() != 200) {
+                return response()->json([
+                    'message' => [
+                        $groupCon->error_description,
+                    ],
+                ])->setStatusCode(500);
+            }
+            // 获取群组头像
+            $group_face = ImGroup::with('face')->whereIn('im_group_id', collect($groupCon->data)->pluck('id'))
+                ->select('group_face', 'im_group_id')->get()->keyBy('im_group_id');
+
+            foreach ($groupCon->data as $group) {
+                // $affiliations = collect($group->affiliations);
+                // $owner = $affiliations->pluck('owner')->filter();
+                // $members = $affiliations->pluck('member')->filter();
+                // $group->affiliations = $this->getUser($members, $owner);
+                $group->group_face = (isset($group_face[$group->id]) && $group_face[$group->id]->face) ? $urlManager->make($group_face[$group->id]->face->file) : '';
+            }
+
+            return response()->json($groupCon->data)->setStatusCode(200);
+        };
+
+        return $this->getConfig($callback);
+    }
+
     public function getGroup(Request $request, UrlManager $urlManager)
     {
         $callback = function () use ($request, $urlManager) {
@@ -278,7 +316,7 @@ class GroupController extends EaseMobController
                 $owner = $affiliations->pluck('owner')->filter();
                 $members = $affiliations->pluck('member')->filter();
                 $group->affiliations = $this->getUser($members, $owner);
-                $group->group_face = $group_face[$group->id]->face ? $urlManager->make($group_face[$group->id]->face->file) : '';
+                $group->group_face = (isset($group_face[$group->id]) && $group_face[$group->id]->face) ? $urlManager->make($group_face[$group->id]->face->file) : '';
             }
 
             return response()->json($groupCon->data)->setStatusCode(200);

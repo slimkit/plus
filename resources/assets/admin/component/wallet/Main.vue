@@ -19,6 +19,15 @@
             <router-link to="/wallet" tag="li" active-class="active" exact>
               <a href="#">统计</a>
             </router-link>
+            <!-- 原生支付设置 -->
+            <router-link to="/wallet/newPaySetting" tag="li" active-class="active">
+              <a href="#">原生支付</a>
+            </router-link>
+
+            <!-- 原生支付设置 -->
+            <router-link to="/wallet/newPaySetting" tag="li" active-class="active">
+              <a href="#">原生支付</a>
+            </router-link>
 
             <!-- 流水 -->
             <router-link to="/wallet/waters" tag="li" active-class="active">

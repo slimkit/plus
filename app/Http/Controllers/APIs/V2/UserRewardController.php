@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -23,23 +23,19 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\GoldType;
+use Zhiyi\Plus\Models\UserCount;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\WalletCharge;
+use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
 class UserRewardController extends Controller
 {
     // 系统货币名称
     protected $goldName;
 
-    // 系统内货币与真实货币兑换比例
-    protected $wallet_ratio;
-
     public function __construct(GoldType $goldModel, CommonConfig $configModel)
     {
-        $walletConfig = $configModel->where('name', 'wallet:ratio')->first();
-
-        $this->goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '金币';
-        $this->wallet_ratio = $walletConfig->value ?? 100;
+        $this->goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '积分';
     }
 
     /**
@@ -51,64 +47,46 @@ class UserRewardController extends Controller
      * @param  WalletCharge $chargeModel
      * @return json
      */
-    public function store(Request $request, User $target, WalletCharge $chargeModel)
+    public function store(Request $request, User $target, UserProcess $processer)
     {
         $amount = $request->input('amount');
         if (! $amount || $amount < 0) {
             return response()->json([
-                'amount' => '请输入正确的打赏金额',
+                'amount' => '请输入正确的打赏数量',
             ], 422);
         }
         $user = $request->user();
-        $user->load('wallet');
 
-        if (! $user->wallet || $user->wallet->balance < $amount) {
+        if (! $user->currency || $user->currency->sum < $amount) {
             return response()->json([
-                'message' => '余额不足',
+                'message' => '积分不足',
             ], 403);
         }
 
-        if (! $target->wallet) {
+        if (! $target->currency) {
             return response()->json([
-                'message' => '对方钱包信息有误',
+                'message' => '对方积分信息有误',
             ], 500);
         }
 
-        $user->getConnection()->transaction(function () use ($user, $target, $chargeModel, $amount) {
-            // 扣除操作用户余额
-            $user->wallet()->decrement('balance', $amount);
-
-            // 扣费记录
-            $userCharge = clone $chargeModel;
-            $userCharge->channel = 'user';
-            $userCharge->account = $target->id;
-            $userCharge->subject = '用户打赏';
-            $userCharge->action = 0;
-            $userCharge->amount = $amount;
-            $userCharge->body = sprintf('打赏用户%s', $target->name);
-            $userCharge->status = 1;
-            $user->walletCharges()->save($userCharge);
-
-            // 被打赏用户增加金额
-            $target->wallet()->increment('balance', $amount);
-
-            // 增加金额记录
-            $chargeModel->user_id = $target->id;
-            $chargeModel->channel = 'user';
-            $chargeModel->account = $user->id;
-            $chargeModel->subject = sprintf('被%s打赏', $user->name);
-            $chargeModel->action = 1;
-            $chargeModel->amount = $amount;
-            $chargeModel->body = sprintf('被%s打赏', $user->name);
-            $chargeModel->status = 1;
-            $chargeModel->save();
+        $userUnreadCount = $target->unreadNotifications()
+            ->count();
+        $userCount = UserCount::firstOrNew([
+            'type' => 'user-system',
+            'user_id' => $target->id,
+        ]);
+        $userCount->total = $userUnreadCount + 1;
+        $user->getConnection()->transaction(function () use ($user, $target, $amount, $userCount, $processer) {
+            $processer->prepayment($user->id, $amount, $target->id, sprintf('打赏用户“%s”', $target->name), sprintf('打赏用户“%s”，积分扣除%s', $target->name, $amount));
+            $processer->receivables($target->id, $amount, $user->id, sprintf('“%s”打赏了你', $user->name), sprintf('用户“%s”打赏了你”，积分增加%s', $user->name, $amount));
 
             if ($user->id !== $target->id) {
                 // 添加被打赏通知
-                $targetNotice = sprintf('你被%s打赏%s%s', $user->name, $amount * $this->wallet_ratio / 10000, $this->goldName);
+                $targetNotice = sprintf('“%s”打赏了你%s%s', $user->name, $amount, $this->goldName);
                 $target->sendNotifyMessage('user:reward', $targetNotice, [
                     'user' => $user,
                 ]);
+                $userCount->save();
             }
 
             // 打赏记录

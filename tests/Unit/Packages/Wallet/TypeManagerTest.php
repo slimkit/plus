@@ -4,7 +4,7 @@
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -18,6 +18,7 @@
 
 namespace Zhiyi\Plus\Tests\Unit\Packages\Wallet;
 
+use RuntimeException;
 use Zhiyi\Plus\Tests\TestCase;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Packages\Wallet\TypeManager;
@@ -41,14 +42,14 @@ class TypeManagerTest extends TestCase
 
     /**
      * Test get default driver return.
-     *
+     * @expectedException RuntimeException
+     * @expectedExceptionMessage The manager not support default driver.
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function testGetDefaultDriver()
     {
-        $defaultDriverString = $this->typeManager->getDefaultDriver();
-        $this->assertSame(Order::TARGET_TYPE_USER, $defaultDriverString);
+        $this->typeManager->getDefaultDriver();
     }
 
     /**

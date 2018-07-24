@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -38,21 +38,22 @@ class FeedPayController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function commentPaid(Request $request,
-                                ResponseContract $response,
-                                PaidNodeModel $paidNode,
-                                FeedModel $feed)
-    {
+    public function commentPaid(
+        Request $request,
+        ResponseContract $response,
+        PaidNodeModel $paidNode,
+        FeedModel $feed
+    ) {
         $feed->load('commentPaidNode');
         $amount = intval($request->input('amount', 0));
         $user = $request->user();
 
         if ($user->id !== $feed->user_id) {
-            return $response->json(['message' => ['你没有权限设置']])->setStatusCode(403);
+            return $response->json(['message' => '你没有权限设置'])->setStatusCode(403);
         } elseif ($feed->commentPaidNode !== null) {
-            return $response->json(['message' => ['已设置了评论，不可重复设置']])->setStatusCode(422);
+            return $response->json(['message' => '已设置了置顶，不可重复设置'])->setStatusCode(422);
         } elseif (! $amount) {
-            return $response->json(['amount' => ['评论收费金额不允许为空']])->setStatusCode(422);
+            return $response->json(['amount' => '评论收费金额不允许为空'])->setStatusCode(422);
         }
 
         $paidNode->channel = 'feed:comment';
@@ -64,11 +65,11 @@ class FeedPayController extends Controller
         $feed->commentPaidNode()->save($paidNode);
 
         if (! $paidNode->id) {
-            return $response->json(['message' => ['设置失败']])->setStatusCode(500);
+            return $response->json(['message' => '设置失败'])->setStatusCode(500);
         }
 
         return $response->json([
-            'message' => ['设置成功'],
+            'message' => '设置成功',
             'paid_node' => $paidNode->id,
         ])->setStatusCode(201);
     }

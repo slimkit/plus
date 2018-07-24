@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -95,10 +95,14 @@ class FilesController extends Controller
      */
     public function store(StoreUploadFileRequest $request, ResponseContract $response, Carbon $dateTime, FileModel $fileModel, FileWithModel $fileWith)
     {
-        $fileModel = $this->validateFileInDatabase($fileModel, $file = $request->file('file'), function (UploadedFile $file, string $md5) use ($fileModel, $dateTime): FileModel {
+        $clientHeight = $request->input('height', 0);
+        $clientWidth = $request->input('width', 0);
+        $fileModel = $this->validateFileInDatabase($fileModel, $file = $request->file('file'), function (UploadedFile $file, string $md5) use ($fileModel, $dateTime, $clientWidth, $clientHeight, $response): FileModel {
             // 图片做旋转处理
-            Image::make($file->getRealPath())->orientate()->save($file->getRealPath(), 100);
-
+            if (! in_array($file->getClientMimeType(), ['video/mp4', 'image/gif'])) {
+                ini_set('memory_limit', '-1');
+                Image::make($file->getRealPath())->orientate()->save($file->getRealPath(), 100);
+            }
             list($width, $height) = ($imageInfo = @getimagesize($file->getRealPath())) === false ? [null, null] : $imageInfo;
             $path = $dateTime->format('Y/m/d/Hi');
             if (($filename = $file->store($path, config('cdn.generators.filesystem.disk'))) === false) {
@@ -108,8 +112,8 @@ class FilesController extends Controller
             $fileModel->hash = $md5;
             $fileModel->origin_filename = $file->getClientOriginalName();
             $fileModel->mime = $file->getClientMimeType();
-            $fileModel->width = $width;
-            $fileModel->height = $height;
+            $fileModel->width = $width ?? $clientWidth;
+            $fileModel->height = $height ?? $clientHeight;
             $fileModel->saveOrFail();
 
             return $fileModel;
@@ -117,7 +121,7 @@ class FilesController extends Controller
         $fileWith = $this->resolveFileWith($fileWith, $request->user(), $fileModel);
 
         return $response->json([
-            'message' => '上传成功',
+            'message' => ['上传成功'],
             'id' => $fileWith->id,
         ])->setStatusCode(201);
     }
@@ -143,7 +147,7 @@ class FilesController extends Controller
         $fileWith = $this->resolveFileWith($fileWith, $request->user(), $file);
 
         return $response->json([
-            'message' => 'success',
+            'message' => ['success'],
             'id' => $fileWith->id,
         ])->setStatusCode(200);
     }

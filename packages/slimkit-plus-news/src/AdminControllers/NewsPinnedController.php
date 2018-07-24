@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -23,6 +23,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\AdminControllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned;
@@ -92,7 +93,7 @@ class NewsPinnedController extends Controller
         }
 
         if ($pinned->expires_at !== null) {
-            return response()->json(['message' => '该记录已被处理'], 403);
+            return response()->json(['message' => ['该记录已被处理']], 403);
         }
 
         return $this->{$action}($pinned, $datetime);
@@ -102,8 +103,17 @@ class NewsPinnedController extends Controller
     {
         $pinned->state = 1;
         $pinned->expires_at = $datetime->addDay($pinned->day);
-
         $pinned->save();
+
+        // 审核通过后增加未读数
+        $userCount = UserCountModel::firstOrNew([
+            'user_id' => $pinned->user_id,
+            'type' => 'user-system',
+        ]);
+
+        $userCount->total += 1;
+        $userCount->save();
+
         $pinned->user->sendNotifyMessage('news:pinned:accept', sprintf('你申请的资讯《%s》已被置顶', $pinned->news->title), [
             'news' => $pinned->news,
             'pinned' => $pinned,
@@ -116,9 +126,15 @@ class NewsPinnedController extends Controller
     {
         $pinned->state = 2;
         $pinned->expires_at = $datetime;
+        $userCount = UserCountModel::firstOrNew([
+            'user_id' => $pinned->user_id,
+            'type' => 'user-system',
+        ]);
 
-        $pinned->getConnection()->transaction(function () use ($pinned, $userProcess) {
+        $userCount->total += 1;
+        $pinned->getConnection()->transaction(function () use ($pinned, $userProcess, $userCount) {
             $pinned->save();
+            $userCount->save();
             $newTitile = $pinned->news->title;
             $body = sprintf('资讯《%s》的置顶申请已被驳回，退还%s积分', $newTitile, $pinned->amount);
             $userProcess->receivables(
@@ -169,7 +185,7 @@ class NewsPinnedController extends Controller
             'pinned' => $pinned,
         ]);
 
-        return response()->json(['message' => '操作成功'], 201);
+        return response()->json(['message' => ['操作成功']], 201);
     }
 
     /**
@@ -184,12 +200,12 @@ class NewsPinnedController extends Controller
     public function cancel(News $news, Carbon $datetime)
     {
         if (! $pinned = $news->pinned()->whereDate('expires_at', '>=', $datetime)->first()) {
-            return response()->json(['message' => '该资讯没有被置顶'], 402);
+            return response()->json(['message' => ['该资讯没有被置顶']], 402);
         }
 
         $pinned->expires_at = $datetime;
         $pinned->save();
 
-        return response()->json(['message' => '设置成功'], 201);
+        return response()->json(['message' => ['设置成功']], 201);
     }
 }

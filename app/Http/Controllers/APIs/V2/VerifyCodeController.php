@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -71,13 +71,19 @@ class VerifyCodeController extends Controller
                 continue;
             }
 
-            $this->send($account, $channel, [
-                'user_id' => $user,
-            ]);
+            try {
+                $this->send($account, $channel, [
+                    'user_id' => $user,
+                ]);
+            } catch (\Exception $e) {
+                \Log::error($e);
+
+                return response()->json(['message' => '验证码发送失败'], 400);
+            }
             break;
         }
 
-        return response()->json(['message' => '获取成功'], 202);
+        return response()->json(['message' => ['获取成功']], 202);
     }
 
     /**
@@ -96,7 +102,7 @@ class VerifyCodeController extends Controller
         $data['channel'] = $channel;
         $model = factory(VerificationCode::class)->create($data);
         $model->notify(
-            new \Zhiyi\Plus\Notifications\VerificationCode($model)
+             new \Zhiyi\Plus\Notifications\VerificationCode($model)
         );
     }
 

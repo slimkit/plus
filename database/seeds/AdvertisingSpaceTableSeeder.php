@@ -4,7 +4,7 @@
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -35,7 +35,7 @@ class AdvertisingSpaceTableSeeder extends Seeder
             'allow_type' => 'image',
             'format' => [
                 'image' => [
-                    'image' => '图片|string|必填，启动图广告尺寸为 375pt*538pt',
+                    'image' => '图片|string|必填，启动图广告尺寸为 1080px * 1567px',
                     'link' => '链接|string|必填，广告位链接',
                     'duration' => '时长|integer|必填， 广告显示时间',
                 ],
@@ -65,7 +65,7 @@ class AdvertisingSpaceTableSeeder extends Seeder
             'allow_type' => 'image',
             'format' => [
                 'image' => [
-                    'image' => '图片|string|必填',
+                    'image' => '图片|string|必填, 广告图，一张图： 1020px * 180px、两张图：502px x 180px、三张图： 340px x 180px;',
                     'link' => '链接|string|必填，广告位链接',
                 ],
             ],

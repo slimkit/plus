@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -23,6 +23,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 
@@ -44,7 +45,9 @@ class LikeController extends Controller
         $userID = $request->user('api')->id ?? 0;
         $likes = $feed->likes()
             ->whereHas('user')
-            ->with('user')
+            ->with(['user' => function ($query) {
+                return $query->withTrashed();
+            }])
             ->when($after, function ($query) use ($after) {
                 return $query->where('id', '<', $after);
             })
@@ -88,11 +91,21 @@ class LikeController extends Controller
         $feed->like($user);
 
         if ($feed->user_id !== $user->id) {
+            // 添加被赞的未读数
             $feed->user->unreadCount()->firstOrCreate([])->increment('unread_likes_count', 1);
-            app(push::class)->push(sprintf('%s 点赞了你的动态', $user->name), (string) $feed->user->id, ['channel' => 'feed:digg']);
+            // 新未读统计 1.8启用
+            $userLikedCount = UserCountModel::firstOrNew([
+                'type' => 'user-liked',
+                'user_id' => $feed->user->id,
+            ]);
+
+            $userLikedCount->total += 1;
+            $userLikedCount->save();
+
+            app(Push::class)->push(sprintf('%s 点赞了你的动态', $user->name), (string) $feed->user->id, ['channel' => 'feed:digg']);
         }
 
-        return $response->json(['message' => ['操作成功']])->setStatusCode(201);
+        return $response->json(['message' => '操作成功'])->setStatusCode(201);
     }
 
     /**
@@ -109,6 +122,6 @@ class LikeController extends Controller
         $user = $request->user();
         $feed->unlike($user);
 
-        return $response->json(['message' => ['操作成功']])->setStatusCode(204);
+        return $response->json(['message' => '操作成功'])->setStatusCode(204);
     }
 }

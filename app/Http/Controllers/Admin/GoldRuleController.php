@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -83,12 +83,12 @@ class GoldRuleController extends Controller
         $incremental = (int) $request->input('incremental');
 
         if ($incremental === 0) {
-            return response()->json(['message' => '增量不能为0'], 422);
+            return response()->json(['message' => ['增量不能为0']], 422);
         }
 
         GoldRule::create($request->all());
 
-        return response()->json(['message' => '添加金币规则成功'], 201);
+        return response()->json(['message' => ['添加金币规则成功']], 201);
     }
 
     /**

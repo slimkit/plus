@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -21,7 +21,6 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('/feeds')->group(function () {
-
     // 动态
     Route::get('/', 'FeedController@index');
     Route::get('/{feed}', 'FeedController@show')->where(['feed' => '[0-9]+']);
@@ -83,6 +82,9 @@ Route::prefix('/feeds')->group(function () {
 
         // 举报
         Route::post('/{feed}/reports', 'ReportController@feed');
+
+        // 获取平均置顶积分
+        Route::get('/average', 'AverageController@show');
     });
 });
 

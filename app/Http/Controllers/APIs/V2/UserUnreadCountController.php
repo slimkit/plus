@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -22,9 +22,11 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Zhiyi\Plus\Models\Like as LikeModel;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\Plus\Support\PinnedsNotificationEventer;
+use Zhiyi\Plus\Models\Conversation as ConversationModel;
 
 class UserUnreadCountController extends Controller
 {
@@ -40,7 +42,7 @@ class UserUnreadCountController extends Controller
     public function index(Request $request, CommentModel $commentModel, LikeModel $likeModel, PinnedsNotificationEventer $eventer)
     {
         $user = $request->user();
-        $counts = $user->unreadCount;
+        $counts = $user->unreadCount ?? new \stdClass();
 
         // 查询最近几条评论记录
         $comments = $commentModel->select('user_id', DB::raw('max(id) as id, max(created_at) as time'))
@@ -69,16 +71,56 @@ class UserUnreadCountController extends Controller
         $pinneds = $eventer->dispatch()->mapWithKeys(function ($pinnedModels) use ($user) {
             $model = new $pinnedModels['namespace']();
 
-            $pinneds[$pinnedModels['name']] = $model->select(DB::raw('max(created_at) as time, count(*) as count'))->where($pinnedModels['owner_prefix'], $user->id)->where($pinnedModels['wherecolumn'])->first()->toArray();
+            $pinned = $model
+                ->select(DB::raw('max(created_at) as time, count(*) as count'))
+                ->where($pinnedModels['owner_prefix'], $user->id)
+                ->where($pinnedModels['wherecolumn'])
+                ->first();
+            if (! $pinned || (! $pinned->time && ! $pinned->count)) {
+                return [];
+            }
 
-            return $pinneds;
+            return [
+                $pinnedModels['name'] => $pinned,
+            ];
         });
 
-        return response()->json([
+        // $lastSystem = ConversationModel::where('type', 'system')
+        //     ->where('to_user_id', $user->id)
+        //     ->latest()
+        //     ->first();
+        $lastSystem = $user->notifications()
+            ->latest()
+            ->first();
+        if ($lastSystem) {
+            $lastSystem = $lastSystem->toArray();
+        }
+
+        $systemUnreadCount = $user->notifications()
+            ->whereNull('read_at')
+            ->count();
+
+        $counts->system = $systemUnreadCount ?? 0;
+        $result = array_filter([
             'counts' => $counts,
             'comments' => $comments,
             'likes' => $likes,
             'pinneds' => $pinneds,
-        ], 200);
+            'system' => $lastSystem,
+        ], function ($item) {
+            if (is_null($item)) {
+                return false;
+            } elseif ($item instanceof Collection) {
+                return $item->isNotEmpty();
+            }
+
+            return true;
+        });
+
+        if (empty($result)) {
+            $result = new \stdClass();
+        }
+
+        return response()->json($result, 200);
     }
 }

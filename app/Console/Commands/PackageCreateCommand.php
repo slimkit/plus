@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -75,11 +75,13 @@ class PackageCreateCommand extends Command
             $this->formatNamespace($namespace.'\\Providers\\RouteServiceProvider'),
         ]);
 
-        $outputPath = $this
-            ->getLaravel()
-            ->resourcePath(sprintf('repositorie/sources/%s-%s', $vendor, $name));
-        if ($this->option('new')) {
-            $outputPath = base_path(sprintf('packages/%s-%s', $vendor, $name));
+        // Get output path.
+        $outputPath = base_path(sprintf('packages/%s-%s', $vendor, $name));
+        if ($this->option('old')) {
+            $outputPath = $this
+                ->getLaravel()
+                ->resourcePath(sprintf('repositorie/sources/%s-%s', $vendor, $name));
+            $this->warn('`package:archive` and `package:create --old` be removed soon.');
         }
 
         if (is_dir($outputPath) && file_exists($outputPath)) {
@@ -241,7 +243,7 @@ class PackageCreateCommand extends Command
     protected function getOptions()
     {
         return [
-            ['new', null, InputOption::VALUE_NONE, 'Create a new package to /packages path.'],
+            ['old', null, InputOption::VALUE_NONE, 'Create a old package.'],
         ];
     }
 }

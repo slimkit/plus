@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -65,7 +65,8 @@ class RankController extends Controller
         ->where('feeds.created_at', '>', $date)
         ->where('audit_status', 1)
         ->with(['user' => function ($query) {
-            return $query->select('id', 'name', 'sex');
+            return $query->select('id', 'name', 'sex')
+                ->withTrashed();
         }, 'user.extra'])
         ->groupBy('user_id')
         ->orderBy('count', 'desc')

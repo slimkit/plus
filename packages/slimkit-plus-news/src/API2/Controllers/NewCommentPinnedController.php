@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
@@ -43,18 +44,19 @@ class NewCommentPinnedController extends Controller
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function accept(Request $request,
-                            ResponseContract $response,
-                            Carbon $dateTime,
-                            NewsModel $news,
-                            CommentModel $comment,
-                            NewsPinnedModel $pinned)
-    {
+    public function accept(
+        Request $request,
+        ResponseContract $response,
+        Carbon $dateTime,
+        NewsModel $news,
+        CommentModel $comment,
+        NewsPinnedModel $pinned
+    ) {
         $user = $request->user();
         if ($user->id !== $news->user_id) {
-            abort(403, '你没有权限操作');
+            return $response->json(['message' => '你没有权限操作'], 403);
         } elseif ($pinned->expires_at) {
-            abort(422, '已操作，请勿重复发起');
+            return $response->json(['message' => '已操作，请勿重复发起'], 422);
         }
 
         // 设置置顶时间
@@ -75,10 +77,36 @@ class NewCommentPinnedController extends Controller
                 'pinned' => $pinned,
             ]);
 
-            return $response->json(['message' => ['置顶成功']], 201);
+            // 获取发起置顶申请的用户未读系统通知数量
+            $unreadCount = $comment->user
+                ->unreadNotifications()
+                ->count();
+            $userCount = UserCountModel::firstOrNew([
+                'user_id' => $pinned->user_id,
+                'type' => 'user-system',
+            ]);
+            $userCount->total = $unreadCount;
+            $userCount->save();
+
+            // 资讯所有者的资讯评论置顶申请未读数更新
+            $unreadCount = $pinned->newQuery()
+                ->where('channel', 'news:comment')
+                ->where('target_user', $user->id)
+                ->whereNull('expires_at')
+                ->count();
+
+            $userCount = $userCount->newQuery()
+                ->firstOrNew([
+                    'user_id' => $user->id,
+                    'type' => 'user-news-comment-pinned',
+                ]);
+            $userCount->total = $unreadCount;
+            $userCount->save();
+
+            return $response->json(['message' => '置顶成功'], 201);
         }
 
-        return $response->json(['message' => ['操作失败']], 500);
+        return $response->json(['message' => '操作失败'], 500);
     }
 
     /**
@@ -93,18 +121,19 @@ class NewCommentPinnedController extends Controller
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function reject(Request $request,
-                            NewsModel $news,
-                            CommentModel $comment,
-                            NewsPinnedModel $pinned,
-                            ResponseContract $response,
-                            Carbon $dateTime)
-    {
+    public function reject(
+        Request $request,
+        NewsModel $news,
+        CommentModel $comment,
+        NewsPinnedModel $pinned,
+        ResponseContract $response,
+        Carbon $dateTime
+    ) {
         $user = $request->user();
         if ($user->id !== $pinned->target_user || $pinned->channel !== 'news:comment') {
-            return $response->json(['message' => ['无效操作']], 422);
+            return $response->json(['message' => '无效操作'], 422);
         } elseif ($pinned->expires_at) {
-            return $response->json(['message' => ['已被处理']], 422);
+            return $response->json(['message' => '已被处理'], 422);
         }
 
         $pinned->load(['comment']);
@@ -125,9 +154,34 @@ class NewCommentPinnedController extends Controller
                 'pinned' => $pinned,
             ]);
 
+            // 获取发起置顶申请的用户未读系统通知数量
+            $unreadCount = $comment->user
+                ->unreadNotifications()
+                ->count();
+            $userCount = UserCountModel::firstOrNew([
+                'user_id' => $pinned->user_id,
+                'type' => 'user-system',
+            ]);
+            $userCount->total = $unreadCount;
+            $userCount->save();
+
+            // 资讯所有者的资讯评论置顶申请未读数更新
+            $unreadCount = $pinned->newQuery()
+                ->where('channel', 'news:comment')
+                ->where('target_user', $user->id)
+                ->whereNull('expires_at')
+                ->count();
+            $userCount = $userCount->newQuery()
+                ->firstOrNew([
+                    'user_id' => $user->id,
+                    'type' => 'user-news-comment-pinned',
+                ]);
+            $userCount->total = $unreadCount;
+            $userCount->save();
+
             return $response->json(null, 204);
         }
 
-        return $response->json(['message' => ['操作失败']], 500);
+        return $response->json(['message' => '操作失败'], 500);
     }
 }

@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -24,6 +24,21 @@ use Zhiyi\Plus\Models\Currency;
 
 trait UserHasCurrency
 {
+    public static function bootUserHasCurrency()
+    {
+        // 用户创建后事件
+        static::created(function ($user) {
+            $currency = Currency::firstOrCreate(
+                ['owner_id' => $user->id],
+                ['type' => 1, 'sum' => 0]
+            );
+
+            if ($currency === false) {
+                return false;
+            }
+        });
+    }
+
     /**
      * user has currencies.
      *

@@ -23,10 +23,9 @@ cache:
     - $HOME/.composer/cache
 
 before_install:
-  - sh -c "if [ '$DB' = 'postgres' ]; then psql -c 'create database plus;' -U postgres; echo "$DB"; fi"
-  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'CREATE DATABASE IF NOT EXISTS plus;'; echo "$DB"; fi"
-  - sh -c "php ./.travis.php "$DB""
-  - php -r "file_exists('.env') || copy('.env.travis', '.env');"
+  - sh -c "if [ '$DB' = 'postgres' ]; then psql -c 'create database plus;' -U postgres; echo $DB; fi"
+  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'CREATE DATABASE IF NOT EXISTS plus;'; echo $DB; fi"
+  - php ./scripts/travis-ci-settings.php $DB
 
 install:
   - composer install

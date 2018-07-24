@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -22,6 +22,8 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
+use Zhiyi\Plus\Models\UserFollow as UserFollowModel;
 use Zhiyi\Plus\Models\VerificationCode as VerificationCodeModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
@@ -43,6 +45,7 @@ class CurrentUserController extends Controller
         $user->makeVisible(['phone', 'email']);
         $friends_count = $user->mutual()->get()->count();
         $user->friends_count = $friends_count;
+        $user->initial_password = (bool) $user->password;
 
         return $response->json($user, 200);
     }
@@ -79,7 +82,7 @@ class CurrentUserController extends Controller
             ? $user->newQuery()->where('name', $name)->where('id', '!=', $user->id)->first()
             : null;
         if ($target) {
-            return $response->json(['name' => '用户名已被使用'], 422);
+            return $response->json(['name' => ['用户名已被使用']], 422);
         }
 
         foreach ($request->only(['name', 'bio', 'sex', 'location']) as $key => $value) {
@@ -90,7 +93,7 @@ class CurrentUserController extends Controller
 
         return $user->save()
             ? $response->make('', 204)
-            : $response->json(['message' => '更新失败'], 500);
+            : $response->json(['message' => ['更新失败']], 500);
     }
 
     /**
@@ -110,7 +113,7 @@ class CurrentUserController extends Controller
         $code = $request->input('verifiable_code');
 
         if (($email && $phone) || (! $email && ! $phone)) {
-            return $response->json(['message' => '非法操作'], 422);
+            return $response->json(['message' => ['非法操作']], 422);
         }
 
         $this->validate($request, [
@@ -128,7 +131,7 @@ class CurrentUserController extends Controller
             ->first();
 
         if ($target) {
-            return $response->json([$field => '已经被使用'], 422);
+            return $response->json([$field => ['已经被使用']], 422);
         }
 
         $code = $model->where('account', $$field)
@@ -136,7 +139,7 @@ class CurrentUserController extends Controller
             ->first();
 
         if (! $code) {
-            return $response->json(['message' => '验证码错误或者已失效'], 422);
+            return $response->json(['message' => ['验证码错误或者已失效']], 422);
         }
 
         $user->$field = $$field;
@@ -144,7 +147,7 @@ class CurrentUserController extends Controller
 
         return $user->save()
             ? $response->make('', 204)
-            : $response->json(['message' => '操作失败'], 500);
+            : $response->json(['message' => ['操作失败']], 500);
     }
 
     /**
@@ -166,7 +169,7 @@ class CurrentUserController extends Controller
 
         return $request->user()->storeAvatar($image, 'user-bg')
             ? $response->make('', 204)
-            : $response->json(['message' => '上传失败'], 500);
+            : $response->json(['message' => ['上传失败']], 500);
     }
 
     /**
@@ -192,6 +195,7 @@ class CurrentUserController extends Controller
             return $response->json($followers->map(function (UserModel $item) use ($user) {
                 $item->following = true;
                 $item->follower = $item->hasFollower($user);
+                $item->blacked = $user->blacked($item);
 
                 return $item;
             }))->setStatusCode(200);
@@ -221,6 +225,7 @@ class CurrentUserController extends Controller
             return $response->json($followings->map(function (UserModel $item) use ($user) {
                 $item->following = $item->hasFollwing($user);
                 $item->follower = true;
+                $item->blacked = $user->blacked($item);
 
                 return $item;
             }))->setStatusCode(200);
@@ -236,50 +241,80 @@ class CurrentUserController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function attachFollowingUser(Request $request, ResponseFactoryContract $response, UserModel $target)
+    public function attachFollowingUser(Request $request, UserModel $target)
     {
         $user = $request->user();
 
         if ($user->id === $target->id) {
-            return $response->json(['message' => '不可对自己进行操作'], 422);
+            return response()->json(['message' => ['不可对自己进行操作']], 422);
         } elseif ($user->hasFollwing($target)) {
-            return $response->json(['message' => '非法的操作'], 422);
+            return response()->json(['message' => ['非法的操作']], 422);
         }
+        $userFollowingCount = UserCountModel::firstOrNew([
+            'type' => 'user-following',
+            'user_id' => $target->id,
+        ]);
 
-        return $user->getConnection()->transaction(function () use ($user, $target, $response) {
-            $user->followings()->attach($target);
-            $user->extra()->firstOrCreate([])->increment('followings_count', 1);
-            $target->extra()->firstOrCreate([])->increment('followers_count', 1);
+        return $user
+            ->getConnection()
+            ->transaction(function () use ($user, $target, $userFollowingCount) {
+                $user->followings()->attach($target);
+                $user->extra()->firstOrCreate([])->increment('followings_count', 1);
+                $target->extra()->firstOrCreate([])->increment('followers_count', 1);
 
-            $message = sprintf('%s关注了你，去看看吧', $user->name);
-            $target->sendNotifyMessage('user:follow', $message, [
-                'user' => $user,
-            ]);
+                if ($target->hasFollwing($user)) {
+                    $userMutualCount = UserCountModel::firstOrNew([
+                        'type' => 'user-mutual',
+                        'user_id' => $target->id,
+                    ]);
+                    $userMutualCount->total += 1;
+                    $userMutualCount->save();
+                }
+                $userFollowingCount->total += 1;
+                $userFollowingCount->save();
 
-            return $response->make(null, 204);
-        });
+                return response('', 204);
+            });
     }
 
     /**
      * detach a following user.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
      * @param \Zhiyi\Plus\Models\User $target
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function detachFollowingUser(Request $request, ResponseFactoryContract $response, UserModel $target)
+    public function detachFollowingUser(Request $request, UserModel $target)
     {
         $user = $request->user();
 
-        return $user->getConnection()->transaction(function () use ($user, $target, $response) {
-            $user->followings()->detach($target);
-            $user->extra()->decrement('followings_count', 1);
-            $target->extra()->decrement('followers_count', 1);
+        $userFollowingCount = UserCountModel::firstOrNew([
+            'type' => 'user-following',
+            'user_id' => $target->id,
+        ]);
 
-            return $response->make('', 204);
-        });
+        $userFollowing = UserFollowModel::where('user_id', $user->id)
+            ->where('target', $target->id)
+            ->first();
+
+        return $user
+            ->getConnection()
+            ->transaction(function () use ($user, $target, $userFollowingCount, $userFollowing) {
+                $user->followings()->detach($target);
+                $user->extra()->decrement('followings_count', 1);
+                $target->extra()->decrement('followers_count', 1);
+
+                if ($userFollowing &&
+                    $userFollowingCount->total &&
+                    $userFollowing->updated_at->gte($userFollowingCount->read_at)
+                ) {
+                    $userFollowingCount->total -= 1;
+                    $userFollowingCount->save();
+                }
+
+                return response('', 204);
+            });
     }
 
     /**
@@ -310,6 +345,7 @@ class CurrentUserController extends Controller
             return $response->json($followings->map(function (UserModel $item) use ($user) {
                 $item->following = true;
                 $item->follower = true;
+                $item->blacked = $user->blacked($item);
 
                 return $item;
             }))->setStatusCode(200);

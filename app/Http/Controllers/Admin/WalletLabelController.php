@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -72,10 +72,12 @@ class WalletLabelController extends Controller
         $this->validate($request, $rules, $messages);
 
         $label = intval($request->input('label'));
-
+        if (count(json_decode($labels->value, true)) === 6) {
+            return response()->json(['message' => ['最多只能设置6个选项']], 422);
+        }
         if (in_array($label, $_labels = json_decode($labels->value, true))) {
             return response()
-                ->json(['messages' => '选项已经存在，请输入新的选项'])
+                ->json(['messages' => ['选项已经存在，请输入新的选项']])
                 ->setStatusCode(422);
         }
 
@@ -85,12 +87,12 @@ class WalletLabelController extends Controller
 
         if ($labels->save()) {
             return response()
-                ->json(['messages' => '创建成功'])
+                ->json(['messages' => ['创建成功']])
                 ->setStatusCode(201);
         }
 
         return response()
-            ->json(['messages' => '创建失败'])
+            ->json(['messages' => ['创建失败']])
             ->setStatusCode(500);
     }
 
@@ -123,7 +125,7 @@ class WalletLabelController extends Controller
         }
 
         return response()
-            ->json(['message' => '删除失败'])
+            ->json(['message' => ['删除失败']])
             ->setStatusCode(500);
     }
 }

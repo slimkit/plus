@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -25,6 +25,7 @@ use Zhiyi\Plus\Models\Report;
 use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Models\FileWith;
 use Zhiyi\Plus\Models\PaidNode;
+use Zhiyi\Plus\Models\BlackList;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -34,7 +35,8 @@ class Feed extends Model
     use SoftDeletes,
         Concerns\HasFeedCollect,
         Relations\FeedHasReward,
-        Relations\FeedHasLike;
+        Relations\FeedHasLike,
+        Relations\FeedHasVideo;
 
     /**
      * The model table name.
@@ -63,7 +65,7 @@ class Feed extends Model
      *
      * @var array
      */
-    protected $with = ['images', 'paidNode'];
+    protected $with = ['images', 'paidNode', 'video'];
 
     /**
      * Has feed pinned.
@@ -75,6 +77,18 @@ class Feed extends Model
     {
         return $this->hasOne(FeedPinned::class, 'target', 'id')
             ->where('channel', 'feed');
+    }
+
+    /**
+     * blacklists of current user.
+     * @Author   Wayne
+     * @DateTime 2018-04-13
+     * @Email    qiaobin@zhiyicx.com
+     * @return   [type]              [description]
+     */
+    public function blacks()
+    {
+        return $this->hasMany(BlackList::class, 'target_id', 'user_id');
     }
 
     /**
@@ -134,12 +148,22 @@ class Feed extends Model
     }
 
     /**
+     * comments are pinneding.
+     */
+    public function pinnedingComments()
+    {
+        return $this->hasMany(FeedPinned::class, 'raw', 'id')
+            ->where('channel', 'comment')
+            ->whereNull('expires_at');
+    }
+
+    /**
      * find the data from the user id.
      * @param  Builder $query [description]
      * @param  string  $phone [description]
      * @return [type]         [description]
      */
-    public function scopeByUserId(Builder $query, integer $userId): Builder
+    public function scopeByUserId(Builder $query, int $userId): Builder
     {
         return $query->where('user_id', $userId);
     }

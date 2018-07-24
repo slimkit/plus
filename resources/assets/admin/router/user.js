@@ -14,6 +14,7 @@ import Abilities from '../component/user/Abilities';
 import Setting from '../component/user/Setting';
 import Recommends from '../component/user/Recommend';
 import Register from '../component/user/Register';
+import UserTrashed from '../components/pages/user-trashed.page'
 
 const routers = {
   path: 'users',
@@ -27,7 +28,8 @@ const routers = {
     { path: 'abilities', component: Abilities },
     { path: 'setting', component: Setting },
     { path: 'recommends', component: Recommends },
-    { path: 'register', component: Register }
+    { path: 'register', component: Register },
+    { path: 'trashed', component: UserTrashed },
   ]
 };
 

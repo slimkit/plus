@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -48,7 +48,7 @@ class ResetPasswordController extends Controller
         $this->validate($request, $this->resetRules(), $this->resetValidationErrorMessages());
 
         if (! $user->verifyPassword($request->input('old_password'))) {
-            return $response->json(['old_password' => '账户密码错误'], 422);
+            return $response->json(['old_password' => ['账户密码错误']], 422);
         }
         $oldPwdHash = $user->getImPwdHash();
         $user->createPassword($request->input('password'));
@@ -124,14 +124,13 @@ class ResetPasswordController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function retrieve(
-        Request $request,
-        ResponseFactoryContract $response,
-        VerificationCodeModel $verificationCodeModel,
-        UserModel $userModel
-    ) {
+    public function retrieve(Request $request,
+                             ResponseFactoryContract $response,
+                             VerificationCodeModel $verificationCodeModel,
+                             UserModel $userModel)
+    {
         if ($request->input('phone') && $request->input('email')) {
-            return $response->json(['message' => '非法请求'], 400);
+            return $response->json(['message' => ['非法请求']], 400);
         }
 
         $this->validate($request, [
@@ -150,7 +149,7 @@ class ResetPasswordController extends Controller
             ->first();
 
         if (! $verificationCode) {
-            return $response->json(['message' => '验证码错误或者已失效'], 422);
+            return $response->json(['message' => ['验证码错误或者已失效']], 422);
         }
         $oldPwdHash = $user->getImPwdHash();
 

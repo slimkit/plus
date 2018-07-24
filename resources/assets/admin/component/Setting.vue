@@ -22,8 +22,8 @@
               <router-link to="/setting/site" tag="li" active-class="active">
                 <a href="#">站点设置</a>
               </router-link>
-              <router-link to="/setting/back-end-setting" tag="li" active-class="active">
-                <a href="#">后台配置</a> 
+              <router-link to="/setting/security" tag="li" active-class="active">
+                <a href="#">安全</a>
               </router-link>
               <router-link to="/setting/area" tag="li" active-class="active">
                 <a href="#">地区库</a>
@@ -65,7 +65,9 @@
               <router-link to="/setting/server" tag="li" active-class="active">
                 <a href="#">服务器信息</a> 
               </router-link>
-
+              <router-link to="/setting/about" tag="li" active-class="active">
+                <a href="#">关于我们</a>
+              </router-link>
             </ul>
             <!-- End settings nav. -->
           </div>

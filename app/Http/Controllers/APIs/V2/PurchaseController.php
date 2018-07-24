@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -66,11 +66,11 @@ class PurchaseController extends Controller
 
         if ($node->paid($user->id)) {
             return $response->json([
-                'message' => '已经支付费用不能重复支付',
+                'message' => ['已经支付费用不能重复支付'],
             ])->setStatusCode(422);
         } elseif (! $user->wallet || $user->wallet->balance < $node->amount) {
             return $response->json([
-                'message' => '余额不足',
+                'message' => ['余额不足'],
             ])->setStatusCode(403);
         }
 
@@ -122,7 +122,7 @@ class PurchaseController extends Controller
         $cache->forget($cacheKey);
 
         return $response->json([
-            'message' => '付费成功',
+            'message' => ['付费成功'],
         ])->setStatusCode(201);
     }
 
@@ -143,11 +143,11 @@ class PurchaseController extends Controller
 
         if ($node->paid($user->id)) {
             return response()->json([
-                'message' => '已经支付费用不能重复支付',
+                'message' => ['已经支付费用不能重复支付'],
             ])->setStatusCode(422);
         } elseif (! $user->currency || $user->currency->sum < $node->amount) {
             return response()->json([
-                'message' => '余额不足',
+                'message' => ['余额不足'],
             ])->setStatusCode(403);
         }
 
@@ -167,10 +167,10 @@ class PurchaseController extends Controller
             $cache->forget($cacheKey);
 
             return response()->json([
-                'message' => '付费成功',
+                'message' => ['付费成功'],
             ])->setStatusCode(201);
         }
 
-        return response()->json(['message' => '操作失败'], 500);
+        return response()->json(['message' => ['操作失败']], 500);
     }
 }

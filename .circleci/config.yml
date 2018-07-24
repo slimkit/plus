@@ -1,0 +1,60 @@
+version: 2
+jobs:
+  front_end:
+    working_directory: ~/plus
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - run:
+          name: "Install Dependencies"
+          command: "npm install"
+      - run:
+          name: "Rebuild node-sass"
+          command: "npm rebuild node-sass --force"
+      - run:
+          name: "Run Production"
+          command: "npm run production"
+  back_end:
+    working_directory: ~/plus
+    docker:
+      - image: circleci/php:7.1-jessie-node-browsers
+      - image: circleci/mysql:5.7-ram
+        environment:
+          MYSQL_DATABASE: plus
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - dependencies-{{ checksum "composer.json" }}
+      - run:
+          name: "Install Dependencies"
+          command: "composer install"
+      - save_cache:
+          key: dependencies-{{ checksum "composer.json" }}
+          paths:
+            - vendor
+      - run:
+          name: "Generate Keys"
+          command: "php artisan app:key-generate --env=circleci"
+      - run:
+          name: "Run Database Migrate"
+          command: "php artisan migrate --env=circleci -vvv"
+      - run:
+          name: "Run Database Seeder"
+          command: "php artisan db:seed --env=circleci -vvv"
+      - run:
+          name: "Run Tests"
+          command: "php vendor/bin/phpunit --coverage-clover=coverage.xml"
+      - run:
+          name: "Publish Coverage To Codacy"
+          command: "php vendor/bin/codacycoverage clover coverage.xml"
+      - run:
+          name: "Publish Codecov"
+          command: "bash <(curl -s https://codecov.io/bash)"
+workflows:
+  version: 2
+  all:
+    jobs:
+      - front_end
+      # - back_end

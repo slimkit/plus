@@ -39,6 +39,7 @@
     "webpack-laravel-mix-manifest": "^1.0.3"
   },
   "dependencies": {
+    "@slimkit/plus-editor": "^0.0.3",
     "axios": "^0.16.1",
     "bootstrap-sass": "^3.3.7",
     "github-markdown-css": "^2.8.0",

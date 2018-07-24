@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -38,7 +38,7 @@ class RoleController extends Controller
     {
         if (! $request->user()->ability('admin:role:show')) {
             return response()->json([
-                'errors' => '你没有管理角色的权限',
+                'errors' => ['你没有管理角色的权限'],
             ])->setStatusCode(403);
         }
 
@@ -60,10 +60,10 @@ class RoleController extends Controller
     {
         if (! $request->user()->ability('admin: Deleting role')) {
             return response()->json([
-                'errors' => '你没有删除角色权限',
+                'errors' => ['你没有删除角色权限'],
             ])->setStatusCode(403);
         } elseif ($role->non_delete) {
-            return response(['errors' => '不可删除的用户组'], 403);
+            return response(['errors' => ['不可删除的用户组']], 403);
         }
 
         $role->delete();
@@ -84,7 +84,7 @@ class RoleController extends Controller
     {
         if (! $request->user()->ability('admin:role:add')) {
             return response()->json([
-                'errors' => '你没有添加角色的权限',
+                'errors' => ['你没有添加角色的权限'],
             ])->setStatusCode(403);
         }
 
@@ -109,7 +109,7 @@ class RoleController extends Controller
 
         if (! $role->save()) {
             return response()->json([
-                'errors' => '保存失败',
+                'errors' => ['保存失败'],
             ])->setStatusCode(400);
         }
 
@@ -128,7 +128,7 @@ class RoleController extends Controller
     {
         if (! $request->user()->ability('admin:role:show')) {
             return response()->json([
-                'errors' => '你没有权限查看角色信息',
+                'errors' => ['你没有权限查看角色信息'],
             ])->setStatusCode(403);
         }
 
@@ -162,7 +162,7 @@ class RoleController extends Controller
     {
         if (! $request->user()->ability('admin:role:update')) {
             return response()->json([
-                'errors' => '你没有权限编辑角色权限',
+                'errors' => ['你没有权限编辑角色权限'],
             ])->setStatusCode(403);
         }
 
@@ -185,7 +185,7 @@ class RoleController extends Controller
     {
         if (! $request->user()->ability('admin:perm:show')) {
             return response()->json([
-                'errors' => '你没有管理权限节点的权限',
+                'errors' => ['你没有管理权限节点的权限'],
             ])->setStatusCode(403);
         }
 
@@ -205,7 +205,7 @@ class RoleController extends Controller
     {
         if (! $request->user()->ability('admin:perm:add')) {
             return response()->json([
-                'errors' => '你没有权限增加权限节点',
+                'errors' => ['你没有权限增加权限节点'],
             ])->setStatusCode(403);
         }
 
@@ -230,7 +230,7 @@ class RoleController extends Controller
 
         if (! $ability->save()) {
             return response()->json([
-                'errors' => '保存失败',
+                'errors' => ['保存失败'],
             ])->setStatusCode(400);
         }
 
@@ -251,7 +251,7 @@ class RoleController extends Controller
     {
         if (! $request->user()->ability('admin:perm:update')) {
             return response()->json([
-                'errors' => '你没有修改权限节点的权限',
+                'errors' => ['你没有修改权限节点的权限'],
             ])->setStatusCode(403);
         }
 
@@ -260,7 +260,7 @@ class RoleController extends Controller
 
         if (! in_array($key, ['display_name', 'description'])) {
             return response()->json([
-                'errors' => '请求不合法',
+                'errors' => ['请求不合法'],
             ])->setStatusCode(422);
         }
 
@@ -268,12 +268,12 @@ class RoleController extends Controller
 
         if (! $ability->save()) {
             return response()->json([
-                'errors' => '数据更新失败',
+                'errors' => ['数据更新失败'],
             ])->setStatusCode(500);
         }
 
         return response()->json([
-            'messages' => '更新成功',
+            'messages' => ['更新成功'],
         ])->setStatusCode(201);
     }
 
@@ -288,7 +288,7 @@ class RoleController extends Controller
     {
         if (! $request->user()->ability('admin:perm:delete')) {
             return response()->json([
-                'errors' => '你没有权限删除该节点',
+                'errors' => ['你没有权限删除该节点'],
             ])->setStatusCode(403);
         }
 
@@ -297,7 +297,7 @@ class RoleController extends Controller
         }
 
         return response()->json([
-            'errors' => '删除失败',
+            'errors' => ['删除失败'],
         ])->setStatusCode(500);
     }
 }

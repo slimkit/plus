@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -40,6 +40,20 @@ class UserCertificationController extends Controller
     public function show(Request $request, ResponseFactoryContract $response)
     {
         $user = $request->user();
+        if (! $user->certification) {
+            return $response->json($user->certification, 200);
+        }
+        $info = $user->certification->data;
+        $fileInfo = [];
+        foreach ($info['files'] as $key => $file) {
+            $file = FileWithModel::where('id', $file)->with('file')->first();
+            $fileInfo[$key] = new \stdClass();
+            $fileInfo[$key]->file = $file->id;
+            $fileInfo[$key]->size = $file->size;
+            $fileInfo[$key]->mime = $file->file->mime;
+        }
+        $fileInfo = collect(array_values($fileInfo));
+        $user->certification->files = $fileInfo;
 
         return $response->json($user->certification, 200);
     }
@@ -82,7 +96,7 @@ class UserCertificationController extends Controller
             });
             $user->certification()->save($certification);
 
-            return $response->json(['message' => ['提交成功，等待审核']])->setStatusCode(201);
+            return $response->json(['message' => '提交成功，等待审核'])->setStatusCode(201);
         });
     }
 
@@ -105,7 +119,7 @@ class UserCertificationController extends Controller
         $certification = $user->certification;
 
         if ($certification->status === 1) {
-            return $response->json(['message' => ['已审核通过，无法修改']], 422);
+            return $response->json(['message' => '已审核通过，无法修改'], 422);
         }
 
         $updateData = $request->only(['name', 'phone', 'number', 'desc']);
@@ -134,7 +148,7 @@ class UserCertificationController extends Controller
             });
             $certification->save();
 
-            return $response->json(['message' => ['修改成功，等待审核']], 201);
+            return $response->json(['message' => '提交成功，等待审核'], 201);
         });
     }
 

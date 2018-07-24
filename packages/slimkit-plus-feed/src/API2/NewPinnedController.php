@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -24,10 +24,14 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned as FeedPinnedModel;
 
+/**
+ * 积分申请置顶控制器.
+ */
 class NewPinnedController extends Controller
 {
     /**
@@ -45,11 +49,11 @@ class NewPinnedController extends Controller
     {
         $user = $request->user();
         if ($comment->user_id !== $user->id) {
-            return response()->json(['message' => ['你没有权限申请']])->setStatusCode(403);
+            return response()->json(['message' => '你没有权限申请'])->setStatusCode(403);
         } elseif ($feed->pinnedComments()->newPivotStatementForId($comment->id)->where(function ($query) use ($datetime) {
             return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
         })->first()) {
-            return response()->json(['message' => ['已经申请过']])->setStatusCode(422);
+            return response()->json(['message' => '已申请过置顶, 请等待审核'])->setStatusCode(422);
         }
 
         $pinned = new FeedPinnedModel();
@@ -65,30 +69,47 @@ class NewPinnedController extends Controller
                 $process = new UserProcess();
                 // $order = $process->prepayment($user->id, $pinned->amount, $feed->user_id, '申请动态评论置顶', sprintf('申请评论《%s》置顶', $comment->body));
                 $message = '提交成功,等待审核';
-                if ($pinned->amount) {
-                    $order = $process->prepayment($user->id, $pinned->amount, $feed->user_id, '申请动态评论置顶', sprintf('申请评论《%s》置顶', $comment->body));
-                    if ($feed->user_id === $user->id) {
-                        $dateTime = new Carbon();
-                        $pinned->expires_at = $dateTime->addDay($pinned->day);
-                        $message = '置顶成功';
-                    }
+                $order = false;
+                if ($feed->user_id === $user->id) {
+                    $dateTime = new Carbon();
+                    $pinned->expires_at = $dateTime->addDay($pinned->day);
+                    $message = '置顶成功';
+                    $order = ! $pinned->amount
+                        ? true
+                        : $process->prepayment($user->id, $pinned->amount, $feed->user_id, '申请动态评论置顶', sprintf('申请评论“%s”置顶', $comment->body));
+                } else {
+                    $order = $process->prepayment($user->id, $pinned->amount, $feed->user_id, '申请动态评论置顶', sprintf('申请评论“%s”置顶', $comment->body));
                 }
+
                 if ($order) {
                     $pinned->save();
                     if ($feed->user) {
-                        $message = sprintf('%s 在你发布的动态中申请评论置顶', $user->name);
-                        $feed->user->sendNotifyMessage('feed:pinned-comment', $message, [
-                            'feed' => $feed,
-                            'user' => $user,
-                            'comment' => $comment,
-                            'pinned' => $pinned,
+                        // $message = sprintf('%s 在你发布的动态中申请评论置顶', $user->name);
+                        // $feed->user->sendNotifyMessage('feed:pinned-comment', $message, [
+                        //     'feed' => $feed,
+                        //     'user' => $user,
+                        //     'comment' => $comment,
+                        //     'pinned' => $pinned,
+                        // ]);
+                        // 增加动态评论置顶申请未读数
+                        $userUnReadCount = $pinned->newQuery()
+                            ->where('target_user', $feed->user_id)
+                            ->where('channel', 'comment')
+                            ->whereNull('expires_at')
+                            ->count();
+                        $userCount = UserCountModel::firstOrNew([
+                            'user_id' => $feed->user->id,
+                            'type' => 'user-feed-comment-pinned',
                         ]);
+
+                        $userCount->total = $userUnReadCount;
+                        $userCount->save();
                     }
 
                     return response()->json(['message' => $message], 201);
                 }
 
-                return response()->json(['message' => ['操作失败']], 500);
+                return response()->json(['message' => '操作失败'], 500);
             },
         ]);
     }
@@ -107,11 +128,11 @@ class NewPinnedController extends Controller
         $user = $request->user();
 
         if ($feed->user_id !== $user->id) {
-            return response()->json(['message' => ['你没有权限申请']])->setStatusCode(403);
+            return response()->json(['message' => '你没有权限申请'])->setStatusCode(403);
         } elseif ($feed->pinned()->where('user_id', $user->id)->where(function ($query) use ($datetime) {
             return $query->where('expires_at', '>', $datetime)->orwhere('expires_at', null);
         })->first()) {
-            return response()->json(['message' => ['已经申请过']])->setStatusCode(422);
+            return response()->json(['message' => '已经申请过'])->setStatusCode(422);
         }
 
         $pinned = new FeedPinnedModel();
@@ -128,10 +149,10 @@ class NewPinnedController extends Controller
                 if ($order) {
                     $pinned->save();
 
-                    return response()->json(['message' => ['申请成功']], 201);
+                    return response()->json(['message' => '提交成功,等待审核'], 201);
                 }
 
-                return response()->json(['message' => ['操作失败']], 500);
+                return response()->json(['message' => '操作失败'], 500);
             },
         ]);
     }
@@ -154,7 +175,7 @@ class NewPinnedController extends Controller
             'amount' => [
                 'required',
                 'integer',
-                'min:1',
+                'min:0',
                 'max:'.$currency->sum,
             ],
             'day' => [

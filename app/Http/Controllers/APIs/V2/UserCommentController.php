@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -59,9 +59,8 @@ class UserCommentController extends Controller
         if ($user->unreadCount !== null) {
             $user->unreadCount()->decrement('unread_comments_count', $user->unreadCount->unread_comments_count);
         }
-
-        return $model->getConnection()->transaction(function () use ($comments, $response) {
-            return $response->json($comments, 200);
-        });
+//        return $model->getConnection()->transaction(function () use ($comments, $response) {
+        return $response->json($comments, 200);
+//        });
     }
 }

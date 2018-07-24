@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -41,9 +41,12 @@ class CateController extends Controller
 
         // 我订阅的分类
         $follows = NewsCateFollow::where('user_id', $user_id)->first();
+        $follows_array = [];
+        // 第一次使用，默认返回5个
         if (! $follows) {
             $follows_array = NewsCate::orderBy('rank', 'desc')->take(5)->pluck('id')->toArray();
-        } else {
+        }
+        if ($follows && $follows->follows) {
             $follows_array = explode(',', $follows->follows);
         }
         // 更多分类

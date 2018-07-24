@@ -4,7 +4,7 @@
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -159,6 +159,10 @@ Route::group([
     // web clients
     $route->get('settings/web-clients', 'WebClientsController@fetch');
     $route->patch('settings/web-clients', 'WebClientsController@update');
+
+    // CORS
+    $route->get('settings/cors', 'CorsController@fetch');
+    $route->put('settings/cors', 'CorsController@update');
 });
 
 Route::middleware('auth:web')
@@ -206,6 +210,10 @@ Route::middleware('auth:web')
         // 钱包开关
         Route::get('/switch', 'WalletSwitchController@show');
         Route::patch('/switch', 'WalletSwitchController@update');
+
+        // 原生支付配置设置
+        Route::get('/newPaySetting', 'NewPaySettingController@index');
+        Route::post('/newPaySetting', 'NewPaySettingController@store');
     });
 
     // SMS 相关

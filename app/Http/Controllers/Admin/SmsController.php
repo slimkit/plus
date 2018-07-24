@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -91,7 +91,7 @@ class SmsController extends Controller
         $type = $request->input('type');
 
         if (! is_array($gateways) || ! $type) {
-            return response(['message' => '数据格式错误或类型参数错误'], 422);
+            return response(['message' => ['数据格式错误或类型参数错误']], 422);
         }
 
         $config = $store->getConfiguration();
@@ -102,7 +102,7 @@ class SmsController extends Controller
 
         $store->save($config);
 
-        return response(['message' => '更新成功'], 201);
+        return response(['message' => ['更新成功']], 201);
     }
 
     /**
@@ -117,7 +117,7 @@ class SmsController extends Controller
     public function showOption(Repository $config, ResponseFactory $response, string $driver)
     {
         if (! in_array($driver, array_keys($config->get('sms.gateways')))) {
-            return $response->json(['message' => '当前驱动不存在于系统中'], 422);
+            return $response->json(['message' => ['当前驱动不存在于系统中']], 422);
         }
 
         $data = $config->get(sprintf('sms.gateways.%s', $driver), []);
@@ -147,7 +147,7 @@ class SmsController extends Controller
 
         $store->save($config);
 
-        return $response->json(['message' => '更新成功'], 201);
+        return $response->json(['message' => ['更新成功']], 201);
     }
 
     /**
@@ -172,7 +172,7 @@ class SmsController extends Controller
 
         $store->save($config);
 
-        return response()->json(['message' => '更新成功'], 201);
+        return response()->json(['message' => ['更新成功']], 201);
     }
 
     /**
@@ -197,7 +197,21 @@ class SmsController extends Controller
 
         $store->save($config);
 
-        return response()->json(['message' => '更新成功'], 201);
+        return response()->json(['message' => ['更新成功']], 201);
+    }
+
+    public function updateHuyiOption(Configuration $store, Request $request)
+    {
+        $config = $store->getConfiguration();
+
+        $config->set(
+            'sms.gateways.huyi',
+            $request->only(['api_key', 'api_id', 'content'])
+        );
+
+        $store->save($config);
+
+        return response()->json(['message' => ['更新成功']], 201);
     }
 
     /**
@@ -213,6 +227,7 @@ class SmsController extends Controller
         $data['alidayu_template_id'] = $config->get('sms.channels.code.alidayu.template');
         $data['aliyun_template_id'] = $config->get('sms.channels.code.aliyun.template');
         $data['yunpian_template_content'] = $config->get('sms.channels.code.yunpian.content');
+        $data['huyi_template_content'] = $config->get('sms.channels.code.huyi.content');
 
         return response()->json($data, 200);
     }
@@ -244,8 +259,13 @@ class SmsController extends Controller
             $request->input('yunpian_template_content')
         );
 
+        $config->set(
+            'sms.channels.code.huyi.content',
+            $request->input('huyi_template_content')
+        );
+
         $store->save($config);
 
-        return response()->json(['message' => '更新成功'], 201);
+        return response()->json(['message' => ['更新成功']], 201);
     }
 }

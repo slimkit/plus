@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -34,7 +34,7 @@ class AdvertisingSpaceSeeder extends Seeder
             'allow_type' => 'image',
             'format' => [
                 'image' => [
-                    'image' => '图片|string|必填，图片，尺寸：375pt*187.5pt',
+                    'image' => '图片|string|必填，图片，尺寸：1080px * 561px',
                     'link' => '链接|string|必填，广告链接',
                 ],
             ],
@@ -60,7 +60,7 @@ class AdvertisingSpaceSeeder extends Seeder
             'allow_type' => 'image',
             'format' => [
                 'image' => [
-                    'image' => '图片|string|必填，广告图，一张图： 宽353.5pt x 高59pt、两张图：宽174.5pt x 高59pt、三张图： 宽111.5pt x 高59pt;',
+                    'image' => '图片|string|必填，广告图，一张图： 1020px * 180px、两张图：502px x 180px、三张图： 340px x 180px;',
                     'link' => '链接|string|必填，广告链接',
                 ],
             ],
@@ -86,10 +86,10 @@ class AdvertisingSpaceSeeder extends Seeder
             'allow_type' => 'feed:analog',
             'format' => [
                 'feed:analog' => [
-                    'avatar' => '头像图|image|必填，头像',
+                    'avatar' => '头像图|image|必填，头像 尺寸: 196px * 196px',
                     'name' => '用户名|string|必填，用户名',
                     'content' => '内容|string|必填，广告动态内容',
-                    'image' => '图片|image|广告图，尺寸：262.5pt x 262.5pt',
+                    'image' => '图片|image|广告图，尺寸：777px x 387px',
                     'time' => '时间|date|必填，广告动态时间',
                     'link' => '链接|string|必填，广告链接',
                 ],

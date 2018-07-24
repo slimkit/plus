@@ -9,7 +9,7 @@
 </style>
 <template>
    <div class="alert alert-style" :class="type" role="alert" v-show="open">
-     {{ message | plusMessageFirst('Todo') }}
+     {{ message | plusMessageFirst(defaultMessage) }}
    </div>
 </template>
 
@@ -39,6 +39,10 @@ export default {
       const { type } = this.alert;
 
       return `alert-${type}`;
+    },
+    defaultMessage() {
+      const { defaultMessage } = this.alert;
+      return defaultMessage;
     },
   },
 };

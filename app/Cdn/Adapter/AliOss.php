@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -65,8 +65,9 @@ class AliOss implements FileUrlGeneratorContract
         $this->ssl = config('cdn.generators.alioss.ssl', false);
         $this->public = config('cdn.generators.alioss.public', true);
         $this->expires = config('cdn.generators.alioss.expires', 3600);
+        $this->isCname = config('cdn.generators.alioss.cname', false);
 
-        $this->client = new OssClient($this->accessKeyId, $this->accessKeySecret, $this->endpoint);
+        $this->client = new OssClient($this->accessKeyId, $this->accessKeySecret, $this->endpoint, $this->isCname);
         $this->client->setUseSSL($this->ssl);
     }
 
@@ -184,6 +185,10 @@ class AliOss implements FileUrlGeneratorContract
                 'blur,r_50,s_%d' => [
                     'confirm' => (bool) $blur,
                     'params' => [intval($blur / 2)],
+                ],
+                'auto-orient,%d' => [
+                    'confirm' => true,
+                    'params' => [1],
                 ],
             ])->map(function ($value, $key) {
                 if (! $value['confirm']) {

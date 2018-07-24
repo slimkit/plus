@@ -5,6 +5,7 @@
 @section('head')
   <meta name="api-token" content="{{ $token }}">
   <meta name="api-basename" content="{{ url('/api/v2') }}">
+  <meta name="domain" content="{{ config('app.url') }}" />
   <meta name="admin-api-basename" content="{{ url('/news/admin') }}">
   
   <link rel="stylesheet" href="{{mix('css/index.css', 'assets/news/assets')}}">

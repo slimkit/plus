@@ -1,0 +1,215 @@
+#
+#########################################################################
+# The Application PHP configurations transform to the YAML configure.
+#########################################################################
+#
+# The root key of this YAML is the `{name}` value in `/config/{name}.php`
+#	  For example: `/config/app.php` written as YAML is the top `app:`,
+#	  then the `name` in the file should be written as:
+#		   ```yaml
+#      app:
+#          name: "My is Value"
+#		   ```
+# So the same is true for other configurations.
+# ❗️You should only convert the configuration parts you need here instead
+# of all, and the configuration loader will automatically
+# perform deep merges.
+#
+
+#=========================== DIVIDING LINE =============================#
+
+#
+#########################################################################
+# /config/app.php
+#########################################################################
+#
+
+app:
+  name: "Plus(ThinkSNS+)" # Application Name
+  env: local              # Values: `local` and `production`, default `local`
+  debug: false            # Application Debug Mode
+  url: http://localhost   # Application URL
+  timezone: UTC           # Application Timezone
+  locale: zh-CN           # Application Locale Configuration
+  fallback_locale: zh-CN  # Application Fallback Locale
+  data_limit: 15          # RESTFul APIs data limit
+
+#
+#########################################################################
+# /config/cache.php
+#########################################################################
+#
+
+cache:
+  #
+  #----------------------------------------------------------------------
+  # Default Cache Store
+  #----------------------------------------------------------------------
+  #
+  # This option controls the default cache connection that gets used
+  # while using this caching library. This connection is used when
+  # another is not explicitly specified when executing
+  # a given caching function.
+  # 
+  # Supported: "apc", "array", "database", "file", "memcached", "redis"
+  #
+  default: file
+  stores:
+    apc:
+      driver: apc
+    array:
+      driver: array
+    database:
+      driver: database
+      table: cache      # Database store cache table name
+      connection: null  # Database connection name (ID)
+    file:
+      driver: file
+      # path: /var/www/storage/framework/cache/data
+      # 👆 Setting file store driver using path.
+    memcached:
+      driver: memcached
+      persistent_id: null # Distributed endpoint (persistent id), non-distributed Mencached does not need to be set
+      sasl:
+        - null            # Mencached system auth username
+        - null            # Mencached system auth user password
+      # options:
+      #   - item
+      # 👆 mencached options.
+      servers:
+        - host: 127.0.0.1 # Connection host
+          port: 11211     # Connection port
+          weight: 100     # Weight
+        # -
+        # 👆more...
+    redis:
+      driver: redis
+      connection: default
+  prefix: plus_cache     # Cache prefix
+
+#
+#########################################################################
+# /config/cors.php
+#########################################################################
+#
+
+core:
+  allow-credentials: false # Set "Access-Control-Allow-Credentials" 👉 string "false" or "true"
+  max-age: 0               # Cache `options` request second
+  allow-headers:           # E.g: Content-Type, Accept, X-Requested-With, default `*`
+    - *
+  expose-headers: {  }     # E.g: X-Data-Total, default is empty
+  origins:                 # E.g: http://localhost, default is `*`, allow all.
+    - *
+    # - http://127.0.0.1:8080
+  methods:                 # E.g: POST, GET, PUT, PATCH, DELETE, Default allow all
+    - *
+    # - GET
+    # - POST
+    # - PUT
+    # - PATCH
+    # - DELETE
+  laravel:
+    allow-route-perfix: *   # The perfix is using \Illumante\Http\Request::is 
+    route-group-mode: false # Route grouo mode, default disabled
+
+#
+#########################################################################
+# /config/database.php
+#########################################################################
+#
+
+database:
+  default: mysql # Default Database Connection Name
+  connections:
+    sqlite:
+      driver: sqlite
+      prefix: null
+      # database: /var/www/database/database.sqlite
+    mysql:
+      driver: mysql
+      host: 127.0.0.1  # MySQL connection host
+      port: 3306       # MySQL connection port
+      database: plus   # Used MySQL database name
+      username: plus   # Connection MySQL username
+      password: null   # Connection MySQL user password
+      charset: utf8mb4 # MySQL using charset
+      collation: utf8mb4_unicode_ci # Default table using collation
+      prefix: null     # Table name prefix
+      strict: true
+      engine: null
+      unix_socket: ""  # If you MySQL is UNIX, The setting UNIX socket path
+      # unix_socket: /var/www/database/mysql.socket
+    pgsql:
+      driver: pgsql
+      host: 127.0.0.1 # PostgreSQL connection host
+      port: 5432      # PostgreSQL connection port
+      database: plus  # Used database name
+      username: plus  # Connection database username
+      password: null  # Connection database user password
+      charset: utf8   # Using charset
+      prefix: null    # Table name prefix
+      schema: public  # PostgreSQL schema mode
+      sslmode: prefer
+    sqlsrv:
+      driver: sqlsrv
+      host: 127.0.0.1 # SQL Server connection host
+      port: 5432      # SQL Server connection port
+      database: plus  # Used database name
+      username: plus  # Connection database username
+      password: null  # Connection database user password
+      charset: utf8   # Using charset
+      prefix: null    # Table name prefix
+  redis:
+    client: predis
+    default:
+      host: 127.0.0.1 # Redis connection host
+      port: 6379      # Redis connection port
+      password: null  # Connection password
+      database: 0
+
+#
+#########################################################################
+# /config/image.php
+#########################################################################
+#
+
+image:
+  #
+  #---------------------------------------------------------------------
+  # Image Driver
+  #---------------------------------------------------------------------
+  #
+  # Intervention Image supports "GD Library" and "Imagick" to process
+  # images internally. You may choose one of them according to your PHP
+  # configuration. By default PHP's "GD Library" implementation is used.
+  # 
+  # Supported: "gd", "imagick"
+  #
+  driver: gd
+  blur: 96   # User unpaid picture default Gauss blur degree
+
+#
+#########################################################################
+# /config/jwt.php
+#########################################################################
+#
+
+jwt:
+  ttl: 21600
+  refresh_ttl: 43200
+
+#
+#########################################################################
+# /config/jwt.php
+#########################################################################
+#
+
+logging:
+  default: daily # Available Drivers: "single", "daily", "slack", "syslog", "errorlog", "monolog", "custom", "stack"
+
+###
+##
+#
+#  More👉 `/config/{name}.php`
+#  END.

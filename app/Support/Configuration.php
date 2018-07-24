@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -53,7 +53,7 @@ class Configuration
     public function getConfiguration(): RepositoryContract
     {
         $items = [];
-        if ($this->files->exists($file = $this->app->vendorYamlFilePath())) {
+        if ($this->files->exists($file = $this->app->appYamlConfigureFile())) {
             $items = $this->app->make(Parser::class)->parse(
                 $this->files->get($file)
             ) ?: $items;
@@ -107,14 +107,14 @@ class Configuration
         //
         // This is useful in custom configuration file storage,
         // and you can avoid the direct save of the error.
-        $target = dirname($this->app->vendorYamlFilePath());
+        $target = dirname($this->app->appYamlConfigureFile());
         if (! $this->files->isDirectory($target)) {
             $this->files->makeDirectory($target, 0755, true);
         }
 
         // Save the configuration into the YAML file.
         $this->files->put(
-            $this->app->vendorYamlFilePath(),
+            $this->app->appYamlConfigureFile(),
             $this->app->make(Dumper::class)->dump($config->all(), 10)
         );
     }
@@ -128,7 +128,7 @@ class Configuration
      * @return array
      * @author Seven Du <shiweidu@outlook.com>
      */
-    protected function parse(array $target, string $pre = '', array $org = []): array
+    public function parse(array $target, string $pre = '', array $org = []): array
     {
         if (! is_array($target)) {
             return [];
@@ -138,7 +138,7 @@ class Configuration
             $key = $pre ? $pre.'.'.$key : $key;
             $value = value($value);
 
-            if (is_array($value) || (is_object($value) && $value = (array) $value)) {
+            if (is_array($value) && array_keys($value) !== range(0, count($value) - 1)) {
                 $org = $this->parse($value, $key, $org);
                 continue;
             }

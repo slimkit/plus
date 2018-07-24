@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -39,7 +39,7 @@ class SystemController extends Controller
     {
         if (! $request->user()->ability('admin:notice:send')) {
             return response()->json([
-                'errors' => '你没有发送系统通知的权限',
+                'errors' => ['你没有发送系统通知的权限'],
             ])->setStatusCode(403);
         }
 

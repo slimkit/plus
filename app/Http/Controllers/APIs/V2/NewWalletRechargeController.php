@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -81,7 +81,7 @@ class NewWalletRechargeController extends Controller
             return response()->json($result, 201);
         }
 
-        return response()->json(['message' => '操作失败'], 500);
+        return response()->json(['message' => ['操作失败']], 500);
     }
 
     /**
@@ -114,7 +114,7 @@ class NewWalletRechargeController extends Controller
             return response()->json($order, 200);
         }
 
-        return response()->json(['message' => '操作失败'], 500);
+        return response()->json(['message' => ['操作失败']], 500);
     }
 
     /**
@@ -131,9 +131,9 @@ class NewWalletRechargeController extends Controller
         $amount = (int) $request->input('amount');
 
         if ($manager->driver(Order::TARGET_TYPE_TRANSFORM)->transform($user, $amount) === true) {
-            return response()->json(['message' => '操作成功'], 201);
+            return response()->json(['message' => ['操作成功']], 201);
         }
 
-        return response()->json(['message' => '操作失败'], 500);
+        return response()->json(['message' => ['操作失败']], 500);
     }
 }

@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -62,6 +62,7 @@ class RewardNewsTest extends TestCase
             ->json('POST', "/api/v2/news/{$this->news->id}/rewards", [
                 'amount' => 100,
             ]);
+
         $response
             ->assertStatus(201)
             ->assertJsonStructure(['message']);
@@ -75,12 +76,7 @@ class RewardNewsTest extends TestCase
     public function testNewRewardNews()
     {
         $other = factory(UserModel::class)->create();
-
-        $other->newWallet()->create([
-            'balance' => 1000,
-            'total_income' => 0,
-            'total_expenses' => 0,
-        ]);
+        $other->currency()->increment('sum', 100);
 
         $response = $this
             ->actingAs($other, 'api')

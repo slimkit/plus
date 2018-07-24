@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -24,6 +24,7 @@ use RuntimeException;
 use Tymon\JWTAuth\JWTAuth;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\username;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\VerificationCode;
 use Zhiyi\Plus\Http\Requests\API2\StoreUserPost;
@@ -42,7 +43,7 @@ class UserController extends Controller
      */
     public function index(Request $request, ResponseFactoryContract $response, User $model)
     {
-        $user = $request->user('api') ?: 0;
+        $user = $request->user('api');
         $ids = array_filter(explode(',', $request->query('id', '')));
         $limit = max(min($request->query('limit', 15), 50), 1);
         $order = in_array($order = $request->query('order', 'desc'), ['asc', 'desc']) ? $order : 'desc';
@@ -54,15 +55,16 @@ class UserController extends Controller
         })->when($name, function ($query) use ($name) {
             return $query->where('name', 'like', sprintf('%%%s%%', $name));
         })->when(! empty($ids), function ($query) use ($ids) {
-            return $query->whereIn('id', $ids);
+            return $query->whereIn('id', $ids)->withTrashed();
         })->limit($limit)
           ->orderby('id', $order)
           ->get();
 
         return $response->json($model->getConnection()->transaction(function () use ($users, $user) {
             return $users->map(function (User $item) use ($user) {
-                $item->following = $item->hasFollwing($user);
-                $item->follower = $item->hasFollower($user);
+                $item->following = $item->hasFollwing($user->id ?? 0);
+                $item->follower = $item->hasFollower($user->id ?? 0);
+                $item->blacked = $user ? $user->blacked($item) : false;
 
                 return $item;
             });
@@ -73,16 +75,25 @@ class UserController extends Controller
      *  Get user.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Plus\Models\User $user
+     * @param string $user
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function show(Request $request, User $user)
+    public function show(Request $request, string $user)
     {
+        $field = username($user);
+        $user = User::withTrashed()
+            ->where($field, $user)
+            ->firstOrFail();
+
+        $user->makeVisible($field);
+
         // 我关注的处理
         $this->hasFollowing($request, $user);
         // 处理关注我的
         $this->hasFollower($request, $user);
+        // 处理黑名单
+        $this->hasBlacked($request, $user);
 
         return response()->json($user, 200);
     }
@@ -114,14 +125,17 @@ class UserController extends Controller
             ->first();
 
         if (! $verify) {
-            return $response->json(['message' => '验证码错误或者已失效'], 422);
+            return $response->json(['message' => ['验证码错误或者已失效']], 422);
         }
 
         $user = new User();
         $user->phone = $phone;
         $user->email = $email;
         $user->name = $name;
-        $user->createPassword($password);
+
+        if ($password !== null) {
+            $user->createPassword($password);
+        }
 
         $verify->delete();
         if (! $user->save()) {
@@ -165,5 +179,11 @@ class UserController extends Controller
         $currentUser = $request->user('api');
         $hasUser = (int) $request->query('follower', $currentUser ? $currentUser->id : 0);
         $user['follower'] = $user->hasFollower($hasUser);
+    }
+
+    protected function hasBlacked(Request $request, User &$user)
+    {
+        $currentUser = $request->user('api');
+        $user['blacked'] = $currentUser ? $currentUser->blacked($user) : false;
     }
 }

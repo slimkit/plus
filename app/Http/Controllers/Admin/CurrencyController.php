@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -69,10 +69,13 @@ class CurrencyController extends Controller
             $input = $request->except('type');
             $input['recharge-option'] = str_replace('，', ',', $input['recharge-option']);
             $options = explode(',', $input['recharge-option']);
-            $input['recharge-option'] = implode(',', array_filter(array_map(function ($option) {
+            $sourceOptions = array_filter(array_map(function ($option) {
                 return (int) $option;
-            }, $options)));
-
+            }, $options));
+            if (count($sourceOptions) > 6) {
+                return response()->json(['message' => '充值选项不能超过6个'], 422);
+            }
+            $input['recharge-option'] = implode(',', $sourceOptions);
             foreach ($input as $key => $value) {
                 $config = CommonConfig::where('name', sprintf('currency:%s', $key))
                 ->where('namespace', 'currency')

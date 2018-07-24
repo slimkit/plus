@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -36,7 +36,7 @@ class PayControlController extends Controller
         $textLength = $config->get('feed.limit') ?? 50;
 
         foreach ($items as $key => $value) {
-            $items[$key] = $value / 100;
+            $items[$key] = $value;
         }
 
         return response()->json([
@@ -58,7 +58,7 @@ class PayControlController extends Controller
         if ($paycontrol) {
             $paycontrol = explode(',', $paycontrol);
             foreach ($paycontrol as $key => $item) {
-                $paycontrol[$key] = $item * 100;
+                $paycontrol[$key] = $item;
             }
         }
 

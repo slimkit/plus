@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -84,9 +84,13 @@ class AuthControllerTest extends TestCase
             ['login', '', '1'],
             ['password', '', 'password'],
         ];
-        $request->expects($this->exactly(4))
+        $request->expects($this->exactly(6))
                 ->method('input')
-                ->withConsecutive([$this->equalTo('login')], [$this->equalTo('password')])
+                ->withConsecutive(
+                    [$this->equalTo('login')],
+                    [$this->equalTo('verifiable_code')],
+                    [$this->equalTo('password')]
+                )
                 ->will($this->returnValueMap($map));
 
         // Mock JsonResponse::json method
@@ -218,7 +222,7 @@ class AuthControllerTest extends TestCase
 
         $original = [
             'access_token' => $token,
-            'token_type' => 'bearer',
+            'token_type' => 'Bearer',
             'expires_in' => $ttl,
             'refresh_ttl' => config('jwt.refresh_ttl'),
         ];

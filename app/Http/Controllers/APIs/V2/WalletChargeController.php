@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -77,7 +77,7 @@ class WalletChargeController extends Controller
         $mode = $request->query('mode') === 'retrieve';
         // prem.
         if ($request->user()->id !== $charge->user_id) {
-            return $response->json(['message' => '当前用户无权限查询该订单'])->setStatusCode(403);
+            return $response->json(['message' => ['当前用户无权限查询该订单']])->setStatusCode(403);
         // retrueve.
         } elseif ($mode === true && $charge->status === 0) {
             $this->retrieveCharge($charge, $request->user());

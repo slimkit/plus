@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -39,7 +39,8 @@ class FindUserController extends Controller
     {
         $limit = $request->input('limit', 15);
         $offset = $request->input('offset', 0);
-        $user_id = $request->user('api')->id ?? 0;
+        $currentUser = $request->user('api');
+        $user_id = $currentUser->id ?? 0;
 
         $users = $userExtra
             ->when($offset, function ($query) use ($offset) {
@@ -58,9 +59,10 @@ class FindUserController extends Controller
             ->get();
 
         return $response->json(
-            $users->map(function ($user) use ($user_id) {
+            $users->map(function ($user) use ($user_id, $currentUser) {
                 $user->user->following = $user->user->hasFollwing($user_id);
                 $user->user->follower = $user->user->hasFollower($user_id);
+                $user->user->blacked = $currentUser ? $currentUser->blacked($user->user) : false;
 
                 return $user->user;
             })
@@ -75,7 +77,8 @@ class FindUserController extends Controller
     {
         $limit = $request->input('limit', 15);
         $offset = $request->input('offset', null);
-        $user_id = $request->user('api')->id ?? 0;
+        $currentUser = $request->user('api');
+        $user_id = $currentUser->id ?? 0;
 
         $users = $user->when($offset, function ($query) use ($offset) {
             return $query->offset($offset);
@@ -85,9 +88,10 @@ class FindUserController extends Controller
             ->get();
 
         return $response->json(
-            $users->map(function ($user) use ($user_id) {
+            $users->map(function ($user) use ($user_id, $currentUser) {
                 $user->following = $user->hasFollwing($user_id);
                 $user->follower = $user->hasFollower($user_id);
+                $user->blacked = $currentUser ? $currentUser->blacked($user) : false;
 
                 return $user;
             })
@@ -100,7 +104,8 @@ class FindUserController extends Controller
      */
     public function recommends(Request $request, UserRecommendedModel $userRecommended, ResponseContract $response)
     {
-        $user_id = $request->user('api')->id ?? 0;
+        $currentUser = $request->user('api');
+        $user_id = $currentUser->id ?? 0;
         $limit = $request->input('limit', 200);
         $offset = $request->input('offset', 0);
 
@@ -116,9 +121,10 @@ class FindUserController extends Controller
         ->get();
 
         return $response->json(
-            $users->map(function ($user) use ($user_id) {
+            $users->map(function ($user) use ($user_id, $currentUser) {
                 $user->user->following = $user->user->hasFollwing($user_id);
                 $user->user->follower = $user->user->hasFollower($user_id);
+                $user->user->blacked = $currentUser ? $currentUser->blacked($user->user) : false;
 
                 return $user->user;
             })
@@ -131,7 +137,8 @@ class FindUserController extends Controller
      */
     public function search(Request $request, UserModel $user, ResponseContract $response, UserRecommendedModel $userRecommended)
     {
-        $user_id = $request->user('api')->id ?? 0;
+        $currentUser = $request->user('api');
+        $user_id = $currentUser->id ?? 0;
         $limit = $request->input('limit', 15);
         $offset = $request->input('offset', 0);
         $keyword = $request->input('keyword', null);
@@ -147,10 +154,11 @@ class FindUserController extends Controller
                 ->get();
 
             return $response->json(
-                $users->map(function ($user) use ($user_id) {
+                $users->map(function ($user) use ($user_id, $currentUser) {
                     $user->user->following = $user->user->hasFollwing($user_id);
                     $user->user->follower = $user->user->hasFollower($user_id);
                     $user->user->load('tags');
+                    $user->user->blacked = $currentUser ? $currentUser->blacked($user->user) : false;
 
                     return $user->user;
                 })
@@ -168,9 +176,10 @@ class FindUserController extends Controller
             ->get();
 
         return $response->json(
-            $users->map(function ($user) use ($user_id) {
+            $users->map(function ($user) use ($user_id, $currentUser) {
                 $user->following = $user->hasFollwing($user_id);
                 $user->follower = $user->hasFollower($user_id);
+                $user->blacked = $currentUser ? $currentUser->blacked($user) : false;
 
                 return $user;
             })
@@ -215,6 +224,7 @@ class FindUserController extends Controller
             $users->map(function ($user) use ($currentUser) {
                 $user->user->following = $user->user->hasFollwing($currentUser->id);
                 $user->user->follower = $user->user->hasFollower($currentUser->id);
+                $user->user->blacked = $currentUser->blacked($user->user);
 
                 return $user->user;
             })
@@ -225,26 +235,31 @@ class FindUserController extends Controller
     /**
      * 通过手机号查找,无需登录.
      */
-    public function findByPhone(Request $request, UserModel $user, ResponseContract $response)
+    public function findByPhone(Request $request, UserModel $userModel, ResponseContract $response)
     {
-        $user_id = $request->user('api')->id ?? 0;
+        $currentUser = $request->user('api');
+        $user_id = $currentUser->id ?? 0;
         $phones = $request->input('phones', '');
 
         if (! $phones) {
             abort(422, '请传递手机号码');
         }
+        if (! is_array($phones)) {
+            $phones = explode(',', $phones);
+        }
 
-        $users = $user
+        $users = $userModel
             ->select('*')
             ->whereIn('phone', $phones)
             ->limit(100)
             ->get();
 
         return $response->json(
-            $users->map(function ($user) use ($user_id) {
+            $users->map(function ($user) use ($user_id, $currentUser) {
                 $user->following = $user->hasFollwing($user_id);
                 $user->follower = $user->hasFollower($user_id);
                 $user->mobi = $user->phone;
+                $user->blacked = $currentUser ? $currentUser->blacked($user) : false;
 
                 return $user;
             })

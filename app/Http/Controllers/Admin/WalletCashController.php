@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -59,7 +59,7 @@ class WalletCashController extends Controller
 
         if (empty($items)) {
             return response()
-                ->json(['message' => '没有检索到数据'])
+                ->json(['message' => ['没有检索到数据']])
                 ->setStatusCode(404);
         }
 
@@ -88,7 +88,7 @@ class WalletCashController extends Controller
 
         if (! $remark) {
             return response()
-                ->json(['remark' => '请输入备注信息'])
+                ->json(['remark' => ['请输入备注信息']])
                 ->setStatusCode(422);
         }
 
@@ -111,14 +111,14 @@ class WalletCashController extends Controller
             $charge->save();
             $cash->save();
 
-            $cash->user->sendNotifyMessage('user-cash:passed', '您申请的体现已通过，请注意查收', [
+            $cash->user->sendNotifyMessage('user-cash:passed', '你的提现申请已通过', [
                 'charge' => $charge,
                 'cash' => $cash,
             ]);
         });
 
         return response()
-            ->json(['message' => '操作成功'])
+            ->json(['message' => ['操作成功']])
             ->setStatusCode(201);
     }
 
@@ -136,7 +136,7 @@ class WalletCashController extends Controller
 
         if (! $remark) {
             return response()
-                ->json(['remark' => '请输入备注信息'])
+                ->json(['remark' => ['请输入备注信息']])
                 ->setStatusCode(422);
         }
 
@@ -160,14 +160,14 @@ class WalletCashController extends Controller
             $charge->save();
             $cash->save();
 
-            $cash->user->sendNotifyMessage('user-cash:refuse', sprintf('您申请的体现已被拒绝，原因为：%s', $remark), [
+            $cash->user->sendNotifyMessage('user-cash:refuse', sprintf('你的提现申请已被拒绝，原因为：%s', $remark), [
                 'charge' => $charge,
                 'cash' => $cash,
             ]);
         });
 
         return response()
-            ->json(['message' => '操作成功'])
+            ->json(['message' => ['操作成功']])
             ->setStatusCode(201);
     }
 }

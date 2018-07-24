@@ -21,8 +21,9 @@ import Site from '../component/setting/Site';
 import Sensitive from '../components/pages/Sensitive';
 import FileSetting from '../components/modules/file/Setting'
 
-import BackEndSetting from '../component/setting/BackEndSetting';
+import Security from '../component/setting/Security';
 import IosIap from '../components/pages/IosIap';
+import About from "../component/setting/About";
 
 const settingRouter = {
   path: 'setting',
@@ -41,8 +42,9 @@ const settingRouter = {
     { path: 'site', component: Site },
     { path: 'sensitives', component: Sensitive },
     { path: 'upload-setting', component: FileSetting },
-    { path: 'back-end-setting', component: BackEndSetting },
+    { path: 'security', component: Security },
     { path: 'ios-iap', component: IosIap },
+      { path: 'about', component: About}
   ]
 };
 

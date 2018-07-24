@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -124,6 +124,7 @@ class Feed
             $image = [
                 'file' => $item->id,
                 'size' => $item->size,
+                'mime' => $item->file->mime ?? '',
             ];
             if ($item->paidNode !== null) {
                 $image['amount'] = $item->paidNode->amount;
@@ -182,13 +183,21 @@ class Feed
     {
         $comments = collect([]);
 
-        $pinnedComments = $this->model->pinnedComments()->with('user')->where('expires_at', '>', $this->dateTime)->get();
+        $pinnedComments = $this->model
+            ->pinnedComments()
+            ->with('user')
+            ->where('expires_at', '>', $this->dateTime)
+            ->orderBy('amount', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         if ($pinnedComments->count() < 5) {
             $comments = $this->model->comments()
                 ->limit(5 - $pinnedComments->count())
                 ->whereNotIn('id', $pinnedComments->pluck('id'))
-                ->with(['user', 'reply'])
+                ->with(['user' => function ($query) {
+                    return $query->withTrashed();
+                }, 'reply'])
                 ->orderBy('id', 'desc')
                 ->get();
         }

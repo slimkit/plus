@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models;
 
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
@@ -47,7 +49,8 @@ class User extends Authenticatable implements JWTSubject
         Relations\UserHasRole,
         Relations\UserHasLike,
         Relations\UserHasCurrency,
-        Relations\UserHasNewWallet;
+        Relations\UserHasNewWallet,
+        Relations\UserHasBlackLists;
 
     /**
      * The attributes that are mass assignable.
@@ -64,7 +67,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'phone', 'email', 'deleted_at', 'pivot',
+        'password', 'remember_token', 'phone', 'email', 'pivot',
     ];
 
     /**
@@ -125,8 +128,15 @@ class User extends Authenticatable implements JWTSubject
         if (! $this->avatarPath()) {
             return null;
         }
+        // 获取头像更新时间
+        $lastModified = Cache::get('avatar_'.$this->id.'_lastModified_at');
+        if (! $lastModified) {
+            $lastModified = Storage::disk(config('cdn.generators.filesystem.disk'))->exists($this->avatarPath()) ?
+             Storage::disk(config('cdn.generators.filesystem.disk'))->lastModified($this->avatarPath(''))
+             : '';
+        }
 
-        return action('\\'.UserAvatarController::class.'@show', ['user' => $this]);
+        return action('\\'.UserAvatarController::class.'@show', ['user' => $this]).'?v='.$lastModified;
     }
 
     /**
@@ -137,7 +147,15 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getBgAttribute()
     {
-        return $this->avatar(0, 'user-bg');
+        // 获取头像更新时间
+        $lastModified = Cache::get('avatar_'.$this->id.'user-bg_lastModified_at');
+        if (! $lastModified) {
+            $lastModified = Storage::disk(config('cdn.generators.filesystem.disk'))->exists($this->avatarPath('user-bg')) ?
+             Storage::disk(config('cdn.generators.filesystem.disk'))->lastModified($this->avatarPath('user-bg'))
+             : '';
+        }
+
+        return $lastModified ? $this->avatar(0, 'user-bg').'?v='.$lastModified : $this->avatar(0, 'user-bg');
     }
 
     /**

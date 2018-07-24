@@ -1,0 +1,5 @@
+*
+!.gitignore
+!.env.circleci
+!.env.example
+!plus.yml.example

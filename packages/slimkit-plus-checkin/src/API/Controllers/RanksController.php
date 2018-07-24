@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -43,8 +43,11 @@ class RanksController extends Controller
         $limit = $request->query('limit', 10);
         $offset = max(0, $request->query('offset', 0));
 
-        $users = $model->with('user')
+        $users = $model->with(['user' => function ($query) {
+            return $query->withTrashed();
+        }])
             ->orderBy('checkin_count', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->offset($offset)
             ->limit($limit)
             ->get()

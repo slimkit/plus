@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -23,6 +23,7 @@ namespace Zhiyi\Plus\Packages\Music\API\Controllers;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Models\Comment;
+use Zhiyi\Plus\Models\UserCount;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\Music;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSpecial;
@@ -52,18 +53,26 @@ class MusicCommentController extends Controller
         $music->getConnection()->transaction(function () use ($music, $comment, $user) {
             $music->comments()->save($comment);
             $music->increment('comment_count', 1);
-            $music->musicSpecials()->increment('comment_count', 1);
+            $music->musicSpecials()->get()->map(function ($special) {
+                $special->increment('comment_count', 1);
+            });
             $user->extra()->firstOrCreate([])->increment('comments_count', 1);
         });
 
         if ($replyUser && $replyUser !== $user->id) {
             $replyUser = $user->newQuery()->where('id', $replyUser)->first();
+            $userCount = UserCount::firstOrNew([
+                'type' => 'user-commented',
+                'user_id' => $replyUser,
+            ]);
+            $userCount->total += 1;
+            $userCount->save();
             $replyUser->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
             app(Push::class)->push(sprintf('%s 回复了您的评论', $user->name), (string) $replyUser->id, ['channel' => 'music:comment-reply']);
         }
 
         return response()->json([
-            'message' => ['操作成功'],
+            'message' => '操作成功',
             'comment' => $comment,
         ])->setStatusCode(201);
     }
@@ -82,7 +91,9 @@ class MusicCommentController extends Controller
         $limit = $request->query('limit', 15);
         $comments = $music->comments()->when($max_id, function ($query) use ($max_id) {
             return $query->where('id', '<', $max_id);
-        })->with(['user', 'reply'])->limit($limit)->orderBy('id', 'desc')->get();
+        })->with(['user' => function ($query) {
+            return $query->withTrashed();
+        }, 'reply'])->limit($limit)->orderBy('id', 'desc')->get();
 
         return response()->json($comments, 200);
     }
@@ -105,7 +116,9 @@ class MusicCommentController extends Controller
 
         $music->getConnection()->transaction(function () use ($user, $music, $comment) {
             $music->decrement('comment_count', 1);
-            $music->musicSpecials()->decrement('comment_count', 1);
+            $music->musicSpecials()->get()->map(function ($special) {
+                $special->decrement('comment_count', 1);
+            });
             $user->extra()->decrement('comments_count', 1);
             $comment->delete();
         });
@@ -126,7 +139,7 @@ class MusicCommentController extends Controller
     {
         $user = $request->user();
         if ($comment->user_id !== $user->id) {
-            return response()->json(['message' => ['没有权限']], 403);
+            return response()->json(['message' => '没有权限'], 403);
         }
 
         $special->getConnection()->transaction(function () use ($user, $special, $comment) {
@@ -190,13 +203,19 @@ class MusicCommentController extends Controller
         });
 
         if ($replyUser && $replyUser !== $user->id) {
+            $userCount = UserCount::firstOrNew([
+                'type' => 'user-commented',
+                'user_id' => $replyUser,
+            ]);
+            $userCount->total += 1;
+            $userCount->save();
             $replyUser = $user->newQuery()->where('id', $replyUser)->first();
             $replyUser->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
-            app(push::class)->push(sprintf('%s 回复了您的评论', $user->name), (string) $replyUser->id, ['channel' => 'music:special-comment-reply']);
+            app(Push::class)->push(sprintf('%s 回复了您的评论', $user->name), (string) $replyUser->id, ['channel' => 'music:special-comment-reply']);
         }
 
         return response()->json([
-            'message' => ['操作成功'],
+            'message' => '操作成功',
             'comment' => $comment,
         ])->setStatusCode(201);
     }

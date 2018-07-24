@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -25,8 +25,10 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Requests\StoreNewsComment;
 
 class CommentController extends Controller
 {
@@ -39,35 +41,59 @@ class CommentController extends Controller
      * @param  Comment $comment
      * @return mix
      */
-    public function store(Request $request, News $news, Comment $comment)
+    public function store(StoreNewsComment $request, News $news, Comment $comment)
     {
         $replyUser = intval($request->input('reply_user', 0));
         $body = $request->input('body');
         $user = $request->user();
+        $mark = $request->input('comment_mark', '');
 
         $comment->user_id = $user->id;
         $comment->reply_user = $replyUser;
         $comment->target_user = $news->user_id;
         $comment->body = $body;
+        $comment->comment_mark = $mark;
 
         $news->getConnection()->transaction(function () use ($news, $comment, $user) {
             $news->comments()->save($comment);
             $news->increment('comment_count', 1);
             $user->extra()->firstOrCreate([])->increment('comments_count', 1);
             if ($news->user->id !== $user->id) {
+                // 增加资讯被评论未读数
                 $news->user->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
+                // 新, 1.8启用
+                $userCommentedCount = UserCountModel::firstOrNew([
+                    'type' => 'user-commented',
+                    'user_id' => $news->user->id,
+                ]);
+
+                $userCommentedCount->total += 1;
+                $userCommentedCount->save();
+                // 推送
                 app(Push::class)->push(sprintf('%s评论了你的资讯', $user->name), (string) $news->user->id, ['channel' => 'news:comment']);
+                unset($userCommentedCount);
             }
         });
 
         if ($replyUser && $replyUser !== $user->id && $replyUser !== $news->user_id) {
             $replyUser = $user->newQuery()->where('id', $replyUser)->first();
+            // 增加资讯评论被回复的未读数
             $replyUser->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
-            app(Push::class)->push(sprintf('%s 回复了您的评论', $user->name), (string) $replyUser->id, ['channel' => 'news:comment-reply']);
+            // 新, 1.8启用
+            $userCommentedCount = UserCountModel::firstOrNew([
+                'type' => 'user-commented',
+                'user_id' => $replyUser->id,
+            ]);
+
+            $userCommentedCount->total += 1;
+            $userCommentedCount->save();
+            // 推送
+            app(Push::class)->push(sprintf('%s 回复了你的评论', $user->name), (string) $replyUser->id, ['channel' => 'news:comment-reply']);
+            unset($userCommentedCount);
         }
 
         return response()->json([
-            'message' => ['操作成功'],
+            'message' => '操作成功',
             'comment' => $comment,
         ])->setStatusCode(201);
     }
@@ -82,11 +108,20 @@ class CommentController extends Controller
      */
     public function index(Request $request, news $news)
     {
+        $user = $request->user('api')->id ?? 0;
         $after = $request->input('after');
         $limit = $request->input('limit', 15);
-        $comments = $news->comments()->when($after, function ($query) use ($after) {
-            return $query->where('id', '<', $after);
-        })->limit($limit)->with(['user', 'reply'])->orderBy('id', 'desc')->get();
+        $comments = $news->comments()
+            ->whereDoesntHave('blacks', function ($query) use ($user) {
+                $query->where('user_id', $user);
+            })
+            ->when($after, function ($query) use ($after) {
+                return $query->where('id', '<', $after);
+            })
+            ->limit($limit)
+            ->with(['user', 'reply'])
+            ->orderBy('id', 'desc')
+            ->get();
 
         return response()->json([
             'pinneds' => ! $after ? app()->call([$this, 'pinneds'], ['news' => $news]) : [],
@@ -111,6 +146,8 @@ class CommentController extends Controller
             return $news->pinnedComments()
                 ->with(['user', 'reply'])
                 ->where('expires_at', '>', $dateTime)
+                ->orderBy('amount', 'desc')
+                ->orderBy('created_at', 'desc')
                 ->get();
         }
     }
@@ -128,7 +165,7 @@ class CommentController extends Controller
     {
         $user = $request->user();
         if ($comment->user_id !== $user->id) {
-            return response()->json(['message' => ['没有权限']], 403);
+            return response()->json(['message' => '没有权限'], 403);
         }
 
         $pinned = $pinnedModel->where('channel', 'news:comment')->where('raw', $comment->id)->where('state', 0)->first();

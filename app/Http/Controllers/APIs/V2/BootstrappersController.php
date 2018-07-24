@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -64,6 +64,9 @@ class BootstrappersController extends Controller
 
         $currency = CurrencyType::where('enable', 1)->first() ?? collect(['name' => '积分', 'unit' => '']);
         $bootstrappers['site']['currency_name'] = $currency;
+        config('im.helper-user') && $bootstrappers['im:helper-user'] = config('im.helper-user');
+        // 每页数据量
+        $bootstrappers['limit'] = config('app.data_limit');
 
         return $response->json($events->dispatch('v2', [$bootstrappers]), 200);
     }

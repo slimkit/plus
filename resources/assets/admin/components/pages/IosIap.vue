@@ -49,7 +49,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td><input type="number" v-model="product.product_id" class="form-control" placeholder="产品ID"></td>
+							<td><input type="text" v-model="product.product_id" class="form-control" placeholder="产品ID"></td>
 							<td><input type="text" v-model="product.name" class="form-control" placeholder="产品名"></td>
 							<td><input type="number" v-model="product.amount" class="form-control" placeholder="产品定价(分)"></td>
 							<td><input type="text" v-model="product.apple_id" class="form-control" placeholder="apple id"></td>

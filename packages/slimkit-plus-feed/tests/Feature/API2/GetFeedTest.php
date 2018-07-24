@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -55,7 +55,7 @@ class GetFeedTest extends TestCase
             ->json('GET', '/api/v2/feeds');
         $response
             ->assertStatus(200)
-            ->assertJsonStructure(['ad', 'pinned', 'feeds']);
+            ->assertJsonStructure(['pinned', 'feeds']);
     }
 
     /**
@@ -79,7 +79,7 @@ class GetFeedTest extends TestCase
         $response = $this->json('GET', '/api/v2/feeds');
         $response
             ->assertStatus(200)
-            ->assertJsonStructure(['ad', 'pinned', 'feeds']);
+            ->assertJsonStructure(['pinned', 'feeds']);
     }
 
     /**

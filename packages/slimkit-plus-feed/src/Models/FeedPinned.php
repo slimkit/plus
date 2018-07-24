@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -61,5 +61,20 @@ class FeedPinned extends Model
     public function comment()
     {
         return $this->hasOne(CommentModel::class, 'id', 'target');
+    }
+
+    public function averages($type = 'feed', $date = '')
+    {
+        return self::newQuery()
+            ->where('channel', '=', $type)
+            ->whereNotNull('expires_at')
+            ->where('created_at', '>', $date)
+            ->where('amount', '>', 0)
+            ->where('day', '>', 0)
+            ->first([
+                \DB::raw('SUM(day) as total_day'),
+                \DB::raw('SUM(amount) as total_amount'),
+            ])
+            ->toArray();
     }
 }

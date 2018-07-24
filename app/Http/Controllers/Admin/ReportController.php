@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -70,7 +70,7 @@ class ReportController extends Controller
         $report->save();
 
         if ($report->user) {
-            $report->user->sendNotifyMessage('user-report:notice', '您的举报已被后台处理：'.$mark, [
+            $report->user->sendNotifyMessage('user-report:notice', '你的举报已被平台处理', [
                 'report' => $report,
             ]);
         }
@@ -78,12 +78,12 @@ class ReportController extends Controller
         if ($report->target) {
             $report->target->sendNotifyMessage(
                 'user-report:notice',
-                '你的「'.$report->subject.'」已被举报',
-                ['repot' => $report]
+                '你的'.$report->subject.'已被举报',
+                ['report' => $report]
             );
         }
 
-        return response()->json(['message' => '操作成功'], 201);
+        return response()->json(['message' => ['操作成功']], 201);
     }
 
     /**
@@ -102,12 +102,12 @@ class ReportController extends Controller
         $report->save();
 
         if ($report->user) {
-            $report->user->sendNotifyMessage('user-report:notice', '您的举报已被后台驳回，原因是：'.$mark, [
+            $report->user->sendNotifyMessage('user-report:notice', '你的举报已被平台处理', [
                 'report' => $report,
             ]);
         }
 
-        return response()->json(['message' => '操作成功'], 201);
+        return response()->json(['message' => ['操作成功']], 201);
     }
 
     /**

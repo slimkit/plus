@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -23,6 +23,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 
 class LikeController extends Controller
@@ -40,7 +41,7 @@ class LikeController extends Controller
         $user = $request->user();
         if ($news->liked($user)) {
             return response()->json([
-                'message' => ['已赞过该资讯'],
+                'message' => '已赞过该资讯',
             ])->setStatusCode(400);
         }
 
@@ -48,7 +49,16 @@ class LikeController extends Controller
         $news->user->extra()->firstOrCreate([])->increment('likes_count', 1);
         if ($news->user_id !== $user->id) {
             $news->user->unreadCount()->firstOrCreate([])->increment('unread_likes_count', 1);
-            app(push::class)->push(sprintf('%s点赞了你的资讯', $user->name), (string) $news->user->id, ['channel' => 'news:like']);
+            // 新未读统计 1.8启用
+            $userLikedCount = UserCountModel::firstOrNew([
+                'type' => 'user-liked',
+                'user_id' => $news->user->id,
+            ]);
+
+            $userLikedCount->total += 1;
+            $userLikedCount->save();
+
+            app(Push::class)->push(sprintf('%s点赞了你的资讯', $user->name), (string) $news->user->id, ['channel' => 'news:like']);
         }
 
         return response()->json()->setStatusCode(201);
@@ -67,7 +77,7 @@ class LikeController extends Controller
         $user = $request->user();
         if (! $news->liked($user)) {
             return response()->json([
-                'message' => ['未对该资讯点赞'],
+                'message' => '未对该资讯点赞',
             ])->setStatusCode(400);
         }
 
@@ -92,7 +102,9 @@ class LikeController extends Controller
         $userID = $request->user('api')->id ?? 0;
         $likes = $news->likes()
             ->whereHas('user')
-            ->with('user')
+            ->with(['user' => function ($query) {
+                return $query->withTrashed();
+            }])
             ->when($after, function ($query) use ($after) {
                 return $query->where('id', '<', $after);
             })

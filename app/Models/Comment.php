@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -46,11 +46,30 @@ class Comment extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    /**
+     * 被回复者.
+     * @Author   Wayne
+     * @DateTime 2018-04-14
+     * @Email    qiaobin@zhiyicx.com
+     * @return   [type]              [description]
+     */
     public function target()
     {
         return $this->belongsTo(User::class, 'target_user', 'id');
     }
 
+    public function blacks()
+    {
+        return $this->hasMany(BlackList::class, 'target_id', 'user_id');
+    }
+
+    /**
+     * 被回复者.
+     * @Author   Wayne
+     * @DateTime 2018-04-14
+     * @Email    qiaobin@zhiyicx.com
+     * @return   [type]              [description]
+     */
     public function reply()
     {
         return $this->belongsTo(User::class, 'reply_user', 'id');
