@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -18,29 +16,6 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Models;
-
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-
-class FeedTopic extends Model
-{
-    /**
-     * The model table name.
-     */
-    protected $table = 'feed_topics';
-
-    /**
-     * Topic belongs to many relation.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function followers(): BelongsToMany
-    {
-        $table = (new FeedTopicFollower)->getTable();
-        return $this
-            ->belongsToMany(User::class, $table, 'topic_id', 'user_id')
-            ->withPivot('index', Model::CREATED_AT)
-            ->using(FeedTopicFollower::class);
-    }
-}
+return [
+    'Created' => '创建成功',
+];

@@ -631,18 +631,33 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
              * @Param::query {limit} Featch data limit.
              * @Param::query {index} Featch data start index.
              * @Param::query {direction} Can be one of `asc` or `desc`.
-             * @Response::headers('Status', 200, 'OK')
-             * @Response::json
-             *  <pre>
+             * @Response::header('Status', 200, 'OK')
+             * @Response::json('<pre>
              *  [{
              *   "id": 1,        // Topic ID
              *   "name": "Plus", // Topic name
              *   "logo": 2,      // Topic logo, file with ID
              *   "created_at": "2018-07-23T15:04:23Z" // Topic created datetime
              *  }]
-             *  </pre>
+             *  </pre>')
              */
             $api->get('', \Zhiyi\Plus\API2\Controllers\Feed\Topic::class.'@index');
+
+            /*
+             * Create an topic
+             * 
+             * @Post /api/v2/feed/topics
+             * @Param::input('name', 'string', 'The name of the topic.')
+             * @Param::input('desc', 'string', 'The desc of the topic.')
+             * @Param::input('logo', 'integer', 'The topic logo file with     ID.')
+             * @Response::header('Status', 201, 'Created')
+             * @Response::json('<pre>
+             * {
+             *     "id": 2 // Created topic id
+             * }
+             * </pre>')
+             */
+            $api->post('', \Zhiyi\Plus\API2\Controllers\Feed\Topic::class.'@create');
         });
     });
 });

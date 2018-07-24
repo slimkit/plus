@@ -23,14 +23,28 @@ namespace Zhiyi\Plus\API2\Controllers\Feed;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\Model;
 use Zhiyi\Plus\API2\Controllers\Controller;
+use Zhiyi\Plus\Types\Models as ModelsTypes;
 use Symfony\Component\HttpFoundation\Response;
+use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
 use Zhiyi\Plus\API2\Resources\Feed\TopicCollection;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Zhiyi\Plus\API2\Requests\Feed\TopicIndex as IndexRequest;
+use Zhiyi\Plus\API2\Requests\Feed\CreateTopic as CreateTopicRequest;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class Topic extends Controller
 {
+    /**
+     * Create the controller instance.
+     */
+    public function __construct()
+    {
+        $this
+            ->middleware('auth:api')
+            ->only(['create']);
+    }
+
     /**
      * List topics.
      *
@@ -82,5 +96,80 @@ class Topic extends Controller
             ->setStatusCode(Response::HTTP_OK /* 200 */);
 
         return $response;
+    }
+
+    /**
+     * Create an topic.
+     * 
+     * @param \Zhiyi\Plus\API2\Requests\Feed\CreateTopic $request
+     * @param \Zhiyi\Plus\Types\Models $types
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function create(CreateTopicRequest $request, ModelsTypes $types): JsonResponse
+    {
+        // Create feed topic module
+        $topic = new FeedTopicModel;
+        foreach($request->only(['name', 'logo', 'desc']) as $key => $value) {
+            $topic->{$key} = $value;
+        }
+
+        // If logo exists, inspect file with ID to be used.
+        $with = null;
+        if ($topic->logo) {
+            $with = (new FileWithModel)
+                ->query()
+                ->where('id', $topic->logo)
+                ->first();
+            if ($with->channel || $with->raw) {
+                throw new UnprocessableEntityHttpException('Logo 文件不合法');
+            }
+        }
+
+        // Database query `name` used
+        $exists = $topic
+            ->query()
+            ->where('name', $topic->name)
+            ->exists();
+        if ($exists) {
+            throw new UnprocessableEntityHttpException(sprintf('“%s”话题已存在', $topic->name));
+        }
+
+        // Fetch the authentication user model.
+        $user = $request->user();
+
+        // Open a database transaction,
+        // database commit success return the topic model.
+        $topic = $user->getConnection()->transaction(function () use ($user, $topic, $with, $types) {
+            // Set topic creator user ID and
+            // init default followers count.
+            $topic->creator_user_id = $user->id;
+            $topic->followers_count = 1;
+            $topic->save();
+
+            // Attach the creator user follow the topic.
+            $topic->followers()->attach($user);
+
+            // If the FileWith instance of `FileWithModel`,
+            // set topic class alias to `channel`, set the
+            // topic `id` to `raw` column.
+            // Reset FileWith owner for the authenticated auth.
+            if ($with instanceof FileWithModel) {
+                $with->channel = $types->get(ModelsTypes::KEY_BY_CLASSNAME, FeedTopicModel::class);
+                $with->raw = $topic->id;
+                $with->user_id = $user->id;
+                $with->save();
+            }
+
+            return $topic;
+        });
+
+        // Headers:
+        //      Status: 201 Created
+        // Body:
+        //      { "id": $topid->id }
+        return new JsonResponse(
+            ['id' => $topic->id],
+            Response::HTTP_CREATED /* 201 */
+        );
     }
 }

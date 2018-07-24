@@ -37,6 +37,8 @@ class CreateFeedTopicsTable extends Migration
             $table->integer('logo')->unsigned()->nullable()->default(0)->comment('The topic logo, file with id');
             $table->text('desc')->nullable()->comment('The topic desc');
             $table->integer('creator_user_id')->unsigned()->comment('The topic creator user ID');
+            $table->integer('feeds_count')->unsigned()->nullable()->default(0)->comment('The topic link feeds count');
+            $table->integer('followers_count')->unsigned()->nullable()->default(0)->comment('The topic followers count');
             $table->timestamps();
 
             $table->unique('name');

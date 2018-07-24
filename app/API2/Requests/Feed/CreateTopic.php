@@ -18,29 +18,39 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Models;
+namespace Zhiyi\Plus\API2\Requests\Feed;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Zhiyi\Plus\API2\Requests\Request;
 
-class FeedTopic extends Model
+class CreateTopic extends Request
 {
     /**
-     * The model table name.
+     * Get the validator rules.
+     *
+     * @return array
      */
-    protected $table = 'feed_topics';
+    public function rules(): array
+    {
+        return [
+            'name' => ['required', 'string', 'max:100'],
+            'desc' => ['nullable', 'string', 'max:500'],
+            'logo' => ['nullable', 'integer', 'min:1'],
+        ];
+    }
 
     /**
-     * Topic belongs to many relation.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * Get the validator error messages.
+     *
+     * @return array
      */
-    public function followers(): BelongsToMany
+    public function messages(): array
     {
-        $table = (new FeedTopicFollower)->getTable();
-        return $this
-            ->belongsToMany(User::class, $table, 'topic_id', 'user_id')
-            ->withPivot('index', Model::CREATED_AT)
-            ->using(FeedTopicFollower::class);
+        return [
+            'name.required' => '请输入话题名称',
+            'name.max' => '话题名称请控制在 100 字以内',
+            'desc.max' => '话题描述请控制在 500 字以内',
+            'logo.integer' => '话题 Logo 数据非法',
+            'logo.min' => '话题 Logo 文件 ID 非法',
+        ];
     }
 }
