@@ -44,7 +44,7 @@ class Topic extends Controller
         $this
             ->middleware('auth:api')
             ->only(['create']);
-        
+
         // Add DisposeSensitive middleware.
         $this
             ->middleware('sensitive:name,desc')
