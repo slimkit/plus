@@ -389,7 +389,7 @@ class FeedController extends Controller
 
         $feed->topics()->sync($topics);
         $query = (new FeedTopicModel)->query();
-        $query->whereIn('id', $topics)->increment('followers_count', 1);
+        $query->whereIn('id', $topics)->increment('feeds_count', 1);
     }
 
     /**
