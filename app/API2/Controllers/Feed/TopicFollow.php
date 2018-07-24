@@ -113,7 +113,7 @@ class TopicFollow extends Controller
             ->followers()
             ->where('user_id', $user->id)
             ->exists();
-        
+
         // If not followed, return 204 response.
         if (! $exists) {
             return $response;
