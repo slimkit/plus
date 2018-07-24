@@ -36,9 +36,9 @@ use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed as FeedRepository;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2\StoreFeedPost as StoreFeedPostRequest;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class FeedController extends Controller
 {
@@ -323,7 +323,7 @@ class FeedController extends Controller
             return response()->json($repository->format($user))->setStatusCode(200);
         });
     }
-    
+
     /**
      * Make feed link topics.
      *
@@ -332,7 +332,7 @@ class FeedController extends Controller
      */
     private function makeFeedLinkTopics(StoreFeedPostRequest $request): array
     {
-        $topics = array_map(function($item): ?int {
+        $topics = array_map(function ($item): ?int {
             if (is_numeric($item) || $item == (int) $item) {
                 return (int) $item;
             }
@@ -343,10 +343,10 @@ class FeedController extends Controller
         $topicsCount = count($topics);
         if ($topicsCount === 0) {
             return [];
-        } else if ($topicsCount > 5) {
+        } elseif ($topicsCount > 5) {
             throw new UnprocessableEntityHttpException('话题最多允许五个');
         }
-        
+
         $topics = array_values(array_filter($topics));
         $topicsModelIDs = (new FeedTopicModel)
             ->query()
@@ -354,7 +354,7 @@ class FeedController extends Controller
             ->select('id')
             ->get()
             ->pluck('id');
-        
+
         if ($topicsModelIDs->diff($topics)->isNotEmpty()) {
             throw new UnprocessableEntityHttpException('不合法的话题数据，部分话题不存在');
         }
