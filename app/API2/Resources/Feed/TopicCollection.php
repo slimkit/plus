@@ -58,7 +58,7 @@ class TopicCollection extends ResourceCollection
             'id' => $item->id,
             'name' => $item->name,
             'logo' => $this->when((bool) $item->logo, $item->logo),
-            'created_at' => $this->dateTimeToIso8601ZuluString($this->${Model::CREATED_AT}),
+            'created_at' => $this->dateTimeToIso8601ZuluString($item->{Model::CREATED_AT}),
         ];
     }
 }
