@@ -668,4 +668,12 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
      * @Response::header('Status', 204, 'No Content')
      */
     $api->put('user/feed-topics/{topicID}', \Zhiyi\Plus\API2\Controllers\Feed\TopicFollow::class.'@follow');
+
+    /*
+     * Unfollow a topic
+     *
+     * @Delete /api/v2/user/feed-topics/:topicID
+     * @Response::header('Status', 204, 'No Content')
+     */
+    $api->delete('user/feed-topics/{topicID}', \Zhiyi\Plus\API2\Controllers\Feed\TopicFollow::class.'@unfollow');
 });

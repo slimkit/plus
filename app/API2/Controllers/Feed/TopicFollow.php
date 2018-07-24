@@ -80,4 +80,53 @@ class TopicFollow extends Controller
             return $response;
         });
     }
+
+    /**
+     * Unfollow a topic.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Zhiyi\Plus\Models\FeedTopic $model
+     * @param int $topicID
+     * @return \Illuminate\Http\Response
+     */
+    public function unfollow(Request $request, FeedTopicModel $model, int $topicID): Response
+    {
+        // Featch the request authentication user model.
+        $user = $request->user();
+
+        // Database query topic.
+        $topic = $model
+            ->query()
+            ->where('id', $topicID)
+            ->first();
+
+        // If the topic Non-existent, throw a not found exception.
+        if (! $topic) {
+            throw new NotFoundHttpException('关注的话题不存在');
+        }
+
+        // Create success 204 response
+        $response = (new Response())->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
+
+        // Database query the authentication user followed.
+        $exists = $topic
+            ->followers()
+            ->where('user_id', $user->id)
+            ->exists();
+        
+        // If not followed, return 204 response.
+        if (! $exists) {
+            return $response;
+        }
+
+        return $user->getConnection()->transaction(function () use ($user, $topic, $response): Response {
+            $topic->followers()->detach($user);
+
+            if ($topic->followers_count > 0) {
+                $topic->decrement('followers_count', 1);
+            }
+
+            return $response;
+        });
+    }
 }
