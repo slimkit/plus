@@ -95,6 +95,9 @@ class FeedController extends Controller
             ->orderBy('feed_pinneds.amount', 'desc')
             ->orderBy('feed_pinneds.created_at', 'desc')
             ->get();
+        $feeds->load(['topics' => function ($query) {
+            return $query->select('id', 'name');
+        }]);
 
         $user = $request->user('api')->id ?? 0;
         $ids = $feeds->pluck('id');
@@ -147,6 +150,9 @@ class FeedController extends Controller
             },
             'user' => function ($query) {
                 return $query->withTrashed();
+            },
+            'topics' => function ($query) {
+                return $query->select('id', 'name');
             },
         ])
         ->limit($limit)
@@ -203,6 +209,9 @@ class FeedController extends Controller
              ->offset($offset)
              ->orderBy('popular', 'desc')
              ->get();
+        $feeds->load(['topocs' => function ($query) {
+            return $query->select('id', 'name');
+        }]);
 
         FeedModel::whereIn('id', $feeds->pluck('id'))->increment('feed_view_count');
 
@@ -258,6 +267,9 @@ class FeedController extends Controller
                 },
                 'user' => function ($query) {
                     return $query->withTrashed();
+                },
+                'topics' => function ($query) {
+                    return $query->select('id', 'name');
                 },
             ])
             ->when((bool) $after, function ($query) use ($after) {
