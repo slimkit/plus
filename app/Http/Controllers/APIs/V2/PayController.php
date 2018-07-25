@@ -113,7 +113,7 @@ class PayController extends Controller
         return $response->json(['message' => '创建支付宝订单失败'], 422);
     }
 
-    public function getAlipayWapOrder(Request $request, Carbon $dateTime, ResponseFactory $response, NativePayOrder $order)
+    public function getAlipayWapOrder(Request $request, ResponseFactory $response, NativePayOrder $order)
     {
         $user = $request->user();
         $amount = $request->input('amount', 0);
@@ -465,7 +465,7 @@ class PayController extends Controller
         return $response->json(['message' => '创建微信订单失败'], 422);
     }
 
-    public function wechatNotify(WalletChargeModel $walletChargeModel, WalletOrderModel $walletOrderModel, NativePayOrder $orderModel, ResponseFactory $response)
+    public function wechatNotify(WalletOrderModel $walletOrderModel, NativePayOrder $orderModel, ResponseFactory $response)
     {
         $data = file_get_contents('php://input');
         $config = array_filter(config('newPay.wechatPay'));

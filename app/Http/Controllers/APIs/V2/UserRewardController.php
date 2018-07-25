@@ -33,7 +33,7 @@ class UserRewardController extends Controller
     // 系统货币名称
     protected $goldName;
 
-    public function __construct(GoldType $goldModel, CommonConfig $configModel)
+    public function __construct(GoldType $goldModel)
     {
         $this->goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '积分';
     }

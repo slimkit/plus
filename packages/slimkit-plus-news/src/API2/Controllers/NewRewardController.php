@@ -42,7 +42,7 @@ class NewRewardController extends Controller
      * @param  News $news
      * @return mix
      */
-    public function reward(Request $request, News $news, UserProcess $processer, GoldType $goldModel, CommonConfig $configModel)
+    public function reward(Request $request, News $news, UserProcess $processer, GoldType $goldModel)
     {
         $goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '积分';
         $amount = (int) $request->input('amount');
