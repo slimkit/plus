@@ -1,22 +1,11 @@
 {
-  "name": "plus-component-news",
-  "version": "1.0.0",
+  "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack --progress --hide-modules --colors",
     "watch": "npm run dev -- -w",
     "watch-poll": "npm run dev -- -w --watch-poll",
     "dist": "cross-env NODE_ENV=production webpack --display-error-details --progress --colors"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/zhiyicx/plus-component-news.git"
-  },
-  "author": "Jsonleex <jsonleex@163.com>",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/zhiyicx/plus-component-news/issues"
-  },
-  "homepage": "https://github.com/zhiyicx/plus-component-news#readme",
   "devDependencies": {
     "autoprefixer": "^6.7.7",
     "babel-core": "^6.24.1",
@@ -52,9 +41,5 @@
     "simplemde": "^1.11.2",
     "vue": "^2.3.3",
     "vue-router": "^2.5.3"
-  },
-  "engines": {
-    "node": ">= 4.0.0",
-    "npm": ">= 3.0.0"
   }
 }
