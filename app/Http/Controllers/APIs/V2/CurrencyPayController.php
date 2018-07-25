@@ -221,15 +221,15 @@ class CurrencyPayController extends Controller
         $config = array_filter(config('newPay.alipay'));
         // 支付宝配置必须包含signType, appId, secretKey, publicKey, 缺一不可
         if (count($config) < 4) {
-            die('fail');
+            exit('fail');
         }
         $order = $orderModel->where('out_trade_no', $data['out_trade_no'])
             ->first();
         if (! $order || $order->status === 1) {
-            die('fail');
+            exit('fail');
         }
         if ($order->amount != $data['total_amount'] * 100) {
-            die('fail');
+            exit('fail');
         }
         $gateWay = Omnipay::create('Alipay_AopApp');
         // 签名方法
@@ -253,12 +253,12 @@ class CurrencyPayController extends Controller
                 }
                 $this->resolveWalletCharge($order->walletCharge, $data);
                 $this->resolveUserCurrency($order);
-                die('success');
+                exit('success');
             } else {
-                die('fail');
+                exit('fail');
             }
         } catch (Exception $e) {
-            die('fail');
+            exit('fail');
         }
     }
 
@@ -478,7 +478,7 @@ class CurrencyPayController extends Controller
             $payOrder = $orderModel->where('out_trade_no', $requestData['out_trade_no'])
                 ->first();
             if (! $payOrder || ($payOrder->amount != $requestData['total_fee'])) {
-                die('<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>');
+                exit('<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>');
             }
             $currencyOrder = $currencyOrderModel->where('target_id', $payOrder->id)
                 ->first();
@@ -494,9 +494,9 @@ class CurrencyPayController extends Controller
                 $this->resolveCurrencyOrder($currencyOrder, $data);
             }
 
-            die('<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>');
+            exit('<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>');
         } else {
-            die('<xml><return_code><![CDATA[FAIL]]></return_code></xml>');
+            exit('<xml><return_code><![CDATA[FAIL]]></return_code></xml>');
         }
     }
 
