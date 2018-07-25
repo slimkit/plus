@@ -33,7 +33,8 @@ class UserCountsResource extends JsonResource
      */
     public function toArray($request): array
     {
-        static::withoutWrapping();
+        // unused the $request.
+        unset($request);
 
         return [
             'user' => [
@@ -46,18 +47,5 @@ class UserCountsResource extends JsonResource
                 'mutual' => $this['user-mutual'] ?? 0,
             ],
         ];
-    }
-
-    /**
-     * with response that the resource.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illiminate\Http\Response $response
-     * @return void
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function withResponse($request, $response)
-    {
-        $response->setStatusCode(200);
     }
 }

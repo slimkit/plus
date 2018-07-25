@@ -514,8 +514,10 @@ class CurrencyPayController extends Controller
         return $charge;
     }
 
-    protected function createOrderModel(int $owner, int $amount, string $target_type, string $title): CurrencyOrderModel
+    protected function createOrderModel(int $owner, int $amount, string $targetType, string $title): CurrencyOrderModel
     {
+        // Why? Why ununed the $targetType ?
+        unset($targetType);
         $recharge = new Recharge();
         $order = $recharge->createOrder($owner, $amount * $this->ratio);
 
