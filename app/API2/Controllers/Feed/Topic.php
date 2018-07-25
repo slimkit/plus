@@ -184,10 +184,11 @@ class Topic extends Controller
      * Edit an topic.
      *
      * @param \Zhiyi\Plus\API2\Requests\Feed\EditTopic $request
+     * @param \Zhiyi\Plus\Types\Models $types
      * @param \Zhiyi\Plus\Models\FeedTopic $topic
      * @return \Illuminate\Http\Response
      */
-    public function update(EditTopicRequest $request, FeedTopicModel $topic): Response
+    public function update(EditTopicRequest $request, ModelsTypes $types, FeedTopicModel $topic): Response
     {
         $this->authorize('update', $topic);
 
@@ -208,18 +209,14 @@ class Topic extends Controller
             }
 
             $with->user_id = $request->user()->id;
+            $with->channel = $types->get(FeedTopicModel::class, ModelsTypes::KEY_BY_CLASSNAME);
+            $with->raw = $topic->id;
         }
 
         $topic->desc = $desc ?: $topic->desc;
 
         return $topic->getConnection()->transaction(function () use ($response, $topic, $with): Response {
             if ($with instanceof FileWithModel) {
-                if ($topic->logo) {
-                    $with->query()->where('id', $topic->logo)->delete();
-                }
-
-                $with->channel = $types->get(FeedTopicModel::class, ModelsTypes::KEY_BY_CLASSNAME);
-                $with->raw = $topic->id;
                 $with->save();
 
                 // Set file with ID to topic logo.
