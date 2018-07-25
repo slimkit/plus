@@ -25,6 +25,10 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./app</directory>
         </whitelist>
+
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./packages</directory>
+        </whitelist>
     </filter>
     <php>
         <env name="APP_ENV" value="testing"/>
