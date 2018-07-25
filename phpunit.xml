@@ -27,7 +27,7 @@
         </whitelist>
 
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./packages</directory>
+            <directory suffix=".php">./packages/*/src</directory>
         </whitelist>
     </filter>
     <php>
