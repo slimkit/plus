@@ -31,7 +31,6 @@ use Zhiyi\Plus\API2\Resources\Feed\TopicCollection;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Zhiyi\Plus\API2\Requests\Feed\TopicIndex as IndexRequest;
 use Zhiyi\Plus\API2\Requests\Feed\EditTopic as EditTopicRequest;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zhiyi\Plus\API2\Requests\Feed\CreateTopic as CreateTopicRequest;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
@@ -191,7 +190,7 @@ class Topic extends Controller
     public function update(EditTopicRequest $request, FeedTopicModel $topic): Response
     {
         $this->authorize('update', $topic);
-        
+
         // Create success 204 response
         $response = (new Response())->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
 
@@ -199,7 +198,7 @@ class Topic extends Controller
         $with = null;
         if (! ($logo = (int) $request->input('logo')) && ! ($desc = $request->input('desc'))) {
             return $response;
-        } else if ($logo && $logo !== $topic->logo) {
+        } elseif ($logo && $logo !== $topic->logo) {
             $with = (new FileWithModel)
                 ->query()
                 ->where('id', $logo)
@@ -222,7 +221,7 @@ class Topic extends Controller
                 $with->channel = $types->get(FeedTopicModel::class, ModelsTypes::KEY_BY_CLASSNAME);
                 $with->raw = $topic->id;
                 $with->save();
-                
+
                 // Set file with ID to topic logo.
                 $topic->logo = $with->id;
             }
