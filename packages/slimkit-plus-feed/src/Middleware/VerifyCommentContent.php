@@ -22,12 +22,9 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Traits\CreateJsonResponseData;
 
 class VerifyCommentContent
 {
-    use CreateJsonResponseData;
-
     /**
      * check if comment_content exits.
      *

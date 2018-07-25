@@ -22,13 +22,10 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Traits\CreateJsonResponseData;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
 class CheckFeedByFeedId
 {
-    use CreateJsonResponseData;
-
     /**
      * 验证动态是否存在.
      *

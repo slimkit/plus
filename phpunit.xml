@@ -24,9 +24,6 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./app</directory>
-        </whitelist>
-
-        <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./packages/*/src</directory>
         </whitelist>
     </filter>
