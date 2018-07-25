@@ -516,8 +516,8 @@ class CurrencyPayController extends Controller
 
     protected function createOrderModel(int $owner, int $amount, string $targetType, string $title): CurrencyOrderModel
     {
-        // Why? Why ununed the $targetType ?
-        unset($targetType);
+        // Why? Why ununed the $targetType and $title ?
+        unset($targetType, $title);
         $recharge = new Recharge();
         $order = $recharge->createOrder($owner, $amount * $this->ratio);
 
