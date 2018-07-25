@@ -56,8 +56,8 @@ class CommentPinnedController extends Controller
                 CASE
                     WHEN (`state` = 0) THEN 1
                     WHEN (`state` <> 0 ) THEN 2
-                    END ASC'
-            )
+                END ASC
+            ')
             ->orderBy('created_at', 'desc')
             ->orderBy('id', 'desc')
             ->limit($limit)
