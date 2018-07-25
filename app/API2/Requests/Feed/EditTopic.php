@@ -18,28 +18,36 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Providers;
+namespace Zhiyi\Plus\API2\Requests\Feed;
 
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Zhiyi\Plus\API2\Requests\Request;
 
-class AuthServiceProvider extends ServiceProvider
+class EditTopic extends Request
 {
     /**
-     * The policy mappings for the application.
+     * Get the validator rules.
      *
-     * @var array
+     * @return array
      */
-    protected $policies = [
-        \Zhiyi\Plus\Models\FeedTopic::class => \Zhiyi\Plus\Policies\Feed\Topic::class
-    ];
+    public function rules(): array
+    {
+        return [
+            'logo' => ['nullable', 'integer', 'min:1'],
+            'desc' => ['nullable', 'string', 'max:500'],
+        ];
+    }
 
     /**
-     * Register any authentication / authorization services.
+     * Get the validator error messages.
      *
-     * @return void
+     * @return array
      */
-    public function boot()
+    public function messages(): array
     {
-        $this->registerPolicies();
+        return [
+            'desc.max' => '话题描述请控制在 500 字以内',
+            'logo.integer' => '话题 Logo 数据非法',
+            'logo.min' => '话题 Logo 文件 ID 非法',
+        ];
     }
 }

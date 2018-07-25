@@ -658,6 +658,16 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
              * </pre>')
              */
             $api->post('', \Zhiyi\Plus\API2\Controllers\Feed\Topic::class.'@create');
+
+            /*
+             * Edit an topic.
+             *
+             * @Patch /api/v2/feed/topics/:topicID
+             * @Param::input('desc', 'string', 'The desc of the topic')
+             * @Param::input('logo', 'integer', 'The topic logo file with ID')
+             * @Response::header('Status', 204, 'No Content')
+             */
+            $api->patch('{topic}', \Zhiyi\Plus\API2\Controllers\Feed\Topic::class.'@update');
         });
     });
 

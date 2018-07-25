@@ -20,16 +20,18 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\API2\Controllers\Feed;
 
+use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\Model;
 use Zhiyi\Plus\API2\Controllers\Controller;
 use Zhiyi\Plus\Types\Models as ModelsTypes;
-use Symfony\Component\HttpFoundation\Response;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
 use Zhiyi\Plus\API2\Resources\Feed\TopicCollection;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Zhiyi\Plus\API2\Requests\Feed\TopicIndex as IndexRequest;
+use Zhiyi\Plus\API2\Requests\Feed\EditTopic as EditTopicRequest;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zhiyi\Plus\API2\Requests\Feed\CreateTopic as CreateTopicRequest;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
@@ -43,12 +45,12 @@ class Topic extends Controller
         // Add Auth(api) middleware.
         $this
             ->middleware('auth:api')
-            ->only(['create']);
+            ->only(['create', 'update']);
 
         // Add DisposeSensitive middleware.
         $this
             ->middleware('sensitive:name,desc')
-            ->only(['create']);
+            ->only(['create', 'update']);
     }
 
     /**
@@ -177,5 +179,57 @@ class Topic extends Controller
             ['id' => $topic->id],
             Response::HTTP_CREATED /* 201 */
         );
+    }
+
+    /**
+     * Edit an topic.
+     *
+     * @param \Zhiyi\Plus\API2\Requests\Feed\EditTopic $request
+     * @param \Zhiyi\Plus\Models\FeedTopic $topic
+     * @return \Illuminate\Http\Response
+     */
+    public function update(EditTopicRequest $request, FeedTopicModel $topic): Response
+    {
+        $this->authorize('update', $topic);
+        
+        // Create success 204 response
+        $response = (new Response())->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
+
+        // If `logo` and `desc` field all is NULL
+        $with = null;
+        if (! ($logo = (int) $request->input('logo')) && ! ($desc = $request->input('desc'))) {
+            return $response;
+        } else if ($logo && $logo !== $topic->logo) {
+            $with = (new FileWithModel)
+                ->query()
+                ->where('id', $logo)
+                ->first();
+            if ($with->channel || $with->raw) {
+                throw new UnprocessableEntityHttpException('Logo 文件不合法');
+            }
+
+            $with->user_id = $request->user()->id;
+        }
+
+        $topic->desc = $desc ?: $topic->desc;
+
+        return $topic->getConnection()->transaction(function () use ($response, $topic, $with): Response {
+            if ($with instanceof FileWithModel) {
+                if ($topic->logo) {
+                    $with->query()->where('id', $topic->logo)->delete();
+                }
+
+                $with->channel = $types->get(FeedTopicModel::class, ModelsTypes::KEY_BY_CLASSNAME);
+                $with->raw = $topic->id;
+                $with->save();
+                
+                // Set file with ID to topic logo.
+                $topic->logo = $with->id;
+            }
+
+            $topic->save();
+
+            return $response;
+        });
     }
 }

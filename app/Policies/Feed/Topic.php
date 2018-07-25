@@ -18,28 +18,22 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Providers;
+namespace Zhiyi\Plus\Policies\Feed;
 
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
 
-class AuthServiceProvider extends ServiceProvider
+class Topic
 {
     /**
-     * The policy mappings for the application.
+     * Check the topic can be operated by the user.
      *
-     * @var array
+     * @param \Zhiyi\Plus\Models\User $user
+     * @param \Zhiyi\Plus\Models\FeedTopic $topic
+     * @return bool
      */
-    protected $policies = [
-        \Zhiyi\Plus\Models\FeedTopic::class => \Zhiyi\Plus\Policies\Feed\Topic::class
-    ];
-
-    /**
-     * Register any authentication / authorization services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function update(UserModel $user, FeedTopicModel $topic): bool
     {
-        $this->registerPolicies();
+        return $user->id === $topic->creator_user_id;
     }
 }
