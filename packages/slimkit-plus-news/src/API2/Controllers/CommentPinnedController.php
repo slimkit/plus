@@ -46,18 +46,19 @@ class CommentPinnedController extends Controller
         $limit = $request->query('limit', 15);
         $after = $request->query('after');
 
+        $grammar = $model->getConnection()->getQueryGrammar();
         $pinneds = $model->with('comment')
             ->where('channel', 'news:comment')
             ->where('target_user', $user->id)
             ->when(boolval($after), function ($query) use ($after) {
                 return $query->where('id', '<', $after);
             })
-            ->orderByRaw('
+            ->orderByRaw(str_replace('{state}', $grammar->wrap('state'), '
                 CASE
-                    WHEN (`state` = 0) THEN 1
-                    WHEN (`state` <> 0 ) THEN 2
+                    WHEN ({state} = 0) THEN 1
+                    WHEN ({state} != 0 ) THEN 2
                 END ASC
-            ')
+            '))
             ->orderBy('created_at', 'desc')
             ->orderBy('id', 'desc')
             ->limit($limit)

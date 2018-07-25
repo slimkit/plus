@@ -47,18 +47,21 @@ class CommentPinnedController extends Controller
         $limit = $request->query('limit', 15);
         $after = $request->query('after');
 
+        $grammar = $model->getConnection()->getQueryGrammar();
         $pinneds = $model->with('comment')
             ->where('channel', 'comment')
             ->where('target_user', $user->id)
             ->when(boolval($after), function ($query) use ($after) {
                 return $query->where('id', '<', $after);
             })
-            ->orderByRaw(
+            ->orderByRaw(str_replace(
+                '{expires_at}',
+                $grammar->wrap('expires_at'),
                 'CASE
-                    WHEN isnull(`expires_at`) THEN 1
-                    WHEN (`expires_at` is not null ) THEN 2
+                    WHEN isnull({expires_at}) THEN 1
+                    WHEN ({expires_at} is not null ) THEN 2
                 END ASC'
-            )
+            ))
             ->orderBy('created_at', 'desc')
             ->limit($limit)
             ->get();
