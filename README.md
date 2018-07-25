@@ -10,7 +10,6 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8320deaa80b8489f95fcedaae6df079d)](https://www.codacy.com/app/slimkit/plus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=slimkit/plus&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/8320deaa80b8489f95fcedaae6df079d)](https://www.codacy.com/app/slimkit/plus?utm_source=github.com&utm_medium=referral&utm_content=slimkit/plus&utm_campaign=Badge_Coverage)
-[![codecov](https://codecov.io/gh/slimkit/plus/branch/master/graph/badge.svg)](https://codecov.io/gh/slimkit/plus)
 [![StyleCI](https://github.styleci.io/repos/76627423/shield?branch=master)](https://github.styleci.io/repos/76627423)
 [![Build Status](https://travis-ci.org/slimkit/plus.svg?branch=master)](https://travis-ci.org/slimkit/plus)
 [![CircleCI](https://circleci.com/gh/slimkit/plus/tree/master.svg?style=svg)](https://circleci.com/gh/slimkit/plus/tree/master)
