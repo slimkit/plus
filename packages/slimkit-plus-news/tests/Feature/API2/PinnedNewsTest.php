@@ -76,6 +76,7 @@ class PinnedNewsTest extends TestCase
         $response = $this
             ->actingAs($this->user, 'api')
             ->json('GET', '/api/v2/news/pinneds');
+        dd($response);
         $response
             ->assertStatus(200);
     }
