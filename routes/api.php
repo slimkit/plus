@@ -668,6 +668,14 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
              * @Response::header('Status', 204, 'No Content')
              */
             $api->patch('{topic}', \Zhiyi\Plus\API2\Controllers\Feed\Topic::class.'@update');
+
+            /*
+             * Get a single topic.
+             *
+             * @Get /api/v2/feed/topics/:topicID
+             * @Response::header('Status', 200, 'OK')
+             */
+            $api->get('{topic}', \Zhiyi\Plus\API2\Controllers\Feed\Topic::class.'@show');
         });
     });
 

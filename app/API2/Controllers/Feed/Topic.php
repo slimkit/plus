@@ -27,12 +27,13 @@ use Zhiyi\Plus\API2\Controllers\Controller;
 use Zhiyi\Plus\Types\Models as ModelsTypes;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
-use Zhiyi\Plus\API2\Resources\Feed\TopicCollection;
+use Zhiyi\Plus\API2\Resources\Feed\Topic as TopicResource;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Zhiyi\Plus\API2\Requests\Feed\TopicIndex as IndexRequest;
 use Zhiyi\Plus\API2\Requests\Feed\EditTopic as EditTopicRequest;
 use Zhiyi\Plus\API2\Requests\Feed\CreateTopic as CreateTopicRequest;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Zhiyi\Plus\API2\Resources\Feed\TopicCollection as TopicCollectionResource;
 
 class Topic extends Controller
 {
@@ -98,7 +99,7 @@ class Topic extends Controller
             ->get();
 
         // Create the action response.
-        $response = (new TopicCollection($result))
+        $response = (new TopicCollectionResource($result))
             ->response()
             ->setStatusCode(Response::HTTP_OK /* 200 */);
 
@@ -227,5 +228,18 @@ class Topic extends Controller
 
             return $response;
         });
+    }
+
+    /**
+     * Get a single topic.
+     *
+     * @param \Zhiyi\Plus\Models\FeedTopic $topic
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show(FeedTopicModel $topic): JsonResponse
+    {
+        return (new TopicResource($topic))
+            ->response()
+            ->setStatusCode(Response::HTTP_OK /* 200 */);
     }
 }
