@@ -32,5 +32,10 @@ class FeedTopicLink extends Pivot
     /**
      * Indicates if the IDs are auto-incrementing.
      */
-    public $incrementing = false;
+    public $incrementing = true;
+
+    /**
+     * The pviot using primary key to index.
+     */
+    protected $primaryKey = 'index';
 }
