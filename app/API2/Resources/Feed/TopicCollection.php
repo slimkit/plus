@@ -39,11 +39,10 @@ class TopicCollection extends ResourceCollection
     {
         return $this
             ->collection
-            ->map(function (FeedTopicModel $item) use ($request): array {
+            ->map(function ($item) use ($request): array {
                 return $this->collectionItemToArray($item, $request);
             })
-            ->values()
-            ->toArray();
+            ->all();
     }
 
     /**
@@ -52,7 +51,7 @@ class TopicCollection extends ResourceCollection
      * @param \Zhiyi\Plus\Models\FeedTopic $item
      * @return array
      */
-    public function collectionItemToArray(FeedTopicModel $item): array
+    public function collectionItemToArray($item): array
     {
         return [
             'id' => $item->id,

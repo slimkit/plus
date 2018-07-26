@@ -676,6 +676,22 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
              * @Response::header('Status', 200, 'OK')
              */
             $api->get('{topic}', \Zhiyi\Plus\API2\Controllers\Feed\Topic::class.'@show');
+
+            /*
+             * List feeds on a topic.
+             *
+             * @Get /api/v2/feed/topics/:topicID/feeds
+             * @Param::query('limit', 'integer', 'The data limit, default `15`.')
+             * @Param::query('index', 'integer', 'fetch data start index')
+             * @Param::query('direction', 'string', 'Can be one of `asc` or `desc`.')
+             * @Response::header('Status', 200, 'OK')
+             * @Response::json('<pre>
+             * [{
+             *     ""
+             * }]
+             * </pre>')
+             */
+            $api->get('{topic}/feeds', Zhiyi\Plus\API2\Controllers\Feed\TopicFeed::class);
         });
     });
 
