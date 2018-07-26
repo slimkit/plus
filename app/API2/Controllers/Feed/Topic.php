@@ -89,7 +89,7 @@ class Topic extends Controller
         if ($request->query('only') === 'hot') {
             return $this->listTopicsOnlyHot($model);
         }
-    
+
         // Get query data `id` order direction.
         // Value: `asc` or `desc`
         $direction = $request->query('direction', 'desc');

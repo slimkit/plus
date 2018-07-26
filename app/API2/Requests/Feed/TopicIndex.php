@@ -36,7 +36,7 @@ class TopicIndex extends Request
             'index' => ['nullable', 'integer', 'min:0'],
             'direction' => ['nullable', 'in:asc,desc'],
             'q' => ['nullable', 'string'],
-            'only' => ['nullable', 'string', 'in:hot']
+            'only' => ['nullable', 'string', 'in:hot'],
         ];
     }
 
