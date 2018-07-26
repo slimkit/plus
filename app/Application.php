@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Zhiyi\Plus;
 
 use Illuminate\Foundation\Application as LaravelApplication;
-use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 
 class Application extends LaravelApplication
 {
@@ -31,13 +30,6 @@ class Application extends LaravelApplication
      * @var string
      */
     const VERSION = '1.9.0';
-
-    /**
-     * The core vendor YAML file.
-     *
-     * @var string.
-     */
-    protected $vendorYamlFile;
 
     /**
      * Create a new Illuminate application instance.
@@ -54,6 +46,9 @@ class Application extends LaravelApplication
             $app->make(\Zhiyi\Plus\Bootstrap\LoadConfiguration::class)
                 ->handle();
         });
+
+        // Use environment path.
+        $this->useEnvironmentPath($this->appConfigurePath());
     }
 
     /**
@@ -68,69 +63,45 @@ class Application extends LaravelApplication
     }
 
     /**
-     * Set load vendor environment yaml file to be loaded during bootstrapping.
-     *
-     * @param string $file
-     * @return $this
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function loadVendorYamlFrom(string $file): ApplicationContract
-    {
-        $this->vendorYamlFile = $file;
-
-        return $this;
-    }
-
-    /**
-     * Get the environment yaml file the application using.
-     *
-     * @return string
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function vendorYamlFile(): string
-    {
-        return $this->vendorYamlFile ?: '.plus.yml';
-    }
-
-    /**
-     * Get the fully qualified path to the environment yaml file.
-     *
-     * @return string
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function vendorYamlFilePath(): string
-    {
-        return $this->storagePath()
-            .DIRECTORY_SEPARATOR
-            .'app'
-            .DIRECTORY_SEPARATOR
-            .'config'
-            .DIRECTORY_SEPARATOR
-            .$this->vendorYamlFile();
-    }
-
-    /**
      * Register the core class aliases in the container.
      *
      * @return void
-     * @author Seven Du <shiweidu@outlook.com>
      */
     public function registerCoreContainerAliases()
     {
+        // Register parent core container aliases.
         parent::registerCoreContainerAliases();
 
-        $aliases = [
+        // Register the app core container aliased.
+        foreach ([
             'app' => [static::class],
             'cdn' => [
                 \Zhiyi\Plus\Contracts\Cdn\UrlFactory::class,
                 \Zhiyi\Plus\Cdn\UrlManager::class,
             ],
-        ];
-
-        foreach ($aliases as $key => $aliases) {
+        ] as $abstract => $aliases) {
             foreach ($aliases as $alias) {
-                $this->alias($key, $alias);
+                $this->alias($abstract, $alias);
             }
         }
+    }
+
+    /**
+     * The app configure path.
+     * @param  string $path
+     * @return string
+     */
+    public function appConfigurePath(string $path = ''): string
+    {
+        return $this->basePath().'/storage/configure'.($path ? DIRECTORY_SEPARATOR.$path : '');
+    }
+
+    /**
+     * Get the app YAML configure filename.
+     * @return string
+     */
+    public function appYamlConfigureFile(): string
+    {
+        return $this->appConfigurePath('plus.yml');
     }
 }

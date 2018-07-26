@@ -24,7 +24,6 @@ use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\GoldType;
 use Zhiyi\Plus\Models\UserCount;
-use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
 class NewUserRewardController extends Controller
@@ -32,7 +31,7 @@ class NewUserRewardController extends Controller
     // 系统货币名称
     protected $goldName;
 
-    public function __construct(GoldType $goldModel, CommonConfig $configModel)
+    public function __construct(GoldType $goldModel)
     {
         $this->goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '积分';
     }

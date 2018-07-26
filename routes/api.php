@@ -616,4 +616,82 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
      * 重置未读信息
      */
     $api->patch('/user/counts', \Zhiyi\Plus\API2\Controllers\UserCountsController::class.'@reset');
+
+    // Feed group
+    // @Route /api/v2/feed
+    $api->group(['prefix' => 'feed'], function (RouteContract $api) {
+        // Feed Topics Group
+        // @Route /api/v2/feed/topics
+        $api->group(['prefix' => 'topics'], function (RouteContract $api) {
+            /*
+             * Topic Index
+             *
+             * @Get /api/v2/feed/topics
+             * @Param::query {q} Search topic name keyword.
+             * @Param::query {limit} Featch data limit.
+             * @Param::query {index} Featch data start index.
+             * @Param::query {direction} Can be one of `asc` or `desc`.
+             * @Response::header('Status', 200, 'OK')
+             * @Response::json('<pre>
+             *  [{
+             *   "id": 1,        // Topic ID
+             *   "name": "Plus", // Topic name
+             *   "logo": 2,      // Topic logo, file with ID
+             *   "created_at": "2018-07-23T15:04:23Z" // Topic created datetime
+             *  }]
+             *  </pre>')
+             */
+            $api->get('', \Zhiyi\Plus\API2\Controllers\Feed\Topic::class.'@index');
+
+            /*
+             * Create an topic
+             *
+             * @Post /api/v2/feed/topics
+             * @Param::input('name', 'string', 'The name of the topic.')
+             * @Param::input('desc', 'string', 'The desc of the topic.')
+             * @Param::input('logo', 'integer', 'The topic logo file with     ID.')
+             * @Response::header('Status', 201, 'Created')
+             * @Response::json('<pre>
+             * {
+             *     "id": 2 // Created topic id
+             * }
+             * </pre>')
+             */
+            $api->post('', \Zhiyi\Plus\API2\Controllers\Feed\Topic::class.'@create');
+
+            /*
+             * Edit an topic.
+             *
+             * @Patch /api/v2/feed/topics/:topicID
+             * @Param::input('desc', 'string', 'The desc of the topic')
+             * @Param::input('logo', 'integer', 'The topic logo file with ID')
+             * @Response::header('Status', 204, 'No Content')
+             */
+            $api->patch('{topic}', \Zhiyi\Plus\API2\Controllers\Feed\Topic::class.'@update');
+
+            /*
+             * Get a single topic.
+             *
+             * @Get /api/v2/feed/topics/:topicID
+             * @Response::header('Status', 200, 'OK')
+             */
+            $api->get('{topic}', \Zhiyi\Plus\API2\Controllers\Feed\Topic::class.'@show');
+        });
+    });
+
+    /*
+     * Follow a topic.
+     *
+     * @Put /api/v2/user/feed-topics/:topicID
+     * @Response::header('Status', 204, 'No Content')
+     */
+    $api->put('user/feed-topics/{topicID}', \Zhiyi\Plus\API2\Controllers\Feed\TopicFollow::class.'@follow');
+
+    /*
+     * Unfollow a topic
+     *
+     * @Delete /api/v2/user/feed-topics/:topicID
+     * @Response::header('Status', 204, 'No Content')
+     */
+    $api->delete('user/feed-topics/{topicID}', \Zhiyi\Plus\API2\Controllers\Feed\TopicFollow::class.'@unfollow');
 });

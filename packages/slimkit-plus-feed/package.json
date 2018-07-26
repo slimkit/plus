@@ -1,10 +1,5 @@
 {
-  "name": "plus-component-feed",
-  "version": "1.0.0",
-  "description": "为 ThinkSNS+ 添加分享功能拓展包",
-  "repository": "https://github.com/zhiyicx/plus-component-feed",
-  "author": "Seven Du <shiweidu@outlook.com>",
-  "license": "Apache-2",
+  "private": true,
   "devDependencies": {
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.0",

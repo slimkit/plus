@@ -64,7 +64,14 @@ class Feed
      */
     public function find($id, $columns = ['*'])
     {
-        return $this->model = $this->model->findOrFail($id, $columns);
+        $this->model = $this->model->findOrFail($id, $columns);
+        $this->model->load([
+            'topics' => function ($query) {
+                return $query->select('id', 'name');
+            },
+        ]);
+
+        return $this->model;
     }
 
     /**

@@ -45,6 +45,7 @@ class CurrentUserController extends Controller
         $user->makeVisible(['phone', 'email']);
         $friends_count = $user->mutual()->get()->count();
         $user->friends_count = $friends_count;
+        $user->initial_password = (bool) $user->password;
 
         return $response->json($user, 200);
     }

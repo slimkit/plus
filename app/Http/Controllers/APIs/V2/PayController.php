@@ -113,7 +113,7 @@ class PayController extends Controller
         return $response->json(['message' => '创建支付宝订单失败'], 422);
     }
 
-    public function getAlipayWapOrder(Request $request, Carbon $dateTime, ResponseFactory $response, NativePayOrder $order)
+    public function getAlipayWapOrder(Request $request, ResponseFactory $response, NativePayOrder $order)
     {
         $user = $request->user();
         $amount = $request->input('amount', 0);
@@ -206,12 +206,12 @@ class PayController extends Controller
         $config = array_filter(config('newPay.alipay'));
         // 支付宝配置必须包含signType, appId, secretKey, publicKey, 缺一不可
         if (count($config) < 4) {
-            die('fail');
+            exit('fail');
         }
         $order = $orderModel->where('out_trade_no', $data['out_trade_no'])
             ->first();
         if (! $order || $order->status === 1) {
-            die('fail');
+            exit('fail');
         }
         if ($order->amount != $data['total_amount'] * 100) {
             return $response->json(['message' => '订单金额有误，请联系小助手'], 422);
@@ -251,12 +251,12 @@ class PayController extends Controller
 
                 $this->resolveWalletCharge($order->walletCharge, $data);
 
-                die('success');
+                exit('success');
             } else {
-                die('fail');
+                exit('fail');
             }
         } catch (Exception $e) {
-            die('fail');
+            exit('fail');
         }
     }
 
@@ -465,7 +465,7 @@ class PayController extends Controller
         return $response->json(['message' => '创建微信订单失败'], 422);
     }
 
-    public function wechatNotify(WalletChargeModel $walletChargeModel, WalletOrderModel $walletOrderModel, NativePayOrder $orderModel, ResponseFactory $response)
+    public function wechatNotify(WalletOrderModel $walletOrderModel, NativePayOrder $orderModel, ResponseFactory $response)
     {
         $data = file_get_contents('php://input');
         $config = array_filter(config('newPay.wechatPay'));
@@ -486,7 +486,7 @@ class PayController extends Controller
             $payOrder = $orderModel->where('out_trade_no', $requestData['out_trade_no'])
                 ->first();
             if (! $payOrder || ($payOrder->amount != $requestData['total_fee'])) {
-                die('<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>');
+                exit('<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>');
             }
             $walletOrder = $walletOrderModel->where('target_id', $payOrder->id)
                 ->first();
@@ -502,9 +502,9 @@ class PayController extends Controller
                 $this->resolveWalletOrder($walletOrder, $data);
             }
 
-            die('<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>');
+            exit('<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>');
         } else {
-            die('<xml><return_code><![CDATA[FAIL]]></return_code></xml>');
+            exit('<xml><return_code><![CDATA[FAIL]]></return_code></xml>');
         }
     }
 

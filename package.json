@@ -11,6 +11,7 @@
         "postinstall": "opencollective postinstall"
     },
     "devDependencies": {
+        "@slimkit/plus-editor": "^0.0.3",
         "babel-plugin-component": "^1.1.1",
         "babel-preset-env": "^1.7.0",
         "babel-preset-stage-2": "^6.24.1",
@@ -20,6 +21,7 @@
         "vue-template-compiler": "^2.5.16"
     },
     "dependencies": {
+        "@slimkit/plus-editor": "^0.0.3",
         "axios": "^0.18",
         "bootstrap-sass": "^3.3.7",
         "chart.js": "^2.7.2",
@@ -40,7 +42,7 @@
     },
     "collective": {
         "type": "opencollective",
-        "url": "https://opencollective.com/thinksns-plus",
-        "logo": "https://opencollective.com/thinksns-plus/logo.txt"
+        "url": "https://opencollective.com/plus",
+        "logo": "https://opencollective.com/plus/logo.txt"
     }
 }

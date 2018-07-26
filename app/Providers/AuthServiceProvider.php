@@ -30,7 +30,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'Zhiyi\Plus\Model' => 'Zhiyi\Plus\Policies\ModelPolicy',
+        \Zhiyi\Plus\Models\FeedTopic::class => \Zhiyi\Plus\Policies\Feed\Topic::class,
     ];
 
     /**

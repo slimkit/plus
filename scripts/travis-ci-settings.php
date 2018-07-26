@@ -1,4 +1,7 @@
+#!/usr/bin/env php
 <?php
+
+declare(strict_types=1);
 
 $db = $argv[1] ?? 'mysql';
 $connection = [];
@@ -14,7 +17,7 @@ switch ($db) {
             'DB_PASSWORD' => 'postgres',
         ];
         break;
-    
+
     case 'mysql':
     default:
         $connection = [
@@ -30,10 +33,14 @@ switch ($db) {
 
 $connection = array_merge($connection, [
     'APP_ENV' => 'testing',
+    'APP_DEBUG'=> 'true',
 ]);
-$env = file_get_contents(__DIR__.'/.env.example');
+
+$basePath = dirname(__DIR__);
+
+$env = file_get_contents($basePath.'/storage/configure/.env.example');
 foreach ($connection as $key => $value) {
-    $env = preg_replace("/{$key}=(.*)?/i", "{$key}={$value}", $env);
+    $env .= PHP_EOL.$key.'='.$value.PHP_EOL;
 }
 
-file_put_contents(__DIR__.'/.env.travis', $env);
+file_put_contents($basePath.'/storage/configure/.env', $env);

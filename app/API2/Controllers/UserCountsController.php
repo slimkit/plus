@@ -22,6 +22,7 @@ namespace Zhiyi\Plus\API2\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\API2\Resources\UserCountsResource;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 
@@ -41,10 +42,10 @@ class UserCountsController extends Controller
      * The route controller to callable handle.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Zhiyi\Plus\API2\Resources\UserCountsResource
+     * @return \Illuminate\Http\JsonResponse
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function count(Request $request): UserCountsResource
+    public function count(Request $request): JsonResponse
     {
         $user = $request->user();
         $counts = UserCountModel::where('user_id', $user->id)->get();
@@ -54,7 +55,9 @@ class UserCountsController extends Controller
             $data[$count->type] = $count->total;
         });
 
-        return new UserCountsResource($data);
+        return (new UserCountsResource($data))
+            ->response()
+            ->setStatusCode(200);
     }
 
     /**

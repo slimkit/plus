@@ -53,7 +53,8 @@ class WechatController extends Controller
      * @param    string              $code    [description]
      * @return   [type]                       [description]
      */
-    public function getAccess(Request $request, string $code) {
+    public function getAccess(string $code)
+    {
         $config = config('socialite.wechat-mp') ?? null;
         $url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid='. $config['appid'] .'&secret='. $config['secret'] .'&code=' . $code . '&grant_type=authorization_code';
         $res = file_get_contents($url);
@@ -88,7 +89,8 @@ class WechatController extends Controller
         if(!$accessToken || !$jssdkTicket) {
             $originUrl = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='. $config['appid'] .'&secret='. $config['secret'];
             $result = json_decode(file_get_contents($originUrl), true) ?? [];
-            if(!$result) {
+            if(isset($result['errcode'])) {
+                \Log::debug('微信分享配置信息错误');
                 return response()->json(['message' => '微信配置错误'], 422);
             }
 

@@ -28,6 +28,7 @@ use Zhiyi\Plus\Models\Like as LikeModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
+use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedVideo;
@@ -35,6 +36,7 @@ use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed as FeedRepository;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2\StoreFeedPost as StoreFeedPostRequest;
 
@@ -93,6 +95,9 @@ class FeedController extends Controller
             ->orderBy('feed_pinneds.amount', 'desc')
             ->orderBy('feed_pinneds.created_at', 'desc')
             ->get();
+        $feeds->load(['topics' => function ($query) {
+            return $query->select('id', 'name');
+        }]);
 
         $user = $request->user('api')->id ?? 0;
         $ids = $feeds->pluck('id');
@@ -140,12 +145,15 @@ class FeedController extends Controller
         })
         ->orderBy('id', 'desc')
         ->with([
-        'pinnedComments' => function ($query) use ($datetime) {
-            return $query->with('user')->where('expires_at', '>', $datetime)->limit(5);
-        },
-        'user' => function ($query) {
-            return $query->withTrashed();
-        },
+            'pinnedComments' => function ($query) use ($datetime) {
+                return $query->with('user')->where('expires_at', '>', $datetime)->limit(5);
+            },
+            'user' => function ($query) {
+                return $query->withTrashed();
+            },
+            'topics' => function ($query) {
+                return $query->select('id', 'name');
+            },
         ])
         ->limit($limit)
         ->get();
@@ -186,22 +194,25 @@ class FeedController extends Controller
         $user = $request->user('api')->id ?? 0;
 
         $feeds = FeedModel::where('created_at', '>', $dateTime->subDay(config('feed.duration', 7)))
-        ->whereDoesntHave('blacks', function ($query) use ($user) {
-            $query->where('user_id', $user);
-        })
-        ->with([
-            'pinnedComments' => function ($query) use ($dateTime) {
-                return $query->with('user')->where('expires_at', '>', $dateTime)->limit(5);
-            },
-            'user' => function ($query) {
-                return $query->withTrashed();
-            },
-        ])
-        ->select('*', $model->getConnection()->raw('(feed_view_count + (feed_comment_count * 10) + (like_count * 5)) as popular'))
-        ->limit($limit)
-        ->offset($offset)
-        ->orderBy('popular', 'desc')
-        ->get();
+             ->whereDoesntHave('blacks', function ($query) use ($user) {
+                 $query->where('user_id', $user);
+             })
+             ->with([
+                 'pinnedComments' => function ($query) use ($dateTime) {
+                     return $query->with('user')->where('expires_at', '>', $dateTime)->limit(5);
+                 },
+                 'user' => function ($query) {
+                     return $query->withTrashed();
+                 },
+             ])
+             ->select('*', $model->getConnection()->raw('(feed_view_count + (feed_comment_count * 10) + (like_count * 5)) as popular'))
+             ->limit($limit)
+             ->offset($offset)
+             ->orderBy('popular', 'desc')
+             ->get();
+        $feeds->load(['topocs' => function ($query) {
+            return $query->select('id', 'name');
+        }]);
 
         FeedModel::whereIn('id', $feeds->pluck('id'))->increment('feed_view_count');
 
@@ -256,6 +267,9 @@ class FeedController extends Controller
                 },
                 'user' => function ($query) {
                     return $query->withTrashed();
+                },
+                'topics' => function ($query) {
+                    return $query->select('id', 'name');
                 },
             ])
             ->when((bool) $after, function ($query) use ($after) {
@@ -323,38 +337,94 @@ class FeedController extends Controller
         });
     }
 
-        /**
-        * 储存分享.
-        *
-        * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2\StoreFeedPost $request
-        * @return mixed
-        * @author Seven Du <shiweidu@outlook.com>
-        */
+    /**
+     * Make feed link topics.
+     *
+     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2\StoreFeedPost $request
+     * @return array
+     */
+    private function makeFeedLinkTopics(StoreFeedPostRequest $request): array
+    {
+        $topics = array_map(function ($item): ?int {
+            if (is_numeric($item) || $item == (int) $item) {
+                return (int) $item;
+            }
+
+            throw new UnprocessableEntityHttpException('发布的话题存在非法数据');
+        }, (array) $request->input('topics'));
+
+        $topicsCount = count($topics);
+        if ($topicsCount === 0) {
+            return [];
+        } elseif ($topicsCount > 5) {
+            throw new UnprocessableEntityHttpException('话题最多允许五个');
+        }
+
+        $topics = array_values(array_filter($topics));
+        $topicsModelIDs = (new FeedTopicModel)
+            ->query()
+            ->whereIn('id', $topics)
+            ->select('id')
+            ->get()
+            ->pluck('id');
+
+        if ($topicsModelIDs->diff($topics)->isNotEmpty()) {
+            throw new UnprocessableEntityHttpException('不合法的话题数据，部分话题不存在');
+        }
+
+        return $topicsModelIDs->all();
+    }
+
+    /**
+     * Link feed to topics and increment topic followers_count column.
+     *
+     * @param array     $topics
+     * @param FeedModel $feed
+     * @return void
+     */
+    private function linkFeedToTopics(array $topics, FeedModel $feed): void
+    {
+        if (empty($topics)) {
+            return;
+        }
+
+        $feed->topics()->sync($topics);
+        $query = (new FeedTopicModel)->query();
+        $query->whereIn('id', $topics)->increment('feeds_count', 1);
+    }
+
+    /**
+     * Create an feed.
+     *
+     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2\StoreFeedPost $request
+     * @return mixed
+     */
     public function store(StoreFeedPostRequest $request)
     {
         $user = $request->user();
         $feed = $this->fillFeedBaseData($request, new FeedModel());
+        $topics = $this->makeFeedLinkTopics($request);
 
         $paidNodes = $this->makePaidNode($request);
         $fileWiths = $this->makeFileWith($request);
         $videoWith = $this->makeVideoWith($request);
         $videoCoverWith = $this->makeVideoCoverWith($request);
 
-        try {
-            $feed->saveOrFail();
-            $feed->getConnection()->transaction(function () use ($request, $feed, $paidNodes, $fileWiths, $user, $videoWith, $videoCoverWith) {
-                $this->saveFeedPaidNode($request, $feed);
-                $this->saveFeedFilePaidNode($paidNodes, $feed);
-                $this->saveFeedFileWith($fileWiths, $feed);
-                $videoWith && $this->saveFeedVideoWith($videoWith, $videoCoverWith, $feed);
-                $user->extra()->firstOrCreate([])->increment('feeds_count', 1);
-            });
-        } catch (\Exception $e) {
-            $feed->delete();
-            throw $e;
-        }
+        return $user->getConnection()->transaction(function () use ($request, $feed, $topics, $paidNodes, $fileWiths, $videoWith, $videoCoverWith, $user) {
+            $feed->save();
+            $this->saveFeedPaidNode($request, $feed);
+            $this->saveFeedFilePaidNode($paidNodes, $feed);
+            $this->saveFeedFileWith($fileWiths, $feed);
+            $this->linkFeedToTopics($topics, $feed);
 
-        return response()->json(['message' => '发布成功', 'id' => $feed->id])->setStatusCode(201);
+            if ($videoWith) {
+                $this->saveFeedVideoWith($videoWith, $videoCoverWith, $feed);
+            }
+
+            $user->extra()->firstOrCreate([])->increment('feeds_count', 1);
+
+            return response()->json(['message' => '发布成功', 'id' => $feed->id])->setStatusCode(201);
+        });
     }
 
         /**

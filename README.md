@@ -8,6 +8,13 @@
 
 [Plus (ThinkSNS+)](http://www.thinksns.com) 是使用 [Laravel](https://laravel.com/) 框架开发；一个功能强大、易于开发和动态拓展的社交系统。
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8320deaa80b8489f95fcedaae6df079d)](https://www.codacy.com/app/slimkit/plus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=slimkit/plus&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/8320deaa80b8489f95fcedaae6df079d)](https://www.codacy.com/app/slimkit/plus?utm_source=github.com&utm_medium=referral&utm_content=slimkit/plus&utm_campaign=Badge_Coverage)
+[![StyleCI](https://github.styleci.io/repos/76627423/shield?branch=master)](https://github.styleci.io/repos/76627423)
+[![Build Status](https://travis-ci.org/slimkit/plus.svg?branch=master)](https://travis-ci.org/slimkit/plus)
+[![CircleCI](https://circleci.com/gh/slimkit/plus/tree/master.svg?style=svg)](https://circleci.com/gh/slimkit/plus/tree/master)
+[![QQ Group](https://img.shields.io/badge/QQ%20Group-651240785-red.svg?longCache=true&style=flat-square)](//shang.qq.com/wpa/qunwpa?idkey=01b61bdf8a7efc2a40ab4caab2d14793f340e5fe5d09aa0c2c17f3115a579678)
+
 </div>
 
 ## 简介
@@ -20,19 +27,6 @@ Plus (ThinkSNS+) 是一个使用 Laravel 开发，并且功能繁多且健壮的
 - 一个更加强大的大屏 Web 界面应用 (但它是收费的) 👉 [Plus PC](https://github.com/zhiyicx/plus-component-pc)
 
 > 如果你关注 ThinkSNS 所属公司更多开源产品，请看[ThinkSNS 官网](http://www.thinksns.com)
-
-## Badges
-
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8320deaa80b8489f95fcedaae6df079d)](https://www.codacy.com/app/zhiyi/thinksns-plus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=slimkit/thinksns-plus&amp;utm_campaign=Badge_Grade)
-[![codecov](https://codecov.io/gh/slimkit/thinksns-plus/branch/master/graph/badge.svg)](https://codecov.io/gh/slimkit/thinksns-plus)
-[![Style CI](https://styleci.io/repos/76627423/shield?branch=master)](https://styleci.io/repos/76627423)
-[![Composer publish version](https://img.shields.io/packagist/v/slimkit/plus.svg?style=flat-square)](https://packagist.org/packages/slimkit/plus)
-[![Composer publish preview version](https://img.shields.io/packagist/vpre/slimkit/plus.svg?style=flat-square)](https://packagist.org/packages/slimkit/plus)
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fslimkit%2Fthinksns-plus.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fslimkit%2Fthinksns-plus?ref=badge_shield)
-
-Travis CI: [![Travis CI Build Status](https://img.shields.io/travis/slimkit/plus.svg?style=flat-square)](https://travis-ci.org/slimkit/plus)
-
-Circle CI: [![https://img.shields.io/circleci/project/github/slimkit/plus.svg?style=flat-square](https://img.shields.io/travis/slimkit/plus.svg?style=flat-square)](https://circleci.com/gh/slimkit/plus)
 
 ## 特点
 
@@ -133,18 +127,18 @@ php artisan serve
 
 ### 赞助商
 
-感谢所有赞助商！(如果你也支持这个项目，[√成为赞助商](https://opencollective.com/thinksns-plus#sponsor))
+感谢所有赞助商！(如果你也支持这个项目，[√成为赞助商](https://opencollective.com/plus#sponsor))
 
-<a href="https://opencollective.com/thinksns-plus/sponsor/0/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/thinksns-plus/sponsor/1/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/thinksns-plus/sponsor/2/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/thinksns-plus/sponsor/3/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/3/avatar.svg"></a>
-<a href="https://opencollective.com/thinksns-plus/sponsor/4/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/4/avatar.svg"></a>
-<a href="https://opencollective.com/thinksns-plus/sponsor/5/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/5/avatar.svg"></a>
-<a href="https://opencollective.com/thinksns-plus/sponsor/6/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/6/avatar.svg"></a>
-<a href="https://opencollective.com/thinksns-plus/sponsor/7/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/7/avatar.svg"></a>
-<a href="https://opencollective.com/thinksns-plus/sponsor/8/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/8/avatar.svg"></a>
-<a href="https://opencollective.com/thinksns-plus/sponsor/9/website" target="_blank"><img src="https://opencollective.com/thinksns-plus/sponsor/9/avatar.svg"></a>
+<a href="https://opencollective.com/plus/sponsor/0/website" target="_blank"><img src="https://opencollective.com/plus/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/plus/sponsor/1/website" target="_blank"><img src="https://opencollective.com/plus/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/plus/sponsor/2/website" target="_blank"><img src="https://opencollective.com/plus/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/plus/sponsor/3/website" target="_blank"><img src="https://opencollective.com/plus/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/plus/sponsor/4/website" target="_blank"><img src="https://opencollective.com/plus/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/plus/sponsor/5/website" target="_blank"><img src="https://opencollective.com/plus/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/plus/sponsor/6/website" target="_blank"><img src="https://opencollective.com/plus/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/plus/sponsor/7/website" target="_blank"><img src="https://opencollective.com/plus/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/plus/sponsor/8/website" target="_blank"><img src="https://opencollective.com/plus/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/plus/sponsor/9/website" target="_blank"><img src="https://opencollective.com/plus/sponsor/9/avatar.svg"></a>
 
 ## 优秀项目推荐
 
@@ -155,4 +149,6 @@ php artisan serve
 
 ThinkSNS Plus 代码遵循 Apache 2.0 许可证发布，请参阅完整的 [许可证文本](https://github.com/slimkit/plus/blob/master/LICENSE)
 
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fslimkit%2Fthinksns-plus.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fslimkit%2Fthinksns-plus?ref=badge_large)
+Copyright © 2018 Chengdu [ZhiYiChuangXiang](http://zhiyicx.com) Technology Co., Ltd. All rights reserved.
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fslimkit%2Fplus.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fslimkit%2Fplus?ref=badge_large)
