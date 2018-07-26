@@ -209,7 +209,7 @@ class FeedController extends Controller
              ->offset($offset)
              ->orderBy('popular', 'desc')
              ->get();
-        $feeds->load(['topocs' => function ($query) {
+        $feeds->load(['topics' => function ($query) {
             return $query->select('id', 'name');
         }]);
 
