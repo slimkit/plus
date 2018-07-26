@@ -39,6 +39,7 @@ class CreateFeedTopicsTable extends Migration
             $table->integer('creator_user_id')->unsigned()->comment('The topic creator user ID');
             $table->integer('feeds_count')->unsigned()->nullable()->default(0)->comment('The topic link feeds count');
             $table->integer('followers_count')->unsigned()->nullable()->default(0)->comment('The topic followers count');
+            $table->dateTime('hot_at')->nullable()->default(null)->comment('设置为热门的时间');
             $table->timestamps();
 
             $table->unique('name');

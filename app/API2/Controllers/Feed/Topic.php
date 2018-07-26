@@ -53,6 +53,30 @@ class Topic extends Controller
             ->only(['create', 'update']);
     }
 
+    public function listTopicsOnlyHot(FeedTopicModel $model): JsonResponse
+    {
+        $topics = $model
+            ->query()
+            ->whereNotNull('hot_at')
+            ->limit(8)
+            ->orderBy('id', 'desc')
+            ->get();
+        if (($count = $topics->count()) < 8) {
+            $topics = $topics->merge(
+                $model->query()
+                ->whereNull('hot_at')
+                ->limit(8 - $count)
+                ->orderBy('feeds_count', 'desc')
+                ->get()
+                ->all()
+            )->values();
+        }
+
+        return (new TopicCollectionResource($topics))
+            ->response()
+            ->setStatusCode(Response::HTTP_OK /* 200 */);
+    }
+
     /**
      * List topics.
      *
@@ -62,6 +86,10 @@ class Topic extends Controller
      */
     public function index(IndexRequest $request, FeedTopicModel $model): JsonResponse
     {
+        if ($request->query('only') === 'hot') {
+            return $this->listTopicsOnlyHot($model);
+        }
+
         // Get query data `id` order direction.
         // Value: `asc` or `desc`
         $direction = $request->query('direction', 'desc');

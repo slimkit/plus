@@ -21,6 +21,8 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 
 class FeedTopicLink extends Pivot
 {
@@ -38,4 +40,14 @@ class FeedTopicLink extends Pivot
      * The pviot using primary key to index.
      */
     protected $primaryKey = 'index';
+
+    /**
+     * Load the link has feed relation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function feed(): HasOne
+    {
+        return $this->hasOne(FeedModel::class, 'id', 'feed_id');
+    }
 }
