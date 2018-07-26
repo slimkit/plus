@@ -24,9 +24,8 @@ use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\API2\Controllers\Controller;
 use Zhiyi\Plus\Models\FeedTopicLink as FeedTopicLinkModel;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Zhiyi\Plus\API2\Resources\Feed\FeedCollection as FeedCollectionResource;
-use Zhiyi\Plus\API2\Requests\Feed\ListFeedsForATopic as ListFeedsForATopicRequest;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed as FeedRepository;
+use Zhiyi\Plus\API2\Requests\Feed\ListFeedsForATopic as ListFeedsForATopicRequest;
 
 class TopicFeed extends Controller
 {

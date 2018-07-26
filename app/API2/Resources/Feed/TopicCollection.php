@@ -22,7 +22,6 @@ namespace Zhiyi\Plus\API2\Resources\Feed;
 
 use Illuminate\Database\Eloquent\Model;
 use Zhiyi\Plus\Utils\DateTimeToIso8601ZuluString;
-use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class TopicCollection extends ResourceCollection

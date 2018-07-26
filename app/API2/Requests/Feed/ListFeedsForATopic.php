@@ -34,7 +34,7 @@ class ListFeedsForATopic extends Request
         return [
             'limit' => ['nullable', 'integer', 'min:1'],
             'index' => ['nullable', 'integer', 'min:0'],
-            'direction' => ['nullable', 'string', 'in:asc,desc']
+            'direction' => ['nullable', 'string', 'in:asc,desc'],
         ];
     }
 
