@@ -631,6 +631,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
              * @Param::query {limit} Featch data limit.
              * @Param::query {index} Featch data start index.
              * @Param::query {direction} Can be one of `asc` or `desc`.
+             * @Param::query('only', 'string', 'The value is `hot`')
              * @Response::header('Status', 200, 'OK')
              * @Response::json('<pre>
              *  [{
