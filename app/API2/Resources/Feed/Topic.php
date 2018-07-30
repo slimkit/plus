@@ -51,6 +51,7 @@ class Topic extends JsonResource
 
                 return false;
             }),
+            'participants' => $this->when($this->participants, $this->participants),
         ];
     }
 }

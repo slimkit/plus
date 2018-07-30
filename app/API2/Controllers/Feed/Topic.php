@@ -272,6 +272,16 @@ class Topic extends Controller
      */
     public function show(FeedTopicModel $topic): JsonResponse
     {
+        $topic->participants = $topic
+            ->users()
+            ->newPivotQuery()
+            ->where('user_id', '!=', $topic->creator_user_id)
+            ->orderBy(Model::UPDATE_AT, 'desc')
+            ->limit(3)
+            ->select('user_id')
+            ->get()
+            ->pluck('user_id');
+
         return (new TopicResource($topic))
             ->response()
             ->setStatusCode(Response::HTTP_OK /* 200 */);
