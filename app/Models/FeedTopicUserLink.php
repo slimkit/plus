@@ -22,12 +22,12 @@ namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class FeedTopicFollower extends Pivot
+class FeedTopicUserLink extends Pivot
 {
     /**
      * The model table name.
      */
-    protected $table = 'feed_topic_followers';
+    protected $table = 'feed_topic_user_links';
 
     /**
      * The pviot using primary key to index.

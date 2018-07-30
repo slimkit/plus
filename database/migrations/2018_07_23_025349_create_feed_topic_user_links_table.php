@@ -19,6 +19,7 @@ declare(strict_types=1);
  */
 
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -31,15 +32,18 @@ class CreateFeedTopicFollowersTable extends Migration
      */
     public function up()
     {
-        Schema::create('feed_topic_followers', function (Blueprint $table) {
+        Schema::create('feed_topic_user_links', function (Blueprint $table) {
             $table->increments('index')->comment('The topic followers index');
             $table->integer('topic_id')->unsigned()->comment('Be follow topic id');
             $table->integer('user_id')->unsigned()->comment('Follow topic user id');
+            $table->integer('feeds_count')->unsigned()->nullable()->default(0)->comment('The user send to the topic feeds count');
+            $table->dateTime('following_at')->nullable()->default(null)->command('The user following the topic date.');
             $table->timestamps();
 
             $table->unique(['topic_id', 'user_id']);
             $table->index('user_id');
             $table->index('topic_id');
+            $table->index(Model::CREATED_AT);
         });
     }
 

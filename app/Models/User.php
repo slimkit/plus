@@ -27,6 +27,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Zhiyi\Plus\Http\Controllers\APIs\V2\UserAvatarController;
 
 class User extends Authenticatable implements JWTSubject
@@ -335,5 +336,17 @@ class User extends Authenticatable implements JWTSubject
     public function getImPwdHash()
     {
         return $this->password ? md5($this->password) : md5('123456');
+    }
+
+    /**
+     * The user topics belong to many.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function feedTopics(): BelongsToMany
+    {
+        $table = (new FeedTopicUserLink)->getTable();
+
+        return $this->belongsToMany(FeedTopic::class, $table, 'user_id', 'topic_id');
     }
 }

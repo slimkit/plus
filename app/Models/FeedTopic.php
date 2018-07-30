@@ -35,13 +35,13 @@ class FeedTopic extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function followers(): BelongsToMany
+    public function users(): BelongsToMany
     {
-        $table = (new FeedTopicFollower)->getTable();
+        $table = (new FeedTopicUserLink)->getTable();
 
         return $this
             ->belongsToMany(User::class, $table, 'topic_id', 'user_id')
             ->withPivot('index', Model::CREATED_AT)
-            ->using(FeedTopicFollower::class);
+            ->using(FeedTopicUserLink::class);
     }
 }

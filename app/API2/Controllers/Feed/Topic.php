@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\API2\Controllers\Feed;
 
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\Model;
 use Zhiyi\Plus\API2\Controllers\Controller;
@@ -31,6 +32,7 @@ use Zhiyi\Plus\API2\Resources\Feed\Topic as TopicResource;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Zhiyi\Plus\API2\Requests\Feed\TopicIndex as IndexRequest;
 use Zhiyi\Plus\API2\Requests\Feed\EditTopic as EditTopicRequest;
+use Zhiyi\Plus\Models\FeedTopicUserLink as FeedTopicUserLinkModel;
 use Zhiyi\Plus\API2\Requests\Feed\CreateTopic as CreateTopicRequest;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Zhiyi\Plus\API2\Resources\Feed\TopicCollection as TopicCollectionResource;
@@ -183,7 +185,11 @@ class Topic extends Controller
             $topic->save();
 
             // Attach the creator user follow the topic.
-            $topic->followers()->attach($user);
+            $link = new FeedTopicUserLinkModel();
+            $link->topic_id = $topic->id;
+            $link->user_id = $user->id;
+            $link->following_at = new Carbon();
+            $link->save();
 
             // If the FileWith instance of `FileWithModel`,
             // set topic class alias to `channel`, set the
