@@ -679,7 +679,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             $api->get('{topic}', \Zhiyi\Plus\API2\Controllers\Feed\Topic::class.'@show');
 
             /*
-             * List feeds on a topic.
+             * List feeds for a topic.
              *
              * @Get /api/v2/feed/topics/:topicID/feeds
              * @Param::query('limit', 'integer', 'The data limit, default `15`.')
@@ -693,6 +693,20 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
              * </pre>')
              */
             $api->get('{topic}/feeds', Zhiyi\Plus\API2\Controllers\Feed\TopicFeed::class);
+
+            /*
+             *
+             * List participants for a topic.
+             * 
+             * @Get /api/v2/feed/topic/:topicID/participants
+             * @Param::query('limit', 'integer', 'The data limit, default `15`.')
+             * @Param::query('offset', 'integer', 'The data offset, default `0`.')
+             * @Response::header('Status', 200, 'OK')
+             * @Response::json('<pre>
+             * [2, 3, 4, 5]
+             * </pre>')
+             */
+            $api->get('{topic}/participants', \Zhiyi\Plus\API2\Controllers\Feed\TopicParticipant::class.'@index');
         });
     });
 

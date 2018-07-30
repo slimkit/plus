@@ -276,7 +276,7 @@ class Topic extends Controller
             ->users()
             ->newPivotQuery()
             ->where('user_id', '!=', $topic->creator_user_id)
-            ->orderBy(Model::UPDATE_AT, 'desc')
+            ->orderBy(Model::UPDATED_AT, 'desc')
             ->limit(3)
             ->select('user_id')
             ->get()
