@@ -70,7 +70,7 @@ class TopicFollow extends Controller
             ->users()
             ->newPivotStatementForId($user->id)
             ->first();
-        if (!$link) {
+        if (! $link) {
             $link = new FeedTopicUserLinkModel();
             $link->user_id = $user->id;
             $link->following_at = new Carbon();

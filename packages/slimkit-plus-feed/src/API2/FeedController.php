@@ -24,8 +24,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\UserCount;
 use Illuminate\Support\Facades\DB;
-use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\Like as LikeModel;
+use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
@@ -418,7 +418,7 @@ class FeedController extends Controller
                 ->feedTopics()
                 ->newPivotStatementForId($topicID)
                 ->first();
-            if (!$link) {
+            if (! $link) {
                 $link = new FeedTopicUserLinkModel();
                 $link->topic_id = $topicID;
                 $link->user_id = $user->id;
