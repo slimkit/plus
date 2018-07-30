@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFeedTopicFollowersTable extends Migration
+class CreateFeedTopicUserLinksTable extends Migration
 {
     /**
      * Run the migrations.
