@@ -697,7 +697,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             /*
              *
              * List participants for a topic.
-             * 
+             *
              * @Get /api/v2/feed/topic/:topicID/participants
              * @Param::query('limit', 'integer', 'The data limit, default `15`.')
              * @Param::query('offset', 'integer', 'The data offset, default `0`.')

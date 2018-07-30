@@ -46,7 +46,7 @@ class TopicParticipant extends Controller
             ->offset($request->query('offset', 0))
             ->orderBy(Model::UPDATED_AT, 'desc')
             ->get();
-        
+
         return (new TopicParticipantCollectionResponse($result))
             ->response()
             ->setStatusCode(JsonResponse::HTTP_OK /* 200 */);
