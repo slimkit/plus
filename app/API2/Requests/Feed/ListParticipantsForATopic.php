@@ -32,7 +32,7 @@ class ListParticipantsForATopic extends Request
     public function rules(): array
     {
         return [
-            'limit' => ['nullable', 'integer', 'min:1'],
+            'limit' => ['nullable', 'integer', 'min:1', 'max:100'],
             'offset' => ['nullable', 'integer', 'min:0'],
         ];
     }
