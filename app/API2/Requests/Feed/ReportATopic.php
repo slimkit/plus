@@ -18,41 +18,34 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Models;
+namespace Zhiyi\Plus\API2\Requests\Feed;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Zhiyi\Plus\API2\Requests\Request;
 
-class FeedTopic extends Model
+class ReportATopic extends Request
 {
     /**
-     * The model table name.
-     */
-    protected $table = 'feed_topics';
-
-    /**
-     * Topic belongs to many relation.
+     * Get the validator rules.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return array
      */
-    public function users(): BelongsToMany
+    public function rules(): array
     {
-        $table = (new FeedTopicUserLink)->getTable();
-
-        return $this
-            ->belongsToMany(User::class, $table, 'topic_id', 'user_id')
-            ->withPivot('index', Model::CREATED_AT)
-            ->using(FeedTopicUserLink::class);
+        return [
+            'message' => ['required', 'string', 'max:255'],
+        ];
     }
 
     /**
-     * The topic reports morph to many.
+     * Get the validator error messages.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return array
      */
-    public function reports(): MorphToMany
+    public function messages(): array
     {
-        return $this->morphToMany(Report::class, 'reportable');
+        return [
+            'message.required' => '请输入举报理由',
+            'message.max' => '举报理由必须在 255 个字以内',
+        ];
     }
 }

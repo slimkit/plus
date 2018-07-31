@@ -711,7 +711,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     });
 
     /*
-     * Follow a topic.
+     * Follow a feed topic.
      *
      * @Put /api/v2/user/feed-topics/:topicID
      * @Response::header('Status', 204, 'No Content')
@@ -719,10 +719,19 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     $api->put('user/feed-topics/{topicID}', \Zhiyi\Plus\API2\Controllers\Feed\TopicFollow::class.'@follow');
 
     /*
-     * Unfollow a topic
+     * Unfollow a feed topic
      *
      * @Delete /api/v2/user/feed-topics/:topicID
      * @Response::header('Status', 204, 'No Content')
      */
     $api->delete('user/feed-topics/{topicID}', \Zhiyi\Plus\API2\Controllers\Feed\TopicFollow::class.'@unfollow');
+
+    /*
+     * Report a feed topic.
+     *
+     * @Put /api/v2/user/report-feed-topics/:topicID
+     * @Patam::query('message', 'string', 'Report the feed topic message.')
+     * @Response::header('Status', 204, 'No Content')
+     */
+    $api->put('user/report-feed-topics/{topic}', \Zhiyi\Plus\API2\Controllers\Feed\TopicReport::class);
 });
