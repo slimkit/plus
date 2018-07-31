@@ -25,6 +25,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\UserCount;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\Like as LikeModel;
+use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
@@ -33,6 +34,7 @@ use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedVideo;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
+use Zhiyi\Plus\Models\FeedTopicUserLink as FeedTopicUserLinkModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
@@ -394,6 +396,42 @@ class FeedController extends Controller
     }
 
     /**
+     * Update and touching user feed topics data.
+     *
+     * @param \Zhiyi\Plus\Models\User $user
+     * @param array $topics
+     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed
+     * @return void
+     */
+    private function touchUserFollowBindFeedCount(UserModel $user, array $topics, FeedModel $feed): void
+    {
+        if (empty($topics)) {
+            return;
+        }
+
+        foreach ($topics as $topic) {
+            $topicID = $topic;
+            if ($topic instanceof FeedTopicModel) {
+                $topicID = $topic->id;
+            }
+
+            $link = $user
+                ->feedTopics()
+                ->newPivotStatementForId($topicID)
+                ->first();
+            if (! $link) {
+                $link = new FeedTopicUserLinkModel();
+                $link->topic_id = $topicID;
+                $link->user_id = $user->id;
+                $link->feeds_count = 0;
+            }
+
+            $link->feeds_count += 1;
+            $link->save();
+        }
+    }
+
+    /**
      * Create an feed.
      *
      * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2\StoreFeedPost $request
@@ -416,6 +454,7 @@ class FeedController extends Controller
             $this->saveFeedFilePaidNode($paidNodes, $feed);
             $this->saveFeedFileWith($fileWiths, $feed);
             $this->linkFeedToTopics($topics, $feed);
+            $this->touchUserFollowBindFeedCount($user, $topics, $feed);
 
             if ($videoWith) {
                 $this->saveFeedVideoWith($videoWith, $videoCoverWith, $feed);

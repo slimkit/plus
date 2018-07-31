@@ -43,8 +43,15 @@ class Topic extends JsonResource
             'feeds_count' => $this->feeds_count,
             'followers_count' => $this->followers_count,
             'has_followed' => $this->when($user, function () use ($user) {
-                return $this->followers()->where('user_id', $user->id)->exists();
+                $link = $this->users()->newPivotStatementForId($user->id)->first();
+
+                if ($link && $link->following_at) {
+                    return true;
+                }
+
+                return false;
             }),
+            'participants' => $this->when($this->participants, $this->participants),
         ];
     }
 }

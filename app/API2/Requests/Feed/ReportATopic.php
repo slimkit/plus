@@ -18,19 +18,34 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Models;
+namespace Zhiyi\Plus\API2\Requests\Feed;
 
-use Illuminate\Database\Eloquent\Relations\Pivot;
+use Zhiyi\Plus\API2\Requests\Request;
 
-class FeedTopicFollower extends Pivot
+class ReportATopic extends Request
 {
     /**
-     * The model table name.
+     * Get the validator rules.
+     *
+     * @return array
      */
-    protected $table = 'feed_topic_followers';
+    public function rules(): array
+    {
+        return [
+            'message' => ['required', 'string', 'max:255'],
+        ];
+    }
 
     /**
-     * The pviot using primary key to index.
+     * Get the validator error messages.
+     *
+     * @return array
      */
-    protected $primaryKey = 'index';
+    public function messages(): array
+    {
+        return [
+            'message.required' => '请输入举报理由',
+            'message.max' => '举报理由必须在 255 个字以内',
+        ];
+    }
 }

@@ -5,56 +5,53 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import withStyles from "material-ui/styles/withStyles";
-import Grid from "material-ui/Grid";
-import Card, {
-  CardHeader,
-  CardContent,
-  CardMedia,
-  CardActions
-} from "material-ui/Card";
-import Typography from "material-ui/Typography";
-import Dialog, {
-  DialogContent,
-  DialogActions,
-  DialogTitle,
-  DialogContentText
-} from "material-ui/Dialog";
-import Snackbar from "material-ui/Snackbar";
-import Avatar from "material-ui/Avatar";
-import Button from "material-ui/Button";
-import IconButton from "material-ui/IconButton";
-import SvgIcon from "material-ui/SvgIcon";
-import CircularProgress from "material-ui/Progress/CircularProgress";
-import Drawer from "material-ui/Drawer";
-import Chip from "material-ui/Chip";
-import Input, { InputLabel } from "material-ui/Input";
-import { MenuItem } from "material-ui/Menu";
-import {
-  FormControl,
-  FormHelperText,
-  FormControlLabel
-} from "material-ui/Form";
+import withStyles from "@material-ui/core/styles/withStyles";
+import Grid from "@material-ui/core/Grid";
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardActions from '@material-ui/core/CardActions';
+import Typography from "@material-ui/core/Typography";
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import Snackbar from "@material-ui/core/Snackbar";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import SvgIcon from "@material-ui/core/SvgIcon";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Drawer from "@material-ui/core/Drawer";
+import Chip from "@material-ui/core/Chip";
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
 import { Link } from "react-router-dom";
 
-import FavoriteIcon from "material-ui-icons/Favorite";
-import ArrowUpward from "material-ui-icons/ArrowUpward";
-import Forum from "material-ui-icons/Forum";
-import Delete from "material-ui-icons/Delete";
-import CloseIcon from "material-ui-icons/Close";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import ArrowUpward from "@material-ui/icons/ArrowUpward";
+import Forum from "@material-ui/icons/Forum";
+import Delete from "@material-ui/icons/Delete";
+import CloseIcon from "@material-ui/icons/Close";
 import _ from "lodash";
-import Select from "material-ui/Select";
-import TextField from "material-ui/TextField";
-import Checkbox from "material-ui/Checkbox";
+import Select from "@material-ui/core/Select";
+import TextField from "@material-ui/core/TextField";
+import Checkbox from "@material-ui/core/Checkbox";
 import getQuery from "../utils/getQuery";
 import { localDateToUTC, localDate } from "../utils/dateProcess";
-import purple from "material-ui/colors/purple";
+import purple from "@material-ui/core/colors/purple";
 const accent = purple["A200"];
 
 import request, { createRequestURI } from "../utils/request";
 import { showAmount } from "../utils/balance";
 
-const styles = (theme: object) => ({
+const styles = (theme) => ({
   root: {
     padding: theme.spacing.unit * 2,
     width: "100%",
@@ -204,16 +201,14 @@ class Feed extends Component {
 
     return (
       <div>
-        <Grid container className={classes.root}>
+        <Grid  spacing={16} container className={classes.root}>
           <div className={classes.container}>
             <form className={classes.container} autoComplete="off">
               <FormControl className={classes.formControl}>
                 <h5 className={classes.title}>动态筛选</h5>
                 <Input
                   placeholder="关键字"
-                  inputProps={{
-                    "aria-label": "Description"
-                  }}
+                  aria-label="Description"
                   onChange={this.keyWordChanged}
                   value={params.keyword}
                 />
@@ -222,9 +217,7 @@ class Feed extends Component {
                 <h5 className={classes.title}>用户ID</h5>
                 <Input
                   placeholder="用户ID"
-                  inputProps={{
-                    "aria-label": "Description"
-                  }}
+                  aria-label="Description"
                   type={"number"}
                   onChange={this.UserIdChanged}
                   value={params.user_id || ""}
@@ -234,9 +227,7 @@ class Feed extends Component {
                 <h5 className={classes.title}>用户昵称</h5>
                 <Input
                   placeholder="用户昵称"
-                  inputProps={{
-                    "aria-label": "Description"
-                  }}
+                  aria-label="Description"
                   onChange={this.UserNameChanged}
                   value={params.userName}
                 />
@@ -316,7 +307,7 @@ class Feed extends Component {
             </form>
           </div>
           {feeds.map(feed => (
-            <Grid item xs={12} sm={6} key={feed.id}>
+            <Grid spacing={16} item xs={12} sm={6} key={feed.id}>
               <Card>
                 <CardHeader
                   className={classes.cursor}

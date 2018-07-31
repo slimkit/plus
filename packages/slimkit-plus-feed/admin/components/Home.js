@@ -2,62 +2,73 @@
  * Feed component home page.
  */
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types'
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-import withStyles from 'material-ui/styles/withStyles';
-import Grid from 'material-ui/Grid';
-import Card, { CardHeader, CardContent, CardMedia, CardActions } from 'material-ui/Card';
-import Typography from 'material-ui/Typography';
-import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
-import SvgIcon from 'material-ui/SvgIcon';
-import { blue } from 'material-ui/colors';
-import { Link } from 'react-router-dom';
-import { FormControl, FormLabel, FormControlLabel } from 'material-ui/Form';
-import Dialog, { DialogContent, DialogActions } from 'material-ui/Dialog';
-import { CircularProgress } from 'material-ui/Progress';
-import Snackbar from 'material-ui/Snackbar';
+import withStyles from "@material-ui/core/styles/withStyles";
+import Grid from "@material-ui/core/Grid";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardActions from "@material-ui/core/CardActions";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import SvgIcon from "@material-ui/core/SvgIcon";
+import { blue } from "@material-ui/core/colors";
+import { Link } from "react-router-dom";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import Dialog from "@material-ui/core/Dialog";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Snackbar from "@material-ui/core/Snackbar";
 
-import FavoriteIcon from 'material-ui-icons/Favorite';
-import Comment from 'material-ui-icons/Comment';
-import RssFeed from 'material-ui-icons/RssFeed';
-import Radio, { RadioGroup } from 'material-ui/Radio';
-import Popover from 'material-ui/Popover';
-import Chip from 'material-ui/Chip';
-import Drawer from 'material-ui/Drawer';
-import Divider from 'material-ui/Divider';
-import ListSubheader from 'material-ui/List/ListSubheader';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
-import Collapse from 'material-ui/transitions/Collapse';import ExpandLess from 'material-ui-icons/ExpandLess';
-import ExpandMore from 'material-ui-icons/ExpandMore';
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import Comment from "@material-ui/icons/Comment";
+import RssFeed from "@material-ui/icons/RssFeed";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import Popover from "@material-ui/core/Popover";
+import Chip from "@material-ui/core/Chip";
+import Drawer from "@material-ui/core/Drawer";
+import Divider from "@material-ui/core/Divider";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import ListItemText from "@material-ui/core/ListItemText";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import Collapse from "@material-ui/core/Collapse";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
 
-import request, { createRequestURI } from '../utils/request';
-import { showAmount } from '../utils/balance';
+import request, { createRequestURI } from "../utils/request";
+import { showAmount } from "../utils/balance";
 
-
-const styles = (theme:object) => ({
+const styles = theme => ({
   root: {
     padding: theme.spacing.unit,
-    width: '100%',
+    width: "100%",
     margin: 0
   },
   flexGrow: {},
   link: {
     color: blue[400],
-    textDecoration: 'none',
-    display: 'flex'
+    textDecoration: "none",
+    display: "flex"
   },
   action: {
     padding: `0 ${theme.spacing.unit * 2}px`
   },
   drawer: {
-    width: '100%',
+    width: "100%",
     maxWidth: 360,
-    background: theme.palette.background.paper,
+    background: theme.palette.background.paper
   },
   nested: {
-    paddingLeft: theme.spacing.unit * 4,
+    paddingLeft: theme.spacing.unit * 4
   },
   icon: {
     padding: `0 ${theme.spacing.unit}px`
@@ -67,8 +78,7 @@ const styles = (theme:object) => ({
   }
 });
 
-class Home extends Component
-{
+class Home extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired
   };
@@ -78,15 +88,15 @@ class Home extends Component
     comments: 0,
     status: true,
     loading: false,
-    reward: 'true',
+    reward: "true",
     close: {
       reward: {
-        status: 'true',
+        status: "true",
         ing: false
       }
     },
     open: false,
-    type: '',
+    type: "",
     drawerOpen: false,
     data: {
       feedsCount: 0,
@@ -95,25 +105,26 @@ class Home extends Component
     }
   };
 
-  componentDidMount () {
-    request.get(createRequestURI('statistics'), {
-      validataStatus: status => status === 200
-    }).then(({ data } = {} ) => {
-      this.setState({
-        feeds: data.feedsCount || 0,
-        comments: data.commentsCount || 0,
-        reward: data.status.reward ? 'true' : 'false'
+  componentDidMount() {
+    request
+      .get(createRequestURI("statistics"), {
+        validataStatus: status => status === 200
       })
-    }).catch( error => {
+      .then(({ data } = {}) => {
+        this.setState({
+          feeds: data.feedsCount || 0,
+          comments: data.commentsCount || 0,
+          reward: data.status.reward ? "true" : "false"
+        });
+      })
+      .catch(error => {});
+  }
 
-    });
-  };
-
-  handleRequestClose =  () => {
+  handleRequestClose = () => {
     this.setState({
       open: false
-    })
-  }
+    });
+  };
 
   /**
    * 修改打赏开关
@@ -123,263 +134,468 @@ class Home extends Component
   handleRewardChange = key => (event, value) => {
     this.state.close.reward.status = value;
     this.setState(this.state);
-    if (value === 'true') {
+    if (value === "true") {
       this.handleRewardStore();
     }
   };
 
   // 打赏开关控制
-  handleRewardStore () {
+  handleRewardStore() {
     this.state.close.reward.ing = true;
     this.setState(this.state);
-    const { close: { reward: { status = 'false' } = {} } = {} } = this.state;
-    request.patch(createRequestURI('status/reward'), {
-      reward: status === 'false' ? false : true
-    }, {
-      validataStatus: status => status === 201
-    })
-    .then( () => {
-      this.state.close.reward.ing = false;
-      this.state.close.reward.status = 'true';
-      this.state.reward = status;
-      this.state.open = true;
-      this.setState(this.state);
-    })
-    .catch(({ response: { data = {} } }) => {
-      console.log(data);
-    })
-  };
+    const { close: { reward: { status = "false" } = {} } = {} } = this.state;
+    request
+      .patch(
+        createRequestURI("status/reward"),
+        {
+          reward: status === "false" ? false : true
+        },
+        {
+          validataStatus: status => status === 201
+        }
+      )
+      .then(() => {
+        this.state.close.reward.ing = false;
+        this.state.close.reward.status = "true";
+        this.state.reward = status;
+        this.state.open = true;
+        this.setState(this.state);
+      })
+      .catch(({ response: { data = {} } }) => {
+        console.log(data);
+      });
+  }
 
-  handleCloseRewardDialog () {
-    this.state.close.reward.status = 'true';
+  handleCloseRewardDialog() {
+    this.state.close.reward.status = "true";
     this.state.close.reward.ing = false;
     this.setState(this.state);
-  };
-  handleClick = (type) => {
-    request.get(createRequestURI(`statistics?type=${type}`), {
-      validataStatus: status => status === 200
-    })
-    .then(({ data = {} }) => {
-      this.setState({
-        data: { ...data },
-        type: type
+  }
+  handleClick = type => {
+    request
+      .get(createRequestURI(`statistics?type=${type}`), {
+        validataStatus: status => status === 200
+      })
+      .then(({ data = {} }) => {
+        this.setState({
+          data: { ...data },
+          type: type
+        });
       });
-    })
     this.setState({
       type: type
     });
-  }
-
-  
+  };
 
   render() {
     const { classes } = this.props;
-    const { feeds = 0, comments = 0, close, open, data, type, drawerOpen } = this.state;
+    const {
+      feeds = 0,
+      comments = 0,
+      close,
+      open,
+      data,
+      type,
+      drawerOpen
+    } = this.state;
 
     return (
       <div>
         <Drawer
           anchor="right"
           open={drawerOpen}
-          onClose={() => {this.setState({ drawerOpen: false, type: ''})}}
+          onClose={() => {
+            this.setState({ drawerOpen: false, type: "" });
+          }}
         >
           <div tabIndex={0} role="button">
-            <List className={classes.drawer} subheader={<ListSubheader>动态数据统计</ListSubheader>}>
+            <List
+              className={classes.drawer}
+              subheader={<ListSubheader>动态数据统计</ListSubheader>}
+            >
               <ListItem
-                className={classes.button} 
+                className={classes.button}
                 button
-                onTouchTap={ () => this.handleClick('all')}
+                onTouchTap={() => this.handleClick("all")}
               >
                 <ListItemText inset primary="全部" />
-                {type === 'all' ? <ExpandLess /> : <ExpandMore />}
+                {type === "all" ? <ExpandLess /> : <ExpandMore />}
               </ListItem>
-              <Collapse in={type === 'all'} transitionDuration="auto" unmountOnExit>
+              <Collapse
+                in={type === "all"}
+                transitionDuration="auto"
+                unmountOnExit
+              >
                 <ListItem button className={classes.nested}>
                   <Link className={classes.link} to="/feeds?type=all">
-                    <ListItemText className={classes.text} inset primary="动态数量" secondary={data.feedsCount} />
+                    <ListItemText
+                      className={classes.text}
+                      inset
+                      primary="动态数量"
+                      secondary={data.feedsCount}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
                   <Link className={classes.link} to="/feeds?type=all&pay=paid">
-                    <ListItemText className={classes.text} inset primary="收费动态" secondary={data.payFeedsCount} />
+                    <ListItemText
+                      className={classes.text}
+                      inset
+                      primary="收费动态"
+                      secondary={data.payFeedsCount}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
                   <Link className={classes.link} to="/comments?type=all">
-                    <ListItemText className={classes.text} inset primary="评论数量" secondary={data.commentsCount} />
+                    <ListItemText
+                      className={classes.text}
+                      inset
+                      primary="评论数量"
+                      secondary={data.commentsCount}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
                   <Link className={classes.link} to="/feeds?type=all&top=yes">
-                    <ListItemText className={classes.text} inset primary="置顶动态" secondary={data.topFeed} />
+                    <ListItemText
+                      className={classes.text}
+                      inset
+                      primary="置顶动态"
+                      secondary={data.topFeed}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
-                  <Link className={classes.link} to="/comments?type=all&top=yes">
-                    <ListItemText className={classes.text} inset primary="置顶评论" secondary={data.topComment} />
+                  <Link
+                    className={classes.link}
+                    to="/comments?type=all&top=yes"
+                  >
+                    <ListItemText
+                      className={classes.text}
+                      inset
+                      primary="置顶评论"
+                      secondary={data.topComment}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
-                  <ListItemText className={classes.text} inset primary="收到金额" secondary={showAmount(data.payCount)} />
+                  <ListItemText
+                    className={classes.text}
+                    inset
+                    primary="收到金额"
+                    secondary={showAmount(data.payCount)}
+                  />
                 </ListItem>
               </Collapse>
               <ListItem
-                className={classes.button} 
+                className={classes.button}
                 button
-                onTouchTap={ () => this.handleClick('today')}
+                onTouchTap={() => this.handleClick("today")}
               >
                 <ListItemText inset primary="今天" />
-                {type === 'today' ? <ExpandLess /> : <ExpandMore />}
+                {type === "today" ? <ExpandLess /> : <ExpandMore />}
               </ListItem>
-              <Collapse in={type === 'today'} transitionDuration="auto" unmountOnExit>
+              <Collapse
+                in={type === "today"}
+                transitionDuration="auto"
+                unmountOnExit
+              >
                 <ListItem button className={classes.nested}>
                   <Link className={classes.link} to="/feeds?type=today">
-                    <ListItemText className={classes.text} inset primary="动态数量" secondary={data.feedsCount} />
+                    <ListItemText
+                      className={classes.text}
+                      inset
+                      primary="动态数量"
+                      secondary={data.feedsCount}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
-                  <Link className={classes.link} to="/feeds?type=today&pay=paid">
-                    <ListItemText className={classes.text} inset primary="收费动态" secondary={data.payFeedsCount} />
+                  <Link
+                    className={classes.link}
+                    to="/feeds?type=today&pay=paid"
+                  >
+                    <ListItemText
+                      className={classes.text}
+                      inset
+                      primary="收费动态"
+                      secondary={data.payFeedsCount}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
                   <Link className={classes.link} to="/comments?type=today">
-                    <ListItemText className={classes.text} inset primary="评论数量" secondary={data.commentsCount} />
+                    <ListItemText
+                      className={classes.text}
+                      inset
+                      primary="评论数量"
+                      secondary={data.commentsCount}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
                   <Link className={classes.link} to="/feeds?type=today&top=yes">
-                    <ListItemText className={classes.text} inset primary="置顶动态" secondary={data.topFeed} />
+                    <ListItemText
+                      className={classes.text}
+                      inset
+                      primary="置顶动态"
+                      secondary={data.topFeed}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
-                  <Link className={classes.link} to="/comments?type=today&top=yes">
-                    <ListItemText className={classes.text} inset primary="置顶评论" secondary={data.topComment} />
+                  <Link
+                    className={classes.link}
+                    to="/comments?type=today&top=yes"
+                  >
+                    <ListItemText
+                      className={classes.text}
+                      inset
+                      primary="置顶评论"
+                      secondary={data.topComment}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
-                  <ListItemText className={classes.text} inset primary="收到金额" secondary={showAmount(data.payCount)} />
+                  <ListItemText
+                    className={classes.text}
+                    inset
+                    primary="收到金额"
+                    secondary={showAmount(data.payCount)}
+                  />
                 </ListItem>
               </Collapse>
               <ListItem
-                className={classes.button} 
+                className={classes.button}
                 button
-                onTouchTap={ () => this.handleClick('yesterday')}
+                onTouchTap={() => this.handleClick("yesterday")}
               >
                 <ListItemText inset primary="昨天" />
-                {type === 'yesterday' ? <ExpandLess /> : <ExpandMore />}
+                {type === "yesterday" ? <ExpandLess /> : <ExpandMore />}
               </ListItem>
-              <Collapse in={type === 'yesterday'} transitionDuration="auto" unmountOnExit>
+              <Collapse
+                in={type === "yesterday"}
+                transitionDuration="auto"
+                unmountOnExit
+              >
                 <ListItem button className={classes.nested}>
                   <Link className={classes.link} to="/feeds?type=yesterday">
-                    <ListItemText inset primary="动态数量" secondary={data.feedsCount} />
+                    <ListItemText
+                      inset
+                      primary="动态数量"
+                      secondary={data.feedsCount}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
-                  <Link className={classes.link} to="/feeds?type=yesterday&pay=paid">
-                    <ListItemText inset primary="收费动态" secondary={data.payFeedsCount} />
+                  <Link
+                    className={classes.link}
+                    to="/feeds?type=yesterday&pay=paid"
+                  >
+                    <ListItemText
+                      inset
+                      primary="收费动态"
+                      secondary={data.payFeedsCount}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
                   <Link className={classes.link} to="/comments?type=yesterday">
-                    <ListItemText inset primary="评论数量" secondary={data.commentsCount} />
+                    <ListItemText
+                      inset
+                      primary="评论数量"
+                      secondary={data.commentsCount}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
-                  <Link className={classes.link} to="/feeds?type=yesterday&top=yes">
-                    <ListItemText className={classes.text} inset primary="置顶动态" secondary={data.topFeed} />
+                  <Link
+                    className={classes.link}
+                    to="/feeds?type=yesterday&top=yes"
+                  >
+                    <ListItemText
+                      className={classes.text}
+                      inset
+                      primary="置顶动态"
+                      secondary={data.topFeed}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
-                  <Link className={classes.link} to="/comments?type=yesterday&top=yes">
-                    <ListItemText className={classes.text} inset primary="置顶评论" secondary={data.topComment} />
+                  <Link
+                    className={classes.link}
+                    to="/comments?type=yesterday&top=yes"
+                  >
+                    <ListItemText
+                      className={classes.text}
+                      inset
+                      primary="置顶评论"
+                      secondary={data.topComment}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
-                  <ListItemText inset primary="收到金额" secondary={showAmount(data.payCount)} />
+                  <ListItemText
+                    inset
+                    primary="收到金额"
+                    secondary={showAmount(data.payCount)}
+                  />
                 </ListItem>
               </Collapse>
               <ListItem
-                className={classes.button} 
+                className={classes.button}
                 button
-                onTouchTap={ () => this.handleClick('week')}
+                onTouchTap={() => this.handleClick("week")}
               >
                 <ListItemText inset primary="过去一周" />
-                {type === 'week' ? <ExpandLess /> : <ExpandMore />}
+                {type === "week" ? <ExpandLess /> : <ExpandMore />}
               </ListItem>
-              <Collapse in={type === 'week'} transitionDuration="auto" unmountOnExit>
+              <Collapse
+                in={type === "week"}
+                transitionDuration="auto"
+                unmountOnExit
+              >
                 <ListItem button className={classes.nested}>
                   <Link className={classes.link} to="/feeds?type=week">
-                    <ListItemText inset primary="动态数量" secondary={data.feedsCount} />
+                    <ListItemText
+                      inset
+                      primary="动态数量"
+                      secondary={data.feedsCount}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
                   <Link className={classes.link} to="/feeds?type=week&pay=paid">
-                    <ListItemText inset primary="收费动态" secondary={data.payFeedsCount} />
+                    <ListItemText
+                      inset
+                      primary="收费动态"
+                      secondary={data.payFeedsCount}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
                   <Link className={classes.link} to="/comments?type=week">
-                    <ListItemText inset primary="评论数量" secondary={data.commentsCount} />
+                    <ListItemText
+                      inset
+                      primary="评论数量"
+                      secondary={data.commentsCount}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
                   <Link className={classes.link} to="/feeds?type=week&top=yes">
-                    <ListItemText className={classes.text} inset primary="置顶动态" secondary={data.topFeed} />
+                    <ListItemText
+                      className={classes.text}
+                      inset
+                      primary="置顶动态"
+                      secondary={data.topFeed}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
-                  <Link className={classes.link} to="/comments?type=week&top=yes">
-                    <ListItemText className={classes.text} inset primary="置顶评论" secondary={data.topComment} />
+                  <Link
+                    className={classes.link}
+                    to="/comments?type=week&top=yes"
+                  >
+                    <ListItemText
+                      className={classes.text}
+                      inset
+                      primary="置顶评论"
+                      secondary={data.topComment}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
-                  <ListItemText inset primary="收到金额" secondary={showAmount(data.payCount)} />
+                  <ListItemText
+                    inset
+                    primary="收到金额"
+                    secondary={showAmount(data.payCount)}
+                  />
                 </ListItem>
               </Collapse>
               <ListItem
-                className={classes.button} 
+                className={classes.button}
                 button
-                onTouchTap={ () => this.handleClick('lastDay')}
+                onTouchTap={() => this.handleClick("lastDay")}
               >
                 <ListItemText inset primary="截止昨天" />
-                {type === 'lastDay' ? <ExpandLess /> : <ExpandMore />}
+                {type === "lastDay" ? <ExpandLess /> : <ExpandMore />}
               </ListItem>
-              <Collapse in={type === 'lastDay'} transitionDuration="auto" unmountOnExit>
+              <Collapse
+                in={type === "lastDay"}
+                transitionDuration="auto"
+                unmountOnExit
+              >
                 <ListItem button className={classes.nested}>
                   <Link className={classes.link} to="/feeds?type=lastDay">
-                    <ListItemText inset primary="动态数量" secondary={data.feedsCount} />
+                    <ListItemText
+                      inset
+                      primary="动态数量"
+                      secondary={data.feedsCount}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
-                  <Link className={classes.link} to="/feeds?type=lastDay&pay=paid">
-                    <ListItemText inset primary="收费动态" secondary={data.payFeedsCount} />
+                  <Link
+                    className={classes.link}
+                    to="/feeds?type=lastDay&pay=paid"
+                  >
+                    <ListItemText
+                      inset
+                      primary="收费动态"
+                      secondary={data.payFeedsCount}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
                   <Link className={classes.link} to="/comments?type=lastDay">
-                    <ListItemText inset primary="评论数量" secondary={data.commentsCount} />
+                    <ListItemText
+                      inset
+                      primary="评论数量"
+                      secondary={data.commentsCount}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
-                  <Link className={classes.link} to="/feeds?type=lastDay&top=yes">
-                    <ListItemText className={classes.text} inset primary="置顶动态" secondary={data.topFeed} />
+                  <Link
+                    className={classes.link}
+                    to="/feeds?type=lastDay&top=yes"
+                  >
+                    <ListItemText
+                      className={classes.text}
+                      inset
+                      primary="置顶动态"
+                      secondary={data.topFeed}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
-                  <Link className={classes.link} to="/comments?type=lastDay&top=yes">
-                    <ListItemText className={classes.text} inset primary="置顶评论" secondary={data.topComment} />
+                  <Link
+                    className={classes.link}
+                    to="/comments?type=lastDay&top=yes"
+                  >
+                    <ListItemText
+                      className={classes.text}
+                      inset
+                      primary="置顶评论"
+                      secondary={data.topComment}
+                    />
                   </Link>
                 </ListItem>
                 <ListItem button className={classes.nested}>
-                  <ListItemText inset primary="收到金额" secondary={showAmount(data.payCount)} />
+                  <ListItemText
+                    inset
+                    primary="收到金额"
+                    secondary={showAmount(data.payCount)}
+                  />
                 </ListItem>
               </Collapse>
             </List>
           </div>
         </Drawer>
-        <Grid container className={classes.root}>
-          <Grid item xs={12} sm={6}>
+        <Grid spacing={16} spacing={16} container className={classes.root}>
+          <Grid spacing={16} item xs={12} sm={6}>
             <Card>
               <CardContent>
                 <Typography type="headline" component="h2">
@@ -391,7 +607,7 @@ class Home extends Component
               </CardContent>
 
               <CardActions>
-                <FormControl component="fieldset"  className={classes.action}>
+                <FormControl component="fieldset" className={classes.action}>
                   <FormLabel component="legend">打赏开关</FormLabel>
                   <RadioGroup
                     row
@@ -399,16 +615,23 @@ class Home extends Component
                     value={this.state.reward}
                     onChange={this.handleRewardChange()}
                   >
-                    <FormControlLabel value={'true'} control={<Radio />} label="开启" />
-                    <FormControlLabel value={'false'} control={<Radio />} label="关闭" />
+                    <FormControlLabel
+                      value={"true"}
+                      control={<Radio color="primary" />}
+                      label="开启"
+                    />
+                    <FormControlLabel
+                      value={"false"}
+                      control={<Radio color="primary" />}
+                      label="关闭"
+                    />
                   </RadioGroup>
                 </FormControl>
               </CardActions>
-
             </Card>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <Card>
+          <Grid spacing={16} item xs={12} sm={6}>
+            <Card spacing={16}>
               <CardContent>
                 <Typography type="headline" component="h2">
                   动态统计
@@ -427,24 +650,26 @@ class Home extends Component
                 </Button>
 
                 <div className={classes.flexGrow} />
-                <Button 
-                  dense 
+                <Button
+                  size="small"
                   color="primary"
-                  onTouchTap={() => { this.setState({drawerOpen: true}) }}
+                  onTouchTap={() => {
+                    this.setState({ drawerOpen: true });
+                  }}
                 >
                   数据统计
                 </Button>
                 <div className={classes.flexGrow} />
-                <Button dense color="primary">
-                  <Link to="/feeds" className={classes.link}>管理动态</Link>
+                <Button size="small" color="primary">
+                  <Link to="/feeds" className={classes.link}>
+                    管理动态
+                  </Link>
                 </Button>
-
               </CardActions>
-
             </Card>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <Card>
+          <Grid spacing={16} item xs={12} sm={6}>
+            <Card spacing={16}>
               <CardContent>
                 <Typography type="headline" component="h2">
                   动态回收站
@@ -455,15 +680,15 @@ class Home extends Component
               </CardContent>
 
               <CardActions>
-                <Button dense color="primary">
-                  <Link to="/deleteFeeds" className={classes.link}>管理动态回收站</Link>
+                <Button size="small" color="primary">
+                  <Link to="/deleteFeeds" className={classes.link}>
+                    管理动态回收站
+                  </Link>
                 </Button>
-
               </CardActions>
-
             </Card>
           </Grid>
-          {/*<Grid item xs={12} sm={6}>
+          {/*<Grid spacing={16} item xs={12} sm={6}>
             <Card>
               <CardContent>
                 <Typography type="headline" component="h2">
@@ -475,7 +700,7 @@ class Home extends Component
               </CardContent>
 
               <CardActions>
-                <Button dense color="primary">
+                <Button size="small" color="primary">
                   <Link to="/deleteComments" className={classes.link}>管理评论回收站</Link>
                 </Button>
 
@@ -484,25 +709,36 @@ class Home extends Component
             </Card>
           </Grid>*/}
         </Grid>
-        <Dialog open={close.reward.status === 'false'}>
+        <Dialog open={close.reward.status === "false"}>
           <DialogContent>确定要关闭打赏吗？</DialogContent>
           <DialogActions>
-            { close.reward.ing
-              ? <Button disabled>取消</Button>
-              : <Button onTouchTap={() =>this.handleCloseRewardDialog()}>取消</Button>
-            }
-            { close.reward.ing
-              ? <Button disabled><CircularProgress size={14} /></Button>
-              : <Button color="primary" onTouchTap={() => this.handleRewardStore()}>关闭</Button>
-            }
+            {close.reward.ing ? (
+              <Button disabled>取消</Button>
+            ) : (
+              <Button onTouchTap={() => this.handleCloseRewardDialog()}>
+                取消
+              </Button>
+            )}
+            {close.reward.ing ? (
+              <Button disabled>
+                <CircularProgress size={14} />
+              </Button>
+            ) : (
+              <Button
+                color="primary"
+                onTouchTap={() => this.handleRewardStore()}
+              >
+                关闭
+              </Button>
+            )}
           </DialogActions>
         </Dialog>
         <Snackbar
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           open={open}
-          onClose={this.handleRequestClose}
-          SnackbarContentProps={{
-            'aria-describedby': 'message-id',
+          onRequestClose={this.handleRequestClose}
+          ContentProps={{
+            "aria-describedby": "message-id"
           }}
           message={<span id="message-id">操作成功</span>}
         />

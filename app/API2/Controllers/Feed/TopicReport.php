@@ -18,41 +18,42 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Models;
+namespace Zhiyi\Plus\API2\Controllers\Feed;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Http\Response;
+use Zhiyi\Plus\API2\Controllers\Controller;
+use Zhiyi\Plus\Models\Report as ReportModel;
+use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
+use Zhiyi\Plus\API2\Requests\Feed\ReportATopic as ReportATopicRequest;
 
-class FeedTopic extends Model
+class TopicReport extends Controller
 {
     /**
-     * The model table name.
+     * Create the action instance.
      */
-    protected $table = 'feed_topics';
-
-    /**
-     * Topic belongs to many relation.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function users(): BelongsToMany
+    public function __construct()
     {
-        $table = (new FeedTopicUserLink)->getTable();
-
-        return $this
-            ->belongsToMany(User::class, $table, 'topic_id', 'user_id')
-            ->withPivot('index', Model::CREATED_AT)
-            ->using(FeedTopicUserLink::class);
+        $this->middleware('auth:api');
     }
 
     /**
-     * The topic reports morph to many.
+     * Report a topic.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @param \Zhiyi\Plus\API2\Requests\Feed\ReportATopic $request
+     * @param \Zhiyi\Plus\Models\FeedTopic $topic
+     * @return \Illuminate\Http\Response
      */
-    public function reports(): MorphToMany
+    public function __invoke(ReportATopicRequest $request, FeedTopicModel $topic): Response
     {
-        return $this->morphToMany(Report::class, 'reportable');
+        $report = new ReportModel();
+        $report->reason = $request->input('message');
+        $report->user_id = $request->user()->id;
+        $report->target_user = $topic->creator_user_id;
+        $report->subject = $topic->name;
+        $report->status = 0;
+
+        $topic->reports()->save($report);
+
+        return (new Response)->setStatusCode(Response::HTTP_NO_CONTENT);
     }
 }

@@ -20,39 +20,17 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class FeedTopic extends Model
+class FeedTopicUserLink extends Pivot
 {
     /**
      * The model table name.
      */
-    protected $table = 'feed_topics';
+    protected $table = 'feed_topic_user_links';
 
     /**
-     * Topic belongs to many relation.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * The pviot using primary key to index.
      */
-    public function users(): BelongsToMany
-    {
-        $table = (new FeedTopicUserLink)->getTable();
-
-        return $this
-            ->belongsToMany(User::class, $table, 'topic_id', 'user_id')
-            ->withPivot('index', Model::CREATED_AT)
-            ->using(FeedTopicUserLink::class);
-    }
-
-    /**
-     * The topic reports morph to many.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
-     */
-    public function reports(): MorphToMany
-    {
-        return $this->morphToMany(Report::class, 'reportable');
-    }
+    protected $primaryKey = 'index';
 }

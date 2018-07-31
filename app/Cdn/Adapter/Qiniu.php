@@ -292,7 +292,7 @@ class Qiniu implements FileUrlGeneratorContract
      */
     private function makeImageProcessor(int $width, int $height, int $quality, int $blur): string
     {
-        return sprintf('imageView2/2/w/%d/h/%d/q/%d|imageMogr2/blur/50x%d/quality/%d', $width, $height, $quality, $blur, $quality);
+        return sprintf('imageView2/2/w/%d/h/%d/q/%d|imageMogr2/blur/50x%d/quality/%d/', $width, $height, $quality, $blur, $quality);
     }
 
     /**

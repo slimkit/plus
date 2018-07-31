@@ -679,7 +679,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             $api->get('{topic}', \Zhiyi\Plus\API2\Controllers\Feed\Topic::class.'@show');
 
             /*
-             * List feeds on a topic.
+             * List feeds for a topic.
              *
              * @Get /api/v2/feed/topics/:topicID/feeds
              * @Param::query('limit', 'integer', 'The data limit, default `15`.')
@@ -693,11 +693,25 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
              * </pre>')
              */
             $api->get('{topic}/feeds', Zhiyi\Plus\API2\Controllers\Feed\TopicFeed::class);
+
+            /*
+             *
+             * List participants for a topic.
+             *
+             * @Get /api/v2/feed/topic/:topicID/participants
+             * @Param::query('limit', 'integer', 'The data limit, default `15`.')
+             * @Param::query('offset', 'integer', 'The data offset, default `0`.')
+             * @Response::header('Status', 200, 'OK')
+             * @Response::json('<pre>
+             * [2, 3, 4, 5]
+             * </pre>')
+             */
+            $api->get('{topic}/participants', \Zhiyi\Plus\API2\Controllers\Feed\TopicParticipant::class.'@index');
         });
     });
 
     /*
-     * Follow a topic.
+     * Follow a feed topic.
      *
      * @Put /api/v2/user/feed-topics/:topicID
      * @Response::header('Status', 204, 'No Content')
@@ -705,10 +719,19 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     $api->put('user/feed-topics/{topicID}', \Zhiyi\Plus\API2\Controllers\Feed\TopicFollow::class.'@follow');
 
     /*
-     * Unfollow a topic
+     * Unfollow a feed topic
      *
      * @Delete /api/v2/user/feed-topics/:topicID
      * @Response::header('Status', 204, 'No Content')
      */
     $api->delete('user/feed-topics/{topicID}', \Zhiyi\Plus\API2\Controllers\Feed\TopicFollow::class.'@unfollow');
+
+    /*
+     * Report a feed topic.
+     *
+     * @Put /api/v2/user/report-feed-topics/:topicID
+     * @Patam::query('message', 'string', 'Report the feed topic message.')
+     * @Response::header('Status', 204, 'No Content')
+     */
+    $api->put('user/report-feed-topics/{topic}', \Zhiyi\Plus\API2\Controllers\Feed\TopicReport::class);
 });

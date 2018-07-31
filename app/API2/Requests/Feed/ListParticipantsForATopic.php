@@ -18,38 +18,37 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
+namespace Zhiyi\Plus\API2\Requests\Feed;
 
-class CreateFeedTopicFollowersTable extends Migration
+use Zhiyi\Plus\API2\Requests\Request;
+
+class ListParticipantsForATopic extends Request
 {
     /**
-     * Run the migrations.
+     * Get the validator rules.
      *
-     * @return void
+     * @return array
      */
-    public function up()
+    public function rules(): array
     {
-        Schema::create('feed_topic_followers', function (Blueprint $table) {
-            $table->increments('index')->comment('The topic followers index');
-            $table->integer('topic_id')->unsigned()->comment('Be follow topic id');
-            $table->integer('user_id')->unsigned()->comment('Follow topic user id');
-            $table->timestamps();
-
-            $table->unique(['topic_id', 'user_id']);
-            $table->index('user_id');
-            $table->index('topic_id');
-        });
+        return [
+            'limit' => ['nullable', 'integer', 'min:1', 'max:100'],
+            'offset' => ['nullable', 'integer', 'min:0'],
+        ];
     }
 
     /**
-     * Reverse the migrations.
+     * Get the validator error messages.
      *
-     * @return void
+     * @return array
      */
-    public function down()
+    public function messages(): array
     {
-        Schema::dropIfExists('feed_topic_followers');
+        return [
+            'limit.integer' => '请求数据量必须是整数',
+            'limit.min' => '请求数据量最少 1 条',
+            'offset.integer' => '请求的数据偏移必须是整数',
+            'offset.min' => '请求的数据偏移最少 0 条',
+        ];
     }
 }

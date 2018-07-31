@@ -18,41 +18,36 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Models;
+namespace Zhiyi\Plus\API2\Resources\Feed;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class FeedTopic extends Model
+class TopicParticipantCollection extends ResourceCollection
 {
     /**
-     * The model table name.
-     */
-    protected $table = 'feed_topics';
-
-    /**
-     * Topic belongs to many relation.
+     * The collection to array.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @param \Illuminate\Http\Request $request
+     * @return array
      */
-    public function users(): BelongsToMany
+    public function toArray($request): array
     {
-        $table = (new FeedTopicUserLink)->getTable();
-
         return $this
-            ->belongsToMany(User::class, $table, 'topic_id', 'user_id')
-            ->withPivot('index', Model::CREATED_AT)
-            ->using(FeedTopicUserLink::class);
+            ->collection
+            ->map(function ($item) use ($request) {
+                return $this->renderItem($item, $request);
+            })
+            ->all();
     }
 
     /**
-     * The topic reports morph to many.
+     * Render the collection item.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @param mixed $item
+     * @return int
      */
-    public function reports(): MorphToMany
+    public function renderItem($item): int
     {
-        return $this->morphToMany(Report::class, 'reportable');
+        return $item->user_id;
     }
 }

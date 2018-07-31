@@ -4,25 +4,31 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import Grid from 'material-ui/Grid';
-import Card, { CardHeader, CardContent, CardMedia, CardActions } from 'material-ui/Card';
-import Typography from 'material-ui/Typography';
-import Dialog, { DialogContent, DialogActions } from 'material-ui/Dialog';
-import Snackbar from 'material-ui/Snackbar';
-import Avatar from 'material-ui/Avatar';
-import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
-import { FormControlLabel } from 'material-ui/Form';
-import Switch from 'material-ui/Switch';
-import CircularProgress from 'material-ui/Progress/CircularProgress';
-import TextField from 'material-ui/TextField';
-import CloseIcon from 'material-ui-icons/Close';
+import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardActions from '@material-ui/core/CardActions';
+import Typography from '@material-ui/core/Typography';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Snackbar from '@material-ui/core/Snackbar';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import TextField from '@material-ui/core/TextField';
+import CloseIcon from '@material-ui/icons/Close';
 
-import withStyles from 'material-ui/styles/withStyles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import request, { createRequestURI } from '../utils/request';
 import _ from "lodash";
 
-const styles = (theme:object) => ({
+const styles = (theme) => ({
   root: {
     width: '100%',
     padding: theme.spacing.unit,
@@ -107,8 +113,8 @@ class PayControl extends Component
 
     return (
       <div>
-        <Grid container className={classes.root}>
-          <Grid item xs={12} sm={12}>
+        <Grid spacing={16} container className={classes.root}>
+          <Grid spacing={16} item xs={12} sm={12}>
             <Card>
               <CardContent>
                 <Typography type="headline" component="h2">
@@ -124,6 +130,7 @@ class PayControl extends Component
                 <FormControlLabel
                   control={
                     <Switch
+                      color="primary"
                       checked={open}
                       onChange={ (event, checked) => !checked ? this.handleSetFalse(checked) : this.handleStatusChange (checked) }
                     />
@@ -135,8 +142,8 @@ class PayControl extends Component
 
             </Card>
           </Grid>
-          <Grid item xs={12} sm={12}>
-            <Card>
+          <Grid spacing={16} item xs={12} sm={12}>
+            <Card spacing={16}>
               <CardContent>
                 <Typography type="headline" component="h2">
                   付费选项
@@ -163,7 +170,7 @@ class PayControl extends Component
 
             </Card>
           </Grid>
-          <Grid item xs={12} sm={12}>
+          <Grid spacing={16} item xs={12} sm={12}>
             <Card>
               <CardContent>
                 <Typography type="headline" component="h2">
