@@ -13,7 +13,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { HashRouter as Router } from 'react-router-dom';
 import theme from './theme';
-import { MuiThemeProvider, createMuiTheme, withTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import App from 'App';
 

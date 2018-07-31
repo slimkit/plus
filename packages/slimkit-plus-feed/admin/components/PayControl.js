@@ -3,19 +3,16 @@
  */
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Snackbar from '@material-ui/core/Snackbar';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -60,23 +57,23 @@ class PayControl extends Component
     this.setState({
       ...this.state,
       payItems: e.target.value
-    })
+    });
   };
   handleTextChange = e => {
     this.setState({
       ...this.state,
       textLength: e.target.value
-    })
+    });
   };
-   handleSnackbar(snackbar = {}) {
+  handleSnackbar(snackbar = {}) {
     this.setState({
       ...this.state,
       snackbar: { ...this.state.snackbar, ...snackbar }
     });
-  };
+  }
   handleSnackbarClose() {
     this.handleSnackbar({ open: false, });
-  };
+  }
   saveItem () {
     const { payItems, textLength } = this.state;
     request.patch(createRequestURI('paycontrol'), {
@@ -89,16 +86,16 @@ class PayControl extends Component
         message: '保存成功!',
         open: true,
       });
-    }).catch ( error => {
+    }).catch ( () => {
       this.handleSnackbar({
         message: '保存失败!',
         open: true,
       });
-    })
-  };
+    });
+  }
 
   render () {
-    let { open = false, payItems = '',close, snackbar } = this.state;
+    let { open = false, close, snackbar } = this.state;
     const { classes } = this.props;
 
     return (
@@ -141,7 +138,7 @@ class PayControl extends Component
                 <Typography component="div">
                   <p>发布付费动态时的金额选项，最少为0.01元</p>
                   <p>少于0.01元时会出现意想不到的支付错误，请慎重填写</p>
-                  <p>3个选项，请用半角","隔开</p>
+                  <p>3个选项，请用半角&quot;,&quot;隔开</p>
                 </Typography>
               </CardContent>
 
@@ -154,7 +151,7 @@ class PayControl extends Component
                   margin="normal"
                 />
                 <Button onTouchTap={() => {
-                  this.saveItem()
+                  this.saveItem();
                 }}>保存</Button>
               </CardContent>
 
@@ -181,7 +178,7 @@ class PayControl extends Component
                   margin="normal"
                 />
                 <Button onTouchTap={() => {
-                  this.saveItem()
+                  this.saveItem();
                 }}>保存</Button>
               </CardContent>
 
@@ -218,21 +215,21 @@ class PayControl extends Component
           ]}
         />
       </div>
-    )
+    );
   }
 
-  handleSetFalse (checked) {
+  handleSetFalse () {
     this.setState({
       ...this.state,
       close: {
         open: true,
         ing: false
       }
-    })
+    });
   }
 
   handleStatusChange () {
-    open = !this.state.open;
+    let open = !this.state.open;
     if (!open) {
       this.setState({
         ...this.state,
@@ -240,7 +237,7 @@ class PayControl extends Component
           open: true,
           ing: true
         }
-      })
+      });
     }
     request.patch(createRequestURI('paycontrol'), {
       open: open
@@ -256,12 +253,12 @@ class PayControl extends Component
         message: '保存成功!',
         open: true,
       });
-    }).catch ( error => {
+    }).catch ( () => {
       this.handleSnackbar({
         message: '保存失败!',
         open: true,
       });
-    })
+    });
   }
 
   handleCannel () {
@@ -270,7 +267,7 @@ class PayControl extends Component
         open: false,
         ing: false
       }
-    })
+    });
   }
 
   componentDidMount () {
@@ -281,10 +278,10 @@ class PayControl extends Component
         open: data.open,
         payItems: data.payItems,
         textLength: data.textLength
-      })
-    }).catch( error => {
+      });
+    }).catch( () => {
       alert('获取配置信息失败');
-    })
+    });
   }
 }
 

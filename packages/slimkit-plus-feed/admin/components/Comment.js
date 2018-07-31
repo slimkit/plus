@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -28,7 +28,6 @@ import Chip from '@material-ui/core/Chip';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -66,7 +65,7 @@ const styles = (theme) => ({
   },
   drawerImageTitle: {
     width: `calc(100% - ${theme.spacing.unit * 4}px)`,
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
     background: 'rgba(255, 255, 255, .4)',
     color: '#fff'
@@ -111,9 +110,6 @@ const styles = (theme) => ({
   cursor: {
     cursor: 'pointer'
   },
-  chip: {
-    margin: 4,
-  },
   feedContent: {
     width: `calc(100% - ${theme.spacing.unit * 4}px)`,
     wordBreak: 'break-all'
@@ -130,6 +126,7 @@ class Comment extends Component
 {
   static propTypes = {
     classes: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
   };
 
   state = {
@@ -155,7 +152,6 @@ class Comment extends Component
     loadMoreBtnDisabled: false, // 加载按钮是否禁用
     loading: false, // 正在加载
     nextPage: null, // 下一页
-    pinned: null,
     currentPage: 1,
     lastPage: 1,
     total: 0,
@@ -204,25 +200,23 @@ class Comment extends Component
         ...this.state,
         comments: comments,
         del: { comment: null, ing: false }
-      })
-    }).catch( error => {
-      console.log(error);
+      });
     });
-  };
+  }
 
   handlePushDelete (id) {
     this.setState({
       ...this.state,
       del: { comment: id, ing: false }
-    })
-  };
+    });
+  }
 
   handlePushClose () {
     this.setState({
       ...this.state,
       del: { comment: null, ing: false }
     });
-  };
+  }
 
   handleLoadMoreComments () {
     const { nextPage = null, comments, pinneds, params } = this.state;
@@ -262,11 +256,9 @@ class Comment extends Component
         loadMoreBtnDisabled,
         loadMoreBtnText,
         nextPage: data.nextPage
-      })
-    }).catch( error => {
-
+      });
     });
-  };
+  }
 
   // 检测关键字变化
   keyWordChanged = (e) => {
@@ -276,7 +268,7 @@ class Comment extends Component
         ...this.state.params,
         keyword: e.target.value
       }
-    })
+    });
   };
 
   handleStimeChanged = (e) => {
@@ -287,14 +279,14 @@ class Comment extends Component
         ...this.state.params,
         stime: stime
       }
-    })
+    });
   }
-   handleSnackbar(snackbar = {}) {
+  handleSnackbar(snackbar = {}) {
     this.setState({
       ...this.state,
       snackbar: { ...this.state.snackbar, ...snackbar }
     });
-  };
+  }
 
   handleEtimeChanged = (e) => {
     const etime = e.target.value;
@@ -307,14 +299,13 @@ class Comment extends Component
     });
   };
 
-    // 选择动态时间段
+  // 选择动态时间段
   handleTypeChanged = name => event => {
     let value = event.target.value;
-    const specialType = ['pinned_type', 'top'];
     const { params } = this.state;
     let pinned_etime = params.pinned_etime, 
-        pinned_stime = params.pinned_stime,
-        pinned_type = params.pinned_type;
+      pinned_stime = params.pinned_stime,
+      pinned_type = params.pinned_type;
 
     if (name === 'top') {
       pinned_stime = '';
@@ -349,7 +340,7 @@ class Comment extends Component
     this.setState({
       ...this.state,
       [name]: value
-    })
+    });
   };
 
   handlePinnedEtimeChanged = (e) => {
@@ -385,7 +376,7 @@ class Comment extends Component
           open: true,
           message: '请至少选择一个时间'
         }
-      })
+      });
     } else {
       this.setState({
         ...this.state,
@@ -405,7 +396,7 @@ class Comment extends Component
           open: true,
           message: '请至少选择一个时间'
         }
-      })
+      });
     } else {
       this.setState({
         ...this.state,
@@ -416,18 +407,28 @@ class Comment extends Component
 
   // 删除用户选择
   handleRequestDelete = () => {
-    this.state.params.userName = '';
-    this.state.params.user_id = 0;
-    this.setState(this.state);
+    this.setState({
+      ...this.state,
+      params: {
+        ...this.state.params,
+        userName: '',
+        user_id: 0,
+      }
+    });
 
     this.handleGetDatas();
   };
 
   // 获取用户发布的评论
   getUserComments = (user, name = '') => {
-    this.state.params.user_id = user;
-    this.state.params.userName = name;
-    this.setState(this.state);
+    this.setState({
+      ...this.state,
+      params: {
+        ...this.state.params,
+        userName: name,
+        user_id: user,
+      }
+    });
 
     this.handleGetDatas();
   };
@@ -442,15 +443,15 @@ class Comment extends Component
 
       return defaultValue;
     }, null);
-  };
+  }
 
   // 打开一个置顶操作框
   handlePinnedOpen (comment) {
     this.setState({
       ...this.state,
       pinned: comment
-    })
-  };
+    });
+  }
 
   handleRejectOpen(comment)
   {
@@ -460,8 +461,8 @@ class Comment extends Component
         comment,
         ing: false
       }
-    })
-  };
+    });
+  }
 
   feedIdChange = e => {
     this.setState({
@@ -470,7 +471,7 @@ class Comment extends Component
         ...this.state.params,
         feed: e.target.value
       }
-    })
+    });
   };
 
   userUserChange = e => {
@@ -480,7 +481,7 @@ class Comment extends Component
         ...this.state.params,
         user_id: e.target.value
       }
-    })
+    });
   };
 
   userNameChange = e => {
@@ -490,7 +491,7 @@ class Comment extends Component
         ...this.state.params,
         userName: e.target.value
       }
-    })
+    });
   };
 
   renderPinnedDom(comment) {
@@ -502,25 +503,25 @@ class Comment extends Component
     return (
       expires_at 
         ?
-          <Button 
-            color="textSecondary"
-            onTouchTap={ () => this.handlePinnedOpen(comment) }
-          >
+        <Button 
+          color="textSecondary"
+          onTouchTap={ () => this.handlePinnedOpen(comment) }
+        >
             置顶到期时间{ new Date(expires_at) < new Date() ? '[已过期]' : ''}: {localDate(expires_at)} | {showAmount(amount)}
-          </Button>
+        </Button>
         :
-          <Button 
-            color="textSecondary"
-            onTouchTap={ () => this.handlePinnedOpen(comment) }
-          >
+        <Button 
+          color="textSecondary"
+          onTouchTap={ () => this.handlePinnedOpen(comment) }
+        >
             申请置顶：{day} 天, 费用 {showAmount(amount)}
-          </Button>
+        </Button>
     );
   }
 
   render () {
     const { classes } = this.props;
-    const { drawer, feed, comments = [], del, snackbar, params, customer, pinned_customer, pinned, pinnedDialog } = this.state;
+    const { drawer, feed, comments = [], del, snackbar, params, customer, pinned_customer, pinned } = this.state;
 
     return(
       <div>
@@ -605,8 +606,8 @@ class Comment extends Component
                       <MenuItem value="customer">自定义时间</MenuItem>
                     </Select>
                   </FormControl>
-                :
-                ''
+                  :
+                  ''
               }
               {
                 params.user_id ?
@@ -618,8 +619,8 @@ class Comment extends Component
                       className={classes.chip}
                     />
                   </FormControl>
-                :
-                ''
+                  :
+                  ''
               }
               
               <Button variant="raised" onClick={ () => this.handleGetDatas() } color="primary" className={classes.button}>
@@ -630,47 +631,47 @@ class Comment extends Component
           { comments.map(
             comment => (
 
-            <Grid spacing={16} item xs={12} sm={6} key={comment.id}>
-              <Card spacing={16}>
+              <Grid spacing={16} item xs={12} sm={6} key={comment.id}>
+                <Card spacing={16}>
 
-                <CardHeader
-                  className={classes.cursor}
-                  onTouchTap={() => this.getUserComments(comment.user_id, comment.user.name)}
-                  avatar={<Avatar>{name[0]}</Avatar>}
-                  title={`${comment.user.name} (${comment.user_id})`}
-                  subheader={localDate(comment.created_at)}
-                />
+                  <CardHeader
+                    className={classes.cursor}
+                    onTouchTap={() => this.getUserComments(comment.user_id, comment.user.name)}
+                    avatar={<Avatar>{name[0]}</Avatar>}
+                    title={`${comment.user.name} (${comment.user_id})`}
+                    subheader={localDate(comment.created_at)}
+                  />
 
-                <CardContent
-                >
-                  <Typography>
+                  <CardContent
+                  >
+                    <Typography>
                     #{comment.id} <Button color="primary" onClick={ () => this.handleShowFeed (comment.commentable_id)}>查看动态</Button>
-                  </Typography>
+                    </Typography>
                   评论内容: {comment.body}
-                </CardContent>
+                  </CardContent>
 
-                <CardActions>
-                  <IconButton
-                    onTouchTap={() => this.handlePinnedOpen(comment)}
-                  >
-                    <ArrowUpward />
-                  </IconButton>
-                  <div className={classes.flexGrow} />
+                  <CardActions>
+                    <IconButton
+                      onTouchTap={() => this.handlePinnedOpen(comment)}
+                    >
+                      <ArrowUpward />
+                    </IconButton>
+                    <div className={classes.flexGrow} />
 
-                  <IconButton
-                    onTouchTap={() => this.handlePushDelete(comment.id)}
-                  >
-                    <Delete />
-                  </IconButton>
+                    <IconButton
+                      onTouchTap={() => this.handlePushDelete(comment.id)}
+                    >
+                      <Delete />
+                    </IconButton>
 
-                </CardActions>
-                <CardActions>
-                  {this.renderPinnedDom(comment)}
-                </CardActions>
+                  </CardActions>
+                  <CardActions>
+                    {this.renderPinnedDom(comment)}
+                  </CardActions>
 
-              </Card>
-            </Grid>
-          ))}
+                </Card>
+              </Grid>
+            ))}
         </Grid>
         <Button
           raised
@@ -687,7 +688,7 @@ class Comment extends Component
           />
         </Button>
         <Dialog open={ customer } >
-          <DialogTitle>{"自定义查询日期"}</DialogTitle>
+          <DialogTitle>{'自定义查询日期'}</DialogTitle>
           <DialogContent>
             <FormControl className={classes.formControl}>
               <TextField
@@ -726,7 +727,7 @@ class Comment extends Component
                     type: 'all'
                   }
                 }
-              )} 
+                )} 
               color="primary"
             >
               取消
@@ -737,7 +738,7 @@ class Comment extends Component
           </DialogActions>
         </Dialog>
         <Dialog open={ pinned_customer } >
-          <DialogTitle>{"自定义置顶查询日期"}</DialogTitle>
+          <DialogTitle>{'自定义置顶查询日期'}</DialogTitle>
           <DialogContent>
             <FormControl className={classes.formControl}>
               <TextField
@@ -776,7 +777,7 @@ class Comment extends Component
                     pinned_type: 'all'
                   }
                 }
-              )} 
+                )} 
               color="primary"
             >
               取消
@@ -828,7 +829,7 @@ class Comment extends Component
         </Dialog>
       </div>
     );
-  };
+  }
   /**
    * 关闭撤销置顶确认窗口
    */
@@ -840,19 +841,19 @@ class Comment extends Component
         comment: null,
         ing: false
       }
-    })
-  };
+    });
+  }
 
   handleSnackbarClose () {
     this.handleSnackbar({ open: false });
-  };
-    // 关闭动态详情
+  }
+  // 关闭动态详情
   handleDrawerClose () {
     this.setState({
       ...this.state,
       drawer: null,
     });
-  };
+  }
 
   handleShowFeed = (feed) => {
     if (feed === this.state.feed.id) {
@@ -874,7 +875,7 @@ class Comment extends Component
         drawer: true,
         feed: { ...data }
       });
-    })
+    });
   };
 
   makeDrawerContent(feed) {
@@ -911,7 +912,7 @@ class Comment extends Component
           <Typography component="span" className={classes.amoutShow}>
             文字收费：{paid_node.amount  / 100} 元
           </Typography>
-          )
+        )
         }
         {content}
       </CardContent>
@@ -946,56 +947,54 @@ class Comment extends Component
   }
 
   setFeedId (feed_id) {
-    this.state.params.feed = feed_id;
-    this.setState(this.state);
+    this.setState({ params: { ...this.state.params, feed: feed_id } });
     this.handleGetDatas();
-  };
+  }
 
   handleOpenPinnedDialog (comment) {
     this.setState({
-      ...this.state,
       pinned: comment
-    })
-  };
+    });
+  }
 
   handleAcceptPinned (comment) {
-    let pinned = this.handleGetPinned(comment.id)
+    let pinned = this.handleGetPinned(comment.id);
     request.patch(
       createRequestURI(`comments/${pinned.target}/pinneds/${pinned.id}`),
       {
         validateStatus: status => status === 201
       }
     )
-    .then(( { data: { data } }) => {
-      this.handleSnackbar({
-        message: '操作成功!',
-        open: true,
-      });
-      delete data.comment;
-      this.setState({
-        ...this.state,
-        pinned: null
-      })
-      let index = _.findIndex(this.state.pinneds, { id: pinned.id });
-      if(index !== -1) {
+      .then(( { data: { data } }) => {
+        this.handleSnackbar({
+          message: '操作成功!',
+          open: true,
+        });
+        delete data.comment;
         this.setState({
           ...this.state,
-          pinneds: {
-            ...this.state.pinneds,
-            [index]: {
-              ...data
-            }
-          }
+          pinned: null
         });
-      }
-    })
-    .catch(({ response: { data } }) => {
-      this.handleSnackbar({
-        message: '操作失败!',
-        open: true,
+        let index = _.findIndex(this.state.pinneds, { id: pinned.id });
+        if(index !== -1) {
+          this.setState({
+            ...this.state,
+            pinneds: {
+              ...this.state.pinneds,
+              [index]: {
+                ...data
+              }
+            }
+          });
+        }
+      })
+      .catch(() => {
+        this.handleSnackbar({
+          message: '操作失败!',
+          open: true,
+        });
       });
-    })
-  };
+  }
 
   doPinnedAudit (comment = null) {
     if (! comment) {
@@ -1004,12 +1003,10 @@ class Comment extends Component
 
     let pin = this.handleGetPinned(comment.id);
 
-    const { classes } = this.props;
-
     if(!pin ) {
       return (
         <section>
-          <DialogTitle>{"评论置顶审核操作"}</DialogTitle>
+          <DialogTitle>{'评论置顶审核操作'}</DialogTitle>
           <DialogContent>
             <DialogContentText>
               该评论未置顶，如果您要人工置顶，请在下方输入要置顶的天数
@@ -1033,7 +1030,7 @@ class Comment extends Component
             </Button>
           </DialogActions>
         </section>
-      )
+      );
     }
 
     const {
@@ -1043,14 +1040,12 @@ class Comment extends Component
       expires_at = null,
       amount = 0,
       day = 0,
-      target = 0,
-      id = 0
     } = pin;
 
     if (expires_at && new Date(expires_at) < new Date()) {
       return (
         <section>
-          <DialogTitle>{"评论置顶审核操作"}</DialogTitle>
+          <DialogTitle>{'评论置顶审核操作'}</DialogTitle>
           <DialogContent>
             <DialogContentText>
               该评论未置顶，或置顶时间已到，或已经被拒绝了申请，如果您要人工置顶，请在下方输入要置顶的天数
@@ -1074,11 +1069,11 @@ class Comment extends Component
             </Button>
           </DialogActions>
         </section>
-      )
+      );
     } else if (pin && (expires_at && new Date(expires_at) > new Date())) {
       return(
         <section>
-          <DialogTitle>{"评论置顶操作"}</DialogTitle>
+          <DialogTitle>{'评论置顶操作'}</DialogTitle>
           <DialogContent>
             <DialogContentText>
               评论作者: {name}，{
@@ -1095,11 +1090,11 @@ class Comment extends Component
             </Button>
           </DialogActions>
         </section>
-      )
+      );
     } else {
       return(
         <section>
-          <DialogTitle>{"评论置顶审核操作"}</DialogTitle>
+          <DialogTitle>{'评论置顶审核操作'}</DialogTitle>
           <DialogContent>
             <DialogContentText>
               评论作者: {name} 花费 {showAmount(amount)}，申请该条评论置顶{day}天时间，是否同意？
@@ -1119,20 +1114,20 @@ class Comment extends Component
         </section>
       );
     }
-  };
+  }
 
   handleRequestClose() {
     this.setState({
       ...this.state,
       pinned: null
-    })
-  };
+    });
+  }
 
   handleDayChange = event => {
     this.setState({
       ...this.state,
       pinnedDay: event.target.value
-    })
+    });
   };
   /**
    * 撤销置顶
@@ -1152,40 +1147,40 @@ class Comment extends Component
         validateStatus: status => status === 204
       }
     )
-    .then( () => {
-      this.setState({
-        ...this.state,
-        pinned: null
-      });
-      this.handleSnackbar({
-        message: '操作成功!',
-        open: true,
-      });
-      this.handleRequestClose();
-      let index = _.findIndex(this.state.pinneds, { target: pinned.target });
-      if(index !== -1) {
-        this.state.pinneds.splice(index, 1);
-      }
+      .then( () => {
+        this.setState({
+          ...this.state,
+          pinned: null
+        });
+        this.handleSnackbar({
+          message: '操作成功!',
+          open: true,
+        });
+        this.handleRequestClose();
+        let index = _.findIndex(this.state.pinneds, { target: pinned.target });
+        if(index !== -1) {
+          this.state.pinneds.splice(index, 1);
+        }
 
-      this.setState({
-        ...this.state
+        this.setState({
+          ...this.state
+        });
       })
-    })
-    .catch( () => {
-      this.setState({
-        ...this.state,
-        pinnedDialog:
+      .catch( () => {
+        this.setState({
+          ...this.state,
+          pinnedDialog:
         {
           ...this.state.pinnedDialog,
           ing: false
         }
-      })
-      this.handleSnackbar({
-        message: '操作失败!',
-        open: true,
+        });
+        this.handleSnackbar({
+          message: '操作失败!',
+          open: true,
+        });
       });
-    })
-  };
+  }
 
   /**
    * 设置置顶
@@ -1207,42 +1202,43 @@ class Comment extends Component
         validateStatus: status => status === 201
       }
     )
-    .then( ({ data: { data } }) => {
-      this.handleSnackbar({
-        message: '设置成功!',
-        open: true,
+      .then( ({ data: { data } }) => {
+        this.handleSnackbar({
+          message: '设置成功!',
+          open: true,
+        });
+        let state = this.state;
+        state.pinned = null;
+        let index = _.findIndex(this.state.pinneds, {id: data.target});
+        if(index !== -1) {
+          state.pinneds[index] = {
+            ...this.state.pinneds[index],
+            ...data
+          };
+        } else {
+          state.pinneds.push(data);
+        }
+
+        this.setState(state);
+      })
+      .catch( () => {
+        this.handleSnackbar({
+          message: '操作失败了!',
+          open: true,
+        });
       });
-      this.setState({
-        ...this.state,
-        pinned: null
-      });
-      let index = _.findIndex(this.state.pinneds, {id: data.target});
-      if(index !== -1) {
-        this.state.pinneds[index] = {
-          ...this.state.pinneds[index],
-          ...data
-        };
-      } else {
-        this.state.pinneds.push(data);
-      }
-    })
-    .catch( () => {
-      this.handleSnackbar({
-        message: '操作失败了!',
-        open: true,
-      });
-    })
   };
 
   makeImages(images = []) {
-    switch (images.length) {
-      case 1:
-        const file = images.pop();
-        return (<img src={createRequestURI(`files/${file.id}`)} />);
+    if (images.length) {
+      let { id } = images.pop();
 
-      default:
-        return null;
+      return (
+        <img src={createRequestURI(`files/${id}`)} />
+      );
     }
+    
+    return null;
   }
 
   handleGetDatas () {
@@ -1270,41 +1266,38 @@ class Comment extends Component
         validateStatus: status => status === 200
       }
     )
-    .then(({ data }) => {
-      if (!data.nextPage) {
-        loadMoreBtnDisabled = true;
-        loadMoreBtnText = '已全部加载';
-      } else {
-        loadMoreBtnDisabled = false;
-        loadMoreBtnText = '加载更多';
-      }
+      .then(({ data }) => {
+        if (!data.nextPage) {
+          loadMoreBtnDisabled = true;
+          loadMoreBtnText = '已全部加载';
+        } else {
+          loadMoreBtnDisabled = false;
+          loadMoreBtnText = '加载更多';
+        }
       
-      this.setState({
-        comments: data.comments,
-        pinneds: data.pinneds,
-        loading: false,
-        nextPage: data.nextPage,
-        currentPage: data.current_page,
-        lastPage: data.lastPage,
-        total: data.total,
-        loadMoreBtnDisabled,
-        loadMoreBtnText
+        this.setState({
+          comments: data.comments,
+          pinneds: data.pinneds,
+          loading: false,
+          nextPage: data.nextPage,
+          currentPage: data.current_page,
+          lastPage: data.lastPage,
+          total: data.total,
+          loadMoreBtnDisabled,
+          loadMoreBtnText
+        });
       });
-    })
   }
 
   componentDidMount () {
     const search = this.props.location.search;
     if(search) {
-      let params = {...getQuery(search)};
-      params = {
-        ...this.state.params,
-        ...params
-      };
-      this.state.params = params;
+      this.setState({
+        params: { ...this.state.params, ...getQuery(search) }
+      });
     }
     this.handleGetDatas();
-  };
+  }
 }
 
 export default withStyles(styles)(Comment);

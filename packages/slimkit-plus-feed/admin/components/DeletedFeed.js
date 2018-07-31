@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -24,18 +24,13 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Drawer from '@material-ui/core/Drawer';
 import Chip from '@material-ui/core/Chip';
 import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { Link } from 'react-router-dom';
 import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Forum from '@material-ui/icons/Forum';
 import Delete from '@material-ui/icons/Delete';
 import CloseIcon from '@material-ui/icons/Close';
 import SettingsBackupRestore from '@material-ui/icons/SettingsBackupRestore';
-import _ from 'lodash';
 
 import request, { createRequestURI } from '../utils/request';
 
@@ -57,7 +52,7 @@ const styles = (theme) => ({
   },
   drawerImageTitle: {
     width: '100%',
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
     background: 'rgba(255, 255, 255, .4)',
     color: '#fff'
@@ -156,7 +151,7 @@ class DeletedFeed extends Component
         ...this.state.params,
         keyword: e.target.value
       }
-    })
+    });
   };
 
   handleUserChange = e => {
@@ -166,7 +161,7 @@ class DeletedFeed extends Component
         ...this.state.params,
         user: e.target.value
       }
-    })
+    });
   };
 
   handleNameChange = e => {
@@ -176,7 +171,7 @@ class DeletedFeed extends Component
         ...this.state.params,
         name: e.target.value
       }
-    })
+    });
   };
 
   render() {
@@ -226,8 +221,8 @@ class DeletedFeed extends Component
                       className={classes.chip}
                     />
                   </FormControl>
-                :
-                ''
+                  :
+                  ''
               }
               
               <Button variant="raised" onClick={ () => this.handleGetDatas() } color="primary" className={classes.button}>
@@ -239,11 +234,9 @@ class DeletedFeed extends Component
             id,
             created_at,
             feed_content: content,
-            images = [],
             user: { name, id: user_id } = {},
             like_count: digg_count = 0,
             feed_comment_count: comment_count = 0,
-            expanded = false,
           }) => (
 
             <Grid spacing={16} item xs={12} sm={6} key={id}>
@@ -403,7 +396,6 @@ class DeletedFeed extends Component
       created_at,
       feed_content: content,
       images = [],
-      paid_node,
       feed_digg_count: digg_count,
       feed_comment_count: comment_count,
     } = feed;
@@ -447,14 +439,15 @@ class DeletedFeed extends Component
   }
 
   makeImages(images = []) {
-    switch (images.length) {
-      case 1:
-        const file = images.pop();
-        return (<img src={createRequestURI(`files/${file.id}`)} />);
+    if (images.length >= 1) {
+      const { id } = images.pop();
 
-      default:
-        return null;
+      return (
+        <img src={createRequestURI(`files/${id}`)} />
+      );
     }
+    
+    return null;
   }
 
   handlePushDelete(feed) {
@@ -470,7 +463,7 @@ class DeletedFeed extends Component
     this.setState({
       ...state,
       restore: { feed, ing: false }
-    })
+    });
   }
 
   handlePushClose() {
@@ -577,40 +570,37 @@ class DeletedFeed extends Component
         validateStatus: status => status === 200
       }
     )
-    .then(({ data }) => {
-      let loadMoreBtnText = '加载更多', loadMoreBtnDisabled = false, loading = false;
-      if (data.data.length < params.limit || data.current_page === data.last_page) {
-        loadMoreBtnDisabled = true;
-        loadMoreBtnText = '已加载全部';
-      }
-      let feeds = this.state.feeds;
-      if(type === 'loadmore') {
-        feeds = [ ...feeds, ...data.data ];
-      } else {
-        feeds = data.data
-      }
-
-      this.setState({
-        ...this.state,
-        ...{
-          feeds: feeds,
-          params: {
-            ...this.state.params,
-            ...{
-              current_page: data.current_page,
-              last_page: data.last_page,
-              total: data.total
-            }
-          },
-          loading,
-          loadMoreBtnDisabled,
-          loadMoreBtnText
+      .then(({ data }) => {
+        let loadMoreBtnText = '加载更多', loadMoreBtnDisabled = false, loading = false;
+        if (data.data.length < params.limit || data.current_page === data.last_page) {
+          loadMoreBtnDisabled = true;
+          loadMoreBtnText = '已加载全部';
         }
+        let feeds = this.state.feeds;
+        if(type === 'loadmore') {
+          feeds = [ ...feeds, ...data.data ];
+        } else {
+          feeds = data.data;
+        }
+
+        this.setState({
+          ...this.state,
+          ...{
+            feeds: feeds,
+            params: {
+              ...this.state.params,
+              ...{
+                current_page: data.current_page,
+                last_page: data.last_page,
+                total: data.total
+              }
+            },
+            loading,
+            loadMoreBtnDisabled,
+            loadMoreBtnText
+          }
+        });
       });
-    })
-    .catch(({ response: { data }}) => {
-      console.log(data);
-    })
   }
 
   // 加载更多

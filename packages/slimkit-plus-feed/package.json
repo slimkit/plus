@@ -2,11 +2,14 @@
   "private": true,
   "devDependencies": {
     "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.6",
     "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "cross-env": "^5.2.0",
+    "eslint": "^5.2.0",
+    "eslint-plugin-react": "^7.10.0",
     "uglifyjs-webpack-plugin": "^1.2.7",
     "webpack": "^4.16.3",
     "webpack-cli": "^3.1.0",
@@ -27,6 +30,7 @@
     "watch": "cross-env NODE_ENV=development webpack --display-error-details --progress --hide-modules --colors --watch",
     "dev:r": "cross-env PLUS_DEV_FEED=1 npm run dev",
     "dist:r": "cross-env PLUS_DEV_FEED=1 npm run dist",
-    "watch:r": "cross-env PLUS_DEV_FEED=1 npm run watch"
+    "watch:r": "cross-env PLUS_DEV_FEED=1 npm run watch",
+    "lint": "eslint --fix --ext .js,.jsx admin/"
   }
 }

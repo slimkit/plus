@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import { matchPath, withRouter } from 'react-router';
 import { Route } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -85,30 +85,30 @@ class App extends Component
     const { history: { replace } } = this.props;
     this.setState({ value });
     switch (value) {
-      case 'comments':
-        replace('/comments');
-        break;
+    case 'comments':
+      replace('/comments');
+      break;
 
-      case 'feeds':
-        replace('/feeds');
-        break;
+    case 'feeds':
+      replace('/feeds');
+      break;
         
-      case 'paycontrol':
-        replace('/paycontrol');
-        break;
+    case 'paycontrol':
+      replace('/paycontrol');
+      break;
 
       // case 'deleteComments':
       //   replace('/deleteComments');
       //   break;
 
-      case 'deleteFeeds':
-        replace('/deleteFeeds');
-        break;
+    case 'deleteFeeds':
+      replace('/deleteFeeds');
+      break;
 
-      case 'root':
-      default:
-        replace('/');
-        break;
+    case 'root':
+    default:
+      replace('/');
+      break;
     }
   };
 
@@ -122,7 +122,7 @@ class App extends Component
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <AppBar position="fixed">
+        <AppBar position="static">
           <Toolbar>
             <Tabs
               value={this.matchPath()}

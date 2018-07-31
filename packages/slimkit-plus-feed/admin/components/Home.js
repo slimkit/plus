@@ -3,19 +3,15 @@
  */
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import SvgIcon from '@material-ui/core/SvgIcon';
 import { blue } from '@material-ui/core/colors';
 import { Link } from 'react-router-dom';
 import FormControl from '@material-ui/core/FormControl';
@@ -26,16 +22,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Dialog from '@material-ui/core/Dialog';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
-
-import FavoriteIcon from '@material-ui/icons/Favorite';
 import Comment from '@material-ui/icons/Comment';
 import RssFeed from '@material-ui/icons/RssFeed';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import Popover from '@material-ui/core/Popover';
-import Chip from '@material-ui/core/Chip';
 import Drawer from '@material-ui/core/Drawer';
-import Divider from '@material-ui/core/Divider';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import ListItemText from '@material-ui/core/ListItemText';
 import List from '@material-ui/core/List';
@@ -115,16 +106,15 @@ class Home extends Component
         feeds: data.feedsCount || 0,
         comments: data.commentsCount || 0,
         reward: data.status.reward ? 'true' : 'false'
-      })
-    }).catch( error => {
-
+      });
+    }).catch( () => {
     });
-  };
+  }
 
   handleRequestClose =  () => {
     this.setState({
       open: false
-    })
+    });
   }
 
   /**
@@ -132,9 +122,10 @@ class Home extends Component
    * @param  {[type]} key [description]
    * @return {[type]}     [description]
    */
-  handleRewardChange = key => (event, value) => {
-    this.state.close.reward.status = value;
-    this.setState(this.state);
+  handleRewardChange = () => (value) => {
+    let state = this.state;
+    state.close.reward.status = value;
+    this.setState(state);
     if (value === 'true') {
       this.handleRewardStore();
     }
@@ -142,41 +133,40 @@ class Home extends Component
 
   // 打赏开关控制
   handleRewardStore () {
-    this.state.close.reward.ing = true;
-    this.setState(this.state);
+    let state = this.state;
+    state.close.reward.ing = true;
+    this.setState(state);
     const { close: { reward: { status = 'false' } = {} } = {} } = this.state;
     request.patch(createRequestURI('status/reward'), {
       reward: status === 'false' ? false : true
     }, {
       validataStatus: status => status === 201
     })
-    .then( () => {
-      this.state.close.reward.ing = false;
-      this.state.close.reward.status = 'true';
-      this.state.reward = status;
-      this.state.open = true;
-      this.setState(this.state);
-    })
-    .catch(({ response: { data = {} } }) => {
-      console.log(data);
-    })
-  };
+      .then( () => {
+        state.close.reward.ing = false;
+        state.close.reward.status = 'true';
+        state.reward = status;
+        state.open = true;
+        this.setState(state);
+      });
+  }
 
   handleCloseRewardDialog () {
-    this.state.close.reward.status = 'true';
-    this.state.close.reward.ing = false;
-    this.setState(this.state);
-  };
+    let state = this.state;
+    state.close.reward.status = 'true';
+    state.close.reward.ing = false;
+    this.setState(state);
+  }
   handleClick = (type) => {
     request.get(createRequestURI(`statistics?type=${type}`), {
       validataStatus: status => status === 200
     })
-    .then(({ data = {} }) => {
-      this.setState({
-        data: { ...data },
-        type: type
+      .then(({ data = {} }) => {
+        this.setState({
+          data: { ...data },
+          type: type
+        });
       });
-    })
     this.setState({
       type: type
     });
@@ -191,7 +181,7 @@ class Home extends Component
         <Drawer
           anchor="right"
           open={drawerOpen}
-          onRequestClose={() => {this.setState({ drawerOpen: false, type: ''})}}
+          onRequestClose={() => {this.setState({ drawerOpen: false, type: ''});}}
         >
           <div tabIndex={0} role="button">
             <List className={classes.drawer} subheader={<ListSubheader>动态数据统计</ListSubheader>}>
@@ -388,7 +378,7 @@ class Home extends Component
             </List>
           </div>
         </Drawer>
-        <Grid spacing={16} spacing={16} container className={classes.root}>
+        <Grid spacing={16} container className={classes.root}>
           <Grid spacing={16} item xs={12} sm={6}>
             <Card>
               <CardContent>
@@ -440,7 +430,7 @@ class Home extends Component
                 <Button 
                   size="small" 
                   color="primary"
-                  onTouchTap={() => { this.setState({drawerOpen: true}) }}
+                  onTouchTap={() => { this.setState({drawerOpen: true}); }}
                 >
                   数据统计
                 </Button>
