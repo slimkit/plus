@@ -79,12 +79,10 @@ const resolve = pathname => path.resolve(src, pathname);
 |
 */
 
-const join = pathname => path.join(src, pathname);
-
 const webpackConfig = {
 
-mode: isProd ? 'production' : 'development',
-/*
+  mode: isProd ? 'production' : 'development',
+  /*
 |---------------------------------------------------------
 | 开发工具
 |---------------------------------------------------------
@@ -93,9 +91,9 @@ mode: isProd ? 'production' : 'development',
 |
 */
 
-devtool: isProd ? false : 'source-map',
+  devtool: isProd ? false : 'source-map',
 
-/*
+  /*
 |---------------------------------------------------------
 | 配置入口
 |---------------------------------------------------------
@@ -104,11 +102,11 @@ devtool: isProd ? false : 'source-map',
 |
 */
 
-entry: {
-  admin: resolve('main.js')
-},
+  entry: {
+    admin: resolve('main.js')
+  },
 
-/*
+  /*
 |---------------------------------------------------------
 | 输出配置
 |---------------------------------------------------------
@@ -117,12 +115,12 @@ entry: {
 |
 */
 
-output: {
-  path: isRepositorie ? path.join(__dirname, '../../../../public/zhiyicx/plus-component-feed') : path.join(__dirname, 'assets'),
-  filename: '[name].js'
-},
+  output: {
+    path: isRepositorie ? path.join(__dirname, '../../../../public/zhiyicx/plus-component-feed') : path.join(__dirname, 'assets'),
+    filename: '[name].js'
+  },
 
-/*
+  /*
 |---------------------------------------------------------
 | 解决配置
 |---------------------------------------------------------
@@ -131,14 +129,14 @@ output: {
 |
 */
 
-resolve: {
+  resolve: {
   // 忽略加载的后缀
-  extensions: [ '.js', '.jsx', '.json' ],
-  // 模块所处的目录
-  modules: [ src, path.resolve(__dirname, 'node_modules') ]
-},
+    extensions: [ '.js', '.jsx', '.json' ],
+    // 模块所处的目录
+    modules: [ src, path.resolve(__dirname, 'node_modules') ]
+  },
 
-/*
+  /*
 |---------------------------------------------------------
 | 模块
 |---------------------------------------------------------
@@ -147,18 +145,18 @@ resolve: {
 |
 */
 
-module: {
-  rules: [
+  module: {
+    rules: [
     // js文件加载规则
-    {
-      test: /\.jsx?$/,
-      include: [ src ],
-      use: [ 'babel-loader' ]
-    }
-  ]
-},
+      {
+        test: /\.jsx?$/,
+        include: [ src ],
+        use: [ 'babel-loader' ]
+      }
+    ]
+  },
 
-/*
+  /*
 |---------------------------------------------------------
 | 插件配置
 |---------------------------------------------------------
@@ -167,24 +165,24 @@ module: {
 |
 */
 
-plugins: [
+  plugins: [
   // Defined build env.
-  new webpack.DefinePlugin({
-    'process.env': {
-      NODE_ENV: JSON.stringify(NODE_ENV)
-    }
-  }),
-  new WebpackLaravelMixManifest(),
-  ...(isProd ? [
-    // Prod env.
-    new UglifyJsPlugin({
-      sourceMap: false
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify(NODE_ENV)
+      }
     }),
-  ] : [
+    new WebpackLaravelMixManifest(),
+    ...(isProd ? [
+    // Prod env.
+      new UglifyJsPlugin({
+        sourceMap: false
+      }),
+    ] : [
     // Development env.
-    new webpack.NoEmitOnErrorsPlugin(),
-  ])
-],
+      new webpack.NoEmitOnErrorsPlugin(),
+    ])
+  ],
 
 // optimization: {
 //   splitChunks: {
