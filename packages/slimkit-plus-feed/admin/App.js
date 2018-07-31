@@ -8,9 +8,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { matchPath, withRouter } from 'react-router';
 import { Route } from 'react-router-dom';
-import withStyles from 'material-ui/styles/withStyles';
-import AppBar from 'material-ui/AppBar';
-import Tabs, { Tab } from 'material-ui/Tabs';
+import withStyles from '@material-ui/core/styles/withStyles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import Home from './components/Home';
 import Feed from './components/Feed';
 import Comment from './components/Comment';
@@ -120,17 +122,19 @@ class App extends Component
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <AppBar position="static">
-          <Tabs
-            value={this.matchPath()}
-            onChange={this.handleChange}
-          >
-            <Tab label="基础信息" value="root" />
-            <Tab label="动态管理" value="feeds" />
-            <Tab label="评论管理" value="comments" />
-            <Tab label="付费开关" value="paycontrol" />
-            <Tab label="动态回收站" value="deleteFeeds" />
-          </Tabs>
+        <AppBar position="fixed">
+          <Toolbar>
+            <Tabs
+              value={this.matchPath()}
+              onChange={this.handleChange}
+            >
+              <Tab label="基础信息" value="root" />
+              <Tab label="动态管理" value="feeds" />
+              <Tab label="评论管理" value="comments" />
+              <Tab label="付费开关" value="paycontrol" />
+              <Tab label="动态回收站" value="deleteFeeds" />
+            </Tabs>
+          </Toolbar>
         </AppBar>
 
         <Route exact path="/" component={Home} />

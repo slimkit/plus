@@ -5,32 +5,41 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 
-import withStyles from 'material-ui/styles/withStyles';
-import Grid from 'material-ui/Grid';
-import Card, { CardHeader, CardContent, CardMedia, CardActions } from 'material-ui/Card';
-import Typography from 'material-ui/Typography';
-import Dialog, { DialogContent, DialogActions } from 'material-ui/Dialog';
-import Snackbar from 'material-ui/Snackbar';
-import Avatar from 'material-ui/Avatar';
-import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
-import CircularProgress from 'material-ui/Progress/CircularProgress';
-import Drawer from 'material-ui/Drawer';
-import Chip from 'material-ui/Chip';
-import { FormControl, FormHelperText, FormControlLabel } from 'material-ui/Form';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardActions from '@material-ui/core/CardActions';
+import Typography from '@material-ui/core/Typography';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Snackbar from '@material-ui/core/Snackbar';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Drawer from '@material-ui/core/Drawer';
+import Chip from '@material-ui/core/Chip';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { Link } from 'react-router-dom';
-import Input, { InputLabel } from 'material-ui/Input';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
 
-import FavoriteIcon from 'material-ui-icons/Favorite';
-import Forum from 'material-ui-icons/Forum';
-import Delete from 'material-ui-icons/Delete';
-import CloseIcon from 'material-ui-icons/Close';
-import SettingsBackupRestore from 'material-ui-icons/SettingsBackupRestore';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import Forum from '@material-ui/icons/Forum';
+import Delete from '@material-ui/icons/Delete';
+import CloseIcon from '@material-ui/icons/Close';
+import SettingsBackupRestore from '@material-ui/icons/SettingsBackupRestore';
 import _ from 'lodash';
 
 import request, { createRequestURI } from '../utils/request';
 
-const styles = (theme:object) => ({
+const styles = (theme) => ({
   root: {
     padding: theme.spacing.unit * 2,
     width: '100%',
@@ -176,16 +185,14 @@ class DeletedFeed extends Component
 
     return (
       <div>
-        <Grid container className={classes.root}>
+        <Grid spacing={16} container className={classes.root}>
           <div className={classes.container}>
             <form className={classes.container} autoComplete="off">
               <FormControl className={classes.formControl}>
                 <h5 className={classes.title}>动态筛选</h5>
                 <Input
                   placeholder="关键字"
-                  inputProps={{
-                    'aria-label': 'Description',
-                  }}
+                  aria-label="Description"
                   onChange={ this.handleKeywordChange }
                   value={params.keyword}
                 />
@@ -194,9 +201,7 @@ class DeletedFeed extends Component
                 <h5 className={classes.title}>用户ID</h5>
                 <Input
                   placeholder="用户ID"
-                  inputProps={{
-                    'aria-label': 'Description',
-                  }}
+                  aria-label="Description"
                   type={'number'}
                   onChange={ this.handleUserChange }
                   value={params.user || ''}
@@ -206,9 +211,7 @@ class DeletedFeed extends Component
                 <h5 className={classes.title}>用户昵称</h5>
                 <Input
                   placeholder="用户昵称"
-                  inputProps={{
-                    'aria-label': 'Description',
-                  }}
+                  aria-label="Description"
                   onChange={ this.handleNameChange }
                   value={params.name}
                 />
@@ -227,7 +230,7 @@ class DeletedFeed extends Component
                 ''
               }
               
-              <Button raised onClick={ () => this.handleGetDatas() } color="primary" className={classes.button}>
+              <Button variant="raised" onClick={ () => this.handleGetDatas() } color="primary" className={classes.button}>
                 筛选
               </Button>
             </form>
@@ -243,7 +246,7 @@ class DeletedFeed extends Component
             expanded = false,
           }) => (
 
-            <Grid item xs={12} sm={6} key={id}>
+            <Grid spacing={16} item xs={12} sm={6} key={id}>
               <Card>
 
                 <CardHeader
@@ -300,7 +303,7 @@ class DeletedFeed extends Component
           共[{params.total}]条动态，当前第[{params.current_page}]页/共[{params.last_page}]页{this.state.loadMoreBtnText}
           <CircularProgress
             className={this.state.loading ? classes.progress : classes.progeessHide}
-            color="accent"
+            color="textSecondary"
             size={30}
           />
         </Button>

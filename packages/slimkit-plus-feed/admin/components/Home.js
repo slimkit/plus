@@ -5,38 +5,50 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 
-import withStyles from 'material-ui/styles/withStyles';
-import Grid from 'material-ui/Grid';
-import Card, { CardHeader, CardContent, CardMedia, CardActions } from 'material-ui/Card';
-import Typography from 'material-ui/Typography';
-import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
-import SvgIcon from 'material-ui/SvgIcon';
-import { blue } from 'material-ui/colors';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardActions from '@material-ui/core/CardActions';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import SvgIcon from '@material-ui/core/SvgIcon';
+import { blue } from '@material-ui/core/colors';
 import { Link } from 'react-router-dom';
-import { FormControl, FormLabel, FormControlLabel } from 'material-ui/Form';
-import Dialog, { DialogContent, DialogActions } from 'material-ui/Dialog';
-import { CircularProgress } from 'material-ui/Progress';
-import Snackbar from 'material-ui/Snackbar';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import Dialog from '@material-ui/core/Dialog';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Snackbar from '@material-ui/core/Snackbar';
 
-import FavoriteIcon from 'material-ui-icons/Favorite';
-import Comment from 'material-ui-icons/Comment';
-import RssFeed from 'material-ui-icons/RssFeed';
-import Radio, { RadioGroup } from 'material-ui/Radio';
-import Popover from 'material-ui/Popover';
-import Chip from 'material-ui/Chip';
-import Drawer from 'material-ui/Drawer';
-import Divider from 'material-ui/Divider';
-import ListSubheader from 'material-ui/List/ListSubheader';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
-import Collapse from 'material-ui/transitions/Collapse';import ExpandLess from 'material-ui-icons/ExpandLess';
-import ExpandMore from 'material-ui-icons/ExpandMore';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import Comment from '@material-ui/icons/Comment';
+import RssFeed from '@material-ui/icons/RssFeed';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Popover from '@material-ui/core/Popover';
+import Chip from '@material-ui/core/Chip';
+import Drawer from '@material-ui/core/Drawer';
+import Divider from '@material-ui/core/Divider';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import ListItemText from '@material-ui/core/ListItemText';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Collapse from '@material-ui/core/Collapse';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 
 import request, { createRequestURI } from '../utils/request';
 import { showAmount } from '../utils/balance';
 
 
-const styles = (theme:object) => ({
+const styles = (theme) => ({
   root: {
     padding: theme.spacing.unit,
     width: '100%',
@@ -376,8 +388,8 @@ class Home extends Component
             </List>
           </div>
         </Drawer>
-        <Grid container className={classes.root}>
-          <Grid item xs={12} sm={6}>
+        <Grid spacing={16} spacing={16} container className={classes.root}>
+          <Grid spacing={16} item xs={12} sm={6}>
             <Card>
               <CardContent>
                 <Typography type="headline" component="h2">
@@ -397,16 +409,16 @@ class Home extends Component
                     value={this.state.reward}
                     onChange={this.handleRewardChange()}
                   >
-                    <FormControlLabel value={'true'} control={<Radio />} label="开启" />
-                    <FormControlLabel value={'false'} control={<Radio />} label="关闭" />
+                    <FormControlLabel value={'true'} control={<Radio color="primary" />} label="开启" />
+                    <FormControlLabel value={'false'} control={<Radio color="primary" />} label="关闭" />
                   </RadioGroup>
                 </FormControl>
               </CardActions>
 
             </Card>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <Card>
+          <Grid spacing={16} item xs={12} sm={6}>
+            <Card spacing={16}>
               <CardContent>
                 <Typography type="headline" component="h2">
                   动态统计
@@ -426,14 +438,14 @@ class Home extends Component
 
                 <div className={classes.flexGrow} />
                 <Button 
-                  dense 
+                  size="small" 
                   color="primary"
                   onTouchTap={() => { this.setState({drawerOpen: true}) }}
                 >
                   数据统计
                 </Button>
                 <div className={classes.flexGrow} />
-                <Button dense color="primary">
+                <Button size="small" color="primary">
                   <Link to="/feeds" className={classes.link}>管理动态</Link>
                 </Button>
 
@@ -441,8 +453,8 @@ class Home extends Component
 
             </Card>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <Card>
+          <Grid spacing={16} item xs={12} sm={6}>
+            <Card spacing={16}>
               <CardContent>
                 <Typography type="headline" component="h2">
                   动态回收站
@@ -453,7 +465,7 @@ class Home extends Component
               </CardContent>
 
               <CardActions>
-                <Button dense color="primary">
+                <Button size="small" color="primary">
                   <Link to="/deleteFeeds" className={classes.link}>管理动态回收站</Link>
                 </Button>
 
@@ -461,7 +473,7 @@ class Home extends Component
 
             </Card>
           </Grid>
-          {/*<Grid item xs={12} sm={6}>
+          {/*<Grid spacing={16} item xs={12} sm={6}>
             <Card>
               <CardContent>
                 <Typography type="headline" component="h2">
@@ -473,7 +485,7 @@ class Home extends Component
               </CardContent>
 
               <CardActions>
-                <Button dense color="primary">
+                <Button size="small" color="primary">
                   <Link to="/deleteComments" className={classes.link}>管理评论回收站</Link>
                 </Button>
 
@@ -499,7 +511,7 @@ class Home extends Component
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           open={open}
           onRequestClose={this.handleRequestClose}
-          SnackbarContentProps={{
+          ContentProps={{
             'aria-describedby': 'message-id',
           }}
           message={<span id="message-id">操作成功</span>}

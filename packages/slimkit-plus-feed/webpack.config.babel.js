@@ -13,6 +13,7 @@
 import path from 'path';
 import webpack from 'webpack';
 import WebpackLaravelMixManifest from 'webpack-laravel-mix-manifest';
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 
 /*
 |--------------------------------------------------------
@@ -82,6 +83,7 @@ const join = pathname => path.join(src, pathname);
 
 const webpackConfig = {
 
+mode: isProd ? 'production' : 'development',
 /*
 |---------------------------------------------------------
 | 开发工具
@@ -175,10 +177,7 @@ plugins: [
   new WebpackLaravelMixManifest(),
   ...(isProd ? [
     // Prod env.
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      },
+    new UglifyJsPlugin({
       sourceMap: false
     }),
   ] : [
@@ -186,6 +185,15 @@ plugins: [
     new webpack.NoEmitOnErrorsPlugin(),
   ])
 ],
+
+// optimization: {
+//   splitChunks: {
+//     chunks: 'all',
+//     // minSize: 30000,
+//     maxSize: 300000,
+//     name: 'admin',
+//   }
+// }
 
 };
 
