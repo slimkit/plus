@@ -318,7 +318,7 @@ class Feed extends Component {
 
                 <CardContent
                   className={classes.feedContent}
-                   onClick={() => this.handleRequestDrawer(feed.id)}
+                  onClick={() => this.handleRequestDrawer(feed.id)}
                 >
                   <Typography>动态ID(#{feed.id})</Typography>
                   {feed.feed_content}
@@ -347,7 +347,7 @@ class Feed extends Component {
         <Button
           color="primary"
           className={classes.loadMoreBtn}
-           onClick={() => this.handleLoadMoreFeed()}
+          onClick={() => this.handleLoadMoreFeed()}
           disabled={this.state.loadMoreBtnDisabled}
         >
           共[{this.state.params.total}]条动态，当前第[{
@@ -444,7 +444,7 @@ class Feed extends Component {
             <IconButton
               key="snackbar.close"
               color="inherit"
-               onClick={() => this.handleSnackbarClose()}
+              onClick={() => this.handleSnackbarClose()}
             >
               <CloseIcon />
             </IconButton>
@@ -479,7 +479,7 @@ class Feed extends Component {
             ) : (
               <Button
                 color="primary"
-                 onClick={() => this.handleDeletePinned(deletePinned.feed)}
+                onClick={() => this.handleDeletePinned(deletePinned.feed)}
               >
                 撤销
               </Button>
@@ -685,7 +685,7 @@ class Feed extends Component {
         <CardActions>
           <IconButton
             aria-label="置顶操作"
-             onClick={() => this.handleOpenPinnedDialog(feed)}
+            onClick={() => this.handleOpenPinnedDialog(feed)}
           >
             <ArrowUpward />
           </IconButton>
@@ -744,13 +744,13 @@ class Feed extends Component {
           </DialogContent>
           <DialogActions>
             <Button
-               onClick={() => this.handleRequestClose()}
+              onClick={() => this.handleRequestClose()}
               color="primary"
             >
               取消
             </Button>
             <Button
-               onClick={() => this.handleSetPinned(feed.id, pin ? pin.id : 0)}
+              onClick={() => this.handleSetPinned(feed.id, pin ? pin.id : 0)}
               color="primary"
               autoFocus
             >
@@ -774,13 +774,13 @@ class Feed extends Component {
           </DialogContent>
           <DialogActions>
             <Button
-               onClick={() => this.handleRequestClose()}
+              onClick={() => this.handleRequestClose()}
               color="primary"
             >
               取消
             </Button>
             <Button
-               onClick={() => this.handleDeletePinned(feed)}
+              onClick={() => this.handleDeletePinned(feed)}
               color="primary"
               autoFocus
             >
@@ -802,19 +802,19 @@ class Feed extends Component {
           </DialogContent>
           <DialogActions>
             <Button
-               onClick={() => this.handleRejectPinnedInDraw(feed)}
+              onClick={() => this.handleRejectPinnedInDraw(feed)}
               color="primary"
             >
               拒绝
             </Button>
             <Button
-               onClick={() => this.handleRequestClose()}
+              onClick={() => this.handleRequestClose()}
               color="primary"
             >
               取消
             </Button>
             <Button
-               onClick={() => this.handleAuditPinned(feed)}
+              onClick={() => this.handleAuditPinned(feed)}
               color="primary"
               autoFocus
             >
@@ -884,7 +884,7 @@ class Feed extends Component {
     return expires_at ? (
       <Button
         color="primary"
-         onClick={() => this.handleOpenDeleteDialog(feed)}
+        onClick={() => this.handleOpenDeleteDialog(feed)}
       >
         置顶到期时间{new Date(expires_at) < new Date() ? '[已过期]' : ''}:{' '}
         {localDate(expires_at)} | {showAmount(amount)}
@@ -892,7 +892,7 @@ class Feed extends Component {
     ) : (
       <Button
         color="primary"
-         onClick={() => this.handleOpenPinnedDialog(feed)}
+        onClick={() => this.handleOpenPinnedDialog(feed)}
       >
         申请置顶：{day} 天, 积分 {showAmount(amount)}
       </Button>

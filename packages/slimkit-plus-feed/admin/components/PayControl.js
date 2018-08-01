@@ -208,7 +208,7 @@ class PayControl extends Component
             <IconButton
               key="snackbar.close"
               color="inherit"
-               onClick={() => this.handleSnackbarClose()}
+              onClick={() => this.handleSnackbarClose()}
             >
               <CloseIcon />
             </IconButton>

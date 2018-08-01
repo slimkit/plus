@@ -122,7 +122,6 @@ class Home extends Component
    * @return {[type]}     [description]
    */
   handleRewardChange = () => (event, value) => {
-    console.log(value);
     let state = this.state;
     state.close.reward.status = value;
     this.setState(state);
@@ -188,7 +187,7 @@ class Home extends Component
               <ListItem
                 className={classes.button} 
                 button
-                 onClick={ () => this.handleClick('all')}
+                onClick={ () => this.handleClick('all')}
               >
                 <ListItemText inset primary="全部" />
                 {type === 'all' ? <ExpandLess /> : <ExpandMore />}
@@ -226,7 +225,7 @@ class Home extends Component
               <ListItem
                 className={classes.button} 
                 button
-                 onClick={ () => this.handleClick('today')}
+                onClick={ () => this.handleClick('today')}
               >
                 <ListItemText inset primary="今天" />
                 {type === 'today' ? <ExpandLess /> : <ExpandMore />}
@@ -264,7 +263,7 @@ class Home extends Component
               <ListItem
                 className={classes.button} 
                 button
-                 onClick={ () => this.handleClick('yesterday')}
+                onClick={ () => this.handleClick('yesterday')}
               >
                 <ListItemText inset primary="昨天" />
                 {type === 'yesterday' ? <ExpandLess /> : <ExpandMore />}
@@ -302,7 +301,7 @@ class Home extends Component
               <ListItem
                 className={classes.button} 
                 button
-                 onClick={ () => this.handleClick('week')}
+                onClick={ () => this.handleClick('week')}
               >
                 <ListItemText inset primary="过去一周" />
                 {type === 'week' ? <ExpandLess /> : <ExpandMore />}
@@ -340,7 +339,7 @@ class Home extends Component
               <ListItem
                 className={classes.button} 
                 button
-                 onClick={ () => this.handleClick('lastDay')}
+                onClick={ () => this.handleClick('lastDay')}
               >
                 <ListItemText inset primary="截止昨天" />
                 {type === 'lastDay' ? <ExpandLess /> : <ExpandMore />}
@@ -430,7 +429,7 @@ class Home extends Component
                 <Button 
                   size="small" 
                   color="primary"
-                   onClick={() => { this.setState({drawerOpen: true}); }}
+                  onClick={() => { this.setState({drawerOpen: true}); }}
                 >
                   数据统计
                 </Button>

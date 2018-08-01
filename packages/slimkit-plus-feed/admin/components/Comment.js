@@ -505,14 +505,14 @@ class Comment extends Component
         ?
         <Button 
           color="secondary"
-           onClick={ () => this.handlePinnedOpen(comment) }
+          onClick={ () => this.handlePinnedOpen(comment) }
         >
             置顶到期时间{ new Date(expires_at) < new Date() ? '[已过期]' : ''}: {localDate(expires_at)} | {showAmount(amount)}
         </Button>
         :
         <Button 
           color="secondary"
-           onClick={ () => this.handlePinnedOpen(comment) }
+          onClick={ () => this.handlePinnedOpen(comment) }
         >
             申请置顶：{day} 天, 费用 {showAmount(amount)}
         </Button>
@@ -636,7 +636,7 @@ class Comment extends Component
 
                   <CardHeader
                     className={classes.cursor}
-                     onClick={() => this.getUserComments(comment.user_id, comment.user.name)}
+                    onClick={() => this.getUserComments(comment.user_id, comment.user.name)}
                     avatar={<Avatar>{name[0]}</Avatar>}
                     title={`${comment.user.name} (${comment.user_id})`}
                     subheader={localDate(comment.created_at)}
@@ -652,14 +652,14 @@ class Comment extends Component
 
                   <CardActions>
                     <IconButton
-                       onClick={() => this.handlePinnedOpen(comment)}
+                      onClick={() => this.handlePinnedOpen(comment)}
                     >
                       <ArrowUpward />
                     </IconButton>
                     <div className={classes.flexGrow} />
 
                     <IconButton
-                       onClick={() => this.handlePushDelete(comment.id)}
+                      onClick={() => this.handlePushDelete(comment.id)}
                     >
                       <Delete />
                     </IconButton>
@@ -677,7 +677,7 @@ class Comment extends Component
           variant="contained"
           color="primary"
           className={classes.loadMoreBtn}
-           onClick={() => this.handleLoadMoreComments()}
+          onClick={() => this.handleLoadMoreComments()}
           disabled={this.state.loadMoreBtnDisabled}
         >
           共[{this.state.total}]条评论，当前第[{this.state.currentPage}]页/共[{this.state.lastPage}]页 {this.state.loadMoreBtnText}
@@ -810,7 +810,7 @@ class Comment extends Component
             <IconButton
               key="snackbar.close"
               color="inherit"
-               onClick={() => this.handleSnackbarClose()}
+              onClick={() => this.handleSnackbarClose()}
             >
               <CloseIcon />
             </IconButton>

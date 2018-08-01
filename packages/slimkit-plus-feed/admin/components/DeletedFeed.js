@@ -266,14 +266,14 @@ class DeletedFeed extends Component
                   </Button>
                   <IconButton
                     title={'恢复'}
-                     onClick={() => this.handlePushRestore(id)}
+                    onClick={() => this.handlePushRestore(id)}
                   >
                     <SettingsBackupRestore />
                   </IconButton>
                   <div className={classes.flexGrow} />
 
                   <IconButton
-                     onClick={() => this.handlePushDelete(id)}
+                    onClick={() => this.handlePushDelete(id)}
                   >
                     <Delete />
                   </IconButton>
@@ -290,7 +290,7 @@ class DeletedFeed extends Component
           raised="true"
           color="primary"
           className={classes.loadMoreBtn}
-           onClick={() => this.handleLoadMoreFeed()}
+          onClick={() => this.handleLoadMoreFeed()}
           disabled={this.state.loadMoreBtnDisabled}
         >
           共[{params.total}]条动态，当前第[{params.current_page}]页/共[{params.last_page}]页{this.state.loadMoreBtnText}
@@ -336,7 +336,7 @@ class DeletedFeed extends Component
             <IconButton
               key="snackbar.close"
               color="inherit"
-               onClick={() => this.handleSnackbarClose()}
+              onClick={() => this.handleSnackbarClose()}
             >
               <CloseIcon />
             </IconButton>

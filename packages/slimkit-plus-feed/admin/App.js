@@ -44,14 +44,14 @@ class App extends Component
     return (
       <div className={classes.root}>
         <AppBar position="fixed">
-            <Tabs value={pathname} >
-              <Tab label="基础信息" value="/" component={Link} to="/" />
-              <Tab label="动态管理" value="/feeds" component={Link} to="/feeds" />
-              <Tab label="话题管理" value="/topics" component={Link} to="/topics" />
-              <Tab label="评论管理" value="/comments" component={Link} to="/comments" />
-              <Tab label="付费开关" value="/paycontrol" component={Link} to="/paycontrol" />
-              <Tab label="动态回收站" value="/deleteFeeds" component={Link} to="/deleteFeeds" />
-            </Tabs>
+          <Tabs value={pathname} >
+            <Tab label="基础信息" value="/" component={Link} to="/" />
+            <Tab label="动态管理" value="/feeds" component={Link} to="/feeds" />
+            <Tab label="话题管理" value="/topics" component={Link} to="/topics" />
+            <Tab label="评论管理" value="/comments" component={Link} to="/comments" />
+            <Tab label="付费开关" value="/paycontrol" component={Link} to="/paycontrol" />
+            <Tab label="动态回收站" value="/deleteFeeds" component={Link} to="/deleteFeeds" />
+          </Tabs>
         </AppBar>
 
         <main style={{ paddingTop: 48 }}>
