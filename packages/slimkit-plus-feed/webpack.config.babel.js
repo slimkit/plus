@@ -116,7 +116,7 @@ const webpackConfig = {
 */
 
   output: {
-    path: isRepositorie ? path.join(__dirname, '../../../../public/zhiyicx/plus-component-feed') : path.join(__dirname, 'assets'),
+    path: isRepositorie ? path.resolve(__dirname, '../../public/assets/feed') : path.resolve(__dirname, 'assets'),
     filename: '[name].js'
   },
 

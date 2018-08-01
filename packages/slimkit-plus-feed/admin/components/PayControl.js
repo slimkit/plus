@@ -100,8 +100,8 @@ class PayControl extends Component
 
     return (
       <div>
-        <Grid spacing={16} container className={classes.root}>
-          <Grid spacing={16} item xs={12} sm={12}>
+        <Grid  container className={classes.root}>
+          <Grid  item xs={12} sm={12}>
             <Card>
               <CardContent>
                 <Typography type="headline" component="h2">
@@ -129,8 +129,8 @@ class PayControl extends Component
 
             </Card>
           </Grid>
-          <Grid spacing={16} item xs={12} sm={12}>
-            <Card spacing={16}>
+          <Grid  item xs={12} sm={12}>
+            <Card >
               <CardContent>
                 <Typography type="headline" component="h2">
                   付费选项
@@ -150,14 +150,14 @@ class PayControl extends Component
                   onChange={this.handleChange}
                   margin="normal"
                 />
-                <Button onTouchTap={() => {
+                <Button  onClick={() => {
                   this.saveItem();
                 }}>保存</Button>
               </CardContent>
 
             </Card>
           </Grid>
-          <Grid spacing={16} item xs={12} sm={12}>
+          <Grid  item xs={12} sm={12}>
             <Card>
               <CardContent>
                 <Typography type="headline" component="h2">
@@ -177,7 +177,7 @@ class PayControl extends Component
                   onChange={this.handleTextChange}
                   margin="normal"
                 />
-                <Button onTouchTap={() => {
+                <Button  onClick={() => {
                   this.saveItem();
                 }}>保存</Button>
               </CardContent>
@@ -190,11 +190,11 @@ class PayControl extends Component
           <DialogActions>
             { close.ing
               ? <Button disabled>取消</Button>
-              : <Button onTouchTap={() => this.handleCannel()}>取消</Button>
+              : <Button  onClick={() => this.handleCannel()}>取消</Button>
             }
             { close.ing
               ? <Button disabled><CircularProgress size={14} /></Button>
-              : <Button color="primary" onTouchTap={() => this.handleStatusChange()}>确定</Button>
+              : <Button color="primary"  onClick={() => this.handleStatusChange()}>确定</Button>
             }
           </DialogActions>
         </Dialog>
@@ -203,12 +203,12 @@ class PayControl extends Component
           open={!! snackbar.open}
           message={snackbar.message}
           autoHideDuration={3e3}
-          onRequestClose={() => this.handleSnackbarClose()}
+          onClose={() => this.handleSnackbarClose()}
           action={[
             <IconButton
               key="snackbar.close"
               color="inherit"
-              onTouchTap={() => this.handleSnackbarClose()}
+               onClick={() => this.handleSnackbarClose()}
             >
               <CloseIcon />
             </IconButton>

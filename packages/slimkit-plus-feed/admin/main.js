@@ -17,7 +17,6 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import App from 'App';
 
-
 /**
  * The app entry component.
  *

@@ -45,7 +45,6 @@ const styles = (theme) => ({
     width: '100%',
     margin: 0
   },
-  flexGrow: {},
   link: {
     color: blue[400],
     textDecoration: 'none',
@@ -122,7 +121,8 @@ class Home extends Component
    * @param  {[type]} key [description]
    * @return {[type]}     [description]
    */
-  handleRewardChange = () => (value) => {
+  handleRewardChange = () => (event, value) => {
+    console.log(value);
     let state = this.state;
     state.close.reward.status = value;
     this.setState(state);
@@ -181,14 +181,14 @@ class Home extends Component
         <Drawer
           anchor="right"
           open={drawerOpen}
-          onRequestClose={() => {this.setState({ drawerOpen: false, type: ''});}}
+          onClose={() => {this.setState({ drawerOpen: false, type: ''});}}
         >
           <div tabIndex={0} role="button">
             <List className={classes.drawer} subheader={<ListSubheader>动态数据统计</ListSubheader>}>
               <ListItem
                 className={classes.button} 
                 button
-                onTouchTap={ () => this.handleClick('all')}
+                 onClick={ () => this.handleClick('all')}
               >
                 <ListItemText inset primary="全部" />
                 {type === 'all' ? <ExpandLess /> : <ExpandMore />}
@@ -226,7 +226,7 @@ class Home extends Component
               <ListItem
                 className={classes.button} 
                 button
-                onTouchTap={ () => this.handleClick('today')}
+                 onClick={ () => this.handleClick('today')}
               >
                 <ListItemText inset primary="今天" />
                 {type === 'today' ? <ExpandLess /> : <ExpandMore />}
@@ -264,7 +264,7 @@ class Home extends Component
               <ListItem
                 className={classes.button} 
                 button
-                onTouchTap={ () => this.handleClick('yesterday')}
+                 onClick={ () => this.handleClick('yesterday')}
               >
                 <ListItemText inset primary="昨天" />
                 {type === 'yesterday' ? <ExpandLess /> : <ExpandMore />}
@@ -302,7 +302,7 @@ class Home extends Component
               <ListItem
                 className={classes.button} 
                 button
-                onTouchTap={ () => this.handleClick('week')}
+                 onClick={ () => this.handleClick('week')}
               >
                 <ListItemText inset primary="过去一周" />
                 {type === 'week' ? <ExpandLess /> : <ExpandMore />}
@@ -340,7 +340,7 @@ class Home extends Component
               <ListItem
                 className={classes.button} 
                 button
-                onTouchTap={ () => this.handleClick('lastDay')}
+                 onClick={ () => this.handleClick('lastDay')}
               >
                 <ListItemText inset primary="截止昨天" />
                 {type === 'lastDay' ? <ExpandLess /> : <ExpandMore />}
@@ -378,8 +378,8 @@ class Home extends Component
             </List>
           </div>
         </Drawer>
-        <Grid spacing={16} container className={classes.root}>
-          <Grid spacing={16} item xs={12} sm={6}>
+        <Grid container className={classes.root}>
+          <Grid item xs={12} sm={6}>
             <Card>
               <CardContent>
                 <Typography type="headline" component="h2">
@@ -407,8 +407,8 @@ class Home extends Component
 
             </Card>
           </Grid>
-          <Grid spacing={16} item xs={12} sm={6}>
-            <Card spacing={16}>
+          <Grid item xs={12} sm={6}>
+            <Card >
               <CardContent>
                 <Typography type="headline" component="h2">
                   动态统计
@@ -420,17 +420,17 @@ class Home extends Component
 
               <CardActions>
                 <Button disabled className={classes.icon}>
-                  <RssFeed color={blue[400]} />&nbsp;{feeds}
+                  <RssFeed color="primary" />&nbsp;{feeds}
                 </Button>
                 <Button disabled className={classes.icon}>
-                  <Comment color={blue[400]} />&nbsp;{comments}
+                  <Comment color="primary" />&nbsp;{comments}
                 </Button>
 
                 <div className={classes.flexGrow} />
                 <Button 
                   size="small" 
                   color="primary"
-                  onTouchTap={() => { this.setState({drawerOpen: true}); }}
+                   onClick={() => { this.setState({drawerOpen: true}); }}
                 >
                   数据统计
                 </Button>
@@ -443,8 +443,8 @@ class Home extends Component
 
             </Card>
           </Grid>
-          <Grid spacing={16} item xs={12} sm={6}>
-            <Card spacing={16}>
+          <Grid item xs={12} sm={6}>
+            <Card >
               <CardContent>
                 <Typography type="headline" component="h2">
                   动态回收站
@@ -463,7 +463,7 @@ class Home extends Component
 
             </Card>
           </Grid>
-          {/*<Grid spacing={16} item xs={12} sm={6}>
+          {/*<Grid item xs={12} sm={6}>
             <Card>
               <CardContent>
                 <Typography type="headline" component="h2">
@@ -489,18 +489,18 @@ class Home extends Component
           <DialogActions>
             { close.reward.ing
               ? <Button disabled>取消</Button>
-              : <Button onTouchTap={() =>this.handleCloseRewardDialog()}>取消</Button>
+              : <Button  onClick={() =>this.handleCloseRewardDialog()}>取消</Button>
             }
             { close.reward.ing
               ? <Button disabled><CircularProgress size={14} /></Button>
-              : <Button color="primary" onTouchTap={() => this.handleRewardStore()}>关闭</Button>
+              : <Button color="primary"  onClick={() => this.handleRewardStore()}>关闭</Button>
             }
           </DialogActions>
         </Dialog>
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           open={open}
-          onRequestClose={this.handleRequestClose}
+          onClose={this.handleRequestClose}
           ContentProps={{
             'aria-describedby': 'message-id',
           }}

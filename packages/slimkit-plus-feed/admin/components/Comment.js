@@ -504,15 +504,15 @@ class Comment extends Component
       expires_at 
         ?
         <Button 
-          color="textSecondary"
-          onTouchTap={ () => this.handlePinnedOpen(comment) }
+          color="secondary"
+           onClick={ () => this.handlePinnedOpen(comment) }
         >
             置顶到期时间{ new Date(expires_at) < new Date() ? '[已过期]' : ''}: {localDate(expires_at)} | {showAmount(amount)}
         </Button>
         :
         <Button 
-          color="textSecondary"
-          onTouchTap={ () => this.handlePinnedOpen(comment) }
+          color="secondary"
+           onClick={ () => this.handlePinnedOpen(comment) }
         >
             申请置顶：{day} 天, 费用 {showAmount(amount)}
         </Button>
@@ -525,7 +525,7 @@ class Comment extends Component
 
     return(
       <div>
-        <Grid spacing={16} container className={classes.root}>
+        <Grid  container className={classes.root}>
           <div className={classes.container}>
             <form className={classes.container} autoComplete="off">
               <FormControl className={classes.formControl}>
@@ -623,7 +623,7 @@ class Comment extends Component
                   ''
               }
               
-              <Button variant="raised" onClick={ () => this.handleGetDatas() } color="primary" className={classes.button}>
+              <Button variant="contained" onClick={ () => this.handleGetDatas() } color="primary" className={classes.button}>
                 筛选
               </Button>
             </form>
@@ -631,12 +631,12 @@ class Comment extends Component
           { comments.map(
             comment => (
 
-              <Grid spacing={16} item xs={12} sm={6} key={comment.id}>
-                <Card spacing={16}>
+              <Grid  item xs={12} sm={6} key={comment.id}>
+                <Card >
 
                   <CardHeader
                     className={classes.cursor}
-                    onTouchTap={() => this.getUserComments(comment.user_id, comment.user.name)}
+                     onClick={() => this.getUserComments(comment.user_id, comment.user.name)}
                     avatar={<Avatar>{name[0]}</Avatar>}
                     title={`${comment.user.name} (${comment.user_id})`}
                     subheader={localDate(comment.created_at)}
@@ -652,14 +652,14 @@ class Comment extends Component
 
                   <CardActions>
                     <IconButton
-                      onTouchTap={() => this.handlePinnedOpen(comment)}
+                       onClick={() => this.handlePinnedOpen(comment)}
                     >
                       <ArrowUpward />
                     </IconButton>
                     <div className={classes.flexGrow} />
 
                     <IconButton
-                      onTouchTap={() => this.handlePushDelete(comment.id)}
+                       onClick={() => this.handlePushDelete(comment.id)}
                     >
                       <Delete />
                     </IconButton>
@@ -674,16 +674,16 @@ class Comment extends Component
             ))}
         </Grid>
         <Button
-          raised
+          variant="contained"
           color="primary"
           className={classes.loadMoreBtn}
-          onTouchTap={() => this.handleLoadMoreComments()}
+           onClick={() => this.handleLoadMoreComments()}
           disabled={this.state.loadMoreBtnDisabled}
         >
           共[{this.state.total}]条评论，当前第[{this.state.currentPage}]页/共[{this.state.lastPage}]页 {this.state.loadMoreBtnText}
           <CircularProgress
             className={this.state.loading ? classes.progress : classes.progeessHide}
-            color="textSecondary"
+            color="secondary"
             size={30}
           />
         </Button>
@@ -792,11 +792,11 @@ class Comment extends Component
           <DialogActions>
             { del.ing
               ? <Button disabled>取消</Button>
-              : <Button onTouchTap={() => this.handlePushClose()}>取消</Button>
+              : <Button  onClick={() => this.handlePushClose()}>取消</Button>
             }
             { del.ing
               ? <Button disabled><CircularProgress size={14} /></Button>
-              : <Button color="primary" onTouchTap={() => this.handleDelete()}>删除</Button>
+              : <Button color="primary"  onClick={() => this.handleDelete()}>删除</Button>
             }
           </DialogActions>
         </Dialog>
@@ -805,12 +805,12 @@ class Comment extends Component
           open={!! snackbar.open}
           message={snackbar.message}
           autoHideDuration={3e3}
-          onRequestClose={() => this.handleSnackbarClose()}
+          onClose={() => this.handleSnackbarClose()}
           action={[
             <IconButton
               key="snackbar.close"
               color="inherit"
-              onTouchTap={() => this.handleSnackbarClose()}
+               onClick={() => this.handleSnackbarClose()}
             >
               <CloseIcon />
             </IconButton>
@@ -819,13 +819,13 @@ class Comment extends Component
         <Drawer
           open={!! drawer}
           anchor="right"
-          onRequestClose={() => this.handleDrawerClose()}
+          onClose={() => this.handleDrawerClose()}
         >
           {this.makeDrawerContent(feed)}
         </Drawer>
 
-        <Dialog open={!! pinned} onRequestClose={ () => this.handleRequestClose()}>
-          {this.doPinnedAudit(pinned)}
+        <Dialog open={!! pinned} onClose={ () => this.handleRequestClose()}>
+          {this.doPinnedAudit(pinned) || ''}
         </Dialog>
       </div>
     );
@@ -938,8 +938,8 @@ class Comment extends Component
       )) }
 
       <CardContent className={classes.drawerRow}>
-        <Chip className={classes.chip} avatar={<Avatar><FavoriteIcon /></Avatar>} label={digg_count} />
-        <Chip className={classes.chip} onTouchTap={ () => this.setFeedId(feed_id) } avatar={<Avatar><Forum /></Avatar>} label={comment_count} />
+        <Chip className={classes.chip} avatar={<Avatar><FavoriteIcon /></Avatar>} label={digg_count || 0} />
+        <Chip className={classes.chip}  onClick={ () => this.setFeedId(feed_id) } avatar={<Avatar><Forum /></Avatar>} label={comment_count || 0} />
       </CardContent>
 
     </Card>);
@@ -1022,10 +1022,10 @@ class Comment extends Component
             />
           </DialogContent>
           <DialogActions>
-            <Button onTouchTap={() =>this.handleRequestClose()} color="primary">
+            <Button  onClick={() =>this.handleRequestClose()} color="primary">
               取消
             </Button>
-            <Button onTouchTap={() => this.handleSetPinned(comment)} color="primary" autoFocus>
+            <Button  onClick={() => this.handleSetPinned(comment)} color="primary" autoFocus>
               确定
             </Button>
           </DialogActions>
@@ -1061,10 +1061,10 @@ class Comment extends Component
             />
           </DialogContent>
           <DialogActions>
-            <Button onTouchTap={() =>this.handleRequestClose()} color="primary">
+            <Button  onClick={() =>this.handleRequestClose()} color="primary">
               取消
             </Button>
-            <Button onTouchTap={() => this.handleSetPinned(comment)} color="primary" autoFocus>
+            <Button  onClick={() => this.handleSetPinned(comment)} color="primary" autoFocus>
               确定
             </Button>
           </DialogActions>
@@ -1082,10 +1082,10 @@ class Comment extends Component
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onTouchTap={() =>this.handleRequestClose()} color="primary">
+            <Button  onClick={() =>this.handleRequestClose()} color="primary">
               取消
             </Button>
-            <Button onTouchTap={() => this.handleRejectPinned(comment)} color="primary" autoFocus>
+            <Button  onClick={() => this.handleRejectPinned(comment)} color="primary" autoFocus>
               撤销
             </Button>
           </DialogActions>
@@ -1101,13 +1101,13 @@ class Comment extends Component
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onTouchTap={() =>this.handleRejectPinned(comment)} color="primary">
+            <Button  onClick={() =>this.handleRejectPinned(comment)} color="primary">
               拒绝
             </Button>
-            <Button onTouchTap={() =>this.handleRequestClose()} color="primary">
+            <Button  onClick={() =>this.handleRequestClose()} color="primary">
               取消
             </Button>
-            <Button onTouchTap={() => this.handleAcceptPinned(comment)} color="primary" autoFocus>
+            <Button  onClick={() => this.handleAcceptPinned(comment)} color="primary" autoFocus>
               同意
             </Button>
           </DialogActions>

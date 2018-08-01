@@ -192,7 +192,7 @@ class Feed extends Component {
 
     return (
       <div>
-        <Grid  spacing={16} container className={classes.root}>
+        <Grid   container className={classes.root}>
           <div className={classes.container}>
             <form className={classes.container} autoComplete="off">
               <FormControl className={classes.formControl}>
@@ -298,7 +298,7 @@ class Feed extends Component {
             </form>
           </div>
           {feeds.map(feed => (
-            <Grid spacing={16} item xs={12} sm={6} key={feed.id}>
+            <Grid  item xs={12} sm={6} key={feed.id}>
               <Card>
                 <CardHeader
                   className={classes.cursor}
@@ -318,7 +318,7 @@ class Feed extends Component {
 
                 <CardContent
                   className={classes.feedContent}
-                  onTouchTap={() => this.handleRequestDrawer(feed.id)}
+                   onClick={() => this.handleRequestDrawer(feed.id)}
                 >
                   <Typography>动态ID(#{feed.id})</Typography>
                   {feed.feed_content}
@@ -335,7 +335,7 @@ class Feed extends Component {
 
                   <div className={classes.flexGrow} />
 
-                  <IconButton onTouchTap={() => this.handlePushDelete(feed.id)}>
+                  <IconButton  onClick={() => this.handlePushDelete(feed.id)}>
                     <Delete />
                   </IconButton>
                 </CardActions>
@@ -347,7 +347,7 @@ class Feed extends Component {
         <Button
           color="primary"
           className={classes.loadMoreBtn}
-          onTouchTap={() => this.handleLoadMoreFeed()}
+           onClick={() => this.handleLoadMoreFeed()}
           disabled={this.state.loadMoreBtnDisabled}
         >
           共[{this.state.params.total}]条动态，当前第[{
@@ -367,14 +367,14 @@ class Feed extends Component {
             {del.ing ? (
               <Button disabled>取消</Button>
             ) : (
-              <Button onTouchTap={() => this.handlePushClose()}>取消</Button>
+              <Button  onClick={() => this.handlePushClose()}>取消</Button>
             )}
             {del.ing ? (
               <Button disabled>
                 <CircularProgress size={14} />
               </Button>
             ) : (
-              <Button color="primary" onTouchTap={() => this.handleDelete()}>
+              <Button color="primary"  onClick={() => this.handleDelete()}>
                 删除
               </Button>
             )}
@@ -444,7 +444,7 @@ class Feed extends Component {
             <IconButton
               key="snackbar.close"
               color="inherit"
-              onTouchTap={() => this.handleSnackbarClose()}
+               onClick={() => this.handleSnackbarClose()}
             >
               <CloseIcon />
             </IconButton>
@@ -459,7 +459,7 @@ class Feed extends Component {
           {this.makeDrawerContent(drawer)}
         </Drawer>
         <Dialog open={!!pinned} onClose={() => this.handleAuditDialogColse()}>
-          {this.doPinnedAudit(pinned)}
+          {this.doPinnedAudit(pinned) || ''}
         </Dialog>
 
         <Dialog open={deletePinned.feed !== null}>
@@ -468,7 +468,7 @@ class Feed extends Component {
             {deletePinned.ing ? (
               <Button disabled>取消</Button>
             ) : (
-              <Button onTouchTap={() => this.handleCloseDeletePinned()}>
+              <Button  onClick={() => this.handleCloseDeletePinned()}>
                 取消
               </Button>
             )}
@@ -479,7 +479,7 @@ class Feed extends Component {
             ) : (
               <Button
                 color="primary"
-                onTouchTap={() => this.handleDeletePinned(deletePinned.feed)}
+                 onClick={() => this.handleDeletePinned(deletePinned.feed)}
               >
                 撤销
               </Button>
@@ -641,7 +641,7 @@ class Feed extends Component {
         </CardContent>
 
         {images.map(({ id, paid_node }) => (
-          <CardMedia key={id} image={''} className={classes.media}>
+          <CardMedia key={id} src={createRequestURI(`files/${id}`)} className={classes.media}>
             <img
               src={createRequestURI(`files/${id}`)}
               className={classes.drawerImage}
@@ -685,7 +685,7 @@ class Feed extends Component {
         <CardActions>
           <IconButton
             aria-label="置顶操作"
-            onTouchTap={() => this.handleOpenPinnedDialog(feed)}
+             onClick={() => this.handleOpenPinnedDialog(feed)}
           >
             <ArrowUpward />
           </IconButton>
@@ -744,13 +744,13 @@ class Feed extends Component {
           </DialogContent>
           <DialogActions>
             <Button
-              onTouchTap={() => this.handleRequestClose()}
+               onClick={() => this.handleRequestClose()}
               color="primary"
             >
               取消
             </Button>
             <Button
-              onTouchTap={() => this.handleSetPinned(feed.id, pin ? pin.id : 0)}
+               onClick={() => this.handleSetPinned(feed.id, pin ? pin.id : 0)}
               color="primary"
               autoFocus
             >
@@ -774,13 +774,13 @@ class Feed extends Component {
           </DialogContent>
           <DialogActions>
             <Button
-              onTouchTap={() => this.handleRequestClose()}
+               onClick={() => this.handleRequestClose()}
               color="primary"
             >
               取消
             </Button>
             <Button
-              onTouchTap={() => this.handleDeletePinned(feed)}
+               onClick={() => this.handleDeletePinned(feed)}
               color="primary"
               autoFocus
             >
@@ -802,19 +802,19 @@ class Feed extends Component {
           </DialogContent>
           <DialogActions>
             <Button
-              onTouchTap={() => this.handleRejectPinnedInDraw(feed)}
+               onClick={() => this.handleRejectPinnedInDraw(feed)}
               color="primary"
             >
               拒绝
             </Button>
             <Button
-              onTouchTap={() => this.handleRequestClose()}
+               onClick={() => this.handleRequestClose()}
               color="primary"
             >
               取消
             </Button>
             <Button
-              onTouchTap={() => this.handleAuditPinned(feed)}
+               onClick={() => this.handleAuditPinned(feed)}
               color="primary"
               autoFocus
             >
@@ -884,7 +884,7 @@ class Feed extends Component {
     return expires_at ? (
       <Button
         color="primary"
-        onTouchTap={() => this.handleOpenDeleteDialog(feed)}
+         onClick={() => this.handleOpenDeleteDialog(feed)}
       >
         置顶到期时间{new Date(expires_at) < new Date() ? '[已过期]' : ''}:{' '}
         {localDate(expires_at)} | {showAmount(amount)}
@@ -892,7 +892,7 @@ class Feed extends Component {
     ) : (
       <Button
         color="primary"
-        onTouchTap={() => this.handleOpenPinnedDialog(feed)}
+         onClick={() => this.handleOpenPinnedDialog(feed)}
       >
         申请置顶：{day} 天, 积分 {showAmount(amount)}
       </Button>

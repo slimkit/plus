@@ -180,7 +180,7 @@ class DeletedFeed extends Component
 
     return (
       <div>
-        <Grid spacing={16} container className={classes.root}>
+        <Grid  container className={classes.root}>
           <div className={classes.container}>
             <form className={classes.container} autoComplete="off">
               <FormControl className={classes.formControl}>
@@ -225,7 +225,7 @@ class DeletedFeed extends Component
                   ''
               }
               
-              <Button variant="raised" onClick={ () => this.handleGetDatas() } color="primary" className={classes.button}>
+              <Button variant="contained" onClick={ () => this.handleGetDatas() } color="primary" className={classes.button}>
                 筛选
               </Button>
             </form>
@@ -239,7 +239,7 @@ class DeletedFeed extends Component
             feed_comment_count: comment_count = 0,
           }) => (
 
-            <Grid spacing={16} item xs={12} sm={6} key={id}>
+            <Grid  item xs={12} sm={6} key={id}>
               <Card>
 
                 <CardHeader
@@ -248,7 +248,7 @@ class DeletedFeed extends Component
                   subheader={created_at}
                 />
 
-                <CardContent onTouchTap={() => this.handleRequestDrawer(id)}>
+                <CardContent  onClick={() => this.handleRequestDrawer(id)}>
                   <Typography>
                     #{id}
                   </Typography>
@@ -266,14 +266,14 @@ class DeletedFeed extends Component
                   </Button>
                   <IconButton
                     title={'恢复'}
-                    onTouchTap={() => this.handlePushRestore(id)}
+                     onClick={() => this.handlePushRestore(id)}
                   >
                     <SettingsBackupRestore />
                   </IconButton>
                   <div className={classes.flexGrow} />
 
                   <IconButton
-                    onTouchTap={() => this.handlePushDelete(id)}
+                     onClick={() => this.handlePushDelete(id)}
                   >
                     <Delete />
                   </IconButton>
@@ -287,16 +287,16 @@ class DeletedFeed extends Component
 
         </Grid>
         <Button
-          raised
+          raised="true"
           color="primary"
           className={classes.loadMoreBtn}
-          onTouchTap={() => this.handleLoadMoreFeed()}
+           onClick={() => this.handleLoadMoreFeed()}
           disabled={this.state.loadMoreBtnDisabled}
         >
           共[{params.total}]条动态，当前第[{params.current_page}]页/共[{params.last_page}]页{this.state.loadMoreBtnText}
           <CircularProgress
             className={this.state.loading ? classes.progress : classes.progeessHide}
-            color="textSecondary"
+            color="secondary"
             size={30}
           />
         </Button>
@@ -305,11 +305,11 @@ class DeletedFeed extends Component
           <DialogActions>
             { del.ing
               ? <Button disabled>取消</Button>
-              : <Button onTouchTap={() => this.handlePushClose()}>取消</Button>
+              : <Button  onClick={() => this.handlePushClose()}>取消</Button>
             }
             { del.ing
               ? <Button disabled><CircularProgress size={14} /></Button>
-              : <Button color="primary" onTouchTap={() => this.handleDelete()}>删除</Button>
+              : <Button color="primary"  onClick={() => this.handleDelete()}>删除</Button>
             }
           </DialogActions>
         </Dialog>
@@ -318,11 +318,11 @@ class DeletedFeed extends Component
           <DialogActions>
             { restore.ing
               ? <Button disabled>取消</Button>
-              : <Button onTouchTap={() => this.handlePushClose()}>取消</Button>
+              : <Button  onClick={() => this.handlePushClose()}>取消</Button>
             }
             { restore.ing
               ? <Button disabled><CircularProgress size={14} /></Button>
-              : <Button color="primary" onTouchTap={() => this.handleRestore()}>恢复</Button>
+              : <Button color="primary"  onClick={() => this.handleRestore()}>恢复</Button>
             }
           </DialogActions>
         </Dialog>
@@ -331,12 +331,12 @@ class DeletedFeed extends Component
           open={!! snackbar.open}
           message={snackbar.message}
           autoHideDuration={3e3}
-          onRequestClose={() => this.handleSnackbarClose()}
+          onClose={() => this.handleSnackbarClose()}
           action={[
             <IconButton
               key="snackbar.close"
               color="inherit"
-              onTouchTap={() => this.handleSnackbarClose()}
+               onClick={() => this.handleSnackbarClose()}
             >
               <CloseIcon />
             </IconButton>
@@ -346,7 +346,7 @@ class DeletedFeed extends Component
         <Drawer
           open={!! drawer}
           anchor="right"
-          onRequestClose={() => this.handleDrawerClose()}
+          onClose={() => this.handleDrawerClose()}
         >
           {this.makeDrawerContent(drawer)}
         </Drawer>

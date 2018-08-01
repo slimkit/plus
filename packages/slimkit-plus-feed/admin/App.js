@@ -6,11 +6,10 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { matchPath, withRouter } from 'react-router';
-import { Route } from 'react-router-dom';
+import { withRouter } from 'react-router';
+import { Route, Link } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Home from './components/Home';
@@ -18,7 +17,7 @@ import Feed from './components/Feed';
 import Comment from './components/Comment';
 import PayControl from './components/PayControl';
 import DeleteFeed from './components/DeletedFeed';
-// import DeleteComment from './components/DeletedComment';
+import TopicsPage from './components/pages/TopicList';
 
 const styles = () => ({
   root: {}
@@ -35,113 +34,34 @@ class App extends Component
   }
 
   /**
-   * Get router pathname.
-   *
-   * @return {String}
-   * @author Seven Du <shiweidu@outlook.com>
-   */
-  getPathname() {
-    const { location: { pathname = '/' } } = this.props;
-
-    return pathname;
-  }
-
-  /**
-   * Match pathname.
-   *
-   * @return {Integer} route's index.
-   * @author Seven Du <shiweidu@outlook.com>
-   */
-  matchPath() {
-    const pathname = this.getPathname();
-
-    if (matchPath(pathname, { exact: true })) {
-      return 'root';
-    } else if (matchPath(pathname, { path: '/feeds' })) {
-      return 'feeds';
-    } else if (matchPath(pathname, { path: '/comments' })) {
-      return 'comments';
-    } else if (matchPath(pathname, { path: '/paycontrol'})) {
-      return 'paycontrol';
-    } else if (matchPath(pathname, { path: '/deleteFeeds'})) {
-      return 'deleteFeeds';
-    } 
-    // else if(matchPath(pathname, { path: '/deleteComments'})) {
-    //   return 'deleteComments'
-    // }
-
-    return 0;
-  }
-
-  /**
-   * Route change handle.
-   *
-   * @param {Object} event
-   * @param {Integer} index
-   * @return {void}
-   * @author Seven Du <shiweidu@outlook.com>
-   */
-  handleChange = (event, value) => {
-    const { history: { replace } } = this.props;
-    this.setState({ value });
-    switch (value) {
-    case 'comments':
-      replace('/comments');
-      break;
-
-    case 'feeds':
-      replace('/feeds');
-      break;
-        
-    case 'paycontrol':
-      replace('/paycontrol');
-      break;
-
-      // case 'deleteComments':
-      //   replace('/deleteComments');
-      //   break;
-
-    case 'deleteFeeds':
-      replace('/deleteFeeds');
-      break;
-
-    case 'root':
-    default:
-      replace('/');
-      break;
-    }
-  };
-
-  /**
    * Rende the component view.
    *
    * @return {Object}
    * @author Seven Du <shiweidu@outlook.com>
    */
   render() {
-    const { classes } = this.props;
+    const { classes, location: { pathname = '/' } } = this.props;
     return (
       <div className={classes.root}>
-        <AppBar position="static">
-          <Toolbar>
-            <Tabs
-              value={this.matchPath()}
-              onChange={this.handleChange}
-            >
-              <Tab label="基础信息" value="root" />
-              <Tab label="动态管理" value="feeds" />
-              <Tab label="评论管理" value="comments" />
-              <Tab label="付费开关" value="paycontrol" />
-              <Tab label="动态回收站" value="deleteFeeds" />
+        <AppBar position="fixed">
+            <Tabs value={pathname} >
+              <Tab label="基础信息" value="/" component={Link} to="/" />
+              <Tab label="动态管理" value="/feeds" component={Link} to="/feeds" />
+              <Tab label="话题管理" value="/topics" component={Link} to="/topics" />
+              <Tab label="评论管理" value="/comments" component={Link} to="/comments" />
+              <Tab label="付费开关" value="/paycontrol" component={Link} to="/paycontrol" />
+              <Tab label="动态回收站" value="/deleteFeeds" component={Link} to="/deleteFeeds" />
             </Tabs>
-          </Toolbar>
         </AppBar>
 
-        <Route exact path="/" component={Home} />
-        <Route path="/feeds" component={Feed} />
-        <Route path='/comments' component={Comment} />
-        <Route path='/paycontrol' component={PayControl} />
-        <Route path="/deleteFeeds" component={DeleteFeed} />
+        <main style={{ paddingTop: 48 }}>
+          <Route exact path="/" component={Home} />
+          <Route path="/feeds" component={Feed} />
+          <Route path='/comments' component={Comment} />
+          <Route path='/paycontrol' component={PayControl} />
+          <Route path="/deleteFeeds" component={DeleteFeed} />
+          <Route path="/topics" component={TopicsPage} />
+        </main>
       </div>
     );
   }
