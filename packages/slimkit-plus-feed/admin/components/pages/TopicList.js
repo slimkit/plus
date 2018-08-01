@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
 import Table from '@material-ui/core/Table';
+import Breadcrumb from '../common/Breadcrumb';
 
 const styles = theme => {
   return {
@@ -13,6 +14,9 @@ const styles = theme => {
     },
     paper: {
       width: '100%',
+    },
+    breadcrumb: {
+      marginBottom: theme.spacing.unit * 2
     }
   };
 };
@@ -37,6 +41,7 @@ class TopicList extends React.Component {
 
     return (
       <Grid container className={classes.root}>
+        <Breadcrumb className={classes.breadcrumb} items={['动态', '话题列表']} />
         <Paper className={classes.paper}>
           <Toolbar>
             <div>2</div>
