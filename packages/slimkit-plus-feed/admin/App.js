@@ -17,14 +17,13 @@ import Feed from './components/Feed';
 import Comment from './components/Comment';
 import PayControl from './components/PayControl';
 import DeleteFeed from './components/DeletedFeed';
-import TopicsPage from './components/pages/TopicList';
+import TopicPage from './pages/topic';
 
 const styles = () => ({
   root: {}
 });
 
-class App extends Component
-{
+class App extends Component {
 
   static propTypes = {
     match: PropTypes.object.isRequired,
@@ -47,7 +46,7 @@ class App extends Component
           <Tabs value={pathname} >
             <Tab label="基础信息" value="/" component={Link} to="/" />
             <Tab label="动态管理" value="/feeds" component={Link} to="/feeds" />
-            <Tab label="话题管理" value="/topics" component={Link} to="/topics" />
+            <Tab label="话题管理" value="/topic" component={Link} to="/topic" />
             <Tab label="评论管理" value="/comments" component={Link} to="/comments" />
             <Tab label="付费开关" value="/paycontrol" component={Link} to="/paycontrol" />
             <Tab label="动态回收站" value="/deleteFeeds" component={Link} to="/deleteFeeds" />
@@ -60,7 +59,7 @@ class App extends Component
           <Route path='/comments' component={Comment} />
           <Route path='/paycontrol' component={PayControl} />
           <Route path="/deleteFeeds" component={DeleteFeed} />
-          <Route path="/topics" component={TopicsPage} />
+          <Route path="/topic" component={TopicPage} />
         </main>
       </div>
     );
