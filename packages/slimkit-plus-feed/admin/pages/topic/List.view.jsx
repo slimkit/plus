@@ -17,19 +17,18 @@ class ListView extends React.Component {
       classes: PropTypes.object.isRequired,
       showSearchBar: PropTypes.bool.isRequired,
       handleSearchBarToggle: PropTypes.func.isRequired,
+      loading: PropTypes.bool.isRequired,
+      topics: PropTypes.array.isRequired
     }
 
     render() {
-      let { classes } = this.props;
-      let topics = [
-        {
-          id: 1,
-          name: "话题1"
-        }
-      ];
+      let { classes, topics } = this.props;
       return (
         <div>
-          <HeaderBar handleSearchBarToggle={this.props.handleSearchBarToggle} />
+          <HeaderBar
+            handleSearchBarToggle={this.props.handleSearchBarToggle}
+            loading={this.props.loading}
+          />
           <Paper className={classes.root}>
             <SearchBar show={this.props.showSearchBar} />
             {this.props.showSearchBar && <Divider />}
