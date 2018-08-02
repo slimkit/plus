@@ -232,7 +232,8 @@ class Topic extends Controller
 
         // If `logo` and `desc` field all is NULL
         $with = null;
-        if (! ($logo = (int) $request->input('logo')) && ! ($desc = $request->input('desc'))) {
+        $desc = $request->input('desc');
+        if (! ($logo = (int) $request->input('logo')) && ! $desc) {
             return $response;
         } elseif ($logo && $logo !== $topic->logo) {
             $with = (new FileWithModel)
