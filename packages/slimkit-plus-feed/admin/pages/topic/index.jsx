@@ -7,7 +7,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Table from '@material-ui/core/Table';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
-import Breadcrumb from '../common/Breadcrumb';
+import Breadcrumb from '../../components/common/Breadcrumb';
 
 // Icons
 import RefreshIcon from "@material-ui/icons/RefreshRounded";

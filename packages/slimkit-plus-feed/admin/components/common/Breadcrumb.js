@@ -10,7 +10,6 @@ const styles = theme => {
         item: {
             color: theme.palette.text.secondary,
             display: 'inline-block',
-            float: 'left',
             '&:last-child:after': {
                 display: 'none'
             },
