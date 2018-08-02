@@ -2,85 +2,78 @@
  * The file is admin feeds manage page.
  */
 
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import withStyles from "@material-ui/core/styles/withStyles";
-import Grid from "@material-ui/core/Grid";
+import withStyles from '@material-ui/core/styles/withStyles';
+import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardActions from '@material-ui/core/CardActions';
-import Typography from "@material-ui/core/Typography";
+import Typography from '@material-ui/core/Typography';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import Snackbar from "@material-ui/core/Snackbar";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import SvgIcon from "@material-ui/core/SvgIcon";
+import Snackbar from '@material-ui/core/Snackbar';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Drawer from "@material-ui/core/Drawer";
-import Chip from "@material-ui/core/Chip";
+import Drawer from '@material-ui/core/Drawer';
+import Chip from '@material-ui/core/Chip';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import ArrowUpward from "@material-ui/icons/ArrowUpward";
-import Forum from "@material-ui/icons/Forum";
-import Delete from "@material-ui/icons/Delete";
-import CloseIcon from "@material-ui/icons/Close";
-import _ from "lodash";
-import Select from "@material-ui/core/Select";
-import TextField from "@material-ui/core/TextField";
-import Checkbox from "@material-ui/core/Checkbox";
-import getQuery from "../utils/getQuery";
-import { localDateToUTC, localDate } from "../utils/dateProcess";
-import purple from "@material-ui/core/colors/purple";
-const accent = purple["A200"];
-
-import request, { createRequestURI } from "../utils/request";
-import { showAmount } from "../utils/balance";
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import ArrowUpward from '@material-ui/icons/ArrowUpward';
+import Forum from '@material-ui/icons/Forum';
+import Delete from '@material-ui/icons/Delete';
+import CloseIcon from '@material-ui/icons/Close';
+import _ from 'lodash';
+import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
+import getQuery from '../utils/getQuery';
+import { localDateToUTC, localDate } from '../utils/dateProcess';
+import request, { createRequestURI } from '../utils/request';
+import { showAmount } from '../utils/balance';
 
 const styles = (theme) => ({
   root: {
     padding: theme.spacing.unit * 2,
-    width: "100%",
+    width: '100%',
     margin: 0
   },
   flexGrow: {
-    flex: "1 1 auto"
+    flex: '1 1 auto'
   },
   drawer: {
     width: 450,
-    overflowY: "auto"
+    overflowY: 'auto'
   },
   drawerImage: {
-    width: "100%"
+    width: '100%'
   },
   media: {
-    position: "relative"
+    position: 'relative'
   },
   drawerImageTitle: {
     width: `calc(100% - ${theme.spacing.unit * 4}px)`,
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
-    background: "rgba(0, 0, 0, .4)",
-    color: "#fff"
+    background: 'rgba(0, 0, 0, .4)',
+    color: '#fff'
   },
   drawerRow: {
-    display: "flex",
-    justifyContent: "flex-start",
-    flexWrap: "wrap"
+    display: 'flex',
+    justifyContent: 'flex-start',
+    flexWrap: 'wrap'
   },
   chip: {
     margin: theme.spacing.unit
@@ -94,12 +87,12 @@ const styles = (theme) => ({
   },
   progeessHide: {
     margin: `0 ${theme.spacing.unit}px`,
-    visibility: "hidden"
+    visibility: 'hidden'
   },
   container: {
-    display: "flex",
-    flexWrap: "wrap",
-    width: "100%",
+    display: 'flex',
+    flexWrap: 'wrap',
+    width: '100%',
     padding: theme.spacing.unit
   },
   formControl: {
@@ -107,7 +100,7 @@ const styles = (theme) => ({
     minWidth: 120
   },
   title: {
-    width: "100%",
+    width: '100%',
     color: theme.palette.grey[500]
   },
   textField: {
@@ -119,30 +112,28 @@ const styles = (theme) => ({
     margin: theme.spacing.unit
   },
   cursor: {
-    cursor: "pointer"
-  },
-  chip: {
-    margin: 4
+    cursor: 'pointer'
   },
   feedContent: {
     width: `calc(100% - ${theme.spacing.unit * 4}px)`,
-    wordBreak: "break-all"
+    wordBreak: 'break-all'
   },
   amoutShow: {
-    fontSize: "16px",
-    padding: "8px",
-    background: "#f4f5f5",
-    marginBottom: "10px"
+    fontSize: '16px',
+    padding: '8px',
+    background: '#f4f5f5',
+    marginBottom: '10px'
   },
   link: {
-    cursor: "pointer",
-    textDecoration: "none"
+    cursor: 'pointer',
+    textDecoration: 'none'
   }
 });
 
 class Feed extends Component {
   static propTypes = {
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
   };
 
   state = {
@@ -153,9 +144,9 @@ class Feed extends Component {
     },
     snackbar: {
       open: false,
-      message: "",
-      vertical: "bottom",
-      horizontal: "right"
+      message: '',
+      vertical: 'bottom',
+      horizontal: 'right'
     },
     deletePinned: {
       feed: null,
@@ -164,20 +155,20 @@ class Feed extends Component {
     drawer: null,
     pinned: null,
     pinnedDay: 0,
-    loadMoreBtnText: "加载更多",
+    loadMoreBtnText: '加载更多',
     loadMoreBtnDisabled: false,
     loading: false,
     params: {
-      type: "all",
-      pay: "all",
+      type: 'all',
+      pay: 'all',
       limit: 16,
       user_id: 0,
       from: 0,
-      stime: "",
-      etime: "",
-      keyword: "",
-      top: "all",
-      userName: "",
+      stime: '',
+      etime: '',
+      keyword: '',
+      top: 'all',
+      userName: '',
       needPay: false,
       current_page: 1,
       last_page: 1,
@@ -201,7 +192,7 @@ class Feed extends Component {
 
     return (
       <div>
-        <Grid  spacing={16} container className={classes.root}>
+        <Grid   container className={classes.root}>
           <div className={classes.container}>
             <form className={classes.container} autoComplete="off">
               <FormControl className={classes.formControl}>
@@ -218,9 +209,9 @@ class Feed extends Component {
                 <Input
                   placeholder="用户ID"
                   aria-label="Description"
-                  type={"number"}
+                  type={'number'}
                   onChange={this.UserIdChanged}
-                  value={params.user_id || ""}
+                  value={params.user_id || ''}
                 />
               </FormControl>
               <FormControl className={classes.formControl}>
@@ -236,21 +227,21 @@ class Feed extends Component {
                 <InputLabel htmlFor="type">时间段</InputLabel>
                 <Select
                   value={params.type}
-                  onChange={this.handleTypeChanged("type")}
+                  onChange={this.handleTypeChanged('type')}
                 >
-                  <MenuItem value={"all"}>全部</MenuItem>
-                  <MenuItem value={"today"}>今天</MenuItem>
-                  <MenuItem value={"yesterday"}>昨天</MenuItem>
-                  <MenuItem value={"week"}>最近一周</MenuItem>
-                  <MenuItem value={"lastDay"}>截止昨天</MenuItem>
-                  <MenuItem value={"customer"}>自定义时间</MenuItem>
+                  <MenuItem value={'all'}>全部</MenuItem>
+                  <MenuItem value={'today'}>今天</MenuItem>
+                  <MenuItem value={'yesterday'}>昨天</MenuItem>
+                  <MenuItem value={'week'}>最近一周</MenuItem>
+                  <MenuItem value={'lastDay'}>截止昨天</MenuItem>
+                  <MenuItem value={'customer'}>自定义时间</MenuItem>
                 </Select>
               </FormControl>
               <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="from">来源</InputLabel>
                 <Select
                   value={params.from}
-                  onChange={this.handleTypeChanged("from")}
+                  onChange={this.handleTypeChanged('from')}
                 >
                   <MenuItem value={0}>全部</MenuItem>
                   <MenuItem value={1}>PC</MenuItem>
@@ -264,24 +255,24 @@ class Feed extends Component {
                 <InputLabel htmlFor="from">是否付费</InputLabel>
                 <Select
                   value={params.pay}
-                  onChange={this.handleTypeChanged("pay")}
+                  onChange={this.handleTypeChanged('pay')}
                 >
-                  <MenuItem value={"all"}>全部</MenuItem>
-                  <MenuItem value={"free"}>免费</MenuItem>
-                  <MenuItem value={"paid"}>付费</MenuItem>
+                  <MenuItem value={'all'}>全部</MenuItem>
+                  <MenuItem value={'free'}>免费</MenuItem>
+                  <MenuItem value={'paid'}>付费</MenuItem>
                 </Select>
               </FormControl>
               <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="top">是否置顶</InputLabel>
                 <Select
                   value={params.top}
-                  onChange={this.handleTypeChanged("top")}
+                  onChange={this.handleTypeChanged('top')}
                 >
-                  <MenuItem value={"all"}>全部</MenuItem>
-                  <MenuItem value={"no"}>非置顶</MenuItem>
-                  <MenuItem value={"yes"}>置顶</MenuItem>
-                  <MenuItem value={"wait"}>待审核</MenuItem>
-                  <MenuItem value={"reject"}>拒绝/过期</MenuItem>
+                  <MenuItem value={'all'}>全部</MenuItem>
+                  <MenuItem value={'no'}>非置顶</MenuItem>
+                  <MenuItem value={'yes'}>置顶</MenuItem>
+                  <MenuItem value={'wait'}>待审核</MenuItem>
+                  <MenuItem value={'reject'}>拒绝/过期</MenuItem>
                 </Select>
               </FormControl>
               {params.user_id ? (
@@ -294,7 +285,7 @@ class Feed extends Component {
                   />
                 </FormControl>
               ) : (
-                ""
+                ''
               )}
 
               <Button
@@ -307,7 +298,7 @@ class Feed extends Component {
             </form>
           </div>
           {feeds.map(feed => (
-            <Grid spacing={16} item xs={12} sm={6} key={feed.id}>
+            <Grid  item xs={12} sm={6} key={feed.id}>
               <Card>
                 <CardHeader
                   className={classes.cursor}
@@ -327,7 +318,7 @@ class Feed extends Component {
 
                 <CardContent
                   className={classes.feedContent}
-                  onTouchTap={() => this.handleRequestDrawer(feed.id)}
+                  onClick={() => this.handleRequestDrawer(feed.id)}
                 >
                   <Typography>动态ID(#{feed.id})</Typography>
                   {feed.feed_content}
@@ -344,7 +335,7 @@ class Feed extends Component {
 
                   <div className={classes.flexGrow} />
 
-                  <IconButton onTouchTap={() => this.handlePushDelete(feed.id)}>
+                  <IconButton  onClick={() => this.handlePushDelete(feed.id)}>
                     <Delete />
                   </IconButton>
                 </CardActions>
@@ -356,7 +347,7 @@ class Feed extends Component {
         <Button
           color="primary"
           className={classes.loadMoreBtn}
-          onTouchTap={() => this.handleLoadMoreFeed()}
+          onClick={() => this.handleLoadMoreFeed()}
           disabled={this.state.loadMoreBtnDisabled}
         >
           共[{this.state.params.total}]条动态，当前第[{
@@ -376,21 +367,21 @@ class Feed extends Component {
             {del.ing ? (
               <Button disabled>取消</Button>
             ) : (
-              <Button onTouchTap={() => this.handlePushClose()}>取消</Button>
+              <Button  onClick={() => this.handlePushClose()}>取消</Button>
             )}
             {del.ing ? (
               <Button disabled>
                 <CircularProgress size={14} />
               </Button>
             ) : (
-              <Button color="primary" onTouchTap={() => this.handleDelete()}>
+              <Button color="primary"  onClick={() => this.handleDelete()}>
                 删除
               </Button>
             )}
           </DialogActions>
         </Dialog>
         <Dialog open={customer}>
-          <DialogTitle>{"自定义查询日期"}</DialogTitle>
+          <DialogTitle>{'自定义查询日期'}</DialogTitle>
           <DialogContent>
             <FormControl className={classes.formControl}>
               <TextField
@@ -427,7 +418,7 @@ class Feed extends Component {
                   customer: false,
                   params: {
                     ...params,
-                    type: "all"
+                    type: 'all'
                   }
                 })
               }
@@ -453,7 +444,7 @@ class Feed extends Component {
             <IconButton
               key="snackbar.close"
               color="inherit"
-              onTouchTap={() => this.handleSnackbarClose()}
+              onClick={() => this.handleSnackbarClose()}
             >
               <CloseIcon />
             </IconButton>
@@ -468,7 +459,7 @@ class Feed extends Component {
           {this.makeDrawerContent(drawer)}
         </Drawer>
         <Dialog open={!!pinned} onClose={() => this.handleAuditDialogColse()}>
-          {this.doPinnedAudit(pinned)}
+          {this.doPinnedAudit(pinned) || ''}
         </Dialog>
 
         <Dialog open={deletePinned.feed !== null}>
@@ -477,7 +468,7 @@ class Feed extends Component {
             {deletePinned.ing ? (
               <Button disabled>取消</Button>
             ) : (
-              <Button onTouchTap={() => this.handleCloseDeletePinned()}>
+              <Button  onClick={() => this.handleCloseDeletePinned()}>
                 取消
               </Button>
             )}
@@ -488,7 +479,7 @@ class Feed extends Component {
             ) : (
               <Button
                 color="primary"
-                onTouchTap={() => this.handleDeletePinned(deletePinned.feed)}
+                onClick={() => this.handleDeletePinned(deletePinned.feed)}
               >
                 撤销
               </Button>
@@ -541,10 +532,8 @@ class Feed extends Component {
     });
   };
 
-  getUserFeeds = (user, name = "") => {
-    this.state.params.userName = name;
-    this.state.params.user_id = user;
-    this.setState(this.state);
+  getUserFeeds = (user, name = '') => {
+    this.setState({ params: { ...this.state.params, userName: name, user_id: user } });
 
     this.handleGetDatas();
   };
@@ -555,17 +544,17 @@ class Feed extends Component {
     this.setState({
       ...this.state,
       customer:
-        name === "type" && event.target.value === "customer" ? true : false,
+        name === 'type' && event.target.value === 'customer' ? true : false,
       params: {
         ...params,
         [name]: event.target.value,
         stime:
-          name === "type" && event.target.value !== "customer"
-            ? ""
+          name === 'type' && event.target.value !== 'customer'
+            ? ''
             : params.stime,
         etime:
-          name === "type" && event.target.value !== "customer"
-            ? ""
+          name === 'type' && event.target.value !== 'customer'
+            ? ''
             : params.etime
       }
     });
@@ -573,67 +562,36 @@ class Feed extends Component {
 
   // 删除用户选择
   handleRequestDelete = () => {
-    this.state.params.user_id = 0;
-    this.state.params.userName = "";
-    this.setState(this.state);
-
+    this.setState({ params: { ...this.state.params, userName: '', user_id: 0 } });
     this.handleGetDatas();
   };
 
   handleStimeChanged = e => {
     const stime = e.target.value;
-    this.setState({
-      ...this.state,
-      params: {
-        ...this.state.params,
-        stime: stime
-      }
-    });
+    this.setState({ params: { ...this.state.params, stime } });
   };
   handleEtimeChanged = e => {
     const etime = e.target.value;
-    this.setState({
-      ...this.state,
-      params: {
-        ...this.state.params,
-        etime: etime
-      }
-    });
+    this.setState({ params: { ...this.state.params, etime } });
   };
   // 选择自定义时间
   handleChooseTime = () => {
-    const { params: { stime = "", etime = "" } = {}, snackbar } = this.state;
-    if (stime === "" && etime === "") {
-      this.setState({
-        ...this.state,
-        snackbar: {
-          ...snackbar,
-          open: true,
-          message: "请至少选择一个时间"
-        }
-      });
+    const { params: { stime = '', etime = '' } = {}, snackbar } = this.state;
+    if (stime === '' && etime === '') {
+      this.setState({ snackbar: { ...snackbar, open: true, message: '请至少选择一个时间' } });
     } else {
-      this.setState({
-        ...this.state,
-        customer: false
-      });
+      this.setState({ customer: false });
     }
   };
 
   // 打开动态详情
   handleRequestDrawer(feed) {
-    this.setState({
-      ...this.state,
-      drawer: feed
-    });
+    this.setState({ drawer: feed });
   }
 
   // 关闭动态详情
   handleDrawerClose() {
-    this.setState({
-      ...this.state,
-      drawer: null
-    });
+    this.setState({ drawer: null });
   }
 
   makeDrawerContent(feed_id = null) {
@@ -683,7 +641,7 @@ class Feed extends Component {
         </CardContent>
 
         {images.map(({ id, paid_node }) => (
-          <CardMedia key={id} image={""} className={classes.media}>
+          <CardMedia key={id} src={createRequestURI(`files/${id}`)} className={classes.media}>
             <img
               src={createRequestURI(`files/${id}`)}
               className={classes.drawerImage}
@@ -691,10 +649,10 @@ class Feed extends Component {
             {paid_node && (
               <CardHeader
                 title={
-                  (paid_node.extra === "read" ? "查看" : "下载") +
-                  "收费：" +
+                  (paid_node.extra === 'read' ? '查看' : '下载') +
+                  '收费：' +
                   paid_node.amount / 100 +
-                  " 积分"
+                  ' 积分'
                 }
                 className={classes.drawerImageTitle}
               />
@@ -727,7 +685,7 @@ class Feed extends Component {
         <CardActions>
           <IconButton
             aria-label="置顶操作"
-            onTouchTap={() => this.handleOpenPinnedDialog(feed)}
+            onClick={() => this.handleOpenPinnedDialog(feed)}
           >
             <ArrowUpward />
           </IconButton>
@@ -737,14 +695,15 @@ class Feed extends Component {
   }
 
   makeImages(images = []) {
-    switch (images.length) {
-      case 1:
-        const file = images.pop();
-        return <img src={createRequestURI(`files/${file.id}`)} />;
+    if (images.length >= 1) {
+      const { id } = images.pop();
 
-      default:
-        return null;
+      return (
+        <img src={createRequestURI(`files/${id}`)} />
+      );
     }
+
+    return null;
   }
   handleOpenPinnedDialog(feed) {
     this.setState({
@@ -758,9 +717,7 @@ class Feed extends Component {
       return null;
     }
 
-    const { classes } = this.props;
     const {
-      user: { name },
       pinned: pin = null
     } = feed;
 
@@ -770,7 +727,7 @@ class Feed extends Component {
     ) {
       return (
         <section>
-          <DialogTitle>{"动态置顶审核操作"}</DialogTitle>
+          <DialogTitle>{'动态置顶审核操作'}</DialogTitle>
           <DialogContent>
             <DialogContentText>
               该动态未置顶，或置顶时间已到，或已经被拒绝了申请，如果您要人工置顶，请在下方输入要置顶的天数
@@ -787,13 +744,13 @@ class Feed extends Component {
           </DialogContent>
           <DialogActions>
             <Button
-              onTouchTap={() => this.handleRequestClose()}
+              onClick={() => this.handleRequestClose()}
               color="primary"
             >
               取消
             </Button>
             <Button
-              onTouchTap={() => this.handleSetPinned(feed.id, pin ? pin.id : 0)}
+              onClick={() => this.handleSetPinned(feed.id, pin ? pin.id : 0)}
               color="primary"
               autoFocus
             >
@@ -805,7 +762,7 @@ class Feed extends Component {
     } else if (pin && pin.expires_at && new Date(pin.expires_at) > new Date()) {
       return (
         <section>
-          <DialogTitle>{"动态置顶操作"}</DialogTitle>
+          <DialogTitle>{'动态置顶操作'}</DialogTitle>
           <DialogContent>
             <DialogContentText>
               动态作者: {feed.user.name}，{pin.amount !== 0
@@ -817,13 +774,13 @@ class Feed extends Component {
           </DialogContent>
           <DialogActions>
             <Button
-              onTouchTap={() => this.handleRequestClose()}
+              onClick={() => this.handleRequestClose()}
               color="primary"
             >
               取消
             </Button>
             <Button
-              onTouchTap={() => this.handleDeletePinned(feed)}
+              onClick={() => this.handleDeletePinned(feed)}
               color="primary"
               autoFocus
             >
@@ -835,7 +792,7 @@ class Feed extends Component {
     } else {
       return (
         <section>
-          <DialogTitle>{"动态置顶审核操作"}</DialogTitle>
+          <DialogTitle>{'动态置顶审核操作'}</DialogTitle>
           <DialogContent>
             <DialogContentText>
               动态作者: {feed.user.name} 花费 {showAmount(pin.amount)}，申请该条动态置顶{
@@ -845,19 +802,19 @@ class Feed extends Component {
           </DialogContent>
           <DialogActions>
             <Button
-              onTouchTap={() => this.handleRejectPinnedInDraw(feed)}
+              onClick={() => this.handleRejectPinnedInDraw(feed)}
               color="primary"
             >
               拒绝
             </Button>
             <Button
-              onTouchTap={() => this.handleRequestClose()}
+              onClick={() => this.handleRequestClose()}
               color="primary"
             >
               取消
             </Button>
             <Button
-              onTouchTap={() => this.handleAuditPinned(feed)}
+              onClick={() => this.handleAuditPinned(feed)}
               color="primary"
               autoFocus
             >
@@ -894,22 +851,21 @@ class Feed extends Component {
       )
       .then(({ data }) => {
         this.handleSnackbar({
-          message: "设置成功!",
+          message: '设置成功!',
           open: true
         });
-        this.setState({
-          ...this.state,
-          pinned: null
-        });
         let index = _.findIndex(this.state.feeds, { id: data.data.target });
-        this.state.feeds[index].pinned = {
+        let state = this.state;
+        state.feeds[index].pinned = {
           ...this.state.feeds[index].pinned,
           ...data.data
         };
+        state.pinned = null;
+        this.setState(state);
       })
       .catch(() => {
         this.handleSnackbar({
-          message: "操作失败了!",
+          message: '操作失败了!',
           open: true
         });
       });
@@ -923,20 +879,20 @@ class Feed extends Component {
 
   renderPinnedDom(feed) {
     let pinned = this.handleGetPinned(feed);
-    if (pinned === null) return "";
-    const { expires_at = "", day = 0, amount } = feed.pinned;
+    if (pinned === null) return '';
+    const { expires_at = '', day = 0, amount } = feed.pinned;
     return expires_at ? (
       <Button
         color="primary"
-        onTouchTap={() => this.handleOpenDeleteDialog(feed)}
+        onClick={() => this.handleOpenDeleteDialog(feed)}
       >
-        置顶到期时间{new Date(expires_at) < new Date() ? "[已过期]" : ""}:{" "}
+        置顶到期时间{new Date(expires_at) < new Date() ? '[已过期]' : ''}:{' '}
         {localDate(expires_at)} | {showAmount(amount)}
       </Button>
     ) : (
       <Button
         color="primary"
-        onTouchTap={() => this.handleOpenPinnedDialog(feed)}
+        onClick={() => this.handleOpenPinnedDialog(feed)}
       >
         申请置顶：{day} 天, 积分 {showAmount(amount)}
       </Button>
@@ -949,16 +905,15 @@ class Feed extends Component {
         validateStatus: status => status === 204
       })
       .then(() => {
-        this.state.pinned = null;
+        let state = this.state;
+        state.pinned = null;
         let index = _.findIndex(this.state.feeds, { id: feed.id });
-        this.state.feeds[index].pinned = null;
+        state.feeds[index].pinned = null;
         this.handleSnackbar({
-          message: "已拒绝申请",
+          message: '已拒绝申请',
           open: true
         });
-      })
-      .catch(({ response: { data } }) => {
-        console.log(data);
+        this.setState(state);
       });
   }
 
@@ -989,19 +944,23 @@ class Feed extends Component {
       .delete(createRequestURI(`feeds/${feed.id}/pinned`), {
         validateStatus: status => status === 204
       })
-      .then(({ data }) => {
+      .then(() => {
         this.handleSnackbar({
-          message: "已撤销!",
+          message: '已撤销!',
           open: true
         });
         this.handleCloseDeletePinned();
-        this.state.pinned = null;
+
+        let state = this.state;
+        state.pinned = null;
         let index = _.findIndex(this.state.feeds, { id: feed.id });
-        this.state.feeds[index].pinned = null;
+        state.feeds[index].pinned = null;
+
+        this.setState(state);
       })
       .catch(() => {
         this.handleSnackbar({
-          message: "操作失败!",
+          message: '操作失败!',
           open: true
         });
         this.handleCloseDeletePinned();
@@ -1014,7 +973,7 @@ class Feed extends Component {
         createRequestURI(`pinned/${feed.pinned.id}`),
         {
           ...{
-            action: "accept"
+            action: 'accept'
           }
         },
         {
@@ -1022,18 +981,19 @@ class Feed extends Component {
         }
       )
       .then(({ data }) => {
-        console.log(data);
         let index = _.findIndex(this.state.feeds, { id: feed.id });
-        this.state.feeds[index].pinned = data;
+        let state = this.state;
+        state.feeds[index].pinned = data;
         this.handleSnackbar({
-          message: "操作成功!",
+          message: '操作成功!',
           open: true
         });
         this.handleRequestClose();
+        this.setState(state);
       })
       .catch(() => {
         this.handleSnackbar({
-          message: "操作失败!",
+          message: '操作失败!',
           open: true
         });
       });
@@ -1077,14 +1037,14 @@ class Feed extends Component {
         this.handlePushClose();
         this.handlePullFeed(feed);
         this.handleSnackbar({
-          message: "删除成功!",
+          message: '删除成功!',
           open: true
         });
       })
       .catch(
         ({
           response: {
-            data: { message: [message = "删除失败，请检查网络！"] = [] } = {}
+            data: { message: [message = '删除失败，请检查网络！'] = [] } = {}
           } = {}
         } = {}) => {
           this.handlePushClose();
@@ -1129,12 +1089,12 @@ class Feed extends Component {
       this.setState({
         ...this.state,
         loadMoreBtnDisabled: true,
-        loadMoreBtnText: "没有更多了",
+        loadMoreBtnText: '没有更多了',
         loading: false,
         snackbar: {
           ...this.state.snackbar,
           open: true,
-          message: "没有更多了"
+          message: '没有更多了'
         }
       });
       return;
@@ -1143,12 +1103,12 @@ class Feed extends Component {
     this.setState({
       ...this.state,
       loading: true,
-      loadMoreBtnText: "",
+      loadMoreBtnText: '',
       loadMoreBtnDisabled: true
     });
 
     request
-      .get(createRequestURI("feeds"), {
+      .get(createRequestURI('feeds'), {
         params: {
           ...params,
           page: params.current_page + 1
@@ -1176,7 +1136,7 @@ class Feed extends Component {
           this.setState({
             ...this.state,
             loading: false,
-            loadMoreBtnText: "已加载全部",
+            loadMoreBtnText: '已加载全部',
             loadMoreBtnDisabled: true
           });
           return;
@@ -1184,7 +1144,7 @@ class Feed extends Component {
         this.setState({
           ...this.state,
           loading: false,
-          loadMoreBtnText: "加载更多",
+          loadMoreBtnText: '加载更多',
           loadMoreBtnDisabled: false
         });
       });
@@ -1196,31 +1156,31 @@ class Feed extends Component {
       ...this.state,
       loading: true,
       loadMoreBtnDisabled: true,
-      loadMoreBtnText: "加载中..."
+      loadMoreBtnText: '加载中...'
     });
 
     const { params } = this.state;
 
     request
       .get(
-        createRequestURI("feeds"),
+        createRequestURI('feeds'),
         {
           params: {
             ...params,
-            stime: params.stime ? localDateToUTC(params.stime) : "",
-            etime: params.etime ? localDateToUTC(params.etime) : "",
+            stime: params.stime ? localDateToUTC(params.stime) : '',
+            etime: params.etime ? localDateToUTC(params.etime) : '',
             page: 1
           }
         },
         { validateStatus: status => status === 200 }
       )
       .then(({ data }) => {
-        let loadMoreBtnText = "加载更多",
+        let loadMoreBtnText = '加载更多',
           loadMoreBtnDisabled = false,
           loading = false;
         if (data.data.length < params.limit) {
           loadMoreBtnDisabled = true;
-          loadMoreBtnText = "已加载全部";
+          loadMoreBtnText = '已加载全部';
         }
         this.setState({
           ...this.state,
@@ -1245,12 +1205,12 @@ class Feed extends Component {
   componentDidMount() {
     const search = this.props.location.search;
     if (search) {
-      let params = { ...getQuery(search) };
-      params = {
-        ...this.state.params,
-        ...params
-      };
-      this.state.params = params;
+      this.setState({
+        params: {
+          ...this.state.params,
+          ...getQuery(search)
+        }
+      });
     }
     this.handleGetDatas();
   }
