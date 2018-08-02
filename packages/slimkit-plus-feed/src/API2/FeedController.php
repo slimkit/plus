@@ -792,11 +792,17 @@ class FeedController extends Controller
             ->when($after, function ($query) use ($after) {
                 return $query->where('id', '<', $after);
             })
-            ->with(['pinnedComments' => function ($query) use ($datetime) {
-                return $query->where('expires_at', '>', $datetime)->limit(5);
-            }, 'user' => function ($query) {
-                return $query->withTrashed();
-            }])
+            ->with([
+                'pinnedComments' => function ($query) use ($datetime) {
+                    return $query->where('expires_at', '>', $datetime)->limit(5);
+                },
+                'user' => function ($query) {
+                    return $query->withTrashed();
+                },
+                'topics' => function ($query) {
+                    return $query->select('id', 'name');
+                },
+            ])
             ->orderBy('id', 'desc')
             ->limit($limit)
             ->get();
