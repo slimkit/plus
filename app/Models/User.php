@@ -347,6 +347,8 @@ class User extends Authenticatable implements JWTSubject
     {
         $table = (new FeedTopicUserLink)->getTable();
 
-        return $this->belongsToMany(FeedTopic::class, $table, 'user_id', 'topic_id');
+        return $this
+            ->belongsToMany(FeedTopic::class, $table, 'user_id', 'topic_id')
+            ->using(FeedTopicUserLink::class);
     }
 }

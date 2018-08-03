@@ -276,6 +276,7 @@ class Topic extends Controller
         $topic->participants = $topic
             ->users()
             ->newPivotStatement()
+            ->where('topic_id', $topic->id)
             ->where('user_id', '!=', $topic->creator_user_id)
             ->orderBy(Model::UPDATED_AT, 'desc')
             ->limit(3)
