@@ -6,17 +6,22 @@ class List extends React.Component {
 
   state = {
     showSearchBar: false,
-    loading: true,
+    loading: false,
     topics: [],
-    error: null
+    error: null,
+    cacheRequestQuery: {}
   }
 
   handleSearchBarToggle = () => {
     this.setState({ showSearchBar: !this.state.showSearchBar });
   }
 
-  handleRequestTopics = (query = {}) => {
-    this.setState({ loading: true });
+  handleRequestTopics = (query = this.state.cacheRequestQuery) => {
+    if (this.state.loading) {
+      return;
+    }
+
+    this.setState({ loading: true, cacheRequestQuery: query });
     listRequest({ params: query })
       .then(({ data }) => this.setState({
         loading: false,
@@ -28,10 +33,14 @@ class List extends React.Component {
       }));
   }
 
+  handleRefreshPage = () => this.handleRequestTopics()
+
   render() {
     return <View
       showSearchBar={this.state.showSearchBar}
       handleSearchBarToggle={this.handleSearchBarToggle}
+      handleRefresh={this.handleRefreshPage}
+      handleRequestTopics={this.handleRequestTopics}
       loading={this.state.loading}
       topics={this.state.topics}
     />;

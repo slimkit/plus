@@ -32,6 +32,7 @@ class ListContentHeaderBar extends React.Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     handleSearchBarToggle: PropTypes.func.isRequired,
+    handleRefresh: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
   }
 
@@ -62,7 +63,7 @@ class ListContentHeaderBar extends React.Component {
 
         <Tooltip title="刷新页面">
           <div className={classes.wrapper}>
-            <Button className={classes.headerBarButton} variant="fab" mini disabled={this.props.loading}>
+            <Button className={classes.headerBarButton} variant="fab" mini disabled={this.props.loading} onClick={this.props.handleRefresh}>
               <RefreshIcon />
             </Button>
             {this.props.loading && <CircularProgress size={40} className={classes.fabProgress} />}

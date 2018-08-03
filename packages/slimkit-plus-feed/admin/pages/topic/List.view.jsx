@@ -17,6 +17,8 @@ class ListView extends React.Component {
       classes: PropTypes.object.isRequired,
       showSearchBar: PropTypes.bool.isRequired,
       handleSearchBarToggle: PropTypes.func.isRequired,
+      handleRefresh: PropTypes.func.isRequired,
+      handleRequestTopics: PropTypes.func.isRequired,
       loading: PropTypes.bool.isRequired,
       topics: PropTypes.array.isRequired
     }
@@ -27,10 +29,14 @@ class ListView extends React.Component {
         <div>
           <HeaderBar
             handleSearchBarToggle={this.props.handleSearchBarToggle}
+            handleRefresh={this.props.handleRefresh}
             loading={this.props.loading}
           />
           <Paper className={classes.root}>
-            <SearchBar show={this.props.showSearchBar} />
+            <SearchBar
+              show={this.props.showSearchBar}
+              handleRequestTopics={this.props.handleRequestTopics}
+            />
             {this.props.showSearchBar && <Divider />}
             <Table>
               <TableHead>

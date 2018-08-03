@@ -34,7 +34,8 @@ class ListSearchBar extends React.Component {
 
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    show: PropTypes.bool.isRequired
+    show: PropTypes.bool.isRequired,
+    handleRequestTopics: PropTypes.func.isRequired,
   }
 
   state = {
@@ -52,6 +53,8 @@ class ListSearchBar extends React.Component {
       hot: 0
     });
   }
+
+  handleSearch = () => this.props.handleRequestTopics(this.state)
 
   render() {
     let { classes, show } = this.props;
@@ -78,7 +81,7 @@ class ListSearchBar extends React.Component {
               <MenuItem value={1}>是</MenuItem>
             </Select>
           </FormControl>
-          <Button className={classes.baseMargin} variant="contained" color="primary">搜&nbsp;索</Button>
+          <Button className={classes.baseMargin} variant="contained" color="primary" onClick={this.handleSearch}>搜&nbsp;索</Button>
           <Button className={classes.baseMargin} variant="contained" onClick={this.handleResetSearch}>重&nbsp;置</Button>
         </Toolbar>
       </Collapse>
