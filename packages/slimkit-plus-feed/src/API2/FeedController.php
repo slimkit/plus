@@ -416,7 +416,9 @@ class FeedController extends Controller
 
             $link = $user
                 ->feedTopics()
-                ->newPivotStatementForId($topicID)
+                ->newPivot()
+                ->where('user_id', $user->id)
+                ->where('topic_id', $topicID)
                 ->first();
             if (! $link) {
                 $link = new FeedTopicUserLinkModel();
