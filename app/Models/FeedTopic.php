@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class FeedTopic extends Model
@@ -49,10 +49,10 @@ class FeedTopic extends Model
     /**
      * The topic reports morph to many.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function reports(): MorphToMany
+    public function reports(): MorphMany
     {
-        return $this->morphToMany(Report::class, 'reportable');
+        return $this->morphMany(Report::class, 'reportable');
     }
 }

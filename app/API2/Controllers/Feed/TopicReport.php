@@ -49,9 +49,8 @@ class TopicReport extends Controller
         $report->reason = $request->input('message');
         $report->user_id = $request->user()->id;
         $report->target_user = $topic->creator_user_id;
-        $report->subject = $topic->name;
+        $report->subject = sprintf('动态话题（%d）：%s', $topic->id, $topic->name);
         $report->status = 0;
-
         $topic->reports()->save($report);
 
         return (new Response)->setStatusCode(Response::HTTP_NO_CONTENT);
