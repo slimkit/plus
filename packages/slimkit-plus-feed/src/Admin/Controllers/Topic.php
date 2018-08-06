@@ -20,13 +20,22 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Packages\Feed\Admin\Controllers;
 
-use Zhiyi\Plus\API2\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\Models\FeedTopic as TopicModel;
+use Zhiyi\Plus\API2\Controllers\Feed\Topic as Controller;
 use Zhiyi\Plus\Packages\Feed\Admin\Requests\ListAllTopics as ListTopicsRequest;
 
 class Topic extends Controller
 {
-    public function index(ListTopicsRequest $request, TopicModel $model)
+    public function __construct()
+    {
+        // Add DisposeSensitive middleware.
+        $this
+            ->middleware('sensitive:name,desc')
+            ->only(['create', 'update']);
+    }
+
+    public function adminListTopics(ListTopicsRequest $request, TopicModel $model): JsonResponse
     {
         $data = $model
             ->query()
@@ -39,8 +48,9 @@ class Topic extends Controller
             ->when($name = $request->query('name'), function ($query) use ($name) {
                 return $query->where('name', 'like', sprintf('%%%s%%', $name));
             })
+            ->orderBy('id', 'desc')
             ->paginate($request->query('limit', 15), ['*'], 'page');
-
-        return $data;
+        
+        return new JsonResponse($data);
     }
 }

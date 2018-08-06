@@ -179,7 +179,7 @@ class ListView extends React.Component {
                     labelDisplayedRows={({from, to, count}) => `${from} 至 ${to}，总：${count}`}
                     onChangePage={(event, page) => {
                       this.props.handleRequestTopics({
-                        page: page
+                        page: page + 1
                       });
                     }}
                     onChangeRowsPerPage={this.props.handleChangeLimit}
@@ -219,6 +219,7 @@ class ListView extends React.Component {
                   onChange={this.handleChangeAddFormInput}
                   value={this.state.addForm.name}
                   disabled={this.props.addSubmitting}
+                  required={true}
                 />
 
                 <TextField
