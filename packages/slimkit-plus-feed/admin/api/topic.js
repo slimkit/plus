@@ -18,3 +18,9 @@ export function update({ id, ...form }) {
     validateStatus: status => status === 204
   });
 }
+
+export function hotToggle(id) {
+  return adminRequest.put(`topics/${id}/hot-toggle`, {}, {
+    validateStatus: status => status === 204
+  });
+}

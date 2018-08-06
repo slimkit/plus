@@ -38,11 +38,12 @@ class ListView extends React.Component {
       total: PropTypes.number.isRequired,
       page: PropTypes.number.isRequired,
       limit: PropTypes.number.isRequired,
-      addSubmitting: PropTypes.bool.isRequired,
+      submitting: PropTypes.bool.isRequired,
       handleSubmitAddForm: PropTypes.func.isRequired,
       message: PropTypes.object.isRequired,
       handleCloseMessage: PropTypes.func.isRequired,
       handleSubmitEditForm: PropTypes.func.isRequired,
+      handleToggleTopicHot: PropTypes.func.isRequired
     }
 
     state = {
@@ -51,7 +52,8 @@ class ListView extends React.Component {
       form: {
         name: '',
         desc: '',
-      }
+      },
+      hotTopic: 0
     }
 
     handleOpenAddForm = () => {
@@ -111,6 +113,15 @@ class ListView extends React.Component {
       }));
     };
 
+    handleOpenToggleTopicHot = (id) => this.setState({ hotTopic: id })
+
+    handleCloseToggleTopicHot = () => this.setState({ hotTopic: 0 })
+
+    handleToggleTopicHot = () => this.props.handleToggleTopicHot(this.state.hotTopic, ({ submit, success, error }) => submit().then(() => {
+      this.handleCloseToggleTopicHot();
+      success();
+    }).catch(({ response: { data = { message: '操作失败' } } = {} }) => error(data)))
+
     render() {
       let { classes, topics } = this.props;
       return (
@@ -148,22 +159,24 @@ class ListView extends React.Component {
                     <TableCell>{ topic.creator.name }</TableCell>
                     <TableCell>
 
-                      {/* 置顶/取消按钮 */}
+                      {/* 热门/取消按钮 */}
                       {topic.hot_at ? (
-                        // 取消置顶
+                        // 取消热门
                         <Button
                           variant="fab"
                           mini={true}
                           className={classes.actionsFab}
+                          onClick={() => this.handleOpenToggleTopicHot(topic.id)}
                         >
                           <VerticalAlignDownIcon />
                         </Button>
                       ) : (
-                        // 置顶
+                        // 热门
                         <Button
                           variant="fab"
                           mini={true}
                           className={classes.actionsFab}
+                          onClick={() => this.handleOpenToggleTopicHot(topic.id)}
                         >
                           <VerticalAlignTopIcon />
                         </Button>
@@ -244,7 +257,7 @@ class ListView extends React.Component {
                   helperText="&nbsp;"
                   onChange={this.handleChangeFormInput}
                   value={this.state.form.name}
-                  disabled={this.props.addSubmitting}
+                  disabled={this.props.submitting}
                   required={true}
                 />
 
@@ -257,19 +270,19 @@ class ListView extends React.Component {
                   rowsMax={5}
                   onChange={this.handleChangeFormInput}
                   value={this.state.form.desc}
-                  disabled={this.props.addSubmitting}
+                  disabled={this.props.submitting}
                 />
 
                 <div className={classes.modalActions}>
 
-                  {this.props.addSubmitting && <CircularProgress size={36}/>}
+                  {this.props.submitting && <CircularProgress size={36}/>}
 
                   <Button
                     color="primary"
                     className={classes.actionsFab}
                     variant="contained"
                     onClick={this.state.add === true ? this.handleSubmitAddForm : this.handleSubmitEditForm}
-                    disabled={this.props.addSubmitting}
+                    disabled={this.props.submitting}
                   >
                     { this.state.add === true ? '添 加' : '提 交' }
                   </Button>
@@ -279,7 +292,7 @@ class ListView extends React.Component {
                     className={classes.actionsFab}
                     variant="contained"
                     onClick={this.handleCloseForm}
-                    disabled={this.props.addSubmitting}
+                    disabled={this.props.submitting}
                   >
                     取&nbsp;消
                   </Button>
@@ -287,6 +300,44 @@ class ListView extends React.Component {
               </Paper>
             </div>
           </Modal>
+
+          {/* 热门状态切换 */}
+          <Modal open={!!this.state.hotTopic}>
+            <div className={classes.modalWrap} >
+              <Paper
+                classes={{
+                  root: classes.modalPager
+                }}
+              >
+                是否切换热门状态？
+                <div className={classes.modalActions}>
+
+                  {this.props.submitting && <CircularProgress size={36}/>}
+
+                  <Button
+                    color="primary"
+                    className={classes.actionsFab}
+                    variant="contained"
+                    onClick={this.handleToggleTopicHot}
+                    disabled={this.props.submitting}
+                  >
+                    提&nbsp;交
+                  </Button>
+
+                  <Button
+                    color="secondary"
+                    className={classes.actionsFab}
+                    variant="contained"
+                    onClick={this.handleCloseToggleTopicHot}
+                    disabled={this.props.submitting}
+                  >
+                    取&nbsp;消
+                  </Button>
+                </div>
+              </Paper>
+            </div>
+          </Modal>
+
         </div>
       );
     }
