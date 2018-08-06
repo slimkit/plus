@@ -139,7 +139,7 @@ class AbilitySeeder extends Seeder
         Ability::create([
             'name' => 'admin: update feed topic',
             'display_name' => '动态»话题»编辑话题',
-            'description' => '修改动态话题'
+            'description' => '修改动态话题',
         ]);
     }
 
