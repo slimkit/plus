@@ -55,7 +55,6 @@ class FeedTopic extends Model
         return $this
             ->belongsToMany(FeedModel::class, $table, 'topic_id', 'feed_id')
             ->using(FeedTopicLink::class);
-        ;
     }
 
     public function creator(): HasOne
