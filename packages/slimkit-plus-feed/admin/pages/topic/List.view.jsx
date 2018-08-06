@@ -43,7 +43,8 @@ class ListView extends React.Component {
       message: PropTypes.object.isRequired,
       handleCloseMessage: PropTypes.func.isRequired,
       handleSubmitEditForm: PropTypes.func.isRequired,
-      handleToggleTopicHot: PropTypes.func.isRequired
+      handleToggleTopicHot: PropTypes.func.isRequired,
+      handleDestroyTopic: PropTypes.func.isRequired
     }
 
     state = {
@@ -119,6 +120,15 @@ class ListView extends React.Component {
 
     handleToggleTopicHot = () => this.props.handleToggleTopicHot(this.state.hotTopic, ({ submit, success, error }) => submit().then(() => {
       this.handleCloseToggleTopicHot();
+      success();
+    }).catch(({ response: { data = { message: '操作失败' } } = {} }) => error(data)))
+
+    handleOpenDeleteTopic = (id) => this.setState({ deleteTopic: id })
+
+    handleCloseDeleteTopic = () => this.setState({ deleteTopic: 0 })
+
+    handleSubmitDeleteTopic = () => this.props.handleDestroyTopic(this.state.deleteTopic, ({ submit, success, error }) => submit().then(() => {
+      this.handleCloseDeleteTopic();
       success();
     }).catch(({ response: { data = { message: '操作失败' } } = {} }) => error(data)))
 
@@ -200,6 +210,7 @@ class ListView extends React.Component {
                         mini={true}
                         className={classes.actionsFab}
                         color="secondary"
+                        onClick={() => this.handleOpenDeleteTopic(topic.id)}
                       >
                         <DeleteIcon />
                       </Button>
@@ -332,6 +343,43 @@ class ListView extends React.Component {
                     disabled={this.props.submitting}
                   >
                     取&nbsp;消
+                  </Button>
+                </div>
+              </Paper>
+            </div>
+          </Modal>
+
+          {/* 删除确认提示 */}
+          <Modal open={!!this.state.deleteTopic}>
+            <div className={classes.modalWrap} >
+              <Paper
+                classes={{
+                  root: classes.modalPager
+                }}
+              >
+                确认要删除话题嘛？
+                <div className={classes.modalActions}>
+
+                  {this.props.submitting && <CircularProgress size={36}/>}
+
+                  <Button
+                    color="primary"
+                    className={classes.actionsFab}
+                    variant="contained"
+                    onClick={this.handleCloseDeleteTopic}
+                    disabled={this.props.submitting}
+                  >
+                    取&nbsp;消
+                  </Button>
+
+                  <Button
+                    color="secondary"
+                    className={classes.actionsFab}
+                    variant="contained"
+                    onClick={this.handleSubmitDeleteTopic}
+                    disabled={this.props.submitting}
+                  >
+                    删&nbsp;除
                   </Button>
                 </div>
               </Paper>

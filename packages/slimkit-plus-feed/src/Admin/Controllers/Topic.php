@@ -62,4 +62,20 @@ class Topic extends Controller
 
         return response('', 204);
     }
+
+    public function destroy(TopicModel $topic)
+    {
+        return $topic->getConnection()->transaction(function () use ($topic) {
+            // 删除关联用户
+            $topic->users()->sync([], true);
+
+            // 删除动态关联
+            $topic->feeds()->sync([], true);
+
+            // 删除话题
+            $topic->delete();
+
+            return response('', 204);
+        });
+    }
 }

@@ -5,7 +5,8 @@ import {
   list as listRequest,
   add  as addRequest,
   update as updateRequest,
-  hotToggle as hotToggleRequest
+  hotToggle as hotToggleRequest,
+  destroy as destroyRequest
 } from '../../api/topic';
 
 class List extends React.Component {
@@ -124,10 +125,33 @@ class List extends React.Component {
       })
     }),
     error: message => this.setState({
-      submitting: falae,
+      submitting: false,
       message: { type: 'error', text: message, open: true }
     })
   });
+
+  handleDestroyTopic = (id, fn) => fn({
+    submit: () => {
+      this.setState({ submitting: true });
+
+      return destroyRequest(id);
+    },
+    success: () => this.setState({
+      submitting: false,
+      message: { type: 'success', text: '删除成功', open: true },
+      topics: lodash.reduce(this.state.topics, (topics, topic) => {
+        if (parseInt(topic.id) != parseInt(id)) {
+          topics.push(topic);
+        }
+
+        return topics;
+      }, [])
+    }),
+    error: message => this.setState({
+      submitting: false,
+      message: { type: 'error', text: message, open: true }
+    })
+  })
 
   render() {
     return <View
@@ -147,6 +171,7 @@ class List extends React.Component {
       handleCloseMessage={this.handleCloseMessage}
       handleSubmitEditForm={this.handleSubmitEditForm}
       handleToggleTopicHot={this.handleToggleTopicHot}
+      handleDestroyTopic={this.handleDestroyTopic}
     />;
   }
 

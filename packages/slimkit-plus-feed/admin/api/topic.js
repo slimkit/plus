@@ -24,3 +24,9 @@ export function hotToggle(id) {
     validateStatus: status => status === 204
   });
 }
+
+export function destroy(id) {
+  return adminRequest.delete(`topics/${id}`, {
+    validateStatus: status => status === 204,
+  });
+}

@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 
 class FeedTopic extends Model
 {
@@ -45,6 +46,16 @@ class FeedTopic extends Model
             ->belongsToMany(User::class, $table, 'topic_id', 'user_id')
             ->withPivot('index', Model::CREATED_AT)
             ->using(FeedTopicUserLink::class);
+    }
+
+    public function feeds(): BelongsToMany
+    {
+        $table = (new FeedTopicLink)->getTable();
+
+        return $this
+            ->belongsToMany(FeedModel::class, $table, 'topic_id', 'feed_id')
+            ->using(FeedTopicLink::class);
+        ;
     }
 
     public function creator(): HasOne
