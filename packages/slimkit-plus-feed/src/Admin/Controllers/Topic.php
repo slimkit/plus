@@ -50,7 +50,7 @@ class Topic extends Controller
             })
             ->orderBy('id', 'desc')
             ->paginate($request->query('limit', 15), ['*'], 'page');
-        
+
         return new JsonResponse($data);
     }
 }
