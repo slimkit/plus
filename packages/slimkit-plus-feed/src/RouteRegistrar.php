@@ -69,7 +69,7 @@ class RouteRegistrar
         ], dirname(__DIR__).'/routes/admin.php');
         $this->router->group([
             'middleware' => 'web',
-            'prefix' => '/feed/admin'
+            'prefix' => '/feed/admin',
         ], dirname(__DIR__).'/routes/new-admin.php');
     }
 

@@ -40,7 +40,7 @@ class Topic extends Controller
                 return $query->where('name', 'like', sprintf('%%%s%%', $name));
             })
             ->paginate($request->query('limit', 15), ['*'], 'page');
-        
+
         return $data;
     }
 }
