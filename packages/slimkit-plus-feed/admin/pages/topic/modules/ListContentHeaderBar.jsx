@@ -33,6 +33,7 @@ class ListContentHeaderBar extends React.Component {
     classes: PropTypes.object.isRequired,
     handleSearchBarToggle: PropTypes.func.isRequired,
     handleRefresh: PropTypes.func.isRequired,
+    handleOpenAddForm: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
   }
 
@@ -56,7 +57,13 @@ class ListContentHeaderBar extends React.Component {
         </Tooltip>
 
         <Tooltip title="创建话题">
-          <Button className={classes.headerBarButton} variant="fab" color="primary" mini>
+          <Button
+            className={classes.headerBarButton}
+            variant="fab"
+            color="primary" 
+            mini
+            onClick={this.props.handleOpenAddForm}
+          >
             <AddIcon />
           </Button>
         </Tooltip>

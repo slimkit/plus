@@ -6,3 +6,9 @@ export function list(options = {}) {
     ...options
   });
 }
+
+export function add({ name, desc }) {
+  return adminRequest.post('topics', { name, desc }, {
+    validateStatus: status => status === 201
+  });
+}

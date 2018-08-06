@@ -67,6 +67,10 @@ class RouteRegistrar
             'prefix' => '/feed/admin',
             'namespace' => 'Zhiyi\\Component\\ZhiyiPlus\\PlusComponentFeed\\AdminControllers',
         ], dirname(__DIR__).'/routes/admin.php');
+        $this->router->group([
+            'middleware' => 'web',
+            'prefix' => '/feed/admin',
+        ], dirname(__DIR__).'/routes/new-admin.php');
     }
 
     /**
