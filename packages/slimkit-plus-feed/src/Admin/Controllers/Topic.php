@@ -55,7 +55,8 @@ class Topic extends Controller
         return new JsonResponse($data);
     }
 
-    public function hotToggle(TopicModel $topic) {
+    public function hotToggle(TopicModel $topic)
+    {
         $topic->hot_at = $topic->hot_at ? null : new Carbon;
         $topic->save();
 
