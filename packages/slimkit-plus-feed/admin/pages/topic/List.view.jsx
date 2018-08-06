@@ -20,8 +20,8 @@ import Snackbar from '../../components/common/Snackbar';
 import styles from './List.styles';
 
 // Icons
-import VerticalAlignTopIcon from "@material-ui/icons/VerticalAlignTop";
-import VerticalAlignDownIcon from "@material-ui/icons/VerticalAlignBottom";
+import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop';
+import VerticalAlignDownIcon from '@material-ui/icons/VerticalAlignBottom';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -38,53 +38,99 @@ class ListView extends React.Component {
       total: PropTypes.number.isRequired,
       page: PropTypes.number.isRequired,
       limit: PropTypes.number.isRequired,
-      addSubmitting: PropTypes.bool.isRequired,
+      submitting: PropTypes.bool.isRequired,
       handleSubmitAddForm: PropTypes.func.isRequired,
       message: PropTypes.object.isRequired,
       handleCloseMessage: PropTypes.func.isRequired,
+      handleSubmitEditForm: PropTypes.func.isRequired,
+      handleToggleTopicHot: PropTypes.func.isRequired,
+      handleDestroyTopic: PropTypes.func.isRequired
     }
 
     state = {
       add: false,
-      addForm: {
+      edit: false,
+      form: {
         name: '',
         desc: '',
-      }
+      },
+      hotTopic: 0
     }
 
     handleOpenAddForm = () => {
-      this.setState({ add: true });
-    }
-
-    handleCloseAddForm = () => {
       this.setState({
-        add: false,
-        addForm: {
+        add: true,
+        form: {
           name: '',
           desc: ''
         }
-      })
+      });
     }
 
-    handleChangeAddFormInput = event => {
-      this.setState({ addForm: {
-        ...this.state.addForm,
+    handleCloseForm = () => {
+      this.setState({
+        add: false,
+        edit: false,
+        form: {
+          name: '',
+          desc: ''
+        }
+      });
+    }
+
+    handleChangeFormInput = event => {
+      this.setState({ form: {
+        ...this.state.form,
         [event.target.name]: event.target.value
       } });
     }
 
-    handleSubmitAddForm = () => {
-      this.props.handleSubmitAddForm(this.state.addForm);
-    }
-
-    handleSubmitAddForm = () => this.props.handleSubmitAddForm(this.state.addForm, ({ submit, error, success }) => {
+    handleSubmitAddForm = () => this.props.handleSubmitAddForm(this.state.form, ({ submit, error, success }) => {
       submit().then(() => {
-        this.handleCloseAddForm();
+        this.handleCloseForm();
         success();
-      }).catch(({ response: { data = { message: "添加失败" } } }) => {
+      }).catch(({ response: { data = { message: '添加失败' } } = {} }) => {
         error(data);
       });
     })
+
+    handleOpenEditForm(topic) {
+      this.setState({
+        edit: topic.id,
+        form: {
+          name: topic.name,
+          desc: topic.desc || ''
+        }
+      });
+    }
+
+    handleSubmitEditForm = () => {
+      let { edit: id, form } = this.state;
+      this.props.handleSubmitEditForm(id, form, ({ submit, success, error }) => submit().then(() => {
+        this.handleCloseForm();
+        success();
+      }).catch(({ response: { data = { message: '编辑失败！' } } = {} }) => {
+        error(data);
+      }));
+    };
+
+    handleOpenToggleTopicHot = (id) => this.setState({ hotTopic: id })
+
+    handleCloseToggleTopicHot = () => this.setState({ hotTopic: 0 })
+
+    handleToggleTopicHot = () => this.props.handleToggleTopicHot(this.state.hotTopic, ({ submit, success, error }) => submit().then(() => {
+      this.handleCloseToggleTopicHot();
+      success();
+    }).catch(({ response: { data = { message: '操作失败' } } = {} }) => error(data)))
+
+    handleOpenDeleteTopic = (id) => this.setState({ deleteTopic: id })
+
+    handleCloseDeleteTopic = () => this.setState({ deleteTopic: 0 })
+
+    handleSubmitDeleteTopic = () => this.props.handleDestroyTopic(this.state.deleteTopic, ({ submit, success, error }) => submit().then(() => {
+      this.handleCloseDeleteTopic();
+      success();
+    }).catch(({ response: { data = { message: '操作失败' } } = {} }) => error(data)))
 
     render() {
       let { classes, topics } = this.props;
@@ -123,22 +169,24 @@ class ListView extends React.Component {
                     <TableCell>{ topic.creator.name }</TableCell>
                     <TableCell>
 
-                      {/* 置顶/取消按钮 */}
+                      {/* 热门/取消按钮 */}
                       {topic.hot_at ? (
-                        // 取消置顶
+                        // 取消热门
                         <Button
                           variant="fab"
                           mini={true}
                           className={classes.actionsFab}
+                          onClick={() => this.handleOpenToggleTopicHot(topic.id)}
                         >
                           <VerticalAlignDownIcon />
                         </Button>
                       ) : (
-                        // 置顶
+                        // 热门
                         <Button
                           variant="fab"
                           mini={true}
                           className={classes.actionsFab}
+                          onClick={() => this.handleOpenToggleTopicHot(topic.id)}
                         >
                           <VerticalAlignTopIcon />
                         </Button>
@@ -151,6 +199,7 @@ class ListView extends React.Component {
                         mini={true}
                         className={classes.actionsFab}
                         color="primary"
+                        onClick={() => this.handleOpenEditForm(topic)}
                       >
                         <EditIcon />
                       </Button>
@@ -161,6 +210,7 @@ class ListView extends React.Component {
                         mini={true}
                         className={classes.actionsFab}
                         color="secondary"
+                        onClick={() => this.handleOpenDeleteTopic(topic.id)}
                       >
                         <DeleteIcon />
                       </Button>
@@ -200,7 +250,7 @@ class ListView extends React.Component {
 
           {/* 添加话题 */}
           <Modal
-            open={this.state.add}
+            open={!!(this.state.add || this.state.edit)}
           >
             <div
               className={classes.modalWrap}
@@ -216,9 +266,9 @@ class ListView extends React.Component {
                   name="name"
                   type="text"
                   helperText="&nbsp;"
-                  onChange={this.handleChangeAddFormInput}
-                  value={this.state.addForm.name}
-                  disabled={this.props.addSubmitting}
+                  onChange={this.handleChangeFormInput}
+                  value={this.state.form.name}
+                  disabled={this.props.submitting}
                   required={true}
                 />
 
@@ -229,31 +279,31 @@ class ListView extends React.Component {
                   multiline={true}
                   rows={3}
                   rowsMax={5}
-                  onChange={this.handleChangeAddFormInput}
-                  value={this.state.addForm.desc}
-                  disabled={this.props.addSubmitting}
+                  onChange={this.handleChangeFormInput}
+                  value={this.state.form.desc}
+                  disabled={this.props.submitting}
                 />
 
                 <div className={classes.modalActions}>
 
-                  {this.props.addSubmitting && <CircularProgress size={36}/>}
+                  {this.props.submitting && <CircularProgress size={36}/>}
 
                   <Button
                     color="primary"
                     className={classes.actionsFab}
                     variant="contained"
-                    onClick={this.handleSubmitAddForm}
-                    disabled={this.props.addSubmitting}
+                    onClick={this.state.add === true ? this.handleSubmitAddForm : this.handleSubmitEditForm}
+                    disabled={this.props.submitting}
                   >
-                    添&nbsp;加
+                    { this.state.add === true ? '添 加' : '提 交' }
                   </Button>
 
                   <Button
                     color="secondary"
                     className={classes.actionsFab}
                     variant="contained"
-                    onClick={this.handleCloseAddForm}
-                    disabled={this.props.addSubmitting}
+                    onClick={this.handleCloseForm}
+                    disabled={this.props.submitting}
                   >
                     取&nbsp;消
                   </Button>
@@ -261,6 +311,81 @@ class ListView extends React.Component {
               </Paper>
             </div>
           </Modal>
+
+          {/* 热门状态切换 */}
+          <Modal open={!!this.state.hotTopic}>
+            <div className={classes.modalWrap} >
+              <Paper
+                classes={{
+                  root: classes.modalPager
+                }}
+              >
+                是否切换热门状态？
+                <div className={classes.modalActions}>
+
+                  {this.props.submitting && <CircularProgress size={36}/>}
+
+                  <Button
+                    color="primary"
+                    className={classes.actionsFab}
+                    variant="contained"
+                    onClick={this.handleToggleTopicHot}
+                    disabled={this.props.submitting}
+                  >
+                    切&nbsp;换
+                  </Button>
+
+                  <Button
+                    color="secondary"
+                    className={classes.actionsFab}
+                    variant="contained"
+                    onClick={this.handleCloseToggleTopicHot}
+                    disabled={this.props.submitting}
+                  >
+                    取&nbsp;消
+                  </Button>
+                </div>
+              </Paper>
+            </div>
+          </Modal>
+
+          {/* 删除确认提示 */}
+          <Modal open={!!this.state.deleteTopic}>
+            <div className={classes.modalWrap} >
+              <Paper
+                classes={{
+                  root: classes.modalPager
+                }}
+              >
+                确认要删除话题嘛？
+                <div className={classes.modalActions}>
+
+                  {this.props.submitting && <CircularProgress size={36}/>}
+
+                  <Button
+                    color="primary"
+                    className={classes.actionsFab}
+                    variant="contained"
+                    onClick={this.handleCloseDeleteTopic}
+                    disabled={this.props.submitting}
+                  >
+                    取&nbsp;消
+                  </Button>
+
+                  <Button
+                    color="secondary"
+                    className={classes.actionsFab}
+                    variant="contained"
+                    onClick={this.handleSubmitDeleteTopic}
+                    disabled={this.props.submitting}
+                  >
+                    删&nbsp;除
+                  </Button>
+                </div>
+              </Paper>
+            </div>
+          </Modal>
+
         </div>
       );
     }

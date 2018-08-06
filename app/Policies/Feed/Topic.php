@@ -34,6 +34,10 @@ class Topic
      */
     public function update(UserModel $user, FeedTopicModel $topic): bool
     {
+        if ($user->ability('admin: update feed topic')) {
+            return true;
+        }
+
         return $user->id === $topic->creator_user_id;
     }
 }

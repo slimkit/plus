@@ -1,10 +1,13 @@
 import React from 'react';
+import lodash from 'lodash';
 import View from './List.view';
 import {
   list as listRequest,
-  add  as addRequest
+  add  as addRequest,
+  update as updateRequest,
+  hotToggle as hotToggleRequest,
+  destroy as destroyRequest
 } from '../../api/topic';
-import { format } from 'upath';
 
 class List extends React.Component {
 
@@ -21,7 +24,7 @@ class List extends React.Component {
     page: 1,
     limit: 5,
     total: 0,
-    addSubmitting: false,
+    submitting: false,
   }
 
   handleSearchBarToggle = () => {
@@ -59,19 +62,44 @@ class List extends React.Component {
   }
 
   handleSubmitAddForm = (form, fn) => fn({
-    submit: async () => {
-      this.setState({ addSubmitting: true });
-      let response = await addRequest(form);
+    submit: () => {
+      this.setState({ submitting: true });
     
-      return response.data;
+      return addRequest(form);
     },
     error: message => this.setState({
       message: { type: 'error', text: message, open: true },
-      addSubmitting: false,
+      submitting: false,
     }),
     success: () => this.setState({
-      addSubmitting: false,
+      submitting: false,
       message: { type: 'success', text: '添加成功!', open: true }
+    })
+  })
+
+  handleSubmitEditForm = (id, form, fn) => fn({
+    submit: () => {
+      this.setState({ submitting: true });
+
+      return updateRequest({ ...form, id });
+    },
+    success: () => {
+      let topics = lodash.map(this.state.topics, (topic) => {
+        if (parseInt(topic.id) === parseInt(id)) {
+          return { ...topic, ...form };
+        }
+
+        return topic;
+      });
+      this.setState({
+        submitting: false,
+        message: { open: true, text: '修改成功', type: 'success' },
+        topics
+      });
+    },
+    error: message => this.setState({
+      submitting: false,
+      message: { type: 'error', text: message, open: true }
     })
   })
 
@@ -79,6 +107,51 @@ class List extends React.Component {
     ...this.state.message,
     open: false,
   }})
+
+  handleToggleTopicHot = (id, fn) => fn({
+    submit: () => {
+      this.setState({ submitting: true });
+      return hotToggleRequest(id);
+    },
+    success: () => this.setState({
+      submitting: false,
+      message: { type: 'success', text: '操作成功', open: true },
+      topics: lodash.map(this.state.topics, (topic) => {
+        if (parseInt(topic.id) === parseInt(id)) {
+          topic.hot_at = topic.hot_at ? null : new Date();
+        }
+
+        return topic;
+      })
+    }),
+    error: message => this.setState({
+      submitting: false,
+      message: { type: 'error', text: message, open: true }
+    })
+  });
+
+  handleDestroyTopic = (id, fn) => fn({
+    submit: () => {
+      this.setState({ submitting: true });
+
+      return destroyRequest(id);
+    },
+    success: () => this.setState({
+      submitting: false,
+      message: { type: 'success', text: '删除成功', open: true },
+      topics: lodash.reduce(this.state.topics, (topics, topic) => {
+        if (parseInt(topic.id) != parseInt(id)) {
+          topics.push(topic);
+        }
+
+        return topics;
+      }, [])
+    }),
+    error: message => this.setState({
+      submitting: false,
+      message: { type: 'error', text: message, open: true }
+    })
+  })
 
   render() {
     return <View
@@ -92,10 +165,13 @@ class List extends React.Component {
       total={this.state.total}
       page={this.state.page}
       limit={this.state.limit}
-      addSubmitting={this.state.addSubmitting}
+      submitting={this.state.submitting}
       handleSubmitAddForm={this.handleSubmitAddForm}
       message={this.state.message}
       handleCloseMessage={this.handleCloseMessage}
+      handleSubmitEditForm={this.handleSubmitEditForm}
+      handleToggleTopicHot={this.handleToggleTopicHot}
+      handleDestroyTopic={this.handleDestroyTopic}
     />;
   }
 

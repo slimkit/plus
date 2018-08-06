@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Packages\Feed\Admin\Controllers;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\Models\FeedTopic as TopicModel;
 use Zhiyi\Plus\API2\Controllers\Feed\Topic as Controller;
@@ -52,5 +53,29 @@ class Topic extends Controller
             ->paginate($request->query('limit', 15), ['*'], 'page');
 
         return new JsonResponse($data);
+    }
+
+    public function hotToggle(TopicModel $topic)
+    {
+        $topic->hot_at = $topic->hot_at ? null : new Carbon;
+        $topic->save();
+
+        return response('', 204);
+    }
+
+    public function destroy(TopicModel $topic)
+    {
+        return $topic->getConnection()->transaction(function () use ($topic) {
+            // 删除关联用户
+            $topic->users()->sync([], true);
+
+            // 删除动态关联
+            $topic->feeds()->sync([], true);
+
+            // 删除话题
+            $topic->delete();
+
+            return response('', 204);
+        });
     }
 }
