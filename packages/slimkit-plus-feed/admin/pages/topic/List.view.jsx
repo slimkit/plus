@@ -42,49 +42,74 @@ class ListView extends React.Component {
       handleSubmitAddForm: PropTypes.func.isRequired,
       message: PropTypes.object.isRequired,
       handleCloseMessage: PropTypes.func.isRequired,
+      handleSubmitEditForm: PropTypes.func.isRequired,
     }
 
     state = {
       add: false,
-      addForm: {
+      edit: false,
+      form: {
         name: '',
         desc: '',
       }
     }
 
     handleOpenAddForm = () => {
-      this.setState({ add: true });
-    }
-
-    handleCloseAddForm = () => {
       this.setState({
-        add: false,
-        addForm: {
+        add: true,
+        form: {
           name: '',
           desc: ''
         }
       });
     }
 
-    handleChangeAddFormInput = event => {
-      this.setState({ addForm: {
-        ...this.state.addForm,
+    handleCloseForm = () => {
+      this.setState({
+        add: false,
+        edit: false,
+        form: {
+          name: '',
+          desc: ''
+        }
+      });
+    }
+
+    handleChangeFormInput = event => {
+      this.setState({ form: {
+        ...this.state.form,
         [event.target.name]: event.target.value
       } });
     }
 
-    handleSubmitAddForm = () => {
-      this.props.handleSubmitAddForm(this.state.addForm);
-    }
-
-    handleSubmitAddForm = () => this.props.handleSubmitAddForm(this.state.addForm, ({ submit, error, success }) => {
+    handleSubmitAddForm = () => this.props.handleSubmitAddForm(this.state.form, ({ submit, error, success }) => {
       submit().then(() => {
-        this.handleCloseAddForm();
+        this.handleCloseForm();
         success();
-      }).catch(({ response: { data = { message: '添加失败' } } }) => {
+      }).catch(({ response: { data = { message: '添加失败' } } = {} }) => {
         error(data);
       });
     })
+
+    handleOpenEditForm(topic) {
+      this.setState({
+        edit: topic.id,
+        form: {
+          name: topic.name,
+          desc: topic.desc || ''
+        }
+      });
+    }
+
+    handleSubmitEditForm = () => {
+      let { edit: id, form } = this.state;
+      this.props.handleSubmitEditForm(id, form, ({ submit, success, error }) => submit().then(() => {
+        this.handleCloseForm();
+        success();
+      }).catch(({ response: { data = { message: '编辑失败！' } } = {} }) => {
+        error(data);
+      }));
+    };
 
     render() {
       let { classes, topics } = this.props;
@@ -151,6 +176,7 @@ class ListView extends React.Component {
                         mini={true}
                         className={classes.actionsFab}
                         color="primary"
+                        onClick={() => this.handleOpenEditForm(topic)}
                       >
                         <EditIcon />
                       </Button>
@@ -200,7 +226,7 @@ class ListView extends React.Component {
 
           {/* 添加话题 */}
           <Modal
-            open={this.state.add}
+            open={!!(this.state.add || this.state.edit)}
           >
             <div
               className={classes.modalWrap}
@@ -216,8 +242,8 @@ class ListView extends React.Component {
                   name="name"
                   type="text"
                   helperText="&nbsp;"
-                  onChange={this.handleChangeAddFormInput}
-                  value={this.state.addForm.name}
+                  onChange={this.handleChangeFormInput}
+                  value={this.state.form.name}
                   disabled={this.props.addSubmitting}
                   required={true}
                 />
@@ -229,8 +255,8 @@ class ListView extends React.Component {
                   multiline={true}
                   rows={3}
                   rowsMax={5}
-                  onChange={this.handleChangeAddFormInput}
-                  value={this.state.addForm.desc}
+                  onChange={this.handleChangeFormInput}
+                  value={this.state.form.desc}
                   disabled={this.props.addSubmitting}
                 />
 
@@ -242,17 +268,17 @@ class ListView extends React.Component {
                     color="primary"
                     className={classes.actionsFab}
                     variant="contained"
-                    onClick={this.handleSubmitAddForm}
+                    onClick={this.state.add === true ? this.handleSubmitAddForm : this.handleSubmitEditForm}
                     disabled={this.props.addSubmitting}
                   >
-                    添&nbsp;加
+                    { this.state.add === true ? '添 加' : '提 交' }
                   </Button>
 
                   <Button
                     color="secondary"
                     className={classes.actionsFab}
                     variant="contained"
-                    onClick={this.handleCloseAddForm}
+                    onClick={this.handleCloseForm}
                     disabled={this.props.addSubmitting}
                   >
                     取&nbsp;消

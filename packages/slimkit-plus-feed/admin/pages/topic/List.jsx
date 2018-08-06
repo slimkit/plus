@@ -1,8 +1,10 @@
 import React from 'react';
+import lodash from 'lodash';
 import View from './List.view';
 import {
   list as listRequest,
-  add  as addRequest
+  add  as addRequest,
+  update as updateRequest
 } from '../../api/topic';
 
 class List extends React.Component {
@@ -58,11 +60,10 @@ class List extends React.Component {
   }
 
   handleSubmitAddForm = (form, fn) => fn({
-    submit: async () => {
+    submit: () => {
       this.setState({ addSubmitting: true });
-      let response = await addRequest(form);
     
-      return response.data;
+      return addRequest(form);
     },
     error: message => this.setState({
       message: { type: 'error', text: message, open: true },
@@ -71,6 +72,32 @@ class List extends React.Component {
     success: () => this.setState({
       addSubmitting: false,
       message: { type: 'success', text: '添加成功!', open: true }
+    })
+  })
+
+  handleSubmitEditForm = (id, form, fn) => fn({
+    submit: () => {
+      this.setState({ addSubmitting: true });
+
+      return updateRequest({ ...form, id });
+    },
+    success: () => {
+      let topics = lodash.map(this.state.topics, (topic) => {
+        if (parseInt(topic.id) === parseInt(id)) {
+          return { ...topic, ...form };
+        }
+
+        return topic;
+      });
+      this.setState({
+        addSubmitting: false,
+        message: { open: true, text: '修改成功', type: 'success' },
+        topics
+      });
+    },
+    error: message => this.setState({
+      addSubmitting: false,
+      message: { type: 'error', text: message, open: true }
     })
   })
 
@@ -95,6 +122,7 @@ class List extends React.Component {
       handleSubmitAddForm={this.handleSubmitAddForm}
       message={this.state.message}
       handleCloseMessage={this.handleCloseMessage}
+      handleSubmitEditForm={this.handleSubmitEditForm}
     />;
   }
 

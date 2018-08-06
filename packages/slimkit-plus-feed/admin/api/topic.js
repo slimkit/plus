@@ -12,3 +12,9 @@ export function add({ name, desc }) {
     validateStatus: status => status === 201
   });
 }
+
+export function update({ id, ...form }) {
+  return adminRequest.put(`topics/${id}`, form, {
+    validateStatus: status => status === 204
+  });
+}
