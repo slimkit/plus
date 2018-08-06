@@ -4,7 +4,6 @@ import {
   list as listRequest,
   add  as addRequest
 } from '../../api/topic';
-import { format } from 'upath';
 
 class List extends React.Component {
 

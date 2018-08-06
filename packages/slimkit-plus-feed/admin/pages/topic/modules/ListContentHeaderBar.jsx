@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -26,6 +27,9 @@ const styles = theme => ({
     position: 'relative',
     display: 'inline-block'
   },
+  zoreRightMargin: {
+    marginRight: 0
+  }
 });
 
 class ListContentHeaderBar extends React.Component {
@@ -68,14 +72,20 @@ class ListContentHeaderBar extends React.Component {
           </Button>
         </Tooltip>
 
-        <Tooltip title="刷新页面">
+        {this.props.loading ? (
           <div className={classes.wrapper}>
-            <Button className={classes.headerBarButton} variant="fab" mini disabled={this.props.loading} onClick={this.props.handleRefresh}>
+            <Button className={classNames([classes.headerBarButton, classes.zoreRightMargin])} variant="fab" mini >
               <RefreshIcon />
             </Button>
-            {this.props.loading && <CircularProgress size={40} className={classes.fabProgress} />}
+            <CircularProgress size={40} className={classes.fabProgress} />
           </div>
-        </Tooltip>
+        ) : (
+          <Tooltip title="刷新页面">
+            <Button className={classes.headerBarButton} variant="fab" mini onClick={this.props.handleRefresh}>
+              <RefreshIcon />
+            </Button>
+          </Tooltip>
+        )}
       </ContentHeaderBar>
     );
   }

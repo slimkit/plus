@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import messageAnalysis from 'plus-message-bundle';
 import withStyles from '@material-ui/core/styles/withStyles';
-import MaterialSnackbar from "@material-ui/core/Snackbar";
-import SnackbarContent from "@material-ui/core/SnackbarContent";
+import MaterialSnackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
 import IconButton from '@material-ui/core/IconButton';
 import green from '@material-ui/core/colors/green';
 import amber from '@material-ui/core/colors/amber';
@@ -34,8 +34,8 @@ class Snackbar extends React.Component {
   }
 
   static defaultProps = {
-    onClose: () => console.log('close'),
-    type: "info"
+    onClose: () => {},
+    type: 'info'
   }
 
   render() {

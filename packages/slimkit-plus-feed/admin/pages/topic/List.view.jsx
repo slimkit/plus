@@ -20,8 +20,8 @@ import Snackbar from '../../components/common/Snackbar';
 import styles from './List.styles';
 
 // Icons
-import VerticalAlignTopIcon from "@material-ui/icons/VerticalAlignTop";
-import VerticalAlignDownIcon from "@material-ui/icons/VerticalAlignBottom";
+import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop';
+import VerticalAlignDownIcon from '@material-ui/icons/VerticalAlignBottom';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -63,7 +63,7 @@ class ListView extends React.Component {
           name: '',
           desc: ''
         }
-      })
+      });
     }
 
     handleChangeAddFormInput = event => {
@@ -81,7 +81,7 @@ class ListView extends React.Component {
       submit().then(() => {
         this.handleCloseAddForm();
         success();
-      }).catch(({ response: { data = { message: "添加失败" } } }) => {
+      }).catch(({ response: { data = { message: '添加失败' } } }) => {
         error(data);
       });
     })
