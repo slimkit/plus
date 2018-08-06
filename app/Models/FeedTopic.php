@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -44,6 +45,11 @@ class FeedTopic extends Model
             ->belongsToMany(User::class, $table, 'topic_id', 'user_id')
             ->withPivot('index', Model::CREATED_AT)
             ->using(FeedTopicUserLink::class);
+    }
+
+    public function creator(): HasOne
+    {
+        return $this->hasOne(User::class, 'id', 'creator_user_id');
     }
 
     /**
