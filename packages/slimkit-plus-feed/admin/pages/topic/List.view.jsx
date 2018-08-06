@@ -321,7 +321,7 @@ class ListView extends React.Component {
                     onClick={this.handleToggleTopicHot}
                     disabled={this.props.submitting}
                   >
-                    提&nbsp;交
+                    切&nbsp;换
                   </Button>
 
                   <Button
