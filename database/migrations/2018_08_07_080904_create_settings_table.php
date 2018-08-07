@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -18,15 +16,39 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Contracts\Routing\Registrar as RouteContract;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
-Route::group(['middleware' => ['auth:web', 'admin']], function (RouteContract $route) {
-    $route->get('topics', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@adminListTopics');
-    $route->post('topics', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@create');
-    $route->put('topics/{topic}', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@update');
-    $route->delete('topics/{topic}', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@destroy');
-    $route->put('topics/{topic}/hot-toggle', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@hotToggle');
-    $route->get('topic-review-switch-toggle', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@getReviewSwitch');
-    $route->put('topic-review-switch-toggle', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@reviewSwitchToggle');
-});
+class CreateSettingsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('settings', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('namespace', 150)->comment('配置命名空间');
+            $table->string('name', 150)->comment('配置名称');
+            $table->text('contents')->nullable()->comment('配置数据');
+            $table->timestamps();
+
+            $table->index('namespace');
+            $table->index('name');
+            $table->unique(['namespace', 'name']);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('settings');
+    }
+}

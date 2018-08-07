@@ -114,6 +114,7 @@ trait HasAvatar
      */
     public function storeAvatar(UploadedFile $avatar, string $prefix = '')
     {
+        $prefix = $prefix ?: $this->getAvatarPrefix();
         $extension = strtolower($avatar->extension());
         if (! in_array($extension, $this->getAvatarExtensions())) {
             throw new \Exception('保存的头像格式不符合要求');

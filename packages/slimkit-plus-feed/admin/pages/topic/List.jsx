@@ -36,13 +36,14 @@ class List extends React.Component {
       return;
     }
 
-    this.setState({ loading: true, cacheRequestQuery: query, topics: [] });
+    this.setState({ loading: true, topics: [] });
     listRequest({ params: { ...this.state.cacheRequestQuery, limit: this.state.limit, ...query } })
       .then(({ data }) => this.setState({
         loading: false,
         topics: data.data,
         page: data.current_page,
-        total: data.total
+        total: data.total,
+        cacheRequestQuery: { ...this.state.cacheRequestQuery, ...query}
       }))
       .catch(({ response: { data = { message: '数据加载失败，请刷新页面重拾！' } } = {} }) => this.setState({
         loading: false,
@@ -50,7 +51,8 @@ class List extends React.Component {
           open: true,
           type: 'error',
           text: data
-        }
+        },
+        cacheRequestQuery: { ...this.state.cacheRequestQuery, ...query}
       }));
   }
 

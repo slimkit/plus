@@ -30,3 +30,15 @@ export function destroy(id) {
     validateStatus: status => status === 204,
   });
 }
+
+export function reviewSwitchToggle() {
+  return adminRequest.put('topic-review-switch-toggle', {}, {
+    validateStatus: status => status === 204
+  });
+}
+
+export function fetchReviewSwitch() {
+  return adminRequest.get('topic-review-switch-toggle', {
+    validateStatus: status => 200 === status
+  });
+}

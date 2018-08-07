@@ -22,6 +22,7 @@ namespace Zhiyi\Plus\API2\Controllers\Feed;
 
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use function Zhiyi\Plus\setting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\Model;
 use Zhiyi\Plus\API2\Controllers\Controller;
@@ -182,6 +183,7 @@ class Topic extends Controller
             // init default followers count.
             $topic->creator_user_id = $user->id;
             $topic->followers_count = 1;
+            $topic->status = setting('feed', 'topic:need-review', false) ? FeedTopicModel::REVIEW_WAITING : FeedTopicModel::REVIEW_PASSED;
             $topic->save();
 
             // Attach the creator user follow the topic.
@@ -210,7 +212,10 @@ class Topic extends Controller
         // Body:
         //      { "id": $topid->id }
         return new JsonResponse(
-            ['id' => $topic->id],
+            [
+                'id' => $topic->id,
+                'need_review' => setting('feed', 'topic:need-review', false),
+            ],
             Response::HTTP_CREATED /* 201 */
         );
     }

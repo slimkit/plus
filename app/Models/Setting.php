@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -18,15 +16,40 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Contracts\Routing\Registrar as RouteContract;
+namespace Zhiyi\Plus\Models;
 
-Route::group(['middleware' => ['auth:web', 'admin']], function (RouteContract $route) {
-    $route->get('topics', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@adminListTopics');
-    $route->post('topics', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@create');
-    $route->put('topics/{topic}', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@update');
-    $route->delete('topics/{topic}', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@destroy');
-    $route->put('topics/{topic}/hot-toggle', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@hotToggle');
-    $route->get('topic-review-switch-toggle', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@getReviewSwitch');
-    $route->put('topic-review-switch-toggle', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@reviewSwitchToggle');
-});
+use Illuminate\Database\Eloquent\Model;
+
+class Setting extends Model
+{
+    /**
+     * The table name.
+     * @var string
+     */
+    protected $table = 'settings';
+
+    /**
+     * Where by namespace scope.
+     */
+    public function scopeByNamespace($query, string $namespace)
+    {
+        return $query->where('namespace', $namespace);
+    }
+
+    public function scopeByName($query, string $name)
+    {
+        return $query->where('name', $name);
+    }
+
+    public function setContentsAttribute($contents)
+    {
+        $this->attributes['contents'] = serialize($contents);
+
+        return $this;
+    }
+
+    public function getContentsAttribute(string $contents)
+    {
+        return unserialize($contents);
+    }
+}

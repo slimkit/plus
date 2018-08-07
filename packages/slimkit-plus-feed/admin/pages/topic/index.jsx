@@ -6,13 +6,13 @@ import styles from './index.styles';
 
 // Components
 import List from './List';
+import Settings from './Settings';
 
 class Topic extends React.Component {
 
   static propTypes = {
     classes: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired
-    // match: PropTypes.object.isRequired
   };
 
   render() {
@@ -20,7 +20,8 @@ class Topic extends React.Component {
     return (
       <div className={classes.root}>
         <Switch>
-          <Route exact path="" component={List} />
+          <Route exact path="/topic" component={List} />
+          <Route path="/topic/settings" component={Settings} />
         </Switch>
       </div>
     );
