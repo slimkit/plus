@@ -20,11 +20,13 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Packages\Feed\Admin\Controllers;
 
+use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\Models\FeedTopic as TopicModel;
 use Zhiyi\Plus\API2\Controllers\Feed\Topic as Controller;
 use Zhiyi\Plus\Packages\Feed\Admin\Requests\ListAllTopics as ListTopicsRequest;
+use function Zhiyi\Plus\setting;
 
 class Topic extends Controller
 {
@@ -80,5 +82,20 @@ class Topic extends Controller
 
             return response('', 204);
         });
+    }
+
+    public function getReviewSwitch(): JsonResponse
+    {
+        return new JsonResponse([
+            'switch' => (bool) setting('feed', 'topic:need-review', false)
+        ], JsonResponse::HTTP_OK);
+    }
+
+    public function reviewSwitchToggle(): Response
+    {
+        $setting = setting('feed');
+        $setting->set('topic:need-review', ! $setting->get('topic:need-review'));
+
+        return new Response('', 204);
     }
 }

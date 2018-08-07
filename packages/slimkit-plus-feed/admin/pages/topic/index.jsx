@@ -13,7 +13,6 @@ class Topic extends React.Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired
-    // match: PropTypes.object.isRequired
   };
 
   render() {
