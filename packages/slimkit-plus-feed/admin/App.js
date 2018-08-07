@@ -6,8 +6,8 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
-import { Route, Link } from 'react-router-dom';
+import { withRouter, matchPath } from 'react-router';
+import { Route, NavLink } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -23,13 +23,31 @@ const styles = () => ({
   root: {}
 });
 
+const routes = [
+  { label: '基础信息', route: '/', component: Home, exact: true },
+  { label: '动态管理', route: '/feeds', component: Feed },
+  { label: '话题管理', route: '/topic', component: TopicPage },
+  { label: '评论管理', route: '/comments', component: Comment },
+  { label: '付费开关', route: '/paycontrol', component: PayControl },
+  { label: '动态回收站', route: '/deleteFeeds', component: DeleteFeed },
+];
+
 class App extends Component {
 
   static propTypes = {
-    match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
+  }
+
+  handleActiveRoute = () => {
+    let { location: { pathname } } = this.props;
+
+    for (let tab of routes) {
+      let matched = matchPath(pathname, { ...tab, path: tab.route });
+      if (matched) {
+        return matched.path;
+      }
+    }
   }
 
   /**
@@ -39,27 +57,29 @@ class App extends Component {
    * @author Seven Du <shiweidu@outlook.com>
    */
   render() {
-    const { classes, location: { pathname = '/' } } = this.props;
+    let { classes} = this.props;
+
     return (
       <div className={classes.root}>
         <AppBar position="fixed">
-          <Tabs value={pathname} >
-            <Tab label="基础信息" value="/" component={Link} to="/" />
-            <Tab label="动态管理" value="/feeds" component={Link} to="/feeds" />
-            <Tab label="话题管理" value="/topic" component={Link} to="/topic" />
-            <Tab label="评论管理" value="/comments" component={Link} to="/comments" />
-            <Tab label="付费开关" value="/paycontrol" component={Link} to="/paycontrol" />
-            <Tab label="动态回收站" value="/deleteFeeds" component={Link} to="/deleteFeeds" />
+          <Tabs value={this.handleActiveRoute()} >
+            {routes.map(tab => (
+              <Tab
+                {...tab}
+                lebel={tab.label}
+                value={tab.route}
+                to={tab.route}
+                component={NavLink}
+                key={tab.route}
+              />
+            ))}
           </Tabs>
         </AppBar>
 
         <main style={{ paddingTop: 48 }}>
-          <Route exact path="/" component={Home} />
-          <Route path="/feeds" component={Feed} />
-          <Route path='/comments' component={Comment} />
-          <Route path='/paycontrol' component={PayControl} />
-          <Route path="/deleteFeeds" component={DeleteFeed} />
-          <Route path="/topic" component={TopicPage} />
+          {routes.map(tab => (
+            <Route {...tab} key={tab.route} path={tab.route} component={tab.component} />
+          ))}
         </main>
       </div>
     );
