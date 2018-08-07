@@ -33,7 +33,7 @@ class Setting extends Model
      */
     public function scopeByNamespace($query, string $namespace)
     {
-        return $query->where('namespace', '$namespace');
+        return $query->where('namespace', $namespace);
     }
 
     public function scopeByName($query, string $name)

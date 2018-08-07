@@ -137,7 +137,7 @@ function setting(string $namespace, ?string $name = null, $default = null)
 {
     $setting = \Zhiyi\Plus\Support\Setting::create($namespace);
     if ($name) {
-        $setting->get($name, $default);
+        return $setting->get($name, $default);
     }
 
     return $setting;
