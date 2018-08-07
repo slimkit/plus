@@ -136,7 +136,7 @@ trait HasAvatar
         app(CdnUrlFactoryContract::class)->generator()->refresh(new Refresh($files, [$filename]));
         // 头像更新时间
         $now = new Carbon();
-        Cache::forever('avatar_' . $this->id . $prefix . '_lastModified_at', $now->timestamp);
+        Cache::forever('avatar_'.$this->id.$prefix.'_lastModified_at', $now->timestamp);
 
         return $avatar->storeAs($path, $name, config('cdn.generators.filesystem.disk'));
     }
