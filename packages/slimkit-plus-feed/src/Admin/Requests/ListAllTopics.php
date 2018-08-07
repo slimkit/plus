@@ -36,7 +36,7 @@ class ListAllTopics extends Request
             'page' => 'nullable|integer|min:0',
             'name' => 'nullable|string',
             'hot' => 'nullable',
-            'id' => 'nullable|integer|min:1'
+            'id' => 'nullable|integer|min:1',
         ];
     }
 }
