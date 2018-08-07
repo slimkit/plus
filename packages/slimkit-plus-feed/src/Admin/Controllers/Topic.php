@@ -52,7 +52,7 @@ class Topic extends Controller
             ->when($name = $request->query('name'), function ($query) use ($name) {
                 return $query->where('name', 'like', sprintf('%%%s%%', $name));
             })
-            ->orderBy('id', 'desc')
+            ->orderBy($request->query('orderBy', 'id'), $request->query('direction', 'desc'))
             ->paginate($request->query('limit', 15), ['*'], 'page');
 
         return new JsonResponse($data);

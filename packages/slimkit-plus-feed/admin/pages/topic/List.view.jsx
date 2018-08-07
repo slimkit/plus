@@ -15,6 +15,7 @@ import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Tooltip from '@material-ui/core/Tooltip';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 import HeaderBar from './modules/ListContentHeaderBar';
 import SearchBar from './modules/ListSearchBar';
 import Snackbar from '../../components/common/Snackbar';
@@ -57,6 +58,8 @@ class ListView extends React.Component {
       },
       hotTopic: 0,
       hotTopicAt: null,
+      orderField: 'id',
+      orderDirection: 'desc',
     }
 
     handleOpenAddForm = () => {
@@ -134,6 +137,11 @@ class ListView extends React.Component {
       success();
     }).catch(({ response: { data = { message: '操作失败' } } = {} }) => error(data)))
 
+    handleOrderCreator = (orderField, orderDirection) => () => {
+      this.setState({ orderField, orderDirection });
+      this.props.handleRequestTopics({ orderBy: orderField, direction: orderDirection });
+    }
+
     render() {
       let { classes, topics } = this.props;
       return (
@@ -153,10 +161,58 @@ class ListView extends React.Component {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>ID</TableCell>
+                  <TableCell
+                    sortDirection={this.state.orderField === 'id' && this.state.orderDirection}
+                  >
+                    <Tooltip
+                      title="按照 ID 排序（创建时间）"
+                      enterDelay={300}
+                    >
+                      <TableSortLabel
+                        active={this.state.orderField === 'id'}
+                        direction={this.state.orderDirection}
+                        onClick={this.handleOrderCreator('id', this.state.orderDirection === 'asc' ? 'desc' : 'asc')}
+                      >
+                        ID
+                      </TableSortLabel>
+                    </Tooltip>
+                  </TableCell>
                   <TableCell>名称</TableCell>
-                  <TableCell>动态数</TableCell>
-                  <TableCell>关注数</TableCell>
+                  
+                  <TableCell
+                    sortDirection={this.state.orderField === 'feeds_count' && this.state.orderDirection}
+                  >
+                    <Tooltip
+                      title="按照动态数排序"
+                      enterDelay={300}
+                    >
+                      <TableSortLabel
+                        active={this.state.orderField === 'feeds_count'}
+                        direction={this.state.orderDirection}
+                        onClick={this.handleOrderCreator('feeds_count', this.state.orderDirection === 'asc' ? 'desc' : 'asc')}
+                      >
+                        动态数
+                      </TableSortLabel>
+                    </Tooltip>
+                  </TableCell>
+
+                  <TableCell
+                    sortDirection={this.state.orderField === 'followers_count' && this.state.orderDirection}
+                  >
+                    <Tooltip
+                      title="按照关注数排序"
+                      enterDelay={300}
+                    >
+                      <TableSortLabel
+                        active={this.state.orderField === 'followers_count'}
+                        direction={this.state.orderDirection}
+                        onClick={this.handleOrderCreator('followers_count', this.state.orderDirection === 'asc' ? 'desc' : 'asc')}
+                      >
+                        关注数
+                      </TableSortLabel>
+                    </Tooltip>
+                  </TableCell>
+                  
                   <TableCell>创建者</TableCell>
                   <TableCell>操作</TableCell>
                 </TableRow>
