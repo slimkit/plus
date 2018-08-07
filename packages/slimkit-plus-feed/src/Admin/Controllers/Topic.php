@@ -43,6 +43,9 @@ class Topic extends Controller
             ->with([
                 'creator',
             ])
+            ->when($id = $request->query('id'), function ($query) use ($id) {
+                return $query->where('id', $id);
+            })
             ->when($request->query('hot'), function ($query) {
                 return $query->whereNotNull('hot_at');
             })

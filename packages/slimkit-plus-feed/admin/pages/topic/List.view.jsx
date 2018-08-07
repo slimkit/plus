@@ -14,6 +14,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Tooltip from '@material-ui/core/Tooltip';
 import HeaderBar from './modules/ListContentHeaderBar';
 import SearchBar from './modules/ListSearchBar';
 import Snackbar from '../../components/common/Snackbar';
@@ -54,7 +55,8 @@ class ListView extends React.Component {
         name: '',
         desc: '',
       },
-      hotTopic: 0
+      hotTopic: 0,
+      hotTopicAt: null,
     }
 
     handleOpenAddForm = () => {
@@ -114,9 +116,9 @@ class ListView extends React.Component {
       }));
     };
 
-    handleOpenToggleTopicHot = (id) => this.setState({ hotTopic: id })
+    handleOpenToggleTopicHot = (id, hotAt) => this.setState({ hotTopic: id, hotTopicAt: hotAt })
 
-    handleCloseToggleTopicHot = () => this.setState({ hotTopic: 0 })
+    handleCloseToggleTopicHot = () => this.setState({ hotTopic: 0, hotTopicAt: null })
 
     handleToggleTopicHot = () => this.props.handleToggleTopicHot(this.state.hotTopic, ({ submit, success, error }) => submit().then(() => {
       this.handleCloseToggleTopicHot();
@@ -172,48 +174,56 @@ class ListView extends React.Component {
                       {/* 热门/取消按钮 */}
                       {topic.hot_at ? (
                         // 取消热门
-                        <Button
-                          variant="fab"
-                          mini={true}
-                          className={classes.actionsFab}
-                          onClick={() => this.handleOpenToggleTopicHot(topic.id)}
-                        >
-                          <VerticalAlignDownIcon />
-                        </Button>
+                        <Tooltip title="取消热门">
+                          <Button
+                            variant="fab"
+                            mini={true}
+                            className={classes.actionsFab}
+                            onClick={() => this.handleOpenToggleTopicHot(topic.id, topic.hot_at)}
+                          >
+                            <VerticalAlignDownIcon />
+                          </Button>
+                        </Tooltip>
                       ) : (
                         // 热门
-                        <Button
-                          variant="fab"
-                          mini={true}
-                          className={classes.actionsFab}
-                          onClick={() => this.handleOpenToggleTopicHot(topic.id)}
-                        >
-                          <VerticalAlignTopIcon />
-                        </Button>
+                        <Tooltip title="设置热门">
+                          <Button
+                            variant="fab"
+                            mini={true}
+                            className={classes.actionsFab}
+                            onClick={() => this.handleOpenToggleTopicHot(topic.id, topic.hot_at)}
+                          >
+                            <VerticalAlignTopIcon />
+                          </Button>
+                        </Tooltip>
                       )}
                       
 
                       {/* 编辑 */}
-                      <Button
-                        variant="fab"
-                        mini={true}
-                        className={classes.actionsFab}
-                        color="primary"
-                        onClick={() => this.handleOpenEditForm(topic)}
-                      >
-                        <EditIcon />
-                      </Button>
+                      <Tooltip title="编辑话题">
+                        <Button
+                          variant="fab"
+                          mini={true}
+                          className={classes.actionsFab}
+                          color="primary"
+                          onClick={() => this.handleOpenEditForm(topic)}
+                        >
+                          <EditIcon />
+                        </Button>
+                      </Tooltip>
 
                       {/* 删除 */}
-                      <Button
-                        variant="fab"
-                        mini={true}
-                        className={classes.actionsFab}
-                        color="secondary"
-                        onClick={() => this.handleOpenDeleteTopic(topic.id)}
-                      >
-                        <DeleteIcon />
-                      </Button>
+                      <Tooltip title="删除话题">
+                        <Button
+                          variant="fab"
+                          mini={true}
+                          className={classes.actionsFab}
+                          color="secondary"
+                          onClick={() => this.handleOpenDeleteTopic(topic.id)}
+                        >
+                          <DeleteIcon />
+                        </Button>
+                      </Tooltip>
                       
                     </TableCell>
                   </TableRow>
@@ -320,7 +330,7 @@ class ListView extends React.Component {
                   root: classes.modalPager
                 }}
               >
-                是否切换热门状态？
+                {this.state.hotTopicAt ? '确认取消热门？' : '确认设置热门？'}
                 <div className={classes.modalActions}>
 
                   {this.props.submitting && <CircularProgress size={36}/>}
@@ -332,7 +342,7 @@ class ListView extends React.Component {
                     onClick={this.handleToggleTopicHot}
                     disabled={this.props.submitting}
                   >
-                    切&nbsp;换
+                    {this.state.hotTopicAt ? '取消热门' : '设置热门'}
                   </Button>
 
                   <Button
