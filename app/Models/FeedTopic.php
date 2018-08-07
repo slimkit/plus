@@ -28,6 +28,10 @@ use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 
 class FeedTopic extends Model
 {
+    public const REVIEW_PASSED = 'passed';
+    public const REVIEW_WAITING = 'waiting';
+    public const REVIEW_FAILED = 'failed';
+
     /**
      * The model table name.
      */

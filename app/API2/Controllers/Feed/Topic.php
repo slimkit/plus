@@ -36,6 +36,7 @@ use Zhiyi\Plus\Models\FeedTopicUserLink as FeedTopicUserLinkModel;
 use Zhiyi\Plus\API2\Requests\Feed\CreateTopic as CreateTopicRequest;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Zhiyi\Plus\API2\Resources\Feed\TopicCollection as TopicCollectionResource;
+use function Zhiyi\Plus\setting;
 
 class Topic extends Controller
 {
@@ -182,6 +183,7 @@ class Topic extends Controller
             // init default followers count.
             $topic->creator_user_id = $user->id;
             $topic->followers_count = 1;
+            $topic->status = setting('feed', 'topic:need-review', false) ? FeedTopicModel::REVIEW_WAITING : FeedTopicModel::REVIEW_PASSED;
             $topic->save();
 
             // Attach the creator user follow the topic.
@@ -210,7 +212,10 @@ class Topic extends Controller
         // Body:
         //      { "id": $topid->id }
         return new JsonResponse(
-            ['id' => $topic->id],
+            [
+                'id' => $topic->id,
+                'need_review' => setting('feed', 'topic:need-review', false)
+            ],
             Response::HTTP_CREATED /* 201 */
         );
     }
