@@ -19,6 +19,8 @@
 namespace Zhiyi\PlusGroup\Admin\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Zhiyi\Plus\Models\CommonConfig as CommonConfigModel;
 
 class GroupProtocolController
@@ -32,7 +34,11 @@ class GroupProtocolController
      */
     public function get(CommonConfigModel $configModel)
     {
-        $protocol = $configModel->byNamespace('groups')->byName('group:protocol')->value('value');
+        $key = 'group://create-group-protocol';
+        $expires_at = now()->addYear(1);
+        $protocol = Cache::remember($key, $expires_at, function () use ($configModel) {
+           return $configModel->byNamespace('groups')->byName('group:protocol')->value('value');
+        });
 
         return response()->json([
             'protocol' => $protocol ?? '',
@@ -49,6 +55,9 @@ class GroupProtocolController
     public function set(Request $request, CommonConfigModel $configModel)
     {
         $protocol = $request->input('protocol');
+        $key = 'group://create-group-protocol';
+        $expires_at = now()->addYear(1);
+        Cache::put($key, $protocol, $expires_at);
         $configModel->updateOrCreate([
             'namespace' => 'groups',
             'name' => 'group:protocol',
