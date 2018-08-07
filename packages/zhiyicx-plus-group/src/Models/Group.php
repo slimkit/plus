@@ -18,11 +18,13 @@
 
 namespace Zhiyi\PlusGroup\Models;
 
+use Cache;
 use Zhiyi\Plus\Models\Tag;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\Report;
 use Zhiyi\Plus\Models\BlackList;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Zhiyi\Plus\Models\Concerns\HasAvatar;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -69,7 +71,16 @@ class Group extends Model
      */
     public function getAvatarAttribute()
     {
-        return $this->avatar();
+        $prefix = $this->getAvatarPrefix();
+        $lastModified = Cache::get('avatar_' . $this->id . $prefix . '_lastModified_at');
+        if (! $lastModified) {
+            $lastModified = Storage::disk(config('cdn.generators.filesystem.disk'))->exists($this->avatarPath()) ?
+                Storage::disk(config('cdn.generators.filesystem.disk'))->lastModified($this->avatarPath(''))
+                : '';
+            Cache::forever('avatar_' . $this->id.$prefix.'_lastModified_at', $lastModified);
+        }
+
+        return $this->avatar() ? $this->avatar() . '?v=' . $lastModified : null;
     }
 
     /**
