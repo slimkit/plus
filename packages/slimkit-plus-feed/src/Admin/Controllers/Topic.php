@@ -43,13 +43,16 @@ class Topic extends Controller
             ->with([
                 'creator',
             ])
+            ->when($id = $request->query('id'), function ($query) use ($id) {
+                return $query->where('id', $id);
+            })
             ->when($request->query('hot'), function ($query) {
                 return $query->whereNotNull('hot_at');
             })
             ->when($name = $request->query('name'), function ($query) use ($name) {
                 return $query->where('name', 'like', sprintf('%%%s%%', $name));
             })
-            ->orderBy('id', 'desc')
+            ->orderBy($request->query('orderBy', 'id'), $request->query('direction', 'desc'))
             ->paginate($request->query('limit', 15), ['*'], 'page');
 
         return new JsonResponse($data);

@@ -36,6 +36,9 @@ class ListAllTopics extends Request
             'page' => 'nullable|integer|min:0',
             'name' => 'nullable|string',
             'hot' => 'nullable',
+            'id' => 'nullable|integer|min:1',
+            'orderBy' => 'nullable|in:id,feeds_count,followers_count',
+            'direction' => 'nullable|in:asc,desc',
         ];
     }
 }

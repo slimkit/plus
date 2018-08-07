@@ -40,7 +40,8 @@ class ListSearchBar extends React.Component {
 
   state = {
     hot: 0,
-    name: ''
+    name: '',
+    id: '',
   }
 
   handleChangeInput = event => {
@@ -50,7 +51,8 @@ class ListSearchBar extends React.Component {
   handleResetSearch = () => {
     this.setState({
       name: '',
-      hot: 0
+      hot: 0,
+      id: ''
     });
   }
 
@@ -62,6 +64,17 @@ class ListSearchBar extends React.Component {
     return (
       <Collapse in={show}>
         <Toolbar className={classes.root}>
+
+          <TextField
+            name="id"
+            value={this.state.id}
+            className={classes.formControl}
+            label="ID"
+            type="number"
+            min={1}
+            onChange={this.handleChangeInput}
+          />
+        
           <TextField
             name="name"
             value={this.state.name}
@@ -77,7 +90,7 @@ class ListSearchBar extends React.Component {
               onChange={this.handleChangeInput}
               name="hot"
             >
-              <MenuItem value={0}>否</MenuItem>
+              <MenuItem value={0}>全部</MenuItem>
               <MenuItem value={1}>是</MenuItem>
             </Select>
           </FormControl>

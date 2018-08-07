@@ -14,6 +14,8 @@ import TablePagination from '@material-ui/core/TablePagination';
 import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Tooltip from '@material-ui/core/Tooltip';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 import HeaderBar from './modules/ListContentHeaderBar';
 import SearchBar from './modules/ListSearchBar';
 import Snackbar from '../../components/common/Snackbar';
@@ -54,7 +56,10 @@ class ListView extends React.Component {
         name: '',
         desc: '',
       },
-      hotTopic: 0
+      hotTopic: 0,
+      hotTopicAt: null,
+      orderField: 'id',
+      orderDirection: 'desc',
     }
 
     handleOpenAddForm = () => {
@@ -114,9 +119,9 @@ class ListView extends React.Component {
       }));
     };
 
-    handleOpenToggleTopicHot = (id) => this.setState({ hotTopic: id })
+    handleOpenToggleTopicHot = (id, hotAt) => this.setState({ hotTopic: id, hotTopicAt: hotAt })
 
-    handleCloseToggleTopicHot = () => this.setState({ hotTopic: 0 })
+    handleCloseToggleTopicHot = () => this.setState({ hotTopic: 0, hotTopicAt: null })
 
     handleToggleTopicHot = () => this.props.handleToggleTopicHot(this.state.hotTopic, ({ submit, success, error }) => submit().then(() => {
       this.handleCloseToggleTopicHot();
@@ -131,6 +136,11 @@ class ListView extends React.Component {
       this.handleCloseDeleteTopic();
       success();
     }).catch(({ response: { data = { message: '操作失败' } } = {} }) => error(data)))
+
+    handleOrderCreator = (orderField, orderDirection) => () => {
+      this.setState({ orderField, orderDirection });
+      this.props.handleRequestTopics({ orderBy: orderField, direction: orderDirection });
+    }
 
     render() {
       let { classes, topics } = this.props;
@@ -151,10 +161,58 @@ class ListView extends React.Component {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>ID</TableCell>
+                  <TableCell
+                    sortDirection={this.state.orderField === 'id' && this.state.orderDirection}
+                  >
+                    <Tooltip
+                      title="按照 ID 排序（创建时间）"
+                      enterDelay={300}
+                    >
+                      <TableSortLabel
+                        active={this.state.orderField === 'id'}
+                        direction={this.state.orderDirection}
+                        onClick={this.handleOrderCreator('id', this.state.orderDirection === 'asc' ? 'desc' : 'asc')}
+                      >
+                        ID
+                      </TableSortLabel>
+                    </Tooltip>
+                  </TableCell>
                   <TableCell>名称</TableCell>
-                  <TableCell>动态数</TableCell>
-                  <TableCell>关注数</TableCell>
+                  
+                  <TableCell
+                    sortDirection={this.state.orderField === 'feeds_count' && this.state.orderDirection}
+                  >
+                    <Tooltip
+                      title="按照动态数排序"
+                      enterDelay={300}
+                    >
+                      <TableSortLabel
+                        active={this.state.orderField === 'feeds_count'}
+                        direction={this.state.orderDirection}
+                        onClick={this.handleOrderCreator('feeds_count', this.state.orderDirection === 'asc' ? 'desc' : 'asc')}
+                      >
+                        动态数
+                      </TableSortLabel>
+                    </Tooltip>
+                  </TableCell>
+
+                  <TableCell
+                    sortDirection={this.state.orderField === 'followers_count' && this.state.orderDirection}
+                  >
+                    <Tooltip
+                      title="按照关注数排序"
+                      enterDelay={300}
+                    >
+                      <TableSortLabel
+                        active={this.state.orderField === 'followers_count'}
+                        direction={this.state.orderDirection}
+                        onClick={this.handleOrderCreator('followers_count', this.state.orderDirection === 'asc' ? 'desc' : 'asc')}
+                      >
+                        关注数
+                      </TableSortLabel>
+                    </Tooltip>
+                  </TableCell>
+                  
                   <TableCell>创建者</TableCell>
                   <TableCell>操作</TableCell>
                 </TableRow>
@@ -172,48 +230,56 @@ class ListView extends React.Component {
                       {/* 热门/取消按钮 */}
                       {topic.hot_at ? (
                         // 取消热门
-                        <Button
-                          variant="fab"
-                          mini={true}
-                          className={classes.actionsFab}
-                          onClick={() => this.handleOpenToggleTopicHot(topic.id)}
-                        >
-                          <VerticalAlignDownIcon />
-                        </Button>
+                        <Tooltip title="取消热门">
+                          <Button
+                            variant="fab"
+                            mini={true}
+                            className={classes.actionsFab}
+                            onClick={() => this.handleOpenToggleTopicHot(topic.id, topic.hot_at)}
+                          >
+                            <VerticalAlignDownIcon />
+                          </Button>
+                        </Tooltip>
                       ) : (
                         // 热门
-                        <Button
-                          variant="fab"
-                          mini={true}
-                          className={classes.actionsFab}
-                          onClick={() => this.handleOpenToggleTopicHot(topic.id)}
-                        >
-                          <VerticalAlignTopIcon />
-                        </Button>
+                        <Tooltip title="设置热门">
+                          <Button
+                            variant="fab"
+                            mini={true}
+                            className={classes.actionsFab}
+                            onClick={() => this.handleOpenToggleTopicHot(topic.id, topic.hot_at)}
+                          >
+                            <VerticalAlignTopIcon />
+                          </Button>
+                        </Tooltip>
                       )}
                       
 
                       {/* 编辑 */}
-                      <Button
-                        variant="fab"
-                        mini={true}
-                        className={classes.actionsFab}
-                        color="primary"
-                        onClick={() => this.handleOpenEditForm(topic)}
-                      >
-                        <EditIcon />
-                      </Button>
+                      <Tooltip title="编辑话题">
+                        <Button
+                          variant="fab"
+                          mini={true}
+                          className={classes.actionsFab}
+                          color="primary"
+                          onClick={() => this.handleOpenEditForm(topic)}
+                        >
+                          <EditIcon />
+                        </Button>
+                      </Tooltip>
 
                       {/* 删除 */}
-                      <Button
-                        variant="fab"
-                        mini={true}
-                        className={classes.actionsFab}
-                        color="secondary"
-                        onClick={() => this.handleOpenDeleteTopic(topic.id)}
-                      >
-                        <DeleteIcon />
-                      </Button>
+                      <Tooltip title="删除话题">
+                        <Button
+                          variant="fab"
+                          mini={true}
+                          className={classes.actionsFab}
+                          color="secondary"
+                          onClick={() => this.handleOpenDeleteTopic(topic.id)}
+                        >
+                          <DeleteIcon />
+                        </Button>
+                      </Tooltip>
                       
                     </TableCell>
                   </TableRow>
@@ -320,7 +386,7 @@ class ListView extends React.Component {
                   root: classes.modalPager
                 }}
               >
-                是否切换热门状态？
+                {this.state.hotTopicAt ? '确认取消热门？' : '确认设置热门？'}
                 <div className={classes.modalActions}>
 
                   {this.props.submitting && <CircularProgress size={36}/>}
@@ -332,7 +398,7 @@ class ListView extends React.Component {
                     onClick={this.handleToggleTopicHot}
                     disabled={this.props.submitting}
                   >
-                    切&nbsp;换
+                    {this.state.hotTopicAt ? '取消热门' : '设置热门'}
                   </Button>
 
                   <Button
