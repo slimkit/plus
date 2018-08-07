@@ -57,6 +57,7 @@ class ListContentHeaderBar extends React.Component {
       <ContentHeaderBar
         title="话题列表"
         breadcrumbs={['动态', '话题']}
+        rightGridXs={3}
       >
         <Tooltip title="搜索条切换">
           <Button
