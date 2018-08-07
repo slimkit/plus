@@ -22,6 +22,7 @@ namespace Zhiyi\Plus\API2\Controllers\Feed;
 
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use function Zhiyi\Plus\setting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\Model;
 use Zhiyi\Plus\API2\Controllers\Controller;
@@ -36,7 +37,6 @@ use Zhiyi\Plus\Models\FeedTopicUserLink as FeedTopicUserLinkModel;
 use Zhiyi\Plus\API2\Requests\Feed\CreateTopic as CreateTopicRequest;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Zhiyi\Plus\API2\Resources\Feed\TopicCollection as TopicCollectionResource;
-use function Zhiyi\Plus\setting;
 
 class Topic extends Controller
 {
@@ -214,7 +214,7 @@ class Topic extends Controller
         return new JsonResponse(
             [
                 'id' => $topic->id,
-                'need_review' => setting('feed', 'topic:need-review', false)
+                'need_review' => setting('feed', 'topic:need-review', false),
             ],
             Response::HTTP_CREATED /* 201 */
         );
