@@ -82,6 +82,7 @@ class Setting
                 ->query()
                 ->byName($name)
                 ->first();
+
             return $single ? $single->contents : $default;
         }
 
@@ -110,7 +111,7 @@ class Setting
         }
 
         $setting = $this->query()->byName($name)->first();
-        if (!$setting) {
+        if (! $setting) {
             $setting = clone $this->model;
             $setting->namespace = $this->namespace;
             $setting->name = $name;
