@@ -36,6 +36,7 @@ use Zhiyi\Plus\API2\Requests\Feed\EditTopic as EditTopicRequest;
 use Zhiyi\Plus\Models\FeedTopicUserLink as FeedTopicUserLinkModel;
 use Zhiyi\Plus\API2\Requests\Feed\CreateTopic as CreateTopicRequest;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zhiyi\Plus\API2\Resources\Feed\TopicCollection as TopicCollectionResource;
 
 class Topic extends Controller
@@ -61,6 +62,7 @@ class Topic extends Controller
         $topics = $model
             ->query()
             ->whereNotNull('hot_at')
+            ->where('status', FeedTopicModel::REVIEW_PASSED)
             ->limit(8)
             ->orderBy('id', 'desc')
             ->get();
@@ -68,6 +70,7 @@ class Topic extends Controller
             $topics = $topics->merge(
                 $model->query()
                 ->whereNull('hot_at')
+                ->where('status', FeedTopicModel::REVIEW_PASSED)
                 ->limit(8 - $count)
                 ->orderBy('feeds_count', 'desc')
                 ->get()
@@ -100,6 +103,7 @@ class Topic extends Controller
         // Query database data.
         $result = $model
             ->query()
+            ->where('status', FeedTopicModel::REVIEW_PASSED)
 
             // If `$request->query('q')` param exists,
             // create "`name` like %?%" SQL where.
@@ -278,6 +282,10 @@ class Topic extends Controller
      */
     public function show(FeedTopicModel $topic): JsonResponse
     {
+        if ($topic->status !== FeedTopicModel::REVIEW_PASSED) {
+            throw new NotFoundHttpException('话题不存在或者还没有通过审核');
+        }
+
         $topic->participants = $topic
             ->users()
             ->newPivotStatement()
