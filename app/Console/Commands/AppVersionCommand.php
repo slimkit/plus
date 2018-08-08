@@ -65,6 +65,7 @@ class AppVersionCommand extends Command
             $this->repository->set('require.'.$package['repository']->get('name'), $version);
             $this->savePackage($package['path'], $package['repository']);
         }
+        $this->setVersionToPackageJson($version);
         $this->savePackage(base_path('composer.json'), $this->repository);
         $this->setVersionToApplicationClass($version);
         $this->comment('Setting new version: '.$version);
@@ -82,6 +83,13 @@ class AppVersionCommand extends Command
         $contents = $this->getFileContents($filename);
         $contents = preg_replace('/const VERSION = \'(.*?)\';/', 'const VERSION = \''.$version.'\';', $contents);
         file_put_contents($filename, $contents);
+    }
+
+    protected function setVersionToPackageJson(string $version)
+    {
+        $repo = $this->createComposerRepositroy('package.json');
+        $repo->set('version', $version);
+        $this->savePackage(base_path('package.json'), $repo);
     }
 
     /**

@@ -1,5 +1,6 @@
 {
     "private": true,
+    "version": "1.9.0",
     "scripts": {
         "dev": "npm run development",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
@@ -8,6 +9,7 @@
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js --progress",
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "prepublishOnly": "rm -rf CHANGELOG.md && conventional-changelog -p angular -r 2 -i CHANGELOG.md -s",
         "postinstall": "opencollective postinstall"
     },
     "devDependencies": {
@@ -15,6 +17,7 @@
         "babel-plugin-component": "^1.1.1",
         "babel-preset-env": "^1.7.0",
         "babel-preset-stage-2": "^6.24.1",
+        "conventional-changelog-cli": "^2.0.1",
         "cross-env": "^5.1.5",
         "laravel-mix": "^2.1",
         "opencollective": "^1.0.3",
