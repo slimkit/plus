@@ -66,10 +66,11 @@ Plus 是基于 Laravel 所开发，它拥有下面的几个主要特点：
 
 ```shell
 composer create-project slimkit/plus
-cd plus
 ```
 
-> 现在，打开你的 `.env` 文件配置数据库等各类信息，然后执行后面的步骤！
+基本配置：
+
+下载完成后进入程序的 `storage/configure/` 目录，你会看到一个 `plus.yml.example` 文件，复制一份命名为 `plus.yml` 然后打开这份 Yaml 配置文件，进行你数据库等信息的配置。
 
 生成数据表以及默认填充数据：
 
@@ -143,11 +144,11 @@ php artisan serve
 ## 优秀项目推荐
 
 - [PHP CORS](https://github.com/medz/cors) 专为 PHP 开发的“跨域资源共享”中间件，快速解决 PHP 设置跨域问题
-- [Notadd](https://github.com/notadd/notadd) 基于 Laravel 的下一代开发框架
+- [Notadd](https://github.com/notadd/notadd) 基于 Nest.js 的微服务开发架构，异步高性能应用、AOP（面向切面编程）
 
 ## License
 
-ThinkSNS Plus 代码遵循 Apache 2.0 许可证发布，请参阅完整的 [许可证文本](https://github.com/slimkit/plus/blob/master/LICENSE)
+Plus 代码遵循 Apache 2.0 许可证发布，请参阅完整的 [许可证文本](https://github.com/slimkit/plus/blob/master/LICENSE)
 
 Copyright © 2018 Chengdu [ZhiYiChuangXiang](http://zhiyicx.com) Technology Co., Ltd. All rights reserved.
 
