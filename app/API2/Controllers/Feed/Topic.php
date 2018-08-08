@@ -242,7 +242,8 @@ class Topic extends Controller
         // If `logo` and `desc` field all is NULL
         $with = null;
         $desc = $request->input('desc');
-        if (! ($logo = (int) $request->input('logo')) && ! $desc) {
+        $name = $request->input('name');
+        if (! ($logo = (int) $request->input('logo')) && ! $desc && ! $name) {
             return $response;
         } elseif ($logo && $logo !== $topic->logo) {
             $with = (new FileWithModel)
@@ -258,6 +259,7 @@ class Topic extends Controller
             $with->raw = $topic->id;
         }
 
+        $topic->name = $name ?: $topic->name;
         $topic->desc = $desc ?: $topic->desc;
 
         return $topic->getConnection()->transaction(function () use ($response, $topic, $with): Response {
