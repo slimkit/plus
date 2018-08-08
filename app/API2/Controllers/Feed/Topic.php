@@ -33,10 +33,10 @@ use Zhiyi\Plus\API2\Resources\Feed\Topic as TopicResource;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Zhiyi\Plus\API2\Requests\Feed\TopicIndex as IndexRequest;
 use Zhiyi\Plus\API2\Requests\Feed\EditTopic as EditTopicRequest;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zhiyi\Plus\Models\FeedTopicUserLink as FeedTopicUserLinkModel;
 use Zhiyi\Plus\API2\Requests\Feed\CreateTopic as CreateTopicRequest;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zhiyi\Plus\API2\Resources\Feed\TopicCollection as TopicCollectionResource;
 
 class Topic extends Controller
