@@ -33,6 +33,7 @@ use Zhiyi\Plus\API2\Resources\Feed\Topic as TopicResource;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Zhiyi\Plus\API2\Requests\Feed\TopicIndex as IndexRequest;
 use Zhiyi\Plus\API2\Requests\Feed\EditTopic as EditTopicRequest;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zhiyi\Plus\Models\FeedTopicUserLink as FeedTopicUserLinkModel;
 use Zhiyi\Plus\API2\Requests\Feed\CreateTopic as CreateTopicRequest;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -242,7 +243,8 @@ class Topic extends Controller
         // If `logo` and `desc` field all is NULL
         $with = null;
         $desc = $request->input('desc');
-        if (! ($logo = (int) $request->input('logo')) && ! $desc) {
+        $name = $request->input('name');
+        if (! ($logo = (int) $request->input('logo')) && ! $desc && ! $name) {
             return $response;
         } elseif ($logo && $logo !== $topic->logo) {
             $with = (new FileWithModel)
@@ -258,6 +260,7 @@ class Topic extends Controller
             $with->raw = $topic->id;
         }
 
+        $topic->name = $name ?: $topic->name;
         $topic->desc = $desc ?: $topic->desc;
 
         return $topic->getConnection()->transaction(function () use ($response, $topic, $with): Response {
