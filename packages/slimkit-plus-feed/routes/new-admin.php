@@ -29,4 +29,5 @@ Route::group(['middleware' => ['auth:web', 'admin']], function (RouteContract $r
     $route->put('topics/{topic}/hot-toggle', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@hotToggle');
     $route->get('topic-review-switch-toggle', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@getReviewSwitch');
     $route->put('topic-review-switch-toggle', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@reviewSwitchToggle');
+    $route->put('topics/{topic}/review', \Zhiyi\Plus\Packages\Feed\Admin\Controllers\Topic::class.'@toggleReview');
 });
