@@ -110,7 +110,7 @@
           <p>内部订单识别标识</p>
         </blockquote>
         <div class="form-group">
-          <label class="col-sm-2 control-label">支付宝密钥</label>
+          <label class="col-sm-2 control-label">内部订单标识</label>
           <div class="col-sm-4">
             <input placeholder="填写内部订单标识" class="form-control" rows="4" v-model="outTradeNoSign" />
           </div>
