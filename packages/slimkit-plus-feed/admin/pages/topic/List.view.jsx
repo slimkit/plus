@@ -141,7 +141,7 @@ class ListView extends React.Component {
 
     handleOrderCreator = (orderField, orderDirection) => () => {
       this.setState({ orderField, orderDirection });
-      this.props.handleRequestTopics({ orderBy: orderField, direction: orderDirection });
+      this.props.handleRequestTopics({ orderBy: orderField, direction: orderDirection, page: 1 });
     }
 
     handleOpenReview = (topic) => this.setState({
