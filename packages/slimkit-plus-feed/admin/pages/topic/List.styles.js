@@ -37,5 +37,8 @@ export default theme => ({
     padding: 0,
     cursor: 'pointer',
     color: theme.palette.primary.main
+  },
+  tableActionCell: {
+    minWidth: 150
   }
 });
