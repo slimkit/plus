@@ -271,7 +271,9 @@ class ListView extends React.Component {
                     <TableCell>{ topic.feeds_count || 0 }</TableCell>
                     <TableCell>{ topic.followers_count || 0 }</TableCell>
                     <TableCell>{ topic.creator.name }</TableCell>
-                    <TableCell>
+                    <TableCell classes={{
+                      root: classes.tableActionCell
+                    }}>
 
                       {/* 编辑 */}
                       <Tooltip title="编辑话题">
