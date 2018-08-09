@@ -40,17 +40,6 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 const isProd = NODE_ENV === 'production';
 
 /*
-|--------------------------------------------------------
-| 获取编译模式
-|--------------------------------------------------------
-|
-| 判断是否是使用 plus-component 内置开发模式的静态资源编译。
-|
-*/
-
-const isRepositorie = !!parseInt(process.env.PLUS_DEV_FEED || 0);
-
-/*
 |---------------------------------------------------------
 | 源代码根
 |---------------------------------------------------------
@@ -71,6 +60,9 @@ const src = path.join(__dirname, 'admin');
 */
 
 const resolve = pathname => path.resolve(src, pathname);
+
+const outPath = path.resolve(__dirname, isProd ? 
+'assets' : '../../public/assets/feed');
 
 /*
 |---------------------------------------------------------
@@ -118,8 +110,8 @@ const webpackConfig = {
 */
 
   output: {
-    path: isRepositorie ? path.resolve(__dirname, '../../public/assets/feed') : path.resolve(__dirname, 'assets'),
-    filename: isProd ? '[name].js' : '[name].[hash:8].js'
+    path: outPath,
+    filename: !isProd ? '[name].js' : '[name].[hash:8].js'
   },
 
   /*
@@ -149,7 +141,7 @@ const webpackConfig = {
 
   module: {
     rules: [
-    // js文件加载规则
+      // js文件加载规则
       {
         test: /\.jsx?$/,
         include: [ src ],
@@ -176,30 +168,22 @@ const webpackConfig = {
     }),
     new WebpackLaravelMixManifest(),
     ...(isProd ? [
-    // Prod env.
+      // Prod env.
       new UglifyJsPlugin({
         sourceMap: false
-      }),
-      new CleanPlugin(path.resolve(__dirname, 'assets')),
-      new CopyPlugin([{
-        from: path.resolve(__dirname, 'admin/static'),
-        to: path.resolve(__dirname, 'assets')
-      }]),
+      })
     ] : [
-    // Development env.
+      // Development env.
       new webpack.NoEmitOnErrorsPlugin(),
-    ])
+    ]),
+    new CleanPlugin(outPath, {
+      root: isProd ? __dirname : path.resolve(__dirname, '../..')
+    }),
+    new CopyPlugin([{
+      from: path.resolve(__dirname, 'admin/static'),
+      to: outPath
+    }]),
   ],
-
-// optimization: {
-//   splitChunks: {
-//     chunks: 'all',
-//     // minSize: 30000,
-//     maxSize: 300000,
-//     name: 'admin',
-//   }
-// }
-
 };
 
 export default webpackConfig;

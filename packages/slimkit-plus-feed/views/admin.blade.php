@@ -27,6 +27,6 @@
 </head>
 <body>
     <div id="app"></div>
-    <script src="{{ asset('assets/feed/admin.js') }}"></script>
+    <script src="{{ mix('admin.js', 'assets/feed') }}"></script>
 </body>
 </html>

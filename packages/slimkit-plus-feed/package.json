@@ -30,12 +30,8 @@
     "react-router-dom": "^4.3.1"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack --display-error-details --progress --colors --hide-modules",
-    "dist": "cross-env NODE_ENV=production webpack --display-error-details --progress --colors",
-    "watch": "cross-env NODE_ENV=development webpack --display-error-details --progress --hide-modules --colors --watch",
-    "dev:r": "cross-env PLUS_DEV_FEED=1 npm run dev",
-    "dist:r": "cross-env PLUS_DEV_FEED=1 npm run dist",
-    "watch:r": "cross-env PLUS_DEV_FEED=1 npm run watch",
+    "dev": "cross-env NODE_ENV=development webpack --display-error-details --progress --hide-modules --colors --watch ",
+    "build": "cross-env NODE_ENV=production webpack --display-error-details --progress --colors",
     "lint": "eslint --fix --ext .js,.jsx admin/"
   }
 }
