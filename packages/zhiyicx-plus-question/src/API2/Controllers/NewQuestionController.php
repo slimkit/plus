@@ -304,7 +304,6 @@ class NewQuestionController extends Controller
                 $process->reject(0, $applylog->amount, $question->user_id, trans('plus-question::questions.application.退还问题申精费用'), trans('plus-question::questions.application.退还问题《:subject》的申精费用', ['subject' => $question->subject]));
             }
 
-            $question->topics()->decrement('questions_count', 1);
             $question->delete();
         });
 
