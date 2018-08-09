@@ -119,7 +119,7 @@ const webpackConfig = {
 
   output: {
     path: isRepositorie ? path.resolve(__dirname, '../../public/assets/feed') : path.resolve(__dirname, 'assets'),
-    filename: '[name].[hash:8].js'
+    filename: isProd ? '[name].js' : '[name].[hash:8].js'
   },
 
   /*
@@ -174,21 +174,21 @@ const webpackConfig = {
         NODE_ENV: JSON.stringify(NODE_ENV)
       }
     }),
-    new CleanPlugin(path.resolve(__dirname, 'assets')),
     new WebpackLaravelMixManifest(),
     ...(isProd ? [
     // Prod env.
       new UglifyJsPlugin({
         sourceMap: false
       }),
+      new CleanPlugin(path.resolve(__dirname, 'assets')),
+      new CopyPlugin([{
+        from: path.resolve(__dirname, 'admin/static'),
+        to: path.resolve(__dirname, 'assets')
+      }]),
     ] : [
     // Development env.
       new webpack.NoEmitOnErrorsPlugin(),
-    ]),
-    new CopyPlugin([{
-      from: path.resolve(__dirname, 'admin/static'),
-      to: path.resolve(__dirname, 'assets')
-    }])
+    ])
   ],
 
 // optimization: {
