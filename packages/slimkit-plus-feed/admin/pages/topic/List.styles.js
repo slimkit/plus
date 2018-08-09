@@ -31,5 +31,11 @@ export default theme => ({
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'center',
+  },
+  statusButtons: {
+    margin: 0,
+    padding: 0,
+    cursor: 'pointer',
+    color: theme.palette.primary.main
   }
 });

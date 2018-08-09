@@ -178,6 +178,7 @@ class ListView extends React.Component {
                     </Tooltip>
                   </TableCell>
                   <TableCell>名称</TableCell>
+                  <TableCell>审核状态&nbsp;/&nbsp;热门状态</TableCell>
                   
                   <TableCell
                     sortDirection={this.state.orderField === 'feeds_count' && this.state.orderDirection}
@@ -222,38 +223,40 @@ class ListView extends React.Component {
                   <TableRow key={topic.id}>
                     <TableCell component="th" scope="row">{ topic.id }</TableCell>
                     <TableCell>{ topic.name }</TableCell>
+                    <TableCell>
+                      {/* 审核状态 */}
+                      <Tooltip title="点击切换审核状态">
+                        <span className={classes.statusButtons}>
+                          {topic.status === 'waiting' && '待审核'}
+                          {topic.status === 'failed' && '未通过'}
+                          {topic.status === 'passed' && '通过'}
+                        </span>
+                      </Tooltip>
+                      &nbsp;/&nbsp;
+                      {/* 热门/取消按钮 */}
+                      {topic.hot_at ? (
+                        // 取消热门
+                        <span
+                          className={classes.statusButtons}
+                          onClick={() => this.handleOpenToggleTopicHot(topic.id, topic.hot_at)}
+                        >
+                          取消热门
+                        </span>
+                      ) : (
+                        // 热门
+                        <span
+                          className={classes.statusButtons}
+                          onClick={() => this.handleOpenToggleTopicHot(topic.id, topic.hot_at)}
+                        >
+                          设为热门
+                        </span>
+                      )}
+                    
+                    </TableCell>
                     <TableCell>{ topic.feeds_count || 0 }</TableCell>
                     <TableCell>{ topic.followers_count || 0 }</TableCell>
                     <TableCell>{ topic.creator.name }</TableCell>
                     <TableCell>
-
-                      {/* 热门/取消按钮 */}
-                      {topic.hot_at ? (
-                        // 取消热门
-                        <Tooltip title="取消热门">
-                          <Button
-                            variant="fab"
-                            mini={true}
-                            className={classes.actionsFab}
-                            onClick={() => this.handleOpenToggleTopicHot(topic.id, topic.hot_at)}
-                          >
-                            <VerticalAlignDownIcon />
-                          </Button>
-                        </Tooltip>
-                      ) : (
-                        // 热门
-                        <Tooltip title="设置热门">
-                          <Button
-                            variant="fab"
-                            mini={true}
-                            className={classes.actionsFab}
-                            onClick={() => this.handleOpenToggleTopicHot(topic.id, topic.hot_at)}
-                          >
-                            <VerticalAlignTopIcon />
-                          </Button>
-                        </Tooltip>
-                      )}
-                      
 
                       {/* 编辑 */}
                       <Tooltip title="编辑话题">
