@@ -42,3 +42,9 @@ export function fetchReviewSwitch() {
     validateStatus: status => 200 === status
   });
 }
+
+export function toggleReview(id, status) {
+  return adminRequest.put(`topics/${id}/review`, { status }, {
+    validateStatus: status => status === 204,
+  });
+}

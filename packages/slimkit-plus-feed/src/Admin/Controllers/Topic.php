@@ -20,12 +20,14 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Packages\Feed\Admin\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use function Zhiyi\Plus\setting;
 use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\Models\FeedTopic as TopicModel;
 use Zhiyi\Plus\API2\Controllers\Feed\Topic as Controller;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Zhiyi\Plus\Packages\Feed\Admin\Requests\ListAllTopics as ListTopicsRequest;
 
 class Topic extends Controller
@@ -95,6 +97,19 @@ class Topic extends Controller
     {
         $setting = setting('feed');
         $setting->set('topic:need-review', ! $setting->get('topic:need-review'));
+
+        return new Response('', 204);
+    }
+
+    public function toggleReview(Request $request, TopicModel $topic): Response
+    {
+        $status = $request->input('status');
+        if (! in_array($status, [TopicModel::REVIEW_PASSED, TopicModel::REVIEW_FAILED, TopicModel::REVIEW_WAITING])) {
+            throw new UnprocessableEntityHttpException('切换的状态不合法');
+        }
+
+        $topic->status = $status;
+        $topic->save();
 
         return new Response('', 204);
     }
