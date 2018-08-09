@@ -413,24 +413,33 @@ class GroupMemberController
             $user->unreadCount()->update(['unread_group_join_count' => 0]);
         }
 
-        $groupIds = GroupModel::select('id')->whereHas('members', function ($query) use ($user) {
-            return $query->where('user_id', $user->id)->whereIn('role', ['founder', 'administrator']);
-        })
-        ->when($group_ids, function ($query) use ($group_ids) {
-            return $query->whereIn('id', $group_ids);
-        })
-        ->where('audit', 1)
-        ->get()
-        ->pluck('id');
+        $groupIds = GroupModel::select('id')
+            ->whereHas('members', function ($query) use ($user) {
+                return $query->where('user_id', $user->id)
+                    ->whereIn('role', ['founder', 'administrator']);
+            })
+            ->when($group_ids, function ($query) use ($group_ids) {
+                return $query->whereIn('id', $group_ids);
+            })
+            ->where('audit', 1)
+            ->get()
+            ->pluck('id');
 
         $items = $logModel->whereIn('group_id', $groupIds)
-        ->orderBy('id', 'desc')
-        ->limit($limit)
-        ->where('user_id', '!=', $user->id)
-        ->with(['user', 'audit_user', 'member_info', 'group'])
-        ->when($after, function ($query) use ($after) {
-            return $query->where('id', '<', $after);
-        })->get();
+            ->orderByRaw(
+                'CASE
+                WHEN (`status` = 0) THEN 1
+                WHEN (`status` <> 0 ) THEN 2
+            END ASC'
+            )
+            ->orderBy('id', 'desc')
+            ->limit($limit)
+            ->where('user_id', '!=', $user->id)
+            ->with(['user', 'audit_user', 'member_info', 'group'])
+            ->when($after, function ($query) use ($after) {
+                return $query->where('id', '<', $after);
+            })
+            ->get();
 
         return response()->json($items, 200);
     }

@@ -59,6 +59,12 @@ class PinnedController extends Controller
         ->when($after, function ($query) use ($after) {
             return $query->where('id', '<', $after);
         })
+        ->orderByRaw(
+            'CASE
+                WHEN (`status` = 0) THEN 1
+                WHEN (`status` <> 0 ) THEN 2
+            END ASC'
+        )
         ->orderBy('id', 'desc')
         ->get();
 
@@ -403,6 +409,12 @@ class PinnedController extends Controller
             return $query->where('raw', $post);
         })
         ->limit($limit)
+        ->orderByRaw(
+            'CASE
+                WHEN (`status` = 0) THEN 1
+                WHEN (`status` <> 0 ) THEN 2
+            END ASC'
+        )
         ->orderBy('id', 'desc')
         ->get();
 
