@@ -9,7 +9,7 @@ yarn production
 # Build Feed
 cd packages/slimkit-plus-feed/
 yarn
-yarn dist
+yarn build
 cd -
 
 # build news
