@@ -41,9 +41,9 @@ class NewsApplyLogController extends Controller
         $key = $request->query('key');
         $user_id = $request->query('user_id');
         $news_id = $request->query('news_id');
-        $query = $model->when($user_id, function ($query) {
+        $query = $model->when($user_id, function ($query) use ($user_id) {
             return $query->where('user_id', $user_id);
-        })->when($news_id, function ($query) {
+        })->when($news_id, function ($query) use ($news_id) {
             return $query->where('news_id', $news_id);
         })->whereHas('news', function ($query) use ($key) {
             return $query->when($key, function ($query) use ($key) {
