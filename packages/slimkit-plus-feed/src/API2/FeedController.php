@@ -703,6 +703,12 @@ class FeedController extends Controller
                 $pinned->delete();
             }
 
+            // 删除话题关联
+            $topics = $feed->topics;
+            $feed->topics()->sync([], true);
+            $topics->map->feeds_count -= 1;
+            $topics->each->save();
+
             $feed->delete();
             $user->extra()->decrement('feeds_count', 1);
         });
@@ -754,6 +760,13 @@ class FeedController extends Controller
             // 更新未被操作的评论置顶
             $userCount->total = $unReadCount - $pinnedComments->count();
             $userCount->save();
+
+            // 删除话题关联
+            $topics = $feed->topics;
+            $feed->topics()->sync([], true);
+            $topics->map->feeds_count -= 1;
+            $topics->each->save();
+
             $feed->delete();
             $user->extra()->decrement('feeds_count', 1);
         });
