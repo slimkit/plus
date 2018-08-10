@@ -87,9 +87,9 @@ class ContributeController extends Controller
             })
             ->with([
                 'tags',
-                'user' => function($query) {
+                'user' => function ($query) {
                     return $query->withTrashed();
-                }
+                },
             ])
             ->orderBy('id', 'desc')
             ->limit($limit)
