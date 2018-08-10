@@ -85,7 +85,12 @@ class ContributeController extends Controller
             ->when($after, function ($query) use ($after) {
                 return $query->where('id', '<', $after);
             })
-            ->with('tags')
+            ->with([
+                'tags',
+                'user' => function($query) {
+                    return $query->withTrashed();
+                }
+            ])
             ->orderBy('id', 'desc')
             ->limit($limit)
             ->get();
