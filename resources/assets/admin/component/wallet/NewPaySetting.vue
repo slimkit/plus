@@ -22,12 +22,12 @@
 
         <!-- APP ID -->
         <div class="form-group">
-          <label class="col-sm-2 control-label">微信公众号APPID</label>
+          <label class="col-sm-2 control-label">APPID</label>
           <div class="col-sm-4">
             <input type="text" class="form-control" placeholder="输入 微信公众号APPID" v-model="wechatPayAppId">
           </div>
           <span class="col-sm-6 help-block">
-            请输入 微信公众号APPID。
+            请输入 微信开放平台审核通过的应用APPID。
           </span>
         </div>
 
@@ -38,18 +38,18 @@
             <input type="text" class="form-control" placeholder="请输入 微信公众号APIKEY" v-model="wechatPayApiKey">
           </div>
           <span class="col-sm-6 help-block">
-            输入 微信公众号APIKEY。
+            输入 微信商户平台API KEY。
           </span>
         </div>
 
         <!-- Ping++ public key -->
         <div class="form-group">
-          <label class="col-sm-2 control-label">微信公众号MCHID</label>
+          <label class="col-sm-2 control-label">微信支付MCHID</label>
           <div class="col-sm-4">
             <input type="text" class="form-control" placeholder="请输入 微信公众号MCHID" v-model="wechatPayMchId">
           </div>
           <span class="col-sm-6 help-block">
-            输入 微信公众号MCHID
+            输入 微信商户平台的商户号，为数字
           </span>
         </div>
         <hr />
@@ -110,7 +110,7 @@
           <p>内部订单识别标识</p>
         </blockquote>
         <div class="form-group">
-          <label class="col-sm-2 control-label">支付宝密钥</label>
+          <label class="col-sm-2 control-label">内部订单标识</label>
           <div class="col-sm-4">
             <input placeholder="填写内部订单标识" class="form-control" rows="4" v-model="outTradeNoSign" />
           </div>
