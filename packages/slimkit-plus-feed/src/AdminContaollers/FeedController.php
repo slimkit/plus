@@ -284,10 +284,10 @@ class FeedController extends Controller
             }
 
             // 删除话题关联
-            $topics = $feed->topics;
-            $feed->topics()->sync([], true);
-            $topics->map->feeds_count -= 1;
-            $topics->each->save();
+            $feed->topics->each(function ($topic) {
+                $topic->feeds_count -= 1;
+                $topic->save();
+            });
 
             $feed->delete();
             $cache->forget(sprintf('feed:%s', $feed->id));
