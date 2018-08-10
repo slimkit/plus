@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid" style="margin-top:10px;">
+  <div class="container-fluid" style="margin-top:10px;">
     <div class="panel panel-default">
 
       <!-- Title -->
@@ -22,12 +22,12 @@
 
         <!-- APP ID -->
         <div class="form-group">
-          <label class="col-sm-2 control-label">微信公众号APPID</label>
+          <label class="col-sm-2 control-label">APPID</label>
           <div class="col-sm-4">
             <input type="text" class="form-control" placeholder="输入 微信公众号APPID" v-model="wechatPayAppId">
           </div>
           <span class="col-sm-6 help-block">
-            请输入 微信公众号APPID。
+            请输入 微信开放平台审核通过的应用APPID。
           </span>
         </div>
 
@@ -38,18 +38,18 @@
             <input type="text" class="form-control" placeholder="请输入 微信公众号APIKEY" v-model="wechatPayApiKey">
           </div>
           <span class="col-sm-6 help-block">
-            输入 微信公众号APIKEY。
+            输入 微信商户平台API KEY。
           </span>
         </div>
 
         <!-- Ping++ public key -->
         <div class="form-group">
-          <label class="col-sm-2 control-label">微信公众号MCHID</label>
+          <label class="col-sm-2 control-label">微信支付MCHID</label>
           <div class="col-sm-4">
             <input type="text" class="form-control" placeholder="请输入 微信公众号MCHID" v-model="wechatPayMchId">
           </div>
           <span class="col-sm-6 help-block">
-            输入 微信公众号MCHID
+            输入 微信商户平台的商户号，为数字
           </span>
         </div>
         <hr />
@@ -147,163 +147,164 @@
 </template>
 
 <script>
-import lodash from "lodash";
-import request, { createRequestURI } from "../../util/request";
+    import lodash from "lodash";
+    import request, { createRequestURI } from "../../util/request";
 
-export default {
-  name: "NewPaySetting",
-  data: () => ({
-    load: {
-      message: "",
-      status: 0
-    },
-    config: {
-      wechatPay: {
-        appId: "",
-        apiKey: "",
-        mchId: ""
-      },
-      alipay: {
-        appId: "",
-        publicKey: "",
-        secretKey: "",
-        signType: "RSA2",
-        alipayAlipayKey: ""
-      },
-      sign: ""
-    },
-    alert: {
-      status: false,
-      type: "info",
-      message: "",
-      interval: null
-    },
-    updating: false
-  }),
-  methods: {
-    getSetting() {
-      request
-        .get(createRequestURI("wallet/newPaySetting"), {
-          validateStatus: status => status === 200
-        })
-        .then(({ data }) => {
-          this.config = { ...data };
-          this.load.status = 1;
-        });
-    },
-    storeSetting() {
-      const { config: { wechatPay, alipay, sign } } = this;
-      const params = { wechatPay, alipay, sign };
-      request
-        .post(createRequestURI("wallet/newPaySetting"), {
-          ...params,
-          validateStatus: status => status === 201
-        })
-        .then(({ data }) => {
-          console.log(data);
-        });
-    }
-  },
-  computed: {
-    wechatPay() {
-      const { config: { wechatPay = {} } = {} } = this;
-      return wechatPay;
-    },
-    alipay() {
-      const { config: { alipay = {} } = {} } = this;
-      return alipay;
-    },
-    wechatPayAppId: {
-      get: function() {
-        return this.wechatPay.appId || "";
-      },
-      set: function(appId) {
-        const wechatPay = this.config.wechatPay || {};
-        wechatPay.appId = appId;
-        this.config = { ...this.config, wechatPay };
-      }
-    },
-    wechatPayMchId: {
-      get: function() {
-        return this.wechatPay.mchId || "";
-      },
-      set: function(mchId) {
-        const wechatPay = this.config.wechatPay || {};
-        wechatPay.mchId = mchId;
-        this.config = { ...this.config, wechatPay };
-      }
-    },
-    wechatPayApiKey: {
-      get: function() {
-        return this.wechatPay.apiKey || "";
-      },
-      set: function(apiKey) {
-        const wechatPay = this.config.wechatPay || {};
-        wechatPay.apiKey = apiKey;
-        this.config = { ...this.config, wechatPay };
-      }
-    },
-    alipayAppid: {
-      get: function() {
-        return this.alipay.appId || "";
-      },
-      set: function(appId) {
-        const alipay = this.config.alipay || {};
-        alipay.appId = appId;
-        this.config = { ...this.config, alipay };
-      }
-    },
-    alipaySignType: {
-      get: function() {
-        return this.alipay.signType || "";
-      },
-      set: function(signType) {
-        const alipay = this.config.alipay || {};
-        alipay.signType = signType;
-        this.config = { ...this.config, alipay };
-      }
-    },
-    alipayPublicKey: {
-      get: function() {
-        return this.alipay.publicKey || "";
-      },
-      set: function(publicKey) {
-        const alipay = this.config.alipay || {};
-        alipay.publicKey = publicKey;
-        this.config = { ...this.config, alipay };
-      }
-    },
-    alipayAliPayKey: {
-      get: function() {
-        return this.alipay.alipayKey || "";
-      },
-      set: function(alipayKey) {
-        const alipay = this.config.alipay || {};
-        alipay.alipayKey = alipayKey;
-        this.config = { ...this.config, alipay };
-      }
-    },
-    alipaySecretKey: {
-      get: function() {
-        return this.alipay.secretKey || "";
-      },
-      set: function(secretKey) {
-        const alipay = this.config.alipay || {};
-        alipay.secretKey = secretKey;
-        this.config = { ...this.config, alipay };
-      }
-    },
-    outTradeNoSign: {
-      get: function() {
-        return this.config.sign || "";
-      },
-      set: function(sign) {
-        this.config.sign = sign;
-      }
-    }
-  },
-  created() {
-    this.getSetting();
-  }
-};
+    export default {
+        name: "NewPaySetting",
+        data: () => ({
+            load: {
+                message: "",
+                status: 0
+            },
+            config: {
+                wechatPay: {
+                    appId: "",
+                    apiKey: "",
+                    mchId: ""
+                },
+                alipay: {
+                    appId: "",
+                    publicKey: "",
+                    secretKey: "",
+                    signType: "RSA2",
+                    alipayAlipayKey: ""
+                },
+                sign: ""
+            },
+            alert: {
+                status: false,
+                type: "info",
+                message: "",
+                interval: null
+            },
+            updating: false
+        }),
+        methods: {
+            getSetting() {
+                request
+                    .get(createRequestURI("wallet/newPaySetting"), {
+                        validateStatus: status => status === 200
+                    })
+                    .then(({ data }) => {
+                        this.config = { ...data };
+                        this.load.status = 1;
+                    });
+            },
+            storeSetting() {
+                const { config: { wechatPay, alipay, sign } } = this;
+                const params = { wechatPay, alipay, sign };
+                request
+                    .post(createRequestURI("wallet/newPaySetting"), {
+                        ...params,
+                        validateStatus: status => status === 201
+                    })
+                    .then(({ data }) => {
+                        console.log(data);
+                    });
+            }
+        },
+        computed: {
+            wechatPay() {
+                const { config: { wechatPay = {} } = {} } = this;
+                return wechatPay;
+            },
+            alipay() {
+                const { config: { alipay = {} } = {} } = this;
+                return alipay;
+            },
+            wechatPayAppId: {
+                get: function() {
+                    return this.wechatPay.appId || "";
+                },
+                set: function(appId) {
+                    const wechatPay = this.config.wechatPay || {};
+                    wechatPay.appId = appId;
+                    this.config = { ...this.config, wechatPay };
+                }
+            },
+            wechatPayMchId: {
+                get: function() {
+                    return this.wechatPay.mchId || "";
+                },
+                set: function(mchId) {
+                    const wechatPay = this.config.wechatPay || {};
+                    wechatPay.mchId = mchId;
+                    this.config = { ...this.config, wechatPay };
+                }
+            },
+            wechatPayApiKey: {
+                get: function() {
+                    return this.wechatPay.apiKey || "";
+                },
+                set: function(apiKey) {
+                    const wechatPay = this.config.wechatPay || {};
+                    wechatPay.apiKey = apiKey;
+                    this.config = { ...this.config, wechatPay };
+                }
+            },
+            alipayAppid: {
+                get: function() {
+                    return this.alipay.appId || "";
+                },
+                set: function(appId) {
+                    const alipay = this.config.alipay || {};
+                    alipay.appId = appId;
+                    this.config = { ...this.config, alipay };
+                }
+            },
+            alipaySignType: {
+                get: function() {
+                    return this.alipay.signType || "";
+                },
+                set: function(signType) {
+                    const alipay = this.config.alipay || {};
+                    alipay.signType = signType;
+                    this.config = { ...this.config, alipay };
+                }
+            },
+            alipayPublicKey: {
+                get: function() {
+                    return this.alipay.publicKey || "";
+                },
+                set: function(publicKey) {
+                    const alipay = this.config.alipay || {};
+                    alipay.publicKey = publicKey;
+                    this.config = { ...this.config, alipay };
+                }
+            },
+            alipayAliPayKey: {
+                get: function() {
+                    return this.alipay.alipayKey || "";
+                },
+
+                set: function(alipayKey) {
+                    const alipay = this.config.alipay || {};
+                    alipay.alipayKey = alipayKey;
+                    this.config = { ...this.config, alipay };
+                }
+            },
+            alipaySecretKey: {
+                get: function() {
+                    return this.alipay.secretKey || "";
+                },
+                set: function(secretKey) {
+                    const alipay = this.config.alipay || {};
+                    alipay.secretKey = secretKey;
+                    this.config = { ...this.config, alipay };
+                }
+            },
+            outTradeNoSign: {
+                get: function() {
+                    return this.config.sign || "";
+                },
+                set: function(sign) {
+                    this.config.sign = sign;
+                }
+            }
+        },
+        created() {
+            this.getSetting();
+        }
+    };
 </script>

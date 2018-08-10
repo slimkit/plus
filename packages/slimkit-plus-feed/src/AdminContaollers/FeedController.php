@@ -282,6 +282,13 @@ class FeedController extends Controller
                 $process->reject(0, $pinnedFeed->amount, $pinnedFeed->user_id, '动态申请置顶退款', sprintf('退还动态《%s》申请置顶的款项', str_limit($feed->feed_content, 100)));
                 $pinnedFeed->delete();
             }
+
+            // 删除话题关联
+            $feed->topics->each(function ($topic) {
+                $topic->feeds_count -= 1;
+                $topic->save();
+            });
+
             $feed->delete();
             $cache->forget(sprintf('feed:%s', $feed->id));
         });
