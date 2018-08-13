@@ -47,15 +47,12 @@ class UserCountsController extends Controller
      */
     public function count(Request $request): JsonResponse
     {
-        $user = $request->user();
-        $counts = UserCountModel::where('user_id', $user->id)->get();
-        // $now = new Carbon();
-        $data = [];
-        $counts->each(function (UserCountModel $count) use (&$data) {
-            $data[$count->type] = $count->total;
+        $counts = UserCountModel::where('user_id', $request->user()->id)->get();
+        $counts = $counts->keyBy('type')->map(function ($count) {
+            return $count->total;
         });
 
-        return (new UserCountsResource($data))
+        return (new UserCountsResource($counts->all()))
             ->response()
             ->setStatusCode(200);
     }
@@ -70,17 +67,18 @@ class UserCountsController extends Controller
      */
     public function reset(Request $request)
     {
-        $type = $request->input('type', '');
-        if (! in_array($type, ['commented', 'liked', 'system', 'group-post-pinned', 'post-comment-pinned', 'feed-comment-pinned', 'news-comment-pinned', 'post-pinned', 'mutual', 'following', 'group-join-pinned'])) {
-            return response()->json(['message' => '非法请求'], 422);
+        $type = $request->input('type');
+        if ($type && in_array($type, ['commented', 'liked', 'system', 'group-post-pinned', 'post-comment-pinned', 'feed-comment-pinned', 'news-comment-pinned', 'post-pinned', 'mutual', 'following', 'group-join-pinned'])) {
+            $type = 'user-'.$type;
         }
-        $user = $request->user();
-        $now = new Carbon();
-        UserCountModel::where('type', 'user-'.$type)
-            ->where('user_id', $user->id)
+
+        UserCountModel::where('user_id', $request->user()->id)
+            ->when($type, function ($query) use ($type) {
+                return $query->where('type', $type);
+            })
             ->update([
                 'total' => 0,
-                'read_at' => $now,
+                'read_at' => new Carbon(),
             ]);
 
         return response()->json('', 204);
