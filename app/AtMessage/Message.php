@@ -32,7 +32,7 @@ class Message implements MessageInterface
     protected $model;
     protected $pusher;
 
-    public function __construct(ResourceManagerInterface $manager, Model $pusher, Push $push)
+    public function __construct(ResourceManagerInterface $manager, Model $model, Push $pusher)
     {
         $this->manager = $manager;
         $this->model = $model;
