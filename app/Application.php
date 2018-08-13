@@ -79,6 +79,14 @@ class Application extends LaravelApplication
                 \Zhiyi\Plus\Contracts\Cdn\UrlFactory::class,
                 \Zhiyi\Plus\Cdn\UrlManager::class,
             ],
+            'at-message' => [
+                \Zhiyi\Plus\AtMessage\MessageInterface::class,
+                \Zhiyi\Plus\AtMessage\Message::class,
+            ],
+            'at-resource-manager' => [
+                \Zhiyi\Plus\AtMessage\ResourceManagerInterface::class,
+                \Zhiyi\Plus\AtMessage\ResourceManager::class,
+            ],
         ] as $abstract => $aliases) {
             foreach ($aliases as $alias) {
                 $this->alias($abstract, $alias);
