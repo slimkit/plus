@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\AtMessage;
 
-interface MessageInterface
+interface ResourceInterface
 {
     public function type(): string;
 
