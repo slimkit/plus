@@ -25,7 +25,7 @@ use Zhiyi\Plus\Types\Models as ModelTypes;
 use Zhiyi\Plus\AtMessage\ResourceInterface;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 
-class Feed implements ResourceInterface
+class Comment implements ResourceInterface
 {
     protected $comment;
     protected $sender;
