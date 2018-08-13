@@ -38,7 +38,13 @@ class Comment implements ResourceInterface
 
     public function type(): string
     {
-        return ModelTypes::get(CommentModel::class, ModelTypes::KEY_BY_CLASS_ALIAS);
+        $alise = ModelTypes::$types[CommentModel::class] ?? null;
+        
+        if (is_null($alise)) {
+            throw new InvalidArgumentException('不支持的资源');
+        }
+
+        return $alise;
     }
 
     public function id(): int

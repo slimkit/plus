@@ -18,43 +18,21 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\AtMessage\Resources;
+namespace Zhiyi\Plus\AtMessage;
 
-use InvalidArgumentException;
 use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\Types\Models as ModelTypes;
-use Zhiyi\Plus\AtMessage\ResourceInterface;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
+use Zhiyi\Plus\AtMessage\Message;
 
-class Feed implements ResourceInterface
+trait AtMessageHelperTrait
 {
-    protected $feed;
-    protected $sender;
-
-    public function __construct(FeedModel $feed, UserModel $sender)
+    public function sendAtMessage(string $content, UserModel $sender, $resource): void
     {
-        $this->feed = $feed;
-        $this->sender = $sender;
-    }
+        preg_match_all('/\x{00ad}@((?:[^\/]+?))\x{00ad}/iu', $content, $matches);
+        $users = UserModel::whereIn('name', $matches[1])->get();
+        $message = app(Message::class);
 
-    public function type(): string
-    {
-        $alise = ModelTypes::$types[FeedModel::class] ?? null;
-        
-        if (is_null($alise)) {
-            throw new InvalidArgumentException('不支持的资源');
+        foreach ($users as $user) {
+            $message->send($sender, $user, $resource);
         }
-
-        return $alise;
-    }
-
-    public function id(): int
-    {
-        return $this->feed->id;
-    }
-
-    public function message(): string
-    {
-        return sprintf('%s在动态中@了你', $this->sender->name);
     }
 }
