@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\Like as LikeModel;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\AtMessage\AtMessageHelperTrait;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
 use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
@@ -41,11 +42,11 @@ use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed as FeedRepository;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2\StoreFeedPost as StoreFeedPostRequest;
-use Zhiyi\Plus\AtMessage\AtMessageHelperTrait;
 
 class FeedController extends Controller
 {
     use AtMessageHelperTrait;
+
     /**
      * 分享列表.
      *
@@ -451,7 +452,7 @@ class FeedController extends Controller
         $videoWith = $this->makeVideoWith($request);
         $videoCoverWith = $this->makeVideoCoverWith($request);
 
-        $response =  $user->getConnection()->transaction(function () use ($request, $feed, $topics, $paidNodes, $fileWiths, $videoWith, $videoCoverWith, $user) {
+        $response = $user->getConnection()->transaction(function () use ($request, $feed, $topics, $paidNodes, $fileWiths, $videoWith, $videoCoverWith, $user) {
             $feed->save();
             $this->saveFeedPaidNode($request, $feed);
             $this->saveFeedFilePaidNode($paidNodes, $feed);

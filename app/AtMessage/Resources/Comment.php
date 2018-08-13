@@ -39,7 +39,7 @@ class Comment implements ResourceInterface
     public function type(): string
     {
         $alise = ModelTypes::$types[CommentModel::class] ?? null;
-        
+
         if (is_null($alise)) {
             throw new InvalidArgumentException('不支持的资源');
         }

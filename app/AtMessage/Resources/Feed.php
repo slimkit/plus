@@ -40,7 +40,7 @@ class Feed implements ResourceInterface
     public function type(): string
     {
         $alise = ModelTypes::$types[FeedModel::class] ?? null;
-        
+
         if (is_null($alise)) {
             throw new InvalidArgumentException('不支持的资源');
         }
