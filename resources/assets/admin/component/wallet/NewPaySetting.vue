@@ -74,7 +74,7 @@
             <input type="text" class="form-control" placeholder="请输入 支付宝签名算法" v-model="alipaySignType">
           </div>
           <span class="col-sm-6 help-block">
-            商户生成签名字符串所使用的签名算法类型，目前支持RSA2和RSA，推荐使用RSA2 <a href="https://docs.open.alipay.com/291/105971/">签名生成教程</a>
+            商户生成签名字符串所使用的签名算法类型，目前支持RSA2和RSA，推荐使用RSA2 <a target="_blank" href="https://docs.open.alipay.com/291/105971/">签名生成教程</a>
           </span>
         </div>
         <!-- local private key -->
@@ -84,7 +84,16 @@
             <textarea placeholder="填写支付宝管理页面设置的应用公钥" class="form-control" rows="4"  v-model="alipayPublicKey"></textarea>
           </div>
           <span class="col-sm-6 help-block">
-            填写支付宝管理页面设置的应用公钥
+            填写支付宝管理页面设置的应用公钥 <a href="https://docs.open.alipay.com/291/105971/" target="_blank">如何获取支付宝应用公钥</a>
+          </span>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">支付宝应用密钥</label>
+          <div class="col-sm-4">
+            <textarea placeholder="填写支付宝管理页面设置的应用密钥" class="form-control" rows="4" v-model="alipaySecretKey"></textarea>
+          </div>
+          <span class="col-sm-6 help-block">
+            填写支付宝管理页面设置应用密钥 <a href="https://docs.open.alipay.com/291/105971/" target="_blank">如何获取支付宝应用密钥</a>
           </span>
         </div>
         <div class="form-group">
@@ -93,16 +102,7 @@
             <textarea placeholder="填写支付宝管理页面设置的支付宝公钥" class="form-control" rows="4"  v-model="alipayAliPayKey"></textarea>
           </div>
           <span class="col-sm-6 help-block">
-            填写支付宝管理页面设置的支付宝公钥
-          </span>
-        </div>
-        <div class="form-group">
-          <label class="col-sm-2 control-label">支付宝密钥</label>
-          <div class="col-sm-4">
-            <textarea placeholder="填写支付宝管理页面设置的密钥" class="form-control" rows="4" v-model="alipaySecretKey"></textarea>
-          </div>
-          <span class="col-sm-6 help-block">
-            填写支付宝管理页面设置的密钥
+            填写支付宝管理页面设置的支付宝公钥 <a href="https://docs.open.alipay.com/291/105972/">如何获取支付宝公钥</a>
           </span>
         </div>
         <hr>
