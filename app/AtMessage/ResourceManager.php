@@ -26,7 +26,7 @@ use Zhiyi\Plus\Models\User as UserModel;
 class ResourceManager implements ResourceManagerInterface
 {
     /**
-     * Resource map
+     * Resource map.
      * @var array
      */
     public static $map = [

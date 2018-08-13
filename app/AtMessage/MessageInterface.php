@@ -25,7 +25,7 @@ use Zhiyi\Plus\Models\User as UserModel;
 interface MessageInterface
 {
     /**
-     * Send at message
+     * Send at message.
      * @param \Zhiyi\Plus\Models\User $sender
      * @param \Zhiyi\Plus\Models\User $user
      * @param mixed $resource

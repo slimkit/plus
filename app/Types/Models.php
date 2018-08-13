@@ -78,7 +78,7 @@ class Models
 
     public static function __callStatic($method, $params)
     {
-        if (!static::$instance instanceof static) {
+        if (! static::$instance instanceof static) {
             static::$instance = new static;
         }
 
