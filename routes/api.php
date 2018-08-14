@@ -748,7 +748,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
      *  {
      *      "id": 1,
      *      "user_id": 1,
-     *      "resourceable" => {
+     *      "resourceable": {
      *          "type": "feeds",
      *          "id": "id"
      *      },
