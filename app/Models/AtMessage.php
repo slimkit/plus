@@ -19,6 +19,7 @@
 namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class AtMessage extends Model
 {
@@ -27,4 +28,13 @@ class AtMessage extends Model
      * @var string
      */
     protected $table = 'at_messages';
+
+    /**
+     * The model user relation.
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function user(): HasOne
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }

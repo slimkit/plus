@@ -37,7 +37,7 @@ class CreateFeedTopicUserLinksTable extends Migration
             $table->integer('topic_id')->unsigned()->comment('Be follow topic id');
             $table->integer('user_id')->unsigned()->comment('Follow topic user id');
             $table->integer('feeds_count')->unsigned()->nullable()->default(0)->comment('The user send to the topic feeds count');
-            $table->dateTime('following_at')->nullable()->default(null)->command('The user following the topic date.');
+            $table->timestamp('following_at')->nullable()->default(null)->command('The user following the topic date.');
             $table->timestamps();
 
             $table->unique(['topic_id', 'user_id']);
