@@ -46,7 +46,8 @@ class ListView extends React.Component {
       handleCloseMessage: PropTypes.func.isRequired,
       handleSubmitEditForm: PropTypes.func.isRequired,
       handleToggleTopicHot: PropTypes.func.isRequired,
-      handleDestroyTopic: PropTypes.func.isRequired
+      handleDestroyTopic: PropTypes.func.isRequired,
+      handleToggleTopicReview: PropTypes.func.isRequired
     }
 
     state = {
@@ -60,6 +61,7 @@ class ListView extends React.Component {
       hotTopicAt: null,
       orderField: 'id',
       orderDirection: 'desc',
+      review: null,
     }
 
     handleOpenAddForm = () => {
@@ -139,8 +141,18 @@ class ListView extends React.Component {
 
     handleOrderCreator = (orderField, orderDirection) => () => {
       this.setState({ orderField, orderDirection });
-      this.props.handleRequestTopics({ orderBy: orderField, direction: orderDirection });
+      this.props.handleRequestTopics({ orderBy: orderField, direction: orderDirection, page: 1 });
     }
+
+    handleOpenReview = (topic) => this.setState({
+      review: topic
+    })
+
+    handleCloseReview = () => this.setState({ review: null })
+
+    handleToggleReview = (id, status) => this.props.handleToggleTopicReview({
+      id, status, successFn: () => this.handleCloseReview()
+    })
 
     render() {
       let { classes, topics } = this.props;
@@ -178,6 +190,7 @@ class ListView extends React.Component {
                     </Tooltip>
                   </TableCell>
                   <TableCell>名称</TableCell>
+                  <TableCell>审核状态&nbsp;/&nbsp;热门状态</TableCell>
                   
                   <TableCell
                     sortDirection={this.state.orderField === 'feeds_count' && this.state.orderDirection}
@@ -222,38 +235,43 @@ class ListView extends React.Component {
                   <TableRow key={topic.id}>
                     <TableCell component="th" scope="row">{ topic.id }</TableCell>
                     <TableCell>{ topic.name }</TableCell>
-                    <TableCell>{ topic.feeds_count || 0 }</TableCell>
-                    <TableCell>{ topic.followers_count || 0 }</TableCell>
-                    <TableCell>{ topic.creator.name }</TableCell>
                     <TableCell>
-
+                      {/* 审核状态 */}
+                      <Tooltip title="点击切换审核状态">
+                        <span
+                          className={classes.statusButtons}
+                          onClick={() => this.handleOpenReview(topic)}
+                        >
+                          {topic.status === 'waiting' && '待审核'}
+                          {topic.status === 'failed' && '未通过'}
+                          {topic.status === 'passed' && '通过'}
+                        </span>
+                      </Tooltip>
+                      &nbsp;/&nbsp;
                       {/* 热门/取消按钮 */}
                       {topic.hot_at ? (
                         // 取消热门
-                        <Tooltip title="取消热门">
-                          <Button
-                            variant="fab"
-                            mini={true}
-                            className={classes.actionsFab}
-                            onClick={() => this.handleOpenToggleTopicHot(topic.id, topic.hot_at)}
-                          >
-                            <VerticalAlignDownIcon />
-                          </Button>
-                        </Tooltip>
+                        <span
+                          className={classes.statusButtons}
+                          onClick={() => this.handleOpenToggleTopicHot(topic.id, topic.hot_at)}
+                        >
+                          取消热门
+                        </span>
                       ) : (
                         // 热门
-                        <Tooltip title="设置热门">
-                          <Button
-                            variant="fab"
-                            mini={true}
-                            className={classes.actionsFab}
-                            onClick={() => this.handleOpenToggleTopicHot(topic.id, topic.hot_at)}
-                          >
-                            <VerticalAlignTopIcon />
-                          </Button>
-                        </Tooltip>
+                        <span
+                          className={classes.statusButtons}
+                          onClick={() => this.handleOpenToggleTopicHot(topic.id, topic.hot_at)}
+                        >
+                          设为热门
+                        </span>
                       )}
-                      
+                    
+                    </TableCell>
+                    <TableCell>{ topic.feeds_count || 0 }</TableCell>
+                    <TableCell>{ topic.followers_count || 0 }</TableCell>
+                    <TableCell>{ topic.creator.name }</TableCell>
+                    <TableCell classes={{ root: classes.tableActionCell }}>
 
                       {/* 编辑 */}
                       <Tooltip title="编辑话题">
@@ -451,8 +469,69 @@ class ListView extends React.Component {
               </Paper>
             </div>
           </Modal>
+          
+          {this.renderReviewModal(this.state.review, classes)}
 
         </div>
+      );
+    }
+
+    renderReviewModal(topic, classes) {
+      if (!topic) {
+        return null;
+      }
+
+      return (
+        <Modal open={true}>
+          <div className={classes.modalWrap} >
+              <Paper
+                classes={{
+                  root: classes.modalPager
+                }}
+              >
+                请选择你需要切换的话题状态：
+                {this.props.submitting && <CircularProgress size={16}/>}
+                <div className={classes.modalActions}>
+                <Button
+                  color="primary"
+                  className={classes.actionsFab}
+                  variant="contained"
+                  disabled={this.props.submitting || topic.status === 'waiting'}
+                  onClick={() => this.handleToggleReview(topic.id, 'waiting')}
+                >
+                  待审核
+                </Button>
+                <Button
+                  color="primary"
+                  className={classes.actionsFab}
+                  variant="contained"
+                  disabled={this.props.submitting || topic.status === 'passed'}
+                  onClick={() => this.handleToggleReview(topic.id, 'passed')}
+                >
+                  通&nbsp;过
+                </Button>
+                <Button
+                  color="primary"
+                  className={classes.actionsFab}
+                  variant="contained"
+                  disabled={this.props.submitting || topic.status === 'failed'}
+                  onClick={() => this.handleToggleReview(topic.id, 'failed')}
+                >
+                  未通过
+                </Button>
+                  <Button
+                    color="secondary"
+                    className={classes.actionsFab}
+                    variant="contained"
+                    onClick={this.handleCloseReview}
+                    disabled={this.props.submitting}
+                  >
+                    关&nbsp;闭
+                  </Button>
+                </div>
+              </Paper>
+          </div>
+        </Modal>
       );
     }
 }

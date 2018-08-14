@@ -56,7 +56,7 @@ class ListSearchBar extends React.Component {
     });
   }
 
-  handleSearch = () => this.props.handleRequestTopics(this.state)
+  handleSearch = () => this.props.handleRequestTopics({ ...this.state, page: 1 })
 
   render() {
     let { classes, show } = this.props;

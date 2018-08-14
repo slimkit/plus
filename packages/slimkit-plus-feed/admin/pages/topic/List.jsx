@@ -6,7 +6,8 @@ import {
   add  as addRequest,
   update as updateRequest,
   hotToggle as hotToggleRequest,
-  destroy as destroyRequest
+  destroy as destroyRequest,
+  toggleReview as toggleReviewRequest
 } from '../../api/topic';
 
 class List extends React.Component {
@@ -155,6 +156,31 @@ class List extends React.Component {
     })
   })
 
+  handleToggleTopicReview = ({ id, status, successFn }) => {
+    this.setState({ submitting: true });
+    toggleReviewRequest(id, status)
+      .then(() => {
+        this.setState({
+          submitting: false,
+          message: { type: 'success', open: true, text: '切换成功' },
+          topics: lodash.map(this.state.topics, (topic) => {
+            if (parseInt(topic.id) === parseInt(id)) {
+              return { ...topic, status };
+            }
+
+            return topic;
+          })
+        });
+        successFn();
+      })
+      .catch(({ response: { data = { message: "操作失败" } } = {} }) => {
+        this.setState({
+          submitting: false,
+          message: { type: 'error', open: true, text: data }
+        });
+      });
+  }
+
   render() {
     return <View
       showSearchBar={this.state.showSearchBar}
@@ -174,6 +200,7 @@ class List extends React.Component {
       handleSubmitEditForm={this.handleSubmitEditForm}
       handleToggleTopicHot={this.handleToggleTopicHot}
       handleDestroyTopic={this.handleDestroyTopic}
+      handleToggleTopicReview={this.handleToggleTopicReview}
     />;
   }
 
