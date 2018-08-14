@@ -49,16 +49,24 @@ class UserController extends Controller
         $order = in_array($order = $request->query('order', 'desc'), ['asc', 'desc']) ? $order : 'desc';
         $since = $request->query('since', false);
         $name = $request->query('name', false);
+        $fetchBy = $request->query('fetch_by', 'id');
 
-        $users = $model->when($since, function ($query) use ($since, $order) {
-            return $query->where('id', $order === 'asc' ? '>' : '<', $since);
-        })->when($name, function ($query) use ($name) {
-            return $query->where('name', 'like', sprintf('%%%s%%', $name));
-        })->when(! empty($ids), function ($query) use ($ids) {
-            return $query->whereIn('id', $ids)->withTrashed();
-        })->limit($limit)
-          ->orderby('id', $order)
-          ->get();
+        $users = $model
+            ->when($since, function ($query) use ($since, $order) {
+                return $query->where('id', $order === 'asc' ? '>' : '<', $since);
+            })
+            ->when($name && $fetchBy !== 'username', function ($query) use ($name) {
+                return $query->where('name', 'like', sprintf('%%%s%%', $name));
+            })
+            ->when(! empty($ids) && $fetchBy === 'id', function ($query) use ($ids) {
+                return $query->whereIn('id', $ids)->withTrashed();
+            })
+            ->when($name && $fetchBy === 'username', function ($query) use ($name) {
+                return $query->whereIn('name', array_filter(explode(',', $name)));
+            })
+            ->limit($limit)
+            ->orderby('id', $order)
+            ->get();
 
         return $response->json($model->getConnection()->transaction(function () use ($users, $user) {
             return $users->map(function (User $item) use ($user) {
