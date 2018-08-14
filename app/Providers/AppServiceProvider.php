@@ -62,6 +62,18 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(TargetTypeManager::class, function ($app) {
             return new TargetTypeManager($app);
         });
+
+        $this->app->singleton('at-message', function ($app) {
+            $manager = $app->make(\Zhiyi\Plus\AtMessage\ResourceManagerInterface::class);
+            $pusher = $app->make(\Zhiyi\Plus\Services\Push::class);
+            $model = new \Zhiyi\Plus\Models\AtMessage();
+
+            return new \Zhiyi\Plus\AtMessage\Message($manager, $model, $pusher);
+        });
+
+        $this->app->singleton('at-resource-manager', function ($app) {
+            return new \Zhiyi\Plus\AtMessage\ResourceManager($app);
+        });
     }
 
     /**

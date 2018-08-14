@@ -18,38 +18,36 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\API2\Resources;
+namespace Zhiyi\Plus\API2\Resources\User\Message;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Zhiyi\Plus\Utils\DateTimeToIso8601ZuluString;
 
-class UserCountsResource extends JsonResource
+class AtMessage extends JsonResource
 {
+    use DateTimeToIso8601ZuluString;
+
     /**
      * The resource to array.
-     *
      * @param \Illuminate\Http\Request $request
      * @return array
-     * @author Seven Du <shiweidu@outlook.com>
      */
     public function toArray($request): array
     {
-        // unused the $request.
-        unset($request);
-
         return [
-            'user' => [
-                'following' => $this['user-following'] ?? 0,
-                'liked' => $this['user-liked'] ?? 0,
-                'commented' => $this['user-commented'] ?? 0,
-                'system' => $this['user-system'] ?? 0,
-                'news-comment-pinned' => $this['user-news-comment-pinned'] ?? 0,
-                'feed-comment-pinned' => $this['user-feed-comment-pinned'] ?? 0,
-                'mutual' => $this['user-mutual'] ?? 0,
-                'group-join-pinned' => $this['user-group-join-pinned'] ?? 0,
-                'post-comment-pinned' => $this['user-post-comment-pinned'] ?? 0,
-                'post-pinned' => $this['user-post-pinned'] ?? 0,
-                'at' => $this['at'] ?? 0,
+            'id' => $this->id,
+            'user_id' => $this->user_id,
+            'resourceable' => [
+                'type' => $this->resourceable_type,
+                'id' => $this->resourceable_id,
             ],
+            $this->mergeWhen($request->query('load'), [
+                'resource' => ['暂不提供数据支持'],
+            ]),
+            'created_at' => $this->dateTimeToIso8601ZuluString(
+                $this->{Model::CREATED_AT}
+            ),
         ];
     }
 }

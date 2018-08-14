@@ -34,6 +34,8 @@ class Models
      */
     public const KEY_BY_CLASS_ALIAS = 'class alias';
 
+    protected static $instance;
+
     /**
      * Types.
      * @var array
@@ -42,6 +44,7 @@ class Models
         \Zhiyi\Plus\Models\FeedTopic::class => 'types/models/feed-topics',
         \Zhiyi\Plus\Models\User::class => 'users', /* 旧关系别名，保持不变 */
         \Zhiyi\Plus\Models\Comment::class => 'comments', /* 旧关系别名，保持不变 */
+        \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed::class => 'feeds', /* 旧关系别名，保持不变 */
     ];
 
     /**
@@ -71,5 +74,14 @@ class Models
         }
 
         return static::$types;
+    }
+
+    public static function __callStatic($method, $params)
+    {
+        if (! static::$instance instanceof static) {
+            static::$instance = new static;
+        }
+
+        return static::$instance->$method(...$params);
     }
 }

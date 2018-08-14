@@ -734,4 +734,28 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
      * @Response::header('Status', 204, 'No Content')
      */
     $api->put('user/report-feed-topics/{topic}', \Zhiyi\Plus\API2\Controllers\Feed\TopicReport::class);
+
+    /*
+     * List at me messages.
+     *
+     * @Get /api/v2/user/message/atme
+     * @Param::query('limit', 'integer', 'The query data limit.')
+     * @Param::query('index', 'integer', 'The query start index.')
+     * @param::query('direction', 'enum:asc,desc', 'The data order by id direction.')
+     * @Response::header('Sttaus', 200, 'OK')
+     * @response::json('<pre>
+     * [
+     *  {
+     *      "id": 1,
+     *      "user_id": 1,
+     *      "resourceable": {
+     *          "type": "feeds",
+     *          "id": "id"
+     *      },
+     *      "created_at": "2018-08-13T08:06:54Z"
+     *  }
+     * ]
+     * </pre>')
+     */
+    $api->get('user/message/atme', \Zhiyi\Plus\API2\Controllers\User\Message\At::class);
 });

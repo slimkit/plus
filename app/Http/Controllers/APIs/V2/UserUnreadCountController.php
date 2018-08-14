@@ -25,6 +25,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Zhiyi\Plus\Models\Like as LikeModel;
 use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Models\AtMessage as AtMessageModel;
 use Zhiyi\Plus\Support\PinnedsNotificationEventer;
 use Zhiyi\Plus\Models\Conversation as ConversationModel;
 
@@ -100,6 +101,16 @@ class UserUnreadCountController extends Controller
             ->whereNull('read_at')
             ->count();
 
+        // at 最近三个用户
+        $atMeUsers = (new AtMessageModel)->query()
+            ->where('user_id', $user->id)
+            ->limit(3)
+            ->orderBy('id', 'desc')
+            ->select('user_id')
+            ->get()
+            ->pluck('user_id')
+            ->all();
+
         $counts->system = $systemUnreadCount ?? 0;
         $result = array_filter([
             'counts' => $counts,
@@ -107,6 +118,7 @@ class UserUnreadCountController extends Controller
             'likes' => $likes,
             'pinneds' => $pinneds,
             'system' => $lastSystem,
+            'atme' => $atMeUsers,
         ], function ($item) {
             if (is_null($item)) {
                 return false;
