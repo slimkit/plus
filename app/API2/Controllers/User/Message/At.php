@@ -48,13 +48,13 @@ class At extends Controller
             ->limit($request->query('limit', 15))
             ->orderBy('id', $direction)
             ->get();
-        
+
         // 暂不提供支持，动态付费内容难以处理！代码请不要删除！
         // $relationships = array_filter(explode(',', $request->query('load')));
         // if ($relationships) {
         //     $collection->load($relationships);
         // }
-        
+
         return AtMessageResource::collection($collection)
             ->toResponse($request)
             ->setStatusCode(Response::HTTP_OK);

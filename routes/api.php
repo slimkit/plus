@@ -737,7 +737,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
     /*
      * List at me messages.
-     * 
+     *
      * @Get /api/v2/user/message/atme
      * @Param::query('limit', 'integer', 'The query data limit.')
      * @Param::query('index', 'integer', 'The query start index.')
