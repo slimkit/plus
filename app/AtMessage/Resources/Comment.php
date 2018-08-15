@@ -34,7 +34,7 @@ class Comment implements ResourceInterface
     protected $comment;
 
     /**
-     * The sender
+     * The sender.
      * @var \Zhiyi\Plus\Models\User
      */
     protected $sender;
