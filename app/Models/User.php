@@ -51,7 +51,7 @@ class User extends Authenticatable implements JWTSubject
         Relations\UserHasLike,
         Relations\UserHasCurrency,
         Relations\UserHasNewWallet,
-        Relations\UserHasBlackLists;
+        Relations\UserHasBlackList;
 
     /**
      * The attributes that are mass assignable.
