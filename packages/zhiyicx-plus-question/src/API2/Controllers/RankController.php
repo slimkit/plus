@@ -136,8 +136,13 @@ class RankController extends Controller
         $limit = $request->query('limit', 10);
         $offset = $request->query('offset', 0);
 
+        $grammar = $userModel->getConnection()->getQueryGrammar();
+        $fields = array_map(function ($field) use ($grammar) {
+            return $grammar->wrap($field);
+        }, ['user_id', 'amount', 'count', 'topic_expert_income', 'user_id', 'count']);
+
         $users = $userModel->select('users.id', 'users.name', 'users.sex')
-            ->join(DB::raw('(select `user_id`, SUM(`amount`) as `count` from `topic_expert_income` group by `user_id`) as count'), function ($join) {
+            ->join(DB::raw(sprintf('(select %s, SUM(%s) as %s from %s group by %s) as %s', ...$fields)), function ($join) {
                 return $join->on('users.id', '=', 'count.user_id');
             })
             ->orderBy('count.count', 'desc')

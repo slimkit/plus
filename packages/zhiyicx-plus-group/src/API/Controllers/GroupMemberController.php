@@ -425,13 +425,14 @@ class GroupMemberController
             ->get()
             ->pluck('id');
 
+        $grammar = $logModel->getConnection()->getQueryGrammar();
         $items = $logModel->whereIn('group_id', $groupIds)
-            ->orderByRaw(
-                'CASE
-                WHEN (`status` = 0) THEN 1
-                WHEN (`status` <> 0 ) THEN 2
-            END ASC'
-            )
+            ->orderByRaw(str_replace('{status}', $grammar->wrap('status'), '
+                CASE
+                    WHEN ({status} = 0) THEN 1
+                    WHEN ({status} <> 0 ) THEN 2
+                END ASC
+            '))
             ->orderBy('id', 'desc')
             ->limit($limit)
             ->where('user_id', '!=', $user->id)

@@ -399,6 +399,7 @@ class PinnedController extends Controller
         $limit = $request->query('limit', 15);
         $after = $request->query('after', 0);
         $post = $request->query('post');
+        $grammar = $pinnedModel->getConnection()->getQueryGrammar();
         $pinneds = $pinnedModel
         ->where('target_user', $user->id)
         ->where('channel', 'comment')
@@ -409,12 +410,12 @@ class PinnedController extends Controller
             return $query->where('raw', $post);
         })
         ->limit($limit)
-        ->orderByRaw(
-            'CASE
-                WHEN (`status` = 0) THEN 1
-                WHEN (`status` <> 0 ) THEN 2
-            END ASC'
-        )
+        ->orderByRaw(str_replace('{status}', $grammar->wrap('status'), '
+            CASE
+                WHEN ({status} = 0) THEN 1
+                WHEN ({status} <> 0 ) THEN 2
+            END ASC
+        '))
         ->orderBy('id', 'desc')
         ->get();
 
