@@ -34,8 +34,6 @@ class Models
      */
     public const KEY_BY_CLASS_ALIAS = 'class alias';
 
-    protected static $instance;
-
     /**
      * Types.
      * @var array
@@ -74,14 +72,5 @@ class Models
         }
 
         return static::$types;
-    }
-
-    public static function __callStatic($method, $params)
-    {
-        if (! static::$instance instanceof static) {
-            static::$instance = new static;
-        }
-
-        return static::$instance->$method(...$params);
     }
 }
