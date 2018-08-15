@@ -24,7 +24,7 @@ use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\Models\BlackList;
 use Illuminate\Support\Facades\Cache;
 
-trait UserHasBlackLists
+trait UserHasBlackList
 {
     /**
      * get blacklists of current user.
