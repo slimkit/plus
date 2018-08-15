@@ -31,6 +31,7 @@ class ResourceManager implements ResourceManagerInterface
      */
     public static $map = [
         \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed::class => Resources\Feed::class,
+        \Zhiyi\Plus\Models\Comment::class => Resources\Comment::class,
     ];
 
     /**
