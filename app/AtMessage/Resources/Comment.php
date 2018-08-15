@@ -27,15 +27,33 @@ use Zhiyi\Plus\Models\Comment as CommentModel;
 
 class Comment implements ResourceInterface
 {
+    /**
+     * The comment resource.
+     * @var \Zhiyi\Plus\Models\Comment
+     */
     protected $comment;
+
+    /**
+     * The sender
+     * @var \Zhiyi\Plus\Models\User
+     */
     protected $sender;
 
+    /**
+     * Create the resource.
+     * @param \Zhiyi\Plus\Models\Comment $comment
+     * @param \Zhiyi\Plus\Models\User $sender
+     */
     public function __construct(CommentModel $comment, UserModel $sender)
     {
         $this->comment = $comment;
         $this->sender = $sender;
     }
 
+    /**
+     * Get the resourceable type.
+     * @return string
+     */
     public function type(): string
     {
         $alise = ModelTypes::$types[CommentModel::class] ?? null;
@@ -47,11 +65,19 @@ class Comment implements ResourceInterface
         return $alise;
     }
 
+    /**
+     * Get the resourceable id.
+     * @return int
+     */
     public function id(): int
     {
         return $this->comment->id;
     }
 
+    /**
+     * Get the resourceable push message.
+     * @return string
+     */
     public function message(): string
     {
         return sprintf('%s在评论中@了你', $this->sender->name);
