@@ -469,7 +469,7 @@ class FeedController extends Controller
             return response()->json(['message' => '发布成功', 'id' => $feed->id])->setStatusCode(201);
         });
 
-        $this->sendAtMessage($feed->feed_content, $user, $feed);
+        $this->sendAtMessage((string) $feed->feed_content, $user, $feed);
 
         return $response;
     }
