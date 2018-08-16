@@ -21,6 +21,7 @@ namespace SlimKit\PlusQuestion\API2\Controllers;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Models\Comment;
+use Zhiyi\Plus\AtMessage\AtMessageHelperTrait;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use SlimKit\PlusQuestion\API2\Requests\CommentRequest;
 use SlimKit\PlusQuestion\Models\Answer as AnswerModel;
@@ -29,6 +30,8 @@ use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class CommentController extends Controller
 {
+    use AtMessageHelperTrait;
+
     /**
      * 问题评论列表.
      */
@@ -117,6 +120,9 @@ class CommentController extends Controller
             app(Push::class)->push(sprintf('%s回复了您的评论', $user->name), (string) $replyUser->id, ['channel' => 'question:comment-reply']);
         }
         $comment->load('user', 'target', 'reply');
+
+        $this->sendAtMessage($comment->body, $user, $comment);
+
         return response()->json([
             'message' => ['操作成功'],
             'comment' => $comment,
@@ -170,6 +176,9 @@ class CommentController extends Controller
             app(Push::class)->push(sprintf('%s回复了您的评论', $user->name), (string) $replyUser->id, ['channel' => 'answer:comment-reply']);
         }
         $comment->load('user', 'target', 'reply');
+
+        $this->sendAtMessage($comment->body, $user, $comment);
+
         return response()->json([
             'message' => ['操作成功'],
             'comment' => $comment,

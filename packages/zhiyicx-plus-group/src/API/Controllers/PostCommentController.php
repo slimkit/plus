@@ -22,6 +22,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Models\User as UserModel;
+use Zhiyi\Plus\AtMessage\AtMessageHelperTrait;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\PlusGroup\Models\Pinned;
 use Zhiyi\PlusGroup\Models\Post as GroupPostModel;
@@ -31,6 +32,8 @@ use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
 class PostCommentController
 {
+    use AtMessageHelperTrait;
+
     /**
      * get list of comments.
      *
@@ -153,6 +156,8 @@ class PostCommentController
 
             $commentModel->load(['user', 'reply', 'target']);
         });
+
+        $this->sendAtMessage($commentModel->body, $user, $commentModel);
 
         return response()->json([
             'message' => ['操作成功'],
