@@ -28,10 +28,30 @@ use Zhiyi\Plus\Models\UserCount as UserCountModel;
 
 class Message implements MessageInterface
 {
+    /**
+     * Resources manager.
+     * @var \Zhiyi\Plus\AtMessage\ResourceManagerInterface
+     */
     protected $manager;
+
+    /**
+     * At message model.
+     * @var \Zhiyi\Plus\Models\AtMessage
+     */
     protected $model;
+
+    /**
+     * Jpush pusher.
+     * @var \Zhiyi\Plus\Services\Push
+     */
     protected $pusher;
 
+    /**
+     * Create the message instance.
+     * @param \Zhiyi\Plus\AtMessage\ResourceManagerInterface $manager
+     * @param \Zhiyi\Plus\Models\AtMessage $model
+     * @param \Zhiyi\Plus\Services\Push $pusher
+     */
     public function __construct(ResourceManagerInterface $manager, Model $model, Push $pusher)
     {
         $this->manager = $manager;
@@ -39,6 +59,13 @@ class Message implements MessageInterface
         $this->pusher = $pusher;
     }
 
+    /**
+     * The message send handler.
+     * @param \Zhiyi\Plus\Models\User $sender
+     * @param \Zhiyi\Plus\Models\User $user
+     * @param mixed $resource
+     * @return void
+     */
     public function send(UserModel $sender, UserModel $user, $resource): void
     {
         $resource = $this->manager->resource($resource, $sender);
@@ -51,6 +78,12 @@ class Message implements MessageInterface
         $this->notice($user, $resource);
     }
 
+    /**
+     * Create a at message model.
+     * @param \Zhiyi\Plus\AtMessage\ResourceInterface $resource
+     * @param \Zhiyi\Plus\Models\User $user
+     * @return \Zhiyi\Plus\Models\AtMessage
+     */
     public function message(ResourceInterface $resource, UserModel $user): Model
     {
         $message = $this->model->newInstance();
@@ -61,6 +94,12 @@ class Message implements MessageInterface
         return $message;
     }
 
+    /**
+     * Send a jpush message.
+     * @param \Zhiyi\Plus\Models\User $user
+     * @param \Zhiyi\Plus\AtMessage\ResourceInterface $resource
+     * @return void
+     */
     protected function notice(UserModel $user, ResourceInterface $resource): void
     {
         $this->pusher->push(
@@ -73,6 +112,11 @@ class Message implements MessageInterface
         );
     }
 
+    /**
+     * Update user unread message count.
+     * @param \Zhiyi\Plus\Models\User $user;
+     * @return void
+     */
     protected function updateAtMessageCount(UserModel $user): void
     {
         $model = new UserCountModel();
@@ -91,6 +135,11 @@ class Message implements MessageInterface
         $count->save();
     }
 
+    /**
+     * Open a database transaction.
+     * @param \Closure $closure
+     * @return any
+     */
     protected function save(Closure $closure)
     {
         return $this->model->getConnection()->transaction($closure);

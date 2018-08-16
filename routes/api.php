@@ -758,4 +758,37 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
      * </pre>')
      */
     $api->get('user/message/atme', \Zhiyi\Plus\API2\Controllers\User\Message\At::class);
+
+    /*
+     * List all comments
+     *
+     * @Get /api/v2/comments
+     * @Param::query('limit', 'integer', 'The query data limit.')
+     * @Param::query('index', 'integer', 'The query data start index.')
+     * @Param::query('direction', 'enum:asc,desc', 'The data order by id direction.')
+     * @Param::query('author', 'integer', 'The comment author user id')
+     * @Param::query('for_user', 'integer', 'The comment target user id')
+     * @Param::query('for_type', 'enum:all,target,reply', 'for user type')
+     * @Param::query('id', 'string', 'Comment IDs, using `,` slicing')
+     * @Param::query('resourceable_id', 'string', 'Resourceable IDs, using `,` slicing')
+     * @Param::query('resourceable_type', 'string', 'Resourceabe type name')
+     * @Response::header('Sttaus', 200, 'OK')
+     * @Response::json('<pre>
+     * [
+     *     {
+     *          "id": 1,
+     *          "user_id": 1,
+     *          "target_user": 2,
+     *          "reply_user": 3,
+     *          "body": "Hi, I love you.",
+     *          "resourceable": {
+     *              "type": "feeds",
+     *              "id": 1
+     *          },
+     *          "created_at": "2018-08-15T05:57:01Z"
+     *     }
+     * ]
+     * </pre>')
+     */
+    $api->get('comments', \Zhiyi\Plus\API2\Controllers\Comment::class.'@index');
 });
