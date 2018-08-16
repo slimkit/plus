@@ -761,7 +761,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
     /*
      * List all comments
-     * 
+     *
      * @Get /api/v2/comments
      * @Param::query('limit', 'integer', 'The query data limit.')
      * @Param::query('index', 'integer', 'The query data start index.')

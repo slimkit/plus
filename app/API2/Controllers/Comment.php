@@ -28,7 +28,7 @@ use Zhiyi\Plus\API2\Resources\Comment as CommentResource;
 class Comment extends Controller
 {
     /**
-     * List all comments
+     * List all comments.
      * @param \Zhiyi\Plus\API2\Requests\ListAllComments $request
      * @param \Zhiyi\Plus\Models\Comment $model
      * @return \Illuminate\Http\JsonResponse
@@ -74,7 +74,7 @@ class Comment extends Controller
             })
             ->when(($forUser = $request->query('for_user')) && ! $skipNonId, function ($query) use ($forUser, $request) {
                 $forType = $request->query('for_type', 'all');
-                
+
                 if ($forType === 'target') {
                     return $query->where('target_user', $forUser);
                 } elseif ($forType === 'reply') {
