@@ -97,6 +97,9 @@ class Comment extends Controller
                     ->where('commentable_type', $request->query('resourceable_type'))
                     ->whereIn('commentable_id', $resourceableId);
             })
+            ->when(! $skipNonId, function ($query) use ($request) {
+                return $query->limit($request->query('limit', 15));
+            })
             ->orderBy('id', $direction)
             ->get();
 
