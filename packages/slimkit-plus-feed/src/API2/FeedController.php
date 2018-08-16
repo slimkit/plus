@@ -58,21 +58,15 @@ class FeedController extends Controller
     public function index(Request $request, ApplicationContract $app, ResponseContract $response)
     {
         $type = $request->query('type', 'new');
-        if (! in_array($type, ['new', 'hot', 'follow', 'users'])) {
+        if (! in_array($type, ['new', 'hot', 'follow', 'users']) || $request->query('id', false)) {
             $type = 'new';
         }
 
         return $response->json([
-        // 'ad' => $app->call([$this, 'getAd']),
             'pinned' => $app->call([$this, 'getPinnedFeeds']),
             'feeds' => $app->call([$this, $type]),
         ])
         ->setStatusCode(200);
-    }
-
-    public function getAd()
-    {
-        // todo.
     }
 
     public function getPinnedFeeds(Request $request, FeedModel $feedModel, FeedRepository $repository, Carbon $datetime)
@@ -138,9 +132,23 @@ class FeedController extends Controller
         $after = $request->query('after');
         $user = $request->user('api')->id ?? 0;
         $search = $request->query('search');
+        $id = $request->query('id', '');
 
         $feeds = $feedModel->when($after, function ($query) use ($after) {
             return $query->where('id', '<', $after);
+        })
+        ->when($id, function ($query) use ($id) {
+            $id = array_values(
+                array_filter(
+                    explode(',', $id)
+                )
+            );
+
+            if (! $id) {
+                return $query;
+            }
+
+            return $query->whereIn('id', $id);
         })
         ->when(isset($search), function ($query) use ($search) {
             return $query->where('feed_content', 'LIKE', '%'.$search.'%');
