@@ -708,6 +708,7 @@ class FeedController extends Controller
                 $topic->feeds_count -= 1;
                 $topic->save();
             });
+            $feed->topics()->sync([]);
 
             $feed->delete();
             $user->extra()->decrement('feeds_count', 1);
@@ -766,6 +767,7 @@ class FeedController extends Controller
                 $topic->feeds_count -= 1;
                 $topic->save();
             });
+            $feed->topics()->sync([]);
 
             $feed->delete();
             $user->extra()->decrement('feeds_count', 1);

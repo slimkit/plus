@@ -288,6 +288,7 @@ class FeedController extends Controller
                 $topic->feeds_count -= 1;
                 $topic->save();
             });
+            $feed->topics()->sync([]);
 
             $feed->delete();
             $cache->forget(sprintf('feed:%s', $feed->id));
