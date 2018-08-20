@@ -719,6 +719,7 @@ class FeedController extends Controller
             }
 
             // 删除话题关联
+            $feed->topics()->sync([]);
             $feed->topics->each(function ($topic) {
                 $topic->feeds_count -= 1;
                 $topic->save();
@@ -777,6 +778,7 @@ class FeedController extends Controller
             $userCount->save();
 
             // 删除话题关联
+            $feed->topics()->sync([]);
             $feed->topics->each(function ($topic) {
                 $topic->feeds_count -= 1;
                 $topic->save();
