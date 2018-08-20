@@ -791,4 +791,24 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
      * </pre>')
      */
     $api->get('comments', \Zhiyi\Plus\API2\Controllers\Comment::class.'@index');
+
+    /*
+     * Get all simple posts.
+     *
+     * @Get /api/v2/group/simple-posts
+     * @Param::query('id', 'string', 'Fetch post IDs.')
+     * @Response::header('status', 200, 'OK')
+     * @Response::Json('
+     * [
+     *     {
+     *         "id": 1,
+     *         "group_id": 1,
+     *         "title": "第一个帖子",
+     *         "summary": "帖子描述",
+     *         "image": 1,
+     *     }
+     * ]
+     * ')
+     */
+    $api->get('group/simple-posts', \Zhiyi\Plus\API2\Controllers\Group\Post::class.'@simpleList');
 });
