@@ -23,6 +23,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Auth\Access\AuthorizationException;
+use Zhiyi\Plus\Types\Models as ModelTypes;
 
 class StoreFeedPost extends FormRequest
 {
@@ -82,6 +83,8 @@ class StoreFeedPost extends FormRequest
             ],
             'topics' => ['nullable', 'array'],
             'topics.*' => ['required_with:topics', 'integer', 'min:1'],
+            'repostable_type' => ['required_with:repostable_id', Rule::in(ModelTypes::$types)],
+            'repostable_id' => ['required_with:repostable_type', 'integer', 'min:1'],
         ];
     }
 
@@ -120,6 +123,11 @@ class StoreFeedPost extends FormRequest
             'topics.*.required_with' => '话题数据不合法',
             'topics.*.integer' => '话题数据必须是合法内容',
             'topics.*.min' => '话题不存在',
+            'repostable_type.required_with' => '请求不合法',
+            'repostable_id.required_with' => '请求不合法',
+            'repostable_type.in' => '转发的资源类型不合法',
+            'repostable_id.integer' => '转发的资源 ID 必须是正整数',
+            'repostable_id.min' => '转发的资源 ID 不合法',
         ];
     }
 

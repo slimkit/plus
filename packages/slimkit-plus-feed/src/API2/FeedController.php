@@ -670,7 +670,12 @@ class FeedController extends Controller
      */
     protected function fillFeedBaseData(Request $request, FeedModel $feed): FeedModel
     {
-        foreach ($request->only(['feed_content', 'feed_from', 'feed_mark', 'feed_latitude', 'feed_longtitude', 'feed_geohash']) as $key => $value) {
+        $baseFormInputs = $request->only([
+            'feed_content', 'feed_from', 'feed_mark',
+            'feed_latitude', 'feed_longtitude', 'feed_geohash',
+            'repostable_type', 'repostable_id',
+        ]);
+        foreach (array_filter($baseFormInputs) as $key => $value) {
             $feed->$key = $value;
         }
 
