@@ -46,6 +46,10 @@ class CreateFeedsTable extends Migration
             $table->tinyInteger('audit_status')->nullable()->default(1)->comment('审核状态 0-未审核 1-已审核 2-未通过');
             $table->bigInteger('feed_mark')->comment('唯一标记');
 
+            // 可转发的
+            $table->string('repostable_type')->nullable()->default(null)->comment('可转发的资源类型');
+            $table->integer('repostable_id')->unsigned()->nullable()->default(0)->comment();
+
             $table->timestamps();
             $table->softDeletes();
 
