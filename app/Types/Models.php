@@ -46,6 +46,10 @@ class Models
         \Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\Music::class => 'musics', /* 旧关系别名，保持不变 */
         \Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSpecial::class => 'music_specials', /* 旧关系别名，保持不变 */
         \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News::class => 'news', /* 旧关系别名，保持不变 */
+        \Zhiyi\PlusGroup\Models\Group::class => 'groups', /* 旧关系别名，保持不变 */
+        \Zhiyi\PlusGroup\Models\Post::class => 'group-posts', /* 旧关系别名，保持不变 */
+        \SlimKit\PlusQuestion\Models\Question::class => 'questions', /* 旧关系别名，保持不变 */
+        \SlimKit\PlusQuestion\Models\Answer::class => 'question-answers', /* 旧关系别名，保持不变 */
     ];
 
     /**
