@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\API2\Controllers\Controller;
 use Zhiyi\PlusGroup\Models\Post as PostModel;
 use Zhiyi\Plus\API2\Requests\Group\ListAllSimplePosts;
-use Zhiyi\Plus\API2\Responses\Group\SimplePost as SimplePostResource;
+use Zhiyi\Plus\API2\Resources\Group\SimplePost as SimplePostResource;
 
 class Post extends Controller
 {

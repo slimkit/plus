@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Zhiyi\Plus\Responses\Group;
+namespace Zhiyi\Plus\API2\Resources\Group;
 
 use Illuminate\Http\Resources\MissingValue;
-use Illuminate\Http\Responses\Json\JsonResource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class SimplePost extends JsonResource
 {
