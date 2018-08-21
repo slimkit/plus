@@ -411,30 +411,30 @@ class GroupsController
      * @param Request $request
      * @return mixed
      */
-    public function groups(Request $request)
+    public function groups(Request $request, GroupModel $model)
     {
-        $userId = $request->user('api')->id ?? 0;
-
-        $keyword = $request->get('keyword');
-        $limit = (int) $request->query('limit', 15);
-        $offset = (int) $request->get('offset', 0);
-        $categoryId = (int) $request->get('category_id');
-
-        $builder = GroupModel::where('audit', 1);
-
-        $groups = $builder->when($keyword, function ($query) use ($keyword) {
-            return $query->where('name', 'like', sprintf('%%%s%%', $keyword));
-        })
-        ->when($categoryId, function ($query) use ($categoryId) {
-            return $query->where('category_id', $categoryId);
-        })
-        ->offset($offset)
-        ->limit($limit)
-        ->get();
+        $id = array_values(array_filter(explode(',', $request->query('id', ''))));
+        $groups = $model
+            ->query()
+            ->when(! empty($id), function ($query) use ($id) {
+                return $query->whereIn('id', $id);
+            })
+            ->when(empty($id), function ($query) use ($request) {
+                return $query
+                    ->when($keyword = $request->get('keyword'), function ($query) use ($keyword) {
+                        return $query->where('name', 'like', sprintf('%%%s%%', $keyword));
+                    })
+                    ->when($categoryId = (int) $request->get('category_id'), function ($query) use ($categoryId) {
+                        return $query->where('category_id', $categoryId);
+                    })
+                    ->limit($request->query('limit', 15))
+                    ->offset($request->query('offset', 0));
+            })
+            ->where('audit', 1)
+            ->get();
 
         $user_id = $request->user('api')->id ?? 0;
-
-        $joined = GroupMemberModel::whereIn('group_id', $groups->map->id)
+        $joined = GroupMemberModel::whereIn('group_id', $groups->pluck('id')->all())
             ->where('user_id', $user_id)
             ->get();
 
