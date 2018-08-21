@@ -81,12 +81,20 @@ class QuestionController extends Controller
             },
         ];
         $type = in_array($type = $request->query('type', 'new'), array_keys($map)) ? $type : 'new';
+        $id = array_values(array_filter(
+            explode(',', $request->query('id', ''))
+        ));
+        $type = $id ? 'all' : $type;
+
         call_user_func($map[$type], $query = $questionModel
             ->whereDoesntHave('blacks', function ($query) use ($userID) {
                 $query->where('user_id', $userID);
             })
-            ->when($subject, function ($query) use ($subject) {
+            ->when($subject && ! $id, function ($query) use ($subject) {
                 return $query->where('subject', 'like', '%'.$subject.'%');
+            })
+            ->when($id, function ($query) use ($id) {
+                return $query->whereIn('id', $id);
             })
             ->limit($limit)
             ->offset($offset));
