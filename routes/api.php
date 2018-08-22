@@ -820,6 +820,12 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
      */
     $api->put('group/posts/{post}/toggle-excellent', \Zhiyi\Plus\API2\Controllers\Group\Post::class.'@toggleExcellent');
 
+    /**
+     * Get group preview posts
+     * @GET /api/v2/group/groups/:groupId/preview-posts
+     */
+    $api->get('group/groups/{group}/preview-posts', \Zhiyi\Plus\API2\Controllers\Group\Post::class.'@previewPosts');
+
     /*
      * Using answer IDs fetch answers.
      *

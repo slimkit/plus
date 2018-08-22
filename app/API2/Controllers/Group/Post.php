@@ -10,13 +10,17 @@ use Illuminate\Support\Carbon;
 use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\API2\Controllers\Controller;
 use Zhiyi\PlusGroup\Models\Post as PostModel;
+use Zhiyi\PlusGroup\Models\Group as GroupModel;
 use Zhiyi\Plus\API2\Requests\Group\ListAllSimplePosts;
 use Zhiyi\PlusGroup\Models\GroupMember as GroupMemberModel;
 use Zhiyi\Plus\API2\Resources\Group\SimplePost as SimplePostResource;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Zhiyi\Plus\Utils\DateTimeToIso8601ZuluString;
 
 class Post extends Controller
 {
+    use DateTimeToIso8601ZuluString;
+
     public function __construct()
     {
         $this
@@ -78,5 +82,67 @@ class Post extends Controller
         $post->save();
 
         return new Response('', Response::HTTP_NO_CONTENT);
+    }
+
+    public function previewPosts(Request $request, GroupModel $group): JsonResponse
+    {
+        $posts = $group
+            ->posts()
+            ->with(['images'])
+            ->whereNotNull('excellent_at')
+            ->limit(2)
+            ->orderBy('id', 'desc')
+            ->get();
+        $count = $posts->count();
+        if ($count < 2) {
+            $newPosts = $group
+                ->posts()
+                ->with(['images'])
+                ->when($ids = $posts->pluck('id')->all(), function ($query) use ($ids) {
+                    return $query->whereNotIn('id', $ids);
+                })
+                ->orderBy(GroupModel::UPDATED_AT, 'desc')
+                ->limit(2 - $count)
+                ->get();
+            $posts = $posts->merge($newPosts->all());
+        }
+
+        $posts = $posts->map(function (PostModel $post) {
+            $post->load(['comments' => function ($query) {
+                return $query
+                    ->limit(3)
+                    ->orderBy('id', 'desc');
+            }]);
+
+            return [
+                'id' => $post->id,
+                'group_id' => $post->group_id,
+                'user_id' => $post->user_id,
+                'title' => $post->title,
+                'summary' => $post->summary,
+                'likes_count' => $post->likes_count,
+                'comments_count' => $post->comments_count,
+                'views_count' => $post->views_count,
+                'created_at' => $this->dateTimeToIso8601ZuluString($post->{PostModel::CREATED_AT}),
+                'excellent_at' => $post->excellent_at ? $this->dateTimeToIso8601ZuluString($post->excellent_at) : null,
+                'images' => $post->images->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'size' => $item->size,
+                    ];
+                }),
+                'comments' => $post->comments->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'user_id' => $item->user_id,
+                        'reply_user' => $item->reply_user,
+                        'body' => $item->body,
+                        'created_at' => $this->dateTimeToIso8601ZuluString($item->{PostModel::CREATED_AT})
+                    ];
+                }),
+            ];
+        });
+
+        return new JsonResponse($posts, Response::HTTP_OK);
     }
 }
