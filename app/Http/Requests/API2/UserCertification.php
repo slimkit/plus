@@ -92,9 +92,10 @@ class UserCertification extends FormRequest
             'id.required' => '证件号未提供',
             'contact.required' => '联系方式未提供',
             'desc.required' => '认证描述未提供',
-            'desc.max' => '认证描述长度最大250',
+            'desc.max' => '认证描述长度最大 250 个字',
             'files.required' => '证件照片未提供',
-            'files.exists' => '文件不存在或已被使用',
+            'files.*.required_with' => '非法提交',
+            'files.*.exists' => '文件不存在或已被使用',
         ];
 
         return $this->input('certification') === 'enterprise_certification'
