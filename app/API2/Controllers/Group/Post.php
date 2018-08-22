@@ -16,6 +16,7 @@ use Zhiyi\PlusGroup\Models\GroupMember as GroupMemberModel;
 use Zhiyi\Plus\API2\Resources\Group\SimplePost as SimplePostResource;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zhiyi\Plus\Utils\DateTimeToIso8601ZuluString;
+use Zhiyi\Plus\API2\Resources\Comment as CommentResource;
 
 class Post extends Controller
 {
@@ -131,15 +132,7 @@ class Post extends Controller
                         'size' => $item->size,
                     ];
                 }),
-                'comments' => $post->comments->map(function ($item) {
-                    return [
-                        'id' => $item->id,
-                        'user_id' => $item->user_id,
-                        'reply_user' => $item->reply_user,
-                        'body' => $item->body,
-                        'created_at' => $this->dateTimeToIso8601ZuluString($item->{PostModel::CREATED_AT})
-                    ];
-                }),
+                'comments' => CommentResource::collection($post->comments),
             ];
         });
 
