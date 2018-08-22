@@ -47,6 +47,7 @@ class CreateGroupsTable extends Migration
             $table->integer('users_count')->unsigned()->nullable()->default(0)->comment('成员数');
             $table->integer('posts_count')->unsigned()->nullable()->default(0)->comment('帖子数');
             $table->tinyInteger('audit')->nullable()->defalt(0)->comment('审核状态, 0 - 待审核、1 - 通过、2 - 拒绝');
+            $table->string('im_group_id')->nullable()->comment('环换新群组 ID');
             $table->timestamps();
             $table->softDeletes();
 

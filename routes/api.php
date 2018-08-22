@@ -820,11 +820,20 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
      */
     $api->put('group/posts/{post}/toggle-excellent', \Zhiyi\Plus\API2\Controllers\Group\Post::class.'@toggleExcellent');
 
-    /**
+    /*
      * Get group preview posts
      * @GET /api/v2/group/groups/:groupId/preview-posts
      */
     $api->get('group/groups/{group}/preview-posts', \Zhiyi\Plus\API2\Controllers\Group\Post::class.'@previewPosts');
+
+    
+    /*
+     * Bind im group to group
+     * @PUT /api/v2/group/groups/bind-im-group
+     * @Param::input('id', 'string', 'Im group id')
+     * @Response::header('Status', 204, 'No Content')
+     */
+    $api->put('group/groups/{group}/bind-im-group', \Zhiyi\Plus\API2\Controllers\Group\Group::class.'@bindImGroupId');
 
     /*
      * Using answer IDs fetch answers.

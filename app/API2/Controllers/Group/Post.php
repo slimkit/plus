@@ -76,7 +76,7 @@ class Post extends Controller
             ->where('disabled', 0)
             ->exists();
         if (! $canOperation) {
-            return new AccessDeniedHttpException('你无权进行操作');
+            throw new AccessDeniedHttpException('你无权进行操作');
         }
 
         $post->excellent_at = $post->excellent_at ? null : new Carbon();
