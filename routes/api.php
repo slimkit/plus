@@ -813,6 +813,14 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     $api->get('group/simple-posts', \Zhiyi\Plus\API2\Controllers\Group\Post::class.'@simpleList');
 
     /*
+     * Toggle a post excellent.
+     * 
+     * @PUT /api/v2/group/posts/:postId/toggle-excellent
+     * @Response:header('Status', 204, 'No Content')
+     */
+    $api->put('group/posts/{post}/toggle-excellent', \Zhiyi\Plus\API2\Controllers\Group\Post::class.'@toggleExcellent');
+
+    /*
      * Using answer IDs fetch answers.
      *
      * @Get /api/v2/qa/reposted-answers

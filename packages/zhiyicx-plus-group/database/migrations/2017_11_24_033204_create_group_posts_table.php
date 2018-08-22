@@ -39,8 +39,13 @@ class CreateGroupPostsTable extends Migration
             $table->integer('likes_count')->unsigned()->nullable()->default(0)->comment('喜欢数量统计');
             $table->integer('comments_count')->unsigned()->nullable()->default(0)->comment('评论数统计');
             $table->integer('views_count')->unsigned()->nullable()->default(0)->comment('查看数统计');
+            $table->timestamp('excellent_at')->nullable()->default(null)->comment('设置精华时间，也表示是否是精华');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->index('group_id');
+            $table->index('user_id');
+            $table->index('excellent_at');
         });
     }
 
