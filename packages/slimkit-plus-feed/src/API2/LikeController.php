@@ -88,6 +88,11 @@ class LikeController extends Controller
     public function store(Request $request, ResponseContract $response, FeedModel $feed)
     {
         $user = $request->user();
+
+        if ($feed->liked($user)) {
+            return $response->json(['message' => '操作成功'])->setStatusCode(201);
+        }
+
         $feed->like($user);
 
         if ($feed->user_id !== $user->id) {
@@ -120,6 +125,11 @@ class LikeController extends Controller
     public function destroy(Request $request, ResponseContract $response, FeedModel $feed)
     {
         $user = $request->user();
+
+        if (! $feed->liked($user)) {
+            return $response->json(['message' => '操作成功'])->setStatusCode(204);
+        }
+
         $feed->unlike($user);
 
         return $response->json(['message' => '操作成功'])->setStatusCode(204);

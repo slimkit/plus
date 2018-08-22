@@ -62,10 +62,10 @@
         <div class="form-group">
           <label class="col-sm-2 control-label">支付宝APPId</label>
           <div class="col-sm-4">
-            <input type="text" class="form-control" placeholder="请输入 微信公众号MCHID" v-model="alipayAppid">
+            <input type="text" class="form-control" placeholder="请输入支付宝 App ID" v-model="alipayAppid">
           </div>
           <span class="col-sm-6 help-block">
-            输入 支付宝appId
+            输入支付宝appId
           </span>
         </div>
         <div class="form-group">
