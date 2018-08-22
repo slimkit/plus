@@ -829,7 +829,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     
     /*
      * Bind im group to group
-     * @PUT /api/v2/group/groups/bind-im-group
+     * @PUT /api/v2/group/groups/:groupId/bind-im-group
      * @Param::input('id', 'string', 'Im group id')
      * @Response::header('Status', 204, 'No Content')
      */
