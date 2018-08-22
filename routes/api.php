@@ -811,4 +811,25 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
      * ')
      */
     $api->get('group/simple-posts', \Zhiyi\Plus\API2\Controllers\Group\Post::class.'@simpleList');
+
+    /*
+     * Using answer IDs fetch answers.
+     *
+     * @Get /api/v2/qa/reposted-answers
+     * @Param::query('id', 'string', 'Fetch answer IDs.')
+     * @Response::header('Status', 200, 'OK')
+     * @Response::json('
+     * [
+     *     {
+     *         "id": 1,                  // Answer ID
+     *         "body" "回答内容",         // 回答内容，前 100 字
+     *         "question": {
+     *             "id": 1,              // 问题 ID
+     *             "subject": "问题标题", // 问题标题
+     *         }
+     *     }
+     * ]
+     * ')
+     */
+    $api->get('qa/reposted-answers', \Zhiyi\Plus\API2\Controllers\QA\Answer::class.'@repostedAnswerList');
 });
