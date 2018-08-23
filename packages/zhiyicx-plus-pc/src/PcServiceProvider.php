@@ -6,7 +6,6 @@ use Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Zhiyi\Plus\Support\ManageRepository;
-use Zhiyi\Plus\Support\PackageHandler;
 
 class PcServiceProvider extends ServiceProvider
 {
@@ -40,9 +39,6 @@ class PcServiceProvider extends ServiceProvider
             dirname(__DIR__).'/config/pc.php' => $this->app->configPath('pc.php'),
         ], 'config');
 
-        // load handle
-        PackageHandler::loadHandleFrom('pc', PcPackageHandler::class);
-
         // load view composers
         View::composer('pcview::widgets.hotusers', 'Zhiyi\Component\ZhiyiPlus\PlusComponentPc\ViewComposers\HotUsers');
         View::composer('pcview::widgets.recusers', 'Zhiyi\Component\ZhiyiPlus\PlusComponentPc\ViewComposers\RecommendUsers');
@@ -69,6 +65,10 @@ class PcServiceProvider extends ServiceProvider
             'route' => true,
             'icon' => asset('assets/pc/pc-icon.png'),
         ]);
+
+        $this->mergeConfigFrom(
+            dirname(__DIR__).'/config/pc.php', 'pc'
+        );
     }
 
     /**
