@@ -79,8 +79,19 @@ class Post extends Controller
             throw new AccessDeniedHttpException('你无权进行操作');
         }
 
-        $post->excellent_at = $post->excellent_at ? null : new Carbon();
-        $post->save();
+        $post->getConnection()->transaction(function () use ($post) {
+            if ($post->excellent_at) {
+                $post->excellent_at = null;
+                $post->group()->decrement('excellen_posts_count', 1);
+                $post->save();
+
+                return;
+            }
+
+            $post->excellent_at = new Carbon();
+            $post->group()->increment('excellen_posts_count', 1);
+            $post->save();
+        });
 
         return new Response('', Response::HTTP_NO_CONTENT);
     }
