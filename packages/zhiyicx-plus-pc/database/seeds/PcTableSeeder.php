@@ -71,7 +71,7 @@ class PcTableSeeder extends Seeder
             'url' => '/topic',
             'target' => '_self',
             'status' => 1,
-            'poistion' => 0,
+            'position' => 0,
             'parent_id' => 0,
             'order_sort' => 0,
         ]);
