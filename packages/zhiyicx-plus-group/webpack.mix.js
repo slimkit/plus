@@ -22,6 +22,6 @@ if (mix.inProduction()) {
   // Dev build.
   } else {
     mix.setPublicPath('../../public/assets/plus-group');
-    mix.setResourceRoot('//localhost:8080/');
+    mix.setResourceRoot('/');
     mix.js('resources/assets/admin/index.js', '../../public/assets/plus-group/admin.js');
   }
