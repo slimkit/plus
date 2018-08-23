@@ -1,0 +1,78 @@
+.login_head {width:100%;height:80px;background:#fff;}
+.login_head .header {width:1080px;margin:auto;}
+.login_head .header .nav {padding-top:8px;}
+.login_top {position:absolute;top:10px;right:50px;margin-right:0;padding-top:20px;}
+.login_top a {font-size:14px;display:inline-block;padding-right:15px;padding-left:15px;color:#666;border-right:1px solid #e6e6e6;}
+.login_top a:last-child {border-right:0;}
+.login_top a:hover {color:#59b6d7;}
+.login_container {width:640px;height:360px;margin:auto;padding-top:200px;}
+.login_left {float:left;width:240px;height:360px;background:url('../images/login-leftBg.png') no-repeat;}
+.login_hy {font-size:20px;padding:50px 0 55px;text-align:center;color:#fff;}
+.login_code {width:120px;margin:auto;}
+.login_code img {width:120px;height:120px;}
+.login_scan {font-size:14px;margin-top:55px;text-align:center;color:#fff;}
+.login_right {float:left;width:400px;height:360px;padding:50px;background:#fff;}
+.login_right .login_input {margin-bottom:20px;}
+.login_right .login_input span {font-size:12px;display:block;margin-bottom:10px;color:#f87d72;}
+.login_right .login_input input {font-size:14px;line-height:38px;width:300px;height:40px;padding-left:15px;color:#333;border:none;border-radius:3px;outline:none;background:#f3f6f7;}
+.login_right .login_extra {font-size:12px;color:#b3b3b3;overflow:hidden;}
+.login_right .login_extra .forget_pwd {float:right;color:#b3b3b3;font-size:12px;cursor:pointer;}
+.login_right .login_extra .forget_pwd:hover {color:#59b6d7;}
+.login_right_bottom .no_account {font-size:12px;color:#b3b3b3;}
+.login_right_bottom .no_account span {cursor:pointer;color:#59b6d7;}
+.login_right_bottom .icon_weibo {color:#f87d72;}
+.login_right_bottom .icon_qq {color:#5fbdbe;}
+.login_right_bottom .icon_weixin {color:#54c58c;}
+.login_share {font-size:12px;margin-top:0;color:#b3b3b3 !important;float:right;}
+.login_share svg {font-size:24px !important;padding:2px;cursor:pointer;border:1px solid #ededed;border-radius:50%;}
+.login_button {
+    font-size:16px;line-height:50px;display:block;height:50px;margin:20px auto 50px;cursor:pointer;text-align:center;letter-spacing:2px;color:#fff;border-radius:3px;background:#59b6d7;
+    width: 300px;
+    border: none;
+}
+.login_button:link,.login_button:visited,.login_button:active,.login_button:hover {color:#fff;}
+.login_word {position:relative;z-index:1;clear:both;width:100%;height:50px;margin-top:-50px;text-align:center;color:#CCC;}
+/*忘记密码*/.reg_cont {width:1080px;height:500px;margin:40px auto auto;padding:60px 70px 0;background:#fff;}
+.reg_menu {height:44px;border-bottom:1px solid #ededed;}
+.reg_menu li {float:left;margin-right:10px;}
+.reg_menu li a {font-size:16px;display:block;width:84px;padding-bottom:20px;text-align:center;color:#999;}
+.reg_menu li a:hover {color:#333;border-bottom:2px solid #59b6d7;}
+.reg_menu li a.current {border-bottom:2px solid #59b6d7;color:#333 !important;}
+.reg_form {margin-top:60px;color:#CCCCCC;}
+.reg_cont .reg_input {position:relative;margin-bottom:25px;}
+.reg_cont .reg_input label {font-size:14px;font-weight:normal;display:inline-block;width:88px;margin-right:15px;}
+.reg_cont .reg_input .input_span {display:inline-block;width:385px;margin-top:-5px;padding-bottom:5px;border-bottom:1px solid #ededed;}
+.reg_cont .reg_input .input_span input {width:100%;border:none;outline:none;color:#333;font-size:14px;}
+.reg_cont .reg_input .input_span input:-webkit-autofill {-webkit-box-shadow:0 0 0px 1000px #fff inset;}
+.reg_cont .reg_input .captcha {bottom:0;width:100px;height:40px;vertical-align:bottom;cursor:pointer;}
+.reg_cont .reg_input .code {position:absolute;top:-25px;display:inline-block;width:120px;height:55px;}
+.reg_cont .reg_input .code img {width:100px;height:40px;}
+.reg_cont .reg_btn {font-size:16px;line-height:36px;display:block;width:100px;height:36px;margin-top:60px;cursor:pointer;text-align:center;letter-spacing:2px;color:#fff;border:0;border-radius:3px;background:#59b6d7;}
+.reg_btn:hover,.reg_btn:link,.reg_btn:visited {color:#fff;}
+.reg_cont .reg_input .get_code {font-size:12px;line-height:38px;bottom:0;display:inline-block;width:100px;height:38px;cursor:pointer;text-align:center;vertical-align:bottom;color:#333;border:1px solid #dedede;background:#ededed;}
+.reg_cont .reg_input .get_code_disable {cursor:auto;color:#999;}
+.w_370 {width:370px !important;}
+.w_280 {width:280px !important;}
+.f_welcome {font-size:20px;color:#333;}
+.f_next {font-size:12px;margin-top:15px;color:#999;}
+.f_sex {font-size:14px;display:inline-block;margin-right:30px;color:#CCC;}
+.f_sex i {margin-right:8px;vertical-align:0;color:#CCC;}
+.f_select {position:relative;display:inline-block;height:28px;margin-right:15px;border:1px solid #dedede;}
+.f_select select {position:relative;z-index:1;height:26px;border:none;outline:none;background:rgba(0,0,0,0);}
+.f_select span img {padding-left:6px;}
+.perfect_container {width:100%;}
+.perfect_wrap {margin:40px auto 0;padding:60px 70px;width:1080px;background-color:#fff;}
+.perfect_row {padding-bottom:10px;width:100%;}
+.perfect_title {padding-bottom:20px;border-bottom:1px solid #ededed;}
+.perfect_title p {margin:0 0 10px;font-size:16px;color:#333;}
+.perfect_title span {font-size:14px;color:#b2b2b2;}
+.perfect_row > label {display:block;margin:20px 0;padding-left:6px;height:14px;font-size:14px;line-height:14px;color:#333;border-left:2px solid #4bb893;}
+/* 设置用户标签 */.selected-box {font-size:14px;display:flex;width:100%;height:50px;text-align:center;border:1px solid #ededed;align-items:center;}
+.selected-box li {line-height:36px;height:36px;margin-left:10px;padding:0 10px;cursor:pointer;color:#59b6d7;border-radius:3px;background-color:#eef8fb;/*background-color:rgba(89,182,183,.1);*/}
+.selected-box li::after {font-size:0;display:inline-block;width:16px;height:16px;margin-left:5px;content:'X';vertical-align:middle;background-image:url(./img/close_icon.png);background-repeat:no-repeat;background-position:center;background-size:16px;}
+.icon.close {display:inline-block;margin-left:5px;width:16px;height:16px;font-size:0;vertical-align:sub;background-image:url(./img/close_icon.png);background-repeat:no-repeat;background-size:16px;background-position:center;}
+.perfect_label_list {font-size:0;margin-bottom:-20px;margin-left:-20px;}
+.perfect_selected_list {padding:10px;height:56px;font-size:0;border:1px solid #dedede;}
+.perfect_selected_list li,.perfect_label_list li {display:inline-block;padding:0 20px;height:36px;font-size:14px;color:#666;line-height:36px;margin-left:20px;margin-bottom:20px;background-color:#f4f5f5;border-radius:3px;cursor:pointer;}
+.perfect_label_list li.active,.perfect_label_list li:hover,.perfect_selected_list li {color:#59b6d7;background-color:#eef8fb;}
+.perfect_selected_list li:first-child {margin-left:0;}
