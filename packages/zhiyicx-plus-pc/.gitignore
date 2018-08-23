@@ -2,7 +2,6 @@
 vendor
 composer.lock
 node_modules
-composer.json
 yarn.lock
 .idea/
 .DS_Store
