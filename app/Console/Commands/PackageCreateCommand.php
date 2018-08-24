@@ -23,7 +23,6 @@ namespace Zhiyi\Plus\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Config\Repository;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Console\Input\InputOption;
 
 class PackageCreateCommand extends Command
 {
