@@ -22,9 +22,9 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Models\UserCount;
 use Illuminate\Support\Facades\DB;
-use Zhiyi\Plus\Models\Like as LikeModel;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\AtMessage\AtMessageHelperTrait;
@@ -42,7 +42,6 @@ use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed as FeedRepository;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\FormRequest\API2\StoreFeedPost as StoreFeedPostRequest;
-use function Zhiyi\Plus\setting;
 
 class FeedController extends Controller
 {
@@ -100,7 +99,6 @@ class FeedController extends Controller
 
         return $feedModel->getConnection()->transaction(function () use ($feeds, $repository, $user) {
             return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
-
                 $feed->feed_view_count += 1;
                 $feed->hot = $feed->makeHotValue();
                 $feed->save();
@@ -171,7 +169,6 @@ class FeedController extends Controller
 
         return $feedModel->getConnection()->transaction(function () use ($feeds, $repository, $user) {
             return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
-
                 $feed->feed_view_count += 1;
                 $feed->hot = $feed->makeHotValue();
                 $feed->save();
@@ -219,12 +216,11 @@ class FeedController extends Controller
             },
             'topics' => function ($query) {
                 return $query->select('id', 'name');
-            }
+            },
         ]);
 
         return $model->getConnection()->transaction(function () use ($feeds, $repository, $user) {
             return $feeds->map(function ($feed) use ($repository, $user) {
-
                 $feed->feed_view_count += 1;
                 $feed->hot = $feed->makeHotValue();
                 $feed->save();
@@ -289,7 +285,6 @@ class FeedController extends Controller
 
         return $model->getConnection()->transaction(function () use ($repository, $user, $feeds) {
             return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
-
                 $feed->feed_view_count += 1;
                 $feed->hot = $feed->makeHotValue();
                 $feed->save();
