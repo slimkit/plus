@@ -79,40 +79,32 @@ function api($method = 'POST', $url = '', $params = array(), $instance = 1, $ori
 }
 
 /**
- * [socialiteapi 三方登录内部请求]
+ * [newapi formRequest请求api]
  * @author Foreach
  * @param  string  $method   [请求方式]
  * @param  string  $url      [地址]
  * @param  array   $params   [参数]
- * @param  integer $instance
- * @param  integer $original
  * @return
  */
-function socialiteapi($method = 'POST', $url = '', $params = array(), $instance = 1, $original = 1)
+function newapi($method = 'POST', $url = '', $params = array())
 {
-    $request = AccessTokenRequest::create($url, $method, $params);
-    $request->headers->add(['Accept' => 'application/json', 'Authorization' => 'Bearer '. Session::get('token')]);
+    $client = new Client([
+        'base_uri' => config('app.url')
+    ]);
 
-    // 注入JWT请求单例
-    app()->resolving(\Tymon\JWTAuth\JWT::class, function ($jwt) use ($request) {
-        $jwt->setRequest($request);
-
-        return $jwt;
-    });
-    Auth::guard('api')->setRequest($request);
-
-    // 解决获取认证用户
-    $request->setUserResolver(function() {
-        return Auth::user('api');
-    });
-
-    // 解决请求传参问题
-    if ($instance) { // 获取登录用户不需要传参
-        app()->instance(AccessTokenRequest::class, $request);
+    $headers = ['Accept' => 'application/json', 'Authorization' => 'Bearer '. Session::get('token')];
+    if ($method == 'GET') {
+        $response = $client->request($method, $url, [
+            'query' => $params,
+            'headers' => $headers
+        ]);
+    } else {
+        $response = $client->request($method, $url, [
+            'form_params' => $params,
+            'headers' => $headers
+        ]);
     }
-
-    $response = Route::dispatch($request);
-    return $original ? $response->original : $response;
+    return json_decode($response->getBody(), true);
 }
 
 /**

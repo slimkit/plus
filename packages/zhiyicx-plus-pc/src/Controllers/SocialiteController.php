@@ -6,7 +6,7 @@ use Auth;
 use Session;
 use Overtrue\Socialite\SocialiteManager;
 use Illuminate\Http\Request;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\socialiteapi;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\newapi;
 
 class SocialiteController extends BaseController
 {
@@ -75,7 +75,7 @@ class SocialiteController extends BaseController
 
         // 已登录时账号绑定
         if ($type == 'bind') {
-            $res = socialiteapi('PATCH', '/api/v2/user/socialite/'.$service, ['access_token' => $access_token]);
+            $res = newapi('PATCH', '/api/v2/user/socialite/'.$service, ['access_token' => $access_token]);
 
             $request->offsetSet('status', isset($res['message']) ? 0 : 1);
             $request->offsetSet('url', Route('pc:binds'));
@@ -86,7 +86,7 @@ class SocialiteController extends BaseController
 
         } else {
         // 未登录时账号注册/绑定
-            $res = socialiteapi('POST', '/api/v2/socialite/'.$service, ['access_token' => $access_token]);
+            $res = newapi('POST', '/api/v2/socialite/'.$service, ['access_token' => $access_token]);
 
             if (isset($res['token'])) { // 登录
                 $jwt = app(\Tymon\JWTAuth\JWTAuth::class);
