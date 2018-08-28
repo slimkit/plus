@@ -23,6 +23,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\PlusGroup\Models\Post;
 use Zhiyi\PlusGroup\Models\Group;
+use Zhiyi\PlusGroup\Models\Pinned;
 use Illuminate\Database\Eloquent\Model;
 use Zhiyi\PlusGroup\Models\GroupMember;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
@@ -80,41 +81,32 @@ class PostController
             return $post;
         });
         return response()->json([
-            'pinneds' => ($type == 'latest_reply' || $offset > 0) ? collect([]) : app()->call([$this, 'pinneds'], ['group' => $group]),
+            'pinneds' => ($type == 'latest_reply' || $offset > 0) ? [] : $this->pinneds($request, $repository),
             'posts' => $items,
         ], 200);
     }
 
-
     /**
-     * 获取一个圈子的置顶帖子.
-     *
-     * @param Request $request
-     * @param Group   $group
-     * @param Carbon  $datetime
-     * @return mixed
-     * @author BS <414606094@qq.com>
+     * list pinned posts for a group.
+     * @param \Illuminate\Http\Request $request
+     * @param \Zhiyi\PlusGroup\Repository\Post $repository
+     * @return array
      */
-    public function pinneds(Request $request, Group $group, Carbon $datetime, PostRepository $repository)
+    public function pinneds(Request $request, PostRepository $repository): array
     {
         $user = $request->user('api')->id ?? null;
-        $pinneds = $group->posts()->whereHas('pinned', function ($query) use ($datetime) {
-            return $query->where('expires_at', '>', $datetime);
-        })
-            ->join('group_pinneds', function ($join) use ($datetime) {
-                return $join->on('group_pinneds.target', '=', 'group_posts.id')
-                    ->where('group_pinneds.raw', 0);
-            })
-            ->select('group_posts.*')
-            ->orderBy('group_pinneds.amount', 'desc')
-            ->orderBy('group_pinneds.created_at', 'desc')
-            ->with(['user', 'images'])
+        $pinneds = (new Pinned)
+            ->query()
+            ->where('channel', 'post')
+            ->where('expires_at', '>', new Carbon)
             ->get();
-        return $pinneds->map(function ($post) use ($user, $repository) {
+        $pinneds->load(['post', 'post.user', 'post.images']);
+        
+        return $pinneds->map(function (Pinned $pinned) {
+            return $pinned->post;
+        })->filter()->each(function (Post $post) use ($user, $repository) {
             $repository->formatCommonList($user, $post);
-
-            return $post;
-        });
+        })->all();
     }
 
     /**
