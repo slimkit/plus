@@ -9,13 +9,13 @@
 
         <span class="font14 ml20 topic-btn">
             <div class="ev-btn-topic">
-                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-topic1"></use></svg>
+                <svg class="icon" aria-hidden="true" style="fill: #999;"><use xlink:href="#icon-topic1"></use></svg>
                 话题
             </div>
 
             <div class="dialog-topic-select ev-view-topic-select" style="display: none;">
                 <label class="search-wrap">
-                    <svg class="icon" aria-hidden="true" fill="#59b6d7"><use xlink:href="#icon-search-blue"></use></svg>
+                    <svg class="icon" aria-hidden="true" style="fill: #59b6d7;"><use xlink:href="#icon-search"></use></svg>
                     <input type="text" placeholder="搜索话题" oninput="weibo.searchTopics(this)">
                 </label>
                 <span class="hot ev-view-topic-hot">热门话题</span>
@@ -48,7 +48,7 @@
             @if ($default_topic ?? [])
             <li class="selected-topic-item">{{$default_topic['name']}}
                 <span class="close ev-delete-topic" data-topic-id="{{$default_topic['id']}}">
-                    <svg class="icon" aria-hidden="true" fill="#59b6d7"><use xlink:href="#icon-added"></use></svg>
+                    <svg class="icon" aria-hidden="true" style="fill: #59b6d7;"><use xlink:href="#icon-close"></use></svg>
                 </span>
             </li>
             @endif
