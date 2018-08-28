@@ -385,7 +385,7 @@ $(function() {
       var name = $(this).data('topic-name')
       var html = '<li class="selected-topic-item ev-selected-topic-item">' + name +
         '<span data-topic-id="'+id+'" class="close ev-delete-topic">'+
-        '<svg class="icon" aria-hidden="true" fill="#59b6d7"><use xlink:href="#icon-added"></use></svg>'+
+        '<svg class="icon" aria-hidden="true" style="fill: #59d6b7;"><use xlink:href="#icon-close"></use></svg>'+
         '</span></li>';
       $('.ev-selected-topics').append(html);
       weibo.selectedTopics.push(id);
