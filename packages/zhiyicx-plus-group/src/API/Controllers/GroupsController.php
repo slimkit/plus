@@ -33,9 +33,12 @@ use Zhiyi\PlusGroup\Models\GroupMember as GroupMemberModel;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\PlusGroup\Models\GroupMemberLog as GroupMemberLogModel;
+use Zhiyi\Plus\Utils\DateTimeToIso8601ZuluString;
 
 class GroupsController
 {
+    use DateTimeToIso8601ZuluString;
+
     // 圈子封闭等级
     protected $mode_level = [
         'paid' => 3,
@@ -606,7 +609,7 @@ class GroupsController
         ->offset($offset)
         ->get();
 
-        $joined = GroupMemberModel::whereIn('group_id', $groups->map->id)
+        $joined = GroupMemberModel::whereIn('group_id', $groups->map->id->all())
             ->where('user_id', $user->id)
             ->get();
 
@@ -616,6 +619,12 @@ class GroupsController
                 if ($member->group_id === $group->id && $member->audit === 1) {
                     $group->joined = $member;
 
+                    return false;
+                } elseif ($member->group_id == $group->id) {
+                    $group->join_at = $this->dateTimeToIso8601ZuluString(
+                        $member->{GroupMemberModel::CREATED_AT}
+                    );
+                    
                     return false;
                 }
             });
