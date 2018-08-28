@@ -61,8 +61,8 @@ class PinnedController extends Controller
         })
         ->orderByRaw(
             'CASE
-                WHEN (`status` = 0) THEN 1
-                WHEN (`status` <> 0 ) THEN 2
+                WHEN (status = 0) THEN 1
+                WHEN (status <> 0 ) THEN 2
             END ASC'
         )
         ->orderBy('id', 'desc')

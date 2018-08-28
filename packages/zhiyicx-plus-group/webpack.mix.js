@@ -11,9 +11,17 @@ let mix = require("laravel-mix");
  |
  */
 
-mix.setPublicPath("assets");
-mix.setResourceRoot("/assets/plus-group/");
 mix.sourceMaps(!mix.inProduction());
 
 // More documents see: https://laravel.com/docs/master/mix
-mix.js("resources/assets/admin", "assets");
+if (mix.inProduction()) {
+    mix.setPublicPath('assets');
+    mix.setResourceRoot('/assets/plus-group');
+    mix.js('resources/assets/admin/index.js', 'assets/admin.js');
+  
+  // Dev build.
+  } else {
+    mix.setPublicPath('../../public/assets/plus-group');
+    mix.setResourceRoot('/');
+    mix.js('resources/assets/admin/index.js', '../../public/assets/plus-group/admin.js');
+  }
