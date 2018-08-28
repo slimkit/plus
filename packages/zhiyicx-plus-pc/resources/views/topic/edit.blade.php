@@ -217,13 +217,16 @@
 
     function uploadBlobImage(file) {
         var formData = new FormData();
-        formData.append('file', file)
+        formData.append('file', file);
         axios.post('/api/v2/files', formData, {
             headers: { 'content-type': 'multipart/form-data' },
         }).then(function(res) {
-            $('.ev-ipt-logo-id').val(res.data.id)
+            $('.ev-ipt-logo-id').val(res.data.id);
         }).catch(function(error) {
-            showError(error.response.data.message)
+            $('.ev-cover-tips').show();
+            $('.ev-img-cover').removeAttr('src');
+            if (error.response.status === 413) return noticebox('图片文件超出大小', 0);
+            showError(error.response.data);
         })
     }
 })()
