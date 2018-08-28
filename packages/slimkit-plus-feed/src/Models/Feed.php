@@ -229,4 +229,13 @@ class Feed extends Model
             ->belongsToMany(FeedTopicModel::class, $table, 'feed_id', 'topic_id')
             ->using(FeedTopicLinkModel::class);
     }
+
+    public function makeHotValue($model = null): int
+    {
+        if (! $model instanceof static) {
+            $model = $this;
+        }
+
+        return $model->feed_view_count + $model->feed_comment_count * 10 + $model->like_count * 5;
+    }
 }

@@ -32,8 +32,6 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\PackageCreateCommand::class,
-        Commands\PackageArchiveCommand::class,
-        Commands\PackageLinkCommand::class,
         Commands\PackageHandlerCommand::class,
         Commands\InstallPasswordCommand::class,
     ];
@@ -58,8 +56,6 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
-
         require base_path('routes/console.php');
     }
 
@@ -72,7 +68,7 @@ class Kernel extends ConsoleKernel
     protected function getArtisan()
     {
         $artisan = parent::getArtisan();
-        $artisan->setName(sprintf('ThinkSNS Plus ( For Larvel %s )', $this->app->getLaravelVersion()));
+        $artisan->setName(sprintf('Plus (ThinkSNS+) ( For Larvel %s )', $this->app->getLaravelVersion()));
 
         return $artisan;
     }

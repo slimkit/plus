@@ -22,9 +22,9 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Models\UserCount;
 use Illuminate\Support\Facades\DB;
-use Zhiyi\Plus\Models\Like as LikeModel;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\AtMessage\AtMessageHelperTrait;
@@ -71,11 +71,11 @@ class FeedController extends Controller
 
     public function getPinnedFeeds(Request $request, FeedModel $feedModel, FeedRepository $repository, Carbon $datetime)
     {
-        $user = $request->user('api')->id ?? 0;
-        if ($request->query('after') || $request->query('type') === 'follow' || $request->query('offset')) {
+        if ($request->query('after') || $request->query('hot') || $request->query('type') === 'follow' || $request->query('offset')) {
             return collect([]);
         }
 
+        $user = $request->user('api')->id ?? 0;
         $feeds = $feedModel->select('feeds.*')
             ->join('feed_pinneds', function ($join) use ($datetime) {
                 return $join->on('feeds.id', '=', 'feed_pinneds.target')->where('channel', 'feed')->where('expires_at', '>', $datetime);
@@ -84,9 +84,6 @@ class FeedController extends Controller
                 $query->where('user_id', $user);
             })
             ->with([
-                'pinnedComments' => function ($query) use ($datetime) {
-                    return $query->where('expires_at', '>', $datetime)->limit(5);
-                },
                 'user' => function ($query) {
                     return $query->withTrashed();
                 },
@@ -99,11 +96,13 @@ class FeedController extends Controller
         }]);
 
         $user = $request->user('api')->id ?? 0;
-        $ids = $feeds->pluck('id');
-        $feedModel->whereIn('id', $ids)->increment('feed_view_count');
 
         return $feedModel->getConnection()->transaction(function () use ($feeds, $repository, $user) {
             return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
+                $feed->feed_view_count += 1;
+                $feed->hot = $feed->makeHotValue();
+                $feed->save();
+
                 $repository->setModel($feed);
                 $repository->images();
                 $repository->format($user);
@@ -158,9 +157,6 @@ class FeedController extends Controller
         })
         ->orderBy('id', 'desc')
         ->with([
-            'pinnedComments' => function ($query) use ($datetime) {
-                return $query->with('user')->where('expires_at', '>', $datetime)->limit(5);
-            },
             'user' => function ($query) {
                 return $query->withTrashed();
             },
@@ -171,11 +167,12 @@ class FeedController extends Controller
         ->limit($limit)
         ->get();
 
-        $ids = $feeds->pluck('id');
-        $feedModel->whereIn('id', $ids)->increment('feed_view_count');
-
         return $feedModel->getConnection()->transaction(function () use ($feeds, $repository, $user) {
             return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
+                $feed->feed_view_count += 1;
+                $feed->hot = $feed->makeHotValue();
+                $feed->save();
+
                 $repository->setModel($feed);
                 $repository->images();
                 $repository->format($user);
@@ -199,40 +196,35 @@ class FeedController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function hot(Request $request, LikeModel $model, FeedRepository $repository, Carbon $dateTime)
+    public function hot(Request $request, FeedRepository $repository, Carbon $dateTime, FeedModel $model)
     {
-        $limit = $request->query('limit', 15);
-        $offset = $request->query('offset');
+        $hot = $request->query('hot', 0);
         $user = $request->user('api')->id ?? 0;
 
-        $feeds = FeedModel::where('created_at', '>', $dateTime->subDay(config('feed.duration', 7)))
-             ->whereDoesntHave('blacks', function ($query) use ($user) {
-                 $query->where('user_id', $user);
-             })
-             ->with([
-                 'pinnedComments' => function ($query) use ($dateTime) {
-                     return $query->with('user')->where('expires_at', '>', $dateTime)->limit(5);
-                 },
-                 'user' => function ($query) {
-                     return $query->withTrashed();
-                 },
-             ])
-             ->select('*', $model->getConnection()->raw('(feed_view_count + (feed_comment_count * 10) + (like_count * 5)) as popular'))
-             ->limit($limit)
-             ->offset($offset)
-             ->orderBy('popular', 'desc')
-             ->get();
-        $feeds->load(['topics' => function ($query) {
-            return $query->select('id', 'name');
-        }]);
-
-        FeedModel::whereIn('id', $feeds->pluck('id'))->increment('feed_view_count');
+        $feeds = $model
+            ->query()
+            ->when($hot, function ($query) use ($hot) {
+                return $query->where('hot', '<', $hot);
+            })
+            ->where(FeedModel::CREATED_AT, '>', $dateTime->subDay(setting('feed', 'list/hot-duration', 7)))
+            ->limit($request->query('limit', 15))
+            ->orderBy('hot', 'desc')
+            ->get();
+        $feeds->load([
+            'user' => function ($query) {
+                return $query->withTrashed();
+            },
+            'topics' => function ($query) {
+                return $query->select('id', 'name');
+            },
+        ]);
 
         return $model->getConnection()->transaction(function () use ($feeds, $repository, $user) {
             return $feeds->map(function ($feed) use ($repository, $user) {
-                if (! $feed) {
-                    return null;
-                }
+                $feed->feed_view_count += 1;
+                $feed->hot = $feed->makeHotValue();
+                $feed->save();
+
                 $repository->setModel($feed);
                 $repository->images();
                 $repository->format($user);
@@ -275,9 +267,6 @@ class FeedController extends Controller
                     ->orWhere('feeds.user_id', $user->id);
             })
             ->with([
-                'pinnedComments' => function ($query) use ($datetime) {
-                    return $query->with('user')->where('expires_at', '>', $datetime)->limit(5);
-                },
                 'user' => function ($query) {
                     return $query->withTrashed();
                 },
@@ -293,11 +282,13 @@ class FeedController extends Controller
             ->orderBy('feeds.id', 'desc')
             ->limit($limit)
             ->get();
-        $ids = $feeds->pluck('id');
-        $model->whereIn('id', $ids)->increment('feed_view_count');
 
         return $model->getConnection()->transaction(function () use ($repository, $user, $feeds) {
             return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
+                $feed->feed_view_count += 1;
+                $feed->hot = $feed->makeHotValue();
+                $feed->save();
+
                 $repository->setModel($feed);
                 $repository->images();
                 $repository->format($user->id);
@@ -830,9 +821,6 @@ class FeedController extends Controller
                 return $query->where('id', '<', $after);
             })
             ->with([
-                'pinnedComments' => function ($query) use ($datetime) {
-                    return $query->where('expires_at', '>', $datetime)->limit(5);
-                },
                 'user' => function ($query) {
                     return $query->withTrashed();
                 },

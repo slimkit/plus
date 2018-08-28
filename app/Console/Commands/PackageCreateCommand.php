@@ -23,7 +23,6 @@ namespace Zhiyi\Plus\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Config\Repository;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Console\Input\InputOption;
 
 class PackageCreateCommand extends Command
 {
@@ -77,13 +76,6 @@ class PackageCreateCommand extends Command
 
         // Get output path.
         $outputPath = base_path(sprintf('packages/%s-%s', $vendor, $name));
-        if ($this->option('old')) {
-            $outputPath = $this
-                ->getLaravel()
-                ->resourcePath(sprintf('repositorie/sources/%s-%s', $vendor, $name));
-            $this->warn('`package:archive` and `package:create --old` be removed soon.');
-        }
-
         if (is_dir($outputPath) && file_exists($outputPath)) {
             throw new \RuntimeException(sprintf('Will the directory "%s" already exist', $outputPath));
         }
@@ -228,22 +220,6 @@ class PackageCreateCommand extends Command
                 'php' => '>=7.1.3',
             ],
             'autoload' => [],
-            'config' => [
-                'sort-packages' => true,
-            ],
         ]);
-    }
-
-    /**
-     * Get the console command options.
-     *
-     * @return array
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    protected function getOptions()
-    {
-        return [
-            ['old', null, InputOption::VALUE_NONE, 'Create a old package.'],
-        ];
     }
 }
