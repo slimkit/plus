@@ -22,7 +22,7 @@
                 <ul class="topic-list ev-view-topic-list">
                     @foreach($list ?? [] as $topic)
                     @if($loop->index < 8)
-                    <li data-topic-id="{{$topic->id}}" data-topic-name="{{$topic->name}}">{{$topic->name}}</li>
+                    <li data-topic-id="{{$topic['id']}}" data-topic-name="{{$topic['name']}}">{{$topic['name']}}</li>
                     @endif
                     @endforeach
                 </ul>
@@ -46,8 +46,8 @@
         <ul class="selected-topics ev-selected-topics">
             {{-- 如果传入了话题, 就默认添加这个话题 --}}
             @if ($default_topic ?? [])
-            <li class="selected-topic-item">{{$default_topic->name}}
-                <span class="close ev-delete-topic" data-topic-id="{{$default_topic->id}}">
+            <li class="selected-topic-item">{{$default_topic['name']}}
+                <span class="close ev-delete-topic" data-topic-id="{{$default_topic['id']}}">
                     <svg class="icon" aria-hidden="true" fill="#59b6d7"><use xlink:href="#icon-added"></use></svg>
                 </span>
             </li>

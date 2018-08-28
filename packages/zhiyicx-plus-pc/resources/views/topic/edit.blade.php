@@ -19,17 +19,17 @@
                     <br>上传话题封面
                 </div>
                 <div class="cover">
-                    <img src="/api/v2/files/{{$topic->logo}}" class="ev-img-cover" />
+                    <img src="/api/v2/files/{{$topic['logo']}}" class="ev-img-cover" />
                 </div>
                 <button class="btn-edit-cover" type="button">更改封面</button>
             </div>
             <input type="file" class="hide ev-ipt-upload-file">
             <input type="text" name="logo" class="hide ev-ipt-logo-id">
             <div class="fomritm title">
-                <input type="text" maxlength="10" value="{{$topic->name}}" readonly>
+                <input type="text" maxlength="10" value="{{$topic['name']}}" readonly>
             </div>
             <div class="formitm description">
-                <input class="ev-ipt-desc" type="text" value="{{$topic->desc}}" maxlength="50" name="desc" placeholder="简单介绍一下话题内容">
+                <input class="ev-ipt-desc" type="text" value="{{$topic['desc']}}" maxlength="50" name="desc" placeholder="简单介绍一下话题内容">
             </div>
             <div class="formitm word-count">
                 <span><span class="ev-current-word-count">0</span>/50</span>
@@ -75,9 +75,9 @@
     function onSubmit(event) {
         event.preventDefault();
         var formData = $('.ev-form-create-topic').serialize();
-        axios.patch('/api/v2/feed/topics/{{$topic->id}}', formData, { validatStatus: s => s === 204 })
+        axios.patch('/api/v2/feed/topics/{{$topic['id']}}', formData, { validatStatus: s => s === 204 })
             .then(function(res) {
-                location.href = '/topic/{{$topic->id}}'
+                location.href = '/topic/{{$topic['id']}}'
             })
             .catch(function(error) {
                 showError(error.response.data);

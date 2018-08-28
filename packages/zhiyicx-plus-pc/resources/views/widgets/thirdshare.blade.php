@@ -1,5 +1,6 @@
 @php
     $share_title = str_replace(array("\r", "\n"), array('', '\n'), addslashes($share_title));
+    $color = $color ?? false;
 @endphp
 
 <a href="javascript:;" onclick="thirdShare(1, '{{ $share_url }}', '{{ $share_title }}', '{{ $share_pic }}', this)" title="分享到新浪微博">

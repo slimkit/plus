@@ -9,10 +9,10 @@
                         </span>
                     </div>
                     <div class="hot-subject">
-                        <a class="hot-issues-title" href="{{ Route('pc:topicinfo', $topic->id) }}">{{$topic->name}}</a>
+                        <a class="hot-issues-title" href="{{ Route('pc:topicinfo', $topic['id']) }}">{{$topic['name']}}</a>
                         <div class="hot-issues-count">
-                            <span class="count">关注  {{$topic->follows_count}}</span>
-                            <span class="count">问题  {{$topic->questions_count}}</span>
+                            <span class="count">关注  {{$topic['follows_count']}}</span>
+                            <span class="count">问题  {{$topic['questions_count']}}</span>
                         </div>
                     </div>
                 </li>

@@ -1,4 +1,4 @@
-@section('title')话题 - {{ $topic->name }}@endsection
+@section('title')话题 - {{ $topic['name'] }}@endsection
 
 @extends('pcview::layouts.default')
 
@@ -12,14 +12,14 @@
 <div class="m-topic p-topic-detail">
     <div class="left">
         <header>
-            <div class="bg" style="background-image: url(/api/v2/files/{{$topic->logo}}?w=815&h=426)"></div>
+            <div class="bg" style="background-image: url(/api/v2/files/{{$topic['logo'] ?? ''}}?w=815&h=426)"></div>
             <div class="mask">
-                <h1>{{ $topic->name }}</h1>
-                <p class="author">创建者: {{ $creator->name }}</p>
-                <p class="description">{{ $topic->desc }}</p>
+                <h1>{{ $topic['name'] }}</h1>
+                <p class="author">创建者: {{ $creator['name'] }}</p>
+                <p class="description">{{ $topic['desc'] ?? '' }}</p>
             </div>
 
-            @if($creator->id !== $TS['id'])
+            @if($creator['id'] !== $TS['id'])
                 <button class="report ev-btn-report">举报</button>
             @else
                 <button class="report ev-btn-edit-topic">编辑话题</button>
@@ -36,12 +36,12 @@
     </div>
     <div class="right">
         <div class="interaction">
-            @if($TS && $TS->id !== $topic->creator_user_id)
-            <button class="ev-btn-follow-topic" @if($topic->has_followed)style="display: none;"@endif>
+            @if($TS && $TS['id'] !== $topic['creator_user_id'])
+            <button class="ev-btn-follow-topic" @if($topic['has_followed'])style="display: none;"@endif>
                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-topic"></use></svg>
                 关注话题
             </button>
-            <button class="ev-btn-unfollow-topic actived" @if(!$topic->has_followed)style="display: none;"@endif>
+            <button class="ev-btn-unfollow-topic actived" @if(!$topic['has_followed'])style="display: none;"@endif>
                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-topic2"></use></svg>
                 已关注
             </button>
@@ -53,16 +53,16 @@
         </div>
         <div class="share-wrap">
             <div class="info">
-                <div class="item"><p>{{ $topic->feeds_count }}</p><p><small>动态</small></p></div>
-                <div class="item"><p>{{ $topic->followers_count }}</p><p><small>关注</small></p></div>
+                <div class="item"><p>{{ $topic['feeds_count'] }}</p><p><small>动态</small></p></div>
+                <div class="item"><p>{{ $topic['followers_count'] }}</p><p><small>关注</small></p></div>
             </div>
             <div class="share">
                 分享至:
                 @include('pcview::widgets.thirdshare' , [
                     'color' => '#fff',
-                    'share_url' => route('pc:topicDetail', ['topicid_id' => $topic->id]),
-                    'share_title' => $topic->name,
-                    'share_pic' => ($topic->logo ? getenv('APP_URL') . '/api/v2/files/' . $topic->logo : asset('assets/pc/images/default_picture.png'))
+                    'share_url' => route('pc:topicDetail', ['topicid_id' => $topic['id']]),
+                    'share_title' => $topic['name'],
+                    'share_pic' => (!empty($topic['logo']) ? getenv('APP_URL') . '/api/v2/files/' . $topic['logo'] : asset('assets/pc/images/default_picture.png'))
                 ])
             </div>
         </div>
@@ -73,8 +73,8 @@
             <ul>
                 @foreach($participants as $user)
                 <li>
-                    <a href="/users/{{ $user->id }}">
-                        <div class="avatar"></div><span class="name">{{ $user->name }}</span>
+                    <a href="/users/{{ $user['id'] }}">
+                        <div class="avatar"></div><span class="name">{{ $user['name'] }}</span>
                     </a>
                 </li>
                 @endforeach
@@ -104,8 +104,7 @@
     // 加载微博
     var params = {
         isAjax: true,
-        topic_id: Number('{{$topic->id}}') || 0,
-
+        topic_id: Number('{{$topic['id']}}') || 0,
     };
     loader.init({
         container: '.ev-feed-list',
@@ -142,21 +141,21 @@
     }
 
     function reportTopic() {
-        reported.init('{{$topic->id}}', 'topic')
+        reported.init('{{$topic['id']}}', 'topic')
     }
 
     function editTopic() {
-        location.href = '/topic/{{$topic->id}}/edit'
+        location.href = '/topic/{{$topic['id']}}/edit'
     }
 
     function followTopic() {
-        axios.put('/api/v2/user/feed-topics/{{$topic->id}}')
+        axios.put('/api/v2/user/feed-topics/{{$topic['id']}}')
         $('.ev-btn-follow-topic').hide()
         $('.ev-btn-unfollow-topic').show()
     }
 
     function unfollowTopic() {
-        axios.delete('/api/v2/user/feed-topics/{{$topic->id}}')
+        axios.delete('/api/v2/user/feed-topics/{{$topic['id']}}')
         $('.ev-btn-unfollow-topic').hide()
         $('.ev-btn-follow-topic').show()
     }

@@ -124,7 +124,7 @@ function getTime($time, int $type = 1, int $format = 1)
     $timezone = isset($_COOKIE['customer_timezone']) ? $_COOKIE['customer_timezone'] : 0;
     // 一小时内显示文字
     if ((Carbon::now()->subHours(24) < $time) && $format) {
-        return $time->diffForHumans();
+        return Carbon::parse($time)->diffForHumans();
     }
     return $type ? $time->addHours($timezone)->toDateString() : $time->addHours($timezone);
 }
@@ -137,7 +137,7 @@ function getTime($time, int $type = 1, int $format = 1)
  * @param  [type]  $height [高度]
  * @param  boolean $cut    [是否裁剪]
  * @param  integer $blur   [是否高斯模糊]
- * @return [string]          
+ * @return [string]
  */
 function getImageUrl($image = array(), $width, $height, $cut = true, $blur = 0)
 {

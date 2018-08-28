@@ -5,6 +5,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 use DB;
 use Illuminate\Http\Request;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\newapi;
 use Zhiyi\Plus\Models\AdvertisingSpace;
 
 class FeedController extends BaseController
@@ -20,7 +21,7 @@ class FeedController extends BaseController
         if ($request->isAjax) {
             if ($request->query('feed_id')) { // 获取单条微博内容
                 $feeds['feeds'] = collect();
-                $feed = api('GET', '/api/v2/feeds/' . $request->feed_id);
+                $feed = newapi('GET', '/api/v2/feeds/' . $request->feed_id);
                 $feeds['feeds']->push($feed);
                 $feedData = view('pcview::templates.feeds', $feeds, $this->PlusData)->render();
 
@@ -35,10 +36,9 @@ class FeedController extends BaseController
                     $params = [
                         'index' => (int) $request->query('after') ?: 0,
                     ];
-                    $feeds = api('GET', '/api/v2/feed/topics/' . $topic_id . '/feeds', $params);
+                    $feeds = newapi('GET', '/api/v2/feed/topics/' . $topic_id . '/feeds', $params);
                     $data['feeds'] = $feeds;
-                    $clone = clone $feeds;
-                    $after = $clone->pop()->index ?? 0;
+                    $after = $feeds[count($feeds) - 1]['index'] ?? 0;
                 } else {
                     // 普通列表
                     $params['type'] = $request->query('type');
@@ -47,7 +47,7 @@ class FeedController extends BaseController
                     } else {
                         $params['offset'] = $request->query('offset') ?: 0;
                     }
-                    $data = api('GET', '/api/v2/feeds', $params);
+                    $data = newapi('GET', '/api/v2/feeds', $params);
                     if (!empty($data['pinned']) && $params['type'] != 'follow') { // 置顶动态
                         $data['pinned']->reverse()->each(function ($item, $key) use ($data) {
                             $item->pinned = true;
@@ -55,8 +55,8 @@ class FeedController extends BaseController
                         });
                     }
 
-                    $feed = clone $data['feeds'];
-                    $after = $feed->pop()->id ?? 0;
+                    $feed = $data['feeds'];
+                    $after = $feed[count($feed) - 1]['id'] ?? 0;
                 }
 
                 $data['space'] = $this->PlusData['config']['ads_space']['pc:feeds:list'] ?? [];
@@ -75,7 +75,7 @@ class FeedController extends BaseController
         // 渲染模板
         $data['type'] = $request->input('type') ?: 'new';
 
-        $data['hot_topics'] = api('GET', '/api/v2/feed/topics', ['limit' => 8, 'only' => 'hot']);
+        $data['hot_topics'] = newapi('GET', '/api/v2/feed/topics', ['only' => 'hot']);
 
         $this->PlusData['current'] = 'feeds';
         return view('pcview::feed.index', $data, $this->PlusData);
