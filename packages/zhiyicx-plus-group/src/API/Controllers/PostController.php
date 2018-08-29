@@ -41,37 +41,32 @@ class PostController
     public function index(Request $request, Group $group, PostRepository $repository)
     {
         $user = $request->user('api')->id ?? 0;
-        $limit = $request->get('limit', 15);
-        $offset = $request->get('offset', 0);
-        $type = $request->get('type');
+        $limit = $request->query('limit', 15);
+        $offset = $request->query('offset', 0);
+        $type = $request->query('type');
 
-        $posts = $group->posts()
+        $posts = $group
+            ->posts()
             ->whereDoesntHave('blacks', function ($query) use ($user) {
                 $query->where('user_id', $user);
             })
-            ->when($type && $type == 'latest_reply', function ($query) use ($type) {
-                return $query->leftJoin('comments', function ($join) {
-                    $join->on('group_posts.id', '=', 'comments.commentable_id')
-                        ->where('commentable_type', '=', 'group-posts')
-                        ->orderBy('comments.created_at', 'desc');
-                    })
-                    ->orderBy('comments.created_at', 'desc');
-                }, function ($query) {
-                    return $query->orderBy('id', 'desc');
-                })
+            ->when($excellent = $request->query('excellent', false), function ($query) {
+                return $query->whereNotNull('excellent_at');
+            })
             ->select([
-                'group_posts.id',
-                'group_posts.group_id',
-                'group_posts.title',
-                'group_posts.user_id',
-                'group_posts.summary',
-                'group_posts.likes_count',
-                'group_posts.views_count',
-                'group_posts.comments_count',
-                'group_posts.created_at',
+                'id',
+                'group_id',
+                'title',
+                'user_id',
+                'summary',
+                'likes_count',
+                'views_count',
+                'comments_count',
+                'excellent_at',
+                'created_at',
             ])
             ->with(['user', 'images'])
-            ->orderBy($type === 'last_reply' ? 'comments.created_at' : 'id', 'desc')
+            ->orderBy($type === 'last_reply' ? 'comment_updated_at' : 'id', 'desc')
             ->offset($offset)
             ->limit($limit)
             ->get();

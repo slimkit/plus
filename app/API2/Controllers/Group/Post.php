@@ -22,6 +22,9 @@ class Post extends Controller
 {
     use DateTimeToIso8601ZuluString;
 
+    /**
+     * Create the controller instance.
+     */
     public function __construct()
     {
         $this
@@ -96,6 +99,12 @@ class Post extends Controller
         return new Response('', Response::HTTP_NO_CONTENT);
     }
 
+    /**
+     * list non-foolow group preview posts.
+     * @param \Illuminate\Http\Request $request
+     * @param \Zhiyi\PlusGroup\Models\Group $group
+     * @return \Illuminate\Http\JsonResponse;
+     */
     public function previewPosts(Request $request, GroupModel $group): JsonResponse
     {
         $posts = $group
@@ -148,5 +157,10 @@ class Post extends Controller
         });
 
         return new JsonResponse($posts, Response::HTTP_OK);
+    }
+
+    public function listExcellentPosts()
+    {
+        
     }
 }

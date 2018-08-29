@@ -126,7 +126,9 @@ class PostCommentController
 
         $post->getConnection()->transaction(function () use ($post, $commentModel, $reply, $user) {
             $post->comments()->save($commentModel);
-            $post->increment('comments_count', 1);
+            $post->comments_count += 1;
+            $post->comment_updated_at = new Carbon;
+            $post->save();
             $user->extra()->firstOrCreate([])->increment('comments_count', 1);
 
             if ($post->user_id !== $user->id) {
