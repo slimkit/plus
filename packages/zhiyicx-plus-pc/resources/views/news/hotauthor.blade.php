@@ -5,16 +5,16 @@
     <div class="itop_autor">热门作者</div>
     <div id="j-author-hot-wrapp">
         <div class="R_list hots_author">
-        @if ($author->isEmpty())
+        @if (!empty($author))
             @foreach ($author as $user)
                 <div class="fl">
-                    <a href="{{ Route('pc:mine',['user_id'=>$user->user['id']]) }}">
-                        <img src="{{ getAvatar($user->$user) }}" />
+                    <a href="{{ Route('pc:mine',['user_id'=>$user]['user']['id']]) }}">
+                        <img src="{{ getAvatar($user['user']) }}" />
                     </a>
                 </div>
                 <div class="i_right">
-                    <span><a href="{{ route('pc:mine',['user_id'=>$user->user['id']]) }}">{{$user->user['name']}}</a></span>
-                    <p class="bio">{{ $user->user['bio'] or '暂无简介信息' }}</p>
+                    <span><a href="{{ route('pc:mine',['user_id'=>$user['user']['id']]) }}">{{$user['user']['name']}}</a></span>
+                    <p class="bio">{{ $user['user']['bio'] or '暂无简介信息' }}</p>
                 </div>
             @endforeach
         @else

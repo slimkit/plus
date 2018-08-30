@@ -1,4 +1,4 @@
-@section('title') {{ $user->name }} 的个人主页@endsection
+@section('title') {{ $user['name'] }} 的个人主页@endsection
 
 @extends('pcview::layouts.default')
 

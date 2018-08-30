@@ -22,8 +22,8 @@
                 <dt class="fl">
                     <a class="avatar_box" href="{{ route('pc:mine', $user['id']) }}">
                     <img class="round" src="{{ getAvatar($user, 60) }}" width="60">
-                    @if($user->verified)
-                    <img class="role-icon" src="{{ $user->verified['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                    @if($user['verified'])
+                    <img class="role-icon" src="{{ $user['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
                     @endif
                     </a>
                 </dt>
@@ -38,20 +38,20 @@
                     <div class="options_div">
                         <div class="triangle"></div>
                         <ul>
-                        @if($TS && $user->id == $TS->id)
+                        @if($TS && $user['id'] == $TS['id'])
                             <li>
-                                <a href="javascript:;" onclick="weibo.pinneds({{$feed->id}});">
+                                <a href="javascript:;" onclick="weibo.pinneds({{$feed['id']}});">
                                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-pinned2"></use></svg>申请置顶
                                 </a>
                             </li>
                             <li>
-                                <a href="javascript:;" onclick="weibo.delFeed({{$feed->id}}, 1);">
+                                <a href="javascript:;" onclick="weibo.delFeed({{$feed['id']}}, 1);">
                                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-delete"></use></svg>删除
                                 </a>
                             </li>
                         @else
                             <li>
-                                <a href="javascript:;" onclick="reported.init('{{$feed->id}}', 'feed');">
+                                <a href="javascript:;" onclick="reported.init('{{$feed['id']}}', 'feed');">
                                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-report"></use></svg>
                                     <span>举报</span>
                                 </a>
@@ -62,9 +62,9 @@
                 </dd>
             </dl>
 
-            @if(!empty($feed->images))
+            @if(!empty($feed['images']))
             <div class="detail_images">
-            @foreach($feed->images as $store)
+            @foreach($feed['images'] as $store)
                 {{-- 计算图片高度 --}}
                 @php
                     $size = explode('x', $store['size']);
@@ -79,41 +79,41 @@
             </div>
             @endif
 
-            @if($feed->video)
+            @if($feed['video'])
                 <div>
-                    <video poster="{{ $routes['storage'] . $feed->video['cover_id'] }}" src="{{ $routes['storage'] . $feed->video['video_id'] }}" width="735" height="500" controls="controls">
+                    <video poster="{{ $routes['storage'] . $feed['video']['cover_id'] }}" src="{{ $routes['storage'] . $feed['video']['video_id'] }}" width="735" height="500" controls="controls">
                     </video>
                 </div>
             @endif
 
             <div class="detail_body">
-                {!! formatContent($feed->feed_content) !!}
+                {!! formatContent($feed['feed_content']) !!}
             </div>
 
             <div class="detail_share">
-                <span id="J-collect{{ $feed->id }}" rel="{{ $feed->collect_count }}" status="{{(int) $feed->has_collect}}">
-                    @if($feed->has_collect)
-                    <a href="javascript:;" onclick="collected.init({{$feed->id}}, 'feeds', 0);" class="act">
+                <span id="J-collect{{ $feed['id'] }}" rel="{{ $feed['collect_count'] }}" status="{{(int) $feed['has_collect']}}">
+                    @if($feed['has_collect'])
+                    <a href="javascript:;" onclick="collected.init({{$feed['id']}}, 'feeds', 0);" class="act">
                         <svg class="icon" aria-hidden="true"><use xlink:href="#icon-collect"></use></svg>
-                        <font class="cs">{{ $feed->collect_count }}</font> 人收藏
+                        <font class="cs">{{ $feed['collect_count'] }}</font> 人收藏
                     </a>
                     @else
-                    <a href="javascript:;" onclick="collected.init({{$feed->id}}, 'feeds', 0);">
+                    <a href="javascript:;" onclick="collected.init({{$feed['id']}}, 'feeds', 0);">
                         <svg class="icon" aria-hidden="true"><use xlink:href="#icon-collect"></use></svg>
-                        <font class="cs">{{ $feed->collect_count }}</font> 人收藏
+                        <font class="cs">{{ $feed['collect_count'] }}</font> 人收藏
                     </a>
                     @endif
                 </span>
-                <span id="J-likes{{$feed->id}}" rel="{{ $feed->like_count }}" status="{{(int) $feed->has_like}}">
-                    @if($feed->has_like)
-                    <a href="javascript:;" onclick="liked.init({{$feed->id}}, 'feeds', 0);" class="act">
+                <span id="J-likes{{$feed['id']}}" rel="{{ $feed['like_count'] }}" status="{{(int) $feed['has_like']}}">
+                    @if($feed['has_like'])
+                    <a href="javascript:;" onclick="liked.init({{$feed['id']}}, 'feeds', 0);" class="act">
                         <svg class="icon" aria-hidden="true"><use xlink:href="#icon-like"></use></svg>
-                        <font>{{ $feed->like_count }}</font> 人喜欢
+                        <font>{{ $feed['like_count'] }}</font> 人喜欢
                     </a>
                     @else
-                    <a href="javascript:;" onclick="liked.init({{$feed->id}}, 'feeds', 0);">
+                    <a href="javascript:;" onclick="liked.init({{$feed['id']}}, 'feeds', 0);">
                         <svg class="icon" aria-hidden="true"><use xlink:href="#icon-like"></use></svg>
-                        <font>{{ $feed->like_count }}</font> 人喜欢
+                        <font>{{ $feed['like_count'] }}</font> 人喜欢
                     </a>
                     @endif
                 </span>
@@ -123,22 +123,22 @@
                     分享至：
                     @php
                         //设置第三方分享图片，若未付费则为锁图。
-                        if ($feed->images->count() > 0) {
-                            $share_pic = config('app.url') . '/api/v2/files/' . $feed->images[0]['file'];
+                        if (count($feed['images']) > 0) {
+                            $share_pic = config('app.url') . '/api/v2/files/' . $feed['images'][0]['file'];
                         } else {
                             $share_pic = '';
                         }
                     @endphp
-                    @include('pcview::widgets.thirdshare' , ['share_url' => route('redirect', ['target' => '/feeds/'.$feed->id]), 'share_title' => $feed->feed_content, 'share_pic' => $share_pic])
+                    @include('pcview::widgets.thirdshare' , ['share_url' => route('redirect', ['target' => '/feeds/'.$feed['id']]), 'share_title' => $feed['feed_content'], 'share_pic' => $share_pic])
                 </div>
                 {{-- 打賞 --}}
                 @if($config['bootstrappers']['feed']['reward'])
-                    @include('pcview::widgets.rewards' , ['rewards_data' => $feed->rewards, 'rewards_type' => 'feeds', 'rewards_id' => $feed->id, 'rewards_info' => $feed->reward])
+                    @include('pcview::widgets.rewards' , ['rewards_data' => $feed['rewards'], 'rewards_type' => 'feeds', 'rewards_id' => $feed['id'], 'rewards_info' => $feed['reward']])
                 @endif
             </div>
 
             {{-- 评论 --}}
-            @include('pcview::widgets.comments', ['id' => $feed->id, 'comments_count' => $feed->feed_comment_count, 'comments_type' => 'feeds', 'loading' => '.feed_left', 'position' => 0, 'top' => 1])
+            @include('pcview::widgets.comments', ['id' => $feed['id'], 'comments_count' => $feed['feed_comment_count'], 'comments_type' => 'feeds', 'loading' => '.feed_left', 'position' => 0, 'top' => 1])
 
         </div>
     </div>
@@ -149,8 +149,8 @@
                 <div class="auth_header">
                     <a href="{{ route('pc:mine', $user['id']) }}">
                         <img class="round" src="{{ getAvatar($user, 50) }}" width="50">
-                        @if($user->verified)
-                        <img class="role-icon" src="{{ $user->verified['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                        @if($user['verified'])
+                        <img class="role-icon" src="{{ $user['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
                         @endif
                     </a>
                 </div>

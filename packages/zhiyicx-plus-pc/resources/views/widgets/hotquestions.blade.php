@@ -1,4 +1,4 @@
-@if(!$issues->isEmpty())
+@if(!empty($issues))
 <div class="hot-issues">
     <div class="title">热门问题</div>
     <ul class="hot-issues-list">
@@ -9,7 +9,7 @@
                         </span>
                     </div>
                     <div class="hot-subject">
-                        <a class="hot-issues-title" href="{{ Route('pc:questionread', $issue->id) }}">{{$issue->subject}}</a>
+                        <a class="hot-issues-title" href="{{ Route('pc:questionread', $issue['id']) }}">{{$issue['subject']}}</a>
                     </div>
                 </li>
             @endforeach

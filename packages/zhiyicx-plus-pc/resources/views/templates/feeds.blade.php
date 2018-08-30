@@ -5,7 +5,7 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getUserInfo;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
 @endphp
 
-@if(count($feeds))
+@if(!empty($feeds))
 @foreach($feeds as $key => $post)
 <div class="feed_item" id="feed_{{$post['id']}}" data-amount="{{ $post['paid_node']['amount'] }}" data-node="{{ $post['paid_node']['node'] }}">
     <div class="feed_title">
@@ -130,21 +130,13 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
         </div>
 
         {{-- 评论 --}}
-        @include('pcview::widgets.comments', [
-            'id' => $post['id'],
-            'comments_count' => !empty($post['comments']) ? count($post['comments']) : 0,
-            'comments_type' => 'feeds',
-            'url' => Route('pc:feedread', $post['id']),
-            'position' => 1,
-            'comments_data' => $post['comments'] ?? [],
-            'top' => 1
-        ])
+        @include('pcview::widgets.comments', ['id' => $post['id'], 'comments_count' => count($post['comments']), 'comments_type' => 'feeds', 'url' => Route('pc:feedread', $post['id']), 'position' => 1, 'comments_data' => $post['comments'], 'top' => 1])
 
         <div class="feed_line"></div>
     </div>
 </div>
 <script type="text/javascript">
-    var images = JSON.parse(@json($post['images'])), data = new Array();
+    var images = {!! json_encode($post['images']) !!}, data = new Array();
     if(images){
         for (var i in images) {
             var size = images[i].size.split('x');

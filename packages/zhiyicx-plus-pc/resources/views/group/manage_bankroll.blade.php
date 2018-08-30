@@ -1,5 +1,5 @@
 
-@section('title') {{ $group->name }}-圈子收益 @endsection
+@section('title') {{ $group['name'] }}-圈子收益 @endsection
 
 @extends('pcview::layouts.default')
 
@@ -13,12 +13,12 @@
     <div class="g-bd f-cb">
         <div class="g-sd">
             <ul>
-                <a href="{{ route('pc:groupedit', ['group_id'=>$group->id]) }}"><li>圈子资料</li></a>
-                @if ($group->joined->role == 'founder')
-                    <a href="{{ route('pc:groupbankroll', ['group_id'=>$group->id]) }}"><li class="cur">圈子收益</li></a>
+                <a href="{{ route('pc:groupedit', ['group_id'=>$group['id']]) }}"><li>圈子资料</li></a>
+                @if ($group['joined']['role'] == 'founder')
+                    <a href="{{ route('pc:groupbankroll', ['group_id'=>$group['id']]) }}"><li class="cur">圈子收益</li></a>
                 @endif
-                <a href="{{ route('pc:groupmember', ['group_id'=>$group->id]) }}"><li>成员管理</li></a>
-                <a href="{{ route('pc:groupreport', ['group_id'=>$group->id]) }}"><li>举报管理</li></a>
+                <a href="{{ route('pc:groupmember', ['group_id'=>$group['id']]) }}"><li>成员管理</li></a>
+                <a href="{{ route('pc:groupreport', ['group_id'=>$group['id']]) }}"><li>举报管理</li></a>
             </ul>
         </div>
         <div class="g-mn">
@@ -31,18 +31,18 @@
             </div>
             <div class="m-hd">
                 <div class="m-income all-income">
-                    <span>{{$group->join_income_count + $group->pinned_income_count}}</span>
+                    <span>{{$group['join_income_count'] + $group['pinned_income_count']}}</span>
                     <div class="s-fc4 f-fs2">账户余额（积分）</div>
                 </div>
                 <div class="f-dn m-income pinned-income">
-                    <span>{{$group->pinned_income_count}}</span>
+                    <span>{{$group['pinned_income_count']}}</span>
                     <div class="s-fc4 f-fs2">置顶收益（积分） 共置顶了
-                    <font color="#3CA967">{{$group->posts_count}}</font> 条帖子</div>
+                    <font color="#3CA967">{{$group['posts_count']}}</font> 条帖子</div>
                 </div>
                 <div class="f-dn m-income join-income">
-                    <span>{{$group->join_income_count}}</span>
+                    <span>{{$group['join_income_count']}}</span>
                     <div class="s-fc4 f-fs2">成员费（积分） 共
-                    {{-- <font color="#3CA967">{{$group->users_count}}</font> 个付费成员</div> --}}
+                    {{-- <font color="#3CA967">{{$group['users_count']}}</font> 个付费成员</div> --}}
                 </div>
             </div>
             <div class="m-ct">
@@ -68,7 +68,7 @@ $(function(){
         container: '#incomes-box',
         loading: '#incomes-box',
         url: '/groups/incomes',
-        params: {limit: 15, group_id: {{$group->id}} }
+        params: {limit: 15, group_id: {{$group['id']}} }
     });
 })
 
@@ -85,7 +85,7 @@ laydate.render({
             container: '#incomes-box',
             loading: '#incomes-box',
             url: '/groups/incomes',
-            params: {limit: 15, group_id: {{$group->id}}, start: value, end: $('#T-end').val() ,type:$('#J-tab .cur').attr('type')}
+            params: {limit: 15, group_id: {{$group['id']}}, start: value, end: $('#T-end').val() ,type:$('#J-tab .cur').attr('type')}
         });
     }
 });
@@ -102,7 +102,7 @@ laydate.render({
             container: '#incomes-box',
             loading: '#incomes-box',
             url: '/groups/incomes',
-            params: {limit: 15, group_id: {{$group->id}}, start: $('#T-start').val(), end: value,type:$('#J-tab .cur').attr('type')}
+            params: {limit: 15, group_id: {{$group['id']}}, start: $('#T-start').val(), end: value,type:$('#J-tab .cur').attr('type')}
         });
     }
 });
@@ -114,7 +114,7 @@ $('#J-tab li').on('click', function(){
     var params = {
         limit: 15,
         type: type,
-        group_id: {{$group->id}},
+        group_id: {{$group['id']}},
     }
     loader.init({
         container: '#incomes-box',

@@ -1,7 +1,7 @@
 @php
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
 @endphp
-@section('title') {{ $group->name }}-成员管理 @endsection
+@section('title') {{ $group['name'] }}-成员管理 @endsection
 
 @extends('pcview::layouts.default')
 
@@ -15,18 +15,18 @@
     <div class="g-bd f-cb">
         <div class="g-sd">
             <ul>
-                <a href="{{ route('pc:groupedit', ['group_id'=>$group->id]) }}"><li>圈子资料</li></a>
-                @if ($group->joined->role == 'founder')
-                    <a href="{{ route('pc:groupbankroll', ['group_id'=>$group->id]) }}"><li>圈子收益</li></a>
+                <a href="{{ route('pc:groupedit', ['group_id'=>$group['id']]) }}"><li>圈子资料</li></a>
+                @if ($group['joined']['role'] == 'founder')
+                    <a href="{{ route('pc:groupbankroll', ['group_id'=>$group['id']]) }}"><li>圈子收益</li></a>
                 @endif
-                <a href="{{ route('pc:groupmember', ['group_id'=>$group->id]) }}"><li class="cur">成员管理</li></a>
-                <a href="{{ route('pc:groupreport', ['group_id'=>$group->id]) }}"><li>举报管理</li></a>
+                <a href="{{ route('pc:groupmember', ['group_id'=>$group['id']]) }}"><li class="cur">成员管理</li></a>
+                <a href="{{ route('pc:groupreport', ['group_id'=>$group['id']]) }}"><li>举报管理</li></a>
             </ul>
         </div>
         <div class="g-mn">
             <div class="m-nav">
                 <ul class="f-cb" id="J-tab">
-                    <a href="{{ route('pc:groupmember', ['group_id'=>$group->id]) }}"><li class="cur">全部成员</li></a>
+                    <a href="{{ route('pc:groupmember', ['group_id'=>$group['id']]) }}"><li class="cur">全部成员</li></a>
                     <li type="audit">待审核</li>
                     <li type="blacklist">黑名单</li>
                 </ul>
@@ -42,33 +42,33 @@
                 <div class="f-mt20 f-fs4">圈主</div>
                 <dl class="m-row">
                     <dt>
-                        <img src="{{ getAvatar($group->founder->user, 50) }}" width="50" class="avatar">
-                        @if ($group->founder->user->verified)
-                            <img class="role-icon" src="{{ $group->founder->user->verified['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                        <img src="{{ getAvatar($group['founder']['user'], 50) }}" width="50" class="avatar">
+                        @if ($group['founder']['user']['verified'])
+                            <img class="role-icon" src="{{ $group['founder']['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
                         @endif
                     </dt>
-                    <dd>{{$group->founder->user->name}}</dd>
+                    <dd>{{$group['founder']['user']['name']}}</dd>
                 </dl>
             </div>
             <div>
                 <div class="f-mt20 f-fs4">管理员</div>
-                @if (!$manager->isEmpty())
+                @if (!empty($manager))
                 @foreach ($manager as $manage)
                     <dl class="m-row">
                         <dt>
-                            <img src="{{ getAvatar($manage->user, 50) }}" width="50" class="avatar">
-                            @if ($manage->user->verified)
-                                <img class="role-icon" src="{{ $manage->user->verified['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                            <img src="{{ getAvatar($manage['user'], 50) }}" width="50" class="avatar">
+                            @if ($manage['user']['verified'])
+                                <img class="role-icon" src="{{ $manage['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
                             @endif
                         </dt>
-                        <dd><div>{{$manage->user->name}}</div>
+                        <dd><div>{{$manage['user']['name']}}</div>
                             <div class="u-opt">
                                 <span>管理</span>
-                                @if (($group->joined->role == 'founder') && ($group->joined->user_id != $manage->user_id))
+                                @if (($group['joined']['role'] == 'founder') && ($group['joined']['user_id'] != $manage['user']))
                                 <svg class="icon f-fs2"><use xlink:href="#icon-setting"></use></svg>
                                     <ul class="u-menu f-dn">
-                                        <a href="javascript:;" onclick="MAG.set({{$group->id}}, {{$manage->id}}, 0);"><li>撤销管理员</li></a>
-                                        <a href="javascript:;" onclick="MAG.assign({{$group->id}}, {{$manage->user_id}});"><li>转让圈子</li></a>
+                                        <a href="javascript:;" onclick="MAG.set({{$group['id']}}, {{$manage['id']}}, 0);"><li>撤销管理员</li></a>
+                                        <a href="javascript:;" onclick="MAG.assign({{$group['id']}}, {{$manage['user_id']}});"><li>转让圈子</li></a>
                                     </ul>
                                 @endif
                             </div>
@@ -81,26 +81,26 @@
             </div>
             <div>
                 <div class="f-mt20 f-fs4">一般成员</div>
-                @if (!$members->isEmpty())
+                @if (!empty($members))
                 @foreach ($members as $member)
                     <dl class="m-row">
                         <dt>
-                            <img src="{{ getAvatar($member->user, 50) }}" width="50" class="avatar">
-                            @if ($member->user->verified)
-                                <img class="role-icon" src="{{ $member->user->verified['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                            <img src="{{ getAvatar($member['user'], 50) }}" width="50" class="avatar">
+                            @if ($member['user']['verified'])
+                                <img class="role-icon" src="{{ $member['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
                             @endif
                         </dt>
-                        <dd><div>{{$member->user->name}}</div>
+                        <dd><div>{{$member['user']['name']}}</div>
                             <div class="u-opt">
                                 <span>管理</span>
                                 <svg class="icon f-fs2"><use xlink:href="#icon-setting"></use></svg>
                                 <ul class="u-menu f-dn">
-                                    @if ($group->joined->role == 'founder')
-                                    <a href="javascript:;" onclick="MAG.set({{$group->id}}, {{$member->id}}, 1);"><li>设为管理员</li></a>
-                                    <a href="javascript:;" onclick="MAG.assign({{$group->id}}, {{$member->user_id}});"><li>转让圈子</li></a>
+                                    @if ($group['joined']['role'] == 'founder')
+                                    <a href="javascript:;" onclick="MAG.set({{$group['id']}}, {{$member['id']}}, 1);"><li>设为管理员</li></a>
+                                    <a href="javascript:;" onclick="MAG.assign({{$group['id']}}, {{$member['user']_id}});"><li>转让圈子</li></a>
                                     @endif
-                                    <a href="javascript:;" onclick="MAG.black({{$group->id}}, {{$member->id}}, 1);"><li>加入黑名单</li></a>
-                                    <a href="javascript:;" onclick="MAG.delete({{$group->id}}, {{$member->id}});"><li>踢出圈子</li></a>
+                                    <a href="javascript:;" onclick="MAG.black({{$group['id']}}, {{$member['id']}}, 1);"><li>加入黑名单</li></a>
+                                    <a href="javascript:;" onclick="MAG.delete({{$group['id']}}, {{$member['id']}});"><li>踢出圈子</li></a>
                                 </ul>
                             </div>
                         </dd>
@@ -229,7 +229,7 @@ $('#J-tab li').on('click', function(){
     var params = {
         limit: 15,
         type: type,
-        group_id: {{$group->id}},
+        group_id: {{$group['id']}},
     }
     loader.init({
         container: '#member-box',

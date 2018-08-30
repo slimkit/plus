@@ -6,7 +6,7 @@
 {{-- 右侧广告位 --}}
 @if ($type == 1)
 
-    @if(!$ads->isEmpty())
+    @if(!empty($ads))
         @foreach($ads as $ad)
         <div class="news_ad">
             <a href="{{ $ad['data']['link'] }}" target="_blank">
@@ -19,7 +19,7 @@
 {{-- 资讯顶部广告 --}}
 @elseif ($type == 2)
 
-    @if(!$ads->isEmpty())
+    @if(!empty($ads))
         <div class="unslider">
             <ul>
                 @foreach($ads as $ad)

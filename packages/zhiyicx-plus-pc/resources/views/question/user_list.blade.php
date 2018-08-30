@@ -1,13 +1,13 @@
 @php
 	use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
 @endphp
-@if(!$users->isEmpty())
+@if(!empty($users))
     @foreach($users as $user)
         <div class="user">
         	<div class="user-header">
         		<img src="{{ getAvatar($user, 40) }}" class="fans_img" alt="{{$user['name']}}">
-				@if ($user->verified)
-					<img class="verified_icon" src="{{ $user->verified['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+				@if ($user['verified'])
+					<img class="verified_icon" src="{{ $user['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
 				@endif
         	</div>
         	<div class="user-info">

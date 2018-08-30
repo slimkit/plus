@@ -13,8 +13,8 @@
     @if (!empty($TS))
     <div class="nav_right relative">
         <img src="{{ getAvatar($TS, 30) }}" id="menu_toggle" alt="{{ $TS['name'] }}"/>
-        @if($TS->verified)
-            <img class="role-icon" src="{{ $TS->verified['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+        @if($TS['verified'])
+            <img class="role-icon" src="{{ $TS['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
         @endif
         <span class="font16 nav_name">{{$TS['name']}}</span>
 
@@ -65,18 +65,18 @@
     <div class="nav_list clearfix">
         {{-- 导航 --}}
         <ul class="navs">
-            @if (!$config['nav']->isEmpty())
+            @if (!empty($config['nav']))
             @foreach ($config['nav'] as $nav)
             <li>
-                <a target="{{ $nav->target }}" href="{{ $nav->url }}" @if(!empty($current) && $current == $nav->app_name) class="selected" @endif>{{ $nav->name}} </a>
+                <a target="{{ $nav['target'] }}" href="{{ $nav['url'] }}" @if(!empty($current) && $current == $nav['app_name']) class="selected" @endif>{{ $nav['name']}} </a>
                 {{-- 二级导航 --}}
                 @php
                     $nav_childs = $nav->items()->get();
                 @endphp
-                @if (!$nav_childs->isEmpty())
+                @if (!empty($nav_childs))
                     <div class="child_navs">
                     @foreach ($nav_childs as $child)
-                        <a target="{{ $child->target }}" href="{{ $child->url }}">{{ $child->name}} </a>
+                        <a target="{{ $child['target'] }}" href="{{ $child['url'] }}">{{ $child['name']}} </a>
                     @endforeach
                     </div>
                 @endif

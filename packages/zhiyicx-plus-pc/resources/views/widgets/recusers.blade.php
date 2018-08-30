@@ -1,7 +1,7 @@
 @php
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
 @endphp
-@if (!$users->isEmpty())
+@if (!empty($users))
 <div class="recusers">
     <div class="u-tt">推荐用户</div>
     <ul>
@@ -19,7 +19,7 @@
         </li>
         @endforeach
     </ul>
-    @if ($users->count() == 9)
+    @if (count($users) == 9)
     <a class="recmore" href="{{ route('pc:users', ['type'=>3]) }}">更多推荐用户</a>
     @endif
 </div>

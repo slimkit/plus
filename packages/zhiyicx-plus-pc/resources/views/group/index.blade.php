@@ -22,9 +22,9 @@
             </div>
             <div class="m-chip">
                 @foreach ($cates as $cate)
-                    <span class="u-chip" rel="{{$cate->id}}">{{$cate->name}}</span>
+                    <span class="u-chip" rel="{{$cate['id']}}">{{$cate['name']}}</span>
                 @endforeach
-                @if ($cates->count() > 10)
+                @if (count($cates) > 10)
                     <a class="u-chip cur" id="J-show">查看更多</a>
                 @endif
             </div>
@@ -48,7 +48,7 @@
                 </div>
             </a>
             <a
-                @if (isset($my_group) && !$my_group->isEmpty())
+                @if (isset($my_group) && !empty($my_group))
                     href="{{route('pc:postcreate', ['type'=>'outside'])}}"
                 @else
                     href="javascript:;" onclick="noticebox('未加入圈子，不能进行发帖', 0)"

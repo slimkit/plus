@@ -1,4 +1,4 @@
-@if(!$topics->isEmpty())
+@if(!empty($topics))
     <div class="hot-issues">
         <div class="title">热门专题</div>
         <ul class="hot-issues-list">

@@ -24,7 +24,7 @@
                 <div class="detail_info relative" id="news_toolbar">
                     <a href="{{ route('pc:news', ['cate_id' => $news['category']['id']]) }}" class="cates_span">{{ $news['category']['name'] or '默认' }}</a>
                     <span>{{ $news['from'] != '原创' ? $news['from'] : $news['user']['name'] }}  ·  {{ $news['hits'] }}浏览  ·  {{ getTime($news['created_at']) }}</span>
-                    @if($news->audit_status != 1)
+                    @if($news['audit_status'] != 1)
                     <span class="options" onclick="options(this)">
                         <svg class="icon icon-more" aria-hidden="true"><use xlink:href="#icon-more"></use></svg>
                     </span>
@@ -32,28 +32,28 @@
                     <div class="options_div">
                         <div class="triangle"></div>
                         <ul>
-                            @if($TS && $news->user->id == $TS->id)
-                                @if($news->audit_status == 3)
+                            @if($TS && $news['user']['id'] == $TS['id'])
+                                @if($news['audit_status'] == 3)
                                     <li>
-                                        <a href="{{ route('pc:newsrelease', $news->id) }}">
+                                        <a href="{{ route('pc:newsrelease', $news['id']) }}">
                                            <svg class="icon" aria-hidden="true"><use xlink:href="#icon-edit"></use></svg>编辑
                                         </a>
                                     </li>
-                                @elseif($news->audit_status == 0)
+                                @elseif($news['audit_status'] == 0)
                                     <li>
-                                        <a href="javascript:;" onclick="news.pinneds({{$news->id}});">
+                                        <a href="javascript:;" onclick="news.pinneds({{$news['id']}});">
                                             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-pinned2"></use></svg>申请置顶
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="javascript:;" onclick="news.delete({{$news->id}}, {{$news->cate_id}});">
+                                        <a href="javascript:;" onclick="news.delete({{$news['id']}}, {{$news['cate_id']}});">
                                             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-delete"></use></svg>删除
                                         </a>
                                     </li>
                                 @endif
                             @else
                                 <li>
-                                    <a href="javascript:;" onclick="reported.init('{{$news->id}}', 'news');">
+                                    <a href="javascript:;" onclick="reported.init('{{$news['id']}}', 'news');">
                                         <svg class="icon" aria-hidden="true"><use xlink:href="#icon-report"></use></svg><span>举报</span>
                                     </a>
                                 </li>
@@ -71,33 +71,33 @@
                 @endif
 
                 <div class="detail_content markdown-body editormd-preview-container">
-                {!! formatMarkdown($news->content) !!}
+                {!! formatMarkdown($news['content']) !!}
                 </div>
                 @if (!$news['audit_status'])
                 <div class="detail_share">
-                    <span id="J-collect{{ $news->id }}" rel="{{ $news->collect_count }}" status="{{(int) $news->has_collect}}">
-                        @if($news->has_collect)
-                        <a class="act" href="javascript:;" onclick="collected.init({{$news->id}}, 'news', 0);" class="act">
+                    <span id="J-collect{{ $news['id'] }}" rel="{{ $news['collect_count'] }}" status="{{(int) $news['has_collect']}}">
+                        @if($news['has_collect'])
+                        <a class="act" href="javascript:;" onclick="collected.init({{$news['id']}}, 'news', 0);" class="act">
                             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-collect"></use></svg>
-                            <font class="cs">{{ $news->collect_count }}</font> 人收藏
+                            <font class="cs">{{ $news['collect_count'] }}</font> 人收藏
                         </a>
                         @else
-                        <a href="javascript:;" onclick="collected.init({{$news->id}}, 'news', 0);">
+                        <a href="javascript:;" onclick="collected.init({{$news['id']}}, 'news', 0);">
                             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-collect"></use></svg>
-                            <font class="cs">{{ $news->collect_count }}</font> 人收藏
+                            <font class="cs">{{ $news['collect_count'] }}</font> 人收藏
                         </a>
                         @endif
                     </span>
-                    <span class="digg" id="J-likes{{$news->id}}" rel="{{$news->digg_count}}" status="{{(int) $news->has_like}}">
-                        @if($news->has_like)
-                        <a class="act" href="javascript:void(0)" onclick="liked.init({{$news->id}}, 'news', 0)">
+                    <span class="digg" id="J-likes{{$news['id']}}" rel="{{$news['digg_count']}}" status="{{(int) $news['has_like']}}">
+                        @if($news['has_like'])
+                        <a class="act" href="javascript:void(0)" onclick="liked.init({{$news['id']}}, 'news', 0)">
                             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-like-copy"></use></svg>
-                            <font>{{$news->digg_count}}</font> 人喜欢
+                            <font>{{$news['digg_count']}}</font> 人喜欢
                         </a>
                         @else
-                        <a href="javascript:;" onclick="liked.init({{$news->id}}, 'news', 0)">
+                        <a href="javascript:;" onclick="liked.init({{$news['id']}}, 'news', 0)">
                             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-like"></use></svg>
-                            <font>{{$news->digg_count}}</font> 人喜欢
+                            <font>{{$news['digg_count']}}</font> 人喜欢
                         </a>
                         @endif
                     </span>
@@ -105,20 +105,20 @@
                     {{-- 第三方分享 --}}
                     <div class="detail_third_share">
                         分享至：
-                        @include('pcview::widgets.thirdshare' , ['share_url' => route('redirect', array('target' => '/news/'.$news->id)), 'share_title' => $news->subject, 'share_pic' => config('app.url') . '/api/v2/files/' . $news->storage ])
+                        @include('pcview::widgets.thirdshare' , ['share_url' => route('redirect', array('target' => '/news/'.$news['id'])), 'share_title' => $news['subject'], 'share_pic' => config('app.url') . '/api/v2/files/' . $news['storage'] ])
                     </div>
 
                     {{-- 打赏 --}}
-                    @include('pcview::widgets.rewards' , ['rewards_data' => $news->rewards, 'rewards_type' => 'news', 'rewards_id' => $news->id, 'rewards_info' => $news['reward']])
+                    @include('pcview::widgets.rewards' , ['rewards_data' => $news['rewards'], 'rewards_type' => 'news', 'rewards_id' => $news['id'], 'rewards_info' => $news['reward']])
                 </div>
 
                 {{-- 相关推荐 --}}
-                @if (!$news_rel->isEmpty())
+                @if (!empty($news_rel))
                 <div class="detail_recommend">
                     <p class="rel_title">相关推荐</p>
                     <div class="rel_tags">
-                        @foreach ($news->tags as $tag)
-                        <span>{{ $tag->name }}</span>
+                        @foreach ($news['tags'] as $tag)
+                        <span>{{ $tag['name'] }}</span>
                         @endforeach
                     </div>
 
@@ -143,7 +143,7 @@
                 @endif
 
                 {{-- 评论  --}}
-                @include('pcview::widgets.comments', ['id' => $news->id, 'comments_count' => $news->comment_count, 'comments_type' => 'news', 'loading' => '.detail_comment', 'position' => 0, 'top' => 1])
+                @include('pcview::widgets.comments', ['id' => $news['id'], 'comments_count' => $news['comment_count'], 'comments_type' => 'news', 'loading' => '.detail_comment', 'position' => 0, 'top' => 1])
 
                 @endif
             </div>

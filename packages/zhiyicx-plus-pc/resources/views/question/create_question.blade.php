@@ -27,7 +27,7 @@
             <div class="question-topics-list" id="J-topic-box" style="display: none;">
                 <dl>
                     @foreach ($topics as $topic)
-                        <dd data-id="{{$topic->id}}">{{ $topic->name }}</dd>
+                        <dd data-id="{{$topic['id']}}">{{ $topic['name'] }}</dd>
                     @endforeach
                 </dl>
             </div>

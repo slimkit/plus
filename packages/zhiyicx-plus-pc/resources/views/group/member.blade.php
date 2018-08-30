@@ -23,26 +23,26 @@
 	            <div class="f-mt20 f-fs4">圈主</div>
 	            <dl class="m-row">
 	                <dt>
-						<img src="{{ getAvatar($group->founder->user, 50) }}" width="50" class="avatar">
-						@if ($group->founder->user->verified)
-							<img class="role-icon" src="{{ $group->founder->user->verified['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+						<img src="{{ getAvatar($group['founder']['user'], 50) }}" width="50" class="avatar">
+						@if ($group['founder']['user']['verified'])
+							<img class="role-icon" src="{{ $group['founder']['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
 						@endif
 					</dt>
-	                <dd>{{$group->founder->user->name}}</dd>
+	                <dd>{{$group['founder']['user']['name']}}</dd>
 	            </dl>
 	        </div>
 	        <div>
 	            <div class="f-mt20 f-fs4">管理员</div>
-	            @if (!$manager->isEmpty())
+	            @if (!empty($manager))
 	            @foreach ($manager as $manage)
 	                <dl class="m-row">
 	                    <dt>
-							<img src="{{ getAvatar($manage->user, 50) }}" width="50" class="avatar">
-							@if ($manage->user->verified)
-								<img class="role-icon" src="{{ $manage->user->verified['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+							<img src="{{ getAvatar($manage['user'], 50) }}" width="50" class="avatar">
+							@if ($manage['user']['verified'])
+								<img class="role-icon" src="{{ $manage['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
 							@endif
 						</dt>
-	                    <dd><div>{{$manage->user->name}}</div></dd>
+	                    <dd><div>{{$manage['user']['name']}}</div></dd>
 	                </dl>
 	            @endforeach
 	            @else
@@ -52,16 +52,16 @@
 	        <div>
 	            <div class="f-mt20 f-fs4">一般成员</div>
 	            <div id="member-box"> </div>
-	            @if (!$members->isEmpty())
+	            @if (!empty($members))
 	            @foreach ($members as $member)
 	                <dl class="m-row">
 	                    <dt>
-							<img src="{{ getAvatar($member->user, 50) }}" width="50" class="avatar">
-							@if ($member->user->verified)
-								<img class="role-icon" src="{{ $member->user->verified['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+							<img src="{{ getAvatar($member['user'], 50) }}" width="50" class="avatar">
+							@if ($member['user']['verified'])
+								<img class="role-icon" src="{{ $member['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
 							@endif
 						</dt>
-	                    <dd><div>{{$member->user->name}}</div></dd>
+	                    <dd><div>{{$member['user']['name']}}</div></dd>
 	                </dl>
 	            @endforeach
 	            @else

@@ -17,14 +17,14 @@
         <div class="account_c_c">
             <div class="account_tab" id="J-authenticate">
                 <div class="perfect_title">
-                    @if ($info->certification_name == 'user')
+                    @if ($info['certification_name'] == 'user')
                         <span>个人认证</span>
                     @else
                         <span>机构认证</span>
                     @endif
                     <input id="authtype" name="type" type="hidden" value="{{$info['certification_name']}}" />
                 </div>
-                @if ($info->certification_name == 'user')
+                @if ($info['certification_name'] == 'user')
                 {{-- 个人认证 --}}
                 <div class="user_authenticate">
                     <div class="account_form_row">

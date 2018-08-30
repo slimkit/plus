@@ -1,5 +1,5 @@
 
-@section('title') {{ $group->name }}-举报管理 @endsection
+@section('title') {{ $group['name'] }}-举报管理 @endsection
 
 @extends('pcview::layouts.default')
 
@@ -13,12 +13,12 @@
     <div class="g-bd f-cb">
         <div class="g-sd">
             <ul>
-                <a href="{{ route('pc:groupedit', ['group_id'=>$group->id]) }}"><li>圈子资料</li></a>
-                @if ($group->joined->role == 'founder')
-                    <a href="{{ route('pc:groupbankroll', ['group_id'=>$group->id]) }}"><li>圈子收益</li></a>
+                <a href="{{ route('pc:groupedit', ['group_id'=>$group['id']]) }}"><li>圈子资料</li></a>
+                @if ($group['joined']['role'] == 'founder')
+                    <a href="{{ route('pc:groupbankroll', ['group_id'=>$group['id']]) }}"><li>圈子收益</li></a>
                 @endif
-                <a href="{{ route('pc:groupmember', ['group_id'=>$group->id]) }}"><li>成员管理</li></a>
-                <a href="{{ route('pc:groupreport', ['group_id'=>$group->id]) }}"><li class="cur">举报管理</li></a>
+                <a href="{{ route('pc:groupmember', ['group_id'=>$group['id']]) }}"><li>成员管理</li></a>
+                <a href="{{ route('pc:groupreport', ['group_id'=>$group['id']]) }}"><li class="cur">举报管理</li></a>
             </ul>
         </div>
         <div class="g-mn">
@@ -50,7 +50,7 @@ $(function(){
         container: '#report-box',
         loading: '#report-box',
         url: '/groups/report',
-        params: {limit: 15, group_id: {{$group->id}} }
+        params: {limit: 15, group_id: {{$group['id']}} }
     });
 })
 
@@ -67,7 +67,7 @@ laydate.render({
             container: '#report-box',
             loading: '#report-box',
             url: '/groups/report',
-            params: {limit: 15, group_id: {{$group->id}}, start: value, end: $('#T-end').val() ,status:$('#J-tab .cur').attr('status')}
+            params: {limit: 15, group_id: {{$group['id']}}, start: value, end: $('#T-end').val() ,status:$('#J-tab .cur').attr('status')}
         });
     }
 });
@@ -84,7 +84,7 @@ laydate.render({
             container: '#report-box',
             loading: '#report-box',
             url: '/groups/report',
-            params: {limit: 15, group_id: {{$group->id}}, start: $('#T-start').val(), end: value,status:$('#J-tab .cur').attr('status')}
+            params: {limit: 15, group_id: {{$group['id']}}, start: $('#T-start').val(), end: value,status:$('#J-tab .cur').attr('status')}
         });
     }
 });
@@ -121,7 +121,7 @@ $('#J-tab li').on('click', function(){
         $('#J-tab li').removeClass('cur'); $(this).addClass('cur');
     var params = {
         limit: 15,
-        group_id: {{$group->id}},
+        group_id: {{$group['id']}},
     }
     if (status != undefined) {
         params.status = status;

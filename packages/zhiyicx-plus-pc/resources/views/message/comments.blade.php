@@ -3,13 +3,13 @@
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
 @endphp
 
-@if (!$comments->isEmpty())
+@if (!empty($comments))
     @foreach($comments as $comment)
         <dl class="message_one">
             <dt>
                 <img src="{{ getAvatar($comment['user'], 40) }}">
-                @if($comment['user']->verified)
-                    <img class="role-icon" src="{{ $comment['user']->verified['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                @if($comment['user']['verified'])
+                    <img class="role-icon" src="{{ $comment['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
                 @endif
             </dt>
             <dd>

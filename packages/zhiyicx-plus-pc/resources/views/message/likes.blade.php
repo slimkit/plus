@@ -3,13 +3,13 @@
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
 @endphp
 
-@if (!$likes->isEmpty())
+@if (!empty($likes))
     @foreach($likes as $like)
         <dl class="message_one">
             <dt>
                 <img src="{{ getAvatar($like['user'], 40) }}">
-                @if($like['user']->verified)
-                    <img class="role-icon" src="{{ $like['user']->verified['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                @if($like['user']['verified'])
+                    <img class="role-icon" src="{{ $like['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
                 @endif
             </dt>
             <dd>

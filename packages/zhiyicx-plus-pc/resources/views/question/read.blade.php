@@ -20,31 +20,31 @@
     <div class="questionheader">
         <div class="questionheader-content">
             <div class="questionheader-main">
-                @if($question->amount > 0)
-                    <span class="questionheader-price">{{ $question->amount }}</span>
+                @if($question['amount'] > 0)
+                    <span class="questionheader-price">{{ $question['amount'] }}</span>
                 @endif
                 <div class="questionheader-tags">
                     <div class="questionheader-topics">
-                        @if (!$question->topics->isEmpty())
-                            @foreach ($question->topics as $topic)
+                        @if (!empty($question['topics']))
+                            @foreach ($question['topics'] as $topic)
                                 <div class="tag questiontopic">
                                     <span class="tag-content">
-                                        <a class="topiclink" href="{{ route('pc:topicinfo', $topic->id) }}">{{ $topic->name }}</a>
+                                        <a class="topiclink" href="{{ route('pc:topicinfo', $topic['id']) }}">{{ $topic['name'] }}</a>
                                     </span>
                                 </div>
                             @endforeach
                         @endif
                     </div>
                 </div>
-                <h1 class="questionheader-title txt-hide">{{ $question->subject }}</h1>
+                <h1 class="questionheader-title txt-hide">{{ $question['subject'] }}</h1>
                 <div class="questionheader-detail">
                     {{-- js增删  .questionrichtextcollapsed 改变content字数 --}}
                     <div class="questionrichtext questionrichtext--expandable questionrichtext--collapsed markdown-body">
-                        @if(strpos(formatList($question->body), '[图片]') === false && strlen(formatList($question->body)) <= 300)
-                            <div class="show-body"> {!! formatMarkdown($question->body) !!} </div>
+                        @if(strpos(formatList($question['body']), '[图片]') === false && strlen(formatList($question['body'])) <= 300)
+                            <div class="show-body"> {!! formatMarkdown($question['body']) !!} </div>
                         @else
-                            <span class="show-body hide">{!! formatMarkdown($question->body) !!}</span>
-                            <span class="richtext" itemprop="text">{!! str_limit(preg_replace('/\<[\/a-z]+\>/', '', formatList($question->body)), 300, '...') !!}</span>
+                            <span class="show-body hide">{!! formatMarkdown($question['body']) !!}</span>
+                            <span class="richtext" itemprop="text">{!! str_limit(preg_replace('/\<[\/a-z]+\>/', '', formatList($question['body'])), 300, '...') !!}</span>
                             <button class="button button-plain button-more questionrichtext-more" data-show="0">显示全部</button>
                         @endif
                     </div>
@@ -55,17 +55,17 @@
                     <div class="questionfollowstatus">
                         <div class="numberboard questionfollowstatus-counts">
                             <div class="numberboard-item">
-                                <div id="watchers_count_value" class="numberboard-value">{{ $question->watchers_count }}</div>
+                                <div id="watchers_count_value" class="numberboard-value">{{ $question['watchers_count'] }}</div>
                                 <div class="numberboard-name">关注</div>
                             </div>
                             <div class="numberboard-divider"></div>
                             <div class="numberboard-item">
-                                <div class="numberboard-value">{{ $question->views_count }}</div>
+                                <div class="numberboard-value">{{ $question['views_count'] }}</div>
                                 <div class="numberboard-name">浏览</div>
                             </div>
                         </div>
-                        @if (!$question->invitations->isempty())
-                        @foreach($question->invitations  as $invitation)
+                        @if (!empty($question['invitations']))
+                        @foreach($question['invitations']  as $invitation)
                         <div class="questionfollowstatus-people">
                             <a href="{{ route('pc:mine', $invitation['id']) }}">
                                 <span class="fl">已邀请悬赏：</span>
@@ -86,14 +86,14 @@
         <div class="questionheader-footer">
             <div class="questionheader-footer-inner">
                 <div class="questionheader-main questionheader-footer-main">
-                    @if($question['look'] == 1 && isset($question['invitation_answers']) && !$question['invitation_answers']->isEmpty() && $question['invitation_answers'][0]['onlookers_count'] > 0)
+                    @if($question['look'] == 1 && isset($question['invitation_answers']) && !empty($question['invitation_answers']) && $question['invitation_answers'][0]['onlookers_count'] > 0)
                         <span class="questionheader-onlook">{{ $question['invitation_answers'][0]['onlookers_count']*$config['bootstrappers']['question:onlookers_amount'] }}围观</span>
                     @endif
                     <div class="questionheaderactions">
                         <div class="questionheader-comment">
                             <button class="button button-plain" type="button" id="comment-button">
                                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-comment"></use></svg>
-                                {{ $question->comments_count }} 评论
+                                {{ $question['comments_count'] }} 评论
                             </button>
                         </div>
                         <div class="popover sharemenu">
@@ -104,7 +104,7 @@
                             <div class="share-show">
                                 分享至：
                                 @php
-                                    preg_match('/<img src="(.*?)".*?/', formatMarkdown($question->body), $imgs);
+                                    preg_match('/<img src="(.*?)".*?/', formatMarkdown($question['body']), $imgs);
                                     if (count($imgs) > 0) {
                                         $share_pic = $imgs[1];
                                     } else {
@@ -113,7 +113,7 @@
 
 
                                 @endphp
-                                @include('pcview::widgets.thirdshare' , ['share_url' => route('redirect', ['target' => '/questions/'.$question->id]), 'share_title' => $question->subject, 'share_pic' => $share_pic])
+                                @include('pcview::widgets.thirdshare' , ['share_url' => route('redirect', ['target' => '/questions/'.$question['id']]), 'share_title' => $question['subject'], 'share_pic' => $share_pic])
                                 <div class="triangle"></div>
                             </div>
                         </div>
@@ -123,9 +123,9 @@
                                 编辑
                             </a>
                         @endif
-                        @if($question->amount <= 0)
+                        @if($question['amount'] <= 0)
                             <a href="javascript:;" class="button set-amount" @if($question['user_id'] == $TS['id'] && $question['status'] == 0) onclick="question.amount({{ $question['id'] }})" @endif >未设置悬赏</a>
-                        @elseif(!$question->invitations->isempty())
+                        @elseif(!empty($question['invitations']))
                             <a href="javascript:;" class="button set-amount">已邀请悬赏</a>
                         @else
                             <a href="javascript:;" class="button set-amount">已设置悬赏</a>
@@ -163,15 +163,15 @@
                 </div>
                 <div class="questionheader-side">
                     <div class="question-button-group">
-                        @if (isset($TS) && $question->watched)
+                        @if (isset($TS) && $question['watched'])
                             <button class="button button-grey watched" type="button" data-watched="1">已关注</button>
                         @else
                             <button class="button button-primary button-blue watched" type="button" data-watched="0">关注</button>
                         @endif
-                            @if($question->my_answer == null)
+                            @if($question['my_answer'] == null)
                                 <button class="button button-blue button-primary" id="write-answer" type="button">写回答</button>
                             @else
-                                <a class="button button-blue button-primary"  href="{{ route('pc:answeread', ['question' => $question->id, 'answer' => $question->my_answer['id']]) }}" type="button">查看回答</a>
+                                <a class="button button-blue button-primary"  href="{{ route('pc:answeread', ['question' => $question['id'], 'answer' => $question['my_answer']['id']]) }}" type="button">查看回答</a>
                             @endif
                     </div>
                 </div>
@@ -183,13 +183,13 @@
     <div class="question-main">
 
         {{-- 评论 --}}
-        @include('pcview::widgets.comments', ['id' => $question->id, 'comments_count' => $question->comments_count, 'comments_type' => 'question', 'loading' => '.detail_comment', 'add_class' => 'question_coment hide', 'position' => 0])
+        @include('pcview::widgets.comments', ['id' => $question['id'], 'comments_count' => $question['comments_count'], 'comments_type' => 'question', 'loading' => '.detail_comment', 'add_class' => 'question_coment hide', 'position' => 0])
 
         <div class="question-main-l">
             <div class="question-answers">
                 <div class="question-answers-list">
                     <div class="question-answers-list-header">
-                        <h4 class="headertxt"><span class="qs{{$question->id}}">{{$question['answers_count']}}</span>个回答</h4>
+                        <h4 class="headertxt"><span class="qs{{$question['id']}}">{{$question['answers_count']}}</span>个回答</h4>
                         <div data-value="" class="zy_select t_c gap12 ">
                             <span>默认排序</span>
                             <ul>
@@ -215,8 +215,8 @@
                         <span class="author-info-name">{{ $TS['name'] }}</span>
                     </div>
                     <div class="author-info-tag">
-                        @if(isset($TS->tags) && !$TS->tags->isEmpty())
-                            @foreach($TS->tags as $tag)
+                        @if(isset($TS['tags']) && !empty($TS['tags']))
+                            @foreach($TS['tags'] as $tag)
                                 <span>{{$tag['name']}}</span>
                             @endforeach
                         @endif
@@ -232,7 +232,7 @@
             </div>
             <div class="answer-anonymity"><button id="answer-send">提交</button></div>
         </div>
-        {{-- --发布回答 end --}}
+        {{-- 发布回答 end --}}
     </div>
 
     {{-- /quesition-main --}}
@@ -361,7 +361,7 @@
                 loader.init({
                     container: '.J-commentbox',
                     loading: '.detail_comment',
-                    url: '/questions/{{$question->id}}/comments'
+                    url: '/questions/{{$question['id']}}/comments'
                 });
             }, 300);
         });

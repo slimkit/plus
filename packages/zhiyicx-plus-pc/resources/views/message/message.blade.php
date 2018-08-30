@@ -64,7 +64,7 @@
                             </svg>
                         </div>
                         <div class="chat_item">
-                            @if((isset($pinneds->news) && $pinneds->news->count > 0) || (isset($pinneds->feeds) && $pinneds->feeds->count > 0))
+                            @if((isset($pinneds['news']) && count($pinneds['news']) > 0) || (isset($pinneds['feeds']) && count($pinneds['feeds']) > 0))
                                 <span class="chat_span">审核通知</span>
                                 <div>未审核的信息请及时处理</div>
                             @else

@@ -4,7 +4,7 @@
 
 @if ($type == 2)
     {{-- 交易记录 --}}
-    @if(!$records->isEmpty())
+    @if(!empty($records))
     <div class="wallet-table">
         <table class="table tborder" border="0" cellspacing="0" cellpadding="0">
             @if ($loadcount == 1)
@@ -20,17 +20,17 @@
             <tbody>
                 @foreach ($records as $item)
                 <tr>
-                    <td width="20%">{{ getTime($item->created_at, 0, 0) }}</td>
+                    <td width="20%">{{ getTime($item['created_at'], 0, 0) }}</td>
                     <td width="40%"><p class="ptext">
-                        {{ $item->target_type == 'widthdraw' ? '提现' : ($item->target_type == 'user' ? '转账' : $item->body) }}
+                        {{ $item['target_type'] == 'widthdraw' ? '提现' : ($item['target_type'] == 'user' ? '转账' : $item['body']) }}
                         </p></td>
                     <td width="20%">
-                        @if ($item->state == 0) 等待 @endif
-                        @if ($item->state == 1) 成功 @endif
-                        @if ($item->state == -1) 失败 @endif
+                        @if ($item['state'] == 0) 等待 @endif
+                        @if ($item['state'] == 1) 成功 @endif
+                        @if ($item['state'] == -1) 失败 @endif
                     </td>
                     <td width="20%">
-                        <font color="#FF9400">{{ $item->type=='1' ? '+'.sprintf("%.2f", $item->amount / 100) : '-'.sprintf("%.2f", $item->amount / 100) }}</font>
+                        <font color="#FF9400">{{ $item['type']=='1' ? '+'.sprintf("%.2f", $item['amount'] / 100) : '-'.sprintf("%.2f", $item['amount'] / 100) }}</font>
                     </td>
                 </tr>
                 @endforeach
@@ -40,7 +40,7 @@
     @endif
 @elseif ($type == 3)
     {{-- 提现记录 --}}
-    @if(!$records->isEmpty())
+    @if(!empty($records))
     <div class="wallet-table">
         <table class="table tborder" border="0" cellspacing="0" cellpadding="0">
             @if ($loadcount == 1)
@@ -56,13 +56,13 @@
             <tbody>
                 @foreach ($records as $item)
                 <tr>
-                    <td width="20%">{{ getTime($item->created_at, 0, 0) }}</td>
-                    <td width="50%"><p class="ptext">{{ $item->type == 'alipay' ? '支付宝' : '微信' }}账户提现</p></td>
-                    <td width="15%"><font color="#FF9400">{{ sprintf("%.2f", $item->value / 100) }}</font></td>
+                    <td width="20%">{{ getTime($item['created_at'], 0, 0) }}</td>
+                    <td width="50%"><p class="ptext">{{ $item['type'] == 'alipay' ? '支付宝' : '微信' }}账户提现</p></td>
+                    <td width="15%"><font color="#FF9400">{{ sprintf("%.2f", $item['value'] / 100) }}</font></td>
                     <td width="15%">
-                        @if ($item->status == 0) 待审批 @endif
-                        @if ($item->status == 1) 已审批 @endif
-                        @if ($item->status == 2) 拒绝 @endif
+                        @if ($item['status'] == 0) 待审批 @endif
+                        @if ($item['status'] == 1) 已审批 @endif
+                        @if ($item['status'] == 2) 拒绝 @endif
                     </td>
                 </tr>
                 @endforeach

@@ -15,7 +15,7 @@
             <a class="f-fr s-fc" href="javascript:history.go(-1);">返回</a>
         </div>
         <div class="g-bd">
-            <p class="s-fc2">{{$group->notice}}</p>
+            <p class="s-fc2">{{$group['notice']}}</p>
         </div>
     </div>
 </div>

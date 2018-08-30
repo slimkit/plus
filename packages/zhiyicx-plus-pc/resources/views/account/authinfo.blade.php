@@ -17,26 +17,26 @@
         <div class="account_c_c">
             <div class="account_tab">
                 <div class="perfect_title">
-                    @if ($info->certification_name == 'user')
+                    @if ($info['certification_name'] == 'user')
                     <p>个人认证</p>
                     @else
                     <p>企业认证</p>
                     @endif
                 </div>
                 {{-- 个人认证 --}}
-                @if ($info->certification_name == 'user')
+                @if ($info['certification_name'] == 'user')
                 <div class="user_authenticate" id="J-input-user">
                     <div class="account_form_row">
                         <label class="w80 required" for="realName">认证状态</label>
                         <div class="text">
-                            @if ($info->status == 0)待审核 @endif
-                            @if ($info->status == 1)通过 @endif
-                            @if ($info->status == 2)拒绝
+                            @if ($info['status'] == 0)待审核 @endif
+                            @if ($info['status'] == 1)通过 @endif
+                            @if ($info['status'] == 2)拒绝
                                 <a class="ml20 mcolor" href="{{ route('pc:update_authenticate') }}">重新认证</a>
                             @endif
                         </div>
                     </div>
-                    @if ($info->status == 2)
+                    @if ($info['status'] == 2)
                         <div class="account_form_row">
                             <label class="w80 required" for="realName">拒绝原因</label>
                             <div class="text">{{ $info['data']['reject_content'] }}</div>
@@ -70,19 +70,19 @@
                 @endif
 
                 {{-- 机构认证 --}}
-                @if ($info->certification_name == 'org')
+                @if ($info['certification_name'] == 'org')
                 <div class="org_authenticate">
             		<div class="account_form_row">
                         <label class="w80 required" for="realName">认证状态</label>
                         <div>
-                            @if ($info->status == 0)待审核 @endif
-                            @if ($info->status == 1)通过 @endif
-                            @if ($info->status == 2)拒绝
+                            @if ($info['status'] == 0)待审核 @endif
+                            @if ($info['status'] == 1)通过 @endif
+                            @if ($info['status']== 2)拒绝
                                 <a class="ml20 mcolor" href="{{ route('pc:update_authenticate') }}">重新认证</a>
                             @endif
                         </div>
                     </div>
-                    @if ($info->status == 2)
+                    @if ($info['status'] == 2)
                         <div class="account_form_row">
                             <label class="w80 required" for="realName">拒绝原因</label>
                             <div class="text">{{ $info['data']['reject_content'] }}</div>

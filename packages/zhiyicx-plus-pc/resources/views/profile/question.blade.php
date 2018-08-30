@@ -1,4 +1,4 @@
-@section('title') {{ $user->name }} 的个人主页@endsection
+@section('title') {{ $user['name'] }} 的个人主页@endsection
 
 @extends('pcview::layouts.default')
 
@@ -28,7 +28,7 @@
                     <i></i>
                 </div>
                 <div data-value="1" class="zy_select t_c gap12 mr20 select-gray" id="J-answer">
-                    @if ($user->id == $TS->id)
+                    @if ($user['id'] == $TS['id'])
                         <span class="qa_opt">我的回答</span>
                     @else
                         <span class="qa_opt">TA的回答</span>
@@ -41,7 +41,7 @@
                     </ul>
                     <i></i>
                 </div>
-                @if ($user->id == $TS->id)
+                @if ($user['id'] == $TS['id'])
                     <a class="qa_opt ucolor" href="javascript:;" data-value="3">关注的问题</a>
                     <a class="qa_opt ucolor" href="javascript:;" data-value="4">关注的专题</a>
                 @endif
@@ -66,8 +66,8 @@
             loader.init({
                 container: '#content_list',
                 loading: '.profile_content',
-                url: '/users/{{$user->id}}/q-a',
-                params: {isAjax: true, type: 'all', user_id: '{{$user->id}}' }
+                url: '/users/{{$user['id']}}/q-a',
+                params: {isAjax: true, type: 'all', user_id: '{{$user['id']}}' }
             });
         })
 
@@ -77,8 +77,8 @@
             loader.init({
                 container: '#content_list',
                 loading: '.profile_content',
-                url: '/users/{{$user->id}}/q-a',
-                params: {type: type, isAjax: true, cate: 1, user_id: '{{$user->id}}' }
+                url: '/users/{{$user['id']}}/q-a',
+                params: {type: type, isAjax: true, cate: 1, user_id: '{{$user['id']}}' }
             });
         });
         $('#J-answer li').on('click', function(){
@@ -87,8 +87,8 @@
             loader.init({
                 container: '#content_list',
                 loading: '.profile_content',
-                url: '/users/{{$user->id}}/q-a',
-                params: {type: type, isAjax: true, cate: 2, user_id: '{{$user->id}}' }
+                url: '/users/{{$user['id']}}/q-a',
+                params: {type: type, isAjax: true, cate: 2, user_id: '{{$user['id']}}' }
             });
         });
 
@@ -98,8 +98,8 @@
             loader.init({
                 container: '#content_list',
                 loading: '.profile_content',
-                url: '/users/{{$user->id}}/q-a',
-                params: {isAjax: true, cate: type, user_id: '{{$user->id}}' }
+                url: '/users/{{$user['id']}}/q-a',
+                params: {isAjax: true, cate: type, user_id: '{{$user['id']}}' }
             });
 
             $('.qa_opt').removeClass('active');

@@ -1,5 +1,5 @@
 @section('title')
-{{ $user->name }}的个人主页
+{{ $user['name'] }}的个人主页
 @endsection
 
 @extends('pcview::layouts.default')
@@ -24,7 +24,7 @@
                 <ul class="g-tab">
                     <li>
                         <div type="join" class="zy_select t_c gap12" id="J-group">
-                            @if ($TS->id == $user->id)
+                            @if ($TS['id'] == $user['id'])
                                 <span>圈子</span>
                                 <ul>
                                     <li type="join" @if($type == 'join') class="active" @endif>我加入的</li>
@@ -36,7 +36,7 @@
                             @endif
                         </div>
                     </li>
-                    @if ($TS->id == $user->id)
+                    @if ($TS['id'] == $user['id'])
                     <li>
                         <div type="5" class="zy_select t_c gap12 select-gray" id="J-post">
                                 <span>帖子</span>
@@ -70,7 +70,7 @@
     loader.init({
         container: '#content_list',
         loading: '.profile_content',
-        url: '/users/{{ $user->id }}/group',
+        url: '/users/{{ $user['id'] }}/group',
         paramtype: 1,
         params: {isAjax: true, limit: 10}
     });
@@ -88,7 +88,7 @@
         loader.init({
             container: '#content_list',
             loading: '.profile_content',
-            url: '/users/{{ $user->id }}/group',
+            url: '/users/{{ $user['id'] }}/group',
             params: params,
             paramtype: 1,
         });

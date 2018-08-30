@@ -17,7 +17,7 @@
             <div class="formitm">
                 @include('pcview::widgets.markdown', ['place' => '请输入帖子内容', 'content'=>$content ?? ''])
             </div>
-            @if ($group->allow_feed)
+            @if ($group['allow_feed'])
             <div class="formitm">
                 <input class="iptck" type="checkbox" name="sync_feed" value="1"><span>同步分享至动态</span>
             </div>
@@ -39,7 +39,7 @@
 <script>
 
 $('#J-publish-post').on('click', function(e){
-    var POST_URL = '/api/v2/plus-group/groups/{{$group->id}}/posts';
+    var POST_URL = '/api/v2/plus-group/groups/{{$group['id']}}/posts';
     var isSync = $("input:checkbox:checked").val();
     var args = {
         'title': $('#title').val(),
@@ -99,7 +99,7 @@ $('#J-publish-post').on('click', function(e){
     _this.lockStatus = 1;
     axios.post(POST_URL, args)
     .then(function (response) {
-        noticebox('发布成功', 1, '/groups/{{ $group->id }}/posts/' + response.data.post.id);
+        noticebox('发布成功', 1, '/groups/{{ $group['id'] }}/posts/' + response.data.post.id);
     })
     .catch(function (error) {
         showError(error.response.data);

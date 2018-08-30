@@ -1,4 +1,4 @@
-@section('title') {{ $user->name }} 的个人主页@endsection
+@section('title') {{ $user['name'] }} 的个人主页@endsection
 
 @extends('pcview::layouts.default')
 
@@ -42,7 +42,7 @@ $(function(){
         type: 'users',
         cate: 1,
         isAjax: true,
-        user: {{$user->id}}
+        user: {{$user['id']}}
     };
 
     loader.init({

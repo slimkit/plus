@@ -20,24 +20,24 @@
             <div id="J-commentbox-{{ $comments_type }}{{ $id }}">
                 @if($comments_count)
                     @foreach($comments_data as $cv)
-                        <p class="comment_con" id="comment{{$cv->id}}">
-                            <span class="tcolor">{{ $cv->user['name'] }}：</span>
-                            @if ($cv->reply_user)
-                                @php $user = getUserInfo($cv->reply_user); @endphp
-                                回复<a href="{{ route('pc:mine', $user->id) }}">{{ '@'.$user->name }}</a>：
+                        <p class="comment_con" id="comment{{$cv['id']}}">
+                            <span class="tcolor">{{ $cv['user']['name'] }}：</span>
+                            @if ($cv['reply_user'])
+                                @php $user = getUserInfo($cv['reply_user']); @endphp
+                                回复<a href="{{ route('pc:mine', $user['id']) }}">{{ '@'.$user['name'] }}</a>：
                             @endif
 
-                            {!! formatContent($cv->body) !!}
+                            {!! formatContent($cv['body']) !!}
 
-                            @if(isset($cv->pinned) && $cv->pinned == 1)
+                            @if(isset($cv['pinned']) && $cv['pinned'] == 1)
                                 <span class="mouse green">置顶</span>
                             @endif
 
                             @if (
-                                    ($TS['id'] == $cv->user_id) ||
-                                    (isset($group->joined) && in_array($group->joined->role, ['administrator', 'founder']))
+                                    ($TS['id'] == $cv['user_id']) ||
+                                    (isset($group['joined']) && in_array($group['joined']['role'], ['administrator', 'founder']))
                                 )
-                                @if(isset($top) && $top == 1 && $TS['id'] == $cv->user_id && !$params['disabled'])
+                                @if(isset($top) && $top == 1 && $TS['id'] == $cv['user_id'] && !$params['disabled'])
                                     <a class="mouse comment_del" onclick="comment.pinneds('{{$cv['commentable_type']}}', {{$cv['commentable_id']}}, {{$cv['id']}})">申请置顶</a>
                                 @endif
                                 <a class="mouse comment_del" onclick="comment.delete('{{$cv['commentable_type']}}', {{$cv['commentable_id']}}, {{$cv['id']}})">删除</a>

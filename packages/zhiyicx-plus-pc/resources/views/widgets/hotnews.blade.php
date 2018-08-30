@@ -7,11 +7,11 @@
     </ul>
     <ul class="hot_news_list"">
         <div class="hot_news_item" id="week">
-            @if(!$week->isEmpty())
+            @if(!empty($week))
             @foreach($week as $item)
                 <li>
                     <span @if($loop->index > 2) class="grey" @endif>{{$loop->iteration}}</span>
-                    <a href="{{ Route('pc:newsread', $item->id) }}">{{$item->title}}</a>
+                    <a href="{{ Route('pc:newsread', $item['id']) }}">{{$item['title']}}</a>
                 </li>
             @endforeach
             @else
@@ -19,11 +19,11 @@
             @endif
         </div>
         <div class="hot_news_item hide" id="month">
-            @if(!$month->isEmpty())
+            @if(!empty($month))
             @foreach($month as $item)
                 <li>
                     <span @if($loop->index > 2) class="grey" @endif>{{$loop->iteration}}</span>
-                    <a href="{{ Route('pc:newsread', $item->id) }}">{{$item->title}}</a>
+                    <a href="{{ Route('pc:newsread', $item['id']) }}">{{$item['title']}}</a>
                 </li>
             @endforeach
             @else
@@ -31,11 +31,11 @@
             @endif
         </div>
         <div class="hot_news_item hide" id="quarter">
-            @if(!$quarter->isEmpty())
+            @if(!empty($quarter))
             @foreach($quarter as $item)
                 <li>
                     <span @if($loop->index > 2) class="grey" @endif>{{$loop->iteration}}</span>
-                    <a href="{{ Route('pc:newsread', $item->id) }}">{{$item->title}}</a>
+                    <a href="{{ Route('pc:newsread', $item['id']) }}">{{$item['title']}}</a>
                 </li>
             @endforeach
             @else

@@ -10,14 +10,14 @@
         </p>
 
         {{-- 打賞 --}}
-        @if (!$rewards_data->isEmpty())
+        @if (!empty($rewards_data))
             <div class="reward_user">
                 @foreach ($rewards_data as $key => $reward)
                     @if ($key < 10)
-                        <a href="{{ route('pc:mine', $reward->user->id) }}" class="user_item">
-                            <img class="lazy round" src="{{ getAvatar($reward->user, 42) }}" width="42" />
-                            @if ($reward->user->verified)
-                                <img class="verified_icon" src="{{ $reward->user->verified['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                        <a href="{{ route('pc:mine', $reward['user']['id']) }}" class="user_item">
+                            <img class="lazy round" src="{{ getAvatar($reward['user'], 42) }}" width="42" />
+                            @if ($reward['user']['verified'])
+                                <img class="verified_icon" src="{{ $reward['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
                             @endif
                         </a>
                     @endif

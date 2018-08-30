@@ -11,8 +11,8 @@
             <div class="hot_user_avatar avatar_box">
                 <a href="{{ route('pc:mine', $user['id']) }}">
                     <img src="{{ getAvatar($user, 60) }}">
-                    @if($user->verified)
-                        <img class="role-icon" src="{{ $user->verified['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                    @if($user['verified'])
+                        <img class="role-icon" src="{{ $user['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
                     @endif
                 </a>
             </div>

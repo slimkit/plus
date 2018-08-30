@@ -22,22 +22,22 @@
                 </div>
                 @foreach ($tags as $tag)
                     <div class="perfect_row">
-                        <label>{{$tag->name}}</label>
+                        <label>{{$tag['name']}}</label>
                         <ul class="perfect_label_list" id="J-tags">
-                        @foreach ($tag->tags as $item)
-                            <li class="tag_{{$item->id}}
+                        @foreach ($tag['tags'] as $item)
+                            <li class="tag_{{$item['id']}}
                             @foreach ($user_tag as $t)
-                                @if ($t->name == $item->name) active @endif
-                            @endforeach" data-id="{{$item->id}}">{{$item->name}}</li>
+                                @if ($t['name'] == $item['name']) active @endif
+                            @endforeach" data-id="{{$item['id']}}">{{$item['name']}}</li>
                         @endforeach
                         </ul>
                     </div>
                 @endforeach
             </div>
-            <p class="mt20 font14 tcolor">最多可选5个标签，已选 <font class="mcolor num">{{ $user_tag->count() }}</font> 个</p>
+            <p class="mt20 font14 tcolor">最多可选5个标签，已选 <font class="mcolor num">{{ count($user_tag) }}</font> 个</p>
             <ul class="selected-box">
                 @foreach ($user_tag as $item)
-                    <li class="taged{{$item->id}}" data-id="{{$item->id}}">{{$item->name}}</li>
+                    <li class="taged{{$item['id']}}" data-id="{{$item['id']}}">{{$item['name']}}</li>
                 @endforeach
             </ul>
         </div>

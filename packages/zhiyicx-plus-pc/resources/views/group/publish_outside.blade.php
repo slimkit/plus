@@ -19,7 +19,7 @@
                     <span>请选择圈子</span>
                     <ul id="J-group">
                         @foreach ($cates as $cate)
-                            <li data-value="{{$cate->id}}" allow_feed="{{$cate->allow_feed}}">{{$cate->name}}</li>
+                            <li data-value="{{$cate['id']}}" allow_feed="{{$cate['allow_feed']}}">{{$cate['name']}}</li>
                         @endforeach
                     </ul>
                     <i></i>

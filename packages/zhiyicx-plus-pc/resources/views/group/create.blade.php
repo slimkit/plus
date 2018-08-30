@@ -31,7 +31,7 @@
                     <span>{{ $cates[0]['name'] or '请先创建分类' }}</span>
                     <ul>
                         @foreach ($cates as $key => $cate)
-                            <li @if($key == 0) class="active" @endif data-value="{{$cate->id}}">{{$cate->name}}</li>
+                            <li @if($key == 0) class="active" @endif data-value="{{$cate['id']}}">{{$cate['name']}}</li>
                         @endforeach
                     </ul>
                     <i></i>
@@ -44,9 +44,9 @@
                     <div class="choos-tags" id="J-tag-box">
                         @foreach ($tags as $tag)
                             <dl>
-                                <dt>{{ $tag->name }}</dt>
-                                @foreach ($tag->tags as $item)
-                                    <dd data-id="{{$item->id}}">{{$item->name}}</dd>
+                                <dt>{{ $tag['name'] }}</dt>
+                                @foreach ($tag['tags'] as $item)
+                                    <dd data-id="{{$item['id']}}">{{$item['name']}}</dd>
                                 @endforeach
                             </dl>
                         @endforeach

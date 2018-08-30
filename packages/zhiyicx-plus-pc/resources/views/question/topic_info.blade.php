@@ -16,23 +16,23 @@
         <div class="question-topic">
             <div class="topic-info">
                 <div class="info-left">
-                    <img src="{{ $topic->avatar or asset('assets/pc/images/default_picture.png') }}" width="100px" height="100px">
+                    <img src="{{ $topic['avatar'] or asset('assets/pc/images/default_picture.png') }}" width="100px" height="100px">
                 </div>
                 <div class="info-right">
-                    <div class="topic-title">{{ $topic->name }}
+                    <div class="topic-title">{{ $topic['name'] }}
 
-                        @if($topic->has_follow)
-                        <a class="has-follow followed" href="javascript:;" tid="{{ $topic->id }}" status="1" onclick="QT.follow(this)">已关注</a>
+                        @if($topic['has_follow'])
+                        <a class="has-follow followed" href="javascript:;" tid="{{ $topic['id'] }}" status="1" onclick="QT.follow(this)">已关注</a>
                         @else
-                            <a class="has-follow" href="javascript:;" tid="{{ $topic->id }}" status="0" onclick="QT.follow(this)">+关注</a>
+                            <a class="has-follow" href="javascript:;" tid="{{ $topic['id'] }}" status="0" onclick="QT.follow(this)">+关注</a>
                         @endif
                     </div>
                     <div class="topic-foot">
                         <span class="count">关注
-                            <font class="mcolor" id="tf-count-{{ $topic->id }}">{{ $topic->follows_count }}</font>
+                            <font class="mcolor" id="tf-count-{{ $topic['id'] }}">{{ $topic['follows_count'] }}</font>
                         </span>
                         <span class="count">问题
-                            <font class="mcolor">{{ $topic->questions_count }}</font>
+                            <font class="mcolor">{{ $topic['questions_count'] }}</font>
                         </span>
                         {{-- 第三方分享 --}}
                         <span class="show-share">
@@ -40,7 +40,7 @@
                         </span>
                         <div class="share-show">
                             分享至：
-                            @include('pcview::widgets.thirdshare' , ['share_url' => route('pc:topicinfo', ['topic' => $topic->id]), 'share_title' => $topic->name, 'share_pic' => ($topic->avatar ? $topic->avatar : asset('assets/pc/images/default_picture.png'))])
+                            @include('pcview::widgets.thirdshare' , ['share_url' => route('pc:topicinfo', ['topic' => $topic['id']]), 'share_title' => $topic['name'], 'share_pic' => ($topic['avatar'] ? $topic['avatar'] : asset('assets/pc/images/default_picture.png'))])
                             <div class="triangle"></div>
                         </div>
                     </div>
@@ -48,9 +48,9 @@
             </div>
             <div class="topic-description">
                 <span class="intro">专题简介：</span>
-                <span class="h-d">{!! str_limit($topic->description, 250, '...') !!}</span>
-                <span class="s-d">{{ $topic->description }}</span>
-                @if(strlen($topic->description) > 250)
+                <span class="h-d">{!! str_limit($topic['description'], 250, '...') !!}</span>
+                <span class="s-d">{{ $topic['description'] }}</span>
+                @if(strlen($topic['description']) > 250)
                     &nbsp; &nbsp; <a href="javascript:;" class="show-description" data-show="0">查看详情</a>
                 @endif
             </div>
@@ -71,7 +71,7 @@
     </div>
     <div class="right_container">
         {{-- 相关专家 --}}
-        @if($experts->count() > 1)
+        @if(count($experts) > 1)
             <div class="recusers">
                 <div class="experts-users-title">
                     <div>相关专家</div>
@@ -81,8 +81,8 @@
                         <li>
                             <a href="{{ route('pc:mine', $user['id']) }}">
                                 <img src="{{ getAvatar($user, 50) }}"/>
-                                @if($user->verified)
-                                    <img class="role-icon" src="{{ $user->verified['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                                @if($user['verified'])
+                                    <img class="role-icon" src="{{ $user['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
                                 @endif
                             </a>
                             <span>
@@ -91,15 +91,15 @@
                         </li>
                     @endforeach
                 </ul>
-                @if ($experts->count() >= 9)
-                    <a class="recmore" href="{{ route('pc:topicexpert', $topic->id) }}">更多相关专家</a>
+                @if (count($experts) >= 9)
+                    <a class="recmore" href="{{ route('pc:topicexpert', $topic['id']) }}">更多相关专家</a>
                 @endif
             </div>
         @endif
 
         {{-- 提问 --}}
         <div class="q_c_post_btn">
-            <a href="javascript:;" onclick="question.create({{ $topic->id }})">
+            <a href="javascript:;" onclick="question.create({{ $topic['id'] }})">
             <span>
                 <svg class="icon white_color" aria-hidden="true"><use xlink:href="#icon-publish"></use></svg>提问
             </span>
@@ -115,7 +115,7 @@
 @section('scripts')
     <script src="{{ asset('assets/pc/js/module.question.js') }}"></script>
     <script>
-        var topic_id = "{{ $topic->id }}";
+        var topic_id = "{{ $topic['id'] }}";
         $(function(){
             loader.init({
                 container: '#J-box',

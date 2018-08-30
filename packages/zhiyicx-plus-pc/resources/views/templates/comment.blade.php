@@ -5,15 +5,15 @@
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
 @endphp
 
-@if (!$comments->isEmpty())
+@if (!empty($comments))
 @foreach ($comments as $comment)
 <div class="comment_item" id="comment{{$comment['id']}}">
     <dl class="clearfix">
         <dt>
             <a href="{{ route('pc:mine', $comment['user']['id']) }}">
                 <img src="{{ getAvatar($comment['user'], 50) }}" width="50">
-                @if($comment->user->verified)
-                    <img class="role-icon" src="{{ $comment->user->verified['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                @if($comment['user']['verified'])
+                    <img class="role-icon" src="{{ $comment['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
                 @endif
             </a>
         </dt>
@@ -29,10 +29,10 @@
                     <ul>
                     @if (
                             ($comment['user']['id'] == $TS['id']) ||
-                            (isset($group->joined) && in_array($group->joined->role, ['administrator', 'founder']))
+                            (isset($group['joined']) && in_array($group['joined']['role'], ['administrator', 'founder']))
                         )
                         @php
-                            $disabled = $group->joined->disabled ?? 0;
+                            $disabled = $group['joined']['disabled'] ?? 0;
                         @endphp
                         @if( (!isset($top) || $top !== false) && $comment['user']['id'] == $TS['id'] && !$disabled)
                         <li>
@@ -56,16 +56,16 @@
                     @endif
                     </ul>
                 </div>
-                @if(isset($comment->top) && $comment->top == 1)
+                @if(isset($comment['top']) && $comment['top'] == 1)
                     <span class="green fr">置顶</span>
                 @endif
             </div>
             <div class="reply_body">
-                @if ($comment->reply_user != 0)
+                @if ($comment['reply_user'] != 0)
                     @php
-                        $user = getUserInfo($comment->reply_user);
+                        $user = getUserInfo($comment['reply_user']);
                     @endphp
-                    回复<a class="mcolor" href="{{ route('pc:mine', $user->id) }}">{{ '@'.$user->name }}</a>：
+                    回复<a class="mcolor" href="{{ route('pc:mine', $user['id']) }}">{{ '@'.$user['name'] }}</a>：
                 @endif
 
                 {!! formatContent($comment['body']) !!}

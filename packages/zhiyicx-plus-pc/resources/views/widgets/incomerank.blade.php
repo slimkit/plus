@@ -1,7 +1,7 @@
 @php
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
 @endphp
-@if(!$incomes->isEmpty())
+@if(!empty($incomes))
 <div class="income-rank">
     <div class="title">收入达人排行榜</div>
     <ul class="income-list">

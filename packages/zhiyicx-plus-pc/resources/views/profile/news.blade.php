@@ -1,4 +1,4 @@
-@section('title') {{ $user->name }} 的个人主页@endsection
+@section('title') {{ $user['name'] }} 的个人主页@endsection
 
 @extends('pcview::layouts.default')
 
@@ -17,7 +17,7 @@
         {{-- 资讯列表 --}}
         <div class="profile_content">
             <div class="profile_menu J-menu">
-            @if ($user->id == $TS->id)
+            @if ($user['id'] == $TS['id'])
                 <a class="active" href="javascript:;" cid="0">已发布</a>
                 <a href="javascript:;" cid="1">投稿中</a>
                 <a href="javascript:;" cid="3">被驳回</a>
@@ -42,14 +42,14 @@
 $(function(){
     var params = { type: {{ $type }}, isAjax: true };
 
-    @if ($user->id != $TS->id)
-        params = { user: {{$user->id}}, isAjax: true }
+    @if ($user['id'] != $TS['id'])
+        params = { user: {{$user['id']}}, isAjax: true }
     @endif
 
     loader.init({
         container: '#content_list',
         loading: '.profile_content',
-        url: '/users/{{$user->id}}/news',
+        url: '/users/{{$user['id']}}/news',
         params: params
     });
 })
@@ -61,7 +61,7 @@ $('.J-menu > a').on('click', function(){
 	loader.init({
         container: '#content_list',
         loading: '.profile_content',
-        url: '/users/{{$user->id}}/news',
+        url: '/users/{{$user['id']}}/news',
         params: {type: type, isAjax: true }
     });
 

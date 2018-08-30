@@ -11,7 +11,7 @@
 
     {{-- 天排行榜 --}}
     <ul class="answer-rank-list" id="J-tab-day">
-        @if(!$qrank['day']->isEmpty())
+        @if(!empty($qrank['day']))
             @foreach($qrank['day'] as $day)
                 <li>
                 <a href="{{ route('pc:mine', $day['id']) }}">
@@ -40,7 +40,7 @@
 
     {{-- 周排行榜 --}}
     <ul class="answer-rank-list" id="J-tab-week" style="display: none;">
-        @if(!$qrank['week']->isEmpty())
+        @if(!empty($qrank['week']))
             @foreach($qrank['week'] as $week)
                 <li>
                 <a href="{{ route('pc:mine', $week['id']) }}">
@@ -69,7 +69,7 @@
 
     {{-- 月排行榜 --}}
     <ul class="answer-rank-list" id="J-tab-month" style="display: none;">
-        @if(!$qrank['month']->isEmpty())
+        @if(!empty($qrank['month']))
             @foreach($qrank['month'] as $month)
                 <li>
                 <a href="{{ route('pc:mine', $month['id']) }}">

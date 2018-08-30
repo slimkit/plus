@@ -1,7 +1,7 @@
 @php
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getTime;
 @endphp
-@if (!$notifications->isEmpty())
+@if (!empty($notifications))
     <ul class="tz-cont">
         @foreach($notifications as $notification)
             <li>
