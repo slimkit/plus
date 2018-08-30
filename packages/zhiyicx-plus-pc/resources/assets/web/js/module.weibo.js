@@ -355,6 +355,18 @@ weibo.searchTopics = _.debounce(function(el) {
     })
 }, 450)
 
+/**
+ * 显示话题选择框
+ *
+ * @param {boolean} [show] 是否为显示, 如果不填则表示切换
+ */
+weibo.showMention = function(show) {
+    var $el = $('.ev-view-mention-select')
+    if (show === false) $el.slideUp('fast');
+    else if (show === true) $el.slideDown('fast');
+    else $el.slideToggle('fast');
+}
+
 $(function() {
 
     weibo.selectedTopics = [];
@@ -410,6 +422,18 @@ $(function() {
     $(document).on('click', function(event) {
       var $parent = $(event.target).closest('.ev-view-topic-select')
       if (!$parent.length) weibo.showTopics(false)
+    })
+
+    // 捕获 at 按钮
+    $(document).on('click', '.ev-btn-mention', function(event) {
+      event.stopPropagation();
+      weibo.showMention(true);
+    })
+
+    // 捕获话题搜索框以外的点击事件以关闭话题搜索框
+    $(document).on('click', function(event) {
+      var $parent = $(event.target).closest('.ev-view-mention-select')
+      if (!$parent.length) weibo.showMention(false)
     })
 
     // 微博分类tab

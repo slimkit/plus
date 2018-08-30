@@ -29,6 +29,29 @@
             </div>
         </span>
 
+        <span class="font14 ml20 mention-btn">
+            <div class="ev-btn-mention">
+                <svg class="icon" aria-hidden="true" style="fill: #999;"><use xlink:href="#icon-mention"></use></svg>
+                @某人
+            </div>
+
+            <div class="dialog-mention-select ev-view-mention-select" style="display: none;">
+                <label class="search-wrap">
+                    <svg class="icon" aria-hidden="true" style="fill: #59b6d7;"><use xlink:href="#icon-mention"></use></svg>
+                    <input type="text" placeholder="搜索用户" oninput="weibo.searchUsers(this)">
+                </label>
+                <span class="hot ev-view-topic-hot">关注用户</span>
+                <ul class="topic-list ev-view-topic-list">
+                    @foreach($list ?? [] as $topic)
+                    @if($loop->index < 8)
+                    <li data-topic-id="{{$topic['id']}}" data-topic-name="{{$topic['name']}}">{{$topic['name']}}</li>
+                    @endif
+                    @endforeach
+                </ul>
+            </div>
+
+        </span>
+
         <a href="javascript:;" class="post_button" onclick="weibo.postFeed()">分享</a>
 
         {{-- 付费免费 --}}

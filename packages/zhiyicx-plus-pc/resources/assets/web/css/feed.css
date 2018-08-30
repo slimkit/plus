@@ -8,14 +8,21 @@
 .feed_post .post_extra .dy_cs {position:absolute;right:15px;top:-45px;font-size:12px;}
 .feed_post .post_extra span {cursor:pointer;line-height:37px;display:inline-block;color:#666;}
 .feed_post .post_extra svg {display:inline-block;margin-right:2px;margin-bottom:2px;font-size:20px;}
-.feed_post .topic-btn {position: relative;}
-.feed_post .topic-btn .dialog-topic-select {position: absolute;display: flex;left: 0;top: 100%;width: 400px;height: 300px;z-index: 10;padding: 20px 40px;background-color: #fff;box-shadow: 0px 2px 9px 0px
+.feed_post .topic-btn,
+.feed_post .mention-btn {position: relative;}
+.feed_post .topic-btn  .dialog-topic-select,
+.feed_post .mention-btn .dialog-mention-select {position: absolute;display: flex;left: 0;top: 100%;width: 400px;height: 300px;z-index: 10;padding: 20px 40px;background-color: #fff;box-shadow: 0px 2px 9px 0px
     rgba(22, 23, 23, 0.09);flex-direction: column;cursor: default;}
-.feed_post .dialog-topic-select .search-wrap {border-bottom: 1px solid #ccc;}
-.feed_post .dialog-topic-select .search-wrap input {border: none;}
-.feed_post .dialog-topic-select .hot {color: #ccc;margin-top: 20px;cursor: default;}
-.feed_post .dialog-topic-select .topic-list {display: flex;flex-flow: row wrap;}
+.feed_post .dialog-topic-select .search-wrap,
+.feed_post .dialog-mention-select .search-wrap {border-bottom: 1px solid #ccc;}
+.feed_post .dialog-topic-select .search-wrap input,
+.feed_post .dialog-mention-select .search-wrap input {border: none;}
+.feed_post .dialog-topic-select .hot,
+.feed_post .dialog-mention-select .hot {color: #ccc;margin-top: 20px;cursor: default;}
+.feed_post .dialog-topic-select .topic-list,
+.feed_post .dialog-mention-select .topic-list {display: flex;flex-flow: row wrap;}
 .feed_post .dialog-topic-select .topic-list > li {display: inline-block;width: 50%;cursor: pointer;}
+.feed_post .dialog-mention-select .topic-list > li {display: inline-block;width: 50%;cursor: pointer;}
 .feed_post .post_button {line-height:32px;float:right;width:85px;height:32px;text-align:center;color:#fff;border:0;border-radius:3px;background:#59b6d7;/* margin-right:40px;.del_huifu */}
 .feed_post .feed_select {float:right;margin-right:10px;font-size:14px;color:#666;}
 .feed_post .feed_select i {margin-top:10px;}
