@@ -13,8 +13,8 @@
     <div class="left">
 
         <nav class="topic-nav">
-            <a @if($type === 'hot')class="active"@endif href="/topic?type=hot">热门</a>
-            <a @if($type === 'new')class="active"@endif href="/topic?type=new">最新</a>
+            <a @if($type === 'hot')class="active"@endif href='{{ url("/topic?type=hot") }}'>热门</a>
+            <a @if($type === 'new')class="active"@endif href='{{ url("/topic?type=new") }}'>最新</a>
         </nav>
 
         <hr>
@@ -70,11 +70,11 @@
     });
 
     function gotoCreateTopic() {
-        location.href = '/topic/create';
+        location.href = '{{ url("/topic/create") }}';
     }
 
     function popupPostDialog() {
-        if (!TS.USER) return location.href= '/auth/login';
+        if (!TS.USER) return location.href= '{{ url("/auth/login") }}';
         layer.open({
             type: 1,
             title: '动态发布',

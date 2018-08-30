@@ -21,7 +21,7 @@ class FeedController extends BaseController
         if ($request->isAjax) {
             if ($request->query('feed_id')) { // 获取单条微博内容
                 $feeds['feeds'] = collect();
-                $feed = newapi('GET', '/api/v2/feeds/' . $request->feed_id);
+                $feed = api('GET', '/api/v2/feeds/' . $request->feed_id);
                 $feeds['feeds']->push($feed);
                 $feedData = view('pcview::templates.feeds', $feeds, $this->PlusData)->render();
 
@@ -47,7 +47,7 @@ class FeedController extends BaseController
                     } else {
                         $params['offset'] = $request->query('offset') ?: 0;
                     }
-                    $data = newapi('GET', '/api/v2/feeds', $params);
+                    $data = api('GET', '/api/v2/feeds', $params);
                     if (!empty($data['pinned']) && $params['type'] != 'follow') { // 置顶动态
                         $data['pinned']->reverse()->each(function ($item, $key) use ($data) {
                             $item->pinned = true;

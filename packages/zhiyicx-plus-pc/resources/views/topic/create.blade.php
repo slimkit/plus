@@ -74,7 +74,7 @@
     function onSubmit(event) {
         event.preventDefault();
         var formData = $('.ev-form-create-topic').serialize();
-        axios.post('/api/v2/feed/topics', formData, { validatStatus: s => s === 200 })
+        axios.post("{{ url('/api/v2/feed/topics') }}", formData, { validatStatus: s => s === 200 })
             .then(function(res) {
                 location.href = res.data.id;
             })
@@ -217,7 +217,7 @@
     function uploadBlobImage(file) {
         var formData = new FormData();
         formData.append('file', file);
-        axios.post('/api/v2/files', formData, {
+        axios.post('{{ url("/api/v2/files") }}', formData, {
             headers: { 'content-type': 'multipart/form-data' },
         }).then(function(res) {
             $('.ev-ipt-logo-id').val(res.data.id);

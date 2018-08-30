@@ -12,7 +12,10 @@
 <div class="m-topic p-topic-detail">
     <div class="left">
         <header>
-            <div class="bg" style="background-image: url(/api/v2/files/{{$topic['logo'] ?? ''}}?w=815&h=426)"></div>
+            <div class="bg"
+            @if($topic['logo'] ?? false)
+            style="background-image: url({{ url("/api/v2/files/{$topic['logo']}?w=815&h=426")}} )"
+            @endif></div>
             <div class="mask">
                 <h1>{{ $topic['name'] }}</h1>
                 <p class="author">创建者: {{ $creator['name'] }}</p>
@@ -62,7 +65,7 @@
                     'color' => '#fff',
                     'share_url' => route('pc:topicDetail', ['topicid_id' => $topic['id']]),
                     'share_title' => $topic['name'],
-                    'share_pic' => (!empty($topic['logo']) ? getenv('APP_URL') . '/api/v2/files/' . $topic['logo'] : asset('assets/pc/images/default_picture.png'))
+                    'share_pic' => (!empty($topic['logo']) ? url("/api/v2/files/{$topic['logo']}") : asset('assets/pc/images/default_picture.png'))
                 ])
             </div>
         </div>
@@ -73,7 +76,7 @@
             <ul>
                 @foreach($participants as $user)
                 <li>
-                    <a href="/users/{{ $user['id'] }}">
+                    <a href='{{ url("/users/{$user['id']}") }}'>
                         <div class="avatar"></div><span class="name">{{ $user['name'] }}</span>
                     </a>
                 </li>
@@ -109,7 +112,7 @@
     loader.init({
         container: '.ev-feed-list',
         loading: '.feed-list',
-        url: '/feeds',
+        url: '{{ url("/feeds") }}',
         params: params,
         loadtype: 0,
     });
@@ -121,10 +124,10 @@
         { el: '.ev-btn-edit-topic', on: 'click', fn: editTopic },
         { el: '.ev-btn-follow-topic', on: 'click', fn: followTopic },
         { el: '.ev-btn-unfollow-topic', on: 'click', fn: unfollowTopic },
-    ]
+    ];
     eventMap.forEach(function(event) {
         $('.p-topic-detail').on(event.on, event.el, event.fn);
-    })
+    });
 
     // 发布微博
     var up = $('.post_extra').Huploadify({
@@ -136,28 +139,28 @@
     });
 
     function togglePostBox() {
-        if (!TS.USER) return location.href= '/auth/login';
+        if (!TS.USER) return location.href= '{{ url("/auth/login") }}';
         $('.ev-post-box').slideToggle();
     }
 
     function reportTopic() {
-        reported.init('{{$topic['id']}}', 'topic')
+        reported.init('{{$topic['id']}}', 'topic');
     }
 
     function editTopic() {
-        location.href = '/topic/{{$topic['id']}}/edit'
+        location.href = '{{ route("pc:topicEdit", ["topic_id" => $topic['id']]) }}';
     }
 
     function followTopic() {
-        axios.put('/api/v2/user/feed-topics/{{$topic['id']}}')
-        $('.ev-btn-follow-topic').hide()
-        $('.ev-btn-unfollow-topic').show()
+        axios.put('{{ url("/api/v2/user/feed-topics/{$topic['id']}") }}');
+        $('.ev-btn-follow-topic').hide();
+        $('.ev-btn-unfollow-topic').show();
     }
 
     function unfollowTopic() {
-        axios.delete('/api/v2/user/feed-topics/{{$topic['id']}}')
-        $('.ev-btn-unfollow-topic').hide()
-        $('.ev-btn-follow-topic').show()
+        axios.delete('{{ url("/api/v2/user/feed-topics/{$topic['id']}") }}');
+        $('.ev-btn-unfollow-topic').hide();
+        $('.ev-btn-follow-topic').show();
     }
 
 })()

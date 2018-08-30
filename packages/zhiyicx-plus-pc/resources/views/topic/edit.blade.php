@@ -14,22 +14,22 @@
         <h1 class="u-tt">编辑话题</h1>
         <form class="m-form ev-form-create-topic">
             <div class="formitm cover ev-view-cover">
-                <div class="default ev-cover-tips">
+                <div class="default ev-cover-tips" @if($topic['logo'] ?? false) style="display: none;" @endif>
                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-ico_upload"></use></svg>
                     <br>上传话题封面
                 </div>
                 <div class="cover">
-                    <img src="/api/v2/files/{{$topic['logo']}}" class="ev-img-cover" />
+                    <img @if($topic['logo'] ?? false) src="/api/v2/files/{{$topic['logo']}}" @endif class="ev-img-cover" />
                 </div>
                 <button class="btn-edit-cover" type="button">更改封面</button>
             </div>
             <input type="file" class="hide ev-ipt-upload-file">
             <input type="text" name="logo" class="hide ev-ipt-logo-id">
-            <div class="fomritm title">
+            <div class="formitm title">
                 <input type="text" maxlength="10" value="{{$topic['name']}}" readonly>
             </div>
             <div class="formitm description">
-                <input class="ev-ipt-desc" type="text" value="{{$topic['desc']}}" maxlength="50" name="desc" placeholder="简单介绍一下话题内容">
+                <input class="ev-ipt-desc" type="text" value="{{$topic['desc'] ?? ''}}" maxlength="50" name="desc" placeholder="简单介绍一下话题内容">
             </div>
             <div class="formitm word-count">
                 <span><span class="ev-current-word-count">0</span>/50</span>
@@ -75,9 +75,9 @@
     function onSubmit(event) {
         event.preventDefault();
         var formData = $('.ev-form-create-topic').serialize();
-        axios.patch('/api/v2/feed/topics/{{$topic['id']}}', formData, { validatStatus: s => s === 204 })
+        axios.patch('{{ url("/api/v2/feed/topics/{$topic['id']}") }}', formData, { validatStatus: s => s === 204 })
             .then(function(res) {
-                location.href = '/topic/{{$topic['id']}}'
+                location.href = '{{ route("pc:topicDetail", ["topic_id" => $topic['id']]) }}'
             })
             .catch(function(error) {
                 showError(error.response.data);
@@ -218,7 +218,7 @@
     function uploadBlobImage(file) {
         var formData = new FormData();
         formData.append('file', file);
-        axios.post('/api/v2/files', formData, {
+        axios.post('{{ url("/api/v2/files") }}', formData, {
             headers: { 'content-type': 'multipart/form-data' },
         }).then(function(res) {
             $('.ev-ipt-logo-id').val(res.data.id);
