@@ -21,7 +21,7 @@
 
 /* 话题详情页 */
 .p-topic-detail .left > header {position: relative;height: 426px;}
-.p-topic-detail .left > header .bg {position: absolute;width: 100%;height: 100%;background: #ededed;background-size: cover;}
+.p-topic-detail .left > header .bg {position: absolute;width: 100%;height: 100%;background: #ededed center no-repeat;background-size: cover;}
 .p-topic-detail .left > header .mask {position: absolute;display: flex;flex-direction: column;justify-content: center;align-items: center;;width: 100%;height: 100%;background-color: rgba(0,0,0,0.4);z-index: 1;color: #fff;padding: 110px;}
 .p-topic-detail .left > header .mask h1 {font-size: 40px;letter-spacing: 1px;margin-bottom: 30px;}
 .p-topic-detail .left > header .mask .author {font-size: 18px;margin-bottom: 24px;margin-top: 0;}
@@ -82,7 +82,7 @@
 
 /* 话题卡片 */
 .w-topic-card {width: 100%;height: 100%;position: relative;border-radius: 20px;overflow: hidden;}
-.w-topic-card .bg {position: absolute;background: #ededed;width:100%;height:100%;background-size: cover;}
+.w-topic-card .bg {position: absolute;background: #ededed center no-repeat;width:100%;height:100%;background-size: cover;}
 .w-topic-card .mask {position: absolute;z-index: 1;display: flex;align-items: center;justify-content: center;height: 100%;width: 100%;background-color: rgba(0,0,0,0.2);color: #fff;}
 .w-topic-card .mask h2 {font-size: 20px;max-width: 10em;text-align: center;margin: 0;display: inline-block;}
 .w-topic-list {display: flex;flex-flow: row wrap;justify-content: space-between;margin-bottom: 0;}
