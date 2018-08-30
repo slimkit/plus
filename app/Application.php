@@ -22,7 +22,7 @@ namespace Zhiyi\Plus;
 
 use Illuminate\Foundation\Application as LaravelApplication;
 
-class Application extends LaravelApplication
+class Application extends LaravelApplication implements AppInterface
 {
     /**
      * The ThinkSNS Plus version.
@@ -74,7 +74,10 @@ class Application extends LaravelApplication
 
         // Register the app core container aliased.
         foreach ([
-            'app' => [static::class],
+            'app' => [
+                static::class,
+                \Zhiyi\Plus\AppInterface::class,
+            ],
             'cdn' => [
                 \Zhiyi\Plus\Contracts\Cdn\UrlFactory::class,
                 \Zhiyi\Plus\Cdn\UrlManager::class,

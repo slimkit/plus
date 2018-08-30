@@ -171,11 +171,6 @@ return [
         Illuminate\View\ViewServiceProvider::class,
 
         /*
-         * Package Service Providers...
-         */
-        Intervention\Image\ImageServiceProvider::class,
-
-        /*
          * Application Service Providers...
          */
         Zhiyi\Plus\Providers\AppServiceProvider::class,
@@ -185,6 +180,7 @@ return [
         Zhiyi\Plus\Providers\RouteServiceProvider::class,
         Zhiyi\Plus\Providers\NotificationServiceProvider::class,
         Zhiyi\Plus\Providers\EloquentServiceProvider::class,
+        Zhiyi\Plus\FileStorage\Providers\AppServiceProvider::class,
 
     ],
 
