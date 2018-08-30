@@ -97,7 +97,7 @@
                                 <ul class="u-menu f-dn">
                                     @if ($group['joined']['role'] == 'founder')
                                     <a href="javascript:;" onclick="MAG.set({{$group['id']}}, {{$member['id']}}, 1);"><li>设为管理员</li></a>
-                                    <a href="javascript:;" onclick="MAG.assign({{$group['id']}}, {{$member['user']_id}});"><li>转让圈子</li></a>
+                                    <a href="javascript:;" onclick="MAG.assign({{$group['id']}}, {{$member['user_id']}});"><li>转让圈子</li></a>
                                     @endif
                                     <a href="javascript:;" onclick="MAG.black({{$group['id']}}, {{$member['id']}}, 1);"><li>加入黑名单</li></a>
                                     <a href="javascript:;" onclick="MAG.delete({{$group['id']}}, {{$member['id']}});"><li>踢出圈子</li></a>

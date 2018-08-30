@@ -3,9 +3,9 @@
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatList;
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
 @endphp
-@if (!empty($data))
+@if (!$data->isEmpty())
+@foreach ($data as $post)
 <ul>
-    @foreach ($data as $post)
     <li>
         <h3 class="m-tt">
             <a href="{{ route('pc:questionread', $post['id']) }}"> {{ $post['subject'] }} </a>
@@ -74,7 +74,7 @@
             </span>
             <span class="u-btn">
                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-huida"></use></svg>
-                {{ $post['answer']s_count }} 条回答
+                {{ $post['answers_count'] }} 条回答
             </span>
             @if($post['amount'])
             <span class="u-btn">
@@ -84,13 +84,14 @@
             @endif
         </div>
     </li>
-    @endforeach
 </ul>
-@elseif(isset($search) && $search)
+@endforeach
+{{-- @elseif(isset($search) && $search)
 <script>
 if (!$('.no_data_div').length && $('#content_list').find('li').length < 1) {
     var box = $('#content_list');
     box.append('<div class="no_data_div"><div class="no_data"><img src="{{ asset('assets/pc/images/pic_default_content.png') }}"><p><div class="search-button"><a href="{{ route('pc:createquestion') }}">去提问</a></div></div></div>');
 }
 </script>
+ --}}
 @endif

@@ -218,7 +218,6 @@ var loader = {
         this.setting.selfname = option.selfname || 'loader';
         this.setting.clickHtml = "<div class='click_loading'><span onclick='"+ this.setting.selfname +".clickMore(this)'>加载更多<svg class='icon mcolor' aria-hidden='true'><use xlink:href='#icon-icon07'></use></svg></span></div>";
 
-
         this.bindScroll();
 
         if ($(this.setting.container).length > 0 && this.setting.canload == 0) {

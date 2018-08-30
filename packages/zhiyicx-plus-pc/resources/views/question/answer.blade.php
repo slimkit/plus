@@ -60,7 +60,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="javascript:;" onclick="QA.delAnswer({{ $answer['question']_id }}, {{ $answer['id'] }}, '/questions/{{ $answer['question']_id }}')">
+                            <a href="javascript:;" onclick="QA.delAnswer({{ $answer['question_id'] }}, {{ $answer['id'] }}, '/questions/{{ $answer['question_id'] }}')">
                                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-delete"></use></svg>删除
                             </a>
                         </li>
@@ -71,7 +71,7 @@
                                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-adopt"></use></svg>已采纳
                                 </a>
                             @else
-                                <a href="javascript:;" onclick="QA.adoptions('{{$answer['question']_id}}', '{{$answer['id']}}', '/questions/{{ $answer['id'] }}')">
+                                <a href="javascript:;" onclick="QA.adoptions('{{$answer['question_id']}}', '{{$answer['id']}}', '/questions/{{ $answer['id'] }}')">
                                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-adopt"></use></svg>采纳
                                 </a>
                             @endif
@@ -95,7 +95,7 @@
             @if($answer['invited'] == 0 || $answer['question']['look'] == 0 || (isset($TS) && $answer['invited'] == 1 && ($answer['could'] || $answer['question']['user_id'] == $TS['id'] || $answer['user_id'] == $TS['id'])))
                 <div class="answer-body markdown-body"> {!! formatMarkdown($answer['body']) !!} </div>
             @else
-                <span class="answer-body fuzzy" onclick="QA.look({{ $answer['id'] }}, '{{ $config['bootstrappers']['question:onlookers_amount'] }}' , {{ $answer['question']_id }})">@php for ($i = 0; $i < 250; $i ++) {echo 'T';} @endphp</span>
+                <span class="answer-body fuzzy" onclick="QA.look({{ $answer['id'] }}, '{{ $config['bootstrappers']['question:onlookers_amount'] }}' , {{ $answer['question_id'] }})">@php for ($i = 0; $i < 250; $i ++) {echo 'T';} @endphp</span>
             @endif
 
         <div class="detail_share">
@@ -137,7 +137,7 @@
                             $share_pic = '';
                         }
                 @endphp
-                @include('pcview::widgets.thirdshare' , ['share_url' => route('redirect', ['target' => '/questions/'.$answer['question']_id.'/'.'answers/'.$answer['id']]), 'share_title' => addslashes($answer['body']), 'share_pic' => $share_pic])
+                @include('pcview::widgets.thirdshare' , ['share_url' => route('redirect', ['target' => '/questions/'.$answer['question_id'].'/'.'answers/'.$answer['id']]), 'share_title' => addslashes($answer['body']), 'share_pic' => $share_pic])
             </div>
 
             {{-- 打賞 --}}

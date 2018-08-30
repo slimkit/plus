@@ -53,7 +53,7 @@
                 <font>{{$post['views_count']}}</font>
             </span>
             @if ($post['group']['joined'])
-            @if ($post['user']_id != $TS['id'] && $post['group']['joined']['disabled']) @else
+            @if ($post['user_id'] != $TS['id'] && $post['group']['joined']['disabled']) @else
                 <span class="options" onclick="options(this)">
                     <svg class="icon icon-more" aria-hidden="true"><use xlink:href="#icon-more"></use></svg>
                 </span>
@@ -84,7 +84,7 @@
                             </a>
                         </li>
                     @else
-                        @if($post['user']_id == $TS['id'])
+                        @if($post['user_id'] == $TS['id'])
                             <li>
                                 <a href="javascript:;" onclick="post.delPost('{{$post['group_id']}}', '{{$post['id']}}');">
                                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-delete"></use></svg>删除
@@ -202,7 +202,7 @@
                 <font>{{$post['views_count']}}</font>
             </span>
             {{--@if ($post['group']['joined'])--}}
-            @if ($post['user']_id != $TS['id'] && $post['group']['joined']['disabled']) @else
+            @if ($post['user_id'] != $TS['id'] && $post['group']['joined']['disabled']) @else
                 <span class="options" onclick="options(this)">
                     <svg class="icon icon-more" aria-hidden="true"><use xlink:href="#icon-more"></use></svg>
                 </span>
@@ -250,7 +250,7 @@
                                 </a>
                             @endif
                         </li>
-                        @if($post['user']_id == $TS['id'])
+                        @if($post['user_id'] == $TS['id'])
                             @if(!$post['group']['joined']['disabled'])
                             <li>
                                 <a href="javascript:;" onclick="post.pinnedPost('{{$post['id']}}', 'pinned');">

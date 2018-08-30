@@ -43,15 +43,15 @@
                 <div class="content-inner">
                     @if($answer['invited'] == 0 || $answer['question']['look'] == 0 || (isset($TS) && $answer['invited'] == 1 && ($answer['look'] || $answer['question']['user_id'] == $TS['id'] || $answer['user_id'] == $TS['id'])))
                         <span class="answer-body">{!! str_limit(formatList($answer['body']), 250, '...') !!}</span>
-                        <a class="button button-plain button-more" href="{{ route('pc:answeread', ['question' => $answer['question']_id, 'answer' => $answer['id']]) }}">查看详情</a>
+                        <a class="button button-plain button-more" href="{{ route('pc:answeread', ['question' => $answer['question_id'], 'answer' => $answer['id']]) }}">查看详情</a>
                     @else
-                        <span class="answer-body fuzzy" onclick="QA.look({{ $answer['id'] }}, '{{ $config['bootstrappers']['question:onlookers_amount'] }}' , {{ $answer['question']_id }})">@php for ($i = 0; $i < 250; $i ++) {echo 'T';} @endphp</span>
+                        <span class="answer-body fuzzy" onclick="QA.look({{ $answer['id'] }}, '{{ $config['bootstrappers']['question:onlookers_amount'] }}' , {{ $answer['question_id'] }})">@php for ($i = 0; $i < 250; $i ++) {echo 'T';} @endphp</span>
                     @endif
                 </div>
 
                 <div class="answer-footer">
                     <div class="answer-footer-inner">
-                        <a href="{{ route('pc:answeread', ['question' => $answer['question']_id, 'answer' => $answer['id']]) }}" class="button button-plain">
+                        <a href="{{ route('pc:answeread', ['question' => $answer['question_id'], 'answer' => $answer['id']]) }}" class="button button-plain">
                             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg>
                             {{ $answer['likes_count'] }} 分享
                         </a>
@@ -104,7 +104,7 @@
                                 @endif
                                 @if($answer['user_id'] == $TS['id'] && (!$answer['invited'] && !$answer['adoption']))
                                     <li>
-                                        <a href="javascript:;" onclick="QA.delAnswer({{$answer['question']_id}}, {{$answer['id']}}, '/questions/{{ $answer['question']_id }}')">
+                                        <a href="javascript:;" onclick="QA.delAnswer({{$answer['question_id']}}, {{$answer['id']}}, '/questions/{{ $answer['question_id'] }}')">
                                             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-delete"></use></svg>
                                             删除
                                         </a>
@@ -127,7 +127,7 @@
                                     @if(isset($TS) && $answer['could'])
                                         <button class="button look-cloud" type="button">已围观</button>
                                     @else
-                                        <button class="button button-blue button-primary look-cloud" onclick="QA.look({{ $answer['id'] }}, '{{ $config['bootstrappers']['question:onlookers_amount'] }}' , {{ $answer['question']_id }})" type="button">围观</button>
+                                        <button class="button button-blue button-primary look-cloud" onclick="QA.look({{ $answer['id'] }}, '{{ $config['bootstrappers']['question:onlookers_amount'] }}' , {{ $answer['question_id'] }})" type="button">围观</button>
                                     @endif
                                 @endif
                             </div>
@@ -136,7 +136,7 @@
                     </div>
 
                     {{-- 评论 --}}
-                    @include('pcview::widgets.comments', ['id' => $answer['id'], 'comments_count' => count($answer['comments']), 'comments_type' => 'answer', 'url' => Route('pc:answeread', ['question' => $answer['question']_id, 'answer' => $answer['id']]), 'position' => 1, 'comments_data' => $answer['comments']])
+                    @include('pcview::widgets.comments', ['id' => $answer['id'], 'comments_count' => count($answer['comments']), 'comments_type' => 'answer', 'url' => Route('pc:answeread', ['question' => $answer['question_id'], 'answer' => $answer['id']]), 'position' => 1, 'comments_data' => $answer['comments']])
 
                 </div>
             </div>

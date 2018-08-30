@@ -66,7 +66,7 @@
                                 </a>
                             </li>
                         @else
-                            @if($post['user']_id == $TS['id'])
+                            @if($post['user_id'] == $TS['id'])
                                 @if (!$post['pinned'] && !$post['group']['joined']['disabled'])
                                 <li>
                                     <a href="javascript:;" onclick="post.pinnedPost('{{$post['id']}}', 'pinned');">

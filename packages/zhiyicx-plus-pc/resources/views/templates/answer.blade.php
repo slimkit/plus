@@ -3,6 +3,7 @@
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatList;
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getUserInfo;
 @endphp
+@if (!$datas->isEmpty())
 @foreach ($datas as $k => $answer)
     <div class="qa-item @if ($k == 0) mt30 @endif">
         <div class="qa-body mb20 clearfix">
@@ -77,3 +78,4 @@
         }
     };
 </script>
+@endif
