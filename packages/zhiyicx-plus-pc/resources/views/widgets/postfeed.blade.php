@@ -1,6 +1,6 @@
 {{-- 动态发布 --}}
 <div class="feed_post">
-    <textarea class="post_textarea" placeholder="说说新鲜事" id="feed_content" amount="" onkeyup="checkNums(this, 255, 'nums');"></textarea>
+    <div class="post_textarea" placeholder="说说新鲜事" id="feed_content" amount="" onkeyup="checkNums(this, 255, 'nums');" contenteditable></div>
     <div class="post_extra">
         <span class="font14 ev-btn-feed-pic">
             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-img"></use></svg>

@@ -129,7 +129,7 @@ post.createPost = function (group_id) {
     });
     var data = {
         //title: $('#post_title').val(),
-        content: $('#feed_content').val(),
+        content: $('#feed_content').text(),
         images: images,
         group_post_mark: TS.MID + new Date().getTime(),
     };
@@ -147,7 +147,7 @@ post.createPost = function (group_id) {
         noticebox('发布成功', 1);
         $('.feed_picture').html('').hide();
         $('#post_title').val('');
-        $('#feed_content').val('');
+        $('#feed_content').html('');
         post.afterCreatePost(group_id, response.data.id);
         _this.lockStatus = 0;
       })
