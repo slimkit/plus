@@ -12,6 +12,8 @@ use Zhiyi\Plus\FileStorage\ResourceInterface;
 use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use function Zhiyi\Plus\setting;
 use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Auth;
 
 class LocalFilesystem implements FilesystemInterface
 {
@@ -22,10 +24,9 @@ class LocalFilesystem implements FilesystemInterface
         $this->filesystem = $filesystem;
     }
 
-    public function meta(ResourceInterface $resource): ?FileMetaInterface
+    public function meta(ResourceInterface $resource): FileMetaInterface
     {
-        $meta = $this->filesystem->getMetadata($resource->getPath());
-        dd($meta);
+        return new Local\FileMeta($this->filesystem, $resource);
     }
 
     public function url(string $path, ?string $rule = null): string
@@ -47,8 +48,10 @@ class LocalFilesystem implements FilesystemInterface
             'channel' => $resource->getChannel(),
             'path' => base64_encode($resource->getPath()),
         ]);
+        $user = $this->guard()->user();
 
-        return new Task($uri, 'PUT', null, null, [
+        return new Task($resource, $uri, 'PUT', null, null, [
+            'Authorization' => 'Bearer '.$this->guard()->login($user),
             'x-plus-storage-filename' => $request->input('filename'),
             'x-plus-storage-hash' => $request->input('hash'),
             'x-plus-storage-size' => $request->input('size'),
@@ -59,5 +62,15 @@ class LocalFilesystem implements FilesystemInterface
     public function put(string $path, $content): bool
     {
         return (bool) $this->filesystem->put($path, $content);
+    }
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\Guard
+     */
+    public function guard(): Guard
+    {
+        return Auth::guard('api');
     }
 }

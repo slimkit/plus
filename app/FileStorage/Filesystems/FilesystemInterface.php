@@ -11,7 +11,7 @@ use Zhiyi\Plus\FileStorage\FileMetaInterface;
 
 interface FilesystemInterface
 {
-    public function meta(ResourceInterface $resource): ?FileMetaInterface;
+    public function meta(ResourceInterface $resource): FileMetaInterface;
 
     public function url(string $path, ?string $rule = null): string;
 

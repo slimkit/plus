@@ -45,4 +45,19 @@ interface StorageInterface
      * @return \Zhiyi\Plus\FileStorage\ResourceInterface
      */
     public function transform(ResourceInterface $resource, string $channel, Request $request): ResourceInterface;
+
+    /**
+     * Put a file.
+     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     * @param mixed $content
+     * @return bool
+     */
+    public function put(ResourceInterface $resource, $content): bool;
+
+    /**
+     * A storage task callback handle.
+     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     * @return void
+     */
+    public function callback(ResourceInterface $resource): void;
 }

@@ -35,6 +35,7 @@ class CreateTask extends Controller
             'headers' => $task->getHeaders(),
             'form' => $task->getForm(),
             'file_key' => $task->getFileKey(),
+            'node' => $task->getNode(),
         ], JsonResponse::HTTP_CREATED);
     }
 }

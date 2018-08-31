@@ -6,7 +6,7 @@ namespace Zhiyi\Plus\FileStorage\Channels;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\FileStorage\TaskInterface;
-use Zhiyi\Plus\FileStorage\FileMateInterface;
+use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Zhiyi\Plus\FileStorage\ResourceInterface;
 use Zhiyi\Plus\FileStorage\Filesystems\FilesystemInterface;
 
@@ -20,5 +20,9 @@ interface ChannelInterface
 
     public function createTask(): TaskInterface;
 
-    public function meta(): FileMateInterface;
+    public function meta(): FileMetaInterface;
+
+    public function url(?string $rule = null): string;
+
+    public function callback(): void;
 }

@@ -35,4 +35,17 @@ interface TaskInterface
      * @return null|string
      */
     public function getFileKey(): ?string;
+
+    /**
+     * Get resource node string.
+     * @return string
+     */
+    public function getNode(): string;
+
+    /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray(): array;
 }

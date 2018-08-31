@@ -28,7 +28,7 @@ class FilesystemManager extends Manager
         $filesystem = $this
             ->app
             ->make(\Illuminate\Contracts\Filesystem\Factory::class)
-            ->disk(setting('core:file-local-select', 'local'));
+            ->disk(setting('core', 'file:local-filesystem-select', 'local'));
 
         return new Filesystems\LocalFilesystem($filesystem);
     }

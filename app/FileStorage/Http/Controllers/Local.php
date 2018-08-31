@@ -15,6 +15,8 @@ use Illuminate\Contracts\Cache\Factory as FactoryContract;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Auth;
 
 class Local extends Controller
 {
@@ -24,14 +26,29 @@ class Local extends Controller
     {
         $this
             ->middleware('signed')
+            ->only(['put'/* , 'show' */]);
+        $this
+            ->middleware('auth:api')
             ->only(['put']);
         
         $this->storage = $storage;
     }
 
-    public function show()
+    public function get(Request $request, string $channel, string $path)
     {
-        // todo.
+        $resource = new Resource($channel, base64_decode($path));
+        $rule = $request->query('rule', null);
+        // $meta = $this->storage->meta($resource);
+        // dd(
+        //     [
+        //         'size' => $meta->getSize(),
+        //         'mime' => $meta->getMimeType(),
+        //         'dimension' => [
+        //             'width' => $meta->getImageDimension()->getWidth(),
+        //             'height' => $meta->getImageDimension()->getHeight(),
+        //         ]
+        //     ]
+        // );
     }
 
     public function put(Request $request, FactoryContract $cache, string $channel, string $path): Response
@@ -52,11 +69,23 @@ class Local extends Controller
             throw new HttpException('储存文件失败');
         }
 
+        $this->storage->callback($resource);
         $expiresAt = (new Carbon)->addHours(
             setting('core', 'file:put-signature-expires-at', 1)
         );
         $cache->put($signature, 1, $expiresAt);
+        $this->guard()->invalidate();
 
         return new Response('', Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\Guard
+     */
+    public function guard(): Guard
+    {
+        return Auth::guard('api');
     }
 }

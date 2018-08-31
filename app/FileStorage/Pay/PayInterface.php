@@ -20,7 +20,9 @@ interface PayInterface
 
     /**
      * Get pay node.
-     * @return int
+     * @return string
      */
-    public function getNode(): int;
+    public function getNode(): string;
+
+    public function getType(): string;
 }

@@ -7,6 +7,7 @@ namespace Zhiyi\Plus\FileStorage;
 use Zhiyi\Plus\AppInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Zhiyi\Plus\FileStorage\Channels\ChannelInterface;
 
 class Storage implements StorageInterface
 {
@@ -52,10 +53,7 @@ class Storage implements StorageInterface
         );
 
         // Create task
-        $channel = $this
-            ->channelManager
-            ->driver($resource->getChannel());
-        $channel->setResource($resource);
+        $channel = $this->getChannel($resource);
         $channel->setRequest($request);
 
         return $channel->createTask();
@@ -63,20 +61,12 @@ class Storage implements StorageInterface
 
     public function meta(ResourceInterface $resource): FileMetaInterface
     {
-        $channel = $this
-            ->channelManager
-            ->driver($resource->getChannel());
-        $channel->setResource($resource);
-        return $channel->meta();
+        return $this->getChannel($resource)->meta();
     }
 
     public function url(ResourceInterface $resource, ?string $rule = null): string
     {
-        $channel = $this
-            ->channelManager
-            ->driver($resource->getChannel());
-        $channel->setResource($resource);
-        return $channel->url($rule);
+        return $this->getChannel($resource)->url($rule);
     }
 
     /**
@@ -86,12 +76,7 @@ class Storage implements StorageInterface
      */
     public function delete(ResourceInterface $resource): ?bool
     {
-        $channel = $this
-            ->channelManager
-            ->driver($resource->getChannel());
-        $channel->setResource($resource);
-
-        return $channel->delete();
+        return $this->getChannel($resource)->delete();
     }
 
     /**
@@ -103,26 +88,39 @@ class Storage implements StorageInterface
      */
     public function transform(ResourceInterface $resource, string $channel, Request $request): ResourceInterface
     {
-        $newResource = $this->createResource(
-           $channel,
+        return $this->getChannel($resource)->transform($this->createResource(
+            $channel,
             $this->makePath($resource->getPath())
-        );
-
-        $channel = $this
-            ->channelManager
-            ->driver($resource->getChannel());
-        $channel->setResource($resource);
-        $channel->setRequest($this->app->make(Request::class));
-
-        return $channel->transform($newResource);
+        ));
     }
 
+    /**
+     * Put a file.
+     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     * @param mixed $content
+     * @return bool
+     */
     public function put(ResourceInterface $resource, $content): bool
+    {
+        return $this->getChannel($resource)->put($content);
+    }
+
+    /**
+     * A storage task callback handle.
+     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     * @return void
+     */
+    public function callback(ResourceInterface $resource): void
+    {
+        $this->getChannel($resource)->callback();
+    }
+
+    public function getChannel(ResourceInterface $resource): ChannelInterface
     {
         $channel = $this->channelManager->driver($resource->getChannel());
         $channel->setResource($resource);
 
-        return $channel->put($content);
+        return $channel;
     }
 
     public function makePath(string $filename): string

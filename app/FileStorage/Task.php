@@ -6,14 +6,16 @@ namespace Zhiyi\Plus\FileStorage;
 
 class Task implements TaskInterface
 {
+    protected $resource;
     protected $uri;
     protected $method;
     protected $from;
     protected $fileKey;
     protected $headers;
 
-    public function __construct(string $uri, string $method, ?array $form = null, ?string $fileKey = null, array $headers = [])
+    public function __construct(ResourceInterface $resource, string $uri, string $method, ?array $form = null, ?string $fileKey = null, array $headers = [])
     {
+        $this->resource = $resource;
         $this->uri = $uri;
         $this->method = $method;
         $this->form = $form;
@@ -64,5 +66,14 @@ class Task implements TaskInterface
     public function getFileKey(): ?string
     {
         return $this->fileKey;
+    }
+
+    /**
+     * Get resource node string.
+     * @return string
+     */
+    public function getNode(): string
+    {
+        return (string) $this->resource;
     }
 }

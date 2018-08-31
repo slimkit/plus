@@ -36,7 +36,7 @@ class MakeRoutes
 
     protected function registerChannelCallbackRoutes(): void
     {
-        $this->router->group(['prefix' => 'api/v2', 'middleware' => ['api']], function (RegistrarContract $router) {
+        $this->router->group(['prefix' => 'api/v2'], function (RegistrarContract $router) {
             $router
                 ->post('storage/{channel}:{path}', Controllers\Callback::class)
                 ->name('storage:callback');
@@ -45,7 +45,7 @@ class MakeRoutes
 
     protected function registerCreateTaskRoutes(): void
     {
-        $this->router->group(['prefix' => 'api/v2', 'middleware' => ['api']], function (RegistrarContract $router) {
+        $this->router->group(['prefix' => 'api/v2'], function (RegistrarContract $router) {
             $router
                 ->post('storage', Controllers\CreateTask::class)
                 ->name('storage:create-task');

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\AppInterface;
 use Zhiyi\Plus\FileStorage\TaskInterface;
 use Zhiyi\Plus\FileStorage\Task;
-use Zhiyi\Plus\FileStorage\FileMateInterface;
+use Zhiyi\Plus\FileStorage\FileMetaInterface;
 
 class PublicChannel extends AbstractChannel
 {
@@ -24,8 +24,16 @@ class PublicChannel extends AbstractChannel
         return $this->filesystem->createTask($this->request, $this->resource);
     }
 
-    public function meta(): FileMateInterface
+    public function meta(): FileMetaInterface
     {
-        return $this->filesystem->mate($this->resource);
+        return $this->filesystem->meta($this->resource);
     }
+
+    public function url(?string $rule = null): string
+    {
+        return $this->filesystem->url($this->resource->getPath(), $rule);
+    }
+
+    public function callback(): void
+    {}
 }

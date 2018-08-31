@@ -29,13 +29,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Zhiyi\Plus\Http\Controllers\APIs\V2\UserAvatarController;
+use Zhiyi\Plus\FileStorage\FileMetaInterface;
+use Zhiyi\Plus\FileStorage\Traits\EloquentAttributeTrait as FileStorageEloquentAttributeTrait;
 
 class User extends Authenticatable implements JWTSubject
 {
     // 功能性辅助相关。
     use Notifiable,
         SoftDeletes,
-        Concerns\HasAvatar,
         Concerns\UserHasAbility,
         Concerns\UserHasNotifiable,
         Concerns\Macroable;
@@ -52,6 +53,7 @@ class User extends Authenticatable implements JWTSubject
         Relations\UserHasCurrency,
         Relations\UserHasNewWallet,
         Relations\UserHasBlackList;
+    use FileStorageEloquentAttributeTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -76,7 +78,7 @@ class User extends Authenticatable implements JWTSubject
      *
      * @var array
      */
-    protected $appends = ['avatar', 'bg', 'verified'];
+    protected $appends = ['verified'];
 
     /**
      * The relations to eager load on every query.
@@ -107,58 +109,11 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    /**
-     * Get avatar key.
-     *
-     * @return int
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function getAvatarKey()
+    public function getAvatarAttribute(?string $resource): FileMetaInterface
     {
-        return $this->getKey();
+        return $this->parseFile($resource);
     }
-
-    /**
-     * Get avatar attribute.
-     *
-     * @return string|null
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function getAvatarAttribute()
-    {
-        if (! $this->avatarPath()) {
-            return null;
-        }
-        // 获取头像更新时间
-        $lastModified = Cache::get('avatar_'.$this->id.'_lastModified_at');
-        if (! $lastModified) {
-            $lastModified = Storage::disk(config('cdn.generators.filesystem.disk'))->exists($this->avatarPath()) ?
-             Storage::disk(config('cdn.generators.filesystem.disk'))->lastModified($this->avatarPath(''))
-             : '';
-        }
-
-        return action('\\'.UserAvatarController::class.'@show', ['user' => $this]).'?v='.$lastModified;
-    }
-
-    /**
-     * Get user background image.
-     *
-     * @return string|null
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function getBgAttribute()
-    {
-        // 获取头像更新时间
-        $lastModified = Cache::get('avatar_'.$this->id.'user-bg_lastModified_at');
-        if (! $lastModified) {
-            $lastModified = Storage::disk(config('cdn.generators.filesystem.disk'))->exists($this->avatarPath('user-bg')) ?
-             Storage::disk(config('cdn.generators.filesystem.disk'))->lastModified($this->avatarPath('user-bg'))
-             : '';
-        }
-
-        return $lastModified ? $this->avatar(0, 'user-bg').'?v='.$lastModified : $this->avatar(0, 'user-bg');
-    }
-
+    
     /**
      * Get verifed.
      *
