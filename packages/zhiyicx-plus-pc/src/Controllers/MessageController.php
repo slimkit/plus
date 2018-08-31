@@ -281,4 +281,16 @@ class MessageController extends BaseController
             'count' => $data['users']->count(),
         ]);
     }
+
+    /**
+     * at 我的
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function mention(Request $request)
+    {
+        return response()->json([
+            'status' => true,
+        ]);
+    }
 }

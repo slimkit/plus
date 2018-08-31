@@ -25,6 +25,17 @@
             {{-- 通知 --}}
             <div class="chat_left @if($type == 0) hide" @endif" id="chat_left_notice">
                 <ul>
+                    <li @if($type == 5) class="current_room"@endif data-type="5" id="chat_mention">
+                        <div class="chat_left_icon">
+                            <svg class="icon chat_svg" aria-hidden="true">
+                                <use xlink:href="#icon-side-mention"></use>
+                            </svg>
+                        </div>
+                        <div class="chat_item">
+                            <span class="chat_span">@我的</span>
+                            <div class="last_content"></div>
+                        </div>
+                    </li>
                     <li @if($type == 1)class="current_room"@endif data-type="1" id="chat_comments">
                         <div class="chat_left_icon">
                             <svg class="icon chat_svg" aria-hidden="true">
@@ -149,7 +160,7 @@
     var audit_top = $('.audit_top');
     var select = $(".message_select");
     var _loader = _.cloneDeep(loader);
-    
+
     $(function () {
         axios.defaults.baseURL = TS.SITE_URL;
         axios.defaults.headers.common['Accept'] = 'application/json';
@@ -358,9 +369,9 @@
         if (TS.EASEMOB_KEY) {
             // 设置聊天会话
             easemob.cid = {{ $cid or 0 }};
-            easemob.setInnerCon();   
+            easemob.setInnerCon();
         }
-        
+
         // 加载内容
         if(type != 0) messageData(type);
     });
@@ -479,6 +490,18 @@
                 body_title.addClass('hide');
                 audit_top.removeClass('hide');
                 break;
+            case 8:
+                _loader.init({
+                    container: '#message_cont',
+                    loading: '.message_cont',
+                    url: '/message/pinnedPost',
+                    paramtype: 1,
+                    params: {limit: 20},
+                    loadtype: 2,
+                    selfname: '_loader'
+                })
+                body_title.addClass('hide')
+                audit_top.removeClass('hide')
         }
     }
 

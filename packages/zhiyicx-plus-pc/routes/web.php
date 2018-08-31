@@ -233,6 +233,8 @@ Route::prefix('message')->group(function () {
     Route::get('/pinnedPost', 'MessageController@pinnedPost')->name('pc:webmessagepost');
     // 联系人列表
     Route::get('/followMutual', 'MessageController@followMutual');
+    // at 我的信息列表
+    Route::get('/mention', 'MessageController@mention')->name('pc:webmessagemention');
 });
 
 // 圈子首页
