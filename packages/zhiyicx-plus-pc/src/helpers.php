@@ -32,12 +32,20 @@ function formatContent($content)
     $replace = '<br>';
     $content = str_replace($pattern, $replace, $content);
 
-
     // 过滤xss
     $config = HTMLPurifier_Config::createDefault();
     $config->set('HTML.Allowed', 'br,a[href]');
     $purifier = new HTMLPurifier($config);
     $content = $purifier->purify($content);
+
+    // at 用户替换为链接
+    $content = preg_replace_callback('/\x{00ad}@((?:[^\/]+?))\x{00ad}/iu', function ($match) {
+        $username = $match[1];
+        $url = route('pc:mine', [
+            'user' => $username,
+        ]);
+        return sprintf('<a href="%s">@%s</a>', $url, $username);
+    }, $content);
 
     return $content;
 }

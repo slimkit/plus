@@ -4,6 +4,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
 use Illuminate\Http\Request;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
+use function Zhiyi\Plus\username;
 
 class UserController extends BaseController
 {
@@ -91,10 +92,15 @@ class UserController extends BaseController
      * @param  int|integer $user_id [用户id]
      * @return mixed
      */
-    public function follower(Request $request, int $user_id = 0)
+    public function follower(Request $request, ?srting $user)
     {
         if ($request->isAjax) {
-            $user_id = $request->query('user_id');
+            if (! $user) {
+                $user = $request->user();
+            } else {
+                $user = UserModel::where(username($user), $user)->first();
+            }
+            $user_id = $user->id;
 
             $params = [
                 'offset' => $request->query('offset'),

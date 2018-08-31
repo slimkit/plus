@@ -1,11 +1,12 @@
 <?php
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
-    
+
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User as UserModel;
 use function zhiyi\Component\ZhiyiPlus\PlusComponentPc\replaceUrl;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
+use function Zhiyi\Plus\username;
 
 class ProfileController extends BaseController
 {
@@ -13,11 +14,16 @@ class ProfileController extends BaseController
      * 动态
      * @author Foreach
      * @param  Request     $request
-     * @param  int|integer $user_id [用户id]
+     * @param  string      $user [用户id 或用户名]
      * @return mixed
      */
-    public function feeds(Request $request, UserModel $user)
+    public function feeds(Request $request, ?string $user = null)
     {
+        if (! $user) {
+            $user = $request->user();
+        } else {
+            $user = UserModel::where(username($user), $user)->first();
+        }
         $this->PlusData['current'] = 'feeds';
         if ($request->isAjax) {
             $params = [
@@ -56,11 +62,17 @@ class ProfileController extends BaseController
      * 文章.
      * @author 28youth
      * @param  Request $request
+     * @param  string  $user [用户id 或用户名]
      * @return mixed
      */
-    public function news(Request $request, UserModel $user)
+    public function news(Request $request, ?string $user = null)
     {
         $this->PlusData['current'] = 'news';
+        if (! $user) {
+            $user = $request->user();
+        } else {
+            $user = UserModel::where(username($user), $user)->first();
+        }
         if ($request->isAjax) {
             $params = [
                 'type' => $request->query('type'),
@@ -242,8 +254,13 @@ class ProfileController extends BaseController
      * @param  int $user_id [用户id]
      * @return mixed
      */
-    public function group(Request $request, UserModel $user)
+    public function group(Request $request, ?string $user)
     {
+        if (! $user) {
+            $user = $request->user();
+        } else {
+            $user = UserModel::where(username($user), $user)->first();
+        }
         $this->PlusData['current'] = 'group';
         if ($request->isAjax) {
             $type = (int) $request->query('type');
@@ -280,8 +297,13 @@ class ProfileController extends BaseController
      * @param  int $user_id [用户id]
      * @return mixed
      */
-    public function question(Request $request, UserModel $user)
+    public function question(Request $request, ?string $user)
     {
+        if (! $user) {
+            $user = $request->user();
+        } else {
+            $user = UserModel::where(username($user), $user)->first();
+        }
         $this->PlusData['current'] = 'question';
         if ($request->isAjax) {
             $cate = $request->query('cate', 1);

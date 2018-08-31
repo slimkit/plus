@@ -156,7 +156,7 @@ Route::prefix('settings')->middleware('auth')->group(function () {
 Route::prefix('users')->middleware('auth')->group(function () {
 
     // 动态
-    Route::get('/{user?}', 'ProfileController@feeds')->where(['user' => '[0-9]+'])->name('pc:mine');
+    Route::get('/{user?}', 'ProfileController@feeds')->name('pc:mine');
 
     // 资讯
     Route::get('/{user?}/news', 'ProfileController@news')->name('pc:profilenews');
