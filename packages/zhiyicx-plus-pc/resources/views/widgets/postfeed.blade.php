@@ -40,11 +40,11 @@
                     <svg class="icon" aria-hidden="true" style="fill: #59b6d7;"><use xlink:href="#icon-mention"></use></svg>
                     <input type="text" placeholder="搜索用户" oninput="weibo.searchUsers(this)">
                 </label>
-                <span class="hot ev-view-follow-users">关注用户</span>
-                <ul class="follow-users ev-view-follow-users">
-                    @foreach($follow_users ?? [] as $user)
+                <span class="hot ev-view-topic-hot">关注用户</span>
+                <ul class="topic-list ev-view-topic-list">
+                    @foreach($list ?? [] as $topic)
                     @if($loop->index < 8)
-                    <li data-user-id="{{$user['id']}}" data-user-name="{{$user['name']}}">{{$user['name']}}</li>
+                    <li data-topic-id="{{$topic['id']}}" data-topic-name="{{$topic['name']}}">{{$topic['name']}}</li>
                     @endif
                     @endforeach
                 </ul>

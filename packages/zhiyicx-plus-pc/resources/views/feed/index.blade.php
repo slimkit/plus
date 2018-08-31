@@ -17,7 +17,7 @@
 
         {{-- 发布动态 --}}
         @if (!empty($TS))
-        @include('pcview::widgets.postfeed', ['list' => $hot_topics, 'follow_users' => $follow_users])
+        @include('pcview::widgets.postfeed', ['list' => $hot_topics])
         @endif
 
         {{-- 动态列表 --}}
