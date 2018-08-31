@@ -2,21 +2,37 @@
 
 declare(strict_types=1);
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Plus\FileStorage\Http\Controllers;
 
-use function Zhiyi\Plus\setting;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use function Zhiyi\Plus\setting;
 use Illuminate\Routing\Controller;
-use Zhiyi\Plus\FileStorage\Resource;
-use Zhiyi\Plus\FileStorage\StorageInterface;
-use Illuminate\Contracts\Cache\Factory as FactoryContract;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Auth;
+use Zhiyi\Plus\FileStorage\Resource;
+use Zhiyi\Plus\FileStorage\StorageInterface;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Contracts\Cache\Factory as FactoryContract;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class Local extends Controller
 {
@@ -30,7 +46,7 @@ class Local extends Controller
         $this
             ->middleware('auth:api')
             ->only(['put']);
-        
+
         $this->storage = $storage;
     }
 

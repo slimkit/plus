@@ -2,23 +2,39 @@
 
 declare(strict_types=1);
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Plus\FileStorage;
 
-use Zhiyi\Plus\AppInterface;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\AppInterface;
 use Illuminate\Support\Carbon;
 use Zhiyi\Plus\FileStorage\Channels\ChannelInterface;
 
 class Storage implements StorageInterface
 {
     /**
-     * The app
+     * The app.
      * @var \Zhiyi\Plus\AppInterface
      */
     protected $app;
 
     /**
-     * Channel manager
+     * Channel manager.
      * @var
      */
     protected $channelManager;
@@ -127,7 +143,7 @@ class Storage implements StorageInterface
     {
         $path = (new Carbon)->format('Y/m/d');
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
-        
+
         return sprintf('%s/%s%s', $path, str_random(64), $ext ? '.'.$ext : '');
     }
 

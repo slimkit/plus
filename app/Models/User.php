@@ -20,16 +20,13 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models;
 
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Zhiyi\Plus\Http\Controllers\APIs\V2\UserAvatarController;
-use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Zhiyi\Plus\FileStorage\Traits\EloquentAttributeTrait as FileStorageEloquentAttributeTrait;
 
 class User extends Authenticatable implements JWTSubject
@@ -113,7 +110,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->parseFile($resource);
     }
-    
+
     /**
      * Get verifed.
      *
