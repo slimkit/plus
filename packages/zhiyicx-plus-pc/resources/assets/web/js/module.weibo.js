@@ -436,6 +436,16 @@ $(function() {
       if (!$parent.length) weibo.showMention(false)
     })
 
+    // 捕获添加话题
+    $(document).on('click', '.ev-view-follow-users > li', function() {
+      var id = $(this).data('user-id')
+      var name = $(this).data('user-name')
+
+      $('#feed_content').val($('#feed_content').val() + " \u00ad­@" + name + "\u00ad­ ")
+
+      weibo.showMention(false);
+    })
+
     // 微博分类tab
     $('.show_tab a').on('click', function() {
         var type = $(this).data('type');
