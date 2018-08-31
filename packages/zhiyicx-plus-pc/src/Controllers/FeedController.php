@@ -79,7 +79,7 @@ class FeedController extends BaseController
         $data['hot_topics'] = newapi('GET', '/api/v2/feed/topics', ['only' => 'hot']);
 
         // 用于 at 某人时的初始关注用户列表
-        $user_id = $this->PlusData['TS']['id'];
+        $user_id = $this->PlusData['TS']['id'] ?? 0;
         $data['follow_users'] = api('GET', "/api/v2/users/{$user_id}/followings");
 
         $this->PlusData['current'] = 'feeds';
