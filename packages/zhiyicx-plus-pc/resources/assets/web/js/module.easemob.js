@@ -343,9 +343,7 @@ easemob = {
 
                         if (value.del == 0 || value.id == easemob.cid) {
                             var css = value.id == easemob.cid ? 'class="room_item current_room"' : 'class="room_item"';
-
                             var last_message_txt = value.last_message_txt == undefined ? '' : value.last_message_txt;
-
                             var html = '<li ' + css + ' class="room_item" data-type="0" data-uid="' + to + '" data-cid="' + value.id + '" data-name="' + title +  '" id="chat_' + value.id + '">'
                                         +      '<div class="chat_delete"><a href="javascript:;" onclick="easemob.delCon(' + value.id + ', ' + value.uid + ')"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-delbtn1"></use></svg></a></div>'
                                         +      '<div class="chat_left_icon">'
@@ -360,6 +358,7 @@ easemob = {
                             if (value.id == easemob.cid) {
                                 $('#chat_left_message ul').prepend(html);
                                 easemob.listMes(easemob.cid);
+                                $('#chat_text').focus();
                             } else {
                                 $('#chat_left_message ul').append(html);
                             }
@@ -721,37 +720,79 @@ easemob = {
         var groupname = $('#chat_selected_users').attr('name');
         var members = $('#chat_selected_users').val();
         if (members == '') return false;
-        var params = {
-            groupname: groupname,
-            desc: '暂无描述',
-            members: members,
-        }
-        axios.post('/api/v2/easemob/group', params)
-        .then(function (response) {
-            var room = {
-                group: response.data.im_group_id,
-                title: groupname,
-                type: 'groupchat',
-                mid: TS.MID,
-                uid: members,
-                last_message_time: (new Date()).valueOf(),
-                last_message_txt: '',
-                del: 0
-            };
+
+        // 单聊
+        if (members.split(',').length == 1) {
+            easemob.updateUsers(members);
+            uid = members.toString();
 
             window.TS.dataBase.transaction('rw?', window.TS.dataBase.room, () => {
-                window.TS.dataBase.room.add(room).then(function(i){
-                    easemob.updateUsers(members.split(','));
-                    easemob.setNewCon(room);
-                    $('#chat_more').html('').hide();
-                    $('#chat_normal').show();
-                    $('#chat_' + i).click();
+                window.TS.dataBase.room.where('[mid+uid]').equals([TS.MID, uid]).first(function(item){
+                     /*不存在创建会话*/
+                    if (item === undefined) {
+                        var room = {
+                            type: 'chat',
+                            title: easemob.users[uid]['name'],
+                            mid: TS.MID,
+                            uid: uid,
+                            last_message_time: (new Date()).valueOf(),
+                            last_message_txt: '',
+                            del: 0
+                        };
+
+                        window.TS.dataBase.room.add(room).then(function(i){
+                            easemob.cid = i;
+                            easemob.setNewCon(room);
+                            $('#chat_more').html('').hide();
+                            $('#chat_normal').show();
+                            $('#chat_' + i).click();
+                        });
+                    /* 存在修改会话内容*/
+                    } else {
+                        if (item.del == 1) {
+                            window.TS.dataBase.room.where('[mid+uid]').equals([TS.MID, uid]).modify({
+                                del: 0
+                            });
+                        }
+                        $('#chat_more').html('').hide();
+                        $('#chat_normal').show();
+                        $('#chat_' + i).click();
+                    }
                 });
             });
-        })
-        .catch(function (error) {
-            showError(error.response.data);
-        });
+        } else { // 群聊
+            var params = {
+                groupname: groupname,
+                desc: '暂无描述',
+                members: members,
+            }
+            axios.post('/api/v2/easemob/group', params)
+            .then(function (response) {
+                var room = {
+                    group: response.data.im_group_id,
+                    title: groupname,
+                    type: 'groupchat',
+                    mid: TS.MID,
+                    uid: members,
+                    last_message_time: (new Date()).valueOf(),
+                    last_message_txt: '',
+                    del: 0
+                };
+
+                window.TS.dataBase.transaction('rw?', window.TS.dataBase.room, () => {
+                    window.TS.dataBase.room.add(room).then(function(i){
+                        easemob.updateUsers(members.split(','));
+                        easemob.setNewCon(room);
+                        $('#chat_more').html('').hide();
+                        $('#chat_normal').show();
+                        $('#chat_' + i).click();
+                    });
+                });
+            })
+            .catch(function (error) {
+                showError(error.response.data);
+            });
+        }
     },
 
     /*取消创建群组*/

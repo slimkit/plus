@@ -225,6 +225,7 @@
                 easemob.cid = cid;
                 easemob.setRead(1, cid);
                 easemob.listMes(cid);
+                $('#chat_text').click();
             } else {
                 easemob.cid = 0;
                 $('#message_wrap').show();

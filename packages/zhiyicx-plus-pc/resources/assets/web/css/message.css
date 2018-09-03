@@ -9,7 +9,7 @@
 .chat_left_wrap {float:left;width:240px;height:572px;border-right:1px solid #DEDEDE;overflow:hidden;}
 .chat_left {overflow-y:auto;overflow-x:hidden;width:260px;height:100%;background:#F3F6F7}
 .chat_right {overflow-y:hidden;position:relative;float:left;width:510px;height:100%;}
-.current_room {background:#DEDEDE;}
+.current_room {background:#DEDEDE !important;}
 .chat_left_icon {float:left;padding:5px 0 0 10px;position:relative;}
 .chat_unread_div {position:absolute;top:25px;right:15px;border:1px solid #fff;border-radius:50%;}
 .chat_unread_div span {display:block;font-size:12px;text-align:center;color:#fff;border-radius:50%;background:#f24343;width:16px;height:16px;}
