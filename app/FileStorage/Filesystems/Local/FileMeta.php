@@ -52,7 +52,7 @@ class FileMeta implements FileMetaInterface
                 'image/jpeg',
                 'image/png',
                 'image/gif',
-                'image/bmp',
+                // 'image/bmp',
                 'image/webp',
             ];
         };
