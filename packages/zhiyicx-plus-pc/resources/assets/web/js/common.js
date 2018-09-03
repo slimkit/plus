@@ -1571,7 +1571,7 @@ $(function() {
     if (TS.MID != 0) {
         var _code = '<div id="ms_fixed_wrap">'
                   + '<dl id="ms_fixed">'
-                  +   '<dd id="ms_mention"><a href="javascript:;" onclick="easemob.openChatDialog(5)"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-side-mention"></use></svg></a></dd>'
+                  +   '<dd id="ms_mention"><a href="javascript:;" onclick="easemob.openChatDialog(8)"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-side-mention"></use></svg></a></dd>'
                   +   '<dd id="ms_comments"><a href="javascript:;" onclick="easemob.openChatDialog(1)"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-side-msg"></use></svg></a></dd>'
                   +   '<dd id="ms_likes"><a href="javascript:;" onclick="easemob.openChatDialog(2)"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-side-like"></use></svg></a></dd>'
                   +   '<dd id="ms_notifications"><a href="javascript:;" onclick="easemob.openChatDialog(3)"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-side-notice"></use></svg></a></dd>'

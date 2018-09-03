@@ -25,7 +25,7 @@
             {{-- 通知 --}}
             <div class="chat_left @if($type == 0) hide" @endif" id="chat_left_notice">
                 <ul>
-                    <li @if($type == 5) class="current_room"@endif data-type="5" id="chat_mention">
+                    <li @if($type == 8) class="current_room"@endif data-type="8" id="chat_mention">
                         <div class="chat_left_icon">
                             <svg class="icon chat_svg" aria-hidden="true">
                                 <use xlink:href="#icon-side-mention"></use>
@@ -193,6 +193,7 @@
             $('#chat_normal').show();
             var type = $(this).attr('type');
             var item = $('#chat_left_' + type);
+            console.log(item);
 
             $('.chat_left').hide();
             item.show();
@@ -491,17 +492,18 @@
                 audit_top.removeClass('hide');
                 break;
             case 8:
+                title = '@我的';
                 _loader.init({
                     container: '#message_cont',
                     loading: '.message_cont',
-                    url: '/message/pinnedPost',
-                    paramtype: 1,
+                    url: '/message/mention',
+                    paramtype: 0,
                     params: {limit: 20},
                     loadtype: 2,
                     selfname: '_loader'
                 })
-                body_title.addClass('hide')
-                audit_top.removeClass('hide')
+                body_title.html(title).removeClass('hide')
+                audit_top.addClass('hide')
         }
     }
 

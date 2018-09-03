@@ -289,8 +289,40 @@ class MessageController extends BaseController
      */
     public function mention(Request $request)
     {
+        // 拉取 mention 列表
+        $after = $request->input('after');
+        $limit = $request->input('limit') ?: 20;
+        $data['mention'] = api('GET', '/api/v2/user/message/atme', [
+            'index' => $after,
+            'limit' => $limit,
+        ]);
+
+        // 获取用户列表
+        $users = [];
+        foreach ($data['mention'] as  $mention) {
+            array_push($users, $mention['user_id']);
+        }
+        $users = array_unique($users);
+        $data['users'] = api('GET', '/api/v2/users', [
+            'limit' => $limit,
+            'id' => implode(',', $users),
+        ]);
+
+        // 获取 mention 详情
+        foreach ($data['mention'] as &$mention) {
+            switch ($mention['resourceable']['type']) {
+                case 'feeds':
+                    $mention['feeds'] = api('GET', "/api/v2/feeds/{$mention['resourceable']['id']}");
+                    break;
+            }
+        }
+
+        $return = view('pcview::templates.mention', $data, $this->PlusData)->render();
+
         return response()->json([
             'status' => true,
+            'data' => $return,
+            'count' => count($data['mention']),
         ]);
     }
 }

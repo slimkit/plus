@@ -125,3 +125,10 @@
 .chat_ad_selected_users span{float:left;width:225px;line-height:40px;margin-left:20px;}
 .chat_ad_selected_users svg{margin-top:8px;}
 .chat_ad_selected_users .chat_ad_selected_op{width:315px; padding: 40px 0px 0px 0px !important;text-align: left;margin-top: 0px;float: left;clear: both;text-align: center;}
+.chat_mention_card {width: 100%;padding: 20px 0;display: flex;flex-direction: row;border-bottom: 1px solid #ededed;}
+.chat_mention_card img {width: 40px;height: 40px;margin-right: 20px;flex:none;}
+.chat_mention_card .mention_info {display: flex;flex-direction: column;}
+.chat_mention_card .content {font-size: 16px;}
+.chat_mention_card .content a {color: #59b6d7;}
+.chat_mention_card .name {font-size: 14px;}
+.chat_mention_card .time {font-size: 14px;color: #ccc;margin: 10px 0;}
