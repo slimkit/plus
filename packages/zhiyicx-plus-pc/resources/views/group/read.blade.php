@@ -16,7 +16,7 @@
                <nav class="m-crumb m-crumb-arr f-ib">
                    <ul class="f-cb s-fc4">
                        <li><a href="{{ route('pc:group') }}">圈子</a></li>
-                       <li><a href="{{ route('pc:group', ['category_id' => $group['category']['id']]) }}">{{$group['category']}}</a></li>
+                       <li><a href="{{ route('pc:group', ['category_id' => $group['category']['id']]) }}">{{$group['category']['name']}}</a></li>
                        <li>{{$group['name']}}</li>
                    </ul>
                </nav>
@@ -29,7 +29,7 @@
                 <div class="m-ct f-cb">
                     <div class="ct-left">
                         <img src="{{ $group['avatar'] or asset('assets/pc/images/default_picture.png') }}" height="100%">
-                        <span class="ct-cate">{{$group['category']}}</span>
+                        <span class="ct-cate">{{$group['category']['name']}}</span>
                     </div>
                     <div class="ct-right">
                         <div class="ct-tt">
