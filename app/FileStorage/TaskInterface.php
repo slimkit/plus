@@ -57,11 +57,4 @@ interface TaskInterface
      * @return string
      */
     public function getNode(): string;
-
-    /**
-     * Get the instance as an array.
-     *
-     * @return array
-     */
-    public function toArray(): array;
 }
