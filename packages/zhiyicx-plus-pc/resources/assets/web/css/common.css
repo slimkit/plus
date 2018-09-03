@@ -7,6 +7,7 @@ input::-moz-placeholder,/* Mozilla Firefox 19+ */textarea::-moz-placeholder {/* 
 input:-ms-input-placeholder,textarea:-ms-input-placeholder {/* important 增加权重*/    color:rgb(204,204,204) !important;}
 input::-ms-clear {display:none;}
 input::-ms-reveal {display:none;}
+input::-webkit-contacts-auto-fill-button {visibility: hidden; display: none !important; pointer-events: none; position: absolute; right: 0;}
 /* 底部置地*/html,body,.wrap {height:100%;font-size:100%;background:#f3f6f7;min-width:1200px;}
 img {max-width:100%;border-style:none;vertical-align:middle;object-fit:cover;}
 img.avatar {border-radius:50%;}
