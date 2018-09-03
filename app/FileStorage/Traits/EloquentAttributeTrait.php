@@ -26,11 +26,20 @@ use Zhiyi\Plus\FileStorage\FileMetaInterface;
 
 trait EloquentAttributeTrait
 {
+    /**
+     * Get file storage instance.
+     * @return \Zhiyi\Plus\FileStorage\StorageInterface
+     */
     protected function getStorage(): StorageInterface
     {
         return app(StorageInterface::class);
     }
 
+    /**
+     * Parse file.
+     * @param string $resource
+     * @return \Zhiyi\Plus\FileStorage\FileMeatInterface
+     */
     protected function parseFile(string $resource): FileMetaInterface
     {
         return $this->getStorage()->meta(new Resource($resource));

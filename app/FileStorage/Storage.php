@@ -60,7 +60,7 @@ class Storage implements StorageInterface
     {
         // validate the base rules.
         $this
-            ->getCreateTaskValidate()
+            ->getCreateTaskValidator()
             ->validate($request);
 
         // Create resource
@@ -76,11 +76,22 @@ class Storage implements StorageInterface
         return $channel->createTask();
     }
 
+    /**
+     * Get a file info.
+     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     * @return \Zhiyi\Plus\FileMetaInterface
+     */
     public function meta(ResourceInterface $resource): FileMetaInterface
     {
         return $this->getChannel($resource)->meta();
     }
 
+    /**
+     * Get a file response.
+     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     * @param string|null $rule
+     * @return string
+     */
     public function response(ResourceInterface $resource, ?string $rule = null): Response
     {
         return $this->getChannel($resource)->response($rule);
@@ -132,6 +143,11 @@ class Storage implements StorageInterface
         $this->getChannel($resource)->callback();
     }
 
+    /**
+     * Get a channel instance.
+     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     * @return \Zhiyi\Plus\FileStorage\Channels\ChannelInterface
+     */
     public function getChannel(ResourceInterface $resource): ChannelInterface
     {
         $channel = $this->channelManager->driver($resource->getChannel());
@@ -140,6 +156,11 @@ class Storage implements StorageInterface
         return $channel;
     }
 
+    /**
+     * Make a new path.
+     * @param string $filename
+     * @return string
+     */
     public function makePath(string $filename): string
     {
         $path = (new Carbon)->format('Y/m/d');
@@ -148,7 +169,11 @@ class Storage implements StorageInterface
         return sprintf('%s/%s%s', $path, str_random(64), $ext ? '.'.$ext : '');
     }
 
-    public function getCreateTaskValidate(): Validators\ValidatorInterface
+    /**
+     * Get create task validator
+     * @return \Zhiyi\Plus\FileStorage\Valodators\ValidatorInterface
+     */
+    public function getCreateTaskValidator(): Validators\ValidatorInterface
     {
         return $this->app->make(
             Validators\CreateTaskValidator::class

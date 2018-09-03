@@ -22,8 +22,16 @@ namespace Zhiyi\Plus\FileStorage\Filesystems\Local;
 
 class RuleParser
 {
+    /**
+     * Cacheing the rules.
+     * @var array
+     */
     protected $rule = [];
 
+    /**
+     * Create a new rule.
+     * @param null|string $rule
+     */
     public function __construct(?string $rule = null)
     {
         if (! is_null($rule)) {
@@ -31,6 +39,11 @@ class RuleParser
         }
     }
 
+    /**
+     * Parse a rule.
+     * @param null|string $rule
+     * @return void
+     */
     protected function parse(?string $rule): void
     {
         if (! $rule) {
@@ -44,6 +57,12 @@ class RuleParser
         }
     }
 
+    /**
+     * Get rule.
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
     public function getRule(string $key, $default)
     {
         $value = $this->rule[$key] ?? $default;
@@ -54,11 +73,19 @@ class RuleParser
         return $value;
     }
 
+    /**
+     * Get quality.
+     * @return int
+     */
     public function getQuality(): int
     {
         return (int) $this->getRule('q', 90);
     }
 
+    /**
+     * Get blur.
+     * @return int
+     */
     public function getBlur(): int
     {
         $blur = (int) $this->getRule('b', 0);
@@ -68,16 +95,32 @@ class RuleParser
         return $blur;
     }
 
+    /**
+     * Get width.
+     * @return null|float
+     */
     public function getWidth(): ?float
     {
-        return (float) $this->getRule('w', 0.0);
+        $width = (float) $this->getRule('w', 0.0);
+
+        return $width ?: null;
     }
 
+    /**
+     * Get height.
+     * @return null|float
+     */
     public function getHeight(): ?float
     {
-        return (float) $this->getRule('h', 0.0);
+        $height = (float) $this->getRule('h', 0.0);
+
+        return $height ?: null;
     }
 
+    /**
+     * Get cacheing filename.
+     * @return string
+     */
     public function getFilename(): string
     {
         return sprintf('w%s-h%s-b%s-q%s', $this->getWidth(), $this->getHeight(), $this->getBlur(), $this->getQuality());

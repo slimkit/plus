@@ -30,6 +30,10 @@ use Zhiyi\Plus\FileStorage\FilesystemManager;
 
 class AppServiceProvider extends ServiceProvider
 {
+    /**
+     * The app register.
+     * @return void
+     */
     public function register()
     {
         // Register StorageInterface instance.
@@ -38,20 +42,12 @@ class AppServiceProvider extends ServiceProvider
 
             return new Storage($app, $manager);
         });
-
-        // // Register FilesystemManager instance.
-        // $this->app->singleton(FilesystemManager::class, function (AppInterface $app) {
-        //     return new FilesystemManager($app);
-        // });
-
-        // // Register ChannelManager instance.
-        // $this->app->singleton(ChannelManager::class, function (AppInterface $app) {
-        //     $manager = $this->app->make(FilesystemManager::class);
-
-        //     return new ChannelManager($app, $manager);
-        // });
     }
 
+    /**
+     * The app bolstrap handler.
+     * @return void
+     */
     public function boot()
     {
         $this

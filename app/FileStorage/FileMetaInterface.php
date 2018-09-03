@@ -63,6 +63,10 @@ interface FileMetaInterface extends Arrayable
      */
     public function getPay(User $user): ?PayInterface;
 
+    /**
+     * Get the resource url.
+     * @return string
+     */
     public function url(): string;
 
     /**

@@ -35,16 +35,39 @@ class FileMeta implements FileMetaInterface
 {
     use HasImageTrait;
 
+    /**
+     * Local filesystem.
+     * @var \Illuminate\Contracts\Filesystem\Filesystem
+     */
     protected $filesystem;
+
+    /**
+     * Resource instance.
+     * @var \Zhiyi\Plus\FileStorage\ResourceInterface
+     */
     protected $resource;
+
+    /**
+     * Cache the instance image dimension.
+     * @var \Zhiyi\Plus\FileStorage\ImageDimensionInterface
+     */
     protected $dimension;
 
+    /**
+     * Create a file meta.
+     * @param \Illuminate\Contracts\Filesystem\Filesystem $filesystem
+     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     */
     public function __construct(FilesystemContract $filesystem, ResourceInterface $resource)
     {
         $this->filesystem = $filesystem;
         $this->resource = $resource;
     }
 
+    /**
+     * Use custom MIME types.
+     * @return null|\Closure
+     */
     protected function useCustomTypes(): ?Closure
     {
         return function () {
@@ -130,6 +153,10 @@ class FileMeta implements FileMetaInterface
         return 'local';
     }
 
+    /**
+     * Get the resource url.
+     * @return string
+     */
     public function url(): string
     {
         return route('storage:get', [

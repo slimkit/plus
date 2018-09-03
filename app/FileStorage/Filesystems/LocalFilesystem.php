@@ -35,23 +35,50 @@ use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
 
 class LocalFilesystem implements FilesystemInterface
 {
+    /**
+     * The local filesystem.
+     * @var \Illuminate\Contracts\Filesystem\Filesystem
+     */
     protected $filesystem;
-    protected $meta;
 
+    /**
+     * Cache the file metas.
+     * @var array<\Zhiyi\Plus\FileStorage\FileMetaInterface>
+     */
+    protected $metas = [];
+
+    /**
+     * Create the filesystem driver instance.
+     * @param \\Illuminate\Contracts\Filesystem\Filesystem $folesystem
+     */
     public function __construct(FilesystemContract $filesystem)
     {
         $this->filesystem = $filesystem;
     }
 
+    /**
+     * Get file meta.
+     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     * @return \Zhiyi\Plus\FileStorage\FileMetaInterface
+     */
     public function meta(ResourceInterface $resource): FileMetaInterface
     {
-        if ($this->meta instanceof FileMetaInterface) {
-            return $this->meta;
+        $resourceString = (string) $resource;
+        $meta = $this->metas[$resourceString] ?: null;
+
+        if ($meta instanceof FileMetaInterface) {
+            return $meta;
         }
 
-        return $this->meta = new Local\FileMeta($this->filesystem, $resource);
+        return $$this->metas[$resourceString] = new Local\FileMeta($this->filesystem, $resource);
     }
 
+    /**
+     * Get file response.
+     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     * @param string|null $rule
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function response(ResourceInterface $resource, ?string $rule = null): Response
     {
         if ($this->meta($resource)->hasImage()) {
@@ -80,11 +107,28 @@ class LocalFilesystem implements FilesystemInterface
         return $this->filesystem->response($resource->getPath());
     }
 
+    /**
+     * Delete file.
+     * @param string $path
+     * @return bool
+     */
     public function delete(string $path): bool
     {
-        //
+        $pathinfo = \League\Flysystem\Util::pathinfo($path);
+        $dir = sprintf('%s/%s', $pathinfo['dirname'], $pathinfo['filename']);
+        
+        $this->filesystem->deleteDir($dir);
+        $this->filesystem->delete($path);
+
+        return true;
     }
 
+    /**
+     * Create upload task.
+     * @param \Illuminate\Http\Request $request
+     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     * @return \Zhiyi\Plus\FileStorage\TaskInterface
+     */
     public function createTask(Request $request, ResourceInterface $resource): TaskInterface
     {
         $expiresAt = (new Carbon)->addHours(
@@ -105,7 +149,13 @@ class LocalFilesystem implements FilesystemInterface
         ]);
     }
 
-    public function put(string $path, $content): bool
+    /**
+     * Put a file.
+     * @param string $path
+     * @param mixed $contents
+     * @return bool
+     */
+    public function put(string $path, $contents): bool
     {
         return (bool) $this->filesystem->put($path, $content);
     }

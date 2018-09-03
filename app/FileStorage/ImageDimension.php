@@ -22,9 +22,23 @@ namespace Zhiyi\Plus\FileStorage;
 
 class ImageDimension implements ImageDimensionInterface
 {
+    /**
+     * The dimension width.
+     * @var float
+     */
     protected $width;
+
+    /**
+     * The dimnsion height.
+     * @var float
+     */
     protected $height;
 
+    /**
+     * Create a image dimension.
+     * @param float $width
+     * @param float $height
+     */
     public function __construct(float $width, float $height)
     {
         $this->width = $width;

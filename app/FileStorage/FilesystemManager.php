@@ -26,6 +26,10 @@ use function Zhiyi\Plus\setting;
 
 class FilesystemManager extends Manager
 {
+    /**
+     * Create the filesystem manager instance.
+     * @param \Zhiyi\Plus\AppInterface $app
+     */
     public function __construct(AppInterface $app)
     {
         parent::__construct($app);
@@ -39,6 +43,10 @@ class FilesystemManager extends Manager
         return setting('core', 'file:default-filesystem', 'local');
     }
 
+    /**
+     * Create local driver
+     * @return \Zhiyi\Plus\FileStorage\Filesystems\FilesystemInterface
+     */
     public function createLocalDriver(): Filesystems\FilesystemInterface
     {
         $filesystem = $this

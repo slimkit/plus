@@ -24,13 +24,25 @@ use Illuminate\Contracts\Routing\Registrar as RegistrarContract;
 
 class MakeRoutes
 {
+    /**
+     * The router instance.
+     * @var \Illuminate\Contracts\Routing\Registrar
+     */
     protected $router;
 
+    /**
+     * Create the maker instance.
+     * @param \Illuminate\Contracts\Routing\Registrar $router
+     */
     public function __construct(RegistrarContract $router)
     {
         $this->router = $router;
     }
 
+    /**
+     * The routes resister.
+     * @return void
+     */
     public function register(): void
     {
         $this->registerLocalFilesystemRoutes();
@@ -38,6 +50,10 @@ class MakeRoutes
         $this->registerCreateTaskRoutes();
     }
 
+    /**
+     * Register local filesystem routes.
+     * @return void
+     */
     protected function registerLocalFilesystemRoutes(): void
     {
         $this->router->group(['prefix' => 'storage'], function (RegistrarContract $router) {
@@ -50,6 +66,10 @@ class MakeRoutes
         });
     }
 
+    /**
+     * Register channel callback routes.
+     * @return void
+     */
     protected function registerChannelCallbackRoutes(): void
     {
         $this->router->group(['prefix' => 'api/v2'], function (RegistrarContract $router) {
@@ -59,6 +79,10 @@ class MakeRoutes
         });
     }
 
+    /**
+     * Register create a upload task routes.
+     * @return void
+     */
     protected function registerCreateTaskRoutes(): void
     {
         $this->router->group(['prefix' => 'api/v2'], function (RegistrarContract $router) {

@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\FileStorage\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use function Zhiyi\Plus\setting;
 use Illuminate\Routing\Controller;
@@ -29,6 +28,7 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Auth;
 use Zhiyi\Plus\FileStorage\Resource;
 use Zhiyi\Plus\FileStorage\StorageInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Contracts\Cache\Factory as FactoryContract;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -36,8 +36,16 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class Local extends Controller
 {
+    /**
+     * File storage instance.
+     * @var \Zhiyi\Plus\FileStorage\StorageInterface
+     */
     protected $storage;
 
+    /**
+     * Create the controller instance.
+     * @param \Zhiyi\Plus\FileStorage\StorageInterface $storage
+     */
     public function __construct(StorageInterface $storage)
     {
         $this
@@ -50,13 +58,28 @@ class Local extends Controller
         $this->storage = $storage;
     }
 
-    public function get(Request $request, string $channel, string $path)
+    /**
+     * Get a file.
+     * @param \Illuminate\Http\Request $request
+     * @param string $channel
+     * @param string $path
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function get(Request $request, string $channel, string $path): Response
     {
         $resource = new Resource($channel, base64_decode($path));
 
         return $this->storage->response($resource, $request->query('rule', null));
     }
 
+    /**
+     * Put a file.
+     * @param \Illuminate\Http\Request $request
+     * @param s\Illuminate\Contracts\Cache\Factory $cache
+     * @param string $channel
+     * @param string $path
+     * @return Symfony\Component\HttpFoundation\Response
+     */
     public function put(Request $request, FactoryContract $cache, string $channel, string $path): Response
     {
         $signature = $request->query('signature');

@@ -20,29 +20,33 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage\Channels;
 
-use Zhiyi\Plus\AppInterface;
 use Zhiyi\Plus\FileStorage\TaskInterface;
 use Zhiyi\Plus\FileStorage\FileMetaInterface;
 
 class PublicChannel extends AbstractChannel
 {
-    protected $app;
-
-    public function __construct(AppInterface $app)
-    {
-        $this->app = $app;
-    }
-
+    /**
+     * Create a upload task.
+     * @return \Zhiyi\Plus\FileStorage\TaskInterface
+     */
     public function createTask(): TaskInterface
     {
         return $this->filesystem->createTask($this->request, $this->resource);
     }
 
+    /**
+     * Get a resource meta.
+     * @return \Zhiyi\Plus\FileStorage\FileMetaInterface
+     */
     public function meta(): FileMetaInterface
     {
         return $this->filesystem->meta($this->resource);
     }
 
+    /**
+     * Uploaded callback handler.
+     * @return void
+     */
     public function callback(): void
     {
     }

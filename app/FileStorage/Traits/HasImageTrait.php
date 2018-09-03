@@ -24,9 +24,17 @@ use Closure;
 
 trait HasImageTrait
 {
+    /**
+     * Custom using MIME types
+     * @return null\Closure
+     */
     abstract protected function useCustomTypes(): ?Closure;
 
-    protected function getImageMIMETypes(): array
+    /**
+     * Get support image MIME types.
+     * @return array
+     */
+    protected function getImageMimeTypes(): array
     {
         if (! ($handler = $this->useCustomTypes())) {
             return [
@@ -43,8 +51,13 @@ trait HasImageTrait
         return $handler();
     }
 
-    protected function hasImageType(string $MIMEType): bool
+    /**
+     * Check is support image type
+     * @param string $mimeTypes
+     * @return bool
+     */
+    protected function hasImageType(string $mimeTypes): bool
     {
-        return in_array($MIMEType, $this->getImageMIMETypes());
+        return in_array($mimeTypes, $this->getImageMimeTypes());
     }
 }

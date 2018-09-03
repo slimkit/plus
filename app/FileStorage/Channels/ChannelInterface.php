@@ -29,17 +29,56 @@ use Zhiyi\Plus\FileStorage\Filesystems\FilesystemInterface;
 
 interface ChannelInterface
 {
+    /**
+     * Set resource.
+     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
+     * @return void
+     */
     public function setResource(ResourceInterface $resource): void;
 
+    /**
+     * Set request.
+     * @param \Illuminate\Http\Request $request
+     * @return void
+     */
     public function setRequest(Request $request): void;
 
+    /**
+     * Set filesystem.
+     * @param \Zhiyi\Plus\FileStorage\Filesystems\FilesystemInterface $filesystem
+     * @return void
+     */
     public function setFilesystem(FilesystemInterface $filesystem): void;
 
+    /**
+     * Create a upload task.
+     * @return \Zhiyi\Plus\FileStorage\TaskInterface
+     */
     public function createTask(): TaskInterface;
 
+    /**
+     * Get a resource meta.
+     * @return \Zhiyi\Plus\FileStorage\FileMetaInterface
+     */
     public function meta(): FileMetaInterface;
 
+    /**
+     * Get a resource response.
+     * @param string|null $rule
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function response(?string $rule = null): Response;
 
+    /**
+     * Uploaded callback handler.
+     * @return void
+     */
     public function callback(): void;
+
+    /**
+     * Put a file.
+     * @param mixed $contents
+     * @return vodi
+     */
+    public function put($contents): bool;
 }
