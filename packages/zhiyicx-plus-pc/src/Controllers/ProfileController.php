@@ -271,7 +271,7 @@ class ProfileController extends BaseController
             ];
             if (!$type) {
                 $data['type'] = $params['type'];
-                $data['group'] = $user->id ? api('GET', '/api/v2/plus-group/groups/users', array_merge($params, ['user_id' => $user->id])) : api('GET', '/api/v2/plus-group/user-groups', $params);
+                $data['group'] = $user->id ? api('GET', '/api/v2/plus-group/user-groups', $params) : api('GET', '/api/v2/plus-group/groups/users', array_merge($params, ['user_id' => $user->id]));
                 $html = view('pcview::templates.group', $data, $this->PlusData)->render();
             } else {
                 $posts['pinneds'] = collect();
