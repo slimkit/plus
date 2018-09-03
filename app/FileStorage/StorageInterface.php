@@ -16,11 +16,12 @@
  * +----------------------------------------------------------------------+
  */
 
-declare(srrict_types=1);
+declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage;
 
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 interface StorageInterface
 {
@@ -39,12 +40,12 @@ interface StorageInterface
     public function meta(ResourceInterface $resource): FileMetaInterface;
 
     /**
-     * Get a file URL.
+     * Get a file response.
      * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
      * @param string|null $rule
      * @return string
      */
-    public function url(ResourceInterface $resource, ?string $rule = null): string;
+    public function response(ResourceInterface $resource, ?string $rule = null): Response;
 
     /**
      * Deelte a resource.

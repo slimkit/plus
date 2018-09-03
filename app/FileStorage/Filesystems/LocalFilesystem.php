@@ -24,16 +24,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\FileStorage\Task;
+use Intervention\Image\Facades\Image;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Auth;
 use Zhiyi\Plus\FileStorage\TaskInterface;
 use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Zhiyi\Plus\FileStorage\ResourceInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
 
 class LocalFilesystem implements FilesystemInterface
 {
     protected $filesystem;
+    protected $meta;
 
     public function __construct(FilesystemContract $filesystem)
     {
@@ -42,12 +45,40 @@ class LocalFilesystem implements FilesystemInterface
 
     public function meta(ResourceInterface $resource): FileMetaInterface
     {
-        return new Local\FileMeta($this->filesystem, $resource);
+        if ($this->meta instanceof FileMetaInterface)
+        {
+            return $this->meta;
+        }
+
+        return $this->meta = new Local\FileMeta($this->filesystem, $resource);
     }
 
-    public function url(string $path, ?string $rule = null): string
+    public function response(ResourceInterface $resource, ?string $rule = null): Response
     {
-        //
+        if ($this->meta($resource)->hasImage()) {
+            $pathinfo = \League\Flysystem\Util::pathinfo($resource->getPath());
+            $rule = new Local\RuleParser($rule);
+            $cachePath = sprintf('%s/%s/%s.%s', $pathinfo['dirname'], $pathinfo['filename'], $rule->getFilename(), $pathinfo['extension']);
+            if ($this->filesystem->has($cachePath)) {
+                return $this->filesystem->response($cachePath);
+            }
+
+            $realPath = $this->filesystem->path($resource->getPath());
+            $image = Image::make($realPath);
+            $image->blur($rule->getBlur());
+            if (($image->width() > $rule->getWidth() || $image->height() > $rule->getHeight()) && ($rule->getWidth() || $rule->getHeight())) {
+                $image->resize($rule->getWidth() ?: null, $rule->getHeight() ?: null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+            }
+            $contents = $image->encode($image->extension, $rule->getQuality());
+            $this->filesystem->put($cachePath, $contents);
+
+            return $image->response();
+        }
+
+        return $this->filesystem->response($resource->getPath());
     }
 
     public function delete(string $path): bool

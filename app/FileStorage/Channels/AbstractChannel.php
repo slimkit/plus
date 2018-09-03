@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\FileStorage\Channels;
 
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Zhiyi\Plus\FileStorage\ResourceInterface;
 use Zhiyi\Plus\FileStorage\Filesystems\FilesystemInterface;
 
@@ -48,5 +49,10 @@ abstract class AbstractChannel implements ChannelInterface
     public function put($context): bool
     {
         return $this->filesystem->put($this->resource->getPath(), $context);
+    }
+
+    public function response(?string $rule = null): Response
+    {
+        return $this->filesystem->response($this->resource, $rule);
     }
 }

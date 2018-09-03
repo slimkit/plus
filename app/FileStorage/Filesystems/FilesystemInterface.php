@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\FileStorage\Filesystems;
 
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Zhiyi\Plus\FileStorage\TaskInterface;
 use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Zhiyi\Plus\FileStorage\ResourceInterface;
@@ -29,7 +30,7 @@ interface FilesystemInterface
 {
     public function meta(ResourceInterface $resource): FileMetaInterface;
 
-    public function url(string $path, ?string $rule = null): string;
+    public function response(ResourceInterface $resource, ?string $rule = null): Response;
 
     public function delete(string $path): bool;
 

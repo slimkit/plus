@@ -42,7 +42,7 @@ class Local extends Controller
     {
         $this
             ->middleware('signed')
-            ->only(['put'/* , 'show' */]);
+            ->only(['put']);
         $this
             ->middleware('auth:api')
             ->only(['put']);
@@ -53,18 +53,8 @@ class Local extends Controller
     public function get(Request $request, string $channel, string $path)
     {
         $resource = new Resource($channel, base64_decode($path));
-        $rule = $request->query('rule', null);
-        // $meta = $this->storage->meta($resource);
-        // dd(
-        //     [
-        //         'size' => $meta->getSize(),
-        //         'mime' => $meta->getMimeType(),
-        //         'dimension' => [
-        //             'width' => $meta->getImageDimension()->getWidth(),
-        //             'height' => $meta->getImageDimension()->getHeight(),
-        //         ]
-        //     ]
-        // );
+
+        return $this->storage->response($resource, $request->query('rule', null));
     }
 
     public function put(Request $request, FactoryContract $cache, string $channel, string $path): Response

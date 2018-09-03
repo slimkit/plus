@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\FileStorage\Channels;
 
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Zhiyi\Plus\FileStorage\TaskInterface;
 use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Zhiyi\Plus\FileStorage\ResourceInterface;
@@ -38,7 +39,7 @@ interface ChannelInterface
 
     public function meta(): FileMetaInterface;
 
-    public function url(?string $rule = null): string;
+    public function response(?string $rule = null): Response;
 
     public function callback(): void;
 }

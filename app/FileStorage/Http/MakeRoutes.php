@@ -43,7 +43,7 @@ class MakeRoutes
         $this->router->group(['prefix' => 'storage'], function (RegistrarContract $router) {
             $router
                 ->get('{channel}:{path}', Controllers\Local::class.'@get')
-                ->name('storage:local-get');
+                ->name('storage:get');
             $router
                 ->put('{channel}:{path}', Controllers\Local::class.'@put')
                 ->name('storage:local-put');

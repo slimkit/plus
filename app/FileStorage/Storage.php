@@ -23,6 +23,7 @@ namespace Zhiyi\Plus\FileStorage;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\AppInterface;
 use Illuminate\Support\Carbon;
+use Symfony\Component\HttpFoundation\Response;
 use Zhiyi\Plus\FileStorage\Channels\ChannelInterface;
 
 class Storage implements StorageInterface
@@ -80,9 +81,9 @@ class Storage implements StorageInterface
         return $this->getChannel($resource)->meta();
     }
 
-    public function url(ResourceInterface $resource, ?string $rule = null): string
+    public function response(ResourceInterface $resource, ?string $rule = null): Response
     {
-        return $this->getChannel($resource)->url($rule);
+        return $this->getChannel($resource)->response($rule);
     }
 
     /**

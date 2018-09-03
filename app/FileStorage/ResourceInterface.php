@@ -16,7 +16,7 @@
  * +----------------------------------------------------------------------+
  */
 
-declare(srrict_types=1);
+declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage;
 

@@ -106,8 +106,21 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function getAvatarAttribute(?string $resource): FileMetaInterface
+    public function getAvatarAttribute(?string $resource): ?FileMetaInterface
     {
+        if (! $resource) {
+            return null;
+        }
+
+        return $this->parseFile($resource);
+    }
+
+    public function getBgAttribute(?string $resource): ?FileMetaInterface
+    {
+        if (! $resource) {
+            return null;
+        }
+
         return $this->parseFile($resource);
     }
 

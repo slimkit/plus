@@ -132,7 +132,7 @@ class FileMeta implements FileMetaInterface
 
     public function url(): string
     {
-        return route('storage:local-get', [
+        return route('storage:get', [
             'channel' => $this->resource->getChannel(),
             'path' => base64_encode($this->resource->getPath()),
         ]);
@@ -145,6 +145,19 @@ class FileMeta implements FileMetaInterface
      */
     public function toArray(): array
     {
-        return [1, 2];
+        $baseArr = [
+            'url' => $this->url(),
+            'vendor' => $this->getVendorName(),
+            'mime' => $this->getMimeType(),
+            'size' => $this->getSize(),
+        ];
+        if ($this->hasImage()) {
+            $baseArr['dimension'] = [
+                'width' => $this->getImageDimension()->getWidth(),
+                'height' => $this->getImageDimension()->getHeight(),
+            ];
+        }
+
+        return $baseArr;
     }
 }

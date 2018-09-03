@@ -43,11 +43,6 @@ class PublicChannel extends AbstractChannel
         return $this->filesystem->meta($this->resource);
     }
 
-    public function url(?string $rule = null): string
-    {
-        return $this->filesystem->url($this->resource->getPath(), $rule);
-    }
-
     public function callback(): void
     {
     }
