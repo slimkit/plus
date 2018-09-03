@@ -81,7 +81,7 @@
 @section('scripts')
     <script>
         function gorank(action,genre,num) {
-            var _this = $('div[rel="'+genre+'div"').first();
+            var _this = $("div[rel='"+genre+"div']").first();
             var current = $('div[rel="'+genre+'div"][current="1"]');
             //当前页数
             var curnum = $('#'+genre+'num').text();
