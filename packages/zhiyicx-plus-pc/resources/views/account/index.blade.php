@@ -244,6 +244,7 @@
                 insert: function(src) {
                     $('#J-image-preview').attr('src', src);
                     layer.closeAll();
+                    noticebox('修改头像成功', 1);
                 },
                 change: function () {
                     var files,file;
