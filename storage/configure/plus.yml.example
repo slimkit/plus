@@ -208,6 +208,17 @@ jwt:
 logging:
   default: daily # Available Drivers: "single", "daily", "slack", "syslog", "errorlog", "monolog", "custom", "stack"
 
+#
+#########################################################################
+# /config/filesystems.php
+#########################################################################
+#
+filesystems:
+  default: public
+  disks:
+    public:
+      url: http://localhost:8000/storage
+
 ###
 ##
 #

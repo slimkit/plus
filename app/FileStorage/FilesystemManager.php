@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage;
 
+use OSS\OssClient;
 use Zhiyi\Plus\AppInterface;
 use Illuminate\Support\Manager;
 use function Zhiyi\Plus\setting;
@@ -40,7 +41,7 @@ class FilesystemManager extends Manager
      */
     public function getDefaultDriver()
     {
-        return setting('core', 'file:default-filesystem', 'local');
+        return setting('core', 'file:default-filesystem', 'AliyunOSS');
     }
 
     /**
@@ -55,5 +56,13 @@ class FilesystemManager extends Manager
             ->disk(setting('core', 'file:local-filesystem-select', 'local'));
 
         return new Filesystems\LocalFilesystem($filesystem);
+    }
+
+    public function createAliyunOSSDriver(): Filesystems\FilesystemInterface
+    {
+        $bucket = setting('core', 'file:aliyun-oss-bucket', 'plus-test');
+        $oss = new OssClient('LTAIXfwTSAa2RTVn', 'rqij4pL7qv0ZeC5p5dUQBOQGvCaji6', 'http://ximage.zhibocloud.cn', true);
+
+        return new Filesystems\AliyunOSS(/* $this->app->make(\OSS\OssClient::class) */ $oss, $bucket);
     }
 }
