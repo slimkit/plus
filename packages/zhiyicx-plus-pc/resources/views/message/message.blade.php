@@ -509,7 +509,7 @@
     }
 
     // 聊天会话搜索
-    function messsageSearch() {
+    function messageSearch() {
         var val = $('#chat_search_input').val();
         if (val == '') {
             $('#chat_left_message li').show();
