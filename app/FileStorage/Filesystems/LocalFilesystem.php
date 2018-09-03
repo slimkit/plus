@@ -24,9 +24,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\FileStorage\Task;
-use Intervention\Image\Facades\Image;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
 use Zhiyi\Plus\FileStorage\TaskInterface;
 use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Zhiyi\Plus\FileStorage\ResourceInterface;
@@ -45,8 +45,7 @@ class LocalFilesystem implements FilesystemInterface
 
     public function meta(ResourceInterface $resource): FileMetaInterface
     {
-        if ($this->meta instanceof FileMetaInterface)
-        {
+        if ($this->meta instanceof FileMetaInterface) {
             return $this->meta;
         }
 
