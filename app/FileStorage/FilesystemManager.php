@@ -44,7 +44,7 @@ class FilesystemManager extends Manager
     }
 
     /**
-     * Create local driver
+     * Create local driver.
      * @return \Zhiyi\Plus\FileStorage\Filesystems\FilesystemInterface
      */
     public function createLocalDriver(): Filesystems\FilesystemInterface

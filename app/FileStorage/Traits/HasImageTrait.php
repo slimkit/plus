@@ -25,7 +25,7 @@ use Closure;
 trait HasImageTrait
 {
     /**
-     * Custom using MIME types
+     * Custom using MIME types.
      * @return null\Closure
      */
     abstract protected function useCustomTypes(): ?Closure;
@@ -52,7 +52,7 @@ trait HasImageTrait
     }
 
     /**
-     * Check is support image type
+     * Check is support image type.
      * @param string $mimeTypes
      * @return bool
      */

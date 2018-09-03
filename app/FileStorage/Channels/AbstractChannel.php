@@ -28,7 +28,7 @@ use Zhiyi\Plus\FileStorage\Filesystems\FilesystemInterface;
 abstract class AbstractChannel implements ChannelInterface
 {
     /**
-     * The resource
+     * The resource.
      * @var \Zhiyi\Plus\FileStorage\ResourceInterface
      */
     protected $resource;

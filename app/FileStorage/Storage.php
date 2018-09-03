@@ -170,7 +170,7 @@ class Storage implements StorageInterface
     }
 
     /**
-     * Get create task validator
+     * Get create task validator.
      * @return \Zhiyi\Plus\FileStorage\Valodators\ValidatorInterface
      */
     public function getCreateTaskValidator(): Validators\ValidatorInterface

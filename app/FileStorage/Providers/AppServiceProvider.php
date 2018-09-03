@@ -26,7 +26,6 @@ use Illuminate\Support\ServiceProvider;
 use Zhiyi\Plus\FileStorage\ChannelManager;
 use Zhiyi\Plus\FileStorage\Http\MakeRoutes;
 use Zhiyi\Plus\FileStorage\StorageInterface;
-use Zhiyi\Plus\FileStorage\FilesystemManager;
 
 class AppServiceProvider extends ServiceProvider
 {

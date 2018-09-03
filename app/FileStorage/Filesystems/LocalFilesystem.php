@@ -116,7 +116,7 @@ class LocalFilesystem implements FilesystemInterface
     {
         $pathinfo = \League\Flysystem\Util::pathinfo($path);
         $dir = sprintf('%s/%s', $pathinfo['dirname'], $pathinfo['filename']);
-        
+
         $this->filesystem->deleteDir($dir);
         $this->filesystem->delete($path);
 

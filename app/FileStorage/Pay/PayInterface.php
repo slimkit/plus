@@ -41,7 +41,7 @@ interface PayInterface
     public function getNode(): string;
 
     /**
-     * Get pay type
+     * Get pay type.
      * @return string
      */
     public function getType(): string;

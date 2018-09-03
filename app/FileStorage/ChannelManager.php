@@ -36,7 +36,7 @@ class ChannelManager extends Manager
 
     /**
      * Filesystem manager.
-     * @var \Zhiyi\Plus\FileStorage\FilesystemManager $fielsystemManager
+     * @var \Zhiyi\Plus\FileStorage\FilesystemManager
      */
     protected $fielsystemManager;
 
