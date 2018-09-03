@@ -64,7 +64,7 @@
                         <dd><div>{{$manage['user']['name']}}</div>
                             <div class="u-opt">
                                 <span>管理</span>
-                                @if (($group['joined']['role'] == 'founder') && ($group['joined']['user_id'] != $manage['user']))
+                                @if (($group['joined']['role'] == 'founder') && ($group['joined']['user_id'] != $manage['user']['id']))
                                 <svg class="icon f-fs2"><use xlink:href="#icon-setting"></use></svg>
                                     <ul class="u-menu f-dn">
                                         <a href="javascript:;" onclick="MAG.set({{$group['id']}}, {{$manage['id']}}, 0);"><li>撤销管理员</li></a>
