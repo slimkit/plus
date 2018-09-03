@@ -100,7 +100,7 @@ weibo.postFeed = function() {
         });
     } else {
         // 分享字数限制
-        var strlen = $('#feed_content').text().length;
+        var strlen = _.trim($('#feed_content').text()).length;
         var leftnums = initNums - strlen;
 
         // 免费并仅有文字时验证1-255个字，其余不超过255字即可
