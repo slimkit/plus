@@ -70,7 +70,7 @@ class LocalFilesystem implements FilesystemInterface
             return $meta;
         }
 
-        return $$this->metas[$resourceString] = new Local\FileMeta($this->filesystem, $resource);
+        return $this->metas[$resourceString] = new Local\FileMeta($this->filesystem, $resource);
     }
 
     /**
