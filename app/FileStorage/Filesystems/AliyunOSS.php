@@ -114,7 +114,7 @@ class AliyunOSS implements FilesystemInterface
         $url = $this->oss->signUrl($this->bucket, $resource->getPath(), 3600, 'GET', [
             OssClient::OSS_PROCESS => $rule,
         ]);
-        
+
         return new RedirectResponse($url, Response::HTTP_TEMPORARY_REDIRECT);
     }
 
