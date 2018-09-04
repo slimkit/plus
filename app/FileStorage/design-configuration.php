@@ -17,12 +17,15 @@
  */
 
 return [
+    // default-filsystem
     'default-filsystem' => 'local',
     'filesystems' => [
+        // filesystems.local
         'local' => [
             'disk' => 'local',
             'timeout' => 3360,
         ],
+        // filesystems.aliyun-oss
         'aliyun-oss' => [
             'bucket' => null,
             'access-key-id' => null,
@@ -33,16 +36,20 @@ return [
         ],
     ],
     'channels' => [
+        // channels.public
         'public' => [
             'filesystem' => '',
         ],
+        // channels.protected
         'protected' => [
             'filesystem' => '',
         ],
+        // channels.private
         'private' => [
             'filesystem' => '',
         ],
     ],
+    // task-create-validate
     'task-create-validate' => [
         'image-min-width' => 0,
         'image-max-width' => 2800,

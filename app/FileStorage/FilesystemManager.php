@@ -41,7 +41,7 @@ class FilesystemManager extends Manager
      */
     public function getDefaultDriver()
     {
-        return setting('file-storage', 'default-filsystem', 'local');
+        return setting('file-storage', 'default-filesystem', 'local');
     }
 
     /**

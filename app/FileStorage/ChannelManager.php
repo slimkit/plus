@@ -66,7 +66,7 @@ class ChannelManager extends Manager
     protected function createPublicDriver(): ChannelInterface
     {
         $filesystem = $this->filesystemManager->driver(
-            setting('file-storage', 'channels.public')
+            setting('file-storage', 'channels.public')['filesystem']
         );
 
         $channel = $this->app->make(Channels\PublicChannel::class);
