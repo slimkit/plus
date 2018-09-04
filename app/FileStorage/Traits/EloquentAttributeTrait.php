@@ -38,10 +38,19 @@ trait EloquentAttributeTrait
     /**
      * Parse file.
      * @param string $resource
-     * @return \Zhiyi\Plus\FileStorage\FileMeatInterface
+     * @return null|\Zhiyi\Plus\FileStorage\FileMeatInterface
      */
-    protected function parseFile(string $resource): FileMetaInterface
+    protected function parseFile(string $resource): ?FileMetaInterface
     {
-        return $this->getStorage()->meta(new Resource($resource));
+        // Is local mode, throw exceptions.
+        if (app()->isLocal()) {
+            return $this->getStorage()->meta(new Resource($resource));
+        }
+
+        try {
+            return $this->getStorage()->meta(new Resource($resource));
+        } finally {
+            return null;
+        }
     }
 }
