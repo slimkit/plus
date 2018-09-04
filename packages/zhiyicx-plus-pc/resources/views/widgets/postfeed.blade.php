@@ -38,9 +38,9 @@
             <div class="dialog-mention-select ev-view-mention-select" style="display: none;">
                 <label class="search-wrap">
                     <svg class="icon" aria-hidden="true" style="fill: #59b6d7;"><use xlink:href="#icon-mention"></use></svg>
-                    <input type="text" placeholder="搜索用户" oninput="weibo.searchUsers(this)">
+                    <input type="text" placeholder="搜索用户" oninput="searchUser(this)">
                 </label>
-                <span class="hot ev-view-follow-users">关注用户</span>
+                <span class="hot ev-view-mention-placeholder">关注用户</span>
                 <ul class="follow-users ev-view-follow-users">
                     @foreach($follow_users ?? [] as $user)
                     @if($loop->index < 8)

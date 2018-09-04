@@ -796,13 +796,17 @@ var comment = {
             noticebox('请勿重复提交', 0);
             return;
         }
-        var formData = { body: _this.support.editor.val() };
+        var formData = { body: _this.support.editor.val() || _this.support.editor.text() };
         if (!formData.body) {
             noticebox('评论内容不能为空', 0); return;
         }
 
-        // 保留原始回复内容
-        var original_body = formData.body;
+        // 保留原始回复内容, at 用户替换为链接
+        var original_body = formData.body.replace(/\u00ad@([^\/]+?)\u00ad/gi, function(matches, username) {
+          var url = TS.SITE_URL + '/users/' + username;
+          return '<a href="' + url + '">@' + username + '</a>'
+        });
+
         // 去除回复@
         if (_this.support.to_uid > 0 && formData.body.indexOf('回复') != -1) {
             if (formData.body == '回复@'+this.support.to_uname+'：') {
@@ -1301,6 +1305,50 @@ var formatConfirm = function(title, text) {
                 + '</div>';
     return html;
 }
+
+/**
+ * 显示需要 at 的用户列表
+ *
+ * @param {boolean} [show] 是否为显示, 如果不填则表示切换
+ */
+var showMention = function(show) {
+  var $el = $('.ev-view-comment-mention-select')
+  if (show === false) $el.slideUp('fast');
+  else if (show === true) $el.slideDown('fast');
+  else $el.slideToggle('fast');
+}
+
+/**
+ * 搜索用户
+ * 使用 lodash.debounce 防抖, 450ms 后触发搜索
+ *
+ * @param {}
+ */
+var searchUser = _.debounce(function(el) {
+  var keyword = $(el).val();
+  $('.ev-view-comment-follow-users').empty();
+  if (keyword) {
+    $('.ev-view-comment-mention-placeholder').text('搜索中...');
+    axios.get('/api/v2/users', { params: {name: keyword, limit: 8} })
+    .then(function(res) {
+      var result = res.data.slice(0, 8);
+      if (result.length) {
+        $('.ev-view-comment-mention-placeholder').empty();
+        // 填充列表
+        result.forEach(function(user) {
+          // 高亮关键字
+          var regex = new RegExp(keyword, 'gi');
+          var nameMarked = user.name.replace(regex, '<span style="color: #59b6d7;">$&</span>');
+          $('.ev-view-comment-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+nameMarked+'</li>');
+        });
+      } else {
+        $('.ev-view-comment-mention-placeholder').text('没有找到结果');
+      }
+    })
+  } else {
+    $('.ev-view-comment-mention-placeholder').text('搜索中...');
+  }
+}, 450);
 
 // 获取参数
 var getParams = function(url, key) {
@@ -1801,6 +1849,76 @@ $(function() {
         });
     }
 
+    // 捕获添加话题
+    $(document).on('click', '.ev-view-comment-follow-users > li', function() {
+      var name = $(this).data('user-name')
+
+      $(this).closest('.comment_box').find('.comment_editor').html($('#feed_content').html() + " <span contenteditable=\"false\" style=\"color: #59b6d7;\">\u00ad@" + name + "\u00ad</span> ")
+
+      showMention(false);
+    })
+
+    // 监听输入框按键 用于检测@符号键入和删除整段@内容
+    var isShiftKey = false;
+    var is2Key = false;
+
+    // 监听输入框按键, 检测到退格键删除@区域
+    $('.comment_editor').on('keydown', function (event) {
+      if (window.getSelection && event.which == 8) { // backspace
+          // fix backspace bug in FF
+          // https://bugzilla.mozilla.org/show_bug.cgi?id=685445
+          var selection = window.getSelection();
+          if (!selection.isCollapsed || !selection.rangeCount) {
+              return;
+          }
+
+          var curRange = selection.getRangeAt(selection.rangeCount - 1);
+          if (curRange.commonAncestorContainer.nodeType == 3 && curRange.startOffset > 0) {
+              // we are in child selection. The characters of the text node is being deleted
+              return;
+          }
+
+          var range = document.createRange();
+          if (selection.anchorNode != this) {
+              // selection is in character mode. expand it to the whole editable field
+              range.selectNodeContents(this);
+              range.setEndBefore(selection.anchorNode);
+          } else if (selection.anchorOffset > 0) {
+              range.setEnd(this, selection.anchorOffset);
+          } else {
+              // reached the beginning of editable field
+              return;
+          }
+          range.setStart(this, range.endOffset - 1);
+
+          var previousNode = range.cloneContents().lastChild;
+          if (previousNode && previousNode.contentEditable == 'false') {
+              // this is some rich content, e.g. smile. We should help the user to delete it
+              range.deleteContents();
+              event.preventDefault();
+          }
+      }
+      if (event.which === 16 ) {
+        isShiftKey = true;
+      }
+      if (event.which === 50) {
+        is2Key = true
+      }
+      console.log(isShiftKey, is2Key);
+      if (isShiftKey && is2Key) {
+        $(this).closest('.comment_box').find('.ev-btn-comment-mention').click();
+      }
+    });
+
+    $('.comment_editor').on('keyup', function(event) {
+      if (event.which === 16) {
+        isShiftKey = false;
+      }
+      if (event.which === 50) {
+        is2Key = false;
+      }
+    })
+
     // 置顶弹窗
     $(document).on('click', '.pinned_spans span', function() {
         $(this).siblings().removeClass('current');
@@ -1897,6 +2015,18 @@ $(function() {
             $('#chat_send').click();
         }
     };
+
+    // 捕获各处评论区 at 按钮
+    $(document).on('click', '.ev-btn-comment-mention', function(event) {
+      event.stopPropagation();
+      showMention(true);
+    })
+
+    // 捕获话题搜索框以外的点击事件以关闭话题搜索框
+    $(document).on('click', function(event) {
+      var $parent = $(event.target).closest('.ev-view-comment-mention-select')
+      if (!$parent.length) showMention(false)
+    })
 
     // IM聊天
     $(function(){

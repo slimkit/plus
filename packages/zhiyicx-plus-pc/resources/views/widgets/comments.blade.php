@@ -11,9 +11,31 @@
         </div>
         <div class="comment_body" id="comment_box{{ $id }}">
             <div class="comment_textarea">
-                <textarea class="comment_editor" id="J-editor-{{ $comments_type }}{{ $id }}" placeholder="说点什么吧" onkeyup="checkNums(this, 255, 'nums');"></textarea>
+                <div class="comment_editor" id="J-editor-{{ $comments_type }}{{ $id }}" placeholder="说点什么吧" onkeyup="checkNums(this, 255, 'nums');" contenteditable></div>
                 <div class="comment_post">
                     <span class="dy_cs">可输入<span class="nums" style="color: rgb(89, 182, 215);">255</span>字</span>
+                    <span class="font14 mention-btn">
+                        <div class="ev-btn-comment-mention">
+                            <svg class="icon" aria-hidden="true" style="fill: #999;"><use xlink:href="#icon-mention"></use></svg>
+                            提醒谁看
+                        </div>
+
+                        <div class="dialog-mention-select ev-view-comment-mention-select" style="display: none;">
+                            <label class="search-wrap">
+                                <svg class="icon" aria-hidden="true" style="fill: #59b6d7;"><use xlink:href="#icon-mention"></use></svg>
+                                <input type="text" placeholder="搜索用户" oninput="searchUser(this)">
+                            </label>
+                            <span class="hot ev-view-comment-mention-placeholder">关注用户</span>
+                            <ul class="follow-users ev-view-comment-follow-users">
+                                @foreach($follow_users ?? [] as $user)
+                                @if($loop->index < 8)
+                                <li data-user-id="{{$user['id']}}" data-user-name="{{$user['name']}}">{{$user['name']}}</li>
+                                @endif
+                                @endforeach
+                            </ul>
+                        </div>
+
+                    </span>
                     <a class="btn btn-primary fr" id="J-button{{ $id }}" data-id="{{ $id }}" data-position="{{ $position or 0 }}" data-type="{{ $comments_type }}" data-top="{{ $top or 0 }}" data-groupid="{{ $params['group_id'] or 0 }}" onclick="comment.publish(this)"> 评 论 </a>
                 </div>
             </div>
@@ -52,7 +74,6 @@
             @if($comments_count >= 5)
                 <div class="comit_all font12"><a href="{{ $url }}">查看全部评论</a></div>
             @endif
-
         </div>
     </div>
 @else
@@ -64,7 +85,7 @@
         @endif
         <div class="comment_title"><span class="comment_count cs{{ $id }}">{{ $comments_count }} </span>人评论</div>
         <div class="comment_box">
-            <textarea class="comment_editor" id="J-editor-{{ $comments_type }}{{ $id }}" placeholder="说点什么吧" onkeyup="checkNums(this, 255, 'nums');"></textarea>
+            <div class="comment_editor" id="J-editor-{{ $comments_type }}{{ $id }}" placeholder="说点什么吧" onkeyup="checkNums(this, 255, 'nums');" contenteditable></div>
             <div class="comment_tool">
                 <span class="text_stats">可输入<span class="nums mcolor"> 255 </span>字</span>
                 <button class="btn btn-primary" id="J-button{{ $id }}" data-id="{{ $id }}" data-position="{{ $position or 0 }}" data-type="{{ $comments_type }}" data-top="{{ $top or 0 }}" data-groupid="{{ $params['group_id'] or 0 }}" onclick="comment.publish(this)"> 评 论 </button>
