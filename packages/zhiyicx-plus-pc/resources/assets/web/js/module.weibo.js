@@ -345,7 +345,7 @@ weibo.searchTopics = _.debounce(function(el) {
         // 填充列表
         result.forEach(function(topic) {
           // 高亮关键字
-          var regex = new RegExp(query, 'g');
+          var regex = new RegExp(query, 'gi');
           var nameMarked = topic.name.replace(regex, '<span style="color: #59b6d7;">$&<span>');
           $('.ev-view-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+nameMarked+'</li>');
         });
