@@ -51,5 +51,5 @@ return [
         'file-min-size' => 2048, // 2KB
         'file-mix-size' => 2097152, // 2MB
         'file-mime-types' => [],
-    ]
+    ],
 ];
