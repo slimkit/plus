@@ -64,7 +64,7 @@ class LocalFilesystem implements FilesystemInterface
     public function meta(ResourceInterface $resource): FileMetaInterface
     {
         $resourceString = (string) $resource;
-        $meta = $this->metas[$resourceString] ?: null;
+        $meta = $this->metas[$resourceString] ?? null;
 
         if ($meta instanceof FileMetaInterface) {
             return $meta;

@@ -25,6 +25,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\FileStorage\Task;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 use Zhiyi\Plus\FileStorage\TaskInterface;
 use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Zhiyi\Plus\FileStorage\ResourceInterface;
@@ -34,6 +35,7 @@ class AliyunOSS implements FilesystemInterface
 {
     protected $oss;
     protected $bucket;
+    protected $metas = [];
 
     public function __construct(OssClient $oss, string $bucket)
     {
@@ -52,15 +54,17 @@ class AliyunOSS implements FilesystemInterface
         $user = $this->guard()->user();
         $expiresSecond = 360;
         $headers = [
-            OssClient::OSS_CONTENT_MD5 => $request->input('hash'),
+            OssClient::OSS_CONTENT_DISPOSTION => 'attachment;filename='.$request->input('filename'),
+            OssClient::OSS_CONTENT_MD5 => base64_encode(pack('H*', $request->input('hash'))),
             OssClient::OSS_CONTENT_LENGTH => $request->input('size'),
             OssClient::OSS_CONTENT_TYPE => $request->input('mime_type'),
             OssClient::OSS_CALLBACK => json_encode([
                 'callbackBodyType' => 'application/json',
-                'callbackUrl' => route('storage:callback', [
-                    'channel' => $resource->getChannel(),
-                    'path' => base64_encode($resource->getPath()),
-                ]),
+                'callbackUrl' => 'http://test-plus.zhibocloud.cn/oss-callback.php',
+                // 'callbackUrl' => route('storage:callback', [
+                //     'channel' => $resource->getChannel(),
+                //     'path' => base64_encode($resource->getPath()),
+                // ]),
                 'callbackBody' => json_encode([
                     'jwt' => '${x:auth-token}',
                 ]),
@@ -90,7 +94,13 @@ class AliyunOSS implements FilesystemInterface
      */
     public function meta(ResourceInterface $resource): FileMetaInterface
     {
-        return new Local\FileMeta;
+        $resourceString = (string) $resource;
+        $meta = $this->metas[$resourceString] ?? null;
+        if ($meta instanceof FileMetaInterface) {
+            return $meta;
+        }
+
+        return $this->metas[$resourceString] = new AliyunOSS\FileMeta($this->oss, $resource, $this->bucket);
     }
 
     /**
@@ -101,7 +111,11 @@ class AliyunOSS implements FilesystemInterface
      */
     public function response(ResourceInterface $resource, ?string $rule = null): Response
     {
-        return new Response;
+        $url = $this->oss->signUrl($this->bucket, $resource->getPath(), 3600, 'GET', [
+            OssClient::OSS_PROCESS => $rule,
+        ]);
+        
+        return new RedirectResponse($url, Response::HTTP_TEMPORARY_REDIRECT);
     }
 
     /**
