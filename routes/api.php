@@ -199,16 +199,6 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
         $api->get('/{user}', API2\UserController::class.'@show');
 
-        /*
-        | 用户头像
-         */
-
-        tap($api->get('/{user}/avatar', API2\UserAvatarController::class.'@show'), function ($route) {
-            $route->setAction(array_merge($route->getAction(), [
-                'middleware' => ['cors-should', 'bindings'],
-            ]));
-        });
-
         // 获取用户关注者
         $api->get('/{user}/followers', API2\UserFollowController::class.'@followers');
 
@@ -325,15 +315,6 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
             // get a list of system conversation.
             $api->get('/conversations', API2\SystemController::class.'@getConversations');
-
-            /*
-            | 更新当前用户头像
-             */
-
-            $api->post('/avatar', API2\UserAvatarController::class.'@update');
-
-            // Update background image of the authenticated user.
-            $api->post('/bg', API2\CurrentUserController::class.'@uploadBgImage');
 
             /*
             | 用户关注
