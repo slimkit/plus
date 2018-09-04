@@ -925,7 +925,7 @@ var comment = {
           })
           .catch(function (error) {
             showError(error.response.data);
-            _this.lockStatus =0;
+            _this.lockStatus = 0;
           });
     },
     pinneds: function (type, source_id, id){

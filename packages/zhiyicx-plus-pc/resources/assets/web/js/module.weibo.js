@@ -438,7 +438,6 @@ $(function() {
 
     // 捕获添加话题
     $(document).on('click', '.ev-view-follow-users > li', function() {
-      var id = $(this).data('user-id')
       var name = $(this).data('user-name')
 
       $('#feed_content').html($('#feed_content').html() + " <span contenteditable=\"false\" style=\"color: #59b6d7;\">\u00ad@" + name + "\u00ad</span> ")

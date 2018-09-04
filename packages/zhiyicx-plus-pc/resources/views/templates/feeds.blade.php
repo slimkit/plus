@@ -70,8 +70,8 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
                 @endif
             </span>
             <span class="comment J-comment-show">
-                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-comment"></use></svg> <span
-                        class="cs{{$post['id']}}">{{$post['feed_comment_count']}}</span>
+                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-comment"></use></svg>
+                <span class="cs{{$post['id']}}">{{$post['feed_comment_count']}}</span>
             </span>
             <span class="view">
                 <a @if($post['paid_node'] && $post['paid_node']['paid'] == false)
