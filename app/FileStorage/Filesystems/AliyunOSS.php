@@ -34,12 +34,12 @@ use Symfony\Component\HttpFoundation\Response;
 class AliyunOSS implements FilesystemInterface
 {
     protected $oss;
-    protected $bucket;
+    protected $configure;
     protected $metas = [];
 
-    public function __construct(OssClient $oss, string $bucket)
+    public function __construct(OssClient $oss, array $configure)
     {
-        $this->bucket = $bucket;
+        $this->configure = $configure;
         $this->oss = $oss;
     }
 
@@ -52,7 +52,6 @@ class AliyunOSS implements FilesystemInterface
     public function createTask(Request $request, ResourceInterface $resource): TaskInterface
     {
         $user = $this->guard()->user();
-        $expiresSecond = 360;
         $headers = [
             OssClient::OSS_CONTENT_DISPOSTION => 'attachment;filename='.$request->input('filename'),
             OssClient::OSS_CONTENT_MD5 => base64_encode(pack('H*', $request->input('hash'))),
@@ -60,11 +59,10 @@ class AliyunOSS implements FilesystemInterface
             OssClient::OSS_CONTENT_TYPE => $request->input('mime_type'),
             OssClient::OSS_CALLBACK => json_encode([
                 'callbackBodyType' => 'application/json',
-                'callbackUrl' => 'http://test-plus.zhibocloud.cn/oss-callback.php',
-                // 'callbackUrl' => route('storage:callback', [
-                //     'channel' => $resource->getChannel(),
-                //     'path' => base64_encode($resource->getPath()),
-                // ]),
+                'callbackUrl' => route('storage:callback', [
+                    'channel' => $resource->getChannel(),
+                    'path' => base64_encode($resource->getPath()),
+                ]),
                 'callbackBody' => json_encode([
                     'jwt' => '${x:auth-token}',
                 ]),
@@ -75,9 +73,9 @@ class AliyunOSS implements FilesystemInterface
         ];
 
         $url = $this->oss->signUrl(
-            $this->bucket,
+            $this->configure['bucket'],
             $resource->getPath(),
-            $expiresSecond,
+            $this->configure['timeout'],
             OssClient::OSS_HTTP_PUT,
             $headers
         );
@@ -100,7 +98,7 @@ class AliyunOSS implements FilesystemInterface
             return $meta;
         }
 
-        return $this->metas[$resourceString] = new AliyunOSS\FileMeta($this->oss, $resource, $this->bucket);
+        return $this->metas[$resourceString] = new AliyunOSS\FileMeta($this->oss, $resource, $this->configure['bucket']);
     }
 
     /**
@@ -111,9 +109,15 @@ class AliyunOSS implements FilesystemInterface
      */
     public function response(ResourceInterface $resource, ?string $rule = null): Response
     {
-        $url = $this->oss->signUrl($this->bucket, $resource->getPath(), 3600, 'GET', [
-            OssClient::OSS_PROCESS => $rule,
-        ]);
+        $url = $this->configure['domain'].'/'.$resource->getPath();
+        if ($rule) {
+            $url .= '?x-oss-process='.$rule;
+        }
+        if ($this->configure['acl'] !== 'private') {
+            $url = $this->oss->signUrl($this->configure['bucket'], $resource->getPath(), $this->configure['timeout'], 'GET', [
+                OssClient::OSS_PROCESS => $rule,
+            ]);
+        }
 
         return new RedirectResponse($url, Response::HTTP_TEMPORARY_REDIRECT);
     }

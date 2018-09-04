@@ -41,7 +41,7 @@ class FilesystemManager extends Manager
      */
     public function getDefaultDriver()
     {
-        return setting('core', 'file:default-filesystem', 'AliyunOSS');
+        return setting('file-storage', 'default-filsystem', 'local');
     }
 
     /**
@@ -50,19 +50,34 @@ class FilesystemManager extends Manager
      */
     public function createLocalDriver(): Filesystems\FilesystemInterface
     {
+        $localConfigure = setting('file-storage', 'filesystems.local', [
+            'disk' => 'local',
+        ]);
         $filesystem = $this
             ->app
             ->make(\Illuminate\Contracts\Filesystem\Factory::class)
-            ->disk(setting('core', 'file:local-filesystem-select', 'local'));
+            ->disk($localConfigure['disk']);
 
         return new Filesystems\LocalFilesystem($filesystem);
     }
 
     public function createAliyunOSSDriver(): Filesystems\FilesystemInterface
     {
-        $bucket = setting('core', 'file:aliyun-oss-bucket', 'plus-test');
-        $oss = new OssClient('LTAIXfwTSAa2RTVn', 'rqij4pL7qv0ZeC5p5dUQBOQGvCaji6', 'http://ximage.zhibocloud.cn', true);
+        $aliyunOssConfigure = setting('file-storage', 'filesystems.aliyun-oss', []);
+        $aliyunOssConfigure = array_merge([
+            'bucket' => null,
+            'access-key-id' => null,
+            'access-key-secret' => null,
+            'domain' => null,
+            'timeout' => 3360,
+        ], $aliyunOssConfigure);
+        $oss = new OssClient(
+            $aliyunOssConfigure['access-key-id'],
+            $aliyunOssConfigure['access-key-secret'],
+            $aliyunOssConfigure['domain'],
+            true
+        );
 
-        return new Filesystems\AliyunOSS(/* $this->app->make(\OSS\OssClient::class) */ $oss, $bucket);
+        return new Filesystems\AliyunOSS($oss, $aliyunOssConfigure);
     }
 }
