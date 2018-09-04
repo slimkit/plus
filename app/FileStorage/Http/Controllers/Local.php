@@ -99,8 +99,8 @@ class Local extends Controller
         }
 
         $this->storage->callback($resource);
-        $expiresAt = (new Carbon)->addHours(
-            setting('core', 'file:put-signature-expires-at', 1)
+        $expiresAt = (new Carbon)->addSeconds(
+            setting('file-storage', 'filesystems.local', ['timeout' => 3360])['timeout']
         );
         $cache->put($signature, 1, $expiresAt);
         $this->guard()->invalidate();

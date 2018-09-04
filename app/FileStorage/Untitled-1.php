@@ -21,6 +21,7 @@ return [
     'filesystems' => [
         'local' => [
             'disk' => 'local',
+            'timeout' => 3360,
         ],
         'aliyun-oss' => [
             'bucket' => null,
@@ -42,4 +43,13 @@ return [
             'filesystem' => '',
         ],
     ],
+    'task-create-validate' => [
+        'image-min-width' => 0,
+        'image-max-width' => 2800,
+        'image-min-height' => 0,
+        'image-max-height' => 2800,
+        'file-min-size' => 2048, // 2KB
+        'file-mix-size' => 2097152, // 2MB
+        'file-mime-types' => [],
+    ]
 ];

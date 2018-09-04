@@ -131,8 +131,8 @@ class LocalFilesystem implements FilesystemInterface
      */
     public function createTask(Request $request, ResourceInterface $resource): TaskInterface
     {
-        $expiresAt = (new Carbon)->addHours(
-            setting('core', 'file:put-signature-expires-at', 1)
+        $expiresAt = (new Carbon)->addSeconds(
+            setting('file-storage', 'filesystems.local', ['timeout' => 3360])['timeout']
         );
         $uri = url()->temporarySignedRoute('storage:local-put', $expiresAt, [
             'channel' => $resource->getChannel(),

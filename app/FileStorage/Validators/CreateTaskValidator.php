@@ -27,6 +27,12 @@ use Zhiyi\Plus\FileStorage\Exceptions\NotAllowUploadMimeTypeException;
 class CreateTaskValidator extends AbstractValidator
 {
     /**
+     * Caching configures.
+     * @var array
+     */
+    protected $configure;
+
+    /**
      * Get the validate rules.
      * @return array
      */
@@ -58,7 +64,7 @@ class CreateTaskValidator extends AbstractValidator
      */
     protected function getAllowImageMinWidth(): string
     {
-        return sprintf('min:%d', setting('core', 'file:upload-allow-image-min-width', 0));
+        return sprintf('min:%d', $this->getConfigure()['image-min-width']);
     }
 
     /**
@@ -67,7 +73,7 @@ class CreateTaskValidator extends AbstractValidator
      */
     protected function getAllowImageMaxWidth(): string
     {
-        return sprintf('max:%d', setting('core', 'file:upload-allow-image-max-width', 0));
+        return sprintf('max:%d', $this->getConfigure()['image-max-width']);
     }
 
     /**
@@ -76,7 +82,7 @@ class CreateTaskValidator extends AbstractValidator
      */
     protected function getAllowImageMinHeight(): string
     {
-        return sprintf('min:%d', setting('core', 'file:upload-allow-image-min-height', 0));
+        return sprintf('min:%d', $this->getConfigure()['image-min-height']);
     }
 
     /**
@@ -85,7 +91,7 @@ class CreateTaskValidator extends AbstractValidator
      */
     protected function getAllowImageMaxHeight(): string
     {
-        return sprintf('max:%d', setting('core', 'file:upload-allow-image-max-height', 0));
+        return sprintf('max:%d', $this->getConfigure()['image-max-height']);
     }
 
     /**
@@ -94,7 +100,7 @@ class CreateTaskValidator extends AbstractValidator
      */
     protected function getAllowMinSize(): string
     {
-        return sprintf('min:%d', setting('core', 'file:upload-allow-min-size', 0));
+        return sprintf('min:%d', $this->getConfigure()['file-min-size']);
     }
 
     /**
@@ -103,7 +109,7 @@ class CreateTaskValidator extends AbstractValidator
      */
     protected function getAllowMaxSize(): string
     {
-        return sprintf('max:%d', setting('core', 'file:upload-allow-max-size', 2097152));
+        return sprintf('max:%d', $this->getConfigure()['file-max-size']);
     }
 
     /**
@@ -112,11 +118,28 @@ class CreateTaskValidator extends AbstractValidator
      */
     protected function getAllowMimeTypes(): string
     {
-        $mimeTypes = setting('core', 'file:upload-allow-mime-types', ['image/png']);
+        $mimeTypes = $this->getConfigure()['file-mime-types'];
         if (empty($mimeTypes)) {
             throw new NotAllowUploadMimeTypeException();
         }
 
         return sprintf('in:%s', implode(',', $mimeTypes));
+    }
+
+    protected function getConfigure(): array
+    {
+        if ($this->configure) {
+            return $this->configure;
+        }
+
+        return $this->configure = setting('file-storage', 'task-create-validate', [
+            'image-min-width' => 0,
+            'image-max-width' => 2800,
+            'image-min-height' => 0,
+            'image-max-height' => 2800,
+            'file-min-size' => 2048, // 2KB
+            'file-mix-size' => 2097152, // 2MB
+            'file-mime-types' => [],
+        ]);
     }
 }
