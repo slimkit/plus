@@ -37,6 +37,11 @@ class AliyunOSS implements FilesystemInterface
     protected $configure;
     protected $metas = [];
 
+    /**
+     * Create the Aliyun OSS filesystem instance.
+     * @param \OSS\OssClient $oss
+     * @param array $configure
+     */
     public function __construct(OssClient $oss, array $configure)
     {
         $this->configure = $configure;
@@ -129,7 +134,9 @@ class AliyunOSS implements FilesystemInterface
      */
     public function delete(string $path): bool
     {
-        return false;
+        $this->oss->deleteObject($this->configure['bucket'], $path);
+
+        return true;
     }
 
     /**
@@ -140,7 +147,9 @@ class AliyunOSS implements FilesystemInterface
      */
     public function put(string $path, $contents): bool
     {
-        return false;
+        $this->oss->putObject($this->configure['bucket'], $path, $contents);
+
+        return true;
     }
 
     /**
