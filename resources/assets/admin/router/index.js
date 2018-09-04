@@ -17,6 +17,7 @@ import rewardRouter from './reward';
 import cdnRoutes from './cdn';
 import reportRoutes from './report';
 import currencyRoutes from './currency';
+import FileStorageRoutes from './file-storage-routes';
 
 // components.
 import Login from '../component/Login';
@@ -47,7 +48,8 @@ const childrenRoutes = [
   rewardRouter,
   cdnRoutes,
   reportRoutes,
-  currencyRoutes
+  currencyRoutes,
+  FileStorageRoutes
 ];
 
 const router = new VueRouter({

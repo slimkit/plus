@@ -29,4 +29,7 @@ Route::middleware(['auth:web', 'admin'])->prefix('admin')->group(function (Route
     $route->delete('trashed-users/{user}', AdminControllers\UserTrashedController::class.'@restore');
     $route->get('about-us', AdminControllers\AboutUsController::class.'@show');
     $route->patch('about-us', AdminControllers\AboutUsController::class.'@store');
+
+    $route->get('file-storage/image-dimension', AdminControllers\FileStorage\ImageDimension::class.'@show');
+    $route->patch('file-storage/image-dimension', AdminControllers\FileStorage\ImageDimension::class.'@update');
 });
