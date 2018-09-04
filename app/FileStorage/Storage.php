@@ -108,21 +108,6 @@ class Storage implements StorageInterface
     }
 
     /**
-     * Transform a resource channel.
-     * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
-     * @param string $channel
-     * @param \Illuminate\Http\Request $request
-     * @return \Zhiyi\Plus\FileStorage\ResourceInterface
-     */
-    public function transform(ResourceInterface $resource, string $channel, Request $request): ResourceInterface
-    {
-        return $this->getChannel($resource)->transform($this->createResource(
-            $channel,
-            $this->makePath($resource->getPath())
-        ));
-    }
-
-    /**
      * Put a file.
      * @param \Zhiyi\Plus\FileStorage\ResourceInterface $resource
      * @param mixed $content
