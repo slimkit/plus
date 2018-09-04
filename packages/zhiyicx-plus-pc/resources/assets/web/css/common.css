@@ -304,6 +304,7 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 .comment_post .dy_cs {position:absolute;right:5px;top:-40px;}
 .comment_post .post_button {line-height:32px;float:right;width:85px;height:32px;text-align:center;color:#fff;border:0;cursor:pointer;border-radius:3px;background:#59b6d7;}
 .comment_post_nums {font-size:12px;margin-left:385px;}
+.comment_box {margin-bottom: 80px;}
 .comment_box .comment_con {word-break:break-all;margin-bottom:16px;}
 .comment_box .comment_con a {color: #59b6d7;}
 .comment_box .comment_con a.mouse {cursor:pointer;display:none;margin-left:5px;}
@@ -312,14 +313,15 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 .comment_box .comment_editor {font-size:14px;width:100%;height:77px;margin-bottom:10px;padding:10px;resize:none;color:#666;border:1px solid #ededed;outline:none;background:#f3f6f7;}
 .comment_box .comment_tool {text-align:right;}
 .comment_box .mention-btn {position: relative;display: inline-block;cursor: pointer;}
-.comment_box .mention-btn .dialog-mention-select {position: absolute;display: flex;left: 0;top: 100%;width: 400px;height: 220px;z-index: 10;padding: 20px 40px;background-color: #fff;box-shadow: 0px 2px 9px 0px
+.comment_box .dialog-mention-select {position: absolute;display: flex;left: 0;top: 100%;width: 400px;height: 220px;z-index: 10;padding: 20px 40px;background-color: #fff;box-shadow: 0px 2px 9px 0px
     rgba(22, 23, 23, 0.09);flex-direction: column;cursor: default;}
 .comment_box .dialog-mention-select .search-wrap {border-bottom: 1px solid #ccc;}
 .comment_box .dialog-mention-select .search-wrap input {border: none;}
 .comment_box .dialog-mention-select .hot {color: #ccc;margin-top: 20px;cursor: default;}
 .comment_box .dialog-mention-select .follow-users {display: flex;flex-flow: row wrap;}
 .comment_box .dialog-mention-select .follow-users > li {display: inline-block;width: 50%;cursor: pointer;}
-
+.comment_buttons {float: left;}
+.comment_tool {float:right;}
 .comment_tool .text_stats {margin-right:20px;font-size:14px;color:#777;}
 .comment_list .comment_item {border-bottom:1px solid #ededed;margin-top:40px;padding-bottom:10px;}
 .comment_list .comment_item dt {float:left;position:relative;}
@@ -330,7 +332,8 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 .comment_list .comment_item .reply_time {font-size:12px;color:#ccc;}
 .reply_tool .reply_action {float:right;cursor:pointer;}
 .reply_body {word-break:break-all;width:645px;}
-.reply_body a.mouse {color:#59b6d7;display:none;}
+.reply_body a {color:#59b6d7;}
+.reply_body a.mouse {display:none;}
 .a_link:hover {text-decoration:none;color:#fff !important;}
 /*更多操作*/.options {float:right;width:30px;cursor:pointer;text-align:right;color:#999;}
 .options_div {position:absolute;z-index:99;top:30px;right:-50px;display:none;width:125px;border-radius:3px;background:#fff;box-shadow:0 1px 22px #e2e0e0;}

@@ -1852,8 +1852,8 @@ $(function() {
     // 捕获添加话题
     $(document).on('click', '.ev-view-comment-follow-users > li', function() {
       var name = $(this).data('user-name')
-
-      $(this).closest('.comment_box').find('.comment_editor').html($('#feed_content').html() + " <span contenteditable=\"false\" style=\"color: #59b6d7;\">\u00ad@" + name + "\u00ad</span> ")
+      var $el = $(this).closest('.comment_box').find('.comment_editor')
+      $el.html($el.html() + " <span contenteditable=\"false\" style=\"color: #59b6d7;\">\u00ad@" + name + "\u00ad</span> ")
 
       showMention(false);
     })
