@@ -32,6 +32,11 @@
                     <div class="options_div">
                         <div class="triangle"></div>
                         <ul>
+                            <li>
+                                <a href="javascript:;" onclick="repostable('news' ,{{$news['id']}})">
+                                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg>转发
+                                </a>
+                            </li>
                             @if($TS && $news['user']['id'] == $TS['id'])
                                 @if($news['audit_status'] == 3)
                                     <li>

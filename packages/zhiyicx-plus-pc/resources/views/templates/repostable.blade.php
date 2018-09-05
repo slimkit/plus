@@ -1,8 +1,18 @@
 <div class="repostable-wrap">
-    <blockquote>
-        <h3>{{$refer['title']}}</h3>
-        <p>{{$refer['content']}}</p>
-    </blockquote>
+    @switch($type)
+        @case('news')
+        <blockquote>
+            <h3>{{$news['title']}}</h3>
+            <p>{{$news['content']}}</p>
+        </blockquote>
+        @break
+
+        @case('feed')
+        <blockquote>
+            <p>{{$feed['feed_content']}}</p>
+        </blockquote>
+        @break
+    @endswitch
 
     <div class="content" contenteditable=true placeholder="请输入转发理由"></div>
 

@@ -37,7 +37,10 @@ class FeedController extends BaseController
                         'index' => (int) $request->query('after') ?: 0,
                     ];
                     $feeds = newapi('GET', '/api/v2/feed/topics/' . $topic_id . '/feeds', $params);
-                    $data['feeds'] = $feeds;
+                    $data['feeds'] = array_filter($feeds, function($val) use ($topic_id) {
+                        $data['test'] = $val;
+                        return $val['id'] !== $topic_id;
+                    });
                     $after = $feeds[count($feeds) - 1]['index'] ?? 0;
                 } else {
                     // 普通列表
@@ -147,18 +150,26 @@ class FeedController extends BaseController
     {
         $type = $request->query('type');
         $id = $request->query('id');
-        $data = [];
+        $data = [
+            'type' => $type,
+        ];
 
         switch ($type) {
             case 'news':
-            $data['refer'] = api('GET', "/api/v2/news/{$id}");
+            $data['news'] = api('GET', "/api/v2/news/{$id}");
             break;
-
-            default:
-            # code...
+            case 'feed':
+            $data['feed'] = api('GET', "/api/v2/feeds/{$id}");
+            break;
+            case 'group':
+            $data['group'] = api('GET', "/api/v2/plus-group/groups/{$id}");
+            break;
+            case 'post':
+            $data['post'] = api('GET', "/api/v2/plus-group/groups/");
             break;
         }
 
         return view('pcview::templates.repostable', $data, $this->PlusData)->render();
     }
+
 }
