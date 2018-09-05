@@ -18,7 +18,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\FileStorage\Filesystems\AliyunOSS;
+namespace Zhiyi\Plus\FileStorage\Filesystems\AliyunOss;
 
 use Closure;
 use OSS\OssClient;

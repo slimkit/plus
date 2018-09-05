@@ -103,7 +103,7 @@ class AliyunOSS implements FilesystemInterface
             return $meta;
         }
 
-        return $this->metas[$resourceString] = new AliyunOSS\FileMeta($this->oss, $resource, $this->configure['bucket']);
+        return $this->metas[$resourceString] = new AliyunOss\FileMeta($this->oss, $resource, $this->configure['bucket']);
     }
 
     /**
