@@ -118,7 +118,7 @@ class AliyunOSS implements FilesystemInterface
         if ($rule) {
             $url .= '?x-oss-process='.$rule;
         }
-        if ($this->configure['acl'] !== 'private') {
+        if ($this->configure['acl'] === 'private') {
             $url = $this->oss->signUrl($this->configure['bucket'], $resource->getPath(), $this->configure['timeout'], 'GET', [
                 OssClient::OSS_PROCESS => $rule,
             ]);

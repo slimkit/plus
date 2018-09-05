@@ -64,7 +64,7 @@ class CreateTaskValidator extends AbstractValidator
      */
     protected function getAllowImageMinWidth(): string
     {
-        return sprintf('min:%d', $this->getConfigure()['image-min-width']);
+        return sprintf('min:%d', $this->getConfigure()['image-min-width'] ?? 0);
     }
 
     /**
@@ -73,7 +73,7 @@ class CreateTaskValidator extends AbstractValidator
      */
     protected function getAllowImageMaxWidth(): string
     {
-        return sprintf('max:%d', $this->getConfigure()['image-max-width']);
+        return sprintf('max:%d', $this->getConfigure()['image-max-width'] ?? 0);
     }
 
     /**
@@ -82,7 +82,7 @@ class CreateTaskValidator extends AbstractValidator
      */
     protected function getAllowImageMinHeight(): string
     {
-        return sprintf('min:%d', $this->getConfigure()['image-min-height']);
+        return sprintf('min:%d', $this->getConfigure()['image-min-height'] ?? 0);
     }
 
     /**
@@ -91,7 +91,7 @@ class CreateTaskValidator extends AbstractValidator
      */
     protected function getAllowImageMaxHeight(): string
     {
-        return sprintf('max:%d', $this->getConfigure()['image-max-height']);
+        return sprintf('max:%d', $this->getConfigure()['image-max-height'] ?? 0);
     }
 
     /**
@@ -100,7 +100,7 @@ class CreateTaskValidator extends AbstractValidator
      */
     protected function getAllowMinSize(): string
     {
-        return sprintf('min:%d', $this->getConfigure()['file-min-size']);
+        return sprintf('min:%d', $this->getConfigure()['file-min-size'] ?? 0);
     }
 
     /**
@@ -109,7 +109,7 @@ class CreateTaskValidator extends AbstractValidator
      */
     protected function getAllowMaxSize(): string
     {
-        return sprintf('max:%d', $this->getConfigure()['file-max-size']);
+        return sprintf('max:%d', $this->getConfigure()['file-max-size'] ?? 0);
     }
 
     /**

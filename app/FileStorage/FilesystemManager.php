@@ -61,6 +61,10 @@ class FilesystemManager extends Manager
         return new Filesystems\LocalFilesystem($filesystem);
     }
 
+    /**
+     * Create Aliyun OSS filesystem driver.
+     * @return \Zhiyi\Plus\FileStorage\Filesystems\FilesystemInterface
+     */
     public function createAliyunOSSDriver(): Filesystems\FilesystemInterface
     {
         $aliyunOssConfigure = setting('file-storage', 'filesystems.aliyun-oss', []);
@@ -69,7 +73,7 @@ class FilesystemManager extends Manager
             'access-key-id' => null,
             'access-key-secret' => null,
             'domain' => null,
-            'timeout' => 3360,
+            'timeout' => 3600,
         ], $aliyunOssConfigure);
         $oss = new OssClient(
             $aliyunOssConfigure['access-key-id'],
