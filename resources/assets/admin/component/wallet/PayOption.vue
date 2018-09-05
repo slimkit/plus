@@ -54,7 +54,7 @@
 
         <!-- 选项组 -->
         <div :class="$style.labelBox">
-          <span class="label label-info" :class="$style.label" v-for="label in labels">
+          <span class="label label-info" :class="$style.label" v-for="label in labels" :key="label">
             {{ label / 100 }}
             <span :class="$style.labelDelete" title="删除" aria-hidden="true" @click="deleteLabel(label)">&times;</span>
           </span>

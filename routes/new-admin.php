@@ -32,4 +32,7 @@ Route::middleware(['auth:web', 'admin'])->prefix('admin')->group(function (Route
 
     $route->get('file-storage/image-dimension', AdminControllers\FileStorage\ImageDimension::class.'@show');
     $route->patch('file-storage/image-dimension', AdminControllers\FileStorage\ImageDimension::class.'@update');
+
+    $route->get('file-storage/file-mime-types', AdminControllers\FileStorage\MimeType::class.'@show');
+    $route->patch('file-storage/file-mime-types', AdminControllers\FileStorage\MimeType::class.'@update');
 });
