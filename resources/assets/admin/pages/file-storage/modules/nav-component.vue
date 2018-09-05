@@ -24,7 +24,7 @@
                 <router-link tag="li" active-class="active" :to="{ name: 'file-storage:filesystems' }">
                     <a>文件系统</a>
                 </router-link>
-                <router-link tag="li" active-class="active" to="/file-storage/filesystem">
+                <router-link tag="li" active-class="active" :to="{ name: 'file-storage:channels' }">
                     <a>频道设置</a>
                 </router-link>
             </ul>

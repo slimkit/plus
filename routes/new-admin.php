@@ -47,4 +47,7 @@ Route::middleware(['auth:web', 'admin'])->prefix('admin')->group(function (Route
 
     $route->get('file-storage/filesystems/aliyun-oss', AdminControllers\FileStorage\AliyunOSSFilesystem::class.'@show');
     $route->patch('file-storage/filesystems/aliyun-oss', AdminControllers\FileStorage\AliyunOSSFilesystem::class.'@update');
+
+    $route->get('file-storage/channels/public', AdminControllers\FileStorage\PublicChannel::class.'@show');
+    $route->patch('file-storage/channels/public', AdminControllers\FileStorage\PublicChannel::class.'@update');
 });

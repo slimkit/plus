@@ -2,6 +2,7 @@ import {
     WrapComponent,
     HomeComponent,
     FilesystemsComponent,
+    ChannelsComponent,
 } from '../pages/file-storage';
 
 export default {
@@ -17,6 +18,11 @@ export default {
             name: "file-storage:filesystems",
             path: "filesystems",
             component: FilesystemsComponent
+        },
+        {
+            name: "file-storage:channels",
+            path: 'channels',
+            component: ChannelsComponent
         }
     ]
 };

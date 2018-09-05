@@ -41,7 +41,7 @@ $lefyNavWidth: 240px;
     <div class="left-nav pull-left">
 
       <!-- User avatar. -->
-      <img v-if="user.avatar" class="img-responsive img-circle center-block user-avatar" :src="user.avatar">
+      <img v-if="user.avatar" class="img-responsive img-circle center-block user-avatar" :src="user.avatar.url">
       <default-avatar v-else class="img-responsive img-circle center-block user-avatar" />
       <!-- End user avatar. -->
 
