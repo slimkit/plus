@@ -1,6 +1,7 @@
 import {
     WrapComponent,
     HomeComponent,
+    FilesystemsComponent,
 } from '../pages/file-storage';
 
 export default {
@@ -11,6 +12,11 @@ export default {
             name: "file-storage:home",
             path: "",
             component: HomeComponent
+        },
+        {
+            name: "file-storage:filesystems",
+            path: "filesystems",
+            component: FilesystemsComponent
         }
     ]
 };

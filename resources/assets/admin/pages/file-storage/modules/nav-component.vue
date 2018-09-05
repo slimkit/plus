@@ -18,10 +18,10 @@
             </div>
 
             <ul class="nav navbar-nav">
-                <router-link exact tag="li" exact-active-class="active" to="/file-storage">
+                <router-link exact tag="li" exact-active-class="active" :to="{ name: 'file-storage:home' }">
                     <a>基础设置</a>
                 </router-link>
-                <router-link tag="li" active-class="active" to="/file-storage/filesystem">
+                <router-link tag="li" active-class="active" :to="{ name: 'file-storage:filesystems' }">
                     <a>文件系统</a>
                 </router-link>
                 <router-link tag="li" active-class="active" to="/file-storage/filesystem">

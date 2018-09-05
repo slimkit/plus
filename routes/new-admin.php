@@ -38,4 +38,7 @@ Route::middleware(['auth:web', 'admin'])->prefix('admin')->group(function (Route
 
     $route->get('file-storage/file-size', AdminControllers\FileStorage\FileSize::class.'@show');
     $route->patch('file-storage/file-size', AdminControllers\FileStorage\FileSize::class.'@update');
+
+    $route->get('file-storage/default-filesystem', AdminControllers\FileStorage\DefaultFilesystem::class.'@show');
+    $route->patch('file-storage/default-filesystem', AdminControllers\FileStorage\DefaultFilesystem::class.'@update');
 });

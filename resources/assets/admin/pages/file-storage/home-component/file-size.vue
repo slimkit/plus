@@ -1,6 +1,6 @@
 <template>
     <div class="panel panel-default">
-        <div class="panel-heading">图片设置</div>
+        <div class="panel-heading">文件大小</div>
         <div class="panel-body">
 
             <div class="alert alert-warning">

@@ -17,8 +17,8 @@
  */
 
 return [
-    // default-filsystem
-    'default-filsystem' => 'local',
+    // default-filesystem
+    'default-filesystem' => 'local',
     'filesystems' => [
         // filesystems.local
         'local' => [
