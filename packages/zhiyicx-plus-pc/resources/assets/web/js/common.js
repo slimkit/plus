@@ -1319,6 +1319,17 @@ var showMention = function(show) {
 }
 
 /**
+ * 转发至动态
+ * @author mutoe <mutoe@foxmail.com>
+ * @param {string} type
+ * @param {number} id
+ */
+var repostable = function(type, id) {
+  var url = '/feeds/repostable?type='+type+'&id='+id;
+  ly.load(url, '转发', '720px');
+}
+
+/**
  * 搜索用户
  * 使用 lodash.debounce 防抖, 450ms 后触发搜索
  *

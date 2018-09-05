@@ -454,6 +454,19 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 .PicShowExpand .smallcursor {cursor:url("../images/small.cur"),pointer;}
 .PicShowExpand .leftcursor {cursor:url("../images/pic_prev.cur"),pointer;}
 .PicShowExpand .rightcursor {cursor:url("../images/pic_next.cur"),pointer;}
-/*Markdownli样式*/.markdown-body ol li{list-style:decimal;}
+/*Markdownli样式*/
+.markdown-body ol li{list-style:decimal;}
 .markdown-body ul li{list-style:disc;}
-/*举报弹窗*/.report-ct{font-size: 14px;width: 100%;height: 150px;padding: 10px;resize: none;color: #666;border: 1px solid #ededed;outline: none;background: #f3f6f7;}
+/*举报弹窗*/
+.report-ct{font-size: 14px;width: 100%;height: 150px;padding: 10px;resize: none;color: #666;border: 1px solid #ededed;outline: none;background: #f3f6f7;}
+/* 转发弹框 */
+.repostable-wrap {padding: 20px;}
+.repostable-wrap blockquote {margin: 0;background-color: #f7f7f7;padding: 10px;font-size: 14px;line-height: 24px;color: #b3b3b3;}
+.repostable-wrap blockquote h3 {color: #333;margin: 0;font-weight: normal;font-size: 100%;}
+.repostable-wrap blockquote p {margin: 0;}
+.repostable-wrap .content {margin-top: 20px;border: 1px solid #ededed;background-color: #f3f6f7;padding: 10px;font-size: 14px;height: 100px;overflow: auto;}
+.repostable-wrap .content[contenteditable=true]:empty::before {content: attr(placeholder);display: block;color: #b3b3b3;}/* placeholder */
+.repostable-wrap .tools {color: #666;margin-top: 20px;overflow: hidden;}
+.repostable-wrap .tools > span {margin-right: 20px;font-size: 14px;float: left;display: block;height: 36px;line-height: 36px;}
+.repostable-wrap .tools > button {float: right;background-color: #59b6d7;color: #fff;border: none;border-radius: 2px;width: 85px;height: 36px;}
+.repostable-wrap .icon {fill: #999;}

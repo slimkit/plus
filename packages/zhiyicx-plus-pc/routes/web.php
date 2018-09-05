@@ -53,6 +53,9 @@ Route::prefix('feeds')->group(function () {
 
     // 动态详情获取评论
     Route::get('/{feed}/comments', 'FeedController@comments')->where(['feed' => '[0-9]+']);
+
+    // 转发弹框
+    Route::get('/repostable', 'FeedController@repostable')->name('pc:repostable');
 });
 
 // 问答专题

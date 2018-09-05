@@ -139,4 +139,26 @@ class FeedController extends BaseController
             'after' => $after,
         ]);
     }
+
+    /**
+     * 转发
+     */
+    public function repostable(Request $request)
+    {
+        $type = $request->query('type');
+        $id = $request->query('id');
+        $data = [];
+
+        switch ($type) {
+            case 'news':
+            $data['refer'] = api('GET', "/api/v2/news/{$id}");
+            break;
+
+            default:
+            # code...
+            break;
+        }
+
+        return view('pcview::templates.repostable', $data, $this->PlusData)->render();
+    }
 }
