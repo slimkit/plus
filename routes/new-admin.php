@@ -41,4 +41,7 @@ Route::middleware(['auth:web', 'admin'])->prefix('admin')->group(function (Route
 
     $route->get('file-storage/default-filesystem', AdminControllers\FileStorage\DefaultFilesystem::class.'@show');
     $route->patch('file-storage/default-filesystem', AdminControllers\FileStorage\DefaultFilesystem::class.'@update');
+
+    $route->get('file-storage/filesystems/local', AdminControllers\FileStorage\LocalFilesystem::class.'@show');
+    $route->patch('file-storage/filesystems/local', AdminControllers\FileStorage\LocalFilesystem::class.'@update');
 });
