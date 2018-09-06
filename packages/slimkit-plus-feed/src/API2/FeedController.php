@@ -399,10 +399,9 @@ class FeedController extends Controller
      *
      * @param \Zhiyi\Plus\Models\User $user
      * @param array $topics
-     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed
      * @return void
      */
-    private function touchUserFollowBindFeedCount(UserModel $user, array $topics, FeedModel $feed): void
+    private function touchUserFollowBindFeedCount(UserModel $user, array $topics): void
     {
         if (empty($topics)) {
             return;
@@ -455,7 +454,7 @@ class FeedController extends Controller
             $this->saveFeedFilePaidNode($paidNodes, $feed);
             $this->saveFeedFileWith($fileWiths, $feed);
             $this->linkFeedToTopics($topics, $feed);
-            $this->touchUserFollowBindFeedCount($user, $topics, $feed);
+            $this->touchUserFollowBindFeedCount($user, $topics);
 
             if ($videoWith) {
                 $this->saveFeedVideoWith($videoWith, $videoCoverWith, $feed);
