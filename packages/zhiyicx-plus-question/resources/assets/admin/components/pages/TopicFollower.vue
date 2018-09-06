@@ -4,7 +4,7 @@
     <div class="panel-heading">
       <router-link :to="`/topics/${id}`">
         <span class="glyphicon glyphicon-menu-left"></span>
-        返回话题
+        返回专题
       </router-link>
     </div>
     <div class="panel-heading">
@@ -62,7 +62,7 @@
                   <ui-loading></ui-loading>
                   移除中...
                 </template>
-                <template v-else>移出话题</template>
+                <template v-else>移出专题</template>
               </template>
             </ui-process-button>
 

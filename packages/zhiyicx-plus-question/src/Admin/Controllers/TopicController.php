@@ -54,7 +54,7 @@ class TopicController extends Controller
     }
 
     /**
-     * 创建话题.
+     * 创建专题.
      *
      * @param TopicRequest $request
      * @param TopicModel $topicModel
@@ -64,7 +64,7 @@ class TopicController extends Controller
     public function store(TopicRequest $request, TopicModel $topicModel)
     {
         if ($topicModel->newQuery()->where('name', $request->input('name'))->first()) {
-            return response()->json(['message' => ['话题名称已存在']], 422);
+            return response()->json(['message' => ['专题名称已存在']], 422);
         }
 
         $topicModel->name = $request->input('name');
@@ -77,7 +77,7 @@ class TopicController extends Controller
     }
 
     /**
-     * 更新话题封面.
+     * 更新专题封面.
      *
      * @param TopicAvatarRequest $request
      * @param TopicModel $topic
@@ -107,7 +107,7 @@ class TopicController extends Controller
     public function storeExperts(Request $request, TopicModel $topic, User $expert)
     {
         if ($topic->experts()->where('user_id', $expert->id)->count() > 0) {
-            return response()->json(['message' => ['该用户已设置为该话题下专家，请勿重复操作']], 422);
+            return response()->json(['message' => ['该用户已设置为该专题下专家，请勿重复操作']], 422);
         }
         $sort = $request->input('sort', 0);
         $topic->getConnection()->transaction(function () use ($expert, $topic, $sort) {
@@ -129,7 +129,7 @@ class TopicController extends Controller
     public function update(Request $request, TopicModel $topic)
     {
         if ($request->input('name') != $topic->name && $topic->newQuery()->where('name', $request->input('name'))->first()) {
-            return response()->json(['message' => ['话题名称已存在']], 422);
+            return response()->json(['message' => ['专题名称已存在']], 422);
         }
 
         $request->has('name') && $topic->name = $request->input('name');
@@ -142,7 +142,7 @@ class TopicController extends Controller
     }
 
     /**
-     * 删除话题.
+     * 删除专题.
      *
      * @param TopicModel $topic
      * @return mixed
@@ -293,7 +293,7 @@ class TopicController extends Controller
     }
 
     /**
-     * 话题专家排序.
+     * 专题专家排序.
      *
      * @param  Request    $request
      * @param  TopicModel $topic
@@ -310,7 +310,7 @@ class TopicController extends Controller
     }
 
     /**
-     * 话题排序.
+     * 专题排序.
      *
      * @param  Request    $request
      * @param  TopicModel $topic
@@ -327,7 +327,7 @@ class TopicController extends Controller
     }
 
     /**
-     * 话题开启.
+     * 专题开启.
      *
      * @param  Request    $request
      * @param  TopicModel $topic

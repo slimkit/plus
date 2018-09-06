@@ -78,7 +78,7 @@ class TopicApplicationRecordController extends Controller
             $topicModel->save();
             $topicApplication->save();
 
-            $topicApplication->user->sendNotifyMessage('question-topic:accept', sprintf('你申请创建的话题%s已被管理员通过', $topicApplication->name), [
+            $topicApplication->user->sendNotifyMessage('question-topic:accept', sprintf('你申请创建的专题%s已被管理员通过', $topicApplication->name), [
                 'topic' => $topicModel,
             ]);
         });
@@ -107,7 +107,7 @@ class TopicApplicationRecordController extends Controller
         $topicApplication->getConnection()->transaction(function () use ($topicApplication) {
             $topicApplication->save();
 
-            $topicApplication->user->sendNotifyMessage('question-topic:reject', sprintf('你申请创建的话题%s已被管理员驳回', $topicApplication->name), [
+            $topicApplication->user->sendNotifyMessage('question-topic:reject', sprintf('你申请创建的专题%s已被管理员驳回', $topicApplication->name), [
                 'topic_application' => $topicApplication,
             ]);
         });

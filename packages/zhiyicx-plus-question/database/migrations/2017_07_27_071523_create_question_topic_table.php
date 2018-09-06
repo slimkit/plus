@@ -31,7 +31,7 @@ class CreateQuestionTopicTable extends Migration
     {
         Schema::create('question_topic', function (Blueprint $table) {
             $table->integer('question_id')->unsigned()->comment('问题ID');
-            $table->integer('topic_id')->unsigned()->comment('话题ID');
+            $table->integer('topic_id')->unsigned()->comment('专题ID');
 
             $table->primary(['question_id', 'topic_id']);
         });

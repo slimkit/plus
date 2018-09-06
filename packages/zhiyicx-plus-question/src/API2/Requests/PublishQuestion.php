@@ -65,7 +65,7 @@ class PublishQuestion extends FormRequest
         return [
             'subject.regex' => trans('plus-question::questions.Attribute must end with a question mark'),
             'amount.max' => trans('plus-question::questions.Insufficient balance'),
-            'topics.between' => '话题必须在1到5个之间',
+            'topics.between' => '专题必须在1到5个之间',
             'invitations.*.user.not_in' => trans('plus-question::questions.Can not invite yourself'),
         ];
     }

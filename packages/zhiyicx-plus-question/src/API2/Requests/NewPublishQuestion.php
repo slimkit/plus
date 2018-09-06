@@ -68,8 +68,8 @@ class NewPublishQuestion extends FormRequest
             'subject.regex' => trans('plus-question::questions.Attribute must end with a question mark'),
             'amount.max' => trans('plus-question::questions.Insufficient balance'),
             'invitations.*.user.not_in' => trans('plus-question::questions.Can not invite yourself'),
-            'topics.*.id.distinct' => '话题不能重复',
-            'topics.between' => '话题必须在1到5个之间',
+            'topics.*.id.distinct' => '专题不能重复',
+            'topics.between' => '专题必须在1到5个之间',
         ];
     }
 

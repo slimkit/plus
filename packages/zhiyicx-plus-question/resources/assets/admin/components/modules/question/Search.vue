@@ -51,17 +51,17 @@
           </span>
         </div>
 
-        <!-- 选择话题 -->
+        <!-- 选择专题 -->
         <div class="form-group">
-          <label class="col-sm-2 control-label">话题</label>
+          <label class="col-sm-2 control-label">专题</label>
           <div class="col-sm-2">
-            <input class="form-control" type="number" name="topic" v-model="localQuery.topic" placeholder="话题 ID">
+            <input class="form-control" type="number" name="topic" v-model="localQuery.topic" placeholder="专题 ID">
           </div>
           <div class="col-sm-4">
             <module-search-topic :handleSelected="searchTopicCall"></module-search-topic>
           </div>
           <span class="col-sm-4 help-block">
-            输入话题 ID，如果不清楚话题 ID，可使用右侧输入框进行检索。
+            输入专题 ID，如果不清楚专题 ID，可使用右侧输入框进行检索。
           </span>
         </div>
 

@@ -38,7 +38,7 @@
           </router-link>
 
           <router-link to="/topics" tag="li" active-class="active">
-            <a href="#">话题管理</a>
+            <a href="#">专题管理</a>
           </router-link>
         </ul>
 

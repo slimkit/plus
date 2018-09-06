@@ -1,6 +1,6 @@
 <template>
   <module-search-input
-    placeholder="输入话题搜索"
+    placeholder="输入专题搜索"
     :search="fetchSearchData"
     :handleSelected="handleSelected"
   >

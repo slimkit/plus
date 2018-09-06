@@ -6,7 +6,7 @@
       筛选条件
       <router-link class="pull-right" to="/topic/add">
         <span class="glyphicon glyphicon-plus"></span>
-        添加话题
+        添加专题
       </router-link>
     </div>
 
@@ -14,14 +14,14 @@
     <div class="panel-body">
       <div class="form-horizontal">
 
-        <!-- 话题名称 -->
+        <!-- 专题名称 -->
         <div class="form-group">
-          <label class="col-sm-2 control-label">话题</label>
+          <label class="col-sm-2 control-label">专题</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" placeholder="输入需要检索的话题" v-model="localQuery.name">
+            <input type="text" class="form-control" placeholder="输入需要检索的专题" v-model="localQuery.name">
           </div>
           <span class="col-sm-4 help-block">
-            输入需要检索的话题关键词。
+            输入需要检索的专题关键词。
           </span>
         </div>
 

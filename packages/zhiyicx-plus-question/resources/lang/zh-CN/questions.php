@@ -20,7 +20,7 @@ return [
 
     'attributes' => [
         'subject' => '问题',
-        'topics' => '话题',
+        'topics' => '专题',
         'anonymity' => '匿名',
         'look' => '围观',
         'user' => '用户',

@@ -71,7 +71,7 @@ export default {
   },
   methods: {
     /**
-     * 话题排序.
+     * 专题排序.
      * 
      * @param  {int} sort
      * @param  {int} topicId
@@ -90,7 +90,7 @@ export default {
       });
     },
     /**
-     * 关闭和开启话题.
+     * 关闭和开启专题.
      * 
      * @param  {Object} event
      * @param  {int} topicId

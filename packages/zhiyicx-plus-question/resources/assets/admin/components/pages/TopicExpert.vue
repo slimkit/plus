@@ -4,7 +4,7 @@
     <div class="panel-heading">
       <router-link :to="`/topics/${id}`">
         <span class="glyphicon glyphicon-menu-left"></span>
-        返回话题
+        返回专题
       </router-link>
     </div>
 

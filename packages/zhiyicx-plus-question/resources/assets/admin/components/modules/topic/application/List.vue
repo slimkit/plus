@@ -99,7 +99,7 @@ export default {
     },
     /**
      * 处理删除申请.
-     * @param  {[int]} id [申请话题id]
+     * @param  {[int]} id [申请专题id]
      */
     handleDelete(id) {
       admin.delete(`/topic-application-records/${id}`, {

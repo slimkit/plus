@@ -30,7 +30,7 @@ class CreateTopicExpertTable extends Migration
     public function up()
     {
         Schema::create('topic_expert', function (Blueprint $table) {
-            $table->integer('topic_id')->unsigned()->comment('话题ID');
+            $table->integer('topic_id')->unsigned()->comment('专题ID');
             $table->integer('user_id')->unsigned()->comment('用户ID');
             $table->integer('sort')->unsigned()->nullable()->default(0)->comment('排序,权重越大越靠前');
             $table->timestamps();

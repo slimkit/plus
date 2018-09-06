@@ -6,11 +6,11 @@
         
         <ul class="nav navbar-nav">
           <router-link to="/topics" tag="li" active-class="active" exact>
-            <a href="#">话题列表</a>
+            <a href="#">专题列表</a>
           </router-link>
 
           <router-link to="/topics/applications" tag="li" active-class="active">
-            <a href="#">话题申请列表</a>
+            <a href="#">专题申请列表</a>
           </router-link>
         </ul>
 

@@ -12,12 +12,12 @@
 
         <!-- name -->
         <div class="form-group">
-          <label class="col-sm-2 control-label">话题</label>
+          <label class="col-sm-2 control-label">专题</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" placeholder="输入话题" v-model="name">
+            <input type="text" class="form-control" placeholder="输入专题" v-model="name">
           </div>
           <span class="col-sm-4 help-block">
-            请输入需要创建的话题。
+            请输入需要创建的专题。
           </span>
         </div>
 
@@ -25,10 +25,10 @@
         <div class="form-group">
           <label class="col-sm-2 control-label">描述</label>
           <div class="col-sm-6">
-            <textarea class="form-control" placeholder="输入话题描述" v-model="description"></textarea>
+            <textarea class="form-control" placeholder="输入专题描述" v-model="description"></textarea>
           </div>
           <span class="col-sm-4 help-block">
-            请输入话题描述。
+            请输入专题描述。
           </span>
         </div>
 
@@ -42,7 +42,7 @@
                   <ui-loading></ui-loading>
                   创建中...
                 </template>
-                <template v-else>创建话题</template>
+                <template v-else>创建专题</template>
               </template>
             </ui-process-button>
 

@@ -54,9 +54,9 @@ class TopicApplication extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => '话题名称不能为空',
+            'name.required' => '专题名称不能为空',
             'body.max' => '不能超过255个字',
-            'description.required' => '话题描述不能为空',
+            'description.required' => '专题描述不能为空',
         ];
     }
 }

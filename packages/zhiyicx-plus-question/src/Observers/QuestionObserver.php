@@ -58,7 +58,7 @@ class QuestionObserver
             $db->table('question_application')
                ->where('question_id', $question->id)
                ->delete();
-            // 减少话题下问题数量
+            // 减少专题下问题数量
             $question->topics->map(function ($topic) {
                 $topic->questions_count && $topic->decrement('questions_count');
             });

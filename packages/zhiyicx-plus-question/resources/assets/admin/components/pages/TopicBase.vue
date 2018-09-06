@@ -10,7 +10,7 @@
 
       <router-link class="pull-right" :to="`/topics/${id}/edit`">
         <span class="glyphicon glyphicon-edit"></span>
-        编辑话题
+        编辑专题
       </router-link>
 
     </div>
@@ -18,7 +18,7 @@
     <ul class="list-group" v-show="!loading">
       <li class="list-group-item" v-show="topic.avatar">头像：<img :src="topic.avatar" width="100px" height="100px">  </li>
       <li class="list-group-item">ID：{{ id }}</li>
-      <li class="list-group-item">话题：{{ topic.name }}</li>
+      <li class="list-group-item">专题：{{ topic.name }}</li>
       <li class="list-group-item">描述：{{ topic.description }}</li>
       <li class="list-group-item">成员数：{{ topic.follows_count | thousands }}</li>
       <li class="list-group-item">专家数：{{ topic.experts_count | thousands }}</li>

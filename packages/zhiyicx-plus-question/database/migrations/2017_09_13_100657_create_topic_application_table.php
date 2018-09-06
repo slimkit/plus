@@ -32,8 +32,8 @@ class CreateTopicApplicationTable extends Migration
         Schema::create('topic_application', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned()->comment('申请用户');
-            $table->string('name')->comment('申请话题名称');
-            $table->string('description')->nullable()->default(null)->comment('申请话题描述');
+            $table->string('name')->comment('申请专题名称');
+            $table->string('description')->nullable()->default(null)->comment('申请专题描述');
             $table->tinyInteger('status')->unsigned()->default(0)->comment('审核状态 0-未处理 1-已通过 2-被驳回');
             $table->timestamp('expires_at')->nullable()->comment('处理时间');
             $table->integer('examiner')->unsigned()->default(0)->comment('审核用户');

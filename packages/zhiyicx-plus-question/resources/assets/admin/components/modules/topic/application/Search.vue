@@ -5,12 +5,12 @@
     <div class="form-horizontal">
       <div class="col-md-10 col-md-offset-1">
         <div class="form-group">
-          <label class="control-label col-md-2">话题名称</label>
+          <label class="control-label col-md-2">专题名称</label>
           <div class="col-md-5">
-            <input type="text" class="form-control" v-model="localQuery.name" placeholder="输入话题名称进行搜索">
+            <input type="text" class="form-control" v-model="localQuery.name" placeholder="输入专题名称进行搜索">
           </div>
           <div class="col-md-5">
-            <span class="help-block">按话题名称进行搜索，支持模糊匹配</span>
+            <span class="help-block">按专题名称进行搜索，支持模糊匹配</span>
           </div>
         </div>
         <div class="form-group">
@@ -21,7 +21,7 @@
             </select>
           </div>
           <div class="col-md-5">
-            <span class="help-block">按话题状态进行搜索</span>
+            <span class="help-block">按专题状态进行搜索</span>
           </div>
         </div>
         <div class="form-group">

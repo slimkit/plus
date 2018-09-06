@@ -39,9 +39,9 @@ class StoreTopic extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => '话题名称不能为空',
-            'name.max' => '话题名称不能超过50个字',
-            'description.required' => '话题描述不能为空',
+            'name.required' => '专题名称不能为空',
+            'name.max' => '专题名称不能超过50个字',
+            'description.required' => '专题描述不能为空',
             'sort.integer' => '排序必须是整数',
         ];
     }

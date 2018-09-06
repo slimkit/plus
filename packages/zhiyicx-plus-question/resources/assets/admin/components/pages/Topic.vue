@@ -88,9 +88,9 @@ export default {
       return { path: '/topics', query: { ...query, offset } };
     },
     /**
-     * 更新话题列表节点.
+     * 更新专题列表节点.
      * 
-     * @param  {int}  id     话题ID
+     * @param  {int}  id     专题ID
      * @param  {int}  sort   排序权重
      * @param  {Boolean} isOpen 为true 更新节点status状态
      * @return {void}         

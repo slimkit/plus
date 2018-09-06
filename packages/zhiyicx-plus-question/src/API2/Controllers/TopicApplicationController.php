@@ -47,7 +47,7 @@ class TopicApplicationController extends Controller
             $topicApplicationModel->save();
         } catch (\Exception $e) {
             \Log::debug($e);
-            return response()->json(['message' => '申请创建话题失败'], 500);
+            return response()->json(['message' => '申请创建专题失败'], 500);
         }
 
         return response()->json([
