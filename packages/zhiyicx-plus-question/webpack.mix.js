@@ -1,4 +1,4 @@
-let mix = require('laravel-mix');
+let mix = require("laravel-mix");
 
 /*
  |--------------------------------------------------------------------------
@@ -12,10 +12,18 @@ let mix = require('laravel-mix');
  */
 
 mix.disableNotifications();
-mix.setPublicPath('assets');
-mix.setResourceRoot('../');
+mix.sourceMaps(!mix.inProduction());
 
-mix.sourceMaps(! mix.inProduction());
-
-mix.js('resources/assets/admin', 'assets');
+// More documents see: https://laravel.com/docs/master/mix
+if (mix.inProduction()) {
+  mix.setPublicPath('assets');
+  mix.setResourceRoot('/assets/question-answer');
+  mix.js('resources/assets/admin/index.js', 'assets/admin.js');
+  
+// Dev build.
+} else {
+  mix.setPublicPath('../../public/assets/question-answer');
+  mix.setResourceRoot('/');
+  mix.js('resources/assets/admin/index.js', '../../public/assets/question-answer/admin.js');
+}
 
