@@ -47,6 +47,12 @@ class HomeController
         return view('welcome');
     }
 
+    /**
+     * Redirect URL.
+     * @param \Illuminate\Http\Request $request
+     * @param \Jenssegers\Agent\Agent $agent
+     * @return mixed
+     */
     public function redirect(Request $request, Agent $agent)
     {
         $target = $request->input('target', '');
@@ -55,7 +61,7 @@ class HomeController
         if ($isUrl !== false) {
             $redirect = $isUrl;
 
-            return view('redirect', ['redirect' => $redirect]);
+            return redirect($redirect);
         }
 
         $agent->isMobile();
@@ -65,12 +71,12 @@ class HomeController
         if ($agent->isMobile() && $spa['open']) {
             $redirect = trim($spa['url'], '/').$target;
 
-            return view('redirect', ['redirect' => $redirect]);
+            return redirect($redirect);
         }
         if ($web['open']) {
             $redirect = trim(config('app.url'), '/').$target;
 
-            return view('redirect', ['redirect' => $redirect]);
+            return redirect($redirect);
         }
 
         return view('welcome');
