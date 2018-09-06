@@ -19,7 +19,7 @@
     </thead>
 
     <tbody>
-      <tr v-for="question in questions">
+      <tr v-for="question in questions" :key="question.id">
         <td>{{ question.id }}</td>
         <td><ui-show-more :content="question.subject"></ui-show-more></td>
         <td>{{ question.user ? `${question.user.name} (${question.user_id})` : question.user_id }}</td>
@@ -27,7 +27,7 @@
         <td>{{ question.answers_count }}</td>
         <td>{{ question.comments_count }}</td>
         <td>
-          <module-question-topic v-for="topic in question.topics" :topic="topic" :key="question.id"></module-question-topic>
+          <module-question-topic v-for="topic in question.topics" :topic="topic" :key="topic.id"></module-question-topic>
         </td>
         <td>{{ question.created_at | localDate }}</td>
         <td>{{ question.updated_at | localDate }}</td>

@@ -17,7 +17,7 @@
           <label class="control-label col-md-2">审核状态</label>
           <div class="col-md-5">
             <select class="form-control" v-model="localQuery.status">
-              <option :value="status.val" v-for="status in statuss">{{ status.label }}</option>
+              <option v-for="status in statuss" :value="status.val" :key="status.val">{{ status.label }}</option>
             </select>
           </div>
           <div class="col-md-5">
