@@ -58,7 +58,7 @@ class AliyunOssFilesystem implements FilesystemInterface
     {
         $user = $this->guard()->user();
         $headers = [
-            OssClient::OSS_CONTENT_DISPOSTION => 'attachment;filename='.$request->input('filename'),
+            // OssClient::OSS_CONTENT_DISPOSTION => 'attachment;filename='.$request->input('filename'),
             OssClient::OSS_CONTENT_MD5 => base64_encode(pack('H*', $request->input('hash'))),
             OssClient::OSS_CONTENT_LENGTH => $request->input('size'),
             OssClient::OSS_CONTENT_TYPE => $request->input('mime_type'),
