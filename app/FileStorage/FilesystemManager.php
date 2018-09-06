@@ -82,6 +82,6 @@ class FilesystemManager extends Manager
             true
         );
 
-        return new Filesystems\AliyunOSS($oss, $aliyunOssConfigure);
+        return new Filesystems\AliyunOssFilesystem($oss, $aliyunOssConfigure);
     }
 }

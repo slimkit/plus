@@ -31,7 +31,7 @@ use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Zhiyi\Plus\FileStorage\ResourceInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class AliyunOSS implements FilesystemInterface
+class AliyunOssFilesystem implements FilesystemInterface
 {
     protected $oss;
     protected $configure;
