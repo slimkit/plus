@@ -168,14 +168,7 @@ class NewPinnedController extends Controller
                 }
                 if ($order) {
                     $pinned->save();
-                    if ($news->user) {
-                        // $message = sprintf('%s 在你发布的资讯中申请评论置顶', $user->name);
-                        // $news->user->sendNotifyMessage('news:pinned-comment', $message, [
-                        //     'news' => $news,
-                        //     'user' => $user,
-                        //     'comment' => $comment,
-                        //     'pinned' => $pinned,
-                        // ]);
+                    if ($news->user && $news->user->id !== $user->id) {
                         // 查询资讯用户未审核的资讯评论数量
                         // 增加资讯评论置顶申请未读数
                         $unreadPinned = $pinned->newQuery()
