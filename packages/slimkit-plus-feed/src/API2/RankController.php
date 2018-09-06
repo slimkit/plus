@@ -68,7 +68,7 @@ class RankController extends Controller
                 'user' => function ($query) {
                     return $query->select('id', 'name', 'sex')->withTrashed();
                 },
-                'user.extra'
+                'user.extra',
             ])
             ->groupBy('user_id')
             ->orderBy('count', 'desc')
