@@ -519,20 +519,11 @@ class GroupsController
     public function show(Request $request, GroupModel $group)
     {
         $user_id = $request->user('api')->id ?? 0;
-
-        $exist = in_array($group->mode, ['paid', 'private']);
-
         // 圈子被关闭或审核被驳回，无法访问
         if (in_array($group->audit, [2, 3])) {
             return response()->json(['message' => '圈子审核被驳回或已关闭无法访问'], 403);
         }
-
         $member = $group->members()->where('user_id', $user_id)->where('audit', 1)->first();
-
-        // 私密和收费圈只有成员才能访问
-        if ($exist && is_null($member)) {
-            return response()->json(['message' => '未加入该圈子']);
-        }
 
         if (! is_null($member) && $member->role === 'founder') {
             $group->join_income_count = (int) $group->incomes()->where('type', 1)->sum('amount');
