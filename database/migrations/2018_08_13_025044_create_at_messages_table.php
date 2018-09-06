@@ -34,6 +34,7 @@ class CreateAtMessagesTable extends Migration
             $table->string('resourceable_type')->comment('资源类型');
             $table->integer('resourceable_id')->unsigned()->comment('资源 ID');
             $table->integer('user_id')->unsigned()->comment('接受 At Message 消息用户');
+            $table->integer('sender_id')->unsigned()->comment('发送 At 消息的用户ID');
             $table->timestamps();
 
             $table->index('user_id');

@@ -69,7 +69,7 @@ class Message implements MessageInterface
     public function send(UserModel $sender, UserModel $user, $resource): void
     {
         $resource = $this->manager->resource($resource, $sender);
-        $atMessage = $this->message($resource, $user);
+        $atMessage = $this->message($resource, $user, $sender);
         $this->save(function () use ($resource, $atMessage, $user) {
             $atMessage->save();
             $this->updateAtMessageCount($user);
@@ -82,14 +82,16 @@ class Message implements MessageInterface
      * Create a at message model.
      * @param \Zhiyi\Plus\AtMessage\ResourceInterface $resource
      * @param \Zhiyi\Plus\Models\User $user
+     * @param \Zhiyi\Plus\Models\User $sender
      * @return \Zhiyi\Plus\Models\AtMessage
      */
-    public function message(ResourceInterface $resource, UserModel $user): Model
+    public function message(ResourceInterface $resource, UserModel $user, UserModel $sender): Model
     {
         $message = $this->model->newInstance();
         $message->resourceable_type = $resource->type();
         $message->resourceable_id = $resource->id();
         $message->user_id = $user->id;
+        $message->sender_id = $sender->id;
 
         return $message;
     }

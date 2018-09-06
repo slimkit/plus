@@ -37,4 +37,13 @@ class AtMessage extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+
+    /**
+     * The model sender relation.
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function sender(): HasOne
+    {
+        return $this->hasOne(User::class, 'id', 'sender_id');
+    }
 }
