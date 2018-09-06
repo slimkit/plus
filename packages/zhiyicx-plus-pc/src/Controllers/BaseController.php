@@ -38,7 +38,7 @@ class BaseController extends Controller
                 }
 
                 $this->PlusData['TS'] = clone $user;
-                $this->PlusData['TS']['avatar'] = $this->PlusData['TS']['avatar'] ?: asset('assets/pc/images/avatar.png');
+                // $this->PlusData['TS']['avatar'] = $this->PlusData['TS']['avatar'] ?: asset('assets/pc/images/avatar.png');
             }
 
             // 站点配置
