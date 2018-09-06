@@ -207,7 +207,7 @@ function getAvatar($user, $width = 0)
     if ($avatar['vendor'] === 'local' && $width) {
         return sprintf('%s?rule=w_%s', $avatar['url'], $width);
     } elseif ($avatar['vendor'] === 'aliyun-oss' && $width) {
-        return sprintf('%s?rule=image/resize,w_', $width);
+        return sprintf('%s?rule=image/resize,w_%s', $avatar['url'], $width);
     }
 
     return $avatar['url'];
