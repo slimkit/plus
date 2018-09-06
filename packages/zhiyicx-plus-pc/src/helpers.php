@@ -189,29 +189,28 @@ function cacheClear()
  */
 function getAvatar($user, $width = 0)
 {
-    if ($user['avatar']) {
-        $avatar = $user['avatar'];
-    } else {
-        if(isset($user['sex'])) {
-            switch ($user['sex']) {
-                case 1:
-                    $avatar = asset('assets/pc/images/pic_default_man.png');
-                    break;
-                case 2:
-                    $avatar = asset('assets/pc/images/pic_default_woman.png');
-                    break;
-                default:
-                    $avatar = asset('assets/pc/images/pic_default_secret.png');
-                    break;
-            }
-        } else {
-            $avatar = asset('assets/pc/images/avatar.png');
+    if (! $user['avatar']) {
+        switch ($user['sex']) {
+            case 1:
+                return asset('assets/pc/images/pic_default_man.png');
+            case 2:
+                return asset('assets/pc/images/pic_default_woman.png');
         }
+
+        return asset('assets/pc/images/pic_default_secret.png');
     }
 
-    $width && $avatar .= '?s='.$width;
+    $avatar = $user['avatar'];
+    if ($avatar instanceof \Zhiyi\Plus\FileStorage\FileMetaInterface) {
+        $avatar = $avatar->toArray();
+    }
+    if ($avatar['vendor'] === 'local' && $width) {
+        return sprintf('%s?rule=w_%s', $avatar['url'], $width);
+    } elseif ($avatar['vendor'] === 'aliyun-oss' && $width) {
+        return sprintf('%s?rule=image/resize,w_', $width);
+    }
 
-    return $avatar;
+    return $avatar['url'];
 }
 
 /**
