@@ -29,4 +29,25 @@ Route::middleware(['auth:web', 'admin'])->prefix('admin')->group(function (Route
     $route->delete('trashed-users/{user}', AdminControllers\UserTrashedController::class.'@restore');
     $route->get('about-us', AdminControllers\AboutUsController::class.'@show');
     $route->patch('about-us', AdminControllers\AboutUsController::class.'@store');
+
+    $route->get('file-storage/image-dimension', AdminControllers\FileStorage\ImageDimension::class.'@show');
+    $route->patch('file-storage/image-dimension', AdminControllers\FileStorage\ImageDimension::class.'@update');
+
+    $route->get('file-storage/file-mime-types', AdminControllers\FileStorage\MimeType::class.'@show');
+    $route->patch('file-storage/file-mime-types', AdminControllers\FileStorage\MimeType::class.'@update');
+
+    $route->get('file-storage/file-size', AdminControllers\FileStorage\FileSize::class.'@show');
+    $route->patch('file-storage/file-size', AdminControllers\FileStorage\FileSize::class.'@update');
+
+    $route->get('file-storage/default-filesystem', AdminControllers\FileStorage\DefaultFilesystem::class.'@show');
+    $route->patch('file-storage/default-filesystem', AdminControllers\FileStorage\DefaultFilesystem::class.'@update');
+
+    $route->get('file-storage/filesystems/local', AdminControllers\FileStorage\LocalFilesystem::class.'@show');
+    $route->patch('file-storage/filesystems/local', AdminControllers\FileStorage\LocalFilesystem::class.'@update');
+
+    $route->get('file-storage/filesystems/aliyun-oss', AdminControllers\FileStorage\AliyunOSSFilesystem::class.'@show');
+    $route->patch('file-storage/filesystems/aliyun-oss', AdminControllers\FileStorage\AliyunOSSFilesystem::class.'@update');
+
+    $route->get('file-storage/channels/public', AdminControllers\FileStorage\PublicChannel::class.'@show');
+    $route->patch('file-storage/channels/public', AdminControllers\FileStorage\PublicChannel::class.'@update');
 });

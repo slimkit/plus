@@ -66,6 +66,8 @@ class CurrentUserController extends Controller
             'bio' => ['nullable', 'string'],
             'sex' => ['nullable', 'numeric', 'in:0,1,2'],
             'location' => ['nullable', 'string'],
+            'avatar' => ['nullable', 'string', 'regex:/public:(.+)/is'],
+            'bg' => ['nullable', 'string', 'regex:/public:(.+)/is'],
         ];
         $messages = [
             'name.string' => '用户名只能是字符串',
@@ -75,6 +77,8 @@ class CurrentUserController extends Controller
             'sex.numeric' => '发送的性别数据异常',
             'sex.in' => '发送的性别数据非法',
             'location.string' => '地区数据异常',
+            'avatar.regex' => '头像错误',
+            'bg.regex' => '背景图片错误',
         ];
         $this->validate($request, $rules, $messages);
 
@@ -85,8 +89,8 @@ class CurrentUserController extends Controller
             return $response->json(['name' => ['用户名已被使用']], 422);
         }
 
-        foreach ($request->only(['name', 'bio', 'sex', 'location']) as $key => $value) {
-            if (isset($value)) {
+        foreach ($request->only(['name', 'bio', 'sex', 'location', 'avatar', 'bg']) as $key => $value) {
+            if (! is_null($value)) {
                 $user->$key = $value;
             }
         }
@@ -148,28 +152,6 @@ class CurrentUserController extends Controller
         return $user->save()
             ? $response->make('', 204)
             : $response->json(['message' => ['操作失败']], 500);
-    }
-
-    /**
-     * Update background image of the authenticated user.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-     * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function uploadBgImage(Request $request, ResponseFactoryContract $response)
-    {
-        $this->validate($request, ['image' => ['required', 'image']], [
-            'image.required' => '请上传图片',
-            'image.image' => '上传的文件必须是图像',
-        ]);
-
-        $image = $request->file('image');
-
-        return $request->user()->storeAvatar($image, 'user-bg')
-            ? $response->make('', 204)
-            : $response->json(['message' => ['上传失败']], 500);
     }
 
     /**

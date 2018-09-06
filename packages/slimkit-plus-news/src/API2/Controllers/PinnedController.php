@@ -68,18 +68,18 @@ class PinnedController extends Controller
         }
 
         if ($news
-        ->pinned()
-        ->where('state', 1)
-        ->where('expires_at', '>', $dateTime)
-        ->count()
+            ->pinned()
+            ->where('state', 1)
+            ->where('expires_at', '>', $dateTime)
+            ->count()
         ) {
             return response()->json(['message' => '已经申请过'], 422);
         }
 
         if ($news
-        ->pinned()
-        ->where('state', 0)
-        ->count()
+            ->pinned()
+            ->where('state', 0)
+            ->count()
         ) {
             return response()->json(['message' => '已经申请过置顶,请等待审核'], 422);
         }
@@ -129,24 +129,24 @@ class PinnedController extends Controller
         }
 
         if ($news
-        ->pinnedComments()
-        ->newPivotStatementForId($comment->id)
-        ->where('user_id', $user->id)
-        ->where('channel', 'news:comment')
-        ->where('state', 1)
-        ->where('expires_at', '>', $dateTime)
-        ->count()
+            ->pinnedComments()
+            ->newPivotStatementForId($comment->id)
+            ->where('user_id', $user->id)
+            ->where('channel', 'news:comment')
+            ->where('state', 1)
+            ->where('expires_at', '>', $dateTime)
+            ->count()
         ) {
             return response()->json(['message' => '已经申请过'], 422);
         }
 
         if ($news
-        ->pinnedComments()
-        ->newPivotStatementForId($comment->id)
-        ->where('user_id', $user->id)
-        ->where('channel', 'news:comment')
-        ->where('state', 0)
-        ->count()
+            ->pinnedComments()
+            ->newPivotStatementForId($comment->id)
+            ->where('user_id', $user->id)
+            ->where('channel', 'news:comment')
+            ->where('state', 0)
+            ->count()
         ) {
             return response()->json(['message' => '已经申请过,请等待审核'], 422);
         }

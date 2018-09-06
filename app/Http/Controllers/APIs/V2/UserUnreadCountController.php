@@ -106,10 +106,10 @@ class UserUnreadCountController extends Controller
 
         // at 最近三个用户
         $atMeUsers = (new AtMessageModel)->query()
-            ->with('user')
+            ->with('sender')
             ->where('user_id', $user->id)
-            ->limit(3)
             ->orderBy('id', 'desc')
+            ->limit(3)
             ->get();
         $atLatestTimestamp = ($atMeUsersLatest = $atMeUsers->first()) ? $this->dateTimeToIso8601ZuluString($atMeUsersLatest->{AtMessageModel::CREATED_AT}) : null;
 
@@ -122,8 +122,8 @@ class UserUnreadCountController extends Controller
             'system' => $lastSystem,
             'atme' => $atMeUsers->isEmpty() ? null : [
                 'users' => $atMeUsers->map(function ($item) {
-                    return $item->user->name ?? null;
-                })->filter()->all(),
+                    return $item->sender->name ?? null;
+                })->filter()->unique()->all(),
                 'latest_at' => $atLatestTimestamp,
             ],
         ], function ($item) {
