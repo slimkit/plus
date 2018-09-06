@@ -41,7 +41,7 @@
                         </div>
                         <div class="account_form_row">
                             <label for="bio">简介</label>
-                            <input id="bio" name="bio" type="text" value="{{$user['bio'] or ''}}" />
+                            <input id="bio" name="bio" type="text" value="{{$user['bio'] ?? ''}}" />
                         </div>
                         <div class="account_form_row">
                             <label>性别</label>
@@ -62,7 +62,7 @@
                         </div>
                         <div class="account_form_row" style="position:relative">
                             <label for="area">地区</label>
-                            <input id="location" name="location" type="text" value="{{$user['location'] or ''}}" placeholder="请输入地区搜索（例如：成都）" />
+                            <input id="location" name="location" type="text" value="{{$user['location'] ?? ''}}" placeholder="请输入地区搜索（例如：成都）" />
                             <div class="area_searching">
                             </div>
                         </div>

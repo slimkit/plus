@@ -3,15 +3,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="_token" content="{{ csrf_token() }}"/>
-    <title>@yield('title') - {{ $config['app']['name'] or 'ThinkSNS Plus' }}</title>
-    <meta name="keywords" content="{{ $config['app']['keywords'] or '' }}"/>
-    <meta name="description" content="{{ $config['app']['description'] or '' }}"/>
+    <title>@yield('title') - {{ $config['app']['name'] ?? 'ThinkSNS Plus' }}</title>
+    <meta name="keywords" content="{{ $config['app']['keywords'] ?? '' }}"/>
+    <meta name="description" content="{{ $config['app']['description'] ?? '' }}"/>
     <script>
         var TS = {
             API:'{{ $routes["api"] }}',
             USER:{!! json_encode($TS) !!},
-            MID: "{{ $TS['id'] or 0 }}",
-            TOKEN: "{{ $token or '' }}",
+            MID: "{{ $TS['id'] ?? 0 }}",
+            TOKEN: "{{ $token ?? '' }}",
             SITE_URL: "{{ getenv('APP_URL') }}",
             RESOURCE_URL: '{{ asset('assets/pc/') }}',
             BOOT: {!! json_encode($config['bootstrappers']) !!},

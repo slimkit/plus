@@ -44,7 +44,7 @@
                     <dt>
                         <img src="{{ getAvatar($group['founder']['user'], 50) }}" width="50" class="avatar">
                         @if ($group['founder']['user']['verified'])
-                            <img class="role-icon" src="{{ $group['founder']['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                            <img class="role-icon" src="{{ $group['founder']['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                         @endif
                     </dt>
                     <dd>{{$group['founder']['user']['name']}}</dd>
@@ -58,7 +58,7 @@
                         <dt>
                             <img src="{{ getAvatar($manage['user'], 50) }}" width="50" class="avatar">
                             @if ($manage['user']['verified'])
-                                <img class="role-icon" src="{{ $manage['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                                <img class="role-icon" src="{{ $manage['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                             @endif
                         </dt>
                         <dd><div>{{$manage['user']['name']}}</div>
@@ -87,7 +87,7 @@
                         <dt>
                             <img src="{{ getAvatar($member['user'], 50) }}" width="50" class="avatar">
                             @if ($member['user']['verified'])
-                                <img class="role-icon" src="{{ $member['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                                <img class="role-icon" src="{{ $member['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                             @endif
                         </dt>
                         <dd><div>{{$member['user']['name']}}</div>

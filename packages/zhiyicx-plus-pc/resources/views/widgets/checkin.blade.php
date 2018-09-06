@@ -10,7 +10,7 @@
         <a class="avatar" href="{{ route('pc:mine') }}">
             <img class="round" src="{{ getAvatar($TS, 100) }}"/>
             @if($TS['verified'])
-                <img class="role-icon" src="{{ $TS['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                <img class="role-icon" src="{{ $TS['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
             @endif
         </a>
     </div>

@@ -7,13 +7,13 @@
             <a class="avatar_box" href="{{route('pc:mine',['user_id'=>$data['id']])}}">
                 <img src="{{ getAvatar($data, 60) }}" class="user_avatar" alt="{{ $data['name'] }}"/>
                 @if($data['verified'])
-                <img class="role-icon" src="{{ $data['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                <img class="role-icon" src="{{ $data['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                 @endif
             </a>
         </div>
         <div class="user_body">
                 <a href="{{route('pc:mine',['user_id'=>$data['id']])}}">
-                    <span class="user_name">{{ $data['name'] or $data['phone'] }}</span>
+                    <span class="user_name">{{ $data['name'] ?? $data['phone'] }}</span>
                 </a>
                 @if ($data['id'] != $TS['id'])
                 @if ($data['follower'])
@@ -22,10 +22,10 @@
                 <span id="data" class="follow_btn" uid="{{ $data['id'] }}" status="0">+关注</span>
                 @endif
                 @endif
-            <div class="user_subtitle">{{ $data['bio'] or '这家伙很懒，什么都没留下'}}</div>
+            <div class="user_subtitle">{{ $data['bio'] ?? '这家伙很懒，什么都没留下'}}</div>
             <div class="user_number">
-                <a href="{{ route('pc:follower', ['user_id' => $data['id']]) }}" class="user_num">粉丝<span>{{ $data['extra']['followers_count'] or 0 }}</span></a>
-                <a href="{{ route('pc:following', ['user_id' => $data['id']]) }}" class="user_num right">关注<span>{{ $data['extra']['followings_count'] or 0 }}</span></a>
+                <a href="{{ route('pc:follower', ['user_id' => $data['id']]) }}" class="user_num">粉丝<span>{{ $data['extra']['followers_count'] ?? 0 }}</span></a>
+                <a href="{{ route('pc:following', ['user_id' => $data['id']]) }}" class="user_num right">关注<span>{{ $data['extra']['followings_count'] ?? 0 }}</span></a>
             </div>
         </div>
     </div>

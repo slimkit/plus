@@ -9,14 +9,14 @@
             <dt>
                 <img src="{{ getAvatar($comment['user'], 40) }}">
                 @if($comment['user']['verified'])
-                    <img class="role-icon" src="{{ $comment['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                    <img class="role-icon" src="{{ $comment['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                 @endif
             </dt>
             <dd>
                 <div class="one_title"><a href="/users/{{$comment['user']['id']}}">{{$comment['user']['name']}}</a></div>
                 <div class="one_date">{{ getTime($comment['created_at']) }}</div>
                 @if ($comment['post'])
-                    <div class="top_comment">对帖子“<sapn>{{$comment['post']['title'] or '已删除'}}</sapn>”申请置顶，请及时处理。</div>
+                    <div class="top_comment">对帖子“<sapn>{{$comment['post']['title'] ?? '已删除'}}</sapn>”申请置顶，请及时处理。</div>
                 @endif
                 <div class="comment_audit">
                     @if($comment['comment'] == null || $comment['post'] == null)

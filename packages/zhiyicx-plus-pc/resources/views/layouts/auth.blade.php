@@ -8,8 +8,8 @@
         var TS = {
             API:'{{ $routes["api"] }}',
             USER:{!! json_encode($TS) !!},
-            MID: "{{ $TS['id'] or 0 }}",
-            TOKEN: "{{ $token or '' }}",
+            MID: "{{ $TS['id'] ?? 0 }}",
+            TOKEN: "{{ $token ?? '' }}",
             SITE_URL: "{{ getenv('APP_URL') }}",
             RESOURCE_URL: '{{ asset('assets/pc/') }}',
             CONFIG: {!! json_encode($config) !!},

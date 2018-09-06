@@ -12,11 +12,11 @@
 <div class="news_left">
     <div class="m-form release_cont">
         <div class="release_title">
-            <input type="hidden" id="news_id" name="id" value="{{$data['id'] or 0}}" />
-            <input type="text" id="subject-title" name="title" value="{{$data['title'] or ''}}" placeholder="请在此输入20字以内的标题" maxlength="20"/>
+            <input type="hidden" id="news_id" name="id" value="{{$data['id'] ?? 0}}" />
+            <input type="text" id="subject-title" name="title" value="{{$data['title'] ?? ''}}" placeholder="请在此输入20字以内的标题" maxlength="20"/>
         </div>
         <div class="release_title p_30">
-        <textarea class="subject autotext" id="subject-abstract" name="abstract" value="{{$data['subject'] or ''}}" placeholder="请在此输入200字以内的文章摘要" maxlength="200">{{ $data['subject'] or '' }}</textarea>
+        <textarea class="subject autotext" id="subject-abstract" name="abstract" value="{{$data['subject'] ?? ''}}" placeholder="请在此输入200字以内的文章摘要" maxlength="200">{{ $data['subject'] ?? '' }}</textarea>
         </div>
         <div data-value="@if(isset($data['cate_id'])) {{$data['cate_id']}} @endif" class="zy_select gap12 p_30" id="categrey">
             <span>@if(isset($data['cate_id'])) {{ $data['category']['name'] }}  @else 请选择文章分类 @endif</span>
@@ -26,7 +26,7 @@
                 @endforeach
             </ul>
             <i></i>
-            <input id="cate" type="hidden" value="{{$data['cate_id'] or 0}}" />
+            <input id="cate" type="hidden" value="{{$data['cate_id'] ?? 0}}" />
         </div>
         <div class="release_place">
             @include('pcview::widgets.markdown', ['height'=>'530px', 'width' => '100%', 'content'=>$data['content'] ?? ''])
@@ -61,15 +61,15 @@
             <span class="ai_face_box">
                 <img src="@if (!empty($data['image'])) {{ $routes['storage'] }}{{$data['image']['id']}}?w=230&h=163 @else {{ asset('assets/pc/images/pic_upload.png') }} @endif" id="J-image-preview" />
                 <div class="ai_upload">
-                    <input name="subject-image" id="subject-image" type="hidden" value="{{$data['image']['id'] or 0}}" />
+                    <input name="subject-image" id="subject-image" type="hidden" value="{{$data['image']['id'] ?? 0}}" />
                 </div>
             </span>
         </div>
         <div class="release_word">
-            <input type="text" id="subject-author" name="subject-author" value="{{$data['author'] or ''}}" placeholder="文章作者（选填）" maxlength="8"/>
+            <input type="text" id="subject-author" name="subject-author" value="{{$data['author'] ?? ''}}" placeholder="文章作者（选填）" maxlength="8"/>
         </div>
         <div class="release_word">
-            <input type="text" id="subject-from" name="subject-from" value="{{$data['from'] or ''}}" placeholder="文章转载至何处（非转载可不填）"  maxlength="8"/>
+            <input type="text" id="subject-from" name="subject-from" value="{{$data['from'] ?? ''}}" placeholder="文章转载至何处（非转载可不填）"  maxlength="8"/>
         </div>
         <div class="release_after">投稿后，我们将在两个工作日内给予反馈，谢谢合作！</div>
         <div class="release_btn">

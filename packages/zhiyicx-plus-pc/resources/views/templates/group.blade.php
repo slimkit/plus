@@ -12,7 +12,7 @@
                     href="{{Route('pc:groupread', $item['id'])}}"
                 @endif
                 >
-                    <img src="{{ $item['avatar'] or asset('assets/pc/images/default_picture.png') }}" width="120" height="120">
+                    <img src="{{ $item['avatar'] ?? asset('assets/pc/images/default_picture.png') }}" width="120" height="120">
                 </a>
             </dt>
             <dd>

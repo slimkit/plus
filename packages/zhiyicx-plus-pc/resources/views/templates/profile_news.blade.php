@@ -12,7 +12,7 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
         <a class="avatar_box" href="{{ route('pc:mine', $post['user']['id']) }}">
             <img class="avatar" src="{{ getAvatar($post['user'], 50) }}" width="50" />
             @if($post['user']['verified'])
-            <img class="role-icon" src="{{ $post['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+            <img class="role-icon" src="{{ $post['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
             @endif
         </a>
 
@@ -31,7 +31,7 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
             <img data-original="{{$routes['storage']}}{{$post['storage']}}?w=584&h=400" class="lazy img">
             <div class="article_desc">
                 <p class="title"><a @if ($post['audit_status'] == 0) href="{{ route('pc:newsread', $post['id']) }}" @endif>{{ $post['title'] }}</a></p>
-                <p class="subject">{{ $post['subject'] or '' }}</p>
+                <p class="subject">{{ $post['subject'] ?? '' }}</p>
             </div>
         </div>
     </div>

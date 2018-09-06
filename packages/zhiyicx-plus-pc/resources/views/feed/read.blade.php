@@ -23,7 +23,7 @@
                     <a class="avatar_box" href="{{ route('pc:mine', $user['id']) }}">
                     <img class="round" src="{{ getAvatar($user, 60) }}" width="60">
                     @if($user['verified'])
-                    <img class="role-icon" src="{{ $user['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                    <img class="role-icon" src="{{ $user['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                     @endif
                     </a>
                 </dt>
@@ -155,7 +155,7 @@
                     <a href="{{ route('pc:mine', $user['id']) }}">
                         <img class="round" src="{{ getAvatar($user, 50) }}" width="50">
                         @if($user['verified'])
-                        <img class="role-icon" src="{{ $user['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                        <img class="role-icon" src="{{ $user['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                         @endif
                     </a>
                 </div>
@@ -163,7 +163,7 @@
                     <div class="info_name">
                         <a href="#">{{ $user['name'] }}</a>
                     </div>
-                    <div class="info_bio">{{ $user['bio'] or '暂无简介' }}</div>
+                    <div class="info_bio">{{ $user['bio'] ?? '暂无简介' }}</div>
                 </div>
             </div>
             <ul class="auth_fans">

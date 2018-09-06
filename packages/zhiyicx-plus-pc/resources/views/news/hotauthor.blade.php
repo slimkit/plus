@@ -14,7 +14,7 @@
                 </div>
                 <div class="i_right">
                     <span><a href="{{ route('pc:mine',['user_id'=>$user['user']['id']]) }}">{{$user['user']['name']}}</a></span>
-                    <p class="bio">{{ $user['user']['bio'] or '暂无简介信息' }}</p>
+                    <p class="bio">{{ $user['user']['bio'] ?? '暂无简介信息' }}</p>
                 </div>
             @endforeach
         @else

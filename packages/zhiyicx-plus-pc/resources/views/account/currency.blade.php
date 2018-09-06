@@ -32,7 +32,7 @@
                         </div>
                         <div class="wallet-body" id="wallet-info">
                             <div class="currency-info clearfix">
-                                <div class="remaining-sum">{{ $TS['currency']['sum'] or 0 }}</div>
+                                <div class="remaining-sum">{{ $TS['currency']['sum'] ?? 0 }}</div>
                                 <div class="operate">
                                     @if($config['bootstrappers']['currency:recharge']['open'])
                                         <a href="{{ route('pc:currencypay') }}">

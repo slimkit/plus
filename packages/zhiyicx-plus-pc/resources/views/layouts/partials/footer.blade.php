@@ -9,10 +9,10 @@
             @endforeach
         </ul>
         @endif
-        <div class="rights font12">{{ $config['common']['site_copyright'] or 'Powered by ThinkSNS ©2017 ZhishiSoft All Rights Reserved.' }}</div>
+        <div class="rights font12">{{ $config['common']['site_copyright'] ?? 'Powered by ThinkSNS ©2017 ZhishiSoft All Rights Reserved.' }}</div>
         @if (isset($config['app']['icp']))
         <div class="rights font12">{{ $config['app']['icp']}}</div>
         @endif
-        <div class="developer">本站/APP由 <span>{{ $config['common']['site_technical'] or 'ThinkSNS+' }}</span> 提供技术和产品支持</div>
+        <div class="developer">本站/APP由 <span>{{ $config['common']['site_technical'] ?? 'ThinkSNS+' }}</span> 提供技术和产品支持</div>
     </div>
 </div>

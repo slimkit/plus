@@ -12,13 +12,13 @@
                 <a href="{{ route('pc:mine', $user['id']) }}">
                     <img src="{{ getAvatar($user, 60) }}">
                     @if($user['verified'])
-                        <img class="role-icon" src="{{ $user['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                        <img class="role-icon" src="{{ $user['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                     @endif
                 </a>
             </div>
             <div class="hot_user_info">
                 <a href="{{ route('pc:mine', $user['id']) }}"><span class="hot_user_name">{{ $user['name'] }}</span></a>
-                <div class="hot_user_intro">{{ $user['bio'] or '这家伙很懒，什么都没留下'}}</div>
+                <div class="hot_user_intro">{{ $user['bio'] ?? '这家伙很懒，什么都没留下'}}</div>
             </div>
         </li>
         @endforeach

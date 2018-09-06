@@ -8,9 +8,9 @@
                 window.opener.getToken();
                 window.close();
             } else if (status == -1) {
-                var other_type = "{{$data['other_type'] or ''}}";
-                var access_token = "{{$data['access_token'] or ''}}";
-                var name = "{{$data['name'] or ''}}";
+                var other_type = "{{$data['other_type'] ?? ''}}";
+                var access_token = "{{$data['access_token'] ?? ''}}";
+                var name = "{{$data['name'] ?? ''}}";
                 window.opener.toBind(other_type, access_token, name);
                 window.close();
             }

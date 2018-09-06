@@ -15,7 +15,7 @@
                         <a href="{{ route('pc:mine', $answer['user']['id']) }}" class="avatar_box">
                             <img class="avatar" width="50" height="50" src="{{ getAvatar($answer['user'], 50) }}" alt="">
                             @if ($answer['user']['verified'])
-                                <img class="role-icon" src="{{ $answer['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                                <img class="role-icon" src="{{ $answer['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                             @endif
                         </a>
                     @endif

@@ -23,7 +23,7 @@
                     <a class="avatar_box" href="{{ route('pc:mine', $post['user_id']) }}">
                     <img class="round" src="{{ getAvatar($post['user'], 50) }}" width="50" class="avatar">
                     @if($post['user']['verified'])
-                    <img class="role-icon" src="{{ $post['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                    <img class="role-icon" src="{{ $post['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                     @endif
                     </a>
                 </dt>
@@ -165,7 +165,7 @@
                     <div class="info_name">
                         <a href="{{ @route('pc:groupread', ['group_id' => $post['group']['id']]) }}">{{ $post['group']['name'] }}</a>
                     </div>
-                    <p class="info_bio">{{ $post['group']['summary'] or '暂无简介' }}</p>
+                    <p class="info_bio">{{ $post['group']['summary'] ?? '暂无简介' }}</p>
                 </div>
             </div>
             <ul class="auth_fans">

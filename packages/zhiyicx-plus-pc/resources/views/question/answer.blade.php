@@ -21,13 +21,13 @@
                 @if($answer['anonymity'] == 1 && !(isset($TS) && $TS['id'] == $answer['user_id']))
                     <img class="round" src="{{ asset('assets/pc/images/ico_anonymity_60.png') }}" width="60">
                     @if ($answer['user']['verified'])
-                        <img class="role-icon" src="{{ $answer['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                        <img class="role-icon" src="{{ $answer['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                     @endif
                 @else
                     <a href="{{ route('pc:mine', $answer['user']['id']) }}">
                         <img class="round" src="{{ getAvatar($answer['user'], 60) }}" width="60">
                         @if ($answer['user']['verified'])
-                            <img class="role-icon" src="{{ $answer['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                            <img class="role-icon" src="{{ $answer['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                         @endif
                     </a>
                 @endif
@@ -163,13 +163,13 @@
                     <a href="{{ route('pc:mine', $answer['user']['id']) }}">
                         <img src="{{ getAvatar($answer['user']) }}" class="avatar">
                         @if ($answer['user']['verified'])
-                            <img class="role-icon" src="{{ $answer['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                            <img class="role-icon" src="{{ $answer['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                         @endif
                     </a>
                 </div>
                 <div class="author-right">
                     <div class="author-name"><a href="{{ route('pc:mine', $answer['user']['id']) }}">{{ $answer['user']['name'] }}</a></div>
-                    <div class="author-intro">{{ $answer['user']['bio'] or '暂无简介~~'}}</div>
+                    <div class="author-intro">{{ $answer['user']['bio'] ?? '暂无简介~~'}}</div>
                 </div>
             </div>
             <div class="author-count">

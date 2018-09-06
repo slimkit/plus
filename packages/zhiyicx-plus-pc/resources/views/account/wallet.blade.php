@@ -54,7 +54,7 @@
                             <p class="gcolor">账户余额（元）</p>
                         </div>
                         <p>使用规则</p>
-                        {{ $wallet['rule'] or ''}}
+                        {{ $wallet['rule'] ?? ''}}
                     </div>
 
                     <div class="wallet-body" id="wallet-records">

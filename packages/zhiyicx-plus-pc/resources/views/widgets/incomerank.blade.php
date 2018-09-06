@@ -12,7 +12,7 @@
                         <a href="{{ route('pc:mine', $income['id']) }}">
                             <img src="{{ getAvatar($income, 60) }}" alt="{{$income['name']}}">
                             @if($income['verified'])
-                                <img class="role-icon" src="{{ $income['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                                <img class="role-icon" src="{{ $income['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                             @endif
                         </a>
                     </div>

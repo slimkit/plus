@@ -19,7 +19,7 @@
                 <tr>
                     <td>{{getTime($report['created_at'])}}</td>
                     <td>{{$report['user']['name']}}</td>
-                    <td><span class="s-fc3 f-pre">{{$report['content'] or ''}}</span></td>
+                    <td><span class="s-fc3 f-pre">{{$report['content'] ?? ''}}</span></td>
                     <td>
                         @if ($report['type'] == 'post')
                             @if (isset($report['resource']['summary']))

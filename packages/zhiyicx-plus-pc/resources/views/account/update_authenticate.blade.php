@@ -29,19 +29,19 @@
                 <div class="user_authenticate">
                     <div class="account_form_row">
                         <label class="w80 required" for="realName"><font color="red">*</font>真实姓名</label>
-                        <input id="realName" name="name" type="text" value="{{$info['data']['name'] or ''}}">
+                        <input id="realName" name="name" type="text" value="{{$info['data']['name'] ?? ''}}">
                     </div>
                     <div class="account_form_row">
                         <label class="w80 required" for="IDNumber"><font color="red">*</font>身份证号码</label>
-                        <input  id="IDNumber" name="number" type="text" value="{{$info['data']['number'] or ''}}">
+                        <input  id="IDNumber" name="number" type="text" value="{{$info['data']['number'] ?? ''}}">
                     </div>
                     <div class="account_form_row">
                         <label class="w80 required" for="contact"><font color="red">*</font>联系方式</label>
-                        <input id="contact" name="phone" type="text" value="{{$info['data']['phone'] or ''}}">
+                        <input id="contact" name="phone" type="text" value="{{$info['data']['phone'] ?? ''}}">
                     </div>
                     <div class="account_form_row">
                         <label class="w80 required" for="desc"><font color="red">*</font>认证描述</label>
-                        <div class="text_box desc" contenteditable="true">{{$info['data']['desc'] or ''}}</div>
+                        <div class="text_box desc" contenteditable="true">{{$info['data']['desc'] ?? ''}}</div>
                     </div>
                     <div class="account_form_row">
                         <label class="w80 required" for="desc"><font color="red">*</font>认证资料</label>
@@ -63,8 +63,8 @@
                                 <input class="J-file-upload behind" type="file" name="file-behind" />
                             </span>
                         </div>
-                        <input name="front_id" id="front_id" type="hidden" value="{{$info['data']['files'][0] or ''}}" />
-                        <input name="behind_id" id="behind_id" type="hidden" value="{{$info['data']['files'][1] or ''}}"/>
+                        <input name="front_id" id="front_id" type="hidden" value="{{$info['data']['files'][0] ?? ''}}" />
+                        <input name="behind_id" id="behind_id" type="hidden" value="{{$info['data']['files'][1] ?? ''}}"/>
                     </div>
                     <div class="account_form_row">
                         <div class="cer_format">附件格式：gif, jpg, jpeg, png;附件大小：不超过10M</div>
@@ -78,27 +78,27 @@
                 <div class="org_authenticate">
                     <div class="account_form_row">
                         <label class="w80 required" for="orgName"><font color="red">*</font>机构名称</label>
-                        <input id="orgName" name="org_name" type="text" value="{{$info['data']['org_name'] or ''}}">
+                        <input id="orgName" name="org_name" type="text" value="{{$info['data']['org_name'] ?? ''}}">
                     </div>
                     <div class="account_form_row">
                         <label class="w80 required" for="orgAddress"><font color="red">*</font>机构地址</label>
-                        <input  id="orgAddress" name="org_address" type="text" value="{{$info['data']['org_address'] or ''}}">
+                        <input  id="orgAddress" name="org_address" type="text" value="{{$info['data']['org_address'] ?? ''}}">
                     </div>
                     <div class="account_form_row">
                         <label class="w80 required" for="ruler"><font color="red">*</font>负责人</label>
-                        <input  id="ruler" name="name" type="text" value="{{$info['data']['name'] or ''}}">
+                        <input  id="ruler" name="name" type="text" value="{{$info['data']['name'] ?? ''}}">
                     </div>
                     <div class="account_form_row">
                         <label class="w80 required" for="rulerPhone"><font color="red">*</font>负责人电话</label>
-                        <input id="rulerPhone" name="phone" type="text" value="{{$info['data']['phone'] or ''}}">
+                        <input id="rulerPhone" name="phone" type="text" value="{{$info['data']['phone'] ?? ''}}">
                     </div>
                     <div class="account_form_row">
                         <label class="w80 required" for="license"><font color="red">*</font>营业执照号</label>
-                        <input  id="license" name="number" type="text" value="{{$info['data']['number'] or ''}}">
+                        <input  id="license" name="number" type="text" value="{{$info['data']['number'] ?? ''}}">
                     </div>
                     <div class="account_form_row">
                         <label class="w80 required" for="desc"><font color="red">*</font>认证描述</label>
-                        <div class="text_box desc" contenteditable="true">{{$info['data']['desc'] or ''}}</div>
+                        <div class="text_box desc" contenteditable="true">{{$info['data']['desc'] ?? ''}}</div>
                     </div>
                     <div class="account_form_row">
                         <label class="w80 required" for="desc"><font color="red">*</font>认证资料</label>
@@ -112,7 +112,7 @@
                                 <input class="J-file-upload org" type="file" name="file-front" />
                             </span>
                         </div>
-                        <input name="license_id" id="license_id" type="hidden" value="{{$info['data']['files'][0] or ''}}" />
+                        <input name="license_id" id="license_id" type="hidden" value="{{$info['data']['files'][0] ?? ''}}" />
                     </div>
                     <div class="perfect_btns">
                         <a class="perfect_btn save J-authenticate-btn" href="javascript:;">保存</a>

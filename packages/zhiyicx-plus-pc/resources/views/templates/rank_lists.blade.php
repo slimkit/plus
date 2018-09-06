@@ -11,13 +11,13 @@
                         <a href="{{ route('pc:mine', ['user_id'=>$postv['id']]) }}">
                             <img src="{{ getAvatar($postv, 30) }}" class="fans_img" />
                             @if($postv['verified'])
-                                <img class="role-icon" src="{{ $postv['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                                <img class="role-icon" src="{{ $postv['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                             @endif
                         </a>
                         <a href="{{ route('pc:mine', ['user_id'=>$postv['id']]) }}">{{$postv['name']}}</a>
                     </div>
                     @if($tabName !== '')
-                        <div class="fans_span3">{{$postv['extra']['count'] or 0}}</div>
+                        <div class="fans_span3">{{$postv['extra']['count'] ?? 0}}</div>
                     @endif
                 @endif
             </li>

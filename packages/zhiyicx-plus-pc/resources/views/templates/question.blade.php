@@ -22,9 +22,9 @@
                 <div class="f-pr fl">
                     <img class="avatar lazy" data-original="{{ getAvatar($post['answer']['user'], 24) }}" width="24" height="24" />
                     @if ($post['answer']['user']['verified'])
-                        <img class="role" src="{{ $post['answer']['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                        <img class="role" src="{{ $post['answer']['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                     @endif
-                    <span class="u-name">{{ $post['answer']['user']['name'] or '（匿名）'}}</span>
+                    <span class="u-name">{{ $post['answer']['user']['name'] ?? '（匿名）'}}</span>
                     @if(!empty($post['answer']['user']['tags']))
                     <div class="m-tags">
                         <span class="u-ll">·</span>

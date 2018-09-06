@@ -370,7 +370,7 @@
 
         if (TS.EASEMOB_KEY) {
             // 设置聊天会话
-            easemob.cid = {{ $cid or 0 }};
+            easemob.cid = {{ $cid ?? 0 }};
             easemob.setInnerCon();
         }
 

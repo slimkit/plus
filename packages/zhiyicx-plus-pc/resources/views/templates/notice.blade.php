@@ -4,10 +4,10 @@
     <div class="success">
         <img src="{{ $status == 1 ? asset('assets/pc/images/pay_pic_succeed.png') : asset('assets/pc/images/pay_pic_failed.png')}}" alt="">
         <div class="content">
-            <div class="success-message">{{$message or '操作成功'}}</div>
+            <div class="success-message">{{$message ?? '操作成功'}}</div>
             <div class="success-content">
-                {{$content or '操作成功！'}}，
-                <span id="redirect-time">{{$time or 10}}</span>s后自动返回
+                {{$content ?? '操作成功！'}}，
+                <span id="redirect-time">{{$time ?? 10}}</span>s后自动返回
             </div>
             <a href="{{$url}}" class="success-button">返回</a>
         </div>

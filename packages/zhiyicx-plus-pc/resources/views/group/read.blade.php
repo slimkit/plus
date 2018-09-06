@@ -28,7 +28,7 @@
             <div class="g-hd-ct">
                 <div class="m-ct f-cb">
                     <div class="ct-left">
-                        <img src="{{ $group['avatar'] or asset('assets/pc/images/default_picture.png') }}" height="100%">
+                        <img src="{{ $group['avatar'] ?? asset('assets/pc/images/default_picture.png') }}" height="100%">
                         <span class="ct-cate">{{$group['category']['name']}}</span>
                     </div>
                     <div class="ct-right">
@@ -128,7 +128,7 @@
             @if(strlen($group['notice']) >= 100)
             <p class="u-ct">{{str_limit($group['notice'], 100, '...')}}</p>
             @else
-            <p class="u-ct">{{$group['notice'] or '暂无公告信息'}}</p>
+            <p class="u-ct">{{$group['notice'] ?? '暂无公告信息'}}</p>
             @endif
         </div>
         <p class="u-more f-csp">
@@ -146,9 +146,9 @@
             <dl class="qz-box">
                 <dt>
                     <a href="{{ route('pc:mine', $group['founder']['user']['id']) }}">
-                        <img class="avatar" src="{{ $group['founder']['user']['avatar'] or asset('assets/pc/images/pic_default_secret.png') }}">
+                        <img class="avatar" src="{{ $group['founder']['user']['avatar'] ?? asset('assets/pc/images/pic_default_secret.png') }}">
                         @if($group['founder']['user']['verified'])
-                            <img class="role-icon" src="{{ $group['founder']['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                            <img class="role-icon" src="{{ $group['founder']['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                         @endif
                     </a>
                 </dt>
@@ -165,9 +165,9 @@
                 @foreach ($manager as $manage)
                     <li>
                         <a href="{{ route('pc:mine', $manage['user_id']) }}">
-                            <img class="avatar" src="{{ $manage['user']['avatar'] or asset('assets/pc/images/pic_default_secret.png') }}" width="50">
+                            <img class="avatar" src="{{ $manage['user']['avatar'] ?? asset('assets/pc/images/pic_default_secret.png') }}" width="50">
                             @if($manage['user']['verified'])
-                                <img class="role-icon" src="{{ $manage['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                                <img class="role-icon" src="{{ $manage['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                             @endif
                             <p class="f-toe">{{$manage['user']['name']}}</p>
                         </a>
@@ -176,9 +176,9 @@
                 @foreach ($members as $member)
                     <li>
                         <a href="{{ route('pc:mine', $member['user_id']) }}">
-                            <img class="avatar" src="{{ $member['user']['avatar'] or asset('assets/pc/images/pic_default_secret.png') }}" width="50">
+                            <img class="avatar" src="{{ $member['user']['avatar'] ?? asset('assets/pc/images/pic_default_secret.png') }}" width="50">
                             @if($member['user']['verified'])
-                                <img class="role-icon" src="{{ $member['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                                <img class="role-icon" src="{{ $member['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                             @endif
                             <p class="f-toe">{{$member['user']['name']}}</p>
                         </a>

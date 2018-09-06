@@ -7,7 +7,7 @@
             <a class="u-avatar" href="{{ route('pc:mine', $reward['user']['id']) }}">
                 <img src="{{ getAvatar($reward['user'], 40) }}" class="lazy avatar" width="40"/>
                 @if($reward['user']['verified'])
-                <img class="role-icon" src="{{ $reward['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                <img class="role-icon" src="{{ $reward['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                 @endif
             </a>
             <a href="{{ route('pc:mine', $reward['user']['id']) }}" class="uname">{{ $reward['user']['name'] }}</a>

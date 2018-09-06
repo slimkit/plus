@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="detail_info relative" id="news_toolbar">
-                    <a href="{{ route('pc:news', ['cate_id' => $news['category']['id']]) }}" class="cates_span">{{ $news['category']['name'] or '默认' }}</a>
+                    <a href="{{ route('pc:news', ['cate_id' => $news['category']['id']]) }}" class="cates_span">{{ $news['category']['name'] ?? '默认' }}</a>
                     <span>{{ $news['from'] != '原创' ? $news['from'] : $news['user']['name'] }}  ·  {{ $news['hits'] }}浏览  ·  {{ getTime($news['created_at']) }}</span>
                     @if($news['audit_status'] != 1)
                     <span class="options" onclick="options(this)">
@@ -138,7 +138,7 @@
                               <a href="{{ route('pc:newsread', ['news_id' => $rel['id']]) }}" class="news_title"> {{ $rel['title'] }} </a>
                               <p>{{ $rel['subject'] }}</p>
                               <div class="news_bm">
-                                   <a href="{{ route('pc:news', ['cate_id' => $rel['category']['id']]) }}" class="cates_span">{{ $rel['category']['name'] or '默认'}}</a>
+                                   <a href="{{ route('pc:news', ['cate_id' => $rel['category']['id']]) }}" class="cates_span">{{ $rel['category']['name'] ?? '默认'}}</a>
                                    <span>{{ $rel['from'] }}  ·  {{ $rel['hits'] }}浏览  ·  {{ getTime($rel['created_at']) }}</span>
                               </div>
                          </div>

@@ -72,7 +72,7 @@
                                 <div class="info">
                                     <img class="avatar" width="30px" height="30px" src="{{ getAvatar($invitation, 30) }}">
                                     @if ($invitation['verified'])
-                                    <img class="role-icon" src="{{ $invitation['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                                    <img class="role-icon" src="{{ $invitation['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                                     @endif
                                 </div><span class="name fr">{{$invitation['name']}}</span>
                             </a>

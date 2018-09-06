@@ -36,7 +36,7 @@
                         </div>
 
                     </span>
-                    <a class="btn btn-primary fr" id="J-button{{ $id }}" data-id="{{ $id }}" data-position="{{ $position or 0 }}" data-type="{{ $comments_type }}" data-top="{{ $top or 0 }}" data-groupid="{{ $params['group_id'] or 0 }}" onclick="comment.publish(this)"> 评 论 </a>
+                    <a class="btn btn-primary fr" id="J-button{{ $id }}" data-id="{{ $id }}" data-position="{{ $position ?? 0 }}" data-type="{{ $comments_type }}" data-top="{{ $top ?? 0 }}" data-groupid="{{ $params['group_id'] ?? 0 }}" onclick="comment.publish(this)"> 评 论 </a>
                 </div>
             </div>
             <div id="J-commentbox-{{ $comments_type }}{{ $id }}">
@@ -111,7 +111,7 @@
             </div>
             <div class="comment_tool">
                 <span class="text_stats">可输入<span class="nums mcolor"> 255 </span>字</span>
-                <button class="btn btn-primary" id="J-button{{ $id }}" data-id="{{ $id }}" data-position="{{ $position or 0 }}" data-type="{{ $comments_type }}" data-top="{{ $top or 0 }}" data-groupid="{{ $params['group_id'] or 0 }}" onclick="comment.publish(this)"> 评 论 </button>
+                <button class="btn btn-primary" id="J-button{{ $id }}" data-id="{{ $id }}" data-position="{{ $position ?? 0 }}" data-type="{{ $comments_type }}" data-top="{{ $top ?? 0 }}" data-groupid="{{ $params['group_id'] ?? 0 }}" onclick="comment.publish(this)"> 评 论 </button>
             </div>
         </div>
         <div class="comment_list J-commentbox" id="J-commentbox-{{ $comments_type }}{{ $id }}"></div>
@@ -123,7 +123,7 @@
     $(function(){
         var params = {};
         var comments_type = '{{ $comments_type }}';
-        var group_id = '{{$params['group_id'] or 0}}';
+        var group_id = '{{$params['group_id'] ?? 0}}';
         if (group_id) {
             params.group_id = group_id;
         }
@@ -138,7 +138,7 @@
         if (types[comments_type] !== undefined) {
             loader.init({
                 container: '.J-commentbox',
-                loading: '{{ $loading or ''}}',
+                loading: '{{ $loading ?? ''}}',
                 url: types[comments_type],
                 params: params,
             });

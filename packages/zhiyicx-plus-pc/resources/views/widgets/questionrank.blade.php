@@ -23,7 +23,7 @@
                     <div class="rank-avatar">
                         <img src="{{ getAvatar($day, 60) }}" width="60" height="60" class="avatar"/>
                         @if ($day['verified'])
-                            <img class="role-icon" src="{{ $day['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                            <img class="role-icon" src="{{ $day['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                         @endif
                     </div>
                     <div class="rank-info">
@@ -52,7 +52,7 @@
                     <div class="rank-avatar">
                         <img src="{{ getAvatar($week, 60) }}" width="60" height="60" class="avatar"/>
                         @if ($week['verified'])
-                            <img class="role-icon" src="{{ $week['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                            <img class="role-icon" src="{{ $week['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                         @endif
                     </div>
                     <div class="rank-info">
@@ -81,7 +81,7 @@
                     <div class="rank-avatar">
                         <img src="{{ getAvatar($month, 60) }}" width="60" height="60" class="avatar"/>
                         @if ($month['verified'])
-                            <img class="role-icon" src="{{ $month['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                            <img class="role-icon" src="{{ $month['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                         @endif
                     </div>
                     <div class="rank-info">

@@ -5,8 +5,8 @@
     <div class="step1">
         <div class="question-tw">提问</div>
         <div class="question-form-row" style="position:relative">
-            <input type="hidden" id="question_id" name="id" value="{{ $id or 0 }}" />
-            <input id="subject" name="subject" type="text" value="{{ $question['subject'] or '' }}" placeholder="请输入问题并以问号结束" autocomplete="off" maxlength="50"/>
+            <input type="hidden" id="question_id" name="id" value="{{ $id ?? 0 }}" />
+            <input id="subject" name="subject" type="text" value="{{ $question['subject'] ?? '' }}" placeholder="请输入问题并以问号结束" autocomplete="off" maxlength="50"/>
             <div class="subject-error"></div>
             <div class="question-searching">
                 <div class="searching-existing"></div>
@@ -124,7 +124,7 @@
         var args = {};
         var step1 = $('.step1');
         var step2 = $('.step2');
-        var question_id = {{ $question['id'] or 0}};
+        var question_id = {{ $question['id'] ?? 0}};
         var selBox = $('#J-select-topics');
         var lockStatus = false;
         subject.keyup(function (event) {

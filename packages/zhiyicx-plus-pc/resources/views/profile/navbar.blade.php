@@ -3,7 +3,7 @@
 @endphp
 {{-- 个人中心头部个人信息 --}}
 <div class="m-uchead profile_top">
-    <div class="profile_top_cover" style="background-image: url({{ $user['bg'] or asset('assets/pc/images/default_cover.jpg') }});background-repeat: no-repeat;background-size: cover;">
+    <div class="profile_top_cover" style="background-image: url({{ $user['bg'] ?? asset('assets/pc/images/default_cover.jpg') }});background-repeat: no-repeat;background-size: cover;">
     </div>
 
     @if ($user['id'] == $TS['id'])
@@ -16,7 +16,7 @@
             <a href="{{ route('pc:mine', $user['id']) }}">
                 <img class="round" src="{{ getAvatar($user, 160) }}"/>
                 @if($user['verified'])
-                    <img class="role-icon" src="{{ $user['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                    <img class="role-icon" src="{{ $user['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                 @endif
             </a>
         </div>
@@ -24,11 +24,11 @@
             <div class="profile_top_user">
                 <a href="{{ route('pc:mine', $user['id']) }}">{{ $user['name'] }}</a>
                 @if($user['location'])
-                <span>{{$user['location'] or ''}}</span>&nbsp;&nbsp;|
+                <span>{{$user['location'] ?? ''}}</span>&nbsp;&nbsp;|
                 @endif
                 &nbsp;<svg class="icon" aria-hidden="true"><use xlink:href="#icon-currency"></use></svg>{{$user['currency']['sum'] ?? '0'}} 积分
             </div>
-            <div class="profile_top_bio">{{ $user['bio'] or '这家伙很懒，什么都没留下'}}</div>
+            <div class="profile_top_bio">{{ $user['bio'] ?? '这家伙很懒，什么都没留下'}}</div>
             <div class="profile_top_tags">
                 @foreach ($user['tags'] as $tag)
                     <span>{{$tag['name']}}</span>

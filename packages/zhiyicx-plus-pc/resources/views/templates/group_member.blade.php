@@ -11,7 +11,7 @@
                     <dt>
                         <img src="{{ getAvatar($member['user'], 50) }}" width="50">
                         @if($member['user']['verified'])
-                            <img class="role-icon" src="{{ $member['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                            <img class="role-icon" src="{{ $member['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                         @endif
                     </dt>
                     <dd><div>{{$member['user']['name']}}</div>
@@ -39,7 +39,7 @@
                     <dt>
                         <img src="{{ getAvatar($member['user'], 50) }}" width="50">
                         @if($member['user']['verified'])
-                            <img class="role-icon" src="{{ $member['user']['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                            <img class="role-icon" src="{{ $member['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                         @endif
                     </dt>
                     <dd><div>{{$member['user']['name']}}</div>

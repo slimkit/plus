@@ -14,7 +14,7 @@
     <div class="nav_right relative">
         <img src="{{ getAvatar($TS, 30) }}" id="menu_toggle" alt="{{ $TS['name'] }}"/>
         @if($TS['verified'])
-            <img class="role-icon" src="{{ $TS['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+            <img class="role-icon" src="{{ $TS['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
         @endif
         <span class="font16 nav_name">{{$TS['name']}}</span>
 
@@ -86,7 +86,7 @@
         </ul>
 
         <div class="nav_search">
-            <input class="nav_input" type="text" placeholder="输入关键词搜索" value="{{ $keywords or ''}}" id="head_search"/>
+            <input class="nav_input" type="text" placeholder="输入关键词搜索" value="{{ $keywords ?? ''}}" id="head_search"/>
             <a class="nav_search_icon">
                 <svg class="icon" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-search"></use></svg>
             </a>

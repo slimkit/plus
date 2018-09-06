@@ -16,7 +16,7 @@
         <div class="question-topic">
             <div class="topic-info">
                 <div class="info-left">
-                    <img src="{{ $topic['avatar'] or asset('assets/pc/images/default_picture.png') }}" width="100px" height="100px">
+                    <img src="{{ $topic['avatar'] ?? asset('assets/pc/images/default_picture.png') }}" width="100px" height="100px">
                 </div>
                 <div class="info-right">
                     <div class="topic-title">{{ $topic['name'] }}
@@ -82,7 +82,7 @@
                             <a href="{{ route('pc:mine', $user['id']) }}">
                                 <img src="{{ getAvatar($user, 50) }}"/>
                                 @if($user['verified'])
-                                    <img class="role-icon" src="{{ $user['verified']['icon'] or asset('assets/pc/images/vip_icon.svg') }}">
+                                    <img class="role-icon" src="{{ $user['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                                 @endif
                             </a>
                             <span>
