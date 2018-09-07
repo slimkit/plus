@@ -102,6 +102,22 @@
                         访问域名可以是绑定的别名域名，也可以是 OSS 系统分配的 Bucket 访问域名，输入域名请携带<b>协议</b>，例如 <code>https://image.oss.cn</code>。
                     </div>
                 </div>
+
+                <!-- 域名 -->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">内部域名</label>
+                    <div class="col-sm-3">
+                        <input
+                            type="url"
+                            class="form-control"
+                            placeholder="请输入 Object 访问域名..."
+                            v-model="form.insideDomain"
+                        >
+                    </div>
+                    <div class="col-sm-7 help-block">
+                        如果访问域名一样！但是这个设置如果你使用与 OSS 同可用区域的 ECS，这里可以设置为内网的访问地址，例如：<code>http://seven-local.oss-cn-beijing-internal.aliyuncs.com</code>并且不建议设置为 <code>https://</code> 协议，因为这样会浪费很多的解压时间和压缩时间！如果你没有使用阿里云 ECS 主机，这里建议与<code>「访问域名」</code>保持一致。
+                    </div>
+                </div>
                 
                 <!-- 提交按钮 -->
                 <div class="form-group">
@@ -126,6 +142,7 @@ export default {
             acl: 'public-read',
             timeout: 3600,
             domain: null,
+            insideDomain: null,
         },
         loading: true,
     }),

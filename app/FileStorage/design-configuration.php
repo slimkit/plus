@@ -31,6 +31,7 @@ return [
             'access-key-id' => null,
             'access-key-secret' => null,
             'domain' => null,
+            'inside-domain' => null, // 内部请求域名
             'timeout' => 3360,
             'acl' => 'public-read', // public-read-write、public-read、private
         ],

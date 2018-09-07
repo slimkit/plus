@@ -73,15 +73,22 @@ class FilesystemManager extends Manager
             'access-key-id' => null,
             'access-key-secret' => null,
             'domain' => null,
+            'inside-domain' => null,
             'timeout' => 3600,
         ], $aliyunOssConfigure);
         $oss = new OssClient(
-            $aliyunOssConfigure['access-key-id'],
-            $aliyunOssConfigure['access-key-secret'],
-            $aliyunOssConfigure['domain'],
+            $aliyunOssConfigure['access-key-id'] ?? null,
+            $aliyunOssConfigure['access-key-secret'] ?? null,
+            $aliyunOssConfigure['domain'] ?? null,
+            true
+        );
+        $insideOss = new OssClient(
+            $aliyunOssConfigure['access-key-id'] ?? null,
+            $aliyunOssConfigure['access-key-secret'] ?? null,
+            $aliyunOssConfigure['inside-domain'] ?? null,
             true
         );
 
-        return new Filesystems\AliyunOssFilesystem($oss, $aliyunOssConfigure);
+        return new Filesystems\AliyunOssFilesystem($oss, $insideOss, $aliyunOssConfigure);
     }
 }
