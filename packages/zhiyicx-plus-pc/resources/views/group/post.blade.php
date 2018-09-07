@@ -169,8 +169,8 @@
                 </div>
             </div>
             <ul class="auth_fans">
-                <li><a href="javascript:void(0)">成员<span>{{ $post['group']['posts_count'] ?? 0}}</span></a></li>
-                <li><a href="javascript:void(0)">帖子<span>{{ $post['group']['users_count'] ?? 0}}</span></a></li>
+                <li><a href="javascript:void(0)">成员<span>{{ $post['group']['users_count'] ?? 0}}</span></a></li>
+                <li><a href="javascript:void(0)">帖子<span>{{ $post['group']['posts_count'] ?? 0}}</span></a></li>
             </ul>
             <div class="m-act">
                 @if ($post['group']['joined'])
