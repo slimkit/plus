@@ -22,6 +22,7 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
+use hiyi\Plus\Http\Middleware\VerifyUserPassword;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
@@ -29,6 +30,16 @@ use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 
 class PurchaseController extends Controller
 {
+    /**
+     * Create the controller instance.
+     */
+    public function __construct()
+    {
+        $this
+            ->middleware(VerifyUserPassword::class)
+            ->only(['pay', 'payByCurrency']);
+    }
+
     /**
      * 获取付费节点和当前用户的付费状态.
      *
