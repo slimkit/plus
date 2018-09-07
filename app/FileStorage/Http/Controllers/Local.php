@@ -23,6 +23,7 @@ namespace Zhiyi\Plus\FileStorage\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use function Zhiyi\Plus\setting;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Auth;
@@ -80,7 +81,7 @@ class Local extends Controller
      * @param string $path
      * @return Symfony\Component\HttpFoundation\Response
      */
-    public function put(Request $request, FactoryContract $cache, string $channel, string $path): Response
+    public function put(Request $request, FactoryContract $cache, string $channel, string $path): JsonResponse
     {
         $signature = $request->query('signature');
         if ($cache->has($signature)) {
@@ -105,7 +106,7 @@ class Local extends Controller
         $cache->put($signature, 1, $expiresAt);
         $this->guard()->invalidate();
 
-        return new Response('', Response::HTTP_NO_CONTENT);
+        return new JsonResponse(['node' => (string) $resource], Response::HTTP_CREATED);
     }
 
     /**
