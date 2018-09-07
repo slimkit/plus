@@ -53,8 +53,8 @@ class UpdateGroupRequest extends FormRequest
             'latitude' => 'required_with:longitude|string',
             'mode' => 'required|in:public,private,paid',
             'money' => 'required_if:mode,paid|integer',
-            'summary' => 'required|max:255',
-            'notice' => 'required|max:2000',
+            'summary' => 'nullable|max:255',
+            'notice' => 'nullable|max:2000',
         ];
     }
 
@@ -76,9 +76,7 @@ class UpdateGroupRequest extends FormRequest
             'tags.required' => '请添加标签',
             'mode.required' => '请选择圈子类别',
             'money.required_if' => '收费圈子请填写金额',
-            'summary.required' => '请填写圈子简介',
             'summary.max' => '简介最大长度255字符',
-            'notice.required' => '请填写圈子公告',
             'notice.max' => '公告最大长度2000字符',
         ];
     }
