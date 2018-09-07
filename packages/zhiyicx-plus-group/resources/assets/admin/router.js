@@ -5,7 +5,7 @@ import VueRouter from 'vue-router';
 import NotFound from './components/pages/NotFound';
 
 // root 
-import Main from './components/pages/Main';
+import WrapComponent from './components/pages/wrap-component';
 // home
 import Home from './components/pages/Home';
 // category
@@ -30,7 +30,7 @@ import GroupProtocol from './components/pages/GroupProtocol';
 Vue.use(VueRouter);
 
 const routes = [
-  { path: "/", component: Main, children: [
+  { path: "/", component: WrapComponent, children: [
     { path: '', component: Home },
     { path: 'categories', component: Category },
     { path: 'groups', component: Group },

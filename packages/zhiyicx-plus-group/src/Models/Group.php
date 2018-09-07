@@ -25,12 +25,13 @@ use Zhiyi\Plus\Models\Report;
 use Zhiyi\Plus\Models\BlackList;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use Zhiyi\Plus\Models\Concerns\HasAvatar;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Zhiyi\Plus\FileStorage\Traits\EloquentAttributeTrait;
 
 class Group extends Model
 {
-    use HasAvatar, SoftDeletes;
+    use EloquentAttributeTrait;
+    use SoftDeletes;
 
     /**
      * The table associated with the model.
@@ -39,48 +40,31 @@ class Group extends Model
      */
     protected $table = 'groups';
 
-    protected $appends = ['avatar'];
-
-    /**
-     * Get avatar trait.
-     *
-     * @return string|int
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function getAvatarKey(): string
-    {
-        return $this->getKey();
-    }
-
-    /**
-     * Avatar prefix.
-     *
-     * @return string
-     * @author BS <414606094@qq.com>
-     */
-    public function getAvatarPrefix(): string
-    {
-        return 'group/avatars';
-    }
-
     /**
      * Get avatar attribute.
      *
      * @return string|null
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function getAvatarAttribute()
+    public function getAvatarAttribute(?string $resource)
     {
-        $prefix = $this->getAvatarPrefix();
-        $lastModified = Cache::get('avatar_' . $this->id . $prefix . '_lastModified_at');
-        if (! $lastModified) {
-            $lastModified = Storage::disk(config('cdn.generators.filesystem.disk'))->exists($this->avatarPath()) ?
-                Storage::disk(config('cdn.generators.filesystem.disk'))->lastModified($this->avatarPath(''))
-                : '';
-            Cache::forever('avatar_' . $this->id.$prefix.'_lastModified_at', $lastModified);
+        if (! $resource) {
+            return null;
         }
 
-        return $this->avatar() ? $this->avatar() . '?v=' . $lastModified : null;
+        return $this->parseFile($resource);
+    }
+
+    /**
+     * Set the avatar attribute.
+     * @param mixed $resource
+     * @return self;
+     */
+    public function setAvatarAttribute($resource)
+    {
+        $this->attributes['avatar'] = (string) $resource;
+
+        return $this;
     }
 
     /**

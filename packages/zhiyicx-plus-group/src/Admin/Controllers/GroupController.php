@@ -28,6 +28,9 @@ use Zhiyi\PlusGroup\Models\GroupRecommend as RecommendModel;
 use Zhiyi\PlusGroup\Admin\Requests\CreateGroupRequest as StoreRequest;
 use Zhiyi\PlusGroup\Admin\Requests\UpdateGroupRequest as UpdateRequest;
 
+use Zhiyi\Plus\FileStorage\Resource;
+use Zhiyi\Plus\FileStorage\StorageInterface;
+
 class GroupController
 {
     public function index(Request $request)
@@ -74,8 +77,20 @@ class GroupController
         return response()->json($items, 200, ['x-total' => $count]);
     }
 
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request, StorageInterface $storage)
     {
+        $avatar = $request->file('avatar');
+        $resource = new Resource(
+            'public',
+            $storage->makePath(
+                sprintf(
+                    '%s.%s',
+                    $avatar->path(),
+                    $avatar->guessClientExtension()
+                )
+            )
+        );
+        $storage->put($resource, $avatar->get());
         $data = $this->getRequestOnly($request);
 
         DB::beginTransaction();
@@ -85,6 +100,7 @@ class GroupController
             foreach ($data as $key => $value) {
                 $group->{$key} = $value;
             }
+            $group->avatar = $resource;
 
             // 地理位置
             if (isset($data['location'])) {
@@ -125,9 +141,6 @@ class GroupController
             $member->save();
 
             $group->increment('users_count');
-
-            $avatar = $request->file('avatar');
-            $group->storeAvatar($avatar);
 
             DB::commit();
 
@@ -170,8 +183,24 @@ class GroupController
         return response()->json($group, 200);
     }
 
-    public function update(UpdateRequest $request, GroupModel $group)
+    public function update(UpdateRequest $request, StorageInterface $storage, GroupModel $group)
     {
+        $avatar = $request->file('avatar');
+        $resource = null;
+        if ($avatar) {
+            $resource = new Resource(
+                'public',
+                $storage->makePath(
+                    sprintf(
+                        '%s.%s',
+                        $avatar->path(),
+                        $avatar->guessClientExtension()
+                    )
+                )
+            );
+            $storage->put($resource, $avatar->get());
+        }
+
         $data = $this->getRequestOnly($request);
 
         DB::beginTransaction();
@@ -199,8 +228,11 @@ class GroupController
                 $group->permissions = $default;
             }
 
-            $group->save();
+            if ($resource) {
+                $group->avatar = $resource;
+            }
 
+            $group->save();
             $group->tags()->sync(explode(',', $request->input('tags')));
 
             $recommend = (int) $request->input('recommend');
@@ -212,10 +244,6 @@ class GroupController
                 ]);
             } else {
                 $group->recommend()->delete();
-            }
-
-            if ($avatar = $request->file('avatar')) {
-                $group->storeAvatar($avatar);
             }
 
             DB::commit();

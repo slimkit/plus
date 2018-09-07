@@ -9,7 +9,7 @@
     <!-- panle-content -->
     <div class="row">
       <div class="col-lg-4">
-      	<img :src="group.avatar" class="img-circle" style="max-width:100px;">
+      	<img v-show="group.avatar" :src="group.avatar.url" class="img-circle" style="max-width:100px;">
 		  <p>#ID： {{ group.id }}</p>
 		  <p>名称： {{ group.name }}</p>
 		  <p>分类： {{ group.hasOwnProperty('category') ? group.category.name : '' }}</p>
@@ -17,7 +17,7 @@
 		  	<span class="text-danger" v-show="group.mode=='paid'">{{ group.money | money }}</span>
 		  </p>
 		  <p>
-		  	标签： <span class="label label-success" v-for="tag in group.tags" style="margin-left:2px;">{{ tag.name }}</span>
+		  	标签： <span class="label label-success" v-for="tag in group.tags" style="margin-left:2px;" :key="tag.name">{{ tag.name }}</span>
 		  </p>
 		  <p>简介： {{ group.summary }}</p>
 		  <p>公告： {{ group.notice }}</p>

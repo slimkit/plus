@@ -14,7 +14,7 @@
       <th>操作</th>
     </tr>
     <!-- tbody -->
-    <tr slot="table-tbody-tr" v-for="item in items">
+    <tr slot="table-tbody-tr" v-for="item in items" :key="item.id">
       <td>{{ item.id }}</td>  
       <td>{{ item.name }}</td>
       <td>{{ item.category.name }}</td>

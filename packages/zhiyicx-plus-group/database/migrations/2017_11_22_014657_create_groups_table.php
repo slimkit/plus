@@ -49,6 +49,7 @@ class CreateGroupsTable extends Migration
             $table->tinyInteger('audit')->nullable()->defalt(0)->comment('审核状态, 0 - 待审核、1 - 通过、2 - 拒绝');
             $table->string('im_group_id')->nullable()->comment('环换新群组 ID');
             $table->integer('excellen_posts_count')->unsigned()->nullable()->default(0)->comment('圈子精华贴统计');
+            $table->string('avatar')->nullable()->comment('圈子头像');
             $table->timestamps();
             $table->softDeletes();
 

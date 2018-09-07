@@ -32,7 +32,7 @@
                 <label class="control-label col-xs-2"><span class="text-danger">*</span>分类</label>
                 <div class="col-xs-7">
                     <select name="" id="" class="form-control" v-model="group.category_id">
-                        <option :value="cate.id" v-for="cate in cates">{{ cate.name }}</option>
+                        <option :value="cate.id" v-for="cate in cates" :key="cate.id">{{ cate.name }}</option>
                     </select>
                 </div>
                 <div class="col-xs-3 help-block">
@@ -46,7 +46,7 @@
                 <div class="col-xs-7">
                     <div class="input-group">
                         <div class="form-control">
-                            <span class="label label-success" v-for="tag in checkedTags" style="margin-left:2px;">{{ tag }}</span>
+                            <span class="label label-success" v-for="tag in checkedTags" style="margin-left:2px;" :key="tag">{{ tag }}</span>
                         </div>
                         <span class="input-group-btn">
                 <button class="btn btn-default" @click="tagShow=!tagShow">
@@ -54,9 +54,9 @@
                 </button>
               </span>
                     </div>
-                    <div v-for="tag in tags" v-show="tagShow">
+                    <div v-for="tag in tags" v-show="tagShow" :key="tag.name">
                         <span class="help-block">{{ tag.name }}</span>
-                        <label class="checkbox-inline" v-for="item in tag.tags">
+                        <label class="checkbox-inline" v-for="item in tag.tags" :key="item.id">
                             <input type="checkbox" :value="item.id" @click="handleCheckbox($event, item)"
                                    :checked="lodashIndexOf(item.name, checkedTags) !== -1 "> {{ item.name }}
                         </label>
@@ -325,7 +325,7 @@ export default {
                     let group = this.group;
 
                     if (avatar) {
-                        this.avatarUrl = `${avatar}`;
+                        this.avatarUrl = avatar.url;
                     }
 
                     group.name = name;
