@@ -25,7 +25,7 @@
                         <a href="#">置顶审核</a>
                     </router-link>
                     <router-link to="/deletelist" tag="li" active-class="active">
-                        <a href="#">删除审核</a>
+                        <a href="#">删除申请审核</a>
                     </router-link>
                 </ul>
             </div>

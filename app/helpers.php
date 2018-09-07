@@ -125,3 +125,20 @@ function filterUrlStringLength(string $data, int $length = 0): string
 
     return $value;
 }
+
+/**
+ * Setting helper.
+ *
+ * @param string $namespace
+ * @param string|null $name
+ * @return any
+ */
+function setting(string $namespace, ?string $name = null, $default = null)
+{
+    $setting = \Zhiyi\Plus\Support\Setting::create($namespace);
+    if ($name) {
+        return $setting->get($name, $default);
+    }
+
+    return $setting;
+}

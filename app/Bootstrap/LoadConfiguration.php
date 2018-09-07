@@ -47,11 +47,6 @@ class LoadConfiguration
      */
     public function handle()
     {
-        static $loaded = false;
-        if ($loaded) {
-            return;
-        }
-
         $this->app->config->set(
             $this->configuration->getConfigurationBase()
         );
@@ -62,7 +57,5 @@ class LoadConfiguration
         });
 
         date_default_timezone_set($config->get('app.timezone', 'UTC'));
-
-        $loaded = true;
     }
 }

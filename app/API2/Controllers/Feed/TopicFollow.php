@@ -22,9 +22,11 @@ namespace Zhiyi\Plus\API2\Controllers\Feed;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 use Zhiyi\Plus\API2\Controllers\Controller;
 use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Zhiyi\Plus\Models\FeedTopicUserLink as FeedTopicUserLinkModel;
 
 class TopicFollow extends Controller
 {
@@ -64,16 +66,20 @@ class TopicFollow extends Controller
         $response = (new Response())->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
 
         // Database query the authentication user followed.
-        $exists = $topic
-            ->followers()
-            ->where('user_id', $user->id)
-            ->exists();
-        if ($exists) {
-            return $response;
+        $link = $topic
+            ->users()
+            ->newPivotStatementForId($user->id)
+            ->first();
+        if (! $link) {
+            $link = new FeedTopicUserLinkModel();
+            $link->user_id = $user->id;
+            $link->following_at = new Carbon();
+            $link->topic_id = $topic->id;
         }
 
-        return $user->getConnection()->transaction(function () use ($user, $topic, $response): Response {
-            $topic->followers()->attach($user);
+        return $user->getConnection()->transaction(function () use ($topic, $link, $response): Response {
+            $link->save();
+
             $topic->followers_count += 1;
             $topic->save();
 
@@ -109,18 +115,19 @@ class TopicFollow extends Controller
         $response = (new Response())->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
 
         // Database query the authentication user followed.
-        $exists = $topic
-            ->followers()
-            ->where('user_id', $user->id)
-            ->exists();
+        $link = $topic
+            ->users()
+            ->newPivotStatementForId($user->id)
+            ->first();
 
         // If not followed, return 204 response.
-        if (! $exists) {
+        if (! $link) {
             return $response;
         }
 
-        return $user->getConnection()->transaction(function () use ($user, $topic, $response): Response {
-            $topic->followers()->detach($user);
+        return $user->getConnection()->transaction(function () use ($topic, $link, $response): Response {
+            $link->following_at = null;
+            $link->save();
 
             if ($topic->followers_count > 0) {
                 $topic->decrement('followers_count', 1);

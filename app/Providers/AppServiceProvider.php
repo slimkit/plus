@@ -27,7 +27,6 @@ use Zhiyi\Plus\Packages\Wallet\TypeManager;
 use Illuminate\Http\Resources\Json\Resource;
 use function Zhiyi\Plus\validateChinaPhoneNumber;
 use Zhiyi\Plus\Packages\Wallet\TargetTypeManager;
-use Illuminate\Database\Eloquent\Relations\Relation;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -64,7 +63,17 @@ class AppServiceProvider extends ServiceProvider
             return new TargetTypeManager($app);
         });
 
-        $this->registerMorpMap();
+        $this->app->singleton('at-message', function ($app) {
+            $manager = $app->make(\Zhiyi\Plus\AtMessage\ResourceManagerInterface::class);
+            $pusher = $app->make(\Zhiyi\Plus\Services\Push::class);
+            $model = new \Zhiyi\Plus\Models\AtMessage();
+
+            return new \Zhiyi\Plus\AtMessage\Message($manager, $model, $pusher);
+        });
+
+        $this->app->singleton('at-resource-manager', function ($app) {
+            return new \Zhiyi\Plus\AtMessage\ResourceManager($app);
+        });
     }
 
     /**
@@ -116,32 +125,5 @@ class AppServiceProvider extends ServiceProvider
         $length = count($single[0]) / 2 + mb_strlen(preg_replace('([a-zA-Z0-9_])', '', $value));
 
         return $length >= $min && $length <= $max;
-    }
-
-    /**
-     * Register model morp map.
-     *
-     * @return void
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    protected function registerMorpMap()
-    {
-        $this->setMorphMap([
-            'users' => \Zhiyi\Plus\Models\User::class,
-            'comments' => \Zhiyi\Plus\Models\Comment::class,
-        ]);
-    }
-
-    /**
-     * Set the morph map for polymorphic relations.
-     *
-     * @param array|null $map
-     * @param bool|bool $merge
-     * @return array
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    private function setMorphMap(array $map = null, bool $merge = true)
-    {
-        Relation::morphMap($map, $merge);
     }
 }

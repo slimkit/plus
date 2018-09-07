@@ -97,20 +97,20 @@ core:
   allow-credentials: false # Set "Access-Control-Allow-Credentials" 👉 string "false" or "true"
   max-age: 0               # Cache `options` request second
   allow-headers:           # E.g: Content-Type, Accept, X-Requested-With, default `*`
-    - *
+    - "*"
   expose-headers: {  }     # E.g: X-Data-Total, default is empty
   origins:                 # E.g: http://localhost, default is `*`, allow all.
-    - *
+    - "*"
     # - http://127.0.0.1:8080
   methods:                 # E.g: POST, GET, PUT, PATCH, DELETE, Default allow all
-    - *
+    - "*"
     # - GET
     # - POST
     # - PUT
     # - PATCH
     # - DELETE
   laravel:
-    allow-route-perfix: *   # The perfix is using \Illumante\Http\Request::is 
+    allow-route-perfix: "*"   # The perfix is using \Illumante\Http\Request::is 
     route-group-mode: false # Route grouo mode, default disabled
 
 #
@@ -170,6 +170,16 @@ database:
 
 #
 #########################################################################
+# /config/filesystems.php
+#########################################################################
+#
+filesystems:
+  default: public
+  disks:
+    public:
+      url: http://localhost/storage
+#
+#########################################################################
 # /config/image.php
 #########################################################################
 #
@@ -207,6 +217,17 @@ jwt:
 
 logging:
   default: daily # Available Drivers: "single", "daily", "slack", "syslog", "errorlog", "monolog", "custom", "stack"
+
+#
+#########################################################################
+# /config/filesystems.php
+#########################################################################
+#
+filesystems:
+  default: public
+  disks:
+    public:
+      url: http://localhost:8000/storage
 
 ###
 ##

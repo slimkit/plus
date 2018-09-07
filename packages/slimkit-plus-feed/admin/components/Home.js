@@ -3,46 +3,48 @@
  */
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
-import withStyles from 'material-ui/styles/withStyles';
-import Grid from 'material-ui/Grid';
-import Card, { CardHeader, CardContent, CardMedia, CardActions } from 'material-ui/Card';
-import Typography from 'material-ui/Typography';
-import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
-import SvgIcon from 'material-ui/SvgIcon';
-import { blue } from 'material-ui/colors';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import { blue } from '@material-ui/core/colors';
 import { Link } from 'react-router-dom';
-import { FormControl, FormLabel, FormControlLabel } from 'material-ui/Form';
-import Dialog, { DialogContent, DialogActions } from 'material-ui/Dialog';
-import { CircularProgress } from 'material-ui/Progress';
-import Snackbar from 'material-ui/Snackbar';
-
-import FavoriteIcon from 'material-ui-icons/Favorite';
-import Comment from 'material-ui-icons/Comment';
-import RssFeed from 'material-ui-icons/RssFeed';
-import Radio, { RadioGroup } from 'material-ui/Radio';
-import Popover from 'material-ui/Popover';
-import Chip from 'material-ui/Chip';
-import Drawer from 'material-ui/Drawer';
-import Divider from 'material-ui/Divider';
-import ListSubheader from 'material-ui/List/ListSubheader';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
-import Collapse from 'material-ui/transitions/Collapse';import ExpandLess from 'material-ui-icons/ExpandLess';
-import ExpandMore from 'material-ui-icons/ExpandMore';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import Dialog from '@material-ui/core/Dialog';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Snackbar from '@material-ui/core/Snackbar';
+import Comment from '@material-ui/icons/Comment';
+import RssFeed from '@material-ui/icons/RssFeed';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Drawer from '@material-ui/core/Drawer';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import ListItemText from '@material-ui/core/ListItemText';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Collapse from '@material-ui/core/Collapse';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 
 import request, { createRequestURI } from '../utils/request';
 import { showAmount } from '../utils/balance';
 
 
-const styles = (theme:object) => ({
+const styles = (theme) => ({
   root: {
     padding: theme.spacing.unit,
     width: '100%',
     margin: 0
   },
-  flexGrow: {},
   link: {
     color: blue[400],
     textDecoration: 'none',
@@ -103,16 +105,15 @@ class Home extends Component
         feeds: data.feedsCount || 0,
         comments: data.commentsCount || 0,
         reward: data.status.reward ? 'true' : 'false'
-      })
-    }).catch( error => {
-
+      });
+    }).catch( () => {
     });
-  };
+  }
 
   handleRequestClose =  () => {
     this.setState({
       open: false
-    })
+    });
   }
 
   /**
@@ -120,9 +121,10 @@ class Home extends Component
    * @param  {[type]} key [description]
    * @return {[type]}     [description]
    */
-  handleRewardChange = key => (event, value) => {
-    this.state.close.reward.status = value;
-    this.setState(this.state);
+  handleRewardChange = () => (event, value) => {
+    let state = this.state;
+    state.close.reward.status = value;
+    this.setState(state);
     if (value === 'true') {
       this.handleRewardStore();
     }
@@ -130,41 +132,40 @@ class Home extends Component
 
   // 打赏开关控制
   handleRewardStore () {
-    this.state.close.reward.ing = true;
-    this.setState(this.state);
+    let state = this.state;
+    state.close.reward.ing = true;
+    this.setState(state);
     const { close: { reward: { status = 'false' } = {} } = {} } = this.state;
     request.patch(createRequestURI('status/reward'), {
       reward: status === 'false' ? false : true
     }, {
       validataStatus: status => status === 201
     })
-    .then( () => {
-      this.state.close.reward.ing = false;
-      this.state.close.reward.status = 'true';
-      this.state.reward = status;
-      this.state.open = true;
-      this.setState(this.state);
-    })
-    .catch(({ response: { data = {} } }) => {
-      console.log(data);
-    })
-  };
+      .then( () => {
+        state.close.reward.ing = false;
+        state.close.reward.status = 'true';
+        state.reward = status;
+        state.open = true;
+        this.setState(state);
+      });
+  }
 
   handleCloseRewardDialog () {
-    this.state.close.reward.status = 'true';
-    this.state.close.reward.ing = false;
-    this.setState(this.state);
-  };
+    let state = this.state;
+    state.close.reward.status = 'true';
+    state.close.reward.ing = false;
+    this.setState(state);
+  }
   handleClick = (type) => {
     request.get(createRequestURI(`statistics?type=${type}`), {
       validataStatus: status => status === 200
     })
-    .then(({ data = {} }) => {
-      this.setState({
-        data: { ...data },
-        type: type
+      .then(({ data = {} }) => {
+        this.setState({
+          data: { ...data },
+          type: type
+        });
       });
-    })
     this.setState({
       type: type
     });
@@ -179,14 +180,14 @@ class Home extends Component
         <Drawer
           anchor="right"
           open={drawerOpen}
-          onRequestClose={() => {this.setState({ drawerOpen: false, type: ''})}}
+          onClose={() => {this.setState({ drawerOpen: false, type: ''});}}
         >
           <div tabIndex={0} role="button">
             <List className={classes.drawer} subheader={<ListSubheader>动态数据统计</ListSubheader>}>
               <ListItem
                 className={classes.button} 
                 button
-                onTouchTap={ () => this.handleClick('all')}
+                onClick={ () => this.handleClick('all')}
               >
                 <ListItemText inset primary="全部" />
                 {type === 'all' ? <ExpandLess /> : <ExpandMore />}
@@ -224,7 +225,7 @@ class Home extends Component
               <ListItem
                 className={classes.button} 
                 button
-                onTouchTap={ () => this.handleClick('today')}
+                onClick={ () => this.handleClick('today')}
               >
                 <ListItemText inset primary="今天" />
                 {type === 'today' ? <ExpandLess /> : <ExpandMore />}
@@ -262,7 +263,7 @@ class Home extends Component
               <ListItem
                 className={classes.button} 
                 button
-                onTouchTap={ () => this.handleClick('yesterday')}
+                onClick={ () => this.handleClick('yesterday')}
               >
                 <ListItemText inset primary="昨天" />
                 {type === 'yesterday' ? <ExpandLess /> : <ExpandMore />}
@@ -300,7 +301,7 @@ class Home extends Component
               <ListItem
                 className={classes.button} 
                 button
-                onTouchTap={ () => this.handleClick('week')}
+                onClick={ () => this.handleClick('week')}
               >
                 <ListItemText inset primary="过去一周" />
                 {type === 'week' ? <ExpandLess /> : <ExpandMore />}
@@ -338,7 +339,7 @@ class Home extends Component
               <ListItem
                 className={classes.button} 
                 button
-                onTouchTap={ () => this.handleClick('lastDay')}
+                onClick={ () => this.handleClick('lastDay')}
               >
                 <ListItemText inset primary="截止昨天" />
                 {type === 'lastDay' ? <ExpandLess /> : <ExpandMore />}
@@ -397,8 +398,8 @@ class Home extends Component
                     value={this.state.reward}
                     onChange={this.handleRewardChange()}
                   >
-                    <FormControlLabel value={'true'} control={<Radio />} label="开启" />
-                    <FormControlLabel value={'false'} control={<Radio />} label="关闭" />
+                    <FormControlLabel value={'true'} control={<Radio color="primary" />} label="开启" />
+                    <FormControlLabel value={'false'} control={<Radio color="primary" />} label="关闭" />
                   </RadioGroup>
                 </FormControl>
               </CardActions>
@@ -406,7 +407,7 @@ class Home extends Component
             </Card>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Card>
+            <Card >
               <CardContent>
                 <Typography type="headline" component="h2">
                   动态统计
@@ -418,22 +419,22 @@ class Home extends Component
 
               <CardActions>
                 <Button disabled className={classes.icon}>
-                  <RssFeed color={blue[400]} />&nbsp;{feeds}
+                  <RssFeed color="primary" />&nbsp;{feeds}
                 </Button>
                 <Button disabled className={classes.icon}>
-                  <Comment color={blue[400]} />&nbsp;{comments}
+                  <Comment color="primary" />&nbsp;{comments}
                 </Button>
 
                 <div className={classes.flexGrow} />
                 <Button 
-                  dense 
+                  size="small" 
                   color="primary"
-                  onTouchTap={() => { this.setState({drawerOpen: true}) }}
+                  onClick={() => { this.setState({drawerOpen: true}); }}
                 >
                   数据统计
                 </Button>
                 <div className={classes.flexGrow} />
-                <Button dense color="primary">
+                <Button size="small" color="primary">
                   <Link to="/feeds" className={classes.link}>管理动态</Link>
                 </Button>
 
@@ -442,7 +443,7 @@ class Home extends Component
             </Card>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Card>
+            <Card >
               <CardContent>
                 <Typography type="headline" component="h2">
                   动态回收站
@@ -453,7 +454,7 @@ class Home extends Component
               </CardContent>
 
               <CardActions>
-                <Button dense color="primary">
+                <Button size="small" color="primary">
                   <Link to="/deleteFeeds" className={classes.link}>管理动态回收站</Link>
                 </Button>
 
@@ -473,7 +474,7 @@ class Home extends Component
               </CardContent>
 
               <CardActions>
-                <Button dense color="primary">
+                <Button size="small" color="primary">
                   <Link to="/deleteComments" className={classes.link}>管理评论回收站</Link>
                 </Button>
 
@@ -487,19 +488,19 @@ class Home extends Component
           <DialogActions>
             { close.reward.ing
               ? <Button disabled>取消</Button>
-              : <Button onTouchTap={() =>this.handleCloseRewardDialog()}>取消</Button>
+              : <Button  onClick={() =>this.handleCloseRewardDialog()}>取消</Button>
             }
             { close.reward.ing
               ? <Button disabled><CircularProgress size={14} /></Button>
-              : <Button color="primary" onTouchTap={() => this.handleRewardStore()}>关闭</Button>
+              : <Button color="primary"  onClick={() => this.handleRewardStore()}>关闭</Button>
             }
           </DialogActions>
         </Dialog>
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           open={open}
-          onRequestClose={this.handleRequestClose}
-          SnackbarContentProps={{
+          onClose={this.handleRequestClose}
+          ContentProps={{
             'aria-describedby': 'message-id',
           }}
           message={<span id="message-id">操作成功</span>}

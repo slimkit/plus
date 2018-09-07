@@ -22,14 +22,14 @@ namespace Zhiyi\Plus;
 
 use Illuminate\Foundation\Application as LaravelApplication;
 
-class Application extends LaravelApplication
+class Application extends LaravelApplication implements AppInterface
 {
     /**
      * The ThinkSNS Plus version.
      *
      * @var string
      */
-    const VERSION = '1.9.0';
+    const VERSION = '2.0.0';
 
     /**
      * Create a new Illuminate application instance.
@@ -74,10 +74,21 @@ class Application extends LaravelApplication
 
         // Register the app core container aliased.
         foreach ([
-            'app' => [static::class],
+            'app' => [
+                static::class,
+                \Zhiyi\Plus\AppInterface::class,
+            ],
             'cdn' => [
                 \Zhiyi\Plus\Contracts\Cdn\UrlFactory::class,
                 \Zhiyi\Plus\Cdn\UrlManager::class,
+            ],
+            'at-message' => [
+                \Zhiyi\Plus\AtMessage\MessageInterface::class,
+                \Zhiyi\Plus\AtMessage\Message::class,
+            ],
+            'at-resource-manager' => [
+                \Zhiyi\Plus\AtMessage\ResourceManagerInterface::class,
+                \Zhiyi\Plus\AtMessage\ResourceManager::class,
             ],
         ] as $abstract => $aliases) {
             foreach ($aliases as $alias) {

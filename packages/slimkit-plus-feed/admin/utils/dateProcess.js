@@ -5,26 +5,26 @@
   * @return {String}
   * @author Seven Du <shiweidu@outlook.com>
   */
-  function localDate(value){
-    return (new Date(`${value}Z`)).toLocaleString();
-  }
-  /**
+function localDate(value){
+  return (new Date(`${value}Z`)).toLocaleString();
+}
+/**
   * Local date to UTC.
   *
   * @param {String} value
   * @return {String}
   * @author Seven Du <shiweidu@outlook.com>
   */
-  function localDateToUTC(value) {
-    const dateRepo = new Date(value);
-    const fullYear = dateRepo.getUTCFullYear();
-    const month = dateRepo.getUTCMonth() + 1;
-    const date = dateRepo.getUTCDate();
+function localDateToUTC(value) {
+  const dateRepo = new Date(value);
+  const fullYear = dateRepo.getUTCFullYear();
+  const month = dateRepo.getUTCMonth() + 1;
+  const date = dateRepo.getUTCDate();
 
-    return `${fullYear}-${month}-${date}`;
-  }
+  return `${fullYear}-${month}-${date}`;
+}
 
 export {
   localDateToUTC,
   localDate
-}
+};

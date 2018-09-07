@@ -5,110 +5,50 @@
  */
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
-import { matchPath, withRouter } from 'react-router';
-import { Route } from 'react-router-dom';
-import withStyles from 'material-ui/styles/withStyles';
-import AppBar from 'material-ui/AppBar';
-import Tabs, { Tab } from 'material-ui/Tabs';
+import PropTypes from 'prop-types';
+import { withRouter, matchPath } from 'react-router';
+import { Route, NavLink } from 'react-router-dom';
+import withStyles from '@material-ui/core/styles/withStyles';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import Home from './components/Home';
 import Feed from './components/Feed';
 import Comment from './components/Comment';
 import PayControl from './components/PayControl';
 import DeleteFeed from './components/DeletedFeed';
-// import DeleteComment from './components/DeletedComment';
+import TopicPage from './pages/topic';
 
 const styles = () => ({
   root: {}
 });
 
-class App extends Component
-{
+const routes = [
+  { label: '基础信息', route: '/', component: Home, exact: true },
+  { label: '动态管理', route: '/feeds', component: Feed },
+  { label: '话题管理', route: '/topic', component: TopicPage },
+  { label: '评论管理', route: '/comments', component: Comment },
+  { label: '付费开关', route: '/paycontrol', component: PayControl },
+  { label: '动态回收站', route: '/deleteFeeds', component: DeleteFeed },
+];
+
+class App extends Component {
 
   static propTypes = {
-    match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
   }
 
-  /**
-   * Get router pathname.
-   *
-   * @return {String}
-   * @author Seven Du <shiweidu@outlook.com>
-   */
-  getPathname() {
-    const { location: { pathname = '/' } } = this.props;
+  handleActiveRoute = () => {
+    let { location: { pathname } } = this.props;
 
-    return pathname;
-  }
-
-  /**
-   * Match pathname.
-   *
-   * @return {Integer} route's index.
-   * @author Seven Du <shiweidu@outlook.com>
-   */
-  matchPath() {
-    const pathname = this.getPathname();
-
-    if (matchPath(pathname, { exact: true })) {
-      return 'root';
-    } else if (matchPath(pathname, { path: '/feeds' })) {
-      return 'feeds';
-    } else if (matchPath(pathname, { path: '/comments' })) {
-      return 'comments';
-    } else if (matchPath(pathname, { path: '/paycontrol'})) {
-      return 'paycontrol';
-    } else if (matchPath(pathname, { path: '/deleteFeeds'})) {
-      return 'deleteFeeds';
-    } 
-    // else if(matchPath(pathname, { path: '/deleteComments'})) {
-    //   return 'deleteComments'
-    // }
-
-    return 0;
-  }
-
-  /**
-   * Route change handle.
-   *
-   * @param {Object} event
-   * @param {Integer} index
-   * @return {void}
-   * @author Seven Du <shiweidu@outlook.com>
-   */
-  handleChange = (event, value) => {
-    const { history: { replace } } = this.props;
-    this.setState({ value });
-    switch (value) {
-      case 'comments':
-        replace('/comments');
-        break;
-
-      case 'feeds':
-        replace('/feeds');
-        break;
-        
-      case 'paycontrol':
-        replace('/paycontrol');
-        break;
-
-      // case 'deleteComments':
-      //   replace('/deleteComments');
-      //   break;
-
-      case 'deleteFeeds':
-        replace('/deleteFeeds');
-        break;
-
-      case 'root':
-      default:
-        replace('/');
-        break;
+    for (let tab of routes) {
+      let matched = matchPath(pathname, { ...tab, path: tab.route });
+      if (matched) {
+        return matched.path;
+      }
     }
-  };
+  }
 
   /**
    * Rende the component view.
@@ -117,27 +57,30 @@ class App extends Component
    * @author Seven Du <shiweidu@outlook.com>
    */
   render() {
-    const { classes } = this.props;
+    let { classes} = this.props;
+
     return (
       <div className={classes.root}>
-        <AppBar position="static">
-          <Tabs
-            value={this.matchPath()}
-            onChange={this.handleChange}
-          >
-            <Tab label="基础信息" value="root" />
-            <Tab label="动态管理" value="feeds" />
-            <Tab label="评论管理" value="comments" />
-            <Tab label="付费开关" value="paycontrol" />
-            <Tab label="动态回收站" value="deleteFeeds" />
+        <AppBar position="fixed">
+          <Tabs value={this.handleActiveRoute()} >
+            {routes.map(tab => (
+              <Tab
+                {...tab}
+                lebel={tab.label}
+                value={tab.route}
+                to={tab.route}
+                component={NavLink}
+                key={tab.route}
+              />
+            ))}
           </Tabs>
         </AppBar>
 
-        <Route exact path="/" component={Home} />
-        <Route path="/feeds" component={Feed} />
-        <Route path='/comments' component={Comment} />
-        <Route path='/paycontrol' component={PayControl} />
-        <Route path="/deleteFeeds" component={DeleteFeed} />
+        <main style={{ paddingTop: 48 }}>
+          {routes.map(tab => (
+            <Route {...tab} key={tab.route} path={tab.route} component={tab.component} />
+          ))}
+        </main>
       </div>
     );
   }

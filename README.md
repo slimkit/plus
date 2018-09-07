@@ -1,12 +1,6 @@
-<p align="center">
-	<a href="http://www.thinksns.com" rel="noopener" target="_blank"><img src="https://github.com/slimkit/plus/raw/master/public/plus.png" alt="Plus (ThinkSNS+) Logo"></a>
-</p>
+<img align="right" width="100px" src="https://github.com/slimkit/plus/raw/master/public/plus.png" alt="Plus (ThinkSNS+) Logo">
 
-<h1 align="center">Plus (ThinkSNS+)</h1>
-
-<div align="center">
-
-[Plus (ThinkSNS+)](http://www.thinksns.com) 是使用 [Laravel](https://laravel.com/) 框架开发；一个功能强大、易于开发和动态拓展的社交系统。
+# Plus (ThinkSNS+)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8320deaa80b8489f95fcedaae6df079d)](https://www.codacy.com/app/slimkit/plus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=slimkit/plus&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/8320deaa80b8489f95fcedaae6df079d)](https://www.codacy.com/app/slimkit/plus?utm_source=github.com&utm_medium=referral&utm_content=slimkit/plus&utm_campaign=Badge_Coverage)
@@ -15,11 +9,7 @@
 [![CircleCI](https://circleci.com/gh/slimkit/plus/tree/master.svg?style=svg)](https://circleci.com/gh/slimkit/plus/tree/master)
 [![QQ Group](https://img.shields.io/badge/QQ%20Group-651240785-red.svg?longCache=true&style=flat-square)](//shang.qq.com/wpa/qunwpa?idkey=01b61bdf8a7efc2a40ab4caab2d14793f340e5fe5d09aa0c2c17f3115a579678)
 
-</div>
-
-## 简介
-
-Plus (ThinkSNS+) 是一个使用 Laravel 开发，并且功能繁多且健壮的社交程序。Plus 是遵循 **PSR 规范** 代码统一，并功能块松耦合。你安装完成 Plus 并不意味着已经成功安装了所有功能，因为 Plus 使用 **模块化** 的
+[Plus (ThinkSNS+)](http://www.thinksns.com) 是使用 [Laravel](https://laravel.com/) 框架开发；一个功能强大、易于开发和动态拓展的社交系统。Plus 是遵循 **PSR 规范** 代码统一，并功能块松耦合。你安装完成 Plus 并不意味着已经成功安装了所有功能，因为 Plus 使用 **模块化** 的
 原则，所以你安装完成后拥有了所有可以被请求的 REST 接口和后台管理面板，你可能还需要安装如下模块：
 
 - 一个对搜索引擎支持良好的大屏 Web 界面 👉 [ThinkSNS Plus PC](https://github.com/zhiyicx/plus-component-pcos)
@@ -66,10 +56,11 @@ Plus 是基于 Laravel 所开发，它拥有下面的几个主要特点：
 
 ```shell
 composer create-project slimkit/plus
-cd plus
 ```
 
-> 现在，打开你的 `.env` 文件配置数据库等各类信息，然后执行后面的步骤！
+基本配置：
+
+下载完成后进入程序的 `storage/configure/` 目录，你会看到一个 `plus.yml.example` 文件，复制一份命名为 `plus.yml` 然后打开这份 Yaml 配置文件，进行你数据库等信息的配置。
 
 生成数据表以及默认填充数据：
 
@@ -143,11 +134,11 @@ php artisan serve
 ## 优秀项目推荐
 
 - [PHP CORS](https://github.com/medz/cors) 专为 PHP 开发的“跨域资源共享”中间件，快速解决 PHP 设置跨域问题
-- [Notadd](https://github.com/notadd/notadd) 基于 Laravel 的下一代开发框架
+- [Notadd](https://github.com/notadd/notadd) 基于 Nest.js 的微服务开发架构，异步高性能应用、AOP（面向切面编程）
 
 ## License
 
-ThinkSNS Plus 代码遵循 Apache 2.0 许可证发布，请参阅完整的 [许可证文本](https://github.com/slimkit/plus/blob/master/LICENSE)
+Plus 代码遵循 Apache 2.0 许可证发布，请参阅完整的 [许可证文本](https://github.com/slimkit/plus/blob/master/LICENSE)
 
 Copyright © 2018 Chengdu [ZhiYiChuangXiang](http://zhiyicx.com) Technology Co., Ltd. All rights reserved.
 

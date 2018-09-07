@@ -21,6 +21,7 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 
 class CreateFeedsTable extends Migration
 {
@@ -46,11 +47,20 @@ class CreateFeedsTable extends Migration
             $table->tinyInteger('audit_status')->nullable()->default(1)->comment('审核状态 0-未审核 1-已审核 2-未通过');
             $table->bigInteger('feed_mark')->comment('唯一标记');
 
+            // 可转发的
+            $table->string('repostable_type')->nullable()->default(null)->comment('可转发的资源类型');
+            $table->integer('repostable_id')->unsigned()->nullable()->default(0)->comment('可转发的资源 ID');
+
+            // 用于热门动态需求
+            $table->integer('hot')->unsigned()->nullable()->default(0)->comment('热门排序值');
+
             $table->timestamps();
             $table->softDeletes();
 
             $table->index('user_id');
             $table->unique('feed_mark');
+            $table->index('hot');
+            $table->index(FeedModel::CREATED_AT);
         });
     }
 

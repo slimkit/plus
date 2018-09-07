@@ -34,6 +34,9 @@ class TrashedUserResource extends JsonResource
      */
     public function toArray($request): array
     {
+        // The $request unused.
+        unset($request);
+
         return [
             'id' => $this->id,
             'name' => $this->name,

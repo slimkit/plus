@@ -3,39 +3,48 @@
  */
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
-import withStyles from 'material-ui/styles/withStyles';
-import Grid from 'material-ui/Grid';
-import Card, { CardHeader, CardContent, CardMedia, CardActions } from 'material-ui/Card';
-import Typography from 'material-ui/Typography';
-import Dialog, { DialogContent, DialogActions, DialogTitle, DialogContentText } from 'material-ui/Dialog';
-import Snackbar from 'material-ui/Snackbar';
-import Avatar from 'material-ui/Avatar';
-import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
-import CircularProgress from 'material-ui/Progress/CircularProgress';
-import Drawer from 'material-ui/Drawer';
-import Chip from 'material-ui/Chip';
-import Input, { InputLabel } from 'material-ui/Input';
-import { MenuItem } from 'material-ui/Menu';
-import { FormControl, FormHelperText } from 'material-ui/Form';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardActions from '@material-ui/core/CardActions';
+import Typography from '@material-ui/core/Typography';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import Snackbar from '@material-ui/core/Snackbar';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Drawer from '@material-ui/core/Drawer';
+import Chip from '@material-ui/core/Chip';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
 
-import FavoriteIcon from 'material-ui-icons/Favorite';
-import ArrowUpward from 'material-ui-icons/ArrowUpward';
-import Forum from 'material-ui-icons/Forum';
-import Delete from 'material-ui-icons/Delete';
-import CloseIcon from 'material-ui-icons/Close';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import ArrowUpward from '@material-ui/icons/ArrowUpward';
+import Forum from '@material-ui/icons/Forum';
+import Delete from '@material-ui/icons/Delete';
+import CloseIcon from '@material-ui/icons/Close';
 import _ from 'lodash';
-import Select from 'material-ui/Select';
-import TextField from 'material-ui/TextField';
+import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
 import getQuery from '../utils/getQuery';
 import { localDateToUTC, localDate } from '../utils/dateProcess';
 
 import request, { createRequestURI } from '../utils/request';
 import { showAmount } from '../utils/balance';
 
-const styles = (theme:object) => ({
+const styles = (theme) => ({
   root: {
     padding: theme.spacing.unit,
     margin: 0,
@@ -56,7 +65,7 @@ const styles = (theme:object) => ({
   },
   drawerImageTitle: {
     width: `calc(100% - ${theme.spacing.unit * 4}px)`,
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
     background: 'rgba(255, 255, 255, .4)',
     color: '#fff'
@@ -101,9 +110,6 @@ const styles = (theme:object) => ({
   cursor: {
     cursor: 'pointer'
   },
-  chip: {
-    margin: 4,
-  },
   feedContent: {
     width: `calc(100% - ${theme.spacing.unit * 4}px)`,
     wordBreak: 'break-all'
@@ -120,6 +126,7 @@ class Comment extends Component
 {
   static propTypes = {
     classes: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
   };
 
   state = {
@@ -145,7 +152,6 @@ class Comment extends Component
     loadMoreBtnDisabled: false, // 加载按钮是否禁用
     loading: false, // 正在加载
     nextPage: null, // 下一页
-    pinned: null,
     currentPage: 1,
     lastPage: 1,
     total: 0,
@@ -194,25 +200,23 @@ class Comment extends Component
         ...this.state,
         comments: comments,
         del: { comment: null, ing: false }
-      })
-    }).catch( error => {
-      console.log(error);
+      });
     });
-  };
+  }
 
   handlePushDelete (id) {
     this.setState({
       ...this.state,
       del: { comment: id, ing: false }
-    })
-  };
+    });
+  }
 
   handlePushClose () {
     this.setState({
       ...this.state,
       del: { comment: null, ing: false }
     });
-  };
+  }
 
   handleLoadMoreComments () {
     const { nextPage = null, comments, pinneds, params } = this.state;
@@ -252,11 +256,9 @@ class Comment extends Component
         loadMoreBtnDisabled,
         loadMoreBtnText,
         nextPage: data.nextPage
-      })
-    }).catch( error => {
-
+      });
     });
-  };
+  }
 
   // 检测关键字变化
   keyWordChanged = (e) => {
@@ -266,7 +268,7 @@ class Comment extends Component
         ...this.state.params,
         keyword: e.target.value
       }
-    })
+    });
   };
 
   handleStimeChanged = (e) => {
@@ -277,14 +279,14 @@ class Comment extends Component
         ...this.state.params,
         stime: stime
       }
-    })
+    });
   }
-   handleSnackbar(snackbar = {}) {
+  handleSnackbar(snackbar = {}) {
     this.setState({
       ...this.state,
       snackbar: { ...this.state.snackbar, ...snackbar }
     });
-  };
+  }
 
   handleEtimeChanged = (e) => {
     const etime = e.target.value;
@@ -297,14 +299,13 @@ class Comment extends Component
     });
   };
 
-    // 选择动态时间段
+  // 选择动态时间段
   handleTypeChanged = name => event => {
     let value = event.target.value;
-    const specialType = ['pinned_type', 'top'];
     const { params } = this.state;
     let pinned_etime = params.pinned_etime, 
-        pinned_stime = params.pinned_stime,
-        pinned_type = params.pinned_type;
+      pinned_stime = params.pinned_stime,
+      pinned_type = params.pinned_type;
 
     if (name === 'top') {
       pinned_stime = '';
@@ -339,7 +340,7 @@ class Comment extends Component
     this.setState({
       ...this.state,
       [name]: value
-    })
+    });
   };
 
   handlePinnedEtimeChanged = (e) => {
@@ -375,7 +376,7 @@ class Comment extends Component
           open: true,
           message: '请至少选择一个时间'
         }
-      })
+      });
     } else {
       this.setState({
         ...this.state,
@@ -395,7 +396,7 @@ class Comment extends Component
           open: true,
           message: '请至少选择一个时间'
         }
-      })
+      });
     } else {
       this.setState({
         ...this.state,
@@ -406,18 +407,28 @@ class Comment extends Component
 
   // 删除用户选择
   handleRequestDelete = () => {
-    this.state.params.userName = '';
-    this.state.params.user_id = 0;
-    this.setState(this.state);
+    this.setState({
+      ...this.state,
+      params: {
+        ...this.state.params,
+        userName: '',
+        user_id: 0,
+      }
+    });
 
     this.handleGetDatas();
   };
 
   // 获取用户发布的评论
   getUserComments = (user, name = '') => {
-    this.state.params.user_id = user;
-    this.state.params.userName = name;
-    this.setState(this.state);
+    this.setState({
+      ...this.state,
+      params: {
+        ...this.state.params,
+        userName: name,
+        user_id: user,
+      }
+    });
 
     this.handleGetDatas();
   };
@@ -432,15 +443,15 @@ class Comment extends Component
 
       return defaultValue;
     }, null);
-  };
+  }
 
   // 打开一个置顶操作框
   handlePinnedOpen (comment) {
     this.setState({
       ...this.state,
       pinned: comment
-    })
-  };
+    });
+  }
 
   handleRejectOpen(comment)
   {
@@ -450,8 +461,8 @@ class Comment extends Component
         comment,
         ing: false
       }
-    })
-  };
+    });
+  }
 
   feedIdChange = e => {
     this.setState({
@@ -460,7 +471,7 @@ class Comment extends Component
         ...this.state.params,
         feed: e.target.value
       }
-    })
+    });
   };
 
   userUserChange = e => {
@@ -470,7 +481,7 @@ class Comment extends Component
         ...this.state.params,
         user_id: e.target.value
       }
-    })
+    });
   };
 
   userNameChange = e => {
@@ -480,7 +491,7 @@ class Comment extends Component
         ...this.state.params,
         userName: e.target.value
       }
-    })
+    });
   };
 
   renderPinnedDom(comment) {
@@ -492,38 +503,36 @@ class Comment extends Component
     return (
       expires_at 
         ?
-          <Button 
-            color="accent"
-            onTouchTap={ () => this.handlePinnedOpen(comment) }
-          >
+        <Button 
+          color="secondary"
+          onClick={ () => this.handlePinnedOpen(comment) }
+        >
             置顶到期时间{ new Date(expires_at) < new Date() ? '[已过期]' : ''}: {localDate(expires_at)} | {showAmount(amount)}
-          </Button>
+        </Button>
         :
-          <Button 
-            color="accent"
-            onTouchTap={ () => this.handlePinnedOpen(comment) }
-          >
+        <Button 
+          color="secondary"
+          onClick={ () => this.handlePinnedOpen(comment) }
+        >
             申请置顶：{day} 天, 费用 {showAmount(amount)}
-          </Button>
+        </Button>
     );
   }
 
   render () {
     const { classes } = this.props;
-    const { drawer, feed, comments = [], del, snackbar, params, customer, pinned_customer, pinned, pinnedDialog } = this.state;
+    const { drawer, feed, comments = [], del, snackbar, params, customer, pinned_customer, pinned } = this.state;
 
     return(
       <div>
-        <Grid container className={classes.root}>
+        <Grid  container className={classes.root}>
           <div className={classes.container}>
             <form className={classes.container} autoComplete="off">
               <FormControl className={classes.formControl}>
                 <h5 className={classes.title}>评论筛选</h5>
                 <Input
                   placeholder="关键字"
-                  inputProps={{
-                    'aria-label': 'Description',
-                  }}
+                  aria-label="Description"
                   onChange={this.keyWordChanged}
                 />
               </FormControl>
@@ -531,9 +540,7 @@ class Comment extends Component
                 <h5 className={classes.title}>所属动态ID</h5>
                 <Input
                   placeholder="所属动态ID"
-                  inputProps={{
-                    'aria-label': 'Description',
-                  }}
+                  aria-label="Description"
                   onChange={this.feedIdChange}
                   value={this.state.params.feed || ''}
                 />
@@ -542,9 +549,7 @@ class Comment extends Component
                 <h5 className={classes.title}>用户ID</h5>
                 <Input
                   placeholder="用户ID"
-                  inputProps={{
-                    'aria-label': 'Description',
-                  }}
+                  aria-label="Description"
                   onChange={this.userUserChange}
                   value={this.state.params.user_id || ''}
                 />
@@ -553,9 +558,7 @@ class Comment extends Component
                 <h5 className={classes.title}>用户名</h5>
                 <Input
                   placeholder="用户名"
-                  inputProps={{
-                    'aria-label': 'Description',
-                  }}
+                  aria-label="Description"
                   onChange={this.userNameChange}
                   value={this.state.params.userName}
                 />
@@ -603,8 +606,8 @@ class Comment extends Component
                       <MenuItem value="customer">自定义时间</MenuItem>
                     </Select>
                   </FormControl>
-                :
-                ''
+                  :
+                  ''
               }
               {
                 params.user_id ?
@@ -616,11 +619,11 @@ class Comment extends Component
                       className={classes.chip}
                     />
                   </FormControl>
-                :
-                ''
+                  :
+                  ''
               }
               
-              <Button raised onClick={ () => this.handleGetDatas() } color="primary" className={classes.button}>
+              <Button variant="contained" onClick={ () => this.handleGetDatas() } color="primary" className={classes.button}>
                 筛选
               </Button>
             </form>
@@ -628,64 +631,64 @@ class Comment extends Component
           { comments.map(
             comment => (
 
-            <Grid item xs={12} sm={6} key={comment.id}>
-              <Card>
+              <Grid  item xs={12} sm={6} key={comment.id}>
+                <Card >
 
-                <CardHeader
-                  className={classes.cursor}
-                  onTouchTap={() => this.getUserComments(comment.user_id, comment.user.name)}
-                  avatar={<Avatar>{name[0]}</Avatar>}
-                  title={`${comment.user.name} (${comment.user_id})`}
-                  subheader={localDate(comment.created_at)}
-                />
+                  <CardHeader
+                    className={classes.cursor}
+                    onClick={() => this.getUserComments(comment.user_id, comment.user.name)}
+                    avatar={<Avatar>{name[0]}</Avatar>}
+                    title={`${comment.user.name} (${comment.user_id})`}
+                    subheader={localDate(comment.created_at)}
+                  />
 
-                <CardContent
-                >
-                  <Typography>
+                  <CardContent
+                  >
+                    <Typography>
                     #{comment.id} <Button color="primary" onClick={ () => this.handleShowFeed (comment.commentable_id)}>查看动态</Button>
-                  </Typography>
+                    </Typography>
                   评论内容: {comment.body}
-                </CardContent>
+                  </CardContent>
 
-                <CardActions>
-                  <IconButton
-                    onTouchTap={() => this.handlePinnedOpen(comment)}
-                  >
-                    <ArrowUpward />
-                  </IconButton>
-                  <div className={classes.flexGrow} />
+                  <CardActions>
+                    <IconButton
+                      onClick={() => this.handlePinnedOpen(comment)}
+                    >
+                      <ArrowUpward />
+                    </IconButton>
+                    <div className={classes.flexGrow} />
 
-                  <IconButton
-                    onTouchTap={() => this.handlePushDelete(comment.id)}
-                  >
-                    <Delete />
-                  </IconButton>
+                    <IconButton
+                      onClick={() => this.handlePushDelete(comment.id)}
+                    >
+                      <Delete />
+                    </IconButton>
 
-                </CardActions>
-                <CardActions>
-                  {this.renderPinnedDom(comment)}
-                </CardActions>
+                  </CardActions>
+                  <CardActions>
+                    {this.renderPinnedDom(comment)}
+                  </CardActions>
 
-              </Card>
-            </Grid>
-          ))}
+                </Card>
+              </Grid>
+            ))}
         </Grid>
         <Button
-          raised
+          variant="contained"
           color="primary"
           className={classes.loadMoreBtn}
-          onTouchTap={() => this.handleLoadMoreComments()}
+          onClick={() => this.handleLoadMoreComments()}
           disabled={this.state.loadMoreBtnDisabled}
         >
           共[{this.state.total}]条评论，当前第[{this.state.currentPage}]页/共[{this.state.lastPage}]页 {this.state.loadMoreBtnText}
           <CircularProgress
             className={this.state.loading ? classes.progress : classes.progeessHide}
-            color="accent"
+            color="secondary"
             size={30}
           />
         </Button>
         <Dialog open={ customer } >
-          <DialogTitle>{"自定义查询日期"}</DialogTitle>
+          <DialogTitle>{'自定义查询日期'}</DialogTitle>
           <DialogContent>
             <FormControl className={classes.formControl}>
               <TextField
@@ -724,7 +727,7 @@ class Comment extends Component
                     type: 'all'
                   }
                 }
-              )} 
+                )} 
               color="primary"
             >
               取消
@@ -735,7 +738,7 @@ class Comment extends Component
           </DialogActions>
         </Dialog>
         <Dialog open={ pinned_customer } >
-          <DialogTitle>{"自定义置顶查询日期"}</DialogTitle>
+          <DialogTitle>{'自定义置顶查询日期'}</DialogTitle>
           <DialogContent>
             <FormControl className={classes.formControl}>
               <TextField
@@ -774,7 +777,7 @@ class Comment extends Component
                     pinned_type: 'all'
                   }
                 }
-              )} 
+                )} 
               color="primary"
             >
               取消
@@ -789,11 +792,11 @@ class Comment extends Component
           <DialogActions>
             { del.ing
               ? <Button disabled>取消</Button>
-              : <Button onTouchTap={() => this.handlePushClose()}>取消</Button>
+              : <Button  onClick={() => this.handlePushClose()}>取消</Button>
             }
             { del.ing
               ? <Button disabled><CircularProgress size={14} /></Button>
-              : <Button color="primary" onTouchTap={() => this.handleDelete()}>删除</Button>
+              : <Button color="primary"  onClick={() => this.handleDelete()}>删除</Button>
             }
           </DialogActions>
         </Dialog>
@@ -802,12 +805,12 @@ class Comment extends Component
           open={!! snackbar.open}
           message={snackbar.message}
           autoHideDuration={3e3}
-          onRequestClose={() => this.handleSnackbarClose()}
+          onClose={() => this.handleSnackbarClose()}
           action={[
             <IconButton
               key="snackbar.close"
               color="inherit"
-              onTouchTap={() => this.handleSnackbarClose()}
+              onClick={() => this.handleSnackbarClose()}
             >
               <CloseIcon />
             </IconButton>
@@ -816,17 +819,17 @@ class Comment extends Component
         <Drawer
           open={!! drawer}
           anchor="right"
-          onRequestClose={() => this.handleDrawerClose()}
+          onClose={() => this.handleDrawerClose()}
         >
           {this.makeDrawerContent(feed)}
         </Drawer>
 
-        <Dialog open={!! pinned} onRequestClose={ () => this.handleRequestClose()}>
-          {this.doPinnedAudit(pinned)}
+        <Dialog open={!! pinned} onClose={ () => this.handleRequestClose()}>
+          {this.doPinnedAudit(pinned) || ''}
         </Dialog>
       </div>
     );
-  };
+  }
   /**
    * 关闭撤销置顶确认窗口
    */
@@ -838,19 +841,19 @@ class Comment extends Component
         comment: null,
         ing: false
       }
-    })
-  };
+    });
+  }
 
   handleSnackbarClose () {
     this.handleSnackbar({ open: false });
-  };
-    // 关闭动态详情
+  }
+  // 关闭动态详情
   handleDrawerClose () {
     this.setState({
       ...this.state,
       drawer: null,
     });
-  };
+  }
 
   handleShowFeed = (feed) => {
     if (feed === this.state.feed.id) {
@@ -872,7 +875,7 @@ class Comment extends Component
         drawer: true,
         feed: { ...data }
       });
-    })
+    });
   };
 
   makeDrawerContent(feed) {
@@ -909,7 +912,7 @@ class Comment extends Component
           <Typography component="span" className={classes.amoutShow}>
             文字收费：{paid_node.amount  / 100} 元
           </Typography>
-          )
+        )
         }
         {content}
       </CardContent>
@@ -935,8 +938,8 @@ class Comment extends Component
       )) }
 
       <CardContent className={classes.drawerRow}>
-        <Chip className={classes.chip} avatar={<Avatar><FavoriteIcon /></Avatar>} label={digg_count} />
-        <Chip className={classes.chip} onTouchTap={ () => this.setFeedId(feed_id) } avatar={<Avatar><Forum /></Avatar>} label={comment_count} />
+        <Chip className={classes.chip} avatar={<Avatar><FavoriteIcon /></Avatar>} label={digg_count || 0} />
+        <Chip className={classes.chip}  onClick={ () => this.setFeedId(feed_id) } avatar={<Avatar><Forum /></Avatar>} label={comment_count || 0} />
       </CardContent>
 
     </Card>);
@@ -944,56 +947,54 @@ class Comment extends Component
   }
 
   setFeedId (feed_id) {
-    this.state.params.feed = feed_id;
-    this.setState(this.state);
+    this.setState({ params: { ...this.state.params, feed: feed_id } });
     this.handleGetDatas();
-  };
+  }
 
   handleOpenPinnedDialog (comment) {
     this.setState({
-      ...this.state,
       pinned: comment
-    })
-  };
+    });
+  }
 
   handleAcceptPinned (comment) {
-    let pinned = this.handleGetPinned(comment.id)
+    let pinned = this.handleGetPinned(comment.id);
     request.patch(
       createRequestURI(`comments/${pinned.target}/pinneds/${pinned.id}`),
       {
         validateStatus: status => status === 201
       }
     )
-    .then(( { data: { data } }) => {
-      this.handleSnackbar({
-        message: '操作成功!',
-        open: true,
-      });
-      delete data.comment;
-      this.setState({
-        ...this.state,
-        pinned: null
-      })
-      let index = _.findIndex(this.state.pinneds, { id: pinned.id });
-      if(index !== -1) {
+      .then(( { data: { data } }) => {
+        this.handleSnackbar({
+          message: '操作成功!',
+          open: true,
+        });
+        delete data.comment;
         this.setState({
           ...this.state,
-          pinneds: {
-            ...this.state.pinneds,
-            [index]: {
-              ...data
-            }
-          }
+          pinned: null
         });
-      }
-    })
-    .catch(({ response: { data } }) => {
-      this.handleSnackbar({
-        message: '操作失败!',
-        open: true,
+        let index = _.findIndex(this.state.pinneds, { id: pinned.id });
+        if(index !== -1) {
+          this.setState({
+            ...this.state,
+            pinneds: {
+              ...this.state.pinneds,
+              [index]: {
+                ...data
+              }
+            }
+          });
+        }
+      })
+      .catch(() => {
+        this.handleSnackbar({
+          message: '操作失败!',
+          open: true,
+        });
       });
-    })
-  };
+  }
 
   doPinnedAudit (comment = null) {
     if (! comment) {
@@ -1002,12 +1003,10 @@ class Comment extends Component
 
     let pin = this.handleGetPinned(comment.id);
 
-    const { classes } = this.props;
-
     if(!pin ) {
       return (
         <section>
-          <DialogTitle>{"评论置顶审核操作"}</DialogTitle>
+          <DialogTitle>{'评论置顶审核操作'}</DialogTitle>
           <DialogContent>
             <DialogContentText>
               该评论未置顶，如果您要人工置顶，请在下方输入要置顶的天数
@@ -1023,15 +1022,15 @@ class Comment extends Component
             />
           </DialogContent>
           <DialogActions>
-            <Button onTouchTap={() =>this.handleRequestClose()} color="primary">
+            <Button  onClick={() =>this.handleRequestClose()} color="primary">
               取消
             </Button>
-            <Button onTouchTap={() => this.handleSetPinned(comment)} color="primary" autoFocus>
+            <Button  onClick={() => this.handleSetPinned(comment)} color="primary" autoFocus>
               确定
             </Button>
           </DialogActions>
         </section>
-      )
+      );
     }
 
     const {
@@ -1041,14 +1040,12 @@ class Comment extends Component
       expires_at = null,
       amount = 0,
       day = 0,
-      target = 0,
-      id = 0
     } = pin;
 
     if (expires_at && new Date(expires_at) < new Date()) {
       return (
         <section>
-          <DialogTitle>{"评论置顶审核操作"}</DialogTitle>
+          <DialogTitle>{'评论置顶审核操作'}</DialogTitle>
           <DialogContent>
             <DialogContentText>
               该评论未置顶，或置顶时间已到，或已经被拒绝了申请，如果您要人工置顶，请在下方输入要置顶的天数
@@ -1064,19 +1061,19 @@ class Comment extends Component
             />
           </DialogContent>
           <DialogActions>
-            <Button onTouchTap={() =>this.handleRequestClose()} color="primary">
+            <Button  onClick={() =>this.handleRequestClose()} color="primary">
               取消
             </Button>
-            <Button onTouchTap={() => this.handleSetPinned(comment)} color="primary" autoFocus>
+            <Button  onClick={() => this.handleSetPinned(comment)} color="primary" autoFocus>
               确定
             </Button>
           </DialogActions>
         </section>
-      )
+      );
     } else if (pin && (expires_at && new Date(expires_at) > new Date())) {
       return(
         <section>
-          <DialogTitle>{"评论置顶操作"}</DialogTitle>
+          <DialogTitle>{'评论置顶操作'}</DialogTitle>
           <DialogContent>
             <DialogContentText>
               评论作者: {name}，{
@@ -1085,52 +1082,52 @@ class Comment extends Component
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onTouchTap={() =>this.handleRequestClose()} color="primary">
+            <Button  onClick={() =>this.handleRequestClose()} color="primary">
               取消
             </Button>
-            <Button onTouchTap={() => this.handleRejectPinned(comment)} color="primary" autoFocus>
+            <Button  onClick={() => this.handleRejectPinned(comment)} color="primary" autoFocus>
               撤销
             </Button>
           </DialogActions>
         </section>
-      )
+      );
     } else {
       return(
         <section>
-          <DialogTitle>{"评论置顶审核操作"}</DialogTitle>
+          <DialogTitle>{'评论置顶审核操作'}</DialogTitle>
           <DialogContent>
             <DialogContentText>
               评论作者: {name} 花费 {showAmount(amount)}，申请该条评论置顶{day}天时间，是否同意？
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onTouchTap={() =>this.handleRejectPinned(comment)} color="primary">
+            <Button  onClick={() =>this.handleRejectPinned(comment)} color="primary">
               拒绝
             </Button>
-            <Button onTouchTap={() =>this.handleRequestClose()} color="primary">
+            <Button  onClick={() =>this.handleRequestClose()} color="primary">
               取消
             </Button>
-            <Button onTouchTap={() => this.handleAcceptPinned(comment)} color="primary" autoFocus>
+            <Button  onClick={() => this.handleAcceptPinned(comment)} color="primary" autoFocus>
               同意
             </Button>
           </DialogActions>
         </section>
       );
     }
-  };
+  }
 
   handleRequestClose() {
     this.setState({
       ...this.state,
       pinned: null
-    })
-  };
+    });
+  }
 
   handleDayChange = event => {
     this.setState({
       ...this.state,
       pinnedDay: event.target.value
-    })
+    });
   };
   /**
    * 撤销置顶
@@ -1150,40 +1147,40 @@ class Comment extends Component
         validateStatus: status => status === 204
       }
     )
-    .then( () => {
-      this.setState({
-        ...this.state,
-        pinned: null
-      });
-      this.handleSnackbar({
-        message: '操作成功!',
-        open: true,
-      });
-      this.handleRequestClose();
-      let index = _.findIndex(this.state.pinneds, { target: pinned.target });
-      if(index !== -1) {
-        this.state.pinneds.splice(index, 1);
-      }
+      .then( () => {
+        this.setState({
+          ...this.state,
+          pinned: null
+        });
+        this.handleSnackbar({
+          message: '操作成功!',
+          open: true,
+        });
+        this.handleRequestClose();
+        let index = _.findIndex(this.state.pinneds, { target: pinned.target });
+        if(index !== -1) {
+          this.state.pinneds.splice(index, 1);
+        }
 
-      this.setState({
-        ...this.state
+        this.setState({
+          ...this.state
+        });
       })
-    })
-    .catch( () => {
-      this.setState({
-        ...this.state,
-        pinnedDialog:
+      .catch( () => {
+        this.setState({
+          ...this.state,
+          pinnedDialog:
         {
           ...this.state.pinnedDialog,
           ing: false
         }
-      })
-      this.handleSnackbar({
-        message: '操作失败!',
-        open: true,
+        });
+        this.handleSnackbar({
+          message: '操作失败!',
+          open: true,
+        });
       });
-    })
-  };
+  }
 
   /**
    * 设置置顶
@@ -1205,42 +1202,43 @@ class Comment extends Component
         validateStatus: status => status === 201
       }
     )
-    .then( ({ data: { data } }) => {
-      this.handleSnackbar({
-        message: '设置成功!',
-        open: true,
+      .then( ({ data: { data } }) => {
+        this.handleSnackbar({
+          message: '设置成功!',
+          open: true,
+        });
+        let state = this.state;
+        state.pinned = null;
+        let index = _.findIndex(this.state.pinneds, {id: data.target});
+        if(index !== -1) {
+          state.pinneds[index] = {
+            ...this.state.pinneds[index],
+            ...data
+          };
+        } else {
+          state.pinneds.push(data);
+        }
+
+        this.setState(state);
+      })
+      .catch( () => {
+        this.handleSnackbar({
+          message: '操作失败了!',
+          open: true,
+        });
       });
-      this.setState({
-        ...this.state,
-        pinned: null
-      });
-      let index = _.findIndex(this.state.pinneds, {id: data.target});
-      if(index !== -1) {
-        this.state.pinneds[index] = {
-          ...this.state.pinneds[index],
-          ...data
-        };
-      } else {
-        this.state.pinneds.push(data);
-      }
-    })
-    .catch( () => {
-      this.handleSnackbar({
-        message: '操作失败了!',
-        open: true,
-      });
-    })
   };
 
   makeImages(images = []) {
-    switch (images.length) {
-      case 1:
-        const file = images.pop();
-        return (<img src={createRequestURI(`files/${file.id}`)} />);
+    if (images.length) {
+      let { id } = images.pop();
 
-      default:
-        return null;
+      return (
+        <img src={createRequestURI(`files/${id}`)} />
+      );
     }
+    
+    return null;
   }
 
   handleGetDatas () {
@@ -1268,41 +1266,38 @@ class Comment extends Component
         validateStatus: status => status === 200
       }
     )
-    .then(({ data }) => {
-      if (!data.nextPage) {
-        loadMoreBtnDisabled = true;
-        loadMoreBtnText = '已全部加载';
-      } else {
-        loadMoreBtnDisabled = false;
-        loadMoreBtnText = '加载更多';
-      }
+      .then(({ data }) => {
+        if (!data.nextPage) {
+          loadMoreBtnDisabled = true;
+          loadMoreBtnText = '已全部加载';
+        } else {
+          loadMoreBtnDisabled = false;
+          loadMoreBtnText = '加载更多';
+        }
       
-      this.setState({
-        comments: data.comments,
-        pinneds: data.pinneds,
-        loading: false,
-        nextPage: data.nextPage,
-        currentPage: data.current_page,
-        lastPage: data.lastPage,
-        total: data.total,
-        loadMoreBtnDisabled,
-        loadMoreBtnText
+        this.setState({
+          comments: data.comments,
+          pinneds: data.pinneds,
+          loading: false,
+          nextPage: data.nextPage,
+          currentPage: data.current_page,
+          lastPage: data.lastPage,
+          total: data.total,
+          loadMoreBtnDisabled,
+          loadMoreBtnText
+        });
       });
-    })
   }
 
   componentDidMount () {
     const search = this.props.location.search;
     if(search) {
-      let params = {...getQuery(search)};
-      params = {
-        ...this.state.params,
-        ...params
-      };
-      this.state.params = params;
+      this.setState({
+        params: { ...this.state.params, ...getQuery(search) }
+      });
     }
     this.handleGetDatas();
-  };
+  }
 }
 
 export default withStyles(styles)(Comment);

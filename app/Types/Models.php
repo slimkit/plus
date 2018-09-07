@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Types;
 
-use Zhiyi\Plus\Models\FeedTopic;
-
 class Models
 {
     /**
@@ -41,7 +39,13 @@ class Models
      * @var array
      */
     public static $types = [
-        FeedTopic::class => 'types/models/feed-topics',
+        \Zhiyi\Plus\Models\FeedTopic::class => 'types/models/feed-topics',
+        \Zhiyi\Plus\Models\User::class => 'users', /* 旧关系别名，保持不变 */
+        \Zhiyi\Plus\Models\Comment::class => 'comments', /* 旧关系别名，保持不变 */
+        \Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed::class => 'feeds', /* 旧关系别名，保持不变 */
+        \Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\Music::class => 'musics', /* 旧关系别名，保持不变 */
+        \Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSpecial::class => 'music_specials', /* 旧关系别名，保持不变 */
+        \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News::class => 'news', /* 旧关系别名，保持不变 */
     ];
 
     /**

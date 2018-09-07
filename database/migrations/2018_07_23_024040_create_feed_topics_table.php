@@ -21,6 +21,7 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
 
 class CreateFeedTopicsTable extends Migration
 {
@@ -39,10 +40,13 @@ class CreateFeedTopicsTable extends Migration
             $table->integer('creator_user_id')->unsigned()->comment('The topic creator user ID');
             $table->integer('feeds_count')->unsigned()->nullable()->default(0)->comment('The topic link feeds count');
             $table->integer('followers_count')->unsigned()->nullable()->default(0)->comment('The topic followers count');
+            $table->dateTime('hot_at')->nullable()->default(null)->comment('设置为热门的时间');
+            $table->string('status', 100)->nullable()->default(FeedTopicModel::REVIEW_WAITING)->comment('Review status');
             $table->timestamps();
 
             $table->unique('name');
             $table->index('creator_user_id');
+            $table->index('status');
         });
     }
 

@@ -134,6 +134,13 @@ class AbilitySeeder extends Seeder
             'display_name' => '系统通知-发送',
             'description' => '系统通知发送系统通知权限',
         ]);
+
+        // 编辑话题权限
+        Ability::create([
+            'name' => 'admin: update feed topic',
+            'display_name' => '动态»话题»编辑话题',
+            'description' => '修改动态话题',
+        ]);
     }
 
     /**

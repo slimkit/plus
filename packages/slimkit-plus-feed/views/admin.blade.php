@@ -9,6 +9,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ $csrf_token }}">
 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <script>
         window.FEED = {!! json_encode([
             'baseURL' => $base_url,
@@ -26,6 +27,6 @@
 </head>
 <body>
     <div id="app"></div>
-    <script src="{{ asset('assets/feed/admin.js') }}"></script>
+    <script src="{{ mix('admin.js', 'assets/feed') }}"></script>
 </body>
 </html>

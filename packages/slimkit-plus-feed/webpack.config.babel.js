@@ -13,6 +13,9 @@
 import path from 'path';
 import webpack from 'webpack';
 import WebpackLaravelMixManifest from 'webpack-laravel-mix-manifest';
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
+import CleanPlugin from 'clean-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 
 /*
 |--------------------------------------------------------
@@ -37,17 +40,6 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 const isProd = NODE_ENV === 'production';
 
 /*
-|--------------------------------------------------------
-| 获取编译模式
-|--------------------------------------------------------
-|
-| 判断是否是使用 plus-component 内置开发模式的静态资源编译。
-|
-*/
-
-const isRepositorie = !!parseInt(process.env.PLUS_DEV_FEED || 0);
-
-/*
 |---------------------------------------------------------
 | 源代码根
 |---------------------------------------------------------
@@ -69,6 +61,9 @@ const src = path.join(__dirname, 'admin');
 
 const resolve = pathname => path.resolve(src, pathname);
 
+const outPath = path.resolve(__dirname, isProd ? 
+'assets' : '../../public/assets/feed');
+
 /*
 |---------------------------------------------------------
 | 合并路径位置
@@ -78,11 +73,10 @@ const resolve = pathname => path.resolve(src, pathname);
 |
 */
 
-const join = pathname => path.join(src, pathname);
-
 const webpackConfig = {
 
-/*
+  mode: isProd ? 'production' : 'development',
+  /*
 |---------------------------------------------------------
 | 开发工具
 |---------------------------------------------------------
@@ -91,9 +85,9 @@ const webpackConfig = {
 |
 */
 
-devtool: isProd ? false : 'source-map',
+  devtool: isProd ? false : 'source-map',
 
-/*
+  /*
 |---------------------------------------------------------
 | 配置入口
 |---------------------------------------------------------
@@ -102,11 +96,11 @@ devtool: isProd ? false : 'source-map',
 |
 */
 
-entry: {
-  admin: resolve('main.js')
-},
+  entry: {
+    admin: resolve('main.js')
+  },
 
-/*
+  /*
 |---------------------------------------------------------
 | 输出配置
 |---------------------------------------------------------
@@ -115,12 +109,12 @@ entry: {
 |
 */
 
-output: {
-  path: isRepositorie ? path.join(__dirname, '../../../../public/zhiyicx/plus-component-feed') : path.join(__dirname, 'assets'),
-  filename: '[name].js'
-},
+  output: {
+    path: outPath,
+    filename: !isProd ? '[name].js' : '[name].[hash:8].js'
+  },
 
-/*
+  /*
 |---------------------------------------------------------
 | 解决配置
 |---------------------------------------------------------
@@ -129,14 +123,14 @@ output: {
 |
 */
 
-resolve: {
+  resolve: {
   // 忽略加载的后缀
-  extensions: [ '.js', '.jsx', '.json' ],
-  // 模块所处的目录
-  modules: [ src, path.resolve(__dirname, 'node_modules') ]
-},
+    extensions: [ '.js', '.jsx', '.json' ],
+    // 模块所处的目录
+    modules: [ src, path.resolve(__dirname, 'node_modules') ]
+  },
 
-/*
+  /*
 |---------------------------------------------------------
 | 模块
 |---------------------------------------------------------
@@ -145,18 +139,18 @@ resolve: {
 |
 */
 
-module: {
-  rules: [
-    // js文件加载规则
-    {
-      test: /\.jsx?$/,
-      include: [ src ],
-      use: [ 'babel-loader' ]
-    }
-  ]
-},
+  module: {
+    rules: [
+      // js文件加载规则
+      {
+        test: /\.jsx?$/,
+        include: [ src ],
+        use: [ 'babel-loader' ]
+      }
+    ]
+  },
 
-/*
+  /*
 |---------------------------------------------------------
 | 插件配置
 |---------------------------------------------------------
@@ -165,28 +159,31 @@ module: {
 |
 */
 
-plugins: [
+  plugins: [
   // Defined build env.
-  new webpack.DefinePlugin({
-    'process.env': {
-      NODE_ENV: JSON.stringify(NODE_ENV)
-    }
-  }),
-  new WebpackLaravelMixManifest(),
-  ...(isProd ? [
-    // Prod env.
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      },
-      sourceMap: false
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify(NODE_ENV)
+      }
     }),
-  ] : [
-    // Development env.
-    new webpack.NoEmitOnErrorsPlugin(),
-  ])
-],
-
+    new WebpackLaravelMixManifest(),
+    ...(isProd ? [
+      // Prod env.
+      new UglifyJsPlugin({
+        sourceMap: false
+      })
+    ] : [
+      // Development env.
+      new webpack.NoEmitOnErrorsPlugin(),
+    ]),
+    new CleanPlugin(outPath, {
+      root: isProd ? __dirname : path.resolve(__dirname, '../..')
+    }),
+    new CopyPlugin([{
+      from: path.resolve(__dirname, 'admin/static'),
+      to: outPath
+    }]),
+  ],
 };
 
 export default webpackConfig;

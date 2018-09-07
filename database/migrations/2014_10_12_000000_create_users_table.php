@@ -39,6 +39,8 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('sex')->nullable()->default(0)->comment('用户性别');
             $table->string('location')->nullable()->default(null)->comment('用户位置');
             $table->rememberToken()->comment('user auth token.');
+            $table->string('avatar')->nullable()->default(null)->comment('用户头像');
+            $table->string('bg')->nullable()->default(null)->comment('个人主页背景');
             $table->timestamps();
             $table->softDeletes();
 

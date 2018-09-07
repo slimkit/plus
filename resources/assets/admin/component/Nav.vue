@@ -97,13 +97,30 @@
     </router-link>
 
     <!-- CDN -->
-    <router-link class="list-group-item __button" to="/cdn" active-class="active">
+    <router-link class="list-group-item __button" to="/cdn" active-class="active" title="即将废弃">
         <span class="glyphicon glyphicon-cloud __icon"></span>
         CDN管理
     </router-link>
 
+    <!-- 存储设置 -->
+    <router-link
+      class="list-group-item __button"
+      to="/file-storage"
+      active-class="active"
+    >
+      <span class="glyphicon glyphicon-file __icon"></span>
+      存储设置
+    </router-link>
+
     <!-- 拓展包导航加载 -->
-    <router-link class="list-group-item __button" v-for="item, index in manages" :key="index" :to="`/package/${index}`" active-class="active" exact>
+    <router-link
+      class="list-group-item __button"
+      v-for="(item, index) in manages"
+      :key="item['uri']"
+      :to="`/package/${index}`"
+      active-class="active"
+      exact
+    >
       <img class="__icon-img" :src="item['icon']" v-if="item['icon'].substr(4, 3) === '://' || item['icon'].substr(5, 3) === '://'">
       <span v-else class="__icon">{{ item['icon'] }}</span>
       {{ item['name'] }}

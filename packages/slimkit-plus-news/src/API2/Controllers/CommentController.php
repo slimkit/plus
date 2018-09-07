@@ -25,6 +25,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\AtMessage\AtMessageHelperTrait;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned;
@@ -32,6 +33,8 @@ use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Requests\StoreNewsComment;
 
 class CommentController extends Controller
 {
+    use AtMessageHelperTrait;
+
     /**
      * 发布资讯评论.
      *
@@ -91,6 +94,8 @@ class CommentController extends Controller
             app(Push::class)->push(sprintf('%s 回复了你的评论', $user->name), (string) $replyUser->id, ['channel' => 'news:comment-reply']);
             unset($userCommentedCount);
         }
+
+        $this->sendAtMessage($comment->body, $user, $comment);
 
         return response()->json([
             'message' => '操作成功',

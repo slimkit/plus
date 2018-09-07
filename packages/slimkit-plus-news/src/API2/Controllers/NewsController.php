@@ -37,38 +37,49 @@ class NewsController extends Controller
      */
     public function index(Request $request, News $newsModel)
     {
-        $user = $request->user('api')->id ?? 0;
-        $limit = $request->query('limit', 15);
-        $after = $request->query('after', 0);
-        $key = $request->query('key');
-        $is_recommend = $request->query('recommend');
-        $cate_id = $request->query('cate_id');
+        $userId = $request->user('api')->id ?? 0;
+        $id = array_values(
+            array_filter(
+                explode(',', $request->query('id', ''))
+            )
+        );
+        $news = $newsModel
+            ->query()
+            ->orderBy('id', 'desc')
+            ->when(! empty($id), function ($query) use ($id) {
+                return $query->whereIn('id', $id);
+            })
+            ->when(empty($id), function ($query) use ($request) {
+                return $query
+                    ->when($recommend = (int) $request->query('recommend'), function ($query) use ($recommend) {
+                        return $query->where('is_recommend', $recommend);
+                    })
+                    ->when($cateId = $request->query('cate_id'), function ($query) use ($cateId) {
+                        return $query->where('cate_id', $cateId);
+                    })
+                    ->when($after = $request->query('after', 0), function ($query) use ($after) {
+                        return $query->where('id', '<', $after);
+                    })
+                    ->when($key = $request->query('key'), function ($query) use ($key) {
+                        return $query->where('title', 'like', '%'.$key.'%');
+                    })
+                    ->limit($request->query('limit', 15));
+            })
+            ->where('audit_status', 0)
+            ->whereDoesntHave('blacks', function ($query) use ($userId) {
+                return $query->where('user_id', $userId);
+            })
+            ->get();
 
-        $news = $newsModel->where('audit_status', 0)
-        ->whereDoesntHave('blacks', function ($query) use ($user) {
-            $query->where('user_id', $user);
-        })
-        ->when($is_recommend, function ($query) use ($is_recommend) {
-            return $query->where('is_recommend', $is_recommend);
-        })
-        ->when($cate_id, function ($query) use ($cate_id) {
-            return $query->where('cate_id', $cate_id);
-        })->when($after, function ($query) use ($after) {
-            return $query->where('id', '<', $after);
-        })->when($key, function ($query) use ($key) {
-            return $query->where('title', 'like', '%'.$key.'%');
-        })->take($limit)->select(['id', 'title', 'subject', 'created_at', 'updated_at', 'storage', 'cate_id', 'from', 'author', 'user_id', 'hits', 'text_content', 'images'])
-        ->orderBy('id', 'desc')->get();
-
-        $datas = $newsModel->getConnection()->transaction(function () use ($news, $user) {
-            return $news->each(function ($data) use ($user) {
-                $data->has_collect = $data->collected($user);
-                $data->has_like = $data->liked($user);
+        $data = $newsModel->getConnection()->transaction(function () use ($news, $userId) {
+            return $news->each(function ($data) use ($userId) {
+                $data->has_collect = $data->collected($userId);
+                $data->has_like = $data->liked($userId);
                 unset($data->pinned);
             });
         });
 
-        return response()->json($datas, 200);
+        return response()->json($data, 200);
     }
 
     /**
