@@ -115,7 +115,7 @@
                         >
                     </div>
                     <div class="col-sm-7 help-block">
-                        如果访问域名一样！但是这个设置如果你使用与 OSS 同可用区域的 ECS，这里可以设置为内网的访问地址，例如：<code>http://seven-local.oss-cn-beijing-internal.aliyuncs.com</code>并且不建议设置为 <code>https://</code> 协议，因为这样会浪费很多的解压时间和压缩时间！如果你没有使用阿里云 ECS 主机，这里建议与<code>「访问域名」</code>保持一致。
+                        如同访问域名一样！如果你使用与 OSS 同可用区域的 ECS，这里可以设置为内网的访问地址，例如：<code>http://seven-local.oss-cn-beijing-internal.aliyuncs.com</code>并且不建议设置为 <code>https://</code> 协议，因为这样会浪费很多的解压时间和压缩时间！如果你没有使用阿里云 ECS 主机，这里建议与<code>「访问域名」</code>保持一致。
                     </div>
                 </div>
                 
