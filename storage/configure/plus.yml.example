@@ -167,6 +167,11 @@ database:
       port: 6379      # Redis connection port
       password: null  # Connection password
       database: 0
+    cache:
+      host: 127.0.0.1 # Redis connection host
+      port: 6379      # Redis connection port
+      password: null  # Connection password
+      database: 0
 
 #
 #########################################################################

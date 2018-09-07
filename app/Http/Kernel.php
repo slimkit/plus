@@ -75,7 +75,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth'       => \Illuminate\Auth\Middleware\Authenticate::class,
+        'auth' => \Zhiyi\Plus\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
@@ -87,5 +87,6 @@ class Kernel extends HttpKernel
         'ability'    => \Zhiyi\Plus\Http\Middleware\UserAbility::class,
         'sensitive'  => \Zhiyi\Plus\Http\Middleware\DisposeSensitive::class,
         'operation'  => \Zhiyi\Plus\Http\Middleware\SensitiveOperation::class,
+        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
 }
