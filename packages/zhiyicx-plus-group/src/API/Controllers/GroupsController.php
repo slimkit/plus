@@ -34,6 +34,8 @@ use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\PlusGroup\Models\GroupMemberLog as GroupMemberLogModel;
 use Zhiyi\Plus\Utils\DateTimeToIso8601ZuluString;
+use Zhiyi\Plus\FileStorage\Resource;
+use Zhiyi\Plus\FileStorage\StorageInterface;
 
 class GroupsController
 {
@@ -97,7 +99,7 @@ class GroupsController
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function store(CreateGroupRequest $request, CategoryModel $category, ConfigRepository $config)
+    public function store(CreateGroupRequest $request, StorageInterface $storage, CategoryModel $category, ConfigRepository $config)
     {
         $user = $request->user();
 
@@ -109,12 +111,26 @@ class GroupsController
 
         DB::beginTransaction();
 
+        $avatar = $request->file('avatar');
+        $resource = new Resource(
+            'public',
+            $storage->makePath(
+                sprintf(
+                    '%s.%s',
+                    $avatar->path(),
+                    $avatar->guessClientExtension()
+                )
+            )
+        );
+        $storage->put($resource, $avatar->get());
+
         try {
             $group = new GroupModel();
 
             foreach ($values as $field => $value) {
                 $group->$field = $value;
             }
+            $group->avatar = $resource;
 
             if ($request->has('permissions')) {
                 $permissions = $request->input('permissions');
@@ -142,9 +158,6 @@ class GroupsController
 
             $category->groups()->save($group);
 
-            $avatar = $request->file('avatar');
-            $group->storeAvatar($avatar);
-
             $tags = collect($request->input('tags'))->map->id;
 
             $group->tags()->sync($tags);
@@ -166,7 +179,7 @@ class GroupsController
      * @param Group $group
      * @return mixed
      */
-    public function update(UpdateGroupRequest $request, GroupModel $group)
+    public function update(UpdateGroupRequest $request, StorageInterface $storage, GroupModel $group)
     {
         $user = $request->user();
         $member = $group->members()->where('user_id', $user->id)->where('audit', 1)->where('disabled', 0)->first();
@@ -230,14 +243,26 @@ class GroupsController
             $group->money = $mode == 'paid' ? (int) $request->input('money') : 0;
         }
 
+        $avatar = $request->file('avatar');
+        if ($avatar) {
+            $resource = new Resource(
+                'public',
+                $storage->makePath(
+                    sprintf(
+                        '%s.%s',
+                        $avatar->path(),
+                        $avatar->guessClientExtension()
+                    )
+                )
+            );
+            $storage->put($resource, $avatar->get());
+            $group->avatar = $resource;
+        }
+
         DB::beginTransaction();
 
         try {
             $group->save();
-
-            if ($avatar = $request->file('avatar')) {
-                $group->storeAvatar($avatar);
-            }
 
             $tags = collect($request->input('tags'))->map->id;
 

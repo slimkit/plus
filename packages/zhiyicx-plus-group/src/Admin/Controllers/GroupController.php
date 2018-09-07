@@ -186,7 +186,6 @@ class GroupController
     public function update(UpdateRequest $request, StorageInterface $storage, GroupModel $group)
     {
         $avatar = $request->file('avatar');
-        $resource = null;
         if ($avatar) {
             $resource = new Resource(
                 'public',
@@ -199,6 +198,7 @@ class GroupController
                 )
             );
             $storage->put($resource, $avatar->get());
+            $group->avatar = $resource;
         }
 
         $data = $this->getRequestOnly($request);
@@ -226,10 +226,6 @@ class GroupController
                     $default = 'founder';
                 }
                 $group->permissions = $default;
-            }
-
-            if ($resource) {
-                $group->avatar = $resource;
             }
 
             $group->save();
