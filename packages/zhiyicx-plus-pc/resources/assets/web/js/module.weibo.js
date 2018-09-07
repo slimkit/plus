@@ -377,6 +377,11 @@ $(function() {
     // 图片删除事件
     $(".feed_post").on("click", ".imgdel", function() {
         $(this).parent().remove();
+        // 重置上传队列ID
+        $('#file_upload_1-queue .uploadify-queue-item').each(function(index){
+            $(this).attr('id', 'fileupload_1_' + (parseInt($(this).index()) + 1));
+        });
+
         if ($('#file_upload_1-queue').find('.uploadify-queue-item').length == 0) {
             $('.uploadify-queue-add').remove();
             $('#file_upload_1-queue').hide();
