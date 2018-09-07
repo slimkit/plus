@@ -224,8 +224,8 @@ export default {
     admin.get(`/topics/${this.id}`, {
       validateStatus: status => status === 200,
     }).then(({ data }) => {
-      const { name, description, avatar } = data;
-      this.avatar = avatar;
+      const { name, description, avatar: { url } = {} } = data;
+      this.avatar = url;
       this.name = name;
       this.description = description;
       this.loading = false;

@@ -32,6 +32,7 @@ class CreateTopicsTable extends Migration
         Schema::create('topics', function (Blueprint $table) {
             $table->increments('id')->comment('专题ID');
             $table->string('name', 100)->comment('专题名称');
+            $table->string('avatar')->nullable()->comment('专题头像');
             $table->string('description')->nullable()->default(null)->comment('专题描述');
             $table->integer('questions_count')->unsigned()->nullable()->default(0)->comment('专题问题统计');
             $table->integer('follows_count')->unsigned()->nullable()->default(0)->comment('专题关注者统计');

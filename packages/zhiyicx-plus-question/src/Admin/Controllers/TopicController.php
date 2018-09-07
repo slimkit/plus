@@ -20,7 +20,9 @@ namespace SlimKit\PlusQuestion\Admin\Controllers;
 
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\FileStorage\Resource;
 use Zhiyi\Plus\Models\Reward as RewardModel;
+use Zhiyi\Plus\FileStorage\StorageInterface;
 use SlimKit\PlusQuestion\Models\Topic as TopicModel;
 use SlimKit\PlusQuestion\Models\Answer as AnswerModel;
 use SlimKit\PlusQuestion\Models\Question as QuestionModel;
@@ -84,16 +86,19 @@ class TopicController extends Controller
      * @return mixed
      * @author BS <414606094@qq.com>
      */
-    public function storeAvatar(TopicAvatarRequest $request, TopicModel $topic)
+    public function storeAvatar(TopicAvatarRequest $request, StorageInterface $storage, TopicModel $topic)
     {
         $avatar = $request->file('avatar');
         if (! $avatar->isValid()) {
             return $response->json(['messages' => [$avatar->getErrorMessage()]], 400);
         }
 
-        return $topic->storeAvatar($avatar)
-            ? response()->json('', 204)
-            : response()->json(['message' => ['上传失败']], 500);
+        $resource = new Resource('public', $storage->makePath(sprintf('%s.%s', $avatar->path(), $avatar->guessClientExtension())));
+        $storage->put($resource, $avatar->get());
+        $topic->avatar = $resource;
+        $topic->save();
+
+        return response()->json('', 204);
     }
 
     /**

@@ -20,11 +20,11 @@ namespace SlimKit\PlusQuestion\Models;
 
 use Zhiyi\Plus\Models\User;
 use Illuminate\Database\Eloquent\Model;
-use Zhiyi\Plus\Models\Concerns\HasAvatar;
+use Zhiyi\Plus\FileStorage\Traits\EloquentAttributeTrait;
 
 class Topic extends Model
 {
-    use HasAvatar;
+    use EloquentAttributeTrait;
 
     /**
      * The attributes that should be hidden for arrays.
@@ -34,21 +34,30 @@ class Topic extends Model
     protected $hidden = ['created_at', 'updated_at', 'pivot'];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = ['avatar'];
-
-    /**
      * Get topic avatar attribute.
      *
      * @return string|null
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function getAvatarAttribute()
+    public function getAvatarAttribute(?string $resource)
     {
-        return $this->avatar();
+        if (! $resource) {
+            return null;
+        }
+
+        return $this->parseFile($resource);
+    }
+
+    /**
+     * Set the topic avatar.
+     * @param mixed $resource
+     * @return self
+     */
+    public function setAvatarAttribute($resource)
+    {
+        $this->attributes['avatar'] = (string) $resource;
+
+        return $this;
     }
 
     /**
@@ -87,27 +96,5 @@ class Topic extends Model
     {
         return $this->belongsToMany(Question::class, 'question_topic')
             ->using(QuestionTopic::class);
-    }
-
-    /**
-     * Get avatar trait.
-     *
-     * @return string|int
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function getAvatarKey()
-    {
-        return $this->getKey();
-    }
-
-    /**
-     * Avatar prefix.
-     *
-     * @return string
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function getAvatarPrefix(): string
-    {
-        return 'question/topics';
     }
 }
