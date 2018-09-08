@@ -113,7 +113,7 @@
         @else
             <div class="user">
                 @if (Auth::user()->avatar)
-                    <img class="avatar" src="{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}" />
+                    <img class="avatar" src="{{ Auth::user()->avatar->url() }}" alt="{{ Auth::user()->name }}" />
                 @else
                     <span class="name">Hi, {{ Auth::user()->name }}</span>
                 @endif

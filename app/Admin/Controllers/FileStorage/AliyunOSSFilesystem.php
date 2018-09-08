@@ -41,6 +41,7 @@ class AliyunOSSFilesystem
             'acl' => $configure['acl'] ?? 'public-read',
             'timeout' => $configure['timeout'] ?? 3600,
             'domain' => $configure['domain'] ?? null,
+            'insideDomain' => $configure['inside-domain'] ?? null,
         ];
 
         return new JsonResponse($result, Response::HTTP_OK);
@@ -62,6 +63,7 @@ class AliyunOSSFilesystem
             'acl' => $request->input('acl'),
             'timeout' => $request->input('timeout'),
             'domain' => $request->input('domain'),
+            'inside-domain' => $request->input('insideDomain'),
         ]);
 
         return new Response('', Response::HTTP_NO_CONTENT);
@@ -76,6 +78,7 @@ class AliyunOSSFilesystem
             'acl' => ['required', 'string', 'in:public-read-write,public-read,private'],
             'timeout' => ['required', 'integer'],
             'domain' => ['required', 'string', 'url'],
+            'insideDomain' => ['required', 'string', 'url'],
         ];
     }
 

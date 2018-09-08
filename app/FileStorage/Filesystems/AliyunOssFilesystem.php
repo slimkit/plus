@@ -34,6 +34,7 @@ use Symfony\Component\HttpFoundation\Response;
 class AliyunOssFilesystem implements FilesystemInterface
 {
     protected $oss;
+    protected $insideOss;
     protected $configure;
     protected $metas = [];
 
@@ -42,10 +43,11 @@ class AliyunOssFilesystem implements FilesystemInterface
      * @param \OSS\OssClient $oss
      * @param array $configure
      */
-    public function __construct(OssClient $oss, array $configure)
+    public function __construct(OssClient $oss, OssClient $insideOss, array $configure)
     {
         $this->configure = $configure;
         $this->oss = $oss;
+        $this->insideOss = $insideOss;
     }
 
     /**
@@ -103,7 +105,7 @@ class AliyunOssFilesystem implements FilesystemInterface
             return $meta;
         }
 
-        return $this->metas[$resourceString] = new AliyunOss\FileMeta($this->oss, $resource, $this->configure['bucket']);
+        return $this->metas[$resourceString] = new AliyunOss\FileMeta($this->insideOss, $resource, $this->configure['bucket']);
     }
 
     /**
@@ -134,7 +136,7 @@ class AliyunOssFilesystem implements FilesystemInterface
      */
     public function delete(string $path): bool
     {
-        $this->oss->deleteObject($this->configure['bucket'], $path);
+        $this->insideOss->deleteObject($this->configure['bucket'], $path);
 
         return true;
     }
@@ -147,7 +149,7 @@ class AliyunOssFilesystem implements FilesystemInterface
      */
     public function put(string $path, $contents): bool
     {
-        $this->oss->putObject($this->configure['bucket'], $path, $contents);
+        $this->insideOss->putObject($this->configure['bucket'], $path, $contents);
 
         return true;
     }
