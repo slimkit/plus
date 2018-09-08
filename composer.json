@@ -132,8 +132,8 @@
         "symfony/finder": "^4.0",
         "symfony/yaml": "^4.0",
         "tymon/jwt-auth": "1.0.0-rc.2",
-        "zhiyicx/plus-group": "1.8.2",
-        "zhiyicx/plus-question": "1.8.2"
+        "zhiyicx/plus-group": "1.8.5",
+        "zhiyicx/plus-question": "1.8.5"
     },
     "require-dev": {
         "codacy/coverage": "^1.4",
