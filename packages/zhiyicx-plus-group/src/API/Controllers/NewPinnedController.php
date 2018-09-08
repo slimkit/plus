@@ -412,7 +412,9 @@ class NewPinnedController extends Controller
                 'user' => $user,
                 'pinned' => $pinnedModel,
             ]);
-            $founderCount->save();
+            if ($user->id !== $target_user->id) {
+                $founderCount->save();
+            }
 
             return response()->json(['message' => $message], 201);
         });
