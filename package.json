@@ -1,6 +1,6 @@
 {
     "private": true,
-    "version": "1.9.3",
+    "version": "1.9.4",
     "scripts": {
         "dev": "npm run development",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
