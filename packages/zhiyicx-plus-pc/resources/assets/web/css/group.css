@@ -93,11 +93,11 @@
 .p-addgroup .m-form .auth-box{width:675px;padding:20px;border:1px solid #ededed;}
 .p-addgroup .m-form .iptline{border:0;text-align:center;border-bottom:1px solid #ededed;}
 .p-addgroup .m-form .tooltips{margin-top:50px;margin-bottom:30px;font-size:14px;text-align:center;color:#777;}
-.p-addgroup .m-form .tags-box{display:inline-block;min-height:56px;vertical-align:text-top;padding:0px 10px 10px 10px;}
+.p-addgroup .m-form .tags-box{display:inline-block;min-height:100px;vertical-align:text-top;padding:0px 10px 10px 10px;}
 .p-addgroup .m-form .tags-box span{display:inline-block;line-height:28px;padding:3px 12px;margin:10px 6px 0px 0px;color:#59b6b7;background-color:#EEF8F8;border-radius:3px;}
 .p-addgroup .m-form .tags-box span:after{display:inline-block;margin-left:5px;width:16px;height:16px;background-image:url(./img/close_icon.png);background-position:center;background-size:16px;background-repeat:no-repeat;content:'X';vertical-align:middle;font-size:0}
 .p-addgroup .m-form .tags-box:hover .choos-tags{display:block;}
-.p-addgroup .m-form .choos-tags{display:none;width:600px;position:absolute;left:75px;top:56px;padding:10px 40px;background-color:white;z-index:5;box-shadow: 0 0 10px 0 rgba(23, 23, 23, .1);}
+.p-addgroup .m-form .choos-tags{display:none;width:600px;position:absolute;left:75px;top:100px;padding:10px 40px;background-color:white;z-index:5;box-shadow: 0 0 10px 0 rgba(23, 23, 23, .1);}
 .p-addgroup .m-form .choos-tags dt{margin-bottom:10px;color:#ccc}
 .p-addgroup .m-form .choos-tags dd{font-size:14px;display:inline-block;margin:10px;cursor:pointer;color:#666}
 
