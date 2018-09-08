@@ -8,6 +8,10 @@
 <link rel="stylesheet" href="{{ asset('assets/pc/css/feed.css') }}"/>
 @endsection
 
+@php
+    use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
+@endphp
+
 @section('content')
 <div class="p-readgroup">
     <div class="g-mn left_container">
@@ -146,7 +150,7 @@
             <dl class="qz-box">
                 <dt>
                     <a href="{{ route('pc:mine', $group['founder']['user']['id']) }}">
-                        <img class="avatar" src="{{ $group['founder']['user']['avatar']['url'] ?? asset('assets/pc/images/pic_default_secret.png') }}">
+                        <img class="avatar" src="{{ getAvatar($group['founder']['user']) }}">
                         @if($group['founder']['user']['verified'])
                             <img class="role-icon" src="{{ $group['founder']['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                         @endif
@@ -165,7 +169,7 @@
                 @foreach ($manager as $manage)
                     <li>
                         <a href="{{ route('pc:mine', $manage['user_id']) }}">
-                            <img class="avatar" src="{{ $manage['user']['avatar']['url'] ?? asset('assets/pc/images/pic_default_secret.png') }}" width="50">
+                            <img class="avatar" src="{{ getAvatar($manage['user']) }}" width="50">
                             @if($manage['user']['verified'])
                                 <img class="role-icon" src="{{ $manage['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                             @endif
@@ -176,7 +180,7 @@
                 @foreach ($members as $member)
                     <li>
                         <a href="{{ route('pc:mine', $member['user_id']) }}">
-                            <img class="avatar" src="{{ $member['user']['avatar']['url'] ?? asset('assets/pc/images/pic_default_secret.png') }}" width="50">
+                            <img class="avatar" src="{{ getAvatar($member['user']) }}" width="50">
                             @if($member['user']['verified'])
                                 <img class="role-icon" src="{{ $member['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                             @endif
