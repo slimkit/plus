@@ -38,12 +38,12 @@
                     <div class="options_div">
                         <div class="triangle"></div>
                         <ul>
-                        @if($TS && $user['id'] == $TS['id'])
                             <li>
                                 <a href="javascript:;" onclick="repostable('feed', {{$feed['id']}})">
                                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg>转发
                                 </a>
                             </li>
+                        @if($TS && $user['id'] == $TS['id'])
                             <li>
                                 <a href="javascript:;" onclick="weibo.pinneds({{$feed['id']}});">
                                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-pinned2"></use></svg>申请置顶

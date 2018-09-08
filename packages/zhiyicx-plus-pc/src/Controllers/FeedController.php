@@ -152,14 +152,15 @@ class FeedController extends BaseController
         $id = $request->query('id');
         $data = [
             'type' => $type,
+            'id' => $id,
         ];
 
         switch ($type) {
             case 'news':
             $data['news'] = api('GET', "/api/v2/news/{$id}");
             break;
-            case 'feed':
-            $data['feed'] = api('GET', "/api/v2/feeds/{$id}");
+            case 'feeds':
+            $data['feeds'] = api('GET', "/api/v2/feeds/{$id}");
             break;
             case 'group':
             $data['group'] = api('GET', "/api/v2/plus-group/groups/{$id}");

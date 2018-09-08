@@ -1325,6 +1325,8 @@ var showMention = function(show) {
  * @param {number} id
  */
 var repostable = function(type, id) {
+  // 未登录时跳转倒登陆页面
+  if (!TS.USER) return location.href = TS.SITE_URL + '/auth/login';
   var url = '/feeds/repostable?type='+type+'&id='+id;
   ly.load(url, '转发', '720px');
 }
@@ -1598,6 +1600,27 @@ var strLen = function (str){
         }
     }
     return len;
+};
+
+var postRepostable = function(type, id) {
+    // 组装数据
+    var data = {
+        feed_content: $('.ev-ipt-repostable-content').text(),
+        feed_from: 1,
+        feed_mark: TS.MID + new Date().getTime(),
+        repostable_type: type,
+        repostable_id: id,
+    };
+
+    axios.post('/api/v2/feeds', data)
+        .then(function (response) {
+            console.log(response.data.id);
+            noticebox('发布成功', 1);
+            layer.closeAll();
+        })
+        .catch(function (error) {
+            showError(error.response.data);
+        });
 };
 
 $(function() {

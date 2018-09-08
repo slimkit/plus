@@ -93,6 +93,11 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
             <div class="options_div">
                 <div class="triangle"></div>
                 <ul>
+                    <li>
+                        <a href="javascript:;" onclick="repostable('feeds', {{$post['id']}})">
+                            <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg>转发
+                        </a>
+                    </li>
                     <li id="J-collect{{$post['id']}}" rel="0" status="{{(int) $post['has_collect']}}">
                         @if($post['has_collect'])
                         <a href="javascript:;" onclick="collected.init({{$post['id']}}, 'feeds', 0);" class="act">
@@ -107,11 +112,6 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
                         @endif
                     </li>
                     @if($post['user_id'] == $TS['id'])
-                    <li>
-                        <a href="javascript:;" onclick="repostable('feed', {{$post['id']}})">
-                            <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg>转发
-                        </a>
-                    </li>
                     <li>
                         <a href="javascript:;" onclick="weibo.pinneds({{$post['id']}});">
                             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-pinned2"></use></svg>申请置顶
