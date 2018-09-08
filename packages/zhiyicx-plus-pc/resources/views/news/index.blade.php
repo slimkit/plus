@@ -55,11 +55,19 @@
 <script type="text/javascript">
 $(function(){
     //加载资讯列表
-    var params = {
-        isAjax: true,
-        type: 'recommend'
-    };
-
+    if ({{ $cate_id }} == 0) {
+        var params = {
+            isAjax: true,
+            type: 'recommend'
+        };
+    } else {
+        var params = {
+            isAjax: true,
+            type: 'category',
+            category: {{ $cate_id }}
+        };
+    }
+ 
     loader.init({
         container: '#news_list',
         loading: '#news_list',
