@@ -31,6 +31,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        Commands\AppVersionCommand::class,
         Commands\PackageCreateCommand::class,
         Commands\PackageHandlerCommand::class,
         Commands\InstallPasswordCommand::class,
