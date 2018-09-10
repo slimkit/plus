@@ -40,8 +40,8 @@
                     <svg class="icon" aria-hidden="true" style="fill: #59b6d7;"><use xlink:href="#icon-mention"></use></svg>
                     <input type="text" placeholder="搜索用户" oninput="searchUser(this)">
                 </label>
-                <span class="hot ev-view-mention-placeholder">关注用户</span>
-                <ul class="follow-users ev-view-follow-users">
+                <span class="hot ev-view-comment-mention-placeholder">关注用户</span>
+                <ul class="follow-users ev-view-comment-follow-users">
                     @foreach($follow_users ?? [] as $user)
                     @if($loop->index < 8)
                     <li data-user-id="{{$user['id']}}" data-user-name="{{$user['name']}}">{{$user['name']}}</li>

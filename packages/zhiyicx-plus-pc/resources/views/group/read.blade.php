@@ -38,14 +38,17 @@
                     <div class="ct-right">
                         <div class="ct-tt">
                             {{$group['name']}}
-                            <span class="u-share">
+                            <span class="u-share" onclick="repostable.show('groups', '{{$group['id']}}')">
+                                <svg class="icon f-mr10"><use xlink:href="#icon-share"></use></svg>转发
+                            </span>
+                            <!-- <span class="u-share">
                                 <svg class="icon f-mr10"><use xlink:href="#icon-share"></use></svg>分享
                             </span>
                             <div class="u-share-show">
                                 分享至：
                                 @include('pcview::widgets.thirdshare' , ['share_url' => route('redirect', ['target' => '/groups/'.$group['id']]), 'share_title' => $group['name'], 'share_pic' => $group['avatar']])
                                 <div class="triangle"></div>
-                            </div>
+                            </div> -->
                         </div>
                         @if(strlen($group['summary']) <= 300)
                         <p class="ct-intro">{{$group['summary']}}</p>

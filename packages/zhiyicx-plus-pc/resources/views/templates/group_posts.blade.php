@@ -210,6 +210,11 @@
             <div class="options_div">
                 <div class="triangle"></div>
                 <ul>
+                    <li onclick="repostable.show('posts', '{{$post['id']}}')">
+                        <a href="javascript:;">
+                            <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg><span>转发</span>
+                        </a>
+                    </li>
                     @if(in_array($post['group']['joined']['role'], ['administrator', 'founder']))
                         <li id="J-collect{{$post['id']}}" rel="0" status="{{(int) $post['collected']}}">
                             @if($post['collected'])

@@ -39,7 +39,7 @@
                         <div class="triangle"></div>
                         <ul>
                             <li>
-                                <a href="javascript:;" onclick="repostable('feed', {{$feed['id']}})">
+                                <a href="javascript:;" onclick="repostable.show('feeds', {{$feed['id']}})">
                                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg>转发
                                 </a>
                             </li>
@@ -95,18 +95,34 @@
                 {!! formatContent($feed['feed_content']) !!}
             </div>
 
-            @if($feed['repostable_type'])
-            <div class="feed_repostable">
-                @switch($feed['repostable_type'])
+            @switch($feed['repostable_type'])
                 @case('feeds')
-                <div class="description"><strong>{{$repostable['user']['name']}}:</strong> {{$repostable['feed_content']}}</div>
+                <a class="feed_repostable" href='{{ url("/feeds/{$feed->repostable_id}") }}'>
+                    <div class="description"><strong>{{$repostable['user']['name']}}:</strong> {{$repostable['feed_content']}}</div>
+                </a>
                 @break
-                @endswitch
-            </div>
-            @endif
+                @case('news')
+                <a class="feed_repostable" href='{{ url("/news/{$feed->repostable_id}") }}'>
+                    <div class="title">{{$repostable['title']}}</div>
+                    <div class="description">{{$repostable['content']}}</div>
+                </a>
+                @break
+                @case('group')
+                <a class="feed_repostable" href='{{ url("/group/{$feed->repostable_id}") }}'>
+                    <div class="title">{{$repostable['title']}}</div>
+                    <div class="description">{{$repostable['content']}}</div>
+                </a>
+                @break
+                @case('post')
+                <a class="feed_repostable" href='{{ url("/post/{$feed->repostable_id}") }}'>
+                    <div class="title">{{$repostable['title']}}</div>
+                    <div class="description">{{$repostable['content']}}</div>
+                </a>
+                @break
+            @endswitch
 
             <script>
-            console.log(@json($repostable))
+            console.log(@json($repostable ?? ''))
             </script>
 
             <div class="detail_share">

@@ -1648,6 +1648,7 @@ var repostable = {
     },
 
     post: function(type, id) {
+        if (type === 'posts') type = 'group_posts';
         // 组装数据
         var data = {
             feed_content: $('.ev-ipt-repostable-content').text(),

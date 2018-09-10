@@ -33,7 +33,7 @@
                         <div class="triangle"></div>
                         <ul>
                             <li>
-                                <a href="javascript:;" onclick="repostable('news' ,{{$news['id']}})">
+                                <a href="javascript:;" onclick="repostable.show('news' ,{{$news['id']}})">
                                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg>转发
                                 </a>
                             </li>

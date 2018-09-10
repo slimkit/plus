@@ -44,6 +44,11 @@
                     <div class="options_div">
                         <div class="triangle"></div>
                         <ul>
+                            <li>
+                                <a href="javascript:;" onclick="repostable.show('posts', '{{$post['id']}}', '{{$post['group_id']}}');">
+                                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg>转发
+                                </a>
+                            </li>
                         @if (in_array($post['group']['joined']['role'], ['administrator', 'founder']))
                             @if ($post['pinned'])
                                 <li>

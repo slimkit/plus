@@ -112,13 +112,13 @@ class FeedController extends BaseController
                     $data['repostable'] = api('GET', "/api/v2/feeds/{$feed->repostable_id}");
                     break;
                 case 'news';
-                    $data['repostabe'] = api('GET', "/api/v2/news/{$feed->repostable_id}");
+                    $data['repostable'] = api('GET', "/api/v2/news/{$feed->repostable_id}");
                     break;
-                case 'group':
+                case 'groups':
                     $data['repostable'] = api('GET', "/api/v2/plus-group/groups/{$feed->repostable_id}");
                     break;
-                case 'post':
-                    $data['repostable'] = api('GET', "/api/v2/plus-group/groups/{$feed->repostable_id}/posts/{$feed->repostable_id}");
+                case 'posts':
+                    $data['repostable'] = api('GET', "/api/v2/plus-group/groups/1/posts/{$feed->repostable_id}");
                     break;
             }
         }
@@ -179,13 +179,16 @@ class FeedController extends BaseController
             case 'feeds':
             $data['feeds'] = api('GET', "/api/v2/feeds/{$id}");
             break;
-            case 'group':
-            $data['group'] = api('GET', "/api/v2/plus-group/groups/{$id}");
+            case 'groups':
+            $data['groups'] = api('GET', "/api/v2/plus-group/groups/{$id}");
             break;
-            case 'post':
-            $data['post'] = api('GET', "/api/v2/plus-group/groups/");
+            case 'posts':
+            $data['posts'] = api('GET', "/api/v2/plus-group/groups/1/posts/{$id}"); // fixme: 少参数，圈子id暂时用1代替，不影响最终结果
+            $data['posts']['user'] = api('GET', "/api/v2/users/{$data['posts']['user_id']}");
             break;
         }
+
+        // dd($data);
 
         return view('pcview::templates.repostable', $data, $this->PlusData)->render();
     }
