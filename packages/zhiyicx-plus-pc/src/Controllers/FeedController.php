@@ -106,6 +106,23 @@ class FeedController extends BaseController
         $data['feed'] = $feed;
         $data['user'] = $feed->user;
 
+        if ($feed->repostable_type) {
+            switch ($feed->repostable_type) {
+                case 'feeds':
+                    $data['repostable'] = api('GET', "/api/v2/feeds/{$feed->repostable_id}");
+                    break;
+                case 'news';
+                    $data['repostabe'] = api('GET', "/api/v2/news/{$feed->repostable_id}");
+                    break;
+                case 'group':
+                    $data['repostable'] = api('GET', "/api/v2/plus-group/groups/{$feed->repostable_id}");
+                    break;
+                case 'post':
+                    $data['repostable'] = api('GET', "/api/v2/plus-group/groups/{$feed->repostable_id}/posts/{$feed->repostable_id}");
+                    break;
+            }
+        }
+
         $this->PlusData['current'] = 'feeds';
         return view('pcview::feed.read', $data, $this->PlusData);
     }

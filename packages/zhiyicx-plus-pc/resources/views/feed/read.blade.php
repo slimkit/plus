@@ -95,6 +95,20 @@
                 {!! formatContent($feed['feed_content']) !!}
             </div>
 
+            @if($feed['repostable_type'])
+            <div class="feed_repostable">
+                @switch($feed['repostable_type'])
+                @case('feeds')
+                <div class="description"><strong>{{$repostable['user']['name']}}:</strong> {{$repostable['feed_content']}}</div>
+                @break
+                @endswitch
+            </div>
+            @endif
+
+            <script>
+            console.log(@json($repostable))
+            </script>
+
             <div class="detail_share">
                 <span id="J-collect{{ $feed['id'] }}" rel="{{ $feed['collect_count'] }}" status="{{(int) $feed['has_collect']}}">
                     @if($feed['has_collect'])
