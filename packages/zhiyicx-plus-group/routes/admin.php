@@ -65,8 +65,8 @@ Route::group(['prefix' => 'group-admin'], function (RouteRegisterContract $route
 
     // post
     $route->get('/posts', Admin\GroupPostController::class.'@index');
-    $route->patch('/posts/{id}/restore', Admin\GroupPostController::class.'@restore');
-    $route->delete('/groups/{groupId}/posts/{postId}', Admin\GroupPostController::class.'@delete');
+    $route->patch('/posts/{post}/restore', Admin\GroupPostController::class.'@restore');
+    $route->delete('/groups/{group}/posts/{post}', Admin\GroupPostController::class.'@delete');
 
     // pinned storePost
     $route->post('/pinned/posts/{post}', Admin\PinnedController::class.'@storePost');
