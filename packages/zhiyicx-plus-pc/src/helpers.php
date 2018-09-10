@@ -225,11 +225,11 @@ function formatMarkdown($body)
     $body = preg_replace('/\@\!\[(.*?)\]\((\d+)\)/i', '![$1](' . getenv('APP_URL') . '/api/v2/files/$2)', $body);
 
     $content = htmlspecialchars_decode(\Parsedown::instance()->setMarkupEscaped(true)->text($body));
-    if (!strip_tags($content)) {
-        $content = preg_replace_callback('/\[\]\((.*?)\)/i', function($url){
-            return '<p><a href="'.$url[1].'">'.$url[1].'</a></p>';
-        }, $body);
-    }
+    // if (!strip_tags($content)) {
+    //     $content = preg_replace_callback('/\[\]\((.*?)\)/i', function($url){
+    //         return '<p><a href="'.$url[1].'">'.$url[1].'</a></p>';
+    //     }, $body);
+    // }
 
     return $content;
 }
