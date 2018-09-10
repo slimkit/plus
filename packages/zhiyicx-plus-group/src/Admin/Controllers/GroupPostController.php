@@ -20,9 +20,10 @@ namespace Zhiyi\PlusGroup\Admin\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Zhiyi\PlusGroup\Models\Group;
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use Zhiyi\PlusGroup\Models\Post as PostModel;
-use Zhiyi\PlusGroup\Models\Post;
+use Zhiyi\PlusGroup\Models\Group as GroupModel;
 
 class GroupPostController
 {
@@ -81,23 +82,57 @@ class GroupPostController
         return response()->json($posts, 200, ['x-total' => $count]);
     }
 
-    public function delete(Group $groupId, Post $post)
+    /**
+     * Remove a post tu trash.
+     * @param \Zhiyi\PlusGroup\Models\Group $group
+     * @param \Zhiyi\PlusGroup\Models\Post $post
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(GroupModel $group, PostModel $post): Response
     {
-        $post->delete();
+        if ($post->excellent_at) {
+            $group->excellen_posts_count -= 1;
+            $group->excellen_posts_count = $group->excellen_posts_count <= 0 ? 0 : $group->excellen_posts_count;
+        }
+        
+        $group->posts_count -= 1;
+        $group->posts_count = $group->posts_count <= 0 ? 0 : $group->posts_count;
 
-        return response()->json(null, 204);
+        $group->getConnection()->transaction(function () use ($group, $post) {
+            $post->delete();
+            $group->save();
+        });
+
+        return new Response('', Response::HTTP_NO_CONTENT);
     }
 
     /**
-     * 还原帖子.
-     *
-     * @param  int    $id
-     * @return mixed
+     * 还原回收站帖子.
+     * @param \Zhiyi\PlusGroup\Models\Post $model
+     * @param int $post
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function restore(int $id)
+    public function restore(PostModel $model, int $post): JsonResponse
     {
-        PostModel::withTrashed()->find($id)->restore();
+        $post = $model
+            ->query()
+            ->withTrashed()
+            ->where('id', $post)
+            ->first();
+        
+        if (! $post) {
+            return new JsonResponse(['message' => '该帖子已被完全移除，无法恢复'], 422);
+        } elseif (! ($group = $post->group)) {
+            return new JsonResponse(['message' => '帖子所属圈子已被移除，无法恢复'], 422);
+        }
 
-        return response()->json(['message' => '恢复成功'], 201);
+        $group->excellen_posts_count = $post->excellent_at ? $group->excellen_posts_count + 1 : $group->excellen_posts_count;
+        $group->posts_count += 1;
+        $group->getConnection()->transaction(function () use ($group, $post) {
+            $post->restore();
+            $group->save();
+        });
+
+        return new JsonResponse(['message' => '恢复成功'], 201);
     }
 }
