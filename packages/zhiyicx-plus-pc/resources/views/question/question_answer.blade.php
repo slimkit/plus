@@ -41,7 +41,7 @@
             </div>
             <div class="list-item-content">
                 <div class="content-inner">
-                    @if($answer['invited'] == 0 || $answer['question']['look'] == 0 || (isset($TS) && $answer['invited'] == 1 && ($answer['look'] || $answer['question']['user_id'] == $TS['id'] || $answer['user_id'] == $TS['id'])))
+                    @if($answer['invited'] == 0 || $answer['question']['look'] == 0 || (isset($TS) && $answer['invited'] == 1 && ((!isset($answer['could']) || $answer['could'] !== false) || $answer['question']['user_id'] == $TS['id'] || $answer['user_id'] == $TS['id'])))
                         <span class="answer-body">{!! str_limit(formatList($answer['body']), 250, '...') !!}</span>
                         <a class="button button-plain button-more" href="{{ route('pc:answeread', ['question' => $answer['question_id'], 'answer' => $answer['id']]) }}">查看详情</a>
                     @else
