@@ -100,10 +100,13 @@
         </div>
 
         {{-- 动态列表 --}}
-        <div class="feed_content">
+        <div class="feed_content ev-check-joined">
             <div class="feed_menu">
+                @if (!in_array($group['mode'], ['paid', 'private']) && $group['joined'])
                 <a href="javascript:;" rel="post" class="font16 @if($type=='post')selected @endif">最新帖子</a>
                 <a href="javascript:;" rel="reply" class="font16 @if($type=='reply')selected @endif">最新回复</a>
+                @endif
+                <a href="javascript:;" rel="excellent" class="font16 @if($type=='excellent')selected @endif">精华帖子</a>
             </div>
             <div id="feeds_list"></div>
         </div>
@@ -217,6 +220,16 @@
             params: {type:"{{$type}}", isAjax:true, limit:15}
         });
     });
+
+    /**
+     * 加入圈子检查 如果没有假如圈子，则提示需要加入圈子才能进行更多操作
+     */
+    $('.ev-check-joined').on('click', function(event) {
+        if ("{{(in_array($group['mode'], ['paid', 'private']) && !$group['joined'])}}") {
+            noticebox('请先加入圈子', 0);
+            return event.stopPropagation(); // 阻止冒泡， 禁止继续点击行为
+        }
+    })
 
     // 切换帖子列表
     $('.feed_menu a').on('click', function() {

@@ -171,22 +171,22 @@ class GroupController extends BaseController
     public function list(Request $request)
     {
         $type = $request->query('type', 'all');
-        $params = [
-            'offset' => $request->query('offset', 0),
-            'limit' => $request->query('limit', 15),
-            'category_id' => $request->query('category_id'),
-        ];
+        if ($type === 'excellent') {
+            $params = [
+                'excellent' => '1',
+            ];
+            $groups = api('GET', '/api/v2/plus-group/groups', $params);
+        }
 
-        $groups = api('GET', '/api/v2/plus-group/groups', $params);
-
-        if ($type == 'join') {
+        else if ($type == 'join') {
             $params = [
                 'offset' => $request->query('offset', 0),
                 'limit' => $request->query('limit', 15),
             ];
             $groups = api('GET', '/api/v2/plus-group/user-groups', $params);
         }
-        if ($type == 'nearby') {
+
+        else if ($type == 'nearby') {
             $params = [
                 'offset' => $request->query('offset', 0),
                 'limit' => $request->query('limit', 15),
@@ -194,6 +194,15 @@ class GroupController extends BaseController
                 'latitude' => $request->query('latitude'),
             ];
             $groups = api('GET', '/api/v2/plus-group/round/groups', $params);
+        }
+
+        else {
+            $params = [
+                'offset' => $request->query('offset', 0),
+                'limit' => $request->query('limit', 15),
+                'category_id' => $request->query('category_id'),
+            ];
+            $groups = api('GET', '/api/v2/plus-group/groups', $params);
         }
 
         $group = clone $groups;

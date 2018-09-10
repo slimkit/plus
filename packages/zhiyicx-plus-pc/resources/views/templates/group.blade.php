@@ -5,25 +5,12 @@
     <div class="group_item @if($loop->iteration % 2 == 0) group_item_right @endif">
         <dl class="clearfix">
             <dt>
-                <a
-                @if (in_array($item['mode'], ['paid', 'private']) && !$item['joined'])
-                    href="javascript:noticebox('必须先加入圈子', 0);"
-                @else
-                    href="{{Route('pc:groupread', $item['id'])}}"
-                @endif
-                >
+                <a href="{{Route('pc:groupread', $item['id'])}}" >
                     <img src="{{ $item['avatar'] ?? asset('assets/pc/images/default_picture.png') }}" width="120" height="120">
                 </a>
             </dt>
             <dd>
-                <a class="title"
-                    @if (in_array($item['mode'], ['paid', 'private']) && !$item['joined'])
-                        href="javascript:noticebox('必须先加入圈子', 0);"
-                    @else
-                        href="{{Route('pc:groupread', $item['id'])}}"
-                    @endif
-                    alt="{{ $item['name'] }}"
-                >{{ str_limit($item['name'], 16, '...') }}
+                <a class="title" href="{{Route('pc:groupread', $item['id'])}}" alt="{{ $item['name'] }}" >{{ str_limit($item['name'], 16, '...') }}
                     @if ($item['mode'] == 'paid')
                     <span class="paid">付费</span>
                     @endif
