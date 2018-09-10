@@ -329,7 +329,7 @@ class GroupController extends BaseController
                     'limit' => $request->query('limit', 15),
                     'offset' => $request->query('offset', 0),
                     'keyword' =>$request->query('keyword'),
-                    'group_id' => $request->query('group_id'),
+                    'group_id' => $group_id,
                 ];
                 $posts['posts'] = api('GET', '/api/v2/plus-group/group-posts', $params);
             }
