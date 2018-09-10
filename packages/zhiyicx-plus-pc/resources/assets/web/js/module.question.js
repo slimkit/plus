@@ -66,7 +66,7 @@ var QA = {
             axios.post(url)
               .then(function (response) {
                 if (!obj) {
-                    noticebox('围观成功', 1, '/questions/' + question_id);
+                    noticebox('围观成功', 1, 'refresh');
                 } else {
                     noticebox('围观成功', 1);
                     var txt = response.data.answer.body.replace(/\@*\!\[\w*\]\(([https]+\:\/\/[\w\/\.]+|[0-9]+)\)/g, "[图片]");
