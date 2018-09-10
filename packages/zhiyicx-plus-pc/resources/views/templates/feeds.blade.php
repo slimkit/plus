@@ -94,7 +94,7 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
                 <div class="triangle"></div>
                 <ul>
                     <li>
-                        <a href="javascript:;" onclick="repostable('feeds', {{$post['id']}})">
+                        <a href="javascript:;" onclick="repostable.show('feeds', {{$post['id']}})">
                             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg>转发
                         </a>
                     </li>

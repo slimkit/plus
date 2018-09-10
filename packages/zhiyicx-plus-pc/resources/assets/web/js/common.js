@@ -1319,19 +1319,6 @@ var showMention = function(show) {
 }
 
 /**
- * 转发至动态
- * @author mutoe <mutoe@foxmail.com>
- * @param {string} type
- * @param {number} id
- */
-var repostable = function(type, id) {
-  // 未登录时跳转倒登陆页面
-  if (!TS.USER) return location.href = TS.SITE_URL + '/auth/login';
-  var url = '/feeds/repostable?type='+type+'&id='+id;
-  ly.load(url, '转发', '720px');
-}
-
-/**
  * 搜索用户
  * 使用 lodash.debounce 防抖, 450ms 后触发搜索
  *
@@ -1360,6 +1347,36 @@ var searchUser = _.debounce(function(el) {
     })
   } else {
     $('.ev-view-comment-mention-placeholder').text('搜索中...');
+  }
+}, 450);
+
+/**
+ * 搜索用户（用于转发at）
+ * 使用 lodash.debounce 防抖, 450ms 后触发搜索
+ */
+var searchUserForRepostable = _.debounce(function(el) {
+  var keyword = $(el).val();
+  $('.ev-view-repostable-follow-users').empty();
+  if (keyword) {
+    $('.ev-view-repostable-mention-placeholder').text('搜索中...');
+    axios.get('/api/v2/users', { params: {name: keyword, limit: 8} })
+    .then(function(res) {
+      var result = res.data.slice(0, 8);
+      if (result.length) {
+        $('.ev-view-repostable-mention-placeholder').empty();
+        // 填充列表
+        result.forEach(function(user) {
+          // 高亮关键字
+          var regex = new RegExp(keyword, 'gi');
+          var nameMarked = user.name.replace(regex, '<span style="color: #59b6d7;">$&</span>');
+          $('.ev-view-repostable-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+nameMarked+'</li>');
+        });
+      } else {
+        $('.ev-view-repostable-mention-placeholder').text('没有找到结果');
+      }
+    })
+  } else {
+    $('.ev-view-repostable-mention-placeholder').text('搜索中...');
   }
 }, 450);
 
@@ -1602,26 +1619,55 @@ var strLen = function (str){
     return len;
 };
 
-var postRepostable = function(type, id) {
-    // 组装数据
-    var data = {
-        feed_content: $('.ev-ipt-repostable-content').text(),
-        feed_from: 1,
-        feed_mark: TS.MID + new Date().getTime(),
-        repostable_type: type,
-        repostable_id: id,
-    };
 
-    axios.post('/api/v2/feeds', data)
-        .then(function (response) {
-            console.log(response.data.id);
-            noticebox('发布成功', 1);
-            layer.closeAll();
-        })
-        .catch(function (error) {
-            showError(error.response.data);
-        });
-};
+
+var repostable = {
+    /**
+     * 显示需要 at 的用户列表
+     *
+     * @param {boolean} [show] 是否为显示, 如果不填则表示切换
+     */
+    showMention: function(show) {
+        var $el = $('.ev-view-repostable-mention-select')
+        if (show === false) $el.slideUp('fast');
+        else if (show === true) $el.slideDown('fast');
+        else $el.slideToggle('fast');
+    },
+
+    /**
+     * 转发至动态
+     * @author mutoe <mutoe@foxmail.com>
+     * @param {string} type
+     * @param {number} id
+     */
+    show: function(type, id) {
+        // 未登录时跳转倒登陆页面
+        if (!TS.USER) return location.href = TS.SITE_URL + '/auth/login';
+        var url = '/feeds/repostable?type='+type+'&id='+id;
+        ly.load(url, '转发', '720px');
+    },
+
+    post: function(type, id) {
+        // 组装数据
+        var data = {
+            feed_content: $('.ev-ipt-repostable-content').text(),
+            feed_from: 1,
+            feed_mark: TS.MID + new Date().getTime(),
+            repostable_type: type,
+            repostable_id: id,
+        };
+
+        axios.post('/api/v2/feeds', data)
+            .then(function (response) {
+                console.log(response.data.id);
+                noticebox('发布成功', 1);
+                layer.closeAll();
+            })
+            .catch(function (error) {
+                showError(error.response.data);
+            });
+    },
+}
 
 $(function() {
     // Jquery fixed拓展
@@ -1826,6 +1872,16 @@ $(function() {
         }
         $(this).parent().hide();
     });
+
+    // 捕获添加话题
+    $(document).on('click', '.ev-view-repostable-follow-users > li', function() {
+      var name = $(this).data('user-name')
+      $el = $('.ev-ipt-repostable-content');
+
+      $el.html($el.html() + " <span contenteditable=\"false\" style=\"color: #59b6d7;\">\u00ad@" + name + "\u00ad</span> 1")
+
+      repostable.showMention(false);
+    })
 
     // 近期热点
     if($('.time_menu li a').length > 0) {
