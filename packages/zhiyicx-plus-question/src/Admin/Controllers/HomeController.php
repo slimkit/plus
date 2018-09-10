@@ -19,6 +19,7 @@
 namespace SlimKit\PlusQuestion\Admin\Controllers;
 
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Auth\JWTAuthToken;
 use Zhiyi\Plus\Support\Configuration;
 
@@ -70,6 +71,8 @@ class HomeController extends Controller
             'question.onlookers_amount' => $onlookers_amount,
             'question.anonymity_rule' => $anonymity_rule,
         ]);
+
+        setting('Q&A')->set('reward-rule', $request->input('reward_rule'));
 
         return response()->json(['message' => '设置成功'], 201);
     }

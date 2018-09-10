@@ -18,6 +18,8 @@
 
 namespace SlimKit\PlusQuestion\API2\Controllers;
 
+use function Zhiyi\Plus\setting;
+
 class QuestionConfigController extends Controller
 {
     /**
@@ -31,7 +33,8 @@ class QuestionConfigController extends Controller
         return response()->json([
             'apply_amount' => config('question.apply_amount', 200),
             'onlookers_amount' => config('question.onlookers_amount', 100),
-            'anonymity_rule' => config('question.anonymity_rule', '匿名规则'),
+            'anonymity_rule' => config('question.anonymity_rule', null),
+            'reward_rule' => setting('Q&A', 'reward-rule', null),
         ], 200);
     }
 }

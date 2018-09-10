@@ -60,6 +60,17 @@
             </div>
         </div>
 
+        <!-- 悬赏规则 -->
+        <div class="form-group">
+            <label class="control-label col-xs-2">悬赏规则</label>
+            <div class="col-xs-4">
+                <textarea class="form-control" v-model="rewardRule"></textarea>
+            </div>
+            <div class="col-xs-6 help-block">
+                请输入悬赏规则 Markdown 文本
+            </div>
+        </div>
+
         <!-- Submit -->
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
@@ -94,6 +105,7 @@ export default {
     apply_amount: 0,
     onlookers_amount: 0,
     anonymity_rule: '',
+    rewardRule: '',
     message: {
       open: false,
       type: '',
@@ -116,6 +128,7 @@ export default {
         apply_amount: this.apply_amount,
         onlookers_amount: this.onlookers_amount,
         anonymity_rule: this.anonymity_rule,
+        reward_rule: this.rewardRule,
       }, {
         validateStatus: status => status === 201
       }).then(({ data }) => {
