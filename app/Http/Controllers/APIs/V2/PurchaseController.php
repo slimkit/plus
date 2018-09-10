@@ -22,7 +22,7 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
-use hiyi\Plus\Http\Middleware\VerifyUserPassword;
+use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;

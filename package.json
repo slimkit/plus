@@ -10,7 +10,9 @@
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prepublishOnly": "rm -rf CHANGELOG.md && conventional-changelog -p angular -r 2 -i CHANGELOG.md -s",
-        "postinstall": "opencollective postinstall"
+        "postinstall": "opencollective postinstall",
+        "docs:dev": "vuepress dev docs",
+        "docs:build": "vuepress build docs"
     },
     "devDependencies": {
         "@slimkit/plus-editor": "^0.0.3",
@@ -21,7 +23,8 @@
         "cross-env": "^5.1.5",
         "laravel-mix": "^2.1",
         "opencollective": "^1.0.3",
-        "vue-template-compiler": "^2.5.16"
+        "vue-template-compiler": "^2.5.16",
+        "vuepress": "^0.14.2"
     },
     "dependencies": {
         "@slimkit/plus-editor": "^0.0.3",
