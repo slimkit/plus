@@ -47,11 +47,11 @@ install:
 script:
   - php vendor/bin/phpunit --coverage-clover=coverage.xml
   - npm run development
+  - bash ./scripts/publish-docs-gh-pages.sh bot
 
 after_script:
   - php vendor/bin/codacycoverage clover coverage.xml
   - bash <(curl -s https://codecov.io/bash)
-  - bash ./scripts/publish-docs-gh-pages.sh bot
 
 deploy:
   provider: pages
