@@ -27,11 +27,15 @@ cache:
     - $HOME/.composer/cache
 
 before_install:
+  # Install NODE.js 8.12 version
+  - nvm install 8.12
+  # Check and create database.
   - sh -c "if [ '$DB' = 'postgres' ]; then psql -c 'create database plus;' -U postgres; echo $DB; fi"
   - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'CREATE DATABASE IF NOT EXISTS plus;'; echo $DB; fi"
   - php ./scripts/travis-ci-settings.php $DB
 
 install:
+  - npm install
   - composer install
   - php artisan key:generate
   - php artisan jwt:secret --force
@@ -41,7 +45,20 @@ install:
 
 script:
   - php vendor/bin/phpunit --coverage-clover=coverage.xml
+  - npm development
+  - npm production
 
 after_script:
   - php vendor/bin/codacycoverage clover coverage.xml
   - bash <(curl -s https://codecov.io/bash)
+  - bash ./scripts/publish-docs-gh-pages.sh bot
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_PUBLISH_TOKEN
+  keep-history: true
+  local-dir: /tmp/plus-publish-gh-pages/
+  target-branch: gh-pages
+  name: SlimKit Bot
+  verbose: true
