@@ -2,8 +2,8 @@ version: 2
 jobs:
   front_end:
     branches:
-        ignore:
-            - gh-pages
+      ignore:
+        - gh-pages
     working_directory: ~/plus
     docker:
       - image: circleci/node:10
@@ -20,8 +20,8 @@ jobs:
           command: "npm run production"
   back_end:
     branches:
-        ignore:
-            - gh-pages
+      ignore:
+        - gh-pages
     working_directory: ~/plus
     docker:
       - image: circleci/php:7.1-jessie-node-browsers
