@@ -9,7 +9,7 @@ if [ -d "$GIT_DIR" ]; then
     rm -rf "$GIT_DIR"
 fi;
 
-npm run docs:build
+yarn docs:build
 mkdir "$GIT_DIR"
 cd "$GIT_DIR"
 
