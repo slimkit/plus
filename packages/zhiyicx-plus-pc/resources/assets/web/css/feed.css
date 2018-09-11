@@ -30,11 +30,11 @@
 .feed_post .feed_select ul li {margin-bottom:10px;}
 .feed_post .feed_picture {display:none;overflow:hidden;height:60px;margin-top:20px;}
 .feed_post .feed_picture_span {position:relative;display:inline-block;float:left;width:59px;height:59px;margin-right:3px;border:1px solid #ededed;}
-.feed_post .selected-topics .selected-topic-item {padding: 0 0 0 6px;}
+.feed_post .selected-topics .selected-topic-item {padding: 0 6px;}
 
 /* 小标签 */
 .selected-topics {display: flex;flex-flow: row wrap;margin-top: 10px;}
-.selected-topics .selected-topic-item {background-color: rgba(89, 182, 215, 0.15);padding: 0 6px;border-radius: 3px;color: #59b6d7;font-size: 12px;margin-right: 6px;height: 24px;line-height: 24px;}
+.selected-topics .selected-topic-item {background-color: rgba(89, 182, 215, 0.15);padding: 6px;border-radius: 3px;color: #59b6d7;font-size: 12px;margin-right: 6px;height: 24px;line-height: 24px;}
 .selected-topics .selected-topic-item .close {height: 24px;line-height: 24px;cursor: pointer;}
 .selected-topics .selected-topic-item svg {transform: scale(0.7);}
 

@@ -371,7 +371,7 @@ $(function() {
 
     weibo.selectedTopics = [];
 
-    var defaultTopic = $('.ev-selected-topics').find('.ev-delete-topic').data('topic-id');
+    var defaultTopic = $('.ev-selected-topics').find('.ev-selected-topic-default').data('topic-id');
     if (defaultTopic) weibo.selectedTopics.push(defaultTopic);
 
     // 图片删除事件

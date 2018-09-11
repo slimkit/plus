@@ -69,11 +69,7 @@
         <ul class="selected-topics ev-selected-topics">
             {{-- 如果传入了话题, 就默认添加这个话题 --}}
             @if ($default_topic ?? [])
-            <li class="selected-topic-item">{{$default_topic['name']}}
-                <span class="close ev-delete-topic" data-topic-id="{{$default_topic['id']}}">
-                    <svg class="icon" aria-hidden="true" style="fill: #59b6d7;"><use xlink:href="#icon-close"></use></svg>
-                </span>
-            </li>
+            <li class="selected-topic-item ev-selected-topic-default" data-topic-id="{{ $default_topic['id'] }}">{{$default_topic['name']}}</li>
             @endif
             {{-- this will be injected by javascript --}}
         </ul>
