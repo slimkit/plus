@@ -824,7 +824,7 @@ var comment = {
         axios.post(comment.urls(_this.support.row_id, _this.support.type), formData)
           .then(function (response) {
             _this.support.button.text('评论');
-            _this.support.editor.val('');
+            _this.support.editor.html('');
             _this.support.to_uid = 0;
             var res = response.data;
             var info = {
