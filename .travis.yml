@@ -47,9 +47,9 @@ install:
   - php artisan vendor:publish --all -vvv
 
 script:
-  - php vendor/bin/phpunit --coverage-clover=coverage.xml
-  - yarn development
-  - bash ./scripts/publish-docs-gh-pages.sh bot
+  # - php vendor/bin/phpunit --coverage-clover=coverage.xml
+  # - yarn development
+  - yarn add vuepress -D && bash ./scripts/publish-docs-gh-pages.sh bot
 
 after_script:
   - php vendor/bin/codacycoverage clover coverage.xml
