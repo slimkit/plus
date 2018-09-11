@@ -25,10 +25,11 @@ matrix:
 cache:
   directories:
     - $HOME/.composer/cache
+    - node_modules
 
 before_install:
   # Install NODE.js 8.12 version
-  - nvm install 8.12
+  - nvm install 8
   # Check and create database.
   - sh -c "if [ '$DB' = 'postgres' ]; then psql -c 'create database plus;' -U postgres; echo $DB; fi"
   - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'CREATE DATABASE IF NOT EXISTS plus;'; echo $DB; fi"
@@ -46,7 +47,6 @@ install:
 script:
   - php vendor/bin/phpunit --coverage-clover=coverage.xml
   - npm run development
-  - npm run production
 
 after_script:
   - php vendor/bin/codacycoverage clover coverage.xml
@@ -58,7 +58,7 @@ deploy:
   skip-cleanup: true
   github-token: $GITHUB_PUBLISH_TOKEN
   keep-history: true
-  local-dir: /tmp/plus-publish-gh-pages/
+  local-dir: storage/app/plus-publish-gh-pages
   target-branch: gh-pages
   name: SlimKit Bot
   verbose: true
