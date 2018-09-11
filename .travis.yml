@@ -2,6 +2,10 @@ sudo: false
 
 language: php
 
+branches:
+  except:
+    - gh-pages
+
 matrix:
   fast_finish: true
   include:
