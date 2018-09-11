@@ -32,7 +32,7 @@
         <span class="font14 ml20 mention-btn">
             <div class="ev-btn-mention">
                 <svg class="icon" aria-hidden="true" style="fill: #999;"><use xlink:href="#icon-mention"></use></svg>
-                @某人
+                某人
             </div>
 
             <div class="dialog-mention-select ev-view-mention-select" style="display: none;">
