@@ -45,8 +45,8 @@ install:
 
 script:
   - php vendor/bin/phpunit --coverage-clover=coverage.xml
-  - npm development
-  - npm production
+  - npm run development
+  - npm run production
 
 after_script:
   - php vendor/bin/codacycoverage clover coverage.xml
