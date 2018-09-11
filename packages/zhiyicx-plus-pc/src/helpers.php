@@ -189,7 +189,7 @@ function cacheClear()
  */
 function getAvatar($user, $width = 0)
 {
-    if (! $user['avatar']) {
+    if (empty($user['avatar']) || !$user['avatar']) {
         switch ($user['sex']) {
             case 1:
                 return asset('assets/pc/images/pic_default_man.png');
