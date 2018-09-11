@@ -36,13 +36,14 @@
                 </div>
                 <div class="f-dn m-income pinned-income">
                     <span>{{$group['pinned_income_count']}}</span>
-                    <div class="s-fc4 f-fs2">置顶收益（积分） 共置顶了
-                    <font color="#3CA967">{{$group['posts_count']}}</font> 条帖子</div>
+                    <div class="s-fc4 f-fs2">置顶收益（积分）
                 </div>
                 <div class="f-dn m-income join-income">
                     <span>{{$group['join_income_count']}}</span>
-                    <div class="s-fc4 f-fs2">成员费（积分） 共
-                    {{-- <font color="#3CA967">{{$group['users_count']}}</font> 个付费成员</div> --}}
+                    <div class="s-fc4 f-fs2">成员费（积分）
+                    @if ($group['mode'] == 'paid')
+                    共<font color="#3CA967">{{$group['users_count']}}</font> 个付费成员</div>
+                    @endif
                 </div>
             </div>
             <div class="m-ct">

@@ -170,6 +170,7 @@
 .p-bankroll .m-table th,.p-bankroll .m-table td{border-bottom:0;}
 .p-bankroll .m-crumb{padding-bottom:20px;border-bottom:1px solid #EDEDED;}
 .p-bankroll .m-crumb .u-back{float:right;color:#59b6d7}
+.p-bankroll .m-ct {margin-top:20px;}
 .p-bankroll .m-ct .m-item{display:flex;align-items:center;margin-top:20px;}
 .p-bankroll .m-ct .m-item .u-lab{margin-right:40px;min-width:80px;color:#AAA;}
 .p-bankroll .t-filter{padding:2px 10px;width:135px;border-radius:2px;border:1px solid #999;color:#777;}
