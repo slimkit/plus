@@ -6,7 +6,7 @@
         <dl class="clearfix">
             <dt>
                 <a href="{{Route('pc:groupread', $item['id'])}}" >
-                    <img src="{{ $item['avatar'] ?? asset('assets/pc/images/default_picture.png') }}" width="120" height="120">
+                    <img src="{{ $item['avatar']->url() ?? asset('assets/pc/images/default_picture.png') }}" width="120" height="120">
                 </a>
             </dt>
             <dd>
