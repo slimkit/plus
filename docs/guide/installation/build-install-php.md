@@ -8,7 +8,7 @@ title: 编译安装 PHP
 
 我们打开[PHP 官网下载页](http://www.php.net/downloads.php)找到最新的 PHP 7.2 版本，以 7.2.9 为例：
 
-<img :src="$withBase('/assets/images/php-download-page.png')" />
+<img :src="$withBase('/assets/img/php-download-page.png')" />
 
 我们点击**绿色**框部分的的地址，最后我们通过选择地区后得到最终地址为：`http://cn2.php.net/distributions/php-7.2.9.tar.xz` 
 
@@ -33,7 +33,7 @@ curl -o php-7.2.9.tar.xz http://cn2.php.net/distributions/php-7.2.9.tar.xz
 ::: warning
 如果你无法找到准确的文件下载地址，那么你点击**绿色**框的链接，会进入地区选择页面，例如你选择 `China` 地区，你会看到一个 `cn2.php.net` 的链接，鼠标放上去，「右键」点击「复制链接地址」你粘贴后会得到 `http://cn2.php.net/get/php-7.2.9.tar.xz/from/this/mirror` 这样的地址，如图：
 
-<img :src="$withBase('/assets/images/php-download-copy-link.png')" />
+<img :src="$withBase('/assets/img/php-download-copy-link.png')" />
 
 复制得到地址后，我们运行下面的命令进行下载：
 
