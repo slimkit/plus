@@ -32,7 +32,7 @@
             <div class="g-hd-ct">
                 <div class="m-ct f-cb">
                     <div class="ct-left">
-                        <img src="{{ $group['avatar']->url() ?? asset('assets/pc/images/default_picture.png') }}" height="100%">
+                        <img src="{{ $group['avatar'] ? $group['avatar']->url() : asset('assets/pc/images/default_picture.png') }}" height="100%">
                         <span class="ct-cate">{{$group['category']['name']}}</span>
                     </div>
                     <div class="ct-right">
