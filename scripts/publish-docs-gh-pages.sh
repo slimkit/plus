@@ -25,12 +25,12 @@ if [ "@$@" != "@bot" ]; then
     fi
 
     # Copy dist
-    cp -R "$WORKER_DIR/docs/.vuepress/dist/" "$GIT_DIR/"
+    cp -R "$WORKER_DIR/docs/.vuepress/dist/*" "$GIT_DIR/"
     git add .
     git commit -m "deploy"
     git push --set-upstream origin gh-pages
 else
-    cp -R "$WORKER_DIR/docs/.vuepress/dist/" "$GIT_DIR/"
+    cp -R "$WORKER_DIR/docs/.vuepress/dist/*" "$GIT_DIR/"
 fi
 
 cd -
