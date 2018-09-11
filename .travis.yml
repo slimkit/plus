@@ -47,8 +47,8 @@ install:
   - php artisan vendor:publish --all -vvv
 
 script:
-  # - php vendor/bin/phpunit --coverage-clover=coverage.xml
-  # - yarn development
+  - php vendor/bin/phpunit --coverage-clover=coverage.xml
+  - yarn development
   - yarn add vuepress -D && bash ./scripts/publish-docs-gh-pages.sh bot
 
 after_script:
@@ -60,7 +60,7 @@ deploy:
   skip-cleanup: true
   github-token: $GITHUB_PUBLISH_TOKEN
   keep-history: true
-  local-dir: storage/app/plus-publish-gh-pages
+  local-dir: storage/app/plus-publish-gh-pages/
   target-branch: gh-pages
   name: SlimKit Bot
   verbose: true
