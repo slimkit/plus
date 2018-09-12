@@ -22,7 +22,7 @@ namespace Zhiyi\Plus\FileStorage\Validators\Rulers;
 
 use Zhiyi\Plus\FileStorage\StorageInterface;
 
-class FileStorageRuler implements RulersInterface
+class FileStorageRuler implements RulerInterface
 {
     /**
      * The storage.
