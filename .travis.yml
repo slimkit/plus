@@ -1,77 +1,64 @@
+sudo: false
+branches:
+  except:
+    - gh-pages
+language: php
+php:
+  - 7.1.3
+  - 7.1
+  - 7.2
+  - hhvm
+  - nightly
+services:
+  - mysql
+  - postgres
+cache:
+  directories:
+    - $HOME/.composer/cache
+before_install:
+  # Check and create database.
+  - sh -c "if [ '$DB' = 'postgres' ]; then psql -c 'create database plus;' -U postgres; echo $DB; fi"
+  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'CREATE DATABASE IF NOT EXISTS plus;'; echo $DB; fi"
+  - php ./scripts/travis-ci-settings.php $DB
+install:
+  - composer install
+  - php artisan app:key-generate
+  - php artisan migrate -vvv
+  - php artisan db:seed -vvv
+  - php artisan vendor:publish --all -vvv
+script: php vendor/bin/phpunit --coverage-clover=coverage.xml
+after_script:
+  - php vendor/bin/codacycoverage clover coverage.xml
+  - bash <(curl -s https://codecov.io/bash)
 jobs:
   include:
-    - stage: "Tests"
-      name: "PHP Tests (MySQL)"
-      sudo: false
-      branches:
-        except:
-          - gh-pages
-      language: php
-      php:
-        - 7.1.3
-        - 7.1
-        - 7.2
-        - hhvm
-        - nightly
-      services:
-        - mysql
+    - stage: Build
+      name: Build Assets Test
+      language: node_js
+      node_js: 6
       cache:
         directories:
-          - $HOME/.composer/cache
-      before_install:
-        - mysql -e 'CREATE DATABASE IF NOT EXISTS plus;'
-        - php ./scripts/travis-ci-settings.php mysql
+          - "node_modules"
+      install: npm install
+      script: npm run dev
+    - stage: Deploy
+      name: Deploy docs website
+      branches:
+        only: master
+      language: node_js
+      node_js: 8
+      cache: yarn
+      before_install: npm install --global yarn
       install:
-        - composer install
-        - php artisan key:generate
-        - php artisan jwt:secret --force
-        - php artisan migrate -vvv
-        - php artisan db:seed -vvv
-        - php artisan vendor:publish --all -vvv
-      script: php vendor/bin/phpunit --coverage-clover=coverage.xml
-      after_script:
-        - php vendor/bin/codacycoverage clover coverage.xml
-        - bash <(curl -s https://codecov.io/bash)  
-
-# cache:
-#   directories:
-#     - $HOME/.composer/cache
-#     - node_modules
-
-# before_install:
-#   # Install NODE.js 8.12 version
-#   - nvm install 8
-#   # Install Yarn
-#   - npm install --global yarn
-#   # Check and create database.
-#   - sh -c "if [ '$DB' = 'postgres' ]; then psql -c 'create database plus;' -U postgres; echo $DB; fi"
-#   - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'CREATE DATABASE IF NOT EXISTS plus;'; echo $DB; fi"
-#   - php ./scripts/travis-ci-settings.php $DB
-
-# install:
-#   - yarn install
-#   - composer install
-#   - php artisan key:generate
-#   - php artisan jwt:secret --force
-#   - php artisan migrate -vvv
-#   - php artisan db:seed -vvv
-#   - php artisan vendor:publish --all -vvv
-
-# script:
-#   - php vendor/bin/phpunit --coverage-clover=coverage.xml
-#   - yarn development
-#   - yarn add vuepress -D && yarn docs:build
-
-# after_script:
-#   - php vendor/bin/codacycoverage clover coverage.xml
-#   - bash <(curl -s https://codecov.io/bash)
-
-# deploy:
-#   provider: pages
-#   skip-cleanup: true
-#   github-token: $GITHUB_PUBLISH_TOKEN
-#   keep-history: true
-#   local-dir: docs/.vuepress/dist
-#   target-branch: gh-pages
-#   name: SlimKit Bot
-#   verbose: true
+        - yarn install
+        - yarn add vuepress
+      script: yarn docs:build
+      deploy:
+        provider: pages
+        skip-cleanup: true
+        github-token: $GITHUB_PUBLISH_TOKEN
+        keep-history: true
+        local-dir: docs/.vuepress/dist
+        target-branch: gh-pages
+        name: SlimKit Bot
+        verbose: true
