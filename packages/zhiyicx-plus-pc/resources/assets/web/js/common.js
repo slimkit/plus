@@ -1696,10 +1696,13 @@ var repostable = {
      * 提交转发
      */
     post: function(type, id) {
+        var content = $('.ev-ipt-repostable-content').text();
+        if (!content) return noticebox('请输入转发理由', 0);
+
         if (type === 'posts') type = 'group_posts';
         // 组装数据
         var data = {
-            feed_content: $('.ev-ipt-repostable-content').text(),
+            feed_content: content,
             feed_from: 1,
             feed_mark: TS.MID + new Date().getTime(),
             repostable_type: type,
