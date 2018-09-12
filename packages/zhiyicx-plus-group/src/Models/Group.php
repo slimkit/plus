@@ -52,7 +52,7 @@ class Group extends Model
             return null;
         }
 
-        return $this->parseFile($resource);
+        return $this->getFileStorageResourceMeta($resource);
     }
 
     /**
