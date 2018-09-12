@@ -26,8 +26,6 @@ use function Zhiyi\Plus\setting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\Model;
 use Zhiyi\Plus\API2\Controllers\Controller;
-use Zhiyi\Plus\Types\Models as ModelsTypes;
-use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
 use Zhiyi\Plus\API2\Resources\Feed\Topic as TopicResource;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;

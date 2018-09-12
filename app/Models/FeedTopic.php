@@ -24,8 +24,8 @@ use Illuminate\Database\Eloquent\Model;
 use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Zhiyi\Plus\FileStorage\Traits\EloquentAttributeTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Zhiyi\Plus\FileStorage\Traits\EloquentAttributeTrait;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 
 class FeedTopic extends Model
@@ -58,7 +58,7 @@ class FeedTopic extends Model
     protected function setLogoAttribute($resource)
     {
         $this->attributes['logo'] = (string) $resource;
-        
+
         return $this;
     }
 
