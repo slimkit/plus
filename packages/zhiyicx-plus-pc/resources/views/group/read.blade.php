@@ -101,12 +101,16 @@
 
         {{-- 动态列表 --}}
         <div class="feed_content ev-check-joined">
+            {{-- 圈子预览遮罩 --}}
+            <div class="unjoined-cover"></div>
+
             <div class="feed_menu">
                 @if (!in_array($group['mode'], ['paid', 'private']) && $group['joined'])
                 <a href="javascript:;" rel="post" class="font16 @if($type=='post')selected @endif">最新帖子</a>
                 <a href="javascript:;" rel="reply" class="font16 @if($type=='reply')selected @endif">最新回复</a>
-                @endif
                 <a href="javascript:;" rel="excellent" class="font16 @if($type=='excellent')selected @endif">精华帖子</a>
+                @endif
+                <a href="javascript:;" rel="excellent" class="font16 @if($type=='excellent')selected @endif">精华帖预览</a>
             </div>
             <div id="feeds_list"></div>
         </div>

@@ -36,8 +36,10 @@
 .group-info .add-join {color:#59b6d7;border-color:#59b6d7;}
 .group_item .title {color:#000;}
 .group_item .title .paid {display:inline-block;margin-left:2px;color:#FA9C38;border:1px solid #FA9C38;font-size: 12px;padding:0px 2px;border-radius: 2px;}
+.feed_content {position: relative;}
 .feed_content .post-title {height:30px;line-height:54px;font-size:16px;}
 .feed_content .post-title a {color:#59b6d7;}
+.feed_content .unjoined-cover {position: absolute;top: 0;left:0;right:0;bottom:0;z-index: 100;cursor: pointer;}
 /* 圈子动态详情 */
 .feed_left .post-title {font-size:30px;color:#333;line-height:30px;height:60px;cursor:pointer;}
 
