@@ -9,6 +9,9 @@ php:
   - 7.2
   - hhvm
   - nightly
+env:
+  - DB=mysql
+  - DB=postgres
 services:
   - mysql
   - postgres
