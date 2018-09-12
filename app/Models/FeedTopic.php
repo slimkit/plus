@@ -55,6 +55,11 @@ class FeedTopic extends Model
         return $this->getFileStorageResourceMeta($resource);
     }
 
+    /**
+     * Set logo attribute.
+     * @param mixed
+     * @return self
+     */
     protected function setLogoAttribute($resource)
     {
         $this->attributes['logo'] = (string) $resource;
