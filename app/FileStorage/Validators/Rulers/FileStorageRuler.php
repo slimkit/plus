@@ -18,39 +18,40 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\FileStorage\Traits;
+namespace Zhiyi\Plus\FileStorage\Validators\Rulers;
 
-use Zhiyi\Plus\FileStorage\Resource;
 use Zhiyi\Plus\FileStorage\StorageInterface;
-use Zhiyi\Plus\FileStorage\FileMetaInterface;
 
-trait EloquentAttributeTrait
+class FileStorageRuler implements RulerInterface
 {
     /**
-     * Get file storage instance.
-     * @return \Zhiyi\Plus\FileStorage\StorageInterface
+     * The storage.
+     * @var \Zhiyi\Plus\FileStorage\StorageInterface
      */
-    protected function getFileStorageInstance(): StorageInterface
+    protected $storage;
+
+    /**
+     * Create the ruler instalce.
+     * @param Zhiyi\Plus\FileStorage\StorageInterface $storage
+     */
+    public function __construct(StorageInterface $storage)
     {
-        return app(StorageInterface::class);
+        $this->storage;
     }
 
     /**
-     * Get resource meta.
-     * @param string $resource
-     * @return null|\Zhiyi\Plus\FileStorage\FileMeatInterface
+     * Rule handler.
+     * @param array $params
+     * @return bool
      */
-    protected function getFileStorageResourceMeta(string $resource): ?FileMetaInterface
+    public function handle(array $params): bool
     {
-        // Is local mode, throw exceptions.
-        if (app()->isLocal()) {
-            return $this->getFileStorageInstance()->meta(new Resource($resource));
-        }
-
         try {
-            return $this->getFileStorageInstance()->meta(new Resource($resource));
+            return (bool) $this->storage
+                ->meta(new Resource($params[1]))
+                ->getSize();
         } finally {
-            return null;
+            return false;
         }
     }
 }

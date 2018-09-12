@@ -56,5 +56,9 @@ workflows:
   version: 2
   all:
     jobs:
-      - front_end
+      - front_end:
+        filters:
+          branches:
+            ignore:
+              - gh-pages
       # - back_end

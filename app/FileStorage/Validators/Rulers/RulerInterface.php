@@ -18,39 +18,14 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\FileStorage\Traits;
+namespace Zhiyi\Plus\FileStorage\Validators\Rulers;
 
-use Zhiyi\Plus\FileStorage\Resource;
-use Zhiyi\Plus\FileStorage\StorageInterface;
-use Zhiyi\Plus\FileStorage\FileMetaInterface;
-
-trait EloquentAttributeTrait
+interface RulerInterface
 {
     /**
-     * Get file storage instance.
-     * @return \Zhiyi\Plus\FileStorage\StorageInterface
+     * Rule handler.
+     * @param array $params
+     * @return bool
      */
-    protected function getFileStorageInstance(): StorageInterface
-    {
-        return app(StorageInterface::class);
-    }
-
-    /**
-     * Get resource meta.
-     * @param string $resource
-     * @return null|\Zhiyi\Plus\FileStorage\FileMeatInterface
-     */
-    protected function getFileStorageResourceMeta(string $resource): ?FileMetaInterface
-    {
-        // Is local mode, throw exceptions.
-        if (app()->isLocal()) {
-            return $this->getFileStorageInstance()->meta(new Resource($resource));
-        }
-
-        try {
-            return $this->getFileStorageInstance()->meta(new Resource($resource));
-        } finally {
-            return null;
-        }
-    }
+    public function handle(array $params): bool;
 }

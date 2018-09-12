@@ -23,5 +23,4 @@ features:
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/8320deaa80b8489f95fcedaae6df079d)](https://www.codacy.com/app/slimkit/plus?utm_source=github.com&utm_medium=referral&utm_content=slimkit/plus&utm_campaign=Badge_Coverage)
 [![StyleCI](https://github.styleci.io/repos/76627423/shield?branch=master)](https://github.styleci.io/repos/76627423)
 [![Build Status](https://travis-ci.org/slimkit/plus.svg?branch=master)](https://travis-ci.org/slimkit/plus)
-[![CircleCI](https://circleci.com/gh/slimkit/plus/tree/master.svg?style=svg)](https://circleci.com/gh/slimkit/plus/tree/master)
 [![QQ Group](https://img.shields.io/badge/QQ%20Group-651240785-red.svg?longCache=true&style=flat-square)](https://shang.qq.com/wpa/qunwpa?idkey=01b61bdf8a7efc2a40ab4caab2d14793f340e5fe5d09aa0c2c17f3115a579678)
