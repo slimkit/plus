@@ -17,7 +17,7 @@
                     <span class="font14 mention-btn">
                         <div class="ev-btn-comment-mention">
                             <svg class="icon" aria-hidden="true" style="fill: #999;"><use xlink:href="#icon-mention"></use></svg>
-                            提醒谁看
+                            某人
                         </div>
 
                         <div class="dialog-mention-select ev-view-comment-mention-select" style="display: none;">
@@ -90,7 +90,7 @@
                 <span class="font14 mention-btn">
                     <div class="ev-btn-comment-mention">
                         <svg class="icon" aria-hidden="true" style="fill: #999;"><use xlink:href="#icon-mention"></use></svg>
-                        提醒谁看
+                        某人
                     </div>
 
                     <div class="dialog-mention-select ev-view-comment-mention-select" style="display: none;">
