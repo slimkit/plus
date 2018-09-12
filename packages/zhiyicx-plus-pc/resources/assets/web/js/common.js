@@ -1699,7 +1699,7 @@ var repostable = {
         var content = $('.ev-ipt-repostable-content').text();
         if (!content) return noticebox('请输入转发理由', 0);
 
-        if (type === 'posts') type = 'group_posts';
+        if (type === 'posts') type = 'group-posts';
         // 组装数据
         var data = {
             feed_content: content,
