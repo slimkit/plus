@@ -2,11 +2,9 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
-use DB;
-use Illuminate\Http\Request;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\newapi;
-use Zhiyi\Plus\Models\AdvertisingSpace;
+use Illuminate\Http\Request;
 
 class FeedController extends BaseController
 {
@@ -37,7 +35,7 @@ class FeedController extends BaseController
                         'index' => (int) $request->query('after') ?: 0,
                     ];
                     $feeds = newapi('GET', '/api/v2/feed/topics/' . $topic_id . '/feeds', $params);
-                    $data['feeds'] = array_filter($feeds, function($val) use ($topic_id) {
+                    $data['feeds'] = array_filter($feeds, function ($val) use ($topic_id) {
                         $data['test'] = $val;
                         return $val['id'] !== $topic_id;
                     });
@@ -174,21 +172,26 @@ class FeedController extends BaseController
 
         switch ($type) {
             case 'news':
-            $data['news'] = api('GET', "/api/v2/news/{$id}");
-            break;
+                $data['news'] = api('GET', "/api/v2/news/{$id}");
+                break;
             case 'feeds':
-            $data['feeds'] = api('GET', "/api/v2/feeds/{$id}");
-            break;
+                $data['feeds'] = api('GET', "/api/v2/feeds/{$id}");
+                break;
             case 'groups':
-            $data['groups'] = api('GET', "/api/v2/plus-group/groups/{$id}");
-            break;
+                $data['groups'] = api('GET', "/api/v2/plus-group/groups/{$id}");
+                break;
             case 'posts':
-            $data['posts'] = api('GET', "/api/v2/plus-group/groups/1/posts/{$id}"); // fixme: 少参数，圈子id暂时用1代替，不影响最终结果
-            $data['posts']['user'] = api('GET', "/api/v2/users/{$data['posts']['user_id']}");
-            break;
+                $data['posts'] = api('GET', "/api/v2/plus-group/groups/1/posts/{$id}"); // fixme: 少参数，圈子id暂时用1代替，不影响最终结果
+                $data['posts']['user'] = api('GET', "/api/v2/users/{$data['posts']['user_id']}");
+                break;
         }
 
-        // dd($data);
+        // 用于添加话题时的初始热门话题列表
+        $data['hot_topics'] = newapi('GET', '/api/v2/feed/topics', ['only' => 'hot']);
+
+        // 用于 at 某人时的初始关注用户列表
+        $user_id = $this->PlusData['TS']['id'] ?? 0;
+        $data['follow_users'] = api('GET', "/api/v2/users/{$user_id}/followings");
 
         return view('pcview::templates.repostable', $data, $this->PlusData)->render();
     }

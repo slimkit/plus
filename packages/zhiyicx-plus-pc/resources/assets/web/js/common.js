@@ -1620,8 +1620,53 @@ var strLen = function (str){
 };
 
 
-
+/**
+ * 转发
+ */
 var repostable = {
+
+    // 弹出层索引
+    layerIndex: null,
+
+    // 已选择的话题
+    selectedTopics: [],
+
+    // 显示话题选择框
+    showTopics: function(show) {
+        var $el = $('.ev-view-repostable-topic-select')
+        if (show === false) $el.slideUp('fast');
+        else if (show === true) $el.slideDown('fast');
+        else $el.slideToggle('fast');
+    },
+
+    /**
+     * 搜索话题
+     * 使用 lodash.debounce 防抖， 450ms
+     */
+    searchTopics: _.debounce(function(el) {
+      var query = $(el).val();
+      if (query) {
+        $('.ev-view-repostable-topic-hot').text('搜索中...');
+      }
+      $('.ev-view-repostable-topic-list').empty();
+      axios.get('/api/v2/feed/topics', { params: {q: query, limit: 8} })
+        .then(function(res) {
+          var result = res.data.slice(0, 8);
+          if (result.length) {
+            $('.ev-view-repostable-topic-hot').empty();
+            // 填充列表
+            result.forEach(function(topic) {
+              // 高亮关键字
+              var regex = new RegExp(query, 'gi');
+              var nameMarked = topic.name.replace(regex, '<span style="color: #59b6d7;">$&<span>');
+              $('.ev-view-repostable-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+nameMarked+'</li>');
+            });
+          } else {
+            $('.ev-view-repostable-topic-hot').text('没有找到结果');
+          }
+        })
+    }, 450),
+
     /**
      * 显示需要 at 的用户列表
      *
@@ -1644,9 +1689,12 @@ var repostable = {
         // 未登录时跳转倒登陆页面
         if (!TS.USER) return location.href = TS.SITE_URL + '/auth/login';
         var url = '/feeds/repostable?type='+type+'&id='+id;
-        ly.load(url, '转发', '720px');
+        repostable.layerIndex = ly.load(url, '转发', '720px');
     },
 
+    /**
+     * 提交转发
+     */
     post: function(type, id) {
         if (type === 'posts') type = 'group_posts';
         // 组装数据
@@ -1656,6 +1704,7 @@ var repostable = {
             feed_mark: TS.MID + new Date().getTime(),
             repostable_type: type,
             repostable_id: id,
+            topics: repostable.selectedTopics,
         };
 
         axios.post('/api/v2/feeds', data)
@@ -1732,6 +1781,33 @@ $(function() {
         if (e.type == 'mouseenter' && $('.nav_menu').css('display') == 'none') {
             $('.nav_menu').show();
         }
+    })
+
+    // 捕获添加话题(用于转发动态)
+    $(document).on('click', '.ev-view-repostable-topic-list > li', function() {
+      var id = $(this).data('topic-id')
+      if (repostable.selectedTopics.indexOf(id) > -1) {
+        repostable.showTopics(false);
+        return layer.msg('你已经添加过这个话题了')
+      };
+      var name = $(this).data('topic-name')
+      var html = '<li class="selected-topic-item ev-selected-topic-item">' + name +
+        '<span data-topic-id="'+id+'" class="close ev-delete-repostable-topic">'+
+        '<svg class="icon" aria-hidden="true" style="fill: #59d6b7;"><use xlink:href="#icon-close"></use></svg>'+
+        '</span></li>';
+      $('.ev-selected-repostable-topics').append(html);
+      repostable.selectedTopics.push(id);
+      repostable.showTopics(false);
+      $('.layui-layer-content').css('height', $('.layui-layer-content .repostable-wrap').outerHeight())
+    })
+
+    // 捕获移除话题(用于转发动态)
+    $(document).on('click', '.ev-delete-repostable-topic', function() {
+      var id = $(this).data('topic-id');
+      $(this).parents('.ev-selected-topic-item').remove();
+      var index = repostable.selectedTopics.indexOf(id)
+      if (index > -1) repostable.selectedTopics.splice(index, 1);
+      $('.layui-layer-content').css('height', $('.layui-layer-content .repostable-wrap').outerHeight())
     })
 
     // 跳至顶部
