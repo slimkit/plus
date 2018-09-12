@@ -27,7 +27,7 @@
             <div class="m-form">
                 <div class="formitm">
                     <input class="chools-cover" id="J-upload-cover" type="file" name="file">
-                    <img class="cover" id="J-preview-cover" src="{{ $group['avatar']['url'] ?? asset('assets/pc/images/default_group_cover.png') }}">
+                    <img class="cover" id="J-preview-cover" src="{{ $group['avatar'] ? $group['avatar']->url() : asset('assets/pc/images/default_group_cover.png') }}">
                     <button class="J-upload-cover-btn change-cover" onclick="$('#J-upload-cover').click();">更改圈子头像</button>
                 </div>
                 <div class="formitm">
