@@ -1879,7 +1879,7 @@ $(function() {
       var name = $(this).data('user-name')
       $el = $('.ev-ipt-repostable-content');
 
-      $el.html($el.html() + " <span contenteditable=\"false\" style=\"color: #59b6d7;\">\u00ad@" + name + "\u00ad</span> 1")
+      $el.html($el.html() + " <span contenteditable=\"false\" style=\"color: #59b6d7;\">\u00ad@" + name + "\u00ad</span> ")
 
       repostable.showMention(false);
     })
