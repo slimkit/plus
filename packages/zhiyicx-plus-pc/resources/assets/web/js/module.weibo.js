@@ -399,6 +399,10 @@ $(function() {
         weibo.showTopics(false);
         return layer.msg('你已经添加过这个话题了')
       };
+      if (weibo.selectedTopics.length >= 5) {
+        weibo.showTopics(false)
+        return layer.msg('最多只能选择5个话题')
+      }
       var name = $(this).data('topic-name')
       var html = '<li class="selected-topic-item ev-selected-topic-item">' + name +
         '<span data-topic-id="'+id+'" class="close ev-delete-topic">'+
