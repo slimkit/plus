@@ -1,66 +1,82 @@
 sudo: false
 
-language: php
-
 branches:
   except:
     - gh-pages
 
-matrix:
-  fast_finish: true
+language: php
+
+php:
+  - 7.1.3
+  - 7.1
+  - 7.2
+  - hhvm
+  - nightly
+
+jobs:
   include:
-    - php: 7.1
-      env: DB=mysql
-      services: mysql
-    - php: 7.1
-      env: DB=postgres
-      services: postgresql
-    - php: 7.2
-      env: DB=mysql
-      services: mysql
-    - php: 7.2
-      env: DB=postgres
-      services: postgresql
+    - stage: "Tests"
+      name: "PHP Tests (MySQL)"
+      services:
+        - mysql
+      cache:
+        directories:
+          - $HOME/.composer/cache
+      before_install:
+        - mysql -e 'CREATE DATABASE IF NOT EXISTS plus;'
+        - php ./scripts/travis-ci-settings.php mysql
+      install:
+        - composer install
+        - php artisan key:generate
+        - php artisan jwt:secret --force
+        - php artisan migrate -vvv
+        - php artisan db:seed -vvv
+        - php artisan vendor:publish --all -vvv
+      script: php vendor/bin/phpunit --coverage-clover=coverage.xml
+      after_script:
+        - php vendor/bin/codacycoverage clover coverage.xml
+        - bash <(curl -s https://codecov.io/bash)
+      
 
-cache:
-  directories:
-    - $HOME/.composer/cache
-    - node_modules
+# cache:
+#   directories:
+#     - $HOME/.composer/cache
+#     - node_modules
 
-before_install:
-  # Install NODE.js 8.12 version
-  - nvm install 8
-  # Install Yarn
-  - npm install --global yarn
-  # Check and create database.
-  - sh -c "if [ '$DB' = 'postgres' ]; then psql -c 'create database plus;' -U postgres; echo $DB; fi"
-  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'CREATE DATABASE IF NOT EXISTS plus;'; echo $DB; fi"
-  - php ./scripts/travis-ci-settings.php $DB
+# before_install:
+#   # Install NODE.js 8.12 version
+#   - nvm install 8
+#   # Install Yarn
+#   - npm install --global yarn
+#   # Check and create database.
+#   - sh -c "if [ '$DB' = 'postgres' ]; then psql -c 'create database plus;' -U postgres; echo $DB; fi"
+#   - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'CREATE DATABASE IF NOT EXISTS plus;'; echo $DB; fi"
+#   - php ./scripts/travis-ci-settings.php $DB
 
-install:
-  - yarn install
-  - composer install
-  - php artisan key:generate
-  - php artisan jwt:secret --force
-  - php artisan migrate -vvv
-  - php artisan db:seed -vvv
-  - php artisan vendor:publish --all -vvv
+# install:
+#   - yarn install
+#   - composer install
+#   - php artisan key:generate
+#   - php artisan jwt:secret --force
+#   - php artisan migrate -vvv
+#   - php artisan db:seed -vvv
+#   - php artisan vendor:publish --all -vvv
 
-script:
-  - php vendor/bin/phpunit --coverage-clover=coverage.xml
-  - yarn development
-  - yarn add vuepress -D && yarn docs:build
+# script:
+#   - php vendor/bin/phpunit --coverage-clover=coverage.xml
+#   - yarn development
+#   - yarn add vuepress -D && yarn docs:build
 
-after_script:
-  - php vendor/bin/codacycoverage clover coverage.xml
-  - bash <(curl -s https://codecov.io/bash)
+# after_script:
+#   - php vendor/bin/codacycoverage clover coverage.xml
+#   - bash <(curl -s https://codecov.io/bash)
 
-deploy:
-  provider: pages
-  skip-cleanup: true
-  github-token: $GITHUB_PUBLISH_TOKEN
-  keep-history: true
-  local-dir: docs/.vuepress/dist
-  target-branch: gh-pages
-  name: SlimKit Bot
-  verbose: true
+# deploy:
+#   provider: pages
+#   skip-cleanup: true
+#   github-token: $GITHUB_PUBLISH_TOKEN
+#   keep-history: true
+#   local-dir: docs/.vuepress/dist
+#   target-branch: gh-pages
+#   name: SlimKit Bot
+#   verbose: true
