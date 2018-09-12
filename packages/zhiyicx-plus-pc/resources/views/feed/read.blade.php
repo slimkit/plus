@@ -121,9 +121,13 @@
                 @break
             @endswitch
 
-            <script>
-            console.log(@json($repostable ?? ''))
-            </script>
+            @if(count($feed['topics']))
+            <div class="selected-topics" style="margin-bottom: 20px;">
+                @foreach($feed['topics'] as $topic)
+                <a href='{{ route("pc:topicDetail", ["topic_id" => $topic["id"]]) }}' class="selected-topic-item">{{ $topic['name'] }}</a>
+                @endforeach
+            </div>
+            @endif
 
             <div class="detail_share">
                 <span id="J-collect{{ $feed['id'] }}" rel="{{ $feed['collect_count'] }}" status="{{(int) $feed['has_collect']}}">
