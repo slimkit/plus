@@ -46,7 +46,7 @@
                             </span>
                             <div class="u-share-show">
                                 分享至：
-                                @include('pcview::widgets.thirdshare' , ['share_url' => route('redirect', ['target' => '/groups/'.$group['id']]), 'share_title' => $group['name'], 'share_pic' => $group['avatar']])
+                                @include('pcview::widgets.thirdshare' , ['share_url' => route('redirect', ['target' => '/groups/'.$group['id']]), 'share_title' => $group['name'], 'share_pic' => $group['avatar']['url']])
                                 <div class="triangle"></div>
                             </div> --}}
                         </div>
