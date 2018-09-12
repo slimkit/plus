@@ -106,22 +106,22 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function getAvatarAttribute(?string $resource): ?FileMetaInterface
+    protected function getAvatarAttribute(?string $resource): ?FileMetaInterface
     {
         if (! $resource) {
             return null;
         }
 
-        return $this->parseFile($resource);
+        return $this->getFileStorageResourceMeta($resource);
     }
 
-    public function getBgAttribute(?string $resource): ?FileMetaInterface
+    protected function getBgAttribute(?string $resource): ?FileMetaInterface
     {
         if (! $resource) {
             return null;
         }
 
-        return $this->parseFile($resource);
+        return $this->getFileStorageResourceMeta($resource);
     }
 
     /**
@@ -130,7 +130,7 @@ class User extends Authenticatable implements JWTSubject
      * @return array|null
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function getVerifiedAttribute()
+    protected function getVerifiedAttribute()
     {
         $certification = $this->certification()
             ->where('status', 1)

@@ -32,7 +32,7 @@ class EditTopic extends Request
     public function rules(): array
     {
         return [
-            'logo' => ['nullable', 'integer', 'min:1'],
+            'logo' => ['nullable', 'string', 'file_storage'],
             'desc' => ['nullable', 'string', 'max:500'],
         ];
     }
@@ -46,8 +46,8 @@ class EditTopic extends Request
     {
         return [
             'desc.max' => '话题描述请控制在 500 字以内',
-            'logo.integer' => '话题 Logo 数据非法',
-            'logo.min' => '话题 Logo 文件 ID 非法',
+            'logo.string' => '话题 Logo 数据非法',
+            'logo.file_storage' => '话题 Logo 未上传，或使用非法节点',
         ];
     }
 }

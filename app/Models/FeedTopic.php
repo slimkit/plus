@@ -21,13 +21,17 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Zhiyi\Plus\FileStorage\Traits\EloquentAttributeTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 
 class FeedTopic extends Model
 {
+    use EloquentAttributeTrait;
+
     public const REVIEW_PASSED = 'passed';
     public const REVIEW_WAITING = 'waiting';
     public const REVIEW_FAILED = 'failed';
@@ -36,6 +40,27 @@ class FeedTopic extends Model
      * The model table name.
      */
     protected $table = 'feed_topics';
+
+    /**
+     * Parse resource and get resource meta.
+     * @param null|string $resource
+     * @return null|\Zhiyi\Plus\FileStorage\FileMetaInterface
+     */
+    protected function getLogoAttribute(?string $resource = null): ?FileMetaInterface
+    {
+        if (! $resource) {
+            return null;
+        }
+
+        return $this->getFileStorageResourceMeta($resource);
+    }
+
+    protected function setLogoAttribute($resource)
+    {
+        $this->attributes['logo'] = (string) $resource;
+        
+        return $this;
+    }
 
     /**
      * Topic belongs to many relation.
@@ -52,6 +77,10 @@ class FeedTopic extends Model
             ->using(FeedTopicUserLink::class);
     }
 
+    /**
+     * The model feed velongs ti many relation.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function feeds(): BelongsToMany
     {
         $table = (new FeedTopicLink)->getTable();
@@ -61,6 +90,10 @@ class FeedTopic extends Model
             ->using(FeedTopicLink::class);
     }
 
+    /**
+     * The topic creator has one relation.
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function creator(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'creator_user_id');

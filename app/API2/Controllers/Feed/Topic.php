@@ -145,27 +145,14 @@ class Topic extends Controller
      * Create an topic.
      *
      * @param \Zhiyi\Plus\API2\Requests\Feed\CreateTopic $request
-     * @param \Zhiyi\Plus\Types\Models $types
      * @return \Illuminate\Http\JsonResponse
      */
-    public function create(CreateTopicRequest $request, ModelsTypes $types): JsonResponse
+    public function create(CreateTopicRequest $request): JsonResponse
     {
         // Create feed topic module
         $topic = new FeedTopicModel;
         foreach ($request->only(['name', 'logo', 'desc']) as $key => $value) {
             $topic->{$key} = $value;
-        }
-
-        // If logo exists, inspect file with ID to be used.
-        $with = null;
-        if ($topic->logo) {
-            $with = (new FileWithModel)
-                ->query()
-                ->where('id', $topic->logo)
-                ->first();
-            if ($with->channel || $with->raw) {
-                throw new UnprocessableEntityHttpException('Logo 文件不合法');
-            }
         }
 
         // Database query `name` used
@@ -182,7 +169,7 @@ class Topic extends Controller
 
         // Open a database transaction,
         // database commit success return the topic model.
-        $topic = $user->getConnection()->transaction(function () use ($user, $topic, $with, $types) {
+        $topic = $user->getConnection()->transaction(function () use ($user, $topic) {
             // Set topic creator user ID and
             // init default followers count.
             $topic->creator_user_id = $user->id;
@@ -196,17 +183,6 @@ class Topic extends Controller
             $link->user_id = $user->id;
             $link->following_at = new Carbon();
             $link->save();
-
-            // If the FileWith instance of `FileWithModel`,
-            // set topic class alias to `channel`, set the
-            // topic `id` to `raw` column.
-            // Reset FileWith owner for the authenticated auth.
-            if ($with instanceof FileWithModel) {
-                $with->channel = $types->get(FeedTopicModel::class, ModelsTypes::KEY_BY_CLASSNAME);
-                $with->raw = $topic->id;
-                $with->user_id = $user->id;
-                $with->save();
-            }
 
             return $topic;
         });
@@ -228,11 +204,10 @@ class Topic extends Controller
      * Edit an topic.
      *
      * @param \Zhiyi\Plus\API2\Requests\Feed\EditTopic $request
-     * @param \Zhiyi\Plus\Types\Models $types
      * @param \Zhiyi\Plus\Models\FeedTopic $topic
      * @return \Illuminate\Http\Response
      */
-    public function update(EditTopicRequest $request, ModelsTypes $types, FeedTopicModel $topic): Response
+    public function update(EditTopicRequest $request, FeedTopicModel $topic): Response
     {
         $this->authorize('update', $topic);
 
@@ -240,40 +215,19 @@ class Topic extends Controller
         $response = (new Response())->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
 
         // If `logo` and `desc` field all is NULL
-        $with = null;
         $desc = $request->input('desc');
         $name = $request->input('name');
-        if (! ($logo = (int) $request->input('logo')) && ! $desc && ! $name) {
+        $logo = $request->input('logo');
+        if (! $logo && ! $desc && ! $name) {
             return $response;
-        } elseif ($logo && $logo !== $topic->logo) {
-            $with = (new FileWithModel)
-                ->query()
-                ->where('id', $logo)
-                ->first();
-            if ($with->channel || $with->raw) {
-                throw new UnprocessableEntityHttpException('Logo 文件不合法');
-            }
-
-            $with->user_id = $request->user()->id;
-            $with->channel = $types->get(FeedTopicModel::class, ModelsTypes::KEY_BY_CLASSNAME);
-            $with->raw = $topic->id;
         }
 
         $topic->name = $name ?: $topic->name;
         $topic->desc = $desc ?: $topic->desc;
+        $topic->logo = $logo ?: $topic->logo;
+        $topic->save();
 
-        return $topic->getConnection()->transaction(function () use ($response, $topic, $with): Response {
-            if ($with instanceof FileWithModel) {
-                $with->save();
-
-                // Set file with ID to topic logo.
-                $topic->logo = $with->id;
-            }
-
-            $topic->save();
-
-            return $response;
-        });
+        return $response;
     }
 
     /**
