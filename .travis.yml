@@ -44,6 +44,7 @@ jobs:
           - "node_modules"
       services: null
       env: null
+      before_install: null
       install: npm install
       script: npm run dev
       after_script: null
