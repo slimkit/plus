@@ -469,7 +469,7 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 .repostable-wrap .content[contenteditable=true]:empty::before {content: attr(placeholder);display: block;color: #b3b3b3;}/* placeholder */
 .repostable-wrap .tools {color: #666;margin-top: 20px;overflow: hidden;}
 .repostable-wrap .tools > span {margin-right: 20px;font-size: 14px;float: left;display: block;height: 36px;line-height: 36px;}
-.repostable-wrap .tools > button {float: right;background-color: #59b6d7;color: #fff;border: none;border-radius: 2px;width: 85px;height: 36px;}
+.repostable-wrap .tools > button {float: right;background-color: #59b6d7;color: #fff;border: none;border-radius: 2px;width: 85px;height: 36px;cursor: pointer;}
 .repostable-wrap .icon {fill: #999;}
 .repostable-topic {cursor: pointer;}
 .repostable-mention {cursor: pointer;}

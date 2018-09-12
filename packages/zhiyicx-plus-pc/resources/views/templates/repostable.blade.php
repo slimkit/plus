@@ -40,7 +40,7 @@
         <span class="repostable-topic">
             <div onclick="repostable.showTopics()">
                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-topic1"></use></svg>
-                话题
+                <span>话题</span>
             </div>
             <div class="dialog-topic-select ev-view-repostable-topic-select" style="display: none;">
                 <label class="search-wrap">
@@ -61,7 +61,7 @@
         <span class="repostable-mention">
             <div onclick="repostable.showMention()">
                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-mention"></use></svg>
-                @某人
+                <span>某人</span>
             </div>
             <!-- <div class="repostable-mention-wrap"> -->
                 <div class="dialog-mention-select ev-view-repostable-mention-select" style="display: none;">

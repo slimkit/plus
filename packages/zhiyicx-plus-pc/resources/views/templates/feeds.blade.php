@@ -95,7 +95,8 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
                 <ul>
                     <li>
                         <a href="javascript:;" onclick="repostable.show('feeds', {{$post['id']}})">
-                            <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg>转发
+                            <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg>
+                            <span>转发</span>
                         </a>
                     </li>
                     <li id="J-collect{{$post['id']}}" rel="0" status="{{(int) $post['has_collect']}}">
