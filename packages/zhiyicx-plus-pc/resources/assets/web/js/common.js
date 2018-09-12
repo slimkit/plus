@@ -1698,6 +1698,7 @@ var repostable = {
     post: function(type, id) {
         var content = $('.ev-ipt-repostable-content').text();
         if (!content) return noticebox('请输入转发理由', 0);
+        if (content.length > 255) return noticebox('超出 255 字限制', 0);
 
         if (type === 'posts') type = 'group-posts';
         // 组装数据
