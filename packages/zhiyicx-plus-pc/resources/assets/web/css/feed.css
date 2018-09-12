@@ -34,7 +34,7 @@
 
 /* 小标签 */
 .selected-topics {display: flex;flex-flow: row wrap;margin-top: 10px;}
-.selected-topics .selected-topic-item {background-color: rgba(89, 182, 215, 0.15);padding: 6px;border-radius: 3px;color: #59b6d7;font-size: 12px;margin-right: 6px;height: 24px;line-height: 24px;}
+.selected-topics .selected-topic-item {background-color: rgba(89, 182, 215, 0.15);padding: 0 6px;border-radius: 3px;color: #59b6d7;font-size: 12px;margin-right: 6px;height: 24px;line-height: 24px;}
 .selected-topics .selected-topic-item .close {height: 24px;line-height: 24px;cursor: pointer;}
 .selected-topics .selected-topic-item svg {transform: scale(0.7);}
 
