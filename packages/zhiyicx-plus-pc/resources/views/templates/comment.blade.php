@@ -65,7 +65,7 @@
                     @php
                         $user = getUserInfo($comment['reply_user']);
                     @endphp
-                    回复<a class="mcolor" href="{{ route('pc:mine', $user['id']) }}">{{ '@'.$user['name'] }}</a>：
+                    回复 <a class="mcolor" href="{{ route('pc:mine', $user['id']) }}">{{ $user['name'] }}</a>：
                 @endif
 
                 {!! formatContent($comment['body']) !!}
@@ -78,4 +78,3 @@
 </div>
 @endforeach
 @endif
-

@@ -779,7 +779,7 @@ var comment = {
         this.support.to_uname = name;
         this.support.row_id = source_id;
         this.support.editor = $('#J-editor-' + type + this.support.row_id);
-        this.support.editor.text('回复@' + this.support.to_uname+'：');
+        this.support.editor.text('回复 ' + this.support.to_uname+'：');
         this.support.editor.focus();
     },
     publish: function(obj) {
@@ -804,12 +804,12 @@ var comment = {
         // 保留原始回复内容, at 用户替换为链接
         var original_body = formData.body.replace(/\u00ad@([^\/]+?)\u00ad/gi, function(matches, username) {
           var url = TS.SITE_URL + '/users/' + username;
-          return '<a href="' + url + '">@' + username + '</a>'
+          return '<a href="' + url + '">' + username + '</a>'
         });
 
         // 去除回复@
         if (_this.support.to_uid > 0 && formData.body.indexOf('回复') != -1) {
-            if (formData.body == '回复@'+this.support.to_uname+'：') {
+            if (formData.body == '回复 '+this.support.to_uname+'：') {
                 noticebox('回复内容不能为空', 0); return;
             }
             formData.body = formData.body.split('：')[1];
