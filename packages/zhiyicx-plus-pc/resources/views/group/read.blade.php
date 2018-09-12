@@ -102,7 +102,9 @@
         {{-- 动态列表 --}}
         <div class="feed_content ev-check-joined">
             {{-- 圈子预览遮罩 --}}
+            @if (in_array($group['mode'], ['paid', 'private']) && !$group['joined'])
             <div class="unjoined-cover"></div>
+            @endif
 
             <div class="feed_menu">
                 @if (!in_array($group['mode'], ['paid', 'private']) && $group['joined'])
