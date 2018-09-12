@@ -779,7 +779,7 @@ var comment = {
         this.support.to_uname = name;
         this.support.row_id = source_id;
         this.support.editor = $('#J-editor-' + type + this.support.row_id);
-        this.support.editor.val('回复@' + this.support.to_uname+'：');
+        this.support.editor.text('回复@' + this.support.to_uname+'：');
         this.support.editor.focus();
     },
     publish: function(obj) {
@@ -1955,50 +1955,56 @@ $(function() {
 
     // 监听输入框按键, 检测到退格键删除@区域
     $('.comment_editor').on('keydown', function (event) {
-      if (window.getSelection && event.which == 8) { // backspace
-          // fix backspace bug in FF
-          // https://bugzilla.mozilla.org/show_bug.cgi?id=685445
-          var selection = window.getSelection();
-          if (!selection.isCollapsed || !selection.rangeCount) {
-              return;
-          }
+        console.log(12);
+        if (window.getSelection && event.which == 8) { // backspace
+            // fix backspace bug in FF
+            // https://bugzilla.mozilla.org/show_bug.cgi?id=685445
+            var selection = window.getSelection();
+            if (!selection.isCollapsed || !selection.rangeCount) {
+                return;
+            }
 
-          var curRange = selection.getRangeAt(selection.rangeCount - 1);
-          if (curRange.commonAncestorContainer.nodeType == 3 && curRange.startOffset > 0) {
-              // we are in child selection. The characters of the text node is being deleted
-              return;
-          }
+            var curRange = selection.getRangeAt(selection.rangeCount - 1);
+            if (curRange.commonAncestorContainer.nodeType == 3 && curRange.startOffset > 0) {
+                // we are in child selection. The characters of the text node is being deleted
+                return;
+            }
 
-          var range = document.createRange();
-          if (selection.anchorNode != this) {
-              // selection is in character mode. expand it to the whole editable field
-              range.selectNodeContents(this);
-              range.setEndBefore(selection.anchorNode);
-          } else if (selection.anchorOffset > 0) {
-              range.setEnd(this, selection.anchorOffset);
-          } else {
-              // reached the beginning of editable field
-              return;
-          }
-          range.setStart(this, range.endOffset - 1);
+            var range = document.createRange();
+            if (selection.anchorNode != this) {
+                // selection is in character mode. expand it to the whole editable field
+                range.selectNodeContents(this);
+                range.setEndBefore(selection.anchorNode);
+            } else if (selection.anchorOffset > 0) {
+                range.setEnd(this, selection.anchorOffset);
+            } else {
+                // reached the beginning of editable field
+                return;
+            }
+            range.setStart(this, range.endOffset - 1);
 
-          var previousNode = range.cloneContents().lastChild;
-          if (previousNode && previousNode.contentEditable == 'false') {
-              // this is some rich content, e.g. smile. We should help the user to delete it
-              range.deleteContents();
-              event.preventDefault();
-          }
-      }
-      if (event.which === 16 ) {
-        isShiftKey = true;
-      }
-      if (event.which === 50) {
-        is2Key = true
-      }
-      console.log(isShiftKey, is2Key);
-      if (isShiftKey && is2Key) {
-        $(this).closest('.comment_box').find('.ev-btn-comment-mention').click();
-      }
+            var previousNode = range.cloneContents().lastChild;
+            if (previousNode && previousNode.contentEditable == 'false') {
+                // this is some rich content, e.g. smile. We should help the user to delete it
+                range.deleteContents();
+                event.preventDefault();
+            }
+        }
+        if (event.which === 16) {
+            isShiftKey = true;
+        }
+        if (event.which === 50) {
+            is2Key = true
+        }
+        console.log(1);
+        console.log(isShiftKey, is2Key);
+        if (isShiftKey && is2Key) {
+            $(this).closest('.comment_box').find('.ev-btn-comment-mention').click();
+            setTimeout(() => {
+                var $el = $('#feed_content')
+                $el.html($el.html().replace(/@$/, ''))
+            }, 0);
+        }
     });
 
     $('.comment_editor').on('keyup', function(event) {
