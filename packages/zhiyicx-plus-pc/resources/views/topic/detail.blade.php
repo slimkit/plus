@@ -115,6 +115,12 @@
         url: '{{ url("/feeds") }}',
         params: params,
         loadtype: 0,
+        callback: function() {
+            // 移除话题下所有动态的当前话题
+            $('a.selected-topic-item').each(function() {
+                if ($(this).text() === '{{ $topic["name"] }}') $(this).remove();
+            })
+        }
     });
 
     // 事件绑定工厂
