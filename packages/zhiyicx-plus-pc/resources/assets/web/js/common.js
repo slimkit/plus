@@ -405,7 +405,7 @@ var getLength = function(str, shortUrl) {
 
 // 统计输入字符串长度(用于评论回复最大字数计算)
 var checkNums = function(obj, len, show) {
-    var str = $(obj).val();
+    var str = $(obj).val() || $(obj).text();
     var surplus = len - str.length;
     if (surplus < 0) {
         $(obj).parent().find('.' + show)
