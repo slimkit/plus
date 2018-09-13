@@ -43,15 +43,23 @@
         @break
 
         @case('groups')
-        <a class="feed_repostable"
+        <a class="feed_repostable group"
         @if ($nolink)
             href="javascript:;"
         @else
             href="{{ route('pc:groupread', ['group_id' => $feed['repostable_id']]) }}"
         @endif
         >
-            <p class="description"><strong>{{$repostable['name']}}</strong></p>
-            <p class="description">{{$repostable['summary']}}</p>
+            <div class="group-wrap">
+                <div class="group-left">
+                    <div class="label">{{ $repostable['category']['name'] }}</div>
+                    <img src='{{ $repostable['avatar'] ? $repostable['avatar']->url() : asset('assets/pc/images/default_picture.png') }}' alt="">
+                </div>
+                <div class="group-right">
+                    <p class="title"><strong>{{$repostable['name']}}</strong></p>
+                    <p class="description">{{$repostable['summary']}}</p>
+                </div>
+            </div>
         </a>
         @break
 

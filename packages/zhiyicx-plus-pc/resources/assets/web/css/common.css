@@ -483,4 +483,13 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 .feed_repostable .news-right .title {font-size: 16px;}
 .feed_repostable .news-right .category {border: 1px solid #59b6d7;border-radius: 3px;color: #59b6d7;font-size: 12px;padding: 1px 2px;margin-right: 10px;}
 .feed_repostable .news-right .information {color: #999;font-size: 12px;}
+.feed_repostable.group {padding: 10px 20px;}
+.feed_repostable .group-wrap {background-color: #fff;display: flex;width: 100%;padding: 10px 20px;}
+.feed_repostable .group-left {width: 100px;height: 100px;flex: none;margin-right: 15px;position: relative;}
+.feed_repostable .group-left img {width: 100%;height: 100%;}
+.feed_repostable .group-left .label {position: absolute;top: 10px;left: -10px;background-color: #64bad9;color: #fff;border-radius: 0 100px 100px 0;padding: 0 20px 0 15px;}
+.feed_repostable .group-left .label::after {content: "";display: block;width: 0;height: 0;border-top: 10px solid #4a9cba;border-left: 10px solid transparent;position: absolute;top: 20px;left: 0;}
+.feed_repostable .group-right {flex: auto;display: flex;flex-direction: column;justify-content: space-around;letter-spacing: 0;}
+.feed_repostable .group-right .title {font-size: 18px;}
+.feed_repostable .group-right .description {font-size: 14px;color: #999;}
 .layui-layer-page .layui-layer-content {overflow: visible !important;} /*转发弹框话题选择溢出部分可见*/
