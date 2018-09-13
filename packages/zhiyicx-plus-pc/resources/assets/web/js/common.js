@@ -955,6 +955,7 @@ var comment = {
       if (show === false) $el.slideUp('fast');
       else if (show === true) $el.slideDown('fast');
       else $el.slideToggle('fast');
+      $el.find('input').val('');
     },
 
     /**
@@ -1609,6 +1610,7 @@ var repostable = {
         if (show === false) $el.slideUp('fast');
         else if (show === true) $el.slideDown('fast');
         else $el.slideToggle('fast');
+        $el.find('input').val('');
     },
 
     /**
@@ -1649,6 +1651,7 @@ var repostable = {
         if (show === false) $el.slideUp('fast');
         else if (show === true) $el.slideDown('fast');
         else $el.slideToggle('fast');
+        $el.find('input').val('');
     },
 
     /**
