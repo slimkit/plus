@@ -986,7 +986,14 @@ var comment = {
           }
         })
       } else {
-        $('.ev-view-comment-mention-placeholder').text('搜索中...');
+        $('.ev-view-comment-mention-placeholder').text('关注用户');
+        axios.get('/api/v2/users/'+TS.USER.id+'/followings')
+          .then(function (res) {
+            res = res.data
+            res.forEach(function(user) {
+              $('.ev-view-comment-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
+            })
+          })
       }
     }, 450),
 
