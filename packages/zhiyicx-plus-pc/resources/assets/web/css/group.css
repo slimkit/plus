@@ -40,6 +40,9 @@
 .feed_content .post-title {height:30px;line-height:54px;font-size:16px;}
 .feed_content .post-title a {color:#59b6d7;}
 .feed_content .unjoined-cover {position: absolute;top: 0;left:0;right:0;bottom:0;z-index: 100;cursor: pointer;}
+.feed_content .feed_item .feed_title .pinned {background-color: #67b595;border-radius: 2px;padding: 0 2px;color: #fff;font-size: 12px;}
+
+
 /* 圈子动态详情 */
 .feed_left .post-title {font-size:30px;color:#333;line-height:30px;height:60px;cursor:pointer;}
 

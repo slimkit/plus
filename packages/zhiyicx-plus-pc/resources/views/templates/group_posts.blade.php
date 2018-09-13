@@ -20,9 +20,7 @@
             <span class="feed_time font12">{{ getTime($post['created_at']) }}</span>
             <span class="feed_time font12 hide">查看详情</span>
         </a>
-        <a class="pinned" href="javascript:;">
-            <span class="font12">置顶</span>
-        </a>
+        <a class="pinned" href="javascript:;">置顶</a>
     </div>
     <div class="feed_body">
         <p class="s-fc">{!! formatContent($post['title']) !!}</p>
