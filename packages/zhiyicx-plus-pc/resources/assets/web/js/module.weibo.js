@@ -369,10 +369,26 @@ weibo.showMention = function(show) {
 
 $(function() {
 
+    // 已选择话题
     weibo.selectedTopics = [];
-
     var defaultTopic = $('.ev-selected-topics').find('.ev-selected-topic-default').data('topic-id');
     if (defaultTopic) weibo.selectedTopics.push(defaultTopic);
+
+    // 弹出层点击其他地方关闭
+    $('body').click(function(e) {
+        var target = $(e.target);
+
+        // at 用户搜索框
+        if (!target.closest('.mention-btn').length) {
+          weibo.showMention(false);
+        }
+
+        // 话题搜索框
+        if (!target.closest('.mention-btn').length) {
+          weibo.showTopics(false)
+        }
+    });
+
 
     // 图片删除事件
     $(".feed_post").on("click", ".imgdel", function() {
@@ -419,30 +435,6 @@ $(function() {
       $(this).parents('.ev-selected-topic-item').remove();
       var index = weibo.selectedTopics.indexOf(id)
       if (index > -1) weibo.selectedTopics.splice(index, 1);
-    })
-
-    // 捕获添加话题按钮以显示话题
-    $(document).on('click','.ev-btn-topic', function(event) {
-      event.stopPropagation();  // 禁止冒泡
-      weibo.showTopics(true);
-    })
-
-    // 捕获话题搜索框以外的点击事件以关闭话题搜索框
-    $(document).on('click', function(event) {
-      var $parent = $(event.target).closest('.ev-view-topic-select')
-      if (!$parent.length) weibo.showTopics(false)
-    })
-
-    // 捕获 at 按钮
-    $(document).on('click', '.ev-btn-mention', function(event) {
-      event.stopPropagation();
-      weibo.showMention(true);
-    })
-
-    // 捕获话题搜索框以外的点击事件以关闭话题搜索框
-    $(document).on('click', function(event) {
-      var $parent = $(event.target).closest('.ev-view-mention-select')
-      if (!$parent.length) weibo.showMention(false)
     })
 
     // 捕获添加话题

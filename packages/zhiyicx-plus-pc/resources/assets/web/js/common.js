@@ -942,8 +942,54 @@ var comment = {
             url = '/api/v2/plus-group/currency-pinned/comments/'+ id;
             pinneds(url, 'pinned');
         }
-    }
-};
+    },
+
+
+    /**
+     * 显示需要 at 的用户列表
+     *
+     * @param {boolean} [show] 是否为显示, 如果不填则表示切换
+     */
+    showMention: function(show) {
+      var $el = $('.ev-view-comment-mention-select')
+      if (show === false) $el.slideUp('fast');
+      else if (show === true) $el.slideDown('fast');
+      else $el.slideToggle('fast');
+    },
+
+    /**
+     * 搜索用户
+     * 使用 lodash.debounce 防抖, 450ms 后触发搜索
+     *
+     * @param {}
+     */
+    searchUser: _.debounce(function(el) {
+      var keyword = $(el).val();
+      $('.ev-view-comment-follow-users').empty();
+      if (keyword) {
+        $('.ev-view-comment-mention-placeholder').text('搜索中...');
+        axios.get('/api/v2/users', { params: {name: keyword, limit: 8} })
+        .then(function(res) {
+          var result = res.data.slice(0, 8);
+          if (result.length) {
+            $('.ev-view-comment-mention-placeholder').empty();
+            // 填充列表
+            result.forEach(function(user) {
+              // 高亮关键字
+              var regex = new RegExp(keyword, 'gi');
+              var nameMarked = user.name.replace(regex, '<span style="color: #59b6d7;">$&</span>');
+              $('.ev-view-comment-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+nameMarked+'</li>');
+            });
+          } else {
+            $('.ev-view-comment-mention-placeholder').text('没有找到结果');
+          }
+        })
+      } else {
+        $('.ev-view-comment-mention-placeholder').text('搜索中...');
+      }
+    }, 450),
+
+}
 
 var liked = {
     init: function(row_id, cate, type){
@@ -1306,80 +1352,6 @@ var formatConfirm = function(title, text) {
     return html;
 }
 
-/**
- * 显示需要 at 的用户列表
- *
- * @param {boolean} [show] 是否为显示, 如果不填则表示切换
- */
-var showMention = function(show) {
-  var $el = $('.ev-view-comment-mention-select')
-  if (show === false) $el.slideUp('fast');
-  else if (show === true) $el.slideDown('fast');
-  else $el.slideToggle('fast');
-}
-
-/**
- * 搜索用户
- * 使用 lodash.debounce 防抖, 450ms 后触发搜索
- *
- * @param {}
- */
-var searchUser = _.debounce(function(el) {
-  var keyword = $(el).val();
-  $('.ev-view-comment-follow-users').empty();
-  if (keyword) {
-    $('.ev-view-comment-mention-placeholder').text('搜索中...');
-    axios.get('/api/v2/users', { params: {name: keyword, limit: 8} })
-    .then(function(res) {
-      var result = res.data.slice(0, 8);
-      if (result.length) {
-        $('.ev-view-comment-mention-placeholder').empty();
-        // 填充列表
-        result.forEach(function(user) {
-          // 高亮关键字
-          var regex = new RegExp(keyword, 'gi');
-          var nameMarked = user.name.replace(regex, '<span style="color: #59b6d7;">$&</span>');
-          $('.ev-view-comment-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+nameMarked+'</li>');
-        });
-      } else {
-        $('.ev-view-comment-mention-placeholder').text('没有找到结果');
-      }
-    })
-  } else {
-    $('.ev-view-comment-mention-placeholder').text('搜索中...');
-  }
-}, 450);
-
-/**
- * 搜索用户（用于转发at）
- * 使用 lodash.debounce 防抖, 450ms 后触发搜索
- */
-var searchUserForRepostable = _.debounce(function(el) {
-  var keyword = $(el).val();
-  $('.ev-view-repostable-follow-users').empty();
-  if (keyword) {
-    $('.ev-view-repostable-mention-placeholder').text('搜索中...');
-    axios.get('/api/v2/users', { params: {name: keyword, limit: 8} })
-    .then(function(res) {
-      var result = res.data.slice(0, 8);
-      if (result.length) {
-        $('.ev-view-repostable-mention-placeholder').empty();
-        // 填充列表
-        result.forEach(function(user) {
-          // 高亮关键字
-          var regex = new RegExp(keyword, 'gi');
-          var nameMarked = user.name.replace(regex, '<span style="color: #59b6d7;">$&</span>');
-          $('.ev-view-repostable-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+nameMarked+'</li>');
-        });
-      } else {
-        $('.ev-view-repostable-mention-placeholder').text('没有找到结果');
-      }
-    })
-  } else {
-    $('.ev-view-repostable-mention-placeholder').text('搜索中...');
-  }
-}, 450);
-
 // 获取参数
 var getParams = function(url, key) {
     var reg = new RegExp("(^|&)"+ key +"=([^&]*)(&|$)");
@@ -1658,7 +1630,7 @@ var repostable = {
             result.forEach(function(topic) {
               // 高亮关键字
               var regex = new RegExp(query, 'gi');
-              var nameMarked = topic.name.replace(regex, '<span style="color: #59b6d7;">$&<span>');
+              var nameMarked = topic.name.replace(regex, '<span style="color: #59b6d7;">$&</span>');
               $('.ev-view-repostable-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+nameMarked+'</li>');
             });
           } else {
@@ -1678,6 +1650,36 @@ var repostable = {
         else if (show === true) $el.slideDown('fast');
         else $el.slideToggle('fast');
     },
+
+    /**
+     * 搜索用户
+     * 使用 lodash.debounce 防抖, 450ms 后触发搜索
+     */
+    searchUser: _.debounce(function(el) {
+      var keyword = $(el).val();
+      $('.ev-view-repostable-follow-users').empty();
+      if (keyword) {
+        $('.ev-view-repostable-mention-placeholder').text('搜索中...');
+        axios.get('/api/v2/users', { params: {name: keyword, limit: 8} })
+        .then(function(res) {
+          var result = res.data.slice(0, 8);
+          if (result.length) {
+            $('.ev-view-repostable-mention-placeholder').empty();
+            // 填充列表
+            result.forEach(function(user) {
+              // 高亮关键字
+              var regex = new RegExp(keyword, 'gi');
+              var nameMarked = user.name.replace(regex, '<span style="color: #59b6d7;">$&</span>');
+              $('.ev-view-repostable-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+nameMarked+'</li>');
+            });
+          } else {
+            $('.ev-view-repostable-mention-placeholder').text('没有找到结果');
+          }
+        })
+      } else {
+        $('.ev-view-repostable-mention-placeholder').text('搜索中...');
+      }
+    }, 450),
 
     /**
      * 转发至动态
@@ -1871,8 +1873,8 @@ $(function() {
         }
 
         // 话题搜索框
-        if (!target.is('.ev-view-comment-mention-select')) {
-          showMention(false);
+        if (!target.closest('.mention-btn').length) {
+          comment.showMention(false);
         }
 
         // 转发话题弹框
@@ -1972,13 +1974,12 @@ $(function() {
         $(this).parent().hide();
     });
 
-    // 捕获添加话题
+    // 捕获转发时at用户
     $(document).on('click', '.ev-view-repostable-follow-users > li', function() {
       var name = $(this).data('user-name')
       $el = $('.ev-ipt-repostable-content');
 
       $el.html($el.html() + " <span contenteditable=\"false\" style=\"color: #59b6d7;\">\u00ad@" + name + "\u00ad</span> ")
-
       repostable.showMention(false);
     })
 
@@ -2044,7 +2045,7 @@ $(function() {
       var $el = $(this).closest('.comment_box').find('.comment_editor')
       $el.html($el.html() + " <span contenteditable=\"false\" style=\"color: #59b6d7;\">\u00ad@" + name + "\u00ad</span> ")
 
-      showMention(false);
+      comment.showMention(false);
     })
 
     // 监听输入框按键 用于检测@符号键入和删除整段@内容
@@ -2214,7 +2215,7 @@ $(function() {
     // 捕获各处评论区 at 按钮
     $(document).on('click', '.ev-btn-comment-mention', function(event) {
       event.stopPropagation();
-      showMention(true);
+      comment.showMention(true);
     })
 
     // IM聊天

@@ -39,7 +39,7 @@
                 <div class="dialog-mention-select ev-view-repostable-mention-select" style="display: none;">
                     <label class="search-wrap">
                         <svg class="icon" aria-hidden="true" style="fill: #59b6d7;"><use xlink:href="#icon-mention"></use></svg>
-                        <input type="text" placeholder="搜索用户" oninput="searchUserForRepostable(this)">
+                        <input type="text" placeholder="搜索用户" oninput="repostable.searchUser(this)">
                     </label>
                     <span class="hot ev-view-repostable-mention-placeholder">关注用户</span>
                     <ul class="follow-users ev-view-repostable-follow-users">

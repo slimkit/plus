@@ -8,7 +8,7 @@
         </span>
 
         <span class="font14 ml20 topic-btn">
-            <div class="ev-btn-topic">
+            <div onclick="weibo.showTopics(true)">
                 <svg class="icon" aria-hidden="true" style="fill: #999;"><use xlink:href="#icon-topic1"></use></svg>
                 话题
             </div>
@@ -30,7 +30,7 @@
         </span>
 
         <span class="font14 ml20 mention-btn">
-            <div class="ev-btn-mention">
+            <div onclick="weibo.showMention(true)">
                 <svg class="icon" aria-hidden="true" style="fill: #999;"><use xlink:href="#icon-mention"></use></svg>
                 某人
             </div>
@@ -38,7 +38,7 @@
             <div class="dialog-mention-select ev-view-mention-select" style="display: none;">
                 <label class="search-wrap">
                     <svg class="icon" aria-hidden="true" style="fill: #59b6d7;"><use xlink:href="#icon-mention"></use></svg>
-                    <input type="text" placeholder="搜索用户" oninput="searchUser(this)">
+                    <input type="text" placeholder="搜索用户" oninput="comment.searchUser(this)">
                 </label>
                 <span class="hot ev-view-comment-mention-placeholder">关注用户</span>
                 <ul class="follow-users ev-view-comment-follow-users">
