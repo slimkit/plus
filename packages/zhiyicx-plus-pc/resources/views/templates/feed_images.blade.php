@@ -4,7 +4,7 @@
     $conh = isset($conh) ? $conh : 400;
 @endphp
 @if($post['images'] && count($post['images']) > 0)
-    <div id="feed_photos_{{$post['id']}}">
+<div id="feed_photos_{{$post['id']}}">
     <div class="feed_images">
     @if(count($post['images']) == 1)
         @include('pcview::templates.feed_image', ['image' => $post['images'][0], 'width' => $conw, 'height' => $conh, 'count' => 'one', 'curloc' => 0])
@@ -178,9 +178,15 @@
                 @include('pcview::templates.feed_image', ['image' => $post['images'][8], 'width' => 185, 'height' => 181, 'curloc' => 8])
             </div>
         </div>
+
+    @endif
+    {{-- 圈子图片操作9张显示 --}}
+    @if (count($post['images']) > 9)
+    <a href="{{ $post_url }}"><div class="more_count_div"></div></a>
+    <a href="{{ $post_url }}"><span class="more_count">+{{ (count($post['images']) - 9) }}</span></a>
     @endif
     </div>
-    </div>
+</div>
 @endif
 
 @if($post['video'])
