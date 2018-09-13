@@ -48,6 +48,11 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
         @endif
 
         @include('pcview::templates.feed_images')
+
+        @if($post['repostable_type'] ?? false)
+        @include('pcview::templates.feed_repostable', ['feed' => $post])
+        @endif
+
     </div>
 
     <div class="feed_bottom">

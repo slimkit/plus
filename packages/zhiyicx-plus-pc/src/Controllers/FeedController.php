@@ -63,6 +63,30 @@ class FeedController extends BaseController
                 $data['space'] = $this->PlusData['config']['ads_space']['pc:feeds:list'] ?? [];
                 $data['page'] = $request->loadcount;
 
+                // 组装转发数据
+                foreach ($data['feeds'] as &$feed) {
+                    if (!$feed['repostable_type']) {
+                        continue;
+                    }
+                    $feed['repostable'] = [];
+                    $id = $feed['repostable_id'];
+                    switch ($feed['repostable_type']) {
+                        case 'news':
+                            $feed['repostable'] = api('GET', "/api/v2/news/{$id}");
+                            break;
+                        case 'feeds':
+                            $feed['repostable'] = api('GET', "/api/v2/feeds/{$id}");
+                            break;
+                        case 'groups':
+                            $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/{$id}");
+                            break;
+                        case 'posts':
+                            $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/1/posts/{$id}"); // fixme: 少参数，圈子id暂时用1代替，不影响最终结果
+                            $feed['repostable']['user'] = api('GET', "/api/v2/users/{$feed['user_id']}");
+                            break;
+                    }
+                }
+
                 $feedData = view('pcview::templates.feeds', $data, $this->PlusData)->render();
 
                 return response()->json([
