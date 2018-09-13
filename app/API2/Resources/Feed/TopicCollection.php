@@ -55,7 +55,9 @@ class TopicCollection extends ResourceCollection
         return [
             'id' => $item->id,
             'name' => $item->name,
-            'logo' => $this->when((bool) $item->logo, $item->logo),
+            'logo' => $this->when((bool) $item->logo, function () use ($item) {
+                return $item->logo->toArray();
+            }),
             'created_at' => $this->dateTimeToIso8601ZuluString($item->{Model::CREATED_AT}),
         ];
     }
