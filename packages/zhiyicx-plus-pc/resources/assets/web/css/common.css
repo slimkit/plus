@@ -473,3 +473,4 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 .repostable-wrap .icon {fill: #999;}
 .repostable-topic {cursor: pointer;}
 .repostable-mention {cursor: pointer;}
+.layui-layer-page .layui-layer-content {overflow: visible !important;} /*转发弹框话题选择溢出部分可见*/

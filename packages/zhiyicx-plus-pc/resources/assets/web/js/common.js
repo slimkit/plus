@@ -1869,6 +1869,20 @@ $(function() {
         if(!target.is('.u-menu li') && !target.is('.u-opt svg')) {
             $('.u-menu').fadeOut();
         }
+
+        // 话题搜索框
+        if (!target.is('.ev-view-comment-mention-select')) {
+          showMention(false);
+        }
+
+        // 转发话题弹框
+        if (!target.closest('.repostable-topic').length) {
+          repostable.showTopics(false);
+        }
+        // 转发at某人弹框
+        if (!target.closest('.repostable-mention').length) {
+          repostable.showMention(false);
+        }
     });
 
     // 显示隐藏评论操作
@@ -2201,12 +2215,6 @@ $(function() {
     $(document).on('click', '.ev-btn-comment-mention', function(event) {
       event.stopPropagation();
       showMention(true);
-    })
-
-    // 捕获话题搜索框以外的点击事件以关闭话题搜索框
-    $(document).on('click', function(event) {
-      var $parent = $(event.target).closest('.ev-view-comment-mention-select')
-      if (!$parent.length) showMention(false)
     })
 
     // IM聊天
