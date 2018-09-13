@@ -8,7 +8,7 @@
         </span>
 
         <span class="font14 ml20 topic-btn">
-            <div onclick="weibo.showTopics(true)">
+            <div onclick="weibo.showTopics()">
                 <svg class="icon" aria-hidden="true" style="fill: #999;"><use xlink:href="#icon-topic1"></use></svg>
                 话题
             </div>
@@ -30,7 +30,7 @@
         </span>
 
         <span class="font14 ml20 mention-btn">
-            <div onclick="weibo.showMention(true)">
+            <div onclick="weibo.showMention()">
                 <svg class="icon" aria-hidden="true" style="fill: #999;"><use xlink:href="#icon-mention"></use></svg>
                 某人
             </div>

@@ -384,7 +384,7 @@ $(function() {
         }
 
         // 话题搜索框
-        if (!target.closest('.mention-btn').length) {
+        if (!target.closest('.topic-btn').length) {
           weibo.showTopics(false)
         }
     });
