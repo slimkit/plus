@@ -21,6 +21,9 @@
             <span class="feed_time font12 hide">查看详情</span>
         </a>
         <a class="pinned" href="javascript:;">置顶</a>
+        @if($post['excellent_at'])
+        <a class="excellent" href="javascript:;">精华</a>
+        @endif
     </div>
     <div class="feed_body">
         <p class="s-fc">{!! formatContent($post['title']) !!}</p>
@@ -65,6 +68,17 @@
                         </a>
                     </li>
                     @if(in_array($post['group']['joined']['role'], ['administrator', 'founder']))
+                        <li>
+                            @if(!$post['excellent_at'])
+                            <a href="javascript:;" onclick="post.setExcellent('{{ $post['id'] }}', true)">
+                                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-text"></use></svg><span>设为精华</span>
+                            </a>
+                            @else
+                            <a href="javascript:;" onclick="post.setExcellent('{{ $post['id'] }}', false)">
+                                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-text"></use></svg><span>取消精华</span>
+                            </a>
+                            @endif
+                        </li>
                         <li id="J-collect{{$post['id']}}" rel="0" status="{{(int) $post['collected']}}">
                             @if($post['collected'])
                                 <a class="act" href="javascript:;" onclick="collected.init({{$post['id']}}, 'group', 1);" class="act">
@@ -78,12 +92,12 @@
                         </li>
                         <li>
                             <a href="javascript:;" onclick="post.cancelPinned('{{$post['id']}}');">
-                                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-pinned"></use></svg>撤销置顶
+                                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-pinned"></use></svg><span>撤销置顶</span>
                             </a>
                         </li>
                         <li>
                             <a href="javascript:;" onclick="post.delPost('{{$post['group_id']}}', '{{$post['id']}}');">
-                                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-delete"></use></svg>删除
+                                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-delete"></use></svg><span>删除</span>
                             </a>
                         </li>
                     @else
@@ -166,9 +180,10 @@
             <span class="feed_time font12 hide">查看详情</span>
         </a>
         @if(!empty($post['pinned']) && $post['pinned']['status'] == 1 && (strtotime($post['pinned']['expires_at']) > time()))
-            <a class="pinned" href="javascript:;">
-                <span class="font12">置顶</span>
-            </a>
+            <a class="pinned" href="javascript:;">置顶</a>
+        @endif
+        @if($post['excellent_at'])
+        <a class="excellent" href="javascript:;">精华</a>
         @endif
     </div>
 
@@ -219,6 +234,17 @@
                         </a>
                     </li>
                     @if(in_array($post['group']['joined']['role'], ['administrator', 'founder']))
+                        <li>
+                            @if(!$post['excellent_at'])
+                            <a href="javascript:;" onclick="post.setExcellent('{{ $post['id'] }}', true)">
+                                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-text"></use></svg><span>设为精华</span>
+                            </a>
+                            @else
+                            <a href="javascript:;" onclick="post.setExcellent('{{ $post['id'] }}', false)">
+                                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-text"></use></svg><span>取消精华</span>
+                            </a>
+                            @endif
+                        </li>
                         <li id="J-collect{{$post['id']}}" rel="0" status="{{(int) $post['collected']}}">
                             @if($post['collected'])
                                 <a class="act" href="javascript:;" onclick="collected.init({{$post['id']}}, 'group', 1);" class="act">

@@ -211,3 +211,20 @@ post.cancelPinned = function(post_id){
           });
     });
 };
+
+/**
+ * 将帖子设置为精华
+ */
+post.setExcellent = function(post_id, set) {
+  var text = set ? '确定将帖子设为精华？' : '确定要取消设置精华帖？';
+  ly.confirm(confirmTxt + text, '', '', function() {
+    ly.close();
+    axios.put('/api/v2/group/posts/'+post_id+'/toggle-excellent')
+      .then(function (res) {
+        noticebox('操作成功！', 1, 'refresh');
+      })
+      .catch(function(error) {
+        showError(error.response.data)
+      })
+  })
+}
