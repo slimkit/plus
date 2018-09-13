@@ -90,8 +90,12 @@ class PostController
     public function pinneds(Request $request, PostRepository $repository): array
     {
         $user = $request->user('api')->id ?? null;
+        $group = $request->group->id;
         $pinneds = (new Pinned)
             ->query()
+            ->whereHas('post.group', function ($query) use ($group) {
+                $query->where('id', $group);
+            })
             ->where('channel', 'post')
             ->where('expires_at', '>', new Carbon)
             ->get();
