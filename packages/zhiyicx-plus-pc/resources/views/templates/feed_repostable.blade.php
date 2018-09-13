@@ -2,13 +2,20 @@
 @php
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getTime;
     $repostable = $feed['repostable'];
+    $nolink = $nolink ?? false;
 @endphp
 
 @if($repostable && !$repostable['exception'])
     @switch($feed['repostable_type'])
 
         @case('news')
-        <a class="feed_repostable news" href="{{ route('pc:newsread', ['news_id' => $feed['repostable_id']]) }}">
+        <a class="feed_repostable news"
+        @if ($nolink)
+            href="javascript:;"
+        @else
+            href="{{ route('pc:newsread', ['news_id' => $feed['repostable_id']]) }}"
+        @endif
+        >
             <div class="news-left">
                 <img src='{{ url("/api/v2/files/{$repostable['image']['id']}") }}' alt="">
             </div>
@@ -24,20 +31,38 @@
         @break
 
         @case('feeds')
-        <a class="feed_repostable" href="{{ route('pc:feedread', ['feed' => $feed['repostable_id']]) }}">
+        <a class="feed_repostable"
+        @if ($nolink)
+            href="javascript:;"
+        @else
+            href="{{ route('pc:feedread', ['feed' => $feed['repostable_id']]) }}"
+        @endif
+        >
             <p class="description"><strong>{{$repostable['user']['name']}}: </strong>{{$repostable['feed_content']}}</p>
         </a>
         @break
 
         @case('groups')
-        <a class="feed_repostable" href="{{ route('pc:groupread', ['group_id' => $feed['repostable_id']]) }}">
+        <a class="feed_repostable"
+        @if ($nolink)
+            href="javascript:;"
+        @else
+            href="{{ route('pc:groupread', ['group_id' => $feed['repostable_id']]) }}"
+        @endif
+        >
             <p class="description"><strong>{{$repostable['name']}}</strong></p>
             <p class="description">{{$repostable['summary']}}</p>
         </a>
         @break
 
         @case('posts')
-        <a class="feed_repostable" href="{{ route('pc:grouppost', ['group_id' => 1, 'post_id' => $feed['repostable_id']]) }}">
+        <a class="feed_repostable"
+        @if ($nolink)
+            href="javascript:;"
+        @else
+            href="{{ route('pc:grouppost', ['group_id' => 1, 'post_id' => $feed['repostable_id']]) }}"
+        @endif
+        >
             <p class="description"><strong>{{$repostable['user']['name']}}: {{$repostable['title']}}</strong></p>
             <p class="description">{{$repostable['summary']}}</p>
         </a>
