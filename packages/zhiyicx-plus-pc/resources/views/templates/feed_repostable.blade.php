@@ -4,7 +4,7 @@
     @case('news')
     <a class="feed_repostable" href="{{ route('pc:newsread', ['news_id' => $feed['repostable_id']]) }}">
         <p class="title">{{$feed['repostable']['title']}}</p>
-        <p class="description">{{$feed['repostable']['summary']}}</p>
+        <p class="description">{{$feed['repostable']['subject']}}</p>
     </a>
     @break
 

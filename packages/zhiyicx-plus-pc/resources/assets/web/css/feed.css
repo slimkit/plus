@@ -74,10 +74,7 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 .feed_item .feed_body .feed_pay_text {cursor:pointer;text-shadow:0 0 8px #000;color:rgba(255,255,255,0);-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}
 .feed_item .feed_body .feed_images {position:relative;margin-bottom:8px;}
 .feed_item .feed_body .feed_images img {cursor:url(../images/big.cur),pointer;}
-.feed_repostable {display: block;padding: 20px;margin-bottom: 20px;background-color: #f7f7f7;font-size: 14px;color: #666;letter-spacing: 1px;cursor: pointer;}
-.feed_repostable strong {font-weight: bold;}
-.feed_repostable .title {font-weight: bold;margin: 0;}
-.feed_repostable .description {margin: 0;}
+
 /* 多图片样式 */
 .image_box {position:relative;left:-1px;overflow:hidden;margin-bottom:2px;padding:0 2px;}
 .image_box .per_image {position:absolute;top:0;left:2px;width:100%;height:100%;object-fit:cover;}
