@@ -5,7 +5,7 @@
     $nolink = $nolink ?? false;
 @endphp
 
-@if($repostable && !$repostable['exception'])
+@if($repostable && !($repostable['exception'] ?? false))
     @switch($feed['repostable_type'])
 
         @case('news')
