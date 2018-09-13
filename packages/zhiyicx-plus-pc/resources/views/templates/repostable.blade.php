@@ -2,7 +2,7 @@
     {{-- 转发内容预览 --}}
     @include('pcview::templates.feed_repostable', ['feed' => $feed])
 
-    <div class="content ev-ipt-repostable-content" contenteditable="true" placeholder="请输入转发理由"></div>
+    <div class="content ev-ipt-repostable-content" contenteditable="true" placeholder="请输入转发内容"></div>
 
     <ul class="selected-topics ev-selected-repostable-topics">
         {{-- there will be injected topics by javascript --}}
