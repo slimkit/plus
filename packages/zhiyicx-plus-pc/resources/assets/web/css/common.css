@@ -319,7 +319,24 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 .dialog-mention-select .hot {color: #ccc;margin-top: 20px;cursor: default;}
 .dialog-mention-select .follow-users {display: flex;flex-flow: row wrap;}
 .dialog-mention-select .follow-users > li {display: inline-block;width: 50%;cursor: pointer;}
-.dialog-topic-select {position: absolute;display: flex;left: 0;top: 100%;width: 400px;height: 220px;z-index: 10;padding: 20px 40px;background-color: #fff;box-shadow: 0px 2px 9px 0px rgba(22, 23, 23, 0.09);flex-direction: column;cursor: default;}
+.dialog-topic-select {position: absolute;display: flex;left: 0;top: 100%;width: 400px;z-index: 10;padding: 20px 40px;background-color: #fff;box-shadow: 0px 2px 9px 0px rgba(22, 23, 23, 0.09);flex-direction: column;cursor: default;}
+.dialog-topic-select .search-wrap,
+.dialog-mention-select .search-wrap {border-bottom: 1px solid #ccc;}
+.dialog-topic-select .search-wrap input,
+.dialog-mention-select .search-wrap input {border: none;}
+.dialog-topic-select .hot,
+.dialog-mention-select .hot {color: #ccc;margin-top: 20px;cursor: default;}
+.dialog-topic-select .topic-list,
+.dialog-mention-select .follow-users {display: flex;flex-flow: row wrap;}
+.dialog-topic-select .topic-list > li {display: inline-block;width: 50%;cursor: pointer;}
+.dialog-mention-select .follow-users > li {display: inline-block;width: 50%;cursor: pointer;}
+
+/* 小标签 */
+.selected-topics {display: flex;flex-flow: row wrap;margin-top: 10px;}
+.selected-topics .selected-topic-item {background-color: rgba(89, 182, 215, 0.15);padding: 0 6px;border-radius: 3px;color: #59b6d7;font-size: 12px;margin-right: 6px;margin-bottom: 6px;height: 24px;line-height: 24px;}
+.selected-topics .selected-topic-item .close {height: 24px;line-height: 24px;cursor: pointer;}
+.selected-topics .selected-topic-item svg {transform: scale(0.7);}
+
 .comment_buttons {float: left;}
 .comment_tool {float:right;}
 .comment_tool .text_stats {margin-right:20px;font-size:14px;color:#777;}
