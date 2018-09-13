@@ -38,7 +38,20 @@
             href="{{ route('pc:feedread', ['feed' => $feed['repostable_id']]) }}"
         @endif
         >
-            <p class="description"><strong>{{$repostable['user']['name']}}: </strong>{{$repostable['feed_content']}}</p>
+            <p class="description">
+                <strong>{{$repostable['user']['name']}}: </strong>
+                {{$repostable['feed_content']}}
+                @if (count($repostable['images']))
+                <span class="view-more">
+                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-liaotiantubiao_5"></use></svg> 查看图片
+                </span>
+                @endif
+                @if (count($repostable['video']))
+                <span class="view-more">
+                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-liaotiantubiao_5"></use></svg> 查看视频
+                </span>
+                @endif
+            </p>
         </a>
         @break
 

@@ -509,4 +509,6 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 .feed_repostable .group-right {flex: auto;display: flex;flex-direction: column;justify-content: space-around;letter-spacing: 0;}
 .feed_repostable .group-right .title {font-size: 18px;}
 .feed_repostable .group-right .description {font-size: 14px;color: #999;}
+.feed_repostable .view-more {font-size: 12px;color: #59b6d7;letter-spacing: 0;margin-left: 10px;}
+.feed_repostable .view-more svg {fill: #59b6d7;}
 .layui-layer-page .layui-layer-content {overflow: visible !important;} /*转发弹框话题选择溢出部分可见*/
