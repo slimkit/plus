@@ -440,8 +440,12 @@ $(function() {
     // 捕获at用户
     $(document).on('click', '.ev-view-follow-users > li, .ev-view-comment-follow-users > li', function() {
       var name = $(this).data('user-name')
+      // 如果是评论区的 at (hack)
+      $el = $(this).closest('.comment_editor')
+      // 如果是发送动态中的 at
+      if (!$el.length) $el = $(this).closest('.feed_post').find('.post_textarea')
 
-      $('#feed_content').html($('#feed_content').html() + " <span contenteditable=\"false\" style=\"color: #59b6d7;\">\u00ad@" + name + "\u00ad</span> ")
+      $el.html($('#feed_content').html() + " <span contenteditable=\"false\" style=\"color: #59b6d7;\">\u00ad@" + name + "\u00ad</span> ")
       checkNums($('#feed_content'), 255, 'nums');
       weibo.showMention(false);
     })
