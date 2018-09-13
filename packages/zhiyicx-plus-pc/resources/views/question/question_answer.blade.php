@@ -136,7 +136,14 @@
                     </div>
 
                     {{-- 评论 --}}
-                    @include('pcview::widgets.comments', ['id' => $answer['id'], 'comments_count' => count($answer['comments']), 'comments_type' => 'answer', 'url' => Route('pc:answeread', ['question' => $answer['question_id'], 'answer' => $answer['id']]), 'position' => 1, 'comments_data' => $answer['comments']])
+                    @include('pcview::widgets.comments', [
+                        'id' => $answer['id'],
+                        'comments_count' => count($answer['comments']),
+                        'comments_type' => 'question-answers',
+                        'url' => Route('pc:answeread', ['question' => $answer['question_id'], 'answer' => $answer['id']]),
+                        'position' => 1,
+                        'comments_data' => $answer['comments'],
+                    ])
 
                 </div>
             </div>

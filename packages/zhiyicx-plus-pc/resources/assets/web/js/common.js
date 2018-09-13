@@ -767,7 +767,7 @@ var comment = {
             'news' : '/api/v2/news/' + id + '/comments',
             'feeds' : '/api/v2/feeds/' + id + '/comments',
             'group-posts' : '/api/v2/plus-group/group-posts/' + id + '/comments',
-            'answer' : '/api/v2/question-answers/' + id + '/comments',
+            'question-answers' : '/api/v2/question-answers/' + id + '/comments',
             'product' : '/api/v2/product/' + id + '/comments',
             'question' : '/api/v2/questions/' + id + '/comments',
         };
