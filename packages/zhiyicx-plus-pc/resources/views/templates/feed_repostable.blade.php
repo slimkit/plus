@@ -46,7 +46,7 @@
                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-liaotiantubiao_5"></use></svg> 查看图片
                 </span>
                 @endif
-                @if (count($repostable['video']))
+                @if ($repostable['video'])
                 <span class="view-more">
                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-liaotiantubiao_5"></use></svg> 查看视频
                 </span>
