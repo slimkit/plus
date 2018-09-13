@@ -437,12 +437,12 @@ $(function() {
       if (index > -1) weibo.selectedTopics.splice(index, 1);
     })
 
-    // 捕获添加话题
+    // 捕获at用户
     $(document).on('click', '.ev-view-follow-users > li, .ev-view-comment-follow-users > li', function() {
       var name = $(this).data('user-name')
 
       $('#feed_content').html($('#feed_content').html() + " <span contenteditable=\"false\" style=\"color: #59b6d7;\">\u00ad@" + name + "\u00ad</span> ")
-
+      checkNums($('#feed_content'), 255, 'nums');
       weibo.showMention(false);
     })
 
