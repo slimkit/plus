@@ -55,6 +55,7 @@ var grouped = {
                 $(_this).text('已加入');
                 $(_this).attr('state', 1);
                 $(_this).addClass('joined');
+                noticebox('加入成功', 1)
                 $('#join-count-'+_self.gid).text(_self.count + 1);
                 _this.lockStatus = 0;
               })
