@@ -37,7 +37,9 @@ class Topic extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'logo' => $this->when($this->logo, $this->logo),
+            'logo' => $this->when($this->logo, function () {
+                return $this->logo->toArray();
+            }),
             'desc' => $this->when($this->desc, $this->desc),
             'creator_user_id' => $this->creator_user_id,
             'feeds_count' => $this->feeds_count,

@@ -42,7 +42,7 @@ class ValidatorRegister
      * @var array
      */
     protected $rules = [
-        'file_storage',
+        'file_storage' => FileStorageRuler::class,
     ];
 
     /**

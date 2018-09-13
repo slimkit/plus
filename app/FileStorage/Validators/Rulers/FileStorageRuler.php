@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage\Validators\Rulers;
 
+use Exception;
+use Zhiyi\Plus\FileStorage\Resource;
 use Zhiyi\Plus\FileStorage\StorageInterface;
 
 class FileStorageRuler implements RulerInterface
@@ -36,7 +38,7 @@ class FileStorageRuler implements RulerInterface
      */
     public function __construct(StorageInterface $storage)
     {
-        $this->storage;
+        $this->storage = $storage;
     }
 
     /**
@@ -50,7 +52,7 @@ class FileStorageRuler implements RulerInterface
             return (bool) $this->storage
                 ->meta(new Resource($params[1]))
                 ->getSize();
-        } finally {
+        } catch (Exception $e) {
             return false;
         }
     }
