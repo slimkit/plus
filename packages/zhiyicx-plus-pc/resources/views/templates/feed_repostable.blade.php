@@ -5,10 +5,10 @@
     $nolink = $nolink ?? false;
 @endphp
 
-@if($repostable && !($repostable['exception'] ?? false))
-    @switch($feed['repostable_type'])
+@switch($feed['repostable_type'])
 
-        @case('news')
+    @case('news')
+    @if($repostable['title'] ?? false)
         <a class="feed_repostable news"
         @if ($nolink)
             href="javascript:;"
@@ -28,9 +28,15 @@
                 </div>
             </div>
         </a>
-        @break
+    @else
+        <span class="feed_repostable">
+            <p class="description">该内容已被删除</p>
+        </span>
+    @endif
+    @break
 
-        @case('feeds')
+    @case('feeds')
+    @if($repostable['feed_content'] ?? false)
         <a class="feed_repostable"
         @if ($nolink)
             href="javascript:;"
@@ -53,9 +59,15 @@
                 @endif
             </p>
         </a>
-        @break
+    @else
+        <span class="feed_repostable">
+            <p class="description">该内容已被删除</p>
+        </span>
+    @endif
+    @break
 
-        @case('groups')
+    @case('groups')
+    @if($repostable['name'])
         <a class="feed_repostable group"
         @if ($nolink)
             href="javascript:;"
@@ -74,9 +86,15 @@
                 </div>
             </div>
         </a>
-        @break
+    @else
+        <span class="feed_repostable">
+            <p class="description">该内容已被删除</p>
+        </span>
+    @endif
+    @break
 
-        @case('posts')
+    @case('posts')
+    @if($repostable['title'] ?? false)
         <a class="feed_repostable"
         @if ($nolink)
             href="javascript:;"
@@ -87,11 +105,11 @@
             <p class="description"><strong>{{$repostable['user']['name']}}: {{$repostable['title']}}</strong></p>
             <p class="description">{{$repostable['summary']}}</p>
         </a>
-        @break
+    @else
+        <span class="feed_repostable">
+            <p class="description">该内容已被删除</p>
+        </span>
+    @endif
+    @break
 
-    @endswitch
-@else
-    <span class="feed_repostable">
-        <p class="description">该内容已被删除</p>
-    </span>
-@endif
+@endswitch
