@@ -129,18 +129,19 @@ class FeedController extends BaseController
         $data['user'] = $feed->user;
 
         if ($feed->repostable_type) {
+            $id = $feed->repostable_id;
             switch ($feed->repostable_type) {
                 case 'feeds':
-                    $data['repostable'] = api('GET', "/api/v2/feeds/{$feed->repostable_id}");
+                    $data['feed']['repostable'] = api('GET', "/api/v2/feeds/{$id}");
                     break;
                 case 'news';
-                    $data['repostable'] = api('GET', "/api/v2/news/{$feed->repostable_id}");
+                    $data['feed']['repostable'] = api('GET', "/api/v2/news/{$id}");
                     break;
                 case 'groups':
-                    $data['repostable'] = api('GET', "/api/v2/plus-group/groups/{$feed->repostable_id}");
+                    $data['feed']['repostable'] = api('GET', "/api/v2/plus-group/groups/{$id}");
                     break;
                 case 'posts':
-                    $data['repostable'] = api('GET', "/api/v2/plus-group/groups/1/posts/{$feed->repostable_id}");
+                    $data['feed']['repostable'] = api('GET', "/api/v2/plus-group/groups/1/posts/{$id}");
                     break;
             }
         }
@@ -189,26 +190,28 @@ class FeedController extends BaseController
     {
         $type = $request->query('type');
         $id = $request->query('id');
-        $data = [
-            'type' => $type,
-            'id' => $id,
+        $feed = [
+            'repostable_type' => $type,
+            'repostable_id' => $id,
+            'repostable' => [],
         ];
 
         switch ($type) {
             case 'news':
-                $data['news'] = api('GET', "/api/v2/news/{$id}");
+                $feed['repostable'] = api('GET', "/api/v2/news/{$id}");
                 break;
             case 'feeds':
-                $data['feeds'] = api('GET', "/api/v2/feeds/{$id}");
+                $feed['repostable'] = api('GET', "/api/v2/feeds/{$id}");
                 break;
             case 'groups':
-                $data['groups'] = api('GET', "/api/v2/plus-group/groups/{$id}");
+                $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/{$id}");
                 break;
             case 'posts':
-                $data['posts'] = api('GET', "/api/v2/plus-group/groups/1/posts/{$id}"); // fixme: 少参数，圈子id暂时用1代替，不影响最终结果
-                $data['posts']['user'] = api('GET', "/api/v2/users/{$data['posts']['user_id']}");
+                $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/1/posts/{$id}"); // fixme: 少参数，圈子id暂时用1代替，不影响最终结果
+                $feed['repostable']['user'] = api('GET', "/api/v2/users/{$feed['repostable']['user_id']}");
                 break;
         }
+        $data['feed'] = $feed;
 
         // 用于添加话题时的初始热门话题列表
         $data['hot_topics'] = newapi('GET', '/api/v2/feed/topics', ['only' => 'hot']);

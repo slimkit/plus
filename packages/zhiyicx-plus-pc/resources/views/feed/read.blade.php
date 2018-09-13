@@ -95,31 +95,9 @@
                 {!! formatContent($feed['feed_content']) !!}
             </div>
 
-            @switch($feed['repostable_type'])
-                @case('feeds')
-                <a class="feed_repostable" href='{{ url("/feeds/{$feed->repostable_id}") }}'>
-                    <div class="description"><strong>{{$repostable['user']['name']}}:</strong> {{$repostable['feed_content']}}</div>
-                </a>
-                @break
-                @case('news')
-                <a class="feed_repostable" href='{{ url("/news/{$feed->repostable_id}") }}'>
-                    <div class="title">{{$repostable['title']}}</div>
-                    <div class="description">{{$repostable['content']}}</div>
-                </a>
-                @break
-                @case('group')
-                <a class="feed_repostable" href='{{ url("/group/{$feed->repostable_id}") }}'>
-                    <div class="title">{{$repostable['title']}}</div>
-                    <div class="description">{{$repostable['content']}}</div>
-                </a>
-                @break
-                @case('post')
-                <a class="feed_repostable" href='{{ url("/post/{$feed->repostable_id}") }}'>
-                    <div class="title">{{$repostable['title']}}</div>
-                    <div class="description">{{$repostable['content']}}</div>
-                </a>
-                @break
-            @endswitch
+            @if($feed['repostable_type'])
+            @include('pcview::templates.feed_repostable', ['feed' => $feed])
+            @endif
 
             @if(count($feed['topics']))
             <div class="selected-topics" style="margin-bottom: 20px;">

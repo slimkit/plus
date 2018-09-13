@@ -1,34 +1,6 @@
 <div class="repostable-wrap">
     {{-- 转发内容预览 --}}
-    @switch($type)
-        @case('news')
-        <blockquote>
-            <h3>{{$news['title']}}</h3>
-            <p>{{$news['summary']}}</p>
-        </blockquote>
-        @break
-
-        @case('feeds')
-        <blockquote>
-            <p><strong>{{$feeds['user']['name']}}: </strong>{{$feeds['feed_content']}}</p>
-        </blockquote>
-        @break
-
-        @case('groups')
-        <blockquote>
-            <p><strong>{{$groups['name']}}</strong></p>
-            <p>{{$groups['summary']}}</p>
-        </blockquote>
-        @break
-
-        @case('posts')
-        <blockquote>
-            <p><strong>{{$posts['user']['name']}}: {{$posts['title']}}</strong></p>
-            <p>{{$posts['summary']}}</p>
-        </blockquote>
-        @break
-
-    @endswitch
+    @include('pcview::templates.feed_repostable', ['feed' => $feed])
 
     <div class="content ev-ipt-repostable-content" contenteditable="true" placeholder="请输入转发理由"></div>
 
@@ -80,6 +52,6 @@
                 </div>
             <!-- </div> -->
         </span>
-        <button onclick="repostable.post('{{$type}}', {{$id}})">分 享</button>
+        <button onclick="repostable.post('{{$feed['repostable_type']}}', {{$feed['repostable_id']}})">分 享</button>
     </div>
 </div>
