@@ -14,7 +14,7 @@
         <header>
             <div class="bg"
             @if($topic['logo'] ?? false)
-            style="background-image: url({{ url("/api/v2/files/{$topic['logo']}?w=815&h=426")}} )"
+            style="background-image: url({{ $topic['logo']['url'] . "?w=815&h=426") }})"
             @endif></div>
             <div class="mask">
                 <h1>{{ $topic['name'] }}</h1>
@@ -65,7 +65,7 @@
                     'color' => '#fff',
                     'share_url' => route('pc:topicDetail', ['topicid_id' => $topic['id']]),
                     'share_title' => $topic['name'],
-                    'share_pic' => (!empty($topic['logo']) ? url("/api/v2/files/{$topic['logo']}") : asset('assets/pc/images/default_picture.png'))
+                    'share_pic' => $topic['logo'] ? $topic['logo']['url'] : asset('assets/pc/images/default_picture.png'),
                 ])
             </div>
         </div>
