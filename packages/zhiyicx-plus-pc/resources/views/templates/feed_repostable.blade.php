@@ -36,7 +36,7 @@
     @break
 
     @case('feeds')
-    @if($repostable['feed_content'] ?? false)
+    @if($repostable['id'] ?? false)
         <a class="feed_repostable"
         @if ($nolink)
             href="javascript:;"
