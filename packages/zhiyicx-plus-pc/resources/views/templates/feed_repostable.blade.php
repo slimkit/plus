@@ -5,6 +5,8 @@
     $nolink = $nolink ?? false;
 @endphp
 
+<script>console.log(@json($repostable));</script>
+
 @switch($feed['repostable_type'])
 
     @case('news')
@@ -103,7 +105,8 @@
         @endif
         >
             <p class="description"><strong>{{$repostable['user']['name']}}: {{$repostable['title']}}</strong></p>
-            <p class="description">{{$repostable['summary']}}</p>
+            <p class="description">{{ substr(preg_replace('/@!\[图片描述\]\(\d+\)/', '[图片]', $repostable['body']), 255)}}
+            </p>
         </a>
     @else
         <span class="feed_repostable">
