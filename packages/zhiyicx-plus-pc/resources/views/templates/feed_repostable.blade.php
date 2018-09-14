@@ -19,7 +19,7 @@
         @endif
         >
             <div class="news-left">
-                <img src='{{ url("/api/v2/files/{$repostable['image']['id']}") }}' alt="">
+                <div class="cover" style='background-image: url({{ url("/api/v2/files/{$repostable['image']['id']}") }})'></div>
             </div>
             <div class="news-right">
                 <p class="title">{{$repostable['title']}}</p>
