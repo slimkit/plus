@@ -171,6 +171,8 @@ weibo.doPostFeed = function(type) {
             $('#feed_content').html('');
             weibo.afterPostFeed(response.data.id);
             noticebox('发布成功', 1);
+            weibo.selectedTopics = [];
+            $('.ev-selected-topics').empty();
             layer.closeAll();
             _this.lockStatus = 0;
       })
