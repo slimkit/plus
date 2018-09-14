@@ -3,7 +3,7 @@
     <div class="m-blk ">
         <div class="m-cover">
             <a href="{{ route('pc:topicinfo', $post['id']) }}">
-                <img src="{{ $post['avatar'] ?? asset('assets/pc/images/default_picture.png') }}" width="120" height="120">
+                <img src="{{ $post['avatar'] ? $post['avatar']->url() : asset('assets/pc/images/default_picture.png') }}" width="120" height="120">
             </a>
         </div>
         <div class="m-entry">
