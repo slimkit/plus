@@ -182,8 +182,8 @@
     @endif
     {{-- 圈子图片操作9张显示 --}}
     @if (count($post['images']) > 9)
-    <a href="{{ $post_url }}"><div class="more_count_div"></div></a>
-    <a href="{{ $post_url }}"><span class="more_count">+{{ (count($post['images']) - 9) }}</span></a>
+    <a href="{{ $post_url ?? 'javascript:;' }}"><div class="more_count_div"></div></a>
+    <a href="{{ $post_url ?? 'javascript:;' }}"><span class="more_count">+{{ (count($post['images']) - 9) }}</span></a>
     @endif
     </div>
 </div>
