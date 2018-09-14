@@ -99,7 +99,7 @@
                         <div class="form-control">
                             <input class="regular-radio f-dn" id="radio-private" name="mode" type="radio" value="private"
                             @if ($group['mode'] == 'private') checked @endif />
-                            <label class="radio" for="radio-private"></label>封闭圈子<span class="f-ml20 s-fc4">未通过加入申请的人不能进入圈子</span>
+                            <label class="radio" for="radio-private"></label>私密圈子<span class="f-ml20 s-fc4">未通过加入申请的人不能进入圈子</span>
                         </div>
                     </div>
                     <div class="form-control @if ($group['mode'] != 'paid') f-dn @endif j-sub1">
