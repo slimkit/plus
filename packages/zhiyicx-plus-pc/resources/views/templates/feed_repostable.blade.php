@@ -106,7 +106,7 @@
         @endif
         >
             <p class="description"><strong>{{$repostable['user']['name']}}: {{$repostable['title']}}</strong></p>
-            <p class="description">{{ substr(preg_replace('/@!\[图片描述\]\(\d+\)/', '[图片]', $repostable['body']), 255)}}
+            <p class="description">{{ substr(preg_replace('/@!\[image\]\(\d+\)/', '[图片]', $repostable['summary']), 0, 255)}}
             </p>
         </a>
     @else
