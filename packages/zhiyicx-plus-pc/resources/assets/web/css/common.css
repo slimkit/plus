@@ -490,7 +490,7 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 .repostable-wrap .icon {fill: #999;}
 .repostable-topic {cursor: pointer;}
 .repostable-mention {cursor: pointer;}
-.feed_repostable {display: block;padding: 20px;margin-bottom: 20px;background-color: #f7f7f7;font-size: 14px;color: #666;letter-spacing: 1px;cursor: pointer;}
+.feed_repostable {display: block;padding: 20px;margin-bottom: 20px;background-color: #f7f7f7;font-size: 14px;color: #666;letter-spacing: 1px;cursor: pointer;word-wrap: break-word;word-break: break-all;}
 .feed_repostable strong {font-weight: bold;}
 .feed_repostable .title {font-weight: bold;margin: 0;}
 .feed_repostable .description {margin: 0;}
