@@ -80,6 +80,7 @@ class FeedController extends BaseController
                         case 'groups':
                             $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/{$id}");
                             break;
+                        case 'group-posts':
                         case 'posts':
                             $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/1/posts/{$id}"); // fixme: 少参数，圈子id暂时用1代替，不影响最终结果
                             $feed['repostable']['user'] = api('GET', "/api/v2/users/{$feed['user_id']}");
@@ -139,6 +140,7 @@ class FeedController extends BaseController
                 case 'groups':
                     $data['feed']['repostable'] = api('GET', "/api/v2/plus-group/groups/{$id}");
                     break;
+                case 'group-posts':
                 case 'posts':
                     $data['feed']['repostable'] = api('GET', "/api/v2/plus-group/groups/1/posts/{$id}");
                     break;
@@ -205,6 +207,7 @@ class FeedController extends BaseController
             case 'groups':
                 $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/{$id}");
                 break;
+            case 'group-posts':
             case 'posts':
                 $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/1/posts/{$id}"); // fixme: 少参数，圈子id暂时用1代替，不影响最终结果
                 $feed['repostable']['user'] = api('GET', "/api/v2/users/{$feed['repostable']['user_id']}");

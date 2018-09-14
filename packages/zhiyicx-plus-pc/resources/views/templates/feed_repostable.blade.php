@@ -95,6 +95,7 @@
     @endif
     @break
 
+    @case('group-posts')
     @case('posts')
     @if($repostable['title'] ?? false)
         <a class="feed_repostable"
