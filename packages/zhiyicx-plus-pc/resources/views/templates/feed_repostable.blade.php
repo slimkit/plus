@@ -106,8 +106,11 @@
         @endif
         >
             <p class="description"><strong>{{$repostable['user']['name']}}: {{$repostable['title']}}</strong></p>
-            <p class="description">{{ substr(preg_replace('/@!\[image\]\(\d+\)/', '[图片]', $repostable['summary']), 0, 255)}}
-            </p>
+            @php
+                $summary = preg_replace('/@!\[image\]\(\d+\)/', '[图片]', $repostable['summary']); // 替换图片
+                $summary = preg_replace('/<{0,1}((http|ftp|https):\/\/)(([a-zA-Z0-9\._-]+\.[a-zA-Z]{2,6})|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,4})*(\/[#a-zA-Z0-9\&%_\.\/-~-]*)?>{0,1}/', '<span style="color: #59b6d7;">网页链接</span>', $summary); // 超级厉害的正则（来自android端）匹配网址
+            @endphp
+            <p class="description">{!! $summary !!}</p>
         </a>
     @else
         <span class="feed_repostable">
