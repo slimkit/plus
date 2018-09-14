@@ -149,7 +149,13 @@
         </div>
 
         {{-- 评论 --}}
-        @include('pcview::widgets.comments', ['id' => $answer['id'], 'comments_count' => $answer['comments_count'], 'comments_type' => 'answer', 'loading' => '.answer-detail-box', 'position' => 0])
+        @include('pcview::widgets.comments', [
+            'id' => $answer['id'],
+            'comments_count' => $answer['comments_count'],
+            'comments_type' => 'question-answers',
+            'loading' => '.answer-detail-box',
+            'position' => 0,
+        ])
 
     </div>
 </div>

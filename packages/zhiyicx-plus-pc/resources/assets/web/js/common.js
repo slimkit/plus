@@ -769,7 +769,7 @@ var comment = {
             'group-posts' : '/api/v2/plus-group/group-posts/' + id + '/comments',
             'question-answers' : '/api/v2/question-answers/' + id + '/comments',
             'product' : '/api/v2/product/' + id + '/comments',
-            'question' : '/api/v2/questions/' + id + '/comments',
+            'questions' : '/api/v2/questions/' + id + '/comments',
         };
         return types[type];
     },

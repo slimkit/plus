@@ -183,7 +183,14 @@
     <div class="question-main">
 
         {{-- 评论 --}}
-        @include('pcview::widgets.comments', ['id' => $question['id'], 'comments_count' => $question['comments_count'], 'comments_type' => 'question', 'loading' => '.detail_comment', 'add_class' => 'question_coment hide', 'position' => 0])
+        @include('pcview::widgets.comments', [
+            'id' => $question['id'],
+            'comments_count' => $question['comments_count'],
+            'comments_type' => 'questions',
+            'loading' => '.detail_comment',
+            'add_class' => 'question_coment hide',
+            'position' => 0,
+        ])
 
         <div class="question-main-l">
             <div class="question-answers">

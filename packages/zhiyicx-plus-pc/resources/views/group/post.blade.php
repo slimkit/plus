@@ -165,7 +165,14 @@
             </div>
 
             {{-- 评论 --}}
-            @include('pcview::widgets.comments', ['id' => $post['id'] , 'comments_count' => $post['comments_count'], 'comments_type' => 'group-posts', 'loading' => '.feed_left', 'position' => 0, 'params' => ['group_id' => $post['group_id'], 'disabled' => $post['group']['joined']['disabled']]])
+            @include('pcview::widgets.comments', [
+                'id' => $post['id'] ,
+                'comments_count' => $post['comments_count'],
+                'comments_type' => 'group-posts',
+                'loading' => '.feed_left',
+                'position' => 0,
+                'params' => ['group_id' => $post['group_id'], 'disabled' => $post['group']['joined']['disabled']],
+            ])
         </div>
     </div>
 

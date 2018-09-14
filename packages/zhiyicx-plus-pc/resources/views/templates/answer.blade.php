@@ -38,7 +38,14 @@
                 <font class="cs{{$answer['id']}}">{{$answer['comments_count']}}</font> 评论
             </a>
         </div>
-        @include('pcview::widgets.comments', ['id' => $answer['id'], 'comments_count' => $answer['comments_count'], 'comments_type' => 'answer', 'url' => Route('pc:answeread', ['question' => $answer['question_id'], 'answer' => $answer['id']]), 'position' => 1, 'comments_data' => $answer['comments']])
+        @include('pcview::widgets.comments', [
+            'id' => $answer['id'],
+            'comments_count' => $answer['comments_count'],
+            'comments_type' => 'question-answers',
+            'url' => Route('pc:answeread', ['question' => $answer['question_id'], 'answer' => $answer['id']]),
+            'position' => 1,
+            'comments_data' => $answer['comments'],
+        ])
     </div>
 @endforeach
 <script>

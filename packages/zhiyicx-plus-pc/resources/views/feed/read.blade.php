@@ -155,7 +155,14 @@
             </div>
 
             {{-- 评论 --}}
-            @include('pcview::widgets.comments', ['id' => $feed['id'], 'comments_count' => $feed['feed_comment_count'], 'comments_type' => 'feeds', 'loading' => '.feed_left', 'position' => 0, 'top' => 1])
+            @include('pcview::widgets.comments', [
+                'id' => $feed['id'],
+                'comments_count' => $feed['feed_comment_count'],
+                'comments_type' => 'feeds',
+                'loading' => '.feed_left',
+                'position' => 0,
+                'top' => 1,
+            ])
 
         </div>
     </div>

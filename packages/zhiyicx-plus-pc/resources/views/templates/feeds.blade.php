@@ -141,7 +141,15 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
         </div>
 
         {{-- 评论 --}}
-        @include('pcview::widgets.comments', ['id' => $post['id'], 'comments_count' => count($post['comments']), 'comments_type' => 'feeds', 'url' => Route('pc:feedread', $post['id']), 'position' => 1, 'comments_data' => $post['comments'], 'top' => 1])
+        @include('pcview::widgets.comments', [
+            'id' => $post['id'],
+            'comments_count' => count($post['comments']),
+            'comments_type' => 'feeds',
+            'url' => Route('pc:feedread', $post['id']),
+            'position' => 1,
+            'comments_data' => $post['comments'],
+            'top' => 1,
+        ])
 
         <div class="feed_line"></div>
     </div>

@@ -132,7 +132,16 @@
         @endif
         </div>
          {{-- 评论 --}}
-        @include('pcview::widgets.comments', ['id' => $post['id'], 'group_id' => $post['group_id'], 'comments_count' => $post['comments_count'], 'comments_type' => 'group', 'url' => Route('pc:grouppost', [$post['group_id'], $post['id']]), 'position' => 1, 'top' => 1, 'comments_data' => $post['comments']])
+        @include('pcview::widgets.comments', [
+            'id' => $post['id'],
+            'group_id' => $post['group_id'],
+            'comments_count' => $post['comments_count'],
+            'comments_type' => 'group',
+            'url' => Route('pc:grouppost', [$post['group_id'], $post['id']]),
+            'position' => 1,
+            'top' => 1,
+            'comments_data' => $post['comments'],
+        ])
 
         <div class="feed_line"></div>
     </div>
@@ -311,7 +320,17 @@
         {{--@endif--}}
         </div>
          {{-- 评论 --}}
-        @include('pcview::widgets.comments', ['id' => $post['id'], 'comments_count' => $post['comments_count'], 'comments_type' => 'group-posts', 'url' => Route('pc:grouppost', [$post['group_id'], $post['id']]), 'position' => 1, 'top' => 1, 'comments_data' => $post['comments'], 'params' => ['group_id' => $post['group_id'], 'disabled' => $post['group']['joined']['disabled']]])
+        @include('pcview::widgets.comments', [
+            'id' => $post['id'],
+            'comments_count' => $post['comments_count'],
+            'comments_type' => 'group-posts',
+            'url' => Route('pc:grouppost', [$post['group_id'], $post['id']]),
+            'position' => 1,
+            'top' => 1,
+            'comments_data' => $post['comments'],
+            'params' => ['group_id' => $post['group_id'],
+            'disabled' => $post['group']['joined']['disabled']],
+        ])
 
         <div class="feed_line"></div>
     </div>

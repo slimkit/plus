@@ -148,7 +148,14 @@
                 @endif
 
                 {{-- 评论  --}}
-                @include('pcview::widgets.comments', ['id' => $news['id'], 'comments_count' => $news['comment_count'], 'comments_type' => 'news', 'loading' => '.detail_comment', 'position' => 0, 'top' => 1])
+                @include('pcview::widgets.comments', [
+                    'id' => $news['id'],
+                    'comments_count' => $news['comment_count'],
+                    'comments_type' => 'news',
+                    'loading' => '.detail_comment',
+                    'position' => 0,
+                    'top' => 1,
+                ])
 
                 @endif
             </div>
