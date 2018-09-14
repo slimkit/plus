@@ -14,7 +14,7 @@
         <header>
             <div class="bg"
             @if($topic['logo'] ?? false)
-            style="background-image: url({{ $topic['logo']['url'] . "?w=815&h=426") }})"
+            style="background-image: url({{ $topic['logo']['url'] . "?w=815&h=426" }})"
             @endif></div>
             <div class="mask">
                 <h1>{{ $topic['name'] }}</h1>
