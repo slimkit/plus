@@ -65,7 +65,7 @@
                     'color' => '#fff',
                     'share_url' => route('pc:topicDetail', ['topicid_id' => $topic['id']]),
                     'share_title' => $topic['name'],
-                    'share_pic' => $topic['logo'] ? $topic['logo']['url'] : asset('assets/pc/images/default_picture.png'),
+                    'share_pic' => $topic['logo']['url'] ?? asset('assets/pc/images/default_picture.png'),
                 ])
             </div>
         </div>
