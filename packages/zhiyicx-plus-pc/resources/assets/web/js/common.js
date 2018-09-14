@@ -956,6 +956,15 @@ var comment = {
       else if (show === true) $el.slideDown('fast');
       else $el.slideToggle('fast');
       $el.find('input').val('');
+      axios.get('/api/v2/user/follow-mutual')
+      .then(function (res) {
+          $('.ev-view-comment-mention-placeholder').text('好友');
+          $('.ev-view-comment-follow-users').empty();
+          res = res.data.slice(0, 8)
+          res.forEach(function(user) {
+            $('.ev-view-comment-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
+          })
+        })
     },
 
     /**
@@ -970,30 +979,31 @@ var comment = {
       if (keyword) {
         $('.ev-view-comment-mention-placeholder').text('搜索中...');
         axios.get('/api/v2/users', { params: {name: keyword, limit: 8} })
-        .then(function(res) {
-          var result = res.data.slice(0, 8);
-          if (result.length) {
-            $('.ev-view-comment-mention-placeholder').empty();
-            // 填充列表
-            result.forEach(function(user) {
-              // 高亮关键字
-              var regex = new RegExp(keyword, 'gi');
-              var nameMarked = user.name.replace(regex, '<span style="color: #59b6d7;">$&</span>');
-              $('.ev-view-comment-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+nameMarked+'</li>');
-            });
-          } else {
-            $('.ev-view-comment-mention-placeholder').text('没有找到结果');
-          }
-        })
-      } else {
-        $('.ev-view-comment-mention-placeholder').text('关注用户');
-        axios.get('/api/v2/users/'+TS.USER.id+'/followings')
-          .then(function (res) {
-            res = res.data
-            res.forEach(function(user) {
-              $('.ev-view-comment-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
+            .then(function(res) {
+                var result = res.data.slice(0, 8);
+                if (result.length) {
+                    $('.ev-view-comment-mention-placeholder').empty();
+                    // 填充列表
+                    result.forEach(function(user) {
+                    // 高亮关键字
+                    var regex = new RegExp(keyword, 'gi');
+                    var nameMarked = user.name.replace(regex, '<span style="color: #59b6d7;">$&</span>');
+                    $('.ev-view-comment-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+nameMarked+'</li>');
+                    });
+                } else {
+                    $('.ev-view-comment-mention-placeholder').text('没有找到结果');
+                }
             })
-          })
+      } else {
+        axios.get('/api/v2/user/follow-mutual')
+            .then(function (res) {
+                $('.ev-view-comment-mention-placeholder').text('好友');
+                $('.ev-view-comment-follow-users').empty();
+                res = res.data.slice(0, 8)
+                res.forEach(function(user) {
+                $('.ev-view-comment-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
+                })
+            })
       }
     }, 450),
 
@@ -1687,7 +1697,15 @@ var repostable = {
           }
         })
       } else {
-        $('.ev-view-repostable-mention-placeholder').text('搜索中...');
+        axios.get('/api/v2/user/follow-mutual')
+            .then(function (res) {
+                $('.ev-view-repostable-mention-placeholder').text('好友');
+                $('.ev-view-repostable-follow-users').empty();
+                res = res.data.slice(0, 8)
+                res.forEach(function(user) {
+                $('.ev-view-repostable-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
+                })
+            })
       }
     }, 450),
 

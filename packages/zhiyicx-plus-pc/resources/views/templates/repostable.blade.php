@@ -41,7 +41,7 @@
                         <svg class="icon" aria-hidden="true" style="fill: #59b6d7;"><use xlink:href="#icon-mention"></use></svg>
                         <input type="text" placeholder="搜索用户" oninput="repostable.searchUser(this)">
                     </label>
-                    <span class="hot ev-view-repostable-mention-placeholder">关注用户</span>
+                    <span class="hot ev-view-repostable-mention-placeholder">好友</span>
                     <ul class="follow-users ev-view-repostable-follow-users">
                         @foreach($follow_users ?? [] as $user)
                         @if($loop->index < 8)

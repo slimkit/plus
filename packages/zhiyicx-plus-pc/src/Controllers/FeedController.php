@@ -104,8 +104,7 @@ class FeedController extends BaseController
         $data['hot_topics'] = newapi('GET', '/api/v2/feed/topics', ['only' => 'hot']);
 
         // 用于 at 某人时的初始关注用户列表
-        $user_id = $this->PlusData['TS']['id'] ?? 0;
-        $data['follow_users'] = api('GET', "/api/v2/users/{$user_id}/followings");
+        $data['follow_users'] = api('GET', "/api/v2/user/follow-mutual");
 
         $this->PlusData['current'] = 'feeds';
         return view('pcview::feed.index', $data, $this->PlusData);
@@ -217,8 +216,7 @@ class FeedController extends BaseController
         $data['hot_topics'] = newapi('GET', '/api/v2/feed/topics', ['only' => 'hot']);
 
         // 用于 at 某人时的初始关注用户列表
-        $user_id = $this->PlusData['TS']['id'] ?? 0;
-        $data['follow_users'] = api('GET', "/api/v2/users/{$user_id}/followings");
+        $data['follow_users'] = api('GET', "/api/v2/user/follow-mutual");
 
         return view('pcview::templates.repostable', $data, $this->PlusData)->render();
     }

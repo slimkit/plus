@@ -325,7 +325,7 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 .dialog-topic-select .search-wrap input,
 .dialog-mention-select .search-wrap input {border: none;}
 .dialog-topic-select .hot,
-.dialog-mention-select .hot {color: #ccc;margin-top: 20px;cursor: default;}
+.dialog-mention-select .hot {color: #ccc !important;margin-top: 20px;cursor: default !important;}
 .dialog-topic-select .topic-list,
 .dialog-mention-select .follow-users {display: flex;flex-flow: row wrap;}
 .dialog-topic-select .topic-list > li {display: inline-block;width: 50%;cursor: pointer;}
