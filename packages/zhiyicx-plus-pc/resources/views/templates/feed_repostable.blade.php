@@ -48,16 +48,16 @@
         >
             <p class="description">
                 <strong>{{$repostable['user']['name']}}: </strong>
-                {{$repostable['feed_content']}}
                 @if (count($repostable['images']))
                 <span class="view-more">
                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-liaotiantubiao_5"></use></svg> 查看图片
                 </span>
-                @endif
-                @if ($repostable['video'])
+                @elseif ($repostable['video'])
                 <span class="view-more">
                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-liaotiantubiao_5"></use></svg> 查看视频
                 </span>
+                @else
+                {{$repostable['feed_content']}}
                 @endif
             </p>
         </a>
