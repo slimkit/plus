@@ -50,6 +50,17 @@
                                 </a>
                             </li>
                         @if (in_array($post['group']['joined']['role'], ['administrator', 'founder']))
+                            <li>
+                                @if(!$post['excellent_at'])
+                                <a href="javascript:;" onclick="post.setExcellent('{{ $post['id'] }}', true)">
+                                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-text"></use></svg><span>设为精华</span>
+                                </a>
+                                @else
+                                <a href="javascript:;" onclick="post.setExcellent('{{ $post['id'] }}', false)">
+                                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-text"></use></svg><span>取消精华</span>
+                                </a>
+                                @endif
+                            </li>
                             @if ($post['pinned'])
                                 <li>
                                     <a href="javascript:;" onclick="post.cancelPinned('{{$post['id']}}');">
