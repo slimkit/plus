@@ -1530,7 +1530,7 @@ var getAvatar = function(user, width) {
     width = width || 0;
     var avatar = '';
     if (user['avatar']) {
-        avatar = user['avatar'];
+        avatar = user['avatar'].url;
     } else {
         switch (user['sex']) {
             case 1:
@@ -1545,7 +1545,7 @@ var getAvatar = function(user, width) {
         }
     }
     if (width > 0) {
-        avatar += '?s=' + width;
+        avatar += '?w=' + width;
     }
 
     return avatar;
