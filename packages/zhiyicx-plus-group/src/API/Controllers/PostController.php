@@ -347,26 +347,29 @@ class PostController
     public function delete(Group $group, Post $post)
     {
         $user = request()->user();
-
         $member = GroupMember::select('role')
             ->where('user_id', $user->id)
             ->where('group_id', $group->id)
             ->first();
-
         if ($group->id != $post->group_id) {
             return response()->json(['message' => '操作资源不匹配'], 403);
-        }
-
-        if (is_null($member)) {
+        } elseif (is_null($member)) {
+            return response()->json(['message' => '无操作权限'], 403);
+        } elseif ($post->user_id != $user->id && !in_array($member->role, ['administrator', 'founder'])) {
             return response()->json(['message' => '无操作权限'], 403);
         }
 
-        if ($post->user_id != $user->id && !in_array($member->role, ['administrator', 'founder'])) {
-            return response()->json(['message' => '无操作权限'], 403);
+        if ($post->excellent_at) {
+            $group->excellen_posts_count -= 1;
+            $group->excellen_posts_count = $group->excellen_posts_count <= 0 ? 0 : $group->excellen_posts_count;
         }
-
-        $post->delete();
-        $group->decrement('posts_count');
+        
+        $group->posts_count -= 1;
+        $group->posts_count = $group->posts_count <= 0 ? 0 : $group->posts_count;
+        $group->getConnection()->transaction(function () use ($group, $post) {
+            $post->delete();
+            $group->save();
+        });
 
         return response()->json(null, 204);
     }
