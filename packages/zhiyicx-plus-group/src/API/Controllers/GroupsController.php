@@ -366,7 +366,7 @@ class GroupsController
 
             DB::commit();
             return response()->json([
-                'message' => in_array($group->mode, ['paid', 'private']) ? '申请已提交，等待管理员审核' : '加圈成功',
+                'message' => in_array($group->mode, ['paid', 'private']) ? '申请已提交，等待管理员审核' : '加入成功',
             ], 201);
         } catch (\Exception $e) {
             DB::rollback();
@@ -886,7 +886,7 @@ class GroupsController
             DB::commit();
 
             return response()->json([
-                'message' => in_array($group->mode, ['paid', 'private']) ? '申请成功，等待管理员审核' : '加圈成功',
+                'message' => in_array($group->mode, ['paid', 'private']) ? '申请成功，等待管理员审核' : '加入成功',
             ], 201);
         } catch (\Exception $e) {
             DB::rollback();
