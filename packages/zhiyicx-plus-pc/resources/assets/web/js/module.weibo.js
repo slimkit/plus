@@ -324,10 +324,22 @@ weibo.payImage = function(obj){
  * @param {boolean} [show] 是否为显示, 如果不填则表示切换
  */
 weibo.showTopics = function(show) {
-  var $el = $('.ev-view-topic-select')
-  if (show === false) $el.slideUp('fast');
-  else if (show === true) $el.slideDown('fast');
-  else $el.slideToggle('fast');
+    var $el = $('.ev-view-topic-select')
+    if (show === false) $el.slideUp('fast');
+    else if (show === true) $el.slideDown('fast');
+    else $el.slideToggle('fast');
+
+    $el.find('input').val('');
+    axios.get('/api/v2/feed/topics', { params: {only: 'hot'} })
+        .then(function(res) {
+            $('.ev-view-topic-list').empty();
+            $('.ev-view-topic-hot').text('热门话题');
+            var result = res.data.slice(0, 8);
+                // 填充列表
+                result.forEach(function(topic) {
+                    $('.ev-view-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+topic.name+'</li>');
+                });
+        })
 }
 
 /**
@@ -360,11 +372,11 @@ weibo.searchTopics = _.debounce(function(el) {
         axios.get('/api/v2/feed/topics', { params: {only: 'hot'} })
         .then(function(res) {
             var result = res.data.slice(0, 8);
-                // 填充列表
-                result.forEach(function(topic) {
-                    $('.ev-view-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+topic.name+'</li>');
-                });
-            })
+              // 填充列表
+              result.forEach(function(topic) {
+                  $('.ev-view-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+topic.name+'</li>');
+              });
+          })
     }
 }, 450)
 

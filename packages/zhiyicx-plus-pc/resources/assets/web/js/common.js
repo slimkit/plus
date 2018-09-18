@@ -1627,7 +1627,18 @@ var repostable = {
         if (show === false) $el.slideUp('fast');
         else if (show === true) $el.slideDown('fast');
         else $el.slideToggle('fast');
+
         $el.find('input').val('');
+        axios.get('/api/v2/feed/topics', { params: {only: 'hot'} })
+            .then(function(res) {
+                $('.ev-view-repostable-topic-list').empty();
+                $('.ev-view-repostable-topic-hot').text('热门话题');
+                var result = res.data.slice(0, 8);
+                    // 填充列表
+                    result.forEach(function(topic) {
+                        $('.ev-view-repostable-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+topic.name+'</li>');
+                    });
+            })
     },
 
     /**
