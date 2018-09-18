@@ -92,15 +92,10 @@ class UserController extends BaseController
      * @param  int|integer $user_id [用户id]
      * @return mixed
      */
-    public function follower(Request $request, ?srting $user)
+    public function follower(Request $request, int $user_id = 0)
     {
         if ($request->isAjax) {
-            if (! $user) {
-                $user = $request->user();
-            } else {
-                $user = UserModel::where(username($user), $user)->first();
-            }
-            $user_id = $user->id;
+            $user_id = $request->query('user_id');
 
             $params = [
                 'offset' => $request->query('offset'),
