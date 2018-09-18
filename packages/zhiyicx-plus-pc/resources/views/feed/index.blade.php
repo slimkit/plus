@@ -85,8 +85,7 @@ $(function(){
             isAjax: true,
         };
         if(options.params.type == 'hot') {
-            options.paramtype = 1;
-            options.params.limit = 10;
+            options.paramtype = 2;
         }
 
         loader.init(options);

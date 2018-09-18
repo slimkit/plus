@@ -205,7 +205,7 @@ var loader = {
     init: function(option) {
         this.params = option.params || {};
         this.setting.container = option.container; // 容器ID
-        this.setting.paramtype = option.paramtype || 0; // 参数类型，0为after，1为offset
+        this.setting.paramtype = option.paramtype || 0; // 参数类型，0为after，1为offset，2为热门动态单独使用
         this.setting.loadtype = option.loadtype || 0; // 加载方式，0为一直加载更多，1为3次以后点击加载，2为点击加载
         this.setting.loading = option.loading; //加载图位置
         this.setting.loadcount = option.loadcount || 0; // 加载次数
@@ -282,11 +282,13 @@ var loader = {
             if (res.data != '') {
                 _this.setting.canload = 0;
 
-                // 两种不同的加载方式
+                // 加载传参方式
                 if (_this.setting.paramtype == 0) {
                     _this.params.after = res.after;
-                } else {
+                } else if (_this.setting.paramtype == 1) {
                     _this.params.offset = _this.setting.loadcount * _this.params.limit;
+                } else { // 热门动态
+                    _this.params.hot = res.after;
                 }
 
                 var html = res.data;
@@ -339,11 +341,13 @@ var loader = {
             if (res.data != '') {
                 _this.setting.canload = 0;
 
-                // 两种不同的加载方式
+                // 加载传参方式
                 if (_this.setting.paramtype == 0) {
                     _this.params.after = res.after;
-                } else {
+                } else if (_this.setting.paramtype == 1) {
                     _this.params.offset = _this.setting.loadcount * _this.params.limit;
+                } else { // 热门动态
+                    _this.params.hot = res.after;
                 }
 
                 var html = res.data;

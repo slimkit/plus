@@ -43,10 +43,12 @@ class FeedController extends BaseController
                 } else {
                     // 普通列表
                     $params['type'] = $request->query('type');
-                    if ($request->query('type') == 'new') {
+                    if ($request->query('type') == 'new' || $request->query('type') == 'follow') { // 最新，关注
                         $params['after'] = $request->query('after') ?: 0;
-                    } else {
-                        $params['offset'] = $request->query('offset') ?: 0;
+                        $after = $feed[count($feed) - 1]['id'] ?? 0;
+                    } else { // 热门
+                        $params['hot'] = $request->query('hot') ?: 0;
+                        $after = $feed[count($feed) - 1]['hot'] ?? 0;
                     }
                     $data = api('GET', '/api/v2/feeds', $params);
                     if (!empty($data['pinned']) && $params['type'] != 'follow') { // 置顶动态
@@ -57,7 +59,6 @@ class FeedController extends BaseController
                     }
 
                     $feed = $data['feeds'];
-                    $after = $feed[count($feed) - 1]['id'] ?? 0;
                 }
 
                 $data['space'] = $this->PlusData['config']['ads_space']['pc:feeds:list'] ?? [];
