@@ -86,6 +86,9 @@ $(function(){
         };
         if(options.params.type == 'hot') {
             options.paramtype = 2;
+            options.params.hot = 0
+        } else {
+            options.paramtype = 0;
         }
 
         loader.init(options);
