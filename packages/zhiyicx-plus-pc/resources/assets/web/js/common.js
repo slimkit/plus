@@ -1635,27 +1635,37 @@ var repostable = {
      * 使用 lodash.debounce 防抖， 450ms
      */
     searchTopics: _.debounce(function(el) {
-      var query = $(el).val();
-      if (query) {
-        $('.ev-view-repostable-topic-hot').text('搜索中...');
-      }
-      $('.ev-view-repostable-topic-list').empty();
-      axios.get('/api/v2/feed/topics', { params: {q: query, limit: 8} })
-        .then(function(res) {
-          var result = res.data.slice(0, 8);
-          if (result.length) {
-            $('.ev-view-repostable-topic-hot').empty();
-            // 填充列表
-            result.forEach(function(topic) {
-              // 高亮关键字
-              var regex = new RegExp(query, 'gi');
-              var nameMarked = topic.name.replace(regex, '<span style="color: #59b6d7;">$&</span>');
-              $('.ev-view-repostable-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+nameMarked+'</li>');
-            });
-          } else {
-            $('.ev-view-repostable-topic-hot').text('没有找到结果');
-          }
-        })
+        var keyword = $(el).val();
+        $('.ev-view-repostable-topic-list').empty();
+        if (keyword) {
+            $('.ev-view-repostable-topic-hot').text('搜索中...');
+            axios.get('/api/v2/feed/topics', { params: {q: keyword, limit: 8} })
+                .then(function(res) {
+                    var result = res.data.slice(0, 8);
+                    if (result.length) {
+                        $('.ev-view-repostable-topic-hot').empty();
+                        // 填充列表
+                        result.forEach(function(topic) {
+                            // 高亮关键字
+                            var regex = new RegExp(keyword, 'gi');
+                            var nameMarked = topic.name.replace(regex, '<span style="color: #59b6d7;">$&<span>');
+                            $('.ev-view-repostable-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+nameMarked+'</li>');
+                        });
+                    } else {
+                        $('.ev-view-repostable-topic-hot').text('没有找到结果');
+                    }
+                })
+        } else {
+            $('.ev-view-repostable-topic-hot').text('热门话题');
+            axios.get('/api/v2/feed/topics', { params: {only: 'hot'} })
+            .then(function(res) {
+                var result = res.data.slice(0, 8);
+                    // 填充列表
+                    result.forEach(function(topic) {
+                        $('.ev-view-repostable-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+topic.name+'</li>');
+                    });
+                })
+        }
     }, 450),
 
     /**
