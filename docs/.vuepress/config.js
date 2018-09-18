@@ -35,7 +35,7 @@ module.exports = {
             }
         ],
         sidebar: {
-            '/guide/installation/': ['', 'build-install-php']
+            '/guide/installation/': ['', 'build-install-php', 'build-install-mysql']
         }
     },
 };
