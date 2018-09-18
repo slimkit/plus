@@ -91,31 +91,61 @@ class AppServiceProvider extends ServiceProvider
 
             return $this->validateDisplayLength($value, $parameters);
         });
+
+        // 注册中英文显示宽度验证规则
+        $this->app->validator->extend('display_width', function ($attribute, string $value, array $parameters) {
+            unset($attribute);
+
+            return $this->validateDisplayWidth($value, $parameters);
+        });
     }
 
     /**
      * 验证显示长度计算.
      *
-     * @param strint|int $value
+     * @param string|int $value
      * @param array $parameters
      * @return bool
      * @author Seven Du <shiweidu@outlook.com>
      */
     protected function validateDisplayLength(string $value, array $parameters): bool
     {
-        if (empty($parameters)) {
-            throw new \InvalidArgumentException('Parameters must be passed');
-        // 补充 min 位.
-        } elseif (count($parameters) === 1) {
-            $parameters = [0, array_first($parameters)];
-        }
-
-        list($min, $max) = $parameters;
-
         preg_match_all('/[a-zA-Z0-9_]/', $value, $single);
         $length = count($single[0]) / 2 + mb_strlen(preg_replace('([a-zA-Z0-9_])', '', $value));
 
-        return $length >= $min && $length <= $max;
+        return $this->validateBetween($length, $parameters);
+    }
+
+    /**
+     * 验证中英文显示宽度.
+     *
+     * @param string $value
+     * @param array $parameters
+     * @return bool
+     */
+    protected function validateDisplayWidth(string $value, array $parameters): bool
+    {
+        $number = strlen(mb_convert_encoding($value, 'GB18030', 'UTF-8'));
+
+        return $this->validateBetween($number, $parameters);
+    }
+
+    /**
+     * 验证一个数字是否在指定的最小最大值之间.
+     *
+     * @param float $number
+     * @param array $parameters
+     * @return bool
+     */
+    private function validateBetween(float $number, array $parameters): bool
+    {
+        if (empty($parameters)) {
+            throw new \InvalidArgumentException('Parameters must be passed');
+        }
+
+        list($min, $max) = array_pad($parameters, -2, 0);
+
+        return $number >= $min && $number <= $max;
     }
 
     /**
