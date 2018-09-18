@@ -231,11 +231,11 @@ function formatMarkdown($body)
     //     }, $body);
     // }
     
-    $content = \Parsedown::instance()->text($body);
     $config = HTMLPurifier_Config::createDefault();
     $config->set('HTML.Allowed', 'br,a[href]');
     $purifier = new HTMLPurifier($config);
-    $content = $purifier->purify($content);
+    $body = $purifier->purify($body);
+    $content = \Parsedown::instance()->text($body);
 
     return $content;
 }
@@ -249,11 +249,11 @@ function formatList($body)
 {
     $body = preg_replace('/\@\!\[(.*?)\]\((\d+)\)/', '[图片]', $body);
 
-    $content = \Parsedown::instance()->text($body);
     $config = HTMLPurifier_Config::createDefault();
     $config->set('HTML.Allowed', 'br,a[href]');
     $purifier = new HTMLPurifier($config);
-    $content = $purifier->purify($content);
+    $body = $purifier->purify($body);
+    $content = \Parsedown::instance()->text($body);
 
     return  $content;
 }
