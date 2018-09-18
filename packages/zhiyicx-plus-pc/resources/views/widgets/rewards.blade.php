@@ -10,7 +10,7 @@
         </p>
 
         {{-- 打賞 --}}
-        @if (!empty($rewards_data))
+        @if (!$rewards_data->isEmpty())
             <div class="reward_user">
                 @foreach ($rewards_data as $key => $reward)
                     @if ($key < 10)
