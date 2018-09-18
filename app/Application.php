@@ -30,7 +30,7 @@ class Application extends LaravelApplication
      *
      * @var string
      */
-    const VERSION = '1.7.6';
+    const VERSION = '1.7.7';
 
     /**
      * The core vendor YAML file.
