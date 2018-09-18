@@ -224,12 +224,18 @@ function formatMarkdown($body)
     // 图片替换
     $body = preg_replace('/\@\!\[(.*?)\]\((\d+)\)/i', '![$1](' . getenv('APP_URL') . '/api/v2/files/$2)', $body);
 
-    $content = htmlspecialchars_decode(\Parsedown::instance()->setMarkupEscaped(true)->text($body));
+    // $content = htmlspecialchars_decode(\Parsedown::instance()->setMarkupEscaped(true)->text($body));
     // if (!strip_tags($content)) {
     //     $content = preg_replace_callback('/\[\]\((.*?)\)/i', function($url){
     //         return '<p><a href="'.$url[1].'">'.$url[1].'</a></p>';
     //     }, $body);
     // }
+    
+    $content = \Parsedown::instance()->text($body);
+    $config = HTMLPurifier_Config::createDefault();
+    $config->set('HTML.Allowed', 'br,a[href]');
+    $purifier = new HTMLPurifier($config);
+    $content = $purifier->purify($content);
 
     return $content;
 }
@@ -243,7 +249,13 @@ function formatList($body)
 {
     $body = preg_replace('/\@\!\[(.*?)\]\((\d+)\)/', '[图片]', $body);
 
-    return  htmlspecialchars_decode(\Parsedown::instance()->setMarkupEscaped(true)->text($body));
+    $content = \Parsedown::instance()->text($body);
+    $config = HTMLPurifier_Config::createDefault();
+    $config->set('HTML.Allowed', 'br,a[href]');
+    $purifier = new HTMLPurifier($config);
+    $content = $purifier->purify($content);
+
+    return  $content;
 }
 
 /**
