@@ -319,21 +319,26 @@ class GroupController extends BaseController
     {
         if ($request->isAjax) {
             $type = $request->query('type', 'post');
-            $params = [
-                'type' => $type == 'reply' ? 'latest_reply' : 'latest_post',
-                'offset' => $request->query('offset', 0),
-                'limit' => $request->query('limit', 15),
-            ];
-            $posts = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/posts', $params);
-            if ($request->keyword) {
-                $posts['pinneds'] = collect();
+            if ($type === 'excellent') {
+                $params = ['excellent' => '1'];
+                $posts = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/posts', $params);
+            } else {
                 $params = [
-                    'limit' => $request->query('limit', 15),
+                    'type' => $type == 'reply' ? 'latest_reply' : 'latest_post',
                     'offset' => $request->query('offset', 0),
-                    'keyword' => $request->query('keyword'),
-                    'group_id' => $group_id,
+                    'limit' => $request->query('limit', 15),
                 ];
-                $posts['posts'] = api('GET', '/api/v2/plus-group/group-posts', $params);
+                $posts = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/posts', $params);
+                if ($request->keyword) {
+                    $posts['pinneds'] = collect();
+                    $params = [
+                        'limit' => $request->query('limit', 15),
+                        'offset' => $request->query('offset', 0),
+                        'keyword' => $request->query('keyword'),
+                        'group_id' => $group_id,
+                    ];
+                    $posts['posts'] = api('GET', '/api/v2/plus-group/group-posts', $params);
+                }
             }
             $after = 0;
             $posts['conw'] = 815;

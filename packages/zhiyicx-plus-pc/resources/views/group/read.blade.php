@@ -242,12 +242,18 @@
     $('.feed_menu a').on('click', function() {
         $('#J-search').prev('input').val('');
         $('#feeds_list').html('');
+        var type = $(this).attr('rel');
         loader.init({
             container: '#feeds_list',
             loading: '.feed_content',
             url: '/groups/{{ $group['id'] }}',
             paramtype: 1,
-            params: {type:$(this).attr('rel'), isAjax:true, limit:15}
+            params: {type: type, isAjax: true, limit: 15},
+            callback: function() {
+                if (type === 'excellent') {
+                    $('.feed_item .excellent').remove();
+                }
+            }
         });
 
         $('.feed_menu a').removeClass('selected');
