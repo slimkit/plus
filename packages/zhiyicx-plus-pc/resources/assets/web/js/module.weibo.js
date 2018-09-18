@@ -335,31 +335,41 @@ weibo.showTopics = function(show) {
  * using lodash.debounce with 450ms
  */
 weibo.searchTopics = _.debounce(function(el) {
-  var query = $(el).val();
-  if (query) {
-    $('.ev-view-topic-hot').text('搜索中...');
-  }
-  $('.ev-view-topic-list').empty();
-  axios.get('/api/v2/feed/topics', { params: {q: query, limit: 8} })
-    .then(function(res) {
-      var result = res.data.slice(0, 8);
-      if (result.length) {
-        $('.ev-view-topic-hot').empty();
-        // 填充列表
-        result.forEach(function(topic) {
-          // 高亮关键字
-          var regex = new RegExp(query, 'gi');
-          var nameMarked = topic.name.replace(regex, '<span style="color: #59b6d7;">$&<span>');
-          $('.ev-view-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+nameMarked+'</li>');
-        });
-      } else {
-        $('.ev-view-topic-hot').text('没有找到结果');
-      }
-    })
+    var keyword = $(el).val();
+    $('.ev-view-topic-list').empty();
+    if (keyword) {
+        $('.ev-view-topic-hot').text('搜索中...');
+        axios.get('/api/v2/feed/topics', { params: {q: keyword, limit: 8} })
+            .then(function(res) {
+                var result = res.data.slice(0, 8);
+                if (result.length) {
+                    $('.ev-view-topic-hot').empty();
+                    // 填充列表
+                    result.forEach(function(topic) {
+                        // 高亮关键字
+                        var regex = new RegExp(keyword, 'gi');
+                        var nameMarked = topic.name.replace(regex, '<span style="color: #59b6d7;">$&<span>');
+                        $('.ev-view-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+nameMarked+'</li>');
+                    });
+                } else {
+                    $('.ev-view-topic-hot').text('没有找到结果');
+                }
+            })
+    } else {
+        $('.ev-view-topic-hot').text('热门话题');
+        axios.get('/api/v2/feed/topics', { params: {only: 'hot'} })
+        .then(function(res) {
+            var result = res.data.slice(0, 8);
+                // 填充列表
+                result.forEach(function(topic) {
+                    $('.ev-view-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+topic.name+'</li>');
+                });
+            })
+    }
 }, 450)
 
 /**
- * 显示话题选择框
+ * 显示at选择框
  *
  * @param {boolean} [show] 是否为显示, 如果不填则表示切换
  */
@@ -411,7 +421,7 @@ weibo.searchUser = _.debounce(function(el) {
                 $('.ev-view-follow-users').empty();
                 res = res.data.slice(0, 8)
                 res.forEach(function(user) {
-                $('.ev-view-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
+                    $('.ev-view-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
                 })
             })
     }
