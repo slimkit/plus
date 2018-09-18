@@ -3,7 +3,7 @@
 
 /*动态发布*/
 .feed_post {width:100%;margin-bottom:20px;padding:30px 40px;border-radius:3px;background:white;}
-.feed_post .post_textarea {font-size:16px;width:100%;height:158px;padding:10px;resize:none;border:1px solid #ededed;outline:none;background:#f3f6f7;color:#333;}
+.feed_post .post_textarea {font-size:16px;width:100%;min-height:158px;padding:10px;resize:none;border:1px solid #ededed;outline:none;background:#f3f6f7;color:#333;}
 .feed_post .post_extra {position:relative;line-height:31px;margin-top:10px;}
 .feed_post .post_extra .dy_cs {position:absolute;right:15px;top:-45px;font-size:12px;}
 .feed_post .post_extra span {cursor:pointer;line-height:37px;display:inline-block;color:#666;}
