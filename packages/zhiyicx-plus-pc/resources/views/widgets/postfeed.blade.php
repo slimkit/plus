@@ -1,6 +1,8 @@
 {{-- 动态发布 --}}
 <div class="feed_post">
+
     <div class="post_textarea" placeholder="说说新鲜事" id="feed_content" amount="" onkeyup="checkNums(this, 255, 'nums');" contenteditable></div>
+
     <div class="post_extra">
         <span class="font14 ev-btn-feed-pic">
             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-img"></use></svg>
@@ -38,10 +40,10 @@
             <div class="dialog-mention-select ev-view-mention-select" style="display: none;">
                 <label class="search-wrap">
                     <svg class="icon" aria-hidden="true" style="fill: #59b6d7;"><use xlink:href="#icon-mention"></use></svg>
-                    <input type="text" placeholder="搜索用户" oninput="comment.searchUser(this)">
+                    <input type="text" placeholder="搜索用户" oninput="weibo.searchUser(this)">
                 </label>
-                <span class="hot ev-view-comment-mention-placeholder">好友</span>
-                <ul class="follow-users ev-view-comment-follow-users">
+                <span class="hot ev-view-mention-placeholder">好友</span>
+                <ul class="follow-users ev-view-follow-users">
                     @foreach($follow_users ?? [] as $user)
                     @if($loop->index < 8)
                     <li data-user-id="{{$user['id']}}" data-user-name="{{$user['name']}}">{{$user['name']}}</li>

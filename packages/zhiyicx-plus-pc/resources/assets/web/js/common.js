@@ -957,14 +957,14 @@ var comment = {
       else $el.slideToggle('fast');
       $el.find('input').val('');
       axios.get('/api/v2/user/follow-mutual')
-      .then(function (res) {
-          $('.ev-view-comment-mention-placeholder').text('好友');
-          $('.ev-view-comment-follow-users').empty();
-          res = res.data.slice(0, 8)
-          res.forEach(function(user) {
-            $('.ev-view-comment-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
+        .then(function (res) {
+            $('.ev-view-comment-mention-placeholder').text('好友');
+            $('.ev-view-comment-follow-users').empty();
+            res = res.data.slice(0, 8)
+            res.forEach(function(user) {
+              $('.ev-view-comment-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
+            })
           })
-        })
     },
 
     /**
@@ -1669,6 +1669,15 @@ var repostable = {
         else if (show === true) $el.slideDown('fast');
         else $el.slideToggle('fast');
         $el.find('input').val('');
+        axios.get('/api/v2/user/follow-mutual')
+          .then(function (res) {
+              $('.ev-view-repostable-mention-placeholder').text('好友');
+              $('.ev-view-repostable-follow-users').empty();
+              res = res.data.slice(0, 8)
+              res.forEach(function(user) {
+                $('.ev-view-repostable-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
+              })
+            })
     },
 
     /**
@@ -1815,6 +1824,16 @@ $(function() {
         if (e.type == 'mouseenter' && $('.nav_menu').css('display') == 'none') {
             $('.nav_menu').show();
         }
+    })
+
+    // 捕获评论区at用户
+    $(document).on('click', '.ev-view-comment-follow-users > li', function() {
+      var name = $(this).data('user-name');
+      var $el = $(this).closest('.comment_textarea').children('.comment_editor');
+
+      $el.html($el.html() + " <span contenteditable=\"false\" style=\"color: #59b6d7;\">\u00ad@" + name + "\u00ad</span> ");
+      checkNums($(this).closest('.comment_textarea').find('.comment_editor')[0], 255, 'nums');
+      weibo.showMention(false);
     })
 
     // 捕获添加话题(用于转发动态)

@@ -169,6 +169,7 @@ weibo.doPostFeed = function(type) {
       .then(function (response) {
             $('.feed_picture').html('').hide();
             $('#feed_content').html('');
+            checkNums($('#feed_content')[0], 255, 'nums');
             weibo.afterPostFeed(response.data.id);
             noticebox('发布成功', 1);
             weibo.selectedTopics = [];
@@ -367,7 +368,54 @@ weibo.showMention = function(show) {
     if (show === false) $el.slideUp('fast');
     else if (show === true) $el.slideDown('fast');
     else $el.slideToggle('fast');
+    $el.find('input').val('');
+    axios.get('/api/v2/user/follow-mutual')
+        .then(function (res) {
+            $('.ev-view-mention-placeholder').text('好友');
+            $('.ev-view-follow-users').empty();
+            res = res.data.slice(0, 8)
+            res.forEach(function(user) {
+                $('.ev-view-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
+            })
+        })
 }
+
+/**
+ * 搜索用户
+ */
+weibo.searchUser = _.debounce(function(el) {
+    var keyword = $(el).val();
+    $('.ev-view-follow-users').empty();
+    if (keyword) {
+        $('.ev-view-mention-placeholder').text('搜索中...');
+        axios.get('/api/v2/users', { params: {name: keyword, limit: 8} })
+            .then(function(res) {
+                var result = res.data.slice(0, 8);
+                if (result.length) {
+                    $('.ev-view-mention-placeholder').empty();
+                    // 填充列表
+                    result.forEach(function(user) {
+                    // 高亮关键字
+                    var regex = new RegExp(keyword, 'gi');
+                    var nameMarked = user.name.replace(regex, '<span style="color: #59b6d7;">$&</span>');
+                    $('.ev-view-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+nameMarked+'</li>');
+                    });
+                } else {
+                    $('.ev-view-mention-placeholder').text('没有找到结果');
+                }
+            })
+    } else {
+        axios.get('/api/v2/user/follow-mutual')
+            .then(function (res) {
+                $('.ev-view-mention-placeholder').text('好友');
+                $('.ev-view-follow-users').empty();
+                res = res.data.slice(0, 8)
+                res.forEach(function(user) {
+                $('.ev-view-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
+                })
+            })
+    }
+}, 450),
 
 $(function() {
 
@@ -440,12 +488,9 @@ $(function() {
     })
 
     // 捕获at用户
-    $(document).on('click', '.ev-view-follow-users > li, .ev-view-comment-follow-users > li', function() {
+    $(document).on('click', '.ev-view-follow-users > li', function() {
       var name = $(this).data('user-name')
-      // 如果是评论区的 at (hack)
-      $el = $(this).closest('.comment_editor')
-      // 如果是发送动态中的 at
-      if (!$el.length) $el = $(this).closest('.feed_post').find('.post_textarea')
+      var $el = $(this).closest('.feed_post').find('.post_textarea')
 
       $el.html($('#feed_content').html() + " <span contenteditable=\"false\" style=\"color: #59b6d7;\">\u00ad@" + name + "\u00ad</span> ")
       checkNums($('#feed_content'), 255, 'nums');
