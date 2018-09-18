@@ -112,7 +112,7 @@
                 <a href="javascript:;" rel="reply" class="font16 @if($type=='reply')selected @endif">最新回复</a>
                 <a href="javascript:;" rel="excellent" class="font16 @if($type=='excellent')selected @endif">精华帖子</a>
                 @else
-                <a href="javascript:;" rel="excellent" class="font16 @if($type=='excellent')selected @endif">精华帖预览</a>
+                <a href="javascript:;" rel="excellent" class="font16 @if($type=='excellent')selected @endif">帖子预览</a>
                 @endif
             </div>
             <div id="feeds_list"></div>
