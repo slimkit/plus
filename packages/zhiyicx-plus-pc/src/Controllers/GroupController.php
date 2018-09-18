@@ -2,9 +2,9 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use Illuminate\Http\Request;
 use Zhiyi\PlusGroup\Models\Group as GroupModel;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 
 class GroupController extends BaseController
 {
@@ -55,7 +55,7 @@ class GroupController extends BaseController
         $group_id = $request->query('group_id', 2);
         $data['tags'] = api('GET', '/api/v2/tags');
         $data['cates'] = api('GET', '/api/v2/plus-group/categories');
-        $data['group'] = api('GET', '/api/v2/plus-group/groups/'.$group_id);
+        $data['group'] = api('GET', '/api/v2/plus-group/groups/' . $group_id);
 
         return view('pcview::group.manage_edit', $data, $this->PlusData);
     }
@@ -69,9 +69,9 @@ class GroupController extends BaseController
     public function manageMember(Request $request)
     {
         $group_id = $request->query('group_id', 2);
-        $data['group'] = api('GET', '/api/v2/plus-group/groups/'.$group_id);
-        $data['members'] = api('GET', '/api/v2/plus-group/groups/'.$group_id.'/members', ['type'=>'member']);
-        $data['manager'] = api('GET', '/api/v2/plus-group/groups/'.$group_id.'/members', ['type'=>'manager']);
+        $data['group'] = api('GET', '/api/v2/plus-group/groups/' . $group_id);
+        $data['members'] = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/members', ['type' => 'member']);
+        $data['manager'] = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/members', ['type' => 'manager']);
 
         return view('pcview::group.manage_member', $data, $this->PlusData);
     }
@@ -85,8 +85,8 @@ class GroupController extends BaseController
     public function bankroll(Request $request)
     {
         $group_id = $request->query('group_id', 2);
-        $data['group'] = api('GET', '/api/v2/plus-group/groups/'.$group_id);
-        $data['bankroll'] = api('GET', '/api/v2/plus-group/groups/'.$group_id.'/incomes');
+        $data['group'] = api('GET', '/api/v2/plus-group/groups/' . $group_id);
+        $data['bankroll'] = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/incomes');
 
         return view('pcview::group.manage_bankroll', $data, $this->PlusData);
     }
@@ -105,7 +105,7 @@ class GroupController extends BaseController
             'offset' => $request->query('offset', 0),
             'group_id' => $request->query('group_id', 2),
         ];
-        $data['group'] = api('GET', '/api/v2/plus-group/groups/'.$group_id);
+        $data['group'] = api('GET', '/api/v2/plus-group/groups/' . $group_id);
         $data['reports'] = api('GET', '/api/v2/plus-group/reports/', $params);
 
         return view('pcview::group.manage_report', $data, $this->PlusData);
@@ -123,13 +123,13 @@ class GroupController extends BaseController
         $template = 'publish';
         if ($request->type) {
             $template = 'publish_outside';
-            $data['cates'] = api('GET', '/api/v2/plus-group/user-groups',['type' => 'allow_post']);
+            $data['cates'] = api('GET', '/api/v2/plus-group/user-groups', ['type' => 'allow_post']);
         } else {
             $group_id = $request->query('group_id');
-            $data['group'] = api('GET', '/api/v2/plus-group/groups/'.$group_id);
+            $data['group'] = api('GET', '/api/v2/plus-group/groups/' . $group_id);
         }
 
-        return view('pcview::group.'.$template, $data, $this->PlusData);
+        return view('pcview::group.' . $template, $data, $this->PlusData);
     }
 
     /**
@@ -141,7 +141,7 @@ class GroupController extends BaseController
     public function noticeRead(Request $request)
     {
         $group_id = $request->query('group_id');
-        $data['group'] = api('GET', '/api/v2/plus-group/groups/'.$group_id);
+        $data['group'] = api('GET', '/api/v2/plus-group/groups/' . $group_id);
 
         return view('pcview::group.notice', $data, $this->PlusData);
     }
@@ -155,9 +155,9 @@ class GroupController extends BaseController
     public function member(Request $request)
     {
         $group_id = $request->query('group_id');
-        $data['group'] = api('GET', '/api/v2/plus-group/groups/'.$group_id);
-        $data['members'] = api('GET', '/api/v2/plus-group/groups/'.$group_id.'/members', ['type'=>'member']);
-        $data['manager'] = api('GET', '/api/v2/plus-group/groups/'.$group_id.'/members', ['type'=>'manager']);
+        $data['group'] = api('GET', '/api/v2/plus-group/groups/' . $group_id);
+        $data['members'] = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/members', ['type' => 'member']);
+        $data['manager'] = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/members', ['type' => 'manager']);
 
         return view('pcview::group.member', $data, $this->PlusData);
     }
@@ -168,25 +168,20 @@ class GroupController extends BaseController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function list(Request $request)
-    {
+    public function list(Request $request) {
         $type = $request->query('type', 'all');
         if ($type === 'excellent') {
             $params = [
                 'excellent' => '1',
             ];
             $groups = api('GET', '/api/v2/plus-group/groups', $params);
-        }
-
-        else if ($type == 'join') {
+        } else if ($type == 'join') {
             $params = [
                 'offset' => $request->query('offset', 0),
                 'limit' => $request->query('limit', 15),
             ];
             $groups = api('GET', '/api/v2/plus-group/user-groups', $params);
-        }
-
-        else if ($type == 'nearby') {
+        } else if ($type == 'nearby') {
             $params = [
                 'offset' => $request->query('offset', 0),
                 'limit' => $request->query('limit', 15),
@@ -194,9 +189,7 @@ class GroupController extends BaseController
                 'latitude' => $request->query('latitude'),
             ];
             $groups = api('GET', '/api/v2/plus-group/round/groups', $params);
-        }
-
-        else {
+        } else {
             $params = [
                 'offset' => $request->query('offset', 0),
                 'limit' => $request->query('limit', 15),
@@ -212,9 +205,9 @@ class GroupController extends BaseController
         $groupData = view('pcview::templates.group', $data, $this->PlusData)->render();
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'data' => $groupData,
-            'after' => $after
+            'after' => $after,
         ]);
 
     }
@@ -233,8 +226,8 @@ class GroupController extends BaseController
             'limit' => $request->query('limit', 15),
             'type' => $request->query('type', 'member'),
         ];
-        $group = api('GET', '/api/v2/plus-group/groups/'.$group_id);
-        $members = api('GET', '/api/v2/plus-group/groups/'.$group_id.'/members', $params);
+        $group = api('GET', '/api/v2/plus-group/groups/' . $group_id);
+        $members = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/members', $params);
 
         $member = clone $members;
         $after = $member->pop()->id ?? 0;
@@ -244,9 +237,9 @@ class GroupController extends BaseController
         $memberData = view('pcview::templates.group_member', $data, $this->PlusData)->render();
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'data' => $memberData,
-            'after' => $after
+            'after' => $after,
         ]);
     }
 
@@ -299,7 +292,7 @@ class GroupController extends BaseController
             'start' => strtotime($request->query('start')),
             'end' => strtotime($request->query('end')),
         ];
-        $records = api('GET', '/api/v2/plus-group/groups/'.$group_id.'/incomes', $params);
+        $records = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/incomes', $params);
         $record = clone $records;
         $after = $record->pop()->id ?? 0;
         $data['record'] = $records;
@@ -311,7 +304,7 @@ class GroupController extends BaseController
         return response()->json([
             'status' => true,
             'data' => $recordData,
-            'after' => $after
+            'after' => $after,
         ]);
     }
 
@@ -331,18 +324,18 @@ class GroupController extends BaseController
                 'offset' => $request->query('offset', 0),
                 'limit' => $request->query('limit', 15),
             ];
-            $posts = api('GET', '/api/v2/plus-group/groups/'.$group_id.'/posts', $params);
+            $posts = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/posts', $params);
             if ($request->keyword) {
                 $posts['pinneds'] = collect();
                 $params = [
                     'limit' => $request->query('limit', 15),
                     'offset' => $request->query('offset', 0),
-                    'keyword' =>$request->query('keyword'),
+                    'keyword' => $request->query('keyword'),
                     'group_id' => $group_id,
                 ];
                 $posts['posts'] = api('GET', '/api/v2/plus-group/group-posts', $params);
             }
-            $after =  0;
+            $after = 0;
             $posts['conw'] = 815;
             $posts['conh'] = 545;
             $posts['top'] = true;
@@ -350,20 +343,20 @@ class GroupController extends BaseController
             $feedData = view('pcview::templates.group_posts', $posts, $this->PlusData)->render();
 
             return response()->json([
-                'status'  => true,
+                'status' => true,
                 'data' => $feedData,
-                'after' => $after
+                'after' => $after,
             ]);
         }
-        $data['group'] = api('GET', '/api/v2/plus-group/groups/'.$group_id);
+        $data['group'] = api('GET', '/api/v2/plus-group/groups/' . $group_id);
         if ($data['group']['message']) {
             return redirect(route('pc:group'));
         }
         $this->PlusData['current'] = 'group';
         $data['type'] = $request->query('type', 'post');
         $user = $this->PlusData['TS']['id'] ?? 0;
-        $data['members'] = api('GET', '/api/v2/plus-group/groups/'.$group_id.'/members',['type'=>'member']);
-        $data['manager'] = api('GET', '/api/v2/plus-group/groups/'.$group_id.'/members', ['type'=>'manager']);
+        $data['members'] = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/members', ['type' => 'member']);
+        $data['manager'] = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/members', ['type' => 'manager']);
 
         return view('pcview::group.read', $data, $this->PlusData);
     }
@@ -377,13 +370,13 @@ class GroupController extends BaseController
     public function getPost(Request $request)
     {
         $posts['posts'] = collect();
-        $post = api('GET', '/api/v2/groups/'.$request->group_id.'/posts/'.$request->post_id);
+        $post = api('GET', '/api/v2/groups/' . $request->group_id . '/posts/' . $request->post_id);
         $posts['posts']->push($post);
         $feedData = view('pcview::templates.group_posts', $posts, $this->PlusData)->render();
 
         return response()->json([
-            'status'  => true,
-            'data' => $feedData
+            'status' => true,
+            'data' => $feedData,
         ]);
     }
 
@@ -400,7 +393,7 @@ class GroupController extends BaseController
         $this->PlusData['current'] = 'group';
 
         $data['top'] = true;
-        $data['post'] = api('GET', '/api/v2/plus-group/groups/'.$group_id.'/posts/'.$post_id);
+        $data['post'] = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/posts/' . $post_id);
 
         return view('pcview::group.post', $data, $this->PlusData);
     }
@@ -416,8 +409,8 @@ class GroupController extends BaseController
     public function comments(Request $request, $post_id)
     {
         $group_id = $request->query('group_id', 0);
-        $params = [ 'after' => $request->query('after', 0) ];
-        $comments = api('GET', '/api/v2/plus-group/group-posts/'.$post_id.'/comments', $params);
+        $params = ['after' => $request->query('after', 0)];
+        $comments = api('GET', '/api/v2/plus-group/group-posts/' . $post_id . '/comments', $params);
         $comment = clone $comments['comments'];
         $after = $comment->pop()->id ?? 0;
         if ($comments['pinneds'] != null) {
@@ -428,13 +421,13 @@ class GroupController extends BaseController
             });
         }
         $comments['top'] = true;
-        $comments['group'] = api('GET', '/api/v2/plus-group/groups/'.$group_id);
+        $comments['group'] = api('GET', '/api/v2/plus-group/groups/' . $group_id);
         $commentData = view('pcview::templates.comment', $comments, $this->PlusData)->render();
 
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'data' => $commentData,
-            'after' => $after
+            'after' => $after,
         ]);
     }
 }
