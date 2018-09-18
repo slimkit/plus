@@ -6,7 +6,7 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
  * +----------------------------------------------------------------------+
- * | Copyright (c) 2017 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
  * +----------------------------------------------------------------------+
  * | This source file is subject to version 2.0 of the Apache license,    |
  * | that is bundled with this package in the file LICENSE, and is        |
@@ -124,6 +124,7 @@ class AppServiceProvider extends ServiceProvider
     protected function validateDisplayWidth(string $value, array $parameters): bool
     {
         $number = strlen(mb_convert_encoding($value, 'GB18030', 'UTF-8'));
+
         return $this->validateBetween($number, $parameters);
     }
 
