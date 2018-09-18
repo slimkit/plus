@@ -189,7 +189,7 @@
 </div>
 @endif
 
-@if($post['video'])
+@if($post['video'] ?? false)
     <div>
         <video poster="{{ $routes['storage'] . $post['video']['cover_id'] }}" src="{{ $routes['storage'] . $post['video']['video_id'] }}" width="{{ $conw }}" height="{{ $conh }}" controls="controls">
         </video>

@@ -319,7 +319,14 @@ class GroupController extends BaseController
     {
         if ($request->isAjax) {
             $type = $request->query('type', 'post');
-            if ($type === 'excellent') {
+            if ($type === 'preview') {
+                $users = [];
+                $posts['posts'] = api('GET', '/api/v2/group/groups/' . $group_id . '/preview-posts');
+                foreach ($posts['posts'] as &$post) {
+                    $users[] = api('GET', '/api/v2/users/' . $post['user_id']);
+                }
+                $posts['users'] = $users;
+            } elseif ($type === 'excellent') {
                 $params = ['excellent' => '1'];
                 $posts = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/posts', $params);
             } else {
@@ -358,7 +365,13 @@ class GroupController extends BaseController
             return redirect(route('pc:group'));
         }
         $this->PlusData['current'] = 'group';
-        $data['type'] = $request->query('type', 'post');
+
+        if (!in_array($data['group']['mode'], ['paid', 'private']) || $data['group']['joined']) {
+            $data['type'] = $request->query('type', 'post');
+        } else {
+            $data['type'] = 'preview';
+        }
+
         $user = $this->PlusData['TS']['id'] ?? 0;
         $data['members'] = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/members', ['type' => 'member']);
         $data['manager'] = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/members', ['type' => 'manager']);

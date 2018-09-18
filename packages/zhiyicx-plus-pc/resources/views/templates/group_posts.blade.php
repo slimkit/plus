@@ -7,6 +7,14 @@
 
 @if(!empty($pinneds))
 @foreach($pinneds as $k => $post)
+@php
+    $post['user'] = $post['user'] ?? array_where($users, function ($user) use ($post) {
+        return $user['id'] === $post['user_id'];
+    })[0];
+    $post['liked'] = $post['liked'] ?? false;
+    $post['group'] = $post['group'] ?? false;
+    $post['collected'] = $post['collected'] ?? false;
+@endphp
 <div class="feed_item" id="feed{{$post['id']}}">
     <div class="feed_title">
         <a class="avatar_box" href="{{ route('pc:mine', $post['user']['id']) }}">
@@ -33,7 +41,7 @@
     <div class="feed_bottom">
         <div class="feed_datas">
             <span class="digg" id="J-likes{{$post['id']}}" rel="{{$post['likes_count']}}" status="{{(int) $post['liked']}}">
-                @if($post['liked'])
+                @if($post['liked'] ?? false)
                 <a href="javascript:void(0)" onclick="liked.init({{$post['id']}}, 'group', 1)">
                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-likered"></use></svg>
                     <font>{{$post['likes_count']}}</font>
@@ -172,7 +180,15 @@
 
 @if(!empty($posts))
 @foreach($posts as $key => $post)
-<div class="feed_item" id="feed{{$post['id']}}">
+@php
+    $post['user'] = $post['user'] ?? array_where($users, function ($user) use ($post) {
+        return $user['id'] === $post['user_id'];
+    })[0];
+    $post['liked'] = $post['liked'] ?? false;
+    $post['group'] = $post['group'] ?? false;
+    $post['collected'] = $post['collected'] ?? false;
+@endphp
+<div class="feed_item" id="feed{{ $post['id'] }}">
     <div class="feed_title">
         <a class="avatar_box" href="{{ route('pc:mine', $post['user']['id']) }}">
             <img class="avatar" src="{{ getAvatar($post['user'], 50) }}" />
@@ -205,8 +221,8 @@
 
     <div class="feed_bottom">
         <div class="feed_datas">
-            <span class="digg" id="J-likes{{$post['id']}}" rel="{{$post['likes_count']}}" status="{{(int) $post['liked']}}">
-                @if($post['liked'])
+            <span class="digg" id="J-likes{{$post['id']}}" rel="{{ $post['likes_count']  }}" status="{{(int) $post['liked'] ?? ''}}">
+                @if($post['liked'] ?? false)
                 <a href="javascript:void(0)" onclick="liked.init({{$post['id']}}, 'group', 1)">
                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-likered"></use></svg>
                     <font>{{$post['likes_count']}}</font>
