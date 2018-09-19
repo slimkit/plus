@@ -66,11 +66,11 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
             <span class="digg" id="J-likes{{$post['id']}}" rel="{{$post['like_count']}}" status="{{(int) $post['has_like']}}">
                 @if($post['has_like'])
                 <a href="javascript:void(0)" onclick="liked.init({{ $post['id'] }}, 'feeds', 1)">
-                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-likered"></use></svg> <span>{{ $post['like_count'] }}</span>
+                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-likered"></use></svg> <font>{{ $post['like_count'] }}</font>
                 </a>
                 @else
                 <a href="javascript:;" onclick="liked.init({{$post['id']}}, 'feeds', 1)">
-                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-like"></use></svg> <span>{{$post['like_count']}}</span>
+                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-like"></use></svg> <font>{{$post['like_count']}}</font>
                 </a>
                 @endif
             </span>
