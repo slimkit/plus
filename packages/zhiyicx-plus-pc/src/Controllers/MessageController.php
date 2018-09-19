@@ -4,6 +4,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatList;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\newapi;
 use Illuminate\Http\Request;
 
 class MessageController extends BaseController
@@ -291,30 +292,41 @@ class MessageController extends BaseController
         // 拉取 mention 列表
         $after = $request->input('after');
         $limit = $request->input('limit') ?: 20;
-        $data['mention'] = api('GET', '/api/v2/user/message/atme', [
+        $data['mention'] = newapi('GET', '/api/v2/user/message/atme', [
             'index' => $after,
             'limit' => $limit,
         ]);
 
-        // 获取用户列表
-        $users = [];
-        foreach ($data['mention'] as $mention) {
-            array_push($users, $mention['user_id']);
-        }
-        $users = array_unique($users);
-        $data['users'] = api('GET', '/api/v2/users', [
-            'limit' => $limit,
-            'id' => implode(',', $users),
-        ]);
-
         // 获取 mention 详情
         foreach ($data['mention'] as &$mention) {
-            switch ($mention['resourceable']['type']) {
+            $id = $mention['resourceable']['id'];
+            $type = $mention['resourceable']['type'];
+            switch ($type) {
                 case 'feeds':
-                    $mention['feeds'] = api('GET', "/api/v2/feeds/{$mention['resourceable']['id']}");
+                    $mention['feeds'] = api('GET', "/api/v2/feeds/{$id}");
+                    $user_id = $mention['feeds']['user_id'];
+                    break;
+                case 'comments':
+                    $mention['comments'] = newapi('GET', "/api/v2/comments", ['id' => $id])[0];
+                    $user_id = $mention['comments']['user_id'];
+                    $mention['repostable_type'] = $mention['comments']['resourceable']['type'] ?? '';
+
+                    switch ($mention['repostable_type']) {
+                        case 'news':
+                            $repo_id = $mention['comments']['resourceable']['id'];
+                            $mention['repostable'] = api('GET', '/api/v2/news/' . $repo_id);
+                            break;
+                        case 'feeds':
+                            $repo_id = $mention['comments']['resourceable']['id'];
+                            $mention['repostable'] = api('GET', '/api/v2/feeds/' . $repo_id);
+                            break;
+                    }
+
                     break;
             }
+            $mention['user'] = api('GET', '/api/v2/users/' . $user_id);
         }
+        // dd($data);
 
         $return = view('pcview::templates.mention', $data, $this->PlusData)->render();
 
