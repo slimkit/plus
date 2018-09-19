@@ -25,7 +25,7 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
             <span class="feed_time font12 hide">查看详情</span>
         </a>
 
-        @if(isset($post['pinned']) && $post['pinned'])
+        @if(isset($post['pinned']) ? $post['pinned'] === true : false)
         <a class="pinned" href="javascript:;">
             <span class="font12">置顶</span>
         </a>
