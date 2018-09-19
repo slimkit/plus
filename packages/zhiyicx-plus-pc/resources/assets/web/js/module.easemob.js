@@ -267,7 +267,7 @@ easemob = {
     database: function(){
         /*创建本地存储*/
         var db = new Dexie('TS_EASEMOB');
-        db.version(1).stores({
+        db.version(2).stores({
             /*message*/
             message: "id, time, cid, type, mid, uid, touid, txt, read, [cid+read]",
 
