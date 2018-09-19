@@ -498,10 +498,11 @@ $(function() {
 
     // 捕获at用户
     $(document).on('click', '.ev-view-follow-users > li', function() {
-      var name = $(this).data('user-name')
-      var $el = $(this).closest('.feed_post').find('.post_textarea')
+      var name = $(this).data('user-name');
+      var $el = $('#feed_content');
 
-      $el.html($('#feed_content').html() + " <span contenteditable=\"false\" style=\"color: #59b6d7;\">\u00ad@" + name + "\u00ad</span> ")
+      $el.html($el.html().replace(/@$/g, ''));
+      $el.html($el.html() + " <span contenteditable=\"false\" style=\"color: #59b6d7;\">\u00ad@" + name + "\u00ad</span> ")
       checkNums($('#feed_content'), 255, 'nums');
       weibo.showMention(false);
     })
