@@ -48,7 +48,7 @@ class CommentPinnedController extends Controller
         $after = $request->query('after');
 
         $grammar = $model->getConnection()->getQueryGrammar();
-        $pinneds = $model->with('comment')
+        $pinneds = $model->with('comment', 'user')
             ->where('channel', 'comment')
             ->where('target_user', $user->id)
             ->when(boolval($after), function ($query) use ($after) {
@@ -65,8 +65,25 @@ class CommentPinnedController extends Controller
             ->orderBy('created_at', 'desc')
             ->limit($limit)
             ->get();
+        $pinneds = $pinneds->groupBy(function ($item) {
+            return $item->channel;
+        });
+        $commentPinneds = $pinneds->get('comment', collect());
+        $feedsPinneds = $pinneds->get('feed', collect());
 
-        $pinneds = $pinneds->load(['feed', 'user'])->map(function ($pinned) use ($repository, $user) {
+        if ($commentPinneds->isNotEmpty()) {
+            $commentPinneds->load(['commentFeed']);
+            $commentPinneds->map(function ($item) {
+                $item->feed = $item->commentFeed;
+                unset($item->commentFeed);
+            });
+        }
+        if ($feedsPinneds->isNotEmpty()) {
+            $feedsPinneds->load(['feed']);
+        }
+
+        $pinneds = $commentPinneds->merge($feedsPinneds->all());
+        $pinneds = $pinneds->map(function ($pinned) use ($repository, $user) {
             if ($pinned->feed && $pinned->feed instanceof FeedModel) {
                 $repository->setModel($pinned->feed);
                 $repository->images();
