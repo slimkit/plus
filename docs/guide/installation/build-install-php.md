@@ -260,3 +260,13 @@ proc_get_status function: 1
 如果你按照教程进行安装，到这里输出结果都会如上。自行安装的请百度 php 解锁禁用函数。
 
 到这里，我们编译安装 PHP 就算完成
+
+## 命令
+
+- `systemctl enable php-fpm` 开启 FPM 开机启动
+- `systemctl disable php-fpm` 关闭 FPM 开机启动
+- `systemctl start php-fpm` 启动 FPM
+- `systemctl stop php-fpm` 关闭 FPM
+- `systemctl restart php-fpm` 重启 FPM
+- `systemctl status php-fpm` 查看 FPM 运行状态
+- `systemctl kill php-fpm` 杀死 FPM
