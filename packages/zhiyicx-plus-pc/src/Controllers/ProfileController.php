@@ -35,6 +35,30 @@ class ProfileController extends BaseController
             switch ($cate) {
                 case 1: //全部
                     $feeds = api('GET', '/api/v2/feeds', $params);
+                    foreach ($feeds['feeds'] as &$feed) {
+                        if (!$feed['repostable_type']) {
+                            continue;
+                        }
+                        $feed['repostable'] = [];
+                        $id = $feed['repostable_id'];
+                        switch ($feed['repostable_type']) {
+                            case 'news':
+                                $feed['repostable'] = api('GET', "/api/v2/news/{$id}");
+                                break;
+                            case 'feeds':
+                                $feed['repostable'] = api('GET', "/api/v2/feeds/{$id}");
+                                break;
+                            case 'groups':
+                                $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/{$id}");
+                                break;
+                            case 'group-posts':
+                            case 'posts':
+                                $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/1/posts/{$id}"); // fixme: 少参数，圈子id暂时用1代替，不影响最终结果
+                                $feed['repostable']['user'] = api('GET', "/api/v2/users/{$feed['user_id']}");
+                                break;
+                        }
+                    }
+
                     $feed = clone $feeds['feeds'];
                     $after = $feed->pop()->id ?? 0;
                     $feeds['conw'] = 735;
