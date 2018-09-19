@@ -46,17 +46,17 @@
                     @endif
                     </div>
                 </div>
-            </div>
-            <div class="m-ct">
-                <div class="u-tt">
-                    <span>交易记录</span>
-                    <div class="m-filter f-fr">
-                        <input class="t-filter" id="T-start" type="text" placeholder="请选择开始日期">
-                        -
-                        <input class="t-filter" id="T-end" type="text" placeholder="请选择结束日期">
+                <div class="m-ct">
+                    <div class="u-tt">
+                        <span>交易记录</span>
+                        <div class="m-filter f-fr">
+                            <input class="t-filter" id="T-start" type="text" placeholder="请选择开始日期">
+                            -
+                            <input class="t-filter" id="T-end" type="text" placeholder="请选择结束日期">
+                        </div>
                     </div>
+                    <div id="incomes-box"> </div>
                 </div>
-                <div id="incomes-box"> </div>
             </div>
         </div>
     </div>
