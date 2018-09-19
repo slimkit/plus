@@ -45,11 +45,12 @@ class Pinned extends Model
      */
     public function post()
     {
-        if ($this->channel === 'comment') {
-            return $this->hasOne(Post::class, 'id', 'raw');
-        }
-
         return $this->hasOne(Post::class, 'id', 'target');
+    }
+
+    public function commentPost()
+    {
+        return $this->hasOne(Post::class, 'id', 'raw');
     }
 
     /**

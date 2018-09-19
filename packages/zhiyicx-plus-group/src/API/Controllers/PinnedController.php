@@ -419,7 +419,13 @@ class PinnedController extends Controller
         ->orderBy('id', 'desc')
         ->get();
 
-        $pinneds->load(['comment', 'user', 'post']);
+        $pinneds->load(['comment', 'user', 'commentPost']);
+        $pinneds = $pinneds->map(function ($item) {
+            $item->post = $item->commentPost;
+            unset($item->commentPost);
+
+            return $item;
+        });
 
         return response()->json($pinneds, 200);
     }
