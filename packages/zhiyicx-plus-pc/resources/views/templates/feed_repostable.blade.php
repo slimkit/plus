@@ -48,11 +48,11 @@
                 <strong>{{$repostable['user']['name']}}: </strong>
                 @if (count($repostable['images']))
                 <span class="view-more">
-                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-liaotiantubiao_5"></use></svg> 查看图片
+                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-pics"></use></svg> 查看图片
                 </span>
                 @elseif ($repostable['video'])
                 <span class="view-more">
-                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-liaotiantubiao_5"></use></svg> 查看视频
+                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-video"></use></svg> 查看视频
                 </span>
                 @else
                 {{$repostable['feed_content']}}
