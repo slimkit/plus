@@ -955,20 +955,18 @@ var comment = {
      * @param {boolean} [show] 是否为显示, 如果不填则表示切换
      */
     showMention: function(show) {
-      var $el = $('.ev-view-comment-mention-select')
-      if (show === false) $el.slideUp('fast');
-      else if (show === true) $el.slideDown('fast');
-      else $el.slideToggle('fast');
-      $el.find('input').val('');
-      // if (show !== 'false') axios.get('/api/v2/user/follow-mutual')
-      //   .then(function (res) {
-      //       $('.ev-view-comment-mention-placeholder').text('好友');
-      //       $('.ev-view-comment-follow-users').empty();
-      //       res = res.data.slice(0, 8)
-      //       res.forEach(function(user) {
-      //         $('.ev-view-comment-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
-      //       })
-      //     })
+        var $el = $('.ev-view-comment-mention-select')
+        if (show === false) $el.slideUp('fast');
+        else if (show === true) $el.slideDown('fast');
+        else $el.slideToggle('fast');
+        $el.find('input').val('');
+
+        $('.ev-view-comment-mention-placeholder').text('好友');
+        $('.ev-view-comment-follow-users').empty();
+        TS.USER_FOLLOW_MUTUAL.forEach(function(user) {
+            $('.ev-view-comment-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
+        })
+
     },
 
     /**
@@ -978,39 +976,34 @@ var comment = {
      * @param {}
      */
     searchUser: _.debounce(function(el) {
-      var keyword = $(el).val();
-      $('.ev-view-comment-follow-users').empty();
-      if (keyword) {
-        $('.ev-view-comment-mention-placeholder').text('搜索中...');
-        axios.get('/api/v2/users', { params: {name: keyword, limit: 8} })
-            .then(function(res) {
-                var result = res.data.slice(0, 8);
-                if (result.length) {
-                    $('.ev-view-comment-mention-placeholder').empty();
-                    // 填充列表
-                    result.forEach(function(user) {
-                    // 高亮关键字
-                    var regex = new RegExp(keyword, 'gi');
-                    var nameMarked = user.name.replace(regex, '<span style="color: #59b6d7;">$&</span>');
-                    $('.ev-view-comment-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+nameMarked+'</li>');
-                    });
-                } else {
-                    $('.ev-view-comment-mention-placeholder').text('没有找到结果');
-                }
-            })
-      } else {
-        axios.get('/api/v2/user/follow-mutual')
-            .then(function (res) {
-                $('.ev-view-comment-mention-placeholder').text('好友');
-                $('.ev-view-comment-follow-users').empty();
-                res = res.data.slice(0, 8)
-                res.forEach(function(user) {
-                $('.ev-view-comment-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
+        var keyword = $(el).val();
+        $('.ev-view-comment-follow-users').empty();
+        if (keyword) {
+            $('.ev-view-comment-mention-placeholder').text('搜索中...');
+            axios.get('/api/v2/users', { params: {name: keyword, limit: 8} })
+                .then(function(res) {
+                    var result = res.data.slice(0, 8);
+                    if (result.length) {
+                        $('.ev-view-comment-mention-placeholder').empty();
+                        // 填充列表
+                        result.forEach(function(user) {
+                        // 高亮关键字
+                        var regex = new RegExp(keyword, 'gi');
+                        var nameMarked = user.name.replace(regex, '<span style="color: #59b6d7;">$&</span>');
+                        $('.ev-view-comment-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+nameMarked+'</li>');
+                        });
+                    } else {
+                        $('.ev-view-comment-mention-placeholder').text('没有找到结果');
+                    }
                 })
+        } else {
+            $('.ev-view-comment-mention-placeholder').text('好友');
+            $('.ev-view-comment-follow-users').empty();
+            TS.USER_FOLLOW_MUTUAL.forEach(function(user) {
+                $('.ev-view-comment-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
             })
-      }
+        }
     }, 450),
-
 }
 
 var liked = {
@@ -1633,16 +1626,13 @@ var repostable = {
         else $el.slideToggle('fast');
 
         $el.find('input').val('');
-        // axios.get('/api/v2/feed/topics', { params: {only: 'hot'} })
-        //     .then(function(res) {
-        //         $('.ev-view-repostable-topic-list').empty();
-        //         $('.ev-view-repostable-topic-hot').text('热门话题');
-        //         var result = res.data.slice(0, 8);
-        //             // 填充列表
-        //             result.forEach(function(topic) {
-        //                 $('.ev-view-repostable-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+topic.name+'</li>');
-        //             });
-        //     })
+
+        $('.ev-view-repostable-topic-list').empty();
+        $('.ev-view-repostable-topic-hot').text('热门话题');
+        // 填充列表
+        TS.HOT_TOPICS.forEach(function(topic) {
+            $('.ev-view-repostable-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+topic.name+'</li>');
+        });
     },
 
     /**
@@ -1671,15 +1661,12 @@ var repostable = {
                     }
                 })
         } else {
+            $('.ev-view-repostable-topic-list').empty();
             $('.ev-view-repostable-topic-hot').text('热门话题');
-            axios.get('/api/v2/feed/topics', { params: {only: 'hot'} })
-            .then(function(res) {
-                var result = res.data.slice(0, 8);
-                    // 填充列表
-                    result.forEach(function(topic) {
-                        $('.ev-view-repostable-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+topic.name+'</li>');
-                    });
-                })
+            // 填充列表
+            TS.HOT_TOPICS.forEach(function(topic) {
+                $('.ev-view-repostable-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+topic.name+'</li>');
+            });
         }
     }, 450),
 
@@ -1694,15 +1681,12 @@ var repostable = {
         else if (show === true) $el.slideDown('fast');
         else $el.slideToggle('fast');
         $el.find('input').val('');
-        // if (show !== 'false') axios.get('/api/v2/user/follow-mutual')
-        //   .then(function (res) {
-        //       $('.ev-view-repostable-mention-placeholder').text('好友');
-        //       $('.ev-view-repostable-follow-users').empty();
-        //       res = res.data.slice(0, 8)
-        //       res.forEach(function(user) {
-        //         $('.ev-view-repostable-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
-        //       })
-        //     })
+
+        $('.ev-view-repostable-mention-placeholder').text('好友');
+        $('.ev-view-repostable-follow-users').empty();
+        TS.USER_FOLLOW_MUTUAL.forEach(function(user) {
+            $('.ev-view-repostable-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
+        })
     },
 
     /**
@@ -1710,37 +1694,33 @@ var repostable = {
      * 使用 lodash.debounce 防抖, 450ms 后触发搜索
      */
     searchUser: _.debounce(function(el) {
-      var keyword = $(el).val();
-      $('.ev-view-repostable-follow-users').empty();
-      if (keyword) {
-        $('.ev-view-repostable-mention-placeholder').text('搜索中...');
-        axios.get('/api/v2/users', { params: {name: keyword, limit: 8} })
-        .then(function(res) {
-          var result = res.data.slice(0, 8);
-          if (result.length) {
-            $('.ev-view-repostable-mention-placeholder').empty();
-            // 填充列表
-            result.forEach(function(user) {
-              // 高亮关键字
-              var regex = new RegExp(keyword, 'gi');
-              var nameMarked = user.name.replace(regex, '<span style="color: #59b6d7;">$&</span>');
-              $('.ev-view-repostable-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+nameMarked+'</li>');
-            });
-          } else {
-            $('.ev-view-repostable-mention-placeholder').text('没有找到结果');
-          }
-        })
-      } else {
-        axios.get('/api/v2/user/follow-mutual')
-            .then(function (res) {
-                $('.ev-view-repostable-mention-placeholder').text('好友');
-                $('.ev-view-repostable-follow-users').empty();
-                res = res.data.slice(0, 8)
-                res.forEach(function(user) {
-                $('.ev-view-repostable-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
-                })
+        var keyword = $(el).val();
+        $('.ev-view-repostable-follow-users').empty();
+        if (keyword) {
+            $('.ev-view-repostable-mention-placeholder').text('搜索中...');
+            axios.get('/api/v2/users', { params: {name: keyword, limit: 8} })
+            .then(function(res) {
+            var result = res.data.slice(0, 8);
+            if (result.length) {
+                $('.ev-view-repostable-mention-placeholder').empty();
+                // 填充列表
+                result.forEach(function(user) {
+                // 高亮关键字
+                var regex = new RegExp(keyword, 'gi');
+                var nameMarked = user.name.replace(regex, '<span style="color: #59b6d7;">$&</span>');
+                $('.ev-view-repostable-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+nameMarked+'</li>');
+                });
+            } else {
+                $('.ev-view-repostable-mention-placeholder').text('没有找到结果');
+            }
             })
-      }
+        } else {
+            $('.ev-view-repostable-mention-placeholder').text('好友');
+            $('.ev-view-repostable-follow-users').empty();
+            TS.USER_FOLLOW_MUTUAL.forEach(function(user) {
+                $('.ev-view-repostable-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
+            })
+        }
     }, 450),
 
     /**
@@ -1788,6 +1768,17 @@ var repostable = {
 }
 
 $(function() {
+
+    // 获取我的好友 用于全局at弹框显示默认内容
+    axios.get('/api/v2/user/follow-mutual').then(function (res) {
+        TS.USER_FOLLOW_MUTUAL = res.data.slice(0, 8)
+    })
+
+    // 获取热门话题 用于全局转发动态选择话题显示默认内容
+    axios.get('/api/v2/feed/topics', { params: {only: 'hot'} }) .then(function(res) {
+        TS.HOT_TOPICS = res.data.slice(0, 8)
+    })
+
     // Jquery fixed拓展
     jQuery.fn.fixed = function(options) {
         var defaults = {
@@ -1853,34 +1844,34 @@ $(function() {
 
     // 捕获评论区at用户
     $(document).on('click', '.ev-view-comment-follow-users > li', function() {
-      var name = $(this).data('user-name');
-      var $el = $(this).closest('.comment_textarea').children('.comment_editor');
+        var name = $(this).data('user-name');
+        var $el = $(this).closest('.comment_textarea').children('.comment_editor');
 
-      $el.html($el.html() + " <span contenteditable=\"false\" style=\"color: #59b6d7;\">\u00ad@" + name + "\u00ad</span> ");
-      checkNums($(this).closest('.comment_textarea').find('.comment_editor')[0], 255, 'nums');
-      weibo.showMention(false);
+        $el.html($el.html() + " <span contenteditable=\"false\" style=\"color: #59b6d7;\">\u00ad@" + name + "\u00ad</span> ");
+        checkNums($(this).closest('.comment_textarea').find('.comment_editor')[0], 255, 'nums');
+        comment.showMention(false);
     })
 
     // 捕获添加话题(用于转发动态)
     $(document).on('click', '.ev-view-repostable-topic-list > li', function() {
-      var id = $(this).data('topic-id')
-      if (repostable.selectedTopics.indexOf(id) > -1) {
+        var id = $(this).data('topic-id')
+        if (repostable.selectedTopics.indexOf(id) > -1) {
+            repostable.showTopics(false);
+            return layer.msg('你已经添加过这个话题了')
+        };
+        if (repostable.selectedTopics.length >= 5) {
+            repostable.showTopics(false)
+            return layer.msg('最多只能选择5个话题')
+        }
+        var name = $(this).data('topic-name')
+        var html = '<li class="selected-topic-item ev-selected-topic-item">' + name +
+            '<span data-topic-id="'+id+'" class="close ev-delete-repostable-topic">'+
+            '<svg class="icon" aria-hidden="true" style="fill: #59d6b7;"><use xlink:href="#icon-close"></use></svg>'+
+            '</span></li>';
+        $('.ev-selected-repostable-topics').append(html);
+        repostable.selectedTopics.push(id);
         repostable.showTopics(false);
-        return layer.msg('你已经添加过这个话题了')
-      };
-      if (repostable.selectedTopics.length >= 5) {
-        repostable.showTopics(false)
-        return layer.msg('最多只能选择5个话题')
-      }
-      var name = $(this).data('topic-name')
-      var html = '<li class="selected-topic-item ev-selected-topic-item">' + name +
-        '<span data-topic-id="'+id+'" class="close ev-delete-repostable-topic">'+
-        '<svg class="icon" aria-hidden="true" style="fill: #59d6b7;"><use xlink:href="#icon-close"></use></svg>'+
-        '</span></li>';
-      $('.ev-selected-repostable-topics').append(html);
-      repostable.selectedTopics.push(id);
-      repostable.showTopics(false);
-      $('.layui-layer-content').css('height', $('.layui-layer-content .repostable-wrap').outerHeight())
+        $('.layui-layer-content').css('height', $('.layui-layer-content .repostable-wrap').outerHeight())
     })
 
     // 捕获移除话题(用于转发动态)
@@ -2170,7 +2161,7 @@ $(function() {
         console.log(1);
         console.log(isShiftKey, is2Key);
         if (isShiftKey && is2Key) {
-            $(this).closest('.comment_box').find('.ev-btn-comment-mention').click();
+            $(this).closest('.comment_box').find('.mention-btn').click();
             setTimeout(() => {
                 var $el = $('#feed_content')
                 $el.html($el.html().replace(/@$/, ''))
@@ -2283,12 +2274,6 @@ $(function() {
             $('#chat_send').click();
         }
     };
-
-    // 捕获各处评论区 at 按钮
-    $(document).on('click', '.ev-btn-comment-mention', function(event) {
-      event.stopPropagation();
-      comment.showMention(true);
-    })
 
     // IM聊天
     $(function(){

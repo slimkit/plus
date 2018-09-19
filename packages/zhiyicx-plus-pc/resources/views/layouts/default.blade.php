@@ -18,7 +18,9 @@
             EASEMOB_KEY: {!! json_encode($config['easemob_key']) !!},
             EASEMOB_USERS: {!! json_encode($easemob_users) !!},
             FILES: {!! json_encode($config['files']) !!},
-            UNREAD: {}
+            UNREAD: {},
+            USER_FOLLOW_MUTUAL: [],
+            HOT_TOPICS: [],
         };
     </script>
     <link rel="stylesheet" href="{{ asset('assets/pc/css/common.css') }}">

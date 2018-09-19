@@ -330,16 +330,13 @@ weibo.showTopics = function(show) {
     else $el.slideToggle('fast');
 
     $el.find('input').val('');
-    // axios.get('/api/v2/feed/topics', { params: {only: 'hot'} })
-    //     .then(function(res) {
-    //         $('.ev-view-topic-list').empty();
-    //         $('.ev-view-topic-hot').text('热门话题');
-    //         var result = res.data.slice(0, 8);
-    //             // 填充列表
-    //             result.forEach(function(topic) {
-    //                 $('.ev-view-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+topic.name+'</li>');
-    //             });
-    //     })
+
+    $('.ev-view-topic-list').empty();
+    $('.ev-view-topic-hot').text('热门话题');
+    // 填充列表
+    TS.HOT_TOPICS.forEach(function(topic) {
+        $('.ev-view-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+topic.name+'</li>');
+    });
 }
 
 /**
@@ -368,15 +365,12 @@ weibo.searchTopics = _.debounce(function(el) {
                 }
             })
     } else {
-        $('.ev-view-topic-hot').text('热门话题');
-        axios.get('/api/v2/feed/topics', { params: {only: 'hot'} })
-        .then(function(res) {
-            var result = res.data.slice(0, 8);
-              // 填充列表
-              result.forEach(function(topic) {
-                  $('.ev-view-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+topic.name+'</li>');
-              });
-          })
+        $('.ev-view-repostable-topic-list').empty();
+        $('.ev-view-repostable-topic-hot').text('热门话题');
+        // 填充列表
+        TS.HOT_TOPICS.forEach(function(topic) {
+            $('.ev-view-repostable-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+topic.name+'</li>');
+        });
     }
 }, 450)
 
@@ -391,15 +385,12 @@ weibo.showMention = function(show) {
     else if (show === true) $el.slideDown('fast');
     else $el.slideToggle('fast');
     $el.find('input').val('');
-    // if (show !== 'false') axios.get('/api/v2/user/follow-mutual')
-    //     .then(function (res) {
-    //         $('.ev-view-mention-placeholder').text('好友');
-    //         $('.ev-view-follow-users').empty();
-    //         res = res.data.slice(0, 8)
-    //         res.forEach(function(user) {
-    //             $('.ev-view-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
-    //         })
-    //     })
+
+    $('.ev-view-mention-placeholder').text('好友');
+    $('.ev-view-follow-users').empty();
+    TS.USER_FOLLOW_MUTUAL.forEach(function(user) {
+        $('.ev-view-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
+    })
 }
 
 /**
@@ -427,15 +418,11 @@ weibo.searchUser = _.debounce(function(el) {
                 }
             })
     } else {
-        axios.get('/api/v2/user/follow-mutual')
-            .then(function (res) {
-                $('.ev-view-mention-placeholder').text('好友');
-                $('.ev-view-follow-users').empty();
-                res = res.data.slice(0, 8)
-                res.forEach(function(user) {
-                    $('.ev-view-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
-                })
-            })
+        $('.ev-view-mention-placeholder').text('好友');
+        $('.ev-view-follow-users').empty();
+        TS.USER_FOLLOW_MUTUAL.forEach(function(user) {
+            $('.ev-view-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
+        })
     }
 }, 450),
 
