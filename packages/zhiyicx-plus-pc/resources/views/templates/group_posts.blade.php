@@ -33,7 +33,7 @@
     <div class="feed_body">
         <p class="s-fc">{!! formatContent($post['title']) !!}</p>
         <p class="f-fs2">{!! formatContent($post['summary']) !!}</p>
-        @include('pcview::templates.feed_images', ['post_url' => route('pc:grouppost', [$post['group_id'], $post['id']])])
+        @include('pcview::templates.feed_images', ['target_url' => route('pc:grouppost', [$post['group_id'], $post['id']])])
     </div>
     <div class="feed_bottom">
         <div class="feed_datas">

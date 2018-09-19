@@ -47,7 +47,7 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
         <p class="feed_text">{!! formatContent($post['feed_content']) !!}</p>
         @endif
 
-        @include('pcview::templates.feed_images')
+        @include('pcview::templates.feed_images', ['target_url' => route('pc:feedread', ['feed' => $post['id']])])
 
         @if($post['repostable_type'] ?? false)
         @include('pcview::templates.feed_repostable', ['feed' => $post])

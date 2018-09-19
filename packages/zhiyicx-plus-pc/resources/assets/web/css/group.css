@@ -203,3 +203,6 @@
 /*定义滑块 内阴影+圆角*/
 /*::-webkit-scrollbar-thumb {border-radius:10px;-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,.3);background-color:#555;}*/
 .zy_select.open >ul{max-height: 288px;overflow-y: scroll;}
+
+/* 帖子列表图片超过九张 */
+.feed_item .feed_body .more_count {right: 85px !important;top: 565px !important;}
