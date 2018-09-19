@@ -338,7 +338,7 @@ class GroupController extends BaseController
                     'offset' => $request->query('offset', 0),
                 ];
                 $posts = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/posts', $params);
-                $posts['pinned'] = collect();
+                $posts['pinneds'] = collect();
             } else {
                 $params = [
                     'type' => $type == 'reply' ? 'latest_reply' : 'latest_post',
