@@ -1036,7 +1036,7 @@ var liked = {
             _this.box.attr('rel', _this.num);
             _this.box.attr('status', 1);
             _this.box.find('a').addClass('act');
-            _this.box.find('font').text(_this.num);
+            _this.box.find('span').text(_this.num);
             if (_this.type) {
                 _this.box.find('svg').html('<use xlink:href="#icon-likered"></use>');
             } else {
@@ -1061,7 +1061,7 @@ var liked = {
             _this.box.attr('rel', _this.num);
             _this.box.attr('status', 0);
             _this.box.find('a').removeClass('act');
-            _this.box.find('font').text(_this.num);
+            _this.box.find('span').text(_this.num);
             _this.box.find('svg').html('<use xlink:href="#icon-like"></use>');
           })
           .catch(function (error) {
