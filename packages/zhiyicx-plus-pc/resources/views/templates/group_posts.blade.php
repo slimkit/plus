@@ -8,9 +8,6 @@
 @if(!empty($pinneds))
 @foreach($pinneds as $k => $post)
 @php
-    $post['user'] = $post['user'] ?? array_where($users, function ($user) use ($post) {
-        return $user['id'] === $post['user_id'];
-    })[0];
     $post['liked'] = $post['liked'] ?? false;
     $post['group'] = $post['group'] ?? false;
     $post['collected'] = $post['collected'] ?? false;
@@ -181,9 +178,6 @@
 @if(!empty($posts))
 @foreach($posts as $key => $post)
 @php
-    $post['user'] = $post['user'] ?? array_where($users, function ($user) use ($post) {
-        return $user['id'] === $post['user_id'];
-    })[0];
     $post['liked'] = $post['liked'] ?? false;
     $post['group'] = $post['group'] ?? false;
     $post['collected'] = $post['collected'] ?? false;

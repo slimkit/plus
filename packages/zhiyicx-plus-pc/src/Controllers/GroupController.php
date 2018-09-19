@@ -320,14 +320,23 @@ class GroupController extends BaseController
         if ($request->isAjax) {
             $type = $request->query('type', 'post');
             if ($type === 'preview') {
-                $users = [];
-                $posts['posts'] = api('GET', '/api/v2/group/groups/' . $group_id . '/preview-posts');
-                foreach ($posts['posts'] as &$post) {
-                    $users[] = api('GET', '/api/v2/users/' . $post['user_id']);
+                if ($request->query('offset', 0) > 0) {
+                    $posts['posts'] = [];
+                } else {
+                    $clone = [];
+                    $posts['posts'] = api('GET', '/api/v2/group/groups/' . $group_id . '/preview-posts');
+                    foreach ($posts['posts'] as $post) {
+                        $post['user'] = api('GET', '/api/v2/users/' . $post['user_id']);
+                        $clone[] = $post;
+                    }
+                    $posts['posts'] = $clone;
                 }
-                $posts['users'] = $users;
             } elseif ($type === 'excellent') {
-                $params = ['excellent' => '1'];
+                $params = [
+                    'excellent' => '1',
+                    'limit' => $request->query('limit', 15),
+                    'offset' => $request->query('offset', 0),
+                ];
                 $posts = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/posts', $params);
             } else {
                 $params = [
