@@ -98,7 +98,7 @@ class RankController extends Controller
 
         $answers = $answerModel->select('user_id', DB::raw('sum(likes_count) as count'))
         ->with(['user' => function ($query) {
-            return $query->select('id', 'name', 'sex');
+            return $query->select('id', 'name', 'sex', 'avatar');
         }])
         ->groupBy('user_id')
         ->orderBy('count', 'desc')
