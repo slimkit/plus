@@ -220,7 +220,6 @@
             var title = '';
             bindContent.find('.bind-submit').on('click', function () {
                 var data = getFormJson(bindContent);
-                console.log(data);
                 if (type == 'phone') {
                     if(!(/^1(3|4|5|7|8)\d{9}$/.test(data.phone))) {
 

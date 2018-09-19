@@ -193,7 +193,6 @@
             $('#chat_normal').show();
             var type = $(this).attr('type');
             var item = $('#chat_left_' + type);
-            console.log(item);
 
             $('.chat_left').hide();
             item.show();

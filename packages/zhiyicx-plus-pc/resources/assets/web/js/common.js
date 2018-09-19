@@ -2158,8 +2158,6 @@ $(function() {
         if (event.which === 50) {
             is2Key = true
         }
-        console.log(1);
-        console.log(isShiftKey, is2Key);
         if (isShiftKey && is2Key) {
             $(this).closest('.comment_box').find('.mention-btn').click();
             setTimeout(() => {

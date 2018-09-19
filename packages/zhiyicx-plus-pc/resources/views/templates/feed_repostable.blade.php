@@ -5,8 +5,6 @@
     $nolink = $nolink ?? false;
 @endphp
 
-<script>console.log(@json($repostable));</script>
-
 @switch($feed['repostable_type'])
 
     @case('news')
