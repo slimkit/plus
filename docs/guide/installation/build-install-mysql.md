@@ -121,3 +121,51 @@ mysql -u root -h localhost -P 3360 -p
 ```
 
 然后会出现一个密码输入，现在输入之前初始化的时候得到的 root 账号密码，即可成功进入数据库啦！
+
+## 小问题
+
+进入数据库后，你可能迫不及待的输入 `show databases;` 查看数据表了，输入后，会返回：
+
+```
+ERROR 1820 (HY000): You must reset your password using ALTER USER statement before executing this statement.
+```
+
+哈哈，懵逼是吧，这是因为我们没有修改 root 帐号的默认密码所致，我们在数据库输入：
+
+```sql
+set password=password("你的密码");
+```
+
+执行完成后，我们需要刷新权限：
+
+```sql
+flush privileges;
+```
+
+好了，我们现在执行 `show databases;` 就正常了，输出内容如下：
+
+```
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.00 sec)
+```
+
+证明我们修改密码成功了，之后使用 root 登入 MySQL 需要使用你设置的**新密码**！
+
+退出 MySQL 则在输入 `exit` 然后回车即可！
+
+## 命令
+
+- `/etc/init.d/mysql.server` 输出辅助信息
+- `/etc/init.d/mysql.server start` 启动 MySQL
+- `/etc/init.d/mysql.server stop` 停止 MySQL
+- `/etc/init.d/mysql.server restart` 重启
+- `/etc/init.d/mysql.server reload` 重新加载配置
+- `/etc/init.d/mysql.server force-reload` 强制重新加载配置
+- `/etc/init.d/mysql.server status` 查看运行状态
