@@ -36,7 +36,7 @@
                 </div>
                 <div class="f-dn m-income pinned-income">
                     <span>{{$group['pinned_income_count']}}</span>
-                    <div class="s-fc4 f-fs2">置顶收益（积分）
+                    <div class="s-fc4 f-fs2">置顶收益（积分）</div>
                 </div>
                 <div class="f-dn m-income join-income">
                     <span>{{$group['join_income_count']}}</span>
