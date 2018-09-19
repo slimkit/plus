@@ -72,13 +72,14 @@ class Post
      */
     public function formatImages()
     {
-        $images = $this->model->images;
-
-        unset($this->model->images);
-
+        $images = $this->model->get('images', collect())->filter();
         $this->model->images = $images->map(function ($image) {
+            if (! $image) {
+                return null;
+            }
+
             return ['id' => $image->id, 'size' => $image->size, 'mime' => $image->file->mime ?? ''];
-        });
+        })->filter();
 
         return $this->model;
     }
