@@ -26,7 +26,7 @@ use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
 use Zhiyi\Plus\FileStorage\Pay\PayInterface;
 
-interface FileMetaInterface extends Arrayable, JsonSerializable, Jsonable 
+interface FileMetaInterface extends Arrayable, JsonSerializable, Jsonable
 {
     /**
      * Has the file is image.
