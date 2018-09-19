@@ -66,7 +66,7 @@ class RankController extends Controller
             ->where('audit_status', 1)
             ->with([
                 'user' => function ($query) {
-                    return $query->select('id', 'name', 'sex')->withTrashed();
+                    return $query->select('id', 'name', 'sex', 'avatar')->withTrashed();
                 },
                 'user.extra',
             ])
