@@ -38,17 +38,46 @@
                     <div class="ct-right">
                         <div class="ct-tt">
                             {{$group['name']}}
-                            <span class="u-share" onclick="repostable.show('groups', '{{$group['id']}}')">
-                                <svg class="icon f-mr10"><use xlink:href="#icon-share"></use></svg>转发
+                            <span class="options" onclick="options(this)">
+                                <svg class="icon icon-more" aria-hidden="true"><use xlink:href="#icon-more"></use></svg>
                             </span>
-                            {{-- <span class="u-share">
-                                <svg class="icon f-mr10"><use xlink:href="#icon-share"></use></svg>分享
-                            </span>
-                            <div class="u-share-show">
-                                分享至：
-                                @include('pcview::widgets.thirdshare' , ['share_url' => route('redirect', ['target' => '/groups/'.$group['id']]), 'share_title' => $group['name'], 'share_pic' => $group['avatar']['url']])
+                            <div class="options_div">
                                 <div class="triangle"></div>
-                            </div> --}}
+                                    <ul>
+                                        @if($TS['id'] ?? false)
+                                        <li>
+                                            <a href="javascript:;" onclick="repostable.show('groups', '{{$group['id']}}')">
+                                                <svg class="icon"><use xlink:href="#icon-share"></use></svg> 转发
+                                            </a>
+                                        </li>
+                                        @endif
+                                        @php
+                                            $share_url = route('redirect', ['target' => '/groups/'.$group['id']]);
+                                            $share_title = str_replace(array("\r", "\n"), array('', '\n'), addslashes($group['name']));
+                                            $color = "#666";
+                                            $share_pic = $group['avatar'];
+                                            $share_pic = gettype($share_pic) === "string" ? $share_pic : $share_pic['url'];
+                                        @endphp
+                                        <li>
+                                            <a href="javascript:;" onclick="thirdShare(1, '{{ $share_url }}', '{{ $share_title }}', '{{ $share_pic }}', this)" title="分享到新浪微博">
+                                                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-weibo" @if($color)fill="{{$color}}"@endif></use></svg>
+                                                微博
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;" onclick="thirdShare(2, '{{ $share_url }}', '{{ $share_title }}', '{{ $share_pic }}', this)" title="分享到腾讯微博">
+                                                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-qq" @if($color)fill="{{$color}}"@endif></use></svg>
+                                                QQ
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;" onclick="thirdShare(3, '{{ $share_url }}', '{{ $share_title }}', '{{ $share_pic }}', this)" title="分享到朋友圈">
+                                                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-weixin" @if($color)fill="{{$color}}"@endif></use></svg>
+                                                微信
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                         </div>
                         @if(strlen($group['summary']) <= 300)
                         <p class="ct-intro">{{$group['summary']}}</p>
