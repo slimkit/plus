@@ -98,9 +98,11 @@
     @if($repostable['title'] ?? false)
         <a class="feed_repostable"
         @if ($nolink)
-            href="javascript:;"
+        href="javascript:;"
+        @elseif($repostable['group']['mode'] !== 'public' && !$repostable['group']['joined'])
+        href="{{ route('pc:groupread', ['group_id' => $repostable['group']['id']]) }}"
         @else
-            href="{{ route('pc:grouppost', ['group_id' => 1, 'post_id' => $feed['repostable_id']]) }}"
+        href="{{ route('pc:grouppost', ['group_id' => $repostable['group']['id'], 'post_id' => $feed['repostable_id']]) }}"
         @endif
         >
             <p class="description"><strong>{{$repostable['user']['name']}}: {{$repostable['title']}}</strong></p>
