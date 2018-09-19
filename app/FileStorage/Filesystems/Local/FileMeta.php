@@ -24,14 +24,14 @@ use Closure;
 use Exception;
 use Zhiyi\Plus\Models\User;
 use Zhiyi\Plus\FileStorage\ImageDimension;
+use Zhiyi\Plus\FileStorage\FileMetaAbstract;
 use Zhiyi\Plus\FileStorage\Pay\PayInterface;
-use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Zhiyi\Plus\FileStorage\ResourceInterface;
 use Zhiyi\Plus\FileStorage\Traits\HasImageTrait;
 use Zhiyi\Plus\FileStorage\ImageDimensionInterface;
 use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
 
-class FileMeta implements FileMetaInterface
+class FileMeta extends FileMetaAbstract
 {
     use HasImageTrait;
 
@@ -163,28 +163,5 @@ class FileMeta implements FileMetaInterface
             'channel' => $this->resource->getChannel(),
             'path' => base64_encode($this->resource->getPath()),
         ]);
-    }
-
-    /**
-     * Get the instance as an array.
-     *
-     * @return array
-     */
-    public function toArray(): array
-    {
-        $baseArr = [
-            'url' => $this->url(),
-            'vendor' => $this->getVendorName(),
-            'mime' => $this->getMimeType(),
-            'size' => $this->getSize(),
-        ];
-        if ($this->hasImage()) {
-            $baseArr['dimension'] = [
-                'width' => $this->getImageDimension()->getWidth(),
-                'height' => $this->getImageDimension()->getHeight(),
-            ];
-        }
-
-        return $baseArr;
     }
 }

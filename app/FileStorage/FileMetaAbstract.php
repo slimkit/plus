@@ -20,54 +20,48 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage;
 
-use JsonSerializable;
-use Zhiyi\Plus\Models\User;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Contracts\Support\Arrayable;
-use Zhiyi\Plus\FileStorage\Pay\PayInterface;
-
-interface FileMetaInterface extends Arrayable, JsonSerializable, Jsonable
+abstract class FileMetaAbstract implements FileMetaInterface
 {
     /**
-     * Has the file is image.
-     * @return bool
+     * Get the instance as an array.
+     *
+     * @return array
      */
-    public function hasImage(): bool;
+    public function toArray(): array
+    {
+        $baseArr = [
+            'url' => $this->url(),
+            'vendor' => $this->getVendorName(),
+            'mime' => $this->getMimeType(),
+            'size' => $this->getSize(),
+        ];
+        if ($this->hasImage()) {
+            $baseArr['dimension'] = [
+                'width' => $this->getImageDimension()->getWidth(),
+                'height' => $this->getImageDimension()->getHeight(),
+            ];
+        }
+
+        return $baseArr;
+    }
 
     /**
-     * Get image file dimension.
-     * @return \Zhiyi\Plus\FileStorage\ImageDimensionInterface
-     */
-    public function getImageDimension(): ImageDimensionInterface;
-
-    /**
-     * Get the file size (Byte).
-     * @return int
-     */
-    public function getSize(): int;
-
-    /**
-     * Get the resource mime type.
+     * Convert the object to its JSON representation.
+     *
+     * @param  int  $options
      * @return string
      */
-    public function getMimeType(): string;
+    public function toJson($options = 0): string
+    {
+        return json_encode($this->toArray(), $options);
+    }
 
     /**
-     * Get the storage vendor name.
+     * Convert the object to its JSON representation.
      * @return string
      */
-    public function getVendorName(): string;
-
-    /**
-     * Get the resource pay info.
-     * @param \Zhiyi\Plus\Models\User $user
-     * @return \Zhiyi\Plus\FileStorage\Pay\PayInterface
-     */
-    public function getPay(User $user): ?PayInterface;
-
-    /**
-     * Get the resource url.
-     * @return string
-     */
-    public function url(): string;
+    public function jsonSerialize(): string
+    {
+        return $this->toJson();
+    }
 }
