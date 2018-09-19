@@ -37,7 +37,7 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
         @if ($post['paid_node'] && $post['paid_node']['paid'] == false)
         <p class="feed_text" onclick="weibo.payText(this)">
             @php
-            $content = mb_substr(formatContent($post['feed_content']), 0, $config['bootstrappers']['feed']['limit'], 'utf-8');
+            $content = mb_substr($post['feed_content'], 0, $config['bootstrappers']['feed']['limit'], 'utf-8');
             $len = (strlen($content) + mb_strlen($content, 'utf-8')) / 2;
             @endphp
             {!! $content !!}
