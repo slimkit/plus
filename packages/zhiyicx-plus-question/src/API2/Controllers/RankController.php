@@ -60,7 +60,7 @@ class RankController extends Controller
         $answers = $answerModel->select('user_id', DB::raw('count(user_id) as count'))
         ->where('created_at', '>', $date)
         ->with(['user' => function ($query) {
-            return $query->select('id', 'name', 'sex');
+            return $query->select('id', 'name', 'sex', 'avatar');
         }])
         ->groupBy('user_id')
         ->orderBy('count', 'desc')
@@ -141,7 +141,7 @@ class RankController extends Controller
             return $grammar->wrap($field);
         }, ['user_id', 'amount', 'count', 'topic_expert_income', 'user_id', 'count']);
 
-        $users = $userModel->select('users.id', 'users.name', 'users.sex')
+        $users = $userModel->select('users.id', 'users.name', 'users.sex', 'users.avatar')
             ->join(DB::raw(sprintf('(select %s, SUM(%s) as %s from %s group by %s) as %s', ...$fields)), function ($join) {
                 return $join->on('users.id', '=', 'count.user_id');
             })
