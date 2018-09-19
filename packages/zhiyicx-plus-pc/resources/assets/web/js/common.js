@@ -808,7 +808,7 @@ var comment = {
         // 保留原始回复内容, at 用户替换为链接
         var original_body = formData.body.replace(/\u00ad@([^\/]+?)\u00ad/gi, function(matches, username) {
           var url = TS.SITE_URL + '/users/' + username;
-          return '<a href="' + url + '">' + username + '</a>'
+          return '<a href="' + url + '">@' + username + '</a>'
         });
 
         // 去除回复@
