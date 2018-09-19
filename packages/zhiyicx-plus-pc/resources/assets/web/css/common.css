@@ -320,7 +320,7 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 .dialog-mention-select .hot {color: #ccc;margin-top: 20px;cursor: default;}
 .dialog-mention-select .follow-users {display: flex;flex-flow: row wrap;}
 .dialog-mention-select .follow-users > li {display: inline-block;width: 50%;cursor: pointer;}
-.dialog-topic-select {position: absolute;display: flex;left: 0;top: 100%;width: 400px;height: 249px;z-index: 10;padding: 20px 40px;background-color: #fff;box-shadow: 0px 2px 9px 0px rgba(22, 23, 23, 0.09);flex-direction: column;cursor: default;}
+.dialog-topic-select {position: absolute;display: flex;left: 0;top: 100%;width: 400px;height: 300px;z-index: 10;padding: 20px 40px;background-color: #fff;box-shadow: 0px 2px 9px 0px rgba(22, 23, 23, 0.09);flex-direction: column;cursor: default;}
 .repostable-topic .dialog-topic-select {top: auto;bottom: 60px;}
 .dialog-topic-select .search-wrap,
 .dialog-mention-select .search-wrap {border-bottom: 1px solid #ccc;}
