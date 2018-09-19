@@ -19,6 +19,7 @@
 namespace Zhiyi\PlusGroup\Repository;
 
 use Carbon\Carbon;
+use Zhiyi\Plus\Models\FileWith as FileWithMpdel;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\PlusGroup\Models\Post as PostModel;
 
@@ -72,9 +73,9 @@ class Post
      */
     public function formatImages()
     {
-        $images = $this->model->get('images', collect())->filter();
+        $images = $this->model->images->filter();
         $this->model->images = $images->map(function ($image) {
-            if (! $image) {
+            if ($image instanceof FileWithMpdel) {
                 return null;
             }
 
