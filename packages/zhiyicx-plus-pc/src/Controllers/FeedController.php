@@ -63,7 +63,7 @@ class FeedController extends BaseController
                     } else {
                         $after = $feed[count($feed) - 1]['hot'] ?? 0;
                     }
-                    
+
                 }
 
                 $data['space'] = $this->PlusData['config']['ads_space']['pc:feeds:list'] ?? [];
@@ -81,7 +81,8 @@ class FeedController extends BaseController
                             $feed['repostable'] = api('GET', "/api/v2/news/{$id}");
                             break;
                         case 'feeds':
-                            $feed['repostable'] = api('GET', "/api/v2/feeds/{$id}");
+                            $feed_list = api('GET', "/api/v2/feeds", ['id' => $id . '']);
+                            $feed['repostable'] = $feed_list['feeds'][0];
                             break;
                         case 'groups':
                             $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/{$id}");
@@ -141,7 +142,8 @@ class FeedController extends BaseController
                     $data['feed']['repostable'] = api('GET', "/api/v2/feeds/{$id}");
                     break;
                 case 'news';
-                    $data['feed']['repostable'] = api('GET', "/api/v2/news/{$id}");
+                    $feed_list = api('GET', "/api/v2/feeds", ['id' => $id . '']);
+                    $data['feed']['repostable'] = $feed_list['feeds'][0];
                     break;
                 case 'groups':
                     $data['feed']['repostable'] = api('GET', "/api/v2/plus-group/groups/{$id}");
@@ -208,7 +210,8 @@ class FeedController extends BaseController
                 $feed['repostable'] = api('GET', "/api/v2/news/{$id}");
                 break;
             case 'feeds':
-                $feed['repostable'] = api('GET', "/api/v2/feeds/{$id}");
+                $feed_list = api('GET', "/api/v2/feeds", ['id' => $id . '']);
+                $feed['repostable'] = $feed_list['feeds'][0];
                 break;
             case 'groups':
                 $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/{$id}");

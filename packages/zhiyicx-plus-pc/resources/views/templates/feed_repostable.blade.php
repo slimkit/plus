@@ -39,11 +39,9 @@
 
     @case('feeds')
     @if($repostable['id'] ?? false)
-        <a class="feed_repostable"
-        @if ($nolink)
-            href="javascript:;"
-        @else
-            href="{{ route('pc:feedread', ['feed' => $feed['repostable_id']]) }}"
+        <a class="feed_repostable" href="javascript:;"
+        @if (!$nolink)
+            onclick='repostable.jumpToReference("{{ route('pc:feedread', ['feed' => $feed['repostable_id']]) }}", @json($repostable['paid_node']))'
         @endif
         >
             <p class="description">

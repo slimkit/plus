@@ -1765,6 +1765,28 @@ var repostable = {
                 showError(error.response.data);
             });
     },
+
+    jumpToReference(url, node) {
+        if (node.paid) return location.href = url;
+
+        var html = formatConfirm('购买支付', '<div class="confirm_money">' + node.amount + '</div>您只需要支付' + node.amount + '积分即可查看完整内容，是否确认支付？');
+        ly.confirm(html, '', '', function(){
+            var url = '/api/v2/currency/purchases/' + node.node;
+            // 确认支付
+            axios.post(url)
+            .then(function (response) {
+                layer.closeAll();
+                if (tourl == '') {
+                    noticebox('支付成功', 1);
+                    location.href = url;
+                }
+            })
+            .catch(function (error) {
+                layer.closeAll();
+                showError(error.response.data)
+            });
+        })
+    },
 }
 
 $(function() {
