@@ -36,8 +36,8 @@
         </div>
     @endif
 
-@elseif($type == 3 && isset($ads[$page-1]['data']) && $_GET['type'] == 'hot')
-
+{{-- 热门动态列表广告 --}}
+@elseif($type == 3 && isset($ads[$page-1]['data']) && isset($_GET['type']) && $_GET['type'] == 'hot')
     <div class="ads_item">
         <a target="_blank" href="{{ $ads[$page-1]['data']['link'] ?? ''}}">
             <dl class="user-box mt30 clearfix">
@@ -56,8 +56,8 @@
         <div class="feed_line"></div>
     </div>
 
-@elseif($type == 4 && isset($ads[$page-1]['data']) && isset($_GET['recommend']))
-
+{{-- 推荐资讯列表广告 --}}
+@elseif($type == 4 && isset($ads[$page-1]['data']) && isset($_GET['type']) && $_GET['type'] == 'recommend')
     <div class="news_item">
         <a target="_blank" href="{{ $ads[$page-1]['data']['link'] ?? ''}}">
             <div class="news_img">
