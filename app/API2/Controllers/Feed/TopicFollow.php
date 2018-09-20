@@ -60,30 +60,22 @@ class TopicFollow extends Controller
         // If the topic Non-existent, throw a not found exception.
         if (! $topic) {
             throw new NotFoundHttpException('关注的话题不存在');
+            
+        } elseif ($topic->users()->newPivotStatementForId($user->id)->exists()) {
+            return (new Response())->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */); 
         }
 
-        // Create success 204 response
-        $response = (new Response())->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
+        $feedsCount = $topic->feeds()->where('user_id', $user->id)->count();
 
-        // Database query the authentication user followed.
-        $link = $topic
-            ->users()
-            ->newPivotStatementForId($user->id)
-            ->first();
-        if (! $link) {
-            $link = new FeedTopicUserLinkModel();
-            $link->user_id = $user->id;
-            $link->following_at = new Carbon();
-            $link->topic_id = $topic->id;
-        }
-
-        return $user->getConnection()->transaction(function () use ($topic, $link, $response): Response {
-            $link->save();
-
+        return $user->getConnection()->transaction(function () use ($topic, $user, $feedsCount): Response {
+            $topic->users()->attach($user, [
+                'following_at' => new Carbon(),
+                'feeds_count' => $feedsCount,
+            ]);
             $topic->followers_count += 1;
             $topic->save();
 
-            return $response;
+            return (new Response())->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
         });
     }
 
@@ -114,21 +106,13 @@ class TopicFollow extends Controller
         // Create success 204 response
         $response = (new Response())->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
 
-        // Database query the authentication user followed.
-        $link = $topic
-            ->users()
-            ->newPivotStatementForId($user->id)
-            ->first();
-
         // If not followed, return 204 response.
-        if (! $link) {
+        if (! $topic->users()->newPivotStatementForId($user->id)->first()) {
             return $response;
         }
 
-        return $user->getConnection()->transaction(function () use ($topic, $link, $response): Response {
-            $link->following_at = null;
-            $link->save();
-
+        return $user->getConnection()->transaction(function () use ($topic, $response, $user): Response {
+            $topic->users()->detach($user);
             if ($topic->followers_count > 0) {
                 $topic->decrement('followers_count', 1);
             }
