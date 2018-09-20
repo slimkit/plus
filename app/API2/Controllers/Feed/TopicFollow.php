@@ -26,7 +26,6 @@ use Illuminate\Support\Carbon;
 use Zhiyi\Plus\API2\Controllers\Controller;
 use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zhiyi\Plus\Models\FeedTopicUserLink as FeedTopicUserLinkModel;
 
 class TopicFollow extends Controller
 {
@@ -60,9 +59,8 @@ class TopicFollow extends Controller
         // If the topic Non-existent, throw a not found exception.
         if (! $topic) {
             throw new NotFoundHttpException('关注的话题不存在');
-            
         } elseif ($topic->users()->newPivotStatementForId($user->id)->exists()) {
-            return (new Response())->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */); 
+            return (new Response())->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
         }
 
         $feedsCount = $topic->feeds()->where('user_id', $user->id)->count();
