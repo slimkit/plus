@@ -23,15 +23,15 @@
 
     | 字段 | 可为空 | 默认值 | 其他 | 描述 | 操作 |
     |-----|----|----|----|----|----|
-    | `following_at` | `true` | `null` | 修改为 `timestamp` 类型 | 关注话题时间 | 改变 |
+    | `following_at` | `true` | `null` | | 修改为 `timestamp` 类型 | 关注话题时间 | 改变 |
 - `feeds` 动态
     * 表字段
     
         | 字段 | 可为空 | 默认值 | 其他 | 描述 | 操作 |
         |-----|----|----|----|----|----|
-        | `repostable_type` | `true` | `null` | VARCHAR 类型，可转发的资源类型 | 添加 |
-        | `repostable_id` | `true` | `0` | integer 类型，unsigned ,可转发的资源 ID | 添加 |
-        | `hot` | `true` | `0` | int 类型，unsigned ,热门排序值 | 添加 |
+        | `repostable_type` | `true` | `null` | | VARCHAR 类型，可转发的资源类型 | 添加 |
+        | `repostable_id` | `true` | `0` | | integer 类型，unsigned ,可转发的资源 ID | 添加 |
+        | `hot` | `true` | `0` | | int 类型，unsigned ,热门排序值 | 添加 |
     * 索引
     
         | 字段 | 索引类型 |
@@ -42,19 +42,20 @@
 
     | 字段 | 可为空 | 默认值 | 其他 | 描述 | 操作 |
     |-----|----|----|----|----|----|
-    | `im_group_id` | `true` | `null` | varchar 类型，环信群组 ID | 添加 |
-    | `excellen_posts_count` | `true` | `0` | integer 类型，unsigned，圈子精华贴统计 | 添加 |
+    | `im_group_id` | `true` | `null` | | varchar 类型，环信群组 ID | 添加 |
+    | `excellen_posts_count` | `true` | | `0` | integer 类型，unsigned，圈子精华贴统计 | 添加 |
     | `avatar` | `true` | `null` | VARCHAR 类型，圈子头像 | 添加 |
 - `group_posts` **授权**，圈子
     * 表字段
     
         | 字段 | 可为空 | 默认值 | 其他 | 描述 | 操作 |
         |-----|----|----|----|----|----|
-        | `excellent_at` | `true` | `null` | timestamp 类型，设置精华时间，也表示是否是精华 | 添加 |
-        | `comment_updated_at` | `true` | `null` | timestamp 类型，评论最后更新时间 | 添加 |
+        | `excellent_at` | `true` | `null` | | timestamp 类型，设置精华时间，也表示是否是精华 | 添加 |
+        | `comment_updated_at` | `true` | `null` | | timestamp 类型，评论最后更新时间 | 添加 |
     * 索引
     
         | 字段 | 索引类型 |
+        | ----|----|
         | `group_id` | index |
         | `user_id` | index |
         | `excellent_at` | index |
@@ -63,7 +64,7 @@
 
     | 字段 | 可为空 | 默认值 | 其他 | 描述 | 操作 |
     |-----|----|----|----|----|----|
-    | `avatar` | `true` | `null` | varchar 类型，专题头像 | 添加 |
+    | `avatar` | `true` | `null` | | varchar 类型，专题头像 | 添加 |
 
 ### 执行命令
 
