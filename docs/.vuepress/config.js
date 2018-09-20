@@ -23,6 +23,7 @@ module.exports = {
                 text: '学习指南',
                 items: [
                     { text: '安装教程', link: '/guide/installation/' },
+                    { text: '升级指南', link: '/guide/upgrade/' },
                     { text: '应用开发', link: '/guide/app/' }
                 ]
             },
@@ -40,6 +41,10 @@ module.exports = {
                 'build-install-php',
                 'build-install-mysql',
                 'build-install-nginx',
+            ],
+            '/guide/upgrade/': [
+                '',
+                '1.9-to-2.0'
             ]
         }
     },
