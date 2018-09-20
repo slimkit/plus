@@ -25,7 +25,7 @@
             {{-- 通知 --}}
             <div class="chat_left @if($type == 0) hide" @endif" id="chat_left_notice">
                 <ul>
-                    <li @if($type == 8) class="current_room"@endif data-type="8" id="chat_mention">
+                    <li @if($type == 8) class="current_room"@endif data-type="8" id="chat_at">
                         <div class="chat_left_icon">
                             <svg class="icon chat_svg" aria-hidden="true">
                                 <use xlink:href="#icon-side-mention"></use>
@@ -36,7 +36,7 @@
                             <div class="last_content"></div>
                         </div>
                     </li>
-                    <li @if($type == 1)class="current_room"@endif data-type="1" id="chat_comments">
+                    <li @if($type == 1)class="current_room"@endif data-type="1" id="chat_commented">
                         <div class="chat_left_icon">
                             <svg class="icon chat_svg" aria-hidden="true">
                                 <use xlink:href="#icon-side-msg"></use>
@@ -47,7 +47,7 @@
                             <div class="last_content"></div>
                         </div>
                     </li>
-                    <li @if($type == 2)class="current_room"@endif data-type="2" id="chat_likes">
+                    <li @if($type == 2)class="current_room"@endif data-type="2" id="chat_liked">
                         <div class="chat_left_icon">
                             <svg class="icon chat_svg" aria-hidden="true">
                                 <use xlink:href="#icon-side-like"></use>
@@ -58,14 +58,14 @@
                             <div class="last_content"></div>
                         </div>
                     </li>
-                    <li @if($type == 3)class="current_room"@endif data-type="3" id="chat_notifications">
+                    <li @if($type == 3)class="current_room"@endif data-type="3" id="chat_system">
                         <div class="chat_left_icon">
                             <svg class="icon chat_svg" aria-hidden="true">
                                 <use xlink:href="#icon-side-notice"></use>
                             </svg>
                         </div>
                         <div class="chat_item">
-                            <span class="chat_span chat_span_noinfo">通知</span>
+                            <span class="chat_span">通知</span>
                         </div>
                     </li>
                     <li @if($type == 4)class="current_room"@endif data-type="4" id="chat_pinneds">
@@ -79,7 +79,7 @@
                                 <span class="chat_span">审核通知</span>
                                 <div>未审核的信息请及时处理</div>
                             @else
-                                <span class="chat_span chat_span_noinfo">审核通知</span>
+                                <span class="chat_span">审核通知</span>
                             @endif
                         </div>
                     </li>
@@ -393,7 +393,7 @@
                     loadtype: 2,
                     selfname: '_loader',
                     callback: function(){
-                        easemob.setRead(0, 'comments');
+                        easemob.setRead(0, 'commented');
                     }
                 });
                 body_title.html(title);
@@ -411,7 +411,7 @@
                     loadtype: 2,
                     selfname: '_loader',
                     callback: function(){
-                        easemob.setRead(0, 'likes');
+                        easemob.setRead(0, 'liked');
                     }
                 });
                 body_title.html(title);
@@ -430,7 +430,7 @@
                     loadtype: 2,
                     selfname: '_loader',
                     callback: function(){
-                        easemob.setRead(0, 'notifications');
+                        easemob.setRead(0, 'system');
                     }
                 });
                 body_title.html(title);
@@ -500,7 +500,10 @@
                     paramtype: 0,
                     params: {limit: 20},
                     loadtype: 2,
-                    selfname: '_loader'
+                    selfname: '_loader',
+                    callback: function(){
+                        easemob.setRead(0, 'at');
+                    }
                 })
                 body_title.html(title).removeClass('hide')
                 audit_top.addClass('hide')

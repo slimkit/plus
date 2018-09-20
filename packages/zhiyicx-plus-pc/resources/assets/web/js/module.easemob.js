@@ -267,7 +267,7 @@ easemob = {
     database: function(){
         /*创建本地存储*/
         var db = new Dexie('TS_EASEMOB');
-        db.version(2).stores({
+        db.version(1).stores({
             /*message*/
             message: "id, time, cid, type, mid, uid, touid, txt, read, [cid+read]",
 
@@ -613,10 +613,10 @@ easemob = {
                 $('#chat_' + i + ' .chat_unread_div').remove();
             }
 
-            if ((i == 'comments' || i == 'likes') && TS.UNREAD['last_' + i]) {
-                var txt = i == 'comments' ? '评论了你' : '点赞了你';
-                $('#chat_' + i).find('.last_content').html(TS.UNREAD['last_' + i] + txt);
-            }
+            // if ((i == 'comments' || i == 'likes') && TS.UNREAD['last_' + i]) {
+            //     var txt = i == 'comments' ? '评论了你' : '点赞了你';
+            //     $('#chat_' + i).find('.last_content').html(TS.UNREAD['last_' + i] + txt);
+            // }
         }
     },
 
@@ -634,6 +634,22 @@ easemob = {
     setRead: function(type, cid) {
          /*消息*/
         if (type == 0) {
+            axios.patch('/api/v2/user/counts', {type: cid})
+            .then(function (response) {
+                var res = response.data.user;
+                TS.UNREAD.comments = res.commented;
+                TS.UNREAD.likes = res.liked;
+                TS.UNREAD.mention = res.at;
+                TS.UNREAD.notifications = res.system;
+                TS.UNREAD.pinneds = parseInt(res['news-comment-pinned']) + parseInt(res['feed-comment-pinned']) + parseInt(res['post-comment-pinned']) + parseInt(res['post-pinned']);
+
+                easemob.setUnreadMes();
+            })
+            .catch(function (error) {
+                console.log(error);
+                showError(error.response.data);
+            });
+
             TS.UNREAD[cid] = 0;
             $('#ms_' + cid).find('.unread_div').remove();
             $('#chat_' + cid).find('.chat_unread_div').remove();
@@ -663,38 +679,56 @@ easemob = {
     /*获取未读消息数量*/
     getUnreadMessage: function() {
         /*获取未读通知数量*/
-        axios.get('/api/v2/user/notifications')
-          .then(function (response) {
-                TS.UNREAD.notifications = response.headers['unread-notification-limit'];
+        // axios.get('/api/v2/user/notifications')
+        //   .then(function (response) {
+        //         TS.UNREAD.notifications = response.headers['unread-notification-limit'];
 
-                easemob.setUnreadMes();
-          })
-          .catch(function (error) {
-            showError(error.response.data);
-          });
+        //         easemob.setUnreadMes();
+        //   })
+        //   .catch(function (error) {
+        //     showError(error.response.data);
+        //   });
 
         /*获取未读点赞，评论，审核通知数量*/
-        axios.get('/api/v2/user/unread-count')
-          .then(function (response) {
-                var res = response.data;
-                res.counts = res.counts ? res.counts : {};
-                TS.UNREAD.comments = res.counts.unread_comments_count ? res.counts.unread_comments_count : 0;
-                TS.UNREAD.last_comments = res.comments !== undefined && res.comments.length > 0 ? res.comments[0]['user']['name'] : '';
-                TS.UNREAD.likes = res.counts.unread_likes_count ? res.counts.unread_likes_count : 0;
-                TS.UNREAD.last_likes = res.likes !== undefined &&  res.likes.length > 0 ? res.likes[0]['user']['name'] : '';
+        // axios.get('/api/v2/user/unread-count')
+        //   .then(function (response) {
+        //         var res = response.data;
+        //         res.counts = res.counts ? res.counts : {};
+        //         TS.UNREAD.comments = res.counts.unread_comments_count ? res.counts.unread_comments_count : 0;
+        //         TS.UNREAD.last_comments = res.comments !== undefined && res.comments.length > 0 ? res.comments[0]['user']['name'] : '';
+        //         TS.UNREAD.likes = res.counts.unread_likes_count ? res.counts.unread_likes_count : 0;
+        //         TS.UNREAD.last_likes = res.likes !== undefined &&  res.likes.length > 0 ? res.likes[0]['user']['name'] : '';
 
-                /*审核通知数量*/
-                var pinneds_count = 0;
-                for(var i in res.pinneds){
-                    pinneds_count += res.pinneds[i]['count'];
-                }
-                TS.UNREAD.pinneds = pinneds_count;
+        //         /*审核通知数量*/
+        //         var pinneds_count = 0;
+        //         for(var i in res.pinneds){
+        //             pinneds_count += res.pinneds[i]['count'];
+        //         }
+        //         TS.UNREAD.pinneds = pinneds_count;
 
-                easemob.setUnreadMes();
-          })
-          .catch(function (error) {
+        //         easemob.setUnreadMes();
+        //   })
+        //   .catch(function (error) {
+        //     showError(error.response.data);
+        //   });
+
+        axios.get('/api/v2/user/counts')
+        .then(function (response) {
+            var res = response.data.user;
+            TS.UNREAD.commented = res.commented;
+            TS.UNREAD.liked = res.liked;
+            TS.UNREAD.at = res.at;
+            TS.UNREAD.system = res.system;
+            TS.UNREAD.pinneds = parseInt(res['news-comment-pinned']) + parseInt(res['feed-comment-pinned']) + parseInt(res['post-comment-pinned']) + parseInt(res['post-pinned']);
+
+            easemob.setUnreadMes();
+        })
+        .catch(function (error) {
+            console.log(error);
             showError(error.response.data);
-          });
+        });
+
+
     },
 
     /*获取未读聊天消息数量*/
