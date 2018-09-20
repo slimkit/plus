@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage\Traits;
 
+use Exception;
 use Zhiyi\Plus\FileStorage\Resource;
 use Zhiyi\Plus\FileStorage\StorageInterface;
 use Zhiyi\Plus\FileStorage\FileMetaInterface;
@@ -49,8 +50,10 @@ trait EloquentAttributeTrait
 
         try {
             return $this->getFileStorageInstance()->meta(new Resource($resource));
-        } finally {
+        } catch (Exception $e) {
             return null;
         }
+
+        return null;
     }
 }
