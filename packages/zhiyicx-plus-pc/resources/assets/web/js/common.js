@@ -1767,7 +1767,7 @@ var repostable = {
     },
 
     jumpToReference(url, node) {
-        if (node.paid) return location.href = url;
+        if (!node || node.paid) return location.href = url;
 
         var html = formatConfirm('购买支付', '<div class="confirm_money">' + node.amount + '</div>您只需要支付' + node.amount + '积分即可查看完整内容，是否确认支付？');
         ly.confirm(html, '', '', function(){
