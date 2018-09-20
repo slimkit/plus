@@ -356,7 +356,13 @@ class GroupController extends BaseController
                     ];
                     $posts['posts'] = api('GET', '/api/v2/plus-group/group-posts', $params);
                 }
+                $posts['posts'] = $posts['posts']->diff($posts['pinneds']);
+                foreach (array_reverse($posts['pinneds']) as $key => $value) {
+                    $value->pinned = true;
+                    $posts['posts']->prepend($value);
+                }
             }
+
             $after = 0;
             $posts['conw'] = 815;
             $posts['conh'] = 545;

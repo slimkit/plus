@@ -89,8 +89,8 @@ class FeedController extends BaseController
                             break;
                         case 'group-posts':
                         case 'posts':
-                            $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/1/posts/{$id}"); // fixme: 少参数，圈子id暂时用1代替，不影响最终结果
-                            $feed['repostable']['user'] = api('GET', "/api/v2/users/{$feed['user_id']}");
+                            $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/1/posts/{$id}");
+                            if ($feed['repostable']['title'] ?? false) $feed['repostable']['user'] = api('GET', "/api/v2/users/{$feed['user_id']}");
                             break;
                     }
                 }
