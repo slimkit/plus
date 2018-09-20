@@ -107,7 +107,7 @@ class PostController
             return $post->id;
         })->each(function (Post $post) use ($user, $repository) {
             $repository->formatCommonList($user, $post);
-        })->all();
+        })->values()->all();
     }
 
     /**
