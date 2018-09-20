@@ -9,7 +9,9 @@
     <!-- panle-content -->
     <div class="row">
       <div class="col-lg-4">
-      	<img v-show="group.avatar" :src="group.avatar.url" class="img-circle" style="max-width:100px;">
+        <template v-if="group.avatar">
+          <img :src="group.avatar.url" class="img-circle" style="max-width:100px;">
+        </template>
 		  <p>#ID： {{ group.id }}</p>
 		  <p>名称： {{ group.name }}</p>
 		  <p>分类： {{ group.hasOwnProperty('category') ? group.category.name : '' }}</p>
