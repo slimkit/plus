@@ -55,7 +55,7 @@
     * 索引
     
         | 字段 | 索引类型 |
-        | ----|----|
+        |----|----|
         | `group_id` | index |
         | `user_id` | index |
         | `excellent_at` | index |
