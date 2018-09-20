@@ -55,8 +55,7 @@
                                             $share_url = route('redirect', ['target' => '/groups/'.$group['id']]);
                                             $share_title = str_replace(array("\r", "\n"), array('', '\n'), addslashes($group['name']));
                                             $color = "#666";
-                                            $share_pic = $group['avatar'];
-                                            $share_pic = gettype($share_pic) === "string" ? $share_pic : $share_pic->url();
+                                            $share_pic = $group['avatar'] ? $group['avatar']->url() : asset('assets/pc/images/default_group_cover.png')
                                         @endphp
                                         <li>
                                             <a href="javascript:;" onclick="thirdShare(1, '{{ $share_url }}', '{{ $share_title }}', '{{ $share_pic }}', this)" title="分享到新浪微博">
