@@ -58,7 +58,7 @@
                     $(_this).parent('.comment_audit').html('<a href="javascript:">已审核</a>');
                 }
                 TS.UNREAD.pinneds -= 1;
-                message.setUnreadMessage();
+                easemob.setUnreadMes();
               })
               .catch(function (error) {
                 showError(error.response.status);
