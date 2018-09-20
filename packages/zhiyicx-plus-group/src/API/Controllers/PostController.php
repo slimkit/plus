@@ -103,7 +103,9 @@ class PostController
         
         return $pinneds->map(function (Pinned $pinned) {
             return $pinned->post;
-        })->filter()->each(function (Post $post) use ($user, $repository) {
+        })->filter()->unique(function (Post $post) {
+            return $post->id;
+        })->each(function (Post $post) use ($user, $repository) {
             $repository->formatCommonList($user, $post);
         })->all();
     }
