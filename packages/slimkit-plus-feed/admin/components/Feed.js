@@ -306,7 +306,7 @@ class Feed extends Component {
                     !feed.user.avatar ? (
                       <Avatar>{feed.user.name[0]}</Avatar>
                     ) : (
-                      <Avatar src={feed.user.avatar} alt={feed.user.name} />
+                      <Avatar src={feed.user.avatar.url} alt={feed.user.name} />
                     )
                   }
                   title={`${feed.user.name} (用户ID：${feed.user.id})`}
