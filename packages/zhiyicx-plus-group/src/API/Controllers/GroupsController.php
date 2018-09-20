@@ -601,7 +601,7 @@ class GroupsController
                     })->orWhere(function ($query) use ($user) {
                         return $query->whereHas('members', function ($query) use ($user) {
                             return $query->where('user_id', $user->id)->where('audit', 0);
-                        });
+                        })->where('audit', 1);
                     });
                     break;
                 case 'allow_post':
