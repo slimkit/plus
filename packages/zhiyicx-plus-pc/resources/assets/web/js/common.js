@@ -1792,12 +1792,12 @@ var repostable = {
 $(function() {
 
     // 获取我的好友 用于全局at弹框显示默认内容
-    axios.get('/api/v2/user/follow-mutual').then(function (res) {
+    if (TS.USER) axios.get('/api/v2/user/follow-mutual').then(function (res) {
         TS.USER_FOLLOW_MUTUAL = res.data.slice(0, 8)
     })
 
     // 获取热门话题 用于全局转发动态选择话题显示默认内容
-    axios.get('/api/v2/feed/topics', { params: {only: 'hot'} }) .then(function(res) {
+    if (TS.USER) axios.get('/api/v2/feed/topics', { params: {only: 'hot'} }) .then(function(res) {
         TS.HOT_TOPICS = res.data.slice(0, 8)
     })
 
