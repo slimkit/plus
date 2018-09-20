@@ -40,11 +40,7 @@
                 </div>
                 <div class="f-dn m-income join-income">
                     <span>{{$group['join_income_count']}}</span>
-                    <div class="s-fc4 f-fs2">成员费（积分）
-                    @if ($group['mode'] == 'paid')
-                    共<font color="#3CA967">{{$group['users_count']}}</font> 个付费成员
-                    @endif
-                    </div>
+                    <div class="s-fc4 f-fs2">成员费（积分）</div>
                 </div>
                 <div class="m-ct">
                     <div class="u-tt">
