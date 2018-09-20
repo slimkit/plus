@@ -303,8 +303,11 @@ class MessageController extends BaseController
             $type = $mention['resourceable']['type'];
             switch ($type) {
                 case 'feeds':
-                    $mention['feeds'] = api('GET', "/api/v2/feeds/{$id}");
-                    $user_id = $mention['feeds']['user_id'];
+                    $mention['feeds'] = api('GET', "/api/v2/feeds", ['id' => $id . ''])['feeds'];
+                    if (count($mention['feeds'])) {
+                        $mention['feeds'] = $mention['feeds'][0];
+                        $user_id = $mention['feeds']['user_id'];
+                    }
                     break;
                 case 'comments':
                     $mention['comments'] = newapi('GET', "/api/v2/comments", ['id' => $id])[0];
@@ -324,7 +327,10 @@ class MessageController extends BaseController
 
                     break;
             }
-            $mention['user'] = api('GET', '/api/v2/users/' . $user_id);
+            if ($user_id ?? false) {
+                $mention['user'] = api('GET', '/api/v2/users/' . $user_id);
+            }
+
         }
         // dd($data);
 

@@ -13,7 +13,12 @@
         <span class="time">{{ getTime($item['created_at']) }}</span>
         @switch($item['resourceable']['type'])
             @case('feeds')
+                @if($item['feeds']['feed_content'] ?? false)
                 <div class="content">{!! formatContent($item['feeds']['feed_content']) !!}</div>
+                @else
+                <div class="content">内容不存在或已被删除</div>
+                <script>console.log(@json($item));</script>
+                @endif
                 @break
             @case('comments')
                 <span>{{ $item['comments']['body'] }}</span>
@@ -28,9 +33,14 @@
                         </a>
                         @break
                     @case('feeds')
+                        @if($item['repostable']['message'] ?? false)
+                        <span class="content">内容不存在或已被删除</span>
+                        <script>console.log(@json($item));</script>
+                        @else
                         <a class="content" href="{{ route('pc:feedread', ['feed_id' => $item['repostable']['id']]) }}">
                             {{ $item['repostable']['feed_content'] }}
                         </a>
+                        @endif
                         @break
                     @default
 
