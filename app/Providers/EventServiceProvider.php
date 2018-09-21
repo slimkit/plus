@@ -21,10 +21,10 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Providers;
 
 use Illuminate\Support\Facades\Event;
-use Zhiyi\Plus\Support\BootstrapAPIsEventer;
-use Illuminate\Contracts\Events\Dispatcher as EventsDispatcherContract;
 use Illuminate\Auth\Events\Registered;
+use Zhiyi\Plus\Support\BootstrapAPIsEventer;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+use Illuminate\Contracts\Events\Dispatcher as EventsDispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
