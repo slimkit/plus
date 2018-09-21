@@ -16,7 +16,7 @@
         <div class="question-topic">
             <div class="topic-info">
                 <div class="info-left">
-                    <img src="{{ $topic['avatar'] ? $topic['avatar']->url() : asset('assets/pc/images/default_picture.png') }}" width="100px" height="100px">
+                    <img src="{{ $topic['avatar'] ? $topic['avatar']['url'] : asset('assets/pc/images/default_picture.png') }}" width="100px" height="100px">
                 </div>
                 <div class="info-right">
                     <div class="topic-title">{{ $topic['name'] }}

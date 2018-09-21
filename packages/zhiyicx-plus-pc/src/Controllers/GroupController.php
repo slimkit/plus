@@ -2,9 +2,10 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use Illuminate\Http\Request;
 use Zhiyi\PlusGroup\Models\Group as GroupModel;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatPinneds;
 
 class GroupController extends BaseController
 {
@@ -198,8 +199,7 @@ class GroupController extends BaseController
             $groups = api('GET', '/api/v2/plus-group/groups', $params);
         }
 
-        $group = clone $groups;
-        $after = $group->pop()->id ?? 0;
+        $after = $groups[count($groups) -1]['id'] ?? 0;
         $data['type'] = $type;
         $data['group'] = $groups;
         $groupData = view('pcview::templates.group', $data, $this->PlusData)->render();
@@ -229,8 +229,7 @@ class GroupController extends BaseController
         $group = api('GET', '/api/v2/plus-group/groups/' . $group_id);
         $members = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/members', $params);
 
-        $member = clone $members;
-        $after = $member->pop()->id ?? 0;
+        $after = last($members)['id'] ?? 0;
         $data['type'] = $params['type'];
         $data['group'] = $group;
         $data['members'] = $members;
@@ -262,8 +261,7 @@ class GroupController extends BaseController
         ];
         $reports = api('GET', '/api/v2/plus-group/reports', $params);
 
-        $report = clone $reports;
-        $after = $report->pop()->id ?? 0;
+        $after = last($reports)['id'] ?? 0;
         $data['reports'] = $reports;
         $data['group_id'] = $group_id;
         $data['loadcount'] = $request->query('loadcount');
@@ -293,8 +291,8 @@ class GroupController extends BaseController
             'end' => strtotime($request->query('end')),
         ];
         $records = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/incomes', $params);
-        $record = clone $records;
-        $after = $record->pop()->id ?? 0;
+
+        $after = last($records)['id'] ?? 0;
         $data['record'] = $records;
         $data['group_id'] = $group_id;
         $data['type'] = $request->query('type');
@@ -356,11 +354,7 @@ class GroupController extends BaseController
                     ];
                     $posts['posts'] = api('GET', '/api/v2/plus-group/group-posts', $params);
                 }
-                $posts['posts'] = $posts['posts']->diff($posts['pinneds']);
-                foreach (array_reverse($posts['pinneds']) as $key => $value) {
-                    $value->pinned = true;
-                    $posts['posts']->prepend($value);
-                }
+                $posts['posts'] = formatPinneds($posts['posts'], $posts['pinneds']);
             }
 
             $after = 0;
@@ -377,7 +371,7 @@ class GroupController extends BaseController
             ]);
         }
         $data['group'] = api('GET', '/api/v2/plus-group/groups/' . $group_id);
-        if ($data['group']['message']) {
+        if ($data['group']['message'] ?? false) {
             return redirect(route('pc:group'));
         }
         $this->PlusData['current'] = 'group';
@@ -445,8 +439,7 @@ class GroupController extends BaseController
         $group_id = $request->query('group_id', 0);
         $params = ['after' => $request->query('after', 0)];
         $comments = api('GET', '/api/v2/plus-group/group-posts/' . $post_id . '/comments', $params);
-        $comment = clone $comments['comments'];
-        $after = $comment->pop()->id ?? 0;
+        $after = last($comments['comments'])['id'] ?? 0;
         if ($comments['pinneds'] != null) {
 
             $comments['pinneds']->each(function ($item, $key) use ($comments) {

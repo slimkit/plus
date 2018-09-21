@@ -2,9 +2,9 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\newapi;
 use Illuminate\Http\Request;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatPinneds;
 
 class FeedController extends BaseController
 {
@@ -34,12 +34,12 @@ class FeedController extends BaseController
                     $params = [
                         'index' => (int) $request->query('after') ?: 0,
                     ];
-                    $feeds = newapi('GET', '/api/v2/feed/topics/' . $topic_id . '/feeds', $params);
+                    $feeds = api('GET', '/api/v2/feed/topics/' . $topic_id . '/feeds', $params);
                     $data['feeds'] = array_filter($feeds, function ($val) use ($topic_id) {
                         $data['test'] = $val;
                         return $val['id'] !== $topic_id;
                     });
-                    $after = $feeds[count($feeds) - 1]['index'] ?? 0;
+                    $after = last($feeds)['index'] ?? 0;
                 } else {
                     // 普通列表
                     $params['type'] = $request->query('type');
@@ -49,19 +49,14 @@ class FeedController extends BaseController
                         $params['hot'] = $request->query('hot') ?: 0;
                     }
                     $data = api('GET', '/api/v2/feeds', $params);
-                    if (!empty($data['pinned']) && $params['type'] != 'follow') { // 置顶动态
-                        $data['pinned']->reverse()->each(function ($item, $key) use ($data) {
-                            $item->pinned = true;
-                            $data['feeds']->prepend($item);
-                        });
+                    if ($params['type'] != 'follow') { // 置顶动态
+                        $data['feeds'] = formatPinneds($data['feeds'], $data['pinned']);
                     }
 
-                    $feed = $data['feeds'];
-
                     if ($request->query('type') == 'new' || $request->query('type') == 'follow') {
-                        $after = $feed[count($feed) - 1]['id'] ?? 0;
+                        $after = last($data['feeds'])['id'] ?? 0;
                     } else {
-                        $after = $feed[count($feed) - 1]['hot'] ?? 0;
+                        $after = last($data['feeds'])['hot'] ?? 0;
                     }
 
                 }
@@ -112,7 +107,7 @@ class FeedController extends BaseController
         $data['type'] = $request->input('type') ?: 'new';
 
         // 用于添加话题时的初始热门话题列表
-        $data['hot_topics'] = newapi('GET', '/api/v2/feed/topics', ['only' => 'hot']);
+        $data['hot_topics'] = api('GET', '/api/v2/feed/topics', ['only' => 'hot']);
 
         // 用于 at 某人时的初始关注用户列表
         $data['follow_users'] = api('GET', "/api/v2/user/follow-mutual");
@@ -146,7 +141,7 @@ class FeedController extends BaseController
                     break;
                 case 'news';
                     $feed_list = api('GET', "/api/v2/feeds", ['id' => $id . '']);
-                    $data['feed']['repostable'] = $feed_list['feeds'][0];
+                    if ($feed_list['feeds'][0] ?? false) $data['feed']['repostable'] = $feed_list['feeds'][0];
                     break;
                 case 'groups':
                     $data['feed']['repostable'] = api('GET', "/api/v2/plus-group/groups/{$id}");
@@ -176,16 +171,8 @@ class FeedController extends BaseController
         ];
 
         $comments = api('GET', '/api/v2/feeds/' . $feed_id . '/comments', $params);
-        $comment = clone $comments['comments'];
-        $after = $comment->pop()->id ?? 0;
-
-        if ($comments['pinneds'] != null) {
-
-            $comments['pinneds']->each(function ($item, $key) use ($comments) {
-                $item->top = 1;
-                $comments['comments']->prepend($item);
-            });
-        }
+        $after = last($comments['comments'])['id'] ?? 0;
+        $comments['comments'] = formatPinneds($comments['comments'], $comments['pinneds']);
         $commentData = view('pcview::templates.comment', $comments, $this->PlusData)->render();
 
         return response()->json([
@@ -229,7 +216,7 @@ class FeedController extends BaseController
         $data['feed'] = $feed;
 
         // 用于添加话题时的初始热门话题列表
-        $data['hot_topics'] = newapi('GET', '/api/v2/feed/topics', ['only' => 'hot']);
+        $data['hot_topics'] = api('GET', '/api/v2/feed/topics', ['only' => 'hot']);
 
         // 用于 at 某人时的初始关注用户列表
         $data['follow_users'] = api('GET', "/api/v2/user/follow-mutual");

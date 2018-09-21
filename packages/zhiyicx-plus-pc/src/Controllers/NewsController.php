@@ -29,8 +29,7 @@ class NewsController extends BaseController
 
             // 获取资讯列表
             $news['news'] = api('GET', '/api/v2/news', $params);
-            $new = clone $news['news'];
-            $after = $new->pop()->id ?? 0;
+            $after = last($news['news'])['id'] ?? 0;
             $news['cate_id'] = $params['cate_id'];
 
             $news['space'] =  $this->PlusData['config']['ads_space']['pc:news:list'] ?? [];
@@ -39,12 +38,7 @@ class NewsController extends BaseController
             // 加入置顶资讯
             if ($params['cate_id']) {
                 $topNews = api('GET', '/api/v2/news/categories/pinneds', $params);
-                if (!empty($topNews) && $request->loadcount == 1) {
-                    $topNews->reverse()->each(function ($item, $key) use ($news) {
-                        $item->top = 1;
-                        $news['news']->prepend($item);
-                    });
-                }
+                $news['news'] = formatPinneds($news['news'], $topNews, 'id');
             }
 
             $newsData = view('pcview::templates.news', $news, $this->PlusData)->render();
@@ -133,16 +127,8 @@ class NewsController extends BaseController
         ];
 
         $comments = api('GET', '/api/v2/news/'.$news_id.'/comments', $params);
-        $comment = clone $comments['comments'];
-        $after = $comment->pop()->id ?? 0;
-        if ($comments['pinneds'] != null) {
-
-            $comments['pinneds']->each(function ($item, $key) use ($comments) {
-                $item->top = 1;
-                $comments['comments']->prepend($item);
-            });
-        }
-
+        $after = last($comments['comments'])['id'] ?? 0;
+        $comments['comments'] = formatPinneds($comments['comments'], $comments['pinneds']);
         $commentData = view('pcview::templates.comment', $comments, $this->PlusData)->render();
 
         return response()->json([

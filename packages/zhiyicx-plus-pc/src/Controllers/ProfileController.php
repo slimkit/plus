@@ -59,8 +59,7 @@ class ProfileController extends BaseController
                         }
                     }
 
-                    $feed = clone $feeds['feeds'];
-                    $after = $feed->pop()->id ?? 0;
+                    $after = last($feeds['feeds'])['id'] ?? 0;
                     $feeds['conw'] = 735;
                     $feeds['conh'] = 545;
                     $html = view('pcview::templates.feeds', $feeds, $this->PlusData)->render();
@@ -109,8 +108,7 @@ class ProfileController extends BaseController
             $news->map(function($item){
                 $item->collection_count = $item->collections->count();
             });
-            $new = clone $news;
-            $after = $new->pop()->id ?? 0;
+            $after = last($news)['id'] ?? 0;
             $data['data'] = $news;
             $html = view('pcview::templates.profile_news', $data, $this->PlusData)->render();
 
@@ -180,8 +178,7 @@ class ProfileController extends BaseController
                 $item->collection_count = $item->collections->count();
                 $item->comment_count = $item->comments->count();
             });
-            $new = clone $news;
-            $after = $new->pop()->id ?? 0;
+            $after = last($news)['id'] ?? 0;
             $data['data'] = $news;
             $html = view('pcview::templates.profile_news', $data, $this->PlusData)->render();
 
@@ -214,8 +211,7 @@ class ProfileController extends BaseController
             ];
             $answers = api('GET', '/api/v2/user/question-answer/collections', $params);
 
-            $answer = clone $answers;
-            $after = $answer->pop()->id ?? 0;
+            $after = last($answers)['id'] ?? 0;
             foreach ($answers as $k => $v) {
                 $v->collectible->liked = $v->collectible->liked($this->PlusData['TS']['id']);
                 $answers[$k] = $v->collectible;
@@ -251,7 +247,6 @@ class ProfileController extends BaseController
                 'limit' => $request->query('limit', 10),
             ];
             $posts = api('GET', '/api/v2/plus-group/user-post-collections', $params);
-            $data['pinneds'] = collect([]);
             $data['posts'] = $posts;
             $after = 0;
             $data['conw'] = 815;
@@ -298,7 +293,6 @@ class ProfileController extends BaseController
                 $data['group'] = $user->id ? api('GET', '/api/v2/plus-group/user-groups', $params) : api('GET', '/api/v2/plus-group/groups/users', array_merge($params, ['user_id' => $user->id]));
                 $html = view('pcview::templates.group', $data, $this->PlusData)->render();
             } else {
-                $posts['pinneds'] = collect();
                 $posts['posts'] = api('GET', '/api/v2/plus-group/user-group-posts', $params);
                 $html = view('pcview::templates.group_posts', $posts, $this->PlusData)->render();
             }
@@ -339,8 +333,7 @@ class ProfileController extends BaseController
                         'user_id' => $request->query('user_id'),
                     ];
                     $questions = api('GET', '/api/v2/user/questions', $params);
-                    $question = clone $questions;
-                    $after = $question->pop()->id ?? 0;
+                    $after = last($questions)['id'] ?? 0;
                     $data['data'] = $questions;
                     $html = view('pcview::templates.question', $data, $this->PlusData)->render();
 
@@ -352,8 +345,7 @@ class ProfileController extends BaseController
                         'user_id' => $request->query('user_id'),
                     ];
                     $answers = api('GET', '/api/v2/user/question-answer', $params);
-                    $answer = clone $answers;
-                    $after = $answer->pop()->id ?? 0;
+                    $after = last($answers)['id'] ?? 0;
                     $data['datas'] = $answers;
                     $html = view('pcview::templates.answer', $data, $this->PlusData)->render();
                     break;
@@ -378,8 +370,7 @@ class ProfileController extends BaseController
                     $topics->map(function($item){
                         $item->has_follow = true;
                     });
-                    $topic = clone $topics;
-                    $after = $topic->pop()->id ?? 0;
+                    $after = last($topics)['id'] ?? 0;
                     $data['data'] = $topics;
                     $html = view('pcview::templates.question_topic', $data, $this->PlusData)->render();
                     break;

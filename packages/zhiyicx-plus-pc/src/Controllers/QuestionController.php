@@ -68,8 +68,7 @@ class QuestionController extends BaseController
                     $questions->map(function($item){
                         $item->has_follow = true;
                     });
-                    $question = clone $questions;
-                    $after = $question->pop()->id ?? 0;
+                    $after = last($questions)['id'] ?? 0;
                     $data['data'] = $questions;
                     break;
             }
@@ -169,8 +168,7 @@ class QuestionController extends BaseController
             'limit' => $request->query('limit', 10),
         ];
         $comments = api('GET', '/api/v2/question-answers/'.$answer.'/comments', $params);
-        $comment = clone $comments;
-        $after = $comment->pop()->id ?? 0;
+        $after = last($comments)['id'] ?? 0;
         $data['comments'] = $comments;
         $data['top'] = false;
 
@@ -287,8 +285,7 @@ class QuestionController extends BaseController
             'limit' => $request->query('limit', 10),
         ];
         $comments = api('GET', '/api/v2/questions/'.$question.'/comments', $params);
-        $comment = clone $comments;
-        $after = $comment->pop()->id ?? 0;
+        $after = last($comments)['id'] ?? 0;
         $data['comments'] = $comments;
         $data['top'] = false;
         $html = view('pcview::templates.comment', $data, $this->PlusData)->render();
