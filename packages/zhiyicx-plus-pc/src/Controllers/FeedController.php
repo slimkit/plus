@@ -89,11 +89,11 @@ class FeedController extends BaseController
                             break;
                         case 'group-posts':
                         case 'posts':
-                            $feed['repostable'] = api('GET', "/api/v2/group/simple-posts", ['id' => [$id . '']]);
+                            $feed['repostable'] = api('GET', "/api/v2/group/simple-posts", ['id' => $id . '']);
                             if ($feed['repostable'][0]['title'] ?? false) {
                                 $feed['repostable'] = $feed['repostable'][0];
+                                $feed['repostable']['group'] = api('GET', '/api/v2/plus-group/groups/' . $feed['repostable']['group_id']);
                             }
-
                             break;
                     }
                 }
@@ -221,10 +221,12 @@ class FeedController extends BaseController
                 break;
             case 'group-posts':
             case 'posts':
-                $feed['repostable'] = api('GET', "/api/v2/group/simple-posts", ['id' => [$id . '']]);
+                $feed['repostable'] = api('GET', "/api/v2/group/simple-posts", ['id' => $id . '']);
                 if ($feed['repostable'][0]['title'] ?? false) {
                     $feed['repostable'] = $feed['repostable'][0];
-                }break;
+                    $feed['repostable']['group'] = api('GET', '/api/v2/plus-group/groups/' . $feed['repostable']['group_id']);
+                }
+                break;
         }
         $data['feed'] = $feed;
 
