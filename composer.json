@@ -140,9 +140,9 @@
         "slimkit/plus-socialite": "2.0.2",
         "symfony/finder": "^4.0",
         "symfony/yaml": "^4.0",
-        "zhiyicx/plus-group": "2.0.0",
-        "zhiyicx/plus-pc": "2.0.0",
-        "zhiyicx/plus-question": "2.0.0",
+        "zhiyicx/plus-group": "2.0.2",
+        "zhiyicx/plus-pc": "2.0.2",
+        "zhiyicx/plus-question": "2.0.2",
         "tymon/jwt-auth": "1.0.0-rc.3"
     },
     "require-dev": {
