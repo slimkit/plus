@@ -94,7 +94,7 @@
     @case('group-posts')
     @case('posts')
     @if($repostable['title'] ?? false)
-        <a class="feed_repostable"
+        <a class="feed_repostable news"
         @if ($nolink)
         href="javascript:;"
         @elseif($repostable['group']['mode'] !== 'public' && !$repostable['group']['joined'])
@@ -103,12 +103,19 @@
         href="{{ route('pc:grouppost', ['group_id' => $repostable['group']['id'], 'post_id' => $feed['repostable_id']]) }}"
         @endif
         >
-            <p class="description"><strong>{{$repostable['title']}}</strong></p>
+            @if ($repostable['image'] ?? false)
+            <div class="news-left">
+                <div class="cover" style="background: url({{ url('/api/v2/files/' . $repostable['image']) }});"></div>
+            </div>
+            @endif
             @php
                 $summary = preg_replace('/@!\[image\]\(\d+\)/', '[图片]', $repostable['summary']); // 替换图片
                 $summary = preg_replace('/<{0,1}((http|ftp|https):\/\/)(([a-zA-Z0-9\._-]+\.[a-zA-Z]{2,6})|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,4})*(\/[#a-zA-Z0-9\&%_\.\/-~-]*)?>{0,1}/', '<span style="color: #59b6d7;">网页链接</span>', $summary); // 超级厉害的正则（来自android端）匹配网址
             @endphp
-            <p class="description">{!! $summary !!}</p>
+            <div class="news-right">
+                <p class="description"><strong>{{$repostable['title']}}</strong></p>
+                <p class="description">{!! $summary !!}</p>
+            </div>
         </a>
     @else
         <span class="feed_repostable">
