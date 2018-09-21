@@ -48,7 +48,7 @@ class FeedController extends BaseController
                     } else { // 热门
                         $params['hot'] = $request->query('hot') ?: 0;
                     }
-                    $data = api('GET', '/api/v2/feeds', $params);
+                    $data = newapi('GET', '/api/v2/feeds', $params);
                     if (!empty($data['pinned']) && $params['type'] != 'follow') { // 置顶动态
                         $data['pinned']->reverse()->each(function ($item, $key) use ($data) {
                             $item->pinned = true;
@@ -82,16 +82,18 @@ class FeedController extends BaseController
                             break;
                         case 'feeds':
                             $feed_list = api('GET', "/api/v2/feeds", ['id' => $id . '']);
-                            if ($feed_list['feeds'][0] ?? false) $feed['repostable'] = $feed_list['feeds'][0];
+                            if ($feed_list['feeds'][0] ?? false) {
+                                $feed['repostable'] = $feed_list['feeds'][0];
+                            }
                             break;
                         case 'groups':
                             $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/{$id}");
                             break;
                         case 'group-posts':
                         case 'posts':
-                            $feed['repostable'] = api('GET', "/api/v2/group/simple-posts", ['id' => $id . '']);
-                            if ($feed['repostable'][0]['title'] ?? false) {
-                                $feed['repostable'] = $feed['repostable'][0];
+                            $post = newapi('GET', "/api/v2/group/simple-posts", ['id' => $id . '']);
+                            $feed['repostable'] = $post[0] ?? $post;
+                            if ($feed['repostable']['title'] ?? false) {
                                 $feed['repostable']['group'] = api('GET', '/api/v2/plus-group/groups/' . $feed['repostable']['group_id']);
                             }
                             break;
@@ -135,28 +137,36 @@ class FeedController extends BaseController
         $feed->rewards = $feed->rewards->filter(function ($value, $key) {
             return $key < 10;
         });
-        $data['feed'] = $feed;
-        $data['user'] = $feed->user;
+        $feed = $feed->toArray();
+        $data['user'] = $feed['user'];
 
-        if ($feed->repostable_type) {
-            $id = $feed->repostable_id;
-            switch ($feed->repostable_type) {
-                case 'feeds':
-                    $data['feed']['repostable'] = api('GET', "/api/v2/feeds/{$id}");
+        if ($feed['repostable_type'] ?? false) {
+            $id = $feed['repostable_id'];
+            switch ($feed['repostable_type']) {
+                case 'news':
+                    $feed['repostable'] = api('GET', "/api/v2/news/{$id}");
                     break;
-                case 'news';
+                case 'feeds':
                     $feed_list = api('GET', "/api/v2/feeds", ['id' => $id . '']);
-                    $data['feed']['repostable'] = $feed_list['feeds'][0];
+                    if ($feed_list['feeds'][0] ?? false) {
+                        $feed['repostable'] = $feed_list['feeds'][0];
+                    }
                     break;
                 case 'groups':
-                    $data['feed']['repostable'] = api('GET', "/api/v2/plus-group/groups/{$id}");
+                    $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/" . $id);
                     break;
                 case 'group-posts':
                 case 'posts':
-                    $data['feed']['repostable'] = api('GET', "/api/v2/plus-group/groups/1/posts/{$id}");
+                    $post = newapi('GET', "/api/v2/group/simple-posts", ['id' => $id . '']);
+                    $feed['repostable'] = $post[0] ?? $post;
+                    if ($feed['repostable']['title'] ?? false) {
+                        $feed['repostable']['group'] = api('GET', '/api/v2/plus-group/groups/' . $feed['repostable']['group_id']);
+                    }
                     break;
             }
         }
+
+        $data['feed'] = $feed;
 
         $this->PlusData['current'] = 'feeds';
         return view('pcview::feed.read', $data, $this->PlusData);
@@ -214,16 +224,18 @@ class FeedController extends BaseController
                 break;
             case 'feeds':
                 $feed_list = api('GET', "/api/v2/feeds", ['id' => $id . '']);
-                if ($feed_list['feeds'][0] ?? false) $feed['repostable'] = $feed_list['feeds'][0];
+                if ($feed_list['feeds'][0] ?? false) {
+                    $feed['repostable'] = $feed_list['feeds'][0];
+                }
                 break;
             case 'groups':
                 $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/{$id}");
                 break;
             case 'group-posts':
             case 'posts':
-                $feed['repostable'] = api('GET', "/api/v2/group/simple-posts", ['id' => $id . '']);
-                if ($feed['repostable'][0]['title'] ?? false) {
-                    $feed['repostable'] = $feed['repostable'][0];
+                $post = newapi('GET', "/api/v2/group/simple-posts", ['id' => $id . '']);
+                $feed['repostable'] = $post[0] ?? $post;
+                if ($feed['repostable']['title'] ?? false) {
                     $feed['repostable']['group'] = api('GET', '/api/v2/plus-group/groups/' . $feed['repostable']['group_id']);
                 }
                 break;
