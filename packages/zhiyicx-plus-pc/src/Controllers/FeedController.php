@@ -236,6 +236,7 @@ class FeedController extends BaseController
                 $post = newapi('GET', "/api/v2/group/simple-posts", ['id' => $id . '']);
                 $feed['repostable'] = $post[0] ?? $post;
                 if ($feed['repostable']['title'] ?? false) {
+                    $feed['repostable']['image'] = null; // 当在转发弹框时不显示引用帖子的图片
                     $feed['repostable']['group'] = api('GET', '/api/v2/plus-group/groups/' . $feed['repostable']['group_id']);
                 }
                 break;
