@@ -16,21 +16,20 @@
  * +----------------------------------------------------------------------+
  */
 
-return [
+namespace Zhiyi\Plus\Http\Middleware;
 
-    /*
-    |--------------------------------------------------------------------------
-    | Default Hash Driver
-    |--------------------------------------------------------------------------
-    |
-    | This option controls the default hash driver that will be used to hash
-    | passwords for your application. By default, the bcrypt algorithm is
-    | used; however, you remain free to modify this option if you wish.
-    |
-    | Supported: "bcrypt", "argon", "argon2id"
-    |
-    */
+use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
-    'driver' => 'bcrypt',
-
-];
+class Authenticate extends Middleware
+{
+    /**
+     * Get the path the user should be redirected to when they are not authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return string
+     */
+    protected function redirectTo($request)
+    {
+        return route('login');
+    }
+}

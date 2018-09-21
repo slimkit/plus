@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -16,21 +18,42 @@
  * +----------------------------------------------------------------------+
  */
 
-return [
+namespace Zhiyi\Plus\Http\Controllers\Auth;
 
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\VerifiesEmails;
+
+class VerificationController extends Controller
+{
     /*
     |--------------------------------------------------------------------------
-    | Default Hash Driver
+    | Email Verification Controller
     |--------------------------------------------------------------------------
     |
-    | This option controls the default hash driver that will be used to hash
-    | passwords for your application. By default, the bcrypt algorithm is
-    | used; however, you remain free to modify this option if you wish.
-    |
-    | Supported: "bcrypt", "argon", "argon2id"
+    | This controller is responsible for handling email verification for any
+    | user that recently registered with the application. Emails may also
+    | be re-sent if the user didn't receive the original email message.
     |
     */
 
-    'driver' => 'bcrypt',
+    use VerifiesEmails;
 
-];
+    /**
+     * Where to redirect users after verification.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/home';
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('signed')->only('verify');
+        $this->middleware('throttle:6,1')->only('verify', 'resend');
+    }
+}
