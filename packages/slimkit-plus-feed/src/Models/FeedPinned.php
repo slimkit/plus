@@ -45,11 +45,12 @@ class FeedPinned extends Model
      */
     public function feed()
     {
-        if ($this->channel === 'comment') {
-            return $this->hasOne(Feed::class, 'id', 'raw');
-        }
-
         return $this->hasOne(Feed::class, 'id', 'target');
+    }
+
+    public function commentFeed()
+    {
+        return $this->hasOne(Feed::class, 'id', 'raw');
     }
 
     /**

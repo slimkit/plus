@@ -26,6 +26,7 @@ use Illuminate\Support\ServiceProvider;
 use Zhiyi\Plus\FileStorage\ChannelManager;
 use Zhiyi\Plus\FileStorage\Http\MakeRoutes;
 use Zhiyi\Plus\FileStorage\StorageInterface;
+use Zhiyi\Plus\FileStorage\Validators\Rulers\ValidatorRegister;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -49,9 +50,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this
-            ->app
-            ->make(MakeRoutes::class)
-            ->register();
+        // Register routes.
+        $this->app->make(MakeRoutes::class)->register();
+
+        // Register validate rules.
+        $this->app->make(ValidatorRegister::class)->register();
     }
 }

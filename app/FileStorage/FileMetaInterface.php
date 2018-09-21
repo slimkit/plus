@@ -20,11 +20,13 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage;
 
+use JsonSerializable;
 use Zhiyi\Plus\Models\User;
+use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
 use Zhiyi\Plus\FileStorage\Pay\PayInterface;
 
-interface FileMetaInterface extends Arrayable
+interface FileMetaInterface extends Arrayable, JsonSerializable, Jsonable
 {
     /**
      * Has the file is image.
@@ -68,11 +70,4 @@ interface FileMetaInterface extends Arrayable
      * @return string
      */
     public function url(): string;
-
-    /**
-     * Get the instance as an array.
-     *
-     * @return array
-     */
-    public function toArray(): array;
 }

@@ -1,6 +1,6 @@
 {
     "private": true,
-    "version": "2.0.0",
+    "version": "2.0.1",
     "scripts": {
         "dev": "npm run development",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
@@ -10,7 +10,9 @@
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prepublishOnly": "rm -rf CHANGELOG.md && conventional-changelog -p angular -r 2 -i CHANGELOG.md -s",
-        "postinstall": "opencollective postinstall"
+        "postinstall": "opencollective postinstall",
+        "docs:dev": "vuepress dev docs",
+        "docs:build": "vuepress build docs"
     },
     "devDependencies": {
         "@slimkit/plus-editor": "^0.0.3",

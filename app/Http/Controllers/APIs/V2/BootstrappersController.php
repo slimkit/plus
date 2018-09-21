@@ -21,22 +21,21 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Zhiyi\Plus\Models\GoldType;
+use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\CurrencyType;
 use Zhiyi\Plus\Models\AdvertisingSpace;
+use Illuminate\Contracts\Support\Arrayable;
 use Zhiyi\Plus\Support\BootstrapAPIsEventer;
-use Illuminate\Contracts\Routing\ResponseFactory;
 
 class BootstrappersController extends Controller
 {
     /**
      * Gets the list of initiator configurations.
      *
-     * @param ResponseFactory $response
-     * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(BootstrapAPIsEventer $events, ResponseFactory $response, AdvertisingSpace $space, GoldType $goldType)
+    public function show(BootstrapAPIsEventer $events, AdvertisingSpace $space, GoldType $goldType): JsonResponse
     {
         $bootstrappers = [
             'server:version' => app()->version(),
@@ -68,7 +67,35 @@ class BootstrappersController extends Controller
         // 每页数据量
         $bootstrappers['limit'] = config('app.data_limit');
 
-        return $response->json($events->dispatch('v2', [$bootstrappers]), 200);
+        return new JsonResponse($this->filterNull($events->dispatch('v2', [$bootstrappers])), JsonResponse::HTTP_OK);
+    }
+
+    /**
+     * Filter null.
+     * @param array $data
+     * @return array
+     */
+    protected function filterNull(array $data): array
+    {
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $value = $this->filterNull($value);
+            } elseif ($value instanceof Arrayable) {
+                $value = $this->filterNull(
+                    $value->toArray()
+                );
+            }
+
+            $data[$key] = $value;
+        }
+
+        return array_filter($data, function ($item) {
+            if (is_array($item) || is_string($item)) {
+                return ! empty($item);
+            }
+
+            return $item !== null;
+        });
     }
 
     /**

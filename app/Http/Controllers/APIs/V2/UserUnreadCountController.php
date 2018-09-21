@@ -123,7 +123,7 @@ class UserUnreadCountController extends Controller
             'atme' => $atMeUsers->isEmpty() ? null : [
                 'users' => $atMeUsers->map(function ($item) {
                     return $item->sender->name ?? null;
-                })->filter()->unique()->all(),
+                })->filter()->unique()->values()->all(),
                 'latest_at' => $atLatestTimestamp,
             ],
         ], function ($item) {

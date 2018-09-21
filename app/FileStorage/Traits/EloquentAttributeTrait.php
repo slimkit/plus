@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\FileStorage\Traits;
 
+use Exception;
 use Zhiyi\Plus\FileStorage\Resource;
 use Zhiyi\Plus\FileStorage\StorageInterface;
 use Zhiyi\Plus\FileStorage\FileMetaInterface;
@@ -30,27 +31,29 @@ trait EloquentAttributeTrait
      * Get file storage instance.
      * @return \Zhiyi\Plus\FileStorage\StorageInterface
      */
-    protected function getStorage(): StorageInterface
+    protected function getFileStorageInstance(): StorageInterface
     {
         return app(StorageInterface::class);
     }
 
     /**
-     * Parse file.
+     * Get resource meta.
      * @param string $resource
      * @return null|\Zhiyi\Plus\FileStorage\FileMeatInterface
      */
-    protected function parseFile(string $resource): ?FileMetaInterface
+    protected function getFileStorageResourceMeta(string $resource): ?FileMetaInterface
     {
         // Is local mode, throw exceptions.
         if (app()->isLocal()) {
-            return $this->getStorage()->meta(new Resource($resource));
+            return $this->getFileStorageInstance()->meta(new Resource($resource));
         }
 
         try {
-            return $this->getStorage()->meta(new Resource($resource));
-        } finally {
+            return $this->getFileStorageInstance()->meta(new Resource($resource));
+        } catch (Exception $e) {
             return null;
         }
+
+        return null;
     }
 }

@@ -35,7 +35,7 @@ class CreateFeedTopicsTable extends Migration
         Schema::create('feed_topics', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 100)->comment('The topic name');
-            $table->integer('logo')->unsigned()->nullable()->default(0)->comment('The topic logo, file with id');
+            $table->string('logo')->nullable()->default(null)->comment('The topic logo');
             $table->text('desc')->nullable()->comment('The topic desc');
             $table->integer('creator_user_id')->unsigned()->comment('The topic creator user ID');
             $table->integer('feeds_count')->unsigned()->nullable()->default(0)->comment('The topic link feeds count');
