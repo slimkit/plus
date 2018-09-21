@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * +----------------------------------------------------------------------+
  * |                          ThinkSNS Plus                               |
@@ -20,23 +18,18 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Middleware;
 
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
+use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
-class VerifyCsrfToken extends Middleware
+class Authenticate extends Middleware
 {
     /**
-     * Indicates whether the XSRF-TOKEN cookie should be set on the response.
+     * Get the path the user should be redirected to when they are not authenticated.
      *
-     * @var bool
+     * @param  \Illuminate\Http\Request  $request
+     * @return string
      */
-    protected $addHttpCookie = true;
-
-    /**
-     * The URIs that should be excluded from CSRF verification.
-     *
-     * @var array
-     */
-    protected $except = [
-        //
-    ];
+    protected function redirectTo($request)
+    {
+        return route('login');
+    }
 }

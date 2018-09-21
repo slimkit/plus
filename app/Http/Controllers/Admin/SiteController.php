@@ -430,25 +430,25 @@ class SiteController extends Controller
     /**
      * 服务器信息.
      */
-    public function server(ResponseFactory $response)
+    public function server(Request $request, ResponseFactory $response)
     {
         $system = [
+            'app_version' => app()->version(),
             'php_version' => PHP_VERSION,
             'os' => PHP_OS,
-            'server' => $_SERVER['SERVER_SOFTWARE'],
-            'db' => env('DB_CONNECTION'),
-            'port' => $_SERVER['SERVER_PORT'],
-            'root' => $_SERVER['DOCUMENT_ROOT'],
-            'agent' => $_SERVER['HTTP_USER_AGENT'],
-            'protocol' => $_SERVER['SERVER_PROTOCOL'],
-            'method' => $_SERVER['REQUEST_METHOD'],
+            'db' => config('database.default'),
+            'server' => $request->server->get('SERVER_SOFTWARE'),
+            'port' => $request->server->get('SERVER_PORT'),
+            'root' => $request->server->get('DOCUMENT_ROOT'),
+            'agent' => $request->server->get('HTTP_USER_AGENT'),
+            'protocol' => $request->server->get('SERVER_PROTOCOL'),
+            'domain_ip' => $request->server->get('SERVER_NAME'),
+            'user_ip' => $request->server->get('REMOTE_ADDR'),
             'laravel_version' => app()->getLaravelVersion(),
             'max_upload_size' => ini_get('upload_max_filesize'),
             'execute_time' => ini_get('max_execution_time').'秒',
             'server_date' => date('Y年n月j日 H:i:s'),
             'local_date' => gmdate('Y年n月j日 H:i:s', time() + 8 * 3600),
-            'domain_ip' => $_SERVER['SERVER_NAME'].' [ '.$_SERVER['SERVER_ADDR'].' ]',
-            'user_ip' => $_SERVER['REMOTE_ADDR'],
             'disk' => round((disk_free_space('.') / (1024 * 1024)), 2).'M',
         ];
 

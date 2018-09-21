@@ -30,8 +30,8 @@ if (mix.config.hmr === true) {
  |
  */
 
-mix.sass('resources/assets/sass/bootstrap.scss', path.join('public', 'assets', 'css'))
-   .js('resources/assets/js/bootstrap.js', path.join('public', 'assets', 'js'))
+mix.sass('resources/sass/bootstrap.scss', path.join('public', 'assets', 'css'))
+   .js('resources/js/bootstrap.js', path.join('public', 'assets', 'js'))
 
 
 /*
