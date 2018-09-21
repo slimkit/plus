@@ -48,7 +48,7 @@ class FeedController extends BaseController
                     } else { // 热门
                         $params['hot'] = $request->query('hot') ?: 0;
                     }
-                    $data = newapi('GET', '/api/v2/feeds', $params);
+                    $data = api('GET', '/api/v2/feeds', $params);
                     if (!empty($data['pinned']) && $params['type'] != 'follow') { // 置顶动态
                         $data['pinned']->reverse()->each(function ($item, $key) use ($data) {
                             $item->pinned = true;
