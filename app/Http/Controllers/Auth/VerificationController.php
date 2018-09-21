@@ -18,25 +18,42 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Http\Middleware;
+namespace Zhiyi\Plus\Http\Controllers\Auth;
 
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\VerifiesEmails;
 
-class VerifyCsrfToken extends Middleware
+class VerificationController extends Controller
 {
-    /**
-     * Indicates whether the XSRF-TOKEN cookie should be set on the response.
-     *
-     * @var bool
-     */
-    protected $addHttpCookie = true;
+    /*
+    |--------------------------------------------------------------------------
+    | Email Verification Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller is responsible for handling email verification for any
+    | user that recently registered with the application. Emails may also
+    | be re-sent if the user didn't receive the original email message.
+    |
+    */
+
+    use VerifiesEmails;
 
     /**
-     * The URIs that should be excluded from CSRF verification.
+     * Where to redirect users after verification.
      *
-     * @var array
+     * @var string
      */
-    protected $except = [
-        //
-    ];
+    protected $redirectTo = '/home';
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('signed')->only('verify');
+        $this->middleware('throttle:6,1')->only('verify', 'resend');
+    }
 }

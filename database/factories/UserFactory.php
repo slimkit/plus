@@ -37,6 +37,8 @@ $factory->define(Zhiyi\Plus\Models\User::class, function (Faker $faker) {
         'email' => $faker->unique()->safeEmail,
         'phone' => $faker->unique()->phoneNumber,
         'password' => $password ?: $password = bcrypt('secret'),
+        'email_verified_at' => now(),
+        'phone_verified_at' => now(),
         'remember_token' => str_random(10),
     ];
 });

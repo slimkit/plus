@@ -95,7 +95,7 @@
         "intervention/image": "^2.3",
         "jenssegers/agent": "^2.6",
         "jpush/jpush": "^3.5",
-        "laravel/framework": "5.6.*",
+        "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
         "league/html-to-markdown": "^4.6",
         "league/omnipay": "^3.0",
@@ -116,9 +116,10 @@
         "slimkit/plus-socialite": "2.0.1",
         "symfony/finder": "^4.0",
         "symfony/yaml": "^4.0",
-        "tymon/jwt-auth": "1.0.0-rc.2"
+        "tymon/jwt-auth": "1.0.0-rc.3"
     },
     "require-dev": {
+        "beyondcode/laravel-dump-server": "^1.0",
         "codacy/coverage": "^1.4",
         "filp/whoops": "^2.0",
         "mockery/mockery": "^1.0",
@@ -155,12 +156,12 @@
             "@php -r \"file_exists('storage/configure/.env') || copy('storage/configure/.env.example', 'storage/configure/.env');\""
         ],
         "post-create-project-cmd": [
-            "@php artisan key:generate",
-            "@php artisan jwt:secret --force"
+            "@php artisan key:generate --ansi",
+            "@php artisan jwt:secret --force --ansi"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover"
+            "@php artisan package:discover --ansi"
         ]
     },
     "config": {
