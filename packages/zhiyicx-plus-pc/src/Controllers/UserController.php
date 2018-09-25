@@ -4,7 +4,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
 use Illuminate\Http\Request;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
-use function Zhiyi\Plus\username;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatPinneds;
 
 class UserController extends BaseController
 {
@@ -47,13 +47,9 @@ class UserController extends BaseController
             // 推荐用户 = 后台推荐的用户 + 相同标签用户
             if ($type == 3 && $offset == 0) {
                 $recommends = api('GET', '/api/v2/user/recommends', ['offset' => 0]);
-                if ($recommends && $data['users']) {
-                    foreach ($recommends as $v) {
-                        $data['users']->prepend($v);
-                    }
-                }
+                $data['users'] = formatPinneds($data['users'], $recommends, 'id');
             }
-            $data['users'] = $data['users']->unique('id')->values()->all();
+
             $html =  view('pcview::templates.user', $data, $this->PlusData)->render();
 
             return response()->json([

@@ -99,7 +99,8 @@
                 container: '#content_list',
                 loading: '.profile_content',
                 url: '/users/{{$user['id']}}/q-a',
-                params: {isAjax: true, cate: type, user_id: '{{$user['id']}}' }
+                paramtype: type == 3 ? 1 : 0,
+                params: {isAjax: true, cate: type, user_id: '{{$user['id']}}', limit: 20 }
             });
 
             $('.qa_opt').removeClass('active');

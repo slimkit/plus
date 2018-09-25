@@ -28,7 +28,7 @@
             <span class="feed_time font12">{{ getTime($post['created_at']) }}</span>
             <span class="feed_time font12 hide">查看详情</span>
         </a>
-        @if(!empty($post['pinned']) && $post['pinned'] == true)
+        @if(!(isset($post['pinned']) && $post['pinned'] == false))
             <a class="pinned" href="javascript:;">置顶</a>
         @endif
         @if($post['excellent_at'])
@@ -160,7 +160,7 @@
         {{--@endif--}}
         </div>
          {{-- 评论 --}}
-        @include('pcview::widgets.comments', [
+{{--         @include('pcview::widgets.comments', [
             'id' => $post['id'],
             'comments_count' => $post['comments_count'],
             'comments_type' => 'group-posts',
@@ -170,13 +170,13 @@
             'comments_data' => $post['comments'],
             'params' => ['group_id' => $post['group_id'],
             'disabled' => $post['group']['joined']['disabled']],
-        ])
+        ]) --}}
 
         <div class="feed_line"></div>
     </div>
 </div>
 <script type="text/javascript">
-    var images = JSON.parse('{!!$post['images']!!}'), data = new Array();
+    var images = {!! json_encode($post['images']) !!}, data = new Array();
     if(images){
         for (var i in images) {
             var size = images[i].size.split('x');

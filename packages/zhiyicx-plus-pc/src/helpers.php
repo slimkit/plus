@@ -51,7 +51,7 @@ function formatContent($content)
 }
 
 /**
- * [api 内部请求]
+ * [inapi 内部请求（弃用）]
  * @author Foreach
  * @param  string  $method   [请求方式]
  * @param  string  $url      [地址]
@@ -60,7 +60,7 @@ function formatContent($content)
  * @param  integer $original
  * @return
  */
-function api($method = 'POST', $url = '', $params = array(), $instance = 1, $original = 1)
+function inapi($method = 'POST', $url = '', $params = array(), $instance = 1, $original = 1)
 {
     $request = Request::create($url, $method, $params);
     $request->headers->add(['Accept' => 'application/json', 'Authorization' => 'Bearer '. Session::get('token')]);
@@ -88,14 +88,14 @@ function api($method = 'POST', $url = '', $params = array(), $instance = 1, $ori
 }
 
 /**
- * [newapi formRequest请求api]
+ * [api]
  * @author Foreach
  * @param  string  $method   [请求方式]
  * @param  string  $url      [地址]
  * @param  array   $params   [参数]
  * @return
  */
-function newapi($method = 'POST', $url = '', $params = array())
+function api($method = 'POST', $url = '', $params = array())
 {
     $client = new Client([
         'base_uri' => config('app.url')
@@ -105,12 +105,14 @@ function newapi($method = 'POST', $url = '', $params = array())
     if ($method == 'GET') {
         $response = $client->request($method, $url, [
             'query' => $params,
-            'headers' => $headers
+            'headers' => $headers,
+            'http_errors' => false
         ]);
     } else {
         $response = $client->request($method, $url, [
             'form_params' => $params,
-            'headers' => $headers
+            'headers' => $headers,
+            'http_errors' => false
         ]);
     }
     return json_decode($response->getBody(), true);
@@ -266,5 +268,25 @@ function formatList($body)
  */
 function getUserInfo($id)
 {
-    return User::find($id);
+    return User::find($id)->toArray();
+}
+
+/**
+ * [setPinneds 置顶数据组装]
+ * @author Foreach
+ * @param  [type] $data    [列表数据]
+ * @param  [type] $pinneds [置顶数据]
+ * @param  [type] $k       [键名]
+ */
+function formatPinneds($data, $pinneds) {
+    if (empty($pinneds)) return $data;
+    $pinneds_keys = array_pluck($pinneds, 'id');
+    foreach ($data as $key => $value) {
+        if (!in_array($value['id'], $pinneds_keys)) {
+            $value['pinned'] = false;
+            array_push($pinneds, $value);
+        }
+    }
+
+    return $pinneds;
 }

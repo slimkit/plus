@@ -97,6 +97,11 @@ class ContributeController extends Controller
 
         return $response->json($model->getConnection()->transaction(function () use ($user, $news) {
             return $news->each(function ($data) use ($user) {
+                $data->collection_count = $data->collections()->count();
+                $data->comments = $data->load(['comments' => function($query){
+                    $query->with(['user'])->limit(3);
+                }]);
+                $data->comment_count = $data->comments()->count();
                 $data->has_collect = $data->collected($user);
                 $data->has_like = $data->liked($user);
                 unset($data->pinned);

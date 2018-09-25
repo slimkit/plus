@@ -4,7 +4,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatList;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\newapi;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use Illuminate\Http\Request;
 
 class MessageController extends BaseController
@@ -292,7 +292,7 @@ class MessageController extends BaseController
         // 拉取 mention 列表
         $after = $request->input('after');
         $limit = $request->input('limit') ?: 20;
-        $data['mention'] = newapi('GET', '/api/v2/user/message/atme', [
+        $data['mention'] = api('GET', '/api/v2/user/message/atme', [
             'index' => $after,
             'limit' => $limit,
         ]);
@@ -310,7 +310,7 @@ class MessageController extends BaseController
                     }
                     break;
                 case 'comments':
-                    $mention['comments'] = newapi('GET', "/api/v2/comments", ['id' => $id])[0];
+                    $mention['comments'] = api('GET', "/api/v2/comments", ['id' => $id])[0];
                     $user_id = $mention['comments']['user_id'];
                     $mention['repostable_type'] = $mention['comments']['resourceable']['type'] ?? '';
 

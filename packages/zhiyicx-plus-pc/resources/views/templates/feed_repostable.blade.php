@@ -76,7 +76,7 @@
             <div class="group-wrap">
                 <div class="group-left">
                     <div class="label">{{ $repostable['category']['name'] }}</div>
-                    <img src='{{ $repostable['avatar'] ? $repostable['avatar']->url() : asset('assets/pc/images/default_picture.png') }}' alt="">
+                    <img src='{{ $repostable['avatar'] ? $repostable['avatar']['url'] : asset('assets/pc/images/default_picture.png') }}' alt="">
                 </div>
                 <div class="group-right">
                     <p class="title"><strong>{{$repostable['name']}}</strong></p>

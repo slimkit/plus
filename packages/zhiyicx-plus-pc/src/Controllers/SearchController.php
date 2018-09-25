@@ -49,8 +49,7 @@ class SearchController extends BaseController
 
                 $datas = api('GET', '/api/v2/feeds', $params);
                 $data = $datas;
-                $feed = clone $data['feeds'];
-                $after = $feed->pop()->id ?? 0;
+                $after = last($data['feeds'])['id'] ?? 0;
 
                 $data['conw'] = 815;
                 $data['conh'] = 545;
@@ -67,8 +66,7 @@ class SearchController extends BaseController
                 $datas = api('GET', '/api/v2/questions', $params);
                 $data['data'] = $datas;
                 $data['search'] = true;
-                $question = clone $data['data'];
-                $after = $question->pop()->id ?? 0;
+                $after = last($data['data'])['id'] ?? 0;
                 $html = view('pcview::templates.question', $data, $this->PlusData)->render();
                 break;
             case '3':
@@ -80,8 +78,7 @@ class SearchController extends BaseController
 
                 $datas = api('GET', '/api/v2/news', $params);
                 $data['news'] = $datas;
-                $new = clone $data['news'];
-                $after = $new->pop()->id ?? 0;
+                $after = last($data['news'])['id'] ?? 0;
                 $html = view('pcview::templates.news', $data, $this->PlusData)->render();
 
                 break;
@@ -105,8 +102,7 @@ class SearchController extends BaseController
 
                 $datas = api('GET', '/api/v2/plus-group/groups', $params);
                 $data['group'] = $datas;
-                $group = clone $data['group'];
-                $after = $group->pop()->id ?? 0;
+                $after = last($data['group'])['id'] ?? 0;
                 $html = view('pcview::templates.group', $data, $this->PlusData)->render();
                 break;
             case '6':
@@ -119,8 +115,7 @@ class SearchController extends BaseController
                 $datas = api('GET', '/api/v2/question-topics', $params);
                 $data['data'] = $datas;
                 $data['search'] = true;
-                $topic = clone $data['data'];
-                $after = $topic->pop()->id ?? 0;
+                $after = last($data['data'])['id'] ?? 0;
                 $html = view('pcview::templates.question_topic', $data, $this->PlusData)->render();
                 break;
             case '7':
@@ -129,7 +124,6 @@ class SearchController extends BaseController
                     'offset' => $offset,
                     'keyword' => $keywords
                 ];
-                $posts['pinneds'] = collect();
                 $posts['posts'] = api('GET', '/api/v2/plus-group/group-posts', $params);
                 $datas = $posts['posts'];
                 $after = 0;
