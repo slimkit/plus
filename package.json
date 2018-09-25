@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "repository": "https://github.com/slimkit/plus",
+  "author": "Seven Du <shiweidu@outlook.com>",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "vuepress": "^0.14.4"
+  },
+  "scripts": {
+    "dev": "vuepress dev",
+    "build": "vuepress build"
+  }
+}
