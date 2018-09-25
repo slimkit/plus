@@ -41,6 +41,7 @@ module.exports = {
                 'build-install-php',
                 'build-install-mysql',
                 'build-install-nginx',
+                'install-plus',
             ],
             '/guide/upgrade/': [
                 '',
