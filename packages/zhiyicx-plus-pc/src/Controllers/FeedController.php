@@ -130,34 +130,34 @@ class FeedController extends BaseController
     {
         $feedinfo = api('GET', '/api/v2/feeds/' . $feed->id);
         $feedinfo['collect_count'] = $feed->collection->count();
-        $data['feed'] = $feedinfo;
+        $feedinfo['rewards'] = $feed->rewards->toArray();
         $data['user'] = $feed->user;
 
         if ($feedinfo['repostable_type']) {
             $id = $feedinfo['repostable_id'];
             switch ($feedinfo['repostable_type']) {
                 case 'feeds':
-                    $data['feed']['repostable'] = api('GET', "/api/v2/feeds/{$id}");
+                    $feedinfo['repostable'] = api('GET', "/api/v2/feeds/{$id}");
                     break;
                 case 'feeds':
                     $feed_list = api('GET', "/api/v2/feeds", ['id' => $id . '']);
-                    if ($feed_list['feeds'][0] ?? false) $data['feed']['repostable'] = $feed_list['feeds'][0];
+                    if ($feed_list['feeds'][0] ?? false) $feedinfo['repostable'] = $feed_list['feeds'][0];
                     break;
                 case 'groups':
-                    $data['feed']['repostable'] = api('GET', "/api/v2/plus-group/groups/" . $id);
+                    $feedinfo['repostable'] = api('GET', "/api/v2/plus-group/groups/" . $id);
                     break;
                 case 'group-posts':
                 case 'posts':
                     $post = api('GET', "/api/v2/group/simple-posts", ['id' => $id . '']);
-                    $data['feed']['repostable'] = $post[0] ?? $post;
-                    if ($data['feed']['repostable']['title'] ?? false) {
-                        $data['feed']['repostable']['group'] = api('GET', '/api/v2/plus-group/groups/' . $feed['repostable']['group_id']);
+                    $feedinfo['repostable'] = $post[0] ?? $post;
+                    if ($feedinfo['repostable']['title'] ?? false) {
+                        $feedinfo['repostable']['group'] = api('GET', '/api/v2/plus-group/groups/' . $feedinfo['repostable']['group_id']);
                     }
                     break;
             }
         }
 
-        $data['feed'] = $feed;
+        $data['feed'] = $feedinfo;
 
         $this->PlusData['current'] = 'feeds';
         return view('pcview::feed.read', $data, $this->PlusData);
