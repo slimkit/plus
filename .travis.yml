@@ -48,28 +48,3 @@ jobs:
       install: npm install
       script: npm run dev
       after_script: null
-    - stage: Deploy
-      name: Deploy docs website
-      branches:
-        only: master
-      language: node_js
-      node_js: 8
-      services: null
-      env: null
-      cache: yarn
-      before_install: npm install --global yarn
-      install:
-        - yarn install
-        - yarn add vuepress
-      script: yarn docs:build
-      after_script: null
-      deploy:
-        provider: pages
-        repo: slimkit/plus
-        skip-cleanup: true
-        github-token: $GITHUB_PUBLISH_TOKEN
-        keep-history: true
-        local-dir: docs/.vuepress/dist
-        target-branch: gh-pages
-        name: SlimKit Bot
-        verbose: true
