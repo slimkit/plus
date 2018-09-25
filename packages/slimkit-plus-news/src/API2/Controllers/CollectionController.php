@@ -87,15 +87,20 @@ class CollectionController extends Controller
             return $query->when($after, function ($query) use ($after) {
                 return $query->where('news.id', '<', $after);
             })->take($limit)
-                ->select(['news.id', 'news.title', 'news.subject', 'news.created_at', 'news.updated_at', 'news.storage', 'news.cate_id', 'news.from', 'news.author', 'news.user_id', 'news.hits'])
+                ->select(['news.id', 'news.title', 'news.subject', 'news.created_at', 'news.updated_at', 'news.storage', 'news.cate_id', 'news.from', 'news.author', 'news.user_id', 'news.hits', 'news.audit_status'])
                 ->orderBy('news.id', 'desc');
         }]);
 
         $user->newsCollections->map(function ($collection) use ($user) {
+            $collection->user = $collection->load('user');
+            $collection->collection_count = $collection->collections()->count();
+            $collection->comments = $collection->load(['comments' => function($query){
+                $query->with(['user'])->limit(3);
+            }]);
+            $collection->comment_count = $collection->comments()->count();
             $collection->has_collect = $collection->collected($user);
             $collection->has_like = $collection->liked($user);
             $collection->addHidden('pinned', 'pivot');
-
             return $collection;
         });
 

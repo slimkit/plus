@@ -28,7 +28,7 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
 
     <div class="news_body">
         <div class="article_box relative">
-            <img data-original="{{$routes['storage']}}{{$post['storage']}}?w=584&h=400" class="lazy img">
+            <img data-original="{{$routes['storage']}}{{$post['image']['id']}}?w=584&h=400" class="lazy img">
             <div class="article_desc">
                 <p class="title"><a @if ($post['audit_status'] == 0) href="{{ route('pc:newsread', $post['id']) }}" @endif>{{ $post['title'] }}</a></p>
                 <p class="subject">{{ $post['subject'] ?? '' }}</p>

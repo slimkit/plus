@@ -3,6 +3,7 @@
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
 use Illuminate\Http\Request;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatPinneds;
 
@@ -123,19 +124,16 @@ class FeedController extends BaseController
      * @param  int     $feed_id [动态id]
      * @return mixed
      */
-    public function read(Request $request, int $feed_id)
+    public function read(Request $request, Feed $feed)
     {
-        $feed = api('GET', '/api/v2/feeds/' . $feed_id);
-        $feed->collect_count = $feed->collection->count();
-        $feed->rewards = $feed->rewards->filter(function ($value, $key) {
-            return $key < 10;
-        });
-        $data['feed'] = $feed;
+        $feedinfo = api('GET', '/api/v2/feeds/' . $feed->id);
+        $feedinfo['collect_count'] = $feed->collection->count();
+        $data['feed'] = $feedinfo;
         $data['user'] = $feed->user;
 
-        if ($feed->repostable_type) {
-            $id = $feed->repostable_id;
-            switch ($feed->repostable_type) {
+        if ($feedinfo['repostable_type']) {
+            $id = $feedinfo['repostable_id'];
+            switch ($feedinfo['repostable_type']) {
                 case 'feeds':
                     $data['feed']['repostable'] = api('GET', "/api/v2/feeds/{$id}");
                     break;

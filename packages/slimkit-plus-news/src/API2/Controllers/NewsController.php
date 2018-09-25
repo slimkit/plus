@@ -138,6 +138,7 @@ class NewsController extends Controller
         $news = $news->getConnection()->transaction(function () use ($user, $news, $datetime) {
             $news->increment('hits', 1);
             $news->load('tags');
+            $news->load('user');
             $news->has_collect = $news->collected($user);
             $news->has_like = $news->liked($user);
             $news->is_pinned = ! (bool) $news->pinned()->where('state', 1)->where('expires_at', '>', $datetime)->get()->isEmpty();

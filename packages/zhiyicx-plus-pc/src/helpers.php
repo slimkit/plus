@@ -268,7 +268,7 @@ function formatList($body)
  */
 function getUserInfo($id)
 {
-    return User::find($id);
+    return User::find($id)->toArray();
 }
 
 /**

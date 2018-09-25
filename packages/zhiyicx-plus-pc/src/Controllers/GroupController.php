@@ -199,7 +199,7 @@ class GroupController extends BaseController
             $groups = api('GET', '/api/v2/plus-group/groups', $params);
         }
 
-        $after = $groups[count($groups) -1]['id'] ?? 0;
+        $after = last($groups)['id'] ?? 0;
         $data['type'] = $type;
         $data['group'] = $groups;
         $groupData = view('pcview::templates.group', $data, $this->PlusData)->render();

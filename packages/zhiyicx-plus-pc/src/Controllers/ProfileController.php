@@ -5,6 +5,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User as UserModel;
 use function zhiyi\Component\ZhiyiPlus\PlusComponentPc\replaceUrl;
+use function zhiyi\Component\ZhiyiPlus\PlusComponentPc\getUserInfo;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use function Zhiyi\Plus\username;
 
@@ -105,9 +106,6 @@ class ProfileController extends BaseController
                 $params['user'] = $request->query('user');
             }
             $news = api('GET', '/api/v2/user/news/contributes', $params);
-            $news->map(function($item){
-                $item->collection_count = $item->collections->count();
-            });
             $after = last($news)['id'] ?? 0;
             $data['data'] = $news;
             $html = view('pcview::templates.profile_news', $data, $this->PlusData)->render();
@@ -174,10 +172,6 @@ class ProfileController extends BaseController
                 'limit' => $request->query('limit', 10),
             ];
             $news = api('GET', '/api/v2/news/collections', $params);
-            $news->map(function($item){
-                $item->collection_count = $item->collections->count();
-                $item->comment_count = $item->comments->count();
-            });
             $after = last($news)['id'] ?? 0;
             $data['data'] = $news;
             $html = view('pcview::templates.profile_news', $data, $this->PlusData)->render();
@@ -367,9 +361,9 @@ class ProfileController extends BaseController
                         'user_id' => $request->query('user_id'),
                     ];
                     $topics = api('GET', '/api/v2/user/question-topics', $params);
-                    $topics->map(function($item){
-                        $item->has_follow = true;
-                    });
+                    foreach ($topics as $key => &$value) {
+                        $value['has_follow'] = true;
+                    }
                     $after = last($topics)['id'] ?? 0;
                     $data['data'] = $topics;
                     $html = view('pcview::templates.question_topic', $data, $this->PlusData)->render();
