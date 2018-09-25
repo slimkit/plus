@@ -20,5 +20,7 @@ deploy:
   verbose: true
   on:
     repo: slimkit/plus
-    branch: docs
+    branches:
+      only:
+        - docs
 
