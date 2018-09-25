@@ -111,7 +111,7 @@ const webpackConfig = {
 
   output: {
     path: outPath,
-    filename: !isProd ? '[name].js' : '[name].[hash:8].js'
+    filename: !isProd ? '[name].js' : '[name].js'
   },
 
   /*
