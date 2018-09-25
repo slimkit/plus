@@ -19,9 +19,10 @@ class FeedController extends BaseController
     {
         if ($request->isAjax) {
             if ($request->query('feed_id')) { // 获取单条微博内容
-                $feeds['feeds'] = collect();
-                $feed = api('GET', '/api/v2/feeds/' . $request->feed_id);
-                $feeds['feeds']->push($feed);
+                $feeds['feeds'] = [];
+                $feedinfo = api('GET', '/api/v2/feeds/' . $request->feed_id);
+                $feedinfo['comments'] = [];
+                array_push($feeds['feeds'], $feedinfo);
                 $feedData = view('pcview::templates.feeds', $feeds, $this->PlusData)->render();
 
                 return response()->json([
