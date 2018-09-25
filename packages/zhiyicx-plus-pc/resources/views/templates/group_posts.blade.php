@@ -160,7 +160,7 @@
         {{--@endif--}}
         </div>
          {{-- 评论 --}}
-{{--         @include('pcview::widgets.comments', [
+        @include('pcview::widgets.comments', [
             'id' => $post['id'],
             'comments_count' => $post['comments_count'],
             'comments_type' => 'group-posts',
@@ -170,7 +170,7 @@
             'comments_data' => $post['comments'],
             'params' => ['group_id' => $post['group_id'],
             'disabled' => $post['group']['joined']['disabled']],
-        ]) --}}
+        ])
 
         <div class="feed_line"></div>
     </div>
