@@ -18,3 +18,7 @@ deploy:
   target-branch: gh-pages
   name: SlimKit Bot
   verbose: true
+  on:
+    repo: slimkit/plus
+    branch: docs
+
