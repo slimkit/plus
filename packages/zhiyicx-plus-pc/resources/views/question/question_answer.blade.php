@@ -41,7 +41,7 @@
             </div>
             <div class="list-item-content">
                 <div class="content-inner">
-                    @if($answer['invited'] == 0 || $answer['question']['look'] == 0 || (isset($TS) && $answer['invited'] == 1 && ((!isset($answer['could']) || $answer['could'] !== false) || $answer['question']['user_id'] == $TS['id'] || $answer['user_id'] == $TS['id'])))
+                    @if($answer['invited'] == 0 || $question['look'] == 0 || (isset($TS) && $answer['invited'] == 1 && ((!isset($answer['could']) || $answer['could'] !== false) || $question['user_id'] == $TS['id'] || $answer['user_id'] == $TS['id'])))
                         <span class="answer-body">{!! str_limit(formatList($answer['body']), 250, '...') !!}</span>
                         <a class="button button-plain button-more" href="{{ route('pc:answeread', ['question' => $answer['question_id'], 'answer' => $answer['id']]) }}">查看详情</a>
                     @else
@@ -55,7 +55,7 @@
                             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg>
                             {{ $answer['likes_count'] }} 分享
                         </a>
-                        <a href="javascript:;" class="button button-plain comment J-comment-show">
+                        <a href="{{ route('pc:answeread', ['question' => $answer['question_id'], 'answer' => $answer['id']]) }}" class="button button-plain comment J-comment-show">
                             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-comment"></use></svg>
                             <font class="cs{{$answer['id']}}">{{$answer['comments_count']}}</font> 评论
                         </a>
@@ -74,8 +74,8 @@
                         <div class="options_div">
                             <div class="triangle"></div>
                             <ul>
-                                <li id="J-collect{{$answer['id']}}" rel="0" status="{{(int) (isset($TS) && $answer->collected($TS))}}">
-                                    @if(isset($TS) && $answer->collected($TS))
+                                <li id="J-collect{{$answer['id']}}" rel="0" status="{{(int)$answer['collected']}}">
+                                    @if($answer['collected'])
                                     <a href="javascript:;" onclick="collected.init({{$answer['id']}}, 'question', 0);" class="act">
                                         <svg class="icon" aria-hidden="true"><use xlink:href="#icon-collect"></use></svg>
                                         <span>已收藏</span>
@@ -87,7 +87,7 @@
                                     </a>
                                     @endif
                                 </li>
-                                @if($answer['question']['user_id'] == $TS['id'])
+                                @if($question['user_id'] == $TS['id'])
                                     <li>
                                         @if($answer['adoption'] == 1)
                                             <a class="act" href="javascript:;">
@@ -123,7 +123,7 @@
                             <div class="look-answer">
 
                                 <span class="look-user">{{ $answer['onlookers_count'] }}人正在围观</span>
-                                @if($answer['question']['user_id'] != $TS['id'] && $answer['user_id'] != $TS['id'])
+                                @if($question['user_id'] != $TS['id'] && $answer['user_id'] != $TS['id'])
                                     @if(isset($TS) && $answer['could'])
                                         <button class="button look-cloud" type="button">已围观</button>
                                     @else
@@ -136,14 +136,14 @@
                     </div>
 
                     {{-- 评论 --}}
-                    @include('pcview::widgets.comments', [
+                    {{-- @include('pcview::widgets.comments', [
                         'id' => $answer['id'],
                         'comments_count' => count($answer['comments']),
                         'comments_type' => 'question-answers',
                         'url' => Route('pc:answeread', ['question' => $answer['question_id'], 'answer' => $answer['id']]),
                         'position' => 1,
                         'comments_data' => $answer['comments'],
-                    ])
+                    ]) --}}
 
                 </div>
             </div>

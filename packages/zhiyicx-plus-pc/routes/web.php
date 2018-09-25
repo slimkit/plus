@@ -88,7 +88,7 @@ Route::prefix('questions')->group(function () {
 
     Route::get('users', 'QuestionController@getUsers')->name('pc:questionusers');
     // 回答列表
-    Route::get('{question_id}/answers', 'QuestionController@getAnswers')->name('pc:questionanswers');
+    Route::get('{question}/answers', 'QuestionController@getAnswers')->name('pc:questionanswers');
 
     // 问题评论列表
     Route::get('{question}/comments', 'QuestionController@questionComments')->name('pc:questioncomments');

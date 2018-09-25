@@ -2,10 +2,9 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
+use Illuminate\Http\Request;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatList;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
-use Illuminate\Http\Request;
 
 class MessageController extends BaseController
 {

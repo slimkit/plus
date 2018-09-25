@@ -107,6 +107,7 @@ class AnswerController extends Controller
             'question',
             'question.user',
             'user',
+            'collectors'
         ]);
 
         $answer->liked = false;

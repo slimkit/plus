@@ -3,6 +3,7 @@
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
 use Illuminate\Http\Request;
+use SlimKit\PlusQuestion\Models\Question;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 
 class QuestionController extends BaseController
@@ -150,10 +151,7 @@ class QuestionController extends BaseController
     public function answer(int $question, int $answer)
     {
         $answer = api('GET', '/api/v2/question-answers/'.$answer );
-        $answer->collect_count = $answer->collectors->count();
-        $answer->rewarders = $answer->rewarders->reverse()->sortByDesc('id');
         $data['answer'] = $answer;
-        $data['answer']->user->hasFollower = $data['answer']['user']->hasFollower($this->PlusData['TS']['id']);
         return view('pcview::question.answer', $data, $this->PlusData);
     }
 
@@ -243,17 +241,16 @@ class QuestionController extends BaseController
      * 回答列表
      * @author ZsyD
      * @param  Request $request
-     * @param  int     $question_id [问题id]
+     * @param  Question $question
      * @return mixed
      */
-    public function getAnswers(Request $request, int $question_id)
+    public function getAnswers(Request $request, Question $question)
     {
         $params['limit'] = $request->input('limit') ?: 10;
         $params['offset'] = $request->input('offset') ?: 0;
         $params['order_type'] = $request->input('order_type') ?: 'time';
-        $data['answers'] = api('GET', '/api/v2/questions/'.$question_id.'/answers', $params);
+        $data['answers'] = api('GET', '/api/v2/questions/'.$question->id.'/answers', $params);
         if ($params['offset'] == 0) {
-            $question = api('GET', '/api/v2/questions/'.$question_id );
             if (!empty($question['adoption_answers'])) { // 采纳回答
                 $question['adoption_answers']->each(function ($item, $key) use ($data) {
                     $data['answers']->prepend($item);
@@ -265,6 +262,8 @@ class QuestionController extends BaseController
                 });
             }
         }
+        $data['question'] = $question->toArray();
+
         $return = view('pcview::question.question_answer', $data, $this->PlusData)
             ->render();
 

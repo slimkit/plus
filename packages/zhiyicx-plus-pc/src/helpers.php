@@ -290,3 +290,37 @@ function formatPinneds($data, $pinneds) {
 
     return $pinneds;
 }
+
+
+function formatRepostable($feeds) {
+    foreach ($feeds as &$feed) {
+        if (!$feed['repostable_type']) {
+            continue;
+        }
+        $feed['repostable'] = [];
+        $id = $feed['repostable_id'];
+        switch ($feed['repostable_type']) {
+            case 'news':
+                $feed['repostable'] = api('GET', "/api/v2/news/{$id}");
+                break;
+            case 'feeds':
+                $feed_list = api('GET', "/api/v2/feeds", ['id' => $id . '']);
+                if ($feed_list['feeds'][0] ?? false) {
+                    $feed['repostable'] = $feed_list['feeds'][0];
+                }
+                break;
+            case 'groups':
+                $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/{$id}");
+                break;
+            case 'group-posts':
+            case 'posts':
+                $post = api('GET', "/api/v2/group/simple-posts", ['id' => $id . '']);
+                $feed['repostable'] = $post[0] ?? $post;
+                if ($feed['repostable']['title'] ?? false) {
+                    $feed['repostable']['group'] = api('GET', '/api/v2/plus-group/groups/' . $feed['repostable']['group_id']);
+                }
+                break;
+        }
+    }
+    return $feeds;
+}
