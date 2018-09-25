@@ -21,7 +21,9 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Providers;
 
 use Illuminate\Support\Facades\Event;
+use Illuminate\Auth\Events\Registered;
 use Zhiyi\Plus\Support\BootstrapAPIsEventer;
+use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Contracts\Events\Dispatcher as EventsDispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -35,6 +37,9 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         \Illuminate\Notifications\Events\NotificationSent::class => [
             \Zhiyi\Plus\Listeners\VerificationCode::class,
+        ],
+        Registered::class => [
+            SendEmailVerificationNotification::class,
         ],
     ];
 

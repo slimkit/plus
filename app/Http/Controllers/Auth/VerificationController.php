@@ -18,29 +18,42 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Packages\Installer\Middleware;
+namespace Zhiyi\Plus\Http\Controllers\Auth;
 
-use Closure;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\VerifiesEmails;
 
-class VerifyInstallationPassword
+class VerificationController extends Controller
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure $next
-     * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function handle($request, Closure $next)
-    {
-        $password = $request->get('password');
-        if (! $password) {
-            abort(422, '请输入安装密码');
-        } elseif (md5($password) !== config('installer.password')) {
-            abort(422, '安装密码错误');
-        }
+    /*
+    |--------------------------------------------------------------------------
+    | Email Verification Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller is responsible for handling email verification for any
+    | user that recently registered with the application. Emails may also
+    | be re-sent if the user didn't receive the original email message.
+    |
+    */
 
-        return $next($request);
+    use VerifiesEmails;
+
+    /**
+     * Where to redirect users after verification.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/home';
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('signed')->only('verify');
+        $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
 }

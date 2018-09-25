@@ -157,7 +157,7 @@ class LocalFilesystem implements FilesystemInterface
      */
     public function put(string $path, $contents): bool
     {
-        return (bool) $this->filesystem->put($path, $content);
+        return (bool) $this->filesystem->put($path, $contents);
     }
 
     /**

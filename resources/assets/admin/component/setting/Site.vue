@@ -74,7 +74,7 @@
             <div class="form-group" v-if="site.anonymous.status">
               <label class="control-label col-md-2">匿名规则说明</label>
               <div class="col-md-6">
-                <textarea class="form-control" v-model="site.anonymous.rule">{{ site.anonymous.rule }} </textarea>
+                <textarea class="form-control" v-model="site.anonymous.rule"></textarea>
               </div>
               <div class="col-md-4">
                 <span class="help-block">用于开启匿名时，给用户说明匿名规则</span>
@@ -111,8 +111,7 @@
             <div class="form-group">
               <label class="control-label col-md-2">关于我们</label>
               <div class="col-md-6">
-                <input type="text" class="form-control" v-model="site.about_url" placeholder="例如: http://www.about.com">
-                </textarea>
+                <input type="text" class="form-control" v-model="site.about_url" placeholder="例如: http://www.about.com" />
               </div>
               <div class="col-md-4">
                 <span class="help-block">关于我们链接地址</span>

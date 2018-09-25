@@ -16,22 +16,20 @@
  * +----------------------------------------------------------------------+
  */
 
-use Illuminate\Support\Facades\Route;
+namespace Zhiyi\Plus\Http\Middleware;
 
-/*
-|--------------------------------------------------------------------------
-| The app routes.
-|--------------------------------------------------------------------------
-|
-| Define the root definitions for all routes here.
-|
-*/
+use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
-// APIs routes.
-// Route::group(['middleware' => ['api']], __DIR__.'/routes/api.php');
-
-// Web routes.
-Route::group(['middleware' => ['web'], 'prefix' => 'installer'], __DIR__.'/packages/installer.php');
-
-// Admin routes.
-// Route::group(['middleware' => ['web', 'auth', 'admin']], __DIR__.'/routes/admin.php');
+class Authenticate extends Middleware
+{
+    /**
+     * Get the path the user should be redirected to when they are not authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return string
+     */
+    protected function redirectTo($request)
+    {
+        return route('login');
+    }
+}
