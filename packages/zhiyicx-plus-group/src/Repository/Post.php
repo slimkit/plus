@@ -168,14 +168,14 @@ class Post
      */
     public function previewRewards()
     {
-        $this->model->load('rewards');
+        $this->model->load('rewards.user');
 
         $rewards = $this->model->rewards;
 
         $this->model->reward_amount = (int) $rewards->sum('amount');
         $this->model->reward_number = $rewards->count();
 
-        $this->model->addHidden('rewards');
+        // $this->model->addHidden('rewards');
 
         return $this->model;
     }
@@ -251,7 +251,7 @@ class Post
         }
 
         $this->setModel($model);
-        $this->model->load(['group', 'user']);
+        $this->model->load(['group', 'user', 'collectors']);
 
         $this->model->group->joined = (isset($this->user) && $this->model->group) ? $this->model->group->members()->where('user_id', $this->user->id)->where('audit', 1)->first() : null;
 
