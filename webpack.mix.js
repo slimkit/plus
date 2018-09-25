@@ -44,15 +44,3 @@ mix.sass('resources/sass/bootstrap.scss', path.join('public', 'assets', 'css'))
  */
 
 mix.js('resources/assets/admin', path.join('public', 'assets', 'js'));
-
-/*
- |--------------------------------------------------------------------------
- | Installer 打包
- |--------------------------------------------------------------------------
- |
- | element-ui
- |
- */
-
-mix.js('resources/assets/installer/main.js', path.join('public', 'assets', 'js', 'installer.js'));
-mix.copy('resources/assets/installer/logo.png', path.join('public', 'assets', 'installer', 'logo.png'));
