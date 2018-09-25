@@ -34,7 +34,6 @@ class Kernel extends ConsoleKernel
         Commands\AppVersionCommand::class,
         Commands\PackageCreateCommand::class,
         Commands\PackageHandlerCommand::class,
-        Commands\InstallPasswordCommand::class,
     ];
 
     /**

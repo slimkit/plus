@@ -1,6 +1,6 @@
 {
     "private": true,
-    "version": "2.0.2",
+    "version": "2.0.3",
     "scripts": {
         "dev": "npm run development",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
@@ -9,7 +9,7 @@
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js --progress",
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "prepublishOnly": "rm -rf CHANGELOG.md && conventional-changelog -p angular -r 2 -i CHANGELOG.md -s",
+        "changelog": "rm -rf CHANGELOG.md && conventional-changelog -p angular -r 2 -i CHANGELOG.md -s",
         "postinstall": "opencollective postinstall",
         "docs:dev": "vuepress dev docs",
         "docs:build": "vuepress build docs"
@@ -31,7 +31,6 @@
         "bootstrap-sass": "^3.3.7",
         "chart.js": "^2.7.2",
         "echarts": "^4.1.0",
-        "element-ui": "^2.3.8",
         "highlight.js": "^9.12.0",
         "jquery": "^3.3.1",
         "js-md5": "^0.7.3",

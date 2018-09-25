@@ -1,3 +1,18 @@
+<a name="2.0.3"></a>
+## [2.0.3](https://github.com/slimkit/plus/compare/2.0.2...2.0.3) (2018-09-25)
+
+
+### Bug Fixes
+
+* **file-storage:** 修复文件存储本地驱动 PUT 文件错误 ([c537a8c](https://github.com/slimkit/plus/commit/c537a8c)), closes [slimkit/plus#389](https://github.com/slimkit/plus/issues/389)
+
+### Changed
+
+* Remove installer
+* Move docs dir to docs branch
+
+
+
 <a name="2.0.2"></a>
 ## [2.0.2](https://github.com/slimkit/plus/compare/2.0.1...2.0.2) (2018-09-21)
 
@@ -12,16 +27,6 @@
 ### Features
 
 * **admin:** 后台增加当前程序版本号输出 ([8ce0f04](https://github.com/slimkit/plus/commit/8ce0f04))
-
-
-
-<a name="2.0.1"></a>
-## [2.0.1](https://github.com/slimkit/plus/compare/2.0.0...2.0.1) (2018-09-20)
-
-
-### Bug Fixes
-
-* **file-storage:** 修复正是环境下始终返回 Null ([856cad4](https://github.com/slimkit/plus/commit/856cad4))
 
 
 
