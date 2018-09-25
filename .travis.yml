@@ -2,7 +2,7 @@ sudo: false
 branches:
   only: docs
 language: node_js
-node_js: 8
+node_js: 10
 cache: yarn
 before_install: npm install --global yarn
 install:
@@ -20,7 +20,5 @@ deploy:
   verbose: true
   on:
     repo: slimkit/plus
-    branches:
-      only:
-        - docs
+    branch: docs
 
