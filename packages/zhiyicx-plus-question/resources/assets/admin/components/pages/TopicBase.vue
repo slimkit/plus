@@ -16,7 +16,7 @@
     </div>
 
     <ul class="list-group" v-show="!loading">
-      <li class="list-group-item" v-show="topic.avatar">头像：<img :src="topic.avatar" width="100px" height="100px">  </li>
+      <li class="list-group-item" v-if="topic.avatar">头像：<img :src="topic.avatar.url" width="100px" height="100px">  </li>
       <li class="list-group-item">ID：{{ id }}</li>
       <li class="list-group-item">专题：{{ topic.name }}</li>
       <li class="list-group-item">描述：{{ topic.description }}</li>

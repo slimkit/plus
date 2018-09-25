@@ -182,15 +182,19 @@ class GroupsController
     public function update(UpdateGroupRequest $request, StorageInterface $storage, GroupModel $group)
     {
         $user = $request->user();
-        $member = $group->members()->where('user_id', $user->id)->where('audit', 1)->where('disabled', 0)->first();
-
         // 审核未通过或被禁用
         if (in_array($group->audit, [0, 2, 3])) {
             return response()->json(['message' => '圈子审核未通过或已被禁用,不能进行修改'], 403);
         }
 
+        $member = $group
+            ->members()
+            ->where('user_id', $user->id)
+            ->where('audit', 1)
+            ->where('disabled', 0)
+            ->first();
         // 是否为普通成员
-        if ($member->role === 'member') {
+        if (! $member || $member->role === 'member') {
             return response()->json(['message' => '无权限操作'], 403);
         }
 
@@ -597,7 +601,7 @@ class GroupsController
                     })->orWhere(function ($query) use ($user) {
                         return $query->whereHas('members', function ($query) use ($user) {
                             return $query->where('user_id', $user->id)->where('audit', 0);
-                        });
+                        })->where('audit', 1);
                     });
                     break;
                 case 'allow_post':

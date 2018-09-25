@@ -46,7 +46,7 @@
                         <ul>
                             <li>
                                 <a href="javascript:;" onclick="repostable.show('posts', '{{$post['id']}}');">
-                                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg>转发
+                                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg> <span>转发</span>
                                 </a>
                             </li>
                         @if (in_array($post['group']['joined']['role'], ['administrator', 'founder']))

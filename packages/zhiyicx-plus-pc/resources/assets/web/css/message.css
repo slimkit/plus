@@ -24,6 +24,7 @@
 .chat_left ul li:hover {cursor:pointer;background:#DBDEDF;}
 .chat_left .chat_svg {font-size:40px;width:40px;height:40px;border-radius:50%;}
 .chat_left .chat_item {float:left;width:127px;margin-left:12px;font-size:14px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#999;line-height:20px;}
+.chat_left .chat_item .chat_ms_span {font-size:14px;color:#333;line-height:30px;}
 .chat_left .chat_item .chat_span {font-size:14px;color:#333;line-height:50px;}
 .chat_left .chat_item .last_content {overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
 .chat_right .body_title {width:100%;font-size:16px;height:50px;padding-left:20px;text-align:left;border-bottom:1px solid #DEDEDE;line-height:50px;}

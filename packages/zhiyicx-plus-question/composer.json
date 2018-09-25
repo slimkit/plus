@@ -13,11 +13,6 @@
         "php": ">=7.0",
         "erusev/parsedown": "^1.6",
         "ezyang/htmlpurifier": "^4.9",
-        "illuminate/console": "5.6.*",
-        "illuminate/contracts": "5.6.*",
-        "illuminate/database": "5.6.*",
-        "illuminate/http": "5.6.*",
-        "illuminate/support": "5.6.*",
         "league/html-to-markdown": "^4.4"
     },
     "autoload": {
@@ -37,5 +32,5 @@
     "config": {
         "sort-packages": true
     },
-    "version": "2.0.0"
+    "version": "2.0.3"
 }

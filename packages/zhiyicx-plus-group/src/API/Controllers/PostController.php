@@ -66,7 +66,7 @@ class PostController
                 'created_at',
             ])
             ->with(['user', 'images'])
-            ->orderBy($type === 'last_reply' ? 'comment_updated_at' : 'id', 'desc')
+            ->orderBy($type === 'latest_reply' ? 'comment_updated_at' : 'id', 'desc')
             ->offset($offset)
             ->limit($limit)
             ->get();
