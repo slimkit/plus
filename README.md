@@ -1,8 +1,8 @@
 ---
 home: true
 heroImage: https://github.com/zhiyicx/plus/blob/master/public/plus.png?raw=true
-actionText: 快速上手 →
-actionLink: /
+actionText: 开始学习 →
+actionLink: /guide/installation/
 footer: Apache-2.0 Licensed | Copyright © 2016-Present Chengdu ZhiYiChuangXiang Technology Co., Ltd. All rights reserved.
 features:
     - title: PHP 7
