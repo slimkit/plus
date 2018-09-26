@@ -24,7 +24,7 @@ class ProfileController extends BaseController
         if (! $user) {
             $user = $request->user();
         } else {
-            $user = UserModel::where(username($user), $user)->first();
+            $user = UserModel::where(username($user), $user)->with('tags')->first();
         }
         $this->PlusData['current'] = 'feeds';
         if ($request->isAjax) {
@@ -54,10 +54,10 @@ class ProfileController extends BaseController
                 'data' => $html
             ]);
         }
-        $user = $user->id ? $user : $request->user();
         $user->follower = $user->hasFollower($request->user()->id);
+        $data['user'] = $user->toArray();
 
-        return view('pcview::profile.index', compact('user'), $this->PlusData);
+        return view('pcview::profile.index', $data, $this->PlusData);
     }
 
     /**
@@ -73,7 +73,7 @@ class ProfileController extends BaseController
         if (! $user) {
             $user = $request->user();
         } else {
-            $user = UserModel::where(username($user), $user)->first();
+            $user = UserModel::where(username($user), $user)->with('tags')->first();
         }
         if ($request->isAjax) {
             $params = [
@@ -94,11 +94,11 @@ class ProfileController extends BaseController
                 'data' => $html
             ]);
         }
-        $user = $user->id ? $user : $request->user();
         $user->follower = $user->hasFollower($request->user()->id);
-        $type = 0;
+        $data['user'] = $user->toArray();
+        $data['type'] = 0;
 
-        return view('pcview::profile.news', compact('user', 'type'), $this->PlusData);
+        return view('pcview::profile.news', $data, $this->PlusData);
     }
 
     /**
@@ -250,7 +250,7 @@ class ProfileController extends BaseController
         if (! $user) {
             $user = $request->user();
         } else {
-            $user = UserModel::where(username($user), $user)->first();
+            $user = UserModel::where(username($user), $user)->with('tags')->first();
         }
         $this->PlusData['current'] = 'group';
         if ($request->isAjax) {
@@ -273,11 +273,11 @@ class ProfileController extends BaseController
                 'data' => $html,
             ]);
         }
-        $type = 'join';
-        $user = $user->id ? $user : $request->user();
         $user->follower = $user->hasFollower($request->user()->id);
+        $data['user'] = $user->toArray();
+        $data['type'] = 'join';
 
-        return view('pcview::profile.group', compact('user', 'type'), $this->PlusData);
+        return view('pcview::profile.group', $data, $this->PlusData);
     }
 
     /**
@@ -292,7 +292,7 @@ class ProfileController extends BaseController
         if (! $user) {
             $user = $request->user();
         } else {
-            $user = UserModel::where(username($user), $user)->first();
+            $user = UserModel::where(username($user), $user)->with('tags')->first();
         }
         $this->PlusData['current'] = 'question';
         if ($request->isAjax) {
@@ -353,9 +353,9 @@ class ProfileController extends BaseController
                 'after' => $after
             ]);
         }
-        $user = $user->id ? $user : $request->user();
         $user->follower = $user->hasFollower($request->user()->id);
+        $data['user'] = $user->toArray();
 
-        return view('pcview::profile.question', compact('user'), $this->PlusData);
+        return view('pcview::profile.question', $data, $this->PlusData);
     }
 }
