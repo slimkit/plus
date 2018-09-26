@@ -131,7 +131,7 @@ class FileMeta extends FileMetaAbstract
     {
         return $this->filesystem->mimeType(
             $this->resource->getPath()
-        );
+        ) ?: 'application/octet-stream';
     }
 
     /**
