@@ -57,16 +57,44 @@ var news = {
 $(function() {
     $('#cover').on('change', function(e) {
         var file = e.target.files[0];
-        var formDatas = new FormData();
-            formDatas.append("image", file);
-            axios.post('/api/v2/user/bg', formDatas)
-              .then(function (response) {
-                noticebox('更换背景图成功', 1);
-                $('.profile_top_cover').css("background-image","url("+window.URL.createObjectURL(file)+")");
-              })
-              .catch(function (error) {
-                showError(error.response.data);
-              });
+
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var base64 = e.target.result;
+            var hash = md5(base64);
+
+            var params = {
+                filename: file.name,
+                hash: hash,
+                size: file.size,
+                mime_type: file.type,
+                storage: { channel: 'public' },
+            }
+            axios.post('/api/v2/storage', params).then(function(res) {
+                var result = res.data
+                var node = result.node
+
+                axios({
+                    method: result.method,
+                    url: result.uri,
+                    headers: result.headers,
+                    data: file,
+                }).then(function(res) {
+                    axios.patch('/api/v2/user', { bg: node }).then(function() {
+                        noticebox('更换背景图成功', 1);
+                        $('.profile_top_cover').css("background-image","url("+window.URL.createObjectURL(file)+")");
+                    }).catch(function(error) {
+                        showError(error.response.data);
+                    })
+                }).catch(function (error) {
+                  showError(error.response.data);
+                })
+            }).catch(function (error) {
+              showError(error.response.data);
+            })
+        }
+
+        reader.readAsArrayBuffer(file);
     });
 
     // 显示跳转详情文字
