@@ -105,7 +105,7 @@ class FileMeta extends FileMetaAbstract
      */
     public function getMimeType(): string
     {
-        return MimeTypes::getMimetype($this->resource->getPath());
+        return MimeTypes::getMimetype($this->resource->getPath()) ?: 'application/octet-stream';
     }
 
     /**
