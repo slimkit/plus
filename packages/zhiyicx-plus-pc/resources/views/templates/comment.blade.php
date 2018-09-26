@@ -34,7 +34,7 @@
                         @php
                             $disabled = $group['joined']['disabled'] ?? 0;
                         @endphp
-                        @if( (!isset($top) || $top !== false) && $comment['user']['id'] == $TS['id'] && !$disabled)
+                        @if($comment['user']['id'] == $TS['id'] && !$disabled)
                         <li>
                             <a href="javascript:;" onclick="comment.pinneds('{{$comment['commentable_type']}}', {{$comment['commentable_id']}}, {{$comment['id']}});">
                                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-pinned2"></use></svg>申请置顶
@@ -56,7 +56,7 @@
                     @endif
                     </ul>
                 </div>
-                @if(isset($comment['top']) && $comment['top'] == 1)
+                @if(isset($comment['pinned']) && $comment['pinned'])
                     <span class="green fr">置顶</span>
                 @endif
             </div>

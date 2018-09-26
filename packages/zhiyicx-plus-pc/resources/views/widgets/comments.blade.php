@@ -51,7 +51,7 @@
 
                             {!! formatContent($cv['body']) !!}
 
-                            @if(!(isset($cv['pinned']) && $cv['pinned'] == false))
+                            @if(isset($cv['pinned']) && $cv['pinned'])
                                 <span class="mouse green">置顶</span>
                             @endif
 

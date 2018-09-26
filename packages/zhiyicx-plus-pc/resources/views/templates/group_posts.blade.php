@@ -28,7 +28,7 @@
             <span class="feed_time font12">{{ getTime($post['created_at']) }}</span>
             <span class="feed_time font12 hide">查看详情</span>
         </a>
-        @if(!(isset($post['pinned']) && $post['pinned'] == false))
+        @if(isset($post['pinned']) && $post['pinned'])
             <a class="pinned" href="javascript:;">置顶</a>
         @endif
         @if($post['excellent_at'])

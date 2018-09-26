@@ -281,7 +281,10 @@ function getUserInfo($id)
 function formatPinneds($data, $pinneds) {
     if (empty($pinneds)) return $data;
     $pinneds_keys = array_pluck($pinneds, 'id');
-    foreach ($data as $key => $value) {
+    foreach ($pinneds as $key => &$value) {
+        $value['pinned'] = true;
+    }
+    foreach ($data as $key => &$value) {
         if (!in_array($value['id'], $pinneds_keys)) {
             $value['pinned'] = false;
             array_push($pinneds, $value);

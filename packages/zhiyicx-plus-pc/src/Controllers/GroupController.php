@@ -336,7 +336,6 @@ class GroupController extends BaseController
                     'offset' => $request->query('offset', 0),
                 ];
                 $posts = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/posts', $params);
-                $posts['pinneds'] = collect();
             } else {
                 $params = [
                     'type' => $type == 'reply' ? 'latest_reply' : 'latest_post',
@@ -345,7 +344,6 @@ class GroupController extends BaseController
                 ];
                 $posts = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/posts', $params);
                 if ($request->keyword) {
-                    $posts['pinneds'] = collect();
                     $params = [
                         'limit' => $request->query('limit', 15),
                         'offset' => $request->query('offset', 0),
@@ -419,7 +417,7 @@ class GroupController extends BaseController
     public function postDetail(Request $request, int $group_id, int $post_id)
     {
         $this->PlusData['current'] = 'group';
-
+        
         $data['top'] = true;
         $data['post'] = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/posts/' . $post_id);
 
@@ -440,14 +438,7 @@ class GroupController extends BaseController
         $params = ['after' => $request->query('after', 0)];
         $comments = api('GET', '/api/v2/plus-group/group-posts/' . $post_id . '/comments', $params);
         $after = last($comments['comments'])['id'] ?? 0;
-        if ($comments['pinneds'] != null) {
-
-            $comments['pinneds']->each(function ($item, $key) use ($comments) {
-                $item->top = 1;
-                $comments['comments']->prepend($item);
-            });
-        }
-        $comments['top'] = true;
+        $comments['comments'] = formatPinneds($comments['comments'], $comments['pinneds']);
         $comments['group'] = api('GET', '/api/v2/plus-group/groups/' . $group_id);
         $commentData = view('pcview::templates.comment', $comments, $this->PlusData)->render();
 
