@@ -216,10 +216,10 @@
                 click: function () {
                     if (this.fileUpload.mime_type) {
                         // 默认宽高 160
-                        var croppedCanvas = this.$img.cropper('getCroppedCanvas', { width: 160, height: 90 });
+                        var croppedCanvas = this.$img.cropper('getCroppedCanvas');
                         var roundedCanvas = getRoundedCanvas(croppedCanvas); // 获取圆形头像
-                        var blob = dataURLtoBlob(roundedCanvas.toDataURL());
                         var dataurl = roundedCanvas.toDataURL('image/png');
+                        var blob = dataURLtoBlob(dataurl);
                         /*blob.name = this.fileUpload.origin_filename;
                         this.$avatarSave.text('上传中...');
                         fileUpload.init(blob, updateImg);*/
@@ -228,18 +228,50 @@
                         ly.error('请选择上传文件', false);
                     }
                 },
-                upload: function(file, url) {
+                upload: function(blob, url) {
                     var _this = this;
-                    var formDatas = new FormData();
-                        formDatas.append("avatar", file);
+
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        var base64 = e.target.result;
+                        var hash = md5(base64);
+
                         _this.$avatarSave.text('上传中...');
-                    axios.post('/api/v2/user/avatar', formDatas)
-                      .then(function (response) {
-                        _this.insert(url);
-                      })
-                      .catch(function (error) {
-                        showError(error.response.data);
-                      });
+                        var params = {
+                            filename: _this.fileUpload.origin_filename,
+                            hash: hash,
+                            size: blob.size,
+                            mime_type: 'image/png',
+                            storage: { channel: 'public' },
+                        }
+                        axios.post('/api/v2/storage', params).then(function(res) {
+                            var result = res.data
+                            var node = result.node
+
+                            axios({
+                                method: result.method,
+                                url: result.uri,
+                                headers: result.headers,
+                                data: blob,
+                            }).then(function(res) {
+                                // 头像上传成功后，更新用户头像
+                                axios.patch('/api/v2/user', {avatar: node}).then(function () {
+                                    _this.insert(url);
+                                }).catch(function (error) {
+                                    showError(error.response.data);
+                                })
+                            }).catch(function (error) {
+                                showError(error.response.data);
+                            })
+                        }).catch(function (error) {
+                            showError(error.response.data);
+                        })
+                    }
+                    var file = new File([blob], _this.fileUpload.origin_filename, {
+                        type: 'image/png',
+                        lastModified: new Date()
+                    })
+                    reader.readAsArrayBuffer(file);
                 },
                 insert: function(src) {
                     $('#J-image-preview').attr('src', src);
