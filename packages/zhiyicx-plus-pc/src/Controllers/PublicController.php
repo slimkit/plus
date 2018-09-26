@@ -49,7 +49,7 @@ class PublicController extends BaseController
             return response()->json([
                 'data' => $html,
                 'after' => $after ?? 0,
-                'count' => $data['rewards']->count() ?? 0,
+                'count' => count($data['rewards']) ?? 0,
             ]);
         }
 

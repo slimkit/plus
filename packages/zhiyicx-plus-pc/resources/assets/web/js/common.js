@@ -1263,7 +1263,7 @@ var reported = {
               axios.put(_this.url, {message: reason})
                 .then(function(res) {
                   layer.closeAll()
-                  noticebox('举报成功')
+                  noticebox('举报成功', 1)
                 })
                 .catch(function(err) {
                   showError(error.response.data)
@@ -1272,7 +1272,7 @@ var reported = {
               axios.post(_this.url, {reason: reason, content: reason})
               .then(function (response) {
                 layer.closeAll();
-                noticebox(response.data.message, 1);
+                noticebox('举报成功', 1);
               })
               .catch(function (error) {
                 showError(error.response.data);
