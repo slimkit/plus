@@ -42,6 +42,7 @@ module.exports = {
                 'build-install-mysql',
                 'build-install-nginx',
                 'install-plus',
+                'using-nginx-and-fpm-publish-website',
             ],
             '/guide/upgrade/': [
                 '',
