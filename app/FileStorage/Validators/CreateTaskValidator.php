@@ -39,7 +39,7 @@ class CreateTaskValidator extends AbstractValidator
     public function rules(bool $image = false): array
     {
         $rules = [
-            'filename' => ['bail', 'required', 'string'],
+            'filename' => ['bail', 'required', 'string', 'regex:/(.*?)\.(\w+)$/is'],
             'hash' => ['bail', 'required', 'string'],
             'size' => ['bail', 'required', 'integer', $this->getAllowMinSize(), $this->getAllowMaxSize()],
             'mime_type' => ['bail', 'required', 'string', $this->getAllowMimeTypes()],
@@ -56,6 +56,17 @@ class CreateTaskValidator extends AbstractValidator
         }
 
         return $rules;
+    }
+
+    /**
+     * Get the validate error messages.
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            'filename.regex' => '文件名非法！',
+        ];
     }
 
     /**
