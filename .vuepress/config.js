@@ -43,6 +43,7 @@ module.exports = {
                 'build-install-nginx',
                 'install-plus',
                 'using-nginx-and-fpm-publish-website',
+                'install-spa',
             ],
             '/guide/upgrade/': [
                 '',
