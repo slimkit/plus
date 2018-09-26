@@ -218,7 +218,6 @@
 
     function uploadBlobImage(file) {
         var _this = this;
-        console.log(file);
 
         var reader = new FileReader();
         reader.onload = function(e) {
