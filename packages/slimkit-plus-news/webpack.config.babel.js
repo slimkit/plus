@@ -104,7 +104,7 @@ const webpackConfig = {
     output: {
         path: BuildRoot,
         publicPath: '../',
-        filename: isProd ? 'js/[chunkhash].js' : 'js/[name].js',
+        filename: isProd ? 'js/[name].js' : 'js/[name].js',
     },
     resolve: {
         extensions: ['.js', '.vue', '.json'],
@@ -142,7 +142,7 @@ const webpackConfig = {
                 loader: 'url-loader',
                 query: {
                     limit: 10000,
-                    name: isProd ? 'images/[hash].[ext]' : `images/[name].[ext]`
+                    name: isProd ? 'images/[name].[ext]' : `images/[name].[ext]`
                 }
             },
             {
@@ -150,7 +150,7 @@ const webpackConfig = {
                 loader: 'url-loader',
                 query: {
                     limit: 10000,
-                    name: isProd ? 'fonts/[hash].[ext]' : `fonts/[name].[ext]`
+                    name: isProd ? 'fonts/[name].[ext]' : `fonts/[name].[ext]`
                 }
             }
         ]
@@ -163,7 +163,7 @@ const webpackConfig = {
         }),
         // extract css into its own file
         new ExtractTextPlugin({
-            filename: isProd ? 'css/[chunkhash].css' : 'css/[name].css'
+            filename: isProd ? 'css/[name].css' : 'css/[name].css'
         }),
 
         // split vendor js into its own file
