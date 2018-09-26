@@ -15,6 +15,7 @@ module.exports = {
         repoLabel: 'GitHub',
         editLinks: true,
         editLinkText: '协助改善此文档',
+        docsBranch: 'docs',
         sidebar: 'auto',
         search: true,
         lastUpdated: '更新时间',
