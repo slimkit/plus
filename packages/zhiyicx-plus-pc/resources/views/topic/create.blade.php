@@ -45,6 +45,7 @@
 
 @section('scripts')
 <script src="{{ asset('assets/pc/cropper/cropper.min.js')}}"></script>
+<script src="{{ asset('assets/pc/js/md5.min.js')}}"></script>
 <script>
 (function() {
 
@@ -151,8 +152,9 @@
                         }
                         // 裁切成功后
                         $('.ev-cover-tips').hide();
-                        $('.ev-img-cover').attr('src', croppedCanvas.toDataURL(blob));
-                        uploadBlobImage(new File([blob], 'image'));
+                        var imgUrl = croppedCanvas.toDataURL(blob)
+                        $('.ev-img-cover').attr('src', imgUrl);
+                        uploadBlobImage(new File([blob], 'image.png'));
                         layer.closeAll();
                     }, "image/png");
                 },
@@ -215,18 +217,46 @@
     }
 
     function uploadBlobImage(file) {
-        var formData = new FormData();
-        formData.append('file', file);
-        axios.post('{{ url("/api/v2/files") }}', formData, {
-            headers: { 'content-type': 'multipart/form-data' },
-        }).then(function(res) {
-            $('.ev-ipt-logo-id').val(res.data.id);
-        }).catch(function(error) {
-            $('.ev-cover-tips').show();
-            $('.ev-img-cover').removeAttr('src');
-            if (error.response.status === 413) return noticebox('图片文件超出大小', 0);
-            showError(error.response.data);
-        })
+        var _this = this;
+        console.log(file);
+
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var base64 = e.target.result;
+            var hash = md5(base64);
+
+            var params = {
+                filename: file.name,
+                hash: hash,
+                size: file.size,
+                mime_type: 'image/png',
+                storage: { channel: 'public' },
+            }
+            axios.post('/api/v2/storage', params).then(function(res) {
+                var result = res.data
+                var node = result.node
+
+                axios({
+                    method: result.method,
+                    url: result.uri,
+                    headers: result.headers,
+                    data: file,
+                }).then(function(res) {
+                    // 头像上传成功后，更新用户头像
+                    $('.ev-ipt-logo-id').val(node);
+                }).catch(function (error) {
+                    $('.ev-cover-tips').show();
+                    $('.ev-img-cover').removeAttr('src');
+                    showError(error.response.data);
+                })
+            }).catch(function (error) {
+                $('.ev-cover-tips').show();
+                $('.ev-img-cover').removeAttr('src');
+                showError(error.response.data);
+            })
+        }
+
+        reader.readAsArrayBuffer(file);
     }
 })()
 </script>
