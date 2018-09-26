@@ -29,8 +29,8 @@ class MessageController extends BaseController
         $data['comments'] = api('GET', '/api/v2/user/comments', ['after' => $after, 'limit' => $limit]);
 
         $return = '';
-        if (!$data['comments']->isEmpty()) {
-            foreach ($data['comments'] as $v) {
+        if (!empty($data['comments'])) {
+            foreach ($data['comments'] as &$v) {
                 switch ($v['commentable_type']) {
                     case 'feeds':
                         $v['source_type'] = '评论了你的动态';
@@ -86,8 +86,8 @@ class MessageController extends BaseController
         return response()->json([
             'status' => true,
             'data' => $return,
-            'count' => $data['comments']->count(),
-            'after' => $data['comments']->pop()->id ?? 0,
+            'count' => count($data['comments']),
+            'after' => last($data['comments'])['id'] ?? 0,
         ]);
     }
 
@@ -102,8 +102,8 @@ class MessageController extends BaseController
         $limit = $request->input('limit') ?: 20;
         $data['likes'] = api('GET', '/api/v2/user/likes', ['after' => $after, 'limit' => $limit]);
         $return = '';
-        if (!$data['likes']->isEmpty()) {
-            foreach ($data['likes'] as $v) {
+        if (!empty($data['likes'])) {
+            foreach ($data['likes'] as &$v) {
                 switch ($v['likeable_type']) {
                     case 'feeds':
                         $v['source_type'] = '赞了你的动态';
@@ -112,12 +112,12 @@ class MessageController extends BaseController
                         !empty($v['likeable']['images']) && count($v['likeable']['images']) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'] . $v['likeable']['images'][0]['id'] . '?w=35&h=35';
                         break;
                     case 'group-posts':
-                        $v['source_type'] = '赞了你的圈子';
+                        $v['source_type'] = '赞了你的帖子';
                         $v['source_url'] = Route('pc:grouppost', [
                             'group_id' => $v['likeable']['group_id'],
                             'post_id' => $v['likeable']['id'],
                         ]);
-                        $v['source_content'] = $v['likeable']['content'];
+                        $v['source_content'] = $v['likeable']['summary'];
                         !empty($v['likeable']['images']) && count($v['likeable']['images']) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'] . $v['likeable']['images'][0]['id'] . '?w=35&h=35';
                         break;
                     case 'news':
@@ -149,8 +149,8 @@ class MessageController extends BaseController
         return response()->json([
             'status' => true,
             'data' => $return,
-            'count' => $data['likes']->count(),
-            'after' => $data['likes']->pop()->id ?? 0,
+            'count' => count($data['likes']),
+            'after' => last($data['likes'])['id'] ?? 0,
         ]);
     }
 
@@ -169,14 +169,14 @@ class MessageController extends BaseController
         $read = api('PUT', '/api/v2/user/notifications/all');
 
         $return = '';
-        if (!$data['notifications']->isEmpty()) {
+        if (!empty($data['notifications'])) {
             $return = view('pcview::message.notifications', $data, $this->PlusData)->render();
         }
 
         return response()->json([
             'status' => true,
             'data' => $return,
-            'count' => $data['notifications']->count(),
+            'count' => count($data['notifications']),
         ]);
     }
 
@@ -196,8 +196,8 @@ class MessageController extends BaseController
         return response()->json([
             'status' => true,
             'data' => $return,
-            'count' => $data['comments']->count(),
-            'after' => $data['comments']->pop()->id ?? 0,
+            'count' => count($data['comments']),
+            'after' => last($data['comments'])['id'] ?? 0,
         ]);
     }
 
@@ -217,7 +217,7 @@ class MessageController extends BaseController
         return response()->json([
             'status' => true,
             'data' => $return,
-            'count' => $data['comments']->count(),
+            'count' => count($data['comments']),
         ]);
     }
 
@@ -237,7 +237,7 @@ class MessageController extends BaseController
         return response()->json([
             'status' => true,
             'data' => $return,
-            'count' => $data['comments']->count(),
+            'count' => count($data['comments']),
         ]);
     }
 
@@ -257,7 +257,7 @@ class MessageController extends BaseController
         return response()->json([
             'status' => true,
             'data' => $return,
-            'count' => $data['comments']->count(),
+            'count' => count($data['comments']),
         ]);
     }
 
@@ -277,7 +277,7 @@ class MessageController extends BaseController
         return response()->json([
             'status' => true,
             'data' => $return,
-            'count' => $data['users']->count(),
+            'count' => count($data['users']),
         ]);
     }
 
