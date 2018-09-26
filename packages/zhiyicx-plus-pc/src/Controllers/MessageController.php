@@ -2,9 +2,9 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
-use Illuminate\Http\Request;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatList;
+use Illuminate\Http\Request;
 
 class MessageController extends BaseController
 {
@@ -303,14 +303,17 @@ class MessageController extends BaseController
             switch ($type) {
                 case 'feeds':
                     $mention['feeds'] = api('GET', "/api/v2/feeds", ['id' => $id . ''])['feeds'];
-                    if (count($mention['feeds'])) {
+                    if ($mention['feeds'][0] ?? false) {
                         $mention['feeds'] = $mention['feeds'][0];
                         $user_id = $mention['feeds']['user_id'];
                     }
                     break;
                 case 'comments':
-                    $mention['comments'] = api('GET', "/api/v2/comments", ['id' => $id])[0];
-                    $user_id = $mention['comments']['user_id'];
+                    $mention['comments'] = api('GET', "/api/v2/comments", ['id' => $id]);
+                    if ($mention['comments'][0] ?? false) {
+                        $mention['comments'] = $mention['comments'][0];
+                        $user_id = $mention['comments']['user_id'];
+                    }
                     $mention['repostable_type'] = $mention['comments']['resourceable']['type'] ?? '';
 
                     switch ($mention['repostable_type']) {
@@ -331,7 +334,6 @@ class MessageController extends BaseController
             }
 
         }
-        // dd($data);
 
         $return = view('pcview::templates.mention', $data, $this->PlusData)->render();
 
