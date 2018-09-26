@@ -3,7 +3,7 @@
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatList;
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
 @endphp
-@if (!$data->isEmpty())
+@if (!empty($data))
 @foreach ($data as $post)
 <ul>
     <li>
@@ -13,7 +13,7 @@
                 <span class="u-exc">精</span>
             @endif
         </h3>
-        @if ($post['answer'])
+        @if (isset($post['answer']) && $post['answer'])
         <div class="m-subtt">
             @if ($post['answer']['anonymity'] && !($post['answer']['user_id'] == $TS['id']))
                 <img src="{{ asset('assets/pc/images/ico_anonymity_60.png') }}" width="24" height="24" />
@@ -51,7 +51,7 @@
                     (
                         $post['answer']['invited'] &&
                         (
-                            $post['answer']['could'] ||
+                            (isset($post['answer']['could']) && $post['answer']['could']) ||
                             in_array($TS['id'], [$post['user_id'],$post['answer']['user_id']])
                         )
                     )

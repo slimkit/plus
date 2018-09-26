@@ -36,14 +36,14 @@
                 @if($answer['anonymity'] == 1 && !(isset($TS) && $TS['id'] == $answer['user_id']))
                     <span href="javascript:;" class="anonymity">匿名用户</span>
                 @else
-                    <a href="{{ route('pc:mine', $answer['user']['id']) }}" class="tcolor">{{ $answer['user']['names'] }} {{ (isset($TS) && $answer['anonymity'] == 1 && $TS['id'] == $answer['user_id']) ? '（匿名）' : '' }}</a>
-                    <div class="user-tags">
+                    <a href="{{ route('pc:mine', $answer['user']['id']) }}" class="tcolor">{{ $answer['user']['name'] }} {{ (isset($TS) && $answer['anonymity'] == 1 && $TS['id'] == $answer['user_id']) ? '（匿名）' : '' }}</a>
+                    {{-- <div class="user-tags">
                         @if ($answer['user']['tags'])
                             @foreach ($answer['user']['tags'] as $tag)
                                 <span class="tag ucolor">{{ $tag['name'] }}</span>
                             @endforeach
                         @endif
-                    </div>
+                    </div> --}}
                 @endif
             </dd>
             <div class="fr mt20 relative">
@@ -99,16 +99,16 @@
             @endif
 
         <div class="detail_share">
-            <span id="J-collect{{ $answer['id'] }}" rel="{{ $answer['collect_count'] }}" status="{{(int) $answer['collected']}}">
+            <span id="J-collect{{ $answer['id'] }}" rel="{{ count($answer['collectors']) }}" status="{{(int) $answer['collected']}}">
                 @if($answer['collected'])
                 <a class="act" href="javascript:;" onclick="collected.init({{$answer['id']}}, 'question', 0);">
                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-collect"></use></svg>
-                    <font class="cs">{{ $answer['collect_count'] }}</font> 人收藏
+                    <font class="cs">{{ count($answer['collectors']) }}</font> 人收藏
                 </a>
                 @else
                 <a href="javascript:;" onclick="collected.init({{$answer['id']}}, 'question', 0);">
                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-collect"></use></svg>
-                    <font class="cs">{{ $answer['collect_count'] }}</font> 人收藏
+                    <font class="cs">{{ count($answer['collectors']) }}</font> 人收藏
                 </a>
                 @endif
             </span>
@@ -184,7 +184,7 @@
             </div>
             @if(!isset($TS) || $TS['id'] != $answer['user']['id'])
                 <div class="author-collect">
-                    @if($answer['user']['hasFollower'])
+                    @if($answer['user']['following'])
                         <a href="javascript:;" id="follow" status="1">已关注</a>
                     @else
                         <a href="javascript:;" id="follow" class="followed" status="0">+关注</a>

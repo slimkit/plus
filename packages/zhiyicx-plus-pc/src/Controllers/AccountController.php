@@ -132,8 +132,7 @@ class AccountController extends BaseController
         if ($type == 3) {
             $records = api('GET', '/api/v2/plus-pay/cashes', $params);
         }
-        $record = clone $records;
-        $after = $record->pop()->id ?? 0;
+        $after = last($records)['id'] ?? 0;
         $data['records'] = $records;
         $data['type'] = $type;
         $data['loadcount'] = $request->query('loadcount');
@@ -270,8 +269,7 @@ class AccountController extends BaseController
         $after = 0;
         if ($type != 1){
             $data['loadcount'] = $request->query('loadcount');
-            $currencys = clone $currency;
-            $after = $currencys->pop()->id ?? 0;
+            $after = last($currency)['id'] ?? 0;
         }
         $data['currency'] = $currency;
         $data['type'] = $type;

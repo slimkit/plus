@@ -5,6 +5,8 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User as UserModel;
 use function zhiyi\Component\ZhiyiPlus\PlusComponentPc\replaceUrl;
+use function zhiyi\Component\ZhiyiPlus\PlusComponentPc\getUserInfo;
+use function zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatRepostable;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use function Zhiyi\Plus\username;
 
@@ -35,32 +37,8 @@ class ProfileController extends BaseController
             switch ($cate) {
                 case 1: //全部
                     $feeds = api('GET', '/api/v2/feeds', $params);
-                    foreach ($feeds['feeds'] as &$feed) {
-                        if (!$feed['repostable_type']) {
-                            continue;
-                        }
-                        $feed['repostable'] = [];
-                        $id = $feed['repostable_id'];
-                        switch ($feed['repostable_type']) {
-                            case 'news':
-                                $feed['repostable'] = api('GET', "/api/v2/news/{$id}");
-                                break;
-                            case 'feeds':
-                                $feed['repostable'] = api('GET', "/api/v2/feeds/{$id}");
-                                break;
-                            case 'groups':
-                                $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/{$id}");
-                                break;
-                            case 'group-posts':
-                            case 'posts':
-                                $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/1/posts/{$id}"); // fixme: 少参数，圈子id暂时用1代替，不影响最终结果
-                                $feed['repostable']['user'] = api('GET', "/api/v2/users/{$feed['user_id']}");
-                                break;
-                        }
-                    }
-
-                    $feed = clone $feeds['feeds'];
-                    $after = $feed->pop()->id ?? 0;
+                    $feeds['feeds'] = formatRepostable($feeds['feeds']);
+                    $after = last($feeds['feeds'])['id'] ?? 0;
                     $feeds['conw'] = 735;
                     $feeds['conh'] = 545;
                     $html = view('pcview::templates.feeds', $feeds, $this->PlusData)->render();
@@ -106,11 +84,7 @@ class ProfileController extends BaseController
                 $params['user'] = $request->query('user');
             }
             $news = api('GET', '/api/v2/user/news/contributes', $params);
-            $news->map(function($item){
-                $item->collection_count = $item->collections->count();
-            });
-            $new = clone $news;
-            $after = $new->pop()->id ?? 0;
+            $after = last($news)['id'] ?? 0;
             $data['data'] = $news;
             $html = view('pcview::templates.profile_news', $data, $this->PlusData)->render();
 
@@ -142,7 +116,7 @@ class ProfileController extends BaseController
                 'limit' => $request->query('limit'),
             ];
             $feeds = api('GET', '/api/v2/feeds/collections', $params);
-            $data['feeds'] = $feeds;
+            $data['feeds'] = formatRepostable($feeds);
             $after = 0;
             $data['conw'] = 815;
             $data['conh'] = 545;
@@ -176,12 +150,7 @@ class ProfileController extends BaseController
                 'limit' => $request->query('limit', 10),
             ];
             $news = api('GET', '/api/v2/news/collections', $params);
-            $news->map(function($item){
-                $item->collection_count = $item->collections->count();
-                $item->comment_count = $item->comments->count();
-            });
-            $new = clone $news;
-            $after = $new->pop()->id ?? 0;
+            $after = last($news)['id'] ?? 0;
             $data['data'] = $news;
             $html = view('pcview::templates.profile_news', $data, $this->PlusData)->render();
 
@@ -214,8 +183,7 @@ class ProfileController extends BaseController
             ];
             $answers = api('GET', '/api/v2/user/question-answer/collections', $params);
 
-            $answer = clone $answers;
-            $after = $answer->pop()->id ?? 0;
+            $after = last($answers)['id'] ?? 0;
             foreach ($answers as $k => $v) {
                 $v->collectible->liked = $v->collectible->liked($this->PlusData['TS']['id']);
                 $answers[$k] = $v->collectible;
@@ -251,7 +219,6 @@ class ProfileController extends BaseController
                 'limit' => $request->query('limit', 10),
             ];
             $posts = api('GET', '/api/v2/plus-group/user-post-collections', $params);
-            $data['pinneds'] = collect([]);
             $data['posts'] = $posts;
             $after = 0;
             $data['conw'] = 815;
@@ -298,7 +265,6 @@ class ProfileController extends BaseController
                 $data['group'] = $user->id ? api('GET', '/api/v2/plus-group/user-groups', $params) : api('GET', '/api/v2/plus-group/groups/users', array_merge($params, ['user_id' => $user->id]));
                 $html = view('pcview::templates.group', $data, $this->PlusData)->render();
             } else {
-                $posts['pinneds'] = collect();
                 $posts['posts'] = api('GET', '/api/v2/plus-group/user-group-posts', $params);
                 $html = view('pcview::templates.group_posts', $posts, $this->PlusData)->render();
             }
@@ -339,8 +305,7 @@ class ProfileController extends BaseController
                         'user_id' => $request->query('user_id'),
                     ];
                     $questions = api('GET', '/api/v2/user/questions', $params);
-                    $question = clone $questions;
-                    $after = $question->pop()->id ?? 0;
+                    $after = last($questions)['id'] ?? 0;
                     $data['data'] = $questions;
                     $html = view('pcview::templates.question', $data, $this->PlusData)->render();
 
@@ -352,8 +317,7 @@ class ProfileController extends BaseController
                         'user_id' => $request->query('user_id'),
                     ];
                     $answers = api('GET', '/api/v2/user/question-answer', $params);
-                    $answer = clone $answers;
-                    $after = $answer->pop()->id ?? 0;
+                    $after = last($answers)['id'] ?? 0;
                     $data['datas'] = $answers;
                     $html = view('pcview::templates.answer', $data, $this->PlusData)->render();
                     break;
@@ -375,11 +339,10 @@ class ProfileController extends BaseController
                         'user_id' => $request->query('user_id'),
                     ];
                     $topics = api('GET', '/api/v2/user/question-topics', $params);
-                    $topics->map(function($item){
-                        $item->has_follow = true;
-                    });
-                    $topic = clone $topics;
-                    $after = $topic->pop()->id ?? 0;
+                    foreach ($topics as $key => &$value) {
+                        $value['has_follow'] = true;
+                    }
+                    $after = last($topics)['id'] ?? 0;
                     $data['data'] = $topics;
                     $html = view('pcview::templates.question_topic', $data, $this->PlusData)->render();
                     break;

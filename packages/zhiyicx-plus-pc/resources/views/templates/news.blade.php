@@ -17,7 +17,7 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getImageUrl;
                </a>
                <p>{{ $item['subject'] }}</p>
                <div class="news_bm">
-                    @if(isset($item['top']) && $item['top'] == 1)
+                    @if(!(isset($item['pinned']) && $item['pinned'] == false))
                          <a href="javascript:;" class="cates_span span_green">置顶</a>
                     @endif
                     @if (!isset($cate_id) || $cate_id == 0)

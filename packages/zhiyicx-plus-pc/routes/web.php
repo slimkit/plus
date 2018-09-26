@@ -88,7 +88,7 @@ Route::prefix('questions')->group(function () {
 
     Route::get('users', 'QuestionController@getUsers')->name('pc:questionusers');
     // 回答列表
-    Route::get('{question_id}/answers', 'QuestionController@getAnswers')->name('pc:questionanswers');
+    Route::get('{question}/answers', 'QuestionController@getAnswers')->name('pc:questionanswers');
 
     // 问题评论列表
     Route::get('{question}/comments', 'QuestionController@questionComments')->name('pc:questioncomments');
@@ -209,7 +209,7 @@ Route::prefix('news')->group(function () {
     Route::get('/', 'NewsController@index')->name('pc:news');
 
     // 资讯详情
-    Route::get('/{news_id}', 'NewsController@read')->where(['news_id' => '[0-9]+'])->name('pc:newsread');
+    Route::get('/{news}', 'NewsController@read')->where(['news' => '[0-9]+'])->name('pc:newsread');
 
     // 文章详情评论
     Route::get('/{news_id}/comments', 'NewsController@comments')->where(['news_id' => '[0-9]+']);

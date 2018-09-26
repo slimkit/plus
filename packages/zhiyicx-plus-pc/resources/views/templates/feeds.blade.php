@@ -57,9 +57,11 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
 
     <div class="feed_bottom">
         <div class="selected-topics">
+            @if (isset($post['topics']))
             @foreach($post['topics'] as $topic)
             <a class="selected-topic-item" href='{{ url("/topic/{$topic['id']}") }}'>{{$topic['name']}}</a>
             @endforeach
+            @endif
         </div>
 
         <div class="feed_datas">

@@ -3,7 +3,7 @@
 @endphp
 {{-- 个人中心头部个人信息 --}}
 <div class="m-uchead profile_top">
-    <div class="profile_top_cover" style="background-image: url({{ $user['bg'] ? $user['bg']->url() : asset('assets/pc/images/default_cover.jpg') }});background-repeat: no-repeat;background-size: cover;"> </div>
+    <div class="profile_top_cover" style="background-image: url({{ $user['bg'] ? $user['bg']['url'] : asset('assets/pc/images/default_cover.jpg') }});background-repeat: no-repeat;background-size: cover;"> </div>
 
     @if ($user['id'] == $TS['id'])
         <input type="file" name="cover" style="display:none" id="cover">

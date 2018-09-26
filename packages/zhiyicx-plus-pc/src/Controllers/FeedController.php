@@ -2,9 +2,11 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\newapi;
 use Illuminate\Http\Request;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatPinneds;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatRepostable;
 
 class FeedController extends BaseController
 {
@@ -18,9 +20,10 @@ class FeedController extends BaseController
     {
         if ($request->isAjax) {
             if ($request->query('feed_id')) { // 获取单条微博内容
-                $feeds['feeds'] = collect();
-                $feed = api('GET', '/api/v2/feeds/' . $request->feed_id);
-                $feeds['feeds']->push($feed);
+                $feeds['feeds'] = [];
+                $feedinfo = api('GET', '/api/v2/feeds/' . $request->feed_id);
+                $feedinfo['comments'] = [];
+                array_push($feeds['feeds'], $feedinfo);
                 $feedData = view('pcview::templates.feeds', $feeds, $this->PlusData)->render();
 
                 return response()->json([
@@ -34,12 +37,12 @@ class FeedController extends BaseController
                     $params = [
                         'index' => (int) $request->query('after') ?: 0,
                     ];
-                    $feeds = newapi('GET', '/api/v2/feed/topics/' . $topic_id . '/feeds', $params);
+                    $feeds = api('GET', '/api/v2/feed/topics/' . $topic_id . '/feeds', $params);
                     $data['feeds'] = array_filter($feeds, function ($val) use ($topic_id) {
                         $data['test'] = $val;
                         return $val['id'] !== $topic_id;
                     });
-                    $after = $feeds[count($feeds) - 1]['index'] ?? 0;
+                    $after = last($feeds)['index'] ?? 0;
                 } else {
                     // 普通列表
                     $params['type'] = $request->query('type');
@@ -49,56 +52,21 @@ class FeedController extends BaseController
                         $params['hot'] = $request->query('hot') ?: 0;
                     }
                     $data = api('GET', '/api/v2/feeds', $params);
-                    if (!empty($data['pinned']) && $params['type'] != 'follow') { // 置顶动态
-                        $data['pinned']->reverse()->each(function ($item, $key) use ($data) {
-                            $item->pinned = true;
-                            $data['feeds']->prepend($item);
-                        });
+                    if ($params['type'] != 'follow') { // 置顶动态
+                        $data['feeds'] = formatPinneds($data['feeds'], $data['pinned']);
                     }
 
-                    $feed = $data['feeds'];
-
                     if ($request->query('type') == 'new' || $request->query('type') == 'follow') {
-                        $after = $feed[count($feed) - 1]['id'] ?? 0;
+                        $after = last($data['feeds'])['id'] ?? 0;
                     } else {
-                        $after = $feed[count($feed) - 1]['hot'] ?? 0;
+                        $after = last($data['feeds'])['hot'] ?? 0;
                     }
 
                 }
 
                 $data['space'] = $this->PlusData['config']['ads_space']['pc:feeds:list'] ?? [];
                 $data['page'] = $request->loadcount;
-
-                // 组装转发数据
-                foreach ($data['feeds'] as &$feed) {
-                    if (!$feed['repostable_type']) {
-                        continue;
-                    }
-                    $feed['repostable'] = [];
-                    $id = $feed['repostable_id'];
-                    switch ($feed['repostable_type']) {
-                        case 'news':
-                            $feed['repostable'] = api('GET', "/api/v2/news/{$id}");
-                            break;
-                        case 'feeds':
-                            $feed_list = api('GET', "/api/v2/feeds", ['id' => $id . '']);
-                            if ($feed_list['feeds'][0] ?? false) {
-                                $feed['repostable'] = $feed_list['feeds'][0];
-                            }
-                            break;
-                        case 'groups':
-                            $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/{$id}");
-                            break;
-                        case 'group-posts':
-                        case 'posts':
-                            $post = newapi('GET', "/api/v2/group/simple-posts", ['id' => $id . '']);
-                            $feed['repostable'] = $post[0] ?? $post;
-                            if ($feed['repostable']['title'] ?? false) {
-                                $feed['repostable']['group'] = api('GET', '/api/v2/plus-group/groups/' . $feed['repostable']['group_id']);
-                            }
-                            break;
-                    }
-                }
+                $data['feeds'] = formatRepostable($data['feeds']);
 
                 $feedData = view('pcview::templates.feeds', $data, $this->PlusData)->render();
 
@@ -114,7 +82,7 @@ class FeedController extends BaseController
         $data['type'] = $request->input('type') ?: 'new';
 
         // 用于添加话题时的初始热门话题列表
-        $data['hot_topics'] = newapi('GET', '/api/v2/feed/topics', ['only' => 'hot']);
+        $data['hot_topics'] = api('GET', '/api/v2/feed/topics', ['only' => 'hot']);
 
         // 用于 at 某人时的初始关注用户列表
         $data['follow_users'] = api('GET', "/api/v2/user/follow-mutual");
@@ -130,43 +98,38 @@ class FeedController extends BaseController
      * @param  int     $feed_id [动态id]
      * @return mixed
      */
-    public function read(Request $request, int $feed_id)
+    public function read(Request $request, Feed $feed)
     {
-        $feed = api('GET', '/api/v2/feeds/' . $feed_id);
-        $feed->collect_count = $feed->collection->count();
-        $feed->rewards = $feed->rewards->filter(function ($value, $key) {
-            return $key < 10;
-        });
-        $feed = $feed->toArray();
-        $data['user'] = $feed['user'];
+        $feedinfo = api('GET', '/api/v2/feeds/' . $feed->id);
+        $feedinfo['collect_count'] = $feed->collection->count();
+        $feedinfo['rewards'] = $feed->rewards->toArray();
+        $data['user'] = $feed->user;
 
-        if ($feed['repostable_type'] ?? false) {
-            $id = $feed['repostable_id'];
-            switch ($feed['repostable_type']) {
-                case 'news':
-                    $feed['repostable'] = api('GET', "/api/v2/news/{$id}");
+        if ($feedinfo['repostable_type']) {
+            $id = $feedinfo['repostable_id'];
+            switch ($feedinfo['repostable_type']) {
+                case 'feeds':
+                    $feedinfo['repostable'] = api('GET', "/api/v2/feeds/{$id}");
                     break;
                 case 'feeds':
                     $feed_list = api('GET', "/api/v2/feeds", ['id' => $id . '']);
-                    if ($feed_list['feeds'][0] ?? false) {
-                        $feed['repostable'] = $feed_list['feeds'][0];
-                    }
+                    if ($feed_list['feeds'][0] ?? false) $feedinfo['repostable'] = $feed_list['feeds'][0];
                     break;
                 case 'groups':
-                    $feed['repostable'] = api('GET', "/api/v2/plus-group/groups/" . $id);
+                    $feedinfo['repostable'] = api('GET', "/api/v2/plus-group/groups/" . $id);
                     break;
                 case 'group-posts':
                 case 'posts':
-                    $post = newapi('GET', "/api/v2/group/simple-posts", ['id' => $id . '']);
-                    $feed['repostable'] = $post[0] ?? $post;
-                    if ($feed['repostable']['title'] ?? false) {
-                        $feed['repostable']['group'] = api('GET', '/api/v2/plus-group/groups/' . $feed['repostable']['group_id']);
+                    $post = api('GET', "/api/v2/group/simple-posts", ['id' => $id . '']);
+                    $feedinfo['repostable'] = $post[0] ?? $post;
+                    if ($feedinfo['repostable']['title'] ?? false) {
+                        $feedinfo['repostable']['group'] = api('GET', '/api/v2/plus-group/groups/' . $feedinfo['repostable']['group_id']);
                     }
                     break;
             }
         }
 
-        $data['feed'] = $feed;
+        $data['feed'] = $feedinfo;
 
         $this->PlusData['current'] = 'feeds';
         return view('pcview::feed.read', $data, $this->PlusData);
@@ -186,16 +149,8 @@ class FeedController extends BaseController
         ];
 
         $comments = api('GET', '/api/v2/feeds/' . $feed_id . '/comments', $params);
-        $comment = clone $comments['comments'];
-        $after = $comment->pop()->id ?? 0;
-
-        if ($comments['pinneds'] != null) {
-
-            $comments['pinneds']->each(function ($item, $key) use ($comments) {
-                $item->top = 1;
-                $comments['comments']->prepend($item);
-            });
-        }
+        $after = last($comments['comments'])['id'] ?? 0;
+        $comments['comments'] = formatPinneds($comments['comments'], $comments['pinneds']);
         $commentData = view('pcview::templates.comment', $comments, $this->PlusData)->render();
 
         return response()->json([
@@ -233,7 +188,7 @@ class FeedController extends BaseController
                 break;
             case 'group-posts':
             case 'posts':
-                $post = newapi('GET', "/api/v2/group/simple-posts", ['id' => $id . '']);
+                $post = api('GET', "/api/v2/group/simple-posts", ['id' => $id . '']);
                 $feed['repostable'] = $post[0] ?? $post;
                 if ($feed['repostable']['title'] ?? false) {
                     $feed['repostable']['image'] = null; // 当在转发弹框时不显示引用帖子的图片
@@ -244,7 +199,7 @@ class FeedController extends BaseController
         $data['feed'] = $feed;
 
         // 用于添加话题时的初始热门话题列表
-        $data['hot_topics'] = newapi('GET', '/api/v2/feed/topics', ['only' => 'hot']);
+        $data['hot_topics'] = api('GET', '/api/v2/feed/topics', ['only' => 'hot']);
 
         // 用于 at 某人时的初始关注用户列表
         $data['follow_users'] = api('GET', "/api/v2/user/follow-mutual");

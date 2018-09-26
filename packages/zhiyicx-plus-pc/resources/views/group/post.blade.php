@@ -155,7 +155,7 @@
                             $share_pic = '';
                         }
                     @endphp
-                    @include('pcview::widgets.thirdshare' , ['share_url' => route('redirect', ['target' => '/groups/'.$post['group']['id'].'/posts/'.$post['id']]), 'share_title' => addslashes($post['content']), 'share_pic' => $share_pic])
+                    @include('pcview::widgets.thirdshare' , ['share_url' => route('redirect', ['target' => '/groups/'.$post['group']['id'].'/posts/'.$post['id']]), 'share_title' => addslashes($post['body']), 'share_pic' => $share_pic])
                 </div>
                 @php $rewards = ['count' => $post['reward_number'], 'amount' => $post['reward_amount']]; @endphp
                 {{-- 打賞 --}}

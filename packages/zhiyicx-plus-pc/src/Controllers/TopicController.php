@@ -2,7 +2,7 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\newapi;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use Illuminate\Http\Request;
 
 class TopicController extends BaseController
@@ -26,11 +26,11 @@ class TopicController extends BaseController
      */
     public function index(Request $request)
     {
-        $data['list_hot'] = newapi('GET', '/api/v2/feed/topics', ['only' => 'hot']);
+        $data['list_hot'] = api('GET', '/api/v2/feed/topics', ['only' => 'hot']);
 
         $data['type'] = $request->query('type') ?? 'hot';
         if ($data['type'] === 'new') {
-            $data['list'] = newapi('GET', '/api/v2/feed/topics', ['limit' => 8]);
+            $data['list'] = api('GET', '/api/v2/feed/topics', ['limit' => 8]);
         } else {
             $data['list'] = $data['list_hot'];
         }
@@ -48,20 +48,20 @@ class TopicController extends BaseController
     public function detail(Request $request, int $topic_id)
     {
         // 获取话题详情
-        $data['topic'] = newapi('GET', '/api/v2/feed/topics/' . $topic_id);
+        $data['topic'] = api('GET', '/api/v2/feed/topics/' . $topic_id);
 
         // 获取话题创建者信息
-        $data['creator'] = newapi('GET', '/api/v2/users/' . $data['topic']['creator_user_id']);
+        $data['creator'] = api('GET', '/api/v2/users/' . $data['topic']['creator_user_id']);
 
         // 获取话题下动态列表
-        $data['list'] = newapi('GET', '/api/v2/feed/topics/' . $topic_id . '/feeds');
+        $data['list'] = api('GET', '/api/v2/feed/topics/' . $topic_id . '/feeds');
 
         // 获取话题参与者
-        $participants = newapi('GET', '/api/v2/feed/topics/' . $topic_id . '/participants');
-        $data['participants'] = newapi('GET', '/api/v2/users', ['id' => implode(',', $participants)]);
+        $participants = api('GET', '/api/v2/feed/topics/' . $topic_id . '/participants');
+        $data['participants'] = api('GET', '/api/v2/users', ['id' => implode(',', $participants)]);
 
         // 获取热门话题
-        $data['list_hot'] = newapi('GET', '/api/v2/feed/topics', ['limit' => 8, 'only' => 'hot']);
+        $data['list_hot'] = api('GET', '/api/v2/feed/topics', ['limit' => 8, 'only' => 'hot']);
 
         return view('pcview::topic.detail', $data, $this->PlusData);
     }
@@ -86,7 +86,7 @@ class TopicController extends BaseController
      */
     public function edit(Request $request, int $topic_id)
     {
-        $data['topic'] = newapi('GET', '/api/v2/feed/topics/' . $topic_id);
+        $data['topic'] = api('GET', '/api/v2/feed/topics/' . $topic_id);
 
         return view('pcview::topic.edit', $data, $this->PlusData);
     }

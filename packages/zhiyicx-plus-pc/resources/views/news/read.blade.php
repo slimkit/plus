@@ -110,7 +110,7 @@
                     {{-- 第三方分享 --}}
                     <div class="detail_third_share">
                         分享至：
-                        @include('pcview::widgets.thirdshare' , ['share_url' => route('redirect', array('target' => '/news/'.$news['id'])), 'share_title' => $news['subject'], 'share_pic' => config('app.url') . '/api/v2/files/' . $news['storage'] ])
+                        @include('pcview::widgets.thirdshare' , ['share_url' => route('redirect', array('target' => '/news/'.$news['id'])), 'share_title' => $news['subject'], 'share_pic' => config('app.url') . '/api/v2/files/' . $news['image']['id'] ])
                     </div>
 
                     {{-- 打赏 --}}

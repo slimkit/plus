@@ -28,7 +28,7 @@
             <span class="feed_time font12">{{ getTime($post['created_at']) }}</span>
             <span class="feed_time font12 hide">查看详情</span>
         </a>
-        @if(!empty($post['pinned']) && $post['pinned'] == true)
+        @if(!(isset($post['pinned']) && $post['pinned'] == false))
             <a class="pinned" href="javascript:;">置顶</a>
         @endif
         @if($post['excellent_at'])
@@ -176,7 +176,7 @@
     </div>
 </div>
 <script type="text/javascript">
-    var images = JSON.parse('{!!$post['images']!!}'), data = new Array();
+    var images = {!! json_encode($post['images']) !!}, data = new Array();
     if(images){
         for (var i in images) {
             var size = images[i].size.split('x');

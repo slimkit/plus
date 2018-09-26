@@ -4,8 +4,10 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
 use DB;
 use Illuminate\Http\Request;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getTime;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatPinneds;
 
 class NewsController extends BaseController
 {
@@ -29,8 +31,7 @@ class NewsController extends BaseController
 
             // 获取资讯列表
             $news['news'] = api('GET', '/api/v2/news', $params);
-            $new = clone $news['news'];
-            $after = $new->pop()->id ?? 0;
+            $after = last($news['news'])['id'] ?? 0;
             $news['cate_id'] = $params['cate_id'];
 
             $news['space'] =  $this->PlusData['config']['ads_space']['pc:news:list'] ?? [];
@@ -39,12 +40,7 @@ class NewsController extends BaseController
             // 加入置顶资讯
             if ($params['cate_id']) {
                 $topNews = api('GET', '/api/v2/news/categories/pinneds', $params);
-                if (!empty($topNews) && $request->loadcount == 1) {
-                    $topNews->reverse()->each(function ($item, $key) use ($news) {
-                        $item->top = 1;
-                        $news['news']->prepend($item);
-                    });
-                }
+                $news['news'] = formatPinneds($news['news'], $topNews, 'id');
             }
 
             $newsData = view('pcview::templates.news', $news, $this->PlusData)->render();
@@ -71,22 +67,20 @@ class NewsController extends BaseController
      * @param  int    $news_id [资讯id]
      * @return mixed
      */
-    public function read(int $news_id)
+    public function read(News $news)
     {
         $this->PlusData['current'] = 'news';
 
         // 获取资讯详情
-        $news = api('GET', '/api/v2/news/' . $news_id);
-        $news->reward = api('GET', '/api/v2/news/' . $news_id . '/rewards/sum');
-        $news->rewards = $news->rewards->filter(function ($value, $key) {
-            return $key < 10;
-        });
-        $news->collect_count = $news->collections->count();
+        $news_info = api('GET', '/api/v2/news/' . $news->id);
+        $news_info['reward'] = api('GET', '/api/v2/news/' . $news->id . '/rewards/sum');
+        $news_info['rewards'] = $news->rewards;
+        $news_info['collect_count'] = $news->collections->count();
 
         // 相关资讯
-        $news_rel = api('GET', '/api/v2/news/' . $news_id . '/correlations');
+        $news_rel = api('GET', '/api/v2/news/' . $news->id . '/correlations');
 
-        $data['news'] = $news;
+        $data['news'] = $news_info;
         $data['news_rel'] = $news_rel;
         return view('pcview::news.read', $data, $this->PlusData);
     }
@@ -133,16 +127,8 @@ class NewsController extends BaseController
         ];
 
         $comments = api('GET', '/api/v2/news/'.$news_id.'/comments', $params);
-        $comment = clone $comments['comments'];
-        $after = $comment->pop()->id ?? 0;
-        if ($comments['pinneds'] != null) {
-
-            $comments['pinneds']->each(function ($item, $key) use ($comments) {
-                $item->top = 1;
-                $comments['comments']->prepend($item);
-            });
-        }
-
+        $after = last($comments['comments'])['id'] ?? 0;
+        $comments['comments'] = formatPinneds($comments['comments'], $comments['pinneds']);
         $commentData = view('pcview::templates.comment', $comments, $this->PlusData)->render();
 
         return response()->json([

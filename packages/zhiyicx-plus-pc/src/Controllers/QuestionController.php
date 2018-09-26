@@ -3,6 +3,7 @@
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
 use Illuminate\Http\Request;
+use SlimKit\PlusQuestion\Models\Question;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 
 class QuestionController extends BaseController
@@ -24,9 +25,10 @@ class QuestionController extends BaseController
             ];
             $question['data'] = api('GET', '/api/v2/questions', $params);
             if ($params['type'] == 'excellent') {
-                $question['data']->map(function ($item) {
-                    $item->excellent_show = false;
-                });
+                // TODO
+                foreach ($question['data'] as $key => &$value) {
+                    $value->excellent_show = false;
+                }
             }
             $html = view('pcview::templates.question', $question, $this->PlusData)->render();
 
@@ -65,11 +67,11 @@ class QuestionController extends BaseController
                         'limit' => $request->query('limit', 10),
                     ];
                     $questions = api('GET', '/api/v2/user/question-topics', $params);
-                    $questions->map(function($item){
-                        $item->has_follow = true;
-                    });
-                    $question = clone $questions;
-                    $after = $question->pop()->id ?? 0;
+                    // TODO
+                    foreach ($questions as $key => &$value) {
+                        $value['has_follow'] = true;
+                    }
+                    $after = last($questions)['id'] ?? 0;
                     $data['data'] = $questions;
                     break;
             }
@@ -105,9 +107,10 @@ class QuestionController extends BaseController
             ];
             $question['data'] = api('GET', '/api/v2/question-topics/'.$topic_id.'/questions', $params);
             if ($params['type'] == 'excellent') {
-                $question['data']->map(function ($item) {
-                    $item->excellent_show = false;
-                });
+                // TODO
+                foreach ($question['data'] as $key => &$value) {
+                    $value['excellent_show'] = false;
+                }
             }
             $html = view('pcview::templates.question', $question, $this->PlusData)->render();
 
@@ -148,10 +151,7 @@ class QuestionController extends BaseController
     public function answer(int $question, int $answer)
     {
         $answer = api('GET', '/api/v2/question-answers/'.$answer );
-        $answer->collect_count = $answer->collectors->count();
-        $answer->rewarders = $answer->rewarders->reverse()->sortByDesc('id');
         $data['answer'] = $answer;
-        $data['answer']->user->hasFollower = $data['answer']['user']->hasFollower($this->PlusData['TS']['id']);
         return view('pcview::question.answer', $data, $this->PlusData);
     }
 
@@ -169,8 +169,7 @@ class QuestionController extends BaseController
             'limit' => $request->query('limit', 10),
         ];
         $comments = api('GET', '/api/v2/question-answers/'.$answer.'/comments', $params);
-        $comment = clone $comments;
-        $after = $comment->pop()->id ?? 0;
+        $after = last($comments)['id'] ?? 0;
         $data['comments'] = $comments;
         $data['top'] = false;
 
@@ -242,17 +241,16 @@ class QuestionController extends BaseController
      * 回答列表
      * @author ZsyD
      * @param  Request $request
-     * @param  int     $question_id [问题id]
+     * @param  Question $question
      * @return mixed
      */
-    public function getAnswers(Request $request, int $question_id)
+    public function getAnswers(Request $request, Question $question)
     {
         $params['limit'] = $request->input('limit') ?: 10;
         $params['offset'] = $request->input('offset') ?: 0;
         $params['order_type'] = $request->input('order_type') ?: 'time';
-        $data['answers'] = api('GET', '/api/v2/questions/'.$question_id.'/answers', $params);
+        $data['answers'] = api('GET', '/api/v2/questions/'.$question->id.'/answers', $params);
         if ($params['offset'] == 0) {
-            $question = api('GET', '/api/v2/questions/'.$question_id );
             if (!empty($question['adoption_answers'])) { // 采纳回答
                 $question['adoption_answers']->each(function ($item, $key) use ($data) {
                     $data['answers']->prepend($item);
@@ -264,6 +262,8 @@ class QuestionController extends BaseController
                 });
             }
         }
+        $data['question'] = $question->toArray();
+
         $return = view('pcview::question.question_answer', $data, $this->PlusData)
             ->render();
 
@@ -287,8 +287,7 @@ class QuestionController extends BaseController
             'limit' => $request->query('limit', 10),
         ];
         $comments = api('GET', '/api/v2/questions/'.$question.'/comments', $params);
-        $comment = clone $comments;
-        $after = $comment->pop()->id ?? 0;
+        $after = last($comments)['id'] ?? 0;
         $data['comments'] = $comments;
         $data['top'] = false;
         $html = view('pcview::templates.comment', $data, $this->PlusData)->render();
