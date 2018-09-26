@@ -1,10 +1,5 @@
 {
     "/js/admin.js": "/js/admin.js",
     "/js/bootstrap.js": "/js/bootstrap.js",
-<<<<<<< HEAD
     "/css/bootstrap.css": "/css/bootstrap.css"
-=======
-    "/css/bootstrap.css": "/css/bootstrap.css",
-    "/installer/logo.png": "/installer/logo.png"
->>>>>>> 1.9
 }
