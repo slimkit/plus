@@ -2,7 +2,7 @@
     <link rel="stylesheet" href="{{ URL::asset('assets/pc/css/question.css') }}" />
 @endsection @section('content')
     <div class="create-question">
-        <div class="question-tw">{{ $answer['question']['suject'] }}</div>
+        <div class="question-tw">{{ $answer['question']['subject'] }}</div>
 
         <div class="question-form-row">
             @include('pcview::widgets.markdown', ['height'=>'400px', 'width' => '100%', 'content' => $answer['body'] ?? ''])

@@ -48,7 +48,7 @@ class BaseController extends Controller
                 $config = [];
 
                 // 启动信息接口
-                $config['bootstrappers'] = api('GET', '/api/v2/bootstrappers/', [], 0);
+                $config['bootstrappers'] = api('GET', '/api/v2/bootstrappers/', []);
 
                 // 删除不需要配置项
                 unset($config['bootstrappers']['registerSettings']['content']);
@@ -66,7 +66,7 @@ class BaseController extends Controller
                 $config['nav_bottom'] = Navigation::byPid(0)->byPos(1)->get();
 
                 // 获取所有广告位
-                $config['ads_space'] = array_column(api('GET', '/api/v2/advertisingspace', [], 0), NULL, 'space');
+                $config['ads_space'] = array_column(api('GET', '/api/v2/advertisingspace', []), NULL, 'space');
 
                 // 环信
                 $easemob = $repository->get('easemob');
