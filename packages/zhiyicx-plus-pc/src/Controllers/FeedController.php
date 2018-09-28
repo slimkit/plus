@@ -104,32 +104,8 @@ class FeedController extends BaseController
         $feedinfo['collect_count'] = $feed->collection->count();
         $feedinfo['rewards'] = $feed->rewards->toArray();
         $data['user'] = $feed->user;
-
-        if ($feedinfo['repostable_type']) {
-            $id = $feedinfo['repostable_id'];
-            switch ($feedinfo['repostable_type']) {
-                case 'feeds':
-                    $feedinfo['repostable'] = api('GET', "/api/v2/feeds/{$id}");
-                    break;
-                case 'feeds':
-                    $feed_list = api('GET', "/api/v2/feeds", ['id' => $id . '']);
-                    if ($feed_list['feeds'][0] ?? false) $feedinfo['repostable'] = $feed_list['feeds'][0];
-                    break;
-                case 'groups':
-                    $feedinfo['repostable'] = api('GET', "/api/v2/plus-group/groups/" . $id);
-                    break;
-                case 'group-posts':
-                case 'posts':
-                    $post = api('GET', "/api/v2/group/simple-posts", ['id' => $id . '']);
-                    $feedinfo['repostable'] = $post[0] ?? $post;
-                    if ($feedinfo['repostable']['title'] ?? false) {
-                        $feedinfo['repostable']['group'] = api('GET', '/api/v2/plus-group/groups/' . $feedinfo['repostable']['group_id']);
-                    }
-                    break;
-            }
-        }
-
-        $data['feed'] = $feedinfo;
+        $feedinfo = formatRepostable([$feedinfo]);
+        $data['feed'] = $feedinfo[0];
 
         $this->PlusData['current'] = 'feeds';
         return view('pcview::feed.read', $data, $this->PlusData);
