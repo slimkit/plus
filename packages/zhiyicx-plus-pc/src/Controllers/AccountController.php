@@ -203,8 +203,8 @@ class AccountController extends BaseController
         // 手机邮箱绑定状态
         $user = api('GET', '/api/v2/user');
 
-        $data['phone'] = (boolean)$user->phone;
-        $data['email'] = (boolean)$user->email;
+        $data['phone'] = (boolean)$user['phone'];
+        $data['email'] = (boolean)$user['email'];
 
         // 三方绑定状态
         $binds = api('GET', '/api/v2/user/socialite');
