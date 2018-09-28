@@ -11,7 +11,7 @@ class RecommendUsers
         $params = [
             'limit' => 9
         ];
-        $api = '/api/v2/user/latests';
+        $api = '/api/v2/user/recommends';
         // $api = '/api/v2/user/find-by-tags';
 
         $users = api('GET', $api, $params);

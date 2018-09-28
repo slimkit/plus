@@ -395,7 +395,7 @@ easemob = {
                         +          '<img src="' + avatar + '" class="chat_svg">'
                         +       '</div>'
                         +      '<div class="chat_item">'
-                        +          '<span class="chat_span">' + title + '</span>'
+                        +          '<span class="chat_ms_span">' + title + '</span>'
                         +          '<div>' + last_message_txt + '</div>'
                         +      '</div>'
                         +  '</li>';

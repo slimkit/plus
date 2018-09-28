@@ -277,6 +277,7 @@ function getUserInfo($id)
  * @param  [type] $data    [列表数据]
  * @param  [type] $pinneds [置顶数据]
  * @param  [type] $k       [键名]
+ * @return [type]        [description]
  */
 function formatPinneds($data, $pinneds) {
     if (empty($pinneds)) return $data;
@@ -294,7 +295,12 @@ function formatPinneds($data, $pinneds) {
     return $pinneds;
 }
 
-
+/**
+ * [formatRepostable 转发数据组装]
+ * @author Foreach
+ * @param  [array] $feeds
+ * @return [array]
+ */
 function formatRepostable($feeds) {
     foreach ($feeds as &$feed) {
         if (!$feed['repostable_type']) {
