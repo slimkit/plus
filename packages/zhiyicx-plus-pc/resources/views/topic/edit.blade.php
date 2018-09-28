@@ -19,7 +19,7 @@
                     <br>上传话题封面
                 </div>
                 <div class="cover">
-                    <img @if($topic['logo'] ?? false) src="/api/v2/files/{{$topic['logo']}}" @endif class="ev-img-cover" />
+                    <img @if($topic['logo'] ?? false) src="{{$topic['logo']['url']}}" @endif class="ev-img-cover" />
                 </div>
                 <button class="btn-edit-cover" type="button">更改封面</button>
             </div>
