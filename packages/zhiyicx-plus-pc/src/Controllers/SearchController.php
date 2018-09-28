@@ -4,6 +4,8 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
 use Illuminate\Http\Request;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatRepostable;
+
 
 class SearchController extends BaseController
 {
@@ -48,6 +50,7 @@ class SearchController extends BaseController
                 ];
 
                 $datas = api('GET', '/api/v2/feeds', $params);
+                $datas['feeds'] = formatRepostable($datas['feeds']);
                 $data = $datas;
                 $after = last($data['feeds'])['id'] ?? 0;
 
