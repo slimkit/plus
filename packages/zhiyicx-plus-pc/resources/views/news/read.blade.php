@@ -51,7 +51,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="javascript:;" onclick="news.delete({{$news['id']}}, {{$news['cate_id']}});">
+                                        <a href="javascript:;" onclick="news.delete({{$news['id']}}, {{$news['category']['id']}});">
                                             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-delete"></use></svg>删除
                                         </a>
                                     </li>

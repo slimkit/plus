@@ -74,9 +74,12 @@
                 @php
                     $size = explode('x', $store['size']);
                     $store_height = $size[0] > 675 ? 675 / $size[0] * $size[1] : $size[1];
+
+                    // 下载付费设置为高斯模糊
+                    $blur = $store['type'] == 'download' ? 96 : 0;
                 @endphp
                 @if(isset($store['paid']) && !$store['paid'])
-                    <img style="height:{{ $store_height }}px" data-original="{{ getImageUrl($store, '', '', false) }}" class="per_image lazy" onclick="weibo.payImage(this)" data-node="{{ $store['paid_node'] }}" data-amount="{{ $store['amount'] }}" data-file="{{ $store['file'] }}" />
+                    <img style="height:{{ $store_height }}px" data-original="{{ getImageUrl($store, '', '', false, $blur) }}" class="per_image lazy" onclick="weibo.payImage(this)" data-node="{{ $store['paid_node'] }}" data-amount="{{ $store['amount'] }}" data-file="{{ $store['file'] }}" />
                 @else
                     <a target="_blank" href="{{ getImageUrl($store, '', '', false) }}"><img data-original="{{ getImageUrl($store, '', '', false) }}" class="per_image lazy"/></a>
                 @endif

@@ -50,7 +50,7 @@
                     </div>
                     <div class="account_form_row">
                         <label class="w80 required" for="desc"><span style="color: red; ">*</span>认证描述</label>
-                        <textarea class="text_box desc" maxlength="200" rows="1"></textarea>
+                        <textarea class="text_box desc" maxlength="200" rows="1" id="desc-user"></textarea>
                     </div>
                     <div class="account_form_row">
                         <label class="w80 required" for="desc"><span style="color: red; ">*</span>认证资料</label>
@@ -99,7 +99,7 @@
                     </div>
                     <div class="account_form_row">
                         <label class="w80 required" for="desc"><span style="color: red; ">*</span>认证描述</label>
-                        <textarea rows="1" class="text_box desc" maxlength="200"></textarea>
+                        <textarea rows="1" class="text_box desc" maxlength="200" id="desc-org"></textarea>
                     </div>
                     <div class="account_form_row">
                         <label class="w80 required" for="desc"><span style="color: red; ">*</span>认证资料</label>
@@ -154,12 +154,12 @@ $('.J-authenticate-btn').on('click', function(e) {
             sel = $(inp[i]);
             args.set(sel.attr('name'), sel.val());
         };
-        args.set('desc', $('.text_box').text());
+        args.set('desc', $('#desc-'+authType).val());
         args.set('type', $('#authtype').val());
 
         return args.get();
     };
-
+    console.log(getArgs());return false;
     if (authType == 'user') {
         if (getArgs().name == '') {
             noticebox('请填写真实姓名', 0);return;
