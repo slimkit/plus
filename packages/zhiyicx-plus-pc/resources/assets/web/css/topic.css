@@ -81,9 +81,8 @@
 .w-hot-topics ol li.top3::before {background-color: #59b6d7;}
 
 /* 话题卡片 */
-.w-topic-card {width: 100%;height: 100%;position: relative;border-radius: 20px;overflow: hidden;}
+.w-topic-card {float: left;width: 348px;height: 171px;position: relative;border-radius: 20px;overflow: hidden;margin: 20px 0;cursor: pointer;}
+.w-topic-card:nth-child(odd) {margin-right: 30px;}
 .w-topic-card .bg {position: absolute;background: #ededed center no-repeat;width:100%;height:100%;background-size: cover;}
 .w-topic-card .mask {position: absolute;z-index: 1;display: flex;align-items: center;justify-content: center;height: 100%;width: 100%;background-color: rgba(0,0,0,0.2);color: #fff;}
 .w-topic-card .mask h2 {font-size: 20px;max-width: 10em;text-align: center;margin: 0;display: inline-block;}
-.w-topic-list {display: flex;flex-flow: row wrap;justify-content: space-between;margin-bottom: 0;}
-.w-topic-list > li {width: 348px;height: 171px;flex: none;margin-bottom: 40px;cursor: pointer;}
