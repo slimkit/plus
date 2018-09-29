@@ -800,8 +800,8 @@ var comment = {
             noticebox('请勿重复提交', 0);
             return;
         }
-        var formData = { body: _this.support.editor.val() || _this.support.editor.text() };
-        if (!formData.body) {
+        var formData = { body: $.trim(_this.support.editor.val()) || $.trim(_this.support.editor.text()) };
+        if (formData.body == '') {
             noticebox('评论内容不能为空', 0); return;
         }
 
