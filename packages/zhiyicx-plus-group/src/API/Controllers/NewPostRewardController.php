@@ -22,11 +22,22 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\GoldType;
 use Zhiyi\PlusGroup\Models\Post as GroupPostModel;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
+use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
 class NewPostRewardController
 {
+    /**
+     * Create the controller instance.
+     */
+    public function __construct()
+    {
+        $this
+            ->middleware(VerifyUserPassword::class)
+            ->only(['store']);
+    }
+
     /**
      * 打赏操作.
      *
