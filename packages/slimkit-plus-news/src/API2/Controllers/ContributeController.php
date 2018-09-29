@@ -25,6 +25,7 @@ use Zhiyi\Plus\Utils\Markdown;
 use Zhiyi\Plus\Models\Tag as TagModel;
 use Zhiyi\Plus\Concerns\FindMarkdownFileTrait;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
+use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
@@ -53,6 +54,9 @@ class ContributeController extends Controller
     public function __construct(ApplicationContract $app)
     {
         $this->app = $app;
+        $this
+            ->middleware(VerifyUserPassword::class)
+            ->only(['store']);
     }
 
     /**

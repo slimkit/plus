@@ -83,7 +83,9 @@ class CurrencyNewsTest extends TestCase
      */
     public function testCurrencyPinnedNews()
     {
-        $user = factory(UserModel::class)->create();
+        $user = factory(UserModel::class)->create([
+            'password' => bcrypt('123456'),
+        ]);
         $user->currency()->update([
             'sum' => 1000,
             'type' => 1,
@@ -102,6 +104,7 @@ class CurrencyNewsTest extends TestCase
             ->json('POST', "/api/v2/news/{$news->id}/currency-pinneds", [
                 'amount' => 1000,
                 'day' => 1,
+                'password' => '123456',
             ]);
         $response
             ->assertStatus(201)
@@ -116,7 +119,9 @@ class CurrencyNewsTest extends TestCase
     public function testPinnedNewsComment()
     {
         $user = factory(UserModel::class)->create();
-        $other = factory(UserModel::class)->create();
+        $other = factory(UserModel::class)->create([
+            'password' => bcrypt('123456'),
+        ]);
         $other->currency()->update([
             'sum' => 1000,
             'type' => 1,
@@ -143,6 +148,7 @@ class CurrencyNewsTest extends TestCase
             ->json('POST', "/api/v2/news/{$news->id}/comments/{$comment->id}/currency-pinneds", [
                 'amount' => 100,
                 'day' => 1,
+                'password' => '123456',
             ]);
 
         $response

@@ -89,7 +89,9 @@ class PinnedNewsTest extends TestCase
      */
     public function testNewPinnedNewsComment()
     {
-        $other = factory(UserModel::class)->create();
+        $other = factory(UserModel::class)->create([
+            'password' => bcrypt('123456'),
+        ]);
         $other->currency()->increment('sum', 100);
         $comment = factory(CommentModel::class)->create([
             'user_id' =>    $other->id,
@@ -104,6 +106,7 @@ class PinnedNewsTest extends TestCase
             ->json('POST', "/api/v2/news/{$this->news->id}/comments/{$comment->id}/currency-pinneds", [
                 'amount' => 100,
                 'day' => 1,
+                'password' => '123456',
             ]);
         $response
             ->assertStatus(201)

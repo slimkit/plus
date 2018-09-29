@@ -37,7 +37,9 @@ class CurrencyPinnedFeedTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = factory(UserModel::class)->create();
+        $this->user = factory(UserModel::class)->create([
+            'password' => bcrypt('123456'),
+        ]);
 
         $this->feed = factory(Feed::class)->create([
             'user_id' => $this->user->id,
@@ -53,7 +55,9 @@ class CurrencyPinnedFeedTest extends TestCase
     {
         $response = $this
             ->actingAs($this->user, 'api')
-            ->json('POST', "/api/v2/feeds/{$this->feed->id}/currency-pinneds");
+            ->json('POST', "/api/v2/feeds/{$this->feed->id}/currency-pinneds", [
+                'password' => '123456',
+            ]);
         $response
             ->assertStatus(422);
     }
@@ -70,6 +74,7 @@ class CurrencyPinnedFeedTest extends TestCase
             ->json('POST', "/api/v2/feeds/{$this->feed->id}/currency-pinneds", [
                 'amount' => 1000,
                 'day' => 10,
+                'password' => '123456',
             ]);
         $response
             ->assertStatus(422);
@@ -92,6 +97,7 @@ class CurrencyPinnedFeedTest extends TestCase
             ->json('POST', "/api/v2/feeds/{$this->feed->id}/currency-pinneds", [
                 'amount' => 1000,
                 'day' => 10,
+                'password' => '123456',
             ]);
         $response
             ->assertStatus(201);
