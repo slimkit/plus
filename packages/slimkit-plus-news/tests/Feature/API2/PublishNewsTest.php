@@ -38,7 +38,9 @@ class PublishNewsTest extends TestCase
      */
     public function testPublishNews()
     {
-        $user = factory(UserModel::class)->create();
+        $user = factory(UserModel::class)->create([
+            'password' => bcrypt('123456'),
+        ]);
         $cate = factory(NewsCateModel::class)->create();
 
         $response = $this
@@ -52,6 +54,7 @@ class PublishNewsTest extends TestCase
                 'image' => null,
                 'author' => 'test',
                 'text_content' => 'test',
+                'password' => '123456',
             ]);
         $response
             ->assertStatus(201)

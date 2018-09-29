@@ -44,7 +44,9 @@ class CurrencyPinnedFeedCommentTest extends TestCase
 
         $this->owner = factory(UserModel::class)->create();
 
-        $this->other = factory(UserModel::class)->create();
+        $this->other = factory(UserModel::class)->create([
+            'password' => bcrypt('123456'),
+        ]);
 
         $this->feed = factory(Feed::class)->create([
             'user_id' => $this->owner->id,
@@ -76,6 +78,7 @@ class CurrencyPinnedFeedCommentTest extends TestCase
             ->json('POST', "/api/v2/feeds/{$this->feed->id}/comments/{$this->comment->id}/currency-pinneds", [
                 'amount' => 100,
                 'day' => 1,
+                'password' => '123456'
             ]);
         $response
             ->assertStatus(201)
