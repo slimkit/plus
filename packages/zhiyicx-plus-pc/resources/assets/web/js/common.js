@@ -1203,7 +1203,7 @@ var pinneds = function (url, type) {
             + '<p class="confirm_title">置顶帖子</p>'
             + '<div class="pinned_text">设置帖子置顶天数</div>'
             + '<div class="pinned_input">'
-                + '<input min="0" max="30" oninput="value=moneyLimit(value, this, \'range\')" type="number" placeholder="设置范围为1~30天">'
+                + '<input min="1" max="30" oninput="value=moneyLimit(value, this, \'range\')" type="number" placeholder="设置范围为1~30天">'
             + '</div>'
         + '</div>';
     }
