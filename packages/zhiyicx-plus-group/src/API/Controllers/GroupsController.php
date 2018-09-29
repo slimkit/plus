@@ -36,6 +36,7 @@ use Zhiyi\PlusGroup\Models\GroupMemberLog as GroupMemberLogModel;
 use Zhiyi\Plus\Utils\DateTimeToIso8601ZuluString;
 use Zhiyi\Plus\FileStorage\Resource;
 use Zhiyi\Plus\FileStorage\StorageInterface;
+use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
 
 class GroupsController
 {
@@ -837,6 +838,10 @@ class GroupsController
 
         if ($group->mode == 'paid' && ($user->currency()->firstOrCreate(['type' => 1], ['sum' => 0])->sum < $group->money)) {
             return response()->json(['message' => '账户余额不足不能申请加入'], 422);
+        } elseif ($group->mode = 'paid') {
+            app(VerifyUserPassword::class)->handle($request, function () {
+                // No code.
+            });
         }
 
         DB::beginTransaction();
