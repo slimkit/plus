@@ -20,6 +20,7 @@ namespace SlimKit\PlusQuestion\API2\Controllers;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\GoldType;
+use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use SlimKit\PlusQuestion\Models\Answer as AnswerModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
@@ -29,6 +30,16 @@ use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
 
 class NewAnswerRewardController extends Controller
 {
+    /**
+     * Create the controller instance.
+     */
+    public function __construct()
+    {
+        $this
+            ->middleware(VerifyUserPassword::class)
+            ->only(['store']);
+    }
+
     public function store(NewAnswerRewardRequest $request, ResponseFactoryContract $response, UserProcess $process, AnswerModel $answer, GoldType $goldModel)
     {
         $goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '积分';
