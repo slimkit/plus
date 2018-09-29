@@ -37,7 +37,6 @@ class SearchController extends BaseController
         $limit = $request->query('limit') ?: 9;
         $after = $request->query('after') ?: 0;
         $offset = $request->query('offset') ?: 0;
-        $index = $request->query('index') ?: 0;
         $keywords = $request->query('keywords') ?: '';
 
         switch ($type) {
@@ -110,7 +109,7 @@ class SearchController extends BaseController
                 break;
             case '6':
                 $params = [
-                    'limit' => 10,
+                    'limit' => $limit,
                     'offset' => $offset,
                     'follow' => 1,
                     'name' => $keywords
@@ -123,7 +122,7 @@ class SearchController extends BaseController
                 break;
             case '7':
                 $params = [
-                    'limit' => 10,
+                    'limit' => $limit,
                     'offset' => $offset,
                     'keyword' => $keywords
                 ];
@@ -134,13 +133,13 @@ class SearchController extends BaseController
                 break;
             case '8':
                 $params = [
-                    'limit' => 10,
-                    'index' => $index,
+                    'limit' => $limit,
+                    'index' => $after,
                     'q' => $keywords,
                 ];
                 $datas = api('GET', '/api/v2/feed/topics', $params);
                 $data['topics'] = $datas;
-                $after = end($datas)->id ?? 0;
+                $after = end($datas)['id'] ?? 0;
                 $html = view('pcview::templates.feed_topic', $data, $this->PlusData)->render();
                 break;
         }
