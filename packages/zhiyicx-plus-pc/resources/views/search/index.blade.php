@@ -60,11 +60,7 @@
                     </a>
                 </div>
             </div>
-            @if($type == 8)
-            <ul class="w-topic-list mt20" id="content_list"></ul>
-            @else
             <div class="clearfix" id="content_list"></div>
-            @endif
         </div>
     </div>
 

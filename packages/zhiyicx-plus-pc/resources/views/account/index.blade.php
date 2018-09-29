@@ -238,17 +238,17 @@
 
                         _this.$avatarSave.text('上传中...');
                         var params = {
-                            filename: _this.fileUpload.origin_filename,
+                            filename: md5(_this.fileUpload.origin_filename) + '.' + _this.fileUpload.origin_filename.split('.').splice(-1),
                             hash: hash,
                             size: blob.size,
                             mime_type: 'image/png',
                             storage: { channel: 'public' },
                         }
                         axios.post('/api/v2/storage', params).then(function(res) {
-                            var result = res.data
-                            var node = result.node
-
-                            axios({
+                            var result = res.data;
+                            var node = result.node;
+                            var instance = axios.create();
+                            instance.request({
                                 method: result.method,
                                 url: result.uri,
                                 headers: result.headers,

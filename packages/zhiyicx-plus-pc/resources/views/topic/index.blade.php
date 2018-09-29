@@ -19,11 +19,11 @@
 
         <hr>
 
-        <ul class="w-topic-list">
+        <div class="clearfix">
             @foreach ($list as $topic)
-            <li>@include('pcview::topic.widgets.topic_card', ['topic' => $topic])</li>
+            @include('pcview::topic.widgets.topic_card', ['topic' => $topic])
             @endforeach
-        </ul>
+        </div>
 
     </div>
     <div class="right">
