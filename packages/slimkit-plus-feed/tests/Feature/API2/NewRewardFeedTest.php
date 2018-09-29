@@ -41,7 +41,9 @@ class NewRewardFeedTest extends TestCase
 
         $this->owner = factory(UserModel::class)->create();
 
-        $this->other = factory(UserModel::class)->create();
+        $this->other = factory(UserModel::class)->create([
+            'password' => bcrypt('123456')
+        ]);
 
         $this->feed = factory(Feed::class)->create([
             'user_id' => $this->owner->id,
@@ -59,7 +61,10 @@ class NewRewardFeedTest extends TestCase
 
         $response = $this
             ->actingAs($this->other, 'api')
-            ->json('POST', "/api/v2/feeds/{$this->feed->id}/new-rewards", ['amount' => 10]);
+            ->json('POST', "/api/v2/feeds/{$this->feed->id}/new-rewards", [
+                'amount' => 10,
+                'password' => '123456',
+            ]);
 
         $response
             ->assertStatus(201)
