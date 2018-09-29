@@ -19,20 +19,22 @@
 
         <hr>
 
-        <div class="clearfix">
+        <div class="clearfix" id="topic_list">
+            @if ($type === 'hot')
             @foreach ($list as $topic)
             @include('pcview::topic.widgets.topic_card', ['topic' => $topic])
             @endforeach
+            @endif
         </div>
 
     </div>
     <div class="right">
         <div class="interaction">
-            <button class="ev-btn-create-topic">
+            <button onclick="gotoCreateTopic">
                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-topic4"></use></svg>
                 创建话题
             </button>
-            <button class="ev-btn-show-post">
+            <button onclick="popupPostDialog">
                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-topic"></use></svg>
                 发动态
             </button>
@@ -60,19 +62,22 @@
 <script>
 (function(){
 
-    // 事件绑定工厂
-    var eventMap = [
-        { el: '.ev-btn-create-topic', on: 'click', fn: gotoCreateTopic },
-        { el: '.ev-btn-show-post', on: 'click', fn: popupPostDialog },
-    ];
-    eventMap.forEach(function(event) {
-        $('.p-topic-index').on(event.on, event.el, event.fn);
+    var params = {
+        isAjax: true,
+    };
+    loader.init({
+        container: '#topic_list',
+        loading: '#topic_list',
+        url: '/topic',
+        params: params,
     });
 
+    // 创建话题
     function gotoCreateTopic() {
         location.href = '{{ url("/topic/create") }}';
     }
 
+    // 弹出发布动态弹框
     function popupPostDialog() {
         if (!TS.USER) return location.href= '{{ url("/auth/login") }}';
         layer.open({
