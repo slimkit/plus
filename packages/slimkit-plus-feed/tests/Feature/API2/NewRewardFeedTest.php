@@ -42,7 +42,7 @@ class NewRewardFeedTest extends TestCase
         $this->owner = factory(UserModel::class)->create();
 
         $this->other = factory(UserModel::class)->create([
-            'password' => bcrypt('123456')
+            'password' => bcrypt('123456'),
         ]);
 
         $this->feed = factory(Feed::class)->create([

@@ -106,7 +106,7 @@ class PinnedNewsTest extends TestCase
             ->json('POST', "/api/v2/news/{$this->news->id}/comments/{$comment->id}/currency-pinneds", [
                 'amount' => 100,
                 'day' => 1,
-                'password' => '123456'
+                'password' => '123456',
             ]);
         $response
             ->assertStatus(201)
