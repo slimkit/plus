@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\WalletCharge;
 use SlimKit\PlusQuestion\Models\Answer;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
@@ -33,6 +34,9 @@ class AnswerOnlookersController extends Controller
     public function __construct()
     {
         $this->onlookers_amount = config('question.onlookers_amount');
+        $this
+            ->middleware(VerifyUserPassword::class)
+            ->only(['store', 'newStore']);
     }
 
     /**
