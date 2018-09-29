@@ -21,7 +21,13 @@
             </div>
             <div class="news-right">
                 <p class="title">{{$repostable['title']}}</p>
-                <p class="description">{{$repostable['subject']}}</p>
+                <p class="description">
+                    @if (mb_strlen($repostable['subject']) > 80)
+                    {{ mb_substr($repostable['subject'], 0, 80) }}...
+                    @else
+                    {{ $repostable['subject'] }}
+                    @endif
+                </p>
                 <div class="info">
                     <span class="category">{{ $repostable['category']['name'] }}</span>
                     <span class="information">{{ $repostable['author'] }} · {{ $repostable['hits'] }}浏览 · {{ getTime($repostable['created_at']) }}</span>
@@ -108,7 +114,13 @@
                 $summary = preg_replace('/<{0,1}((http|ftp|https):\/\/)(([a-zA-Z0-9\._-]+\.[a-zA-Z]{2,6})|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,4})*(\/[#a-zA-Z0-9\&%_\.\/-~-]*)?>{0,1}/', '<span style="color: #59b6d7;">网页链接</span>', $summary); // 超级厉害的正则（来自android端）匹配网址
             @endphp
             <p class="description"><strong>{{$repostable['title']}}</strong></p>
-            <p class="description">{!! $summary !!}</p>
+            <p class="description">
+                @if (mb_strlen($summary) > 60)
+                {{ mb_substr($summary, 0, 60) }}...
+                @else
+                {{ $summary }}
+                @endif
+            </p>
             @if ($repostable['image'] ?? false)
             <img class="post_cover" src="{{ url('/api/v2/files/' . $repostable['image']) }}" alt="">
             @endif
