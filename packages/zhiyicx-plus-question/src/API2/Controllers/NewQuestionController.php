@@ -21,6 +21,7 @@ namespace SlimKit\PlusQuestion\API2\Controllers;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Concerns\FindMarkdownFileTrait;
+use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use SlimKit\PlusQuestion\Models\Topic as TopicModel;
 use SlimKit\PlusQuestion\Models\Question as QuestionModel;
@@ -75,6 +76,10 @@ class NewQuestionController extends Controller
             return $response->json(['automaticity' => trans('plus-question::questions.开启围观必须设置自动入账')], 422);
         } elseif ($look && ! $amount) {
             return $response->json(['amount' => trans('plus-question::question.开启围观必须设置悬赏金额')], 422);
+        } elseif ($amount) {
+            app(VerifyUserPassword::class)->handle($request, function () {
+                // No Code.
+            });
         }
 
         // Find topics.
