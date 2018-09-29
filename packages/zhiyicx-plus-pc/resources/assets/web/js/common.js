@@ -1947,7 +1947,7 @@ $(function() {
         $('.ev-selected-repostable-topics').append(html);
         repostable.selectedTopics.push(id);
         repostable.showTopics(false);
-        $('.layui-layer-content').css('height', $('.layui-layer-content .repostable-wrap').outerHeight())
+        $('.layui-layer-page .layui-layer-content').css('height', $('.layui-layer-content .repostable-wrap').outerHeight())
     })
 
     // 捕获移除话题(用于转发动态)
