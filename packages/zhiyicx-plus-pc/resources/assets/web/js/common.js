@@ -954,8 +954,10 @@ var comment = {
      *
      * @param {boolean} [show] 是否为显示, 如果不填则表示切换
      */
-    showMention: function(show) {
-        var $el = $('.ev-view-comment-mention-select')
+    showMention: function(show, el) {
+        var $el;
+        if (el) $el = $(el).parent().find('.ev-view-comment-mention-select')
+        else $el = $('.ev-view-comment-mention-select')
         if (show === false) $el.slideUp('fast');
         else if (show === true) $el.slideDown('fast');
         else $el.slideToggle('fast');
@@ -1917,7 +1919,7 @@ $(function() {
         }
         if (event.which === 16 ) isShiftKey = true;
         if (event.which === 50) is2Key = true
-        if (isShiftKey && is2Key) comment.showMention(true);
+        if (isShiftKey && is2Key) comment.showMention(true, event.target);
 
     });
 
