@@ -21,6 +21,7 @@ namespace SlimKit\PlusQuestion\API2\Controllers;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\WalletCharge;
 use SlimKit\PlusQuestion\Models\Question;
+use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
 use SlimKit\PlusQuestion\Models\QuestionApplication;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
@@ -32,6 +33,9 @@ class QuestionApplicationController extends Controller
     public function __construct()
     {
         $this->apply_amount = config('question.apply_amount');
+        $this
+            ->middleware(VerifyUserPassword::class)
+            ->only(['store', 'newStore']);
     }
 
     /**
