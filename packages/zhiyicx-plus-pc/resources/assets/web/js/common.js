@@ -1867,11 +1867,11 @@ $(function() {
     // 捕获评论区at用户
     $(document).on('click', '.ev-view-comment-follow-users > li', function() {
         var name = $(this).data('user-name');
-        var $el = $(this).closest('.comment_textarea, .comment_box').children('.comment_editor');
+        var $el = $(this).closest('.comment_textarea, .comment_box').find('.comment_editor');
 
         $el.html($el.html().replace(/@$/g, ''))
         $el.html($el.html() + " <span contenteditable=\"false\" style=\"color: #59b6d7;\">\u00ad@" + name + "\u00ad</span> ");
-        checkNums($(this).closest('.comment_textarea').find('.comment_editor')[0], 255, 'nums');
+        checkNums($el[0], 255, 'nums');
         comment.showMention(false);
     })
 
