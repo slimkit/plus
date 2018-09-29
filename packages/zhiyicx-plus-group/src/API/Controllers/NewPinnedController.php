@@ -28,12 +28,23 @@ use Zhiyi\PlusGroup\Models\Post as PostModel;
 use Zhiyi\Plus\Models\Comment as CommentModel;
 use Zhiyi\PlusGroup\Models\Pinned as PinnedModel;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
+use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
 use Zhiyi\PlusGroup\Models\GroupMember as MemberModel;
 use Zhiyi\PlusGroup\Models\GroupIncome as GroupIncomeModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
 class NewPinnedController extends Controller
 {
+    /**
+     * Create the controller instance.
+     */
+    public function __construct()
+    {
+        $this
+            ->middleware(VerifyUserPassword::class)
+            ->only(['storePost', 'storeComments']);
+    }
+
     /**
      * 申请帖子置顶.
      *
