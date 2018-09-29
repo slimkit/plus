@@ -181,7 +181,7 @@
             <div class="info clearfix">
                 <div class="auth_header">
                     <a href="{{ @route('pc:groupread', ['group_id' => $post['group']['id']]) }}">
-                        <img src="{{ getAvatar($post['group'], 60) }}" class="avatar"/>
+                        <img src="{{ $post['group']['avatar'] ? $post['group']['avatar']['url'] : asset('assets/pc/images/default_picture.png') }}" class="avatar"/>
                     </a>
                 </div>
                 <div class="auth_info">
