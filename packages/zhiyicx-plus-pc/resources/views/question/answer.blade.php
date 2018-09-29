@@ -20,9 +20,6 @@
             <dt class="fl">
                 @if($answer['anonymity'] == 1 && !(isset($TS) && $TS['id'] == $answer['user_id']))
                     <img class="round" src="{{ asset('assets/pc/images/ico_anonymity_60.png') }}" width="60">
-                    @if ($answer['user']['verified'])
-                        <img class="role-icon" src="{{ $answer['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
-                    @endif
                 @else
                     <a href="{{ route('pc:mine', $answer['user']['id']) }}">
                         <img class="round" src="{{ getAvatar($answer['user'], 60) }}" width="60">
@@ -53,7 +50,7 @@
                 <div class="options_div">
                     <div class="triangle"></div>
                     <ul>
-                        @if($TS && $answer['user']['id'] == $TS['id'] && !$answer['adoption'] && !$answer['invited'])
+                        @if($TS && $answer['user_id'] == $TS['id'] && !$answer['adoption'] && !$answer['invited'])
                         <li>
                             <a href="{{ route('pc:answeredit', $answer['id']) }}">
                                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-edit"></use></svg>编辑
@@ -210,7 +207,7 @@ $(function(){
     $('#follow').click(function(){
         var _this = $(this);
         var status = $(this).attr('status');
-        var user_id = "{{ $answer['user']['id'] }}";
+        var user_id = "{{ $answer['user_id'] }}";
         follow(status, user_id, _this, afterdata);
     });
 
