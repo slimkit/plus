@@ -22,6 +22,7 @@ namespace Zhiyi\Plus\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\setting;
 use Illuminate\Contracts\Auth\Guard;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -54,7 +55,9 @@ class VerifyUserPassword
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($this->auth->guest()) {
+        if (setting('pay', 'validate-password', false) === false) {
+            return $next($request);
+        } elseif ($this->auth->guest()) {
             throw new UnauthorizedHttpException('请先登录');
         } elseif ($this->auth->getProvider()->validateCredentials(
             $this->auth->user(),
