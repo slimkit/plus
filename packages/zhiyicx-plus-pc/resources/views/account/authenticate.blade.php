@@ -159,7 +159,6 @@ $('.J-authenticate-btn').on('click', function(e) {
 
         return args.get();
     };
-    console.log(getArgs());return false;
     if (authType == 'user') {
         if (getArgs().name == '') {
             noticebox('请填写真实姓名', 0);return;

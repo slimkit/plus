@@ -42,6 +42,7 @@
             <div id="J-commentbox-{{ $comments_type }}{{ $id }}">
                 @if($comments_count)
                     @foreach($comments_data as $cv)
+                        @if ($cv['user'] ?? false)
                         <p class="comment_con" id="comment{{$cv['id']}}">
                             <span class="tcolor">{{ $cv['user']['name'] }}：</span>
                             @if ($cv['reply_user'])
@@ -68,6 +69,7 @@
                                 <a class="mouse" onclick="reported.init('{{$cv['id']}}', '{{$cv['commentable_type']}}');">举报</a>
                             @endif
                         </p>
+                        @endif
                     @endforeach
                 @endif
             </div>
