@@ -50,4 +50,7 @@ Route::middleware(['auth:web', 'admin'])->prefix('admin')->group(function (Route
 
     $route->get('file-storage/channels/public', AdminControllers\FileStorage\PublicChannel::class.'@show');
     $route->patch('file-storage/channels/public', AdminControllers\FileStorage\PublicChannel::class.'@update');
+
+    $route->get('setting/security/pay-validate-password', AdminControllers\Setting\Security::class.'@payValidateSwitch');
+    $route->put('setting/security/pay-validate-password', AdminControllers\Setting\Security::class.'@changePayValidateSwitch');
 });
