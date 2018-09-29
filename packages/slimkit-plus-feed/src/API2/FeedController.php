@@ -97,22 +97,20 @@ class FeedController extends Controller
 
         $user = $request->user('api')->id ?? 0;
 
-        return $feedModel->getConnection()->transaction(function () use ($feeds, $repository, $user) {
-            return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
-                $feed->feed_view_count += 1;
-                $feed->hot = $feed->makeHotValue();
-                $feed->save();
+        return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
+            $feed->feed_view_count += 1;
+            $feed->hot = $feed->makeHotValue();
+            $feed->save();
 
-                $repository->setModel($feed);
-                $repository->images();
-                $repository->format($user);
-                $repository->previewComments();
+            $repository->setModel($feed);
+            $repository->images();
+            $repository->format($user);
+            $repository->previewComments();
 
-                $feed->has_collect = $feed->collected($user);
-                $feed->has_like = $feed->liked($user);
+            $feed->has_collect = $feed->collected($user);
+            $feed->has_like = $feed->liked($user);
 
-                return $feed;
-            });
+            return $feed;
         });
     }
 
@@ -167,22 +165,20 @@ class FeedController extends Controller
         ->limit($limit)
         ->get();
 
-        return $feedModel->getConnection()->transaction(function () use ($feeds, $repository, $user) {
-            return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
-                $feed->feed_view_count += 1;
-                $feed->hot = $feed->makeHotValue();
-                $feed->save();
+        return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
+            $feed->feed_view_count += 1;
+            $feed->hot = $feed->makeHotValue();
+            $feed->save();
 
-                $repository->setModel($feed);
-                $repository->images();
-                $repository->format($user);
-                $repository->previewComments();
+            $repository->setModel($feed);
+            $repository->images();
+            $repository->format($user);
+            $repository->previewComments();
 
-                $feed->has_collect = $feed->collected($user);
-                $feed->has_like = $feed->liked($user);
+            $feed->has_collect = $feed->collected($user);
+            $feed->has_like = $feed->liked($user);
 
-                return $feed;
-            });
+            return $feed;
         });
     }
 
@@ -219,21 +215,19 @@ class FeedController extends Controller
             },
         ]);
 
-        return $model->getConnection()->transaction(function () use ($feeds, $repository, $user) {
-            return $feeds->map(function ($feed) use ($repository, $user) {
-                $feed->feed_view_count += 1;
-                $feed->hot = $feed->makeHotValue();
-                $feed->save();
+        return $feeds->map(function ($feed) use ($repository, $user) {
+            $feed->feed_view_count += 1;
+            $feed->hot = $feed->makeHotValue();
+            $feed->save();
 
-                $repository->setModel($feed);
-                $repository->images();
-                $repository->format($user);
-                $repository->previewComments();
-                $feed->has_collect = $feed->collected($user);
-                $feed->has_like = $feed->liked($user);
+            $repository->setModel($feed);
+            $repository->images();
+            $repository->format($user);
+            $repository->previewComments();
+            $feed->has_collect = $feed->collected($user);
+            $feed->has_like = $feed->liked($user);
 
-                return $feed;
-            });
+            return $feed;
         });
     }
 
@@ -283,22 +277,20 @@ class FeedController extends Controller
             ->limit($limit)
             ->get();
 
-        return $model->getConnection()->transaction(function () use ($repository, $user, $feeds) {
-            return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
-                $feed->feed_view_count += 1;
-                $feed->hot = $feed->makeHotValue();
-                $feed->save();
+        return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
+            $feed->feed_view_count += 1;
+            $feed->hot = $feed->makeHotValue();
+            $feed->save();
 
-                $repository->setModel($feed);
-                $repository->images();
-                $repository->format($user->id);
-                $repository->previewComments();
+            $repository->setModel($feed);
+            $repository->images();
+            $repository->format($user->id);
+            $repository->previewComments();
 
-                $feed->has_collect = $feed->collected($user->id);
-                $feed->has_like = $feed->liked($user);
+            $feed->has_collect = $feed->collected($user->id);
+            $feed->has_like = $feed->liked($user);
 
-                return $feed;
-            });
+            return $feed;
         });
     }
 
@@ -831,18 +823,16 @@ class FeedController extends Controller
             ->limit($limit)
             ->get();
 
-        return $feedModel->getConnection()->transaction(function () use ($feeds, $repository, $user) {
-            return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
-                $repository->setModel($feed);
-                $repository->images();
-                $repository->format($user);
-                $repository->previewComments();
+        return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
+            $repository->setModel($feed);
+            $repository->images();
+            $repository->format($user);
+            $repository->previewComments();
 
-                $feed->has_collect = $feed->collected($user);
-                $feed->has_like = $feed->liked($user);
+            $feed->has_collect = $feed->collected($user);
+            $feed->has_like = $feed->liked($user);
 
-                return $feed;
-            });
+            return $feed;
         });
     }
 }
