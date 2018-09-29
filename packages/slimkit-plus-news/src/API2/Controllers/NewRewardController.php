@@ -36,7 +36,7 @@ class NewRewardController extends Controller
     {
         $this
             ->middleware(VerifyUserPassword::class)
-            ->only(['pay', 'payByCurrency']);
+            ->only(['reward']);
     }
 
     /**

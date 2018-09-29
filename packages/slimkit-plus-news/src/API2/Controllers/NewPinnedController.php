@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
@@ -31,6 +32,16 @@ use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned as NewsPinnedM
 
 class NewPinnedController extends Controller
 {
+    /**
+     * Create the controller instance.
+     */
+    public function __construct()
+    {
+        $this
+            ->middleware(VerifyUserPassword::class)
+            ->only(['newsPinned', 'commentPinned']);
+    }
+
     /**
      * 申请资讯置顶.
      *
