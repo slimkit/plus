@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Zhiyi\Plus\Models\GoldType;
+use function Zhiyi\Plus\setting;
 use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\CurrencyType;
@@ -66,6 +67,7 @@ class BootstrappersController extends Controller
         config('im.helper-user') && $bootstrappers['im:helper-user'] = config('im.helper-user');
         // 每页数据量
         $bootstrappers['limit'] = config('app.data_limit');
+        $bootstrappers['pay-validate-user-password'] = setting('pay', 'validate-password', false);
 
         return new JsonResponse($this->filterNull($events->dispatch('v2', [$bootstrappers])), JsonResponse::HTTP_OK);
     }
