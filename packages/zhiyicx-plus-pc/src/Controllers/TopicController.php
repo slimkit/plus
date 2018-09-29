@@ -26,14 +26,25 @@ class TopicController extends BaseController
      */
     public function index(Request $request)
     {
-        $data['list_hot'] = api('GET', '/api/v2/feed/topics', ['only' => 'hot']);
-
         $data['type'] = $request->query('type') ?? 'hot';
-        if ($data['type'] === 'new') {
-            $data['list'] = api('GET', '/api/v2/feed/topics', ['limit' => 8]);
-        } else {
-            $data['list'] = $data['list_hot'];
+        if ($request->isAjax) {
+            $after = $request->query('after') ?? 0;
+            $data['topics'] = api('GET', '/api/v2/feed/topics', [
+                'limit' => 8,
+                'index' => $after,
+            ]);
+
+            $view = view('pcview::templates.feed_topic', $data, $this->PlusData)->render();
+            return response()->json([
+                'status' => true,
+                'data' => $view,
+                'count' => count($data['topics']),
+                'after' => end($data['topics'])['id'] ?? 0,
+            ]);
         }
+
+        $data['list_hot'] = api('GET', '/api/v2/feed/topics', ['only' => 'hot']);
+        $data['list'] = $data['list_hot'];
 
         return view('pcview::topic.index', $data, $this->PlusData);
     }
