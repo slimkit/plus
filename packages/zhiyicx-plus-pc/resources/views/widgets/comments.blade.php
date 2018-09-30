@@ -15,7 +15,7 @@
                 <div class="comment_post">
                     <span class="dy_cs">可输入<span class="nums" style="color: rgb(89, 182, 215);">255</span>字</span>
                     <span class="font14 mention-btn">
-                        <div onclick="comment.showMention(true);">
+                        <div onclick="comment.showMention(true, this);">
                             <svg class="icon" aria-hidden="true" style="fill: #999;"><use xlink:href="#icon-mention"></use></svg>
                             某人
                         </div>
@@ -90,7 +90,7 @@
             <div class="comment_editor" id="J-editor-{{ $comments_type }}{{ $id }}" placeholder="说点什么吧" oninput="checkNums(this, 255, 'nums');" contenteditable></div>
             <div class="comment_buttons">
                 <span class="font14 mention-btn">
-                    <div onclick="comment.showMention(true);">
+                    <div onclick="comment.showMention(true, this);">
                         <svg class="icon" aria-hidden="true" style="fill: #999;"><use xlink:href="#icon-mention"></use></svg>
                         某人
                     </div>

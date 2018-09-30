@@ -176,6 +176,7 @@ easemob = {
                     dbMsg.cid = item.id;
                     dbMsg.read = (easemob.cid == dbMsg.cid && $('.chat_dialog').length > 0) ? 1 : 0;
                     window.TS.dataBase.message.add(dbMsg);
+                    easemob.updateUsers([message.from]);
 
                 }
 

@@ -954,8 +954,10 @@ var comment = {
      *
      * @param {boolean} [show] 是否为显示, 如果不填则表示切换
      */
-    showMention: function(show) {
-        var $el = $('.ev-view-comment-mention-select')
+    showMention: function(show, el) {
+        var $el;
+        if (el) $el = $(el).parent().find('.ev-view-comment-mention-select')
+        else $el = $('.ev-view-comment-mention-select')
         if (show === false) $el.slideUp('fast');
         else if (show === true) $el.slideDown('fast');
         else $el.slideToggle('fast');
@@ -1203,7 +1205,7 @@ var pinneds = function (url, type) {
             + '<p class="confirm_title">置顶帖子</p>'
             + '<div class="pinned_text">设置帖子置顶天数</div>'
             + '<div class="pinned_input">'
-                + '<input min="0" max="30" oninput="value=moneyLimit(value, this, \'range\')" type="number" placeholder="设置范围为1~30天">'
+                + '<input min="1" max="30" oninput="value=moneyLimit(value, this, \'range\')" type="number" placeholder="设置范围为1~30天">'
             + '</div>'
         + '</div>';
     }
@@ -1917,7 +1919,7 @@ $(function() {
         }
         if (event.which === 16 ) isShiftKey = true;
         if (event.which === 50) is2Key = true
-        if (isShiftKey && is2Key) comment.showMention(true);
+        if (isShiftKey && is2Key) comment.showMention(true, event.target);
 
     });
 
@@ -1945,7 +1947,7 @@ $(function() {
         $('.ev-selected-repostable-topics').append(html);
         repostable.selectedTopics.push(id);
         repostable.showTopics(false);
-        $('.layui-layer-content').css('height', $('.layui-layer-content .repostable-wrap').outerHeight())
+        $('.layui-layer-page .layui-layer-content').css('height', $('.layui-layer-content .repostable-wrap').outerHeight())
     })
 
     // 捕获移除话题(用于转发动态)
