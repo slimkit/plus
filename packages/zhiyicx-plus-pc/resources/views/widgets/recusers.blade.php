@@ -8,10 +8,10 @@
         @foreach ($users as $user)
         <li>
             <a href="{{ route('pc:mine', $user['id']) }}">
-                <img src="{{ getAvatar($user, 50) }}"/>
                 @if($user['verified'])
                     <img class="role-icon" src="{{ $user['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                 @endif
+                <img src="{{ getAvatar($user, 50) }}"/>
             </a>
             <span>
                 <a href="{{ route('pc:mine', $user['id']) }}">{{ $user['name'] }}</a>
