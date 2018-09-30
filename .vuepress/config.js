@@ -25,7 +25,7 @@ module.exports = {
                 items: [
                     { text: '安装教程', link: '/guide/installation/' },
                     { text: '升级指南', link: '/guide/upgrade/' },
-                    { text: '应用开发', link: '/guide/app/' }
+                    { text: '开发教程', link: '/guide/dev/' }
                 ]
             },
             {
@@ -49,6 +49,11 @@ module.exports = {
             '/guide/upgrade/': [
                 '',
                 '1.9-to-2.0'
+            ],
+            '/guide/dev/': [
+                '',
+                'create-blog-package',
+                'create-pages'
             ]
         }
     },
