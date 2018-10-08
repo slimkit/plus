@@ -1,7 +1,12 @@
 {{-- 动态发布 --}}
 <div class="feed_post">
+    <div class="input-wrap">
+        <textarea id="feed_content" class="post_textarea" placeholder="说说新鲜事" onkeyup="checkNums(this, 255, 'nums');"></textarea>
+        <div id="mirror" class="post_textarea" contenteditable="true"></div>
+    </div>
 
-    <div class="post_textarea" placeholder="说说新鲜事" id="feed_content" amount="" onkeyup="checkNums(this, 255, 'nums');" contenteditable></div>
+    {{-- at列表 --}}
+    <ul id="mention_list"></ul>
 
     <div class="post_extra">
         <span class="font14 ev-btn-feed-pic">

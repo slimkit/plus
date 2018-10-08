@@ -32,7 +32,7 @@ weibo.postFeed = function() {
     if (select == 'pay') {
         if ($('.feed_picture').find('img').length > 0) { // 图片付费弹窗
             // 分享文字内容不超过255字
-            if ($('#feed_content').text().length > initNums) {
+            if ($('#feed_content').val().length > initNums) {
                 noticebox('分享内容长度不能超过' + initNums + '字', 0);
                 return false;
             }
@@ -69,7 +69,7 @@ weibo.postFeed = function() {
             var html = pay_box + images_box + info_box + '</div>';
         } else { // 文字付费弹窗
             // 分享字数限制
-            var strlen = $('#feed_content').text().length;
+            var strlen = $('#feed_content').val().length;
             var leftnums = initNums - strlen;
             if (leftnums < 0 || leftnums == initNums || strlen < TS.BOOT.feed.limit) {
                 noticebox('付费动态内容长度为' + TS.BOOT.feed.limit + '-' + initNums + '字', 0);
@@ -100,7 +100,7 @@ weibo.postFeed = function() {
         });
     } else {
         // 分享字数限制
-        var strlen = _.trim($('#feed_content').text()).length;
+        var strlen = _.trim($('#feed_content').val()).length;
         var leftnums = initNums - strlen;
 
         // 免费并仅有文字时验证1-255个字，其余不超过255字即可
@@ -117,9 +117,11 @@ weibo.doPostFeed = function(type) {
     if (_this.lockStatus == 1) {
         return;
     }
+    var post_content = $('#feed_content').val()
+    post_content = post_content.replace(/(@\S+)(\s)/g, '\u00ad$1\u00ad$2')
     // 组装数据
     var data = {
-        feed_content: $('#feed_content').text(),
+        feed_content: post_content,
         feed_from: 1,
         feed_mark: TS.MID + new Date().getTime(),
         topics: weibo.selectedTopics,
@@ -168,7 +170,7 @@ weibo.doPostFeed = function(type) {
     axios.post('/api/v2/feeds', data)
       .then(function (response) {
             $('.feed_picture').html('').hide();
-            $('#feed_content').html('');
+            $('#feed_content').val('');
             checkNums($('#feed_content')[0], 255, 'nums');
             weibo.afterPostFeed(response.data.id);
             noticebox('发布成功', 1);
@@ -424,7 +426,7 @@ weibo.searchUser = _.debounce(function(el) {
             $('.ev-view-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
         })
     }
-}, 450),
+}, 450)
 
 $(function() {
 
@@ -501,70 +503,9 @@ $(function() {
       var name = $(this).data('user-name');
       var $el = $('#feed_content');
 
-      $el.html($el.html().replace(/@$/g, ''));
-      $el.html($el.html() + " <span contenteditable=\"false\" style=\"color: #59b6d7;\">\u00ad@" + name + "\u00ad</span> ")
+      $el.val($el.val() + "@" + name + " ")
       checkNums($('#feed_content'), 255, 'nums');
       weibo.showMention(false);
-    })
-
-    // 监听输入框按键 用于检测@符号键入和删除整段@内容
-    var isShiftKey = false;
-    var is2Key = false;
-
-    // 监听输入框按键, 检测到退格键删除@区域
-    $('#feed_content').on('keydown', function (event) {
-      if (window.getSelection && event.which == 8) { // backspace
-          // fix backspace bug in FF
-          // https://bugzilla.mozilla.org/show_bug.cgi?id=685445
-          var selection = window.getSelection();
-          if (!selection.isCollapsed || !selection.rangeCount) {
-              return;
-          }
-
-          var curRange = selection.getRangeAt(selection.rangeCount - 1);
-          if (curRange.commonAncestorContainer.nodeType == 3 && curRange.startOffset > 0) {
-              // we are in child selection. The characters of the text node is being deleted
-              return;
-          }
-
-          var range = document.createRange();
-          if (selection.anchorNode != this) {
-              // selection is in character mode. expand it to the whole editable field
-              range.selectNodeContents(this);
-              range.setEndBefore(selection.anchorNode);
-          } else if (selection.anchorOffset > 0) {
-              range.setEnd(this, selection.anchorOffset);
-          } else {
-              // reached the beginning of editable field
-              return;
-          }
-          range.setStart(this, range.endOffset - 1);
-
-          var previousNode = range.cloneContents().lastChild;
-          if (previousNode && previousNode.contentEditable == 'false') {
-              // this is some rich content, e.g. smile. We should help the user to delete it
-              range.deleteContents();
-              event.preventDefault();
-          }
-      }
-      if (event.which === 16 ) {
-        isShiftKey = true;
-      }
-      if (event.which === 50) {
-        is2Key = true
-      }
-      if (isShiftKey && is2Key) {
-        weibo.showMention(true);
-      }
-    });
-
-    $('#feed_content').on('keyup', function(event) {
-      if (event.which === 16) {
-        isShiftKey = false;
-      }
-      if (event.which === 50) {
-        is2Key = false;
-      }
     })
 
     // 微博分类tab
