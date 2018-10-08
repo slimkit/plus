@@ -132,10 +132,6 @@ class HomeController
 }
 ```
 
-然后我们访问 `/blogs` 你会看到下面的效果：
-
-<img :src="$withBase('/assets/img/guide/dev/create-pages-layout-view.png')" />
-
 ## 顶栏用户图标
 
 我们上面创建玩基础模板了，我们来处理下顶部用户状态吧，当用户没有登录的时候我们显示「登录按钮」，登录成功后我们显示用户头像和名字。
@@ -208,3 +204,40 @@ class HomeController
 ```
 
 然后保存，我们就完成了用户的登录与退出（因为 Plus 自带登录页面，所以无需再写登录页面）
+
+## 开源版设置 Blog 默认进入
+
+我们的开发教程是在开源版本的 Plus 程序上进行的，是不是觉得每次都要在 URL 输入 `/blogs` 进入很麻烦？我们现在就来设置默认用户打开就进入 Blog 首页即可！
+
+我们打开拓展包的 `routes/web.php` 文件：
+
+```php
+<?php
+
+use Illuminate\Support\Facades\Route;
+use SlimKit\Plus\Packages\Blog\Web\Controllers as Web;
+use Illuminate\Contracts\Routing\Registrar as RouteRegisterContract;
+
+Route::get('/', Web\HomeController::class.'@index');
+Route::group(['prefix' => 'blogs'], function (RouteRegisterContract $route) {
+    // TODO
+});
+```
+
+## 后台入口
+
+我们覆盖了默认首页，我们自定义的页面没有了默认首页的提供的后台入口，所以我们在顶部用户图标下拉菜单中增加后台入口吧！
+
+我们先打开包的 `resources/views/headers/user.blade.php` 中。在「退出登录」的 `li` 标签前面增加：
+
+```html
+@if (Auth::user()->ability('admin: login'))
+    <li><a href="{{ url('/admin') }}">进入后台</a></li>
+@endif
+```
+
+## 页面预览
+
+我们这一步就开发完成了所有页面公用的 Layout 部分，我们来看看效果吧！
+
+<img :src="$withBase('/assets/img/guide/dev/create-pages-layout-view.png')" />
