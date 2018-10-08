@@ -1,5 +1,5 @@
 ---
-title: 创建 Blog 应用
+title: 创建应用
 ---
 
 从这里开始，我们假设你已经在你的本地安装好了 Plus 程序的 Master 分支版本程序。
@@ -12,13 +12,13 @@ title: 创建 Blog 应用
 php artisan package:create
 ```
 
-<img :src="$withBase('/assets/img/guide/dev/create-blog-package.gif')" />
+<img :src="$withBase('/assets/img/guide/dev/blog/create-blog-package.gif')" />
 
 我们将包名称定义为 `slimkit/plus-blog` 命令空间为 `SlimKit\Plus\Packages\Blog\` 创建完成后，页面会提示你所处位置，存储位置位于 Plus 程序的 `packages/` 目录下，名字叫做 `slimkit-plus-blo`。
 
 我们进入 `packages/slimkit-plus-blog` 目录，你会看到已经为你生成好了下面的结构：
 
-<img :src="$withBase('/assets/img/guide/dev/base-created-package-dir-tree.png')" /> 
+<img :src="$withBase('/assets/img/guide/dev/blog/base-created-package-dir-tree.png')" /> 
 
 ## 安装本地拓展包
 
@@ -43,7 +43,7 @@ composer require slimkit/plus-blog -vvv
 
 等到命令完成。然后执行 `php artisan package:handle` 你会看到下面红框部分的信息：
 
-<img :src="$withBase('/assets/img/guide/dev/package-handlers-output.png')" /> 
+<img :src="$withBase('/assets/img/guide/dev/blog/package-handlers-output.png')" /> 
 
 > 开发过程，真正需要的是红色框下面的那一些命令。
 

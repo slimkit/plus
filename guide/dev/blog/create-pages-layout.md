@@ -1,5 +1,5 @@
 ---
-title: 创建前台页面
+title: 创建页面
 ---
 
 我们已经设计好了数据表，创建的 Blog 已经安装到了 Plus 程序上，这一章，我们来编写前台所需要的 UI 和逻辑部分。注意，这里不是去拓展 PC 的 UI，而是使用 Bootstrap 3 编写 Blog 的页面，因为我这里拟定你是使用开源版的 Plus 程序。
@@ -240,4 +240,4 @@ Route::group(['prefix' => 'blogs'], function (RouteRegisterContract $route) {
 
 我们这一步就开发完成了所有页面公用的 Layout 部分，我们来看看效果吧！
 
-<img :src="$withBase('/assets/img/guide/dev/create-pages-layout-view.png')" />
+<img :src="$withBase('/assets/img/guide/dev/blog/create-pages-layout-view.png')" />
