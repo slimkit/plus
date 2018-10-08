@@ -30,11 +30,11 @@
     </div>
     <div class="right">
         <div class="interaction">
-            <button onclick="gotoCreateTopic">
+            <button onclick="gotoCreateTopic()">
                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-topic4"></use></svg>
                 创建话题
             </button>
-            <button onclick="popupPostDialog">
+            <button onclick="popupPostDialog()">
                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-topic"></use></svg>
                 发动态
             </button>
@@ -71,32 +71,32 @@
         url: '/topic',
         params: params,
     });
-
-    // 创建话题
-    function gotoCreateTopic() {
-        location.href = '{{ url("/topic/create") }}';
-    }
-
-    // 弹出发布动态弹框
-    function popupPostDialog() {
-        if (!TS.USER) return location.href= '{{ url("/auth/login") }}';
-        layer.open({
-            type: 1,
-            title: '动态发布',
-            area: '600px',
-            content: $('.ev-post-feed-dialog')
-        })
-
-        // 发布微博
-        var up = $('.layui-layer .post_extra').Huploadify({
-            auto:true,
-            multi:true,
-            newUpload:true,
-            buttonText:'',
-            onUploadSuccess: weibo.afterUpload
-        });
-    }
-
 })()
+
+// 创建话题
+function gotoCreateTopic() {
+    location.href = '{{ url("/topic/create") }}';
+}
+
+// 弹出发布动态弹框
+function popupPostDialog() {
+    if (!TS.USER) return location.href= '{{ url("/auth/login") }}';
+    layer.open({
+        type: 1,
+        title: '动态发布',
+        area: '600px',
+        content: $('.ev-post-feed-dialog')
+    })
+
+    // 发布微博
+    var up = $('.layui-layer .post_extra').Huploadify({
+        auto:true,
+        multi:true,
+        newUpload:true,
+        buttonText:'',
+        onUploadSuccess: weibo.afterUpload
+    });
+}
+
 </script>
 @endsection
