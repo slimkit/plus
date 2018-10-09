@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="{{ asset('assets/pc/markdown/pluseditor.css') }}">
 <div id="layout" class="div">
     <div class="editormd">
