@@ -329,6 +329,12 @@ function formatRepostable($feeds) {
                     $feed['repostable']['group'] = api('GET', '/api/v2/plus-group/groups/' . $feed['repostable']['group_id']);
                 }
                 break;
+            case 'questions':
+                $feed['repostable'] = api('GET', "/api/v2/questions/{$id}");
+                break;
+            case 'question-answers':
+                $feed['repostable'] = api('GET', "/api/v2/question-answers/{$id}");
+                break;
         }
     }
     return $feeds;

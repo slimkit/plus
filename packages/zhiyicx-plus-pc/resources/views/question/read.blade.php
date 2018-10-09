@@ -130,33 +130,39 @@
                         @else
                             <a href="javascript:;" class="button set-amount">已设置悬赏</a>
                         @endif
-                        @if($question['user_id'] == $TS['id'])
-                            <a class="button button-plain options" onclick="options(this)" type="button" aria-haspopup="true" aria-expanded="false">
-                                <svg class="icon icon-more" aria-hidden="true"><use xlink:href="#icon-more"></use></svg>
-                            </a>
-                            <div class="options_div">
-                                <div class="triangle"></div>
-                                <ul>
+                        <a class="button button-plain options" onclick="options(this)" type="button" aria-haspopup="true" aria-expanded="false">
+                            <svg class="icon icon-more" aria-hidden="true"><use xlink:href="#icon-more"></use></svg>
+                        </a>
+                        <div class="options_div">
+                            <div class="triangle"></div>
+                            <ul>
+                                <li>
+                                    <a href="javascript:;" onclick="repostable.show('questions', {{ $question['id'] }})">
+                                        <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg> 转发
+                                    </a>
+                                </li>
+                                @if($question['user_id'] == $TS['id'])
                                     @if($question['excellent'] == 0)
                                         <li>
                                             <a href="javascript:;" onclick="question.selected({{ $question['id'] }}, {{ $config['bootstrappers']['question:apply_amount'] }})">
-                                                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-text"></use></svg>申请为精选
+                                                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-text"></use></svg> 申请为精选
                                             </a>
                                         </li>
                                     @endif
                                     <li>
                                         <a href="javascript:;" onclick="question.delQuestion('{{$question['id']}}')">
-                                            <svg class="icon" aria-hidden="true"><use xlink:href="#icon-delete"></use></svg>删除
+                                            <svg class="icon" aria-hidden="true"><use xlink:href="#icon-delete"></use></svg> 删除
                                         </a>
                                     </li>
+                                @else
+                                    <li>
+                                        <a href="javascript:;" onclick="reported.init('{{$question['id']}}', 'question');">
+                                            <svg class="icon" aria-hidden="true"><use xlink:href="#icon-report"></use></svg> 举报
+                                        </a>
+                                    </li>
+                                @endif
                                 </ul>
                             </div>
-                        @else
-                            <button class="button button-plain" onclick="reported.init('{{$question['id']}}', 'question');">
-                                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-report"></use></svg>
-                                举报
-                            </button>
-                        @endif
 
                     </div>
                     <div class="questionheader-actions"></div>

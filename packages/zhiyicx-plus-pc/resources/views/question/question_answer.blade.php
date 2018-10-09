@@ -87,6 +87,11 @@
                                     </a>
                                     @endif
                                 </li>
+                                <li>
+                                    <a href="javascript:;" onclick="repostable.show('question-answers', {{ $answer['id'] }})">
+                                        <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg> 转发
+                                    </a>
+                                </li>
                                 @if($question['user_id'] == $TS['id'])
                                     <li>
                                         @if($answer['adoption'] == 1)

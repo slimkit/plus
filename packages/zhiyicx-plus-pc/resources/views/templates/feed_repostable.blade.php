@@ -132,4 +132,30 @@
     @endif
     @break
 
+    @case('questions')
+        <a class="feed_repostable"
+        @if ($nolink)
+            href="javascript:;"
+        @else
+            href="{{ route('pc:questionread', ['question' => $feed['repostable_id']]) }}"
+        @endif
+        >
+            <p class="title">{{ $repostable['subject'] }}</p>
+            <p class="description">{{ $repostable['body'] }}</p>
+        </a>
+    @break
+
+    @case('question-answers')
+        <a class="feed_repostable"
+        @if ($nolink)
+            href="javascript:;"
+        @else
+            href="{{ route('pc:questionread', ['question' => $feed['repostable_id']]) }}"
+        @endif
+        >
+            <p class="title">{{ $repostable['question']['subject'] }}</p>
+            <p class="description">{{ $repostable['body'] }}</p>
+        </a>
+    @break
+
 @endswitch

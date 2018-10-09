@@ -50,33 +50,38 @@
                 <div class="options_div">
                     <div class="triangle"></div>
                     <ul>
+                        <li>
+                            <a href="javascript:;" onclick="repostable.show('question-answers', {{ $answer['id'] }})">
+                                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg> 转发
+                            </a>
+                        </li>
                         @if($TS && $answer['user_id'] == $TS['id'] && !$answer['adoption'] && !$answer['invited'])
                         <li>
                             <a href="{{ route('pc:answeredit', $answer['id']) }}">
-                                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-edit"></use></svg>编辑
+                                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-edit"></use></svg> 编辑
                             </a>
                         </li>
                         <li>
                             <a href="javascript:;" onclick="QA.delAnswer({{ $answer['question_id'] }}, {{ $answer['id'] }}, '/questions/{{ $answer['question_id'] }}')">
-                                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-delete"></use></svg>删除
+                                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-delete"></use></svg> 删除
                             </a>
                         </li>
                         @elseif($TS && $answer['question']['user_id'] == $TS['id'])
                         <li>
                             @if($answer['adoption'] == 1)
                                 <a class="act" href="javascript:;">
-                                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-adopt"></use></svg>已采纳
+                                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-adopt"></use></svg> 已采纳
                                 </a>
                             @else
                                 <a href="javascript:;" onclick="QA.adoptions('{{$answer['question_id']}}', '{{$answer['id']}}', '/questions/{{ $answer['id'] }}')">
-                                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-adopt"></use></svg>采纳
+                                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-adopt"></use></svg> 采纳
                                 </a>
                             @endif
                         </li>
                         @else
                             <li>
                                 <a href="javascript:;" onclick="reported.init('{{$answer['id']}}', 'question-answer');">
-                                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-report"></use></svg><span>举报</span>
+                                    <svg class="icon" aria-hidden="true"><use xlink:href="#icon-report"></use></svg> 举报
                                 </a>
                             </li>
                         @endif
