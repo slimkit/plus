@@ -411,10 +411,12 @@ class ContributeController extends Controller
 
         if ($config['pay'] && $user->currency && $user->currency->sum < $payAmount) {
             return $response->json(['message' => '账户余额不足'], 403);
-        }
-
-        if ($config['verified'] && $user->verified === null) {
+        } elseif ($config['verified'] && $user->verified === null) {
             return $response->json(['message' => '未认证用户不可投稿'], 403);
+        } elseif ($config['pay']) {
+            app(VerifyUserPassword::class)->handle($request, function () {
+                // No code.
+            });
         }
 
         $map = $request->only(['title', 'content', 'subject']);
