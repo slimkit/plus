@@ -24,6 +24,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class FileWith extends Model
 {
+    /**
+     * 可以被批量赋值的属性.
+     *
+     * @var array
+     */
+    protected $fillable = ['file_id', 'user_id', 'channel', 'raw', 'size'];
+
     public function getPayIndexAttribute(): string
     {
         return sprintf('file:%d', $this->id);
