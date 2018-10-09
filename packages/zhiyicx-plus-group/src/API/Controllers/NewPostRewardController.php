@@ -20,13 +20,14 @@ namespace Zhiyi\PlusGroup\API\Controllers;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\GoldType;
+use \Illuminate\Routing\Controller;
 use Zhiyi\PlusGroup\Models\Post as GroupPostModel;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 
-class NewPostRewardController
+class NewPostRewardController extends Controller
 {
     /**
      * Create the controller instance.
