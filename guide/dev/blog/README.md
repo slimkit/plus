@@ -37,6 +37,6 @@ title: 概述
 
 ## 信息
 
-Blog 应用仓库地址👉 [slimkit/plus-blog](https://github.com/slimkit/plus-blog)
+Blog 应用代码地址👉 [slimkit/plus:docs#guide/dev/blog/codes](https://github.com/slimkit/plus/tree/docs/guide/dev/blog/codes)
 
 SPA 修改版本👉 [slimkit/plus-small-screen-client:feat-teaching-blog](https://github.com/slimkit/plus-small-screen-client/tree/feat-teaching-blog)

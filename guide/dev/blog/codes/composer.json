@@ -1,0 +1,25 @@
+{
+    "name": "slimkit/plus-blog",
+    "description": "A \"slimkit/plus-blog\" package For ThinkSNS+✈️.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.1.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "SlimKit\\Plus\\Packages\\Blog\\": "src/",
+            "SlimKit\\Plus\\Packages\\Blog\\Seeds\\": "database/seeds/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SlimKit\\Plus\\Packages\\Blog\\Providers\\AppServiceProvider",
+                "SlimKit\\Plus\\Packages\\Blog\\Providers\\ModelServiceProvider",
+                "SlimKit\\Plus\\Packages\\Blog\\Providers\\RouteServiceProvider"
+            ]
+        }
+    },
+    "version": "2.0.4"
+}

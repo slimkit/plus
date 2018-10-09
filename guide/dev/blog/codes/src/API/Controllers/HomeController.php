@@ -1,0 +1,13 @@
+<?php
+
+declare(strict_types=1);
+
+namespace SlimKit\Plus\Packages\Blog\API\Controllers;
+
+class HomeController
+{
+    public function index()
+    {
+        return trans('plus-blog::messages.success');
+    }
+}

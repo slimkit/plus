@@ -13,10 +13,10 @@ title: 我的博客
 
 ```php
 // 我的博客
-    $route
-        ->get('me', Web\HomeController::class.'@me')
-        ->name('blog:me')
-    ;
+$route
+    ->get('me', Web\HomeController::class.'@me')
+    ->name('blog:me')
+;
 ```
 
 然后我们打开包的 `src/Web/Controllers/HomeController.php` 修改其内容如下：
@@ -72,159 +72,13 @@ class HomeController extends Controller
 
 我们在包的 `resources/views` 下面创建一个名为 `create-blog.blade.php` 的文件，内容如下：
 
-```html
-@extends('plus-blog::layout')
-@section('title', '创建博客')
-@section('container')
-    <div class="row">
-        <div class="col-md-8">
-            <div class="panel panel-default">
-                <div class="panel-heading">创建博客</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('blog:me') }}" enctype="multipart/form-data">
-                        @csrf
-                        <!-- 唯一标识 -->
-                        <div class="form-group {{ $errors->has('slug') ? 'has-error': '' }}">
-                            <label class="col-sm-2 control-label">标识</label>
-                            <div class="col-sm-10">
-                                <input name="slug" type="text" class="form-control" placeholder="博客唯一标识" value="{{ old('slug') }}">
-                                <span class="help-block">
-                                    {{ 
-                                        $errors->has('slug')
-                                            ? $errors->first('slug')
-                                            : '输入你博客的唯一标识，一旦创建将不再允许修改'
-                                    }}
-                                </span>
-                            </div>
-                        </div>
-                        <!-- 名称 -->
-                        <div class="form-group {{ $errors->has('name') ? 'has-error': '' }}">
-                            <label class="col-sm-2 control-label">名称</label>
-                            <div class="col-sm-10">
-                                <input name="name" type="text" class="form-control" placeholder="博客名称" value="{{ old('name') }}">
-                                <span class="help-block">
-                                    {{ 
-                                        $errors->has('name')
-                                            ? $errors->first('name')
-                                            : '输入博客名称'
-                                    }}
-                                </span>
-                            </div>
-                        </div>
-                        <!-- 博客描述 -->
-                        <div class="form-group {{ $errors->has('desc') ? 'has-error': '' }}">
-                            <label class="col-sm-2 control-label">描述</label>
-                            <div class="col-sm-10">
-                                <textarea name="desc" class="form-control" rows="3" placeholder="博客描述">{{ old('desc') }}</textarea>
-                                <span class="help-block">
-                                    {{ 
-                                        $errors->has('desc')
-                                            ? $errors->first('desc')
-                                            : '请输入你博客的描述，好的描述让你的博客更有魅力哦！'
-                                    }}
-                                </span>
-                            </div>
-                        </div>
-                        <!-- 博客 Logo -->
-                        <div class="form-group {{ $errors->has('logo') ? 'has-error': '' }}">
-                            <label class="col-sm-2 control-label">图标</label>
-                            <div class="col-sm-10">
-                                <input name="logo" type="file" class="form-control" >
-                                <span class="help-block">
-                                    {{ 
-                                        $errors->has('logo')
-                                            ? $errors->first('logo')
-                                            : '请选择博客所使用的图标'
-                                    }}
-                                </span>
-                            </div>
-                        </div>
-                        <!-- 提交按钮 -->
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-primary">创建</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="alert alert-warning" role="alert">你还没有创建属于你的博客，你可以在这里创建一个属于你自己的博客，博客创建完成后你可以发布你的文章了！</div>
-        </div>
-    </div>
-@endsection
-```
+<<< @/guide/dev/blog/codes/resources/views/create-blog.blade.php
 
 ## 创建博客逻辑
 
 首先，我们应该创建一个「[表单验证](https://laravel-china.org/docs/laravel/5.7/validation/2262)」，我们创建一个文件 `src/Web/Requests/CreateBlog.php`：
 
-```php
-<?php
-
-declare(strict_types=1);
-
-namespace SlimKit\Plus\Packages\Blog\Web\Requests;
-
-use Illuminate\Validation\Rule;
-use Illuminate\Foundation\Http\FormRequest;
-
-class CreateBlog extends FormRequest
-{
-    /**
-     * Get request authorize.
-     *
-     * @return bool
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
-    /**
-     * Get custom message from validateor rules.
-     *
-     * @return array
-     */
-    public function rules(): array
-    {
-        return [
-            'slug' => ['required', 'string', 'min:4', 'max:26', 'regex:/[a-z][a-z0-9]/s', Rule::unique('blogs', 'slug')],
-            'name' => ['required', 'string', 'max:100'],
-            'desc' => ['nullable', 'string', 'max:250'],
-            'logo' => ['nullable', 'image']
-        ];
-    }
-
-    /**
-     * Get custom messages for validator errors.
-     *
-     * @return array
-     */
-    public function messages(): array
-    {
-        return [
-            'slug.regex' => ':attribute必须是字母开头仅含有字母和数字的小写字符串'
-        ];
-    }
-
-    /**
-     * Get custom attributes for validator errors.
-     *
-     * @return array
-     */
-    public function attributes(): array
-    {
-        return [
-            'slug' => '博客唯一标识',
-            'name' => '博客名称',
-            'desc' => '博客描述',
-            'logo' => '博客图标'
-        ];
-    }
-}
-```
+<<< @/guide/dev/blog/codes/src/Web/Requests/CreateBlog.php
 
 为了之后的快捷获取，以及创建的时候更加优雅，我们为 `User` 模型附加一个 `blog` 关系，我们打开包的 `src/Providers/ModelServiceProvider.php` 文件，在 `namespace` 下面，插入下面的代码：
 
@@ -324,40 +178,7 @@ public function getRouteKeyName()
 
 然后我们创建在包里面创建 `src/Web/Controllers/BlogController.php` 文件：
 
-```php
-<?php
-
-declare(strict_types=1);
-
-namespace SlimKit\Plus\Packages\Blog\Web\Controllers;
-
-use Illuminate\Routing\Controller;
-use SlimKit\Plus\Packages\Blog\Models\Blog as BlogModel;
-
-class BlogController extends Controller
-{
-    /**
-     * Create the controller instance.
-     */
-    public function __construct()
-    {
-        // todo.
-    }
-
-    /**
-     * Get the blog profile.
-     * @param SlimKit\Plus\Packages\Blog\Models\Blog $blog
-     * @return mixed
-     */
-    public function show(BlogModel $blog)
-    {
-        return view('plus-blog::blog-profile', [
-            'blog' => $blog,
-            'articles' => $blog->articles()->paginate(15),
-        ]);
-    }
-}
-```
+<<< @/guide/dev/blog/codes/src/Web/Controllers/BlogController.php
 
 ## 文章关系
 

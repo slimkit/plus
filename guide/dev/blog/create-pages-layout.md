@@ -21,65 +21,16 @@ title: 创建页面
 首先，我们的前台 UI 应该有一个总图布局，所以我们在应用的 `resources/views` 目录下新建下面的文件并写入内容：
 
 `layout.blade.php`
-```html
-@extends('layouts.bootstrap')
-@section('head')
-    @parent
-    <style>
-        .blog-container {
-            margin-top: 70px;
-        }
-    </style>
-@endsection
-@section('body')
-    @include('plus-blog::header')
-    <main class="container blog-container">
-        @yield('container')
-    </main>
-    @include('plus-blog::footer')
-    @parent
-    @stack('footer-scripts')
-@endsection
-```
+
+<<< @/guide/dev/blog/codes/resources/views/layout.blade.php
 
 `header.blade.php`
-```html
-<header class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">Blog</a>
-        </div>
-        <ul class="nav navbar-nav">
-            <li class="active"><a href="#">博客广场</a></li>
-            <li class=""><a href="#">我的博客</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">登入</a></li>
-        </ul>
-    </div>
-</header>
-```
+
+<<< @/guide/dev/blog/codes/resources/views/header.blade.php
 
 `footer.blade.php`
-```html
-@section('head')
-    @parent
-    <style>
-        .blog-footer {
-            width: 100%;
-            background-color: #2a2730;
-            color: #99979c;
-            margin-top: 100px;
-            padding: 50px 0;
-        }
-    </style>
-@endsection
 
-<footer class="blog-footer text-center">
-    <!-- 这里写入你自己的页脚文字 -->
-    The Blog package MIT Licensed | Copyright © 2018-Present <a href="https://github.com/medz" target="_blank">Seven Du</a> All rights reserved.
-</footer>
-```
+<<< @/guide/dev/blog/codes/resources/views/footer.blade.php
 
 `home.blade.php`
 ```php
@@ -138,69 +89,12 @@ class HomeController
 
 现在我们打开包的 `resources/views/header.blade.php` 文件，修改为下面的内容：
 
-```html
-<header class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">Blog</a>
-        </div>
-        <ul class="nav navbar-nav">
-            <li class="active"><a href="#">博客广场</a></li>
-            <li class=""><a href="#">我的博客</a></li>
-        </ul>
-        @include('plus-blog::headers.user')
-    </div>
-</header>
-```
+<<< @/guide/dev/blog/codes/resources/views/header.blade.php
 
 然后我们创建一个 `resources/views/headers/user.blade.php` 文件内容如下：
 
-```html
-<ul class="nav navbar-nav navbar-right">
-    @if (Auth::guest())
-    <li><a href="{{ route('login') }}">登入</a></li>
-    @else
-    <li class="dropdown">
-        <a
-            href="#"
-            class="dropdown-toggle"
-            data-toggle="dropdown" 
-            role="button" 
-            aria-haspopup="true" 
-            aria-expanded="false"
-        >
-            @if (Auth::user()->avatar instanceof \Zhiyi\Plus\FileStorage\FileMetaInterface)
-                @php
-                    $avatarUrl = Auth::user()->avatar->url();
-                    switch (Auth::user()->avatar->getVendorName()) {
-                        case 'local':
-                            $avatarUrl .= '?rule=h_50,w_50';
-                            break;
-                        case 'aliyun-oss':
-                            $avatarUrl .= '?rule=image/resize,h_50,w_50';
-                            break;
-                    }
-                @endphp
-                <img
-                    src="{{ $avatarUrl }}"
-                    alt="{{ Auth::user()->name }}的头像"
-                    style="
-                        width: 20px;
-                        height: 20px;
-                    "
-                >
-            @else
-                {{ Auth::user()->name }}
-            @endif
-            <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu">
-            <li><a href="{{ route('logout') }}">退出登录</a></li>
-        </ul>
-    </li>
-    @endif
-</ul>
-```
+
+<<< @/guide/dev/blog/codes/resources/views/headers/user.blade.php
 
 然后保存，我们就完成了用户的登录与退出（因为 Plus 自带登录页面，所以无需再写登录页面）
 

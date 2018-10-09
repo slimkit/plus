@@ -111,101 +111,11 @@ php artisan package:handle plus-blog-dev make-model
 
 现在，我们打开应用下的 `database/migrations/` 目录，你会看到有一个 `create_blogs_table` 结尾的 PHP 文件，我已经将上面的表设计转化为迁移 PHP 代码，你只需要写入即可：
 
-```php
-<?php
-
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
-
-class CreateBlogsTable extends Migration
-{
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('blogs', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('slug', 50)->comment('博客自定义地址');
-            $table->string('name', 100)->comment('博客名称');
-            $table->string('desc', 255)->nullable()->default(null)->comment('博客描述');
-            $table->string('logo', 255)->nullable()->default(null)->comment('博客 Logo');
-            $table->integer('owner_id')->unsigned()->comment('博客所有者');
-            $table->integer('posts_count')->unsigned()->nullable()->default(0)->comment('博客帖子统计');
-            $table->timestamp('latest_post_sent_at')->nullable()->default(null)->comment('最后发布文章时间');
-            $table->timestamp('reviewed_at')->nullable()->default(null)->comment('审核通过时间');
-            $table->timestamps();
-
-            // 索引
-            $table->unique('slug');
-            $table->unique('owner_id');
-            $table->index('posts_count');
-            $table->index('latest_post_sent_at');
-            $table->index('reviewed_at');
-        });
-    }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('blogs');
-    }
-}
-```
+<<< @/guide/dev/blog/codes/database/migrations/2018_09_30_040837_create_blogs_table.php
 
 接下来，我们接着编写 `blog_articles` 迁移文件，和上面一样，我们找到 `create_blog_articles_table` 结尾的 PHP 文件，写入下面的内容：
 
-```php
-<?php
-
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
-
-class CreateBlogArticlesTable extends Migration
-{
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('blog_articles', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('title', 150)->comment('文章标题');
-            $table->text('contents')->comment('文章内容');
-            $table->integer('blog_id')->unsigned()->comment('文章所属博客');
-            $table->integer('creator_id')->unsigned()->comment('文章创建者');
-            $table->integer('comments_count')->unsigned()->nullable()->default(0)->comment('文章评论数量统计');
-            $table->timestamp('reviewed_at')->nullable()->default(null)->comment('审核通过时间');
-            $table->timestamps();
-
-            // 索引
-            $table->index('blog_id');
-            $table->index('creator_id');
-            $table->index('reviewed_at');
-        });
-    }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('blog_articles');
-    }
-}
-```
+<<< @/guide/dev/blog/codes/database/migrations/2018_09_30_042237_create_blog_articles_table.php
 
 ::: tip
 需要用到的 Laravel 知识👉[数据库迁移](https://laravel-china.org/docs/laravel/5.7/migrations/2291)
@@ -221,36 +131,11 @@ php artisan package:handle plus-blog-dev make-seeder
 
 然后我们输入 `Settings` 回车即可，会在 `database/seeds` 下面创建一个名为 `SettingsSeeder.php` 的文件。我们打开这个文件输入如下内容：
 
-```php
-<?php
+<<< @/guide/dev/blog/codes/database/seeds/SettingsSeeder.php
 
-declare(strict_types=1);
+然后我们打开拓展包的 `database/seeds/DatabaseSeeder.php` 文件，在 `run` 方法中输入下面的高亮内容：
 
-namespace SlimKit\Plus\Packages\Blog\Seeds;
-
-use Illuminate\Database\Seeder;
-use function Zhiyi\Plus\setting;
-
-class SettingsSeeder extends Seeder
-{
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
-    {
-        // 我们使用 Plus 的 `Zhiyi\Plus\setting` 函数进行默认值设置！
-        setting('blog')->set('create-need-review', false);
-    }
-}
-```
-
-然后我们打开拓展包的 `database/seeds/DatabaseSeeder.php` 文件，在 `run` 方法中输入下面的内容：
-
-```php
-$this->call(SettingsSeeder::class);
-```
+<<< @/guide/dev/blog/codes/database/seeds/DatabaseSeeder.php{16}
 
 ::: tip
 需要用到的 Laravel 知识👉[数据填充](https://laravel-china.org/docs/laravel/5.7/seeding/2292)
