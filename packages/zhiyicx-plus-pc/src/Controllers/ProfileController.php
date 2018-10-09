@@ -54,8 +54,12 @@ class ProfileController extends BaseController
                 'data' => $html
             ]);
         }
-        $user->follower = $user->hasFollower($request->user()->id);
-        $data['user'] = $user->toArray();
+        if ($user) {
+            $user->follower = $user->hasFollower($request->user()->id);
+            $data['user'] = $user->toArray();
+        } else {
+            return abort(404);
+        }
 
         return view('pcview::profile.index', $data, $this->PlusData);
     }
