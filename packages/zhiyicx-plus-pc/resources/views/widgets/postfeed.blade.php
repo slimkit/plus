@@ -1,7 +1,13 @@
 {{-- 动态发布 --}}
 <div class="feed_post">
+    <div class="input-wrap">
+        <textarea id="feed_content" class="post_textarea" onkeyup="checkNums(this, 255, 'nums');"></textarea>
+        <div id="mirror" class="post_textarea" contenteditable="true"></div>
+        <span class="dy_cs">可输入<span class="nums" style="color: rgb(89, 182, 215);">255</span>字</span>
+    </div>
 
-    <div class="post_textarea" placeholder="说说新鲜事" id="feed_content" amount="" onkeyup="checkNums(this, 255, 'nums');" contenteditable></div>
+    {{-- at列表 --}}
+    <ul id="mention_list"></ul>
 
     <div class="post_extra">
         <span class="font14 ev-btn-feed-pic">
@@ -75,7 +81,5 @@
             @endif
             {{-- this will be injected by javascript --}}
         </ul>
-
-        <span class="dy_cs">可输入<span class="nums" style="color: rgb(89, 182, 215);">255</span>字</span>
     </div>
 </div>

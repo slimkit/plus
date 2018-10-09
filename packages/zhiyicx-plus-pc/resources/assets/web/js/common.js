@@ -409,6 +409,7 @@ var getLength = function(str, shortUrl) {
 
 // 统计输入字符串长度(用于评论回复最大字数计算)
 var checkNums = function(obj, len, show) {
+    if (obj instanceof jQuery) obj = obj[0]
     var str = $(obj).val() || $(obj).text();
     var surplus = len - str.length;
     if (surplus < 0) {
@@ -1871,61 +1872,9 @@ $(function() {
         var name = $(this).data('user-name');
         var $el = $(this).closest('.comment_textarea, .comment_box').find('.comment_editor');
 
-        $el.html($el.html().replace(/@$/g, ''))
-        $el.html($el.html() + " <span contenteditable=\"false\" style=\"color: #59b6d7;\">\u00ad@" + name + "\u00ad</span> ");
+        $el.html($el.html() + "@" + name + " ");
         checkNums($el[0], 255, 'nums');
         comment.showMention(false);
-    })
-
-    // 监听输入框按键 用于检测@符号键入和删除整段@内容
-    var isShiftKey = false;
-    var is2Key = false;
-
-    // 监听输入框按键, 检测到退格键删除@区域
-    $(document).on('keydown', '.comment_editor', function (event) {
-        if (window.getSelection && event.which == 8) { // backspace
-            // fix backspace bug in FF
-            // https://bugzilla.mozilla.org/show_bug.cgi?id=685445
-            var selection = window.getSelection();
-            if (!selection.isCollapsed || !selection.rangeCount) {
-                return;
-            }
-
-            var curRange = selection.getRangeAt(selection.rangeCount - 1);
-            if (curRange.commonAncestorContainer.nodeType == 3 && curRange.startOffset > 0) {
-                // we are in child selection. The characters of the text node is being deleted
-                return;
-            }
-
-            var range = document.createRange();
-            if (selection.anchorNode != this) {
-                // selection is in character mode. expand it to the whole editable field
-                range.selectNodeContents(this);
-                range.setEndBefore(selection.anchorNode);
-            } else if (selection.anchorOffset > 0) {
-                range.setEnd(this, selection.anchorOffset);
-            } else {
-                // reached the beginning of editable field
-                return;
-            }
-            range.setStart(this, range.endOffset - 1);
-
-            var previousNode = range.cloneContents().lastChild;
-            if (previousNode && previousNode.contentEditable == 'false') {
-                // this is some rich content, e.g. smile. We should help the user to delete it
-                range.deleteContents();
-                event.preventDefault();
-            }
-        }
-        if (event.which === 16 ) isShiftKey = true;
-        if (event.which === 50) is2Key = true
-        if (isShiftKey && is2Key) comment.showMention(true, event.target);
-
-    });
-
-    $(document).on('keyup','.comment_editor', function(event) {
-        if (event.which === 16) isShiftKey = false;
-        if (event.which === 50) is2Key = false;
     })
 
     // 捕获添加话题(用于转发动态)
@@ -2118,7 +2067,7 @@ $(function() {
       var name = $(this).data('user-name')
       $el = $('.ev-ipt-repostable-content');
 
-      $el.html($el.html() + " <span contenteditable=\"false\" style=\"color: #59b6d7;\">\u00ad@" + name + "\u00ad</span> ")
+      $el.html($el.html() + "@" + name + " ")
       repostable.showMention(false);
     })
 
