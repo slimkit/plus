@@ -35,6 +35,17 @@ class NewQuestionController extends Controller
     use FindMarkdownFileTrait;
 
     /**
+     * Create the controller instance.
+     */
+    public function __construct()
+    {
+        $this
+            ->middleware(VerifyUserPassword::class)
+            ->only(['resetAmount'])
+        ;
+    }
+
+    /**
      * Publish a question.
      *
      * @param PublishQuestionRequest                        $request
