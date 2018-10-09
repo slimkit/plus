@@ -27,7 +27,7 @@ title: 创建页面
     @parent
     <style>
         .blog-container {
-            margin-top: 50px;
+            margin-top: 70px;
         }
     </style>
 @endsection
@@ -38,19 +38,19 @@ title: 创建页面
     </main>
     @include('plus-blog::footer')
     @parent
+    @stack('footer-scripts')
 @endsection
 ```
 
 `header.blade.php`
 ```html
-<header class="navbar navbar-default navbar-fixed-top">
+<header class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
             <a class="navbar-brand" href="#">Blog</a>
         </div>
         <ul class="nav navbar-nav">
             <li class="active"><a href="#">博客广场</a></li>
-            <li class=""><a href="#">文章投稿</a></li>
             <li class=""><a href="#">我的博客</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -146,7 +146,6 @@ class HomeController
         </div>
         <ul class="nav navbar-nav">
             <li class="active"><a href="#">博客广场</a></li>
-            <li class=""><a href="#">文章投稿</a></li>
             <li class=""><a href="#">我的博客</a></li>
         </ul>
         @include('plus-blog::headers.user')

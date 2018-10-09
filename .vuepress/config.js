@@ -58,7 +58,9 @@ module.exports = {
             '/guide/dev/blog/': [
                 '',
                 'create-package',
-                'create-pages-layout'
+                'create-pages-layout',
+                'create-pages-my-blog',
+                'blog-profile',
             ]
         }
     },
