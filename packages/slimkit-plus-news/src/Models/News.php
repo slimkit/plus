@@ -159,7 +159,7 @@ class News extends Model
      */
     public function applylog()
     {
-        return $this->hasOne(NewsApplyLog::class, 'id', 'news_id');
+        return $this->hasOne(NewsApplyLog::class, 'news_id', 'id');
     }
 
     /**
