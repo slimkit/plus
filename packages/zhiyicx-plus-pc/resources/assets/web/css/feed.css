@@ -4,15 +4,15 @@
 /*动态发布*/
 .feed_post {width:100%;margin-bottom:20px;padding:30px 40px;border-radius:3px;background:white;}
 .feed_post .input-wrap {position: relative;width: 100%;min-height: 158px;}
-.feed_post .input-wrap .post_textarea {display: inline-block;position: absolute;width:100%;height:100%;overflow: hidden auto;outline: none;resize: none;white-space: pre-wrap;cursor: auto;padding: 10px;z-index: 101;top: 0;border: 1px solid #ededed;}
+.feed_post .input-wrap .post_textarea {display: inline-block;position: absolute;width:100%;height:100%;overflow: hidden auto;outline: none;resize: none;white-space: pre-wrap;cursor: auto;padding: 10px;z-index: 101;top: 0;border: 1px solid #ededed;background-color: #f3f6f7;}
 .feed_post .input-wrap #mirror {z-index: 101;}
 .feed_post .input-wrap #feed_content {z-index: 102;}
+.feed_post .input-wrap .dy_cs {position:absolute;right:15px;bottom:10px;font-size:12px;z-index: 109;}
 .feed_post #mention_list {position: absolute;background-color: #fff;z-index: 105;display: none;padding: 8px;border: 1px solid #ccc;border-radius: 2px;box-shadow: 0 2px 8px 1px rgba(0, 0, 9, .2);}
 .feed_post #mention_list .list-content,
 .feed_post #mention_list .list-title {font-size: 12px;cursor: pointer;list-style: none;}
 .feed_post #mention_list .list-content.active {color: #59b6d7; background-color: #fff;}
 .feed_post .post_extra {position:relative;line-height:31px;margin-top:10px;}
-.feed_post .post_extra .dy_cs {position:absolute;right:15px;top:-45px;font-size:12px;}
 .feed_post .post_extra span {cursor:pointer;line-height:37px;display:inline-block;color:#666;}
 .feed_post .post_extra svg {display:inline-block;margin-right:2px;margin-bottom:2px;font-size:20px;}
 .feed_post .topic-btn,
