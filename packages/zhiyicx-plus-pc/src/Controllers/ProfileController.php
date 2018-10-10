@@ -132,7 +132,7 @@ class ProfileController extends BaseController
                 'data' => $html
             ]);
         }
-        $user = $request->user();
+        $user = $request->user()->toArray();
         $type = 0;
         $url = route('pc:profilecollectfeeds');
 
@@ -164,7 +164,7 @@ class ProfileController extends BaseController
                 'data' => $html
             ]);
         }
-        $user = $request->user();
+        $user = $request->user()->toArray();
         $type = 0;
         $url = route('pc:profilecollectnews');
 
@@ -201,7 +201,7 @@ class ProfileController extends BaseController
                 'data' => $html
             ]);
         }
-        $user = $request->user();
+        $user = $request->user()->toArray();
         $type = 0;
         $url = route('pc:profilecollectqa');
 
@@ -235,7 +235,7 @@ class ProfileController extends BaseController
                 'data' => $html
             ]);
         }
-        $user = $request->user();
+        $user = $request->user()->toArray();
         $type = 0;
         $url = route('pc:profilecollectgroup');
 
