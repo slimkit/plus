@@ -227,6 +227,7 @@ Route::middleware('auth:web')
         Route::patch('/driver/alidayu', 'SmsController@updateAlidayuOption');
         Route::patch('/driver/aliyun', 'SmsController@updateAliyunOption');
         Route::patch('/driver/yunpian', 'SmsController@updateYunpianOption');
+        Route::patch('/driver/huyi', 'SmsController@updateHuyiOption');
         Route::patch('update/gateways', 'SmsController@updateGateway');
         Route::patch('update/templates', 'SmsController@updateTemplate');
     });
