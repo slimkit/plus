@@ -386,7 +386,8 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 .pinned_box .pinned_input {margin-bottom:20px;}
 .pinned_box .pinned_input input {outline:none;text-indent:10px;background-color:transparent;height:28px;line-height:28px;color:#333;border:1px solid #ccc;border-radius:5px;vertical-align:bottom;width:260px;}
 .pinned_box .pinned_total {font-size:20px;color:#59b6d7;}
-/*打赏*/.reward_cont {margin-top:40px;text-align:center;}
+/*打赏*/
+.reward_cont {margin-top:40px;text-align:center;}
 .reward_cont .reward_user {width:75%;margin:0 auto;overflow:hidden;}
 .reward_cont .user_item {position:relative;display:inline-block;margin-right:5px;}
 .reward_cont .user_item .verified_icon {width:19px;position:absolute;bottom:0px;right:-1px;}
@@ -400,6 +401,12 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 .reward_box .reward_input {margin-bottom:20px;}
 .reward_box .reward_input input {outline:none;text-indent:10px;background-color:transparent;height:28px;line-height:28px;color:#333;border:1px solid #ccc;border-radius:5px;vertical-align:bottom;width:260px;}
 .reward_box .reward_total {font-size:20px;color:#59b6d7;}
+.reward_box .reward_amount {color: #59b6d7;font-weight: bold;margin-bottom: 10px;margin-top: 10px;font-size: 16px;}
+.reward_box .reward_input_wrap {height: 36px;}
+.reward_box .reward_input_wrap input[type="password"] {border: 1px solid #ccc;height: 100%;border-radius: 4px 0 0 4px;padding-left: 6px;width: calc(100% - 4em);}
+.reward_box .reward_input_wrap button {background-color: #59b6d7;color: #fff;width: 4em;height: 100%;border-radius: 0 4px 4px 0;border: 1px solid #59b6d7;}
+/* .reward_box .reward_input_wrap input[type="password"]:valid + button {background-color: #59b6d7;} */
+.reward_box .reward_forgot {color: #59b6d7;text-align: right;font-size: 12px;margin-top: 10px;}
 .reward_popups {padding:20px 40px;width:340px;overflow:hidden;min-height:500px;}
 .reward_popups_con {height:100%;overflow-y:auto;overflow-x:hidden;}
 .reward_popups .reward_title {font-size:18px;margin-top:10px;margin-bottom:10px;}

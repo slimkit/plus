@@ -652,8 +652,11 @@ var checkIn = function(is_check, nums) {
 
 // 打赏
 var rewarded = {
+    payload: {}, // 打赏表单
+
     show: function(id, type, pay_amount) {
         checkLogin();
+        rewarded.payload = {};
         var html = '<div class="reward_box">'
                     + '<p class="confirm_title">打赏</p>'
                     + '<div class="reward_text">选择打赏金额</div>'
@@ -681,24 +684,56 @@ var rewarded = {
                 'answer': '/api/v2/question-answers/'+id+'/new-rewards',
                 'group-posts' : '/api/v2/plus-group/group-posts/'+id+'/new-rewards',
             };
-            axios.post(types[type], {amount: num ? num : amount})
-              .then(function (response) {
-                ly.close();
-                noticebox(response.data.message, 1, 'refresh');
-              })
-              .catch(function (error) {
-                lyShowError(error.response.data);
-              });
+            rewarded.payload = {
+                id: id,
+                amount: num ? num : amount,
+                type: types[type]
+            }
+
+            if (TS.BOOT['pay-validate-user-password']) rewarded.showPassword()
+            else rewarded.postReward()
         });
         $('.reward-sum label').on('click', function(){
             $('.reward-sum label').removeClass('active');
             $(this).addClass('active');
         })
     },
-    list: function(id, type){
+    postReward: function () {
+        var payload = rewarded.payload || {};
+        if (TS.BOOT['pay-validate-user-password']) {
+            payload.password = $('#J-password-confirm').val();
+        }
+        axios.post(payload.type, {amount: payload.amount, password: payload.password})
+            .then(function (response) {
+                ly.close();
+                noticebox(response.data.message, 1, 'refresh');
+            })
+            .catch(function (error) {
+                lyShowError(error.response.data);
+            });
+    },
+    list: function(id, type) {
         var reward_url = TS.SITE_URL + '/reward/view?type='+type+'&post_id='+id;
         ly.load(reward_url, '', '340px');
-    }
+    },
+    showPassword: function() {
+        var html
+            = '<div class="reward_box">'
+                + '<p class="confirm_title">输入密码</p>'
+                + '<div class="reward_amount">金额：' + rewarded.payload.amount + '积分</div>'
+                + '<div class="reward_input_wrap">'
+                +    '<input id="J-password-confirm" placeholder="请输入登陆密码" pattern=".{6-16}" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
+                +    '<button onclick="rewarded.postReward()">确认</button>'
+                + '</div>'
+                + '<div class="reward_forgot"><a href="'+ TS.SITE_URL +'/forget-password">忘记密码?</a></div>'
+            + '</div>';
+        layer.open({
+          type: 0,
+          title: '',
+          content: html,
+          btn: '',
+        })
+    },
 }
 
 var getMaps = function(callback){
