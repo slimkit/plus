@@ -315,13 +315,13 @@
                 return update();
             }
             lockStatus = true;
-            if (TS.BOOT['pay-validate-user-password']) showPassword();
+            if (TS.BOOT['pay-validate-user-password'] && args.amount > 0) showPassword();
             else postQuestion()
 
         });
 
         function postQuestion() {
-            if (TS.BOOT['pay-validate-user-password']) {
+            if (TS.BOOT['pay-validate-user-password'] && args.amount > 0) {
                 args.password = $("#J-password-confirm").val()
             }
             axios.post('/api/v2/currency-questions', args)

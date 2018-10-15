@@ -91,6 +91,7 @@ var QA = {
 var question = {
     args: {},
     lockStatus: 0,
+    amount: 0,
     create:function (topic_id) {
         checkLogin();
         var url = '/questions/create';
@@ -151,17 +152,17 @@ var question = {
             }
             question.lockStatus = 1;
             question.url ='/api/v2/user/currency-question-application/' + question_id;
-            if (TS.BOOT['pay-validate-user-password']) question.showPassword(money)
+            if (TS.BOOT['pay-validate-user-password']) question.showPassword(money, 'postApplyTop')
             else question.postApplyTop();
         });
     },
-    showPassword: function(money) {
+    showPassword: function(money, funName) {
         var html = '<div class="reward_box">'
             +   '<p class="confirm_title">输入密码</p>'
             +   '<div class="reward_amount">金额：' + money + '积分</div>'
             +   '<div class="reward_input_wrap">'
             +       '<input id="J-password-confirm" placeholder="请输入登陆密码" pattern="^.{6-16}$" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
-            +       '<button onclick="question.postApplyTop()">确认</button>'
+            +       '<button onclick="question.'+ funName +'()">确认</button>'
             +   '</div>'
             +   '<div class="reward_forgot"><a href="'+ TS.SITE_URL +'/forget-password">忘记密码?</a></div>'
             + '</div>';
@@ -184,6 +185,21 @@ var question = {
                 layer.closeAll();
                 question.lockStatus = 0;
                 showError(error.response.data);
+            });
+    },
+    postAmount: function() {
+        if (TS.BOOT['pay-validate-user-password']) {
+            var password = $('#J-password-confirm').val()
+        }
+        axios.patch(question.url, {amount: args.amount, password: password})
+            .then(function () {
+                layer.closeAll();
+                question.lockStatus = 0;
+                noticebox('操作成功', 1, 'refresh');
+            })
+            .catch(function (error) {
+                question.lockStatus = 0;
+                lyShowError(error.response.data);
             });
     },
     amount: function (question_id) {
@@ -221,17 +237,9 @@ var question = {
                 window.location.href = TS.SITE_URL + "/settings/currency/pay";
                 return false;
             }
-            var url = '/api/v2/currency-questions/' + question_id + '/amount';
-            axios.patch(url, {amount: amount})
-              .then(function (response) {
-                layer.closeAll();
-                _this.lockStatus = 0;
-                noticebox('操作成功', 1, 'refresh');
-              })
-              .catch(function (error) {
-                _this.lockStatus = 0;
-                lyShowError(error.response.data);
-              });
+            question.url = '/api/v2/currency-questions/' + question_id + '/amount';
+            if (TS.BOOT['pay-validate-user-password']) question.showPassword(amount, 'postAmount')
+            else question.postAmount()
         });
     }
 };
