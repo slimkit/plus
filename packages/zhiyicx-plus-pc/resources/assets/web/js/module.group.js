@@ -197,7 +197,7 @@ post.pinnedPost = function(post_id, type){
     if (type == 'pinned') {
         url = '/api/v2/plus-group/pinned/posts/'+post_id;
     }
-    pinneds(url, type);
+    pinneds.show(url, type);
 };
 /* 撤销置顶 */
 post.cancelPinned = function(post_id){

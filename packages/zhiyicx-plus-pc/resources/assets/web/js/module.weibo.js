@@ -237,7 +237,7 @@ weibo.denounce = function(obj) {
 //微博申请置顶
 weibo.pinneds = function (feed_id) {
     var url = '/api/v2/feeds/'+feed_id+'/currency-pinneds';
-    pinneds(url, 'pinned');
+    pinneds.show(url, 'pinned');
 };
 weibo.addComment = function (row_id, type) {
     var url = '/api/v2/feeds/' + row_id + '/comments';

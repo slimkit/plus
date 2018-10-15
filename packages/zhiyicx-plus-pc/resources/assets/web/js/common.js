@@ -972,15 +972,15 @@ var comment = {
         var url = '';
         if (type == 'feeds') {
             url = '/api/v2/feeds/' + source_id + '/comments/' + id + '/currency-pinneds';
-            pinneds(url, 'pinned');
+            pinneds.show(url, 'pinned');
         }
         if (type == 'news') {
             url = '/api/v2/news/' + source_id + '/comments/' + id + '/currency-pinneds';
-            pinneds(url, 'pinned');
+            pinneds.show(url, 'pinned');
         }
         if (type == 'group-posts') {
             url = '/api/v2/plus-group/currency-pinned/comments/'+ id;
-            pinneds(url, 'pinned');
+            pinneds.show(url, 'pinned');
         }
     },
 
@@ -1219,60 +1219,90 @@ var collected = {
 };
 
 // 申请置顶
-var pinneds = function (url, type) {
-    var html = '<div class="pinned_box">'
-            + '<p class="confirm_title">申请置顶</p>'
-            + '<div class="pinned_text">选择置顶天数</div>'
-            + '<div class="pinned_spans">'
-                + '<span days="1">1d</span>'
-                + '<span days="5">5d</span>'
-                + '<span days="10">10d</span>'
-            + '</div>'
-            + '<div class="pinned_text">设置置顶金额</div>'
-            + '<div class="pinned_input">'
-                + '<input min="0" oninput="value=moneyLimit(value, this, \'pinned\')" type="number" placeholder="自定义置顶金额，必须为整数">'
-            + '</div>'
-            + '<div class="pinned_text">当前平均置顶金额为积分200/天，积分余额为' + (TS.USER.currency ? TS.USER.currency.sum : 0) + '</div>'
-            + '<div class="pinned_text">需要支付总金额：</div>'
-            + '<div class="pinned_total"><span>0</span></div>'
-        + '</div>';
-    if (type != 'pinned') {
-        html = '<div class="pinned_box">'
-            + '<p class="confirm_title">置顶帖子</p>'
-            + '<div class="pinned_text">设置帖子置顶天数</div>'
-            + '<div class="pinned_input">'
-                + '<input min="1" max="30" oninput="value=moneyLimit(value, this, \'range\')" type="number" placeholder="设置范围为1~30天">'
-            + '</div>'
-        + '</div>';
-    }
-
-    ly.confirm(html, '', '', function(){
-        var data = {};
-        if (type == 'pinned') {
-            data.day = $('.pinned_spans .current').length > 0 ? $('.pinned_spans .current').attr('days') : '';
-            data.amount = $('.pinned_input input').val() * data.day;
-            if (!data.day) {
-                lyNotice('请选择置顶天数');return;
-            }
-            if (data.amount < 0) {
-                lyNotice('请输入置顶金额');return;
-            }
-        } else {
-            data.day = $('.pinned_input input').val();
-            if (!data.day) {
-                lyNotice('请输入置顶天数');return;
-            }
+var pinneds = {
+    payload: {}, // 置顶表单
+    show: function (url, type) {
+        pinneds.payload.url = url;
+        var html = '<div class="pinned_box">'
+                + '<p class="confirm_title">申请置顶</p>'
+                + '<div class="pinned_text">选择置顶天数</div>'
+                + '<div class="pinned_spans">'
+                    + '<span days="1">1d</span>'
+                    + '<span days="5">5d</span>'
+                    + '<span days="10">10d</span>'
+                + '</div>'
+                + '<div class="pinned_text">设置置顶金额</div>'
+                + '<div class="pinned_input">'
+                    + '<input min="0" oninput="value=moneyLimit(value, this, \'pinned\')" type="number" placeholder="自定义置顶金额，必须为整数">'
+                + '</div>'
+                + '<div class="pinned_text">当前平均置顶金额为积分200/天，积分余额为' + (TS.USER.currency ? TS.USER.currency.sum : 0) + '</div>'
+                + '<div class="pinned_text">需要支付总金额：</div>'
+                + '<div class="pinned_total"><span>0</span></div>'
+            + '</div>';
+        if (type != 'pinned') {
+            html = '<div class="pinned_box">'
+                + '<p class="confirm_title">置顶帖子</p>'
+                + '<div class="pinned_text">设置帖子置顶天数</div>'
+                + '<div class="pinned_input">'
+                    + '<input min="1" max="30" oninput="value=moneyLimit(value, this, \'range\')" type="number" placeholder="设置范围为1~30天">'
+                + '</div>'
+            + '</div>';
         }
-        axios.post(url, data)
-          .then(function (response) {
-            layer.closeAll();
-            noticebox(response.data.message, 1);
-          })
-          .catch(function (error) {
-            lyShowError(error.response.data);
-          });
-    });
-};
+
+        ly.confirm(html, '', '', function(){
+            var data = pinneds.payload.data = {};
+            if (type == 'pinned') {
+                data.day = $('.pinned_spans .current').length > 0 ? $('.pinned_spans .current').attr('days') : '';
+                data.amount = $('.pinned_input input').val() * data.day;
+                if (!data.day) {
+                    lyNotice('请选择置顶天数');return;
+                }
+                if (data.amount < 0) {
+                    lyNotice('请输入置顶金额');return;
+                }
+            } else {
+                data.day = $('.pinned_input input').val();
+                if (!data.day) {
+                    lyNotice('请输入置顶天数');return;
+                }
+            }
+
+            if (TS.BOOT['pay-validate-user-password']) pinneds.showPassword()
+            else pinneds.postPinneds();
+        });
+    },
+    postPinneds: function() {
+        var payload = pinneds.payload || {};
+        if (TS.BOOT['pay-validate-user-password']) {
+            payload.data.password = $('#J-password-confirm').val();
+        }
+        axios.post(payload.url, payload.data)
+            .then(function (response) {
+                layer.closeAll();
+                noticebox(response.data.message, 1);
+            })
+            .catch(function (error) {
+                lyShowError(error.response.data);
+            });
+    },
+    showPassword: function() {
+        var html = '<div class="reward_box">'
+            +   '<p class="confirm_title">输入密码</p>'
+            +   '<div class="reward_amount">金额：' + pinneds.payload.data.amount + '积分</div>'
+            +   '<div class="reward_input_wrap">'
+            +       '<input id="J-password-confirm" placeholder="请输入登陆密码" pattern="^.{6-16}$" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
+            +       '<button onclick="pinneds.postPinneds()">确认</button>'
+            +   '</div>'
+            +   '<div class="reward_forgot"><a href="'+ TS.SITE_URL +'/forget-password">忘记密码?</a></div>'
+            + '</div>';
+        layer.open({
+            type: 0,
+            title: '',
+            content: html,
+            btn: '',
+        })
+    }
+}
 
 // 举报
 var reported = {

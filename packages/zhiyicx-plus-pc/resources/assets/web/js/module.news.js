@@ -126,7 +126,7 @@ var news = {
     },
     pinneds: function (news_id) {
         var url = '/api/v2/news/'+news_id+'/currency-pinneds';
-        pinneds(url, 'pinned');
+        pinneds.show(url, 'pinned');
     },
     addComment: function (row_id, type) {
         var url = '/api/v2/news/' + row_id + '/comments';

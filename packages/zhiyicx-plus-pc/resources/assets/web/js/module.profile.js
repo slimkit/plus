@@ -20,7 +20,7 @@ var weibo = {
     },
     pinneds: function (id) {
         var url = '/api/v2/feeds/'+id+'/pinneds';
-        pinneds(url);
+        pinneds.show(url);
     },
     addComment: function (row_id, type) {
         var url = '/api/v2/feeds/' + row_id + '/comments';
@@ -38,7 +38,7 @@ var weibo = {
 var news = {
     pinneds: function(id) {
         var url = '/api/v2/news/'+id+'/pinneds';
-        pinneds(url);
+        pinneds.show(url);
     },
     addComment: function(row_id, type) {
         var url = '/api/v2/news/' + row_id + '/comments';
