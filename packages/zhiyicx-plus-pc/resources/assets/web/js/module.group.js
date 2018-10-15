@@ -1,4 +1,6 @@
 var grouped = {
+    url: '',
+
     init: function(obj){
         checkLogin();
         this._this = obj;
@@ -17,7 +19,7 @@ var grouped = {
         var html = '';
         var _self = this;
         var _this = this._this;
-        var url = '/api/v2/plus-group/currency-groups/'+this.gid;
+        grouped.url = '/api/v2/plus-group/currency-groups/'+this.gid;
         if (_this.lockStatus == 1) {
             return;
         }
@@ -25,6 +27,7 @@ var grouped = {
 
         if (this.mode == 'paid') {
             var money = this.money;
+            grouped.money = money
             html = '<div class="f-tac" style="padding:20px;">'+
                         '<h3 class="f-mb30">加入付费圈子</h3>'+
                         '<div><font color="red" size="4">'+money+'</font></div>'+
@@ -39,31 +42,55 @@ var grouped = {
         }
         if (html && html != '') {
             ly.confirm(html,'','',function(){
-                axios.put(url)
-                  .then(function (response) {
-                    noticebox(response.data.message, 1);
-                  })
-                  .catch(function (error) {
-                    showError(error.response.data);
-                  });
-                ly.close();
+                if (TS.BOOT['pay-validate-user-password']) {
+                    var html = '<div class="reward_box">'
+                        +   '<p class="confirm_title">输入密码</p>'
+                        +   '<div class="reward_amount">金额：' + grouped.money + '积分</div>'
+                        +   '<div class="reward_input_wrap">'
+                        +       '<input id="J-password-confirm" placeholder="请输入登陆密码" pattern="^.{6-16}$" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
+                        +       '<button onclick="grouped.postJoined()">确认</button>'
+                        +   '</div>'
+                        +   '<div class="reward_forgot"><a href="'+ TS.SITE_URL +'/forget-password">忘记密码?</a></div>'
+                        + '</div>';
+                    layer.open({
+                        type: 0,
+                        title: '',
+                        content: html,
+                        btn: '',
+                    })
+                } else {
+                    grouped.postJoined()
+                }
             })
             _this.lockStatus = 0;
         } else {
-            axios.put(url)
-              .then(function (response) {
-                $(_this).text('已加入');
-                $(_this).attr('state', 1);
-                $(_this).addClass('joined');
-                noticebox('加入成功', 1)
-                $('#join-count-'+_self.gid).text(_self.count + 1);
-                _this.lockStatus = 0;
-              })
-              .catch(function (error) {
-                _this.lockStatus = 0;
-                showError(error.response.data);
-              });
+            axios.put(grouped.url)
+                .then(function (response) {
+                    $(_this).text('已加入');
+                    $(_this).attr('state', 1);
+                    $(_this).addClass('joined');
+                    noticebox('加入成功', 1)
+                    $('#join-count-'+_self.gid).text(_self.count + 1);
+                    _this.lockStatus = 0;
+                })
+                .catch(function (error) {
+                    _this.lockStatus = 0;
+                    showError(error.response.data);
+                });
         }
+    },
+    postJoined(){
+        if (TS.BOOT['pay-validate-user-password']) {
+            var password = $('#J-password-confirm').val();
+        }
+        axios.put(grouped.url, {password: password})
+            .then(function (response) {
+                noticebox(response.data.message, 1);
+            })
+            .catch(function (error) {
+                showError(error.response.data);
+            });
+        ly.close();
     },
     unjoined:function(){
         var _self = this;
