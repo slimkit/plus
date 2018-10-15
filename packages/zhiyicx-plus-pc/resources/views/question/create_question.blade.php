@@ -303,7 +303,7 @@
 
                     return false;
                 }
-                if ($.inArray({{ $TS['id'] }}, args.invitations_) > -1) {
+                if ($.inArray(Number("{{ $TS['id'] }}"), args.invitations_) > -1) {
                     noticebox('不能邀请自己', 0);
 
                     return false;
@@ -315,16 +315,43 @@
                 return update();
             }
             lockStatus = true;
-            axios.post('/api/v2/currency-questions', args)
-              .then(function (response) {
-                lockStatus = false;
-                noticebox(response.data.message, 1, '/questions/'+response.data.question.id);
-              })
-              .catch(function (error) {
-                lockStatus = false;
-                showError(error.response.data);
-              });
+            if (TS.BOOT['pay-validate-user-password']) showPassword();
+            else postQuestion()
+
         });
+
+        function postQuestion() {
+            if (TS.BOOT['pay-validate-user-password']) {
+                args.password = $("#J-password-confirm").val()
+            }
+            axios.post('/api/v2/currency-questions', args)
+                .then(function (response) {
+                    lockStatus = false;
+                    noticebox(response.data.message, 1, '/questions/'+response.data.question.id);
+                })
+                .catch(function (error) {
+                    lockStatus = false;
+                    showError(error.response.data);
+                });
+        };
+
+        function showPassword() {
+            var html = '<div class="reward_box">'
+                +   '<p class="confirm_title">输入密码</p>'
+                +   '<div class="reward_amount">金额：' + args.amount + '积分</div>'
+                +   '<div class="reward_input_wrap">'
+                +       '<input id="J-password-confirm" placeholder="请输入登陆密码" pattern="^.{6-16}$" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
+                +       '<button onclick="postQuestion()">确认</button>'
+                +   '</div>'
+                +   '<div class="reward_forgot"><a href="'+ TS.SITE_URL +'/forget-password">忘记密码?</a></div>'
+                + '</div>';
+            layer.open({
+                type: 0,
+                title: '',
+                content: html,
+                btn: '',
+            })
+        };
 
         function stepOne() {
             args.subject = $('#subject').val().replace(/(\s*$)/g, "");
