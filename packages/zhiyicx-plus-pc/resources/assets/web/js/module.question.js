@@ -89,6 +89,8 @@ var QA = {
 };
 
 var question = {
+    args: {},
+    lockStatus: 0,
     create:function (topic_id) {
         checkLogin();
         var url = '/questions/create';
@@ -144,24 +146,45 @@ var question = {
                 window.location.href = TS.SITE_URL + "/settings/currency/pay";
                 return;
             }
-            var _this = this;
-            if (_this.lockStatus == 1) {
+            if (question.lockStatus == 1) {
                 return;
             }
-            _this.lockStatus = 1;
-            var url ='/api/v2/user/currency-question-application/' + question_id;
-            axios.post(url)
-              .then(function (response) {
-                layer.closeAll();
-                _this.lockStatus = 0;
-                noticebox('申请成功', 1);
-              })
-              .catch(function (error) {
-                layer.closeAll();
-                _this.lockStatus = 0;
-                showError(error.response.data);
-              });
+            question.lockStatus = 1;
+            question.url ='/api/v2/user/currency-question-application/' + question_id;
+            if (TS.BOOT['pay-validate-user-password']) question.showPassword(money)
+            else question.postApplyTop();
         });
+    },
+    showPassword: function(money) {
+        var html = '<div class="reward_box">'
+            +   '<p class="confirm_title">输入密码</p>'
+            +   '<div class="reward_amount">金额：' + money + '积分</div>'
+            +   '<div class="reward_input_wrap">'
+            +       '<input id="J-password-confirm" placeholder="请输入登陆密码" pattern="^.{6-16}$" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
+            +       '<button onclick="question.postApplyTop()">确认</button>'
+            +   '</div>'
+            +   '<div class="reward_forgot"><a href="'+ TS.SITE_URL +'/forget-password">忘记密码?</a></div>'
+            + '</div>';
+        layer.open({
+            type: 0,
+            title: '',
+            content: html,
+            btn: '',
+        })
+    },
+    postApplyTop: function() {
+        if (TS.BOOT['pay-validate-user-password']) var password = $("#J-password-confirm").val()
+        axios.post(question.url, {password: password})
+            .then(function (response) {
+                layer.closeAll();
+                question.lockStatus = 0;
+                noticebox('申请成功', 1);
+            })
+            .catch(function (error) {
+                layer.closeAll();
+                question.lockStatus = 0;
+                showError(error.response.data);
+            });
     },
     amount: function (question_id) {
         checkLogin();
