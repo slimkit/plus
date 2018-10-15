@@ -65,7 +65,8 @@ $('.subject-submit').on('click', function() {
     } else if (isPay && pay_contribute > 0) {
         var html = formatConfirm('投稿提示', '<div class="confirm_money">' + pay_contribute + '</div>本次投稿您需要支付' + pay_contribute + '积分，是否继续投稿？');
         ly.confirm(html, '投稿' , '', function(){
-           return news.create(args);
+            if (TS.BOOT['pay-validate-user-password']) return news.showPassword(args)
+            else return news.create(args);
         });
 
         return false;
@@ -75,12 +76,33 @@ $('.subject-submit').on('click', function() {
 });
 
 var news = {
+    args: {},
+    showPassword(args) {
+        news.args = args
+        var html = '<div class="reward_box">'
+            +   '<p class="confirm_title">输入密码</p>'
+            +   '<div class="reward_amount">金额：' + TS.BOOT['news:pay_conyribute'] + '积分</div>'
+            +   '<div class="reward_input_wrap">'
+            +       '<input id="J-password-confirm" placeholder="请输入登陆密码" pattern="^.{6-16}$" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
+            +       "<button onclick='news.create(news.args)'>确认</button>"
+            +   '</div>'
+            +   '<div class="reward_forgot"><a href="'+ TS.SITE_URL +'/forget-password">忘记密码?</a></div>'
+            + '</div>';
+        layer.open({
+            type: 0,
+            title: '',
+            content: html,
+            btn: '',
+        })
+    },
     create: function (args) {
         var _this = this;
         if ( _this.lockStatus == 1) {
             return;
         }
          _this.lockStatus = 1;
+        if (TS.BOOT['pay-validate-user-password']) args.password = $('#J-password-confirm').val();
+
         var url = '/api/v2/news/categories/'+args.cate_id+'/currency-news';
         axios.post(url, args)
           .then(function (response) {
