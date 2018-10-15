@@ -23,6 +23,7 @@
             </div>
             <div class="login_extra">
                 <a class="forget_pwd" href="{{ route('pc:findpassword') }}">忘记密码</a>
+                <a class="" href="{{ route('pc:dynamiclogin') }}">验证码登陆 </a>
             </div>
             <button class="login_button" type="submit">登录</button>
             <!-- <a class="login_button" type="submit">登录</a> -->

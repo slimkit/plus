@@ -15,6 +15,12 @@ Route::prefix('auth')->group(function () {
         'as' => 'login',
     ]);
 
+    // 动态验证码登录
+    Route::get('/dynamic-login', [
+        'uses' => 'PassportController@dynamic',
+        'as' => 'pc:dynamiclogin',
+    ]);
+
     // 登出
     Route::get('/logout', [
         'uses' => 'PassportController@logout',

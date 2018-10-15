@@ -12,9 +12,11 @@
 .login_code img {width:120px;height:120px;}
 .login_scan {font-size:14px;margin-top:55px;text-align:center;color:#fff;}
 .login_right {float:left;width:400px;height:360px;padding:50px;background:#fff;}
-.login_right .login_input {margin-bottom:20px;}
-.login_right .login_input span {font-size:12px;display:block;margin-bottom:10px;color:#f87d72;}
+.login_right .login_input {margin-bottom:20px;position: relative;}
+.login_right .login_input > span {font-size:12px;display:block;margin-bottom:10px;color:#f87d72;}
 .login_right .login_input input {font-size:14px;line-height:38px;width:300px;height:40px;padding-left:15px;color:#333;border:none;border-radius:3px;outline:none;background:#f3f6f7;}
+.login_right .login_input .get_verify_code {position: absolute;right: 10px;bottom: 0;color: #59b6d7;cursor: pointer;}
+.login_right .login_input .get_verify_code .gray {color: #b3b3b3;}
 .login_right .login_extra {font-size:12px;color:#b3b3b3;overflow:hidden;}
 .login_right .login_extra .forget_pwd {float:right;color:#b3b3b3;font-size:12px;cursor:pointer;}
 .login_right .login_extra .forget_pwd:hover {color:#59b6d7;}

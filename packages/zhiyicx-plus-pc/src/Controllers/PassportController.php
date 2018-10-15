@@ -64,6 +64,20 @@ class PassportController extends BaseController
     }
 
     /**
+     * 动态验证码登陆
+     *
+     * @return mixed
+     */
+    public function dynamic()
+    {
+        if ($this->PlusData['TS'] != null) {
+            return redirect(route('pc:feeds'));
+        }
+
+        return view('pcview::passport.dynamiclogin', [], $this->PlusData);
+    }
+
+    /**
      * 注册
      * @author Foreach
      * @param  \Illuminate\Http\Request  $request
