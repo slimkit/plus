@@ -24,7 +24,7 @@ class SocialiteController extends BaseController
 
         $socialite = new SocialiteManager($config);
 
-        $response = $socialite->driver($service)->redirect();
+        $response = $socialite->setRequest($request)->driver($service)->redirect();
 
         $response->send();
     }
@@ -51,7 +51,7 @@ class SocialiteController extends BaseController
 
         $socialite = new SocialiteManager($config);
 
-        $response = $socialite->driver($service)->redirect();
+        $response = $socialite->setRequest($request)->driver($service)->redirect();
 
         $response->send();
     }
@@ -70,7 +70,7 @@ class SocialiteController extends BaseController
         $config[$service]['redirect'] = url('/socialite/'.$service.'/callback'.($type != '' ? '?type=bind' : ''));
 
         $socialite = new SocialiteManager($config);
-        $user = $socialite->driver($service)->user();
+        $user = $socialite->setRequest($request)->driver($service)->user();
         $access_token = $user->getToken()->access_token;
 
         // 已登录时账号绑定
