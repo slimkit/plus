@@ -9,7 +9,7 @@
             @foreach ($members as $member)
                 <dl class="m-row">
                     <dt>
-                        <img src="{{ getAvatar($member['user'], 50) }}" width="50">
+                        <img src="{{ getAvatar($member['user'], 50) }}" width="50" class="avatar">
                         @if($member['user']['verified'])
                             <img class="role-icon" src="{{ $member['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                         @endif
@@ -37,7 +37,7 @@
             @foreach ($members as $member)
                 <dl class="m-row">
                     <dt>
-                        <img src="{{ getAvatar($member['user'], 50) }}" width="50">
+                        <img src="{{ getAvatar($member['user'], 50) }}" width="50" class="avatar">
                         @if($member['user']['verified'])
                             <img class="role-icon" src="{{ $member['user']['verified']['icon'] ?? asset('assets/pc/images/vip_icon.svg') }}">
                         @endif
