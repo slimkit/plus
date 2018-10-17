@@ -40,11 +40,12 @@
 <script src="{{ asset('assets/pc/js/module.picshow.js') }}"></script>
 <script>
 $(function(){
+    var type = {{ $type }};
     loader.init({
         container: '#content_list',
         loading: '.profile_content',
         url: '{{ $url }}',
-        paramtype: 1,
+        paramtype: type,
         params: {limit: 10, isAjax: true}
     });
 });
