@@ -51,10 +51,6 @@
 
                 <div class="answer-footer">
                     <div class="answer-footer-inner">
-                        <a href="{{ route('pc:answeread', ['question' => $answer['question_id'], 'answer' => $answer['id']]) }}" class="button button-plain">
-                            <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg>
-                            {{ $answer['likes_count'] }} 分享
-                        </a>
                         <a href="{{ route('pc:answeread', ['question' => $answer['question_id'], 'answer' => $answer['id']]) }}" class="button button-plain comment J-comment-show">
                             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-comment"></use></svg>
                             <font class="cs{{$answer['id']}}">{{$answer['comments_count']}}</font> 评论
