@@ -102,7 +102,7 @@ class FeedController extends BaseController
     {
         $feedinfo = api('GET', '/api/v2/feeds/' . $feed->id);
         $feedinfo['collect_count'] = $feed->collection->count();
-        $feedinfo['rewards'] = $feed->rewards->toArray();
+        $feedinfo['rewards'] = api('GET', '/api/v2/feeds/' . $feed->id . '/rewards');
         $data['user'] = $feed->user;
         $feedinfo = formatRepostable([$feedinfo]);
         $data['feed'] = $feedinfo[0];
