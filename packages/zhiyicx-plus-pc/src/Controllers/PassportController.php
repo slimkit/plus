@@ -26,7 +26,7 @@ class PassportController extends BaseController
         parent::__construct();
 
         // Register "guest" middleware
-        $this->middleware('guest')->except('logout', 'perfect', 'captcha', 'checkCaptcha');
+        $this->middleware('guest')->except('logout', 'perfect', 'captcha', 'checkCaptcha', 'findPassword');
     }
 
     /**
@@ -102,9 +102,6 @@ class PassportController extends BaseController
     public function findPassword(Request $request)
     {
         $type = $request->input('type', 'phone');
-        if ($this->PlusData['TS'] != null) {
-            return redirect(route('pc:feeds'));
-        }
 
         return view('pcview::passport.findpwd', ['type' => $type], $this->PlusData);
     }
