@@ -677,6 +677,7 @@ var rewarded = {
         ly.confirm(html, '', '', function(){
             var num = $('#J-reward .current').length ? $('#J-reward .current').attr('num') : ($('#J-custom').val());
             var amount = pay_amount ? (pay_amount) : ($('#J-custom').val());
+            if (!amount) return lyShowError("", "请输入打赏金额");
             var types = {
                 'user'  : '/api/v2/user/'+id+'/new-rewards',
                 'news'  : '/api/v2/news/'+id+'/new-rewards',
