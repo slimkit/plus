@@ -74,8 +74,8 @@
                         <div class="options_div">
                             <div class="triangle"></div>
                             <ul>
-                                <li id="J-collect{{$answer['id']}}" rel="0" status="{{(int)$answer['collected']}}">
-                                    @if($answer['collected'])
+                                <li id="J-collect{{$answer['id']}}" rel="0" status="{{ isset($answer['collected']) ? 1 : 0 }}">
+                                    @if($answer['collected'] ?? false)
                                     <a href="javascript:;" onclick="collected.init({{$answer['id']}}, 'question', 0);" class="act">
                                         <svg class="icon" aria-hidden="true"><use xlink:href="#icon-collect"></use></svg>
                                         <span>已收藏</span>

@@ -249,20 +249,21 @@ class QuestionController extends BaseController
         $params['limit'] = $request->input('limit') ?: 10;
         $params['offset'] = $request->input('offset') ?: 0;
         $params['order_type'] = $request->input('order_type') ?: 'time';
-        $data['answers'] = api('GET', '/api/v2/questions/'.$question->id.'/answers', $params);
+        $question = api('GET', '/api/v2/questions/' . $question->id);
+        $data['answers'] = api('GET', '/api/v2/questions/' . $question['id'] . '/answers', $params);
         if ($params['offset'] == 0) {
             if (!empty($question['adoption_answers'])) { // 采纳回答
-                $question['adoption_answers']->each(function ($item, $key) use ($data) {
-                    $data['answers']->prepend($item);
-                });
+                foreach ($question['adoption_answers'] as $key => $item) {
+                    array_unshift($data['answers'], $item);
+                }
             }
             if (!empty($question['invitation_answers'])) { // 悬赏人回答
-                $question['invitation_answers']->each(function ($item, $key) use ($data) {
-                    $data['answers']->prepend($item);
-                });
+                foreach ($question['adoption_answers'] as $key => $item) {
+                    array_unshift($data['answers'], $item);
+                };
             }
         }
-        $data['question'] = $question->toArray();
+        $data['question'] = $question;
 
         $return = view('pcview::question.question_answer', $data, $this->PlusData)
             ->render();

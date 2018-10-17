@@ -64,7 +64,7 @@
                                 <div class="numberboard-name">浏览</div>
                             </div>
                         </div>
-                        @if (!empty($question['invitations']) && !$question['invitations']->isEmpty())
+                        @if (!empty($question['invitations']) && count($question['invitations']))
                         @foreach($question['invitations']  as $invitation)
                         <div class="questionfollowstatus-people">
                             <a href="{{ route('pc:mine', $invitation['id']) }}">
@@ -125,7 +125,7 @@
                         @endif
                         @if($question['amount'] <= 0)
                             <a href="javascript:;" class="button set-amount" @if($question['user_id'] == $TS['id'] && $question['status'] == 0) onclick="question.amount({{ $question['id'] }})" @endif >未设置悬赏</a>
-                        @elseif(!empty($question['invitations']) && !$question['invitations']->isEmpty())
+                        @elseif(!empty($question['invitations']) && count($question['invitations']))
                             <a href="javascript:;" class="button set-amount">已邀请悬赏</a>
                         @else
                             <a href="javascript:;" class="button set-amount">已设置悬赏</a>

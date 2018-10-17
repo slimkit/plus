@@ -150,7 +150,7 @@ a {font-size:100%;vertical-align:baseline;background:transparent;text-decoration
 .recusers li > a > img.role-icon {position:absolute;right:0;top:10px;width:18px;height:18px;border-radius:50%;}
 .recusers li img {width:50px;height:50px;border-radius:50%;margin-top:20px;}
 .recusers li span {font-size:12px;overflow:hidden;width:50px;margin-top:10px;white-space:nowrap;text-overflow:ellipsis;color:#666;line-height: 1;}
-.recusers li span a {color:#333;}
+.recusers li span a {color:#333;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; display:block;margin-top:10px;}
 .recusers .recmore {font-size:12px;line-height:40px;display:block;height:40px;cursor:pointer;text-align:center;color:#999;background:#f8fcff;}
 .recusers .recmore {color:#999;}
 /*近期热点*/.hot_news {width:100%;margin-bottom:30px;padding:0 15px 0;border:1px solid #ededed;background-color:#fff;}
