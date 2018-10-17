@@ -311,7 +311,6 @@
 /* 专题首页 */
 .m-cover {float:left;height: 120px;}
 .m-blk {display:inline-block;margin-top:40px;width:49.5%;}
-.m-blk:nth-last-child(1),.m-lst .m-blk:nth-last-child(2){margin-bottom: 0;}
 .m-entry {float:left;height: 120px;margin-left: 20px;}
 .m-entry .u-name {width: 180px;}
 .m-entry .m-col,.m-entry .m-col1{font-size: 14px;color: #999;}
