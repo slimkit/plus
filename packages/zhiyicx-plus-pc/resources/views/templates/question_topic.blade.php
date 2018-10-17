@@ -24,11 +24,4 @@
         </div>
     </div>
     @endforeach
-@elseif(isset($search) && $search)
-<script>
-if (!$('.no_data_div').length && $('#content_list').find('li').length < 1) {
-    var box = $('#content_list');
-    box.append('<div class="no_data_div"><div class="no_data"><img src="{{ asset('assets/pc/images/pic_default_content.png') }}"><p><div class="search-button"><a href="javascript:;" onclick="QT.show()">向官方建议创建新专题</a></div></div></div>');
-}
-</script>
 @endif
