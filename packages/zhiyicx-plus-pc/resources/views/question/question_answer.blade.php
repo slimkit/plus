@@ -124,7 +124,7 @@
 
                                 <span class="look-user">{{ $answer['onlookers_count'] }}人正在围观</span>
                                 @if($question['user_id'] != $TS['id'] && $answer['user_id'] != $TS['id'])
-                                    @if(isset($TS) && $answer['could'])
+                                    @if(isset($TS) && ($answer['could'] ?? false))
                                         <button class="button look-cloud" type="button">已围观</button>
                                     @else
                                         <button class="button button-blue button-primary look-cloud" onclick="QA.look({{ $answer['id'] }}, '{{ $config['bootstrappers']['question:onlookers_amount'] }}' , {{ $answer['question_id'] }})" type="button">围观</button>

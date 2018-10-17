@@ -258,7 +258,7 @@ class QuestionController extends BaseController
                 }
             }
             if (!empty($question['invitation_answers'])) { // 悬赏人回答
-                foreach ($question['adoption_answers'] as $key => $item) {
+                foreach ($question['invitation_answers'] as $key => $item) {
                     array_unshift($data['answers'], $item);
                 };
             }
