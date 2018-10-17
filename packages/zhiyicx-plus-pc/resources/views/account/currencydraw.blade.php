@@ -1,4 +1,4 @@
-@section('title')积分提取 @endsection
+@section('title'){{ $config['bootstrappers']['site']['currency_name']['name'] }}提取 @endsection
 
 @extends('pcview::layouts.default')
 
@@ -10,18 +10,18 @@
 
 <div class="pay-box">
     <div class="pay-title">
-        <h1 class="title">积分提取</h1>
+        <h1 class="title">{{ $config['bootstrappers']['site']['currency_name']['name'] }}提取</h1>
         <span id="open">
             <svg class="icon" aria-hidden="true"><use xlink:href="#icon-doubt"></use></svg>
-            积分提取规则
+            {{ $config['bootstrappers']['site']['currency_name']['name'] }}提取规则
         </span>
     </div>
     <div class="pay-form">
 
-        <p class="tcolor">积分兑换余额比例</p>
-        <p><font color="#FF9400">{{$currency['recharge-ratio'] * 100}}积分 = 1元</font></p>
-        <p class="rules">输入需提取的积分，提取积分需官方审核，审核反馈请注意系统消息！</p>
-        <p><input class="custom-sum" type="text" name="sum" placeholder="请至少提取{{$currency['cash-min']}}积分"></p>
+        <p class="tcolor">{{ $config['bootstrappers']['site']['currency_name']['name'] }}兑换余额比例</p>
+        <p><font color="#FF9400">{{$currency['recharge-ratio'] * 100}}{{ $config['bootstrappers']['site']['currency_name']['name'] }} = 1元</font></p>
+        <p class="rules">输入需提取的{{ $config['bootstrappers']['site']['currency_name']['name'] }}，提取{{ $config['bootstrappers']['site']['currency_name']['name'] }}需官方审核，审核反馈请注意系统消息！</p>
+        <p><input class="custom-sum" type="text" name="sum" placeholder="请至少提取{{$currency['cash-min']}}{{ $config['bootstrappers']['site']['currency_name']['name'] }}"></p>
 
         <button class="pay-btn" id="J-pay-btn">确认</button>
     </div>
@@ -36,7 +36,7 @@
         var html = '<div class="out">';
         html += '<div class="agreement">';
         html += '  <div class="title">';
-        html += '  <h3>积分提取规则</h3>';
+        html += '  <h3>' + TS.CURRENCY_UNIT + '提取规则</h3>';
         html += '  </div>';
         html += '    <div class="agreement-info">';
         html += '    <p class="info">{{$currency['cash-rule']}}</p>';

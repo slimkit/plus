@@ -26,7 +26,7 @@
                 <span>{{$user['location'] ?? ''}}</span>&nbsp;&nbsp;|
                 @endif
                 @if ($user['id'] == $TS['id'])
-                &nbsp;<svg class="icon" aria-hidden="true"><use xlink:href="#icon-currency"></use></svg>{{$user['currency']['sum'] ?? '0'}} 积分
+                &nbsp;<svg class="icon" aria-hidden="true"><use xlink:href="#icon-currency"></use></svg>{{$user['currency']['sum'] ?? '0'}} {{ $config['bootstrappers']['site']['currency_name']['name'] }}
                 @endif
             </div>
             <div class="profile_top_bio">{{ $user['bio'] ?? '这家伙很懒，什么都没留下'}}</div>

@@ -338,7 +338,7 @@
         function showPassword() {
             var html = '<div class="reward_box">'
                 +   '<p class="confirm_title">输入密码</p>'
-                +   '<div class="reward_amount">金额：' + args.amount + '积分</div>'
+                +   '<div class="reward_amount">金额：' + args.amount + TS.CURRENCY_UNIT + '</div>'
                 +   '<div class="reward_input_wrap">'
                 +       '<input id="J-password-confirm" placeholder="请输入登陆密码" pattern="^.{6-16}$" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
                 +       '<button onclick="postQuestion()">确认</button>'

@@ -6,7 +6,7 @@
         <p><button class="btn btn-warning btn-lg" onclick="rewarded.show({{ $rewards_id }}, '{{ $rewards_type }}')">打 赏</button></p>
         <p class="reward_info tcolor">
             <span style="color: #F76C6A; ">{{ $rewards_info['count'] }} </span>人打赏，共
-            <span style="color: #F76C6A; ">{{ $rewards_info['amount'] ?? 0 }} </span>积分
+            <span style="color: #F76C6A; ">{{ $rewards_info['amount'] ?? 0 }} </span>{{ $config['bootstrappers']['site']['currency_name']['name'] }}
         </p>
 
         {{-- 打賞 --}}

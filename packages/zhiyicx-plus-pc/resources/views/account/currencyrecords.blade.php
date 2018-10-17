@@ -27,7 +27,7 @@
                             @if ($item['state'] == -1) 失败 @endif
                         </td>
                         <td width="20%">
-                            <font color="#FF9400">{{ $item['type'] == 1 ? '+' : '-' }}{{ $item['amount']}}积分</font>
+                            <font color="#FF9400">{{ $item['type'] == 1 ? '+' : '-' }}{{ $item['amount']}}{{ $config['bootstrappers']['site']['currency_name']['name'] }}</font>
                         </td>
                     </tr>
                 @endforeach
@@ -59,7 +59,7 @@
                             @if ($item['state'] == -1) 失败 @endif
                         </td>
                         <td width="30%">
-                            <p class="ptext"><font @if($item['state'] == 1) color="#FF9400" @endif>{{ $item['type'] == 1 ? '+' : '-' }}{{ $item['state'] == -1 ? 0 : $item['amount']}}积分</font></p>
+                            <p class="ptext"><font @if($item['state'] == 1) color="#FF9400" @endif>{{ $item['type'] == 1 ? '+' : '-' }}{{ $item['state'] == -1 ? 0 : $item['amount']}}{{ $config['bootstrappers']['site']['currency_name']['name'] }}</font></p>
                         </td>
                     </tr>
                 @endforeach
@@ -91,7 +91,7 @@
                             @if ($item['state']  == -1) 失败 @endif
                         </td>
                         <td width="30%">
-                            <p class="ptext"><font @if($item['state']  == 1) color="#FF9400" @endif>{{ $item['type'] == 1 ? '+' : '-' }}{{ $item['amount']}}积分</font></p>
+                            <p class="ptext"><font @if($item['state']  == 1) color="#FF9400" @endif>{{ $item['type'] == 1 ? '+' : '-' }}{{ $item['amount']}}{{ $config['bootstrappers']['site']['currency_name']['name'] }}</font></p>
                         </td>
                     </tr>
                 @endforeach

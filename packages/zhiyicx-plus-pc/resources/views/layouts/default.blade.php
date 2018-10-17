@@ -22,6 +22,11 @@
             USER_FOLLOW_MUTUAL: [],
             HOT_TOPICS: [],
         };
+        try {
+            TS.CURRENCY_UNIT = TS.BOOT.site.currency_name.name;
+        } catch (e) {
+            TS.CURRENCY_UNIT = "积分";
+        }
     </script>
     <link rel="stylesheet" href="{{ asset('assets/pc/css/common.css') }}">
     <script src="{{ asset('assets/pc/js/jquery.min.js') }}"></script>

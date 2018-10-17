@@ -104,7 +104,7 @@
                     </div>
                     <div class="form-control @if ($group['mode'] != 'paid') f-dn @endif j-sub1">
                         <label class="lab">设置入圈金额</label>
-                        <input min="1" oninput="value=moneyLimit(value)" class="iptline f-mr10" name="money" type="text" value="{{$group['money']}}" /><span class="s-fc4">积分</span>
+                        <input min="1" oninput="value=moneyLimit(value)" class="iptline f-mr10" name="money" type="text" value="{{$group['money']}}" /><span class="s-fc4">{{ $config['bootstrappers']['site']['currency_name']['name'] }}</span>
                     </div>
                 </div>
                 <div class="formitm">

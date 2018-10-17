@@ -23,7 +23,7 @@
         </a>
         <a href="{{ Route('pc:currency')}}">
             <li class="@if ($account_cur == 'currency')active @endif">
-                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-currency"></use></svg>我的积分</li>
+                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-currency"></use></svg>我的{{ $config['bootstrappers']['site']['currency_name']['name'] }}</li>
         </a>
         <a href="{{ Route('pc:binds')}}">
             <li class="@if ($account_cur == 'binds')active @endif">

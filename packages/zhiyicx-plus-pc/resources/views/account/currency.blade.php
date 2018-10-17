@@ -2,7 +2,7 @@
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getTime;
 @endphp
 @section('title')
-    我的积分
+    我的{{ $config['bootstrappers']['site']['currency_name']['name'] }}
 @endsection
 
 @extends('pcview::layouts.default')
@@ -25,8 +25,8 @@
                 <div class="account_c_a" id="J-warp">
                     <div class="account_tab">
                         <div class="perfect_title">
-                            <span class="switch @if($type == 1) active @endif" type="1">我的积分</span>
-                            <span class="switch @if($type == 2) active @endif" type="2">积分明细</span>
+                            <span class="switch @if($type == 1) active @endif" type="1">我的{{ $config['bootstrappers']['site']['currency_name']['name'] }}</span>
+                            <span class="switch @if($type == 2) active @endif" type="2">{{ $config['bootstrappers']['site']['currency_name']['name'] }}明细</span>
                             <span class="switch @if($type == 3) active @endif" type="3">充值记录</span>
                             <span class="switch @if($type == 4) active @endif" type="4">提取记录</span>
                         </div>
@@ -46,10 +46,10 @@
                                     @endif
                                 </div>
 
-                                <p class="gcolor">当前积分</p>
+                                <p class="gcolor">当前{{ $config['bootstrappers']['site']['currency_name']['name'] }}</p>
                             </div>
                             @if($type==1)
-                                <p>积分规则</p>
+                                <p>{{ $config['bootstrappers']['site']['currency_name']['name'] }}规则</p>
                                 <div class="rules">
                                     {{$currency['rule']}}
                                 </div>

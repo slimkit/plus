@@ -56,7 +56,7 @@ var QA = {
     look: function (answer_id, money, question_id, obj) {
         checkLogin();
         obj = obj ? obj : false;
-        ly.confirm(formatConfirm('围观支付', '本次围观您需要支付' + money + '积分，是否继续围观？'), '' , '', function(){
+        ly.confirm(formatConfirm('围观支付', '本次围观您需要支付' + money + TS.CURRENCY_UNIT + '，是否继续围观？'), '' , '', function(){
             var _this = this;
             if (_this.lockStatus == 1) {
                 return;
@@ -140,7 +140,7 @@ var question = {
         });
     },
     selected: function (question_id, money) {
-        var html = formatConfirm('精选问答支付', '<div class="confirm_money">' + money + '</div>本次申请精选您需要支付' + money + '积分，是否继续申请？');
+        var html = formatConfirm('精选问答支付', '<div class="confirm_money">' + money + '</div>本次申请精选您需要支付' + money + TS.CURRENCY_UNIT + '，是否继续申请？');
 
         ly.confirm(html, '' , '', function(){
             if (TS.USER.currency.sum < money) {
@@ -159,7 +159,7 @@ var question = {
     showPassword: function(money, funName) {
         var html = '<div class="reward_box">'
             +   '<p class="confirm_title">输入密码</p>'
-            +   '<div class="reward_amount">金额：' + money + '积分</div>'
+            +   '<div class="reward_amount">金额：' + money + TS.CURRENCY_UNIT + '</div>'
             +   '<div class="reward_input_wrap">'
             +       '<input id="J-password-confirm" placeholder="请输入登陆密码" pattern="^.{6-16}$" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
             +       '<button onclick="question.'+ funName +'()">确认</button>'

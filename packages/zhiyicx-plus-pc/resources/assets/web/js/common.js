@@ -720,7 +720,7 @@ var rewarded = {
         var html
             = '<div class="reward_box">'
                 + '<p class="confirm_title">输入密码</p>'
-                + '<div class="reward_amount">金额：' + rewarded.payload.amount + '积分</div>'
+                + '<div class="reward_amount">金额：' + rewarded.payload.amount + TS.CURRENCY_UNIT + '</div>'
                 + '<div class="reward_input_wrap">'
                 +    '<input id="J-password-confirm" placeholder="请输入登陆密码" pattern=".{6-16}" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
                 +    '<button onclick="rewarded.postReward()">确认</button>'
@@ -1235,7 +1235,7 @@ var pinneds = {
                 + '<div class="pinned_input">'
                     + '<input min="0" oninput="value=moneyLimit(value, this, \'pinned\')" type="number" placeholder="自定义置顶金额，必须为整数">'
                 + '</div>'
-                + '<div class="pinned_text">当前平均置顶金额为积分200/天，积分余额为' + (TS.USER.currency ? TS.USER.currency.sum : 0) + '</div>'
+                + '<div class="pinned_text">当前平均置顶金额为'+ TS.CURRENCY_UNIT +'200/天，'+ TS.CURRENCY_UNIT +'余额为' + (TS.USER.currency ? TS.USER.currency.sum : 0) + '</div>'
                 + '<div class="pinned_text">需要支付总金额：</div>'
                 + '<div class="pinned_total"><span>0</span></div>'
             + '</div>';
@@ -1288,7 +1288,7 @@ var pinneds = {
     showPassword: function() {
         var html = '<div class="reward_box">'
             +   '<p class="confirm_title">输入密码</p>'
-            +   '<div class="reward_amount">金额：' + pinneds.payload.data.amount + '积分</div>'
+            +   '<div class="reward_amount">金额：' + pinneds.payload.data.amount + TS.CURRENCY_UNIT + '</div>'
             +   '<div class="reward_input_wrap">'
             +       '<input id="J-password-confirm" placeholder="请输入登陆密码" pattern="^.{6-16}$" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
             +       '<button onclick="pinneds.postPinneds()">确认</button>'
@@ -1837,7 +1837,7 @@ var repostable = {
     jumpToReference(url, node) {
         if (!node || node.paid) return location.href = url;
 
-        var html = formatConfirm('购买支付', '<div class="confirm_money">' + node.amount + '</div>您只需要支付' + node.amount + '积分即可查看完整内容，是否确认支付？');
+        var html = formatConfirm('购买支付', '<div class="confirm_money">' + node.amount + '</div>您只需要支付' + node.amount + TS.CURRENCY_UNIT + '即可查看完整内容，是否确认支付？');
         ly.confirm(html, '', '', function(){
             var url = '/api/v2/currency/purchases/' + node.node;
             // 确认支付

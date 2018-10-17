@@ -63,7 +63,7 @@ $('.subject-submit').on('click', function() {
         });
         return false;
     } else if (isPay && pay_contribute > 0) {
-        var html = formatConfirm('投稿提示', '<div class="confirm_money">' + pay_contribute + '</div>本次投稿您需要支付' + pay_contribute + '积分，是否继续投稿？');
+        var html = formatConfirm('投稿提示', '<div class="confirm_money">' + pay_contribute + '</div>本次投稿您需要支付' + pay_contribute + TS.CURRENCY_UNIT + '，是否继续投稿？');
         ly.confirm(html, '投稿' , '', function(){
             if (TS.BOOT['pay-validate-user-password']) return news.showPassword(args)
             else return news.create(args);
@@ -81,7 +81,7 @@ var news = {
         news.args = args
         var html = '<div class="reward_box">'
             +   '<p class="confirm_title">输入密码</p>'
-            +   '<div class="reward_amount">金额：' + TS.BOOT['news:pay_conyribute'] + '积分</div>'
+            +   '<div class="reward_amount">金额：' + TS.BOOT['news:pay_conyribute'] + TS.CURRENCY_UNIT + '</div>'
             +   '<div class="reward_input_wrap">'
             +       '<input id="J-password-confirm" placeholder="请输入登陆密码" pattern="^.{6-16}$" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
             +       "<button onclick='news.create(news.args)'>确认</button>"

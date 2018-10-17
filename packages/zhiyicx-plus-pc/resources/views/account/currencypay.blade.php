@@ -18,7 +18,7 @@
     </div>
     <div class="pay-form">
         <p class="tcolor">充值比率</p>
-        <p><font color="#FF9400">1元 = {{$currency['recharge-ratio'] * 100}}积分</font></p>
+        <p><font color="#FF9400">1元 = {{$currency['recharge-ratio'] * 100}}{{ $config['bootstrappers']['site']['currency_name']['name'] }}</font></p>
         <p class="tcolor">设置充值金额</p>
         <div class="pay-curr">
             @if($currency['recharge-options'])

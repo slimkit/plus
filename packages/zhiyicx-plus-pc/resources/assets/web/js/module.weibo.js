@@ -260,7 +260,7 @@ weibo.payText = function(obj, tourl){
     var amount = feed_item.data('amount');
     var node = feed_item.data('node');
 
-    var html = formatConfirm('购买支付', '<div class="confirm_money">' + amount + '</div>您只需要支付' + amount + '积分即可查看完整内容，是否确认支付？');
+    var html = formatConfirm('购买支付', '<div class="confirm_money">' + amount + '</div>您只需要支付' + amount + TS.CURRENCY_UNIT + '即可查看完整内容，是否确认支付？');
     ly.confirm(html, '', '', function(){
         var url = '/api/v2/currency/purchases/' + node;
         // 确认支付
@@ -301,7 +301,7 @@ weibo.payImage = function(obj){
         var file = _this.data('file');
         var image = _this.data('original');
 
-        var html = formatConfirm('购买支付', '<div class="confirm_money">' + amount + '</div>您只需要支付' + amount + '积分即可查看高清大图，是否确认支付？');
+        var html = formatConfirm('购买支付', '<div class="confirm_money">' + amount + '</div>您只需要支付' + amount + TS.CURRENCY_UNIT + '即可查看高清大图，是否确认支付？');
         ly.confirm(html, '', '', function(){
             var url = '/api/v2/currency/purchases/' + node;
             /*确认支付*/
@@ -527,7 +527,7 @@ $(function() {
         var file = _this.data('file');
         var image = _this.data('original');
 
-        var html = formatConfirm('购买支付', '<div class="confirm_money">' + amount + '</div>您只需要支付' + amount + '积分即可查看高清大图，是否确认支付？');
+        var html = formatConfirm('购买支付', '<div class="confirm_money">' + amount + '</div>您只需要支付' + amount + TS.CURRENCY_UNIT + '即可查看高清大图，是否确认支付？');
         ly.confirm(html, '', '', function(){
             var url = '/api/v2/currency/purchases/' + node;
             /*确认支付*/

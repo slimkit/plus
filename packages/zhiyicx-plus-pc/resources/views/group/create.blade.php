@@ -75,7 +75,7 @@
                 </div>
                 <div class="form-control f-dn j-sub1">
                     <label class="lab">设置入圈金额</label>
-                    <input min="1" oninput="value=moneyLimit(value)" class="iptline" name="money" type="text"/>&nbsp;&nbsp;<span class="s-fc4">积分</span>
+                    <input min="1" oninput="value=moneyLimit(value)" class="iptline" name="money" type="text"/>&nbsp;&nbsp;<span class="s-fc4">{{ $config['bootstrappers']['site']['currency_name']['name'] }}</span>
                 </div>
             </div>
             <div class="formitm">

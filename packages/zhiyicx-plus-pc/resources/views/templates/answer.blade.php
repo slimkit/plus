@@ -53,7 +53,7 @@
         look: function (answer_id, money, question_id, obj) {
             checkLogin();
             obj = obj ? obj : false;
-            ly.confirm(formatConfirm('围观支付', '本次围观您需要支付' + money + '积分，是否继续围观？'), '' , '', function(){
+            ly.confirm(formatConfirm('围观支付', '本次围观您需要支付' + money + TS.CURRENCY_UNIT '，是否继续围观？'), '' , '', function(){
                 var _this = this;
                 if (_this.lockStatus == 1) {
                     return;

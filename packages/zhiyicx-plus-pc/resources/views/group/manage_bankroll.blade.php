@@ -32,15 +32,15 @@
             <div class="m-hd">
                 <div class="m-income all-income">
                     <span>{{$group['join_income_count'] + $group['pinned_income_count']}}</span>
-                    <div class="s-fc4 f-fs2">账户余额（积分）</div>
+                    <div class="s-fc4 f-fs2">账户余额（{{ $config['bootstrappers']['site']['currency_name']['name'] }}）</div>
                 </div>
                 <div class="f-dn m-income pinned-income">
                     <span>{{$group['pinned_income_count']}}</span>
-                    <div class="s-fc4 f-fs2">置顶收益（积分）</div>
+                    <div class="s-fc4 f-fs2">置顶收益（{{ $config['bootstrappers']['site']['currency_name']['name'] }}）</div>
                 </div>
                 <div class="f-dn m-income join-income">
                     <span>{{$group['join_income_count']}}</span>
-                    <div class="s-fc4 f-fs2">成员费（积分）</div>
+                    <div class="s-fc4 f-fs2">成员费（{{ $config['bootstrappers']['site']['currency_name']['name'] }}）</div>
                 </div>
                 <div class="m-ct">
                     <div class="u-tt">

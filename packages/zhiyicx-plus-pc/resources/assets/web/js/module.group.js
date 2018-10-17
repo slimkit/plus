@@ -31,7 +31,7 @@ var grouped = {
             html = '<div class="f-tac" style="padding:20px;">'+
                         '<h3 class="f-mb30">加入付费圈子</h3>'+
                         '<div><font color="red" size="4">'+money+'</font></div>'+
-                        '<p>加入此圈子需要支付'+money+'积分，是否<br/>继续加入?</p>'+
+                        '<p>加入此圈子需要支付'+ money + TS.CURRENCY_UNIT + '，是否<br/>继续加入?</p>'+
                    '</div>';
         }
         if (this.mode == 'private') {
@@ -45,7 +45,7 @@ var grouped = {
                 if (TS.BOOT['pay-validate-user-password']) {
                     var html = '<div class="reward_box">'
                         +   '<p class="confirm_title">输入密码</p>'
-                        +   '<div class="reward_amount">金额：' + grouped.money + '积分</div>'
+                        +   '<div class="reward_amount">金额：' + grouped.money + TS.CURRENCY_UNIT + '</div>'
                         +   '<div class="reward_input_wrap">'
                         +       '<input id="J-password-confirm" placeholder="请输入登陆密码" pattern="^.{6-16}$" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
                         +       '<button onclick="grouped.postJoined()">确认</button>'
