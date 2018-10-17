@@ -838,7 +838,7 @@ var comment = {
             };
             if (_this.support.position) {
                 var html = '<p class="comment_con" id="comment'+res.comment.id+'">';
-                    html +=     '<span class="tcolor">' + TS.USER.name + '：</span>' + res.body + '';
+                    html +=     '<span class="tcolor">' + TS.USER.name + '：</span>' + res.comment.body + '';
                     if (_this.support.top)
                     html +=     '<a class="comment_del mouse" onclick="comment.pinneds(\'' + res.comment.commentable_type + '\', ' + res.comment.commentable_id + ', ' + res.comment.id + ')">申请置顶</a>'
                     html +=     '<a class="comment_del mouse" onclick="comment.delete(\'' + res.comment.commentable_type + '\', ' + res.comment.commentable_id + ', ' + res.comment.id + ')">删除</a>'
@@ -875,7 +875,7 @@ var comment = {
                     html += '                    </ul>'
                     html += '                </div>'
                     html += '            </div>';
-                    html += '            <div class="reply_body">'+res.body+'</div>';
+                    html += '            <div class="reply_body">'+res.comment.body+'</div>';
                     html += '        </dd>';
                     html += '    </dl>';
                     html += '</div>';
