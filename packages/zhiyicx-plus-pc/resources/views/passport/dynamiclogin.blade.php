@@ -23,7 +23,7 @@
                 <span id="J-get-verify-code" class="get_verify_code">获取验证码</span>
             </div>
             <div class="login_extra">
-                <a class="forget_pwd" href="{{ url('/auth/login') }}">使用密码登陆</a>
+                <a class="forget_pwd" href="{{ url('/auth/login') }}">使用密码登录</a>
             </div>
             <button class="login_button" type="submit">登录</button>
         </form>

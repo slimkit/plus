@@ -722,7 +722,7 @@ var rewarded = {
                 + '<p class="confirm_title">输入密码</p>'
                 + '<div class="reward_amount">金额：' + rewarded.payload.amount + TS.CURRENCY_UNIT + '</div>'
                 + '<div class="reward_input_wrap">'
-                +    '<input id="J-password-confirm" placeholder="请输入登陆密码" pattern=".{6-16}" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
+                +    '<input id="J-password-confirm" placeholder="请输入登录密码" pattern=".{6-16}" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
                 +    '<button onclick="rewarded.postReward()">确认</button>'
                 + '</div>'
                 + '<div class="reward_forgot"><a href="'+ TS.SITE_URL +'/forget-password">忘记密码?</a></div>'
@@ -1289,7 +1289,7 @@ var pinneds = {
             +   '<p class="confirm_title">输入密码</p>'
             +   '<div class="reward_amount">金额：' + pinneds.payload.data.amount + TS.CURRENCY_UNIT + '</div>'
             +   '<div class="reward_input_wrap">'
-            +       '<input id="J-password-confirm" placeholder="请输入登陆密码" pattern="^.{6-16}$" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
+            +       '<input id="J-password-confirm" placeholder="请输入登录密码" pattern="^.{6-16}$" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
             +       '<button onclick="pinneds.postPinneds()">确认</button>'
             +   '</div>'
             +   '<div class="reward_forgot"><a href="'+ TS.SITE_URL +'/forget-password">忘记密码?</a></div>'
@@ -1797,7 +1797,7 @@ var repostable = {
      * @param {number} id
      */
     show: function(type, id) {
-        // 未登录时跳转倒登陆页面
+        // 未登录时跳转倒登录页面
         if (!TS.USER) return location.href = TS.SITE_URL + '/auth/login';
         var url = '/feeds/repostable?type='+type+'&id='+id;
         repostable.layerIndex = ly.load(url, '转发', '720px');

@@ -64,7 +64,7 @@ class PassportController extends BaseController
     }
 
     /**
-     * 动态验证码登陆
+     * 动态验证码登录
      *
      * @return mixed
      */
@@ -105,7 +105,7 @@ class PassportController extends BaseController
         if ($this->PlusData['TS'] != null) {
             return redirect(route('pc:feeds'));
         }
-        
+
         return view('pcview::passport.findpwd', ['type' => $type], $this->PlusData);
     }
 

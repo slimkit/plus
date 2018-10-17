@@ -132,7 +132,7 @@ class SocialiteController extends BaseController
     }
 
     /**
-     * 获取登陆信息.
+     * 获取登录信息.
      * @author ZsyD<1251992018@qq.com>
      * @param Request $request
      * @param $token
