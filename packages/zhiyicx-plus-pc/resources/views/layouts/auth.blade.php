@@ -40,11 +40,11 @@
 
     {{-- 底部 --}}
     @include('pcview::layouts.partials.authfooter')
-    <script src="{{ asset('assets/pc/js/axios.min.js')}}"></script>
-    <script src="{{ asset('assets/pc/js/lodash.min.js')}}"></script>
+    <script>
+        (function(undefined) {}).call('object' === typeof window && window || 'object' === typeof self && self || 'object' === typeof global && global || {});
+    </script>
+    <script src="{{ mix('global.min.js', 'assets/pc') }}"></script>
     <script src="{{ asset('assets/pc/js/common.js') }}"></script>
-    <script src="{{ asset('assets/pc/js/iconfont.js') }}"></script>
-    <script src="{{ asset('assets/pc/js/jquery.cookie.js') }}"></script>
     @yield('scripts')
 
     {{-- 统计代码 --}}

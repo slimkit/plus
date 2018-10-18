@@ -133,7 +133,7 @@ class ProfileController extends BaseController
             ]);
         }
         $user = $request->user()->toArray();
-        $type = 0;
+        $type = 1;
         $url = route('pc:profilecollectfeeds');
 
         return view('pcview::profile.collect', compact('user', 'type', 'url'), $this->PlusData);
@@ -188,11 +188,7 @@ class ProfileController extends BaseController
             $answers = api('GET', '/api/v2/user/question-answer/collections', $params);
 
             $after = last($answers)['id'] ?? 0;
-            foreach ($answers as $k => $v) {
-                $v->collectible->liked = $v->collectible->liked($this->PlusData['TS']['id']);
-                $answers[$k] = $v->collectible;
-            }
-            $data['datas'] = $answers;
+            $data['datas'] = array_pluck($answers, 'collectible');
             $html = view('pcview::templates.answer', $data, $this->PlusData)->render();
 
             return response()->json([
@@ -236,7 +232,7 @@ class ProfileController extends BaseController
             ]);
         }
         $user = $request->user()->toArray();
-        $type = 0;
+        $type = 1;
         $url = route('pc:profilecollectgroup');
 
         return view('pcview::profile.collect', compact('user', 'type', 'url'), $this->PlusData);

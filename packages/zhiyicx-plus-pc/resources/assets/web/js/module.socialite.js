@@ -23,12 +23,8 @@ $('#oauth_btn').click(function() {
         }
         title = '绑定';
     } else {
-        if (strLen(name) < 4) {
+        if (strLen(name) < 2) {
             noticebox('用户名不能低于2个中文或4个英文', 0);
-            $('input[name="name"]').focus();
-            return false;
-        } else if (name.length > 8) {
-            noticebox('用户名不能超过8个字符', 0);
             $('input[name="name"]').focus();
             return false;
         }

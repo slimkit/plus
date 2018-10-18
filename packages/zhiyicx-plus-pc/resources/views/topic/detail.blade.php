@@ -40,13 +40,18 @@
     <div class="right">
         <div class="interaction">
             @if($TS && $TS['id'] !== $topic['creator_user_id'])
-            <button class="ev-btn-follow-topic" @if($topic['has_followed'])style="display: none;"@endif>
+            <button class="ev-btn-follow-topic" @if($topic['has_followed'] ?? false)style="display: none;"@endif>
                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-topic"></use></svg>
                 关注话题
             </button>
             <button class="ev-btn-unfollow-topic actived" @if(!$topic['has_followed'])style="display: none;"@endif>
                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-topic2"></use></svg>
                 已关注
+            </button>
+            @elseif (!$TS)
+            <button onclick="checkLogin()">
+                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-topic"></use></svg>
+                关注话题
             </button>
             @endif
             <button class="ev-btn-show-post">

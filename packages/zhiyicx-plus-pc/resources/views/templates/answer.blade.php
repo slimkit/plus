@@ -33,19 +33,19 @@
                     @endif
                 </svg><font>{{ $answer['likes_count'] }}</font> 点赞
             </a>
-            <a class="gcolor comment J-comment-show" href="javascript:;">
+            <a class="gcolor comment J-comment-show" href="{{ route('pc:answeread', ['question' => $answer['question_id'], 'answer' => $answer['id']]) }}">
                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-comment"></use></svg>
                 <font class="cs{{$answer['id']}}">{{$answer['comments_count']}}</font> 评论
             </a>
         </div>
-        @include('pcview::widgets.comments', [
+        {{-- @include('pcview::widgets.comments', [
             'id' => $answer['id'],
             'comments_count' => $answer['comments_count'],
             'comments_type' => 'question-answers',
             'url' => Route('pc:answeread', ['question' => $answer['question_id'], 'answer' => $answer['id']]),
             'position' => 1,
             'comments_data' => $answer['comments'],
-        ])
+        ]) --}}
     </div>
 @endforeach
 @endif

@@ -18,15 +18,15 @@
         <div class="release_title p_30">
         <textarea class="subject autotext" id="subject-abstract" name="abstract" value="{{$data['subject'] ?? ''}}" placeholder="请在此输入200字以内的文章摘要" maxlength="200">{{ $data['subject'] ?? '' }}</textarea>
         </div>
-        <div data-value="@if(isset($data['cate_id'])) {{$data['cate_id']}} @endif" class="zy_select gap12 p_30" id="categrey">
-            <span>@if(isset($data['cate_id'])) {{ $data['category']['name'] }}  @else 请选择文章分类 @endif</span>
+        <div data-value="{{$data['category']['id'] ?? 0}}" class="zy_select gap12 p_30" id="categrey">
+            <span>{{$data['category']['name'] ?? '请选择文章分类'}}</span>
             <ul>
                 @foreach ($cates as $cate)
                     <li data-value="{{$cate['id']}}" @if(isset($data['cate_id']) && $data['cate_id'] == $cate['id']) class="active" @endif>{{$cate['name']}}</li>
                 @endforeach
             </ul>
             <i></i>
-            <input id="cate" type="hidden" value="{{$data['cate_id'] ?? 0}}" />
+            <input id="cate" type="hidden" value="{{$data['category']['id'] ?? 0}}" />
         </div>
         <div class="release_place">
             @include('pcview::widgets.markdown', ['height'=>'530px', 'width' => '100%', 'content'=>$data['content'] ?? ''])

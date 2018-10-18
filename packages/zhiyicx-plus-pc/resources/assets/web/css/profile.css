@@ -51,6 +51,7 @@
 /*文章列表*/
 .news_item .uname {display:inline-block;margin-left:20px;color:#333;}
 .news_item .date {float:right;margin-top:17px;color:#ccc;text-align:right;}
+.news_item .act {color: #59b6d7;}
 .article_box .img {margin-top:20px;width:100% !important;height:100%;max-height:400px;}
 .article_box .article_desc {position:absolute;bottom:0;width:100%;padding:0 20px;padding-top:20px;background-image:-webkit-linear-gradient(top,rgba(0,0,0,0) 0%,rgba(0,0,0,.4) 100%);}
 .article_desc .title {overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:20px;color:#fff;margin-bottom:5px;}

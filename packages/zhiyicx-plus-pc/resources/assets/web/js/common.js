@@ -875,7 +875,7 @@ var comment = {
             };
             if (_this.support.position) {
                 var html = '<p class="comment_con" id="comment'+res.comment.id+'">';
-                    html +=     '<span class="tcolor">' + TS.USER.name + '：</span>' + res.body + '';
+                    html +=     '<span class="tcolor">' + TS.USER.name + '：</span>' + res.comment.body + '';
                     if (_this.support.top)
                     html +=     '<a class="comment_del mouse" onclick="comment.pinneds(\'' + res.comment.commentable_type + '\', ' + res.comment.commentable_id + ', ' + res.comment.id + ')">申请置顶</a>'
                     html +=     '<a class="comment_del mouse" onclick="comment.delete(\'' + res.comment.commentable_type + '\', ' + res.comment.commentable_id + ', ' + res.comment.id + ')">删除</a>'
@@ -912,7 +912,7 @@ var comment = {
                     html += '                    </ul>'
                     html += '                </div>'
                     html += '            </div>';
-                    html += '            <div class="reply_body">'+res.body+'</div>';
+                    html += '            <div class="reply_body">'+res.comment.body+'</div>';
                     html += '        </dd>';
                     html += '    </dl>';
                     html += '</div>';
@@ -1643,21 +1643,8 @@ var cancelBubble = function() {
 
 // 字数计算
 var strLen = function (str){
-    str = str.replace(/(\s+)|([\r\n])/g, '');
-    var len = 0;
-    for (var i=0; i<str.length; i++) {
-        var c = str.charCodeAt(i);
-        //单字节加1
-        if ((c >= 0x0001 && c <= 0x007e) || (0xff60<=c && c<=0xff9f)) {
-            len++;
-        }
-        else {
-            len+=2;
-        }
-    }
-    return len;
+    return str.replace(/[\u0391-\uFFE5]/g,"aa").length / 2;
 };
-
 
 /**
  * 转发

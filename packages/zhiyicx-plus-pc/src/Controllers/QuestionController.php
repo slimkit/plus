@@ -27,7 +27,7 @@ class QuestionController extends BaseController
             if ($params['type'] == 'excellent') {
                 // TODO
                 foreach ($question['data'] as $key => &$value) {
-                    $value->excellent_show = false;
+                    $value['excellent_show'] = false;
                 }
             }
             $html = view('pcview::templates.question', $question, $this->PlusData)->render();
