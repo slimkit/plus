@@ -54,7 +54,7 @@
 
     <script>
         (function(undefined) {}).call('object' === typeof window && window || 'object' === typeof self && self || 'object' === typeof global && global || {});
-        </script>
+    </script>
     <script src="{{ mix('global.min.js', 'assets/pc') }}"></script>
     <script src="{{ asset('assets/pc/js/common.js') }}"></script>
 

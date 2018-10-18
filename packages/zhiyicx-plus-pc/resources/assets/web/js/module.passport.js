@@ -55,7 +55,7 @@ $(function() {
             return false;
         }
 
-        if (name.length < 2) {
+        if (strLen(name) < 2) {
             noticebox('用户名不能低于2个中文或4个英文', 0);
             $('input[name="name"]').focus();
             return false;
