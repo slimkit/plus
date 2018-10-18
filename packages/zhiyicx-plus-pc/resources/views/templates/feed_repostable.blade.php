@@ -150,7 +150,7 @@
         @if ($nolink)
             href="javascript:;"
         @else
-            href="{{ route('pc:questionread', ['question' => $feed['repostable_id']]) }}"
+            href="{{ route('pc:answeread', ['question' => $repostable['question_id'], 'answer' => $repostable['id']]) }}"
         @endif
         >
             <p class="title">{{ $repostable['question']['subject'] }}</p>
