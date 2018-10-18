@@ -151,8 +151,9 @@
                     @endphp
                     @include('pcview::widgets.thirdshare' , ['share_url' => route('redirect', ['target' => '/feeds/'.$feed['id']]), 'share_title' => $feed['feed_content'], 'share_pic' => $share_pic])
                 </div>
+
                 {{-- 打賞 --}}
-                @if($config['bootstrappers']['feed']['reward'])
+                @if($config['bootstrappers']['feed']['reward'] && $user['id'] !== $TS['id'])
                     @include('pcview::widgets.rewards' , ['rewards_data' => $feed['rewards'], 'rewards_type' => 'feeds', 'rewards_id' => $feed['id'], 'rewards_info' => $feed['reward']])
                 @endif
             </div>
