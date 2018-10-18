@@ -42,7 +42,7 @@ var grouped = {
         }
         if (html && html != '') {
             ly.confirm(html,'','',function(){
-                if (TS.BOOT['pay-validate-user-password']) {
+                if (TS.BOOT['pay-validate-user-password'] && this.mode == 'paid') {
                     var html = '<div class="reward_box">'
                         +   '<p class="confirm_title">输入密码</p>'
                         +   '<div class="reward_amount">金额：' + grouped.money + TS.CURRENCY_UNIT + '</div>'
