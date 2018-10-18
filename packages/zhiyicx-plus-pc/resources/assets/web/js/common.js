@@ -1268,7 +1268,7 @@ var pinneds = {
                 }
             }
 
-            if (TS.BOOT['pay-validate-user-password']) showPassword(data.amount, "pinneds.postPinneds()")
+            if (TS.BOOT['pay-validate-user-password'] && type == 'pinned') showPassword(data.amount, "pinneds.postPinneds()")
             else pinneds.postPinneds();
         });
     },
