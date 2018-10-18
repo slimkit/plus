@@ -407,6 +407,25 @@ var getLength = function(str, shortUrl) {
     }
 };
 
+var showPassword = function(amount, onConfirm) {
+    var html
+        = '<div class="reward_box">'
+            + '<p class="confirm_title">输入密码</p>'
+            + '<div class="reward_amount">金额：' + amount + TS.CURRENCY_UNIT + '</div>'
+            + '<div class="reward_input_wrap">'
+            +    '<input id="J-password-confirm" placeholder="请输入登录密码" pattern=".{6-16}" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
+            +    '<button onclick="'+ onConfirm +'">确认</button>'
+            + '</div>'
+            + '<div class="reward_forgot"><a href="'+ TS.SITE_URL +'/forget-password">忘记密码?</a></div>'
+        + '</div>';
+    layer.open({
+      type: 0,
+      title: '',
+      content: html,
+      btn: '',
+    })
+};
+
 // 统计输入字符串长度(用于评论回复最大字数计算)
 var checkNums = function(obj, len, show) {
     if (obj instanceof jQuery) obj = obj[0]
@@ -691,7 +710,7 @@ var rewarded = {
                 type: types[type]
             }
 
-            if (TS.BOOT['pay-validate-user-password']) rewarded.showPassword()
+            if (TS.BOOT['pay-validate-user-password']) showPassword(rewarded.payload.amount, "rewarded.postReward()");
             else rewarded.postReward()
         });
         $('.reward-sum label').on('click', function(){
@@ -716,24 +735,6 @@ var rewarded = {
     list: function(id, type) {
         var reward_url = TS.SITE_URL + '/reward/view?type='+type+'&post_id='+id;
         ly.load(reward_url, '', '340px');
-    },
-    showPassword: function() {
-        var html
-            = '<div class="reward_box">'
-                + '<p class="confirm_title">输入密码</p>'
-                + '<div class="reward_amount">金额：' + rewarded.payload.amount + TS.CURRENCY_UNIT + '</div>'
-                + '<div class="reward_input_wrap">'
-                +    '<input id="J-password-confirm" placeholder="请输入登录密码" pattern=".{6-16}" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
-                +    '<button onclick="rewarded.postReward()">确认</button>'
-                + '</div>'
-                + '<div class="reward_forgot"><a href="'+ TS.SITE_URL +'/forget-password">忘记密码?</a></div>'
-            + '</div>';
-        layer.open({
-          type: 0,
-          title: '',
-          content: html,
-          btn: '',
-        })
     },
 }
 
@@ -1267,7 +1268,7 @@ var pinneds = {
                 }
             }
 
-            if (TS.BOOT['pay-validate-user-password']) pinneds.showPassword()
+            if (TS.BOOT['pay-validate-user-password']) showPassword(data.amount, "pinneds.postPinneds()")
             else pinneds.postPinneds();
         });
     },
@@ -1285,23 +1286,6 @@ var pinneds = {
                 lyShowError(error.response.data);
             });
     },
-    showPassword: function() {
-        var html = '<div class="reward_box">'
-            +   '<p class="confirm_title">输入密码</p>'
-            +   '<div class="reward_amount">金额：' + pinneds.payload.data.amount + TS.CURRENCY_UNIT + '</div>'
-            +   '<div class="reward_input_wrap">'
-            +       '<input id="J-password-confirm" placeholder="请输入登录密码" pattern="^.{6-16}$" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
-            +       '<button onclick="pinneds.postPinneds()">确认</button>'
-            +   '</div>'
-            +   '<div class="reward_forgot"><a href="'+ TS.SITE_URL +'/forget-password">忘记密码?</a></div>'
-            + '</div>';
-        layer.open({
-            type: 0,
-            title: '',
-            content: html,
-            btn: '',
-        })
-    }
 }
 
 // 举报

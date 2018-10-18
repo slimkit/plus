@@ -48,41 +48,4 @@
         ])
     </div>
 @endforeach
-<script>
-    var QA = {
-        look: function (answer_id, money, question_id, obj) {
-            checkLogin();
-            obj = obj ? obj : false;
-            ly.confirm(formatConfirm('围观支付', '本次围观您需要支付' + money + TS.CURRENCY_UNIT '，是否继续围观？'), '' , '', function(){
-                var _this = this;
-                if (_this.lockStatus == 1) {
-                    return;
-                }
-                _this.lockStatus = 1;
-                var url ='/api/v2/question-answers/' + answer_id + '/currency-onlookers';
-                axios.post(url)
-                    .then(function (response) {
-                        if (!obj) {
-                            noticebox('围观成功', 1, '/questions/' + question_id);
-                        } else {
-                            noticebox('围观成功', 1);
-                            var txt = response.data.answer.body.replace(/\@*\!\[\w*\]\(([https]+\:\/\/[\w\/\.]+|[0-9]+)\)/g, "[图片]");
-                            var body = txt.length > 130 ? txt.substr(0, 130) + '...' : txt;
-                            $(obj).removeClass('fuzzy');
-                            $(obj).removeAttr('onclick');
-                            $(obj).text(body);
-                            $(obj).after('<a href="/questions/' + question_id + '/answers/' + answer_id + '" class="button button-plain button-more">查看详情</a>');
-                            layer.closeAll();
-                            _this.lockStatus = 0;
-                        }
-                    })
-                    .catch(function (error) {
-                        _this.lockStatus = 0;
-                        layer.closeAll();
-                        showError(error.response.data);
-                    });
-            });
-        }
-    };
-</script>
 @endif

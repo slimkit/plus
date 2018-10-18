@@ -315,7 +315,7 @@
                 return update();
             }
             lockStatus = true;
-            if (TS.BOOT['pay-validate-user-password'] && args.amount > 0) showPassword();
+            if (TS.BOOT['pay-validate-user-password'] && args.amount > 0) showPassword(args.amount, "postQuestion()");
             else postQuestion()
 
         });
@@ -333,24 +333,6 @@
                     lockStatus = false;
                     showError(error.response.data);
                 });
-        };
-
-        function showPassword() {
-            var html = '<div class="reward_box">'
-                +   '<p class="confirm_title">输入密码</p>'
-                +   '<div class="reward_amount">金额：' + args.amount + TS.CURRENCY_UNIT + '</div>'
-                +   '<div class="reward_input_wrap">'
-                +       '<input id="J-password-confirm" placeholder="请输入登录密码" pattern="^.{6-16}$" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
-                +       '<button onclick="postQuestion()">确认</button>'
-                +   '</div>'
-                +   '<div class="reward_forgot"><a href="'+ TS.SITE_URL +'/forget-password">忘记密码?</a></div>'
-                + '</div>';
-            layer.open({
-                type: 0,
-                title: '',
-                content: html,
-                btn: '',
-            })
         };
 
         function stepOne() {
