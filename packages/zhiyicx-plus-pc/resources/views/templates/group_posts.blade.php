@@ -170,6 +170,7 @@
             'comments_data' => $post['comments'],
             'params' => ['group_id' => $post['group_id'],
             'disabled' => $post['group']['joined']['disabled']],
+            'group' => $post['group'],
         ])
 
         <div class="feed_line"></div>
