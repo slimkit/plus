@@ -12,9 +12,13 @@
             TOKEN: "{{ $token ?? '' }}",
             SITE_URL: "{{ getenv('APP_URL') }}",
             RESOURCE_URL: '{{ asset('assets/pc/') }}',
-            CONFIG: {!! json_encode($config) !!},
             BOOT: {!! json_encode($config['bootstrappers']) !!},
-            UNREAD: {}
+            EASEMOB_KEY: {!! json_encode($config['easemob_key']) !!},
+            EASEMOB_USERS: {!! json_encode($easemob_users) !!},
+            FILES: {!! json_encode($config['files']) !!},
+            UNREAD: {},
+            USER_FOLLOW_MUTUAL: [],
+            HOT_TOPICS: [],
         };
     </script>
     <link rel="stylesheet" href="{{ asset('assets/pc/css/common.css') }}">

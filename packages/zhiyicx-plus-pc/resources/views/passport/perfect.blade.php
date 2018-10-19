@@ -20,7 +20,7 @@
                         <li class="tag_{{$item['id']}}
                         @foreach ($user_tag as $t)
                             @if ($t['name'] == $item['name']) active @endif
-                        @endforeach" data-id="{{$item['name']}}">{{$item['name']}}</li>
+                        @endforeach" data-id="{{$item['id']}}">{{$item['name']}}</li>
                     @endforeach
                 </ul>
             </div>
