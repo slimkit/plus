@@ -1207,7 +1207,7 @@ var pinneds = function (url, type) {
             + '<p class="confirm_title">置顶帖子</p>'
             + '<div class="pinned_text">设置帖子置顶天数</div>'
             + '<div class="pinned_input">'
-                + '<input min="1" max="30" oninput="value=moneyLimit(value, this, \'range\')" type="number" placeholder="设置范围为1~30天">'
+                + '<input oninput="value=moneyLimit(value, this, \'range\')" type="number" placeholder="设置范围为1~30天">'
             + '</div>'
         + '</div>';
     }
@@ -1227,6 +1227,9 @@ var pinneds = function (url, type) {
             data.day = $('.pinned_input input').val();
             if (!data.day) {
                 lyNotice('请输入置顶天数');return;
+            }
+            if (data.day < 1 || data.day > 30) {
+                lyNotice('请输入1-30天');return;
             }
         }
         axios.post(url, data)
