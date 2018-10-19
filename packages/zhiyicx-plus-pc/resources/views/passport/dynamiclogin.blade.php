@@ -13,7 +13,7 @@
         <img src="@if(isset($config['common']['loginbg']) && $config['common']['loginbg']) {{ $routes['storage'] . $config['common']['loginbg'] }} @else {{ asset('assets/pc/images/login_bg.png') }} @endif"/>
     </div>
     <div class="login_right">
-        <form role="form" method="POST" action="{{ url('/auth/dynamiclogin') }}">
+        <form role="form" method="POST" action="{{ url('/auth/dynamic-login') }}">
             {{ csrf_field() }}
             <div class="login_input">
                 <input type="text" placeholder="输入手机号" name="login" value="{{ old('phone', '') }}" required autofocus maxlength="11" />

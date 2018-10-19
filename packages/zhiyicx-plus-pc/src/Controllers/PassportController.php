@@ -11,6 +11,10 @@ use Illuminate\Http\Request;
 use Gregwar\Captcha\CaptchaBuilder;
 use Illuminate\Support\Facades\Auth as Authorize;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\VerificationCode;
+use Zhiyi\Plus\Models\User;
+use Illuminate\Validation\ValidationException;
+use function Zhiyi\Plus\username;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 
 class PassportController extends BaseController
@@ -26,7 +30,7 @@ class PassportController extends BaseController
         parent::__construct();
 
         // Register "guest" middleware
-        $this->middleware('guest')->except('logout', 'perfect', 'captcha', 'checkCaptcha', 'findPassword');
+        $this->middleware('guest')->except('logout', 'perfect', 'captcha', 'checkCaptcha', 'findPassword', 'dynamicLogin');
     }
 
     /**
@@ -75,6 +79,44 @@ class PassportController extends BaseController
         }
 
         return view('pcview::passport.dynamiclogin', [], $this->PlusData);
+    }
+
+    /**
+     * 验证码登录
+     * @author Foreach
+     * @param  Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function dynamicLogin(Request $request)
+    {
+        $login = (string) $request->input('login', '');
+        $code = $request->input('verifiable_code');
+        $field = username($login);
+
+        if ($code !== null && in_array($field, ['phone', 'email'])) {
+            $verify = VerificationCode::where('account', $login)
+                ->where('channel', $field == 'phone' ? 'sms' : 'mail')
+                ->where('code', $code)
+                // ->byValid(120)
+                ->orderby('id', 'desc')
+                ->first();
+
+            if (! $verify) {
+                throw ValidationException::withMessages(['验证码错误或者已失效']);
+            }
+
+            $verify->delete();
+
+            if ($user = User::where($field, $login)->first()) {
+                Authorize::login($user, true);
+                return redirect(route('pc:feeds'));
+            }
+
+
+            throw ValidationException::withMessages([sprintf('%s还没有注册', $field == 'phone' ? '手机号' : '邮箱')]);
+        }
+
+        throw ValidationException::withMessages(['账号或验证码不正确']);
     }
 
     /**
