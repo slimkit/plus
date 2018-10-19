@@ -21,7 +21,7 @@ class ProfileController extends BaseController
      */
     public function feeds(Request $request, ?string $user = null)
     {
-        if (! $user) {
+        if (! $user || $user == $this->PlusData['TS']['id']) {
             $user = $request->user();
         } else {
             $user = UserModel::where(username($user), $user)->with('tags')->first();
@@ -74,7 +74,7 @@ class ProfileController extends BaseController
     public function news(Request $request, ?string $user = null)
     {
         $this->PlusData['current'] = 'news';
-        if (! $user) {
+        if (! $user || $user == $this->PlusData['TS']['id']) {
             $user = $request->user();
         } else {
             $user = UserModel::where(username($user), $user)->with('tags')->first();
@@ -247,7 +247,7 @@ class ProfileController extends BaseController
      */
     public function group(Request $request, ?string $user)
     {
-        if (! $user) {
+        if (! $user || $user == $this->PlusData['TS']['id']) {
             $user = $request->user();
         } else {
             $user = UserModel::where(username($user), $user)->with('tags')->first();
@@ -289,7 +289,7 @@ class ProfileController extends BaseController
      */
     public function question(Request $request, ?string $user)
     {
-        if (! $user) {
+        if (! $user || $user == $this->PlusData['TS']['id']) {
             $user = $request->user();
         } else {
             $user = UserModel::where(username($user), $user)->with('tags')->first();
