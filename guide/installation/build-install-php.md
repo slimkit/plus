@@ -140,7 +140,7 @@ groupadd php-fpm && useradd -s /sbin/nologin -g php-fpm -M php-fpm
 --enable-fpm \
 --with-fpm-user=php-fpm \
 --with-fpm-group=php-fpm \
---with-fpm-systemd \
+--with-fpm-systemd
 ```
 
 等待完成，然后我们执行编译：
@@ -193,7 +193,7 @@ PID 文件配置
 pid = /usr/local/php/var/run/php-fpm.pid
 ```
 
-然后保存并退出，我们再只 `cd /usr/local/php/etc/php-fpm.d` 进入 FPM 配置目录，这个目录下有一个 `www.conf.default` 文件，我们执行 `cp www.conf.defailt www.conf` 命令将其发布为可被加载的配置文件。
+然后保存并退出，我们再只 `cd /usr/local/php/etc/php-fpm.d` 进入 FPM 配置目录，这个目录下有一个 `www.conf.default` 文件，我们执行 `cp www.conf.default www.conf` 命令将其发布为可被加载的配置文件。
 
 接下来，我们需要对 FPM 做一些系统级的配置，我们进入之前解压的 PHP 源码目录，如果你跟随教程执行下来，应该在 `/root/php-7.2.9` 目录，如果不是，自行进入你下载后解压的所在目录。进入该目录后，我们复制服务文件：
 
