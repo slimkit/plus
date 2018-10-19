@@ -49,6 +49,7 @@ class CreateUsersTable extends Migration
             $table->unique('name');
             $table->unique('email');
             $table->unique('phone');
+            $table->index('deleted_at');
         });
     }
 

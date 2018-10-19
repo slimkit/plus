@@ -61,6 +61,7 @@ class CreateFeedsTable extends Migration
             $table->unique('feed_mark');
             $table->index('hot');
             $table->index(FeedModel::CREATED_AT);
+            $table->index('deleted_at');
         });
     }
 
