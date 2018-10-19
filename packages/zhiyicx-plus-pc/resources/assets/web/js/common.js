@@ -843,10 +843,12 @@ var comment = {
             noticebox('评论内容不能为空', 0); return;
         }
 
+        formData.body = formData.body.replace(/(@[^\r\n\t\v\f@ ]+)(\s?)/g, '\u00ad$1\u00ad$2');
+
         // 保留原始回复内容, at 用户替换为链接
         var original_body = formData.body.replace(/\u00ad@([^\/]+?)\u00ad/gi, function(matches, username) {
-          var url = TS.SITE_URL + '/users/' + username;
-          return '<a href="' + url + '">@' + username + '</a>'
+            var url = TS.SITE_URL + '/users/' + username;
+            return '<a href="' + url + '">@' + username + '</a>'
         });
 
         // 去除回复@
@@ -875,7 +877,7 @@ var comment = {
             };
             if (_this.support.position) {
                 var html = '<p class="comment_con" id="comment'+res.comment.id+'">';
-                    html +=     '<span class="tcolor">' + TS.USER.name + '：</span>' + res.comment.body + '';
+                    html +=     '<span class="tcolor">' + TS.USER.name + '：</span>' + original_body + '';
                     if (_this.support.top)
                     html +=     '<a class="comment_del mouse" onclick="comment.pinneds(\'' + res.comment.commentable_type + '\', ' + res.comment.commentable_id + ', ' + res.comment.id + ')">申请置顶</a>'
                     html +=     '<a class="comment_del mouse" onclick="comment.delete(\'' + res.comment.commentable_type + '\', ' + res.comment.commentable_id + ', ' + res.comment.id + ')">删除</a>'
@@ -1786,7 +1788,7 @@ var repostable = {
         if (type === 'posts') type = 'group-posts';
         // 组装数据
         var data = {
-            feed_content: content,
+            feed_content: content.replace(/(@[^\r\n\t\v\f@ ]+)(\s?)/g, '\u00ad$1\u00ad$2'),
             feed_from: 1,
             feed_mark: TS.MID + new Date().getTime(),
             repostable_type: type,
