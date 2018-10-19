@@ -142,7 +142,6 @@ class LocalFilesystem implements FilesystemInterface
 
         return new Task($resource, $uri, 'PUT', null, null, [
             'Authorization' => 'Bearer '.$this->guard()->login($user),
-            'x-plus-storage-filename' => $request->input('filename'),
             'x-plus-storage-hash' => $request->input('hash'),
             'x-plus-storage-size' => $request->input('size'),
             'x-plus-storage-mime-type' => $request->input('mime_type'),
