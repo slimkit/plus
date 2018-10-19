@@ -40,7 +40,7 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
         <div class="feed_datas relative">
             <span class="collect" id="J-collect{{$post['id']}}" rel="{{$post['collection_count']}}" status="{{(int) $post['has_collect']}}">
                 @if($post['has_collect'])
-                <a href="javascript:;" onclick="collected.init({{$post['id']}}, 'news', 1);">
+                <a href="javascript:;" onclick="collected.init({{$post['id']}}, 'news', 1);" class="act">
                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-collect"></use></svg>
                     <font>{{$post['collection_count']}}</font>
                 </a>
