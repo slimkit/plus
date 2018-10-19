@@ -30,7 +30,7 @@ class PassportController extends BaseController
         parent::__construct();
 
         // Register "guest" middleware
-        $this->middleware('guest')->except('auth/login', 'register', 'passport/perfect', 'captcha', 'forget-password', 'dynamic-login');
+        $this->middleware('guest')->except('auth/login', 'register', 'passport/perfect', 'captcha', 'forget-password', 'auth/dynamic-login');
     }
 
     /**
