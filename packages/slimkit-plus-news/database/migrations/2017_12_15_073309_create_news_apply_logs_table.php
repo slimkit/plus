@@ -32,10 +32,12 @@ class CreateNewsApplyLogsTable extends Migration
     public function up()
     {
         Schema::create('news_apply_logs', function (Blueprint $table) {
+            $table->increments('id')->comment('主键');
             $table->integer('news_id')->unsigned()->comment('资讯id');
             $table->integer('user_id')->unsigned()->comment('用户id');
             $table->integer('status')->unsigned()->comment('审核状态，0-待审核 1-已处理 2-已驳回');
             $table->integer('mark')->nullable()->comment('备注');
+            $table->timestamps();
         });
     }
 
