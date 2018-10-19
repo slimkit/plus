@@ -1004,7 +1004,7 @@ var comment = {
 
         $('.ev-view-comment-mention-placeholder').text('好友');
         $('.ev-view-comment-follow-users').empty();
-        TS.USER_FOLLOW_MUTUAL.forEach(function(user) {
+        TS.USER_FOLLOW_MUTUAL && TS.USER_FOLLOW_MUTUAL.forEach(function(user) {
             $('.ev-view-comment-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
         })
 
@@ -1671,7 +1671,7 @@ var repostable = {
         $('.ev-view-repostable-topic-list').empty();
         $('.ev-view-repostable-topic-hot').text('热门话题');
         // 填充列表
-        TS.HOT_TOPICS.forEach(function(topic) {
+        TS.HOT_TOPICS && TS.HOT_TOPICS.forEach(function(topic) {
             $('.ev-view-repostable-topic-list').append('<li data-topic-id="'+topic.id+'" data-topic-name="'+topic.name+'">'+topic.name+'</li>');
         });
     },
@@ -1725,7 +1725,7 @@ var repostable = {
 
         $('.ev-view-repostable-mention-placeholder').text('好友');
         $('.ev-view-repostable-follow-users').empty();
-        TS.USER_FOLLOW_MUTUAL.forEach(function(user) {
+        TS.USER_FOLLOW_MUTUAL && TS.USER_FOLLOW_MUTUAL.forEach(function(user) {
             $('.ev-view-repostable-follow-users').append('<li data-user-id="'+user.id+'" data-user-name="'+user.name+'">'+user.name+'</li>')
         })
     },
