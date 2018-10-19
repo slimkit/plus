@@ -30,7 +30,7 @@ class PassportController extends BaseController
         parent::__construct();
 
         // Register "guest" middleware
-        $this->middleware('guest')->except('logout', 'perfect', 'captcha', 'checkCaptcha', 'findPassword', 'dynamicLogin');
+        $this->middleware('guest')->except('auth/login', 'register', 'passport/perfect', 'captcha', 'forget-password', 'dynamic-login');
     }
 
     /**
@@ -60,10 +60,6 @@ class PassportController extends BaseController
      */
     public function index()
     {
-        if ($this->PlusData['TS'] != null) {
-            return redirect(route('pc:feeds'));
-        }
-
     	return view('pcview::passport.login', [], $this->PlusData);
     }
 
@@ -74,10 +70,6 @@ class PassportController extends BaseController
      */
     public function dynamic()
     {
-        if ($this->PlusData['TS'] != null) {
-            return redirect(route('pc:feeds'));
-        }
-
         return view('pcview::passport.dynamiclogin', [], $this->PlusData);
     }
 
@@ -128,9 +120,6 @@ class PassportController extends BaseController
     public function register(Request $request)
     {
         $type = $request->input('type', 'phone');
-        if ($this->PlusData['TS'] != null) {
-            return redirect(route('pc:feeds'));
-        }
 
         return view('pcview::passport.register', ['type' => $type], $this->PlusData);
     }
