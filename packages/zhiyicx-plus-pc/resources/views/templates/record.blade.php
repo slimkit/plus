@@ -16,7 +16,7 @@
         <tbody>
             @foreach ($record as $item)
                 <tr>
-                    <td>{{ getTime($item['created_at'], 0, 0) }}</td>
+                    <td>{{ getTime($item['created_at']) }}</td>
                     <td>{{$item['subject']}}</td>
                     <td><span class="s-fc3">+{{$item['amount']}}</span></td>
                     {{-- <td><a class="s-fc" href="{{ route('pc:bankrolldetail',['group_id'=>$group_id]) }}">详情</a></td> --}}

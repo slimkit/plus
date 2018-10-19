@@ -20,7 +20,7 @@
             <tbody>
                 @foreach ($records as $item)
                 <tr>
-                    <td width="20%">{{ getTime($item['created_at'], 0, 0) }}</td>
+                    <td width="20%">{{ getTime($item['created_at']) }}</td>
                     <td width="40%"><p class="ptext">
                         {{ $item['target_type'] == 'widthdraw' ? '提现' : ($item['target_type'] == 'user' ? '转账' : $item['body']) }}
                         </p></td>
@@ -56,7 +56,7 @@
             <tbody>
                 @foreach ($records as $item)
                 <tr>
-                    <td width="20%">{{ getTime($item['created_at'], 0, 0) }}</td>
+                    <td width="20%">{{ getTime($item['created_at']) }}</td>
                     <td width="50%"><p class="ptext">{{ $item['type'] == 'alipay' ? '支付宝' : '微信' }}账户提现</p></td>
                     <td width="15%"><font color="#FF9400">{{ sprintf("%.2f", $item['value'] / 100) }}</font></td>
                     <td width="15%">

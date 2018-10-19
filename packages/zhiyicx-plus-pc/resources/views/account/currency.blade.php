@@ -1,6 +1,3 @@
-@php
-    use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getTime;
-@endphp
 @section('title')
     我的积分
 @endsection

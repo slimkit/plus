@@ -121,23 +121,28 @@ function api($method = 'POST', $url = '', $params = array())
 /**
  * [getTime 时间转换]
  * @author Foreach
- * @param  [type]      $time   [时间]
- * @param  int|integer $type   [类型]
- * @param  int|integer $format [是否比较时间差异]
+ * @param  [string] $time [时间]
  * @return
  */
-function getTime($time, int $type = 1, int $format = 1)
+function getTime($time)
 {
     // 本地化
     $time = Carbon::parse($time);
     Carbon::setLocale('zh');
-
     $timezone = isset($_COOKIE['customer_timezone']) ? $_COOKIE['customer_timezone'] : 0;
-    // 一小时内显示文字
-    if ((Carbon::now()->subHours(24) < $time) && $format) {
+    if (Carbon::now()->subHours(24) < $time && $time < Carbon::now()) {
+        // 一天内显示友好时间
         return $time->diffForHumans();
+    } elseif ((Carbon::now()->subHours(24) > $time) &&  (Carbon::now()->subHours(48) < $time)) {
+        // 一到两天内显示昨天+时分
+        return '昨天 ' . $time->addHours($timezone)->format('H:i');
+    } elseif (Carbon::now()->subHours(48) > $time && $time->addHours($timezone)->isCurrentYear()){
+        // 两天以上，今年内显示月日时分
+        return $time->format('m-d H:i');
+    } else {
+        // 其他时间返回年月日时分
+        return $time->format('Y-m-d H:i');
     }
-    return $type ? $time->addHours($timezone)->toDateString() : $time->addHours($timezone);
 }
 
 /**

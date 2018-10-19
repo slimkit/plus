@@ -19,7 +19,7 @@
                 <tbody>
                 @foreach ($currency as $item)
                     <tr>
-                        <td width="30%">{{ getTime($item['created_at'], 0, 0) }}</td>
+                        <td width="30%">{{ getTime($item['created_at']) }}</td>
                         <td width="30%"><p class="ptext">{{ $item['title'] }}</p></td>
                         <td width="20%">
                             @if ($item['state'] == 0) 等待 @endif
@@ -52,7 +52,7 @@
                 <tbody>
                 @foreach ($currency as $item)
                     <tr @if($item['state'] != 1) class="color_gray" @endif>
-                        <td width="30%">{{ getTime($item['created_at'], 0, 0) }}</td>
+                        <td width="30%">{{ getTime($item['created_at']) }}</td>
                         <td width="40%">
                             @if ($item['state'] == 0) 等待 @endif
                             @if ($item['state'] == 1) 成功 @endif
@@ -84,7 +84,7 @@
                 <tbody>
                 @foreach ($currency as $item)
                     <tr @if($item['state']  != 1) class="color_gray" @endif>
-                        <td width="30%">{{ getTime($item['created_at'], 0, 0) }}</td>
+                        <td width="30%">{{ getTime($item['created_at']) }}</td>
                         <td width="40%">
                             @if ($item['state'] == 0) 等待 @endif
                             @if ($item['state']  == 1) 成功 @endif
