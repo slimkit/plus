@@ -5,11 +5,9 @@ var weibo = {};
  * @return void
  */
 weibo.afterUpload = function(image, f, task_id) {
-    var img = '<img class="imgloaded" onclick="weibo.showImg();" src="' + TS.SITE_URL + '/api/v2/files/' + task_id + '"/ tid="' + task_id + '" amount="">';
+    var img = '<img class="imgloaded" src="' + TS.SITE_URL + '/api/v2/files/' + task_id + '"/ tid="' + task_id + '" amount="">';
     var del = '<span class="imgdel"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-close"></use></svg></span>'
     $('#' + 'fileupload_1_' + f.index).css('border', 'none').html(img + del);
-};
-weibo.showImg = function(){
     layer.photos({
       photos: '#file_upload_1-queue'
       ,anim: 0
