@@ -35,7 +35,7 @@
 
         <div class="perfect_btns">
             {{-- <a href="javascript:;" class="perfect_btn save" id="save">保存</a> --}}
-            <a href="{{ route('pc:feeds') }}" class="btn btn-default btn-lg mt20 wcolor skip" id="skip">进 入</a>
+            <a href="{{ route('pc:feeds') }}" class="btn btn-primary btn-lg mt20 wcolor skip" id="skip">进 入</a>
         </div>
     </div>
 </div>
