@@ -105,10 +105,6 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 .right_about .auth_fans li {display:inline-block;border-top:1px solid #ededed;width:50%;height:49px;line-height:47px;font-size:14px;text-align:center;}
 .right_about .auth_fans li:nth-child(even) {border-left:1px solid #ededed;}
 .right_about .auth_fans li a>span {color:#000;margin-left:3px;font-size:18px;}
-/*付费图片*/
-.locked_image {position:absolute;top:0;overflow:hidden;}
-.locked_image .lock {position:absolute;top:0;left:0;bottom:0;right:0;margin:auto;width:10%;height:10%;fill:white;}
-.feed_image_pay {width:100%;height:100%;}
 /*动态付费弹窗*/
 .feed_pay_box {width:587px;}
 .feed_pay_box .pay_title {font-size:20px;font-weight:500;}

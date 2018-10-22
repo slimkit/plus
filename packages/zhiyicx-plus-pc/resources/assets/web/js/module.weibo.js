@@ -252,7 +252,7 @@ weibo.payText = function(obj, tourl){
     checkLogin();
 
     var _this = $(obj);
-    tourl = tourl || '';
+    weibo.tourl = tourl || '';
     var feed_item = _this.parents('.feed_item');
     var id = feed_item.attr('id');
     var amount = feed_item.data('amount');
@@ -260,63 +260,91 @@ weibo.payText = function(obj, tourl){
 
     var html = formatConfirm('购买支付', '<div class="confirm_money">' + amount + '</div>您只需要支付' + amount + TS.CURRENCY_UNIT + '即可查看完整内容，是否确认支付？');
     ly.confirm(html, '', '', function(){
-        var url = '/api/v2/currency/purchases/' + node;
-        // 确认支付
-        axios.post(url)
-          .then(function (response) {
-            layer.closeAll();
-            if (tourl == '') {
-                noticebox('支付成功', 1);
-                /*获取动态完整内容*/
-                axios.get('/api/v2/feeds/'+id.replace('feed_', ''))
-                  .then(function (response) {
-                    _this.text(response.data.feed_content);
-                    _this.removeClass('fuzzy');
-                    _this.removeAttr('onclick');
-                    _this.parents('.feed_body').siblings('.feed_title').children('.date').removeAttr('onclick').attr('href', '/feeds/'+id.replace('feed_', ''));
-                  })
-                  .catch(function (error) {
-                    showError(error.response.data)
-                  });
-            } else {
-                noticebox('支付成功', 1, tourl);
-            }
-          })
-          .catch(function (error) {
-            layer.closeAll();
-            showError(error.response.data)
-          });
+        weibo.node = node
+        weibo.obj = obj
+        weibo.id = id
+
+        if (TS.BOOT['pay-validate-user-password']) showPassword(amount, "weibo.postPayText()");
+        else weibo.postPayText()
     })
 };
+
+weibo.postPayText = function() {
+  var password;
+    if (TS.BOOT['pay-validate-user-password']) {
+        password = $('#J-password-confirm').val();
+    }
+    var _this = $(weibo.obj)
+    var url = '/api/v2/currency/purchases/' + weibo.node;
+        // 确认支付
+        axios.post(url, {password: password})
+            .then(function (response) {
+                layer.closeAll();
+                if (weibo.tourl == '') {
+                    noticebox('支付成功', 1);
+                    /*获取动态完整内容*/
+                    axios.get('/api/v2/feeds/' + weibo.id.replace('feed_', '') )
+                        .then(function (response) {
+                            _this.text(response.data.feed_content);
+                            _this.removeClass('fuzzy');
+                            _this.removeAttr('onclick');
+                            _this.parents('.feed_body').siblings('.feed_title').children('.date').removeAttr('onclick').attr('href', '/feeds/'+weibo.id.replace('feed_', ''));
+                        })
+                        .catch(function (error) {
+                            showError(error.response.data)
+                        });
+                } else {
+                    noticebox('支付成功', 1, weibo.tourl);
+                }
+            })
+            .catch(function (error) {
+                lyShowError(error.response.data);
+            });
+}
+
 weibo.payImage = function(obj){
-        // 阻止冒泡
-        cancelBubble();
-        checkLogin();
+    // 阻止冒泡
+    cancelBubble();
+    checkLogin();
 
-        var _this = $(obj);
-        var amount = parseFloat(_this.data('amount'));
-        var node = _this.data('node');
-        var file = _this.data('file');
-        var image = _this.data('original');
+    var _this = $(obj);
+    var amount = parseFloat(_this.data('amount'));
+    var node = _this.data('node');
+    var file = _this.data('file');
+    var image = _this.data('original');
 
-        var html = formatConfirm('购买支付', '<div class="confirm_money">' + amount + '</div>您只需要支付' + amount + TS.CURRENCY_UNIT + '即可查看高清大图，是否确认支付？');
-        ly.confirm(html, '', '', function(){
-            var url = '/api/v2/currency/purchases/' + node;
-            /*确认支付*/
-            axios.post(url)
-              .then(function (response) {
-                _this.attr('src', image + '&t=paid');
-                _this.removeAttr('onclick');
-                _this.addClass('bigcursor');
-                layer.closeAll();
-                noticebox('支付成功', 1);
-              })
-              .catch(function (error) {
-                layer.closeAll();
-                showError(error.response.data)
-              });
-        })
+    var html = formatConfirm('购买支付', '<div class="confirm_money">' + amount + '</div>您只需要支付' + amount + TS.CURRENCY_UNIT + '即可查看高清大图，是否确认支付？');
+
+    ly.confirm(html, '', '', function(){
+        weibo.node = node
+        weibo.image = image
+        weibo.obj = obj
+
+        if (TS.BOOT['pay-validate-user-password']) showPassword(amount, "weibo.postPayImage()");
+        else weibo.postPayImage()
+    })
 };
+
+weibo.postPayImage = function() {
+    var password;
+    if (TS.BOOT['pay-validate-user-password']) {
+        password = $('#J-password-confirm').val();
+    }
+    var _this = $(weibo.obj)
+    var url = '/api/v2/currency/purchases/' + weibo.node;
+    /*确认支付*/
+    axios.post(url, {password: password})
+        .then(function (response) {
+            _this.attr('src', weibo.image + '&t=paid');
+            _this.removeAttr('onclick');
+            _this.addClass('bigcursor');
+            layer.closeAll();
+            noticebox('支付成功', 1);
+        })
+        .catch(function (error) {
+            lyShowError(error.response.data);
+        });
+}
 
 /**
  * 显示话题选择框
@@ -513,35 +541,6 @@ $(function() {
         weibo.init({ container: '#feeds_list', type: type });
         $('.show_tab a').removeClass('dy_cen_333');
         $(this).addClass('dy_cen_333');
-    });
-
-    // 付费图片弹窗
-    $(document).on('click', '.locked_image', function() {
-        checkLogin();
-
-        var _this = $(this);
-        var amount = parseFloat(_this.data('amount'));
-        var node = _this.data('node');
-        var file = _this.data('file');
-        var image = _this.data('original');
-
-        var html = formatConfirm('购买支付', '<div class="confirm_money">' + amount + '</div>您只需要支付' + amount + TS.CURRENCY_UNIT + '即可查看高清大图，是否确认支付？');
-        ly.confirm(html, '', '', function(){
-            var url = '/api/v2/currency/purchases/' + node;
-            /*确认支付*/
-            axios.post(url)
-              .then(function (response) {
-                layer.closeAll();
-                var img = '<img class="lazy per_image" data-original="' + image + '"/>';
-                _this.replaceWith(img);
-                $("img.lazy").lazyload({ effect: "fadeIn" });
-                noticebox('支付成功', 1);
-              })
-              .catch(function (error) {
-                layer.closeAll();
-                showError(error.response.data)
-              });
-        })
     });
 
     // 付费设置确认
