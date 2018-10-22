@@ -212,9 +212,7 @@ class NewQuestionController extends Controller
         }
         $images = $this->findMarkdownImageNotWithModels($question->body ?: '');
         $topicsIDs = array_pluck((array) $request->input('topics', []), 'id');
-
         $question->anonymity = $anonymity;
-
         $amount = $request->input('amount');
         if ($amount) {
             if ($question->user_id !== $user->id) {
@@ -223,6 +221,10 @@ class NewQuestionController extends Controller
             if (($question->amount !== 0 && $question->invitations()->first()) || $question->answers()->where('adoption', 1)->first()) {
                 return $response->json(['message' => trans('plus-question::questions.该问题无法设置悬赏')], 403);
             }
+
+            app(VerifyUserPassword::class)->handle($request, function () {
+                // No Code.
+            });
         }
 
         $question->getConnection()->transaction(function () use ($question, $images, $topicsIDs, $user, $amount) {
