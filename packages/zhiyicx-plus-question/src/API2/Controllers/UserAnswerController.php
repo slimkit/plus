@@ -59,7 +59,7 @@ class UserAnswerController extends Controller
 
         $answers = $answerModel
             ->where('user_id', $user_id)
-            ->with('user')
+            ->with(['user', 'question'])
             ->when($after, function ($query) use ($after) {
                 return $query->where('id', '<', $after);
             })
@@ -95,7 +95,7 @@ class UserAnswerController extends Controller
         $answers = $answerModel
             ->where('user_id', $user_id)
             ->where('adoption', 1)
-            ->with('user')
+            ->with('user', 'question')
             ->when($after, function ($query) use ($after) {
                 return $query->where('id', '<', $after);
             })
@@ -131,7 +131,7 @@ class UserAnswerController extends Controller
         $answers = $answerModel
             ->where('user_id', $user_id)
             ->where('invited', 1)
-            ->with('user')
+            ->with('user', 'question')
             ->when($after, function ($query) use ($after) {
                 return $query->where('id', '<', $after);
             })
@@ -168,7 +168,7 @@ class UserAnswerController extends Controller
             ->where('user_id', $user_id)
             ->where('invited', 0)
             ->where('adoption', 0)
-            ->with('user')
+            ->with('user', 'question')
             ->when($after, function ($query) use ($after) {
                 return $query->where('id', '<', $after);
             })
