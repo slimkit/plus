@@ -413,7 +413,7 @@ var showPassword = function(amount, onConfirm) {
             + '<p class="confirm_title">输入密码</p>'
             + '<div class="reward_amount">金额：' + amount + TS.CURRENCY_UNIT + '</div>'
             + '<div class="reward_input_wrap">'
-            +    '<input id="J-password-confirm" placeholder="请输入登录密码" pattern=".{6-16}" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
+            +    '<input id="J-password-confirm" placeholder="请输入登录密码" pattern=".{6,16}" type="password" maxlength="16" readonly onclick="this.removeAttribute(\'readonly\')" />'
             +    '<button onclick="'+ onConfirm +'">确认</button>'
             + '</div>'
             + '<div class="reward_forgot"><a href="'+ TS.SITE_URL +'/forget-password">忘记密码?</a></div>'
