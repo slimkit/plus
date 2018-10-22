@@ -93,7 +93,7 @@
 .question-next {text-align:center;margin-top:30px;}
 .question-next button {font-size:16px;line-height:36px;display:inline-block;width:100px;height:36px;cursor:pointer;letter-spacing:2px;color:#fff;border:0;border-radius:3px;background:#59b6d7;}
 .question-next button.question-next-btn {background:#dedede;}
-.question-next button#question-last {margin-right:30px;background:#dedede;}
+.question-next button#question-last {margin-right:30px;}
 .reward-row {width:100%;margin-top:15px;}
 .reward-row .reward-notice {line-height:30px;color:#9C9C9C;height:35px;}
 .reward-example {width:100%;height:80px;}

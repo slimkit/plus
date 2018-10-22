@@ -342,8 +342,7 @@ class GroupController extends BaseController
                     'offset' => $request->query('offset', 0),
                     'limit' => $request->query('limit', 15),
                 ];
-                $posts = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/posts', $params);
-                if ($request->keyword) {
+                if ($request->keyword) { // 搜索
                     $params = [
                         'limit' => $request->query('limit', 15),
                         'offset' => $request->query('offset', 0),
@@ -351,6 +350,9 @@ class GroupController extends BaseController
                         'group_id' => $group_id,
                     ];
                     $posts['posts'] = api('GET', '/api/v2/plus-group/group-posts', $params);
+                    $posts['pinneds'] = [];
+                } else {
+                    $posts = api('GET', '/api/v2/plus-group/groups/' . $group_id . '/posts', $params);
                 }
                 $posts['posts'] = formatPinneds($posts['posts'], $posts['pinneds']);
             }

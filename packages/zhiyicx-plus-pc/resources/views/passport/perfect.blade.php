@@ -20,7 +20,7 @@
                         <li class="tag_{{$item['id']}}
                         @foreach ($user_tag as $t)
                             @if ($t['name'] == $item['name']) active @endif
-                        @endforeach" data-id="{{$item['name']}}">{{$item['name']}}</li>
+                        @endforeach" data-id="{{$item['id']}}">{{$item['name']}}</li>
                     @endforeach
                 </ul>
             </div>
@@ -35,7 +35,7 @@
 
         <div class="perfect_btns">
             {{-- <a href="javascript:;" class="perfect_btn save" id="save">保存</a> --}}
-            <a href="{{ route('pc:feeds') }}" class="btn btn-default btn-lg mt20 wcolor skip" id="skip">进 入</a>
+            <a href="{{ route('pc:feeds') }}" class="btn btn-primary btn-lg mt20 wcolor skip" id="skip">进 入</a>
         </div>
     </div>
 </div>

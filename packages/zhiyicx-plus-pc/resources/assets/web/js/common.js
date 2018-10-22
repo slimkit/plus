@@ -1268,6 +1268,9 @@ var pinneds = {
                 if (!data.day) {
                     lyNotice('请输入置顶天数');return;
                 }
+                if (data.day < 1 || data.day > 30) {
+                    lyNotice('请输入1-30天');return;
+                }
             }
 
             if (TS.BOOT['pay-validate-user-password'] && type == 'pinned') showPassword(data.amount, "pinneds.postPinneds()")
