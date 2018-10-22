@@ -35,7 +35,7 @@
                     <span>{{$tag['name']}}</span>
                 @endforeach
             </div>
-            <div class="u-cert"> {{$user['verified']['description'] ?? ''}} </div>
+            <div class="u-cert" title="{$user['verified']['description']">{{$user['verified']['description'] ?? ''}}</div>
         </div>
     </div>
 
