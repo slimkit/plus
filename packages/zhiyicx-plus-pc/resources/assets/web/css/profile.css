@@ -27,6 +27,7 @@
 .profile_top_bio,.profile_top_tags,.profile_top_user,.profile_logo_icon {font-size:16px;margin-bottom:15px;width:800px;}
 .profile_top_tags span {font-size:12px;line-height:1;display:inline-block;padding:5px 7px;border:1px solid #fff;border-radius:3px;}
 .profile_top_tags span + span {margin-left:10px;}
+.u-cert {overflow: hidden;width: 800px;text-overflow: ellipsis;white-space: nowrap;}
 .profile_logo_icon span {font-size:12px;display:inline-block;margin-left:10px;border-bottom:1px solid #fff;}
 .profile_logo_icon span .tag_icon {display:inline-block;overflow:hidden;width:20px;height:20px;margin-right:-6px;margin-bottom:-4px;transform:translateX(-50%);border-radius:50%;background-color:#fff;}
 .profile_body {margin-top:30px;}
