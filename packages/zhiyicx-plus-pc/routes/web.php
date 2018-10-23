@@ -1,12 +1,6 @@
 <?php
 
 use Zhiyi\Plus\Http\Middleware;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Middleware as PcMiddleware;
-
-// Route::any('/', [
-//     'uses' => '\Illuminate\Routing\RedirectController',
-//     'as' => 'home',
-// ])->defaults('destination', '/feeds');
 
 Route::prefix('auth')->group(function () {
     // 登录

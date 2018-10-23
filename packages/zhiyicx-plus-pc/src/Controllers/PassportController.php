@@ -16,20 +16,6 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 class PassportController extends BaseController
 {
     /**
-     * Create the controller instance.
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function __construct()
-    {
-        // Run parent construct method.
-        parent::__construct();
-
-        // Register "guest" middleware
-        $this->middleware('guest')->except('logout', 'perfect', 'captcha', 'checkCaptcha');
-    }
-
-    /**
      * Log the user out of the application.
      *
      * @param  \Illuminate\Http\Request  $request
