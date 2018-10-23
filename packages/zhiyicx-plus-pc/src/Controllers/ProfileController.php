@@ -39,8 +39,6 @@ class ProfileController extends BaseController
                     $feeds = api('GET', '/api/v2/feeds', $params);
                     $feeds['feeds'] = formatRepostable($feeds['feeds']);
                     $after = last($feeds['feeds'])['id'] ?? 0;
-                    $feeds['conw'] = 735;
-                    $feeds['conh'] = 545;
                     $html = view('pcview::templates.feeds', $feeds, $this->PlusData)->render();
                     break;
                 default:

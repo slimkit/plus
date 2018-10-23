@@ -3,16 +3,13 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getImageUrl;
 @endphp
 
 @php
-$style = $lockstr = $onclick = $class = $blur = 0;
+$style = $lockstr = $onclick = $class = '';
 
 // 付费免费
 if (isset($image['paid']) && !$image['paid']) {
     // 付费数据
     $lockstr =  'data-node=' . $image['paid_node'] . ' data-amount=' . $image['amount'] . ' data-file=' . $image['file'];
     $onclick = 'onclick=weibo.payImage(this)';
-
-    // 下载付费设置为高斯模糊
-    $blur = $image['type'] == 'download' ? 96 : 0;
 } else {
     $class = 'bigcursor';
 }
@@ -38,4 +35,4 @@ if (isset($count) && $count == 'one') {
 }
 @endphp
 
-<img style="{{$style}}" class="lazy per_image {{ $class }}"  data-original="{{ getImageUrl($image, $width, $height, true, $blur) }}" curloc="{{$curloc}}" {{ $onclick }} {{ $lockstr }} />
+<img style="{{$style}}" class="lazy per_image {{ $class }}"  data-original="{{ getImageUrl($image, $width, $height, true) }}" data-id={{ $image['file'] ?? $image['id'] }} data-size={{ $image['size'] }} curloc="{{$curloc}}" {{ $onclick }} {{ $lockstr }} />

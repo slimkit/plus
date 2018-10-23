@@ -4,7 +4,7 @@
     $conh = isset($conh) ? $conh : 400;
 @endphp
 @if($post['images'] && count($post['images']) > 0)
-<div id="feed_photos_{{$post['id']}}">
+<div id="feed_photos_{{$post['id']}}" class="feed_photos">
     <div class="feed_images">
     @if(count($post['images']) == 1)
         @include('pcview::templates.feed_image', ['image' => $post['images'][0], 'width' => $conw, 'height' => $conh, 'count' => 'one', 'curloc' => 0])

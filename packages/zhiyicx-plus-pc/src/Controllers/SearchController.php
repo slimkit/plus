@@ -52,9 +52,6 @@ class SearchController extends BaseController
                 $datas['feeds'] = formatRepostable($datas['feeds']);
                 $data = $datas;
                 $after = last($data['feeds'])['id'] ?? 0;
-
-                $data['conw'] = 815;
-                $data['conh'] = 545;
                 $html = view('pcview::templates.feeds', $data, $this->PlusData)->render();
                 break;
             case '2':

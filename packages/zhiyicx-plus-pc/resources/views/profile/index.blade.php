@@ -52,6 +52,11 @@ $(function(){
         url: '/users',
         params: params
     });
+
+    $('#content_list').PicShow({
+        bigWidth: 815,
+        bigHeight: 545
+    });
 })
 </script>
 @endsection

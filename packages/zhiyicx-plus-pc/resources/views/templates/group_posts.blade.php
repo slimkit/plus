@@ -176,26 +176,5 @@
         <div class="feed_line"></div>
     </div>
 </div>
-<script type="text/javascript">
-    var images = {!! json_encode($post['images']) !!}, data = new Array();
-    if(images){
-        for (var i in images) {
-            var size = images[i].size.split('x');
-            var img = {
-                id: 'img' + i,
-                img: TS.SITE_URL + '/api/v2/files/' + images[i].id + '?token=' + TS.TOKEN,
-                tinyimg: TS.SITE_URL + '/api/v2/files/' + images[i].id + '?w=58&h=58&token=' + TS.TOKEN,
-                width: size[0],
-                height: size[1]
-            };
-            data.push(img);
-        }
-    }
-    $('#feed_photos_{{$post['id']}}').PicShow({
-        data: data,
-        bigWidth: {{ $conw ?? 635}},
-        bigHeight: {{ $conh ?? 400}}
-    });
-</script>
 @endforeach
 @endif
