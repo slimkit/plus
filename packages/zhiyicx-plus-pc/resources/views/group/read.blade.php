@@ -143,7 +143,7 @@
                 <a href="javascript:;" rel="preview" class="font16 @if($type=='preview')selected @endif">帖子预览</a>
                 @endif
             </div>
-            <div id="feeds_list"></div>
+            <div id="content_list"></div>
         </div>
     </div>
 
@@ -248,11 +248,16 @@
     $(function () {
         // 初始帖子列表
         loader.init({
-            container: '#feeds_list',
+            container: '#content_list',
             loading: '.feed_content',
             url: '/groups/{{ $group['id'] }}',
             paramtype: 1,
             params: {type:"{{$type}}", isAjax:true, limit:15}
+        });
+
+        $('#content_list').PicShow({
+            bigWidth: 815,
+            bigHeight: 545
         });
     });
 
@@ -269,10 +274,10 @@
     // 切换帖子列表
     $('.feed_menu a').on('click', function() {
         $('#J-search').prev('input').val('');
-        $('#feeds_list').html('');
+        $('#content_list').html('');
         var type = $(this).attr('rel');
         loader.init({
-            container: '#feeds_list',
+            container: '#content_list',
             loading: '.feed_content',
             url: '/groups/{{ $group['id'] }}',
             paramtype: 1,
@@ -302,10 +307,10 @@
             keyword: key,
             isAjax: true
         };
-        $('#feeds_list').html('');
+        $('#content_list').html('');
 
         loader.init({
-            container: '#feeds_list',
+            container: '#content_list',
             loading: '.feed_content',
             url: '/groups/{{ $group['id'] }}',
             paramtype: 1,

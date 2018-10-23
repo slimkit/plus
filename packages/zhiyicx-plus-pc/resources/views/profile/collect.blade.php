@@ -48,6 +48,11 @@ $(function(){
         paramtype: type,
         params: {limit: 10, isAjax: true}
     });
+
+    $('#content_list').PicShow({
+        bigWidth: 815,
+        bigHeight: 545
+    });
 });
 </script>
 @endsection

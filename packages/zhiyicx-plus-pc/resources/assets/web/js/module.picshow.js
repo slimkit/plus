@@ -11,24 +11,20 @@
 		option.bigWidth=option.bigWidth || 635; //大图片显示宽度
 		option.bigHeight=option.bigHeight || 400;//大图片显示高度
 		option.rowSize=option.rowSize || 4;//每行显示多少个
-		option.data=option.data || {};//图片数组   id img bigimg img
 		if(option.id==null || option.id==''){
 			$(this).attr("id",new Date().getTime());
 			option.id=$(this).attr("id");
 		}
 		var me=$(this);
+		var m;
+		option.data={};//图片数组   id img bigimg img
 		var current_i=0;//当前中间显示的图片在数组中的位置 important
 		var currentPage=1;//底下小图片当前第几页
-		var currentPageSize=Math.ceil(option.data.length/7);//总共多少页
+		var currentPageSize=0;//总共多少页
 		var morePic=false;
-		if(option.data.length>1){
-			morePic=true;
-		}else if(option.data.length==0){
-			return;
-		}
 
 		function narrowMorePicShow(){//多图片 小图片显示
-			var _picshow_narrow_exist=me.find("#"+option.id+"_picshow_narrow");
+			var _picshow_narrow_exist=m.find("#"+option.id+"_picshow_narrow");
 			if(_picshow_narrow_exist.size()>0){
 				_picshow_narrow_exist.show();
 				return;
@@ -50,7 +46,8 @@
 		}
 
 		function expandMorePicShow(){//多图片 大图片显示
-			var _picshow_expand_exist=me.find("#"+option.id+"_picshow_expand");
+			var id=m.attr('id');
+			var _picshow_expand_exist=m.find('.PicShowExpand');
 			if(_picshow_expand_exist.size()>0){
 				getCurrentPicChange();
 				expandCenterUpdate();
@@ -58,18 +55,17 @@
 				return;
 			}
 			var b=new Array();
-			b.push('<div id="'+option.id+'_picshow_expand" class="PicShowExpand">');
+			b.push('<div id="'+id+'_picshow_expand" class="PicShowExpand">');
 			b.push(expandTop());
 			b.push(expandCenterImgHtml(option.data[current_i].id,option.data[current_i].img,option.data[current_i].width,option.data[current_i].height));
 			b.push(expandFootMoreHtml());
 			b.push('</div>');
-			$("#" +option.id).append(b.join(""));
-			$("#" +option.id+"_picshow_expand").css("width",option.bigWidth+"px");
-			expandAddDavFile();
+			$("#" +id).append(b.join(""));
+			$("#" +id+"_picshow_expand").css("width",option.bigWidth+"px");
 			getCurrentPicChange();
 		}
 		function narrowOnePicShow(){//单个图片 小图片显示
-			var _picshow_narrow_exist=me.find("#"+option.id+"_picshow_narrow");
+			var _picshow_narrow_exist=m.find("#"+option.id+"_picshow_narrow");
 			if(_picshow_narrow_exist.size()>0){
 				_picshow_narrow_exist.show();
 				return;
@@ -79,24 +75,23 @@
 			onepicArray.push('<img id="'+option.data[0].id+'" class="bigcursor" curLoc="0" ');
 			onepicArray.push('src="'+option.data[0].img+'" alt="">');
 			onepicArray.push('</div>');
-			me.append(onepicArray.join(""));
+			m.append(onepicArray.join(""));
 		}
 
 		function expandOnePicShow(){//单个图片 大图片 显示
-			var _picshow_expand_exist=me.find("#"+option.id+"_picshow_expand");
+			var id=m.attr('id');
+			var _picshow_expand_exist=m.find('.PicShowExpand');
 			if(_picshow_expand_exist.size()>0){
-				expandAddDavFile();
 				_picshow_expand_exist.show();
 				return;
 			}
 			var b=new Array();
-			b.push('<div id="'+option.id+'_picshow_expand" class="PicShowExpand">');
+			b.push('<div id="'+id+'_picshow_expand" class="PicShowExpand">');
 			b.push(expandTop());
 			b.push(expandCenterImgHtml(option.data[current_i].id,option.data[current_i].img,option.data[current_i].width,option.data[current_i].height));
 			b.push('</div>');
-			$("#" +option.id).append(b.join(""));
-			$("#" +option.id+"_picshow_expand").css("width",option.bigWidth+"px");
-			expandAddDavFile();
+			$("#" +id).append(b.join(""));
+			$("#" +id+"_picshow_expand").css("width",option.bigWidth+"px");
 		}
 
 		function expandTop(){
@@ -153,8 +148,7 @@
 				var w = width;
 				var h = height;
 			}
-			expandAddDavFile();
-			var expandCenterImg=me.find("#expandCenterImg");
+			var expandCenterImg=m.find("#expandCenterImg");
 			var c=new Array();
 			c.push('<img src="'+option.data[current_i].img+'" id="'+option.data[current_i].id+'" class="centerImg" height='+h+' width='+w+'>');
 			expandCenterImg.children().remove();
@@ -162,21 +156,12 @@
 			expandCenterImg.css("height","auto");
 		}
 		/**
-		 * 收藏
-		 */
-		function expandAddDavFile(){
-			var expandTop=$("#" +option.id+"_picshow_expand").find(".expand_top");
-			var fav=$('<a href="javascript:;" class="addFavFile archivebtn" id="addFavFile_'+option.data[current_i].id+'" style="margin: -5px;"></a>');
-			expandTop.find(".addFavFile").remove();
-			expandTop.append(fav);
-		}
-		/**
 		 * 进入多图片大图时方法
 		 */
 		function getCurrentPicChange(){
 			currentPage=Math.ceil((parseInt(current_i)+1)/7);//当前第几页
 			changeCurrentPage();
-			var stage_boxa=me.find("#pic_choose_box .stage_box");
+			var stage_boxa=m.find("#pic_choose_box .stage_box");
 			stage_boxa.find("a").each(function(i){
 				$(this).removeClass("current");
 				if(current_i==i){
@@ -188,10 +173,10 @@
 		 * 当前页面改变时  ------底下的图片改变样式
 		 */
 		function changeCurrentPage(){
-			var arrow_right_small=me.find(".arrow_right_small");
-			var arrow_left_small=me.find(".arrow_left_small");
-			var ico_pic_prev=me.find(".ico_pic_prev");
-			var ico_pic_next=me.find(".ico_pic_next");
+			var arrow_right_small=m.find(".arrow_right_small");
+			var arrow_left_small=m.find(".arrow_left_small");
+			var ico_pic_prev=m.find(".ico_pic_prev");
+			var ico_pic_next=m.find(".ico_pic_next");
 			if(currentPage>1){
 				arrow_left_small.removeClass("big2").addClass("big1");
 				ico_pic_prev.removeClass("text2").addClass("text1");
@@ -206,14 +191,14 @@
 				arrow_right_small.removeClass("big2").addClass("big1");
 				ico_pic_next.removeClass("text2").addClass("text1");
 			}
-			var stage_box_ul=me.find("#pic_choose_box .stage_box ul");
+			var stage_box_ul=m.find("#pic_choose_box .stage_box ul");
 			var marginleft=(currentPage-1)*59*7;
 			stage_box_ul.css("margin-left","-"+marginleft+"px");
 		}
 		//当最大化的时候事件绑定----收起
 		me.delegate(".retract","click",function(){
-			me.find(".feed_images").show();
-			me.find("#"+option.id+"_picshow_expand").hide();
+			m.find(".feed_images").show();
+			m.find(".PicShowExpand").hide();
 		});
 
 		//当最大化的时候事件绑定----原图
@@ -221,20 +206,10 @@
 			window.open(option.data[current_i].img);
 		});
 
-		//当最大化的时候事件绑定----向左旋转
-		me.delegate(".turn_left","click",function(){
-			me.find("#expandCenterImg .centerImg").rotateLeft(option.bigWidth-80);
-		});
-
-		//当最大化的时候事件绑定----向右旋转
-		me.delegate(".turn_right","click",function(){
-			me.find("#expandCenterImg .centerImg").rotateRight(option.bigWidth-80);
-		});
-
 		//当最大化的时候事件绑定----收起
 		me.delegate(".smallcursor","click",function(){
-			me.find("#"+option.id+"_picshow_expand").hide();
-			me.find(".feed_images").show();
+			m.find(".PicShowExpand").hide();
+			m.find(".feed_images").show();
 			// me.find("#"+option.id+"_picshow_narrow").show();
 		});
 
@@ -283,7 +258,30 @@
 
 		//小图片放大事件
 		me.delegate(".bigcursor","click",function(e){
-			$(this).parents('.feed_images').hide();
+			m = $(this).parents('.feed_photos');
+			option.data = [];
+			m.find('.feed_images img').each(function(i){
+	            var size = $(this).data('size').split('x');
+	            var blur = $(this).data('blur') == ''; 
+	            var img = {
+	                id: 'img' + i,
+	                // img: TS.SITE_URL + '/api/v2/files/' + $(this).data('id') + '?token=' + TS.TOKEN,
+	                // tinyimg: TS.SITE_URL + '/api/v2/files/' + $(this).data('id')+ '?w=58&h=58&token=' + TS.TOKEN,
+	                img: 'http://test-plus.zhibocloud.cn/api/v2/files/' + $(this).data('id') + '?token=' + TS.TOKEN,
+	                tinyimg: 'http://test-plus.zhibocloud.cn/api/v2/files/' + $(this).data('id')+ '?w=58&h=58&token=' + TS.TOKEN,
+	                width: size[0],
+	                height: size[1]
+	            };
+	            option.data.push(img);
+			})
+
+			if(option.data.length>1){
+				morePic=true;
+			}else if(option.data.length==0){
+				return;
+			}
+
+			m.find('.feed_images').hide();
 			var curLoc=parseInt($(this).attr("curLoc"));
 			current_i=curLoc;
 			if(morePic){

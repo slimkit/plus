@@ -324,6 +324,8 @@ var loader = {
             }
           })
           .catch(function (error) {
+            console.log(error);
+            return false;
             showError(error.response.data);
           });
     },

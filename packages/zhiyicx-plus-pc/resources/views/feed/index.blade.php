@@ -29,7 +29,7 @@
                 <a href="javascript:;" data-type="follow" class="font16 @if ($type == 'follow')selected @endif">关注的</a>
                 @endif
             </div>
-            <div id="feeds_list"></div>
+            <div id="content_list"></div>
         </div>
     </div>
 
@@ -66,7 +66,7 @@ $(function(){
     };
 
     var options = {
-        container: '#feeds_list',
+        container: '#content_list',
         loading: '.feed_content',
         url: '/feeds',
         params: params,
@@ -77,7 +77,7 @@ $(function(){
     $('.feed_menu a').on('click', function() {
         var type = $(this).data('type');
         // 清空数据
-        $('#feeds_list').html('');
+        $('#content_list').html('');
 
         // 加载相关微博
         options.params = {
@@ -105,6 +105,11 @@ $(function(){
         newUpload:true,
         buttonText:'',
         onUploadSuccess: weibo.afterUpload
+    });
+
+    $('#content_list').PicShow({
+        bigWidth: 635,
+        bigHeight: 400
     });
 });
 </script>
