@@ -53,7 +53,8 @@ module.exports = {
             ],
             '/guide/upgrade/': [
                 '',
-                '1.9-to-2.0'
+                '1.9-to-2.0',
+                '2.0-to-2.1',
             ],
             '/guide/dev/blog/': [
                 '',
