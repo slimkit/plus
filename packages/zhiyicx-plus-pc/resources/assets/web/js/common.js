@@ -978,12 +978,10 @@ var comment = {
     pinneds: function (type, source_id, id){
         var url = '';
         if (type == 'feeds') {
-            url = '/api/v2/feeds/' + source_id + '/comments/' + id + '/currency-pinneds';
-            pinneds.show(url, 'pinned');
+            layer.alert(buyTSInfo)
         }
         if (type == 'news') {
-            url = '/api/v2/news/' + source_id + '/comments/' + id + '/currency-pinneds';
-            pinneds.show(url, 'pinned');
+            layer.alert(buyTSInfo)
         }
         if (type == 'group-posts') {
             url = '/api/v2/plus-group/currency-pinned/comments/'+ id;
