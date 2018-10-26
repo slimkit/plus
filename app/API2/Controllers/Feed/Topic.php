@@ -213,16 +213,14 @@ class Topic extends Controller
         $response = (new Response())->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
 
         // If `logo` and `desc` field all is NULL
-        $desc = $request->input('desc');
-        $name = $request->input('name');
-        $logo = $request->input('logo');
-        if (! $logo && ! $desc && ! $name) {
+        $data = array_filter($request->map(['name', 'desc', 'logo']));
+        if (empty($data)) {
             return $response;
         }
 
-        $topic->name = $name ?: $topic->name;
-        $topic->desc = $desc ?: $topic->desc;
-        $topic->logo = $logo ?: $topic->logo;
+        foreach ($data as $key => $value) {
+            $topic->{$key} = $value;
+        }
         $topic->save();
 
         return $response;
