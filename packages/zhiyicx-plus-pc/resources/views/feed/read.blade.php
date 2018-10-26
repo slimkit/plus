@@ -154,7 +154,12 @@
 
                 {{-- 打賞 --}}
                 @if($config['bootstrappers']['feed']['reward'] && $user['id'] !== $TS['id'])
-                    @include('pcview::widgets.rewards' , ['rewards_data' => $feed['rewards'], 'rewards_type' => 'feeds', 'rewards_id' => $feed['id'], 'rewards_info' => $feed['reward']])
+                    @include('pcview::widgets.rewards' , [
+                        'rewards_data' => $feed['rewards'],
+                        'rewards_type' => 'feeds',
+                        'rewards_id' => $feed['id'],
+                        'rewards_info' => $feed['reward'],
+                    ])
                 @endif
             </div>
 

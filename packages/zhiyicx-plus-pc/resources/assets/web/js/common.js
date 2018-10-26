@@ -678,6 +678,7 @@ var rewarded = {
 
     show: function(id, type, pay_amount) {
         checkLogin();
+        if (['feeds', 'news'].indexOf(type) > -1) return layer.alert(buyTSInfo);
         rewarded.payload = {};
         var html = '<div class="reward_box">'
                     + '<p class="confirm_title">打赏</p>'
