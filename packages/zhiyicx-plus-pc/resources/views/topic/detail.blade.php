@@ -90,9 +90,6 @@
             <footer>更多</footer>
         </div>
 
-        {{-- TODO: 目前没有话题广告位,用动态广告位代替 (话题右侧广告位) --}}
-        @include('pcview::widgets.ads', ['space' => 'pc:feeds:right', 'type' => 1])
-
         {{-- 热门话题 --}}
         @include('pcview::topic.widgets.hot_topics', ['list' => $list_hot])
 

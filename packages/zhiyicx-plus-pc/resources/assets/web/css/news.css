@@ -51,9 +51,7 @@
 .rel_news_word .news_title {height:28px;}
 .rel_news_word a:visited {color:#808080;}
 .rel_news_word p {font-size:14px;line-height:24px;height:48px;display:-webkit-box;overflow:hidden;margin:25px auto 25px;color:#808080;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
-/*右侧广告*//* .news_ad {width:235px;max-height:235px;margin:20px 0;}
-.news_ad img {width:100%;height:auto;}
-*//*轮播图*/.unslider {position:relative;overflow:auto;margin:0;padding:0;}
+/*轮播图*/.unslider {position:relative;overflow:auto;margin:0;padding:0;}
 .unslider-wrap {position:relative;}
 .unslider-wrap.unslider-carousel > li {float:left;}
 .unslider-vertical > ul {height:100%;}

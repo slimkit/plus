@@ -157,7 +157,4 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
     </div>
 </div>
 @endforeach
-@if (isset($space) && $space)
-    @include('pcview::widgets.ads', ['space' => 'pc:feeds:list', 'type' => 3])
-@endif
 @endif

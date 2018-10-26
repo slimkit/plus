@@ -173,8 +173,6 @@
         {{-- 近期热点 --}}
         @include('pcview::widgets.hotnews')
 
-        {{-- 广告位 --}}
-        @include('pcview::widgets.ads', ['space' => 'pc:news:right', 'type' => 1])
     </div>
 @endsection
 
