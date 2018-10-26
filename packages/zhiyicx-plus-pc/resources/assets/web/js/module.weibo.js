@@ -136,8 +136,7 @@ weibo.denounce = function(obj) {
 };
 //微博申请置顶
 weibo.pinneds = function (feed_id) {
-    var url = '/api/v2/feeds/'+feed_id+'/currency-pinneds';
-    pinneds.show(url, 'pinned');
+    layer.alert(buyTSInfo)
 };
 weibo.addComment = function (row_id, type) {
     var url = '/api/v2/feeds/' + row_id + '/comments';

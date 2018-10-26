@@ -130,8 +130,7 @@ var news = {
         });
     },
     pinneds: function (news_id) {
-        var url = '/api/v2/news/'+news_id+'/currency-pinneds';
-        pinneds.show(url, 'pinned');
+        layer.alert(buyTSInfo)
     },
     addComment: function (row_id, type) {
         var url = '/api/v2/news/' + row_id + '/comments';
