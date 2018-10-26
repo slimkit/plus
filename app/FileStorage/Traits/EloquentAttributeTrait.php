@@ -51,9 +51,9 @@ trait EloquentAttributeTrait
         try {
             return $this->getFileStorageInstance()->meta(new Resource($resource));
         } catch (Exception $e) {
-            return null;
+            return $resource;
         }
 
-        return null;
+        return $resource;
     }
 }
