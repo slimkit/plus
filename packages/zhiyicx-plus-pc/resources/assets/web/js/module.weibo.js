@@ -24,78 +24,9 @@ weibo.postFeed = function() {
 
     // 付费免费
     var select = $('#feed_select').data('value');
-
-    var reward_amounts = TS.BOOT.feed.items;
-
     if (select == 'pay') {
-        if ($('.feed_picture').find('img').length > 0) { // 图片付费弹窗
-            // 分享文字内容不超过255字
-            if ($('#feed_content').val().length > initNums) {
-                noticebox('分享内容长度不能超过' + initNums + '字', 0);
-                return false;
-            }
-            var pay_box = '<div class="feed_pay_box"><p class="confirm_title">付费设置</p>';
-            var images_box = '<div class="pay_images">';
-            var info_box = '';
-            $('.feed_picture').find('img').each(function(index) {
-                var amount = $(this).attr('amount') != '' ? $(this).attr('amount') : '';
-
-                var svg = amount == '' ? '' : '<svg viewBox="0 0 18 18" class="lock" width="20%" height="20%" aria-hidden="true"><use xlink:href="#icon-lock"></use></svg>';
-                images_box += '<div class="pay_image"><img ' + (index == 0 ? 'class="current"' : '') + 'src="' + $(this).attr('src') + '" tid="' + $(this).attr('tid') + '" amount="' + amount + '"/>' + svg + '</div>';
-
-                // 如果为第一张图，添加付费信息
-                if (index == 0){
-                    // 付费信息
-                    info_box = '<div class="pay_info"><div class="pay_head clearfix">'
-                                    + '<span class="pay_text">设置图片收费金额</span>'
-                                    + '<span class="pay_btn pay_btn_yes">确定</span>'
-                                    + '<span class="pay_btn pay_btn_reset">重置</span>'
-                                + '</div>'
-                                + '<div class="pay_body">';
-                    $.each(reward_amounts, function (index, value) {
-                        if (value > 0) {
-                            info_box += '<span' + (amount == value ? ' class="current"' : '') + ' amount="' + value + '">' + value + '</span>';
-                        }
-                    });
-                    info_box += '<input min="1" oninput="value=moneyLimit(value)"  type="number" placeholder="自定义金额，必须为整数" value="' + ($.inArray(amount, reward_amounts) ? '' : amount) + '">'
-                             +'</div>';
-                }
-            });
-            images_box += '<div class="triangle"></div></div>';
-            info_box += '</div>'
-
-            var html = pay_box + images_box + info_box + '</div>';
-        } else { // 文字付费弹窗
-            // 分享字数限制
-            var strlen = $('#feed_content').val().length;
-            var leftnums = initNums - strlen;
-            if (leftnums < 0 || leftnums == initNums || strlen < TS.BOOT.feed.limit) {
-                noticebox('付费动态内容长度为' + TS.BOOT.feed.limit + '-' + initNums + '字', 0);
-                return false;
-            }
-
-            var amount = $('#feed_content').attr('amount') != '' ? $('#feed_content').attr('amount') : '';
-            var pay_box = '<div class="feed_pay_box"><p class="pay_title">付费设置</p>';
-            var info_box = '';
-            info_box = '<div class="pay_info"><div class="pay_head clearfix">'
-                            + '<span class="pay_text">设置文字收费金额</span>'
-                        + '</div>';
-
-            info_box +=  '<div class="pay_body">';
-            $.each(reward_amounts, function (index, value) {
-                if (value > 0) {
-                    info_box += '<span' + (amount == value ? ' class="current"' : '') + ' amount="' + value + '">' + value + '</span>';
-                }
-            });
-            info_box += '<input min="1" oninput="value=moneyLimit(value)"  type="number" placeholder="自定义金额，必须为整数" value="' + ($.inArray(amount, reward_amounts) ? '' : amount) + '">'
-                +'</div>';
-            info_box += '</div>';
-
-            var html = pay_box + info_box + '</div>';
-        }
-        ly.confirm(html, '', '', function(){
-            return weibo.doPostFeed('pay');
-        });
+      layer.alert('开源版无此功能，需要使用此功能，请购买正版授权源码，详情访问www.thinksns.com，也可直接咨询：QQ3515923610；电话：18108035545。')
+      return
     } else {
         // 分享字数限制
         var strlen = _.trim($('#feed_content').val()).length;
@@ -131,42 +62,13 @@ weibo.doPostFeed = function(type) {
         });
         if (images.length != 0) data.images = images;
     } else {  // 付费
-        // 图片付费
-        if ($('.pay_images').length > 0) {
-            var has_amount = 0;
-            $('.pay_images').find('img').each(function() {
-                var amount = $(this).attr('amount');
-                if (amount == '') {
-                    images.push({'id':$(this).attr('tid')});
-                } else {
-                    has_amount = 1;
-                    images.push({'id':$(this).attr('tid'), 'type': 'read', 'amount': amount});
-                }
-            });
-            // 判断是否有图片添加付费信息
-            if (!has_amount) {
-                lyNotice('应配置至少一张图片费用');
-
-                return false;
-            }
-
-            if (images.length != 0) data.images = images;
-        } else {
-            // 文字付费
-            var amount = $('#feed_content').attr('amount');
-            if (amount == '') {
-                lyNotice('请配置付费金额');
-
-                return false;
-            }
-            data.amount = amount;
-        }
+        return
     }
 
     _this.lockStatus = 1;
 
     axios.post('/api/v2/feeds', data)
-      .then(function (response) {
+        .then(function (response) {
             $('.feed_picture').html('').hide();
             $('#feed_content').val('');
             checkNums($('#feed_content')[0], 255, 'nums');
@@ -176,11 +78,11 @@ weibo.doPostFeed = function(type) {
             $('.ev-selected-topics').empty();
             layer.closeAll();
             _this.lockStatus = 0;
-      })
-      .catch(function (error) {
-        _this.lockStatus = 0;
-        type == 'pay' ? lyShowError(error.response.data) : showError(error.response.data);
-      });
+        })
+        .catch(function (error) {
+            _this.lockStatus = 0;
+            type == 'pay' ? lyShowError(error.response.data) : showError(error.response.data);
+        });
 };
 
 weibo.afterPostFeed = function(feed_id) {
