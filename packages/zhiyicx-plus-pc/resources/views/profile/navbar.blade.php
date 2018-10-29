@@ -45,9 +45,9 @@
             <ul class="profile_nav_list clearfix">
                 <li @if($current == 'feeds') class="active" @endif><a href="{{ route('pc:mine', $user['id']) }}">主页</a></li>
 
-                <li @if($current == 'group') class="active" @endif><a href="{{ route('pc:profilegroup', $user['id']) }}">圈子</a></li>
+                <li><a href="javascript:;" onclick="layer.alert(buyTSInfo)">圈子</a></li>
 
-                 <li @if($current == 'question') class="active" @endif><a href="{{ route('pc:profilequestion', $user['id']) }}">问答</a></li>
+                <li @if($current == 'question') class="active" @endif><a href="{{ route('pc:profilequestion', $user['id']) }}">问答</a></li>
 
                 <li @if($current == 'news') class="active" @endif><a href="{{ route('pc:profilenews', $user['id']) }}">资讯</a></li>
 
@@ -61,7 +61,7 @@
             <ul class="profile_nav_list clearfix">
                 <li @if($current == 'feeds') class="active" @endif><a href="{{ route('pc:mine', $user['id']) }}">TA的主页</a></li>
 
-                <li @if($current == 'group') class="active" @endif><a href="{{ route('pc:profilegroup', $user['id']) }}">TA的圈子</a></li>
+                <li><a href="javascript:;" onclick="layer.alert(buyTSInfo)">TA的圈子</a></li>
 
                 <li @if($current == 'news') class="active" @endif><a href="{{ route('pc:profilenews', $user['id']) }}">TA的文章</a></li>
 

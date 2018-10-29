@@ -237,48 +237,6 @@ class ProfileController extends BaseController
     }
 
     /**
-     * 圈子
-     * @author 28youth
-     * @param  Request     $request
-     * @param  int $user_id [用户id]
-     * @return mixed
-     */
-    public function group(Request $request, ?string $user)
-    {
-        if (! $user || $user == $this->PlusData['TS']['id']) {
-            $user = $request->user();
-        } else {
-            $user = UserModel::where(username($user), $user)->with('tags')->first();
-        }
-        $this->PlusData['current'] = 'group';
-        if ($request->isAjax) {
-            $type = (int) $request->query('type');
-            $params = [
-                'offset' => $request->query('offset', 0),
-                'limit' => $request->query('limit', 10),
-                'type' => $request->query('type', 'join')
-            ];
-            if (!$type) {
-                $data['type'] = $params['type'];
-                $data['group'] = $user->id ? api('GET', '/api/v2/plus-group/user-groups', $params) : api('GET', '/api/v2/plus-group/groups/users', array_merge($params, ['user_id' => $user->id]));
-                $html = view('pcview::templates.group', $data, $this->PlusData)->render();
-            } else {
-                $posts['posts'] = api('GET', '/api/v2/plus-group/user-group-posts', $params);
-                $html = view('pcview::templates.group_posts', $posts, $this->PlusData)->render();
-            }
-
-            return response()->json([
-                'data' => $html,
-            ]);
-        }
-        $user->follower = $user->hasFollower($request->user()->id);
-        $data['user'] = $user->toArray();
-        $data['type'] = 'join';
-
-        return view('pcview::profile.group', $data, $this->PlusData);
-    }
-
-    /**
      * 问答信息.
      * @author 28youth
      * @param  Request     $request

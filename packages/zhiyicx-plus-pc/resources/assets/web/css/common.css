@@ -522,3 +522,5 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 .feed_repostable .view-more {font-size: 12px;color: #59b6d7;letter-spacing: 0;margin-left: 10px;}
 .feed_repostable .view-more svg {fill: #59b6d7;}
 .layui-layer-page .layui-layer-content {overflow: visible !important;} /*转发弹框话题选择溢出部分可见*/
+/* 遮罩 */
+.overlayer {position: absolute;top:0;left:0;right:0;bottom: 0;z-index: 100;}

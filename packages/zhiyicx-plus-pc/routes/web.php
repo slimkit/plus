@@ -17,7 +17,7 @@ Route::prefix('auth')->group(function () {
 
     // 动态验证码登录
     Route::post('/dynamic-login', [
-        'uses' => 'PassportController@dynamicLogin'
+        'uses' => 'PassportController@dynamicLogin',
     ]);
 
     // 登出
@@ -86,7 +86,6 @@ Route::prefix('questions')->group(function () {
     Route::get('/{question}/answers/{answer}', 'QuestionController@answer')->where(['answer' => '[0-9]+'])->name('pc:answeread');
 
     Route::get('answers/{answer}/comments', 'QuestionController@answerComments');
-
 
     // 创建问题
     Route::get('create/{question_id?}', 'QuestionController@createQuestion')->where(['question_id' => '[0-9]+'])->name('pc:createquestion');
@@ -169,9 +168,6 @@ Route::prefix('users')->middleware('auth')->group(function () {
     // 资讯
     Route::get('/{user?}/news', 'ProfileController@news')->name('pc:profilenews');
 
-    // 圈子
-    Route::get('/{user?}/group', 'ProfileController@group')->name('pc:profilegroup');
-
     // 问答
     Route::get('/{user?}/q-a', 'ProfileController@question')->name('pc:profilequestion');
 
@@ -192,9 +188,6 @@ Route::prefix('user')->middleware('auth')->group(function () {
 
     // 收藏的问答
     Route::get('collect-q-a', 'ProfileController@collectQuestion')->name('pc:profilecollectqa');
-
-    // 收藏的帖子
-    Route::get('collect-group', 'ProfileController@collectGroup')->name('pc:profilecollectgroup');
 });
 
 // 找人
@@ -254,37 +247,6 @@ Route::prefix('group')->group(function () {
 Route::prefix('groups')->group(function () {
     // 圈子列表
     Route::get('/', 'GroupController@list');
-
-    // 圈子详情
-    Route::get('/{group_id?}', 'GroupController@read')->where(['group_id' => '[0-9]+'])->name('pc:groupread');
-
-    //创建圈子
-    Route::middleware('auth')->get('/create', 'GroupController@create')->name('pc:groupcreate');
-
-    //发布帖子
-    Route::middleware('auth')->get('/publish', 'GroupController@publish')->name('pc:postcreate');
-
-    // 圈子动态详情
-    Route::get('/{group_id}/posts/{post_id}', 'GroupController@postDetail')->where(['group_id' => '[0-9]+', 'post_id' => '[0-9]+'])->name('pc:grouppost');
-
-    // 获取单条圈子动态信息
-    Route::get('getPost', 'GroupController@getPost');
-
-    // 圈子动态获取评论列表
-    Route::get('/{post_id}/comments', 'GroupController@comments')->where(['post_id' => '[0-9]+']);
-
-    // 圈子管理
-    Route::middleware('auth')->get('notice', 'GroupController@noticeRead')->name('pc:groupnotice');
-    Route::middleware('auth')->get('member', 'GroupController@member')->name('pc:memberpage');
-    Route::middleware('auth')->get('report', 'GroupController@reportList')->name('pc:reportList');
-    Route::middleware('auth')->get('get-member', 'GroupController@memberList')->name('pc:memberList');
-    Route::middleware('auth')->get('incomes', 'GroupController@incomes')->name('pc:incomes');
-    Route::middleware('auth')->get('manage/group', 'GroupController@manageGroup')->name('pc:groupedit');
-    Route::middleware('auth')->get('manage/member', 'GroupController@manageMember')->name('pc:groupmember');
-    Route::middleware('auth')->get('manage/bankroll', 'GroupController@bankroll')->name('pc:groupbankroll');
-    Route::middleware('auth')->get('manage/bankroll_detail', 'GroupController@bankrollDetail')->name('pc:bankrolldetail');
-    Route::middleware('auth')->get('manage/report', 'GroupController@report')->name('pc:groupreport');
-    Route::middleware('auth')->get('manage/report_detail', 'GroupController@reportDetail')->name('pc:reportdetail');
 });
 
 // 话题
