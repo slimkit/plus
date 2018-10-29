@@ -71,8 +71,6 @@
 <div class="f-dn" id="iCenter"></div>
 @endsection
 @section('scripts')
-<script src='//webapi.amap.com/maps?v=1.4.2&key=e710c0acaf316f2daf2c1c4fd46390e3'></script>
-<script src="{{ asset('assets/pc/js/module.group.js')}}"></script>
 <script>
 loader.init({
     container: '#group_box',

@@ -53,20 +53,6 @@ class SearchController extends BaseController
                 $after = last($data['feeds'])['id'] ?? 0;
                 $html = view('pcview::templates.feeds', $data, $this->PlusData)->render();
                 break;
-            case '2':
-                $params = [
-                    'type' => 'all',
-                    'limit' => $limit,
-                    'offset' => $offset,
-                    'subject' => $keywords,
-                ];
-
-                $datas = api('GET', '/api/v2/questions', $params);
-                $data['data'] = $datas;
-                $data['search'] = true;
-                $after = last($data['data'])['id'] ?? 0;
-                $html = view('pcview::templates.question', $data, $this->PlusData)->render();
-                break;
             case '3':
                 $params = [
                     'limit' => $limit,
@@ -90,20 +76,6 @@ class SearchController extends BaseController
                 $datas = api('GET', '/api/v2/user/search', $params);
                 $data['users'] = $datas;
                 $html = view('pcview::templates.user', $data, $this->PlusData)->render();
-                break;
-
-            case '6':
-                $params = [
-                    'limit' => $limit,
-                    'offset' => $offset,
-                    'follow' => 1,
-                    'name' => $keywords,
-                ];
-                $datas = api('GET', '/api/v2/question-topics', $params);
-                $data['data'] = $datas;
-                $data['search'] = true;
-                $after = last($data['data'])['id'] ?? 0;
-                $html = view('pcview::templates.question_topic', $data, $this->PlusData)->render();
                 break;
             case '8':
                 $params = [

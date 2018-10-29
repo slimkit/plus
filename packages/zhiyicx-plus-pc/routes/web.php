@@ -63,43 +63,10 @@ Route::prefix('feeds')->group(function () {
     Route::get('/repostable', 'FeedController@repostable')->name('pc:repostable');
 });
 
-// 问答专题
-Route::prefix('question-topics')->group(function () {
-
-    // 专题列表
-    Route::get('/', 'QuestionController@topic')->name('pc:topic');
-
-    // 专题详情
-    Route::get('/{topic?}', 'QuestionController@topicInfo')->where(['topic' => '[0-9]+'])->name('pc:topicinfo');
-
-    // 专题下的更多专家
-    Route::get('/{topic}/experts', 'QuestionController@topicExpert')->where(['topic' => '[0-9]+'])->name('pc:topicexpert');
-});
-
 // 问答
 Route::prefix('questions')->group(function () {
     // 问答
     Route::get('/', 'QuestionController@question')->name('pc:question');
-
-    Route::get('/{question}', 'QuestionController@read')->where(['question' => '[0-9]+'])->name('pc:questionread');
-
-    Route::get('/{question}/answers/{answer}', 'QuestionController@answer')->where(['answer' => '[0-9]+'])->name('pc:answeread');
-
-    Route::get('answers/{answer}/comments', 'QuestionController@answerComments');
-
-    // 创建问题
-    Route::get('create/{question_id?}', 'QuestionController@createQuestion')->where(['question_id' => '[0-9]+'])->name('pc:createquestion');
-
-    Route::get('users', 'QuestionController@getUsers')->name('pc:questionusers');
-    // 回答列表
-    Route::get('{question}/answers', 'QuestionController@getAnswers')->name('pc:questionanswers');
-
-    // 问题评论列表
-    Route::get('{question}/comments', 'QuestionController@questionComments')->name('pc:questioncomments');
-
-    // 修改回答
-    Route::get('answer/{answer}/edit', 'QuestionController@editAnswer')->where(['answer' => '[0-9]+'])->name('pc:answeredit');
-
 });
 
 Route::prefix('rank')->group(function () {
@@ -168,9 +135,6 @@ Route::prefix('users')->middleware('auth')->group(function () {
     // 资讯
     Route::get('/{user?}/news', 'ProfileController@news')->name('pc:profilenews');
 
-    // 问答
-    Route::get('/{user?}/q-a', 'ProfileController@question')->name('pc:profilequestion');
-
     // 关注的人
     Route::get('/{user?}/following', 'UserController@following')->name('pc:following');
 
@@ -185,9 +149,6 @@ Route::prefix('user')->middleware('auth')->group(function () {
 
     // 收藏的资讯
     Route::get('collect-news', 'ProfileController@collectNews')->name('pc:profilecollectnews');
-
-    // 收藏的问答
-    Route::get('collect-q-a', 'ProfileController@collectQuestion')->name('pc:profilecollectqa');
 });
 
 // 找人

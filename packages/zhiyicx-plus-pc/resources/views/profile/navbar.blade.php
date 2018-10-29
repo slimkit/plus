@@ -47,7 +47,7 @@
 
                 <li><a href="javascript:;" onclick="layer.alert(buyTSInfo)">圈子</a></li>
 
-                <li @if($current == 'question') class="active" @endif><a href="{{ route('pc:profilequestion', $user['id']) }}">问答</a></li>
+                <li><a href="javascript:;" onclick="layer.alert(buyTSInfo)">问答</a></li>
 
                 <li @if($current == 'news') class="active" @endif><a href="{{ route('pc:profilenews', $user['id']) }}">资讯</a></li>
 
@@ -65,7 +65,7 @@
 
                 <li @if($current == 'news') class="active" @endif><a href="{{ route('pc:profilenews', $user['id']) }}">TA的文章</a></li>
 
-                <li @if($current == 'question') class="active" @endif><a href="{{ route('pc:profilequestion', $user['id']) }}">TA的问答</a></li>
+                <li><a href="javascript:;" onclick="layer.alert(buyTSInfo)">TA的问答</a></li>
             </ul>
             <div class="m-option">
                 <span class="options" onclick="options(this)">

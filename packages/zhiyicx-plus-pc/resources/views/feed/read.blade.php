@@ -105,7 +105,7 @@
             @if(count($feed['topics']))
             <div class="selected-topics" style="margin-bottom: 20px;">
                 @foreach($feed['topics'] as $topic)
-                <a href='{{ route("pc:topicDetail", ["topic_id" => $topic["id"]]) }}' class="selected-topic-item">{{ $topic['name'] }}</a>
+                <a href='javascript:;' onclick="layer.alert(buyTSInfo)" class="selected-topic-item">{{ $topic['name'] }}</a>
                 @endforeach
             </div>
             @endif

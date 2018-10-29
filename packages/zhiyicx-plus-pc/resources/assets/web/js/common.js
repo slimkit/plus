@@ -1988,16 +1988,6 @@ $(function() {
             $('.u-share-show').fadeOut();
         }
 
-        // 相关问题
-        if(!target.is('div.question-searching') && target.parents('.question-searching').length == 0) {
-            $('.question-searching').fadeOut();
-        }
-
-        // 问题专题
-        if(!target.is('div.question-topics-list') && !target.is('dl,dt,dd,li')) {
-            $('.question-topics-list').hide();
-        }
-
         // 圈子管理
         if(!target.is('.u-menu li') && !target.is('.u-opt svg')) {
             $('.u-menu').fadeOut();

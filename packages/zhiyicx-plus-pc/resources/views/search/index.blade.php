@@ -36,7 +36,6 @@
                             <i></i>
                         </div>
                     </li>
-                    {{--<li><a href="javascript:;" @if($type == 6) class="selected" @endif type="6">专题</a></li>--}}
                     <li>
                         <div type="2" class="zy_select t_c gap12 select-gray" id="J-question">
                             <span @if($type == 2 || $type == 6) class="selected" @endif>{{ $type == 6 ? '专题' : '问答' }}</span>
@@ -74,8 +73,6 @@
 
 @section('scripts')
 <script src="{{ asset('assets/pc/js/module.weibo.js') }}"></script>
-<script src="{{ asset('assets/pc/js/module.question.js') }}"></script>
-<script src="{{ asset('assets/pc/js/module.group.js') }}"></script>
 <script src="{{ asset('assets/pc/js/module.picshow.js') }}"></script>
 
 <script type="text/javascript">
@@ -126,20 +123,8 @@ $(function() {
                 });
                 break;
             case '2': //问答加载
-                var params = {
-                    type: type,
-                    limit: 10,
-                    keywords: keywords
-                };
-                loader.init({
-                    container: '#content_list',
-                    loading: '.search_container',
-                    url: '/search/data',
-                    params: params,
-                    paramtype: 1
-                });
-                break;
-
+                layer.alert(buyTSInfo)
+                return;
             case '3': // 资讯加载
                 var params = {
                     type: type,
@@ -174,19 +159,8 @@ $(function() {
                 return;
 
             case '6': // 专题加载
-                var params = {
-                    type: type,
-                    limit: 10,
-                    keywords: keywords
-                };
-                loader.init({
-                    container: '#content_list',
-                    loading: '.search_container',
-                    url: '/search/data',
-                    params: params,
-                    paramtype: 1,
-                });
-                break;
+                layer.alert(buyTSInfo)
+                return;
 
             case '7': // 帖子加载
                 layer.alert(buyTSInfo)

@@ -2,15 +2,15 @@
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
-use Session;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Contracts\Config\Repository;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Models\User;
-use Zhiyi\Plus\Models\Comment as CommentModel;
+use Session;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Models\Navigation;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
+use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\Models\User;
 
 class BaseController extends Controller
 {
@@ -19,7 +19,7 @@ class BaseController extends Controller
     public function __construct()
     {
         // 初始化
-        $this->middleware(function($request, $next) {
+        $this->middleware(function ($request, $next) {
             // 用户认证
             $user = $request->user();
             if ($user) {
@@ -31,7 +31,7 @@ class BaseController extends Controller
             $this->PlusData['TS'] = null;
             if ($user) {
                 $jwt = app(\Tymon\JWTAuth\JWT::class);
-                if (! $token || ! $jwt->setToken($token)->check()) {
+                if (!$token || !$jwt->setToken($token)->check()) {
                     $token = $this->PlusData['token'] = $jwt->fromUser($user);
                     $request->session()->put('token', $token);
                     $request->session()->save();
@@ -92,7 +92,7 @@ class BaseController extends Controller
 
             // 公共地址
             $this->PlusData['routes']['api'] = asset('/api/v2');
-            $this->PlusData['routes']['storage'] = asset('/api/v2/files'). '/';
+            $this->PlusData['routes']['storage'] = asset('/api/v2/files') . '/';
 
             // 环信相关用户
             $this->PlusData['easemob_users'] = isset($_COOKIE['easemob_uids']) ? User::whereIn('id', explode(',', $_COOKIE['easemob_uids']))->get() : [];
@@ -100,7 +100,6 @@ class BaseController extends Controller
             return $next($request);
         });
     }
-
 
     /**
      * 操作提示
@@ -134,7 +133,7 @@ class BaseController extends Controller
     {
         $reportable_id = $request->query('reportable_id');
         $reportable_type = $request->query('reportable_type');
-        if (! $reportable_id || ! $reportable_type) {
+        if (!$reportable_id || !$reportable_type) {
             return abort(404);
         }
 
@@ -144,20 +143,13 @@ class BaseController extends Controller
                 break;
             case 'comments': // 评论部分暂时跳转到所属资源的详情页
                 $comment = CommentModel::find($reportable_id);
-                if (! $comment) {
+                if (!$comment) {
                     return abort(404);
                 }
                 return response()->redirectTo(route('pc:reportview', ['reportable_id' => $comment->commentable_id, 'reportable_type' => $comment->commentable_type]), 302);
                 break;
             case 'feeds':
                 return response()->redirectTo(route('pc:feedread', ['feed' => $reportable_id]), 302);
-                break;
-            case 'questions':
-                return response()->redirectTo(route('pc:questionread', ['question' => $reportable_id]), 302);
-                break;
-            case 'question-answers':
-                $answer = api('GET', '/api/v2/question-answers/'.$reportable_id );
-                return response()->redirectTo(route('pc:answeread', ['question' => $answer->question_id, 'answer' => $reportable_id]), 302);
                 break;
             case 'news':
                 return response()->redirectTo(route('pc:newsread', ['news_id' => $reportable_id]), 302);
