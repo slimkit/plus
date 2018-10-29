@@ -9,7 +9,7 @@ export default {
     path: 'currency',
     component: Main,
     children: [
-    	{path: '', component: Currency},
+    	  {path: '', component: Currency},
         {path: 'config', component: Config},
         {path: 'statistics', component: Statistics},
         {path: 'waters', component: Water},

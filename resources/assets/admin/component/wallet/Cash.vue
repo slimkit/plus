@@ -207,7 +207,7 @@
             <span aria-hidden="true">&raquo;</span>
           </a>
         </router-link>
-        
+
       </ul>
     </div>
 
@@ -215,7 +215,7 @@
     <div :class="$style.modal" v-show="modal.status">
       <div :class="$style.modalContent">
         <div :class="$style.modalIcon">
-          <span v-if="modal.type"class="glyphicon glyphicon-ok-sign" style="color: #449d44;"></span>
+          <span v-if="modal.type" class="glyphicon glyphicon-ok-sign" style="color: #449d44;"></span>
           <span v-else class="glyphicon glyphicon-warning-sign"></span>
         </div>
         {{ modal.message }}
