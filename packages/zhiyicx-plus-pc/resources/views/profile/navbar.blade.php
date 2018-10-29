@@ -54,7 +54,7 @@
                 <li @if($current == 'collect') class="active" @endif><a href="{{ route('pc:profilecollectfeeds') }}">收藏</a></li>
             </ul>
 
-            <a class="btn btn-primary contribute-btn" id="news-release" href="{{ route('pc:newsrelease') }}">
+            <a class="btn btn-primary contribute-btn" href="javascript:;" onclick="layer.alert(buyTSInfo)">
                 <svg class="icon"><use xlink:href="#icon-publish"></use></svg>投稿
             </a>
         @else

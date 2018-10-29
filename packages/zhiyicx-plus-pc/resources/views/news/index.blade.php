@@ -126,19 +126,6 @@ $(function(){
     // 图片懒加载
     $("img.lazy").lazyload({effect: "fadeIn"});
 
-    // 投稿权限判断
-    $('#news-release').on('click', function () {
-        checkLogin();
-        if (TS.BOOT['news:contribute'].verified && TS.USER.verified == null) {
-            ly.confirm(formatConfirm('投稿提示', '成功通过平台认证的用户才能投稿，是否去认证？'), '去认证' , '', function(){
-                window.location.href = "{{ route('pc:authenticate') }}";
-            });
-        } else {
-            window.location.href = "{{ route('pc:newsrelease') }}";
-        }
-
-        return false;
-    });
 })
 </script>
 @endsection
