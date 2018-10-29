@@ -75,7 +75,7 @@
                     <div class="triangle"></div>
                     <ul>
                         <li>
-                            <a href="javascript:;" onclick="rewarded.show({{$user['id']}}, 'user')">
+                            <a href="javascript:;" onclick="layer.alert(buyTSInfo)">
                                 <svg class="icon"><use xlink:href="#icon-money"></use></svg>
                                 <span>打赏</span>
                             </a>
