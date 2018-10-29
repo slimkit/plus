@@ -18,7 +18,7 @@
                 <!-- 类型 -->
                 <div class="form-group">
                   <select class="form-control" v-model="filter.type">
-                    <option v-for="type in reward_types" :value="type.name">{{ type.alias }}</option>
+                    <option v-for="type in reward_types" :key="type.name" :value="type.name">{{ type.alias }}</option>
                   </select>
                 </div>
                 <!-- 时间段 -->
@@ -31,12 +31,10 @@
                 </div>
                 <!-- 搜索 -->
                 <div class="form-group">
-                  <router-link class="btn btn-default" tag="button" :to="{ path: '/reward/list', query: searchQuery }">
-                    搜索
-                  </router-link>
+                  <button class="btn btn-default">搜索</button>
                 </div>
                 <!-- 导出 -->
-                <a :href="exportUrl" class="btn btn-success">导出</a>
+                <a href="javascript:;" class="btn btn-success">导出</a>
               </div>
             </div>
             <!-- 添加广告 -->
@@ -53,41 +51,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- 加载 -->
-                        <table-loading :loadding="loadding" :colspan-num="6"></table-loading>
-                        <tr v-for="reward in rewards">
-                          <td>{{ reward.id }}</td>
-                          <td>{{ reward.user ? reward.user.name : '未知' }}</td>
-                          <td>{{ reward.target ? reward.target.name : '未知' }}</td>
-                          <td>{{ reward.amount / 100 }}</td>
-                          <td v-if="reward.rewardable_type=='feeds'">动态</td>
-                          <td v-else-if="reward.rewardable_type=='news'">咨询</td>
-                          <td v-else-if="reward.rewardable_type=='users'">用户</td>
-                          <td v-else-if="reward.rewardable_type=='question-answers'">问答</td>
-                          <td v-else>未知</td>
-                          <td>{{ reward.created_at | localDate }}</td>
-                        </tr>
+
                     </tbody>
                 </table>
-                <!-- 分页 -->
-                <div class="text-center">
-                  <offset-paginator class="pagination" :total="total" :offset="offset" :limit="15">
-                    <template slot-scope="pagination">
-                      <li :class="(pagination.disabled ? 'disabled': '') + (pagination.currend ? 'active' : '')">
-                        <span v-if="pagination.disabled || pagination.currend">{{ pagination.page }}</span>
-                        <router-link v-else :to="offsetPage(pagination.offset)">{{ pagination.page }}</router-link>
-                      </li>
-                    </template>
-                  </offset-paginator>
-                </div>
+                <p>开源版无此功能，需要使用此功能，请购买正版授权源码，详情访问www.thinksns.com，也可直接咨询：QQ3515923610；电话：18108035545。</p>
             </div>
         </div>
     </div>
 </template>
 <script>
-import request, { createRequestURI } from '../../util/request';
-import { plusMessageFirst } from '../../filters';
-
 const ListComponent = {
     data: () => ({
       loadding: false,
@@ -111,18 +83,6 @@ const ListComponent = {
         { name: 'question-answers', alias: '问答打赏' },
       ],
     }),
-    computed: {
-      exportUrl () {
-        return '/admin/rewards/export?export_type=list' + $.param(this.filter);
-      },
-      offset () {
-        const { query: { offset = 0 } } = this.$route;
-        return parseInt(offset);
-      },
-      searchQuery () {
-        return { ...this.filter, offset: 0 };
-      },
-    },
     watch: {
       '$route': function ($route) {
         this.total = 0;
@@ -135,7 +95,7 @@ const ListComponent = {
         this.loadding = true;
         request.get(
           createRequestURI('rewards'),
-          { 
+          {
             validateStatus: status => status === 200,
             params: { ...query, limit: 15 },
           },
@@ -158,4 +118,3 @@ const ListComponent = {
 };
 export default ListComponent;
 </script>
-
