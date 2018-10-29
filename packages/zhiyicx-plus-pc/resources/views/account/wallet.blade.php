@@ -18,7 +18,7 @@
         {{-- 左侧导航 --}}
         @include('pcview::account.sidebar')
 
-        <div class="account_r">
+        <div class="account_r" onclick="layer.alert(buyTSInfo)">
             <div class="account_c_c" id="J-warp">
                 {{-- 我的钱包 --}}
                 <div class="account_tab">
@@ -39,19 +39,18 @@
                     </div>
                     <div class="wallet-body" id="wallet-info">
                         <div class="wallet-info clearfix">
-                            <div class="remaining-sum">
-                                {{ ((int) $TS['newWallet']['balance']) / 100 }}</div>
+                            <div class="remaining-sum"> </div>
                             <div class="operate">
                                 @if($config['bootstrappers']['wallet:recharge']['open'])
-                                    <a href="javascript:;" data-url="{{ route('pc:walletpay') }}" onclick="checkWallet(this)"><button>充值</button></a>
+                                    <a href="javascript:;"><button>充值</button></a>
                                 @endif
                                 @if($config['bootstrappers']['wallet:cash']['open'])
-                                    <a href="{{ route('pc:walletdraw') }}">
+                                    <a href="javascript:;">
                                         <button class="gray">提现</button>
                                     </a>
                                     @endif
                             </div>
-                            <p class="gcolor">账户余额（元）</p>
+                            <p class="gcolor">开源版无此功能，需要使用此功能，请购买正版授权源码，详情访问www.thinksns.com，也可直接咨询：QQ3515923610；电话：18108035545。</p>
                         </div>
                         <p>使用规则</p>
                         {{ $wallet['rule'] ?? ''}}
@@ -72,22 +71,6 @@
     var wallet = {!! json_encode($wallet) !!};
     $(function(){
         var type = {{ $type }};
-
-        // 点击切换分类
-        $('.perfect_title .switch').click(function(){
-            switchType($(this).attr('type'));
-            $(this).parents('.perfect_title').find('span').removeClass('active');
-            $(this).addClass('active');
-        })
-
-        $('.zy_select li').click(function(){
-            var cate = $(this).data('value');
-            $(this).parents('.perfect_title').find('span').removeClass('active');
-            $(this).addClass('active');
-            $('.zy_select span').addClass('active');
-            switchType(2, cate);
-        })
-
         switchType(type);
     })
 
@@ -117,15 +100,5 @@
         }
     };
 
-    // 充值检测
-    var checkWallet = function (obj) {
-        if (wallet['recharge_type'] && $.inArray('alipay_pc_direct', wallet['recharge_type']) != -1) {
-            var url = $(obj).data('url');
-            window.location.href = url;
-        } else {
-            noticebox('未配置支付环境', 0);
-            return false;
-        }
-    };
 </script>
 @endsection
