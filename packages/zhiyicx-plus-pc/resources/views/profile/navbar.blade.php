@@ -63,7 +63,7 @@
 
                 <li><a href="javascript:;" onclick="layer.alert(buyTSInfo)">TA的圈子</a></li>
 
-                <li @if($current == 'news') class="active" @endif><a href="{{ route('pc:profilenews', $user['id']) }}">TA的文章</a></li>
+                <li><a href="javascript:;" onclick="layer.alert(buyTSInfo)">TA的文章</a></li>
 
                 <li><a href="javascript:;" onclick="layer.alert(buyTSInfo)">TA的问答</a></li>
             </ul>
