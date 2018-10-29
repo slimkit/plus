@@ -1,3 +1,8 @@
+<a name="2.1.1"></a>
+## [2.1.1](https://github.com/slimkit/plus/compare/2.1.0...2.1.1) (2018-10-29)
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/slimkit/plus/compare/2.0.4...2.1.0) (2018-10-22)
 
@@ -25,22 +30,6 @@
 * **news:** 增加资讯和资讯评论申请置顶验证用户密码 ([8b89b39](https://github.com/slimkit/plus/commit/8b89b39)), closes [zhiyicx/thinksns-plus-android#2390](https://github.com/zhiyicx/thinksns-plus-android/issues/2390)
 * **news:** 增加资讯打赏验证密码 ([885dbf1](https://github.com/slimkit/plus/commit/885dbf1))
 * **news:** 增加资讯投稿验证用户密码 ([f7b3f9b](https://github.com/slimkit/plus/commit/f7b3f9b)), closes [zhiyicx/thinksns-plus-android#2390](https://github.com/zhiyicx/thinksns-plus-android/issues/2390)
-
-
-
-<a name="2.0.4"></a>
-## [2.0.4](https://github.com/slimkit/plus/compare/2.0.3...2.0.4) (2018-09-29)
-
-
-### Bug Fixes
-
-* 修复客户端屏蔽原始图像名称无法获取文件后缀情况下报错 ([40dc20a](https://github.com/slimkit/plus/commit/40dc20a))
-
-
-### Features
-
-* 开启支付需要输入用户密码 ([2f71ad5](https://github.com/slimkit/plus/commit/2f71ad5))
-* **file-storage:** 文件系统新增文件名称格式限制，避免错误上传 ([4a5364a](https://github.com/slimkit/plus/commit/4a5364a))
 
 
 
