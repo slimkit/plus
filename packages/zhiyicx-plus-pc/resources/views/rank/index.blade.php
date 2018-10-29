@@ -13,9 +13,9 @@
         <div class="dy_cont list_bg">
             <ul class="list_ul">
                 <li><a href="{{ route('pc:rank',['mold'=>1]) }}" class="font16 @if($mold == 1) a_border @endif">用户排行榜</a></li>
-                <li><a href="{{ route('pc:rank',['mold'=>2]) }}" class="font16 @if($mold == 2) a_border @endif">问答排行榜</a></li>
+                <li><a href="javascript:;" class="font16" onclick="layer.alert(buyTSInfo)">问答排行榜</a></li>
                 <li><a href="{{ route('pc:rank',['mold'=>3]) }}" class="font16 @if($mold == 3) a_border @endif">动态排行榜</a></li>
-                <li><a href="{{ route('pc:rank',['mold'=>4]) }}" class="font16 @if($mold == 4) a_border @endif">资讯排行榜</a></li>
+                <li><a href="javascript:;" class="font16" onclick="layer.alert(buyTSInfo)">资讯排行榜</a></li>
             </ul>
             @if($mold == 1)
                 <div class="fans_div">
@@ -31,24 +31,6 @@
                     @if(!empty($check))
                         @include('pcview::templates.rank', ['title' => '社区签到排行榜', 'genre' => 'check', 'post' => $check, 'tabName' => '累计签到'])
                     @endif
-                    @if(!empty($experts))
-                        @include('pcview::templates.rank', ['title' => '社区专家排行榜', 'genre' => 'experts', 'post' => $experts])
-                    @endif
-                    @if(!empty($likes))
-                        @include('pcview::templates.rank', ['title' => '问答达人排行榜', 'genre' => 'likes', 'post' => $likes, 'tabName' => '问答点赞量'])
-                    @endif
-                </div>
-            @elseif($mold == 2)     {{--解答排行榜--}}
-                <div class="fans_div">
-                    @if(!empty($answers_day))
-                        @include('pcview::templates.rank', ['title' => '今日解答排行榜', 'genre' => 'answers_day', 'post' => $answers_day, 'tabName' => '问答量'])
-                    @endif
-                    @if(!empty($answers_week))
-                        @include('pcview::templates.rank', ['title' => '一周解答排行榜', 'genre' => 'answers_week', 'post' => $answers_week, 'tabName' => '问答量'])
-                    @endif
-                    @if(!empty($answers_month))
-                        @include('pcview::templates.rank', ['title' => '本月解答排行榜', 'genre' => 'answers_month', 'post' => $answers_month, 'tabName' => '问答量'])
-                    @endif
                 </div>
             @elseif($mold == 3)     {{--动态排行榜--}}
                 <div class="fans_div">
@@ -62,18 +44,6 @@
                         @include('pcview::templates.rank', ['title' => '本月动态排行榜', 'genre' => 'feeds_month', 'post' => $feeds_month, 'tabName' => '点赞量'])
                     @endif
                 </div>
-            @elseif($mold == 4)     {{--资讯排行榜--}}
-            <div class="fans_div">
-                @if(!empty($news_day))
-                    @include('pcview::templates.rank', ['title' => '今日资讯排行榜', 'genre' => 'news_day', 'post' => $news_day, 'tabName' => '浏览量'])
-                @endif
-                @if(!empty($news_week))
-                    @include('pcview::templates.rank', ['title' => '一周资讯排行榜', 'genre' => 'news_week', 'post' => $news_week, 'tabName' => '浏览量'])
-                @endif
-                @if(!empty($news_month))
-                    @include('pcview::templates.rank', ['title' => '本月资讯排行榜', 'genre' => 'news_month', 'post' => $news_month, 'tabName' => '浏览量'])
-                @endif
-            </div>
             @endif
         </div>
     </div>
