@@ -16,10 +16,10 @@
           <!-- 添加广告 -->
           <div class="panel-heading">
             广告列表
-            <router-link tag="a" class="btn btn-link pull-right btn-xs" to="/ad/add" role="button">
+            <a href="javascript:;" class="btn btn-link pull-right btn-xs">
               <span class="glyphicon glyphicon-plus"></span>
               添加
-            </router-link>
+            </a>
           </div>
           <!-- 添加广告 -->
           <div class="panel-heading">
@@ -32,9 +32,9 @@
               </div>
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="广告搜索" v-model="filter.keyword">
-                  <router-link class="btn btn-default" tag="button" :to="{ path: '/ad', query: searchQuery }">
+                  <a class="btn btn-default" tag="button" href="javascript:;">
                     搜索
-                  </router-link>
+                  </a>
               </div>
             </div>
           </div>
@@ -52,34 +52,9 @@
                         <th>操作</th>
                     </tr>
                 </thead>
-                <tbody>
-                      <!-- loading -->
-                      <table-loading :loadding="loadding" :colspan-num="7"></table-loading>
-                      <!--  list -->
-                      <template v-if="ads.length">
-                        <tr v-for="ad in ads">
-                          <td>{{ ad.title }}</td>
-                          <td>{{ ad.space.alias }}</td>
-                          <td>
-                            <a :href="ad.data.image" class="img-thumbnail" target="_blank">
-                              <img :src="ad.data.image" style="max-width:40px;max-height:40px;">
-                            </a>
-                          </td>
-                          <td>{{ ad.data.link }}</td>
-                          <td>{{ ad.sort }}</td>
-                          <td>{{ ad.created_at | localDate }}</td>
-                          <td>
-                            <router-link type="button" class="btn btn-primary btn-sm" :to="`ad/${ad.id}/update`">编辑</router-link>
-                            <button type="button" class="btn btn-danger btn-sm" @click="delAd(ad.id)">删除</button>
-                          </td>
-                        </tr>
-                      </template>
-                      <template v-else-if="!loadding">
-                        <!-- 数据为空 -->
-                        <tr> <td colspan="7" style="text-align:center;">暂无数据</td> </tr>
-                      </template>
-                </tbody>
+                <!--  list -->
             </table>
+            <p>开源版无此功能，需要使用此功能，请购买正版授权源码，详情访问www.thinksns.com，也可直接咨询：QQ3515923610；电话：18108035545。</p>
           </div>
           <!-- 分页 -->
           <div class="text-center">
@@ -129,13 +104,13 @@ const ManageComponent = {
         return { ...this.filter, offset: 0 };
       },
     },
-    methods: {  
+    methods: {
       getAds (query = {}) {
         this.ads = {};
         this.loadding = true;
         request.get(
           createRequestURI('ads'),
-          { 
+          {
             validateStatus: status => status === 200,
             params: { ...query, limit: 15 },
           }
