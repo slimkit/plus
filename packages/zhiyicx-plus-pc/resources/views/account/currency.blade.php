@@ -18,7 +18,7 @@
             {{-- 左侧导航 --}}
             @include('pcview::account.sidebar')
 
-            <div class="account_r">
+            <div class="account_r" onclick="layer.alert(buyTSInfo)">
                 <div class="account_c_a" id="J-warp">
                     <div class="account_tab">
                         <div class="perfect_title">
@@ -29,21 +29,20 @@
                         </div>
                         <div class="wallet-body" id="wallet-info">
                             <div class="currency-info clearfix">
-                                <div class="remaining-sum">{{ $TS['currency']['sum'] ?? 0 }}</div>
+                                <div class="remaining-sum"></div>
                                 <div class="operate">
                                     @if($config['bootstrappers']['currency:recharge']['open'])
-                                        <a href="{{ route('pc:currencypay') }}">
+                                        <a href="javascript:;">
                                             <button>充值</button>
                                         </a>
                                     @endif
                                     @if($config['bootstrappers']['currency:cash']['open'])
-                                    <a href="{{ route('pc:currencydraw') }}">
+                                    <a href="javascript:;">
                                         <button class="gray">提取</button>
                                     </a>
                                     @endif
                                 </div>
-
-                                <p class="gcolor">当前{{ $config['bootstrappers']['site']['currency_name']['name'] }}</p>
+                                <p class="gcolor">开源版无此功能，需要使用此功能，请购买正版授权源码，详情访问www.thinksns.com，也可直接咨询：QQ3515923610；电话：18108035545。</p>
                             </div>
                             @if($type==1)
                                 <p>{{ $config['bootstrappers']['site']['currency_name']['name'] }}规则</p>
@@ -67,12 +66,6 @@
         var currency = {!! json_encode($currency) !!};
         $(function(){
             var type = {{ $type }};
-            // 点击切换分类
-            $('.perfect_title .switch').click(function(){
-                switchType($(this).attr('type'));
-                $(this).parents('.perfect_title').find('span').removeClass('active');
-                $(this).addClass('active');
-            })
             switchType(type);
         })
 
@@ -99,17 +92,6 @@
                     url: '/settings/currency/record',
                     params: params
                 });
-            }
-        };
-
-        // 充值检测
-        var checkWallet = function (obj) {
-            if (currency['recharge_type'] && $.inArray('alipay_pc_direct', currency['recharge_type']) != -1) {
-                var url = $(obj).data('url');
-                window.location.href = url;
-            } else {
-                noticebox('未配置支付环境', 0);
-                return false;
             }
         };
     </script>
