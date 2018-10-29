@@ -82,8 +82,18 @@ class LocalFilesystem implements FilesystemInterface
     public function response(ResourceInterface $resource, ?string $rule = null): Response
     {
         if ($this->meta($resource)->hasImage()) {
-            $pathinfo = \League\Flysystem\Util::pathinfo($resource->getPath());
             $rule = new Local\RuleParser($rule);
+            if (
+                $rule->getQuality() >= 90 &&
+                ! $rule->getBlur() &&
+                ! $rule->getWidth() &&
+                ! $rule->getHeight() &&
+                strtolower($this->meta($resource)->getMimeType()) === 'image/gif'
+            ) {
+                return $this->filesystem->response($resource->getPath());
+            }
+
+            $pathinfo = \League\Flysystem\Util::pathinfo($resource->getPath());
             $cachePath = sprintf('%s/%s/%s.%s', $pathinfo['dirname'], $pathinfo['filename'], $rule->getFilename(), $pathinfo['extension']);
             if ($this->filesystem->has($cachePath)) {
                 return $this->filesystem->response($cachePath);
