@@ -11,7 +11,7 @@
 	<div class="panel panel-default">
         <div class="panel-heading">
             音乐检索
-            <a href="{{ route('music:add') }}" class="btn btn-link pull-right btn-xs" role="button">
+            <a href="javascript:;" class="btn btn-link pull-right btn-xs" role="button">
                 <span class="glyphicon glyphicon-plus"></span>
                 添加歌曲
             </a>
@@ -53,44 +53,7 @@
                 <th>操作</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach ($music as $m)
-                <tr id="music_{{$m->id}}">
-                    <td>{{ $m->id }}</td>
-                    <td>{{ $m->title }}</td>
-                    <td>{{ $m->taste_count  }}</td>
-                    <td>{{ $m->share_count  }}</td>
-                    <td><a href="{{ route('music:comments', ['music' => $m->id]) }}">{{ $m->comment_count }}条</a></td>
-                    <td>
-                        @if ($m->musicSpecials)
-                            @foreach ($m->musicSpecials as $ms)
-                                {{ $ms->title }},
-                            @endforeach
-                        @endif
-                    </td>
-                    <td>
-                        @if ($m->paidNode !== null)
-                            {{ $m->paidNode->amount / 100 }} 元
-                        @else
-                            免费
-                        @endif
-                    </td>
-                    <td>{{ $m->sort }}</td>
-                    <td>{{ $m->created_at }}</td>
-                    <td>
-                        <!-- 删除 -->
-                        <form method="post"  action="{{ route('music:delete', ['music' => $m->id]) }}" style="display: initial;">
-                            <input type="hidden" name="_method" value="delete">
-                            {{ csrf_field() }}
-                            <button type="submit" id="delete" data-loading-text="处理中" class="btn btn-danger" autocomplete="off">
-                                删除
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-        
+        <tbody> </tbody>
     </table>
-    {{ $page }}
+    <p>开源版无此功能，需要使用此功能，请购买正版授权源码，详情访问www.thinksns.com，也可直接咨询：QQ3515923610；电话：18108035545。</p>
 @endsection

@@ -11,13 +11,13 @@
 	<div class="panel panel-default">
         <div class="panel-heading">
             歌手检索
-            <a href="{{ route('music:singers:add') }}" class="btn btn-link pull-right btn-xs" role="button">
+            <a href="javascript:;" class="btn btn-link pull-right btn-xs" role="button">
                 <span class="glyphicon glyphicon-plus"></span>
                 添加歌手
             </a>
         </div>
     </div>
-    <form class="form-horizontal" method="get" action="{{ $base_url }}">
+    <form class="form-horizontal" method="get" onsubmit="return false;">
         <h4 class="h4">歌手筛选</h4>
         {{ csrf_field() }}
         <div class="form-group">
@@ -67,55 +67,8 @@
                 <th>操作</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach ($singers as $singer)
-                <tr id="singer_{{$singer->id}}">
-                    <td>{{ $singer->id }}</td>
-                    <td>{{ $singer->name }}</td>
-                    <td>{{ $singer->cover }}</td>
-                    <td>{{ $singer->created_at }}</td>
-                    <td>
-                        <a href="{{ route('music:singers:detail', ['singer' => $singer->id]) }}" class="btn btn-primary btn-sm" role="button">更新</a>
-                        <!-- 删除 -->
-                        @if(!$singer->deleted_at)
-                            <form method="post"  action="{{ route('music:singers:disabled', ['singer' => $singer->id]) }}" style="display: initial;">
-                                <input type="hidden" name="_method" value="delete">
-                                {{ csrf_field() }}
-                                <button type="submit" id="delete" data-loading-text="处理中" class="btn btn-danger btn-sm" autocomplete="off">
-                                    禁用
-                                </button>
-                            </form>
-                        @else
-                            <form method="post"  action="{{ route('music:singers:restore', ['singer' => $singer->id]) }}" style="display: initial;">
-                                <input type="hidden" name="_method" value="patch">
-                                {{ csrf_field() }}
-                                <button type="submit" id="delete" data-loading-text="处理中" class="btn btn-success btn-sm" autocomplete="off">
-                                    启用
-                                </button>
-                            </form>
-                        @endif
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-        
+        <tbody> </tbody>
+
     </table>
-    {{ $page }}
-
-    <script>
-        // $(function() {
-            function changeType (type) {
-                var obj = document.getElementById("typetext");
-                if (type === 'all') {
-                    obj.innerHTML = '全部歌手';
-                } else if (type === 'on') {
-                    obj.innerHTML = '启用歌手';
-                } else {
-                    obj.innerHTML = '禁用歌手';
-                }
-
-                document.getElementById('type').value = type;
-            }
-        // });
-    </script>
+    <p>开源版无此功能，需要使用此功能，请购买正版授权源码，详情访问www.thinksns.com，也可直接咨询：QQ3515923610；电话：18108035545。</p>
 @endsection

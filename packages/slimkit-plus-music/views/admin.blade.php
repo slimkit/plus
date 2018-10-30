@@ -30,7 +30,7 @@
                     音乐检索
                 </div>
             </div>
-            <form class="form-horizontal" method="get" action="{{ $base_url }}">
+            <form class="form-horizontal" method="get" onsubmit="return false;">
                 <h4 class="h4">音乐筛选</h4>
 
                 <div class="form-group">
@@ -67,57 +67,14 @@
                         <th>操作</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach ($music as $m)
-                        <tr id="music_{{$m->id}}">
-                            <td>{{ $m->id }}</td>
-                            <td>{{ $m->title }}</td>
-                            <!-- <td></td> -->
-                            <td>{{ $m->taste_count  }}</td>
-                            <td>{{ $m->share_count  }}</td>
-                            <td>{{ $m->comment_count }}</td>
-                            <td>
-                                @if ($m->musicSpecials)
-                                    @foreach ($m->musicSpecials as $ms)
-                                        {{ $ms->title }},
-                                    @endforeach
-                                @endif
-                            </td>
-                            <td>
-                                @if ($m->paidNode !== null)
-                                    {{ $m->paidNode->amount / 100 }} 元
-                                @else
-                                    免费
-                                @endif
-                            </td>
-                            <td>{{ $m->created_at }}</td>
-                            <td>
-                                <!-- 编辑 -->
-                                <a href="#" class="btn btn-primary btn-sm" role="button">编辑</a>
-                                <!-- 删除 -->
-                                <form method="post"  action="{{ route('music:delete', ['music' => $m->id]) }}" style="display: initial;">
-                                    <input type="hidden" name="_method" value="delete">
-                                    {{ csrf_field() }}
-                                    <button type="submit" id="delete" data-loading-text="处理中" class="btn btn-danger" autocomplete="off">
-                                        删除
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-                
+                <tbody> </tbody>
+                <p>开源版无此功能，需要使用此功能，请购买正版授权源码，详情访问www.thinksns.com，也可直接咨询：QQ3515923610；电话：18108035545。</p>
             </table>
-            {{ $page }}
         @endsection
     </div>
     <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script type="text/javascript" src="/assets/music/js/bootstrap.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script>
 
-        $(function() {
-        })
-    </script>
 </body>
 </html>
