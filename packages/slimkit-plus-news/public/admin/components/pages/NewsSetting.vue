@@ -22,10 +22,10 @@
                 <label class="col-sm-2 control-label">开启付费投稿</label>
                 <div class="col-md-6">
                     <label class="radio-inline">
-                        <input type="radio" v-model="contribute.pay" @change="contributeChange" :value="true"> 开启
+                        <input type="radio" v-model="contribute.pay" @click="contributeChangePay" :value="true"> 开启
                     </label>
                     <label class="radio-inline">
-                        <input type="radio" v-model="contribute.pay" @change="contributeChange" :value="false"> 关闭
+                        <input type="radio" v-model="contribute.pay" @click="contributeChangePay" :value="false"> 关闭
                     </label>
                 </div>
                 <div class="col-md-4">
@@ -35,7 +35,7 @@
             <div class="form-group">
                 <label class="control-label col-md-2">投稿金额 <b class="text-danger">(单位：分)</b></label>
                 <div class="col-md-6">
-                    <input type="tel" maxlength="7" class="form-control" id="title" aria-describedby="title-help-block" placeholder="请输入投稿金额" @blur="pay_contributeChange" v-model.number.trim="pay_contribute">
+                    <input type="tel" maxlength="7" class="form-control" id="title" aria-describedby="title-help-block" placeholder="请输入投稿金额" @click="contributeChangePay" v-model.number.trim="pay_contribute">
                 </div>
                 <div class="col-md-4">
                     <span class="help-block">开启后投稿将扣取相应费用</span>
@@ -86,6 +86,9 @@ export default {
                 console.log(err);
                 this.publishMessage({ message: "配置失败" }, "error");
             })
+        },
+        contributeChangePay() {
+          this.publishMessage({ message: "开源版无此功能，需要使用此功能，请购买正版授权源码." }, "error");
         },
         pay_contributeChange() {
 
