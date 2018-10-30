@@ -14,16 +14,12 @@
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="question-navbar-collapse">
-        
+
         <ul class="nav navbar-nav">
 
           <router-link to="/" tag="li" active-class="active" exact>
             <a href="#">客户端管理</a>
           </router-link>
-
-          <!-- <router-link to="/notices" tag="li" active-class="active">
-            <a href="#">通知列表</a>
-          </router-link> -->
 
         </ul>
 

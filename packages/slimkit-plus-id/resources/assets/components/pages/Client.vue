@@ -15,7 +15,6 @@
           <th>名称</th>
           <th>地址</th>
           <th>密钥</th>
-          <!-- <th>状态</th> -->
           <th>操作</th>
         </tr>
       </thead>
@@ -23,17 +22,7 @@
       </tbody>
     </table>
 
-    <p>开源版无此功能，需要使用此功能，请购买正版授权源码，详情访问www.thinksns.com，也可直接咨询：QQ3515923610；电话：18108035545。</p>
+    <p class="panel-body">开源版无此功能，需要使用此功能，请购买正版授权源码，详情访问www.thinksns.com，也可直接咨询：QQ3515923610；电话：18108035545。</p>
 
   </div>
 </template>
-
-<script>
-export default {
-  name: 'client',
-  data: () => ({
-    clients: [],
-    loadding: false,
-  }),
-};
-</script>
