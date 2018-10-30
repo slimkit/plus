@@ -137,8 +137,6 @@ php artisan serve
 
 ## License
 
-Plus 代码遵循 Apache 2.0 许可证发布，请参阅完整的 [许可证文本](https://github.com/slimkit/plus/blob/master/LICENSE)
+Plus 代码采用企业定制许可证发布，请参阅完整的[许可证文本](https://github.com/slimkit/plus/blob/master/LICENSE)
 
 Copyright © 2018 Chengdu [ZhiYiChuangXiang](http://zhiyicx.com) Technology Co., Ltd. All rights reserved.
-
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fslimkit%2Fplus.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fslimkit%2Fplus?ref=badge_large)
