@@ -7,7 +7,6 @@
 
 import Main from '../component/wallet/Main';
 import Report from '../component/wallet/Report'
-import Accounts from '../component/wallet/Accounts';
 import Cash from '../component/wallet/Cash';
 import CashSetting from '../component/wallet/CashSetting';
 import PayOption from '../component/wallet/PayOption';
@@ -24,7 +23,6 @@ const walletRouter = {
   component: Main,
   children: [
     { path: '', component: Report },
-    { path: 'accounts', component: Accounts },
     { path: 'cash', component: Cash },
     { path: 'cash/setting', component: CashSetting },
     { path: 'pay/option', component: PayOption },
@@ -34,7 +32,7 @@ const walletRouter = {
     { path: 'pay/pingpp', component: PingPlusPlus },
     { path: 'pay/switch', component: Switch },
     { path: 'waters', component: Water },
-      { path: 'newPaySetting', component: NewPaySetting }
+    { path: 'newPaySetting', component: NewPaySetting }
   ]
 };
 
