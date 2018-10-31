@@ -416,10 +416,13 @@ class ContributeController extends Controller
             });
         }
 
-        $map = $request->only(['title', 'content', 'subject']);
+        $map = $request->only(['title', 'subject']);
         $map['from'] = $request->input('from') ?: '原创';
         $map['author'] = $request->input('author') ?: $user->name;
         $map['storage'] = $request->input('image');
+        $map['content'] = $this->app->make(Markdown::class)->safetyMarkdown(
+            $request->input('content', '')
+        );
 
         $images = $this->findMarkdownImageNotWithModels($map['content'] ?: '');
         // 提取内容中的图片，用于列表种的多种UI展示
