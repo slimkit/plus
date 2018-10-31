@@ -43,15 +43,10 @@ trait EloquentAttributeTrait
      */
     protected function getFileStorageResourceMeta(string $resource): ?FileMetaInterface
     {
-        // Is local mode, throw exceptions.
-        if (app()->isLocal()) {
-            return $this->getFileStorageInstance()->meta(new Resource($resource));
-        }
-
         try {
             return $this->getFileStorageInstance()->meta(new Resource($resource));
         } catch (Exception $e) {
-            return $resource;
+            return null;
         }
 
         return $resource;
