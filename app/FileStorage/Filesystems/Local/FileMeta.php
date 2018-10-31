@@ -62,6 +62,7 @@ class FileMeta extends FileMetaAbstract
     {
         $this->filesystem = $filesystem;
         $this->resource = $resource;
+        $this->hasImage();
     }
 
     /**
@@ -75,7 +76,6 @@ class FileMeta extends FileMetaAbstract
                 'image/jpeg',
                 'image/png',
                 'image/gif',
-                // 'image/bmp',
                 'image/webp',
             ];
         };
