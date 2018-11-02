@@ -173,7 +173,7 @@ class List extends React.Component {
         });
         successFn();
       })
-      .catch(({ response: { data = { message: "操作失败" } } = {} }) => {
+      .catch(({ response: { data = { message: '操作失败' } } = {} }) => {
         this.setState({
           submitting: false,
           message: { type: 'error', open: true, text: data }

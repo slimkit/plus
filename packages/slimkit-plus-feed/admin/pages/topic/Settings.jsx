@@ -67,7 +67,7 @@ class Settings extends React.Component {
         this.setState({
           loading: false,
           message: { type: 'error', open: true, text: data }
-        })
+        });
       });
   }
 
