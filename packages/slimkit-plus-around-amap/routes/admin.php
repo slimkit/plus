@@ -38,7 +38,6 @@ Route::group(['prefix' => 'around-amap/admin'], function (RouteRegisterContract 
     // Home router.
     $route
         ->get('/', Admin\HomeController::class.'@index')
-        ->name('around-amap:admin-home')
-    ;
+        ->name('around-amap:admin-home');
     $route->post('/', Admin\HomeController::class.'@save');
 });
