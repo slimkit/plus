@@ -43,7 +43,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">设置高德地图信息</div>
             <div class="panel-body">
-                <form class="form-horizontal" method="POST" action="{{ route('around-amap:admin-save') }}">
+                <form class="form-horizontal" method="POST" action="{{ route('around-amap:admin-home') }}">
                     {{ csrf_field() }}
 
                     <div class="form-group{{ $errors->has('amap-key') ? ' has-error' : '' }}">

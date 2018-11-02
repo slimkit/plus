@@ -25,15 +25,13 @@ use SlimKit\PlusAroundAmap\Admin\Requests\StoreAmapRequest;
 
 class HomeController
 {
-    public function index(Configuration $config)
+    public function index()
     {
-        $conf = $config->getConfigurationBase();
         $around = [];
-
-        $around['sig'] = array_get($conf, 'around-amap.amap-sig');
-        $around['key'] = array_get($conf, 'around-amap.amap-key');
-        $around['tableid'] = array_get($conf, 'around-amap.amap-tableid');
-        $around['jssdk'] = array_get($conf, 'around-amap.amap-jssdk');
+        $around['sig'] = config('around-amap.amap-sig');
+        $around['key'] = config('around-amap.amap-key');
+        $around['tableid'] = config('around-amap.amap-tableid');
+        $around['jssdk'] = config('around-amap.amap-jssdk');
 
         return view('around-amap::admin', $around);
     }
