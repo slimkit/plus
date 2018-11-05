@@ -36,7 +36,8 @@
     "plus-message-bundle": "^1.0.2",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
-    "react-router-dom": "^4.3.1"
+    "react-router-dom": "^4.3.1",
+    "react-select": "^2.1.1"
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack --display-error-details --progress --hide-modules --colors --watch ",
