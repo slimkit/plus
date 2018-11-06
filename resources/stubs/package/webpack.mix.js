@@ -12,7 +12,7 @@ let mix = require('laravel-mix');
  */
 
 mix.setPublicPath('assets');
-mix.setResourceRoot('/assets/{name}');
+mix.setResourceRoot('/assets/{name}/');
 mix.sourceMaps(! mix.inProduction());
 
 // More documents see: https://laravel.com/docs/master/mix
