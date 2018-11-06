@@ -177,6 +177,7 @@ return [
         Zhiyi\Plus\Providers\AuthServiceProvider::class,
         // Zhiyi\Plus\Providers\BroadcastServiceProvider::class,
         Zhiyi\Plus\Providers\EventServiceProvider::class,
+        Zhiyi\Plus\Providers\TelescopeServiceProvider::class,
         Zhiyi\Plus\Providers\RouteServiceProvider::class,
         Zhiyi\Plus\Providers\NotificationServiceProvider::class,
         Zhiyi\Plus\Providers\EloquentServiceProvider::class,

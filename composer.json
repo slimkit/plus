@@ -96,6 +96,7 @@
         "jenssegers/agent": "^2.6",
         "jpush/jpush": "^3.5",
         "laravel/framework": "5.7.*",
+        "laravel/telescope": "^0.1.6",
         "laravel/tinker": "^1.0",
         "league/html-to-markdown": "^4.6",
         "league/omnipay": "^3.0",
