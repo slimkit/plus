@@ -20,8 +20,8 @@
             <div class="profile_menu J-menu">
                 <a @if(route('pc:profilecollectfeeds') == $url) class="active" @endif href="{{ route('pc:profilecollectfeeds') }}">动态</a>
                 <a @if(route('pc:profilecollectnews') == $url) class="active" @endif href="{{ route('pc:profilecollectnews') }}">文章</a>
-                <a @if(route('pc:profilecollectqa') == $url) class="active" @endif href="{{ route('pc:profilecollectqa') }}">回答</a>
-                <a @if(route('pc:profilecollectgroup') == $url) class="active" @endif href="{{ route('pc:profilecollectgroup') }}">帖子</a>
+                <a href="javascript:;" onclick="layer.alert(buyTSInfo)">回答</a>
+                <a href="javascript:;" onclick="layer.alert(buyTSInfo)">帖子</a>
             </div>
             <div id="content_list" class="profile_list"></div>
         </div>
