@@ -87,6 +87,16 @@ class FeedController extends Controller
                 'user' => function ($query) {
                     return $query->withTrashed();
                 },
+                'user.certification',
+                'pinnedComments' => function ($query) {
+                    return $query->with([
+                        'user',
+                        'user.certification',
+                    ])
+                    ->where('expires_at', '>', new Carbon)
+                    ->orderBy('amount', 'desc')
+                    ->orderBy('created_at', 'desc');
+                },
             ])
             ->orderBy('feed_pinneds.amount', 'desc')
             ->orderBy('feed_pinneds.created_at', 'desc')
@@ -161,6 +171,16 @@ class FeedController extends Controller
             'topics' => function ($query) {
                 return $query->select('id', 'name');
             },
+            'user.certification',
+            'pinnedComments' => function ($query) {
+                return $query->with([
+                    'user',
+                    'user.certification',
+                ])
+                ->where('expires_at', '>', new Carbon)
+                ->orderBy('amount', 'desc')
+                ->orderBy('created_at', 'desc');
+            },
         ])
         ->limit($limit)
         ->get();
@@ -212,6 +232,16 @@ class FeedController extends Controller
             },
             'topics' => function ($query) {
                 return $query->select('id', 'name');
+            },
+            'user.certification',
+            'pinnedComments' => function ($query) {
+                return $query->with([
+                    'user',
+                    'user.certification',
+                ])
+                ->where('expires_at', '>', new Carbon)
+                ->orderBy('amount', 'desc')
+                ->orderBy('created_at', 'desc');
             },
         ]);
 
@@ -266,6 +296,16 @@ class FeedController extends Controller
                 },
                 'topics' => function ($query) {
                     return $query->select('id', 'name');
+                },
+                'user.certification',
+                'pinnedComments' => function ($query) {
+                    return $query->with([
+                        'user',
+                        'user.certification',
+                    ])
+                    ->where('expires_at', '>', new Carbon)
+                    ->orderBy('amount', 'desc')
+                    ->orderBy('created_at', 'desc');
                 },
             ])
             ->when((bool) $after, function ($query) use ($after) {
@@ -817,6 +857,16 @@ class FeedController extends Controller
                 },
                 'topics' => function ($query) {
                     return $query->select('id', 'name');
+                },
+                'user.certification',
+                'pinnedComments' => function ($query) {
+                    return $query->with([
+                        'user',
+                        'user.certification',
+                    ])
+                    ->where('expires_at', '>', new Carbon)
+                    ->orderBy('amount', 'desc')
+                    ->orderBy('created_at', 'desc');
                 },
             ])
             ->orderBy('id', 'desc')

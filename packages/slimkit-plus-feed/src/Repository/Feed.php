@@ -189,22 +189,22 @@ class Feed
     public function previewComments()
     {
         $comments = collect([]);
-
-        $pinnedComments = $this->model
-            ->pinnedComments()
-            ->with('user')
-            ->where('expires_at', '>', $this->dateTime)
-            ->orderBy('amount', 'desc')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $pinnedComments = $this->model->pinnedComments;
 
         if ($pinnedComments->count() < 5) {
+            $ids = $pinnedComments->pluck('id')->filter();
             $comments = $this->model->comments()
                 ->limit(5 - $pinnedComments->count())
-                ->whereNotIn('id', $pinnedComments->pluck('id'))
-                ->with(['user' => function ($query) {
-                    return $query->withTrashed();
-                }, 'reply'])
+                ->when(! $ids->isEmpty(), function ($query) use ($ids) {
+                    return $query->whereNotIn('id', $ids);
+                })
+                ->with([
+                    'user' => function ($query) {
+                        return $query->withTrashed();
+                    },
+                    'reply',
+                    'user.certification',
+                ])
                 ->orderBy('id', 'desc')
                 ->get();
         }

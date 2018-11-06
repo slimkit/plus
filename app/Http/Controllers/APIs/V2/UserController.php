@@ -67,6 +67,7 @@ class UserController extends Controller
             ->limit($limit)
             ->orderby('id', $order)
             ->get();
+        $users->load(['certification']);
 
         return $response->json($model->getConnection()->transaction(function () use ($users, $user) {
             return $users->map(function (User $item) use ($user) {

@@ -52,7 +52,19 @@ class TopicFeed extends Controller
                 return $query->select('id', 'name');
             },
             'feed.user' => function ($query) {
-                return $query->withTrashed();
+                return $query
+                    ->withTrashed()
+                    ->with('certification')
+                ;
+            },
+            'pinnedComments' => function ($query) {
+                return $query->with([
+                    'user',
+                    'user.certification',
+                ])
+                ->where('expires_at', '>', new Carbon)
+                ->orderBy('amount', 'desc')
+                ->orderBy('created_at', 'desc');
             },
         ]);
 
