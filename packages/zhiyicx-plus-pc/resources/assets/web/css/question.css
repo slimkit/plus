@@ -58,3 +58,11 @@
 
 /* 公共样式 */
 .g-sdc{padding: 30px 20px;background-color:white;}
+
+.p-qa {overflow: hidden;position: relative;}
+.p-qa .m-nav{margin-bottom:30px;height:80px;line-height: 80px;background-color:#fff;color: #777;}
+.p-qa .m-nav>a{margin-left: 40px;}
+.p-qa .m-nav>a.cur, .p-qa .m-snav>li.cur{color: #333;}
+.p-qa .g-mnc{padding:30px 40px;background-color: #fff;}
+.p-qa .m-snav {padding-bottom:20px;border-bottom: 1px solid #EDEDED;}
+.p-qa .m-snav>li{float:left;margin-right:50px;cursor: pointer;color: #777;}
