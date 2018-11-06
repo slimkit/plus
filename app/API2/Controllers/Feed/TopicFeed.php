@@ -54,8 +54,7 @@ class TopicFeed extends Controller
             'feed.user' => function ($query) {
                 return $query
                     ->withTrashed()
-                    ->with('certification')
-                ;
+                    ->with('certification');
             },
             'pinnedComments' => function ($query) {
                 return $query->with([
