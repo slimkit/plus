@@ -24,6 +24,7 @@ import HeaderBar from './modules/header-bar';
 import SearchBar from './modules/search-bar';
 import RenderPinnedButtom from './modules/render-pinned-buttom';
 import Preview from './modules/preview';
+import DisplayModal from './modules/pinned-modal';
 
 // icons
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -47,7 +48,11 @@ class View extends React.Component {
     };
 
     state = {
-        preview: null
+        preview: null,
+        modal: {
+            type: 'setting',
+            payload: null,
+        }
     };
 
     onChangeRowsPerPage(event)
@@ -73,11 +78,6 @@ class View extends React.Component {
         });
     }
 
-    showPreviewMeow(feed)
-    {
-        // todo
-    }
-
     actionButtonBuilder = (feed, callbackName) => () => {
         this.props[callbackName](feed);
     }
@@ -88,6 +88,14 @@ class View extends React.Component {
 
     closePreview() {
         this.setState({ preview: null });
+    }
+
+    showModal(type, payload) {
+        this.setState({ modal: { type, payload } });
+    }
+
+    closeModal() {
+        this.setState({ modal: { ...this.state.modal, payload: null } });
     }
 
     render() {
@@ -148,6 +156,7 @@ class View extends React.Component {
                             <RenderPinnedButtom
                                 className={classes.actionsFab}
                                 feed={feed}
+                                onAction={this.showModal.bind(this)}
                             />
 
                             {/* 删除 */}
@@ -217,6 +226,17 @@ class View extends React.Component {
                 feed={this.state.preview}
                 classes={classes}
                 onClose={this.closePreview.bind(this)}
+            />
+
+            {/* 弹窗 */}
+            <DisplayModal
+                {...this.state.modal}
+                message={{
+                    onClose: message.onClose,
+                    onShow: message.onShow,
+                }}
+                onClose={this.closeModal.bind(this)}
+                onRefresh={onFetch}
             />
         </div>
       );

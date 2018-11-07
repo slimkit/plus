@@ -15,6 +15,7 @@ function SetPinnedAction(props) {
                 mini={true}
                 className={props.className}
                 color="primary"
+                onClick={() => props.onAction('setting', props.feed)}
             >
                 <VerticalAlignTopIcon />
             </Button>
@@ -30,6 +31,7 @@ function UnsetPinnedAction(props) {
                 mini={true}
                 className={props.className}
                 color="primary"
+                onClick={() => props.onAction('unsetting', props.feed)}
             >
                 <VerticalAlignDownIcon />
             </Button>
@@ -45,6 +47,7 @@ function RenderPassAction(props) {
                 mini={true}
                 color="primary"
                 className={props.className}
+                onClick={() => props.onAction('operation', props.feed)}
             >
                 <VerticalAlignCenterIcon />
             </Button>
@@ -53,22 +56,23 @@ function RenderPassAction(props) {
 }
 
 export default function RenderPinnedBottom (props) {
+    let { onAction } = props;
     let { pinned } = props.feed;
 
     if (! pinned) {
-        return (<SetPinnedAction className={props.className} />);
+        return (<SetPinnedAction {...props} />);
     }
 
     let { expires_at } = pinned;
     if (! expires_at) {
-        return <RenderPassAction className={props.className} />;
+        return <RenderPassAction {...props} />;
     }
 
     let now = new Date();
     let expiresAt = new Date(expires_at);
     if (now.getTime() < expiresAt.getTime()) {
-        return <unsetPinnedAction className={props.className} />;
+        return <UnsetPinnedAction {...props} />;
     }
 
-    return (<SetPinnedAction className={props.className} />);
+    return (<SetPinnedAction {...props} />);
 }

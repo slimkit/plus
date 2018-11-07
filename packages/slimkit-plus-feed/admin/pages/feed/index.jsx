@@ -62,7 +62,7 @@ class Wrap extends React.Component {
       pgae: this.state.pagination.current,
       ...params,
     };
-    this.setState({ cachedSearchParams, loading: true });
+    this.setState({ cachedSearchParams, loading: true, feeds: [] });
     api.list(cachedSearchParams)
       .then(({ data: { total, current_page: current, data } }) => {
         this.setState({
@@ -140,7 +140,9 @@ class Wrap extends React.Component {
       message={{
         ...this.state.message,
         onClose: () => this.showMessage({ open: false }),
+        onShow: (setting) => this.showMessage(setting),
       }}
+      showMessage={this.showMessage.bind(this)}
       onDestroy={this.onDestroy.bind(this)}
       onRestore={this.onRestore.bind(this)}
     />);
