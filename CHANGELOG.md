@@ -1,3 +1,17 @@
+<a name="2.0.7"></a>
+## [2.0.7](https://github.com/slimkit/plus/compare/2.0.6...2.0.7) (2018-11-07)
+
+
+### Bug Fixes
+
+* 修复附近的人后台配置面板无法提交配置问题 ([c98a46f](https://github.com/slimkit/plus/commit/c98a46f)), closes [zhiyicx/plus-component-pc#1081](https://github.com/zhiyicx/plus-component-pc/issues/1081) [zhiyicx/plus-jiajialin#1](https://github.com/zhiyicx/plus-jiajialin/issues/1)
+* **file-storage:** 本地驱动不支持视频在线播放问题 ([76ae3a8](https://github.com/slimkit/plus/commit/76ae3a8))
+* **file-storage:** 修复本地存储系统不支持 GIF 图片 ([99e4e8a](https://github.com/slimkit/plus/commit/99e4e8a))
+* **file-storage:** 增加存储系统兼容性，错误配置将不会导致全站崩溃 ([af821ff](https://github.com/slimkit/plus/commit/af821ff))
+* **news:** 修复资讯前台投稿未做 Markdown 转换处理 ([0009250](https://github.com/slimkit/plus/commit/0009250))
+
+
+
 <a name="2.0.6"></a>
 ## [2.0.6](https://github.com/slimkit/plus/compare/2.0.5...2.0.6) (2018-10-29)
 
@@ -10,19 +24,6 @@
 ### Features
 
 * **file-storage:** 处理失败数据，则返回原始数据！ ([23a0c50](https://github.com/slimkit/plus/commit/23a0c50))
-
-
-
-<a name="2.0.5"></a>
-## [2.0.5](https://github.com/slimkit/plus/compare/2.0.4...2.0.5) (2018-10-22)
-
-
-### Bug Fixes
-
-* **feeds:** 减少列表查询时的事务处理，避免数据库死锁问题 ([f8cd28e](https://github.com/slimkit/plus/commit/f8cd28e)), closes [slimkit/plus#394](https://github.com/slimkit/plus/issues/394)
-* **file-storage:** 增加兼容性，避免 headers 出现中文 ([3d6acbc](https://github.com/slimkit/plus/commit/3d6acbc))
-* **news:** 修复撤销投稿 SQL 报错 ([312139c](https://github.com/slimkit/plus/commit/312139c)), closes [thinksns-plus-android/issues#2402](https://github.com/thinksns-plus-android/issues/issues/2402)
-* **news:** 开发人员错误提交表迁移导致通过后无法删除资讯 ([5fa170e](https://github.com/slimkit/plus/commit/5fa170e)), closes [zhiyicx/thinksns-plus-android#2402](https://github.com/zhiyicx/thinksns-plus-android/issues/2402)
 
 
 
