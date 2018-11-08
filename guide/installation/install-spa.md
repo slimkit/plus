@@ -158,6 +158,19 @@ ln -s /usr/local/src/spa/dist /usr/local/src/plus/public/spa
 
 <img :src="$withBase('/assets/img/guide/installation/local-dir-publish-spa-review.png')" />
 
+注意点：
+
+1. 为防止在history模式下刷新页面出现404错误，需要在nginx.conf的相应配置地方追加对于SPA的重写机制。其中“spa”是你的相对域名根目录的路径，工作目录以`/usr/local/src/plus/public/spa` 为例，相应配置类似于：
+
+location /spa {
+             alias /usr/local/src/plus/public/spa;
+             index index.html;
+             try_files $uri $uri/ /index.html?$query_string;
+             if (!-e $request_filename){
+                 rewrite ^/spa/(.*)$ /spa/index.html?s=$1 last;
+             }
+         }
+
 ## 独立域名发布 SPA
 
 我们在前面的教程中安装了 Nginx 这一节教程将指导如何在独立域名（或者端口）进行程序的发布，因为这里是教程，我们就换一个网络端口（因为 `80` 端口已经被 Plus 程序占用）进行发布。
