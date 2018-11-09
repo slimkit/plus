@@ -30,11 +30,14 @@ class CommonConfigs extends Migration
     public function up()
     {
         Schema::create('common_configs', function (Blueprint $table) {
+            $table->increments('id')->comment('config id');
             $table->string('name', 100)->comment('配置名称');
             $table->string('namespace', 100)->comment('配置命名空间');
             $table->text('value')->nullable()->comment('缓存值');
             $table->timestamps();
-            $table->primary(['name', 'namespace']);
+            $table->unique(['name', 'namespace']);
+            $table->index('name');
+            $table->index('namespace');
         });
     }
 

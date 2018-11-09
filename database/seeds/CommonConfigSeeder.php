@@ -28,10 +28,10 @@ class CommonConfigSeeder extends Seeder
      */
     public function run()
     {
-        CommonConfig::create([
-            'name' => 'default_role',
-            'namespace' => 'user',
-            'value' => 2,
-        ]);
+        $configire = new CommonConfig();
+        $configire->namespace = 'user';
+        $configire->name = 'default_role';
+        $configire->value = 2;
+        $configire->save();
     }
 }
