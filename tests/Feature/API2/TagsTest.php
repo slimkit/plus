@@ -19,8 +19,6 @@
 namespace Zhiyi\Plus\Tests\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\Tag as TagModel;
-use Zhiyi\Plus\Models\TagCategory as TagCategoryModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class TagsTest extends TestCase
