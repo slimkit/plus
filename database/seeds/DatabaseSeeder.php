@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PackagesSeeder::class); // Packages seeder.
         $this->call(CurrencyTypeSeeder::class); // 默认的货币类型
         $this->call(CommonConfigSeeder::class); // 默认用户组
+        $this->call(TagsTableSeeder::class); // 标签和标签分类
         // 把地区放在最后，因为耗时较长.
         $this->call(AreasTableSeeder::class);
     }
