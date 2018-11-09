@@ -160,16 +160,18 @@ ln -s /usr/local/src/spa/dist /usr/local/src/plus/public/spa
 
 注意点：
 
-1. 为防止在history模式下刷新页面出现404错误，需要在nginx.conf的相应配置地方追加对于SPA的重写机制。其中“spa”是你的相对域名根目录的路径，工作目录以`/usr/local/src/plus/public/spa` 为例，相应配置类似于：
+1. 为防止在 History 模式下刷新页面出现 `404` 错误，需要在 nginx.conf 的相应配置地方追加对于 SPA 的 URL 重写机制。其中 `/spa` 是你的相对域名根目录的路径，工作目录以 `/usr/local/src/plus/public/spa` 为例，相应配置类似于：
 
-location /spa {
-             alias /usr/local/src/plus/public/spa;
-             index index.html;
-             try_files $uri $uri/ /index.html?$query_string;
-             if (!-e $request_filename){
-                 rewrite ^/spa/(.*)$ /spa/index.html?s=$1 last;
-             }
-         }
+  ```nginx
+  location /spa {
+     alias /usr/local/src/plus/public/spa;
+     index index.html;
+     try_files $uri $uri/ /index.html?$query_string;
+     if (!-e $request_filename){
+         rewrite ^/spa/(.*)$ /spa/index.html?s=$1 last;
+     }
+  }
+  ```
 
 ## 独立域名发布 SPA
 
