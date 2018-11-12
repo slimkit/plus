@@ -19,6 +19,7 @@
 use Zhiyi\Plus\Models\Role;
 use Zhiyi\Plus\Models\Ability;
 use Illuminate\Database\Seeder;
+use function Zhiyi\Plus\setting;
 
 class RoleSeeder extends Seeder
 {
@@ -75,8 +76,8 @@ class RoleSeeder extends Seeder
         ]);
 
         $abilities = Ability::where('name', 'not like', 'admin:%')->get();
-
         $role->abilities()->sync($abilities);
+        setting('user')->set('register-role', $role->id);
     }
 
     /**

@@ -22,6 +22,7 @@ namespace SlimKit\PlusSocialite\Traits;
 
 use Closure;
 use RuntimeException;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\User as UserModel;
 use GuzzleHttp\Client as GuzzleHttpClient;
@@ -85,13 +86,7 @@ trait SocialiteDriverHelper
      */
     protected function getDefaultUserRole()
     {
-        $role = CommonConfig::byNamespace('user')
-            ->byName('default_role')
-            ->firstOr(function () {
-                throw new RuntimeException('Failed to get the defined user group.');
-            });
-
-        return $role->value;
+        return setting('user', 'register-role');
     }
 
     /**

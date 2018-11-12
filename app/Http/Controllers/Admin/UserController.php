@@ -26,6 +26,7 @@ use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Famous;
 use Illuminate\Validation\Rule;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Support\Configuration;
 use Zhiyi\Plus\Models\UserRecommended;
@@ -468,15 +469,10 @@ class UserController extends Controller
      */
     public function showSetting()
     {
-        $roles = Role::all();
-        $currentRole = CommonConfig::byNamespace('user')
-            ->byName('default_role')
-            ->value('value');
-
         return response()
             ->json([
-                'roles' => $roles,
-                'current_role' => $currentRole,
+                'roles' => Role::all(),
+                'current_role' => setting('user', 'register-role'),
             ])
             ->setStatusCode(200);
     }
@@ -500,11 +496,7 @@ class UserController extends Controller
         $this->validate($request, $rules, $messages);
 
         $role = $request->input('role');
-
-        CommonConfig::updateOrCreate(
-            ['namespace' => 'user', 'name' => 'default_role'],
-            ['value' => $role]
-        );
+        setting('user')->set('register-role', (int) $role);
 
         return response()
             ->json([
