@@ -21,9 +21,7 @@ declare(strict_types=1);
 namespace SlimKit\PlusSocialite\Traits;
 
 use Closure;
-use RuntimeException;
 use function Zhiyi\Plus\setting;
-use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\User as UserModel;
 use GuzzleHttp\Client as GuzzleHttpClient;
 use SlimKit\PlusSocialite\Models\UserSocialite as UserSocialiteModel;

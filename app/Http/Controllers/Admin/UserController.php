@@ -27,7 +27,6 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Famous;
 use Illuminate\Validation\Rule;
 use function Zhiyi\Plus\setting;
-use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Support\Configuration;
 use Zhiyi\Plus\Models\UserRecommended;
 use Illuminate\Contracts\Config\Repository;
