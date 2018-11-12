@@ -22,10 +22,10 @@
               <label class="control-label col-md-2">金币</label>
               <div class="col-md-6">
                 <label class="radio-inline">
-                  <input type="radio" :value="radio.on"  v-model="site.gold.status" :disabled="!site.status"> 开启
+                  <input type="radio" :value="radio.on"  v-model="site.gold.status" > 开启
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" :value="radio.off" v-model="site.gold.status" :disabled="!site.status"> 关闭
+                  <input type="radio" :value="radio.off" v-model="site.gold.status" > 关闭
                 </label>
               </div>
               <div class="col-md-4">
@@ -37,10 +37,10 @@
               <label class="control-label col-md-2">打赏</label>
               <div class="col-md-6">
                 <label class="radio-inline">
-                  <input type="radio" :value="radio.on"  v-model="site.reward.status" :disabled="!site.status"> 开启
+                  <input type="radio" :value="radio.on"  v-model="site.reward.status" > 开启
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" :value="radio.off"  v-model="site.reward.status" :disabled="!site.status"> 关闭
+                  <input type="radio" :value="radio.off"  v-model="site.reward.status" > 关闭
                 </label>
               </div>
               <div class="col-md-4">
@@ -61,10 +61,10 @@
               <label for="" class="control-label col-md-2">匿名开关</label>
               <div class="col-md-6">
                 <label class="radio-inline">
-                  <input type="radio" :value="radio.on"  v-model="site.anonymous.status" :disabled="!site.status"> 开启
+                  <input type="radio" :value="radio.on"  v-model="site.anonymous.status" > 开启
                 </label>
                 <label class="radio-inline">
-                  <input type="radio" :value="radio.off"  v-model="site.anonymous.status" :disabled="!site.status"> 关闭
+                  <input type="radio" :value="radio.off"  v-model="site.anonymous.status" > 关闭
                 </label>
               </div>
               <div class="col-md-4">
@@ -202,10 +202,6 @@ export default {
         let Message = new PlusMessageBundle(data);
         this.message.error = Message.getMessage();
       });
-    },
-    validate () {
-      let site = this.site;
-      return (site.status && !site.off_reason) ? false : true;
     },
   },
   created () {

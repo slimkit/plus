@@ -492,7 +492,7 @@ class SiteController extends Controller
             ],
             'invite-template' => $request->input('site.user_invite_template'),
         ]);
-        setting('site', [
+        setting('site')->set([
             'gold-switch' => (bool) $request->input('site.gold.status'),
             'reward' => [
                 'status' => (bool) $request->input('site.reward.status'),
