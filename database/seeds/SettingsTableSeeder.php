@@ -17,6 +17,7 @@
  */
 
 use Illuminate\Database\Seeder;
+use function Zhiyi\Plus\setting;
 
 class SettingsTableSeeder extends Seeder
 {
@@ -27,6 +28,20 @@ class SettingsTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        setting('user')->set([
+            'keep-username' => 'root,admin',
+            'anonymous' => [
+                'status' => true,
+                'rule' => '',
+            ],
+            'invite-template' => '我发现了一个全平台社交系统ThinkSNS+，快来加入吧：http://t.cn/RpFfbbi',
+        ]);
+        setting('site')->set([
+            'gold-switch' => true,
+            'reward' => [
+                'status' => true,
+                'amounts' => '100,500,1000',
+            ],
+        ]);
     }
 }

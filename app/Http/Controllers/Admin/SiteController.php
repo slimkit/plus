@@ -23,6 +23,7 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 use Carbon\Carbon;
 use Zhiyi\Plus\Models\Area;
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\setting;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\CommonConfig;
 use Illuminate\Contracts\Mail\Mailer;
@@ -458,71 +459,48 @@ class SiteController extends Controller
     /**
      * 获取站点配置.
      *
-     * @param Repository $config
-     * @param Configuration $configuration
      * @return \Illuminate\Http\JsonResponse
      */
-    public function siteConfigurations(Repository $config, Configuration $configuration)
-    {
-        $configs = $config->get('site');
-
-        if (is_null($configs)) {
-            $configs = $this->initSiteConfiguration($configuration);
-        }
-
-        return response()->json($configs, 200);
-    }
-
-    /**
-     * 初始化站点设置.
-     *
-     * @param Repository $config
-     * @param Configuration $configuration
-     * @return mixed
-     */
-    private function initSiteConfiguration(Configuration $configuration)
-    {
-        $config = $configuration->getConfiguration();
-
-        $config->set('site.status', true);
-        $config->set('site.off_reason', '站点维护中请稍后再访问');
-
-        $config->set('site.app.status', true);
-        $config->set('site.h5.status', true);
-
-        $config->set('site.reserved_nickname', 'root,admin');
-
-        $config->set('site.client_email', 'admin@123.com');
-
-        $config->set('site.gold.status', true);
-
-        $config->set('site.reward.status', true);
-        $config->set('site.reward.amounts', '100,500,1000');
-
-        $config->set('site.anonymous.status', false);
-        $config->set('site.anonymous.rule', '');
-
-        $config->set('site.user_invite_template', '我发现了一个全平台社交系统ThinkSNS+，快来加入吧：http://t.cn/RpFfbbi');
-
-        $configuration->save($config);
-
-        return $config['site'];
+    public function siteConfigurations()
+    {   
+        return response()->json([
+            'about_url' => setting('site', 'about-url'),
+            'anonymous' => setting('user', 'anonymous', []),
+            'client_email' => setting('site', 'client-email'),
+            'gold' => [
+                'status' => setting('site', 'gold-switch'),
+            ],
+            'reserved_nickname' => setting('user', 'keep-username'),
+            'reward' => setting('site', 'reward', []),
+            'user_invite_template' => setting('user', 'invite-template'),
+        ], 200);
     }
 
     /**
      * 更新站点设置.
      *
      * @param Request $request
-     * @param Configuration $configuration
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateSiteConfigure(Request $request, Configuration $configuration)
+    public function updateSiteConfigure(Request $request)
     {
-        $config = $configuration->getConfiguration();
-
-        $config->set('site', $request->get('site'));
-
-        $configuration->save($config);
+        setting('user')->set([
+            'keep-username' => $request->input('site.reserved_nickname'),
+            'anonymous' => [
+                'status' => (bool) $request->input('site.anonymous.status'),
+                'rule' => (string) $request->input('site.anonymous.rule'),
+            ],
+            'invite-template' => $request->input('site.user_invite_template'),
+        ]);
+        setting('site', [
+            'gold-switch' => (bool) $request->input('site.gold.status'),
+            'reward' => [
+                'status' => (bool) $request->input('site.reward.status'),
+                'amounts' => $request->input('site.reward.amounts'),
+            ],
+            'about-url' => $request->input('site.about_url'),
+            'client-email' => $request->input('site.client_email'),
+        ]);
 
         return response()->json(['message' => ['更新站点配置成功']], 201);
     }

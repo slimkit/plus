@@ -49,7 +49,17 @@ class BootstrappersController extends Controller
             $query->orderBy('sort', 'asc');
         }])->first()->advertising ?? [];
 
-        $bootstrappers['site'] = config('site', null);
+        $bootstrappers['site'] = [
+            'about_url' => setting('site', 'about-url'),
+            'anonymous' => setting('user', 'anonymous', []),
+            'client_email' => setting('site', 'client-email'),
+            'gold' => [
+                'status' => setting('site', 'gold-switch'),
+            ],
+            'reserved_nickname' => setting('user', 'keep-username'),
+            'reward' => setting('site', 'reward', []),
+            'user_invite_template' => setting('user', 'invite-template'),
+        ];
         $bootstrappers['registerSettings'] = config('registerSettings', null);
 
         $bootstrappers['wallet:cash'] = ['open' => config('wallet.cash.status', true)];
