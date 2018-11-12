@@ -103,11 +103,13 @@ class Setting
     {
         if (is_array($name)) {
             $callbale = [$this, __METHOD__];
-            $this->module->getConnection()->transaction(function () use ($name, $callbale) {
+            $this->model->getConnection()->transaction(function () use ($name, $callbale) {
                 foreach ($name as $name => $contents) {
                     call_user_func($callbale, $name, $contents);
                 }
             });
+
+            return;
         }
 
         $setting = $this->query()->byName($name)->first();
