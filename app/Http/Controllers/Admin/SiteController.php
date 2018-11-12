@@ -462,7 +462,7 @@ class SiteController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function siteConfigurations()
-    {   
+    {
         return response()->json([
             'about_url' => setting('site', 'about-url'),
             'anonymous' => setting('user', 'anonymous', []),
