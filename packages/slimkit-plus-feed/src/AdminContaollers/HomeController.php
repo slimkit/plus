@@ -24,7 +24,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Comment;
 use function Zhiyi\Plus\setting;
-use Zhiyi\Plus\Support\Configuration;
 use Zhiyi\Plus\Repository\WalletRatio;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;

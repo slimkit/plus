@@ -24,7 +24,6 @@ use Illuminate\Http\Request;
 use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Support\Configuration;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Illuminate\Contracts\Config\Repository as ConfigRepository;
 
 class PayControlController extends Controller
 {
@@ -51,7 +50,6 @@ class PayControlController extends Controller
         if (is_bool($paySwitcg)) {
             setting('feed')->set('pay-switch', $paySwitcg);
         }
-        
 
         if ($payWordLimit) {
             setting('feed')->set('pay-word-limit', $payWordLimit);
