@@ -41,6 +41,8 @@ class AbilityTableSeeder extends Seeder
         $ability->save();
 
         $roles = Role::whereIn('name', ['founder', 'owner'])->get();
-        $roles->each->abilities()->syncWithoutDetaching([$ability]);
+        $roles->each(function (Role $role) use ($ability) {
+            $role->abilities()->syncWithoutDetaching($ability);
+        });
     }
 }

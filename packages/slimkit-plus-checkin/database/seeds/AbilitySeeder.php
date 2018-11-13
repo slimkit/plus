@@ -41,6 +41,8 @@ class AbilitySeeder extends Seeder
         ]);
 
         $roles = Role::whereIn('name', ['founder'])->get();
-        $roles->each->abilities()->syncWithoutDetaching([$ability]);
+        $roles->each(function (Role $role) use ($ability) {
+            $role->abilities()->syncWithoutDetaching($ability);
+        });
     }
 }
