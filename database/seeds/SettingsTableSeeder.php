@@ -56,7 +56,7 @@ class SettingsTableSeeder extends Seeder
                 'file-min-size' => 2048, // 2KB
                 'file-max-size' => 2097152, // 2MB
                 'file-mime-types' => ['image/png', 'image/jpeg', 'image/gif'],
-            ]
+            ],
         ]);
     }
 }
