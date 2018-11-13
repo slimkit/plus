@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusCheckIn\Seeds;
 
+use Zhiyi\Plus\Models\Role;
 use Zhiyi\Plus\Models\Ability;
 use Illuminate\Database\Seeder;
 
@@ -33,10 +34,13 @@ class AbilitySeeder extends Seeder
      */
     public function run()
     {
-        Ability::create([
+        $ability = Ability::create([
             'name' => 'admin: checkin config',
             'display_name' => '签到管理',
             'description' => '用户是否拥有后台管理签到权限',
         ]);
+
+        $roles = Role::whereIn('name', ['founder'])->get();
+        $roles->each->abilities()->syncWithoutDetaching([$ability]);
     }
 }
