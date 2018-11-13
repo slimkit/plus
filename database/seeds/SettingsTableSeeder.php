@@ -43,5 +43,20 @@ class SettingsTableSeeder extends Seeder
                 'amounts' => '100,500,1000',
             ],
         ]);
+        setting('file-storage')->set([
+            'default-filesystem' => 'local',
+            'channels.public' => [
+                'filesystem' => 'local',
+            ],
+            'task-create-validate' => [
+                'image-min-width' => 0,
+                'image-max-width' => 2800,
+                'image-min-height' => 0,
+                'image-max-height' => 2800,
+                'file-min-size' => 2048, // 2KB
+                'file-max-size' => 2097152, // 2MB
+                'file-mime-types' => ['image/png', 'image/jpeg', 'image/gif'],
+            ]
+        ]);
     }
 }
