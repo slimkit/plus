@@ -143,20 +143,6 @@ class HomeController extends Controller
     }
 
     /**
-     * 关闭应用.
-     * @param  Request $request [description]
-     * @return [type]           [description]
-     */
-    public function handleComponentStatus(Request $request, Configuration $configuration)
-    {
-        $open = $request->input('open');
-
-        $configuration->set('feed.open', $open);
-
-        return response()->json(['message' => '设置成功'])->setStatusCode(201);
-    }
-
-    /**
      * 关闭应用打赏.
      * @param  Request $request [description]
      * @return [type]           [description]
