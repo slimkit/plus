@@ -33,5 +33,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(AbilitySeeder::class);
+        $this->call(SettingsTableSeeder::class);
     }
 }

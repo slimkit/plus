@@ -18,9 +18,24 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-return [
+namespace SlimKit\PlusCheckIn\Seeds;
 
-    'open' => false,
-    'attach_balance' => 1,
+use Illuminate\Database\Seeder;
+use function Zhiyi\Plus\setting;
 
-];
+class SettingsTableSeeder extends Seeder
+{
+    /**
+     * Run the package seeder.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function run()
+    {
+        setting('checkin')->set([
+            'switch' => true,
+            'attach-balance' => 1,
+        ]);
+    }
+}

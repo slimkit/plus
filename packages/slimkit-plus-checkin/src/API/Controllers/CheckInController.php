@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace SlimKit\PlusCheckIn\API\Controllers;
 
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use SlimKit\PlusCheckIn\Models\CheckinLog as CheckinLogModel;
@@ -44,7 +45,7 @@ class CheckInController extends Controller
      */
     public function __construct(ConfigRepository $config)
     {
-        $this->attach_balance = $config->get('checkin.attach_balance');
+        $this->attach_balance = setting('checkin', 'attach-balance', 1);
     }
 
     /**
