@@ -50,12 +50,8 @@ class FeedServiceProvider extends ServiceProvider
         ]);
 
         $this->publishes([
-            dirname(__DIR__).'/config/feed.php' => $this->app->configPath('feed.php'),
-        ], 'config');
-
-        $this->publishes([
             dirname(__DIR__).'/assets' => $this->app->PublicPath().'/assets/feed',
-        ], 'public');
+        ], 'feed:resource/assets');
 
         $this->app->make(BootstrapAPIsEventer::class)->listen('v2', function () {
             return [
@@ -101,10 +97,6 @@ class FeedServiceProvider extends ServiceProvider
             'route' => true,
             'icon' => asset('assets/feed/feed-icon.png'),
         ]);
-
-        $this->mergeConfigFrom(
-            dirname(__DIR__).'/config/feed.php', 'feed'
-        );
 
         Relation::morphMap([
             'feeds' => Models\Feed::class,
