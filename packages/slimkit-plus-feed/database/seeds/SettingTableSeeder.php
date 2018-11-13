@@ -21,8 +21,9 @@ declare(strict_types=1);
 namespace SlimKit\Plus\Packages\Feed\Seeds;
 
 use Illuminate\Database\Seeder;
+use function Zhiyi\Plus\setting;
 
-class DatabaseSeeder extends Seeder
+class SettingTableSeeder extends Seeder
 {
     /**
      * Run the package seeder.
@@ -32,8 +33,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(AbilityTableSeeder::class);
-        $this->call(AdvertisingSpaceSeeder::class);
-        $this->call(SettingTableSeeder::class);
+        setting('feed')->set([
+            'reward-switch' => true,
+            'pay-switch' => true,
+            'pay-items' => [100, 500, 1000],
+            'pay-word-limit' => 50,
+        ]);
     }
 }

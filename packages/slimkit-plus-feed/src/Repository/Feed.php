@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository;
 
 use Carbon\Carbon;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
@@ -47,8 +48,7 @@ class Feed
      */
     public function __construct(CacheContract $cache, FeedModel $model, Carbon $dateTime)
     {
-        $this->limit = config('feed.limit'); // 未付费前付费内容截取长度
-
+        $this->limit = setting('feed', 'pay-word-limit', 50);
         $this->cache = $cache;
         $this->model = $model;
         $this->dateTime = $dateTime;

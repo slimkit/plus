@@ -23,6 +23,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed;
 use Illuminate\Support\ServiceProvider;
 use Zhiyi\Plus\Support\ManageRepository;
 use Zhiyi\Plus\Support\BootstrapAPIsEventer;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Support\PinnedsNotificationEventer;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
@@ -60,10 +61,10 @@ class FeedServiceProvider extends ServiceProvider
         $this->app->make(BootstrapAPIsEventer::class)->listen('v2', function () {
             return [
                 'feed' => [
-                    'reward' => (bool) $this->app->make(ConfigRepository::class)->get('feed.reward'),
-                    'paycontrol' => (bool) $this->app->make(ConfigRepository::class)->get('feed.paycontrol'),
-                    'items' => (array) $this->app->make(ConfigRepository::class)->get('feed.items'),
-                    'limit' => (int) $this->app->make(ConfigRepository::class)->get('feed.limit'),
+                    'reward' => setting('feed', 'reward-switch'),
+                    'paycontrol' => setting('feed', 'pay-switch', false),
+                    'items' => setting('feed', 'pay-items', []),
+                    'limit' => setting('feed', 'pay-word-limit', 50),
                 ],
             ];
         });
