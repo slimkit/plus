@@ -85,7 +85,9 @@ class CurrencyPayController extends Controller
         $gateWay->setAppId($config['appId']);
         $gateWay->setPrivateKey($config['secretKey']);
         $gateWay->setAlipayPublicKey($config['publicKey']);
-        $gateWay->setNotifyUrl(config('app.url', '/api/v2/alipayCurrency/notify'));
+        $gateWay->setNotifyUrl(
+            action([static::class, 'alipayNotify'])
+        );
 
         $order->out_trade_no = date('YmdHis').mt_rand(1000, 9999).config('newPay.sign');
         $order->subject = '积分充值';
@@ -160,7 +162,9 @@ class CurrencyPayController extends Controller
         // 公钥
         $gateWay->setAlipayPublicKey($config['publicKey']);
         // 通知地址
-        $gateWay->setNotifyUrl(config('app.url').'/api/v2/alipayCurrency/notify');
+        $gateWay->setNotifyUrl(
+            action([static::class, 'alipayNotify'])
+        );
         // 支付成功后返回地址
         $gateWay->setReturnUrl($redirect);
 
@@ -354,7 +358,9 @@ class CurrencyPayController extends Controller
         $gateWay->setAppId($config['appId']);
         $gateWay->setApiKey($config['apiKey']);
         $gateWay->setMchId($config['mchId']);
-        $gateWay->setNotifyUrl(config('app.url').'/api/v2/wechatCurrency/notify');
+        $gateWay->setNotifyUrl(
+            action([static::class, 'wechatNotify'])
+        );
 
         $order->out_trade_no = date('YmdHis').mt_rand(1000, 9999).config('newPay.sign');
         $order->subject = '积分充值';
@@ -420,7 +426,9 @@ class CurrencyPayController extends Controller
         $gateWay->setAppId($config['appId']);
         $gateWay->setApiKey($config['apiKey']);
         $gateWay->setMchId($config['mchId']);
-        $gateWay->setNotifyUrl(config('app.url').'/api/v2/wechatCurrency/notify');
+        $gateWay->setNotifyUrl(
+            action([static::class, 'wechatNotify'])
+        );
 
         $order->out_trade_no = date('YmdHis').mt_rand(1000, 9999).config('newPay.sign');
         $order->subject = '积分充值';
