@@ -53,4 +53,8 @@ Route::middleware(['auth:web', 'admin'])->prefix('admin')->group(function (Route
 
     $route->get('setting/security/pay-validate-password', AdminControllers\Setting\Security::class.'@payValidateSwitch');
     $route->put('setting/security/pay-validate-password', AdminControllers\Setting\Security::class.'@changePayValidateSwitch');
+
+    // 环信配置
+    $route->get('setting/vendor/easemob', AdminControllers\Setting\Easemob::class.'@getConfigure');
+    $route->put('setting/vendor/easemob', AdminControllers\Setting\Easemob::class.'@setConfigure');
 });
