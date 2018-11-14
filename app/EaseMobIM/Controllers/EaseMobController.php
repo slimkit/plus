@@ -62,12 +62,12 @@ class EaseMobController
         $this->client_secret = $settings['clientSecret'];
         $this->register_type = $settings['registerType'];
 
-        if (! $this->open || ! $this->client_id || ! $this->client_secret || !$settings['appKey']) {
+        if (! $this->open || ! $this->client_id || ! $this->client_secret || ! $settings['appKey']) {
             return response()->json([
                 'message' => ['环信未开启或者配置信息不全'],
             ])->setStatusCode(500);
         }
-    
+
         // 应用标识
         $appKey = explode('#', $settings['appKey']);
         $this->org_name = $appKey[0] ?? '';

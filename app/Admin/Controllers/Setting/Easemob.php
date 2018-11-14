@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Admin\Controllers\Setting;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use function Zhiyi\Plus\setting;
 use Illuminate\Http\JsonResponse;

@@ -61,7 +61,7 @@ class SetEasemob extends FormRequest
     public function messages(): array
     {
         return [
-            'appKey.regex' => ':attribute格式错误，请填入使用 `#` 符号分割的正确值'
+            'appKey.regex' => ':attribute格式错误，请填入使用 `#` 符号分割的正确值',
         ];
     }
 
