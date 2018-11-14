@@ -14,12 +14,12 @@
     </slot>
 
     <!-- Pagination Elements -->
-    <slot v-for="element in elements" v-bind="element">
+    <slot v-for="(element) in elements" v-bind="element">
         
-      <li v-if="element.currend" class="page-item active">
+      <li v-if="element.currend" class="page-item active" :key="element.page">
         <span class="page-link">{{ element.page }}</span>
       </li>
-      <li v-else class="page-item">
+      <li v-else class="page-item" :key="element.page">
         <a class="page-link" href="#" :data-offset="element.offset">{{ element.page }}</a>
       </li>
 
