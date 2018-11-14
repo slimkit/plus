@@ -1,0 +1,1 @@
+export { default as Easemob } from './easemob';

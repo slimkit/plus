@@ -42,7 +42,9 @@
                 <li><a href="#">微信登录</a></li>
                 <li><a href="#">微博登录</a></li>
                 <li class="divider"></li>
-                <li><a href="#">环信即时聊天</a></li>
+                <router-link tag="li" active-class="active" :to="{ name: 'user:vendor/easemob' }">
+                  <a href="#">环信即时聊天</a>
+                </router-link>
               </ul>
             </li>
           </ul>
