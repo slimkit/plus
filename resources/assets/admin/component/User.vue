@@ -33,6 +33,18 @@
             <router-link to="/users/recommends" tag="li" active-class="active">
               <a href="#">推荐用户</a>
             </router-link>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                第三方 <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="#">QQ&nbsp;登录</a></li>
+                <li><a href="#">微信登录</a></li>
+                <li><a href="#">微博登录</a></li>
+                <li class="divider"></li>
+                <li><a href="#">环信即时聊天</a></li>
+              </ul>
+            </li>
           </ul>
         </div> 
       </div>   
