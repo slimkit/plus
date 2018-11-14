@@ -144,7 +144,9 @@ class PayController extends Controller
         // 公钥
         $gateWay->setAlipayPublicKey($config['publicKey']);
         // 通知地址
-        $gateWay->setNotifyUrl(config('app.url').'/api/v2/alipay/notify');
+        $gateWay->setNotifyUrl(
+            action([static::class, 'alipayNotify'])
+        );
         // 支付成功后返回地址
         $gateWay->setReturnUrl($redirect);
 
@@ -361,7 +363,9 @@ class PayController extends Controller
         $gateWay->setAppId($config['appId']);
         $gateWay->setApiKey($config['apiKey']);
         $gateWay->setMchId($config['mchId']);
-        $gateWay->setNotifyUrl(config('app.url').'/api/v2/wechat/notify');
+        $gateWay->setNotifyUrl(
+            action([static::class, 'wechatNotify'])
+        );
 
         $order->out_trade_no = date('YmdHis').mt_rand(1000, 9999).config('newPay.sign');
         $order->subject = '钱包充值';
