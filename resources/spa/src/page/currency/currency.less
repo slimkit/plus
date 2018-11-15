@@ -1,0 +1,43 @@
+// 模块通用头部样式
+@panel-background: linear-gradient(-23deg, #9580d1 0%, #ab9cda 100%);
+
+.header {
+  background: transparent;
+  color: #fff;
+  border-bottom: none;
+  position: fixed;
+
+  a {
+    color: inherit;
+  }
+}
+.m-currency-panel {
+  padding: 60+90px 30px 60px;
+  color: #fff;
+  font-size: 28px;
+  background: @panel-background;
+  h3 {
+    opacity: 0.7;
+  }
+  p {
+    margin-top: 80px;
+    font-size: 100px;
+    letter-spacing: 2px;
+  }
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 1rem;
+
+  p {
+    font-size: 26px;
+    color: #999;
+  }
+}
