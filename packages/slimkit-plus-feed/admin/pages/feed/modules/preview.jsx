@@ -20,6 +20,16 @@ import CloseIcon from '@material-ui/icons/Close';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
+function RenderUserAvatar(props) {
+    let { name, avatar } = props.user;
+
+    if (avatar) {
+        return (<Avatar src={avatar.url} />);
+    }
+
+    return <Avatar>{ name[0] }</Avatar>;
+}
+
 export default function Preview(props) {
     let { feed, onClose, classes } = props;
 
@@ -37,7 +47,7 @@ export default function Preview(props) {
             <Paper className={classes.reviewWrap}>
                 <Card>
                     <CardHeader
-                        avatar={<Avatar src={user.avatar ? user.avatar.url : null}>{user.name[0]}</Avatar>}
+                        avatar={<RenderUserAvatar user={user} />}
                         action={<IconButton
                             onClick={onClose}
                         >
@@ -53,8 +63,8 @@ export default function Preview(props) {
                             className={classes.previewVideo}
                             component="video"
                             controls={true}
-                            poster={video.cover.url}
-                            src={video.resource.url}
+                            poster={createRequestURI(`../../../api/v2/files/${video.cover_id}`)}
+                            src={createRequestURI(`../../../api/v2/files/${video.video_id}`)}
                         />
                     ) : null}
 
