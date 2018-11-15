@@ -61,4 +61,8 @@ Route::middleware(['auth:web', 'admin'])->prefix('admin')->group(function (Route
     // QQ 配置
     $route->get('setting/vendor/qq', AdminControllers\Setting\QQ::class.'@getConfigure');
     $route->put('setting/vendor/qq', AdminControllers\Setting\QQ::class.'@setConfigure');
+
+    // 微信配置
+    $route->get('setting/vendor/wechat', AdminControllers\Setting\WeChat::class.'@getConfigure');
+    $route->put('setting/vendor/wechat', AdminControllers\Setting\WeChat::class.'@setConfigure');
 });
