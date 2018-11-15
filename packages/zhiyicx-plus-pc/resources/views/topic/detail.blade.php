@@ -35,7 +35,7 @@
         </div>
 
         {{-- 话题动态列表 --}}
-        <div class="ev-feed-list feed-list"> </div>
+        <div class="ev-feed-list feed-list" id="content_list" > </div>
     </div>
     <div class="right">
         <div class="interaction">
