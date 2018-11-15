@@ -18,42 +18,34 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Admin\Controllers\Setting;
+namespace Zhiyi\Plus\Admin\Requests;
 
-use Illuminate\Http\Response;
-use function Zhiyi\Plus\setting;
-use Illuminate\Http\JsonResponse;
-use Zhiyi\Plus\Admin\Controllers\Controller;
-use Zhiyi\Plus\Admin\Requests\SetWeChatConfigure as SetWeChatConfigureRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
-class WeChat extends Controller
+class SetWeiboConfigure extends FormRequest
 {
     /**
-     * Get configure.
-     * @return \Illuminate\Http\JsonResponse
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     * @author Seven Du <shiweidu@outlook.com>
      */
-    public function getConfigure(): JsonResponse
+    public function authorize(): bool
     {
-        $settings = setting('user', 'vendor:wechat', [
-            'appSecret' => '',
-            'appKey' => '',
-        ]);
-
-        return new JsonResponse($settings, Response::HTTP_OK);
+        return true;
     }
 
     /**
-     * set configure.
-     * @param \Zhiyi\Plus\Admin\Requests\SetWeChatConfigureRequest $request
-     * @return \Illuminate\Http\Response
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     * @author Seven Du <shiweidu@outlook.com>
      */
-    public function setConfigure(SetWeChatConfigureRequest $request)
+    public function rules(): array
     {
-        setting('user')->set('vendor:wechat', [
-            'appSecret' => $request->input('appSecret'),
-            'appKey' => $request->input('appKey'),
-        ]);
-
-        return new Response('', Response::HTTP_NO_CONTENT);
+        return [
+            'appId' => 'required|string',
+            'secret' => 'required|string',
+        ];
     }
 }

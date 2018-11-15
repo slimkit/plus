@@ -24,9 +24,9 @@ use Illuminate\Http\Response;
 use function Zhiyi\Plus\setting;
 use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\Admin\Controllers\Controller;
-use Zhiyi\Plus\Admin\Requests\SetWeChatConfigure as SetWeChatConfigureRequest;
+use Zhiyi\Plus\Admin\Requests\SetWeiboConfigure as SetWeiboConfigureRequest;
 
-class WeChat extends Controller
+class Weibo extends Controller
 {
     /**
      * Get configure.
@@ -34,9 +34,9 @@ class WeChat extends Controller
      */
     public function getConfigure(): JsonResponse
     {
-        $settings = setting('user', 'vendor:wechat', [
-            'appSecret' => '',
-            'appKey' => '',
+        $settings = setting('user', 'vendor:weibo', [
+            'secret' => '',
+            'appId' => '',
         ]);
 
         return new JsonResponse($settings, Response::HTTP_OK);
@@ -44,14 +44,14 @@ class WeChat extends Controller
 
     /**
      * set configure.
-     * @param \Zhiyi\Plus\Admin\Requests\SetWeChatConfigureRequest $request
+     * @param \Zhiyi\Plus\Admin\Requests\SetWeiboConfigureRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function setConfigure(SetWeChatConfigureRequest $request)
+    public function setConfigure(SetWeiboConfigureRequest $request)
     {
-        setting('user')->set('vendor:wechat', [
-            'appSecret' => $request->input('appSecret'),
-            'appKey' => $request->input('appKey'),
+        setting('user')->set('vendor:weibo', [
+            'secret' => $request->input('secret'),
+            'appId' => $request->input('appId'),
         ]);
 
         return new Response('', Response::HTTP_NO_CONTENT);

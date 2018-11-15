@@ -22,7 +22,7 @@ namespace Zhiyi\Plus\Admin\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SeWeChatConfigure extends FormRequest
+class SetWeChatConfigure extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

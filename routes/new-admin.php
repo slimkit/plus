@@ -65,4 +65,8 @@ Route::middleware(['auth:web', 'admin'])->prefix('admin')->group(function (Route
     // 微信配置
     $route->get('setting/vendor/wechat', AdminControllers\Setting\WeChat::class.'@getConfigure');
     $route->put('setting/vendor/wechat', AdminControllers\Setting\WeChat::class.'@setConfigure');
+
+    // 微博配置
+    $route->get('setting/vendor/weibo', AdminControllers\Setting\Weibo::class.'@getConfigure');
+    $route->put('setting/vendor/weibo', AdminControllers\Setting\Weibo::class.'@setConfigure');
 });
