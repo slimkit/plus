@@ -88,10 +88,10 @@ weibo.doPostFeed = function(type) {
 weibo.afterPostFeed = function(feed_id) {
     axios.get('/feeds', {params: {feed_id:feed_id, isAjax:true} })
       .then(function (response) {
-            if ($('#feeds_list').find('.no_data_div').length > 0) {
-                $('#feeds_list').find('.no_data_div').remove();
+            if ($('#content_list').find('.no_data_div').length > 0) {
+                $('#content_list').find('.no_data_div').remove();
             }
-            $(response.data.data).hide().prependTo('#feeds_list').fadeIn('slow');
+            $(response.data.data).hide().prependTo('#content_list').fadeIn('slow');
             $("img.lazy").lazyload({effect: "fadeIn"});
       })
       .catch(function (error) {
@@ -438,8 +438,8 @@ $(function() {
     // 微博分类tab
     $('.show_tab a').on('click', function() {
         var type = $(this).data('type');
-        $('#feeds_list').html('');
-        weibo.init({ container: '#feeds_list', type: type });
+        $('#content_list').html('');
+        weibo.init({ container: '#content_list', type: type });
         $('.show_tab a').removeClass('dy_cen_333');
         $(this).addClass('dy_cen_333');
     });
