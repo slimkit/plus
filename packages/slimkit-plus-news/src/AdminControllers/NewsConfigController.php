@@ -23,7 +23,6 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\AdminControllers;
 use Illuminate\Http\Request;
 use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Support\Configuration;
-use Illuminate\Contracts\Config\Repository;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class NewsConfigController extends Controller
@@ -75,7 +74,7 @@ class NewsConfigController extends Controller
         if ($pay_contribute > 9999999 || $pay_contribute < 1) {
             return response()->json(['message' => ['请输入合适的投稿金额']], 422);
         }
-        
+
         setting('news')->set('contribute-amount', $pay_contribute);
 
         return response()->json([], 204);
