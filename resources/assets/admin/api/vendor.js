@@ -1,15 +1,26 @@
 import request, { createRequestURI } from '../util/request';
 
-export class easemob {
-    static uri = createRequestURI('setting/vendor/easemob');
-    static get() {
+class VendorRequestGenerator {
+
+    static uri;
+
+    constructor(uri) {
+        this.uri = createRequestURI(uri);
+    }
+
+    get() {
         return request.get(this.uri, {
             validateStatus: status => status === 200,
         });
     }
-    static update(settings = {}) {
+
+    update(settings = {}) {
         return request.put(this.uri, settings, {
             validateStatus: status => status === 204,
         });
     }
-};
+}
+
+export const easemob = new VendorRequestGenerator('setting/vendor/easemob');
+export const qq = new VendorRequestGenerator('setting/vendor/qq');
+

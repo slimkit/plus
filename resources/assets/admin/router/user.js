@@ -32,6 +32,7 @@ const routers = {
     { path: 'register', component: Register },
     { path: 'trashed', component: UserTrashed },
     { path: 'vendor-easemob', component: vendorPages.Easemob, name: 'user:vendor/easemob' },
+    { path: 'vendor-qq', component: vendorPages.QQ, name: 'user:vendor/qq' },
   ]
 };
 

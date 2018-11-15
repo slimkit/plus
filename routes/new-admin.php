@@ -57,4 +57,8 @@ Route::middleware(['auth:web', 'admin'])->prefix('admin')->group(function (Route
     // 环信配置
     $route->get('setting/vendor/easemob', AdminControllers\Setting\Easemob::class.'@getConfigure');
     $route->put('setting/vendor/easemob', AdminControllers\Setting\Easemob::class.'@setConfigure');
+
+    // QQ 配置
+    $route->get('setting/vendor/qq', AdminControllers\Setting\QQ::class.'@getConfigure');
+    $route->put('setting/vendor/qq', AdminControllers\Setting\QQ::class.'@setConfigure');
 });
