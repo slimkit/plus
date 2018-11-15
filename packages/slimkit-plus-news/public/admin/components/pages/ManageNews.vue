@@ -101,12 +101,13 @@
                     <label for="content" class="col-sm-1 control-label">正文</label>
                     <div class="col-sm-11">
                         <mavon-editor
+                            class="richEditor"
                             ref="editor"
                             v-model="news.content"
                             :apiHost="apiHost"
                             @imgAdd="$imgAdd"
                         >
-                                
+
                             </mavon-editor>
                     </div>
                 </div>
@@ -358,3 +359,9 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.rich-editor {
+  z-index: auto;
+}
+</style>
