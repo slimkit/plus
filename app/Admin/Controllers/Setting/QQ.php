@@ -44,7 +44,7 @@ class QQ extends Controller
 
     /**
      * set configure.
-     * @param \Zhiyi\Plus\Admin\Requests\SetEasemob $request
+     * @param \Zhiyi\Plus\Admin\Requests\SetQQConfigure $request
      * @return \Illuminate\Http\Response
      */
     public function setConfigure(SetQQConfigureRequest $request)
