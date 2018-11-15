@@ -22,6 +22,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Utils\Markdown;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Models\Tag as TagModel;
 use Zhiyi\Plus\Concerns\FindMarkdownFileTrait;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
@@ -130,8 +131,11 @@ class ContributeController extends Controller
         TagModel $tagModel
     ) {
         $user = $request->user();
-        $config = config('news.contribute');
-        $payAmount = config('news.pay_contribute');
+        $config = setting('news', 'contribute', [
+            'pay' => true,
+            'verified' => true,
+        ]);
+        $payAmount = setting('news', 'contribute-amount', 100);
 
         if ($config['pay'] && $user->wallet->balance < $payAmount) {
             return $response->json(['message' => '账户余额不足'], 422);
@@ -403,8 +407,11 @@ class ContributeController extends Controller
         TagModel $tagModel
     ) {
         $user = $request->user();
-        $config = config('news.contribute');
-        $payAmount = intval(config('news.pay_contribute'));
+        $config = setting('news', 'contribute', [
+            'pay' => true,
+            'verified' => true,
+        ]);
+        $payAmount = setting('news', 'contribute-amount', 100);
 
         if ($config['pay'] && $user->currency && $user->currency->sum < $payAmount) {
             return $response->json(['message' => '账户余额不足'], 403);
