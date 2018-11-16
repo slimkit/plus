@@ -199,3 +199,18 @@ export function deleteFeedComment (feedId, commentId) {
   const url = `/feeds/${feedId}/comments/${commentId}`
   return api.delete(url, { validateStatus: s => s === 204 })
 }
+
+/**
+ * 举报动态
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {number} feedId
+ * @param {Object} data
+ * @param {string} reason 举报理由
+ * @returns
+ */
+export function reportFeed (feedId, reason) {
+  const url = `/feeds/${feedId}/reports`
+  return api.post(url, { reason }, { validateStatus: s => s === 201 })
+}

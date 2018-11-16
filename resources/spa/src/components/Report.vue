@@ -38,22 +38,15 @@
 import { noop } from '@/util'
 import { reportFeed } from '@/api/feeds'
 import { reportNews } from '@/api/news'
-import { reportPost, reportPostComment } from '@/api/group'
 import { reportUser } from '@/api/user'
-import { reportQuestion } from '@/api/question/questions'
-import { reportAnswer } from '@/api/question/answer'
 import { reportComment } from '@/api'
 import TextareaInput from '@/components/common/TextareaInput'
 
 const apiMap = {
   feed: reportFeed,
   news: reportNews,
-  post: reportPost,
-  postComment: reportPostComment,
   comment: reportComment,
   user: reportUser,
-  question: reportQuestion,
-  answer: reportAnswer,
 }
 
 export default {
@@ -82,17 +75,9 @@ export default {
           return '动态'
         case 'news':
           return '资讯'
-        case 'group':
-          return '圈子'
-        case 'post':
-          return '帖子'
         case 'comment':
         case 'postComment':
           return '评论'
-        case 'question':
-          return '问题'
-        case 'answer':
-          return '回答'
         default:
           return ''
       }
