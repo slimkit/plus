@@ -1,6 +1,9 @@
 import wx from 'weixin-js-sdk'
-import api from '@/api/api.js'
+import { baseURL } from '@/api'
 import Message from '@/plugins/message-box'
+import axios from 'axios'
+
+const api = axios.create({ baseURL })
 
 /**
  * 初始化 微信分享 配置
@@ -16,8 +19,9 @@ const __JsApiList = [
 
 export default (url, options) => {
   if (!url) throw new Error('微信分享: 参数URL不能为空')
-  api.post(`socialite/wxconfig`, { url }).then(
-    ({ data: { timestamp, signature, appid, noncestr } }) => {
+  api
+    .post(`socialite/wxconfig`, { url })
+    .then(({ data: { timestamp, signature, appid, noncestr } }) => {
       const wxconfig = {
         debug: false,
         timestamp,
@@ -58,15 +62,13 @@ export default (url, options) => {
         wx.onMenuShareTimeline(options)
         wx.onMenuShareAppMessage(options)
       })
-      wx.error(res => {
+      wx.error(err => {
         // eslint-disable-next-line
-        console.warn(res);
+        console.warn('微信配置错误: ' + err);
       })
-    },
-    err => {
+    })
+    .catch(err => {
       // eslint-disable-next-line
-      console.warn(err);
-      throw new Error('微信分享: 获取微信配置信息失败')
-    }
-  )
+      console.warn(err.response.data);
+    })
 }

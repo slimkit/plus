@@ -4,22 +4,16 @@
     <common-header class="common-header">
       资讯
       <template slot="right">
-        <svg
-          class="m-style-svg m-svg-def"
-          @click="$router.push({path: '/news/search'})">
+        <svg class="m-style-svg m-svg-def" @click="$router.push({path: '/news/search'})">
           <use xlink:href="#icon-search"/>
         </svg>
-        <svg
-          class="m-style-svg m-svg-def"
-          @click="beforeCreatePost">
+        <svg class="m-style-svg m-svg-def" @click="beforeCreatePost">
           <use xlink:href="#icon-news-draft"/>
         </svg>
       </template>
     </common-header>
 
-    <news-filter
-      v-if="isLogin"
-      @change="onCateChange"/>
+    <news-filter v-if="isLogin" @change="onCateChange"/>
 
     <jo-load-more
       ref="loadmore"

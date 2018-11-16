@@ -3,9 +3,7 @@
 
     <common-header class="header">
       我的{{ currencyUnit }}
-      <router-link
-        slot="left"
-        to="/profile">
+      <router-link slot="left" to="/profile">
         <svg class="m-style-svg m-svg-def">
           <use xlink:href="#icon-back" />
         </svg>

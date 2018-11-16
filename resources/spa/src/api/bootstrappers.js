@@ -25,12 +25,12 @@ export async function getHotCities () {
  */
 export async function getCurrentPosition () {
   let data = await location.getCurrentPosition()
-  let { city, province, formatted_address } = data.addressComponent || {}
+  let { city, province, formatted_address: address } = data.addressComponent || {}
 
   return {
     lng: data.position.getLng(),
     lat: data.position.getLat(),
-    label: city || province || formatted_address || '定位失败',
+    label: city || province || address || '定位失败',
   }
 }
 
@@ -39,13 +39,10 @@ export function getGeo (address) {
   return api.get(`around-amap/geo?address=${address}`).then(
     ({
       data: {
-        geocodes: [
-          { /* city, district, province, */ location, formatted_address },
-        ],
+        geocodes: [ { location, formatted_address: label } ],
       } = {},
     }) => {
       // city, district, province, location, formatted_address;
-      const label = formatted_address
       const [lng, lat] = location.split(',')
       return Object.assign(res, { lng, lat, label })
     },
@@ -64,11 +61,9 @@ export async function searchCityByName (
   name,
   defaultResponseValue = { data: [] }
 ) {
-  if (!name) {
-    return defaultResponseValue
-  }
+  if (!name) return defaultResponseValue
 
-  return await api.get('/locations/search', {
+  return api.get('/locations/search', {
     params: { name },
     validateStatus: status => status === 200,
   })

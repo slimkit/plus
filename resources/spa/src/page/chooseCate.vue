@@ -1,8 +1,6 @@
 <template>
   <transition name="pop">
-    <div
-      v-if="show"
-      class="m-box-model m-pos-f p-choose-category m-main">
+    <div v-if="show" class="m-box-model m-pos-f p-choose-category m-main">
 
       <common-header :back="cancel">选择栏目</common-header>
 
@@ -54,8 +52,8 @@ export default {
       // GET /news/cates
       this.$http
         .get(`/news/cates`)
-        .then(({ data: { my_cates = [], more_cates = [] } }) => {
-          this.cates = [...my_cates, ...more_cates]
+        .then(({ data: { my_cates: myCates = [], more_cates: moreCates = [] } }) => {
+          this.cates = [...myCates, ...moreCates]
         })
     },
   },

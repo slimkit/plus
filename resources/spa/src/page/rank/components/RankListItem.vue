@@ -1,15 +1,9 @@
 <template>
   <div class="rank-list-item">
-    <span
-      :class="{ top: index < 3 }"
-      class="rank">{{ index + 1 }}</span>
+    <span :class="{ top: index < 3 }" class="rank">{{ index + 1 }}</span>
 
-    <div
-      class="rank-info"
-      @click="to(`/users/${user.id}`)">
-      <avatar
-        :user="user"
-        class="rank-avatar"/>
+    <div class="rank-info" @click="to(`/users/${user.id}`)">
+      <avatar :user="user" class="rank-avatar"/>
       <div class="rank-title m-text-cut">
         <h6>{{ user.name }}</h6>
         <!-- 用于显示各排行榜数据的插槽 -->
@@ -49,7 +43,7 @@ export default {
           : 'unFollow'
     },
     followText () {
-      if (this.isFollow == 'eachFollow') return '相互关注'
+      if (this.isFollow === 'eachFollow') return '相互关注'
       return this.isFollow === 'follow' ? '已关注' : '+ 关注'
     },
   },

@@ -1,34 +1,22 @@
 <template>
-  <div
-    class="m-box-model m-card"
-    @click="handleView('')">
+  <div class="m-box-model m-card" @click="handleView('')">
     <div class="m-box">
       <div
         v-if="timeLine"
         class="m-box-model m-aln-center m-flex-grow0 m-flex-shrink0 m-card-time-line"
         v-html="timeLineText"/>
-      <avatar
-        v-else
-        :user="user" />
+      <avatar v-else :user="user" />
       <section class="m-box-model m-flex-grow1 m-flex-shrink1 m-card-main">
-        <header
-          v-if="!timeLine"
-          class="m-box m-aln-center m-justify-bet m-card-usr">
+        <header v-if="!timeLine" class="m-box m-aln-center m-justify-bet m-card-usr">
           <h4 class="m-flex-grow1 m-flex-shrink1">{{ user.name }}</h4>
           <div class="m-box m-aln-center">
-            <span
-              v-if="pinned"
-              class="m-art-comment-icon-top">置顶</span>
+            <span v-if="pinned" class="m-art-comment-icon-top">置顶</span>
             <span>{{ time | time2tips }}</span>
           </div>
         </header>
-        <article
-          class="m-card-body"
-          @click="handleView('')">
+        <article class="m-card-body" @click="handleView('')">
           <h2 v-if="title">{{ title }}</h2>
-          <div
-            v-if="body.length > 0"
-            class="m-card-con">
+          <div v-if="body.length > 0" class="m-card-con">
             <p
               :class="{needPay}"
               class="m-text-box m-text-cut-3"
@@ -50,50 +38,38 @@
       class="m-box-model m-card-foot m-bt1"
       @click.stop>
       <div class="m-box m-aln-center m-card-tools m-lim-width">
-        <a
-          class="m-box m-aln-center"
-          @click.prevent="handleLike">
+        <a class="m-box m-aln-center" @click.prevent="handleLike">
           <svg class="m-style-svg m-svg-def">
             <use :xlink:href="liked ? '#icon-like' :'#icon-unlike'"/>
           </svg>
           <span>{{ likeCount | formatNum }}</span>
         </a>
-        <a
-          class="m-box m-aln-center"
-          @click.prevent="handleComment">
+        <a class="m-box m-aln-center" @click.prevent="handleComment">
           <svg class="m-style-svg m-svg-def">
             <use xlink:href="#icon-comment"/>
           </svg>
           <span>{{ commentCount | formatNum }}</span>
         </a>
-        <a
-          class="m-box m-aln-center"
-          @click.prevent="handleView('')">
+        <a class="m-box m-aln-center" @click.prevent="handleView('')">
           <svg class="m-style-svg m-svg-def">
             <use xlink:href="#icon-eye"/>
           </svg>
           <span>{{ viewCount | formatNum }}</span>
         </a>
         <div class="m-box m-justify-end m-flex-grow1 m-flex-shrink1">
-          <a
-            class="m-box m-aln-center"
-            @click.prevent="handleMore">
+          <a class="m-box m-aln-center" @click.prevent="handleMore">
             <svg class="m-style-svg m-svg-def">
               <use xlink:href="#icon-more"/>
             </svg>
           </a>
         </div>
       </div>
-      <ul
-        v-if="commentCount > 0"
-        class="m-card-comments">
+      <ul v-if="commentCount > 0" class="m-card-comments">
         <li
           v-for="com in comments"
           v-if="com.id"
           :key="com.id">
-          <comment-item
-            :comment="com"
-            @click="commentAction"/>
+          <comment-item :comment="com" @click="commentAction"/>
         </li>
       </ul>
       <div
@@ -190,8 +166,8 @@ export default {
       return user && user.id ? user : {}
     },
     needPay () {
-      const { paid_node } = this.feed
-      return paid_node && !paid_node.paid
+      const { paid_node: node } = this.feed
+      return node && !node.paid
     },
     images () {
       return this.feed.images || []
@@ -249,8 +225,8 @@ export default {
       const path = hash
         ? `/feeds/${this.feedID}#${hash}`
         : `/feeds/${this.feedID}`
-      const { paid_node } = this.feed
-      paid_node && !paid_node.paid
+      const { paid_node: node } = this.feed
+      node && !node.paid
         ? this.$lstore.hasData('H5_ACCESS_TOKEN')
           ? this.$bus.$emit('payfor', {
             onCancel: () => {},
@@ -259,8 +235,8 @@ export default {
               this.$router.push(path)
             },
             nodeType: '内容',
-            node: paid_node.node,
-            amount: paid_node.amount,
+            node: node.node,
+            amount: node.amount,
           })
           : this.$nextTick(() => {
             const path = this.$route.fullPath
@@ -284,20 +260,23 @@ export default {
         validateStatus: s => s === 201 || s === 204,
       })
         .then(() => {
-          method === 'post'
-            ? ((this.liked = true), (this.likeCount += 1))
-            : ((this.liked = false), (this.likeCount -= 1))
-          this.fetching = false
+          if (method === 'post') {
+            this.liked = true
+            this.likeCount += 1
+          } else {
+            this.liked = false
+            this.likeCount -= 1
+          }
         })
-        .catch(() => {
+        .finally(() => {
           this.fetching = false
         })
     },
-    handleComment ({ placeholder, reply_user }) {
+    handleComment ({ placeholder, reply_user: user }) {
       this.$bus.$emit('commentInput', {
         placeholder,
         onOk: text => {
-          this.sendComment({ body: text, reply_user })
+          this.sendComment({ body: text, reply_user: user })
         },
       })
     },
@@ -359,32 +338,60 @@ export default {
         actions.push({
           text: '举报',
           method: () => {
-            this.$Message.info('举报功能开发中，敬请期待')
+            this.$bus.$emit('report', {
+              type: 'feed',
+              payload: this.feedID,
+              username: this.user.name,
+              reference: this.body,
+            })
           },
         })
       }
 
       this.$bus.$emit('actionSheet', actions, '取消')
     },
-    commentAction ({ isMine = false, placeholder, reply_user, comment }) {
+    commentAction ({ isMine = false, placeholder, reply_user: user, comment }) {
+      const actions = []
       if (isMine) {
         const isOwner = this.feed.user.id === this.CURRENTUSER.id
-        const actionSheet = [
-          {
-            text: isOwner ? '评论置顶' : '申请评论置顶',
-            method: () => {
-              this.popupBuyTS()
-            },
+        actions.push({
+          text: isOwner ? '评论置顶' : '申请评论置顶',
+          method: () => {
+            this.$bus.$emit('applyTop', {
+              isOwner,
+              type: 'feedComment',
+              api: api.applyTopFeedComment,
+              payload: { feedId: this.feedID, commentId: comment.id },
+            })
           },
-          { text: '删除评论', method: () => this.deleteComment(comment.id) },
-        ]
-        this.$bus.$emit('actionSheet', actionSheet)
+        })
+        actions.push({
+          text: '删除评论',
+          method: () => this.deleteComment(comment.id),
+        })
       } else {
-        this.handleComment({
-          placeholder,
-          reply_user,
+        actions.push({
+          text: '回复',
+          method: () => {
+            this.handleComment({
+              placeholder,
+              reply_user: user,
+            })
+          },
+        })
+        actions.push({
+          text: '举报',
+          method: () => {
+            this.$bus.$emit('report', {
+              type: 'comment',
+              payload: comment.id,
+              username: comment.user.name,
+              reference: comment.body,
+            })
+          },
         })
       }
+      this.$bus.$emit('actionSheet', actions)
     },
     sendComment ({ reply_user: replyUser, body }) {
       if (body && body.length === 0) { return this.$Message.error('评论内容不能为空') }

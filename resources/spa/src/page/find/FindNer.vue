@@ -51,8 +51,8 @@ export default {
       })
       // 修正数据顺序
       const sortedUsers = []
-      for (const user_id of userList) {
-        const user = data.find(u => u.id === user_id)
+      for (const userId of userList) {
+        const user = data.find(u => u.id === userId)
         user && sortedUsers.push(user)
       }
       this.users = sortedUsers
@@ -64,7 +64,7 @@ export default {
           this.users = []
           this.formateUsers(data)
           this.page = 2
-          callback(data.length < 15)
+          this.$refs.loadmore.afterRefresh(data.length < 15)
         }
       )
     },
@@ -73,7 +73,7 @@ export default {
         ({ data = [] }) => {
           this.page += 1
           this.formateUsers(data)
-          callback(data.length < 15)
+          this.$refs.loadmore.afterLoadMore(data.length < 15)
         }
       )
     },

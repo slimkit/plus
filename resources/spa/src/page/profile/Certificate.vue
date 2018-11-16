@@ -1,9 +1,7 @@
 <template>
   <div class="p-profile-certificate">
 
-    <common-header
-      :pinned="true"
-      :back="back">
+    <common-header :pinned="true" :back="back">
       {{ title }}
       <span
         v-show="step === 2"
@@ -18,9 +16,7 @@
       tag="main"
       class="m-box-model m-flex-grow1 m-flex-shrink1 main">
       <template v-if="step === 1">
-        <div
-          key="step1"
-          class="step1">
+        <div key="step1" class="step1">
           <template v-if="type ==='org'">
             <!-- 机构名称 -->
             <div class="m-form-row m-main">
@@ -113,9 +109,7 @@
           <div class="m-box m-aln-center m-text-box m-form-err-box">
             <!-- <span>{{ error | plusMessageFirst }}</span> -->
           </div>
-          <div
-            class="m-form-row"
-            style="border: 0">
+          <div class="m-form-row" style="border: 0">
             <button
               :disabled="loading||disabled"
               class="m-long-btn m-signin-btn"
@@ -254,8 +248,8 @@ export default {
           number,
           desc,
           files = [],
-          org_name,
-          org_address,
+          org_name: orgName,
+          org_address: orgAddress,
         } = val // ignore camelcase
         this.files = files
         this.fields = Object.assign({}, this.fields, {
@@ -265,8 +259,8 @@ export default {
           number,
         })
         this.orgFields = Object.assign({}, this.orgFields, {
-          org_name,
-          org_address,
+          org_name: orgName,
+          org_address: orgAddress,
         })
       },
     },

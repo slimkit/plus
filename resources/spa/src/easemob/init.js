@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import store from '@/plugins/lstore/lstore.js'
 import api from '@/api/api.js'
 import webim from 'easemob-websdk'

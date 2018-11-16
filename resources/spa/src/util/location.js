@@ -43,6 +43,7 @@ export default {
           AMap.event.addListener(geolocation, 'complete', resolve)
           // 定位失败
           AMap.event.addListener(geolocation, 'error', err => {
+            // eslint-disable-next-line
             reject({ message: switchError(err) })
           })
         })

@@ -88,8 +88,8 @@ export default {
       verified: state => state.USER_VERIFY,
     }),
     type () {
-      const { certification_name = 'user' } = this.verified
-      return certification_name
+      const { certification_name: type = 'user' } = this.verified
+      return type
     },
   },
   watch: {

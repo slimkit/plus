@@ -100,9 +100,7 @@ export default {
       }
 
       function isNum (val) {
-        if (val === '' || val == null) {
-          return false
-        }
+        if (val === '' || val === null) return false
         return !isNaN(val)
       }
       if (!name) {

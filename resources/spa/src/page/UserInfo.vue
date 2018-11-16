@@ -37,17 +37,11 @@
 
         <!-- form-tags-selected -->
 
-        <section
-          class="m-box m-aln-stre m-justify-bet p-info-row m-bb1"
-          @click="switchTags">
+        <section class="m-box m-aln-stre m-justify-bet p-info-row m-bb1" @click="switchTags">
           <label>标签</label>
           <div class="m-box m-aln-center m-justify-bet m-flex-grow1 m-flex-shrink1 input">
-            <span
-              v-if="tags.length === 0"
-              class="placeholder">选择标签</span>
-            <div
-              v-else
-              class="m-tag-list m-tags">
+            <span v-if="tags.length === 0" class="placeholder">选择标签</span>
+            <div v-else class="m-tag-list m-tags">
               <span
                 v-for="tag in tags"
                 :key="tag.id"
@@ -82,11 +76,11 @@ import { mapState } from 'vuex'
 if (!HTMLCanvasElement.prototype.toBlob) {
   Object.defineProperty(HTMLCanvasElement.prototype, 'toBlob', {
     value: function (callback, type, quality) {
-      var binStr = atob(this.toDataURL(type, quality).split(',')[1]),
-        len = binStr.length,
-        arr = new Uint8Array(len)
+      const binStr = atob(this.toDataURL(type, quality).split(',')[1])
+      const len = binStr.length
+      const arr = new Uint8Array(len)
 
-      for (var i = 0; i < len; i++) {
+      for (let i = 0; i < len; i++) {
         arr[i] = binStr.charCodeAt(i)
       }
 
@@ -177,20 +171,17 @@ export default {
       }
       if (typeof this.avatar === 'string') param.avatar = this.avatar
       this.$http
-        .patch('/user', param, {
-          validateStatus: s => s === 204,
-        })
+        .patch('/user', param, { validateStatus: s => s === 204 })
         .then(() => {
           this.$store.commit(
             'SAVE_CURRENTUSER',
             Object.assign(this.CURRENTUSER, param)
           )
           this.goBack()
-          this.loading = false
         })
-        .catch(err => {
+        .catch(err => err)
+        .finally(() => {
           this.loading = false
-          return err
         })
     },
     switchTags () {

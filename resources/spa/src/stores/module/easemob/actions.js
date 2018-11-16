@@ -55,7 +55,8 @@ export default {
         type: 'chat',
         title: '' + mid + uid,
       })
-      return await dispatch('GET_ROOM_BY_UID_MID', { uid, mid })
+      const result = await dispatch('GET_ROOM_BY_UID_MID', { uid, mid })
+      return result
     }
     return room
   },

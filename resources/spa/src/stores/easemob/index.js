@@ -32,7 +32,7 @@ const getters = {
     return chatRooms.some(room => room.unreadCount > 0)
   },
   getRoomById: ({ chatRooms }) => id => {
-    return chatRooms.filter(item => item.id == id)
+    return chatRooms.filter(item => item.id === id)
   },
 }
 

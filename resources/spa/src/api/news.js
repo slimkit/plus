@@ -256,3 +256,17 @@ export function getCorrelations (newsId, params) {
   const url = `/news/${newsId}/correlations`
   return api.get(url, { params, validateStatus: s => s === 200 })
 }
+
+/**
+ * 举报动态
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {number} newsId
+ * @param {string} reason 举报理由
+ * @returns
+ */
+export function reportNews (newsId, reason) {
+  const url = `/news/${newsId}/reports`
+  return api.post(url, { reason }, { validateStatus: s => s === 201 })
+}

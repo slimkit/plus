@@ -28,9 +28,7 @@
             :user="user"
             :key="user.id" />
         </jo-load-more>
-        <div
-          v-if="noData"
-          class="placeholder m-no-find"/>
+        <div v-if="noData" class="placeholder m-no-find"/>
       </main>
     </div>
   </transition>
@@ -88,13 +86,13 @@ export default {
     onRefresh (callback) {
       api.searchUserByKey(this.keyword).then(({ data }) => {
         this.users = data
-        callback(data.length < 15)
+        this.$refs.loadmore.afterRefresh(data.length < 15)
       })
     },
     onLoadMore (callback) {
       api.searchUserByKey(this.keyword, this.users.length).then(({ data }) => {
         this.users = [...this.users, ...data]
-        callback(data.length < 15)
+        this.$refs.loadmore.afterLoadMore(data.length < 15)
       })
     },
     onFocus () {
@@ -107,7 +105,7 @@ export default {
     fetchRecs (callback) {
       api.findUserByType('recommends').then(({ data }) => {
         this.recs = data
-        callback(data.length < 15)
+        this.$refs.loadmoreRecs.afterRefresh(data.length < 15)
       })
     },
   },

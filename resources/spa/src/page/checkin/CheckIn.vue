@@ -9,15 +9,11 @@
     <transition>
       <!-- 屏蔽出场动画 -->
       <!-- enter-active-class="animated jello" -->
-      <div
-        v-if="show"
-        class="m-box-model m-main m-check-in-box">
+      <div v-if="show" class="m-box-model m-main m-check-in-box">
         <header class="m-box-model m-aln-center m-justify-center m-check-in-head">
           <h2>每日签到</h2>
           <p>累计签到{{ last_checkin_count }}天</p>
-          <a
-            class="m-check-in-close"
-            @click="cancel">
+          <a class="m-check-in-close" @click="cancel">
             <svg
               viewBox="0 0 1024 1024"
               class="m-style-svg m-svg-def"
@@ -95,29 +91,18 @@ export default {
     updateDate () {
       this.$http
         .get(`/user/checkin`)
-        .then(
-          ({
-            data: {
-              checked_in,
-              attach_balance,
-              rank_users = [],
-              // checkin_count = 0,
-              last_checkin_count = 0,
-            } = {},
-          }) => {
-            this.checked_in = checked_in
-            this.attach_balance = ~~attach_balance
-            this.last_checkin_count = last_checkin_count
-            rank_users && rank_users.length && (this.rank_users = rank_users)
-          }
-        )
+        .then(({ data = {} }) => {
+          const users = data.rank_users || []
+          this.checked_in = data.checked_in
+          this.attach_balance = ~~data.attach_balance
+          this.last_checkin_count = data.last_checkin_count || 0
+          users.length && (this.rank_users = users)
+        })
     },
     fetchCheckIn () {
       if (this.checked_in) return
       this.$http
-        .put('/user/checkin/currency', {
-          validateStatus: s => s === 204,
-        })
+        .put('/user/checkin/currency', { validateStatus: s => s === 204 })
         .then(() => {
           this.checked_in = true
           this.updateDate()

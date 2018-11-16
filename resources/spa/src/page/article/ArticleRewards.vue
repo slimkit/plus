@@ -14,15 +14,11 @@
           :key="`reward-${id}-${index}`"
           class="m-box m-aln-center m-justify-bet m-art-reward-item m-bb1 m-main">
 
-          <avatar
-            :user="user"
-            size="tiny" />
+          <avatar :user="user" size="tiny" />
 
           <h2 class="m-box m-flex-grow1 m-flex-shrink1 m-text-cut"><b>{{ user.name }}</b>打赏了{{ typeMap[type] }}</h2>
 
-          <time
-            :datetime="created_at"
-            class="m-flex-grow0 m-flex-shrink0">{{ created_at | time2tips }}</time>
+          <time :datetime="created_at" class="m-flex-grow0 m-flex-shrink0">{{ created_at | time2tips }}</time>
         </section>
       </jo-load-more>
     </main>
@@ -73,7 +69,7 @@ export default {
     this.$refs.loadmore.beforeRefresh()
   },
   methods: {
-    onRefresh (callback) {
+    onRefresh () {
       /**
        * 刷新列表
        *
@@ -84,33 +80,24 @@ export default {
             order_type    string      默认 date, amount 打赏金额 date 打赏时间
        */
       this.$http
-        .get(this.url, {
-          params: {
-            limit: 15,
-          },
-        })
+        .get(this.url, { params: { limit: 15 } })
         .then(({ data = [] }) => {
           this.rewards = data
-          callback(data.length < 15)
+          this.$refs.loadmore.afterRefresh(data.length < 15)
         })
         .catch(() => {
-          callback(true)
+          this.$refs.loadmore.afterRefresh(true)
         })
     },
-    onLoadMore (callback) {
+    onLoadMore () {
       this.$http
-        .get(this.url, {
-          params: {
-            limit: 15,
-            offset: this.rewards.length,
-          },
-        })
+        .get(this.url, { params: { limit: 15, offset: this.rewards.length } })
         .then(({ data = [] }) => {
           this.rewards = [...this.rewards, ...data]
-          callback(data.length < 15)
+          this.$refs.loadmore.afterLoadmore(data.length < 15)
         })
         .catch(() => {
-          callback(true)
+          this.$refs.loadmore.afterLoadmore(true)
         })
     },
   },

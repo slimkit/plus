@@ -1,6 +1,7 @@
 <template>
   <div class="chat-list">
     <jo-load-more
+      ref="loadmore"
       :auto-load="false"
       :show-bottom="false"
       style="height: 100%"
@@ -39,8 +40,8 @@ export default {
     onRefresh (callback) {
       this.initChatRooms().then(() => {
         setTimeout(() => {
-          callback(false)
-        }, 1e3)
+          this.$refs.loadmore.afterRefresh(false)
+        }, 1000)
       })
     },
   },

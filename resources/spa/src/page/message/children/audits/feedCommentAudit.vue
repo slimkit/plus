@@ -13,9 +13,7 @@
           <div :class="`${prefixCls}-item-top`">
             <avatar :user="audit.user" />
             <section class="userInfo">
-              <router-link
-                :class="`${prefixCls}-item-top-link`"
-                :to="`/users/${audit.user_id}`">
+              <router-link :class="`${prefixCls}-item-top-link`" :to="`/users/${audit.user_id}`">
                 {{ audit.user.name }}
               </router-link>
               <p>{{ audit.created_at | time2tips }}</p>
@@ -105,8 +103,8 @@ export default {
     },
     // 获取动态内容
     getFeedContent (feed) {
-      const { feed_content } = feed || {}
-      return feed_content
+      const { feed_content: content } = feed || {}
+      return content
     },
     // 获取动态第一个图片
     getFirstImage (feed) {

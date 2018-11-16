@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="c-user-item"
-    @click="toUserHome">
+  <div class="c-user-item" @click="toUserHome">
     <avatar :user="user" />
     <section class="user-item-body m-text-cut">
       <h2 class="m-text-box m-text-cut">{{ user.name }}</h2>
@@ -53,7 +51,7 @@ export default {
       },
     },
     followText () {
-      if (this.isFollow == 'eachFollow') return '相互关注'
+      if (this.isFollow === 'eachFollow') return '相互关注'
       return this.isFollow === 'follow' ? '已关注' : '+ 关注'
     },
     isMine () {

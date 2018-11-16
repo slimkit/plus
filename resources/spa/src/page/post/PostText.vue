@@ -109,13 +109,16 @@ export default {
       this.amount = amount
     },
     beforePost () {
-      this.pinned
-        ? this.amount === 0
+      if (this.pinned) {
+        this.amount === 0
           ? this.$Message.error('请设置收费金额')
           : this.contentText.length <= this.limit
             ? this.$Message.error(`正文内容不足${this.limit}字, 无法设置收费`)
             : this.postText()
-        : ((this.amount = 0), this.postText())
+      } else {
+        this.amount = 0
+        this.postText()
+      }
     },
     postText () {
       if (this.loading) return

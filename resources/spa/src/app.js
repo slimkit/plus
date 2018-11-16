@@ -9,6 +9,7 @@ import ActionSheet from './components/ActionSheet.vue'
 import CommentInput from './components/CommentInput.vue'
 import CheckIn from './page/checkin/CheckIn.vue'
 import Reward from './components/Reward.vue'
+import Report from './components/Report.vue'
 import ChooseTags from './page/ChooseTags.vue'
 import ApplyTop from './components/ApplyForTop.vue'
 import PopupDialog from './components/PopupDialog.vue'
@@ -27,6 +28,7 @@ export default {
           <CommentInput />
           <CheckIn />
           <Reward />
+          <Report />
           <ChooseTags />
           <ApplyTop />
           <PopupDialog />

@@ -43,7 +43,7 @@ export default {
       if (_.isEmpty(verified)) return false
 
       // 如果有设置图标 使用设置的图标
-      if (verified.icon) { return { 'background-image': `url("${verified.icon}")` } }
+      if (verified.icon) return { 'background-image': `url("${verified.icon}")` }
       // 否则根据认证类型使用相应的默认图标
       else if (verified.type === 'user') {
         return {
@@ -53,9 +53,7 @@ export default {
         return {
           'background-image': 'url(' + require('@/images/cert_org.png') + ')',
         }
-      }
-      // 如果没有认证 就不显示
-      else return false
+      } else return false
     },
     path () {
       return this.uid ? `/users/${this.uid}` : 'javascript:;'

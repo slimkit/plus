@@ -76,22 +76,21 @@ export default {
       this.$router.push(`/groups/${this.feed.group.id}/posts/${this.feed.id}`)
     },
     handleLike () {
-      const method = this.liked ? 'delete' : 'post'
-      const url = `/plus-group/group-posts/${this.feed.id}/likes`
       if (this.fetching) return
       this.fetching = true
-      this.$http({
-        method,
-        url,
-        validateStatus: s => s === 201 || s === 204,
-      })
+      const method = this.liked ? 'delete' : 'post'
+      const url = `/plus-group/group-posts/${this.feed.id}/likes`
+      this.$http({ method, url, validateStatus: s => s === 201 || s === 204 })
         .then(() => {
-          method === 'post'
-            ? ((this.liked = true), (this.likeCount += 1))
-            : ((this.liked = false), (this.likeCount -= 1))
-          this.fetching = false
+          if (method === 'post') {
+            this.liked = true
+            this.likeCount += 1
+          } else {
+            this.liked = false
+            this.likeCount -= 1
+          }
         })
-        .catch(() => {
+        .finally(() => {
           this.fetching = false
         })
     },
@@ -232,36 +231,60 @@ export default {
         actions.push({
           text: '举报',
           method: () => {
-            this.$Message.info('举报功能开发中，敬请期待')
+            this.$bus.$emit('report', {
+              type: 'post',
+              payload: this.feedID,
+              username: this.user.name,
+              reference: this.title,
+            })
           },
         })
       }
 
       this.$bus.$emit('actionSheet', actions, '取消')
     },
-    commentAction ({ isMine = false, placeholder, reply_user, comment }) {
+    commentAction ({ isMine = false, placeholder, reply_user: reply, comment }) {
+      const actions = []
       if (isMine) {
         const isOwner = this.feed.user.id === this.CURRENTUSER.id
-        this.$bus.$emit('actionSheet', [
-          {
-            text: isOwner ? '评论置顶' : '申请评论置顶',
-            method: () => {
-              this.$bus.$emit('applyTop', {
-                isOwner,
-                type: 'postComment',
-                api: api.applyTopPostComment,
-                payload: { postId: this.feedID, commentId: comment.id },
-              })
-            },
+        actions.push({
+          text: isOwner ? '评论置顶' : '申请评论置顶',
+          method: () => {
+            this.$bus.$emit('applyTop', {
+              isOwner,
+              type: 'postComment',
+              api: api.applyTopPostComment,
+              payload: { postId: this.feedID, commentId: comment.id },
+            })
           },
-          { text: '删除评论', method: () => this.deleteComment(comment.id) },
-        ])
+        })
+        actions.push({
+          text: '删除评论',
+          method: () => this.deleteComment(comment.id),
+        })
       } else {
-        this.handleComment({
-          placeholder,
-          reply_user,
+        actions.push({
+          text: '回复',
+          method: () => {
+            this.handleComment({
+              placeholder,
+              reply_user: reply,
+            })
+          },
+        })
+        actions.push({
+          text: '举报',
+          method: () => {
+            this.$bus.$emit('report', {
+              type: 'postComment',
+              payload: comment.id,
+              username: comment.user.name,
+              reference: comment.body,
+            })
+          },
         })
       }
+      this.$bus.$emit('actionSheet', actions)
     },
     deleteComment (commentId) {
       this.$store

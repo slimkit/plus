@@ -27,18 +27,18 @@ export default {
     this.$refs.loadmore.beforeRefresh()
   },
   methods: {
-    onRefresh (callback) {
+    onRefresh () {
       findUserByType('latests').then(({ data: users } = {}) => {
         users && (this.users = users)
-        callback(users.length < 15)
+        this.$refs.loadmore.afterRefresh(users.length < 15)
       })
     },
-    onLoadMore (callback) {
+    onLoadMore () {
       findUserByType('latests', {
         offset: this.users.length,
       }).then(({ data: users }) => {
         this.users = [...this.users, ...users]
-        callback(users.length < 15)
+        this.$refs.loadmore.afterLoadmore(users.length < 15)
       })
     },
   },

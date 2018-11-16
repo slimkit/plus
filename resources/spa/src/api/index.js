@@ -24,3 +24,17 @@ export const limit = ~~(lstore.getData('BOOTSTRAPPERS') || {}).limit || 15
 export function postFile (formData) {
   return api.post('/files', formData, { validateStatus: s => s === 201 })
 }
+
+/**
+ * 举报评论
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {number} commentId
+ * @param {string} reason 举报原因
+ * @returns
+ */
+export function reportComment (commentId, reason) {
+  const url = `/report/comments/${commentId}`
+  return api.post(url, { reason }, { validateStatus: s => s === 201 })
+}

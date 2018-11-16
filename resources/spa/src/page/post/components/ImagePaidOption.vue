@@ -94,32 +94,28 @@ export default {
     },
     handleOk () {
       const { curIndex, /* type, */ amount } = this.$data
-      curIndex > -1
-        ? // ? type
-        amount > 0
-          ? (this.$parent.$set(
+      if (curIndex > -1) {
+        if (amount > 0) {
+          this.$parent.$set(
             this.$parent.pics,
             curIndex,
             Object.assign(this.$parent.pics[curIndex], {
               amount,
               amountType: 'read',
             })
-          ),
-          this.cancel())
-          : this.$Message.error('请输入或选择 收费金额')
-        : // : this.$Message.error("请选择 收费方式")
-        this.cancel()
+          )
+          this.cancel()
+        } else this.$Message.error('请输入或选择 收费金额')
+      } else this.cancel()
     },
     show (image, index) {
-      const { /* amountType */ amount } = image
-      // this.type = amountType;
+      const { amount } = image
       this.amount = amount
       this.curIndex = index
       this.isShow = true
     },
     cancel () {
       this.isShow = false
-      // this.type = null;
       this.amount = null
       this.curIndex = -1
       this.customAmount = null
@@ -127,6 +123,7 @@ export default {
   },
 }
 </script>
+
 <style lang="less">
 .m-image-paid-option-box {
   position: fixed;
@@ -136,7 +133,6 @@ export default {
   transform: translate(-50%, -50%);
   padding: 0 50px;
   width: 650px;
-  // min-height: 650px;
   border-radius: 10px;
   background-color: #fff;
 }

@@ -75,8 +75,6 @@ export default [
           keepAlive: true,
         },
         beforeEnter (to, from, next) {
-          to,
-          from,
           $lstore.hasData('H5_CURRENT_POSITION') ? next() : next('/location')
         },
       },

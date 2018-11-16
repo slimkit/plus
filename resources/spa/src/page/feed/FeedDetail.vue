@@ -8,28 +8,22 @@
     @on-comment="commentFeed">
 
     <common-header slot="head">
-      <avatar
-        :user="user"
-        size="tiny" />
+      <avatar :user="user" size="tiny" />
       <span class="m-text-cut m-flex-none username">
         {{ user.name }}
       </span>
       <template
         v-if="!isMine"
         slot="right"
-        :class="{ c_59b6d7: relation.status !== 'unFollow' }" >
-        <svg
-          class="m-style-svg m-svg-def"
-          @click="followUserByStatus(relation.status)">
+        :class="{ primary: relation.status !== 'unFollow' }" >
+        <svg class="m-style-svg m-svg-def" @click="followUserByStatus(relation.status)">
           <use :xlink:href="relation.icon"/>
         </svg>
       </template>
     </common-header>
 
     <!-- 内容 -->
-    <load-more
-      ref="loadmore"
-      :on-refresh="onRefresh">
+    <load-more ref="loadmore" :on-refresh="onRefresh">
       <main class="m-flex-shrink1 m-flex-grow1 m-art m-main">
         <div class="m-art-body">
           <h2 v-if="title">{{ title }}</h2>
@@ -39,9 +33,7 @@
             class="feed-detail-video"
             controls
             autoplay>
-            <source
-              :src="video_file"
-              type="video/mp4" >
+            <source :src="video_file" type="video/mp4" >
           </video>
           <async-file
             v-for="img in images"
@@ -54,9 +46,7 @@
               :src="props.src"
               @click="onFileClick(img)">
           </async-file>
-          <p
-            class="m-text-box"
-            v-html="formatBody(feedContent)" />
+          <p class="m-text-box" v-html="formatBody(feedContent)" />
         </div>
         <div class="m-box m-aln-center m-justify-bet m-art-foot">
           <div class="m-flex-grow1 m-flex-shrink1 m-art-like-list">
@@ -85,9 +75,7 @@
           </div>
         </div>
         <div class="m-box-model m-box-center m-box-center-a m-art-reward">
-          <button
-            class="m-art-rew-btn"
-            @click="rewardFeed">打 赏</button>
+          <button class="m-art-rew-btn" @click="rewardFeed">打 赏</button>
           <p class="m-art-rew-label"><a href="javascript:;">{{ reward.count | formatNum }}</a>人打赏，共<a href="javascript:;">{{ ~~reward.amount }}</a>{{ currencyUnit }}</p>
           <router-link
             tag="ul"
@@ -101,12 +89,8 @@
               class="m-flex-grow0 m-flex-shrink0 m-art-rew m-avatar-box tiny">
               <img :src="getAvatar(rew.user.avatar)">
             </li>
-            <li
-              v-if="rewardList.length > 0"
-              class="m-box m-aln-center">
-              <svg
-                class="m-style-svg m-svg-def"
-                style="fill: #bfbfbf">
+            <li v-if="rewardList.length > 0" class="m-box m-aln-center">
+              <svg class="m-style-svg m-svg-def" style="fill: #bfbfbf">
                 <use xlink:href="#icon-arrow-right"/>
               </svg>
             </li>
@@ -115,9 +99,7 @@
       </main>
 
       <!-- 评论列表 -->
-      <div
-        id="comment_list"
-        class="m-box-model m-art-comments">
+      <div id="comment_list" class="m-box-model m-art-comments">
         <ul class="m-box m-aln-center m-art-comments-tabs">
           <li>{{ commentCount | formatNum }}条评论</li>
         </ul>
@@ -126,19 +108,15 @@
           :pinned="true"
           :key="`pinned-comment-${comment.id}`"
           :comment="comment"
-          @click="replyComment"/>
+          @click="replyComment(comment)"/>
         <comment-item
           v-for="(comment) in comments"
           :key="comment.id"
           :comment="comment"
-          @click="replyComment"/>
+          @click="replyComment(comment)"/>
         <div class="m-box m-aln-center m-justify-center load-more-box">
-          <div
-            v-if="!pinnedCom.length && !comments.length"
-            class="m-no-find"/>
-          <span
-            v-else-if="noMoreCom"
-            class="load-more-ph">---没有更多---</span>
+          <div v-if="!pinnedCom.length && !comments.length" class="m-no-find"/>
+          <span v-else-if="noMoreCom" class="load-more-ph">---没有更多---</span>
           <span
             v-else
             class="load-more-btn"
@@ -235,7 +213,7 @@ export default {
         return this.feed.feed_comment_count || 0
       },
       set (val) {
-        val > 0, (this.feed.feed_comment_count = val)
+        this.feed.feed_comment_count = val
       },
     },
     reward () {
@@ -281,13 +259,12 @@ export default {
           },
         }
         const { follower, following } = this.user
-        return relations[
-          follower && following
-            ? 'eachFollow'
-            : follower
-              ? 'follow'
-              : 'unFollow'
-        ]
+        const relation = follower && following
+          ? 'eachFollow'
+          : follower
+            ? 'follow'
+            : 'unFollow'
+        return relations[relation]
       },
 
       set (val) {
@@ -441,27 +418,25 @@ export default {
         validateStatus: s => s === 201 || s === 204,
       })
         .then(() => {
-          method === 'post'
-            ? ((this.liked = true),
-            (this.likeCount += 1),
-            this.likes.length < 5 &&
-                (this.likes = [
-                  ...this.likes,
-                  {
-                    user: this.CURRENTUSER,
-                    id: new Date().getTime(),
-                    user_id: this.CURRENTUSER.id,
-                  },
-                ]))
-            : ((this.liked = false),
-            (this.likeCount -= 1),
-            (this.likes = this.likes.filter(like => {
+          if (method === 'post') {
+            this.liked = true
+            this.likeCount += 1
+            if (this.likes.length < 5) {
+              this.likes.push({
+                user: this.CURRENTUSER,
+                id: new Date().getTime(),
+                user_id: this.CURRENTUSER.id,
+              })
+            }
+          } else {
+            this.liked = false
+            this.likeCount -= 1
+            this.likes = this.likes.filter(like => {
               return like.user_id !== this.CURRENTUSER.id
-            })))
-
-          this.fetching = false
+            })
+          }
         })
-        .catch(() => {
+        .finally(() => {
           this.fetching = false
         })
     },
@@ -486,13 +461,16 @@ export default {
             let url
             let txt
             let method
-            this.has_collect
-              ? ((txt = '取消收藏'),
-              (method = 'delete'),
-              (url = `/feeds/${this.feedID}/uncollect`))
-              : ((txt = '已加入我的收藏'),
-              (method = 'post'),
-              (url = `/feeds/${this.feedID}/collections`))
+            if (this.has_collect) {
+              txt = '取消收藏'
+              method = 'delete'
+              url = `/feeds/${this.feedID}/uncollect`
+            } else {
+              txt = '已加入我的收藏'
+              method = 'post'
+              url = `/feeds/${this.feedID}/collections`
+            }
+
             this.$http({
               url,
               method,
@@ -510,7 +488,11 @@ export default {
           {
             text: '申请动态置顶',
             method: () => {
-              this.popupBuyTS()
+              this.$bus.$emit('applyTop', {
+                type: 'feed',
+                api: api.applyTopFeed,
+                payload: this.feedID,
+              })
             },
           },
           {
@@ -543,35 +525,64 @@ export default {
           {
             text: '举报',
             method: () => {
-              this.$Message.info('举报功能开发中，敬请期待')
+              this.$bus.$emit('report', {
+                type: 'feed',
+                payload: this.feedID,
+                username: this.user.name,
+                reference: this.feed.feed_content,
+              })
             },
           },
         ]
       this.$bus.$emit('actionSheet', [...defaultActions, ...actions], '取消')
     },
-    replyComment (uid, uname, commentId) {
+    replyComment (comment) {
+      const actions = []
       // 是否是自己的评论
-      if (uid === this.CURRENTUSER.id) {
+      if (comment.user_id === this.CURRENTUSER.id) {
         // 是否是自己文章的评论
-        const isOwner = uid === this.user.id
-        const actionSheet = [
-          {
-            text: isOwner ? '评论置顶' : '申请评论置顶',
-            method: () => {
-              this.popupBuyTS()
-            },
+        const isOwner = comment.user_id === this.user.id
+        actions.push({
+          text: isOwner ? '评论置顶' : '申请评论置顶',
+          method: () => {
+            this.$bus.$emit('applyTop', {
+              isOwner,
+              type: 'feedComment',
+              api: api.applyTopFeedComment,
+              payload: { feedId: this.feedID, commentId: comment.id },
+              callback: this.fetchFeedComments,
+            })
           },
-          { text: '删除评论', method: () => this.deleteComment(commentId) },
-        ]
-        this.$bus.$emit('actionSheet', actionSheet, '取消')
+        })
+        actions.push({
+          text: '删除评论',
+          method: () => this.deleteComment(comment.id),
+        })
       } else {
-        this.$bus.$emit('commentInput', {
-          placeholder: `回复： ${uname}`,
-          onOk: text => {
-            this.sendComment({ reply_user: uid, body: text })
+        actions.push({
+          text: '回复',
+          method: () => {
+            this.$bus.$emit('commentInput', {
+              placeholder: `回复： ${comment.user.name}`,
+              onOk: text => {
+                this.sendComment({ reply_user: comment.user_id, body: text })
+              },
+            })
+          },
+        })
+        actions.push({
+          text: '举报',
+          method: () => {
+            this.$bus.$emit('report', {
+              type: 'comment',
+              payload: comment.id,
+              username: comment.user.name,
+              reference: comment.body,
+            })
           },
         })
       }
+      this.$bus.$emit('actionSheet', actions)
     },
     sendComment ({ reply_user: replyUser, body }) {
       const params = {}
@@ -620,14 +631,14 @@ export default {
         this.$refs.loadmore.topEnd()
       })
     },
-    onFileClick (paid_node) {
-      if (!paid_node || paid_node.paid !== false) return
+    onFileClick (paidNode) {
+      if (!paidNode || paidNode.paid !== false) return
 
       if (this.$lstore.hasData('H5_ACCESS_TOKEN')) {
         this.$bus.$emit('payfor', {
           nodeType: '内容',
-          node: paid_node.paid_node,
-          amount: paid_node.amount,
+          node: paidNode.paid_node,
+          amount: paidNode.amount,
           onSuccess: data => {
             this.$Message.success(data)
             this.feed.images = null

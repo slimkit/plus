@@ -9,9 +9,7 @@
       </div>
     </transition>
     <transition @after-enter="transitionComplete">
-      <div
-        v-if="show"
-        class="m-box-model m-post-menu-con">
+      <div v-if="show" class="m-box-model m-post-menu-con">
         <transition-group
           tag="div"
           enter-active-class="animated bounceIn"
@@ -75,9 +73,7 @@
           </template>
         </transition-group>
         <transition name="pop">
-          <button
-            class="m-post-menu-btn"
-            @click="cancel">
+          <button class="m-post-menu-btn" @click="cancel">
             <svg class="m-style-svg m-svg-def">
               <use xlink:href="#icon-foot-close"/>
             </svg>
@@ -143,9 +139,12 @@ export default {
       }
     },
     showCheckIn () {
-      this.login
-        ? this.$bus.$emit('check-in')
-        : (this.$Message.error('请登录'), this.$router.push(`/signin`))
+      if (this.login) this.$bus.$emit('check-in')
+      else {
+        this.$Message.error('请登录')
+        this.$router.push(`/signin`)
+      }
+
       this.$nextTick(this.cancel)
     },
     cancel () {

@@ -1,31 +1,21 @@
 <template>
   <div class="p-find-person">
 
-    <header
-      class="m-pos-f m-box m-aln-center m-justify-bet m-lim-width m-bb1 m-main m-head-top"
-      style="padding: 0 10px;">
+    <header class="m-pos-f m-box m-aln-center m-justify-bet m-lim-width m-bb1 m-main m-head-top" style="padding: 0 10px;">
       <div class="m-box m-aln-center m-flex-grow0 m-flex-shrink0">
-        <svg
-          class="m-style-svg m-svg-def"
-          @click="goBack">
+        <svg class="m-style-svg m-svg-def" @click="goBack">
           <use xlink:href="#icon-back"/>
         </svg>
       </div>
-      <div
-        class="m-box m-aln-center m-flex-grow1 m-flex-shrink1 m-head-search-box"
-        @click="showSearchUser">
+      <div class="m-box m-aln-center m-flex-grow1 m-flex-shrink1 m-head-search-box" @click="showSearchUser">
         <svg class="m-style-svg m-svg-def placeholder">
           <use xlink:href="#icon-search"/>
         </svg>
         <span class="placeholder">搜索</span>
       </div>
-      <div
-        class="m-box m-aln-center m-flex-grow0 m-flex-shrink0 m-justify-end m-location"
-        @click="switchLocation">
+      <div class="m-box m-aln-center m-flex-grow0 m-flex-shrink0 m-justify-end m-location" @click="switchLocation">
         <circle-loading v-if="loading"/>
-        <svg
-          v-else
-          class="m-style-svg m-svg-def">
+        <svg v-else class="m-style-svg m-svg-def">
           <use xlink:href="#icon-find-location"/>
         </svg>
         <span class="m-location-label m-text-cut">{{ location }}</span>
@@ -116,18 +106,18 @@ export default {
       this.$router.push('/location')
     },
     getCurrentPosition () {
-      this.$lstore.hasData('H5_CURRENT_POSITION') ||
-        ((this.loading = true),
-        getCurrentPosition().then(
-          data => {
-            this.$store.commit('SAVE_H5_POSITION', data)
-            this.loading = false
-          },
-          err => {
-            this.loading = false
-            this.$Message.error(err.message)
-          }
-        ))
+      if (this.$lstore.hasData('H5_CURRENT_POSITION')) return
+      this.loading = true
+      getCurrentPosition()
+        .then(data => {
+          this.$store.commit('SAVE_H5_POSITION', data)
+        })
+        .catch(err => {
+          this.$Message.error(err.message)
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
   },
 }

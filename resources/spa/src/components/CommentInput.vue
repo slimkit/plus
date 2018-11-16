@@ -31,9 +31,7 @@
             maxlength="255"/>
         </span>
         <div class="submit-wrap">
-          <span
-            v-if="contentText.length >= 210"
-            class="content-length">{{ contentText.length }}/255</span>
+          <span v-if="contentText.length >= 210" class="content-length">{{ contentText.length }}/255</span>
           <button
             :disabled="!contentText.length"
             class="submit-btn"
@@ -77,9 +75,11 @@ export default {
         document.body.style.top = -this.scrollTop + 'px'
 
         const txt = this.$lstore.getData('H5_COMMENT_SAVE_CONTENT')
-        txt &&
-          ((this.contentText = txt.trim() || ''),
-          (this.curpos = this.contentText.length))
+        if (txt) {
+          this.contentText = txt.trim() || ''
+          this.curpos = this.contentText.length
+        }
+
         this.$nextTick(() => {
           this.$refs.textarea && this.$refs.textarea.focus()
         })

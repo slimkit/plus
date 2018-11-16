@@ -13,9 +13,7 @@
       :class="{ 'show-title': scrollTop > 1 / 2 * bannerHeight }"
       class="m-box m-lim-width m-pos-f m-head-top bg-transp">
       <div class="m-box m-flex-grow1 m-aln-center m-flex-base0">
-        <svg
-          class="m-style-svg m-svg-def white"
-          @click="beforeBack">
+        <svg class="m-style-svg m-svg-def white" @click="beforeBack">
           <use xlink:href="#icon-back"/>
         </svg>
         <circle-loading v-if="updating" />
@@ -24,14 +22,12 @@
         <span class="m-text-cut">{{ user.name }}</span>
       </div>
       <div class="m-box m-flex-grow1 m-aln-center m-flex-base0 m-justify-end">
-        <!-- <svg class="m-style-svg m-svg-def">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-more"></use>
-        </svg> -->
+        <svg class="m-style-svg m-svg-def" @click="onMoreClick">
+          <use xlink:href="#icon-more"/>
+        </svg>
       </div>
     </header>
-    <div
-      v-if="loading"
-      class="m-pos-f m-spinner">
+    <div v-if="loading" class="m-pos-f m-spinner">
       <div/>
       <div/>
     </div>
@@ -42,9 +38,7 @@
         :style="bannerStyle"
         class="m-urh-banner">
         <div class="m-box-model m-aln-center m-justify-end m-pos-f m-urh-bg-mask">
-          <label
-            v-if="isMine"
-            class="banner-click-area">
+          <label v-if="isMine" class="banner-click-area">
             <input
               ref="imagefile"
               :accept="accept"
@@ -52,9 +46,7 @@
               class="m-rfile"
               @change="onBannerChange" >
           </label>
-          <avatar
-            :user="user"
-            size="big" />
+          <avatar :user="user" size="big" />
           <h3>{{ user.name }}</h3>
           <p>
             <router-link
@@ -69,9 +61,7 @@
         </div>
       </div>
       <div class="m-text-box m-urh-info">
-        <p
-          v-if="verified"
-          class="m-cf94">
+        <p v-if="verified" class="m-cf94">
           认证：<span>{{ verified.description }}</span>
         </p>
         <p v-if="user.location">地址：<span>{{ user.location }}</span></p>
@@ -91,9 +81,7 @@
         class="m-box m-aln-center m-justify-bet m-urh-filter-box"
         @click="popupBuyTS">
         <span>{{ feedsCount }}条动态</span>
-        <div
-          v-if="isMine"
-          class="m-box m-aln-center m-urh-filter">
+        <div v-if="isMine" class="m-box m-aln-center m-urh-filter">
           <span>{{ feedTypes[screen] }}</span>
           <svg class="m-style-svg m-svg-small">
             <use xlink:href="#icon-list"/>
@@ -112,9 +100,7 @@
         </li>
       </ul>
       <div class="m-box m-aln-center m-justify-center load-more-box">
-        <span
-          v-if="noMoreData"
-          class="load-more-ph">---没有更多---</span>
+        <span v-if="noMoreData" class="load-more-ph">---没有更多---</span>
         <span
           v-else
           class="load-more-btn"
@@ -127,16 +113,14 @@
       v-if="!isMine"
       ref="foot"
       class="m-box m-pos-f m-main m-bt1 m-user-home-foot">
-      <div
-        class="m-flex-grow0 m-flex-shrink0 m-box m-aln-center m-justify-center"
-        @click="rewardUser">
+      <div class="m-flex-grow0 m-flex-shrink0 m-box m-aln-center m-justify-center" @click="rewardUser">
         <svg class="m-style-svg m-svg-def">
           <use xlink:href="#icon-profile-integral"/>
         </svg>
         <span>打赏</span>
       </div>
       <div
-        :class="{ c_59b6d7: relation.status !== 'unFollow' }"
+        :class="{ primary: relation.status !== 'unFollow' }"
         class="m-flex-grow0 m-flex-shrink0 m-box m-aln-center m-justify-center"
         @click="followUserByStatus(relation.status)">
         <svg class="m-style-svg m-svg-def">
@@ -145,9 +129,7 @@
         <span>{{ relation.text }}</span>
       </div>
       <!-- `/chats/${user.id}` -->
-      <div
-        class="m-flex-grow0 m-flex-shrink0 m-box m-aln-center m-justify-center"
-        @click="startSingleChat">
+      <div class="m-flex-grow0 m-flex-shrink0 m-box m-aln-center m-justify-center" @click="startSingleChat">
         <svg class="m-style-svg m-svg-def">
           <use xlink:href="#icon-comment"/>
         </svg>
@@ -335,13 +317,8 @@ export default {
           },
         }
         const { follower, following } = this.user
-        return relations[
-          follower && following
-            ? 'eachFollow'
-            : follower
-              ? 'follow'
-              : 'unFollow'
-        ]
+        const relation = follower && following ? 'eachFollow' : follower ? 'follow' : 'unFollow'
+        return relations[relation]
       },
 
       set (val) {
@@ -362,9 +339,8 @@ export default {
   mounted () {
     this.typeFilter = this.$refs.typeFilter
     this.bannerHeight = this.$refs.banner.getBoundingClientRect().height
-
-    this.isMine ||
-      ((this.footroom = new HeadRoom(this.$refs.foot, {
+    if (!this.isMine) {
+      this.footroom = new HeadRoom(this.$refs.foot, {
         tolerance: 5,
         offset: 50,
         classes: {
@@ -372,18 +348,21 @@ export default {
           pinned: 'headroom--footShow',
           unpinned: 'headroom--footHide',
         },
-      })),
-      this.footroom.init())
+      })
+      this.footroom.init()
+    }
   },
   activated () {
-    this.preUID !== this.userID
-      ? ((this.loading = true),
-      (this.feeds = []),
-      (this.tags = []),
-      this.updateData())
-      : setTimeout(() => {
+    if (this.preUID !== this.userID) {
+      this.loading = true
+      this.feeds = []
+      this.tags = []
+      this.updateData()
+    } else {
+      setTimeout(() => {
         this.loading = false
       }, 300)
+    }
 
     window.addEventListener('scroll', this.onScroll)
 
@@ -460,7 +439,6 @@ export default {
         this.tags = data
       })
     },
-
     fetchUserFeed (loadmore) {
       if (this.fetchFeeding) return
       this.fetchFeeding = true
@@ -533,9 +511,9 @@ export default {
         .then(data => {
           return Promise.resolve(data.node)
         })
-        .catch(() => {
+        .catch(err => {
           this.$Message.error('文件上传失败，请检查文件系统配置')
-          return Promise.reject()
+          return Promise.reject(err)
         })
     },
     onScroll: _.debounce(function () {
@@ -563,6 +541,21 @@ export default {
     stopDrag () {
       this.dragging = false
       this.dY > 300 && this.scrollTop <= 0 ? this.updateData() : (this.dY = 0)
+    },
+    onMoreClick () {
+      const actions = []
+      actions.push({
+        text: '举报',
+        method: () => {
+          this.$bus.$emit('report', {
+            type: 'user',
+            payload: this.userID,
+            username: this.user.name,
+            reference: this.user.bio,
+          })
+        },
+      })
+      this.$bus.$emit('actionSheet', actions)
     },
   },
 }

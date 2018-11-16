@@ -1,13 +1,9 @@
 <template>
   <div class="p-user-fans">
 
-    <nav
-      class="m-box m-head-top m-lim-width m-pos-f m-main m-bb1"
-      style="padding: 0 10px;">
+    <nav class="m-box m-head-top m-lim-width m-pos-f m-main m-bb1" style="padding: 0 10px;">
       <div class="m-box m-aln-center m-flex-shrink0 ">
-        <svg
-          class="m-style-svg m-svg-def"
-          @click="goBack">
+        <svg class="m-style-svg m-svg-def" @click="goBack">
           <use xlink:href="#icon-back"/>
         </svg>
       </div>
@@ -41,8 +37,7 @@
           v-for="user in users"
           v-if="user.id"
           :user="user"
-          :key="`user-item-${user.id}`"
-        />
+          :key="`user-item-${user.id}`" />
       </jo-load-more>
     </main>
   </div>
@@ -94,33 +89,35 @@ export default {
       typeMap.includes(val) && this.$refs.loadmore.beforeRefresh()
     },
     users (val) {
-      val &&
-        val.length > 0 &&
+      if (val && val.length > 0) {
         val.forEach(user => {
           this.$store.commit('SAVE_USER', user)
         })
+      }
     },
   },
   activated () {
     // 判断是否清空上一次的数据
-    this.userID === this.preUID ||
-      ((this.followers = []), (this.followings = []))
+    if (this.userID !== this.preUID) {
+      this.followers = []
+      this.followings = []
+    }
 
     this.$refs.loadmore.beforeRefresh()
     this.preUID = this.userID
   },
   methods: {
-    onRefresh (callback) {
+    onRefresh () {
       getUserFansByType(this.param).then(data => {
         this.users = data
-        callback(data.length < this.param.limit)
+        this.$refs.loadmore.afterRefresh(data.length < this.param.limit)
       })
     },
     onLoadMore (callback) {
       getUserFansByType({ ...this.param, offset: this.users.length }).then(
         data => {
           this.users = [...this.users, ...data]
-          callback(data.length < this.param.limit)
+          this.$refs.loadmore.afterLoadMore(data.length < this.param.limit)
         }
       )
     },

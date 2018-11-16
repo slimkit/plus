@@ -179,26 +179,19 @@ export function getUserFansByType ({ uid, type, limit = 15, offset = 0 }) {
  * @returns {Promise<boolean>}
  */
 export function signinByAccount (payload) {
-  return api.post('/auth/login', payload, { validateStatus: s => s > 0 }).then(
-    ({ data: { message, access_token /* token_type = "bearer" */ }, status }) => {
+  return api.post('/auth/login', payload, { validateStatus: s => s > 0 })
+    .then(({ data: { message, access_token: token }, status }) => {
       switch (status) {
         case 422:
           $Message.error(message)
           return false
         case 200:
-          lstore.setData(
-            'H5_ACCESS_TOKEN',
-            `Bearer ${access_token}`
-            // `${token_type} ${access_token}`
-          )
+          lstore.setData('H5_ACCESS_TOKEN', `Bearer ${token}`)
           store.dispatch('fetchUserInfo')
           return true
       }
-    },
-    () => {
-      return false
-    }
-  )
+    })
+    .catch(() => false)
 }
 
 /**
@@ -273,4 +266,18 @@ export function patchCertification (payload) {
  */
 export function getUserVerifyInfo () {
   return api.get('/user/certification', { validateStatus: s => s === 200 })
+}
+
+/**
+ * 举报用户
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {number} userId
+ * @param {string} reason
+ * @returns
+ */
+export function reportUser (userId, reason) {
+  const url = `/report/users/${userId}`
+  return api.post(url, { reason }, { validateStatus: s => s === 201 })
 }

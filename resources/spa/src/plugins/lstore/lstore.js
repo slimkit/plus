@@ -86,8 +86,12 @@ export default {
     const store = session ? 'sessionStorage' : 'localStorage'
     if (this.isSupported && window[store]) {
       const data = this.hasData(key, session) ? this.getData(key, session) : []
-      index && index === 'start' ? data.unshift(value) : data.push(value),
-      this.setData(key, data, session)
+      if (index && index === 'start') {
+        data.unshift(value)
+      } else {
+        data.push(value)
+        this.setData(key, data, session)
+      }
     }
   },
   /**

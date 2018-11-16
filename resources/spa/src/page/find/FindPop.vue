@@ -30,7 +30,7 @@ export default {
     onRefresh (callback) {
       findUserByType('populars').then(({ data: users } = {}) => {
         users && (this.users = users)
-        callback(users.length < 15)
+        this.$refs.loadmore.afterRefresh(users.length < 15)
       })
     },
     onLoadMore (callback) {
@@ -38,7 +38,7 @@ export default {
         offset: this.users.length,
       }).then(({ data: users }) => {
         this.users = [...this.users, ...users]
-        callback(users.length < 15)
+        this.$refs.loadmore.afterLoadMore(users.length < 15)
       })
     },
   },

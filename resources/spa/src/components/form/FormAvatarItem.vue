@@ -1,18 +1,10 @@
 <template>
-  <section
-    class="c-form-item c-form-avatar-item"
-    @click="beforeSelectFile">
-    <div
-      :class="shape"
-      class="avatar-wrap">
-      <img
-        :src="avatar"
-        class="m-avatar-img">
+  <section class="c-form-item c-form-avatar-item" @click="beforeSelectFile">
+    <div :class="shape" class="avatar-wrap">
+      <img :src="avatar" class="m-avatar-img">
     </div>
     <span class="avatar-label">{{ label }}</span>
-    <svg
-      v-if="!readonly"
-      class="m-style-svg m-svg-def m-entry-append">
+    <svg v-if="!readonly" class="m-style-svg m-svg-def m-entry-append">
       <use xlink:href="#icon-arrow-right"/>
     </svg>
     <input
@@ -37,9 +29,9 @@ import getFirstFrameOfGif from '@/util/getFirstFrameOfGif.js'
 if (!HTMLCanvasElement.prototype.toBlob) {
   Object.defineProperty(HTMLCanvasElement.prototype, 'toBlob', {
     value: function (callback, type, quality) {
-      var binStr = atob(this.toDataURL(type, quality).split(',')[1]),
-        len = binStr.length,
-        arr = new Uint8Array(len)
+      const binStr = atob(this.toDataURL(type, quality).split(',')[1])
+      const len = binStr.length
+      const arr = new Uint8Array(len)
 
       for (var i = 0; i < len; i++) {
         arr[i] = binStr.charCodeAt(i)
@@ -129,20 +121,18 @@ export default {
     },
 
     async uploadBlob (blob) {
-      // 如果需要得到服务器文件接口返回的 ID
       if (this.type === 'id') {
+        // 如果需要得到服务器文件接口返回的 ID
         const formData = new FormData()
         formData.append('file', blob)
         const id = await this.$store.dispatch('uploadFile', formData)
         this.$Message.success('头像上传成功')
         this.$emit('input', id)
-      }
-      // 如果需要 Blob 对象
-      else if (this.type === 'blob') {
+      } else if (this.type === 'blob') {
+        // 如果需要 Blob 对象
         this.$emit('input', blob)
-      }
-      // 如果需要新文件存储方式上传
-      else if (this.type === 'storage') {
+      } else if (this.type === 'storage') {
+        // 如果需要新文件存储方式上传
         this.avatarBlob = blob
         const hash = await hashFile(
           new File([blob], this.filename, {

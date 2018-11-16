@@ -3,6 +3,7 @@
  * @param {any} value Any type value
  */
 export function boolean (value) {
+  // eslint-disable-next-line no-eval
   return !!eval(value)
 }
 

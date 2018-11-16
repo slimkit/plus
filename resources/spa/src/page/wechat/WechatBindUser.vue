@@ -29,9 +29,7 @@
             v-show="account.length > 0"
             class="m-style-svg m-svg-def"
             @click="account = ''">
-            <use
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-              xlink:href="#icon-clean"/>
+            <use xlink:href="#icon-clean"/>
           </svg>
         </div>
         <div class="m-form-row m-main">
@@ -50,15 +48,10 @@
               v-model="password"
               type="password"
               placeholder="输入6位以上登录密码"
-              @focus="onFocus"
-            >
+              @focus="onFocus" >
           </div>
-          <svg
-            class="m-style-svg m-svg-def"
-            @click="eye=!eye">
-            <use
-              :xlink:href="`#eye-${eye?&quot;open&quot;:&quot;close&quot;}`"
-              xmlns:xlink="http://www.w3.org/1999/xlink"/>
+          <svg class="m-style-svg m-svg-def" @click="eye=!eye">
+            <use :xlink:href="`#eye-${eye?'open':'close'}`"/>
           </svg>
         </div>
         <div class="m-box m-aln-center m-text-box m-form-err-box">
@@ -67,9 +60,7 @@
             <span v-if="err">{{ (err | plusMessageFirst) }}</span>
           </transition>
         </div>
-        <div
-          class="m-form-row"
-          style="border: 0">
+        <div class="m-form-row" style="border: 0">
           <button
             :disabled="disabled"
             class="m-long-btn m-signin-btn"
@@ -128,13 +119,12 @@ export default {
     },
     bindUser () {
       this.err = ''
-      if (this.loading) {
-        return
-      }
+      if (this.loading) return
+
       const {
         account: login,
         password,
-        accessToken: access_token,
+        accessToken,
       } = this.$data
       if (!login) {
         this.err = { error: '账号不能为空' }
@@ -146,21 +136,19 @@ export default {
         return
       }
 
-      if (!access_token) {
+      if (!accessToken) {
         this.err = { error: '未获取到微信授权' }
         return
       }
 
       let param = {
         login,
-        access_token,
+        access_token: accessToken,
         password,
       }
       this.loading = true
       this.$http
-        .put('socialite/wechat', param, {
-          validateStatus: s => s === 201,
-        })
+        .put('socialite/wechat', param, { validateStatus: s => s === 201 })
         .then(({ data: { token = '', user = {} } = {} }) => {
           this.$store.commit('SAVE_CURRENTUSER', { ...user, token })
           this.$nextTick(() => {
@@ -171,9 +159,8 @@ export default {
             this.$lstore.removeData('H5_WECHAT_MP_OPENID')
             this.$lstore.removeData('H5_WECHAT_MP_ASTOKEN')
           })
-          this.loading = false
         })
-        .catch(() => {
+        .finally(() => {
           this.loading = false
         })
     },

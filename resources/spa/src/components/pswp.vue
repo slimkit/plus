@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     payForImg (currItem) {
-      const { paid_node, amount, index } = currItem
+      const { paid_node: node, amount, index } = currItem
       this.$bus.$emit('payfor', {
         onSuccess: data => {
           this.$Message.success(data)
@@ -86,15 +86,15 @@ export default {
           this.updateImage(index, true)
         },
         nodeType: '图片',
-        node: paid_node,
+        node,
         amount: amount,
       })
     },
     checkImage () {
       if (!this.photoswipe) return
       const currItem = this.photoswipe.currItem
-      const { paid_node, paid, index, type } = currItem
-      paid_node > 0 &&
+      const { paid_node: node, paid, index, type } = currItem
+      node > 0 &&
         type === 'read' &&
         (paid
           ? !currItem.updated && this.updateImage(index)
@@ -108,12 +108,12 @@ export default {
         this.$http
           .get(`/files/${currItem.file}?json=1`)
           .then(({ data: { url } }) => {
-            url &&
-              ((this.photoswipe.currItem.src = url),
-              (this.photoswipe.currItem.updated = true),
-              this.photoswipe.invalidateCurrItems(),
-              this.photoswipe.updateSize(),
-              (currItem.el.style.backgroundImage = `url(${url})`))
+            if (!url) return
+            this.photoswipe.currItem.src = url
+            this.photoswipe.currItem.updated = true
+            this.photoswipe.invalidateCurrItems()
+            this.photoswipe.updateSize()
+            currItem.el.style.backgroundImage = `url(${url})`
           })
       }
     },

@@ -27,9 +27,7 @@
         :warnlength="200"
         placeholder="输入要说的话，图文结合更精彩哦"
         class="textarea-input" />
-      <image-list
-        :edit="pinned"
-        style="padding: 0 .3rem .3rem"/>
+      <image-list :edit="pinned" style="padding: 0 .3rem .3rem"/>
     </main>
 
     <footer @click.capture.stop.prevent="popupBuyTS">

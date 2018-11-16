@@ -70,15 +70,11 @@ export default {
       //  limit   Integer   获取条数，默认 20
       //  after   Integer   id 获取之后数据，默认 0
       this.$http
-        .get(this.url, {
-          params: {
-            limit: 15,
-          },
-        })
+        .get(this.url, { params: { limit: 15 } })
         .then(({ data = [] }) => {
           this.likes = data
           data.length > 0 && (this.maxId = data[data.length - 1].id)
-          callback(data.length < 15)
+          this.$refs.loadmore.afterRefresh(data.length < 15)
         })
     },
     onLoadMore (callback) {
@@ -92,7 +88,7 @@ export default {
         .then(({ data = [] }) => {
           this.likes = [...this.likes, ...data]
           data.length > 0 && (this.maxId = data[data.length - 1].id)
-          callback(data.length < 15)
+          this.$refs.loadmore.afterLoadMore(data.length < 15)
         })
     },
   },

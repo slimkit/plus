@@ -6,9 +6,7 @@
         to="/"
         class="m-box m-aln-center m-flex-grow1 m-flex-base0">
         <svg class="m-style-svg m-svg-def">
-          <use
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            xlink:href="#icon-back"/>
+          <use xlink:href="#icon-back"/>
         </svg>
       </router-link>
       <div class="m-box m-aln-center m-justify-center m-flex-grow1 m-flex-base0 m-head-top-title">
@@ -17,9 +15,7 @@
       <div class="m-box m-aln-center m-justify-end m-flex-grow1 m-flex-base0"/>
     </header>
     <!-- loading -->
-    <div
-      v-if="loading"
-      class="m-spinner pos-f">
+    <div v-if="loading" class="m-spinner pos-f">
       <div/>
       <div/>
     </div>
@@ -30,14 +26,10 @@
       </transition>
       <transition name="pop">
         <div class="m-lim-width m-pos-f m-wechat-box">
-          <router-link
-            tag="button"
-            to="/wechat/signup">
+          <router-link tag="button" to="/wechat/signup">
             <a>注册新用户</a>
           </router-link>
-          <router-link
-            tag="button"
-            to="/wechat/bind">
+          <router-link tag="button" to="/wechat/bind">
             <a>绑定已有用户</a>
           </router-link>
         </div>
@@ -89,31 +81,28 @@ export default {
       let accessToken = this.$lstore.getData('H5_WECHAT_MP_ASTOKEN')
 
       if (!accessToken || !openId) {
-        const { data: { access_token, openid } = {} } = await this.$http.get(
+        const { data } = await this.$http.get(
           `socialite/getAccess/${code}`,
-          {
-            validateStatus: status => status === 200,
-          }
+          { validateStatus: status => status === 200 }
         )
+        const { access_token: accessToken, openid: openId } = data
 
-        openId = openid
-        accessToken = access_token
-
-        this.$lstore.setData('H5_WECHAT_MP_OPENID', openid)
+        this.$lstore.setData('H5_WECHAT_MP_OPENID', openId)
         this.$lstore.setData('H5_WECHAT_MP_ASTOKEN', accessToken)
       }
       this.accessToken = accessToken
       this.$http
         .post(
           'socialite/wechat',
-          {
-            access_token: accessToken,
-          },
-          {
-            validateStatus: s => s === 201,
-          }
+          { access_token: accessToken },
+          { validateStatus: s => s === 201 || s === 404 }
         )
-        .then(({ data: { token = '', user = {} } = {} }) => {
+        .then(({ status, data: { token = '', user = {} } = {} }) => {
+          if (status !== 201) {
+            this.loading = false
+            this.getWechatUserInfo(accessToken, openId)
+            return
+          }
           // 保存用户信息 并跳转
           this.$router.push(this.$route.query.redirect || '/feeds?type=hot')
           this.$nextTick(() => {
@@ -126,23 +115,14 @@ export default {
             this.$store.commit('SAVE_CURRENTUSER', user)
           })
         })
-        .catch(() => {
-          this.loading = false
-          this.getWechatUserInfo(accessToken, openId)
-        })
     },
 
-    getWechatUserInfo (access_token, openid) {
+    getWechatUserInfo (accessToken, openid) {
       this.$http
         .post(
           'socialite/getWechatUser',
-          {
-            openid,
-            access_token,
-          },
-          {
-            validateStatus: s => s === 200,
-          }
+          { openid, access_token: accessToken },
+          { validateStatus: s => s === 200 }
         )
         .then(({ data: { nickname = '' } = {} }) => {
           this.WechatUname = nickname

@@ -14,11 +14,7 @@
         <span class="audit-operation">审核</span>
       </section>
     </section>
-    <section
-      v-if="audit.comment == null"
-      class="red">
-      该评论已被删除
-    </section>
+    <section v-if="!audit.comment" class="red"> 该评论已被删除 </section>
   </div>
 </template>
 

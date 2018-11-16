@@ -4,9 +4,7 @@
     <common-header>
       {{ title }}
       <template slot="left">
-        <a
-          v-if="step === 1"
-          @click.prevent="cancel">取消</a>
+        <a v-if="step === 1" @click.prevent="cancel">取消</a>
         <svg
           v-else
           class="m-style-svg m-svg-def"
@@ -50,38 +48,26 @@
         </div>
       </template>
       <template v-if="step === 2">
-        <div
-          key="step2"
-          class="m-pos-f m-box-model m-flex-grow1 m-flex-shrink1">
-          <div
-            class="m-box m-aln-center m-lim-width m-post-news-row m-main m-bb1"
-            @click="switchCate">
+        <div key="step2" class="m-pos-f m-box-model m-flex-grow1 m-flex-shrink1">
+          <div class="m-box m-aln-center m-lim-width m-post-news-row m-main m-bb1" @click="switchCate">
             <span class="m-post-news-row-label">选择栏目</span>
-            <div
-              :class="{placeholder: !(category.id > 0)}"
-              class="m-box m-flex-grow1 m-flex-shrink1 m-aln-center m-justify-end">
+            <div :class="{placeholder: !(category.id > 0)}" class="m-box m-flex-grow1 m-flex-shrink1 m-aln-center m-justify-end">
               <span>{{ category.name || "选择栏目" }}</span>
               <svg class="m-style-svg m-svg-def m-entry-append">
                 <use xlink:href="#icon-arrow-right"/>
               </svg>
             </div>
           </div>
-          <div
-            class="m-box m-aln-center m-lim-width m-post-news-row m-main m-bb1"
-            @click="switchTags">
+          <div class="m-box m-aln-center m-lim-width m-post-news-row m-main m-bb1" @click="switchTags">
             <span class="m-post-news-row-label">选择标签</span>
             <div class="m-flex-grow1 m-flex-shrink1 m-text-r">
-              <div
-                v-if="tags.length > 0"
-                class="m-tags">
+              <div v-if="tags.length > 0" class="m-tags">
                 <span
                   v-for="tag in tags"
                   :key="tag.id"
                   class="m-tag">{{ tag.name }}</span>
               </div>
-              <div
-                v-else
-                class="m-box m-justify-end placeholder">
+              <div v-else class="m-box m-justify-end placeholder">
                 <span>最多选择5个标签</span>
               </div>
             </div>
@@ -123,9 +109,7 @@
         </div>
       </template>
       <template v-if="step === 3">
-        <div
-          key="step3"
-          class="m-box-model m-flex-grow1 m-flex-shrink1 m-aln-center step3 m-main">
+        <div key="step3" class="m-box-model m-flex-grow1 m-flex-shrink1 m-aln-center step3 m-main">
           <div
             :class="{ loading: poster.loading, error: poster.error }"
             class="m-box m-aln-center m-justify-center m-poster-box"
@@ -136,20 +120,14 @@
               class="m-poster"
               @load.stop="loadedPoster(poster)"
               @error="posterError">
-            <div
-              v-else
-              class="m-box-model m-aln-center m-justify-center m-lim-width m-poster-placeholder">
+            <div v-else class="m-box-model m-aln-center m-justify-center m-lim-width m-poster-placeholder">
               <svg class="m-style-svg m-svg-big">
                 <use xlink:href="#icon-camera"/>
               </svg>
               <span>点击上传封面</span>
             </div>
-            <div
-              v-if="!poster.error && poster.loading"
-              class="fixed-loading">
-              <div
-                class="u-loading"
-                style="height: 58px;width: 58px">
+            <div v-if="!poster.error && poster.loading" class="fixed-loading">
+              <div class="u-loading" style="height: 58px;width: 58px">
                 <svg
                   class="loading"
                   width="100%"
@@ -183,13 +161,9 @@
               @change="selectPhoto">
           </div>
           <p>不上传封面则默认为文章内第一张图</p>
-          <button
-            class="m-long-btn m-signin-btn"
-            @click="handleOk">{{ newsPay ? '支付并发布资讯' : '发布资讯' }}</button>
+          <button class="m-long-btn m-signin-btn" @click="handleOk">{{ newsPay ? '支付并发布资讯' : '发布资讯' }}</button>
 
-          <password-confirm
-            ref="password"
-            @submit="handlePostNews" />
+          <password-confirm ref="password" @submit="handlePostNews" />
 
         </div>
       </template>
@@ -393,11 +367,9 @@ export default {
     },
     handleOk () {
       const { title, content } = this.news
-      if (!(title && content)) { return this.$Message.error('请输入标题和正文'), (this.step = 1) }
-      if (!this.category.id) { return this.$Message.error('请选择投稿栏目'), (this.step = 2) }
-      if (this.tags.length === 0) {
-        return this.$Message.error('请选择标签'), (this.step = 2)
-      }
+      if (!(title && content)) return (this.step = 1) && this.$Message.error('请输入标题和正文')
+      if (!this.category.id) return (this.step = 2) && this.$Message.error('请选择投稿栏目')
+      if (this.tags.length === 0) return (this.step = 2) && this.$Message.error('请选择标签')
 
       this.newsPay
         ? this.$bus.$emit('payfor', {
@@ -415,21 +387,23 @@ export default {
         : this.handlePostNews()
     },
     preStep () {
-      this.step > 1 &&
-        ((this.animated = {
+      if (this.step <= 1) {
+        this.animated = {
           enterClass: 'animated slideInLeft',
           leaveClass: 'animated slideOutRight',
-        }),
-        (this.step -= 1))
+        }
+        this.step -= 1
+      }
     },
     nextStep () {
       if (this.disabled) return
-      this.step < 3 &&
-        ((this.animated = {
+      if (this.step < 3) {
+        this.animated = {
           enterClass: 'animated slideInRight',
           leaveClass: 'animated slideOutLeft',
-        }),
-        (this.step += 1))
+        }
+        this.step += 1
+      }
     },
     cancel () {
       this.$bus.$emit(

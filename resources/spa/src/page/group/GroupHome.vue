@@ -3,17 +3,11 @@
 
     <common-header>
       圈子
-      <div
-        slot="right"
-        @click.capture.stop.prevent="popupBuyTS">
-        <svg
-          class="m-style-svg m-svg-def"
-          @click="onSearchClick">
+      <div slot="right" @click.capture.stop.prevent="popupBuyTS">
+        <svg class="m-style-svg m-svg-def" @click="onSearchClick">
           <use xlink:href="#icon-search"/>
         </svg>
-        <svg
-          class="m-style-svg m-svg-def"
-          @click="beforeCreateGroup">
+        <svg class="m-style-svg m-svg-def" @click="beforeCreateGroup">
           <use xlink:href="#icon-group-create"/>
         </svg>
       </div>
@@ -21,9 +15,7 @@
 
     <main @click.capture.stop.prevent="popupBuyTS">
 
-      <div
-        class="group-label"
-        @click="$router.push({ name: 'groups', query: { type: 'recommend' } })">
+      <div class="group-label" @click="$router.push({ name: 'groups', query: { type: 'recommend' } })">
         <h2><strong>{{ groupTotalNumber }}</strong>个兴趣小组，等待你的加入！</h2>
         <svg class="m-style-svg m-svg-def m-entry-append">
           <use xlink:href="#icon-arrow-right"/>
@@ -47,35 +39,25 @@
         </router-link>
 
         <ul class="group-list">
-          <li
-            v-for="group in groups"
-            :key="`mygroup-${group.id}`">
+          <li v-for="group in groups" :key="`mygroup-${group.id}`">
             <group-item :group="group" />
           </li>
         </ul>
       </div>
 
       <!-- 推荐圈子 -->
-      <div
-        v-if="recGroups.length > 0"
-        class="m-box-model">
+      <div v-if="recGroups.length > 0" class="m-box-model">
         <div class="group-label">
           <span>热门推荐</span>
-          <div
-            class="m-box m-aln-center m-justify-end"
-            @click="fetchRecGroups">
-            <svg
-              :style="{ transform: `rotate(${clickCount}turn)` }"
-              class="m-style-svg m-svg-small">
+          <div class="m-box m-aln-center m-justify-end" @click="fetchRecGroups">
+            <svg :style="{ transform: `rotate(${clickCount}turn)` }" class="m-style-svg m-svg-small">
               <use xlink:href="#icon-refresh"/>
             </svg>
             <span style="margin-left: 0.05rem">换一批</span>
           </div>
         </div>
         <ul class="group-list">
-          <li
-            v-for="group in recGroups"
-            :key="`recgroup-${group.id}`">
+          <li v-for="group in recGroups" :key="`recgroup-${group.id}`">
             <group-item :group="group" />
           </li>
         </ul>
