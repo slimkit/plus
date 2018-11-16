@@ -1,10 +1,29 @@
 <?php
+
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc;
+
 use Zhiyi\Plus\Models\Comment;
+use Zhiyi\Plus\Models\Advertising;
 use Zhiyi\Plus\Support\Configuration;
 use Zhiyi\Plus\Support\PackageHandler;
-use Zhiyi\Plus\Models\Advertising;
 use Zhiyi\Plus\Models\AdvertisingSpace;
+
 class PcPackageHandler extends PackageHandler
 {
     /**
@@ -13,6 +32,7 @@ class PcPackageHandler extends PackageHandler
      * @var \Zhiyi\Plus\Support\Configuration
      */
     protected $config;
+
     /**
      * Create the handler instance.
      *
@@ -22,6 +42,7 @@ class PcPackageHandler extends PackageHandler
     {
         $this->config = $config;
     }
+
     public function installHandle($command)
     {
         // publish public assets
@@ -54,6 +75,7 @@ class PcPackageHandler extends PackageHandler
             ]);
         }
     }
+
     public function removeHandle($command)
     {
         if ($command->confirm('This will delete your datas for pc, continue?')) {
@@ -73,6 +95,7 @@ class PcPackageHandler extends PackageHandler
             $command->info('The Pc Component has been removed');
         }
     }
+
     /**
      * Create a soft link to public.
      *
@@ -97,6 +120,7 @@ class PcPackageHandler extends PackageHandler
         }
         $command->info('Linking complete.');
     }
+
     /**
      * Delete links.
      *
@@ -112,8 +136,9 @@ class PcPackageHandler extends PackageHandler
             }
         }
     }
+
     /**
-     * Get the Publish path,
+     * Get the Publish path,.
      *
      * @return array
      * @author Seven Du <shiweidu@outlook.com>

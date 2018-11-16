@@ -1,14 +1,28 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\User as UserModel;
-use function zhiyi\Component\ZhiyiPlus\PlusComponentPc\replaceUrl;
-use function zhiyi\Component\ZhiyiPlus\PlusComponentPc\getUserInfo;
-use function zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatRepostable;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use function Zhiyi\Plus\username;
+use Zhiyi\Plus\Models\User as UserModel;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
+use function zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatRepostable;
 
 class ProfileController extends BaseController
 {
@@ -42,14 +56,14 @@ class ProfileController extends BaseController
                     $html = view('pcview::templates.feeds', $feeds, $this->PlusData)->render();
                     break;
                 default:
-                    # code...
+                    // code...
                     break;
             }
 
             return response()->json([
                 'status' => true,
                 'after' => $after,
-                'data' => $html
+                'data' => $html,
             ]);
         }
         if ($user) {
@@ -80,7 +94,7 @@ class ProfileController extends BaseController
         if ($request->isAjax) {
             $params = [
                 'type' => $request->query('type'),
-                'after' => $request->query('after', 0)
+                'after' => $request->query('after', 0),
             ];
             if ($request->query('user')) {
                 $params['user'] = $request->query('user');
@@ -93,7 +107,7 @@ class ProfileController extends BaseController
             return response()->json([
                 'status' => true,
                 'after' => $after,
-                'data' => $html
+                'data' => $html,
             ]);
         }
         $user->follower = $user->hasFollower($request->user()->id);
@@ -127,7 +141,7 @@ class ProfileController extends BaseController
             return response()->json([
                 'status' => true,
                 'after' => $after,
-                'data' => $html
+                'data' => $html,
             ]);
         }
         $user = $request->user()->toArray();
@@ -138,7 +152,7 @@ class ProfileController extends BaseController
     }
 
     /**
-     * 收藏的文章
+     * 收藏的文章.
      * @author 28youth
      * @param  Request $request
      * @return mixed
@@ -159,7 +173,7 @@ class ProfileController extends BaseController
             return response()->json([
                 'status' => true,
                 'after' => $after,
-                'data' => $html
+                'data' => $html,
             ]);
         }
         $user = $request->user()->toArray();
@@ -170,7 +184,7 @@ class ProfileController extends BaseController
     }
 
     /**
-     * 收藏的问答
+     * 收藏的问答.
      * @author 28youth
      * @param  Request $request
      * @return mixed
@@ -192,7 +206,7 @@ class ProfileController extends BaseController
             return response()->json([
                 'status' => true,
                 'after' => $after,
-                'data' => $html
+                'data' => $html,
             ]);
         }
         $user = $request->user()->toArray();
@@ -203,7 +217,7 @@ class ProfileController extends BaseController
     }
 
     /**
-     * 收藏的帖子
+     * 收藏的帖子.
      * @author ZSYD
      * @param  Request $request
      * @return mixed
@@ -226,7 +240,7 @@ class ProfileController extends BaseController
             return response()->json([
                 'status' => true,
                 'after' => $after,
-                'data' => $html
+                'data' => $html,
             ]);
         }
         $user = $request->user()->toArray();
@@ -306,7 +320,7 @@ class ProfileController extends BaseController
 
             return response()->json([
                 'data' => $html,
-                'after' => $after
+                'after' => $after,
             ]);
         }
         $user->follower = $user->hasFollower($request->user()->id);

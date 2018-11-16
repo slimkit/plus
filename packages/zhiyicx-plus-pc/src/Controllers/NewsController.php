@@ -1,17 +1,32 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
-use DB;
 use Illuminate\Http\Request;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatPinneds;
 
 class NewsController extends BaseController
 {
     /**
-     * 资讯首页
+     * 资讯首页.
      * @author Foreach
      * @param  Request $request
      * @return mixed
@@ -25,7 +40,7 @@ class NewsController extends BaseController
             $params = [
                 'recommend' => $type == 'recommend' ? 1 : 0,
                 'cate_id' => $type == 'category' ? $request->query('category') : 0,
-                'after' => $request->query('after', 0)
+                'after' => $request->query('after', 0),
             ];
 
             // 获取资讯列表
@@ -33,7 +48,7 @@ class NewsController extends BaseController
             $after = last($news['news'])['id'] ?? 0;
             $news['cate_id'] = $params['cate_id'];
 
-            $news['space'] =  $this->PlusData['config']['ads_space']['pc:news:list'] ?? [];
+            $news['space'] = $this->PlusData['config']['ads_space']['pc:news:list'] ?? [];
             $news['page'] = $request->loadcount;
 
             // 加入置顶资讯
@@ -47,7 +62,7 @@ class NewsController extends BaseController
             return response()->json([
                 'status'  => true,
                 'data' => $newsData,
-                'after' => $after
+                'after' => $after,
             ]);
         }
 
@@ -61,7 +76,7 @@ class NewsController extends BaseController
     }
 
     /**
-     * 资讯详情
+     * 资讯详情.
      * @author Foreach
      * @param  int    $news_id [资讯id]
      * @return mixed
@@ -71,16 +86,17 @@ class NewsController extends BaseController
         $this->PlusData['current'] = 'news';
 
         // 获取资讯详情
-        $news_info = api('GET', '/api/v2/news/' . $news->id);
-        $news_info['reward'] = api('GET', '/api/v2/news/' . $news->id . '/rewards/sum');
+        $news_info = api('GET', '/api/v2/news/'.$news->id);
+        $news_info['reward'] = api('GET', '/api/v2/news/'.$news->id.'/rewards/sum');
         $news_info['rewards'] = $news->rewards;
         $news_info['collect_count'] = $news->collections->count();
 
         // 相关资讯
-        $news_rel = api('GET', '/api/v2/news/' . $news->id . '/correlations');
+        $news_rel = api('GET', '/api/v2/news/'.$news->id.'/correlations');
 
         $data['news'] = $news_info;
         $data['news_rel'] = $news_rel;
+
         return view('pcview::news.read', $data, $this->PlusData);
     }
 
@@ -93,7 +109,7 @@ class NewsController extends BaseController
      */
     public function release(Request $request, int $news_id = 0)
     {
-        if ($this->PlusData['config']['bootstrappers']['news:contribute']['verified'] && !$this->PlusData['TS']['verified']) {
+        if ($this->PlusData['config']['bootstrappers']['news:contribute']['verified'] && ! $this->PlusData['TS']['verified']) {
             abort(403, '未认证用户不能投稿');
         }
 
@@ -113,7 +129,7 @@ class NewsController extends BaseController
     }
 
     /**
-     * 文章评论列表
+     * 文章评论列表.
      * @author ZsyD
      * @param  Request $request
      * @param  int     $news_id [资讯id]
@@ -122,7 +138,7 @@ class NewsController extends BaseController
     public function comments(Request $request, int $news_id)
     {
         $params = [
-            'after' => $request->query('after') ?: 0
+            'after' => $request->query('after') ?: 0,
         ];
 
         $comments = api('GET', '/api/v2/news/'.$news_id.'/comments', $params);
@@ -133,7 +149,7 @@ class NewsController extends BaseController
         return response()->json([
             'status'  => true,
             'data' => $commentData,
-            'after' => $after
+            'after' => $after,
         ]);
     }
 }

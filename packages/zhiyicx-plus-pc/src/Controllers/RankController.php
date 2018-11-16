@@ -1,20 +1,34 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
-use DB;
-use Illuminate\Http\Request;
 use Cache;
-use Zhiyi\Plus\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 
 class RankController extends BaseController
-{   
+{
     /**
-     * 排行榜
+     * 排行榜.
      * @author ZysD
      * @param  Request     $request
-     * @param  int|integer $mold [排行榜类型]
+     * @param  int|int $mold [排行榜类型]
      * @return mixed
      */
     public function index(Request $request, int $mold = 1)
@@ -33,29 +47,25 @@ class RankController extends BaseController
             }
             $data['experts'] = $this->rankCache('experts', '/api/v2/question-ranks/experts');
             $data['likes'] = $this->rankCache('likes', '/api/v2/question-ranks/likes');
-
         } elseif ($mold == 2) {
             $data['answers_day'] = $this->rankCache('answers_day', '/api/v2/question-ranks/answers');
             $data['answers_week'] = $this->rankCache('answers_week', '/api/v2/question-ranks/answers', ['type' => 'week']);
             $data['answers_month'] = $this->rankCache('answers_month', '/api/v2/question-ranks/answers', ['type' => 'month']);
-
         } elseif ($mold == 3) {
             $data['feeds_day'] = $this->rankCache('feeds_day', '/api/v2/feeds/ranks');
             $data['feeds_week'] = $this->rankCache('feeds_week', '/api/v2/feeds/ranks', ['type' => 'week']);
             $data['feeds_month'] = $this->rankCache('feeds_month', '/api/v2/feeds/ranks', ['type' => 'month']);
-
         } elseif ($mold == 4) {
             $data['news_day'] = $this->rankCache('news_day', '/api/v2/news/ranks');
             $data['news_week'] = $this->rankCache('news_week', '/api/v2/news/ranks', ['type' => 'week']);
             $data['news_month'] = $this->rankCache('news_month', '/api/v2/news/ranks', ['type' => 'month']);
-
         }
 
         return view('pcview::rank.index', $data, $this->PlusData);
     }
 
     /**
-     * 排行榜列表
+     * 排行榜列表.
      * @author ZysD
      * @param  Request $request
      * @return mixed
@@ -138,7 +148,7 @@ class RankController extends BaseController
             'post' => $data,
             'genre' => $genre,
             'tabName' => $tabName,
-            'routes' => $this->PlusData['routes']
+            'routes' => $this->PlusData['routes'],
         ])
             ->render();
 
@@ -149,12 +159,12 @@ class RankController extends BaseController
     }
 
     /**
-     * 排行榜缓存
+     * 排行榜缓存.
      * @author ZysD
      * @param  string  $key    [键名]
      * @param  string  $url    [api地址]
      * @param  array   $params [参数]
-     * @param  integer $time   [时间]
+     * @param  int $time   [时间]
      * @param  string  $type   [请求类型]
      * @return mixed
      */

@@ -1,10 +1,26 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
+use Illuminate\Http\Request;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatList;
-use Illuminate\Http\Request;
 
 class MessageController extends BaseController
 {
@@ -29,7 +45,7 @@ class MessageController extends BaseController
         $data['comments'] = api('GET', '/api/v2/user/comments', ['after' => $after, 'limit' => $limit]);
 
         $return = '';
-        if (!empty($data['comments'])) {
+        if (! empty($data['comments'])) {
             foreach ($data['comments'] as &$v) {
                 switch ($v['commentable_type']) {
                     case 'feeds':
@@ -37,7 +53,7 @@ class MessageController extends BaseController
                         if ($v['commentable']) {
                             $v['source_url'] = Route('pc:feedread', ($v['commentable']['id'] ?? 0));
                             $v['source_content'] = $v['commentable']['feed_content'];
-                            !empty($v['commentable']['images']) && count($v['commentable']['images']) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'] . $v['commentable']['images'][0]['id'] . '?w=35&h=35';
+                            ! empty($v['commentable']['images']) && count($v['commentable']['images']) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'].$v['commentable']['images'][0]['id'].'?w=35&h=35';
                         }
                         break;
                     case 'group-posts':
@@ -48,7 +64,7 @@ class MessageController extends BaseController
                                 'post_id' => $v['commentable']['id'],
                             ]);
                             $v['source_content'] = $v['commentable']['title'];
-                            !empty($v['commentable']['images']) && count($v['commentable']['images']) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'] . $v['commentable']['images'][0]['id'] . '?w=35&h=35';
+                            ! empty($v['commentable']['images']) && count($v['commentable']['images']) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'].$v['commentable']['images'][0]['id'].'?w=35&h=35';
                         }
                         break;
                     case 'news':
@@ -56,7 +72,7 @@ class MessageController extends BaseController
                         if ($v['commentable']) {
                             $v['source_url'] = Route('pc:newsread', ($v['commentable']['id'] ?? 0));
                             $v['source_content'] = $v['commentable']['subject'];
-                            $v['commentable']['image'] && $v['source_img'] = $this->PlusData['routes']['storage'] . $v['commentable']['image']['id'] . '?w=35&h=35';
+                            $v['commentable']['image'] && $v['source_img'] = $this->PlusData['routes']['storage'].$v['commentable']['image']['id'].'?w=35&h=35';
                         }
                         break;
                     case 'questions':
@@ -65,7 +81,7 @@ class MessageController extends BaseController
                             $v['source_url'] = Route('pc:questionread', ($v['commentable']['id'] ?? 0));
                             $v['source_content'] = $v['commentable']['subject'];
                             preg_match('/\@\!\[.*\]\((\d+)\)/i', $v['commentable']['body'], $imgs);
-                            count($imgs) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'] . $imgs[1];
+                            count($imgs) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'].$imgs[1];
                         }
                         break;
                     case 'question-answers':
@@ -74,7 +90,7 @@ class MessageController extends BaseController
                             $v['source_url'] = Route('pc:answeread', (['question' => $v['commentable']->question_id ?? 0, 'answer' => $v['commentable']['id'] ?? 0]));
                             $v['source_content'] = formatList($v['commentable']['body']);
                             preg_match('/\@\!\[.*\]\((\d+)\)/i', $v['commentable']['body'], $imgs);
-                            count($imgs) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'] . $imgs[1];
+                            count($imgs) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'].$imgs[1];
                         }
                         break;
                 }
@@ -102,14 +118,14 @@ class MessageController extends BaseController
         $limit = $request->input('limit') ?: 20;
         $data['likes'] = api('GET', '/api/v2/user/likes', ['after' => $after, 'limit' => $limit]);
         $return = '';
-        if (!empty($data['likes'])) {
+        if (! empty($data['likes'])) {
             foreach ($data['likes'] as &$v) {
                 switch ($v['likeable_type']) {
                     case 'feeds':
                         $v['source_type'] = '赞了你的动态';
                         $v['source_url'] = Route('pc:feedread', ($v['likeable']['id'] ?? 0));
                         $v['source_content'] = $v['likeable']['feed_content'];
-                        !empty($v['likeable']['images']) && count($v['likeable']['images']) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'] . $v['likeable']['images'][0]['id'] . '?w=35&h=35';
+                        ! empty($v['likeable']['images']) && count($v['likeable']['images']) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'].$v['likeable']['images'][0]['id'].'?w=35&h=35';
                         break;
                     case 'group-posts':
                         $v['source_type'] = '赞了你的帖子';
@@ -118,27 +134,27 @@ class MessageController extends BaseController
                             'post_id' => $v['likeable']['id'],
                         ]);
                         $v['source_content'] = $v['likeable']['summary'];
-                        !empty($v['likeable']['images']) && count($v['likeable']['images']) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'] . $v['likeable']['images'][0]['id'] . '?w=35&h=35';
+                        ! empty($v['likeable']['images']) && count($v['likeable']['images']) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'].$v['likeable']['images'][0]['id'].'?w=35&h=35';
                         break;
                     case 'news':
                         $v['source_type'] = '赞了你的文章';
                         $v['source_url'] = Route('pc:newsread', ($v['likeable']['id'] ?? 0));
                         $v['source_content'] = $v['likeable']['subject'];
-                        $v['likeable']['image'] && $v['source_img'] = $this->PlusData['routes']['storage'] . $v['likeable']['image']['id'] . '?w=35&h=35';
+                        $v['likeable']['image'] && $v['source_img'] = $this->PlusData['routes']['storage'].$v['likeable']['image']['id'].'?w=35&h=35';
                         break;
                     case 'questions':
                         $v['source_type'] = '赞了你的问题';
                         $v['source_url'] = Route('pc:questionread', ($v['likeable']['id'] ?? 0));
                         $v['source_content'] = $v['likeable']['subject'];
                         preg_match('/\@\!\[.*\]\((\d+)\)/i', $v['likeable']['body'], $imgs);
-                        count($imgs) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'] . $imgs[1];
+                        count($imgs) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'].$imgs[1];
                         break;
                     case 'question-answers':
                         $v['source_type'] = '赞了你的回答';
                         $v['source_url'] = Route('pc:answeread', (['question' => $v['likeable']->question_id ?? 0, 'answer' => $v['likeable']['id'] ?? 0]));
                         $v['source_content'] = formatList($v['likeable']['body']);
                         preg_match('/\@\!\[.*\]\((\d+)\)/i', $v['likeable']['body'], $imgs);
-                        count($imgs) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'] . $imgs[1];
+                        count($imgs) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'].$imgs[1];
                         break;
                 }
             }
@@ -169,7 +185,7 @@ class MessageController extends BaseController
         $read = api('PUT', '/api/v2/user/notifications/all');
 
         $return = '';
-        if (!empty($data['notifications'])) {
+        if (! empty($data['notifications'])) {
             $return = view('pcview::message.notifications', $data, $this->PlusData)->render();
         }
 
@@ -181,7 +197,7 @@ class MessageController extends BaseController
     }
 
     /**
-     * 动态评论置顶
+     * 动态评论置顶.
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -202,7 +218,7 @@ class MessageController extends BaseController
     }
 
     /**
-     * 文章评论置顶
+     * 文章评论置顶.
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -222,7 +238,7 @@ class MessageController extends BaseController
     }
 
     /**
-     * 帖子评论置顶
+     * 帖子评论置顶.
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -242,7 +258,7 @@ class MessageController extends BaseController
     }
 
     /**
-     * 圈子帖子置顶
+     * 圈子帖子置顶.
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -262,7 +278,7 @@ class MessageController extends BaseController
     }
 
     /**
-     * 联系人
+     * 联系人.
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -282,7 +298,7 @@ class MessageController extends BaseController
     }
 
     /**
-     * at 我的
+     * at 我的.
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -302,14 +318,14 @@ class MessageController extends BaseController
             $type = $mention['resourceable']['type'];
             switch ($type) {
                 case 'feeds':
-                    $mention['feeds'] = api('GET', "/api/v2/feeds", ['id' => $id . ''])['feeds'];
+                    $mention['feeds'] = api('GET', '/api/v2/feeds', ['id' => $id.''])['feeds'];
                     if ($mention['feeds'][0] ?? false) {
                         $mention['feeds'] = $mention['feeds'][0];
                         $user_id = $mention['feeds']['user_id'];
                     }
                     break;
                 case 'comments':
-                    $mention['comments'] = api('GET', "/api/v2/comments", ['id' => $id]);
+                    $mention['comments'] = api('GET', '/api/v2/comments', ['id' => $id]);
                     if ($mention['comments'][0] ?? false) {
                         $mention['comments'] = $mention['comments'][0];
                         $user_id = $mention['comments']['user_id'];
@@ -319,20 +335,19 @@ class MessageController extends BaseController
                     switch ($mention['repostable_type']) {
                         case 'news':
                             $repo_id = $mention['comments']['resourceable']['id'];
-                            $mention['repostable'] = api('GET', '/api/v2/news/' . $repo_id);
+                            $mention['repostable'] = api('GET', '/api/v2/news/'.$repo_id);
                             break;
                         case 'feeds':
                             $repo_id = $mention['comments']['resourceable']['id'];
-                            $mention['repostable'] = api('GET', '/api/v2/feeds/' . $repo_id);
+                            $mention['repostable'] = api('GET', '/api/v2/feeds/'.$repo_id);
                             break;
                     }
 
                     break;
             }
             if ($user_id ?? false) {
-                $mention['user'] = api('GET', '/api/v2/users/' . $user_id);
+                $mention['user'] = api('GET', '/api/v2/users/'.$user_id);
             }
-
         }
 
         $return = view('pcview::templates.mention', $data, $this->PlusData)->render();

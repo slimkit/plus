@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
 use Illuminate\Http\Request;
@@ -9,15 +25,15 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatPinneds;
 class UserController extends BaseController
 {
     /**
-     * 找伙伴
+     * 找伙伴.
      * @author Foreach
      * @param  Request     $request
-     * @param  int|integer $type    [类型]
+     * @param  int|int $type    [类型]
      * @return mixed
      */
     public function users(Request $request, int $type = 1)
     {
-        if ($request->isAjax){
+        if ($request->isAjax) {
             $type = $request->query('type');
             $limit = $request->query('limit') ?: 10;
             $offset = $request->query('offset') ?: 0;
@@ -28,9 +44,9 @@ class UserController extends BaseController
             ];
 
             if ($type == 1) { // 热门
-                $api =  '/api/v2/user/populars';
+                $api = '/api/v2/user/populars';
             } elseif ($type == 2) { // 最新
-                $api =  '/api/v2/user/latests';
+                $api = '/api/v2/user/latests';
             } elseif ($type == 3) { // 推荐
                 $api = '/api/v2/user/find-by-tags';
             } else { // 地区
@@ -50,30 +66,30 @@ class UserController extends BaseController
                 $data['users'] = formatPinneds($data['users'], $recommends, 'id');
             }
 
-            $html =  view('pcview::templates.user', $data, $this->PlusData)->render();
+            $html = view('pcview::templates.user', $data, $this->PlusData)->render();
 
             return response()->json([
                 'status'  => true,
                 'data' => $html,
-                'count' => count($data['users'])
+                'count' => count($data['users']),
             ]);
         }
 
         $data['type'] = $type;
 
         $this->PlusData['current'] = 'people';
+
         return view('pcview::user.users', $data, $this->PlusData);
     }
 
     /**
-     * 地区搜索
+     * 地区搜索.
      * @author 28youth
      * @param  Request $request
      * @return mixed
      */
     public function area(Request $request)
     {
-
         $data['area'] = api('GET', '/api/v2/locations/hots');
         $this->PlusData['current'] = 'users';
 
@@ -81,11 +97,11 @@ class UserController extends BaseController
     }
 
     /**
-     * 用户粉丝
+     * 用户粉丝.
      * @author Foreach
      * @param  Request     $request
-     * @param  int|integer $type    [类型]
-     * @param  int|integer $user_id [用户id]
+     * @param  int|int $type    [类型]
+     * @param  int|int $user_id [用户id]
      * @return mixed
      */
     public function follower(Request $request, int $user_id = 0)
@@ -95,37 +111,38 @@ class UserController extends BaseController
 
             $params = [
                 'offset' => $request->query('offset'),
-                'limit' => $request->query('limit')
+                'limit' => $request->query('limit'),
             ];
 
             // 判断是否为自己
-            $self = !empty($this->PlusData['TS']['id']) && $user_id == $this->PlusData['TS']['id'] ? 1 : 0;
+            $self = ! empty($this->PlusData['TS']['id']) && $user_id == $this->PlusData['TS']['id'] ? 1 : 0;
 
-            $api =  $self ? '/api/v2/user/followers' : '/api/v2' . '/users/' . $user_id .'/followers';
+            $api = $self ? '/api/v2/user/followers' : '/api/v2'.'/users/'.$user_id.'/followers';
 
             $users = api('GET', $api, $params);
             $data['users'] = $users;
 
-            $html =  view('pcview::templates.user', $data, $this->PlusData)->render();
+            $html = view('pcview::templates.user', $data, $this->PlusData)->render();
 
             return response()->json([
                 'status'  => true,
                 'data' => $html,
-                'count' => count($users)
+                'count' => count($users),
             ]);
         }
 
         $data['type'] = 1;
-        $data['user_id'] = !empty($this->PlusData['TS']['id']) && $user_id == 0 ? $this->PlusData['TS']['id'] : $user_id;
+        $data['user_id'] = ! empty($this->PlusData['TS']['id']) && $user_id == 0 ? $this->PlusData['TS']['id'] : $user_id;
+
         return view('pcview::user.follows', $data, $this->PlusData);
     }
 
     /**
-     * 用户关注
+     * 用户关注.
      * @author Foreach
      * @param  Request     $request
-     * @param  int|integer $type    [类型]
-     * @param  int|integer $user_id [用户id]
+     * @param  int|int $type    [类型]
+     * @param  int|int $user_id [用户id]
      * @return mixed
      */
     public function following(Request $request, int $user_id = 0)
@@ -135,28 +152,29 @@ class UserController extends BaseController
 
             $params = [
                 'offset' => $request->query('offset'),
-                'limit' => $request->query('limit')
+                'limit' => $request->query('limit'),
             ];
 
             // 判断是否为自己
-            $self = !empty($this->PlusData['TS']['id']) && $user_id == $this->PlusData['TS']['id'] ? 1 : 0;
+            $self = ! empty($this->PlusData['TS']['id']) && $user_id == $this->PlusData['TS']['id'] ? 1 : 0;
 
-            $api =  $self ? '/api/v2/user/followings' : '/api/v2' . '/users/' . $user_id .'/followings';
+            $api = $self ? '/api/v2/user/followings' : '/api/v2'.'/users/'.$user_id.'/followings';
 
             $users = api('GET', $api, $params);
             $data['users'] = $users;
 
-            $html =  view('pcview::templates.user', $data, $this->PlusData)->render();
+            $html = view('pcview::templates.user', $data, $this->PlusData)->render();
 
             return response()->json([
                 'status'  => true,
                 'data' => $html,
-                'count' => count($users)
+                'count' => count($users),
             ]);
         }
 
         $data['type'] = 2;
-        $data['user_id'] = !empty($this->PlusData['TS']['id']) && $user_id == 0 ? $this->PlusData['TS']['id'] : $user_id;
+        $data['user_id'] = ! empty($this->PlusData['TS']['id']) && $user_id == 0 ? $this->PlusData['TS']['id'] : $user_id;
+
         return view('pcview::user.follows', $data, $this->PlusData);
     }
 }

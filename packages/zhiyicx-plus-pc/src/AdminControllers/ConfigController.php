@@ -1,23 +1,37 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\AdminControllers;
 
 use Illuminate\Http\Request;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\cacheClear;
 use Zhiyi\Plus\Support\Configuration;
 use Illuminate\Contracts\Config\Repository;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Illuminate\Contracts\Routing\ResponseFactory;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Models\Navigation;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\cacheClear;
 
 class ConfigController extends Controller
 {
-
     /**
      * 导航配置列表.
      * @author 28youth
      * @param  Request     $request
-     * @param  int|integer $pos  0-顶部 1-底部
+     * @param  int|int $pos  0-顶部 1-底部
      * @return mixed
      */
     public function index(Request $request, int $pos = 0)
@@ -27,7 +41,7 @@ class ConfigController extends Controller
         $subsets = [];
         $nav = Navigation::byPos($pos)->get();
         foreach ($nav as $item) {
-            if($item->parent_id <= 0){
+            if ($item->parent_id <= 0) {
                 $parents[] = $item;
             } else {
                 $subsets[$item->parent_id][] = $item;
@@ -111,7 +125,6 @@ class ConfigController extends Controller
     {
         $nav = Navigation::find($nid);
         if ($nav) {
-
             return response()->json(['data' => $nav]);
         }
     }

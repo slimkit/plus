@@ -1,16 +1,30 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
-use Session;
 use Illuminate\Http\Request;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 
 class AccountController extends BaseController
 {
-
     /**
-     * 基本设置
+     * 基本设置.
      * @author Foreach
      * @param  Request $request
      * @return mixed
@@ -24,6 +38,7 @@ class AccountController extends BaseController
         $user = $this->PlusData['TS'];
         $user['city'] = explode(' ', $user['location']);
         $data['user'] = $user;
+
         return view('pcview::account.index', $data, $this->PlusData);
     }
 
@@ -41,6 +56,7 @@ class AccountController extends BaseController
         if (isset($data['info']['status'])) {
             $templet = 'authinfo';
         }
+
         return view('pcview::account.'.$templet, $data, $this->PlusData);
     }
 
@@ -61,7 +77,7 @@ class AccountController extends BaseController
     }
 
     /**
-     * 标签管理
+     * 标签管理.
      * @author 28youth
      * @return mixed
      */
@@ -72,11 +88,12 @@ class AccountController extends BaseController
         $user_id = $this->PlusData['TS']->id ?? 0;
         $data['tags'] = api('GET', '/api/v2/tags');
         $data['user_tag'] = api('GET', '/api/v2/user/tags');
+
         return view('pcview::account.tags', $data, $this->PlusData);
     }
 
     /**
-     * 密码修改
+     * 密码修改.
      * @author 28youth
      * @return mixed
      */
@@ -90,10 +107,10 @@ class AccountController extends BaseController
     }
 
     /**
-     * 我的钱包
+     * 我的钱包.
      * @author Foreach
      * @param  Request     $request
-     * @param  int|integer $type    [类型]
+     * @param  int|int $type    [类型]
      * @return mixed
      */
     public function wallet(Request $request, int $type = 1)
@@ -108,7 +125,7 @@ class AccountController extends BaseController
     }
 
     /**
-     * 钱包记录列表
+     * 钱包记录列表.
      * @author Foreach
      * @param  Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -118,13 +135,17 @@ class AccountController extends BaseController
         $type = $request->query('type');
 
         $params = [
-            'after' => $request->query('after') ?: 0
+            'after' => $request->query('after') ?: 0,
         ];
         // 交易记录列表
         if ($type == 2) {
             $cate = $request->query('cate');
-            if ($cate == 2) $params['action'] = 'income';
-            if ($cate == 3) $params['action'] = 'expenses';
+            if ($cate == 2) {
+                $params['action'] = 'income';
+            }
+            if ($cate == 3) {
+                $params['action'] = 'expenses';
+            }
             $records = api('GET', '/api/v2/plus-pay/orders', $params);
         }
 
@@ -142,7 +163,7 @@ class AccountController extends BaseController
         return response()->json([
             'status'  => true,
             'data' => $html,
-            'after' => $after
+            'after' => $after,
         ]);
     }
 
@@ -160,7 +181,7 @@ class AccountController extends BaseController
     }
 
     /**
-     * ping++充值调起
+     * ping++充值调起.
      * @author Foreach
      * @param  Request $request
      * @return mixed
@@ -173,7 +194,7 @@ class AccountController extends BaseController
     }
 
     /**
-     * 提现
+     * 提现.
      * @author Foreach
      * @return mixed
      */
@@ -185,7 +206,7 @@ class AccountController extends BaseController
     }
 
     /**
-     * 获取绑定信息
+     * 获取绑定信息.
      * @author ZsyD
      * @return mixed
      */
@@ -198,13 +219,13 @@ class AccountController extends BaseController
             'email' => false,
             'qq' => false,
             'wechat' => false,
-            'weibo' => false
+            'weibo' => false,
         ];
         // 手机邮箱绑定状态
         $user = api('GET', '/api/v2/user');
 
-        $data['phone'] = (boolean)$user['phone'];
-        $data['email'] = (boolean)$user['email'];
+        $data['phone'] = (bool) $user['phone'];
+        $data['email'] = (bool) $user['email'];
 
         // 三方绑定状态
         $binds = api('GET', '/api/v2/user/socialite');
@@ -214,14 +235,15 @@ class AccountController extends BaseController
 
         return view('pcview::account.binds', $data, $this->PlusData);
     }
+
     /**
-     * 我的积分
+     * 我的积分.
      * @author szlvincent
      * @param  Request     $request
-     * @param  int|integer $type    [类型]
+     * @param  int|int $type    [类型]
      * @return mixed
      */
-    public function currency(Request $request,int $type=1)
+    public function currency(Request $request, int $type = 1)
     {
         $this->PlusData['account_cur'] = 'currency';
 
@@ -232,7 +254,7 @@ class AccountController extends BaseController
     }
 
     /**
-     * 积分记录列表
+     * 积分记录列表.
      * @author szlvincent
      * @param  Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -242,9 +264,9 @@ class AccountController extends BaseController
         $type = $request->query('type');
         $params = [
             'after' => $request->query('after') ?: 0,
-            'limit' => 15
+            'limit' => 15,
         ];
-        switch ($type){
+        switch ($type) {
             case 1:
                 // 我的积分
                 $currency = api('GET', '/api/v2/currency');
@@ -267,7 +289,7 @@ class AccountController extends BaseController
                 break;
         }
         $after = 0;
-        if ($type != 1){
+        if ($type != 1) {
             $data['loadcount'] = $request->query('loadcount');
             $after = last($currency)['id'] ?? 0;
         }
@@ -278,9 +300,10 @@ class AccountController extends BaseController
         return response()->json([
             'status'  => true,
             'data' => $html,
-            'after' => $after
+            'after' => $after,
         ]);
     }
+
     /**
      * 积分充值
      * @author szlvincent
@@ -292,12 +315,11 @@ class AccountController extends BaseController
         $data['currency'] = api('GET', '/api/v2/currency');
         $data['currency']['recharge-options'] = explode(',', $data['currency']['recharge-options']);
 
-        return view('pcview::account.currencypay',$data, $this->PlusData);
+        return view('pcview::account.currencypay', $data, $this->PlusData);
     }
 
-
     /**
-     * 积分提取
+     * 积分提取.
      * @author szlvincent
      * @return mixed
      */
@@ -306,6 +328,6 @@ class AccountController extends BaseController
         $this->PlusData['account_cur'] = 'currency';
         $data['currency'] = api('GET', '/api/v2/currency');
 
-        return view('pcview::account.currencydraw',$data, $this->PlusData);
+        return view('pcview::account.currencydraw', $data, $this->PlusData);
     }
 }

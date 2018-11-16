@@ -1,17 +1,33 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
 use Illuminate\Http\Request;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatPinneds;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatRepostable;
 
 class FeedController extends BaseController
 {
     /**
-     * 动态首页/列表
+     * 动态首页/列表.
      * @author Foreach
      * @param  Request $request
      * @return mixed
@@ -21,7 +37,7 @@ class FeedController extends BaseController
         if ($request->isAjax) {
             if ($request->query('feed_id')) { // 获取单条微博内容
                 $feeds['feeds'] = [];
-                $feedinfo = api('GET', '/api/v2/feeds/' . $request->feed_id);
+                $feedinfo = api('GET', '/api/v2/feeds/'.$request->feed_id);
                 $feedinfo['comments'] = [];
                 array_push($feeds['feeds'], $feedinfo);
                 $feedData = view('pcview::templates.feeds', $feeds, $this->PlusData)->render();
@@ -37,9 +53,10 @@ class FeedController extends BaseController
                     $params = [
                         'index' => (int) $request->query('after') ?: 0,
                     ];
-                    $feeds = api('GET', '/api/v2/feed/topics/' . $topic_id . '/feeds', $params);
+                    $feeds = api('GET', '/api/v2/feed/topics/'.$topic_id.'/feeds', $params);
                     $data['feeds'] = array_filter($feeds, function ($val) use ($topic_id) {
                         $data['test'] = $val;
+
                         return $val['id'] !== $topic_id;
                     });
                     $after = last($feeds)['index'] ?? 0;
@@ -61,7 +78,6 @@ class FeedController extends BaseController
                     } else {
                         $after = last($data['feeds'])['hot'] ?? 0;
                     }
-
                 }
 
                 $data['space'] = $this->PlusData['config']['ads_space']['pc:feeds:list'] ?? [];
@@ -85,14 +101,15 @@ class FeedController extends BaseController
         $data['hot_topics'] = api('GET', '/api/v2/feed/topics', ['only' => 'hot']);
 
         // 用于 at 某人时的初始关注用户列表
-        $data['follow_users'] = api('GET', "/api/v2/user/follow-mutual");
+        $data['follow_users'] = api('GET', '/api/v2/user/follow-mutual');
 
         $this->PlusData['current'] = 'feeds';
+
         return view('pcview::feed.index', $data, $this->PlusData);
     }
 
     /**
-     * 动态详情
+     * 动态详情.
      * @author Foreach
      * @param  Request $request
      * @param  int     $feed_id [动态id]
@@ -100,19 +117,20 @@ class FeedController extends BaseController
      */
     public function read(Request $request, Feed $feed)
     {
-        $feedinfo = api('GET', '/api/v2/feeds/' . $feed->id);
+        $feedinfo = api('GET', '/api/v2/feeds/'.$feed->id);
         $feedinfo['collect_count'] = $feed->collection->count();
-        $feedinfo['rewards'] = api('GET', '/api/v2/feeds/' . $feed->id . '/rewards');
+        $feedinfo['rewards'] = api('GET', '/api/v2/feeds/'.$feed->id.'/rewards');
         $data['user'] = $feed->user;
         $feedinfo = formatRepostable([$feedinfo]);
         $data['feed'] = $feedinfo[0];
 
         $this->PlusData['current'] = 'feeds';
+
         return view('pcview::feed.read', $data, $this->PlusData);
     }
 
     /**
-     * 动态评论列表
+     * 动态评论列表.
      * @author Foreach
      * @param  Request $request
      * @param  int     $feed_id [动态id]
@@ -124,7 +142,7 @@ class FeedController extends BaseController
             'after' => $request->query('after') ?: 0,
         ];
 
-        $comments = api('GET', '/api/v2/feeds/' . $feed_id . '/comments', $params);
+        $comments = api('GET', '/api/v2/feeds/'.$feed_id.'/comments', $params);
         $after = last($comments['comments'])['id'] ?? 0;
         $comments['comments'] = formatPinneds($comments['comments'], $comments['pinneds']);
         $commentData = view('pcview::templates.comment', $comments, $this->PlusData)->render();
@@ -137,7 +155,7 @@ class FeedController extends BaseController
     }
 
     /**
-     * 转发
+     * 转发.
      */
     public function repostable(Request $request)
     {
@@ -154,7 +172,7 @@ class FeedController extends BaseController
                 $feed['repostable'] = api('GET', "/api/v2/news/{$id}");
                 break;
             case 'feeds':
-                $feed_list = api('GET', "/api/v2/feeds", ['id' => $id . '']);
+                $feed_list = api('GET', '/api/v2/feeds', ['id' => $id.'']);
                 if ($feed_list['feeds'][0] ?? false) {
                     $feed['repostable'] = $feed_list['feeds'][0];
                 }
@@ -164,11 +182,11 @@ class FeedController extends BaseController
                 break;
             case 'group-posts':
             case 'posts':
-                $post = api('GET', "/api/v2/group/simple-posts", ['id' => $id . '']);
+                $post = api('GET', '/api/v2/group/simple-posts', ['id' => $id.'']);
                 $feed['repostable'] = $post[0] ?? $post;
                 if ($feed['repostable']['title'] ?? false) {
                     $feed['repostable']['image'] = null; // 当在转发弹框时不显示引用帖子的图片
-                    $feed['repostable']['group'] = api('GET', '/api/v2/plus-group/groups/' . $feed['repostable']['group_id']);
+                    $feed['repostable']['group'] = api('GET', '/api/v2/plus-group/groups/'.$feed['repostable']['group_id']);
                 }
                 break;
             case 'questions':
@@ -184,9 +202,8 @@ class FeedController extends BaseController
         $data['hot_topics'] = api('GET', '/api/v2/feed/topics', ['only' => 'hot']);
 
         // 用于 at 某人时的初始关注用户列表
-        $data['follow_users'] = api('GET', "/api/v2/user/follow-mutual");
+        $data['follow_users'] = api('GET', '/api/v2/user/follow-mutual');
 
         return view('pcview::templates.repostable', $data, $this->PlusData)->render();
     }
-
 }

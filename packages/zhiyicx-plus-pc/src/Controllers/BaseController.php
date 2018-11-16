@@ -1,16 +1,30 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
-use Illuminate\Contracts\Config\Repository;
+use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Session;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Models\Navigation;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
-use Zhiyi\Plus\Models\User;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Models\Navigation;
 
 class BaseController extends Controller
 {
@@ -31,7 +45,7 @@ class BaseController extends Controller
             $this->PlusData['TS'] = null;
             if ($user) {
                 $jwt = app(\Tymon\JWTAuth\JWT::class);
-                if (!$token || !$jwt->setToken($token)->check()) {
+                if (! $token || ! $jwt->setToken($token)->check()) {
                     $token = $this->PlusData['token'] = $jwt->fromUser($user);
                     $request->session()->put('token', $token);
                     $request->session()->save();
@@ -44,7 +58,7 @@ class BaseController extends Controller
             // 站点配置
             $config = Cache::get('config');
 
-            if (!$config) {
+            if (! $config) {
                 $config = [];
 
                 // 启动信息接口
@@ -92,7 +106,7 @@ class BaseController extends Controller
 
             // 公共地址
             $this->PlusData['routes']['api'] = asset('/api/v2');
-            $this->PlusData['routes']['storage'] = asset('/api/v2/files') . '/';
+            $this->PlusData['routes']['storage'] = asset('/api/v2/files').'/';
 
             // 环信相关用户
             $this->PlusData['easemob_users'] = isset($_COOKIE['easemob_uids']) ? User::whereIn('id', explode(',', $_COOKIE['easemob_uids']))->get() : [];
@@ -102,7 +116,7 @@ class BaseController extends Controller
     }
 
     /**
-     * 操作提示
+     * 操作提示.
      * @author ZsyD
      * @param  int    $status  [状态]
      * @param  string $url     [跳转链接]
@@ -123,7 +137,7 @@ class BaseController extends Controller
     }
 
     /**
-     * 查看资源页面
+     * 查看资源页面.
      *
      * @param Request $request
      * @return mixed
@@ -133,7 +147,7 @@ class BaseController extends Controller
     {
         $reportable_id = $request->query('reportable_id');
         $reportable_type = $request->query('reportable_type');
-        if (!$reportable_id || !$reportable_type) {
+        if (! $reportable_id || ! $reportable_type) {
             return abort(404);
         }
 
@@ -143,9 +157,10 @@ class BaseController extends Controller
                 break;
             case 'comments': // 评论部分暂时跳转到所属资源的详情页
                 $comment = CommentModel::find($reportable_id);
-                if (!$comment) {
+                if (! $comment) {
                     return abort(404);
                 }
+
                 return response()->redirectTo(route('pc:reportview', ['reportable_id' => $comment->commentable_id, 'reportable_type' => $comment->commentable_type]), 302);
                 break;
             case 'feeds':

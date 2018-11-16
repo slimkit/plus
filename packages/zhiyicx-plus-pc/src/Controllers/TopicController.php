@@ -1,15 +1,30 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 use Illuminate\Http\Request;
+use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 
 class TopicController extends BaseController
 {
-
     /**
-     * constructor
+     * constructor.
      *
      * @author mutoe <mutoe@foxmail.com>
      */
@@ -20,7 +35,7 @@ class TopicController extends BaseController
     }
 
     /**
-     * 话题首页
+     * 话题首页.
      *
      * @author mutoe <mutoe@foxmail.com>
      */
@@ -35,6 +50,7 @@ class TopicController extends BaseController
             ]);
 
             $view = view('pcview::templates.feed_topic', $data, $this->PlusData)->render();
+
             return response()->json([
                 'status' => true,
                 'data' => $view,
@@ -50,7 +66,7 @@ class TopicController extends BaseController
     }
 
     /**
-     * 话题详情
+     * 话题详情.
      *
      * @author mutoe <mutoe@foxmail.com>
      * @param Request $request
@@ -59,16 +75,16 @@ class TopicController extends BaseController
     public function detail(Request $request, int $topic_id)
     {
         // 获取话题详情
-        $data['topic'] = api('GET', '/api/v2/feed/topics/' . $topic_id);
+        $data['topic'] = api('GET', '/api/v2/feed/topics/'.$topic_id);
 
         // 获取话题创建者信息
-        $data['creator'] = api('GET', '/api/v2/users/' . $data['topic']['creator_user_id']);
+        $data['creator'] = api('GET', '/api/v2/users/'.$data['topic']['creator_user_id']);
 
         // 获取话题下动态列表
-        $data['list'] = api('GET', '/api/v2/feed/topics/' . $topic_id . '/feeds');
+        $data['list'] = api('GET', '/api/v2/feed/topics/'.$topic_id.'/feeds');
 
         // 获取话题参与者
-        $participants = api('GET', '/api/v2/feed/topics/' . $topic_id . '/participants');
+        $participants = api('GET', '/api/v2/feed/topics/'.$topic_id.'/participants');
         $data['participants'] = api('GET', '/api/v2/users', ['id' => implode(',', $participants)]);
 
         // 获取热门话题
@@ -78,7 +94,7 @@ class TopicController extends BaseController
     }
 
     /**
-     * 创建话题
+     * 创建话题.
      *
      * @author mutoe <mutoe@foxmail.com>
      * @param Request $request
@@ -89,17 +105,16 @@ class TopicController extends BaseController
     }
 
     /**
-     * 编辑话题
+     * 编辑话题.
      *
      * @author mutoe <mutoe@foxmail.com>
      * @param Request $request
-     * @param integer $topic_id
+     * @param int $topic_id
      */
     public function edit(Request $request, int $topic_id)
     {
-        $data['topic'] = api('GET', '/api/v2/feed/topics/' . $topic_id);
+        $data['topic'] = api('GET', '/api/v2/feed/topics/'.$topic_id);
 
         return view('pcview::topic.edit', $data, $this->PlusData);
     }
-
 }

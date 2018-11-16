@@ -1,20 +1,34 @@
 <?php
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentPc\Controllers;
 
 use Auth;
 use Session;
-use Cookie;
 use Tymon\JWTAuth\JWT;
 use Tymon\JWTAuth\JWTAuth;
-use Illuminate\Http\Request;
-use Gregwar\Captcha\CaptchaBuilder;
-use Illuminate\Support\Facades\Auth as Authorize;
-use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Models\VerificationCode;
 use Zhiyi\Plus\Models\User;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Request;
 use function Zhiyi\Plus\username;
+use Gregwar\Captcha\CaptchaBuilder;
+use Zhiyi\Plus\Models\VerificationCode;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth as Authorize;
 use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\api;
 
 class PassportController extends BaseController
@@ -40,7 +54,7 @@ class PassportController extends BaseController
     }
 
     /**
-     * 登录
+     * 登录.
      * @author Foreach
      * @return mixed
      */
@@ -49,12 +63,12 @@ class PassportController extends BaseController
         if ($this->PlusData['TS'] != null) {
             return redirect(route('pc:feeds'));
         }
-        
-    	return view('pcview::passport.login', [], $this->PlusData);
+
+        return view('pcview::passport.login', [], $this->PlusData);
     }
 
     /**
-     * 动态验证码登录
+     * 动态验证码登录.
      *
      * @return mixed
      */
@@ -62,13 +76,13 @@ class PassportController extends BaseController
     {
         if ($this->PlusData['TS'] != null) {
             return redirect(route('pc:feeds'));
-        }   
+        }
 
         return view('pcview::passport.dynamiclogin', [], $this->PlusData);
     }
 
     /**
-     * 验证码登录
+     * 验证码登录.
      * @author Foreach
      * @param  Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -95,9 +109,9 @@ class PassportController extends BaseController
 
             if ($user = User::where($field, $login)->first()) {
                 Authorize::login($user, true);
+
                 return redirect(route('pc:feeds'));
             }
-
 
             throw ValidationException::withMessages([sprintf('%s还没有注册', $field == 'phone' ? '手机号' : '邮箱')]);
         }
@@ -106,7 +120,7 @@ class PassportController extends BaseController
     }
 
     /**
-     * 注册
+     * 注册.
      * @author Foreach
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
@@ -140,7 +154,7 @@ class PassportController extends BaseController
     }
 
     /**
-     * 完善资料
+     * 完善资料.
      * @author Foreach
      * @return mixed
      */
@@ -148,11 +162,12 @@ class PassportController extends BaseController
     {
         $data['tags'] = api('GET', '/api/v2/tags');
         $data['user_tag'] = api('GET', '/api/v2/user/tags');
+
         return view('pcview::passport.perfect', $data, $this->PlusData);
     }
 
     /**
-     * 图形验证码生成
+     * 图形验证码生成.
      * @author Foreach
      * @return mixed
      */
@@ -161,9 +176,9 @@ class PassportController extends BaseController
         // 生成验证码图片的Builder对象，配置相应属性
         $builder = new CaptchaBuilder;
         // 设置背景
-        $builder->setBackgroundColor(237,237,237);
+        $builder->setBackgroundColor(237, 237, 237);
         // 设置字体大小
-        $builder->setBackgroundColor(237,237,237);
+        $builder->setBackgroundColor(237, 237, 237);
         // 可以设置图片宽高及字体
         $builder->build($width = 100, $height = 40, $font = null);
         // 获取验证码的内容
@@ -172,7 +187,7 @@ class PassportController extends BaseController
         // 把内容存入session
         Session::flash('milkcaptcha', $phrase);
         // 生成图片
-        header("Cache-Control: no-cache, must-revalidate");
+        header('Cache-Control: no-cache, must-revalidate');
         header('Content-Type: image/jpeg');
         $builder->output();
     }
@@ -205,7 +220,7 @@ class PassportController extends BaseController
     }
 
     /**
-     * 通过token登录用户
+     * 通过token登录用户.
      * @author Foreach
      * @return mixed
      */
@@ -221,6 +236,7 @@ class PassportController extends BaseController
 
         // 登录用户实例
         Authorize::login($user, true);
+
         return response()->json([], 200);
     }
 }
