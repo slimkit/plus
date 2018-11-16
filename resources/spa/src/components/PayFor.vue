@@ -30,42 +30,44 @@
             @click="handelCancel">{{ cancelText || "返回" }}</button>
         </div>
 
-        <password-confirm ref="password" @submit="handleOk" />
+        <password-confirm
+          ref="password"
+          @submit="handleOk" />
 
       </div>
     </transition>
   </div>
 </template>
 <script>
-import { noop } from "@/util";
-import PasswordConfirm from "@/components/common/PasswordConfirm.vue";
+import { noop } from '@/util'
+import PasswordConfirm from '@/components/common/PasswordConfirm.vue'
 
 export default {
-  name: "PayFor",
+  name: 'PayFor',
   components: { PasswordConfirm },
-  data() {
+  data () {
     return {
       node: 0,
-      nodeType: "图片",
+      nodeType: '图片',
       amount: 0,
       show: false,
       scrollTop: 0,
-      title: "",
-      cancelText: "",
-      confirmText: "",
-      content: "",
-      checkPassword: false
-    };
-  },
-  computed: {
-    currentCurrency() {
-      const user = this.$store.state.CURRENTUSER;
-      return user.currency.sum || 0;
+      title: '',
+      cancelText: '',
+      confirmText: '',
+      content: '',
+      checkPassword: false,
     }
   },
-  created: function() {
-    window.addEventListener("popstate", this.cancel, false);
-    this.$bus.$on("payfor", options => {
+  computed: {
+    currentCurrency () {
+      const user = this.$store.state.CURRENTUSER
+      return user.currency.sum || 0
+    },
+  },
+  created: function () {
+    window.addEventListener('popstate', this.cancel, false)
+    this.$bus.$on('payfor', options => {
       const {
         title,
         cancelText,
@@ -75,82 +77,82 @@ export default {
         onCancel,
         node,
         onSuccess,
-        nodeType = "",
-        content = "",
-        checkPassword = false
-      } = options;
+        nodeType = '',
+        content = '',
+        checkPassword = false,
+      } = options
 
-      this.content = content;
-      this.nodeType = nodeType;
+      this.content = content
+      this.nodeType = nodeType
 
-      node && (this.node = node);
-      title && (this.title = title);
-      cancelText && (this.cancelText = cancelText);
+      node && (this.node = node)
+      title && (this.title = title)
+      cancelText && (this.cancelText = cancelText)
       confirmText && (this.confirmText = confirmText);
-      (amount || +amount === 0) && (this.amount = amount);
-      this.checkPassword = checkPassword;
+      (amount || +amount === 0) && (this.amount = amount)
+      this.checkPassword = checkPassword
 
-      typeof onOk === "function" && (this.onOk = onOk);
-      typeof onCancel === "function" && (this.onCancel = onCancel);
-      typeof onSuccess === "function" && (this.onSuccess = onSuccess);
-      this.show = true;
-      this.scrollable = false;
-    });
+      typeof onOk === 'function' && (this.onOk = onOk)
+      typeof onCancel === 'function' && (this.onCancel = onCancel)
+      typeof onSuccess === 'function' && (this.onSuccess = onSuccess)
+      this.show = true
+      this.scrollable = false
+    })
   },
-  beforeDestroy() {
-    window.removeEventListener("popstate", this.cancel, false);
+  beforeDestroy () {
+    window.removeEventListener('popstate', this.cancel, false)
   },
   methods: {
-    onOk() {},
-    onCancel() {},
-    onSuccess() {},
-    showPasswordConfirm() {
+    onOk () {},
+    onCancel () {},
+    onSuccess () {},
+    showPasswordConfirm () {
       if (this.currentCurrency < this.amount) {
-        this.$Message.error(`${this.currencyUnit}不足，请充值`);
-        this.cancel();
-        return this.$router.push({ name: "currencyRecharge" });
+        this.$Message.error(`${this.currencyUnit}不足，请充值`)
+        this.cancel()
+        return this.$router.push({ name: 'currencyRecharge' })
       }
-      if (this.node || this.checkPassword) this.$refs.password.show();
-      else this.handleOk();
+      if (this.node || this.checkPassword) this.$refs.password.show()
+      else this.handleOk()
     },
-    handleOk(password) {
-      this.onOk(password);
+    handleOk (password) {
+      this.onOk(password)
       this.node
         ? this.$http
-            .post(`/currency/purchases/${this.node}`, { password })
-            .then(({ data }) => {
-              this.onSuccess(data);
-              this.cancel();
-            })
-            .catch(({ response }) => {
-              this.$Message.error(response.data);
-            })
-        : this.cancel();
+          .post(`/currency/purchases/${this.node}`, { password })
+          .then(({ data }) => {
+            this.onSuccess(data)
+            this.cancel()
+          })
+          .catch(({ response }) => {
+            this.$Message.error(response.data)
+          })
+        : this.cancel()
     },
-    handelCancel() {
-      this.onCancel();
-      this.$nextTick(this.cancel);
+    handelCancel () {
+      this.onCancel()
+      this.$nextTick(this.cancel)
     },
-    call() {
-      this.show = true;
-      this.scrollable = false;
+    call () {
+      this.show = true
+      this.scrollable = false
     },
-    cancel() {
-      this.node = null;
-      this.show = false;
-      this.scrollable = true;
+    cancel () {
+      this.node = null
+      this.show = false
+      this.scrollable = true
       this.$nextTick(() => {
-        this.title = "";
-        this.cancelText = "";
-        this.confirmText = "";
+        this.title = ''
+        this.cancelText = ''
+        this.confirmText = ''
 
-        this.onOk = noop;
-        this.onCancel = noop;
-        this.onSuccess = noop;
-      });
-    }
-  }
-};
+        this.onOk = noop
+        this.onCancel = noop
+        this.onSuccess = noop
+      })
+    },
+  },
+}
 </script>
 
 <style lang='less'>

@@ -1,13 +1,17 @@
 <template>
   <transition name="pop">
-    <div v-if="show" class="m-box-model m-pos-f p-choose-tags m-main">
+    <div
+      v-if="show"
+      class="m-box-model m-pos-f p-choose-tags m-main">
 
       <common-header :back="nextFuc">选择标签</common-header>
 
       <main class="m-box-model m-flex-grow1 m-flex-shrink1">
         <section class="m-flex-grow0 m-flex-shrink0 m-tags-group selected m-bb1">
           <span class="m-tags-label">可选择{{ 5 }}个标签，已选择{{ chooseTags.length }}标签</span>
-          <transition-group tag="ul" class="m-tags">
+          <transition-group
+            tag="ul"
+            class="m-tags">
             <li
               v-for="tag in chooseTags"
               v-if="tag.id"
@@ -21,13 +25,17 @@
             </li>
           </transition-group>
         </section>
-        <div class="m-flex-grow1 m-flex-shrink1" style="overflow-y: auto;">
+        <div
+          class="m-flex-grow1 m-flex-shrink1"
+          style="overflow-y: auto;">
           <section
             v-for="(group, Gindex) in tags"
             :key="group.id"
             class="m-tags-group">
             <span class="m-tags-label">{{ group.name }}</span>
-            <transition-group tag="ul" class="m-tags">
+            <transition-group
+              tag="ul"
+              class="m-tags">
               <li
                 v-for="(tag, Tindex) in group.tags"
                 v-if="tag.id"
@@ -47,7 +55,7 @@
 </template>
 
 <script>
-import { noop } from "@/util";
+import { noop } from '@/util'
 
 /**
  * 打开选择标签页面 (钩子 -> "choose-tags")
@@ -58,117 +66,116 @@ import { noop } from "@/util";
  * @param {Function} options.onSelect 选择某个标签时执行的回调函数
  * @param {Function} options.onRemove 取消选择某个标签时执行的回调函数
  */
-function onChooseTags({ chooseTags = [], nextStep, onSelect, onRemove }) {
-  this.isFirst = !this.$lstore.hasData("H5_CHOOSE_TAGS_FIRST");
-  this.nextStep = nextStep || noop;
-  this.onSelect = onSelect || noop;
-  this.onRemove = onRemove || noop;
+function onChooseTags ({ chooseTags = [], nextStep, onSelect, onRemove }) {
+  this.isFirst = !this.$lstore.hasData('H5_CHOOSE_TAGS_FIRST')
+  this.nextStep = nextStep || noop
+  this.onSelect = onSelect || noop
+  this.onRemove = onRemove || noop
 
   if (chooseTags && chooseTags.length > 0) {
     this.tags.forEach((g, Gindex) => {
       g.tags.forEach((t, Tindex) => {
-        t.Gindex = Gindex;
-        t.Tindex = Tindex;
+        t.Gindex = Gindex
+        t.Tindex = Tindex
         if (chooseTags.indexOf(t.id) > -1) {
-          t.selected = true;
-          this.chooseTags.push(t);
+          t.selected = true
+          this.chooseTags.push(t)
         }
-      });
-    });
+      })
+    })
   }
 
-  this.show = true;
-  this.scrollable = false;
+  this.show = true
+  this.scrollable = false
 
-  //首次进入标签选择页面时弹框提示
-  if (this.isFirst && this.$route.name !== "groupCreate") {
+  // 首次进入标签选择页面时弹框提示
+  if (this.isFirst && this.$route.name !== 'groupCreate') {
     this.$nextTick(() => {
-      this.$bus.$emit("popupDialog", {
-        title: "温馨提示",
+      this.$bus.$emit('popupDialog', {
+        title: '温馨提示',
         content:
-          "标签为全局标签，选择合适的标签，系统可推荐你感兴趣的内容，方便找到相同身份或爱好的人，很重要哦！",
+          '标签为全局标签，选择合适的标签，系统可推荐你感兴趣的内容，方便找到相同身份或爱好的人，很重要哦！',
         onClose: () => {
-          this.onReadTips();
-        }
-      });
-    });
+          this.onReadTips()
+        },
+      })
+    })
   }
 }
 
 export default {
-  name: "ChooseTags",
-  data() {
+  name: 'ChooseTags',
+  data () {
     return {
       show: false,
       isFirst: false,
       chooseTags: [],
       loading: false,
-      tags: []
-    };
-  },
-  computed: {
-    disabled() {
-      return this.chooseTags.length === 0;
+      tags: [],
     }
   },
-  created() {
-    this.fetchTags();
+  computed: {
+    disabled () {
+      return this.chooseTags.length === 0
+    },
+  },
+  created () {
+    this.fetchTags()
 
     // 注册钩子
-    this.$bus.$on("choose-tags", onChooseTags.bind(this));
+    this.$bus.$on('choose-tags', onChooseTags.bind(this))
   },
   methods: {
-    nextFuc() {
-      this.nextStep(this.chooseTags);
-      this.$nextTick(this.cancel);
+    nextFuc () {
+      this.nextStep(this.chooseTags)
+      this.$nextTick(this.cancel)
     },
     nextStep: noop,
     onRemove: noop,
     onSelect: noop,
-    fetchTags() {
-      this.$http.get("/tags").then(({ data }) => {
-        this.tags = data;
-      });
+    fetchTags () {
+      this.$http.get('/tags').then(({ data }) => {
+        this.tags = data
+      })
     },
-    addTag(tag, Gindex, Tindex) {
-      const obj = this.tags[Gindex].tags[Tindex];
-      if (obj.selected) return;
+    addTag (tag, Gindex, Tindex) {
+      const obj = this.tags[Gindex].tags[Tindex]
+      if (obj.selected) return
 
-      if (this.chooseTags.length >= 5)
-        return this.$Message.error("标签最多可选5个");
+      if (this.chooseTags.length >= 5) { return this.$Message.error('标签最多可选5个') }
 
-      const status = { selected: true, Gindex, Tindex };
-      Object.assign(obj, status);
-      this.chooseTags.push(obj);
+      const status = { selected: true, Gindex, Tindex }
+      Object.assign(obj, status)
+      this.chooseTags.push(obj)
 
       // emit hooks
-      this.onSelect(tag.id);
+      this.onSelect(tag.id)
     },
-    removeTag(tag) {
-      this.chooseTags.splice(this.chooseTags.indexOf(tag), 1);
-      this.tags[tag.Gindex]["tags"][tag.Tindex].selected = false;
+    removeTag (tag) {
+      this.chooseTags.splice(this.chooseTags.indexOf(tag), 1)
+      this.tags[tag.Gindex]['tags'][tag.Tindex].selected = false
 
       // emit hooks
-      this.onRemove(tag.id);
+      this.onRemove(tag.id)
     },
 
-    cancel() {
+    cancel () {
       this.chooseTags.forEach(tag => {
-        delete tag.Gindex;
-        delete tag.Tindex;
-        delete tag.selected;
-      });
+        delete tag.Gindex
+        delete tag.Tindex
+        delete tag.selected
+      })
 
-      this.show = false;
-      this.chooseTags = [];
-      this.scrollable = true;
+      this.show = false
+      this.chooseTags = []
+      this.scrollable = true
     },
 
-    onReadTips() {
-      this.$lstore.setData("H5_CHOOSE_TAGS_FIRST", false);
-    }
-  }
-};
+    onReadTips () {
+      this.$lstore.setData('H5_CHOOSE_TAGS_FIRST', false)
+    },
+  },
+}
 </script>
 <style lang="less" scoped>
 .p-choose-tags {

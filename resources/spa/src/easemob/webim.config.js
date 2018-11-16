@@ -1,5 +1,5 @@
 export default {
-  xmppURL: "im-api.easemob.com", // xmpp Server地址，对于在console.easemob.com创建的appKey，固定为该值
+  xmppURL: 'im-api.easemob.com', // xmpp Server地址，对于在console.easemob.com创建的appKey，固定为该值
   // apiURL: "a1.easemob.com", // rest Server地址，对于在console.easemob.com创建的appkey，固定为该值
   apiURL: process.env.VUE_APP_EASEMOB_API_URL, // 请附带协议
   appkey: process.env.VUE_APP_EASEMOB_APP_KEY, // App key
@@ -10,5 +10,5 @@ export default {
   autoReconnectNumMax: 2, // 断线重连最大次数
   autoReconnectInterval: 2, // 断线重连时间间隔
   heartBeatWait: 4500, // 使用webrtc（视频聊天）时发送心跳包的时间间隔，单位ms
-  delivery: true // 是否发送已读回执
-};
+  delivery: true, // 是否发送已读回执
+}

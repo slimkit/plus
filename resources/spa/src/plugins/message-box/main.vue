@@ -9,7 +9,9 @@
         <use :xlink:href="`#icon-message-${type}`"/>
       </svg>
       <slot>
-        <p v-if="!dangerouslyUseHTMLString" class="v-message-content">{{ message }}</p>
+        <p
+          v-if="!dangerouslyUseHTMLString"
+          class="v-message-content">{{ message }}</p>
         <p
           v-else
           class="v-message-content"
@@ -21,56 +23,56 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       visible: false,
-      message: "",
+      message: '',
       duration: 3000,
-      type: "info",
+      type: 'info',
       closed: false,
       timer: null,
-      dangerouslyUseHTMLString: false
-    };
-  },
-  watch: {
-    closed(newVal) {
-      if (newVal) {
-        this.visible = false;
-      }
+      dangerouslyUseHTMLString: false,
     }
   },
-  mounted() {
-    this.startTimer();
-  },
-  methods: {
-    transitionend() {
-      this.destroyElement();
-    },
-    destroyElement() {
-      if (!this.closed) return;
-      this.$destroy(true);
-      this.$el.parentNode.removeChild(this.$el);
-    },
-    close() {
-      this.closed = true;
-      if (typeof this.onClose === "function") {
-        this.onClose(this);
+  watch: {
+    closed (newVal) {
+      if (newVal) {
+        this.visible = false
       }
     },
-    clearTimer() {
-      clearTimeout(this.timer);
+  },
+  mounted () {
+    this.startTimer()
+  },
+  methods: {
+    transitionend () {
+      this.destroyElement()
     },
-    startTimer() {
+    destroyElement () {
+      if (!this.closed) return
+      this.$destroy(true)
+      this.$el.parentNode.removeChild(this.$el)
+    },
+    close () {
+      this.closed = true
+      if (typeof this.onClose === 'function') {
+        this.onClose(this)
+      }
+    },
+    clearTimer () {
+      clearTimeout(this.timer)
+    },
+    startTimer () {
       if (this.duration > 0) {
         this.timer = setTimeout(() => {
           if (!this.closed) {
-            this.close();
+            this.close()
           }
-        }, this.duration);
+        }, this.duration)
       }
-    }
-  }
-};
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

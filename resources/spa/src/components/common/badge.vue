@@ -21,57 +21,57 @@
 </template>
 
 <script>
-const prefixCls = "v-badge";
+const prefixCls = 'v-badge'
 
 export default {
-  name: "VBadge",
+  name: 'VBadge',
   props: {
     count: { type: [Number, String], default: 0 },
     dot: { type: Boolean, default: false },
     overflowCount: { type: [Number, String], default: 99 },
-    className: { type: String, default: "" }
+    className: { type: String, default: '' },
   },
   computed: {
-    classes() {
-      return `${prefixCls}`;
+    classes () {
+      return `${prefixCls}`
     },
-    dotClasses() {
-      return `${prefixCls}-dot`;
+    dotClasses () {
+      return `${prefixCls}-dot`
     },
-    countClasses() {
+    countClasses () {
       return [
         `${prefixCls}-count`,
         {
           [`${this.className}`]: !!this.className,
-          [`${prefixCls}-count-alone`]: this.alone
-        }
-      ];
+          [`${prefixCls}-count-alone`]: this.alone,
+        },
+      ]
     },
-    finalCount() {
+    finalCount () {
       return parseInt(this.count) >= parseInt(this.overflowCount)
         ? `${this.overflowCount}+`
-        : this.count;
+        : this.count
     },
-    badge() {
-      let status = false;
+    badge () {
+      let status = false
       if (this.count) {
-        status = !(parseInt(this.count) === 0);
+        status = !(parseInt(this.count) === 0)
       }
       if (this.dot) {
-        status = true;
+        status = true
         if (this.count !== null) {
           if (parseInt(this.count) === 0) {
-            status = false;
+            status = false
           }
         }
       }
-      return status;
+      return status
     },
-    alone() {
-      return this.$slots.default === undefined;
-    }
-  }
-};
+    alone () {
+      return this.$slots.default === undefined
+    },
+  },
+}
 </script>
 
 <style lang='less'>

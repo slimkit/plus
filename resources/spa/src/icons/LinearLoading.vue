@@ -81,6 +81,6 @@
 
 <script>
 export default {
-  name: "LinearLoading"
-};
+  name: 'LinearLoading',
+}
 </script>

@@ -26,44 +26,43 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 
 export default {
-  name: "WalletWithdrawInfo",
+  name: 'WalletWithdrawInfo',
   filters: {
-    postfix(val, pos) {
-      if (!val) return "0.00";
-      return val.toFixed(pos);
-    }
+    postfix (val, pos) {
+      if (!val) return '0.00'
+      return val.toFixed(pos)
+    },
   },
-  data() {
+  data () {
     return {
       // detail: {}
-    };
-  },
-  computed: {
-    ...mapState({ wallet: "wallet" }),
-    id() {
-      return Number(this.$route.params.id);
-    },
-    detail() {
-      return this.$store.getters["wallet/getCashesById"](this.id);
-    },
-    user() {
-      return this.$store.state.CURRENTUSER;
-    },
-    statusText() {
-      if (this.detail.status === 0) return "审核中";
-      if (this.detail.status === 2) return "审核失败";
-      return "交易成功";
     }
   },
-  mounted() {
-    if (!this.wallet.list.length)
-      this.$store.dispatch("wallet/getWalletOrders");
+  computed: {
+    ...mapState({ wallet: 'wallet' }),
+    id () {
+      return Number(this.$route.params.id)
+    },
+    detail () {
+      return this.$store.getters['wallet/getCashesById'](this.id)
+    },
+    user () {
+      return this.$store.state.CURRENTUSER
+    },
+    statusText () {
+      if (this.detail.status === 0) return '审核中'
+      if (this.detail.status === 2) return '审核失败'
+      return '交易成功'
+    },
   },
-  methods: {}
-};
+  mounted () {
+    if (!this.wallet.list.length) { this.$store.dispatch('wallet/getWalletOrders') }
+  },
+  methods: {},
+}
 </script>
 
 <style lang="less" scoped>

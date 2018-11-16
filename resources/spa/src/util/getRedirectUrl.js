@@ -1,20 +1,20 @@
-import http from "../api/api.js";
+import http from '../api/api.js'
 
 export default redirect => {
   // 登录后跳转的url
   const redirectUrl =
-    window.location.origin + "/wechatLogin?redirect=" + redirect;
+    window.location.origin + '/wechatLogin?redirect=' + redirect
   http
     .post(
-      "socialite/getOriginUrl",
+      'socialite/getOriginUrl',
       {
-        redirectUrl
+        redirectUrl,
       },
       {
-        validateStatus: s => s === 200
+        validateStatus: s => s === 200,
       }
     )
-    .then(({ data: { url = "" } = {} }) => {
-      window.location.href = url;
-    });
-};
+    .then(({ data: { url = '' } = {} }) => {
+      window.location.href = url
+    })
+}

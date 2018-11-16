@@ -52,43 +52,43 @@
  * @param  {Object -> Node} el
  * @return {Object -> Node}
  */
-function getScrollTarget(el) {
+function getScrollTarget (el) {
   while (
     el &&
     el.nodeType === 1 &&
-    el.tagName !== "HTML" &&
-    el.tagName !== "BODY"
+    el.tagName !== 'HTML' &&
+    el.tagName !== 'BODY'
   ) {
-    const overflowY = document.defaultView.getComputedStyle(el).overflowY;
-    if (overflowY === "scroll" || overflowY === "auto") {
-      return el;
+    const overflowY = document.defaultView.getComputedStyle(el).overflowY
+    if (overflowY === 'scroll' || overflowY === 'auto') {
+      return el
     }
-    el = el.parentNode;
+    el = el.parentNode
   }
-  return document.documentElement;
+  return document.documentElement
 }
 
 export default {
-  name: "JoLoadMore",
+  name: 'JoLoadMore',
   props: {
     topDistance: {
       type: Number,
-      default: 0
+      default: 0,
     },
     noAnimation: {
       type: Boolean,
-      default: false
+      default: false,
     },
     autoLoad: {
       type: Boolean,
-      default: true
+      default: true,
     },
     showBottom: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
-  data() {
+  data () {
     return {
       // 用于计算 scrollTop 的节点
       scrollTarget: null,
@@ -105,132 +105,131 @@ export default {
       topBarHeight: 0,
 
       isTop: true,
-      topTxt: "下拉刷新",
-      bottomTxt: "点击加载更多"
-    };
+      topTxt: '下拉刷新',
+      bottomTxt: '点击加载更多',
+    }
   },
   computed: {
-    maxDistance() {
-      return this.topDistance > 0 ? this.topDistance : this.topBarHeight * 1.5;
+    maxDistance () {
+      return this.topDistance > 0 ? this.topDistance : this.topBarHeight * 1.5
     },
-    tY() {
-      return this.noAnimation ? 0 : 80 * Math.atan(this.dY / 200);
+    tY () {
+      return this.noAnimation ? 0 : 80 * Math.atan(this.dY / 200)
     },
-    transitionDuration() {
-      return this.pulling ? "0s" : "200ms";
+    transitionDuration () {
+      return this.pulling ? '0s' : '200ms'
     },
-    topStatus() {
-      return this.refreshing ? 2 : this.tY > this.maxDistance ? 1 : 0;
+    topStatus () {
+      return this.refreshing ? 2 : this.tY > this.maxDistance ? 1 : 0
     },
-    bottomStatus() {
-      return this.refreshing ? 0 : this.loading ? 1 : this.noMore ? 2 : 3;
-    }
+    bottomStatus () {
+      return this.refreshing ? 0 : this.loading ? 1 : this.noMore ? 2 : 3
+    },
   },
   watch: {
-    topStatus(val) {
-      this.topTxt = ["下拉刷新", "释放更新", "正在刷新"][val];
+    topStatus (val) {
+      this.topTxt = ['下拉刷新', '释放更新', '正在刷新'][val]
     },
-    bottomStatus(val) {
-      this.bottomTxt = ["", "加载中...", "-- 没有更多 --", "点击加载更多"][val];
-    }
+    bottomStatus (val) {
+      this.bottomTxt = ['', '加载中...', '-- 没有更多 --', '点击加载更多'][val]
+    },
   },
-  mounted() {
-    this.scrollTarget = getScrollTarget(this.$el);
-    this.topBarHeight = this.$refs.head.clientHeight;
+  mounted () {
+    this.scrollTarget = getScrollTarget(this.$el)
+    this.topBarHeight = this.$refs.head.clientHeight
     if (this.autoLoad && !this.isFulled()) {
-      this.beforeRefresh();
+      this.beforeRefresh()
     }
   },
   methods: {
     // Touch start
-    startDrag(e) {
-      e = e.changedTouches ? e.changedTouches[0] : e;
+    startDrag (e) {
+      e = e.changedTouches ? e.changedTouches[0] : e
       // 加载中 || 刷新中 || 不在顶部 禁止 pull
-      if (this.loading || this.refreshing || this.scrollTarget.scrollTop > 0)
-        return;
-      this.topBarHeight = this.$refs.head.clientHeight;
-      this.$emit("onPullStart");
-      this.dragging = true;
-      this.startY = e.pageY;
+      if (this.loading || this.refreshing || this.scrollTarget.scrollTop > 0) { return }
+      this.topBarHeight = this.$refs.head.clientHeight
+      this.$emit('onPullStart')
+      this.dragging = true
+      this.startY = e.pageY
     },
     // Move
-    onDrag(e) {
-      const $e = e.changedTouches ? e.changedTouches[0] : e;
+    onDrag (e) {
+      const $e = e.changedTouches ? e.changedTouches[0] : e
       // move 的距离
-      const offsetY = $e.pageY - this.startY;
+      const offsetY = $e.pageY - this.startY
       // 是否为下拉操作
-      const isPull = offsetY > 0;
+      const isPull = offsetY > 0
 
       if (this.dragging && isPull && window.scrollY <= 0) {
         // 阻止 原生滚动 事件
-        e.preventDefault();
+        e.preventDefault()
 
-        this.dY = offsetY;
-        this.pulling = true;
-        this.$emit("onPull", this.dY);
+        this.dY = offsetY
+        this.pulling = true
+        this.$emit('onPull', this.dY)
       }
     },
     // Touch end
-    stopDrag() {
-      this.dragging = false;
-      this.pulling = false;
+    stopDrag () {
+      this.dragging = false
+      this.pulling = false
 
-      this.$emit("onPullEnd");
+      this.$emit('onPullEnd')
 
       this.tY > this.maxDistance && window.scrollY <= 0
         ? this.beforeRefresh()
-        : (this.dY = 0);
+        : (this.dY = 0)
     },
-    beforeRefresh() {
-      this.dY = Math.tan(this.topBarHeight / 80) * 200;
+    beforeRefresh () {
+      this.dY = Math.tan(this.topBarHeight / 80) * 200
 
-      if (this.refreshing) return;
+      if (this.refreshing) return
 
-      this.noMore = false;
-      this.refreshing = true;
+      this.noMore = false
+      this.refreshing = true
 
-      this.$emit("onRefresh", (noMore = false) => {
-        this.afterRefresh(noMore);
-      });
+      this.$emit('onRefresh', (noMore = false) => {
+        this.afterRefresh(noMore)
+      })
     },
-    afterRefresh(noMore = true) {
-      this.dY = 0;
-      this.noMore = noMore;
-      this.refreshing = false;
-      this.$emit("afterRefresh");
+    afterRefresh (noMore = true) {
+      this.dY = 0
+      this.noMore = noMore
+      this.refreshing = false
+      this.$emit('afterRefresh')
 
       this.$nextTick(() => {
         noMore ||
           (this.showBottom &&
             this.autoLoad &&
             !this.isFulled() &&
-            this.beforeLoadMore());
-      });
+            this.beforeLoadMore())
+      })
     },
-    beforeLoadMore() {
-      if (this.loading || this.refreshing || this.noMore) return;
-      this.loading = true;
-      this.$emit("onLoadMore", (noMore = false) => {
-        this.afterLoadMore(noMore);
-      });
+    beforeLoadMore () {
+      if (this.loading || this.refreshing || this.noMore) return
+      this.loading = true
+      this.$emit('onLoadMore', (noMore = false) => {
+        this.afterLoadMore(noMore)
+      })
     },
-    afterLoadMore(noMore = true) {
-      this.noMore = noMore;
-      this.loading = false;
-      this.$emit("afterLoadMore");
+    afterLoadMore (noMore = true) {
+      this.noMore = noMore
+      this.loading = false
+      this.$emit('afterLoadMore')
 
       this.$nextTick(() => {
-        noMore || (this.autoLoad && !this.isFulled() && this.beforeLoadMore());
-      });
+        noMore || (this.autoLoad && !this.isFulled() && this.beforeLoadMore())
+      })
     },
-    isFulled() {
+    isFulled () {
       return (
         this.$el.getBoundingClientRect().bottom >=
         this.scrollTarget.clientHeight
-      );
-    }
-  }
-};
+      )
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

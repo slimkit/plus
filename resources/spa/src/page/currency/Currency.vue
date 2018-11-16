@@ -3,7 +3,9 @@
 
     <common-header class="header">
       我的{{ currencyUnit }}
-      <router-link slot="left" to="/profile">
+      <router-link
+        slot="left"
+        to="/profile">
         <svg class="m-style-svg m-svg-def">
           <use xlink:href="#icon-back" />
         </svg>
@@ -66,51 +68,50 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import PopupDialog from "@/components/PopupDialog.vue";
+import { mapState } from 'vuex'
+import PopupDialog from '@/components/PopupDialog.vue'
 
 export default {
-  name: "Currency",
+  name: 'Currency',
   components: { PopupDialog },
-  data() {
+  data () {
     return {
-      fromPageTitle: ""
-    };
+      fromPageTitle: '',
+    }
   },
   computed: {
     ...mapState({
-      user: "CURRENTUSER",
-      currency: "currency"
+      user: 'CURRENTUSER',
+      currency: 'currency',
     }),
-    rule() {
-      return this.currency.rule.replace(/\n/g, "<br>");
-    }
+    rule () {
+      return this.currency.rule.replace(/\n/g, '<br>')
+    },
   },
-  created() {
-    this.fromPageTitle = document.title;
-    document.title = this.currencyUnit;
+  created () {
+    this.fromPageTitle = document.title
+    document.title = this.currencyUnit
   },
-  mounted() {
-    if (!this.currency.recharge.length)
-      this.$store.dispatch("currency/getCurrencyInfo");
+  mounted () {
+    if (!this.currency.recharge.length) { this.$store.dispatch('currency/getCurrencyInfo') }
 
-    const amount = this.$route.query.total_amount;
+    const amount = this.$route.query.total_amount
     if (amount) {
-      this.$store.dispatch("fetchUserInfo");
+      this.$store.dispatch('fetchUserInfo')
       this.$Message.success(
         `共消耗${amount}元, 获得 ${amount * 100} ${this.currencyUnit}!`
-      );
+      )
     }
   },
-  destroyed() {
-    document.title = this.fromPageTitle;
+  destroyed () {
+    document.title = this.fromPageTitle
   },
   methods: {
-    showRule() {
-      this.$refs.dialog.show();
-    }
-  }
-};
+    showRule () {
+      this.$refs.dialog.show()
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

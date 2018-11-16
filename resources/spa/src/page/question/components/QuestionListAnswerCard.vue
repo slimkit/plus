@@ -9,28 +9,32 @@
       :user="user"
       size="nano" />
     <!-- Body -->
-    {{ showUsername }} <span v-if="isMine && anonymity" class="gray">(匿名)</span>：{{ body }}
+    {{ showUsername }} <span
+      v-if="isMine && anonymity"
+      class="gray">(匿名)</span>：{{ body }}
   </div>
-  <div v-else class="empty" />
+  <div
+    v-else
+    class="empty" />
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 
 export default {
-  name: "QuestionListAnswerCard",
+  name: 'QuestionListAnswerCard',
   props: {
     answer: {
       type: [Object],
       default: null,
-      validator: function(value) {
-        if (!value || typeof value === "object") return true;
-        return false;
-      }
-    }
+      validator: function (value) {
+        if (!value || typeof value === 'object') return true
+        return false
+      },
+    },
   },
   computed: {
-    ...mapState({ CURRENTUSER: "CURRENTUSER" }),
+    ...mapState({ CURRENTUSER: 'CURRENTUSER' }),
 
     /**
      * The answer anonymity.
@@ -38,13 +42,13 @@ export default {
      * @return {Boolean}
      * @author Seven Du <shiweidu@outlook.com>
      */
-    anonymity() {
-      const { anonymity } = this.answer;
-      return !!anonymity;
+    anonymity () {
+      const { anonymity } = this.answer
+      return !!anonymity
     },
 
-    isMine() {
-      return this.user.id === this.CURRENTUSER.id;
+    isMine () {
+      return this.user.id === this.CURRENTUSER.id
     },
 
     /**
@@ -53,9 +57,9 @@ export default {
      * @return {Object}
      * @author Seven Du <shiweidu@outlook.com>
      */
-    user() {
-      const { user } = this.answer;
-      return user || {};
+    user () {
+      const { user } = this.answer
+      return user || {}
     },
 
     /**
@@ -64,23 +68,23 @@ export default {
      * @return {string}
      * @author Seven Du <shiweidu@outlook.com>
      */
-    showUsername() {
-      if (!this.isMine && this.anonymity) return "匿名用户";
-      return this.user.name;
+    showUsername () {
+      if (!this.isMine && this.anonymity) return '匿名用户'
+      return this.user.name
     },
 
-    body() {
-      const body = this.answer.body || "";
-      return body.replace(/@!\[image]\(\d+\)/g, "[图片]");
-    }
+    body () {
+      const body = this.answer.body || ''
+      return body.replace(/@!\[image]\(\d+\)/g, '[图片]')
+    },
   },
   methods: {
-    gotoQuestionDetail() {
-      const { question_id: qid } = this.answer;
-      this.$router.push(`/questions/${qid}`);
-    }
-  }
-};
+    gotoQuestionDetail () {
+      const { question_id: qid } = this.answer
+      this.$router.push(`/questions/${qid}`)
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

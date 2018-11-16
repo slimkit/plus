@@ -7,7 +7,7 @@ const config = {
    * XMPP server
    * 对于在console.easemob.com创建的appKey，固定为该值
    */
-  xmppURL: "im-api.easemob.com",
+  xmppURL: 'im-api.easemob.com',
 
   /*
    * Backend REST API URL
@@ -56,7 +56,7 @@ const config = {
    * 为 true 时可在console中查看log
    * @type {Boolean}
    */
-  isDebug: process.env.VUE_APP_EASEMOB_ISDEBUG !== "false",
+  isDebug: process.env.VUE_APP_EASEMOB_ISDEBUG !== 'false',
 
   /**
    * 本地存储
@@ -74,9 +74,9 @@ const config = {
    * 断线重连时间间隔
    * @type {Number}
    */
-  autoReconnectInterval: 2
+  autoReconnectInterval: 2,
 
   // heartBeatWait: 4500 // 使用webrtc（视频聊天）时发送心跳包的时间间隔，单位ms
-};
+}
 
-export default config;
+export default config

@@ -4,7 +4,9 @@
     <common-header :pinned="true">
       发布动态
       <template slot="left">
-        <a href="javascript:;" @click="beforeGoBack">取消</a>
+        <a
+          href="javascript:;"
+          @click="beforeGoBack">取消</a>
       </template>
       <template slot="right">
         <circle-loading v-if="loading" />
@@ -41,17 +43,17 @@
 </template>
 
 <script>
-import TextareaInput from "@/components/common/TextareaInput.vue";
+import TextareaInput from '@/components/common/TextareaInput.vue'
 
 export default {
-  name: "PostText",
+  name: 'PostText',
   components: {
-    TextareaInput
+    TextareaInput,
   },
-  data() {
+  data () {
     return {
       loading: false,
-      contentText: "",
+      contentText: '',
       curpos: 0,
       scrollHeight: 0,
       pinned: false,
@@ -59,89 +61,89 @@ export default {
       amount: 0,
       customAmount: null,
 
-      appBackgroundColor: null
-    };
+      appBackgroundColor: null,
+    }
   },
   computed: {
-    paycontrol() {
-      return this.$store.state.CONFIG.feed.paycontrol;
+    paycontrol () {
+      return this.$store.state.CONFIG.feed.paycontrol
     },
-    disabled() {
-      return !this.contentText.length;
+    disabled () {
+      return !this.contentText.length
     },
-    items() {
-      return this.$store.state.CONFIG.feed.items || [];
+    items () {
+      return this.$store.state.CONFIG.feed.items || []
     },
-    limit() {
-      return this.$store.state.CONFIG.feed.limit || 50;
-    }
+    limit () {
+      return this.$store.state.CONFIG.feed.limit || 50
+    },
   },
   watch: {
-    customAmount(val) {
-      if (val) this.amount = ~~val;
-    }
+    customAmount (val) {
+      if (val) this.amount = ~~val
+    },
   },
-  mounted() {
-    this.contentText = "";
+  mounted () {
+    this.contentText = ''
   },
   methods: {
-    beforeGoBack() {
+    beforeGoBack () {
       this.contentText.length === 0
         ? this.goBack()
         : this.$bus.$emit(
-            "actionSheet",
-            [
-              {
-                text: "确定",
-                method: () => {
-                  this.goBack();
-                }
-              }
-            ],
-            "取消",
-            "你还有没有发布的内容,是否放弃发布?"
-          );
+          'actionSheet',
+          [
+            {
+              text: '确定',
+              method: () => {
+                this.goBack()
+              },
+            },
+          ],
+          '取消',
+          '你还有没有发布的内容,是否放弃发布?'
+        )
     },
-    chooseDefaultAmount(amount) {
-      this.customAmount = null;
-      this.amount = amount;
+    chooseDefaultAmount (amount) {
+      this.customAmount = null
+      this.amount = amount
     },
-    beforePost() {
+    beforePost () {
       this.pinned
         ? this.amount === 0
-          ? this.$Message.error("请设置收费金额")
+          ? this.$Message.error('请设置收费金额')
           : this.contentText.length <= this.limit
             ? this.$Message.error(`正文内容不足${this.limit}字, 无法设置收费`)
             : this.postText()
-        : ((this.amount = 0), this.postText());
+        : ((this.amount = 0), this.postText())
     },
-    postText() {
-      if (this.loading) return;
-      this.loading = true;
+    postText () {
+      if (this.loading) return
+      this.loading = true
       this.$http
         .post(
-          "feeds",
+          'feeds',
           {
             feed_content: this.contentText,
             feed_from: 2,
             feed_mark:
-              new Date().valueOf() + "" + this.$store.state.CURRENTUSER.id,
-            amount: this.amount
+              new Date().valueOf() + '' + this.$store.state.CURRENTUSER.id,
+            amount: this.amount,
           },
           { validateStatus: s => s === 201 }
         )
         .then(() => {
-          this.$router.replace("/feeds?type=new&refresh=1");
+          this.$router.replace('/feeds?type=new&refresh=1')
         })
         .catch(err => {
-          this.$Message.error(err.response.data);
+          this.$Message.error(err.response.data)
         })
         .finally(() => {
-          this.loading = false;
-        });
-    }
-  }
-};
+          this.loading = false
+        })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

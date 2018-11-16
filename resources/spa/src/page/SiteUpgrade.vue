@@ -27,6 +27,6 @@
 
 <script>
 export default {
-  name: "SiteUpgrade"
-};
+  name: 'SiteUpgrade',
+}
 </script>

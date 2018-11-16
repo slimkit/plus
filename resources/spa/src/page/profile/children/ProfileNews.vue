@@ -40,8 +40,8 @@
 
 <script>
 export default {
-  name: "ProfileNews"
-};
+  name: 'ProfileNews',
+}
 </script>
 
 <style lang="less">

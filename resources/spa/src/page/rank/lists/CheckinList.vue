@@ -22,63 +22,63 @@
 </template>
 
 <script>
-import HeadTop from "@/components/HeadTop";
-import RankListItem from "../components/RankListItem.vue";
-import { getRankUsers } from "@/api/ranks.js";
-import { limit } from "@/api";
+import HeadTop from '@/components/HeadTop'
+import RankListItem from '../components/RankListItem.vue'
+import { getRankUsers } from '@/api/ranks.js'
+import { limit } from '@/api'
 
-const api = "/checkin-ranks";
-const prefixCls = "rankItem";
+const api = '/checkin-ranks'
+const prefixCls = 'rankItem'
 
 export default {
-  name: "CheckinList",
+  name: 'CheckinList',
   components: {
     HeadTop,
-    RankListItem
+    RankListItem,
   },
-  data() {
+  data () {
     return {
       prefixCls,
       loading: false,
-      vuex: "rankCheckin"
-    };
+      vuex: 'rankCheckin',
+    }
   },
 
   computed: {
-    users() {
-      return this.$store.getters.getUsersByType(this.vuex);
-    }
+    users () {
+      return this.$store.getters.getUsersByType(this.vuex)
+    },
   },
 
   methods: {
-    cancel() {
-      this.to("/rank/users");
+    cancel () {
+      this.to('/rank/users')
     },
-    to(path) {
-      path = typeof path === "string" ? { path } : path;
+    to (path) {
+      path = typeof path === 'string' ? { path } : path
       if (path) {
-        this.$router.push(path);
+        this.$router.push(path)
       }
     },
-    onRefresh() {
+    onRefresh () {
       getRankUsers(api).then(data => {
-        this.$store.commit("SAVE_RANK_DATA", { name: this.vuex, data });
-        this.$refs.loadmore.topEnd(false);
-      });
+        this.$store.commit('SAVE_RANK_DATA', { name: this.vuex, data })
+        this.$refs.loadmore.topEnd(false)
+      })
     },
-    onLoadMore() {
+    onLoadMore () {
       getRankUsers(api, { offset: this.users.length || 0 }).then(
         (data = []) => {
-          this.$store.commit("SAVE_RANK_DATA", {
+          this.$store.commit('SAVE_RANK_DATA', {
             name: this.vuex,
-            data: [...this.users, ...data]
-          });
-          this.$refs.loadmore.bottomEnd(data.length < limit);
+            data: [...this.users, ...data],
+          })
+          this.$refs.loadmore.bottomEnd(data.length < limit)
         }
-      );
-    }
-  }
-};
+      )
+    },
+  },
+}
 </script>
 
 <style lang="less" src="../style.less">

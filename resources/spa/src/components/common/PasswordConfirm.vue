@@ -1,5 +1,7 @@
 <template>
-  <div class="c-password-confirm" @touchmove.prevent>
+  <div
+    class="c-password-confirm"
+    @touchmove.prevent>
     <!-- 遮罩层 -->
     <transition name="toast">
       <div
@@ -9,10 +11,14 @@
     </transition>
 
     <transition name="pop">
-      <div v-if="visible" class="wrap">
+      <div
+        v-if="visible"
+        class="wrap">
         <common-header class="common-header">
           输入密码
-          <a slot="left" @click="cancel">取消</a>
+          <a
+            slot="left"
+            @click="cancel">取消</a>
         </common-header>
         <main>
           <form onsubmit="return false">
@@ -27,7 +33,9 @@
               type="submit"
               @click="submit" >确认</button>
           </form>
-          <a :class="{disabled}" @click="onForgotClick">忘记密码?</a>
+          <a
+            :class="{disabled}"
+            @click="onForgotClick">忘记密码?</a>
         </main>
       </div>
     </transition>
@@ -36,46 +44,46 @@
 
 <script>
 export default {
-  name: "PasswordConfirm",
-  data() {
+  name: 'PasswordConfirm',
+  data () {
     return {
       visible: false,
-      password: ""
-    };
+      password: '',
+    }
   },
   computed: {
-    disabled() {
-      return this.password.length < 6;
+    disabled () {
+      return this.password.length < 6
     },
-    needValidate() {
-      const config = this.$store.state.CONFIG;
-      return config["pay-validate-user-password"] || false;
-    }
+    needValidate () {
+      const config = this.$store.state.CONFIG
+      return config['pay-validate-user-password'] || false
+    },
   },
   methods: {
-    show() {
-      if (!this.needValidate) return this.$emit("submit");
-      this.visible = true;
+    show () {
+      if (!this.needValidate) return this.$emit('submit')
+      this.visible = true
       this.$nextTick(() => {
-        this.$refs.content.focus();
-      });
+        this.$refs.content.focus()
+      })
     },
-    cancel() {
-      this.$emit("cancel");
-      this.visible = false;
-      this.password = "";
+    cancel () {
+      this.$emit('cancel')
+      this.visible = false
+      this.password = ''
     },
-    submit() {
-      this.$emit("submit", this.password);
-      this.visible = false;
-      this.password = "";
+    submit () {
+      this.$emit('submit', this.password)
+      this.visible = false
+      this.password = ''
     },
-    onForgotClick() {
-      this.$router.push({ path: "/forgot" });
-      this.cancel();
-    }
-  }
-};
+    onForgotClick () {
+      this.$router.push({ path: '/forgot' })
+      this.cancel()
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

@@ -1,9 +1,13 @@
 <template>
   <div class="p-user-fans">
 
-    <nav class="m-box m-head-top m-lim-width m-pos-f m-main m-bb1" style="padding: 0 10px;">
+    <nav
+      class="m-box m-head-top m-lim-width m-pos-f m-main m-bb1"
+      style="padding: 0 10px;">
       <div class="m-box m-aln-center m-flex-shrink0 ">
-        <svg class="m-style-svg m-svg-def" @click="goBack">
+        <svg
+          class="m-style-svg m-svg-def"
+          @click="goBack">
           <use xlink:href="#icon-back"/>
         </svg>
       </div>
@@ -45,81 +49,81 @@
 </template>
 
 <script>
-import UserItem from "@/components/UserItem";
-import { getUserFansByType } from "@/api/user.js";
+import UserItem from '@/components/UserItem'
+import { getUserFansByType } from '@/api/user.js'
 
-const typeMap = ["followers", "followings"];
+const typeMap = ['followers', 'followings']
 export default {
-  name: "UserFans",
+  name: 'UserFans',
   components: {
-    UserItem
+    UserItem,
   },
-  data() {
+  data () {
     return {
       followers: [],
       followings: [],
       preUID: 0,
-      USERSChangeTracker: 1
-    };
+      USERSChangeTracker: 1,
+    }
   },
   computed: {
-    userID() {
-      return ~~this.$route.params.userID;
+    userID () {
+      return ~~this.$route.params.userID
     },
-    type() {
-      return this.$route.params.type;
+    type () {
+      return this.$route.params.type
     },
-    param() {
+    param () {
       return {
         limit: 15,
         type: this.type,
-        uid: this.userID
-      };
+        uid: this.userID,
+      }
     },
     users: {
-      get() {
-        return this.type && this.$data[this.type];
+      get () {
+        return this.type && this.$data[this.type]
       },
-      set(val) {
-        this.$data[this.type] = val;
-      }
-    }
+      set (val) {
+        this.$data[this.type] = val
+      },
+    },
   },
   watch: {
-    type(val) {
-      typeMap.includes(val) && this.$refs.loadmore.beforeRefresh();
+    type (val) {
+      typeMap.includes(val) && this.$refs.loadmore.beforeRefresh()
     },
-    users(val) {
+    users (val) {
       val &&
         val.length > 0 &&
         val.forEach(user => {
-          this.$store.commit("SAVE_USER", user);
-        });
-    }
+          this.$store.commit('SAVE_USER', user)
+        })
+    },
   },
-  activated() {
+  activated () {
     // 判断是否清空上一次的数据
     this.userID === this.preUID ||
-      ((this.followers = []), (this.followings = []));
+      ((this.followers = []), (this.followings = []))
 
-    this.$refs.loadmore.beforeRefresh();
-    this.preUID = this.userID;
+    this.$refs.loadmore.beforeRefresh()
+    this.preUID = this.userID
   },
   methods: {
-    onRefresh(callback) {
+    onRefresh (callback) {
       getUserFansByType(this.param).then(data => {
-        this.users = data;
-        callback(data.length < this.param.limit);
-      });
+        this.users = data
+        callback(data.length < this.param.limit)
+      })
     },
-    onLoadMore(callback) {
+    onLoadMore (callback) {
       getUserFansByType({ ...this.param, offset: this.users.length }).then(
         data => {
-          this.users = [...this.users, ...data];
-          callback(data.length < this.param.limit);
+          this.users = [...this.users, ...data]
+          callback(data.length < this.param.limit)
         }
-      );
-    }
-  }
-};
+      )
+    },
+  },
+}
 </script>

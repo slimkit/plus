@@ -9,14 +9,14 @@
 </template>
 
 <script>
-import SwitchBar from "./components/SwitchBar.vue";
+import SwitchBar from './components/SwitchBar.vue'
 
 export default {
-  name: "Questions",
+  name: 'Questions',
   components: {
-    SwitchBar
-  }
-};
+    SwitchBar,
+  },
+}
 </script>
 
 <style lang="less" scoped>

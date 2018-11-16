@@ -1,6 +1,8 @@
 <template>
   <div class="c-loading">
-    <div :class="css" class="circle">
+    <div
+      :class="css"
+      class="circle">
       <span/>
       <span/>
       <span/>
@@ -19,17 +21,17 @@
 
 <script>
 export default {
-  name: "CircleLoading",
+  name: 'CircleLoading',
   props: {
-    size: { type: String, default: "" },
-    color: { type: String, default: "dark" }
+    size: { type: String, default: '' },
+    color: { type: String, default: 'dark' },
   },
   computed: {
-    css() {
-      return [this.size, this.color];
-    }
-  }
-};
+    css () {
+      return [this.size, this.color]
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

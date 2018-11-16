@@ -21,52 +21,52 @@
 </template>
 <script>
 export default {
-  name: "FeedImage",
+  name: 'FeedImage',
   props: {
     id: {
       type: Number,
-      required: true
+      required: true,
     },
     pics: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   methods: {
-    handleClick($event, index) {
-      const component = this.$parent;
-      const els = this.$el.querySelectorAll(".m-pic");
+    handleClick ($event, index) {
+      const component = this.$parent
+      const els = this.$el.querySelectorAll('.m-pic')
       const images = this.pics.map((img, index) => {
-        const el = els[index];
-        const src = `${this.$http.defaults.baseURL}/files/${img.file}`;
+        const el = els[index]
+        const src = `${this.$http.defaults.baseURL}/files/${img.file}`
         return {
           ...img,
           el,
           src,
-          index
-        };
-      });
+          index,
+        }
+      })
       // const { paid_node, paid, type } = this.pics[index];
       // paid_node > 0 && type === "read" && paid
       //   ? this.payForImg(currItem)
       //   : this.$bus.$emit("mvGallery", { component, index, images });
 
-      this.$bus.$emit("mvGallery", { component, index, images });
+      this.$bus.$emit('mvGallery', { component, index, images })
     },
-    isLongImg(img) {
-      const [w, h] = img.size.split("x");
-      img.w = parseInt(w);
-      img.h = parseInt(h);
-      return h > 3 * w;
+    isLongImg (img) {
+      const [w, h] = img.size.split('x')
+      img.w = parseInt(w)
+      img.h = parseInt(h)
+      return h > 3 * w
     },
-    longStyle(w, h) {
+    longStyle (w, h) {
       return {
-        width: w > 518 ? "518px" : w + "px",
-        paddingBottom: (h / w) * 100 + "%"
-      };
-    }
-  }
-};
+        width: w > 518 ? '518px' : w + 'px',
+        paddingBottom: (h / w) * 100 + '%',
+      }
+    },
+  },
+}
 </script>
 <style lang='less'>
 .m-pic {

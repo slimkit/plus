@@ -1,14 +1,14 @@
-import api from "./api";
-import store from "@/stores";
-import $Message from "@/plugins/message-box";
-import lstore from "@/plugins/lstore/lstore.js";
+import api from './api'
+import store from '@/stores'
+import $Message from '@/plugins/message-box'
+import lstore from '@/plugins/lstore/lstore.js'
 
 /**
  * 定义用户对象
  * @typedef {{id: number, name: string, ...more}} UserObject
  */
 
-const resArray = { data: [] };
+const resArray = { data: [] }
 
 /**
  * 关注 || 取关 操作
@@ -19,34 +19,34 @@ const resArray = { data: [] };
  * @returns
  */
 export const followUserByStatus = ({ status, id }) => {
-  let method;
+  let method
   switch (status) {
-    case "unFollow":
-      method = "PUT";
-      break;
-    case "eachFollow":
-      method = "DELETE";
-      break;
-    case "follow":
-      method = "DELETE";
-      break;
+    case 'unFollow':
+      method = 'PUT'
+      break
+    case 'eachFollow':
+      method = 'DELETE'
+      break
+    case 'follow':
+      method = 'DELETE'
+      break
   }
-  if (!method || !id) throw new Error("参数错误");
-  let url = `/user/followings/${id}`;
+  if (!method || !id) throw new Error('参数错误')
+  let url = `/user/followings/${id}`
   const res = {
     status: true,
-    follower: method === "PUT"
-  };
+    follower: method === 'PUT',
+  }
 
   return api({
     method,
     url,
-    validateStatus: s => s === 204
+    validateStatus: s => s === 204,
   }).then(() => {
-    store.commit("SAVE_USER", { id, follower: res.follower });
-    return res.follower;
-  });
-};
+    store.commit('SAVE_USER', { id, follower: res.follower })
+    return res.follower
+  })
+}
 
 /**
  * 搜索用户
@@ -56,14 +56,14 @@ export const followUserByStatus = ({ status, id }) => {
  * @param  {number} after 偏移量 用于翻页
  * @returns {Promise<UserObject[]>}
  */
-export function searchUserByKey(key, after) {
-  if (!key) return Promise.resolve(resArray);
+export function searchUserByKey (key, after) {
+  if (!key) return Promise.resolve(resArray)
 
-  const params = { keyword: key };
-  after > 0 && (params.offset = after);
+  const params = { keyword: key }
+  after > 0 && (params.offset = after)
   return api
-    .get("/user/search", { params })
-    .catch(() => Promise.resolve(resArray));
+    .get('/user/search', { params })
+    .catch(() => Promise.resolve(resArray))
 }
 
 /**
@@ -75,15 +75,15 @@ export function searchUserByKey(key, after) {
  * @returns {Promise<UserObject[]>}
  */
 export const findUserByType = (type, params) => {
-  const typeMap = ["recommends", "populars", "latests", "find-by-tags"];
+  const typeMap = ['recommends', 'populars', 'latests', 'find-by-tags']
   if (!typeMap.includes(type)) {
-    return Promise.reject(new Error("参数不正确"));
+    return Promise.reject(new Error('参数不正确'))
   }
   return api.get(`/user/${type}`, { params }).catch(() => {
     // 错误处理
-    return resArray;
-  });
-};
+    return resArray
+  })
+}
 
 /**
  * 查找附近的人
@@ -98,15 +98,15 @@ export const findNearbyUser = ({ lng: longitude, lat: latitude }, page = 0) => {
   const params = {
     limit: 10,
     longitude,
-    latitude
-  };
-  page > 0 && (params.page = page);
+    latitude,
+  }
+  page > 0 && (params.page = page)
 
   return api
-    .get("around-amap", { params })
+    .get('around-amap', { params })
     .then(data => data)
-    .catch(() => resArray);
-};
+    .catch(() => resArray)
+}
 
 /**
  * 获取用户基本信息
@@ -117,17 +117,17 @@ export const findNearbyUser = ({ lng: longitude, lat: latitude }, page = 0) => {
  * @returns {Promise<UserObject>}
  */
 export const getUserInfoById = (id, force = false) => {
-  const user = store.state.USERS[`user_${id}`];
-  if (user && !force) return user;
+  const user = store.state.USERS[`user_${id}`]
+  if (user && !force) return user
 
   return api
     .get(`/users/${id}`, { validateStatus: s => [404, 201, 200].includes(s) })
     .then(({ data }) => {
-      data = data.id ? data : {};
-      store.commit("SAVE_USER", data);
-      return store.state.USERS[`user_${id}`];
-    });
-};
+      data = data.id ? data : {}
+      store.commit('SAVE_USER', data)
+      return store.state.USERS[`user_${id}`]
+    })
+}
 
 /**
  * 获取用户列表
@@ -142,9 +142,9 @@ export const getUserInfoById = (id, force = false) => {
  * @param {string} [params.id]
  * @returns {Promise<UserObject[]>}
  */
-export function getUserList(params) {
-  const url = "/users";
-  return api.get(url, { params, validateStatus: s => s === 200 });
+export function getUserList (params) {
+  const url = '/users'
+  return api.get(url, { params, validateStatus: s => s === 200 })
 }
 
 /**
@@ -156,17 +156,17 @@ export function getUserList(params) {
  * @param  {number} options.offset
  * @returns {Promise<UserObject[]>}
  */
-export function getUserFansByType({ uid, type, limit = 15, offset = 0 }) {
+export function getUserFansByType ({ uid, type, limit = 15, offset = 0 }) {
   const params = {
     limit,
-    offset
-  };
+    offset,
+  }
   return api
     .get(`/users/${uid}/${type}`, { params })
     .then(({ data = [] }) => data)
     .catch(() => {
-      return [];
-    });
+      return []
+    })
 }
 
 /**
@@ -178,27 +178,27 @@ export function getUserFansByType({ uid, type, limit = 15, offset = 0 }) {
  * @param {string} payload.password
  * @returns {Promise<boolean>}
  */
-export function signinByAccount(payload) {
-  return api.post("/auth/login", payload, { validateStatus: s => s > 0 }).then(
-    ({ data: { message, access_token /*token_type = "bearer"*/ }, status }) => {
+export function signinByAccount (payload) {
+  return api.post('/auth/login', payload, { validateStatus: s => s > 0 }).then(
+    ({ data: { message, access_token /* token_type = "bearer" */ }, status }) => {
       switch (status) {
         case 422:
-          $Message.error(message);
-          return false;
+          $Message.error(message)
+          return false
         case 200:
           lstore.setData(
-            "H5_ACCESS_TOKEN",
+            'H5_ACCESS_TOKEN',
             `Bearer ${access_token}`
             // `${token_type} ${access_token}`
-          );
-          store.dispatch("fetchUserInfo");
-          return true;
+          )
+          store.dispatch('fetchUserInfo')
+          return true
       }
     },
     () => {
-      return false;
+      return false
     }
-  );
+  )
 }
 
 /**
@@ -207,8 +207,8 @@ export function signinByAccount(payload) {
  * @export
  * @returns
  */
-export function fetchUserInfo() {
-  return api.get("/user", { validateStatus: s => s === 200 });
+export function fetchUserInfo () {
+  return api.get('/user', { validateStatus: s => s === 200 })
 }
 
 /**
@@ -217,13 +217,13 @@ export function fetchUserInfo() {
  * @export
  * @param {File} file 图像文件
  */
-export function uploadUserBanner(file) {
-  const formData = new FormData();
-  formData.append("image", file);
+export function uploadUserBanner (file) {
+  const formData = new FormData()
+  formData.append('image', file)
   return api.post(`/user/bg`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-    validateStatus: s => s === 204
-  });
+    headers: { 'Content-Type': 'multipart/form-data' },
+    validateStatus: s => s === 204,
+  })
 }
 
 /**
@@ -235,9 +235,9 @@ export function uploadUserBanner(file) {
  * @param {number} data.amount 打赏金额
  * @returns
  */
-export function rewardUser(userId, data) {
-  const url = `/user/${userId}/new-rewards`;
-  return api.post(url, data, { validateStatus: s => s === 201 });
+export function rewardUser (userId, data) {
+  const url = `/user/${userId}/new-rewards`
+  return api.post(url, data, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -255,14 +255,14 @@ export function rewardUser(userId, data) {
  * @param {number[]} [payload.files]
  * @returns
  */
-export function postCertification(payload) {
-  const url = "/user/certification";
-  return api.post(url, payload, { validateStatus: s => s === 201 });
+export function postCertification (payload) {
+  const url = '/user/certification'
+  return api.post(url, payload, { validateStatus: s => s === 201 })
 }
 
-export function patchCertification(payload) {
-  const url = "/user/certification";
-  return api.patch(url, payload, { validateStatus: s => s === 201 });
+export function patchCertification (payload) {
+  const url = '/user/certification'
+  return api.patch(url, payload, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -271,6 +271,6 @@ export function patchCertification(payload) {
  * @export
  * @returns
  */
-export function getUserVerifyInfo() {
-  return api.get("/user/certification", { validateStatus: s => s === 200 });
+export function getUserVerifyInfo () {
+  return api.get('/user/certification', { validateStatus: s => s === 200 })
 }

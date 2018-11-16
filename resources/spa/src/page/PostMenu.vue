@@ -9,7 +9,9 @@
       </div>
     </transition>
     <transition @after-enter="transitionComplete">
-      <div v-if="show" class="m-box-model m-post-menu-con">
+      <div
+        v-if="show"
+        class="m-box-model m-post-menu-con">
         <transition-group
           tag="div"
           enter-active-class="animated bounceIn"
@@ -73,7 +75,9 @@
           </template>
         </transition-group>
         <transition name="pop">
-          <button class="m-post-menu-btn" @click="cancel">
+          <button
+            class="m-post-menu-btn"
+            @click="cancel">
             <svg class="m-style-svg m-svg-def">
               <use xlink:href="#icon-foot-close"/>
             </svg>
@@ -85,79 +89,77 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 
 export default {
-  name: "PostMenu",
-  data() {
+  name: 'PostMenu',
+  data () {
     return {
       show: false,
-      open: false
-    };
+      open: false,
+    }
   },
   computed: {
     ...mapState({
       verified: state => state.USER_VERIFY,
-      newsVerified: state => state.CONFIG["news:contribute"].verified
+      newsVerified: state => state.CONFIG['news:contribute'].verified,
     }),
-    login() {
-      return !!this.$store.state.CURRENTUSER.id;
+    login () {
+      return !!this.$store.state.CURRENTUSER.id
     },
     /**
      * 检查后台是否开启签到功能
      * @author jsonleex <jsonlseex@163.com>
      * @return {Boolean}
      */
-    checkin() {
-      return this.$store.state.CONFIG.checkin || true;
-    }
+    checkin () {
+      return this.$store.state.CONFIG.checkin || true
+    },
   },
-  created() {
-    this.$bus.$on("post-menu", () => {
-      this.show = true;
-      this.scrollable = false;
-    });
+  created () {
+    this.$bus.$on('post-menu', () => {
+      this.show = true
+      this.scrollable = false
+    })
   },
   methods: {
-    message() {
-      this.$Message.error("请先进行身份认证");
-      this.$router.push({ path: "/profile/certificate" });
-      this.$nextTick(this.cancel);
+    message () {
+      this.$Message.error('请先进行身份认证')
+      this.$router.push({ path: '/profile/certificate' })
+      this.$nextTick(this.cancel)
     },
-    to(path) {
-      path = this.login ? path : `/signin?redirect=${path}`;
-      !this.login && this.$Message.error("请登录");
-      this.$router.push(path);
-      this.$nextTick(this.cancel);
+    to (path) {
+      path = this.login ? path : `/signin?redirect=${path}`
+      !this.login && this.$Message.error('请登录')
+      this.$router.push(path)
+      this.$nextTick(this.cancel)
     },
-    beforePostNews() {
-      if (!this.newsVerified || this.verified.status === 1)
-        this.to("/post/release");
-      else if (this.verified.status === 0) {
-        this.$Message.error("您的认证正在等待审核，通过审核后可发布帖子");
-        this.$nextTick(this.cancel);
+    beforePostNews () {
+      if (!this.newsVerified || this.verified.status === 1) { this.to('/post/release') } else if (this.verified.status === 0) {
+        this.$Message.error('您的认证正在等待审核，通过审核后可发布帖子')
+        this.$nextTick(this.cancel)
       } else {
-        this.message();
+        this.message()
       }
     },
-    showCheckIn() {
+    showCheckIn () {
       this.login
-        ? this.$bus.$emit("check-in")
-        : (this.$Message.error("请登录"), this.$router.push(`/signin`));
-      this.$nextTick(this.cancel);
+        ? this.$bus.$emit('check-in')
+        : (this.$Message.error('请登录'), this.$router.push(`/signin`))
+      this.$nextTick(this.cancel)
     },
-    cancel() {
-      this.show = false;
-      this.scrollable = true;
-      this.open = false;
+    cancel () {
+      this.show = false
+      this.scrollable = true
+      this.open = false
     },
-    transitionComplete() {
+    transitionComplete () {
       this.$nextTick(() => {
-        this.open = true;
-      });
-    }
-  }
-};
+        this.open = true
+      })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

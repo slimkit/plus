@@ -1,25 +1,25 @@
-import bus from "@/bus.js";
-import vuex from "@/stores";
-import WebIM from "./WebIM.js";
-import AppDB from "./AppDB.js";
-import lstore from "@/plugins/lstore";
+import bus from '@/bus.js'
+import vuex from '@/stores'
+import WebIM from './WebIM.js'
+import AppDB from './AppDB.js'
+import lstore from '@/plugins/lstore'
 
-import { generateMessage } from "./index.js";
+import { generateMessage } from './index.js'
 
 WebIM.conn.listen({
   /**
    * 监听连接事件
    * @author jsonleex <jsonlseex@163.com>
    */
-  onOpened(/* msg */) {
+  onOpened (/* msg */) {
     try {
-      /************** 连接成功后 **************/
+      /** ************ 连接成功后 **************/
       /**
        * c初始化 数据表
        */
-      AppDB.init(lstore.getData("H5_CUR_USER").id);
+      AppDB.init(lstore.getData('H5_CUR_USER').id)
 
-      WebIM.conn.setPresence();
+      WebIM.conn.setPresence()
     } catch (e) {
       // eslint-disable-next-line
       console.warn(e);
@@ -48,14 +48,14 @@ WebIM.conn.listen({
        */
       AppDB.addMessage(msg).then(() => {
         AppDB.addChatRoom(room).then(() => {
-          vuex.dispatch("initChatRooms");
-          bus.$emit("UpdateRoomMessages");
-        });
-      });
-    });
+          vuex.dispatch('initChatRooms')
+          bus.$emit('UpdateRoomMessages')
+        })
+      })
+    })
   },
   onPictureMessage: message => {
-    process.env.NODE_ENV !== "production" &&
+    process.env.NODE_ENV !== 'production' &&
       // eslint-disable-next-line
       console.info("onPictureMessage", message);
   },
@@ -68,5 +68,5 @@ WebIM.conn.listen({
   onPresence: msg => {
     // eslint-disable-next-line
     process.env.NODE_ENV !== "production" && console.info(msg);
-  }
-});
+  },
+})

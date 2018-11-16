@@ -18,34 +18,34 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 export default {
-  name: "Bubble",
+  name: 'Bubble',
   props: {
-    msg: { type: [Object, String], default: "" }
+    msg: { type: [Object, String], default: '' },
   },
-  data() {
-    return {};
+  data () {
+    return {}
   },
   computed: {
-    ...mapState(["CURRENTUSER"]),
-    type() {
-      return this.msg.type;
+    ...mapState(['CURRENTUSER']),
+    type () {
+      return this.msg.type
     },
-    bySelef() {
-      return this.msg.bySelf;
+    bySelef () {
+      return this.msg.bySelf
     },
-    source() {
-      return this.msg.source;
+    source () {
+      return this.msg.source
     },
-    body() {
-      return this.source.data;
+    body () {
+      return this.source.data
     },
-    user() {
-      return this.msg.user;
-    }
-  }
-};
+    user () {
+      return this.msg.user
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

@@ -14,37 +14,37 @@
   </div>
 </template>
 <script>
-import chatItem from "./chat-item.vue";
-import { mapState, mapActions } from "vuex";
-import { startSingleChat } from "@/vendor/easemob/";
+import chatItem from './chat-item.vue'
+import { mapState, mapActions } from 'vuex'
+import { startSingleChat } from '@/vendor/easemob/'
 export default {
-  name: "ChatList",
+  name: 'ChatList',
   components: {
-    chatItem
+    chatItem,
   },
-  data() {
-    return {};
+  data () {
+    return {}
   },
   computed: {
     ...mapState({
-      chatRooms: state => state.EASEMOB.chatRooms
-    })
+      chatRooms: state => state.EASEMOB.chatRooms,
+    }),
   },
-  mounted() {
-    this.initChatRooms();
+  mounted () {
+    this.initChatRooms()
   },
   methods: {
     startSingleChat,
-    ...mapActions(["initChatRooms"]),
-    onRefresh(callback) {
+    ...mapActions(['initChatRooms']),
+    onRefresh (callback) {
       this.initChatRooms().then(() => {
         setTimeout(() => {
-          callback(false);
-        }, 1e3);
-      });
-    }
-  }
-};
+          callback(false)
+        }, 1e3)
+      })
+    },
+  },
+}
 </script>
 
 <style lang="less">

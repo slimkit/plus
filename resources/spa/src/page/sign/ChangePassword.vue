@@ -58,73 +58,73 @@
 
 <script>
 export default {
-  name: "Forgot",
-  data() {
+  name: 'Forgot',
+  data () {
     return {
-      oldPassword: "",
-      newPassword: "",
-      rePassword: "",
+      oldPassword: '',
+      newPassword: '',
+      rePassword: '',
       loading: false,
-      error: ""
-    };
+      error: '',
+    }
   },
   computed: {
     disabled: {
-      get() {
-        const rules = [this.oldPassword, this.newPassword, this.rePassword];
-        return rules.some(val => val.length < 6);
+      get () {
+        const rules = [this.oldPassword, this.newPassword, this.rePassword]
+        return rules.some(val => val.length < 6)
       },
 
-      set(val) {
+      set (val) {
         if (val) {
-          this.oldPassword = "";
-          this.newPassword = "";
-          this.rePassword = "";
+          this.oldPassword = ''
+          this.newPassword = ''
+          this.rePassword = ''
         }
-      }
-    }
+      },
+    },
   },
   methods: {
-    handleOk() {
-      if (this.disabled) return;
-      const { oldPassword, newPassword, rePassword } = this.$data;
+    handleOk () {
+      if (this.disabled) return
+      const { oldPassword, newPassword, rePassword } = this.$data
 
       // 密码长度
       if (newPassword.length < 6) {
-        this.$Message.error({ newPassword: "新密码长度必须在6-16位之间" });
-        return;
+        this.$Message.error({ newPassword: '新密码长度必须在6-16位之间' })
+        return
       }
 
       // 重复新密码
       if (rePassword !== newPassword) {
-        this.$Message.error({ rePassword: "密码确认不一致，请重新输入" });
-        return;
+        this.$Message.error({ rePassword: '密码确认不一致，请重新输入' })
+        return
       }
 
       let param = {
         old_password: oldPassword,
         password: newPassword,
         password_confirmation: rePassword,
-        validateStatus: s => s === 204
-      };
-      this.loading = true;
+        validateStatus: s => s === 204,
+      }
+      this.loading = true
       this.$http
-        .put("/user/password", param)
+        .put('/user/password', param)
         .then(() => {
-          this.$Message.success("密码修改成功, 返回重新登陆");
-          this.$lstore.removeData("H5_CUR_USER");
-          this.$lstore.removeData("H5_ACCESS_TOKEN");
-          this.$store.dispatch("SIGN_OUT");
-          this.$router.push("/signin");
-          this.loading = false;
+          this.$Message.success('密码修改成功, 返回重新登陆')
+          this.$lstore.removeData('H5_CUR_USER')
+          this.$lstore.removeData('H5_ACCESS_TOKEN')
+          this.$store.dispatch('SIGN_OUT')
+          this.$router.push('/signin')
+          this.loading = false
         })
         .catch(() => {
-          this.loading = false;
-          this.disabled = true;
-        });
-    }
-  }
-};
+          this.loading = false
+          this.disabled = true
+        })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

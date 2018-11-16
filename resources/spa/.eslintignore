@@ -1,3 +1,4 @@
 dist
 node_modules
 src/icons/iconfont.js
+src/vendor

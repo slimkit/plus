@@ -78,18 +78,18 @@
 </template>
 
 <script>
-const prefixCls = "msgList";
-const url = "/feeds/";
+const prefixCls = 'msgList'
+const url = '/feeds/'
 
 export default {
-  name: "FeedsItem",
+  name: 'FeedsItem',
   props: {
-    comment: { type: Object, required: true }
+    comment: { type: Object, required: true },
   },
   data: () => ({
     prefixCls,
     url,
-    title: "动态"
+    title: '动态',
   }),
   computed: {
     /**
@@ -99,30 +99,30 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   {false|Object}            [description]
      */
-    getFirstImage() {
-      const { comment } = this;
-      const { length } = comment.commentable.images;
+    getFirstImage () {
+      const { comment } = this
+      const { length } = comment.commentable.images
       if (length > 0) {
-        const [img] = comment.commentable.images;
+        const [img] = comment.commentable.images
 
-        return img;
+        return img
       }
 
-      return false;
+      return false
     },
-    getVideo() {
-      const { comment } = this;
-      const { video } = comment.commentable;
+    getVideo () {
+      const { comment } = this
+      const { video } = comment.commentable
       if (video != null) {
-        return video.cover_id;
+        return video.cover_id
       } else {
-        return false;
+        return false
       }
     },
-    user() {
-      const { user } = this.comment || { user: {} };
-      return user;
-    }
+    user () {
+      const { user } = this.comment || { user: {} }
+      return user
+    },
   },
   methods: {
     /**
@@ -132,30 +132,30 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   {[type]}            [description]
      */
-    goToFeedDetail() {
+    goToFeedDetail () {
       const {
-        commentable: { id = 0 }
-      } = this.comment;
-      this.$router.push(`/feeds/${id}`);
+        commentable: { id = 0 },
+      } = this.comment
+      this.$router.push(`/feeds/${id}`)
     },
 
-    sendComment(comment) {
-      const { commentable_id: feedId = 0, user_id: userID = 0 } = this.comment;
+    sendComment (comment) {
+      const { commentable_id: feedId = 0, user_id: userID = 0 } = this.comment
       this.$http
         .post(
           `/feeds/${feedId}/comments`,
           {
             reply_user: userID,
-            body: comment
+            body: comment,
           },
           {
-            validateStatus: s => s === 201
+            validateStatus: s => s === 201,
           }
         )
         .then(() => {
-          this.$Message.success("回复成功");
-          this.$bus.$emit("commentInput:close", true);
-        });
+          this.$Message.success('回复成功')
+          this.$bus.$emit('commentInput:close', true)
+        })
     },
     /**
      * 调起输入框
@@ -164,14 +164,14 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   {[type]}            [description]
      */
-    showCommentInput() {
-      this.$bus.$emit("commentInput", {
+    showCommentInput () {
+      this.$bus.$emit('commentInput', {
         placeholder: `回复: ${this.comment.user.name}`,
         onOk: comment => {
-          this.sendComment(comment);
-        }
-      });
-    }
-  }
-};
+          this.sendComment(comment)
+        },
+      })
+    },
+  },
+}
 </script>

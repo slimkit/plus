@@ -3,7 +3,9 @@
 
     <common-header class="header">
       钱包
-      <router-link slot="left" to="/profile">
+      <router-link
+        slot="left"
+        to="/profile">
         <svg class="m-style-svg m-svg-def">
           <use xlink:href="#icon-back" />
         </svg>
@@ -84,53 +86,53 @@
 </template>
 
 <script>
-import PopupDialog from "@/components/PopupDialog.vue";
+import PopupDialog from '@/components/PopupDialog.vue'
 
 export default {
-  name: "Wallet",
+  name: 'Wallet',
   components: { PopupDialog },
-  data() {
-    return {};
+  data () {
+    return {}
   },
   computed: {
-    goldName() {
+    goldName () {
       const {
-        site: { gold_name: { name = "金币" } = {} } = {}
-      } = this.$store.state.CONFIG;
-      return name;
+        site: { gold_name: { name = '金币' } = {} } = {},
+      } = this.$store.state.CONFIG
+      return name
     },
-    user() {
-      return this.$store.state.CURRENTUSER;
+    user () {
+      return this.$store.state.CURRENTUSER
     },
-    new_wallet() {
-      return this.user.new_wallet || { balance: 0 };
+    new_wallet () {
+      return this.user.new_wallet || { balance: 0 }
     },
-    balance() {
-      const raito = this.$store.state.wallet.ratio || 100;
-      return (this.new_wallet.balance / raito).toFixed(2);
+    balance () {
+      const raito = this.$store.state.wallet.ratio || 100
+      return (this.new_wallet.balance / raito).toFixed(2)
     },
-    rule() {
-      const rule = this.$store.state.wallet.rule || "";
-      return rule.replace(/\n/g, "<br>");
-    }
+    rule () {
+      const rule = this.$store.state.wallet.rule || ''
+      return rule.replace(/\n/g, '<br>')
+    },
   },
-  mounted() {
-    this.$store.dispatch("wallet/getWalletInfo");
+  mounted () {
+    this.$store.dispatch('wallet/getWalletInfo')
 
-    const amount = this.$route.query.total_amount;
+    const amount = this.$route.query.total_amount
     if (amount) {
-      this.$store.dispatch("fetchUserInfo");
+      this.$store.dispatch('fetchUserInfo')
       this.$Message.success(
         `共消耗${amount}元, 获得 ${amount * 100} ${this.currencyUnit}!`
-      );
+      )
     }
   },
   methods: {
-    popupRule() {
-      this.$refs.dialog.show();
-    }
-  }
-};
+    popupRule () {
+      this.$refs.dialog.show()
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

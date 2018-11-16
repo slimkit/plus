@@ -51,11 +51,11 @@
 
 <script>
 export default {
-  name: "ProfileCollection",
-  data() {
-    return {};
-  }
-};
+  name: 'ProfileCollection',
+  data () {
+    return {}
+  },
+}
 </script>
 
 <style lang="less" scoped>

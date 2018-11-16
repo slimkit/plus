@@ -20,21 +20,21 @@
 </template>
 
 <script>
-import _ from "lodash";
-import { getNotifications } from "@/api/message.js";
+import _ from 'lodash'
+import { getNotifications } from '@/api/message.js'
 
-const prefixCls = "notification";
+const prefixCls = 'notification'
 
 export default {
-  name: "MyNotifications",
-  data() {
+  name: 'MyNotifications',
+  data () {
     return {
       prefixCls,
-      notifications: []
-    };
+      notifications: [],
+    }
   },
-  mounted() {
-    this.$refs.loadmore.beforeRefresh();
+  mounted () {
+    this.$refs.loadmore.beforeRefresh()
   },
   methods: {
     /**
@@ -44,12 +44,12 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   {[type]}            [description]
      */
-    onRefresh() {
+    onRefresh () {
       getNotifications().then(({ data }) => {
-        this.$http.put("/user/notifications/all");
-        this.$refs.loadmore.afterRefresh(data.length < 15);
-        this.notifications = data;
-      });
+        this.$http.put('/user/notifications/all')
+        this.$refs.loadmore.afterRefresh(data.length < 15)
+        this.notifications = data
+      })
     },
     /**
      * 上拉加载
@@ -58,15 +58,15 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   {[type]}            [description]
      */
-    onLoadMore() {
-      const { length: offset = 0 } = this.notifications;
+    onLoadMore () {
+      const { length: offset = 0 } = this.notifications
       getNotifications(offset).then(({ data }) => {
-        this.$refs.loadmore.afterLoadMore(data.length < 15);
-        this.notifications = _.unionBy([...this.notifications, ...data]);
-      });
-    }
-  }
-};
+        this.$refs.loadmore.afterLoadMore(data.length < 15)
+        this.notifications = _.unionBy([...this.notifications, ...data])
+      })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

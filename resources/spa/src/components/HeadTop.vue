@@ -40,27 +40,27 @@
 
 <script>
 export default {
-  name: "HeadTop",
+  name: 'HeadTop',
   props: {
-    title: { type: String, default: "" },
+    title: { type: String, default: '' },
     goBack: { type: [Boolean, Function], default: false },
     append: { type: [Boolean, String], default: false },
-    transparent: { type: Boolean, default: false }
+    transparent: { type: Boolean, default: false },
   },
   computed: {},
   methods: {
-    goBackFn() {
-      return typeof this.goBack === "function"
+    goBackFn () {
+      return typeof this.goBack === 'function'
         ? this.goBack()
-        : this.$router.go(-1);
+        : this.$router.go(-1)
     },
-    to(path) {
+    to (path) {
       if (path) {
-        this.$router.push({ path });
+        this.$router.push({ path })
       }
-    }
-  }
-};
+    },
+  },
+}
 </script>
 
 <style lang='less'>

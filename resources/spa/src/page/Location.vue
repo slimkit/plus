@@ -5,7 +5,9 @@
     leave-active-class="animated slideOutRight">
     <div class="m-box-model m-pos-f p-location">
 
-      <search-bar v-model="keyword" :back="goBack"/>
+      <search-bar
+        v-model="keyword"
+        :back="goBack"/>
 
       <main>
         <div v-if="showHot">
@@ -36,7 +38,9 @@
             </ul>
           </div>
         </div>
-        <div v-else class="m-box-model">
+        <div
+          v-else
+          class="m-box-model">
           <div
             v-for="(city, index) in cities"
             :key="`search-${city}-${index}`"
@@ -51,154 +55,154 @@
 </template>
 
 <script>
-import SearchBar from "@/components/common/SearchBar.vue";
-import _ from "lodash";
-import * as api from "@/api/bootstrappers.js";
+import SearchBar from '@/components/common/SearchBar.vue'
+import _ from 'lodash'
+import * as api from '@/api/bootstrappers.js'
 
 export default {
-  name: "Location",
+  name: 'Location',
   components: { SearchBar },
   props: {
     show: {
       type: Boolean,
-      default: true
+      default: true,
     },
     isComponent: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  data() {
+  data () {
     return {
-      keyword: "",
+      keyword: '',
       loading: false,
       hotCities: [],
       autoPos: {},
       hotPos: {},
       isFocus: false,
-      placeholder: "未定位",
+      placeholder: '未定位',
       cities: [],
-      originCities: []
-    };
+      originCities: [],
+    }
   },
   computed: {
-    showHot() {
-      return this.keyword.length === 0 && !this.isFocus;
+    showHot () {
+      return this.keyword.length === 0 && !this.isFocus
     },
-    currentTxt() {
-      return this.currentPos ? this.currentPos.label : "";
+    currentTxt () {
+      return this.currentPos ? this.currentPos.label : ''
     },
     currentPos: {
-      get() {
+      get () {
         return this.hotPos && this.hotPos.label
           ? this.hotPos
           : this.autoPos && this.autoPos.label
             ? this.autoPos
-            : null;
+            : null
       },
-      set(val) {
-        this.autoPos = val;
-        this.$store.commit("SAVE_H5_POSITION", val);
-      }
-    }
+      set (val) {
+        this.autoPos = val
+        this.$store.commit('SAVE_H5_POSITION', val)
+      },
+    },
   },
   watch: {
-    keyword() {
-      this.searchCityByName();
-    }
+    keyword () {
+      this.searchCityByName()
+    },
   },
-  mounted() {
-    this.$lstore.hasData("H5_CURRENT_POSITION")
-      ? (this.currentPos = this.$lstore.getData("H5_CURRENT_POSITION"))
-      : this.getCurrentPosition();
+  mounted () {
+    this.$lstore.hasData('H5_CURRENT_POSITION')
+      ? (this.currentPos = this.$lstore.getData('H5_CURRENT_POSITION'))
+      : this.getCurrentPosition()
   },
-  beforeRouteEnter(to, from, next) {
+  beforeRouteEnter (to, from, next) {
     next(vm => {
-      const { fullPath } = from;
+      const { fullPath } = from
       vm.goBack =
-        fullPath.indexOf("find") > -1
+        fullPath.indexOf('find') > -1
           ? () => {
-              !vm.loading && vm.$router.push("/find/ner");
-            }
-          : vm.goBack;
-    });
+            !vm.loading && vm.$router.push('/find/ner')
+          }
+          : vm.goBack
+    })
   },
-  created() {
+  created () {
     api.getHotCities().then(hotCities => {
-      this.hotCities = hotCities;
-    });
+      this.hotCities = hotCities
+    })
   },
   methods: {
-    goBack() {
+    goBack () {
       this.isComponent
-        ? this.$emit("close", this.currentPos)
-        : this.$router.go(-1);
+        ? this.$emit('close', this.currentPos)
+        : this.$router.go(-1)
     },
-    onFocus() {
-      this.isFocus = true;
+    onFocus () {
+      this.isFocus = true
     },
-    onBlur() {
-      this.isFocus = false;
+    onBlur () {
+      this.isFocus = false
     },
-    formatCities(cities) {
+    formatCities (cities) {
       return Array.isArray(cities)
         ? cities.map(city => {
-            let name = "";
-            city = city.tree;
-            while (city) {
-              name = city.name + "，" + name;
-              city = city.parent;
-            }
-            return name.substr(0, name.length - 1);
-          })
-        : [];
+          let name = ''
+          city = city.tree
+          while (city) {
+            name = city.name + '，' + name
+            city = city.parent
+          }
+          return name.substr(0, name.length - 1)
+        })
+        : []
     },
-    searchCityByName: _.debounce(function() {
+    searchCityByName: _.debounce(function () {
       api.searchCityByName(this.keyword).then(({ data = [] }) => {
-        this.originCities = data;
-        this.cities = this.formatCities(data);
-      });
+        this.originCities = data
+        this.cities = this.formatCities(data)
+      })
     }, 450),
-    getCurrentPosition() {
-      this.loading = true;
-      this.hotPos = null;
-      this.autoPos = null;
-      this.placeholder = "定位中...";
+    getCurrentPosition () {
+      this.loading = true
+      this.hotPos = null
+      this.autoPos = null
+      this.placeholder = '定位中...'
       api.getCurrentPosition().then(
         data => {
-          this.currentPos = data;
-          this.loading = false;
+          this.currentPos = data
+          this.loading = false
         },
         err => {
-          this.loading = false;
-          this.currentPos = {};
-          this.placeholder = "定位失败";
-          this.$Message.error(err.message);
+          this.loading = false
+          this.currentPos = {}
+          this.placeholder = '定位失败'
+          this.$Message.error(err.message)
         }
-      );
+      )
     },
-    selectedHot(city) {
-      if (this.loading) return;
-      this.loading = true;
-      api.getGeo(city.replace(/[\s\uFEFF\xA0]+/g, "")).then(data => {
-        this.loading = false;
-        this.currentPos = data;
-        this.$nextTick(this.goBack);
-      });
+    selectedHot (city) {
+      if (this.loading) return
+      this.loading = true
+      api.getGeo(city.replace(/[\s\uFEFF\xA0]+/g, '')).then(data => {
+        this.loading = false
+        this.currentPos = data
+        this.$nextTick(this.goBack)
+      })
     },
-    selectedSearchItem(index) {
-      if (this.loading) return;
-      this.loading = true;
-      const city = this.cities[index].split("，").pop();
-      api.getGeo(city.replace(/[\s\uFEFF\xA0]+/g, "")).then(data => {
-        this.loading = false;
-        data.label = this.originCities[index].tree.name;
-        this.currentPos = data;
-        this.$nextTick(this.goBack);
-      });
-    }
-  }
-};
+    selectedSearchItem (index) {
+      if (this.loading) return
+      this.loading = true
+      const city = this.cities[index].split('，').pop()
+      api.getGeo(city.replace(/[\s\uFEFF\xA0]+/g, '')).then(data => {
+        this.loading = false
+        data.label = this.originCities[index].tree.name
+        this.currentPos = data
+        this.$nextTick(this.goBack)
+      })
+    },
+  },
+}
 </script>
 
 <style lang="less">

@@ -1,7 +1,9 @@
 <template>
   <div class="p-profile-certificate">
 
-    <common-header :pinned="true" :back="back">
+    <common-header
+      :pinned="true"
+      :back="back">
       {{ title }}
       <span
         v-show="step === 2"
@@ -16,7 +18,9 @@
       tag="main"
       class="m-box-model m-flex-grow1 m-flex-shrink1 main">
       <template v-if="step === 1">
-        <div key="step1" class="step1">
+        <div
+          key="step1"
+          class="step1">
           <template v-if="type ==='org'">
             <!-- 机构名称 -->
             <div class="m-form-row m-main">
@@ -109,7 +113,9 @@
           <div class="m-box m-aln-center m-text-box m-form-err-box">
             <!-- <span>{{ error | plusMessageFirst }}</span> -->
           </div>
-          <div class="m-form-row" style="border: 0">
+          <div
+            class="m-form-row"
+            style="border: 0">
             <button
               :disabled="loading||disabled"
               class="m-long-btn m-signin-btn"
@@ -154,35 +160,35 @@
  * 认证表单页面
  */
 
-import ImagePoster from "@/components/ImagePoster.vue";
-import TextareaInput from "@/components/common/TextareaInput.vue";
-import * as api from "@/api/user.js";
-import { noop } from "@/util";
+import ImagePoster from '@/components/ImagePoster.vue'
+import TextareaInput from '@/components/common/TextareaInput.vue'
+import * as api from '@/api/user.js'
+import { noop } from '@/util'
 
 const formInfo = {
   user: {
-    name: { label: "真实姓名", placeholder: "输入真实姓名" },
-    number: { label: "身份证号码", placeholder: "输入正确的身份证号码" },
-    phone: { label: "手机号码", placeholder: "输入11位手机号码" },
-    desc: { label: "认证描述", placeholder: "该描述会影响审核，请慎重填写" }
+    name: { label: '真实姓名', placeholder: '输入真实姓名' },
+    number: { label: '身份证号码', placeholder: '输入正确的身份证号码' },
+    phone: { label: '手机号码', placeholder: '输入11位手机号码' },
+    desc: { label: '认证描述', placeholder: '该描述会影响审核，请慎重填写' },
   },
   org: {
-    name: { label: "负责人", placeholder: "输入机构负责人" },
-    number: { label: "身份证号码", placeholder: "输入负责人身份证号码" },
-    phone: { label: "手机号码", placeholder: "输入11位手机号码" },
-    desc: { label: "认证描述", placeholder: "该描述会影响审核，请慎重填写" },
-    orgName: { label: "机构名称", placeholder: "输入机构名称" },
-    orgAddress: { label: "机构地址", placeholder: "输入机构地址" }
-  }
-};
+    name: { label: '负责人', placeholder: '输入机构负责人' },
+    number: { label: '身份证号码', placeholder: '输入负责人身份证号码' },
+    phone: { label: '手机号码', placeholder: '输入11位手机号码' },
+    desc: { label: '认证描述', placeholder: '该描述会影响审核，请慎重填写' },
+    orgName: { label: '机构名称', placeholder: '输入机构名称' },
+    orgAddress: { label: '机构地址', placeholder: '输入机构地址' },
+  },
+}
 
 export default {
-  name: "Certificate",
+  name: 'Certificate',
   components: {
     ImagePoster,
-    TextareaInput
+    TextareaInput,
   },
-  data() {
+  data () {
     return {
       loading: false,
       step: 1,
@@ -190,57 +196,57 @@ export default {
       status: 0, // 认证状态
       files: [], // 认证图片
       fields: {
-        name: "",
-        number: "",
-        phone: "",
-        desc: ""
+        name: '',
+        number: '',
+        phone: '',
+        desc: '',
       },
       orgFields: {
-        org_name: "", // ignore camelcase
-        org_address: "" // ignore camelcase
+        org_name: '', // ignore camelcase
+        org_address: '', // ignore camelcase
       },
       animated: {
-        enter: "animated slideInRight",
-        leave: "animated slideOutLeft"
-      }
-    };
+        enter: 'animated slideInRight',
+        leave: 'animated slideOutLeft',
+      },
+    }
   },
   computed: {
-    title() {
+    title () {
       return this.step === 1
-        ? this.type === "user"
-          ? "个人认证"
-          : "企业认证"
-        : "上传资料";
+        ? this.type === 'user'
+          ? '个人认证'
+          : '企业认证'
+        : '上传资料'
     },
     /**
      * 认证类型. 必须是 (user|org)
      * @returns {string}
      */
     type: {
-      get() {
-        return this.$route.query.type || "user";
+      get () {
+        return this.$route.query.type || 'user'
       },
-      set(val) {
-        const { path, query } = this.$route;
-        query.type = val;
-        this.$router.push({ path, query });
-      }
+      set (val) {
+        const { path, query } = this.$route
+        query.type = val
+        this.$router.push({ path, query })
+      },
     },
     /**
      * 待提交表单
      * @returns {Object}
      */
     formData: {
-      get() {
+      get () {
         const ret =
-          this.type === "user"
+          this.type === 'user'
             ? this.fields
-            : Object.assign({}, this.fields, this.orgFields);
-        ret.type = this.type;
-        return ret;
+            : Object.assign({}, this.fields, this.orgFields)
+        ret.type = this.type
+        return ret
       },
-      set(val) {
+      set (val) {
         // TODO: 优化这里
         const {
           name,
@@ -249,116 +255,113 @@ export default {
           desc,
           files = [],
           org_name,
-          org_address
-        } = val; // ignore camelcase
-        this.files = files;
+          org_address,
+        } = val // ignore camelcase
+        this.files = files
         this.fields = Object.assign({}, this.fields, {
           name,
           phone,
           desc,
-          number
-        });
+          number,
+        })
         this.orgFields = Object.assign({}, this.orgFields, {
           org_name,
-          org_address
-        });
-      }
+          org_address,
+        })
+      },
     },
     /**
      * 下一步可用性
      */
-    disabled() {
-      return !Object.values(this.formData).every(v => v);
+    disabled () {
+      return !Object.values(this.formData).every(v => v)
     },
-    poster1() {
-      const id = this.files[0];
-      if (!id) return;
-      return { id, src: `${this.$http.defaults.baseURL}/files/${id}?w=600` };
+    poster1 () {
+      const id = this.files[0]
+      if (!id) return
+      return { id, src: `${this.$http.defaults.baseURL}/files/${id}?w=600` }
     },
-    poster2() {
-      const id = this.files[1];
-      if (!id) return;
-      return { id, src: `${this.$http.defaults.baseURL}/files/${id}?w=600` };
-    }
+    poster2 () {
+      const id = this.files[1]
+      if (!id) return
+      return { id, src: `${this.$http.defaults.baseURL}/files/${id}?w=600` }
+    },
   },
   watch: {
     /**
      * 步骤切换动画
      */
-    step(to, from) {
+    step (to, from) {
       to > from
         ? (this.animated = {
-            enter: "animated slideInRight",
-            leave: "animated slideOutLeft"
-          })
+          enter: 'animated slideInRight',
+          leave: 'animated slideOutLeft',
+        })
         : (this.animated = {
-            enter: "animated slideInLeft",
-            leave: "animated slideOutRight"
-          });
-    }
+          enter: 'animated slideInLeft',
+          leave: 'animated slideOutRight',
+        })
+    },
   },
-  mounted() {
-    this.$store.dispatch("FETCH_USER_VERIFY").then(data => {
-      this.formData = data.data || {};
-      this.type = data.certification_name;
-      this.status = data.status || 0;
-    });
+  mounted () {
+    this.$store.dispatch('FETCH_USER_VERIFY').then(data => {
+      this.formData = data.data || {}
+      this.type = data.certification_name
+      this.status = data.status || 0
+    })
   },
   methods: {
-    back() {
-      this.step > 1 ? this.step-- : this.goBack();
+    back () {
+      this.step > 1 ? this.step-- : this.goBack()
     },
-    onSubmit() {
-      const postData = Object.assign({ files: this.files }, this.formData);
+    onSubmit () {
+      const postData = Object.assign({ files: this.files }, this.formData)
       if (this.status === 0) {
         api.postCertification(postData).then(() => {
-          this.$Message.success("提交成功，请等待审核");
-          this.goBack();
-        });
+          this.$Message.success('提交成功，请等待审核')
+          this.goBack()
+        })
       } else {
         api.patchCertification(postData).then(() => {
-          this.$Message.success("提交成功，请等待审核");
-          this.goBack();
-        });
+          this.$Message.success('提交成功，请等待审核')
+          this.goBack()
+        })
       }
     },
-    uploaded1(poster) {
-      this.$set(this.files, 0, poster.id);
+    uploaded1 (poster) {
+      this.$set(this.files, 0, poster.id)
     },
-    uploaded2(poster) {
-      if (this.type === "org") return;
-      this.$set(this.files, 1, poster.id);
+    uploaded2 (poster) {
+      if (this.type === 'org') return
+      this.$set(this.files, 1, poster.id)
     },
     /**
      * @param {Function} next
      */
-    validate(next = noop) {
-      let failed = false;
+    validate (next = noop) {
+      let failed = false
       const match = {
         phone: /^1[3456789]\d{9}$/, // 手机号正则
-        number: /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)/ // 身份证号正则
-      };
+        number: /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)/, // 身份证号正则
+      }
       switch (this.step) {
         case 1: {
-          if (!this.fields.number.match(match.number))
-            failed = "请检查身份证号码是否正确";
-          if (!this.fields.phone.match(match.phone))
-            failed = "请检查手机号码是否正确";
-          break;
+          if (!this.fields.number.match(match.number)) { failed = '请检查身份证号码是否正确' }
+          if (!this.fields.phone.match(match.phone)) { failed = '请检查手机号码是否正确' }
+          break
         }
         case 2:
           if (
-            (this.type === "user" && this.files.length !== 2) ||
-            (this.type === "org" && this.files.length !== 1)
-          )
-            failed = "请上传证件照片";
-          break;
+            (this.type === 'user' && this.files.length !== 2) ||
+            (this.type === 'org' && this.files.length !== 1)
+          ) { failed = '请上传证件照片' }
+          break
       }
-      if (!failed) next();
-      else this.$Message.error(failed);
-    }
-  }
-};
+      if (!failed) next()
+      else this.$Message.error(failed)
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

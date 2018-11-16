@@ -1,21 +1,31 @@
 <template>
   <div class="p-find-person">
 
-    <header class="m-pos-f m-box m-aln-center m-justify-bet m-lim-width m-bb1 m-main m-head-top" style="padding: 0 10px;">
+    <header
+      class="m-pos-f m-box m-aln-center m-justify-bet m-lim-width m-bb1 m-main m-head-top"
+      style="padding: 0 10px;">
       <div class="m-box m-aln-center m-flex-grow0 m-flex-shrink0">
-        <svg class="m-style-svg m-svg-def" @click="goBack">
+        <svg
+          class="m-style-svg m-svg-def"
+          @click="goBack">
           <use xlink:href="#icon-back"/>
         </svg>
       </div>
-      <div class="m-box m-aln-center m-flex-grow1 m-flex-shrink1 m-head-search-box" @click="showSearchUser">
+      <div
+        class="m-box m-aln-center m-flex-grow1 m-flex-shrink1 m-head-search-box"
+        @click="showSearchUser">
         <svg class="m-style-svg m-svg-def placeholder">
           <use xlink:href="#icon-search"/>
         </svg>
         <span class="placeholder">搜索</span>
       </div>
-      <div class="m-box m-aln-center m-flex-grow0 m-flex-shrink0 m-justify-end m-location" @click="switchLocation">
+      <div
+        class="m-box m-aln-center m-flex-grow0 m-flex-shrink0 m-justify-end m-location"
+        @click="switchLocation">
         <circle-loading v-if="loading"/>
-        <svg v-else class="m-style-svg m-svg-def">
+        <svg
+          v-else
+          class="m-style-svg m-svg-def">
           <use xlink:href="#icon-find-location"/>
         </svg>
         <span class="m-location-label m-text-cut">{{ location }}</span>
@@ -71,56 +81,56 @@
 </template>
 
 <script>
-import { getCurrentPosition } from "@/api/bootstrappers.js";
+import { getCurrentPosition } from '@/api/bootstrappers.js'
 
 export default {
-  name: "Find",
-  data() {
+  name: 'Find',
+  data () {
     return {
-      loading: false
-    };
+      loading: false,
+    }
   },
   computed: {
-    POSITION() {
-      return this.$store.state.POSITION || { label: "" };
+    POSITION () {
+      return this.$store.state.POSITION || { label: '' }
     },
-    location() {
-      const { label = "" } = this.POSITION;
+    location () {
+      const { label = '' } = this.POSITION
       // label.length > 5
       //   ? `${label.slice(0, 2)}…${label.slice(-2)}`
       //   :
-      return label || "选择城市";
-    }
+      return label || '选择城市'
+    },
   },
-  created() {
-    this.getCurrentPosition();
+  created () {
+    this.getCurrentPosition()
   },
   methods: {
-    goBack() {
-      this.$router.push("/discover");
+    goBack () {
+      this.$router.push('/discover')
     },
-    showSearchUser() {
-      this.$router.push("/search/user");
+    showSearchUser () {
+      this.$router.push('/search/user')
     },
-    switchLocation() {
-      this.$router.push("/location");
+    switchLocation () {
+      this.$router.push('/location')
     },
-    getCurrentPosition() {
-      this.$lstore.hasData("H5_CURRENT_POSITION") ||
+    getCurrentPosition () {
+      this.$lstore.hasData('H5_CURRENT_POSITION') ||
         ((this.loading = true),
         getCurrentPosition().then(
           data => {
-            this.$store.commit("SAVE_H5_POSITION", data);
-            this.loading = false;
+            this.$store.commit('SAVE_H5_POSITION', data)
+            this.loading = false
           },
           err => {
-            this.loading = false;
-            this.$Message.error(err.message);
+            this.loading = false
+            this.$Message.error(err.message)
           }
-        ));
-    }
-  }
-};
+        ))
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

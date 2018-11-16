@@ -55,77 +55,77 @@
 </template>
 <script>
 export default {
-  name: "ImagePaidOption",
-  data() {
+  name: 'ImagePaidOption',
+  data () {
     return {
       isShow: false,
-      title: "图片收费选项",
+      title: '图片收费选项',
       // type: "",
       amount: null,
       customAmount: null,
-      curIndex: -1
-    };
+      curIndex: -1,
+    }
   },
   computed: {
-    items() {
-      return this.$store.state.CONFIG.feed.items || [];
-    }
+    items () {
+      return this.$store.state.CONFIG.feed.items || []
+    },
   },
   watch: {
-    isShow(val) {
+    isShow (val) {
       if (val) {
-        this.scrollTop = document.scrollingElement.scrollTop;
-        document.body.classList.add("m-pop-open");
-        document.body.style.top = -this.scrollTop + "px";
+        this.scrollTop = document.scrollingElement.scrollTop
+        document.body.classList.add('m-pop-open')
+        document.body.style.top = -this.scrollTop + 'px'
       } else {
-        document.body.style.top = "";
-        document.body.classList.remove("m-pop-open");
-        document.scrollingElement.scrollTop = this.scrollTop;
+        document.body.style.top = ''
+        document.body.classList.remove('m-pop-open')
+        document.scrollingElement.scrollTop = this.scrollTop
       }
     },
-    customAmount(val) {
-      this.amount = ~~val;
-    }
+    customAmount (val) {
+      this.amount = ~~val
+    },
   },
   methods: {
-    chooseDefaultAmount(amount) {
-      this.customAmount && (this.customAmount = null);
-      this.amount = amount;
+    chooseDefaultAmount (amount) {
+      this.customAmount && (this.customAmount = null)
+      this.amount = amount
     },
-    handleOk() {
-      const { curIndex, /* type,*/ amount } = this.$data;
+    handleOk () {
+      const { curIndex, /* type, */ amount } = this.$data
       curIndex > -1
         ? // ? type
-          amount > 0
+        amount > 0
           ? (this.$parent.$set(
-              this.$parent.pics,
-              curIndex,
-              Object.assign(this.$parent.pics[curIndex], {
-                amount,
-                amountType: "read"
-              })
-            ),
-            this.cancel())
-          : this.$Message.error("请输入或选择 收费金额")
+            this.$parent.pics,
+            curIndex,
+            Object.assign(this.$parent.pics[curIndex], {
+              amount,
+              amountType: 'read',
+            })
+          ),
+          this.cancel())
+          : this.$Message.error('请输入或选择 收费金额')
         : // : this.$Message.error("请选择 收费方式")
-          this.cancel();
+        this.cancel()
     },
-    show(image, index) {
-      const { /*amountType*/ amount } = image;
+    show (image, index) {
+      const { /* amountType */ amount } = image
       // this.type = amountType;
-      this.amount = amount;
-      this.curIndex = index;
-      this.isShow = true;
+      this.amount = amount
+      this.curIndex = index
+      this.isShow = true
     },
-    cancel() {
-      this.isShow = false;
+    cancel () {
+      this.isShow = false
       // this.type = null;
-      this.amount = null;
-      this.curIndex = -1;
-      this.customAmount = null;
-    }
-  }
-};
+      this.amount = null
+      this.curIndex = -1
+      this.customAmount = null
+    },
+  },
+}
 </script>
 <style lang="less">
 .m-image-paid-option-box {

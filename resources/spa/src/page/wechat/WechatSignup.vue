@@ -57,114 +57,114 @@
 </template>
 
 <script>
-const UNAME_REG = /^[a-zA-Z_\u4E00-\u9FA5\uF900-\uFA2D][a-zA-Z0-9_\u4E00-\u9FA5\uF900-\uFA2D]*$/;
+const UNAME_REG = /^[a-zA-Z_\u4E00-\u9FA5\uF900-\uFA2D][a-zA-Z0-9_\u4E00-\u9FA5\uF900-\uFA2D]*$/
 
 export default {
-  name: "WechatSignup",
-  data() {
+  name: 'WechatSignup',
+  data () {
     return {
       loading: false,
 
-      err: "",
-      nickname: "",
-      accessToken: "",
-      displayBtn: false
-    };
+      err: '',
+      nickname: '',
+      accessToken: '',
+      displayBtn: false,
+    }
   },
-  created() {
-    this.nickname = this.$lstore.getData("H5_WECHAT_NICKNAME") || "";
-    this.accessToken = this.$lstore.getData("H5_WECHAT_MP_ASTOKEN") || "";
-    this.checkName(this.nickname);
+  created () {
+    this.nickname = this.$lstore.getData('H5_WECHAT_NICKNAME') || ''
+    this.accessToken = this.$lstore.getData('H5_WECHAT_MP_ASTOKEN') || ''
+    this.checkName(this.nickname)
   },
 
   methods: {
-    onFocus() {
-      this.err = null;
+    onFocus () {
+      this.err = null
     },
-    checkName(name) {
-      function strLength(str) {
-        let totalLength = 0;
-        let i = 0;
-        let charCode;
+    checkName (name) {
+      function strLength (str) {
+        let totalLength = 0
+        let i = 0
+        let charCode
         for (; i < str.length; i++) {
-          charCode = str.charCodeAt(i);
+          charCode = str.charCodeAt(i)
           if (charCode < 0x007f) {
-            totalLength = totalLength + 1;
+            totalLength = totalLength + 1
           } else if (charCode >= 0x0080 && charCode <= 0x07ff) {
-            totalLength += 2;
+            totalLength += 2
           } else if (charCode >= 0x0800 && charCode <= 0xffff) {
-            totalLength += 3;
+            totalLength += 3
           }
         }
-        return totalLength;
+        return totalLength
       }
 
-      function isNum(val) {
-        if (val === "" || val == null) {
-          return false;
+      function isNum (val) {
+        if (val === '' || val == null) {
+          return false
         }
-        return !isNaN(val);
+        return !isNaN(val)
       }
       if (!name) {
-        this.err = { error: "用户名不能为空" };
-        return false;
+        this.err = { error: '用户名不能为空' }
+        return false
       }
 
       // 判断首字符是否为数字
       if (isNum(name[0])) {
-        this.err = { error: "用户名不能以数字开头" };
-        return false;
+        this.err = { error: '用户名不能以数字开头' }
+        return false
       }
 
       if (strLength(name) > 48 || strLength(name) < 4) {
-        this.err = { error: "用户名不能少于2个中文或4个英文" };
-        return false;
+        this.err = { error: '用户名不能少于2个中文或4个英文' }
+        return false
       }
 
       // 判断特殊字符及空格
       if (!UNAME_REG.test(name)) {
-        this.err = { error: "用户名不能包含特殊符号以及空格" };
-        return false;
+        this.err = { error: '用户名不能包含特殊符号以及空格' }
+        return false
       }
 
-      this.err = null;
-      this.displayBtn = true;
-      return true;
+      this.err = null
+      this.displayBtn = true
+      return true
     },
 
-    signupByWechat() {
-      if (this.loading) return;
-      this.loading = true;
+    signupByWechat () {
+      if (this.loading) return
+      this.loading = true
       this.$http
-        .patch("socialite/wechat", {
+        .patch('socialite/wechat', {
           validateStatus: s => s === 201,
           name: this.nickname,
-          access_token: this.accessToken
+          access_token: this.accessToken,
         })
-        .then(({ data: { user = {}, token = "" } = {} }) => {
+        .then(({ data: { user = {}, token = '' } = {} }) => {
           // 保存用户信息 并跳转
-          this.$store.commit("SAVE_CURRENTUSER", { ...user, token });
+          this.$store.commit('SAVE_CURRENTUSER', { ...user, token })
           this.$nextTick(() => {
-            this.$router.push("/feeds?type=hot");
-            this.$store.dispatch("GET_UNREAD_COUNT");
-            this.$store.dispatch("GET_NEW_UNREAD_COUNT");
-            this.$store.commit("SAVE_USER", user);
-            this.$lstore.removeData("H5_WECHAT_MP_OPENID");
-            this.$lstore.removeData("H5_WECHAT_MP_ASTOKEN");
-            this.$lstore.removeData("H5_WECHAT_NICKNAME");
-          });
+            this.$router.push('/feeds?type=hot')
+            this.$store.dispatch('GET_UNREAD_COUNT')
+            this.$store.dispatch('GET_NEW_UNREAD_COUNT')
+            this.$store.commit('SAVE_USER', user)
+            this.$lstore.removeData('H5_WECHAT_MP_OPENID')
+            this.$lstore.removeData('H5_WECHAT_MP_ASTOKEN')
+            this.$lstore.removeData('H5_WECHAT_NICKNAME')
+          })
         })
         .catch(
           ({
             response: {
-              data = { message: "注册失败, 请检查表单内容是否正确" }
-            } = {}
+              data = { message: '注册失败, 请检查表单内容是否正确' },
+            } = {},
           }) => {
-            this.err = data;
-            this.loading = false;
+            this.err = data
+            this.loading = false
           }
-        );
-    }
-  }
-};
+        )
+    },
+  },
+}
 </script>

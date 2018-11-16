@@ -12,58 +12,58 @@
 </template>
 
 <script>
-import UserItem from "@/components/UserItem.vue";
-import * as userApi from "@/api/user";
+import UserItem from '@/components/UserItem.vue'
+import * as userApi from '@/api/user'
 
 export default {
-  name: "FindRec",
+  name: 'FindRec',
   components: { UserItem },
-  data() {
+  data () {
     return {
-      users: []
-    };
+      users: [],
+    }
   },
-  activated() {
-    this.$refs.loadmore.beforeRefresh();
+  activated () {
+    this.$refs.loadmore.beforeRefresh()
   },
   methods: {
-    onRefresh() {
+    onRefresh () {
       const recommendPromise = userApi
-        .findUserByType("recommends")
+        .findUserByType('recommends')
         .then(({ data: users }) => {
-          this.users = users;
+          this.users = users
           return users.map(u => {
-            u.searchFrom = "recommend";
-            return u;
-          });
-        });
+            u.searchFrom = 'recommend'
+            return u
+          })
+        })
       const tagsPromise = userApi
-        .findUserByType("find-by-tags")
+        .findUserByType('find-by-tags')
         .then(({ data: users }) => {
-          this.users = users;
-          this.$refs.loadmore.afterRefresh(users.length < 15);
+          this.users = users
+          this.$refs.loadmore.afterRefresh(users.length < 15)
           return users.map(u => {
-            u.searchFrom = "tags";
-            return u;
-          });
-        });
+            u.searchFrom = 'tags'
+            return u
+          })
+        })
       // 并发获取用户
       Promise.all([recommendPromise, tagsPromise])
         .then(([recommendUsers, tagsUsers]) => {
-          this.users = [...recommendUsers, ...tagsUsers];
+          this.users = [...recommendUsers, ...tagsUsers]
         })
         .catch(err => {
-          this.$refs.loadmore.afterRefresh(false);
-          return err;
-        });
+          this.$refs.loadmore.afterRefresh(false)
+          return err
+        })
     },
-    async onLoadMore() {
-      const { data: users } = await userApi.findUserByType("find-by-tags", {
-        offset: this.users.length
-      });
-      this.users = [...this.users, ...users];
-      this.$refs.loadmore.afterLoadMore(users.length < 15);
-    }
-  }
-};
+    async onLoadMore () {
+      const { data: users } = await userApi.findUserByType('find-by-tags', {
+        offset: this.users.length,
+      })
+      this.users = [...this.users, ...users]
+      this.$refs.loadmore.afterLoadMore(users.length < 15)
+    },
+  },
+}
 </script>

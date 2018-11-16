@@ -1,83 +1,83 @@
-import Message from "./messageInstance";
+import Message from './messageInstance'
 
-const prefixCls = "v-msg";
-const prefixKey = "v_message_key_";
+const prefixCls = 'v-msg'
+const prefixKey = 'v_message_key_'
 
 const defaults = {
-  duration: 3
-};
-
-let messageInstance;
-let name = 1;
-
-const iconTypes = {
-  info: "info",
-  success: "success",
-  warning: "warning",
-  error: "error",
-  loading: "loading"
-};
-
-function getMessageInstance() {
-  messageInstance = messageInstance || Message.newInstance();
-  return messageInstance;
+  duration: 3,
 }
 
-function notice(
+let messageInstance
+let name = 1
+
+const iconTypes = {
+  info: 'info',
+  success: 'success',
+  warning: 'warning',
+  error: 'error',
+  loading: 'loading',
+}
+
+function getMessageInstance () {
+  messageInstance = messageInstance || Message.newInstance()
+  return messageInstance
+}
+
+function notice (
   type,
-  content = "",
+  content = '',
   closable = false,
-  onClose = function() {},
+  onClose = function () {},
   duration = defaults.duration
 ) {
-  const iconType = iconTypes[type];
+  const iconType = iconTypes[type]
 
-  let instance = getMessageInstance();
+  let instance = getMessageInstance()
 
   instance.notice({
     content,
     styles: {},
     icon: iconType,
-    type: "message",
+    type: 'message',
     onClose: onClose,
     closable: closable,
     duration: duration,
-    transitionName: "move-up",
-    name: `${prefixKey}${name}`
-  });
+    transitionName: 'move-up',
+    name: `${prefixKey}${name}`,
+  })
 
-  return (function() {
-    let target = name++;
+  return (function () {
+    let target = name++
 
-    return function() {
-      instance.remove(`${prefixKey}${target}`);
-    };
-  })();
+    return function () {
+      instance.remove(`${prefixKey}${target}`)
+    }
+  })()
 }
 
 export default {
-  name: "Message",
+  name: 'Message',
 
-  info(options) {
-    return this.message("info", options);
+  info (options) {
+    return this.message('info', options)
   },
-  success(options) {
-    return this.message("success", options);
+  success (options) {
+    return this.message('success', options)
   },
-  warning(options) {
-    return this.message("warning", options);
+  warning (options) {
+    return this.message('warning', options)
   },
-  error(options) {
-    return this.message("error", options);
+  error (options) {
+    return this.message('error', options)
   },
-  loading(options) {
-    return this.message("loading", options);
+  loading (options) {
+    return this.message('loading', options)
   },
-  message(type, options) {
-    if (typeof options === "string") {
+  message (type, options) {
+    if (typeof options === 'string') {
       options = {
-        content: options
-      };
+        content: options,
+      }
     }
     return notice(
       type,
@@ -85,16 +85,16 @@ export default {
       options.closable,
       options.onClose,
       options.duration
-    );
+    )
   },
-  config(options) {
+  config (options) {
     if (options.duration || options.duration === 0) {
-      defaults.duration = options.duration;
+      defaults.duration = options.duration
     }
   },
-  destroy() {
-    let instance = getMessageInstance();
-    messageInstance = null;
-    instance.destroy(prefixCls);
-  }
-};
+  destroy () {
+    let instance = getMessageInstance()
+    messageInstance = null
+    instance.destroy(prefixCls)
+  },
+}

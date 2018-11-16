@@ -1,7 +1,11 @@
 <template>
-  <div :id="`m-pics${id}`" :class="['m-pics',`m-pics-${pics.length}`]">
+  <div
+    :id="`m-pics${id}`"
+    :class="['m-pics',`m-pics-${pics.length}`]">
     <ul class="m-pics-list">
-      <li v-for="(img, index) in pics" :key="`pics-${id}-${index}`">
+      <li
+        v-for="(img, index) in pics"
+        :key="`pics-${id}-${index}`">
         <div
           :class="['m-pics-box',{ 'long': isLongImg(img) }]"
           :style="pics.length === 1 ? longStyle(img.w, img.h) : &quot;&quot;">
@@ -20,53 +24,53 @@
 
 <script>
 export default {
-  name: "MPics",
+  name: 'MPics',
   props: {
     id: { type: Number, required: true },
-    pics: { type: Array, default: () => [] }
+    pics: { type: Array, default: () => [] },
   },
-  created() {
-    this.$bus.$on("updateFile", ({ fid, index }) => {
+  created () {
+    this.$bus.$on('updateFile', ({ fid, index }) => {
       if (fid === this.id) {
-        this.pics[index].paid = true;
-        this.$children[index].fetch();
+        this.pics[index].paid = true
+        this.$children[index].fetch()
         setTimeout(() => {
-          this.$bus.$emit("updatePhoto", this.$children[index].src);
-        }, 1500);
+          this.$bus.$emit('updatePhoto', this.$children[index].src)
+        }, 1500)
       }
-    });
+    })
   },
   methods: {
-    handleClick($event, index) {
-      const els = this.$children;
+    handleClick ($event, index) {
+      const els = this.$children
       const images = this.pics.map((img, index) => {
         return {
           ...img,
           el: els[index].$el,
           src: els[index].src,
-          index
-        };
-      });
-      this.$bus.$emit("mvGallery", { fid: this.id, index, images });
+          index,
+        }
+      })
+      this.$bus.$emit('mvGallery', { fid: this.id, index, images })
     },
-    isLongImg(img) {
-      const [w, h] = img.size.split("x");
-      img.title = img.paid_node > 0 && !img.paid ? "购买查看" : "";
-      img.w = parseInt(w);
-      img.h = parseInt(h);
-      return w > 3 * h || h > 3 * w;
+    isLongImg (img) {
+      const [w, h] = img.size.split('x')
+      img.title = img.paid_node > 0 && !img.paid ? '购买查看' : ''
+      img.w = parseInt(w)
+      img.h = parseInt(h)
+      return w > 3 * h || h > 3 * w
     },
 
-    longStyle(w, h) {
-      w = w > 518 ? 518 : w;
-      h = h > 960 ? 960 : h;
+    longStyle (w, h) {
+      w = w > 518 ? 518 : w
+      h = h > 960 ? 960 : h
       return {
-        width: w + "px",
-        paddingBottom: (h / w) * 100 + "%"
-      };
-    }
-  }
-};
+        width: w + 'px',
+        paddingBottom: (h / w) * 100 + '%',
+      }
+    },
+  },
+}
 </script>
 
 <style lang='less'>

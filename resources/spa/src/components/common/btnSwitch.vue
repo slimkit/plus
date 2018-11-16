@@ -34,48 +34,48 @@
   </div>
 </template>
 <script>
-const prefixCls = "v-switch";
+const prefixCls = 'v-switch'
 
 export default {
-  name: "VSwitch",
+  name: 'VSwitch',
   props: {
     type: {
       type: String,
-      default: "checkbox",
+      default: 'checkbox',
       requried: true,
-      validator(val) {
-        return ["checkbox", "radio"].includes(val);
-      }
+      validator (val) {
+        return ['checkbox', 'radio'].includes(val)
+      },
     },
     value: { type: Boolean, default: false },
     dataValue: { type: Object, default: () => {} },
     id: {
       type: String,
-      default: function() {
-        return "v-switch-" + this._uid;
-      }
-    }
+      default: function () {
+        return 'v-switch-' + this._uid
+      },
+    },
   },
-  data() {
+  data () {
     return {
       prefixCls: `${prefixCls}-${this.type}`,
-      cur_value: this.value
-    };
+      cur_value: this.value,
+    }
   },
   watch: {
-    value(val) {
-      this.cur_value = val;
-    }
+    value (val) {
+      this.cur_value = val
+    },
   },
   methods: {
-    setValue() {
-      this.$emit("input", this.cur_value);
+    setValue () {
+      this.$emit('input', this.cur_value)
     },
-    onClick() {
-      this.$refs.label.click();
-    }
-  }
-};
+    onClick () {
+      this.$refs.label.click()
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

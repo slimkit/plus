@@ -53,16 +53,16 @@
   </section>
 </template>
 <script>
-const prefixCls = "msgList";
-const url = "/questions/";
+const prefixCls = 'msgList'
+const url = '/questions/'
 export default {
-  name: "ProductItem",
+  name: 'ProductItem',
   props: {
-    comment: { type: Object, default: () => {} }
+    comment: { type: Object, default: () => {} },
   },
   data: () => ({
     prefixCls,
-    url
+    url,
   }),
   computed: {
     /**
@@ -72,19 +72,19 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   {[type]}            [description]
      */
-    getImage() {
-      const { comment } = this;
-      const { id = 0 } = comment.commentable.image || {};
+    getImage () {
+      const { comment } = this
+      const { id = 0 } = comment.commentable.image || {}
       if (id > 0) {
-        return `${this.$http.defaults.baseURL}/files/${id}`;
+        return `${this.$http.defaults.baseURL}/files/${id}`
       }
 
-      return false;
+      return false
     },
-    user() {
-      const { user } = this.comment || { user: {} };
-      return user;
-    }
+    user () {
+      const { user } = this.comment || { user: {} }
+      return user
+    },
   },
   methods: {
     /**
@@ -94,30 +94,30 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   {[type]}            [description]
      */
-    goToFeedDetail() {
+    goToFeedDetail () {
       const {
-        commentable: { id = 0 }
-      } = this.comment;
-      this.$router.push(`/products/${id}`);
+        commentable: { id = 0 },
+      } = this.comment
+      this.$router.push(`/products/${id}`)
     },
 
-    sendComment(comment) {
-      const { commentable_id: newsId = 0, user_id: userID = 0 } = this.comment;
+    sendComment (comment) {
+      const { commentable_id: newsId = 0, user_id: userID = 0 } = this.comment
       this.$http
         .post(
           `/news/${newsId}/comments`,
           {
             reply_user: userID,
-            body: comment
+            body: comment,
           },
           {
-            validateStatus: s => s === 201
+            validateStatus: s => s === 201,
           }
         )
         .then(() => {
-          this.$Message.success("回复成功");
-          this.$bus.$emit("commentInput:close", true);
-        });
+          this.$Message.success('回复成功')
+          this.$bus.$emit('commentInput:close', true)
+        })
     },
     /**
      * 调起输入框
@@ -126,14 +126,14 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   {[type]}            [description]
      */
-    showCommentInput() {
-      this.$bus.$emit("commentInput", {
+    showCommentInput () {
+      this.$bus.$emit('commentInput', {
         placeholder: `回复: ${this.comment.user.name}`,
         onOk: comment => {
-          this.sendComment(comment);
-        }
-      });
-    }
-  }
-};
+          this.sendComment(comment)
+        },
+      })
+    },
+  },
+}
 </script>

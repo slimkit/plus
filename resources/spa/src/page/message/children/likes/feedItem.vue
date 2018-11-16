@@ -1,9 +1,13 @@
 <template>
   <section>
-    <div :class="`${prefixCls}-item-top`" class="m-box m-aln-center m-justify-bet">
+    <div
+      :class="`${prefixCls}-item-top`"
+      class="m-box m-aln-center m-justify-bet">
       <avatar :user="user" />
       <section class="userInfo m-flex-grow1 m-flex-shrink1 m-flex-base0">
-        <span v-if="!user.id" :class="`${prefixCls}-item-top-link`">未知用户</span>
+        <span
+          v-if="!user.id"
+          :class="`${prefixCls}-item-top-link`">未知用户</span>
         <router-link
           :class="`${prefixCls}-item-top-link`"
           :to="`/users/${user.id}`">{{ user.name }}</router-link>
@@ -15,14 +19,18 @@
       </svg>
     </div>
     <div :class="`${prefixCls}-item-bottom`">
-      <section v-if="like.likeable !== null" @click="goToFeedDetail()">
+      <section
+        v-if="like.likeable !== null"
+        @click="goToFeedDetail()">
         <div
           v-if="!getImage && !getVideo"
           :class="`${prefixCls}-item-bottom-noImg`"
           class="content">
           {{ like.likeable.feed_content }}
         </div>
-        <div v-else :class="`${prefixCls}-item-bottom-img`">
+        <div
+          v-else
+          :class="`${prefixCls}-item-bottom-img`">
           <div class="img">
             <img
               v-if="getImage"
@@ -50,14 +58,14 @@
 </template>
 
 <script>
-const prefixCls = "msgList";
+const prefixCls = 'msgList'
 export default {
-  name: "FeedsItem",
+  name: 'FeedsItem',
   props: {
-    like: { type: Object, default: () => {} }
+    like: { type: Object, default: () => {} },
   },
   data: () => ({
-    prefixCls
+    prefixCls,
   }),
   computed: {
     /**
@@ -67,30 +75,30 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   {[type]}            [description]
      */
-    getImage() {
-      const { like } = this;
-      const { length } = like.likeable.images;
+    getImage () {
+      const { like } = this
+      const { length } = like.likeable.images
       if (length > 0) {
-        const { 0: img = {} } = like.likeable.images;
-        return `${this.$http.defaults.baseURL}/files/${img.id}`;
+        const { 0: img = {} } = like.likeable.images
+        return `${this.$http.defaults.baseURL}/files/${img.id}`
       }
 
-      return false;
+      return false
     },
-    getVideo() {
-      const { like } = this.$props;
-      const video = like.likeable.video;
+    getVideo () {
+      const { like } = this.$props
+      const video = like.likeable.video
       if (video !== null) {
         return {
           video: `${this.$http.defaults.baseURL}/files/${video.video_id}`,
-          cover: `${this.$http.defaults.baseURL}/files/${video.cover_id}`
-        };
+          cover: `${this.$http.defaults.baseURL}/files/${video.cover_id}`,
+        }
       }
-      return false;
+      return false
     },
-    user() {
-      return this.like.user || {};
-    }
+    user () {
+      return this.like.user || {}
+    },
   },
   methods: {
     /**
@@ -100,12 +108,12 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   {[type]}            [description]
      */
-    goToFeedDetail() {
+    goToFeedDetail () {
       const {
-        likeable: { id = 0 }
-      } = this.like;
-      this.$router.push(`/feeds/${id}`);
-    }
-  }
-};
+        likeable: { id = 0 },
+      } = this.like
+      this.$router.push(`/feeds/${id}`)
+    },
+  },
+}
 </script>

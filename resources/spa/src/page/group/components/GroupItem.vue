@@ -1,12 +1,16 @@
 <template>
-  <section class="c-group-item" @click="beforeViewDetail">
+  <section
+    class="c-group-item"
+    @click="beforeViewDetail">
     <div class="avatar">
       <img :src="avatar">
     </div>
     <div class="info">
       <div class="m-box m-aln-center m-text-cut">
         <h2 class="m-text-cut">{{ group.name }}</h2>
-        <span v-if="mode === 'paid'" class="paid">付费</span>
+        <span
+          v-if="mode === 'paid'"
+          class="paid">付费</span>
       </div>
       <p>
         <span>帖子<span class="number">{{ feedCount | formatNum }}</span></span>
@@ -14,10 +18,16 @@
       </p>
     </div>
 
-    <span v-if="isOwner" class="owner-badge">圈主</span>
-    <span v-if="isAdmin" class="admin-badge">管理员</span>
+    <span
+      v-if="isOwner"
+      class="owner-badge">圈主</span>
+    <span
+      v-if="isAdmin"
+      class="admin-badge">管理员</span>
 
-    <div v-if="showAction" class="action">
+    <div
+      v-if="showAction"
+      class="action">
       <button
         v-if="!joined || joined.audit === 0"
         :disabled="loading || joined.audit === 0"
@@ -36,108 +46,106 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 
 export default {
-  name: "GroupItem",
+  name: 'GroupItem',
   props: {
     group: { type: Object, required: true },
     showAction: { type: Boolean, default: true },
-    showRole: { type: Boolean, default: true }
+    showRole: { type: Boolean, default: true },
   },
-  data() {
+  data () {
     return {
-      loading: false
-    };
-  },
-  computed: {
-    ...mapState(["CURRENTUSER"]),
-    avatar() {
-      const avatar = this.group.avatar || {};
-      return avatar.url || null;
-    },
-    name() {
-      return this.group.name;
-    },
-    feedCount() {
-      return this.group.posts_count || 0;
-    },
-    memberCount() {
-      return this.group.users_count || 0;
-    },
-    mode() {
-      return this.group.mode;
-    },
-    money() {
-      return this.group.money || 0;
-    },
-    joined() {
-      return this.group.joined || false;
-    },
-    role() {
-      return typeof this.group.joined === "object" ? this.joined.role : false;
-    },
-    isOwner() {
-      return this.role === "founder";
-    },
-    isAdmin() {
-      return this.role === "administrator";
-    },
-    needPaid() {
-      return this.mode === "paid" && this.money > 0;
+      loading: false,
     }
   },
+  computed: {
+    ...mapState(['CURRENTUSER']),
+    avatar () {
+      const avatar = this.group.avatar || {}
+      return avatar.url || null
+    },
+    name () {
+      return this.group.name
+    },
+    feedCount () {
+      return this.group.posts_count || 0
+    },
+    memberCount () {
+      return this.group.users_count || 0
+    },
+    mode () {
+      return this.group.mode
+    },
+    money () {
+      return this.group.money || 0
+    },
+    joined () {
+      return this.group.joined || false
+    },
+    role () {
+      return typeof this.group.joined === 'object' ? this.joined.role : false
+    },
+    isOwner () {
+      return this.role === 'founder'
+    },
+    isAdmin () {
+      return this.role === 'administrator'
+    },
+    needPaid () {
+      return this.mode === 'paid' && this.money > 0
+    },
+  },
   methods: {
-    beforeJoined() {
-      if (this.joined || this.loading) return;
-      this.loading = true;
+    beforeJoined () {
+      if (this.joined || this.loading) return
+      this.loading = true
       !this.needPaid
         ? this.joinGroup()
-        : this.$bus.$emit("payfor", {
-            title: "申请加入圈子",
-            confirmText: "支付并加入",
-            amount: this.money,
-            content: `你只需支付${this.money}${this.currencyUnit}来加入圈子`,
-            checkPassword: true,
-            onOk: async password => {
-              this.loading = false;
-              if (this.money <= this.CURRENTUSER.currency.sum)
-                this.joinGroup(password);
-              else this.$router.push({ name: "currencyRecharge" });
-            },
-            onCancel: () => {
-              this.loading = false;
-            }
-          });
+        : this.$bus.$emit('payfor', {
+          title: '申请加入圈子',
+          confirmText: '支付并加入',
+          amount: this.money,
+          content: `你只需支付${this.money}${this.currencyUnit}来加入圈子`,
+          checkPassword: true,
+          onOk: async password => {
+            this.loading = false
+            if (this.money <= this.CURRENTUSER.currency.sum) { this.joinGroup(password) } else this.$router.push({ name: 'currencyRecharge' })
+          },
+          onCancel: () => {
+            this.loading = false
+          },
+        })
     },
-    joinGroup(password) {
+    joinGroup (password) {
       this.$store
-        .dispatch("group/joinGroup", {
+        .dispatch('group/joinGroup', {
           groupId: this.group.id,
           needPaid: this.needPaid,
-          password
+          password,
         })
         .then(data => {
-          this.loading = false;
-          this.$Message.success(data);
-          this.group.joined = this.needPaid ? {} : { audit: 1 };
+          this.loading = false
+          this.$Message.success(data)
+          this.group.joined = this.needPaid ? {} : { audit: 1 }
         })
         .catch(err => {
-          this.loading = false;
-          this.$Message.error(err.response.data);
-        });
+          this.loading = false
+          this.$Message.error(err.response.data)
+        })
     },
-    beforeViewDetail() {
+    beforeViewDetail () {
       this.joined
         ? this.joined.audit === 1
           ? this.$router.push(`/groups/${this.group.id}`)
-          : this.$Message.error("审核通过后，才能查看圈子信息哦~")
-        : this.mode !== "public"
-          ? this.$Message.error("需要先加入圈子，才能查看圈子信息哦~")
-          : this.$router.push(`/groups/${this.group.id}`);
-    }
-  }
-};
+          : this.$Message.error('审核通过后，才能查看圈子信息哦~')
+        : this.mode !== 'public'
+          ? this.$Message.error('需要先加入圈子，才能查看圈子信息哦~')
+          : this.$router.push(`/groups/${this.group.id}`)
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

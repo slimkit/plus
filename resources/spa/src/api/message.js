@@ -1,14 +1,14 @@
-import api from "./api";
-import { limit } from "./index";
+import api from './api'
+import { limit } from './index'
 
 // 获取系统通知
-export function getNotifications(offset = 0) {
+export function getNotifications (offset = 0) {
   return api.get(`/user/notifications`, {
     params: {
       offset,
-      limit
-    }
-  });
+      limit,
+    },
+  })
 }
 
 /**
@@ -19,6 +19,6 @@ export function getNotifications(offset = 0) {
  * @param    {String}            type [清除的消息类型]
  * @return   {[type]}                 [description]
  */
-export function resetUserCount(type = "") {
-  api.patch("/user/counts", { type });
+export function resetUserCount (type = '') {
+  api.patch('/user/counts', { type })
 }

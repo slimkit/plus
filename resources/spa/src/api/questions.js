@@ -1,4 +1,4 @@
-import api from "./api";
+import api from './api'
 
 /**
  * Query questions list.
@@ -11,11 +11,11 @@ import api from "./api";
  * @param {string} params.subject search keyword
  * @returns
  */
-export function queryList(params = {}) {
-  return api.get("/questions", {
+export function queryList (params = {}) {
+  return api.get('/questions', {
     params,
-    validateStatus: status => status === 200
-  });
+    validateStatus: status => status === 200,
+  })
 }
 
 /**
@@ -27,6 +27,6 @@ export function queryList(params = {}) {
  * @return {Promise}
  * @author Seven Du <shiweidu@outlook.com>
  */
-export function list(type, offset = 0, limit = 15) {
-  return queryList({ type, limit, offset });
+export function list (type, offset = 0, limit = 15) {
+  return queryList({ type, limit, offset })
 }

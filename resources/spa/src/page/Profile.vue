@@ -12,7 +12,9 @@
           tag="section"
           class="m-box m-aln-center"
           to="/info">
-          <avatar :user="user" size="big" />
+          <avatar
+            :user="user"
+            size="big" />
           <div class="m-text-box m-flex-grow1 m-flex-shrink1 m-flex-base0 m-pr-user-info">
             <h4 class="m-pr-username">{{ user.name }}</h4>
             <p class="m-pr-bio m-text-cut-2">{{ user.bio || "这家伙很懒,什么也没有留下" }}</p>
@@ -132,7 +134,9 @@
           </router-link>
         </ul>
         <ul class="m-box-model m-entry-group">
-          <li class="m-entry" @click="selectCertType">
+          <li
+            class="m-entry"
+            @click="selectCertType">
             <svg class="m-style-svg m-svg-def m-entry-prepend">
               <use xlink:href="#icon-profile-approve"/>
             </svg>
@@ -162,93 +166,93 @@
 </template>
 
 <script>
-import _ from "lodash";
-import { mapState } from "vuex";
-import { resetUserCount } from "@/api/message.js";
+import _ from 'lodash'
+import { mapState } from 'vuex'
+import { resetUserCount } from '@/api/message.js'
 
 export default {
-  name: "Profile",
-  data() {
+  name: 'Profile',
+  data () {
     return {
-      verifiedText: ""
-    };
+      verifiedText: '',
+    }
   },
   computed: {
     ...mapState({
       new_followers: state => state.MESSAGE.NEW_UNREAD_COUNT.following || 0,
       new_mutual: state => state.MESSAGE.NEW_UNREAD_COUNT.mutual || 0,
       user: state => state.CURRENTUSER,
-      verified: state => state.USER_VERIFY
+      verified: state => state.USER_VERIFY,
     }),
-    extra() {
-      return this.user.extra || {};
+    extra () {
+      return this.user.extra || {}
     },
-    new_wallet() {
-      return this.user.new_wallet || { balance: 0 };
+    new_wallet () {
+      return this.user.new_wallet || { balance: 0 }
     },
-    new_balance() {
-      return (this.new_wallet.balance / 100).toFixed(2);
+    new_balance () {
+      return (this.new_wallet.balance / 100).toFixed(2)
     },
-    currency() {
-      return this.user.currency || { sum: 0 };
+    currency () {
+      return this.user.currency || { sum: 0 }
     },
-    sum() {
-      return this.currency.sum;
-    }
+    sum () {
+      return this.currency.sum
+    },
   },
   watch: {
-    verified(to) {
-      if (to && to.status) to.status = Number(to.status);
+    verified (to) {
+      if (to && to.status) to.status = Number(to.status)
       if (to && to.status === 0) {
-        this.verifiedText = "待审核";
+        this.verifiedText = '待审核'
       } else if (to && to.status === 1) {
-        this.verifiedText = "通过审核";
+        this.verifiedText = '通过审核'
       } else if (to && to.status === 2) {
-        this.verifiedText = "被驳回";
+        this.verifiedText = '被驳回'
       } else {
-        this.verifiedText = "未认证";
+        this.verifiedText = '未认证'
       }
-    }
+    },
   },
-  mounted() {
-    this.$store.dispatch("fetchUserInfo");
-    this.$store.dispatch("FETCH_USER_VERIFY");
-    this.$store.dispatch("GET_NEW_UNREAD_COUNT");
+  mounted () {
+    this.$store.dispatch('fetchUserInfo')
+    this.$store.dispatch('FETCH_USER_VERIFY')
+    this.$store.dispatch('GET_NEW_UNREAD_COUNT')
   },
-  beforeRouteLeave(to, from, next) {
+  beforeRouteLeave (to, from, next) {
     const {
-      params: { type }
-    } = to;
+      params: { type },
+    } = to
     const resetType =
-      type === "followers" ? "following" : type === "mutual" ? "mutual" : "";
-    resetType && resetUserCount(resetType);
-    next();
+      type === 'followers' ? 'following' : type === 'mutual' ? 'mutual' : ''
+    resetType && resetUserCount(resetType)
+    next()
   },
   methods: {
-    selectCertType() {
+    selectCertType () {
       if (_.isEmpty(this.verified)) {
         const actions = [
-          { text: "个人认证", method: () => this.certificate("user") },
-          { text: "企业认证", method: () => this.certificate("org") }
-        ];
-        this.$bus.$emit("actionSheet", actions, "取消");
+          { text: '个人认证', method: () => this.certificate('user') },
+          { text: '企业认证', method: () => this.certificate('org') },
+        ]
+        this.$bus.$emit('actionSheet', actions, '取消')
       } else if (this.verified.status === 2) {
         // 被驳回则补充填写表单
-        const type = this.verified.certification_name || "user";
-        this.certificate(type);
+        const type = this.verified.certification_name || 'user'
+        this.certificate(type)
       } else {
-        this.$router.push({ path: "/profile/certification" });
+        this.$router.push({ path: '/profile/certification' })
       }
     },
     /**
      * 认证
      * @param {string} type 认证类型 (user|org)
      */
-    certificate(type) {
-      this.$router.push({ path: "/profile/certificate", query: { type } });
-    }
-  }
-};
+    certificate (type) {
+      this.$router.push({ path: '/profile/certificate', query: { type } })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

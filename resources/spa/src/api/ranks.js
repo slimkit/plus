@@ -1,5 +1,5 @@
-import api from "./api";
-import { limit } from "./index";
+import api from './api'
+import { limit } from './index'
 
 /**
  * 获取全站排行榜
@@ -14,9 +14,9 @@ import { limit } from "./index";
  * @param {Number} params.offset 偏移量
  * @returns
  */
-export function getRankUsers(rankApi, params = {}) {
-  params = Object.assign({ limit, offset: 0 }, params);
+export function getRankUsers (rankApi, params = {}) {
+  params = Object.assign({ limit, offset: 0 }, params)
   return api
     .get(`${rankApi}`, { params, validateStatus: s => s === 200 })
-    .then(({ data }) => data);
+    .then(({ data }) => data)
 }

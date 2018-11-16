@@ -16,13 +16,13 @@
 
 <script>
 export default {
-  name: "NavTab",
+  name: 'NavTab',
   props: {
     nav: { type: Object, required: true },
     route: { type: Object, required: true },
-    default: { type: String, default: "" }
-  }
-};
+    default: { type: String, default: '' },
+  },
+}
 </script>
 
 <style lang="less" scoped>

@@ -23,47 +23,47 @@
 </template>
 <script>
 export default {
-  name: "CommentItem",
+  name: 'CommentItem',
   props: {
-    comment: { type: Object, required: true }
+    comment: { type: Object, required: true },
   },
   computed: {
-    isMine() {
-      return this.$store.state.CURRENTUSER.id === this.user.id;
+    isMine () {
+      return this.$store.state.CURRENTUSER.id === this.user.id
     },
-    user() {
-      return this.comment.user || {};
+    user () {
+      return this.comment.user || {}
     },
-    replyUser() {
-      const { reply } = this.comment;
-      return reply && reply.id ? reply : null;
+    replyUser () {
+      const { reply } = this.comment
+      return reply && reply.id ? reply : null
     },
-    pinned() {
-      return this.comment.pinned;
+    pinned () {
+      return this.comment.pinned
     },
-    body() {
-      return this.comment.body || "";
-    }
+    body () {
+      return this.comment.body || ''
+    },
   },
-  mounted() {
-    this.user && this.$store.commit("SAVE_USER", this.user);
-    this.replyUser && this.$store.commit("SAVE_USER", this.replyUser);
+  mounted () {
+    this.user && this.$store.commit('SAVE_USER', this.user)
+    this.replyUser && this.$store.commit('SAVE_USER', this.replyUser)
   },
   methods: {
-    handelClick() {
+    handelClick () {
       const p = this.isMine
         ? {
-            isMine: true
-          }
+          isMine: true,
+        }
         : {
-            isMine: false,
-            placeholder: `回复${this.user.name}`,
-            reply_user: this.user.id
-          };
-      this.$emit("click", Object.assign({ comment: this.comment }, p));
-    }
-  }
-};
+          isMine: false,
+          placeholder: `回复${this.user.name}`,
+          reply_user: this.user.id,
+        }
+      this.$emit('click', Object.assign({ comment: this.comment }, p))
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

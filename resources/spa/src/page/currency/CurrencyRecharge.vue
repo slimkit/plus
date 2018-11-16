@@ -3,7 +3,9 @@
 
     <common-header class="header">
       充值{{ currencyUnit }}
-      <router-link slot="right" to="/currency/detail" >
+      <router-link
+        slot="right"
+        to="/currency/detail" >
         充值记录
       </router-link>
     </common-header>
@@ -15,7 +17,9 @@
 
     <main class="m-box-model m-aln-center m-justify-center">
       <div class="m-box-model m-lim-width m-main">
-        <div v-if="items.length" class="m-pinned-amount-btns m-bb1">
+        <div
+          v-if="items.length"
+          class="m-pinned-amount-btns m-bb1">
           <p class="m-pinned-amount-label">选择充值金额</p>
           <div class="buttons">
             <button
@@ -43,15 +47,21 @@
         </div>
       </div>
 
-      <div class="m-entry" @click="selectRechargeType">
+      <div
+        class="m-entry"
+        @click="selectRechargeType">
         <span class="m-text-box m-flex-grow1">选择充值方式</span>
         <div class="m-box m-aln-end paid-type">{{ rechargeTypeText }}</div>
         <svg class="m-style-svg m-svg-def m-entry-append">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-arrow-right" />
+          <use
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            xlink:href="#icon-arrow-right" />
         </svg>
       </div>
 
-      <div class="plr20 m-lim-width submit-btn-wrap" style="margin-top: 0.6rem" >
+      <div
+        class="plr20 m-lim-width submit-btn-wrap"
+        style="margin-top: 0.6rem" >
         <button
           :disabled="disabled || loading"
           class="m-long-btn m-signin-btn"
@@ -70,7 +80,9 @@
         </p>
       </footer>
 
-      <popup-dialog ref="dialog" title="用户充值协议" >
+      <popup-dialog
+        ref="dialog"
+        title="用户充值协议" >
         <p v-html="rule" />
       </popup-dialog>
 
@@ -79,132 +91,130 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import PopupDialog from "@/components/PopupDialog.vue";
+import { mapState } from 'vuex'
+import PopupDialog from '@/components/PopupDialog.vue'
 
 const supportTypes = [
-  { key: "alipay_wap", title: "支付宝支付", type: "AlipayWapOrder" },
+  { key: 'alipay_wap', title: '支付宝支付', type: 'AlipayWapOrder' },
   // 尚未实现 { key: "wx_wap", title: "微信支付", type: "WechatWapOrder" },
-  { key: "balance", title: "钱包余额支付", type: "balance" }
-];
+  { key: 'balance', title: '钱包余额支付', type: 'balance' },
+]
 
 export default {
-  name: "CurrencyRecharge",
+  name: 'CurrencyRecharge',
   components: { PopupDialog },
-  data() {
+  data () {
     return {
       customAmount: null,
       amount: 0,
-      rechargeType: "",
-      loading: false
-    };
+      rechargeType: '',
+      loading: false,
+    }
   },
   computed: {
     ...mapState({
-      currency: "currency"
+      currency: 'currency',
     }),
-    recharge() {
-      return this.currency.recharge;
+    recharge () {
+      return this.currency.recharge
     },
-    items() {
-      return this.currency.recharge.items;
+    items () {
+      return this.currency.recharge.items
     },
-    rule() {
-      const rule = this.currency.recharge.rule || "";
-      return rule.replace(/\n/g, "<br>");
+    rule () {
+      const rule = this.currency.recharge.rule || ''
+      return rule.replace(/\n/g, '<br>')
     },
-    rechargeTypeText() {
-      const type = supportTypes.filter(t => t.type === this.form.type).pop();
-      return type && type.title;
+    rechargeTypeText () {
+      const type = supportTypes.filter(t => t.type === this.form.type).pop()
+      return type && type.title
     },
-    form() {
+    form () {
       return {
         amount: this.customAmount * 100 || this.amount,
-        type: this.rechargeType
-      };
+        type: this.rechargeType,
+      }
     },
-    disabled() {
-      return !this.form.amount || !this.rechargeType;
-    }
+    disabled () {
+      return !this.form.amount || !this.rechargeType
+    },
   },
-  mounted() {
-    if (!this.items.length) this.$store.dispatch("currency/getCurrencyInfo");
+  mounted () {
+    if (!this.items.length) this.$store.dispatch('currency/getCurrencyInfo')
   },
   methods: {
-    chooseDefaultAmount(amount) {
-      this.customAmount && (this.customAmount = null);
-      this.amount = amount;
+    chooseDefaultAmount (amount) {
+      this.customAmount && (this.customAmount = null)
+      this.amount = amount
     },
-    selectRechargeType() {
-      const actions = [];
+    selectRechargeType () {
+      const actions = []
       actions.push({
-        text: "钱包余额支付",
-        method: () => selectType("balance")
-      });
+        text: '钱包余额支付',
+        method: () => selectType('balance'),
+      })
       supportTypes.forEach(item => {
         if (this.recharge.type.includes(item.key)) {
           actions.push({
             text: item.title,
-            method: () => selectType(item.type)
-          });
+            method: () => selectType(item.type),
+          })
         }
-      });
+      })
       this.$bus.$emit(
-        "actionSheet",
+        'actionSheet',
         actions,
-        "取消",
-        actions.length ? undefined : "当前未支持任何充值方式"
-      );
+        '取消',
+        actions.length ? undefined : '当前未支持任何充值方式'
+      )
 
       const selectType = type => {
-        this.rechargeType = type;
-      };
-    },
-    beforeSubmit() {
-      if (this.loading) return;
-      const { amount, type } = this.form;
-      if (amount < this.recharge.min)
-        return this.$Message.error(`最低只能充值${this.recharge.min / 100}元`);
-
-      if (amount > this.recharge.max)
-        return this.$Message.error(`最多只能充值${this.recharge.max / 100}元`);
-
-      if (type === "balance") {
-        this.rechargeWithBanlance(amount);
-      } else {
-        this.rechargeWithPay(type, amount);
+        this.rechargeType = type
       }
     },
-    async rechargeWithBanlance(amount) {
-      this.loading = true;
+    beforeSubmit () {
+      if (this.loading) return
+      const { amount, type } = this.form
+      if (amount < this.recharge.min) { return this.$Message.error(`最低只能充值${this.recharge.min / 100}元`) }
+
+      if (amount > this.recharge.max) { return this.$Message.error(`最多只能充值${this.recharge.max / 100}元`) }
+
+      if (type === 'balance') {
+        this.rechargeWithBanlance(amount)
+      } else {
+        this.rechargeWithPay(type, amount)
+      }
+    },
+    async rechargeWithBanlance (amount) {
+      this.loading = true
       const result = await this.$store.dispatch(
-        "currency/currency2wallet",
+        'currency/currency2wallet',
         amount
-      );
-      this.loading = false;
+      )
+      this.loading = false
       if (!result.errors) {
-        this.$Message.success("充值成功！");
-        this.goBack();
-        this.$store.dispatch("fetchUserInfo");
+        this.$Message.success('充值成功！')
+        this.goBack()
+        this.$store.dispatch('fetchUserInfo')
       } else {
-        this.$Message.error(result.errors);
+        this.$Message.error(result.errors)
       }
     },
-    async rechargeWithPay(type, amount) {
-      this.loading = true;
-      const url = await this.$store.dispatch("currency/requestRecharge", {
+    async rechargeWithPay (type, amount) {
+      this.loading = true
+      const url = await this.$store.dispatch('currency/requestRecharge', {
         amount,
         redirect: `${window.location.origin}${process.env.BASE_URL}/currency`, // 支付成功后回调地址
-        type
-      });
-      this.loading = false;
-      location.href = url;
+        type,
+      })
+      this.loading = false
+      location.href = url
     },
-    popupRule() {
-      this.$refs.dialog.show();
-    }
-  }
-};
+    popupRule () {
+      this.$refs.dialog.show()
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

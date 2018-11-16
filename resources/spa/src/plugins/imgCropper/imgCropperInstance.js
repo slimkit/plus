@@ -1,25 +1,25 @@
-import Vue from "vue";
-import ImgCropper from "./imgCropper";
+import Vue from 'vue'
+import ImgCropper from './imgCropper'
 
-const prefixCls = "v-img-cropper";
+const prefixCls = 'v-img-cropper'
 
 /**
  * 圆形裁剪
  *     @author jsonleex <jsonlseex@163.com>
  */
-function getRoundedCanvas(sourceCanvas) {
-  var canvas = document.createElement("canvas");
-  var context = canvas.getContext("2d");
-  var width = sourceCanvas.width;
-  var height = sourceCanvas.height;
+function getRoundedCanvas (sourceCanvas) {
+  var canvas = document.createElement('canvas')
+  var context = canvas.getContext('2d')
+  var width = sourceCanvas.width
+  var height = sourceCanvas.height
 
-  canvas.width = width;
-  canvas.height = height;
+  canvas.width = width
+  canvas.height = height
 
-  context.imageSmoothingEnabled = true;
-  context.drawImage(sourceCanvas, 0, 0, width, height);
-  context.globalCompositeOperation = "destination-in";
-  context.beginPath();
+  context.imageSmoothingEnabled = true
+  context.drawImage(sourceCanvas, 0, 0, width, height)
+  context.globalCompositeOperation = 'destination-in'
+  context.beginPath()
   context.arc(
     width / 2,
     height / 2,
@@ -27,183 +27,183 @@ function getRoundedCanvas(sourceCanvas) {
     0,
     2 * Math.PI,
     true
-  );
-  context.fill();
+  )
+  context.fill()
 
-  return canvas;
+  return canvas
 }
 
 ImgCropper.newInstance = properties => {
-  const _props = properties || {};
+  const _props = properties || {}
 
   const Instance = new Vue({
     data: Object.assign({}, _props, {
-      url: "",
+      url: '',
       round: true,
-      visible: false
+      visible: false,
     }),
     computed: {
-      disabled() {
-        return true;
-      }
-    },
-    created() {},
-    methods: {
-      close() {
-        this.url = "";
-        this.visible = false;
-        this.onCancel();
-        this.remove();
+      disabled () {
+        return true
       },
-      ok() {
+    },
+    created () {},
+    methods: {
+      close () {
+        this.url = ''
+        this.visible = false
+        this.onCancel()
+        this.remove()
+      },
+      ok () {
         let data = this.$children[0].cropper.getCroppedCanvas({
           width: 500,
-          height: 500
-        });
+          height: 500,
+        })
 
         if (this.round) {
-          data = getRoundedCanvas(data);
+          data = getRoundedCanvas(data)
         }
-        this.onOk(data);
-        this.remove();
+        this.onOk(data)
+        this.remove()
       },
-      remove() {
+      remove () {
         setTimeout(() => {
-          this.destroy();
-        }, 300);
+          this.destroy()
+        }, 300)
       },
-      destroy() {
-        document.body.removeChild(this.$el);
-        this.onRemove();
-        this.$destroy();
+      destroy () {
+        document.body.removeChild(this.$el)
+        this.onRemove()
+        this.$destroy()
       },
-      onOk() {},
-      onCancel() {},
-      onRemove() {}
+      onOk () {},
+      onCancel () {},
+      onRemove () {},
     },
-    render(h) {
-      let headerVNodes = [];
+    render (h) {
+      let headerVNodes = []
 
       headerVNodes.push(
         h(
-          "div",
+          'div',
           {
             attrs: {
-              class: `${prefixCls}-header`
-            }
+              class: `${prefixCls}-header`,
+            },
           },
           [
             h(
-              "button",
+              'button',
               {
                 attrs: {
-                  class: `${prefixCls}-header-prepend`
+                  class: `${prefixCls}-header-prepend`,
                 },
                 on: {
-                  click: this.close
-                }
+                  click: this.close,
+                },
               },
-              "取消"
+              '取消'
             ),
             h(
-              "div",
+              'div',
               {
                 attrs: {
-                  class: `${prefixCls}-header-title`
+                  class: `${prefixCls}-header-title`,
                 },
                 directives: [
                   {
-                    name: "show",
-                    value: this.title
-                  }
-                ]
+                    name: 'show',
+                    value: this.title,
+                  },
+                ],
               },
               this.title
             ),
             h(
-              "button",
+              'button',
               {
                 on: {
-                  click: this.ok
-                }
+                  click: this.ok,
+                },
               },
-              "完成"
-            )
+              '完成'
+            ),
           ]
         )
-      );
+      )
 
-      let bodyVNodes = [];
+      let bodyVNodes = []
 
       bodyVNodes.push(
         h(
-          "div",
+          'div',
           {
             attrs: {
-              class: `${prefixCls}-body`
-            }
+              class: `${prefixCls}-body`,
+            },
           },
           [
             h(ImgCropper, {
               props: {
                 url: this.url,
-                round: this.round
-              }
-            })
+                round: this.round,
+              },
+            }),
           ]
         )
-      );
+      )
 
       return h(
-        "div",
+        'div',
         {
           directives: [
             {
-              name: "show",
-              value: this.visible
-            }
+              name: 'show',
+              value: this.visible,
+            },
           ],
           attrs: {
-            class: `${prefixCls}-wrap`
-          }
+            class: `${prefixCls}-wrap`,
+          },
         },
         [headerVNodes, bodyVNodes]
-      );
-    }
-  });
+      )
+    },
+  })
 
-  const component = Instance.$mount();
-  document.body.appendChild(component.$el);
-  const cropper = Instance.$children[0];
+  const component = Instance.$mount()
+  document.body.appendChild(component.$el)
+  const cropper = Instance.$children[0]
   return {
-    show(option) {
-      if ("url" in option) {
-        cropper.$parent.url = option.url;
+    show (option) {
+      if ('url' in option) {
+        cropper.$parent.url = option.url
       }
 
-      if ("round" in option) {
-        cropper.$parent.round = option.round;
+      if ('round' in option) {
+        cropper.$parent.round = option.round
       }
 
-      if ("onOk" in option) {
-        cropper.$parent.onOk = option.onOk;
+      if ('onOk' in option) {
+        cropper.$parent.onOk = option.onOk
       }
 
-      if ("onCancel" in option) {
-        cropper.$parent.onCancel = option.onCancel;
+      if ('onCancel' in option) {
+        cropper.$parent.onCancel = option.onCancel
       }
 
-      if ("onRemove" in option) {
-        cropper.$parent.onRemove = option.onRemove;
+      if ('onRemove' in option) {
+        cropper.$parent.onRemove = option.onRemove
       }
-      cropper.$parent.visible = true;
+      cropper.$parent.visible = true
     },
-    remove() {
-      cropper.$parent.visible = false;
-      cropper.$parent.remove();
+    remove () {
+      cropper.$parent.visible = false
+      cropper.$parent.remove()
     },
-    component: cropper
-  };
-};
+    component: cropper,
+  }
+}
 
-export default ImgCropper;
+export default ImgCropper

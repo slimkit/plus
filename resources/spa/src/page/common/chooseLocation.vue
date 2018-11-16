@@ -1,11 +1,15 @@
 <template>
   <div class="page-location">
-    <head-top :append="true" title="选择定位">
+    <head-top
+      :append="true"
+      title="选择定位">
       <div
         slot="append"
         class="head-top-cancel"
         @click="$router.go(-1)">取消</div>
-      <div slot="title" class="head-top-search">
+      <div
+        slot="title"
+        class="head-top-search">
         <svg class="m-style-svg m-svg-def head-top-search-icon">
           <use xlink:href="#icon-search" />
         </svg>
@@ -22,8 +26,12 @@
     <template v-if="isShowHot">
       <div class="location-current">
         <span>当前定位</span>
-        <span :class="{c999: !cur_txt }" class="location-current-txt">{{ cur_txt || "未定位" }}</span>
-        <svg class="m-style-svg m-svg-def location-current-append" @click.native.stop="updateLocation">
+        <span
+          :class="{c999: !cur_txt }"
+          class="location-current-txt">{{ cur_txt || "未定位" }}</span>
+        <svg
+          class="m-style-svg m-svg-def location-current-append"
+          @click.native.stop="updateLocation">
           <use xlink:href="#cur-icon" />
         </svg>
       </div>
@@ -57,31 +65,31 @@
 </template>
 
 <script>
-import _ from "lodash";
-import HeadTop from "@/components/HeadTop";
+import _ from 'lodash'
+import HeadTop from '@/components/HeadTop'
 
-let sources = [];
+let sources = []
 
 export default {
-  name: "ChooseLocation",
+  name: 'ChooseLocation',
   components: {
-    HeadTop
+    HeadTop,
   },
-  data() {
+  data () {
     return {
-      keyword: "",
+      keyword: '',
       showHot: true,
       loading: false,
 
       dataList: [],
-      redirect: "" // 选择地址后 跳转的路径
-    };
+      redirect: '', // 选择地址后 跳转的路径
+    }
   },
   computed: {
-    location() {
-      const location = this.$store.state.LOCATION || {};
-      if (JSON.stringify(location) === "{}") {
-        this.$store.dispatch("GET_LOCATION");
+    location () {
+      const location = this.$store.state.LOCATION || {}
+      if (JSON.stringify(location) === '{}') {
+        this.$store.dispatch('GET_LOCATION')
       } else {
         /* eslint-disable */
         this.loading = false;

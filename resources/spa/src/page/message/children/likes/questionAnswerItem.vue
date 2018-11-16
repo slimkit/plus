@@ -3,7 +3,9 @@
     <div :class="`${prefixCls}-item-top`">
       <avatar :user="user" />
       <section class="userInfo">
-        <span v-if="!user.id" :class="`${prefixCls}-item-top-link`">未知用户</span>
+        <span
+          v-if="!user.id"
+          :class="`${prefixCls}-item-top-link`">未知用户</span>
         <router-link
           v-else
           :class="`${prefixCls}-item-top-link`"
@@ -13,8 +15,12 @@
       </section>
     </div>
     <div :class="`${prefixCls}-item-bottom`">
-      <section v-if="like.likeable !== null" @click="goToFeedDetail()">
-        <div :class="`${prefixCls}-item-bottom-noImg`" class="content">
+      <section
+        v-if="like.likeable !== null"
+        @click="goToFeedDetail()">
+        <div
+          :class="`${prefixCls}-item-bottom-noImg`"
+          class="content">
           {{ like.likeable.body }}
         </div>
         <!-- <div :class="`${prefixCls}-item-bottom-img`" v-else>
@@ -27,7 +33,9 @@
         </div> -->
       </section>
       <section v-if="like.likeable === null">
-        <div :class="`${prefixCls}-item-bottom-noImg`" class="content">
+        <div
+          :class="`${prefixCls}-item-bottom-noImg`"
+          class="content">
           回答已被删除
         </div>
       </section>
@@ -36,14 +44,14 @@
 </template>
 
 <script>
-const prefixCls = "msgList";
+const prefixCls = 'msgList'
 export default {
-  name: "QuestionAnswerItem",
+  name: 'QuestionAnswerItem',
   props: {
-    like: { type: Object, default: () => {} }
+    like: { type: Object, default: () => {} },
   },
   data: () => ({
-    prefixCls
+    prefixCls,
   }),
   computed: {
     /**
@@ -53,19 +61,19 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   {[type]}            [description]
      */
-    getImage() {
-      const { like } = this;
-      const { length } = like.likeable.images;
+    getImage () {
+      const { like } = this
+      const { length } = like.likeable.images
       if (length > 0) {
-        const { 0: img = {} } = like.likeable.images;
-        return `${this.$http.defaults.baseURL}/files/${img.id}`;
+        const { 0: img = {} } = like.likeable.images
+        return `${this.$http.defaults.baseURL}/files/${img.id}`
       }
 
-      return false;
+      return false
     },
-    user() {
-      return this.like.user || {};
-    }
+    user () {
+      return this.like.user || {}
+    },
   },
   methods: {
     /**
@@ -75,12 +83,12 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   {[type]}            [description]
      */
-    goToFeedDetail() {
+    goToFeedDetail () {
       const {
-        likeable: { id }
-      } = this.like;
-      this.$router.push(`/questions/${id}`);
-    }
-  }
-};
+        likeable: { id },
+      } = this.like
+      this.$router.push(`/questions/${id}`)
+    },
+  },
+}
 </script>

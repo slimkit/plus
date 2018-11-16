@@ -19,53 +19,53 @@
 </template>
 
 <script>
-import _ from "lodash";
-import walletWithdrawDetailItem from "./components/WalletWithdrawDetailItem.vue";
+import _ from 'lodash'
+import walletWithdrawDetailItem from './components/WalletWithdrawDetailItem.vue'
 
 export default {
-  name: "WalletWithdrawDetail",
+  name: 'WalletWithdrawDetail',
   components: { walletWithdrawDetailItem },
-  data() {
+  data () {
     return {
-      currAction: "out",
-      list: []
-    };
+      currAction: 'out',
+      list: [],
+    }
   },
   computed: {
-    after() {
-      const len = this.list.length;
-      return len ? this.list[len - 1].id : 0;
-    }
+    after () {
+      const len = this.list.length
+      return len ? this.list[len - 1].id : 0
+    },
   },
   watch: {
-    currAction() {
-      this.list = [];
-      this.$refs.loadmore.beforeRefresh();
-    }
+    currAction () {
+      this.list = []
+      this.$refs.loadmore.beforeRefresh()
+    },
   },
   methods: {
-    showDetail(id) {
-      this.$router.push({ path: `/wallet/withdraw/detail/${id}` });
+    showDetail (id) {
+      this.$router.push({ path: `/wallet/withdraw/detail/${id}` })
     },
-    async onRefresh() {
-      const data = await this.$store.dispatch("wallet/fetchWithdrawList");
+    async onRefresh () {
+      const data = await this.$store.dispatch('wallet/fetchWithdrawList')
 
-      if (data.length > 0) this.list = _.unionBy([...data, ...this.list], "id");
+      if (data.length > 0) this.list = _.unionBy([...data, ...this.list], 'id')
 
-      this.$refs.loadmore.topEnd(!(data.length < 15));
+      this.$refs.loadmore.topEnd(!(data.length < 15))
     },
-    async onLoadMore() {
-      const data = await this.$store.dispatch("wallet/fetchWithdrawList", {
-        after: this.after
-      });
+    async onLoadMore () {
+      const data = await this.$store.dispatch('wallet/fetchWithdrawList', {
+        after: this.after,
+      })
 
       if (data.length > 0) {
-        this.list = [...this.list, ...data];
+        this.list = [...this.list, ...data]
       }
-      this.$refs.loadmore.bottomEnd(data.length < 15);
-    }
-  }
-};
+      this.$refs.loadmore.bottomEnd(data.length < 15)
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

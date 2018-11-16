@@ -20,59 +20,59 @@
 </template>
 
 <script>
-import _ from "lodash";
-import CurrencyDetailItem from "./components/CurrencyDetailItem.vue";
+import _ from 'lodash'
+import CurrencyDetailItem from './components/CurrencyDetailItem.vue'
 
 export default {
-  name: "CurrencyJournalDetail",
+  name: 'CurrencyJournalDetail',
   components: { CurrencyDetailItem },
-  data() {
+  data () {
     return {
       list: [],
-      currInfo: null
-    };
+      currInfo: null,
+    }
   },
   computed: {
-    after() {
-      const len = this.list.length;
-      return len ? this.list[len - 1].id : 0;
+    after () {
+      const len = this.list.length
+      return len ? this.list[len - 1].id : 0
     },
     currAction: {
-      get() {
-        return this.$route.query.action || "recharge";
+      get () {
+        return this.$route.query.action || 'recharge'
       },
-      set(val) {
+      set (val) {
         this.$router.replace({
           path: this.$route.path,
-          query: { action: val }
-        });
-      }
-    }
+          query: { action: val },
+        })
+      },
+    },
   },
   watch: {
-    currAction() {
-      this.list = [];
-      this.$refs.loadmore.beforeRefresh();
-    }
+    currAction () {
+      this.list = []
+      this.$refs.loadmore.beforeRefresh()
+    },
   },
   methods: {
-    async onRefresh() {
-      const data = await this.$store.dispatch("currency/getCurrencyOrders");
-      if (data.length > 0) this.list = _.unionBy([...data, ...this.list], "id");
+    async onRefresh () {
+      const data = await this.$store.dispatch('currency/getCurrencyOrders')
+      if (data.length > 0) this.list = _.unionBy([...data, ...this.list], 'id')
 
-      this.$refs.loadmore.topEnd(data.length >= 15);
+      this.$refs.loadmore.topEnd(data.length >= 15)
     },
-    async onLoadMore() {
-      const data = await this.$store.dispatch("currency/getCurrencyOrders", {
-        after: this.after
-      });
+    async onLoadMore () {
+      const data = await this.$store.dispatch('currency/getCurrencyOrders', {
+        after: this.after,
+      })
       if (data.length > 0) {
-        this.list = [...this.list, ...data];
+        this.list = [...this.list, ...data]
       }
-      this.$refs.loadmore.bottomEnd(data.length < 15);
-    }
-  }
-};
+      this.$refs.loadmore.bottomEnd(data.length < 15)
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

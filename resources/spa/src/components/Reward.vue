@@ -44,7 +44,9 @@
             </div>
           </div>
         </div>
-        <div class="plr20 m-lim-width" style="margin-top: 0.6rem">
+        <div
+          class="plr20 m-lim-width"
+          style="margin-top: 0.6rem">
           <button
             :disabled="disabled || loading"
             class="m-long-btn m-signin-btn"
@@ -55,52 +57,54 @@
         </div>
       </main>
 
-      <password-confirm ref="password" @submit="reward" />
+      <password-confirm
+        ref="password"
+        @submit="reward" />
 
     </div>
   </transition>
 </template>
 
 <script>
-import { noop } from "@/util";
-import PasswordConfirm from "@/components/common/PasswordConfirm.vue";
+import { noop } from '@/util'
+import PasswordConfirm from '@/components/common/PasswordConfirm.vue'
 
 export default {
-  name: "Reward",
+  name: 'Reward',
   components: { PasswordConfirm },
-  data() {
+  data () {
     return {
       show: false,
       amount: null,
       loading: false,
       customAmount: null,
-      type: "",
+      type: '',
       api: noop,
       callback: noop,
-      payload: {}
-    };
+      payload: {},
+    }
   },
   computed: {
-    items() {
-      return this.$store.state.CONFIG.site.reward.amounts.split(",") || [];
+    items () {
+      return this.$store.state.CONFIG.site.reward.amounts.split(',') || []
     },
-    disabled() {
-      return !this.amount > 0;
+    disabled () {
+      return !this.amount > 0
     },
-    currentCurrency() {
-      const user = this.$store.state.CURRENTUSER;
-      return user.currency.sum || 0;
-    }
+    currentCurrency () {
+      const user = this.$store.state.CURRENTUSER
+      return user.currency.sum || 0
+    },
   },
   watch: {
-    customAmount(val) {
-      this.amount = ~~val;
+    customAmount (val) {
+      this.amount = ~~val
     },
-    $route(to, from) {
-      if (to !== from) this.cancel();
-    }
+    $route (to, from) {
+      if (to !== from) this.cancel()
+    },
   },
-  created() {
+  created () {
     /**
      * 弹出打赏窗口 (hooks -> reward)
      * @author mutoe <mutoe@foxmail.com>
@@ -110,66 +114,66 @@ export default {
      * @param {string|Object} options.payload api 的第一个参数，取决于 api
      * @param {requestCallback} [options.callback] 打赏成功后的回调方法, 接受一个参数 amount 打赏金额
      */
-    this.$bus.$on("reward", options => {
-      const { type, api, payload, callback = noop } = options;
-      this.type = type;
-      this.api = api;
-      this.payload = payload;
-      this.callback = callback;
-      this.open();
-    });
+    this.$bus.$on('reward', options => {
+      const { type, api, payload, callback = noop } = options
+      this.type = type
+      this.api = api
+      this.payload = payload
+      this.callback = callback
+      this.open()
+    })
   },
   methods: {
-    showPasswordConfirm() {
+    showPasswordConfirm () {
       if (this.currentCurrency < this.amount) {
-        this.$Message.error(`${this.currencyUnit}不足，请充值`);
-        this.cancel();
-        return this.$router.push({ name: "currencyRecharge" });
+        this.$Message.error(`${this.currencyUnit}不足，请充值`)
+        this.cancel()
+        return this.$router.push({ name: 'currencyRecharge' })
       }
-      this.$refs.password.show();
+      this.$refs.password.show()
     },
-    reward(password) {
-      if (this.loding || !this.type) return;
-      this.loading = true;
+    reward (password) {
+      if (this.loding || !this.type) return
+      this.loading = true
       const data = {
         amount: ~~this.amount,
-        password
-      };
+        password,
+      }
       this.api(this.payload, data)
         .then(() => {
-          this.loading = false;
-          this.$Message.success("打赏成功");
-          this.callback(data.amount);
-          this.$nextTick(this.cancel);
+          this.loading = false
+          this.$Message.success('打赏成功')
+          this.callback(data.amount)
+          this.$nextTick(this.cancel)
         })
         .catch(({ response: { data: message } }) => {
-          message && this.$Message.error(message);
-          this.loading = false;
-        });
+          message && this.$Message.error(message)
+          this.loading = false
+        })
     },
-    chooseDefaultAmount(amount) {
-      this.customAmount && (this.customAmount = null);
-      this.amount = amount;
+    chooseDefaultAmount (amount) {
+      this.customAmount && (this.customAmount = null)
+      this.amount = amount
     },
-    resetProps() {
-      this.customAmount = null;
-      this.amount = null;
+    resetProps () {
+      this.customAmount = null
+      this.amount = null
     },
-    open() {
-      this.show = true;
-      this.scrollable = false;
+    open () {
+      this.show = true
+      this.scrollable = false
     },
-    cancel() {
-      this.show = false;
-      this.customAmount = null;
-      this.type = "";
-      this.api = noop;
-      this.callback = noop;
-      this.payload = {};
-      this.scrollable = true;
-    }
-  }
-};
+    cancel () {
+      this.show = false
+      this.customAmount = null
+      this.type = ''
+      this.api = noop
+      this.callback = noop
+      this.payload = {}
+      this.scrollable = true
+    },
+  },
+}
 </script>
 
 <style>

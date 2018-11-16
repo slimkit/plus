@@ -1,5 +1,5 @@
-import api from "./api";
-import { limit } from "./index";
+import api from './api'
+import { limit } from './index'
 
 /**
  * 定义动态对象
@@ -23,8 +23,8 @@ import { limit } from "./index";
  * @param {number} params.offset
  * @returns {Promise<FeedObject[]>}
  */
-export function getFeeds(params) {
-  return api.get("/feeds", { params, validateStatus: s => s === 200 });
+export function getFeeds (params) {
+  return api.get('/feeds', { params, validateStatus: s => s === 200 })
 }
 
 /**
@@ -35,10 +35,10 @@ export function getFeeds(params) {
  * @param {Object} params
  * @returns {Promise}
  */
-export function applyTopFeed(feedId, params) {
+export function applyTopFeed (feedId, params) {
   return api.post(`/feeds/${feedId}/currency-pinneds`, params, {
-    validateStatus: s => s === 201
-  });
+    validateStatus: s => s === 201,
+  })
 }
 
 /**
@@ -53,9 +53,9 @@ export function applyTopFeed(feedId, params) {
  * @param {string} [params.oforder_type] date 按时间 amount 按金额
  * @returns
  */
-export function getRewards(feedId, params) {
-  const url = `/feeds/${feedId}/rewards`;
-  return api.get(url, { params, validateStatus: s => s === 200 });
+export function getRewards (feedId, params) {
+  const url = `/feeds/${feedId}/rewards`
+  return api.get(url, { params, validateStatus: s => s === 200 })
 }
 
 /**
@@ -67,9 +67,9 @@ export function getRewards(feedId, params) {
  * @param {number} data.amount 打赏金额
  * @returns
  */
-export function rewardFeed(feedId, data) {
-  const url = `/feeds/${feedId}/new-rewards`;
-  return api.post(url, data, { validateStatus: s => s === 201 });
+export function rewardFeed (feedId, data) {
+  const url = `/feeds/${feedId}/new-rewards`
+  return api.post(url, data, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -79,8 +79,8 @@ export function rewardFeed(feedId, data) {
  * @param {number} feedId
  * @returns {Promise}
  */
-export function deleteFeed(feedId) {
-  return api.delete(`/feeds/${feedId}`, { validateStatus: s => s === 204 });
+export function deleteFeed (feedId) {
+  return api.delete(`/feeds/${feedId}`, { validateStatus: s => s === 204 })
 }
 
 /**
@@ -93,9 +93,9 @@ export function deleteFeed(feedId) {
  * @param {number} [params.user] 用户id
  * @returns {Promise<FeedObject[]>}
  */
-export function getCollectedFeed(params) {
-  const url = "/feeds/collections";
-  return api.get(url, { params, validateStatus: s => s === 200 });
+export function getCollectedFeed (params) {
+  const url = '/feeds/collections'
+  return api.get(url, { params, validateStatus: s => s === 200 })
 }
 
 /**
@@ -105,9 +105,9 @@ export function getCollectedFeed(params) {
  * @param {number} feedId
  * @returns
  */
-export function collectionFeed(feedId) {
-  const url = `/feeds/${feedId}/collections`;
-  return api.post(url, { validateStatus: s => s === 201 });
+export function collectionFeed (feedId) {
+  const url = `/feeds/${feedId}/collections`
+  return api.post(url, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -117,9 +117,9 @@ export function collectionFeed(feedId) {
  * @param {number} feedId
  * @returns
  */
-export function uncollectFeed(feedId) {
-  const url = `/feeds/${feedId}/uncollect`;
-  return api.delete(url, { validateStatus: s => s === 204 });
+export function uncollectFeed (feedId) {
+  const url = `/feeds/${feedId}/uncollect`
+  return api.delete(url, { validateStatus: s => s === 204 })
 }
 
 /**
@@ -132,12 +132,12 @@ export function uncollectFeed(feedId) {
  * @param {number} params.after
  * @returns
  */
-export function getFeedComments(feedId, params) {
-  const { limit, after = 0 } = params;
+export function getFeedComments (feedId, params) {
+  const { limit, after = 0 } = params
   return api.get(`/feeds/${feedId}/comments`, {
     params: { limit, after },
-    validateStatus: s => s === 200
-  });
+    validateStatus: s => s === 200,
+  })
 }
 
 /**
@@ -146,11 +146,11 @@ export function getFeedComments(feedId, params) {
  * @param {number} [after=0]
  * @returns
  */
-export function getFeedCommentPinneds(after = 0) {
-  return api.get("/user/feed-comment-pinneds", {
+export function getFeedCommentPinneds (after = 0) {
+  return api.get('/user/feed-comment-pinneds', {
     limit,
-    after
-  });
+    after,
+  })
 }
 
 /**
@@ -163,11 +163,11 @@ export function getFeedCommentPinneds(after = 0) {
  * @param {number} [payload.reply_user] 回复的用户id
  * @returns {Promise<{comment}>}
  */
-export function postComment(feedId, payload) {
-  const url = `/feeds/${feedId}/comments`;
+export function postComment (feedId, payload) {
+  const url = `/feeds/${feedId}/comments`
   return api
     .post(url, payload, { validateStatus: s => s === 201 })
-    .then(({ data = { comment: {} } }) => data.comment);
+    .then(({ data = { comment: {} } }) => data.comment)
 }
 
 /**
@@ -182,9 +182,9 @@ export function postComment(feedId, payload) {
  * @param {number} data.day 置顶天数
  * @returns
  */
-export function applyTopFeedComment({ feedId, commentId }, data) {
-  const url = `/feeds/${feedId}/comments/${commentId}/currency-pinneds`;
-  return api.post(url, data, { validateStatus: s => s === 201 });
+export function applyTopFeedComment ({ feedId, commentId }, data) {
+  const url = `/feeds/${feedId}/comments/${commentId}/currency-pinneds`
+  return api.post(url, data, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -195,8 +195,8 @@ export function applyTopFeedComment({ feedId, commentId }, data) {
  * @param {number} commentId
  * @returns
  */
-export function deleteFeedComment(feedId, commentId) {
+export function deleteFeedComment (feedId, commentId) {
   return api.delete(`/feeds/${feedId}/comments/${commentId}`, {
-    validateStatus: s => s === 204
-  });
+    validateStatus: s => s === 204,
+  })
 }

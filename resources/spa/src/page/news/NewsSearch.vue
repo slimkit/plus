@@ -14,45 +14,49 @@
         :key="news.id"
         :news="news" />
     </jo-load-more>
-    <p v-show="loading" class="load-more-ph m-text-c mt10">正在搜索...</p>
-    <div v-show="noResult && !loading && keyword && !list.length" class="placeholder m-no-find"/>
+    <p
+      v-show="loading"
+      class="load-more-ph m-text-c mt10">正在搜索...</p>
+    <div
+      v-show="noResult && !loading && keyword && !list.length"
+      class="placeholder m-no-find"/>
   </div>
 </template>
 
 <script>
-import _ from "lodash";
-import SearchBar from "@/components/common/SearchBar.vue";
-import NewsCard from "./components/NewsCard.vue";
-import { searchNewsByKey } from "@/api/news.js";
-import { limit } from "@/api";
+import _ from 'lodash'
+import SearchBar from '@/components/common/SearchBar.vue'
+import NewsCard from './components/NewsCard.vue'
+import { searchNewsByKey } from '@/api/news.js'
+import { limit } from '@/api'
 
 export default {
-  name: "NewsSearch",
+  name: 'NewsSearch',
   components: {
     NewsCard,
-    SearchBar
+    SearchBar,
   },
-  data() {
+  data () {
     return {
-      keywordOrigin: "",
+      keywordOrigin: '',
       list: [],
       loading: false,
-      noResult: false
-    };
+      noResult: false,
+    }
   },
   computed: {
-    after() {
-      const len = this.list.length;
-      return len > 0 ? this.list[len - 1].id : 0;
+    after () {
+      const len = this.list.length
+      return len > 0 ? this.list[len - 1].id : 0
     },
-    keyword() {
-      return this.keywordOrigin.trim();
-    }
+    keyword () {
+      return this.keywordOrigin.trim()
+    },
   },
   watch: {
-    keyword() {
-      this.searchNewsByKey();
-    }
+    keyword () {
+      this.searchNewsByKey()
+    },
   },
   methods: {
     /**
@@ -60,26 +64,26 @@ export default {
      * 不要使用箭头函数，会导致 this 作用域丢失
      * @author mutoe <mutoe@foxmail.com>
      */
-    searchNewsByKey: _.debounce(function() {
-      if (!this.keyword) return;
-      this.loading = true;
+    searchNewsByKey: _.debounce(function () {
+      if (!this.keyword) return
+      this.loading = true
       searchNewsByKey(this.keyword).then(({ data: list }) => {
-        this.loading = false;
-        this.list = list;
-        this.$refs.loadmore.afterRefresh(list.length < limit);
-        if (!list.length) this.noResult = true;
-      });
+        this.loading = false
+        this.list = list
+        this.$refs.loadmore.afterRefresh(list.length < limit)
+        if (!list.length) this.noResult = true
+      })
     }, 600),
-    onLoadMore() {
+    onLoadMore () {
       searchNewsByKey(this.keyword, limit, this.after).then(
         ({ data: list }) => {
-          this.list = [...this.list, ...list];
-          this.$refs.loadmore.afterLoadmore(list.length < limit);
+          this.list = [...this.list, ...list]
+          this.$refs.loadmore.afterLoadmore(list.length < limit)
         }
-      );
-    }
-  }
-};
+      )
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

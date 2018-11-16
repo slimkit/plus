@@ -1,8 +1,12 @@
 <template>
-  <header :class="{pinned}" class="c-common-header">
+  <header
+    :class="{pinned}"
+    class="c-common-header">
     <div class="left">
       <slot name="left">
-        <svg class="m-style-svg m-svg-def" @click="onBackClick">
+        <svg
+          class="m-style-svg m-svg-def"
+          @click="onBackClick">
           <use xlink:href="#icon-back"/>
         </svg>
       </slot>
@@ -17,21 +21,21 @@
 </template>
 
 <script>
-import { noop } from "@/util";
+import { noop } from '@/util'
 
 export default {
-  name: "CommonHeader",
+  name: 'CommonHeader',
   props: {
     back: { type: Function, default: noop },
-    pinned: { type: Boolean, default: false }
+    pinned: { type: Boolean, default: false },
   },
   methods: {
-    onBackClick() {
-      if (this.back === noop) this.goBack();
-      else this.back();
-    }
-  }
-};
+    onBackClick () {
+      if (this.back === noop) this.goBack()
+      else this.back()
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

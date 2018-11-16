@@ -1,6 +1,10 @@
 <template>
-  <common-header :pinned="true" class="c-switch-bar">
-    <div class="tab" @click.capture.stop.prevent="popupBuyTS">
+  <common-header
+    :pinned="true"
+    class="c-switch-bar">
+    <div
+      class="tab"
+      @click.capture.stop.prevent="popupBuyTS">
       <!-- Queation type link. -->
       <router-link
         :replace="true"
@@ -22,7 +26,9 @@
       </router-link>
     </div>
 
-    <div slot="right" @click.capture.stop.prevent="popupBuyTS">
+    <div
+      slot="right"
+      @click.capture.stop.prevent="popupBuyTS">
       <router-link to="/question/search">
         <svg class="m-style-svg m-svg-def search-btn">
           <use xlink:href="#icon-search" />
@@ -34,8 +40,8 @@
 
 <script>
 export default {
-  name: "QuestionSwitchBar"
-};
+  name: 'QuestionSwitchBar',
+}
 </script>
 
 <style lang="less" scoped>

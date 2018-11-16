@@ -2,69 +2,69 @@
  * 钱包模块
  */
 const Wallet = () =>
-  import(/* webpackChunkName: 'wallet' */ "@/page/wallet/Wallet.vue");
+  import(/* webpackChunkName: 'wallet' */ '@/page/wallet/Wallet.vue')
 const WalletRecharge = () =>
-  import(/* webpackChunkName: 'wallet' */ "@/page/wallet/WalletRecharge.vue");
+  import(/* webpackChunkName: 'wallet' */ '@/page/wallet/WalletRecharge.vue')
 const WalletWithdraw = () =>
-  import(/* webpackChunkName: 'wallet' */ "@/page/wallet/WalletWithdraw.vue");
+  import(/* webpackChunkName: 'wallet' */ '@/page/wallet/WalletWithdraw.vue')
 const WalletWithdrawDetail = () =>
-  import(/* webpackChunkName: 'wallet' */ "@/page/wallet/WalletWithdrawDetail.vue");
+  import(/* webpackChunkName: 'wallet' */ '@/page/wallet/WalletWithdrawDetail.vue')
 const WalletWithdrawInfo = () =>
-  import(/* webpackChunkName: 'wallet' */ "@/page/wallet/WalletWithdrawInfo.vue");
+  import(/* webpackChunkName: 'wallet' */ '@/page/wallet/WalletWithdrawInfo.vue')
 const WalletDetail = () =>
-  import(/* webpackChunkName: 'wallet' */ "@/page/wallet/WalletDetail.vue");
+  import(/* webpackChunkName: 'wallet' */ '@/page/wallet/WalletDetail.vue')
 const WalletInfo = () =>
-  import(/* webpackChunkName: 'wallet' */ "@/page/wallet/WalletInfo.vue");
+  import(/* webpackChunkName: 'wallet' */ '@/page/wallet/WalletInfo.vue')
 
 export default [
   {
-    path: "/wallet",
+    path: '/wallet',
     component: Wallet,
     meta: {
-      title: "钱包",
-      requiresAuth: true
-    }
+      title: '钱包',
+      requiresAuth: true,
+    },
   },
   {
-    path: "/wallet/recharge",
+    path: '/wallet/recharge',
     component: WalletRecharge,
     meta: {
-      title: "充值"
-    }
+      title: '充值',
+    },
   },
   {
-    path: "/wallet/withdraw",
+    path: '/wallet/withdraw',
     component: WalletWithdraw,
     meta: {
-      title: "提现"
-    }
+      title: '提现',
+    },
   },
   {
-    path: "/wallet/withdraw/detail",
+    path: '/wallet/withdraw/detail',
     component: WalletWithdrawDetail,
     meta: {
-      title: "提现明细"
-    }
+      title: '提现明细',
+    },
   },
   {
-    path: "/wallet/withdraw/detail/:id",
+    path: '/wallet/withdraw/detail/:id',
     component: WalletWithdrawInfo,
     meta: {
-      title: "提现明细"
-    }
+      title: '提现明细',
+    },
   },
   {
-    path: "/wallet/detail",
+    path: '/wallet/detail',
     component: WalletDetail,
     meta: {
-      title: "明细"
-    }
+      title: '明细',
+    },
   },
   {
-    path: "/wallet/detail/:id",
+    path: '/wallet/detail/:id',
     component: WalletInfo,
     meta: {
-      title: "明细详情"
-    }
-  }
-];
+      title: '明细详情',
+    },
+  },
+]

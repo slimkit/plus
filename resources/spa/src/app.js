@@ -1,20 +1,20 @@
 // vuex utils
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState } from 'vuex'
 
 // components
-import PSWP from "./components/pswp";
-import PostMenu from "./page/PostMenu.vue";
-import PayFor from "./components/PayFor.vue";
-import ActionSheet from "./components/ActionSheet.vue";
-import CommentInput from "./components/CommentInput.vue";
-import CheckIn from "./page/checkin/CheckIn.vue";
-import Reward from "./components/Reward.vue";
-import ChooseTags from "./page/ChooseTags.vue";
-import ApplyTop from "./components/ApplyForTop.vue";
-import PopupDialog from "./components/PopupDialog.vue";
+import PSWP from './components/pswp'
+import PostMenu from './page/PostMenu.vue'
+import PayFor from './components/PayFor.vue'
+import ActionSheet from './components/ActionSheet.vue'
+import CommentInput from './components/CommentInput.vue'
+import CheckIn from './page/checkin/CheckIn.vue'
+import Reward from './components/Reward.vue'
+import ChooseTags from './page/ChooseTags.vue'
+import ApplyTop from './components/ApplyForTop.vue'
+import PopupDialog from './components/PopupDialog.vue'
 
 export default {
-  render() {
+  render () {
     return (
       <div id="app" class="wap-wrap">
         <keep-alive>{this.keepAlive && <router-view />}</keep-alive>
@@ -32,20 +32,20 @@ export default {
           <PopupDialog />
         </div>
       </div>
-    );
+    )
   },
-  name: "App",
+  name: 'App',
   /**
    * The App data.
    *
    * @return {Object}
    */
   data: () => ({
-    title: "Plus (ThinkSNS+)"
+    title: 'Plus (ThinkSNS+)',
   }),
   computed: {
-    keepAlive() {
-      return this.$route.meta.keepAlive || false;
+    keepAlive () {
+      return this.$route.meta.keepAlive || false
     },
     ...mapState({
       /**
@@ -62,8 +62,8 @@ export default {
        * @param  {Object} state
        *
        */
-      status: state => state.EASEMOB.status
-    })
+      status: state => state.EASEMOB.status,
+    }),
   },
   watch: {
     /**
@@ -73,11 +73,11 @@ export default {
      *
      * @return {void}
      */
-    $route(newRoute) {
-      let { title } = newRoute.meta || {};
+    $route (newRoute) {
+      let { title } = newRoute.meta || {}
 
       if (title) {
-        this.title = title;
+        this.title = title
       }
     },
     /**
@@ -87,20 +87,20 @@ export default {
      *
      * @return {void}
      */
-    title(newTitle) {
+    title (newTitle) {
       if (newTitle) {
-        document.title = newTitle;
+        document.title = newTitle
       }
-    }
+    },
   },
   methods: mapActions({
-    bootstrapHandle: "BOOTSTRAPPERS"
+    bootstrapHandle: 'BOOTSTRAPPERS',
   }),
   /**
    * The created hook.
    * @return {void}
    */
-  created() {
-    this.bootstrapHandle();
-  }
-};
+  created () {
+    this.bootstrapHandle()
+  },
+}

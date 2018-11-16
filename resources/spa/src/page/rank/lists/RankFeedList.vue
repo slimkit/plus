@@ -22,92 +22,92 @@
 </template>
 
 <script>
-import HeadTop from "@/components/HeadTop";
-import RankListItem from "../components/RankListItem.vue";
-import { getRankUsers } from "@/api/ranks.js";
-import { limit } from "@/api";
+import HeadTop from '@/components/HeadTop'
+import RankListItem from '../components/RankListItem.vue'
+import { getRankUsers } from '@/api/ranks.js'
+import { limit } from '@/api'
 
-const prefixCls = "rankItem";
-const api = "/feeds/ranks";
+const prefixCls = 'rankItem'
+const api = '/feeds/ranks'
 const config = {
   week: {
-    vuex: "rankFeedsWeek",
-    title: "本周",
-    query: "week"
+    vuex: 'rankFeedsWeek',
+    title: '本周',
+    query: 'week',
   },
   today: {
-    vuex: "rankFeedsToday",
-    title: "今日",
-    query: "day"
+    vuex: 'rankFeedsToday',
+    title: '今日',
+    query: 'day',
   },
   month: {
-    vuex: "rankFeedsMonth",
-    title: "本月",
-    query: "month"
-  }
-};
+    vuex: 'rankFeedsMonth',
+    title: '本月',
+    query: 'month',
+  },
+}
 
 export default {
-  name: "FeedsList",
+  name: 'FeedsList',
   components: {
     HeadTop,
-    RankListItem
+    RankListItem,
   },
-  data() {
+  data () {
     return {
       prefixCls,
       loading: false,
-      title: "", // 标题
-      vuex: "", // vuex主键
-      query: "" // api查询query
-    };
+      title: '', // 标题
+      vuex: '', // vuex主键
+      query: '', // api查询query
+    }
   },
 
   computed: {
-    users() {
-      return this.$store.getters.getUsersByType(this.vuex);
-    }
+    users () {
+      return this.$store.getters.getUsersByType(this.vuex)
+    },
   },
-  created() {
-    let time = this.$route.params.time || "today";
-    this.title = config[time].title;
-    this.vuex = config[time].vuex;
-    this.query = config[time].query;
+  created () {
+    let time = this.$route.params.time || 'today'
+    this.title = config[time].title
+    this.vuex = config[time].vuex
+    this.query = config[time].query
     if (this.users.length === 0) {
-      this.onRefresh();
+      this.onRefresh()
     }
   },
 
   methods: {
-    cancel() {
-      this.to("/rank/feeds");
+    cancel () {
+      this.to('/rank/feeds')
     },
-    to(path) {
-      path = typeof path === "string" ? { path } : path;
+    to (path) {
+      path = typeof path === 'string' ? { path } : path
       if (path) {
-        this.$router.push(path);
+        this.$router.push(path)
       }
     },
-    onRefresh() {
+    onRefresh () {
       getRankUsers(api, { type: this.query }).then(data => {
-        this.$store.commit("SAVE_RANK_DATA", { name: this.vuex, data });
-        this.$refs.loadmore.topEnd(false);
-      });
+        this.$store.commit('SAVE_RANK_DATA', { name: this.vuex, data })
+        this.$refs.loadmore.topEnd(false)
+      })
     },
-    onLoadMore() {
+    onLoadMore () {
       getRankUsers(api, {
         type: this.query,
-        offset: this.users.length || 0
+        offset: this.users.length || 0,
       }).then((data = []) => {
-        this.$store.commit("SAVE_RANK_DATA", {
+        this.$store.commit('SAVE_RANK_DATA', {
           name: this.vuex,
-          data: [...this.users, ...data]
-        });
-        this.$refs.loadmore.bottomEnd(data.length < limit);
-      });
-    }
-  }
-};
+          data: [...this.users, ...data],
+        })
+        this.$refs.loadmore.bottomEnd(data.length < limit)
+      })
+    },
+  },
+}
 </script>
 
 <style lang="less" src="../style.less">

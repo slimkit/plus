@@ -37,11 +37,17 @@
 
         <!-- form-tags-selected -->
 
-        <section class="m-box m-aln-stre m-justify-bet p-info-row m-bb1" @click="switchTags">
+        <section
+          class="m-box m-aln-stre m-justify-bet p-info-row m-bb1"
+          @click="switchTags">
           <label>标签</label>
           <div class="m-box m-aln-center m-justify-bet m-flex-grow1 m-flex-shrink1 input">
-            <span v-if="tags.length === 0" class="placeholder">选择标签</span>
-            <div v-else class="m-tag-list m-tags">
+            <span
+              v-if="tags.length === 0"
+              class="placeholder">选择标签</span>
+            <div
+              v-else
+              class="m-tag-list m-tags">
               <span
                 v-for="tag in tags"
                 :key="tag.id"
@@ -68,36 +74,36 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 
 /**
  * Canvas toBlob
  */
 if (!HTMLCanvasElement.prototype.toBlob) {
-  Object.defineProperty(HTMLCanvasElement.prototype, "toBlob", {
-    value: function(callback, type, quality) {
-      var binStr = atob(this.toDataURL(type, quality).split(",")[1]),
+  Object.defineProperty(HTMLCanvasElement.prototype, 'toBlob', {
+    value: function (callback, type, quality) {
+      var binStr = atob(this.toDataURL(type, quality).split(',')[1]),
         len = binStr.length,
-        arr = new Uint8Array(len);
+        arr = new Uint8Array(len)
 
       for (var i = 0; i < len; i++) {
-        arr[i] = binStr.charCodeAt(i);
+        arr[i] = binStr.charCodeAt(i)
       }
 
-      callback(new Blob([arr], { type: type || "image/png" }));
-    }
-  });
+      callback(new Blob([arr], { type: type || 'image/png' }))
+    },
+  })
 }
 
 const sexMap = {
-  0: "保密",
-  1: "男",
-  2: "女"
-};
+  0: '保密',
+  1: '男',
+  2: '女',
+}
 
 export default {
-  name: "UserInfo",
-  data() {
+  name: 'UserInfo',
+  data () {
     return {
       loading: false,
       scrollHeight: 0,
@@ -105,122 +111,122 @@ export default {
 
       sexMap,
       sex: 0,
-      bio: "",
-      name: "",
+      bio: '',
+      name: '',
       tags: [],
-      location: { label: "请选择地理位置" },
+      location: { label: '请选择地理位置' },
       avatar: {},
-      avatarNode: "",
+      avatarNode: '',
       change: false,
 
-      showPosition: false
-    };
-  },
-  computed: {
-    ...mapState(["CURRENTUSER"]),
-    disabled() {
-      if (!this.bio || !this.name) return true;
-      if (this.location.label !== this.CURRENTUSER.location) return false;
-      return !["sex", "bio", "name", "avatar", this.change].some(
-        key =>
-          typeof key === "string"
-            ? this.$data[key] !== this.CURRENTUSER[key]
-            : key
-      );
-    },
-    sexTxt() {
-      const sex = ["保密", "男", "女"];
-      return sex[this.sex] || "选择性别";
+      showPosition: false,
     }
   },
-  created() {
+  computed: {
+    ...mapState(['CURRENTUSER']),
+    disabled () {
+      if (!this.bio || !this.name) return true
+      if (this.location.label !== this.CURRENTUSER.location) return false
+      return !['sex', 'bio', 'name', 'avatar', this.change].some(
+        key =>
+          typeof key === 'string'
+            ? this.$data[key] !== this.CURRENTUSER[key]
+            : key
+      )
+    },
+    sexTxt () {
+      const sex = ['保密', '男', '女']
+      return sex[this.sex] || '选择性别'
+    },
+  },
+  created () {
     const {
       sex = 0,
-      bio = "",
-      location = "",
-      avatar = "",
+      bio = '',
+      location = '',
+      avatar = '',
       tags = [],
-      name = ""
-    } = this.CURRENTUSER;
-    this.name = name;
-    this.sex = sex;
-    this.bio = bio || "";
-    this.tags = tags || [];
-    this.avatar = avatar;
-    this.location.label = location || "";
+      name = '',
+    } = this.CURRENTUSER
+    this.name = name
+    this.sex = sex
+    this.bio = bio || ''
+    this.tags = tags || []
+    this.avatar = avatar
+    this.location.label = location || ''
     this.$http
       .get(`users/${this.CURRENTUSER.id}/tags`)
       .then(({ data = [] }) => {
-        this.tags = data;
-        this.CURRENTUSER.tags = data;
-        this.$store.commit("SAVE_CURRENTUSER", this.CURRENTUSER);
-      });
+        this.tags = data
+        this.CURRENTUSER.tags = data
+        this.$store.commit('SAVE_CURRENTUSER', this.CURRENTUSER)
+      })
   },
   methods: {
-    handleOk() {
-      if (this.disabled) return;
-      if (this.loading) return;
-      this.change = false;
-      this.loading = true;
+    handleOk () {
+      if (this.disabled) return
+      if (this.loading) return
+      this.change = false
+      this.loading = true
 
       const param = {
         name: this.name,
         bio: this.bio,
         sex: this.sex,
-        location: this.location.label
-      };
-      if (typeof this.avatar === "string") param.avatar = this.avatar;
+        location: this.location.label,
+      }
+      if (typeof this.avatar === 'string') param.avatar = this.avatar
       this.$http
-        .patch("/user", param, {
-          validateStatus: s => s === 204
+        .patch('/user', param, {
+          validateStatus: s => s === 204,
         })
         .then(() => {
           this.$store.commit(
-            "SAVE_CURRENTUSER",
+            'SAVE_CURRENTUSER',
             Object.assign(this.CURRENTUSER, param)
-          );
-          this.goBack();
-          this.loading = false;
+          )
+          this.goBack()
+          this.loading = false
         })
         .catch(err => {
-          this.loading = false;
-          return err;
-        });
+          this.loading = false
+          return err
+        })
     },
-    switchTags() {
-      const chooseTags = this.tags.map(t => t.id);
+    switchTags () {
+      const chooseTags = this.tags.map(t => t.id)
       const nextStep = tags => {
         this.change =
-          tags.map(n => n.id).join(",") !== this.CURRENTUSER.tags.join(",");
-        this.tags = tags;
-      };
+          tags.map(n => n.id).join(',') !== this.CURRENTUSER.tags.join(',')
+        this.tags = tags
+      }
       const onSelect = tagId => {
-        this.$http.put(`/user/tags/${tagId}`);
-      };
+        this.$http.put(`/user/tags/${tagId}`)
+      }
       const onRemove = tagId => {
-        this.$http.delete(`/user/tags/${tagId}`);
-      };
-      this.$bus.$emit("choose-tags", {
+        this.$http.delete(`/user/tags/${tagId}`)
+      }
+      this.$bus.$emit('choose-tags', {
         chooseTags,
         nextStep,
         onSelect,
-        onRemove
-      });
+        onRemove,
+      })
     },
-    switchPosition(val) {
-      this.showPosition = !this.showPosition;
-      val && (this.location = val.label);
+    switchPosition (val) {
+      this.showPosition = !this.showPosition
+      val && (this.location = val.label)
     },
-    switchSex() {
+    switchSex () {
       const options = [
-        { text: "男", method: () => (this.sex = 1) },
-        { text: "女", method: () => (this.sex = 2) },
-        { text: "保密", method: () => (this.sex = 0) }
-      ];
-      this.$bus.$emit("actionSheet", options, "取消");
-    }
-  }
-};
+        { text: '男', method: () => (this.sex = 1) },
+        { text: '女', method: () => (this.sex = 2) },
+        { text: '保密', method: () => (this.sex = 0) },
+      ]
+      this.$bus.$emit('actionSheet', options, '取消')
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

@@ -56,54 +56,54 @@
  * 认证状态页面
  */
 
-import _ from "lodash";
-import { mapState } from "vuex";
+import _ from 'lodash'
+import { mapState } from 'vuex'
 
 const formInfo = {
   user: {
-    name: "真实姓名",
-    number: "身份证号码",
-    phone: "手机号码",
-    desc: "认证描述"
+    name: '真实姓名',
+    number: '身份证号码',
+    phone: '手机号码',
+    desc: '认证描述',
   },
   org: {
-    name: "负责人",
-    number: "身份证号码",
-    phone: "手机号码",
-    desc: "认证描述",
-    orgName: "机构名称",
-    orgAddress: "机构地址"
-  }
-};
+    name: '负责人',
+    number: '身份证号码',
+    phone: '手机号码',
+    desc: '认证描述',
+    orgName: '机构名称',
+    orgAddress: '机构地址',
+  },
+}
 
 export default {
-  name: "Certification",
-  data() {
+  name: 'Certification',
+  data () {
     return {
-      formInfo
-    };
+      formInfo,
+    }
   },
   computed: {
     ...mapState({
-      verified: state => state.USER_VERIFY
+      verified: state => state.USER_VERIFY,
     }),
-    type() {
-      const { certification_name = "user" } = this.verified;
-      return certification_name;
-    }
+    type () {
+      const { certification_name = 'user' } = this.verified
+      return certification_name
+    },
   },
   watch: {
-    verified(to) {
+    verified (to) {
       // 如果被驳回或没有数据则返回个人页面
       if (to.id && ![0, 1].includes(to.status)) {
-        this.$router.replace("/profile");
+        this.$router.replace('/profile')
       }
-    }
+    },
   },
-  created() {
+  created () {
     // 如果 store 中没有数据则重新获取认证数据，用于首屏加载
     if (_.isEmpty(this.verified) || !this.verified.id) {
-      this.$store.dispatch("FETCH_USER_VERIFY");
+      this.$store.dispatch('FETCH_USER_VERIFY')
     }
   },
   methods: {
@@ -111,11 +111,11 @@ export default {
      * @param {number} id
      * @returns {string}
      */
-    getImageSrc(id) {
-      return `${this.$http.defaults.baseURL}/files/${id}?w=250&h=185`;
-    }
-  }
-};
+    getImageSrc (id) {
+      return `${this.$http.defaults.baseURL}/files/${id}?w=250&h=185`
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

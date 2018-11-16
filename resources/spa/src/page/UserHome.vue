@@ -13,7 +13,9 @@
       :class="{ 'show-title': scrollTop > 1 / 2 * bannerHeight }"
       class="m-box m-lim-width m-pos-f m-head-top bg-transp">
       <div class="m-box m-flex-grow1 m-aln-center m-flex-base0">
-        <svg class="m-style-svg m-svg-def white" @click="beforeBack">
+        <svg
+          class="m-style-svg m-svg-def white"
+          @click="beforeBack">
           <use xlink:href="#icon-back"/>
         </svg>
         <circle-loading v-if="updating" />
@@ -27,7 +29,9 @@
         </svg> -->
       </div>
     </header>
-    <div v-if="loading" class="m-pos-f m-spinner">
+    <div
+      v-if="loading"
+      class="m-pos-f m-spinner">
       <div/>
       <div/>
     </div>
@@ -38,7 +42,9 @@
         :style="bannerStyle"
         class="m-urh-banner">
         <div class="m-box-model m-aln-center m-justify-end m-pos-f m-urh-bg-mask">
-          <label v-if="isMine" class="banner-click-area">
+          <label
+            v-if="isMine"
+            class="banner-click-area">
             <input
               ref="imagefile"
               :accept="accept"
@@ -46,7 +52,9 @@
               class="m-rfile"
               @change="onBannerChange" >
           </label>
-          <avatar :user="user" size="big" />
+          <avatar
+            :user="user"
+            size="big" />
           <h3>{{ user.name }}</h3>
           <p>
             <router-link
@@ -61,7 +69,9 @@
         </div>
       </div>
       <div class="m-text-box m-urh-info">
-        <p v-if="verified" class="m-cf94">
+        <p
+          v-if="verified"
+          class="m-cf94">
           认证：<span>{{ verified.description }}</span>
         </p>
         <p v-if="user.location">地址：<span>{{ user.location }}</span></p>
@@ -81,7 +91,9 @@
         class="m-box m-aln-center m-justify-bet m-urh-filter-box"
         @click="popupBuyTS">
         <span>{{ feedsCount }}条动态</span>
-        <div v-if="isMine" class="m-box m-aln-center m-urh-filter">
+        <div
+          v-if="isMine"
+          class="m-box m-aln-center m-urh-filter">
           <span>{{ feedTypes[screen] }}</span>
           <svg class="m-style-svg m-svg-small">
             <use xlink:href="#icon-list"/>
@@ -100,7 +112,9 @@
         </li>
       </ul>
       <div class="m-box m-aln-center m-justify-center load-more-box">
-        <span v-if="noMoreData" class="load-more-ph">---没有更多---</span>
+        <span
+          v-if="noMoreData"
+          class="load-more-ph">---没有更多---</span>
         <span
           v-else
           class="load-more-btn"
@@ -113,7 +127,9 @@
       v-if="!isMine"
       ref="foot"
       class="m-box m-pos-f m-main m-bt1 m-user-home-foot">
-      <div class="m-flex-grow0 m-flex-shrink0 m-box m-aln-center m-justify-center" @click="rewardUser">
+      <div
+        class="m-flex-grow0 m-flex-shrink0 m-box m-aln-center m-justify-center"
+        @click="rewardUser">
         <svg class="m-style-svg m-svg-def">
           <use xlink:href="#icon-profile-integral"/>
         </svg>
@@ -129,7 +145,9 @@
         <span>{{ relation.text }}</span>
       </div>
       <!-- `/chats/${user.id}` -->
-      <div class="m-flex-grow0 m-flex-shrink0 m-box m-aln-center m-justify-center" @click="startSingleChat">
+      <div
+        class="m-flex-grow0 m-flex-shrink0 m-box m-aln-center m-justify-center"
+        @click="startSingleChat">
         <svg class="m-style-svg m-svg-def">
           <use xlink:href="#icon-comment"/>
         </svg>
@@ -140,43 +158,43 @@
 </template>
 
 <script>
-import _ from "lodash";
-import * as uploadApi from "@/api/upload";
-import { hashFile } from "@/util/SendImage.js";
-import FeedCard from "@/components/FeedCard/FeedCard.vue";
-import HeadRoom from "headroom.js";
-import wechatShare from "@/util/wechatShare.js";
+import _ from 'lodash'
+import * as uploadApi from '@/api/upload'
+import { hashFile } from '@/util/SendImage.js'
+import FeedCard from '@/components/FeedCard/FeedCard.vue'
+import HeadRoom from 'headroom.js'
+import wechatShare from '@/util/wechatShare.js'
 
-import { startSingleChat } from "@/vendor/easemob";
-import { checkImageType } from "@/util/imageCheck.js";
-import * as api from "@/api/user.js";
+import { startSingleChat } from '@/vendor/easemob'
+import { checkImageType } from '@/util/imageCheck.js'
+import * as api from '@/api/user.js'
 
 export default {
-  name: "UserHome",
+  name: 'UserHome',
   directives: {
     clickoutside: {
-      bind(el, binding) {
-        function documentHandler(e) {
+      bind (el, binding) {
+        function documentHandler (e) {
           if (el.contains(e.target)) {
-            return false;
+            return false
           }
           if (binding.expression) {
-            binding.value(e);
+            binding.value(e)
           }
         }
-        el.__vueClickOutside__ = documentHandler;
-        document.addEventListener("click", documentHandler);
+        el.__vueClickOutside__ = documentHandler
+        document.addEventListener('click', documentHandler)
       },
-      unbind(el) {
-        document.removeEventListener("click", el.__vueClickOutside__);
-        delete el.__vueClickOutside__;
-      }
-    }
+      unbind (el) {
+        document.removeEventListener('click', el.__vueClickOutside__)
+        delete el.__vueClickOutside__
+      },
+    },
   },
   components: {
-    FeedCard
+    FeedCard,
   },
-  data() {
+  data () {
     return {
       preUID: 0,
       scrollTop: 0,
@@ -189,365 +207,365 @@ export default {
 
       accept: {
         type: [Array, String],
-        default() {
+        default () {
           return [
-            "image/gif",
-            "image/jpeg",
-            "image/webp",
-            "image/jpg",
-            "image/png",
-            "image/bmp"
-          ];
-        }
+            'image/gif',
+            'image/jpeg',
+            'image/webp',
+            'image/jpg',
+            'image/png',
+            'image/bmp',
+          ]
+        },
       },
 
       typeFilter: null,
       showFilter: false,
-      screen: "all",
+      screen: 'all',
 
       feeds: [],
       feedTypes: {
-        all: "全部动态",
-        paid: "付费动态",
-        pinned: "置顶动态"
+        all: '全部动态',
+        paid: '付费动态',
+        pinned: '置顶动态',
       },
       noMoreData: false,
       fetchFeeding: false,
 
       tags: [],
       appList: [
-        "onMenuShareQZone",
-        "onMenuShareQQ",
-        "onMenuShareAppMessage",
-        "onMenuShareTimeline"
+        'onMenuShareQZone',
+        'onMenuShareQQ',
+        'onMenuShareAppMessage',
+        'onMenuShareTimeline',
       ],
       config: {
-        appid: "",
-        signature: "",
-        timestamp: "",
-        noncestr: ""
+        appid: '',
+        signature: '',
+        timestamp: '',
+        noncestr: '',
       },
       footroom: null,
 
-      fetchFollow: false
-    };
+      fetchFollow: false,
+    }
   },
   computed: {
-    isWechat() {
-      return this.$store.state.BROWSER.isWechat;
+    isWechat () {
+      return this.$store.state.BROWSER.isWechat
     },
-    currentUser() {
-      return this.$store.state.CURRENTUSER;
+    currentUser () {
+      return this.$store.state.CURRENTUSER
     },
-    userID() {
-      return ~~this.$route.params.userId;
+    userID () {
+      return ~~this.$route.params.userId
     },
     user: {
-      get() {
-        return this.$store.getters.getUserById(this.userID, true) || {};
+      get () {
+        return this.$store.getters.getUserById(this.userID, true) || {}
       },
-      set(val) {
-        this.$store.commit("SAVE_USER", Object.assign(this.user, val));
-      }
+      set (val) {
+        this.$store.commit('SAVE_USER', Object.assign(this.user, val))
+      },
     },
-    bio() {
-      return this.user.bio || "这家伙很懒,什么也没留下";
+    bio () {
+      return this.user.bio || '这家伙很懒,什么也没留下'
     },
-    extra() {
-      return this.user.extra || {};
+    extra () {
+      return this.user.extra || {}
     },
-    isMine() {
-      return this.userID === this.currentUser.id;
+    isMine () {
+      return this.userID === this.currentUser.id
     },
-    followersCount() {
-      return this.extra.followers_count || 0;
+    followersCount () {
+      return this.extra.followers_count || 0
     },
-    followingsCount() {
-      return this.extra.followings_count || 0;
+    followingsCount () {
+      return this.extra.followings_count || 0
     },
-    feedsCount() {
-      return this.extra.feeds_count || 0;
+    feedsCount () {
+      return this.extra.feeds_count || 0
     },
-    bannerStyle() {
+    bannerStyle () {
       return [
         this.userBackGround,
         this.paddingTop,
-        { transitionDuration: this.dragging ? "0s" : "300ms" }
-      ];
+        { transitionDuration: this.dragging ? '0s' : '300ms' },
+      ]
     },
-    userBackGround() {
-      let ubg = this.user.bg && this.user.bg.url;
-      return ubg ? { "background-image": `url("${ubg}")` } : {};
+    userBackGround () {
+      let ubg = this.user.bg && this.user.bg.url
+      return ubg ? { 'background-image': `url("${ubg}")` } : {}
     },
-    verified() {
-      return this.user.verified;
+    verified () {
+      return this.user.verified
     },
 
     // banner 相关
-    paddingTop() {
+    paddingTop () {
       return {
         paddingTop:
           ((this.bannerHeight + 80 * Math.atan(this.dY / 200)) /
             (this.bannerHeight * 2)) *
             100 +
-          "%"
-      };
+          '%',
+      }
     },
-    after() {
-      const len = this.feeds.length;
-      return len > 0 ? this.feeds[len - 1].id : "";
+    after () {
+      const len = this.feeds.length
+      return len > 0 ? this.feeds[len - 1].id : ''
     },
     relation: {
-      get() {
+      get () {
         const relations = {
           unFollow: {
-            text: "关注",
-            status: "unFollow",
-            icon: `#icon-unFollow`
+            text: '关注',
+            status: 'unFollow',
+            icon: `#icon-unFollow`,
           },
           follow: {
-            text: "已关注",
-            status: "follow",
-            icon: `#icon-follow`
+            text: '已关注',
+            status: 'follow',
+            icon: `#icon-follow`,
           },
           eachFollow: {
-            text: "互相关注",
-            status: "eachFollow",
-            icon: `#icon-eachFollow`
-          }
-        };
-        const { follower, following } = this.user;
+            text: '互相关注',
+            status: 'eachFollow',
+            icon: `#icon-eachFollow`,
+          },
+        }
+        const { follower, following } = this.user
         return relations[
           follower && following
-            ? "eachFollow"
+            ? 'eachFollow'
             : follower
-              ? "follow"
-              : "unFollow"
-        ];
+              ? 'follow'
+              : 'unFollow'
+        ]
       },
 
-      set(val) {
-        this.user.follower = val;
-      }
-    }
+      set (val) {
+        this.user.follower = val
+      },
+    },
   },
   watch: {
-    screen(val) {
-      val && this.updateData();
-    }
+    screen (val) {
+      val && this.updateData()
+    },
   },
-  beforeMount() {
+  beforeMount () {
     if (this.isIosWechat) {
-      this.reload(this.$router);
+      this.reload(this.$router)
     }
   },
-  mounted() {
-    this.typeFilter = this.$refs.typeFilter;
-    this.bannerHeight = this.$refs.banner.getBoundingClientRect().height;
+  mounted () {
+    this.typeFilter = this.$refs.typeFilter
+    this.bannerHeight = this.$refs.banner.getBoundingClientRect().height
 
     this.isMine ||
       ((this.footroom = new HeadRoom(this.$refs.foot, {
         tolerance: 5,
         offset: 50,
         classes: {
-          initial: "headroom-foot",
-          pinned: "headroom--footShow",
-          unpinned: "headroom--footHide"
-        }
+          initial: 'headroom-foot',
+          pinned: 'headroom--footShow',
+          unpinned: 'headroom--footHide',
+        },
       })),
-      this.footroom.init());
+      this.footroom.init())
   },
-  activated() {
+  activated () {
     this.preUID !== this.userID
       ? ((this.loading = true),
-        (this.feeds = []),
-        (this.tags = []),
-        this.updateData())
+      (this.feeds = []),
+      (this.tags = []),
+      this.updateData())
       : setTimeout(() => {
-          this.loading = false;
-        }, 300);
+        this.loading = false
+      }, 300)
 
-    window.addEventListener("scroll", this.onScroll);
+    window.addEventListener('scroll', this.onScroll)
 
     if (this.isWechat) {
       // 微信分享
       const shareUrl =
         window.location.origin +
         process.env.BASE_URL.substr(0, process.env.BASE_URL.length - 1) +
-        this.$route.fullPath;
+        this.$route.fullPath
       const signUrl =
-        this.$store.state.BROWSER.OS === "IOS" ? window.initUrl : shareUrl;
-      const avatar = this.user.avatar || {};
+        this.$store.state.BROWSER.OS === 'IOS' ? window.initUrl : shareUrl
+      const avatar = this.user.avatar || {}
       wechatShare(signUrl, {
         title: this.user.name,
         desc: this.user.bio,
         link: shareUrl,
-        imgUrl: avatar.url || ""
-      });
+        imgUrl: avatar.url || '',
+      })
     }
 
-    this.preUID = this.userID;
+    this.preUID = this.userID
   },
-  deactivated() {
-    this.loading = true;
-    this.showFilter = false;
-    window.removeEventListener("scroll", this.onScroll);
+  deactivated () {
+    this.loading = true
+    this.showFilter = false
+    window.removeEventListener('scroll', this.onScroll)
   },
-  destroyed() {
-    window.removeEventListener("scroll", this.onScroll);
+  destroyed () {
+    window.removeEventListener('scroll', this.onScroll)
   },
   methods: {
-    beforeBack() {
-      if (this.$route.query.from === "checkin") this.$bus.$emit("check-in");
-      this.goBack();
+    beforeBack () {
+      if (this.$route.query.from === 'checkin') this.$bus.$emit('check-in')
+      this.goBack()
     },
     /**
      * 发起单聊
      */
-    startSingleChat() {
+    startSingleChat () {
       startSingleChat(this.user).then(res => {
         this.$nextTick(() => {
-          this.$router.push(`/chats/${res}`);
-        });
-      });
+          this.$router.push(`/chats/${res}`)
+        })
+      })
     },
-    rewardUser() {
-      this.popupBuyTS();
+    rewardUser () {
+      this.popupBuyTS()
     },
-    followUserByStatus(status) {
-      if (!status || this.fetchFollow) return;
-      this.fetchFollow = true;
+    followUserByStatus (status) {
+      if (!status || this.fetchFollow) return
+      this.fetchFollow = true
 
       api
         .followUserByStatus({
           id: this.user.id,
-          status
+          status,
         })
         .then(follower => {
-          this.relation = follower;
-          this.fetchFollow = false;
-        });
+          this.relation = follower
+          this.fetchFollow = false
+        })
     },
-    hidenFilter() {
-      this.showFilter = false;
+    hidenFilter () {
+      this.showFilter = false
     },
-    fetchUserInfo() {
+    fetchUserInfo () {
       api.getUserInfoById(this.userID, true).then(user => {
-        this.user = Object.assign(this.user, user);
-        this.loading = false;
-      });
+        this.user = Object.assign(this.user, user)
+        this.loading = false
+      })
     },
-    fetchUserTags() {
+    fetchUserTags () {
       this.$http.get(`/users/${this.userID}/tags`).then(({ data = [] }) => {
-        this.tags = data;
-      });
+        this.tags = data
+      })
     },
 
-    fetchUserFeed(loadmore) {
-      if (this.fetchFeeding) return;
-      this.fetchFeeding = true;
+    fetchUserFeed (loadmore) {
+      if (this.fetchFeeding) return
+      this.fetchFeeding = true
       const params = {
         limit: 15,
-        type: "users",
-        user: this.userID
-      };
+        type: 'users',
+        user: this.userID,
+      }
 
-      loadmore && (params.after = this.after);
-      this.isMine && this.screen !== "all" && (params.screen = this.screen);
+      loadmore && (params.after = this.after)
+      this.isMine && this.screen !== 'all' && (params.screen = this.screen)
 
       this.$http
-        .get("/feeds", {
-          params
+        .get('/feeds', {
+          params,
         })
         .then(({ data: { feeds = [] } }) => {
-          this.feeds = loadmore ? [...this.feeds, ...feeds] : feeds;
-          this.updating = false;
-          this.fetchFeeding = false;
-          this.noMoreData = feeds.length < params.limit;
-        });
+          this.feeds = loadmore ? [...this.feeds, ...feeds] : feeds
+          this.updating = false
+          this.fetchFeeding = false
+          this.noMoreData = feeds.length < params.limit
+        })
     },
-    updateData() {
-      this.updating = true;
-      this.dY = 0;
-      this.fetchUserInfo();
-      this.fetchUserFeed();
-      this.fetchUserTags();
+    updateData () {
+      this.updating = true
+      this.dY = 0
+      this.fetchUserInfo()
+      this.fetchUserFeed()
+      this.fetchUserTags()
     },
-    onBannerChange() {
-      const $input = this.$refs.imagefile;
-      const file = $input.files[0];
+    onBannerChange () {
+      const $input = this.$refs.imagefile
+      const file = $input.files[0]
 
       checkImageType([file])
         .then(() => {
           this.uploadFile(file)
             .then(async node => {
-              await this.$http.patch("/user", { bg: node });
-              this.$Message.success("更新个人背景成功！");
-              this.fetchUserInfo();
+              await this.$http.patch('/user', { bg: node })
+              this.$Message.success('更新个人背景成功！')
+              this.fetchUserInfo()
             })
             .catch(({ response: { data } = {} }) => {
-              this.$Message.error(data.message);
-            });
+              this.$Message.error(data.message)
+            })
         })
         .catch(() => {
-          this.$Message.info("请上传正确格式的图片文件");
-          $input.value = "";
-        });
+          this.$Message.info('请上传正确格式的图片文件')
+          $input.value = ''
+        })
     },
-    async uploadFile(file) {
+    async uploadFile (file) {
       // 如果需要新文件存储方式上传
-      const hash = await hashFile(file);
+      const hash = await hashFile(file)
       const params = {
         filename: file.name,
         hash,
         size: file.size,
-        mime_type: file.type || "image/png",
-        storage: { channel: "public" }
-      };
-      const result = await uploadApi.createUploadTask(params);
+        mime_type: file.type || 'image/png',
+        storage: { channel: 'public' },
+      }
+      const result = await uploadApi.createUploadTask(params)
       return uploadApi
         .uploadImage({
           method: result.method,
           url: result.uri,
           headers: result.headers,
-          blob: file
+          blob: file,
         })
         .then(data => {
-          return Promise.resolve(data.node);
+          return Promise.resolve(data.node)
         })
         .catch(() => {
-          this.$Message.error("文件上传失败，请检查文件系统配置");
-          return Promise.reject();
-        });
+          this.$Message.error('文件上传失败，请检查文件系统配置')
+          return Promise.reject()
+        })
     },
-    onScroll: _.debounce(function() {
+    onScroll: _.debounce(function () {
       this.scrollTop = Math.max(
         0,
         document.body.scrollTop,
         document.documentElement.scrollTop
-      );
+      )
     }, 1000 / 60),
-    startDrag(e) {
-      e = e.changedTouches ? e.changedTouches[0] : e;
+    startDrag (e) {
+      e = e.changedTouches ? e.changedTouches[0] : e
       if (this.scrollTop <= 0 && !this.updating) {
-        this.startY = e.pageY;
-        this.dragging = true;
+        this.startY = e.pageY
+        this.dragging = true
       }
     },
-    onDrag(e) {
-      const $e = e.changedTouches ? e.changedTouches[0] : e;
+    onDrag (e) {
+      const $e = e.changedTouches ? e.changedTouches[0] : e
       if (this.dragging && $e.pageY - this.startY > 0 && window.scrollY <= 0) {
         // 阻止 原生滚动 事件
-        e.preventDefault();
-        this.dY = $e.pageY - this.startY;
+        e.preventDefault()
+        this.dY = $e.pageY - this.startY
       }
     },
-    stopDrag() {
-      this.dragging = false;
-      this.dY > 300 && this.scrollTop <= 0 ? this.updateData() : (this.dY = 0);
-    }
-  }
-};
+    stopDrag () {
+      this.dragging = false
+      this.dY > 300 && this.scrollTop <= 0 ? this.updateData() : (this.dY = 0)
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

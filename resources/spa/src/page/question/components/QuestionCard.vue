@@ -6,7 +6,9 @@
       tag="h3"
       class="title">
       {{ question.subject }}
-      <span v-show="question.excellent && !noExcellent" class="shang-i">精</span>
+      <span
+        v-show="question.excellent && !noExcellent"
+        class="shang-i">精</span>
     </router-link>
 
     <!-- The question first image. -->
@@ -18,7 +20,9 @@
       class="image" />
 
     <!-- Answer. -->
-    <question-list-answer-card v-if="Object.keys(answer).length" :answer="answer" />
+    <question-list-answer-card
+      v-if="Object.keys(answer).length"
+      :answer="answer" />
 
     <!-- Bottom -->
     <router-link
@@ -31,7 +35,9 @@
       <span class="button-style1">{{ question.answers_count }}</span>
       回答
       <span class="dot">·</span>
-      <span v-show="question.amount" class="shang">
+      <span
+        v-show="question.amount"
+        class="shang">
         <span>赏</span> {{ question.amount }}
       </span>
       <span class="button-time">{{ question.updated_at | time2tips }}</span>
@@ -40,18 +46,18 @@
 </template>
 
 <script>
-import QuestionListAnswerCard from "./QuestionListAnswerCard.vue";
-import { baseURL } from "@/api";
-import { syntaxTextAndImage } from "@/util/markdown";
+import QuestionListAnswerCard from './QuestionListAnswerCard.vue'
+import { baseURL } from '@/api'
+import { syntaxTextAndImage } from '@/util/markdown'
 
 export default {
-  name: "QuestionCard",
+  name: 'QuestionCard',
   components: {
-    QuestionListAnswerCard
+    QuestionListAnswerCard,
   },
   props: {
     question: { type: Object, required: true },
-    noExcellent: { type: Boolean, default: false }
+    noExcellent: { type: Boolean, default: false },
   },
   computed: {
     /**
@@ -60,9 +66,9 @@ export default {
      * @return {Object|null}
      * @author Seven Du <shiweidu@outlook.com>
      */
-    answer() {
-      const { answer } = this.question;
-      return answer || {};
+    answer () {
+      const { answer } = this.question
+      return answer || {}
     },
 
     /**
@@ -71,8 +77,8 @@ export default {
      * @return {Object: { images: Array, text: string }}
      * @author Seven Du <shiweidu@outlook.com>
      */
-    body() {
-      return syntaxTextAndImage(this.question.body);
+    body () {
+      return syntaxTextAndImage(this.question.body)
     },
 
     /**
@@ -81,15 +87,15 @@ export default {
      * @return {string|false}
      * @author Seven Du <shiweidu@outlook.com>
      */
-    firstImageStyle() {
-      const body = this.answer.body || "";
-      const image = body.match(/@!\[image]\((\d+)\)/);
+    firstImageStyle () {
+      const body = this.answer.body || ''
+      const image = body.match(/@!\[image]\((\d+)\)/)
 
-      if (!image) return false;
-      return `background-image: url(${baseURL}/files/${image[1]})`;
-    }
-  }
-};
+      if (!image) return false
+      return `background-image: url(${baseURL}/files/${image[1]})`
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

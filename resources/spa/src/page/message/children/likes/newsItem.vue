@@ -3,7 +3,9 @@
     <div :class="`${prefixCls}-item-top`">
       <avatar :user="user" />
       <section class="userInfo">
-        <span v-if="!user.id" :class="`${prefixCls}-item-top-link`">未知用户</span>
+        <span
+          v-if="!user.id"
+          :class="`${prefixCls}-item-top-link`">未知用户</span>
         <router-link
           :class="`${prefixCls}-item-top-link`"
           :to="`/users/${user._id}`">{{ user.name }}</router-link>
@@ -20,9 +22,13 @@
           class="content">
           {{ like.likeable.title }}
         </div>
-        <div v-else :class="`${prefixCls}-item-bottom-img`">
+        <div
+          v-else
+          :class="`${prefixCls}-item-bottom-img`">
           <div class="img">
-            <img :src="getImage" :alt="user.name">
+            <img
+              :src="getImage"
+              :alt="user.name">
           </div>
           <div class="content">
             {{ like.likeable.title }}
@@ -30,7 +36,9 @@
         </div>
       </section>
       <section v-if="like.likeable === null">
-        <div :class="`${prefixCls}-item-bottom-noImg`" class="content">
+        <div
+          :class="`${prefixCls}-item-bottom-noImg`"
+          class="content">
           资讯已被删除
         </div>
       </section>
@@ -39,14 +47,14 @@
 </template>
 
 <script>
-const prefixCls = "msgList";
+const prefixCls = 'msgList'
 export default {
-  name: "NewsItem",
+  name: 'NewsItem',
   props: {
-    like: { type: Object, default: () => {} }
+    like: { type: Object, default: () => {} },
   },
   data: () => ({
-    prefixCls
+    prefixCls,
   }),
   computed: {
     /**
@@ -56,18 +64,18 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   {[type]}            [description]
      */
-    getImage() {
-      const { like } = this;
-      const { id = 0 } = like.likeable.image || {};
+    getImage () {
+      const { like } = this
+      const { id = 0 } = like.likeable.image || {}
       if (id > 0) {
-        return `${this.$http.defaults.baseURL}/files/${id}`;
+        return `${this.$http.defaults.baseURL}/files/${id}`
       }
 
-      return false;
+      return false
     },
-    user() {
-      return this.like.user || {};
-    }
+    user () {
+      return this.like.user || {}
+    },
   },
   methods: {
     /**
@@ -77,12 +85,12 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   {[type]}            [description]
      */
-    goToFeedDetail() {
+    goToFeedDetail () {
       const {
-        likeable: { id = 0 }
-      } = this.like;
-      this.$router.push(`/news/${id}`);
-    }
-  }
-};
+        likeable: { id = 0 },
+      } = this.like
+      this.$router.push(`/news/${id}`)
+    },
+  },
+}
 </script>

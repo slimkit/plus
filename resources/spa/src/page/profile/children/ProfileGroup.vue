@@ -19,32 +19,32 @@
   </div>
 </template>
 <script>
-import HeadTop from "@/components/HeadTop";
+import HeadTop from '@/components/HeadTop'
 export default {
-  name: "ProfileGroup",
+  name: 'ProfileGroup',
   components: {
-    HeadTop
+    HeadTop,
   },
-  data() {
+  data () {
     return {
       types: [
         {
-          label: "圈子",
-          path: "/profile/group/groups"
+          label: '圈子',
+          path: '/profile/group/groups',
         },
         {
-          label: "帖子",
-          path: "/profile/group/posts"
-        }
-      ]
-    };
+          label: '帖子',
+          path: '/profile/group/posts',
+        },
+      ],
+    }
   },
   methods: {
-    cancel() {
-      this.$router.push("/profile");
-    }
-  }
-};
+    cancel () {
+      this.$router.push('/profile')
+    },
+  },
+}
 </script>
 <style lang='less'>
 @profile-group-prefix: profile-group;

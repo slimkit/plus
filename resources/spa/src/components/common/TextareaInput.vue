@@ -1,6 +1,10 @@
 <template>
-  <div :class="{'auto-height': !rows}" class="textarea-wrap">
-    <div v-if="!rows" class="textarea-shadow c-textarea-input">{{ value }}</div> <!-- 用于撑起文本框自适应高度 -->
+  <div
+    :class="{'auto-height': !rows}"
+    class="textarea-wrap">
+    <div
+      v-if="!rows"
+      class="textarea-shadow c-textarea-input">{{ value }}</div> <!-- 用于撑起文本框自适应高度 -->
     <textarea
       ref="textarea"
       :value="value"
@@ -10,22 +14,24 @@
       :rows="rows ? rows : 1"
       class="c-textarea-input"
       @input="$emit('input', $event.target.value)" />
-    <span v-show="maxlength && value.length > warnlength" class="word-length">{{ value.length }} / {{ maxlength }}</span>
+    <span
+      v-show="maxlength && value.length > warnlength"
+      class="word-length">{{ value.length }} / {{ maxlength }}</span>
   </div>
 </template>
 
 <script>
 export default {
-  name: "TextareaInput",
+  name: 'TextareaInput',
   props: {
-    value: { type: String, default: "" },
+    value: { type: String, default: '' },
     readonly: { type: Boolean, default: false },
     maxlength: { type: [Number, String], default: null },
     warnlength: { type: [Number, String], default: null },
-    placeholder: { type: String, default: "" },
-    rows: { type: [Number, String], default: 0 }
-  }
-};
+    placeholder: { type: String, default: '' },
+    rows: { type: [Number, String], default: 0 },
+  },
+}
 </script>
 
 <style lang="less" scoped>

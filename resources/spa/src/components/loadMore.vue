@@ -61,65 +61,65 @@
 </template>
 
 <script>
-import _ from "lodash";
+import _ from 'lodash'
 
 const getScrollTarget = el => {
   while (
     el &&
     el.nodeType === 1 &&
-    el.tagName !== "HTML" &&
-    el.tagName !== "BODY"
+    el.tagName !== 'HTML' &&
+    el.tagName !== 'BODY'
   ) {
-    const overflowY = document.defaultView.getComputedStyle(el).overflowY;
-    if (overflowY === "scroll" || overflowY === "auto") {
-      return el;
+    const overflowY = document.defaultView.getComputedStyle(el).overflowY
+    if (overflowY === 'scroll' || overflowY === 'auto') {
+      return el
     }
-    el = el.parentNode;
+    el = el.parentNode
   }
-  return document.documentElement;
-};
+  return document.documentElement
+}
 
 export default {
-  name: "LoadMore",
+  name: 'LoadMore',
   props: {
     noTranslateAnimation: {
       type: Boolean,
-      default: false
+      default: false,
     },
     topDistance: {
       type: Number,
-      default: 100
+      default: 100,
     },
     topPullText: {
       type: String,
-      default: "下拉刷新"
+      default: '下拉刷新',
     },
     topDropText: {
       type: String,
-      default: "刷新中..."
+      default: '刷新中...',
     },
     topLoadingText: {
       type: String,
-      default: "释放更新"
+      default: '释放更新',
     },
     showText: {
       type: Boolean,
-      default: !0
+      default: !0,
     },
     onRefresh: {
       type: Function,
-      default: function() {
+      default: function () {
         setTimeout(() => {
-          this.topEnd(false);
-        }, 2000);
-      }
+          this.topEnd(false)
+        }, 2000)
+      },
     },
     onLoadMore: {
       type: Function,
-      default: null
-    }
+      default: null,
+    },
   },
-  data() {
+  data () {
     return {
       scrollTarget: null,
       topBarHeight: 0,
@@ -132,67 +132,67 @@ export default {
       noMore: false,
       reached: false,
 
-      bottom: 0
-    };
+      bottom: 0,
+    }
   },
   computed: {
-    canPulldown() {
-      return typeof this.onRefresh === "function";
+    canPulldown () {
+      return typeof this.onRefresh === 'function'
     },
-    scEl() {
+    scEl () {
       return this.scrollTarget === document.documentElement
         ? window
-        : this.scrollTarget;
+        : this.scrollTarget
     },
-    visibleHeight() {
-      return this.scrollTarget.clientHeight * 1.325;
+    visibleHeight () {
+      return this.scrollTarget.clientHeight * 1.325
     },
-    distance() {
-      return 0.05 * this.visibleHeight;
+    distance () {
+      return 0.05 * this.visibleHeight
     },
-    transition() {
-      return this.dragging || (this.dY === 0 && this.reset) ? "0s" : "200ms";
+    transition () {
+      return this.dragging || (this.dY === 0 && this.reset) ? '0s' : '200ms'
     },
-    translate() {
+    translate () {
       return !this.noTranslateAnimation
-        ? "translateY(" +
+        ? 'translateY(' +
             (80 * Math.atan(this.dY / 200) - this.topBarHeight) +
-            "px)"
-        : "";
+            'px)'
+        : ''
     },
-    status() {
+    status () {
       return this.dragging && this.dY > this.topDistance
         ? this.topLoadingText
         : this.requesting
           ? this.topDropText
-          : this.topPullText;
-    }
+          : this.topPullText
+    },
   },
   watch: {
-    loading(val) {
+    loading (val) {
       val
-        ? this.scEl.removeEventListener("scroll", this.handleScrolling)
-        : this.scEl.addEventListener("scroll", this.handleScrolling);
+        ? this.scEl.removeEventListener('scroll', this.handleScrolling)
+        : this.scEl.addEventListener('scroll', this.handleScrolling)
     },
-    requesting(val) {
-      val || (this.dY = 0);
-    }
+    requesting (val) {
+      val || (this.dY = 0)
+    },
   },
-  mounted() {
-    this.scrollTarget = getScrollTarget(this.$el);
-    this.topBarHeight = this.$el.children[0].clientHeight;
-    this.bindEvent();
+  mounted () {
+    this.scrollTarget = getScrollTarget(this.$el)
+    this.topBarHeight = this.$el.children[0].clientHeight
+    this.bindEvent()
 
-    this.autoLoad();
+    this.autoLoad()
   },
-  activated() {
-    this.$nextTick(this.bindEvent);
+  activated () {
+    this.$nextTick(this.bindEvent)
   },
-  deactivated() {
-    this.scEl.removeEventListener("scroll", this.handleScrolling);
+  deactivated () {
+    this.scEl.removeEventListener('scroll', this.handleScrolling)
   },
-  destroyed() {
-    this.scEl.removeEventListener("scroll", this.handleScrolling);
+  destroyed () {
+    this.scEl.removeEventListener('scroll', this.handleScrolling)
   },
   methods: {
     /**
@@ -201,114 +201,114 @@ export default {
      * @return {Function}
      * @author Seven Du <shiweidu@outlook.com>
      */
-    handleScrolling: _.throttle(function() {
-      if (this.noMore) return;
-      if (this.loading) return;
-      if (!this.bottomReached()) return;
+    handleScrolling: _.throttle(function () {
+      if (this.noMore) return
+      if (this.loading) return
+      if (!this.bottomReached()) return
       // 加载...
-      this.loading = true;
-      this.onLoadMore();
+      this.loading = true
+      this.onLoadMore()
     }, 300),
-    bottomReached() {
-      const elBottom = this.$el.getBoundingClientRect().bottom;
-      return elBottom - this.visibleHeight <= this.distance && !this.loading;
+    bottomReached () {
+      const elBottom = this.$el.getBoundingClientRect().bottom
+      return elBottom - this.visibleHeight <= this.distance && !this.loading
     },
-    fulled() {
-      return this.$el.getBoundingClientRect().bottom > this.visibleHeight;
+    fulled () {
+      return this.$el.getBoundingClientRect().bottom > this.visibleHeight
     },
     /**
      * 填满父容器
      * @auth:  jsonleex <jsonleex@163.com>
      */
-    fillContainer() {
-      if (typeof this.onLoadMore === "function") {
-        this.loading = true;
-        this.onLoadMore();
+    fillContainer () {
+      if (typeof this.onLoadMore === 'function') {
+        this.loading = true
+        this.onLoadMore()
       }
     },
     /**
      * @param {boolean} [next = true]
      */
-    topEnd(next = true) {
-      this.requesting = false;
-      this.noMore = false;
+    topEnd (next = true) {
+      this.requesting = false
+      this.noMore = false
       next &&
         this.$nextTick(() => {
           if (!this.fulled()) {
-            this.fillContainer();
+            this.fillContainer()
           }
-        });
+        })
     },
-    bottomEnd(noMore) {
-      this.loading = false;
-      this.noMore = noMore;
+    bottomEnd (noMore) {
+      this.loading = false
+      this.noMore = noMore
       this.$nextTick(() => {
         if (!this.fulled() && !noMore) {
-          this.fillContainer();
+          this.fillContainer()
         }
-      });
+      })
     },
     // Touch start
-    startDrag(e) {
-      e = e.changedTouches ? e.changedTouches[0] : e;
+    startDrag (e) {
+      e = e.changedTouches ? e.changedTouches[0] : e
       if (
         this.canPulldown &&
         this.scrollTarget.scrollTop <= 0 &&
         !this.loading &&
         !this.requesting
       ) {
-        this.$emit("onStart");
-        this.startY = e.pageY;
-        this.dragging = true;
-        this.reset = false;
+        this.$emit('onStart')
+        this.startY = e.pageY
+        this.dragging = true
+        this.reset = false
       }
     },
     // Move
-    onDrag(e) {
-      const $e = e.changedTouches ? e.changedTouches[0] : e;
+    onDrag (e) {
+      const $e = e.changedTouches ? e.changedTouches[0] : e
       if (this.dragging && $e.pageY - this.startY > 0 && window.scrollY <= 0) {
         // 阻止 原生滚动 事件
-        e.preventDefault();
-        this.dY = $e.pageY - this.startY;
-        this.requesting && (this.dY += this.topDistance);
-        this.$emit("onPull", this.dY);
+        e.preventDefault()
+        this.dY = $e.pageY - this.startY
+        this.requesting && (this.dY += this.topDistance)
+        this.$emit('onPull', this.dY)
       }
     },
     // Touch end
-    stopDrag() {
-      this.dragging = false;
-      this.$emit("onEnd");
+    stopDrag () {
+      this.dragging = false
+      this.$emit('onEnd')
       this.dY > this.topDistance && window.scrollY <= 0
         ? this.beforeRefresh()
-        : (this.dY = 0);
+        : (this.dY = 0)
     },
     /**
      * 判断是否 满足刷新条件
      *
      * @auth:  jsonleex <jsonleex@163.com>
      */
-    beforeRefresh() {
-      if (this.requesting) return;
-      if (typeof this.onRefresh === "function") {
-        this.requesting = true;
-        this.dY = Math.tan(this.topBarHeight / 80) * 200;
-        this.onRefresh();
+    beforeRefresh () {
+      if (this.requesting) return
+      if (typeof this.onRefresh === 'function') {
+        this.requesting = true
+        this.dY = Math.tan(this.topBarHeight / 80) * 200
+        this.onRefresh()
       } else {
-        this.dY = 0;
+        this.dY = 0
       }
     },
-    bindEvent() {
-      if (typeof this.onLoadMore === "function") {
-        this.scEl.addEventListener("scroll", this.handleScrolling);
+    bindEvent () {
+      if (typeof this.onLoadMore === 'function') {
+        this.scEl.addEventListener('scroll', this.handleScrolling)
       }
     },
-    autoLoad() {
+    autoLoad () {
       if (this.canPulldown && !this.fulled()) {
-        this.beforeRefresh();
+        this.beforeRefresh()
       }
-    }
-  }
-};
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

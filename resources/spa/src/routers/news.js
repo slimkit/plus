@@ -1,39 +1,39 @@
 const NewsList = () =>
-  import(/* webpackChunkName: 'news' */ "@/page/news/NewsList.vue");
+  import(/* webpackChunkName: 'news' */ '@/page/news/NewsList.vue')
 const NewsSearch = () =>
-  import(/* webpackChunkName: 'news' */ "@/page/news/NewsSearch.vue");
+  import(/* webpackChunkName: 'news' */ '@/page/news/NewsSearch.vue')
 const NewsDetail = () =>
-  import(/* webpackChunkName: 'news' */ "@/page/news/NewsDetail.vue");
+  import(/* webpackChunkName: 'news' */ '@/page/news/NewsDetail.vue')
 const ArticleLikes = () =>
-  import(/* webpackChunkName: 'news' */ "@/page/article/ArticleLikes.vue");
+  import(/* webpackChunkName: 'news' */ '@/page/article/ArticleLikes.vue')
 const ArticleRewards = () =>
-  import(/* webpackChunkName: 'news' */ "@/page/article/ArticleRewards.vue");
+  import(/* webpackChunkName: 'news' */ '@/page/article/ArticleRewards.vue')
 
 export default [
   {
-    path: "/news",
+    path: '/news',
     component: NewsList,
     meta: {
-      title: "资讯",
-      keepAlive: true
-    }
+      title: '资讯',
+      keepAlive: true,
+    },
   },
   {
-    path: "/news/:newsID(\\d+)",
+    path: '/news/:newsID(\\d+)',
     component: NewsDetail,
     meta: {
-      title: "资讯详情",
+      title: '资讯详情',
       keepAlive: true,
-      requiresAuth: true
-    }
+      requiresAuth: true,
+    },
   },
   {
-    path: "/news/search",
+    path: '/news/search',
     component: NewsSearch,
     meta: {
-      title: "搜索",
-      keepAlive: true
-    }
+      title: '搜索',
+      keepAlive: true,
+    },
   },
   /**
    * 点赞列表 && 打赏列表 路由格式固定
@@ -42,19 +42,19 @@ export default [
    * copy by @/routers/feed.js
    */
   {
-    path: "/news/:article(\\d+)/likers",
+    path: '/news/:article(\\d+)/likers',
     component: ArticleLikes,
     meta: {
-      title: "点赞列表",
-      type: "news"
-    }
+      title: '点赞列表',
+      type: 'news',
+    },
   },
   {
-    path: "/news/:article(\\d+)/rewarders",
+    path: '/news/:article(\\d+)/rewarders',
     component: ArticleRewards,
     meta: {
-      title: "打赏列表",
-      type: "news"
-    }
-  }
-];
+      title: '打赏列表',
+      type: 'news',
+    },
+  },
+]

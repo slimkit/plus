@@ -14,11 +14,15 @@
           :key="`reward-${id}-${index}`"
           class="m-box m-aln-center m-justify-bet m-art-reward-item m-bb1 m-main">
 
-          <avatar :user="user" size="tiny" />
+          <avatar
+            :user="user"
+            size="tiny" />
 
           <h2 class="m-box m-flex-grow1 m-flex-shrink1 m-text-cut"><b>{{ user.name }}</b>打赏了{{ typeMap[type] }}</h2>
 
-          <time :datetime="created_at" class="m-flex-grow0 m-flex-shrink0">{{ created_at | time2tips }}</time>
+          <time
+            :datetime="created_at"
+            class="m-flex-grow0 m-flex-shrink0">{{ created_at | time2tips }}</time>
         </section>
       </jo-load-more>
     </main>
@@ -28,48 +32,48 @@
 
 <script>
 export default {
-  name: "ArticleRewards",
-  data() {
+  name: 'ArticleRewards',
+  data () {
     return {
       rewards: [],
       typeMap: {
-        feed: "动态",
-        news: "资讯",
-        post: "帖子",
-        answer: "回答"
-      }
-    };
+        feed: '动态',
+        news: '资讯',
+        post: '帖子',
+        answer: '回答',
+      },
+    }
   },
   computed: {
-    type() {
-      return this.$route.meta.type;
+    type () {
+      return this.$route.meta.type
     },
-    article() {
-      return this.$route.params.article;
+    article () {
+      return this.$route.params.article
     },
-    url() {
+    url () {
       // 动态 GET /feeds/{feed}/rewards
       // 资讯 GET /news/{news}/rewards
       // 帖子 GET /plus-group/group-posts/:post/rewards
 
       switch (this.type) {
-        case "feed":
-          return `/feeds/${this.article}/rewards`;
-        case "news":
-          return `/news/${this.article}/rewards`;
-        case "post":
-          return `/plus-group/group-posts/${this.article}/rewards`;
-        case "answer":
-          return `/question-answers/${this.article}/rewarders`;
+        case 'feed':
+          return `/feeds/${this.article}/rewards`
+        case 'news':
+          return `/news/${this.article}/rewards`
+        case 'post':
+          return `/plus-group/group-posts/${this.article}/rewards`
+        case 'answer':
+          return `/question-answers/${this.article}/rewarders`
       }
-    }
+    },
   },
 
-  mounted() {
-    this.$refs.loadmore.beforeRefresh();
+  mounted () {
+    this.$refs.loadmore.beforeRefresh()
   },
   methods: {
-    onRefresh(callback) {
+    onRefresh (callback) {
       /**
        * 刷新列表
        *
@@ -82,35 +86,35 @@ export default {
       this.$http
         .get(this.url, {
           params: {
-            limit: 15
-          }
+            limit: 15,
+          },
         })
         .then(({ data = [] }) => {
-          this.rewards = data;
-          callback(data.length < 15);
+          this.rewards = data
+          callback(data.length < 15)
         })
         .catch(() => {
-          callback(true);
-        });
+          callback(true)
+        })
     },
-    onLoadMore(callback) {
+    onLoadMore (callback) {
       this.$http
         .get(this.url, {
           params: {
             limit: 15,
-            offset: this.rewards.length
-          }
+            offset: this.rewards.length,
+          },
         })
         .then(({ data = [] }) => {
-          this.rewards = [...this.rewards, ...data];
-          callback(data.length < 15);
+          this.rewards = [...this.rewards, ...data]
+          callback(data.length < 15)
         })
         .catch(() => {
-          callback(true);
-        });
-    }
-  }
-};
+          callback(true)
+        })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

@@ -28,88 +28,90 @@
             :user="user"
             :key="user.id" />
         </jo-load-more>
-        <div v-if="noData" class="placeholder m-no-find"/>
+        <div
+          v-if="noData"
+          class="placeholder m-no-find"/>
       </main>
     </div>
   </transition>
 </template>
 
 <script>
-import _ from "lodash";
-import SearchBar from "@/components/common/SearchBar.vue";
-import UserItem from "@/components/UserItem.vue";
-import * as api from "@/api/user.js";
+import _ from 'lodash'
+import SearchBar from '@/components/common/SearchBar.vue'
+import UserItem from '@/components/UserItem.vue'
+import * as api from '@/api/user.js'
 
 export default {
-  name: "SearchUser",
+  name: 'SearchUser',
   components: {
     UserItem,
-    SearchBar
+    SearchBar,
   },
-  data() {
+  data () {
     return {
       show: true,
       users: [],
       recs: [],
       isFocus: false,
       noData: false,
-      keyword: ""
-    };
+      keyword: '',
+    }
   },
   computed: {
-    showRec() {
-      return this.keyword.length === 0 && !this.isFocus;
-    }
+    showRec () {
+      return this.keyword.length === 0 && !this.isFocus
+    },
   },
   watch: {
-    keyword() {
-      this.searchUserByKey();
-    }
+    keyword () {
+      this.searchUserByKey()
+    },
   },
   methods: {
-    goBack() {
-      this.keyword = "";
-      this.isFocus = false;
-      this.$router.go(-1);
+    goBack () {
+      this.keyword = ''
+      this.isFocus = false
+      this.$router.go(-1)
     },
     /**
      * 使用 lodash.debounce 防抖，每输入 600ms 后执行
      * 不要使用箭头函数，会导致 this 作用域丢失
      * @author mutoe <mutoe@foxmail.com>
      */
-    searchUserByKey: _.debounce(function() {
+    searchUserByKey: _.debounce(function () {
       api.searchUserByKey(this.keyword).then(({ data }) => {
-        this.users = data;
-        this.noData = data.length === 0 && this.keyword.length > 0;
-      });
+        this.users = data
+        this.noData = data.length === 0 && this.keyword.length > 0
+      })
     }, 600),
-    onRefresh(callback) {
+    onRefresh (callback) {
       api.searchUserByKey(this.keyword).then(({ data }) => {
-        this.users = data;
-        callback(data.length < 15);
-      });
+        this.users = data
+        callback(data.length < 15)
+      })
     },
-    onLoadMore(callback) {
+    onLoadMore (callback) {
       api.searchUserByKey(this.keyword, this.users.length).then(({ data }) => {
-        this.users = [...this.users, ...data];
-        callback(data.length < 15);
-      });
+        this.users = [...this.users, ...data]
+        callback(data.length < 15)
+      })
     },
-    onFocus() {
-      this.isFocus = true;
-      this.noData = false;
+    onFocus () {
+      this.isFocus = true
+      this.noData = false
     },
-    onBlur() {
-      this.isFocus = false;
+    onBlur () {
+      this.isFocus = false
     },
-    fetchRecs(callback) {
-      api.findUserByType("recommends").then(({ data }) => {
-        this.recs = data;
-        callback(data.length < 15);
-      });
-    }
-  }
-};
+    fetchRecs (callback) {
+      api.findUserByType('recommends').then(({ data }) => {
+        this.recs = data
+        callback(data.length < 15)
+      })
+    },
+  },
+}
 </script>
 
 <style lang="less">

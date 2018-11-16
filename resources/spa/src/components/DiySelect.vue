@@ -4,7 +4,9 @@
     class="diy-select"
     @click="onClick">
     <div class="diy-select--label">{{ curSelectValue }}</div>
-    <div v-show="open" class="diy-select--options">
+    <div
+      v-show="open"
+      class="diy-select--options">
       <div
         v-for="option in options"
         :key="option.label"
@@ -21,52 +23,52 @@
 
 <script>
 export default {
-  name: "DiySelect",
+  name: 'DiySelect',
   props: {
-    value: { type: null, default: "" },
+    value: { type: null, default: '' },
     options: { type: Array, default: () => [] },
-    placeholder: { type: String, default: "请选择" },
-    readonly: { type: Boolean, default: false }
+    placeholder: { type: String, default: '请选择' },
+    readonly: { type: Boolean, default: false },
   },
-  data() {
+  data () {
     return {
-      curVal: "",
-      open: false
-    };
+      curVal: '',
+      open: false,
+    }
   },
   computed: {
     curSelectValue: {
-      set(val) {
-        this.curVal = this.options.find(o => o.value === val);
+      set (val) {
+        this.curVal = this.options.find(o => o.value === val)
       },
-      get() {
-        if (this.curVal && typeof this.curVal.label !== "undefined") {
-          return this.curVal.label;
+      get () {
+        if (this.curVal && typeof this.curVal.label !== 'undefined') {
+          return this.curVal.label
         } else {
-          return this.placeholder;
+          return this.placeholder
         }
-      }
-    }
+      },
+    },
   },
   watch: {
-    value(val) {
-      this.curSelectValue = val;
-    }
+    value (val) {
+      this.curSelectValue = val
+    },
   },
-  mounted() {
-    this.curSelectValue = this.value;
+  mounted () {
+    this.curSelectValue = this.value
   },
   methods: {
-    setCurVal(val) {
-      this.curVal = val;
-      this.$emit("input", val.value);
+    setCurVal (val) {
+      this.curVal = val
+      this.$emit('input', val.value)
     },
-    onClick() {
-      if (this.readonly) return this.$emit("click");
-      this.open = !this.open;
-    }
-  }
-};
+    onClick () {
+      if (this.readonly) return this.$emit('click')
+      this.open = !this.open
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

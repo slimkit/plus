@@ -6,50 +6,50 @@
 
 <script>
 export default {
-  name: "AsyncFile",
+  name: 'AsyncFile',
   props: {
     file: { required: true, type: Number },
     w: { type: Number, default: 0 },
     h: { type: Number, default: 0 },
-    q: { type: Number, default: 0 }
+    q: { type: Number, default: 0 },
   },
   data: () => ({
-    src: null
+    src: null,
   }),
-  created() {
-    this.fetch();
+  created () {
+    this.fetch()
   },
   methods: {
-    fetch() {
+    fetch () {
       let params = {
-        json: true
-      };
+        json: true,
+      }
 
       if (this.w) {
-        params.w = this.w;
+        params.w = this.w
       }
 
       if (this.h) {
-        params.h = this.h;
+        params.h = this.h
       }
 
       if (this.q) {
-        params.q = this.q;
+        params.q = this.q
       }
 
       this.$http
         .get(`/files/${this.file}`, {
-          params
+          params,
         })
         .then(
           ({ data: { url } }) => {
-            this.src = url;
+            this.src = url
           },
           () => {
-            this.src = "";
+            this.src = ''
           }
-        );
-    }
-  }
-};
+        )
+    },
+  },
+}
 </script>

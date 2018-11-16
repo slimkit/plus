@@ -101,101 +101,101 @@
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
-import sendImage from "@/util/SendImage.js";
-import ImagePaidOption from "./ImagePaidOption.vue";
-import { checkImageType } from "@/util/imageCheck.js";
+import { mapActions } from 'vuex'
+import sendImage from '@/util/SendImage.js'
+import ImagePaidOption from './ImagePaidOption.vue'
+import { checkImageType } from '@/util/imageCheck.js'
 
 export default {
-  name: "ImageList",
+  name: 'ImageList',
   components: {
-    ImagePaidOption
+    ImagePaidOption,
   },
   props: {
     edit: {
       type: Boolean,
-      default: false
+      default: false,
     },
     limit: {
       type: Number,
-      default: 9
+      default: 9,
     },
     accept: {
       type: [Array, String],
-      default() {
+      default () {
         return [
-          "image/gif",
-          "image/jpeg",
-          "image/webp",
-          "image/jpg",
-          "image/png",
-          "image/bmp"
-        ];
-      }
-    }
+          'image/gif',
+          'image/jpeg',
+          'image/webp',
+          'image/jpg',
+          'image/png',
+          'image/bmp',
+        ]
+      },
+    },
   },
-  data() {
+  data () {
     return {
-      pics: []
-    };
+      pics: [],
+    }
   },
   computed: {
-    acceptType() {
-      return typeof this.accept === "string"
+    acceptType () {
+      return typeof this.accept === 'string'
         ? this.accept
-        : this.accept.join(",");
+        : this.accept.join(',')
     },
-    showLabel() {
-      return this.pics.length < this.limit;
+    showLabel () {
+      return this.pics.length < this.limit
     },
-    multiple() {
-      return this.limit > 1;
+    multiple () {
+      return this.limit > 1
     },
-    picClass() {
+    picClass () {
       // return `img${this.pics.length > 1 ? 3 : 1}`;
-      return `img3`;
-    }
+      return `img3`
+    },
   },
   watch: {
-    pics() {
-      this.updateComposePhoto(this.pics);
+    pics () {
+      this.updateComposePhoto(this.pics)
     },
-    edit(val) {
+    edit (val) {
       val ||
-        this.pics.forEach((pic /*, index*/) => {
-          delete pic.amount;
-          delete pic.amountType;
+        this.pics.forEach((pic /*, index */) => {
+          delete pic.amount
+          delete pic.amountType
           // this.$set(this.pics, index, pic);
-        });
-    }
+        })
+    },
   },
-  destroyed() {
-    this.updateComposePhoto(null);
+  destroyed () {
+    this.updateComposePhoto(null)
   },
   methods: {
-    ...mapActions(["updateComposePhoto"]),
-    imgFormat() {
+    ...mapActions(['updateComposePhoto']),
+    imgFormat () {
       return {
-        id: "",
-        src: "",
-        type: "",
+        id: '',
+        src: '',
+        type: '',
         width: 0,
         height: 0,
         file: null,
         error: false,
-        loading: false
-      };
+        loading: false,
+      }
     },
-    selectPhoto() {
-      this.addPhoto(this.$refs.imagefile);
+    selectPhoto () {
+      this.addPhoto(this.$refs.imagefile)
     },
-    addPhoto($input) {
-      const files = $input.files;
+    addPhoto ($input) {
+      const files = $input.files
       if (files && files.length > 0) {
         if (files.length + this.pics.length > this.limit) {
-          this.$Message.error(`最多只能上传${this.limit}张图片`);
-          $input.value = "";
-          return false;
+          this.$Message.error(`最多只能上传${this.limit}张图片`)
+          $input.value = ''
+          return false
         }
         checkImageType(files)
           .then(() => {
@@ -204,19 +204,19 @@ export default {
                 file: files[i],
                 type: files[i].mimeType,
                 src: window.URL.createObjectURL(files[i]),
-                loading: true
-              };
-              this.pics.push(Object.assign({}, this.imgFormat(), imgObj));
+                loading: true,
+              }
+              this.pics.push(Object.assign({}, this.imgFormat(), imgObj))
             }
-            $input.value = "";
+            $input.value = ''
           })
           .catch(() => {
-            this.$Message.info("请上传正确格式的图片文件");
-            $input.value = "";
-          });
+            this.$Message.info('请上传正确格式的图片文件')
+            $input.value = ''
+          })
       }
     },
-    loadedImg(img) {
+    loadedImg (img) {
       // TODO
       // 前端图片压缩
       sendImage(img.file)
@@ -225,50 +225,50 @@ export default {
             id,
             file: null,
             loading: false,
-            error: false
-          });
-          this.updateComposePhoto(this.pics);
+            error: false,
+          })
+          this.updateComposePhoto(this.pics)
         })
         .catch(() => {
-          img.error = true;
-        });
+          img.error = true
+        })
     },
-    delPhoto(pics, index) {
-      pics.splice(index, 1);
+    delPhoto (pics, index) {
+      pics.splice(index, 1)
     },
-    reUpload(pics, index) {
-      pics[index].error = false;
-      this.loadedImg(pics[index]);
+    reUpload (pics, index) {
+      pics[index].error = false
+      this.loadedImg(pics[index])
     },
-    editImg(img, index) {
-      this.$refs.imageOption.show(img, index);
+    editImg (img, index) {
+      this.$refs.imageOption.show(img, index)
     },
-    onClickThumb(index) {
+    onClickThumb (index) {
       // 图片上传失败时点击会重新上传，否则打开预览
       this.pics[index].error
         ? this.reUpload(this.pics, index)
-        : this.thumbnails(index);
+        : this.thumbnails(index)
     },
     // 图片预览
-    thumbnails(index) {
+    thumbnails (index) {
       const images = this.pics.map((img, index) => {
-        const el = this.$el.querySelectorAll(`img.compose-image`)[index];
+        const el = this.$el.querySelectorAll(`img.compose-image`)[index]
         return {
           el,
           index,
           ...img,
           w: el.naturalWidth,
-          h: el.naturalHeight
-        };
-      });
-      this.$bus.$emit("mvGallery", {
+          h: el.naturalHeight,
+        }
+      })
+      this.$bus.$emit('mvGallery', {
         component: this,
         index,
-        images
-      });
-    }
-  }
-};
+        images,
+      })
+    },
+  },
+}
 </script>
 
 <style lang='less'>

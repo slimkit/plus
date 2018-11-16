@@ -58,65 +58,65 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import PopupDialog from "@/components/PopupDialog.vue";
+import { mapState } from 'vuex'
+import PopupDialog from '@/components/PopupDialog.vue'
 
 export default {
-  name: "CurrencyWithdraw",
+  name: 'CurrencyWithdraw',
   components: { PopupDialog },
-  data() {
+  data () {
     return {
-      amount: "",
-      loading: false
-    };
+      amount: '',
+      loading: false,
+    }
   },
   computed: {
     ...mapState({
-      currency: "currency",
-      user: "CURRENTUSER"
+      currency: 'currency',
+      user: 'CURRENTUSER',
     }),
-    cash() {
-      return this.currency.cash;
+    cash () {
+      return this.currency.cash
     },
-    rule() {
-      const rule = this.currency.cash.rule || "";
-      return rule.replace(/\n/g, "<br>");
+    rule () {
+      const rule = this.currency.cash.rule || ''
+      return rule.replace(/\n/g, '<br>')
     },
-    disabled() {
-      return this.amount < this.cash.min || this.amount > this.cash.max;
+    disabled () {
+      return this.amount < this.cash.min || this.amount > this.cash.max
     },
-    currentCurrency() {
-      return this.user.currency.sum || 0;
-    }
+    currentCurrency () {
+      return this.user.currency.sum || 0
+    },
   },
-  mounted() {
-    if (!this.cash.rule) this.$store.dispatch("currency/getCurrencyInfo");
+  mounted () {
+    if (!this.cash.rule) this.$store.dispatch('currency/getCurrencyInfo')
   },
   methods: {
-    async handleOk() {
+    async handleOk () {
       // 积分不足时前往充值
       if (this.amount > this.currentCurrency) {
-        this.$Message.error(`${this.currencyUnit}不足，请充值`);
-        return this.$router.push({ name: "currencyRecharge" });
+        this.$Message.error(`${this.currencyUnit}不足，请充值`)
+        return this.$router.push({ name: 'currencyRecharge' })
       }
       const { message } = await this.$store.dispatch(
-        "currency/requestWithdraw",
+        'currency/requestWithdraw',
         this.amount
-      );
+      )
       if (message) {
-        this.$Message.success(message);
-        this.goBack();
+        this.$Message.success(message)
+        this.goBack()
       }
     },
-    selectWithdrawType() {
-      const actions = [];
-      this.$bus.$emit("actionSheet", actions, "取消", "当前未支持任何提现方式");
+    selectWithdrawType () {
+      const actions = []
+      this.$bus.$emit('actionSheet', actions, '取消', '当前未支持任何提现方式')
     },
-    popupRule() {
-      this.$refs.dialog.show();
-    }
-  }
-};
+    popupRule () {
+      this.$refs.dialog.show()
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

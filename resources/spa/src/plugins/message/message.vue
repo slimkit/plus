@@ -12,26 +12,26 @@
   </transition>
 </template>
 <script>
-const prefixCls = "v-msg";
+const prefixCls = 'v-msg'
 export default {
   props: {
-    type: { type: String, default: "message" },
+    type: { type: String, default: 'message' },
     duration: { type: Number, default: 3 },
     closable: { type: Boolean, default: false },
-    transitionName: { type: String, default: "" },
-    icon: { type: String, default: "message-success" },
+    transitionName: { type: String, default: '' },
+    icon: { type: String, default: 'message-success' },
     content: { type: [Object, Array], required: true },
     onClose: { type: Function, default: () => {} },
-    name: { type: String, required: true }
+    name: { type: String, required: true },
   },
-  data() {
+  data () {
     return {
-      prefixCls
-    };
+      prefixCls,
+    }
   },
   computed: {
-    classes() {
-      return [prefixCls, `${prefixCls}__${this.type}`];
+    classes () {
+      return [prefixCls, `${prefixCls}__${this.type}`]
     },
     /**
      *  Default message.
@@ -39,41 +39,41 @@ export default {
      * @return {string}
      * @author Seven Du <shiweidu@outlook.com>
      */
-    defaultMessage() {
-      if (this.type === "success") {
-        return "成功！";
+    defaultMessage () {
+      if (this.type === 'success') {
+        return '成功！'
       }
 
-      return "发生错误了，请刷新重试！";
-    }
+      return '发生错误了，请刷新重试！'
+    },
   },
-  mounted() {
-    this.clearCloseTimer();
+  mounted () {
+    this.clearCloseTimer()
     if (this.duration !== 0) {
       this.closeTimer = setTimeout(() => {
-        this.close();
-      }, this.duration * 1000);
+        this.close()
+      }, this.duration * 1000)
     }
   },
-  beforeDestroy() {
-    this.clearCloseTimer();
+  beforeDestroy () {
+    this.clearCloseTimer()
   },
   methods: {
-    clearCloseTimer() {
+    clearCloseTimer () {
       if (this.closeTimer) {
-        clearTimeout(this.closeTimer);
-        this.closeTimer = null;
+        clearTimeout(this.closeTimer)
+        this.closeTimer = null
       }
     },
-    close() {
-      this.clearCloseTimer();
-      this.onClose();
-      this.$parent.close(this.name);
+    close () {
+      this.clearCloseTimer()
+      this.onClose()
+      this.$parent.close(this.name)
     },
-    handleEnter() {},
-    handleLeave() {}
-  }
-};
+    handleEnter () {},
+    handleLeave () {},
+  },
+}
 </script>
 <style lang='less' src='./style/message.less'>
 </style>

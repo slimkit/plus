@@ -1,11 +1,17 @@
 <template>
   <transition name="toast">
 
-    <div v-if="show" class="c-popup-dialog">
+    <div
+      v-if="show"
+      class="c-popup-dialog">
       <div class="panel">
-        <header v-if="title" v-text="title"/>
+        <header
+          v-if="title"
+          v-text="title"/>
         <main v-html="content"/>
-        <footer @click="onConfirm" v-text="confirmText"/>
+        <footer
+          @click="onConfirm"
+          v-text="confirmText"/>
       </div>
     </div>
 
@@ -13,36 +19,36 @@
 </template>
 
 <script>
-import { noop } from "@/util";
+import { noop } from '@/util'
 
 export default {
-  name: "PopupDialog",
-  data() {
+  name: 'PopupDialog',
+  data () {
     return {
       show: false,
 
-      title: "",
-      content: "",
-      confirmText: "知道了",
-      onClose: noop
-    };
+      title: '',
+      content: '',
+      confirmText: '知道了',
+      onClose: noop,
+    }
   },
-  created() {
-    this.$bus.$on("popupDialog", (content, options = {}) => {
-      if (typeof content === "object") options = content;
-      else options.content = content;
-      Object.assign(this.$data, options);
+  created () {
+    this.$bus.$on('popupDialog', (content, options = {}) => {
+      if (typeof content === 'object') options = content
+      else options.content = content
+      Object.assign(this.$data, options)
 
-      this.show = true;
-    });
+      this.show = true
+    })
   },
   methods: {
-    onConfirm() {
-      this.show = false;
-      this.onClose();
-    }
-  }
-};
+    onConfirm () {
+      this.show = false
+      this.onClose()
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

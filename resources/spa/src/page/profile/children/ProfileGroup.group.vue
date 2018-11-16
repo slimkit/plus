@@ -20,49 +20,49 @@
 </template>
 
 <script>
-import groupItem from "@/page/group/components/GroupItem.vue";
+import groupItem from '@/page/group/components/GroupItem.vue'
 
 export default {
-  name: "ProfileGroupGroups",
+  name: 'ProfileGroupGroups',
   components: {
-    groupItem
+    groupItem,
   },
-  data() {
+  data () {
     return {
-      curType: "join",
+      curType: 'join',
       navs: [
         {
-          type: "join",
-          label: "我加入的"
+          type: 'join',
+          label: '我加入的',
         },
         {
-          type: "audit",
-          label: "待审核的"
-        }
+          type: 'audit',
+          label: '待审核的',
+        },
       ],
 
-      dataList: []
-    };
-  },
-  watch: {
-    curType() {
-      this.getData();
+      dataList: [],
     }
   },
-  created() {
-    this.getData();
+  watch: {
+    curType () {
+      this.getData()
+    },
+  },
+  created () {
+    this.getData()
   },
 
   methods: {
-    getData() {
+    getData () {
       this.$http
         .get(`/plus-group/user-groups?type=${this.curType}`)
         .then(({ data = [] }) => {
-          this.dataList = data;
-        });
-    }
-  }
-};
+          this.dataList = data
+        })
+    },
+  },
+}
 </script>
 <style lang='less'>
 </style>

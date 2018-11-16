@@ -24,65 +24,65 @@
 </template>
 
 <script>
-import walletInfo from "./WalletInfo";
-import walletDetailItem from "./components/WalletDetailItem.vue";
+import walletInfo from './WalletInfo'
+import walletDetailItem from './components/WalletDetailItem.vue'
 
 export default {
-  name: "WalletDetail",
+  name: 'WalletDetail',
   components: {
     walletInfo,
-    walletDetailItem
+    walletDetailItem,
   },
-  data() {
+  data () {
     return {
       options: [
-        { value: "all", label: "全部" },
-        { value: "expenses", label: "支出" },
-        { value: "income", label: "收入" }
+        { value: 'all', label: '全部' },
+        { value: 'expenses', label: '支出' },
+        { value: 'income', label: '收入' },
       ],
-      currAction: "",
+      currAction: '',
       list: [],
-      currInfo: null
-    };
+      currInfo: null,
+    }
   },
   computed: {
-    after() {
-      const last = this.list.slice(-1)[0];
-      return last ? last.id : 0;
-    }
+    after () {
+      const last = this.list.slice(-1)[0]
+      return last ? last.id : 0
+    },
   },
   watch: {
-    currAction() {
-      this.list = [];
-      this.$refs.loadmore.beforeRefresh();
-    }
+    currAction () {
+      this.list = []
+      this.$refs.loadmore.beforeRefresh()
+    },
   },
   methods: {
-    showDetail(val) {
+    showDetail (val) {
       this.$router.push({
         path: `/wallet/detail/${val.id}`,
-        meta: { data: val }
-      });
+        meta: { data: val },
+      })
     },
-    async onRefresh() {
-      const data = await this.$store.dispatch("wallet/getWalletOrders", {
-        action: this.currAction
-      });
-
-      if (data.length > 0) this.list = data;
-
-      this.$refs.loadmore.topEnd(data.length < 15);
-    },
-    async onLoadMore() {
-      const data = await this.$store.dispatch("wallet/getWalletOrders", {
+    async onRefresh () {
+      const data = await this.$store.dispatch('wallet/getWalletOrders', {
         action: this.currAction,
-        after: this.after
-      });
-      if (data.length > 0) this.list = [...this.list, ...data];
-      this.$refs.loadmore.bottomEnd(data.length < 15);
-    }
-  }
-};
+      })
+
+      if (data.length > 0) this.list = data
+
+      this.$refs.loadmore.topEnd(data.length < 15)
+    },
+    async onLoadMore () {
+      const data = await this.$store.dispatch('wallet/getWalletOrders', {
+        action: this.currAction,
+        after: this.after,
+      })
+      if (data.length > 0) this.list = [...this.list, ...data]
+      this.$refs.loadmore.bottomEnd(data.length < 15)
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

@@ -6,7 +6,9 @@
         <header class="m-box m-aln-center m-justify-bet m-art-comment-usr">
           <h4 class="m-flex-grow1 m-flex-shrink1">{{ user.name }}</h4>
           <div class="m-box m-aln-center">
-            <span v-if="pinned" class="m-art-comment-icon-top">置顶</span>
+            <span
+              v-if="pinned"
+              class="m-art-comment-icon-top">置顶</span>
             <span>{{ time | time2tips }}</span>
           </div>
         </header>
@@ -36,33 +38,33 @@
  * @author jsonleex <jsonlseex@163.com>
  * 按 4个英文字符 = 1个中文字符 计算
  */
-function strLength(str) {
-  let totalLength = 0;
-  let i = 0;
-  let charCode;
+function strLength (str) {
+  let totalLength = 0
+  let i = 0
+  let charCode
   for (; i < str.length; i++) {
-    charCode = str.charCodeAt(i);
+    charCode = str.charCodeAt(i)
     if (charCode < 0x007f) {
-      totalLength = totalLength + 0.25;
+      totalLength = totalLength + 0.25
     } else if (charCode >= 0x0080 && charCode <= 0x07ff) {
-      totalLength += 1;
+      totalLength += 1
     } else if (charCode >= 0x0800 && charCode <= 0xffff) {
-      totalLength += 1.5;
+      totalLength += 1.5
     }
   }
-  return totalLength;
+  return totalLength
 }
 
 export default {
-  name: "CommentItem",
+  name: 'CommentItem',
   props: {
     comment: { type: Object, required: true },
-    pinned: { type: Boolean, default: false }
+    pinned: { type: Boolean, default: false },
   },
-  data() {
+  data () {
     return {
-      showAll: false
-    };
+      showAll: false,
+    }
   },
   computed: {
     // 需求变更：不显示更多按钮
@@ -74,35 +76,35 @@ export default {
     //     this.showAll = val;
     //   }
     // },
-    isShowAll() {
-      return true;
+    isShowAll () {
+      return true
     },
-    user() {
-      const { user } = this.comment;
-      return user && user.id ? user : {};
+    user () {
+      const { user } = this.comment
+      return user && user.id ? user : {}
     },
-    replyUser() {
-      const { reply } = this.comment;
-      return reply && reply.id ? reply : null;
+    replyUser () {
+      const { reply } = this.comment
+      return reply && reply.id ? reply : null
     },
-    body() {
-      return this.comment.body || "";
+    body () {
+      return this.comment.body || ''
     },
-    bodyLength() {
-      return strLength(this.body);
+    bodyLength () {
+      return strLength(this.body)
     },
-    time() {
-      return this.comment.created_at || "";
-    }
+    time () {
+      return this.comment.created_at || ''
+    },
   },
-  mounted() {
-    this.$store.commit("SAVE_USER", this.user);
+  mounted () {
+    this.$store.commit('SAVE_USER', this.user)
   },
   methods: {
-    handelClick() {
-      if (!this.isShowAll) return (this.isShowAll = !this.isShowAll);
-      this.$emit("click", this.user.id, this.user.name, this.comment.id);
-    }
-  }
-};
+    handelClick () {
+      if (!this.isShowAll) return (this.isShowAll = !this.isShowAll)
+      this.$emit('click', this.user.id, this.user.name, this.comment.id)
+    },
+  },
+}
 </script>

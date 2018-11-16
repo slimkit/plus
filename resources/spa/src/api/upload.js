@@ -1,8 +1,8 @@
-import axios from "axios";
-import api from "./api";
+import axios from 'axios'
+import api from './api'
 
 // 新 axios 实例用于第三方请求
-const localUploadInstance = axios.create();
+const localUploadInstance = axios.create()
 
 /**
  * 创建上传任务
@@ -16,14 +16,14 @@ const localUploadInstance = axios.create();
  * @param {string} payload.storage.channel
  * @export
  */
-export function createUploadTask(payload) {
+export function createUploadTask (payload) {
   return api
-    .post("/storage", payload, {
-      validateStatus: s => s === 201
+    .post('/storage', payload, {
+      validateStatus: s => s === 201,
     })
     .then(({ data }) => {
-      return data;
-    });
+      return data
+    })
 }
 
 /**
@@ -37,13 +37,13 @@ export function createUploadTask(payload) {
  * @param {Blob} payload.blob
  * @returns
  */
-export function uploadImage(payload) {
+export function uploadImage (payload) {
   return localUploadInstance
     .request({
       method: payload.method,
       url: payload.url,
       headers: payload.headers,
-      data: payload.blob
+      data: payload.blob,
     })
-    .then(res => res.data);
+    .then(res => res.data)
 }

@@ -1,7 +1,11 @@
 <template>
-  <transition name="router-fadeInRight" mode="out-in">
+  <transition
+    name="router-fadeInRight"
+    mode="out-in">
     <div class="choose-group">
-      <head-top :go-back="close" :title="`选择圈子`"/>
+      <head-top
+        :go-back="close"
+        :title="`选择圈子`"/>
       <div/>
       <div class="choose-group-list">
         <div
@@ -17,42 +21,42 @@
 </template>
 
 <script>
-import HeadTop from "@/components/HeadTop";
+import HeadTop from '@/components/HeadTop'
 export default {
-  name: "ChooseGroup",
+  name: 'ChooseGroup',
   components: {
-    HeadTop
+    HeadTop,
   },
   props: {
-    value: { type: Object, default: () => {} }
+    value: { type: Object, default: () => {} },
   },
-  data() {
+  data () {
     return {
       groups: [],
-      selected: 0
-    };
+      selected: 0,
+    }
   },
-  mounted() {
-    this.selected = this.value;
-    this.getAllGroups();
+  mounted () {
+    this.selected = this.value
+    this.getAllGroups()
   },
   methods: {
-    close() {
-      this.$emit("on-close");
-      this.selected && this.$emit("input", this.selected);
+    close () {
+      this.$emit('on-close')
+      this.selected && this.$emit('input', this.selected)
     },
-    selectGroup(group) {
-      this.selected = group;
-      this.close();
+    selectGroup (group) {
+      this.selected = group
+      this.close()
     },
-    async getAllGroups() {
+    async getAllGroups () {
       const { data } = await this.$http.get(
         `/plus-group/user-groups?type=allow_post`
-      );
-      this.groups = data ? [...data] : [];
-    }
-  }
-};
+      )
+      this.groups = data ? [...data] : []
+    },
+  },
+}
 </script>
 
 <style lang='less' scoped>

@@ -6,25 +6,25 @@
 </template>
 <script>
 export default {
-  name: "VTab",
+  name: 'VTab',
   props: {
-    title: { type: String, default: "" },
-    value: { type: Object, required: true }
+    title: { type: String, default: '' },
+    value: { type: Object, required: true },
   },
-  data() {
+  data () {
     return {
-      active: false
-    };
+      active: false,
+    }
   },
   methods: {
-    tabClick(e) {
+    tabClick (e) {
       if (this.$parent.handleTabClick) {
-        this.$parent.handleTabClick(this.value, this);
+        this.$parent.handleTabClick(this.value, this)
       }
-      this.$emit("click", e);
-    }
-  }
-};
+      this.$emit('click', e)
+    },
+  },
+}
 </script>
 <style lang='less'>
 </style>

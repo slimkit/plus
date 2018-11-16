@@ -51,52 +51,52 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters } from 'vuex'
 
 export default {
-  name: "FootGuide",
-  data() {
+  name: 'FootGuide',
+  data () {
     return {
-      has_fans: false
-    };
+      has_fans: false,
+    }
   },
   computed: {
     ...mapState({
       has_msg: state =>
         state.MESSAGE.NEW_UNREAD_COUNT.commented +
-          state.MESSAGE.NEW_UNREAD_COUNT["feed-comment-pinned"] +
-          state.MESSAGE.NEW_UNREAD_COUNT["group-join-pinned"] +
+          state.MESSAGE.NEW_UNREAD_COUNT['feed-comment-pinned'] +
+          state.MESSAGE.NEW_UNREAD_COUNT['group-join-pinned'] +
           state.MESSAGE.NEW_UNREAD_COUNT.liked +
-          state.MESSAGE.NEW_UNREAD_COUNT["news-comment-pinned"] +
-          state.MESSAGE.NEW_UNREAD_COUNT["post-comment-pinned"] +
-          state.MESSAGE.NEW_UNREAD_COUNT["post-pinned"] +
+          state.MESSAGE.NEW_UNREAD_COUNT['news-comment-pinned'] +
+          state.MESSAGE.NEW_UNREAD_COUNT['post-comment-pinned'] +
+          state.MESSAGE.NEW_UNREAD_COUNT['post-pinned'] +
           state.MESSAGE.NEW_UNREAD_COUNT.system >
         0,
       profile: state =>
         state.MESSAGE.NEW_UNREAD_COUNT.following +
           state.MESSAGE.NEW_UNREAD_COUNT.mutual >
-        0
+        0,
     }),
-    ...mapGetters(["hasUnreadChat"]),
-    hasMsg() {
-      return this.has_msg || this.hasUnreadChat > 0;
-    }
+    ...mapGetters(['hasUnreadChat']),
+    hasMsg () {
+      return this.has_msg || this.hasUnreadChat > 0
+    },
   },
-  mounted() {
-    this.$el.parentNode.style.paddingBottom = "1rem";
+  mounted () {
+    this.$el.parentNode.style.paddingBottom = '1rem'
   },
   methods: {
-    to(path) {
-      this.$router.push({ path });
+    to (path) {
+      this.$router.push({ path })
     },
-    isCurPath(path) {
-      return this.$route.fullPath.indexOf(path) > -1;
+    isCurPath (path) {
+      return this.$route.fullPath.indexOf(path) > -1
     },
-    showPostMenu() {
-      this.$bus.$emit("post-menu");
-    }
-  }
-};
+    showPostMenu () {
+      this.$bus.$emit('post-menu')
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

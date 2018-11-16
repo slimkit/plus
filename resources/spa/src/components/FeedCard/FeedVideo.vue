@@ -6,73 +6,73 @@
     <video
       v-if="videoFile"
       :poster="coverFile"
-      :ref="`video_${id}`" 
+      :ref="`video_${id}`"
       controls
       x-webkit-airplay="true"
       webkit-playsinline="true"
-      playsinline="true" 
+      playsinline="true"
       preload="none"
     >
-      <source 
-        :src="videoFile" 
+      <source
+        :src="videoFile"
         type="video/mp4"
       >
       Your browser does not support the video tag.
-    </video> 
+    </video>
   </div>
 </template>
 <script>
 export default {
-  name: "FeedVideo",
+  name: 'FeedVideo',
   props: {
     video: {
       type: Object,
-      required: true
+      required: true,
     },
     id: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   data: () => ({
-    videoFile: "",
-    coverFile: "",
+    videoFile: '',
+    coverFile: '',
     play: false,
-    ratio: 1
+    ratio: 1,
   }),
   computed: {
-    height() {
+    height () {
       return this.video.width < this.video.height
         ? 5.18
-        : parseInt(this.video.height * this.ratio) / 100;
-    }
+        : parseInt(this.video.height * this.ratio) / 100
+    },
   },
-  created() {
-    this.ratio = 518 / this.video.width;
-    this.getVideoUrl();
-    this.getCoverUrl();
+  created () {
+    this.ratio = 518 / this.video.width
+    this.getVideoUrl()
+    this.getCoverUrl()
   },
   methods: {
-    getVideoUrl() {
+    getVideoUrl () {
       this.$http
         .get(`/files/${this.video.video_id}?json=1`, {
-          validateStatus: s => s === 200
+          validateStatus: s => s === 200,
         })
-        .then(({ data: { url = "" } = {} } = {}) => {
-          this.videoFile = url;
-        });
+        .then(({ data: { url = '' } = {} } = {}) => {
+          this.videoFile = url
+        })
     },
-    getCoverUrl() {
+    getCoverUrl () {
       this.$http
         .get(`/files/${this.video.cover_id}?json=1`, {
-          validateStatus: s => s === 200
+          validateStatus: s => s === 200,
         })
-        .then(({ data: { url = "" } = {} } = {}) => {
-          this.coverFile = url;
-        });
-    }
-  }
-};
+        .then(({ data: { url = '' } = {} } = {}) => {
+          this.coverFile = url
+        })
+    },
+  },
+}
 </script>
 <style lang="less">
 .feed-video {

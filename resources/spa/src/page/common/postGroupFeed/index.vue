@@ -47,67 +47,67 @@
   </div>
 </template>
 <script>
-import HeadTop from "@/components/HeadTop";
-import ChooseGroup from "./children/chooseGroup";
-const prefixCls = "post--group-feed";
+import HeadTop from '@/components/HeadTop'
+import ChooseGroup from './children/chooseGroup'
+const prefixCls = 'post--group-feed'
 export default {
-  name: "PostGroupFeed",
+  name: 'PostGroupFeed',
   components: {
     HeadTop,
-    ChooseGroup
+    ChooseGroup,
   },
-  data() {
+  data () {
     return {
       prefixCls,
-      title: "",
-      body: "",
+      title: '',
+      body: '',
       showChoose: false,
-      selectGroup: {}
-    };
-  },
-  computed: {
-    chooseTips() {
-      return this.selectGroup.name || "选择圈子";
-    },
-    groupId() {
-      return this.selectGroup.id || this.$route.params.groupId;
-    },
-    disabled() {
-      return !(this.title.length > 0 && this.body.length > 0);
+      selectGroup: {},
     }
   },
+  computed: {
+    chooseTips () {
+      return this.selectGroup.name || '选择圈子'
+    },
+    groupId () {
+      return this.selectGroup.id || this.$route.params.groupId
+    },
+    disabled () {
+      return !(this.title.length > 0 && this.body.length > 0)
+    },
+  },
   methods: {
-    showChoosePage() {
-      this.showChoose = true;
+    showChoosePage () {
+      this.showChoose = true
     },
-    closeChoosePage() {
-      this.showChoose = false;
+    closeChoosePage () {
+      this.showChoose = false
     },
-    goBack() {
-      this.$router.go(-1);
+    goBack () {
+      this.$router.go(-1)
     },
-    postFeed() {
+    postFeed () {
       if (this.groupId) {
         const params = {
           title: this.title,
           body: this.body,
           summary: this.body,
-          feed_from: 2
-        };
+          feed_from: 2,
+        }
         // /groups/:group/posts
         this.$http
           .post(`/plus-group/groups/${this.groupId}/posts`, {
-            ...params
+            ...params,
           })
           .then(({ data: { post } }) => {
             if (post.id) {
-              this.$router.push(`/group/${this.groupId}/feed/${post.id}`);
+              this.$router.push(`/group/${this.groupId}/feed/${post.id}`)
             }
-          });
+          })
       }
-    }
-  }
-};
+    },
+  },
+}
 </script>
 <style lang='less'>
 @post-group-feed-prefix: post--group-feed;

@@ -48,109 +48,109 @@
 
 <script>
 export default {
-  name: "WechatSignin",
-  data() {
+  name: 'WechatSignin',
+  data () {
     return {
       loading: true,
-      accessToken: "",
-      WechatUname: ""
-    };
+      accessToken: '',
+      WechatUname: '',
+    }
   },
 
   watch: {
     // 根据获取到access_token检查用户是否已经被楚泽
-    showBind(val) {
-      this.showBind = val;
+    showBind (val) {
+      this.showBind = val
       if (val) {
-        this.showRegister = !val;
+        this.showRegister = !val
       }
     },
-    showRegister(val) {
-      this.showRegister = val;
+    showRegister (val) {
+      this.showRegister = val
       if (val) {
-        this.showBind = !val;
+        this.showBind = !val
       }
-    }
+    },
   },
-  mounted() {
-    const { code } = this.$route.query;
-    this.resolveUser(code);
+  mounted () {
+    const { code } = this.$route.query
+    this.resolveUser(code)
   },
   methods: {
-    goDefault() {
-      this.showRegister = false;
-      this.showBind = false;
+    goDefault () {
+      this.showRegister = false
+      this.showBind = false
     },
-    action(action) {
-      this[action] = true;
+    action (action) {
+      this[action] = true
     },
-    async resolveUser(code) {
-      let openId = this.$lstore.getData("H5_WECHAT_MP_OPENID");
-      let accessToken = this.$lstore.getData("H5_WECHAT_MP_ASTOKEN");
+    async resolveUser (code) {
+      let openId = this.$lstore.getData('H5_WECHAT_MP_OPENID')
+      let accessToken = this.$lstore.getData('H5_WECHAT_MP_ASTOKEN')
 
       if (!accessToken || !openId) {
         const { data: { access_token, openid } = {} } = await this.$http.get(
           `socialite/getAccess/${code}`,
           {
-            validateStatus: status => status === 200
-          }
-        );
-
-        openId = openid;
-        accessToken = access_token;
-
-        this.$lstore.setData("H5_WECHAT_MP_OPENID", openid);
-        this.$lstore.setData("H5_WECHAT_MP_ASTOKEN", accessToken);
-      }
-      this.accessToken = accessToken;
-      this.$http
-        .post(
-          "socialite/wechat",
-          {
-            access_token: accessToken
-          },
-          {
-            validateStatus: s => s === 201
+            validateStatus: status => status === 200,
           }
         )
-        .then(({ data: { token = "", user = {} } = {} }) => {
+
+        openId = openid
+        accessToken = access_token
+
+        this.$lstore.setData('H5_WECHAT_MP_OPENID', openid)
+        this.$lstore.setData('H5_WECHAT_MP_ASTOKEN', accessToken)
+      }
+      this.accessToken = accessToken
+      this.$http
+        .post(
+          'socialite/wechat',
+          {
+            access_token: accessToken,
+          },
+          {
+            validateStatus: s => s === 201,
+          }
+        )
+        .then(({ data: { token = '', user = {} } = {} }) => {
           // 保存用户信息 并跳转
-          this.$router.push(this.$route.query.redirect || "/feeds?type=hot");
+          this.$router.push(this.$route.query.redirect || '/feeds?type=hot')
           this.$nextTick(() => {
-            this.$lstore.removeData("H5_WECHAT_MP_OPENID");
-            this.$lstore.removeData("H5_WECHAT_MP_ASTOKEN");
-            this.$store.commit("SAVE_USER", user);
-            this.$store.dispatch("GET_UNREAD_COUNT");
-            this.$store.dispatch("GET_NEW_UNREAD_COUNT");
-            this.$lstore.setData("H5_ACCESS_TOKEN", `Bearer ${token}`);
-            this.$store.commit("SAVE_CURRENTUSER", user);
-          });
+            this.$lstore.removeData('H5_WECHAT_MP_OPENID')
+            this.$lstore.removeData('H5_WECHAT_MP_ASTOKEN')
+            this.$store.commit('SAVE_USER', user)
+            this.$store.dispatch('GET_UNREAD_COUNT')
+            this.$store.dispatch('GET_NEW_UNREAD_COUNT')
+            this.$lstore.setData('H5_ACCESS_TOKEN', `Bearer ${token}`)
+            this.$store.commit('SAVE_CURRENTUSER', user)
+          })
         })
         .catch(() => {
-          this.loading = false;
-          this.getWechatUserInfo(accessToken, openId);
-        });
+          this.loading = false
+          this.getWechatUserInfo(accessToken, openId)
+        })
     },
 
-    getWechatUserInfo(access_token, openid) {
+    getWechatUserInfo (access_token, openid) {
       this.$http
         .post(
-          "socialite/getWechatUser",
+          'socialite/getWechatUser',
           {
             openid,
-            access_token
+            access_token,
           },
           {
-            validateStatus: s => s === 200
+            validateStatus: s => s === 200,
           }
         )
-        .then(({ data: { nickname = "" } = {} }) => {
-          this.WechatUname = nickname;
-          this.$lstore.setData("H5_WECHAT_NICKNAME", nickname);
-        });
-    }
-  }
-};
+        .then(({ data: { nickname = '' } = {} }) => {
+          this.WechatUname = nickname
+          this.$lstore.setData('H5_WECHAT_NICKNAME', nickname)
+        })
+    },
+  },
+}
 </script>
 
 <style lang="less">

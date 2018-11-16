@@ -1,11 +1,19 @@
 <template>
-  <section class="m-box m-aln-center m-justify-bet chat-item m-main" @click="handelView">
-    <div :class="avatarStyle" class="m-flex-shrink0 m-flex-grow0 m-avatar-box m-avatar-box-def">
-      <img v-if="avatar" :src="avatar">
+  <section
+    class="m-box m-aln-center m-justify-bet chat-item m-main"
+    @click="handelView">
+    <div
+      :class="avatarStyle"
+      class="m-flex-shrink0 m-flex-grow0 m-avatar-box m-avatar-box-def">
+      <img
+        v-if="avatar"
+        :src="avatar">
     </div>
     <div class="m-box-model m-flex-grow1 m-flex-shrink1 chat-item-main">
       <h2 class="m-text-cut">
-        <span class="m-text-cut" style="display: inline-block; max-width: 70%;vertical-align: middle;">{{ name }}</span>
+        <span
+          class="m-text-cut"
+          style="display: inline-block; max-width: 70%;vertical-align: middle;">{{ name }}</span>
         <span>{{ userCount }}</span>
       </h2>
       <p class="m-text-cut">{{ latest.data }}</p>
@@ -13,7 +21,9 @@
     <div class="m-box-model m-flex-grow0 m-flex-shrink0 m-justify-center chat-item-ext">
       <span>{{ time + timeOffset | time2tips }}</span>
       <div class="m-box m-aln-center m-justify-end chat-item-count-wrap">
-        <span v-show="count > 0" class="chat-item-count">
+        <span
+          v-show="count > 0"
+          class="chat-item-count">
           <i>{{ count }}</i>
         </span>
       </div>
@@ -22,68 +32,68 @@
 </template>
 
 <script>
-import { timeOffset } from "@/filters.js";
+import { timeOffset } from '@/filters.js'
 
 export default {
-  name: "ChatItem",
+  name: 'ChatItem',
   props: {
     item: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
-  data() {
+  data () {
     return {
-      timeOffset
-    };
+      timeOffset,
+    }
   },
   computed: {
-    type() {
-      return this.item.type;
+    type () {
+      return this.item.type
     },
-    info() {
-      return this.item.info;
+    info () {
+      return this.item.info
     },
-    name() {
-      return this.item.name;
+    name () {
+      return this.item.name
     },
-    avatar() {
-      const avatar = this.item.avatar || {};
-      return avatar.url || null;
+    avatar () {
+      const avatar = this.item.avatar || {}
+      return avatar.url || null
     },
-    time() {
-      return this.item.time;
+    time () {
+      return this.item.time
     },
-    latest() {
-      return this.item.latest || { data: "" };
+    latest () {
+      return this.item.latest || { data: '' }
     },
-    count() {
-      return this.item.unreadCount || 0;
+    count () {
+      return this.item.unreadCount || 0
     },
-    avatarStyle() {
+    avatarStyle () {
       return this.avatar
-        ? ""
-        : this.type === "chat"
+        ? ''
+        : this.type === 'chat'
           ? `m-avatar-box-${this.info.sex}`
-          : `m-avatar-box-group`;
+          : `m-avatar-box-group`
     },
-    userCount() {
-      const { affiliations_count: count } = this.info;
-      return count > 0 ? `(${count})` : "";
-    }
+    userCount () {
+      const { affiliations_count: count } = this.info
+      return count > 0 ? `(${count})` : ''
+    },
   },
   methods: {
-    handelView() {
+    handelView () {
       // this.count > 0 &&
       //   // WebIMDB.readMessage(this.item.type, this.item.from).then(res => {
       //   //   res > 0 && this.$store.dispatch("initChats");
       //   // });
       this.$nextTick(() => {
-        this.$router.push(`/chats/${this.item.id}`);
-      });
-    }
-  }
-};
+        this.$router.push(`/chats/${this.item.id}`)
+      })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

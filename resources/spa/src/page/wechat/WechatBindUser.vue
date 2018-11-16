@@ -84,99 +84,99 @@
 </template>
 
 <script>
-function strLength(str) {
-  let totalLength = 0;
-  let i = 0;
-  let charCode;
+function strLength (str) {
+  let totalLength = 0
+  let i = 0
+  let charCode
   for (; i < str.length; i++) {
-    charCode = str.charCodeAt(i);
+    charCode = str.charCodeAt(i)
     if (charCode < 0x007f) {
-      totalLength = totalLength + 1;
+      totalLength = totalLength + 1
     } else if (charCode >= 0x0080 && charCode <= 0x07ff) {
-      totalLength += 2;
+      totalLength += 2
     } else if (charCode >= 0x0800 && charCode <= 0xffff) {
-      totalLength += 3;
+      totalLength += 3
     }
   }
-  return totalLength;
+  return totalLength
 }
 
 export default {
-  name: "WechatBindUser",
+  name: 'WechatBindUser',
   data: () => ({
-    err: "",
+    err: '',
     eye: false,
-    account: "",
-    password: "",
+    account: '',
+    password: '',
     loading: false,
-    accessToken: ""
+    accessToken: '',
   }),
   computed: {
-    disabled() {
-      const { account, password } = this.$data;
+    disabled () {
+      const { account, password } = this.$data
       return !(
-        [account, password].every(i => i !== "") && strLength(account) > 3
-      );
-    }
+        [account, password].every(i => i !== '') && strLength(account) > 3
+      )
+    },
   },
-  created() {
-    this.accessToken = this.$lstore.getData("H5_WECHAT_MP_ASTOKEN");
+  created () {
+    this.accessToken = this.$lstore.getData('H5_WECHAT_MP_ASTOKEN')
   },
   methods: {
-    onFocus() {
-      this.err = "";
+    onFocus () {
+      this.err = ''
     },
-    bindUser() {
-      this.err = "";
+    bindUser () {
+      this.err = ''
       if (this.loading) {
-        return;
+        return
       }
       const {
         account: login,
         password,
-        accessToken: access_token
-      } = this.$data;
+        accessToken: access_token,
+      } = this.$data
       if (!login) {
-        this.err = { error: "账号不能为空" };
-        return;
+        this.err = { error: '账号不能为空' }
+        return
       }
 
       if (!password) {
-        this.err = { error: "密码不能为空" };
-        return;
+        this.err = { error: '密码不能为空' }
+        return
       }
 
       if (!access_token) {
-        this.err = { error: "未获取到微信授权" };
-        return;
+        this.err = { error: '未获取到微信授权' }
+        return
       }
 
       let param = {
         login,
         access_token,
-        password
-      };
-      this.loading = true;
+        password,
+      }
+      this.loading = true
       this.$http
-        .put("socialite/wechat", param, {
-          validateStatus: s => s === 201
+        .put('socialite/wechat', param, {
+          validateStatus: s => s === 201,
         })
-        .then(({ data: { token = "", user = {} } = {} }) => {
-          this.$store.commit("SAVE_CURRENTUSER", { ...user, token });
+        .then(({ data: { token = '', user = {} } = {} }) => {
+          this.$store.commit('SAVE_CURRENTUSER', { ...user, token })
           this.$nextTick(() => {
-            this.$router.push(this.$route.query.redirect || "/feeds?type=hot");
-            this.$store.dispatch("GET_UNREAD_COUNT");
-            this.$store.dispatch("GET_NEW_UNREAD_COUNT");
-            this.$store.commit("SAVE_USER", user);
-            this.$lstore.removeData("H5_WECHAT_MP_OPENID");
-            this.$lstore.removeData("H5_WECHAT_MP_ASTOKEN");
-          });
-          this.loading = false;
+            this.$router.push(this.$route.query.redirect || '/feeds?type=hot')
+            this.$store.dispatch('GET_UNREAD_COUNT')
+            this.$store.dispatch('GET_NEW_UNREAD_COUNT')
+            this.$store.commit('SAVE_USER', user)
+            this.$lstore.removeData('H5_WECHAT_MP_OPENID')
+            this.$lstore.removeData('H5_WECHAT_MP_ASTOKEN')
+          })
+          this.loading = false
         })
         .catch(() => {
-          this.loading = false;
-        });
-    }
-  }
-};
+          this.loading = false
+        })
+    },
+  },
+}
 </script>

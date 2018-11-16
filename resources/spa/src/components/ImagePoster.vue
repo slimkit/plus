@@ -71,76 +71,76 @@
  * @property {boolean} [loading=false]
  */
 
-import sendImage from "@/util/SendImage.js";
+import sendImage from '@/util/SendImage.js'
 
 /**
  * @type {Poster}
  */
 const defaultPoster = {
-  id: "",
-  src: "",
-  type: "",
+  id: '',
+  src: '',
+  type: '',
   file: [],
   error: false,
-  loading: false
-};
+  loading: false,
+}
 
 export default {
   props: {
     /**
      * @type {Poster}
      */
-    poster: { type: Object, default: () => defaultPoster }
+    poster: { type: Object, default: () => defaultPoster },
   },
-  data() {
+  data () {
     return {
-      posterInternal: this.poster // for one-way data binding
-    };
+      posterInternal: this.poster, // for one-way data binding
+    }
   },
   methods: {
-    addPoster() {
-      if (this.posterInternal.loading) return;
-      this.$refs.imagefile.click();
+    addPoster () {
+      if (this.posterInternal.loading) return
+      this.$refs.imagefile.click()
     },
-    selectPhoto() {
-      const files = this.$refs.imagefile.files;
+    selectPhoto () {
+      const files = this.$refs.imagefile.files
       if (files && files.length > 0) {
         const posterObj = {
           loading: true,
           file: files[0],
           type: files[0].mimeType,
-          src: window.URL.createObjectURL(files[0])
-        };
-        this.posterInternal = Object.assign({}, defaultPoster, posterObj);
+          src: window.URL.createObjectURL(files[0]),
+        }
+        this.posterInternal = Object.assign({}, defaultPoster, posterObj)
       }
     },
     /**
      * @param {Poster} poster
      */
-    loadedPoster(poster) {
-      const file = poster.file;
-      if (!file) return;
+    loadedPoster (poster) {
+      const file = poster.file
+      if (!file) return
       sendImage(file)
         .then(id => {
           Object.assign(poster, {
             id,
             file: null,
             loading: false,
-            error: false
-          });
-          this.$emit("uploaded", poster);
+            error: false,
+          })
+          this.$emit('uploaded', poster)
         })
         .catch(() => {
-          poster.error = true;
-          poster.loading = false;
-        });
+          poster.error = true
+          poster.loading = false
+        })
     },
-    posterError() {
-      this.$Message.error("图片上传失败, 请重试");
-      this.$emit("error");
-    }
-  }
-};
+    posterError () {
+      this.$Message.error('图片上传失败, 请重试')
+      this.$emit('error')
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

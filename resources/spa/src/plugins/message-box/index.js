@@ -1,82 +1,82 @@
-import Vue from "vue";
-import Main from "./main.vue";
+import Vue from 'vue'
+import Main from './main.vue'
 
-let MessageConstructor = Vue.extend(Main);
+let MessageConstructor = Vue.extend(Main)
 
-let instance;
-let instances = [];
-let seed = 1;
+let instance
+let instances = []
+let seed = 1
 
 const hasOwn = (obj, key) => {
-  return hasOwnProperty.call(obj, key);
-};
+  return hasOwnProperty.call(obj, key)
+}
 
 const isVNode = node =>
-  node !== null && typeof node === "object" && hasOwn(node, "componentOptions");
+  node !== null && typeof node === 'object' && hasOwn(node, 'componentOptions')
 
 const Message = options => {
-  options = options || {};
+  options = options || {}
 
-  if (typeof options === "string") {
+  if (typeof options === 'string') {
     options = {
-      message: options
-    };
+      message: options,
+    }
   }
 
-  let userOnClose = options.onClose;
+  let userOnClose = options.onClose
 
-  let id = "message_" + seed++;
+  let id = 'message_' + seed++
 
-  options.onClose = function() {
-    Message.close(id, userOnClose);
-  };
+  options.onClose = function () {
+    Message.close(id, userOnClose)
+  }
 
   instance = new MessageConstructor({
-    data: options
-  });
+    data: options,
+  })
 
-  instance.id = id;
+  instance.id = id
 
   if (isVNode(instance.message)) {
-    instance.$slots.default = [instance.message];
-    instance.message = null;
+    instance.$slots.default = [instance.message]
+    instance.message = null
   }
 
-  instance.vm = instance.$mount();
-  document.body.appendChild(instance.vm.$el);
-  instance.vm.visible = true;
-  instance.dom = instance.vm.$el;
-  instance.dom.style.zIndex = 1000 + seed;
-  instances.push(instance);
-  return instance.vm;
+  instance.vm = instance.$mount()
+  document.body.appendChild(instance.vm.$el)
+  instance.vm.visible = true
+  instance.dom = instance.vm.$el
+  instance.dom.style.zIndex = 1000 + seed
+  instances.push(instance)
+  return instance.vm
 };
 
-["success", "warning", "info", "error"].forEach(type => {
+['success', 'warning', 'info', 'error'].forEach(type => {
   Message[type] = options => {
-    if (typeof options === "string") {
+    if (typeof options === 'string') {
       options = {
-        message: options
-      };
+        message: options,
+      }
     }
-    options.type = type;
-    return Message(options);
-  };
-});
+    options.type = type
+    return Message(options)
+  }
+})
 
-Message.close = function(id, userOnClose) {
+Message.close = function (id, userOnClose) {
   for (let i = 0, len = instances.length; i < len; i++) {
     if (id === instances[i].id) {
-      typeof userOnClose === "function" && userOnClose(instances[i]);
-      instances.splice(i, 1);
-      break;
+      typeof userOnClose === 'function' && userOnClose(instances[i])
+      instances.splice(i, 1)
+      break
     }
   }
-};
+}
 
-Message.closeAll = function() {
+Message.closeAll = function () {
   for (let i = instances.length - 1; i >= 0; i--) {
-    instances[i].close();
+    instances[i].close()
   }
-};
+}
 
-export default Message;
+export default Message

@@ -67,64 +67,64 @@
  * @typedef {{id: number, user, ...others}} FeedDetail
  */
 
-import FeedCard from "@/components/FeedCard/FeedCard.vue";
-import { noop } from "@/util";
+import FeedCard from '@/components/FeedCard/FeedCard.vue'
+import { noop } from '@/util'
 
-const feedTypesMap = ["new", "hot", "follow"];
+const feedTypesMap = ['new', 'hot', 'follow']
 
 export default {
-  name: "FeedList",
+  name: 'FeedList',
   components: { FeedCard },
-  data() {
-    return {};
+  data () {
+    return {}
   },
   computed: {
-    feedType() {
-      return this.$route.query.type;
+    feedType () {
+      return this.$route.query.type
     },
-    feeds() {
-      return this.$store.getters[`feed/${this.feedType}`];
+    feeds () {
+      return this.$store.getters[`feed/${this.feedType}`]
     },
-    pinned() {
-      return this.$store.getters["feed/pinned"];
+    pinned () {
+      return this.$store.getters['feed/pinned']
     },
-    after() {
-      const len = this.feeds.length;
-      if (!len) return 0;
-      if (this.feedType !== "hot") return this.feeds[len - 1].id; // after
-      return this.feeds[len - 1].hot; // offset
-    }
+    after () {
+      const len = this.feeds.length
+      if (!len) return 0
+      if (this.feedType !== 'hot') return this.feeds[len - 1].id // after
+      return this.feeds[len - 1].hot // offset
+    },
   },
   watch: {
-    feedType(val, oldVal) {
+    feedType (val, oldVal) {
       feedTypesMap.includes(val) &&
         oldVal &&
-        this.$refs.loadmore.beforeRefresh();
-    }
+        this.$refs.loadmore.beforeRefresh()
+    },
   },
-  created() {
-    this.onRefresh(noop);
+  created () {
+    this.onRefresh(noop)
   },
-  activated() {
+  activated () {
     if (this.$route.query.refresh) {
-      this.onRefresh();
+      this.onRefresh()
     }
   },
   methods: {
-    async onRefresh() {
-      const type = this.feedType.replace(/^\S/, s => s.toUpperCase());
-      const action = `feed/get${type}Feeds`;
-      const data = await this.$store.dispatch(action, { refresh: true });
-      this.$refs.loadmore.afterRefresh(data.length < 15);
+    async onRefresh () {
+      const type = this.feedType.replace(/^\S/, s => s.toUpperCase())
+      const action = `feed/get${type}Feeds`
+      const data = await this.$store.dispatch(action, { refresh: true })
+      this.$refs.loadmore.afterRefresh(data.length < 15)
     },
-    async onLoadMore() {
-      const type = this.feedType.replace(/^\S/, s => s.toUpperCase());
-      const action = `feed/get${type}Feeds`;
-      const data = await this.$store.dispatch(action, { after: this.after });
-      this.$refs.loadmore.afterLoadMore(data.length < 15);
-    }
-  }
-};
+    async onLoadMore () {
+      const type = this.feedType.replace(/^\S/, s => s.toUpperCase())
+      const action = `feed/get${type}Feeds`
+      const data = await this.$store.dispatch(action, { after: this.after })
+      this.$refs.loadmore.afterLoadMore(data.length < 15)
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

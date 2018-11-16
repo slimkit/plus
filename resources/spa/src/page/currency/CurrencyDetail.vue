@@ -28,72 +28,71 @@
 </template>
 
 <script>
-import _ from "lodash";
-import CurrencyDetailItem from "./components/CurrencyDetailItem.vue";
+import _ from 'lodash'
+import CurrencyDetailItem from './components/CurrencyDetailItem.vue'
 
 export default {
-  name: "CurrencyDetail",
+  name: 'CurrencyDetail',
   components: { CurrencyDetailItem },
-  data() {
+  data () {
     return {
       options: [
-        { value: "all", label: "全部" },
-        { value: "expenses", label: "支出" },
-        { value: "income", label: "收入" }
+        { value: 'all', label: '全部' },
+        { value: 'expenses', label: '支出' },
+        { value: 'income', label: '收入' },
       ],
       list: [],
-      currInfo: null
-    };
+      currInfo: null,
+    }
   },
   computed: {
-    after() {
-      const len = this.list.length;
-      return len ? this.list[len - 1].id : 0;
+    after () {
+      const len = this.list.length
+      return len ? this.list[len - 1].id : 0
     },
     currAction: {
-      get() {
-        return this.$route.query.action || "recharge";
+      get () {
+        return this.$route.query.action || 'recharge'
       },
-      set(val) {
+      set (val) {
         this.$router.replace({
           path: this.$route.path,
-          query: { action: val }
-        });
-      }
-    }
+          query: { action: val },
+        })
+      },
+    },
   },
   watch: {
-    currAction() {
-      this.list = [];
-      this.$refs.loadmore.beforeRefresh();
-    }
+    currAction () {
+      this.list = []
+      this.$refs.loadmore.beforeRefresh()
+    },
   },
   methods: {
-    onRefresh() {
+    onRefresh () {
       this.$store
-        .dispatch("currency/getCurrencyOrders", { action: this.currAction })
+        .dispatch('currency/getCurrencyOrders', { action: this.currAction })
         .then(data => {
-          if (data.length > 0)
-            this.list = _.unionBy([...data, ...this.list], "id");
+          if (data.length > 0) { this.list = _.unionBy([...data, ...this.list], 'id') }
 
-          this.$refs.loadmore.topEnd(data.length >= 15);
-        });
+          this.$refs.loadmore.topEnd(data.length >= 15)
+        })
     },
-    onLoadMore() {
+    onLoadMore () {
       this.$store
-        .dispatch("currency/getCurrencyOrders", {
+        .dispatch('currency/getCurrencyOrders', {
           action: this.currAction,
-          after: this.after
+          after: this.after,
         })
         .then(data => {
           if (data.length > 0) {
-            this.list = [...this.list, ...data];
+            this.list = [...this.list, ...data]
           }
-          this.$refs.loadmore.bottomEnd(data.length < 15);
-        });
-    }
-  }
-};
+          this.$refs.loadmore.bottomEnd(data.length < 15)
+        })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

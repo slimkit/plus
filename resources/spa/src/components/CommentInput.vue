@@ -31,7 +31,9 @@
             maxlength="255"/>
         </span>
         <div class="submit-wrap">
-          <span v-if="contentText.length >= 210" class="content-length">{{ contentText.length }}/255</span>
+          <span
+            v-if="contentText.length >= 210"
+            class="content-length">{{ contentText.length }}/255</span>
           <button
             :disabled="!contentText.length"
             class="submit-btn"
@@ -44,114 +46,114 @@
 
 <script>
 export default {
-  name: "CommentInput",
-  data() {
+  name: 'CommentInput',
+  data () {
     return {
       curpos: 0,
       onOk: null,
       show: false,
       loading: false,
       scrollHeight: 0,
-      contentText: "",
-      placeholder: "随便说说~"
-    };
+      contentText: '',
+      placeholder: '随便说说~',
+    }
   },
   computed: {
-    shadowText() {
-      return "blank" + this.contentText;
+    shadowText () {
+      return 'blank' + this.contentText
     },
-    fullContentText() {
-      return this.contentText;
+    fullContentText () {
+      return this.contentText
     },
-    textareaHeight() {
-      return this.scrollHeight > 100 ? 100 : this.scrollHeight;
-    }
+    textareaHeight () {
+      return this.scrollHeight > 100 ? 100 : this.scrollHeight
+    },
   },
   watch: {
-    show(val) {
+    show (val) {
       if (val) {
-        this.scrollTop = document.scrollingElement.scrollTop;
-        document.body.classList.add("m-pop-open");
-        document.body.style.top = -this.scrollTop + "px";
+        this.scrollTop = document.scrollingElement.scrollTop
+        document.body.classList.add('m-pop-open')
+        document.body.style.top = -this.scrollTop + 'px'
 
-        const txt = this.$lstore.getData("H5_COMMENT_SAVE_CONTENT");
+        const txt = this.$lstore.getData('H5_COMMENT_SAVE_CONTENT')
         txt &&
-          ((this.contentText = txt.trim() || ""),
-          (this.curpos = this.contentText.length));
+          ((this.contentText = txt.trim() || ''),
+          (this.curpos = this.contentText.length))
         this.$nextTick(() => {
-          this.$refs.textarea && this.$refs.textarea.focus();
-        });
+          this.$refs.textarea && this.$refs.textarea.focus()
+        })
       } else {
-        document.body.style.top = "";
-        document.body.classList.remove("m-pop-open");
-        document.scrollingElement.scrollTop = this.scrollTop;
+        document.body.style.top = ''
+        document.body.classList.remove('m-pop-open')
+        document.scrollingElement.scrollTop = this.scrollTop
       }
     },
-    contentText(val, oval) {
+    contentText (val, oval) {
       if (val !== oval) {
-        this.$lstore.setData("H5_COMMENT_SAVE_CONTENT", val);
+        this.$lstore.setData('H5_COMMENT_SAVE_CONTENT', val)
         this.$nextTick(() => {
           this.$refs.shadow &&
-            (this.scrollHeight = this.$refs.shadow.scrollHeight);
-        });
+            (this.scrollHeight = this.$refs.shadow.scrollHeight)
+        })
       }
-    }
+    },
   },
-  created() {
-    this.$bus.$on("commentInput:close", status => {
-      status && this.clean();
-      this.cancel();
-    });
-    this.$bus.$on("commentInput", ({ placeholder, onOk }) => {
-      typeof placeholder === "string" && (this.placeholder = placeholder);
-      typeof onOk === "function" && (this.onOk = onOk);
-      this.show = true;
+  created () {
+    this.$bus.$on('commentInput:close', status => {
+      status && this.clean()
+      this.cancel()
+    })
+    this.$bus.$on('commentInput', ({ placeholder, onOk }) => {
+      typeof placeholder === 'string' && (this.placeholder = placeholder)
+      typeof onOk === 'function' && (this.onOk = onOk)
+      this.show = true
       this.$nextTick(() => {
         this.$refs.shadow &&
-          (this.scrollHeight = this.$refs.shadow.scrollHeight);
-      });
-    });
+          (this.scrollHeight = this.$refs.shadow.scrollHeight)
+      })
+    })
   },
-  mounted() {
+  mounted () {
     this.$nextTick(() => {
-      this.$refs.shadow && (this.scrollHeight = this.$refs.shadow.scrollHeight);
-    });
+      this.$refs.shadow && (this.scrollHeight = this.$refs.shadow.scrollHeight)
+    })
   },
-  destroyed() {
-    this.clean();
+  destroyed () {
+    this.clean()
   },
   methods: {
-    moveCurPos() {
-      this.$refs.textarea && (this.curpos = this.$refs.textarea.selectionStart);
+    moveCurPos () {
+      this.$refs.textarea && (this.curpos = this.$refs.textarea.selectionStart)
     },
-    clean() {
-      this.contentText = "";
+    clean () {
+      this.contentText = ''
     },
-    sendText() {
-      if (this.loading) return;
-      this.loading = true;
+    sendText () {
+      if (this.loading) return
+      this.loading = true
 
       this.onOk &&
-        typeof this.onOk === "function" &&
-        this.onOk(this.contentText);
+        typeof this.onOk === 'function' &&
+        this.onOk(this.contentText)
 
-      this.cancel();
+      this.cancel()
     },
-    cancel() {
-      this.placeholder = "随便说说~";
-      this.loading = false;
-      this.onOk = null;
-      this.show = false;
+    cancel () {
+      this.placeholder = '随便说说~'
+      this.loading = false
+      this.onOk = null
+      this.show = false
     },
-    onFocus() {
+    onFocus () {
       // 有用 ???
       setTimeout(() => {
-        const wH2 = window.innerHeight;
-        window.scrollTo(0, wH2 - 70);
-      }, 300);
-    }
-  }
-};
+        const wH2 = window.innerHeight
+        window.scrollTo(0, wH2 - 70)
+      }, 300)
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

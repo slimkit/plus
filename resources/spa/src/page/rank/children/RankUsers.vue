@@ -11,32 +11,32 @@
 </template>
 
 <script>
-import RankUsersComponent from "../components/RankUsersComponent";
+import RankUsersComponent from '../components/RankUsersComponent'
 
 const ranks = [
   {
-    title: "全站粉丝排行榜",
-    listUrl: "/rank/users/followers",
-    api: "/ranks/followers?limit=15",
-    name: "rankFollowers"
+    title: '全站粉丝排行榜',
+    listUrl: '/rank/users/followers',
+    api: '/ranks/followers?limit=15',
+    name: 'rankFollowers',
   },
   {
-    title: "社区签到排行榜",
-    listUrl: "/rank/users/checkin",
-    api: "/checkin-ranks?limit=15",
-    name: "rankCheckin"
-  }
-];
+    title: '社区签到排行榜',
+    listUrl: '/rank/users/checkin',
+    api: '/checkin-ranks?limit=15',
+    name: 'rankCheckin',
+  },
+]
 
 export default {
-  name: "RankUsers",
+  name: 'RankUsers',
   components: {
-    RankUsersComponent
+    RankUsersComponent,
   },
-  data() {
+  data () {
     return {
-      ranks
-    };
-  }
-};
+      ranks,
+    }
+  },
+}
 </script>

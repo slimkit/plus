@@ -7,7 +7,9 @@
       <common-header>
         登录
         <span slot="left"/>
-        <router-link slot="right" to="/signup">注册</router-link>
+        <router-link
+          slot="right"
+          to="/signup">注册</router-link>
       </common-header>
 
       <main class="m-box-model m-flex-grow1">
@@ -46,14 +48,18 @@
               placeholder="输入6位以上登录密码"
               @keyup.enter="signinByAccount">
           </div>
-          <svg class="m-style-svg m-svg-def" @click="eye = !eye">
+          <svg
+            class="m-style-svg m-svg-def"
+            @click="eye = !eye">
             <use :xlink:href="eye ? '#icon-eye-open' : '#icon-eye-close'"/>
           </svg>
         </div>
         <div class="m-box m-aln-center m-text-box m-form-err-box">
           <span>{{ err | plusMessageFirst }}</span>
         </div>
-        <div class="m-form-row" style="border: 0">
+        <div
+          class="m-form-row"
+          style="border: 0">
           <button
             :disabled="disabled"
             class="m-long-btn m-signin-btn"
@@ -63,10 +69,14 @@
           </button>
         </div>
         <div class="m-box m-aln-center m-justify-bet other-link">
-          <router-link tag="span" to="/feeds?type=hot">
+          <router-link
+            tag="span"
+            to="/feeds?type=hot">
             <a>不登录，先随便逛逛</a>
           </router-link>
-          <router-link tag="span" to="/forgot">
+          <router-link
+            tag="span"
+            to="/forgot">
             <a>忘记密码</a>
           </router-link>
         </div>
@@ -76,7 +86,9 @@
       </main>
 
       <!-- TODO: 其他三方登录方式 -->
-      <footer v-if="isWechat" class="m-box-model m-trhsignin">
+      <footer
+        v-if="isWechat"
+        class="m-box-model m-trhsignin">
         <div class="m-box m-aln-center m-justify-aro m-trhsignin-list">
           <!-- <div class="m-box m-fd-col m-aln-center m-tr-item">
             <div class="m-tr-item-icon">
@@ -103,59 +115,59 @@
 </template>
 
 <script>
-import { signinByAccount } from "@/api/user.js";
-import { signinByWechat } from "@/util/wechat.js";
+import { signinByAccount } from '@/api/user.js'
+import { signinByWechat } from '@/util/wechat.js'
 
 export default {
-  name: "Signin",
-  data() {
+  name: 'Signin',
+  data () {
     return {
-      err: "",
+      err: '',
       eye: false,
-      account: "",
-      password: "",
-      loading: false
-    };
+      account: '',
+      password: '',
+      loading: false,
+    }
   },
   computed: {
-    disabled() {
+    disabled () {
       return (
         this.account.length === 0 || this.password.length < 6 || this.loading
-      );
+      )
     },
-    isWechat() {
-      return this.$store.state.BROWSER.isWechat;
-    }
+    isWechat () {
+      return this.$store.state.BROWSER.isWechat
+    },
   },
   methods: {
     signinByWechat,
-    signinByAccount() {
-      this.err = "";
+    signinByAccount () {
+      this.err = ''
       if (this.account.length === 0) {
-        this.err = "账户不正确";
-        return false;
+        this.err = '账户不正确'
+        return false
       }
 
       if (this.password.length < 6) {
-        this.err = "密码不正确";
-        return false;
+        this.err = '密码不正确'
+        return false
       }
 
-      this.loading = true;
+      this.loading = true
 
       signinByAccount({
         login: this.account,
-        password: this.password
+        password: this.password,
       }).then(state => {
-        this.loading = false;
+        this.loading = false
         state &&
           this.$nextTick(() => {
-            this.$router.push(this.$route.query.redirect || "/feeds?type=hot");
-          });
-      });
-    }
-  }
-};
+            this.$router.push(this.$route.query.redirect || '/feeds?type=hot')
+          })
+      })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

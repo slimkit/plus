@@ -1,30 +1,30 @@
-import * as api from "@/api/group";
-import lstore from "@/plugins/lstore/lstore";
+import * as api from '@/api/group'
+import lstore from '@/plugins/lstore/lstore'
 
 export const TYPES = {
-  SAVE_GROUP: "SAVE_GROUP",
-  SAVE_GROUP_CATES: "SAVE_GROUP_CATES"
-};
+  SAVE_GROUP: 'SAVE_GROUP',
+  SAVE_GROUP_CATES: 'SAVE_GROUP_CATES',
+}
 
 const state = {
-  categories: lstore.getData("GROUP_CATES") || [], // 圈子分类
+  categories: lstore.getData('GROUP_CATES') || [], // 圈子分类
   current: {}, // 当前查看的圈子
-  protocol: ""
-};
+  protocol: '',
+}
 
-const getters = {};
+const getters = {}
 
 const mutations = {
-  [TYPES.SAVE_GROUP](state, group) {
-    state.current = group;
+  [TYPES.SAVE_GROUP] (state, group) {
+    state.current = group
   },
 
   // 保存圈子分类列表
-  [TYPES.SAVE_GROUP_CATES](state, cates) {
-    state.categories = cates;
-    lstore.setData("GROUP_CATES", cates);
-  }
-};
+  [TYPES.SAVE_GROUP_CATES] (state, cates) {
+    state.categories = cates
+    lstore.setData('GROUP_CATES', cates)
+  },
+}
 
 const actions = {
   /**
@@ -32,9 +32,9 @@ const actions = {
    * @author mutoe <mutoe@foxmail.com>
    * @returns {api.GroupObject[]}
    */
-  async getMyGroups(store, payload) {
-    const { data } = await api.getMyGroups(payload);
-    return data;
+  async getMyGroups (store, payload) {
+    const { data } = await api.getMyGroups(payload)
+    return data
   },
 
   /**
@@ -42,24 +42,24 @@ const actions = {
    * @author mutoe <mutoe@foxmail.com>
    * @returns
    */
-  async getGroups(store, payload) {
-    const { type, limit, offset = 0 } = payload;
+  async getGroups (store, payload) {
+    const { type, limit, offset = 0 } = payload
 
-    const { data } = ["recommend", "random"].includes(type)
+    const { data } = ['recommend', 'random'].includes(type)
       ? await api.getRecommendGroups({
-          type: type === "random" ? "random" : undefined,
-          limit,
-          offset
-        })
-      : [];
-    return data;
-  }
-};
+        type: type === 'random' ? 'random' : undefined,
+        limit,
+        offset,
+      })
+      : []
+    return data
+  },
+}
 
 export default {
   namespaced: true,
   state,
   getters,
   mutations,
-  actions
-};
+  actions,
+}

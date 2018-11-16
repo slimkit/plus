@@ -1,9 +1,15 @@
 <template>
   <div class="rank-list-item">
-    <span :class="{ top: index < 3 }" class="rank">{{ index + 1 }}</span>
+    <span
+      :class="{ top: index < 3 }"
+      class="rank">{{ index + 1 }}</span>
 
-    <div class="rank-info" @click="to(`/users/${user.id}`)">
-      <avatar :user="user" class="rank-avatar"/>
+    <div
+      class="rank-info"
+      @click="to(`/users/${user.id}`)">
+      <avatar
+        :user="user"
+        class="rank-avatar"/>
       <div class="rank-title m-text-cut">
         <h6>{{ user.name }}</h6>
         <!-- 用于显示各排行榜数据的插槽 -->
@@ -22,46 +28,46 @@
 </template>
 
 <script>
-import { followUserByStatus } from "@/api/user.js";
+import { followUserByStatus } from '@/api/user.js'
 
 export default {
-  name: "RankListItem",
+  name: 'RankListItem',
   props: {
     user: { type: Object, required: true },
-    index: { type: Number, required: true }
+    index: { type: Number, required: true },
   },
   computed: {
-    isMine() {
-      return this.$store.state.CURRENTUSER.id === this.user.id;
+    isMine () {
+      return this.$store.state.CURRENTUSER.id === this.user.id
     },
-    isFollow() {
-      const { follower = false, following = false } = this.user;
+    isFollow () {
+      const { follower = false, following = false } = this.user
       return follower && following
-        ? "eachFollow"
+        ? 'eachFollow'
         : follower
-          ? "follow"
-          : "unFollow";
+          ? 'follow'
+          : 'unFollow'
     },
-    followText() {
-      if (this.isFollow == "eachFollow") return "相互关注";
-      return this.isFollow === "follow" ? "已关注" : "+ 关注";
-    }
+    followText () {
+      if (this.isFollow == 'eachFollow') return '相互关注'
+      return this.isFollow === 'follow' ? '已关注' : '+ 关注'
+    },
   },
   methods: {
-    followUser() {
-      if (this.loading) return;
-      this.loading = true;
+    followUser () {
+      if (this.loading) return
+      this.loading = true
       followUserByStatus({ status: this.isFollow, id: this.user.id })
         .then(state => {
-          this.user.follower = state;
-          this.loading = false;
+          this.user.follower = state
+          this.loading = false
         })
         .catch(() => {
-          this.loading = false;
-        });
-    }
-  }
-};
+          this.loading = false
+        })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

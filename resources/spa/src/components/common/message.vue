@@ -12,25 +12,25 @@
 </template>
 <script>
 export default {
-  name: "Message",
+  name: 'Message',
   props: {
-    type: { type: String, default: "" }
+    type: { type: String, default: '' },
   },
-  data() {
+  data () {
     return {
-      show: true
-    };
+      show: true,
+    }
   },
   computed: {
-    alertClasses() {
+    alertClasses () {
       return {
-        "Alert--Success": this.type === "success",
-        "Alert--Warning": this.type === "warning",
-        "Alert--Error": this.type === "error"
-      };
-    }
-  }
-};
+        'Alert--Success': this.type === 'success',
+        'Alert--Warning': this.type === 'warning',
+        'Alert--Error': this.type === 'error',
+      }
+    },
+  },
+}
 </script>
 <style>
 .Alert__close {

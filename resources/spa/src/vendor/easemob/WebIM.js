@@ -1,9 +1,9 @@
-import websdk from "easemob-websdk";
-import WebIMConfig from "./WebIMConfig.js";
+import websdk from 'easemob-websdk'
+import WebIMConfig from './WebIMConfig.js'
 
-const WebIM = window.WebIM || {};
+const WebIM = window.WebIM || {}
 
-WebIM.config = WebIMConfig;
+WebIM.config = WebIMConfig
 
 WebIM.conn = new websdk.connection({
   isAutoLogin: false,
@@ -15,7 +15,7 @@ WebIM.conn = new websdk.connection({
   autoReconnectNumMax: WebIM.config.autoReconnectNumMax,
   isMultiLoginSessions: WebIM.config.isMultiLoginSessions,
   autoReconnectInterval: WebIM.config.autoReconnectInterval,
-  isDebug: WebIM.config.isDebug
-});
+  isDebug: WebIM.config.isDebug,
+})
 
-export default WebIM;
+export default WebIM

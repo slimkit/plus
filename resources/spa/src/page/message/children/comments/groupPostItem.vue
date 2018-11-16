@@ -67,20 +67,20 @@
 }
 </style>
 <script>
-const prefixCls = "msgList";
+const prefixCls = 'msgList'
 export default {
-  name: "GroupPostItem",
+  name: 'GroupPostItem',
   props: {
-    comment: { type: Object, default: () => {} }
+    comment: { type: Object, default: () => {} },
   },
   data: () => ({
-    prefixCls
+    prefixCls,
   }),
   computed: {
-    user() {
-      const { user } = this.comment || { user: {} };
-      return user;
-    }
+    user () {
+      const { user } = this.comment || { user: {} }
+      return user
+    },
   },
   methods: {
     /**
@@ -90,30 +90,30 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   {[type]}            [description]
      */
-    goToFeedDetail() {
+    goToFeedDetail () {
       const {
-        commentable: { id = 0, group_id: groupId = 0 }
-      } = this.comment;
-      this.$router.push(`/groups/${groupId}/posts/${id}`);
+        commentable: { id = 0, group_id: groupId = 0 },
+      } = this.comment
+      this.$router.push(`/groups/${groupId}/posts/${id}`)
     },
 
-    sendComment(comment) {
-      const { commentable_id: postId = 0, user_id: userID = 0 } = this.comment;
+    sendComment (comment) {
+      const { commentable_id: postId = 0, user_id: userID = 0 } = this.comment
       this.$http
         .post(
           `/group-posts/${postId}/comments`,
           {
             reply_user: userID,
-            body: comment
+            body: comment,
           },
           {
-            validateStatus: s => s === 201
+            validateStatus: s => s === 201,
           }
         )
         .then(() => {
-          this.$Message.success("回复成功");
-          this.$bus.$emit("commentInput:close", true);
-        });
+          this.$Message.success('回复成功')
+          this.$bus.$emit('commentInput:close', true)
+        })
     },
     /**
      * 调起输入框
@@ -122,14 +122,14 @@ export default {
      * @Email    qiaobin@zhiyicx.com
      * @return   {[type]}            [description]
      */
-    showCommentInput() {
-      this.$bus.$emit("commentInput", {
+    showCommentInput () {
+      this.$bus.$emit('commentInput', {
         placeholder: `回复: ${this.comment.user.name}`,
         onOk: comment => {
-          this.sendComment(comment);
-        }
-      });
-    }
-  }
-};
+          this.sendComment(comment)
+        },
+      })
+    },
+  },
+}
 </script>

@@ -14,19 +14,19 @@
 
 <script>
 export default {
-  name: "CurrencyDetailItem",
+  name: 'CurrencyDetailItem',
   props: {
     detail: { type: Object, required: true },
     nostyle: { type: Boolean, default: false },
-    type: { type: String, default: "title" }
+    type: { type: String, default: 'title' },
   },
   computed: {
-    isIncome() {
-      if (this.nostyle) return "no-style";
-      return this.detail.type > 0 ? "in" : "out";
-    }
-  }
-};
+    isIncome () {
+      if (this.nostyle) return 'no-style'
+      return this.detail.type > 0 ? 'in' : 'out'
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

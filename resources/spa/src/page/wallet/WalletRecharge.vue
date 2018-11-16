@@ -5,7 +5,9 @@
 
     <main class="m-box-model m-aln-center m-justify-center">
       <div class="m-box-model m-lim-width m-main">
-        <div v-if="rechargeItems.length" class="m-pinned-amount-btns m-bb1">
+        <div
+          v-if="rechargeItems.length"
+          class="m-pinned-amount-btns m-bb1">
           <p class="m-pinned-amount-label">选择充值金额</p>
           <div class="m-box m-aln-center ">
             <button
@@ -38,7 +40,9 @@
         <span class="m-text-box m-flex-grow1">选择充值方式</span>
         <div class="m-box m-aln-end paid-type">{{ rechargeTypeText }}</div>
         <svg class="m-style-svg m-svg-def m-entry-append">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-arrow-right"/>
+          <use
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            xlink:href="#icon-arrow-right"/>
         </svg>
       </div>
 
@@ -58,84 +62,83 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapGetters, mapState } from 'vuex'
 
 const supportTypes = [
-  { key: "alipay_wap", title: "支付宝支付", type: "AlipayWapOrder" }
+  { key: 'alipay_wap', title: '支付宝支付', type: 'AlipayWapOrder' },
   // 尚未实现 { key: "wx_wap", title: "微信支付" }
-];
+]
 
 export default {
-  name: "WalletRecharge",
-  data() {
+  name: 'WalletRecharge',
+  data () {
     return {
       customAmount: null,
       amount: 0,
-      rechargeType: "",
-      loading: false
-    };
+      rechargeType: '',
+      loading: false,
+    }
   },
   computed: {
     ...mapState({ wallet: state => state.wallet }),
-    ...mapGetters({ rechargeItems: "wallet/rechargeItems" }),
-    rechargeTypeText() {
-      const type = supportTypes.filter(t => t.type === this.form.type).pop();
-      return type && type.title;
+    ...mapGetters({ rechargeItems: 'wallet/rechargeItems' }),
+    rechargeTypeText () {
+      const type = supportTypes.filter(t => t.type === this.form.type).pop()
+      return type && type.title
     },
-    form() {
+    form () {
       return {
         amount: this.customAmount * 100 || this.amount * 100,
-        type: this.rechargeType
-      };
+        type: this.rechargeType,
+      }
     },
-    disabled() {
-      return this.form.amount <= 0 || !this.rechargeType;
-    }
+    disabled () {
+      return this.form.amount <= 0 || !this.rechargeType
+    },
   },
-  mounted() {
-    if (!this.rechargeItems.length)
-      this.$store.dispatch("wallet/getWalletInfo");
+  mounted () {
+    if (!this.rechargeItems.length) { this.$store.dispatch('wallet/getWalletInfo') }
   },
   methods: {
-    chooseDefaultAmount(amount) {
-      this.customAmount && (this.customAmount = null);
-      this.amount = amount;
+    chooseDefaultAmount (amount) {
+      this.customAmount && (this.customAmount = null)
+      this.amount = amount
     },
-    selectRechargeType() {
-      const actions = [];
+    selectRechargeType () {
+      const actions = []
       supportTypes.forEach(item => {
         if (this.wallet.type.includes(item.key)) {
           actions.push({
             text: item.title,
-            method: () => selectType(item.type)
-          });
+            method: () => selectType(item.type),
+          })
         }
-      });
+      })
       this.$bus.$emit(
-        "actionSheet",
+        'actionSheet',
         actions,
-        "取消",
-        actions.length ? undefined : "当前未支持任何充值方式"
-      );
+        '取消',
+        actions.length ? undefined : '当前未支持任何充值方式'
+      )
 
       const selectType = type => {
-        this.rechargeType = type;
-      };
+        this.rechargeType = type
+      }
     },
-    async handleOk() {
-      if (this.loading) return;
-      const { amount, type } = this.form;
-      this.loading = true;
+    async handleOk () {
+      if (this.loading) return
+      const { amount, type } = this.form
+      this.loading = true
       // 获取第三方支付地址,跳转过去
-      const url = await this.$store.dispatch("wallet/requestRecharge", {
+      const url = await this.$store.dispatch('wallet/requestRecharge', {
         amount,
         redirect: `${window.location.origin}${process.env.BASE_URL}/wallet`, // 支付成功后回调地址
-        type
-      });
-      location.href = url;
-    }
-  }
-};
+        type,
+      })
+      location.href = url
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

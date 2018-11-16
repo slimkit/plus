@@ -19,42 +19,42 @@
 </template>
 
 <script>
-import * as api from "@/api/news";
-import { limit } from "@/api";
-import NewsCard from "@/page/news/components/NewsCard.vue";
+import * as api from '@/api/news'
+import { limit } from '@/api'
+import NewsCard from '@/page/news/components/NewsCard.vue'
 
 export default {
-  name: "ProfileCollectionNews",
+  name: 'ProfileCollectionNews',
   components: { NewsCard },
-  data() {
+  data () {
     return {
-      newsList: []
-    };
+      newsList: [],
+    }
   },
-  mounted() {
-    this.$refs.loadmore.beforeRefresh();
+  mounted () {
+    this.$refs.loadmore.beforeRefresh()
   },
   methods: {
-    onRefresh() {
+    onRefresh () {
       // TODO: refactor there with vuex action.
       api.getCollectedNews().then(({ data }) => {
-        this.newsList = data;
-        this.$refs.loadmore.afterRefresh(data.length < limit);
-      });
+        this.newsList = data
+        this.$refs.loadmore.afterRefresh(data.length < limit)
+      })
     },
-    onLoadMore() {
+    onLoadMore () {
       const after =
         this.newsList.length > 0
           ? this.newsList[this.newsList.length - 1].id
-          : 0;
+          : 0
       // TODO: refactor there with vuex action.
       api.getCollectedNews({ after }).then(({ data }) => {
-        this.newsList = [...this.newsList, ...data];
-        this.$refs.loadmore.afterLoadMore(data.length < limit);
-      });
-    }
-  }
-};
+        this.newsList = [...this.newsList, ...data]
+        this.$refs.loadmore.afterLoadMore(data.length < limit)
+      })
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

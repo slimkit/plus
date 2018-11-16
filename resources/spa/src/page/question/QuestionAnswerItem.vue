@@ -1,13 +1,23 @@
 <template>
-  <div class="p-question-answer-item" @click="viewDetail">
+  <div
+    class="p-question-answer-item"
+    @click="viewDetail">
     <div class="main">
-      <div class="avatar" @click.stop="viewUser">
-        <avatar :anonymity="anonymity" :user="user" />
+      <div
+        class="avatar"
+        @click.stop="viewUser">
+        <avatar
+          :anonymity="anonymity"
+          :user="user" />
       </div>
       <div class="info">
         <h3 class="main-header">
-          <span :class="{adoption: answer.adoption, invited: answer.invited}" class="name">
-            <template v-if="!anonymity" @click.stop="viewUser">{{ user.name }}</template>
+          <span
+            :class="{adoption: answer.adoption, invited: answer.invited}"
+            class="name">
+            <template
+              v-if="!anonymity"
+              @click.stop="viewUser">{{ user.name }}</template>
             <template v-else-if="!isMine">匿名用户</template>
             <template v-else>{{ user.name }} <span class="gray">(匿名)</span></template>
           </span>
@@ -35,54 +45,54 @@
 
 <script>
 export default {
-  name: "QuestionAnswerItem",
+  name: 'QuestionAnswerItem',
   props: {
-    answer: { type: Object, required: true }
+    answer: { type: Object, required: true },
   },
   data: () => ({
-    likeTargetHanding: false
+    likeTargetHanding: false,
   }),
   computed: {
-    anonymity() {
-      const { anonymity } = this.answer;
-      return !!anonymity;
+    anonymity () {
+      const { anonymity } = this.answer
+      return !!anonymity
     },
-    user() {
-      const { user = {} } = this.answer;
-      return user;
+    user () {
+      const { user = {} } = this.answer
+      return user
     },
-    body() {
-      const body = this.answer.body || "";
-      return body.replace(/@!\[image]\(\d+\)/g, "[图片]");
+    body () {
+      const body = this.answer.body || ''
+      return body.replace(/@!\[image]\(\d+\)/g, '[图片]')
     },
-    isMine() {
-      return this.user.id === this.$store.state.CURRENTUSER.id;
-    }
+    isMine () {
+      return this.user.id === this.$store.state.CURRENTUSER.id
+    },
   },
   methods: {
-    handleLike() {},
-    handleUnlike() {},
-    handleLikeTarget() {
+    handleLike () {},
+    handleUnlike () {},
+    handleLikeTarget () {
       if (this.likeTargetHanding) {
-        this.$Message.warning("正在执行，请勿重复点击!");
-        return;
+        this.$Message.warning('正在执行，请勿重复点击!')
+        return
       } else if (this.answer.liked) {
-        this.handleUnlike();
-        return;
+        this.handleUnlike()
+        return
       }
-      this.handleLike();
+      this.handleLike()
     },
-    viewDetail() {
+    viewDetail () {
       this.$router.push(
         `/questions/${this.answer.question_id}/answers/${this.answer.id}`
-      );
+      )
     },
-    viewUser() {
-      if (!this.user.id) return;
-      this.$router.push(`/users/${this.user.id}`);
-    }
-  }
-};
+    viewUser () {
+      if (!this.user.id) return
+      this.$router.push(`/users/${this.user.id}`)
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>

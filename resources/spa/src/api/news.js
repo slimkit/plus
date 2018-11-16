@@ -1,5 +1,5 @@
-import api from "./api";
-import { limit } from "./index";
+import api from './api'
+import { limit } from './index'
 
 /**
  * 定义资讯对象
@@ -24,8 +24,8 @@ import { limit } from "./index";
  * @param {number} params.recomended
  * @returns {Promise<NewsObject[]>}
  */
-export function getNewsList(params) {
-  return api.get("/news", { params, validateStatus: s => s === 200 });
+export function getNewsList (params) {
+  return api.get('/news', { params, validateStatus: s => s === 200 })
 }
 
 /**
@@ -36,12 +36,12 @@ export function getNewsList(params) {
  * @param {number}   type [类型: 0: 已发布, 1: 待审核, 2: 已驳回]
  * @returns {Promise<NewsObject[]>}
  */
-export function getMyNews({ type = 0, limit = 15, after = 0 }) {
-  const params = { type, limit, after };
-  return api.get("/user/news/contributes", {
+export function getMyNews ({ type = 0, limit = 15, after = 0 }) {
+  const params = { type, limit, after }
+  return api.get('/user/news/contributes', {
     params,
-    validateStatus: s => s === 200
-  });
+    validateStatus: s => s === 200,
+  })
 }
 
 /**
@@ -51,8 +51,8 @@ export function getMyNews({ type = 0, limit = 15, after = 0 }) {
  * @param {number} newsId
  * @returns {Promise<NewsObject>}
  */
-export function getNewsById(newsId) {
-  return api.get(`/news/${newsId}`, { validateStatus: s => s === 200 });
+export function getNewsById (newsId) {
+  return api.get(`/news/${newsId}`, { validateStatus: s => s === 200 })
 }
 
 /**
@@ -71,9 +71,9 @@ export function getNewsById(newsId) {
  * @param {string=} params.text_content 纯文本
  * @returns {Promise}
  */
-export function postNews(categoryId, params) {
-  const url = `/news/categories/${categoryId}/currency-news`;
-  return api.post(url, params, { validateStatus: s => s === 201 });
+export function postNews (categoryId, params) {
+  const url = `/news/categories/${categoryId}/currency-news`
+  return api.post(url, params, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -84,17 +84,17 @@ export function postNews(categoryId, params) {
  * @param  {number} after
  * @returns
  */
-export function searchNewsByKey(key = "", limit = 15, after = 0) {
-  if (!key) return Promise.resolve({ data: [] });
-  const params = { key, limit, after };
-  return api.get("/news", { params, validateStatus: s => s === 200 });
+export function searchNewsByKey (key = '', limit = 15, after = 0) {
+  if (!key) return Promise.resolve({ data: [] })
+  const params = { key, limit, after }
+  return api.get('/news', { params, validateStatus: s => s === 200 })
 }
 
-export function getNewsCommentPinneds(after = 0) {
-  return api.get("/news/comments/pinneds", {
+export function getNewsCommentPinneds (after = 0) {
+  return api.get('/news/comments/pinneds', {
     limit,
-    after
-  });
+    after,
+  })
 }
 
 /**
@@ -107,11 +107,11 @@ export function getNewsCommentPinneds(after = 0) {
  * @param {number} params.limit
  * @returns
  */
-export function getNewsComments(newsId, params) {
+export function getNewsComments (newsId, params) {
   return api.get(`/news/${newsId}/comments`, {
     params,
-    validateStatus: s => s === 200
-  });
+    validateStatus: s => s === 200,
+  })
 }
 
 /**
@@ -124,10 +124,10 @@ export function getNewsComments(newsId, params) {
  * @param {number} data.day
  * @returns
  */
-export function applyTopNews(newsId, data) {
+export function applyTopNews (newsId, data) {
   return api.post(`/news/${newsId}/currency-pinneds`, data, {
-    validateStatus: s => s === 201
-  });
+    validateStatus: s => s === 201,
+  })
 }
 
 /**
@@ -142,9 +142,9 @@ export function applyTopNews(newsId, data) {
  * @param {number} data.day
  * @returns
  */
-export function applyTopNewsComment({ newsId, commentId }, data) {
-  const url = `/news/${newsId}/comments/${commentId}/currency-pinneds`;
-  return api.post(url, data, { validateStatus: s => s === 201 });
+export function applyTopNewsComment ({ newsId, commentId }, data) {
+  const url = `/news/${newsId}/comments/${commentId}/currency-pinneds`
+  return api.post(url, data, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -155,10 +155,10 @@ export function applyTopNewsComment({ newsId, commentId }, data) {
  * @param {number} commentId 评论 id
  * @returns {Promise}
  */
-export function deleteNewsComment(newsId, commentId) {
+export function deleteNewsComment (newsId, commentId) {
   return api.delete(`/news/${newsId}/comments/${commentId}`, {
-    validateStatus: s => s === 204
-  });
+    validateStatus: s => s === 204,
+  })
 }
 
 /**
@@ -173,9 +173,9 @@ export function deleteNewsComment(newsId, commentId) {
  * @param {string} [params.order_type] date 按时间 amount 按金额
  * @returns
  */
-export function getNewsRewards(newsId, params) {
-  const url = `/news/${newsId}/rewards`;
-  return api.get(url, { params, validateStatus: s => s === 200 });
+export function getNewsRewards (newsId, params) {
+  const url = `/news/${newsId}/rewards`
+  return api.get(url, { params, validateStatus: s => s === 200 })
 }
 
 /**
@@ -187,9 +187,9 @@ export function getNewsRewards(newsId, params) {
  * @param {number} payload.amount 打赏金额
  * @returns
  */
-export function rewardNews(newsId, payload) {
-  const url = `/news/${newsId}/new-rewards`;
-  return api.post(url, payload, { validateStatus: s => s === 201 });
+export function rewardNews (newsId, payload) {
+  const url = `/news/${newsId}/new-rewards`
+  return api.post(url, payload, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -199,9 +199,9 @@ export function rewardNews(newsId, payload) {
  * @param {number} newsId
  * @returns
  */
-export function getRewardInfo(newsId) {
-  const url = `/news/${newsId}/rewards/sum`;
-  return api.get(url, { validateStatus: s => s === 200 });
+export function getRewardInfo (newsId) {
+  const url = `/news/${newsId}/rewards/sum`
+  return api.get(url, { validateStatus: s => s === 200 })
 }
 
 /**
@@ -213,9 +213,9 @@ export function getRewardInfo(newsId) {
  * @param {number} params.after
  * @returns {Promise<NewsObject[]>}
  */
-export function getCollectedNews(params) {
-  const url = "/news/collections";
-  return api.get(url, { params, validateStatus: s => s === 200 });
+export function getCollectedNews (params) {
+  const url = '/news/collections'
+  return api.get(url, { params, validateStatus: s => s === 200 })
 }
 
 /**
@@ -225,9 +225,9 @@ export function getCollectedNews(params) {
  * @param {number} newsId
  * @returns
  */
-export function collectionNews(newsId) {
-  const url = `/news/${newsId}/collections`;
-  return api.post(url, { validateStatus: s => s === 201 });
+export function collectionNews (newsId) {
+  const url = `/news/${newsId}/collections`
+  return api.post(url, { validateStatus: s => s === 201 })
 }
 
 /**
@@ -237,7 +237,7 @@ export function collectionNews(newsId) {
  * @param {number} newsId
  * @returns
  */
-export function uncollectNews(newsId) {
-  const url = `/news/${newsId}/collections`;
-  return api.delete(url, { validateStatus: s => s === 204 });
+export function uncollectNews (newsId) {
+  const url = `/news/${newsId}/collections`
+  return api.delete(url, { validateStatus: s => s === 204 })
 }
