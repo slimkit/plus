@@ -19,7 +19,7 @@ export default [
     },
   },
   {
-    path: '/news/:newsID(\\d+)',
+    path: '/news/:newsId(\\d+)',
     component: NewsDetail,
     meta: {
       title: '资讯详情',

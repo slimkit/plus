@@ -241,3 +241,18 @@ export function uncollectNews (newsId) {
   const url = `/news/${newsId}/collections`
   return api.delete(url, { validateStatus: s => s === 204 })
 }
+
+/**
+ * 获取一条资讯的相关资讯
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {number} newsId
+ * @param {Object} params
+ * @param {number} [params.limit]
+ * @returns
+ */
+export function getCorrelations (newsId, params) {
+  const url = `/news/${newsId}/correlations`
+  return api.get(url, { params, validateStatus: s => s === 200 })
+}

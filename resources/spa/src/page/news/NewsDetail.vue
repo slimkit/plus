@@ -74,6 +74,16 @@
         </div>
       </div>
 
+      <div v-if="relationNews.length" class="m-box-model m-art-comments">
+        <ul class="m-box m-aln-center m-art-comments-tabs">
+          <li>相关资讯</li>
+        </ul>
+        <news-card
+          v-for="news in relationNews"
+          :key="`relation-${news.id}`"
+          :news="news"/>
+      </div>
+
       <div class="m-box-model m-art-comments">
         <ul class="m-box m-aln-center m-art-comments-tabs">
           <li>{{ commentCount | formatNum }}条评论</li>
@@ -101,6 +111,7 @@
           </div>
         </template>
       </div>
+
     </jo-load-more>
   </article-card>
 </template>
@@ -108,6 +119,7 @@
 <script>
 import { mapState } from 'vuex'
 import ArticleCard from '@/page/article/ArticleCard.vue'
+import NewsCard from '@/page/news/components/NewsCard.vue'
 import CommentItem from '@/page/article/ArticleComment.vue'
 import wechatShare from '@/util/wechatShare.js'
 import md from '@/util/markdown.js'
@@ -120,6 +132,7 @@ export default {
   components: {
     ArticleCard,
     CommentItem,
+    NewsCard,
   },
   data () {
     return {
@@ -128,6 +141,7 @@ export default {
       loading: true,
       fetching: false,
 
+      relationNews: [],
       likes: [],
       comments: [],
       rewardList: [],
@@ -170,8 +184,8 @@ export default {
         this.$http.defaults.baseURL + '/files/' + images.id + '?w=300&h=300'
       )
     },
-    newsID () {
-      return this.$route.params.newsID
+    newsId () {
+      return this.$route.params.newsId
     },
     userID () {
       return this.news.user_id || 0
@@ -232,8 +246,8 @@ export default {
     }
   },
   activated () {
-    if (this.newsID) {
-      if (this.newsID !== this.oldID) {
+    if (this.newsId) {
+      if (this.newsId !== this.oldID) {
         this.fetchNews()
       } else {
         setTimeout(() => {
@@ -255,15 +269,17 @@ export default {
     fetchNews (callback = noop) {
       if (this.fetching) return
       this.fetching = true
+      this.relationNews = []
       api
-        .getNewsById(this.newsID)
+        .getNewsById(this.newsId)
         .then(({ data = {} }) => {
           this.loading = false
           this.fetching = false
           this.news = data
-          this.oldID = this.newsID
+          this.oldID = this.newsId
           this.share.title = data.title
           this.share.desc = data.subject
+          this.getCorrelations()
           this.fetchNewsComments()
           this.fetchNewsLikes()
           this.fetchRewardInfo()
@@ -290,9 +306,14 @@ export default {
           this.$router.back()
         })
     },
+    getCorrelations () {
+      api.getCorrelations(this.newsId).then(({ data }) => {
+        this.relationNews = data
+      })
+    },
     fetchNewsLikes () {
       // GET /news/{news}/likes
-      this.$http.get(`/news/${this.newsID}/likes`).then(({ data = [] }) => {
+      this.$http.get(`/news/${this.newsId}/likes`).then(({ data = [] }) => {
         if (data.length) this.likes = data
       })
     },
@@ -301,7 +322,7 @@ export default {
       this.fetchComing = true
 
       api
-        .getNewsComments(this.newsID, { after })
+        .getNewsComments(this.newsId, { after })
         .then(({ data: { pinneds = [], comments = [] } }) => {
           if (!after) {
             this.pinnedCom = pinneds
@@ -324,12 +345,12 @@ export default {
         })
     },
     fetchRewards () {
-      api.getNewsRewards(this.newsID, { limit: 10 }).then(({ data = {} }) => {
+      api.getNewsRewards(this.newsId, { limit: 10 }).then(({ data = {} }) => {
         this.rewardList = data
       })
     },
     fetchRewardInfo () {
-      api.getRewardInfo(this.newsID).then(({ data = {} }) => {
+      api.getRewardInfo(this.newsId).then(({ data = {} }) => {
         this.reward = {
           count: ~~data.count || 0,
           amount: ~~data.amount || 0,
@@ -346,7 +367,7 @@ export default {
       this.fetching = true
       this.$http({
         method,
-        url: `/news/${this.newsID}/likes`,
+        url: `/news/${this.newsId}/likes`,
         validateStatus: s => s === 201 || s === 204,
       })
         .then(() => {
@@ -379,7 +400,7 @@ export default {
         defaultActions.push({
           text: '取消收藏',
           method: () => {
-            api.uncollectNews(this.newsID).then(() => {
+            api.uncollectNews(this.newsId).then(() => {
               this.$Message.success('取消成功')
               this.has_collect = false
             })
@@ -389,7 +410,7 @@ export default {
         defaultActions.push({
           text: '收藏',
           method: () => {
-            api.collectionNews(this.newsID).then(() => {
+            api.collectionNews(this.newsId).then(() => {
               this.$Message.success('收藏成功')
               this.has_collect = true
             })
@@ -405,7 +426,7 @@ export default {
               this.$bus.$emit('applyTop', {
                 type: 'news',
                 api: api.applyTopNews,
-                payload: this.newsID,
+                payload: this.newsId,
               })
             },
           },
@@ -439,7 +460,7 @@ export default {
                 isOwner,
                 type: 'newsComment',
                 api: api.applyTopNewsComment,
-                payload: { newsId: this.newsID, commentId },
+                payload: { newsId: this.newsId, commentId },
                 callback: this.fetchNewsComments,
               })
             },
@@ -462,7 +483,7 @@ export default {
         params.body = body
         replyUser && (params['reply_user'] = replyUser)
         this.$http
-          .post(`/news/${this.newsID}/comments`, params, {
+          .post(`/news/${this.newsId}/comments`, params, {
             validateStatus: s => s === 201,
           })
           .then(() => {
@@ -480,7 +501,7 @@ export default {
       }
     },
     deleteComment (commentId) {
-      api.deleteNewsComment(this.newsID, commentId).then(() => {
+      api.deleteNewsComment(this.newsId, commentId).then(() => {
         this.fetchNewsComments()
         this.commentCount -= 1
         this.$Message.success('删除评论成功')
