@@ -318,4 +318,15 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->password ? md5($this->password) : md5('123456');
     }
+    
+    /**
+     * Set the user's phone.
+     *
+     * @param string $value
+     * @return void
+     */
+    public function setPhoneAttribute($value): void
+    {
+        $this->attributes['phone'] = preg_replace('/^\+?0?86\-?/', '', $value);
+    }
 }
