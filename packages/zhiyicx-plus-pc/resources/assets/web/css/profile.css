@@ -1,0 +1,59 @@
+/*个人主页顶部*/
+.contribute-btn {float:right;margin-top:21px;border-radius:18px;padding:7px 23px;}
+.profile-btn {padding:5px 15px;float:right;margin-top:24px;border-radius:18px;border:1px solid #59B6D7;margin-left:10px;line-height:24px;}
+.profile-btn > svg,.contribute-btn > svg{margin-right:3px;margin-bottom:2px;}
+.follow-box {line-height:80px;float:right;}
+.follow-box > div {line-height:36px;display:inline-block;width:100px;height:36px;margin-left:10px;cursor:pointer;text-align:center;vertical-align:middle;border:1px solid #ccc;border-radius:18px;background:#fff;}
+.follow-box > div:hover {color:#59b6d7;border-color:#59b6d7;}
+.follow-box .followed {color:#ccc;border:1px solid #ededed;}
+.follow-box .followed:hover {color:#ccc;border:1px solid #ededed;}
+.profile_top {position:relative;width:100%;background:#fff;}
+.profile_top_cover {overflow:hidden;width:1080px;height:456px;}
+.profile_top_cover img {width:100%;}
+.change_cover {line-height:36px;position:absolute;z-index:1;top:20px;right:30px;display:block;width:100px;height:36px;cursor:pointer;transition:all .3s;text-align:center;color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:20px;background-color:rgba(0,0,0,.4);}
+.change_cover:hover {border-color:#59b6d7;background:rgba(89,182,215,.8);}
+.profile_nav {width:100%;height:80px;padding:0 20px;}
+.profile_nav .profile_nav_list {font-size:0;float:left;}
+.profile_nav .profile_nav_list li {font-size:18px;line-height:78px;display:inline-block;height:80px;margin-left:60px;transition:all .1s;color:#666;border-bottom:2px solid transparent;}
+.profile_nav .profile_nav_list li:hover,.profile_nav .profile_nav_list li.active {color:#6eb5d3;border-bottom-color:#6eb5d3;}
+.profile_nav .profile_nav_list li a {display:block;width:100%;height:100%;color:inherit;}
+.profile_top_info {position:absolute;bottom:80px;width:100%;height:220px;padding:30px;background-image:-webkit-linear-gradient(top,rgba(0,0,0,0) 0%,rgba(0,0,0,.4) 100%);}
+.profile_top_img {width:160px;height:160px;border:4px solid white;border-radius:50%;}
+.profile_top_img .role-icon {position:absolute;bottom:-10px;right:30px;width:30px;height:30px;}
+.profile_top_info_d {float:left;margin-left:30px;color:#fff;}
+.profile_top_user a {font-size:36px;color:#fff;}
+.profile_top_user span {font-size:14px;margin-left:5px;}
+.profile_top_user span::before {display:inline-block;width:17px;height:17px;margin-right:5px;content:'';vertical-align:baseline;background-image:url(./img/location_icon.png);background-repeat:no-repeat;background-position:center;background-size:17px;}
+.profile_top_bio,.profile_top_tags,.profile_top_user,.profile_logo_icon {font-size:16px;margin-bottom:15px;width:800px;}
+.profile_top_tags span {font-size:12px;line-height:1;display:inline-block;padding:5px 7px;border:1px solid #fff;border-radius:3px;}
+.profile_top_tags span + span {margin-left:10px;}
+.u-cert {overflow: hidden;width: 800px;text-overflow: ellipsis;white-space: nowrap;}
+.profile_logo_icon span {font-size:12px;display:inline-block;margin-left:10px;border-bottom:1px solid #fff;}
+.profile_logo_icon span .tag_icon {display:inline-block;overflow:hidden;width:20px;height:20px;margin-right:-6px;margin-bottom:-4px;transform:translateX(-50%);border-radius:50%;background-color:#fff;}
+.profile_body {margin-top:30px;}
+.profile_body .m-snav{padding-bottom: 20px;}
+.profile_body .m-snav a{margin-right: 20px;}
+.profile_body .right_box {float:right;width:235px;}
+.profile_body .g-tab>li {margin-right:20px;display:inline-block;}
+.m-uchead .m-option{position:relative;float:right;margin: 22px 20px 0 10px;}
+.m-uchead .m-option .options{color: #59B6D7;}
+.m-uchead .m-option .icon-more{font-size:2.5em;}
+.m-uchead .m-option .options_div{top:50px;right:-53px;}
+/*  列表  */
+.profile_content {background:#fff;padding:30px 40px;}
+.profile_menu > a {color:#999;margin-right:20px;}
+.profile_menu > a.active {color:#333;}
+/*问答列表*/
+.qa-item {padding-bottom:20px;border-bottom:1px solid #f1f1f1;}
+.qa-item .qa-body>span {line-height:25px;word-wrap:break-word;}
+.qa-item .qa-toolbar .ctime {line-height:30px;}
+.qa-item .qa-toolbar .follow,.qa-item .qa-toolbar .liked,.qa-item .qa-toolbar .comment {font-size:14px;display:inline-block;margin-right:50px;cursor:pointer;color:#ccc;}
+.qa-item .tr2 {left:140px;}
+/*文章列表*/
+.news_item .uname {display:inline-block;margin-left:20px;color:#333;}
+.news_item .date {float:right;margin-top:17px;color:#ccc;text-align:right;}
+.news_item .act {color: #59b6d7;}
+.article_box .img {margin-top:20px;width:100% !important;height:100%;max-height:400px;}
+.article_box .article_desc {position:absolute;bottom:0;width:100%;padding:0 20px;padding-top:20px;background-image:-webkit-linear-gradient(top,rgba(0,0,0,0) 0%,rgba(0,0,0,.4) 100%);}
+.article_desc .title {overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:20px;color:#fff;margin-bottom:5px;}
+.article_desc .subject {line-height:24px;margin-top:10px;font-size:14px;color:#fff;}
