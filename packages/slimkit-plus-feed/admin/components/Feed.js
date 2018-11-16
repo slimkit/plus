@@ -713,117 +713,21 @@ class Feed extends Component {
   }
 
   doPinnedAudit(feed = null) {
-    if (!feed) {
-      return null;
-    }
-
-    const {
-      pinned: pin = null
-    } = feed;
-
-    if (
-      !pin ||
-      (pin && pin.expires_at && new Date(pin.expires_at) < new Date())
-    ) {
       return (
         <section>
-          <DialogTitle>{'动态置顶审核操作'}</DialogTitle>
+          <DialogTitle>{'提示'}</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              该动态未置顶，或置顶时间已到，或已经被拒绝了申请，如果您要人工置顶，请在下方输入要置顶的天数
+            开源版无此功能，需要使用此功能，请购买正版授权源码，详情访问www.thinksns.com，也可直接咨询：QQ3515923610；电话：18108035545。
             </DialogContentText>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="置顶天数"
-              type="number"
-              fullWidth
-              onChange={this.handleDayChange}
-            />
           </DialogContent>
           <DialogActions>
-            <Button
-              onClick={() => this.handleRequestClose()}
-              color="primary"
-            >
-              取消
-            </Button>
-            <Button
-              onClick={() => this.handleSetPinned(feed.id, pin ? pin.id : 0)}
-              color="primary"
-              autoFocus
-            >
+            <Button onClick={() => this.handleRequestClose()} color="primary" >
               确定
             </Button>
           </DialogActions>
         </section>
       );
-    } else if (pin && pin.expires_at && new Date(pin.expires_at) > new Date()) {
-      return (
-        <section>
-          <DialogTitle>{'动态置顶操作'}</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              动态作者: {feed.user.name}，{pin.amount !== 0
-                ? `花费${showAmount(pin.amount)},申请该条动态置顶${pin.day}天`
-                : `该条动态已由管理员置顶${pin.day}天`},到期时间{localDate(
-                pin.expires_at
-              )}, 是否需要撤销置顶?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => this.handleRequestClose()}
-              color="primary"
-            >
-              取消
-            </Button>
-            <Button
-              onClick={() => this.handleDeletePinned(feed)}
-              color="primary"
-              autoFocus
-            >
-              撤销
-            </Button>
-          </DialogActions>
-        </section>
-      );
-    } else {
-      return (
-        <section>
-          <DialogTitle>{'动态置顶审核操作'}</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              动态作者: {feed.user.name} 花费 {showAmount(pin.amount)}，申请该条动态置顶{
-                pin.day
-              }天时间，是否同意？
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => this.handleRejectPinnedInDraw(feed)}
-              color="primary"
-            >
-              拒绝
-            </Button>
-            <Button
-              onClick={() => this.handleRequestClose()}
-              color="primary"
-            >
-              取消
-            </Button>
-            <Button
-              onClick={() => this.handleAuditPinned(feed)}
-              color="primary"
-              autoFocus
-            >
-              同意
-            </Button>
-          </DialogActions>
-        </section>
-      );
-    }
   }
 
   handleAuditDialogColse() {
