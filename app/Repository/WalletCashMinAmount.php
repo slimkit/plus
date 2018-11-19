@@ -51,7 +51,7 @@ class WalletCashMinAmount
     public function get(): int
     {
         if ($this->cache->has($this->cacheKey())) {
-            return $this->cache->get($this->cacheKey());
+            return (int) $this->cache->get($this->cacheKey());
         }
 
         $model = CommonConfig::firstOrCreate(
@@ -59,7 +59,8 @@ class WalletCashMinAmount
             ['value' => 1]
         );
 
-        $this->cache->forever($this->cacheKey(), $amount = intval($model->value));
+        $amount = intval($model->value);
+        $this->cache->forever($this->cacheKey(), $amount);
 
         return $amount;
     }
