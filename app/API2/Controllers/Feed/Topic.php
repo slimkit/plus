@@ -213,7 +213,7 @@ class Topic extends Controller
         $response = (new Response())->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
 
         // If `logo` and `desc` field all is NULL
-        $data = array_filter($request->map(['name', 'desc', 'logo']));
+        $data = array_filter($request->only(['name', 'desc', 'logo']));
         if (empty($data)) {
             return $response;
         }
