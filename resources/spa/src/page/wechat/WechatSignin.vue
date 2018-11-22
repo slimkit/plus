@@ -94,7 +94,7 @@ export default {
       this.$http
         .post(
           'socialite/wechat',
-          { access_token: accessToken },
+          { access_token: this.accessToken },
           { validateStatus: s => s === 201 || s === 404 }
         )
         .then(({ status, data: { token = '', user = {} } = {} }) => {
@@ -106,8 +106,6 @@ export default {
           // 保存用户信息 并跳转
           this.$router.push(this.$route.query.redirect || '/feeds?type=hot')
           this.$nextTick(() => {
-            this.$lstore.removeData('H5_WECHAT_MP_OPENID')
-            this.$lstore.removeData('H5_WECHAT_MP_ASTOKEN')
             this.$store.commit('SAVE_USER', user)
             this.$store.dispatch('GET_UNREAD_COUNT')
             this.$store.dispatch('GET_NEW_UNREAD_COUNT')

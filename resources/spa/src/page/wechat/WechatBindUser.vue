@@ -156,8 +156,6 @@ export default {
             this.$store.dispatch('GET_UNREAD_COUNT')
             this.$store.dispatch('GET_NEW_UNREAD_COUNT')
             this.$store.commit('SAVE_USER', user)
-            this.$lstore.removeData('H5_WECHAT_MP_OPENID')
-            this.$lstore.removeData('H5_WECHAT_MP_ASTOKEN')
           })
         })
         .finally(() => {
