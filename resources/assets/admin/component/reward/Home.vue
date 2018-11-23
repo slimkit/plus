@@ -14,7 +14,7 @@
               <!-- 打赏类型 -->
               <div class="form-group">
                 <select class="form-control" v-model="filter.type">
-                  <option v-for="type in reward_types" :value="type.name">{{ type.alias }}</option>
+                  <option v-for="type in reward_types" :value="type.name" :key="type.name">{{ type.alias }}</option>
                 </select>
               </div>
               <!-- 打赏类型 -->
