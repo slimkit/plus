@@ -71,7 +71,7 @@ class PinnedsNotificationEventer
         $notifications = collect($this->events->dispatch($this->prefix));
 
         $notifications = $notifications->reject(function ($notification) {
-            return ! class_exists($notification['namespace']) || array_diff_key($this->fillable, $notification);
+            return (! isset($notification['namespace']) && $notification['namespace'] && class_exists($notification['namespace'])) || array_diff_key($this->fillable, $notification);
         });
 
         return $notifications;

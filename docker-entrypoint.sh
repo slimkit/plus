@@ -12,7 +12,7 @@ if ! [ -e $PLUS_SRC_PATH/public/index.php -o "$(ls -A $PLUS_SRC_PATH)" ]; then
 	exit 1
 fi
 
-if ! [ -e $PLUS_TARGET_PATH/plus/index -o "$(ls -A $PLUS_TARGET_PATH)" ]; then
+if ! [ -e $PLUS_TARGET_PATH/plus/index.php -o "$(ls -A $PLUS_TARGET_PATH)" ]; then
 	echo >&2 "$PLUS_NAME not found in \"$PLUS_TARGET_PATH\" - copying now..."
 
 	if [ "$(ls -A $PLUS_TARGET_PATH)" ]; then
