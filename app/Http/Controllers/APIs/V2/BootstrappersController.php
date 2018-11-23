@@ -71,7 +71,7 @@ class BootstrappersController extends Controller
         ];
         $bootstrappers['currency:recharge'] = [
             'open' => setting('currency', 'recharge')['status'],
-            'IAP_only' => config('currency.recharge.IAP.only', true)
+            'IAP_only' => config('currency.recharge.IAP.only', true),
         ];
 
         $goldSetting = $goldType->where('status', 1)->select('name', 'unit')->first() ?? collect(['name' => '金币', 'unit' => '个']);

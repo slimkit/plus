@@ -25,8 +25,6 @@ use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Currency;
 use function Zhiyi\Plus\setting;
-use Zhiyi\Plus\Models\CommonConfig;
-use Zhiyi\Plus\Support\Configuration;
 use Zhiyi\Plus\Repository\CurrencyConfig;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\CurrencyOrder as OrderModel;
@@ -89,7 +87,7 @@ class CurrencyController extends Controller
                 'cash-max' => $request->input('cash-max'),
                 'cash-min' => $request->input('cash-min'),
             ]);
-            
+
             return response()->json(['message' => '更新成功'], 201);
         }
 
