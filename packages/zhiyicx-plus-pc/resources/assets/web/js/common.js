@@ -1915,7 +1915,7 @@ $(function() {
         var name = $(this).data('user-name');
         var $el = $(this).closest('.comment_textarea, .comment_box').find('.comment_editor');
 
-        $el.html($el.html() + "@" + name + " ");
+        $el.val($el.val() + "@" + name + " ");
         checkNums($el[0], 255, 'nums');
         comment.showMention(false);
     })
@@ -2100,7 +2100,7 @@ $(function() {
       var name = $(this).data('user-name')
       $el = $('.ev-ipt-repostable-content');
 
-      $el.html($el.html() + "@" + name + " ")
+      $el.val($el.val() + "@" + name + " ")
       repostable.showMention(false);
     })
 
