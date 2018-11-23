@@ -43,9 +43,15 @@ class StoreTransform extends FormRequest
     public function rules(): array
     {
         $currency = $this->user()->newWallet()->firstOrCreate([], ['balance' => 0, 'total_income' => 0, 'total_expenses' => 0]);
+        $min = setting('currency', 'settings', ['recharge-min' => 100])['recharge-min'];
 
         return [
-            'amount' => 'required|int|min:100|max:'.$currency->balance,
+            'amount' => [
+                'required',
+                'integer',
+                sprintf('min:%d', $min),
+                sprintf('max:%d', $currency->balance),
+            ],
         ];
     }
 
