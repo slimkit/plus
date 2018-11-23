@@ -66,8 +66,13 @@ class BootstrappersController extends Controller
         $bootstrappers['wallet:recharge'] = ['open' => config('wallet.recharge.status', true)];
         $bootstrappers['wallet:transform'] = ['open' => config('wallet.transform.status', true)];
 
-        $bootstrappers['currency:cash'] = ['open' => config('currency.cash.status', true)];
-        $bootstrappers['currency:recharge'] = ['open' => config('currency.recharge.status', true), 'IAP_only' => config('currency.recharge.IAP.only', true)];
+        $bootstrappers['currency:cash'] = [
+            'open' => setting('currency', 'cash')['status'] ?? true,
+        ];
+        $bootstrappers['currency:recharge'] = [
+            'open' => setting('currency', 'recharge')['status'],
+            'IAP_only' => config('currency.recharge.IAP.only', true)
+        ];
 
         $goldSetting = $goldType->where('status', 1)->select('name', 'unit')->first() ?? collect(['name' => '金币', 'unit' => '个']);
         $bootstrappers['site']['gold_name'] = $goldSetting;
