@@ -367,7 +367,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                     'middleware' => [
                         'cors-should',
                         'bindings',
-                        'throttle:5,0.1'
+                        'throttle:5,0.1',
                     ],
                 ]));
             });
@@ -378,7 +378,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                     'middleware' => [
                         'cors-should',
                         'bindings',
-                        'throttle:5,0.1'
+                        'throttle:5,0.1',
                     ],
                 ]));
             });
@@ -435,7 +435,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                     'middleware' => [
                         'cors-should',
                         'bindings',
-                        'throttle:5,0.1'
+                        'throttle:5,0.1',
                     ],
                 ]));
             });
@@ -485,7 +485,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                     'middleware' => [
                         'cors-should',
                         'bindings',
-                        'throttle:5,0.1'
+                        'throttle:5,0.1',
                     ],
                 ]));
             });
@@ -505,7 +505,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                     'middleware' => [
                         'cors-should',
                         'bindings',
-                        'throttle:5,0.1'
+                        'throttle:5,0.1',
                     ],
                 ]));
             });
@@ -516,7 +516,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                     'middleware' => [
                         'cors-should',
                         'bindings',
-                        'throttle:5,0.1'
+                        'throttle:5,0.1',
                     ],
                 ]));
             });
