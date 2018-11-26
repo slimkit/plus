@@ -37,7 +37,7 @@ module.exports = {
                 text: 'HTTP APIs',
                 items: [
                     { text: '核心', link: '/core/api/v2/system' },
-                    { text: '用户', link: '/core/api/v2/users' },
+                    { text: '用户', link: '/api-v2/user/' },
                 ]
             }
         ],
@@ -62,6 +62,9 @@ module.exports = {
                 'create-pages-layout',
                 'create-pages-my-blog',
                 'blog-profile',
+            ],
+            '/api-v2/user/': [
+                '',
             ]
         }
     },
