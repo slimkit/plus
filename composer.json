@@ -104,7 +104,7 @@
         "jenssegers/agent": "^2.6",
         "jpush/jpush": "^3.5",
         "laravel/framework": "5.7.*",
-        "laravel/telescope": "^0.1.6",
+        "laravel/telescope": "^1.0",
         "laravel/tinker": "^1.0",
         "league/html-to-markdown": "^4.6",
         "league/omnipay": "^3.0",
@@ -125,8 +125,8 @@
         "slimkit/plus-socialite": "2.1.2",
         "symfony/finder": "^4.0",
         "symfony/yaml": "^4.0",
-        "zhiyicx/plus-pc": "2.0.4",
-        "tymon/jwt-auth": "1.0.0-rc.3"
+        "tymon/jwt-auth": "1.0.0-rc.3",
+        "zhiyicx/plus-pc": "2.0.4"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
