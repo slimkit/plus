@@ -298,7 +298,7 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 .comment_line>.tr2:after {border-bottom:7px solid #fff;}
 .comment_body {font-size:12px;color:#999;}
 .comment_textarea {margin:10px 0 10px;}
-.comment_textarea textarea {width:100%;height:78px;padding:12px;border:1px solid #ededed;background:#f3f6f7;color:#333;outline:none;resize:none;overflow:hidden;}
+/* .comment_textarea .input-wrap textarea {width:100%;height:78px;padding:12px;border:1px solid #ededed;background:#f3f6f7;color:#333;outline:none;resize:none;overflow:hidden;} */
 .comment_post {line-height:31px;height:37px;position:relative;}
 .comment_post .dy_cs {position:absolute;right:5px;top:-40px;}
 .comment_post .post_button {line-height:32px;float:right;width:85px;height:32px;text-align:center;color:#fff;border:0;cursor:pointer;border-radius:3px;background:#59b6d7;}
@@ -309,7 +309,14 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 .comment_box .comment_con a.mouse {cursor:pointer;display:none;margin-left:5px;}
 /*详情评论*/.comment_title {margin-top:40px;margin-bottom:20px;}
 .comment_count {font-size:22px;color:#59b6d7;}
-.comment_box .comment_editor {font-size:14px;width:100%;min-height:77px;margin-bottom:10px;padding:10px;resize:none;color:#666;border:1px solid #ededed;outline:none;background:#f3f6f7;}
+.comment_box .input-wrap {position: relative;}
+.comment_box .input-wrap .comment_editor {font-size:14px;width:100%;min-height:77px;margin-bottom:10px;padding:10px;resize:none;color:#666;border:1px solid #ededed;outline:none;background:#f3f6f7;z-index: 102;}
+.comment_box .input-wrap .mirror {position: absolute;top: 0;display: none;}
+.comment_box .input-wrap .ev-mention-list {position: absolute;background-color: #fff;z-index: 105;display: none;padding: 8px;border: 1px solid #ccc;border-radius: 2px;box-shadow: 0 2px 8px 1px rgba(0, 0, 9, .2);}
+.comment_box .input-wrap .ev-mention-list .list-content,
+.comment_box .input-wrap .ev-mention-list .list-title {font-size: 12px;cursor: pointer;list-style: none;}
+.comment_box .input-wrap .ev-mention-list .list-content.active {color: #59b6d7; background-color: #fff;}
+
 .comment_box .comment_tool {text-align:right;}
 .comment_box .mention-btn {position: relative;display: inline-block;cursor: pointer;}
 .dialog-mention-select {position: absolute;display: flex;left: 0;top: 100%;width: 400px;height: 300px;z-index: 10;padding: 20px 40px;background-color: #fff;box-shadow: 0px 2px 9px 0px rgba(22, 23, 23, 0.09);flex-direction: column;cursor: default;}

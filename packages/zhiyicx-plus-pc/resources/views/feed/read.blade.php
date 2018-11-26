@@ -209,6 +209,7 @@
 
 @section('scripts')
 <script src="{{ asset('assets/pc/js/module.weibo.js') }}"></script>
+<script src="{{ asset('assets/pc/js/module.mention.js') }}"></script>
 <script src="{{ asset('assets/pc/js/qrcode.js') }}"></script>
 <script type="text/javascript">
     $(function(){

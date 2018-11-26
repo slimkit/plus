@@ -74,27 +74,27 @@ var mention = {
                 var result = res.data.slice(0, 8);
                 list = []
                 // 填充列表
-                    result.forEach(function(user) {
-                        list.push(user.name)
-                    });
+                result.forEach(function(user) {
+                    list.push(user.name)
+                });
 
-                    var dom = ''
-                    if (list.length > 0) {
-                        dom = keyword.length > 1
-                            ? '<li class="list-title">选择好友或直接输入</li>'
-                            : '<li class="list-title">选择用户名或轻敲空格完成输入</li>'
-                        list.forEach(function(user) { dom += '<li class="list-content">' + user + '</li>'; })
-                    } else {
-                        dom = '<li class="list-title">没有找到该用户</li>'
-                    }
+                var dom = ''
+                if (list.length > 0) {
+                    dom = keyword.length > 1
+                        ? '<li class="list-title">选择好友或直接输入</li>'
+                        : '<li class="list-title">选择用户名或轻敲空格完成输入</li>'
+                    list.forEach(function(user) { dom += '<li class="list-content">' + user + '</li>'; })
+                } else {
+                    dom = '<li class="list-title">没有找到该用户</li>'
+                }
 
-                    _this.$atList.html(dom)
+                _this.$atList.html(dom)
 
-                    var $listClick = _this.$atList.find('li.list-content')
-                    if ($listClick.length > 0) {
-                        $listClick.eq(0).addClass('active')
-                    }
-                })
+                var $listClick = _this.$atList.find('li.list-content')
+                if ($listClick.length > 0) {
+                    $listClick.eq(0).addClass('active')
+                }
+            })
 
         } else {
             list = []
@@ -130,7 +130,6 @@ var mention = {
         this.atLocation = this.beforeCursorString.lastIndexOf('@') // 找到 @ 字符在光标签出现的最近位置
         this.indexString = this.objString.substr(this.atLocation, this.cursorPosition - this.atLocation) // 记录光标和@间的字符串，判断是否含有空格
         this.positionString = this.objString.substr(0, this.atLocation) // 获取从开始到光标之前@之间的字符串 定位at弹框的位置
-
         if (this.$atList.css('display') === 'block') {
             // 显示at中的选项列表
             var key = event.keyCode
@@ -167,13 +166,13 @@ var mention = {
             this.dynamicDisplayAtList()
 
             this.$atList.show()
-            this.$hiddenObj.html(this.positionString.replace(/\n/g, '<br>') + '<span id="at">@</span>')
+            this.$hiddenObj.html(this.positionString.replace(/\n/g, '<br>') + '<span class="at">@</span>')
 
-            var $at = $('#at');
+            var $at = this.$hiddenObj.find('.at');
 
             this.$atList.css({
                 left: this.getXY($at[0]).left + 2 + 'px',
-                top: this.getXY($at[0]).top - this.$textarea[0].scrollTop + 18 + 'px'
+                top: this.getXY($at[0]).top - this.$textarea[0].scrollTop + 28 + 'px'
             })
         } else {
             this.$atList.hide().empty()
@@ -182,16 +181,14 @@ var mention = {
 
     // 返回 obj 位置
     getXY: function (obj) {
-        // getBoundingClientRect()用于获取某个元素相对于视窗的位置集合。集合中有top, right, bottom, left等属性
-        let rect = obj.getBoundingClientRect()
         // 获取滑动条位置
-        let scrollTop = document.body.scrollTop || document.documentElement.scrollTop
-        let scrollLeft = document.body.scrollLeft || document.documentElement.scrollLeft
+        let scrollTop = obj.scrollTop || 0
+        let scrollLeft = obj.scrollLeft || 0
         let isIE = document.all ? 2 : 0
 
         let position = {}
-        position.left = rect.left - isIE + scrollLeft
-        position.top = rect.top - isIE + scrollTop
+        position.left = obj.offsetLeft - isIE + scrollLeft
+        position.top = obj.offsetTop - isIE + scrollTop
 
         return position
     }
@@ -205,6 +202,14 @@ $(function() {
         mention.$hiddenObj = $('#mirror')
         mention.$atList = $('#mention_list')
         mention.objChange(event)
+    })
+
+    $('.feed_content, .detail_comment, .profile_list').on('keyup mouseup', '.ev-comment-editor', function(event) {
+      event.preventDefault();
+      mention.$textarea = $(this)
+      mention.$hiddenObj = $(this).next('.ev-mirror')
+      mention.$atList = $(this).parent().children('.ev-mention-list')
+      mention.objChange(event)
     })
 
     // 监听选择框

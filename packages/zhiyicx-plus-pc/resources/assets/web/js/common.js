@@ -825,7 +825,7 @@ var comment = {
         this.support.to_uname = name;
         this.support.row_id = source_id;
         this.support.editor = $('#J-editor-' + type + this.support.row_id);
-        this.support.editor.text('回复 ' + this.support.to_uname+'：');
+        this.support.editor.val('回复 ' + this.support.to_uname+'：');
         this.support.editor.focus();
     },
     publish: function(obj) {
@@ -872,7 +872,7 @@ var comment = {
         axios.post(comment.urls(_this.support.row_id, _this.support.type), formData)
           .then(function (response) {
             _this.support.button.text('评论');
-            _this.support.editor.html('');
+            _this.support.editor.val('');
             _this.support.to_uid = 0;
             var res = response.data;
             var info = {
@@ -918,7 +918,7 @@ var comment = {
                     html += '                    </ul>'
                     html += '                </div>'
                     html += '            </div>';
-                    html += '            <div class="reply_body">'+res.comment.body+'</div>';
+                    html += '            <div class="reply_body">'+original_body+'</div>';
                     html += '        </dd>';
                     html += '    </dl>';
                     html += '</div>';

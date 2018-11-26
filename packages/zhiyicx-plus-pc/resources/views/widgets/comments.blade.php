@@ -11,7 +11,12 @@
         </div>
         <div class="comment_body" id="comment_box{{ $id }}">
             <div class="comment_textarea">
-                <div class="comment_editor" id="J-editor-{{ $comments_type }}{{ $id }}" placeholder="说点什么吧" oninput="checkNums(this, 255, 'nums');" contenteditable></div>
+                <div class="input-wrap">
+                    <textarea class="comment_editor ev-comment-editor" id="J-editor-{{ $comments_type }}{{ $id }}" placeholder="说点什么吧" oninput="checkNums(this, 255, 'nums');" ></textarea>
+                    <div class="comment_editor mirror ev-mirror" contenteditable="true"></div>
+                    {{-- at列表 --}}
+                    <ul class="ev-mention-list"></ul>
+                </div>
                 <div class="comment_post">
                     <span class="dy_cs">可输入<span class="nums" style="color: rgb(89, 182, 215);">255</span>字</span>
                     <span class="font14 mention-btn">
@@ -87,7 +92,12 @@
         @endif
         <div class="comment_title"><span class="comment_count cs{{ $id }}">{{ $comments_count }} </span>人评论</div>
         <div class="comment_box">
-            <div class="comment_editor" id="J-editor-{{ $comments_type }}{{ $id }}" placeholder="说点什么吧" oninput="checkNums(this, 255, 'nums');" contenteditable></div>
+            <div class="input-wrap">
+                <textarea class="comment_editor ev-comment-editor" id="J-editor-{{ $comments_type }}{{ $id }}" placeholder="说点什么吧" oninput="checkNums(this, 255, 'nums');" ></textarea>
+                <div class="comment_editor mirror ev-mirror" contenteditable="true"></div>
+                {{-- at列表 --}}
+                <ul class="ev-mention-list"></ul>
+            </div>
             <div class="comment_buttons">
                 <span class="font14 mention-btn">
                     <div onclick="comment.showMention(true, this);">
