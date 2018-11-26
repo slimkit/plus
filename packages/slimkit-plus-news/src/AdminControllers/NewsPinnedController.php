@@ -84,7 +84,7 @@ class NewsPinnedController extends Controller
      * @param  NewsPinned $pinned
      * @return mixed
      */
-    public function audit(Request $request, UserProcess $userProcess,  NewsPinned $pinned)
+    public function audit(Request $request, UserProcess $userProcess, NewsPinned $pinned)
     {
         $action = $request->input('action', 'accept');
 
