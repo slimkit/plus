@@ -29,7 +29,7 @@ class AbilitySeeder extends Seeder
      */
     public function run()
     {
-        foreach([
+        foreach ([
             'admin: login' => [
                 'display_name' => '后台登录权限',
                 'description' => '用户是否有权限登录后台',

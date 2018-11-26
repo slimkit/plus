@@ -35,7 +35,7 @@ class AbilityController extends Controller
     }
 
     /**
-     * List all abilities
+     * List all abilities.
      */
     public function __invoke(Request $request)
     {
