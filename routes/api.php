@@ -368,6 +368,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                         'cors-should',
                         'bindings',
                         'throttle:5,0.1',
+                        'auth:api',
                     ],
                 ]));
             });
@@ -379,6 +380,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                         'cors-should',
                         'bindings',
                         'throttle:5,0.1',
+                        'auth:api',
                     ],
                 ]));
             });
@@ -436,6 +438,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                         'cors-should',
                         'bindings',
                         'throttle:5,0.1',
+                        'auth:api',
                     ],
                 ]));
             });
@@ -486,6 +489,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                         'cors-should',
                         'bindings',
                         'throttle:5,0.1',
+                        'auth:api',
                     ],
                 ]));
             });
@@ -506,6 +510,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                         'cors-should',
                         'bindings',
                         'throttle:5,0.1',
+                        'auth:api',
                     ],
                 ]));
             });
@@ -517,6 +522,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                         'cors-should',
                         'bindings',
                         'throttle:5,0.1',
+                        'auth:api',
                     ],
                 ]));
             });
