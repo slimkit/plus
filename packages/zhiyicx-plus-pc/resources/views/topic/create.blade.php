@@ -77,6 +77,7 @@
         var formData = $('.ev-form-create-topic').serialize();
         axios.post("{{ url('/api/v2/feed/topics') }}", formData, { validatStatus: s => s === 200 })
             .then(function(res) {
+                if (res.data.need_review) return noticebox('创建成功，等待审核', 1, '/topic')
                 location.href = res.data.id;
             })
             .catch(function(error) {
