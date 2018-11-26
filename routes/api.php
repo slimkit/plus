@@ -362,10 +362,26 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             });
 
             // 打赏用户
-            $api->post('/{target}/rewards', API2\UserRewardController::class.'@store');
+            tap($api->post('/{target}/rewards', API2\UserRewardController::class.'@store'), function ($route) {
+                $route->setAction(array_merge($route->getAction(), [
+                    'middleware' => [
+                        'cors-should',
+                        'bindings',
+                        'throttle:5,0.1'
+                    ],
+                ]));
+            });
 
             // 新版打赏用户
-            $api->post('/{target}/new-rewards', API2\NewUserRewardController::class.'@store');
+            tap($api->post('/{target}/new-rewards', API2\NewUserRewardController::class.'@store'), function ($route) {
+                $route->setAction(array_merge($route->getAction(), [
+                    'middleware' => [
+                        'cors-should',
+                        'bindings',
+                        'throttle:5,0.1'
+                    ],
+                ]));
+            });
 
             /*
              * 解除手机号码绑定.
@@ -414,7 +430,15 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             | 发起提现申请
              */
 
-            $api->post('/cashes', API2\WalletCashController::class.'@store');
+            tap($api->post('/cashes', API2\WalletCashController::class.'@store'), function ($route) {
+                $route->setAction(array_merge($route->getAction(), [
+                    'middleware' => [
+                        'cors-should',
+                        'bindings',
+                        'throttle:5,0.1'
+                    ],
+                ]));
+            });
 
             /*
             | 充值钱包余额
@@ -456,7 +480,15 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             $api->get('/cashes', API2\NewWalletCashController::class.'@show');
 
             // 发起提现申请
-            $api->post('/cashes', API2\NewWalletCashController::class.'@store');
+            tap($api->post('/cashes', API2\NewWalletCashController::class.'@store'), function ($route) {
+                $route->setAction(array_merge($route->getAction(), [
+                    'middleware' => [
+                        'cors-should',
+                        'bindings',
+                        'throttle:5,0.1'
+                    ],
+                ]));
+            });
 
             // 发起充值
             $api->post('/recharge', API2\NewWalletRechargeController::class.'@store');
@@ -468,10 +500,26 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             $api->get('/orders/{order}', API2\NewWalletRechargeController::class.'@retrieve');
 
             // 转账
-            $api->post('/transfer', API2\TransferController::class.'@transfer');
+            tap($api->post('/transfer', API2\TransferController::class.'@transfer'), function ($route) {
+                $route->setAction(array_merge($route->getAction(), [
+                    'middleware' => [
+                        'cors-should',
+                        'bindings',
+                        'throttle:5,0.1'
+                    ],
+                ]));
+            });
 
             // 转换积分
-            $api->post('/transform', API2\NewWalletRechargeController::class.'@transform');
+            tap($api->post('/transform', API2\NewWalletRechargeController::class.'@transform'), function ($route) {
+                $route->setAction(array_merge($route->getAction(), [
+                    'middleware' => [
+                        'cors-should',
+                        'bindings',
+                        'throttle:5,0.1'
+                    ],
+                ]));
+            });
         });
 
         /*
