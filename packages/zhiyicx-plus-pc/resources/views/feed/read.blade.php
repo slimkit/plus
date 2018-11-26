@@ -153,7 +153,7 @@
                 </div>
 
                 {{-- 打賞 --}}
-                @if($config['bootstrappers']['feed']['reward'] && $user['id'] !== $TS['id'])
+                @if(($config['bootstrappers']['feed']['reward'] ?? false) && $user['id'] !== $TS['id'])
                     @include('pcview::widgets.rewards' , [
                         'rewards_data' => $feed['rewards'],
                         'rewards_type' => 'feeds',
