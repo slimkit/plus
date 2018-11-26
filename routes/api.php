@@ -772,4 +772,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
      * </pre>')
      */
     $api->get('comments', \Zhiyi\Plus\API2\Controllers\Comment::class.'@index');
+
+    // List all authed user abilities
+    $api->get('user/abilities', \Zhiyi\Plus\API2\Controllers\User\AbilityController::class);
 });
