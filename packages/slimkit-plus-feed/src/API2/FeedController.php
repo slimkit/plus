@@ -724,7 +724,7 @@ class FeedController extends Controller
         FeedModel $feed
     ) {
         $user = $request->user();
-        if ($user->id !== $feed->user_id || ! $user->ability('[feed] Delete Feed')) {
+        if ($user->id !== $feed->user_id && ! $user->ability('[feed] Delete Feed')) {
             return $response->json(['message' => '你没有权限删除动态'])->setStatusCode(403);
         }
         $feed->getConnection()->transaction(function () use ($feed, $user) {
