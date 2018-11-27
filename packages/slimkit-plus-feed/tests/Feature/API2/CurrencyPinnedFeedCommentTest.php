@@ -80,6 +80,7 @@ class CurrencyPinnedFeedCommentTest extends TestCase
                 'day' => 1,
                 'password' => '123456',
             ]);
+        $response->dump();
         $response
             ->assertStatus(201)
             ->assertJsonStructure(['message']);
