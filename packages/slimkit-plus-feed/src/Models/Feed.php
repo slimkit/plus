@@ -79,7 +79,7 @@ class Feed extends Model
     public function pinned()
     {
         return $this->hasOne(FeedPinned::class, 'target', 'id')
-            ->where('channel', 'feed');
+            ->where('channel', 'like', 'feed');
     }
 
     /**
@@ -103,7 +103,7 @@ class Feed extends Model
     public function images()
     {
         return $this->hasMany(FileWith::class, 'raw', 'id')
-            ->where('channel', 'feed:image');
+            ->where('channel', 'like', 'feed:image');
     }
 
     /**
@@ -115,7 +115,7 @@ class Feed extends Model
     public function paidNode()
     {
         return $this->hasOne(PaidNode::class, 'raw', 'id')
-            ->where('channel', 'feed');
+            ->where('channel', 'like', 'feed');
     }
 
     /**
@@ -147,7 +147,7 @@ class Feed extends Model
     public function pinnedComments()
     {
         return $this->belongsToMany(Comment::class, 'feed_pinneds', 'raw', 'target')
-            ->where('channel', 'comment');
+            ->where('channel', 'like', 'comment');
     }
 
     /**
@@ -156,7 +156,7 @@ class Feed extends Model
     public function pinnedingComments()
     {
         return $this->hasMany(FeedPinned::class, 'raw', 'id')
-            ->where('channel', 'comment')
+            ->where('channel', 'like', 'comment')
             ->whereNull('expires_at');
     }
 

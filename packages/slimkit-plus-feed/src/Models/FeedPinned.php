@@ -67,7 +67,7 @@ class FeedPinned extends Model
     public function averages($type = 'feed', $date = '')
     {
         return self::newQuery()
-            ->where('channel', '=', $type)
+            ->where('channel', 'like', $type)
             ->whereNotNull('expires_at')
             ->where('created_at', '>', $date)
             ->where('amount', '>', 0)
