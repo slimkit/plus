@@ -45,9 +45,9 @@ Route::prefix('/feeds')->group(function () {
 
         // 动态
         Route::post('/', 'FeedController@store')->middleware('sensitive:feed_content');
-        Route::delete('/{feed}', 'FeedController@destroy');
         Route::patch('/{feed}/comment-paid', 'FeedPayController@commentPaid');
 
+        // 删除动态
         Route::delete('/{feed}/currency', 'FeedController@newDestroy');
 
         // 评论
