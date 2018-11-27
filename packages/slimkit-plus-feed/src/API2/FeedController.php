@@ -133,7 +133,7 @@ class FeedController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function new(Request $request, FeedModel $feedModel, FeedRepository $repository, Carbon $datetime)
+    public function new(Request $request, FeedModel $feedModel, FeedRepository $repository)
     {
         $limit = $request->query('limit', 15);
         $after = $request->query('after');
@@ -272,7 +272,7 @@ class FeedController extends Controller
      * @throws \Throwable
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function follow(Request $request, FeedModel $model, FeedRepository $repository, Carbon $datetime)
+    public function follow(Request $request, FeedModel $model, FeedRepository $repository)
     {
         if (is_null($user = $request->user('api'))) {
             abort(401);
