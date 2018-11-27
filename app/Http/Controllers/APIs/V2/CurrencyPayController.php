@@ -258,6 +258,7 @@ class CurrencyPayController extends Controller
                 }
                 $this->resolveWalletCharge($order->walletCharge, $data);
                 $this->resolveUserCurrency($order);
+
                 return new Response('success');
             } else {
                 return new Response('fail');
