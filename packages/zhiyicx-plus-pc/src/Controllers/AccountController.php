@@ -80,8 +80,6 @@ class AccountController extends BaseController
     public function tags()
     {
         $this->PlusData['account_cur'] = 'tags';
-
-        $user_id = $this->PlusData['TS']->id ?? 0;
         $data['tags'] = api('GET', '/api/v2/tags');
         $data['user_tag'] = api('GET', '/api/v2/user/tags');
 
