@@ -30,11 +30,10 @@ class ConfigController extends Controller
     /**
      * 导航配置列表.
      * @author 28youth
-     * @param  Request     $request
      * @param  int|int $pos  0-顶部 1-底部
      * @return mixed
      */
-    public function index(Request $request, int $pos = 0)
+    public function index(int $pos = 0)
     {
         $data = [];
         $parents = [];
@@ -117,11 +116,10 @@ class ConfigController extends Controller
     /**
      * 获取一条导航记录.
      * @author 28youth
-     * @param  Request $request
      * @param  int     $nid  记录id
      * @return mixed
      */
-    public function getnav(Request $request, int $nid)
+    public function getnav(int $nid)
     {
         $nav = Navigation::find($nid);
         if ($nav) {
@@ -132,11 +130,10 @@ class ConfigController extends Controller
     /**
      * 删除导航记录.
      * @author 28youth
-     * @param  Request $request
      * @param  int     $nid   记录id
      * @return mixed
      */
-    public function delete(Request $request, int $nid)
+    public function delete(int $nid)
     {
         $nav = Navigation::find($nid);
         if ($nav) {

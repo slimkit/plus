@@ -32,7 +32,7 @@ class SearchController extends BaseController
      * @param  string      $keywords [关键字]
      * @return mixed
      */
-    public function index(Request $request, int $type = 1, string $keywords = '')
+    public function index(int $type = 1, string $keywords = '')
     {
         $data['type'] = $type;
         $data['keywords'] = $keywords;

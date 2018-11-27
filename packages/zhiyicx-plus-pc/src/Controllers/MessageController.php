@@ -182,7 +182,7 @@ class MessageController extends BaseController
         $data['notifications'] = api('GET', '/api/v2/user/notifications', ['offset' => $offset, 'limit' => $limit]);
 
         // 设置已读
-        $read = api('PUT', '/api/v2/user/notifications/all');
+        api('PUT', '/api/v2/user/notifications/all');
 
         $return = '';
         if (! empty($data['notifications'])) {

@@ -145,11 +145,10 @@ class SocialiteController extends BaseController
     /**
      * 获取登录信息.
      * @author ZsyD<1251992018@qq.com>
-     * @param Request $request
      * @param $token
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
      */
-    public function getToken(Request $request, $token)
+    public function getToken($token)
     {
         $jwt = app(\Tymon\JWTAuth\JWTAuth::class);
         $jwt->setToken($token);

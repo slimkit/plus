@@ -103,11 +103,10 @@ class NewsController extends BaseController
     /**
      * 资讯投稿
      * @author ZsyD
-     * @param  Request     $request
      * @param  int $news_id [资讯id]
      * @return mixed
      */
-    public function release(Request $request, int $news_id = 0)
+    public function release(int $news_id = 0)
     {
         if ($this->PlusData['config']['bootstrappers']['news:contribute']['verified'] && ! $this->PlusData['TS']['verified']) {
             abort(403, '未认证用户不能投稿');

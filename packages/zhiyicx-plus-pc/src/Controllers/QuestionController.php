@@ -42,7 +42,7 @@ class QuestionController extends BaseController
             $question['data'] = api('GET', '/api/v2/questions', $params);
             if ($params['type'] == 'excellent') {
                 // TODO
-                foreach ($question['data'] as $key => &$value) {
+                foreach ($question['data'] as &$value) {
                     $value['excellent_show'] = false;
                 }
             }

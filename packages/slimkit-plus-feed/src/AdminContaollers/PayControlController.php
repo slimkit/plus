@@ -22,7 +22,6 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\AdminControllers;
 
 use Illuminate\Http\Request;
 use function Zhiyi\Plus\setting;
-use Zhiyi\Plus\Support\Configuration;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class PayControlController extends Controller
@@ -41,7 +40,7 @@ class PayControlController extends Controller
     /**
      * 更新动态付费状态
      */
-    public function updateStatus(Request $request, Configuration $config)
+    public function updateStatus(Request $request)
     {
         $paySwitcg = $request->input('open');
         $payWordLimit = intval($request->input('textLength'));

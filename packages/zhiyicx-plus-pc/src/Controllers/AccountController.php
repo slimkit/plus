@@ -26,15 +26,11 @@ class AccountController extends BaseController
     /**
      * 基本设置.
      * @author Foreach
-     * @param  Request $request
      * @return mixed
      */
-    public function index(Request $request)
+    public function index()
     {
         $this->PlusData['account_cur'] = 'index';
-
-        $user_id = $this->PlusData['TS']->id ?? 0;
-
         $user = $this->PlusData['TS'];
         $user['city'] = explode(' ', $user['location']);
         $data['user'] = $user;
@@ -109,11 +105,10 @@ class AccountController extends BaseController
     /**
      * 我的钱包.
      * @author Foreach
-     * @param  Request     $request
      * @param  int|int $type    [类型]
      * @return mixed
      */
-    public function wallet(Request $request, int $type = 1)
+    public function wallet(int $type = 1)
     {
         $this->PlusData['account_cur'] = 'wallet';
 
@@ -239,11 +234,10 @@ class AccountController extends BaseController
     /**
      * 我的积分.
      * @author szlvincent
-     * @param  Request     $request
      * @param  int|int $type    [类型]
      * @return mixed
      */
-    public function currency(Request $request, int $type = 1)
+    public function currency(int $type = 1)
     {
         $this->PlusData['account_cur'] = 'currency';
 

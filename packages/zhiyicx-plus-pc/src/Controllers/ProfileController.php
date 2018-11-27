@@ -309,7 +309,7 @@ class ProfileController extends BaseController
                         'user_id' => $request->query('user_id'),
                     ];
                     $topics = api('GET', '/api/v2/user/question-topics', $params);
-                    foreach ($topics as $key => &$value) {
+                    foreach ($topics as &$value) {
                         $value['has_follow'] = true;
                     }
                     $after = last($topics)['id'] ?? 0;

@@ -69,10 +69,9 @@ class TopicController extends BaseController
      * 话题详情.
      *
      * @author mutoe <mutoe@foxmail.com>
-     * @param Request $request
      * @param int $topic_id
      */
-    public function detail(Request $request, int $topic_id)
+    public function detail(int $topic_id)
     {
         // 获取话题详情
         $data['topic'] = api('GET', '/api/v2/feed/topics/'.$topic_id);
@@ -97,9 +96,8 @@ class TopicController extends BaseController
      * 创建话题.
      *
      * @author mutoe <mutoe@foxmail.com>
-     * @param Request $request
      */
-    public function create(Request $request)
+    public function create()
     {
         return view('pcview::topic.create', [], $this->PlusData);
     }
@@ -111,7 +109,7 @@ class TopicController extends BaseController
      * @param Request $request
      * @param int $topic_id
      */
-    public function edit(Request $request, int $topic_id)
+    public function edit(int $topic_id)
     {
         $data['topic'] = api('GET', '/api/v2/feed/topics/'.$topic_id);
 

@@ -111,11 +111,10 @@ class FeedController extends BaseController
     /**
      * 动态详情.
      * @author Foreach
-     * @param  Request $request
      * @param  int     $feed_id [动态id]
      * @return mixed
      */
-    public function read(Request $request, Feed $feed)
+    public function read(Feed $feed)
     {
         $feedinfo = api('GET', '/api/v2/feeds/'.$feed->id);
         $feedinfo['collect_count'] = $feed->collection->count();

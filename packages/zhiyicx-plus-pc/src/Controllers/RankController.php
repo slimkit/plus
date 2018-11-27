@@ -27,11 +27,10 @@ class RankController extends BaseController
     /**
      * 排行榜.
      * @author ZysD
-     * @param  Request     $request
      * @param  int|int $mold [排行榜类型]
      * @return mixed
      */
-    public function index(Request $request, int $mold = 1)
+    public function index(int $mold = 1)
     {
         $data['mold'] = $mold;
 
