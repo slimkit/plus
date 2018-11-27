@@ -96,7 +96,7 @@ class Local extends Controller
 
         $resource = new Resource($channel, base64_decode($path));
         if (! $this->storage->put($resource, $content)) {
-            throw new HttpException('储存文件失败');
+            throw new HttpException(500, '储存文件失败');
         }
 
         $this->storage->callback($resource);
