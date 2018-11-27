@@ -53,6 +53,6 @@ class CreateNativePayOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('native_pay_order');
+        Schema::dropIfExists('native_pay_orders');
     }
 }
