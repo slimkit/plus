@@ -35,7 +35,7 @@ class WalletTransformTest extends TestCase
         parent::setUp();
 
         $this->user = factory(UserModel::class)->create();
-        $this->user->newWallet()->update(['balance' => 999999, 'total_income' => 0, 'total_expenses' => 0]);
+        $this->user->newWallet()->update(['balance' => 999999]);
     }
 
     /**

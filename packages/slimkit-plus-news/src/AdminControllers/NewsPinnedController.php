@@ -84,7 +84,7 @@ class NewsPinnedController extends Controller
      * @param  NewsPinned $pinned
      * @return mixed
      */
-    public function audit(Request $request, NewsPinned $pinned, Carbon $datetime)
+    public function audit(Request $request, UserProcess $userProcess, NewsPinned $pinned)
     {
         $action = $request->input('action', 'accept');
 
@@ -94,15 +94,17 @@ class NewsPinnedController extends Controller
 
         if ($pinned->expires_at !== null) {
             return response()->json(['message' => ['该记录已被处理']], 403);
+        } elseif ($action === 'accept') {
+            return $this->accept($pinned);
         }
 
-        return $this->{$action}($pinned, $datetime);
+        return $this->reject($userProcess, $pinned);
     }
 
-    public function accept(NewsPinned $pinned, Carbon $datetime)
+    public function accept(NewsPinned $pinned)
     {
         $pinned->state = 1;
-        $pinned->expires_at = $datetime->addDay($pinned->day);
+        $pinned->expires_at = (new Carbon)->addDay($pinned->day);
         $pinned->save();
 
         // 审核通过后增加未读数
@@ -122,10 +124,10 @@ class NewsPinnedController extends Controller
         return response()->json([], 204);
     }
 
-    public function reject(NewsPinned $pinned, Carbon $datetime, UserProcess $userProcess)
+    public function reject(UserProcess $userProcess, NewsPinned $pinned)
     {
         $pinned->state = 2;
-        $pinned->expires_at = $datetime;
+        $pinned->expires_at = new Carbon;
         $userCount = UserCountModel::firstOrNew([
             'user_id' => $pinned->user_id,
             'type' => 'user-system',
