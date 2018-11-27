@@ -710,19 +710,28 @@ class FeedController extends Controller
     /**
      * 新版删除动态接口，如有置顶申请讲退还相应积分.
      *
-     * @param Request $request
      * @param ResponseContract $response
      * @param FeedModel $feed
      * @return mixed
      * @author BS <414606094@qq.com>
      */
     public function newDestroy(
-        Request $request,
         ResponseContract $response,
         FeedModel $feed
     ) {
-        $user = $request->user();
-        if ($user->id !== $feed->user_id && ! $user->ability('[feed] Delete Feed')) {
+        $user = $feed->user;
+        if (! $user) {
+            // 删除话题关联
+            $feed->topics->each(function ($topic) {
+                $topic->feeds_count -= 1;
+                $topic->save();
+            });
+            $feed->topics()->sync([]);
+
+            $feed->delete();
+
+            return $response->json(null, 204);
+        } elseif ($user->id !== $feed->user_id && ! $user->ability('[feed] Delete Feed')) {
             return $response->json(['message' => '你没有权限删除动态'])->setStatusCode(403);
         }
 
