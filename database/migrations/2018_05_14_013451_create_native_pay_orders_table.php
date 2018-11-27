@@ -40,7 +40,7 @@ class CreateNativePayOrdersTable extends Migration
             $table->string('subject')->comment('订单抬头');
             $table->string('content')->comment('订单内容');
             $table->string('product_code')->comment('订单交易方式');
-            $table->string('from', 100)->comment('充值订单来自哪个客户端');
+            $table->unsignedInteger('from')->comment('充值订单来自哪个客户端');
             $table->timestamps();
             $table->index('user_id');
         });
