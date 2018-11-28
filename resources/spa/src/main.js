@@ -60,6 +60,7 @@ if (process.env.VUE_APP_MOBLINK_ENABLE) {
     script.type = 'text/javascript'
     script.src = `//f.moblink.mob.com/3.0.1/moblink.js?appkey=${key}`
     script.onload = () => {
+      // eslint-disable-next-line
       MobLink({ path: location.href })
     }
     document.querySelector('body').appendChild(script)
