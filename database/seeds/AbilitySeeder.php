@@ -242,7 +242,7 @@ class AbilitySeeder extends Seeder
                     continue;
                 }
 
-                $role->abilities()->syncWithoutDetaching([$role]);
+                $role->abilities()->sync($ability, false);
             }
         }
     }
