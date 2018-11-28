@@ -59,7 +59,7 @@ class CurrencyController extends Controller
             'basic_conf' => [
                 'rule' => setting('currency', 'rule', '我是积分规则'),
                 'cash.rule' => $cash['rule'],
-                'cash,status' => $cash['status'],
+                'cash.status' => $cash['status'],
                 'recharge.rule' => $recharge['rule'],
                 'recharge.status' => $recharge['status'],
             ],
