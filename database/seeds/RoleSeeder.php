@@ -17,7 +17,6 @@
  */
 
 use Zhiyi\Plus\Models\Role;
-use Zhiyi\Plus\Models\Ability;
 use Illuminate\Database\Seeder;
 use function Zhiyi\Plus\setting;
 
@@ -31,76 +30,31 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
+        foreach([
+            'founder' => [
+                'display_name' => '创始人',
+                'description' => '站点创始人',
+                'non_delete' => 1,
+            ],
+            'disabler' => [
+                'display_name' => '禁用用户',
+                'description' => '被禁止登录用户， 需要手动设置',
+                'non_delete' => 1,
+            ],
+            'developer' => [
+                'display_name' => '开发/运维人员',
+                'description' => '用于访问调试监控工具的专属角色',
+                'non_delete' => 1,
+            ],
+            'owner' => [
+                'name' => 'owner',
+                'display_name' => '普通用户',
+                'description' => '普通用户',
+            ],
+        ] as $name => $more) {
+            Role::firstOrCreate(['name' => $name], $more);
+        }
         // 权限节点.
         $this->call(AbilitySeeder::class);
-
-        // roles
-        $this->createFounderRole();
-        $this->createOwnerRole();
-        $this->createDisabledRole();
-        $this->createDeveloperRole();
-    }
-
-    /**
-     * 创始人角色.
-     *
-     * @return void
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    protected function createFounderRole()
-    {
-        $role = Role::create([
-            'name' => 'founder',
-            'display_name' => '创始人',
-            'description' => '站点创始人',
-            'non_delete' => 1,
-        ]);
-
-        $abilities = Ability::all();
-
-        $role->abilities()->sync($abilities);
-    }
-
-    /**
-     * 业主，普通用户角色.
-     *
-     * @return void
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    protected function createOwnerRole()
-    {
-        $role = Role::create([
-            'name' => 'owner',
-            'display_name' => '普通用户',
-            'description' => '普通用户',
-        ]);
-
-        $abilities = Ability::where('name', 'not like', 'admin:%')->get();
-        $role->abilities()->sync($abilities);
-        setting('user')->set('register-role', $role->id);
-    }
-
-    /**
-     * 被禁用的用户.
-     * @return [type] [description]
-     */
-    protected function createDisabledRole()
-    {
-        Role::create([
-            'name' => 'disabler',
-            'display_name' => '禁用用户',
-            'description' => '被禁止登录用户， 需要手动设置',
-            'non_delete' => 1,
-        ]);
-    }
-
-    protected function createDeveloperRole()
-    {
-        Role::create([
-            'name' => 'developer',
-            'display_name' => '开发/运维人员',
-            'description' => '用于访问调试监控工具的专属角色',
-            'non_delete' => 1,
-        ]);
     }
 }
