@@ -35,16 +35,15 @@ class ClientVersionController
      */
     public function index(Request $request, ClientVersion $versionModel)
     {
-        // $version_code = $request->query('version_code', 0);
         $type = $request->query('type');
         $limit = $request->query('limit', 15);
         $after = $request->query('after');
 
         $versions = $versionModel->when($after, function ($query) use ($after) {
-            return $query->where('id', '>', $after);
+            return $query->where('id', '<', $after);
         })
         ->where('type', $type)
-        ->orderBy('version_code', 'desc')
+        ->orderBy('id', 'desc')
         ->limit($limit)
         ->get();
 
