@@ -35,6 +35,7 @@ const routers = {
     { path: 'vendor-qq', component: vendorPages.QQ, name: 'user:vendor/qq' },
     { path: 'vendor-wechat', component: vendorPages.WeChat, name: 'user:vendor/wechat' },
     { path: 'vendor-weibo', component: vendorPages.Weibo, name: 'user:vendor/weibo' },
+    { path: 'vendor-wechat-mp', component: vendorPages.WeChatMp, name: 'user:vendor/wechat-mp' },
   ]
 };
 
