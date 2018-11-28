@@ -964,16 +964,21 @@ var comment = {
                 break;
         }
         _this.lockStatus = 1;
-        axios.delete(url)
-          .then(function (response) {
-            $('#comment' + id).fadeOut();
-            $('.cs' + source_id).text(parseInt($('.cs' + source_id).text())-1);
-            _this.lockStatus = 0;
-          })
-          .catch(function (error) {
-            showError(error.response.data);
-            _this.lockStatus = 0;
-          });
+        layer.confirm(confirmTxt + '确定删除这条评论？', {}, function() {
+            axios.delete(url)
+                .then(function (response) {
+                    $('#comment' + id).fadeOut();
+                    $('.cs' + source_id).text(parseInt($('.cs' + source_id).text())-1);
+                    _this.lockStatus = 0;
+                    layer.closeAll();
+                    noticebox('删除成功')
+                })
+                .catch(function (error) {
+                    showError(error.response.data);
+                    _this.lockStatus = 0;
+                });
+        });
+
     },
     pinneds: function (type, source_id, id){
         var url = '';
