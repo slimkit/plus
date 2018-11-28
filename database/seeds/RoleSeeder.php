@@ -18,7 +18,6 @@
 
 use Zhiyi\Plus\Models\Role;
 use Illuminate\Database\Seeder;
-use function Zhiyi\Plus\setting;
 
 class RoleSeeder extends Seeder
 {
@@ -30,7 +29,7 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        foreach([
+        foreach ([
             'founder' => [
                 'display_name' => '创始人',
                 'description' => '站点创始人',
