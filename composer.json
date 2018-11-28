@@ -81,6 +81,14 @@
                 "symlink": true,
                 "plus-soft": true
             }
+        },
+        {
+            "type": "path",
+            "url": "packages/zhiyicx-plus-pc",
+            "options": {
+                "symlink": true,
+                "plus-soft": true
+            }
         }
     ],
     "require": {
@@ -96,6 +104,7 @@
         "jenssegers/agent": "^2.6",
         "jpush/jpush": "^3.5",
         "laravel/framework": "5.7.*",
+        "laravel/telescope": "^1.0",
         "laravel/tinker": "^1.0",
         "league/html-to-markdown": "^4.6",
         "league/omnipay": "^3.0",
@@ -106,17 +115,18 @@
         "overtrue/easy-sms": "^1.0",
         "pingplusplus/pingpp-php": "^2.2",
         "predis/predis": "^1.1",
-        "slimkit/plus-appversion": "2.0.1",
-        "slimkit/plus-around-amap": "2.0.1",
-        "slimkit/plus-checkin": "2.0.1",
-        "slimkit/plus-feed": "2.0.1",
-        "slimkit/plus-id": "2.0.1",
-        "slimkit/plus-music": "2.0.1",
-        "slimkit/plus-news": "2.0.1",
-        "slimkit/plus-socialite": "2.0.1",
+        "slimkit/plus-appversion": "2.1.2",
+        "slimkit/plus-around-amap": "2.1.2",
+        "slimkit/plus-checkin": "2.1.2",
+        "slimkit/plus-feed": "2.1.2",
+        "slimkit/plus-id": "2.1.2",
+        "slimkit/plus-music": "2.1.2",
+        "slimkit/plus-news": "2.1.2",
+        "slimkit/plus-socialite": "2.1.2",
         "symfony/finder": "^4.0",
         "symfony/yaml": "^4.0",
-        "tymon/jwt-auth": "1.0.0-rc.3"
+        "tymon/jwt-auth": "1.0.0-rc.3",
+        "zhiyicx/plus-pc": "2.1.2"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -145,7 +155,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.9-dev"
+            "dev-master": "2.1-dev"
         },
         "laravel": {
             "dont-discover": []

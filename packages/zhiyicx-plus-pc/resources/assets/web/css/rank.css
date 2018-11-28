@@ -1,0 +1,42 @@
+/*排行榜*/.list_bg {margin-top:40px;background:#fff;}
+.list_ul {line-height:80px;width:100%;height:80px;margin-bottom:0;overflow:hidden;}
+.list_ul li {float:left;width:90px;margin-left:40px;text-align:center;}
+.list_ul li a {display:inline-block;width:90px;height:80px;color:#999;}
+.list_ul li a:hover {color:#333;border-bottom:2px solid #59b6d7;}
+.a_border {color:#333 !important;border-bottom:2px solid #59b6d7;}
+.list_fans {float:left;padding:40px 54px 40px 40px;width:540px;border-right:1px solid #ededed;}
+.list_fans:nth-child(even) {border-right:none;}
+.fans_list {padding-bottom:20px;border-bottom:1px solid #ededed;}
+.fList_r {float:right;}
+.fList_r img {cursor:pointer;}
+.list_pm {line-height:40px;height:40px;color:#999;border-bottom:1px solid #ededed;}
+.pm_1 {display:inline-block;width:120px;}
+.pm_2 {display:inline-block;}
+.pm_3 {display:inline-block;float:right;}
+.fans_ul {display:block;clear:both;}
+.fans_img {width:30px;height:30px;margin-right:10px;border-radius:50%;}
+.fans_ul {min-height:506px;margin-bottom:0;padding-bottom:20px;border-bottom:1px solid #ccc;}
+.fans_ul li {margin-top:15px;}
+.fans_ul li div {display:inline-block;}
+.fans_span1 {display:inline-block;float:left;width:120px;padding:10px 0;}
+.fans_span1 span {font-size:12px;line-height:16px;display:block;width:16px;height:16px;text-align:center;color:#333;border-radius:3px;}
+.fans_span1 span.grey {color:#fff;background:#ccc;}
+.fans_span1 span.blue {color:#fff;background:#59b6d7;}
+.bg_ccc {background:#ccc !important;}
+.fans_span2 {font-size:14px;display:inline-block;width:250px;color:#333;}
+.fans_span2 a {color:#333;position:relative;}
+.fans_span2 a:hover {color:#59b6d7;}
+.fans_span3 {font-size:14px;float:right;color:#666;}
+.fans_ranking {font-size:14px;margin:20px auto 0;text-align:center;color:#999;}
+.fans_ranking span {font-weight:bold;color:#f87e73;}
+.fans_div {float:left;margin-top:-1px;border-top:1px solid #ededed;background:#fff;}
+.fans_img0 {transform:rotate(180deg);}
+.fans_bg {padding-bottom:40px;}
+.rank-tit {padding-bottom:20px;border-bottom:1px solid #ccc;}
+.rank-tit .arrow-rank-l,.rank-tit .arrow-rank-l-l,.rank-tit .arrow-rank-r,.rank-tit .arrow-rank-r-l {display:inline-block;width:12px;height:12px;margin:0 0 0 3px;cursor:pointer;}
+.rank-tit .arrow-rank-l {background-image:url('../images/ic_lastpage.png');}
+.rank-tit .arrow-rank-l-l {background-image:url('../images/ic_lastpage_light.png');}
+.rank-tit .arrow-rank-r {background-image:url('../images/ic_nextpage.png');}
+.rank-tit .arrow-rank-r-l {background-image:url('../images/ic_nextpag_light.png');}
+.right {float:right;}
+.fans_span2 .role-icon {position:absolute;width:14px;height:14px;bottom:-8px;left:19px;border-radius:50%;}

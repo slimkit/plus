@@ -23,6 +23,7 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 use Carbon\Carbon;
 use Zhiyi\Plus\Models\Area;
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\setting;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\CommonConfig;
 use Illuminate\Contracts\Mail\Mailer;
@@ -430,25 +431,25 @@ class SiteController extends Controller
     /**
      * 服务器信息.
      */
-    public function server(ResponseFactory $response)
+    public function server(Request $request, ResponseFactory $response)
     {
         $system = [
+            'app_version' => app()->version(),
             'php_version' => PHP_VERSION,
             'os' => PHP_OS,
-            'server' => $_SERVER['SERVER_SOFTWARE'],
-            'db' => env('DB_CONNECTION'),
-            'port' => $_SERVER['SERVER_PORT'],
-            'root' => $_SERVER['DOCUMENT_ROOT'],
-            'agent' => $_SERVER['HTTP_USER_AGENT'],
-            'protocol' => $_SERVER['SERVER_PROTOCOL'],
-            'method' => $_SERVER['REQUEST_METHOD'],
+            'db' => config('database.default'),
+            'server' => $request->server->get('SERVER_SOFTWARE'),
+            'port' => $request->server->get('SERVER_PORT'),
+            'root' => $request->server->get('DOCUMENT_ROOT'),
+            'agent' => $request->server->get('HTTP_USER_AGENT'),
+            'protocol' => $request->server->get('SERVER_PROTOCOL'),
+            'domain_ip' => $request->server->get('SERVER_NAME'),
+            'user_ip' => $request->server->get('REMOTE_ADDR'),
             'laravel_version' => app()->getLaravelVersion(),
             'max_upload_size' => ini_get('upload_max_filesize'),
             'execute_time' => ini_get('max_execution_time').'秒',
             'server_date' => date('Y年n月j日 H:i:s'),
             'local_date' => gmdate('Y年n月j日 H:i:s', time() + 8 * 3600),
-            'domain_ip' => $_SERVER['SERVER_NAME'].' [ '.$_SERVER['SERVER_ADDR'].' ]',
-            'user_ip' => $_SERVER['REMOTE_ADDR'],
             'disk' => round((disk_free_space('.') / (1024 * 1024)), 2).'M',
         ];
 
@@ -458,71 +459,48 @@ class SiteController extends Controller
     /**
      * 获取站点配置.
      *
-     * @param Repository $config
-     * @param Configuration $configuration
      * @return \Illuminate\Http\JsonResponse
      */
-    public function siteConfigurations(Repository $config, Configuration $configuration)
+    public function siteConfigurations()
     {
-        $configs = $config->get('site');
-
-        if (is_null($configs)) {
-            $configs = $this->initSiteConfiguration($configuration);
-        }
-
-        return response()->json($configs, 200);
-    }
-
-    /**
-     * 初始化站点设置.
-     *
-     * @param Repository $config
-     * @param Configuration $configuration
-     * @return mixed
-     */
-    private function initSiteConfiguration(Configuration $configuration)
-    {
-        $config = $configuration->getConfiguration();
-
-        $config->set('site.status', true);
-        $config->set('site.off_reason', '站点维护中请稍后再访问');
-
-        $config->set('site.app.status', true);
-        $config->set('site.h5.status', true);
-
-        $config->set('site.reserved_nickname', 'root,admin');
-
-        $config->set('site.client_email', 'admin@123.com');
-
-        $config->set('site.gold.status', true);
-
-        $config->set('site.reward.status', true);
-        $config->set('site.reward.amounts', '100,500,1000');
-
-        $config->set('site.anonymous.status', false);
-        $config->set('site.anonymous.rule', '');
-
-        $config->set('site.user_invite_template', '我发现了一个全平台社交系统ThinkSNS+，快来加入吧：http://t.cn/RpFfbbi');
-
-        $configuration->save($config);
-
-        return $config['site'];
+        return response()->json([
+            'about_url' => setting('site', 'about-url'),
+            'anonymous' => setting('user', 'anonymous', []),
+            'client_email' => setting('site', 'client-email'),
+            'gold' => [
+                'status' => setting('site', 'gold-switch'),
+            ],
+            'reserved_nickname' => setting('user', 'keep-username'),
+            'reward' => setting('site', 'reward', []),
+            'user_invite_template' => setting('user', 'invite-template'),
+        ], 200);
     }
 
     /**
      * 更新站点设置.
      *
      * @param Request $request
-     * @param Configuration $configuration
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateSiteConfigure(Request $request, Configuration $configuration)
+    public function updateSiteConfigure(Request $request)
     {
-        $config = $configuration->getConfiguration();
-
-        $config->set('site', $request->get('site'));
-
-        $configuration->save($config);
+        setting('user')->set([
+            'keep-username' => $request->input('site.reserved_nickname'),
+            'anonymous' => [
+                'status' => (bool) $request->input('site.anonymous.status'),
+                'rule' => (string) $request->input('site.anonymous.rule'),
+            ],
+            'invite-template' => $request->input('site.user_invite_template'),
+        ]);
+        setting('site')->set([
+            'gold-switch' => (bool) $request->input('site.gold.status'),
+            'reward' => [
+                'status' => (bool) $request->input('site.reward.status'),
+                'amounts' => $request->input('site.reward.amounts'),
+            ],
+            'about-url' => $request->input('site.about_url'),
+            'client-email' => $request->input('site.client_email'),
+        ]);
 
         return response()->json(['message' => ['更新站点配置成功']], 201);
     }

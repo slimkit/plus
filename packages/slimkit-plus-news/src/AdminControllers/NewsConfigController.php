@@ -21,41 +21,43 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\AdminControllers;
 
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Support\Configuration;
-use Illuminate\Contracts\Config\Repository;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class NewsConfigController extends Controller
 {
     /**
      * 查看资讯配置.
-     *
-     * @author bs<414606094@qq.com>
-     * @param  Repository $config
      * @return mixed
      */
-    public function show(Repository $config)
+    public function show()
     {
-        $data = $config->get('news');
+        $config = setting('news', 'contribute', [
+            'pay' => true,
+            'verified' => true,
+        ]);
+        $payAmount = setting('news', 'contribute-amount', 100);
 
-        return response()->json($data, 200);
+        return response()->json([
+            'contribute' => $config,
+            'pay_contribute' => $payAmount,
+        ], 200);
     }
 
     /**
      * 更新投稿配置.
      *
-     * @author bs<414606094@qq.com>
      * @param  Request       $request
      * @param  Configuration $configuration
      */
-    public function setContribute(Request $request, Configuration $configuration)
+    public function setContribute(Request $request)
     {
         $contribute = $request->input('contribute');
-
-        $config = $configuration->getConfiguration();
-        $config->set('news.contribute', $contribute);
-
-        $configuration->save($config);
+        setting('news')->set('contribute', [
+            'pay' => (bool) $contribute['pay'] ?? false,
+            'verified' => (bool) $contribute['verified'] ?? false,
+        ]);
 
         return response()->json([], 204);
     }
@@ -63,20 +65,17 @@ class NewsConfigController extends Controller
     /**
      * 投稿金额配置.
      *
-     * @author bs<414606094@qq.com>
      * @param  Request       $request
      * @param  Configuration $configuration
      */
-    public function setPayContribute(Request $request, Configuration $configuration)
+    public function setPayContribute(Request $request)
     {
         $pay_contribute = $request->input('pay_contribute');
         if ($pay_contribute > 9999999 || $pay_contribute < 1) {
             return response()->json(['message' => ['请输入合适的投稿金额']], 422);
         }
-        $config = $configuration->getConfiguration();
-        $config->set('news.pay_contribute', $pay_contribute);
 
-        $configuration->save($config);
+        setting('news')->set('contribute-amount', $pay_contribute);
 
         return response()->json([], 204);
     }

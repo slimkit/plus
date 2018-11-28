@@ -19,6 +19,8 @@
 use Zhiyi\Plus\Models\Area;
 use Illuminate\Database\Seeder;
 use Illuminate\Console\OutputStyle;
+use Illuminate\Database\Events\QueryExecuted;
+use Illuminate\Console\Events\CommandFinished;
 
 class AreasTableSeeder extends Seeder
 {
@@ -51,6 +53,12 @@ class AreasTableSeeder extends Seeder
      */
     public function run()
     {
+        // 清除 Telescope 监听的事件
+        $events = app('events');
+        $events->forget('eloquent.*');
+        $events->forget(CommandFinished::class);
+        $events->forget(QueryExecuted::class);
+
         $output = $this->command->getOutput();
         $china = new Area();
         $china->name = '中国';

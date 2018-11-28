@@ -50,4 +50,23 @@ Route::middleware(['auth:web', 'admin'])->prefix('admin')->group(function (Route
 
     $route->get('file-storage/channels/public', AdminControllers\FileStorage\PublicChannel::class.'@show');
     $route->patch('file-storage/channels/public', AdminControllers\FileStorage\PublicChannel::class.'@update');
+
+    $route->get('setting/security/pay-validate-password', AdminControllers\Setting\Security::class.'@payValidateSwitch');
+    $route->put('setting/security/pay-validate-password', AdminControllers\Setting\Security::class.'@changePayValidateSwitch');
+
+    // 环信配置
+    $route->get('setting/vendor/easemob', AdminControllers\Setting\Easemob::class.'@getConfigure');
+    $route->put('setting/vendor/easemob', AdminControllers\Setting\Easemob::class.'@setConfigure');
+
+    // QQ 配置
+    $route->get('setting/vendor/qq', AdminControllers\Setting\QQ::class.'@getConfigure');
+    $route->put('setting/vendor/qq', AdminControllers\Setting\QQ::class.'@setConfigure');
+
+    // 微信配置
+    $route->get('setting/vendor/wechat', AdminControllers\Setting\WeChat::class.'@getConfigure');
+    $route->put('setting/vendor/wechat', AdminControllers\Setting\WeChat::class.'@setConfigure');
+
+    // 微博配置
+    $route->get('setting/vendor/weibo', AdminControllers\Setting\Weibo::class.'@getConfigure');
+    $route->put('setting/vendor/weibo', AdminControllers\Setting\Weibo::class.'@setConfigure');
 });

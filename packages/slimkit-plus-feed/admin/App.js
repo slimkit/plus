@@ -13,11 +13,10 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Home from './components/Home';
-import Feed from './components/Feed';
 import Comment from './components/Comment';
 import PayControl from './components/PayControl';
-import DeleteFeed from './components/DeletedFeed';
 import TopicPage from './pages/topic';
+import FeedPage from './pages/feed';
 
 const styles = () => ({
   root: {}
@@ -25,11 +24,10 @@ const styles = () => ({
 
 const routes = [
   { label: '基础信息', route: '/', component: Home, exact: true },
-  { label: '动态管理', route: '/feeds', component: Feed },
+  { label: '动态管理', route: '/feeds', component: FeedPage },
   { label: '话题管理', route: '/topic', component: TopicPage },
   { label: '评论管理', route: '/comments', component: Comment },
   { label: '付费开关', route: '/paycontrol', component: PayControl },
-  { label: '动态回收站', route: '/deleteFeeds', component: DeleteFeed },
 ];
 
 class App extends Component {

@@ -31,6 +31,7 @@ use Zhiyi\Plus\FileStorage\TaskInterface;
 use Zhiyi\Plus\FileStorage\FileMetaInterface;
 use Zhiyi\Plus\FileStorage\ResourceInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
 
 class LocalFilesystem implements FilesystemInterface
@@ -81,15 +82,25 @@ class LocalFilesystem implements FilesystemInterface
      */
     public function response(ResourceInterface $resource, ?string $rule = null): Response
     {
+        $realPath = $this->filesystem->path($resource->getPath());
         if ($this->meta($resource)->hasImage()) {
-            $pathinfo = \League\Flysystem\Util::pathinfo($resource->getPath());
             $rule = new Local\RuleParser($rule);
+            if (
+                $rule->getQuality() >= 90 &&
+                ! $rule->getBlur() &&
+                ! $rule->getWidth() &&
+                ! $rule->getHeight() &&
+                strtolower($this->meta($resource)->getMimeType()) === 'image/gif'
+            ) {
+                return $this->filesystem->response($resource->getPath());
+            }
+
+            $pathinfo = \League\Flysystem\Util::pathinfo($realPath);
             $cachePath = sprintf('%s/%s/%s.%s', $pathinfo['dirname'], $pathinfo['filename'], $rule->getFilename(), $pathinfo['extension']);
             if ($this->filesystem->has($cachePath)) {
                 return $this->filesystem->response($cachePath);
             }
 
-            $realPath = $this->filesystem->path($resource->getPath());
             $image = Image::make($realPath);
             $image->blur($rule->getBlur());
             if (($image->width() > $rule->getWidth() || $image->height() > $rule->getHeight()) && ($rule->getWidth() || $rule->getHeight())) {
@@ -104,7 +115,7 @@ class LocalFilesystem implements FilesystemInterface
             return $image->response();
         }
 
-        return $this->filesystem->response($resource->getPath());
+        return new BinaryFileResponse($realPath);
     }
 
     /**
@@ -142,7 +153,6 @@ class LocalFilesystem implements FilesystemInterface
 
         return new Task($resource, $uri, 'PUT', null, null, [
             'Authorization' => 'Bearer '.$this->guard()->login($user),
-            'x-plus-storage-filename' => $request->input('filename'),
             'x-plus-storage-hash' => $request->input('hash'),
             'x-plus-storage-size' => $request->input('size'),
             'x-plus-storage-mime-type' => $request->input('mime_type'),
@@ -157,7 +167,7 @@ class LocalFilesystem implements FilesystemInterface
      */
     public function put(string $path, $contents): bool
     {
-        return (bool) $this->filesystem->put($path, $content);
+        return (bool) $this->filesystem->put($path, $contents);
     }
 
     /**

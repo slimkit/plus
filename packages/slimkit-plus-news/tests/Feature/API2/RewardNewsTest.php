@@ -75,13 +75,16 @@ class RewardNewsTest extends TestCase
      */
     public function testNewRewardNews()
     {
-        $other = factory(UserModel::class)->create();
+        $other = factory(UserModel::class)->create([
+            'password' => bcrypt('123456'),
+        ]);
         $other->currency()->increment('sum', 100);
 
         $response = $this
             ->actingAs($other, 'api')
             ->json('POST', "/api/v2/news/{$this->news->id}/new-rewards", [
                 'amount' => 100,
+                'password' => '123456',
             ]);
         $response
             ->assertStatus(201)

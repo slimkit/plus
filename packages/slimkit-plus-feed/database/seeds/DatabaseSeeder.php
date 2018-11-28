@@ -34,5 +34,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(AbilityTableSeeder::class);
         $this->call(AdvertisingSpaceSeeder::class);
+        $this->call(SettingTableSeeder::class);
     }
 }

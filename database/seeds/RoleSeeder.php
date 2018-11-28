@@ -19,6 +19,7 @@
 use Zhiyi\Plus\Models\Role;
 use Zhiyi\Plus\Models\Ability;
 use Illuminate\Database\Seeder;
+use function Zhiyi\Plus\setting;
 
 class RoleSeeder extends Seeder
 {
@@ -37,6 +38,7 @@ class RoleSeeder extends Seeder
         $this->createFounderRole();
         $this->createOwnerRole();
         $this->createDisabledRole();
+        $this->createDeveloperRole();
     }
 
     /**
@@ -74,8 +76,8 @@ class RoleSeeder extends Seeder
         ]);
 
         $abilities = Ability::where('name', 'not like', 'admin:%')->get();
-
         $role->abilities()->sync($abilities);
+        setting('user')->set('register-role', $role->id);
     }
 
     /**
@@ -88,6 +90,16 @@ class RoleSeeder extends Seeder
             'name' => 'disabler',
             'display_name' => '禁用用户',
             'description' => '被禁止登录用户， 需要手动设置',
+            'non_delete' => 1,
+        ]);
+    }
+
+    protected function createDeveloperRole()
+    {
+        Role::create([
+            'name' => 'developer',
+            'display_name' => '开发/运维人员',
+            'description' => '用于访问调试监控工具的专属角色',
             'non_delete' => 1,
         ]);
     }

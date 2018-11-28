@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Requests\API2;
 
+use function Zhiyi\Plus\setting;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTransform extends FormRequest
@@ -43,9 +44,15 @@ class StoreTransform extends FormRequest
     public function rules(): array
     {
         $currency = $this->user()->newWallet()->firstOrCreate([], ['balance' => 0, 'total_income' => 0, 'total_expenses' => 0]);
+        $min = setting('currency', 'settings', ['recharge-min' => 100])['recharge-min'];
 
         return [
-            'amount' => 'required|int|min:100|max:'.$currency->balance,
+            'amount' => [
+                'required',
+                'integer',
+                sprintf('min:%d', $min),
+                sprintf('max:%d', $currency->balance),
+            ],
         ];
     }
 

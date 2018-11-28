@@ -34,7 +34,6 @@ class StoreAmapRequest extends Request
             'amap-sig' => 'required|string',
             'amap-tableid' => 'required|string',
             'amap-key' => 'required|string',
-            'amap-jssdk' => 'required|string',
         ];
     }
 
@@ -47,8 +46,6 @@ class StoreAmapRequest extends Request
     public function messages(): array
     {
         return [
-            'amap-jssdk.required' => '请输入 JS SDK 地址',
-            'amap-jssdk.string' => 'JS SDK 地址必须是字符串',
             'amap-sig.required' => '请输入应用密钥',
             'amap-sig.string' => '应用密钥必须是字符串',
             'amap-key.required' => '请输入高德 Web 服务 Key',

@@ -28,7 +28,6 @@ use Zhiyi\Plus\Support\PinnedsNotificationEventer;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
-use function Zhiyi\Component\ZhiyiPlus\PlusComponentNews\base_path as component_base_path;
 
 class NewsServiceProvider extends ServiceProvider
 {
@@ -48,10 +47,6 @@ class NewsServiceProvider extends ServiceProvider
         $this->publishes([
             dirname(__DIR__).'/../resource' => $this->app->PublicPath().'/assets/news',
         ], 'public');
-
-        $this->publishes([
-            component_base_path('/config/news.php') => $this->app->configPath('news.php'),
-        ], 'config');
 
         // Register view namespace.
         $this->loadViewsFrom(dirname(__DIR__).'/../view', 'plus-news');
@@ -99,10 +94,6 @@ class NewsServiceProvider extends ServiceProvider
             'route' => true,
             'icon' => asset('assets/news/news-icon.png'),
         ]);
-
-        $this->mergeConfigFrom(
-            component_base_path('/config/news.php'), 'news'
-        );
 
         User::macro('newsCollections', function () {
             return $this->belongsToMany(News::class, 'news_collections', 'user_id', 'news_id');

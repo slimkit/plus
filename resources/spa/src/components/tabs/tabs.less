@@ -1,0 +1,45 @@
+
+
+@tabs-prefix: v-tab;
+.@{tabs-prefix} {
+  &s {
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 0.9rem;
+    align-items: center;
+    background-color: #fff;
+    justify-content: space-around;
+    box-shadow: 0 0px 5px 0px rgba(0, 0, 0, 0.34);
+    &.fixed {
+      top: 90px;
+      position: fixed;
+      z-index: 10;
+      + * {
+        padding-top: 90px;
+      }
+    }
+  }
+  & {
+    flex: 0 0 auto;
+    height: 100%;
+    color: #999;
+    line-height: 0.88rem;
+    font-size: 0.3rem;
+  }
+  &.active {
+    color: #333;
+  }
+  &-link-highlight {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px; /*no*/
+    background-color: @primary;
+    transition: transform 0.3s, width 0.3s;
+    backface-visibility: hidden;
+    &.init {
+      transition: none !important;
+    }
+  }
+}

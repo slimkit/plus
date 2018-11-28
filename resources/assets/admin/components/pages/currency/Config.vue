@@ -7,7 +7,7 @@
             
             <ui-loading v-if="loading"></ui-loading>
 
-            <div class="form-horizontal" v-else="loading">
+            <div class="form-horizontal" v-else>
                 <div class="form-group">
                     <label class="control-label col-xs-2">积分规则</label>
                     <div class="col-xs-4">

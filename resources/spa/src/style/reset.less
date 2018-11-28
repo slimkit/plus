@@ -1,0 +1,212 @@
+@charset "UTF-8";
+a,
+abbr,
+address,
+article,
+aside,
+audio,
+big,
+blockquote,
+body,
+caption,
+center,
+cite,
+code,
+dd,
+del,
+details,
+dfn,
+dl,
+dt,
+fieldset,
+figcaption,
+figure,
+footer,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+header,
+hgroup,
+html,
+iframe,
+img,
+ins,
+label,
+legend,
+li,
+mark,
+menu,
+nav,
+ol,
+output,
+p,
+pre,
+q,
+ruby,
+s,
+samp,
+section,
+summary,
+table,
+tbody,
+td,
+tfoot,
+th,
+thead,
+time,
+tr,
+ul,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+address {
+  display: inline;
+}
+
+body {
+  line-height: normal;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:after,
+blockquote:before,
+q:after,
+q:before {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+a,
+button,
+div,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+html {
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+a,
+img,
+label {
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+
+input:focus {
+  outline: 0;
+}
+
+a {
+  color: @link-color;
+  text-decoration: none;
+}
+
+input[type="button"],
+input[type="submit"],
+input[type="search"],
+input[type="reset"],
+input[type="number"] {
+  -webkit-appearance: none;
+}
+
+/* 去除谷歌浏览器自动填充背景颜色 */
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #fff inset !important; /*no*/
+  background: none !important;
+  color: inherit !important;
+}
+
+textarea::-webkit-input-placeholder,
+input::-webkit-input-placeholder {
+  font-size: inherit;
+  color: #ccc;
+}
+input[type="text"]:focus,
+input[type="password"]:focus,
+button:focus,
+textarea:focus {
+  -webkit-box-shadow: 0 0 0 1000px transparent inset; /*no*/
+  outline: none;
+}
+
+input[type='number'] {
+  -moz-appearance:textfield;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-size: 16px; /*no*/
+  color: #333;
+  background-color: #f4f5f5;
+  font-family: "PingFang SC", "Helvetica Neue", Helvetica, "Hiragino Sans GB",
+    "Microsoft YaHei", "微软雅黑";
+}
+
+textarea {
+  font-family: inherit;
+  -webkit-appearance: none;
+}
+
+*,
+*:after,
+*:before {
+  border: none;
+  box-sizing: border-box;
+}

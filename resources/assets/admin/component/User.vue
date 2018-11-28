@@ -33,6 +33,26 @@
             <router-link to="/users/recommends" tag="li" active-class="active">
               <a href="#">推荐用户</a>
             </router-link>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                第三方 <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <router-link tag="li" active-class="active" :to="{ name: 'user:vendor/qq' }">
+                  <a href="#">QQ&nbsp;登录</a>
+                </router-link>
+                <router-link tag="li" active-class="active" :to="{ name: 'user:vendor/wechat' }">
+                  <a href="#">微信登录</a>
+                </router-link>
+                <router-link tag="li" active-class="active" :to="{ name: 'user:vendor/weibo' }">
+                  <a href="#">微博登录</a>
+                </router-link>
+                <li class="divider"></li>
+                <router-link tag="li" active-class="active" :to="{ name: 'user:vendor/easemob' }">
+                  <a href="#">环信即时聊天</a>
+                </router-link>
+              </ul>
+            </li>
           </ul>
         </div> 
       </div>   

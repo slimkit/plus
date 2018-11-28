@@ -133,7 +133,8 @@
 
         <div class="links">
             <a href="{{ url('/admin') }}">Administration</a>
-            <a href="https://slimkit.github.io/plus-docs/">Documentation</a>
+            <a href="{{ url('/telescope') }}">Telescope</a>
+            <a href="https://slimkit.github.io/plus/">Documentation</a>
             <a href="https://github.com/slimkit/thinksns-plus">GitHub</a>
         </div>
     </div>

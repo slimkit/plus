@@ -23,6 +23,7 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 use DB;
 use Omnipay\Omnipay;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Zhiyi\Plus\Models\NativePayOrder;
 use Zhiyi\Plus\Http\Controllers\Controller;
@@ -144,7 +145,9 @@ class PayController extends Controller
         // 公钥
         $gateWay->setAlipayPublicKey($config['publicKey']);
         // 通知地址
-        $gateWay->setNotifyUrl(config('app.url').'/api/v2/alipay/notify');
+        $gateWay->setNotifyUrl(
+            action([static::class, 'alipayNotify'])
+        );
         // 支付成功后返回地址
         $gateWay->setReturnUrl($redirect);
 
@@ -206,12 +209,12 @@ class PayController extends Controller
         $config = array_filter(config('newPay.alipay'));
         // 支付宝配置必须包含signType, appId, secretKey, publicKey, 缺一不可
         if (count($config) < 4) {
-            exit('fail');
+            return new Response('fail');
         }
         $order = $orderModel->where('out_trade_no', $data['out_trade_no'])
             ->first();
         if (! $order || $order->status === 1) {
-            exit('fail');
+            return new Response('fail');
         }
         if ($order->amount != $data['total_amount'] * 100) {
             return $response->json(['message' => '订单金额有误，请联系小助手'], 422);
@@ -251,12 +254,12 @@ class PayController extends Controller
 
                 $this->resolveWalletCharge($order->walletCharge, $data);
 
-                exit('success');
-            } else {
-                exit('fail');
+                return new Response('success');
             }
+
+            return new Response('fail');
         } catch (Exception $e) {
-            exit('fail');
+            return new Response('fail');
         }
     }
 
@@ -361,7 +364,9 @@ class PayController extends Controller
         $gateWay->setAppId($config['appId']);
         $gateWay->setApiKey($config['apiKey']);
         $gateWay->setMchId($config['mchId']);
-        $gateWay->setNotifyUrl(config('app.url').'/api/v2/wechat/notify');
+        $gateWay->setNotifyUrl(
+            action([static::class, 'wechatNotify'])
+        );
 
         $order->out_trade_no = date('YmdHis').mt_rand(1000, 9999).config('newPay.sign');
         $order->subject = '钱包充值';
@@ -486,7 +491,7 @@ class PayController extends Controller
             $payOrder = $orderModel->where('out_trade_no', $requestData['out_trade_no'])
                 ->first();
             if (! $payOrder || ($payOrder->amount != $requestData['total_fee'])) {
-                exit('<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>');
+                return new Response('<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>');
             }
             $walletOrder = $walletOrderModel->where('target_id', $payOrder->id)
                 ->first();
@@ -502,10 +507,10 @@ class PayController extends Controller
                 $this->resolveWalletOrder($walletOrder, $data);
             }
 
-            exit('<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>');
-        } else {
-            exit('<xml><return_code><![CDATA[FAIL]]></return_code></xml>');
+            return new Response('<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>');
         }
+
+        return new Response('<xml><return_code><![CDATA[FAIL]]></return_code></xml>');
     }
 
     protected function createChargeModel(Request $request, string $channel): WalletChargeModel

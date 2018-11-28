@@ -377,7 +377,7 @@ class Home extends Component
             </List>
           </div>
         </Drawer>
-        <Grid container className={classes.root}>
+        <Grid container className={classes.root} spacing={24}>
           <Grid item xs={12} sm={6}>
             <Card>
               <CardContent>
@@ -442,46 +442,6 @@ class Home extends Component
 
             </Card>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <Card >
-              <CardContent>
-                <Typography type="headline" component="h2">
-                  动态回收站
-                </Typography>
-                <Typography component="p">
-                  所有被放入回收站的动态管理
-                </Typography>
-              </CardContent>
-
-              <CardActions>
-                <Button size="small" color="primary">
-                  <Link to="/deleteFeeds" className={classes.link}>管理动态回收站</Link>
-                </Button>
-
-              </CardActions>
-
-            </Card>
-          </Grid>
-          {/*<Grid item xs={12} sm={6}>
-            <Card>
-              <CardContent>
-                <Typography type="headline" component="h2">
-                  动态评论回收站
-                </Typography>
-                <Typography component="p">
-                  被加入回收站的动态评论
-                </Typography>
-              </CardContent>
-
-              <CardActions>
-                <Button size="small" color="primary">
-                  <Link to="/deleteComments" className={classes.link}>管理评论回收站</Link>
-                </Button>
-
-              </CardActions>
-
-            </Card>
-          </Grid>*/}
         </Grid>
         <Dialog open={close.reward.status === 'false'}>
           <DialogContent>确定要关闭打赏吗？</DialogContent>

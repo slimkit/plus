@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusCheckIn\Admin\Controllers;
 
-use Zhiyi\Plus\Support\Configuration;
+use function Zhiyi\Plus\setting;
 use SlimKit\PlusCheckIn\Admin\Requests\StoreConfig as StoreConfigRequest;
 
 class HomeController
@@ -34,8 +34,8 @@ class HomeController
     public function index()
     {
         return view('plus-checkin::admin', [
-            'switch' => config('checkin.open'),
-            'balance' => config('checkin.attach_balance'),
+            'switch' => setting('checkin', 'switch'),
+            'balance' => setting('checkin', 'attach-balance'),
         ]);
     }
 
@@ -43,18 +43,14 @@ class HomeController
      * Store checkin config.
      *
      * @param \SlimKit\PlusCheckIn\Admin\Requests\StoreConfig $request
-     * @param \Zhiyi\Plus\Support\Configuration $config
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function store(StoreConfigRequest $request, Configuration $config)
+    public function store(StoreConfigRequest $request)
     {
-        $switch = (bool) $request->input('switch');
-        $balance = (int) $request->input('balance');
-
-        $config->set([
-            'checkin.open' => $switch,
-            'checkin.attach_balance' => $balance,
+        setting('checkin')->set([
+            'switch' => (bool) $request->input('switch'),
+            'attach-balance' => (int) $request->input('balance'),
         ]);
 
         return redirect()->back()->with('message', trans('plus-checkin::messages.success'));

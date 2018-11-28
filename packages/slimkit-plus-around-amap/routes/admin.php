@@ -36,6 +36,8 @@ use Illuminate\Contracts\Routing\Registrar as RouteRegisterContract;
 Route::group(['prefix' => 'around-amap/admin'], function (RouteRegisterContract $route) {
 
     // Home router.
-    $route->get('/', Admin\HomeController::class.'@index')->name('around-amap:admin-home');
-    $route->post('/save', Admin\HomeController::class.'@save')->name('around-amap:admin-save');
+    $route
+        ->get('/', Admin\HomeController::class.'@index')
+        ->name('around-amap:admin-home');
+    $route->post('/', Admin\HomeController::class.'@save');
 });

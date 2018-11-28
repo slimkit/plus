@@ -54,7 +54,7 @@ class Certification extends Model
      *
      * @var array
      */
-    protected $with = ['category', 'user'];
+    protected $with = ['category'];
 
     /**
      * Get icon url.

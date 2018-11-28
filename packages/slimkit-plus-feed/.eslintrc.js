@@ -1,3 +1,4 @@
+const pkg = require('./package.json');
 module.exports = {
     "env": {
         "browser": true,
@@ -7,13 +8,20 @@ module.exports = {
         "eslint:recommended",
         "plugin:react/recommended"
     ],
+    "settings": {
+        "react": {
+            "pragma": "React",
+            "version": pkg.dependencies.react,
+        }
+    },
     "parser": "babel-eslint",
     "parserOptions": {
         "ecmaFeatures": {
-            "jsx": true
+            "jsx": true,
+            "legacyDecorators": true
         },
         "ecmaVersion": 2016,
-        "sourceType": "module"
+        "sourceType": "module",
     },
     "plugins": [
         "react"

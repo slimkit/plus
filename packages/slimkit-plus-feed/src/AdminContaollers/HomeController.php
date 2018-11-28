@@ -23,7 +23,7 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\AdminControllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Comment;
-use Zhiyi\Plus\Support\Configuration;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Repository\WalletRatio;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
@@ -125,12 +125,6 @@ class HomeController extends Controller
             return $feed->paidNode->amount;
         })->sum();
 
-        // 付费总人数
-        // TODO 同上
-
-        $status = [];
-        $status = config('feed');
-
         return response()->json([
             'feedsCount' => $feedsCount,
             'commentsCount' => $commentsCount,
@@ -138,22 +132,10 @@ class HomeController extends Controller
             'payCount' => $payCount,
             'topFeed' => $feedPinnedCount,
             'topComment' => $commentPinnedCount,
-            'status' => $status,
+            'status' => [
+                'reward' => setting('feed', 'reward-switch'),
+            ],
         ])->setStatusCode(200);
-    }
-
-    /**
-     * 关闭应用.
-     * @param  Request $request [description]
-     * @return [type]           [description]
-     */
-    public function handleComponentStatus(Request $request, Configuration $configuration)
-    {
-        $open = $request->input('open');
-
-        $configuration->set('feed.open', $open);
-
-        return response()->json(['message' => '设置成功'])->setStatusCode(201);
     }
 
     /**
@@ -161,11 +143,9 @@ class HomeController extends Controller
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function handleRewardStatus(Request $request, Configuration $configuration)
+    public function handleRewardStatus(Request $request)
     {
-        $reward = $request->input('reward');
-
-        $configuration->set('feed.reward', $reward);
+        setting('feed')->set('reward-switch', (bool) $request->input('reward'));
 
         return response()->json(['message' => '设置成功'])->setStatusCode(201);
     }

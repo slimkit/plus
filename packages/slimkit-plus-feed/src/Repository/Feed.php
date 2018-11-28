@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository;
 
 use Carbon\Carbon;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
@@ -47,8 +48,7 @@ class Feed
      */
     public function __construct(CacheContract $cache, FeedModel $model, Carbon $dateTime)
     {
-        $this->limit = config('feed.limit'); // 未付费前付费内容截取长度
-
+        $this->limit = setting('feed', 'pay-word-limit', 50);
         $this->cache = $cache;
         $this->model = $model;
         $this->dateTime = $dateTime;
@@ -189,22 +189,22 @@ class Feed
     public function previewComments()
     {
         $comments = collect([]);
-
-        $pinnedComments = $this->model
-            ->pinnedComments()
-            ->with('user')
-            ->where('expires_at', '>', $this->dateTime)
-            ->orderBy('amount', 'desc')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $pinnedComments = $this->model->pinnedComments;
 
         if ($pinnedComments->count() < 5) {
+            $ids = $pinnedComments->pluck('id')->filter();
             $comments = $this->model->comments()
                 ->limit(5 - $pinnedComments->count())
-                ->whereNotIn('id', $pinnedComments->pluck('id'))
-                ->with(['user' => function ($query) {
-                    return $query->withTrashed();
-                }, 'reply'])
+                ->when(! $ids->isEmpty(), function ($query) use ($ids) {
+                    return $query->whereNotIn('id', $ids);
+                })
+                ->with([
+                    'user' => function ($query) {
+                        return $query->withTrashed();
+                    },
+                    'reply',
+                    'user.certification',
+                ])
                 ->orderBy('id', 'desc')
                 ->get();
         }

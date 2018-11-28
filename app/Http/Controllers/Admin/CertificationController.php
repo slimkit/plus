@@ -49,6 +49,8 @@ class CertificationController extends Controller
             $query->whereHas('user', function ($query) use ($keyword) {
                 $query->where('name', 'like', sprintf('%%%s%%', $keyword));
             });
+        }, function ($query) {
+            $query->whereHas('user');
         })
         ->when($name, function ($query) use ($name) {
             $query->where('certification_name', $name);

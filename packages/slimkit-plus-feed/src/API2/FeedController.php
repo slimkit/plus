@@ -31,7 +31,6 @@ use Zhiyi\Plus\AtMessage\AtMessageHelperTrait;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
 use Zhiyi\Plus\Models\FeedTopic as FeedTopicModel;
-use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedVideo;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
@@ -87,6 +86,16 @@ class FeedController extends Controller
                 'user' => function ($query) {
                     return $query->withTrashed();
                 },
+                'user.certification',
+                'pinnedComments' => function ($query) {
+                    return $query->with([
+                        'user',
+                        'user.certification',
+                    ])
+                    ->where('expires_at', '>', new Carbon)
+                    ->orderBy('amount', 'desc')
+                    ->orderBy('created_at', 'desc');
+                },
             ])
             ->orderBy('feed_pinneds.amount', 'desc')
             ->orderBy('feed_pinneds.created_at', 'desc')
@@ -97,22 +106,20 @@ class FeedController extends Controller
 
         $user = $request->user('api')->id ?? 0;
 
-        return $feedModel->getConnection()->transaction(function () use ($feeds, $repository, $user) {
-            return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
-                $feed->feed_view_count += 1;
-                $feed->hot = $feed->makeHotValue();
-                $feed->save();
+        return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
+            $feed->feed_view_count += 1;
+            $feed->hot = $feed->makeHotValue();
+            $feed->save();
 
-                $repository->setModel($feed);
-                $repository->images();
-                $repository->format($user);
-                $repository->previewComments();
+            $repository->setModel($feed);
+            $repository->images();
+            $repository->format($user);
+            $repository->previewComments();
 
-                $feed->has_collect = $feed->collected($user);
-                $feed->has_like = $feed->liked($user);
+            $feed->has_collect = $feed->collected($user);
+            $feed->has_like = $feed->liked($user);
 
-                return $feed;
-            });
+            return $feed;
         });
     }
 
@@ -125,7 +132,7 @@ class FeedController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function new(Request $request, FeedModel $feedModel, FeedRepository $repository, Carbon $datetime)
+    public function new(Request $request, FeedModel $feedModel, FeedRepository $repository)
     {
         $limit = $request->query('limit', 15);
         $after = $request->query('after');
@@ -163,26 +170,34 @@ class FeedController extends Controller
             'topics' => function ($query) {
                 return $query->select('id', 'name');
             },
+            'user.certification',
+            'pinnedComments' => function ($query) {
+                return $query->with([
+                    'user',
+                    'user.certification',
+                ])
+                ->where('expires_at', '>', new Carbon)
+                ->orderBy('amount', 'desc')
+                ->orderBy('created_at', 'desc');
+            },
         ])
         ->limit($limit)
         ->get();
 
-        return $feedModel->getConnection()->transaction(function () use ($feeds, $repository, $user) {
-            return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
-                $feed->feed_view_count += 1;
-                $feed->hot = $feed->makeHotValue();
-                $feed->save();
+        return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
+            $feed->feed_view_count += 1;
+            $feed->hot = $feed->makeHotValue();
+            $feed->save();
 
-                $repository->setModel($feed);
-                $repository->images();
-                $repository->format($user);
-                $repository->previewComments();
+            $repository->setModel($feed);
+            $repository->images();
+            $repository->format($user);
+            $repository->previewComments();
 
-                $feed->has_collect = $feed->collected($user);
-                $feed->has_like = $feed->liked($user);
+            $feed->has_collect = $feed->collected($user);
+            $feed->has_like = $feed->liked($user);
 
-                return $feed;
-            });
+            return $feed;
         });
     }
 
@@ -217,23 +232,31 @@ class FeedController extends Controller
             'topics' => function ($query) {
                 return $query->select('id', 'name');
             },
+            'user.certification',
+            'pinnedComments' => function ($query) {
+                return $query->with([
+                    'user',
+                    'user.certification',
+                ])
+                ->where('expires_at', '>', new Carbon)
+                ->orderBy('amount', 'desc')
+                ->orderBy('created_at', 'desc');
+            },
         ]);
 
-        return $model->getConnection()->transaction(function () use ($feeds, $repository, $user) {
-            return $feeds->map(function ($feed) use ($repository, $user) {
-                $feed->feed_view_count += 1;
-                $feed->hot = $feed->makeHotValue();
-                $feed->save();
+        return $feeds->map(function ($feed) use ($repository, $user) {
+            $feed->feed_view_count += 1;
+            $feed->hot = $feed->makeHotValue();
+            $feed->save();
 
-                $repository->setModel($feed);
-                $repository->images();
-                $repository->format($user);
-                $repository->previewComments();
-                $feed->has_collect = $feed->collected($user);
-                $feed->has_like = $feed->liked($user);
+            $repository->setModel($feed);
+            $repository->images();
+            $repository->format($user);
+            $repository->previewComments();
+            $feed->has_collect = $feed->collected($user);
+            $feed->has_like = $feed->liked($user);
 
-                return $feed;
-            });
+            return $feed;
         });
     }
 
@@ -248,7 +271,7 @@ class FeedController extends Controller
      * @throws \Throwable
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function follow(Request $request, FeedModel $model, FeedRepository $repository, Carbon $datetime)
+    public function follow(Request $request, FeedModel $model, FeedRepository $repository)
     {
         if (is_null($user = $request->user('api'))) {
             abort(401);
@@ -273,6 +296,16 @@ class FeedController extends Controller
                 'topics' => function ($query) {
                     return $query->select('id', 'name');
                 },
+                'user.certification',
+                'pinnedComments' => function ($query) {
+                    return $query->with([
+                        'user',
+                        'user.certification',
+                    ])
+                    ->where('expires_at', '>', new Carbon)
+                    ->orderBy('amount', 'desc')
+                    ->orderBy('created_at', 'desc');
+                },
             ])
             ->when((bool) $after, function ($query) use ($after) {
                 return $query->where('feeds.id', '<', $after);
@@ -283,22 +316,20 @@ class FeedController extends Controller
             ->limit($limit)
             ->get();
 
-        return $model->getConnection()->transaction(function () use ($repository, $user, $feeds) {
-            return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
-                $feed->feed_view_count += 1;
-                $feed->hot = $feed->makeHotValue();
-                $feed->save();
+        return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
+            $feed->feed_view_count += 1;
+            $feed->hot = $feed->makeHotValue();
+            $feed->save();
 
-                $repository->setModel($feed);
-                $repository->images();
-                $repository->format($user->id);
-                $repository->previewComments();
+            $repository->setModel($feed);
+            $repository->images();
+            $repository->format($user->id);
+            $repository->previewComments();
 
-                $feed->has_collect = $feed->collected($user->id);
-                $feed->has_like = $feed->liked($user);
+            $feed->has_collect = $feed->collected($user->id);
+            $feed->has_like = $feed->liked($user);
 
-                return $feed;
-            });
+            return $feed;
         });
     }
 
@@ -677,42 +708,19 @@ class FeedController extends Controller
     }
 
     /**
-     * Delete comment.
+     * 新版删除动态接口，如有置顶申请讲退还相应积分.
      *
-     * @param Request $request
      * @param ResponseContract $response
-     * @param FeedRepository $repository
      * @param FeedModel $feed
      * @return mixed
-     * @author Seven Du <shiweidu@outlook.com>
+     * @author BS <414606094@qq.com>
      */
-    public function destroy(
-        Request $request,
+    public function newDestroy(
         ResponseContract $response,
         FeedModel $feed
     ) {
-        $user = $request->user();
-
-        if ($user->id !== $feed->user_id) {
-            return $response->json(['message' => '你没有权限删除动态'])->setStatusCode(403);
-        }
-        $feed->getConnection()->transaction(function () use ($feed, $user) {
-            if ($pinned = $feed->pinned()->where('user_id', $user->id)->where('expires_at', null)->first()) { // 存在未审核的置顶申请时退款
-                $charge = new WalletChargeModel();
-                $charge->user_id = $user->id;
-                $charge->channel = 'user';
-                $charge->account = 0;
-                $charge->action = 1;
-                $charge->amount = $pinned->amount;
-                $charge->subject = '动态申请置顶退款';
-                $charge->body = sprintf('退还申请置顶动态《%s》的款项', str_limit($feed->feed_content, 100));
-                $charge->status = 1;
-
-                $user->wallet()->increment('balance', $charge->amount);
-                $user->walletCharges()->save($charge);
-                $pinned->delete();
-            }
-
+        $user = $feed->user;
+        if (! $user) {
             // 删除话题关联
             $feed->topics->each(function ($topic) {
                 $topic->feeds_count -= 1;
@@ -721,29 +729,9 @@ class FeedController extends Controller
             $feed->topics()->sync([]);
 
             $feed->delete();
-            $user->extra()->decrement('feeds_count', 1);
-        });
 
-        return $response->json(null, 204);
-    }
-
-    /**
-     * 新版删除动态接口，如有置顶申请讲退还相应积分.
-     *
-     * @param Request $request
-     * @param ResponseContract $response
-     * @param FeedModel $feed
-     * @return mixed
-     * @author BS <414606094@qq.com>
-     */
-    public function newDestroy(
-        Request $request,
-        ResponseContract $response,
-        FeedModel $feed
-    ) {
-        $user = $request->user();
-
-        if ($user->id !== $feed->user_id) {
+            return $response->json(null, 204);
+        } elseif ($user->id !== $feed->user_id && ! $user->ability('[feed] Delete Feed')) {
             return $response->json(['message' => '你没有权限删除动态'])->setStatusCode(403);
         }
 
@@ -826,23 +814,31 @@ class FeedController extends Controller
                 'topics' => function ($query) {
                     return $query->select('id', 'name');
                 },
+                'user.certification',
+                'pinnedComments' => function ($query) {
+                    return $query->with([
+                        'user',
+                        'user.certification',
+                    ])
+                    ->where('expires_at', '>', new Carbon)
+                    ->orderBy('amount', 'desc')
+                    ->orderBy('created_at', 'desc');
+                },
             ])
             ->orderBy('id', 'desc')
             ->limit($limit)
             ->get();
 
-        return $feedModel->getConnection()->transaction(function () use ($feeds, $repository, $user) {
-            return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
-                $repository->setModel($feed);
-                $repository->images();
-                $repository->format($user);
-                $repository->previewComments();
+        return $feeds->map(function (FeedModel $feed) use ($repository, $user) {
+            $repository->setModel($feed);
+            $repository->images();
+            $repository->format($user);
+            $repository->previewComments();
 
-                $feed->has_collect = $feed->collected($user);
-                $feed->has_like = $feed->liked($user);
+            $feed->has_collect = $feed->collected($user);
+            $feed->has_like = $feed->liked($user);
 
-                return $feed;
-            });
+            return $feed;
         });
     }
 }

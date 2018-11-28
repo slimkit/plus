@@ -43,12 +43,7 @@ class AppServiceProvider extends ServiceProvider
         // Publish public resource.
         $this->publishes([
             $this->app->make('path.checkin.assets') => $this->app->publicPath().'/assets/checkin',
-        ], 'public');
-
-        // Publish config.
-        $this->publishes([
-            $this->app->make('path.checkin.config') => $this->app->configPath('checkin.php'),
-        ], 'config');
+        ], 'checkin:assets');
     }
 
     /**
@@ -62,11 +57,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->instance('path.checkin', $path = dirname(dirname(__DIR__)));
         $this->app->instance('path.checkin.migrations', $path.'/database/migrations');
         $this->app->instance('path.checkin.assets', $path.'/assets');
-        $this->app->instance('path.checkin.config', $configFilename = $path.'/config/checkin.php');
         $this->app->instance('path.checkin.lang', $path.'/resource/lang');
         $this->app->instance('path.checkin.view', $path.'/resource/views');
-
-        // Merge config.
-        $this->mergeConfigFrom($configFilename, 'checkin');
     }
 }

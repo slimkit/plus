@@ -125,12 +125,6 @@ class FeedPinnedController extends Controller
         $time = intval($request->input('day'));
         $pinned = $request->input('pinned');
 
-        $userCount = UserCountModel::firstOrNew([
-            'type' => 'user-system',
-            'user_id' => $pinned->user_id,
-        ]);
-        $userCount->total += 1;
-
         if (! $pinned) {
             $datetime = $datetime->addDay($time);
             $pinned = new FeedPinned();
@@ -141,13 +135,18 @@ class FeedPinnedController extends Controller
             $pinned->amount = 0;
             $pinned->day = $datetime->diffInDays(Carbon::now());
             $pinned->expires_at = $datetime->toDateTimeString();
-
             $pinned->save();
 
             $pinned->user->sendNotifyMessage('feed:pinned:accept', sprintf('你的动态《%s》已被管理员设置为置顶', str_limit($pinned->feed->feed_content, 100)), [
                 'feed' => $feed,
                 'pinned' => $pinned,
             ]);
+
+            $userCount = UserCountModel::firstOrNew([
+                'type' => 'user-system',
+                'user_id' => $pinned->user_id,
+            ]);
+            $userCount->total += 1;
             $userCount->save();
 
             return response()->json(['message' => ['操作成功'], 'data' => $pinned], 201);
@@ -163,6 +162,12 @@ class FeedPinnedController extends Controller
                 'feed' => $feed,
                 'pinned' => $pinned,
             ]);
+
+            $userCount = UserCountModel::firstOrNew([
+                'type' => 'user-system',
+                'user_id' => $pinned->user_id,
+            ]);
+            $userCount->total += 1;
             $userCount->save();
 
             return response()->json(['message' => ['操作成功'], 'data' => $pinned], 201);

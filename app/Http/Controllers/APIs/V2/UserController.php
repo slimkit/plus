@@ -24,8 +24,8 @@ use RuntimeException;
 use Tymon\JWTAuth\JWTAuth;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\setting;
 use function Zhiyi\Plus\username;
-use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\VerificationCode;
 use Zhiyi\Plus\Http\Requests\API2\StoreUserPost;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
@@ -67,6 +67,7 @@ class UserController extends Controller
             ->limit($limit)
             ->orderby('id', $order)
             ->get();
+        $users->load(['certification']);
 
         return $response->json($model->getConnection()->transaction(function () use ($users, $user) {
             return $users->map(function (User $item) use ($user) {
@@ -120,11 +121,11 @@ class UserController extends Controller
         $password = $request->input('password');
         $channel = $request->input('verifiable_type');
         $code = $request->input('verifiable_code');
-        $role = CommonConfig::byNamespace('user')
-            ->byName('default_role')
-            ->firstOr(function () {
-                throw new RuntimeException('Failed to get the defined user group.');
-            });
+        $role = setting('user', 'register-role');
+
+        if (! $role) {
+            throw new RuntimeException('Failed to get the defined user group.');
+        }
 
         $verify = VerificationCode::where('account', $channel == 'mail' ? $email : $phone)
             ->where('channel', $channel)
@@ -150,7 +151,7 @@ class UserController extends Controller
             return $response->json(['message' => '注册失败'], 500);
         }
 
-        $user->roles()->sync($role->value);
+        $user->roles()->sync($role);
 
         return $response->json([
             'token' => $auth->fromUser($user),

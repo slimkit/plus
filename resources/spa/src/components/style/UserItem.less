@@ -1,0 +1,32 @@
+@user-item-prefix: user-item;
+.@{user-item-prefix} {
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+  height: 135px;
+  font-size: 28px;
+  color: #999;
+  background-color: #fff;
+  border-bottom: 1px solid #ededed; /*no*/
+  &-avatar,
+  &-follow-icon {
+    flex: 0 0 auto;
+  }
+  &-info {
+    margin-left: 30px;
+    margin-right: 30px;
+    width: calc(~"100% -" 60+76+35px);
+    flex: 1 1 auto;
+    p {
+      margin: 5px 0;
+    }
+  }
+  &-name {
+    font-size: 32px;
+    color: #333;
+  }
+  &-follow-icon {
+    width: 40px;
+    height: 40px;
+  }
+}

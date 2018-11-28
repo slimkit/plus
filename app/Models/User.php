@@ -132,11 +132,9 @@ class User extends Authenticatable implements JWTSubject
      */
     protected function getVerifiedAttribute()
     {
-        $certification = $this->certification()
-            ->where('status', 1)
-            ->first();
+        $certification = $this->certification;
 
-        if (! $certification) {
+        if (! $certification || $certification->status !== 1) {
             return null;
         }
 

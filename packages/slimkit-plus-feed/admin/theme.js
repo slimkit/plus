@@ -1,3 +1,4 @@
+// import { withTheme  } from '@material-ui/core/styles/';
 import { createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 import pink from '@material-ui/core/colors/pink';
@@ -15,6 +16,9 @@ const theme = createMuiTheme({
       main: pink[500],
       dark: pink[700],
     }
+  },
+  typography: {
+    useNextVariants: true
   }
 });
 

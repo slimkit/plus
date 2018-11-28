@@ -1,0 +1,88 @@
+/* 公共部分 */
+.m-topic {display: flex;flex-direction: row;justify-content: space-between;}
+.m-topic .left {width: 815px;}
+.m-topic .left > * {margin-bottom: 30px;}
+.m-topic .right {width: 235px;}
+.m-topic .right {width: 235px;}
+.m-topic .right > * {margin-bottom: 30px;}
+.m-topic button {cursor: pointer;}
+
+/* 话题首页 */
+.p-topic-index .left {background-color: #fff;padding: 40px;padding-bottom: 0;}
+.p-topic-index .left .topic-nav {margin-bottom: 0;}
+.p-topic-index .left .topic-nav > a {margin-right: 30px;color: #999;}
+.p-topic-index .left .topic-nav > a.active {color:#333;}
+.p-topic-index .left > hr {margin: 20px 0 40px;border: 1px solid #ededed;border-width: 1px 0 0;}
+.p-topic-index .right .interaction {background-color: #fff;display: flex;flex-direction: column;justify-content: flex-start;align-items: center;padding-bottom: 26px;}
+.p-topic-index .right .interaction > button {background-color: #59b6d7;width: 196px;height: 48px;border-radius: 24px;border: none;color:#fff;font-size: 18px;margin-top: 26px;}
+.p-topic-index .right .interaction svg.icon {font-size: 1.2em}
+
+.layui-layer-content {overflow: initial !important;}
+
+/* 话题详情页 */
+.p-topic-detail .left > header {position: relative;height: 426px;}
+.p-topic-detail .left > header .bg {position: absolute;width: 100%;height: 100%;background: #ededed center no-repeat;background-size: cover;}
+.p-topic-detail .left > header .mask {position: absolute;display: flex;flex-direction: column;justify-content: center;align-items: center;;width: 100%;height: 100%;background-color: rgba(0,0,0,0.4);z-index: 1;color: #fff;padding: 110px;}
+.p-topic-detail .left > header .mask h1 {font-size: 40px;letter-spacing: 1px;margin-bottom: 30px;}
+.p-topic-detail .left > header .mask .author {font-size: 18px;margin-bottom: 24px;margin-top: 0;}
+.p-topic-detail .left > header .mask .description {font-size: 14px;line-height: 24px;margin-top: 0;text-align: center;}
+.p-topic-detail .left > header .report {position: absolute;bottom: 30px;right: 40px;opacity: 0.4;background-color: #000;border-radius: 20px;color:#fff;font-size: 14px;z-index: 2;padding: 2px 12px;border: 1px solid #fff;}
+.p-topic-detail .left .feed-list {background-color: #fff;padding: 40px;}
+.p-topic-detail .left .feed-list .feed_item:first-child .feed_title {margin-top: 0;}
+.p-topic-detail .left .feed-list .feed_item:last-child .feed_line {display: none;}
+.p-topic-detail .right .interaction {background-color: #fff;display: flex;flex-direction: column;justify-content: flex-start;align-items: center;padding-bottom: 26px;}
+.p-topic-detail .right .interaction > button {background-color: #59b6d7;width: 196px;height: 48px;border-radius: 24px;border: none;color:#fff;font-size: 18px;margin-top: 26px;}
+.p-topic-detail .right .interaction > button.actived {background-color: #fff;border: 2px solid #ccc;color: #ccc;}
+.p-topic-detail .right .interaction svg.icon {font-size: 1.2em}
+.p-topic-detail .right .share-wrap {background-color: #fff;}
+.p-topic-detail .right .share-wrap .info {display: flex;height: 100px;justify-content: space-around;align-items: center;}
+.p-topic-detail .right .share-wrap .info .item {flex:none;}
+.p-topic-detail .right .share-wrap .info p {margin: 0;font-size: 20px;text-align: center;}
+.p-topic-detail .right .share-wrap .info p small {margin-top: 10px;font-size: 14px;color: #999;}
+.p-topic-detail .right .share-wrap .share {height: 50px;background-color: #fe8f90;display: flex;justify-content: center;align-items: center;color: #fff;font-size: 14px;}
+.p-topic-detail .right .share-wrap .share > a {margin-left: 10px;}
+.p-topic-detail .right .participant {background-color: #fff;text-align: center;}
+.p-topic-detail .right .participant header {font-size: 16px;padding: 20px;}
+.p-topic-detail .right .participant hr {margin: 0 20px;border: 1px solid #ededed;border-width: 1px 0 0;}
+.p-topic-detail .right .participant ul {display: flex;flex-flow: row wrap;padding: 20px 0;justify-content: space-between;}
+.p-topic-detail .right .participant ul li {width: 33%;height: 90px;display: flex;flex-direction: column;justify-content: space-around;align-items: center;}
+.p-topic-detail .right .participant .avatar {width: 50px;height: 50px;border-radius: 25px;background: url(../images/avatar.png);background-size: contain;;}
+.p-topic-detail .right .participant .name {font-size: 12px;color: #666;}
+.p-topic-detail .right .participant footer {height: 40px;line-height: 40px;background-color: #f9fcff;font-size: 12px;color:#999;cursor: pointer;}
+
+/* 话题创建页 */
+.p-topic-create .g-mn {width: 900px;margin: auto;background-color: #fff;border-radius: 3px;padding: 50px;}
+.p-topic-create .u-tt {margin: 0;padding-bottom: 20px;font-size: 32px;}
+.p-topic-create .formitm {width: 100%;display: flex;justify-content: flex-start;}
+.p-topic-create .m-form .cover {height: 350px;width:100%;background-color: #ededed;display: flex;position: relative;flex-direction: column;justify-content: center;align-items: center;color:#ccc;font-size: 18px;cursor: pointer;}
+.p-topic-create .m-form .cover img {width: 100%;height: 100%;}
+.p-topic-create .m-form .cover .default {position: absolute;left:0;right:0;text-align: center;z-index: 1;}
+.p-topic-create .m-form .title {width: 100%;border-bottom:1px solid #ededed;}
+.p-topic-create .m-form .title input {font-size: 24px;width: 100%;border: none;padding: 30px 0 20px;}
+.p-topic-create .m-form .description {width: 100%;border-bottom:1px solid #ededed;}
+.p-topic-create .m-form .description input {font-size: 14px;width: 100%;border: none;padding: 30px 0 20px;}
+.p-topic-create .m-form .word-count {display: flex;justify-content: flex-end;color: #ededed;}
+.p-topic-create .m-form .tips {margin-top: 57px;margin-bottom: 30px;font-size: 14px;color: #b3b3b3;justify-content: center;}
+.p-topic-create .m-form .submit-wrap {display:flex;justify-content: center;}
+.p-topic-create .m-form .submit-btn {background-color: #59b6d7;width: 100px;height: 36px;line-height: 36px;border-radius: 3px;color: #fff;border: none;}
+.p-topic-create .m-form .cancel-btn {background-color: #ccc;width: 100px;height: 36px;line-height: 36px;border-radius: 3px;color: #fff;border: none;margin-right: 20px;}
+
+/* 话题编辑页 extended .p-topic-create */
+.p-topic-edit .m-form .cover {cursor: default;}
+.p-topic-edit .m-form .cover .btn-edit-cover {position: absolute;bottom: 30px;right:30px;border:1px solid #fff;background-color: transparent;color: #fff;border-radius: 30px;padding: 2px 14px;font-size: 14px;cursor: pointer;}
+
+/* 热门话题组件 */
+.w-hot-topics {background-color: #fff;padding: 0 20px;}
+.w-hot-topics header {padding: 20px;text-align: center;font-size: 16px;}
+.w-hot-topics hr {margin: 0;border: 1px solid #ededed;border-width: 1px 0 0;}
+.w-hot-topics ol {counter-reset:sectioncounter;padding: 0 0 30px;margin: 0;}
+.w-hot-topics ol li {margin-top: 30px;cursor: pointer;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+.w-hot-topics ol li::before {content: counter(sectioncounter);counter-increment:sectioncounter;background-color: #ccc;border-radius: 3px;width: 16px;height: 16px;display: inline-block;color: #fff;text-align: center;font-size: 12px;line-height: 16px;margin-right: 12px;}
+.w-hot-topics ol li.top3::before {background-color: #59b6d7;}
+
+/* 话题卡片 */
+.w-topic-card {float: left;width: 348px;height: 171px;position: relative;border-radius: 20px;overflow: hidden;margin: 20px 0;cursor: pointer;}
+.w-topic-card:nth-child(odd) {margin-right: 30px;}
+.w-topic-card .bg {position: absolute;background: #ededed center no-repeat;width:100%;height:100%;background-size: cover;}
+.w-topic-card .mask {position: absolute;z-index: 1;display: flex;align-items: center;justify-content: center;height: 100%;width: 100%;background-color: rgba(0,0,0,0.2);color: #fff;}
+.w-topic-card .mask h2 {font-size: 20px;max-width: 10em;text-align: center;margin: 0;display: inline-block;}

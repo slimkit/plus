@@ -28,49 +28,38 @@
   const System = {
     data: () => ({
       translates: {
-        php_version: 'PHP版本',
+        app_version: 'Plus 版本',
+        php_version: 'PHP 版本',
         os: '操作系统',
         server: '运行环境',
-        domain_ip: '域名/IP',
+        domain_ip: '域名 / IP',
         db: '数据库',
         root: '根目录',
-        laravel_version: 'Laravel版本',
+        laravel_version: 'Laravel 版本',
         max_upload_size: '最大上传限制',
         server_date: '服务器时间',
         local_date: '本地时间',
         protocol: '通信协议',
         port: '监听端口',
-        method: '请求方法',
         execute_time: '执行时间',
         agent: '你使用的浏览器',
         user_ip: '你的IP',
         disk: '服务端剩余磁盘空间' 
-      }
+      },
+      system: {},
     }),
     created () {
-      this.getSystemInfo();
-    },
-
-    computed: {
-      system () {
-        return this.$store.state.system;
-      }
-    },
-
-    methods : {
-      getSystemInfo () {
-        request.get(createRequestURI('site/systeminfo'), {
+      request.get(createRequestURI('site/systeminfo'), {
           validateStatus: status => status === 200
         }).then(({ data = {} }) => {
-          this.$store.commit(SETTINGS_SYSTEM_UPDATE, { ...data });
+          this.system = data;
           this.loadding = false;
         }).catch(({ response: { data: { message = '加载失败' } = {} } = {} }) => {
           this.loadding = false;
           this.error = true;
           window.alert(message);
         });
-      }
-    }
+    },
   }
 
   export default System;

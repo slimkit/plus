@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class CommonConfig extends Model
 {
-    protected $primaryKey = ['name', 'namespace'];
+    protected $primaryKey = 'id';
     public $incrementing = false;
     protected $fillable = ['name', 'namespace', 'value'];
 

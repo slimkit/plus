@@ -46,14 +46,14 @@ class FeedController extends Controller
         $before = (int) $request->query('before', 0);
         $type = $request->query('type', 'all');
         $id = $request->query('id');
-        $user_id = $request->query('user_id');
         $from = $request->query('from');
         $pay = $request->query('pay');
         $stime = $request->query('stime');
         $etime = $request->query('etime');
         $keyword = $request->query('keyword');
         $top = $request->query('top');
-        $name = $request->query('userName');
+        $user = $request->query('user');
+        $trashed = $request->query('trashed');
 
         // 根据时间快捷筛选
         switch ($type) {
@@ -76,20 +76,6 @@ class FeedController extends Controller
                 break;
         }
 
-        $users = [];
-
-        if ($name) {
-            $users = $user->where('name', 'like', "%{$name}%")
-                ->get()
-                ->pluck('id')
-                ->toArray();
-        }
-
-        if ($user_id) {
-            array_push($users, $user_id);
-            $users = array_unique($users);
-        }
-
         $feeds = $model->with([
                 'user',
                 'paidNode',
@@ -103,14 +89,17 @@ class FeedController extends Controller
             ->when($id, function ($query) use ($id) { // 根据id查询
                 return $query->where('id', $id);
             })
-            ->when($users, function ($query) use ($users) { // 根据用户id查询
-                return $query->whereIn('user_id', $users);
+            ->when($user, function ($query) use ($user) {
+                return $query->where('user_id', $user);
             })
             ->when($from, function ($query) use ($from) { // 根据来源查询
                 return $query->where('feed_from', $from);
             })
             ->when($keyword, function ($query) use ($keyword) { // 根据关键字筛选
                 return $query->where('feed_content', 'like', '%'.$keyword.'%');
+            })
+            ->when($trashed, function ($query) {
+                return $query->onlyTrashed();
             })
             ->when($top && $top !== 'all', function ($query) use ($top, $datetime) { // 置顶筛选
                 switch ($top) {

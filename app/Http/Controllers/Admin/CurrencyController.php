@@ -24,8 +24,7 @@ use DB;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Currency;
-use Zhiyi\Plus\Models\CommonConfig;
-use Zhiyi\Plus\Support\Configuration;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Repository\CurrencyConfig;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\CurrencyOrder as OrderModel;
@@ -48,9 +47,24 @@ class CurrencyController extends Controller
      */
     public function showConfig()
     {
-        $config = [];
-        $config['basic_conf'] = $this->basicConfig();
-        $config['detail_conf'] = $this->rep->get();
+        $cash = setting('currency', 'cash', [
+            'rule' => '我是提现规则',
+            'status' => true, // 提现开关
+        ]);
+        $recharge = setting('currency', 'recharge', [
+            'rule' => '我是积分充值规则',
+            'status' => true, // 充值开关
+        ]);
+        $config = [
+            'basic_conf' => [
+                'rule' => setting('currency', 'rule', '我是积分规则'),
+                'cash.rule' => $cash['rule'],
+                'cash,status' => $cash['status'],
+                'recharge.rule' => $recharge['rule'],
+                'recharge.status' => $recharge['status'],
+            ],
+            'detail_conf' => $this->rep->get(),
+        ];
 
         return response()->json($config, 200);
     }
@@ -61,62 +75,35 @@ class CurrencyController extends Controller
      * @param  Request $request
      * @return mixed
      */
-    public function updateConfig(Request $request, Configuration $configuration)
+    public function updateConfig(Request $request)
     {
-        $type = (string) $request->query('type');
-
+        $type = strtolower((string) $request->query('type'));
         if ($type == 'detail') {
-            $input = $request->except('type');
-            $input['recharge-option'] = str_replace('，', ',', $input['recharge-option']);
-            $options = explode(',', $input['recharge-option']);
-            $sourceOptions = array_filter(array_map(function ($option) {
-                return (int) $option;
-            }, $options));
-            if (count($sourceOptions) > 6) {
-                return response()->json(['message' => '充值选项不能超过6个'], 422);
-            }
-            $input['recharge-option'] = implode(',', $sourceOptions);
-            foreach ($input as $key => $value) {
-                $config = CommonConfig::where('name', sprintf('currency:%s', $key))
-                ->where('namespace', 'currency')
-                ->first();
+            setting('currency')->set('settings', [
+                'recharge-ratio' => (int) $request->input('recharge-ratio'),
+                'recharge-options' => $request->input('recharge-options'),
+                'recharge-max' => $request->input('recharge-max'),
+                'recharge-min' => $request->input('recharge-min'),
+                'cash-max' => $request->input('cash-max'),
+                'cash-min' => $request->input('cash-min'),
+            ]);
 
-                $config->value = $value;
-                $config->save();
-            }
-            $this->rep->flush();
-        } else {
-            $data = $request->all();
-
-            $config = $configuration->getConfiguration();
-            $config->set('currency.rule', (string) $data['rule']);
-            $config->set('currency.cash.rule', (string) $data['cash']['rule']);
-            $config->set('currency.cash.status', (bool) $data['cash']['status']);
-            $config->set('currency.recharge.rule', (string) $data['recharge']['rule']);
-            $config->set('currency.recharge.status', (bool) $data['recharge']['status']);
-
-            $configuration->save($config);
+            return response()->json(['message' => '更新成功'], 201);
         }
 
+        setting('currency')->set([
+            'rule' => $request->input('rule'),
+            'recharge' => [
+                'rule' => $request->input('recharge.rule'),
+                'status' => $request->input('recharge.status'),
+            ],
+            'cash' => [
+                'rule' => $request->input('cash.rule'),
+                'status' => $request->input('cash.status'),
+            ],
+        ]);
+
         return response()->json(['message' => '更新成功'], 201);
-    }
-
-    /**
-     * 积分开关相关配置数据.
-     *
-     * @return array
-     */
-    protected function basicConfig(): array
-    {
-        $bootstrappers = [];
-
-        $bootstrappers['rule'] = config('currency.rule', null);
-        $bootstrappers['cash.rule'] = config('currency.cash.rule', null);
-        $bootstrappers['cash.status'] = config('currency.cash.status', true);
-        $bootstrappers['recharge.rule'] = config('currency.recharge.rule', null);
-        $bootstrappers['recharge.status'] = config('currency.recharge.status', true);
-
-        return $bootstrappers;
     }
 
     /**

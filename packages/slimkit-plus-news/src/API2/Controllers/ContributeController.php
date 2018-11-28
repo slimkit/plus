@@ -22,9 +22,11 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Utils\Markdown;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Models\Tag as TagModel;
 use Zhiyi\Plus\Concerns\FindMarkdownFileTrait;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
+use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
@@ -53,6 +55,9 @@ class ContributeController extends Controller
     public function __construct(ApplicationContract $app)
     {
         $this->app = $app;
+        $this
+            ->middleware(VerifyUserPassword::class)
+            ->only(['store']);
     }
 
     /**
@@ -126,8 +131,11 @@ class ContributeController extends Controller
         TagModel $tagModel
     ) {
         $user = $request->user();
-        $config = config('news.contribute');
-        $payAmount = config('news.pay_contribute');
+        $config = setting('news', 'contribute', [
+            'pay' => true,
+            'verified' => true,
+        ]);
+        $payAmount = setting('news', 'contribute-amount', 100);
 
         if ($config['pay'] && $user->wallet->balance < $payAmount) {
             return $response->json(['message' => '账户余额不足'], 422);
@@ -330,7 +338,9 @@ class ContributeController extends Controller
 
         return $category->getConnection()->transaction(function () use ($news, $response, $user) {
             if ($news->audit_status == 0) { // 已发布的需提交后台申请删除
-                $news->applylog()->firstOrCreate(['user_id' => $user->id, 'news_id' => $news->id], ['status' => 0]);
+                $news
+                    ->applylog()
+                    ->firstOrCreate(['user_id' => $user->id], ['status' => 0]);
 
                 return $response->make(['message' => '删除申请已提交，请等待审核'], 201);
             }
@@ -397,21 +407,29 @@ class ContributeController extends Controller
         TagModel $tagModel
     ) {
         $user = $request->user();
-        $config = config('news.contribute');
-        $payAmount = intval(config('news.pay_contribute'));
+        $config = setting('news', 'contribute', [
+            'pay' => true,
+            'verified' => true,
+        ]);
+        $payAmount = setting('news', 'contribute-amount', 100);
 
         if ($config['pay'] && $user->currency && $user->currency->sum < $payAmount) {
             return $response->json(['message' => '账户余额不足'], 403);
-        }
-
-        if ($config['verified'] && $user->verified === null) {
+        } elseif ($config['verified'] && $user->verified === null) {
             return $response->json(['message' => '未认证用户不可投稿'], 403);
+        } elseif ($config['pay']) {
+            app(VerifyUserPassword::class)->handle($request, function () {
+                // No code.
+            });
         }
 
-        $map = $request->only(['title', 'content', 'subject']);
+        $map = $request->only(['title', 'subject']);
         $map['from'] = $request->input('from') ?: '原创';
         $map['author'] = $request->input('author') ?: $user->name;
         $map['storage'] = $request->input('image');
+        $map['content'] = $this->app->make(Markdown::class)->safetyMarkdown(
+            $request->input('content', '')
+        );
 
         $images = $this->findMarkdownImageNotWithModels($map['content'] ?: '');
         // 提取内容中的图片，用于列表种的多种UI展示

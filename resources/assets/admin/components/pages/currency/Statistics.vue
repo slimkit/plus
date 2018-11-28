@@ -17,7 +17,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(item, index) in items">
+                <tr v-for="(item, index) in items" :key="index">
                     <td>{{ index | alias }}</td>
                     <td>{{ item.count }}</td>
                     <td>{{ item.sum ? item.sum : 0 }}</td>

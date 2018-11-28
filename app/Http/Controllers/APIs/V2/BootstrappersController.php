@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Zhiyi\Plus\Models\GoldType;
+use function Zhiyi\Plus\setting;
 use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\CurrencyType;
@@ -48,15 +49,30 @@ class BootstrappersController extends Controller
             $query->orderBy('sort', 'asc');
         }])->first()->advertising ?? [];
 
-        $bootstrappers['site'] = config('site', null);
+        $bootstrappers['site'] = [
+            'about_url' => setting('site', 'about-url'),
+            'anonymous' => setting('user', 'anonymous', []),
+            'client_email' => setting('site', 'client-email'),
+            'gold' => [
+                'status' => setting('site', 'gold-switch'),
+            ],
+            'reserved_nickname' => setting('user', 'keep-username'),
+            'reward' => setting('site', 'reward', []),
+            'user_invite_template' => setting('user', 'invite-template'),
+        ];
         $bootstrappers['registerSettings'] = config('registerSettings', null);
 
         $bootstrappers['wallet:cash'] = ['open' => config('wallet.cash.status', true)];
         $bootstrappers['wallet:recharge'] = ['open' => config('wallet.recharge.status', true)];
         $bootstrappers['wallet:transform'] = ['open' => config('wallet.transform.status', true)];
 
-        $bootstrappers['currency:cash'] = ['open' => config('currency.cash.status', true)];
-        $bootstrappers['currency:recharge'] = ['open' => config('currency.recharge.status', true), 'IAP_only' => config('currency.recharge.IAP.only', true)];
+        $bootstrappers['currency:cash'] = [
+            'open' => setting('currency', 'cash')['status'] ?? true,
+        ];
+        $bootstrappers['currency:recharge'] = [
+            'open' => setting('currency', 'recharge')['status'],
+            'IAP_only' => config('currency.recharge.IAP.only', true),
+        ];
 
         $goldSetting = $goldType->where('status', 1)->select('name', 'unit')->first() ?? collect(['name' => '金币', 'unit' => '个']);
         $bootstrappers['site']['gold_name'] = $goldSetting;
@@ -66,6 +82,7 @@ class BootstrappersController extends Controller
         config('im.helper-user') && $bootstrappers['im:helper-user'] = config('im.helper-user');
         // 每页数据量
         $bootstrappers['limit'] = config('app.data_limit');
+        $bootstrappers['pay-validate-user-password'] = setting('pay', 'validate-password', false);
 
         return new JsonResponse($this->filterNull($events->dispatch('v2', [$bootstrappers])), JsonResponse::HTTP_OK);
     }

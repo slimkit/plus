@@ -61,8 +61,6 @@ Route::delete('/feeds', 'FeedController@delete');
 // File
 Route::get('/files/{file}', 'FileController@show');
 
-Route::patch('/status/open', 'HomeController@handleComponentStatus');
-
 Route::patch('/status/reward', 'HomeController@handleRewardStatus');
 
 // 获取审核置顶列表

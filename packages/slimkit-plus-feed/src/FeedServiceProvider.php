@@ -20,13 +20,13 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed;
 
+use function Zhiyi\Plus\setting;
 use Illuminate\Support\ServiceProvider;
 use Zhiyi\Plus\Support\ManageRepository;
 use Zhiyi\Plus\Support\BootstrapAPIsEventer;
 use Zhiyi\Plus\Support\PinnedsNotificationEventer;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
-use Illuminate\Contracts\Config\Repository as ConfigRepository;
 
 class FeedServiceProvider extends ServiceProvider
 {
@@ -50,20 +50,16 @@ class FeedServiceProvider extends ServiceProvider
         ]);
 
         $this->publishes([
-            dirname(__DIR__).'/config/feed.php' => $this->app->configPath('feed.php'),
-        ], 'config');
-
-        $this->publishes([
             dirname(__DIR__).'/assets' => $this->app->PublicPath().'/assets/feed',
-        ], 'public');
+        ], 'feed:resource/assets');
 
         $this->app->make(BootstrapAPIsEventer::class)->listen('v2', function () {
             return [
                 'feed' => [
-                    'reward' => (bool) $this->app->make(ConfigRepository::class)->get('feed.reward'),
-                    'paycontrol' => (bool) $this->app->make(ConfigRepository::class)->get('feed.paycontrol'),
-                    'items' => (array) $this->app->make(ConfigRepository::class)->get('feed.items'),
-                    'limit' => (int) $this->app->make(ConfigRepository::class)->get('feed.limit'),
+                    'reward' => setting('feed', 'reward-switch'),
+                    'paycontrol' => setting('feed', 'pay-switch', false),
+                    'items' => setting('feed', 'pay-items', []),
+                    'limit' => setting('feed', 'pay-word-limit', 50),
                 ],
             ];
         });
@@ -101,10 +97,6 @@ class FeedServiceProvider extends ServiceProvider
             'route' => true,
             'icon' => asset('assets/feed/feed-icon.png'),
         ]);
-
-        $this->mergeConfigFrom(
-            dirname(__DIR__).'/config/feed.php', 'feed'
-        );
 
         Relation::morphMap([
             'feeds' => Models\Feed::class,

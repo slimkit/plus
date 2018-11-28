@@ -17,7 +17,7 @@
 	    placeholder="请输入用户名">
 	    <ul class="dropdown-menu" style="max-height: 200px;overflow: auto;">
 	      <template v-if="users.length">
-	        <li  v-for="user in users" @click.prevent="choiceUser(user.id)">
+	        <li  v-for="user in users" @click.prevent="choiceUser(user.id)" :key="user.id">
 	          <a href="javascript:;">
 	            <img :src="`${user.avatar}?w=40&height=40`" class="img-circle avatar" v-if="user.avatar">
 	            <i class="glyphicon glyphicon-user" v-else></i>

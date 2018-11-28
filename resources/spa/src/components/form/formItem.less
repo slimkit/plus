@@ -1,0 +1,41 @@
+.c-form-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100px;
+  font-size: 30px;
+  padding-left: 20px;
+  color: #999;
+  border-bottom: 1px solid @border-color;
+
+  > label {
+    display: inline-block;
+    flex: none;
+    width: 4em;
+  }
+
+  .input-wrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex: auto;
+    height: 100%;
+    padding-right: 20px;
+
+  }
+
+  .placeholder {
+    color: #ccc;
+  }
+}
+
+form {
+  .c-form-item {
+    border-bottom: none;
+  }
+
+  .input-wrap {
+    border-bottom: 1px solid @border-color;
+  }
+}

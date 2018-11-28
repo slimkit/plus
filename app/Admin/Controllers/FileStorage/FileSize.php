@@ -34,7 +34,6 @@ class FileSize
      */
     public function show(): JsonResponse
     {
-        $sysAllowUploadSize = '';
         // Get configure.
         $configure = (array) setting('file-storage', 'task-create-validate', []);
         $result = [

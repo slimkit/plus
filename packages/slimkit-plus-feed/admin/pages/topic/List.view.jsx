@@ -22,8 +22,6 @@ import Snackbar from '../../components/common/Snackbar';
 import styles from './List.styles';
 
 // Icons
-import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop';
-import VerticalAlignDownIcon from '@material-ui/icons/VerticalAlignBottom';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -484,14 +482,14 @@ class ListView extends React.Component {
       return (
         <Modal open={true}>
           <div className={classes.modalWrap} >
-              <Paper
-                classes={{
-                  root: classes.modalPager
-                }}
-              >
+            <Paper
+              classes={{
+                root: classes.modalPager
+              }}
+            >
                 请选择你需要切换的话题状态：
-                {this.props.submitting && <CircularProgress size={16}/>}
-                <div className={classes.modalActions}>
+              {this.props.submitting && <CircularProgress size={16}/>}
+              <div className={classes.modalActions}>
                 <Button
                   color="primary"
                   className={classes.actionsFab}
@@ -519,17 +517,17 @@ class ListView extends React.Component {
                 >
                   未通过
                 </Button>
-                  <Button
-                    color="secondary"
-                    className={classes.actionsFab}
-                    variant="contained"
-                    onClick={this.handleCloseReview}
-                    disabled={this.props.submitting}
-                  >
+                <Button
+                  color="secondary"
+                  className={classes.actionsFab}
+                  variant="contained"
+                  onClick={this.handleCloseReview}
+                  disabled={this.props.submitting}
+                >
                     关&nbsp;闭
-                  </Button>
-                </div>
-              </Paper>
+                </Button>
+              </div>
+            </Paper>
           </div>
         </Modal>
       );

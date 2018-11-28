@@ -39,6 +39,7 @@ class FileMeta extends FileMetaAbstract
     protected $resource;
     protected $bucket;
     protected $dimension;
+    protected $cachedMeta;
 
     /**
      * Create a file meta.
@@ -51,6 +52,7 @@ class FileMeta extends FileMetaAbstract
         $this->oss = $oss;
         $this->resource = $resource;
         $this->bucket = $bucket;
+        $this->getSize();
     }
 
     /**
@@ -94,9 +96,11 @@ class FileMeta extends FileMetaAbstract
      */
     public function getSize(): int
     {
-        $meta = $this->oss->getObjectMeta($this->bucket, $this->resource->getPath());
+        if (! $this->cachedMeta) {
+            $this->cachedMeta = $this->oss->getObjectMeta($this->bucket, $this->resource->getPath());
+        }
 
-        return (int) $meta['content-length'];
+        return (int) $this->cachedMeta['content-length'];
     }
 
     /**
@@ -105,7 +109,7 @@ class FileMeta extends FileMetaAbstract
      */
     public function getMimeType(): string
     {
-        return MimeTypes::getMimetype($this->resource->getPath());
+        return MimeTypes::getMimetype($this->resource->getPath()) ?: 'application/octet-stream';
     }
 
     /**

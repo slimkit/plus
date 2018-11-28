@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\API2\Controllers\Feed;
 
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\API2\Controllers\Controller;
 use Zhiyi\Plus\Models\FeedTopicLink as FeedTopicLinkModel;
@@ -52,7 +53,18 @@ class TopicFeed extends Controller
                 return $query->select('id', 'name');
             },
             'feed.user' => function ($query) {
-                return $query->withTrashed();
+                return $query
+                    ->withTrashed()
+                    ->with('certification');
+            },
+            'feed.pinnedComments' => function ($query) {
+                return $query->with([
+                    'user',
+                    'user.certification',
+                ])
+                ->where('expires_at', '>', new Carbon)
+                ->orderBy('amount', 'desc')
+                ->orderBy('created_at', 'desc');
             },
         ]);
 

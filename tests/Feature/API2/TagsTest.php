@@ -19,27 +19,11 @@
 namespace Zhiyi\Plus\Tests\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
-use Zhiyi\Plus\Models\Tag as TagModel;
-use Zhiyi\Plus\Models\TagCategory as TagCategoryModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class TagsTest extends TestCase
 {
     use DatabaseTransactions;
-
-    /**
-     * The test set up.
-     *
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-
-        app(TagCategoryModel::class)->insert(['id' => '1', 'name' => '测试分类']);
-        app(TagModel::class)->insert(['name' => '标签1', 'tag_category_id' => 1]);
-        app(TagModel::class)->insert(['name' => '标签2', 'tag_category_id' => 1]);
-    }
 
     /**
      * 测试获取标签.

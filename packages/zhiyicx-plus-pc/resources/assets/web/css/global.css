@@ -1,0 +1,93 @@
+/**
+ * 布局（grid）（.g-）；
+ * 模块（module）（.m-）；
+ * 元件（unit）（.u-）；
+ * 功能（function）（.f-）；
+ * 皮肤（skin）（.s-）；
+ * 状态（.z-）
+ */
+.f-cb:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+.f-ib{display:inline-block;*display:inline;*zoom:1;}
+.f-dn{display:none;}
+.f-db{display:block;}
+.f-fl{float:left;}
+.f-fr{float:right;}
+.f-pr{position:relative;}
+.f-prz{position:relative;zoom:1;}
+.f-oh{overflow:hidden;}
+.f-ff0{font-family:arial,\5b8b\4f53;}
+.f-ff1{font-family:"Microsoft YaHei",\5fae\8f6f\96c5\9ed1,arial,\5b8b\4f53;}
+.f-fs1{font-size:12px;}
+.f-fs2{font-size:14px;}
+.f-fs3{font-size:16px;}
+.f-fs4{font-size:18px;}
+.f-fs5{font-size:20px;}
+.f-mr10{margin-right:10px;}
+.f-mr20{margin-right:20px;}
+.f-ml20{margin-left:20px;}
+.f-mt20{margin-top:20px;}
+.f-mb20{margin-bottom:20px;}
+.f-mb30{margin-bottom:30px;}
+.f-fwn{font-weight:normal;}
+.f-fwb{font-weight:bold;}
+.f-tal{text-align:left;}
+.f-tac{text-align:center;}
+.f-tar{text-align:right;}
+.f-taj{text-align:justify;text-justify:inter-ideograph;}
+.f-vam,.f-vama *{vertical-align:middle;}
+.f-vatb{vertical-align:text-bottom;}
+.f-wsn{word-wrap:normal;white-space:nowrap;}
+.f-pre{overflow:hidden;text-align:left;white-space:pre-wrap;word-wrap:break-word;word-break:break-all;}
+.f-wwb{white-space:normal;word-wrap:break-word;word-break:break-all;}
+.f-ti{overflow:hidden;text-indent:-30000px;}
+.f-ti2{text-indent:2em;}
+.f-lhn{line-height:normal;}
+.f-tdu,.f-tdu:hover{text-decoration:underline;}
+.f-tdn,.f-tdn:hover{text-decoration:none;}
+.f-toe{overflow:hidden;word-wrap:normal;white-space:nowrap;text-overflow:ellipsis;}
+.f-csp{cursor:pointer;}
+.f-csd{cursor:default;}
+.f-csh{cursor:help;}
+.f-csm{cursor:move;}
+.f-usn{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;}
+
+/* 皮肤 s- */
+/* fontcolor */
+.s-fc{color:#59B6D7;}
+.s-fc1{color:#444;}
+.s-fc2{color:#777;}
+.s-fc3{color:#FA9C38;}
+.s-fc4{color:#CCC;}
+.s-bgc{background-color:white;}
+
+
+/* 多行式面包屑导航-默认竖线分隔 */
+.m-crumb{overflow:hidden;line-height:1.5;}
+.m-crumb ul{margin-left:-20px;margin-bottom:0;}
+.m-crumb li{float:left;word-wrap:normal;white-space:nowrap;}
+.m-crumb li:before{display:inline-block;width:20px;text-align:center;content:'|';font-size:12px;color:#ccc;font-family:\5b8b\4f53;}
+/* 箭头分隔 */
+.m-crumb-arr li:before{content:'\3E';}
+/* 空白分隔 */
+.m-crumb-blank ul{margin-left:-10px;}
+.m-crumb-blank li:before{width:10px;content:'';}
+
+/* 简易数据表格-格边框 */
+.m-table{border-collapse:collapse;border-spacing:0;table-layout:fixed;width:100%;line-height:1.5;font-size:14px;text-align:center;}
+.m-table th,.m-table td{padding:10px 0;border:1px solid #ddd;text-align:center;}
+.m-table th.left,.m-table td.left{text-align:left;padding-left:10px;}
+.m-table th{font-weight:bold;}
+.m-table tbody tr:nth-child(2n){background:#fafafa;}
+.m-table tbody tr:hover{background:#E3F1FA;}
+.m-table .cola{width:6%;}
+.m-table .colb{width:8%;}
+.m-table .colc{width:10%;}
+/* 简易数据表格-行边框*/
+.m-table-row th,.m-table-row td{border-width:0 0 1px;text-align:center;}
+/* 简易数据表格-圆角*/
+.m-table-rds{border-collapse:separate;border:1px solid #ddd;border-width:0 1px 1px 0;border-radius:5px;}
+.m-table-rds th,.m-table-rds td{border-width:1px 0 0 1px;}
+.m-table-rds > :first-child > :first-child > :first-child{border-top-left-radius:5px;}
+.m-table-rds > :first-child > :first-child > :last-child{border-top-right-radius:5px;}
+.m-table-rds > :last-child > :last-child > :first-child{border-bottom-left-radius:5px;}
+.m-table-rds > :last-child > :last-child > :last-child{border-bottom-right-radius:5px;}
