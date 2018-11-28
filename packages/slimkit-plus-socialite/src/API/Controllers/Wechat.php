@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace SlimKit\PlusSocialite\API\Controllers;
 
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\setting;
 use Illuminate\Support\Facades\Cache;
 
 class WechatController extends Controller
@@ -34,7 +35,10 @@ class WechatController extends Controller
      */
     public function getOauthUrl(Request $request)
     {
-        $config = config('socialite.wechat-mp') ?? null;
+        $config = setting('user', 'vendor:wechat-mp', [
+            'appid' => '',
+            'secret' => '',
+        ]);
         $url = $request->post('redirectUrl') ?? '';
         if ($url === '') {
             return response()->json(['message' => '微信配置错误'], 422);
@@ -56,7 +60,10 @@ class WechatController extends Controller
      */
     public function getAccess(string $code)
     {
-        $config = config('socialite.wechat-mp') ?? null;
+        $config = setting('user', 'vendor:wechat-mp', [
+            'appid' => '',
+            'secret' => '',
+        ]);
         $url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid='.$config['appid'].'&secret='.$config['secret'].'&code='.$code.'&grant_type=authorization_code';
         $res = file_get_contents($url);
 
@@ -89,7 +96,10 @@ class WechatController extends Controller
         }
         $accessToken = Cache::get('wechat-mp-accessToken', '');
         $jssdkTicket = Cache::get('wedchat-mp-jssdk-ticket', '');
-        $config = config('socialite.wechat-mp');
+        $config = setting('user', 'vendor:wechat-mp', [
+            'appid' => '',
+            'secret' => '',
+        ]);
         if (! $accessToken || ! $jssdkTicket) {
             $originUrl = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$config['appid'].'&secret='.$config['secret'];
             $result = json_decode(file_get_contents($originUrl), true) ?? [];
