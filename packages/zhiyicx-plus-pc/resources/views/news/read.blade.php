@@ -23,7 +23,7 @@
 
                 <div class="detail_info relative" id="news_toolbar">
                     <a href="{{ route('pc:news', ['cate_id' => $news['category']['id']]) }}" class="cates_span">{{ $news['category']['name'] ?? '默认' }}</a>
-                    <span>{{ $news['from'] != '原创' ? $news['from'] : $news['user']['name'] }}  ·  {{ $news['hits'] }}浏览  ·  {{ getTime($news['created_at']) }}</span>
+                    <span>{{ $news['from'] != '原创' ? $news['from'] : $news['author'] }}  ·  {{ $news['hits'] }}浏览  ·  {{ getTime($news['created_at']) }}</span>
                     @if($news['audit_status'] != 1)
                     <span class="options" onclick="options(this)">
                         <svg class="icon icon-more" aria-hidden="true"><use xlink:href="#icon-more"></use></svg>
@@ -33,11 +33,11 @@
                         <div class="triangle"></div>
                         <ul>
                             <li>
-                                <a href="javascript:;" onclick="repostable.show('news' ,{{$news['id']}})">
+                                <a href="javascript:;" onclick="repostable.show('news' ,{{ $news['id'] }})">
                                     <svg class="icon" aria-hidden="true"><use xlink:href="#icon-share"></use></svg>转发
                                 </a>
                             </li>
-                            @if($TS && $news['user']['id'] == $TS['id'])
+                            @if($TS && $news['user_id'] == $TS['id'])
                                 @if($news['audit_status'] == 3)
                                     <li>
                                         <a href="{{ route('pc:newsrelease', $news['id']) }}">
@@ -114,7 +114,9 @@
                     </div>
 
                     {{-- 打赏 --}}
+                    @if($news['user_id'] !== $TS['id'])
                     @include('pcview::widgets.rewards' , ['rewards_data' => $news['rewards'], 'rewards_type' => 'news', 'rewards_id' => $news['id'], 'rewards_info' => $news['reward']])
+                    @endif
                 </div>
 
                 {{-- 相关推荐 --}}
