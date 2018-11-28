@@ -126,7 +126,7 @@
         "symfony/finder": "^4.0",
         "symfony/yaml": "^4.0",
         "tymon/jwt-auth": "1.0.0-rc.3",
-        "zhiyicx/plus-pc": "2.0.4"
+        "zhiyicx/plus-pc": "2.1.2"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
