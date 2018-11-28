@@ -70,10 +70,18 @@ class PinnedsNotificationEventer
     {
         $notifications = collect($this->events->dispatch($this->prefix));
 
-        $notifications = $notifications->reject(function ($notification) {
-            return (! isset($notification['namespace']) && $notification['namespace'] && class_exists($notification['namespace'])) || array_diff_key($this->fillable, $notification);
-        });
+        return $notification->reject(function ($notification): bool {
+            if (! is_array($notification)) {
+                return true;
+            } elseif (! isset($notification['namespace'])) {
+                return true;
+            } elseif (! class_exists($notification['namespace'])) {
+                return true;
+            } elseif (array_diff_key($this->fillable, $notification)) {
+                return true;
+            }
 
-        return $notifications;
+            return false;
+        });
     }
 }

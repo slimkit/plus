@@ -54,6 +54,6 @@ class CreateFeedTopicUserLinksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('feed_topic_followers');
+        Schema::dropIfExists('feed_topic_user_links');
     }
 }
