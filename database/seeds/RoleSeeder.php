@@ -18,6 +18,7 @@
 
 use Zhiyi\Plus\Models\Role;
 use Illuminate\Database\Seeder;
+use function Zhiyi\Plus\setting;
 
 class RoleSeeder extends Seeder
 {
@@ -46,7 +47,6 @@ class RoleSeeder extends Seeder
                 'non_delete' => 1,
             ],
             'owner' => [
-                'name' => 'owner',
                 'display_name' => '普通用户',
                 'description' => '普通用户',
             ],
@@ -55,5 +55,10 @@ class RoleSeeder extends Seeder
         }
         // 权限节点.
         $this->call(AbilitySeeder::class);
+        // 设置默认注册角色
+        $defaultRole = Role::where('name', 'like', 'owner')->first();
+        if ($defaultRole) {
+            setting('user')->set('register-role', $defaultRole->id);
+        }
     }
 }
