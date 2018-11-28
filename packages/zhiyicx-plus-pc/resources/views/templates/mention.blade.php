@@ -21,7 +21,11 @@
                 @endif
                 @break
             @case('comments')
+                @if($item['comments']['body'] ?? false)
                 <span>{{ $item['comments']['body'] }}</span>
+                @else
+                <div class="content">内容不存在或已被删除</div>
+                @endif
 
                 @switch($item['repostable_type'])
                     @case('news')
