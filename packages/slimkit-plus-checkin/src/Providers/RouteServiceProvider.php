@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusCheckIn\Providers;
 
+use function Zhiyi\Plus\setting;
 use Illuminate\Support\ServiceProvider;
 use Zhiyi\Plus\Support\ManageRepository;
 use Zhiyi\Plus\Support\BootstrapAPIsEventer;
-use Illuminate\Contracts\Config\Repository as ConfigRepository;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -41,8 +41,10 @@ class RouteServiceProvider extends ServiceProvider
         // Register Bootstraper API event.
         $this->app->make(BootstrapAPIsEventer::class)->listen('v2', function () {
             return [
-                'checkin' => (bool) $this->app->make(ConfigRepository::class)->get('checkin.open'),
-                'checkin:attach_balance' => (int) $this->app->make(ConfigRepository::class)->get('checkin.attach_balance'),
+                'checkin' => [
+                    'switch' => setting('checkin', 'switch', true),
+                    'balance' => setting('checkin', 'attach-balance', 1),
+                ],
             ];
         });
 

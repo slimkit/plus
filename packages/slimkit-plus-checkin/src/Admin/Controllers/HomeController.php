@@ -34,8 +34,8 @@ class HomeController
     public function index()
     {
         return view('plus-checkin::admin', [
-            'switch' => setting('checkin', 'switch'),
-            'balance' => setting('checkin', 'attach-balance'),
+            'switch' => setting('checkin', 'switch', true),
+            'balance' => setting('checkin', 'attach-balance', 1),
         ]);
     }
 
