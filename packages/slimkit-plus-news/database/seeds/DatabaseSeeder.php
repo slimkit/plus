@@ -33,5 +33,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(AdvertisingSpaceTableSeeder::class);
+        $this->call(NewsCatesTableSeeder::class);
     }
 }

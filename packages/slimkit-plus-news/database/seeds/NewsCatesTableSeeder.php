@@ -18,24 +18,23 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models;
+namespace SlimKit\Plus\Packages\News\Seeds;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Seeder;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsCate;
 
-class NewsCate extends Model
+class NewsCatesTableSeeder extends Seeder
 {
-    protected $table = 'news_cates';
-    public $timestamps = false;
-    protected $fillable = ['name', 'rank'];
-
     /**
-     * Has news.
+     * Run the package seeder.
      *
-     * @return null|
+     * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function news()
+    public function run()
     {
-        return $this->hasMany(News::class, 'cate_id', 'id');
+        if (! NewsCate::count()) {
+            NewsCate::firstOrCreate(['name' => '默认分类'], ['rank' => 0]);
+        }
     }
 }
