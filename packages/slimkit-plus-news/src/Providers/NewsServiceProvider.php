@@ -21,13 +21,13 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Providers;
 
 use Zhiyi\Plus\Models\User;
+use function Zhiyi\Plus\setting;
 use Illuminate\Support\ServiceProvider;
 use Zhiyi\Plus\Support\ManageRepository;
 use Zhiyi\Plus\Support\BootstrapAPIsEventer;
 use Zhiyi\Plus\Support\PinnedsNotificationEventer;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
-use Illuminate\Contracts\Config\Repository as ConfigRepository;
 
 class NewsServiceProvider extends ServiceProvider
 {
@@ -58,8 +58,13 @@ class NewsServiceProvider extends ServiceProvider
         // Register Bootstraper API event.
         $this->app->make(BootstrapAPIsEventer::class)->listen('v2', function () {
             return [
-                'news:contribute' => $this->app->make(ConfigRepository::class)->get('news.contribute'),
-                'news:pay_conyribute' => (int) $this->app->make(ConfigRepository::class)->get('news.pay_contribute'),
+                'news' => [
+                    'contribute' => setting('news', 'contribute', [
+                        'pay' => true,
+                        'verified' => true,
+                    ]),
+                    'pay_contribute' => setting('news', 'contribute-amount', 100),
+                ],
             ];
         });
 
