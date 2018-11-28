@@ -28,7 +28,7 @@ declare(strict_types=1);
  */
 
 $app = new Zhiyi\Plus\Application(
-    realpath(__DIR__.'/../')
+    $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
 
 /*

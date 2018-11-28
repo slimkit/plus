@@ -20,6 +20,8 @@ jpush.log
 /vendor
 /resources/views/vendor
 /.idea
+/.vscode
+/nbproject
 /.vagrant
 Homestead.json
 Homestead.yaml
