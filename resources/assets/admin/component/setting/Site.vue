@@ -57,7 +57,7 @@
               </div>
             </div>
 
-            <!-- <div class="form-group">
+            <div class="form-group">
               <label for="" class="control-label col-md-2">匿名开关</label>
               <div class="col-md-6">
                 <label class="radio-inline">
@@ -70,7 +70,7 @@
               <div class="col-md-4">
                 <span class="help-block">站点是否开启匿名，开启后用户可以选择匿名操作部分内容</span>
               </div>
-            </div> -->
+            </div>
             <!-- <div class="form-group" v-if="site.anonymous.status">
               <label class="control-label col-md-2">匿名规则说明</label>
               <div class="col-md-6">
