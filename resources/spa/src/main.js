@@ -1,4 +1,5 @@
 import { version } from '../package.json'
+import { ENABLE_MOBLINK } from '@/constants/app'
 
 import Vue from 'vue'
 
@@ -53,7 +54,7 @@ if (!window.initUrl) {
 }
 
 // 加载 moblink 用于引导打开 APP
-if (process.env.VUE_APP_MOBLINK_ENABLE) {
+if (ENABLE_MOBLINK) {
   window.addEventListener('load', () => {
     const key = process.env.VUE_APP_MOBLINK_KEY || ''
     const script = document.createElement('script')
