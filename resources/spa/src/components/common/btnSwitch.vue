@@ -1,8 +1,6 @@
 <template>
   <div :class="[`${prefixCls}-wrap`]">
-    <span
-      :class="[`${prefixCls}-text`]"
-      @click="onClick">
+    <span :class="[`${prefixCls}-text`]" @click="onClick">
       <slot/>
     </span>
     <div :class="[`${prefixCls}-append`]">
@@ -33,28 +31,17 @@
     </div>
   </div>
 </template>
+
 <script>
 const prefixCls = 'v-switch'
 
 export default {
   name: 'VSwitch',
   props: {
-    type: {
-      type: String,
-      default: 'checkbox',
-      requried: true,
-      validator (val) {
-        return ['checkbox', 'radio'].includes(val)
-      },
-    },
-    value: { type: Boolean, default: false },
+    type: { type: String, default: 'checkbox', validator: val => ['checkbox', 'radio'].includes(val) },
+    value: { type: [Boolean, Number], default: false },
     dataValue: { type: Object, default: () => {} },
-    id: {
-      type: String,
-      default: function () {
-        return 'v-switch-' + this._uid
-      },
-    },
+    id: { type: String, default () { return 'v-switch-' + this._uid } },
   },
   data () {
     return {
@@ -79,12 +66,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@switch-prefix: v-switch;
-@switch-prefix-radio: v-switch-radio;
-@switch-prefix-checkbox: v-switch-checkbox;
-
-.@{switch-prefix-radio},
-.@{switch-prefix-checkbox} {
+.v-switch-radio,
+.v-switch-checkbox {
   &-append {
     order: 2;
     font-size: 30px;
@@ -126,7 +109,7 @@ export default {
   }
 }
 
-.@{switch-prefix-checkbox} {
+.v-switch-checkbox {
   &-box {
     position: relative;
     width: 60px;
@@ -169,7 +152,7 @@ export default {
     }
   }
   &-input {
-    &:checked ~ .@{switch-prefix-checkbox}-box {
+    &:checked ~ .v-switch-checkbox-box {
       border-color: #44db5e;
       background-color: #44db5e;
       &:after {
@@ -183,7 +166,7 @@ export default {
   }
 }
 
-.@{switch-prefix}-radio {
+.v-switch-radio {
   &-wrap {
     justify-content: flex-start;
   }
@@ -203,7 +186,7 @@ export default {
   }
 
   &-input {
-    &:checked ~ .@{switch-prefix-radio}-box {
+    &:checked ~ .v-switch-radio-box {
       &:after {
         position: absolute;
         top: 0;
