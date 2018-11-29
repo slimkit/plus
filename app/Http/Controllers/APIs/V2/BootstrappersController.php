@@ -66,7 +66,7 @@ class BootstrappersController extends Controller
         $bootstrappers['wallet:recharge'] = ['open' => config('wallet.recharge.status', true)];
         $bootstrappers['wallet:transform'] = ['open' => config('wallet.transform.status', true)];
 
-        $bootstrapper['currency'] = [
+        $bootstrappers['currency'] = [
             'IAP_only' => config('currency.recharge.IAP.only', true),
             'cash' => setting('currency', 'cash', [
                 'rule' => '我是提现规则',
