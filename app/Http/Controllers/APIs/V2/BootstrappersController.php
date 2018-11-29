@@ -90,6 +90,9 @@ class BootstrappersController extends Controller
                 'recharge-min' => 100,
                 'cash-max' => 10000000,
                 'cash-min' => 100,
+                'cash-type' => ($cash = CommonConfig::where('name', 'cash')->where('namespace', 'wallet')->first()) ? json_decode($cash->value) : [],
+                'apple-IAP-rule' => config('currency.recharge.IAP.rule', ''),
+                'recharge-type' => ($recharge_type = CommonConfig::where('name', 'wallet:recharge-type')->where('namespace', 'common')->first()) ? json_decode($recharge_type->value) : [],
             ]),
         ];
 
