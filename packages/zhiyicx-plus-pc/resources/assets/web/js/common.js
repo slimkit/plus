@@ -963,8 +963,8 @@ var comment = {
                 url = '/api/v2/questions/' + source_id + '/comments/' + id;
                 break;
         }
-        _this.lockStatus = 1;
         layer.confirm(confirmTxt + '确定删除这条评论？', {}, function() {
+            _this.lockStatus = 1;
             axios.delete(url)
                 .then(function (response) {
                     $('#comment' + id).fadeOut();
