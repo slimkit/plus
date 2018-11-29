@@ -1,25 +1,31 @@
 <template>
   <div
     class="c-password-confirm"
-    @touchmove.prevent>
+    @touchmove.prevent
+  >
     <!-- 遮罩层 -->
-    <transition name="toast">
+    <Transition name="toast">
       <div
         v-if="visible"
         class="m-pop-box"
-        @click="cancel"/>
-    </transition>
+        @click="cancel"
+      />
+    </Transition>
 
-    <transition name="pop">
+    <Transition name="pop">
       <div
         v-if="visible"
-        class="wrap">
-        <common-header class="common-header">
+        class="wrap"
+      >
+        <CommonHeader class="common-header">
           输入密码
           <a
             slot="left"
-            @click="cancel">取消</a>
-        </common-header>
+            @click="cancel"
+          >
+            取消
+          </a>
+        </CommonHeader>
         <main>
           <form onsubmit="return false">
             <input
@@ -27,18 +33,25 @@
               v-model="password"
               type="password"
               minlength="6"
-              maxlength="16">
+              maxlength="16"
+            >
             <button
               :disabled="disabled"
               type="submit"
-              @click="submit" >确认</button>
+              @click="submit"
+            >
+              确认
+            </button>
           </form>
           <a
             :class="{disabled}"
-            @click="onForgotClick">忘记密码?</a>
+            @click="onForgotClick"
+          >
+            忘记密码?
+          </a>
         </main>
       </div>
-    </transition>
+    </Transition>
   </div>
 </template>
 

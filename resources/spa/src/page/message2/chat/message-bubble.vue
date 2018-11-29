@@ -2,14 +2,16 @@
   <div class="message-item">
     <div
       v-if="user.id === 0"
-      class="room-tips">
+      class="room-tips"
+    >
       <span>{{ body }}</span>
     </div>
     <div
       v-else
       :class="{selef: bySelef}"
-      class="m-box m-aln-st msg-bubble">
-      <avatar :user="user"/>
+      class="m-box m-aln-st msg-bubble"
+    >
+      <Avatar :user="user" />
       <section class="m-box-model m-aln-st msg-bubble-main">
         <h2 class="msg-bubble-user-name m-text-cut">{{ user.name }}</h2>
         <p class="msg-bubble-body">{{ body }}</p>

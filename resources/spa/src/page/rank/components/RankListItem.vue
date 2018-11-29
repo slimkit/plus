@@ -3,11 +3,11 @@
     <span :class="{ top: index < 3 }" class="rank">{{ index + 1 }}</span>
 
     <div class="rank-info" @click="to(`/users/${user.id}`)">
-      <avatar :user="user" class="rank-avatar"/>
+      <Avatar :user="user" class="rank-avatar" />
       <div class="rank-title m-text-cut">
         <h6>{{ user.name }}</h6>
         <!-- 用于显示各排行榜数据的插槽 -->
-        <slot/>
+        <slot />
       </div>
     </div>
 
@@ -15,7 +15,8 @@
       v-if="!isMine"
       :class="{active: isFollow === 'unFollow'}"
       class="follow-btn"
-      @click.stop="followUser">
+      @click.stop="followUser"
+    >
       {{ followText }}
     </button>
   </div>

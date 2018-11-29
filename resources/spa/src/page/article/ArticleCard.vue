@@ -1,69 +1,75 @@
 <template>
-  <transition>
+  <Transition>
     <div class="c-article-card">
       <div class="m-box-model m-art-card">
         <header
           ref="head"
-          class="m-box-model m-pos-f m-head-top">
+          class="m-box-model m-pos-f m-head-top"
+        >
           <slot name="head">
-            <common-header>资讯详情</common-header>
+            <CommonHeader>资讯详情</CommonHeader>
           </slot>
         </header>
 
         <div
           v-if="loading"
-          class="m-spinner pos-f">
-          <div/>
-          <div/>
+          class="m-spinner pos-f"
+        >
+          <div />
+          <div />
         </div>
 
         <main class="m-box-model">
-          <slot/>
+          <slot />
         </main>
 
         <footer
           v-if="canOprate"
           ref="foot"
-          class="m-pos-f">
+          class="m-pos-f"
+        >
           <slot name="foot">
             <a
               class="m-box-model m-aln-center"
-              @click.prevent="handelLike">
+              @click.prevent="handelLike"
+            >
               <svg class="m-style-svg m-svg-def">
-                <use :xlink:href="liked ? '#icon-like' :'#icon-unlike'"/>
+                <use :xlink:href="liked ? '#icon-like' :'#icon-unlike'" />
               </svg>
               <span>喜欢</span>
             </a>
             <a
               class="m-box-model m-aln-center"
-              @click.prevent="handelComment">
+              @click.prevent="handelComment"
+            >
               <svg class="m-style-svg m-svg-def">
-                <use xlink:href="#icon-comment"/>
+                <use xlink:href="#icon-comment" />
               </svg>
               <span>评论</span>
             </a>
             <a
               class="m-box-model m-aln-center"
-              @click.prevent="handelShare">
+              @click.prevent="handelShare"
+            >
               <svg class="m-style-svg m-svg-def">
-                <use xlink:href="#icon-share"/>
+                <use xlink:href="#icon-share" />
               </svg>
               <span>分享</span>
             </a>
             <a
               class="m-box-model m-aln-center"
-              @click.prevent="handelMore">
+              @click.prevent="handelMore"
+            >
               <svg class="m-style-svg m-svg-def">
-                <use xlink:href="#icon-more"/>
+                <use xlink:href="#icon-more" />
               </svg>
               <span>更多</span>
             </a>
           </slot>
         </footer>
-
       </div>
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script>

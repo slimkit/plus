@@ -1,19 +1,22 @@
 <template>
   <div class="p-forgot forgot signup">
-
-    <common-header>
+    <CommonHeader>
       找回密码
       <template slot="right">
         <a
           v-show="countdown === 0"
-          @click.prevent="changeType">{{ _$type.label2 }}找回</a>
+          @click.prevent="changeType"
+        >
+          {{ _$type.label2 }}找回
+        </a>
       </template>
-    </common-header>
+    </CommonHeader>
 
     <main>
       <div
         v-if="verifiable_type === &quot;sms&quot;"
-        class="m-form-row m-main">
+        class="m-form-row m-main"
+      >
         <label for="phone">手机号</label>
         <div class="m-input">
           <input
@@ -23,17 +26,21 @@
             autocomplete="off"
             pattern="[0-9]*"
             oninput="value=value.slice(0, 11)"
-            placeholder="输入11位手机号">
+            placeholder="输入11位手机号"
+          >
         </div>
         <span
           :class="{ disabled: phone.length < 11 || countdown > 0 }"
           class="m-flex-grow0 m-flex-shrink0 signup-form--row-append c_59b6d7"
           @click="getCode"
-        >{{ codeText }}</span>
+        >
+          {{ codeText }}
+        </span>
       </div>
       <div
         v-if="verifiable_type === &quot;mail&quot;"
-        class="m-form-row m-main">
+        class="m-form-row m-main"
+      >
         <label for="mail">邮箱</label>
         <div class="m-input">
           <input
@@ -41,12 +48,16 @@
             v-model="email"
             type="mail"
             autocomplete="off"
-            placeholder="输入邮箱地址">
+            placeholder="输入邮箱地址"
+          >
         </div>
         <span
           :class="{ disabled: email.length < 11 || countdown > 0 }"
           class="signup-form--row-append c_59b6d7"
-          @click="getCode" >{{ codeText }}</span>
+          @click="getCode"
+        >
+          {{ codeText }}
+        </span>
       </div>
       <div class="m-form-row m-main">
         <label for="code">验证码</label>
@@ -57,13 +68,15 @@
             type="number"
             pattern="[0-9]*"
             oninput="value=value.slice(0, 6)"
-            placeholder="输入4-6位验证码" >
+            placeholder="输入4-6位验证码"
+          >
         </div>
         <svg
           v-show="verifiable_code.length > 0"
           class="m-style-svg m-svg-def"
-          @click="verifiable_code = ''">
-          <use xlink:href="#icon-clean"/>
+          @click="verifiable_code = ''"
+        >
+          <use xlink:href="#icon-clean" />
         </svg>
       </div>
 
@@ -76,19 +89,22 @@
             v-model="password"
             type="text"
             maxlength="16"
-            placeholder="输入6位以上登录密码">
+            placeholder="输入6位以上登录密码"
+          >
           <input
             v-else
             id="password"
             v-model="password"
             type="password"
             maxlength="16"
-            placeholder="输入6位以上登录密码" >
+            placeholder="输入6位以上登录密码"
+          >
         </div>
         <svg
           class="m-style-svg m-svg-def"
-          @click="eye=!eye">
-          <use :xlink:href="`#eye-${eye ? 'open' : 'close' }`"/>
+          @click="eye=!eye"
+        >
+          <use :xlink:href="`#eye-${eye ? 'open' : 'close' }`" />
         </svg>
       </div>
       <div class="m-box m-aln-center m-text-box m-form-err-box">
@@ -97,12 +113,14 @@
 
       <div
         class="m-form-row"
-        style="border: 0">
+        style="border: 0"
+      >
         <button
           :disabled="loading||disabled"
           class="m-long-btn m-signin-btn"
-          @click="handleOk">
-          <circle-loading v-if="loading" />
+          @click="handleOk"
+        >
+          <CircleLoading v-if="loading" />
           <span v-else>修改</span>
         </button>
       </div>

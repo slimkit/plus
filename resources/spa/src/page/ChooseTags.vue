@@ -1,57 +1,62 @@
 <template>
-  <transition name="pop">
+  <Transition name="pop">
     <div
       v-if="show"
-      class="m-box-model m-pos-f p-choose-tags m-main">
-
-      <common-header :back="nextFuc">选择标签</common-header>
+      class="m-box-model m-pos-f p-choose-tags m-main"
+    >
+      <CommonHeader :back="nextFuc">选择标签</CommonHeader>
 
       <main class="m-box-model m-flex-grow1 m-flex-shrink1">
         <section class="m-flex-grow0 m-flex-shrink0 m-tags-group selected m-bb1">
           <span class="m-tags-label">可选择{{ 5 }}个标签，已选择{{ chooseTags.length }}标签</span>
-          <transition-group
+          <TransitionGroup
             tag="ul"
-            class="m-tags">
+            class="m-tags"
+          >
             <li
               v-for="tag in chooseTags"
               v-if="tag.id"
               :key="`tags-selected-${tag.id}`"
               class="m-tag"
-              @click="removeTag(tag)">
+              @click="removeTag(tag)"
+            >
               <svg class="m-style-svg m-svg-def">
-                <use xlink:href="#icon-clean"/>
+                <use xlink:href="#icon-clean" />
               </svg>
               <span>{{ tag.name }}</span>
             </li>
-          </transition-group>
+          </TransitionGroup>
         </section>
         <div
           class="m-flex-grow1 m-flex-shrink1"
-          style="overflow-y: auto;">
+          style="overflow-y: auto;"
+        >
           <section
             v-for="(group, Gindex) in tags"
             :key="group.id"
-            class="m-tags-group">
+            class="m-tags-group"
+          >
             <span class="m-tags-label">{{ group.name }}</span>
-            <transition-group
+            <TransitionGroup
               tag="ul"
-              class="m-tags">
+              class="m-tags"
+            >
               <li
                 v-for="(tag, Tindex) in group.tags"
                 v-if="tag.id"
                 :key="tag.id"
                 :class="{ selected: tag.selected }"
                 class="m-tag"
-                @click="addTag(tag, Gindex, Tindex)">
+                @click="addTag(tag, Gindex, Tindex)"
+              >
                 <span>{{ tag.name }}</span>
               </li>
-            </transition-group>
+            </TransitionGroup>
           </section>
         </div>
       </main>
-
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script>

@@ -1,14 +1,16 @@
 <template>
-  <jo-load-more
+  <JoLoadMore
     key="find-new"
     ref="loadmore"
     @onRefresh="onRefresh"
-    @onLoadMore="onLoadMore">
-    <user-item
+    @onLoadMore="onLoadMore"
+  >
+    <UserItem
       v-for="user in users"
+      :key="user.id"
       :user="user"
-      :key="user.id"/>
-  </jo-load-more>
+    />
+  </JoLoadMore>
 </template>
 <script>
 import UserItem from '@/components/UserItem.vue'

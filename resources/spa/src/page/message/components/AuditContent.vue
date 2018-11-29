@@ -2,33 +2,43 @@
   <div :class="`${prefixCls}-item-bottom`">
     <span
       v-if="commentBody"
-      class="content"> {{ commentBody }} </span>
+      class="content"
+    >
+      {{ commentBody }}
+    </span>
     <section
       v-if="!commentableDel"
-      @click.capture.stop="goToDetail()">
+      @click.capture.stop="goToDetail()"
+    >
       <div
         v-if="!image && !video"
         :class="`${prefixCls}-item-bottom-noImg`"
-        class="content">
+        class="content"
+      >
         {{ content }}
       </div>
       <div
         v-else
-        :class="`${prefixCls}-item-bottom-img`">
+        :class="`${prefixCls}-item-bottom-img`"
+      >
         <div class="img">
-          <async-file
+          <AsyncFile
             v-if="image && type !== 'group'"
-            :file="image.file">
+            :file="image.file"
+          >
             <img
               slot-scope="props"
-              :src="props.src">
-          </async-file>
+              :src="props.src"
+            >
+          </AsyncFile>
           <img
             v-if="type === 'group'"
-            :src="image">
+            :src="image"
+          >
           <img
             v-if="video"
-            :src="video">
+            :src="video"
+          >
         </div>
         <div class="content">{{ content }}</div>
       </div>
@@ -36,7 +46,8 @@
     <section v-if="commentableDel">
       <div
         :class="`${prefixCls}-item-bottom-noImg`"
-        class="content">
+        class="content"
+      >
         内容已被删除
       </div>
     </section>

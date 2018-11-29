@@ -1,14 +1,18 @@
 <template>
-  <router-link
+  <RouterLink
     :to="`/news/${news.id}`"
     tag="div"
-    class="news-card">
+    class="news-card"
+  >
     <section class="body">
       <h2>{{ title }}</h2>
       <p>
         <i
           v-show="!currentCate"
-          class="news-cate">{{ cate }}</i>
+          class="news-cate"
+        >
+          {{ cate }}
+        </i>
         <span>{{ author }}</span>
         <span>・{{ hits }}浏览</span>
         <span>・{{ time | time2tips }}</span>
@@ -16,10 +20,11 @@
     </section>
     <div
       v-if="image"
-      class="poster">
+      class="poster"
+    >
       <img :src="image">
     </div>
-  </router-link>
+  </RouterLink>
 </template>
 
 <script>

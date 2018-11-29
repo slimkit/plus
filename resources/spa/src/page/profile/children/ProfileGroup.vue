@@ -1,21 +1,23 @@
 <template>
   <div class="profile-group">
-    <head-top :go-back="cancel">
+    <HeadTop :go-back="cancel">
       <div
         slot="nav"
-        class="head-top-tabs-nav">
-        <router-link
+        class="head-top-tabs-nav"
+      >
+        <RouterLink
           v-for="({label, path}, index) in types"
           :key="`profile-group-tab-${index}`"
           :to="path"
-          class="head-top-tabs-nav-item">
+          class="head-top-tabs-nav-item"
+        >
           {{ label }}
-        </router-link>
+        </RouterLink>
       </div>
-    </head-top>
-    <keep-alive>
-      <router-view class="profile-group-content"/>
-    </keep-alive>
+    </HeadTop>
+    <KeepAlive>
+      <RouterView class="profile-group-content" />
+    </KeepAlive>
   </div>
 </template>
 <script>

@@ -1,24 +1,33 @@
 <template>
   <section
     class="c-form-item c-form-tags-item"
-    @click="switchTags">
+    @click="switchTags"
+  >
     <label>{{ label }}</label>
     <div class="input-wrap">
       <span
         v-if="value.length === 0"
-        class="placeholder">选择标签</span>
+        class="placeholder"
+      >
+        选择标签
+      </span>
       <div
         v-else
-        class="m-tag-list m-tags">
+        class="m-tag-list m-tags"
+      >
         <span
           v-for="tag in value"
           :key="tag.id"
-          class="m-tag">{{ tag.name }}</span>
+          class="m-tag"
+        >
+          {{ tag.name }}
+        </span>
       </div>
       <svg
         v-if="!readonly"
-        class="m-style-svg m-svg-def m-entry-append">
-        <use xlink:href="#icon-arrow-right"/>
+        class="m-style-svg m-svg-def m-entry-append"
+      >
+        <use xlink:href="#icon-arrow-right" />
       </svg>
     </div>
   </section>

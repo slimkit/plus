@@ -2,18 +2,21 @@
   <div
     :class="{open}"
     class="diy-select"
-    @click="onClick">
+    @click="onClick"
+  >
     <div class="diy-select--label">{{ curSelectValue }}</div>
     <div
       v-show="open"
-      class="diy-select--options">
+      class="diy-select--options"
+    >
       <div
         v-for="option in options"
         :key="option.label"
         class="diy-select--option"
-        @click="setCurVal(option)">
+        @click="setCurVal(option)"
+      >
         <template v-if="option.hasMsg">
-          <v-badge :dot="option.hasMsg">{{ option.label }}</v-badge>
+          <VBadge :dot="option.hasMsg">{{ option.label }}</VBadge>
         </template>
         <span v-else>{{ option.label }}</span>
       </div>

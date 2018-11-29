@@ -1,12 +1,14 @@
 <template>
-  <transition
+  <Transition
     name="router-fadeInRight"
-    mode="out-in">
+    mode="out-in"
+  >
     <div class="choose-group">
-      <head-top
+      <HeadTop
         :go-back="close"
-        :title="`选择圈子`"/>
-      <div/>
+        :title="`选择圈子`"
+      />
+      <div />
       <div class="choose-group-list">
         <div
           v-for="group in groups"
@@ -14,10 +16,13 @@
           :key="group.id"
           :class="{active: selected.id === group.id}"
           class="choose-group-item ellipsis"
-          @click="selectGroup(group)">{{ group.name }}</div>
+          @click="selectGroup(group)"
+        >
+          {{ group.name }}
+        </div>
       </div>
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script>

@@ -1,16 +1,19 @@
 <template>
-  <transition
+  <Transition
     enter-active-class="animated bounceInRight"
-    leave-active-class="animated bounceOutLeft">
+    leave-active-class="animated bounceOutLeft"
+  >
     <div class="p-signup">
-
-      <common-header>
+      <CommonHeader>
         {{ _$type.label }}注册
         <a
           v-if="allowType === 'all'"
           slot="right"
-          @click.prevent="changeType">{{ _$type.label2 }}</a>
-      </common-header>
+          @click.prevent="changeType"
+        >
+          {{ _$type.label2 }}
+        </a>
+      </CommonHeader>
 
       <main>
         <div class="m-form-row m-main">
@@ -21,18 +24,21 @@
               v-model.trim="name"
               type="text"
               placeholder="用户名不能低于2个中文或4个英文"
-              maxlength="8">
+              maxlength="8"
+            >
           </div>
           <svg
             v-show="name.length > 0"
             class="m-style-svg m-svg-def"
-            @click="name = ''">
-            <use xlink:href="#icon-clean"/>
+            @click="name = ''"
+          >
+            <use xlink:href="#icon-clean" />
           </svg>
         </div>
         <div
           v-if="verifiable_type === 'sms'"
-          class="m-form-row m-main">
+          class="m-form-row m-main"
+        >
           <label for="phone">手机号</label>
           <div class="m-input">
             <input
@@ -41,31 +47,36 @@
               type="number"
               pattern="[0-9]*"
               oninput="value=value.slice(0, 11)"
-              placeholder="输入11位手机号">
-              <!-- maxlength="11" -->
+              placeholder="输入11位手机号"
+            >
+            <!-- maxlength="11" -->
           </div>
           <span
             :class="{ disabled: phone.length < 11 || countdown > 0 }"
             class="code-text"
-            @click="getCode">
+            @click="getCode"
+          >
             {{ codeText }}
           </span>
         </div>
         <div
           v-if="verifiable_type === 'mail'"
-          class="m-form-row m-main">
+          class="m-form-row m-main"
+        >
           <label for="email">邮箱</label>
           <div class="m-input">
             <input
               id="email"
               v-model.trim="email"
               type="email"
-              placeholder="输入邮箱地址">
+              placeholder="输入邮箱地址"
+            >
           </div>
           <span
             :class="{ disabled: email.length < 4 || countdown > 0 }"
             class="code-text"
-            @click="getCode">
+            @click="getCode"
+          >
             {{ codeText }}
           </span>
         </div>
@@ -78,13 +89,15 @@
               type="number"
               pattern="[0-9]*"
               oninput="value=value.slice(0, 6)"
-              placeholder="输入4-6位验证码" >
+              placeholder="输入4-6位验证码"
+            >
           </div>
           <svg
             v-show="verifiable_code.length > 0"
             class="m-style-svg m-svg-def"
-            @click="verifiable_code = ''">
-            <use xlink:href="#icon-clean"/>
+            @click="verifiable_code = ''"
+          >
+            <use xlink:href="#icon-clean" />
           </svg>
         </div>
 
@@ -97,19 +110,22 @@
               v-model="password"
               type="text"
               maxlength="16"
-              placeholder="输入6位以上登录密码" >
+              placeholder="输入6位以上登录密码"
+            >
             <input
               v-else
               id="password"
               v-model="password"
               maxlength="16"
               type="password"
-              placeholder="输入6位以上登录密码" >
+              placeholder="输入6位以上登录密码"
+            >
           </div>
           <svg
             class="m-style-svg m-svg-def"
-            @click="eye = !eye">
-            <use :xlink:href="eye ? '#eye-open' : '#eye-close'"/>
+            @click="eye = !eye"
+          >
+            <use :xlink:href="eye ? '#eye-open' : '#eye-close'" />
           </svg>
         </div>
         <div class="m-box m-aln-center m-text-box m-form-err-box">
@@ -117,27 +133,30 @@
         </div>
         <div
           class="m-form-row"
-          style="border: 0">
+          style="border: 0"
+        >
           <button
             :disabled="loading||disabled"
             class="m-long-btn m-signin-btn"
-            @click="signUp">
-            <circle-loading v-if="loading" />
+            @click="signUp"
+          >
+            <CircleLoading v-if="loading" />
             <span v-else>注册</span>
           </button>
         </div>
       </main>
       <footer>
         <template v-if="showProtocol">
-          <router-link
+          <RouterLink
             to="/signup/protocol"
-            class="register-protocol">
+            class="register-protocol"
+          >
             点击注册即代表同意《ThinkSNS+用户使用协议》
-          </router-link>
+          </RouterLink>
         </template>
       </footer>
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script>

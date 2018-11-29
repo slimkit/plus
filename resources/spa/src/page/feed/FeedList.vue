@@ -2,62 +2,70 @@
   <div class="p-feed">
     <nav class="m-box m-head-top m-lim-width m-pos-f m-main m-bb1">
       <ul class="m-box m-flex-grow1 m-aln-center m-justify-center m-flex-base0 m-head-nav">
-        <router-link
+        <RouterLink
           :to="{ name:'feeds', query: { type: 'new' } }"
           tag="li"
           active-class="active"
           exact
-          replace>
+          replace
+        >
           <a>最新</a>
-        </router-link>
-        <router-link
+        </RouterLink>
+        <RouterLink
           :to="{ name:'feeds', query: { type: 'hot' } }"
           tag="li"
           active-class="active"
           exact
-          replace>
+          replace
+        >
           <a>热门</a>
-        </router-link>
-        <router-link
+        </RouterLink>
+        <RouterLink
           :to="{ name:'feeds', query: { type: 'follow' } }"
           tag="li"
           active-class="active"
           exact
-          replace>
+          replace
+        >
           <a>关注</a>
-        </router-link>
+        </RouterLink>
       </ul>
     </nav>
 
-    <jo-load-more
+    <JoLoadMore
       ref="loadmore"
       :auto-load="true"
       class="p-feed-main"
       @onRefresh="onRefresh"
-      @onLoadMore="onLoadMore" >
-
+      @onLoadMore="onLoadMore"
+    >
       <ul class="p-feed-list">
         <li
           v-for="(feed, index) in pinned"
           v-if="feed.id"
-          :key="`pinned-feed-${feedType}-${feed.id}-${index}`">
-          <feed-card
+          :key="`pinned-feed-${feedType}-${feed.id}-${index}`"
+        >
+          <FeedCard
             :feed="feed"
-            :pinned="true" />
+            :pinned="true"
+          />
         </li>
         <li
           v-for="(card, index) in feeds"
-          :key="`feed-${feedType}-${card.id}-${index}`">
-          <feed-card
+          :key="`feed-${feedType}-${card.id}-${index}`"
+        >
+          <FeedCard
             v-if="card.user_id"
-            :feed="card" />
-          <feed-ad-card
+            :feed="card"
+          />
+          <FeedAdCard
             v-if="card.space_id"
-            :ad="card"/>
+            :ad="card"
+          />
         </li>
       </ul>
-    </jo-load-more>
-    <foot-guide/>
+    </JoLoadMore>
+    <FootGuide />
   </div>
 </template>
 

@@ -1,17 +1,18 @@
 <template>
-  <transition
+  <Transition
     enter-active-class="animated bounceInRight"
-    leave-active-class="animated bounceOutLeft">
+    leave-active-class="animated bounceOutLeft"
+  >
     <div class="p-signin m-pos-f">
       <header class="m-box m-aln-center m-head-top m-pos-f m-main m-bb1">
-        <div class="m-box m-aln-center m-flex-grow1 m-flex-base0"/>
+        <div class="m-box m-aln-center m-flex-grow1 m-flex-base0" />
         <div class="m-box m-aln-center m-justify-center m-flex-grow1 m-flex-base0 m-head-top-title">
           <span>已有账号</span>
         </div>
         <div class="m-box m-aln-center m-justify-end m-flex-grow1 m-flex-base0">
-          <router-link to="/wechat/signup">
+          <RouterLink to="/wechat/signup">
             <a>新账号</a>
-          </router-link>
+          </RouterLink>
         </div>
       </header>
       <main style="padding-top: 0.9rem">
@@ -23,13 +24,15 @@
               v-model="account"
               type="text"
               placeholder="用户名/手机号/邮箱"
-              @focus="onFocus">
+              @focus="onFocus"
+            >
           </div>
           <svg
             v-show="account.length > 0"
             class="m-style-svg m-svg-def"
-            @click="account = ''">
-            <use xlink:href="#icon-clean"/>
+            @click="account = ''"
+          >
+            <use xlink:href="#icon-clean" />
           </svg>
         </div>
         <div class="m-form-row m-main">
@@ -41,37 +44,40 @@
               v-model="password"
               type="text"
               placeholder="输入6位以上登录密码"
-              @focus="onFocus">
+              @focus="onFocus"
+            >
             <input
               v-else
               id="password"
               v-model="password"
               type="password"
               placeholder="输入6位以上登录密码"
-              @focus="onFocus" >
+              @focus="onFocus"
+            >
           </div>
           <svg class="m-style-svg m-svg-def" @click="eye=!eye">
-            <use :xlink:href="`#eye-${eye?'open':'close'}`"/>
+            <use :xlink:href="`#eye-${eye?'open':'close'}`" />
           </svg>
         </div>
         <div class="m-box m-aln-center m-text-box m-form-err-box">
-          <transition enter-active-class="animated shake">
+          <Transition enter-active-class="animated shake">
             @focus="onFocus"
             <span v-if="err">{{ (err | plusMessageFirst) }}</span>
-          </transition>
+          </Transition>
         </div>
         <div class="m-form-row" style="border: 0">
           <button
             :disabled="disabled"
             class="m-long-btn m-signin-btn"
-            @click="bindUser">
-            <circle-loading v-if="loading" />
+            @click="bindUser"
+          >
+            <CircleLoading v-if="loading" />
             <span v-else>绑定账号</span>
           </button>
         </div>
       </main>
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script>

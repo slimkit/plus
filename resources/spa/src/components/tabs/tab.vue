@@ -2,7 +2,10 @@
   <div
     :class="{ active }"
     class="v-tab"
-    @click="tabClick"><slot>{{ title }}</slot></div>
+    @click="tabClick"
+  >
+    <slot>{{ title }}</slot>
+  </div>
 </template>
 <script>
 export default {

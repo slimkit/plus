@@ -1,9 +1,10 @@
 <template>
   <div class="v-tabs">
-    <slot/>
+    <slot />
     <span
       ref="highlight"
-      class="v-tab-link-highlight init"/>
+      class="v-tab-link-highlight init"
+    />
   </div>
 </template>
 <script>

@@ -1,11 +1,12 @@
 <template>
   <ul class="m-box-model m-entry-group">
-    <router-link
+    <RouterLink
       v-for="item in system"
       :key="item.url"
       :to="item.url"
       tag="li"
-      class="m-entry">
+      class="m-entry"
+    >
       <svg class="m-style-svg m-svg-big m-entry-prepend m-flex-grow0 m-flex-shrink0">
         <use :xlink:href="`#icon-message-${item.icon}`" />
       </svg>
@@ -17,16 +18,17 @@
         <h5 v-if="computedGetter(item.time) !== '' && item.time">
           {{ +new Date((computedGetter(item.time))) + 10 || '' | time2tips }}
         </h5>
-        <h5 v-else/>
+        <h5 v-else />
         <div class="m-box m-aln-center m-justify-end">
           <span
             v-if="computedGetter(item.count) !== 0"
-            :class="`${prefixCls}-time-count`">
+            :class="`${prefixCls}-time-count`"
+          >
             <i>{{ computedGetter(item.count) }}</i>
           </span>
         </div>
       </div>
-    </router-link>
+    </RouterLink>
   </ul>
 </template>
 

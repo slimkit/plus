@@ -1,28 +1,27 @@
 <template>
   <div class="m-art-rewards">
-
-    <common-header>打赏列表</common-header>
+    <CommonHeader>打赏列表</CommonHeader>
 
     <main>
-      <jo-load-more
+      <JoLoadMore
         ref="loadmore"
         :auto-load="false"
         @onRefresh="onRefresh"
-        @onLoadMore="onLoadMore">
+        @onLoadMore="onLoadMore"
+      >
         <section
           v-for="({ user, id, created_at }, index) in rewards"
           :key="`reward-${id}-${index}`"
-          class="m-box m-aln-center m-justify-bet m-art-reward-item m-bb1 m-main">
-
-          <avatar :user="user" size="tiny" />
+          class="m-box m-aln-center m-justify-bet m-art-reward-item m-bb1 m-main"
+        >
+          <Avatar :user="user" size="tiny" />
 
           <h2 class="m-box m-flex-grow1 m-flex-shrink1 m-text-cut"><b>{{ user.name }}</b>打赏了{{ typeMap[type] }}</h2>
 
           <time :datetime="created_at" class="m-flex-grow0 m-flex-shrink0">{{ created_at | time2tips }}</time>
         </section>
-      </jo-load-more>
+      </JoLoadMore>
     </main>
-
   </div>
 </template>
 
@@ -51,17 +50,22 @@ export default {
       // 动态 GET /feeds/{feed}/rewards
       // 资讯 GET /news/{news}/rewards
       // 帖子 GET /plus-group/group-posts/:post/rewards
-
+      let result
       switch (this.type) {
         case 'feed':
-          return `/feeds/${this.article}/rewards`
+          result = `/feeds/${this.article}/rewards`
+          break
         case 'news':
-          return `/news/${this.article}/rewards`
+          result = `/news/${this.article}/rewards`
+          break
         case 'post':
-          return `/plus-group/group-posts/${this.article}/rewards`
+          result = `/plus-group/group-posts/${this.article}/rewards`
+          break
         case 'answer':
-          return `/question-answers/${this.article}/rewarders`
+          result = `/question-answers/${this.article}/rewarders`
+          break
       }
+      return result
     },
   },
 

@@ -7,36 +7,39 @@
     @touchmove.stop="onDrag"
     @mouseup="stopDrag"
     @touchend="stopDrag"
-    @mouseleave="stopDrag">
+    @mouseleave="stopDrag"
+  >
     <header
       ref="head"
       :class="{ 'show-title': scrollTop > 1 / 2 * bannerHeight }"
-      class="m-box m-lim-width m-pos-f m-head-top bg-transp">
+      class="m-box m-lim-width m-pos-f m-head-top bg-transp"
+    >
       <div class="m-box m-flex-grow1 m-aln-center m-flex-base0">
         <svg class="m-style-svg m-svg-def white" @click="beforeBack">
-          <use xlink:href="#icon-back"/>
+          <use xlink:href="#icon-back" />
         </svg>
-        <circle-loading v-if="updating" />
+        <CircleLoading v-if="updating" />
       </div>
       <div class="m-box m-flex-grow1 m-aln-center m-flex-base0 m-justify-center m-trans-y">
         <span class="m-text-cut">{{ user.name }}</span>
       </div>
       <div class="m-box m-flex-grow1 m-aln-center m-flex-base0 m-justify-end">
         <svg class="m-style-svg m-svg-def" @click="onMoreClick">
-          <use xlink:href="#icon-more"/>
+          <use xlink:href="#icon-more" />
         </svg>
       </div>
     </header>
     <div v-if="loading" class="m-pos-f m-spinner">
-      <div/>
-      <div/>
+      <div />
+      <div />
     </div>
     <!-- style="overflow-x: hidden; overflow-y:auto; min-height: 100vh" -->
     <main>
       <div
         ref="banner"
         :style="bannerStyle"
-        class="m-urh-banner">
+        class="m-urh-banner"
+      >
         <div class="m-box-model m-aln-center m-justify-end m-pos-f m-urh-bg-mask">
           <label v-if="isMine" class="banner-click-area">
             <input
@@ -44,19 +47,26 @@
               :accept="accept"
               type="file"
               class="m-rfile"
-              @change="onBannerChange" >
+              @change="onBannerChange"
+            >
           </label>
-          <avatar :user="user" size="big" />
+          <Avatar :user="user" size="big" />
           <h3>{{ user.name }}</h3>
           <p>
-            <router-link
+            <RouterLink
               append
               to="followers"
-              tag="span">粉丝<i>{{ followersCount | formatNum }}</i></router-link>
-            <router-link
+              tag="span"
+            >
+              粉丝<i>{{ followersCount | formatNum }}</i>
+            </RouterLink>
+            <RouterLink
               append
               to="followings"
-              tag="span">关注<i>{{ followingsCount | formatNum }}</i></router-link>
+              tag="span"
+            >
+              关注<i>{{ followingsCount | formatNum }}</i>
+            </RouterLink>
           </p>
         </div>
       </div>
@@ -71,7 +81,8 @@
             v-for="tag in tags"
             v-if="tag.id"
             :key="`tag-${tag.id}`"
-            class="m-urh-tag">
+            class="m-urh-tag"
+          >
             {{ tag.name }}
           </i>
         </p>
@@ -79,12 +90,13 @@
       <div
         v-clickoutside="hidenFilter"
         class="m-box m-aln-center m-justify-bet m-urh-filter-box"
-        @click="popupBuyTS">
+        @click="popupBuyTS"
+      >
         <span>{{ feedsCount }}条动态</span>
         <div v-if="isMine" class="m-box m-aln-center m-urh-filter">
           <span>{{ feedTypes[screen] }}</span>
           <svg class="m-style-svg m-svg-small">
-            <use xlink:href="#icon-list"/>
+            <use xlink:href="#icon-list" />
           </svg>
         </div>
       </div>
@@ -92,11 +104,13 @@
         <li
           v-for="feed in feeds"
           v-if="feed.id"
-          :key="`ush-${userID}-feed${feed.id}`">
-          <feed-card
+          :key="`ush-${userID}-feed${feed.id}`"
+        >
+          <FeedCard
             :feed="feed"
             :time-line="true"
-            @afterDelete="fetchUserInfo()" />
+            @afterDelete="fetchUserInfo()"
+          />
         </li>
       </ul>
       <div class="m-box m-aln-center m-justify-center load-more-box">
@@ -104,7 +118,8 @@
         <span
           v-else
           class="load-more-btn"
-          @click.stop="fetchUserFeed(true)">
+          @click.stop="fetchUserFeed(true)"
+        >
           {{ fetchFeeding ? "加载中..." : "点击加载更多" }}
         </span>
       </div>
@@ -112,26 +127,28 @@
     <footer
       v-if="!isMine"
       ref="foot"
-      class="m-box m-pos-f m-main m-bt1 m-user-home-foot">
+      class="m-box m-pos-f m-main m-bt1 m-user-home-foot"
+    >
       <div class="m-flex-grow0 m-flex-shrink0 m-box m-aln-center m-justify-center" @click="rewardUser">
         <svg class="m-style-svg m-svg-def">
-          <use xlink:href="#icon-profile-integral"/>
+          <use xlink:href="#icon-profile-integral" />
         </svg>
         <span>打赏</span>
       </div>
       <div
         :class="{ primary: relation.status !== 'unFollow' }"
         class="m-flex-grow0 m-flex-shrink0 m-box m-aln-center m-justify-center"
-        @click="followUserByStatus(relation.status)">
+        @click="followUserByStatus(relation.status)"
+      >
         <svg class="m-style-svg m-svg-def">
-          <use :xlink:href="relation.icon"/>
+          <use :xlink:href="relation.icon" />
         </svg>
         <span>{{ relation.text }}</span>
       </div>
       <!-- `/chats/${user.id}` -->
       <div class="m-flex-grow0 m-flex-shrink0 m-box m-aln-center m-justify-center" @click="startSingleChat">
         <svg class="m-style-svg m-svg-def">
-          <use xlink:href="#icon-comment"/>
+          <use xlink:href="#icon-comment" />
         </svg>
         <span>聊天</span>
       </div>

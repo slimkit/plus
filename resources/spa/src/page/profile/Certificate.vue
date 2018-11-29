@@ -1,20 +1,23 @@
 <template>
   <div class="p-profile-certificate">
-
-    <common-header :pinned="true" :back="back">
+    <CommonHeader :pinned="true" :back="back">
       {{ title }}
       <span
         v-show="step === 2"
         slot="right"
         :class="['btn-submit', disabled]"
-        @click="validate(onSubmit)">提交</span>
-    </common-header>
+        @click="validate(onSubmit)"
+      >
+        提交
+      </span>
+    </CommonHeader>
 
-    <transition-group
+    <TransitionGroup
       :enter-active-class="animated.enter"
       :leave-active-class="animated.leave"
       tag="main"
-      class="m-box-model m-flex-grow1 m-flex-shrink1 main">
+      class="m-box-model m-flex-grow1 m-flex-shrink1 main"
+    >
       <template v-if="step === 1">
         <div key="step1" class="step1">
           <template v-if="type ==='org'">
@@ -27,13 +30,15 @@
                   v-model.trim="orgFields.org_name"
                   :placeholder="formInfo[type].orgName.placeholder"
                   type="text"
-                  maxlength="20">
+                  maxlength="20"
+                >
               </div>
               <svg
                 v-show="orgFields.org_name.length > 0"
                 class="m-style-svg m-svg-def"
-                @click="orgFields.org_name = ''">
-                <use xlink:href="#icon-clean"/>
+                @click="orgFields.org_name = ''"
+              >
+                <use xlink:href="#icon-clean" />
               </svg>
             </div>
             <!-- 机构地址 -->
@@ -45,13 +50,15 @@
                   v-model.trim="orgFields.org_address"
                   :placeholder="formInfo[type].orgAddress.placeholder"
                   type="text"
-                  maxlength="20">
+                  maxlength="20"
+                >
               </div>
               <svg
                 v-show="orgFields.org_address.length > 0"
                 class="m-style-svg m-svg-def"
-                @click="orgFields.org_address = ''">
-                <use xlink:href="#icon-clean"/>
+                @click="orgFields.org_address = ''"
+              >
+                <use xlink:href="#icon-clean" />
               </svg>
             </div>
           </template>
@@ -65,7 +72,8 @@
                 v-model.trim="fields.name"
                 :placeholder="formInfo[type].name.placeholder"
                 maxlength="8"
-                type="text">
+                type="text"
+              >
             </div>
           </div>
           <!-- 证件号码 -->
@@ -78,7 +86,8 @@
                 :placeholder="formInfo[type].number.placeholder"
                 maxlength="18"
                 type="text"
-                pattern="[0-9x]*">
+                pattern="[0-9x]*"
+              >
             </div>
           </div>
           <!-- 手机号码 -->
@@ -91,19 +100,21 @@
                 :placeholder="formInfo[type].phone.placeholder"
                 type="number"
                 pattern="[0-9]*"
-                oninput="value=value.slice(0, 11)">
+                oninput="value=value.slice(0, 11)"
+              >
             </div>
           </div>
           <!-- 认证描述 -->
           <div class="m-form-row m-main auto-height">
             <label for="desc">{{ formInfo[type].desc.label }}</label>
             <div class="m-input">
-              <textarea-input
+              <TextareaInput
                 id="desc"
                 v-model="fields.desc"
                 :maxlength="200"
                 :warnlength="150"
-                :placeholder="formInfo[type].desc.placeholder"/>
+                :placeholder="formInfo[type].desc.placeholder"
+              />
             </div>
           </div>
           <div class="m-box m-aln-center m-text-box m-form-err-box">
@@ -113,8 +124,9 @@
             <button
               :disabled="loading||disabled"
               class="m-long-btn m-signin-btn"
-              @click="validate(() => {step = 2})">
-              <circle-loading v-if="loading" />
+              @click="validate(() => {step = 2})"
+            >
+              <CircleLoading v-if="loading" />
               <span v-else>下一步</span>
             </button>
           </div>
@@ -124,28 +136,37 @@
       <template v-if="step === 2">
         <div
           key="step2"
-          class="step2">
+          class="step2"
+        >
           <p
             v-if="type === 'user'"
-            class="poster-tips">请上传正反面身份证照片</p>
+            class="poster-tips"
+          >
+            请上传正反面身份证照片
+          </p>
           <p
             v-else
-            class="poster-tips">上传企业机构营业执照</p>
-          <image-poster
+            class="poster-tips"
+          >
+            上传企业机构营业执照
+          </p>
+          <ImagePoster
             :poster="poster1"
-            @uploaded="uploaded1">
+            @uploaded="uploaded1"
+          >
             <span>点击上传正面身份证照片</span>
-          </image-poster>
+          </ImagePoster>
           <template v-if="type=='user' && files.length > 0">
-            <image-poster
+            <ImagePoster
               :poster="poster2"
-              @uploaded="uploaded2">
+              @uploaded="uploaded2"
+            >
               <span>点击上传反面身份证照片</span>
-            </image-poster>
+            </ImagePoster>
           </template>
         </div>
       </template>
-    </transition-group>
+    </TransitionGroup>
   </div>
 </template>
 

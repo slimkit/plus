@@ -1,19 +1,25 @@
 <template>
   <section
     class="m-box m-aln-center m-justify-bet chat-item m-main"
-    @click="handelView">
+    @click="handelView"
+  >
     <div
       :class="avatarStyle"
-      class="m-flex-shrink0 m-flex-grow0 m-avatar-box m-avatar-box-def">
+      class="m-flex-shrink0 m-flex-grow0 m-avatar-box m-avatar-box-def"
+    >
       <img
         v-if="avatar"
-        :src="avatar">
+        :src="avatar"
+      >
     </div>
     <div class="m-box-model m-flex-grow1 m-flex-shrink1 chat-item-main">
       <h2 class="m-text-cut">
         <span
           class="m-text-cut"
-          style="display: inline-block; max-width: 70%;vertical-align: middle;">{{ name }}</span>
+          style="display: inline-block; max-width: 70%;vertical-align: middle;"
+        >
+          {{ name }}
+        </span>
         <span>{{ userCount }}</span>
       </h2>
       <p class="m-text-cut">{{ latest.data }}</p>
@@ -23,7 +29,8 @@
       <div class="m-box m-aln-center m-justify-end chat-item-count-wrap">
         <span
           v-show="count > 0"
-          class="chat-item-count">
+          class="chat-item-count"
+        >
           <i>{{ count }}</i>
         </span>
       </div>

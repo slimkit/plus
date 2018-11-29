@@ -4,12 +4,14 @@
     <div class="checkbox">
       <label
         ref="label"
-        class="label">
+        class="label"
+      >
         <input
           v-model="currentValue"
           :value="value"
-          type="checkbox" >
-        <div class="box"/>
+          type="checkbox"
+        >
+        <div class="box" />
       </label>
     </div>
   </section>

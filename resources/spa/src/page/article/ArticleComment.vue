@@ -1,31 +1,38 @@
 <template>
   <div class="m-lim-width m-art-comment">
     <div class="m-box m-art-comment-wrap">
-      <avatar :user="user"/>
+      <Avatar :user="user" />
       <section class="m-box-model m-flex-grow1 m-flex-shrink1 m-art-comment-body">
         <header class="m-box m-aln-center m-justify-bet m-art-comment-usr">
           <h4 class="m-flex-grow1 m-flex-shrink1">{{ user.name }}</h4>
           <div class="m-box m-aln-center">
             <span
               v-if="pinned"
-              class="m-art-comment-icon-top">置顶</span>
+              class="m-art-comment-icon-top"
+            >
+              置顶
+            </span>
             <span>{{ time | time2tips }}</span>
           </div>
         </header>
         <article
           :class="{maxh: !isShowAll}"
           class="m-text-box m-art-comment-con"
-          @click="handelClick">
+          @click="handelClick"
+        >
           <template v-if="replyUser">
             <span class="m-art-comment-rep">
-              回复<router-link :to="`/users/${replyUser.id}`">{{ replyUser.name }}</router-link>：
+              回复<RouterLink :to="`/users/${replyUser.id}`">{{ replyUser.name }}</RouterLink>：
             </span>
           </template>
           {{ body }}
           <span
             v-show="bodyLength > 60 && !isShowAll"
             class="m-text-more"
-            @click.stop="isShowAll = !isShowAll"> >>更多</span>
+            @click.stop="isShowAll = !isShowAll"
+          >
+            >>更多
+          </span>
         </article>
       </section>
     </div>

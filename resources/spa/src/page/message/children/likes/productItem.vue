@@ -1,11 +1,14 @@
 <template>
   <section>
     <div :class="`${prefixCls}-item-top`">
-      <avatar :user="user" />
+      <Avatar :user="user" />
       <section class="userInfo">
-        <router-link
+        <RouterLink
           :class="`${prefixCls}-item-top-link`"
-          :to="`/users/${like.user_id}`">{{ like.user.name }}</router-link>
+          :to="`/users/${like.user_id}`"
+        >
+          {{ like.user.name }}
+        </RouterLink>
         <span>赞了你的产品</span>
         <p>{{ like.created_at | time2tips }}</p>
       </section>
@@ -13,20 +16,24 @@
     <div :class="`${prefixCls}-item-bottom`">
       <section
         v-if="like.likeable !== null"
-        @click="goToFeedDetail()">
+        @click="goToFeedDetail()"
+      >
         <div
           v-if="!getImage"
           :class="`${prefixCls}-item-bottom-noImg`"
-          class="content">
+          class="content"
+        >
           {{ like.likeable.feed_content }}
         </div>
         <div
           v-else
-          :class="`${prefixCls}-item-bottom-img`">
+          :class="`${prefixCls}-item-bottom-img`"
+        >
           <div class="img">
             <img
               :src="getImage"
-              :alt="like.user.name">
+              :alt="like.user.name"
+            >
           </div>
           <div class="content">
             {{ like.likeable.feed_content }}
@@ -36,7 +43,8 @@
       <section v-if="like.likeable === null">
         <div
           :class="`${prefixCls}-item-bottom-noImg`"
-          class="content">
+          class="content"
+        >
           产品已被删除
         </div>
       </section>

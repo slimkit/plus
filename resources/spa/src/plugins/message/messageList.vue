@@ -1,6 +1,6 @@
 <template>
   <div class="v-msg-list">
-    <message
+    <Message
       v-for="msg in msgs"
       :key="msg.name"
       :type="msg.type"
@@ -10,7 +10,8 @@
       :closable="msg.closable"
       :name="msg.name"
       :transition-name="msg.transitionName"
-      :on-close="msg.onClose"/>
+      :on-close="msg.onClose"
+    />
   </div>
 </template>
 <script>

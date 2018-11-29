@@ -2,32 +2,34 @@
   <div class="p-message">
     <header class="m-box m-head-top m-lim-width m-pos-f m-main m-bb1">
       <ul class="m-box m-flex-grow1 m-aln-center m-justify-center m-flex-base0 m-head-nav">
-        <router-link
+        <RouterLink
           tag="li"
           to="/message/info"
           replace
           exact
-          active-class="active">
-          <v-badge :dot="has_msg">
+          active-class="active"
+        >
+          <VBadge :dot="has_msg">
             <a>消息</a>
-          </v-badge>
-        </router-link>
-        <router-link
+          </VBadge>
+        </RouterLink>
+        <RouterLink
           tag="li"
           to="/message/chats"
           replace
           exact
-          active-class="active">
-          <v-badge :dot="hasUnreadChat > 0">
+          active-class="active"
+        >
+          <VBadge :dot="hasUnreadChat > 0">
             <a>聊天</a>
-          </v-badge>
-        </router-link>
+          </VBadge>
+        </RouterLink>
       </ul>
     </header>
     <main style="padding-top: 0.9rem">
-      <router-view/>
+      <RouterView />
     </main>
-    <foot-guide/>
+    <FootGuide />
   </div>
 </template>
 

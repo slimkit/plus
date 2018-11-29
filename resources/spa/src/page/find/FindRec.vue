@@ -1,14 +1,16 @@
 <template>
-  <jo-load-more
+  <JoLoadMore
     key="find-rec"
     ref="loadmore"
     @onRefresh="onRefresh"
-    @onLoadMore="onLoadMore">
-    <user-item
+    @onLoadMore="onLoadMore"
+  >
+    <UserItem
       v-for="user in users"
+      :key="`${user.id}-from-${user.searchFrom}`"
       :user="user"
-      :key="`${user.id}-from-${user.searchFrom}`"/>
-  </jo-load-more>
+    />
+  </JoLoadMore>
 </template>
 
 <script>

@@ -5,14 +5,15 @@
     </div>
     <span class="avatar-label">{{ label }}</span>
     <svg v-if="!readonly" class="m-style-svg m-svg-def m-entry-append">
-      <use xlink:href="#icon-arrow-right"/>
+      <use xlink:href="#icon-arrow-right" />
     </svg>
     <input
       ref="imagefile"
       type="file"
       class="m-rfile"
       accept="image/jpeg,image/webp,image/jpg,image/png,image/bmp"
-      @change="selectPhoto">
+      @change="selectPhoto"
+    >
   </section>
 </template>
 

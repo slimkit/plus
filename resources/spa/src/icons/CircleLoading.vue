@@ -2,19 +2,20 @@
   <div class="c-loading">
     <div
       :class="css"
-      class="circle">
-      <span/>
-      <span/>
-      <span/>
-      <span/>
-      <span/>
-      <span/>
-      <span/>
-      <span/>
-      <span/>
-      <span/>
-      <span/>
-      <span/>
+      class="circle"
+    >
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
     </div>
   </div>
 </template>

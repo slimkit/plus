@@ -1,22 +1,22 @@
 <template>
   <div class="p-audit-list">
-
-    <common-header>
-      <diy-select
+    <CommonHeader>
+      <DiySelect
+        v-model="currentType"
         :readonly="true"
         :options="options"
-        v-model="currentType"
         placeholder="动态评论置顶"
         style="margin-top: -1px"
-        @click="popupBuyTS"/>
-    </common-header>
+        @click="popupBuyTS"
+      />
+    </CommonHeader>
 
     <div
       class="container"
-      @click.capture.stop.prevent="popupBuyTS">
-      <router-view/>
+      @click.capture.stop.prevent="popupBuyTS"
+    >
+      <RouterView />
     </div>
-
   </div>
 </template>
 

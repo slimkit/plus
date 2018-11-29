@@ -1,24 +1,29 @@
 <template>
-  <transition name="el-message-fade">
+  <Transition name="el-message-fade">
     <div
       v-show="visible"
       :class="[ 'v-message', `v-message-${type}`]"
       role="alert"
-      @transitionend="transitionend" >
+      @transitionend="transitionend"
+    >
       <svg class="m-style-svg m-svg-small">
-        <use :xlink:href="`#icon-message-${type}`"/>
+        <use :xlink:href="`#icon-message-${type}`" />
       </svg>
       <slot>
         <p
           v-if="!dangerouslyUseHTMLString"
-          class="v-message-content">{{ message }}</p>
+          class="v-message-content"
+        >
+          {{ message }}
+        </p>
         <p
           v-else
           class="v-message-content"
-          v-html="message"/>
+          v-html="message"
+        />
       </slot>
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script>

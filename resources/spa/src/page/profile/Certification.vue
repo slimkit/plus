@@ -1,12 +1,12 @@
 <template>
   <div class="p-profile-certification">
-
-    <common-header :pinned="true">{{ type === 'user' ? '个人' : '企业' }}认证</common-header>
+    <CommonHeader :pinned="true">{{ type === 'user' ? '个人' : '企业' }}认证</CommonHeader>
 
     <main class="m-box-model main">
       <div
         v-if="verified.status === 0"
-        class="info-bar">
+        class="info-bar"
+      >
         认证信息审核中，我们会在7个工作日内给您答复
       </div>
       <div class="info-main">
@@ -42,12 +42,12 @@
             <img
               v-for="imageId in verified.data.files"
               :key="imageId"
-              :src="getImageSrc(imageId)">
+              :src="getImageSrc(imageId)"
+            >
           </span>
         </div>
       </div>
     </main>
-
   </div>
 </template>
 

@@ -1,28 +1,28 @@
 <template>
   <div :class="prefixCls">
+    <CommonHeader>社区签到排行榜</CommonHeader>
 
-    <common-header>社区签到排行榜</common-header>
-
-    <load-more
+    <LoadMore
       ref="loadmore"
       :on-refresh="onRefresh"
-      :on-load-more="onLoadMore">
+      :on-load-more="onLoadMore"
+    >
       <div :class="`${prefixCls}-list`">
-        <rank-list-item
+        <RankListItem
           v-for="(user, index) in users"
-          :prefix-cls="prefixCls"
           :key="user.id"
+          :prefix-cls="prefixCls"
           :user="user"
-          :index="index">
+          :index="index"
+        >
           <p>累计签到：{{ user.extra.checkin_count || 0 }}</p>
-        </rank-list-item>
+        </RankListItem>
       </div>
-    </load-more>
+    </LoadMore>
   </div>
 </template>
 
 <script>
-import HeadTop from '@/components/HeadTop'
 import RankListItem from '../components/RankListItem.vue'
 import { getRankUsers } from '@/api/ranks.js'
 import { limit } from '@/api'
@@ -33,7 +33,6 @@ const prefixCls = 'rankItem'
 export default {
   name: 'CheckinList',
   components: {
-    HeadTop,
     RankListItem,
   },
   data () {

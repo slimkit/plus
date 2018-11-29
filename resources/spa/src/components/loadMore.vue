@@ -7,49 +7,55 @@
     @touchmove.stop="onDrag"
     @mouseup="stopDrag"
     @touchend="stopDrag"
-    @mouseleave="stopDrag" >
+    @mouseleave="stopDrag"
+  >
     <div class="load-more-tips">
       <slot name="head">
         <div
           v-if="requesting"
-          class="load-more-loading">
-          <span/>
-          <span/>
-          <span/>
-          <span/>
-          <span/>
-          <span/>
-          <span/>
-          <span/>
-          <span/>
-          <span/>
-          <span/>
-          <span/>
+          class="load-more-loading"
+        >
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
         </div>
         <i
           v-else
-          :class="{up: (dragging && dY > topDistance)}">↓</i>
+          :class="{up: (dragging && dY > topDistance)}"
+        >
+          ↓
+        </i>
         <span v-if="showText">{{ status }}</span>
       </slot>
     </div>
-    <slot/>
+    <slot />
     <div
       v-if="onLoadMore"
-      class="load-more-tips">
+      class="load-more-tips"
+    >
       <template v-if="loading">
         <div class="load-more-loading">
-          <span/>
-          <span/>
-          <span/>
-          <span/>
-          <span/>
-          <span/>
-          <span/>
-          <span/>
-          <span/>
-          <span/>
-          <span/>
-          <span/>
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
         </div>
         <span>加载中...</span>
       </template>

@@ -1,36 +1,40 @@
 <template>
   <div class="p-discover">
-
-    <common-header>
+    <CommonHeader>
       发现
-      <span slot="left"/>
-    </common-header>
+      <span slot="left" />
+    </CommonHeader>
 
     <main>
       <ul
         v-for="(group, index) in entrys"
         :key="`${prefix}-entry-group-${index}`"
-        class="m-entry-group padding">
-        <router-link
+        class="m-entry-group padding"
+      >
+        <RouterLink
           v-for="{icon, title, path, tips, new_tips} in group"
-          :to="path"
           :key="`$discover-entry-${icon}`"
+          :to="path"
           tag="li"
-          class="m-entry">
+          class="m-entry"
+        >
           <svg class="m-style-svg m-svg-def m-entry-prepend">
-            <use :xlink:href="`#icon-discover-${icon}`"/>
+            <use :xlink:href="`#icon-discover-${icon}`" />
           </svg>
           <span class="m-flex-grow1">{{ title }}</span>
-          <v-badge
+          <VBadge
             :dot="new_tips"
-            class="m-entry-extra">{{ tips }}</v-badge>
+            class="m-entry-extra"
+          >
+            {{ tips }}
+          </VBadge>
           <svg class="m-style-svg m-svg-def entry__item--append">
-            <use xlink:href="#icon-arrow-right"/>
+            <use xlink:href="#icon-arrow-right" />
           </svg>
-        </router-link>
+        </RouterLink>
       </ul>
     </main>
-    <foot-guide/>
+    <FootGuide />
   </div>
 </template>
 

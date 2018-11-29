@@ -1,28 +1,28 @@
 <template>
   <div :class="prefixCls">
+    <CommonHeader>{{ title }}解答排行榜</CommonHeader>
 
-    <common-header>{{ title }}解答排行榜</common-header>
-
-    <load-more
+    <LoadMore
       ref="loadmore"
       :on-refresh="onRefresh"
-      :on-load-more="onLoadMore">
+      :on-load-more="onLoadMore"
+    >
       <div :class="`${prefixCls}-list`">
-        <rank-list-item
+        <RankListItem
           v-for="(user, index) in users"
-          :prefix-cls="prefixCls"
           :key="user.id"
+          :prefix-cls="prefixCls"
           :user="user"
-          :index="index">
+          :index="index"
+        >
           <p>回答量：{{ user.extra.count || 0 }}</p>
-        </rank-list-item>
+        </RankListItem>
       </div>
-    </load-more>
+    </LoadMore>
   </div>
 </template>
 
 <script>
-import HeadTop from '@/components/HeadTop'
 import RankListItem from '../components/RankListItem.vue'
 import { getRankUsers } from '@/api/ranks.js'
 import { limit } from '@/api'
@@ -50,7 +50,6 @@ const config = {
 export default {
   name: 'QuestionsList',
   components: {
-    HeadTop,
     RankListItem,
   },
   data () {

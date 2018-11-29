@@ -1,20 +1,23 @@
 <template>
-  <router-link
+  <RouterLink
     :to="path"
     :class="styles"
     class="m-avatar-box"
-    @click.native.stop>
+    @click.native.stop
+  >
     <template v-if="anonymity">匿</template>
     <img
       v-else-if="avatar"
       :src="avatar"
       class="m-avatar-img"
-      @error="handelError">
+      @error="handelError"
+    >
     <i
       v-if="icon"
       :style="icon"
-      class="m-avatar-icon"/>
-  </router-link>
+      class="m-avatar-icon"
+    />
+  </RouterLink>
 </template>
 
 <script>

@@ -1,16 +1,17 @@
 <template>
   <div :class="[`${prefixCls}-wrap`]">
     <span :class="[`${prefixCls}-text`]" @click="onClick">
-      <slot/>
+      <slot />
     </span>
     <div :class="[`${prefixCls}-append`]">
-      <slot name="append"/>
+      <slot name="append" />
     </div>
     <div :class="[`${prefixCls}`]">
       <label
         ref="label"
         :for="id"
-        :class="[`${prefixCls}-label`]">
+        :class="[`${prefixCls}-label`]"
+      >
         <input
           v-if="type===&quot;radio&quot;"
           :id="id"
@@ -18,15 +19,17 @@
           :value="dataValue"
           :class="[`${prefixCls}-input`]"
           type="radio"
-          @change="setValue">
+          @change="setValue"
+        >
         <input
           v-else
           :id="id"
           v-model="cur_value"
           :class="[`${prefixCls}-input`]"
           :type="type"
-          @change="setValue">
-        <div :class="[`${prefixCls}-box`]"/>
+          @change="setValue"
+        >
+        <div :class="[`${prefixCls}-box`]" />
       </label>
     </div>
   </div>

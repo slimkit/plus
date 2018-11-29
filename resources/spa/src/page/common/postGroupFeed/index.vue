@@ -1,25 +1,33 @@
 <template>
   <div :class="prefixCls">
-    <head-top
+    <HeadTop
       :go-back="true"
       :append="true"
-      title="发帖">
+      title="发帖"
+    >
       <button
         slot="prepend"
         :class="`${prefixCls}-btn`"
-        @click="goBack">取消</button>
+        @click="goBack"
+      >
+        取消
+      </button>
       <button
         slot="append"
         :class="`${prefixCls}-btn`"
         :disabled="disabled"
-        @click="postFeed">发布</button>
-    </head-top>
-    <div/>
+        @click="postFeed"
+      >
+        发布
+      </button>
+    </HeadTop>
+    <div />
     <div :class="`${prefixCls}-content`">
       <template v-if="!groupId || selectGroup.id">
         <div
           :class="`${prefixCls}-select`"
-          @click.stop="showChoosePage">
+          @click.stop="showChoosePage"
+        >
           <div :class="`${prefixCls}-select-label`">{{ chooseTips }}</div>
           <svg class="m-style-svg m-svg-def">
             <use xlink:href="#icon-arrow-right" />
@@ -31,19 +39,22 @@
           v-model="title"
           type="text"
           placeholder="输入标题, 20字以内"
-          maxlength="20">
+          maxlength="20"
+        >
       </div>
       <div :class="`${prefixCls}-body`">
         <textarea
-          v-txtautosize
           v-model="body"
-          placeholder="输入要说的话, 图文结合更精彩哦" />
+          v-txtautosize
+          placeholder="输入要说的话, 图文结合更精彩哦"
+        />
       </div>
     </div>
     <ChooseGroup
       v-show="showChoose"
       v-model="selectGroup"
-      @on-close="closeChoosePage" />
+      @on-close="closeChoosePage"
+    />
   </div>
 </template>
 <script>

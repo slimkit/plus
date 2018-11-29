@@ -1,41 +1,47 @@
 <template>
   <div class="p-chat-room m-box-model">
-
-    <common-header><span class="m-text-cut">{{ name }}</span><span>{{ count }}</span></common-header>
+    <CommonHeader><span class="m-text-cut">{{ name }}</span><span>{{ count }}</span></CommonHeader>
 
     <main
       ref="main"
-      class="m-box-model p-chat-room-main m-flex-grow1 m-flex-shrink1 m-main">
-      <bubble
+      class="m-box-model p-chat-room-main m-flex-grow1 m-flex-shrink1 m-main"
+    >
+      <Bubble
         v-for="msg in messages"
+        :key="msg.id"
         :msg="msg"
-        :key="msg.id" />
+      />
     </main>
 
     <footer
       ref="footer"
-      class="m-box m-aln-end m-main p-chat-room-foot m-flex-grow0 m-flex-shrink0 m-bt1">
+      class="m-box m-aln-end m-main p-chat-room-foot m-flex-grow0 m-flex-shrink0 m-bt1"
+    >
       <form
         action="#"
-        class="m-box-model m-aln-center m-justify-center m-flex-grow1 m-flex-shrink1 m-main p-chat-input">
+        class="m-box-model m-aln-center m-justify-center m-flex-grow1 m-flex-shrink1 m-main p-chat-input"
+      >
         <textarea
           ref="textarea"
           v-model.trim="body"
           :style="{ height: `${scrollHeight}px` }"
           placeholder="随便说说~"
           @focus="onFocus"
-          @keydown.enter.prevent="sendMessage"/>
+          @keydown.enter.prevent="sendMessage"
+        />
         <textarea
           ref="shadow"
           v-model.trim="shadowText"
           rows="1"
-          class="shadow-input"/>
+          class="shadow-input"
+        />
       </form>
       <button
         :disabled="disabled || sending"
         class="m-flex-grow0 m-flex-shrink0 p-chat-button"
-        @click="sendMessage">
-        <circle-loading v-if="sending" />
+        @click="sendMessage"
+      >
+        <CircleLoading v-if="sending" />
         <span v-else>发送</span>
       </button>
     </footer>

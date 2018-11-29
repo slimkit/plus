@@ -1,23 +1,30 @@
 <template>
   <div
     class="p-question-answer-item"
-    @click="viewDetail">
+    @click="viewDetail"
+  >
     <div class="main">
       <div
         class="avatar"
-        @click.stop="viewUser">
-        <avatar
+        @click.stop="viewUser"
+      >
+        <Avatar
           :anonymity="anonymity"
-          :user="user" />
+          :user="user"
+        />
       </div>
       <div class="info">
         <h3 class="main-header">
           <span
             :class="{adoption: answer.adoption, invited: answer.invited}"
-            class="name">
+            class="name"
+          >
             <template
               v-if="!anonymity"
-              @click.stop="viewUser">{{ user.name }}</template>
+              @click.stop="viewUser"
+            >
+              {{ user.name }}
+            </template>
             <template v-else-if="!isMine">匿名用户</template>
             <template v-else>{{ user.name }} <span class="gray">(匿名)</span></template>
           </span>

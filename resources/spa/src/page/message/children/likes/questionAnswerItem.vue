@@ -1,15 +1,21 @@
 <template>
   <section>
     <div :class="`${prefixCls}-item-top`">
-      <avatar :user="user" />
+      <Avatar :user="user" />
       <section class="userInfo">
         <span
           v-if="!user.id"
-          :class="`${prefixCls}-item-top-link`">未知用户</span>
-        <router-link
+          :class="`${prefixCls}-item-top-link`"
+        >
+          未知用户
+        </span>
+        <RouterLink
           v-else
           :class="`${prefixCls}-item-top-link`"
-          :to="`/users/${user._id}`">{{ user.name || "未知用户" }} </router-link>
+          :to="`/users/${user._id}`"
+        >
+          {{ user.name || "未知用户" }}
+        </RouterLink>
         <span>赞了你的回答</span>
         <p>{{ like.created_at | time2tips }}</p>
       </section>
@@ -17,10 +23,12 @@
     <div :class="`${prefixCls}-item-bottom`">
       <section
         v-if="like.likeable !== null"
-        @click="goToFeedDetail()">
+        @click="goToFeedDetail()"
+      >
         <div
           :class="`${prefixCls}-item-bottom-noImg`"
-          class="content">
+          class="content"
+        >
           {{ like.likeable.body }}
         </div>
         <!-- <div :class="`${prefixCls}-item-bottom-img`" v-else>
@@ -35,7 +43,8 @@
       <section v-if="like.likeable === null">
         <div
           :class="`${prefixCls}-item-bottom-noImg`"
-          class="content">
+          class="content"
+        >
           回答已被删除
         </div>
       </section>

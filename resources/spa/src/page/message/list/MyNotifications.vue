@@ -1,21 +1,22 @@
 <template>
   <div :class="`${prefixCls}`">
+    <CommonHeader>系统通知</CommonHeader>
 
-    <common-header>系统通知</common-header>
-
-    <jo-load-more
+    <JoLoadMore
       ref="loadmore"
       :class="`${prefixCls}-loadmore`"
       @onRefresh="onRefresh"
-      @onLoadMore="onLoadMore" >
+      @onLoadMore="onLoadMore"
+    >
       <section
         v-for="notification in notifications"
         :key="notification.id"
-        class="m-box m-aln-st m-main m-bb1 notification-item">
+        class="m-box m-aln-st m-main m-bb1 notification-item"
+      >
         <h5 class="m-flex-grow1 m-flex-shrink1">{{ notification.data.content }}</h5>
         <p class="m-flex-grow0 m-flex-shrink0">{{ notification.created_at | time2tips }}</p>
       </section>
-    </jo-load-more>
+    </JoLoadMore>
   </div>
 </template>
 

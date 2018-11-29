@@ -1,15 +1,15 @@
 <template>
-
   <nav class="c-nav-tab">
     <ul>
-      <router-link
+      <RouterLink
         v-for="(label, name) in nav"
         :key="name"
         :to="{name: route.name, query: {[route.query]: name }}"
         tag="li"
-        replace>
+        replace
+      >
         {{ label }}
-      </router-link>
+      </RouterLink>
     </ul>
   </nav>
 </template>

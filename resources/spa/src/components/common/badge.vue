@@ -2,21 +2,27 @@
   <span
     v-if="dot"
     ref="badge"
-    :class="classes">
-    <slot/>
+    :class="classes"
+  >
+    <slot />
     <sup
       v-show="badge"
-      :class="dotClasses"/>
+      :class="dotClasses"
+    />
   </span>
   <span
     v-else
     ref="badge"
-    :class="classes">
-    <slot/>
+    :class="classes"
+  >
+    <slot />
     <sup
       v-if="count"
       v-show="badge"
-      :class="countClasses">{{ finalCount }}</sup>
+      :class="countClasses"
+    >
+      {{ finalCount }}
+    </sup>
   </span>
 </template>
 

@@ -1,15 +1,17 @@
 <template>
   <div class="p-change-password">
-
-    <common-header>
+    <CommonHeader>
       修改密码
       <template slot="right">
         <span
           :class="{disabled: disabled || loading}"
           class="submit-btn"
-          @click="handleOk">更改</span>
+          @click="handleOk"
+        >
+          更改
+        </span>
       </template>
-    </common-header>
+    </CommonHeader>
 
     <main>
       <div class="m-form-row m-main">
@@ -21,7 +23,8 @@
             type="password"
             maxlength="16"
             autocomplete="off"
-            placeholder="输入6位以上的原始密码">
+            placeholder="输入6位以上的原始密码"
+          >
         </div>
       </div>
       <div class="m-form-row m-main">
@@ -33,7 +36,8 @@
             type="password"
             maxlength="16"
             autocomplete="off"
-            placeholder="输入6位以上新密码">
+            placeholder="输入6位以上新密码"
+          >
         </div>
       </div>
       <div class="m-form-row m-main">
@@ -45,7 +49,8 @@
             type="password"
             maxlength="16"
             autocomplete="off"
-            placeholder="请确认新密码">
+            placeholder="请确认新密码"
+          >
         </div>
       </div>
 

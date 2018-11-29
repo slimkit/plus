@@ -1,13 +1,14 @@
 <template>
-  <transition
+  <Transition
     v-if="show"
     enter-active-class="animated slideInRight"
-    leave-active-class="animated slideOutRight">
+    leave-active-class="animated slideOutRight"
+  >
     <div class="m-box-model m-pos-f p-location">
-
-      <search-bar
+      <SearchBar
         v-model="keyword"
-        :back="goBack"/>
+        :back="goBack"
+      />
 
       <main>
         <div v-if="showHot">
@@ -16,12 +17,16 @@
             <p
               :class="{placeholder: currentTxt.length === 0}"
               class="m-flex-grow1 m-flex-shrink1 m-flex-base0 m-text-cut"
-              @click="goBack">{{ currentTxt || placeholder }}</p>
-            <circle-loading v-if="loading" />
+              @click="goBack"
+            >
+              {{ currentTxt || placeholder }}
+            </p>
+            <CircleLoading v-if="loading" />
             <svg
               v-else
               class="m-style-svg m-svg-def"
-              @click="getCurrentPosition">
+              @click="getCurrentPosition"
+            >
               <use xlink:href="#icon-location-arrow" />
             </svg>
           </div>
@@ -32,7 +37,8 @@
                 v-for="(city, index) in hotCities"
                 :key="`${city}&${index}`"
                 class="m-text-cut m-text-c"
-                @click="selectedHot(city)">
+                @click="selectedHot(city)"
+              >
                 <span>{{ city.slice(city.lastIndexOf(' ')) }}</span>
               </li>
             </ul>
@@ -40,18 +46,20 @@
         </div>
         <div
           v-else
-          class="m-box-model">
+          class="m-box-model"
+        >
           <div
             v-for="(city, index) in cities"
             :key="`search-${city}-${index}`"
             class="m-box m-aln-center m-bb1 m-main city-item"
-            @click="selectedSearchItem(index)">
+            @click="selectedSearchItem(index)"
+          >
             <span class="m-text-cut">{{ city }}</span>
           </div>
         </div>
       </main>
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script>

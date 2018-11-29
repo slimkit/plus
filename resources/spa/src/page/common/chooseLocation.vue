@@ -1,15 +1,20 @@
 <template>
   <div class="page-location">
-    <head-top
+    <HeadTop
       :append="true"
-      title="选择定位">
+      title="选择定位"
+    >
       <div
         slot="append"
         class="head-top-cancel"
-        @click="$router.go(-1)">取消</div>
+        @click="$router.go(-1)"
+      >
+        取消
+      </div>
       <div
         slot="title"
-        class="head-top-search">
+        class="head-top-search"
+      >
         <svg class="m-style-svg m-svg-def head-top-search-icon">
           <use xlink:href="#icon-search" />
         </svg>
@@ -18,20 +23,25 @@
           class="head-top-search-input"
           type="text"
           placeholder="搜索"
-          @input="search">
+          @input="search"
+        >
       </div>
-    </head-top>
+    </HeadTop>
     <!-- 保留此空 div -->
-    <div/>
+    <div />
     <template v-if="isShowHot">
       <div class="location-current">
         <span>当前定位</span>
         <span
           :class="{c999: !cur_txt }"
-          class="location-current-txt">{{ cur_txt || "未定位" }}</span>
+          class="location-current-txt"
+        >
+          {{ cur_txt || "未定位" }}
+        </span>
         <svg
           class="m-style-svg m-svg-def location-current-append"
-          @click.native.stop="updateLocation">
+          @click.native.stop="updateLocation"
+        >
           <use xlink:href="#cur-icon" />
         </svg>
       </div>
@@ -43,7 +53,8 @@
             v-if="hotCity.length > 0"
             :key="hotCity"
             class="location-hot-item"
-            @click="chooseHotCity(hotCity)">
+            @click="chooseHotCity(hotCity)"
+          >
             {{ hotCity.slice(hotCity.lastIndexOf(' ')) }}
           </div>
         </div>
@@ -56,7 +67,8 @@
           v-if="item"
           :key="item"
           class="location-search-list-item"
-          @click="chooseHotCity(item)">
+          @click="chooseHotCity(item)"
+        >
           {{ item }}
         </li>
       </ul>

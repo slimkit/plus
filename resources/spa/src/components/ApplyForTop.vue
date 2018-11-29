@@ -1,12 +1,12 @@
 <template>
-  <transition name="toast">
+  <Transition name="toast">
     <div
       v-if="show"
       class="m-box-model m-pos-f"
       style="background-color: #f4f5f6; z-index: 101"
-      @touchmove.prevent>
-
-      <common-header :back="cancel">申请置顶</common-header>
+      @touchmove.prevent
+    >
+      <CommonHeader :back="cancel">申请置顶</CommonHeader>
 
       <main class="m-box-model m-aln-center m-justify-center">
         <div class="m-box-model m-lim-width">
@@ -19,14 +19,18 @@
                 :class="{ active: ~~day === ~~item }"
                 :style="{ width: `${1 / items.length * 100}%` }"
                 class="m-pinned-amount-btn"
-                @click="chooseDefaultDay(item)">{{ ((~~item)) }} 天</button>
+                @click="chooseDefaultDay(item)"
+              >
+                {{ ((~~item)) }} 天
+              </button>
             </div>
           </div>
 
           <template v-if="!isManager">
             <div
               class="m-box m-aln-center m-justify-bet m-bb1 m-pinned-row plr20 m-pinned-amount-customize m-main"
-              style="margin-top: .2rem">
+              style="margin-top: .2rem"
+            >
               <span>置顶金额</span>
               <div class="m-box m-aln-center">
                 <input
@@ -35,7 +39,8 @@
                   pattern="[0-9]*"
                   placeholder="输入金额"
                   oninput="value=value.slice(0,8)"
-                  class="m-flex-grow1 m-flex-shrink1 m-text-r">
+                  class="m-flex-grow1 m-flex-shrink1 m-text-r"
+                >
                 <span>{{ currencyUnit }}</span>
               </div>
             </div>
@@ -51,7 +56,8 @@
                   disabled="true"
                   readonly="true"
                   placeholder="总金额"
-                  style="background-color: transparent">
+                  style="background-color: transparent"
+                >
                 <span>{{ currencyUnit }}</span>
               </div>
             </div>
@@ -59,27 +65,28 @@
               可用{{ currencyUnit }}{{ currencySum }}
             </p>
           </template>
-
         </div>
         <div
           class="plr20 m-lim-width"
-          style="margin-top: 0.6rem">
+          style="margin-top: 0.6rem"
+        >
           <button
             :disabled="disabled || loading"
             class="m-long-btn m-signin-btn"
-            @click="showPasswordConfirm">
-            <circle-loading v-if="loading"/>
+            @click="showPasswordConfirm"
+          >
+            <CircleLoading v-if="loading" />
             <span v-else>{{ isOwner || isManager ? '确认置顶' : '申请置顶' }}</span>
           </button>
         </div>
       </main>
 
-      <password-confirm
+      <PasswordConfirm
         ref="password"
-        @submit="applyTop"/>
-
+        @submit="applyTop"
+      />
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script>

@@ -1,19 +1,20 @@
 <template>
   <div class="m-art-likes">
-
-    <common-header>点赞列表</common-header>
+    <CommonHeader>点赞列表</CommonHeader>
 
     <main>
-      <jo-load-more
+      <JoLoadMore
         ref="loadmore"
         :auto-load="false"
         @onRefresh="onRefresh"
-        @onLoadMore="onLoadMore">
-        <user-item
+        @onLoadMore="onLoadMore"
+      >
+        <UserItem
           v-for="({ user, id }, index) in likes"
           :key="`likes-${id}-${user.id}-${index}`"
-          :user="user" />
-      </jo-load-more>
+          :user="user"
+        />
+      </JoLoadMore>
     </main>
   </div>
 </template>
@@ -43,17 +44,22 @@ export default {
       // 动态  GET /feeds/:feed/likes
       // 资讯  GET /news/:news/likes
       // 帖子  GET /plus-group/group-posts/:post/likes
-
+      let result
       switch (this.type) {
         case 'feed':
-          return `/feeds/${this.article}/likes`
+          result = `/feeds/${this.article}/likes`
+          break
         case 'news':
-          return `/news/${this.article}/likes`
+          result = `/news/${this.article}/likes`
+          break
         case 'post':
-          return `/plus-group/group-posts/${this.article}/likes`
+          result = `/plus-group/group-posts/${this.article}/likes`
+          break
         case 'answer':
-          return `/question-answers/${this.article}/likes`
+          result = `/question-answers/${this.article}/likes`
+          break
       }
+      return result
     },
   },
   mounted () {

@@ -1,25 +1,30 @@
 <template>
   <div class="p-news-search">
+    <SearchBar v-model="keywordOrigin" />
 
-    <search-bar v-model="keywordOrigin" />
-
-    <jo-load-more
+    <JoLoadMore
       ref="loadmore"
       :auto-load="false"
       :show-bottom="list.length > 0"
-      @onLoadMore="onLoadMore">
-      <news-card
+      @onLoadMore="onLoadMore"
+    >
+      <NewsCard
         v-for="news in list"
         v-if="news.id"
         :key="news.id"
-        :news="news" />
-    </jo-load-more>
+        :news="news"
+      />
+    </JoLoadMore>
     <p
       v-show="loading"
-      class="load-more-ph m-text-c mt10">正在搜索...</p>
+      class="load-more-ph m-text-c mt10"
+    >
+      正在搜索...
+    </p>
     <div
       v-show="noResult && !loading && keyword && !list.length"
-      class="placeholder m-no-find"/>
+      class="placeholder m-no-find"
+    />
   </div>
 </template>
 

@@ -1,9 +1,10 @@
 <template>
   <div>
-    <rank-users-component
+    <RankUsersComponent
       v-for="rank in ranks"
+      :key="rank.api"
       v-bind="rank"
-      :key="rank.api" />
+    />
   </div>
 </template>
 

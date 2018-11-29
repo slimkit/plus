@@ -3,48 +3,53 @@
     <section
       :class="{active: isCurPath('/feed')}"
       class="guide-item"
-      @click="to('/feeds?type=hot')">
+      @click="to('/feeds?type=hot')"
+    >
       <svg class="m-style-svg m-svg-def">
-        <use xlink:href="#icon-foot-home"/>
+        <use xlink:href="#icon-foot-home" />
       </svg>
       <span>动态</span>
     </section>
     <section
       :class="{active: isCurPath('/discover')}"
       class="guide-item"
-      @click="to('/discover')">
+      @click="to('/discover')"
+    >
       <svg class="m-style-svg m-svg-def">
-        <use xlink:href="#icon-foot-discover"/>
+        <use xlink:href="#icon-foot-discover" />
       </svg>
       <span>发现</span>
     </section>
     <section
       class="guide-item plus"
-      @click="showPostMenu">
+      @click="showPostMenu"
+    >
       <svg class="m-style-svg m-svg-def plus">
-        <use xlink:href="#icon-plus"/>
+        <use xlink:href="#icon-plus" />
       </svg>
     </section>
     <section
       :class="{active: isCurPath('/message')}"
       class="guide-item"
-      @click="to('/message/info')">
-      <v-badge :dot="hasMsg">
+      @click="to('/message/info')"
+    >
+      <VBadge :dot="hasMsg">
         <svg class="m-style-svg m-svg-def">
-          <use xlink:href="#icon-foot-message"/>
+          <use xlink:href="#icon-foot-message" />
         </svg>
-      </v-badge>
+      </VBadge>
       <span>消息</span>
     </section>
     <section
       :class="{active: isCurPath('profile')}"
       class="guide-item"
-      @click="to('/profile')">
-      <v-badge :dot="profile">
+      @click="to('/profile')"
+    >
+      <VBadge :dot="profile">
         <svg class="m-style-svg m-svg-def">
-          <use xlink:href="#icon-foot-profile"/>
+          <use xlink:href="#icon-foot-profile" />
         </svg>
-      </v-badge>
+      </VBadge>
       <span>我</span>
     </section>
   </footer>

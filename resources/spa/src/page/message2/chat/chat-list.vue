@@ -1,17 +1,18 @@
 <template>
   <div class="chat-list">
-    <jo-load-more
+    <JoLoadMore
       ref="loadmore"
       :auto-load="false"
       :show-bottom="false"
       style="height: 100%"
-      @onRefresh="onRefresh">
-      <chat-item
+      @onRefresh="onRefresh"
+    >
+      <ChatItem
         v-for="(room, index) in chatRooms"
+        :key="`${index}-${room.id}`"
         :item="room"
-        :key="`${index}-${room.id}`" />
-    </jo-load-more>
-
+      />
+    </JoLoadMore>
   </div>
 </template>
 <script>

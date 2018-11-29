@@ -1,41 +1,52 @@
 <template>
   <section>
     <div :class="`${prefixCls}-item-top`">
-      <avatar :user="user" />
+      <Avatar :user="user" />
       <section class="userInfo">
-        <router-link
+        <RouterLink
           :class="`${prefixCls}-item-top-link`"
-          :to="`/users/${comment.user_id}`">{{ comment.user.name }}</router-link>
+          :to="`/users/${comment.user_id}`"
+        >
+          {{ comment.user.name }}
+        </RouterLink>
         <span v-if="comment.reply_user">回复</span><span v-else>评论了你的头条</span>
-        <router-link
+        <RouterLink
           v-if="comment.reply_user"
           :class="`${prefixCls}-item-top-link`"
-          :to="`/users/${comment.reply_user}`">{{ comment.reply.name }} </router-link>:
+          :to="`/users/${comment.reply_user}`"
+        >
+          {{ comment.reply.name }}
+        </RouterLink>:
         <p>{{ comment.created_at | time2tips }}</p>
       </section>
     </div>
     <div :class="`${prefixCls}-item-bottom`">
       <span
         class="content"
-        @click.stop="showCommentInput">
+        @click.stop="showCommentInput"
+      >
         {{ comment.body }}
       </span>
       <section
         v-if="comment.commentable !== null"
-        @click="goToFeedDetail()">
+        @click="goToFeedDetail()"
+      >
         <div
           v-if="!getImage"
           :class="`${prefixCls}-item-bottom-noImg`"
-          class="content">
+          class="content"
+        >
           {{ comment.commentable.subject }}
         </div>
         <div
           v-else
-          :class="`${prefixCls}-item-bottom-img`">
+          :class="`${prefixCls}-item-bottom-img`"
+        >
           <div class="img">
             <img
               :src="getImage"
-              :alt="comment.user.name">
+              :alt="comment.user.name"
+            >
           </div>
           <div class="content">
             {{ comment.commentable.subject }}
@@ -45,7 +56,8 @@
       <section v-if="comment.commentable === null">
         <div
           :class="`${prefixCls}-item-bottom-noImg`"
-          class="content">
+          class="content"
+        >
           产品已被删除
         </div>
       </section>

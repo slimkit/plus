@@ -1,10 +1,14 @@
 <template>
   <div
     :class="{'auto-height': !rows}"
-    class="textarea-wrap">
+    class="textarea-wrap"
+  >
     <div
       v-if="!rows"
-      class="textarea-shadow c-textarea-input">{{ value }}</div> <!-- 用于撑起文本框自适应高度 -->
+      class="textarea-shadow c-textarea-input"
+    >
+      {{ value }}
+    </div> <!-- 用于撑起文本框自适应高度 -->
     <textarea
       ref="textarea"
       :value="value"
@@ -13,10 +17,14 @@
       :readonly="readonly"
       :rows="rows ? rows : 1"
       class="c-textarea-input"
-      @input="$emit('input', $event.target.value)" />
+      @input="$emit('input', $event.target.value)"
+    />
     <span
       v-show="maxlength && value.length > warnlength"
-      class="word-length">{{ value.length }} / {{ maxlength }}</span>
+      class="word-length"
+    >
+      {{ value.length }} / {{ maxlength }}
+    </span>
   </div>
 </template>
 

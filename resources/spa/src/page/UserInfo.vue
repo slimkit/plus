@@ -1,39 +1,44 @@
 <template>
   <div class="m-box-model p-user-info">
-
-    <common-header>
+    <CommonHeader>
       个人资料
       <template slot="right">
-        <circle-loading v-if="loading" />
+        <CircleLoading v-if="loading" />
         <a
           v-else
           :class="{ disabled }"
           class="m-send-btn"
-          @click.prevent="handleOk">完成</a>
+          @click.prevent="handleOk"
+        >
+          完成
+        </a>
       </template>
-    </common-header>
+    </CommonHeader>
 
     <main>
-
       <form>
-        <form-avatar-item
+        <FormAvatarItem
           v-model="avatar"
           label="更换头像"
-          type="storage"/>
+          type="storage"
+        />
 
-        <form-input-item
+        <FormInputItem
           v-model="name"
           placeholder="请输入用户名"
-          label="用户名"/>
+          label="用户名"
+        />
 
-        <form-select-item
+        <FormSelectItem
           v-model="sexMap[sex]"
           label="性别"
-          @click="switchSex"/>
+          @click="switchSex"
+        />
 
-        <form-location-item
+        <FormLocationItem
           v-model="location"
-          label="城市"/>
+          label="城市"
+        />
 
         <!-- form-tags-selected -->
 
@@ -45,25 +50,27 @@
               <span
                 v-for="tag in tags"
                 :key="tag.id"
-                class="m-tag">{{ tag.name }}</span>
+                class="m-tag"
+              >
+                {{ tag.name }}
+              </span>
             </div>
             <svg class="m-style-svg m-svg-def m-entry-append">
-              <use xlink:href="#icon-arrow-right"/>
+              <use xlink:href="#icon-arrow-right" />
             </svg>
           </div>
         </section>
 
-        <form-input-item
+        <FormInputItem
           v-model="bio"
           :maxlength="50"
           :warnlength="40"
           type="textarea"
           label="简介"
-          placeholder="编辑简介"/>
-
+          placeholder="编辑简介"
+        />
       </form>
     </main>
-
   </div>
 </template>
 

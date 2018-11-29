@@ -5,7 +5,8 @@
         <slot name="prepend">
           <section
             v-if="goBack"
-            @click="goBackFn">
+            @click="goBackFn"
+          >
             <template v-if="typeof goBack === &quot;string&quot;">
               {{ goBack }}
             </template>
@@ -19,17 +20,19 @@
       </div>
       <div
         v-if="title"
-        class="head-top-title">
+        class="head-top-title"
+      >
         <slot name="title">
           <span class="ellipsis">
             {{ title || $route.meta.title }}
           </span>
         </slot>
       </div>
-      <slot name="nav"/>
+      <slot name="nav" />
       <div
         v-if="append"
-        class="head-top-append">
+        class="head-top-append"
+      >
         <slot name="append">
           <section @click="to('/signup')">注册</section>
         </slot>

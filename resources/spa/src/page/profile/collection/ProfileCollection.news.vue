@@ -1,20 +1,22 @@
 <template>
   <div class="p-profile-collection-news">
-    <jo-load-more
+    <JoLoadMore
       ref="loadmore"
       :auto-load="false"
       style="padding-top: .9rem"
       @onRefresh="onRefresh"
-      @onLoadMore="onLoadMore">
+      @onLoadMore="onLoadMore"
+    >
       <ul>
         <li
           v-for="news in newsList"
           :key="`collected-${news.id}`"
-          class="news-item">
-          <news-card :news="news" />
+          class="news-item"
+        >
+          <NewsCard :news="news" />
         </li>
       </ul>
-    </jo-load-more>
+    </JoLoadMore>
   </div>
 </template>
 

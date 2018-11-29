@@ -1,19 +1,23 @@
 <template>
   <div
     :id="`m-pics${id}`"
-    :class="['m-pics',`m-pics-${pics.length}`]">
+    :class="['m-pics',`m-pics-${pics.length}`]"
+  >
     <ul class="m-pics-list">
       <li
         v-for="(img, index) in pics.slice(0, 9)"
-        :key="`pics-${id}-${index}`">
+        :key="`pics-${id}-${index}`"
+      >
         <div
           :class="['m-pics-box',{ 'long': isLongImg(img) }, { 'gif': (img.mime || '').indexOf('gif') > -1 }]"
-          :style="pics.length === 1 ? longStyle(img.w, img.h) : &quot;&quot;">
+          :style="pics.length === 1 ? longStyle(img.w, img.h) : &quot;&quot;"
+        >
           <div
             v-async-image="img"
             :data-src="img.file"
             class="m-pic"
-            @click.stop="handleClick($event, index)"/>
+            @click.stop="handleClick($event, index)"
+          />
         </div>
       </li>
     </ul>

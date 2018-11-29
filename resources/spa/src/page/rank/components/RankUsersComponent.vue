@@ -1,12 +1,14 @@
 <template>
   <div
     v-if="show"
-    :class="prefixCls">
+    :class="prefixCls"
+  >
     <div :class="`${prefixCls}-label`">
       <h6>{{ title }}</h6>
       <div
         :class="`${prefixCls}-more`"
-        @click="to(listUrl)">
+        @click="to(listUrl)"
+      >
         <span>全部</span>
         <svg class="m-style-svg m-svg-small">
           <use xlink:href="#icon-arrow-right" />
@@ -18,10 +20,12 @@
         v-for="user in getShow"
         :key="user.id"
         :class="`${prefixCls}-user m-aln-st`"
-        @click="to(`/users/${user.id}`)">
-        <avatar
+        @click="to(`/users/${user.id}`)"
+      >
+        <Avatar
           :class="`${prefixCls}-user-avatar`"
-          :user="user" />
+          :user="user"
+        />
         <p class="m-flex-grow1 m-flex-shrink1 m-text-cut">{{ user.name }}</p>
       </div>
     </div>

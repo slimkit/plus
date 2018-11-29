@@ -1,6 +1,6 @@
 <template>
   <div class="c-user-item" @click="toUserHome">
-    <avatar :user="user" />
+    <Avatar :user="user" />
     <section class="user-item-body m-text-cut">
       <h2 class="m-text-box m-text-cut">{{ user.name }}</h2>
       <p class="m-text-box m-text-cut">{{ user.bio || "这家伙很懒，什么也没留下" }}</p>
@@ -9,7 +9,8 @@
       v-if="!isMine"
       :class="{active: isFollow === 'unFollow'}"
       class="follow-btn"
-      @click.stop="followUser">
+      @click.stop="followUser"
+    >
       {{ followText }}
     </button>
   </div>

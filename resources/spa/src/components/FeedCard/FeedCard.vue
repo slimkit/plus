@@ -4,8 +4,9 @@
       <div
         v-if="timeLine"
         class="m-box-model m-aln-center m-flex-grow0 m-flex-shrink0 m-card-time-line"
-        v-html="timeLineText"/>
-      <avatar v-else :user="user" />
+        v-html="timeLineText"
+      />
+      <Avatar v-else :user="user" />
       <section class="m-box-model m-flex-grow1 m-flex-shrink1 m-card-main">
         <header v-if="!timeLine" class="m-box m-aln-center m-justify-bet m-card-usr">
           <h4 class="m-flex-grow1 m-flex-shrink1">{{ user.name }}</h4>
@@ -20,46 +21,50 @@
             <p
               :class="{needPay}"
               class="m-text-box m-text-cut-3"
-              v-html="replaceURI(body)"/>
+              v-html="replaceURI(body)"
+            />
           </div>
-          <feed-image
+          <FeedImage
             v-if="images.length > 0"
             :id="feedID"
-            :pics="images" />
-          <feed-video
+            :pics="images"
+          />
+          <FeedVideo
             v-if="video"
             :id="feedID"
-            :video="video" />
+            :video="video"
+          />
         </article>
       </section>
     </div>
     <footer
       v-if="showFooter"
       class="m-box-model m-card-foot m-bt1"
-      @click.stop>
+      @click.stop
+    >
       <div class="m-box m-aln-center m-card-tools m-lim-width">
         <a class="m-box m-aln-center" @click.prevent="handleLike">
           <svg class="m-style-svg m-svg-def">
-            <use :xlink:href="liked ? '#icon-like' :'#icon-unlike'"/>
+            <use :xlink:href="liked ? '#icon-like' :'#icon-unlike'" />
           </svg>
           <span>{{ likeCount | formatNum }}</span>
         </a>
         <a class="m-box m-aln-center" @click.prevent="handleComment">
           <svg class="m-style-svg m-svg-def">
-            <use xlink:href="#icon-comment"/>
+            <use xlink:href="#icon-comment" />
           </svg>
           <span>{{ commentCount | formatNum }}</span>
         </a>
         <a class="m-box m-aln-center" @click.prevent="handleView('')">
           <svg class="m-style-svg m-svg-def">
-            <use xlink:href="#icon-eye"/>
+            <use xlink:href="#icon-eye" />
           </svg>
           <span>{{ viewCount | formatNum }}</span>
         </a>
         <div class="m-box m-justify-end m-flex-grow1 m-flex-shrink1">
           <a class="m-box m-aln-center" @click.prevent="handleMore">
             <svg class="m-style-svg m-svg-def">
-              <use xlink:href="#icon-more"/>
+              <use xlink:href="#icon-more" />
             </svg>
           </a>
         </div>
@@ -68,14 +73,16 @@
         <li
           v-for="com in comments"
           v-if="com.id"
-          :key="com.id">
-          <comment-item :comment="com" @click="commentAction"/>
+          :key="com.id"
+        >
+          <CommentItem :comment="com" @click="commentAction" />
         </li>
       </ul>
       <div
         v-if="commentCount > 5"
         class="m-router-link"
-        @click="handleView('comment_list')">
+        @click="handleView('comment_list')"
+      >
         <a>查看全部评论</a>
       </div>
     </footer>

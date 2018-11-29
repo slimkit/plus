@@ -1,20 +1,21 @@
 <template>
-  <article-card
+  <ArticleCard
     :liked="liked"
     :loading="loading"
     :can-oprate="news.audit_status===0"
     @on-like="likeNews"
     @on-share="shareNews"
     @on-more="moreAction"
-    @on-comment="commentNews">
+    @on-comment="commentNews"
+  >
+    <CommonHeader slot="head">资讯详情</CommonHeader>
 
-    <common-header slot="head">资讯详情</common-header>
-
-    <jo-load-more
+    <JoLoadMore
       ref="loadmore"
       :auto-load="false"
       :show-bottom="false"
-      @onRefresh="onRefresh">
+      @onRefresh="onRefresh"
+    >
       <div class="m-flex-shrink1 m-flex-grow1 m-art m-main">
         <section class="m-art-head">
           <h1>{{ news.title }}</h1>
@@ -24,7 +25,7 @@
           </p>
         </section>
         <p v-if="news.subject" class="m-art-subject">{{ news.subject }}</p>
-        <div class="m-art-body markdown-body" v-html="body"/>
+        <div class="m-art-body markdown-body" v-html="body" />
         <div class="m-box m-aln-center m-justify-bet m-art-foot">
           <div class="m-flex-grow1 m-flex-shrink1 m-box m-aln-center m-art-like-list">
             <template v-if="likeCount > 0 && news.audit_status===0">
@@ -33,7 +34,8 @@
                   v-for="({user, id}, index) in likes.slice(0, 5)"
                   :key="id"
                   :style="{ zIndex: 5-index }"
-                  class="m-avatar-box tiny">
+                  class="m-avatar-box tiny"
+                >
                   <img :src="getAvatar(user.avatar)">
                 </li>
               </ul>
@@ -51,24 +53,26 @@
             <a href="javascript:;">{{ reward.count | formatNum }}</a>人打赏，共
             <a href="javascript:;">{{ ~~reward.amount | formatNum }}</a>{{ currencyUnit }}
           </p>
-          <router-link
+          <RouterLink
             tag="ul"
             to="rewarders"
             append
-            class="m-box m-aln-center m-art-rew-list">
+            class="m-box m-aln-center m-art-rew-list"
+          >
             <li
               v-for="rew in rewardList"
               :key="rew.id"
               :class="`m-avatar-box-${rew.user.sex}`"
-              class="m-flex-grow0 m-flex-shrink0 m-art-rew m-avatar-box tiny">
+              class="m-flex-grow0 m-flex-shrink0 m-art-rew m-avatar-box tiny"
+            >
               <img :src="getAvatar(rew.user.avatar)">
             </li>
             <li v-if="rewardList.length > 0" class="m-box m-aln-center">
               <svg class="m-style-svg m-svg-def" style="fill:#bfbfbf">
-                <use xlink:href="#icon-arrow-right"/>
+                <use xlink:href="#icon-arrow-right" />
               </svg>
             </li>
-          </router-link>
+          </RouterLink>
         </div>
       </div>
 
@@ -76,10 +80,11 @@
         <ul class="m-box m-aln-center m-art-comments-tabs">
           <li>相关资讯</li>
         </ul>
-        <news-card
-          v-for="news in relationNews"
-          :key="`relation-${news.id}`"
-          :news="news"/>
+        <NewsCard
+          v-for="newsItem in relationNews"
+          :key="`relation-${newsItem.id}`"
+          :news="newsItem"
+        />
       </div>
 
       <div class="m-box-model m-art-comments">
@@ -87,31 +92,33 @@
           <li>{{ commentCount | formatNum }}条评论</li>
         </ul>
         <template v-if="news.audit_status === 0">
-          <comment-item
+          <CommentItem
             v-for="(comment) in pinnedCom"
             :key="`pinned-${comment.id}`"
             :comment="comment"
             :pinned="true"
-            @click="replyComment(comment)" />
-          <comment-item
+            @click="replyComment(comment)"
+          />
+          <CommentItem
             v-for="(comment) in comments"
             :key="`comment-${comment.id}`"
             :comment="comment"
-            @click="replyComment(comment)" />
+            @click="replyComment(comment)"
+          />
           <div class="m-box m-aln-center m-justify-center load-more-box">
             <span v-if="noMoreCom" class="load-more-ph">---没有更多---</span>
             <span
               v-else
               class="load-more-btn"
-              @click.stop="fetchNewsComments(maxComId)">
+              @click.stop="fetchNewsComments(maxComId)"
+            >
               {{ fetchComing ? "加载中..." : "点击加载更多" }}
             </span>
           </div>
         </template>
       </div>
-
-    </jo-load-more>
-  </article-card>
+    </JoLoadMore>
+  </ArticleCard>
 </template>
 
 <script>

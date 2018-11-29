@@ -1,43 +1,40 @@
 <template>
   <div>
-
-    <common-header class="common-header">排行榜</common-header>
+    <CommonHeader class="common-header">排行榜</CommonHeader>
 
     <div class="rank-nav">
-      <router-link
+      <RouterLink
         tag="div"
         class="rank-nav-item"
         replace
-        to="/rank/users">用户</router-link>
-      <router-link
+        to="/rank/users"
+      >
+        用户
+      </RouterLink>
+      <RouterLink
         tag="div"
         class="rank-nav-item"
         replace
-        to="/rank/feeds">动态</router-link>
+        to="/rank/feeds"
+      >
+        动态
+      </RouterLink>
 
-      <div
-        class="rank-nav-item"
-        @click.capture.stop.prevent="popupBuyTS">问答</div>
-      <div
-        class="rank-nav-item"
-        @click.capture.stop.prevent="popupBuyTS">资讯</div>
+      <div class="rank-nav-item" @click.capture.stop.prevent="popupBuyTS"> 问答 </div>
+      <div class="rank-nav-item" @click.capture.stop.prevent="popupBuyTS"> 资讯 </div>
     </div>
     <div class="rank-content">
-      <keep-alive>
-        <router-view v-if="$route.meta.keepAlive"/>
-      </keep-alive>
-      <router-view v-if="!$route.meta.keepAlive"/>
+      <KeepAlive>
+        <RouterView v-if="$route.meta.keepAlive" />
+      </KeepAlive>
+      <RouterView v-if="!$route.meta.keepAlive" />
     </div>
   </div>
 </template>
 
 <script>
-import HeadTop from '../../components/HeadTop'
 export default {
   name: 'RankIndex',
-  components: {
-    HeadTop,
-  },
   methods: {
     cancel () {
       this.to('/discover')

@@ -1,20 +1,23 @@
 <template>
-  <transition name="pop">
+  <Transition name="pop">
     <div
       v-if="show"
       class="m-box-model m-pos-f"
       style="background-color: #f4f5f6"
-      @touchmove.prevent>
-
-      <common-header :back="cancel">
+      @touchmove.prevent
+    >
+      <CommonHeader :back="cancel">
         打赏
         <template slot="right">
           <button
             :disabled="!(amount > 0)"
             class="m-btn"
-            @click.stop.prevent="resetProps">重置</button>
+            @click.stop.prevent="resetProps"
+          >
+            重置
+          </button>
         </template>
-      </common-header>
+      </CommonHeader>
 
       <main class="m-box-model m-aln-center m-justify-center">
         <div class="m-box-model m-lim-width m-main">
@@ -27,7 +30,10 @@
                 :style="{ width: `${1 / items.length * 100}%` }"
                 :class="{ active: ~~amount === ~~item && !customAmount }"
                 class="m-pinned-amount-btn"
-                @click="chooseDefaultAmount(item)">{{ ~~item }}</button>
+                @click="chooseDefaultAmount(item)"
+              >
+                {{ ~~item }}
+              </button>
             </div>
           </div>
           <div class="m-box m-aln-center m-justify-bet m-bb1 m-bt1 m-pinned-row plr20 m-pinned-amount-customize">
@@ -39,30 +45,33 @@
                 type="number"
                 class="m-text-r"
                 pattern="[0-9]*"
-                oninput="value=value.slice(0,8)">
+                oninput="value=value.slice(0,8)"
+              >
               <span>{{ currencyUnit }}</span>
             </div>
           </div>
         </div>
         <div
           class="plr20 m-lim-width"
-          style="margin-top: 0.6rem">
+          style="margin-top: 0.6rem"
+        >
           <button
             :disabled="disabled || loading"
             class="m-long-btn m-signin-btn"
-            @click="showPasswordConfirm">
-            <circle-loading v-if="loading"/>
+            @click="showPasswordConfirm"
+          >
+            <CircleLoading v-if="loading" />
             <span v-else>确定</span>
           </button>
         </div>
       </main>
 
-      <password-confirm
+      <PasswordConfirm
         ref="password"
-        @submit="reward" />
-
+        @submit="reward"
+      />
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script>

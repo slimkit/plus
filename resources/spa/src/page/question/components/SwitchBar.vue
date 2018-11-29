@@ -1,41 +1,46 @@
 <template>
-  <common-header
+  <CommonHeader
     :pinned="true"
-    class="c-switch-bar">
+    class="c-switch-bar"
+  >
     <div
       class="tab"
-      @click.capture.stop.prevent="popupBuyTS">
+      @click.capture.stop.prevent="popupBuyTS"
+    >
       <!-- Queation type link. -->
-      <router-link
+      <RouterLink
         :replace="true"
         :exact="true"
         :class="{active: $route.path === '/question'}"
         class="item"
-        to="/question" >
+        to="/question"
+      >
         问答
-      </router-link>
+      </RouterLink>
 
       <!-- Tags type link. -->
-      <router-link
+      <RouterLink
         :replace="true"
         :exact="true"
         :class="{active: $route.path === '/question/topics'}"
         class="item"
-        to="/question/topics" >
+        to="/question/topics"
+      >
         专题
-      </router-link>
+      </RouterLink>
     </div>
 
     <div
       slot="right"
-      @click.capture.stop.prevent="popupBuyTS">
-      <router-link to="/question/search">
+      @click.capture.stop.prevent="popupBuyTS"
+    >
+      <RouterLink to="/question/search">
         <svg class="m-style-svg m-svg-def search-btn">
           <use xlink:href="#icon-search" />
         </svg>
-      </router-link>
+      </RouterLink>
     </div>
-  </common-header>
+  </CommonHeader>
 </template>
 
 <script>

@@ -1,37 +1,41 @@
 <template>
-  <transition
+  <Transition
     enter-active-class="animated slideInRight"
-    leave-active-class="animated slideOutLeft">
+    leave-active-class="animated slideOutLeft"
+  >
     <div class="m-box-model m-pos-f p-search-user">
-
-      <search-bar v-model="keyword"/>
+      <SearchBar v-model="keyword" />
 
       <main class="m-flex-grow1 m-flex-shrink1 p-search-user-body">
-        <jo-load-more
+        <JoLoadMore
           v-show="showRec"
           ref="loadmoreRecs"
           :show-bottom="false"
           :no-animation="true"
-          @onRefresh="fetchRecs">
-          <user-item
+          @onRefresh="fetchRecs"
+        >
+          <UserItem
             v-for="user in recs"
+            :key="user.id"
             :user="user"
-            :key="user.id" />
-        </jo-load-more>
-        <jo-load-more
+          />
+        </JoLoadMore>
+        <JoLoadMore
           v-show="users.length > 0"
           ref="loadmore"
           @onRefresh="onRefresh"
-          @onLoadMore="onLoadMore">
-          <user-item
+          @onLoadMore="onLoadMore"
+        >
+          <UserItem
             v-for="user in users"
+            :key="user.id"
             :user="user"
-            :key="user.id" />
-        </jo-load-more>
-        <div v-if="noData" class="placeholder m-no-find"/>
+          />
+        </JoLoadMore>
+        <div v-if="noData" class="placeholder m-no-find" />
       </main>
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script>

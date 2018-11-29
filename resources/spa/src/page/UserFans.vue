@@ -1,44 +1,47 @@
 <template>
   <div class="p-user-fans">
-
     <nav class="m-box m-head-top m-lim-width m-pos-f m-main m-bb1" style="padding: 0 10px;">
       <div class="m-box m-aln-center m-flex-shrink0 ">
         <svg class="m-style-svg m-svg-def" @click="goBack">
-          <use xlink:href="#icon-back"/>
+          <use xlink:href="#icon-back" />
         </svg>
       </div>
       <ul class="m-box m-flex-grow1 m-aln-center m-justify-center m-flex-base0 m-head-nav">
-        <router-link
+        <RouterLink
           :to="`/users/${userID}/followers`"
           tag="li"
           active-class="active"
           exact
-          replace>
+          replace
+        >
           <a>粉丝</a>
-        </router-link>
-        <router-link
+        </RouterLink>
+        <RouterLink
           :to="`/users/${userID}/followings`"
           tag="li"
           active-class="active"
           exact
-          replace>
+          replace
+        >
           <a>关注</a>
-        </router-link>
+        </RouterLink>
       </ul>
-      <div class="m-box m-justify-end"/>
+      <div class="m-box m-justify-end" />
     </nav>
 
     <main style="padding-top: 0.9rem">
-      <jo-load-more
+      <JoLoadMore
         ref="loadmore"
         @onRefresh="onRefresh"
-        @onLoadMore="onLoadMore">
-        <user-item
+        @onLoadMore="onLoadMore"
+      >
+        <UserItem
           v-for="user in users"
           v-if="user.id"
+          :key="`user-item-${user.id}`"
           :user="user"
-          :key="`user-item-${user.id}`" />
-      </jo-load-more>
+        />
+      </JoLoadMore>
     </main>
   </div>
 </template>

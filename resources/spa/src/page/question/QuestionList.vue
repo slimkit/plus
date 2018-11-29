@@ -1,71 +1,93 @@
 <template>
   <div
     class="p-question-list"
-    @click.capture.stop.prevent="popupBuyTS">
-
+    @click.capture.stop.prevent="popupBuyTS"
+  >
     <!-- Question navs. -->
     <nav class="nav">
-      <router-link
+      <RouterLink
         to="/question"
         replace
         exact
-        exact-active-class="active">热门</router-link>
-      <router-link
+        exact-active-class="active"
+      >
+        热门
+      </RouterLink>
+      <RouterLink
         :to="navRouterLinkBuilder('excellent')"
         replace
         exact
-        exact-active-class="active">精选</router-link>
-      <router-link
+        exact-active-class="active"
+      >
+        精选
+      </RouterLink>
+      <RouterLink
         :to="navRouterLinkBuilder('reward')"
         replace
         exact
-        exact-active-class="active">悬赏</router-link>
-      <router-link
+        exact-active-class="active"
+      >
+        悬赏
+      </RouterLink>
+      <RouterLink
         :to="navRouterLinkBuilder('new')"
         replace
         exact
-        exact-active-class="active">最新</router-link>
-      <router-link
+        exact-active-class="active"
+      >
+        最新
+      </RouterLink>
+      <RouterLink
         :to="navRouterLinkBuilder('all')"
         replace
         exact
-        exact-active-class="active">全部</router-link>
+        exact-active-class="active"
+      >
+        全部
+      </RouterLink>
     </nav>
 
     <!-- Question main. -->
     <main class="main">
       <div
         v-if="loading"
-        class="main-loading">
-        <icon-loading class="main-loading_icon" />
+        class="main-loading"
+      >
+        <IconLoading class="main-loading_icon" />
       </div>
 
-      <question-card
+      <QuestionCard
         v-for="question in questions"
         :key="question.id"
         :question="question"
-        :no-excellent="type === 'excellent'" />
+        :no-excellent="type === 'excellent'"
+      />
 
       <div
         v-if="questions.length && !loadmore"
-        class="main-loadmore">
+        class="main-loadmore"
+      >
         <button
           class="main-loadmore_button"
-          @click="fetchQuestionsMore">加载更多</button>
+          @click="fetchQuestionsMore"
+        >
+          加载更多
+        </button>
       </div>
 
       <div
         v-else-if="loadmore"
-        class="main-loadmore">
+        class="main-loadmore"
+      >
         <button class="main-loadmore_button active">
-          <icon-loading class="main-loading_icon" />
+          <IconLoading class="main-loading_icon" />
         </button>
       </div>
     </main>
 
     <button class="create-question">
       <svg class="m-style-svg m-svg-small">
-        <use xlink:href="#icon-plus"/>
+        <use xlink:href="#icon-plus" />
       </svg>
     </button>
   </div>

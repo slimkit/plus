@@ -1,139 +1,147 @@
 <template>
   <div class="p-profile">
-
-    <common-header>
+    <CommonHeader>
       我
-      <template slot="left"><span/></template>
-    </common-header>
+      <template slot="left"><span /></template>
+    </CommonHeader>
 
     <main class="m-box-model">
       <div class="m-box-model m-main m-pr-info">
-        <router-link
+        <RouterLink
           tag="section"
           class="m-box m-aln-center"
-          to="/info">
-          <avatar
+          to="/info"
+        >
+          <Avatar
             :user="user"
-            size="big" />
+            size="big"
+          />
           <div class="m-text-box m-flex-grow1 m-flex-shrink1 m-flex-base0 m-pr-user-info">
             <h4 class="m-pr-username">{{ user.name }}</h4>
             <p class="m-pr-bio m-text-cut-2">{{ user.bio || "这家伙很懒,什么也没有留下" }}</p>
           </div>
           <svg class="m-style-svg m-svg-def m-entry-append">
-            <use xlink:href="#icon-arrow-right"/>
+            <use xlink:href="#icon-arrow-right" />
           </svg>
-        </router-link>
+        </RouterLink>
         <div class="m-box m-aln-center m-justify-aro m-bt1 m-pr-extra-box">
-          <router-link
+          <RouterLink
             :to="`/users/${user.id}/followers`"
             tag="div"
-            class="m-box-model m-aln-center m-justify-center m-flex-grow1 m-pr-extra">
-            <v-badge :count="new_followers">
+            class="m-box-model m-aln-center m-justify-center m-flex-grow1 m-pr-extra"
+          >
+            <VBadge :count="new_followers">
               <a>{{ ~~(extra.followers_count) | formatNum }}</a>
-            </v-badge>
+            </VBadge>
             <p>粉丝</p>
-          </router-link>
-          <router-link
+          </RouterLink>
+          <RouterLink
             :to="`/users/${user.id}/followings`"
             tag="div"
-            class="m-box-model m-aln-center m-justify-center m-flex-grow1 m-pr-extra">
-            <v-badge count="0">
+            class="m-box-model m-aln-center m-justify-center m-flex-grow1 m-pr-extra"
+          >
+            <VBadge count="0">
               <a>{{ ~~(extra.followings_count) | formatNum }}</a>
-            </v-badge>
+            </VBadge>
             <p>关注</p>
-          </router-link>
+          </RouterLink>
         </div>
       </div>
       <div class="m-box-model m-pr-entrys">
         <ul class="m-box-model m-entry-group">
-          <router-link
+          <RouterLink
             :to="`/users/${user.id}`"
             tag="li"
-            class="m-entry">
+            class="m-entry"
+          >
             <svg class="m-style-svg m-svg-def m-entry-prepend">
-              <use xlink:href="#icon-profile-home"/>
+              <use xlink:href="#icon-profile-home" />
             </svg>
             <span class="m-text-box m-flex-grow1">个人主页</span>
             <svg class="m-style-svg m-svg-def m-entry-append">
-              <use xlink:href="#icon-arrow-right"/>
+              <use xlink:href="#icon-arrow-right" />
             </svg>
-          </router-link>
-          <router-link
+          </RouterLink>
+          <RouterLink
             to="/profile/news/released"
             tag="li"
-            class="m-entry">
+            class="m-entry"
+          >
             <svg class="m-style-svg m-svg-def m-entry-prepend">
-              <use xlink:href="#icon-profile-plane"/>
+              <use xlink:href="#icon-profile-plane" />
             </svg>
             <span class="m-text-box m-flex-grow1">我的投稿</span>
             <svg class="m-style-svg m-svg-def m-entry-append">
-              <use xlink:href="#icon-arrow-right"/>
+              <use xlink:href="#icon-arrow-right" />
             </svg>
-          </router-link>
+          </RouterLink>
         </ul>
         <ul class="m-box-model m-entry-group">
           <li class="m-entry" @click="popupBuyTS">
             <svg class="m-style-svg m-svg-def m-entry-prepend">
-              <use xlink:href="#icon-profile-wallet"/>
+              <use xlink:href="#icon-profile-wallet" />
             </svg>
             <span class="m-text-box m-flex-grow1">钱包</span>
             <span class="m-entry-extra">{{ new_balance }}</span>
             <svg class="m-style-svg m-svg-def m-entry-append">
-              <use xlink:href="#icon-arrow-right"/>
+              <use xlink:href="#icon-arrow-right" />
             </svg>
           </li>
           <li class="m-entry" @click="popupBuyTS">
             <svg class="m-style-svg m-svg-def m-entry-prepend">
-              <use xlink:href="#icon-profile-integral"/>
+              <use xlink:href="#icon-profile-integral" />
             </svg>
             <span class="m-text-box m-flex-grow1">{{ currencyUnit }}</span>
             <span class="m-entry-extra">{{ sum }}</span>
             <svg class="m-style-svg m-svg-def m-entry-append">
-              <use xlink:href="#icon-arrow-right"/>
+              <use xlink:href="#icon-arrow-right" />
             </svg>
           </li>
-          <router-link
+          <RouterLink
             to="/profile/collection/feeds"
             tag="li"
-            class="m-entry">
+            class="m-entry"
+          >
             <svg class="m-style-svg m-svg-def m-entry-prepend">
-              <use xlink:href="#icon-profile-collect"/>
+              <use xlink:href="#icon-profile-collect" />
             </svg>
             <span class="m-text-box m-flex-grow1">收藏</span>
             <svg class="m-style-svg m-svg-def m-entry-append">
-              <use xlink:href="#icon-arrow-right"/>
+              <use xlink:href="#icon-arrow-right" />
             </svg>
-          </router-link>
+          </RouterLink>
         </ul>
         <ul class="m-box-model m-entry-group">
           <li
             class="m-entry"
-            @click="selectCertType">
+            @click="selectCertType"
+          >
             <svg class="m-style-svg m-svg-def m-entry-prepend">
-              <use xlink:href="#icon-profile-approve"/>
+              <use xlink:href="#icon-profile-approve" />
             </svg>
             <span class="m-text-box m-flex-grow1">认证</span>
             <span class="m-entry-extra">{{ verifiedText }}</span>
             <svg class="m-style-svg m-svg-def m-entry-append">
-              <use xlink:href="#icon-arrow-right"/>
+              <use xlink:href="#icon-arrow-right" />
             </svg>
           </li>
-          <router-link
+          <RouterLink
             to="/setting"
             tag="li"
-            class="m-entry">
+            class="m-entry"
+          >
             <svg class="m-style-svg m-svg-def m-entry-prepend">
-              <use xlink:href="#icon-profile-setting"/>
+              <use xlink:href="#icon-profile-setting" />
             </svg>
             <span class="m-text-box m-flex-grow1">设置</span>
             <svg class="m-style-svg m-svg-def m-entry-append">
-              <use xlink:href="#icon-arrow-right"/>
+              <use xlink:href="#icon-arrow-right" />
             </svg>
-          </router-link>
+          </RouterLink>
         </ul>
       </div>
     </main>
-    <foot-guide/>
+    <FootGuide />
   </div>
 </template>
 

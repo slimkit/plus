@@ -1,7 +1,8 @@
 <template>
   <section
     class="c-group-item"
-    @click="beforeViewDetail">
+    @click="beforeViewDetail"
+  >
     <div class="avatar">
       <img :src="avatar">
     </div>
@@ -10,7 +11,10 @@
         <h2 class="m-text-cut">{{ group.name }}</h2>
         <span
           v-if="mode === 'paid'"
-          class="paid">付费</span>
+          class="paid"
+        >
+          付费
+        </span>
       </div>
       <p>
         <span>帖子<span class="number">{{ feedCount | formatNum }}</span></span>
@@ -20,23 +24,32 @@
 
     <span
       v-if="isOwner"
-      class="owner-badge">圈主</span>
+      class="owner-badge"
+    >
+      圈主
+    </span>
     <span
       v-if="isAdmin"
-      class="admin-badge">管理员</span>
+      class="admin-badge"
+    >
+      管理员
+    </span>
 
     <div
       v-if="showAction"
-      class="action">
+      class="action"
+    >
       <button
         v-if="!joined || joined.audit === 0"
         :disabled="loading || joined.audit === 0"
         class="m-text-cut"
-        @click.stop="beforeJoined">
+        @click.stop="beforeJoined"
+      >
         <svg
           v-if="!(joined.audit ===0)"
           :style="loading ? {} : {width: '0.2rem', height:'0.2rem'}"
-          class="m-style-svg m-svg-def">
+          class="m-style-svg m-svg-def"
+        >
           <use :xlink:href="`#icon-${loading ? 'loading' : 'plus'}`" />
         </svg>
         <span>{{ joined.audit === 0 ? "审核中" : "加入" }}</span>

@@ -1,29 +1,30 @@
 <template>
-  <article-card
+  <ArticleCard
     :liked="liked"
     :loading="loading"
     @on-like="likeFeed"
     @on-share="shareFeed"
     @on-more="moreAction"
-    @on-comment="commentFeed">
-
-    <common-header slot="head">
-      <avatar :user="user" size="tiny" />
+    @on-comment="commentFeed"
+  >
+    <CommonHeader slot="head">
+      <Avatar :user="user" size="tiny" />
       <span class="m-text-cut m-flex-none username">
         {{ user.name }}
       </span>
       <template
         v-if="!isMine"
         slot="right"
-        :class="{ primary: relation.status !== 'unFollow' }" >
+        :class="{ primary: relation.status !== 'unFollow' }"
+      >
         <svg class="m-style-svg m-svg-def" @click="followUserByStatus(relation.status)">
-          <use :xlink:href="relation.icon"/>
+          <use :xlink:href="relation.icon" />
         </svg>
       </template>
-    </common-header>
+    </CommonHeader>
 
     <!-- 内容 -->
-    <load-more ref="loadmore" :on-refresh="onRefresh">
+    <LoadMore ref="loadmore" :on-refresh="onRefresh">
       <main class="m-flex-shrink1 m-flex-grow1 m-art m-main">
         <div class="m-art-body">
           <h2 v-if="title">{{ title }}</h2>
@@ -32,42 +33,47 @@
             :poster="cover_file"
             class="feed-detail-video"
             controls
-            autoplay>
-            <source :src="video_file" type="video/mp4" >
+            autoplay
+          >
+            <source :src="video_file" type="video/mp4">
           </video>
-          <async-file
+          <AsyncFile
             v-for="img in images"
             v-if="img.file"
             :key="img.file"
-            :file="img.file">
+            :file="img.file"
+          >
             <img
               v-if="props.src"
               slot-scope="props"
               :src="props.src"
-              @click="onFileClick(img)">
-          </async-file>
+              @click="onFileClick(img)"
+            >
+          </AsyncFile>
           <p class="m-text-box" v-html="formatBody(feedContent)" />
         </div>
         <div class="m-box m-aln-center m-justify-bet m-art-foot">
           <div class="m-flex-grow1 m-flex-shrink1 m-art-like-list">
-            <router-link
+            <RouterLink
               v-if="likeCount > 0"
               tag="div"
               class="m-box m-aln-center"
               to="likers"
-              append>
+              append
+            >
               <ul class="m-box m-flex-grow0 m-flex-shrink0">
                 <li
-                  v-for="({user = {}, id}, index) in likes.slice(0, 5)"
+                  v-for="({userItem = {}, id}, index) in likes.slice(0, 5)"
                   :key="id"
                   :style="{ zIndex: 5-index }"
-                  :class="`m-avatar-box-${user.sex}`"
-                  class="m-avatar-box tiny">
-                  <img :src="getAvatar(user.avatar)">
+                  :class="`m-avatar-box-${userItem.sex}`"
+                  class="m-avatar-box tiny"
+                >
+                  <img :src="getAvatar(userItem.avatar)">
                 </li>
               </ul>
               <span>{{ likeCount | formatNum }}人点赞</span>
-            </router-link>
+            </RouterLink>
           </div>
           <div class="m-box-model m-aln-end m-art-info">
             <span v-if="time">发布于{{ time | time2tips }}</span>
@@ -77,24 +83,26 @@
         <div class="m-box-model m-box-center m-box-center-a m-art-reward">
           <button class="m-art-rew-btn" @click="rewardFeed">打 赏</button>
           <p class="m-art-rew-label"><a href="javascript:;">{{ reward.count | formatNum }}</a>人打赏，共<a href="javascript:;">{{ ~~reward.amount }}</a>{{ currencyUnit }}</p>
-          <router-link
+          <RouterLink
             tag="ul"
             to="rewarders"
             append
-            class="m-box m-aln-center m-art-rew-list">
+            class="m-box m-aln-center m-art-rew-list"
+          >
             <li
               v-for="rew in rewardList"
               :key="rew.id"
               :class="`m-avatar-box-${rew.user.sex}`"
-              class="m-flex-grow0 m-flex-shrink0 m-art-rew m-avatar-box tiny">
+              class="m-flex-grow0 m-flex-shrink0 m-art-rew m-avatar-box tiny"
+            >
               <img :src="getAvatar(rew.user.avatar)">
             </li>
             <li v-if="rewardList.length > 0" class="m-box m-aln-center">
               <svg class="m-style-svg m-svg-def" style="fill: #bfbfbf">
-                <use xlink:href="#icon-arrow-right"/>
+                <use xlink:href="#icon-arrow-right" />
               </svg>
             </li>
-          </router-link>
+          </RouterLink>
         </div>
       </main>
 
@@ -103,30 +111,33 @@
         <ul class="m-box m-aln-center m-art-comments-tabs">
           <li>{{ commentCount | formatNum }}条评论</li>
         </ul>
-        <comment-item
+        <CommentItem
           v-for="(comment) in pinnedCom"
-          :pinned="true"
           :key="`pinned-comment-${comment.id}`"
+          :pinned="true"
           :comment="comment"
-          @click="replyComment(comment)"/>
-        <comment-item
+          @click="replyComment(comment)"
+        />
+        <CommentItem
           v-for="(comment) in comments"
           :key="comment.id"
           :comment="comment"
-          @click="replyComment(comment)"/>
+          @click="replyComment(comment)"
+        />
         <div class="m-box m-aln-center m-justify-center load-more-box">
-          <div v-if="!pinnedCom.length && !comments.length" class="m-no-find"/>
+          <div v-if="!pinnedCom.length && !comments.length" class="m-no-find" />
           <span v-else-if="noMoreCom" class="load-more-ph">---没有更多---</span>
           <span
             v-else
             class="load-more-btn"
-            @click.stop="fetchFeedComments(maxComId)">
+            @click.stop="fetchFeedComments(maxComId)"
+          >
             {{ fetchComing ? "加载中..." : "点击加载更多" }}
           </span>
         </div>
       </div>
-    </load-more>
-  </article-card>
+    </LoadMore>
+  </ArticleCard>
 </template>
 
 <script>

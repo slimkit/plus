@@ -1,12 +1,13 @@
 <template>
   <div>
-    <rank-users-component
+    <RankUsersComponent
       v-for="rank in ranks"
+      :key="rank.name"
       :title="rank.title"
       :api="rank.api"
       :name="rank.name"
-      :key="rank.name"
-      :list-url="rank.listUrl" />
+      :list-url="rank.listUrl"
+    />
   </div>
 </template>
 

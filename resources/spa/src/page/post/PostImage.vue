@@ -1,43 +1,50 @@
 <template>
   <div class="p-post-pic">
-
-    <common-header>
+    <CommonHeader>
       发布动态
       <template slot="left">
         <a
           class="m-send-btn"
           href="javascript:;"
-          @click="beforeGoBack">取消</a>
+          @click="beforeGoBack"
+        >
+          取消
+        </a>
       </template>
       <template slot="right">
-        <circle-loading v-if="loading" />
+        <CircleLoading v-if="loading" />
         <a
           v-else
           :class="{ disabled }"
           class="m-send-btn"
-          @click.prevent.stop="sendmessage">发布</a>
+          @click.prevent.stop="sendmessage"
+        >
+          发布
+        </a>
       </template>
-    </common-header>
+    </CommonHeader>
 
     <main>
-      <textarea-input
+      <TextareaInput
         v-model="contentText"
         :rows="11"
         :maxlength="255"
         :warnlength="200"
         placeholder="输入要说的话，图文结合更精彩哦"
-        class="textarea-input" />
-      <image-list :edit="pinned" style="padding: 0 .3rem .3rem"/>
+        class="textarea-input"
+      />
+      <ImageList :edit="pinned" style="padding: 0 .3rem .3rem" />
     </main>
 
     <footer @click.capture.stop.prevent="popupBuyTS">
-      <v-switch
+      <VSwitch
         v-if="paycontrol"
         v-model="pinned"
         class="m-box m-bt1 m-bb1 m-lim-width m-pinned-row"
-        type="checkbox">
+        type="checkbox"
+      >
         <slot>是否收费</slot>
-      </v-switch>
+      </VSwitch>
     </footer>
   </div>
 </template>

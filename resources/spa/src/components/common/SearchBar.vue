@@ -1,21 +1,24 @@
 <template>
   <header class="c-search-bar">
-
     <form
       class="input-wrap"
-      onsubmit="return false">
-      <svg class="m-icon-svg m-svg-small"><use xlink:href="#icon-search"/></svg>
+      onsubmit="return false"
+    >
+      <svg class="m-icon-svg m-svg-small"><use xlink:href="#icon-search" /></svg>
       <input
         :value="value"
         :placeholder="placeholder"
         type="search"
-        @input="$emit('input', $event.target.value)">
+        @input="$emit('input', $event.target.value)"
+      >
     </form>
 
     <a
       class="btn-cancel"
-      @click.prevent.stop="onBackClick">取消</a>
-
+      @click.prevent.stop="onBackClick"
+    >
+      取消
+    </a>
   </header>
 </template>
 

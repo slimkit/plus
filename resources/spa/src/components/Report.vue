@@ -1,11 +1,11 @@
 <template>
-  <transition name="pop">
+  <Transition name="pop">
     <div
       v-if="show"
       class="c-report"
-      @touchmove.prevent>
-
-      <common-header :back="cancel"> 举报 </common-header>
+      @touchmove.prevent
+    >
+      <CommonHeader :back="cancel"> 举报 </CommonHeader>
 
       <main class="m-box-model m-aln-center m-justify-center">
         <div class="m-box-model m-lim-width m-main">
@@ -13,25 +13,27 @@
           <div class="reference">
             {{ reference }}
           </div>
-          <textarea-input
+          <TextareaInput
             v-model="reason"
             class="reason"
             maxlength="255"
             warnlength="200"
-            placeholder="填写举报原因" />
+            placeholder="填写举报原因"
+          />
         </div>
       </main>
       <div class="report-btn">
         <button
           :disabled="disabled || loading"
           class="m-long-btn"
-          @click="report">
-          <circle-loading v-if="loading"/>
+          @click="report"
+        >
+          <CircleLoading v-if="loading" />
           <span v-else>举报</span>
         </button>
       </div>
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script>

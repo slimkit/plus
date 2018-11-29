@@ -1,34 +1,36 @@
 <template>
   <div class="p-setting">
-
-    <common-header>设置</common-header>
+    <CommonHeader>设置</CommonHeader>
 
     <main>
       <ul class="m-box-model m-entry-group padding">
-        <router-link
+        <RouterLink
           to="/changePassword"
           tag="li"
-          class="m-entry">
+          class="m-entry"
+        >
           <span>修改密码</span>
           <svg class="m-style-svg m-svg-def m-entry-append">
-            <use xlink:href="#icon-arrow-right"/>
+            <use xlink:href="#icon-arrow-right" />
           </svg>
-        </router-link>
+        </RouterLink>
         <li
           class="m-entry"
-          @click="aboutUs">
+          @click="aboutUs"
+        >
           <span class="m-box m-text-box m-flex-grow1">关于我们</span>
           <span class="m-box m-text-box m-flex-grow1 m-justify-end m-entry-extra">v{{ version }}</span>
           <svg class="m-style-svg m-svg-def m-entry-append">
-            <use xlink:href="#icon-arrow-right"/>
+            <use xlink:href="#icon-arrow-right" />
           </svg>
         </li>
         <li
           class="m-entry"
-          @click="signOut">
+          @click="signOut"
+        >
           <a>退出登录</a>
           <svg class="m-style-svg m-svg-def m-entry-append">
-            <use xlink:href="#icon-arrow-right"/>
+            <use xlink:href="#icon-arrow-right" />
           </svg>
         </li>
       </ul>

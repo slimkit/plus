@@ -1,16 +1,18 @@
 <template>
   <div @touchmove.prevent>
-    <transition name="toast">
+    <Transition name="toast">
       <div
         v-if="show"
         class="m-pop-box"
-        @click="cancel"/>
-    </transition>
-    <transition name="pop">
+        @click="cancel"
+      />
+    </Transition>
+    <Transition name="pop">
       <div
         v-if="show"
         class="c-comment-input"
-        @touch.prevent>
+        @touch.prevent
+      >
         <span class="textarea-wrap">
           <textarea
             ref="textarea"
@@ -21,24 +23,29 @@
             @focus="onFocus"
             @blur="moveCurPos"
             @keydown.enter.prevent="sendText"
-            @input="moveCurPos"/>
+            @input="moveCurPos"
+          />
           <textarea
             ref="shadow"
             :value="shadowText"
             :disabled="true"
             class="textarea-shadow"
             rows="1"
-            maxlength="255"/>
+            maxlength="255"
+          />
         </span>
         <div class="submit-wrap">
           <span v-if="contentText.length >= 210" class="content-length">{{ contentText.length }}/255</span>
           <button
             :disabled="!contentText.length"
             class="submit-btn"
-            @click="sendText">发送</button>
+            @click="sendText"
+          >
+            发送
+          </button>
         </div>
       </div>
-    </transition>
+    </Transition>
   </div>
 </template>
 

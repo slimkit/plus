@@ -1,15 +1,15 @@
 <template>
   <div class="m-box-model p-post-news">
-
-    <common-header>
+    <CommonHeader>
       {{ title }}
       <template slot="left">
         <a v-if="step === 1" @click.prevent="cancel">取消</a>
         <svg
           v-else
           class="m-style-svg m-svg-def"
-          @click="preStep">
-          <use xlink:href="#icon-back"/>
+          @click="preStep"
+        >
+          <use xlink:href="#icon-back" />
         </svg>
       </template>
       <template slot="right">
@@ -17,33 +17,40 @@
           v-if="step != 3"
           :class="{ disabled }"
           class="m-send-btn"
-          @click.prevent="nextStep">下一步</a>
+          @click.prevent="nextStep"
+        >
+          下一步
+        </a>
       </template>
-    </common-header>
+    </CommonHeader>
 
-    <transition-group
+    <TransitionGroup
       :enter-active-class="animated.enterClass"
       :leave-active-class="animated.leaveClass"
       tag="main"
-      class="m-box-model m-flex-grow1 m-flex-shrink1 p-post-news-main">
+      class="m-box-model m-flex-grow1 m-flex-shrink1 p-post-news-main"
+    >
       <template v-if="step === 1">
         <div
           key="step1"
           class="m-pos-f m-box-model m-flex-grow1 m-flex-shrink1 m-justify-center m-aln-center m-main"
-          style="padding-left: 0.3rem; padding-right: 0.3rem">
+          style="padding-left: 0.3rem; padding-right: 0.3rem"
+        >
           <div class="m-box m-flex-grow0 m-shrink0 m-bb1 m-lim-width m-post-news-title">
             <input
               v-model.trim="news.title"
               class="m-lim-width"
               maxlength="20"
               type="text"
-              placeholder="输入标题，20字以内">
+              placeholder="输入标题，20字以内"
+            >
           </div>
           <div class="m-box-model m-flex-grow1 m-flex-shrink1 m-lim-width m-post-news-content">
             <textarea
               ref="textarea"
               v-model.trim="contentText"
-              placeholder="编辑文章正文"/>
+              placeholder="编辑文章正文"
+            />
           </div>
         </div>
       </template>
@@ -54,7 +61,7 @@
             <div :class="{placeholder: !(category.id > 0)}" class="m-box m-flex-grow1 m-flex-shrink1 m-aln-center m-justify-end">
               <span>{{ category.name || "选择栏目" }}</span>
               <svg class="m-style-svg m-svg-def m-entry-append">
-                <use xlink:href="#icon-arrow-right"/>
+                <use xlink:href="#icon-arrow-right" />
               </svg>
             </div>
           </div>
@@ -65,14 +72,17 @@
                 <span
                   v-for="tag in tags"
                   :key="tag.id"
-                  class="m-tag">{{ tag.name }}</span>
+                  class="m-tag"
+                >
+                  {{ tag.name }}
+                </span>
               </div>
               <div v-else class="m-box m-justify-end placeholder">
                 <span>最多选择5个标签</span>
               </div>
             </div>
             <svg class="m-flex-grow0 m-flex-shrink0 m-style-svg m-svg-def m-entry-append">
-              <use xlink:href="#icon-arrow-right"/>
+              <use xlink:href="#icon-arrow-right" />
             </svg>
           </div>
           <div class="m-box m-aln-center m-lim-width m-post-news-row m-main m-bb1">
@@ -82,7 +92,8 @@
                 v-model.trim="news.from"
                 type="text"
                 dir="rtl"
-                placeholder="不填写则默认为原创">
+                placeholder="不填写则默认为原创"
+              >
             </div>
           </div>
           <div class="m-box m-aln-center m-lim-width m-post-news-row m-main m-bb1">
@@ -92,18 +103,20 @@
                 v-model.trim="news.author"
                 type="text"
                 dir="rtl"
-                placeholder="不填写则默认为本站用户名">
+                placeholder="不填写则默认为本站用户名"
+              >
             </div>
           </div>
           <div class="m-box m-aln-center m-lim-width m-post-news-row m-main">
             <span class="m-post-news-row-label">摘要</span>
             <div class="m-box m-flex-grow1 m-flex-shrink1 m-aln-center m-justify-end">
-              <textarea-input
+              <TextareaInput
                 v-model="news.subject"
                 class="textarea-input"
                 maxlength="200"
                 warnlength="150"
-                placeholder="请输入摘要信息，最多200字" />
+                placeholder="请输入摘要信息，最多200字"
+              />
             </div>
           </div>
         </div>
@@ -113,16 +126,18 @@
           <div
             :class="{ loading: poster.loading, error: poster.error }"
             class="m-box m-aln-center m-justify-center m-poster-box"
-            @click="addPoster">
+            @click="addPoster"
+          >
             <img
               v-if="poster.src"
               :src="poster.src"
               class="m-poster"
               @load.stop="loadedPoster(poster)"
-              @error="posterError">
+              @error="posterError"
+            >
             <div v-else class="m-box-model m-aln-center m-justify-center m-lim-width m-poster-placeholder">
               <svg class="m-style-svg m-svg-big">
-                <use xlink:href="#icon-camera"/>
+                <use xlink:href="#icon-camera" />
               </svg>
               <span>点击上传封面</span>
             </div>
@@ -132,7 +147,8 @@
                   class="loading"
                   width="100%"
                   height="100%"
-                  viewBox="0 0 29 29">
+                  viewBox="0 0 29 29"
+                >
                   <circle
                     class="c1"
                     cx="14.5"
@@ -140,7 +156,8 @@
                     r="12.5"
                     fill="none"
                     stroke-width="4"
-                    stroke="#b1b1b1" />
+                    stroke="#b1b1b1"
+                  />
                   <circle
                     class="c2"
                     cx="14.5"
@@ -148,7 +165,8 @@
                     r="12.5"
                     fill="none"
                     stroke-width="4"
-                    stroke="#c7c7c7" />
+                    stroke="#c7c7c7"
+                  />
                 </svg>
               </div>
             </div>
@@ -158,17 +176,17 @@
               ref="imagefile"
               type="file"
               class="m-rfile"
-              @change="selectPhoto">
+              @change="selectPhoto"
+            >
           </div>
           <p>不上传封面则默认为文章内第一张图</p>
           <button class="m-long-btn m-signin-btn" @click="handleOk">{{ newsPay ? '支付并发布资讯' : '发布资讯' }}</button>
 
-          <password-confirm ref="password" @submit="handlePostNews" />
-
+          <PasswordConfirm ref="password" @submit="handlePostNews" />
         </div>
       </template>
-    </transition-group>
-    <choose-cate />
+    </TransitionGroup>
+    <ChooseCate />
   </div>
 </template>
 
@@ -247,14 +265,19 @@ export default {
       }
     },
     disabled () {
+      let result
       switch (this.step) {
         case 1:
-          return !(this.news.title && this.news.content)
+          result = !(this.news.title && this.news.content)
+          break
         case 2:
-          return !(this.category.id > 0 && this.tags.length > 0)
+          result = !(this.category.id > 0 && this.tags.length > 0)
+          break
         case 3:
-          return !(this.news.image > 0)
+          result = !(this.news.image > 0)
+          break
       }
+      return result
     },
   },
   created () {

@@ -11,33 +11,44 @@
       <div
         v-show="!showAll"
         :class="`${prefixCls}--switch`"
-        @click="showEditor">
+        @click="showEditor"
+      >
         <svg>
-          <use xlink:href="#icon-arrow-right"/>
+          <use xlink:href="#icon-arrow-right" />
         </svg>
       </div>
       <span :class="`${prefixCls}--list__label`">我的订阅</span>
       <div :class="[`${prefixCls}--list`, { editing }]">
         <div
           :class="[`${prefixCls}--list__item`, { active: ~~(currentCate.id) === 0 }]"
-          @click="chooseCate($event, {id: 0, name:'推荐'})" >推荐</div>
+          @click="chooseCate($event, {id: 0, name:'推荐'})"
+        >
+          推荐
+        </div>
         <div
           v-for="myCate in myCates"
-          :class="[`${prefixCls}--list__item`, { active: myCate.id === currentCate.id }]"
           :key="`myCate-${myCate.id}`"
-          @click="chooseCate($event, myCate)">{{ myCate.name }}</div>
+          :class="[`${prefixCls}--list__item`, { active: myCate.id === currentCate.id }]"
+          @click="chooseCate($event, myCate)"
+        >
+          {{ myCate.name }}
+        </div>
       </div>
     </div>
     <div
       v-show="showAll"
-      :class="`${prefixCls}--list__wrap`">
+      :class="`${prefixCls}--list__wrap`"
+    >
       <span :class="`${prefixCls}--list__label`">更多订阅</span>
       <div :class="`${prefixCls}--list`">
         <div
           v-for="cate in moreCates"
-          :class="[`${prefixCls}--list__item`]"
           :key="`moreCate-${cate.id}`"
-          @click="chooseCate($event, cate)">{{ cate.name }}</div>
+          :class="[`${prefixCls}--list__item`]"
+          @click="chooseCate($event, cate)"
+        >
+          {{ cate.name }}
+        </div>
       </div>
     </div>
   </div>
