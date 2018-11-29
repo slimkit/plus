@@ -70,7 +70,7 @@ class PinnedsNotificationEventer
     {
         $notifications = collect($this->events->dispatch($this->prefix));
 
-        return $notification->reject(function ($notification): bool {
+        return $notifications->reject(function ($notification): bool {
             if (! is_array($notification)) {
                 return true;
             } elseif (! isset($notification['namespace'])) {
