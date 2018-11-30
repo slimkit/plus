@@ -15,7 +15,7 @@
   </div>
 </template>
 <script>
-import message from './message'
+import Message from './message'
 
 let seed = 0
 const getUuid = () => {
@@ -24,7 +24,7 @@ const getUuid = () => {
 export default {
   name: 'MessageList',
   components: {
-    message,
+    Message,
   },
   data () {
     return {

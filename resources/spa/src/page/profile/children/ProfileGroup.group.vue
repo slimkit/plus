@@ -24,12 +24,12 @@
 </template>
 
 <script>
-import groupItem from '@/page/group/components/GroupItem.vue'
+import GroupItem from '@/page/group/components/GroupItem.vue'
 
 export default {
   name: 'ProfileGroupGroups',
   components: {
-    groupItem,
+    GroupItem,
   },
   data () {
     return {
