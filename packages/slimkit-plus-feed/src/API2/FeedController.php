@@ -720,6 +720,7 @@ class FeedController extends Controller
         FeedModel $feed
     ) {
         $user = $feed->user;
+        $authUser = request()->user();
         if (! $user) {
             // 删除话题关联
             $feed->topics->each(function ($topic) {
@@ -731,7 +732,9 @@ class FeedController extends Controller
             $feed->delete();
 
             return $response->json(null, 204);
-        } elseif ($user->id !== $feed->user_id && ! $user->ability('[feed] Delete Feed')) {
+        } elseif ($authUser->id !== $user->id) {
+            return $response->json(['message' => '你没有权限删除动态'])->setStatusCode(403);
+        } elseif ($authUser->id !== $user->id && ! $authUser->ability('[feed] Delete Feed')) {
             return $response->json(['message' => '你没有权限删除动态'])->setStatusCode(403);
         }
 
