@@ -416,13 +416,6 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
         */
 
         $api->group(['prefix' => 'wallet'], function (RouteContract $api) {
-
-            /*
-            | 获取钱包配置信息
-             */
-
-            $api->get('/', API2\WalletConfigController::class.'@show');
-
             /*
             | 获取提现记录
              */
