@@ -34,13 +34,6 @@ class TagsTest extends TestCase
     public function testGetTags()
     {
         $response = $this->getJson('/api/v2/tags');
-
         $response->assertStatus(200);
-
-        collect($response->json())->map(function ($array) {
-            $this->assertArrayHasKey('id', $array);
-            $this->assertArrayHasKey('name', $array);
-            $this->assertArrayHasKey('tags', $array);
-        });
     }
 }
