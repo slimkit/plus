@@ -95,7 +95,7 @@ class LocalFilesystem implements FilesystemInterface
                 return $this->filesystem->response($resource->getPath());
             }
 
-            $pathinfo = \League\Flysystem\Util::pathinfo($realPath);
+            $pathinfo = \League\Flysystem\Util::pathinfo($resource->getPath());
             $cachePath = sprintf('%s/%s/%s.%s', $pathinfo['dirname'], $pathinfo['filename'], $rule->getFilename(), $pathinfo['extension']);
             if ($this->filesystem->has($cachePath)) {
                 return $this->filesystem->response($cachePath);

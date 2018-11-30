@@ -91,12 +91,12 @@ export default {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    z-index: 9;
+    z-index: 99999;
     padding: 20px;
     border: 1px solid transparent;
     border-radius: 4px;
     width: 300px;
-    height: 150px;
+    // height: 150px;
     background-color: #fff;
     &.info {
         background-color: #d9edf7;
