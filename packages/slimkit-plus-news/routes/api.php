@@ -96,9 +96,6 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
             // 关注资讯分类
             $api->patch('/categories/follows', API2\CateController::class.'@follow');
 
-            // Send news contributes.
-            $api->post('/categories/{category}/news', API2\ContributeController::class.'@store')->middleware('sensitive:title,content,subject,from,author');
-
             // Update news contributes.
             $api->patch('/categories/{category}/news/{news}', API2\ContributeController::class.'@update')->middleware('sensitive:title,content,subject,from,author');
 
