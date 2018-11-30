@@ -32,7 +32,7 @@ class CreatePaidNodesTable extends Migration
         Schema::create('paid_nodes', function (Blueprint $table) {
             $table->increments('id')->comment('付费记录ID');
             $table->string('channel', 100)->comment('付费频道');
-            $table->string('raw', 150)->comment('付费原始信息');
+            $table->integer('raw')->comment('付费原始信息');
             $table->string('subject')->comment('付费主题');
             $table->string('body')->comment('付费内容详情');
             $table->bigInteger('amount')->unsigned()->comment('付费金额');

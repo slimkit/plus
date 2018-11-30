@@ -58,16 +58,14 @@ class LocationController extends Controller
             return $tree;
         };
 
-        return $model->getConnection()->transaction(function () use ($areas, $parentTreeCall, $response) {
-            return $response->json($areas->map(function (AreaModel $item) use ($parentTreeCall) {
-                $item->setHidden(array_merge($item->getHidden(), ['items']));
+        return $response->json($areas->map(function (AreaModel $item) use ($parentTreeCall) {
+            $item->setHidden(array_merge($item->getHidden(), ['items']));
 
-                return [
-                    'items' => count($parentTreeCall($parentTreeCall, $item, [$item])) < 3 ? $item->items : null,
-                    'tree' => $item,
-                ];
-            }))->setStatusCode(200);
-        });
+            return [
+                'items' => count($parentTreeCall($parentTreeCall, $item, [$item])) < 3 ? $item->items : null,
+                'tree' => $item,
+            ];
+        }))->setStatusCode(200);
     }
 
     /**

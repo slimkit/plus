@@ -30,7 +30,7 @@ class LocationsTest extends TestCase
      */
     public function testSearchLocations()
     {
-        $response = $this->get('/api/v2/locations/search?name=北京');
+        $response = $this->json('GET', '/api/v2/locations/search?name='.urlencode('北京'));
 
         $response->assertStatus(200);
     }
@@ -43,7 +43,7 @@ class LocationsTest extends TestCase
      */
     public function testGetHotLocations()
     {
-        $response = $this->get('/api/v2/locations/hots');
+        $response = $this->json('GET', '/api/v2/locations/hots');
 
         $response->assertStatus(200);
     }

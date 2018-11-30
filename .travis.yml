@@ -10,7 +10,7 @@ php:
   # - 7.3
   - nightly # 每夜 PHP 构建，PHP 开发版本
 env:
-  # - DB=mysql
+  - DB=mysql
   - DB=postgres
 services:
   - mysql
@@ -33,18 +33,18 @@ script: php vendor/bin/phpunit --coverage-clover=coverage.xml
 after_script:
   - php vendor/bin/codacycoverage clover coverage.xml
   - bash <(curl -s https://codecov.io/bash)
-# jobs:
-#   include:
-#     - stage: Build
-#       name: Build Assets Test
-#       language: node_js
-#       node_js: 6
-#       cache:
-#         directories:
-#           - "node_modules"
-#       services: null
-#       env: null
-#       before_install: null
-#       install: npm install
-#       script: npm run dev
-#       after_script: null
+jobs:
+  include:
+    - stage: Build
+      name: Build Assets Test
+      language: node_js
+      node_js: 6
+      cache:
+        directories:
+          - "node_modules"
+      services: null
+      env: null
+      before_install: null
+      install: npm install
+      script: npm run dev
+      after_script: null
