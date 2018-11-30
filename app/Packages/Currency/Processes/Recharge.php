@@ -162,7 +162,6 @@ class Recharge extends Process
             return false;
         }
 
-        
         $settings = setting('wallet', 'ping++', []);
         $signature = $request->headers->get('x-pingplusplus-signature');
         $pingPlusPlusPublicCertificate = $settings['public_key'] ?? null;

@@ -64,7 +64,7 @@ class WalletCashSettingController extends Controller
         $this->validate($request, $rules, $messages);
         setting('wallet')->set([
             'cash-types' => $request->input('types', []),
-            'cash-min-amount' => intval($request->input('min_amount', 1))
+            'cash-min-amount' => intval($request->input('min_amount', 1)),
         ]);
 
         return response()

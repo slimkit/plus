@@ -23,7 +23,6 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use function Zhiyi\Plus\setting;
-use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class WalletLabelController extends Controller
