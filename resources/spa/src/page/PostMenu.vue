@@ -48,7 +48,7 @@
               <span>投稿</span>
             </div>
             <div
-              v-if="checkin"
+              v-if="checkinEnable"
               key="ico_attendance"
               class="m-box-model m-aln-center m-post-menu-item"
               @click="showCheckIn"
@@ -105,6 +105,7 @@ export default {
   },
   computed: {
     ...mapState({
+      checkin: state => state.CONFIG.checkin || { switch: false },
       verified: state => state.USER_VERIFY,
       newsVerified: state => state.CONFIG['news:contribute'].verified,
     }),
@@ -113,11 +114,10 @@ export default {
     },
     /**
      * 检查后台是否开启签到功能
-     * @author jsonleex <jsonlseex@163.com>
      * @return {Boolean}
      */
-    checkin () {
-      return this.$store.state.CONFIG.checkin || true
+    checkinEnable () {
+      return this.checkin.switch
     },
   },
   created () {
