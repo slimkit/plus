@@ -70,7 +70,7 @@ class StoreCurrencyCash extends FormRequest
         $settings = setting('currency', 'settings', [
             'cash-min' => 100,
         ]);
-    
+
         return [
             'amount.required' => '请选择需要提取的积分',
             'amount.min' => sprintf('最低提现金额为：“%d”', $settings['cash-min']),

@@ -53,7 +53,7 @@ class StoreCurrencyAppleIAPRecharge extends FormRequest
                 'required',
                 'integer',
                 sprintf('min:%d', $settings['recharge-min']),
-                sprintf('max:%d', $settings['recharge-max'])
+                sprintf('max:%d', $settings['recharge-max']),
             ],
         ];
     }

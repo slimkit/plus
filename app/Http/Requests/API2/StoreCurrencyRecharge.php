@@ -49,13 +49,14 @@ class StoreCurrencyRecharge extends FormRequest
             'recharge-max' => 10000000,
             'recharge-min' => 100,
         ]);
+
         return [
             'type' => 'required|in:'.implode(',', $repository->get()),
             'amount' => [
                 'required',
                 'integer',
                 sprintf('min:%d', $settings['recharge-min']),
-                sprintf('max:%d', $settings['recharge-max'])
+                sprintf('max:%d', $settings['recharge-max']),
             ],
             'extra' => 'array',
         ];
