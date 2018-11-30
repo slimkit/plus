@@ -79,7 +79,7 @@ class CurrencyController extends Controller
         if ($type == 'detail') {
             setting('currency')->set('settings', [
                 'recharge-ratio' => (int) $request->input('recharge-ratio'),
-                'recharge-options' => $request->input('recharge-options'),
+                'recharge-options' => $request->input('recharge-option'),
                 'recharge-max' => $request->input('recharge-max'),
                 'recharge-min' => $request->input('recharge-min'),
                 'cash-max' => $request->input('cash-max'),
