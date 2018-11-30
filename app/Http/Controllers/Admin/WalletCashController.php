@@ -21,10 +21,10 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Models\WalletCash;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\WalletCharge;
-use Zhiyi\Plus\Repository\WalletRatio;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class WalletCashController extends Controller
@@ -36,7 +36,7 @@ class WalletCashController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function show(Request $request, WalletRatio $repository)
+    public function show(Request $request)
     {
         $user = $request->query('user');
         $status = $request->query('status');
@@ -69,7 +69,7 @@ class WalletCashController extends Controller
                 'current_page' => $paginate->currentPage(),
                 'first_page' => 1,
                 'cashes' => $items,
-                'ratio' => $repository->get(),
+                'ratio' => setting('wallet', 'ratio', 100),
             ])
             ->setStatusCode(200);
     }

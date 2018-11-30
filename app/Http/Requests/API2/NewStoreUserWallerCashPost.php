@@ -21,10 +21,9 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Requests\API2;
 
 use Illuminate\Validation\Rule;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Packages\Wallet\Wallet;
 use Illuminate\Foundation\Http\FormRequest;
-use Zhiyi\Plus\Repository\UserWalletCashType;
-use Zhiyi\Plus\Repository\WalletCashMinAmount as CashMinAmountRepository;
 
 class NewStoreUserWallerCashPost extends FormRequest
 {
@@ -45,7 +44,6 @@ class NewStoreUserWallerCashPost extends FormRequest
      */
     public function rules(): array
     {
-        $typeRepository = app(UserWalletCashType::class);
         $minAmountRepository = app(CashMinAmountRepository::class);
         $wallet = new Wallet($this->user());
 
@@ -53,12 +51,12 @@ class NewStoreUserWallerCashPost extends FormRequest
             'value' => [
                 'required',
                 'numeric',
-                'min:'.$minAmountRepository->get(),
+                'min:'.setting('wallet', 'cash-min-amount', 100),
                 'max:'.$wallet->getWalletModel()->balance,
             ],
             'type' => [
                 'required',
-                Rule::in($typeRepository->get()),
+                Rule::in(setting('wallet', 'cash-types', [])),
             ],
             'account' => ['required'],
         ];

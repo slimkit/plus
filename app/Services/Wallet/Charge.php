@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Services\Wallet;
 
+use function Zhiyi\Plus\setting;
 use Pingpp\Pingpp as PingppInit;
 use Pingpp\Charge as PingppCharge;
-use Zhiyi\Plus\Repository\WalletPingPlusPlus;
 use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 
@@ -74,12 +74,11 @@ class Charge
     /**
      * Create the service instance.
      *
-     * @param \Zhiyi\Plus\Repository\WalletPingPlusPlus $repository
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function __construct(WalletPingPlusPlus $repository)
+    public function __construct()
     {
-        $config = $repository->get();
+        $config = setting('wallet', 'ping++', []);
 
         $this->appId = $config['app_id'] ?? null;
         $this->secretkey = $config['secret_key'] ?? null;

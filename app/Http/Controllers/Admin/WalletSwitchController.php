@@ -21,48 +21,37 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Support\Configuration;
-use Illuminate\Contracts\Config\Repository;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
 class WalletSwitchController extends Controller
 {
-    public function show(Repository $config, Configuration $configuration)
+    public function show()
     {
-        $configs = $config->get('wallet');
+        $settings = [
+            'cash' => [
+                'status' => setting('wallet', 'cash-status', true),
+            ],
+            'recharge' => [
+                'status' => setting('wallet', 'recharge-status', true),
+            ],
+            'transform' => [
+                'status' => setting('wallet', 'transform-status', true),
+            ],
+        ];
 
-        if (is_null($configs)) {
-            $configs = $this->initWalletSwitch($configuration);
-        }
-
-        return response()->json($configs, 200);
+        return response()->json($settings, 200);
     }
 
-    public function update(Request $request, Configuration $configuration)
+    public function update(Request $request)
     {
         $switch = $request->input('switch');
-
-        $config = $configuration->getConfiguration();
-
-        $config->set('wallet.cash.status', $switch['cash']);
-        $config->set('wallet.recharge.status', $switch['recharge']);
-        $config->set('wallet.transform.status', $switch['transform']);
-
-        $configuration->save($config);
+        setting('wallet')->set([
+            'cash-status' => (bool) ($switch['cash'] ?? false),
+            'recharge-status' => (bool) ($switch['recharge'] ?? false),
+            'transform-status' => (bool) ($switch['transform'] ?? false),
+        ]);
 
         return response()->json(['message' => '更新成功'], 201);
-    }
-
-    private function initWalletSwitch(Configuration $configuration)
-    {
-        $config = $configuration->getConfiguration();
-
-        $config->set('wallet.cash.status', true);
-        $config->set('wallet.recharge.status', true);
-        $config->set('wallet.transform.status', true);
-
-        $configuration->save($config);
-
-        return $config['wallet'];
     }
 }

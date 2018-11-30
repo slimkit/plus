@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Tests\Feature\API2;
 
 use Zhiyi\Plus\Tests\TestCase;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\Repository\UserWalletCashType;
 use Zhiyi\Plus\Models\WalletCash as WalletCashModel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -42,8 +42,7 @@ class WalletCashTest extends TestCase
         factory(WalletCashModel::class)->create(['user_id' => $this->user->id]);
         factory(WalletCashModel::class)->create(['user_id' => $this->user->id]);
         factory(WalletCashModel::class)->create(['user_id' => $this->user->id]);
-        app(UserWalletCashType::class)->store(['alipay']);
-        app(UserWalletCashType::class)->flush();
+        setting('wallet')->set('cash-types', ['alipay']);
     }
 
     /**

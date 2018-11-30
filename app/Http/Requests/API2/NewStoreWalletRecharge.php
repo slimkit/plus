@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Requests\API2;
 
+use function Zhiyi\Plus\setting;
 use Illuminate\Foundation\Http\FormRequest;
-use Zhiyi\Plus\Repository\WalletRechargeType;
 
 class NewStoreWalletRecharge extends FormRequest
 {
@@ -38,14 +38,13 @@ class NewStoreWalletRecharge extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @param \Zhiyi\Plus\Repository\WalletRechargeType $repository
      * @return array
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function rules(WalletRechargeType $repository)
+    public function rules()
     {
         return [
-            'type' => 'required|in:'.implode(',', $repository->get()),
+            'type' => 'required|in:'.implode(',', setting('wallet', 'recharge-types', [])),
             'amount' => 'required|min:1|max:1000000',
             'extra' => 'array',
         ];

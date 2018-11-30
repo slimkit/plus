@@ -21,43 +21,41 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
-use Zhiyi\Plus\Repository\WalletRechargeType as RechargeTypeRepository;
 
 class WalletRechargeTypeController extends Controller
 {
     /**
      * Get support types.
      *
-     * @param \Zhiyi\Plus\Repository\WalletRechargeType $repository
      * @param \Illuminate\Contracts\Routing\ResponseFactory $response
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function show(RechargeTypeRepository $repository, ContractResponse $response)
+    public function show(ContractResponse $response)
     {
         return $response
-            ->json(['support' => $this->getSupportTypes(), 'types' => $repository->get()])
+            ->json([
+                'support' => $this->getSupportTypes(),
+                'types' => setting('wallet', 'recharge-types', []),
+            ])
             ->setStatusCode(200);
     }
 
     /**
      * Update support types.
      *
-     * @param \Zhiyi\Plus\Repository\WalletRechargeType $repository
      * @param \Illuminate\Http\Request $request
      * @param \Illuminate\Contracts\Routing\ResponseFactory $response
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function update(RechargeTypeRepository $repository, Request $request, ContractResponse $response)
+    public function update(Request $request, ContractResponse $response)
     {
         $this->validate($request, $this->rules(), $this->validateErrorMessages());
-
-        $repository->store(
-            $request->input('types')
-        );
+        setting('wallet')->set('recharge-types', $request->input('types'));
 
         return $response
             ->json(['message' => ['更新成功']])

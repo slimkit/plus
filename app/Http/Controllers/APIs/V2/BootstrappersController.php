@@ -68,12 +68,11 @@ class BootstrappersController extends Controller
             'type' => 'all',
         ]);
 
-        $bootstrappers['wallet:cash'] = ['open' => config('wallet.cash.status', true)];
-        $bootstrappers['wallet:recharge'] = ['open' => config('wallet.recharge.status', true)];
-        $bootstrappers['wallet:transform'] = ['open' => config('wallet.transform.status', true)];
-
         $bootstrappers['currency'] = [
-            'IAP_only' => config('currency.recharge.IAP.only', true),
+            'IAP' => [
+                'only' => config('currency.recharge.IAP.only', true),
+                'rule' => config('currency.recharge.IAP.rule', ''),
+            ],
             'cash' => setting('currency', 'cash', [
                 'rule' => '我是提现规则',
                 'status' => true, // 提现开关
@@ -90,10 +89,23 @@ class BootstrappersController extends Controller
                 'recharge-min' => 100,
                 'cash-max' => 10000000,
                 'cash-min' => 100,
-                'cash-type' => ($cash = CommonConfig::where('name', 'cash')->where('namespace', 'wallet')->first()) ? json_decode($cash->value) : [],
-                'apple-IAP-rule' => config('currency.recharge.IAP.rule', ''),
-                'recharge-type' => ($recharge_type = CommonConfig::where('name', 'wallet:recharge-type')->where('namespace', 'common')->first()) ? json_decode($recharge_type->value) : [],
             ]),
+        ];
+
+        $bootstrappers['wallet'] = [
+            'rule' => setting('wallet', 'rule'),
+            'labels' => setting('wallet', 'labels', []),
+            'ratio' => setting('wallet', 'ratio', 100),
+            'cash' => [
+                'min-amount' => setting('wallet', 'cash-min-amount', 100),
+                'types' => setting('wallet', 'cash-types', []),
+                'status' => setting('wallet', 'cash-status', true),
+            ],
+            'recharge' => [
+                'types' => setting('wallet', 'recharge-types', []),
+                'status' => setting('wallet', 'recharge-status', true),
+            ],
+            'transform-currency' => setting('wallet', 'transform-status', true),
         ];
 
         $goldSetting = $goldType->where('status', 1)->select('name', 'unit')->first() ?? collect(['name' => '金币', 'unit' => '个']);

@@ -22,7 +22,6 @@ namespace Zhiyi\Plus\Http\Requests\API2;
 
 use function Zhiyi\Plus\setting;
 use Illuminate\Foundation\Http\FormRequest;
-use Zhiyi\Plus\Repository\WalletRechargeType;
 
 class StoreCurrencyRecharge extends FormRequest
 {
@@ -39,11 +38,10 @@ class StoreCurrencyRecharge extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @param \Zhiyi\Plus\Repository\WalletRechargeType $repository
      * @return array
      * @author BS <414606094@qq.com>
      */
-    public function rules(WalletRechargeType $repository)
+    public function rules()
     {
         $settings = setting('currency', 'settings', [
             'recharge-max' => 10000000,
@@ -51,7 +49,10 @@ class StoreCurrencyRecharge extends FormRequest
         ]);
 
         return [
-            'type' => 'required|in:'.implode(',', $repository->get()),
+            'type' => [
+                'required',
+                sprintf('in:%s', implode(',', setting('wallet', 'recharge-types', []))),
+            ],
             'amount' => [
                 'required',
                 'integer',

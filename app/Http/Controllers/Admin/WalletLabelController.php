@@ -21,6 +21,8 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Http\Controllers\Controller;
 
@@ -34,19 +36,9 @@ class WalletLabelController extends Controller
      */
     public function labels()
     {
-        $labels = CommonConfig::byNamespace('wallet')
-            ->byName('labels')
-            ->value('value') ?: '[]';
+        $labels = setting('wallet', 'labels', []);
 
-        if (! $labels) {
-            return response()
-                ->json([], 200);
-        }
-
-        return response()
-            ->json()
-            ->setJson($labels)
-            ->setStatusCode(200);
+        return new Response($labels, 200);
     }
 
     /**
@@ -58,11 +50,6 @@ class WalletLabelController extends Controller
      */
     public function storeLabel(Request $request)
     {
-        $labels = CommonConfig::firstOrNew(
-            ['name' => 'labels', 'namespace' => 'wallet'],
-            ['value' => '[]']
-        );
-
         $rules = [
             'label' => 'required',
         ];
@@ -71,29 +58,23 @@ class WalletLabelController extends Controller
         ];
         $this->validate($request, $rules, $messages);
 
+        $labels = setting('wallet', 'labels', []);
         $label = intval($request->input('label'));
-        if (count(json_decode($labels->value, true)) === 6) {
+        if (count($labels) === 6) {
             return response()->json(['message' => ['最多只能设置6个选项']], 422);
         }
-        if (in_array($label, $_labels = json_decode($labels->value, true))) {
+        if (in_array($label, $labels)) {
             return response()
                 ->json(['messages' => ['选项已经存在，请输入新的选项']])
                 ->setStatusCode(422);
         }
 
-        array_push($_labels, $label);
-
-        $labels->value = json_encode($_labels);
-
-        if ($labels->save()) {
-            return response()
-                ->json(['messages' => ['创建成功']])
-                ->setStatusCode(201);
-        }
+        array_push($labels, $label);
+        setting('wallet')->set('labels', $labels);
 
         return response()
-            ->json(['messages' => ['创建失败']])
-            ->setStatusCode(500);
+            ->json(['messages' => ['创建成功']])
+            ->setStatusCode(201);
     }
 
     /**
@@ -105,27 +86,17 @@ class WalletLabelController extends Controller
      */
     public function deleteLabel(int $label)
     {
-        $labels = CommonConfig::firstOrNew(
-            ['name' => 'labels', 'namespace' => 'wallet'],
-            ['value' => '[]']
-        );
-
-        $items = array_reduce(json_decode($labels->value, true), function (array $labels, $item) use ($label) {
-            if (intval($item) !== $label) {
-                array_push($labels, $item);
+        $labels = setting('wallet', 'labels', []);
+        $labels = array_map(function ($item) use ($label) {
+            if ($item === $label) {
+                return null;
             }
 
-            return $labels;
-        }, []);
+            return $item;
+        }, $labels);
+        $labels = array_filter($labels);
+        setting('wallet')->set('labels', $labels);
 
-        $labels->value = json_encode($items);
-
-        if ($labels->save()) {
-            return response('', 204);
-        }
-
-        return response()
-            ->json(['message' => ['删除失败']])
-            ->setStatusCode(500);
+        return response('', 204);
     }
 }

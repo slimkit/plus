@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Models\CommonConfig;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
 
@@ -36,12 +36,8 @@ class WalletRuleController extends Controller
      */
     public function show(ResponseFactory $response)
     {
-        $rule = CommonConfig::byNamespace('wallet')
-            ->byName('rule')
-            ->value('value');
-
         return $response
-            ->json(['rule' => $rule])
+            ->json(['rule' => setting('wallet', 'rule')])
             ->setStatusCode(200);
     }
 
@@ -56,11 +52,7 @@ class WalletRuleController extends Controller
     public function update(Request $request, ResponseFactory $response)
     {
         $rule = $request->input('rule', '');
-
-        CommonConfig::updateOrCreate(
-            ['name' => 'rule', 'namespace' => 'wallet'],
-            ['value' => $rule]
-        );
+        setting('wallet')->set('rule', $rule);
 
         return $response
             ->json(['message' => ['更新成功']])

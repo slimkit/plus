@@ -22,9 +22,9 @@ namespace Zhiyi\Plus\Packages\Wallet\Types;
 
 use DB;
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\Repository\WalletPingPlusPlus;
 use Zhiyi\Plus\Models\WalletOrder as WalletOrderModel;
 use Zhiyi\Plus\Packages\Wallet\TargetTypes\RechargeTarget;
 use Zhiyi\Plus\Services\Wallet\Charge as WalletChargeService;
@@ -191,8 +191,9 @@ class RechargeType extends Type
             return false;
         }
 
+        $settings = setting('wallet', 'ping++', []);
         $signature = $request->headers->get('x-pingplusplus-signature');
-        $pingPlusPlusPublicCertificate = app(WalletPingPlusPlus::class)->get()['public_key'] ?? null;
+        $pingPlusPlusPublicCertificate = $settings['public_key'] ?? null;
         $signed = openssl_verify($request->getContent(), base64_decode($signature), $pingPlusPlusPublicCertificate, OPENSSL_ALGO_SHA256);
 
         if (! $signed) {

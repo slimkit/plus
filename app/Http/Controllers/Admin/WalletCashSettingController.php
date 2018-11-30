@@ -21,9 +21,8 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Repository\UserWalletCashType;
-use Zhiyi\Plus\Repository\WalletCashMinAmount;
 
 class WalletCashSettingController extends Controller
 {
@@ -33,11 +32,11 @@ class WalletCashSettingController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function show(UserWalletCashType $typeRepository, WalletCashMinAmount $minAmountRepository)
+    public function show()
     {
         return response()->json([
-            'types' => $typeRepository->get(),
-            'min_amount' => $minAmountRepository->get(),
+            'types' => setting('wallet', 'cash-types', []),
+            'min_amount' => setting('wallet', 'cash-min-amount', 100),
         ])->setStatusCode(200);
     }
 
@@ -48,7 +47,7 @@ class WalletCashSettingController extends Controller
      * @return mexed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function update(Request $request, UserWalletCashType $typeRepository, WalletCashMinAmount $minAmountRepository)
+    public function update(Request $request)
     {
         $rules = [
             'types' => 'array|in:alipay,wechat',
@@ -63,12 +62,10 @@ class WalletCashSettingController extends Controller
         ];
 
         $this->validate($request, $rules, $messages);
-        $typeRepository->store(
-            $request->input('types', [])
-        );
-        $minAmountRepository->store(
-            intval($request->input('min_amount', 1))
-        );
+        setting('wallet')->set([
+            'cash-types' => $request->input('types', []),
+            'cash-min-amount' => intval($request->input('min_amount', 1))
+        ]);
 
         return response()
             ->json(['messages' => ['更新成功']])

@@ -24,7 +24,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Comment;
 use function Zhiyi\Plus\setting;
-use Zhiyi\Plus\Repository\WalletRatio;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
@@ -37,12 +36,12 @@ class HomeController extends Controller
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function show(WalletRatio $walletRatioRepository)
+    public function show()
     {
         return view('feed:view::admin', [
             'base_url' => route('feed:admin'),
             'csrf_token' => csrf_token(),
-            'wallet_ratio' => $walletRatioRepository->get(),
+            'wallet_ratio' => setting('wallet', 'ratio', 100),
         ]);
     }
 

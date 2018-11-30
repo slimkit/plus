@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Repository\WalletPingPlusPlus;
 use Illuminate\Contracts\Routing\ResponseFactory as ContractResponse;
 
 class WalletPingPlusPlusController extends Controller
@@ -30,15 +30,14 @@ class WalletPingPlusPlusController extends Controller
     /**
      * Get the Ping++ config.
      *
-     * @param \Zhiyi\Plus\Repository\WalletPingPlusPlus $repository
      * @param \Illuminate\Contracts\Routing\ResponseFactory $response
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function show(WalletPingPlusPlus $repository, ContractResponse $response)
+    public function show(ContractResponse $response)
     {
         return $response
-            ->json($repository->get())
+            ->json(setting('wallet', 'ping++', []))
             ->setStatusCode(200);
     }
 
@@ -46,18 +45,15 @@ class WalletPingPlusPlusController extends Controller
      * Update Ping++ config.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \Zhiyi\Plus\Repository\WalletPingPlusPlus $repository
      * @param \Illuminate\Contracts\Routing\ResponseFactory $response
      * @return mixed
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function update(Request $request, WalletPingPlusPlus $repository, ContractResponse $response)
+    public function update(Request $request, ContractResponse $response)
     {
         $this->validate($request, $this->rules(), $this->validateErrorMessages());
 
-        $repository->store(
-            $request->only(['app_id', 'secret_key', 'public_key', 'private_key'])
-        );
+        setting('wallet')->set('ping++', $request->only(['app_id', 'secret_key', 'public_key', 'private_key']));
 
         return $response
             ->json(['message' => ['更新成功!']])
