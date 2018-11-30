@@ -108,7 +108,7 @@ class NewsController extends BaseController
      */
     public function release(int $news_id = 0)
     {
-        if ($this->PlusData['config']['bootstrappers']['news:contribute']['verified'] && ! $this->PlusData['TS']['verified']) {
+        if ($this->PlusData['config']['bootstrappers']['news']['contribute']['verified'] && !$this->PlusData['TS']['verified']) {
             abort(403, '未认证用户不能投稿');
         }
 
