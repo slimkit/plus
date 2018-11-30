@@ -44,7 +44,6 @@ class NewStoreUserWallerCashPost extends FormRequest
      */
     public function rules(): array
     {
-        $minAmountRepository = app(CashMinAmountRepository::class);
         $wallet = new Wallet($this->user());
 
         return [
