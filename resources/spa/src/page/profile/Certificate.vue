@@ -7,9 +7,8 @@
         slot="right"
         :class="['btn-submit', disabled]"
         @click="validate(onSubmit)"
-      >
-        提交
-      </span>
+        v-text="`提交`"
+      />
     </CommonHeader>
 
     <TransitionGroup
@@ -34,7 +33,7 @@
                 >
               </div>
               <svg
-                v-show="orgFields.org_name.length > 0"
+                v-show="(orgFields.org_name || '').length > 0"
                 class="m-style-svg m-svg-def"
                 @click="orgFields.org_name = ''"
               >
@@ -54,7 +53,7 @@
                 >
               </div>
               <svg
-                v-show="orgFields.org_address.length > 0"
+                v-show="(orgFields.org_address || '').length > 0"
                 class="m-style-svg m-svg-def"
                 @click="orgFields.org_address = ''"
               >
@@ -134,33 +133,14 @@
       </template>
 
       <template v-if="step === 2">
-        <div
-          key="step2"
-          class="step2"
-        >
-          <p
-            v-if="type === 'user'"
-            class="poster-tips"
-          >
-            请上传正反面身份证照片
-          </p>
-          <p
-            v-else
-            class="poster-tips"
-          >
-            上传企业机构营业执照
-          </p>
-          <ImagePoster
-            :poster="poster1"
-            @uploaded="uploaded1"
-          >
+        <div key="step2" class="step2">
+          <p v-if="type === 'user'" class="poster-tips"> 请上传正反面身份证照片 </p>
+          <p v-else class="poster-tips"> 上传企业机构营业执照 </p>
+          <ImagePoster :poster="poster1" @uploaded="uploaded1">
             <span>点击上传正面身份证照片</span>
           </ImagePoster>
           <template v-if="type=='user' && files.length > 0">
-            <ImagePoster
-              :poster="poster2"
-              @uploaded="uploaded2"
-            >
+            <ImagePoster :poster="poster2" @uploaded="uploaded2">
               <span>点击上传反面身份证照片</span>
             </ImagePoster>
           </template>

@@ -192,7 +192,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import chooseCate from '@/page/chooseCate.vue'
+import ChooseCate from '@/page/ChooseCate.vue'
 import PasswordConfirm from '@/components/common/PasswordConfirm.vue'
 import TextareaInput from '@/components/common/TextareaInput.vue'
 import sendImage from '@/util/SendImage.js'
@@ -201,7 +201,7 @@ import * as api from '@/api/news.js'
 export default {
   name: 'PostNews',
   components: {
-    chooseCate,
+    ChooseCate,
     PasswordConfirm,
     TextareaInput,
   },
