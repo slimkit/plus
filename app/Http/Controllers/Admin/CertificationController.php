@@ -78,16 +78,12 @@ class CertificationController extends Controller
      */
     protected function certificationCount()
     {
-        $counts = \DB::select('
-            SELECT 
-                COUNT(status) AS `全部认证用户：`,
-                COUNT(CASE WHEN status=0 THEN 1 ELSE NULL END ) AS `待审核用户：`,
-                COUNT(CASE WHEN status=1 THEN 1 ELSE NULL END ) AS `已认证用户：`,
-                COUNT(CASE WHEN status=2 THEN 1 ELSE NULL END ) AS `驳回用户：` 
-            FROM `certifications`'
-        );
-
-        return $counts;
+        return [
+            '全部认证用户：' => Certification::count(),
+            '待审核用户：' => Certification::where('status', 0)->count(),
+            '已认证用户：' => Certification::where('status', 1)->count(),
+            '驳回用户：' => Certification::where('status', 2)->count(),
+        ];
     }
 
     /**
