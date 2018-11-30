@@ -13,7 +13,7 @@
                 <tbody>
                     <!-- 加载 -->
                     <table-loading :loadding="loadding" :colspan-num="3"></table-loading>
-                    <tr v-for="category in categories">
+                    <tr v-for="category in categories" :key="category.name">
                         <td>{{ category.name }}</td>
                         <td>{{ category.display_name }}</td>
                         <td>
