@@ -43,6 +43,12 @@ class CurrencyNewsTest extends TestCase
     {
         $user = factory(UserModel::class)->create();
         $cate = factory(NewsCateModel::class)->create();
+        $user->currency()->updateOrCreate([], ['sum' => 9999]);
+        $user->certification()->updateOrCreate([], [
+            'certification_name' => 'user',
+            'data' => 'verifed',
+            'status' => 1,
+        ]);
 
         $response = $this
             ->actingAs($user, 'api')

@@ -57,6 +57,13 @@ class Certification extends Model
     protected $with = ['category'];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['certification_name', 'user_id', 'data', 'status'];
+
+    /**
      * Get icon url.
      *
      * @return string|null

@@ -141,7 +141,7 @@ class User extends Authenticatable implements JWTSubject
         return [
             'type' => $certification->certification_name,
             'icon' => $certification->icon,
-            'description' => $certification->data['desc'],
+            'description' => $certification->data['desc'] ?? '',
         ];
     }
 
