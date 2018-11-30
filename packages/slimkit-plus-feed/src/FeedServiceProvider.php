@@ -74,9 +74,8 @@ class FeedServiceProvider extends ServiceProvider
                         ->whereNull('expires_at')
                         ->where('channel', 'comment')
                         ->has('feed')
-                        ->has('comment')
-                    ;
-                    // return $query->where('expires_at', null)->where('channel', 'comment')->whereExists(function ($query) {
+                        ->has('comment');
+                // return $query->where('expires_at', null)->where('channel', 'comment')->whereExists(function ($query) {
                     //     return $query->from('feeds')->whereRaw('feed_pinneds.raw = feeds.id')->where('deleted_at', null);
                     // })->whereExists(function ($query) {
                     //     return $query->from('comments')->whereRaw('feed_pinneds.target = comments.id');
