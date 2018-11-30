@@ -107,7 +107,7 @@ export default {
     ...mapState({
       checkin: state => state.CONFIG.checkin || { switch: false },
       verified: state => state.USER_VERIFY,
-      newsVerified: state => state.CONFIG['news:contribute'].verified,
+      newsVerified: state => state.CONFIG.news.contribute.verified,
     }),
     login () {
       return !!this.$store.state.CURRENTUSER.id

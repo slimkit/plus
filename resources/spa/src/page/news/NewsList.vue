@@ -53,7 +53,7 @@ export default {
   },
   computed: {
     ...mapState({
-      newsVerified: state => state.CONFIG['news:contribute'].verified,
+      newsVerified: state => state.CONFIG.news.contribute.verified,
       userVerify: state => state.USER_VERIFY || {},
     }),
     after () {
@@ -102,7 +102,7 @@ export default {
     beforeCreatePost () {
       // 如果后台设置了不需要验证 或 用户已经认证就直接跳转
       const noNeedVerify =
-        !this.$store.state.CONFIG['news:contribute'].verified ||
+        !this.$store.state.CONFIG.news.contribute.verified ||
         !_.isEmpty(this.$store.state.CURRENTUSER.verified)
       if (noNeedVerify) return this.$router.push({ path: '/post/release' })
       else if (this.userVerify.status === 0) {

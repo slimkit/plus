@@ -229,9 +229,9 @@ export default {
   },
   computed: {
     ...mapState({
-      newsPay: state => state.CONFIG['news:contribute'].pay,
-      newCurrency: state => state.CONFIG['news:pay_conyribute'],
-      newsVerified: state => state.CONFIG['news:contribute'].verified,
+      newsConfig: state => state.CONFIG.news,
+      newsPay: state => state.CONFIG.news.contribute.pay,
+      newCurrency: state => state.CONFIG.news.pay_conyribute,
       verified: state => state.CURRENTUSER.verified,
     }),
     currentCurrency () {
@@ -239,7 +239,8 @@ export default {
       return user.currency.sum || 0
     },
     canPostNews () {
-      return !this.newsVerified || (this.newsVerified && this.verified)
+      const newsVerified = this.newsConfig.contribute.verified
+      return !newsVerified || (newsVerified && this.verified)
     },
     contentText: {
       get () {
