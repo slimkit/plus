@@ -65,6 +65,8 @@ class CertificationController extends Controller
         ->offset($offset)
         ->get();
 
+        $items->load('user');
+
         $data['items'] = $items;
         $data['counts'] = $this->certificationCount();
 
