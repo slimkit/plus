@@ -20,9 +20,9 @@ namespace Zhiyi\Plus\Packages\Currency\Processes;
 
 use DB;
 use GuzzleHttp\Client;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Packages\Currency\Order;
 use Zhiyi\Plus\Packages\Currency\Process;
-use Zhiyi\Plus\Repository\CurrencyConfig;
 use Zhiyi\Plus\Models\CommonConfig as CommonConfigModel;
 use Zhiyi\Plus\Models\CurrencyOrder as CurrencyOrderModel;
 
@@ -106,8 +106,7 @@ class AppStorePay extends Process
     public function createOrder(int $owner_id, int $amount): CurrencyOrderModel
     {
         $user = $this->checkUser($owner_id);
-
-        $config = app(CurrencyConfig::class)->get();
+        $ratio = setting('currency', 'settings')['recharge-ratio'] ?? 1;
 
         $title = '积分充值';
         $body = sprintf('充值积分：%s%s%s', $amount, $this->currency_type->unit, $this->currency_type->name);
@@ -119,7 +118,7 @@ class AppStorePay extends Process
         $order->type = 1;
         $order->currency = $this->currency_type->id;
         $order->target_type = Order::TARGET_TYPE_RECHARGE;
-        $order->amount = $amount * $config['recharge-ratio'];
+        $order->amount = $amount * $ratio;
         $order->save();
 
         return $order;

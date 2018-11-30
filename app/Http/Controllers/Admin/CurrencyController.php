@@ -25,24 +25,15 @@ use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\Currency;
 use function Zhiyi\Plus\setting;
-use Zhiyi\Plus\Repository\CurrencyConfig;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\CurrencyOrder as OrderModel;
 use Zhiyi\Plus\Packages\Currency\Processes\Common;
 
 class CurrencyController extends Controller
 {
-    protected $rep;
-
-    public function __construct(CurrencyConfig $config)
-    {
-        $this->rep = $config;
-    }
-
     /**
      * 获取积分配置项.
      *
-     * @param  CurrencyConfig $config
      * @return mixed
      */
     public function showConfig()
@@ -63,7 +54,14 @@ class CurrencyController extends Controller
                 'recharge.rule' => $recharge['rule'],
                 'recharge.status' => $recharge['status'],
             ],
-            'detail_conf' => $this->rep->get(),
+            'detail_conf' => setting('currency', 'settings', [
+                'recharge-ratio' => 1,
+                'recharge-options' => '100,500,1000,2000,5000,10000',
+                'recharge-max' => 10000000,
+                'recharge-min' => 100,
+                'cash-max' => 10000000,
+                'cash-min' => 100,
+            ]),
         ];
 
         return response()->json($config, 200);

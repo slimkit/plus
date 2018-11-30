@@ -24,7 +24,6 @@ use DB;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\WalletOrder;
 use Zhiyi\Plus\Packages\Wallet\Order;
-use Zhiyi\Plus\Repository\CurrencyConfig;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\CurrencyOrder as OrderModel;
 use Zhiyi\Plus\Models\NewWallet as NewWalletModel;
@@ -75,7 +74,6 @@ class CurrencyCashController extends Controller
      *
      * @param  Request        $request
      * @param  OrderModel     $order
-     * @param  CurrencyConfig $config
      * @return mixed
      */
     public function audit(Request $request, OrderModel $order)

@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Requests\API2;
 
-use Zhiyi\Plus\Repository\CurrencyConfig;
+use function Zhiyi\Plus\setting;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCurrencyCash extends FormRequest
@@ -32,22 +32,30 @@ class StoreCurrencyCash extends FormRequest
      */
     public function authorize()
     {
-        return $this->user() && config('currency.cash.status', true);
+        return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @param \Zhiyi\Plus\Repository\WalletRechargeType $repository
      * @return array
      * @author BS <414606094@qq.com>
      */
-    public function rules(CurrencyConfig $config)
+    public function rules()
     {
+        $settings = setting('currency', 'settings', [
+            'cash-max' => 10000000,
+            'cash-min' => 100,
+        ]);
         $currency = $this->user()->currency()->firstOrCreate(['type' => 1], ['sum' => 0]);
 
         return [
-            'amount' => 'required|int|min:'.$config->get()['cash-min'].'|max:'.min($currency->sum, $config->get()['cash-max']),
+            'amount' => [
+                'required',
+                'integer',
+                sprintf('min:%d', $settings['cash-min']),
+                sprintf('max:%d', min($currency->sum, $settings['cash-max'])),
+            ],
         ];
     }
 
@@ -59,9 +67,13 @@ class StoreCurrencyCash extends FormRequest
      */
     public function messages()
     {
+        $settings = setting('currency', 'settings', [
+            'cash-min' => 100,
+        ]);
+    
         return [
             'amount.required' => '请选择需要提取的积分',
-            'amount.min' => '最低提现金额：'.app(CurrencyConfig::class)->get()['cash-min'],
+            'amount.min' => sprintf('最低提现金额为：“%d”', $settings['cash-min']),
             'amount.max' => '账户积分余额不足或超出最大提现限制',
         ];
     }

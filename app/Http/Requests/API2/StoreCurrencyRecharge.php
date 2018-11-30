@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Requests\API2;
 
-use Zhiyi\Plus\Repository\CurrencyConfig;
+use function Zhiyi\Plus\setting;
 use Illuminate\Foundation\Http\FormRequest;
 use Zhiyi\Plus\Repository\WalletRechargeType;
 
@@ -33,7 +33,7 @@ class StoreCurrencyRecharge extends FormRequest
      */
     public function authorize()
     {
-        return $this->user() && config('currency.recharge.status', true);
+        return true;
     }
 
     /**
@@ -43,11 +43,20 @@ class StoreCurrencyRecharge extends FormRequest
      * @return array
      * @author BS <414606094@qq.com>
      */
-    public function rules(WalletRechargeType $repository, CurrencyConfig $config)
+    public function rules(WalletRechargeType $repository)
     {
+        $settings = setting('currency', 'settings', [
+            'recharge-max' => 10000000,
+            'recharge-min' => 100,
+        ]);
         return [
             'type' => 'required|in:'.implode(',', $repository->get()),
-            'amount' => 'required|int|min:100|max:'.$config->get()['recharge-max'],
+            'amount' => [
+                'required',
+                'integer',
+                sprintf('min:%d', $settings['recharge-min']),
+                sprintf('max:%d', $settings['recharge-max'])
+            ],
             'extra' => 'array',
         ];
     }

@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Packages\Wallet\TargetTypes;
 
 use DB;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Packages\Wallet\Wallet;
-use Zhiyi\Plus\Repository\CurrencyConfig;
 use Zhiyi\Plus\Packages\Currency\Processes\Recharge;
 
 class TransformCurrencyTarget extends Target
@@ -37,9 +37,9 @@ class TransformCurrencyTarget extends Target
 
         $this->initWallet();
 
-        $config = app(CurrencyConfig::class)->get();
+        $ratio = setting('currency', 'settings')['recharge-ratio'] ?? 1;
         $order = $this->order->getOrderModel();
-        $currency_amount = $order->amount * $config['recharge-ratio'];
+        $currency_amount = $order->amount * $ratio;
 
         $orderHandle = function () use ($order, $currency_amount) {
             // 钱包订单部分
