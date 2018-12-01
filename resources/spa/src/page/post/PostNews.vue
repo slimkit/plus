@@ -73,9 +73,8 @@
                   v-for="tag in tags"
                   :key="tag.id"
                   class="m-tag"
-                >
-                  {{ tag.name }}
-                </span>
+                  v-text="tag.name"
+                />
               </div>
               <div v-else class="m-box m-justify-end placeholder">
                 <span>最多选择5个标签</span>
@@ -231,7 +230,7 @@ export default {
     ...mapState({
       newsConfig: state => state.CONFIG.news,
       newsPay: state => state.CONFIG.news.contribute.pay,
-      newCurrency: state => state.CONFIG.news.pay_conyribute,
+      newCurrency: state => state.CONFIG.news.pay_contribute,
       verified: state => state.CURRENTUSER.verified,
     }),
     currentCurrency () {
@@ -298,17 +297,8 @@ export default {
     },
     switchTags () {
       const chooseTags = this.tags.map(t => t.id)
-      /**
-       * 打开选择标签页面 (钩子 -> "choose-tags")
-       * @author jsonleex <jsonlseex@163.com>
-       * @param  {Object} { nextStep, chooseTags }
-       *                   nextStep     {Function}     点击下一步的回调, 注入已选择的 tags
-       *                   chooseTags   {Object}       初始选择值, 只需传 [tag.id], eg: [1, 2, 3,...]
-       */
       this.$bus.$emit('choose-tags', {
-        nextStep: tags => {
-          this.tags = tags
-        },
+        nextStep: tags => void (this.tags = tags),
         chooseTags,
       })
     },
