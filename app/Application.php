@@ -29,7 +29,7 @@ class Application extends LaravelApplication implements AppInterface
      *
      * @var string
      */
-    const VERSION = '2.0.7';
+    const VERSION = '2.0.8';
 
     /**
      * Create a new Illuminate application instance.
