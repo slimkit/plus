@@ -1,12 +1,11 @@
 {
   "name": "@slimkit/plus-small-screen-client",
   "private": true,
-  "version": "4.1.2",
+  "version": "4.2.0",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
     "pages:deploy": "npm run pages:predeploy && gh-pages -d dist -m \"chore: Build SPA & Update assets.\" -t",
     "pages:predeploy": "npm run build && npm run pages:build-404-html",
     "pages:build-404-html": "node scripts/build-github-pages-404.js",
@@ -46,7 +45,6 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
-    "conventional-changelog-cli": "^2.0.5",
     "eslint": "^5.9.0",
     "eslint-plugin-vue": "^5.0.0-0",
     "gh-pages": "^1.2.0",
