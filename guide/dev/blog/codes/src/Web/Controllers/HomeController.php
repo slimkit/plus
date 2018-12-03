@@ -2,11 +2,27 @@
 
 declare(strict_types=1);
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace SlimKit\Plus\Packages\Blog\Web\Controllers;
 
 use Illuminate\Routing\Controller;
-use Zhiyi\Plus\FileStorage\Storage;
 use SlimKit\Plus\Packages\Blog\Web\Requests\CreateBlog;
+use Zhiyi\Plus\FileStorage\Storage;
 
 class HomeController extends Controller
 {
@@ -30,7 +46,9 @@ class HomeController extends Controller
 
     /**
      * Create my blog page.
+     *
      * @param \Illuminate\Http\Request $request
+     *
      * @return mixed
      */
     public function me(\Illuminate\Http\Request $request)
@@ -44,8 +62,10 @@ class HomeController extends Controller
 
     /**
      * create a blog.
+     *
      * @param \SlimKit\Plus\Packages\Blog\Web\Requests\CreateBlog $request
-     * @param \Zhiyi\Plus\FileStorage\Storage $storage
+     * @param \Zhiyi\Plus\FileStorage\Storage                     $storage
+     *
      * @return mixed
      */
     public function createBlog(CreateBlog $request, Storage $storage)
@@ -55,8 +75,8 @@ class HomeController extends Controller
             return redirect()
                 ->route('blog:profile', ['blog' => $blog])
                 ->with('tip', [
-                    'type' => 'warning',
-                    'message' => '您已有博客，无法继续创建！'
+                    'type'    => 'warning',
+                    'message' => '您已有博客，无法继续创建！',
                 ]);
         }
         $blog = new \SlimKit\Plus\Packages\Blog\Models\Blog();
@@ -80,9 +100,8 @@ class HomeController extends Controller
         return redirect()
             ->route('blog:profile', ['blog' => $blog])
             ->with('tip', [
-                'type' => 'success',
-                'message' => '创建博客成功！'
-            ])
-        ;
+                'type'    => 'success',
+                'message' => '创建博客成功！',
+            ]);
     }
 }
