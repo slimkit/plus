@@ -38,7 +38,10 @@ Route::group(['prefix' => 'api/v2'], function (RouteRegisterContract $api) {
     // Socialite.
     // @Route /api/v2/socialite
     $api->group(['prefix' => 'socialite'], function (RouteRegisterContract $api) {
-
+        $api->get('/getAccess/{code}', API\WechatController::class.'@getAccess')->name('wechat://mp:access');
+        $api->post('/getWechatUser', API\WechatController::class.'@getUser')->name('wechat://mp:userInfo');
+        $api->post('/getOriginUrl', API\WechatController::class.'@getOauthUrl')->name('wechat://mp:redirectUrl');
+        $api->post('/wxconfig', API\WechatController::class.'@calculateConfig')->name('wechat://mp:share');
         // Check bind and get user auth token.
         // @POST /api/v2/socialite/:provider
         $api->post('/{provider}', API\SocialiteController::class.'@checkAuth');
