@@ -59,7 +59,7 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 .feed_item .feed_title .pinned {float:right;margin-top:19px;color:#67b595;margin-right:10px;}
 .feed_item .feed_body {text-align:left;word-wrap:break-word;word-break:break-all;}
 .feed_item .feed_body .feed_text {font-size:14px;line-height:24px;display:-webkit-box;overflow:hidden;margin:15px 0;word-break:break-word;color:#666;-webkit-line-clamp:3;-webkit-box-orient:vertical;}
-.feed_item .feed_body .feed_text a {color:#59b6d7;}
+.feed_item .feed_body .feed_text .more {color:#59b6d7;}
 .feed_item .feed_body .feed_pay_text {cursor:pointer;text-shadow:0 0 8px #000;color:rgba(255,255,255,0);-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}
 .feed_item .feed_body .feed_images {position:relative;margin-bottom:8px;}
 .feed_item .feed_body .feed_images img {cursor:url(../images/big.cur),pointer;}

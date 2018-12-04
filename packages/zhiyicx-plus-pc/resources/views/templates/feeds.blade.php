@@ -45,7 +45,13 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
         </p>
         @else
         <a class="feed_text" href="{{ route('pc:feedread', ['feed' => $post['id']]) }}">
-            {!! formatContent($post['feed_content']) !!}
+            @php
+                $content = formatContent($post['feed_content']);
+                $has_more = mb_strlen($content, 'utf-8') > 100;
+                $content = mb_substr($content, 0, 100, 'utf-8');
+            @endphp
+            {!! $content !!}
+            <span class="more"> 查看更多</span>
         </a>
         @endif
 
