@@ -24,13 +24,21 @@
             <div class="triangle"></div>
             <ul>
                 <li>
-                    <a href="{{ route('pc:profilecollectfeeds') }}">
-                        <svg class="icon" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-collect"></use></svg>我的收藏
+                    <a href="{{ route('pc:mine')}}">个人主页</a>
+                </li>
+                <li style="border-top: 1px solid #ededed; padding-top: 20px;">
+                    <a href="{{ route('pc:wallet') }}">
+                        <svg class="icon" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-wallet"></use></svg>我的钱包
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('pc:authenticate') }}">
-                        <svg class="icon" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-auth"></use></svg>去认证
+                        <svg class="icon" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-auth"></use></svg>我的认证
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('pc:profilecollectfeeds') }}">
+                        <svg class="icon" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-collect"></use></svg>我的收藏
                     </a>
                 </li>
                 <li>
@@ -38,15 +46,7 @@
                         <svg class="icon" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-setting"></use></svg>设置
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('pc:wallet') }}">
-                        <svg class="icon" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-wallet"></use></svg>我的钱包
-                    </a>
-                </li>
                 <li style="border-top: 1px solid #ededed; padding-top: 20px;">
-                    <a href="{{ route('pc:mine')}}">个人主页</a>
-                </li>
-                <li>
                     <a href="{{ route('logout') }}" id="action-logout">退出</a>
                 </li>
             </ul>
