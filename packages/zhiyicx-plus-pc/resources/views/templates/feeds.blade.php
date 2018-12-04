@@ -44,7 +44,9 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
             <span class="fuzzy">@php for ($i = 0; $i < (200 - $len); $i ++) {echo 'T';} @endphp</span>
         </p>
         @else
-        <p class="feed_text">{!! formatContent($post['feed_content']) !!}</p>
+        <a class="feed_text" href="{{ route('pc:feedread', ['feed' => $post['id']]) }}">
+            {!! formatContent($post['feed_content']) !!}
+        </a>
         @endif
 
         @include('pcview::templates.feed_images', ['target_url' => route('pc:feedread', ['feed' => $post['id']])])
