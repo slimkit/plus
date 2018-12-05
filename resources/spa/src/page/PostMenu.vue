@@ -193,7 +193,7 @@ export default {
 .m-post-menu-list {
   padding: 6%;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 .m-post-menu-item {
   margin: 3% 6%;

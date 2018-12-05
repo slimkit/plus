@@ -82,11 +82,9 @@ export default {
       let accessToken = this.$lstore.getData('H5_WECHAT_MP_ASTOKEN')
 
       if (!accessToken || !openId) {
-        const { data } = await this.$http.get(
-          `socialite/getAccess/${code}`,
-          { validateStatus: status => status === 200 }
-        )
-        const { access_token: accessToken, openid: openId } = data
+        const { data } = await this.$http.get(`socialite/getAccess/${code}`, { validateStatus: s => s === 200 })
+        const { access_token: newAccessToken, openid: openId } = data
+        accessToken = newAccessToken
 
         this.$lstore.setData('H5_WECHAT_MP_OPENID', openId)
         this.$lstore.setData('H5_WECHAT_MP_ASTOKEN', accessToken)
