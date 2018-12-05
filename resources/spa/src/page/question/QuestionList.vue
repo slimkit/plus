@@ -203,7 +203,7 @@ export default {
     background: #fff;
     color: #999;
     font-size: 30px;
-    border-bottom: solid 1px #dedede;
+    border-bottom: solid 1px #dedede; /* no */
     z-index: 10;
 
     > a {
@@ -236,7 +236,7 @@ export default {
         padding: 12px 24px;
         color: #58b6d7;
         background-color: transparent;
-        border: solid 1px #58b6d7;
+        border: solid 1px #58b6d7; /* no */
         border-radius: 6px;
         outline: none;
         display: inline-flex;
@@ -260,7 +260,7 @@ export default {
     padding: 0;
     border-radius: 100%;
     background-color: @primary;
-    border: 2px solid #fff;
+    border: 2px solid #fff; /* no */
     box-shadow: 0px 0px 12px 0px rgba(89, 182, 215, 0.43);
     z-index: 1;
 

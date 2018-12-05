@@ -149,7 +149,7 @@ export default {
   font-size: 28px;
   overflow: hidden;
   transform: max-height 0.3s ease;
-  border-bottom: 1px solid #ededed;
+  border-bottom: 1px solid #ededed; /* no */
   transform: translate3d(0, 0, 0);
   &--head {
     display: flex;

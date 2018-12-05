@@ -149,7 +149,7 @@ export default {
           color: #666;
 
           &::after {
-            border: 1px solid currentColor;
+            border: 1px solid currentColor; /* no */
             border-radius: 8px;
             font-size: 22px;
             padding: 0 4px;
@@ -198,7 +198,7 @@ export default {
     flex-direction: row;
     align-items: center;
     width: 100%;
-    border-top: solid 1px #ededed;
+    border-top: solid 1px #ededed; /* no */
     padding: 30px;
     padding-left: @avatar-size;
 

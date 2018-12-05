@@ -165,7 +165,7 @@ export default {
       font-stretch: normal;
       line-height: 0px;
       letter-spacing: 0px;
-      border: solid 1px #fca308;
+      border: solid 1px #fca308; /* no */
       padding: 0 4px;
       border-radius: 6px;
     }

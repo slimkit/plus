@@ -111,7 +111,7 @@ export default {
   }
 
   .common-header {
-    margin-bottom: -1px;
+    margin-bottom: -1px;/*no*/
     font-size: 30px;
   }
 
@@ -128,7 +128,7 @@ export default {
 
       input[type="password"] {
         flex: auto;
-        border: 1px solid @border-color;
+        border: 1px solid @border-color;/*no*/
         border-radius: 16px 0 0 16px;
       }
 

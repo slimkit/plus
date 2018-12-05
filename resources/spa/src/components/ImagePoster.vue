@@ -161,7 +161,7 @@ export default {
   max-height: 40vh;
   width: 85px * 10;
   height: 54px * 10;
-  border: 1px solid @border-color;
+  border: 1px solid @border-color; /* no */
   margin: 20px auto;
 
   &.loading,

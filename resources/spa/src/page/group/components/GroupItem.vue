@@ -250,7 +250,7 @@ export default {
       width: 126px;
       height: 50px;
 
-      border: 1px solid currentColor;
+      border: 1px solid currentColor; /* no */
       border-radius: 8px;
       background-color: #fff;
 

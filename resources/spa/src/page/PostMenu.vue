@@ -216,7 +216,7 @@ export default {
   height: 100px;
   width: 100%;
   background-color: #fff;
-  box-shadow: 0 -1px 3px rgba(26, 26, 26, 0.1);
+  box-shadow: 0 -1px 3px rgba(26, 26, 26, 0.1); /* no */
 }
 
 .fadeIn-enter-active,

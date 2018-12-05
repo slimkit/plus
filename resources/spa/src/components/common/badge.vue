@@ -125,19 +125,14 @@ export default {
     position: absolute;
     transform: translateX(-50%);
     transform-origin: 0 center;
-    top: -3px;
-    /* no */
-    right: -6px;
-    /* no */
-    height: 6px;
-    /* no */
-    width: 6px;
-    /* no */
+    top: -3px; /* no */
+    right: -6px; /* no */
+    height: 6px; /* no */
+    width: 6px; /* no */
     border-radius: 100%;
     background: @error;
     z-index: 10;
-    box-shadow: 0 0 0 1px @error;
-    /* no */
+    box-shadow: 0 0 0 1px @error; /* no */
   }
 }
 </style>

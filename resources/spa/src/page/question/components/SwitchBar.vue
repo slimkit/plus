@@ -68,7 +68,7 @@ export default {
       line-height: 60px;
       text-align: center;
       box-sizing: content-box;
-      border: solid 1px @primary;
+      border: solid 1px @primary; /* no */
       color: @primary;
       font-size: 32px;
 

@@ -139,7 +139,7 @@ export default {
     height: 90px;
     line-height: 90px;
     text-align: center;
-    border-bottom: 1px solid @border-color;
+    border-bottom: 1px solid @border-color; /*no*/
   }
 
   a {

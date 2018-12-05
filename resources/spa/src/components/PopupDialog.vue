@@ -86,8 +86,8 @@ export default {
   main {
     flex: auto;
     overflow: auto;
-    border: 1px solid #ededed;
-    border-width: 1px 0;
+    border: 1px solid #ededed; /* no */
+    border-width: 1px 0; /* no */
     padding: 20px 0;
   }
 

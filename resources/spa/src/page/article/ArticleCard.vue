@@ -196,7 +196,7 @@ export default {
       height: 95px;
       font-size: 24px;
       background-color: #fff;
-      border-top: 1px solid @border-color;
+      border-top: 1px solid @border-color; /* no */
 
       a {
         color: #b3b3b3;

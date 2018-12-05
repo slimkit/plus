@@ -90,8 +90,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     & + & {
-      border-top: 1px solid #ededed;
-      /*no*/
+      border-top: 1px solid #ededed; /*no*/
     }
   }
   &-text {
@@ -117,8 +116,7 @@ export default {
     position: relative;
     width: 60px;
     height: 34px;
-    border: 1px solid #ededed;
-    /*no*/
+    border: 1px solid #ededed; /*no*/
     outline: 0;
     border-radius: 34/2px;
     box-sizing: border-box;
@@ -149,8 +147,7 @@ export default {
       width: 30px;
       height: 30px;
       border-radius: 15px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-      /*no*/
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); /*no*/
       transition: transform 0.35s cubic-bezier(0.4, 0.4, 0.25, 1.35);
     }
   }
@@ -182,8 +179,7 @@ export default {
     /*overflow: hidden;*/
     width: 30px;
     height: 30px;
-    border: 1px solid #ccc;
-    /*no*/
+    border: 1px solid #ccc; /*no*/
     background-color: #fff;
     position: relative;
   }

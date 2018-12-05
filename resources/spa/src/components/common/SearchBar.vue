@@ -47,7 +47,7 @@ export default {
   display: flex;
   align-items: center;
   background-color: #fff;
-  border-bottom: 1px solid @border-color;
+  border-bottom: 1px solid @border-color;/*no*/
   width: 100%;
   height: 90px;
   padding: 0 20px;

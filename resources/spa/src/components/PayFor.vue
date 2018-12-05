@@ -194,7 +194,7 @@ export default {
     margin-bottom: 30px;
     font-size: 60px;
     color: #fca308;
-    letter-spacing: 1px;
+    letter-spacing: 1px; /* no */
   }
 }
 .m-payfor-foot {

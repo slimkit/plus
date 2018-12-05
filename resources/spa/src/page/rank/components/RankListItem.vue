@@ -73,7 +73,7 @@ export default {
   height: 135px;
   padding: 0 30px;
   background: #fff;
-  border-bottom: 1px solid #ededed;
+  border-bottom: 1px solid #ededed; /* no */
 
   .rank {
     flex: none;
@@ -116,7 +116,7 @@ export default {
     height: 1.8em;
     background: #fff;
     color: @primary;
-    border: 1px solid currentColor;
+    border: 1px solid currentColor; /* no */
     border-radius: 8px;
     white-space: nowrap;
 

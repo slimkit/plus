@@ -119,7 +119,7 @@ export default {
         right: 5px;
         content: "长图";
         background-color: #c8a06c;
-        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5); /* no */
         background-image: -webkit-linear-gradient(
           25deg,
           #e8d1b3 0%,
