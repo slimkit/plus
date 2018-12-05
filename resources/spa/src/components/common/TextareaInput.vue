@@ -1,12 +1,6 @@
 <template>
-  <div
-    :class="{'auto-height': !rows}"
-    class="textarea-wrap"
-  >
-    <div
-      v-if="!rows"
-      class="textarea-shadow c-textarea-input"
-    >
+  <div :class="{'auto-height': !rows}" class="textarea-wrap">
+    <div v-if="!rows" class="textarea-shadow c-textarea-input">
       {{ value }}
     </div> <!-- 用于撑起文本框自适应高度 -->
     <textarea
@@ -19,10 +13,7 @@
       class="c-textarea-input"
       @input="$emit('input', $event.target.value)"
     />
-    <span
-      v-show="maxlength && value.length > warnlength"
-      class="word-length"
-    >
+    <span v-show="maxlength && value.length > warnlength" class="word-length">
       {{ value.length }} / {{ maxlength }}
     </span>
   </div>
@@ -55,6 +46,8 @@ export default {
     min-height: 100px;
     word-wrap: break-word;
     word-break: break-all;
+    padding-bottom: 28px;
+    font-size: 30px;
   }
 
   textarea {

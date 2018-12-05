@@ -12,16 +12,14 @@
       <div slot="right" class="buttons">
         <RouterLink
           tag="svg"
-          append
-          to="search"
+          :to="{name:'TopicSearch'}"
           class="m-style-svg m-svg-def"
         >
           <use xlink:href="#icon-search" />
         </RouterLink>
         <RouterLink
           tag="svg"
-          append
-          to="create"
+          :to="{name:'TopicCreate'}"
           class="m-style-svg m-svg-def"
         >
           <use xlink:href="#icon-topic-create" />
