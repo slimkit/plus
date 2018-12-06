@@ -608,7 +608,7 @@ export default {
   background-image: url("../images/user_home_default_cover.png");
   font-size: 28px;
   color: #fff;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5); /* no */
   h3 {
     margin: 20px 0;
     font-size: 32px;

@@ -31,7 +31,7 @@ export default {
   align-items: center;
   height: 90px;
   width: 100%;
-  border-bottom: 1px solid @border-color;
+  border-bottom: 1px solid @border-color; /* no */
   background-color: #fff;
   z-index: 10;
 

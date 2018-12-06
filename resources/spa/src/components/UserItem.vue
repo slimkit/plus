@@ -89,7 +89,7 @@ export default {
   background-color: #fff;
 
   & + & {
-    border-top: 1px solid #ededed;
+    border-top: 1px solid #ededed; /* no */
   }
 
   .user-item-body {
@@ -119,7 +119,7 @@ export default {
     height: 1.8em;
     background: #fff;
     color: @primary;
-    border: 1px solid currentColor;
+    border: 1px solid currentColor; /* no */
     border-radius: 8px;
     white-space: nowrap;
 

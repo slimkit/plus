@@ -61,8 +61,7 @@ export default {
     height: 90px;
     width: 100%;
     line-height: 89px;
-    border-bottom: 1px solid #ededed;
-    /*no*/
+    border-bottom: 1px solid #ededed; /*no*/
     background-color: #fff;
     justify-content: center;
     &-item {

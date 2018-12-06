@@ -78,7 +78,7 @@ export default {
   line-height: 90px;
   color: #333;
   background: #fff;
-  border-bottom: 1px solid #ededed;
+  border-bottom: 1px solid #ededed; /* no */
   /* no */
   transition: all 0.3s;
   &.transparent {
@@ -147,8 +147,7 @@ export default {
       text-align: center;
       font-size: 32px;
       width: 90px;
-      border-bottom: 2px solid transparent;
-      /* no */
+      border-bottom: 2px solid transparent; /* no */
       & + & {
         margin-left: 50px;
       }
@@ -176,26 +175,19 @@ export default {
       color: @primary;
       height: 60px;
       line-height: 60px;
-      border-width: 1px 0;
-      /*no*/
+      border-width: 1px 0; /*no*/
       border-style: solid;
       border-color: @primary;
 
       &:first-child {
-        border-left-width: 1px;
-        /*no*/
-        border-top-left-radius: 4px;
-        /*no*/
-        border-bottom-left-radius: 4px;
-        /*no*/
+        border-left-width: 1px; /*no*/
+        border-top-left-radius: 4px; /*no*/
+        border-bottom-left-radius: 4px; /*no*/
       }
       &:last-child {
-        border-right-width: 1px;
-        /*no*/
-        border-top-right-radius: 4px;
-        /*no*/
-        border-bottom-right-radius: 4px;
-        /*no*/
+        border-right-width: 1px; /*no*/
+        border-top-right-radius: 4px; /*no*/
+        border-bottom-right-radius: 4px; /*no*/
       }
 
       &.router-link-active {

@@ -152,8 +152,7 @@ export default {
     display: flex;
     align-items: conter;
     height: 100px;
-    border-bottom: 1px solid #dedede;
-    /*no*/
+    border-bottom: 1px solid #dedede; /*no*/
     input {
       font-size: 30px;
       padding: 0 20px;

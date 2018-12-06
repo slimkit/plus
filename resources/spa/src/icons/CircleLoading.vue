@@ -70,8 +70,8 @@ export default {
       position: absolute;
       left: 50%;
       bottom: calc(~"50% - 18px");
-      margin-left: -1px;
-      width: 2px;
+      margin-left: -1px; /* no */
+      width: 2px; /* no */
       height: 8px;
       border-radius: 2px; /* no */
       transform-origin: center -10px;

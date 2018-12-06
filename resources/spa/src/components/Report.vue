@@ -173,7 +173,7 @@ export default {
 
     .reason {
       padding: 20px;
-      border: 1px solid @border-color;
+      border: 1px solid @border-color; /* no */
       background-color: #f4f5f6;
     }
   }

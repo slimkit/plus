@@ -175,7 +175,7 @@ export default {
   min-height: 100px;
   padding: 20px;
   background-color: @body-bg;
-  border-top: 1px solid @border-color;
+  border-top: 1px solid @border-color;/*no*/
 
   .textarea-wrap {
     flex: auto;

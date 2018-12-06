@@ -142,7 +142,7 @@ export default {
     width: 100%;
     height: 95px;
     + button {
-      border-top: 1px solid @border-color;
+      border-top: 1px solid @border-color; /* no */
     }
   }
 }

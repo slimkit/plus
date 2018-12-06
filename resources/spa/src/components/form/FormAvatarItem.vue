@@ -52,7 +52,7 @@ export default {
 
 form .c-form-avatar-item {
   height: 160px;
-  border-bottom: 1px solid @border-color !important;
+  border-bottom: 1px solid @border-color !important; /* no */
   padding-right: 20px;
 
   .avatar-wrap {
