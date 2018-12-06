@@ -281,3 +281,16 @@ export function reportUser (userId, reason) {
   const url = `/report/users/${userId}`
   return api.post(url, { reason }, { validateStatus: s => s === 201 })
 }
+
+/**
+ * 获取用户标签
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {number} userId
+ * @returns
+ */
+export function getUserTags (userId) {
+  const url = `/users/${userId}/tags`
+  return api.get(url, { validateStatus: s => s === 200 })
+}

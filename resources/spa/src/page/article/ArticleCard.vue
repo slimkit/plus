@@ -2,19 +2,13 @@
   <Transition>
     <div class="c-article-card">
       <div class="m-box-model m-art-card">
-        <header
-          ref="head"
-          class="m-box-model m-pos-f m-head-top"
-        >
+        <header ref="head" class="m-box-model m-pos-f m-head-top">
           <slot name="head">
             <CommonHeader>资讯详情</CommonHeader>
           </slot>
         </header>
 
-        <div
-          v-if="loading"
-          class="m-spinner pos-f"
-        >
+        <div v-if="loading" class="m-spinner pos-f">
           <div />
           <div />
         </div>
@@ -29,37 +23,25 @@
           class="m-pos-f"
         >
           <slot name="foot">
-            <a
-              class="m-box-model m-aln-center"
-              @click.prevent="handelLike"
-            >
+            <a class="m-box-model m-aln-center" @click.prevent="handelLike">
               <svg class="m-style-svg m-svg-def">
                 <use :xlink:href="liked ? '#icon-like' :'#icon-unlike'" />
               </svg>
               <span>喜欢</span>
             </a>
-            <a
-              class="m-box-model m-aln-center"
-              @click.prevent="handelComment"
-            >
+            <a class="m-box-model m-aln-center" @click.prevent="handelComment">
               <svg class="m-style-svg m-svg-def">
                 <use xlink:href="#icon-comment" />
               </svg>
               <span>评论</span>
             </a>
-            <a
-              class="m-box-model m-aln-center"
-              @click.prevent="handelShare"
-            >
+            <a class="m-box-model m-aln-center" @click.prevent="handelShare">
               <svg class="m-style-svg m-svg-def">
                 <use xlink:href="#icon-share" />
               </svg>
               <span>分享</span>
             </a>
-            <a
-              class="m-box-model m-aln-center"
-              @click.prevent="handelMore"
-            >
+            <a class="m-box-model m-aln-center" @click.prevent="handelMore">
               <svg class="m-style-svg m-svg-def">
                 <use xlink:href="#icon-more" />
               </svg>

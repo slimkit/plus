@@ -60,32 +60,6 @@ export function formatDate (date, fmt = 'yyyy/MM/dd hh:mm') {
 }
 
 /**
- * 时间转提示
- * 用于显示在我的动态时间轴
- * @author jsonleex <jsonlseex@163.com>
- * @param  {String} str
- * @return {String}
- */
-export const time2txt = str => {
-  if (!str) return ''
-  if (typeof str === 'string') str = str.replace(/-/g, '/') // 兼容 IOS 保证传入数据格式 YYYY/MM/dd HH:mm:ss
-  let date = new Date(str)
-
-  // 时间差 = 当前时间 - date (单位: 毫秒)
-  let time = new Date() - date
-
-  if (time < 0) {
-    return ''
-  } else if (time / 3600000 < 24) {
-    return '今天'
-  } else {
-    const M = (date.getMonth() + 1 + '').padStart(2, '0')
-    const D = (date.getDate() + '').padStart(2, '0')
-    return M + '月' + D
-  }
-}
-
-/**
  * 祖鲁时间和本地时间之间的时差 (单位:毫秒)
  * @returns {number} timezone offset
  */

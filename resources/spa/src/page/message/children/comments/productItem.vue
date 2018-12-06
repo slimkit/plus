@@ -114,12 +114,12 @@ export default {
     },
 
     sendComment (comment) {
-      const { commentable_id: newsId = 0, user_id: userID = 0 } = this.comment
+      const { commentable_id: newsId = 0, user_id: userId = 0 } = this.comment
       this.$http
         .post(
           `/news/${newsId}/comments`,
           {
-            reply_user: userID,
+            reply_user: userId,
             body: comment,
           },
           {

@@ -43,7 +43,10 @@
   right: 0;
   background-color: #fff;
   pointer-events: none;
-  > div {
+
+  &::after,
+  &::before {
+    content: '';
     overflow: hidden;
     position: absolute;
     top: 0;
@@ -51,15 +54,16 @@
     bottom: 0;
     right: 0;
     margin: auto;
-    width: 50px; /*no*/
-    height: 50px; /*no*/
+    width: 100px;
+    height: 100px;
     opacity: 0.5;
     border-radius: 100%;
     background-color: @primary;
     animation: scale1 2s infinite ease-in-out;
-    &:nth-child(2) {
-      animation-delay: -1s;
-    }
+  }
+
+  &::after {
+    animation-delay: -1s;
   }
 }
 

@@ -25,7 +25,7 @@ export default {
   name: 'CircleLoading',
   props: {
     size: { type: String, default: '' },
-    color: { type: String, default: 'dark' },
+    color: { type: String, default: 'dark', validator: val => ['light', 'dark'].includes(val) },
   },
   computed: {
     css () {

@@ -1,11 +1,13 @@
 <template>
   <div class="m-box-model m-card" @click="handleView('')">
     <div class="m-box">
-      <div
-        v-if="timeLine"
-        class="m-box-model m-aln-center m-flex-grow0 m-flex-shrink0 m-card-time-line"
-        v-html="timeLineText"
-      />
+      <template v-if="timeLine">
+        <div v-if="isToday" v-text="'今天'" />
+        <div v-else class="timeline-text">
+          <span>{{ time.getDate() }}</span>
+          <span class="month">{{ time.getMonth() + 1 }}月</span>
+        </div>
+      </template>
       <Avatar v-else :user="user" />
       <section class="m-box-model m-flex-grow1 m-flex-shrink1 m-card-main">
         <header v-if="!timeLine" class="m-box m-aln-center m-justify-bet m-card-usr">
@@ -94,8 +96,26 @@ import { mapState } from 'vuex'
 import FeedImage from './FeedImage.vue'
 import FeedVideo from './FeedVideo.vue'
 import CommentItem from './CommentItem.vue'
-import { time2txt } from '@/filters.js'
 import * as api from '@/api/feeds.js'
+
+function time2txt (str) {
+  if (!str) return ''
+  if (typeof str === 'string') str = str.replace(/-/g, '/') // 兼容 IOS 保证传入数据格式 YYYY/MM/dd HH:mm:ss
+  let date = new Date(str)
+
+  // 时间差 = 当前时间 - date (单位: 毫秒)
+  let time = new Date() - date
+
+  if (time < 0) {
+    return ''
+  } else if (time / 3600000 < 24) {
+    return '今天'
+  } else {
+    const M = String(date.getMonth() + 1).padStart(2, '0')
+    const D = String(date.getDate()).padStart(2, '0')
+    return M + '月' + D
+  }
+}
 
 export default {
   name: 'FeedCard',
@@ -166,7 +186,15 @@ export default {
       return this.feed.feed_view_count || 0
     },
     time () {
-      return this.feed.created_at
+      let str = this.feed.created_at
+      if (typeof str === 'string') str = str.replace(/-/g, '/') // 兼容 IOS 保证传入数据格式 YYYY/MM/dd HH:mm:ss
+      return new Date(str)
+    },
+    isToday () {
+      // 时间差 = 当前时间 - date (单位: 秒)
+      let offset = (new Date() - this.time) / 1000
+      if (offset / 3600 < 24) return true
+      return false
     },
     user () {
       const user = this.feed.user
@@ -192,16 +220,6 @@ export default {
       set (val) {
         this.feed.has_collect = val
       },
-    },
-    timeLineText () {
-      const text = time2txt(this.time)
-      const len = text.length
-      return len > 4
-        ? `<span>${text.substr(0, len - 2)}</span><span>${text.substr(
-          -2,
-          2
-        )}</span>`
-        : `<span>${text}</span>`
     },
     title () {
       return this.feed.title || ''
@@ -437,15 +455,20 @@ export default {
   box-sizing: border-box;
   background-color: #fff;
 
-  &-time-line {
+  .timeline-text {
+    display: flex;
+    flex-direction: column;
     width: 60px;
-    font-size: 24px;
-    text-align: center;
-    span:last-child {
-      order: -1;
-      font-size: 44px;
+    align-items: center;
+    justify-content: center;
+    font-size: 44px;
+
+    .month {
+      font-size: 24px;
+      letter-spacing: 1px;/* no */
     }
   }
+
   &-usr {
     font-size: 24px;
     color: #ccc;
@@ -492,7 +515,7 @@ export default {
     margin-top: 20px;
     margin-left: -20px;
     margin-right: -20px;
-    padding: 0 20px 0 120px;
+    padding: 0 20px 0 100px;
   }
   &-tools {
     padding: 30px 0;
