@@ -6,7 +6,7 @@
         slot="right"
         class="create-btn"
         :class="{active: !disabled}"
-        @click="beforeCreate"
+        @click="onCreate"
         v-text="'创建'"
       />
     </CommonHeader>
@@ -31,6 +31,7 @@
         />
         <label class="title">
           <input
+            v-model="title"
             type="text"
             maxlength="10"
             placeholder="输入话题标题，10字以内（必填）"
@@ -60,6 +61,7 @@
 </template>
 
 <script>
+import * as api from '@/api/topic'
 import ImageUploader from '@/components/common/ImageUploader'
 import TextareaInput from '@/components/common/TextareaInput'
 
@@ -75,11 +77,12 @@ export default {
       node: null,
       description: '',
       src: '',
+      pending: false,
     }
   },
   computed: {
     disabled () {
-      return false
+      return !this.title
     },
     form () {
       return {
@@ -90,8 +93,21 @@ export default {
     },
   },
   methods: {
-    beforeCreate () {
-      if (this.disabled) return
+    onCreate () {
+      if (this.disabled || this.pending) return
+      this.pending = true
+      api.createTopic(this.form)
+        .then(({ data }) => {
+          const { id, need_review: needReview } = data
+          if (needReview) {
+            this.$Message.success('创建成功，请等待审核')
+            return this.goBack()
+          }
+          this.$router.push({ name: 'TopicDetail', params: { id } })
+        })
+        .finally(() => {
+          this.pending = false
+        })
     },
   },
 }
