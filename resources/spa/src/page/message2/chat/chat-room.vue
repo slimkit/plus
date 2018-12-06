@@ -1,26 +1,20 @@
 <template>
   <div class="p-chat-room m-box-model">
-    <CommonHeader><span class="m-text-cut">{{ name }}</span><span>{{ count }}</span></CommonHeader>
+    <CommonHeader>
+      <span class="m-text-cut">{{ name }}</span>
+      <span>{{ count }}</span>
+    </CommonHeader>
 
-    <main
-      ref="main"
-      class="m-box-model p-chat-room-main m-flex-grow1 m-flex-shrink1 m-main"
-    >
-      <Bubble
+    <main ref="main" class="m-box-model p-chat-room-main m-flex-grow1 m-flex-shrink1 m-main">
+      <MessageBubble
         v-for="msg in messages"
         :key="msg.id"
         :msg="msg"
       />
     </main>
 
-    <footer
-      ref="footer"
-      class="m-box m-aln-end m-main p-chat-room-foot m-flex-grow0 m-flex-shrink0 m-bt1"
-    >
-      <form
-        action="#"
-        class="m-box-model m-aln-center m-justify-center m-flex-grow1 m-flex-shrink1 m-main p-chat-input"
-      >
+    <footer ref="footer" class="m-box m-aln-end m-main p-chat-room-foot m-flex-grow0 m-flex-shrink0 m-bt1">
+      <form action="#" class="m-box-model m-aln-center m-justify-center m-flex-grow1 m-flex-shrink1 m-main p-chat-input">
         <textarea
           ref="textarea"
           v-model.trim="body"
@@ -52,11 +46,11 @@
 import $Message from '@/plugins/message-box'
 import WebIM, { sendTextMessage } from '@/vendor/easemob'
 
-import bubble from './message-bubble.vue'
+import MessageBubble from './message-bubble.vue'
 export default {
   name: 'ChatRoom',
   components: {
-    bubble,
+    MessageBubble,
   },
   data () {
     return {

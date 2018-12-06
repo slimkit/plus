@@ -16,13 +16,13 @@
   </div>
 </template>
 <script>
-import chatItem from './chat-item.vue'
+import ChatItem from './chat-item.vue'
 import { mapState, mapActions } from 'vuex'
 import { startSingleChat } from '@/vendor/easemob/'
 export default {
   name: 'ChatList',
   components: {
-    chatItem,
+    ChatItem,
   },
   data () {
     return {}

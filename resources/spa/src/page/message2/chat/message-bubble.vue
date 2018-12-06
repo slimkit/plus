@@ -21,8 +21,9 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+
 export default {
-  name: 'Bubble',
+  name: 'MessageBubble',
   props: {
     msg: { type: [Object, String], default: '' },
   },
