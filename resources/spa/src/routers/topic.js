@@ -1,5 +1,6 @@
 import TopicHome from '@/page/topic/TopicHome.vue'
 import TopicCreate from '@/page/topic/TopicCreate.vue'
+import TopicSearch from '@/page/topic/TopicSearch.vue'
 
 export default [
   {
@@ -16,6 +17,15 @@ export default [
     component: TopicCreate,
     meta: {
       title: '创建话题',
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/topic/search',
+    name: 'TopicSearch',
+    component: TopicSearch,
+    meta: {
+      title: '搜索话题',
       requiresAuth: true,
     },
   },

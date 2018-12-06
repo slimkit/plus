@@ -1,9 +1,6 @@
 <template>
   <header class="c-search-bar">
-    <form
-      class="input-wrap"
-      onsubmit="return false"
-    >
+    <form class="input-wrap" onsubmit="return false">
       <svg class="m-icon-svg m-svg-small"><use xlink:href="#icon-search" /></svg>
       <input
         :value="value"
@@ -13,10 +10,7 @@
       >
     </form>
 
-    <a
-      class="btn-cancel"
-      @click.prevent.stop="onBackClick"
-    >
+    <a class="btn-cancel" @click.prevent.stop="onBackClick">
       取消
     </a>
   </header>

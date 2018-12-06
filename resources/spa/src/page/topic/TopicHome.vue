@@ -1,6 +1,6 @@
 <template>
   <div class="p-topic-home">
-    <CommonHeader class="header">
+    <CommonHeader :pinned="true" class="header">
       <nav class="type-switch-bar">
         <span :class="{active: currentType === 'hot'}" @click="currentType = 'hot'">
           热门
@@ -34,14 +34,7 @@
         @onRefresh="onRefresh"
         @onLoadMore="onLoadMore"
       >
-        <ul class="topic-list">
-          <TopicCard
-            v-for="topic in list"
-            :key="topic.id"
-            class="topic-item"
-            :topic="topic"
-          />
-        </ul>
+        <TopicList :topics="list" />
       </JoLoadMore>
     </main>
   </div>
@@ -49,12 +42,12 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import TopicCard from './components/TopicCard'
+import TopicList from './components/TopicList'
 
 export default {
   name: 'TopicHome',
   components: {
-    TopicCard,
+    TopicList,
   },
   computed: {
     ...mapState('topic', {
@@ -125,19 +118,5 @@ export default {
     }
   }
 
-  > main {
-    padding: 30px;
-  }
-
-  .topic-list {
-    display: flex;
-    flex-direction: column;
-
-    .topic-item {
-      width: 100%;
-      height: 300px;
-      margin-bottom: 30px;
-    }
-  }
 }
 </style>
