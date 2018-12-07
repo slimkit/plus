@@ -7,16 +7,13 @@
       :loading="loading"
       @more="onMoreClick"
       @loadmore="fetchFeeds(true)"
+      @update="fetchTopic"
     >
       <div slot="head" class="banner-content">
         <div class="detail">
           <div class="info">
             <h1>{{ topic.name }}</h1>
             <p v-show="creator.name">创建者：{{ creator.name }}</p>
-          </div>
-          <div class="follow-btn">
-            <button v-if="topic.has_followed" @click="unfollowTopic">已关注</button>
-            <button v-else @click="followTopic">+ 关注</button>
           </div>
         </div>
       </div>
@@ -25,16 +22,16 @@
         <p v-if="topic.desc" class="description">
           {{ topic.desc }}
         </p>
-        <div v-if="participants.length" class="participants">
-          <div>
+        <div v-if="followers.length" class="participants">
+          <div class="title" @click="gotoParticipants">
             <strong>参与话题的人</strong>
-            <svg class="m-style-svg m-svg-def">
-              <use xlink:href="#icon-arrow-r" />
+            <svg v-if="followers.length >= 4" class="m-style-svg m-svg-small">
+              <use xlink:href="#icon-arrow-right" />
             </svg>
           </div>
           <ul class="user-list">
             <li
-              v-for="user in participants"
+              v-for="user in followers"
               :key="user.id"
               class="user-item"
             >
@@ -46,8 +43,20 @@
       </template>
 
       <div slot="sticky" class="sticky-bar">
-        <span>{{ topic.feeds_count }} 条动态</span>
-        <span>{{ topic.followers_count }} 人关注</span>
+        <div class="info">
+          <span>{{ topic.feeds_count }} 条动态</span>
+          <span>{{ topic.followers_count }} 人关注</span>
+        </div>
+        <div v-if="!isMine" class="follow-btn">
+          <button v-if="topic.has_followed" @click="unfollowTopic">已关注</button>
+          <button
+            v-else
+            class="unfollow"
+            @click="followTopic"
+          >
+            + 关注
+          </button>
+        </div>
       </div>
 
       <template slot="main">
@@ -99,19 +108,20 @@ export default {
     isMine () {
       return this.creator.id === this.currentUser.id
     },
+    followers () {
+      return [this.creator, ...this.participants]
+    },
   },
   created () {
-    this.fetchTopic()
-  },
-  activated () {
-    if (this.topicId !== this.preTopicId) this.fetchTopic()
+    this.fetchTopic(true)
   },
   methods: {
-    fetchTopic () {
-      this.loading = true
+    fetchTopic (init = false) {
+      if (init) this.loading = true
       api.getTopicDetail(this.topicId)
         .then(({ data }) => {
           this.loading = false
+          this.$refs.portal.afterUpdate()
           this.topic = data
           this.preTopicId = this.topic.id
           this.fetchCreator()
@@ -119,16 +129,15 @@ export default {
           this.fetchFeeds()
         })
     },
-    fetchCreator () {
-      this.creator = userApi.getUserInfoById(this.topic.creator_user_id)
+    async fetchCreator () {
+      this.creator = await userApi.getUserInfoById(this.topic.creator_user_id)
     },
-    fetchParticipants () {
+    async fetchParticipants () {
       const users = this.topic.participants || []
       if (!users.length) return
-      userApi.getUserList({ id: users.join(','), limit: 4 })
-        .then(({ data }) => {
-          this.participants = data
-        })
+      const params = { id: users.join(','), limit: 4 }
+      const data = await this.$store.dispatch('user/getUserList', params)
+      this.participants = data
     },
     fetchFeeds (loadmore) {
       const params = {}
@@ -144,14 +153,14 @@ export default {
         })
     },
     async followTopic () {
+      this.$refs.portal.beforeUpdate()
       await api.followTopic(this.topicId)
-      this.topic.has_followed = true
-      this.$Message.success('关注话题成功')
+      this.fetchTopic()
     },
     async unfollowTopic () {
+      this.$refs.portal.beforeUpdate()
       await api.unfollowTopic(this.topicId)
-      this.topic.has_followed = false
-      this.$Message.success('取消关注成功')
+      this.fetchTopic()
     },
     onMoreClick () {
       const actions = []
@@ -176,6 +185,9 @@ export default {
         })
       }
       this.$bus.$emit('actionSheet', actions)
+    },
+    gotoParticipants () {
+      this.$router.push({ name: 'TopicParticipants', params: { topicId: this.topicId } })
     },
   },
 }
@@ -207,19 +219,6 @@ export default {
         margin-bottom: 10px;
       }
     }
-
-    .follow-btn button {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 5em;
-      height: 50px;
-      border: 1px solid @primary;
-      border-radius: 8px;
-      background-color: transparent;
-      color: @primary;
-      font-size: 26px;
-    }
   }
 
   .description {
@@ -235,6 +234,16 @@ export default {
     font-size: 26px;
     background-color: #fff;
     border-top: 1px solid @border-color;
+
+    .title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .m-style-svg {
+        color: @text-color3;
+      }
+    }
 
     .user-list {
       display: flex;
@@ -262,20 +271,39 @@ export default {
   }
 
   .sticky-bar {
-    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    height: 70px;
 
-    span + span {
-      margin-left: 1em;
+    .info {
+      span + span {
+        margin-left: 1em;
+      }
+    }
+
+    .follow-btn {
+      button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 4.5em;
+        border: 1px solid @primary;
+        border-radius: 8px;
+        background-color: transparent;
+        color: @primary;
+        font-size: 22px;
+
+        &.unfollow {
+          background-color: @primary;
+          color: #fff;
+        }
+      }
     }
   }
 
   &.cover {
-    .follow-btn button {
-      border: 1px solid #fff;
-      color: #fff;
-      box-shadow: 0 -1px rgba(0,0,0, 0.35); /*no*/
-    }
-
     .banner-content::before {
       content: "";
       position: absolute;

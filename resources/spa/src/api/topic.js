@@ -91,6 +91,22 @@ export function unfollowTopic (topicId) {
 }
 
 /**
+ * 参与话题的人
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {number} topicId
+ * @param {Object} params
+ * @param {number} [params.limit=15]
+ * @param {number} [params.offset]
+ * @returns {UserObject[]}
+ */
+export function getTopicParticipants (topicId, params) {
+  const url = `/feed/topics/${topicId}/participants`
+  return api.get(url, { params, validateStatus: s => s === 200 })
+}
+
+/**
  * 举报话题
  *
  * @author mutoe <mutoe@foxmail.com>

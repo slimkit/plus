@@ -51,7 +51,7 @@
         <p>
           简介：<span>{{ bio }}</span>
         </p>
-        <p class="user-tags">
+        <p v-if="tags.length" class="user-tags">
           <span
             v-for="tag in tags"
             v-if="tag.id"
@@ -389,7 +389,6 @@ export default {
         })
     },
     updateData () {
-      this.$refs.portal.beforeUpdate()
       this.fetchUserInfo()
       this.fetchUserFeed()
       this.fetchUserTags()
@@ -475,6 +474,18 @@ export default {
     max-width: 768px;
     margin: 0 auto;
     z-index: 10;
+
+    h3 {
+      font-size: 34px;
+      margin-top: 20px;
+    }
+
+    p {
+      margin: 20px 0 30px;
+      span + span {
+        margin-left: 20px;
+      }
+    }
 
     &::after {
       content: "";

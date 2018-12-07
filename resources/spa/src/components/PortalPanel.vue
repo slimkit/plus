@@ -12,6 +12,11 @@
   >
     <div v-if="loading" class="m-pos-f m-spinner" />
     <header :class="{ 'show-title': scrollTop > 1 / 2 * bannerHeight }" class="header">
+      <CircleLoading
+        v-show="updating"
+        class="fetching"
+        :color="cover ? 'light': 'dark'"
+      />
       <div class="left">
         <svg class="m-style-svg m-svg-def" @click="onBackClick">
           <use xlink:href="#icon-back" />
@@ -31,11 +36,6 @@
         :style="bannerStyle"
         class="banner"
       >
-        <CircleLoading
-          v-show="updating"
-          class="fetching"
-          :color="cover ? 'light': 'dark'"
-        />
         <slot name="head" />
       </div>
 
@@ -49,7 +49,11 @@
 
       <slot name="loadmore">
         <div class="m-box m-aln-center m-justify-center load-more-box">
-          <span v-if="noMore" class="load-more-ph">---没有更多---</span>
+          <template v-if="noMore">
+            <slot name="noMore">
+              <span class="load-more-ph">---没有更多---</span>
+            </slot>
+          </template>
           <span
             v-else
             class="load-more-btn"
@@ -151,7 +155,7 @@ export default {
     },
     beforeUpdate () {
       this.updating = true
-      this.dY = 0
+      this.$emit('update')
     },
     afterUpdate () {
       this.updating = false
@@ -184,8 +188,10 @@ export default {
     },
     stopDrag () {
       this.dragging = false
+      if (this.dY > 300 && this.scrollTop <= 0) {
+        this.beforeUpdate()
+      }
       this.dY = 0
-      if (this.dY > 300 && this.scrollTop <= 0) this.$emit('update')
     },
   },
 }
@@ -204,13 +210,20 @@ export default {
     height: 90px;
     max-width: 768px;
     border-bottom: 0;
-    margin-top: -1px;/*no*/
+    margin: -1px auto 0;/*no*/
     background-color: transparent;
     color: #fff;
     font-size: 32px;
     transition: background 0.3s ease;
     overflow: hidden;
     z-index: 30;
+
+    .c-loading {
+      position: absolute;
+      left: 90px;
+      width: 60px;
+      height: 90px;
+    }
 
     .title {
       display: flex;
