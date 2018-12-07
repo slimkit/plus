@@ -1,3 +1,5 @@
+import { timeOffset } from '@/filters'
+
 /**
  * 空函数
  * 用于默认函数引用判断
@@ -183,4 +185,14 @@ export const generateString = length => {
   return Math.random()
     .toString(36)
     .substr(2, length)
+}
+
+export const transTime = (date) => {
+  date = date.replace(/-/g, '/') // for safari
+  // match 2018/10/17 01:48:52"
+  if (date.match(/^\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}$/)) {
+    // 如果匹配到服务器返回的时间是非标准格式的祖鲁时间，需要进行本地化
+    date = +new Date(date) - timeOffset
+  }
+  return new Date(date)
 }
