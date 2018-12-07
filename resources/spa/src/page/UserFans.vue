@@ -93,9 +93,7 @@ export default {
     },
     users (val) {
       if (val && val.length > 0) {
-        val.forEach(user => {
-          this.$store.commit('SAVE_USER', user)
-        })
+        this.$store.commit('SAVE_USER', val)
       }
     },
   },

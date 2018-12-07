@@ -31,16 +31,19 @@ export default {
    * 保存用户信息
    * @author jsonleex <jsonlseex@163.com>
    */
-  SAVE_USER (state, user) {
-    if (!user.id) return
-    const key = `user_${user.id}`
-    const oldUser = state.USERS[key]
+  SAVE_USER (state, users) {
+    if (!(users instanceof Array)) users = [users]
+    for (const user of users) {
+      if (!user.id) continue
+      const key = `user_${user.id}`
+      const oldUser = state.USERS[key]
 
-    oldUser
-      ? (state.USERS[key] = Object.assign(oldUser, user))
-      : (state.USERS[key] = user)
+      oldUser
+        ? (state.USERS[key] = Object.assign(oldUser, user))
+        : (state.USERS[key] = user)
 
-    lstore.setData('H5_USERS', state.USERS)
+      lstore.setData('H5_USERS', state.USERS)
+    }
   },
 
   // 保存当前登录用户信息
