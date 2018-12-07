@@ -1,11 +1,13 @@
 <template>
   <div class="m-box-model m-card" @click="handleView('')">
     <div class="m-box">
-      <div
-        v-if="timeLine"
-        class="m-box-model m-aln-center m-flex-grow0 m-flex-shrink0 m-card-time-line"
-        v-html="timeLineText"
-      />
+      <template v-if="timeLine">
+        <div v-if="isToday" v-text="'今天'" />
+        <div v-else class="timeline-text">
+          <span>{{ time.getDate() }}</span>
+          <span class="month">{{ time.getMonth() + 1 }}月</span>
+        </div>
+      </template>
       <Avatar v-else :user="user" />
       <section class="m-box-model m-flex-grow1 m-flex-shrink1 m-card-main">
         <header v-if="!timeLine" class="m-box m-aln-center m-justify-bet m-card-usr">
@@ -91,11 +93,12 @@
 
 <script>
 import { mapState } from 'vuex'
+import * as api from '@/api/feeds.js'
+import { transTime } from '@/util'
+import { escapeHTML } from '@/filters.js'
 import FeedImage from './FeedImage.vue'
 import FeedVideo from './FeedVideo.vue'
 import CommentItem from './CommentItem.vue'
-import { time2txt, escapeHTML } from '@/filters.js'
-import * as api from '@/api/feeds.js'
 
 export default {
   name: 'FeedCard',
@@ -166,7 +169,14 @@ export default {
       return this.feed.feed_view_count || 0
     },
     time () {
-      return this.feed.created_at
+      let str = this.feed.created_at
+      return transTime(str)
+    },
+    isToday () {
+      // 时间差 = 当前时间 - date (单位: 秒)
+      let offset = (new Date() - this.time) / 1000
+      if (offset / 3600 < 24) return true
+      return false
     },
     user () {
       const user = this.feed.user
@@ -192,16 +202,6 @@ export default {
       set (val) {
         this.feed.has_collect = val
       },
-    },
-    timeLineText () {
-      const text = time2txt(this.time)
-      const len = text.length
-      return len > 4
-        ? `<span>${text.substr(0, len - 2)}</span><span>${text.substr(
-          -2,
-          2
-        )}</span>`
-        : `<span>${text}</span>`
     },
     title () {
       return this.feed.title || ''

@@ -1,5 +1,6 @@
 import plueMessageBundle from 'plus-message-bundle'
 import xss from 'xss'
+import { transTime } from '@/util'
 
 /**
  * ThinkSNS Plus 消息解析器，获取顶部消息.
@@ -111,12 +112,7 @@ export const addTimeOffset = date => {
 
 export const time2tips = date => {
   if (typeof date === 'string') {
-    date = date.replace(/-/g, '/') // for safari
-    // match 2018/10/17 01:48:52"
-    if (date.match(/^\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}$/)) {
-      // 如果匹配到服务器返回的时间是非标准格式的祖鲁时间，需要进行本地化
-      date = +new Date(date) - timeOffset
-    }
+    date = transTime(date)
   }
   const time = new Date(date)
   const offset = (new Date().getTime() - time) / 1000
