@@ -2,6 +2,22 @@
 
 declare(strict_types=1);
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace SlimKit\Plus\Packages\Blog\Providers;
 
 use Illuminate\Support\ServiceProvider;
@@ -31,7 +47,7 @@ class RouteServiceProvider extends ServiceProvider
         // Publish admin menu.
         $this->app->make(ManageRepository::class)->loadManageFrom('plus-blog', 'plus-blog:admin-home', [
             'route' => true,
-            'icon' => '📦',
+            'icon'  => '📦',
         ]);
     }
 }
