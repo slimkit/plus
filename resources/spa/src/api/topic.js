@@ -89,3 +89,17 @@ export function unfollowTopic (topicId) {
   const url = `/user/feed-topics/${topicId}`
   return api.delete(url, { validateStatus: s => s === 204 })
 }
+
+/**
+ * 举报话题
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {number} topicId
+ * @param {string} message 举报理由
+ * @returns
+ */
+export function reportTopic (topicId, message) {
+  const url = `/user/report-feed-topics/${topicId}`
+  return api.put(url, { message }, { validateStatus: s => s === 204 })
+}

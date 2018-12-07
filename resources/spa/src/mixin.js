@@ -9,6 +9,9 @@ export default {
     }
   },
   computed: {
+    currentUser () {
+      return this.$store.state.CURRENTUSER || {}
+    },
     currencyUnit () {
       return this.$store.state.currency.unit
     },

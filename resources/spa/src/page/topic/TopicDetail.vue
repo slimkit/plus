@@ -5,6 +5,7 @@
       :title="topic.name"
       :cover="cover"
       :loading="loading"
+      @more="onMoreClick"
       @loadmore="fetchFeeds(true)"
     >
       <div slot="head" class="banner-content">
@@ -95,6 +96,9 @@ export default {
       const { logo = {} } = this.topic
       return logo.url || false
     },
+    isMine () {
+      return this.creator.id === this.currentUser.id
+    },
   },
   created () {
     this.fetchTopic()
@@ -148,6 +152,30 @@ export default {
       await api.unfollowTopic(this.topicId)
       this.topic.has_followed = false
       this.$Message.success('取消关注成功')
+    },
+    onMoreClick () {
+      const actions = []
+      if (this.isMine) {
+        // actions.push({
+        //   text: '编辑',
+        //   method: () => {
+        //     this.$router.push({ name: 'TopicEdit', params: { topicId: this.topicId } })
+        //   },
+        // })
+      } else {
+        actions.push({
+          text: '举报',
+          method: () => {
+            this.$bus.$emit('report', {
+              type: 'topic',
+              payload: this.topicId,
+              username: this.creator.name,
+              reference: this.topic.name,
+            })
+          },
+        })
+      }
+      this.$bus.$emit('actionSheet', actions)
     },
   },
 }
