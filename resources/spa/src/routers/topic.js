@@ -1,6 +1,7 @@
 import TopicHome from '@/page/topic/TopicHome.vue'
 import TopicCreate from '@/page/topic/TopicCreate.vue'
 import TopicSearch from '@/page/topic/TopicSearch.vue'
+import TopicDetail from '@/page/topic/TopicDetail.vue'
 
 export default [
   {
@@ -27,6 +28,15 @@ export default [
     meta: {
       title: '搜索话题',
       requiresAuth: true,
+    },
+  },
+  {
+    path: '/topic/:topicId',
+    name: 'TopicDetail',
+    component: TopicDetail,
+    meta: {
+      keepAlive: true,
+      title: '话题详情',
     },
   },
 ]

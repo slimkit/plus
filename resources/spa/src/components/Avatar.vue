@@ -26,7 +26,7 @@ import _ from 'lodash'
 export default {
   name: 'Avatar',
   props: {
-    size: { type: String, default: 'def' },
+    size: { type: String, default: 'def', validator: val => ['def', 'big', 'nano', 'small', 'tiny'].includes(val) },
     user: { type: Object, required: true },
     anonymity: { type: [Boolean, Number], default: false },
   },

@@ -1,12 +1,11 @@
 <template>
   <div class="p-user-home">
     <PortalPanel
-      ref="panel"
+      ref="portal"
       :title="user.name"
       :cover="userBackground"
       :loading="loading"
       :show-footer="!isMine"
-      :no-more="noMoreData"
       :back="beforeBack"
       @update="updateData"
       @more="onMoreClick"
@@ -189,7 +188,6 @@ export default {
         paid: '付费动态',
         pinned: '置顶动态',
       },
-      noMoreData: false,
       fetchFeeding: false,
 
       tags: [],
@@ -245,7 +243,8 @@ export default {
       return this.extra.feeds_count || 0
     },
     userBackground () {
-      return this.user.bg && this.user.bg.url
+      const { url } = this.user.bg || {}
+      return url || require('@/images/user_home_default_cover.png')
     },
     verified () {
       return this.user.verified
@@ -376,28 +375,21 @@ export default {
         })
     },
     fetchUserFeed (loadmore) {
-      if (this.fetchFeeding) return
-      this.fetchFeeding = true
-
-      const params = {
-        limit: 15,
-        type: 'users',
-        user: this.userId,
-      }
+      const params = { limit: 15, type: 'users', user: this.userId }
       if (loadmore) params.after = this.after
       if (this.isMine && this.screen !== 'all') params.screen = this.screen
+      this.$refs.portal.beforeLoadMore()
       feedApi.getFeeds(params)
         .then(({ data: { feeds = [] } }) => {
           this.feeds = loadmore ? [...this.feeds, ...feeds] : feeds
-          this.noMoreData = feeds.length < params.limit
+          this.$refs.portal.afterLoadMore(feeds.length < params.limit)
         })
         .finally(() => {
-          this.$refs.panel.afterUpdate()
-          this.fetchFeeding = false
+          this.$refs.portal.afterUpdate()
         })
     },
     updateData () {
-      this.$refs.panel.onUpdate()
+      this.$refs.portal.beforeUpdate()
       this.fetchUserInfo()
       this.fetchUserFeed()
       this.fetchUserTags()

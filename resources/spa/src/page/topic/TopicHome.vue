@@ -60,19 +60,26 @@ export default {
     },
     currentType: {
       get () {
-        return this.$route.query.type || 'hot'
+        return this.$route.query.type
       },
       set (type) {
         this.$router.replace({
           path: this.$route.path,
           query: { type: type },
         })
-        if (!this[type].length) this.onRefresh()
       },
+    },
+  },
+  watch: {
+    currentType () {
+      this.$refs.loadmore.beforeRefresh()
     },
   },
   created () {
     if (!this.$route.query.type) this.currentType = 'hot'
+  },
+  mounted () {
+    this.$refs.loadmore.beforeRefresh()
   },
   methods: {
     ...mapActions('topic', [

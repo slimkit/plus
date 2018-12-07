@@ -1,10 +1,12 @@
 <template>
   <div class="p-topic-search">
-    <SearchBar v-model="keyword" />
+    <SearchBar v-model="keyword" placeholder="搜索话题" />
 
     <main>
       <JoLoadMore
         ref="loadmore"
+        :auto-load="false"
+        :show-bottom="keyword != ''"
         @onRefresh="onRefresh"
         @onLoadMore="onLoadMore"
       >
@@ -33,9 +35,13 @@ export default {
     }
   },
   watch: {
-    keyword () {
-      this.$refs.loadmore.beforeRefresh()
-      this.onRefresh()
+    keyword (val) {
+      if (val) {
+        this.$refs.loadmore.beforeRefresh()
+        this.onRefresh()
+      } else {
+        this.list = []
+      }
     },
   },
   methods: {
@@ -53,8 +59,3 @@ export default {
   },
 }
 </script>
-
-<style lang="less" scoped>
-.p-topic-search {
-}
-</style>

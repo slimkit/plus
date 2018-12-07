@@ -1,5 +1,9 @@
 <template>
-  <li class="c-topic-card" :style="{'background-image': `url(${logo})`}">
+  <li
+    class="c-topic-card"
+    :style="{'background-image': `url(${logo})`}"
+    @click="gotoDetail"
+  >
     <h2 class="title">{{ topic.name }}</h2>
   </li>
 </template>
@@ -14,6 +18,14 @@ export default {
     logo () {
       const { logo = {} } = this.topic
       return logo.url || require('@/images/default_topic.jpg')
+    },
+  },
+  methods: {
+    gotoDetail () {
+      this.$router.push({
+        name: 'TopicDetail',
+        params: { topicId: this.topic.id },
+      })
     },
   },
 }
