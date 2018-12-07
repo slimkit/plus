@@ -22,6 +22,8 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Utils\Markdown;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Models\Conversation;
 
 class SystemController extends Controller
@@ -71,9 +73,12 @@ class SystemController extends Controller
      * @author Foreach<791477842@qq.com>
      * @return html
      */
-    public function agreement()
+    public function agreement(Markdown $markdown)
     {
-        $content = \Parsedown::instance()->setMarkupEscaped(true)->text(config('registerSettings.content', ''));
+        $content = setting('user', 'register-setting', [
+            'content' => '# 服务条款及隐私政策',
+        ])['content'] ?? '# 服务条款及隐私政策';
+        $content = $markdown->toHtml($content);
 
         return view('agreement', ['content' => $content]);
     }
