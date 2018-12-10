@@ -44,6 +44,7 @@ class NewsPinnedController extends Controller
         $max_id = $request->query('max_id', 0);
         $user = $request->query('user');
         $state = $request->query('state');
+        $category = $request->query('cate_id');
 
         $pinneds = $newsPinnedModel->with('news', 'user')
             ->where('channel', 'news')
@@ -65,6 +66,9 @@ class NewsPinnedController extends Controller
             })
             ->when($user, function ($query) use ($user) {
                 return $query->where('user_id', $user);
+            })
+            ->when($category, function ($query) use ($category) {
+                return $query->where('cate_id', $category);
             })
             ->whereExists(function ($query) {
                 return $query->from('news')->whereRaw('news.id = news_pinneds.target')->where('deleted_at', null);
