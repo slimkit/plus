@@ -2,11 +2,27 @@
 
 declare(strict_types=1);
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace SlimKit\Plus\Packages\Blog\Handlers;
 
-use Zhiyi\Plus\Utils\Path;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
+use Zhiyi\Plus\Utils\Path;
 
 class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
 {
@@ -31,6 +47,7 @@ class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
      * Create a migration file.
      *
      * @param \Illuminate\Console\Command $command
+     *
      * @return mixed
      */
     public function makeMigrationHandle(Command $command)
@@ -43,7 +60,7 @@ class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
 
         // Ask table name.
         $table = $command->getOutput()->ask('Enter the table name', null, function ($table) {
-            if (! preg_match('/^[a-z0-9_]+$/is', $table)) {
+            if (!preg_match('/^[a-z0-9_]+$/is', $table)) {
                 throw new \InvalidArgumentException(
                     'The name '.$table.' is invalid, matching: [a-z0-9_]'
                 );
@@ -59,9 +76,9 @@ class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
         $create = $command->confirm('The migration a new creation');
 
         return $command->call('make:migration', [
-            'name' => sprintf('%s_%s_table', $prefix, $table),
-            '--path' => $path,
-            '--table' => $table,
+            'name'     => sprintf('%s_%s_table', $prefix, $table),
+            '--path'   => $path,
+            '--table'  => $table,
             '--create' => $create,
         ]);
     }
@@ -70,14 +87,16 @@ class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
      * Create a database seeder.
      *
      * @param \Illuminate\Console\Command $command
+     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function makeSeederHandle(Command $command)
     {
         $path = $this->app->make('path.plus-blog.seeds');
         $name = $command->getOutput()->ask('Enter the seeder name', null, function ($name) {
-            if (! preg_match('/^[a-z][a-z0-9_-]+[a-z0-9]$/is', $name)) {
+            if (!preg_match('/^[a-z][a-z0-9_-]+[a-z0-9]$/is', $name)) {
                 throw new \InvalidArgumentException(
                     'The name '.$name.' is invalid, matching: [a-z][a-z0-9_-]+[a-z0-9]'
                 );
@@ -105,13 +124,15 @@ class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
      * Make package model.
      *
      * @param \Illuminate\Console\Command $command
+     *
      * @return mixed
+     *
      * @author Seven Du <shiweidu@outlook.com>
      */
     public function makeModelHandle(Command $command)
     {
         $modelName = $command->getOutput()->ask('Enter the Model name', null, function ($modelName) {
-            if (! preg_match('/^[a-zA-Z0-9]+$/is', $modelName)) {
+            if (!preg_match('/^[a-zA-Z0-9]+$/is', $modelName)) {
                 throw new \InvalidArgumentException(
                     'The name '.$modelName.' is invalid, matching: [a-zA-Z0-9]'
                 );
@@ -122,7 +143,7 @@ class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
         $modelName = ucfirst(camel_case($modelName));
         $table = str_plural(strtolower(snake_case($modelName)));
         $table = $command->getOutput()->ask('Enter the table name', $table, function ($table) {
-            if (! preg_match('/^[a-z0-9_]+$/is', $table)) {
+            if (!preg_match('/^[a-z0-9_]+$/is', $table)) {
                 throw new \InvalidArgumentException(
                     'The name '.$table.' is invalid, matching: [a-z0-9_]'
                 );
@@ -142,7 +163,7 @@ class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
             $this->app->make('path.plus-blog.resources').'/stubs/model'
         );
         $variable = [
-            '{--name--}' => $modelName,
+            '{--name--}'       => $modelName,
             '{--table-name--}' => $table,
         ];
         foreach ($variable as $key => $value) {
@@ -159,9 +180,9 @@ class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
             );
 
             return $command->call('make:migration', [
-                'name' => sprintf('create_%s_table', $table),
-                '--path' => $path,
-                '--table' => $table,
+                'name'     => sprintf('create_%s_table', $table),
+                '--path'   => $path,
+                '--table'  => $table,
                 '--create' => true,
             ]);
         }

@@ -2,10 +2,26 @@
 
 declare(strict_types=1);
 
+/*
+ * +----------------------------------------------------------------------+
+ * |                          ThinkSNS Plus                               |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 2018 Chengdu ZhiYiChuangXiang Technology Co., Ltd.     |
+ * +----------------------------------------------------------------------+
+ * | This source file is subject to version 2.0 of the Apache license,    |
+ * | that is bundled with this package in the file LICENSE, and is        |
+ * | available through the world-wide-web at the following url:           |
+ * | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+ * +----------------------------------------------------------------------+
+ * | Author: Slim Kit Group <master@zhiyicx.com>                          |
+ * | Homepage: www.thinksns.com                                           |
+ * +----------------------------------------------------------------------+
+ */
+
 namespace SlimKit\Plus\Packages\Blog\Web\Requests;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateBlog extends FormRequest
 {
@@ -42,7 +58,7 @@ class CreateBlog extends FormRequest
     public function messages(): array
     {
         return [
-            'slug.regex' => ':attribute必须是字母开头仅含有字母和数字的小写字符串'
+            'slug.regex' => ':attribute必须是字母开头仅含有字母和数字的小写字符串',
         ];
     }
 
@@ -57,7 +73,7 @@ class CreateBlog extends FormRequest
             'slug' => '博客唯一标识',
             'name' => '博客名称',
             'desc' => '博客描述',
-            'logo' => '博客图标'
+            'logo' => '博客图标',
         ];
     }
 }
