@@ -66,7 +66,7 @@
             v-if="feed.id"
             :key="`feed${feed.id}`"
           >
-            <FeedCard :feed="feed" />
+            <FeedCard :feed="feed" :current-topic="topic.id" />
           </li>
         </ul>
       </template>

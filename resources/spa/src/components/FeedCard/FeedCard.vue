@@ -36,6 +36,16 @@
             :id="feedID"
             :video="video"
           />
+          <ul v-if="feed.topics.length" class="topics">
+            <li
+              v-for="topic in feed.topics"
+              v-if="topic.id !== currentTopic"
+              :key="topic.id"
+              class="topic-item"
+              @click.capture.stop="viewTopic(topic.id)"
+              v-text="topic.name"
+            />
+          </ul>
         </article>
       </section>
     </div>
@@ -107,22 +117,11 @@ export default {
     FeedVideo,
   },
   props: {
-    timeLine: {
-      type: Boolean,
-      default: false,
-    },
-    pinned: {
-      type: Boolean,
-      default: false,
-    },
-    feed: {
-      type: Object,
-      required: true,
-    },
-    showFooter: {
-      type: Boolean,
-      default: true,
-    },
+    timeLine: { type: Boolean, default: false },
+    pinned: { type: Boolean, default: false },
+    feed: { type: Object, required: true },
+    showFooter: { type: Boolean, default: true },
+    currentTopic: { type: Number, default: 0 },
   },
   computed: {
     ...mapState(['CURRENTUSER']),
@@ -210,6 +209,9 @@ export default {
     this.user && this.$store.commit('SAVE_USER', this.user)
   },
   methods: {
+    viewTopic (topicId) {
+      this.$router.push({ name: 'TopicDetail', params: { topicId } })
+    },
     replaceURI (str) {
       // 脚本内容以纯文本方式显示
       const scriptRegex = /<\s*script\s*>(.*?)<\s*\/\s*script\s*>/i
@@ -447,6 +449,23 @@ export default {
     .month {
       font-size: 24px;
       letter-spacing: 1px;/* no */
+    }
+  }
+
+  .topics {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px 0 0;
+
+    .topic-item {
+      padding: 6px 16px;
+      border-radius: 6px;
+      background-color: rgba(145, 209, 232, 0.12);
+      font-size: 24px;
+      color: @primary;
+      margin-right: 12px;
+      margin-bottom: 12px;
+      cursor: pointer;
     }
   }
 
