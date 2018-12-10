@@ -34,24 +34,25 @@
         class="textarea-input"
       />
       <ImageList :edit="pinned" style="padding: 0 .3rem .3rem" />
-    </main>
 
-    <footer @click.capture.stop.prevent="popupBuyTS">
-      <VSwitch
-        v-if="paycontrol"
-        v-model="pinned"
-        class="m-box m-bt1 m-bb1 m-lim-width m-pinned-row"
-        type="checkbox"
-      >
-        <slot>是否收费</slot>
-      </VSwitch>
-    </footer>
+      <div class="options">
+        <TopicSelector v-model="topics" />
+
+        <FormSwitchItem
+          v-if="paycontrol"
+          v-model="pinned"
+          label="是否收费"
+          @click.capture.stop.prevent="popupBuyTS"
+        />
+      </div>
+    </main>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import ImageList from './components/ImageList.vue'
+import ImageList from './components/ImageList'
+import TopicSelector from './components/TopicSelector'
 import TextareaInput from '@/components/common/TextareaInput.vue'
 
 export default {
@@ -59,6 +60,7 @@ export default {
   components: {
     ImageList,
     TextareaInput,
+    TopicSelector,
   },
   data () {
     return {
@@ -67,6 +69,7 @@ export default {
       curpos: 0,
       loading: false,
       contentText: '',
+      topics: [],
       scrollHeight: 0,
     }
   },
@@ -118,6 +121,7 @@ export default {
               feed_from: 2,
               feed_mark:
                 new Date().valueOf() + '' + this.$store.state.CURRENTUSER.id,
+              topics: this.topics.map(topic => topic.id),
             },
             {
               validateStatus: s => s === 201,

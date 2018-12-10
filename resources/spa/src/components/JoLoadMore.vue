@@ -25,9 +25,7 @@
           v-else
           :style="{ transform: `rotate(${topStatus ? '180deg' : '0'})` }"
           class="jo-loadmore-icon"
-        >
-          ↓
-        </i>
+        />
         <span>{{ topTxt }}</span>
       </slot>
     </div>
@@ -78,22 +76,10 @@ function getScrollTarget (el) {
 export default {
   name: 'JoLoadMore',
   props: {
-    topDistance: {
-      type: Number,
-      default: 0,
-    },
-    noAnimation: {
-      type: Boolean,
-      default: false,
-    },
-    autoLoad: {
-      type: Boolean,
-      default: true,
-    },
-    showBottom: {
-      type: Boolean,
-      default: true,
-    },
+    topDistance: { type: Number, default: 0 },
+    noAnimation: { type: Boolean, default: false },
+    autoLoad: { type: Boolean, default: true },
+    showBottom: { type: Boolean, default: true },
   },
   data () {
     return {
@@ -250,6 +236,10 @@ export default {
   .jo-loadmore-head {
     position: fixed;
     z-index: 0;
+
+    .jo-loadmore-icon::after {
+      content: '↓';
+    }
   }
   .jo-loadmore-head-box {
     height: 45px; /*no*/
