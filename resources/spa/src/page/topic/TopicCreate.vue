@@ -1,20 +1,22 @@
 <template>
   <div class="p-topic-create">
     <CommonHeader>
-      创建话题
+      {{ topicId ? '编辑话题' : '创建话题' }}
       <span
         slot="right"
         class="create-btn"
         :class="{active: !disabled}"
-        @click="onCreate"
-        v-text="'创建'"
+        @click="beforeSubmit"
+        v-text="topicId ? '保存' : '创建'"
       />
     </CommonHeader>
+
+    <div v-if="loading" class="m-pos-f m-spinner" />
 
     <main>
       <form class="form" onsubmit="return false">
         <div
-          v-if="!node"
+          v-if="!src"
           class="coverage"
           @click="$refs.uploader.select()"
         >
@@ -28,18 +30,26 @@
           class="coverage"
           :style="{'background-image': `url(${src})`}"
           @click="$refs.uploader.select()"
-        />
+        >
+          <div class="decor">
+            <svg class="m-style-svg m-svg-big">
+              <use xlink:href="#icon-camera" />
+            </svg>
+            更换封面
+          </div>
+        </div>
         <label class="title">
           <input
-            v-model="title"
+            v-model="name"
             type="text"
             maxlength="10"
+            :disabled="topicId"
             placeholder="输入话题标题，10字以内（必填）"
           >
         </label>
         <label class="description">
           <TextareaInput
-            v-model="description"
+            v-model="desc"
             type="text"
             placeholder="简单介绍一下话题内容"
             :maxlength="50"
@@ -73,30 +83,55 @@ export default {
   },
   data () {
     return {
-      title: '',
+      name: '',
       node: null,
-      description: '',
+      desc: '',
       src: '',
       pending: false,
+      loading: false,
+
+      // 用于判断修改话题是是否有字段变更
+      origin: {
+        desc: '',
+        src: null,
+      },
     }
   },
   computed: {
-    disabled () {
-      return !this.title
+    topicId () {
+      return this.$route.params.topicId || false
     },
-    form () {
-      return {
-        name: this.title,
-        logo: this.node,
-        desc: this.description,
-      }
+    disabled () {
+      return !this.name || !['desc', 'src'].some(key => this.$data[key] !== this.origin[key])
     },
   },
+  created () {
+    if (this.topicId) this.fetchTopic()
+  },
   methods: {
+    fetchTopic () {
+      this.loading = true
+      api.getTopicDetail(this.topicId)
+        .then(({ data }) => {
+          this.loading = false
+          this.name = this.origin.name = data.name
+          this.desc = this.origin.desc = data.desc
+          this.src = this.origin.src = data.logo.url
+        })
+    },
+    beforeSubmit () {
+      if (this.topicId) this.onUpdate()
+      else this.onCreate()
+    },
     onCreate () {
       if (this.disabled || this.pending) return
       this.pending = true
-      api.createTopic(this.form)
+      const params = {
+        name: this.name,
+        desc: this.desc,
+        node: this.node,
+      }
+      api.createTopic(params)
         .then(({ data }) => {
           const { id, need_review: needReview } = data
           if (needReview) {
@@ -104,6 +139,21 @@ export default {
             return this.goBack()
           }
           this.$router.push({ name: 'TopicDetail', params: { id } })
+        })
+        .finally(() => {
+          this.pending = false
+        })
+    },
+    onUpdate () {
+      if (this.disabled || this.pending) return
+      this.pending = true
+      const params = {}
+      if (this.desc !== this.origin.desc) params.desc = this.desc
+      if (this.node) params.logo = this.node
+      api.editTopic(this.topicId, params)
+        .then(() => {
+          this.$Message.success('修改成功')
+          this.$router.push({ name: 'TopicDetail', params: { id: this.topicId } })
         })
         .finally(() => {
           this.pending = false
@@ -127,6 +177,7 @@ export default {
   }
 
   .coverage {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -136,9 +187,18 @@ export default {
     background-size: cover;
 
     .m-svg-big {
-      margin-right: 20px;
+      margin-right: 10px;
       width: 56px;
       height: 56px;
+    }
+
+    .decor {
+      position: absolute;
+      bottom: 30px;
+      left: 30px;
+      color: #000;
+      opacity: 0.2;
+      letter-spacing: 1px;/*no*/
     }
   }
 

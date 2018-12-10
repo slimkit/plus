@@ -166,12 +166,12 @@ export default {
     onMoreClick () {
       const actions = []
       if (this.isMine) {
-        // actions.push({
-        //   text: '编辑',
-        //   method: () => {
-        //     this.$router.push({ name: 'TopicEdit', params: { topicId: this.topicId } })
-        //   },
-        // })
+        actions.push({
+          text: '编辑',
+          method: () => {
+            this.$router.push({ name: 'TopicEdit', params: { topicId: this.topicId } })
+          },
+        })
       } else {
         actions.push({
           text: '举报',

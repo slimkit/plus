@@ -119,3 +119,19 @@ export function reportTopic (topicId, message) {
   const url = `/user/report-feed-topics/${topicId}`
   return api.put(url, { message }, { validateStatus: s => s === 204 })
 }
+
+/**
+ * 编辑话题
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {number} topicId
+ * @param {Object} payload
+ * @param {string} payload.desc
+ * @param {string} payload.logo
+ * @returns
+ */
+export function editTopic (topicId, payload) {
+  const url = `/feed/topics/${topicId}`
+  return api.patch(url, payload, { validateStatus: s => s === 204 })
+}

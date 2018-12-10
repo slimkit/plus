@@ -23,6 +23,15 @@ export default [
     },
   },
   {
+    path: '/topic/:topicId/edit',
+    name: 'TopicEdit',
+    component: TopicCreate,
+    meta: {
+      title: '编辑话题',
+      requiresAuth: true,
+    },
+  },
+  {
     path: '/topic/search',
     name: 'TopicSearch',
     component: TopicSearch,
