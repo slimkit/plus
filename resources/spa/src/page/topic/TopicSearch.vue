@@ -1,61 +1,38 @@
 <template>
   <div class="p-topic-search">
-    <SearchBar v-model="keyword" placeholder="搜索话题" />
-
-    <main>
-      <JoLoadMore
-        ref="loadmore"
-        :auto-load="false"
-        :show-bottom="keyword != ''"
-        @onRefresh="onRefresh"
-        @onLoadMore="onLoadMore"
-      >
-        <TopicList :topics="list" />
-      </JoLoadMore>
-    </main>
+    <TopicSearchPanel
+      ref="search"
+      :show="true"
+      @cancel="goBack"
+      @select="viewTopicDetail"
+    />
   </div>
 </template>
 
 <script>
-import _ from 'lodash'
-import * as api from '@/api/topic'
-import SearchBar from '@/components/common/SearchBar.vue'
-import TopicList from './components/TopicList'
+import TopicSearchPanel from './components/TopicSearchPanel'
 
 export default {
   name: 'TopicSearch',
   components: {
-    SearchBar,
-    TopicList,
-  },
-  data () {
-    return {
-      keyword: '',
-      list: [],
-    }
+    TopicSearchPanel,
   },
   watch: {
-    keyword (val) {
-      if (val) {
-        this.$refs.loadmore.beforeRefresh()
-        this.onRefresh()
-      } else {
-        this.list = []
-      }
+    $route (to, from) {
+      // 从详情页以外的页面进入搜索页面时清空关键字
+      if (to.name === 'TopicSearch' && from.name !== 'TopicDetail') this.$refs.search.open()
     },
   },
   methods: {
-    onRefresh: _.debounce(async function () {
-      const { data } = await api.getTopicList({ q: this.keyword })
-      this.list = data
-      this.$refs.loadmore.afterRefresh(data.length < 15)
-    }, 650),
-    async onLoadMore () {
-      const lastTopic = [...this.list].pop() || {}
-      const { data } = await api.getTopicList({ q: this.keyword, index: lastTopic.id })
-      this.list.push(...data)
-      this.$refs.loadmore.afterRefresh(data.length < 15)
+    viewTopicDetail (topic) {
+      this.$router.push({ name: 'TopicDetail', params: { topicId: topic.id } })
     },
   },
 }
 </script>
+
+<style lang="less" scoped>
+.p-topic-search {
+  content: '';
+}
+</style>

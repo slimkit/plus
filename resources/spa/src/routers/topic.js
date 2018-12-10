@@ -28,6 +28,7 @@ export default [
     component: TopicSearch,
     meta: {
       title: '搜索话题',
+      keepAlive: true,
       requiresAuth: true,
     },
   },
