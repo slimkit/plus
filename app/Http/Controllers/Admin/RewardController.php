@@ -228,6 +228,7 @@ class RewardController extends Controller
            'news'  => '咨询打赏',
            'users' => '用户打赏',
            'question-answers' => '问答打赏',
+           'group-posts' => '圈子帖子打赏',
         ];
     }
 
