@@ -51,6 +51,15 @@
             >
           </AsyncFile>
           <p class="m-text-box" v-html="formatBody(feedContent)" />
+          <ul v-if="topics.length" class="topics">
+            <li
+              v-for="topic in topics"
+              :key="topic.id"
+              class="topic-item"
+              @click.capture.stop="viewTopic(topic.id)"
+              v-text="topic.name"
+            />
+          </ul>
         </div>
         <div class="m-box m-aln-center m-justify-bet m-art-foot">
           <div class="m-flex-grow1 m-flex-shrink1 m-art-like-list">
@@ -197,6 +206,9 @@ export default {
     },
     isMine () {
       return this.feed.user_id === this.CURRENTUSER.id
+    },
+    topics () {
+      return this.feed.topics || []
     },
     likes: {
       get () {
@@ -415,6 +427,9 @@ export default {
     getAvatar (avatar) {
       if (!avatar) return null
       return avatar.url || null
+    },
+    viewTopic (topicId) {
+      this.$router.push({ name: 'TopicDetail', params: { topicId } })
     },
     rewardFeed () {
       this.popupBuyTS()
@@ -708,6 +723,23 @@ export default {
   .m-no-find {
     height: 600px;
     width: 100%;
+  }
+}
+
+.topics {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px 0 0;
+
+  .topic-item {
+    padding: 0 16px;
+    border-radius: 6px;
+    background-color: rgba(145, 209, 232, 0.12);
+    font-size: 24px;
+    color: @primary;
+    margin-right: 12px;
+    margin-bottom: 12px;
+    cursor: pointer;
   }
 }
 </style>

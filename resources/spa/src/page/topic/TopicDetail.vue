@@ -65,6 +65,7 @@
             v-for="feed in feeds"
             v-if="feed.id"
             :key="`feed${feed.id}`"
+            class="feed-item"
           >
             <FeedCard :feed="feed" :current-topic="topic.id" />
           </li>
@@ -153,13 +154,13 @@ export default {
         })
     },
     async followTopic () {
-      this.$refs.portal.beforeUpdate()
       await api.followTopic(this.topicId)
+      this.$Message.success('关注话题成功！')
       this.fetchTopic()
     },
     async unfollowTopic () {
-      this.$refs.portal.beforeUpdate()
       await api.unfollowTopic(this.topicId)
+      this.$Message.success('取消关注话题')
       this.fetchTopic()
     },
     onMoreClick () {
@@ -300,6 +301,12 @@ export default {
           color: #fff;
         }
       }
+    }
+  }
+
+  .user-feeds {
+    .feed-item {
+      margin-bottom: 20px;
     }
   }
 
