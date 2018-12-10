@@ -20,10 +20,10 @@ git clone https://github.com/slimkit/plus plus && cd plus
 
 好了，我们程序下载完成了，如果你原封不动复制的上面的命令，你随处目录为 `/usr/local/src/plus` 了。
 
-我们切换到最新的稳定版本吧，目前最新的稳定版本是 `2.0` 所以执行下面的命令：
+我们切换到最新的稳定版本吧，目前最新的稳定版本是 `2.2` 所以执行下面的命令：
 
 ```bash
-git checkout 2.0
+git checkout 2.2
 ```
 
 ## 创建数据库
