@@ -51,7 +51,9 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
                 $content = mb_substr($content, 0, 100, 'utf-8');
             @endphp
             {!! $content !!}
-            <span class="more"> 查看更多</span>
+            @if($has_more)
+            <span class="more"> ...查看更多</span>
+            @endif
         </a>
         @endif
 

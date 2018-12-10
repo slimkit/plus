@@ -18,7 +18,7 @@
                 <!-- 类型 -->
                 <div class="form-group">
                   <select class="form-control" v-model="filter.type">
-                    <option v-for="type in reward_types" :value="type.name">{{ type.alias }}</option>
+                    <option v-for="type in reward_types" :key="type.name" :value="type.name">{{ type.alias }}</option>
                   </select>
                 </div>
                 <!-- 时间段 -->
@@ -55,13 +55,13 @@
                     <tbody>
                         <!-- 加载 -->
                         <table-loading :loadding="loadding" :colspan-num="6"></table-loading>
-                        <tr v-for="reward in rewards">
+                        <tr v-for="reward in rewards" :key="reward.id">
                           <td>{{ reward.id }}</td>
                           <td>{{ reward.user ? reward.user.name : '未知' }}</td>
                           <td>{{ reward.target ? reward.target.name : '未知' }}</td>
                           <td>{{ reward.amount / 100 }}</td>
                           <td v-if="reward.rewardable_type=='feeds'">动态</td>
-                          <td v-else-if="reward.rewardable_type=='news'">咨询</td>
+                          <td v-else-if="reward.rewardable_type=='news'">资讯</td>
                           <td v-else-if="reward.rewardable_type=='users'">用户</td>
                           <td v-else-if="reward.rewardable_type=='question-answers'">问答</td>
                           <td v-else>未知</td>
