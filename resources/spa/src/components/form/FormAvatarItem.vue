@@ -18,9 +18,8 @@
 </template>
 
 <script>
-import { hashFile } from '@/util/SendImage.js'
 import { baseURL } from '@/api'
-import * as uploadApi from '@/api/upload.js'
+import uploadApi from '@/api/upload.js'
 import { getFileUrl } from '@/util'
 import getFirstFrameOfGif from '@/util/getFirstFrameOfGif.js'
 
@@ -135,33 +134,9 @@ export default {
       } else if (this.type === 'storage') {
         // 如果需要新文件存储方式上传
         this.avatarBlob = blob
-        const hash = await hashFile(
-          new File([blob], this.filename, {
-            type: blob.type,
-            lastModified: new Date(),
-          })
-        )
-        const params = {
-          filename: this.filename,
-          hash,
-          size: blob.size,
-          mime_type: blob.type || 'image/png',
-          storage: { channel: 'public' },
-        }
-        const result = await uploadApi.createUploadTask(params)
-        uploadApi
-          .uploadImage({
-            method: result.method,
-            url: result.uri,
-            headers: result.headers,
-            blob,
-          })
-          .then(data => {
-            this.$emit('input', data.node)
-          })
-          .catch(() => {
-            this.$Message.error('文件上传失败，请检查文件系统配置')
-          })
+        const file = new File([blob], this.filename, { type: blob.type, lastModified: new Date() })
+        const node = await uploadApi(file)
+        this.$emit('input', node)
       }
     },
   },

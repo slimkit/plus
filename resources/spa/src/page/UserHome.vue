@@ -158,8 +158,7 @@
 
 <script>
 import _ from 'lodash'
-import * as uploadApi from '@/api/upload'
-import { hashFile } from '@/util/SendImage.js'
+import uploadApi from '@/api/upload'
 import FeedCard from '@/components/FeedCard/FeedCard.vue'
 import HeadRoom from 'headroom.js'
 import wechatShare from '@/util/wechatShare.js'
@@ -491,46 +490,17 @@ export default {
       const file = $input.files[0]
 
       checkImageType([file])
-        .then(() => {
-          this.uploadFile(file)
-            .then(async node => {
-              await this.$http.patch('/user', { bg: node })
-              this.$Message.success('更新个人背景成功！')
-              this.fetchUserInfo()
-            })
-            .catch(({ response: { data } = {} }) => {
-              this.$Message.error(data.message)
-            })
+        .then(async () => {
+          // 上传图片
+          const node = await uploadApi(file)
+          // 修改用户信息（背景图片）
+          await this.$http.patch('/user', { bg: node })
+          this.$Message.success('更新个人背景成功！')
+          this.fetchUserInfo()
         })
         .catch(() => {
-          this.$Message.info('请上传正确格式的图片文件')
+          this.$Message.error('请上传正确格式的图片文件')
           $input.value = ''
-        })
-    },
-    async uploadFile (file) {
-      // 如果需要新文件存储方式上传
-      const hash = await hashFile(file)
-      const params = {
-        filename: file.name,
-        hash,
-        size: file.size,
-        mime_type: file.type || 'image/png',
-        storage: { channel: 'public' },
-      }
-      const result = await uploadApi.createUploadTask(params)
-      return uploadApi
-        .uploadImage({
-          method: result.method,
-          url: result.uri,
-          headers: result.headers,
-          blob: file,
-        })
-        .then(data => {
-          return Promise.resolve(data.node)
-        })
-        .catch(err => {
-          this.$Message.error('文件上传失败，请检查文件系统配置')
-          return Promise.reject(err)
         })
     },
     onScroll: _.debounce(function () {
