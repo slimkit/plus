@@ -732,8 +732,6 @@ class FeedController extends Controller
             $feed->delete();
 
             return $response->json(null, 204);
-        } elseif ($authUser->id !== $user->id) {
-            return $response->json(['message' => '你没有权限删除动态'])->setStatusCode(403);
         } elseif ($authUser->id !== $user->id && ! $authUser->ability('[feed] Delete Feed')) {
             return $response->json(['message' => '你没有权限删除动态'])->setStatusCode(403);
         }
