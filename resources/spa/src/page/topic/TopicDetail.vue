@@ -72,6 +72,12 @@
         </ul>
       </template>
     </PortalPanel>
+
+    <svg class="m-style-svt m-svg-huge post-btn" @click="$refs.postMenu.open()">
+      <use xlink:href="#icon-topic-edit" />
+    </svg>
+
+    <TopicPostMenu ref="postMenu" :topic="topic" />
   </div>
 </template>
 
@@ -80,12 +86,14 @@ import * as api from '@/api/topic'
 import * as userApi from '@/api/user'
 import PortalPanel from '@/components/PortalPanel'
 import FeedCard from '@/components/FeedCard/FeedCard'
+import TopicPostMenu from './components/TopicPostMenu.vue'
 
 export default {
   name: 'TopicDetail',
   components: {
     PortalPanel,
     FeedCard,
+    TopicPostMenu,
   },
   data () {
     return {
@@ -169,7 +177,7 @@ export default {
         actions.push({
           text: '编辑',
           method: () => {
-            this.$router.push({ name: 'TopicEdit', params: { topicId: this.topicId } })
+            this.$router.push({ name: 'TopicEdit', params: { topicId: this.topicId, topicName: this.topic.name } })
           },
         })
       } else {
@@ -308,6 +316,12 @@ export default {
     .feed-item {
       margin-bottom: 20px;
     }
+  }
+
+  .post-btn {
+    position: fixed;
+    bottom: 45px;
+    right: 45px;
   }
 
   &.cover {

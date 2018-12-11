@@ -88,10 +88,22 @@ export default {
       if (val) this.amount = ~~val
     },
   },
+  created () {
+    this.queryTopic()
+  },
   mounted () {
     this.contentText = ''
   },
   methods: {
+    queryTopic () {
+      const { topicId, topicName } = this.$route.query
+      if (topicId) {
+        this.topics.push({
+          id: topicId,
+          name: topicName,
+        })
+      }
+    },
     beforeGoBack () {
       if (this.contentText.length === 0) return this.goBack()
       const actions = [

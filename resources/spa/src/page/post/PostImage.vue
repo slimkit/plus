@@ -85,7 +85,19 @@ export default {
       return this.$store.state.CONFIG.feed.paycontrol
     },
   },
+  created () {
+    this.queryTopic()
+  },
   methods: {
+    queryTopic () {
+      const { topicId, topicName } = this.$route.query
+      if (topicId) {
+        this.topics.push({
+          id: topicId,
+          name: topicName,
+        })
+      }
+    },
     beforeGoBack () {
       this.contentText.length > 0
         ? this.$bus.$emit(
