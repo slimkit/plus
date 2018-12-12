@@ -95,6 +95,7 @@ export default {
         this.topics.push({
           id: topicId,
           name: topicName,
+          readonly: true,
         })
       }
     },

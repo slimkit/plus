@@ -12,7 +12,7 @@
         class="topic-item"
         @click="deleteTopic(topic)"
       >
-        <svg class="m-style-svg m-svg-small"><use xlink:href="#icon-delete" /></svg>
+        <svg v-if="!topic.readonly" class="m-style-svg m-svg-small"><use xlink:href="#icon-delete" /></svg>
         {{ topic.name }}
       </li>
       <li
@@ -55,6 +55,7 @@ export default {
       this.topics = _.unionBy(this.topics, [topic], 'id')
     },
     deleteTopic (topic) {
+      if (topic.readonly) return
       this.topics = this.topics.filter(item => topic.id !== item.id)
     },
   },
