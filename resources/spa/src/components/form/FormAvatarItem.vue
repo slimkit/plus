@@ -10,8 +10,9 @@
 
     <ImageUploader
       ref="uploader"
-      v-model="value"
+      :value="value"
       type="storage"
+      @input="$emit('input', $event)"
       @update:src="avatar = $event"
     />
   </section>

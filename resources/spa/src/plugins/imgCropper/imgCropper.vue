@@ -13,9 +13,10 @@
 import Cropper from 'cropperjs'
 
 export default {
+  name: 'ImageCropper',
   props: {
     url: { type: String, default: '' },
-    aspectRatio: { type: [Number, String], default: 1 / 1 },
+    aspectRatio: { type: Number, default: NaN },
     round: { type: Boolean, default: true },
   },
   data () {

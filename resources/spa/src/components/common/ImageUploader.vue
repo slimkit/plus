@@ -51,6 +51,7 @@ export default {
       },
     },
     value: { type: null, default: null },
+    ratio: { type: Number, default: 1 / 1 },
   },
   data () {
     return {
@@ -99,6 +100,7 @@ export default {
       this.$ImgCropper.show({
         url: cropperURL,
         round: false,
+        ratio: this.ratio,
         onCancel: () => {
           this.$refs.imagefile.value = null
         },

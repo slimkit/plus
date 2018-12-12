@@ -185,6 +185,10 @@ ImgCropper.newInstance = properties => {
         cropper.$parent.round = option.round
       }
 
+      if ('ratio' in option) {
+        cropper.cropper.setAspectRatio(option.ratio)
+      }
+
       if ('onOk' in option) {
         cropper.$parent.onOk = option.onOk
       }

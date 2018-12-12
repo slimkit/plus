@@ -1,4 +1,4 @@
-import ImgCropper from './imgCropper/imgCropperInstance'
+import ImgCropper from './imgCropperInstance'
 
 let ImgCropperInstance
 
