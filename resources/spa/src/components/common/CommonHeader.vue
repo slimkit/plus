@@ -1,14 +1,8 @@
 <template>
-  <header
-    :class="{pinned}"
-    class="c-common-header"
-  >
+  <header :class="{pinned}" class="c-common-header">
     <div class="left">
       <slot name="left">
-        <svg
-          class="m-style-svg m-svg-def"
-          @click="onBackClick"
-        >
+        <svg class="m-style-svg m-svg-def" @click="onBackClick">
           <use xlink:href="#icon-back" />
         </svg>
       </slot>
@@ -50,7 +44,7 @@ export default {
   bottom: initial;
   width: 100%;
   height: @header-height;
-  max-width: 1080px;
+  max-width: 768px;
   margin: 0 auto;
   justify-content: space-between;
   overflow: hidden;

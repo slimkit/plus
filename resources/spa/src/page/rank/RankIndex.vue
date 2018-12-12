@@ -63,6 +63,7 @@ export default {
   align-items: center;
   height: 90px;
   width: 100%;
+  max-width: 768px;
   line-height: 89px;
   border-bottom: 1px solid #ededed; /*no*/
   background-color: #fff;

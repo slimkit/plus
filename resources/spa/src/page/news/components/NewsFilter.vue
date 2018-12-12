@@ -146,6 +146,8 @@ export default {
   padding-top: 0 !important;
   min-height: 80px;
   max-height: 80px;
+  max-width: 768px;
+  margin: 0 auto;
   font-size: 28px;
   overflow: hidden;
   transform: max-height 0.3s ease;
@@ -207,7 +209,6 @@ export default {
     }
     &__wrap {
       padding: 0 25px;
-      width: 100%;
       height: 80px;
       line-height: 80px;
     }
