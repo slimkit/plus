@@ -9,7 +9,7 @@
         </div>
       </template>
       <Avatar v-else :user="user" />
-      <section class="m-box-model m-flex-grow1 m-flex-shrink1 m-card-main">
+      <section class="m-box-model m-card-main">
         <header v-if="!timeLine" class="m-box m-aln-center m-justify-bet m-card-usr">
           <h4 class="m-flex-grow1 m-flex-shrink1">{{ user.name }}</h4>
           <div class="m-box m-aln-center">
@@ -439,11 +439,12 @@ export default {
   background-color: #fff;
 
   .timeline-text {
+    flex: none;
     display: flex;
     flex-direction: column;
-    width: 60px;
+    justify-content: flex-start;
     align-items: center;
-    justify-content: center;
+    width: 60px;
     font-size: 44px;
 
     .month {
@@ -482,6 +483,7 @@ export default {
     }
   }
   &-main {
+    flex: auto;
     margin-left: 20px;
   }
   &-con {
