@@ -130,7 +130,7 @@ export default {
       const params = {
         name: this.name,
         desc: this.desc,
-        node: this.node,
+        logo: this.node,
       }
       api.createTopic(params)
         .then(({ data }) => {
