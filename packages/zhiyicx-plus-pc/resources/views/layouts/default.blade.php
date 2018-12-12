@@ -49,9 +49,18 @@
         </div>
 
         <div class="right_extras">
-            <a href="https://www.pgyer.com/thinksns-plus" target="_blank" class="app">  <svg class="icon" aria-hidden="true"><use xlink:href="#icon-phone"></use></svg></a>
+            <a href="https://www.pgyer.com/thinksns-plus" target="_blank" class="app">
+                <svg class="icon" aria-hidden="true"><use xlink:href="#icon-phone"></use></svg>
+            </a>
             <a href="javascript:;" class="gotop" id="gotop"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-uptop"></use></svg></a>
         </div>
+
+        @if($config['common']['qq_consult']['enable'] ?? false)
+        <div class="qq_consult">
+            <a href="//wpa.qq.com/msgrd?v=3&uin={{ $config['common']['qq_consult']['uin'] ?? '' }}&site=qq&menu=yes" target="_blank">产品咨询</a>
+            <a href="http://www.thinksns.com" target="_blank">ThinkSNS 官网</a>
+        </div>
+        @endif
     </div>
 
     {{-- 底部 --}}

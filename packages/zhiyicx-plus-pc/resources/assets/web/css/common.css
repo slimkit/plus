@@ -531,3 +531,9 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 .layui-layer-page .layui-layer-content {overflow: visible !important;} /*转发弹框话题选择溢出部分可见*/
 /* 遮罩 */
 .overlayer {position: absolute;top:0;left:0;right:0;bottom: 0;z-index: 100;}
+
+.qq_consult {position: fixed;left: 27px;bottom: 30%;width: 200px;height: 165px;background-color: #70c8ec;z-index: 2;border-radius: 12px;display: flex;flex-direction: column;align-items: center;justify-content: center;}
+.qq_consult::after {content: '';display: block;position: absolute;border: 20px solid transparent;border-top-color: #70c8ec;width: 0;height: 0;top: 100%;left: 40px;}
+.qq_consult::before {content: '';display: block;position: absolute;top: -123px;left: 50%;margin-left: -44px;width: 89px;height: 123px;background: url(../images/pic_service.png) center/contain no-repeat;}
+.qq_consult > a {display: flex;align-items: center;justify-content: center;width: 146px;height: 44px;background-color: #fff;border-radius: 6px;color: #4c7aa8;}
+.qq_consult > a + a {margin-top: 20px;}

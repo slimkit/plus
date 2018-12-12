@@ -66,6 +66,8 @@ class PcPackageHandler extends PackageHandler
         $this->config->set('pc.wechat.client_secret', '');
         $this->config->set('pc.qq.client_id', '');
         $this->config->set('pc.qq.client_secret', '');
+        $this->config->set('pc.qq_consult.enable', false);
+        $this->config->set('pc.qq_consult.uin', '');
         // Run the database migrations
         $command->call('migrate');
         if ($command->confirm('Run seeder')) {

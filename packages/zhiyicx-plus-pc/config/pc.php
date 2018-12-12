@@ -40,4 +40,8 @@ return [
         'client_id' => null,
         'client_secret' => null,
     ],
+    'qq_consult' => [
+        'enable' => false,
+        'uin' => '',
+    ],
 ];
