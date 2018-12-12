@@ -1,6 +1,6 @@
 <template>
   <div class="p-topic-create">
-    <CommonHeader>
+    <CommonHeader :back="beforeBack">
       {{ topicId ? '编辑话题' : '创建话题' }}
       <span
         slot="right"
@@ -65,6 +65,7 @@
       ref="uploader"
       v-model="node"
       type="storage"
+      :ratio="800/350"
       @update:src="src = $event"
     />
   </div>
@@ -158,6 +159,19 @@ export default {
         .finally(() => {
           this.pending = false
         })
+    },
+    beforeBack () {
+      const isModified = this.topicId
+        ? !this.disabled
+        : (this.title || this.desc || this.node)
+      if (!isModified) return this.goBack()
+      const actions = [
+        {
+          text: '放弃创建',
+          method: () => void this.goBack(),
+        },
+      ]
+      this.$bus.$emit('actionSheet', actions, '取消', '确认取消创建话题？')
     },
   },
 }
