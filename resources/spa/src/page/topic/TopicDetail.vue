@@ -196,6 +196,7 @@ export default {
       this.$bus.$emit('actionSheet', actions)
     },
     gotoParticipants () {
+      if (this.followers.length < 4) return
       this.$router.push({ name: 'TopicParticipants', params: { topicId: this.topicId } })
     },
   },
