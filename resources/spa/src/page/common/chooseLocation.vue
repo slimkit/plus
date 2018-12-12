@@ -128,9 +128,7 @@ export default {
     },
     chooseHotCity(cityTxt) {
       this.$http
-        .get(
-          `around-amap/geo?address=${cityTxt.replace(/[\s\uFEFF\xA0]+/g, "")}`
-        )
+        .get(`around-amap/geo?address=${cityTxt.replace(/[\s\uFEFF\xA0]+/g, "")}`)
         .then(res => {
           const {
             data: { geocodes: [{ city, district, province, location }] } = {}

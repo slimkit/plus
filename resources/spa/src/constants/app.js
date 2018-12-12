@@ -1,9 +1,7 @@
-import * as envConstantParseUtil from '../utils/env-constant-type-parse'
+import { boolean } from '../utils/env-constant-type-parse'
 
-export const ENABLE_SERVICE_WORKER = envConstantParseUtil.boolean(
-  process.env.VUE_APP_ENABLE_SERVICE_WORKER || false
-)
-
-export const ENABLE_MOBLINK = envConstantParseUtil.boolean(
-  process.env.VUE_APP_MOBLINK_ENABLE || false
-)
+export default {
+  ENABLE_SERVICE_WORKER: boolean(process.env.VUE_APP_ENABLE_SERVICE_WORKER || false),
+  ENABLE_MOBLINK: boolean(process.env.VUE_APP_MOBLINK_ENABLE || false),
+  ENABLE_GAODE: process.env.VUE_APP_LBS_GAODE_KEY || false,
+}

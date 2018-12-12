@@ -1,6 +1,4 @@
 import { version } from '../package.json'
-import { ENABLE_MOBLINK } from '@/constants/app'
-
 import Vue from 'vue'
 
 import 'github-markdown-css'
@@ -25,6 +23,7 @@ import router from './routers/'
 import App from './app'
 import bus from './bus'
 import './registerServiceWorker'
+import './vendor'
 
 import * as WebIM from '@/vendor/easemob'
 export { version }
@@ -51,21 +50,6 @@ for (const k in filters) {
 }
 if (!window.initUrl) {
   window.initUrl = window.location.href.replace(/(\/$)/, '')
-}
-
-// 加载 moblink 用于引导打开 APP
-if (ENABLE_MOBLINK) {
-  window.addEventListener('load', () => {
-    const key = process.env.VUE_APP_MOBLINK_KEY || ''
-    const script = document.createElement('script')
-    script.type = 'text/javascript'
-    script.src = `//f.moblink.mob.com/3.0.1/moblink.js?appkey=${key}`
-    script.onload = () => {
-      // eslint-disable-next-line
-      MobLink({ path: location.href })
-    }
-    document.querySelector('body').appendChild(script)
-  })
 }
 
 /* eslint-disable no-new */

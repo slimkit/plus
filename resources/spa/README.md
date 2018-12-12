@@ -31,27 +31,7 @@
 
 ## 配置
 
-`.env` 文件配置说明：
-
-``` ini
-BASE_URL=/                                             # 我们假设你部署在一个域名下，所以默认 `/`, 例如你部署在子目录下，请设置子目录，必须以 `/` 结尾！
-GENERATE_CSS_MAP=true                                  # 是否构建的时候生成 source map
-
-VUE_APP_ENABLE_SERVICE_WORKER=false                    # 是否添加离线支持
-VUE_APP_API_HOST=http://127.0.0.1                      # 你的 Plus 程序地址
-VUE_APP_API_VERSION=v2                                 # 无需修改，目前支持的值只有 `v2`
-VUE_APP_NAME="Plus (ThinkSNS+)"                        # 浏览器显示的程序名称
-VUE_APP_KEYWORDS=                                      # 易于搜索引擎搜索的关键词
-VUE_APP_DESCRIPTION=                                   # 你的网站描述
-VUE_APP_ROUTER_MODE=hash                               # 路由模式，请参考下面的「路由模式」文档
-VUE_APP_THEME=src/console/theme.js                     # 主题文件，暂时不支持修改
-VUE_APP_EASEMOB_APP_KEY=#                              # 环信 APP KEY
-VUE_APP_EASEMOB_API_URL=http://a1.easemob.com          # 环信接口地址
-VUE_APP_EASEMOB_ISDEBUG=false                          # 是否开启环信 Debug
-VUE_APP_LBS_GAODE_KEY=                                 # 高德地图 GAODE KEY
-VUE_APP_MOBLINK_ENABLE=false                           # MobLink 引导启动 APP 开关
-VUE_APP_MOBLINK_KEY=                                   # MobLink APP KEY
-```
+`.env` 文件配置说明 请参考[`.env.example`](https://github.com/slimkit/plus/blob/master/resources/spa/.env.example)
 
 ### 路由模式
 
