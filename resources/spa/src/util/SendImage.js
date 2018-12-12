@@ -1,11 +1,11 @@
 import MD5 from 'js-md5'
 import http from '@/api/api.js'
 
-export function hashFile (file) {
+export async function hashFile (file) {
   return new Promise(resolve => {
     const reader = new FileReader()
-    reader.onload = e => {
-      const base64 = e.target.result
+    reader.onload = event => {
+      const base64 = event.target.result
       const hash = MD5(base64)
       resolve(hash)
     }
@@ -46,6 +46,7 @@ function sendImage (file) {
       })
   })
 }
+
 export default file => {
   return new Promise((resolve, reject) => {
     existed(file)

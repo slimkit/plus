@@ -25,7 +25,7 @@ export default {
   name: 'FormAvatarItem',
   components: { ImageUploader },
   props: {
-    value: { type: null, default: null },
+    value: { type: null, default: () => ({}) },
     label: { type: String, default: '上传头像' },
     readonly: { type: Boolean, default: false },
 
@@ -36,7 +36,7 @@ export default {
   },
   data () {
     return {
-      avatar: null,
+      avatar: this.$props.value.url,
     }
   },
   methods: {
