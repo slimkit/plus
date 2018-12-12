@@ -69,8 +69,20 @@
 使用时请填写 `.env` 文件中的以下两行
 
 ``` ini
-VUE_APP_MOBLINK_ENABLE=true                           # MobLink 引导启动 APP 开关
-VUE_APP_MOBLINK_KEY=xxxxxxxxxxxx                      # MobLink APP KEY
+# MobLink 唤起APP
+VUE_APP_MOBLINK_ENABLE=true          # MobLink 引导启动 APP 开关
+VUE_APP_MOBLINK_KEY=xxxxxxxxxxxx     # MobLink APP KEY
+```
+
+### 在线咨询 QQ
+
+使用时请修改 `.env` 文件中的以下部分以唤起 QQ 在线资讯
+
+``` ini
+# QQ 在线咨询
+VUE_APP_QQ_CONSULT_ENALBE=true       # QQ 咨询开关
+VUE_APP_QQ_CONSULT_UIN=10000         # QQ 号码 （需要先开通在线状态）
+VUE_APP_QQ_CONSULT_LABEL=在线咨询      # 标签文本
 ```
 
 ## License

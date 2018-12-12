@@ -1,5 +1,6 @@
 // vuex utils
 import { mapActions, mapState } from 'vuex'
+import CONST from './constants/app'
 
 // components
 import PSWP from './components/pswp'
@@ -13,6 +14,7 @@ import Report from './components/Report.vue'
 import ChooseTags from './page/ChooseTags.vue'
 import ApplyTop from './components/ApplyForTop.vue'
 import PopupDialog from './components/PopupDialog.vue'
+import ChatWithQQ from './components/vendor/ChatWithQQ.vue'
 
 export default {
   render () {
@@ -31,7 +33,8 @@ export default {
           <Report />
           <ChooseTags />
           <ApplyTop />
-          <PopupDialog />
+          <PopupDialog />,
+          {CONST.ENABLE_QQ_CONSULT && <ChatWithQQ />}
         </div>
       </div>
     )
