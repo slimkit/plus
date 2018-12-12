@@ -94,27 +94,14 @@ npm -g i yarn
 cat .env.example > .env
 ```
 
-运行完成后，我们使用 Vim 工具进行编辑该文件，运行 `vim .env` 命令，编辑的内容如下：
+运行完成后，我们使用 Vim 工具进行编辑该文件，运行 `vim .env` 命令，找到并编辑以下内容：
 
-```yaml
+```ini
 BASE_URL=/ # 我们假设你部署在一个域名下，所以默认 `/`, 例如你部署在子目录下，请设置子目录，必须以 `/` 结尾！
-GENERATE_CSS_MAP=true
-
-VUE_APP_ENABLE_SERVICE_WORKER=false
-VUE_APP_API_HOST=http://127.0.0.1 # 我们暂时只配置这里，将内容修改为我们服务器的 IP 地址（上一章我们使用 NPM + FPM 发布了站点的）
-VUE_APP_API_VERSION=v2
-VUE_APP_NAME="Plus (ThinkSNS+)"
-VUE_APP_KEYWORDS="plus,web,spa,sns,think,thinksns,app,social,powerful,vue"
-VUE_APP_DESCRIPTION="📱The Plus(ThinkSNS+) client written with modern web technologies, built with Vue.js."
-VUE_APP_ROUTER_MODE=hash
-VUE_APP_THEME=src/console/theme.js
-VUE_APP_EASEMOB_APP_KEY=#
-VUE_APP_EASEMOB_API_URL=http://a1.easemob.com
-VUE_APP_EASEMOB_ISDEBUG=false
-VUE_APP_LBS_GAODE_KEY=
+VUE_APP_API_HOST=http://127.0.0.1 # 将内容修改为我们服务器的 IP 地址（上一章我们使用 NPM + FPM 发布了站点的）
 ```
 
-> 各个参数描述详情清查看 [slimkit/plus-small-screen-client#readme](https://github.com/slimkit/plus-small-screen-client#%E5%AE%89%E8%A3%85)的描述
+> 各个参数描述详情清查看 [plus/resource/spa/.env.example](https://github.com/slimkit/plus/blob/master/resources/spa/.env.example) 的描述
 
 ## 安装依赖
 
