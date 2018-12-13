@@ -69,6 +69,7 @@ export default {
         this.$refs.loadmore.beforeRefresh()
         this.onRefresh()
       } else {
+        this.$refs.loadmore.afterRefresh(true)
         this.list = []
       }
     },

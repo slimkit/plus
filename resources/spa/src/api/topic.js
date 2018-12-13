@@ -14,6 +14,7 @@ import api from './api'
  * @returns
  */
 export function getTopicList (params) {
+  if (params.q === '') return Promise.resolve({ data: [] })
   const url = '/feed/topics'
   return api.get(url, { params, validateStatus: s => s === 200 })
 }
