@@ -48,7 +48,8 @@
       <slot name="main" />
 
       <slot name="loadmore">
-        <div class="m-box m-aln-center m-justify-center load-more-box">
+        <div v-if="noData" class="m-no-content" />
+        <div v-else class="m-box m-aln-center m-justify-center load-more-box">
           <template v-if="noMore">
             <slot name="noMore">
               <span class="load-more-ph">---没有更多---</span>
@@ -86,6 +87,7 @@ export default {
     loading: { type: Boolean, default: false },
     showFooter: { type: Boolean, default: false },
     back: { type: Function, default: null },
+    noData: { type: Boolean, default: true },
   },
   data () {
     return {

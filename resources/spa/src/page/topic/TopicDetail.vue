@@ -5,6 +5,7 @@
       :title="topic.name"
       :cover="cover"
       :loading="loading"
+      :no-data="!feeds.length"
       @more="onMoreClick"
       @loadmore="fetchFeeds(true)"
       @update="fetchTopic"
