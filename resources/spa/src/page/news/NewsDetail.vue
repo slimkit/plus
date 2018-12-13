@@ -541,9 +541,4 @@ export default {
 .m-main {
   padding-bottom: 36px;
 }
-
-.m-no-content {
-  height: 600px;
-  width: 100%;
-}
 </style>

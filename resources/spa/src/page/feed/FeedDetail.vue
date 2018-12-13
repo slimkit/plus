@@ -684,10 +684,5 @@ export default {
     height: 100px;
     line-height: 100px;
   }
-
-}
-.m-no-content {
-  height: 600px;
-  width: 100%;
 }
 </style>
