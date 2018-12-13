@@ -24,7 +24,7 @@
               <svg class="m-style-svg m-svg-def">
                 <use :xlink:href="liked ? '#icon-like' :'#icon-unlike'" />
               </svg>
-              <span>喜欢</span>
+              <span :class="{liked}">喜欢</span>
             </a>
             <a class="m-box-model m-aln-center" @click.prevent="handelComment">
               <svg class="m-style-svg m-svg-def">
@@ -171,6 +171,10 @@ export default {
 
       span {
         margin-top: 4px;
+      }
+
+      .liked {
+        color: @error;
       }
     }
   }

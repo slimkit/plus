@@ -47,7 +47,7 @@
           <svg class="m-style-svg m-svg-def">
             <use :xlink:href="liked ? '#icon-like' :'#icon-unlike'" />
           </svg>
-          <span>{{ likeCount | formatNum }}</span>
+          <span :class="{liked}">{{ likeCount | formatNum }}</span>
         </a>
         <a class="m-box m-aln-center" @click.prevent="handleComment">
           <svg class="m-style-svg m-svg-def">
@@ -493,6 +493,10 @@ export default {
     margin-left: -20px;
     margin-right: -20px;
     padding: 0 20px 0 120px;
+
+    .liked {
+      color: @error;
+    }
   }
   &-tools {
     padding: 30px 0;
