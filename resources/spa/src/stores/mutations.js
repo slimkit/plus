@@ -81,4 +81,10 @@ export default {
       // no condition here
     }
   },
+
+  // 保存文章信息
+  SAVE_ARTICLE (state, payload) {
+    const { type, list = [] } = payload
+    state.article[type] = list
+  },
 }

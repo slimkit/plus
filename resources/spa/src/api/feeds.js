@@ -59,6 +59,22 @@ export function getRewards (feedId, params) {
 }
 
 /**
+ * 获取点赞列表
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {number} feedId
+ * @param {Object} params
+ * @param {number} [params.limit=20]
+ * @param {number} [params.after=0]
+ * @returns {Promise<Object[]>}
+ */
+export function getFeedLikers (feedId, params) {
+  const url = `/feeds/${feedId}/likes`
+  return api.get(url, { params, validateStatus: s => s === 200 })
+}
+
+/**
  * 打赏动态
  * @author mutoe <mutoe@foxmail.com>
  * @export

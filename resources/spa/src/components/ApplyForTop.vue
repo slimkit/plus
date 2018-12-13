@@ -106,7 +106,7 @@ export default {
       isOwner: false,
       applyType: '', // 申请置顶的类型
       applyApi: noop, // 申请置顶的api 类型是一个 Promise 对象
-      applyPayload: {}, // 申请置顶的负载数据，如feedID等
+      applyPayload: {}, // 申请置顶的负载数据，如feedId等
       applyCallback: noop,
     }
   },

@@ -233,7 +233,7 @@ export default {
           method: () => {
             this.$bus.$emit('report', {
               type: 'post',
-              payload: this.feedID,
+              payload: this.feedId,
               username: this.user.name,
               reference: this.title,
             })
@@ -254,7 +254,7 @@ export default {
               isOwner,
               type: 'postComment',
               api: api.applyTopPostComment,
-              payload: { postId: this.feedID, commentId: comment.id },
+              payload: { postId: this.feedId, commentId: comment.id },
             })
           },
         })
@@ -289,7 +289,7 @@ export default {
     deleteComment (commentId) {
       this.$store
         .dispatch('group/deletePostComment', {
-          postId: this.feedID,
+          postId: this.feedId,
           commentId,
         })
         .then(() => {

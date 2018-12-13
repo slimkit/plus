@@ -1,7 +1,7 @@
 const FeedList = () =>
-  import(/* webpackChunkName: 'feed' */ '../page/feed/FeedList.vue')
+  import(/* webpackChunkName: 'feed' */ '@/page/feed/FeedList.vue')
 const FeedDetail = () =>
-  import(/* webpackChunkName: 'feed' */ '../page/feed/FeedDetail')
+  import(/* webpackChunkName: 'feed' */ '@/page/feed/FeedDetail.vue')
 const ArticleLikes = () =>
   import(/* webpackChunkName: 'feed' */ '@/page/article/ArticleLikes.vue')
 const ArticleRewards = () =>
@@ -27,7 +27,7 @@ export default [
     },
   },
   {
-    path: '/feeds/:feedID(\\d+)',
+    path: '/feeds/:feedId(\\d+)',
     component: FeedDetail,
     meta: {
       title: '动态详情',

@@ -60,18 +60,9 @@ import HeadRoom from 'headroom.js'
 export default {
   name: 'ArticleCard',
   props: {
-    loading: {
-      type: Boolean,
-      default: true,
-    },
-    liked: {
-      type: Boolean,
-      default: false,
-    },
-    canOprate: {
-      type: Boolean,
-      default: true,
-    },
+    loading: { type: Boolean, default: true },
+    liked: { type: Boolean, default: false },
+    canOprate: { type: Boolean, default: true },
   },
   data () {
     return {
@@ -142,9 +133,6 @@ export default {
     },
     handelMore () {
       this.$emit('on-more')
-    },
-    goback () {
-      this.$router.go(-1)
     },
   },
 }

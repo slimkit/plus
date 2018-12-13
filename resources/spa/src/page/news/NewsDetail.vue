@@ -28,19 +28,11 @@
         <div class="m-art-body markdown-body" v-html="body" />
         <div class="m-box m-aln-center m-justify-bet m-art-foot">
           <div class="m-flex-grow1 m-flex-shrink1 m-box m-aln-center m-art-like-list">
-            <template v-if="likeCount > 0 && news.audit_status===0">
-              <ul class="m-box m-flex-grow0 m-flex-shrink0">
-                <li
-                  v-for="({user, id}, index) in likes.slice(0, 5)"
-                  :key="id"
-                  :style="{ zIndex: 5-index }"
-                  class="m-avatar-box tiny"
-                >
-                  <img :src="getAvatar(user.avatar)">
-                </li>
-              </ul>
-              <span>{{ likeCount | formatNum }}人点赞</span>
-            </template>
+            <ArticleLikeBadge
+              v-if="likeCount > 0 && news.audit_status===0"
+              :likers="likes"
+              :total="likeCount"
+            />
           </div>
           <div class="m-box-model m-aln-end m-art-info">
             <span>发布于{{ time | time2tips }}</span>
@@ -49,30 +41,11 @@
         </div>
         <div v-if="allowReward" class="m-box-model m-box-center m-box-center-a m-art-reward">
           <button class="m-art-rew-btn" @click="rewardNews">打 赏</button>
-          <p class="m-art-rew-label">
-            <a href="javascript:;">{{ reward.count | formatNum }}</a>人打赏，共
-            <a href="javascript:;">{{ ~~reward.amount | formatNum }}</a>{{ currencyUnit }}
-          </p>
-          <RouterLink
-            tag="ul"
-            to="rewarders"
-            append
-            class="m-box m-aln-center m-art-rew-list"
-          >
-            <li
-              v-for="rew in rewardList"
-              :key="rew.id"
-              :class="`m-avatar-box-${rew.user.sex}`"
-              class="m-flex-grow0 m-flex-shrink0 m-art-rew m-avatar-box tiny"
-            >
-              <img :src="getAvatar(rew.user.avatar)">
-            </li>
-            <li v-if="rewardList.length > 0" class="m-box m-aln-center">
-              <svg class="m-style-svg m-svg-def" style="fill:#bfbfbf">
-                <use xlink:href="#icon-arrow-right" />
-              </svg>
-            </li>
-          </RouterLink>
+          <ArticleRewardBadge
+            :total="reward.count"
+            :amount="reward.amount"
+            :rewarders="rewardList"
+          />
         </div>
       </div>
 
@@ -123,14 +96,16 @@
 
 <script>
 import { mapState } from 'vuex'
-import ArticleCard from '@/page/article/ArticleCard.vue'
-import NewsCard from '@/page/news/components/NewsCard.vue'
-import CommentItem from '@/page/article/ArticleComment.vue'
 import wechatShare from '@/util/wechatShare.js'
 import md from '@/util/markdown.js'
 import { limit } from '@/api'
 import * as api from '@/api/news.js'
 import { noop } from '@/util'
+import ArticleCard from '@/page/article/ArticleCard.vue'
+import NewsCard from '@/page/news/components/NewsCard.vue'
+import CommentItem from '@/page/article/ArticleComment.vue'
+import ArticleLikeBadge from '@/components/common/ArticleLikeBadge.vue'
+import ArticleRewardBadge from '@/components/common/ArticleRewardBadge.vue'
 
 export default {
   name: 'NewsDetail',
@@ -138,10 +113,12 @@ export default {
     ArticleCard,
     CommentItem,
     NewsCard,
+    ArticleLikeBadge,
+    ArticleRewardBadge,
   },
   data () {
     return {
-      oldID: 0,
+      oldId: 0,
       news: {},
       loading: true,
       fetching: false,
@@ -214,7 +191,7 @@ export default {
         return this.news.digg_count || 0
       },
       set (val) {
-        val && (this.news.digg_count = val)
+        this.news.digg_count = val
       },
     },
     commentCount: {
@@ -255,7 +232,7 @@ export default {
   },
   activated () {
     if (this.newsId) {
-      if (this.newsId !== this.oldID) {
+      if (this.newsId !== this.oldId) {
         this.fetchNews()
       } else {
         setTimeout(() => {
@@ -284,14 +261,14 @@ export default {
           this.loading = false
           this.fetching = false
           this.news = data
-          this.oldID = this.newsId
+          this.oldId = this.newsId
           this.share.title = data.title
           this.share.desc = data.subject
           this.getCorrelations()
           this.fetchNewsComments()
           this.fetchNewsLikes()
+          this.fetchNewsRewards()
           this.fetchRewardInfo()
-          this.fetchRewards()
           callback()
           if (this.isWechat) {
             const shareUrl =
@@ -317,12 +294,6 @@ export default {
     getCorrelations () {
       api.getCorrelations(this.newsId).then(({ data }) => {
         this.relationNews = data
-      })
-    },
-    fetchNewsLikes () {
-      // GET /news/{news}/likes
-      this.$http.get(`/news/${this.newsId}/likes`).then(({ data = [] }) => {
-        if (data.length) this.likes = data
       })
     },
     fetchNewsComments (after = 0) {
@@ -352,10 +323,15 @@ export default {
           this.fetchComing = false
         })
     },
-    fetchRewards () {
-      api.getNewsRewards(this.newsId, { limit: 10 }).then(({ data = {} }) => {
-        this.rewardList = data
-      })
+    async fetchNewsLikes () {
+      const { data: list } = await api.getNewsLikers(this.newsId)
+      this.likes = list
+      this.$store.commit('SAVE_ARTICLE', { type: 'likers', list })
+    },
+    async fetchNewsRewards () {
+      const { data: list } = await api.getNewsRewards(this.newsId, { limit: 10 })
+      this.rewardList = list
+      this.$store.commit('SAVE_ARTICLE', { type: 'rewarders', list })
     },
     fetchRewardInfo () {
       api.getRewardInfo(this.newsId).then(({ data = {} }) => {
@@ -386,6 +362,7 @@ export default {
             this.liked = false
             this.likeCount -= 1
           }
+          this.fetchNewsLikes()
         })
         .finally(() => {
           this.fetching = false
@@ -451,7 +428,7 @@ export default {
             method: () => {
               this.$bus.$emit('report', {
                 type: 'news',
-                payload: this.newsID,
+                payload: this.newsId,
                 username: this.news.user.name,
                 reference: this.news.title,
               })
@@ -473,7 +450,7 @@ export default {
               isOwner,
               type: 'newsComment',
               api: api.applyTopNewsComment,
-              payload: { newsId: this.newsID, commentId: comment.id },
+              payload: { newsId: this.newsId, commentId: comment.id },
               callback: this.fetchNewsComments,
             })
           },

@@ -66,7 +66,7 @@ export default {
       return this.$store.state.CURRENTUSER
     },
     roomId () {
-      return this.$route.params.chatID
+      return this.$route.params.chatId
     },
     name () {
       return this.room.name
