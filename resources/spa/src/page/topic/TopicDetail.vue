@@ -37,7 +37,7 @@
               class="user-item"
             >
               <Avatar class="avatar" :user="user" />
-              <span class="user-name">{{ user.name }}</span>
+              <span class="user-name m-text-cut">{{ user.name }}</span>
             </li>
           </ul>
         </div>
@@ -274,6 +274,7 @@ export default {
         }
 
         .user-name {
+          max-width: 6em;
           margin-top: 20px;
           font-size: 24px;
         }
