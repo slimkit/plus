@@ -60,7 +60,8 @@
         />
       </div>
 
-      <div class="m-box-model m-art-comments">
+      <div v-if="!pinnedCom.length && !comments.length" class="m-no-content" />
+      <div v-else class="m-box-model m-art-comments">
         <ul class="m-box m-aln-center m-art-comments-tabs">
           <li>{{ commentCount | formatNum }}条评论</li>
         </ul>
@@ -539,5 +540,10 @@ export default {
 
 .m-main {
   padding-bottom: 36px;
+}
+
+.m-no-content {
+  height: 600px;
+  width: 100%;
 }
 </style>
