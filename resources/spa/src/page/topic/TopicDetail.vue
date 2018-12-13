@@ -122,6 +122,11 @@ export default {
       return [this.creator, ...this.participants]
     },
   },
+  watch: {
+    $route (to, from) {
+      this.fetchTopic(true)
+    },
+  },
   created () {
     this.fetchTopic(true)
   },
