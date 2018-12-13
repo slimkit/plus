@@ -62,6 +62,7 @@ export default {
       scrollHeight: 0,
       pinned: false,
       topics: [],
+      fromTopic: false,
 
       amount: 0,
       customAmount: null,
@@ -98,6 +99,7 @@ export default {
     queryTopic () {
       const { topicId, topicName } = this.$route.query
       if (topicId) {
+        this.fromTopic = true
         this.topics.push({
           id: topicId,
           name: topicName,
@@ -149,6 +151,8 @@ export default {
           { validateStatus: s => s === 201 }
         )
         .then(() => {
+          this.$Message.success('发布成功')
+          if (this.fromTopic) return this.goBack()
           this.$router.replace('/feeds?type=new&refresh=1')
         })
         .finally(() => {

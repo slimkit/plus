@@ -115,7 +115,7 @@ export default {
   },
   activated () {
     if (this.$route.query.refresh) {
-      this.onRefresh()
+      this.$refs.loadmore.beforeRefresh()
     }
   },
   methods: {
