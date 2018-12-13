@@ -113,7 +113,7 @@ export default [
   {
     name: 'userfans',
     component: UserFans,
-    path: '/users/:userID(\\d+)/:type(followers|followings)',
+    path: '/users/:userId(\\d+)/:type(followers|followings)',
     meta: {
       title: '粉丝',
       keepAlive: true,

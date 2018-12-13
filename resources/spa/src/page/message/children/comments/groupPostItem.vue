@@ -108,12 +108,12 @@ export default {
     },
 
     sendComment (comment) {
-      const { commentable_id: postId = 0, user_id: userID = 0 } = this.comment
+      const { commentable_id: postId = 0, user_id: userId = 0 } = this.comment
       this.$http
         .post(
           `/group-posts/${postId}/comments`,
           {
-            reply_user: userID,
+            reply_user: userId,
             body: comment,
           },
           {

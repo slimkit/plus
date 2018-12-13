@@ -27,7 +27,7 @@ export default [
     },
   },
   {
-    path: '/feeds/:feedID(\\d+)',
+    path: '/feeds/:feedId(\\d+)',
     component: FeedDetail,
     meta: {
       title: '动态详情',

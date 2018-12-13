@@ -54,7 +54,7 @@ export default [
     ],
   },
   {
-    path: '/chats/:chatID(\\d+)',
+    path: '/chats/:chatId(\\d+)',
     component: ChatRoom,
     meta: {
       title: '对话',

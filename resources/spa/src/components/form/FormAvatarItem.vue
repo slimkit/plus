@@ -51,7 +51,7 @@ export default {
 
     /**
      * 文件类型
-     * @param {string} type enum{id: FileID, blob: Blob}
+     * @param {string} type enum{id: FileId, blob: Blob}
      */
     type: {
       type: String,

@@ -118,7 +118,7 @@ export default {
   },
   data () {
     return {
-      oldID: 0,
+      oldId: 0,
       news: {},
       loading: true,
       fetching: false,
@@ -172,7 +172,7 @@ export default {
     newsId () {
       return this.$route.params.newsId
     },
-    userID () {
+    userId () {
       return this.news.user_id || 0
     },
     isMine () {
@@ -232,7 +232,7 @@ export default {
   },
   activated () {
     if (this.newsId) {
-      if (this.newsId !== this.oldID) {
+      if (this.newsId !== this.oldId) {
         this.fetchNews()
       } else {
         setTimeout(() => {
@@ -261,7 +261,7 @@ export default {
           this.loading = false
           this.fetching = false
           this.news = data
-          this.oldID = this.newsId
+          this.oldId = this.newsId
           this.share.title = data.title
           this.share.desc = data.subject
           this.getCorrelations()
@@ -428,7 +428,7 @@ export default {
             method: () => {
               this.$bus.$emit('report', {
                 type: 'news',
-                payload: this.newsID,
+                payload: this.newsId,
                 username: this.news.user.name,
                 reference: this.news.title,
               })
@@ -442,7 +442,7 @@ export default {
       // 是否是自己的评论
       if (comment.user_id === this.CURRENTUSER.id) {
         // 是否是自己文章的评论
-        const isOwner = comment.user_id === this.userID
+        const isOwner = comment.user_id === this.userId
         actions.push({
           text: isOwner ? '评论置顶' : '申请评论置顶',
           method: () => {
@@ -450,7 +450,7 @@ export default {
               isOwner,
               type: 'newsComment',
               api: api.applyTopNewsComment,
-              payload: { newsId: this.newsID, commentId: comment.id },
+              payload: { newsId: this.newsId, commentId: comment.id },
               callback: this.fetchNewsComments,
             })
           },

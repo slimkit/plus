@@ -104,7 +104,7 @@
         <li
           v-for="feed in feeds"
           v-if="feed.id"
-          :key="`ush-${userID}-feed${feed.id}`"
+          :key="`ush-${userId}-feed${feed.id}`"
         >
           <FeedCard
             :feed="feed"
@@ -255,12 +255,12 @@ export default {
     currentUser () {
       return this.$store.state.CURRENTUSER
     },
-    userID () {
+    userId () {
       return ~~this.$route.params.userId
     },
     user: {
       get () {
-        return this.$store.getters.getUserById(this.userID, true) || {}
+        return this.$store.getters.getUserById(this.userId, true) || {}
       },
       set (val) {
         this.$store.commit('SAVE_USER', Object.assign(this.user, val))
@@ -273,7 +273,7 @@ export default {
       return this.user.extra || {}
     },
     isMine () {
-      return this.userID === this.currentUser.id
+      return this.userId === this.currentUser.id
     },
     followersCount () {
       return this.extra.followers_count || 0
@@ -369,7 +369,7 @@ export default {
     }
   },
   activated () {
-    if (this.preUID !== this.userID) {
+    if (this.preUID !== this.userId) {
       this.loading = true
       this.feeds = []
       this.tags = []
@@ -399,7 +399,7 @@ export default {
       })
     }
 
-    this.preUID = this.userID
+    this.preUID = this.userId
   },
   deactivated () {
     this.loading = true
@@ -445,13 +445,13 @@ export default {
       this.showFilter = false
     },
     fetchUserInfo () {
-      api.getUserInfoById(this.userID, true).then(user => {
+      api.getUserInfoById(this.userId, true).then(user => {
         this.user = Object.assign(this.user, user)
         this.loading = false
       })
     },
     fetchUserTags () {
-      this.$http.get(`/users/${this.userID}/tags`).then(({ data = [] }) => {
+      this.$http.get(`/users/${this.userId}/tags`).then(({ data = [] }) => {
         this.tags = data
       })
     },
@@ -461,7 +461,7 @@ export default {
       const params = {
         limit: 15,
         type: 'users',
-        user: this.userID,
+        user: this.userId,
       }
 
       loadmore && (params.after = this.after)
@@ -536,7 +536,7 @@ export default {
         method: () => {
           this.$bus.$emit('report', {
             type: 'user',
-            payload: this.userID,
+            payload: this.userId,
             username: this.user.name,
             reference: this.user.bio,
           })

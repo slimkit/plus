@@ -99,7 +99,7 @@ const cb = amount => { console.log(amount); }
 this.$bus.$emit("reward", {
   type: "feed",
   api,
-  payload: { feedID },
+  payload: { feedId },
   callback：cb
 });
 ```
@@ -124,7 +124,7 @@ const cb = () => { console.log("success"); }
 this.$bus.$emit("applyTop", {
   type: "",
   api,
-  payload: { feedID },
+  payload: { feedId },
   isOwner: true,
   callback: cb
 })

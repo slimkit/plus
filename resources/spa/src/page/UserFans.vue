@@ -8,7 +8,7 @@
       </div>
       <ul class="m-box m-flex-grow1 m-aln-center m-justify-center m-flex-base0 m-head-nav">
         <RouterLink
-          :to="`/users/${userID}/followers`"
+          :to="`/users/${userId}/followers`"
           tag="li"
           active-class="active"
           exact
@@ -17,7 +17,7 @@
           <a>粉丝</a>
         </RouterLink>
         <RouterLink
-          :to="`/users/${userID}/followings`"
+          :to="`/users/${userId}/followings`"
           tag="li"
           active-class="active"
           exact
@@ -65,8 +65,8 @@ export default {
     }
   },
   computed: {
-    userID () {
-      return ~~this.$route.params.userID
+    userId () {
+      return ~~this.$route.params.userId
     },
     type () {
       return this.$route.params.type
@@ -75,7 +75,7 @@ export default {
       return {
         limit: 15,
         type: this.type,
-        uid: this.userID,
+        uid: this.userId,
       }
     },
     users: {
@@ -101,13 +101,13 @@ export default {
   },
   activated () {
     // 判断是否清空上一次的数据
-    if (this.userID !== this.preUID) {
+    if (this.userId !== this.preUID) {
       this.followers = []
       this.followings = []
     }
 
     this.$refs.loadmore.beforeRefresh()
-    this.preUID = this.userID
+    this.preUID = this.userId
   },
   methods: {
     onRefresh () {

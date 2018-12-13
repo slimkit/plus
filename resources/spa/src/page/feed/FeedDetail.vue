@@ -150,8 +150,8 @@ export default {
     allowReward () {
       return this.$store.state.CONFIG.site.reward.status
     },
-    feedID () {
-      return this.$route.params.feedID
+    feedId () {
+      return this.$route.params.feedId
     },
     video () {
       return this.feed.video
@@ -266,7 +266,7 @@ export default {
     }
   },
   activated () {
-    if (this.feedID) {
+    if (this.feedId) {
       this.comments = []
       this.feed = {}
       this.rewardList = []
@@ -315,7 +315,7 @@ export default {
       const signUrl =
         this.$store.state.BROWSER.OS === 'IOS' ? window.initUrl : shareUrl
       this.$http
-        .get(`/feeds/${this.feedID}`)
+        .get(`/feeds/${this.feedId}`)
         .then(({ data = {} }) => {
           this.feed = data
           this.fetching = false
@@ -356,7 +356,7 @@ export default {
       if (this.fetchComing) return
       this.fetchComing = true
       api
-        .getFeedComments(this.feedID, { after })
+        .getFeedComments(this.feedId, { after })
         .then(({ data: { pinneds = [], comments = [] } }) => {
           if (!after) {
             this.pinnedCom = pinneds
@@ -383,12 +383,12 @@ export default {
         })
     },
     async fetchFeedRewards () {
-      const { data: list } = await api.getRewards(this.feedID, { limit: 10 })
+      const { data: list } = await api.getRewards(this.feedId, { limit: 10 })
       this.rewardList = list
       this.$store.commit('SAVE_ARTICLE', { type: 'likers', list })
     },
     async fetchFeedLikers () {
-      const { data: list } = await api.getFeedLikers(this.feedID, { limit: 5 })
+      const { data: list } = await api.getFeedLikers(this.feedId, { limit: 5 })
       this.feed.likes = list
       this.$store.commit('SAVE_ARTICLE', { type: 'likers', list })
     },
@@ -398,8 +398,8 @@ export default {
     likeFeed () {
       const method = this.liked ? 'delete' : 'post'
       const url = this.liked
-        ? `/feeds/${this.feedID}/unlike`
-        : `/feeds/${this.feedID}/like`
+        ? `/feeds/${this.feedId}/unlike`
+        : `/feeds/${this.feedId}/like`
       if (this.fetching) return
       this.fetching = true
       this.$http({
@@ -454,11 +454,11 @@ export default {
             if (this.has_collect) {
               txt = '取消收藏'
               method = 'delete'
-              url = `/feeds/${this.feedID}/uncollect`
+              url = `/feeds/${this.feedId}/uncollect`
             } else {
               txt = '已加入我的收藏'
               method = 'post'
-              url = `/feeds/${this.feedID}/collections`
+              url = `/feeds/${this.feedId}/collections`
             }
 
             this.$http({
@@ -481,7 +481,7 @@ export default {
               this.$bus.$emit('applyTop', {
                 type: 'feed',
                 api: api.applyTopFeed,
-                payload: this.feedID,
+                payload: this.feedId,
               })
             },
           },
@@ -494,7 +494,7 @@ export default {
                     text: '删除',
                     style: { color: '#f4504d' },
                     method: () => {
-                      api.deleteFeed(this.feedID).then(() => {
+                      api.deleteFeed(this.feedId).then(() => {
                         this.$Message.success('删除动态成功')
                         this.goBack()
                       })
@@ -517,7 +517,7 @@ export default {
             method: () => {
               this.$bus.$emit('report', {
                 type: 'feed',
-                payload: this.feedID,
+                payload: this.feedId,
                 username: this.user.name,
                 reference: this.feed.feed_content,
               })
@@ -539,7 +539,7 @@ export default {
               isOwner,
               type: 'feedComment',
               api: api.applyTopFeedComment,
-              payload: { feedId: this.feedID, commentId: comment.id },
+              payload: { feedId: this.feedId, commentId: comment.id },
               callback: this.fetchFeedComments,
             })
           },
@@ -580,7 +580,7 @@ export default {
         params.body = body
         replyUser && (params['reply_user'] = replyUser)
         this.$http
-          .post(`/feeds/${this.feedID}/comments`, params, {
+          .post(`/feeds/${this.feedId}/comments`, params, {
             validateStatus: s => s === 201,
           })
           .then(({ data: { comment } = { comment: {} } }) => {
@@ -598,7 +598,7 @@ export default {
       }
     },
     deleteComment (commentId) {
-      api.deleteFeedComment(this.feedID, commentId).then(() => {
+      api.deleteFeedComment(this.feedId, commentId).then(() => {
         this.fetchFeedComments()
         this.commentCount -= 1
         this.$Message.success('删除评论成功')
