@@ -1,7 +1,14 @@
 <template>
   <div class="p-topic-create">
-    <CommonHeader :back="beforeBack">
+    <CommonHeader>
       {{ topicId ? '编辑话题' : '创建话题' }}
+      <span
+        slot="left"
+        class="primary"
+        @click="beforeBack"
+      >
+        取消
+      </span>
       <span
         slot="right"
         class="create-btn"
@@ -182,6 +189,10 @@ export default {
   background-color: #fff;
   height: 100%;
 
+  .primary {
+    color: @primary;
+  }
+
   .create-btn {
     color: @gray;
 
@@ -229,6 +240,7 @@ export default {
         font-size: 36px;
         height: 100%;
         width: 100%;
+        font-weight: bold;
       }
     }
 
@@ -248,6 +260,18 @@ export default {
     &::before {
       content: '* ';
       color: @error;
+    }
+  }
+}
+</style>
+
+<style lang="less">
+.p-topic-create {
+  .description .textarea-wrap {
+    .word-length {
+      position: absolute;
+      top: calc(100% + 20px);
+      right: 0px;
     }
   }
 }
