@@ -51,6 +51,7 @@
         <div class="right_extras">
             <a href="https://www.pgyer.com/thinksns-plus" target="_blank" class="app">
                 <svg class="icon" aria-hidden="true"><use xlink:href="#icon-phone"></use></svg>
+                <div class="qrcode-wrap"><img src="//www.pgyer.com/app/qrcode/thinksns-plus" alt="ThinkSNS+"><span>扫码下载APP</span></div>
             </a>
             <a href="javascript:;" class="gotop" id="gotop"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-uptop"></use></svg></a>
         </div>
