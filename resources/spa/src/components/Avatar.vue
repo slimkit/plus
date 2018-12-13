@@ -15,6 +15,7 @@
     <i
       v-if="icon"
       :style="icon"
+      :class="iconClass"
       class="m-avatar-icon"
     />
   </RouterLink>
@@ -37,6 +38,11 @@ export default {
     sex () {
       return ~~this.user.sex
     },
+    iconClass () {
+      if (this.anonymity) return false
+      const { verified = {} } = this.user
+      return verified.type
+    },
     icon () {
       // 如果是匿名用户 不显示
       if (this.anonymity) return false
@@ -48,15 +54,8 @@ export default {
       // 如果有设置图标 使用设置的图标
       if (verified.icon) return { 'background-image': `url("${verified.icon}")` }
       // 否则根据认证类型使用相应的默认图标
-      else if (verified.type === 'user') {
-        return {
-          'background-image': 'url(' + require('@/images/cert_user.png') + ')',
-        }
-      } else if (verified.type === 'org') {
-        return {
-          'background-image': 'url(' + require('@/images/cert_org.png') + ')',
-        }
-      } else return false
+      else if (verified.type) return {}
+      else return false
     },
     path () {
       return this.uid ? `/users/${this.uid}` : 'javascript:;'
@@ -84,3 +83,16 @@ export default {
   },
 }
 </script>
+
+<style lang="less" scoped>
+.m-avatar-box {
+  .m-avatar-icon {
+    &.user {
+      background-image: url('~@/images/cert_user.png');
+    }
+    &.org {
+      background-image: url('~@/images/cert_org.png');
+    }
+  }
+}
+</style>

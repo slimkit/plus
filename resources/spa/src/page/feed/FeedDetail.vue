@@ -86,7 +86,12 @@
       </main>
 
       <!-- 评论列表 -->
-      <div id="comment_list" class="m-box-model m-art-comments">
+      <div v-if="!pinnedCom.length && !comments.length" class="m-no-content" />
+      <div
+        v-else
+        id="comment_list"
+        class="m-box-model m-art-comments"
+      >
         <ul class="m-box m-aln-center m-art-comments-tabs">
           <li>{{ commentCount | formatNum }}条评论</li>
         </ul>
@@ -104,8 +109,7 @@
           @click="replyComment(comment)"
         />
         <div class="m-box m-aln-center m-justify-center load-more-box">
-          <div v-if="!pinnedCom.length && !comments.length" class="m-no-find" />
-          <span v-else-if="noMoreCom" class="load-more-ph">---没有更多---</span>
+          <span v-if="noMoreCom" class="load-more-ph">---没有更多---</span>
           <span
             v-else
             class="load-more-btn"
@@ -694,11 +698,6 @@ export default {
   .load-more-ph {
     height: 100px;
     line-height: 100px;
-  }
-
-  .m-no-find {
-    height: 600px;
-    width: 100%;
   }
 }
 

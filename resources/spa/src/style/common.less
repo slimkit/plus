@@ -638,10 +638,12 @@
 
 /* 占位图 */
 .m-no-find {
-  background-size: 400px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url("../images/img_default_search@2x.png");
+  background: url("../images/img_default_search@2x.png") center / 400px no-repeat;
+}
+.m-no-content {
+  width: 100%;
+  height: 600px;
+  background: @gray-bg url('../images/img_default_nothing@2x.png') center / 400px no-repeat;
 }
 .c_59b6d7 {
   color: @primary;
