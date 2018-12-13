@@ -5,15 +5,15 @@
     to="likers"
     append
   >
-    <ul class="avatar-list">
-      <li
+    <div class="avatar-list">
+      <Avatar
         v-for="({user = {}, id}, index) in likers.slice(0, 5)"
         :key="id"
-        :style="{ zIndex: 5-index, backgroundImage: user.avatar && `url(${getAvatar(user)})`}"
-        :class="`m-avatar-box-${user.sex}`"
-        class="m-avatar-box tiny"
+        :user="user"
+        size="tiny"
+        :style="{ zIndex: 5-index}"
       />
-    </ul>
+    </div>
     <span class="total">{{ total | formatNum }}人点赞</span>
   </RouterLink>
 </template>
@@ -41,7 +41,20 @@ export default {
   align-items: center;
 
   .avatar-list {
+    position: relative;
     flex: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      display: block;
+      background: transparent;
+      z-index: 7;
+    }
   }
 
   .total {

@@ -2,7 +2,7 @@
   <div class="rank-list-item">
     <span :class="{ top: index < 3 }" class="rank">{{ index + 1 }}</span>
 
-    <div class="rank-info" @click="to(`/users/${user.id}`)">
+    <div class="rank-info" @click="$router.push(`/users/${user.id}`)">
       <Avatar :user="user" class="rank-avatar" />
       <div class="rank-title m-text-cut">
         <h6>{{ user.name }}</h6>

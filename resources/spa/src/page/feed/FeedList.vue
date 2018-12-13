@@ -88,7 +88,7 @@ export default {
   },
   computed: {
     feedType () {
-      return this.$route.query.type
+      return this.$route.query.type || 'hot'
     },
     feeds () {
       return this.$store.getters[`feed/${this.feedType}`]

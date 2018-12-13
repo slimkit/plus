@@ -5,23 +5,23 @@
       共 <a href="javascript:;">{{ ~~amount }}</a> {{ currencyUnit }}
     </p>
     <RouterLink
-      tag="ul"
+      v-if="rewarders.length > 0"
+      tag="div"
       to="rewarders"
       append
       class="m-box m-aln-center m-art-rew-list"
     >
-      <li
-        v-for="{id, user} in rewarders"
-        :key="id"
-        :class="`m-avatar-box-${user.sex}`"
-        class="m-flex-grow0 m-flex-shrink0 m-art-rew m-avatar-box tiny"
-        :style="{backgroundImage: user.avatar && `url(${getAvatar(user.avatar)})`}"
-      />
-      <li v-if="rewarders.length > 0" class="m-box m-aln-center">
-        <svg class="m-style-svg m-svg-def" style="color: #bfbfbf;">
-          <use xlink:href="#icon-arrow-right" />
-        </svg>
-      </li>
+      <div class="avatar-list">
+        <Avatar
+          v-for="{id, user} in rewarders"
+          :key="id"
+          :user="user"
+          size="small"
+        />
+      </div>
+      <svg class="m-box m-aln-center m-style-svg m-svg-def" style="color: #bfbfbf;">
+        <use xlink:href="#icon-arrow-right" />
+      </svg>
     </RouterLink>
   </div>
 </template>
@@ -42,3 +42,23 @@ export default {
   },
 }
 </script>
+
+<style lang="less" scoped>
+.c-article-reward-badge {
+  .avatar-list {
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      display: block;
+      background: transparent;
+      z-index: 7;
+    }
+  }
+}
+</style>
