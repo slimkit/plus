@@ -33,7 +33,7 @@ export default {
           <Report />
           <ChooseTags />
           <ApplyTop />
-          <PopupDialog />,
+          <PopupDialog />
           {CONST.ENABLE_QQ_CONSULT && <ChatWithQQ />}
         </div>
       </div>
