@@ -52,28 +52,14 @@
           </AsyncFile>
           <p class="m-text-box" v-html="formatBody(feedContent)" />
         </div>
+
         <div class="m-box m-aln-center m-justify-bet m-art-foot">
           <div class="m-flex-grow1 m-flex-shrink1 m-art-like-list">
-            <RouterLink
+            <ArticleLikeBadge
               v-if="likeCount > 0"
-              tag="div"
-              class="m-box m-aln-center"
-              to="likers"
-              append
-            >
-              <ul class="m-box m-flex-grow0 m-flex-shrink0">
-                <li
-                  v-for="({userItem = {}, id}, index) in likes.slice(0, 5)"
-                  :key="id"
-                  :style="{ zIndex: 5-index }"
-                  :class="`m-avatar-box-${userItem.sex}`"
-                  class="m-avatar-box tiny"
-                >
-                  <img :src="getAvatar(userItem.avatar)">
-                </li>
-              </ul>
-              <span>{{ likeCount | formatNum }}人点赞</span>
-            </RouterLink>
+              :likers="likes"
+              :total="likeCount"
+            />
           </div>
           <div class="m-box-model m-aln-end m-art-info">
             <span v-if="time">发布于{{ time | time2tips }}</span>
@@ -82,27 +68,11 @@
         </div>
         <div v-if="allowReward" class="m-box-model m-box-center m-box-center-a m-art-reward">
           <button class="m-art-rew-btn" @click="rewardFeed">打 赏</button>
-          <p class="m-art-rew-label"><a href="javascript:;">{{ reward.count | formatNum }}</a>人打赏，共<a href="javascript:;">{{ ~~reward.amount }}</a>{{ currencyUnit }}</p>
-          <RouterLink
-            tag="ul"
-            to="rewarders"
-            append
-            class="m-box m-aln-center m-art-rew-list"
-          >
-            <li
-              v-for="rew in rewardList"
-              :key="rew.id"
-              :class="`m-avatar-box-${rew.user.sex}`"
-              class="m-flex-grow0 m-flex-shrink0 m-art-rew m-avatar-box tiny"
-            >
-              <img :src="getAvatar(rew.user.avatar)">
-            </li>
-            <li v-if="rewardList.length > 0" class="m-box m-aln-center">
-              <svg class="m-style-svg m-svg-def" style="fill: #bfbfbf">
-                <use xlink:href="#icon-arrow-right" />
-              </svg>
-            </li>
-          </RouterLink>
+          <ArticleRewardBadge
+            :total="reward.count"
+            :amount="reward.amount"
+            :rewarders="rewardList"
+          />
         </div>
       </main>
 
@@ -142,18 +112,22 @@
 
 <script>
 import { mapState } from 'vuex'
-import ArticleCard from '@/page/article/ArticleCard.vue'
-import CommentItem from '@/page/article/ArticleComment.vue'
 import wechatShare from '@/util/wechatShare.js'
 import { limit } from '@/api'
 import { followUserByStatus, getUserInfoById } from '@/api/user.js'
 import * as api from '@/api/feeds.js'
+import ArticleCard from '@/page/article/ArticleCard.vue'
+import CommentItem from '@/page/article/ArticleComment.vue'
+import ArticleLikeBadge from '@/components/common/ArticleLikeBadge.vue'
+import ArticleRewardBadge from '@/components/common/ArticleRewardBadge.vue'
 
 export default {
   name: 'FeedDetail',
   components: {
     ArticleCard,
     CommentItem,
+    ArticleLikeBadge,
+    ArticleRewardBadge,
   },
   data () {
     return {
@@ -347,7 +321,8 @@ export default {
           this.fetching = false
           this.fetchUserInfo()
           this.fetchFeedComments()
-          this.fetchRewards()
+          this.fetchFeedRewards()
+          this.fetchFeedLikers()
           this.isWechat &&
             wechatShare(signUrl, {
               title: `${data.user.name}的动态`,
@@ -407,14 +382,15 @@ export default {
           this.fetchComing = false
         })
     },
-    fetchRewards () {
-      api.getRewards(this.feedID, { limit: 10 }).then(({ data = [] }) => {
-        this.rewardList = data
-      })
+    async fetchFeedRewards () {
+      const { data: list } = await api.getRewards(this.feedID, { limit: 10 })
+      this.rewardList = list
+      this.$store.commit('SAVE_ARTICLE', { type: 'likers', list })
     },
-    getAvatar (avatar) {
-      if (!avatar) return null
-      return avatar.url || null
+    async fetchFeedLikers () {
+      const { data: list } = await api.getFeedLikers(this.feedID, { limit: 5 })
+      this.feed.likes = list
+      this.$store.commit('SAVE_ARTICLE', { type: 'likers', list })
     },
     rewardFeed () {
       this.popupBuyTS()

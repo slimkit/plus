@@ -29,7 +29,7 @@ export default {
   },
   data () {
     return {
-      likes: [],
+      likes: this.$store.state.article.likers || [],
       maxId: 0,
     }
   },

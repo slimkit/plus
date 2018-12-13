@@ -40,6 +40,13 @@ const state = {
     data: {},
     files: [],
   },
+
+  // 文章点赞、打赏信息
+  article: {
+    likers: [],
+    rewarders: [],
+  },
+
 }
 
 export default new Vuex.Store({

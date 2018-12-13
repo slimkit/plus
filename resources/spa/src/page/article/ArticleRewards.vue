@@ -30,7 +30,7 @@ export default {
   name: 'ArticleRewards',
   data () {
     return {
-      rewards: [],
+      rewards: this.$store.state.article.rewarders || [],
       typeMap: {
         feed: '动态',
         news: '资讯',

@@ -162,6 +162,22 @@ export function deleteNewsComment (newsId, commentId) {
 }
 
 /**
+ * 获取资讯点赞列表
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {number} newsId
+ * @param {Object} params
+ * @param {number} [params.limit]
+ * @param {number} [params.after]
+ * @returns {Promise<Object[]>}
+ */
+export function getNewsLikers (newsId, params) {
+  const url = `/news/${newsId}/likes`
+  return api.get(url, { params, validateStatus: s => s === 200 })
+}
+
+/**
  * 获取资讯打赏列表
  * @author mutoe <mutoe@foxmail.com>
  * @export
