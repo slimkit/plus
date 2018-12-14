@@ -158,7 +158,6 @@ export default {
 <style lang="less" scoped>
 .p-post-text {
   background-color: #fff;
-  height: 100%;
 
   main {
     flex: auto;

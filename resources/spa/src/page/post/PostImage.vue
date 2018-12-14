@@ -1,5 +1,5 @@
 <template>
-  <div class="p-post-pic">
+  <div class="p-post-image">
     <CommonHeader>
       发布动态
       <template slot="left">
@@ -139,8 +139,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.p-post-pic {
-  height: 100%;
+.p-post-image {
   background-color: #fff;
 
   main {
