@@ -1,6 +1,6 @@
 <template>
-  <div class="m-box-model m-card" @click="handleView('')">
-    <div class="m-box">
+  <div class="m-box-model m-card c-feed-card" @click="handleView('')">
+    <div class="m-box main">
       <template v-if="timeLine">
         <div v-if="isToday" v-text="'今天'" />
         <div v-else class="timeline-text">
@@ -36,9 +36,9 @@
             :id="feedId"
             :video="video"
           />
-          <ul v-if="feed.topics.length" class="topics">
+          <ul v-if="topics.length" class="topics">
             <li
-              v-for="topic in feed.topics"
+              v-for="topic in topics"
               v-if="topic.id !== currentTopic"
               :key="topic.id"
               class="topic-item"
@@ -189,6 +189,9 @@ export default {
     },
     video () {
       return this.feed.video || false
+    },
+    topics () {
+      return this.feed.topics || []
     },
     body () {
       return this.feed.feed_content || ''
@@ -433,10 +436,14 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.m-card {
+.c-feed-card {
   padding: 30px 20px 0;
   box-sizing: border-box;
   background-color: #fff;
+
+  .main {
+    padding-bottom: 20px;
+  }
 
   .timeline-text {
     flex: none;
@@ -469,7 +476,9 @@ export default {
       cursor: pointer;
     }
   }
+}
 
+.m-card {
   &-usr {
     font-size: 24px;
     color: #ccc;
@@ -514,7 +523,6 @@ export default {
     }
   }
   &-foot {
-    margin-top: 20px;
     margin-left: -20px;
     margin-right: -20px;
     padding: 0 20px 0 100px;

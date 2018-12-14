@@ -13,10 +13,7 @@
           :key="`clet-${feed.id}`"
           class="p-profile-collection-feeds-item"
         >
-          <FeedCard
-            :feed="feed"
-            :show-footer="false"
-          />
+          <FeedCard :feed="feed" :show-footer="false" />
         </li>
       </ul>
     </JoLoadMore>
@@ -42,20 +39,16 @@ export default {
     this.$refs.loadmore.beforeRefresh()
   },
   methods: {
-    onRefresh () {
-      // TODO: refactor there with vuex action.
-      api.getCollectedFeed().then(({ data = [] }) => {
-        this.feedList = data
-        this.$refs.loadmore.afterRefresh(data.length < limit)
-      })
+    async onRefresh () {
+      const { data } = await api.getCollectedFeed()
+      this.feedList = data
+      this.$refs.loadmore.afterRefresh(data.length < limit)
     },
-    onLoadMore () {
+    async onLoadMore () {
       const offset = this.feedList.length
-      // TODO: refactor there with vuex action.
-      api.getCollectedFeed({ offset }).then(({ data = [] }) => {
-        this.feedList = [...this.feedList, ...data]
-        this.$refs.loadmore.afterLoadMore(data.length < limit)
-      })
+      const { data } = await api.getCollectedFeed({ offset })
+      this.feedList = [...this.feedList, ...data]
+      this.$refs.loadmore.afterLoadMore(data.length < limit)
     },
   },
 }
