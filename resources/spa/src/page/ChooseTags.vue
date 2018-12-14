@@ -113,7 +113,7 @@ export default {
   data () {
     return {
       show: false,
-      isFirst: false,
+      isFirst: this.$lstore.getData('H5_CHOOSE_TAGS_FIRST') || true,
       chooseTags: [],
       loading: false,
       tags: [],
