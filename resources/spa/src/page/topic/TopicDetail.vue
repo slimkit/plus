@@ -149,7 +149,7 @@ export default {
     },
     async fetchParticipants () {
       const users = this.topic.participants || []
-      if (!users.length) return
+      if (!users.length) return (this.participants = [])
       const params = { id: users.join(','), limit: 4 }
       const data = await this.$store.dispatch('user/getUserList', params)
       this.participants = data
