@@ -111,7 +111,6 @@
             <div class="m-box m-flex-grow1 m-flex-shrink1 m-aln-center m-justify-end">
               <TextareaInput
                 v-model="news.subject"
-                class="textarea-input"
                 maxlength="200"
                 warnlength="150"
                 placeholder="请输入摘要信息，最多200字"
@@ -510,11 +509,13 @@ export default {
   .m-post-news-row {
     font-size: 30px;
     padding: 40px 30px;
+
     .m-entry-append {
       margin-left: 10px;
     }
     &-label {
-      flex: 0 0 auto;
+      flex: none;
+      align-self: flex-start;
       width: 150px;
     }
     input {
@@ -523,23 +524,14 @@ export default {
       line-height: 30px;
       font-size: 28px;
     }
+
+    .c-textarea-input {
+      text-align: right;
+    }
   }
 
   .placeholder {
     color: #ccc;
-  }
-}
-</style>
-
-<style lang="less">
-.p-post-news {
-  .textarea-input {
-    padding-right: 0;
-
-    textarea {
-      text-align: right;
-      width: 100%;
-    }
   }
 }
 </style>

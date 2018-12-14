@@ -25,14 +25,15 @@
     </CommonHeader>
 
     <main>
-      <TextareaInput
-        v-model="contentText"
-        :rows="11"
-        :maxlength="255"
-        :warnlength="200"
-        placeholder="输入要说的话，图文结合更精彩哦"
-        class="textarea-input"
-      />
+      <div class="content-wrap">
+        <TextareaInput
+          v-model="contentText"
+          :rows="11"
+          :maxlength="255"
+          :warnlength="200"
+          placeholder="输入要说的话，图文结合更精彩哦"
+        />
+      </div>
       <ImageList :edit="pinned" style="padding: 0 .3rem .3rem" />
     </main>
 
@@ -143,8 +144,8 @@ export default {
   background-color: #fff;
 
   main {
-    .textarea-input {
-      padding-left: 20px;
+    .content-wrap {
+      padding: 20px;
     }
   }
 

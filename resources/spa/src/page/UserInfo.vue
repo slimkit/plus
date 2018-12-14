@@ -7,7 +7,7 @@
         <a
           v-else
           :class="{ disabled }"
-          class="m-send-btn"
+          class="submit-btn"
           @click.prevent="handleOk"
         >
           完成
@@ -229,43 +229,16 @@ export default {
 
 <style lang="less" scoped>
 .p-user-info {
-  main {
-    background-color: #fff;
-  }
-
-  input[type="text"] {
-    height: 100%;
-    font-size: 28px;
-    line-height: normal;
-    vertical-align: middle;
-  }
-
-  textarea {
-    font-size: inherit;
-    font-family: inherit;
-    line-height: inherit;
-    background-color: transparent;
-    outline: 0;
-    border: 0;
-    resize: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    box-sizing: border-box;
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-  }
-
-  .m-avatar-box {
-    margin-right: 35px;
-  }
-
-  .m-send-btn {
+  .submit-btn {
     color: @primary;
 
     &.disabled {
       color: @gray;
     }
+  }
+
+  main {
+    background-color: #fff;
   }
 
   .m-entry-append {
@@ -300,11 +273,5 @@ export default {
   .placeholder {
     color: #ccc;
   }
-}
-</style>
-
-<style lang="less">
-.c-textarea-input {
-  padding-top: 28px;
 }
 </style>

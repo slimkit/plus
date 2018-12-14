@@ -24,13 +24,12 @@
     </CommonHeader>
 
     <main>
-      <div style="height: 100%;">
+      <div class="content-wrap">
         <TextareaInput
           v-model="contentText"
           :maxlength="255"
           :warnlength="200"
           :rows="11"
-          class="textarea-input"
         />
       </div>
     </main>
@@ -163,9 +162,8 @@ export default {
     flex: auto;
     padding-top: 90px;
 
-    .textarea-input {
-      padding-top: 20px;
-      padding-left: 20px;
+    .content-wrap {
+      padding: 20px;
     }
   }
 
