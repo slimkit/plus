@@ -1,5 +1,5 @@
 <template>
-  <Transition name="pop">
+  <Transition name="popr">
     <div
       v-if="show"
       class="m-box-model m-pos-f p-choose-tags m-main"

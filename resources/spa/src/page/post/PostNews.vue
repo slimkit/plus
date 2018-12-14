@@ -227,7 +227,7 @@ export default {
   },
   computed: {
     ...mapState({
-      newsConfig: state => state.CONFIG.news,
+      newsConfig: state => state.CONFIG.news || {},
       newsPay: state => state.CONFIG.news.contribute.pay,
       newCurrency: state => state.CONFIG.news.pay_contribute,
       verified: state => state.CURRENTUSER.verified,
@@ -237,8 +237,8 @@ export default {
       return user.currency.sum || 0
     },
     canPostNews () {
-      const newsVerified = this.newsConfig.contribute.verified
-      return !newsVerified || (newsVerified && this.verified)
+      const { verified } = this.newsConfig.contribute || {}
+      return !verified || (verified && this.verified)
     },
     contentText: {
       get () {
