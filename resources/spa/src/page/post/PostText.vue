@@ -21,13 +21,12 @@
     </CommonHeader>
 
     <main>
-      <div class="text-content">
+      <div class="content-wrap">
         <TextareaInput
           v-model="contentText"
           :maxlength="255"
           :warnlength="200"
           :rows="11"
-          class="textarea-input"
         />
       </div>
       <div class="options">
@@ -159,7 +158,6 @@ export default {
           this.loading = false
         })
     },
-
   },
 }
 </script>
@@ -167,7 +165,6 @@ export default {
 <style lang="less" scoped>
 .p-post-text {
   background-color: #fff;
-  height: 100%;
 
   main {
     flex: auto;
@@ -177,11 +174,9 @@ export default {
       border-top: 1px solid @border-color;
     }
 
-    .textarea-input {
-      padding-top: 20px;
-      padding-left: 20px;
+    .content-wrap {
+      padding: 20px;
     }
-
   }
 }
 </style>

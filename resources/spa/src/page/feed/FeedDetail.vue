@@ -641,7 +641,7 @@ export default {
       })
     },
     onFileClick (paidNode) {
-      if (!paidNode || paidNode.paid !== false) return
+      if (!paidNode || paidNode.paid !== false || paidNode.type === 'download') return
 
       if (this.$lstore.hasData('H5_ACCESS_TOKEN')) {
         this.$bus.$emit('payfor', {

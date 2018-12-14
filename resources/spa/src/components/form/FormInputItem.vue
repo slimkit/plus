@@ -97,10 +97,10 @@ export default {
 
 .c-form-textarea-item {
   height: auto !important;
+  padding: 28px 20px;
 
   > label {
     align-self: flex-start;
-    padding-top: 28px;
   }
 
   + .c-form-item {

@@ -1,5 +1,5 @@
 <template>
-  <Transition name="pop">
+  <Transition name="popr">
     <div
       v-if="show"
       class="m-box-model m-pos-f p-choose-tags m-main"
@@ -113,7 +113,7 @@ export default {
   data () {
     return {
       show: false,
-      isFirst: false,
+      isFirst: this.$lstore.getData('H5_CHOOSE_TAGS_FIRST') || true,
       chooseTags: [],
       loading: false,
       tags: [],

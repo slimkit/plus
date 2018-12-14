@@ -49,8 +49,9 @@ export default {
   z-index: 1;
 
   .input-wrap {
-    display: flex;
     flex: auto;
+    display: flex;
+    align-items: center;
     background-color: #ebebeb;
     padding: 10px;
     border-radius: 8px;

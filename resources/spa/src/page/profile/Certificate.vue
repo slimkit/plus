@@ -386,8 +386,12 @@ export default {
         }
       }
 
-      .m-input input {
-        text-align: right;
+      .m-input {
+        padding: 0;
+
+        input {
+          text-align: right;
+        }
       }
 
       &.auto-height {
@@ -397,10 +401,10 @@ export default {
         padding-top: 0.4rem;
         padding-bottom: 0.4rem;
 
-        textarea {
-          width: 100%;
+        .c-textarea-input {
+          text-align: right;
+          font-size: 28px;
           line-height: 1.4;
-          font-size: 0.28rem;
         }
       }
     }
@@ -412,20 +416,6 @@ export default {
     .poster-tips {
       color: #666;
       font-size: 80%;
-    }
-  }
-}
-</style>
-
-<style lang="less">
-.p-profile-certificate {
-  .textarea-wrap {
-    padding-right: 0;
-
-    .c-textarea-input {
-      text-align: right;
-      width: 100%;
-      font-size: 28px;
     }
   }
 }

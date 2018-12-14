@@ -111,7 +111,6 @@
             <div class="m-box m-flex-grow1 m-flex-shrink1 m-aln-center m-justify-end">
               <TextareaInput
                 v-model="news.subject"
-                class="textarea-input"
                 maxlength="200"
                 warnlength="150"
                 placeholder="请输入摘要信息，最多200字"
@@ -228,7 +227,7 @@ export default {
   },
   computed: {
     ...mapState({
-      newsConfig: state => state.CONFIG.news,
+      newsConfig: state => state.CONFIG.news || {},
       newsPay: state => state.CONFIG.news.contribute.pay,
       newCurrency: state => state.CONFIG.news.pay_contribute,
       verified: state => state.CURRENTUSER.verified,
@@ -238,8 +237,8 @@ export default {
       return user.currency.sum || 0
     },
     canPostNews () {
-      const newsVerified = this.newsConfig.contribute.verified
-      return !newsVerified || (newsVerified && this.verified)
+      const { verified } = this.newsConfig.contribute || {}
+      return !verified || (verified && this.verified)
     },
     contentText: {
       get () {
@@ -510,11 +509,13 @@ export default {
   .m-post-news-row {
     font-size: 30px;
     padding: 40px 30px;
+
     .m-entry-append {
       margin-left: 10px;
     }
     &-label {
-      flex: 0 0 auto;
+      flex: none;
+      align-self: flex-start;
       width: 150px;
     }
     input {
@@ -523,23 +524,14 @@ export default {
       line-height: 30px;
       font-size: 28px;
     }
+
+    .c-textarea-input {
+      text-align: right;
+    }
   }
 
   .placeholder {
     color: #ccc;
-  }
-}
-</style>
-
-<style lang="less">
-.p-post-news {
-  .textarea-input {
-    padding-right: 0;
-
-    textarea {
-      text-align: right;
-      width: 100%;
-    }
   }
 }
 </style>

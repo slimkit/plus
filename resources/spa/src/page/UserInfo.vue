@@ -7,7 +7,7 @@
         <a
           v-else
           :class="{ disabled }"
-          class="m-send-btn"
+          class="submit-btn"
           @click.prevent="handleOk"
         >
           完成
@@ -40,26 +40,12 @@
           label="城市"
         />
 
-        <!-- form-tags-selected -->
-
-        <section class="m-box m-aln-stre m-justify-bet p-info-row m-bb1" @click="switchTags">
-          <label>标签</label>
-          <div class="m-box m-aln-center m-justify-bet m-flex-grow1 m-flex-shrink1 input">
-            <span v-if="tags.length === 0" class="placeholder">选择标签</span>
-            <div v-else class="m-tag-list m-tags">
-              <span
-                v-for="tag in tags"
-                :key="tag.id"
-                class="m-tag"
-              >
-                {{ tag.name }}
-              </span>
-            </div>
-            <svg class="m-style-svg m-svg-def m-entry-append">
-              <use xlink:href="#icon-arrow-right" />
-            </svg>
-          </div>
-        </section>
+        <FormTagsItem
+          v-model="tags"
+          label="标签"
+          @select="onTagSelect"
+          @delete="onTagRemove"
+        />
 
         <FormInputItem
           v-model="bio"
@@ -77,30 +63,7 @@
 <script>
 import { mapState } from 'vuex'
 
-/**
- * Canvas toBlob
- */
-if (!HTMLCanvasElement.prototype.toBlob) {
-  Object.defineProperty(HTMLCanvasElement.prototype, 'toBlob', {
-    value: function (callback, type, quality) {
-      const binStr = atob(this.toDataURL(type, quality).split(',')[1])
-      const len = binStr.length
-      const arr = new Uint8Array(len)
-
-      for (let i = 0; i < len; i++) {
-        arr[i] = binStr.charCodeAt(i)
-      }
-
-      callback(new Blob([arr], { type: type || 'image/png' }))
-    },
-  })
-}
-
-const sexMap = {
-  0: '保密',
-  1: '男',
-  2: '女',
-}
+const sexMap = { 0: '保密', 1: '男', 2: '女' }
 
 export default {
   name: 'UserInfo',
@@ -141,29 +104,32 @@ export default {
     },
   },
   created () {
-    const {
-      sex = 0,
-      bio = '',
-      location = '',
-      avatar = '',
-      tags = [],
-      name = '',
-    } = this.CURRENTUSER
-    this.name = name
-    this.sex = sex
-    this.bio = bio || ''
-    this.tags = tags || []
-    this.avatar = avatar
-    this.location.label = location || ''
-    this.$http
-      .get(`users/${this.CURRENTUSER.id}/tags`)
-      .then(({ data = [] }) => {
-        this.tags = data
-        this.CURRENTUSER.tags = data
-        this.$store.commit('SAVE_CURRENTUSER', this.CURRENTUSER)
-      })
+    this.fetchUser()
   },
   methods: {
+    fetchUser () {
+      const {
+        sex = 0,
+        bio = '',
+        location = '',
+        avatar = '',
+        tags = [],
+        name = '',
+      } = this.CURRENTUSER
+      this.name = name
+      this.sex = sex
+      this.bio = bio || ''
+      this.tags = tags || []
+      this.avatar = avatar
+      this.location.label = location || ''
+      this.$http
+        .get(`users/${this.CURRENTUSER.id}/tags`)
+        .then(({ data = [] }) => {
+          this.tags = data
+          this.CURRENTUSER.tags = data
+          this.$store.commit('SAVE_CURRENTUSER', this.CURRENTUSER)
+        })
+    },
     handleOk () {
       if (this.disabled) return
       if (this.loading) return
@@ -191,25 +157,11 @@ export default {
           this.loading = false
         })
     },
-    switchTags () {
-      const chooseTags = this.tags.map(t => t.id)
-      const nextStep = tags => {
-        this.change =
-          tags.map(n => n.id).join(',') !== this.CURRENTUSER.tags.join(',')
-        this.tags = tags
-      }
-      const onSelect = tagId => {
-        this.$http.put(`/user/tags/${tagId}`)
-      }
-      const onRemove = tagId => {
-        this.$http.delete(`/user/tags/${tagId}`)
-      }
-      this.$bus.$emit('choose-tags', {
-        chooseTags,
-        nextStep,
-        onSelect,
-        onRemove,
-      })
+    onTagSelect (tagId) {
+      this.$http.put(`/user/tags/${tagId}`)
+    },
+    onTagRemove (tagId) {
+      this.$http.delete(`/user/tags/${tagId}`)
     },
     switchPosition (val) {
       this.showPosition = !this.showPosition
@@ -217,9 +169,9 @@ export default {
     },
     switchSex () {
       const options = [
-        { text: '男', method: () => (this.sex = 1) },
-        { text: '女', method: () => (this.sex = 2) },
-        { text: '保密', method: () => (this.sex = 0) },
+        { text: '男', method: () => void (this.sex = 1) },
+        { text: '女', method: () => void (this.sex = 2) },
+        { text: '保密', method: () => void (this.sex = 0) },
       ]
       this.$bus.$emit('actionSheet', options, '取消')
     },
@@ -229,43 +181,16 @@ export default {
 
 <style lang="less" scoped>
 .p-user-info {
-  main {
-    background-color: #fff;
-  }
-
-  input[type="text"] {
-    height: 100%;
-    font-size: 28px;
-    line-height: normal;
-    vertical-align: middle;
-  }
-
-  textarea {
-    font-size: inherit;
-    font-family: inherit;
-    line-height: inherit;
-    background-color: transparent;
-    outline: 0;
-    border: 0;
-    resize: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    box-sizing: border-box;
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-  }
-
-  .m-avatar-box {
-    margin-right: 35px;
-  }
-
-  .m-send-btn {
+  .submit-btn {
     color: @primary;
 
     &.disabled {
       color: @gray;
     }
+  }
+
+  main {
+    background-color: #fff;
   }
 
   .m-entry-append {
@@ -300,11 +225,5 @@ export default {
   .placeholder {
     color: #ccc;
   }
-}
-</style>
-
-<style lang="less">
-.c-textarea-input {
-  padding-top: 28px;
 }
 </style>
