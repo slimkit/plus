@@ -60,7 +60,6 @@
             type="text"
             placeholder="简单介绍一下话题内容"
             :maxlength="50"
-            :warnlength="30"
             :rows="4"
           />
         </label>
@@ -245,7 +244,7 @@ export default {
     }
 
     .description {
-      padding: 0 20px;
+      padding: 20px 20px 10px;
       border-bottom: 1px solid @border-color; /* no */
     }
   }
