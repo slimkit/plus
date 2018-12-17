@@ -27,7 +27,7 @@
 
 <script>
 export default {
-  name: 'ArticleRewards',
+  name: 'ArticleRewardList',
   data () {
     return {
       rewards: this.$store.state.article.rewarders || [],

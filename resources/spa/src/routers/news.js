@@ -6,8 +6,8 @@ const NewsDetail = () =>
   import(/* webpackChunkName: 'news' */ '@/page/news/NewsDetail.vue')
 const ArticleLikes = () =>
   import(/* webpackChunkName: 'news' */ '@/page/article/ArticleLikes.vue')
-const ArticleRewards = () =>
-  import(/* webpackChunkName: 'news' */ '@/page/article/ArticleRewards.vue')
+const ArticleRewardList = () =>
+  import(/* webpackChunkName: 'news' */ '@/page/article/ArticleRewardList.vue')
 
 export default [
   {
@@ -51,7 +51,7 @@ export default [
   },
   {
     path: '/news/:article(\\d+)/rewarders',
-    component: ArticleRewards,
+    component: ArticleRewardList,
     meta: {
       title: '打赏列表',
       type: 'news',

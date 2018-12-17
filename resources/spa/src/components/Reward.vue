@@ -77,6 +77,11 @@
 <script>
 import { noop } from '@/util'
 import PasswordConfirm from '@/components/common/PasswordConfirm.vue'
+import * as feedApi from '@/api/feeds'
+import * as newsApi from '@/api/news'
+import * as answerApi from '@/api/question/answer'
+import * as groupApi from '@/api/group'
+import * as userApi from '@/api/user'
 
 export default {
   name: 'Reward',
@@ -88,7 +93,6 @@ export default {
       loading: false,
       customAmount: null,
       type: '',
-      api: noop,
       callback: noop,
       payload: {},
     }
@@ -103,6 +107,22 @@ export default {
     currentCurrency () {
       const user = this.$store.state.CURRENTUSER
       return user.currency.sum || 0
+    },
+    api () {
+      switch (this.type) {
+        case 'user':
+          return userApi.rewardUser
+        case 'feed':
+          return feedApi.rewardFeed
+        case 'news':
+          return newsApi.rewardNews
+        case 'post':
+          return groupApi.rewardPost
+        case 'answer':
+          return answerApi.rewardAnswer
+        default:
+          return noop
+      }
     },
   },
   watch: {
@@ -119,14 +139,12 @@ export default {
      * @author mutoe <mutoe@foxmail.com>
      * @param {Object} options
      * @param {string} options.type 打赏的类型
-     * @param {AxiosPromise} options.api 打赏的 api，接受 axios promise 对象
      * @param {string|Object} options.payload api 的第一个参数，取决于 api
      * @param {requestCallback} [options.callback] 打赏成功后的回调方法, 接受一个参数 amount 打赏金额
      */
     this.$bus.$on('reward', options => {
-      const { type, api, payload, callback = noop } = options
+      const { type, payload, callback = noop } = options
       this.type = type
-      this.api = api
       this.payload = payload
       this.callback = callback
       this.open()

@@ -4,8 +4,8 @@ const FeedDetail = () =>
   import(/* webpackChunkName: 'feed' */ '@/page/feed/FeedDetail.vue')
 const ArticleLikes = () =>
   import(/* webpackChunkName: 'feed' */ '@/page/article/ArticleLikes.vue')
-const ArticleRewards = () =>
-  import(/* webpackChunkName: 'feed' */ '@/page/article/ArticleRewards.vue')
+const ArticleRewardList = () =>
+  import(/* webpackChunkName: 'feed' */ '@/page/article/ArticleRewardList.vue')
 
 export default [
   {
@@ -51,7 +51,7 @@ export default [
   },
   {
     path: '/feeds/:article(\\d+)/rewarders',
-    component: ArticleRewards,
+    component: ArticleRewardList,
     meta: {
       title: '打赏列表',
       type: 'feed',
