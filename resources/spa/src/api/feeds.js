@@ -96,7 +96,7 @@ export function rewardFeed (feedId, data) {
  * @returns {Promise}
  */
 export function deleteFeed (feedId) {
-  return api.delete(`/feeds/${feedId}`, { validateStatus: s => s === 204 })
+  return api.delete(`/feeds/${feedId}/currency`, { validateStatus: s => s === 204 })
 }
 
 /**
