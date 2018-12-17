@@ -145,7 +145,7 @@ export default {
             this.$Message.success('创建成功，请等待审核')
             return this.goBack()
           }
-          this.$router.push({ name: 'TopicDetail', params: { id } })
+          this.$router.push({ name: 'TopicDetail', params: { topicId: id } })
         })
         .finally(() => {
           this.pending = false
