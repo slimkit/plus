@@ -45,6 +45,21 @@ export default {
         ? this.$router.replace('/')
         : this.$router.back(num)
     },
+    /**
+     * 定位到锚点
+     * @param {string} selector
+     */
+    goAnchor (selector) {
+      const anchor = this.$el.querySelector(selector)
+      try {
+        const rect = anchor.getBoundingClientRect()
+        const scrollTop = document.documentElement.scrollTop
+        document.scrollingElement.scrollTop = rect.top + scrollTop
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.warn('锚点定位失败: ', { selector, anchor, error })
+      }
+    },
     reload: reload,
     popupBuyTS () {
       this.$bus.$emit('popupDialog', {
