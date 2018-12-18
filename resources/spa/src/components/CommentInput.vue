@@ -20,7 +20,6 @@
             :placeholder="placeholder"
             :style="{ height: `${textareaHeight}px` }"
             maxlength="255"
-            @focus="onFocus"
             @blur="moveCurPos"
             @keydown.enter.prevent="sendText"
             @input="moveCurPos"
@@ -151,13 +150,6 @@ export default {
       this.loading = false
       this.onOk = null
       this.show = false
-    },
-    onFocus () {
-      // 有用 ???
-      setTimeout(() => {
-        const wH2 = window.innerHeight
-        window.scrollTo(0, wH2 - 70)
-      }, 300)
     },
   },
 }
