@@ -101,7 +101,7 @@ export default [
     },
   },
   {
-    name: 'userDetail',
+    name: 'UserDetail',
     path: '/users/:userId(\\d+)',
     component: UserHome,
     meta: {

@@ -101,7 +101,7 @@ export default {
         body,
         reply_user: replyUser,
       }
-      api.postComment(this.feed.id, params).then(comment => {
+      api.postGroupPostComment(this.feed.id, params).then(comment => {
         this.commentCount += 1
         this.comments.unshift(comment)
         if (this.comments.length > 5) this.comments.pop()

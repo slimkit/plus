@@ -1,9 +1,8 @@
 <template>
-  <RouterLink
-    :to="path"
+  <div
     :class="styles"
-    class="m-avatar-box"
-    @click.native.stop
+    class="m-avatar-box c-avatar"
+    @click="viewUser"
   >
     <template v-if="anonymity">匿</template>
     <img
@@ -18,7 +17,7 @@
       :class="iconClass"
       class="m-avatar-icon"
     />
-  </RouterLink>
+  </div>
 </template>
 
 <script>
@@ -30,11 +29,9 @@ export default {
     size: { type: String, default: 'def', validator: val => ['def', 'big', 'nano', 'small', 'tiny'].includes(val) },
     user: { type: Object, required: true },
     anonymity: { type: [Boolean, Number], default: false },
+    readonly: { type: Boolean, default: false },
   },
   computed: {
-    uid () {
-      return this.user.id
-    },
     sex () {
       return ~~this.user.sex
     },
@@ -57,9 +54,6 @@ export default {
       else if (verified.type) return {}
       else return false
     },
-    path () {
-      return this.uid ? `/users/${this.uid}` : 'javascript:;'
-    },
     styles () {
       const sex = ['secret', 'man', 'woman']
       return this.avatar || this.anonymity
@@ -80,12 +74,17 @@ export default {
     handelError () {
       this.avatar = null
     },
+    viewUser () {
+      const userId = this.user.id
+      if (this.readonly || !userId) return
+      this.$router.push({ name: 'UserDetail', params: { userId } })
+    },
   },
 }
 </script>
 
 <style lang="less" scoped>
-.m-avatar-box {
+.c-avatar {
   .m-avatar-icon {
     &.user {
       background-image: url('~@/images/cert_user.png');

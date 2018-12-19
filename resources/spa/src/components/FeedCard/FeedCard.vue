@@ -412,7 +412,7 @@ export default {
         reply_user: replyUser,
       }
       api
-        .postComment(this.feedId, params)
+        .postFeedComment(this.feedId, params)
         .then(comment => {
           this.commentCount += 1
           this.comments.unshift(comment)

@@ -79,8 +79,6 @@ import { noop } from '@/util'
 import PasswordConfirm from '@/components/common/PasswordConfirm.vue'
 import * as feedApi from '@/api/feeds'
 import * as newsApi from '@/api/news'
-import * as answerApi from '@/api/question/answer'
-import * as groupApi from '@/api/group'
 import * as userApi from '@/api/user'
 
 export default {
@@ -116,10 +114,6 @@ export default {
           return feedApi.rewardFeed
         case 'news':
           return newsApi.rewardNews
-        case 'post':
-          return groupApi.rewardPost
-        case 'answer':
-          return answerApi.rewardAnswer
         default:
           return noop
       }
@@ -143,9 +137,9 @@ export default {
      * @param {requestCallback} [options.callback] 打赏成功后的回调方法, 接受一个参数 amount 打赏金额
      */
     this.$bus.$on('reward', options => {
-      const { type, payload, callback = noop } = options
+      const { type, article, callback = noop } = options
       this.type = type
-      this.payload = payload
+      this.articleId = article
       this.callback = callback
       this.open()
     })
@@ -166,7 +160,7 @@ export default {
         amount: ~~this.amount,
         password,
       }
-      this.api(this.payload, data)
+      this.api(this.articleId, data)
         .then(() => {
           this.loading = false
           this.$Message.success('打赏成功')
@@ -194,7 +188,6 @@ export default {
       this.show = false
       this.customAmount = null
       this.type = ''
-      this.api = noop
       this.callback = noop
       this.payload = {}
       this.scrollable = true

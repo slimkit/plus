@@ -109,14 +109,14 @@ export const findNearbyUser = ({ lng: longitude, lat: latitude }, page = 0) => {
 }
 
 /**
- * 获取用户基本信息
- * 优先返回本地数据
+ * 获取用户基本信息 优先返回本地数据
  * @author jsonleex <jsonlseex@163.com>
  * @export
- * @param  {number} id
+ * @param {number} id
+ * @param {boolean} [force=false]
  * @returns {Promise<UserObject>}
  */
-export const getUserInfoById = (id, force = false) => {
+export async function getUserInfoById (id, force = false) {
   const user = store.state.USERS[`user_${id}`]
   if (user && !force) return user
 

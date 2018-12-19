@@ -115,6 +115,24 @@ export function getNewsComments (newsId, params) {
 }
 
 /**
+ * 评论一条资讯
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {number} newsId
+ * @param {Object} payload
+ * @param {string} payload.body
+ * @param {number} [payload.reply_user=0]
+ * @returns {Promise<{CommentObject}>}
+ */
+export function postNewsComment (newsId, payload) {
+  const url = `/news/${newsId}/comments`
+  return api
+    .post(url, payload, { validateStatus: s => s === 201 })
+    .then(({ data: { comment } }) => comment)
+}
+
+/**
  * 申请置顶
  * @author mutoe <mutoe@foxmail.com>
  * @export

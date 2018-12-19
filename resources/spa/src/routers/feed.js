@@ -2,8 +2,8 @@ const FeedList = () =>
   import(/* webpackChunkName: 'feed' */ '@/page/feed/FeedList.vue')
 const FeedDetail = () =>
   import(/* webpackChunkName: 'feed' */ '@/page/feed/FeedDetail.vue')
-const ArticleLikes = () =>
-  import(/* webpackChunkName: 'feed' */ '@/page/article/ArticleLikes.vue')
+const ArticleLikeList = () =>
+  import(/* webpackChunkName: 'feed' */ '@/page/article/ArticleLikeList.vue')
 const ArticleRewardList = () =>
   import(/* webpackChunkName: 'feed' */ '@/page/article/ArticleRewardList.vue')
 
@@ -43,7 +43,7 @@ export default [
    */
   {
     path: '/feeds/:article(\\d+)/likers',
-    component: ArticleLikes,
+    component: ArticleLikeList,
     meta: {
       title: '点赞列表',
       type: 'feed',

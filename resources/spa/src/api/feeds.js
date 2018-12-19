@@ -53,7 +53,7 @@ export function applyTopFeed (feedId, params) {
  * @param {string} [params.oforder_type] date 按时间 amount 按金额
  * @returns
  */
-export function getRewards (feedId, params) {
+export function getFeedRewards (feedId, params) {
   const url = `/feeds/${feedId}/rewards`
   return api.get(url, { params, validateStatus: s => s === 200 })
 }
@@ -177,13 +177,13 @@ export function getFeedCommentPinneds (after = 0) {
  * @param {Object} payload
  * @param {string} payload.body 评论内容
  * @param {number} [payload.reply_user] 回复的用户id
- * @returns {Promise<{comment}>}
+ * @returns {Promise<{CommentObject}>}
  */
-export function postComment (feedId, payload) {
+export function postFeedComment (feedId, payload) {
   const url = `/feeds/${feedId}/comments`
   return api
     .post(url, payload, { validateStatus: s => s === 201 })
-    .then(({ data = { comment: {} } }) => data.comment)
+    .then(({ data: { comment } }) => comment)
 }
 
 /**

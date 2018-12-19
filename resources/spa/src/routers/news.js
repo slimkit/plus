@@ -4,8 +4,8 @@ const NewsSearch = () =>
   import(/* webpackChunkName: 'news' */ '@/page/news/NewsSearch.vue')
 const NewsDetail = () =>
   import(/* webpackChunkName: 'news' */ '@/page/news/NewsDetail.vue')
-const ArticleLikes = () =>
-  import(/* webpackChunkName: 'news' */ '@/page/article/ArticleLikes.vue')
+const ArticleLikeList = () =>
+  import(/* webpackChunkName: 'news' */ '@/page/article/ArticleLikeList.vue')
 const ArticleRewardList = () =>
   import(/* webpackChunkName: 'news' */ '@/page/article/ArticleRewardList.vue')
 
@@ -43,7 +43,7 @@ export default [
    */
   {
     path: '/news/:article(\\d+)/likers',
-    component: ArticleLikes,
+    component: ArticleLikeList,
     meta: {
       title: '点赞列表',
       type: 'news',

@@ -2,7 +2,7 @@
   <div class="m-lim-width m-art-comment">
     <div class="m-box m-art-comment-wrap">
       <Avatar :user="user" />
-      <section class="m-box-model m-flex-grow1 m-flex-shrink1 m-art-comment-body">
+      <section class="m-box-model m-flex-grow1 m-flex-shrink1 m-art-comment-body" @click="handelClick">
         <header class="m-box m-aln-center m-justify-bet m-art-comment-usr">
           <h4 class="m-flex-grow1 m-flex-shrink1">{{ user.name }}</h4>
           <div class="m-box m-aln-center">
@@ -15,11 +15,7 @@
             <span>{{ time | time2tips }}</span>
           </div>
         </header>
-        <article
-          :class="{maxh: !isShowAll}"
-          class="m-text-box m-art-comment-con"
-          @click="handelClick"
-        >
+        <article :class="{maxh: !isShowAll}" class="m-text-box m-art-comment-con">
           <template v-if="replyUser">
             <span class="m-art-comment-rep">
               回复<RouterLink :to="`/users/${replyUser.id}`">{{ replyUser.name }}</RouterLink>：
@@ -31,7 +27,7 @@
             class="m-text-more"
             @click.stop="isShowAll = !isShowAll"
           >
-            >>更多
+            >> 更多
           </span>
         </article>
       </section>
@@ -63,7 +59,7 @@ function strLength (str) {
 }
 
 export default {
-  name: 'CommentItem',
+  name: 'ArticleCommentItem',
   props: {
     comment: { type: Object, required: true },
     pinned: { type: Boolean, default: false },

@@ -4,17 +4,14 @@
       <div class="m-box-model m-art-card">
         <header ref="head" class="m-box-model m-pos-f m-head-top">
           <slot name="head">
-            <CommonHeader>资讯详情</CommonHeader>
+            <CommonHeader>{{ title }}</CommonHeader>
           </slot>
         </header>
 
-        <div v-if="loading" class="m-spinner pos-f">
-          <div />
-          <div />
-        </div>
+        <div v-if="loading" class="m-spinner m-pos-f" />
 
         <main class="m-box-model">
-          <slot />
+          <slot name="main" />
         </main>
 
         <footer
@@ -56,12 +53,22 @@
 
 <script>
 import HeadRoom from 'headroom.js'
+import { mapState } from 'vuex'
+
+const typeMap = {
+  feed: { title: '动态' },
+  news: { title: '资讯' },
+  post: { title: '帖子' },
+  answer: { title: '回答' },
+}
 
 export default {
   name: 'ArticleCard',
   props: {
-    loading: { type: Boolean, default: true },
-    liked: { type: Boolean, default: false },
+    type: { type: String, required: true, validator: type => Object.keys(typeMap).includes(type) },
+    article: { type: Number, required: true }, // 文章 ID
+    loading: { type: Boolean, default: true }, // 加载中
+    liked: { type: Boolean, default: false }, // 已点赞
     canOprate: { type: Boolean, default: true },
   },
   data () {
@@ -71,8 +78,17 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      CURRENTUSER: 'CURRENTUSER',
+    }),
+    factory () {
+      return typeMap[this.type]
+    },
     isWechat () {
       return this.$store.state.BROWSER.isWechat
+    },
+    title () {
+      return `${this.factory.title}详情`
     },
   },
   watch: {
@@ -123,16 +139,17 @@ export default {
   },
   methods: {
     handelLike () {
-      this.$emit('on-like')
+      this.$emit('like')
     },
     handelComment () {
-      this.$emit('on-comment')
+      this.$emit('comment')
     },
     handelShare () {
-      this.$emit('on-share')
+      if (this.isWechat) this.$Message.success('请点击右上角微信分享😳')
+      else this.$Message.success('请使用浏览器的分享功能😳')
     },
     handelMore () {
-      this.$emit('on-more')
+      this.$emit('more')
     },
   },
 }
