@@ -9,7 +9,7 @@
         :value="value"
         :placeholder="placeholder"
         type="search"
-        @input="$emit('input', $event.target.value)"
+        @input="$emit('input', $event.target.value.trim())"
       >
     </form>
 
