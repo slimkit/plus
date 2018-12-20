@@ -1,13 +1,7 @@
 <template>
-  <div
-    :id="`m-pics${id}`"
-    :class="['m-pics',`m-pics-${pics.length}`]"
-  >
+  <div :id="`m-pics${id}`" :class="['m-pics',`m-pics-${pics.length}`]">
     <ul class="m-pics-list">
-      <li
-        v-for="(img, index) in pics.slice(0, 9)"
-        :key="`pics-${id}-${index}`"
-      >
+      <li v-for="(img, index) in pics.slice(0, 9)" :key="`pics-${id}-${index}`">
         <div
           :class="['m-pics-box',{ 'long': isLongImg(img) }, { 'gif': (img.mime || '').indexOf('gif') > -1 }]"
           :style="pics.length === 1 ? longStyle(img.w, img.h) : &quot;&quot;"
@@ -27,14 +21,8 @@
 export default {
   name: 'FeedImage',
   props: {
-    id: {
-      type: Number,
-      required: true,
-    },
-    pics: {
-      type: Array,
-      default: () => [],
-    },
+    id: { type: Number, required: true },
+    pics: { type: Array, default: () => [] },
   },
   methods: {
     handleClick ($event, index) {

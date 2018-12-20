@@ -65,7 +65,7 @@ import PhotoSwipe from 'photoswipe'
 import PhotoSwipeUI from 'photoswipe/dist/photoswipe-ui-default.js'
 
 export default {
-  name: 'Pswp',
+  name: 'PhotoSwipe',
   data () {
     return {
       photoswipe: null,
@@ -74,7 +74,6 @@ export default {
   },
   created () {
     this.$bus.$on('mvGallery', ({ component, index, images }) => {
-      if (!component) return
       this.component = component
       this.openPhotoSwipe(index, images)
     })
@@ -85,7 +84,7 @@ export default {
       this.$bus.$emit('payfor', {
         onSuccess: data => {
           this.$Message.success(data)
-          this.component.feed.images[index].paid = true
+          if (this.component) this.component.feed.images[index].paid = true
           this.photoswipe.currItem.paid = true
           this.updateImage(index, true)
         },

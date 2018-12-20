@@ -2,7 +2,7 @@
 import { mapActions, mapState } from 'vuex'
 
 // components
-import PSWP from './components/pswp'
+import PhotoSwipe from './components/PhotoSwipe'
 import PostMenu from './page/PostMenu.vue'
 import PayFor from './components/PayFor.vue'
 import ActionSheet from './components/ActionSheet.vue'
@@ -21,7 +21,7 @@ export default {
         <keep-alive>{this.keepAlive && <router-view />}</keep-alive>
         {!this.keepAlive && <router-view />}
         <div>
-          <PSWP />
+          <PhotoSwipe />
           <PostMenu />
           <PayFor />
           <ActionSheet />
