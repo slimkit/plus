@@ -28,23 +28,21 @@
 <script>
 import { mapState } from 'vuex'
 import { resetUserCount } from '@/api/message.js'
-import feedItem from '../children/likes/feedItem'
-import newsItem from '../children/likes/newsItem'
-import productItem from '../children/likes/productItem'
-import groupPostItem from '../children/likes/groupPostItem'
-import questionAnswerItem from '../children/likes/questionAnswerItem'
+import MessageLikeFeedItem from './children/likes/MessageLikeFeedItem'
+import MessageLikeNewsItem from './children/likes/MessageLikeNewsItem'
+import MessageLikePostItem from './children/likes/MessageLikePostItem'
+import MessageLikeAnswerItem from './children/likes/MessageLikeAnswerItem'
 
 const prefixCls = 'msgList'
 const items = {
-  news: newsItem,
-  feeds: feedItem,
-  product: productItem,
-  'group-posts': groupPostItem,
-  'question-answers': questionAnswerItem,
+  'feeds': MessageLikeFeedItem,
+  'news': MessageLikeNewsItem,
+  'group-posts': MessageLikePostItem,
+  'question-answers': MessageLikeAnswerItem,
 }
 
 export default {
-  name: 'MyLikes',
+  name: 'MessageLikes',
   data: () => ({
     prefixCls,
     refreshData: [],
@@ -106,5 +104,5 @@ export default {
 </script>
 
 <style lang="less">
-@import url("../style.less");
+@import url("./style.less");
 </style>

@@ -96,6 +96,7 @@ const defaultPoster = {
 }
 
 export default {
+  name: 'ImagePoster',
   props: {
     /**
      * @type {Poster}
