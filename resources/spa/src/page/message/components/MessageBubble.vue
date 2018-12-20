@@ -1,9 +1,6 @@
 <template>
   <div class="message-item">
-    <div
-      v-if="user.id === 0"
-      class="room-tips"
-    >
+    <div v-if="user.id === 0" class="room-tips">
       <span>{{ body }}</span>
     </div>
     <div

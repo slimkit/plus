@@ -43,10 +43,9 @@
 </template>
 
 <script>
-import $Message from '@/plugins/message-box'
 import WebIM, { sendTextMessage } from '@/vendor/easemob'
+import MessageBubble from './components/MessageBubble'
 
-import MessageBubble from './message-bubble.vue'
 export default {
   name: 'ChatRoom',
   components: {
@@ -119,7 +118,7 @@ export default {
           this.messages = msgs
         })
       } else {
-        $Message.error('错误的会话列表')
+        this.$Message.error('错误的会话列表')
       }
     })
   },
@@ -162,7 +161,7 @@ export default {
           })
         }
       } else {
-        $Message.error('与服务器断开连接, 请刷新重连')
+        this.$Message.error('与服务器断开连接, 请刷新重连')
         this.sending = false
       }
     },

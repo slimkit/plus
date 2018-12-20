@@ -1,12 +1,11 @@
 <template>
-  <div class="p-message">
+  <div class="p-message-base">
     <header class="m-box m-head-top m-lim-width m-pos-f m-main m-bb1">
       <ul class="m-box m-flex-grow1 m-aln-center m-justify-center m-flex-base0 m-head-nav">
         <RouterLink
           tag="li"
-          to="/message/info"
+          :to="{name: 'MessageHome'}"
           replace
-          exact
           active-class="active"
         >
           <VBadge :dot="has_msg">
@@ -15,9 +14,8 @@
         </RouterLink>
         <RouterLink
           tag="li"
-          to="/message/chats"
+          :to="{name: 'ChatList'}"
           replace
-          exact
           active-class="active"
         >
           <VBadge :dot="hasUnreadChat > 0">
@@ -37,10 +35,7 @@
 import { mapState, mapGetters } from 'vuex'
 
 export default {
-  name: 'MessageIndex',
-  data () {
-    return {}
-  },
+  name: 'MessageBase',
   computed: {
     ...mapState({
       // 新消息提示
@@ -57,48 +52,9 @@ export default {
     }),
     ...mapGetters(['hasUnreadChat']),
   },
-
   created () {
     this.$store.dispatch('GET_UNREAD_COUNT')
     this.$store.dispatch('GET_NEW_UNREAD_COUNT')
   },
 }
 </script>
-
-<style lang="less">
-.p-message {
-  min-height: 100vh;
-  main {
-    height: calc(~"100vh - 90px - 100px");
-  }
-  .m-entry-group {
-    padding: 0 20px;
-    .m-entry {
-      align-items: stretch;
-      padding: 30px 0;
-      height: initial;
-    }
-    .m-entry-prepend {
-      margin: 0;
-      width: 76px;
-      height: 76px;
-    }
-    .m-entry-main {
-      margin-left: 30px;
-      margin-right: 30px;
-      h2 {
-        font-weight: 400;
-        font-size: 32px;
-      }
-      p {
-        font-size: 24px;
-        color: @text-color3;
-      }
-    }
-    .m-entry-end {
-      color: #ccc;
-      font-size: 24px;
-    }
-  }
-}
-</style>
