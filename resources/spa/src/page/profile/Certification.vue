@@ -40,9 +40,10 @@
           <span class="label">认证资料</span>
           <span class="value">
             <img
-              v-for="imageId in verified.data.files"
-              :key="imageId"
-              :src="getImageSrc(imageId)"
+              v-for="(image, index) in images"
+              :key="image.id"
+              :src="`${getImageSrc(image.id)}?w=250&h=185`"
+              @click="viewImage(index)"
             >
           </span>
         </div>
@@ -91,6 +92,15 @@ export default {
       const { certification_name: type = 'user' } = this.verified
       return type
     },
+    images () {
+      const files = this.verified.data.files || []
+      return files.map((item, index) => ({
+        id: item,
+        src: this.getImageSrc(item),
+        w: 250,
+        h: 185,
+      }))
+    },
   },
   watch: {
     verified (to) {
@@ -112,7 +122,10 @@ export default {
      * @returns {string}
      */
     getImageSrc (id) {
-      return `${this.$http.defaults.baseURL}/files/${id}?w=250&h=185`
+      return `${this.$http.defaults.baseURL}/files/${id}`
+    },
+    viewImage (index) {
+      this.$bus.$emit('mvGallery', { index, images: this.images })
     },
   },
 }
