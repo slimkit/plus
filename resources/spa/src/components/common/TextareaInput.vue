@@ -37,6 +37,9 @@ export default {
       this.maxlength && (content = content.substr(0, Number(this.maxlength)))
       this.$emit('input', content)
     },
+    focus () {
+      this.$refs.textarea.focus()
+    },
   },
 }
 </script>
