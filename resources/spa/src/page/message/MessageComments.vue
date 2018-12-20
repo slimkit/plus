@@ -1,6 +1,6 @@
 <template>
   <div class="msgList">
-    <CommonHeader>收到的评论</CommonHeader>
+    <CommonHeader :pinned="true">收到的评论</CommonHeader>
 
     <div class="msgList-container">
       <JoLoadMore
@@ -31,21 +31,19 @@
 import { mapState } from 'vuex'
 import { limit } from '@/api'
 import { resetUserCount } from '@/api/message.js'
-import feedItem from '../children/comments/feedItem'
-import newsItem from '../children/comments/newsItem'
-import productItem from '../children/comments/productItem'
-import questionItem from '../children/comments/questionItem'
-import groupPostItem from '../children/comments/groupPostItem'
-import questionAnswerItem from '../children/comments/questionAnswerItem'
+import MessageCommentFeedItem from './children/comments/MessageCommentFeedItem'
+import MessageCommentNewsItem from './children/comments/MessageCommentNewsItem'
+import MessageCommentQuestionItem from './children/comments/MessageCommentQuestionItem'
+import MessageCommentPostItem from './children/comments/MessageCommentPostItem'
+import MessageCommenAnswerItem from './children/comments/MessageCommenAnswerItem'
 
 const prefixCls = 'msgList'
 const items = {
-  news: newsItem,
-  feeds: feedItem,
-  product: productItem,
-  questions: questionItem,
-  'group-posts': groupPostItem,
-  'question-answers': questionAnswerItem,
+  feeds: MessageCommentFeedItem,
+  news: MessageCommentNewsItem,
+  questions: MessageCommentQuestionItem,
+  'group-posts': MessageCommentPostItem,
+  'question-answers': MessageCommenAnswerItem,
 }
 const commentType = {
   feeds: {
@@ -66,7 +64,7 @@ const commentType = {
   },
 }
 export default {
-  name: 'MyComments',
+  name: 'MessageComments',
   data: () => ({
     prefixCls,
     commentType,
@@ -133,6 +131,6 @@ export default {
 }
 </script>
 
-<style lang="less" >
-@import url("../style.less");
+<style lang="less">
+@import url("./style.less");
 </style>
