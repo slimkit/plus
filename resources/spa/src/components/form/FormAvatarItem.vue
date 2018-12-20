@@ -10,8 +10,9 @@
 
     <ImageUploader
       ref="uploader"
-      v-model="value"
-      type="storage"
+      :value="value"
+      :type="type"
+      @input="$emit('input', $event)"
       @update:src="avatar = $event"
     />
   </section>
@@ -24,10 +25,13 @@ export default {
   name: 'FormAvatarItem',
   components: { ImageUploader },
   props: {
-    value: { type: null, default: null },
+    value: { type: null, default: () => ({}) },
     label: { type: String, default: '上传头像' },
     readonly: { type: Boolean, default: false },
-
+    /**
+     * 文件类型
+     */
+    type: { type: String, default: 'storage', validator (type) { return ['blob', 'id', 'url', 'storage'].includes(type) } },
     /**
      * 头像形状 square: 方形 circle: 圆形
      */
@@ -35,7 +39,9 @@ export default {
   },
   data () {
     return {
-      avatar: null,
+      avatar: this.type === 'storage'
+        ? this.$props.value.url
+        : this.$props.value,
     }
   },
   methods: {
