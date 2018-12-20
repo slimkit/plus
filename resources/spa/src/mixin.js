@@ -43,7 +43,7 @@ export default {
       const fallIndex = this.isIosWechat ? 2 : 1
       window.history.length <= fallIndex
         ? this.$router.replace('/')
-        : this.$router.back(num)
+        : this.$router.go(num)
     },
     /**
      * 定位到锚点

@@ -211,9 +211,12 @@ export default {
   },
   computed: {
     ...mapState(['CONFIG']),
+    settings () {
+      return this.CONFIG.registerSettings || {}
+    },
     allowType () {
       // mobile-only | mail-only | all
-      return this.CONFIG.registerSettings.method
+      return this.settings.method || 'all'
     },
     currentType: {
       get () {
@@ -225,8 +228,7 @@ export default {
       },
     },
     showProtocol () {
-      const registerSettings = this.CONFIG.registerSettings || {}
-      return registerSettings.showTerms || false
+      return this.settings.showTerms || false
     },
     codeText () {
       return this.countdown > 0 ? `${this.countdown}s后重发` : '获取验证码'
