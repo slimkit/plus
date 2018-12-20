@@ -16,10 +16,7 @@
       <div class="m-box m-aln-center m-justify-end m-flex-grow1 m-flex-base0" />
     </header>
     <!-- loading -->
-    <div v-if="loading" class="m-spinner pos-f">
-      <div />
-      <div />
-    </div>
+    <div v-if="loading" class="m-spinner m-pos-f" />
 
     <div v-else>
       <Transition name="toast">

@@ -29,10 +29,7 @@
         </svg>
       </div>
     </header>
-    <div v-if="loading" class="m-pos-f m-spinner">
-      <div />
-      <div />
-    </div>
+    <div v-if="loading" class="m-pos-f m-spinner" />
     <!-- style="overflow-x: hidden; overflow-y:auto; min-height: 100vh" -->
     <main>
       <div

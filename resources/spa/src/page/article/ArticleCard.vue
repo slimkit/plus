@@ -8,7 +8,7 @@
           </slot>
         </header>
 
-        <div v-if="loading" class="m-spinner pos-f"> <div /> <div /> </div>
+        <div v-if="loading" class="m-spinner pos-f" />
 
         <main class="m-box-model">
           <slot />
