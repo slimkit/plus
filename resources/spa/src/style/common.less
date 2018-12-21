@@ -669,3 +669,37 @@
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 }
+
+// header switch-bar
+.type-switch-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90px;
+
+  > span {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 3em;
+    margin: 0 1em;
+    color: #999;
+    transition: 0.3s;
+
+    &.active {
+      color: #333;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        display: block;
+        height: 3px;/*no*/
+        width: 100%;
+        background-color: @primary;
+      }
+    }
+  }
+}

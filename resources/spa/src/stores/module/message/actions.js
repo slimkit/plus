@@ -2,15 +2,11 @@ import http from '@/api/api'
 import lstore from '@/plugins/lstore/lstore.js'
 import getMessageUnameTxt from '@/util/getMessageUnameTxt'
 export default {
-  GET_NEW_UNREAD_COUNT ({ rootState, commit }) {
+  async GET_NEW_UNREAD_COUNT ({ rootState, commit }) {
     if (!rootState.CURRENTUSER || !lstore.getData('H5_ACCESS_TOKEN')) return
-    http
-      .get('/user/counts', {
-        validateStatus: status => status === 200,
-      })
-      .then(({ data: { user = {} } = {} }) => {
-        commit('SAVE_NEW_UNREAD_COUNT', user)
-      })
+    const { data } = await http.get('/user/counts', { validateStatus: s => s === 200 })
+    const { user } = data || {}
+    commit('SAVE_NEW_UNREAD_COUNT', user || {})
   },
 
   /**
