@@ -1,39 +1,44 @@
 <template>
-  <ul class="m-box-model m-entry-group p-message-home">
-    <RouterLink
-      v-for="item in system"
-      :key="item.url"
-      :to="item.url"
-      tag="li"
-      class="m-entry"
+  <div class="p-message-home">
+    <JoLoadMore
+      ref="loadmore"
+      :show-bottom="false"
+      @onRefresh="fetchMessage"
     >
-      <svg class="m-style-svg m-svg-big m-entry-prepend m-flex-grow0 m-flex-shrink0">
-        <use :xlink:href="`#icon-message-${item.icon}`" />
-      </svg>
-      <div class="m-box-model m-justify-bet m-flex-grow1 m-flex-shrink1 m-flex-base0 m-entry-main">
-        <h2 class="m-text-cut">{{ item.title }}</h2>
-        <p class="m-text-cut">{{ computedGetter(item.placeholder) }}</p>
-      </div>
-      <div class="m-box-model m-flex-grow0 m-flex-shrink0 m-entry-end m-justify-bet">
-        <h5 v-if="computedGetter(item.time) !== '' && item.time">
-          {{ +new Date((computedGetter(item.time))) + 10 || '' | time2tips }}
-        </h5>
-        <h5 v-else />
-        <div class="m-box m-aln-center m-justify-end">
-          <span
-            v-if="computedGetter(item.count) !== 0"
-            :class="`${prefixCls}-time-count`"
-          >
-            {{ computedGetter(item.count) }}
-          </span>
-        </div>
-      </div>
-    </RouterLink>
-  </ul>
+      <ul class="message-list m-box-model">
+        <RouterLink
+          v-for="item in system"
+          :key="item.url"
+          :to="item.url"
+          tag="li"
+          class="m-entry"
+        >
+          <svg class="m-style-svg m-svg-big m-entry-prepend m-flex-grow0 m-flex-shrink0">
+            <use :xlink:href="`#icon-message-${item.icon}`" />
+          </svg>
+          <div class="m-box-model m-justify-bet m-flex-grow1 m-flex-shrink1 m-flex-base0 m-entry-main">
+            <h2 class="m-text-cut">{{ item.title }}</h2>
+            <p class="m-text-cut">{{ computedGetter(item.placeholder) }}</p>
+          </div>
+          <div class="m-box-model m-flex-grow0 m-flex-shrink0 m-entry-end m-justify-bet">
+            <h5 v-if="computedGetter(item.time) !== '' && item.time">
+              {{ +new Date((computedGetter(item.time))) + 10 || '' | time2tips }}
+            </h5>
+            <h5 v-else />
+            <div class="m-box m-aln-center m-justify-end">
+              <span v-if="computedGetter(item.count) !== 0" :class="`${prefixCls}-time-count`">
+                {{ computedGetter(item.count) }}
+              </span>
+            </div>
+          </div>
+        </RouterLink>
+      </ul>
+    </JoLoadMore>
+  </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 const prefixCls = 'msg'
 
@@ -120,6 +125,11 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['GET_NEW_UNREAD_COUNT']),
+    async fetchMessage () {
+      await this.GET_NEW_UNREAD_COUNT()
+      this.$refs.loadmore.afterRefresh()
+    },
     computedGetter (key) {
       return this[key]
     },
@@ -129,12 +139,14 @@ export default {
 
 <style lang="less" scoped>
 .p-message-home {
-  padding: 0 20px;
+  .message-list {
+    background-color: #fff;
+  }
 
   .m-entry {
     align-items: stretch;
-    padding: 30px 0;
     height: initial;
+    padding: 30px 20px;
   }
 
   .m-entry-prepend {

@@ -98,27 +98,5 @@ export default {
   .header {
     overflow: initial;
   }
-
-  .type-switch-bar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 90px;
-
-    > span {
-      display: inline-block;
-      height: 100%;
-      margin: 0 20px;
-      padding: 22px 12px;
-      color: #999;
-      transition: 0.3s;
-
-      &.active {
-        color: #333;
-        border-bottom: 2px solid @primary; /* no */
-      }
-    }
-  }
-
 }
 </style>

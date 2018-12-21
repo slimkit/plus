@@ -2,9 +2,7 @@
   <div class="p-chat-list">
     <JoLoadMore
       ref="loadmore"
-      :auto-load="false"
       :show-bottom="false"
-      style="height: 100%"
       @onRefresh="onRefresh"
     >
       <ChatItem
@@ -39,12 +37,13 @@ export default {
   methods: {
     startSingleChat,
     ...mapActions(['initChatRooms']),
-    onRefresh (callback) {
-      this.initChatRooms().then(() => {
-        setTimeout(() => {
-          this.$refs.loadmore.afterRefresh(false)
-        }, 1000)
-      })
+    onRefresh () {
+      this.initChatRooms()
+        .then(() => {
+          setTimeout(() => {
+            this.$refs.loadmore.afterRefresh(false)
+          }, 450)
+        })
     },
   },
 }
