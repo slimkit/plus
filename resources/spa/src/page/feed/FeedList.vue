@@ -1,84 +1,43 @@
 <template>
   <div class="p-feed">
-    <nav class="m-box m-head-top m-lim-width m-pos-f m-main m-bb1">
-      <ul class="m-box m-flex-grow1 m-aln-center m-justify-center m-flex-base0 m-head-nav">
-        <RouterLink
-          :to="{ name:'feeds', query: { type: 'new' } }"
-          tag="li"
-          active-class="active"
-          exact
-          replace
-        >
-          <a>最新</a>
-        </RouterLink>
-        <RouterLink
-          :to="{ name:'feeds', query: { type: 'hot' } }"
-          tag="li"
-          active-class="active"
-          exact
-          replace
-        >
-          <a>热门</a>
-        </RouterLink>
-        <RouterLink
-          :to="{ name:'feeds', query: { type: 'follow' } }"
-          tag="li"
-          active-class="active"
-          exact
-          replace
-        >
-          <a>关注</a>
-        </RouterLink>
-      </ul>
-    </nav>
+    <CommonHeader :pinned="true" class="header">
+      <span slot="left" />
+      <nav class="type-switch-bar">
+        <span :class="{active: feedType === 'new'}" @click="feedType = 'new'"> 最新 </span>
+        <span :class="{active: feedType === 'hot'}" @click="feedType = 'hot'"> 热门 </span>
+        <span :class="{active: feedType === 'follow'}" @click="feedType = 'follow'"> 关注 </span>
+      </nav>
+    </CommonHeader>
 
-    <JoLoadMore
-      ref="loadmore"
-      :auto-load="true"
-      class="p-feed-main"
-      @onRefresh="onRefresh"
-      @onLoadMore="onLoadMore"
-    >
-      <ul v-gif-play class="p-feed-list">
-        <li
-          v-for="(feed, index) in pinned"
-          v-if="feed.id"
-          :key="`pinned-feed-${feedType}-${feed.id}-${index}`"
-          :data-feed-id="feed.id"
-        >
-          <FeedCard
-            :feed="feed"
-            :pinned="true"
-          />
-        </li>
-        <li
-          v-for="(card, index) in feeds"
-          :key="`feed-${feedType}-${card.id}-${index}`"
-          :data-feed-id="card.id"
-        >
-          <FeedCard
-            v-if="card.user_id"
-            :feed="card"
-          />
-          <FeedAdCard
-            v-if="card.space_id"
-            :ad="card"
-          />
-        </li>
-      </ul>
-    </JoLoadMore>
+    <main class="p-feed-main">
+      <JoLoadMore
+        ref="loadmore"
+        @onRefresh="onRefresh"
+        @onLoadMore="onLoadMore"
+      >
+        <ul class="feed-list">
+          <li
+            v-for="(feed, index) in pinned"
+            v-if="feed.id"
+            :key="`pinned-feed-${feedType}-${feed.id}-${index}`"
+          >
+            <FeedCard :feed="feed" :pinned="true" />
+          </li>
+          <li v-for="(card, index) in feeds" :key="`feed-${feedType}-${card.id}-${index}`">
+            <FeedCard v-if="card.user_id" :feed="card" />
+            <FeedAdCard v-if="card.space_id" :ad="card" />
+          </li>
+        </ul>
+      </JoLoadMore>
+    </main>
+
     <FootGuide />
   </div>
 </template>
 
 <script>
-/**
- * 动态列表
- * @typedef {{id: number, user, ...others}} FeedDetail
- */
-
+import { mapGetters } from 'vuex'
 import { limit } from '@/api'
-import { noop } from '@/util'
 import FeedCard from '@/components/FeedCard/FeedCard.vue'
 
 const feedTypesMap = ['new', 'hot', 'follow']
@@ -86,18 +45,19 @@ const feedTypesMap = ['new', 'hot', 'follow']
 export default {
   name: 'FeedList',
   components: { FeedCard },
-  data () {
-    return {}
-  },
   computed: {
-    feedType () {
-      return this.$route.query.type || 'hot'
-    },
+    ...mapGetters('feed', ['hot', 'new', 'follow', 'pinned']),
     feeds () {
-      return this.$store.getters[`feed/${this.feedType}`]
+      return this[this.feedType]
     },
-    pinned () {
-      return this.$store.getters['feed/pinned']
+    feedType: {
+      get () {
+        return this.$route.query.type || 'hot'
+      },
+      set (val) {
+        const { query } = this.$route
+        this.$router.replace({ query: { ...query, type: val } })
+      },
     },
     after () {
       const len = this.feeds.length
@@ -107,14 +67,11 @@ export default {
     },
   },
   watch: {
-    feedType (val, oldVal) {
-      feedTypesMap.includes(val) &&
-        oldVal &&
+    feedType (val) {
+      if (feedTypesMap.includes(val)) {
         this.$refs.loadmore.beforeRefresh()
+      }
     },
-  },
-  created () {
-    this.onRefresh(noop)
   },
   activated () {
     if (this.$route.query.refresh) {
@@ -140,11 +97,7 @@ export default {
 
 <style lang="less" scoped>
 .p-feed {
-  .p-feed-main {
-    padding-top: 90px;
-  }
-
-  .p-feed-list > li + li {
+  .feed-list > li + li {
     margin-top: 20px;
   }
 }

@@ -33,11 +33,11 @@
       class="guide-item"
       @click="to({name: 'MessageHome'})"
     >
-      <VBadge :dot="hasUnread">
+      <Badge :dot="hasUnread">
         <svg class="m-style-svg m-svg-def">
           <use xlink:href="#icon-foot-message" />
         </svg>
-      </VBadge>
+      </Badge>
       <span>消息</span>
     </section>
     <section
@@ -45,11 +45,11 @@
       class="guide-item"
       @click="to('/profile')"
     >
-      <VBadge :dot="profile">
+      <Badge :dot="profile">
         <svg class="m-style-svg m-svg-def">
           <use xlink:href="#icon-foot-profile" />
         </svg>
-      </VBadge>
+      </Badge>
       <span>我</span>
     </section>
   </footer>
@@ -77,6 +77,7 @@ export default {
   },
   mounted () {
     this.$el.parentNode.style.paddingBottom = '1rem'
+    this.fetchUnread()
   },
   methods: {
     to (path) {
@@ -87,6 +88,10 @@ export default {
     },
     showPostMenu () {
       this.$bus.$emit('post-menu')
+    },
+    fetchUnread () {
+      if (this.$route.path.match(/^\/message/)) return
+      this.$store.dispatch('GET_NEW_UNREAD_COUNT')
     },
   },
 }
