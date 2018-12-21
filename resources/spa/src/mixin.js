@@ -39,11 +39,11 @@ export default {
     },
   },
   methods: {
-    goBack (num = -1) {
+    goBack () {
       const fallIndex = this.isIosWechat ? 2 : 1
       window.history.length <= fallIndex
         ? this.$router.replace('/')
-        : this.$router.go(num)
+        : this.$router.back()
     },
     /**
      * 定位到锚点
