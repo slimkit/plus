@@ -7,10 +7,7 @@
       <CommonHeader>
         登录
         <span slot="left" />
-        <RouterLink
-          slot="right"
-          to="/signup"
-        >
+        <RouterLink slot="right" to="/signup">
           注册
         </RouterLink>
       </CommonHeader>
@@ -55,20 +52,14 @@
               @keyup.enter="signinByAccount"
             >
           </div>
-          <svg
-            class="m-style-svg m-svg-def"
-            @click="eye = !eye"
-          >
+          <svg class="m-style-svg m-svg-def" @click="eye = !eye">
             <use :xlink:href="eye ? '#icon-eye-open' : '#icon-eye-close'" />
           </svg>
         </div>
         <div class="m-box m-aln-center m-text-box m-form-err-box">
           <span>{{ err | plusMessageFirst }}</span>
         </div>
-        <div
-          class="m-form-row"
-          style="border: 0"
-        >
+        <div class="m-form-row" style="border: 0">
           <button
             :disabled="disabled"
             class="m-long-btn m-signin-btn"
@@ -79,16 +70,10 @@
           </button>
         </div>
         <div class="m-box m-aln-center m-justify-bet other-link">
-          <RouterLink
-            tag="span"
-            to="/feeds?type=hot"
-          >
+          <RouterLink tag="span" to="/feeds?type=hot">
             <a>不登录，先随便逛逛</a>
           </RouterLink>
-          <RouterLink
-            tag="span"
-            to="/forgot"
-          >
+          <RouterLink tag="span" to="/forgot">
             <a>忘记密码</a>
           </RouterLink>
         </div>
@@ -111,10 +96,7 @@
             </div>
             <span>QQ</span>
           </div> -->
-          <div
-            class="m-box m-fd-col m-aln-center m-tr-item"
-            @click="signinByWechat"
-          >
+          <div class="m-box m-fd-col m-aln-center m-tr-item" @click="signinByWechat">
             <div class="m-tr-item-icon">
               <svg class="m-style-svg m-svg-def">
                 <use xlink:href="#icon-login-wechat" />

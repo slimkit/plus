@@ -5,7 +5,7 @@ import SiteUpgrade from '@/page/SiteUpgrade.vue'
 /* TODO */
 import Settings from '@/page/Settings.vue'
 
-import Profile from '@/page/Profile.vue'
+import ProfileHome from '@/page/profile/ProfileHome.vue'
 import UserInfo from '@/page/UserInfo.vue'
 import UserHome from '@/page/UserHome.vue'
 import UserFans from '@/page/UserFans.vue'
@@ -94,7 +94,7 @@ export default [
   },
   {
     path: '/profile',
-    component: Profile,
+    component: ProfileHome,
     meta: {
       title: '我',
       requiresAuth: true,

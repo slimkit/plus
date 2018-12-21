@@ -7,6 +7,7 @@
     <slot />
     <sup :class="dotClasses" />
   </span>
+
   <span
     v-else
     ref="badge"
@@ -27,7 +28,7 @@
 const prefixCls = 'v-badge'
 
 export default {
-  name: 'VBadge',
+  name: 'Badge',
   props: {
     count: { type: [Number, String], default: 0 },
     dot: { type: [Boolean, Number], default: false },
@@ -90,18 +91,16 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    transform: translateX(100%);
-    top: -10px;
     right: 0;
-    height: 24px;
-    width: 24px;
-    border-radius: 24px;
+    height: 32px;
+    width: 32px;
+    border-radius: 32px;
     background: @error;
     border: 1px solid transparent; /*no*/
     color: #fff;
     font-size: 20px;
     white-space: nowrap;
-    transform-origin: -10% center;
+    // transform-origin: -10% center;
     z-index: 10;
     box-shadow: 0 0 0 1px @error; /*no*/
 
@@ -112,9 +111,8 @@ export default {
 
     &-alone {
       top: auto;
-      display: block;
       position: relative;
-      transform: translateX(0);
+      transform: scale(0.9);
     }
   }
 
