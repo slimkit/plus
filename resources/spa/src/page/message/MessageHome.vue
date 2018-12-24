@@ -26,7 +26,7 @@
             </h5>
             <h5 v-else />
             <div class="m-box m-aln-center m-justify-end">
-              <Badge v-if="computedGetter(item.count)" :count="computedGetter(item.count)" />
+              <BadgeIcon v-if="computedGetter(item.count)" :count="computedGetter(item.count)" />
             </div>
           </div>
         </RouterLink>

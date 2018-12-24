@@ -5,10 +5,7 @@
     @click="onClick"
   >
     <div class="diy-select--label">{{ curSelectValue }}</div>
-    <div
-      v-show="open"
-      class="diy-select--options"
-    >
+    <div v-show="open" class="diy-select--options">
       <div
         v-for="option in options"
         :key="option.label"
@@ -16,7 +13,7 @@
         @click="setCurVal(option)"
       >
         <template v-if="option.hasMsg">
-          <Badge :dot="option.hasMsg">{{ option.label }}</Badge>
+          <BadgeIcon :dot="option.hasMsg">{{ option.label }}</BadgeIcon>
         </template>
         <span v-else>{{ option.label }}</span>
       </div>
