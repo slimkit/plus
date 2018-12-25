@@ -405,8 +405,8 @@ export default {
           enterClass: 'animated slideInLeft',
           leaveClass: 'animated slideOutRight',
         }
-        this.step -= 1
       }
+      this.step -= 1
     },
     nextStep () {
       if (this.disabled) return
