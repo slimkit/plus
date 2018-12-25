@@ -34,10 +34,6 @@ class StoreContribute extends FormRequest
      */
     public function authorize(): bool
     {
-        if (config('news.contribute.verified')) {
-            return $this->user()->verified === null ? false : true;
-        }
-
         return true;
     }
 
