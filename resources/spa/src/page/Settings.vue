@@ -24,6 +24,10 @@
             <use xlink:href="#icon-arrow-right" />
           </svg>
         </li>
+        <li class="m-entry" @click="switchLocale">
+          <span>切换语言</span>
+          <span class="m-box m-text-box m-flex-grow1 m-justify-end m-entry-extra">{{ locale === 'en' ? 'Englist' : '简体中文' }}</span>
+        </li>
         <li
           class="m-entry"
           @click="signOut"
@@ -48,6 +52,11 @@ export default {
       version,
     }
   },
+  computed: {
+    locale () {
+      return this.$i18n.locale
+    },
+  },
   methods: {
     signOut () {
       const actions = [
@@ -68,6 +77,11 @@ export default {
       const { aboutUs = {} } = this.$store.state.CONFIG.site
       if (aboutUs.url) return (location.href = aboutUs.url)
       this.$router.push('/about')
+    },
+    switchLocale () {
+      const target = this.locale === 'en' ? 'zh-CN' : 'en'
+      this.$lstore.setData('I18N_LOCALE', target)
+      this.$i18n.locale = target
     },
   },
 }

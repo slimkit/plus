@@ -1,5 +1,6 @@
 import plueMessageBundle from 'plus-message-bundle'
 import { transTime } from '@/util'
+import i18n from '@/i18n'
 
 /**
  * ThinkSNS Plus 消息解析器，获取顶部消息.
@@ -121,4 +122,20 @@ export const formatNum = (a = 0) => {
  */
 export function markdownText (markdown) {
   return require('./util/markdown').syntaxTextAndImage(markdown).text
+}
+
+/**
+ * Internationization label
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {String|String[]} params
+ * @param {string} keypath
+ * @returns
+ */
+export function t (params, keypath) {
+  if (!keypath) return i18n.t(params)
+  if (['string', 'number'].includes(typeof params)) params = [params]
+  if (!(params instanceof Array)) return ''
+  return i18n.t(keypath, params)
 }

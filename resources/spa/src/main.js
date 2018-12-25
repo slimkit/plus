@@ -20,12 +20,14 @@ import components from './components.js'
 
 import store from './stores/'
 import router from './routers/'
+import i18n from './i18n'
 import App from './app'
 import bus from './bus'
 import './registerServiceWorker'
 import './vendor'
 
 import * as WebIM from '@/vendor/easemob'
+
 export { version }
 
 Vue.mixin(mixin)
@@ -56,6 +58,7 @@ if (!window.initUrl) {
 new Vue({
   store,
   router,
+  i18n,
   created () {
     WebIM.openWebIM()
   },
