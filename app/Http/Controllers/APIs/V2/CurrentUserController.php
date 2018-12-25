@@ -88,10 +88,10 @@ class CurrentUserController extends Controller
         if ($target) {
             return $response->json(['name' => ['用户名已被使用']], 422);
         }
-
-        foreach ($request->only(['name', 'bio', 'sex', 'location', 'avatar', 'bg']) as $key => $value) {
-            if (! is_null($value)) {
-                $user->$key = $value;
+        $fields = ['name', 'bio', 'sex', 'location', 'avatar', 'bg'];
+        foreach ($fields as $field) {
+            if ($request->request->has($field)) {
+                $user->{$field} = $request->input($field);
             }
         }
 
