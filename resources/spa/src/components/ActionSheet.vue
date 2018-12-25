@@ -9,10 +9,7 @@
     </Transition>
 
     <Transition name="pop">
-      <div
-        v-if="show"
-        class="m-acbtn-box"
-      >
+      <div v-if="show" class="m-acbtn-box">
         <header v-if="tips">
           <h2 class="m-acbtn-title">{{ title }}</h2>
           <p class="m-acbtn-tips">{{ tips }}</p>
@@ -30,10 +27,7 @@
           </li>
         </ul>
         <ul class="m-acbtn-list">
-          <li
-            class="m-acbtn"
-            @click="cancel"
-          >
+          <li class="m-acbtn" @click="cancel">
             <a href="javascript:;">{{ cancelBtn }}</a>
           </li>
         </ul>
@@ -56,10 +50,10 @@ export default {
     return {
       lists: [],
       tips: '',
-      title: '提示',
+      title: this.$t('tips'),
       show: false,
       scrollTop: 0,
-      cancelBtn: '取消',
+      cancelBtn: this.$t('cancel'),
     }
   },
   created: function () {

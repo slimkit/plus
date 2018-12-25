@@ -1,7 +1,7 @@
 <template>
   <div class="p-news">
     <CommonHeader class="common-header">
-      资讯
+      {{ $t('news.name') }}
       <template slot="right">
         <svg class="m-style-svg m-svg-def" @click="$router.push({path: '/news/search'})">
           <use xlink:href="#icon-search" />
@@ -106,11 +106,11 @@ export default {
         !_.isEmpty(this.$store.state.CURRENTUSER.verified)
       if (noNeedVerify) return this.$router.push({ path: '/post/release' })
       else if (this.userVerify.status === 0) {
-        this.$Message.error('您的认证正在等待审核，通过审核后可发布帖子')
+        this.$Message.error(this.$t('certificate.under_review', { name: this.$t('news.name') }))
       } else {
         const actions = [
           {
-            text: '个人认证',
+            text: this.$t('certificate.user.name'),
             method: () =>
               this.$router.push({
                 path: '/profile/certificate',
@@ -118,7 +118,7 @@ export default {
               }),
           },
           {
-            text: '企业认证',
+            text: this.$t('certificate.org.name'),
             method: () =>
               this.$router.push({
                 path: '/profile/certificate',
@@ -129,8 +129,8 @@ export default {
         this.$bus.$emit(
           'actionSheet',
           actions,
-          '取消',
-          '认证用户才能创建投稿，去认证？'
+          this.$t('cancel'),
+          this.$t('news.need_certificate')
         )
       }
     },

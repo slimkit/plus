@@ -2,10 +2,10 @@
   <div class="m-box-model m-card c-feed-card" @click="handleView('')">
     <div class="m-box main">
       <template v-if="timeLine">
-        <div v-if="isToday" v-text="'今天'" />
+        <div v-if="isToday">{{ $t('date.today') }}</div>
         <div v-else class="timeline-text">
           <span>{{ time.getDate() }}</span>
-          <span class="month">{{ time.getMonth() + 1 }}月</span>
+          <span class="month">{{ $t(`date.months[${time.getMonth()}]`) }}</span>
         </div>
       </template>
       <Avatar v-else :user="user" />
@@ -13,7 +13,7 @@
         <header v-if="!timeLine" class="m-box m-aln-center m-justify-bet m-card-usr">
           <h4 class="m-flex-grow1 m-flex-shrink1">{{ user.name }}</h4>
           <div class="m-box m-aln-center">
-            <span v-if="pinned" class="m-art-comment-icon-top">置顶</span>
+            <span v-if="pinned" class="m-art-comment-icon-top">{{ $t('pinned') }}</span>
             <span>{{ time | time2tips }}</span>
           </div>
         </header>
@@ -95,7 +95,7 @@
         class="m-router-link"
         @click="handleView('comment_list')"
       >
-        <a>查看全部评论</a>
+        <a>{{ $t('article.view_all_comments') }}</a>
       </div>
     </footer>
   </div>
@@ -224,11 +224,12 @@ export default {
       str = str.replace(/\n/g, '<br>')
 
       const reg = /(https?|http|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/g
+      const linkText = this.$t('article.link_text')
       return str
         ? str.replace(
           reg,
           link =>
-            `<a class="m-art-links" href="${link}" onclick='event.stopPropagation()' target="__blank">#网页链接#</a>`
+            `<a class="m-art-links" href="${link}" onclick='event.stopPropagation()' target="__blank">#${linkText}#</a>`
         )
         : ''
     },
@@ -245,7 +246,7 @@ export default {
               this.$Message.success(data)
               this.$router.push(path)
             },
-            nodeType: '内容',
+            nodeType: this.$t('article.content'),
             node: node.node,
             amount: node.amount,
           })
@@ -295,20 +296,20 @@ export default {
       const actions = []
       if (this.has_collect) {
         actions.push({
-          text: '取消收藏',
+          text: this.$t('collect.cancel'),
           method: () => {
             api.uncollectFeed(this.feedId).then(() => {
-              this.$Message.success('取消收藏')
+              this.$Message.success(this.$t('collect.cancel'))
               this.has_collect = false
             })
           },
         })
       } else {
         actions.push({
-          text: '收藏',
+          text: this.$t('collect.name'),
           method: () => {
             api.collectionFeed(this.feedId).then(() => {
-              this.$Message.success('收藏成功')
+              this.$Message.success(this.$t('collect.success'))
               this.has_collect = true
             })
           },
@@ -317,22 +318,22 @@ export default {
       if (this.isMine) {
         // 是否是自己文章的评论
         actions.push({
-          text: '申请动态置顶',
+          text: this.$t('feed.apply_top'),
           method: () => {
             this.popupBuyTS()
           },
         })
         actions.push({
-          text: '删除动态',
+          text: this.$t('feed.delete'),
           method: () => {
             setTimeout(() => {
               const actionSheet = [
                 {
-                  text: '删除',
+                  text: this.$t('delete.name'),
                   style: { color: '#f4504d' },
                   method: () => {
                     api.deleteFeed(this.feedId).then(() => {
-                      this.$Message.success('删除动态成功')
+                      this.$Message.success(this.$t('delete.success'))
                       this.$nextTick(() => {
                         this.$el.remove()
                         this.$emit('afterDelete')
@@ -341,13 +342,13 @@ export default {
                   },
                 },
               ]
-              this.$bus.$emit('actionSheet', actionSheet, '取消', '确认删除?')
+              this.$bus.$emit('actionSheet', actionSheet, this.$t('cancel'), this.$t('delete.confirm'))
             }, 200)
           },
         })
       } else {
         actions.push({
-          text: '举报',
+          text: this.$t('report.name'),
           method: () => {
             this.$bus.$emit('report', {
               type: 'feed',
@@ -359,14 +360,14 @@ export default {
         })
       }
 
-      this.$bus.$emit('actionSheet', actions, '取消')
+      this.$bus.$emit('actionSheet', actions)
     },
     commentAction ({ isMine = false, placeholder, reply_user: user, comment }) {
       const actions = []
       if (isMine) {
         const isOwner = this.feed.user.id === this.CURRENTUSER.id
         actions.push({
-          text: isOwner ? '评论置顶' : '申请评论置顶',
+          text: this.$t(isOwner ? 'comment.top.name' : 'comment.top.apply'),
           method: () => {
             this.$bus.$emit('applyTop', {
               isOwner,
@@ -377,12 +378,12 @@ export default {
           },
         })
         actions.push({
-          text: '删除评论',
+          text: this.$t('comment.delete'),
           method: () => this.deleteComment(comment.id),
         })
       } else {
         actions.push({
-          text: '回复',
+          text: this.$t('reply.name'),
           method: () => {
             this.handleComment({
               placeholder,
@@ -391,7 +392,7 @@ export default {
           },
         })
         actions.push({
-          text: '举报',
+          text: this.$t('report.name'),
           method: () => {
             this.$bus.$emit('report', {
               type: 'comment',
@@ -405,7 +406,7 @@ export default {
       this.$bus.$emit('actionSheet', actions)
     },
     sendComment ({ reply_user: replyUser, body }) {
-      if (body && body.length === 0) { return this.$Message.error('评论内容不能为空') }
+      if (body && body.length === 0) { return this.$Message.error(this.$t('comment.empty')) }
 
       const params = {
         body,
@@ -417,7 +418,7 @@ export default {
           this.commentCount += 1
           this.comments.unshift(comment)
           if (this.comments.length > 5) this.comments.pop()
-          this.$Message.success('评论成功')
+          this.$Message.success(this.$t('comment.success'))
           this.$bus.$emit('commentInput:close', true)
         })
         .catch(() => {
@@ -428,7 +429,7 @@ export default {
       api.deleteFeedComment(this.feedId, commentId).then(() => {
         this.feed.comments = this.feed.comments.filter(c => c.id !== commentId)
         this.commentCount -= 1
-        this.$Message.success('删除评论成功')
+        this.$Message.success(this.$t('comment.delete.success'))
       })
     },
   },

@@ -1,7 +1,7 @@
 <template>
   <div class="p-discover">
     <CommonHeader>
-      发现
+      {{ $t('discover') }}
       <span slot="left" />
     </CommonHeader>
 
@@ -36,61 +36,65 @@
 </template>
 
 <script>
+import i18n from '@/i18n'
+
+const entrys = [
+  [
+    {
+      title: i18n.t('news.name'),
+      icon: 'news',
+      path: '/news',
+      new_tips: false,
+      tips: '',
+    },
+    {
+      title: i18n.t('group.name'),
+      icon: 'group',
+      path: '/group',
+      new_tips: false,
+      tips: '',
+    },
+    {
+      title: i18n.t('question.qa'),
+      icon: 'question',
+      path: '/question',
+      new_tips: false,
+      tips: '',
+    },
+  ],
+  [
+    {
+      title: i18n.t('rank.name'),
+      icon: 'rank',
+      path: '/rank',
+      new_tips: false,
+      tips: '',
+    },
+    {
+      title: i18n.t('feed.topic.name'),
+      icon: 'topic',
+      path: '/topic',
+      new_tips: false,
+      tips: '',
+    },
+  ],
+  [
+    {
+      title: i18n.t('find.name'),
+      icon: 'find',
+      path: '/find/pop',
+      new_tips: false,
+      tips: '',
+    },
+  ],
+]
+
 export default {
   name: 'Discover',
   data () {
     return {
       prefix: 'discover',
-      entrys: [
-        [
-          {
-            title: '资讯',
-            icon: 'news',
-            path: '/news',
-            new_tips: false,
-            tips: '',
-          },
-          {
-            title: '圈子',
-            icon: 'group',
-            path: '/group',
-            new_tips: false,
-            tips: '',
-          },
-          {
-            title: '问答',
-            icon: 'question',
-            path: '/question',
-            new_tips: false,
-            tips: '',
-          },
-        ],
-        [
-          {
-            title: '排行榜',
-            icon: 'rank',
-            path: '/rank',
-            new_tips: false,
-            tips: '',
-          },
-          {
-            title: '话题',
-            icon: 'topic',
-            path: '/topic',
-            new_tips: false,
-            tips: '',
-          },
-        ],
-        [
-          {
-            title: '找人',
-            icon: 'find',
-            path: '/find/pop',
-            new_tips: false,
-            tips: '',
-          },
-        ],
-      ],
+      entrys,
     }
   },
   methods: {

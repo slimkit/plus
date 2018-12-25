@@ -103,7 +103,7 @@ ImgCropper.newInstance = properties => {
                   click: this.close,
                 },
               },
-              '取消'
+              this.$t('cancel')
             ),
             h(
               'div',

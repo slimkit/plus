@@ -26,17 +26,21 @@
 </template>
 
 <script>
+import i18n from '@/i18n'
+
+const typeMap = {
+  feed: i18n.t('feed.name'),
+  news: i18n.t('news.name'),
+  post: i18n.t('group.post.name'),
+  answer: i18n.t('question.answer.name'),
+}
+
 export default {
   name: 'ArticleRewardList',
   data () {
     return {
       rewards: this.$store.state.article.rewarders || [],
-      typeMap: {
-        feed: '动态',
-        news: '资讯',
-        post: '帖子',
-        answer: '回答',
-      },
+      typeMap,
     }
   },
   computed: {

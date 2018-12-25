@@ -1,6 +1,6 @@
 <template>
   <div :class="prefixCls">
-    <CommonHeader>{{ title }}解答排行榜</CommonHeader>
+    <CommonHeader>{{ title | t('rank.answer') }}</CommonHeader>
 
     <JoLoadMore
       ref="loadmore"
@@ -15,7 +15,7 @@
           :user="user"
           :index="index"
         >
-          <p>回答量：{{ user.extra.count || 0 }}</p>
+          <p>{{ user.extra.count || 0 | t('rank.answer_count') }}</p>
         </RankListItem>
       </div>
     </JoLoadMore>
@@ -26,23 +26,24 @@
 import RankListItem from '../components/RankListItem.vue'
 import { getRankUsers } from '@/api/ranks.js'
 import { limit } from '@/api'
+import i18n from '@/i18n'
 
 const prefixCls = 'rankItem'
 const api = '/question-ranks/answers'
 const config = {
   week: {
     vuex: 'rankQuestionsWeek',
-    title: '本周',
+    title: i18n.t('date.week'),
     query: 'week',
   },
   today: {
     vuex: 'rankQuestionsToday',
-    title: '今日',
+    title: i18n.t('date.today'),
     query: 'day',
   },
   month: {
     vuex: 'rankQuestionsMonth',
-    title: '本月',
+    title: i18n.t('date.month'),
     query: 'month',
   },
 }

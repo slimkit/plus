@@ -24,25 +24,25 @@
               <svg class="m-style-svg m-svg-def">
                 <use :xlink:href="liked ? '#icon-like' :'#icon-unlike'" />
               </svg>
-              <span :class="{liked}">喜欢</span>
+              <span :class="{liked}">{{ $t('like') }}</span>
             </a>
             <a class="m-box-model m-aln-center" @click.prevent="handelComment">
               <svg class="m-style-svg m-svg-def">
                 <use xlink:href="#icon-comment" />
               </svg>
-              <span>评论</span>
+              <span>{{ $t('comment.name') }}</span>
             </a>
             <a class="m-box-model m-aln-center" @click.prevent="handelShare">
               <svg class="m-style-svg m-svg-def">
                 <use xlink:href="#icon-share" />
               </svg>
-              <span>分享</span>
+              <span>{{ $t('share') }}</span>
             </a>
             <a class="m-box-model m-aln-center" @click.prevent="handelMore">
               <svg class="m-style-svg m-svg-def">
                 <use xlink:href="#icon-more" />
               </svg>
-              <span>更多</span>
+              <span>{{ $t('more') }}</span>
             </a>
           </slot>
         </footer>
@@ -54,12 +54,13 @@
 <script>
 import HeadRoom from 'headroom.js'
 import { mapState } from 'vuex'
+import i18n from '@/i18n'
 
 const typeMap = {
-  feed: { title: '动态' },
-  news: { title: '资讯' },
-  post: { title: '帖子' },
-  answer: { title: '回答' },
+  feed: { title: i18n.t('feed.name') },
+  news: { title: i18n.t('news.name') },
+  post: { title: i18n.t('group.post.name') },
+  answer: { title: i18n.t('question.answer.name') },
 }
 
 export default {
@@ -88,7 +89,7 @@ export default {
       return this.$store.state.BROWSER.isWechat
     },
     title () {
-      return `${this.factory.title}详情`
+      return this.$t('article.detail', { title: this.factory.title })
     },
   },
   watch: {
@@ -145,8 +146,8 @@ export default {
       this.$emit('comment')
     },
     handelShare () {
-      if (this.isWechat) this.$Message.success('请点击右上角微信分享😳')
-      else this.$Message.success('请使用浏览器的分享功能😳')
+      if (this.isWechat) this.$Message.info(this.$t('article.share_wechat'))
+      else this.$Message.info(this.$t('article.share_brownser'))
     },
     handelMore () {
       this.$emit('more')

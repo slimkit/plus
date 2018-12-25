@@ -5,22 +5,22 @@
   >
     <div class="m-box-model m-pos-f p-signin">
       <CommonHeader>
-        登录
+        {{ $t('auth.login') }}
         <span slot="left" />
         <RouterLink slot="right" to="/signup">
-          注册
+          {{ $t('auth.register') }}
         </RouterLink>
       </CommonHeader>
 
       <main class="m-box-model m-flex-grow1">
         <div class="m-form-row m-main">
-          <label for="account">账户</label>
+          <label for="account">{{ $t('auth.account') }}</label>
           <div class="m-input">
             <input
               id="account"
               v-model="account"
               type="text"
-              placeholder="用户名/手机号/邮箱"
+              :placeholder="$t('auth.placeholder.account')"
             >
           </div>
           <svg
@@ -32,7 +32,7 @@
           </svg>
         </div>
         <div class="m-form-row m-main">
-          <label for="password">密码</label>
+          <label for="password">{{ $t('auth.password') }}</label>
           <div class="m-input">
             <input
               v-if="eye"
@@ -40,7 +40,7 @@
               v-model="password"
               type="text"
               maxlength="16"
-              placeholder="输入6位以上登录密码"
+              :placeholder="$t('auth.placeholder.password', [6])"
             >
             <input
               v-else
@@ -48,7 +48,7 @@
               v-model="password"
               maxlength="16"
               type="password"
-              placeholder="输入6位以上登录密码"
+              :placeholder="$t('auth.placeholder.password', [6])"
               @keyup.enter="signinByAccount"
             >
           </div>
@@ -66,19 +66,19 @@
             @click="signinByAccount"
           >
             <CircleLoading v-if="loading" />
-            <span v-else>登录</span>
+            <span v-else>{{ $t('auth.login') }}</span>
           </button>
         </div>
         <div class="m-box m-aln-center m-justify-bet other-link">
           <RouterLink tag="span" to="/feeds?type=hot">
-            <a>不登录，先随便逛逛</a>
+            <a>{{ $t('auth.guest') }}</a>
           </RouterLink>
           <RouterLink tag="span" to="/forgot">
-            <a>忘记密码</a>
+            <a>{{ $t('auth.forgot.name') }}</a>
           </RouterLink>
         </div>
         <div class="dynamic-signin">
-          <RouterLink to="/signin/dynamic">使用手机号一键登陆</RouterLink>
+          <RouterLink to="/signin/dynamic">{{ $t('auth.use_phone') }}</RouterLink>
         </div>
       </main>
 
@@ -102,7 +102,7 @@
                 <use xlink:href="#icon-login-wechat" />
               </svg>
             </div>
-            <span>微信</span>
+            <span>{{ $t('auth.wechat') }}</span>
           </div>
         </div>
       </footer>
@@ -140,12 +140,12 @@ export default {
     signinByAccount () {
       this.err = ''
       if (this.account.length === 0) {
-        this.err = '账户不正确'
+        this.err = this.$t('auth.error.account')
         return false
       }
 
       if (this.password.length < 6) {
-        this.err = '密码不正确'
+        this.err = this.$t('auth.error.password')
         return false
       }
 

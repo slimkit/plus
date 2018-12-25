@@ -1,5 +1,6 @@
 import * as api from '@/api/currency'
 import * as walletApi from '@/api/wallet'
+import i18n from '@/i18n'
 
 const state = {
   rule: '', // 充值提现规则
@@ -16,7 +17,7 @@ const state = {
     min: 100,
     max: 10000000,
   },
-  unit: '积分',
+  unit: i18n.t('currency.name'),
 }
 
 const getters = {

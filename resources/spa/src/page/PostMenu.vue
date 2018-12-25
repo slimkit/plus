@@ -25,7 +25,7 @@
               <svg class="m-style-svg m-svg-def menu-svg">
                 <use xlink:href="#icon-release-text" />
               </svg>
-              <span>文字</span>
+              <span>{{ $t('release.text') }}</span>
             </div>
             <div
               key="ico_potoablum"
@@ -35,7 +35,7 @@
               <svg class="m-style-svg m-svg-def menu-svg">
                 <use xlink:href="#icon-release-pic" />
               </svg>
-              <span>图片</span>
+              <span>{{ $t('release.image') }}</span>
             </div>
             <div
               key="ico_contribute"
@@ -45,7 +45,7 @@
               <svg class="m-style-svg m-svg-def menu-svg">
                 <use xlink:href="#icon-release-news" />
               </svg>
-              <span>投稿</span>
+              <span>{{ $t('release.news') }}</span>
             </div>
             <div
               v-if="checkinEnable"
@@ -56,7 +56,7 @@
               <svg class="m-style-svg m-svg-def menu-svg">
                 <use xlink:href="#icon-release-attendance" />
               </svg>
-              <span>签到</span>
+              <span>{{ $t('release.checkin') }}</span>
             </div>
             <div
               key="ico_question"
@@ -66,7 +66,7 @@
               <svg class="m-style-svg m-svg-def menu-svg">
                 <use xlink:href="#icon-release-question" />
               </svg>
-              <span>提问</span>
+              <span>{{ $t('release.question') }}</span>
             </div>
             <div
               key="ico_fatie"
@@ -76,7 +76,7 @@
               <svg class="m-style-svg m-svg-def menu-svg">
                 <use xlink:href="#icon-release-post" />
               </svg>
-              <span>发帖</span>
+              <span>{{ $t('release.post') }}</span>
             </div>
           </template>
         </TransitionGroup>
@@ -196,8 +196,8 @@ export default {
   justify-content: flex-start;
 }
 .m-post-menu-item {
-  margin: 3% 6%;
-  width: 1/3 * 100 - 12%;
+  margin: 3% 0;
+  width: 1/3 * 100%;
   font-size: 28px;
   img {
     width: 100%;

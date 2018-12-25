@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CommonHeader class="common-header">排行榜</CommonHeader>
+    <CommonHeader class="common-header">{{ $t('rank.name') }}</CommonHeader>
 
     <div class="rank-nav">
       <RouterLink
@@ -9,7 +9,7 @@
         replace
         to="/rank/users"
       >
-        用户
+        {{ $t('rank.user') }}
       </RouterLink>
       <RouterLink
         tag="div"
@@ -17,11 +17,11 @@
         replace
         to="/rank/feeds"
       >
-        动态
+        {{ $t('feed.name') }}
       </RouterLink>
 
-      <div class="rank-nav-item" @click.capture.stop.prevent="popupBuyTS"> 问答 </div>
-      <div class="rank-nav-item" @click.capture.stop.prevent="popupBuyTS"> 资讯 </div>
+      <div class="rank-nav-item" @click.capture.stop.prevent="popupBuyTS"> {{ $t('question.q_a') }} </div>
+      <div class="rank-nav-item" @click.capture.stop.prevent="popupBuyTS"> {{ $t('news.name') }} </div>
     </div>
     <div class="rank-content">
       <KeepAlive>

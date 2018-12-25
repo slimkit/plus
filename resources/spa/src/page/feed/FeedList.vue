@@ -3,9 +3,9 @@
     <CommonHeader :pinned="true" class="header">
       <span slot="left" />
       <nav class="type-switch-bar">
-        <span :class="{active: feedType === 'new'}" @click="feedType = 'new'"> 最新 </span>
-        <span :class="{active: feedType === 'hot'}" @click="feedType = 'hot'"> 热门 </span>
-        <span :class="{active: feedType === 'follow'}" @click="feedType = 'follow'"> 关注 </span>
+        <span :class="{active: feedType === 'new'}" @click="feedType = 'new'"> {{ $t('newest') }} </span>
+        <span :class="{active: feedType === 'hot'}" @click="feedType = 'hot'"> {{ $t('hot') }} </span>
+        <span :class="{active: feedType === 'follow'}" @click="feedType = 'follow'"> {{ $t('follow.name') }} </span>
       </nav>
     </CommonHeader>
 

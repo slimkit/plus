@@ -1,6 +1,6 @@
 <template>
   <div :class="`${prefixCls}`">
-    <CommonHeader>系统通知</CommonHeader>
+    <CommonHeader>{{ $t('message.system.name') }}</CommonHeader>
 
     <JoLoadMore
       ref="loadmore"

@@ -75,7 +75,9 @@ export default {
     try {
       state.USERS = {}
       state.CURRENTUSER = {}
-      lstore.clearData()
+      lstore.removeData('CURRENTUSER')
+      lstore.removeData('H5_CUR_USER')
+      lstore.removeData('H5_ACCESS_TOKEN')
       state.loginStatus = false
     } catch (e) {
       // no condition here

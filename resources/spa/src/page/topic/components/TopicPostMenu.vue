@@ -25,7 +25,7 @@
               <svg class="m-style-svg m-svg-def menu-svg">
                 <use xlink:href="#icon-release-text" />
               </svg>
-              <span>文字</span>
+              <span>{{ $t('release.text') }}</span>
             </div>
             <div
               key="ico_potoablum"
@@ -35,7 +35,7 @@
               <svg class="m-style-svg m-svg-def menu-svg">
                 <use xlink:href="#icon-release-pic" />
               </svg>
-              <span>图片</span>
+              <span>{{ $t('release.image') }}</span>
             </div>
           </template>
         </TransitionGroup>

@@ -114,7 +114,7 @@ export default {
           method: () => void this.goBack(),
         },
       ]
-      this.$bus.$emit('actionSheet', actions, '取消', '你还有没有发布的内容,是否放弃发布?')
+      this.$bus.$emit('actionSheet', actions, this.$t('cancel'), '你还有没有发布的内容,是否放弃发布?')
     },
     chooseDefaultAmount (amount) {
       this.customAmount = null

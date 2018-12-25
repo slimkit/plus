@@ -2,6 +2,8 @@
  * 消息页面组件
  */
 
+import i18n from '@/i18n'
+
 const MessageBase = () =>
   import(/* webpackChunkName: 'message' */ '@/page/message/MessageBase.vue')
 const MessageHome = () =>
@@ -39,7 +41,7 @@ export default [
         name: 'MessageHome',
         component: MessageHome,
         meta: {
-          title: '消息',
+          title: i18n.t('message.name'),
         },
       },
       {
@@ -47,7 +49,7 @@ export default [
         name: 'ChatList',
         component: ChatList,
         meta: {
-          title: '聊天',
+          title: i18n.t('message.chat.name'),
         },
       },
     ],
@@ -57,14 +59,14 @@ export default [
     name: 'ChatRoom',
     component: ChatRoom,
     meta: {
-      title: '对话',
+      title: i18n.t('message.chat.name'),
     },
   },
   {
     path: '/message/system',
     component: MessageSystem,
     meta: {
-      title: '系统消息',
+      title: i18n.t('message.system.name'),
       requiresAuth: true,
     },
   },
@@ -73,7 +75,7 @@ export default [
     name: 'MessageComments',
     component: MessageComments,
     meta: {
-      title: '评论我的',
+      title: i18n.t('message.comment.name'),
       requiresAuth: true,
     },
   },
@@ -82,7 +84,7 @@ export default [
     name: 'MessageLikes',
     component: MessageLikes,
     meta: {
-      title: '赞过我的',
+      title: i18n.t('message.like.name'),
       requiresAuth: true,
     },
   },
@@ -90,7 +92,7 @@ export default [
     path: '/message/audits',
     component: AuditList,
     meta: {
-      title: '审核列表',
+      title: i18n.t('message.audit.name'),
       requiresAuth: true,
     },
   },
@@ -99,7 +101,7 @@ export default [
     component: AuditList,
     redirect: '/message/audits/feedcomments',
     meta: {
-      title: '审核列表',
+      title: i18n.t('message.audit.name'),
       requiresAuth: true,
     },
     children: [
@@ -107,9 +109,6 @@ export default [
         name: 'auditFeedComments',
         path: 'feedcomments',
         component: feedCommentAudit,
-        meta: {
-          title: '动态评论置顶',
-        },
       },
     ],
   },

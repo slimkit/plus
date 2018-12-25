@@ -3,10 +3,10 @@
     <CommonHeader :pinned="true" class="header">
       <nav class="type-switch-bar">
         <span :class="{active: currentType === 'hot'}" @click="currentType = 'hot'">
-          热门
+          {{ $t('hot') }}
         </span>
         <span :class="{active: currentType === 'new'}" @click="currentType = 'new'">
-          最新
+          {{ $t('newest') }}
         </span>
       </nav>
       <div slot="right" class="buttons">

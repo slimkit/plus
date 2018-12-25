@@ -1,50 +1,9 @@
 <template>
   <div class="p-profile-collection">
-    <CommonHeader>我的收藏</CommonHeader>
+    <CommonHeader>{{ $t('profile.collect.name') }}</CommonHeader>
 
     <main>
-      <div class="m-pos-f m-box m-aln-center m-justify-bet m-sub-nav m-bb1 m-main">
-        <RouterLink
-          replace
-          exact
-          tag="div"
-          exact-active-class="active"
-          to="/profile/collection/feeds"
-          class="m-sub-nav-item"
-        >
-          <a>动态</a>
-        </RouterLink>
-        <RouterLink
-          replace
-          exact
-          tag="div"
-          exact-active-class="active"
-          to="/profile/collection/news"
-          class="m-sub-nav-item"
-        >
-          <a>资讯</a>
-        </RouterLink>
-        <RouterLink
-          replace
-          exact
-          tag="div"
-          exact-active-class="active"
-          to="/profile/collection/answers"
-          class="m-sub-nav-item"
-        >
-          <a>回答</a>
-        </RouterLink>
-        <RouterLink
-          replace
-          exact
-          tag="div"
-          exact-active-class="active"
-          to="/profile/collection/posts"
-          class="m-sub-nav-item"
-        >
-          <a>帖子</a>
-        </RouterLink>
-      </div>
+      <NavTab class="nav" :nav="types" />
       <KeepAlive>
         <RouterView />
       </KeepAlive>
@@ -53,35 +12,22 @@
 </template>
 
 <script>
+import NavTab from '@/components/common/NavTab.vue'
+
+const types = [
+  { name: 'feed', label: '动态', route: '/profile/collection/feeds' },
+  { name: 'news', label: '资讯', route: '/profile/collection/news' },
+  { name: 'answer', label: '回答', route: '/profile/collection/answers' },
+  { name: 'post', label: '帖子', route: '/profile/collection/posts' },
+]
+
 export default {
   name: 'ProfileCollection',
+  components: { NavTab },
   data () {
-    return {}
+    return {
+      types,
+    }
   },
 }
 </script>
-
-<style lang="less" scoped>
-.p-profile-collection {
-  .m-sub-nav {
-    top: 90px;
-    z-index: 2;
-
-    .m-sub-nav-item {
-      height: 100%;
-      line-height: 90px;
-      text-align: center;
-
-      > a {
-        display: inline-block;
-        width: 100%;
-      }
-
-      &.router-link-active {
-        color: #333;
-        border-bottom: 4px solid @primary;
-      }
-    }
-  }
-}
-</style>

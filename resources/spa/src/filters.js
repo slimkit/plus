@@ -77,9 +77,9 @@ export const time2tips = date => {
   }
   const time = new Date(date)
   const offset = (new Date().getTime() - time) / 1000
-  if (offset < 60) return '1分钟内'
-  if (offset < 3600) return `${~~(offset / 60)}分钟前`
-  if (offset < 3600 * 24) return `${~~(offset / 3600)}小时前`
+  if (offset < 60) return i18n.t('date.in_minute')
+  if (offset < 3600) return i18n.t('date.minutes_ago', { min: ~~(offset / 60) })
+  if (offset < 3600 * 24) return i18n.t('date.hours_ago', { hour: ~~(offset / 3600) })
   // 根据 time 获取到 "16:57"
   let timeStr, dateStr
   try {
@@ -90,8 +90,8 @@ export const time2tips = date => {
   } catch (e) {
     return offset
   }
-  if (offset < 3600 * 24 * 2) return `昨天 ${timeStr}`
-  if (offset < 3600 * 24 * 9) return `${~~(offset / 3600 / 24)}天前`
+  if (offset < 3600 * 24 * 2) return i18n.t('date.yesterday', { time: timeStr })
+  if (offset < 3600 * 24 * 9) return i18n.t('date.days_ago', { day: ~~(offset / 3600 / 24) })
   // 根据 time 06-19
   return dateStr
 }

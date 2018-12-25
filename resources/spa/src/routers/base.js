@@ -27,12 +27,14 @@ import Location from '@/page/Location.vue'
 
 import $lstore from '@/plugins/lstore'
 
+import i18n from '@/i18n'
+
 export default [
   {
     path: '/discover',
     component: Discover,
     meta: {
-      title: '发现',
+      title: i18n.t('discover'),
     },
   },
   {
@@ -41,7 +43,7 @@ export default [
     redirect: '/find/pop',
     component: Find,
     meta: {
-      title: '找人',
+      title: i18n.t('find'),
       requiresAuth: false,
     },
     children: [
@@ -82,7 +84,7 @@ export default [
     path: '/search/user',
     component: SearchUser,
     meta: {
-      title: '找人',
+      title: i18n.t('find'),
       keepAlive: true,
     },
   },
@@ -94,7 +96,7 @@ export default [
     path: '/profile',
     component: ProfileHome,
     meta: {
-      title: '我',
+      title: i18n.t('profile'),
       requiresAuth: true,
     },
   },
@@ -103,7 +105,7 @@ export default [
     path: '/users/:userId(\\d+)',
     component: UserHome,
     meta: {
-      title: '个人主页',
+      title: i18n.t('profile.home.name'),
       keepAlive: true,
       requiresAuth: true,
     },
@@ -113,7 +115,7 @@ export default [
     component: UserFans,
     path: '/users/:userId(\\d+)/:type(followers|followings)',
     meta: {
-      title: '粉丝',
+      title: i18n.t('fans'),
       keepAlive: true,
       requiresAuth: true,
     },
@@ -122,7 +124,7 @@ export default [
     path: '/info',
     component: UserInfo,
     meta: {
-      title: '个人资料',
+      title: i18n.t('profile.info'),
       requiresAuth: true,
     },
   },
@@ -130,7 +132,7 @@ export default [
     path: '/setting',
     component: Settings,
     meta: {
-      title: '设置',
+      title: i18n.t('setting.name'),
       requiresAuth: true,
     },
   },

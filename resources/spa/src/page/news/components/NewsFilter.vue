@@ -1,10 +1,10 @@
 <template>
   <div :class="[prefixCls, {showAll}]">
     <div :class="`${prefixCls}--head`">
-      <span>点击以编辑</span>
+      <span>{{ 'tap_to_edit' | t }}</span>
       <div>
-        <button @click="onOk">{{ editing ? '完成' : '编辑' }}</button>
-        <button @click="showEditor">收起</button>
+        <button @click="onOk">{{ editing ? 'complete' : 'edit' | t }}</button>
+        <button @click="showEditor">{{ 'collapse' | t }}</button>
       </div>
     </div>
     <div :class="`${prefixCls}--list__wrap`">
@@ -17,13 +17,13 @@
           <use xlink:href="#icon-arrow-right" />
         </svg>
       </div>
-      <span :class="`${prefixCls}--list__label`">我的订阅</span>
+      <span :class="`${prefixCls}--list__label`">{{ 'news.my_subscription' | t }}</span>
       <div :class="[`${prefixCls}--list`, { editing }]">
         <div
           :class="[`${prefixCls}--list__item`, { active: ~~(currentCate.id) === 0 }]"
-          @click="chooseCate($event, {id: 0, name:'推荐'})"
+          @click="chooseCate($event, {id: 0, name: $t('recommend')})"
         >
-          推荐
+          {{ 'recommend' | t }}
         </div>
         <div
           v-for="myCate in myCates"
@@ -35,11 +35,8 @@
         </div>
       </div>
     </div>
-    <div
-      v-show="showAll"
-      :class="`${prefixCls}--list__wrap`"
-    >
-      <span :class="`${prefixCls}--list__label`">更多订阅</span>
+    <div v-show="showAll" :class="`${prefixCls}--list__wrap`">
+      <span :class="`${prefixCls}--list__label`">{{ 'news.more_subscription' | t }}</span>
       <div :class="`${prefixCls}--list`">
         <div
           v-for="cate in moreCates"
@@ -69,7 +66,7 @@ export default {
 
       currentCate: {
         id: 0,
-        name: '推荐',
+        name: this.$t('recommend'),
       },
     }
   },
@@ -275,13 +272,12 @@ export default {
       }
       &__item {
         margin: 30/2px;
-        width: calc(~"25% - " 30px);
         height: 60px;
         line-height: 60px;
+        padding: 0 1em;
         text-align: center;
         border-radius: 8px;
         background-color: #f4f5f5;
-        padding: 0;
       }
       &__wrap {
         margin-top: 60px;

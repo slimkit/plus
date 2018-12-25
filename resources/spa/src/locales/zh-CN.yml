@@ -1,1 +1,452 @@
-message: 你好啊 i18n !!
+# common
+
+discover: 发现
+find_user: 找人
+
+newest: 最新
+hot: 热门
+fans: 粉丝
+all: 全部
+
+send: 发送
+tips: 提示
+cancel: 取消
+edit: 编辑
+next_step: 下一步
+save: 保存
+create: 创建
+complete: 完成
+confirm: 确定
+submit: 提交
+search: 搜索
+expand: 展开
+collapse: 收起
+change: 更改
+modify: 修改
+
+like: 喜欢
+share: 分享
+more: 更多
+pinned: 置顶
+recommend: 推荐
+nearby: 附近
+
+tap_to_edit: 点击以编辑
+comment_placeholder: 随便说说～
+got_it: 知道了
+
+# ariticle
+article:
+  content: 内容
+  posted_at: 发布于 {0}
+  views_count: '{0} 浏览'
+  like_count: '{0} 人点赞'
+  reward_count: '{count} 人打赏，共 {amount} @:(currency.unit)'
+  comment_count: '{0} 条评论'
+  view_all_comments: 查看全部评论
+  detail: '{title}详情'
+  share_wechat: '请点击右上角微信分享 🥺'
+  share_brownser: '请使用浏览器的分享功能 🥺'
+  link_text: 网页链接
+  deleted: 内容已被删除
+  type:
+    feed: 动态
+    news: 资讯
+    post: 帖子
+    question: 问题
+    answer: 回答
+  list:
+    like: 点赞列表
+    reward: 打赏列表
+
+collect:
+  name: 收藏
+  cancel: 取消收藏
+  success: 收藏成功
+delete:
+  name: 删除
+  confirm: 确认删除？
+  success: 删除成功
+report:
+  name: 举报
+  success: 举报成功
+top:
+  name: 置顶
+  apply: 申请置顶
+reply:
+  name: 回复
+  success: 回复成功
+comment:
+  name: 评论
+  success: 评论成功
+  delete:
+    name: 删除评论
+    success: 删除评论成功
+  top:
+    name: 评论置顶
+    apply: 申请评论置顶
+  empty: 评论内容不能为空
+reward:
+  name: 打赏
+  list: 打赏列表
+follow:
+  name: 关注
+  cancel: 取消关注
+  already: 已关注
+  each: 互相关注
+  count: '{0} 人关注'
+
+release:
+  text: 文字
+  image: 图片
+  news: 投稿
+  checkin: 签到
+  question: 提问
+  post: 发帖
+
+# loadmore
+loadmore:
+  top: ['下拉刷新', '释放更新', '正在刷新']
+  bottom: ['加载中...', '-- 没有更多 --', '点击加载更多']
+
+# date
+date:
+  in_minute: 1分钟内
+  minutes_ago: '{min}分钟前'
+  hours_ago: '{hour}小时前'
+  days_ago: '{day}天前'
+  yesterday: 昨天 {time}
+  today: 今天
+  month: 本月
+  week: 本周
+  months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+
+upload:
+  unsupported: 暂不支持的上传，请联系技术人员
+
+profile:
+  name: 我
+  info: 个人资料
+  address: 地址
+  bio: 简介
+  default_bio: 这家伙很懒，什么也没有留下
+  background:
+    success: 更新个人背景成功！
+    error: 请上传正确格式的图片文件
+  home:
+    name: 个人主页
+  news:
+    name: 我的投稿
+    published: 已发布
+    review: 审核中
+    reject: 被驳回
+  collect:
+    name: 我的收藏
+    feed: 收藏的动态
+    news: 收藏的资讯
+    post: 收藏的回答
+    answer: 收藏的帖子
+
+wallet:
+  name: 钱包
+
+currency:
+  name: 积分
+  unit: 积分
+  insufficient: '@:(currency.unit)不足，请充值'
+
+certificate:
+  name: 认证
+  apply: 申请认证
+  info: 认证信息
+  under_review: 您的认证正在等待审核，通过审核后可发布{name}
+  need: 请先进行身份认证
+  status: ['待审核', '通过审核', '被驳回', '未认证']
+  upload:
+    name: 上传资料
+    success: 提交成功，请等待审核
+    need: 请上传证件照片
+    front: 点击上传正面身份证照片
+    back: 点击上传反面身份证照片
+    fb: 请上传正反面身份证照片
+    org: 上传企业机构营业执照
+  validate:
+    number: 请检查身份证号码是否正确
+    phone: 请检查手机号码是否正确
+  user:
+    name: 个人认证
+    label:
+      name: 真实姓名
+      number: 身份证号码
+      phone: 手机号码
+      desc: 认证描述
+    placeholder:
+      name: 输入真实姓名
+      number: 输入正确的身份证号码
+      phone: 输入11位手机号码
+      desc: 该描述会影响审核，请慎重填写
+  org:
+    name: 企业认证
+    label:
+      name: 负责人
+      number: 身份证号码
+      phone: 手机号码
+      desc: 认证描述
+      org_name: 机构名称
+      org_address: 机构地址
+    placeholder:
+      name: 输入机构负责人
+      number: 输入负责人身份证号码
+      phone: 输入11位手机号码
+      desc: 该描述会影响审核，请慎重填写
+      org_name: 输入机构名称
+      org_address: 输入机构地址
+
+setting:
+  name: 设置
+  about:
+    name: 关于我们
+  locale:
+    name: 切换语言
+  logout:
+    name: 退出登录
+    label: 退出
+    confirm: 确认退出？
+
+tags:
+  select: 选择标签
+  placeholder: 可选择{0}个标签，已选择{1}标签
+  max_tips: 标签最多可选{0}个
+  first_tips:
+    title: 温馨提示
+    content: 标签为全局标签，选择合适的标签，系统可推荐你感兴趣的内容，方便找到相同身份或爱好的人，很重要哦！
+
+# feed
+feed:
+  name: 动态
+  detail: 动态详情
+  delete: 删除动态
+  apply_top: 申请动态置顶
+  count: '{0}条动态'
+  all: 全部动态
+  paid: 付费动态
+  top: 置顶动态
+
+  topic:
+    name: 话题
+    detail: 话题详情
+    creator: 创建者：{0}
+    participants: 参与话题的人
+    search: 搜索话题
+    hot: 热门话题
+    follow:
+      success: 关注话题成功！
+      cancel: 取消关注话题
+    create: 创建话题
+    edit: 编辑话题
+    cover:
+      upload: 上传话题封面
+      change: 更换封面
+    placeholder:
+      title: 输入话题标题，{0}字以内（必填）
+      desc: 简单介绍一下话题内容
+    tips: 话题创建成功后，标题不可更改
+    abort:
+      name: 放弃创建
+      confirm: 确认取消创建话题？
+
+news:
+  name: 资讯
+  detail: 资讯详情
+  need_certificate: 认证用户才能创建投稿，去认证？
+  my_subscription: 我的订阅
+  more_subscription: 更多订阅
+  cover:
+    tap_to_upload: 点击上传封面
+    placeholder: 不上传封面则默认为文章内第一张图
+    upload_failed: 封面图上传失败，请重试
+  post:
+    title: ['编辑文章', '完善文章信息', '上传封面']
+    label:
+      category: 选择栏目
+      tags: 选择标签
+      from: 文章来源
+      author: 作者
+      subject: 摘要
+    placeholder:
+      title: 输入标题，{0}字以内
+      body: 编辑文章正文
+      category: 选择栏目
+      tags: 最多选择{0}个标签
+      from: 不填写则默认为原创
+      author: 不填写则默认为本站用户名
+      subject: 请输入摘要信息，最多{0}字
+    select_category: 选择栏目
+    submit: 发布资讯
+    submit_with_payment: 支付并发布资讯
+    draft_confirm: 你还有未发布的内容，是否放弃发布？
+    need:
+      title&content: 请输入标题和正文
+      category: 请选择投稿栏目
+      tags: 请选择标签
+    pay:
+      title: 投稿支付
+      content: 本次投稿你需要支付{count}@:(currency.unit)，是否继续投稿？
+      confirm: 确认投稿
+      cancel: 暂不考虑
+
+group:
+  name: 圈子
+  index: 圈子首页
+
+  post:
+    name: 帖子
+
+question:
+  name: 问题
+  qa: 问答
+  q_a: 问答
+
+  answer:
+    name: 回答
+
+message:
+  name: 消息
+
+  system:
+    name: 系统消息
+
+  comment:
+    name: 收到的评论
+    reply: '{user1} 回复 {user2}'
+    commented: '{user} 评论了你的 {type}'
+
+  like:
+    name: 收到的赞
+    liked: '{user} 赞了你的 {type}'
+
+  audit:
+    name: 审核通知
+    review: 审核
+    reviewed: 已审核
+    rejected: 已驳回
+    placeholder: ['你有未审核的信息请及时处理', '暂无未审核的申请']
+    types:
+      feed_comment_top: 动态评论置顶
+      news_comment_top: 文章评论置顶
+      post_top: 帖子置顶
+      post_comment_top: 帖子评论置顶
+      group_join: 圈子加入申请
+    top:
+      amount: '{amount}@:(currency.unit) / {day}天'
+      accept: 同意置顶
+      reject: 拒绝置顶
+
+  chat:
+    name: 聊天
+
+
+rank:
+  name: 排行榜
+  user: 用户
+  banance: 财富达人排行榜
+  checkin: 社区签到排行榜
+  checkin_count: 累计签到：{0}
+  expert: 问答达人排行榜
+  fans: 全站粉丝排行榜
+  fans_count: 粉丝：{0}
+  income: 收入达人排行榜
+  question_like: 问答点赞排行榜
+  question_like_count: 问答点赞量：{0}
+  feed: '{0}动态排行榜'
+  feed_count: 点赞量：{0}
+  news: '{0}资讯排行榜'
+  news_count: 阅读量：{0}
+  answer: '{0}解答排行榜'
+  answer_count: 回答量：{0}
+
+find:
+  name: 找人
+
+location:
+  city: 选择城市
+  hot_city: 热门城市
+  current: 当前定位
+  empty: 未定位
+  choose: 选择定位
+
+auth:
+  login: 登录
+  register: 注册
+  register_protocol: 用户注册协议
+  account: 账户
+  password: 密码
+  guest: 不登录，先随便逛逛
+  one_key: 一键登录
+  use_phone: 使用手机号一键登陆
+  wechat: 微信
+  placeholder:
+    account: 用户名/手机号/邮箱
+    password: 输入{0}位以上登录密码
+  error:
+    account: 账户不正确
+    password: 密码不正确
+  forgot:
+    name: 忘记密码
+    find: 找回密码
+    get_code: 获取验证码
+    resend: '{0}s 后重发'
+    label:
+      phone: 手机号
+      email: 邮箱
+      code: 验证码
+      password: 密码
+    placeholder:
+      phone: 输入{0}位手机号
+      email: 输入邮箱地址
+      code: 输入{0}-{1}位验证码
+      password: 输入{0}位以上登录密码
+    type:
+      email: 邮箱找回
+      phone: 手机找回
+    success: 密码修改成功，返回重新登陆
+    error:
+      phone: 请输入正确的手机号码
+      email: 请输入正确的邮箱号码
+      password_min: 密码长度必须大于{0}位
+      password_max: 密码长度不得超过{0}位
+  change_password:
+    name: 修改密码
+    label:
+      old: 旧密码
+      new: 新密码
+      confirm: 确认新密码
+    placeholder:
+      old: 输入{0}位以上的原始密码
+      new: 输入{0}位以上新密码
+      confirm: 请确认新密码
+    message:
+      length: 新密码长度必须在{0}-{1}位之间
+      confirm: 密码确认不一致，请重新输入
+      success: 密码修改成功，返回重新登陆
+
+network:
+  cancel: 操作取消
+  not_found: 页面走丢了, 点击返回上一页
+  error:
+    e400: 错误请求
+    e401: 请登录
+    e401_expire: 登陆失效，请重新登录
+    e403: 拒绝访问
+    e404: 请求错误，未找到该资源
+    e405: 请求方法未允许
+    e408: 请求超时
+    e422: 错误请求
+    e500: 服务器端出错
+    e501: 网络未实现
+    e502: 网络错误
+    e503: 服务不可用
+    e504: 网络超时
+    e505:  HTTP 版本不支持该请求
+    default: 连接错误{0}
+    disconnect: 网络不可用，请检查！

@@ -1,6 +1,6 @@
 <template>
   <div class="p-topic-participants">
-    <CommonHeader>话题参与的人</CommonHeader>
+    <CommonHeader>{{ $t('feed.topic.participants') }}</CommonHeader>
 
     <main>
       <JoLoadMore ref="loadmore" @onRefresh="onRefresh">
@@ -55,9 +55,3 @@ export default {
   },
 }
 </script>
-
-<style lang="less" scoped>
-.p-topic-participants {
-
-}
-</style>

@@ -1,6 +1,6 @@
 <template>
   <div class="msgList">
-    <CommonHeader :pinned="true">收到的评论</CommonHeader>
+    <CommonHeader :pinned="true">{{ $t('message.comment.name') }}</CommonHeader>
 
     <div class="msgList-container">
       <JoLoadMore
@@ -38,35 +38,16 @@ import MessageCommenAnswerItem from './children/comments/MessageCommenAnswerItem
 
 const prefixCls = 'msgList'
 const items = {
-  feeds: MessageCommentFeedItem,
-  news: MessageCommentNewsItem,
-  questions: MessageCommentQuestionItem,
+  'feeds': MessageCommentFeedItem,
+  'news': MessageCommentNewsItem,
   'group-posts': MessageCommentPostItem,
+  'questions': MessageCommentQuestionItem,
   'question-answers': MessageCommenAnswerItem,
-}
-const commentType = {
-  feeds: {
-    title: '动态',
-    url: '/feed/',
-  },
-  'question-answers': {
-    title: '回答',
-    url: '/question-answers/',
-  },
-  news: {
-    title: '头条',
-    url: '/news/',
-  },
-  questions: {
-    title: '问题',
-    url: '/questions/',
-  },
 }
 export default {
   name: 'MessageComments',
   data: () => ({
     prefixCls,
-    commentType,
     items,
     refreshData: [],
   }),

@@ -1,6 +1,6 @@
 <template>
   <div :class="prefixCls">
-    <CommonHeader>问答达人排行榜</CommonHeader>
+    <CommonHeader>{{ $t('rank.expert') }}</CommonHeader>
 
     <JoLoadMore
       ref="loadmore"

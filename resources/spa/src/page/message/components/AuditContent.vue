@@ -48,7 +48,7 @@
         :class="`${prefixCls}-item-bottom-noImg`"
         class="content"
       >
-        内容已被删除
+        {{ $t('article.deleted') }}
       </div>
     </section>
   </div>

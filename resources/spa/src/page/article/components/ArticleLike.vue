@@ -18,13 +18,13 @@
             size="tiny"
           />
         </div>
-        <span class="like-count">{{ likeCount | formatNum }} 人点赞</span>
+        <span class="like-count">{{ likeCount | formatNum | t('article.like_count') }}</span>
       </template>
     </RouterLink>
 
     <div class="article-info">
-      <span>发布于 {{ time | time2tips }}</span>
-      <span>{{ viewCount | formatNum }} 浏览</span>
+      <span>{{ time | time2tips | t('article.posted_at') }}</span>
+      <span>{{ viewCount | formatNum | t('article.views_count') }}</span>
     </div>
   </div>
 </template>

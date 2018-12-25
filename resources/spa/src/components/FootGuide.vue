@@ -8,7 +8,7 @@
       <svg class="m-style-svg m-svg-def">
         <use xlink:href="#icon-foot-home" />
       </svg>
-      <span>动态</span>
+      <span>{{ $t('feed.name') }}</span>
     </section>
     <section
       :class="{active: isCurPath('/discover')}"
@@ -18,7 +18,7 @@
       <svg class="m-style-svg m-svg-def">
         <use xlink:href="#icon-foot-discover" />
       </svg>
-      <span>发现</span>
+      <span>{{ $t('discover') }}</span>
     </section>
     <section
       class="guide-item plus"
@@ -38,7 +38,7 @@
           <use xlink:href="#icon-foot-message" />
         </svg>
       </BadgeIcon>
-      <span>消息</span>
+      <span>{{ $t('message.name') }}</span>
     </section>
     <section
       :class="{active: isCurPath('profile')}"
@@ -50,7 +50,7 @@
           <use xlink:href="#icon-foot-profile" />
         </svg>
       </BadgeIcon>
-      <span>我</span>
+      <span>{{ $t('profile.name') }}</span>
     </section>
   </footer>
 </template>

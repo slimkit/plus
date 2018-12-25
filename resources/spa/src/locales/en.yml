@@ -1,1 +1,446 @@
-message: hello i18n !!
+
+discover: Discover
+
+newest: Newest
+hot: Hot
+fans: Fans
+all: All
+
+send: Send
+tips: Tips
+cancel: Cancel
+edit: Edit
+next_step: Next
+save: Save
+create: Create
+complete: Complete
+submit: Submit
+confirm: OK
+search: Search
+expand: Expand
+collapse: Collapse
+change: Change
+modify: Modify
+
+like: like
+share: share
+more: more
+pinned: pinned
+recommend: recommend
+nearby: 附近
+
+tap_to_edit: Tap to edit
+comment_placeholder: Just talk about ~
+got_it: Got it
+
+# ariticle
+article:
+  content: Content
+  posted_at: Posted {0}
+  views_count: '{0} views'
+  like_count: '{0} likes'
+  reward_count: '{count} rewards, {amount} @:(currency.unit)'
+  comment_count: '{0} comments'
+  view_all_comments: View all comments
+  detail: '{title} detail'
+  share_wechat: '🥺 Please use WeChat built-in sharing in the upper right corner'
+  share_brownser: '🥺 Please use the browser built-in sharing'
+  link_text: Web links
+  deleted: Content has been deleted
+  type:
+    feed: feed
+    news: news
+    post: post
+    question: question
+    answer: answer
+  list:
+    like: Likers list
+    reward: Rewarders list
+
+collect:
+  name: Collect
+  cancel: Cancel collection
+  success: Collection success
+delete:
+  name: Delete
+  confirm: Confirm delete?
+  success: Delete success
+report:
+  name: Report
+  success: Report success
+top:
+  name: Topping
+  apply: Apply for topping
+reply:
+  name: Reply
+  success: Reply success
+comment:
+  name: Comment
+  success: Comment success
+  delete:
+    name: Delete comment
+    success: Delete comment success
+  top:
+    name: Comment top
+    apply: Apply for comment tops
+  empty: Comment content cannot be empty
+reward:
+  name: Reward
+follow:
+  name: Follow
+  cancel: Cancel follow
+  already: Followed
+  each: Each follow
+  count: '{0} follwers'
+
+release:
+  text: Text
+  image: Image
+  news: News
+  checkin: Check-in
+  question: Question
+  post: Group post
+
+# loadmore
+loadmore:
+  top: ['Pull down to refresh', 'Release to update', 'Refreshing']
+  bottom: ['Loading...', '-- No more --', 'Touch to loadmore']
+
+date:
+  in_minute: wihtin 1 minute
+  minutes_ago: '{min} minutes ago'
+  hours_ago: '{hour} hours ago'
+  days_ago: '{day} days ago'
+  yesterday: yesterday {time}
+  today: today
+  month: 本月
+  week: 本周
+  months: ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'June', 'July', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.']
+
+upload:
+  unsupported: For unsupported uploads, please contact technical staff.
+
+profile:
+  name: Me
+  info: My profile
+  address: Address
+  bio: Introduction
+  default_bio: This guy is lazy, nothing left
+  background:
+    success: Update your personal background successfully!
+    error: Please upload the image file in the correct format
+  home:
+    name: Personal Homepage
+  news:
+    name: My contribution
+    published: Published
+    review: Under review
+    reject: Rejected
+  collect:
+    name: My collection
+    feed: 收藏的动态
+    news: 收藏的资讯
+    post: 收藏的回答
+    answer: 收藏的帖子
+
+wallet:
+  name: Wallet
+
+currency:
+  name: Currency
+  unit: currency
+  insufficient: '@:(currency.unit) is insufficient, please recharge'
+
+certificate:
+  name: Certificate
+  apply: Apply certificate
+  info: Certification
+  under_review: Your certification is awaiting review and can be published after reviewing {name}
+  need: Please authenticate first
+  status: ['Pending review', 'Approved', 'Was rejected', 'Not certified']
+  upload:
+    name: Upload data
+    success: Submitted successfully, please wait for review
+    need: Please upload a photo of your ID
+    front: Click to upload a positive ID photo
+    back: Click to upload photos on the back of your ID
+    fb: Please upload the front and back ID card photos
+    org: Upload a business license
+  validate:
+    number: Please check if the ID number is correct.
+    phone: Please check if the mobile number is correct.
+  user:
+    name: Personal certification
+    label:
+      name: Real name
+      number: ID number
+      phone: Phone
+      desc: Description
+    placeholder:
+      name: Enter the real name
+      number: Enter the correct ID number
+      phone: Enter 11 mobile phone number
+      desc: This description will affect the review, please fill in carefully
+  org:
+    name: Enterprise Certification
+    label:
+      name: Person in charge
+      number: ID number
+      phone: Phone
+      desc: Description
+      org_name: Organization name
+      org_address: Institution address
+    placeholder:
+      name: Enter the person in charge of the organization
+      number: Enter the person ID number
+      phone: Enter 11 mobile phone number
+      desc: This description will affect the review, please fill in carefully
+      org_name: Enter the institution name
+      org_address: Enter the institution address
+
+setting:
+  name: Setting
+  about:
+    name: About us
+  locale:
+    name: Change Language
+  logout:
+    name: Logout
+    label: Logout
+    confirm: confirm logout?
+
+tags:
+  select: Chooese Tags
+  placeholder: '{0} labels can be selected, {1} labels selected'
+  max_tips: Labels can be up to {0}
+  first_tips:
+    title: Tips
+    content: Labels are global labels, choose the right label, the system can recommend the content you are interested in, it is very convenient to find the same identity or hobby, it is very important!
+
+feed:
+  name: Feed
+  detail: Feed detail
+  delete: Delete feed
+  apply_top: Apply for feed topping
+  count: '{0} feeds'
+  all: All feeds
+  paid: Paid feeds
+  top: Top feeds
+
+  topic:
+    name: Topic
+    detail: Topic detail
+    creator: 'Creator: {0}'
+    participants: Participants
+    search: Search topic
+    hot: Hot topics
+    follow:
+      success: Follow the topic successfully!
+      cancel: Unfollow the topic
+    create: Create topic
+    edit: Edit topic
+    cover:
+      upload: Upload topic cover
+      change: Replace cover
+    placeholder:
+      title: Enter the topic title, within {0} words (required)
+      desc: Briefly introduce the topic content
+    tips: After the topic is created successfully, the title cannot be changed.
+    abort:
+      name: Give up creating
+      confirm: Confirm cancel the creation of the topic?
+
+news:
+  name: News
+  detail: News detail
+  need_certificate: Can a certified user create a submission and go to certification?
+  my_subscription: My subscription
+  more_subscription: More subscription
+  cover:
+    tap_to_upload: Tap to upload cover
+    placeholder: If you do not upload the cover, it defaults to the first image in the article.
+    upload_failed: Cover image upload failed, please try again
+  post:
+    title: ['Edit news', 'Improve news information', 'Upload cover']
+    label:
+      category: Select category
+      tags: Select label
+      from: Article Source
+      author: Author
+      subject: Summary
+    placeholder:
+      title: Please enter a title, within {0} characters
+      body: Please enter the body of the article
+      category: Select category
+      tags: Select up to {0} labels
+      from: If not filled, the default is original
+      author: If not filled in, the default is the username of the site.
+      subject: Please enter summary information up to {0} characters
+    select_category: Select category
+    submit: Distribute news
+    submit_with_payment: Pay and distribute news
+    draft_confirm: Do you still have unpublished content, do you give up publishing?
+    need:
+      title&content: Please enter the title and body
+      category: Please select the submission category
+      tags: Please select a tag
+    pay:
+      title: Submission payment
+      content: You need to pay {count}@:(currency.unit) for this submission. Do you want to continue contributing?
+      confirm: Confirm submission
+      cancel: 暂不考虑
+
+group:
+  name: Group
+  index: Group
+
+  post:
+    name: group post
+
+question:
+  name: Question
+  qa: Questions and answers
+  q_a: Q&A
+
+  answer:
+    name: Answer
+
+message:
+  name: Message
+
+  system:
+    name: System information
+
+  comment:
+    name: Comments received
+    reply: '{user1} Reply {user2}'
+    commented: '{user} commented on your {type}'
+
+  like:
+    name: Received likes
+    liked: '{user} liked your {type}'
+
+  audit:
+    name: Audit notices
+    review: Review
+    reviewed: Reviewed
+    rejected: Rejected
+    placeholder: ['If you have unreviewed information, please handle it in time.', 'No pending applications']
+    types:
+      feed_comment_top: Feed comment top
+      news_comment_top: News comment top
+      post_top: Group post top
+      post_comment_top: Group post comment top
+      group_join: Group join
+    top:
+      amount: '{amount} @:(currency.unit) / {day} days'
+      accept: Agree to top
+      reject: Reject to top
+
+  chat:
+    name: Chat
+
+rank:
+  name: Ranking list
+  user: User
+  balance: Wealth leader list
+  checkin:
+  checkin_count: 'Cumulative check-in: {0}'
+  expert: 问答达人排行榜
+  fans: 全站粉丝排行榜
+  fans_count: 粉丝：{0}
+  income: 收入达人排行榜
+  question_like: 问答点赞排行榜
+  question_like_count: 问答点赞量：{0}
+  feed: '{0}动态排行榜'
+  feed_count: 点赞量：{0}
+  news: '{0}资讯排行榜'
+  news_count: 阅读量：{0}
+  answer: '{0}解答排行榜'
+  answer_count: 回答量：{0}
+
+find:
+  name: Find user
+
+location:
+  city: Select city
+  hot_city: Hot city
+  current: Current position
+  empty: 未定位
+  choose: 选择定位
+
+auth:
+  login: Login
+  register: Register
+  register_protocol: Register protocol
+  account: Account
+  password: Password
+  guest: Don't log in, just stroll around
+  one_key: 一键登录
+  use_phone: Use the phone number to log in
+  wechat: Wechat
+  placeholder:
+    account: Username / Phone / Email
+    password: Enter a login password of {0} or more
+  error:
+    account: Account is incorrect
+    password: Password is incorrect
+  forgot:
+    name: Forget password
+    find: Find password
+    get_code: Get code
+    resend: 'Resend after {0}s'
+    label:
+      phone: Phone
+      email: Email
+      code: Code
+      password: Password
+    placeholder:
+      phone: Enter {0} digits
+      email: Enter email address
+      code: Enter {0}-{1} digit verification code
+      password: Enter a login password of {0} or more
+    type:
+      email: Use email
+      phone: Use phone
+    success: The password was successfully modified and returned to log in again.
+    error:
+      phone: Please enter the correct phone number
+      email: Please enter the correct email number
+      password_min: Password length must be greater than {0} bit
+      password_max: Password cannot exceed {0} digits
+  change_password:
+    name: Change Password
+    label:
+      old: Old password
+      new: New password
+      confirm: Confirm
+    placeholder:
+      old: Enter the original password above {0}
+      new: Enter a new password above {0}
+      confirm: Confirm the new password
+    message:
+      length: The new password must be between {0} and {1} digits long
+      confirm: Password confirmation is inconsistent, please re-enter
+      success: The password was successfully modified and returned to log in again.
+
+network:
+  cancel: Operation cancellation
+  not_found: 页面走丢了, 点击返回上一页
+  error:
+    e400: Bad request
+    e401: please log in first
+    e401_expire: Login failed, please log in again
+    e403: Access Denied
+    e404: Request error, the resource was not found
+    e405: Request method not allowed
+    e408: Request timed out
+    e422: Bad request
+    e500: Network error, please contact the administrator
+    e501: Network not implemented
+    e502: Bad Gateway
+    e503: Service Unavailable
+    e504: Gateway Timeout
+    e505:  HTTP Version Not Supported
+    default: Error {0}
+    disconnect: Lost connection with the server!

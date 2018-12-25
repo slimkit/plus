@@ -11,19 +11,20 @@
     </form>
 
     <a class="btn-cancel" @click.prevent.stop="onBackClick">
-      取消
+      {{ $t('cancel') }}
     </a>
   </header>
 </template>
 
 <script>
 import { noop } from '@/util'
+import i18n from '@/i18n'
 
 export default {
   name: 'SearchBar',
   props: {
     value: { type: String, default: '' },
-    placeholder: { type: String, default: '搜索' },
+    placeholder: { type: String, default: i18n.t('search') },
     back: { type: Function, default: noop },
   },
   methods: {
@@ -72,8 +73,8 @@ export default {
   }
 
   .btn-cancel {
-    flex: none;
-    width: calc(~"2em + 20px");
+    min-width: 2em;
+    margin-left: 20px;
     text-align: right;
   }
 }

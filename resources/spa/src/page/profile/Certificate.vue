@@ -7,8 +7,9 @@
         slot="right"
         :class="['btn-submit', disabled]"
         @click="validate(onSubmit)"
-        v-text="`提交`"
-      />
+      >
+        {{ $t('submit') }}
+      </span>
     </CommonHeader>
 
     <TransitionGroup
@@ -126,7 +127,7 @@
               @click="validate(() => {step = 2})"
             >
               <CircleLoading v-if="loading" />
-              <span v-else>下一步</span>
+              <span v-else>{{ $t('next_step') }}</span>
             </button>
           </div>
         </div>
@@ -134,14 +135,14 @@
 
       <template v-if="step === 2">
         <div key="step2" class="step2">
-          <p v-if="type === 'user'" class="poster-tips"> 请上传正反面身份证照片 </p>
-          <p v-else class="poster-tips"> 上传企业机构营业执照 </p>
+          <p v-if="type === 'user'" class="poster-tips"> {{ $t('certificate.upload.fb') }} </p>
+          <p v-else class="poster-tips"> {{ $t('certificate.upload.org') }} </p>
           <ImagePoster :poster="poster1" @uploaded="uploaded1">
-            <span>点击上传正面身份证照片</span>
+            <span>{{ $t('certificate.upload.front') }}</span>
           </ImagePoster>
           <template v-if="type=='user' && files.length > 0">
             <ImagePoster :poster="poster2" @uploaded="uploaded2">
-              <span>点击上传反面身份证照片</span>
+              <span>{{ $t('certificate.upload.back') }}</span>
             </ImagePoster>
           </template>
         </div>
@@ -159,21 +160,22 @@ import ImagePoster from '@/components/ImagePoster.vue'
 import TextareaInput from '@/components/common/TextareaInput.vue'
 import * as api from '@/api/user.js'
 import { noop } from '@/util'
+import i18n from '@/i18n'
 
 const formInfo = {
   user: {
-    name: { label: '真实姓名', placeholder: '输入真实姓名' },
-    number: { label: '身份证号码', placeholder: '输入正确的身份证号码' },
-    phone: { label: '手机号码', placeholder: '输入11位手机号码' },
-    desc: { label: '认证描述', placeholder: '该描述会影响审核，请慎重填写' },
+    name: { label: i18n.t('certificate.user.label.name'), placeholder: i18n.t('certificate.user.placeholder.name') },
+    number: { label: i18n.t('certificate.user.label.number'), placeholder: i18n.t('certificate.user.placeholder.number') },
+    phone: { label: i18n.t('certificate.user.label.phone'), placeholder: i18n.t('certificate.user.placeholder.phone') },
+    desc: { label: i18n.t('certificate.user.label.desc'), placeholder: i18n.t('certificate.user.placeholder.desc') },
   },
   org: {
-    name: { label: '负责人', placeholder: '输入机构负责人' },
-    number: { label: '身份证号码', placeholder: '输入负责人身份证号码' },
-    phone: { label: '手机号码', placeholder: '输入11位手机号码' },
-    desc: { label: '认证描述', placeholder: '该描述会影响审核，请慎重填写' },
-    orgName: { label: '机构名称', placeholder: '输入机构名称' },
-    orgAddress: { label: '机构地址', placeholder: '输入机构地址' },
+    name: { label: i18n.t('certificate.org.label.name'), placeholder: i18n.t('certificate.org.placeholder.name') },
+    number: { label: i18n.t('certificate.org.label.number'), placeholder: i18n.t('certificate.org.placeholder.number') },
+    phone: { label: i18n.t('certificate.org.label.phone'), placeholder: i18n.t('certificate.org.placeholder.phone') },
+    desc: { label: i18n.t('certificate.org.label.desc'), placeholder: i18n.t('certificate.org.placeholder.desc') },
+    orgName: { label: i18n.t('certificate.org.label.org_name'), placeholder: i18n.t('certificate.org.placeholder.org_name') },
+    orgAddress: { label: i18n.t('certificate.org.label.org_address'), placeholder: i18n.t('certificate.org.placeholder.org_address') },
   },
 }
 
@@ -208,11 +210,8 @@ export default {
   },
   computed: {
     title () {
-      return this.step === 1
-        ? this.type === 'user'
-          ? '个人认证'
-          : '企业认证'
-        : '上传资料'
+      if (this.step !== 1) return i18n.t('certificate.upload.name')
+      return i18n.t(`certificate.${this.type}.name`)
     },
     /**
      * 认证类型. 必须是 (user|org)
@@ -313,12 +312,12 @@ export default {
       const postData = Object.assign({ files: this.files }, this.formData)
       if (this.status === 0) {
         api.postCertification(postData).then(() => {
-          this.$Message.success('提交成功，请等待审核')
+          this.$Message.success(this.$t('certificate.upload.success'))
           this.goBack()
         })
       } else {
         api.patchCertification(postData).then(() => {
-          this.$Message.success('提交成功，请等待审核')
+          this.$Message.success(this.$t('certificate.upload.success'))
           this.goBack()
         })
       }
@@ -341,15 +340,15 @@ export default {
       }
       switch (this.step) {
         case 1: {
-          if (!this.fields.number.match(match.number)) { failed = '请检查身份证号码是否正确' }
-          if (!this.fields.phone.match(match.phone)) { failed = '请检查手机号码是否正确' }
+          if (!this.fields.number.match(match.number)) { failed = i18n.t('certificate.validate.number') }
+          if (!this.fields.phone.match(match.phone)) { failed = i18n.t('certificate.validate.phone') }
           break
         }
         case 2:
           if (
             (this.type === 'user' && this.files.length !== 2) ||
             (this.type === 'org' && this.files.length !== 1)
-          ) { failed = '请上传证件照片' }
+          ) { failed = i18n.t('certificate.upload.need') }
           break
       }
       if (!failed) next()

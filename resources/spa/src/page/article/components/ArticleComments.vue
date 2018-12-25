@@ -7,7 +7,7 @@
       class="m-box-model m-art-comments"
     >
       <ul class="m-box m-aln-center m-art-comments-tabs">
-        <li>{{ total | formatNum }}条评论</li>
+        <li>{{ total | formatNum | t('article.comment_count') }}</li>
       </ul>
       <ArticleCommentItem
         v-for="(comment) in pinneds"
@@ -24,13 +24,13 @@
         @click="$emit('reply', comment)"
       />
       <div class="m-box m-aln-center m-justify-center load-more-box">
-        <span v-if="noMore" class="load-more-ph">---没有更多---</span>
+        <span v-if="noMore" class="load-more-ph">{{ $t('loadmore.bottom[1]') }}</span>
         <span
           v-else
           class="load-more-btn"
           @click.stop="fetch(maxCommentId)"
         >
-          {{ fetching ? "加载中..." : "点击加载更多" }}
+          {{ fetching ? $t('loadmore.bottom[0]') : $t('loadmore.bottom[2]') }}
         </span>
       </div>
     </div>
@@ -42,16 +42,17 @@ import { limit } from '@/api'
 import * as feedApi from '@/api/feeds'
 import * as newsApi from '@/api/news'
 import ArticleCommentItem from './ArticleCommentItem'
+import i18n from '@/i18n'
 
 const typeMap = {
   feed: {
-    title: '动态',
+    title: i18n.t('feed.name'),
     getComments: feedApi.getFeedComments,
     postComment: feedApi.postFeedComment,
     deleteComment: feedApi.deleteFeedComment,
   },
   news: {
-    title: '资讯',
+    title: i18n.t('news.name'),
     getComments: newsApi.getNewsComments,
     postComment: newsApi.postNewsComment,
     deleteComment: newsApi.deleteNewsComment,
@@ -134,7 +135,7 @@ export default {
         { text: '删除', method: () => void this.deleteComment(commentId) },
       ]
       setTimeout(() => {
-        this.$bus.$emit('actionSheet', actions, '取消', '确认删除？')
+        this.$bus.$emit('actionSheet', actions, this.$t('cancel'), '确认删除？')
       }, 200)
     },
     deleteComment (commentId) {

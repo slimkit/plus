@@ -148,7 +148,7 @@ export default {
       this.$bus.$emit(
         'actionSheet',
         actions,
-        '取消',
+        this.$t('cancel'),
         '认证用户才能创建圈子, 去认证?'
       )
     },

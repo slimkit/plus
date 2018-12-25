@@ -37,51 +37,53 @@
 
 <script>
 import { mapState } from 'vuex'
+import i18n from '@/i18n'
 
 const prefixCls = 'msg'
+const system = {
+  system: {
+    title: i18n.t('message.system.name'),
+    placeholder: 'sPlaceholder',
+    icon: 'notice',
+    hanBadge: 0,
+    url: '/message/system',
+    count: 'sCount',
+    time: 'sTime',
+  },
+  comments: {
+    title: i18n.t('message.comment.name'),
+    placeholder: 'cPlaceholder',
+    icon: 'comment',
+    hanBadge: 0,
+    url: '/message/comments',
+    count: 'cCount',
+    time: 'cTime',
+  },
+  diggs: {
+    title: i18n.t('message.like.name'),
+    placeholder: 'dPlaceholder',
+    icon: 'like',
+    hanBadge: 0,
+    url: '/message/likes',
+    count: 'dCount',
+    time: 'dTime',
+  },
+  audits: {
+    title: i18n.t('message.audit.name'),
+    placeholder: 'aPlaceholder',
+    icon: 'audit',
+    hanBadge: 0,
+    url: '/message/audits/feedcomments',
+    count: 'aCount',
+  },
+}
 
 export default {
   name: 'MessageHome',
   data () {
     return {
       prefixCls,
-      system: {
-        system: {
-          title: '系统消息',
-          placeholder: 'sPlaceholder',
-          icon: 'notice',
-          hanBadge: 0,
-          url: '/message/system',
-          count: 'sCount',
-          time: 'sTime',
-        },
-        comments: {
-          title: '收到的评论',
-          placeholder: 'cPlaceholder',
-          icon: 'comment',
-          hanBadge: 0,
-          url: '/message/comments',
-          count: 'cCount',
-          time: 'cTime',
-        },
-        diggs: {
-          title: '收到的赞',
-          placeholder: 'dPlaceholder',
-          icon: 'like',
-          hanBadge: 0,
-          url: '/message/likes',
-          count: 'dCount',
-          time: 'dTime',
-        },
-        audits: {
-          title: '审核通知',
-          placeholder: 'aPlaceholder',
-          icon: 'audit',
-          hanBadge: 0,
-          url: '/message/audits/feedcomments',
-          count: 'aCount',
-        },
-      },
+      system,
     }
   },
   computed: {
@@ -98,7 +100,7 @@ export default {
       return this.msg.diggs.placeholder
     },
     aPlaceholder () {
-      return this.aCount ? '你有未审核的信息请及时处理' : '暂无未审核的申请'
+      return this.aCount ? this.$t('message.audit.placeholder[0]') : this.$t('message.audit.placeholder[1]')
     },
     sPlaceholder () {
       return this.msg.system.placeholder

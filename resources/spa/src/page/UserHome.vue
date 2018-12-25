@@ -29,27 +29,27 @@
             to="followers"
             tag="span"
           >
-            粉丝 <span>{{ followersCount | formatNum }}</span>
+            {{ $t('fans') }} <span>{{ followersCount | formatNum }}</span>
           </RouterLink>
           <RouterLink
             append
             to="followings"
             tag="span"
           >
-            关注 <span>{{ followingsCount | formatNum }}</span>
+            {{ $t('follow.name') }} <span>{{ followingsCount | formatNum }}</span>
           </RouterLink>
         </p>
       </div>
 
       <div slot="info" class="user-info">
         <p v-if="verified" class="verified">
-          认证：<span>{{ verified.description }}</span>
+          {{ $t('certificate.name') }}: <span>{{ verified.description }}</span>
         </p>
         <p v-if="user.location">
-          地址：<span>{{ user.location }}</span>
+          {{ $t('profile.address') }}: <span>{{ user.location }}</span>
         </p>
         <p>
-          简介：<span>{{ bio }}</span>
+          {{ $t('profile.bio') }}: <span>{{ bio }}</span>
         </p>
         <p v-if="tags.length" class="user-tags">
           <span
@@ -68,7 +68,7 @@
         class="filter-bar"
         @click="popupBuyTS"
       >
-        <span>{{ feedsCount }}条动态</span>
+        <span>{{ feedsCount | t('feed.count') }}</span>
         <div v-if="isMine">
           <span>{{ feedTypes[screen] }}</span>
           <svg class="m-style-svg m-svg-small">
@@ -98,7 +98,7 @@
           <svg class="m-style-svg m-svg-def">
             <use xlink:href="#icon-profile-integral" />
           </svg>
-          <span>打赏</span>
+          <span>{{ $t('reward.name') }}</span>
         </div>
         <div
           :class="{ primary: relation.status !== 'unFollow' }"
@@ -115,7 +115,7 @@
           <svg class="m-style-svg m-svg-def">
             <use xlink:href="#icon-comment" />
           </svg>
-          <span>聊天</span>
+          <span>{{ $t('message.chat.name') }}</span>
         </div>
       </template>
     </PortalPanel>
@@ -183,9 +183,9 @@ export default {
 
       feeds: [],
       feedTypes: {
-        all: '全部动态',
-        paid: '付费动态',
-        pinned: '置顶动态',
+        all: this.$t('feed.all'),
+        paid: this.$t('feed.paid'),
+        pinned: this.$t('feed.top'),
       },
       fetchFeeding: false,
 
@@ -224,7 +224,7 @@ export default {
       },
     },
     bio () {
-      return this.user.bio || '这家伙很懒,什么也没留下'
+      return this.user.bio || this.$t('profile.default_bio')
     },
     extra () {
       return this.user.extra || {}
@@ -256,17 +256,17 @@ export default {
       get () {
         const relations = {
           unFollow: {
-            text: '关注',
+            text: this.$t('follow.name'),
             status: 'unFollow',
             icon: `#icon-unFollow`,
           },
           follow: {
-            text: '已关注',
+            text: this.$t('follow.already'),
             status: 'follow',
             icon: `#icon-follow`,
           },
           eachFollow: {
-            text: '互相关注',
+            text: this.$t('follow.each'),
             status: 'eachFollow',
             icon: `#icon-eachFollow`,
           },
@@ -402,18 +402,18 @@ export default {
           const node = await uploadApi(file)
           // 修改用户信息（背景图片）
           await this.$http.patch('/user', { bg: node })
-          this.$Message.success('更新个人背景成功！')
+          this.$Message.success(this.$t('profile.background.success'))
           this.fetchUserInfo()
         })
         .catch(() => {
-          this.$Message.error('请上传正确格式的图片文件')
+          this.$Message.error(this.$t('profile.background.error'))
           $input.value = ''
         })
     },
     onMoreClick () {
       const actions = []
       actions.push({
-        text: '举报',
+        text: this.$t('report.name'),
         method: () => {
           this.$bus.$emit('report', {
             type: 'user',

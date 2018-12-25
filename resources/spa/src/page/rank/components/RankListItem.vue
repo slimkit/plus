@@ -44,8 +44,8 @@ export default {
           : 'unFollow'
     },
     followText () {
-      if (this.isFollow === 'eachFollow') return '相互关注'
-      return this.isFollow === 'follow' ? '已关注' : '+ 关注'
+      if (this.isFollow === 'eachFollow') return this.$t('follow.each')
+      return this.isFollow === 'follow' ? this.$t('follow.already') : `+ ${this.$t('follow.name')}`
     },
   },
   methods: {

@@ -3,7 +3,6 @@
     <JoLoadMore
       ref="loadmore"
       :auto-load="false"
-      style="padding-top: .9rem"
       @onRefresh="onRefresh"
       @onLoadMore="onLoadMore"
     >

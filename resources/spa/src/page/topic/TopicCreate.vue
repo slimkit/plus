@@ -1,21 +1,22 @@
 <template>
   <div class="p-topic-create">
     <CommonHeader>
-      {{ topicId ? '编辑话题' : '创建话题' }}
+      {{ topicId ? 'feed.topic.edit' : 'feed.topic.create' | t }}
       <span
         slot="left"
         class="primary"
         @click="beforeBack"
       >
-        取消
+        {{ $t('cancel') }}
       </span>
       <span
         slot="right"
         class="create-btn"
         :class="{active: !disabled}"
         @click="beforeSubmit"
-        v-text="topicId ? '保存' : '创建'"
-      />
+      >
+        {{ topicId ? $t('save') : $t('create') }}
+      </span>
     </CommonHeader>
 
     <div v-if="loading" class="m-pos-f m-spinner" />
@@ -30,7 +31,7 @@
           <svg class="m-style-svg m-svg-big">
             <use xlink:href="#icon-camera" />
           </svg>
-          上传话题封面
+          {{ $t('feed.topic.cover.upload') }}
         </div>
         <div
           v-else
@@ -42,7 +43,7 @@
             <svg class="m-style-svg m-svg-big">
               <use xlink:href="#icon-camera" />
             </svg>
-            更换封面
+            {{ $t('feed.topic.cover.change') }}
           </div>
         </div>
         <label class="title">
@@ -51,20 +52,20 @@
             type="text"
             maxlength="10"
             :disabled="topicId"
-            placeholder="输入话题标题，10字以内（必填）"
+            :placeholder="$t('feed.topic.placeholder.desc', [10])"
           >
         </label>
         <label class="description">
           <TextareaInput
             v-model="desc"
             type="text"
-            placeholder="简单介绍一下话题内容"
+            :placeholder="$t('feed.topic.placeholder.desc')"
             :maxlength="50"
             :rows="4"
           />
         </label>
       </form>
-      <p class="tips">话题创建成功后，标题不可更改</p>
+      <p class="tips">{{ $t('feed.topic.tips') }}</p>
     </main>
 
     <ImageUploader
@@ -170,14 +171,14 @@ export default {
       const isModified = this.topicId
         ? !this.disabled
         : (this.title || this.desc || this.node)
-      if (!isModified) return this.goBack()
+      if (!isModified || this.topicId) return this.goBack()
       const actions = [
         {
-          text: '放弃创建',
+          text: this.$t('feed.topic.abort.name'),
           method: () => void this.goBack(),
         },
       ]
-      this.$bus.$emit('actionSheet', actions, '取消', '确认取消创建话题？')
+      this.$bus.$emit('actionSheet', actions, this.$t('cancel'), this.$t('feed.topic.abort.confirm'))
     },
   },
 }
@@ -253,6 +254,7 @@ export default {
     position: fixed;
     bottom: 30px;
     left: 30px;
+    right: 30px;
     color: #999;
     font-size: 26px;
 

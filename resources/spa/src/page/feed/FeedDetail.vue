@@ -469,12 +469,7 @@ export default {
                     },
                   },
                 ]
-                this.$bus.$emit(
-                  'actionSheet',
-                  actionSheet,
-                  '取消',
-                  '确认删除?'
-                )
+                this.$bus.$emit('actionSheet', actionSheet, this.$t('cancel'), '确认删除?')
               }, 200)
             },
           },
@@ -492,7 +487,7 @@ export default {
             },
           },
         ]
-      this.$bus.$emit('actionSheet', [...defaultActions, ...actions], '取消')
+      this.$bus.$emit('actionSheet', [...defaultActions, ...actions])
     },
     replyComment (comment) {
       const actions = []

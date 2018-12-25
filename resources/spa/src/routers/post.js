@@ -1,3 +1,5 @@
+import i18n from '@/i18n'
+
 const PostNews = () =>
   import(/* webpackChunkName: 'post' */ '@/page/post/PostNews.vue')
 const PostImage = () =>
@@ -11,7 +13,7 @@ export default [
     name: 'PostNews',
     component: PostNews,
     meta: {
-      title: '编辑文章',
+      title: i18n.t('release.post'),
       requiresAuth: true,
     },
   },
@@ -20,7 +22,7 @@ export default [
     name: 'PostText',
     component: PostText,
     meta: {
-      title: '发布动态',
+      title: i18n.t('release.text'),
       requiresAuth: true,
     },
   },
@@ -29,7 +31,7 @@ export default [
     name: 'PostImage',
     component: PostImage,
     meta: {
-      title: '发布图片',
+      title: i18n.t('release.image'),
       requiresAuth: true,
     },
   },

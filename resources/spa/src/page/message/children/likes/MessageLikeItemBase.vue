@@ -14,7 +14,7 @@ export default {
   computed: {
     getImage () {
       const { like } = this
-      const { length } = like.likeable.images
+      const { length } = like.likeable.images || []
       if (length > 0) {
         const { 0: img = {} } = like.likeable.images
         return `${this.$http.defaults.baseURL}/files/${img.id}`
@@ -25,6 +25,11 @@ export default {
     user () {
       const { user } = this.like
       return user || {}
+    },
+  },
+  methods: {
+    viewUser (userId) {
+      this.$router.push({ name: 'UserDetail', params: { userId } })
     },
   },
 }

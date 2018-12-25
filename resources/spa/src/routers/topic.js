@@ -1,3 +1,5 @@
+import i18n from '@/i18n'
+
 import TopicHome from '@/page/topic/TopicHome.vue'
 import TopicCreate from '@/page/topic/TopicCreate.vue'
 import TopicSearch from '@/page/topic/TopicSearch.vue'
@@ -10,7 +12,7 @@ export default [
     name: 'TopicHome',
     component: TopicHome,
     meta: {
-      title: '话题',
+      title: i18n.t('feed.topic.name'),
     },
   },
   {
@@ -18,7 +20,7 @@ export default [
     name: 'TopicCreate',
     component: TopicCreate,
     meta: {
-      title: '创建话题',
+      title: i18n.t('feed.topic.create'),
       requiresAuth: true,
     },
   },
@@ -27,7 +29,7 @@ export default [
     name: 'TopicEdit',
     component: TopicCreate,
     meta: {
-      title: '编辑话题',
+      title: i18n.t('feed.topic.edit'),
       requiresAuth: true,
     },
   },
@@ -36,7 +38,7 @@ export default [
     name: 'TopicSearch',
     component: TopicSearch,
     meta: {
-      title: '搜索话题',
+      title: i18n.t('feed.topic.search'),
       keepAlive: true,
       requiresAuth: true,
     },
@@ -46,7 +48,7 @@ export default [
     name: 'TopicDetail',
     component: TopicDetail,
     meta: {
-      title: '话题详情',
+      title: i18n.t('feed.topic.detail'),
     },
   },
   {
@@ -54,7 +56,7 @@ export default [
     name: 'TopicParticipants',
     component: TopicParticipants,
     meta: {
-      title: '话题参与者',
+      title: i18n.t('feed.topic.participants'),
     },
   },
 ]

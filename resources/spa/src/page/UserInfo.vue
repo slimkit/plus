@@ -173,7 +173,7 @@ export default {
         { text: '女', method: () => void (this.sex = 2) },
         { text: '保密', method: () => void (this.sex = 0) },
       ]
-      this.$bus.$emit('actionSheet', options, '取消')
+      this.$bus.$emit('actionSheet', options)
     },
   },
 }

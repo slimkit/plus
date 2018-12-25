@@ -30,7 +30,7 @@ export default {
 
       title: '',
       content: '',
-      confirmText: '知道了',
+      confirmText: this.$t('got_it'),
       onClose: noop,
     }
   },

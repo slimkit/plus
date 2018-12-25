@@ -3,7 +3,7 @@
     <CommonHeader>
       {{ title }}
       <template slot="left">
-        <a v-if="step === 1" @click.prevent="cancel">取消</a>
+        <a v-if="step === 1" @click.prevent="cancel">{{ $t('cancel') }}</a>
         <svg
           v-else
           class="m-style-svg m-svg-def"
@@ -19,7 +19,7 @@
           class="m-send-btn"
           @click.prevent="nextStep"
         >
-          下一步
+          {{ $t('next_step') }}
         </a>
       </template>
     </CommonHeader>
@@ -42,14 +42,14 @@
               class="m-lim-width"
               maxlength="20"
               type="text"
-              placeholder="输入标题，20字以内"
+              :placeholder="$t('news.post.placeholder.title', [20])"
             >
           </div>
           <div class="m-box-model m-flex-grow1 m-flex-shrink1 m-lim-width m-post-news-content">
             <textarea
               ref="textarea"
               v-model.trim="contentText"
-              placeholder="编辑文章正文"
+              :placeholder="$t('news.post.placeholder.body')"
             />
           </div>
         </div>
@@ -57,16 +57,16 @@
       <template v-if="step === 2">
         <div key="step2" class="m-pos-f m-box-model m-flex-grow1 m-flex-shrink1">
           <div class="m-box m-aln-center m-lim-width m-post-news-row m-main m-bb1" @click="switchCate">
-            <span class="m-post-news-row-label">选择栏目</span>
+            <span class="m-post-news-row-label">{{ $t('news.post.label.category') }}</span>
             <div :class="{placeholder: !(category.id > 0)}" class="m-box m-flex-grow1 m-flex-shrink1 m-aln-center m-justify-end">
-              <span>{{ category.name || "选择栏目" }}</span>
+              <span>{{ category.name || $t('news.post.placeholder.category') }}</span>
               <svg class="m-style-svg m-svg-def m-entry-append">
                 <use xlink:href="#icon-arrow-right" />
               </svg>
             </div>
           </div>
           <div class="m-box m-aln-center m-lim-width m-post-news-row m-main m-bb1" @click="switchTags">
-            <span class="m-post-news-row-label">选择标签</span>
+            <span class="m-post-news-row-label">{{ $t('news.post.label.tags') }}</span>
             <div class="m-flex-grow1 m-flex-shrink1 m-text-r">
               <div v-if="tags.length > 0" class="m-tags">
                 <span
@@ -77,7 +77,7 @@
                 />
               </div>
               <div v-else class="m-box m-justify-end placeholder">
-                <span>最多选择5个标签</span>
+                <span>{{ $t('news.post.placeholder.tags', [5]) }}</span>
               </div>
             </div>
             <svg class="m-flex-grow0 m-flex-shrink0 m-style-svg m-svg-def m-entry-append">
@@ -85,35 +85,35 @@
             </svg>
           </div>
           <div class="m-box m-aln-center m-lim-width m-post-news-row m-main m-bb1">
-            <span class="m-post-news-row-label">文章来源</span>
+            <span class="m-post-news-row-label">{{ $t('news.post.label.from') }}</span>
             <div class="m-box m-flex-grow1 m-flex-shrink1 m-aln-center m-justify-end">
               <input
                 v-model.trim="news.from"
                 type="text"
                 dir="rtl"
-                placeholder="不填写则默认为原创"
+                :placeholder="$t('news.post.placeholder.from')"
               >
             </div>
           </div>
           <div class="m-box m-aln-center m-lim-width m-post-news-row m-main m-bb1">
-            <span class="m-post-news-row-label">作者</span>
+            <span class="m-post-news-row-label">{{ $t('news.post.label.author') }}</span>
             <div class="m-box m-flex-grow1 m-flex-shrink1 m-aln-center m-justify-end">
               <input
                 v-model.trim="news.author"
                 type="text"
                 dir="rtl"
-                placeholder="不填写则默认为本站用户名"
+                :placeholder="$t('news.post.placeholder.author')"
               >
             </div>
           </div>
           <div class="m-box m-aln-center m-lim-width m-post-news-row m-main">
-            <span class="m-post-news-row-label">摘要</span>
+            <span class="m-post-news-row-label">{{ $t('news.post.label.subject') }}</span>
             <div class="m-box m-flex-grow1 m-flex-shrink1 m-aln-center m-justify-end">
               <TextareaInput
                 v-model="news.subject"
                 maxlength="200"
                 warnlength="150"
-                placeholder="请输入摘要信息，最多200字"
+                :placeholder="$t('news.post.placeholder.subject', [200])"
               />
             </div>
           </div>
@@ -137,7 +137,7 @@
               <svg class="m-style-svg m-svg-big">
                 <use xlink:href="#icon-camera" />
               </svg>
-              <span>点击上传封面</span>
+              <span>{{ $t('news.cover.tap_to_upload') }}</span>
             </div>
             <div v-if="!poster.error && poster.loading" class="fixed-loading">
               <div class="u-loading" style="height: 58px;width: 58px">
@@ -177,8 +177,10 @@
               @change="selectPhoto"
             >
           </div>
-          <p>不上传封面则默认为文章内第一张图</p>
-          <button class="m-long-btn m-signin-btn" @click="handleOk">{{ newsPay ? '支付并发布资讯' : '发布资讯' }}</button>
+          <p>{{ $t('news.cover.placeholder') }}</p>
+          <button class="m-long-btn m-signin-btn" @click="handleOk">
+            {{ newsPay ? 'news.post.submit_with_payment' : 'news.post.submit' | t }}
+          </button>
 
           <PasswordConfirm ref="password" @submit="handlePostNews" />
         </div>
@@ -252,16 +254,9 @@ export default {
       return 'blank' + this.contentText
     },
     title () {
-      switch (this.step) {
-        case 1:
-          return '编辑文章'
-        case 2:
-          return '完善文章信息'
-        case 3:
-          return '上传封面'
-        default:
-          return '编辑文章'
-      }
+      const title = this.$t('news.post.title') // ['编辑文章', '完善文章信息', '上传封面']
+      if (!this.step) return title[0]
+      return title[this.step - 1]
     },
     disabled () {
       let result
@@ -281,7 +276,7 @@ export default {
   },
   created () {
     if (!this.canPostNews) {
-      this.$Message.error('请先进行身份认证')
+      this.$Message.error(this.$t('certificate.need'))
       this.$router.go(-1)
     }
   },
@@ -345,7 +340,7 @@ export default {
           })
     },
     posterError () {
-      this.$Message.error('封面图上传失败, 请重试')
+      this.$Message.error(this.$t('news.cover.upload_failed'))
     },
     handlePostNews (password) {
       const { title, content } = this.news
@@ -372,7 +367,7 @@ export default {
     },
     showPasswordConfirm () {
       if (this.currentCurrency < this.amount) {
-        this.$Message.error(`${this.currencyUnit}不足，请充值`)
+        this.$Message.error(this.$t('currency.insufficient'))
         this.cancel()
         return this.$router.push({ name: 'currencyRecharge' })
       }
@@ -380,19 +375,17 @@ export default {
     },
     handleOk () {
       const { title, content } = this.news
-      if (!(title && content)) return (this.step = 1) && this.$Message.error('请输入标题和正文')
-      if (!this.category.id) return (this.step = 2) && this.$Message.error('请选择投稿栏目')
-      if (this.tags.length === 0) return (this.step = 2) && this.$Message.error('请选择标签')
+      if (!(title && content)) return (this.step = 1) && this.$Message.error(this.$t('news.post.need.title&content'))
+      if (!this.category.id) return (this.step = 2) && this.$Message.error(this.$t('news.post.need.category'))
+      if (this.tags.length === 0) return (this.step = 2) && this.$Message.error(this.$t('news.post.need.tags'))
 
       this.newsPay
         ? this.$bus.$emit('payfor', {
-          title: '投稿支付',
+          title: this.$t('news.post.pay.title'),
           amount: this.newCurrency,
-          content: `本次投稿你需要支付${this.newCurrency}${
-            this.currencyUnit
-          },是否继续投稿？`,
-          confirmText: '确认投稿',
-          cancelText: '暂不考虑',
+          content: this.$t('news.post.pay.title', { count: this.newCurrency, currencyUnit: this.currencyUnit }),
+          confirmText: this.$t('news.post.pay.confirm'),
+          cancelText: this.$t('news.post.pay.cancel'),
           onOk: () => {
             this.showPasswordConfirm()
           },
@@ -419,11 +412,14 @@ export default {
       }
     },
     cancel () {
+      const actions = [
+        { text: this.$t('confirm'), method: this.goBack },
+      ]
       this.$bus.$emit(
         'actionSheet',
-        [{ text: '确定', method: this.goBack }],
-        '取消',
-        '你还有未发布的内容，是否放弃发布？'
+        actions,
+        this.$t('cancel'),
+        this.$t('news.post.draft_confirm')
       )
     },
   },

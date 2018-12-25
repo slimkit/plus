@@ -1,6 +1,6 @@
 <template>
   <div class="p-setting">
-    <CommonHeader>设置</CommonHeader>
+    <CommonHeader>{{ $t('setting.name') }}</CommonHeader>
 
     <main>
       <ul class="m-box-model m-entry-group padding">
@@ -9,30 +9,24 @@
           tag="li"
           class="m-entry"
         >
-          <span>修改密码</span>
+          <span>{{ $t('auth.change_password.name') }}</span>
           <svg class="m-style-svg m-svg-def m-entry-append">
             <use xlink:href="#icon-arrow-right" />
           </svg>
         </RouterLink>
-        <li
-          class="m-entry"
-          @click="aboutUs"
-        >
-          <span class="m-box m-text-box m-flex-grow1">关于我们</span>
+        <li class="m-entry" @click="aboutUs">
+          <span class="m-box m-text-box m-flex-grow1">{{ $t('setting.about.name') }}</span>
           <span class="m-box m-text-box m-flex-grow1 m-justify-end m-entry-extra">v{{ version }}</span>
           <svg class="m-style-svg m-svg-def m-entry-append">
             <use xlink:href="#icon-arrow-right" />
           </svg>
         </li>
         <li class="m-entry" @click="switchLocale">
-          <span>切换语言</span>
-          <span class="m-box m-text-box m-flex-grow1 m-justify-end m-entry-extra">{{ locale === 'en' ? 'Englist' : '简体中文' }}</span>
+          <span>{{ $t('setting.locale.name') }}</span>
+          <span class="m-box m-text-box m-flex-grow1 m-justify-end m-entry-extra">{{ locale === 'en' ? 'English' : '简体中文' }}</span>
         </li>
-        <li
-          class="m-entry"
-          @click="signOut"
-        >
-          <a>退出登录</a>
+        <li class="m-entry" @click="signOut">
+          <a>{{ $t('setting.logout.name') }}</a>
           <svg class="m-style-svg m-svg-def m-entry-append">
             <use xlink:href="#icon-arrow-right" />
           </svg>
@@ -61,7 +55,7 @@ export default {
     signOut () {
       const actions = [
         {
-          text: '退出',
+          text: this.$t('setting.logout.label'),
           style: { color: '#f4504d' },
           method: () => {
             this.$store.dispatch('SIGN_OUT')
@@ -71,7 +65,7 @@ export default {
           },
         },
       ]
-      this.$bus.$emit('actionSheet', actions, '取消', '确认退出?')
+      this.$bus.$emit('actionSheet', actions, this.$t('cancel'), this.$t('setting.logout.confirm'))
     },
     aboutUs () {
       const { aboutUs = {} } = this.$store.state.CONFIG.site

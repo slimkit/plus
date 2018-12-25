@@ -1,3 +1,5 @@
+import i18n from '@/i18n'
+
 import Forgot from '@/page/sign/Forgot.vue'
 import ChangePassword from '@/page/sign/ChangePassword.vue'
 import Signup from '@/page/sign/Signup.vue'
@@ -10,7 +12,7 @@ export default [
     path: '/signin',
     component: Signin,
     meta: {
-      title: '登录',
+      title: i18n.t('auth.login'),
       forGuest: true,
     },
   },
@@ -18,7 +20,7 @@ export default [
     path: '/signin/dynamic',
     component: SigninDynamic,
     meta: {
-      title: '一键登录',
+      title: i18n.t('auth.one_key'),
       forGuest: true,
     },
   },
@@ -26,7 +28,7 @@ export default [
     path: '/signup',
     component: Signup,
     meta: {
-      title: '注册',
+      title: i18n.t('auth.register'),
       forGuest: true,
     },
   },
@@ -34,21 +36,21 @@ export default [
     path: '/signup/protocol',
     component: RegisterProtocol,
     meta: {
-      title: '用户注册协议',
+      title: i18n.t('auth.register_protocol'),
     },
   },
   {
     path: '/forgot',
     component: Forgot,
     meta: {
-      title: '忘记密码',
+      title: i18n.t('auth.forgot.name'),
     },
   },
   {
     path: '/changePassword',
     component: ChangePassword,
     meta: {
-      title: '修改密码',
+      title: i18n.t('auth.change_password.name'),
       requiresAuth: true,
     },
   },

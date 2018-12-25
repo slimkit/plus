@@ -14,7 +14,7 @@
         <div class="detail">
           <div class="info">
             <h1>{{ topic.name }}</h1>
-            <p v-show="creator.name">创建者：{{ creator.name }}</p>
+            <p v-show="creator.name">{{ creator.name | t('feed.topic.creator') }}</p>
           </div>
         </div>
       </div>
@@ -25,7 +25,7 @@
         </p>
         <div v-if="followers.length" class="participants">
           <div class="title" @click="gotoParticipants">
-            <strong>参与话题的人</strong>
+            <strong>{{ $t('feed.topic.participants') }}</strong>
             <svg v-if="followers.length >= 4" class="m-style-svg m-svg-small">
               <use xlink:href="#icon-arrow-right" />
             </svg>
@@ -45,17 +45,17 @@
 
       <div slot="sticky" class="sticky-bar">
         <div class="info">
-          <span>{{ topic.feeds_count }} 条动态</span>
-          <span>{{ topic.followers_count }} 人关注</span>
+          <span>{{ topic.feeds_count | t('feed.count') }}</span>
+          <span>{{ topic.followers_count | t('follow.count') }}</span>
         </div>
         <div v-if="!isMine" class="follow-btn">
-          <button v-if="topic.has_followed" @click="unfollowTopic">已关注</button>
+          <button v-if="topic.has_followed" @click="unfollowTopic">{{ $t('follow.already') }}</button>
           <button
             v-else
             class="unfollow"
             @click="followTopic"
           >
-            + 关注
+            + {{ $t('follow.name') }}
           </button>
         </div>
       </div>
@@ -169,26 +169,26 @@ export default {
     },
     async followTopic () {
       await api.followTopic(this.topicId)
-      this.$Message.success('关注话题成功！')
+      this.$Message.success(this.$t('feed.topic.follow.success'))
       this.fetchTopic()
     },
     async unfollowTopic () {
       await api.unfollowTopic(this.topicId)
-      this.$Message.success('取消关注话题')
+      this.$Message.success(this.$t('feed.topic.follow.cancel'))
       this.fetchTopic()
     },
     onMoreClick () {
       const actions = []
       if (this.isMine) {
         actions.push({
-          text: '编辑',
+          text: this.$t('edit'),
           method: () => {
             this.$router.push({ name: 'TopicEdit', params: { topicId: this.topicId, topicName: this.topic.name } })
           },
         })
       } else {
         actions.push({
-          text: '举报',
+          text: this.$t('report.name'),
           method: () => {
             this.$bus.$emit('report', {
               type: 'topic',

@@ -1,6 +1,6 @@
 <template>
   <div :class="`${prefixCls}`">
-    <CommonHeader>收到的赞</CommonHeader>
+    <CommonHeader>{{ $t('message.like.name') }}</CommonHeader>
 
     <div :class="`${prefixCls}-container`">
       <JoLoadMore

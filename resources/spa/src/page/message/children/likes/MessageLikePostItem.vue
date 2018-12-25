@@ -3,21 +3,21 @@
     <div :class="`${prefixCls}-item-top`">
       <Avatar :user="user" />
       <section class="userInfo">
-        <span
-          v-if="!user.id"
-          :class="`${prefixCls}-item-top-link`"
-        >
-          未知用户
-        </span>
-        <RouterLink
-          :class="`${prefixCls}-item-top-link`"
-          :to="`/users/${user._id}`"
-        >
-          {{ user.name }}
-        </RouterLink>
-        <span>赞了你的帖子</span>
+        <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
+        <i18n path="message.like.liked" :places="{type: $t('article.type.post')}">
+          <span
+            place="user"
+            :class="`${prefixCls}-item-top-link`"
+            @click="viewUser(user.id)"
+          >
+            {{ user.name }}
+          </span>
+        </i18n>
         <p>{{ like.created_at | time2tips }}</p>
       </section>
+      <svg class="m-style-svg m-svg-def m-flex-grow0 m-shrink0">
+        <use xlink:href="#icon-like" />
+      </svg>
     </div>
     <div :class="`${prefixCls}-item-bottom`">
       <section
@@ -40,11 +40,8 @@
         </div> -->
       </section>
       <section v-if="like.likeable === null">
-        <div
-          :class="`${prefixCls}-item-bottom-noImg`"
-          class="content"
-        >
-          帖子已被删除
+        <div :class="`${prefixCls}-item-bottom-noImg`" class="content">
+          {{ $t('article.deleted') }}
         </div>
       </section>
     </div>

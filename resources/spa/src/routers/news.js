@@ -1,3 +1,5 @@
+import i18n from '@/i18n'
+
 const NewsList = () =>
   import(/* webpackChunkName: 'news' */ '@/page/news/NewsList.vue')
 const NewsSearch = () =>
@@ -14,7 +16,7 @@ export default [
     path: '/news',
     component: NewsList,
     meta: {
-      title: '资讯',
+      title: i18n.t('news.name'),
       keepAlive: true,
     },
   },
@@ -22,7 +24,7 @@ export default [
     path: '/news/:newsId(\\d+)',
     component: NewsDetail,
     meta: {
-      title: '资讯详情',
+      title: i18n.t('news.detail'),
       keepAlive: true,
       requiresAuth: true,
     },
@@ -31,7 +33,7 @@ export default [
     path: '/news/search',
     component: NewsSearch,
     meta: {
-      title: '搜索',
+      title: i18n.t('search'),
       keepAlive: true,
     },
   },
@@ -45,7 +47,7 @@ export default [
     path: '/news/:article(\\d+)/likers',
     component: ArticleLikeList,
     meta: {
-      title: '点赞列表',
+      title: i18n.t('article.list.like'),
       type: 'news',
     },
   },
@@ -53,7 +55,7 @@ export default [
     path: '/news/:article(\\d+)/rewarders',
     component: ArticleRewardList,
     meta: {
-      title: '打赏列表',
+      title: i18n.t('article.list.reward'),
       type: 'news',
     },
   },

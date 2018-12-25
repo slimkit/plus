@@ -1,3 +1,5 @@
+import i18n from '@/i18n'
+
 const FeedList = () =>
   import(/* webpackChunkName: 'feed' */ '@/page/feed/FeedList.vue')
 const FeedDetail = () =>
@@ -13,7 +15,7 @@ export default [
     path: '/feeds',
     component: FeedList,
     meta: {
-      title: '动态',
+      title: i18n.t('feed.name'),
       keepAlive: true,
     },
     beforeEnter (to, from, next) {
@@ -30,7 +32,7 @@ export default [
     path: '/feeds/:feedId(\\d+)',
     component: FeedDetail,
     meta: {
-      title: '动态详情',
+      title: i18n.t('feed.detail'),
       keepAlive: true,
       requiresAuth: true,
     },
@@ -45,7 +47,7 @@ export default [
     path: '/feeds/:article(\\d+)/likers',
     component: ArticleLikeList,
     meta: {
-      title: '点赞列表',
+      title: i18n.t('article.list.like'),
       type: 'feed',
     },
   },
@@ -53,7 +55,7 @@ export default [
     path: '/feeds/:article(\\d+)/rewarders',
     component: ArticleRewardList,
     meta: {
-      title: '打赏列表',
+      title: i18n.t('article.list.reward'),
       type: 'feed',
     },
   },

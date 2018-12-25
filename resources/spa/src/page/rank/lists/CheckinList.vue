@@ -1,6 +1,6 @@
 <template>
   <div :class="prefixCls">
-    <CommonHeader>社区签到排行榜</CommonHeader>
+    <CommonHeader>{{ $t('rank.checkin') }}</CommonHeader>
 
     <JoLoadMore
       ref="loadmore"
@@ -15,7 +15,7 @@
           :user="user"
           :index="index"
         >
-          <p>累计签到：{{ user.extra.checkin_count || 0 }}</p>
+          <p>{{ user.extra.checkin_count || 0 | t('rank.checkin_count') }}</p>
         </RankListItem>
       </div>
     </JoLoadMore>

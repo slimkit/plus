@@ -1,6 +1,6 @@
 <template>
   <div :class="prefixCls">
-    <CommonHeader>问答达人排行榜</CommonHeader>
+    <CommonHeader>{{ $t('rank.question_like') }}</CommonHeader>
 
     <JoLoadMore
       ref="loadmore"
@@ -15,7 +15,7 @@
           :user="user"
           :index="index"
         >
-          <p>问答点赞量：{{ user.extra.count || 0 }}</p>
+          <p>{{ user.extra.count || 0 | t('rank.question_like_count') }}</p>
         </RankListItem>
       </div>
     </JoLoadMore>

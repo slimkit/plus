@@ -19,7 +19,7 @@
       <p class="info">
         <i v-show="!currentCate" class="news-cate"> {{ cate }} </i>
         <span>{{ author }}</span>
-        <span>・{{ hits }}浏览</span>
+        <span>・{{ hits | t('article.views_count') }}</span>
         <span>・{{ time | time2tips }}</span>
       </p>
     </template>
@@ -29,7 +29,7 @@
         <p class="info">
           <i v-show="!currentCate" class="news-cate"> {{ cate }} </i>
           <span>{{ author }}</span>
-          <span>・{{ hits }}浏览</span>
+          <span>・{{ hits | t('article.views_count') }}</span>
           <span>・{{ time | time2tips }}</span>
         </p>
       </section>

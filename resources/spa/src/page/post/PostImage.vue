@@ -114,7 +114,7 @@ export default {
               },
             },
           ],
-          '取消',
+          this.$t('cancel'),
           '你还有没有发布的内容,是否放弃发布?'
         )
         : this.goBack()

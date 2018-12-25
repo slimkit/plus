@@ -1,6 +1,7 @@
 import axios from 'axios'
 import api from './api'
 import { hashFile } from '@/util/SendImage.js'
+import i18n from '@/i18n'
 
 // 新 axios 实例用于第三方请求
 const localUploadInstance = axios.create()
@@ -53,7 +54,7 @@ export default async function (file) {
       await uploadByPost(task, file)
       break
     default:
-      throw new Error('暂不支持的上传，请联系技术人员')
+      throw new Error(i18n.t('upload.unsupported'))
   }
 
   return task.node

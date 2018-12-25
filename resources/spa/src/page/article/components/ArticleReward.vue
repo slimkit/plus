@@ -1,10 +1,16 @@
 <template>
   <div class="c-article-reward">
-    <button class="reward-btn" @click="reward">打 赏</button>
-    <p class="reward-info">
-      <span>{{ count | formatNum }}</span> 人打赏，
-      共 <span>{{ ~~amount }}</span> {{ currencyUnit }}
-    </p>
+    <button class="reward-btn" @click="reward">{{ $t('reward.name') }}</button>
+    <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
+    <i18n
+      path="article.reward_count"
+      class="reward-info"
+      tag="p"
+      :places="{currencyUnit}"
+    >
+      <span place="count">{{ count | formatNum }}</span>
+      <span place="amount">{{ ~~amount }}</span>
+    </i18n>
     <RouterLink
       v-if="list.length > 0"
       tag="div"
@@ -62,14 +68,14 @@ export default {
 
   .reward-btn {
     display: flex;
+    justify-content: center;
+    align-items: center;
     width: 160px;
     height: 60px;
-    color: #fff;
-    font-size: 28px;
     border-radius: 6px;
     background-color: #f76c69;
-    align-items: center;
-    justify-content: center;
+    color: #fff;
+    font-size: 28px;
   }
 
   .reward-info {

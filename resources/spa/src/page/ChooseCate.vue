@@ -1,7 +1,7 @@
 <template>
   <Transition name="pop">
     <div v-if="show" class="m-box-model m-pos-f p-choose-category m-main">
-      <CommonHeader :back="cancel">选择栏目</CommonHeader>
+      <CommonHeader :back="cancel">{{ $t('news.post.select_category') }}</CommonHeader>
 
       <main>
         <ul class="m-cates">

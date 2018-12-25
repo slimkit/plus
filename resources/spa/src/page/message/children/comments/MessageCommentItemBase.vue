@@ -48,7 +48,7 @@ export default {
   methods: {
     showCommentInput () {
       this.$bus.$emit('commentInput', {
-        placeholder: `回复: ${this.comment.user.name}`,
+        placeholder: `${this.$t('reply.name')}: ${this.comment.user.name}`,
         onOk: comment => {
           this.sendComment(comment)
         },

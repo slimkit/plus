@@ -1,6 +1,6 @@
 <template>
   <div :class="prefixCls">
-    <CommonHeader>{{ title }}动态排行榜</CommonHeader>
+    <CommonHeader>{{ title | t('rank.feed') }}</CommonHeader>
 
     <JoLoadMore
       ref="loadmore"
@@ -15,7 +15,7 @@
           :user="user"
           :index="index"
         >
-          <p>点赞量：{{ user.extra.count || 0 }}</p>
+          <p>{{ user.extra.count || 0 | t('rank.feed_count') }}</p>
         </RankListItem>
       </div>
     </JoLoadMore>
@@ -26,23 +26,24 @@
 import RankListItem from '../components/RankListItem.vue'
 import { getRankUsers } from '@/api/ranks.js'
 import { limit } from '@/api'
+import i18n from '@/i18n'
 
 const prefixCls = 'rankItem'
 const api = '/feeds/ranks'
 const config = {
   week: {
     vuex: 'rankFeedsWeek',
-    title: '本周',
+    title: i18n.t('date.week'),
     query: 'week',
   },
   today: {
     vuex: 'rankFeedsToday',
-    title: '今日',
+    title: i18n.t('date.today'),
     query: 'day',
   },
   month: {
     vuex: 'rankFeedsMonth',
-    title: '本月',
+    title: i18n.t('date.month'),
     query: 'month',
   },
 }

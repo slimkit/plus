@@ -1,7 +1,7 @@
 <template>
   <div class="p-profile">
     <CommonHeader>
-      我
+      {{ $t('profile.name') }}
       <template slot="left"><span /></template>
     </CommonHeader>
 
@@ -15,7 +15,7 @@
           <Avatar :user="user" size="big" />
           <div class="m-text-box m-flex-grow1 m-flex-shrink1 m-flex-base0 m-pr-user-info">
             <h4 class="m-pr-username">{{ user.name }}</h4>
-            <p class="m-pr-bio m-text-cut-2">{{ user.bio || "这家伙很懒,什么也没有留下" }}</p>
+            <p class="m-pr-bio m-text-cut-2">{{ user.bio || $t('profile.default_bio') }}</p>
           </div>
           <svg class="m-style-svg m-svg-def m-entry-append">
             <use xlink:href="#icon-arrow-right" />
@@ -31,7 +31,7 @@
             <BadgeIcon :count="new_followers">
               <a>{{ ~~(extra.followers_count) | formatNum }}</a>
             </BadgeIcon>
-            <p>粉丝</p>
+            <p>{{ $t('fans') }}</p>
           </RouterLink>
           <RouterLink
             :to="`/users/${user.id}/followings`"
@@ -41,7 +41,7 @@
             <BadgeIcon count="0">
               <a>{{ ~~(extra.followings_count) | formatNum }}</a>
             </BadgeIcon>
-            <p>关注</p>
+            <p>{{ $t('follow.name') }}</p>
           </RouterLink>
         </div>
       </div>
@@ -49,13 +49,13 @@
       <div class="m-box-model m-pr-entrys">
         <ul class="m-box-model m-entry-group">
           <ProfileItem
-            label="个人主页"
+            :label="$t('profile.home.name')"
             icon="#icon-profile-home"
             :to="`/users/${user.id}`"
           />
 
           <ProfileItem
-            label="我的投稿"
+            :label="$t('profile.news.name')"
             icon="#icon-profile-plane"
             to="/profile/news/released"
           />
@@ -63,7 +63,7 @@
 
         <ul class="m-box-model m-entry-group">
           <ProfileItem
-            label="钱包"
+            :label="$t('wallet.name')"
             icon="#icon-profile-wallet"
             @click="popupBuyTS"
           >
@@ -71,7 +71,7 @@
           </ProfileItem>
 
           <ProfileItem
-            :label="currencyUnit"
+            :label="$t('currency.name')"
             icon="#icon-profile-integral"
             @click="popupBuyTS"
           >
@@ -79,7 +79,7 @@
           </ProfileItem>
 
           <ProfileItem
-            label="收藏"
+            :label="$t('profile.collect.name')"
             icon="#icon-profile-collect"
             to="/profile/collection/feeds"
           />
@@ -87,7 +87,7 @@
 
         <ul class="m-box-model m-entry-group">
           <ProfileItem
-            label="认证"
+            :label="$t('certificate.name')"
             icon="#icon-profile-approve"
             @click="selectCertType"
           >
@@ -95,7 +95,7 @@
           </ProfileItem>
 
           <ProfileItem
-            label="设置"
+            :label="$t('setting.name')"
             icon="#icon-profile-setting"
             to="/setting"
           />
@@ -146,15 +146,9 @@ export default {
   watch: {
     verified (to) {
       if (to && to.status) to.status = Number(to.status)
-      if (to && to.status === 0) {
-        this.verifiedText = '待审核'
-      } else if (to && to.status === 1) {
-        this.verifiedText = '通过审核'
-      } else if (to && to.status === 2) {
-        this.verifiedText = '被驳回'
-      } else {
-        this.verifiedText = '未认证'
-      }
+      const text = this.$t('certificate.status') // ['待审核', '通过审核', '被驳回', '未认证']
+      if (to && [0, 1, 2].includes(to.status)) return (this.verifiedText = text[to.status])
+      this.verifiedText = text[3]
     },
   },
   mounted () {
@@ -172,10 +166,10 @@ export default {
     selectCertType () {
       if (_.isEmpty(this.verified)) {
         const actions = [
-          { text: '个人认证', method: () => this.certificate('user') },
-          { text: '企业认证', method: () => this.certificate('org') },
+          { text: this.$t('certificate.user.name'), method: () => this.certificate('user') },
+          { text: this.$t('certificate.org.name'), method: () => this.certificate('org') },
         ]
-        this.$bus.$emit('actionSheet', actions, '取消')
+        this.$bus.$emit('actionSheet', actions)
       } else if (this.verified.status === 2) {
         // 被驳回则补充填写表单
         const type = this.verified.certification_name || 'user'

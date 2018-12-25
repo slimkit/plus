@@ -4,7 +4,7 @@
       <SearchBar
         v-model.trim="keyword"
         :back="onCancel"
-        placeholder="搜索话题"
+        :placeholder="$t('feed.topic.search')"
       />
 
       <main>
@@ -16,7 +16,7 @@
           @onLoadMore="onLoadMore"
         >
           <template v-if="!keyword || list.length">
-            <div v-show="!list.length" class="title-bar">热门话题</div>
+            <div v-show="!list.length" class="title-bar">{{ $t('feed.topic.hot') }}</div>
             <ul class="search-list">
               <li
                 v-for="topic in topics"

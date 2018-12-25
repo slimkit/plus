@@ -1,11 +1,12 @@
 <template>
   <div class="p-news-search">
-    <SearchBar v-model="keywordOrigin" />
+    <SearchBar v-model="keyword" />
 
     <JoLoadMore
       ref="loadmore"
       :auto-load="false"
       :show-bottom="list.length > 0"
+      @onRefresh="searchNewsByKey"
       @onLoadMore="onLoadMore"
     >
       <NewsCard
@@ -15,12 +16,6 @@
         :news="news"
       />
     </JoLoadMore>
-    <p
-      v-show="loading"
-      class="load-more-ph m-text-c mt10"
-    >
-      正在搜索...
-    </p>
     <div
       v-show="noResult && !loading && keyword && !list.length"
       class="placeholder m-no-find"
@@ -43,7 +38,7 @@ export default {
   },
   data () {
     return {
-      keywordOrigin: '',
+      keyword: '',
       list: [],
       loading: false,
       noResult: false,
@@ -54,13 +49,10 @@ export default {
       const len = this.list.length
       return len > 0 ? this.list[len - 1].id : 0
     },
-    keyword () {
-      return this.keywordOrigin.trim()
-    },
   },
   watch: {
     keyword () {
-      this.searchNewsByKey()
+      this.$refs.loadmore.beforeRefresh()
     },
   },
   methods: {
@@ -70,7 +62,7 @@ export default {
      * @author mutoe <mutoe@foxmail.com>
      */
     searchNewsByKey: _.debounce(function () {
-      if (!this.keyword) return
+      if (!this.keyword) return (this.list = [])
       this.loading = true
       searchNewsByKey(this.keyword).then(({ data: list }) => {
         this.loading = false

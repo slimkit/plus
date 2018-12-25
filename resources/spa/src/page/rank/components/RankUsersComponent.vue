@@ -3,7 +3,7 @@
     <div class="label">
       <h6>{{ title }}</h6>
       <div class="label-more" @click="to(listUrl)">
-        <span>全部</span>
+        <span>{{ $t('all') }}</span>
         <svg class="m-style-svg m-svg-small">
           <use xlink:href="#icon-arrow-right" />
         </svg>

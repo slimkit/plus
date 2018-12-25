@@ -1,6 +1,6 @@
 <template>
   <div :class="prefixCls">
-    <CommonHeader>{{ title }}资讯排行榜</CommonHeader>
+    <CommonHeader>{{ title | t('rank.news') }}</CommonHeader>
 
     <JoLoadMore
       ref="loadmore"
@@ -15,7 +15,7 @@
           :user="user"
           :index="index"
         >
-          <p>阅读量：{{ user.extra.count || 0 }}</p>
+          <p>{{ user.extra.count || 0 | t('rank.news_count') }}</p>
         </RankListItem>
       </div>
     </JoLoadMore>
@@ -26,23 +26,24 @@
 import RankListItem from '../components/RankListItem.vue'
 import { getRankUsers } from '@/api/ranks.js'
 import { limit } from '@/api'
+import i18n from '@/i18n'
 
 const prefixCls = 'rankItem'
 const api = '/news/ranks'
 const config = {
   week: {
     vuex: 'rankNewsWeek',
-    title: '本周',
+    title: i18n.t('date.week'),
     query: 'week',
   },
   today: {
     vuex: 'rankNewsToday',
-    title: '今日',
+    title: i18n.t('date.today'),
     query: 'day',
   },
   month: {
     vuex: 'rankNewsMonth',
-    title: '本月',
+    title: i18n.t('date.month'),
     query: 'month',
   },
 }

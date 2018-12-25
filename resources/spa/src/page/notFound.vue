@@ -41,7 +41,7 @@
         y="290"
         class="tips_text"
       >
-        页面走丢了, 点击返回上一页
+        {{ $t('network.not_found') }}
       </text>
     </svg>
   </div>

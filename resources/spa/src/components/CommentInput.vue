@@ -40,7 +40,7 @@
             class="submit-btn"
             @click="sendText"
           >
-            发送
+            {{ $t('send') }}
           </button>
         </div>
       </div>
@@ -59,7 +59,7 @@ export default {
       loading: false,
       scrollHeight: 0,
       contentText: '',
-      placeholder: '随便说说~',
+      placeholder: this.$t('comment_placeholder'),
     }
   },
   computed: {

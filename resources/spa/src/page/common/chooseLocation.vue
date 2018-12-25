@@ -2,14 +2,14 @@
   <div class="page-location">
     <HeadTop
       :append="true"
-      title="选择定位"
+      :title="$t('location.choose')"
     >
       <div
         slot="append"
         class="head-top-cancel"
         @click="$router.go(-1)"
       >
-        取消
+        {{ $t('cancel') }}
       </div>
       <div
         slot="title"
@@ -22,7 +22,7 @@
           v-model="keyword"
           class="head-top-search-input"
           type="text"
-          placeholder="搜索"
+          :placeholder="$t('search')"
           @input="search"
         >
       </div>
@@ -31,12 +31,12 @@
     <div />
     <template v-if="isShowHot">
       <div class="location-current">
-        <span>当前定位</span>
+        <span>{{ $t('location.current') }}</span>
         <span
           :class="{c999: !cur_txt }"
           class="location-current-txt"
         >
-          {{ cur_txt || "未定位" }}
+          {{ cur_txt || $t('location.empty') }}
         </span>
         <svg
           class="m-style-svg m-svg-def location-current-append"
@@ -46,7 +46,7 @@
         </svg>
       </div>
       <div class="location-hot">
-        <label>热门城市</label>
+        <label>{{ $t('location.choose') }}</label>
         <div class="location-hot-list">
           <div
             v-for="hotCity in hot_citys"
@@ -172,7 +172,7 @@ export default {
         sources.forEach(function(item) {
           if (item !== null && item.source !== null && item.status === 1) {
             item.status = 0;
-            item.source.cancel("取消上一个");
+            item.source.cancel();
           }
         });
 
@@ -202,13 +202,6 @@ export default {
                 return name.substr(0, name.length - 1);
               });
             })
-            .catch(
-              ({ response: { data = { message: "搜索失败" } } = {} } = {}) => {
-                // 置空请求canceltoken
-                sc.source = null;
-                that.$Message.error(data);
-              }
-            );
         }
       },
       500 // 空闲时间间隔设置500ms

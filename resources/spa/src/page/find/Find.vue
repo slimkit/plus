@@ -10,7 +10,7 @@
         <svg class="m-style-svg m-svg-def placeholder">
           <use xlink:href="#icon-search" />
         </svg>
-        <span class="placeholder">搜索</span>
+        <span class="placeholder">{{ $t('search') }}</span>
       </div>
       <div class="m-box m-aln-center m-flex-grow0 m-flex-shrink0 m-justify-end m-location" @click="switchLocation">
         <CircleLoading v-if="loading" />
@@ -31,7 +31,7 @@
           to="/find/pop"
           class="m-sub-nav-item"
         >
-          <a>热门</a>
+          <a>{{ $t('hot') }}</a>
         </RouterLink>
         <RouterLink
           replace
@@ -41,7 +41,7 @@
           to="/find/new"
           class="m-sub-nav-item"
         >
-          <a>最新</a>
+          <a>{{ $t('newest') }}</a>
         </RouterLink>
         <RouterLink
           replace
@@ -51,7 +51,7 @@
           to="/find/rec"
           class="m-sub-nav-item"
         >
-          <a>推荐</a>
+          <a>{{ $t('recommend') }}</a>
         </RouterLink>
         <RouterLink
           replace
@@ -61,7 +61,7 @@
           to="/find/ner"
           class="m-sub-nav-item"
         >
-          <a>附近</a>
+          <a>{{ $t('nearby') }}</a>
         </RouterLink>
       </div>
       <KeepAlive>
@@ -93,7 +93,7 @@ export default {
       // label.length > 5
       //   ? `${label.slice(0, 2)}…${label.slice(-2)}`
       //   :
-      return label || '选择城市'
+      return label || this.$t('location.city')
     },
   },
   created () {

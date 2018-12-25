@@ -59,21 +59,22 @@
 
 import _ from 'lodash'
 import { mapState } from 'vuex'
+import i18n from '@/i18n'
 
 const formInfo = {
   user: {
-    name: '真实姓名',
-    number: '身份证号码',
-    phone: '手机号码',
-    desc: '认证描述',
+    name: i18n.t('certificate.user.label.name'),
+    number: i18n.t('certificate.user.label.number'),
+    phone: i18n.t('certificate.user.label.phone'),
+    desc: i18n.t('certificate.user.label.desc'),
   },
   org: {
-    name: '负责人',
-    number: '身份证号码',
-    phone: '手机号码',
-    desc: '认证描述',
-    orgName: '机构名称',
-    orgAddress: '机构地址',
+    name: i18n.t('certificate.org.label.name'),
+    number: i18n.t('certificate.org.label.number'),
+    phone: i18n.t('certificate.org.label.phone'),
+    desc: i18n.t('certificate.org.label.desc'),
+    orgName: i18n.t('certificate.org.label.org_name'),
+    orgAddress: i18n.t('certificate.org.label.org_address'),
   },
 }
 

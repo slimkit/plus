@@ -1,6 +1,6 @@
 <template>
   <div :class="prefixCls">
-    <CommonHeader>全站粉丝排行榜</CommonHeader>
+    <CommonHeader>{{ $t('rank.fans') }}</CommonHeader>
 
     <JoLoadMore
       ref="loadmore"
@@ -15,7 +15,7 @@
           :user="user"
           :index="index"
         >
-          <p>粉丝：{{ user.extra.followers_count || 0 }}</p>
+          <p>{{ user.extra.followers_count || 0 | t('rank.fans_count') }}</p>
         </RankListItem>
       </div>
     </JoLoadMore>

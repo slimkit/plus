@@ -76,14 +76,14 @@ export default {
     typeText () {
       switch (this.type) {
         case 'feed':
-          return '动态'
+          return this.$t('feed.name')
         case 'news':
-          return '资讯'
+          return this.$t('news.name')
         case 'comment':
         case 'postComment':
-          return '评论'
+          return this.$t('comment.name')
         case 'topic':
-          return '话题'
+          return this.$t('feed.topic.name')
         default:
           return ''
       }

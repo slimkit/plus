@@ -52,7 +52,7 @@
         <div v-else class="m-box m-aln-center m-justify-center load-more-box">
           <template v-if="noMore">
             <slot name="noMore">
-              <span class="load-more-ph">---没有更多---</span>
+              <span class="load-more-ph">{{ $t('loadmore.bottom[1]') }}</span>
             </slot>
           </template>
           <span

@@ -4,11 +4,11 @@
       v-if="show"
       class="m-box-model m-pos-f p-choose-tags m-main"
     >
-      <CommonHeader :back="nextFuc">选择标签</CommonHeader>
+      <CommonHeader :back="nextFuc">{{ $t('tags.select') }}</CommonHeader>
 
       <main class="m-box-model m-flex-grow1 m-flex-shrink1">
         <section class="m-flex-grow0 m-flex-shrink0 m-tags-group selected m-bb1">
-          <span class="m-tags-label">可选择{{ 5 }}个标签，已选择{{ chooseTags.length }}标签</span>
+          <span class="m-tags-label">{{ $t('tags.placeholder', [5, chooseTags.length]) }}</span>
           <TransitionGroup
             tag="ul"
             class="m-tags"
@@ -97,9 +97,8 @@ function onChooseTags ({ chooseTags = [], nextStep, onSelect, onRemove }) {
   if (this.isFirst && this.$route.name !== 'groupCreate') {
     this.$nextTick(() => {
       this.$bus.$emit('popupDialog', {
-        title: '温馨提示',
-        content:
-          '标签为全局标签，选择合适的标签，系统可推荐你感兴趣的内容，方便找到相同身份或爱好的人，很重要哦！',
+        title: this.$t('tags.first_tips.title'),
+        content: this.$t('tags.first_tips.content'),
         onClose: () => {
           this.onReadTips()
         },
@@ -147,7 +146,7 @@ export default {
       const obj = this.tags[Gindex].tags[Tindex]
       if (obj.selected) return
 
-      if (this.chooseTags.length >= 5) { return this.$Message.error('标签最多可选5个') }
+      if (this.chooseTags.length >= 5) { return this.$Message.error(this.$t('tags.max_tips')) }
 
       const status = { selected: true, Gindex, Tindex }
       Object.assign(obj, status)

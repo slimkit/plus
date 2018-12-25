@@ -13,7 +13,7 @@
     @touchend="stopDrag"
     @mouseleave="stopDrag"
   >
-    <!-- 顶部 -->
+    <!-- header -->
     <div
       ref="head"
       :style="{transform: `translateY(${ tY - topBarHeight }px)`, transitionDuration}"
@@ -29,13 +29,13 @@
         <span>{{ topTxt }}</span>
       </slot>
     </div>
-    <!-- 内容 -->
+    <!-- body -->
     <div
       :style="{transform: `translateY(${tY}px)`, transitionDuration }"
       class="jo-loadmore-main"
     >
       <slot />
-      <!-- 底部 -->
+      <!-- footer -->
       <div
         v-if="bottomStatus > 0 && showBottom"
         :class="`jo-loadmore-foot status-${bottomStatus}`"
@@ -98,8 +98,8 @@ export default {
       topBarHeight: 0,
 
       isTop: true,
-      topTxt: '下拉刷新',
-      bottomTxt: '点击加载更多',
+      topTxt: this.$t('loadmore.top[0]'), // '下拉刷新'
+      bottomTxt: this.$t('loadmore.bottom[2]'), // '点击加载更多'
     }
   },
   computed: {
@@ -121,10 +121,12 @@ export default {
   },
   watch: {
     topStatus (val) {
-      this.topTxt = ['下拉刷新', '释放更新', '正在刷新'][val]
+      const text = this.$t('loadmore.top') // ['下拉刷新', '释放更新', '正在刷新']
+      this.topTxt = text[val]
     },
     bottomStatus (val) {
-      this.bottomTxt = ['', '加载中...', '-- 没有更多 --', '点击加载更多'][val]
+      const text = this.$t('loadmore.bottom') // ['加载中...', '-- 没有更多 --', '点击加载更多']
+      this.bottomTxt = ['', ...text][val]
     },
   },
   mounted () {
