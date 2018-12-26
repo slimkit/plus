@@ -3,7 +3,6 @@ import btnSwitch from './components/common/btnSwitch' /* btnSwitch 按钮 */
 import BadgeIcon from './components/common/BadgeIcon' /* Badge 徽标 */
 import CommonHeader from './components/common/CommonHeader.vue' /* 通用头部 */
 import fullSpin from './components/FullSpin' /* 全屏加载动画 */
-import loadMore from './components/loadMore'
 import HeadTop from './components/HeadTop'
 import FootGuide from './components/FootGuide'
 import DiySelect from './components/DiySelect'
@@ -19,7 +18,6 @@ export default [
   Avatar,
   btnSwitch,
   BadgeIcon,
-  loadMore,
   fullSpin,
   HeadTop,
   FootGuide,

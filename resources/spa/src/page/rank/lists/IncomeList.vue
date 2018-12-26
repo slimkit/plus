@@ -2,10 +2,10 @@
   <div :class="prefixCls">
     <CommonHeader>收入达人排行榜</CommonHeader>
 
-    <LoadMore
+    <JoLoadMore
       ref="loadmore"
-      :on-refresh="onRefresh"
-      :on-load-more="onLoadMore"
+      @onRefresh="onRefresh"
+      @onLoadMore="onLoadMore"
     >
       <div :class="`${prefixCls}-list`">
         <RankListItem
@@ -16,7 +16,7 @@
           :index="index"
         />
       </div>
-    </LoadMore>
+    </JoLoadMore>
   </div>
 </template>
 
@@ -60,7 +60,8 @@ export default {
     onRefresh () {
       getRankUsers(api).then(data => {
         this.$store.commit('SAVE_RANK_DATA', { name: this.vuex, data })
-        this.$refs.loadmore.topEnd(false)
+        this.$refs.loadmore.afterRefresh(data.length <
+ limit)
       })
     },
     onLoadMore () {
@@ -70,7 +71,7 @@ export default {
             name: this.vuex,
             data: [...this.users, ...data],
           })
-          this.$refs.loadmore.bottomEnd(data.length < limit)
+          this.$refs.loadmore.afterLoadMore(data.length < limit)
         }
       )
     },
