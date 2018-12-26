@@ -58,8 +58,3 @@ export default {
   },
 }
 </script>
-
-<style lang="less" scoped>
-.p-profile.collection-news {
-}
-</style>

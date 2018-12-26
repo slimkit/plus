@@ -1,7 +1,5 @@
 import AboutUs from '@/page/AboutUs.vue'
 
-import SiteUpgrade from '@/page/SiteUpgrade.vue'
-
 /* TODO */
 import Settings from '@/page/Settings.vue'
 
@@ -181,13 +179,6 @@ export default [
     beforeEnter (to, from, next) {
       const accessToken = window.$lstore.getData('H5_WECHAT_MP_ASTOKEN')
       accessToken ? next() : next('/wechat')
-    },
-  },
-  {
-    path: '/upgrade',
-    component: SiteUpgrade,
-    meta: {
-      title: '功能开发中...',
     },
   },
 ]
