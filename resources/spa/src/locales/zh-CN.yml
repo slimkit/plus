@@ -1,12 +1,14 @@
 # common
 
 discover: 发现
-find_user: 找人
+anonymity: 匿名
+image: 图片
 
 newest: 最新
 hot: 热门
 fans: 粉丝
 all: 全部
+excellent: 精选
 
 send: 发送
 tips: 提示
@@ -23,6 +25,7 @@ expand: 展开
 collapse: 收起
 change: 更改
 modify: 修改
+back: 返回
 
 like: 喜欢
 share: 分享
@@ -49,6 +52,11 @@ article:
   share_brownser: '请使用浏览器的分享功能 🥺'
   link_text: 网页链接
   deleted: 内容已被删除
+  badge:
+    excellent: 精
+    top: 置顶
+    reward: 赏
+    onlook: 围
   type:
     feed: 动态
     news: 资讯
@@ -70,6 +78,9 @@ delete:
 report:
   name: 举报
   success: 举报成功
+  reason: 填写举报原因
+  content: '举报 {user} {type}'
+  s: 的
 top:
   name: 置顶
   apply: 申请置顶
@@ -119,6 +130,7 @@ date:
   today: 今天
   month: 本月
   week: 本周
+  weeks: ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
   months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
 
 upload:
@@ -126,6 +138,7 @@ upload:
 
 profile:
   name: 我
+  anonymity: 匿名用户
   info: 个人资料
   address: 地址
   bio: 简介
@@ -149,11 +162,81 @@ profile:
 
 wallet:
   name: 钱包
+  unit: 元
+  detail: 明细
+  balance: 账户余额(@:(wallet.unit))
+  rule: 充值提现规则
+  recharge:
+    name: 充值
+    select: 选择充值金额
+    custom: 自定义金额
+    input: 输入金额
+    success: 充值成功{0}@:(wallet.unit)！
+    type:
+      name: 请选择支付方式
+      alipay: 支付宝支付
+      wxpay: 微信支付
+      wallet: 钱包余额支付
+      no: 未开启任何充值方式
+    pay:
+      already: 我已完成支付
+      success: 充值成功
+      problem: 支付遇到问题
+      contact: 如遇到问题请联系管理员
+    order:
+      failed: 查询订单失败
+      repeat: 支付失败，请重新下单
+  withdraw:
+    name: 提现
+    detail: 提现明细
+    amount: 提现金额
+    input: 输入金额
+    account: 提现账户
+    account_input: 输入提现账户
+    info: '{0}账户提现'
+    type:
+      name: 选择提现方式
+      alipay: 支付宝
+      wxpay: 微信
+      no: 未开启提现功能
+  income: 收入
+  expenses: 支出
+  review: 审核中
+  review_failed: 审核失败
+  info:
+    name: 账单详情
+    success: 交易成功
+    failed: 交易失败
+    desc: 交易说明
+    account: 交易账户
+    time: 交易时间
 
 currency:
   name: 积分
   unit: 积分
+  my: 我的@:(currency.unit)
+  current: 当前@:(currency.unit)
+  detail: 明细
   insufficient: '@:(currency.unit)不足，请充值'
+  success: 充值成功, 获得 {0} @:(currency.unit)!
+  rule: '@:(currency.unit)规则'
+  recharge:
+    name: 充值@:(currency.unit)
+    log: 充值记录
+    ratio: 充值比率
+    rule: 用户充值协议
+    min: 最低只能充值{0}@:(wallet.unit)
+    max: 最多只能充值{0}@:(wallet.unit)
+  withdraw:
+    name: '@:(currency.unit)提现'
+    log: 提取记录
+    rule: '@:(currency.unit)提取规则'
+    title: 兑换余额
+    input: 输入需提取的@:(currency.unit)
+    desc: 提取@:(currency.unit)须提交官方审核，审核反馈请关注系统消息！
+    min: 请至少提取{0}@:(currency.unit)
+    disabled: 未开启积分提取功能
+
 
 certificate:
   name: 认证
@@ -161,6 +244,7 @@ certificate:
   info: 认证信息
   under_review: 您的认证正在等待审核，通过审核后可发布{name}
   need: 请先进行身份认证
+  go: 去认证
   status: ['待审核', '通过审核', '被驳回', '未认证']
   upload:
     name: 上传资料
@@ -214,6 +298,7 @@ setting:
     confirm: 确认退出？
 
 tags:
+  name: 标签
   select: 选择标签
   placeholder: 可选择{0}个标签，已选择{1}标签
   max_tips: 标签最多可选{0}个
@@ -258,6 +343,7 @@ feed:
 news:
   name: 资讯
   detail: 资讯详情
+  relation: 相关资讯
   need_certificate: 认证用户才能创建投稿，去认证？
   my_subscription: 我的订阅
   more_subscription: 更多订阅
@@ -297,18 +383,120 @@ news:
 
 group:
   name: 圈子
+  avatar: 圈子头像
   index: 圈子首页
+  count: '{count}个兴趣小组，等待你的加入！'
+  my: 我加入的
+  ta: TA的圈子
+  all: 全部圈子
+  view_all: 查看全部
+  view_more: 查看更多
+  hot: 热门推荐
+  refresh: 换一批
+  need_certificate: 认证用户才能创建圈子, 去认证?
+  need_review: 审核通过后，才能查看圈子信息哦~
+  need_join_first: 需要先加入圈子，才能查看圈子信息哦~
+  audit: 审核中
+  join: 加入
+  owner: 圈主
+  admin: 管理员
+  member: 成员
+  reward: 悬赏
+
+  pay:
+    name: 付费
+    apply: 申请加入圈子
+    join: 支付并加入
+    confirm: 你只需支付${0}@:(currency.name)来加入圈子
+
+  create:
+    name: 创建圈子
+    no_location: 不显示位置
+    location_map: ['水星', '金星', '火星', '土星', '地球']
+    label:
+      avatar: 上传圈子头像
+      name: 圈名
+      category: 分类
+      tag: 标签
+      location: 位置
+      bio: 简介
+      notice: 公告
+      sync: 帖子同步至动态
+      private: 设置为封闭圈子
+    placeholder:
+      name: 输入圈名, {0}字以内
+      category: 选择圈子类别
+      tag: 标签
+      location: 设置圈子的地理位置
+      bio: 编辑简介
+      optional: 选填
+      paid: 设置收费入圈金额
+    agree: '点击创建即代表同意 {protocol}'
+    protocol: '《ThinkSNS+圈子创建协议》'
+    paid: 收费入圈
+    free: 免费入圈
+    need_review: '注：用户需经圈管理员同意方可加入封闭圈子'
+
+  information: 详细信息
+  report: 举报圈子
+  black: 黑名单
+  black_join: 加入黑名单
+  black_confirm: 确认加入黑名单？
+  transfer: 转让圈子
+  exit: 退出圈子
+  exit_confirm: 确定要退出圈子吗？
+  exit_success: 退出圈子成功
+
+  members:
+    name: 成员
+    owner: 圈主
+    admin: 管理员
+    oa: 圈主和管理员
 
   post:
     name: 帖子
+    count: 帖子数量{0}
+    new: 最新帖子
+    new_reply: 最新回复
+    permission: 发帖权限
+    need_permission: '"{0}"仅{1}拥有发帖权限'
+    need_join_first: 需要先加入才可发帖
 
 question:
   name: 问题
+  detail: 问题详情
   qa: 问答
   q_a: 问答
 
+  topic:
+    name: 专题
+    detail: 专题详情
+    desc: 专题简介
+    all: 全部专题
+    follow: 我关注的
+    expert:
+      name: 专家
+      list: 专家列表
+      count: '{0}位相关专家'
+
   answer:
     name: 回答
+    detail: 回答详情
+    add: 添加回答
+    view: 查看回答
+    count: '{0}个回答'
+    invite: ['已邀请悬赏', '已设置悬赏', '未设置悬赏']
+    sort: ['时间排序', '默认排序']
+    adoption: 已采纳
+    invited: 邀请回答
+    look:
+      already: 已围观
+      count: '{0}人正在围观'
+    pay:
+      name: 支付
+      look: 围观支付
+      count: 你只需支付 {0} 积分即可围观该回答
+      success: 支付成功！
 
 message:
   name: 消息
@@ -328,9 +516,12 @@ message:
   audit:
     name: 审核通知
     review: 审核
+    accept: 同意
+    reject: 驳回
     reviewed: 已审核
     rejected: 已驳回
     placeholder: ['你有未审核的信息请及时处理', '暂无未审核的申请']
+    group_join: 申请加入你创建的圈子“{group}”，请及时审核。
     types:
       feed_comment_top: 动态评论置顶
       news_comment_top: 文章评论置顶
@@ -369,11 +560,13 @@ find:
   name: 找人
 
 location:
+  name: 位置
   city: 选择城市
   hot_city: 热门城市
   current: 当前定位
   empty: 未定位
   choose: 选择定位
+
 
 auth:
   login: 登录

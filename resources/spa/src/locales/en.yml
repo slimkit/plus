@@ -1,10 +1,13 @@
 
 discover: Discover
+anonymity: anonymity
+image: Image
 
 newest: Newest
 hot: Hot
 fans: Fans
 all: All
+excellent: Excellent
 
 send: Send
 tips: Tips
@@ -21,6 +24,7 @@ expand: Expand
 collapse: Collapse
 change: Change
 modify: Modify
+back: Back
 
 like: like
 share: share
@@ -47,6 +51,12 @@ article:
   share_brownser: '🥺 Please use the browser built-in sharing'
   link_text: Web links
   deleted: Content has been deleted
+  badge:
+    excellent: E
+    top: T
+    reward: R
+    onlook: L
+
   type:
     feed: feed
     news: news
@@ -68,6 +78,9 @@ delete:
 report:
   name: Report
   success: Report success
+  reason: Fill in the reason for the report
+  content: 'Report {user}{type}'
+  s: "'s "
 top:
   name: Topping
   apply: Apply for topping
@@ -113,8 +126,9 @@ date:
   days_ago: '{day} days ago'
   yesterday: yesterday {time}
   today: today
-  month: 本月
-  week: 本周
+  month: this month
+  week: this week
+  weeks: ['Sun.', 'Mon.', 'Tues.', 'Wed.', 'Thur.', 'Fri.', 'Sat.']
   months: ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'June', 'July', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.']
 
 upload:
@@ -122,6 +136,7 @@ upload:
 
 profile:
   name: Me
+  anonymity: Anonymity
   info: My profile
   address: Address
   bio: Introduction
@@ -145,11 +160,80 @@ profile:
 
 wallet:
   name: Wallet
+  unit: USD
+  detail: Detail
+  balance: Account balance (@:(wallet.unit))
+  rule: Recharge withdrawal rule
+  recharge:
+    name: Recharge
+    select: Select recharge amount
+    custom: Custom amount
+    input: Input amount
+    success: Recharged successfully {0} @:(wallet.unit)!
+    type:
+      name: Please select the payment method
+      alipay: Pay with Ali-Pay
+      wxpay: Pay with Wechat-Pay
+      wallet: Wallet balance payment
+      no: No recharge method is turned on
+    pay:
+      already: I have completed the payment
+      success: Recharge successful
+      problem: Problem encountered in payment
+      contact: If you encounter problems, please contact the administrator.
+    order:
+      failed: Query order failed
+      repeat: Payment failed, please re-order
+  withdraw:
+    name: Withdraw
+    detail: Detail
+    amount: Withdrawal Amount
+    input: Amount
+    account: Account
+    account_input: Input withdrawal account
+    info: '{0} account withdrawal'
+    type:
+      name: Choose a withdrawal method
+      alipay: Alipay
+      wxpay: Wechat Pay
+      no: Cash withdrawal is not turned on
+  income: Income
+  expenses: Expenses
+  review: Under review
+  review_failed: Audit failure
+  info:
+    name: Billing details
+    success: Transaction successful
+    failed: Transaction failed
+    desc: Description
+    account: Account
+    time: Time
 
 currency:
   name: Currency
   unit: currency
+  my: My @:(currency.unit)
+  current: Current @:(currency.unit)
+  detail: Detail
   insufficient: '@:(currency.unit) is insufficient, please recharge'
+  success: Recharged successfully, get {0} @:(currency.unit)!
+  rule: Rule of @:(currency.unit)
+  recharge:
+    name: Recharge @:(currency.unit)
+    log: Log
+    ratio: Recharge ratio
+    rule: User recharge agreement
+    min: The minimum can only be recharged {0} @:(wallet.unit)
+    max: Can only recharge up to {0} @:(wallet.unit)
+  withdraw:
+    name: Withdraw @:(currency.unit)
+    log: Log
+    rule: '@:(currency.unit) withdraw rule'
+    title: Redeem balance
+    input: Enter the @:(currency.unit) to be extracted
+    desc: Extract @:(currency.unit) must submit an official review, review feedback please pay attention to system news!
+    min: Please extract at least {0} @:(currency.unit)
+    disabled: Integral extraction is not turned on
 
 certificate:
   name: Certificate
@@ -157,6 +241,7 @@ certificate:
   info: Certification
   under_review: Your certification is awaiting review and can be published after reviewing {name}
   need: Please authenticate first
+  go: Go to certification
   status: ['Pending review', 'Approved', 'Was rejected', 'Not certified']
   upload:
     name: Upload data
@@ -210,6 +295,7 @@ setting:
     confirm: confirm logout?
 
 tags:
+  name: Tag
   select: Chooese Tags
   placeholder: '{0} labels can be selected, {1} labels selected'
   max_tips: Labels can be up to {0}
@@ -253,6 +339,7 @@ feed:
 news:
   name: News
   detail: News detail
+  relation: Relation news
   need_certificate: Can a certified user create a submission and go to certification?
   my_subscription: My subscription
   more_subscription: More subscription
@@ -292,18 +379,120 @@ news:
 
 group:
   name: Group
+  avatar: Group avatar
   index: Group
+  count: '{count} interest groups, waiting for you to join!'
+  my: I joined
+  ta: Its joined
+  all: All groups
+  view_all: View all
+  view_more: View more
+  hot: Popular recommendation
+  refresh: Change batch
+  need_certificate: Can a certified user create a group to authenticate?
+  need_review: After reviewing, you can view the group information~
+  need_join_first: You need to join the group before you can view the group information~
+  audit: Under review
+  join: Join
+  owner: owner
+  admin: admin
+  member: members
+  reward: Reward
+
+  pay:
+    name: Pay
+    apply: Apply to join the group
+    join: Pay and join
+    confirm: You only need to pay ${0}@:(currency.name) to join the group.
+
+  create:
+    name: Create group
+    no_location: Do not display location
+    location_map: ['Mercury', 'Venus', 'Mars', 'Saturn', 'Earch']
+    label:
+      avatar: Upload group avatar
+      name: Name
+      category: Category
+      tag: Tags
+      location: Location
+      bio: Introduction
+      notice: Notice
+      sync: Post sync to feed
+      private: Set as a private group
+    placeholder:
+      name: Enter the group name, within {0} words
+      category: Choose category
+      tag: Select tags
+      location: Set the location of the group
+      bio: Edit introduction
+      optional: Optional
+      paid: amount
+    agree: 'Click to create agree to {protocol}'
+    protocol: '"ThinkSNS+ Group Creation Agreement"'
+    paid: Paid
+    free: Free
+    need_review: 'Note: Users need to be approved by the group administrator to join the closed group.'
+
+  information: Information
+  report: Report group
+  black: Black list
+  black_join: Join black list
+  black_confirm: Confirm to join the blacklist?
+  transfer: Transfer group
+  exit: Quit
+  exit_confirm: Are you sure you want to leave the circle?
+  exit_success: Exit group successfully
+
+  members:
+    name: Members
+    owener: Owner
+    admin: Administrators
+    oa: Owener and administrators
 
   post:
-    name: group post
+    name: group posts
+    count: Number of posts {0}
+    new: Newest posts
+    new_reply: Newest reply
+    permission: Permission
+    need_permission: '"{0}" only {1} has post permission'
+    need_join_first: Need to join before you can post
 
 question:
   name: Question
+  detail: Question information
   qa: Questions and answers
   q_a: Q&A
 
+  topic:
+    name: Topic
+    detail: Topic detail
+    desc: Introduction
+    all: All topics
+    follow: Following
+    expert:
+      name: Expert
+      list: Expert list
+      count: '{0} related experts'
+
   answer:
-    name: Answer
+    name: Answers
+    detail: Answer detail
+    add: Add answer
+    view: View answer
+    count: '{0} answers'
+    invite: ['Invited Reward', 'Set Reward', 'Unset Reward']
+    sort: ['time', 'default']
+    adoption: Adopted
+    invited: Invited
+    look:
+      already: Overlooking
+      count: '{0} people are watching'
+    pay:
+      name: Pay
+      look: Onlookers
+      count: You only need to pay {0} points to watch the answer.
+      success: Payment successful!
 
 message:
   name: Message
@@ -323,14 +512,17 @@ message:
   audit:
     name: Audit notices
     review: Review
+    accept: Accept
+    reject: Reject
     reviewed: Reviewed
     rejected: Rejected
     placeholder: ['If you have unreviewed information, please handle it in time.', 'No pending applications']
+    group_join: Apply to join the group "{group}" you created, please review it in time.
     types:
       feed_comment_top: Feed comment top
       news_comment_top: News comment top
+      post_comment_top: Post comment top
       post_top: Group post top
-      post_comment_top: Group post comment top
       group_join: Group join
     top:
       amount: '{amount} @:(currency.unit) / {day} days'
@@ -346,28 +538,29 @@ rank:
   balance: Wealth leader list
   checkin:
   checkin_count: 'Cumulative check-in: {0}'
-  expert: 问答达人排行榜
-  fans: 全站粉丝排行榜
-  fans_count: 粉丝：{0}
-  income: 收入达人排行榜
-  question_like: 问答点赞排行榜
-  question_like_count: 问答点赞量：{0}
-  feed: '{0}动态排行榜'
-  feed_count: 点赞量：{0}
-  news: '{0}资讯排行榜'
-  news_count: 阅读量：{0}
-  answer: '{0}解答排行榜'
-  answer_count: 回答量：{0}
+  expert: Q&A leader list
+  fans: Fan rankings
+  fans_count: "Fans: {0}"
+  income: Revenue leader ranking
+  question_like: Q&A like ranking
+  question_like_count: 'like: {0}'
+  feed: '{0} feed ranking'
+  feed_count: 'like: {0}'
+  news: '{0} news ranking'
+  news_count: 'view: {0}'
+  answer: '{0} answer ranking'
+  answer_count: 'answer: {0}'
 
 find:
   name: Find user
 
 location:
+  name: Position
   city: Select city
   hot_city: Hot city
   current: Current position
-  empty: 未定位
-  choose: 选择定位
+  empty: Not positioned
+  choose: Select targeting
 
 auth:
   login: Login
@@ -376,7 +569,7 @@ auth:
   account: Account
   password: Password
   guest: Don't log in, just stroll around
-  one_key: 一键登录
+  one_key: One-click login
   use_phone: Use the phone number to log in
   wechat: Wechat
   placeholder:
@@ -426,7 +619,7 @@ auth:
 
 network:
   cancel: Operation cancellation
-  not_found: 页面走丢了, 点击返回上一页
+  not_found: The page is lost, click to return to the previous page
   error:
     e400: Bad request
     e401: please log in first
