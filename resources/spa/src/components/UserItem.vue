@@ -3,7 +3,7 @@
     <Avatar :user="user" />
     <section class="user-item-body m-text-cut">
       <h2 class="m-text-box m-text-cut">{{ user.name }}</h2>
-      <p class="m-text-box m-text-cut">{{ user.bio || "这家伙很懒，什么也没留下" }}</p>
+      <p class="m-text-box m-text-cut">{{ user.bio || $t('profile.default_bio') }}</p>
     </section>
     <button
       v-if="!isMine"
@@ -52,8 +52,8 @@ export default {
       },
     },
     followText () {
-      if (this.isFollow === 'eachFollow') return '相互关注'
-      return this.isFollow === 'follow' ? '已关注' : '+ 关注'
+      if (this.isFollow === 'eachFollow') return this.$t('follow.each')
+      return this.isFollow === 'follow' ? this.$t('follow.already') : `+ ${this.$t('follow.name')}`
     },
     isMine () {
       return this.$store.state.CURRENTUSER.id === this.user.id
@@ -115,7 +115,7 @@ export default {
     align-items: center;
     justify-content: center;
     flex: none;
-    width: 5em;
+    width: 6em;
     height: 1.8em;
     background: #fff;
     color: @primary;

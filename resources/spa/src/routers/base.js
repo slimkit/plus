@@ -140,14 +140,14 @@ export default [
     path: '/about',
     component: AboutUs,
     meta: {
-      title: '关于我们',
+      title: i18n.t('setting.about.name'),
     },
   },
   {
     path: '/wechat',
     component: WechatSignin,
     meta: {
-      title: '登录中...',
+      title: i18n.t('setting.login.logging'),
       forGuest: true,
     },
     beforeEnter (to, from, next) {
@@ -162,7 +162,7 @@ export default [
     path: '/wechat/signup',
     component: WechatSignup,
     meta: {
-      title: '完善资料',
+      title: i18n.t('setting.login.supply'),
       forGuest: true,
     },
     beforeEnter (to, from, next) {
@@ -175,7 +175,7 @@ export default [
     path: '/wechat/bind',
     component: WechatBindUser,
     meta: {
-      title: '绑定已有账号',
+      title: i18n.t('setting.login.bind'),
       forGuest: true,
     },
     beforeEnter (to, from, next) {

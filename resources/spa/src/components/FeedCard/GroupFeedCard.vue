@@ -95,7 +95,7 @@ export default {
         })
     },
     sendComment ({ reply_user: replyUser, body }) {
-      if (body && body.length === 0) { return this.$Message.error('评论内容不能为空') }
+      if (body && body.length === 0) { return this.$Message.error(this.$t('comment.empty')) }
 
       const params = {
         body,
@@ -105,13 +105,13 @@ export default {
         this.commentCount += 1
         this.comments.unshift(comment)
         if (this.comments.length > 5) this.comments.pop()
-        this.$Message.success('评论成功')
+        this.$Message.success(this.$t('comment.success'))
         this.$bus.$emit('commentInput:close', true)
       })
     },
     handleCollection () {
       api.collectGroupPost(this.feed.id, this.has_collect).then(() => {
-        this.$Message.success('操作成功')
+        this.$Message.success(this.$t('collect.success'))
         this.has_collect = !this.has_collect
       })
     },
@@ -119,20 +119,20 @@ export default {
       const actions = []
       if (this.has_collect) {
         actions.push({
-          text: '取消收藏',
+          text: this.$t('collect.cancel'),
           method: () => {
             api.uncollectPost(this.feed.id).then(() => {
-              this.$Message.success('取消收藏')
+              this.$Message.success(this.$t('collect.cancel'))
               this.has_collect = false
             })
           },
         })
       } else {
         actions.push({
-          text: '收藏',
+          text: this.$t('collect.name'),
           method: () => {
             api.collectionPost(this.feed.id).then(() => {
-              this.$Message.success('已加入我的收藏')
+              this.$Message.success(this.$t('collect.already'))
               this.has_collect = true
             })
           },
@@ -141,14 +141,14 @@ export default {
       if (this.isGroupManager) {
         if (!this.pinned) {
           actions.push({
-            text: '置顶帖子',
+            text: this.$t('group.post.top.name'),
             method: () => {
               this.$bus.$emit('applyTop', {
                 type: 'post-manager',
                 api: api.pinnedPost,
                 payload: this.feed.id,
                 callback: () => {
-                  this.$Message.success('置顶成功！')
+                  this.$Message.success(this.$t('group.post.top.success'))
                   this.$emit('reload')
                 },
               })
@@ -156,18 +156,18 @@ export default {
           })
         } else {
           actions.push({
-            text: '撤销置顶',
+            text: this.$t('top.revert.name'),
             method: () => {
               const actions = [
                 {
-                  text: '撤销置顶',
+                  text: this.$t('top.revert.name'),
                   method: () => {
                     this.$store
                       .dispatch('group/unpinnedPost', {
                         postId: this.feed.id,
                       })
                       .then(() => {
-                        this.$Message.success('撤销置顶成功！')
+                        this.$Message.success(this.$t('top.revert.success'))
                         this.$emit('reload')
                       })
                   },
@@ -178,7 +178,7 @@ export default {
                   'actionSheet',
                   actions,
                   this.$t('cancel'),
-                  '确认撤销置顶?'
+                  this.$t('top.revert.confirm')
                 )
               }, 200)
             },
@@ -186,7 +186,7 @@ export default {
         }
       } else if (this.isMine && !this.pinned) {
         actions.push({
-          text: '申请帖子置顶',
+          text: this.$t('group.post.top.apply'),
           method: () => {
             this.$bus.$emit('applyTop', {
               type: 'post',
@@ -199,12 +199,12 @@ export default {
       if (this.isMine || this.isGroupManager) {
         // 是是自己文章或是圈子管理员
         actions.push({
-          text: '删除帖子',
+          text: this.$t('group.post.delete.name'),
           method: () => {
             setTimeout(() => {
               const actions = [
                 {
-                  text: '删除',
+                  text: this.$t('delete.name'),
                   style: { color: '#f4504d' },
                   method: () => {
                     this.$store
@@ -213,7 +213,7 @@ export default {
                         postId: this.feed.id,
                       })
                       .then(() => {
-                        this.$Message.success('删除帖子成功')
+                        this.$Message.success(this.$t('group.post.delete.success'))
                         this.$nextTick(() => {
                           this.$el.remove()
                           this.$emit('afterDelete')
@@ -222,14 +222,14 @@ export default {
                   },
                 },
               ]
-              this.$bus.$emit('actionSheet', actions, this.$t('cancel'), '确认删除?')
+              this.$bus.$emit('actionSheet', actions, this.$t('cancel'), this.$t('delete.confirm'))
             }, 200)
           },
         })
       }
       if (!this.isMine) {
         actions.push({
-          text: '举报',
+          text: this.$t('report.name'),
           method: () => {
             this.$bus.$emit('report', {
               type: 'post',
@@ -248,7 +248,7 @@ export default {
       if (isMine) {
         const isOwner = this.feed.user.id === this.CURRENTUSER.id
         actions.push({
-          text: isOwner ? '评论置顶' : '申请评论置顶',
+          text: isOwner ? this.$t('comment.top.name') : this.$t('comment.top.apply'),
           method: () => {
             this.$bus.$emit('applyTop', {
               isOwner,
@@ -259,12 +259,12 @@ export default {
           },
         })
         actions.push({
-          text: '删除评论',
+          text: this.$t('comment.delete.name'),
           method: () => this.deleteComment(comment.id),
         })
       } else {
         actions.push({
-          text: '回复',
+          text: this.$t('reply.name'),
           method: () => {
             this.handleComment({
               placeholder,
@@ -273,7 +273,7 @@ export default {
           },
         })
         actions.push({
-          text: '举报',
+          text: this.$t('report.name'),
           method: () => {
             this.$bus.$emit('report', {
               type: 'postComment',
@@ -297,7 +297,7 @@ export default {
             c => c.id !== commentId
           )
           this.commentCount -= 1
-          this.$Message.success('删除评论成功')
+          this.$Message.success(this.$t('comment.delete.success'))
         })
     },
   },

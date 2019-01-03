@@ -231,17 +231,17 @@ export default {
       get () {
         const relations = {
           unFollow: {
-            text: '关注',
+            text: this.$t('follow.name'),
             status: 'unFollow',
             icon: `#icon-unFollow`,
           },
           follow: {
-            text: '已关注',
+            text: this.$t('follow.already'),
             status: 'follow',
             icon: `#icon-follow`,
           },
           eachFollow: {
-            text: '互相关注',
+            text: this.$t('follow.each'),
             status: 'eachFollow',
             icon: `#icon-eachFollow`,
           },
@@ -299,7 +299,7 @@ export default {
         ? str.replace(
           reg,
           link =>
-            `<a class="m-art-links" href="${link}" target="__blank">#网页链接#</a>`
+            `<a class="m-art-links" href="${link}" target="__blank">#${this.$t('article.link_text')}#</a>`
         )
         : ''
     },
@@ -412,7 +412,7 @@ export default {
     moreAction () {
       const defaultActions = [
         {
-          text: this.has_collect ? '取消收藏' : '收藏',
+          text: this.$t(this.has_collect ? 'collect.cancel' : 'collect.name'),
           method: () => {
             // POST /feeds/:feed/collections
             // DELETE /feeds/:feed/uncollect
@@ -420,11 +420,11 @@ export default {
             let txt
             let method
             if (this.has_collect) {
-              txt = '取消收藏'
+              txt = this.$t('collect.name')
               method = 'delete'
               url = `/feeds/${this.feedId}/uncollect`
             } else {
-              txt = '已加入我的收藏'
+              txt = this.$t('collect.already')
               method = 'post'
               url = `/feeds/${this.feedId}/collections`
             }
@@ -444,7 +444,7 @@ export default {
       const actions = this.isMine
         ? [
           {
-            text: '申请动态置顶',
+            text: this.$t('feed.apply_top'),
             method: () => {
               this.$bus.$emit('applyTop', {
                 type: 'feed',
@@ -454,29 +454,29 @@ export default {
             },
           },
           {
-            text: '删除动态',
+            text: this.$t('feed.delete'),
             method: () => {
               setTimeout(() => {
                 const actionSheet = [
                   {
-                    text: '删除',
+                    text: this.$t('delete.name'),
                     style: { color: '#f4504d' },
                     method: () => {
                       api.deleteFeed(this.feedId).then(() => {
-                        this.$Message.success('删除动态成功')
+                        this.$Message.success(this.$t('feed.delete_success'))
                         this.goBack()
                       })
                     },
                   },
                 ]
-                this.$bus.$emit('actionSheet', actionSheet, this.$t('cancel'), '确认删除?')
+                this.$bus.$emit('actionSheet', actionSheet, this.$t('cancel'), this.$t('delete.confirm'))
               }, 200)
             },
           },
         ]
         : [
           {
-            text: '举报',
+            text: this.$t('report.name'),
             method: () => {
               this.$bus.$emit('report', {
                 type: 'feed',
@@ -496,7 +496,7 @@ export default {
         // 是否是自己文章的评论
         const isOwner = comment.user_id === this.user.id
         actions.push({
-          text: isOwner ? '评论置顶' : '申请评论置顶',
+          text: this.$t(isOwner ? 'comment.top.name' : 'comment.top.apply'),
           method: () => {
             this.$bus.$emit('applyTop', {
               isOwner,
@@ -508,16 +508,16 @@ export default {
           },
         })
         actions.push({
-          text: '删除评论',
+          text: this.$t('comment.delete.name'),
           method: () => this.$refs.comments.delete(comment.id),
         })
       } else {
         actions.push({
-          text: '回复',
+          text: this.$t('reply.name'),
           method: () => this.$refs.comments.open(comment.user),
         })
         actions.push({
-          text: '举报',
+          text: this.$t('report.name'),
           method: () => {
             this.$bus.$emit('report', {
               type: 'comment',
@@ -551,7 +551,7 @@ export default {
 
       if (this.$lstore.hasData('H5_ACCESS_TOKEN')) {
         this.$bus.$emit('payfor', {
-          nodeType: '内容',
+          nodeType: this.$t('article.content'),
           node: paidNode.paid_node,
           amount: paidNode.amount,
           onSuccess: data => {

@@ -13,16 +13,17 @@
 
 <script>
 import RankUsersComponent from '../components/RankUsersComponent'
+import i18n from '@/i18n'
 
 const ranks = [
   {
-    title: '全站粉丝排行榜',
+    title: i18n.t('rank.fans'),
     listUrl: '/rank/users/followers',
     api: '/ranks/followers?limit=15',
     name: 'rankFollowers',
   },
   {
-    title: '社区签到排行榜',
+    title: i18n.t('rank.checkin'),
     listUrl: '/rank/users/checkin',
     api: '/checkin-ranks?limit=15',
     name: 'rankCheckin',

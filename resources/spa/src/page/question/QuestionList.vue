@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="p-question-list"
-    @click.capture.stop.prevent="popupBuyTS"
-  >
+  <div class="p-question-list" @click.capture.stop.prevent="popupBuyTS">
     <!-- Question navs. -->
     <nav class="nav">
       <RouterLink
@@ -11,7 +8,7 @@
         exact
         exact-active-class="active"
       >
-        热门
+        {{ $t('hot') }}
       </RouterLink>
       <RouterLink
         :to="navRouterLinkBuilder('excellent')"
@@ -19,7 +16,7 @@
         exact
         exact-active-class="active"
       >
-        精选
+        {{ $t('excellent') }}
       </RouterLink>
       <RouterLink
         :to="navRouterLinkBuilder('reward')"
@@ -27,7 +24,7 @@
         exact
         exact-active-class="active"
       >
-        悬赏
+        {{ $t('group.reward') }}
       </RouterLink>
       <RouterLink
         :to="navRouterLinkBuilder('new')"
@@ -35,7 +32,7 @@
         exact
         exact-active-class="active"
       >
-        最新
+        {{ $t('newest') }}
       </RouterLink>
       <RouterLink
         :to="navRouterLinkBuilder('all')"
@@ -43,16 +40,13 @@
         exact
         exact-active-class="active"
       >
-        全部
+        {{ $t('all') }}
       </RouterLink>
     </nav>
 
     <!-- Question main. -->
     <main class="main">
-      <div
-        v-if="loading"
-        class="main-loading"
-      >
+      <div v-if="loading" class="main-loading">
         <IconLoading class="main-loading_icon" />
       </div>
 
@@ -63,22 +57,13 @@
         :no-excellent="type === 'excellent'"
       />
 
-      <div
-        v-if="questions.length && !loadmore"
-        class="main-loadmore"
-      >
-        <button
-          class="main-loadmore_button"
-          @click="fetchQuestionsMore"
-        >
-          加载更多
+      <div v-if="questions.length && !loadmore" class="main-loadmore">
+        <button class="main-loadmore_button" @click="fetchQuestionsMore">
+          {{ $t('loadmore.bottom[2]') }}
         </button>
       </div>
 
-      <div
-        v-else-if="loadmore"
-        class="main-loadmore"
-      >
+      <div v-else-if="loadmore" class="main-loadmore">
         <button class="main-loadmore_button active">
           <IconLoading class="main-loading_icon" />
         </button>
@@ -94,7 +79,6 @@
 </template>
 
 <script>
-import message from 'plus-message-bundle'
 import LinearLoading from '@/icons/LinearLoading.vue'
 import QuestionCard from './components/QuestionCard.vue'
 import { list } from '@/api/questions'
@@ -160,7 +144,6 @@ export default {
         })
         .catch(({ response: { data } = {} }) => {
           this.loading = false
-          this.$Message.error(message(data, '加载失败，请刷新重试！'))
         })
     },
 
@@ -169,16 +152,12 @@ export default {
       list(this.type, this.questions.length + 1)
         .then(({ data }) => {
           this.loadmore = false
-          if (!data.length) {
-            this.$Message.error('没有更多数据了')
-            return
-          }
+          if (!data.length) return
 
           this.questions = [...this.questions, ...data]
         })
         .catch(({ response: { data } = {} }) => {
           this.loadmore = false
-          this.$Message.error(message(data, '加载失败，请刷新重试！'))
         })
     },
   },
@@ -187,7 +166,7 @@ export default {
 
 <style lang="less" scoped>
 .p-question-list {
-  padding-top: 180px !important;
+  padding-top: 180px;
   padding-bottom: 100px;
   min-height: 100vh;
 

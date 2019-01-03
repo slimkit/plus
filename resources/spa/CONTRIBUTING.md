@@ -65,7 +65,7 @@
  * @property {Object} [style] - 按钮的样式
  */
 const actions = [
-  { text: '确定', method: () => { console.log('button clicked!') }, style: { color: 'green' } }
+  { text: this.$t('confirm'), method: () => { console.log('button clicked!') }, style: { color: 'green' } }
 ]
 /**
  * Call actionSheet

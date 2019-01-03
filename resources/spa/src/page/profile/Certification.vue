@@ -1,13 +1,13 @@
 <template>
   <div class="p-profile-certification">
-    <CommonHeader :pinned="true">{{ type === 'user' ? '个人' : '企业' }}认证</CommonHeader>
+    <CommonHeader :pinned="true">{{ `certificate.${type}.name` | t }}</CommonHeader>
 
     <main class="m-box-model main">
       <div
         v-if="verified.status === 0"
         class="info-bar"
       >
-        认证信息审核中，我们会在7个工作日内给您答复
+        {{ $t('certificate.reviewing', [7]) }}
       </div>
       <div class="info-main">
         <template v-if="type !== 'user'">
@@ -37,7 +37,7 @@
           <span class="value">{{ verified.data.desc }}</span>
         </div>
         <div class="row">
-          <span class="label">认证资料</span>
+          <span class="label">{{ $t('certificate.data') }}</span>
           <span class="value">
             <img
               v-for="(image, index) in images"

@@ -22,12 +22,14 @@
 </template>
 
 <script>
+import i18n from '@/i18n'
+
 export default {
   name: 'DiySelect',
   props: {
     value: { type: null, default: '' },
     options: { type: Array, default: () => [] },
-    placeholder: { type: String, default: '请选择' },
+    placeholder: { type: String, default: i18n.t('please_select') },
     readonly: { type: Boolean, default: false },
   },
   data () {

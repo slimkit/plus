@@ -112,7 +112,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 5em;
+    width: 6em;
     height: 1.8em;
     background: #fff;
     color: @primary;

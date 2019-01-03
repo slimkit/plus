@@ -1,6 +1,7 @@
 
 discover: Discover
 anonymity: anonymity
+hide: hide
 image: Image
 
 newest: Newest
@@ -26,16 +27,17 @@ change: Change
 modify: Modify
 back: Back
 
-like: like
-share: share
-more: more
-pinned: pinned
-recommend: recommend
-nearby: 附近
+like: Like
+share: Share
+more: More
+pinned: Pinned
+recommend: Recommend
+nearby: Nearby
 
 tap_to_edit: Tap to edit
 comment_placeholder: Just talk about ~
 got_it: Got it
+please_select: Please choose
 
 # ariticle
 article:
@@ -51,6 +53,7 @@ article:
   share_brownser: '🥺 Please use the browser built-in sharing'
   link_text: Web links
   deleted: Content has been deleted
+  uncategorized: uncategorized
   badge:
     excellent: E
     top: T
@@ -71,6 +74,7 @@ collect:
   name: Collect
   cancel: Cancel collection
   success: Collection success
+  already: Already added to my collection
 delete:
   name: Delete
   confirm: Confirm delete?
@@ -84,12 +88,23 @@ report:
 top:
   name: Topping
   apply: Apply for topping
+  confirm: Confirm top
+  revert:
+    name: Undo top
+    confirm: Confirm to cancel the top?
+    success: Cancel the success of the top!
+  select_day: Select top days
+  amount:
+    name: Top amount
+    input: Enter the amount
+    total: Total amount
 reply:
   name: Reply
   success: Reply success
 comment:
   name: Comment
   success: Comment success
+  failed: Comment failed
   delete:
     name: Delete comment
     success: Delete comment success
@@ -107,12 +122,22 @@ follow:
   count: '{0} follwers'
 
 release:
+  name: Release
   text: Text
   image: Image
   news: News
   checkin: Check-in
   question: Question
   post: Group post
+  feed: Release feed
+  confirm_cancel: Do you still have content posted, do you give up publishing?
+  success: Release successful
+  need_pay: Whether to charge
+  add_topic: Topics
+  set_amount: Please set the charge amount
+  text_limit: Insufficient body content {0} words, unable to set charges
+  image_placeholder: The combination of graphics and text is more exciting.
+  has_failed_upload: There is an image that failed to upload, please confirm
 
 # loadmore
 loadmore:
@@ -124,6 +149,7 @@ date:
   minutes_ago: '{min} minutes ago'
   hours_ago: '{hour} hours ago'
   days_ago: '{day} days ago'
+  day: day
   yesterday: yesterday {time}
   today: today
   month: this month
@@ -140,6 +166,7 @@ profile:
   info: My profile
   address: Address
   bio: Introduction
+  sex: ['Srcret', 'Man', 'Woman']
   default_bio: This guy is lazy, nothing left
   background:
     success: Update your personal background successfully!
@@ -153,10 +180,30 @@ profile:
     reject: Rejected
   collect:
     name: My collection
-    feed: 收藏的动态
-    news: 收藏的资讯
-    post: 收藏的回答
-    answer: 收藏的帖子
+    feed: Favorite feeds
+    news: Favorite news
+    post: Favorite post
+    answer: Favorite answer
+  label:
+    username: Name
+    sex: Sex
+    city: City
+    tag: Tags
+    bio: Intro.
+    avatar: Change avatar
+  placeholder:
+    username: Enter user name
+    bio: Introduction to editing
+    location: Select a location
+    sex: Choose gender
+
+checkin:
+  name: Check-in
+  already: Already check-in
+  title: Daily Check-in
+  count: Cumulative check-in {0} days
+  tips: Daily check-in to get @:(currency.unit)
+  failed: Check in failed, please try again later
 
 wallet:
   name: Wallet
@@ -239,7 +286,9 @@ certificate:
   name: Certificate
   apply: Apply certificate
   info: Certification
+  data: Data
   under_review: Your certification is awaiting review and can be published after reviewing {name}
+  reviewing: In the certification information review, we will reply to you within {0} working days.
   need: Please authenticate first
   go: Go to certification
   status: ['Pending review', 'Approved', 'Was rejected', 'Not certified']
@@ -289,6 +338,10 @@ setting:
     name: About us
   locale:
     name: Change Language
+  login:
+    logging: Logging in...
+    supply: Complete material
+    bind: Bind an existing account
   logout:
     name: Logout
     label: Logout
@@ -307,6 +360,7 @@ feed:
   name: Feed
   detail: Feed detail
   delete: Delete feed
+  delete_success: Delete feed success
   apply_top: Apply for feed topping
   count: '{0} feeds'
   all: All feeds
@@ -329,7 +383,7 @@ feed:
       upload: Upload topic cover
       change: Replace cover
     placeholder:
-      title: Enter the topic title, within {0} words (required)
+      title: Topic title, within {0} words (required)
       desc: Briefly introduce the topic content
     tips: After the topic is created successfully, the title cannot be changed.
     abort:
@@ -343,6 +397,8 @@ news:
   need_certificate: Can a certified user create a submission and go to certification?
   my_subscription: My subscription
   more_subscription: More subscription
+  from: From
+  original: original
   cover:
     tap_to_upload: Tap to upload cover
     placeholder: If you do not upload the cover, it defaults to the first image in the article.
@@ -375,7 +431,7 @@ news:
       title: Submission payment
       content: You need to pay {count}@:(currency.unit) for this submission. Do you want to continue contributing?
       confirm: Confirm submission
-      cancel: 暂不考虑
+      cancel: Not considering
 
 group:
   name: Group
@@ -457,6 +513,13 @@ group:
     permission: Permission
     need_permission: '"{0}" only {1} has post permission'
     need_join_first: Need to join before you can post
+    delete:
+      name: Delete group post
+      success: Delete group post success
+    top:
+      name: Top group post
+      apply: Apply for post tops
+      success: Topping success!
 
 question:
   name: Question
@@ -536,19 +599,19 @@ rank:
   name: Ranking list
   user: User
   balance: Wealth leader list
-  checkin:
+  checkin: Check-in ranking list
   checkin_count: 'Cumulative check-in: {0}'
   expert: Q&A leader list
-  fans: Fan rankings
+  fans: Fans rankings
   fans_count: "Fans: {0}"
   income: Revenue leader ranking
   question_like: Q&A like ranking
   question_like_count: 'like: {0}'
-  feed: '{0} feed ranking'
+  feed: 'Feed ranking {0}'
   feed_count: 'like: {0}'
-  news: '{0} news ranking'
+  news: 'News ranking {0}'
   news_count: 'view: {0}'
-  answer: '{0} answer ranking'
+  answer: 'Answer ranking {0}'
   answer_count: 'answer: {0}'
 
 find:
@@ -561,6 +624,12 @@ location:
   current: Current position
   empty: Not positioned
   choose: Select targeting
+  positioning: Positioning...
+  error: Positioning failure
+
+password:
+  input: Input password
+  forgot: forget password?
 
 auth:
   login: Login

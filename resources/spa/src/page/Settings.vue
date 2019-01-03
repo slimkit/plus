@@ -76,6 +76,7 @@ export default {
       const target = this.locale === 'en' ? 'zh-CN' : 'en'
       this.$lstore.setData('I18N_LOCALE', target)
       this.$i18n.locale = target
+      location.reload()
     },
   },
 }

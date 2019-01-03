@@ -4,7 +4,7 @@
     class="m-avatar-box c-avatar"
     @click="viewUser"
   >
-    <template v-if="anonymity">匿</template>
+    <template v-if="anonymity">{{ $t('hide') }}</template>
     <img
       v-else-if="avatar"
       :src="avatar"

@@ -13,12 +13,13 @@
 
 <script>
 import NavTab from '@/components/common/NavTab.vue'
+import i18n from '@/i18n'
 
 const types = [
-  { name: 'feed', label: '动态', route: '/profile/collection/feeds' },
-  { name: 'news', label: '资讯', route: '/profile/collection/news' },
-  { name: 'answer', label: '回答', route: '/profile/collection/answers' },
-  { name: 'post', label: '帖子', route: '/profile/collection/posts' },
+  { name: 'feed', label: i18n.t('feed.name'), route: '/profile/collection/feeds' },
+  { name: 'news', label: i18n.t('news.name'), route: '/profile/collection/news' },
+  { name: 'answer', label: i18n.t('question.answer.name'), route: '/profile/collection/answers' },
+  { name: 'post', label: i18n.t('group.post.name'), route: '/profile/collection/posts' },
 ]
 
 export default {

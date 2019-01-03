@@ -22,10 +22,13 @@
           <h1>{{ news.title }}</h1>
           <p>
             <i class="m-art-cate">{{ cate }}</i>
-            <span class="from">来自 {{ news.from || '原创' }}</span>
+            <span class="from">{{ $t('news.from') }} {{ news.from || $t('news.original') }}</span>
           </p>
         </section>
-        <p v-if="news.subject" class="m-art-subject">{{ news.subject }}</p>
+        <p v-if="news.subject" class="m-art-subject">
+          <span>[{{ $t('news.post.label.subject') }}]</span>
+          {{ news.subject }}
+        </p>
         <div class="m-art-body markdown-body" v-html="body" />
 
         <!-- 点赞组件 -->
@@ -49,7 +52,7 @@
 
       <div v-if="relationNews.length" class="m-box-model m-art-comments">
         <ul class="m-box m-aln-center m-art-comments-tabs">
-          <li>相关资讯</li>
+          <li>{{ $t('news.relation') }}</li>
         </ul>
         <NewsCard
           v-for="newsItem in relationNews"
@@ -184,7 +187,7 @@ export default {
       return this.news.created_at || ''
     },
     cate () {
-      const { category: { name = '未分类' } = {} } = this.news
+      const { category: { name = this.$t('article.uncategorized') } = {} } = this.news
       return name
     },
     body () {
@@ -324,20 +327,20 @@ export default {
       const defaultActions = []
       if (this.has_collect) {
         defaultActions.push({
-          text: '取消收藏',
+          text: this.$t('collect.cancel'),
           method: () => {
             api.uncollectNews(this.newsId).then(() => {
-              this.$Message.success('取消成功')
+              this.$Message.success(this.$t('collect.cancel'))
               this.has_collect = false
             })
           },
         })
       } else {
         defaultActions.push({
-          text: '收藏',
+          text: this.$t('collect.name'),
           method: () => {
             api.collectionNews(this.newsId).then(() => {
-              this.$Message.success('收藏成功')
+              this.$Message.success(this.$t('collect.success'))
               this.has_collect = true
             })
           },
@@ -347,7 +350,7 @@ export default {
       const actions = this.isMine
         ? [
           {
-            text: '申请文章置顶',
+            text: this.$t('top.apply'),
             method: () => {
               this.$bus.$emit('applyTop', {
                 type: 'news',
@@ -356,16 +359,10 @@ export default {
               })
             },
           },
-          {
-            text: '删除',
-            method: () => {
-              this.$Message.info('资讯删除功能开发中，敬请期待')
-            },
-          },
         ]
         : [
           {
-            text: '举报',
+            text: this.$t('report.name'),
             method: () => {
               this.$bus.$emit('report', {
                 type: 'news',
@@ -385,7 +382,7 @@ export default {
         // 是否是自己文章的评论
         const isOwner = comment.user_id === this.userId
         actions.push({
-          text: isOwner ? '评论置顶' : '申请评论置顶',
+          text: isOwner ? this.$t('comment.top.name') : this.$t('comment.top.apply'),
           method: () => {
             this.$bus.$emit('applyTop', {
               isOwner,
@@ -397,16 +394,16 @@ export default {
           },
         })
         actions.push({
-          text: '删除评论',
+          text: this.$t('comment.delete.name'),
           method: () => this.$refs.comments.delete(comment.id),
         })
       } else {
         actions.push({
-          text: '回复',
+          text: this.$t('reply.name'),
           method: () => this.$refs.comments.open(comment.user),
         })
         actions.push({
-          text: '举报',
+          text: this.$t('report.name'),
           method: () => {
             this.$bus.$emit('report', {
               type: 'comment',
@@ -472,8 +469,7 @@ export default {
   background-color: #f4f5f6;
   color: #999;
   border-left: 5px solid #e3e3e3;
-  &:before {
-    content: "[摘要]";
+  span {
     color: #666;
   }
 }

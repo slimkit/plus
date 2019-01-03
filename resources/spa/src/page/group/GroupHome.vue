@@ -1,7 +1,7 @@
 <template>
   <div class="p-group-home">
     <CommonHeader>
-      圈子
+      {{ $t('group.name') }}
       <div slot="right" @click.capture.stop.prevent="popupBuyTS">
         <svg class="m-style-svg m-svg-def" @click="onSearchClick">
           <use xlink:href="#icon-search" />
@@ -14,7 +14,10 @@
 
     <main @click.capture.stop.prevent="popupBuyTS">
       <div class="group-label" @click="$router.push({ name: 'groups', query: { type: 'recommend' } })">
-        <h2><strong>{{ groupTotalNumber }}</strong>个兴趣小组，等待你的加入！</h2>
+        <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
+        <i18n tag="h2" path="group.count">
+          <strong place="count">{{ groupTotalNumber }}</strong>
+        </i18n>
         <svg class="m-style-svg m-svg-def m-entry-append">
           <use xlink:href="#icon-arrow-right" />
         </svg>
@@ -27,10 +30,10 @@
           tag="div"
           class="group-label"
         >
-          <span>我加入的</span>
+          <span>{{ $t('group.my') }}</span>
           <div class="m-box m-aln-center m-justify-end">
-            <span v-if="!myGroupsCount">查看全部</span>
-            <span v-else-if="myGroupsCount > 5">查看更多</span>
+            <span v-if="!myGroupsCount">{{ $t('group.view_all') }}</span>
+            <span v-else-if="myGroupsCount > 5">{{ $t('group.view_more') }}</span>
             <svg class="m-style-svg m-svg-def m-entry-append">
               <use xlink:href="#icon-arrow-right" />
             </svg>
@@ -47,12 +50,12 @@
       <!-- 推荐圈子 -->
       <div v-if="recGroups.length > 0" class="m-box-model">
         <div class="group-label">
-          <span>热门推荐</span>
+          <span>{{ $t('group.hot') }}</span>
           <div class="m-box m-aln-center m-justify-end" @click="fetchRecGroups">
             <svg :style="{ transform: `rotate(${clickCount}turn)` }" class="m-style-svg m-svg-small">
               <use xlink:href="#icon-refresh" />
             </svg>
-            <span style="margin-left: 0.05rem">换一批</span>
+            <span style="margin-left: 0.05rem">{{ $t('group.refresh') }}</span>
           </div>
         </div>
         <ul class="group-list">
@@ -72,7 +75,9 @@ import * as api from '@/api/group.js'
 
 export default {
   name: 'GroupHome',
-  components: { GroupItem },
+  components: {
+    GroupItem,
+  },
   data () {
     return {
       myGroups: new Map(),
@@ -141,7 +146,7 @@ export default {
 
       const actions = [
         {
-          text: '去认证',
+          text: this.$t('certificate.go'),
           method: () => this.$router.push({ name: 'ProfileCertificate' }),
         },
       ]
@@ -149,7 +154,7 @@ export default {
         'actionSheet',
         actions,
         this.$t('cancel'),
-        '认证用户才能创建圈子, 去认证?'
+        this.$t('group.need_certificate')
       )
     },
   },

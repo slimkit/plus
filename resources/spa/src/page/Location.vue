@@ -60,6 +60,7 @@
 import SearchBar from '@/components/common/SearchBar.vue'
 import _ from 'lodash'
 import * as api from '@/api/bootstrappers.js'
+import i18n from '@/i18n'
 
 export default {
   name: 'Location',
@@ -76,7 +77,7 @@ export default {
       autoPos: {},
       hotPos: {},
       isFocus: false,
-      placeholder: '未定位',
+      placeholder: i18n.t('location.empty'),
       cities: [],
       originCities: [],
     }
@@ -163,7 +164,7 @@ export default {
       this.loading = true
       this.hotPos = null
       this.autoPos = null
-      this.placeholder = '定位中...'
+      this.placeholder = i18n.t('location.positioning')
       api.getCurrentPosition().then(
         data => {
           this.currentPos = data
@@ -172,7 +173,7 @@ export default {
         err => {
           this.loading = false
           this.currentPos = {}
-          this.placeholder = '定位失败'
+          this.placeholder = i18n.t('location.error')
           this.$Message.error(err.message)
         }
       )

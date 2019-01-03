@@ -2,6 +2,7 @@
 
 discover: 发现
 anonymity: 匿名
+hide: 匿
 image: 图片
 
 newest: 最新
@@ -37,6 +38,7 @@ nearby: 附近
 tap_to_edit: 点击以编辑
 comment_placeholder: 随便说说～
 got_it: 知道了
+please_select: 请选择
 
 # ariticle
 article:
@@ -52,6 +54,7 @@ article:
   share_brownser: '请使用浏览器的分享功能 🥺'
   link_text: 网页链接
   deleted: 内容已被删除
+  uncategorized: 未分类
   badge:
     excellent: 精
     top: 置顶
@@ -71,6 +74,7 @@ collect:
   name: 收藏
   cancel: 取消收藏
   success: 收藏成功
+  already: 已加入我的收藏
 delete:
   name: 删除
   confirm: 确认删除？
@@ -84,12 +88,23 @@ report:
 top:
   name: 置顶
   apply: 申请置顶
+  confirm: 确认置顶
+  revert:
+    name: 撤销置顶
+    confirm: 确认撤销置顶？
+    success: 撤销置顶成功！
+  select_day: 选择置顶天数
+  amount:
+    name: 置顶金额
+    input: 输入金额
+    total: 总金额
 reply:
   name: 回复
   success: 回复成功
 comment:
   name: 评论
   success: 评论成功
+  failed: 评论失败
   delete:
     name: 删除评论
     success: 删除评论成功
@@ -108,12 +123,22 @@ follow:
   count: '{0} 人关注'
 
 release:
+  name: 发布
   text: 文字
   image: 图片
   news: 投稿
   checkin: 签到
   question: 提问
   post: 发帖
+  feed: 发布动态
+  confirm_cancel: 你还有没有发布的内容，是否放弃发布？
+  success: 发布成功
+  need_pay: 是否收费
+  add_topic: 添加话题
+  set_amount: 请设置收费金额
+  text_limit: 正文内容不足{0}字, 无法设置收费
+  image_placeholder: 输入要说的话，图文结合更精彩哦
+  has_failed_upload: 存在上传失败的图片，请确认
 
 # loadmore
 loadmore:
@@ -126,6 +151,7 @@ date:
   minutes_ago: '{min}分钟前'
   hours_ago: '{hour}小时前'
   days_ago: '{day}天前'
+  day: 天
   yesterday: 昨天 {time}
   today: 今天
   month: 本月
@@ -142,6 +168,7 @@ profile:
   info: 个人资料
   address: 地址
   bio: 简介
+  sex: ['保密', '男', '女']
   default_bio: 这家伙很懒，什么也没有留下
   background:
     success: 更新个人背景成功！
@@ -157,8 +184,28 @@ profile:
     name: 我的收藏
     feed: 收藏的动态
     news: 收藏的资讯
-    post: 收藏的回答
-    answer: 收藏的帖子
+    post: 收藏的帖子
+    answer: 收藏的回答
+  label:
+    username: 用户名
+    sex: 性别
+    city: 城市
+    tag: 标签
+    bio: 简介
+    avatar: 更换头像
+  placeholder:
+    username: 请输入用户名
+    bio: 编辑简介
+    location: 请选择地理位置
+    sex: 选择性别
+
+checkin:
+  name: 签到
+  already: 已签到
+  title: 每日签到
+  count: 累计签到{0}天
+  tips: 每日签到得@:(currency.unit)
+  failed: 签到失败, 请稍后重试
 
 wallet:
   name: 钱包
@@ -237,12 +284,13 @@ currency:
     min: 请至少提取{0}@:(currency.unit)
     disabled: 未开启积分提取功能
 
-
 certificate:
   name: 认证
   apply: 申请认证
   info: 认证信息
+  data: 认证资料
   under_review: 您的认证正在等待审核，通过审核后可发布{name}
+  reviewing: 认证信息审核中，我们会在{0}个工作日内给您答复
   need: 请先进行身份认证
   go: 去认证
   status: ['待审核', '通过审核', '被驳回', '未认证']
@@ -292,6 +340,10 @@ setting:
     name: 关于我们
   locale:
     name: 切换语言
+  login:
+    logging: 登录中...
+    supply: 完善资料
+    bind: 绑定已有账号
   logout:
     name: 退出登录
     label: 退出
@@ -311,6 +363,7 @@ feed:
   name: 动态
   detail: 动态详情
   delete: 删除动态
+  delete_success: 删除动态
   apply_top: 申请动态置顶
   count: '{0}条动态'
   all: 全部动态
@@ -347,6 +400,8 @@ news:
   need_certificate: 认证用户才能创建投稿，去认证？
   my_subscription: 我的订阅
   more_subscription: 更多订阅
+  from: 来自
+  original: 原创
   cover:
     tap_to_upload: 点击上传封面
     placeholder: 不上传封面则默认为文章内第一张图
@@ -461,6 +516,13 @@ group:
     permission: 发帖权限
     need_permission: '"{0}"仅{1}拥有发帖权限'
     need_join_first: 需要先加入才可发帖
+    delete:
+      name: 删除帖子
+      success: 删除帖子成功
+    top:
+      name: 置顶帖子
+      apply: 申请帖子置顶
+      success: 置顶成功！
 
 question:
   name: 问题
@@ -566,7 +628,12 @@ location:
   current: 当前定位
   empty: 未定位
   choose: 选择定位
+  positioning: 定位中...
+  error: 定位失败
 
+password:
+  input: 输入密码
+  forgot: 忘记密码？
 
 auth:
   login: 登录

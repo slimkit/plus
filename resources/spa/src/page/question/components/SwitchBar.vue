@@ -15,7 +15,7 @@
         class="item"
         to="/question"
       >
-        问答
+        {{ $t('question.q_a') }}
       </RouterLink>
 
       <!-- Tags type link. -->
@@ -26,7 +26,7 @@
         class="item"
         to="/question/topics"
       >
-        专题
+        {{ $t('question.topic.name') }}
       </RouterLink>
     </div>
 

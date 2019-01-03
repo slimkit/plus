@@ -250,6 +250,11 @@ export default {
       p {
         margin-top: 15px;
       }
+
+      /deep/ .v-badge-count {
+        top: -12px;
+        right: -44px;
+      }
     }
   }
   .m-entry-prepend {

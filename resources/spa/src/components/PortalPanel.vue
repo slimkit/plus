@@ -59,8 +59,9 @@
             v-else
             class="load-more-btn"
             @click.stop="$emit('loadmore')"
-            v-text="fetching ? '加载中...' : '点击加载更多'"
-          />
+          >
+            {{ fetching ? 0 : 2 | t('loadmore.bottom') }}
+          </span>
         </div>
       </slot>
     </main>

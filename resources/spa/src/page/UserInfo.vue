@@ -1,7 +1,7 @@
 <template>
   <div class="m-box-model p-user-info">
     <CommonHeader>
-      个人资料
+      {{ $t('profile.info') }}
       <template slot="right">
         <CircleLoading v-if="loading" />
         <a
@@ -10,7 +10,7 @@
           class="submit-btn"
           @click.prevent="handleOk"
         >
-          完成
+          {{ $t('complete') }}
         </a>
       </template>
     </CommonHeader>
@@ -19,30 +19,30 @@
       <form>
         <FormAvatarItem
           v-model="avatar"
-          label="更换头像"
+          :label="$t('profile.label.avatar')"
           type="storage"
         />
 
         <FormInputItem
           v-model="name"
-          placeholder="请输入用户名"
-          label="用户名"
+          :label="$t('profile.label.username')"
+          :placeholder="$t('profile.placeholder.username')"
         />
 
         <FormSelectItem
           v-model="sexMap[sex]"
-          label="性别"
+          :label="$t('profile.label.sex')"
           @click="switchSex"
         />
 
         <FormLocationItem
           v-model="location"
-          label="城市"
+          :label="$t('profile.label.city')"
         />
 
         <FormTagsItem
           v-model="tags"
-          label="标签"
+          :label="$t('profile.label.tag')"
           @select="onTagSelect"
           @delete="onTagRemove"
         />
@@ -52,8 +52,8 @@
           :maxlength="50"
           :warnlength="40"
           type="textarea"
-          label="简介"
-          placeholder="编辑简介"
+          :label="$t('profile.label.bio')"
+          :placeholder="$t('profile.placeholder.bio')"
         />
       </form>
     </main>
@@ -63,8 +63,6 @@
 <script>
 import { mapState } from 'vuex'
 
-const sexMap = { 0: '保密', 1: '男', 2: '女' }
-
 export default {
   name: 'UserInfo',
   data () {
@@ -73,12 +71,12 @@ export default {
       scrollHeight: 0,
       showCleanName: false,
 
-      sexMap,
+      sexMap: this.$t('profile.sex'),
       sex: 0,
       bio: '',
       name: '',
       tags: [],
-      location: { label: '请选择地理位置' },
+      location: { label: this.$t('profile.placeholder.location') },
       avatar: {},
       avatarNode: '',
       change: false,
@@ -99,8 +97,7 @@ export default {
       )
     },
     sexTxt () {
-      const sex = ['保密', '男', '女']
-      return sex[this.sex] || '选择性别'
+      return this.sexMap[this.sex] || this.$t('profile.placeholder.sex')
     },
   },
   created () {
@@ -169,9 +166,9 @@ export default {
     },
     switchSex () {
       const options = [
-        { text: '男', method: () => void (this.sex = 1) },
-        { text: '女', method: () => void (this.sex = 2) },
-        { text: '保密', method: () => void (this.sex = 0) },
+        { text: this.$t('profile.sex[1]'), method: () => void (this.sex = 1) },
+        { text: this.$t('profile.sex[2]'), method: () => void (this.sex = 2) },
+        { text: this.$t('profile.sex[0]'), method: () => void (this.sex = 0) },
       ]
       this.$bus.$emit('actionSheet', options)
     },

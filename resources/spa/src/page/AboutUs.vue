@@ -1,6 +1,6 @@
 <template>
   <div class="about-us">
-    <CommonHeader>关于我们</CommonHeader>
+    <CommonHeader>{{ $t('setting.about.name') }}</CommonHeader>
 
     <main>
       <div

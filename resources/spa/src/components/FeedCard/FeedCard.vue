@@ -378,7 +378,7 @@ export default {
           },
         })
         actions.push({
-          text: this.$t('comment.delete'),
+          text: this.$t('comment.delete.name'),
           method: () => this.deleteComment(comment.id),
         })
       } else {

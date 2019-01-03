@@ -6,12 +6,12 @@
       style="background-color: #f4f5f6; z-index: 101"
       @touchmove.prevent
     >
-      <CommonHeader :back="cancel">申请置顶</CommonHeader>
+      <CommonHeader :back="cancel">{{ $t('top.apply') }}</CommonHeader>
 
       <main class="m-box-model m-aln-center m-justify-center">
         <div class="m-box-model m-lim-width">
           <div class="m-pinned-amount-btns m-main">
-            <p class="m-pinned-amount-label">选择置顶天数</p>
+            <p class="m-pinned-amount-label">{{ $t('top.select_day') }}</p>
             <div class="m-box m-aln-center ">
               <button
                 v-for="item in items"
@@ -21,7 +21,7 @@
                 class="m-pinned-amount-btn"
                 @click="chooseDefaultDay(item)"
               >
-                {{ ((~~item)) }} 天
+                {{ ((~~item)) }} {{ $t('date.day') }}
               </button>
             </div>
           </div>
@@ -31,22 +31,22 @@
               class="m-box m-aln-center m-justify-bet m-bb1 m-pinned-row plr20 m-pinned-amount-customize m-main"
               style="margin-top: .2rem"
             >
-              <span>置顶金额</span>
+              <span>{{ $t('top.amount.name') }}</span>
               <div class="m-box m-aln-center">
                 <input
                   v-model="customAmount"
                   type="number"
                   pattern="[0-9]*"
-                  placeholder="输入金额"
+                  :placeholder="$t('top.amount.input')"
                   oninput="value=value.slice(0,8)"
                   class="m-flex-grow1 m-flex-shrink1 m-text-r"
                 >
-                <span>{{ currencyUnit }}</span>
+                <span>{{ $t('currency.unit') }}</span>
               </div>
             </div>
 
             <div class="m-box m-aln-center m-justify-bet m-pinned-row plr20 m-pinned-amount-customize m-main">
-              <span>总金额</span>
+              <span>{{ $t('top.amount.total') }}</span>
               <div class="m-box m-aln-center">
                 <input
                   v-model="amount"
@@ -55,14 +55,14 @@
                   pattern="[0-9]*"
                   disabled="true"
                   readonly="true"
-                  placeholder="总金额"
+                  :placeholder="$t('top.amount.total')"
                   style="background-color: transparent"
                 >
-                <span>{{ currencyUnit }}</span>
+                <span>{{ $t('currency.unit') }}</span>
               </div>
             </div>
             <p class="placeholder m-flex-grow1 m-flex-shrink1">
-              可用{{ currencyUnit }}{{ currencySum }}
+              {{ $t('currency.current') }} {{ currencySum }}
             </p>
           </template>
         </div>
@@ -76,15 +76,12 @@
             @click="showPasswordConfirm"
           >
             <CircleLoading v-if="loading" />
-            <span v-else>{{ isOwner || isManager ? '确认置顶' : '申请置顶' }}</span>
+            <span v-else>{{ isOwner || isManager ? $t('top.confirm') : $t('top.apply') }}</span>
           </button>
         </div>
       </main>
 
-      <PasswordConfirm
-        ref="password"
-        @submit="applyTop"
-      />
+      <PasswordConfirm ref="password" @submit="applyTop" />
     </div>
   </Transition>
 </template>
@@ -157,7 +154,7 @@ export default {
   methods: {
     showPasswordConfirm () {
       if (this.currency < this.amount) {
-        this.$Message.error(`${this.currencyUnit}不足，请充值`)
+        this.$Message.error(this.$t('currency.insufficient'))
         this.cancel()
         return this.$router.push({ name: 'currencyRecharge' })
       }

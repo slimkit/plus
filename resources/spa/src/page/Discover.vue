@@ -12,18 +12,18 @@
         class="m-entry-group padding"
       >
         <RouterLink
-          v-for="{icon, title, path, tips, new_tips} in group"
-          :key="`$discover-entry-${icon}`"
-          :to="path"
+          v-for="item in group"
+          :key="`$discover-entry-${item.icon}`"
+          :to="item.path"
           tag="li"
           class="m-entry"
         >
           <svg class="m-style-svg m-svg-def m-entry-prepend">
-            <use :xlink:href="`#icon-discover-${icon}`" />
+            <use :xlink:href="`#icon-discover-${item.icon}`" />
           </svg>
-          <span class="m-flex-grow1">{{ title }}</span>
-          <BadgeIcon :dot="new_tips" class="m-entry-extra">
-            {{ tips }}
+          <span class="m-flex-grow1">{{ item.title }}</span>
+          <BadgeIcon :dot="item.new_tips" class="m-entry-extra">
+            {{ item.tips }}
           </BadgeIcon>
           <svg class="m-style-svg m-svg-def entry__item--append">
             <use xlink:href="#icon-arrow-right" />

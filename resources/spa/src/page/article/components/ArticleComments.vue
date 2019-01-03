@@ -106,36 +106,36 @@ export default {
     },
     open (replyUser = {}) {
       let placeholder
-      if (replyUser.name) placeholder = `回复 ${replyUser.name}：`
+      if (replyUser.name) placeholder = `${this.$t('reply.name')} ${replyUser.name}：`
       this.$bus.$emit('commentInput', {
         placeholder,
         onOk: body => void this.sendComment(body, replyUser.id),
       })
     },
     sendComment (body, replyUser) {
-      if (!body) return this.$Message.error('评论内容不能为空')
+      if (!body) return this.$Message.error(this.$t('comment.empty'))
       const params = { body }
       if (replyUser) params['reply_user'] = replyUser
       this.factory.postComment(this.article, { body, reply_user: replyUser })
         .then(async comment => {
-          this.$Message.success('评论成功')
+          this.$Message.success(this.$t('comment.success'))
           this.$bus.$emit('commentInput:close', true)
           this.fetch()
           this.goAnchor('#comment-head')
           this.$emit('update:total', 1)
         })
         .catch(() => {
-          this.$Message.error('评论失败')
+          this.$Message.error(this.$t('delete.failed'))
           this.$bus.$emit('commentInput:close', true)
         })
     },
 
     delete (commentId) {
       const actions = [
-        { text: '删除', method: () => void this.deleteComment(commentId) },
+        { text: this.$t('delete.name'), method: () => void this.deleteComment(commentId) },
       ]
       setTimeout(() => {
-        this.$bus.$emit('actionSheet', actions, this.$t('cancel'), '确认删除？')
+        this.$bus.$emit('actionSheet', actions, this.$t('cancel'), this.$t('delete.confirm'))
       }, 200)
     },
     deleteComment (commentId) {
@@ -145,7 +145,7 @@ export default {
           this.comments = this.comments.filter(c => c.id !== commentId)
           this.pinneds = this.pinneds.filter(c => c.id !== commentId)
           this.$emit('update:total', -1)
-          this.$Message.success('删除评论成功')
+          this.$Message.success(this.$t('comment.delete.success'))
         })
     },
   },

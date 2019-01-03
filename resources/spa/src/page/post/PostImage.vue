@@ -1,14 +1,14 @@
 <template>
   <div class="p-post-image">
     <CommonHeader>
-      发布动态
+      {{ $t('release.feed') }}
       <template slot="left">
         <a
           class="m-send-btn"
           href="javascript:;"
           @click="beforeGoBack"
         >
-          取消
+          {{ $t('cancel') }}
         </a>
       </template>
       <template slot="right">
@@ -19,7 +19,7 @@
           class="m-send-btn"
           @click.prevent.stop="sendmessage"
         >
-          发布
+          {{ $t('release.name') }}
         </a>
       </template>
     </CommonHeader>
@@ -31,7 +31,7 @@
           :rows="11"
           :maxlength="255"
           :warnlength="200"
-          placeholder="输入要说的话，图文结合更精彩哦"
+          :placeholder="$t('release.image_placeholder')"
         />
       </div>
       <ImageList :edit="pinned" style="padding: 0 .3rem .3rem" />
@@ -42,7 +42,7 @@
         <FormSwitchItem
           v-if="paycontrol"
           v-model="pinned"
-          label="是否收费"
+          :label="$t('release.need_pay')"
           @click.capture.stop.prevent="popupBuyTS"
         />
       </div>
@@ -108,14 +108,14 @@ export default {
           'actionSheet',
           [
             {
-              text: '确定',
+              text: this.$t('confirm'),
               method: () => {
                 this.goBack()
               },
             },
           ],
           this.$t('cancel'),
-          '你还有没有发布的内容,是否放弃发布?'
+          this.$t('release.confirm_cancel')
         )
         : this.goBack()
     },
@@ -124,7 +124,7 @@ export default {
         this.loading = true
         // 检测是否存在上传失败的图片
         if (this.composePhoto.some(item => Object.keys(item).length === 0)) {
-          this.$Message.error('存在上传失败的图片，请确认')
+          this.$Message.error(this.$t('release.has_failed_upload'))
           this.loading = false
           return
         }
@@ -144,7 +144,7 @@ export default {
             }
           )
           .then(() => {
-            this.$Message.success('发布成功')
+            this.$Message.success(this.$t('release.success'))
             if (this.fromTopic) return this.goBack()
             this.$router.replace('/feeds?type=new&refresh=1')
           })

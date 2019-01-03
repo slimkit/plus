@@ -1,44 +1,23 @@
 <template>
-  <section
-    class="c-group-item"
-    @click="beforeViewDetail"
-  >
+  <section class="c-group-item" @click="beforeViewDetail">
     <div class="avatar">
       <img :src="avatar">
     </div>
     <div class="info">
       <div class="m-box m-aln-center m-text-cut">
         <h2 class="m-text-cut">{{ group.name }}</h2>
-        <span
-          v-if="mode === 'paid'"
-          class="paid"
-        >
-          付费
-        </span>
+        <span v-if="mode === 'paid'" class="paid">{{ $t('group.pay.name') }}</span>
       </div>
       <p>
-        <span>帖子<span class="number">{{ feedCount | formatNum }}</span></span>
-        <span>成员<span class="number">{{ memberCount | formatNum }}</span></span>
+        <span>{{ $t('group.post.name') }} <span class="number">{{ feedCount | formatNum }}</span></span>
+        <span>{{ $t('group.member') }} <span class="number">{{ memberCount | formatNum }}</span></span>
       </p>
     </div>
 
-    <span
-      v-if="isOwner"
-      class="owner-badge"
-    >
-      圈主
-    </span>
-    <span
-      v-if="isAdmin"
-      class="admin-badge"
-    >
-      管理员
-    </span>
+    <span v-if="isOwner" class="owner-badge">{{ $t('group.owner') }}</span>
+    <span v-if="isAdmin" class="admin-badge">{{ $t('group.admin') }}</span>
 
-    <div
-      v-if="showAction"
-      class="action"
-    >
+    <div v-if="showAction" class="action">
       <button
         v-if="!joined || joined.audit === 0"
         :disabled="loading || joined.audit === 0"
@@ -52,7 +31,7 @@
         >
           <use :xlink:href="`#icon-${loading ? 'loading' : 'plus'}`" />
         </svg>
-        <span>{{ joined.audit === 0 ? "审核中" : "加入" }}</span>
+        <span>{{ joined.audit === 0 ? "group.audit" : "group.join" | t }}</span>
       </button>
     </div>
   </section>
@@ -117,10 +96,10 @@ export default {
       !this.needPaid
         ? this.joinGroup()
         : this.$bus.$emit('payfor', {
-          title: '申请加入圈子',
-          confirmText: '支付并加入',
+          title: this.$t('group.pay.apply'),
+          confirmText: this.$t('group.pay.join'),
           amount: this.money,
-          content: `你只需支付${this.money}${this.currencyUnit}来加入圈子`,
+          content: this.$t('group.pay.confirm', [this.money]),
           checkPassword: true,
           onOk: async password => {
             this.loading = false
@@ -152,9 +131,9 @@ export default {
       this.joined
         ? this.joined.audit === 1
           ? this.$router.push(`/groups/${this.group.id}`)
-          : this.$Message.error('审核通过后，才能查看圈子信息哦~')
+          : this.$Message.error(this.$t('group.need_review'))
         : this.mode !== 'public'
-          ? this.$Message.error('需要先加入圈子，才能查看圈子信息哦~')
+          ? this.$Message.error(this.$t('group.need_join_first'))
           : this.$router.push(`/groups/${this.group.id}`)
     },
   },

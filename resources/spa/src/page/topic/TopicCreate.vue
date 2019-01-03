@@ -52,7 +52,7 @@
             type="text"
             maxlength="10"
             :disabled="topicId"
-            :placeholder="$t('feed.topic.placeholder.desc', [10])"
+            :placeholder="$t('feed.topic.placeholder.title', [10])"
           >
         </label>
         <label class="description">

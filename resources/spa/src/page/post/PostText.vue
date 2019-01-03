@@ -1,10 +1,10 @@
 <template>
   <div class="p-post-text m-box-model">
     <CommonHeader :pinned="true">
-      发布动态
+      {{ $t('release.feed') }}
       <template slot="left">
         <a href="javascript:;" @click="beforeGoBack">
-          取消
+          {{ $t('cancel') }}
         </a>
       </template>
       <template slot="right">
@@ -15,7 +15,7 @@
           class="m-send-btn"
           @click.prevent.stop="beforePost"
         >
-          发布
+          {{ $t('release.name') }}
         </a>
       </template>
     </CommonHeader>
@@ -35,7 +35,7 @@
         <FormSwitchItem
           v-if="paycontrol"
           v-model="pinned"
-          label="是否收费"
+          :label="$t('release.need_pay')"
           @click.capture.stop.prevent="popupBuyTS"
         />
       </div>
@@ -110,11 +110,11 @@ export default {
       if (this.contentText.length === 0) return this.goBack()
       const actions = [
         {
-          text: '确定',
+          text: this.$t('confirm'),
           method: () => void this.goBack(),
         },
       ]
-      this.$bus.$emit('actionSheet', actions, this.$t('cancel'), '你还有没有发布的内容,是否放弃发布?')
+      this.$bus.$emit('actionSheet', actions, this.$t('cancel'), this.$t('release.confirm_cancel'))
     },
     chooseDefaultAmount (amount) {
       this.customAmount = null
@@ -123,9 +123,9 @@ export default {
     beforePost () {
       if (this.pinned) {
         this.amount === 0
-          ? this.$Message.error('请设置收费金额')
+          ? this.$Message.error(this.$t('release.set_amount'))
           : this.contentText.length <= this.limit
-            ? this.$Message.error(`正文内容不足${this.limit}字, 无法设置收费`)
+            ? this.$Message.error(this.$t('release.text_limit', [this.limit]))
             : this.postText()
       } else {
         this.amount = 0
@@ -150,7 +150,7 @@ export default {
           { validateStatus: s => s === 201 }
         )
         .then(() => {
-          this.$Message.success('发布成功')
+          this.$Message.success(this.$t('release.success'))
           if (this.fromTopic) return this.goBack()
           this.$router.replace('/feeds?type=new&refresh=1')
         })

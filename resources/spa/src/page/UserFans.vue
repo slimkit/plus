@@ -3,10 +3,10 @@
     <CommonHeader :pinned="true" class="header">
       <nav class="type-switch-bar">
         <span :class="{active: type === 'followers'}" @click="type = 'followers'">
-          粉丝
+          {{ $t('fans') }}
         </span>
         <span :class="{active: type === 'followings'}" @click="type = 'followings'">
-          关注
+          {{ $t('follow.name') }}
         </span>
       </nav>
     </CommonHeader>

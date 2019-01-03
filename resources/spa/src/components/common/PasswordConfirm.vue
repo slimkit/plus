@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="c-password-confirm"
-    @touchmove.prevent
-  >
+  <div class="c-password-confirm" @touchmove.prevent>
     <!-- 遮罩层 -->
     <Transition name="toast">
       <div
@@ -13,17 +10,11 @@
     </Transition>
 
     <Transition name="pop">
-      <div
-        v-if="visible"
-        class="wrap"
-      >
+      <div v-if="visible" class="wrap">
         <CommonHeader class="common-header">
-          输入密码
-          <a
-            slot="left"
-            @click="cancel"
-          >
-            取消
+          {{ $t('password.input') }}
+          <a slot="left" @click="cancel">
+            {{ $t('cancel') }}
           </a>
         </CommonHeader>
         <main>
@@ -40,14 +31,11 @@
               type="submit"
               @click="submit"
             >
-              确认
+              {{ $t('confirm') }}
             </button>
           </form>
-          <a
-            :class="{disabled}"
-            @click="onForgotClick"
-          >
-            忘记密码?
+          <a :class="{disabled}" @click="onForgotClick">
+            {{ $t('password.forgot') }}
           </a>
         </main>
       </div>

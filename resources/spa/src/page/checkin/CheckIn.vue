@@ -12,8 +12,8 @@
       <!-- enter-active-class="animated jello" -->
       <div v-if="show" class="m-box-model m-main m-check-in-box">
         <header class="m-box-model m-aln-center m-justify-center m-check-in-head">
-          <h2>每日签到</h2>
-          <p>累计签到{{ last_checkin_count }}天</p>
+          <h2>{{ $t('checkin.title') }}</h2>
+          <p>{{ last_checkin_count | t('checkin.count') }}</p>
           <a class="m-check-in-close" @click="cancel">
             <svg
               viewBox="0 0 1024 1024"
@@ -28,14 +28,14 @@
         <main class="m-box-model m-aln-center m-check-in-body">
           <section class="m-check-in-con">
             <h2>+{{ attach_balance }}</h2>
-            <p>每日签到得{{ currencyUnit }}</p>
+            <p>{{ $t('checkin.tips') }}</p>
           </section>
           <button
             :disabled="checked_in"
             class="m-check-in-btn"
             @click="fetchCheckIn"
           >
-            {{ checked_in ? "已签到" : "签到" }}
+            {{ checked_in ? "checkin.already" : "checkin.name" | t }}
           </button>
           <div class="m-lim-width">
             <ul class="m-box m-lan-center m-justify-center m-check-in-user-list">
@@ -116,7 +116,7 @@ export default {
           this.updateDate()
         })
         .catch(() => {
-          this.$Message.error('签到失败, 请稍后重试')
+          this.$Message.error(this.$t('checkin.failed'))
         })
     },
   },

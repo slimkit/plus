@@ -2,7 +2,7 @@
   <div class="c-topic-selector">
     <FormSelectItem
       v-if="!topics.length"
-      label="添加话题"
+      :label="$t('release.add_topic')"
       @click="$refs.topicPanel.open()"
     />
     <ul v-else class="topic-select">
