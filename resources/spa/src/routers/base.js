@@ -96,7 +96,7 @@ export default [
     path: '/profile',
     component: ProfileHome,
     meta: {
-      title: i18n.t('profile'),
+      title: i18n.t('profile.name'),
       requiresAuth: true,
     },
   },

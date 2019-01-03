@@ -562,15 +562,18 @@ message:
 
   system:
     name: System information
+    empty: No system notification
 
   comment:
     name: Comments received
     reply: '{user1} Reply {user2}'
     commented: '{user} commented on your {type}'
+    empty: No one has commented on you yet.
 
   like:
     name: Received likes
     liked: '{user} liked your {type}'
+    empty: No one has ever liked you yet.
 
   audit:
     name: Audit notices
@@ -706,3 +709,5 @@ network:
     e505:  HTTP Version Not Supported
     default: Error {0}
     disconnect: Lost connection with the server!
+
+popup_buy_ts: 'Open source version does not have this feature, you need to use this feature, please purchase genuine licensed source code, visit www.thinksns.com, or directly consult: QQ3515923610; Tel: 17311245680.'

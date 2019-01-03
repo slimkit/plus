@@ -565,15 +565,18 @@ message:
 
   system:
     name: 系统消息
+    empty: 暂无系统通知
 
   comment:
     name: 收到的评论
     reply: '{user1} 回复 {user2}'
     commented: '{user} 评论了你的 {type}'
+    empty: 还没有人评论过你
 
   like:
     name: 收到的赞
     liked: '{user} 赞了你的 {type}'
+    empty: 还没有人赞过你
 
   audit:
     name: 审核通知
@@ -710,3 +713,5 @@ network:
     e505:  HTTP 版本不支持该请求
     default: 连接错误{0}
     disconnect: 网络不可用，请检查！
+
+popup_buy_ts: '开源版无此功能，需要使用此功能，请购买正版授权源码，详情访问www.thinksns.com，也可直接咨询：QQ3515923610；电话：17311245680。'

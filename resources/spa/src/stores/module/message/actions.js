@@ -1,6 +1,8 @@
 import http from '@/api/api'
 import lstore from '@/plugins/lstore/lstore.js'
 import getMessageUnameTxt from '@/util/getMessageUnameTxt'
+import i18n from '@/i18n'
+
 export default {
   async GET_NEW_UNREAD_COUNT ({ rootState, commit }) {
     if (!rootState.CURRENTUSER || !lstore.getData('H5_ACCESS_TOKEN')) return
@@ -19,9 +21,9 @@ export default {
   GET_UNREAD_COUNT ({ rootState, commit }) {
     if (!rootState.CURRENTUSER || !lstore.hasData('H5_ACCESS_TOKEN')) return
     let options = {}
-    let cPlaceholder = '还没有人评论过你'
-    let dPlaceholder = '还没有人赞过你'
-    let sPlaceholder = '暂无系统通知'
+    let cPlaceholder = i18n.t('message.comment.empty')
+    let dPlaceholder = i18n.t('message.like.empty')
+    let sPlaceholder = i18n.t('message.system.empty')
     let cTime = ''
     let dTime = ''
     let sTime = ''
@@ -39,7 +41,7 @@ export default {
 
         // 审核信息未处理数
         let {
-          news: { count: newsCount = 0 } = {},
+          'news-comment': { count: newsCount = 0 } = {},
           feeds: { count: feedsCount = 0 } = {},
           'group-comments': { count: groupComments = 0 } = {},
           'group-posts': { count: groupPosts = 0 } = {},
