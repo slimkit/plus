@@ -11,7 +11,7 @@
 
     <main>
       <div v-if="verifiable_type === 'sms'" class="m-form-row m-main">
-        <label for="phone">{{ $t('auth.forgot.label.phone') }}</label>
+        <label for="phone">{{ $t('auth.label.phone') }}</label>
         <div class="m-input">
           <input
             id="phone"
@@ -20,7 +20,7 @@
             autocomplete="off"
             pattern="[0-9]*"
             oninput="value=value.slice(0, 11)"
-            :placeholder="$t('auth.forgot.placeholder.phone', [11])"
+            :placeholder="$t('auth.placeholder.phone', [11])"
           >
         </div>
         <span
@@ -32,14 +32,14 @@
         </span>
       </div>
       <div v-if="verifiable_type === 'mail'" class="m-form-row m-main">
-        <label for="mail">{{ $t('auth.forgot.label.email') }}</label>
+        <label for="mail">{{ $t('auth.label.email') }}</label>
         <div class="m-input">
           <input
             id="mail"
             v-model="email"
             type="mail"
             autocomplete="off"
-            :placeholder="$t('auth.forgot.placeholder.email')"
+            :placeholder="$t('auth.placeholder.email')"
           >
         </div>
         <span
@@ -51,7 +51,7 @@
         </span>
       </div>
       <div class="m-form-row m-main">
-        <label for="code">{{ $t('auth.forgot.label.code') }}</label>
+        <label for="code">{{ $t('auth.label.code') }}</label>
         <div class="m-input">
           <input
             id="code"
@@ -59,7 +59,7 @@
             type="number"
             pattern="[0-9]*"
             oninput="value=value.slice(0, 6)"
-            :placeholder="$t('auth.forgot.placeholder.code', [4, 6])"
+            :placeholder="$t('auth.placeholder.code', [4, 6])"
           >
         </div>
         <svg
@@ -72,7 +72,7 @@
       </div>
 
       <div class="m-form-row m-main">
-        <label for="password">{{ $t('auth.forgot.label.password') }}</label>
+        <label for="password">{{ $t('auth.label.password') }}</label>
         <div class="m-input">
           <input
             v-if="eye"
@@ -80,7 +80,7 @@
             v-model="password"
             type="text"
             maxlength="16"
-            :placeholder="$t('auth.forgot.placeholder.password', [6])"
+            :placeholder="$t('auth.placeholder.password', [6])"
           >
           <input
             v-else
@@ -88,7 +88,7 @@
             v-model="password"
             type="password"
             maxlength="16"
-            :placeholder="$t('auth.forgot.placeholder.password', [6])"
+            :placeholder="$t('auth.placeholder.password', [6])"
           >
         </div>
         <svg class="m-style-svg m-svg-def" @click="eye=!eye">
@@ -161,8 +161,8 @@ export default {
       )
     },
     codeText () {
-      if (this.countdown <= 0) return this.$t('auth.forgot.get_code')
-      return this.$t('auth.forgot.resend', [this.countdown])
+      if (this.countdown <= 0) return this.$t('auth.get_code')
+      return this.$t('auth.resend', [this.countdown])
     },
     label2 () {
       const type = this.verifiable_type === SMS ? 'phone' : 'email'
@@ -180,23 +180,23 @@ export default {
       } = this.$data
       // 手机号
       if (verifiableType === SMS && !phoneReg.test(phone)) {
-        this.$Message.error({ phone: this.$t('auth.forgot.error.phone') })
+        this.$Message.error({ phone: this.$t('auth.error.phone') })
         return
       }
 
       // 邮箱
       if (verifiableType !== SMS && !emailReg.test(email)) {
-        this.$Message.error({ email: this.$t('auth.forgot.error.email') })
+        this.$Message.error({ email: this.$t('auth.error.email') })
         return
       }
 
       // 密码长度
       if (password.length < 6) {
-        this.$Message.error({ password: this.$t('auth.forgot.error.password_min', [6]) })
+        this.$Message.error({ password: this.$t('auth.error.password_min', [6]) })
         return
       }
       if (password.length > 16) {
-        this.$Message.error({ password: this.$t('auth.forgot.error.password_max', [16]) })
+        this.$Message.error({ password: this.$t('auth.error.password_max', [16]) })
         return
       }
 
@@ -292,7 +292,7 @@ export default {
   padding: 0 30px 0 0;
 }
 .p-forgot .m-form-row label {
-  flex: 0 0 30 * 4px;
-  width: 30 * 4px;
+  flex: none;
+  width: 5em;
 }
 </style>

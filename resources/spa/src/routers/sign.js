@@ -28,7 +28,7 @@ export default [
     path: '/signup',
     component: Signup,
     meta: {
-      title: i18n.t('auth.register'),
+      title: i18n.t('auth.register.name'),
       forGuest: true,
     },
   },
@@ -36,7 +36,7 @@ export default [
     path: '/signup/protocol',
     component: RegisterProtocol,
     meta: {
-      title: i18n.t('auth.register_protocol'),
+      title: i18n.t('auth.register.protocol'),
     },
   },
   {

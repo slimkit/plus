@@ -640,44 +640,54 @@ password:
 
 auth:
   login: 登录
-  register: 注册
-  register_protocol: 用户注册协议
+  register:
+    name: 注册
+    success: 注册成功
+    protocol: 用户注册协议
+    agree: 点击注册即代表同意{protocol}
+    ts_protocol: '《ThinkSNS+用户使用协议》'
+    label:
+      phone: 手机注册
+      email: 邮箱注册
+  label:
+    username: 用户名
+    email: 邮箱
+    phone: 手机号
+    code: 验证码
+    password: 密码
+  placeholder:
+    username: 用户名不能低于2个中文或4个英文
+    email: 输入邮箱地址
+    phone: 输入{0}位手机号码
+    account: 用户名/手机号/邮箱
+    password: 输入{0}位以上登录密码
+    code: 输入{0}-{1}位验证码
+  user: 用户
   account: 账户
   password: 密码
   guest: 不登录，先随便逛逛
   one_key: 一键登录
   use_phone: 使用手机号一键登陆
+  use_account: 使用账号密码登陆
+  get_code: 获取验证码
+  resend: '{0}s 后重发'
   wechat: 微信
-  placeholder:
-    account: 用户名/手机号/邮箱
-    password: 输入{0}位以上登录密码
   error:
     account: 账户不正确
+    username_number: 用户名不能以数字开头
+    username_special_char: 用户名不能包含特殊符号以及空格
     password: 密码不正确
+    phone: 请输入正确的手机号码
+    email: 请输入正确的邮箱
+    password_min: 密码长度必须大于{0}位
+    password_max: 密码长度不得超过{0}位
   forgot:
     name: 忘记密码
     find: 找回密码
-    get_code: 获取验证码
-    resend: '{0}s 后重发'
-    label:
-      phone: 手机号
-      email: 邮箱
-      code: 验证码
-      password: 密码
-    placeholder:
-      phone: 输入{0}位手机号
-      email: 输入邮箱地址
-      code: 输入{0}-{1}位验证码
-      password: 输入{0}位以上登录密码
     type:
       email: 邮箱找回
       phone: 手机找回
     success: 密码修改成功，返回重新登陆
-    error:
-      phone: 请输入正确的手机号码
-      email: 请输入正确的邮箱号码
-      password_min: 密码长度必须大于{0}位
-      password_max: 密码长度不得超过{0}位
   change_password:
     name: 修改密码
     label:

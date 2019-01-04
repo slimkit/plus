@@ -636,44 +636,54 @@ password:
 
 auth:
   login: Login
-  register: Register
-  register_protocol: Register protocol
+  register:
+    name: Register
+    success: Register success
+    protocol: Register protocol
+    agree: By clicking Register, I agree to {protocol}
+    ts_protocol: '"ThinkSNS + User Use Agreement"'
+    label:
+      phone: Register with phone
+      email: Register with email
+  label:
+    username: Username
+    email: Email
+    phone: Phone
+    code: Code
+    password: Password
+  placeholder:
+    username: Cannot be lower than 4 characters
+    email: Enter email address
+    phone: Enter {0} digits
+    account: Username / Phone / Email
+    password: Enter a login password of {0} or more
+    code: Enter {0}-{1} digit verification code
+  user: User
   account: Account
   password: Password
   guest: Don't log in, just stroll around
-  one_key: One-click login
-  use_phone: Use the phone number to log in
+  one_key: Quick login
+  use_phone: Use the phone number to login
+  use_account: Use the account to login
+  get_code: Get code
+  resend: 'Resend after {0}s'
   wechat: Wechat
-  placeholder:
-    account: Username / Phone / Email
-    password: Enter a login password of {0} or more
   error:
     account: Account is incorrect
+    username_number: Username cannot start with a number
+    username_special_char: Username cannot contain special symbols and spaces
     password: Password is incorrect
+    phone: Please enter the correct phone number
+    email: Please enter the correct email
+    password_min: Password length must be greater than {0} bit
+    password_max: Password cannot exceed {0} digits
   forgot:
     name: Forget password
     find: Find password
-    get_code: Get code
-    resend: 'Resend after {0}s'
-    label:
-      phone: Phone
-      email: Email
-      code: Code
-      password: Password
-    placeholder:
-      phone: Enter {0} digits
-      email: Enter email address
-      code: Enter {0}-{1} digit verification code
-      password: Enter a login password of {0} or more
     type:
       email: Use email
       phone: Use phone
     success: The password was successfully modified and returned to log in again.
-    error:
-      phone: Please enter the correct phone number
-      email: Please enter the correct email number
-      password_min: Password length must be greater than {0} bit
-      password_max: Password cannot exceed {0} digits
   change_password:
     name: Change Password
     label:

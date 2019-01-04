@@ -8,7 +8,7 @@
         {{ $t('auth.login') }}
         <span slot="left" />
         <RouterLink slot="right" to="/signup">
-          {{ $t('auth.register') }}
+          {{ $t('auth.register.name') }}
         </RouterLink>
       </CommonHeader>
 
