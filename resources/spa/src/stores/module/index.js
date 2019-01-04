@@ -8,6 +8,7 @@ import news from './news'
 import group from './group'
 import feed from './feed'
 import user from './user'
+import topic from './topic'
 
 export default {
   rank,
@@ -20,4 +21,5 @@ export default {
   group,
   feed,
   user,
+  topic,
 }

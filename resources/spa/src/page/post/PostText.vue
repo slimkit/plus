@@ -3,10 +3,7 @@
     <CommonHeader :pinned="true">
       发布动态
       <template slot="left">
-        <a
-          href="javascript:;"
-          @click="beforeGoBack"
-        >
+        <a href="javascript:;" @click="beforeGoBack">
           取消
         </a>
       </template>
@@ -24,36 +21,38 @@
     </CommonHeader>
 
     <main>
-      <div class="content-wrap">
+      <div class="text-content">
         <TextareaInput
           v-model="contentText"
           :maxlength="255"
           :warnlength="200"
           :rows="11"
+          class="textarea-input"
+        />
+      </div>
+      <div class="options">
+        <TopicSelector v-model="topics" />
+
+        <FormSwitchItem
+          v-if="paycontrol"
+          v-model="pinned"
+          label="是否收费"
+          @click.capture.stop.prevent="popupBuyTS"
         />
       </div>
     </main>
-
-    <footer @click.capture.stop.prevent="popupBuyTS">
-      <VSwitch
-        v-if="paycontrol"
-        v-model="pinned"
-        type="checkbox"
-        class="m-box m-bt1 m-bb1 m-lim-width m-pinned-row"
-      >
-        <slot>是否收费</slot>
-      </VSwitch>
-    </footer>
   </div>
 </template>
 
 <script>
+import TopicSelector from './components/TopicSelector'
 import TextareaInput from '@/components/common/TextareaInput.vue'
 
 export default {
   name: 'PostText',
   components: {
     TextareaInput,
+    TopicSelector,
   },
   data () {
     return {
@@ -62,6 +61,8 @@ export default {
       curpos: 0,
       scrollHeight: 0,
       pinned: false,
+      topics: [],
+      fromTopic: false,
 
       amount: 0,
       customAmount: null,
@@ -88,26 +89,33 @@ export default {
       if (val) this.amount = ~~val
     },
   },
+  created () {
+    this.queryTopic()
+  },
   mounted () {
     this.contentText = ''
   },
   methods: {
+    queryTopic () {
+      const { topicId, topicName } = this.$route.query
+      if (topicId) {
+        this.fromTopic = true
+        this.topics.push({
+          id: topicId,
+          name: topicName,
+          readonly: true,
+        })
+      }
+    },
     beforeGoBack () {
-      this.contentText.length === 0
-        ? this.goBack()
-        : this.$bus.$emit(
-          'actionSheet',
-          [
-            {
-              text: '确定',
-              method: () => {
-                this.goBack()
-              },
-            },
-          ],
-          '取消',
-          '你还有没有发布的内容,是否放弃发布?'
-        )
+      if (this.contentText.length === 0) return this.goBack()
+      const actions = [
+        {
+          text: '确定',
+          method: () => void this.goBack(),
+        },
+      ]
+      this.$bus.$emit('actionSheet', actions, '取消', '你还有没有发布的内容,是否放弃发布?')
     },
     chooseDefaultAmount (amount) {
       this.customAmount = null
@@ -128,23 +136,24 @@ export default {
     postText () {
       if (this.loading) return
       this.loading = true
+
+      const mark = new Date().valueOf() + '' + this.$store.state.CURRENTUSER.id
       this.$http
         .post(
           'feeds',
           {
             feed_content: this.contentText,
             feed_from: 2,
-            feed_mark:
-              new Date().valueOf() + '' + this.$store.state.CURRENTUSER.id,
+            feed_mark: mark,
             amount: this.amount,
+            topics: this.topics.map(item => item.id),
           },
           { validateStatus: s => s === 201 }
         )
         .then(() => {
+          this.$Message.success('发布成功')
+          if (this.fromTopic) return this.goBack()
           this.$router.replace('/feeds?type=new&refresh=1')
-        })
-        .catch(err => {
-          this.$Message.error(err.response.data)
         })
         .finally(() => {
           this.loading = false
@@ -157,22 +166,21 @@ export default {
 <style lang="less" scoped>
 .p-post-text {
   background-color: #fff;
+  height: 100%;
 
   main {
     flex: auto;
     padding-top: 90px;
 
-    .content-wrap {
-      padding: 20px;
+    .options {
+      border-top: 1px solid @border-color;
     }
-  }
 
-  footer {
-    flex: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 10;
+    .textarea-input {
+      padding-top: 20px;
+      padding-left: 20px;
+    }
+
   }
 }
 </style>

@@ -76,6 +76,13 @@ export default {
             new_tips: false,
             tips: '',
           },
+          {
+            title: '话题',
+            icon: 'topic',
+            path: '/topic',
+            new_tips: false,
+            tips: '',
+          },
         ],
         [
           {

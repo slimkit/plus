@@ -1,5 +1,5 @@
 <template>
-  <div class="p-post-image">
+  <div class="p-post-pic">
     <CommonHeader>
       发布动态
       <template slot="left">
@@ -25,34 +25,34 @@
     </CommonHeader>
 
     <main>
-      <div class="content-wrap">
-        <TextareaInput
-          v-model="contentText"
-          :rows="11"
-          :maxlength="255"
-          :warnlength="200"
-          placeholder="输入要说的话，图文结合更精彩哦"
+      <TextareaInput
+        v-model="contentText"
+        :rows="11"
+        :maxlength="255"
+        :warnlength="200"
+        placeholder="输入要说的话，图文结合更精彩哦"
+        class="textarea-input"
+      />
+      <ImageList :edit="pinned" style="padding: 0 .3rem .3rem" />
+
+      <div class="options">
+        <TopicSelector v-model="topics" />
+
+        <FormSwitchItem
+          v-if="paycontrol"
+          v-model="pinned"
+          label="是否收费"
+          @click.capture.stop.prevent="popupBuyTS"
         />
       </div>
-      <ImageList :edit="pinned" style="padding: 0 .3rem .3rem" />
     </main>
-
-    <footer @click.capture.stop.prevent="popupBuyTS">
-      <VSwitch
-        v-if="paycontrol"
-        v-model="pinned"
-        class="m-box m-bt1 m-bb1 m-lim-width m-pinned-row"
-        type="checkbox"
-      >
-        <slot>是否收费</slot>
-      </VSwitch>
-    </footer>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import ImageList from './components/ImageList.vue'
+import ImageList from './components/ImageList'
+import TopicSelector from './components/TopicSelector'
 import TextareaInput from '@/components/common/TextareaInput.vue'
 
 export default {
@@ -60,6 +60,7 @@ export default {
   components: {
     ImageList,
     TextareaInput,
+    TopicSelector,
   },
   data () {
     return {
@@ -68,6 +69,8 @@ export default {
       curpos: 0,
       loading: false,
       contentText: '',
+      topics: [],
+      fromTopic: false,
       scrollHeight: 0,
     }
   },
@@ -83,7 +86,21 @@ export default {
       return this.$store.state.CONFIG.feed.paycontrol
     },
   },
+  created () {
+    this.queryTopic()
+  },
   methods: {
+    queryTopic () {
+      const { topicId, topicName } = this.$route.query
+      if (topicId) {
+        this.fromTopic = true
+        this.topics.push({
+          id: topicId,
+          name: topicName,
+          readonly: true,
+        })
+      }
+    },
     beforeGoBack () {
       this.contentText.length > 0
         ? this.$bus.$emit(
@@ -119,12 +136,15 @@ export default {
               feed_from: 2,
               feed_mark:
                 new Date().valueOf() + '' + this.$store.state.CURRENTUSER.id,
+              topics: this.topics.map(topic => topic.id),
             },
             {
               validateStatus: s => s === 201,
             }
           )
           .then(() => {
+            this.$Message.success('发布成功')
+            if (this.fromTopic) return this.goBack()
             this.$router.replace('/feeds?type=new&refresh=1')
           })
           .catch(err => {
@@ -140,12 +160,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.p-post-image {
+.p-post-pic {
+  height: 100%;
   background-color: #fff;
 
   main {
-    .content-wrap {
-      padding: 20px;
+    .textarea-input {
+      padding-left: 20px;
     }
   }
 
