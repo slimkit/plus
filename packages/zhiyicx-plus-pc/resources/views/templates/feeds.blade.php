@@ -40,17 +40,17 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
             $content = mb_substr($post['feed_content'], 0, $config['bootstrappers']['feed']['limit'], 'utf-8');
             $len = (strlen($content) + mb_strlen($content, 'utf-8')) / 2;
             @endphp
-            {!! $content !!}
+            {!! formatContent($content) !!}
             <span class="fuzzy">@php for ($i = 0; $i < (200 - $len); $i ++) {echo 'T';} @endphp</span>
         </p>
         @else
         <a class="feed_text" href="{{ route('pc:feedread', ['feed' => $post['id']]) }}">
             @php
-                $content = formatContent($post['feed_content']);
+                $content = $post['feed_content'];
                 $has_more = mb_strlen($content, 'utf-8') > 100;
                 $content = mb_substr($content, 0, 100, 'utf-8');
             @endphp
-            {!! $content !!}
+            {!! formatContent($content) !!}
             @if($has_more)
             <span class="more"> ...查看更多</span>
             @endif
