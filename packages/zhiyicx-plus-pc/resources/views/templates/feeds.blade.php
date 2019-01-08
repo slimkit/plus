@@ -46,7 +46,7 @@ use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
         @else
         <a class="feed_text" href="{{ route('pc:feedread', ['feed' => $post['id']]) }}">
             @php
-                $content = $post['feed_content'];
+                $content = formatContent($post['feed_content']);
                 $has_more = mb_strlen($content, 'utf-8') > 100;
                 $content = mb_substr($content, 0, 100, 'utf-8');
             @endphp
