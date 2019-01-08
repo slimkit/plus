@@ -45,8 +45,7 @@ class Topic extends JsonResource
             'feeds_count' => $this->feeds_count,
             'followers_count' => $this->followers_count,
             'has_followed' => $this->when($user, function () use ($user) {
-                $link = $this->users()->newPivotStatementForId($user->id)->first();
-
+                $link = $this->users->firstWhere('id', $user->id)->pivot ?? null;
                 if ($link && $link->following_at) {
                     return true;
                 }

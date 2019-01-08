@@ -78,7 +78,7 @@ class FeedTopic extends Model
 
         return $this
             ->belongsToMany(User::class, $table, 'topic_id', 'user_id')
-            ->withPivot('index', Model::CREATED_AT)
+            ->withPivot('index', Model::CREATED_AT, 'following_at')
             ->using(FeedTopicUserLink::class);
     }
 

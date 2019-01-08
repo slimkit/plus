@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\API2\Controllers\Feed;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use function Zhiyi\Plus\setting;
@@ -35,7 +36,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zhiyi\Plus\Models\FeedTopicUserLink as FeedTopicUserLinkModel;
 use Zhiyi\Plus\API2\Requests\Feed\CreateTopic as CreateTopicRequest;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Zhiyi\Plus\API2\Resources\Feed\TopicCollection as TopicCollectionResource;
 
 class Topic extends Controller
 {
@@ -55,8 +55,9 @@ class Topic extends Controller
             ->only(['create', 'update']);
     }
 
-    public function listTopicsOnlyHot(FeedTopicModel $model): JsonResponse
+    public function listTopicsOnlyHot(Request $request, FeedTopicModel $model): JsonResponse
     {
+        $user = $request->user('api');
         $topics = $model
             ->query()
             ->whereNotNull('hot_at')
@@ -75,8 +76,14 @@ class Topic extends Controller
                 ->all()
             )->values();
         }
+        if ($user) {
+            dd($user);
+            $result->load(['users' => function ($query) use ($user) {
+                return $query->wherePivot('user_id', $user->id);
+            }]);
+        }
 
-        return (new TopicCollectionResource($topics))
+        return TopicResource::collection($result)
             ->response()
             ->setStatusCode(Response::HTTP_OK /* 200 */);
     }
@@ -91,8 +98,9 @@ class Topic extends Controller
     public function index(IndexRequest $request, FeedTopicModel $model): JsonResponse
     {
         if ($request->query('only') === 'hot') {
-            return $this->listTopicsOnlyHot($model);
+            return $this->listTopicsOnlyHot($request, $model);
         }
+        $user = $request->user('api');
 
         // Get query data `id` order direction.
         // Value: `asc` or `desc`
@@ -124,15 +132,17 @@ class Topic extends Controller
             // the `$direction` enum `asc` or `desc`.
             ->orderBy('id', $direction)
 
-            // Set only query table column name.
-            ->select('id', 'name', 'logo', Model::CREATED_AT)
-
             // Run the SQL query, return a collection.
             // instanceof \Illuminate\Support\Collection
             ->get();
+        if ($user) {
+            $result->load(['users' => function ($query) use ($user) {
+                return $query->wherePivot('user_id', $user->id);
+            }]);
+        }
 
         // Create the action response.
-        $response = (new TopicCollectionResource($result))
+        $response = TopicResource::collection($result)
             ->response()
             ->setStatusCode(Response::HTTP_OK /* 200 */);
 
