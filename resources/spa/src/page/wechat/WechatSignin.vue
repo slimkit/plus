@@ -80,8 +80,9 @@ export default {
 
       if (!accessToken || !openId) {
         const { data } = await this.$http.get(`socialite/getAccess/${code}`, { validateStatus: s => s === 200 })
-        const { access_token: newAccessToken, openid: openId } = data
+        const { access_token: newAccessToken, openid: newOpenId } = data
         accessToken = newAccessToken
+        openId = newOpenId
 
         this.$lstore.setData('H5_WECHAT_MP_OPENID', openId)
         this.$lstore.setData('H5_WECHAT_MP_ASTOKEN', accessToken)
