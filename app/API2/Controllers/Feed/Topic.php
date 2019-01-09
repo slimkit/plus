@@ -78,12 +78,12 @@ class Topic extends Controller
         }
         if ($user) {
             dd($user);
-            $result->load(['users' => function ($query) use ($user) {
+            $topics->load(['users' => function ($query) use ($user) {
                 return $query->wherePivot('user_id', $user->id);
             }]);
         }
 
-        return TopicResource::collection($result)
+        return TopicResource::collection($topics)
             ->response()
             ->setStatusCode(Response::HTTP_OK /* 200 */);
     }
