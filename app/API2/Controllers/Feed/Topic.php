@@ -77,7 +77,8 @@ class Topic extends Controller
             )->values();
         }
         if ($user) {
-            $topics->load(['users' => function ($query) use ($user) {
+            dd($user);
+            $result->load(['users' => function ($query) use ($user) {
                 return $query->wherePivot('user_id', $user->id);
             }]);
         }
