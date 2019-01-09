@@ -25,6 +25,7 @@ use Omnipay\Omnipay;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use function Zhiyi\Plus\setting;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\NativePayOrder;
 use Zhiyi\Plus\Http\Controllers\Controller;
@@ -48,11 +49,7 @@ class CurrencyPayController extends Controller
      */
     public function __construct()
     {
-        $ratio = CommonConfig::where('namespace', 'currency')
-            ->where('name', 'currency:recharge-ratio')
-            ->value('value');
-
-        $ratio && $this->ratio = $ratio;
+        $this->ratio = $ratio = setting('currency', 'settings')['recharge-ratio'] ?? 1;
     }
 
     public function entry(Request $request, ApplicationContract $app, ResponseContract $response)
