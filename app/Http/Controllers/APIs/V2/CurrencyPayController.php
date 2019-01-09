@@ -26,7 +26,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use function Zhiyi\Plus\setting;
-use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\NativePayOrder;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
