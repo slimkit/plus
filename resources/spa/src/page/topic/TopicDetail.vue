@@ -37,7 +37,7 @@
               class="user-item"
             >
               <Avatar class="avatar" :user="user" />
-              <span class="user-name">{{ user.name }}</span>
+              <span class="user-name m-text-cut">{{ user.name }}</span>
             </li>
           </ul>
         </div>
@@ -122,6 +122,11 @@ export default {
       return [this.creator, ...this.participants]
     },
   },
+  watch: {
+    $route (to, from) {
+      this.fetchTopic(true)
+    },
+  },
   created () {
     this.fetchTopic(true)
   },
@@ -144,7 +149,7 @@ export default {
     },
     async fetchParticipants () {
       const users = this.topic.participants || []
-      if (!users.length) return
+      if (!users.length) return (this.participants = [])
       const params = { id: users.join(','), limit: 4 }
       const data = await this.$store.dispatch('user/getUserList', params)
       this.participants = data
@@ -274,6 +279,7 @@ export default {
         }
 
         .user-name {
+          max-width: 6em;
           margin-top: 20px;
           font-size: 24px;
         }
@@ -299,7 +305,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 4.5em;
+        width: 5em;
         border: 1px solid @primary;
         border-radius: 8px;
         background-color: transparent;
