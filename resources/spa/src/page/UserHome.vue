@@ -110,7 +110,6 @@
           </svg>
           <span>{{ relation.text }}</span>
         </div>
-        <!-- `/chats/${user.id}` -->
         <div class="m-flex-grow0 m-flex-shrink0 m-box m-aln-center m-justify-center" @click="startSingleChat">
           <svg class="m-style-svg m-svg-def">
             <use xlink:href="#icon-comment" />
@@ -332,9 +331,9 @@ export default {
       this.goBack()
     },
     startSingleChat () {
-      startSingleChat(this.user).then(res => {
+      startSingleChat(this.user).then(chatId => {
         this.$nextTick(() => {
-          this.$router.push(`/chats/${res}`)
+          this.$router.push({ name: 'ChatRoom', params: { chatId } })
         })
       })
     },
