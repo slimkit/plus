@@ -6,7 +6,7 @@
       ref="loadmore"
       :auto-load="false"
       :show-bottom="list.length > 0"
-      @onRefresh="searchNewsByKey"
+      @onRefresh="onRefresh"
       @onLoadMore="onLoadMore"
     >
       <NewsCard
@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import _ from 'lodash'
 import SearchBar from '@/components/common/SearchBar.vue'
 import NewsCard from './components/NewsCard.vue'
 import { searchNewsByKey } from '@/api/news.js'
@@ -56,12 +55,7 @@ export default {
     },
   },
   methods: {
-    /**
-     * 使用 lodash.debounce 防抖，每输入 600ms 后执行
-     * 不要使用箭头函数，会导致 this 作用域丢失
-     * @author mutoe <mutoe@foxmail.com>
-     */
-    searchNewsByKey: _.debounce(function () {
+    onRefresh () {
       if (!this.keyword) return (this.list = [])
       this.loading = true
       searchNewsByKey(this.keyword).then(({ data: list }) => {
@@ -70,7 +64,7 @@ export default {
         this.$refs.loadmore.afterRefresh(list.length < limit)
         if (!list.length) this.noResult = true
       })
-    }, 600),
+    },
     onLoadMore () {
       searchNewsByKey(this.keyword, limit, this.after).then(
         ({ data: list }) => {

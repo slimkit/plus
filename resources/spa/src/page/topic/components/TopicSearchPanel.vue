@@ -2,7 +2,7 @@
   <Transition name="pop">
     <div v-if="show || visible" class="c-topic-search-panel">
       <SearchBar
-        v-model.trim="keyword"
+        v-model="keyword"
         :back="onCancel"
         :placeholder="$t('feed.topic.search')"
       />
@@ -35,7 +35,6 @@
 </template>
 
 <script>
-import _ from 'lodash'
 import * as api from '@/api/topic'
 import { mapState } from 'vuex'
 import SearchBar from '@/components/common/SearchBar.vue'
@@ -78,11 +77,11 @@ export default {
     if (!this.hotTopics.length) this.$store.dispatch('topic/fetchTopicList', { type: 'hot' })
   },
   methods: {
-    onRefresh: _.debounce(async function () {
+    async onRefresh () {
       const { data } = await api.getTopicList({ q: this.keyword })
       this.list = data
       this.$refs.loadmore.afterRefresh(data.length < 15)
-    }, 450),
+    },
     async onLoadMore () {
       const lastTopic = [...this.list].pop() || {}
       const { data } = await api.getTopicList({ q: this.keyword, index: lastTopic.id })

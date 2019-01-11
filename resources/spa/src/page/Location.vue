@@ -57,10 +57,9 @@
 </template>
 
 <script>
-import SearchBar from '@/components/common/SearchBar.vue'
-import _ from 'lodash'
-import * as api from '@/api/bootstrappers.js'
 import i18n from '@/i18n'
+import * as api from '@/api/bootstrappers.js'
+import SearchBar from '@/components/common/SearchBar.vue'
 
 export default {
   name: 'Location',
@@ -154,12 +153,12 @@ export default {
         })
         : []
     },
-    searchCityByName: _.debounce(function () {
+    searchCityByName () {
       api.searchCityByName(this.keyword).then(({ data = [] }) => {
         this.originCities = data
         this.cities = this.formatCities(data)
       })
-    }, 450),
+    },
     getCurrentPosition () {
       this.loading = true
       this.hotPos = null

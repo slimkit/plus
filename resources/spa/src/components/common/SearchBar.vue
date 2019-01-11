@@ -6,7 +6,7 @@
         :value="value"
         :placeholder="placeholder"
         type="search"
-        @input="$emit('input', $event.target.value.trim())"
+        @input="onInput"
       >
     </form>
 
@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { noop } from '@/util'
 import i18n from '@/i18n'
 
@@ -32,6 +33,9 @@ export default {
       if (this.back === noop) this.goBack()
       else this.back()
     },
+    onInput: _.debounce(function (event) {
+      this.$emit('input', event.target.value.trim())
+    }, 600),
   },
 }
 </script>

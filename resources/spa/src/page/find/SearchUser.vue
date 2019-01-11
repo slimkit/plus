@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import _ from 'lodash'
 import { mapState } from 'vuex'
 import SearchBar from '@/components/common/SearchBar.vue'
 import UserItem from '@/components/UserItem.vue'
@@ -67,16 +66,6 @@ export default {
     this.keyword = ''
   },
   methods: {
-    /**
-     * 使用 lodash.debounce 防抖，每输入 600ms 后执行
-     * 不要使用箭头函数，会导致 this 作用域丢失
-     * @author mutoe <mutoe@foxmail.com>
-     */
-    searchUserByKey: _.debounce(async function () {
-      const { data } = await api.searchUserByKey(this.keyword)
-      this.users = data
-      this.noData = !data.length && this.keyword.length > 0
-    }, 600),
     async onRefresh () {
       const { data } = await api.searchUserByKey(this.keyword)
       this.users = data
