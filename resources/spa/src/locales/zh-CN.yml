@@ -623,6 +623,8 @@ rank:
 
 find:
   name: 找人
+  user:
+    recommend: 推荐用户
 
 location:
   name: 位置

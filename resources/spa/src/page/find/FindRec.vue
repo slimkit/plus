@@ -22,7 +22,7 @@ export default {
   components: { UserItem },
   data () {
     return {
-      users: [],
+      users: this.$store.state.user.recommend || [],
     }
   },
   activated () {

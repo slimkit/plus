@@ -619,6 +619,8 @@ rank:
 
 find:
   name: Find user
+  user:
+    recommend: Recommended Users
 
 location:
   name: Position
