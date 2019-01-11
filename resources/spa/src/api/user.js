@@ -5,7 +5,8 @@ import lstore from '@/plugins/lstore/lstore.js'
 
 /**
  * 定义用户对象
- * @typedef {{id: number, name: string, ...more}} UserObject
+ * @typedef {Object} UserObject
+ * @property {number} id
  */
 
 const resArray = { data: [] }
@@ -293,4 +294,20 @@ export function reportUser (userId, reason) {
 export function getUserTags (userId) {
   const url = `/users/${userId}/tags`
   return api.get(url, { validateStatus: s => s === 200 })
+}
+
+/**
+ * 获取好友列表
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {Object} [params]
+ * @param {number} [params.offset]
+ * @param {number} [params.limit]
+ * @param {string} [params.keyword]
+ * @returns {UserObject[]}
+ */
+export function getUserFriends (params) {
+  const url = '/user/follow-mutual'
+  return api.get(url, { params, validateStatus: s => s === 200 })
 }

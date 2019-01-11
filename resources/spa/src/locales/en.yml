@@ -120,6 +120,7 @@ follow:
   already: Followed
   each: Each follow
   count: '{0} follwers'
+  friend: Friends
 
 release:
   name: Release

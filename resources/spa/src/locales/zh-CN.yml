@@ -121,6 +121,7 @@ follow:
   already: 已关注
   each: 互相关注
   count: '{0} 人关注'
+  friend: 好友
 
 release:
   name: 发布

@@ -7,6 +7,7 @@ import ProfileHome from '@/page/profile/ProfileHome.vue'
 import UserInfo from '@/page/UserInfo.vue'
 import UserHome from '@/page/UserHome.vue'
 import UserFans from '@/page/UserFans.vue'
+import UserFriends from '@/page/profile/UserFriends.vue'
 /* TODO END */
 
 import Discover from '@/page/Discover.vue'
@@ -97,6 +98,15 @@ export default [
     component: ProfileHome,
     meta: {
       title: i18n.t('profile.name'),
+      requiresAuth: true,
+    },
+  },
+  {
+    name: 'UserFriends',
+    path: '/users/friends',
+    component: UserFriends,
+    meta: {
+      title: i18n.t('follow.friend'),
       requiresAuth: true,
     },
   },

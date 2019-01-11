@@ -43,6 +43,16 @@
             </BadgeIcon>
             <p>{{ $t('follow.name') }}</p>
           </RouterLink>
+          <RouterLink
+            :to="`/users/friends`"
+            tag="div"
+            class="follower-item"
+          >
+            <BadgeIcon count="0">
+              <a>{{ ~~(user.friends_count) | formatNum }}</a>
+            </BadgeIcon>
+            <p>{{ $t('follow.friend') }}</p>
+          </RouterLink>
         </div>
       </div>
 
