@@ -376,7 +376,7 @@ export default {
 
     .m-form-row {
       label {
-        width: 6em;
+        width: 6.5em;
         flex: none;
 
         &::before {
