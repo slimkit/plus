@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import ImgCropper from './imgCropper'
+import i18n from '@/i18n'
 
 const prefixCls = 'v-img-cropper'
 
@@ -103,7 +104,7 @@ ImgCropper.newInstance = properties => {
                   click: this.close,
                 },
               },
-              this.$t('cancel')
+              i18n.t('cancel')
             ),
             h(
               'div',
@@ -127,7 +128,7 @@ ImgCropper.newInstance = properties => {
                   click: this.ok,
                 },
               },
-              '完成'
+              i18n.t('complete')
             ),
           ]
         )
