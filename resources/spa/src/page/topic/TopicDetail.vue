@@ -305,8 +305,8 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 5em;
-        border: 1px solid @primary;
+        width: 5.5em;
+        border: 1px solid @primary;/*no*/
         border-radius: 8px;
         background-color: transparent;
         color: @primary;
