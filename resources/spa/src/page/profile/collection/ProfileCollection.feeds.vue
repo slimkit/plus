@@ -64,6 +64,9 @@ export default {
 <style lang="less" scoped>
 .p-profile-collection-feeds {
   &-item {
+    background-color: #fff;
+    padding-bottom: 20px;
+
     .m-card-main {
       padding-bottom: 30px;
     }

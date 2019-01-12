@@ -1,6 +1,6 @@
 <template>
   <div class="p-profile-collection">
-    <CommonHeader>我的收藏</CommonHeader>
+    <CommonHeader :pinned="true">我的收藏</CommonHeader>
 
     <main>
       <div class="m-pos-f m-box m-aln-center m-justify-bet m-sub-nav m-bb1 m-main">
