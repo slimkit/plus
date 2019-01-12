@@ -306,7 +306,7 @@ export default {
         justify-content: center;
         align-items: center;
         width: 6em;
-        border: 1px solid @primary;
+        border: 1px solid @primary;/*no*/
         border-radius: 8px;
         background-color: transparent;
         color: @primary;

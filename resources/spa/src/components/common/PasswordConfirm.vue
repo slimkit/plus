@@ -19,13 +19,15 @@
         </CommonHeader>
         <main>
           <form onsubmit="return false">
-            <input
-              ref="content"
-              v-model="password"
-              type="password"
-              minlength="6"
-              maxlength="16"
-            >
+            <label class="input-wrap">
+              <input
+                ref="content"
+                v-model="password"
+                type="password"
+                minlength="6"
+                maxlength="16"
+              >
+            </label>
             <button
               :disabled="disabled"
               type="submit"
@@ -114,18 +116,24 @@ export default {
       margin-bottom: 20px;
       height: 60px;
 
-      input[type="password"] {
+      .input-wrap {
         flex: auto;
         border: 1px solid @border-color;/*no*/
         border-radius: 16px 0 0 16px;
+
+        input[type="password"] {
+          margin: 0;
+          box-shadow: none;
+        }
       }
 
       button[type="submit"] {
         flex: none;
         width: 6em;
+        margin: 0;
+        border-radius: 0 16px 16px 0;
         background-color: @primary;
         color: #fff;
-        border-radius: 0 16px 16px 0;
 
         &:disabled {
           background-color: #999;

@@ -56,6 +56,11 @@ export default {
       cancelBtn: this.$t('cancel'),
     }
   },
+  watch: {
+    $route () {
+      this.cancel()
+    },
+  },
   created: function () {
     /**
      * Call actionSheet

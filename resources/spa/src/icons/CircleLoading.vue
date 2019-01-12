@@ -76,53 +76,14 @@ export default {
       border-radius: 2px; /* no */
       transform-origin: center -10px;
 
-      &:nth-child(1) {
-        animation-delay: 0s;
-        transform: rotate(0);
-      }
-      &:nth-child(2) {
-        animation-delay: 0.1s;
-        transform: rotate(30deg);
-      }
-      &:nth-child(3) {
-        animation-delay: 0.2s;
-        transform: rotate(60deg);
-      }
-      &:nth-child(4) {
-        animation-delay: 0.3s;
-        transform: rotate(90deg);
-      }
-      &:nth-child(5) {
-        animation-delay: 0.4s;
-        transform: rotate(120deg);
-      }
-      &:nth-child(6) {
-        animation-delay: 0.5s;
-        transform: rotate(150deg);
-      }
-      &:nth-child(7) {
-        animation-delay: 0.6s;
-        transform: rotate(180deg);
-      }
-      &:nth-child(8) {
-        animation-delay: 0.7s;
-        transform: rotate(210deg);
-      }
-      &:nth-child(9) {
-        animation-delay: 0.8s;
-        transform: rotate(240deg);
-      }
-      &:nth-child(10) {
-        animation-delay: 0.9s;
-        transform: rotate(270deg);
-      }
-      &:nth-child(11) {
-        animation-delay: 1s;
-        transform: rotate(300deg);
-      }
-      &:nth-child(12) {
-        animation-delay: 1.1s;
-        transform: rotate(330deg);
+      .generate-i(12);
+
+      .generate-i(@n, @i: 1) when (@i =< @n) {
+        &:nth-child(@{i}) {
+          animation-delay: 0.1s * (@i - 1);
+          transform: rotate(30deg * (@i - 1));
+        }
+        .generate-i(@n, (@i + 1))
       }
     }
   }
