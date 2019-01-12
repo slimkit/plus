@@ -15,6 +15,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { noop } from '@/util'
 import UserItem from '@/components/UserItem.vue'
 import { findNearbyUser } from '@/api/user.js'
 
@@ -43,7 +44,7 @@ export default {
     this.$refs.loadmore.beforeRefresh()
   },
   methods: {
-    async formateUsers (users) {
+    async formateUsers (users, callback = noop) {
       const userList = []
       for (let item of users) {
         userList.push(item.user_id)
@@ -58,15 +59,18 @@ export default {
         user && sortedUsers.push(user)
       }
       this.users = sortedUsers
+      const more = this.users.length < 15
+      callback(more)
     },
     onRefresh (callback) {
       this.page = 1
       findNearbyUser({ lat: this.lat, lng: this.lng }, this.page).then(
         ({ data = [] }) => {
           this.users = []
-          this.formateUsers(data)
+          this.formateUsers(data, more => {
+            this.$refs.loadmore.afterRefresh(more)
+          })
           this.page = 2
-          this.$refs.loadmore.afterRefresh(data.length < 15)
         }
       )
     },
@@ -74,8 +78,9 @@ export default {
       findNearbyUser({ lat: this.lat, lng: this.lng }, this.page).then(
         ({ data = [] }) => {
           this.page += 1
-          this.formateUsers(data)
-          this.$refs.loadmore.afterLoadMore(data.length < 15)
+          this.formateUsers(data, more => {
+            this.$refs.loadmore.afterLoadMore(more)
+          })
         }
       )
     },
