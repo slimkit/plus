@@ -39,11 +39,11 @@ export default {
     },
   },
   methods: {
-    goBack (num = -1) {
+    goBack () {
       const fallIndex = this.isIosWechat ? 2 : 1
       window.history.length <= fallIndex
         ? this.$router.replace('/')
-        : this.$router.back(num)
+        : this.$router.back()
     },
     /**
      * 定位到锚点
@@ -61,5 +61,12 @@ export default {
       }
     },
     reload: reload,
+    popupBuyTS () {
+      this.$bus.$emit('popupDialog', {
+        title: '温馨提示',
+        content:
+          '开源版无此功能，需要使用此功能，请购买正版授权源码，详情访问www.thinksns.com，也可直接咨询：QQ3515923610；电话：17311245680。',
+      })
+    },
   },
 }
