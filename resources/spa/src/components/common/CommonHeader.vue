@@ -77,7 +77,7 @@ export default {
     left: 0;
     right: 0;
     height: 100%;
-    width: 12em;
+    width: 16em;
     margin: 0 auto;
     text-align: center;
 

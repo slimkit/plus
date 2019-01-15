@@ -27,6 +27,8 @@ collapse: 收起
 change: 更改
 modify: 修改
 back: 返回
+buy: 购买
+reset: 重置
 
 like: 喜欢
 share: 分享
@@ -115,6 +117,8 @@ comment:
 reward:
   name: 打赏
   list: 打赏列表
+  select: 选择打赏@:(currency.unit)
+  success: 打赏成功
 follow:
   name: 关注
   cancel: 取消关注
@@ -135,11 +139,20 @@ release:
   confirm_cancel: 你还有没有发布的内容，是否放弃发布？
   success: 发布成功
   need_pay: 是否收费
+  pay_tips: 注：超过{0}字部分内容收费
   add_topic: 添加话题
   set_amount: 请设置收费金额
+  input_amount: 输入金额
+  select_image_amount: 选择图片收费金额
+  custom_amount: 自定义金额
   text_limit: 正文内容不足{0}字, 无法设置收费
   image_placeholder: 输入要说的话，图文结合更精彩哦
   has_failed_upload: 存在上传失败的图片，请确认
+  paid_image: 应配置至少一张图片收费
+  image_amount: 设置金额
+  image_limit: 最多只能上传{0}张图片
+  image_format: 请上传正确格式的图片文件
+  image_option: 图片收费选项
 
 # loadmore
 loadmore:
@@ -242,6 +255,7 @@ wallet:
     account: 提现账户
     account_input: 输入提现账户
     info: '{0}账户提现'
+    integer: 请输入整数
     type:
       name: 选择提现方式
       alipay: 支付宝
@@ -260,7 +274,7 @@ wallet:
     time: 交易时间
 
 currency:
-  name: 积分
+  name: '@:(currency.unit)'
   unit: 积分
   my: 我的@:(currency.unit)
   current: 当前@:(currency.unit)
@@ -283,7 +297,7 @@ currency:
     input: 输入需提取的@:(currency.unit)
     desc: 提取@:(currency.unit)须提交官方审核，审核反馈请关注系统消息！
     min: 请至少提取{0}@:(currency.unit)
-    disabled: 未开启积分提取功能
+    disabled: 未开启@:(currency.unit)提取功能
 
 certificate:
   name: 认证
@@ -307,7 +321,7 @@ certificate:
     number: 请检查身份证号码是否正确
     phone: 请检查手机号码是否正确
   user:
-    name: 个人认证
+    name: 基本信息
     label:
       name: 真实姓名
       number: 身份证号码
@@ -319,7 +333,7 @@ certificate:
       phone: 输入11位手机号码
       desc: 该描述会影响审核，请慎重填写
   org:
-    name: 企业认证
+    name: 基本信息
     label:
       name: 负责人
       number: 身份证号码
@@ -370,6 +384,10 @@ feed:
   all: 全部动态
   paid: 付费动态
   top: 置顶动态
+
+  pay:
+    need_paid: '你只需要支付{0}@:(currency.unit)就可查看此{1}'
+    buy:
 
   topic:
     name: 话题
@@ -541,6 +559,14 @@ question:
       name: 专家
       list: 专家列表
       count: '{0}位相关专家'
+    apply:
+      name: 建议创建专题
+      success: 申请成功
+      no_find: 没有找到相关专题
+      suggest: 向官方建议创建新专题
+      placeholder:
+        name: 请输入专题名称
+        desc: 请输入专题描述
 
   answer:
     name: 回答
@@ -558,7 +584,7 @@ question:
     pay:
       name: 支付
       look: 围观支付
-      count: 你只需支付 {0} 积分即可围观该回答
+      count: 你只需支付 {0} @:(currency.unit)即可围观该回答
       success: 支付成功！
 
 message:

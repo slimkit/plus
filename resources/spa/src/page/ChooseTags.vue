@@ -146,7 +146,7 @@ export default {
       const obj = this.tags[Gindex].tags[Tindex]
       if (obj.selected) return
 
-      if (this.chooseTags.length >= 5) { return this.$Message.error(this.$t('tags.max_tips')) }
+      if (this.chooseTags.length >= 5) { return this.$Message.error(this.$t('tags.max_tips', [5])) }
 
       const status = { selected: true, Gindex, Tindex }
       Object.assign(obj, status)

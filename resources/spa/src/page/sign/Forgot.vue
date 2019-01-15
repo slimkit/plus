@@ -165,7 +165,7 @@ export default {
       return this.$t('auth.resend', [this.countdown])
     },
     label2 () {
-      const type = this.verifiable_type === SMS ? 'phone' : 'email'
+      const type = this.verifiable_type !== SMS ? 'phone' : 'email'
       return this.$t(`auth.forgot.type.${type}`)
     },
   },

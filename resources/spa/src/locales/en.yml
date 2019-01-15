@@ -26,6 +26,8 @@ collapse: Collapse
 change: Change
 modify: Modify
 back: Back
+buy: Buy
+reset: Reset
 
 like: Like
 share: Share
@@ -114,6 +116,9 @@ comment:
   empty: Comment content cannot be empty
 reward:
   name: Reward
+  list: Reward list
+  select: Choose to reward @:(currency.unit)
+  success: Reward success
 follow:
   name: Follow
   cancel: Cancel follow
@@ -134,11 +139,20 @@ release:
   confirm_cancel: Do you still have content posted, do you give up publishing?
   success: Release successful
   need_pay: Whether to charge
+  pay_tips: 'Note: More than {0} word part of the content charge'
   add_topic: Topics
   set_amount: Please set the charge amount
+  input_amount: Input amount
+  select_image_amount: Select image charge amount
+  custom_amount: Custom amount
   text_limit: Insufficient body content {0} words, unable to set charges
   image_placeholder: The combination of graphics and text is more exciting.
   has_failed_upload: There is an image that failed to upload, please confirm
+  paid_image: At least one picture charge should be configured
+  image_amount: Amount
+  image_limit: Can only upload up to {0} images
+  image_format: Please upload the image file in the correct format
+  image_option: Picture charging option
 
 # loadmore
 loadmore:
@@ -240,6 +254,7 @@ wallet:
     account: Account
     account_input: Input withdrawal account
     info: '{0} account withdrawal'
+    integer: Please enter an integer
     type:
       name: Choose a withdrawal method
       alipay: Alipay
@@ -258,8 +273,8 @@ wallet:
     time: Time
 
 currency:
-  name: Currency
-  unit: currency
+  name: Credits
+  unit: credits
   my: My @:(currency.unit)
   current: Current @:(currency.unit)
   detail: Detail
@@ -305,7 +320,7 @@ certificate:
     number: Please check if the ID number is correct.
     phone: Please check if the mobile number is correct.
   user:
-    name: Personal certification
+    name: Basic Information
     label:
       name: Real name
       number: ID number
@@ -317,7 +332,7 @@ certificate:
       phone: Enter 11 mobile phone number
       desc: This description will affect the review, please fill in carefully
   org:
-    name: Enterprise Certification
+    name: Basic Information
     label:
       name: Person in charge
       number: ID number
@@ -367,6 +382,8 @@ feed:
   all: All feeds
   paid: Paid feeds
   top: Top feeds
+  pay:
+    need_paid: 'You only need to pay {0} @:(currency.unit) to view this {1}'
 
   topic:
     name: Topic
@@ -538,6 +555,14 @@ question:
       name: Expert
       list: Expert list
       count: '{0} related experts'
+    apply:
+      name: Suggested to create a topic
+      success: Successful application
+      no_find: No related topics found
+      suggest: Create new topics for official advice
+      placeholder:
+        name: Enter the topic name
+        desc: Enter a description of the topic
 
   answer:
     name: Answers
@@ -562,22 +587,22 @@ message:
   name: Message
 
   system:
-    name: System information
+    name: System messages
     empty: No system notification
 
   comment:
-    name: Comments received
+    name: Comments
     reply: '{user1} Reply {user2}'
     commented: '{user} commented on your {type}'
     empty: No one has commented on you yet.
 
   like:
-    name: Received likes
+    name: Likes
     liked: '{user} liked your {type}'
     empty: No one has ever liked you yet.
 
   audit:
-    name: Audit notices
+    name: Review notification
     review: Review
     accept: Accept
     reject: Reject
@@ -586,11 +611,11 @@ message:
     placeholder: ['If you have unreviewed information, please handle it in time.', 'No pending applications']
     group_join: Apply to join the group "{group}" you created, please review it in time.
     types:
-      feed_comment_top: Feed comment top
-      news_comment_top: News comment top
-      post_comment_top: Post comment top
-      post_top: Group post top
-      group_join: Group join
+      feed_comment_top: top the moment comment
+      news_comment_top: top the news comment
+      post_comment_top: top the post comment
+      post_top: top the post
+      group_join: group application
     top:
       amount: '{amount} @:(currency.unit) / {day} days'
       accept: Agree to top
@@ -674,7 +699,7 @@ auth:
   error:
     account: Account is incorrect
     username_number: Username cannot start with a number
-    username_special_char: Username cannot contain special symbols and spaces
+    username_special_char: Username cannot contain special symbols
     password: Password is incorrect
     phone: Please enter the correct phone number
     email: Please enter the correct email

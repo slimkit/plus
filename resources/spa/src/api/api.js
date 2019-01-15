@@ -75,7 +75,11 @@ instance.interceptors.response.use(
             break
           case 422: {
             const { data } = err.response
-            err.tips = data || { message: i18n.t('network.error.e422') }
+            try {
+              err.tips = Object.values(data.errors)[0][0]
+            } catch (error) {
+              err.tips = data || { message: i18n.t('network.error.e422') }
+            }
             break
           }
           case 500:
