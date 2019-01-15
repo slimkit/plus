@@ -21,7 +21,7 @@
 
     <div v-if="loading" class="m-pos-f m-spinner" />
 
-    <main>
+    <main class="main-container">
       <form class="form" onsubmit="return false">
         <div
           v-if="!src"
@@ -189,6 +189,12 @@ export default {
   background-color: #fff;
   height: 100%;
 
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
   .primary {
     color: @primary;
   }
@@ -251,10 +257,8 @@ export default {
   }
 
   .tips {
-    position: fixed;
-    bottom: 30px;
-    left: 30px;
-    right: 30px;
+    flex: none;
+    padding: 30px;
     color: #999;
     font-size: 26px;
 

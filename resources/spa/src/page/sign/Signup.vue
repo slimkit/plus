@@ -255,6 +255,8 @@ export default {
 
       if (!res) return true
 
+      if (verifiableCode.length < 4 || verifiableCode.length > 6) return true
+
       return this.verifiable_type === 'sms'
         ? phone.length !== 11
         : email.length <= 4
@@ -398,12 +400,9 @@ export default {
   }
 
   footer {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    text-align: center;
+    margin-top: 40px;
     padding: 0.2rem;
+    text-align: center;
 
     .register-protocol {
       font-size: 0.3rem;
