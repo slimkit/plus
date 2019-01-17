@@ -39,7 +39,7 @@ function formatContent($content)
 {
     // 链接替换
     $content = preg_replace_callback('/((?:https?|mailto|ftp):\/\/([^\x{2e80}-\x{9fff}\s<\'\"“”‘’，。}]*)?)/u', function ($url) {
-        return '<a href="'.$url[0].'">访问链接+</a>';
+        return '<a class="mcolor" href="'.$url[0].'">访问链接+</a>';
     }, $content);
 
     // 回车替换
@@ -49,7 +49,7 @@ function formatContent($content)
 
     // 过滤xss
     $config = HTMLPurifier_Config::createDefault();
-    $config->set('HTML.Allowed', 'br,a[href]');
+    $config->set('HTML.Allowed', 'br,a[href|class]');
     $purifier = new HTMLPurifier($config);
     $content = $purifier->purify($content);
 

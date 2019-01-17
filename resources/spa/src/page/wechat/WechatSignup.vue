@@ -149,6 +149,7 @@ export default {
           // 保存用户信息 并跳转
           this.$store.commit('SAVE_CURRENTUSER', { ...user, token })
           this.$nextTick(() => {
+            this.$lstore.setData('H5_ACCESS_TOKEN', `Bearer ${token}`)
             this.$router.push('/feeds?type=hot')
             this.$store.dispatch('GET_UNREAD_COUNT')
             this.$store.dispatch('GET_NEW_UNREAD_COUNT')

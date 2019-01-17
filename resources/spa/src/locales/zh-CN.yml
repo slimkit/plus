@@ -421,6 +421,7 @@ news:
   more_subscription: 更多订阅
   from: 来自
   original: 原创
+  not_found: 资讯不存在或正在审核中
   cover:
     tap_to_upload: 点击上传封面
     placeholder: 不上传封面则默认为文章内第一张图

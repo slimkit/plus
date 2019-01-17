@@ -41,7 +41,7 @@
 
         <!-- 打赏组件 -->
         <ArticleReward
-          v-if="allowReward"
+          v-if="allowReward && !isMine"
           v-bind="reward"
           :article="newsId"
           :is-mine="isMine"
@@ -50,7 +50,7 @@
         />
       </div>
 
-      <div v-if="relationNews.length" class="m-box-model m-art-comments">
+      <div v-if="relationNews.length && isPublic" class="m-box-model m-art-comments">
         <ul class="m-box m-aln-center m-art-comments-tabs">
           <li>{{ $t('news.relation') }}</li>
         </ul>
@@ -159,6 +159,9 @@ export default {
     isMine () {
       return this.news.user_id === this.currentUser.id
     },
+    isPublic () {
+      return this.news.audit_status === 0
+    },
     liked: {
       get () {
         return !!this.news.has_like
@@ -242,10 +245,14 @@ export default {
       api
         .getNewsById(this.newsId)
         .then(({ data = {} }) => {
+          this.news = data
+          if (!this.isMine && !this.isPublic) {
+            this.$Message.error(this.$t('news.not_found'))
+            return this.goBack()
+          }
           this.loading = false
           this.fetching = false
           this.$refs.loadmore.afterRefresh()
-          this.news = data
           this.oldId = this.newsId
           this.share.title = data.title
           this.share.desc = data.subject

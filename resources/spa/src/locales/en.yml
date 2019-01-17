@@ -417,6 +417,7 @@ news:
   more_subscription: More subscription
   from: From
   original: original
+  not_found: News does not exist or is under review
   cover:
     tap_to_upload: Tap to upload cover
     placeholder: If you do not upload the cover, it defaults to the first image in the article.
