@@ -39,7 +39,7 @@
             <span>{{ news.hits || 0 | formatNum }}浏览</span>
           </div>
         </div>
-        <div v-if="allowReward" class="m-box-model m-box-center m-box-center-a m-art-reward">
+        <div v-if="allowReward && !isMine" class="m-box-model m-box-center m-box-center-a m-art-reward">
           <button class="m-art-rew-btn" @click="rewardNews">打 赏</button>
           <ArticleRewardBadge
             :total="reward.count"
@@ -49,7 +49,7 @@
         </div>
       </div>
 
-      <div v-if="relationNews.length" class="m-box-model m-art-comments">
+      <div v-if="relationNews.length && isPublic" class="m-box-model m-art-comments">
         <ul class="m-box m-aln-center m-art-comments-tabs">
           <li>相关资讯</li>
         </ul>
@@ -179,6 +179,9 @@ export default {
     isMine () {
       return this.news.user_id === this.CURRENTUSER.id
     },
+    isPublic () {
+      return this.news.audit_status === 0
+    },
     liked: {
       get () {
         return !!this.news.has_like
@@ -259,9 +262,13 @@ export default {
       api
         .getNewsById(this.newsId)
         .then(({ data = {} }) => {
+          this.news = data
+          if (!this.isMine && !this.isPublic) {
+            this.$Message.error('资讯不存在或正在审核中')
+            return this.goBack()
+          }
           this.loading = false
           this.fetching = false
-          this.news = data
           this.oldId = this.newsId
           this.share.title = data.title
           this.share.desc = data.subject
