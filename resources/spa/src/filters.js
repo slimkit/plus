@@ -13,6 +13,31 @@ export function plusMessageFirst (message, defaultMessage) {
 }
 
 /**
+ * 过滤 XSS
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {string} value
+ * @returns {string}
+ */
+export function escapeHTML (value) {
+  if (typeof value !== 'string') {
+    return value
+  }
+  return value.replace(/[&<>`"'/]/g, function (result) {
+    return {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '`': '&#x60;',
+      '"': '&quot;',
+      "'": '&#x27;',
+      '/': '&#x2f;',
+    }[result]
+  })
+}
+
+/**
  * ThinkSNS Plus 消息解析器，获取顶部消息.
  *
  * @param {Object} message

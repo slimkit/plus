@@ -50,7 +50,7 @@
               @click="onFileClick(img)"
             >
           </AsyncFile>
-          <p class="m-text-box" v-html="formatBody(feedContent)" />
+          <p class="m-text-box m-text-pre" v-html="formatBody(feedContent)" />
         </div>
 
         <div class="m-box m-aln-center m-justify-bet m-art-foot">
@@ -124,6 +124,7 @@ import ArticleCard from '@/page/article/ArticleCard.vue'
 import CommentItem from '@/page/article/ArticleComment.vue'
 import ArticleLikeBadge from '@/components/common/ArticleLikeBadge.vue'
 import ArticleRewardBadge from '@/components/common/ArticleRewardBadge.vue'
+import { escapeHTML } from '@/filters'
 
 export default {
   name: 'FeedDetail',
@@ -293,12 +294,8 @@ export default {
   },
   methods: {
     formatBody (str) {
-      // 脚本内容以纯文本方式显示
-      const scriptRegex = /<\s*script\s*>(.*?)<\s*\/\s*script\s*>/i
-      str = str.replace(scriptRegex, '&lt;script&gt;$1&lt;/script&gt;')
-
-      // 换行符转换
-      str = str.replace(/\n/g, '<br>')
+      // XSS filter
+      str = escapeHTML(str)
 
       const reg = /(https?|http|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/g
       return str
