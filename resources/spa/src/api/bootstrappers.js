@@ -25,12 +25,39 @@ export async function getHotCities () {
  */
 export async function getCurrentPosition () {
   let data = await location.getCurrentPosition()
-  let { city, province, formatted_address: address } = data.addressComponent || {}
+  let { country, city, province } = data.addressComponent || {}
+  const [lng, lat] = [data.position.getLng(), data.position.getLat()]
+
+  // 保存位置信息 (异步，无需 await)
+  saveCurrentPosition(lng, lat)
+
+  let label = ''
+  if (city) label = `${province} ${city}`
+  else if (province) label = `${country} ${city}`
+  else label = '定位失败'
 
   return {
-    lng: data.position.getLng(),
-    lat: data.position.getLat(),
-    label: city || province || address || '定位失败',
+    lng,
+    lat,
+    label,
+  }
+}
+
+/**
+ * 保存当前位置信息
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {number} longitude 经度
+ * @param {number} latitude 纬度
+ * @returns
+ */
+export async function saveCurrentPosition (longitude, latitude) {
+  try {
+    await api.post(`/around-amap`, { longitude, latitude })
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.warn('保存位置信息失败: ', error)
   }
 }
 
