@@ -193,7 +193,9 @@ export default {
       const city = this.cities[index].split('，').pop()
       api.getGeo(city.replace(/[\s\uFEFF\xA0]+/g, '')).then(data => {
         this.loading = false
-        data.label = parseSearchTree(this.originCities[index].tree)
+        let label = parseSearchTree(this.originCities[index].tree, 3).split(' ')
+        if (label[0] === '中国') label.shift()
+        data.label = label.slice(0, 2).join(' ')
         this.currentPos = data
         this.$nextTick(this.goBack)
       })
