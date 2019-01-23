@@ -5,10 +5,7 @@
     leave-active-class="animated slideOutRight"
   >
     <div class="m-box-model m-pos-f p-location">
-      <SearchBar
-        v-model="keyword"
-        :back="goBack"
-      />
+      <SearchBar v-model="keyword" :back="goBack" />
 
       <main>
         <div v-if="showHot">
@@ -44,10 +41,7 @@
             </ul>
           </div>
         </div>
-        <div
-          v-else
-          class="m-box-model"
-        >
+        <div v-else class="m-box-model">
           <div
             v-for="(city, index) in cities"
             :key="`search-${city}-${index}`"
@@ -63,22 +57,16 @@
 </template>
 
 <script>
-import SearchBar from '@/components/common/SearchBar.vue'
-import _ from 'lodash'
+import { parseSearchTree } from '@/util/location'
 import * as api from '@/api/bootstrappers.js'
+import SearchBar from '@/components/common/SearchBar.vue'
 
 export default {
   name: 'Location',
   components: { SearchBar },
   props: {
-    show: {
-      type: Boolean,
-      default: true,
-    },
-    isComponent: {
-      type: Boolean,
-      default: false,
-    },
+    show: { type: Boolean, default: true },
+    isComponent: { type: Boolean, default: false },
   },
   data () {
     return {
@@ -142,6 +130,7 @@ export default {
   },
   methods: {
     goBack () {
+      this.keyword = ''
       this.isComponent
         ? this.$emit('close', this.currentPos)
         : this.$router.go(-1)
@@ -165,12 +154,12 @@ export default {
         })
         : []
     },
-    searchCityByName: _.debounce(function () {
+    searchCityByName () {
       api.searchCityByName(this.keyword).then(({ data = [] }) => {
         this.originCities = data
         this.cities = this.formatCities(data)
       })
-    }, 450),
+    },
     getCurrentPosition () {
       this.loading = true
       this.hotPos = null
@@ -204,7 +193,7 @@ export default {
       const city = this.cities[index].split('，').pop()
       api.getGeo(city.replace(/[\s\uFEFF\xA0]+/g, '')).then(data => {
         this.loading = false
-        data.label = this.originCities[index].tree.name
+        data.label = parseSearchTree(this.originCities[index].tree)
         this.currentPos = data
         this.$nextTick(this.goBack)
       })
