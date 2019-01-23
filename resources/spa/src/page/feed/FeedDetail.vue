@@ -59,7 +59,7 @@
               @click="onFileClick(img)"
             >
           </AsyncFile>
-          <p class="m-text-box" v-html="formatBody(feedContent)" />
+          <p class="m-text-box m-text-pre" v-html="formatBody(feedContent)" />
           <ul v-if="topics.length" class="topics">
             <li
               v-for="topic in topics"
@@ -105,6 +105,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { escapeHTML } from '@/filters'
 import wechatShare from '@/util/wechatShare.js'
 import * as userApi from '@/api/user.js'
 import * as api from '@/api/feeds.js'
@@ -287,12 +288,8 @@ export default {
   },
   methods: {
     formatBody (str) {
-      // 脚本内容以纯文本方式显示
-      const scriptRegex = /<\s*script\s*>(.*?)<\s*\/\s*script\s*>/i
-      str = str.replace(scriptRegex, '&lt;script&gt;$1&lt;/script&gt;')
-
-      // 换行符转换
-      str = str.replace(/\n/g, '<br>')
+      // XSS filter
+      str = escapeHTML(str)
 
       const reg = /(https?|http|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/g
       return str

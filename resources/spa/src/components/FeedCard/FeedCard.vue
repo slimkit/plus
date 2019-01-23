@@ -22,7 +22,7 @@
           <div v-if="body.length > 0" class="m-card-con">
             <p
               :class="{needPay}"
-              class="m-text-box m-text-cut-3 feed-body"
+              class="m-text-box m-text-cut-3 feed-body m-text-pre"
               v-html="replaceURI(body)"
             />
           </div>
@@ -103,8 +103,9 @@
 
 <script>
 import { mapState } from 'vuex'
-import * as api from '@/api/feeds.js'
+import { time2txt, escapeHTML } from '@/filters.js'
 import { transTime } from '@/util'
+import * as api from '@/api/feeds.js'
 import FeedImage from './FeedImage.vue'
 import FeedVideo from './FeedVideo.vue'
 import CommentItem from './CommentItem.vue'
@@ -216,12 +217,8 @@ export default {
       this.$router.push({ name: 'TopicDetail', params: { topicId } })
     },
     replaceURI (str) {
-      // 脚本内容以纯文本方式显示
-      const scriptRegex = /<\s*script\s*>(.*?)<\s*\/\s*script\s*>/i
-      str = str.replace(scriptRegex, '&lt;script&gt;$1&lt;/script&gt;')
-
-      // 换行符转换
-      str = str.replace(/\n/g, '<br>')
+      // XSS filter
+      str = escapeHTML(str)
 
       const reg = /(https?|http|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/g
       const linkText = this.$t('article.link_text')

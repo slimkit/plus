@@ -58,6 +58,7 @@
 
 <script>
 import i18n from '@/i18n'
+import { parseSearchTree } from '@/util/location'
 import * as api from '@/api/bootstrappers.js'
 import SearchBar from '@/components/common/SearchBar.vue'
 
@@ -130,6 +131,7 @@ export default {
   },
   methods: {
     goBack () {
+      this.keyword = ''
       this.isComponent
         ? this.$emit('close', this.currentPos)
         : this.$router.go(-1)
@@ -192,7 +194,9 @@ export default {
       const city = this.cities[index].split('，').pop()
       api.getGeo(city.replace(/[\s\uFEFF\xA0]+/g, '')).then(data => {
         this.loading = false
-        data.label = this.originCities[index].tree.name
+        let label = parseSearchTree(this.originCities[index].tree, 3).split(' ')
+        if (label[0] === '中国') label.shift()
+        data.label = label.slice(0, 2).join(' ')
         this.currentPos = data
         this.$nextTick(this.goBack)
       })
