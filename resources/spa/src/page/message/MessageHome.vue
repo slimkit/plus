@@ -22,7 +22,7 @@
           </div>
           <div class="m-box-model m-flex-grow0 m-flex-shrink0 m-entry-end m-justify-bet">
             <h5 v-if="computedGetter(item.time) !== '' && item.time">
-              {{ +new Date((computedGetter(item.time))) + 10 || '' | time2tips }}
+              {{ computedGetter(item.time) || '' | time2tips }}
             </h5>
             <h5 v-else />
             <div class="m-box m-aln-center m-justify-end">
