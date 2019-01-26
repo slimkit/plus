@@ -1,4 +1,5 @@
 import plueMessageBundle from 'plus-message-bundle'
+import xss from 'xss'
 
 /**
  * ThinkSNS Plus 消息解析器，获取顶部消息.
@@ -21,20 +22,8 @@ export function plusMessageFirst (message, defaultMessage) {
  * @returns {string}
  */
 export function escapeHTML (value) {
-  if (typeof value !== 'string') {
-    return value
-  }
-  return value.replace(/[&<>`"'/]/g, function (result) {
-    return {
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '`': '&#x60;',
-      '"': '&quot;',
-      "'": '&#x27;',
-      '/': '&#x2f;',
-    }[result]
-  })
+  const options = {}
+  return xss(value, options)
 }
 
 /**
