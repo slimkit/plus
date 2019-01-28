@@ -103,7 +103,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { time2txt, escapeHTML } from '@/filters.js'
+import { escapeHTML } from '@/filters.js'
 import { transTime } from '@/util'
 import * as api from '@/api/feeds.js'
 import FeedImage from './FeedImage.vue'
