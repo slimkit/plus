@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import WebIM, { sendTextMessage } from '@/vendor/easemob'
+import WebIM, { sendTextMessage, clearUnread } from '@/vendor/easemob'
 import MessageBubble from './components/MessageBubble'
 
 export default {
@@ -141,6 +141,10 @@ export default {
          * @type {[type]}
          */
         this.$el.style.height = window.innerHeight + 'px'
+        /**
+         * 清空已读信息
+         */
+        clearUnread(this.roomId)
       })
     },
     sendMessage () {

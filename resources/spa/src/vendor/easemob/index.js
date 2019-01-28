@@ -126,6 +126,10 @@ export function getGroupInfo (gid) {
   })
 }
 
+export function clearUnread(id) {
+  AppDB.upDateChatRoom({ id }, { unreadCount: 0 })
+}
+
 export function sendTextMessage ({ to, from, body, type }) {
   return new Promise((resolve, reject) => {
     /**
