@@ -28,7 +28,10 @@ export default {
     value: { type: null, default: () => ({}) },
     label: { type: String, default: '上传头像' },
     readonly: { type: Boolean, default: false },
-
+    /**
+     * 文件类型
+     */
+    type: { type: String, default: 'storage', validator (type) { return ['blob', 'id', 'url', 'storage'].includes(type) } },
     /**
      * 头像形状 square: 方形 circle: 圆形
      */

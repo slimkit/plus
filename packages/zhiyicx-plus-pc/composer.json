@@ -29,5 +29,5 @@
         "overtrue/socialite": "^2.0",
         "gregwar/captcha": "1.*"
     },
-    "version": "2.2.1"
+    "version": "2.2.2"
 }
