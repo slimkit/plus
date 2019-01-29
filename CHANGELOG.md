@@ -1,4 +1,18 @@
+<<<<<<< HEAD
 ## [2.2.1](https://github.com/slimkit/plus/compare/2.2.0...2.2.1) (2018-12-25)
+=======
+## [2.1.5](https://github.com/slimkit/plus/compare/2.1.4...2.1.5) (2019-01-29)
+
+
+### Bug Fixes
+
+* **动态:** 修复动态话题未关注状态下发布动态后无法关注该话题 ([86f5aaf](https://github.com/slimkit/plus/commit/86f5aaf)), closes [#579](https://github.com/slimkit/plus/issues/579)
+* **CDN:** 修复阿里云获取原图 GIF 并没有返回原图问题 ([c13db22](https://github.com/slimkit/plus/commit/c13db22))
+
+
+
+## [2.1.4](https://github.com/slimkit/plus/compare/2.0.8...2.1.4) (2018-12-25)
+>>>>>>> 2.1
 
 
 ### Bug Fixes
@@ -10,6 +24,7 @@
 * **核心:** 修复导出打赏清单存在圈子帖子打赏导致到处错误 fix [#497](https://github.com/slimkit/plus/issues/497) ([097e6fd](https://github.com/slimkit/plus/commit/097e6fd))
 * **资讯:** 修复打赏清单列表来源为“资讯”出现错别字 fix [#498](https://github.com/slimkit/plus/issues/498) ([a8a4a00](https://github.com/slimkit/plus/commit/a8a4a00))
 * **资讯:** 修复资讯后台筛选指定所属类别无效问题 fix[#495](https://github.com/slimkit/plus/issues/495) ([9e3078b](https://github.com/slimkit/plus/commit/9e3078b))
+<<<<<<< HEAD
 * **资讯:** 修复资讯投稿认证进行错误认证 [#540](https://github.com/slimkit/plus/issues/540) ([cfb23fa](https://github.com/slimkit/plus/commit/cfb23fa))
 * **PC:** 调整右上角用户导航菜单顺序 ([1a7ed6c](https://github.com/slimkit/plus/commit/1a7ed6c))
 * **PC:** 动态列表超出3行的动态显示查看更多按钮 ([8f7e314](https://github.com/slimkit/plus/commit/8f7e314)), closes [#468](https://github.com/slimkit/plus/issues/468)
@@ -31,10 +46,14 @@
 * **SPA:** 修复非首次进入标签选择页面时也弹出提示的问题 ([d50a3ad](https://github.com/slimkit/plus/commit/d50a3ad))
 * **SPA:** 修复通用输入框输入emoji字符时被算作1个字符的问题 (hack) ([88015df](https://github.com/slimkit/plus/commit/88015df)), closes [#506](https://github.com/slimkit/plus/issues/506)
 * **SPA:** 修复注册设置无时注册页面报错的问题 ([6fb431b](https://github.com/slimkit/plus/commit/6fb431b))
+=======
+* **admin:** 管理员禁用某用户后，认证管理获取不到用户信息报错 ([5b4cb7a](https://github.com/slimkit/plus/commit/5b4cb7a))
+>>>>>>> 2.1
 
 
 ### Features
 
+<<<<<<< HEAD
 * **PC:** 点击动态列表的内容也可以跳转到动态详情了 ([706ffc0](https://github.com/slimkit/plus/commit/706ffc0)), closes [#468](https://github.com/slimkit/plus/issues/468)
 
 
@@ -44,10 +63,18 @@
 
 
 ## [2.1.3](https://github.com/slimkit/plus/compare/2.1.2...2.1.3) (2018-12-01)
+=======
+## [2.1.2](https://github.com/slimkit/plus/compare/2.0.7...2.1.2) (2018-11-07)
+
+
+
+# [2.1.0](https://github.com/slimkit/plus/compare/2.0.4...2.1.0) (2018-10-22)
+>>>>>>> 2.1
 
 
 ### Bug Fixes
 
+<<<<<<< HEAD
 * 修复升级后的配置错误 ([72242ca](https://github.com/slimkit/plus/commit/72242ca))
 * 修复拓展包填充逻辑错误 ([e07542c](https://github.com/slimkit/plus/commit/e07542c))
 * 修复用户和认真信息关系出现死循环导致整个应用崩溃 ([4e76b65](https://github.com/slimkit/plus/commit/4e76b65))
@@ -553,17 +580,25 @@
 * **Test Group Worker:** Fixed not ';' ([d12e1f8](https://github.com/slimkit/plus/commit/d12e1f8))
 * Fixed zhiyicx/plus-group not load seeder ([d07bbdb](https://github.com/slimkit/plus/commit/d07bbdb))
 * Trying to get property of non-object ([d2bad38](https://github.com/slimkit/plus/commit/d2bad38))
+=======
+* 修复核心加载中间件错误 ([55ad69e](https://github.com/slimkit/plus/commit/55ad69e))
+* **news:** 修复投稿时输入错误密码依然能够投稿成功！ ([c64e400](https://github.com/slimkit/plus/commit/c64e400)), closes [zhiyicx/thinksns-plus-android#2396](https://github.com/zhiyicx/thinksns-plus-android/issues/2396) [zhiyicx/thinksns-plus-android#2390](https://github.com/zhiyicx/thinksns-plus-android/issues/2390)
+>>>>>>> 2.1
 
 
 ### Features
 
 * 启动接口返回是否需要用户输入支付时密码标识 ([058c852](https://github.com/slimkit/plus/commit/058c852)), closes [zhiyicx/thinksns-plus-android#2390](https://github.com/zhiyicx/thinksns-plus-android/issues/2390)
+<<<<<<< HEAD
 * 问答 & 圈子评论增加 at 人功能 ([e4c4c08](https://github.com/slimkit/plus/commit/e4c4c08)), closes [slimkit/plus#337](https://github.com/slimkit/plus/issues/337)
+=======
+>>>>>>> 2.1
 * 新增打赏用户需要验证用户密码 ([e873876](https://github.com/slimkit/plus/commit/e873876)), closes [zhiyicx/thinksns-plus-android#2390](https://github.com/zhiyicx/thinksns-plus-android/issues/2390)
 * 验证用户密码中间件允许后台开关 ([7ba0df1](https://github.com/slimkit/plus/commit/7ba0df1))
 * 增加支付节点验证用户密码 ([a50d0a4](https://github.com/slimkit/plus/commit/a50d0a4)), closes [zhiyicx/thinksns-plus-android#2390](https://github.com/zhiyicx/thinksns-plus-android/issues/2390)
 * **admin:** 增加验证用户支付时密码开关功能 ([02d8ec0](https://github.com/slimkit/plus/commit/02d8ec0)), closes [zhiyicx/thinksns-plus-android#2390](https://github.com/zhiyicx/thinksns-plus-android/issues/2390)
 * **core:** 核心 FileWith 允许批量复制属性 ([ad2ff46](https://github.com/slimkit/plus/commit/ad2ff46))
+<<<<<<< HEAD
 * **feed:** ( isses slimkit/plus[#343](https://github.com/slimkit/plus/issues/343) ) 添加支持转发的资源类型 ([f9eda20](https://github.com/slimkit/plus/commit/f9eda20))
 * **feeds:** 增加打赏动态验证用户密码 ([b82139c](https://github.com/slimkit/plus/commit/b82139c)), closes [zhiyicx/thinksns-plus-android#2390](https://github.com/zhiyicx/thinksns-plus-android/issues/2390)
 * **feeds:** 增加动态和动态评论置顶申请验证用户密码 ([0a219db](https://github.com/slimkit/plus/commit/0a219db))
@@ -656,6 +691,13 @@
 * Add a Test group worker package. ([ae3d992](https://github.com/slimkit/plus/commit/ae3d992))
 * Compoer require zhiyicx/plus-group to core ([b12f3dc](https://github.com/slimkit/plus/commit/b12f3dc))
 * Compoer require zhiyicx/plus-question to core ([0ed0d3f](https://github.com/slimkit/plus/commit/0ed0d3f))
+=======
+* **feeds:** 增加打赏动态验证用户密码 ([b82139c](https://github.com/slimkit/plus/commit/b82139c)), closes [zhiyicx/thinksns-plus-android#2390](https://github.com/zhiyicx/thinksns-plus-android/issues/2390)
+* **feeds:** 增加动态和动态评论置顶申请验证用户密码 ([0a219db](https://github.com/slimkit/plus/commit/0a219db))
+* **news:** 增加资讯打赏验证密码 ([885dbf1](https://github.com/slimkit/plus/commit/885dbf1))
+* **news:** 增加资讯和资讯评论申请置顶验证用户密码 ([8b89b39](https://github.com/slimkit/plus/commit/8b89b39)), closes [zhiyicx/thinksns-plus-android#2390](https://github.com/zhiyicx/thinksns-plus-android/issues/2390)
+* **news:** 增加资讯投稿验证用户密码 ([f7b3f9b](https://github.com/slimkit/plus/commit/f7b3f9b)), closes [zhiyicx/thinksns-plus-android#2390](https://github.com/zhiyicx/thinksns-plus-android/issues/2390)
+>>>>>>> 2.1
 
 
 
