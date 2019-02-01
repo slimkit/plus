@@ -110,7 +110,7 @@ a {font-size:100%;vertical-align:baseline;background:transparent;text-decoration
 .footer_cont .rights {margin:20px 0 30px;color:#808080;}
 .footer_cont .developer {font-size:12px;margin-top:50px;color:#ccc;}
 .footer_cont .developer span {display:inline-block;margin:0 5px;color:#333;}
-/*内容*/.main {float:left;clear:both;width:100%;padding-bottom:30px;background:#f3f6f7;padding-right: 54px;}
+/*内容*/.main {float:left;clear:both;width:100%;padding-bottom:30px;background:#f3f6f7;}
 .container {width:1080px;margin:36px auto 0 auto;}
 /*左侧导航*/.left_menu {float:left;width:150px;padding-top:20px;}
 .left_menu ul li {position:relative;margin-bottom:36px;}
