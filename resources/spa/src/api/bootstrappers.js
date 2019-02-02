@@ -25,7 +25,8 @@ export async function getHotCities () {
  */
 export async function getCurrentPosition () {
   let data = await location.getCurrentPosition()
-  let { country, city, province } = data.addressComponent || {}
+  console.log(data) // eslint-disable-line no-console
+  let { city, province } = data.addressComponent || {}
   const [lng, lat] = [data.position.getLng(), data.position.getLat()]
 
   // 保存位置信息 (异步，无需 await)
@@ -33,7 +34,7 @@ export async function getCurrentPosition () {
 
   let label = ''
   if (city) label = `${province} ${city}`
-  else if (province) label = `${country} ${city}`
+  else if (province) label = `中国 ${province}`
   else label = '定位失败'
 
   return {
