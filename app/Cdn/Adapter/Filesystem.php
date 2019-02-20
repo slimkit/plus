@@ -78,6 +78,8 @@ class Filesystem implements FileUrlGeneratorContract
     {
         if ($this->files->exists($filename) === false) {
             throw new \Exception("Unable to find a file at path [{$filename}].");
+        } elseif (app('files')->extension($filename) === 'gif' && empty($extra)) {
+            return $this->makeUrl($filename);
         }
 
         return $this->validateImageAnd($filename, function (string $filename) use ($extra) {
