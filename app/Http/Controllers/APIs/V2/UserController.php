@@ -24,6 +24,7 @@ use RuntimeException;
 use Tymon\JWTAuth\JWTAuth;
 use Zhiyi\Plus\Models\User;
 use Illuminate\Http\Request;
+use Zhiyi\Plus\Models\Taggable;
 use function Zhiyi\Plus\setting;
 use function Zhiyi\Plus\username;
 use Zhiyi\Plus\Models\VerificationCode;
@@ -50,6 +51,7 @@ class UserController extends Controller
         $since = $request->query('since', false);
         $name = $request->query('name', false);
         $fetchBy = $request->query('fetch_by', 'id');
+        $tags = $request->query('tags', []);
 
         $users = $model
             ->when($since, function ($query) use ($since, $order) {
@@ -63,6 +65,13 @@ class UserController extends Controller
             })
             ->when($name && $fetchBy === 'username', function ($query) use ($name) {
                 return $query->whereIn('name', array_filter(explode(',', $name)));
+            })
+            ->when(is_array($tags) && ! empty($tags), function ($query) use ($tags) {
+                return $query->whereHas('tags', function ($query) use ($tags) {
+                    $taggableTable = (new Taggable)->getTable();
+
+                    return $query->whereIn($taggableTable.'.tag_id', $tags);
+                });
             })
             ->limit($limit)
             ->orderby('id', $order)
