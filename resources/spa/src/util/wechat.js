@@ -1,7 +1,9 @@
 import api from '@/api/api'
 
 export const signinByWechat = () => {
-  const redirectUrl = window.location.origin + process.env.BASE_URL + 'wechat/'
+  let redirectUrl = window.location.origin + process.env.BASE_URL
+  if (process.env.VUE_APP_ROUTER_MODE === 'hash') redirectUrl += '#/'
+  redirectUrl += 'wechat/'
   api
     .post(
       'socialite/getOriginUrl',
