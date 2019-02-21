@@ -27,6 +27,7 @@ use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\AtMessage\AtMessageHelperTrait;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
+use Zhiyi\Plus\Notifications\Comment as CommentNotification;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Requests\StoreNewsComment;
@@ -61,38 +62,17 @@ class CommentController extends Controller
             $news->comments()->save($comment);
             $news->increment('comment_count', 1);
             $user->extra()->firstOrCreate([])->increment('comments_count', 1);
-            if ($news->user->id !== $user->id) {
-                // 增加资讯被评论未读数
-                $news->user->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
-                // 新, 1.8启用
-                $userCommentedCount = UserCountModel::firstOrNew([
-                    'type' => 'user-commented',
-                    'user_id' => $news->user->id,
-                ]);
-
-                $userCommentedCount->total += 1;
-                $userCommentedCount->save();
-                // 推送
-                app(Push::class)->push(sprintf('%s评论了你的资讯', $user->name), (string) $news->user->id, ['channel' => 'news:comment']);
-                unset($userCommentedCount);
-            }
         });
 
+        if ($news->user) {
+            $news->user->notify(new CommentNotification($comment, $user));
+        }
+        
         if ($replyUser && $replyUser !== $user->id && $replyUser !== $news->user_id) {
             $replyUser = $user->newQuery()->where('id', $replyUser)->first();
-            // 增加资讯评论被回复的未读数
-            $replyUser->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
-            // 新, 1.8启用
-            $userCommentedCount = UserCountModel::firstOrNew([
-                'type' => 'user-commented',
-                'user_id' => $replyUser->id,
-            ]);
-
-            $userCommentedCount->total += 1;
-            $userCommentedCount->save();
-            // 推送
-            app(Push::class)->push(sprintf('%s 回复了你的评论', $user->name), (string) $replyUser->id, ['channel' => 'news:comment-reply']);
-            unset($userCommentedCount);
+            if ($replyUser) {
+                $replyUser->notify(new CommentNotification($comment, $user));
+            }
         }
 
         $this->sendAtMessage($comment->body, $user, $comment);

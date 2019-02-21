@@ -26,6 +26,7 @@ use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Models\UserCount;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\AtMessage\AtMessageHelperTrait;
+use Zhiyi\Plus\Notifications\Comment as CommentNotification;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\Music;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\MusicSpecial;
 
@@ -56,22 +57,14 @@ class MusicCommentController extends Controller
         $music->getConnection()->transaction(function () use ($music, $comment, $user) {
             $music->comments()->save($comment);
             $music->increment('comment_count', 1);
-            $music->musicSpecials()->get()->map(function ($special) {
-                $special->increment('comment_count', 1);
-            });
-            $user->extra()->firstOrCreate([])->increment('comments_count', 1);
+            $music->musicSpecials()->increment('comment_count', 1);
         });
 
         if ($replyUser && $replyUser !== $user->id) {
             $replyUser = $user->newQuery()->where('id', $replyUser)->first();
-            $userCount = UserCount::firstOrNew([
-                'type' => 'user-commented',
-                'user_id' => $replyUser,
-            ]);
-            $userCount->total += 1;
-            $userCount->save();
-            $replyUser->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
-            app(Push::class)->push(sprintf('%s 回复了您的评论', $user->name), (string) $replyUser->id, ['channel' => 'music:comment-reply']);
+            if ($replyUser) {
+                $replyUser->notify(new CommentNotification($comment, $user));
+            }
         }
 
         $this->sendAtMessage($comment->body, $user, $comment);
@@ -208,15 +201,10 @@ class MusicCommentController extends Controller
         });
 
         if ($replyUser && $replyUser !== $user->id) {
-            $userCount = UserCount::firstOrNew([
-                'type' => 'user-commented',
-                'user_id' => $replyUser,
-            ]);
-            $userCount->total += 1;
-            $userCount->save();
             $replyUser = $user->newQuery()->where('id', $replyUser)->first();
-            $replyUser->unreadCount()->firstOrCreate([])->increment('unread_comments_count', 1);
-            app(Push::class)->push(sprintf('%s 回复了您的评论', $user->name), (string) $replyUser->id, ['channel' => 'music:special-comment-reply']);
+            if ($replyUser) {
+                $replyUser->notify(new CommentNotification($comment, $user));
+            }
         }
 
         return response()->json([

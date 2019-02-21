@@ -85,6 +85,20 @@ class User extends Authenticatable implements JWTSubject
     protected $with = ['extra'];
 
     /**
+     * Get Notification for JPush sender.
+     * @return \Medz\Laravel\Notifications\JPush\Sender
+     */
+    protected function routeNotificationForJpush()
+    {
+        return new \Medz\Laravel\Notifications\JPush\Sender([
+            'platform' => 'all',
+            'audience' => [
+                'alias' => sprintf('user_%d', $this->id),
+            ],
+        ]);
+    }
+
+    /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed
