@@ -22,7 +22,6 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\AtMessage\AtMessageHelperTrait;
 use Zhiyi\Plus\Models\Comment as CommentModel;

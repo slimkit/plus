@@ -22,13 +22,11 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Models\Comment;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\AtMessage\AtMessageHelperTrait;
-use Zhiyi\Plus\Models\UserCount as UserCountModel;
-use Zhiyi\Plus\Notifications\Comment as CommentNotification;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
+use Zhiyi\Plus\Notifications\Comment as CommentNotification;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Requests\StoreNewsComment;
 
@@ -67,7 +65,7 @@ class CommentController extends Controller
         if ($news->user) {
             $news->user->notify(new CommentNotification($comment, $user));
         }
-        
+
         if ($replyUser && $replyUser !== $user->id && $replyUser !== $news->user_id) {
             $replyUser = $user->newQuery()->where('id', $replyUser)->first();
             if ($replyUser) {
