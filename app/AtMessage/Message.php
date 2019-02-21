@@ -20,12 +20,8 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\AtMessage;
 
-use Closure;
-use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Models\User as UserModel;
-use Zhiyi\Plus\Models\AtMessage as Model;
 use Zhiyi\Plus\Notifications\At as AtNotification;
-use Zhiyi\Plus\Models\UserCount as UserCountModel;
 
 class Message implements MessageInterface
 {
