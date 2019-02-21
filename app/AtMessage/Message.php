@@ -24,6 +24,7 @@ use Closure;
 use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Models\User as UserModel;
 use Zhiyi\Plus\Models\AtMessage as Model;
+use Zhiyi\Plus\Notifications\At as AtNotification;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 
 class Message implements MessageInterface
@@ -35,28 +36,12 @@ class Message implements MessageInterface
     protected $manager;
 
     /**
-     * At message model.
-     * @var \Zhiyi\Plus\Models\AtMessage
-     */
-    protected $model;
-
-    /**
-     * Jpush pusher.
-     * @var \Zhiyi\Plus\Services\Push
-     */
-    protected $pusher;
-
-    /**
      * Create the message instance.
      * @param \Zhiyi\Plus\AtMessage\ResourceManagerInterface $manager
-     * @param \Zhiyi\Plus\Models\AtMessage $model
-     * @param \Zhiyi\Plus\Services\Push $pusher
      */
-    public function __construct(ResourceManagerInterface $manager, Model $model, Push $pusher)
+    public function __construct(ResourceManagerInterface $manager)
     {
         $this->manager = $manager;
-        $this->model = $model;
-        $this->pusher = $pusher;
     }
 
     /**
@@ -69,81 +54,6 @@ class Message implements MessageInterface
     public function send(UserModel $sender, UserModel $user, $resource): void
     {
         $resource = $this->manager->resource($resource, $sender);
-        $atMessage = $this->message($resource, $user, $sender);
-        $this->save(function () use ($resource, $atMessage, $user) {
-            $atMessage->save();
-            $this->updateAtMessageCount($user);
-        });
-
-        $this->notice($user, $resource);
-    }
-
-    /**
-     * Create a at message model.
-     * @param \Zhiyi\Plus\AtMessage\ResourceInterface $resource
-     * @param \Zhiyi\Plus\Models\User $user
-     * @param \Zhiyi\Plus\Models\User $sender
-     * @return \Zhiyi\Plus\Models\AtMessage
-     */
-    public function message(ResourceInterface $resource, UserModel $user, UserModel $sender): Model
-    {
-        $message = $this->model->newInstance();
-        $message->resourceable_type = $resource->type();
-        $message->resourceable_id = $resource->id();
-        $message->user_id = $user->id;
-        $message->sender_id = $sender->id;
-
-        return $message;
-    }
-
-    /**
-     * Send a jpush message.
-     * @param \Zhiyi\Plus\Models\User $user
-     * @param \Zhiyi\Plus\AtMessage\ResourceInterface $resource
-     * @return void
-     */
-    protected function notice(UserModel $user, ResourceInterface $resource): void
-    {
-        $this->pusher->push(
-            $resource->message(),
-            $user->id,
-            [
-                'resourceable_type' => $resource->type(),
-                'resourceable_id' => $resource->id(),
-            ]
-        );
-    }
-
-    /**
-     * Update user unread message count.
-     * @param \Zhiyi\Plus\Models\User $user;
-     * @return void
-     */
-    protected function updateAtMessageCount(UserModel $user): void
-    {
-        $model = new UserCountModel();
-        $count = $model->newQuery()
-            ->where('user_id', $user->id)
-            ->where('type', 'at')
-            ->first();
-        if (! $count) {
-            $count = $model->newInstance();
-            $count->type = 'at';
-            $count->user_id = $user->id;
-            $count->total = 0;
-        }
-
-        $count->total += 1;
-        $count->save();
-    }
-
-    /**
-     * Open a database transaction.
-     * @param \Closure $closure
-     * @return any
-     */
-    protected function save(Closure $closure)
-    {
-        return $this->model->getConnection()->transaction($closure);
+        $user->notify(new AtNotification($resource, $sender));
     }
 }

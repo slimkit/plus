@@ -65,10 +65,8 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton('at-message', function ($app) {
             $manager = $app->make(\Zhiyi\Plus\AtMessage\ResourceManagerInterface::class);
-            $pusher = $app->make(\Zhiyi\Plus\Services\Push::class);
-            $model = new \Zhiyi\Plus\Models\AtMessage();
 
-            return new \Zhiyi\Plus\AtMessage\Message($manager, $model, $pusher);
+            return new \Zhiyi\Plus\AtMessage\Message($manager);
         });
 
         $this->app->singleton('at-resource-manager', function ($app) {

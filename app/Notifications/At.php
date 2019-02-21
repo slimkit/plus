@@ -1,35 +1,19 @@
 <?php
 
-/*
- * +----------------------------------------------------------------------+
- * |                          ThinkSNS Plus                               |
- * +----------------------------------------------------------------------+
- * | Copyright (c) 2016-Present ZhiYiChuangXiang Technology Co., Ltd.     |
- * +----------------------------------------------------------------------+
- * | This source file is subject to enterprise private license, that is   |
- * | bundled with this package in the file LICENSE, and is available      |
- * | through the world-wide-web at the following url:                     |
- * | https://github.com/slimkit/plus/blob/master/LICENSE                  |
- * +----------------------------------------------------------------------+
- * | Author: Slim Kit Group <master@zhiyicx.com>                          |
- * | Homepage: www.thinksns.com                                           |
- * +----------------------------------------------------------------------+
- */
-
 namespace Zhiyi\Plus\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Zhiyi\Plus\Models\User as UserModel;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Zhiyi\Plus\Models\Comment as CommentModel;
+use Zhiyi\Plus\AtMessage\ResourceInterface;
 use Medz\Laravel\Notifications\JPush\Message as JPushMessage;
 
-class Comment extends Notification implements ShouldQueue
+class At extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    protected $comment;
+    protected $resource;
     protected $sender;
 
     /**
@@ -37,9 +21,9 @@ class Comment extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(CommentModel $comment, UserModel $sender)
+    public function __construct(ResourceInterface $resource, UserModel $sender)
     {
-        $this->comment = $comment;
+        $this->resource = $resource;
         $this->sender = $sender;
     }
 
@@ -66,10 +50,9 @@ class Comment extends Notification implements ShouldQueue
      */
     public function toJpush($notifiable): JPushMessage
     {
-        $action = $notifiable->id === $this->comment->reply_user ? '回复' : '评论';
-        $alert = sprintf('%s%s了你：%s', $this->sender->name, $action, $this->comment->body);
+        $alert = $this->resource->message();
         $extras = [
-            'tag' => 'notification:comments',
+            'tag' => 'notification:at',
         ];
 
         $payload = new JPushMessage;
@@ -101,15 +84,14 @@ class Comment extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'contents' => $this->comment->body,
             'sender' => [
                 'id' => $this->sender->id,
                 'name' => $this->sender->name,
             ],
-            'commentable' => [
-                'type' => $this->comment->commentable_type,
-                'id' => $this->comment->commentable_id,
-            ],
+            'resource' => [
+                'type' => $this->resource->type(),
+                'id' => $this->resource->id(),
+            ]
         ];
     }
 }
