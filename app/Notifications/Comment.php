@@ -110,7 +110,7 @@ class Comment extends Notification implements ShouldQueue
             ],
             'commentable' => [
                 'type' => $this->comment->commentable_type,
-                'id' => $this->comment->commentable->commentable_id,
+                'id' => $this->comment->commentable_id,
             ],
             'created_at' => $this->dateTimeToIso8601ZuluString($this->comment->created_at),
         ];
