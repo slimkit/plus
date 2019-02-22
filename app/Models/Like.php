@@ -20,10 +20,15 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class Like extends Model
+class Like extends Pivot
 {
+    /**
+     * The model table name.
+     */
+    protected $table = 'likes';
+
     /**
      * The guarded attributes on the model.
      *

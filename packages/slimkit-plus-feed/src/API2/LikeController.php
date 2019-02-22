@@ -24,6 +24,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
+use Zhiyi\Plus\Notifications\Like as LikeNotification;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 
@@ -88,26 +89,13 @@ class LikeController extends Controller
     public function store(Request $request, ResponseContract $response, FeedModel $feed)
     {
         $user = $request->user();
-
         if ($feed->liked($user)) {
             return $response->json(['message' => '操作成功'])->setStatusCode(201);
         }
 
-        $feed->like($user);
-
-        if ($feed->user_id !== $user->id) {
-            // 添加被赞的未读数
-            $feed->user->unreadCount()->firstOrCreate([])->increment('unread_likes_count', 1);
-            // 新未读统计 1.8启用
-            $userLikedCount = UserCountModel::firstOrNew([
-                'type' => 'user-liked',
-                'user_id' => $feed->user->id,
-            ]);
-
-            $userLikedCount->total += 1;
-            $userLikedCount->save();
-
-            app(Push::class)->push(sprintf('%s 点赞了你的动态', $user->name), (string) $feed->user->id, ['channel' => 'feed:digg']);
+        $like = $feed->like($user);
+        if ($feed->user_id !== $user->id && $feed->user) {
+            $feed->user->notify(new LikeNotification('动态', $like, $user));
         }
 
         return $response->json(['message' => '操作成功'])->setStatusCode(201);

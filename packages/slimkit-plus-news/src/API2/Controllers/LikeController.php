@@ -24,6 +24,7 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Services\Push;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
+use Zhiyi\Plus\Notifications\Like as LikeNotification;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 
 class LikeController extends Controller
@@ -45,20 +46,10 @@ class LikeController extends Controller
             ])->setStatusCode(400);
         }
 
-        $news->like($user);
+        $like = $news->like($user);
         $news->user->extra()->firstOrCreate([])->increment('likes_count', 1);
-        if ($news->user_id !== $user->id) {
-            $news->user->unreadCount()->firstOrCreate([])->increment('unread_likes_count', 1);
-            // 新未读统计 1.8启用
-            $userLikedCount = UserCountModel::firstOrNew([
-                'type' => 'user-liked',
-                'user_id' => $news->user->id,
-            ]);
-
-            $userLikedCount->total += 1;
-            $userLikedCount->save();
-
-            app(Push::class)->push(sprintf('%s点赞了你的资讯', $user->name), (string) $news->user->id, ['channel' => 'news:like']);
+        if ($news->user) {
+            $news->user->notify(new LikeNotification('资讯文章', $like, $user));
         }
 
         return response()->json()->setStatusCode(201);
