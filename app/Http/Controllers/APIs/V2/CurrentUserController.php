@@ -26,6 +26,7 @@ use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Models\UserFollow as UserFollowModel;
 use Zhiyi\Plus\Models\VerificationCode as VerificationCodeModel;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseFactoryContract;
+use Zhiyi\Plus\Notifications\Follow as FollowNotification;
 
 class CurrentUserController extends Controller
 {
@@ -232,31 +233,16 @@ class CurrentUserController extends Controller
         } elseif ($user->hasFollwing($target)) {
             return response()->json(['message' => ['非法的操作']], 422);
         }
-        $userFollowingCount = UserCountModel::firstOrNew([
-            'type' => 'user-following',
-            'user_id' => $target->id,
-        ]);
 
-        return $user
-            ->getConnection()
-            ->transaction(function () use ($user, $target, $userFollowingCount) {
-                $user->followings()->attach($target);
-                $user->extra()->firstOrCreate([])->increment('followings_count', 1);
-                $target->extra()->firstOrCreate([])->increment('followers_count', 1);
+        $user->getConnection()->transaction(function () use ($user, $target) {
+            $user->followings()->attach($target);
+            $user->extra()->firstOrCreate([])->increment('followings_count', 1);
+            $target->extra()->firstOrCreate([])->increment('followers_count', 1);
+        });
 
-                if ($target->hasFollwing($user)) {
-                    $userMutualCount = UserCountModel::firstOrNew([
-                        'type' => 'user-mutual',
-                        'user_id' => $target->id,
-                    ]);
-                    $userMutualCount->total += 1;
-                    $userMutualCount->save();
-                }
-                $userFollowingCount->total += 1;
-                $userFollowingCount->save();
+        $target->notify(new FollowNotification($user));
 
-                return response('', 204);
-            });
+        return response('', 204);
     }
 
     /**
@@ -270,33 +256,13 @@ class CurrentUserController extends Controller
     public function detachFollowingUser(Request $request, UserModel $target)
     {
         $user = $request->user();
+        $user->getConnection()->transaction(function () use ($user, $target) {
+            $user->followings()->detach($target);
+            $user->extra()->decrement('followings_count', 1);
+            $target->extra()->decrement('followers_count', 1);
+        });
 
-        $userFollowingCount = UserCountModel::firstOrNew([
-            'type' => 'user-following',
-            'user_id' => $target->id,
-        ]);
-
-        $userFollowing = UserFollowModel::where('user_id', $user->id)
-            ->where('target', $target->id)
-            ->first();
-
-        return $user
-            ->getConnection()
-            ->transaction(function () use ($user, $target, $userFollowingCount, $userFollowing) {
-                $user->followings()->detach($target);
-                $user->extra()->decrement('followings_count', 1);
-                $target->extra()->decrement('followers_count', 1);
-
-                if ($userFollowing &&
-                    $userFollowingCount->total &&
-                    $userFollowing->updated_at->gte($userFollowingCount->read_at)
-                ) {
-                    $userFollowingCount->total -= 1;
-                    $userFollowingCount->save();
-                }
-
-                return response('', 204);
-            });
+        return response('', 204);
     }
 
     /**
