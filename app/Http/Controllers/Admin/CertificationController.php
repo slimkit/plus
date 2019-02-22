@@ -118,7 +118,6 @@ class CertificationController extends Controller
             ]));
         }
 
-
         return response()->json(['message' => ['通过认证成功']], 201);
     }
 

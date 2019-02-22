@@ -24,10 +24,10 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
 use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
-use Zhiyi\Plus\Notifications\System as SystemNotification;
 
 class PurchaseController extends Controller
 {
@@ -105,7 +105,7 @@ class PurchaseController extends Controller
             $node->users()->sync($user->id, false);
 
             // 存在发起人钱包，则插入，否则上述余额扣除后不增加到任何账户。
-            if ($nodeUser &&  $nodeUser->wallet) {
+            if ($nodeUser && $nodeUser->wallet) {
                 // 为发起人钱包增加
                 $nodeUser->wallet->increment('balance', $node->amount);
 
@@ -137,7 +137,7 @@ class PurchaseController extends Controller
                     'resource' => [
                         'type' => $node->channel,
                         'raw' => $node->raw,
-                    ]
+                    ],
                 ]));
             }
         });

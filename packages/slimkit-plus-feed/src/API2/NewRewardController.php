@@ -24,10 +24,9 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\GoldType;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
-use Zhiyi\Plus\Models\UserCount as UserCountModel;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
-use Zhiyi\Plus\Notifications\System as SystemNotification;
 
 class NewRewardController extends Controller
 {

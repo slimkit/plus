@@ -23,10 +23,9 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\GoldType;
 use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
-use Zhiyi\Plus\Models\UserCount as UserCountModel;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
-use Zhiyi\Plus\Notifications\System as SystemNotification;
 
 class NewRewardController extends Controller
 {
@@ -85,7 +84,7 @@ class NewRewardController extends Controller
                 'news' => [
                     'id' => $news->id,
                     'title' => $news->title,
-                ]
+                ],
             ]));
 
             return response()->json(['message' => '打赏成功'], 201);

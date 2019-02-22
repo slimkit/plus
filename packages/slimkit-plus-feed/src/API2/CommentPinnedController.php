@@ -24,13 +24,12 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
-use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Repository\Feed as FeedRepository;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned as FeedPinnedModel;
-use Zhiyi\Plus\Notifications\System as SystemNotification;
 
 class CommentPinnedController extends Controller
 {

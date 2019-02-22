@@ -23,11 +23,10 @@ namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\AdminControllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Models\UserCount as UserCountModel;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
-use Zhiyi\Plus\Notifications\System as SystemNotification;
 
 class FeedPinnedController extends Controller
 {
@@ -72,7 +71,7 @@ class FeedPinnedController extends Controller
                 'id' => $pinned->target,
             ],
         ]));
-    
+
         return response()->json($pinned, 201);
     }
 
@@ -125,7 +124,6 @@ class FeedPinnedController extends Controller
             $pinned->day = $datetime->diffInDays(Carbon::now());
             $pinned->expires_at = $datetime->toDateTimeString();
             $pinned->save();
-
         } else {
             $pinned = FeedPinned::find($pinned);
         }

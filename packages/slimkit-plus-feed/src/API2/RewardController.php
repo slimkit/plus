@@ -25,9 +25,8 @@ use Zhiyi\Plus\Models\GoldType;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\WalletCharge;
 use Zhiyi\Plus\Http\Controllers\Controller;
-use Zhiyi\Plus\Models\UserCount as UserCountModel;
-use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 use Zhiyi\Plus\Notifications\System as SystemNotification;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 
 class RewardController extends Controller
 {

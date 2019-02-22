@@ -24,12 +24,11 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
-use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News as NewsModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\NewsPinned as NewsPinnedModel;
-use Zhiyi\Plus\Notifications\System as SystemNotification;
 
 class CommentPinnedController extends Controller
 {
@@ -144,7 +143,7 @@ class CommentPinnedController extends Controller
             'comment' => [
                 'id' => $comment->id,
                 'contents' => $comment->body,
-            ]
+            ],
         ]));
 
         return $response->json(['message' => '置顶成功'], 201);
@@ -206,7 +205,7 @@ class CommentPinnedController extends Controller
             'comment' => [
                 'id' => $comment->id,
                 'contents' => $comment->body,
-            ]
+            ],
         ]));
 
         return $response->json(null, 204);

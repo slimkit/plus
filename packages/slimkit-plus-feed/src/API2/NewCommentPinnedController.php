@@ -20,17 +20,15 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
-use Log;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
-use Zhiyi\Plus\Models\UserCount as UserCountModel;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed as FeedModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned as FeedPinnedModel;
-use Zhiyi\Plus\Notifications\System as SystemNotification;
 
 class NewCommentPinnedController extends Controller
 {

@@ -24,7 +24,6 @@ use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\GoldType;
 use Zhiyi\Plus\Models\CommonConfig;
 use Zhiyi\Plus\Models\WalletCharge;
-use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 
 class RewardController extends Controller
@@ -114,7 +113,7 @@ class RewardController extends Controller
                     'news' => [
                         'id' => $news->id,
                         'title' => $news->subject,
-                    ]
+                    ],
                 ]));
             }
         });
