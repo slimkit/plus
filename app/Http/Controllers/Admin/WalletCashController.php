@@ -26,6 +26,7 @@ use Zhiyi\Plus\Models\WalletCash;
 use Illuminate\Support\Facades\DB;
 use Zhiyi\Plus\Models\WalletCharge;
 use Zhiyi\Plus\Http\Controllers\Controller;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 
 class WalletCashController extends Controller
 {
@@ -110,12 +111,12 @@ class WalletCashController extends Controller
         DB::transaction(function () use ($cash, $charge) {
             $charge->save();
             $cash->save();
-
-            $cash->user->sendNotifyMessage('user-cash:passed', '你的提现申请已通过', [
-                'charge' => $charge,
-                'cash' => $cash,
-            ]);
         });
+
+        $cash->user->notify(new SystemNotification('你的提现申请已通过', [
+            'type' => 'user-cash',
+            'state' => 'passed',
+        ]));
 
         return response()
             ->json(['message' => ['操作成功']])
@@ -155,16 +156,17 @@ class WalletCashController extends Controller
         $charge->status = 2;
         $charge->user_id = $user->id;
 
-        DB::transaction(function () use ($cash, $charge, $remark) {
+        DB::transaction(function () use ($cash, $charge) {
             $cash->user->wallet()->increment('balance', $cash->value);
             $charge->save();
             $cash->save();
-
-            $cash->user->sendNotifyMessage('user-cash:refuse', sprintf('你的提现申请已被拒绝，原因为：%s', $remark), [
-                'charge' => $charge,
-                'cash' => $cash,
-            ]);
         });
+
+        $cash->user->notify(new SystemNotification('你的提现申请已通过', [
+            'type' => 'user-cash',
+            'state' => 'rejected',
+            'contents' => $remark,
+        ]));
 
         return response()
             ->json(['message' => ['操作成功']])

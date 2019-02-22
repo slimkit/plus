@@ -27,6 +27,7 @@ use Zhiyi\Plus\Packages\Wallet\Order;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\CurrencyOrder as OrderModel;
 use Zhiyi\Plus\Models\NewWallet as NewWalletModel;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 
 class CurrencyCashController extends Controller
 {
@@ -94,11 +95,6 @@ class CurrencyCashController extends Controller
             $order->save();
 
             if ($state === 1) {
-                $order->user->sendNotifyMessage(
-                    'user-currency:cash',
-                    '积分提现申请审核通过',
-                    ['order' => $order]
-                );
                 // 钱包变更记录.
                 $walletOrderModel = new WalletOrder();
                 $walletOrderModel->owner_id = $order->owner_id;
@@ -124,14 +120,22 @@ class CurrencyCashController extends Controller
             }
             // 处理退还积分
             if ($state === -1) {
-                $order->user->sendNotifyMessage(
-                    'user-currency:cash',
-                    sprintf('积分提现申请被驳回,原因：%s', $mark),
-                    ['order' => $order]
-                );
                 $order->user->currency->increment('sum', $order->amount);
             }
         });
+
+        if ($state === 1) {
+            $order->user->notify(new SystemNotification('你的积分提现申请已审核通过', [
+                'type' => 'user-currency:cash',
+                'state' => 'passed',
+            ]));
+        } elseif ($state === -1) {
+            $order->user->notify(new SystemNotification('你的积分提现申请被驳回', [
+                'type' => 'user-currency:cash',
+                'state' => 'rejected',
+                'contents' => $mark,
+            ]));
+        }
 
         return response()->json(['message' => '处理成功'], 200);
     }

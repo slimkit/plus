@@ -88,14 +88,7 @@ class RewardTarget extends Target
      */
     protected function sendNotification($extra)
     {
-        $target = $extra['order']['target'];
-        $notice = $extra['notice'];
-
-        $target->sendNotifyMessage(
-            $notice['type'],
-            $notice['message'],
-            $notice['detail']
-        );
+        //
     }
 
     /**

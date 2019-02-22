@@ -23,6 +23,7 @@ namespace Zhiyi\Plus\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Report as ReportModel;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 
 class ReportController extends Controller
 {
@@ -70,17 +71,15 @@ class ReportController extends Controller
         $report->save();
 
         if ($report->user) {
-            $report->user->sendNotifyMessage('user-report:notice', '你的举报已被平台处理', [
-                'report' => $report,
-            ]);
-        }
-
-        if ($report->target) {
-            $report->target->sendNotifyMessage(
-                'user-report:notice',
-                '你的'.$report->subject.'已被举报',
-                ['report' => $report]
-            );
+            $report->user->notify(new SystemNotification('你举报的内容平台已处理', [
+                'type' => 'report',
+                'resource' => [
+                    'type' => $report->reportable_type,
+                    'id' => $report->reportable_id,
+                ],
+                'subject' => $report->subject,
+                'state' => 'passed',
+            ]));
         }
 
         return response()->json(['message' => ['操作成功']], 201);
@@ -102,9 +101,15 @@ class ReportController extends Controller
         $report->save();
 
         if ($report->user) {
-            $report->user->sendNotifyMessage('user-report:notice', '你的举报已被平台处理', [
-                'report' => $report,
-            ]);
+            $report->user->notify(new SystemNotification('你举报的内容平台已处理', [
+                'type' => 'report',
+                'resource' => [
+                    'type' => $report->reportable_type,
+                    'id' => $report->reportable_id,
+                ],
+                'subject' => $report->subject,
+                'state' => 'rejected',
+            ]));
         }
 
         return response()->json(['message' => ['操作成功']], 201);

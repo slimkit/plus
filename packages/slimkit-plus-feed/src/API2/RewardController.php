@@ -27,6 +27,7 @@ use Zhiyi\Plus\Models\WalletCharge;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 
 class RewardController extends Controller
 {
@@ -71,15 +72,7 @@ class RewardController extends Controller
             ], 403);
         }
 
-        // 系统消息未读数预处理, 事务中只做保存操作
-        $userCount = UserCountModel::firstOrNew([
-            'user_id' => $current_user->id,
-            'type' => 'user-system',
-        ]);
-
-        $userCount->total += 1;
-
-        $user->getConnection()->transaction(function () use ($user, $feed, $charge, $current_user, $amount, $userCount) {
+        $user->getConnection()->transaction(function () use ($user, $feed, $charge, $current_user, $amount) {
             // 扣除操作用户余额
             $user->wallet()->decrement('balance', $amount);
 
@@ -95,8 +88,8 @@ class RewardController extends Controller
             $userCharge->body = sprintf('打赏“%s”的动态%s', $current_user->name, $feed_title);
             $userCharge->status = 1;
             $user->walletCharges()->save($userCharge);
-            // 增加系统通知未读数
-            $userCount->save();
+            // 打赏记录
+            $feed->reward($user, $amount);
 
             if ($current_user->wallet) {
                 // 增加对应用户余额
@@ -113,15 +106,18 @@ class RewardController extends Controller
                 $charge->save();
 
                 // 添加被打赏通知
-                $notice = sprintf('“%s”打赏了你的动态%s%s元', $user->name, $feed_title, $amount * $this->wallet_ratio / 10000, $this->goldName);
-                $current_user->sendNotifyMessage('feed:reward', $notice, [
-                    'feed' => $feed,
-                    'user' => $user,
-                ]);
+                $notice = sprintf('“%s”打赏了你的动态%s%s', $user->name, $feed_title, $amount * $this->wallet_ratio / 10000, $this->goldName);
+                $feed->user->notify(new SystemNotification(sprintf('%s打赏了你的动态', $user->name), [
+                    'type' => 'reward:feeds',
+                    'sender' => [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                    ],
+                    'amount' => $amount,
+                    'unit' => $this->goldName,
+                    'feed_id' => $feed->id,
+                ]));
             }
-
-            // 打赏记录
-            $feed->reward($user, $amount);
         });
 
         return response()->json([

@@ -28,6 +28,7 @@ use Zhiyi\Plus\Models\Certification;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\FileWith as FileWithModel;
 use Zhiyi\Plus\Http\Requests\API2\UserCertification;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 
 class CertificationController extends Controller
 {
@@ -110,9 +111,13 @@ class CertificationController extends Controller
         $certification->examiner = Auth::user()->id;
         $certification->save();
 
-        $certification->user->sendNotifyMessage('user-certification:pass', '你申请的身份认证已被通过', [
-            'certification' => $certification,
-        ]);
+        if ($certification->user) {
+            $certification->user->notify(new SystemNotification('你申请的身份认证已被通过', [
+                'type' => 'user-certification',
+                'state' => 'passed',
+            ]));
+        }
+
 
         return response()->json(['message' => ['通过认证成功']], 201);
     }
@@ -139,9 +144,11 @@ class CertificationController extends Controller
         $certification->examiner = Auth::user()->id;
 
         if ($certification->save()) {
-            $certification->user->sendNotifyMessage('user-certification:reject', sprintf('你申请的身份认证已被驳回，驳回理由为%s', $content), [
-                'certification' => $certification,
-            ]);
+            $certification->user->notify(new SystemNotification('你申请的身份认证已被驳回！', [
+                'type' => 'user-certification',
+                'contents' => $content,
+                'state' => 'rejected',
+            ]));
 
             return response()->json(['message' => ['驳回成功']], 201);
         } else {

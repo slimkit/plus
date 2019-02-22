@@ -27,6 +27,7 @@ use Zhiyi\Plus\Models\WalletCharge as WalletChargeModel;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Illuminate\Contracts\Routing\ResponseFactory as ResponseContract;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 
 class PurchaseController extends Controller
 {
@@ -104,28 +105,40 @@ class PurchaseController extends Controller
             $node->users()->sync($user->id, false);
 
             // 存在发起人钱包，则插入，否则上述余额扣除后不增加到任何账户。
+            if ($nodeUser &&  $nodeUser->wallet) {
+                // 为发起人钱包增加
+                $nodeUser->wallet->increment('balance', $node->amount);
+
+                // 添加收款订单
+                $charge->channel = 'user';
+                $charge->account = $user->id;
+                $charge->action = 1;
+                $charge->amount = $node->amount;
+                $charge->subject = '被'.$node->subject;
+                $charge->body = $charge->subject;
+                $charge->status = 1;
+                $charge->user_id = $nodeUser->id;
+                $charge->save();
+
+                // 被购买通知
+                $nodeUser->sendNotifyMessage('paid:'.$node->channel, '被'.$user->name.$node->body, [
+                    'charge' => $charge,
+                    'user' => $user,
+                ]);
+            }
             if ($nodeUser) {
-                if ($nodeUser->wallet) {
-                    // 为发起人钱包增加
-                    $nodeUser->wallet->increment('balance', $node->amount);
-
-                    // 添加收款订单
-                    $charge->channel = 'user';
-                    $charge->account = $user->id;
-                    $charge->action = 1;
-                    $charge->amount = $node->amount;
-                    $charge->subject = '被'.$node->subject;
-                    $charge->body = $charge->subject;
-                    $charge->status = 1;
-                    $charge->user_id = $nodeUser->id;
-                    $charge->save();
-
-                    // 被购买通知
-                    $nodeUser->sendNotifyMessage('paid:'.$node->channel, '被'.$user->name.$node->body, [
-                        'charge' => $charge,
-                        'user' => $user,
-                    ]);
-                }
+                $target->notify(new SystemNotification(sprintf('%s买了你的%s', $user->name, $node->subject), [
+                    'type' => 'purchase',
+                    'sender' => [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                    ],
+                    'amount' => $node->amount,
+                    'resource' => [
+                        'type' => $node->channel,
+                        'raw' => $node->raw,
+                    ]
+                ]));
             }
         });
 

@@ -27,6 +27,7 @@ use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\Feed;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\Models\FeedPinned;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 
 class FeedPinnedController extends Controller
 {
@@ -64,20 +65,14 @@ class FeedPinnedController extends Controller
         $pinned->expires_at = $datetime->addDay($pinned->day)->toDateTimeString();
 
         $pinned->save();
-        $pinned->user->sendNotifyMessage('feeds:pinned:accept', sprintf('你申请的动态《%s》已被置顶', str_limit($pinned->feed->feed_content, 100)), [
-            'feed' => $pinned->feed,
-            'pinned' => $pinned,
-        ]);
-
-        // 审核通过后增加系统通知的未读数
-        $userCount = UserCountModel::firstOrNew([
-            'type' => 'user-system',
-            'user_id' => $pinned->user_id,
-        ]);
-
-        $userCount->total += 1;
-        $userCount->save();
-
+        $pinned->user->notify(new SystemNotification('你申请的动态置顶已通过', [
+            'type' => 'pinned:feeds',
+            'state' => 'passed',
+            'feed' => [
+                'id' => $pinned->target,
+            ],
+        ]));
+    
         return response()->json($pinned, 201);
     }
 
@@ -90,14 +85,7 @@ class FeedPinnedController extends Controller
             $pinned->amount
         );
 
-        // 审核未通过, 增加系统通知的未读数
-        $userCount = UserCountModel::firstOrNew([
-            'type' => 'user-system',
-            'user_id' => $pinned->user_id,
-        ]);
-        $userCount->total += 1;
-
-        $pinned->getConnection()->transaction(function () use ($pinned, $body, $userProcess, $userCount) {
+        $pinned->getConnection()->transaction(function () use ($pinned, $body, $userProcess) {
             $order = $userProcess->receivables(
                 $pinned->user_id,
                 $pinned->amount,
@@ -108,12 +96,13 @@ class FeedPinnedController extends Controller
 
             if ($order) {
                 $pinned->delete();
-                $pinned->user->sendNotifyMessage(
-                    'news:pinned:reject',
-                    $body,
-                    ['feed' => $pinned->feed, 'pinned' => $pinned]
-                );
-                $userCount->save();
+                $pinned->user->notify(new SystemNotification('你申请的动态置顶未通过', [
+                    'type' => 'pinned:feeds',
+                    'state' => 'rejected',
+                    'feed' => [
+                        'id' => $pinned->target,
+                    ],
+                ]));
             }
         });
 
@@ -137,41 +126,24 @@ class FeedPinnedController extends Controller
             $pinned->expires_at = $datetime->toDateTimeString();
             $pinned->save();
 
-            $pinned->user->sendNotifyMessage('feed:pinned:accept', sprintf('你的动态《%s》已被管理员设置为置顶', str_limit($pinned->feed->feed_content, 100)), [
-                'feed' => $feed,
-                'pinned' => $pinned,
-            ]);
-
-            $userCount = UserCountModel::firstOrNew([
-                'type' => 'user-system',
-                'user_id' => $pinned->user_id,
-            ]);
-            $userCount->total += 1;
-            $userCount->save();
-
-            return response()->json(['message' => ['操作成功'], 'data' => $pinned], 201);
         } else {
             $pinned = FeedPinned::find($pinned);
-            $date = new Carbon($pinned->expires_at);
-            $datetime = $date->addDay($time);
-            $pinned->day = $datetime->diffInDays(Carbon::now());
-            $pinned->expires_at = $datetime->toDateTimeString();
-            $pinned->save();
-
-            $pinned->user->sendNotifyMessage('feed:pinned:accept', sprintf('你的动态《%s》已被管理员设置为置顶', str_limit($pinned->feed->feed_content, 100)), [
-                'feed' => $feed,
-                'pinned' => $pinned,
-            ]);
-
-            $userCount = UserCountModel::firstOrNew([
-                'type' => 'user-system',
-                'user_id' => $pinned->user_id,
-            ]);
-            $userCount->total += 1;
-            $userCount->save();
-
-            return response()->json(['message' => ['操作成功'], 'data' => $pinned], 201);
         }
+        $date = new Carbon($pinned->expires_at);
+        $datetime = $date->addDay($time);
+        $pinned->day = $datetime->diffInDays(Carbon::now());
+        $pinned->expires_at = $datetime->toDateTimeString();
+        $pinned->save();
+
+        $pinned->user->notify(new SystemNotification('你的动态被管理员设置为置顶', [
+            'type' => 'pinned:feeds',
+            'state' => 'admin',
+            'feed' => [
+                'id' => $pinned->target,
+            ],
+        ]));
+
+        return response()->json(['message' => ['操作成功'], 'data' => $pinned], 201);
     }
 
     /**

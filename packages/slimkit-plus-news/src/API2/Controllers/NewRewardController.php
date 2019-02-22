@@ -26,6 +26,7 @@ use Zhiyi\Plus\Http\Middleware\VerifyUserPassword;
 use Zhiyi\Plus\Models\UserCount as UserCountModel;
 use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 use Zhiyi\Plus\Packages\Currency\Processes\User as UserProcess;
+use Zhiyi\Plus\Notifications\System as SystemNotification;
 
 class NewRewardController extends Controller
 {
@@ -73,22 +74,19 @@ class NewRewardController extends Controller
         $paid = $processer->receivables($target->id, $amount, $user->id, sprintf('“%s”打赏了你的资讯', $target->name), sprintf('“%s”打赏了你的的资讯“%s”，%s扣除%s', $user->name, $news->title, $goldName, $amount));
 
         if ($pay && $paid) {
-            $target->sendNotifyMessage('news:reward', sprintf('“%s”打赏了你的资讯', $user->name), [
-                'feed' => $news,
-                'user' => $user,
-            ]);
-            // 增加被打赏未读数
-            $userUnreadCount = $target->unreadNotifications()
-                ->count();
-            $userCount = UserCountModel::firstOrNew([
-                'type' => 'user-system',
-                'user_id' => $target->id,
-            ]);
-
-            $userCount->total = $userUnreadCount;
-            $userCount->save();
-            // 打赏记录
-            $news->reward($user, $amount);
+            $target->notify(new SystemNotification(sprintf('%s打赏了你的资讯文章', $user->name), [
+                'type' => 'reward:news',
+                'sender' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                ],
+                'amount' => $amount,
+                'unit' => $goldName,
+                'news' => [
+                    'id' => $news->id,
+                    'title' => $news->title,
+                ]
+            ]));
 
             return response()->json(['message' => '打赏成功'], 201);
         } else {
