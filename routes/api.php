@@ -280,36 +280,6 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
                 $api->get('/', API2\UserCertificationController::class.'@show');
             });
 
-            /*
-            | 用户通知相关
-             */
-
-            $api->group(['prefix' => 'notifications'], function (RouteContract $api) {
-
-                /*
-                | 用户通知列表
-                 */
-
-                $api->get('/', API2\UserNotificationController::class.'@index');
-
-                /*
-                | 通知详情
-                 */
-
-                $api->get('/{notification}', API2\UserNotificationController::class.'@show');
-
-                /*
-                | 阅读通知，可以使用资源模型阅读单条，也可以使用资源组形式，阅读标注多条.
-                 */
-
-                $api->patch('/{notification?}', API2\UserNotificationController::class.'@markAsRead');
-
-                /*
-                    标记所有未读消息为已读
-                 */
-                $api->put('/all', API2\UserNotificationController::class.'@markAllAsRead');
-            });
-
             // send a feedback.
             $api->post('/feedback', API2\SystemController::class.'@createFeedback');
 
@@ -818,4 +788,10 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
 
     // List all authed user abilities
     $api->get('user/abilities', \Zhiyi\Plus\API2\Controllers\User\AbilityController::class);
+
+    // User Notifications
+    $api->get('user/notifications', \Zhiyi\Plus\API2\Controllers\NotificationController::class.'@index');
+    $api->patch('user/notifications', \Zhiyi\Plus\API2\Controllers\NotificationController::class.'@update');
+    $api->get('user/notification-statistics', \Zhiyi\Plus\API2\Controllers\NotificationController::class.'@statistics');
+    $api->patch('user/clear-follow-notification', \Zhiyi\Plus\API2\Controllers\NotificationController::class.'@clearFollowNotifications');
 });
