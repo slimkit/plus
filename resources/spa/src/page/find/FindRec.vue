@@ -14,8 +14,9 @@
 </template>
 
 <script>
-import UserItem from '@/components/UserItem.vue'
+import { limit } from '@/api'
 import * as userApi from '@/api/user'
+import UserItem from '@/components/UserItem.vue'
 
 export default {
   name: 'FindRec',
@@ -43,7 +44,7 @@ export default {
         .findUserByType('find-by-tags')
         .then(({ data: users }) => {
           this.users = users
-          this.$refs.loadmore.afterRefresh(users.length < 15)
+          this.$refs.loadmore.afterRefresh(users.length < limit)
           return users.map(u => {
             u.searchFrom = 'tags'
             return u
@@ -64,7 +65,7 @@ export default {
         offset: this.users.length,
       })
       this.users = [...this.users, ...users]
-      this.$refs.loadmore.afterLoadMore(users.length < 15)
+      this.$refs.loadmore.afterLoadMore(users.length < limit)
     },
   },
 }

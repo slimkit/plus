@@ -1,3 +1,4 @@
+import { limit } from './index'
 import api from './api'
 
 /**
@@ -27,6 +28,6 @@ export function queryList (params = {}) {
  * @return {Promise}
  * @author Seven Du <shiweidu@outlook.com>
  */
-export function list (type, offset = 0, limit = 15) {
+export function list (type, offset = 0) {
   return queryList({ type, limit, offset })
 }

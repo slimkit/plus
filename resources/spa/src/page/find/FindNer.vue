@@ -16,8 +16,9 @@
 <script>
 import { mapState } from 'vuex'
 import { noop } from '@/util'
-import UserItem from '@/components/UserItem.vue'
+import { limit } from '@/api'
 import { findNearbyUser } from '@/api/user.js'
+import UserItem from '@/components/UserItem.vue'
 
 export default {
   name: 'FindNer',
@@ -59,7 +60,7 @@ export default {
         user && sortedUsers.push(user)
       }
       this.users = sortedUsers
-      const more = this.users.length < 15
+      const more = this.users.length < limit
       callback(more)
     },
     onRefresh (callback) {

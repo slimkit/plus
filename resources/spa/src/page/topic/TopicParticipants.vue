@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { limit } from '@/api'
 import * as api from '@/api/topic'
 import UserItem from '@/components/UserItem.vue'
 
@@ -39,14 +40,14 @@ export default {
     async onRefresh () {
       const { data: participants } = await api.getTopicParticipants(this.topicId)
       const users = await this.fetchUser(participants)
-      this.$refs.loadmore.afterRefresh(users.length < 15)
+      this.$refs.loadmore.afterRefresh(users.length < limit)
       this.participants = users
     },
     async onLoadMore () {
       const offset = this.participants.length
       const { data: participants } = await api.getTopicParticipants(this.topicId, { offset })
       const users = await this.fetchUser(participants)
-      this.$refs.loadmore.afterLoadMore(users.length < 15)
+      this.$refs.loadmore.afterLoadMore(users.length < limit)
       this.participants.push(...users)
     },
     async fetchUser (ids) {

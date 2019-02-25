@@ -155,14 +155,14 @@
 
 <script>
 import _ from 'lodash'
-import uploadApi from '@/api/upload'
-import FeedCard from '@/components/FeedCard/FeedCard.vue'
 import HeadRoom from 'headroom.js'
-import wechatShare from '@/util/wechatShare.js'
-
+import { limit } from '@/api'
+import uploadApi from '@/api/upload'
+import * as api from '@/api/user'
+import wechatShare from '@/util/wechatShare'
+import { checkImageType } from '@/util/imageCheck'
 import { startSingleChat } from '@/vendor/easemob'
-import { checkImageType } from '@/util/imageCheck.js'
-import * as api from '@/api/user.js'
+import FeedCard from '@/components/FeedCard/FeedCard.vue'
 
 export default {
   name: 'UserHome',
@@ -456,7 +456,7 @@ export default {
       if (this.fetchFeeding) return
       this.fetchFeeding = true
       const params = {
-        limit: 15,
+        limit,
         type: 'users',
         user: this.userId,
       }

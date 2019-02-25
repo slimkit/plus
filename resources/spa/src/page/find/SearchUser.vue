@@ -40,9 +40,10 @@
 
 <script>
 import _ from 'lodash'
+import { limit } from '@/api'
+import * as api from '@/api/user.js'
 import SearchBar from '@/components/common/SearchBar.vue'
 import UserItem from '@/components/UserItem.vue'
-import * as api from '@/api/user.js'
 
 export default {
   name: 'SearchUser',
@@ -90,13 +91,13 @@ export default {
     onRefresh (callback) {
       api.searchUserByKey(this.keyword).then(({ data }) => {
         this.users = data
-        this.$refs.loadmore.afterRefresh(data.length < 15)
+        this.$refs.loadmore.afterRefresh(data.length < limit)
       })
     },
     onLoadMore (callback) {
       api.searchUserByKey(this.keyword, this.users.length).then(({ data }) => {
         this.users = [...this.users, ...data]
-        this.$refs.loadmore.afterLoadMore(data.length < 15)
+        this.$refs.loadmore.afterLoadMore(data.length < limit)
       })
     },
     onFocus () {
@@ -109,7 +110,7 @@ export default {
     fetchRecs (callback) {
       api.findUserByType('recommends').then(({ data }) => {
         this.recs = data
-        this.$refs.loadmoreRecs.afterRefresh(data.length < 15)
+        this.$refs.loadmoreRecs.afterRefresh(data.length < limit)
       })
     },
   },

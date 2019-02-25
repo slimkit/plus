@@ -1,3 +1,4 @@
+import { limit } from './index'
 import api from './api'
 import store from '@/stores'
 import $Message from '@/plugins/message-box'
@@ -5,7 +6,8 @@ import lstore from '@/plugins/lstore/lstore.js'
 
 /**
  * 定义用户对象
- * @typedef {{id: number, name: string, ...more}} UserObject
+ * @typedef {Object} UserObject
+ * @property {number} id
  */
 
 const resArray = { data: [] }
@@ -89,34 +91,32 @@ export const findUserByType = (type, params) => {
  * 查找附近的人
  * @author jsonleex <jsonlseex@163.com>
  * @export
- * @param  {number} options.lng: longitude    经度
- * @param  {number} options.lat: latitude     纬度
- * @param  {number} page                      当前页
+ * @param {number} options.lng: longitude    经度
+ * @param {number} options.lat: latitude     纬度
+ * @param {number} page                      当前页
  * @returns {Promise<UserObject[]>}
  */
 export const findNearbyUser = ({ lng: longitude, lat: latitude }, page = 0) => {
   const params = {
-    limit: 10,
+    limit,
     longitude,
     latitude,
   }
   page > 0 && (params.page = page)
 
-  return api
-    .get('around-amap', { params })
-    .then(data => data)
+  return api.get('around-amap', { params })
     .catch(() => resArray)
 }
 
 /**
- * 获取用户基本信息
- * 优先返回本地数据
+ * 获取用户基本信息 优先返回本地数据
  * @author jsonleex <jsonlseex@163.com>
  * @export
- * @param  {number} id
+ * @param {number} id
+ * @param {boolean} [force=false]
  * @returns {Promise<UserObject>}
  */
-export const getUserInfoById = (id, force = false) => {
+export async function getUserInfoById (id, force = false) {
   const user = store.state.USERS[`user_${id}`]
   if (user && !force) return user
 
@@ -156,7 +156,7 @@ export function getUserList (params) {
  * @param  {number} options.offset
  * @returns {Promise<UserObject[]>}
  */
-export function getUserFansByType ({ uid, type, limit = 15, offset = 0 }) {
+export function getUserFansByType ({ uid, type, offset = 0 }) {
   const params = {
     limit,
     offset,
@@ -280,4 +280,33 @@ export function getUserVerifyInfo () {
 export function reportUser (userId, reason) {
   const url = `/report/users/${userId}`
   return api.post(url, { reason }, { validateStatus: s => s === 201 })
+}
+
+/**
+ * 获取用户标签
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {number} userId
+ * @returns
+ */
+export function getUserTags (userId) {
+  const url = `/users/${userId}/tags`
+  return api.get(url, { validateStatus: s => s === 200 })
+}
+
+/**
+ * 获取好友列表
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {Object} [params]
+ * @param {number} [params.offset]
+ * @param {number} [params.limit]
+ * @param {string} [params.keyword]
+ * @returns {UserObject[]}
+ */
+export function getUserFriends (params) {
+  const url = '/user/follow-mutual'
+  return api.get(url, { params, validateStatus: s => s === 200 })
 }

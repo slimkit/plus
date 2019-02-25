@@ -36,7 +36,7 @@ export function getNewsList (params) {
  * @param {number}   type [类型: 0: 已发布, 1: 待审核, 2: 已驳回]
  * @returns {Promise<NewsObject[]>}
  */
-export function getMyNews ({ type = 0, limit = 15, after = 0 }) {
+export function getMyNews ({ type = 0, after = 0 }) {
   const params = { type, limit, after }
   return api.get('/user/news/contributes', {
     params,

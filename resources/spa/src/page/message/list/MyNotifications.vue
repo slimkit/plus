@@ -22,6 +22,7 @@
 
 <script>
 import _ from 'lodash'
+import { limit } from '@/api'
 import { getNotifications } from '@/api/message.js'
 
 const prefixCls = 'notification'
@@ -48,7 +49,7 @@ export default {
     onRefresh () {
       getNotifications().then(({ data }) => {
         this.$http.put('/user/notifications/all')
-        this.$refs.loadmore.afterRefresh(data.length < 15)
+        this.$refs.loadmore.afterRefresh(data.length < limit)
         this.notifications = data
       })
     },
@@ -62,7 +63,7 @@ export default {
     onLoadMore () {
       const { length: offset = 0 } = this.notifications
       getNotifications(offset).then(({ data }) => {
-        this.$refs.loadmore.afterLoadMore(data.length < 15)
+        this.$refs.loadmore.afterLoadMore(data.length < limit)
         this.notifications = _.unionBy([...this.notifications, ...data])
       })
     },

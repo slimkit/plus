@@ -29,6 +29,7 @@
  * 消息-评论列表
  */
 import { mapState } from 'vuex'
+import { limit } from '@/api'
 import { resetUserCount } from '@/api/message.js'
 import feedItem from '../children/comments/feedItem'
 import newsItem from '../children/comments/newsItem'
@@ -104,7 +105,7 @@ export default {
             this.refreshData = data
           }
           this.$nextTick(() => {
-            this.$refs.loadmore.afterRefresh(data.length < 15)
+            this.$refs.loadmore.afterRefresh(data.length < limit)
           })
         })
     },
@@ -124,7 +125,7 @@ export default {
             data,
           })
           this.$nextTick(() => {
-            this.$refs.loadmore.afterLoadMore(data.length < 15)
+            this.$refs.loadmore.afterLoadMore(data.length < limit)
           })
         })
     },

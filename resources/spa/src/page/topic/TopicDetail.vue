@@ -83,6 +83,7 @@
 </template>
 
 <script>
+import { limit } from '@/api'
 import * as api from '@/api/topic'
 import * as userApi from '@/api/user'
 import PortalPanel from '@/components/PortalPanel'
@@ -162,7 +163,7 @@ export default {
       api.getTopicFeeds(this.topicId, params)
         .then(({ data }) => {
           this.fetching = false
-          this.$refs.portal.afterLoadMore(data.length < 15)
+          this.$refs.portal.afterLoadMore(data.length < limit)
           if (loadmore) this.feeds.push(...data)
           else this.feeds = data
         })

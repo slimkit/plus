@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { limit } from '@/api'
 import UserItem from '@/components/UserItem.vue'
 
 export default {
@@ -73,28 +74,27 @@ export default {
     },
     onRefresh (callback) {
       //  名称    类型       描述
-      //  limit   Integer   获取条数，默认 20
       //  after   Integer   id 获取之后数据，默认 0
       this.$http
-        .get(this.url, { params: { limit: 15 } })
+        .get(this.url, { params: { limit } })
         .then(({ data = [] }) => {
           this.likes = data
           data.length > 0 && (this.maxId = data[data.length - 1].id)
-          this.$refs.loadmore.afterRefresh(data.length < 15)
+          this.$refs.loadmore.afterRefresh(data.length < limit)
         })
     },
     onLoadMore (callback) {
       this.$http
         .get(this.url, {
           params: {
-            limit: 15,
+            limit,
             after: this.maxId,
           },
         })
         .then(({ data = [] }) => {
           this.likes = [...this.likes, ...data]
           data.length > 0 && (this.maxId = data[data.length - 1].id)
-          this.$refs.loadmore.afterLoadMore(data.length < 15)
+          this.$refs.loadmore.afterLoadMore(data.length < limit)
         })
     },
   },
