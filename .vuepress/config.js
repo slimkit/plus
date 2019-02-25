@@ -66,6 +66,7 @@ module.exports = {
             ],
             '/api-v2/user/': [
                 '',
+                'notifications',
             ]
         }
     },
