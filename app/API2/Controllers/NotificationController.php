@@ -25,10 +25,10 @@ use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use Zhiyi\Plus\Utils\DateTimeToIso8601ZuluString;
 use Zhiyi\Plus\Notifications\At as AtNotification;
-use Zhiyi\Plus\Notifications\Comment as CommentNotification;
-use Zhiyi\Plus\Notifications\Follow as FollowNotification;
 use Zhiyi\Plus\Notifications\Like as LikeNotification;
+use Zhiyi\Plus\Notifications\Follow as FollowNotification;
 use Zhiyi\Plus\Notifications\System as SystemNotification;
+use Zhiyi\Plus\Notifications\Comment as CommentNotification;
 use Zhiyi\Plus\API2\Resources\Notification as NotificationResource;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
@@ -59,7 +59,7 @@ class NotificationController extends Controller
             'system' => SystemNotification::class,
         ];
 
-        if ($getTypes) { 
+        if ($getTypes) {
             return $types;
         } elseif (array_key_exists($type, $types)) {
             return $types[$type];
@@ -82,7 +82,7 @@ class NotificationController extends Controller
             ->appends([
                 'type' => $request->query('type'),
             ]);
-        
+
         return NotificationResource::collection($notifications);
     }
 
@@ -98,9 +98,8 @@ class NotificationController extends Controller
             ->unreadNotifications()
             ->whereType($type)
             ->update([
-                'read_at' => now()
-            ])
-        ;
+                'read_at' => now(),
+            ]);
 
         return new Response('', Response::HTTP_NO_CONTENT);
     }
@@ -127,8 +126,7 @@ class NotificationController extends Controller
         $statistics = [];
         foreach ($this->getQueryType($request, true) as $alias => $notificationClassname) {
             $badge = $request->user()->unreadNotifications()->whereType($notificationClassname)->count();
-            if ($notificationClassname === SystemNotification::class)
-            {
+            if ($notificationClassname === SystemNotification::class) {
                 $first = $request->user()->notifications(SystemNotification::class)->first();
                 $statistics[$alias] = [
                     'badge' => $badge,
@@ -158,7 +156,7 @@ class NotificationController extends Controller
                 'preview_users_names' => $previewUserNames,
             ];
         }
-        
+
         $statistics['follow'] = [
             'badge' => $request->user()->unreadNotifications()->whereType(FollowNotification::class)->count(),
         ];
