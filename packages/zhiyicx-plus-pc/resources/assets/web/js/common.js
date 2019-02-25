@@ -1840,6 +1840,60 @@ var repostable = {
     },
 }
 
+function handleFile(blob, callback) {
+    var reader = new FileReader()
+    reader.onload = function(event) {
+        var arrayBuffer = reader.result
+        var gifInfo = gify.getInfo(arrayBuffer)
+        callback(gifInfo)
+    }
+    reader.readAsArrayBuffer(blob)
+}
+
+// 播放 GIF 图
+if ('getContext' in document.createElement('canvas')) {
+    HTMLImageElement.prototype.play = function() {
+        var that = this
+        that.parentElement.classList.add('playing')
+        if (that.dataset.blobURL) {
+            that.src = that.dataset.blobURL
+            gifInfo.timer = setTimeout(function() {
+                that.stop()
+                gifInfo.currentIndex++
+            }, that.dataset.gifDuration)
+            return
+        }
+        // 从远程获取 GIF blob 对象
+        axios.get(that.dataset.originalGif, {
+            responseType: 'blob'
+        }).then(function(res) {
+            var blob = res.data
+
+            // 加载图片
+            var blobURL = window.URL.createObjectURL(blob);
+            that.src = blobURL
+            that.dataset.blobURL = blobURL
+
+            // 解析 GIF 信息 （via gify）
+            handleFile(blob, function (info) {
+                console.log(info);
+                // 读取 GIF 持续时间
+                that.dataset.gifDuration = info.durationChrome
+                // 停止播放
+                gifInfo.timer = setTimeout(function() {
+                    that.stop()
+                    gifInfo.currentIndex++ // 触发索引变更 播放下一个 GIF
+                }, that.dataset.gifDuration)
+            })
+        })
+    };
+    HTMLImageElement.prototype.stop = function() {
+        clearTimeout(gifInfo.timer)
+        this.parentElement.classList.remove('playing')
+        this.src = this.dataset.original
+    };
+}
+
 $(function() {
 
     // 获取我的好友 用于全局at弹框显示默认内容

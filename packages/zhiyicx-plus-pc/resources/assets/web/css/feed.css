@@ -68,6 +68,9 @@ to {-webkit-transform:rotate(360deg);transform:rotate(360deg);}
 /* 多图片样式 */
 .image_box {position:relative;left:-1px;overflow:hidden;margin-bottom:2px;padding:0 2px;}
 .image_box .per_image {position:absolute;top:0;left:2px;width:100%;height:100%;object-fit:cover;}
+.image_box .gif_badge {position: absolute;bottom: 0;right: 0;background-color: #5dc8ab;color: #fff;font-size: 80%;padding: 1px 4px;}
+.image_box .long_badge {position: absolute;bottom: 0;right: 0;background-color: #c8a06c;color: #fff;font-size: 80%;padding: 1px 4px;}
+.image_box.playing .gif_badge{display: none;}
 .image_box:before {display:block;padding-top:100%;content:'';}
 .feed_item .feed_bottom {margin-top:20px;}
 .feed_item .feed_bottom .feed_datas {position:relative;clear:both;margin-top: 20px;}

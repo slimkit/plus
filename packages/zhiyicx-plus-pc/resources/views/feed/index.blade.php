@@ -54,6 +54,8 @@
 <script src="{{ asset('assets/pc/js/module.mention.js') }}"></script>
 <script src="{{ asset('assets/pc/js/jquery.uploadify.js') }}"></script>
 <script src="{{ asset('assets/pc/js/md5.min.js') }}"></script>
+<script src="{{ asset('assets/pc/js/jdataview.js') }}"></script>
+<script src="{{ asset('assets/pc/js/gify.min.js') }}"></script>
 <script type="text/javascript">
 $(function(){
     // 加载微博
@@ -67,6 +69,9 @@ $(function(){
         loading: '.feed_content',
         url: '/feeds',
         params: params,
+        callback: function() {
+            afterLoadmore()
+        }
     };
     loader.init(options);
 
@@ -108,6 +113,75 @@ $(function(){
         bigWidth: 635,
         bigHeight: 400
     });
+
+
+
 });
+
+var gifInfo = {
+    feed: 0, // 动态ID
+    index: 0, // 当前播放索引
+    len: 0, // 总数
+    feedsTop: {}, // 动态们距离页面顶部的高度 {id: offsetTop}
+    timer: null, // 延时计数器
+}
+
+function playFeedGif(feedId) {
+    var els = $('#feed_' + feedId).find('.per_image[data-original-gif]')
+    gifInfo.feed = feedId
+    gifInfo.currentIndex = 0
+    gifInfo.len = els.length
+    els[gifInfo.currentIndex].play()
+}
+
+Object.defineProperty(gifInfo, 'currentFeed', {
+    get: function() {
+        return this.feed
+    },
+    set: function(val) {
+        if (val == this.feed) return
+        $('#feed_' + this.feed).find('.per_image[data-original-gif]').each(function(index, el) {
+            el.stop()
+            console.log(el);
+        })
+        this.feed = val
+        playFeedGif(val)
+    }
+})
+
+Object.defineProperty(gifInfo, 'currentIndex', {
+    get: function() {
+        return this.index
+    },
+    set: function(val) {
+        if (val >= this.len) val = 0
+        var els = $('#feed_' + this.feed).find('.per_image[data-original-gif]')
+        this.index = val
+        if (val >= this.len) return
+        if (els.length) {
+            els[val].play()
+        }
+    }
+})
+
+// 加载完毕后，读取每个动态的高度，用于滚动检测
+function afterLoadmore() {
+    gifInfo.feedsTop = {}
+    $('.feed_item .feed_images').each(function(idx, el) {
+        var id = $(el).closest('.feed_item')[0].id.match(/^feed_(\d+)$/)[1]
+        gifInfo.feedsTop[id] = $(el).offset().top
+    })
+}
+
+$(window).on('scroll', _.debounce(function(e) {
+    let scrollTop= $(document).scrollTop()
+    var feedId = 0
+    for (const id in gifInfo.feedsTop) {
+        if (!feedId) {feedId = id; continue}
+        if (gifInfo.feedsTop[id] < scrollTop - 200) break
+        feedId = id
+    }
+    gifInfo.currentFeed = feedId
+}, 50))
 </script>
 @endsection

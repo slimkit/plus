@@ -14,8 +14,6 @@ if (isset($image['paid']) && !$image['paid']) {
     $class = 'bigcursor';
 }
 
-
-
 // 计算展示宽高
 if (isset($count) && $count == 'one') {
     $size = explode('x', $image['size']);
@@ -35,4 +33,22 @@ if (isset($count) && $count == 'one') {
 }
 @endphp
 
-<img style="{{$style}}" class="lazy per_image {{ $class }}"  data-original="{{ getImageUrl($image, $width, $height, true) }}" data-id={{ $image['file'] ?? $image['id'] }} data-size={{ $image['size'] }} curloc="{{$curloc}}" {{ $onclick }} {{ $lockstr }} />
+<img style="{{$style}}"
+    class="lazy per_image {{ $class }}"
+    data-original="{{ getImageUrl($image, $width, $height, true) }}"
+    {{-- GIF 的资源 通过调用 $(el).play() 播放 --}}
+    @if ($image['mime'] == "image/gif" && !(isset($image['paid']) && !$image['paid']))
+    data-original-gif="{{ getImageUrl($image, $width, $height, false) }}"
+    @endif
+    data-id={{ $image['file'] ?? $image['id'] }}
+    data-size={{ $image['size'] }}
+    curloc="{{$curloc}}"
+    {{ $onclick }}
+    {{ $lockstr }}
+/>
+
+<script>console.log(@json($image));</script>
+
+@if ($image['mime'] == 'image/gif')
+<span class="gif_badge">GIF</span>
+@endif
