@@ -21,6 +21,7 @@ namespace Zhiyi\Plus\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Medz\Laravel\Notifications\JPush\Message as JPushMessage;
 
 class System extends Notification implements ShouldQueue
 {
