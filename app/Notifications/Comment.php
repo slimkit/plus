@@ -110,6 +110,7 @@ class Comment extends Notification implements ShouldQueue
                 'type' => $this->comment->commentable_type,
                 'id' => $this->comment->commentable_id,
             ],
+            'hasReply' => $notifiable->id === $this->comment->reply_user ? true : false,
         ];
     }
 }
