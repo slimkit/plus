@@ -55,7 +55,7 @@ class MusicCommentController extends Controller
         $music->getConnection()->transaction(function () use ($music, $comment, $user) {
             $music->comments()->save($comment);
             $music->increment('comment_count', 1);
-            $music->musicSpecials()->increment('comment_count', 1);
+            $music->musicSpecials->each->increment('comment_count', 1);
         });
 
         if ($replyUser && $replyUser !== $user->id) {
