@@ -110,7 +110,7 @@ class Like extends Notification implements ShouldQueue
             ],
             'resource' => [
                 'type' => $this->like->likeable_type,
-                'type' => $this->like->likeable_id,
+                'id' => $this->like->likeable_id,
             ],
         ];
     }
