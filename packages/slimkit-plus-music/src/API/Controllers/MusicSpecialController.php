@@ -33,28 +33,26 @@ class MusicSpecialController extends Controller
      * @author bs<414606094@qq.com>
      * @return [type] [description]
      */
-    public function list(Request $request, MusicSpecial $specialModel, ResponseFactory $response)
+    public function list(Request $request, ResponseFactory $response)
     {
         $uid = $request->user('api')->id ?? 0;
         // 设置单页数量
         $limit = $request->limit ?? 15;
-        $specials = $specialModel->orderBy('id', 'DESC')
-            ->where(function ($query) use ($request) {
-                if ($request->max_id > 0) {
-                    $query->where('id', '<', $request->max_id);
-                }
+        $specials = MusicSpecial::with(['storage', 'paidNode'])
+            ->when($request->max_id > 0, function ($query) use ($request) {
+                return $query->where('id', '<', $request->max_id);
             })
-            ->with(['storage', 'paidNode'])
-            ->take($limit)
+            ->when(is_array($request->id), function ($query) use ($request) {
+                return $query->whereIn('id', $request->id);
+            })
+            ->limit($limit)
             ->get();
 
-        $specials = $specialModel->getConnection()->transaction(function () use ($specials, $uid) {
-            return $specials->map(function ($special) use ($uid) {
-                $special->has_collect = $special->hasCollected($uid);
-                $special = $special->formatPaidNode($uid);
+        $specials = $specials->map(function ($special) use ($uid) {
+            $special->has_collect = $special->hasCollected($uid);
+            $special = $special->formatPaidNode($uid);
 
-                return $special;
-            });
+            return $special;
         });
 
         return $response->json($specials)->setStatusCode(200);
