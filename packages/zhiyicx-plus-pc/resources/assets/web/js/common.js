@@ -1876,7 +1876,6 @@ if ('getContext' in document.createElement('canvas')) {
 
             // 解析 GIF 信息 （via gify）
             handleFile(blob, function (info) {
-                console.log(info);
                 // 读取 GIF 持续时间
                 that.dataset.gifDuration = info.durationChrome
                 // 停止播放
