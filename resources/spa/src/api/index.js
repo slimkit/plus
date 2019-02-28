@@ -38,3 +38,13 @@ export function reportComment (commentId, reason) {
   const url = `/report/comments/${commentId}`
   return api.post(url, { reason }, { validateStatus: s => s === 201 })
 }
+
+/**
+ * 关于我们
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ */
+export function getAboutUs () {
+  const url = '/aboutus'
+  return api.get(url, { validateStatus: s => s === 200 })
+}
