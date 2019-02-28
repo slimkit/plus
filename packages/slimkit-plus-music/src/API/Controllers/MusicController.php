@@ -27,6 +27,31 @@ use Zhiyi\Component\ZhiyiPlus\PlusComponentMusic\Models\Music;
 class MusicController extends Controller
 {
     /**
+     * List songs.
+     * @param \Illuminate\Http\Request $request
+     * @return mixed
+     */
+    public function index(Request $request)
+    {
+        $songs = Music::when(is_array($request->id), function ($query) use ($request) {
+            return $query->whereIn('id', $request->id);
+        })
+        ->when($request->after, function ($query) use ($request) {
+            return $query->where('id', '<', $request->after);
+        })
+        ->limit($request->limit ?: is_array($request->id) ? count($request->id) : 15)
+        ->orderBy('id', 'desc')
+        ->get();
+        $songs = $songs->map(function ($song) use ($request) {
+            $song->has_like = $song->liked($request->user()->id ?? 0);
+            
+            return $song->formatStorage($request->user()->id ?? 0);
+        });
+
+        return $songs;
+    }
+
+    /**
      * 专辑详情.
      *
      * @author bs<414606094@qq.com>
