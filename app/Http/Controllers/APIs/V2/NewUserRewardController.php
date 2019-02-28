@@ -34,10 +34,10 @@ class NewUserRewardController extends Controller
 
     public function __construct(GoldType $goldModel)
     {
-        $this->goldName = $goldModel->where('status', 1)->select('name', 'unit')->value('name') ?? '积分';
         $this
             ->middleware(VerifyUserPassword::class)
             ->only(['store']);
+        $this->goldName = GoldType::whereStatus(1)->first()->name ?? '积分';
     }
 
     /**
