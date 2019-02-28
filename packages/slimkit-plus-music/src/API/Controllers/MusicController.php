@@ -44,7 +44,7 @@ class MusicController extends Controller
         ->get();
         $songs = $songs->map(function ($song) use ($request) {
             $song->has_like = $song->liked($request->user()->id ?? 0);
-            
+
             return $song->formatStorage($request->user()->id ?? 0);
         });
 
