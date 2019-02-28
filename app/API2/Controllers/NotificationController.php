@@ -130,8 +130,10 @@ class NotificationController extends Controller
                 $first = $request->user()->notifications(SystemNotification::class)->first();
                 $statistics[$alias] = [
                     'badge' => $badge,
-                    'first' => new NotificationResource($first),
                 ];
+                $statistics[$alias] = array_merge($statistics[$alias], (! $first) ? [] : [
+                    'first' => new NotificationResource($first),
+                ]);
                 continue;
             }
 
