@@ -37,7 +37,7 @@ if (isset($count) && $count == 'one') {
     class="lazy per_image {{ $class }}"
     data-original="{{ getImageUrl($image, $width, $height, true) }}"
     {{-- GIF 的资源 通过调用 $(el).play() 播放 --}}
-    @if ($image['mime'] == "image/gif" && !(isset($image['paid']) && !$image['paid']))
+    @if ($image['mime'] ?? '' == "image/gif" && !(isset($image['paid']) && !$image['paid']))
     data-original-gif="{{ getImageUrl($image, $width, $height, false) }}"
     @endif
     data-id={{ $image['file'] ?? $image['id'] }}
@@ -49,6 +49,6 @@ if (isset($count) && $count == 'one') {
 
 <script>console.log(@json($image));</script>
 
-@if ($image['mime'] == 'image/gif')
+@if ($image['mime'] ?? '' == 'image/gif')
 <span class="gif_badge">GIF</span>
 @endif
