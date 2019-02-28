@@ -2105,7 +2105,7 @@ $(function() {
       var name = $(this).data('user-name')
       $el = $('.ev-ipt-repostable-content');
 
-      $el.val($el.val() + "@" + name + " ")
+      $el.html($el.html() + "@" + name + " ")
       repostable.showMention(false);
     })
 
