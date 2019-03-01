@@ -33,7 +33,7 @@
       class="guide-item"
       @click="to({name: 'MessageHome'})"
     >
-      <VBadge :dot="hasUnread">
+      <VBadge :dot="hasMsg">
         <svg class="m-style-svg m-svg-def">
           <use xlink:href="#icon-foot-message" />
         </svg>
@@ -67,12 +67,21 @@ export default {
   },
   computed: {
     ...mapState({
+      has_msg: state =>
+        state.MESSAGE.NEW_UNREAD_COUNT.commented +
+          state.MESSAGE.NEW_UNREAD_COUNT['feed-comment-pinned'] +
+          state.MESSAGE.NEW_UNREAD_COUNT['group-join-pinned'] +
+          state.MESSAGE.NEW_UNREAD_COUNT.liked +
+          state.MESSAGE.NEW_UNREAD_COUNT['news-comment-pinned'] +
+          state.MESSAGE.NEW_UNREAD_COUNT['post-comment-pinned'] +
+          state.MESSAGE.NEW_UNREAD_COUNT['post-pinned'] +
+          state.MESSAGE.NEW_UNREAD_COUNT.system > 0,
       profile: state =>
         state.MESSAGE.NEW_UNREAD_COUNT.following > 0,
     }),
-    ...mapGetters(['hasUnreadChat', 'hasUnreadMessage']),
-    hasUnread () {
-      return this.hasUnreadMessage + this.hasUnreadChat
+    ...mapGetters(['hasUnreadChat']),
+    hasMsg () {
+      return this.has_msg || this.hasUnreadChat > 0
     },
   },
   mounted () {

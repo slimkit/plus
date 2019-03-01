@@ -30,7 +30,7 @@ export default {
   name: 'VBadge',
   props: {
     count: { type: [Number, String], default: 0 },
-    dot: { type: [Boolean, Number], default: false },
+    dot: { type: Boolean, default: false },
     overflowCount: { type: [Number, String], default: 99 },
     className: { type: String, default: '' },
   },
