@@ -1,20 +1,37 @@
 <template>
   <div class="p-user-fans">
-    <CommonHeader :pinned="true" class="header">
-      <nav class="type-switch-bar">
-        <span :class="{active: type === 'followers'}" @click="type = 'followers'">
-          粉丝
-        </span>
-        <span :class="{active: type === 'followings'}" @click="type = 'followings'">
-          关注
-        </span>
-      </nav>
-    </CommonHeader>
+    <nav class="m-box m-head-top m-lim-width m-pos-f m-main m-bb1" style="padding: 0 10px;">
+      <div class="m-box m-aln-center m-flex-shrink0 ">
+        <svg class="m-style-svg m-svg-def" @click="goBack">
+          <use xlink:href="#icon-back" />
+        </svg>
+      </div>
+      <ul class="m-box m-flex-grow1 m-aln-center m-justify-center m-flex-base0 m-head-nav">
+        <RouterLink
+          :to="`/users/${userId}/followers`"
+          tag="li"
+          active-class="active"
+          exact
+          replace
+        >
+          <a>粉丝</a>
+        </RouterLink>
+        <RouterLink
+          :to="`/users/${userId}/followings`"
+          tag="li"
+          active-class="active"
+          exact
+          replace
+        >
+          <a>关注</a>
+        </RouterLink>
+      </ul>
+      <div class="m-box m-justify-end" />
+    </nav>
 
-    <main>
+    <main style="padding-top: 0.9rem">
       <JoLoadMore
         ref="loadmore"
-        :auto-load="false"
         @onRefresh="onRefresh"
         @onLoadMore="onLoadMore"
       >
@@ -50,16 +67,10 @@ export default {
   },
   computed: {
     userId () {
-      return Number(this.$route.params.userId)
+      return ~~this.$route.params.userId
     },
-    type: {
-      get () {
-        const { path } = this.$route
-        return path.match(/\/(\w+)$/)[1]
-      },
-      set (val) {
-        this.$router.replace({ path: `/users/${this.userId}/${val}` })
-      },
+    type () {
+      return this.$route.params.type
     },
     param () {
       return {

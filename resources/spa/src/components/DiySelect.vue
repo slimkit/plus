@@ -16,7 +16,7 @@
         @click="setCurVal(option)"
       >
         <template v-if="option.hasMsg">
-          <Badge :dot="option.hasMsg">{{ option.label }}</Badge>
+          <VBadge :dot="option.hasMsg">{{ option.label }}</VBadge>
         </template>
         <span v-else>{{ option.label }}</span>
       </div>

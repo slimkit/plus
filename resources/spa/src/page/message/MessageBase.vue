@@ -4,10 +4,10 @@
       <span slot="left" />
       <nav class="type-switch-bar">
         <span :class="{active: currentType === 'list'}" @click="currentType = 'list'">
-          <Badge :dot="hasUnreadMessage">消息</Badge>
+          <VBadge :dot="hasUnreadMessage">消息</VBadge>
         </span>
         <span :class="{active: currentType === 'chats'}" @click="currentType = 'chats'">
-          <Badge :dot="hasUnreadChat">聊天</Badge>
+          <VBadge :dot="hasUnreadChat">聊天</VBadge>
         </span>
       </nav>
     </CommonHeader>
@@ -36,6 +36,10 @@ export default {
         this.$router.replace({ name: routeName })
       },
     },
+  },
+  created () {
+    this.$store.dispatch('GET_UNREAD_COUNT')
+    this.$store.dispatch('GET_NEW_UNREAD_COUNT')
   },
 }
 </script>

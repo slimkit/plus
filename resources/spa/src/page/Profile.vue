@@ -6,13 +6,16 @@
     </CommonHeader>
 
     <main class="m-box-model">
-      <div class="m-box-model m-main">
+      <div class="m-box-model m-main m-pr-info">
         <RouterLink
           tag="section"
-          class="m-box m-aln-center profile-info"
+          class="m-box m-aln-center"
           to="/info"
         >
-          <Avatar :user="user" size="big" />
+          <Avatar
+            :user="user"
+            size="big"
+          />
           <div class="m-text-box m-flex-grow1 m-flex-shrink1 m-flex-base0 m-pr-user-info">
             <h4 class="m-pr-username">{{ user.name }}</h4>
             <p class="m-pr-bio m-text-cut-2">{{ user.bio || "这家伙很懒,什么也没有留下" }}</p>
@@ -21,84 +24,120 @@
             <use xlink:href="#icon-arrow-right" />
           </svg>
         </RouterLink>
-
-        <div class="m-box m-aln-center m-justify-aro m-bt1 followers">
+        <div class="m-box m-aln-center m-justify-aro m-bt1 m-pr-extra-box">
           <RouterLink
             :to="`/users/${user.id}/followers`"
             tag="div"
-            class="follower-item"
+            class="m-box-model m-aln-center m-justify-center m-flex-grow1 m-pr-extra"
           >
-            <Badge :count="new_followers">
+            <VBadge :count="new_followers">
               <a>{{ ~~(extra.followers_count) | formatNum }}</a>
-            </Badge>
+            </VBadge>
             <p>粉丝</p>
           </RouterLink>
           <RouterLink
             :to="`/users/${user.id}/followings`"
             tag="div"
-            class="follower-item"
+            class="m-box-model m-aln-center m-justify-center m-flex-grow1 m-pr-extra"
           >
-            <Badge count="0">
+            <VBadge count="0">
               <a>{{ ~~(extra.followings_count) | formatNum }}</a>
-            </Badge>
+            </VBadge>
             <p>关注</p>
           </RouterLink>
         </div>
       </div>
-
       <div class="m-box-model m-pr-entrys">
         <ul class="m-box-model m-entry-group">
-          <ProfileItem
-            label="个人主页"
-            icon="#icon-profile-home"
+          <RouterLink
             :to="`/users/${user.id}`"
-          />
-
-          <ProfileItem
-            label="我的投稿"
-            icon="#icon-profile-plane"
+            tag="li"
+            class="m-entry"
+          >
+            <svg class="m-style-svg m-svg-def m-entry-prepend">
+              <use xlink:href="#icon-profile-home" />
+            </svg>
+            <span class="m-text-box m-flex-grow1">个人主页</span>
+            <svg class="m-style-svg m-svg-def m-entry-append">
+              <use xlink:href="#icon-arrow-right" />
+            </svg>
+          </RouterLink>
+          <RouterLink
             to="/profile/news/released"
-          />
+            tag="li"
+            class="m-entry"
+          >
+            <svg class="m-style-svg m-svg-def m-entry-prepend">
+              <use xlink:href="#icon-profile-plane" />
+            </svg>
+            <span class="m-text-box m-flex-grow1">我的投稿</span>
+            <svg class="m-style-svg m-svg-def m-entry-append">
+              <use xlink:href="#icon-arrow-right" />
+            </svg>
+          </RouterLink>
         </ul>
-
         <ul class="m-box-model m-entry-group">
-          <ProfileItem
-            label="钱包"
-            icon="#icon-profile-wallet"
-            @click="popupBuyTS"
-          >
-            {{ new_balance }}
-          </ProfileItem>
-
-          <ProfileItem
-            :label="currencyUnit"
-            icon="#icon-profile-integral"
-            @click="popupBuyTS"
-          >
-            {{ sum }}
-          </ProfileItem>
-
-          <ProfileItem
-            label="收藏"
-            icon="#icon-profile-collect"
+          <li class="m-entry" @click="popupBuyTS">
+            <svg class="m-style-svg m-svg-def m-entry-prepend">
+              <use xlink:href="#icon-profile-wallet" />
+            </svg>
+            <span class="m-text-box m-flex-grow1">钱包</span>
+            <span class="m-entry-extra">{{ new_balance }}</span>
+            <svg class="m-style-svg m-svg-def m-entry-append">
+              <use xlink:href="#icon-arrow-right" />
+            </svg>
+          </li>
+          <li class="m-entry" @click="popupBuyTS">
+            <svg class="m-style-svg m-svg-def m-entry-prepend">
+              <use xlink:href="#icon-profile-integral" />
+            </svg>
+            <span class="m-text-box m-flex-grow1">{{ currencyUnit }}</span>
+            <span class="m-entry-extra">{{ sum }}</span>
+            <svg class="m-style-svg m-svg-def m-entry-append">
+              <use xlink:href="#icon-arrow-right" />
+            </svg>
+          </li>
+          <RouterLink
             to="/profile/collection/feeds"
-          />
+            tag="li"
+            class="m-entry"
+          >
+            <svg class="m-style-svg m-svg-def m-entry-prepend">
+              <use xlink:href="#icon-profile-collect" />
+            </svg>
+            <span class="m-text-box m-flex-grow1">收藏</span>
+            <svg class="m-style-svg m-svg-def m-entry-append">
+              <use xlink:href="#icon-arrow-right" />
+            </svg>
+          </RouterLink>
         </ul>
-
         <ul class="m-box-model m-entry-group">
-          <ProfileItem
-            label="认证"
-            icon="#icon-profile-approve"
+          <li
+            class="m-entry"
             @click="selectCertType"
           >
-            {{ verifiedText }}
-          </ProfileItem>
-
-          <ProfileItem
-            label="设置"
-            icon="#icon-profile-setting"
+            <svg class="m-style-svg m-svg-def m-entry-prepend">
+              <use xlink:href="#icon-profile-approve" />
+            </svg>
+            <span class="m-text-box m-flex-grow1">认证</span>
+            <span class="m-entry-extra">{{ verifiedText }}</span>
+            <svg class="m-style-svg m-svg-def m-entry-append">
+              <use xlink:href="#icon-arrow-right" />
+            </svg>
+          </li>
+          <RouterLink
             to="/setting"
-          />
+            tag="li"
+            class="m-entry"
+          >
+            <svg class="m-style-svg m-svg-def m-entry-prepend">
+              <use xlink:href="#icon-profile-setting" />
+            </svg>
+            <span class="m-text-box m-flex-grow1">设置</span>
+            <svg class="m-style-svg m-svg-def m-entry-append">
+              <use xlink:href="#icon-arrow-right" />
+            </svg>
+          </RouterLink>
         </ul>
       </div>
     </main>
@@ -110,11 +149,9 @@
 import _ from 'lodash'
 import { mapState } from 'vuex'
 import { resetUserCount } from '@/api/message.js'
-import ProfileItem from './components/ProfileItem'
 
 export default {
   name: 'Profile',
-  components: { ProfileItem },
   data () {
     return {
       verifiedText: '',
@@ -160,9 +197,12 @@ export default {
   mounted () {
     this.$store.dispatch('fetchUserInfo')
     this.$store.dispatch('FETCH_USER_VERIFY')
+    this.$store.dispatch('GET_NEW_UNREAD_COUNT')
   },
   beforeRouteLeave (to, from, next) {
-    const { params: { type } } = to
+    const {
+      params: { type },
+    } = to
     const resetType =
       type === 'followers' ? 'following' : type === 'mutual' ? 'mutual' : ''
     resetType && resetUserCount(resetType)
@@ -196,6 +236,27 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.m-pr-info {
+  padding: 30px;
+}
+.m-pr-extra {
+  font-size: 28px;
+
+  a {
+    font-size: 32px;
+  }
+
+  p {
+    margin-top: 15px;
+  }
+  & + & {
+    border-left: 1px solid @border-color; /*no*/
+  }
+  &-box {
+    margin-top: 30px;
+    padding-top: 30px;
+  }
+}
 .m-pr-user-info {
   margin-left: 30px;
   margin-right: 30px;
@@ -215,9 +276,8 @@ export default {
 .m-pr-entrys {
   margin-top: 30px;
   margin-bottom: 30px;
-
-  .m-entry {
-    padding: 0 20px;
+  .m-entry-group {
+    padding: 0 30px;
   }
 
   .m-entry-extra {
@@ -230,34 +290,6 @@ export default {
 }
 
 .p-profile {
-  .profile-info {
-    padding: 30px;
-  }
-  .followers {
-    padding: 40px 20px;
-
-    .follower-item {
-      flex: auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      font-size: 28px;
-      border-left: 1px solid @border-color; /*no*/
-
-      &:first-child {
-        border-left: none;
-      }
-
-      a {
-        font-size: 32px;
-      }
-
-      p {
-        margin-top: 15px;
-      }
-    }
-  }
   .m-entry-prepend {
     color: @primary;
     width: 36px;

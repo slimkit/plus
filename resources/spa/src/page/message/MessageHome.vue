@@ -26,7 +26,9 @@
             </h5>
             <h5 v-else />
             <div class="m-box m-aln-center m-justify-end">
-              <Badge v-if="computedGetter(item.count)" :count="computedGetter(item.count)" />
+              <span v-if="computedGetter(item.count) !== 0" :class="`${prefixCls}-time-count`">
+                {{ computedGetter(item.count) }}
+              </span>
             </div>
           </div>
         </RouterLink>
@@ -36,7 +38,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 const prefixCls = 'msg'
 
@@ -123,9 +125,9 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['GET_NEW_UNREAD_COUNT']),
     async fetchMessage () {
-      this.$store.dispatch('GET_UNREAD_COUNT')
-      await this.$store.dispatch('GET_NEW_UNREAD_COUNT')
+      await this.GET_NEW_UNREAD_COUNT()
       this.$refs.loadmore.afterRefresh()
     },
     computedGetter (key) {
@@ -170,5 +172,18 @@ export default {
     color: #ccc;
     font-size: 24px;
   }
+
+  .msg-time-count {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 32px;
+    background: @error;
+    color: #fff;
+    font-size: 24px;
+  }
 }
+
 </style>
