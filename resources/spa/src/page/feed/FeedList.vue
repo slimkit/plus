@@ -37,13 +37,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-/**
- * 动态列表
- * @typedef {{id: number, user, ...others}} FeedDetail
- */
-
 import { limit } from '@/api'
-import { noop } from '@/util'
 import FeedCard from '@/components/FeedCard/FeedCard.vue'
 
 const feedTypesMap = ['new', 'hot', 'follow']

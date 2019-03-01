@@ -78,8 +78,8 @@ export default function Preview(props) {
                         <div className={classes.imageRoot}>
                             <GridList cols={images.length > 3 ? 2.5 : images.length} className={classes.imageGridList}>
                                 {images.map(image => (
-                                    <GridListTile key={image.file_id}>
-                                        <img src={createRequestURI(`../../../api/v2/files/${image.file_id}`)} />
+                                    <GridListTile key={image.id}>
+                                        <img src={createRequestURI(`../../../api/v2/files/${image.id}`)} />
                                         {image.paid_node ? (
                                             <GridListTileBar
                                                 title={`${image.paid_node.extra === 'read' ? '查看' : '下载'}收费`}

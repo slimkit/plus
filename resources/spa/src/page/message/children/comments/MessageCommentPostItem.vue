@@ -3,43 +3,24 @@
     <div :class="`${prefixCls}-item-top`">
       <Avatar :user="user" />
       <section class="userInfo">
-        <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
-        <i18n v-if="comment.reply_user" path="message.comment.reply">
-          <RouterLink
-            place="user1"
-            :class="`${prefixCls}-item-top-link`"
-            :to="`/users/${comment.user_id}`"
-          >
-            {{ comment.user.name }}
-          </RouterLink>
-          <RouterLink
-            place="user2"
-            :class="`${prefixCls}-item-top-link`"
-            :to="`/users/${comment.reply_user}`"
-          >
-            {{ comment.reply.name }}
-          </RouterLink>
-        </i18n>
-        <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
-        <i18n
-          v-else
-          path="message.comment.commented"
-          :places="{type: $t('article.type.post')}"
+        <RouterLink :class="`${prefixCls}-item-top-link`" :to="`/users/${comment.user_id}`">
+          {{ comment.user.name }}
+        </RouterLink>
+        <span v-if="comment.reply_user"> 回复</span>
+        <span v-else> 评论了你的帖子</span>
+        <RouterLink
+          v-if="comment.reply_user"
+          :class="`${prefixCls}-item-top-link`"
+          :to="`/users/${comment.reply_user}`"
         >
-          <RouterLink
-            place="user"
-            :class="`${prefixCls}-item-top-link`"
-            :to="`/users/${comment.user_id}`"
-          >
-            {{ comment.user.name }}
-          </RouterLink>
-        </i18n>
+          {{ comment.reply.name }}
+        </RouterLink>
         <p>{{ comment.created_at | time2tips }}</p>
       </section>
       <section class="msgList-status">
         <section class="gray">
           <span class="reply" @click.stop="showCommentInput">
-            {{ $t('reply.name') }}
+            回复
           </span>
         </section>
       </section>
@@ -90,7 +71,7 @@ export default {
           { validateStatus: s => s === 201 }
         )
         .then(() => {
-          this.$Message.success(this.$t('reply.success'))
+          this.$Message.success('回复成功')
           this.$bus.$emit('commentInput:close', true)
         })
     },

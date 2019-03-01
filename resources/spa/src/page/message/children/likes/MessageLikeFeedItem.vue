@@ -3,16 +3,13 @@
     <div :class="`${prefixCls}-item-top`" class="m-box m-aln-center m-justify-bet">
       <Avatar :user="user" />
       <section class="userInfo m-flex-grow1 m-flex-shrink1 m-flex-base0">
-        <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
-        <i18n path="message.like.liked" :places="{type: $t('article.type.feed')}">
-          <span
-            place="user"
-            :class="`${prefixCls}-item-top-link`"
-            @click="viewUser(user.id)"
-          >
-            {{ user.name }}
-          </span>
-        </i18n>
+        <span v-if="!user.id" :class="`${prefixCls}-item-top-link`">
+          未知用户
+        </span>
+        <RouterLink :class="`${prefixCls}-item-top-link`" :to="`/users/${user.id}`">
+          {{ user.name }}
+        </RouterLink>
+        <span> 赞了你的动态</span>
         <p>{{ like.created_at | time2tips }}</p>
       </section>
       <svg class="m-style-svg m-svg-def m-flex-grow0 m-shrink0">
@@ -48,7 +45,7 @@
       </section>
       <section v-if="like.likeable === null">
         <div :class="`${prefixCls}-item-bottom-noImg`" class="content">
-          {{ $t('article.deleted') }}
+          动态已被删除
         </div>
       </section>
     </div>

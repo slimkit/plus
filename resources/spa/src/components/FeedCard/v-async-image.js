@@ -4,10 +4,10 @@
 
 import _ from 'lodash'
 import api from '@/api/api.js'
+import getFirstFrameOfGif from '@/util/getFirstFrameOfGif.js'
 
 /**
  * 绑定事件
- * @author jsonleex <jsonlseex@163.com>
  * @param  {Object -> DOM}        el
  * @param  {String}               type
  * @param  {Function}             func
@@ -48,8 +48,20 @@ export default Vue => {
     )
   }
 
+  const handleFile = blob => {
+    return new Promise(resolve => {
+      const reader = new FileReader()
+      reader.onload = function (event) {
+        const arrayBuffer = reader.result
+        const gifInfo = window.gify.getInfo(arrayBuffer)
+        resolve(gifInfo)
+      }
+      reader.readAsArrayBuffer(blob)
+    })
+  }
+
   const isCanShow = item => {
-    const { el, file, q = 40, w, h } = item
+    const { el, file } = item
     const isIMG = el.nodeName === 'IMG'
     if (checkInView(el)) {
       let image = new Image()
@@ -60,14 +72,30 @@ export default Vue => {
       api
         .get(`/files/${file}`, {
           // 验证 status ; 屏蔽 404 抛错
-          vaildateStatus: s => s === 200 || s === 201 || s === 204 || s === 400,
-          params: { json: 1, q: w > 4096 || h > 4096 ? undefined : q },
+          vaildateStatus: s => [200, 201, 204, 400, 302].includes(s),
+          params: { json: 1 },
         })
-        .then(({ data: { url } }) => {
+        .then(async ({ data: { url } }) => {
           if (url) {
-            image.src = url
+            // GIF 特别处理 用于播放 GIF
+            if (url.match(/\.gif$/)) {
+              const { data: blob } = await api.get(url, { responseType: 'blob' })
+              var blobURL = window.URL.createObjectURL(blob)
+              el.dataset.gifBlobUrl = blobURL
+              const [gifInfo, firstFrameBlob] = await Promise.all([
+                handleFile(blob),
+                getFirstFrameOfGif(blob, 'blob'),
+              ])
+              const firstFrame = window.URL.createObjectURL(firstFrameBlob)
+              el.dataset.gifFirstFrame = firstFrame
+              el.dataset.gifDuration = gifInfo.durationChrome
+              image.src = firstFrame
+            } else {
+              image.src = url
+            }
 
             image.onload = () => {
+              const url = image.src
               isIMG
                 ? (el.src = url)
                 : (el.style.backgroundImage = `url(${url})`)

@@ -18,6 +18,10 @@ const instance = axios.create({
 // 请求拦截器
 instance.interceptors.request.use(
   config => {
+    // 开发环境静态资源重定向
+    if (process.env.NODE_ENV === 'development') {
+      config.url = config.url.replace(/^http:\/\/test-plus\.zhibocloud\.cn\/storage/, 'http://localhost:8080/storage')
+    }
     // 发起请求时，取消掉当前正在进行的相同请求
     if (pending[config.url]) {
       pending[config.url](i18n.t('network.cancel'))
