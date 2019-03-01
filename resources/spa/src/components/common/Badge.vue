@@ -28,7 +28,7 @@
 const prefixCls = 'v-badge'
 
 export default {
-  name: 'BadgeIcon',
+  name: 'Badge',
   props: {
     count: { type: [Number, String], default: 0 },
     dot: { type: [Boolean, Number], default: false },

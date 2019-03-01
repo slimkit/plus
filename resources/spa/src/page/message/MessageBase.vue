@@ -4,10 +4,10 @@
       <span slot="left" />
       <nav class="type-switch-bar">
         <span :class="{active: currentType === 'list'}" @click="currentType = 'list'">
-          <BadgeIcon :dot="hasUnreadMessage">消息</BadgeIcon>
+          <Badge :dot="hasUnreadMessage">消息</Badge>
         </span>
         <span :class="{active: currentType === 'chats'}" @click="currentType = 'chats'">
-          <BadgeIcon :dot="hasUnreadChat">聊天</BadgeIcon>
+          <Badge :dot="hasUnreadChat">聊天</Badge>
         </span>
       </nav>
     </CommonHeader>

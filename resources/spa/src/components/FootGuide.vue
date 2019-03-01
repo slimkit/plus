@@ -33,11 +33,11 @@
       class="guide-item"
       @click="to({name: 'MessageHome'})"
     >
-      <BadgeIcon :dot="hasUnread">
+      <Badge :dot="hasUnread">
         <svg class="m-style-svg m-svg-def">
           <use xlink:href="#icon-foot-message" />
         </svg>
-      </BadgeIcon>
+      </Badge>
       <span>消息</span>
     </section>
     <section
@@ -45,11 +45,11 @@
       class="guide-item"
       @click="to('/profile')"
     >
-      <BadgeIcon :dot="profile">
+      <Badge :dot="profile">
         <svg class="m-style-svg m-svg-def">
           <use xlink:href="#icon-foot-profile" />
         </svg>
-      </BadgeIcon>
+      </Badge>
       <span>我</span>
     </section>
   </footer>

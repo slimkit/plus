@@ -28,9 +28,9 @@
             tag="div"
             class="follower-item"
           >
-            <BadgeIcon :count="new_followers">
+            <Badge :count="new_followers">
               <a>{{ ~~(extra.followers_count) | formatNum }}</a>
-            </BadgeIcon>
+            </Badge>
             <p>粉丝</p>
           </RouterLink>
           <RouterLink
@@ -38,9 +38,9 @@
             tag="div"
             class="follower-item"
           >
-            <BadgeIcon count="0">
+            <Badge count="0">
               <a>{{ ~~(extra.followings_count) | formatNum }}</a>
-            </BadgeIcon>
+            </Badge>
             <p>关注</p>
           </RouterLink>
         </div>
