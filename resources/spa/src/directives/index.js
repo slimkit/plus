@@ -1,5 +1,7 @@
 // import autosize from 'autosize'
 import { getStyle, getScrollTop, getScrollEventTarget } from '@/util/'
+import gifPlay from './gifPlay'
+console.log(gifPlay)
 
 const autosize = el => {
   const originalHeight = el.style.height
@@ -11,7 +13,9 @@ const autosize = el => {
   }
   el.style.height = endHeight + 'px'
 }
+
 export default {
+  gifPlay,
   txtautosize: {
     inserted (el) {
       autosize(el)

@@ -1,4 +1,5 @@
 import reload from '@/util/wechatShareForIOS.js'
+import directives from '@/directives'
 
 export default {
   data () {
@@ -8,6 +9,7 @@ export default {
       isCurrentView: false,
     }
   },
+  directives,
   computed: {
     currentUser () {
       return this.$store.state.CURRENTUSER || {}

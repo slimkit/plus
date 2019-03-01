@@ -39,11 +39,12 @@
       @onRefresh="onRefresh"
       @onLoadMore="onLoadMore"
     >
-      <ul class="p-feed-list">
+      <ul v-gif-play class="p-feed-list">
         <li
           v-for="(feed, index) in pinned"
           v-if="feed.id"
           :key="`pinned-feed-${feedType}-${feed.id}-${index}`"
+          :data-feed-id="feed.id"
         >
           <FeedCard
             :feed="feed"
@@ -53,6 +54,7 @@
         <li
           v-for="(card, index) in feeds"
           :key="`feed-${feedType}-${card.id}-${index}`"
+          :data-feed-id="card.id"
         >
           <FeedCard
             v-if="card.user_id"
