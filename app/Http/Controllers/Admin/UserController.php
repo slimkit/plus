@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Http\Controllers\Admin;
 
+use DB;
 use Carbon\Carbon;
 use Zhiyi\Plus\Models\Role;
 use Zhiyi\Plus\Models\User;
@@ -329,30 +330,21 @@ class UserController extends Controller
             $user->createPassword($password);
         }
 
-        $easeMob = new EaseMobController();
-
-        $response = app('db.connection')->transaction(function () use ($user, $request, $easeMob, $oldPwdHash) {
+        DB::transaction(function () use ($user, $request) {
             $user->save();
-            $user->roles()->sync(
-                $request->input('roles')
-            );
-
-            // 环信重置密码
-            $request->user_id = $user->id;
-            $request->old_pwd_hash = $oldPwdHash;
-            $im = $easeMob->resetPassword($request);
-            if ($im->getStatusCode() != 201) {
-                return false;
-            }
-
-            return true;
+            $user->roles()->sync($request->input('roles'));
         });
 
+        // 更新环信密码
+        if ($password && setting('user', 'vendor:easemob', ['open' => false])['open'] ?? false) {
+            $request->user_id = $user->id;
+            $request->old_pwd_hash = $oldPwdHash;
+            (new EaseMobController)->resetPassword($request);
+        }
+
         return response()->json([
-            'messages' => [
-                $response === true ? '更新成功' : '更新失败',
-            ],
-        ])->setStatusCode($response === true ? 201 : 422);
+            'message' => ['更新成功'],
+        ])->setStatusCode(201);
     }
 
     /**
