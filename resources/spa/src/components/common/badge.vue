@@ -5,7 +5,7 @@
     :class="classes"
   >
     <slot />
-    <sup :class="dotClasses" />
+    <sup v-show="badge" :class="dotClasses" />
   </span>
   <span
     v-else
@@ -122,7 +122,7 @@ export default {
     position: absolute;
     transform: translateX(-50%);
     transform-origin: 0 center;
-    top: 2px; /* no */
+    top: -3px; /* no */
     right: -6px; /* no */
     height: 6px; /* no */
     width: 6px; /* no */

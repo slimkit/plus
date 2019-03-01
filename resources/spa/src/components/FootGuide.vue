@@ -75,9 +75,12 @@ export default {
           state.MESSAGE.NEW_UNREAD_COUNT['news-comment-pinned'] +
           state.MESSAGE.NEW_UNREAD_COUNT['post-comment-pinned'] +
           state.MESSAGE.NEW_UNREAD_COUNT['post-pinned'] +
-          state.MESSAGE.NEW_UNREAD_COUNT.system > 0,
+          state.MESSAGE.NEW_UNREAD_COUNT.system >
+        0,
       profile: state =>
-        state.MESSAGE.NEW_UNREAD_COUNT.following > 0,
+        state.MESSAGE.NEW_UNREAD_COUNT.following +
+          state.MESSAGE.NEW_UNREAD_COUNT.mutual >
+        0,
     }),
     ...mapGetters(['hasUnreadChat']),
     hasMsg () {

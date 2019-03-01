@@ -116,7 +116,13 @@ export default {
       return this.newMsg.liked || 0
     },
     aCount () {
-      return 0
+      return (
+        ~~this.newMsg['feed-comment-pinned'] +
+        ~~this.newMsg['news-comment-pinned'] +
+        ~~this.newMsg['post-comment-pinned'] +
+        ~~this.newMsg['post-pinned'] +
+        ~~this.newMsg['group-join-pinned']
+      )
     },
   },
   methods: {

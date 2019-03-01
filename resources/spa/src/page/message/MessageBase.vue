@@ -3,7 +3,6 @@
     <header class="m-box m-head-top m-lim-width m-pos-f m-main m-bb1">
       <ul class="m-box m-flex-grow1 m-aln-center m-justify-center m-flex-base0 m-head-nav">
         <RouterLink
-          class="link-item"
           tag="li"
           :to="{name: 'MessageHome'}"
           replace
@@ -14,7 +13,6 @@
           </VBadge>
         </RouterLink>
         <RouterLink
-          class="link-item"
           tag="li"
           :to="{name: 'ChatList'}"
           replace
@@ -60,19 +58,3 @@ export default {
   },
 }
 </script>
-
-<style lang="less" scoped>
-.p-message-base {
-  .link-item {
-    position: relative;
-
-    a {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 2.3em;
-      height: 1.5em;
-    }
-  }
-}
-</style>
