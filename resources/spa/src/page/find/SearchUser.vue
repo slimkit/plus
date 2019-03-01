@@ -32,9 +32,11 @@
 
 <script>
 import { mapState } from 'vuex'
+import _ from 'lodash'
+import { limit } from '@/api'
+import * as api from '@/api/user.js'
 import SearchBar from '@/components/common/SearchBar.vue'
 import UserItem from '@/components/UserItem.vue'
-import * as api from '@/api/user.js'
 
 export default {
   name: 'SearchUser',
@@ -66,19 +68,46 @@ export default {
     this.keyword = ''
   },
   methods: {
-    async onRefresh () {
-      const { data } = await api.searchUserByKey(this.keyword)
-      this.users = data
-      this.$refs.loadmore.afterRefresh(data.length < 15)
+    goBack () {
+      this.keyword = ''
+      this.isFocus = false
+      this.$router.go(-1)
     },
-    async onLoadMore () {
-      const { data } = await api.searchUserByKey(this.keyword, this.users.length)
-      this.users.push(...data)
-      this.$refs.loadmore.afterLoadMore(data.length < 15)
+    /**
+     * 使用 lodash.debounce 防抖，每输入 600ms 后执行
+     * 不要使用箭头函数，会导致 this 作用域丢失
+     * @author mutoe <mutoe@foxmail.com>
+     */
+    searchUserByKey: _.debounce(function () {
+      api.searchUserByKey(this.keyword).then(({ data }) => {
+        this.users = data
+        this.noData = data.length === 0 && this.keyword.length > 0
+      })
+    }, 600),
+    onRefresh (callback) {
+      api.searchUserByKey(this.keyword).then(({ data }) => {
+        this.users = data
+        this.$refs.loadmore.afterRefresh(data.length < limit)
+      })
     },
-    async fetchRecommendUsers () {
-      const { data } = await api.findUserByType('recommends')
-      this.recommendUsers = data
+    onLoadMore (callback) {
+      api.searchUserByKey(this.keyword, this.users.length).then(({ data }) => {
+        this.users = [...this.users, ...data]
+        this.$refs.loadmore.afterLoadMore(data.length < limit)
+      })
+    },
+    onFocus () {
+      this.isFocus = true
+      this.noData = false
+    },
+    onBlur () {
+      this.isFocus = false
+    },
+    fetchRecs (callback) {
+      api.findUserByType('recommends').then(({ data }) => {
+        this.recs = data
+        this.$refs.loadmoreRecs.afterRefresh(data.length < limit)
+      })
     },
   },
 }

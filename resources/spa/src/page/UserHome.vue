@@ -54,7 +54,7 @@
         <p v-if="tags.length" class="user-tags">
           <span
             v-for="tag in tags"
-            v-if="tag.id"
+            :show="tag.id"
             :key="`tag-${tag.id}`"
             class="tag-item"
             v-text="tag.name"
@@ -81,10 +81,10 @@
         <ul class="user-feeds">
           <li
             v-for="feed in feeds"
-            v-if="feed.id"
             :key="`ush-${userId}-feed${feed.id}`"
           >
             <FeedCard
+              v-if="feed.id"
               :feed="feed"
               :time-line="true"
               @afterDelete="fetchUserInfo()"
@@ -122,13 +122,14 @@
 </template>
 
 <script>
+import _ from 'lodash'
+import HeadRoom from 'headroom.js'
+import { limit } from '@/api'
 import uploadApi from '@/api/upload'
-import * as feedApi from '@/api/feeds'
-import * as userApi from '@/api/user'
-import { startSingleChat } from '@/vendor/easemob'
+import * as api from '@/api/user'
+import wechatShare from '@/util/wechatShare'
 import { checkImageType } from '@/util/imageCheck'
-import wechatShare from '@/util/wechatShare.js'
-import PortalPanel from '@/components/PortalPanel'
+import { startSingleChat } from '@/vendor/easemob'
 import FeedCard from '@/components/FeedCard/FeedCard.vue'
 
 export default {
@@ -373,11 +374,21 @@ export default {
         })
     },
     fetchUserFeed (loadmore) {
-      const params = { limit: 15, type: 'users', user: this.userId }
-      if (loadmore) params.after = this.after
-      if (this.isMine && this.screen !== 'all') params.screen = this.screen
-      this.$refs.portal.beforeLoadMore()
-      feedApi.getFeeds(params)
+      if (this.fetchFeeding) return
+      this.fetchFeeding = true
+      const params = {
+        limit,
+        type: 'users',
+        user: this.userId,
+      }
+
+      loadmore && (params.after = this.after)
+      this.isMine && this.screen !== 'all' && (params.screen = this.screen)
+
+      this.$http
+        .get('/feeds', {
+          params,
+        })
         .then(({ data: { feeds = [] } }) => {
           this.feeds = loadmore ? [...this.feeds, ...feeds] : feeds
           this.$refs.portal.afterLoadMore(feeds.length < params.limit)

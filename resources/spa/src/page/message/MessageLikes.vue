@@ -27,6 +27,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { limit } from '@/api'
 import { resetUserCount } from '@/api/message.js'
 import MessageLikeFeedItem from './children/likes/MessageLikeFeedItem'
 import MessageLikeNewsItem from './children/likes/MessageLikeNewsItem'
@@ -77,7 +78,7 @@ export default {
             this.refreshData = data
           }
           resetUserCount('liked')
-          this.$refs.loadmore.afterRefresh(data.length < 15)
+          this.$refs.loadmore.afterRefresh(data.length < limit)
         })
     },
 
@@ -96,7 +97,7 @@ export default {
             return false
           }
           this.$store.commit('SAVE_MY_LIKED', { type: 'more', data })
-          this.$refs.loadmore.afterLoadMore(data.length < 15)
+          this.$refs.loadmore.afterLoadMore(data.length < limit)
         })
     },
   },

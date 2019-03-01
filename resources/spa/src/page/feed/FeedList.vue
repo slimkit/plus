@@ -37,6 +37,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
+/**
+ * 动态列表
+ * @typedef {{id: number, user, ...others}} FeedDetail
+ */
+
+import { limit } from '@/api'
+import { noop } from '@/util'
 import FeedCard from '@/components/FeedCard/FeedCard.vue'
 
 const feedTypesMap = ['new', 'hot', 'follow']
@@ -82,13 +89,13 @@ export default {
       const type = this.feedType.replace(/^\S/, s => s.toUpperCase())
       const action = `feed/get${type}Feeds`
       const data = await this.$store.dispatch(action, { refresh: true })
-      this.$refs.loadmore.afterRefresh(data.length < 15)
+      this.$refs.loadmore.afterRefresh(data.length < limit)
     },
     async onLoadMore () {
       const type = this.feedType.replace(/^\S/, s => s.toUpperCase())
       const action = `feed/get${type}Feeds`
       const data = await this.$store.dispatch(action, { after: this.after })
-      this.$refs.loadmore.afterLoadMore(data.length < 15)
+      this.$refs.loadmore.afterLoadMore(data.length < limit)
     },
   },
 }

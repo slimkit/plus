@@ -15,6 +15,8 @@
 
 <script>
 import * as api from '@/api/user.js'
+import { limit } from '@/api'
+import { findUserByType } from '@/api/user.js'
 import UserItem from '@/components/UserItem.vue'
 
 export default {
@@ -34,7 +36,7 @@ export default {
     onRefresh (callback) {
       api.findUserByType('populars').then(({ data: users } = {}) => {
         users && (this.users = users)
-        this.$refs.loadmore.afterRefresh(users.length < 15)
+        this.$refs.loadmore.afterRefresh(users.length < limit)
       })
     },
     onLoadMore (callback) {
@@ -42,7 +44,7 @@ export default {
         offset: this.users.length,
       }).then(({ data: users }) => {
         this.users = [...this.users, ...users]
-        this.$refs.loadmore.afterLoadMore(users.length < 15)
+        this.$refs.loadmore.afterLoadMore(users.length < limit)
       })
     },
   },

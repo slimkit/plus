@@ -91,7 +91,7 @@ weibo.afterPostFeed = function(feed_id) {
             if ($('#content_list').find('.no_data_div').length > 0) {
                 $('#content_list').find('.no_data_div').remove();
             }
-            $(response.data.data).hide().prependTo('#content_list').fadeIn('slow');
+            $(response.data.data).hide().prependTo('#content_list:not(.profile_list)').fadeIn('slow');
             $("img.lazy").lazyload({effect: "fadeIn"});
       })
       .catch(function (error) {

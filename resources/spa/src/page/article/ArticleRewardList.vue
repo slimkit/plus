@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { limit } from '@/api'
 import i18n from '@/i18n'
 
 const typeMap = {
@@ -88,10 +89,10 @@ export default {
             order_type    string      默认 date, amount 打赏金额 date 打赏时间
        */
       this.$http
-        .get(this.url, { params: { limit: 15 } })
+        .get(this.url, { params: { limit } })
         .then(({ data = [] }) => {
           this.rewards = data
-          this.$refs.loadmore.afterRefresh(data.length < 15)
+          this.$refs.loadmore.afterRefresh(data.length < limit)
         })
         .catch(() => {
           this.$refs.loadmore.afterRefresh(true)
@@ -99,10 +100,10 @@ export default {
     },
     onLoadMore () {
       this.$http
-        .get(this.url, { params: { limit: 15, offset: this.rewards.length } })
+        .get(this.url, { params: { limit, offset: this.rewards.length } })
         .then(({ data = [] }) => {
           this.rewards = [...this.rewards, ...data]
-          this.$refs.loadmore.afterLoadmore(data.length < 15)
+          this.$refs.loadmore.afterLoadmore(data.length < limit)
         })
         .catch(() => {
           this.$refs.loadmore.afterLoadmore(true)

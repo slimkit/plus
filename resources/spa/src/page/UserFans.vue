@@ -30,8 +30,9 @@
 </template>
 
 <script>
-import UserItem from '@/components/UserItem'
+import { limit } from '@/api'
 import { getUserFansByType } from '@/api/user.js'
+import UserItem from '@/components/UserItem'
 
 const typeMap = ['followers', 'followings']
 export default {
@@ -62,7 +63,7 @@ export default {
     },
     param () {
       return {
-        limit: 15,
+        limit,
         type: this.type,
         uid: this.userId,
       }

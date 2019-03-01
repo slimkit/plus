@@ -1,3 +1,4 @@
+import { limit } from './index'
 import api from './api'
 import store from '@/stores'
 import $Message from '@/plugins/message-box'
@@ -90,22 +91,20 @@ export const findUserByType = (type, params) => {
  * 查找附近的人
  * @author jsonleex <jsonlseex@163.com>
  * @export
- * @param  {number} options.lng: longitude    经度
- * @param  {number} options.lat: latitude     纬度
- * @param  {number} page                      当前页
+ * @param {number} options.lng: longitude    经度
+ * @param {number} options.lat: latitude     纬度
+ * @param {number} page                      当前页
  * @returns {Promise<UserObject[]>}
  */
 export const findNearbyUser = ({ lng: longitude, lat: latitude }, page = 0) => {
   const params = {
-    limit: 10,
+    limit,
     longitude,
     latitude,
   }
   page > 0 && (params.page = page)
 
-  return api
-    .get('around-amap', { params })
-    .then(data => data)
+  return api.get('around-amap', { params })
     .catch(() => resArray)
 }
 
@@ -157,7 +156,7 @@ export function getUserList (params) {
  * @param  {number} options.offset
  * @returns {Promise<UserObject[]>}
  */
-export function getUserFansByType ({ uid, type, limit = 15, offset = 0 }) {
+export function getUserFansByType ({ uid, type, offset = 0 }) {
   const params = {
     limit,
     offset,

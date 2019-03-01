@@ -36,7 +36,10 @@
 
 <script>
 import * as api from '@/api/topic'
+import _ from 'lodash'
 import { mapState } from 'vuex'
+import { limit } from '@/api'
+import * as api from '@/api/topic'
 import SearchBar from '@/components/common/SearchBar.vue'
 
 export default {
@@ -80,13 +83,13 @@ export default {
     async onRefresh () {
       const { data } = await api.getTopicList({ q: this.keyword })
       this.list = data
-      this.$refs.loadmore.afterRefresh(data.length < 15)
+      this.$refs.loadmore.afterRefresh(data.length < limit)
     },
     async onLoadMore () {
       const lastTopic = [...this.list].pop() || {}
       const { data } = await api.getTopicList({ q: this.keyword, index: lastTopic.id })
       this.list.push(...data)
-      this.$refs.loadmore.afterRefresh(data.length < 15)
+      this.$refs.loadmore.afterRefresh(data.length < limit)
     },
     highlight (name) {
       const regex = new RegExp(`(${this.keyword})`, 'ig')

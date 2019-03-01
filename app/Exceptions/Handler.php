@@ -86,15 +86,15 @@ class Handler extends ExceptionHandler
     /**
      * Prepare exception for rendering.
      *
-     * @param  \Exception  $e
+     * @param  \Exception  $exception
      * @return \Exception
      */
-    protected function prepareException(Exception $e)
+    protected function prepareException(Exception $exception)
     {
-        if ($e instanceof ModelNotFoundException) {
-            $e = new NotFoundHttpException('内容不存在', $e);
+        if ($exception instanceof ModelNotFoundException) {
+            $exception = new NotFoundHttpException('内容不存在', $exception);
         }
 
-        return parent::prepareException($e);
+        return parent::prepareException($exception);
     }
 }

@@ -1,3 +1,4 @@
+import { limit } from './index'
 import api from './api'
 
 /**
@@ -7,13 +8,14 @@ import api from './api'
  * @export
  * @param {Object} params
  * @param {string} [params.q] 搜索关键字
- * @param {number} [params.limit=15]
+ * @param {number} [params.limit]
  * @param {string} [params.direction=desc]
  * @param {number} [params.index=0]
  * @param {string} [params.only] 是否热门 'hot'
  * @returns
  */
 export function getTopicList (params) {
+  if (!params.limit) params.limit = limit
   if (params.q === '') return Promise.resolve({ data: [] })
   const url = '/feed/topics'
   return api.get(url, { params, validateStatus: s => s === 200 })
