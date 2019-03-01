@@ -241,11 +241,6 @@ export default {
 }
 .m-pr-extra {
   font-size: 28px;
-
-  a {
-    font-size: 32px;
-  }
-
   p {
     margin-top: 15px;
   }

@@ -28,7 +28,7 @@ import { getNotifications } from '@/api/message.js'
 const prefixCls = 'notification'
 
 export default {
-  name: 'MessageSystem',
+  name: 'MyNotifications',
   data () {
     return {
       prefixCls,

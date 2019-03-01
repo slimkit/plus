@@ -1,5 +1,5 @@
 <template>
-  <ul class="m-box-model m-entry-group p-message-home">
+  <ul class="m-box-model m-entry-group">
     <RouterLink
       v-for="item in system"
       :key="item.url"
@@ -24,7 +24,7 @@
             v-if="computedGetter(item.count) !== 0"
             :class="`${prefixCls}-time-count`"
           >
-            {{ computedGetter(item.count) }}
+            <i>{{ computedGetter(item.count) }}</i>
           </span>
         </div>
       </div>
@@ -38,7 +38,7 @@ import { mapState } from 'vuex'
 const prefixCls = 'msg'
 
 export default {
-  name: 'MessageHome',
+  name: 'MsgInfo',
   data () {
     return {
       prefixCls,
@@ -48,7 +48,7 @@ export default {
           placeholder: 'sPlaceholder',
           icon: 'notice',
           hanBadge: 0,
-          url: '/message/system',
+          url: '/message/notification',
           count: 'sCount',
           time: 'sTime',
         },
@@ -133,51 +133,14 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-.p-message-home {
-  padding: 0 20px;
-
-  .m-entry {
-    align-items: stretch;
-    padding: 30px 0;
-    height: initial;
-  }
-
-  .m-entry-prepend {
-    margin: 0;
-    width: 76px;
-    height: 76px;
-  }
-
-  .m-entry-main {
-    margin-left: 30px;
-    margin-right: 30px;
-    h2 {
-      font-weight: 400;
-      font-size: 32px;
-    }
-    p {
-      font-size: 24px;
-      color: @text-color3;
-    }
-  }
-
-  .m-entry-end {
-    color: #ccc;
-    font-size: 24px;
-  }
-
-  .msg-time-count {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 32px;
-    background: @error;
+<style lang="less">
+.msg-time-count {
+  i {
+    padding: 0 10px;
+    border-radius: 50px;
+    background: red;
     color: #fff;
-    font-size: 24px;
+    font: initial;
   }
 }
-
 </style>

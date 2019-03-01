@@ -5,7 +5,10 @@
     :class="classes"
   >
     <slot />
-    <sup v-show="badge" :class="dotClasses" />
+    <sup
+      v-show="badge"
+      :class="dotClasses"
+    />
   </span>
   <span
     v-else
@@ -87,19 +90,19 @@ export default {
 
   &-count {
     position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform: translateX(100%);
+    transform: translateX(50%);
     top: -10px;
     right: 0;
-    height: 24px;
-    width: 24px;
-    border-radius: 24px;
+    height: 20px;
+    min-width: 20px;
+    border-radius: 10px;
     background: @error;
     border: 1px solid transparent; /*no*/
     color: #fff;
-    font-size: 20px;
+    line-height: 20px;
+    text-align: center;
+    padding: 0 6px;
+    font-size: 16px;
     white-space: nowrap;
     transform-origin: -10% center;
     z-index: 10;

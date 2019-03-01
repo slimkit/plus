@@ -1,5 +1,5 @@
 <template>
-  <div class="p-chat-list">
+  <div class="chat-list">
     <JoLoadMore
       ref="loadmore"
       :auto-load="false"
@@ -16,10 +16,9 @@
   </div>
 </template>
 <script>
+import ChatItem from './chat-item.vue'
 import { mapState, mapActions } from 'vuex'
 import { startSingleChat } from '@/vendor/easemob/'
-import ChatItem from './components/ChatItem'
-
 export default {
   name: 'ChatList',
   components: {
@@ -50,8 +49,22 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-.p-chat-list {
+<style lang="less">
+.chat-list {
   height: 100%;
+}
+.easemob-tips {
+  position: fixed;
+  top: 90px;
+  left: 0;
+  right: 0;
+  z-index: 11;
+  height: 60px;
+
+  color: #fff;
+  font-size: 24px;
+  touch-action: none;
+
+  background-color: rgba(89, 182, 215, 0.7);
 }
 </style>

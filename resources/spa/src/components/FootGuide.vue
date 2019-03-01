@@ -31,7 +31,7 @@
     <section
       :class="{active: isCurPath('/message')}"
       class="guide-item"
-      @click="to({name: 'MessageHome'})"
+      @click="to('/message/info')"
     >
       <VBadge :dot="hasMsg">
         <svg class="m-style-svg m-svg-def">
@@ -92,7 +92,7 @@ export default {
   },
   methods: {
     to (path) {
-      this.$router.push(path)
+      this.$router.push({ path })
     },
     isCurPath (path) {
       return this.$route.fullPath.indexOf(path) > -1
