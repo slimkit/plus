@@ -15,15 +15,20 @@
         @onRefresh="onRefresh"
         @onLoadMore="onLoadMore"
       >
-        <ul class="feed-list">
+        <ul v-gif-play class="feed-list">
           <li
             v-for="(feed, index) in pinned"
             v-if="feed.id"
             :key="`pinned-feed-${feedType}-${feed.id}-${index}`"
+            :data-feed-id="feed.id"
           >
             <FeedCard :feed="feed" :pinned="true" />
           </li>
-          <li v-for="(card, index) in feeds" :key="`feed-${feedType}-${card.id}-${index}`">
+          <li
+            v-for="(card, index) in feeds"
+            :key="`feed-${feedType}-${card.id}-${index}`"
+            :data-feed-id="feed.id"
+          >
             <FeedCard v-if="card.user_id" :feed="card" />
             <FeedAdCard v-if="card.space_id" :ad="card" />
           </li>
