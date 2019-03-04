@@ -4,10 +4,10 @@
       <span slot="left" />
       <nav class="type-switch-bar">
         <span :class="{active: currentType === 'list'}" @click="currentType = 'list'">
-          <BadgeIcon :dot="hasUnreadMessage">消息</BadgeIcon>
+          <BadgeIcon :dot="unreadMessage">消息</BadgeIcon>
         </span>
         <span :class="{active: currentType === 'chats'}" @click="currentType = 'chats'">
-          <BadgeIcon :dot="hasUnreadChat">聊天</BadgeIcon>
+          <BadgeIcon :dot="unreadChat">聊天</BadgeIcon>
         </span>
       </nav>
     </CommonHeader>
@@ -25,7 +25,12 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'MessageBase',
   computed: {
-    ...mapGetters(['hasUnreadChat', 'hasUnreadMessage']),
+    ...mapGetters({
+      unreadChat: 'unreadChat',
+    }),
+    ...mapGetters('message', {
+      unreadMessage: 'unreadMessage',
+    }),
     currentType: {
       get () {
         const { path } = this.$route
@@ -36,6 +41,7 @@ export default {
         this.$router.replace({ name: routeName })
       },
     },
+
   },
 }
 </script>

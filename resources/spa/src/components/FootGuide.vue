@@ -33,7 +33,7 @@
       class="guide-item"
       @click="to({name: 'MessageHome'})"
     >
-      <BadgeIcon :dot="hasUnread">
+      <BadgeIcon :dot="notification">
         <svg class="m-style-svg m-svg-def">
           <use xlink:href="#icon-foot-message" />
         </svg>
@@ -62,22 +62,19 @@ export default {
   name: 'FootGuide',
   data () {
     return {
-      has_fans: false,
+      // has_fans: false,
     }
   },
   computed: {
-    ...mapState({
-      profile: state =>
-        state.MESSAGE.NEW_UNREAD_COUNT.following > 0,
+    ...mapState('message', {
+      profile: state => state.user.following + state.user.mutual > 0,
     }),
-    ...mapGetters(['hasUnreadChat', 'hasUnreadMessage']),
-    hasUnread () {
-      return this.hasUnreadMessage + this.hasUnreadChat
-    },
+    ...mapGetters('message', {
+      notification: 'unreadMessage',
+    }),
   },
   mounted () {
     this.$el.parentNode.style.paddingBottom = '1rem'
-    this.fetchUnread()
   },
   methods: {
     to (path) {
@@ -88,10 +85,6 @@ export default {
     },
     showPostMenu () {
       this.$bus.$emit('post-menu')
-    },
-    fetchUnread () {
-      if (this.$route.path.match(/^\/message/)) return
-      this.$store.dispatch('GET_NEW_UNREAD_COUNT')
     },
   },
 }

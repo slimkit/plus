@@ -158,6 +158,7 @@ export default {
         this.loading = false
         state &&
           this.$nextTick(() => {
+            this.$store.dispatch('message/getAllUnreadCount')
             this.$router.push(this.$route.query.redirect || '/feeds?type=hot')
           })
       })

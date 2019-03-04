@@ -28,7 +28,7 @@
             tag="div"
             class="follower-item"
           >
-            <BadgeIcon :count="new_followers">
+            <BadgeIcon :count="newFans">
               <a>{{ ~~(extra.followers_count) | formatNum }}</a>
             </BadgeIcon>
             <p>粉丝</p>
@@ -108,8 +108,8 @@
 
 <script>
 import _ from 'lodash'
-import { mapState } from 'vuex'
-import { resetUserCount } from '@/api/message.js'
+import { mapState, mapActions } from 'vuex'
+import { resetUserCount } from '@/api/message'
 import ProfileItem from './components/ProfileItem'
 
 export default {
@@ -122,8 +122,8 @@ export default {
   },
   computed: {
     ...mapState({
-      new_followers: state => state.MESSAGE.NEW_UNREAD_COUNT.following || 0,
-      new_mutual: state => state.MESSAGE.NEW_UNREAD_COUNT.mutual || 0,
+      newFans: state => state.message.user.following || 0,
+      newMutual: state => state.message.user.mutual || 0,
       user: state => state.CURRENTUSER,
       verified: state => state.USER_VERIFY,
     }),
@@ -160,6 +160,7 @@ export default {
   mounted () {
     this.$store.dispatch('fetchUserInfo')
     this.$store.dispatch('FETCH_USER_VERIFY')
+    this.getUnreadCount()
   },
   beforeRouteLeave (to, from, next) {
     const { params: { type } } = to
@@ -169,6 +170,9 @@ export default {
     next()
   },
   methods: {
+    ...mapActions('message', {
+      getUnreadCount: 'getUnreadCount',
+    }),
     selectCertType () {
       if (_.isEmpty(this.verified)) {
         const actions = [

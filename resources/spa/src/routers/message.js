@@ -66,6 +66,7 @@ export default [
     meta: {
       title: '系统消息',
       requiresAuth: true,
+      keepAlive: true,
     },
   },
   {
@@ -75,6 +76,7 @@ export default [
     meta: {
       title: '评论我的',
       requiresAuth: true,
+      keepAlive: true,
     },
   },
   {
@@ -84,6 +86,7 @@ export default [
     meta: {
       title: '赞过我的',
       requiresAuth: true,
+      keepAlive: true,
     },
   },
   {

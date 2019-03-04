@@ -28,6 +28,18 @@ export function getFeeds (params) {
 }
 
 /**
+ * 获取动态详情
+ *
+ * @author mutoe <mutoe@foxmail.com>
+ * @export
+ * @param {string} feedId
+ * @returns
+ */
+export function getFeed (feedId) {
+  return api.get(`/feeds/${feedId}`)
+}
+
+/**
  * 申请动态置顶
  * @author mutoe <mutoe@foxmail.com>
  * @export
