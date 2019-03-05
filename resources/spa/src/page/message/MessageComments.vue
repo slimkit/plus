@@ -10,14 +10,13 @@
         @onLoadMore="onLoadMore"
       >
         <div
-          v-for="comment in comments"
-          :key="`comment-key-${comment.id}`"
+          v-for="noti in comments"
+          :key="noti.id"
           class="msgList-item"
         >
-          <Component
-            :is="items[comment.commentable_type]"
-            :comment="comment"
-          />
+          <MessageCommentsItem :comment="noti.data">
+            {{ noti.created_at | time2tips }}
+          </MessageCommentsItem>
         </div>
       </JoLoadMore>
     </div>
@@ -28,84 +27,40 @@
 /**
  * 消息-评论列表
  */
-import { mapState } from 'vuex'
-import { limit } from '@/api'
-import { resetUserCount } from '@/api/message.js'
-import MessageCommentFeedItem from './children/comments/MessageCommentFeedItem'
-import MessageCommentNewsItem from './children/comments/MessageCommentNewsItem'
-import MessageCommentQuestionItem from './children/comments/MessageCommentQuestionItem'
-import MessageCommentPostItem from './children/comments/MessageCommentPostItem'
-import MessageCommenAnswerItem from './children/comments/MessageCommenAnswerItem'
+import * as api from '@/api/message.js'
+import MessageCommentsItem from './MessageCommentsItem.vue'
 
-const prefixCls = 'msgList'
-const items = {
-  'feeds': MessageCommentFeedItem,
-  'news': MessageCommentNewsItem,
-  'group-posts': MessageCommentPostItem,
-  'questions': MessageCommentQuestionItem,
-  'question-answers': MessageCommenAnswerItem,
-}
 export default {
   name: 'MessageComments',
+  components: {
+    MessageCommentsItem,
+  },
   data: () => ({
-    prefixCls,
-    items,
-    refreshData: [],
+    comments: [],
   }),
-  computed: {
-    ...mapState({
-      comments: state => state.MESSAGE.MY_COMMENTED,
-    }),
-  },
-  watch: {
-    refreshData (data) {
-      if (data.length > 0) {
-        this.$store.commit('SAVE_MY_COMMENTED', {
-          type: 'new',
-          data,
-        })
-      }
-    },
-  },
   mounted () {
     this.$refs.loadmore.beforeRefresh()
   },
   methods: {
-    // 刷新服务
     onRefresh () {
-      this.refreshData = []
-      this.$http
-        .get('/user/comments', {
-          validateStatus: s => s === 200,
-        })
+      const type = 'comment'
+      api.getNotification({ type, page: this.page })
         .then(({ data }) => {
-          resetUserCount('commented')
-          if (data.length > 0) {
-            this.refreshData = data
-          }
-          this.$nextTick(() => {
-            this.$refs.loadmore.afterRefresh(data.length < limit)
-          })
+          const noMore = data.meta.last_page <= data.meta.current_page
+          this.comments = data.data
+          api.resetNotificationCount(type)
+          this.$refs.loadmore.afterRefresh(noMore)
+          if (!noMore) this.page++
         })
     },
-
-    // loadmore
     onLoadMore () {
-      const { id = 0 } = this.comments.slice(-1)[0] || {}
-      this.$http
-        .get(
-          '/user/comments',
-          { params: { after: id } },
-          { validateStatus: s => s === 200 }
-        )
+      const type = 'comment'
+      api.getNotification({ type, page: this.page })
         .then(({ data }) => {
-          this.$store.commit('SAVE_MY_COMMENTED', {
-            type: 'more',
-            data,
-          })
-          this.$nextTick(() => {
-            this.$refs.loadmore.afterLoadMore(data.length < limit)
-          })
+          const noMore = data.meta.last_page <= data.meta.current_page
+          this.comments.push(...data.data)
+          this.$refs.loadmore.afterLoadMore(noMore)
+          if (!noMore) this.page++
         })
     },
   },

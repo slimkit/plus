@@ -4,7 +4,7 @@
       ref="imagefile"
       type="file"
       class="hidden"
-      accept="image/jpeg,image/webp,image/jpg,image/png,image/bmp"
+      accept="image/*"
       @change="selectPhoto"
     >
   </div>

@@ -163,19 +163,7 @@ export default {
       preUID: 0,
       loading: false,
 
-      accept: {
-        type: [Array, String],
-        default () {
-          return [
-            'image/gif',
-            'image/jpeg',
-            'image/webp',
-            'image/jpg',
-            'image/png',
-            'image/bmp',
-          ]
-        },
-      },
+      accept: { type: [Array, String], default: 'image/*' },
 
       typeFilter: null,
       showFilter: false,

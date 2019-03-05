@@ -68,6 +68,7 @@ export default [
     meta: {
       title: i18n.t('message.system.name'),
       requiresAuth: true,
+      keepAlive: true,
     },
   },
   {
@@ -77,6 +78,7 @@ export default [
     meta: {
       title: i18n.t('message.comment.name'),
       requiresAuth: true,
+      keepAlive: true,
     },
   },
   {
@@ -86,6 +88,7 @@ export default [
     meta: {
       title: i18n.t('message.like.name'),
       requiresAuth: true,
+      keepAlive: true,
     },
   },
   {

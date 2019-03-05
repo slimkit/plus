@@ -123,7 +123,7 @@ export default {
     }
     &.gif:not(.playing) {
       .m-pic:after {
-        content: "GIF";
+        content: "Gif";
         background-color: #5dc8ab;
         background-image: linear-gradient(135deg, #60ceb0 50%, #5dc8ab 50%);
       }

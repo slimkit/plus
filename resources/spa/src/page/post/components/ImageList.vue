@@ -135,19 +135,7 @@ export default {
       type: Number,
       default: 9,
     },
-    accept: {
-      type: [Array, String],
-      default () {
-        return [
-          'image/gif',
-          'image/jpeg',
-          'image/webp',
-          'image/jpg',
-          'image/png',
-          'image/bmp',
-        ]
-      },
-    },
+    accept: { type: [Array, String], default: 'image/*' },
   },
   data () {
     return {

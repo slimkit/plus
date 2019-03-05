@@ -2,6 +2,7 @@ import plueMessageBundle from 'plus-message-bundle'
 import { transTime } from '@/util'
 import i18n from '@/i18n'
 import xss from 'xss'
+import { transTime } from '@/util'
 
 /**
  * ThinkSNS Plus 消息解析器，获取顶部消息.

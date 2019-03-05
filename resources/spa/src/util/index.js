@@ -9,72 +9,8 @@ import { timeOffset } from '@/filters'
 export const noop = () => {}
 
 /**
- * 驼峰命名
- *     @author jsonleex <jsonlseex@163.com>
- */
-export const str2Hump = str => {
-  return str.replace(/-(\w)/g, ($0, $1) => {
-    return $1.toUpperCase()
-  })
-}
-
-/**
- * 获取样式
- *     @author jsonleex <jsonlseex@163.com>
- */
-export const getStyle = (element, attr, NumberMode = 'int') => {
-  let target
-  if (attr === 'scrollTop') {
-    target = getScrollTop(element)
-  } else if (element.currentStyle) {
-    target = element.currentStyle[attr]
-  } else {
-    target = document.defaultView.getComputedStyle(element, null)[attr]
-  }
-  // 在获取 opactiy 时需要获取小数 parseFloat
-  return NumberMode === 'float' ? parseFloat(target) : parseInt(target)
-}
-
-/**
- * 获取 ScrollTop
- *   @author jsonleex <jsonlseex@163.com>
- */
-export const getScrollTop = element => {
-  if (element === window) {
-    return Math.max(
-      window.pageYOffset || 0,
-      document.documentElement.scrollTop
-    )
-  }
-
-  return element.scrollTop
-}
-
-/**
- * 获取 当前滚动节点
- *   @author jsonleex <jsonlseex@163.com>
- */
-export const getScrollEventTarget = element => {
-  let currentNode = element
-  while (
-    currentNode &&
-    currentNode.tagName !== 'HTML' &&
-    currentNode.tagName !== 'BODY' &&
-    currentNode.nodeType === 1
-  ) {
-    let overflowY = document.defaultView.getComputedStyle(currentNode)
-      .overflowY
-    if (overflowY === 'scroll' || overflowY === 'auto') {
-      return currentNode
-    }
-    currentNode = currentNode.parentNode
-  }
-  return window
-}
-
-/**
  * 判断终端类型
- *     @author jsonleex <jsonlseex@163.com>
+ * @author jsonleex <jsonlseex@163.com>
  */
 export const detectOS = () => {
   const u = navigator.userAgent
@@ -144,7 +80,7 @@ export const detectOS = () => {
 
 /**
  * 格式化数字
- *     @author jsonleex <jsonlseex@163.com>
+ * @author jsonleex <jsonlseex@163.com>
  */
 export const formatNum = num => {
   if (typeof ~~num === 'number') {
@@ -160,7 +96,7 @@ export const formatNum = num => {
 
 /**
  * create object url
- *     @author jsonleex <jsonlseex@163.com>
+ * @author jsonleex <jsonlseex@163.com>
  */
 export const getFileUrl = file => {
   let url = null
@@ -188,9 +124,9 @@ export const generateString = length => {
 }
 
 export const transTime = (date) => {
-  date = date.replace(/-/g, '/') // for safari
   // match 2018/10/17 01:48:52"
-  if (date.match(/^\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}$/)) {
+  if (date.match(/^\d{4}[-/]\d{2}[-/]\d{2} \d{2}:\d{2}:\d{2}$/)) {
+    date = date.replace(/-/g, '/') // for safari
     // 如果匹配到服务器返回的时间是非标准格式的祖鲁时间，需要进行本地化
     date = +new Date(date) - timeOffset
   }

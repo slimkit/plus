@@ -850,7 +850,7 @@ var comment = {
         formData.body = formData.body.replace(/(@[^\r\n\t\v\f@ ]+)(\s?)/g, '\u00ad$1\u00ad$2');
 
         // 保留原始回复内容, at 用户替换为链接
-        var original_body = formData.body.replace(/\u00ad@([^\/]+?)\u00ad/gi, function(matches, username) {
+        var body = formData.body.replace(/\u00ad@([^\/]+?)\u00ad/gi, function(matches, username) {
             var url = TS.SITE_URL + '/users/' + username;
             return '<a href="' + url + '">@' + username + '</a>'
         });
@@ -918,7 +918,7 @@ var comment = {
                     html += '                    </ul>'
                     html += '                </div>'
                     html += '            </div>';
-                    html += '            <div class="reply_body">'+original_body+'</div>';
+                    html += '            <div class="reply_body">'+body+'</div>';
                     html += '        </dd>';
                     html += '    </dl>';
                     html += '</div>';

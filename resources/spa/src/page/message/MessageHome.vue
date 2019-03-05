@@ -3,31 +3,39 @@
     <JoLoadMore
       ref="loadmore"
       :show-bottom="false"
+      :auto-load="true"
       @onRefresh="fetchMessage"
     >
-      <ul class="message-list m-box-model">
-        <RouterLink
-          v-for="item in system"
-          :key="item.url"
-          :to="item.url"
-          tag="li"
-          class="m-entry"
-        >
-          <svg class="m-style-svg m-svg-big m-entry-prepend m-flex-grow0 m-flex-shrink0">
-            <use :xlink:href="`#icon-message-${item.icon}`" />
-          </svg>
-          <div class="m-box-model m-justify-bet m-flex-grow1 m-flex-shrink1 m-flex-base0 m-entry-main">
-            <h2 class="m-text-cut">{{ item.title }}</h2>
-            <p class="m-text-cut">{{ computedGetter(item.placeholder) }}</p>
+      <ul class="message-list">
+        <RouterLink to="/message/system" tag="li">
+          <svg class="m-style-svg m-svg-large"><use xlink:href="#icon-message-notice" /></svg>
+          <div class="info">
+            <h2>系统消息 <span class="time">{{ system.first.created_at | time2tips }}</span></h2>
+            <p class="description">{{ system.first.data.contents }} <BadgeIcon v-if="system.badge" :count="system.badge" /></p>
           </div>
-          <div class="m-box-model m-flex-grow0 m-flex-shrink0 m-entry-end m-justify-bet">
-            <h5 v-if="computedGetter(item.time) !== '' && item.time">
-              {{ +new Date((computedGetter(item.time))) + 10 || '' | time2tips }}
-            </h5>
-            <h5 v-else />
-            <div class="m-box m-aln-center m-justify-end">
-              <BadgeIcon v-if="computedGetter(item.count)" :count="computedGetter(item.count)" />
-            </div>
+        </RouterLink>
+
+        <RouterLink to="/message/comments" tag="li">
+          <svg class="m-style-svg m-svg-large"><use xlink:href="#icon-message-comment" /></svg>
+          <div class="info">
+            <h2>收到的评论 <span class="time">{{ comment.last_created_at | time2tips }}</span></h2>
+            <p class="description">{{ (comment.preview_users_names || []).join('、') }}评论了我 <BadgeIcon v-if="comment.badge" :count="comment.badge" /></p>
+          </div>
+        </RouterLink>
+
+        <RouterLink to="/message/likes" tag="li">
+          <svg class="m-style-svg m-svg-large"><use xlink:href="#icon-message-like" /></svg>
+          <div class="info">
+            <h2>收到的赞 <span class="time">{{ like.last_created_at | time2tips }}</span></h2>
+            <p class="description">{{ (like.preview_users_names || []).join('、') }}评论了我 <BadgeIcon v-if="like.badge" :count="like.badge" /></p>
+          </div>
+        </RouterLink>
+
+        <RouterLink to="/message/audits" tag="li">
+          <svg class="m-style-svg m-svg-large"><use xlink:href="#icon-message-audit" /></svg>
+          <div class="info">
+            <h2>审核通知</h2>
+            <p class="description">你有未审核的信息请及时处理 <BadgeIcon v-if="unreadAudits" :count="unreadAudits" /></p>
           </div>
         </RouterLink>
       </ul>
@@ -36,100 +44,37 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
-const prefixCls = 'msg'
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'MessageHome',
   data () {
     return {
-      prefixCls,
-      system: {
-        system: {
-          title: '系统消息',
-          placeholder: 'sPlaceholder',
-          icon: 'notice',
-          hanBadge: 0,
-          url: '/message/system',
-          count: 'sCount',
-          time: 'sTime',
-        },
-        comments: {
-          title: '收到的评论',
-          placeholder: 'cPlaceholder',
-          icon: 'comment',
-          hanBadge: 0,
-          url: '/message/comments',
-          count: 'cCount',
-          time: 'cTime',
-        },
-        diggs: {
-          title: '收到的赞',
-          placeholder: 'dPlaceholder',
-          icon: 'like',
-          hanBadge: 0,
-          url: '/message/likes',
-          count: 'dCount',
-          time: 'dTime',
-        },
-        audits: {
-          title: '审核通知',
-          placeholder: 'aPlaceholder',
-          icon: 'audit',
-          hanBadge: 0,
-          url: '/message/audits/feedcomments',
-          count: 'aCount',
-        },
-      },
+      audit: {},
     }
   },
   computed: {
-    ...mapState({
-      msg: state => state.MESSAGE.UNREAD_COUNT.msg,
-      newMsg: state => state.MESSAGE.NEW_UNREAD_COUNT,
-      sCount: state => state.MESSAGE.NEW_UNREAD_COUNT.system || 0,
+    ...mapState('message', {
+      at: 'at',
+      comment: 'comment',
+      follow: 'follow',
+      like: 'like',
+      system: 'system',
     }),
-
-    cPlaceholder () {
-      return this.msg.comments.placeholder
-    },
-    dPlaceholder () {
-      return this.msg.diggs.placeholder
-    },
-    aPlaceholder () {
-      return this.aCount ? '你有未审核的信息请及时处理' : '暂无未审核的申请'
-    },
-    sPlaceholder () {
-      return this.msg.system.placeholder
-    },
-    cTime () {
-      return this.msg.comments.time
-    },
-    dTime () {
-      return this.msg.diggs.time
-    },
-    sTime () {
-      return this.msg.system.time
-    },
-    cCount () {
-      return this.newMsg.commented || 0
-    },
-    dCount () {
-      return this.newMsg.liked || 0
-    },
-    aCount () {
-      return 0
-    },
+    ...mapGetters('message', {
+      unreadAudits: 'unreadAudits',
+    }),
   },
+
   methods: {
+    ...mapActions('message', {
+      getNotificationStatistics: 'getNotificationStatistics',
+      getGroupJoinedList: 'getGroupJoinedList',
+    }),
     async fetchMessage () {
-      this.$store.dispatch('GET_UNREAD_COUNT')
-      await this.$store.dispatch('GET_NEW_UNREAD_COUNT')
+      await this.getNotificationStatistics()
+      this.getGroupJoinedList()
       this.$refs.loadmore.afterRefresh()
-    },
-    computedGetter (key) {
-      return this[key]
     },
   },
 }
@@ -139,36 +84,42 @@ export default {
 .p-message-home {
   .message-list {
     background-color: #fff;
-  }
+    font-size: 28px;
 
-  .m-entry {
-    align-items: stretch;
-    height: initial;
-    padding: 30px 20px;
-  }
+    > li {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      border-bottom: 1px solid #ededed;
 
-  .m-entry-prepend {
-    margin: 0;
-    width: 76px;
-    height: 76px;
-  }
-
-  .m-entry-main {
-    margin-left: 30px;
-    margin-right: 30px;
-    h2 {
-      font-weight: 400;
-      font-size: 32px;
+      .m-svg-large {
+        flex: none;
+        width: 90px;
+        height: 90px;
+        margin-right: 15px;
+      }
     }
-    p {
-      font-size: 24px;
-      color: @text-color3;
-    }
-  }
 
-  .m-entry-end {
-    color: #ccc;
-    font-size: 24px;
+    .info {
+      flex: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      h2 {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      p {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .time, .description {
+        color: #999;
+      }
+    }
   }
 }
 </style>

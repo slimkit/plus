@@ -1,24 +1,22 @@
 <template>
-  <div :class="`${prefixCls}`">
+  <div class="msgList">
     <CommonHeader>{{ $t('message.like.name') }}</CommonHeader>
 
-    <div :class="`${prefixCls}-container`">
+    <div class="msgList-container">
       <JoLoadMore
         ref="loadmore"
-        :class="`${prefixCls}-loadmore`"
+        class="msgList-loadmore"
         @onRefresh="onRefresh"
         @onLoadMore="onLoadMore"
       >
         <div
-          v-for="like in likes"
-          v-if="like.id"
-          :key="like.id"
-          :class="`${prefixCls}-item`"
+          v-for="noti in likes"
+          :key="noti.id"
+          class="msgList-item"
         >
-          <Component
-            :is="items[like.likeable_type]"
-            :like="like"
-          />
+          <MessageLikesItem :like="noti.data">
+            {{ noti.created_at | time2tips }}
+          </MessageLikesItem>
         </div>
       </JoLoadMore>
     </div>
@@ -26,78 +24,62 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import { limit } from '@/api'
-import { resetUserCount } from '@/api/message.js'
-import MessageLikeFeedItem from './children/likes/MessageLikeFeedItem'
-import MessageLikeNewsItem from './children/likes/MessageLikeNewsItem'
-import MessageLikePostItem from './children/likes/MessageLikePostItem'
-import MessageLikeAnswerItem from './children/likes/MessageLikeAnswerItem'
+/**
+ * 消息-评论列表
+ */
+import * as api from '@/api/message.js'
+import MessageLikesItem from './MessageLikesItem.vue'
 
-const prefixCls = 'msgList'
-const items = {
-  'feeds': MessageLikeFeedItem,
-  'news': MessageLikeNewsItem,
-  'group-posts': MessageLikePostItem,
-  'question-answers': MessageLikeAnswerItem,
+const likeType = {
+  'feeds': {
+    title: '动态',
+    url: '/feed/',
+  },
+  'news': {
+    title: '资讯',
+    url: '/news/',
+  },
+  'questions': {
+    title: '问题',
+    url: '/questions/',
+  },
+  'question-answers': {
+    title: '回答',
+    url: '/question-answers/',
+  },
 }
-
 export default {
   name: 'MessageLikes',
+  components: {
+    MessageLikesItem,
+  },
   data: () => ({
-    prefixCls,
-    refreshData: [],
-    items,
+    likeType,
+    likes: [],
   }),
-  computed: {
-    ...mapState({
-      likes: state => state.MESSAGE.MY_LIKED || [],
-    }),
-  },
-  watch: {
-    refreshData (val) {
-      if (val.length > 0) {
-        this.$store.commit('SAVE_MY_LIKED', { type: 'new', data: val })
-      }
-    },
-  },
   mounted () {
     this.$refs.loadmore.beforeRefresh()
   },
   methods: {
-    // 刷新服务
     onRefresh () {
-      this.refreshData = []
-      this.$http
-        .get('/user/likes', {
-          validateStatus: s => s === 200,
-        })
+      const type = 'like'
+      api.getNotification({ type, page: this.page })
         .then(({ data }) => {
-          // 判断与现有数据的id的对比,加入新数据
-          if (data.length > 0) {
-            this.refreshData = data
-          }
-          resetUserCount('liked')
-          this.$refs.loadmore.afterRefresh(data.length < limit)
+          const noMore = data.meta.last_page <= data.meta.current_page
+          this.likes = data.data
+          api.resetNotificationCount(type)
+          this.$refs.loadmore.afterRefresh(noMore)
+          if (!noMore) this.page++
         })
     },
-
-    // loadmore
     onLoadMore () {
-      const { id = 0 } = this.likes.slice(-1)[0] || {}
-      this.$http
-        .get(
-          '/user/likes',
-          { params: { after: id } },
-          { validateStatus: s => s === 200 }
-        )
+      const type = 'like'
+      api.getNotification({ type, page: this.page })
         .then(({ data }) => {
-          if (data.length === 0) {
-            this.$refs.loadmore.afterLoadMore(true)
-            return false
-          }
-          this.$store.commit('SAVE_MY_LIKED', { type: 'more', data })
-          this.$refs.loadmore.afterLoadMore(data.length < limit)
+          const noMore = data.meta.last_page <= data.meta.current_page
+          this.likes.push(...data.data)
+          this.$refs.loadmore.afterLoadMore(noMore)
+          if (!noMore) this.page++
         })
     },
   },
