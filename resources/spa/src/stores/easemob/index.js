@@ -28,8 +28,8 @@ const mutations = {
 }
 
 const getters = {
-  unreadChat ({ chatRooms }) {
-    return chatRooms.some(room => room.unreadCount)
+  hasUnreadChat ({ chatRooms }) {
+    return chatRooms.some(room => room.unreadCount > 0)
   },
   getRoomById: ({ chatRooms }) => id => {
     return chatRooms.filter(item => item.id === id)

@@ -22,9 +22,12 @@
             <use :xlink:href="`#icon-discover-${icon}`" />
           </svg>
           <span class="m-flex-grow1">{{ title }}</span>
-          <BadgeIcon :dot="new_tips" class="m-entry-extra">
+          <VBadge
+            :dot="new_tips"
+            class="m-entry-extra"
+          >
             {{ tips }}
-          </BadgeIcon>
+          </VBadge>
           <svg class="m-style-svg m-svg-def entry__item--append">
             <use xlink:href="#icon-arrow-right" />
           </svg>

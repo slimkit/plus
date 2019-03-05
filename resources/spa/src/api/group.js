@@ -62,28 +62,3 @@ export function getPostCommentAudits ({ after = 0, post = 0 }) {
   const params = { after, limit, post }
   return api.get('/plus-group/pinned/comments', { params })
 }
-
-/**
- * 获取圈子审核列表
- * @author mutoe <mutoe@foxmail.com>
- * @export
- * @param {Object} payload
- * @param {number} [payload.after=0]
- * @returns
- */
-export function getGroupAudits ({ after }) {
-  const params = { after, limit }
-  return api.get('/plus-group/user-group-audit-members', { params })
-}
-
-/**
- * 批量获取帖子简单数据
- *
- * @author mutoe <mutoe@foxmail.com>
- * @export
- * @param {string} ids
- * @returns
- */
-export function getSimplePosts (ids) {
-  return api.get('/group/simple-posts', { params: { id: ids } })
-}

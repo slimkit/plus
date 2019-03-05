@@ -43,7 +43,7 @@ class WechatController extends Controller
         if ($url === '') {
             return response()->json(['message' => '微信配置错误'], 422);
         }
-        $url = urlencode($url);
+
         $originUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$config['appid'].'&redirect_uri='.$url.'&response_type=code&scope=snsapi_userinfo&state=true#wechat_redirect';
 
         return response()->json(['url' => $originUrl], 200);

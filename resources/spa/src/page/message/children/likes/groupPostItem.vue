@@ -52,14 +52,48 @@
 </template>
 
 <script>
-import MessageLikeItemBase from './MessageLikeItemBase'
-
+const prefixCls = 'msgList'
 export default {
-  name: 'MessageLikePostItem',
-  extends: MessageLikeItemBase,
+  name: 'GroupPostItem',
+  props: {
+    like: { type: Object, default: () => {} },
+  },
+  data: () => ({
+    prefixCls,
+  }),
+  computed: {
+    /**
+     * 获取图片,并计算地址
+     * @Author   Wayne
+     * @DateTime 2018-01-31
+     * @Email    qiaobin@zhiyicx.com
+     * @return   {[type]}            [description]
+     */
+    // getImage () {
+    //   const { like } = this;
+    //   const { length } = like.likeable.images;
+    //   if (length > 0) {
+    //     const { 0: img = {} } = like.likeable.images;
+    //     return `${this.$http.defaults.baseURL}/files/${img.id}`;
+    //   }
+    //   return false;
+    // }
+    user () {
+      return this.like.user || {}
+    },
+  },
   methods: {
+    /**
+     * 进入动态详情
+     * @Author   Wayne
+     * @DateTime 2018-01-31
+     * @Email    qiaobin@zhiyicx.com
+     * @return   {[type]}            [description]
+     */
     goToFeedDetail () {
-      const { likeable: { id = 0 } } = this.like
+      const {
+        likeable: { id = 0 },
+      } = this.like
       this.$router.push(`/feeds/${id}`)
     },
   },

@@ -1,50 +1,51 @@
 /**
  * 消息页面组件
+ * @Author   Wayne
+ * @DateTime 2018-01-29
+ * @Email    qiaobin@zhiyicx.com
+ * @return   {[type]}            [description]
  */
 
-const MessageBase = () =>
-  import(/* webpackChunkName: 'message' */ '@/page/message/MessageBase.vue')
-const MessageHome = () =>
-  import(/* webpackChunkName: 'message' */ '@/page/message/MessageHome.vue')
-
-// 消息
-const MessageSystem = () =>
-  import(/* webpackChunkName: 'message' */ '@/page/message/MessageSystem.vue')
-const MessageComments = () =>
-  import(/* webpackChunkName: 'message' */ '@/page/message/MessageComments.vue')
-const MessageLikes = () =>
-  import(/* webpackChunkName: 'message' */ '@/page/message/MessageLikes.vue')
+const notification = () =>
+  import(/* webpackChunkName: 'message' */ '@/page/message/list/MyNotifications.vue')
+const msgComments = () =>
+  import(/* webpackChunkName: 'message' */ '@/page/message/list/MyComments.vue')
+const msgLikes = () =>
+  import(/* webpackChunkName: 'message' */ '@/page/message/list/MyLikes.vue')
 const AuditList = () =>
   import(/* webpackChunkName: 'message' */ '@/page/message/list/AuditList')
 const feedCommentAudit = () =>
   import(/* webpackChunkName: 'message' */ '@/page/message/children/audits/feedCommentAudit')
 
-// 聊天
 const ChatList = () =>
-  import(/* webpackChunkName: 'message' */ '@/page/message/ChatList.vue')
+  import(/* webpackChunkName: 'message' */ '@/page/message2/chat/chat-list.vue')
 const ChatRoom = () =>
-  import(/* webpackChunkName: 'message' */ '@/page/message/ChatRoom.vue')
+  import(/* webpackChunkName: 'message' */ '@/page/message2/chat/chat-room.vue')
+
+// 通知
+const MessageIndex = () =>
+  import(/* webpackChunkName: 'message' */ '@/page/message2/index.vue')
+const info = () =>
+  import(/* webpackChunkName: 'message' */ '@/page/message2/info/index.vue')
 
 export default [
   {
     path: '/message',
-    component: MessageBase,
-    redirect: '/message/list',
+    component: MessageIndex,
+    redirect: '/message/info',
     meta: {
       requiresAuth: true,
     },
     children: [
       {
-        path: 'list',
-        name: 'MessageHome',
-        component: MessageHome,
+        path: 'info',
+        component: info,
         meta: {
           title: '消息',
         },
       },
       {
         path: 'chats',
-        name: 'ChatList',
         component: ChatList,
         meta: {
           title: '聊天',
@@ -53,40 +54,35 @@ export default [
     ],
   },
   {
-    path: '/message/chats/:chatId(\\d+)',
-    name: 'ChatRoom',
+    path: '/chats/:chatId(\\d+)',
     component: ChatRoom,
     meta: {
       title: '对话',
+      requiresAuth: true,
     },
   },
   {
-    path: '/message/system',
-    component: MessageSystem,
+    path: '/message/notification',
+    component: notification,
     meta: {
-      title: '系统消息',
+      title: '通知',
       requiresAuth: true,
-      keepAlive: true,
     },
   },
   {
     path: '/message/comments',
-    name: 'MessageComments',
-    component: MessageComments,
+    component: msgComments,
     meta: {
       title: '评论我的',
       requiresAuth: true,
-      keepAlive: true,
     },
   },
   {
     path: '/message/likes',
-    name: 'MessageLikes',
-    component: MessageLikes,
+    component: msgLikes,
     meta: {
       title: '赞过我的',
       requiresAuth: true,
-      keepAlive: true,
     },
   },
   {

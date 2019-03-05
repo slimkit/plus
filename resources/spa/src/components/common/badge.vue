@@ -5,9 +5,11 @@
     :class="classes"
   >
     <slot />
-    <sup :class="dotClasses" />
+    <sup
+      v-show="badge"
+      :class="dotClasses"
+    />
   </span>
-
   <span
     v-else
     ref="badge"
@@ -28,10 +30,10 @@
 const prefixCls = 'v-badge'
 
 export default {
-  name: 'BadgeIcon',
+  name: 'VBadge',
   props: {
     count: { type: [Number, String], default: 0 },
-    dot: { type: [Boolean, Number], default: false },
+    dot: { type: Boolean, default: false },
     overflowCount: { type: [Number, String], default: 99 },
     className: { type: String, default: '' },
   },
@@ -88,19 +90,21 @@ export default {
 
   &-count {
     position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    transform: translateX(50%);
+    top: -10px;
     right: 0;
-    height: 32px;
-    width: 32px;
-    border-radius: 32px;
+    height: 20px;
+    min-width: 20px;
+    border-radius: 10px;
     background: @error;
     border: 1px solid transparent; /*no*/
     color: #fff;
-    font-size: 20px;
+    line-height: 20px;
+    text-align: center;
+    padding: 0 6px;
+    font-size: 16px;
     white-space: nowrap;
-    // transform-origin: -10% center;
+    transform-origin: -10% center;
     z-index: 10;
     box-shadow: 0 0 0 1px @error; /*no*/
 
@@ -111,8 +115,9 @@ export default {
 
     &-alone {
       top: auto;
+      display: block;
       position: relative;
-      transform: scale(0.9);
+      transform: translateX(0);
     }
   }
 
@@ -120,7 +125,7 @@ export default {
     position: absolute;
     transform: translateX(-50%);
     transform-origin: 0 center;
-    top: 2px; /* no */
+    top: -3px; /* no */
     right: -6px; /* no */
     height: 6px; /* no */
     width: 6px; /* no */

@@ -1,14 +1,18 @@
 <template>
   <div class="profile-group">
     <HeadTop :go-back="cancel">
-      <div slot="nav" class="head-top-tabs-nav">
+      <div
+        slot="nav"
+        class="head-top-tabs-nav"
+      >
         <RouterLink
           v-for="({label, path}, index) in types"
           :key="`profile-group-tab-${index}`"
           :to="path"
           class="head-top-tabs-nav-item"
-          v-text="label"
-        />
+        >
+          {{ label }}
+        </RouterLink>
       </div>
     </HeadTop>
     <KeepAlive>
@@ -16,10 +20,8 @@
     </KeepAlive>
   </div>
 </template>
-
 <script>
 import HeadTop from '@/components/HeadTop'
-
 export default {
   name: 'ProfileGroup',
   components: {
@@ -46,10 +48,8 @@ export default {
   },
 }
 </script>
-
 <style lang='less'>
 @profile-group-prefix: profile-group;
-
 .@{profile-group-prefix} {
   &-nav {
     position: fixed;

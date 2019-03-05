@@ -31,13 +31,13 @@
     <section
       :class="{active: isCurPath('/message')}"
       class="guide-item"
-      @click="to({name: 'MessageHome'})"
+      @click="to('/message/info')"
     >
-      <BadgeIcon :dot="notification">
+      <VBadge :dot="hasMsg">
         <svg class="m-style-svg m-svg-def">
           <use xlink:href="#icon-foot-message" />
         </svg>
-      </BadgeIcon>
+      </VBadge>
       <span>消息</span>
     </section>
     <section
@@ -45,11 +45,11 @@
       class="guide-item"
       @click="to('/profile')"
     >
-      <BadgeIcon :dot="profile">
+      <VBadge :dot="profile">
         <svg class="m-style-svg m-svg-def">
           <use xlink:href="#icon-foot-profile" />
         </svg>
-      </BadgeIcon>
+      </VBadge>
       <span>我</span>
     </section>
   </footer>
@@ -62,23 +62,37 @@ export default {
   name: 'FootGuide',
   data () {
     return {
-      // has_fans: false,
+      has_fans: false,
     }
   },
   computed: {
-    ...mapState('message', {
-      profile: state => state.user.following + state.user.mutual > 0,
+    ...mapState({
+      has_msg: state =>
+        state.MESSAGE.NEW_UNREAD_COUNT.commented +
+          state.MESSAGE.NEW_UNREAD_COUNT['feed-comment-pinned'] +
+          state.MESSAGE.NEW_UNREAD_COUNT['group-join-pinned'] +
+          state.MESSAGE.NEW_UNREAD_COUNT.liked +
+          state.MESSAGE.NEW_UNREAD_COUNT['news-comment-pinned'] +
+          state.MESSAGE.NEW_UNREAD_COUNT['post-comment-pinned'] +
+          state.MESSAGE.NEW_UNREAD_COUNT['post-pinned'] +
+          state.MESSAGE.NEW_UNREAD_COUNT.system >
+        0,
+      profile: state =>
+        state.MESSAGE.NEW_UNREAD_COUNT.following +
+          state.MESSAGE.NEW_UNREAD_COUNT.mutual >
+        0,
     }),
-    ...mapGetters('message', {
-      notification: 'unreadMessage',
-    }),
+    ...mapGetters(['hasUnreadChat']),
+    hasMsg () {
+      return this.has_msg || this.hasUnreadChat > 0
+    },
   },
   mounted () {
     this.$el.parentNode.style.paddingBottom = '1rem'
   },
   methods: {
     to (path) {
-      this.$router.push(path)
+      this.$router.push({ path })
     },
     isCurPath (path) {
       return this.$route.fullPath.indexOf(path) > -1

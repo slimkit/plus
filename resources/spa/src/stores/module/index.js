@@ -1,5 +1,5 @@
 import rank from './rank/'
-import message from './message'
+import MESSAGE from './message'
 import post from './post'
 import easemob from './easemob'
 import wallet from './wallet'
@@ -13,7 +13,7 @@ import topic from './topic'
 export default {
   rank,
   post,
-  message,
+  MESSAGE,
   easemob,
   wallet,
   currency,
