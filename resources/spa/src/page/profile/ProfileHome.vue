@@ -109,7 +109,6 @@
 <script>
 import _ from 'lodash'
 import { mapState, mapActions } from 'vuex'
-import { resetUserCount } from '@/api/message'
 import ProfileItem from './components/ProfileItem'
 
 export default {
@@ -161,13 +160,6 @@ export default {
     this.$store.dispatch('fetchUserInfo')
     this.$store.dispatch('FETCH_USER_VERIFY')
     this.getUnreadCount()
-  },
-  beforeRouteLeave (to, from, next) {
-    const { params: { type } } = to
-    const resetType =
-      type === 'followers' ? 'following' : type === 'mutual' ? 'mutual' : ''
-    resetType && resetUserCount(resetType)
-    next()
   },
   methods: {
     ...mapActions('message', {

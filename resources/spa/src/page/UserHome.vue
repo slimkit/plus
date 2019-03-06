@@ -54,8 +54,8 @@
         <p v-if="tags.length" class="user-tags">
           <span
             v-for="tag in tags"
-            :show="tag.id"
             :key="`tag-${tag.id}`"
+            :show="tag.id"
             class="tag-item"
             v-text="tag.name"
           />
@@ -122,15 +122,14 @@
 </template>
 
 <script>
-import _ from 'lodash'
-import HeadRoom from 'headroom.js'
 import { limit } from '@/api'
 import uploadApi from '@/api/upload'
-import * as api from '@/api/user'
+import * as userApi from '@/api/user'
 import wechatShare from '@/util/wechatShare'
 import { checkImageType } from '@/util/imageCheck'
 import { startSingleChat } from '@/vendor/easemob'
 import FeedCard from '@/components/FeedCard/FeedCard.vue'
+import PortalPanel from '@/components/PortalPanel.vue'
 
 export default {
   name: 'UserHome',

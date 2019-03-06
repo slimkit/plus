@@ -14,9 +14,8 @@
 </template>
 
 <script>
-import * as api from '@/api/user.js'
 import { limit } from '@/api'
-import { findUserByType } from '@/api/user.js'
+import * as api from '@/api/user.js'
 import UserItem from '@/components/UserItem.vue'
 
 export default {

@@ -35,8 +35,6 @@
 </template>
 
 <script>
-import * as api from '@/api/topic'
-import _ from 'lodash'
 import { mapState } from 'vuex'
 import { limit } from '@/api'
 import * as api from '@/api/topic'
