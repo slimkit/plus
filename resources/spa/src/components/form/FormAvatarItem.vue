@@ -39,7 +39,7 @@ export default {
   },
   data () {
     return {
-      avatar: this.$props.value.url,
+      avatar: (this.$props.value || {}).url,
     }
   },
   methods: {
