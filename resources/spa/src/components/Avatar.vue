@@ -1,12 +1,19 @@
 <template>
-  <div
+  <span
+    v-if="anonymity"
+    :class="styles"
+    class="m-avatar-box anonymity"
+  >
+    {{ $t('hide') }}
+  </span>
+  <RouterLink
+    v-else
+    :to="path"
     :class="styles"
     class="m-avatar-box c-avatar"
     @click="viewUser"
   >
-    <template v-if="anonymity">{{ $t('hide') }}</template>
     <img
-      v-else-if="avatar"
       :src="avatar"
       class="m-avatar-img"
       @error="handelError"
@@ -17,7 +24,7 @@
       :class="iconClass"
       class="m-avatar-icon"
     />
-  </div>
+  </RouterLink>
 </template>
 
 <script>
@@ -54,6 +61,9 @@ export default {
       else if (verified.type) return {}
       else return false
     },
+    path () {
+      return this.user.id ? `/users/${this.user.id}` : 'javascript:;'
+    },
     styles () {
       const sex = ['secret', 'man', 'woman']
       return this.avatar || this.anonymity
@@ -84,7 +94,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.c-avatar {
+.m-avatar-box {
+  &.anonymity {
+    background-color: #ccc;
+  }
+
   .m-avatar-icon {
     &.user {
       background-image: url('~@/images/cert_user.png');
