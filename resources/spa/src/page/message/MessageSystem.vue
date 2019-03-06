@@ -33,7 +33,7 @@ export default {
         case 'reward:feeds':
           return `${data.sender.name}打赏了你的动态`
         case 'reward:news':
-          return `你的资讯《${data.news.name}》被${data.user.name}打赏了${data.amount}${this.currencyUnit}`
+          return `你的资讯《${data.news.title}》被${data.user.name}打赏了${data.amount}${this.currencyUnit}`
         case 'group:join':
           return `${data.user ? data.user.name : ''}请求加入圈子「${data.group.name}」`
         case 'user-certification':
@@ -47,12 +47,12 @@ export default {
           return `${data.user.name}打赏了你的回答`
         case 'pinned:feed/comment':
           return data.state === 'rejected'
-            ? `拒绝用户动态评论「${data.comment.name}」的置顶请求`
-            : `同意用户动态评论「${data.comment.name}」的置顶请求`
+            ? `拒绝用户动态评论「${data.comment.contents}」的置顶请求`
+            : `同意用户动态评论「${data.comment.contents}」的置顶请求`
         case 'pinned:news/comment':
           return data.state === 'rejected'
-            ? `拒绝用户关于资讯《${data.news.name}》评论「${data.comment.name}」的置顶请求`
-            : `同意用户关于资讯《${data.news.name}》评论「${data.comment.name}」的置顶请求`
+            ? `拒绝用户关于资讯《${data.news.title}》评论「${data.comment.contents}」的置顶请求`
+            : `同意用户关于资讯《${data.news.title}》评论「${data.comment.contents}」的置顶请求`
         case 'group:comment-pinned':
         case 'group:send-comment-pinned':
           return data.state === 'rejected'
