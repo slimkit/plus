@@ -11,7 +11,12 @@
           <svg class="m-style-svg m-svg-large"><use xlink:href="#icon-message-notice" /></svg>
           <div class="info">
             <h2>系统消息 <span class="time">{{ system.first.created_at | time2tips }}</span></h2>
-            <p v-if="system.badge" class="description">{{ system.first.data.contents }} <BadgeIcon v-if="system.badge" :count="system.badge" /></p>
+            <p v-if="system.badge" class="description">
+              <template v-if="system.first.data.contents">{{ system.first.data.contents }}</template>
+              <template v-else-if="system.first.data.type === 'reward:news'">你的资讯《{{ system.first.data.news.title }}》被{{ system.first.data.sender.name }}打赏了{{ system.first.data.amount }}{{ system.first.data.unit }}</template>
+
+              <BadgeIcon v-if="system.badge" :count="system.badge" />
+            </p>
             <p v-else class="description">暂无系统消息</p>
           </div>
         </RouterLink>
