@@ -26,7 +26,7 @@
                         </a>
                         @break
 					@case('group:join')
-						@if($ref['state'] == 'rejected')
+						@if($ref['state'] ?? 'accept'== 'rejected')
 						<a href="{{route('pc:groupread', ['group_id'=>$ref['group']['id']])}}">
 							拒绝用户加入「{{ $ref['group']['name'] }}」圈子
 						</a>
@@ -38,7 +38,7 @@
                         @break
                     @case('user-certification')
                         <a href="{{route('pc:authenticate')}}">
-                        @if($ref['state'] == 'rejected')
+                        @if($ref['state'] ?? 'accept' == 'rejected')
                             你申请的身份认证已被驳回，驳回理由：{{ $ref['contents'] }}
                         @else
                             你申请的身份认证已通过
@@ -62,7 +62,7 @@
                         @break
                     @case('pinned:feed/comment')
                         <a href="{{route('pc:feedread', ['feed'=>$ref['feed']['id']])}}">
-                        @if($ref['state'] == 'rejected')
+                        @if($ref['state'] ?? 'accept' == 'rejected')
                             拒绝用户动态评论「{{ $ref['comment']['contents'] }}」的置顶请求
                         @else
                             同意用户动态评论「{{ $ref['comment']['contents'] }}」的置顶请求
@@ -71,7 +71,7 @@
                         @break
 					@case('pinned:news/comment')
                         <a href="{{route('pc:newsread', ['news'=>$ref['news']['id']])}}">
-                        @if($ref['state'] == 'rejected')
+                        @if($ref['state'] ?? 'accept' == 'rejected')
                             拒绝用户关于资讯《{{ $ref['news']['title'] }}》评论「{{ $ref['comment']['contents'] }}」的置顶请求
                         @else
                             同意用户关于资讯《{{ $ref['news']['title'] }}》评论「{{ $ref['comment']['contents'] }}」的置顶请求
@@ -81,7 +81,7 @@
                     @case('group:comment-pinned')
                     @case('group:send-comment-pinned')
                         <a href="{{route('pc:grouppost', ['group_id'=>$ref['group_id'], ''=>$ref['post']['id']])}}">
-                        @if($ref['state'] == 'rejected')
+                        @if($ref['state'] ?? 'accept' == 'rejected')
                             拒绝帖子「{{ $ref['post']['title']}}」的评论置顶请求
                         @else
                             同意帖子「{{ $ref['post']['title']}}」的评论置顶请求
@@ -90,7 +90,7 @@
                         @break
                     @case('group:post-pinned')
                         <a href="{{route('pc:grouppost', ['group_id'=>$ref['group_id'], ''=>$ref['post']['id']])}}">
-                        @if($ref['state'] == 'rejected')
+                        @if($ref['state'] ?? 'accept' == 'rejected')
                             拒绝用于帖子「{{ $ref['post']['title']}}」的置顶请求
                         @else
                             同意用于帖子「{{ $ref['post']['title']}}」的置顶请求
