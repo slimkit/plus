@@ -56,6 +56,7 @@ module.exports = {
                 '1.9-to-2.0',
                 '2.0-to-2.1',
                 '2.1-to-2.2',
+                '2.2-to-2.3',
             ],
             '/guide/dev/blog/': [
                 '',
