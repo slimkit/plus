@@ -102,11 +102,12 @@ export const time2tips = date => {
       .toLocaleDateString() // > "2018/10/19"
       .replace(/^\d{4}\/(\d{2})\/(\d{2})/, '$1-$2') // > 10-19
   } catch (e) {
-    return offset
+    console.warn('time2tips error: ', { date, time }) // eslint-disable-line no-console
+    return ''
   }
   if (offset < 3600 * 24 * 2) return i18n.t('date.yesterday', { time: timeStr })
   if (offset < 3600 * 24 * 9) return i18n.t('date.days_ago', { day: ~~(offset / 3600 / 24) })
-  // 根据 time 06-19
+
   return dateStr
 }
 
