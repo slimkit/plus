@@ -1,6 +1,6 @@
 {
   "name": "@slimkit/plus-small-screen-client",
-  "version": "4.4.0",
+  "version": "4.5.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
