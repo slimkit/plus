@@ -3,13 +3,17 @@
     <h5 v-if="noContent">该动态不存在或已被删除</h5>
     <RouterLink v-else :to="`/feeds/${id}`">
       <AsyncFile
-        v-if="image"
+        v-if="cover"
         class="image"
-        :file="image.file"
+        :file="cover"
         :w="80"
         :h="80"
       >
-        <div slot-scope="props" :style="{backgroundImage: `url(${props.src})`}" />
+        <div
+          slot-scope="{ src }"
+          :class="{video: isVideo}"
+          :style="{backgroundImage: `url(${src})`}"
+        />
       </AsyncFile>
       <div>{{ feed.feed_content }}</div>
     </RouterLink>
@@ -34,6 +38,17 @@ export default {
     image () {
       const images = this.feed.images || []
       return images[0]
+    },
+    isVideo () {
+      return !!this.feed.video
+    },
+    cover () {
+      if (this.isVideo) {
+        return this.feed.video.cover_id
+      } else if (this.image) {
+        return this.image.file
+      }
+      return null
     },
   },
   mounted () {
@@ -74,6 +89,34 @@ export default {
       width: 100%;
       height: 100%;
       background: no-repeat center / cover;
+    }
+  }
+
+  .video {
+    position: relative;
+
+    &::after,
+    &::before {
+      content: '';
+      position: absolute;
+      display: block;
+    }
+
+    &::after {
+      left: 10px;
+      top: 10px;
+      width: 60px;
+      height: 60px;
+      border: 1px solid #fff;
+      border-radius: 30px;
+    }
+
+    &::before {
+      left: 35px;
+      top: 25px;
+      border: 30px solid transparent;
+      border-width: 15px 25px;
+      border-left-color: #fff;
     }
   }
 
