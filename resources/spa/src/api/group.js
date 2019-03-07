@@ -84,6 +84,11 @@ export function getGroupAudits ({ after }) {
  * @param {string} ids
  * @returns
  */
-export function getSimplePosts (ids) {
-  return api.get('/group/simple-posts', { params: { id: ids } })
+export function getSimplePosts (ids, { allow404 = false }) {
+  const allowedStatus = [200]
+  if (allow404) allowedStatus.push(404)
+  return api.get('/group/simple-posts', {
+    params: { id: ids },
+    validateStatus: s => allowedStatus.includes(s),
+  })
 }

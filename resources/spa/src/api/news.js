@@ -51,8 +51,10 @@ export function getMyNews ({ type = 0, after = 0 }) {
  * @param {number} newsId
  * @returns {Promise<NewsObject>}
  */
-export function getNewsById (newsId) {
-  return api.get(`/news/${newsId}`, { validateStatus: s => s === 200 })
+export function getNewsById (newsId, { allow404 = false }) {
+  const allowedStatus = [200]
+  if (allow404) allowedStatus.push(404)
+  return api.get(`/news/${newsId}`, { validateStatus: s => allowedStatus.includes(s) })
 }
 
 /**

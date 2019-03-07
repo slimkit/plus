@@ -1,16 +1,19 @@
 <template>
-  <RouterLink class="c-reference-feed" :to="`/feeds/${id}`">
-    <AsyncFile
-      v-if="image"
-      class="image"
-      :file="image.file"
-      :w="80"
-      :h="80"
-    >
-      <div slot-scope="props" :style="{backgroundImage: `url(${props.src})`}" />
-    </AsyncFile>
-    <div>{{ feed.feed_content }}</div>
-  </RouterLink>
+  <div class="c-reference-feed">
+    <h5 v-if="noContent">该动态不存在或已被删除</h5>
+    <RouterLink v-else :to="`/feeds/${id}`">
+      <AsyncFile
+        v-if="image"
+        class="image"
+        :file="image.file"
+        :w="80"
+        :h="80"
+      >
+        <div slot-scope="props" :style="{backgroundImage: `url(${props.src})`}" />
+      </AsyncFile>
+      <div>{{ feed.feed_content }}</div>
+    </RouterLink>
+  </div>
 </template>
 
 <script>
@@ -24,6 +27,7 @@ export default {
   data () {
     return {
       feed: {},
+      noContent: false,
     }
   },
   computed: {
@@ -36,11 +40,13 @@ export default {
     this.fetchFeed()
   },
   methods: {
-    fetchFeed () {
-      api.getFeed(this.id)
-        .then(({ data: feed }) => {
-          this.feed = feed
-        })
+    async fetchFeed () {
+      const { data: feed, status } = await api.getFeed(this.id, { allow404: true })
+      if (status === 404) {
+        this.noContent = true
+      } else {
+        this.feed = feed
+      }
     },
   },
 }
@@ -48,12 +54,16 @@ export default {
 
 <style lang="less" scoped>
 .c-reference-feed {
-  display: flex;
-  align-items: center;
   padding: 15px 20px;
   background-color: #f4f5f5;
   color: #999;
   font-size: 26px;
+
+  > a {
+    display: flex;
+    align-items: center;
+    color: #999;
+  }
 
   .image {
     width: 80px;

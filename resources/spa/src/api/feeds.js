@@ -33,10 +33,13 @@ export function getFeeds (params) {
  * @author mutoe <mutoe@foxmail.com>
  * @export
  * @param {string} feedId
+ * @param {boolean} [params.allow404=false] 允许404
  * @returns
  */
-export function getFeed (feedId) {
-  return api.get(`/feeds/${feedId}`)
+export function getFeed (feedId, { allow404 = false }) {
+  const allowedStatus = [200]
+  if (allow404) allowedStatus.push(404)
+  return api.get(`/feeds/${feedId}`, { validateStatus: s => allowedStatus.includes(s) })
 }
 
 /**
