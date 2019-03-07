@@ -22,19 +22,19 @@
                         @break
                     @case('reward:news')
                         <a href="{{route('pc:newsread', ['news'=>$ref['news']['id']])}}">
-                            你的资讯《{{ $ref['news']['title'] }}》被{{ $ref['user']['name'] }}打赏了{{ $ref['amount'].$ref['unit'] }}
+                            你的资讯《{{ $ref['news']['title'] }}》被{{ $ref['sender']['name'] }}打赏了{{ $ref['amount'].$ref['unit'] }}
                         </a>
                         @break
-					@case('group:join')
-						@if($ref['state'] ?? 'accept'== 'rejected')
+                    @case('group:join')
+                        @if($ref['state'] ?? 'accept'== 'rejected')
                             <a href="{{route('pc:groupread', ['group_id'=>$ref['group']['id']])}}">
                                 拒绝用户加入「{{ $ref['group']['name'] }}」圈子
                             </a>
-						@else
-							<a href="{{route('pc:groupread', ['group_id'=>$ref['group']['id']])}}">
-								{{ $ref['user'] ? $ref['user']['name'] : ''}}请求加入圈子「{{ $ref['group']['name'] }}」
-							</a>
-						@endif
+                        @else
+                            <a href="{{route('pc:groupread', ['group_id'=>$ref['group']['id']])}}">
+                                {{ $ref['user'] ? $ref['user']['name'] : ''}}请求加入圈子「{{ $ref['group']['name'] }}」
+                            </a>
+                        @endif
                         @break
                     @case('user-certification')
                         <a href="{{route('pc:authenticate')}}">
@@ -45,8 +45,8 @@
                         @endif
                         </a>
                         @break
-					@case('qa:answer-adoption')
-					@case('question:answer')
+                    @case('qa:answer-adoption')
+                    @case('question:answer')
                         <a href="{{route('pc:answeread', ['question'=>$ref['question']['id'],'answer'=>$ref['answer']['id']])}}">
                             你提交的问题回答被采纳
                         </a>
@@ -54,6 +54,11 @@
                     @case('qa:reward')
                         <a href="{{route('pc:answeread', ['question'=>$ref['answer']['question_id'],'answer'=>$ref['answer']['id']])}}">
                             {{ $ref['sender']['name'] }}打赏了你的回答
+                        </a>
+                        @break
+                    @case('qa:invitation')
+                        <a href="{{route('pc:questionread', ['question'=>$ref['question']['id']])}}">
+                            {{ $ref['sender']['name'] }}邀请你回答问题「{{ $ref['question']['subject'] }}」
                         </a>
                         @break
                     @case('pinned:feed/comment')
@@ -65,7 +70,7 @@
                         @endif
                         </a>
                         @break
-					@case('pinned:news/comment')
+                    @case('pinned:news/comment')
                         <a href="{{route('pc:newsread', ['news'=>$ref['news']['id']])}}">
                         @if($ref['state'] ?? 'accept' == 'rejected')
                             拒绝用户关于资讯《{{ $ref['news']['title'] }}》评论「{{ $ref['comment']['contents'] }}」的置顶请求

@@ -1,16 +1,19 @@
 <template>
-  <RouterLink class="c-reference-post" :to="`/group/${post.group_id}/post/${id}`">
-    <AsyncFile
-      v-if="post.image"
-      class="image"
-      :file="post.image"
-      :w="80"
-      :h="80"
-    >
-      <div slot-scope="props" :style="{backgroundImage: `url(${props.src})`}" />
-    </AsyncFile>
-    <div>{{ post.title }}</div>
-  </RouterLink>
+  <div class="c-reference-post">
+    <h5 v-if="noContent">该帖子不存在或已被删除</h5>
+    <RouterLink v-else :to="`/group/${post.group_id}/post/${id}`">
+      <AsyncFile
+        v-if="post.image"
+        class="image"
+        :file="post.image"
+        :w="80"
+        :h="80"
+      >
+        <div slot-scope="props" :style="{backgroundImage: `url(${props.src})`}" />
+      </AsyncFile>
+      <div>{{ post.title }}</div>
+    </RouterLink>
+  </div>
 </template>
 
 <script>
@@ -24,17 +27,20 @@ export default {
   data () {
     return {
       post: {},
+      noContent: false,
     }
   },
   mounted () {
     this.fetchPost()
   },
   methods: {
-    fetchPost () {
-      api.getSimplePosts(`${this.id}`)
-        .then(({ data }) => {
-          this.post = data[0]
-        })
+    async fetchPost () {
+      const { data: posts, status } = await api.getSimplePosts(`${this.id}`, { allow404: true })
+      if (status === 404) {
+        this.noContent = true
+      } else {
+        this.post = posts[0]
+      }
     },
   },
 }
@@ -42,12 +48,15 @@ export default {
 
 <style lang="less" scoped>
 .c-reference-post {
-  display: flex;
-  align-items: center;
   padding: 15px 20px;
   background-color: #f4f5f5;
-  color: #999;
   font-size: 26px;
+
+  > a {
+    display: flex;
+    align-items: center;
+    color: #999;
+  }
 
   .image {
     width: 80px;

@@ -1,16 +1,19 @@
 <template>
-  <RouterLink class="c-reference-news" :to="`/news/${id}`">
-    <AsyncFile
-      v-if="image"
-      class="image"
-      :file="image.file"
-      :w="80"
-      :h="80"
-    >
-      <div slot-scope="props" :style="{backgroundImage: `url(${props.src})`}" />
-    </AsyncFile>
-    <div>{{ news.title }}</div>
-  </RouterLink>
+  <div class="c-reference-news">
+    <h5 v-if="noContent">该资讯不存在或已被删除</h5>
+    <RouterLink v-else :to="`/news/${id}`">
+      <AsyncFile
+        v-if="image"
+        class="image"
+        :file="image.file"
+        :w="80"
+        :h="80"
+      >
+        <div slot-scope="props" :style="{backgroundImage: `url(${props.src})`}" />
+      </AsyncFile>
+      <div>{{ news.title }}</div>
+    </RouterLink>
+  </div>
 </template>
 
 <script>
@@ -24,6 +27,7 @@ export default {
   data () {
     return {
       news: {},
+      noContent: false,
     }
   },
   computed: {
@@ -35,11 +39,13 @@ export default {
     this.fetchNews()
   },
   methods: {
-    fetchNews () {
-      api.getNewsById(this.id)
-        .then(({ data: news }) => {
-          this.news = news
-        })
+    async fetchNews () {
+      const { data: news, status } = await api.getNewsById(this.id, { allow404: true })
+      if (status === 404) {
+        this.noContent = true
+      } else {
+        this.news = news
+      }
     },
   },
 }
@@ -47,12 +53,15 @@ export default {
 
 <style lang="less" scoped>
 .c-reference-news {
-  display: flex;
-  align-items: center;
   padding: 15px 20px;
   background-color: #f4f5f5;
-  color: #999;
   font-size: 26px;
+
+  > a {
+    display: flex;
+    align-items: center;
+    color: #999;
+  }
 
   .image {
     width: 80px;
