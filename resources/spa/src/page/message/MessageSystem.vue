@@ -71,6 +71,8 @@ export default {
           url = `/question/${data.question.id}/answer/${data.answer.id}`; break
         case 'qa:reward':
           url = `/question/${data.answer.question_id}/answer/${data.answer.id}`; break
+        case 'qa:invitation':
+          url = `/question/${data.question.id}`; break
         case 'pinned:feed/comment':
           url = `/feeds/${data.feed.id}`; break
         case 'pinned:news/comment':

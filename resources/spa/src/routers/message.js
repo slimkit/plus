@@ -42,6 +42,7 @@ export default [
         component: MessageHome,
         meta: {
           title: i18n.t('message.notice'),
+          keepAlive: true,
         },
       },
       {

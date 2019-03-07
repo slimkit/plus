@@ -177,9 +177,11 @@ export function getNotificationDisplay (data) {
         : `你申请的身份认证已通过`
     case 'qa:answer-adoption':
     case 'question:answer':
-      return `你提交的回答“${data.answer.body}”被采纳`
+      return `你提交的回答「${data.answer.body}」被采纳`
     case 'qa:reward':
       return `${data.sender.name}打赏了你的回答`
+    case 'qa:invitation':
+      return `${data.sender.name}邀请你回答问题「${data.question.subject}」`
     case 'pinned:feed/comment':
       return data.state === 'rejected'
         ? `拒绝用户动态评论「${data.comment.contents}」的置顶请求`

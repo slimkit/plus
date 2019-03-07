@@ -34,7 +34,8 @@ export default {
     currentType: {
       get () {
         const { path } = this.$route
-        return path.match(/^\/message\/(\S+)$/)[1]
+        const match = path.match(/^\/message\/(\S+)$/)
+        return match ? match[1] : 'list'
       },
       set (val) {
         const routeName = val === 'list' ? 'MessageHome' : 'ChatList'

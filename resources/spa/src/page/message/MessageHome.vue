@@ -3,7 +3,6 @@
     <JoLoadMore
       ref="loadmore"
       :show-bottom="false"
-      :auto-load="true"
       @onRefresh="fetchMessage"
     >
       <ul class="message-list">
@@ -73,7 +72,9 @@ export default {
       unreadAudits: 'unreadAudits',
     }),
   },
-
+  activated () {
+    this.$refs.loadmore.beforeRefresh()
+  },
   methods: {
     ...mapActions('message', {
       getNotificationStatistics: 'getNotificationStatistics',
