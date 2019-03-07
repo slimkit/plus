@@ -161,8 +161,8 @@ export function t (params, keypath) {
  */
 export function getNotificationDisplay (data) {
   switch (data.type) {
-    case 'user':
-      return `${data.user.name}打赏了你`
+    case 'reward':
+      return `${data.sender.name}打赏了你`
     case 'reward:feeds':
       return `${data.sender.name}打赏了你的动态`
     case 'reward:news':
@@ -177,9 +177,9 @@ export function getNotificationDisplay (data) {
         : `你申请的身份认证已通过`
     case 'qa:answer-adoption':
     case 'question:answer':
-      return `你提交的问题回答被采纳`
+      return `你提交的回答“${data.answer.body}”被采纳`
     case 'qa:reward':
-      return `${data.user.name}打赏了你的回答`
+      return `${data.sender.name}打赏了你的回答`
     case 'pinned:feed/comment':
       return data.state === 'rejected'
         ? `拒绝用户动态评论「${data.comment.contents}」的置顶请求`

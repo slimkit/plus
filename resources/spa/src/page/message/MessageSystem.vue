@@ -56,8 +56,8 @@ export default {
     jump (data) {
       let url
       switch (data.type) {
-        case 'user':
-          url = `/user/${data.user.id}`; break
+        case 'reward':
+          url = `/users/${data.sender.id}`; break
         case 'reward:feeds':
           url = `/feeds/${data.feed_id}`; break
         case 'reward:news':
@@ -68,10 +68,11 @@ export default {
           url = data.state === 'rejected' ? '/profile/certificate' : '/profile/certification'; break
         case 'qa:answer-adoption':
         case 'question:answer':
+          url = `/question/${data.question.id}/answer/${data.answer.id}`; break
         case 'qa:reward':
-          url = `/question/${data.question_id}/answer/${data.answer_id}`; break
+          url = `/question/${data.answer.question_id}/answer/${data.answer.id}`; break
         case 'pinned:feed/comment':
-          url = `/feeds/${data.feed_id}`; break
+          url = `/feeds/${data.feed.id}`; break
         case 'pinned:news/comment':
           url = `/news/${data.news.id}`; break
         case 'group:comment-pinned':
