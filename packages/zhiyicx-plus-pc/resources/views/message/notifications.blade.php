@@ -11,7 +11,7 @@
                 <div class="tz-content">
                     @switch($ref['type'])
                     @case('reward')
-                        <a href="{{route('pc:mine', ['user' => $ref['user']['id']])}}">
+                        <a href="{{route('pc:mine', ['user' => $ref['sender']['id']])}}">
                             {{ $ref['sender']['name'] }}打赏了你
                         </a>
                         @break
