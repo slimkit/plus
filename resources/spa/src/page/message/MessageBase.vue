@@ -4,7 +4,7 @@
       <span slot="left" />
       <nav class="type-switch-bar">
         <span :class="{active: currentType === 'list'}" @click="currentType = 'list'">
-          <BadgeIcon :dot="unreadMessage">{{ $t('message.name') }}</BadgeIcon>
+          <BadgeIcon :dot="unreadMessage">{{ $t('message.notice') }}</BadgeIcon>
         </span>
         <span :class="{active: currentType === 'chats'}" @click="currentType = 'chats'">
           <BadgeIcon :dot="unreadChat">{{ $t('message.chat.name') }}</BadgeIcon>

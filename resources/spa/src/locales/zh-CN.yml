@@ -590,6 +590,7 @@ question:
 
 message:
   name: 消息
+  notice: 通知
 
   system:
     name: 系统消息

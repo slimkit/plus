@@ -41,7 +41,7 @@ export default [
         name: 'MessageHome',
         component: MessageHome,
         meta: {
-          title: i18n.t('message.name'),
+          title: i18n.t('message.notice'),
         },
       },
       {

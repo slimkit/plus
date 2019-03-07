@@ -586,6 +586,7 @@ question:
 
 message:
   name: Message
+  notice: Notice
 
   system:
     name: System messages
