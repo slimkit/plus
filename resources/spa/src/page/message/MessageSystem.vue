@@ -13,7 +13,7 @@
         class="notification-item"
         @click="jump(notification.data)"
       >
-        <h5>{{ notification.data | getDisplayText }}</h5>
+        <h5>{{ notification.data | getNotificationDisplay }}</h5>
         <p>{{ notification.created_at | time2tips }}</p>
       </section>
     </JoLoadMore>
@@ -25,48 +25,6 @@ import * as api from '@/api/message'
 
 export default {
   name: 'MessageSystem',
-  filters: {
-    getDisplayText (data) {
-      switch (data.type) {
-        case 'user':
-          return `${data.user.name}打赏了你`
-        case 'reward:feeds':
-          return `${data.sender.name}打赏了你的动态`
-        case 'reward:news':
-          return `你的资讯《${data.news.title}》被${data.sender.name}打赏了${data.amount}${data.unit}`
-        case 'group:join':
-          return data.state === 'rejected'
-            ? `拒绝用户加入圈子「${data.group.name}」`
-            : `${data.user ? data.user.name : ''}请求加入圈子「${data.group.name}」`
-        case 'user-certification':
-          return data.state === 'rejected'
-            ? `你申请的身份认证已被驳回，驳回理由：${data.contents}`
-            : `你申请的身份认证已通过`
-        case 'qa:answer-adoption':
-        case 'question:answer':
-          return `你提交的问题回答被采纳`
-        case 'qa:reward':
-          return `${data.user.name}打赏了你的回答`
-        case 'pinned:feed/comment':
-          return data.state === 'rejected'
-            ? `拒绝用户动态评论「${data.comment.contents}」的置顶请求`
-            : `同意用户动态评论「${data.comment.contents}」的置顶请求`
-        case 'pinned:news/comment':
-          return data.state === 'rejected'
-            ? `拒绝用户关于资讯《${data.news.title}》评论「${data.comment.contents}」的置顶请求`
-            : `同意用户关于资讯《${data.news.title}》评论「${data.comment.contents}」的置顶请求`
-        case 'group:comment-pinned':
-        case 'group:send-comment-pinned':
-          return data.state === 'rejected'
-            ? `拒绝帖子「${data.post.title}」的评论置顶请求`
-            : `同意帖子「${data.post.title}」的评论置顶请求`
-        case 'group:post-pinned':
-          return data.state === 'rejected'
-            ? `拒绝用于帖子「${data.post.title}」的置顶请求`
-            : `同意用于帖子「${data.post.title}」的置顶请求`
-      }
-    },
-  },
   data () {
     return {
       notifications: [],
