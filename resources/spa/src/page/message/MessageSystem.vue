@@ -33,9 +33,11 @@ export default {
         case 'reward:feeds':
           return `${data.sender.name}打赏了你的动态`
         case 'reward:news':
-          return `你的资讯《${data.news.title}》被${data.user.name}打赏了${data.amount}${this.currencyUnit}`
+          return `你的资讯《${data.news.title}》被${data.sender.name}打赏了${data.amount}${data.unit}`
         case 'group:join':
-          return `${data.user ? data.user.name : ''}请求加入圈子「${data.group.name}」`
+          return data.state === 'rejected'
+            ? `拒绝用户加入圈子「${data.group.name}」`
+            : `${data.user ? data.user.name : ''}请求加入圈子「${data.group.name}」`
         case 'user-certification':
           return data.state === 'rejected'
             ? `你申请的身份认证已被驳回，驳回理由：${data.contents}`
