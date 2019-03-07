@@ -11,7 +11,8 @@
           <svg class="m-style-svg m-svg-large"><use xlink:href="#icon-message-notice" /></svg>
           <div class="info">
             <h2>系统消息 <span class="time">{{ system.first.created_at | time2tips }}</span></h2>
-            <p class="description">{{ system.first.data.contents }} <BadgeIcon v-if="system.badge" :count="system.badge" /></p>
+            <p v-if="system.badge" class="description">{{ system.first.data.contents }} <BadgeIcon v-if="system.badge" :count="system.badge" /></p>
+            <p v-else class="description">暂无系统消息</p>
           </div>
         </RouterLink>
 
@@ -19,7 +20,8 @@
           <svg class="m-style-svg m-svg-large"><use xlink:href="#icon-message-comment" /></svg>
           <div class="info">
             <h2>收到的评论 <span class="time">{{ comment.last_created_at | time2tips }}</span></h2>
-            <p class="description">{{ (comment.preview_users_names || []).join('、') }}评论了我 <BadgeIcon v-if="comment.badge" :count="comment.badge" /></p>
+            <p v-if="comment.badge" class="description">{{ (comment.preview_users_names || []).join('、') }}评论了我 <BadgeIcon v-if="comment.badge" :count="comment.badge" /></p>
+            <p v-else class="description">还没有人评论了我</p>
           </div>
         </RouterLink>
 
@@ -27,7 +29,8 @@
           <svg class="m-style-svg m-svg-large"><use xlink:href="#icon-message-like" /></svg>
           <div class="info">
             <h2>收到的赞 <span class="time">{{ like.last_created_at | time2tips }}</span></h2>
-            <p class="description">{{ (like.preview_users_names || []).join('、') }}评论了我 <BadgeIcon v-if="like.badge" :count="like.badge" /></p>
+            <p v-if="like.badge" class="description">{{ (like.preview_users_names || []).join('、') }}评论了我 <BadgeIcon v-if="like.badge" :count="like.badge" /></p>
+            <p class="description">还没有人赞了我</p>
           </div>
         </RouterLink>
 
