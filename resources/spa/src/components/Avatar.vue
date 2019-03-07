@@ -29,6 +29,7 @@
 
 <script>
 import _ from 'lodash'
+import * as userApi from '@/api/user'
 
 export default {
   name: 'Avatar',
@@ -37,6 +38,11 @@ export default {
     user: { type: Object, required: true },
     anonymity: { type: [Boolean, Number], default: false },
     readonly: { type: Boolean, default: false },
+  },
+  data () {
+    return {
+      localUser: {},
+    }
   },
   computed: {
     sex () {
@@ -72,13 +78,16 @@ export default {
     },
     avatar: {
       get () {
-        const avatar = this.user.avatar || {}
+        const avatar = this.user.avatar || this.localUser.avatar || {}
         return avatar.url || null
       },
       set (val) {
         this.user.avatar.url = val
       },
     },
+  },
+  created () {
+    if (!this.user.avatar) this.getUserAvatar()
   },
   methods: {
     handelError () {
@@ -88,6 +97,9 @@ export default {
       const userId = this.user.id
       if (this.readonly || !userId) return
       this.$router.push({ name: 'UserDetail', params: { userId } })
+    },
+    async getUserAvatar () {
+      this.localUser = await userApi.getUserInfoById(this.user.id)
     },
   },
 }
