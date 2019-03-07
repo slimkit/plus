@@ -34,8 +34,8 @@
           <svg class="m-style-svg m-svg-large"><use xlink:href="#icon-message-like" /></svg>
           <div class="info">
             <h2>收到的赞 <span class="time">{{ like.last_created_at | time2tips }}</span></h2>
-            <p v-if="like.badge" class="description">{{ (like.preview_users_names || []).join('、') }}评论了我 <BadgeIcon v-if="like.badge" :count="like.badge" /></p>
-            <p class="description">还没有人赞了我</p>
+            <p v-if="like.badge" class="description">{{ (like.preview_users_names || []).join('、') }}赞了我 <BadgeIcon v-if="like.badge" :count="like.badge" /></p>
+            <p v-else class="description">还没有人赞了我</p>
           </div>
         </RouterLink>
 
