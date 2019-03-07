@@ -1855,8 +1855,8 @@ if ('getContext' in document.createElement('canvas')) {
     HTMLImageElement.prototype.play = function() {
         var that = this
         that.parentElement.classList.add('playing')
-        if (that.dataset.blobURL) {
-            that.src = that.dataset.blobURL
+        if (that.dataset.blobUrl) {
+            that.src = that.dataset.blobUrl
             gifInfo.timer = setTimeout(function() {
                 that.stop()
                 gifInfo.currentIndex++
@@ -1870,9 +1870,9 @@ if ('getContext' in document.createElement('canvas')) {
             var blob = res.data
 
             // 加载图片
-            var blobURL = window.URL.createObjectURL(blob);
-            that.src = blobURL
-            that.dataset.blobURL = blobURL
+            var blobUrl = window.URL.createObjectURL(blob);
+            that.src = blobUrl
+            that.dataset.blobUrl = blobUrl
 
             // 解析 GIF 信息 （via gify）
             handleFile(blob, function (info) {

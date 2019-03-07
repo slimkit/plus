@@ -142,7 +142,6 @@ Object.defineProperty(gifInfo, 'currentFeed', {
         if (val == this.feed) return
         $('#feed_' + this.feed).find('.per_image[data-original-gif]').each(function(index, el) {
             el.stop()
-            console.log(el);
         })
         this.feed = val
         playFeedGif(val)
