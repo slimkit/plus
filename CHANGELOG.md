@@ -1,16 +1,47 @@
-## [2.2.2](https://github.com/slimkit/plus/compare/2.2.1...2.2.2) (2019-01-29)
+## [2.2.3](https://github.com/slimkit/plus/compare/2.2.2...2.2.3) (2019-03-07)
 
 
 ### Bug Fixes
 
-* **动态:** 修复动态话题未关注状态下发布动态后无法关注该话题 ([86f5aaf](https://github.com/slimkit/plus/commit/86f5aaf)), closes [#579](https://github.com/slimkit/plus/issues/579)
+* **Admin:** 修复后台动态管理预览动态图片非原本动态图片 Bug ([da22ac9](https://github.com/slimkit/plus/commit/da22ac9)), closes [#624](https://github.com/slimkit/plus/issues/624)
+* **IM:** 修复未使用环信情况下后台更新用户资料永远都会失败问题 ([155005a](https://github.com/slimkit/plus/commit/155005a))
+* **News:** 兼容 PC 需要获取置顶用户信息需求 ([cfbc299](https://github.com/slimkit/plus/commit/cfbc299))
+* **PC:** 修复全局评论时没有自动添加评论的问题 ([26284d0](https://github.com/slimkit/plus/commit/26284d0)), closes [#629](https://github.com/slimkit/plus/issues/629)
+* **PC:** 在个人主页转发动态时会添加到其他人个人主页时间线中的问题 ([5faf023](https://github.com/slimkit/plus/commit/5faf023)), closes [#628](https://github.com/slimkit/plus/issues/628)
+* **SPA:** 解决安卓微信下无法上传图片的问题(hack) ([b390b44](https://github.com/slimkit/plus/commit/b390b44))
+* **SPA:** 解决安卓微信下无法上传图片的问题(hack) ([5840826](https://github.com/slimkit/plus/commit/5840826))
+* **SPA:** 修复动态列表出现两次的问题 ([82d2a27](https://github.com/slimkit/plus/commit/82d2a27))
+* **SPA:** 修复获取数据时数量传出10而判断为15的问题 ([673080c](https://github.com/slimkit/plus/commit/673080c))
+* **SPA:** 修复未读消息小红点提示 ([94a7606](https://github.com/slimkit/plus/commit/94a7606)), closes [#529](https://github.com/slimkit/plus/issues/529)
+* **SPA:** 修复未读消息小红点提示 ([e69e6e8](https://github.com/slimkit/plus/commit/e69e6e8)), closes [#529](https://github.com/slimkit/plus/issues/529)
+* **SPA:** 修复消息错误显示小红点 ([4dc0550](https://github.com/slimkit/plus/commit/4dc0550)), closes [#529](https://github.com/slimkit/plus/issues/529)
+* **SPA:** 修复消息错误显示小红点 ([1e56725](https://github.com/slimkit/plus/commit/1e56725)), closes [#529](https://github.com/slimkit/plus/issues/529)
+* **SPA:** 修复在 hash 模式下无法微信登录的问题 ([5b5281c](https://github.com/slimkit/plus/commit/5b5281c))
+* **SPA:** 修正动态卡片时间 ([b9ad1fc](https://github.com/slimkit/plus/commit/b9ad1fc))
+* **SPA:** 直辖市的定位问题 ([2a9e44b](https://github.com/slimkit/plus/commit/2a9e44b))
+* **SPA:** GIF -> Gif ([cbe870a](https://github.com/slimkit/plus/commit/cbe870a)), closes [#644](https://github.com/slimkit/plus/issues/644)
+* 签到若未登录，不返回rank字段 ([f00c455](https://github.com/slimkit/plus/commit/f00c455))
+* 转发时at用户没有反应的问题 ([9430f5c](https://github.com/slimkit/plus/commit/9430f5c))
+* Fixed local CDN gif bepass ([ba50f4d](https://github.com/slimkit/plus/commit/ba50f4d))
+
+
+### Features
+
+* **SPA:** GIF 动图播放 ([69c7ac3](https://github.com/slimkit/plus/commit/69c7ac3))
+
+
+
+## [2.2.2](https://github.com/slimkit/plus/compare/2.1.5...2.2.2) (2019-01-29)
+
+
+### Bug Fixes
+
 * **SPA:** 动态中的链接高亮显示 ([370bef4](https://github.com/slimkit/plus/commit/370bef4))
 * **SPA:** 过滤 XSS ([bed1606](https://github.com/slimkit/plus/commit/bed1606))
 * **SPA:** 修复无法创建圈子的问题 ([8965728](https://github.com/slimkit/plus/commit/8965728)), closes [slimkit/plus#542](https://github.com/slimkit/plus/issues/542)
 * 定位搜索地区体验优化 ([0bc7dec](https://github.com/slimkit/plus/commit/0bc7dec))
 * **核心:** 修复积分原生支付读取兑换比例错误 ([a835380](https://github.com/slimkit/plus/commit/a835380))
 * **后台:** 修复「用户」-「第三方」配置菜单消失 ([c0dca8f](https://github.com/slimkit/plus/commit/c0dca8f))
-* **CDN:** 修复阿里云获取原图 GIF 并没有返回原图问题 ([c13db22](https://github.com/slimkit/plus/commit/c13db22))
 * **PC:** 修复 xss 问题 ([588afe6](https://github.com/slimkit/plus/commit/588afe6)), closes [#583](https://github.com/slimkit/plus/issues/583)
 * **SPA:** 创建投稿时无法返回上一步的问题 ([99a552b](https://github.com/slimkit/plus/commit/99a552b))
 * **SPA:** 过滤 XSS ([7f9beb2](https://github.com/slimkit/plus/commit/7f9beb2))
