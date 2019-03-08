@@ -1,6 +1,6 @@
 <template>
   <div class="c-reference-news">
-    <h5 v-if="noContent">该资讯不存在或已被删除</h5>
+    <h5 v-if="noContent">{{ $t('message.not_exist') }}</h5>
     <RouterLink v-else :to="`/news/${id}`">
       <AsyncFile
         v-if="image"

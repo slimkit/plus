@@ -7,7 +7,9 @@
 <div id="feed_photos_{{$post['id']}}" class="feed_photos">
     <div class="feed_images">
     @if(count($post['images']) == 1)
-        @include('pcview::templates.feed_image', ['image' => $post['images'][0], 'width' => $conw, 'height' => $conh, 'count' => 'one', 'curloc' => 0])
+        <div class="image_box_one">
+            @include('pcview::templates.feed_image', ['image' => $post['images'][0], 'width' => $conw, 'height' => $conh, 'count' => 'one', 'curloc' => 0])
+        </div>
     @elseif(count($post['images']) == 2)
         <div style="width: 100%; display: flex;">
             <div style="width: 50%;" class="image_box">

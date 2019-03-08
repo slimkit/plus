@@ -53,7 +53,8 @@ class MessageController extends BaseController
                         if ($v['commentable']) {
                             $v['source_url'] = Route('pc:feedread', ($v['commentable']['id'] ?? 0));
                             $v['source_content'] = $v['commentable']['feed_content'];
-                            ! empty($v['commentable']['images']) && count($v['commentable']['images']) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'].$v['commentable']['images'][0]['id'].'?w=35&h=35';
+                            ! empty($v['commentable']['images']) && count($v['commentable']['images']) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'].$v['commentable']['images'][0]['id'];
+                            ! empty($v['commentable']['video']) && $v['source_img'] = $this->PlusData['routes']['storage'].$v['commentable']['video']['cover_id'];
                         }
                         break;
                     case 'group-posts':
@@ -126,6 +127,7 @@ class MessageController extends BaseController
                         $v['source_url'] = Route('pc:feedread', ($v['likeable']['id'] ?? 0));
                         $v['source_content'] = $v['likeable']['feed_content'];
                         ! empty($v['likeable']['images']) && count($v['likeable']['images']) > 0 && $v['source_img'] = $this->PlusData['routes']['storage'].$v['likeable']['images'][0]['id'].'?w=35&h=35';
+                        ! empty($v['likeable']['video']) && $v['source_img'] = $this->PlusData['routes']['storage'].$v['likeable']['video']['cover_id'];
                         break;
                     case 'group-posts':
                         $v['source_type'] = '赞了你的帖子';

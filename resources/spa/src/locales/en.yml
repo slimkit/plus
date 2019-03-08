@@ -587,20 +587,36 @@ question:
 message:
   name: Message
   notice: Notice
+  not_exist: The resource does not exist or is deleted
 
   system:
     name: System messages
     empty: No system notification
 
+    reward_user: '{user} rewards you'
+    reward_feed: '{user} rewards your feed'
+    reward_news: '{user} reward your news "{news}" {amount}'
+    group_join: ['Agree to user {user} to join the group "{group}"', 'Reject users to join the group "{group}"']
+    certificate: ['The identity you applied for has passed', 'The identity you applied for has been rejected']
+    qa_adopt: 'The answer you submitted "{answer}" was adopted'
+    reward_qa: '{user} rewards your answer'
+    qa_invitation: '{user} invites you to answer the question "{question}"'
+    pinned_feed_comment: ['Agree to the feed comment on "{comment}" top request', 'Reject the feed comment "{comment}" top request']
+    pinned_news_comment: ['Agree to the news "{news}"" comment "{comment}"', 'Reject to the news "{news}" comment "{comment}"']
+    pinned_post_comment: ['Agree to post "{post}" comment pin request', 'reject post "{post}" comment pin request']
+    pinned_post: ['Agree to the top request for the post "{post}"', 'Reject the top request for the post "{post}"']
+
   comment:
     name: Comments
     reply: '{user1} Reply {user2}'
-    commented: '{user} commented on your {type}'
+    commented: '{0} commented me'
     empty: No one has commented on you yet.
+    type: {'feeds': 'comment your feed', 'news': 'comment your news', 'group-posts': 'comment your group post'}
+
 
   like:
     name: Likes
-    liked: '{user} liked your {type}'
+    liked: '{0} liked me'
     empty: No one has ever liked you yet.
 
   audit:
@@ -610,7 +626,7 @@ message:
     reject: Reject
     reviewed: Reviewed
     rejected: Rejected
-    placeholder: ['If you have unreviewed information, please handle it in time.', 'No pending applications']
+    placeholder: ['You have unreviewed notification', 'No pending applications']
     group_join: Apply to join the group "{group}" you created, please review it in time.
     types:
       feed_comment_top: top the moment comment
