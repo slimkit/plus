@@ -9,7 +9,7 @@
         <RouterLink to="/message/system" tag="li">
           <svg class="m-style-svg m-svg-large"><use xlink:href="#icon-message-notice" /></svg>
           <div class="info">
-            <h2>系统消息 <span class="time">{{ system.first.created_at | time2tips }}</span></h2>
+            <h2>{{ $t('message.system.name') }} <span v-if="system.badge" class="time">{{ system.first.created_at | time2tips }}</span></h2>
             <p v-if="system.badge" class="description">
               <template v-if="system.first.data.contents">{{ system.first.data.contents }}</template>
               <template v-else>{{ system.first.data | getNotificationDisplay }}</template>
@@ -23,7 +23,7 @@
         <RouterLink to="/message/comments" tag="li">
           <svg class="m-style-svg m-svg-large"><use xlink:href="#icon-message-comment" /></svg>
           <div class="info">
-            <h2>收到的评论 <span class="time">{{ comment.last_created_at | time2tips }}</span></h2>
+            <h2>{{ $t('message.comment.name') }} <span v-if="comment.badge" class="time">{{ comment.last_created_at | time2tips }}</span></h2>
             <p v-if="comment.badge" class="description">{{ (comment.preview_users_names || []).join('、') }}评论了我 <BadgeIcon v-if="comment.badge" :count="comment.badge" /></p>
             <p v-else class="description">还没有人评论了我</p>
           </div>
@@ -32,7 +32,7 @@
         <RouterLink to="/message/likes" tag="li">
           <svg class="m-style-svg m-svg-large"><use xlink:href="#icon-message-like" /></svg>
           <div class="info">
-            <h2>收到的赞 <span class="time">{{ like.last_created_at | time2tips }}</span></h2>
+            <h2>{{ $t('message.like.name') }} <span v-if="like.badge" class="time">{{ like.last_created_at | time2tips }}</span></h2>
             <p v-if="like.badge" class="description">{{ (like.preview_users_names || []).join('、') }}赞了我 <BadgeIcon v-if="like.badge" :count="like.badge" /></p>
             <p v-else class="description">还没有人赞了我</p>
           </div>
