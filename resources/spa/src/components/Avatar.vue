@@ -78,7 +78,7 @@ export default {
     },
     avatar: {
       get () {
-        const avatar = this.user.avatar || this.localUser.avatar || {}
+        const avatar = (this.user || {}).avatar || this.localUser.avatar || {}
         return avatar.url || null
       },
       set (val) {
