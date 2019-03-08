@@ -1,6 +1,6 @@
 <template>
   <div class="c-reference-post">
-    <h5 v-if="noContent">该帖子不存在或已被删除</h5>
+    <h5 v-if="noContent">{{ $t('message.not_exist') }}</h5>
     <RouterLink v-else :to="`/group/${post.group_id}/post/${id}`">
       <AsyncFile
         v-if="post.image"

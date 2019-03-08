@@ -16,7 +16,7 @@
 
               <BadgeIcon v-if="system.badge" :count="system.badge" />
             </p>
-            <p v-else class="description">暂无系统消息</p>
+            <p v-else class="description">{{ $t('message.system.empty') }}</p>
           </div>
         </RouterLink>
 
@@ -24,8 +24,8 @@
           <svg class="m-style-svg m-svg-large"><use xlink:href="#icon-message-comment" /></svg>
           <div class="info">
             <h2>{{ $t('message.comment.name') }} <span v-if="comment.badge" class="time">{{ comment.last_created_at | time2tips }}</span></h2>
-            <p v-if="comment.badge" class="description">{{ (comment.preview_users_names || []).join('、') }}评论了我 <BadgeIcon v-if="comment.badge" :count="comment.badge" /></p>
-            <p v-else class="description">还没有人评论了我</p>
+            <p v-if="comment.badge" class="description">{{ (comment.preview_users_names || []).join('、') | t('message.comment.commented') }} <BadgeIcon v-if="comment.badge" :count="comment.badge" /></p>
+            <p v-else class="description">{{ $t('message.comment.empty') }}</p>
           </div>
         </RouterLink>
 
@@ -33,16 +33,16 @@
           <svg class="m-style-svg m-svg-large"><use xlink:href="#icon-message-like" /></svg>
           <div class="info">
             <h2>{{ $t('message.like.name') }} <span v-if="like.badge" class="time">{{ like.last_created_at | time2tips }}</span></h2>
-            <p v-if="like.badge" class="description">{{ (like.preview_users_names || []).join('、') }}赞了我 <BadgeIcon v-if="like.badge" :count="like.badge" /></p>
-            <p v-else class="description">还没有人赞了我</p>
+            <p v-if="like.badge" class="description">{{ (like.preview_users_names || []).join('、') | t('message.like.liked') }} <BadgeIcon v-if="like.badge" :count="like.badge" /></p>
+            <p v-else class="description">{{ $t('message.like.empty') }}</p>
           </div>
         </RouterLink>
 
         <RouterLink to="/message/audits" tag="li">
           <svg class="m-style-svg m-svg-large"><use xlink:href="#icon-message-audit" /></svg>
           <div class="info">
-            <h2>审核通知</h2>
-            <p class="description">你有未审核的信息请及时处理 <BadgeIcon v-if="unreadAudits" :count="unreadAudits" /></p>
+            <h2>{{ $t('message.audit.name') }}</h2>
+            <p class="description">{{ $t('message.audit.placeholder[0]', ) }} <BadgeIcon v-if="unreadAudits" :count="unreadAudits" /></p>
           </div>
         </RouterLink>
       </ul>

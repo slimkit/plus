@@ -591,20 +591,35 @@ question:
 message:
   name: 消息
   notice: 通知
+  not_exist: 该资源不存在或被删除
 
   system:
     name: 系统消息
     empty: 暂无系统通知
 
+    reward_user: '{user}打赏了你'
+    reward_feed: '{user}打赏了你的动态'
+    reward_news: '你的资讯《{news}》被{user}打上了{amount}'
+    group_join: ['同意用户{user}加入圈子「{group}」', '拒绝用户加入圈子「{group}」']
+    certificate: ['你申请的身份认证已通过', '你申请的身份认证已被驳回，驳回理由：{reason}']
+    qa_adopt: 你提交的回答「{answer}」被采纳
+    reward_qa: '{user}打赏了你的回答'
+    qa_invitation: '{user}邀请你回答问题「{question}」'
+    pinned_feed_comment: ['同意用户动态评论「{comment}」的置顶请求', '拒绝用户动态评论「{comment}」的置顶请求']
+    pinned_news_comment: ['同意用户关于资讯《{news}》评论「{comment}」的置顶请求', '同意用户关于资讯《{news}》评论「{comment}」的置顶请求']
+    pinned_post_comment: ['同意帖子「{post}」的评论置顶请求', '拒绝帖子「{post}」的评论置顶请求']
+    pinned_post: ['同意用户帖子「{post}」的置顶请求', '拒绝用户帖子「{post}」的置顶请求']
+
   comment:
     name: 收到的评论
     reply: '{user1} 回复 {user2}'
-    commented: '{user} 评论了你的 {type}'
+    commented: '{0}评论了我'
     empty: 还没有人评论过你
+    type: {'feeds': '评论了你的动态', 'news': '评论了你的资讯', 'group-posts': '评论了你的帖子'}
 
   like:
     name: 收到的赞
-    liked: '{user} 赞了你的 {type}'
+    liked: '{0}赞了我'
     empty: 还没有人赞过你
 
   audit:

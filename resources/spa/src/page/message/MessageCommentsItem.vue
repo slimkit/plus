@@ -7,8 +7,8 @@
           <RouterLink class="username" :to="`/users/${comment.sender.id}`">
             {{ comment.sender.name }}
           </RouterLink>
-          <span v-if="comment.reply_user"> 回复</span>
-          <span v-else> 评论了你的{{ nameMap[comment.commentable.type] }}</span>
+          <span v-if="comment.reply_user"> {{ $t('reply.name') }}</span>
+          <span v-else> {{ $t(`message.comment.type.${comment.commentable.type}`) }}</span>
           <RouterLink
             v-if="comment.reply_user"
             class="comment-item-top-link"
@@ -19,7 +19,7 @@
           <p class="time"><slot /></p>
         </section>
 
-        <span class="reply" @click.stop="showCommentInput">回复</span>
+        <span class="reply" @click.stop="showCommentInput">{{ $t('reply.name') }}</span>
       </div>
       <div class="comment-item-bottom">
         <span class="content" @click.stop="showCommentInput">
@@ -45,12 +45,6 @@ const componentMap = {
   'group-posts': ReferencePost,
 }
 
-const nameMap = {
-  'feeds': '动态',
-  'news': '资讯',
-  'group-posts': '帖子',
-}
-
 export default {
   name: 'MessageCommentsItem',
   components: {
@@ -64,7 +58,6 @@ export default {
   data () {
     return {
       componentMap,
-      nameMap,
     }
   },
   computed: {
