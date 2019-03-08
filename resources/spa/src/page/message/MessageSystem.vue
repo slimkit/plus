@@ -31,6 +31,9 @@ export default {
       page: 1,
     }
   },
+  activated () {
+    this.$refs.loadmore.beforeRefresh()
+  },
   methods: {
     onRefresh () {
       const type = 'system'
