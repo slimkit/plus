@@ -37,7 +37,7 @@ class Follow extends Notification implements ShouldQueue
      */
     public function __construct(UserModel $sender)
     {
-        $this->sender;
+        $this->sender = $sender;
     }
 
     /**
