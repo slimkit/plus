@@ -109,7 +109,8 @@ class TopicFollow extends Controller
         $response = (new Response)->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
 
         // If not followed, return 204 response.
-        if (! (($link = $topic->users()->newPivotStatementForId($user->id)->first())->following_at ?? false)) {
+        $link = $topic->users()->wherePivot('user_id', $user->id)->first()->pivot;
+        if (! $link || ! ($link->following_at ?? false)) {
             return $response;
         }
 
