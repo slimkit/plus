@@ -11,7 +11,7 @@
     <div class="mention_info">
         <span class="name">{{ $item['user']['name'] }}</span>
         <span class="time">{{ getTime($item['created_at']) }}</span>
-        @switch($item['resourceable']['type'])
+        @switch($item['data']['resource']['type'])
             @case('feeds')
                 @if($item['feeds']['feed_content'] ?? false)
                 <div class="content">{!! formatContent($item['feeds']['feed_content']) !!}</div>
