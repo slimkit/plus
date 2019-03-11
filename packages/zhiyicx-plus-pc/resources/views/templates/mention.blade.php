@@ -14,7 +14,9 @@
         @switch($item['data']['resource']['type'])
             @case('feeds')
                 @if($item['feeds']['feed_content'] ?? false)
-                <div class="content">{!! formatContent($item['feeds']['feed_content']) !!}</div>
+                <div class="content" onclick="location.href = '{{ route('pc:feedread', ['feed' => $item['data']['resource']['id']]) }}'">
+                    {!! formatContent($item['feeds']['feed_content']) !!}
+                </div>
                 @else
                 <div class="content">内容不存在或已被删除</div>
                 <script>console.log(@json($item));</script>
