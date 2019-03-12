@@ -36,8 +36,10 @@ module.exports = {
             {
                 text: 'HTTP APIs',
                 items: [
-                    { text: '核心', link: '/core/api/v2/system' },
+                    // { text: '核心', link: '/core/api/v2/system' },
                     { text: '用户', link: '/api-v2/user/' },
+                    { text: '资讯', link: '/api-v2/news/' },
+                    { text: '问答', link: '/api-v2/qa/' },
                 ]
             }
         ],
