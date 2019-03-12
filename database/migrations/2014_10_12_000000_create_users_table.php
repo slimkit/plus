@@ -43,6 +43,8 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('phone_verified_at')->nullable();
             $table->rememberToken()->comment('user auth token.');
+            $table->ipAddress('register_ip')->nullable()->default('::1')->comment('注册 ID');
+            $table->ipAddress('last_login_ip')->nullable()->default('::1')->comment('最近登录 ID');
             $table->timestamps();
             $table->softDeletes();
 

@@ -150,6 +150,7 @@ class UserController extends Controller
         $user->phone = $phone;
         $user->email = $email;
         $user->name = $name;
+        $user->register_ip = $request->ip();
 
         if ($password !== null) {
             $user->createPassword($password);
