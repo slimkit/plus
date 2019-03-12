@@ -234,6 +234,13 @@ class AbilitySeeder extends Seeder
                 ],
                 'roles' => ['founder'],
             ],
+            '[News] Delete News Post' => [
+                'more' => [
+                    'display_name' => '[资讯] 删除资讯文章',
+                    'description' => '删除资讯文章权限',
+                ],
+                'roles' => ['founder'],
+            ],
         ] as $name => $data) {
             $ability = Ability::firstOrCreate(['name' => $name], $data['more']);
             foreach ($data['roles'] as $role) {

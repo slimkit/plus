@@ -18,29 +18,39 @@ declare(strict_types=1);
  * +----------------------------------------------------------------------+
  */
 
-namespace Zhiyi\Plus\Providers;
+namespace Zhiyi\Plus\API2\Controllers;
 
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use Zhiyi\Plus\Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 
-class AuthServiceProvider extends ServiceProvider
+class NewsPostController extends Controller
 {
     /**
-     * The policy mappings for the application.
-     *
-     * @var array
+     * Create the news posts controller instance.
      */
-    protected $policies = [
-        \Zhiyi\Plus\Models\FeedTopic::class => \Zhiyi\Plus\Policies\Feed\Topic::class,
-        \Zhiyi\Plus\Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News::class => Zhiyi\Plus\Policies\NewsPostPolicy::class,
-    ];
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
 
     /**
-     * Register any authentication / authorization services.
-     *
-     * @return void
+     * Destory a News post.
+     * @param \Zhiyi\Plus\Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News $post
+     * @return mixed
      */
-    public function boot()
+    public function destroy(News $post)
     {
-        $this->registerPolicies();
+        $this->authorize('delete', $post);
+
+        // Database transaction
+        DB::transaction(function () use ($post) {
+            $post->pinned()->delete();
+            $post->applylog()->delete();
+            $post->reports()->delete();
+            $post->tags()->detach();
+        });
+
+        return new Response('', Response::HTTP_NO_CONTENT);
     }
 }

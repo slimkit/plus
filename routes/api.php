@@ -794,4 +794,7 @@ Route::group(['prefix' => 'v2'], function (RouteContract $api) {
     $api->patch('user/notifications', \Zhiyi\Plus\API2\Controllers\NotificationController::class.'@update');
     $api->get('user/notification-statistics', \Zhiyi\Plus\API2\Controllers\NotificationController::class.'@statistics');
     $api->patch('user/clear-follow-notification', \Zhiyi\Plus\API2\Controllers\NotificationController::class.'@clearFollowNotifications');
+
+    // News Posts
+    $api->delete('news/posts/{post}', \Zhiyi\Plus\API2\Controllers\NewsPostController::class.'@destroy');
 });
