@@ -49,6 +49,7 @@ class NewsPostController extends Controller
             $post->applylog()->delete();
             $post->reports()->delete();
             $post->tags()->detach();
+            $post->delete();
         });
 
         return new Response('', Response::HTTP_NO_CONTENT);
