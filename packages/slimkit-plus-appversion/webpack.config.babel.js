@@ -8,7 +8,7 @@ module.exports = {
   entry: './admin/index.js',
   output: {
     path: buildAssetsRoot,
-    publicPath: './',
+    publicPath: '/assets/appversion/',
     filename: 'js/main.js'
   },
   module: {
