@@ -22,7 +22,7 @@ namespace Zhiyi\Plus\API2\Controllers;
 
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Zhiyi\Plus\Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 
 class NewsPostController extends Controller
 {
@@ -36,7 +36,7 @@ class NewsPostController extends Controller
 
     /**
      * Destory a News post.
-     * @param \Zhiyi\Plus\Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News $post
+     * @param \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News $post
      * @return mixed
      */
     public function destroy(News $post)

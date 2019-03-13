@@ -20,7 +20,7 @@ namespace Zhiyi\Plus\Policies;
 
 use Zhiyi\Plus\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Zhiyi\Plus\Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
+use Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News;
 
 class NewsPostPolicy
 {
@@ -30,7 +30,7 @@ class NewsPostPolicy
      * Determine whether the user can delete the news.
      *
      * @param  \Zhiyi\Plus\Models\User  $user
-     * @param  \Zhiyi\Plus\Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News  $news
+     * @param  \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News  $news
      * @return mixed
      */
     public function delete(User $user, News $news)
