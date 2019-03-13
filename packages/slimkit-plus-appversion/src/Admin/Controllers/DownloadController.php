@@ -23,8 +23,8 @@ namespace Slimkit\PlusAppversion\Admin\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use function Zhiyi\Plus\setting;
-use Zhiyi\Plus\FileStorage\StorageInterface;
 use Zhiyi\Plus\Admin\Controllers\Controller;
+use Zhiyi\Plus\FileStorage\StorageInterface;
 
 class DownloadController extends Controller
 {
@@ -42,7 +42,7 @@ class DownloadController extends Controller
     protected function storeFile(string $key, $file)
     {
         if (! $file) {
-            return ;
+            return;
         }
 
         $storage = app()->make(StorageInterface::class);
