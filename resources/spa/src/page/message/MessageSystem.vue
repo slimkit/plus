@@ -37,6 +37,7 @@ export default {
   methods: {
     onRefresh () {
       const type = 'system'
+      this.page = 1
       api.getNotification({ type, page: this.page })
         .then(({ data }) => {
           const noMore = data.meta.last_page <= data.meta.current_page
