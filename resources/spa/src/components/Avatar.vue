@@ -87,7 +87,7 @@ export default {
     },
   },
   created () {
-    if (!this.anonymity && !this.user.avatar) this.getUserAvatar()
+    if (!this.anonymity && this.user.id && !this.user.avatar) this.getUserAvatar()
   },
   methods: {
     handelError () {
