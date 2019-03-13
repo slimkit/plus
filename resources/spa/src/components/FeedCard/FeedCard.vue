@@ -413,6 +413,7 @@ export default {
         .postFeedComment(this.feedId, params)
         .then(comment => {
           this.commentCount += 1
+          comment.user = this.$store.state.CURRENTUSER
           this.comments.unshift(comment)
           if (this.comments.length > 5) this.comments.pop()
           this.$Message.success(this.$t('comment.success'))
