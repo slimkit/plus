@@ -59,7 +59,10 @@ class TopicFollow extends Controller
         // If the topic Non-existent, throw a not found exception.
         if (! $topic) {
             throw new NotFoundHttpException('关注的话题不存在');
-        } elseif (($link = $topic->users()->newPivotStatementForId($user->id)->first())->following_at ?? false) {
+        }
+        
+        $link = $topic->users()->wherePivot('user_id', $user->id)->first()->pivot;
+        if ($link->following_at ?? false) {
             return (new Response())->setStatusCode(Response::HTTP_NO_CONTENT /* 204 */);
         }
 
