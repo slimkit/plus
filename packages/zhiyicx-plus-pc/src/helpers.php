@@ -225,7 +225,7 @@ function getAvatar($user, $width = 0)
             case 0:
                 return asset('assets/pc/images/pic_default_secret.png');
             default:
-                $user = api("GET", "/api/v2/users/".$user['id']);
+                $user = api('GET', '/api/v2/users/'.$user['id']);
         }
     }
 
