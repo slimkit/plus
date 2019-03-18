@@ -217,14 +217,16 @@ function cacheClear()
 function getAvatar($user, $width = 0)
 {
     if (empty($user['avatar']) || ! $user['avatar']) {
-        switch ($user['sex']) {
+        switch ($user['sex'] ?? false) {
             case 1:
                 return asset('assets/pc/images/pic_default_man.png');
             case 2:
                 return asset('assets/pc/images/pic_default_woman.png');
+            case 0:
+                return asset('assets/pc/images/pic_default_secret.png');
+            default:
+                $user = api("GET", "/api/v2/users/".$user['id']);
         }
-
-        return asset('assets/pc/images/pic_default_secret.png');
     }
 
     $avatar = $user['avatar'];
