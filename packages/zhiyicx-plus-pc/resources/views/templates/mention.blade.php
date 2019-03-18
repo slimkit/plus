@@ -7,9 +7,9 @@
 @foreach ($mention as $item)
 
 <li data-id="{{ $item['id'] }}" class="chat_mention_card">
-    <img src="{{ getAvatar($item['user'], 40) }}"/>
+    <img src="{{ getAvatar($item['data']['sender'], 40) }}"/>
     <div class="mention_info">
-        <span class="name">{{ $item['user']['name'] }}</span>
+        <span class="name">{{ $item['data']['sender']['name'] }}</span>
         <span class="time">{{ getTime($item['created_at']) }}</span>
         @switch($item['data']['resource']['type'])
             @case('feeds')
