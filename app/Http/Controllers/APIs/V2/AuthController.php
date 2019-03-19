@@ -133,6 +133,10 @@ class AuthController extends Controller
      */
     protected function respondWithToken(string $token): JsonResponse
     {
+        $this->guard()->user()->update([
+            'last_login_ip' => request()->ip(),
+        ]);
+
         return $this->response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',

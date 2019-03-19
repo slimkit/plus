@@ -31,6 +31,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         \Zhiyi\Plus\Models\FeedTopic::class => \Zhiyi\Plus\Policies\Feed\Topic::class,
+        \Zhiyi\Component\ZhiyiPlus\PlusComponentNews\Models\News::class => \Zhiyi\Plus\Policies\NewsPostPolicy::class,
     ];
 
     /**

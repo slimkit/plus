@@ -378,28 +378,21 @@ class UserController extends Controller
         $user->phone = $request->input('phone');
         $user->email = $request->input('email');
         $user->createPassword($request->input('password'));
+        $user->save();
 
-        if ($user->save()) {
-
-            // 环信用户注册
-            $easeMob = new EaseMobController();
+        if (setting('user', 'vendor:easemob', ['open' => false])['open'] ?? false) {
             $request->user_id = $user->id;
-            $im = $easeMob->createUser($request);
-            if ($im->getStatusCode() != 201) {
+            if ((new EaseMobController)->createUser($request)->getStatusCode() !== 201) {
                 return response()->json([
                     'message' => ['环信用户注册失败'],
                 ])->setStatusCode(400);
             }
-
-            return response()->json([
-                'message' => ['成功'],
-                'user_id' => $user->id,
-            ])->setStatusCode(201);
         }
 
         return response()->json([
-            'message' => ['添加失败'],
-        ])->setStatusCode(400);
+            'message' => ['成功'],
+            'user_id' => $user->id,
+        ])->setStatusCode(201);
     }
 
     /**

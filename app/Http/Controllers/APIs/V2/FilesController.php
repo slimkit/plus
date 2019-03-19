@@ -22,6 +22,7 @@ namespace Zhiyi\Plus\Http\Controllers\APIs\V2;
 
 use Image;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Zhiyi\Plus\Models\File as FileModel;
@@ -99,7 +100,8 @@ class FilesController extends Controller
         $clientWidth = $request->input('width', 0);
         $fileModel = $this->validateFileInDatabase($fileModel, $file = $request->file('file'), function (UploadedFile $file, string $md5) use ($fileModel, $dateTime, $clientWidth, $clientHeight, $response): FileModel {
             // 图片做旋转处理
-            if (! in_array($file->getClientMimeType(), ['video/mp4', 'image/gif'])) {
+            $clientMimeType = $file->getClientMimeType();
+            if (Str::startsWith($clientMimeType, 'image/') && $clientMimeType !== 'image/gif') {
                 ini_set('memory_limit', '-1');
                 Image::make($file->getRealPath())->orientate()->save($file->getRealPath(), 100);
             }

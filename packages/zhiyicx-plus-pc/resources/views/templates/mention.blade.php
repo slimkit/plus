@@ -7,14 +7,16 @@
 @foreach ($mention as $item)
 
 <li data-id="{{ $item['id'] }}" class="chat_mention_card">
-    <img src="{{ getAvatar($item['user'], 40) }}"/>
+    <img src="{{ getAvatar($item['data']['sender'], 40) }}"/>
     <div class="mention_info">
-        <span class="name">{{ $item['user']['name'] }}</span>
+        <span class="name">{{ $item['data']['sender']['name'] }}</span>
         <span class="time">{{ getTime($item['created_at']) }}</span>
-        @switch($item['resourceable']['type'])
+        @switch($item['data']['resource']['type'])
             @case('feeds')
                 @if($item['feeds']['feed_content'] ?? false)
-                <div class="content">{!! formatContent($item['feeds']['feed_content']) !!}</div>
+                <div class="content" onclick="location.href = '{{ route('pc:feedread', ['feed' => $item['data']['resource']['id']]) }}'">
+                    {!! formatContent($item['feeds']['feed_content']) !!}
+                </div>
                 @else
                 <div class="content">内容不存在或已被删除</div>
                 <script>console.log(@json($item));</script>

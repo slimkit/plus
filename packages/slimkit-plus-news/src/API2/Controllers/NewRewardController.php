@@ -73,6 +73,7 @@ class NewRewardController extends Controller
         $paid = $processer->receivables($target->id, $amount, $user->id, sprintf('“%s”打赏了你的资讯', $target->name), sprintf('“%s”打赏了你的的资讯“%s”，%s扣除%s', $user->name, $news->title, $goldName, $amount));
 
         if ($pay && $paid) {
+            $news->reward($user, $amount);
             $target->notify(new SystemNotification(sprintf('%s打赏了你的资讯文章', $user->name), [
                 'type' => 'reward:news',
                 'sender' => [

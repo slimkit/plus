@@ -43,4 +43,5 @@ Route::group(['prefix' => 'admin/plus-appversion'], function (RouteRegisterContr
     $route->post('/upload', Admin\HomeController::class.'@storage')->name('plus-appversion:admin-upload');
     $route->get('/status', Admin\HomeController::class.'@status')->name('plus-appversion:admin-status');
     $route->patch('/status', Admin\HomeController::class.'@update')->name('plus-appversion:admin-status-update');
+    $route->post('/download-manage', Admin\DownloadController::class);
 });

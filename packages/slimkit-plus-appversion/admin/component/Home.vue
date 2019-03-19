@@ -149,6 +149,9 @@
             <i class="el-icon-left el-icon-plus"></i>添加
         </el-button>
       </el-tab-pane>
+      <el-tab-pane label="下载页管理" name="download-manage">
+        <download-manage />
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -164,9 +167,10 @@
   import request, { createRequestURI } from '../utils/request.js';
   import PlusMessageBundle from 'plus-message-bundle/es.js';
   import _ from 'lodash';
-  __webpack_public_path__ = '../../zhiyi/appversion/';
+  import DownloadManage from './download-manage.vue';
 
 	const Home = {
+    components: { DownloadManage },
     data: () => ({
       action: createRequestURI("admin/plus-appversion/upload"),
       data: {

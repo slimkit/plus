@@ -307,17 +307,16 @@ class MessageController extends BaseController
     public function mention(Request $request)
     {
         // 拉取 mention 列表
-        $after = $request->input('after');
-        $limit = $request->input('limit') ?: 20;
-        $data['mention'] = api('GET', '/api/v2/user/message/atme', [
-            'index' => $after,
-            'limit' => $limit,
-        ]);
+        $page = $request->input('page') ?? 1;
+        $data['mention'] = api('GET', '/api/v2/user/notifications', [
+            'type' => 'at',
+            'page' => $page,
+        ])['data'];
 
         // 获取 mention 详情
         foreach ($data['mention'] as &$mention) {
-            $id = $mention['resourceable']['id'];
-            $type = $mention['resourceable']['type'];
+            $id = $mention['data']['resource']['id'];
+            $type = $mention['data']['resource']['type'];
             switch ($type) {
                 case 'feeds':
                     $mention['feeds'] = api('GET', '/api/v2/feeds', ['id' => $id.''])['feeds'];
