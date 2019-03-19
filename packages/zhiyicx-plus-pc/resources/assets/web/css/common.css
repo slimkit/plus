@@ -79,7 +79,7 @@ a {font-size:100%;vertical-align:baseline;background:transparent;text-decoration
 .head_search .history {display:none;}
 .head_search .history p {font-size:14px;color:#ccc;padding:20px 15px;margin:0;}
 .head_search .history ul {display:block;margin:0;padding:0px 15px;overflow:hidden;}
-.head_search .history ul li {width:205px;float:left;margin-bottom:20px;overflow:hidden;line-height:16px}
+.head_search .history ul li {width:205px;float:left;margin-bottom:20px;overflow:hidden;}
 .head_search .history ul li span {cursor:pointer;width:170px;font-size:16px;color:#999;display:block;float:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .head_search .history ul li i {display:block;cursor:pointer;width:16px;height:16px;float:right;vertical-align:sub;background-image:url(./img/close_icon.png);background-repeat:no-repeat;background-size:16px;background-position:center;content:'';}
 .head_search .history .clear {font-size:12px;line-height:40px;display:block;height:40px;cursor:pointer;text-align:center;color:#999;background:#f8fcff;}
