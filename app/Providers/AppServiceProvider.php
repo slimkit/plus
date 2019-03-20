@@ -31,11 +31,11 @@ use Zhiyi\Plus\Packages\Wallet\TargetTypeManager;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap any application services.
+     * Register any application services.
      *
      * @return void
      */
-    public function boot()
+    public function register()
     {
         Schema::defaultStringLength(191);
         Resource::withoutWrapping();
@@ -44,12 +44,12 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Resgister the application service.
+     * Bootstrap any application services.
      *
      * @return void
      * @author Seven Du <shiweidu@outlook.com>
      */
-    public function register()
+    public function boot()
     {
         $this->app->singleton('cdn', function ($app) {
             return new \Zhiyi\Plus\Cdn\UrlManager($app);

@@ -30,7 +30,7 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->increments('id')->comment('user id.');
+            $table->bigIncrements('id')->comment('user id.');
             $table->string('name', 100)->nullable()->default(null)->comment('user name.');
             $table->string('email', 150)->nullable()->default(null)->comment('user email.');
             $table->string('phone', 50)->nullable()->default(null)->comment('user phone member.');
