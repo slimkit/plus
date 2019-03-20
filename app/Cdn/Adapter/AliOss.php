@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Zhiyi\Plus\Cdn\Adapter;
 
 use OSS\OssClient;
+use Illuminate\Support\Arr;
 use Zhiyi\Plus\Cdn\Refresh;
 use Zhiyi\Plus\Models\File;
-use Illuminate\Support\Arr;
 use Zhiyi\Plus\Contracts\Cdn\UrlGenerator as FileUrlGeneratorContract;
 
 class AliOss implements FileUrlGeneratorContract

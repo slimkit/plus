@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Utils;
 
-use Illuminate\Support\Arr;
-
 class Path
 {
     /**
