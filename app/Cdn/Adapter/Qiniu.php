@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Plus\Cdn\Adapter;
 
+use Illuminate\Support\Arr;
 use Zhiyi\Plus\Cdn\Refresh;
 use GuzzleHttp\Client as HttpClient;
 use Zhiyi\Plus\Contracts\Cdn\UrlGenerator as FileUrlGeneratorContract;
@@ -236,8 +237,8 @@ class Qiniu implements FileUrlGeneratorContract
      */
     private function makeImage(string $filename, array $extra = []): string
     {
-        $width = max(0, intval(array_get($extra, 'width', 0)));
-        $height = max(0, intval(array_get($extra, 'height', 0)));
+        $width = max(0, intval(Arr::get($extra, 'width', 0)));
+        $height = max(0, intval(Arr::get($extra, 'height', 0)));
         $quality = min(100, max(0, intval($extra['quality'] ?? 100)));
         $blur = max(0, intval($extra['blur'] ?? 0));
         $processor = $this->makeImageProcessor($width, $height, $quality, $blur);

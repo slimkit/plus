@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
@@ -67,7 +68,7 @@ class NewCommentPinnedController extends Controller
         $pinned->expires_at = $dateTime->addDay($pinned->day);
 
         $process = new UserProcess();
-        $order = $process->receivables($user->id, $pinned->amount, $pinned->user_id, '置顶动态评论', sprintf('置顶评论“%s”', str_limit($comment->body, 100, '...')));
+        $order = $process->receivables($user->id, $pinned->amount, $pinned->user_id, '置顶动态评论', sprintf('置顶评论“%s”', Str::limit($comment->body, 100, '...')));
 
         if ($order) {
             $pinned->save();
@@ -117,7 +118,7 @@ class NewCommentPinnedController extends Controller
 
         // 拒绝凭据
         $process = new UserProcess();
-        $order = $process->reject($user->id, $pinned->amount, $pinned->user_id, '被拒动态评论置顶', sprintf('被拒动态评论“%s”申请，退还申请金额', str_limit($pinned->comment->body ?? 'null', 100, '...')));
+        $order = $process->reject($user->id, $pinned->amount, $pinned->user_id, '被拒动态评论置顶', sprintf('被拒动态评论“%s”申请，退还申请金额', Str::limit($pinned->comment->body ?? 'null', 100, '...')));
 
         if ($order) {
             $pinned->expires_at = $dateTime;

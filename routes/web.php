@@ -16,13 +16,15 @@
  * +----------------------------------------------------------------------+
  */
 
+use Illuminate\Support\Arr;
+
 if (! Route::has('home')) {
     /**
      * Get front “/” route.
      *
      * @var \Illuminate\Routing\Route
      */
-    $route = array_get(Route::getRoutes()->get('GET'), '/');
+    $route = Arr::get(Route::getRoutes()->get('GET'), '/');
 
     // Not defined "/" route,
     // Create a default "/" route.

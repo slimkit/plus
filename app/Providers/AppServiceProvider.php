@@ -31,23 +31,9 @@ use Zhiyi\Plus\Packages\Wallet\TargetTypeManager;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap any application services.
+     * Register any application services.
      *
      * @return void
-     */
-    public function boot()
-    {
-        Schema::defaultStringLength(191);
-        Resource::withoutWrapping();
-        // 注册验证规则.
-        $this->registerValidator();
-    }
-
-    /**
-     * Resgister the application service.
-     *
-     * @return void
-     * @author Seven Du <shiweidu@outlook.com>
      */
     public function register()
     {
@@ -72,6 +58,20 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('at-resource-manager', function ($app) {
             return new \Zhiyi\Plus\AtMessage\ResourceManager($app);
         });
+    }
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function boot()
+    {
+        Schema::defaultStringLength(191);
+        Resource::withoutWrapping();
+        // 注册验证规则.
+        $this->registerValidator();
     }
 
     /**

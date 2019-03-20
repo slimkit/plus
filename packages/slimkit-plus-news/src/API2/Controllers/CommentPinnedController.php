@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentNews\API2\Controllers;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
@@ -125,7 +126,7 @@ class CommentPinnedController extends Controller
         $charge->action = 1;
         $charge->amount = $pinned->amount;
         $charge->subject = '置顶资讯动态评论';
-        $charge->body = sprintf('置顶评论《%s》', str_limit($comment->body, 100, '...'));
+        $charge->body = sprintf('置顶评论《%s》', Str::limit($comment->body, 100, '...'));
 
         $news->getConnection()->transaction(function () use ($response, $pinned, $comment, $user, $charge, $news) {
             $pinned->save();
@@ -184,7 +185,7 @@ class CommentPinnedController extends Controller
         $charge->action = 1;
         $charge->amount = $pinned->amount;
         $charge->subject = '被拒动态评论置顶';
-        $charge->body = sprintf('被拒动态评论《%s》申请，退还申请金额', str_limit($pinned->comment->body ?? 'null', 100, '...'));
+        $charge->body = sprintf('被拒动态评论《%s》申请，退还申请金额', Str::limit($pinned->comment->body ?? 'null', 100, '...'));
         $charge->status = 1;
 
         $pinned->getConnection()->transaction(function () use ($response, $charge, $pinned, $comment, $dateTime, $news, $user) {

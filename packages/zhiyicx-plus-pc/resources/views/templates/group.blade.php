@@ -1,5 +1,6 @@
 @php
     use Zhiyi\PlusGroup\Models\GroupMember;
+    use Illuminate\Support\Str;
 @endphp
 @foreach ($group as $item)
     <div class="group_item @if($loop->iteration % 2 == 0) group_item_right @endif">
@@ -10,7 +11,7 @@
                 </a>
             </dt>
             <dd>
-                <a class="title" href="{{Route('pc:groupread', $item['id'])}}" alt="{{ $item['name'] }}" >{{ str_limit($item['name'], 16, '...') }}
+                <a class="title" href="{{Route('pc:groupread', $item['id'])}}" alt="{{ $item['name'] }}" >{{ Str::limit($item['name'], 16, '...') }}
                     @if ($item['mode'] == 'paid')
                     <span class="paid">付费</span>
                     @endif

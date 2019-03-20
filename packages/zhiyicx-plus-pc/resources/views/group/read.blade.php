@@ -10,6 +10,7 @@
 
 @php
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
+    use Illuminate\Support\Str;
 @endphp
 
 @section('content')
@@ -82,7 +83,7 @@
                         <p class="ct-intro">{{$group['summary']}}</p>
                         @else
                         <p class="ct-intro-all">{{$group['summary']}}<span class="ct-intro-more" onclick="grouped.intro(0)">收起</span></p>
-                        <p class="ct-intro">{{str_limit($group['summary'], 160, '...')}}<span class="ct-intro-more" onclick="grouped.intro(1)">显示全部</span></p>
+                        <p class="ct-intro">{{Str::limit($group['summary'], 160, '...')}}<span class="ct-intro-more" onclick="grouped.intro(1)">显示全部</span></p>
                         @endif
 
                         <div class="ct-stat">
@@ -149,7 +150,7 @@
         <div class="f-mb30">
             <a
                 @if($group['joined'])
-                    @if (!str_contains($group['permissions'], $group['joined']['role']))
+                    @if (!Str::contains($group['permissions'], $group['joined']['role']))
                         href="javascript:;" onclick="noticebox('当前圈子没有权限发帖', 0)"
                     @elseif($group['joined']['disabled'])
                         href="javascript:;" onclick="noticebox('用户已被禁用，不能进行发帖', 0)"
@@ -169,7 +170,7 @@
         <div class="g-sidec s-bgc">
             <h3 class="u-tt">圈子公告</h3>
             @if(strlen($group['notice']) >= 100)
-            <p class="u-ct">{{str_limit($group['notice'], 100, '...')}}</p>
+            <p class="u-ct">{{Str::limit($group['notice'], 100, '...')}}</p>
             @else
             <p class="u-ct">{{$group['notice'] ?? '暂无公告信息'}}</p>
             @endif

@@ -25,6 +25,7 @@ use Carbon\Carbon;
 use GuzzleHttp\Client;
 use HTMLPurifier_Config;
 use Zhiyi\Plus\Models\User;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -311,7 +312,7 @@ function formatPinneds($data, $pinneds)
     if (empty($pinneds)) {
         return $data;
     }
-    $pinneds_keys = array_pluck($pinneds, 'id');
+    $pinneds_keys = Arr::pluck($pinneds, 'id');
     foreach ($pinneds as $key => &$value) {
         $value['pinned'] = true;
     }
