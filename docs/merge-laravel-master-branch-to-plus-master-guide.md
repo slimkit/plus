@@ -28,7 +28,7 @@ Plus（ThinkSNS Plus 缩写） 是基于 [laravel/laravel](https://github.com/la
 
 上次 Merge 的 Larave 版本 | 上次 Merge 操作执行时间
 ------------------------|----------------------
-5.7.* | 2018-11-28
+5.8.* | 2010-03-20
 
 <a name="add-laravel-repo"></a>
 ## 添加 Laravel 远端到本地仓库
