@@ -37,20 +37,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        Schema::defaultStringLength(191);
-        Resource::withoutWrapping();
-        // 注册验证规则.
-        $this->registerValidator();
-    }
-
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     * @author Seven Du <shiweidu@outlook.com>
-     */
-    public function boot()
-    {
         $this->app->singleton('cdn', function ($app) {
             return new \Zhiyi\Plus\Cdn\UrlManager($app);
         });
@@ -72,6 +58,20 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('at-resource-manager', function ($app) {
             return new \Zhiyi\Plus\AtMessage\ResourceManager($app);
         });
+    }
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     * @author Seven Du <shiweidu@outlook.com>
+     */
+    public function boot()
+    {
+        Schema::defaultStringLength(191);
+        Resource::withoutWrapping();
+        // 注册验证规则.
+        $this->registerValidator();
     }
 
     /**

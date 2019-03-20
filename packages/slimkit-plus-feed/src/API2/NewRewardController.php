@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Models\GoldType;
 use Zhiyi\Plus\Http\Controllers\Controller;
@@ -73,7 +74,7 @@ class NewRewardController extends Controller
             ], 403);
         }
 
-        $feedTitle = str_limit($feed->feed_content, 100, '...');
+        $feedTitle = Str::limit($feed->feed_content, 100, '...');
         $feedTitle = ($feedTitle ? "“${feedTitle}”" : '');
 
         $pay = $process->prepayment($user->id, $amount, $target->id, sprintf('打赏“%s”的动态', $target->name, $feedTitle, $amount), sprintf('打赏“%s”的动态，%s扣除%s', $target->name, $goldName, $amount));

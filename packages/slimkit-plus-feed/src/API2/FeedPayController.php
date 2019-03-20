@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\PaidNode as PaidNodeModel;
@@ -57,7 +58,7 @@ class FeedPayController extends Controller
         }
 
         $paidNode->channel = 'feed:comment';
-        $paidNode->subject = sprintf('评论动态《%s》', str_limit($feed->feed_content, 100));
+        $paidNode->subject = sprintf('评论动态《%s》', Str::limit($feed->feed_content, 100));
         $paidNode->body = $paidNode->subject;
         $paidNode->amount = $amount;
         $paidNode->user_id = $user->id;

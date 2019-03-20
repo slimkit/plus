@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Zhiyi\Component\ZhiyiPlus\PlusComponentFeed\API2;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Zhiyi\Plus\Http\Controllers\Controller;
 use Zhiyi\Plus\Models\Comment as CommentModel;
@@ -148,7 +149,7 @@ class NewPinnedController extends Controller
             'pinned' => $pinned,
             'call' => function (FeedPinnedModel $pinned) use ($user, $feed) {
                 $process = new UserProcess();
-                $order = $process->prepayment($user->id, $pinned->amount, 0, '动态申请置顶', sprintf('申请置顶动态《%s》', str_limit($feed->feed_content, 100)));
+                $order = $process->prepayment($user->id, $pinned->amount, 0, '动态申请置顶', sprintf('申请置顶动态《%s》', Str::limit($feed->feed_content, 100)));
 
                 if ($order) {
                     $pinned->save();

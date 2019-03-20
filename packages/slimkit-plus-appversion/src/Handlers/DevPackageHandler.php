@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Slimkit\PlusAppversion\Handlers;
 
+use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Slimkit\PlusAppversion\Support\Path;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
@@ -136,7 +137,7 @@ class DevPackageHandler extends \Zhiyi\Plus\Support\PackageHandler
             return $modelName;
         });
         $modelName = ucfirst(camel_case($modelName));
-        $table = str_plural(strtolower(snake_case($modelName)));
+        $table = Str::plural(strtolower(snake_case($modelName)));
         $table = $command->getOutput()->ask('Enter the table name', $table, function ($table) {
             if (! preg_match('/^[a-z0-9_]+$/is', $table)) {
                 throw new \InvalidArgumentException(

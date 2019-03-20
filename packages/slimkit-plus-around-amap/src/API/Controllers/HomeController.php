@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace SlimKit\PlusAroundAmap\API\Controllers;
 
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Zhiyi\Plus\Support\Configuration;
@@ -77,9 +78,9 @@ class HomeController extends Controller
     {
         $this->http = new GuzzleHttpClient();
         $conf = $config->getConfigurationBase();
-        $this->_amap_sig = array_get($conf, 'around-amap.amap-sig') ?? '';
-        $this->_amap_key = array_get($conf, 'around-amap.amap-key') ?? '';
-        $this->_amap_tableId = array_get($conf, 'around-amap.amap-tableid') ?? '';
+        $this->_amap_sig = Arr::get($conf, 'around-amap.amap-sig') ?? '';
+        $this->_amap_key = Arr::get($conf, 'around-amap.amap-key') ?? '';
+        $this->_amap_tableId = Arr::get($conf, 'around-amap.amap-tableid') ?? '';
     }
 
     // 数据总线

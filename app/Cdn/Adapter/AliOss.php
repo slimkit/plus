@@ -23,6 +23,7 @@ namespace Zhiyi\Plus\Cdn\Adapter;
 use OSS\OssClient;
 use Zhiyi\Plus\Cdn\Refresh;
 use Zhiyi\Plus\Models\File;
+use Illuminate\Support\Arr;
 use Zhiyi\Plus\Contracts\Cdn\UrlGenerator as FileUrlGeneratorContract;
 
 class AliOss implements FileUrlGeneratorContract
@@ -168,8 +169,8 @@ class AliOss implements FileUrlGeneratorContract
     protected function getProcess(string $filename, array $extra): array
     {
         if ($this->isImage($filename)) {
-            $width = max(0, intval(array_get($extra, 'width', 0)));
-            $height = max(0, intval(array_get($extra, 'height', 0)));
+            $width = max(0, intval(Arr::get($extra, 'width', 0)));
+            $height = max(0, intval(Arr::get($extra, 'height', 0)));
             $quality = min(100, max(0, intval($extra['quality'] ?? 0)));
             $blur = max(0, intval($extra['blur'] ?? 0));
 
@@ -242,11 +243,11 @@ class AliOss implements FileUrlGeneratorContract
         if ($pares === false) {
             throw new \Exception('Parse URL error.');
         }
-        $scheme = array_get($pares, 'scheme', $this->getScheme());
-        $host = array_get($pares, 'host', '');
-        $path = array_get($pares, 'path', '');
+        $scheme = Arr::get($pares, 'scheme', $this->getScheme());
+        $host = Arr::get($pares, 'host', '');
+        $path = Arr::get($pares, 'path', '');
         $query = $this->mergeHttpQueryString(
-            array_get($pares, 'query', ''),
+            Arr::get($pares, 'query', ''),
             http_build_query($query)
         );
 

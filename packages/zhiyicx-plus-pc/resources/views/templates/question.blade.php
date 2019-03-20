@@ -1,4 +1,5 @@
 @php
+    use Illuminate\Support\Str;
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getTime;
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\formatList;
     use function Zhiyi\Component\ZhiyiPlus\PlusComponentPc\getAvatar;
@@ -56,7 +57,7 @@
                         )
                     )
                 )
-                    {!! str_limit(formatList($post['answer']['body']), 250, '...') !!}
+                    {!! Str::limit(formatList($post['answer']['body']), 250, '...') !!}
                     <a class="u-more" href="javascript:;">查看详情</a>
                 @else
                     <span class="fuzzy">

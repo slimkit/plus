@@ -104,7 +104,7 @@
         "jenssegers/agent": "^2.6",
         "jpush/jpush": "^3.5",
         "laravel/framework": "5.8.*",
-        "laravel/telescope": "^1.0",
+        "laravel/telescope": "^2.0",
         "laravel/tinker": "^1.0",
         "league/html-to-markdown": "^4.6",
         "league/omnipay": "^3.0",
@@ -126,7 +126,7 @@
         "slimkit/plus-socialite": "2.3.0",
         "symfony/finder": "^4.0",
         "symfony/yaml": "^4.0",
-        "tymon/jwt-auth": "1.0.0-rc.3",
+        "tymon/jwt-auth": "1.0.0-rc.4.1",
         "zhiyicx/plus-pc": "2.3.0"
     },
     "require-dev": {
