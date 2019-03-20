@@ -167,6 +167,8 @@ export function getNotificationDisplay (data) {
       return i18n.t('message.system.reward_feed', { user: data.sender.name })
     case 'reward:news':
       return i18n.t('message.system.reward_news', { news: data.news.title, user: data.sender.name, amount: data.amount + data.unit })
+    case 'group:post-reward':
+      return i18n.t('message.system.reward_post', { post: data.post.title, user: data.sender.name })
     case 'group:join':
       return i18n.t(`message.system.group_join[${data.state !== 'reject' ? 1 : 0}]`, { group: data.group.name, user: (data.user || {}).name })
     case 'user-certification':
@@ -178,6 +180,10 @@ export function getNotificationDisplay (data) {
       return i18n.t('message.system.reward_qa', { user: data.sender.name })
     case 'qa:invitation':
       return i18n.t('message.system.qa_invitation', { user: data.sender.name, question: data.question.subject })
+    case 'qa:question-topic:passed':
+      return i18n.t('message.system.qa_topic_passed', { topic: data.topic_application.name })
+    case 'qa:question-topic:reject':
+      return i18n.t('message.system.qa_topic_reject', { topic: data.topic_application.name })
     case 'pinned:feed/comment':
       return i18n.t(`message.system.pinned_feed_comment[${data.state !== 'reject' ? 1 : 0}]`, { comment: data.comment.contents })
     case 'pinned:news/comment':
@@ -187,5 +193,7 @@ export function getNotificationDisplay (data) {
       return i18n.t(`message.system.pinned_post_comment[${data.state !== 'reject' ? 1 : 0}]`, { post: data.post.title })
     case 'group:post-pinned':
       return i18n.t(`message.system.pinned_post[${data.state !== 'reject' ? 1 : 0}]`, { post: data.post.title })
+    case 'group:pinned-admin':
+      return i18n.t('message.system.pinned_post_by_admin', { post: data.post.title })
   }
 }
